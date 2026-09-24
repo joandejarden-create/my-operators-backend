@@ -20,6 +20,7 @@ There is **one** versioned ResearchTemplateRegistry. Customer / UI / agents must
 | `OWNERSHIP_CAPITAL_EVENTS` | `OWNERSHIP_CAPITAL` | (registry) | Addendum | $5 max | PropCo / economic owner / capital events |
 | `REPOSITIONING_DEVELOPMENT` | — | (registry) | Addendum | $5 max | Renovation / PIP / development |
 | `OWNER_PORTFOLIO` | Owner Portfolio Multi-Asset | (registry) | Addendum | $5 max | Org portfolio / multi-asset relationships |
+| `DEVELOPMENT_PROJECT_INTELLIGENCE` | Development & Project Intelligence Investigation | 1.0.0 | Addendum | $5 max | Proposed / suspected hotel & hotel+residences development sites (no Census hotel required) |
 
 Each template includes: `customer_question`, `research_objective`, lanes/scope, preferred sources, extraction targets, validation rules, negative screens, stop/escalation conditions, confirmation UI fields, `claim_handoff.auto_promote: false`.
 

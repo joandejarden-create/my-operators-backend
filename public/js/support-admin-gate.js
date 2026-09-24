@@ -12,16 +12,29 @@
   async function fetchMe() {
     var auth = getAuth();
     if (!auth || typeof auth.authFetch !== "function") {
-      return { ok: false, reason: "auth_unavailable" };
+      return { ok: false, reason: "auth_unavailable", data: null };
     }
     try {
       var res = await auth.authFetch("/api/me", { maxWaitMs: 20000 });
+      var data = await res.json().catch(function () {
+        return {};
+      });
       if (!res.ok) {
-        return { ok: false, reason: "http_" + res.status };
+        return {
+          ok: false,
+          reason: "http_" + res.status,
+          data: data,
+          status: res.status,
+          message: (data && (data.message || data.error)) || null,
+        };
       }
-      return { ok: true, data: await res.json() };
+      return { ok: true, data: data, status: res.status };
     } catch (err) {
-      return { ok: false, reason: err && err.message ? err.message : "network_error" };
+      return {
+        ok: false,
+        reason: err && err.message ? err.message : "network_error",
+        data: null,
+      };
     }
   }
 
@@ -31,6 +44,20 @@
 
   function isInternalRunbookMe(data) {
     return isAdminMe(data);
+  }
+
+  /**
+   * Same decision as server canAccessAdpMonthlyReviewAdmin / /api/me.adpMonthlyReviewAdmin.
+   * Must not invent client-only admin from Demo Mode badge alone.
+   */
+  function isAdpMonthlyReviewAdminMe(data) {
+    if (!data || !data.dealality) return false;
+    if (data.dealality.adpMonthlyReviewAdmin === true) return true;
+    if (data.dealality.localDealalityAdminAccess === true) return true;
+    if (data.dealality.isAdmin === true) return true;
+    if (data.dealality.flags && data.dealality.flags.isAdmin === true) return true;
+    if (data.dealality.isInternalRunbookAdmin === true) return true;
+    return false;
   }
 
   function resolveEl(idOrEl) {
@@ -181,14 +208,64 @@
     return true;
   }
 
+  async function requireAdpMonthlyReviewAdmin(options) {
+    options = options || {};
+    var loadingEl = document.getElementById(options.loadingId || "supportGateLoading");
+    var deniedEl = document.getElementById(options.deniedId || "supportGateDenied");
+    var contentEl = document.getElementById(options.contentId || "supportGateContent");
+
+    // Keep loading visible until auth resolves — avoid Access Restricted flash
+    // for authorized local demo users, and avoid content flash for denied users.
+    if (contentEl) contentEl.hidden = true;
+    if (deniedEl) deniedEl.hidden = true;
+    if (loadingEl) {
+      showPageLoading(loadingEl, options.loadingMessage || "Verifying access…");
+    }
+
+    var result = await fetchMe();
+
+    if (!result.ok) {
+      if (loadingEl) hidePageLoading(loadingEl);
+      if (deniedEl) {
+        deniedEl.hidden = false;
+        var msg = deniedEl.querySelector("[data-gate-message]");
+        if (msg) {
+          msg.textContent =
+            result.reason === "auth_unavailable"
+              ? "Sign in through the Dealality app to view this page."
+              : result.message || "Authentication required. Sign in and try again.";
+        }
+      }
+      if (contentEl) contentEl.hidden = true;
+      return false;
+    }
+
+    if (!isAdpMonthlyReviewAdminMe(result.data)) {
+      if (loadingEl) hidePageLoading(loadingEl);
+      if (deniedEl) deniedEl.hidden = false;
+      if (contentEl) contentEl.hidden = true;
+      return false;
+    }
+
+    // Stay on loading until caller reveals content (catalog load, etc.).
+    if (deniedEl) deniedEl.hidden = true;
+    if (contentEl) contentEl.hidden = true;
+    if (typeof options.onAllowed === "function") {
+      options.onAllowed(result.data);
+    }
+    return true;
+  }
+
   global.SupportAdminGate = {
     fetchMe: fetchMe,
     isAdminMe: isAdminMe,
     isInternalRunbookMe: isInternalRunbookMe,
+    isAdpMonthlyReviewAdminMe: isAdpMonthlyReviewAdminMe,
     showPageLoading: showPageLoading,
     setPageLoadingMessage: setPageLoadingMessage,
     hidePageLoading: hidePageLoading,
     requireAdmin: requireAdmin,
     requireInternalRunbook: requireInternalRunbook,
+    requireAdpMonthlyReviewAdmin: requireAdpMonthlyReviewAdmin,
   };
 })(window);

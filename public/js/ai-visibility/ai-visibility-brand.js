@@ -383,16 +383,40 @@
     setPartialBanner(freshness);
   }
 
+  function isBaiOwnerAppSurface() {
+    try {
+      var path = String(window.location.pathname || "");
+      if (/brand-ai-visibility-share\.html$/i.test(path)) return false;
+      if (/ai-visibility-brand\.html$/i.test(path)) return true;
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
+
   async function apiGet(path, opts) {
     var auth = window.DealalityMemberstackAuth;
     if (!auth || typeof auth.authFetch !== "function") {
       throw new Error("Sign in required to view Brand AI Visibility.");
     }
+    var ownerApp = isBaiOwnerAppSurface();
+    var embedded = false;
+    try {
+      embedded = window.self !== window.top;
+    } catch (_) {
+      embedded = true;
+    }
     var fetchOpts = {
       method: "GET",
+      // Standalone owner HTML: short wait — governed local DEV_AUTH_BYPASS can proceed
+      // with X-Dealality-Owner-App (same pattern as ADP). Embeds still wait for JWT.
       waitForLogin: true,
-      maxWaitMs: 20000,
+      maxWaitMs: ownerApp && !embedded ? 2500 : 20000,
+      headers: { Accept: "application/json" },
     };
+    if (ownerApp) {
+      fetchOpts.headers["X-Dealality-Owner-App"] = "1";
+    }
     if (opts && opts.signal) {
       fetchOpts.signal = opts.signal;
     }

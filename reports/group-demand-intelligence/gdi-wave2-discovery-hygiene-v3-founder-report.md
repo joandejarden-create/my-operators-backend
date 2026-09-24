@@ -132,7 +132,7 @@ Detail: `reports/group-demand-intelligence/gdi-wave2-discovery-hygiene-v3-regres
 | HOTEL-SPECIFIC | NO |
 | PERSON-SPECIFIC | NO |
 | EVENT-SPECIFIC | NO |
-| COMMIT SHA | `9ba5c917a3114f718e46a1a4f5fff277c0a15e78` |
+| COMMIT SHA | `7312754ea8823bb4f5c28491f0096805030a0ffd` |
 
 ---
 

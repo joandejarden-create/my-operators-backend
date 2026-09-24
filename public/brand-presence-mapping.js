@@ -15,6 +15,11 @@ let infrastructureLayer = null;
 let demandAnchorsLayer = null;
 let cityAggregationLayer = null;
 let allHotels = [];
+/** Below this zoom, skip individual hotel markers (city aggregates cover density). */
+const HOTEL_MARKER_MIN_ZOOM = 7;
+let viewportMarkerRefreshTimer = null;
+let viewportMarkerGen = 0;
+let viewportMarkerListenerBound = false;
 let currentFilteredHotels = [];
 let isCityAggregationEnabled = false;
 
@@ -703,6 +708,7 @@ function initializeMap() {
         markerZoomAnimation: true, // Animate markers during zoom
         zoomControl: true          // Explicitly enable zoom controls
     });
+    window.__radarLeafletMap = map;
     
     // Add tile layer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -747,9 +753,8 @@ function initializeMap() {
     // Zoom controls are enabled by default in Leaflet
     // Add keyboard shortcuts for zoom
     addZoomKeyboardShortcuts();
+    bindViewportMarkerRefresh();
 
-    // Add additional map controls
-    
     // Load hotel data
     loadHotelData();
 }
@@ -798,9 +803,29 @@ async function loadHotelData() {
     try {
         showLoading(true);
         showSystemStatus('Loading Market Signals…');
+
+        // Progressive: city aggregates first (small payload) so the map is useful
+        // before the full sparse map DTO finishes downloading/parsing.
+        let earlyCitiesPainted = false;
+        try {
+            const aggResponse = await fetch('/api/brand-presence?view=map&aggregate=city&limit=100000', {
+                headers: { 'ngrok-skip-browser-warning': 'true' }
+            });
+            const aggResult = await aggResponse.json();
+            if (aggResult && aggResult.success && Array.isArray(aggResult.cities) && aggResult.cities.length) {
+                window.__radarServerCityAggregates = aggResult.cities;
+                renderServerCityAggregates(aggResult.cities);
+                earlyCitiesPainted = true;
+                updateSystemStatus('Loading full census for filters…');
+                showLoading(false);
+            }
+        } catch (aggErr) {
+            console.warn('[radar-map] city aggregate prefetch failed:', aggErr);
+        }
         
-        // Fetch all data from API with high limit
-        const response = await fetch('/api/brand-presence?limit=100000', {
+        // Sparse map DTO — full hotel detail stays on GET /api/brand-presence/hotel/:id
+        // Retained for client-side filters/search until facet/server-filter path is complete.
+        const response = await fetch('/api/brand-presence?view=map&limit=100000', {
             headers: {
                 'ngrok-skip-browser-warning': 'true'
             }
@@ -811,8 +836,9 @@ async function loadHotelData() {
             updateSystemStatus('Processing Market Signals…');
             allHotels = result.hotels;
             window.allHotels = allHotels;
-            hotelData = [...allHotels];
-            currentFilteredHotels = [...allHotels];
+            // Avoid cloning ~15k entries on initial load; filters create new arrays when needed.
+            hotelData = allHotels;
+            currentFilteredHotels = allHotels;
             if (result.skippedNoCoordinates) console.warn(result.skippedNoCoordinates + " Airtable records have no coordinates and are not shown on the map.");
             
             updateSystemStatus('Displaying hotels on map…');
@@ -826,7 +852,7 @@ async function loadHotelData() {
                 updateBrandDistribution(hotelData);
                 generateInsights(hotelData);
                 updateAllDropdowns(hotelData);
-                if (isCityAggregationEnabled) renderCityAggregationMarkers();
+                if (isCityAggregationEnabled || earlyCitiesPainted) renderCityAggregationMarkers();
             });
         } else {
             throw new Error('API returned error: ' + result.error);
@@ -871,16 +897,45 @@ async function displayHotels(hotels) {
     // Clear existing markers
     markersCluster.clearLayers();
     currentMarkers = [];
+
+    const zoom = map && typeof map.getZoom === 'function' ? map.getZoom() : HOTEL_MARKER_MIN_ZOOM;
+    // Regional zoom: do not construct ~15k circleMarkers (main TBT driver).
+    // City aggregates (or forced low-zoom agg) provide useful map density.
+    if (zoom < HOTEL_MARKER_MIN_ZOOM) {
+        console.log(
+            '[radar-map] skip individual markers at zoom ' +
+                zoom +
+                ' (min ' +
+                HOTEL_MARKER_MIN_ZOOM +
+                '); hotels retained for filters=' +
+                (hotels || []).length
+        );
+        ensureLowZoomCityAggregation();
+        return;
+    }
+
+    if (!isCityAggregationEnabled) {
+        clearCityAggregationLayer();
+    }
+
+    const viewportSource = hotelsInMapViewport(hotels, 0.2);
     
-    // Add markers for each hotel
+    // Add markers for each hotel in the padded viewport only
     let markersAdded = 0;
     let skippedInvalid = 0;
-    const markerPositions = buildHotelMarkerPositions(filterHotelsForMapLayer(hotels));
-    const batchSize = 800;
+    const markerPositions = buildHotelMarkerPositions(filterHotelsForMapLayer(viewportSource));
+    // Smaller batches yield to the browser more often (lower TBT after large census loads).
+    const batchSize = 250;
     const pendingLayers = [];
 
     console.log(
-        'Processing ' + markerPositions.length + ' map markers from ' + hotels.length + ' hotels'
+        'Processing ' +
+            markerPositions.length +
+            ' viewport markers from ' +
+            (hotels || []).length +
+            ' hotels (zoom ' +
+            zoom +
+            ')'
     );
 
     for (let i = 0; i < markerPositions.length; i += 1) {
@@ -922,6 +977,95 @@ async function displayHotels(hotels) {
     if (isCityAggregationEnabled) renderCityAggregationMarkers();
 }
 
+function hotelsInMapViewport(hotels, padRatio) {
+    if (!map || typeof map.getBounds !== 'function') return hotels || [];
+    let bounds;
+    try {
+        bounds = map.getBounds();
+    } catch (err) {
+        return hotels || [];
+    }
+    if (!bounds) return hotels || [];
+    const pad = Number.isFinite(padRatio) ? padRatio : 0.15;
+    const sw = bounds.getSouthWest();
+    const ne = bounds.getNorthEast();
+    const latPad = (ne.lat - sw.lat) * pad;
+    const lngPad = (ne.lng - sw.lng) * pad;
+    const south = sw.lat - latPad;
+    const north = ne.lat + latPad;
+    const west = sw.lng - lngPad;
+    const east = ne.lng + lngPad;
+    const crossesAntimeridian = west > east;
+    return (hotels || []).filter(function (hotel) {
+        const lat = Number(hotel.lat);
+        const lng = Number(hotel.lng);
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return false;
+        if (lat < south || lat > north) return false;
+        if (crossesAntimeridian) return lng >= west || lng <= east;
+        return lng >= west && lng <= east;
+    });
+}
+
+function ensureLowZoomCityAggregation() {
+    // Temporary density layer when individual pins are suppressed at regional zoom.
+    renderCityAggregationMarkers({ force: true });
+}
+
+function renderServerCityAggregates(cities) {
+    if (!map) return;
+    clearCityAggregationLayer();
+    cityAggregationLayer = L.layerGroup();
+    (cities || []).forEach(function (row) {
+        if (!Number.isFinite(row.lat) || !Number.isFinite(row.lng)) return;
+        if (!cityRowPassesAggFilter(row, MAP_LAYER_FILTERS.cityAggFilter)) return;
+        const marker = L.marker([row.lat, row.lng], {
+            icon: L.divIcon({
+                className: 'city-aggregate-marker',
+                html: '<div style="width:24px;height:24px;border-radius:50%;background:#6c72ff;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;">' + row.totalHotels + '</div>',
+                iconSize: [24, 24],
+                iconAnchor: [12, 12]
+            })
+        });
+        marker.bindPopup(
+            '<div style="min-width:260px;font-family:Inter,Segoe UI,sans-serif;">' +
+                '<h3 style="margin:0 0 8px;color:#1a1a1a;">' + row.city + ', ' + row.country + '</h3>' +
+                '<div style="font-size:12px;color:#444;line-height:1.45;">' +
+                    '<strong>Total hotels:</strong> ' + Number(row.totalHotels || 0).toLocaleString() + '<br>' +
+                    '<strong>Total rooms:</strong> ' + Number(row.totalRooms || 0).toLocaleString() + '<br>' +
+                    '<strong>Open / Pipeline / Candidate:</strong> ' +
+                    (row.openHotels || 0) + ' / ' + (row.pipelineHotels || 0) + ' / ' + (row.candidateHotels || 0) +
+                '</div>' +
+            '</div>'
+        );
+        cityAggregationLayer.addLayer(marker);
+    });
+    map.addLayer(cityAggregationLayer);
+}
+
+function bindViewportMarkerRefresh() {
+    if (viewportMarkerListenerBound || !map) return;
+    viewportMarkerListenerBound = true;
+    const schedule = function () {
+        if (viewportMarkerRefreshTimer) clearTimeout(viewportMarkerRefreshTimer);
+        viewportMarkerRefreshTimer = setTimeout(function () {
+            viewportMarkerRefreshTimer = null;
+            const gen = ++viewportMarkerGen;
+            const source =
+                currentFilteredHotels && currentFilteredHotels.length
+                    ? currentFilteredHotels
+                    : allHotels;
+            Promise.resolve(displayHotels(source)).then(function () {
+                if (gen !== viewportMarkerGen) return;
+            });
+        }, 220);
+    };
+    map.on('moveend', schedule);
+    map.on('zoomend', schedule);
+}
+
+window.__radarHotelsInMapViewport = hotelsInMapViewport;
+window.__radarHotelMarkerMinZoom = HOTEL_MARKER_MIN_ZOOM;
+
 function getHotelsForAggregation() {
     const hasActiveFilters = Object.values(currentFilters || {}).some(function (value) {
         return String(value || '').trim() !== '';
@@ -953,13 +1097,20 @@ function cityRowPassesAggFilter(row, token) {
     return row.totalHotels >= Math.max(1, filter.min || 1);
 }
 
-function renderCityAggregationMarkers() {
+function renderCityAggregationMarkers(options) {
     if (!map) return;
+    const opts = options || {};
+    const force = opts.force === true;
     clearCityAggregationLayer();
-    if (!isCityAggregationEnabled) return;
+    if (!isCityAggregationEnabled && !force) return;
 
     const sourceHotels = getHotelsForAggregation();
-    if (!sourceHotels.length) return;
+    if (!sourceHotels.length) {
+        if (force && window.__radarServerCityAggregates && window.__radarServerCityAggregates.length) {
+            renderServerCityAggregates(window.__radarServerCityAggregates);
+        }
+        return;
+    }
 
     const cityGroups = {};
     sourceHotels.forEach(function (hotel) {
@@ -3429,7 +3580,10 @@ async function loadInfrastructureSummaryCounts() {
     const TIR = window.TravelInfrastructureRadar;
     if (!TIR) return;
     try {
-        const data = await TIR.fetchInfrastructure({ region: currentFilters.region || "" });
+        const data = await TIR.fetchInfrastructure({
+            region: currentFilters.region || "",
+            countsOnly: true,
+        });
         infrastructureTypeCounts = TIR.extractTypeCounts(data);
         infrastructureTotalCount = TIR.getTotalCount(data, infrastructureTypeCounts);
         renderInfrastructureFilterChips();
@@ -3573,7 +3727,8 @@ async function loadDemandAnchorsSummaryCounts() {
     const DAR = window.DemandAnchorsRadar;
     if (!DAR) return;
     try {
-        const data = await DAR.fetchDemandAnchors(getDemandAnchorsApiOpts());
+        const opts = Object.assign({}, getDemandAnchorsApiOpts(), { countsOnly: true });
+        const data = await DAR.fetchDemandAnchors(opts);
         demandAnchorsTypeCounts = DAR.extractTypeCounts(data);
         demandAnchorsTotalCount = DAR.getTotalCount(data, demandAnchorsTypeCounts);
         renderDemandAnchorsFilterChips();

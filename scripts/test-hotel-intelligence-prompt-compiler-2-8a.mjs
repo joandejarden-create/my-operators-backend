@@ -57,6 +57,11 @@ check("RESEARCH_TEMPLATE_REGISTRY", () => {
   assert.ok(RESEARCH_TEMPLATES.OWNERSHIP_CAPITAL_EVENTS);
   assert.ok(RESEARCH_TEMPLATES.REPOSITIONING_DEVELOPMENT);
   assert.ok(RESEARCH_TEMPLATES.OWNER_PORTFOLIO);
+  assert.ok(RESEARCH_TEMPLATES.DEVELOPMENT_PROJECT_INTELLIGENCE);
+  assert.equal(
+    RESEARCH_TEMPLATES.DEVELOPMENT_PROJECT_INTELLIGENCE.display_name,
+    "Development & Project Intelligence Investigation"
+  );
   assert.equal(getTemplate("BRAND_FRANCHISE_OPERATOR")?.template_id, "BRAND_OPERATOR_AGREEMENT");
   assert.equal(getTemplate("OWNERSHIP_CAPITAL")?.template_id, "OWNERSHIP_CAPITAL_EVENTS");
   assert.ok(INTERNAL_GAP_FILL_TEMPLATES.OWNERSHIP_GAP);
@@ -165,6 +170,30 @@ check("PROMPT_SNAPSHOTS", () => {
     hotel_seed: { hotel_id: "recIwaP1etgx2g9nA", hotel_name: "Cambridge Beaches Resort & Spa" },
     budget_usd: 5,
   });
+  const dpi = compileWebhoundPrompt({
+    template_id: "DEVELOPMENT_PROJECT_INTELLIGENCE",
+    hotel_seed: {
+      hotel_id: "devproj_san_jose_altiplano_mijares_32_v1",
+      hotel_name: "San José del Cabo — suspected Altiplano development site",
+      country: "Mexico",
+    },
+    subject: {
+      subject_type: "UNKNOWN_PROJECT_TYPE",
+      development_project_id: "devproj_san_jose_altiplano_mijares_32_v1",
+      project_name: "San José del Cabo — suspected Altiplano development site",
+      known_developer: "Altiplano (seed hint — verify)",
+      city: "San José del Cabo",
+      country: "Mexico",
+    },
+    known_facts: [],
+    unresolved_questions: ["Exact site identity", "Brand status", "Development stage"],
+    budget_usd: 5,
+    learning_tags: ["MEXICO", "LOS_CABOS", "DEVELOPMENT_PROJECT"],
+  });
+  assert.equal(validateCompiledWebhoundPrompt(dpi).ok, true, validateCompiledWebhoundPrompt(dpi).errors.join(","));
+  assert.ok(dpi.prompt.includes("Development & Project Intelligence special requirements"));
+  assert.ok(dpi.prompt.includes("WRONG_SITE"));
+  assert.equal(dpi.spec.subject.development_project_id, "devproj_san_jose_altiplano_mijares_32_v1");
   for (const [name, body] of [
     ["full-hi-kgpv.snap.md", full.prompt],
     ["change-opportunity-kgpv.snap.md", co.prompt],

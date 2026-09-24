@@ -153,7 +153,8 @@
       var filters = readFilters();
       var data = await TIR.fetchInfrastructure({
         country: filters.countryFilter || "",
-        region: filters.marketFilter || ""
+        region: filters.marketFilter || "",
+        countsOnly: true
       });
       state.infrastructureTypeCounts = TIR.extractTypeCounts(data);
       state.infrastructureTotalCount = TIR.getTotalCount(data, state.infrastructureTypeCounts);
@@ -242,7 +243,8 @@
       var filters = readFilters();
       var data = await DAR.fetchDemandAnchors({
         country: filters.countryFilter || "",
-        region: filters.marketFilter || ""
+        region: filters.marketFilter || "",
+        countsOnly: true
       });
       state.demandAnchorsTypeCounts = DAR.extractTypeCounts(data);
       state.demandAnchorsTotalCount = DAR.getTotalCount(data, state.demandAnchorsTypeCounts);
@@ -1559,14 +1561,15 @@
       state.data = await responses[0].json();
       state.filters = await responses[1].json();
 
-      // Live layers: Hotel Census (same source as Radar /api/brand-presence) + travel infrastructure.
+      // Live hotel census (sparse map DTO). TI / demand only when their toggles are on.
       updateSystemStatus("Fetching map layers...", "1-2 seconds");
       state.liveMapMode = false;
       state.liveHotels = [];
       state.liveInfrastructure = [];
       state.liveDemandAnchors = [];
       try {
-        var hotelsFetch = await fetch("/api/brand-presence?limit=100000");
+        // Sparse map DTO — Scout only needs map/filter fields for live hotel layer
+        var hotelsFetch = await fetch("/api/brand-presence?view=map&limit=100000");
         if (hotelsFetch.ok) {
           var hotelsJson = await hotelsFetch.json();
           if (hotelsJson.success && hotelsJson.hotels) {
@@ -1595,13 +1598,14 @@
       } catch (_hotelErr) {
         state.liveHotels = [];
       }
-      await loadScoutInfrastructureSummary();
-      await loadScoutDemandAnchorsSummary();
+      // Defer multi-MB TI/demand until the layer toggle is enabled (chips load with the layer).
       if (isToggleOn("toggleTravelInfrastructure", false)) {
+        await loadScoutInfrastructureSummary();
         await loadScoutInfrastructure();
         setScoutInfrastructureFilterVisible(true);
       }
       if (isToggleOn("toggleDemandAnchors", false)) {
+        await loadScoutDemandAnchorsSummary();
         await loadScoutDemandAnchors();
         setScoutDemandAnchorsFilterVisible(true);
       }

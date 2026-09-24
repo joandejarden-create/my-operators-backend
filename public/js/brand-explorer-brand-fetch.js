@@ -108,12 +108,12 @@
       return listCache.promise;
     }
 
-    var url = '/api/brand-library/brands?refresh=1';
-    if (options.refresh === false) {
-      url = '/api/brand-library/brands';
+    var url = '/api/brand-library/brands';
+    if (options.refresh) {
+      url = '/api/brand-library/brands?refresh=1';
     }
 
-    var promise = fetch(url, { cache: 'no-store' })
+    var promise = fetch(url, options.refresh ? { cache: 'no-store' } : undefined)
       .then(function (res) {
         if (!res.ok) {
           throw new Error('Failed to fetch brands (' + res.status + ')');

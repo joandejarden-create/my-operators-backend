@@ -75,8 +75,22 @@
         try {
             var auth = window.DealalityMemberstackAuth;
             if (auth && typeof auth.getAuthHeaders === 'function') {
-                var headers = await Promise.resolve(auth.getAuthHeaders());
-                if (headers && headers.Authorization) authHeaders = headers;
+                // getAuthHeaders returns { headers } | { error } — not a flat header map.
+                var embedded = false;
+                try {
+                    embedded = window.self !== window.top;
+                } catch (_) {
+                    embedded = true;
+                }
+                var result = await Promise.resolve(
+                    auth.getAuthHeaders(null, {
+                        waitForLogin: embedded,
+                        maxWaitMs: embedded ? 12000 : 2500,
+                    })
+                );
+                if (result && !result.error && result.headers && result.headers.Authorization) {
+                    authHeaders = result.headers;
+                }
             } else if (auth && typeof auth.getMemberstackJwt === 'function') {
                 var jwt = await Promise.resolve(auth.getMemberstackJwt());
                 if (jwt) authHeaders = { Authorization: 'Bearer ' + jwt };
@@ -98,6 +112,31 @@
         }
 
         updateFeedModeControls();
+    }
+
+    async function ensureAuthHeaders() {
+        if (authHeaders && authHeaders.Authorization) return authHeaders;
+        try {
+            var auth = window.DealalityMemberstackAuth;
+            if (auth && typeof auth.getAuthHeaders === 'function') {
+                var embedded = false;
+                try {
+                    embedded = window.self !== window.top;
+                } catch (_) {
+                    embedded = true;
+                }
+                var result = await Promise.resolve(
+                    auth.getAuthHeaders(null, {
+                        waitForLogin: true,
+                        maxWaitMs: embedded ? 12000 : 4000,
+                    })
+                );
+                if (result && !result.error && result.headers && result.headers.Authorization) {
+                    authHeaders = result.headers;
+                }
+            }
+        } catch (_) {}
+        return authHeaders;
     }
 
     function updateFeedModeControls() {
@@ -373,7 +412,15 @@
         var showWorth = !!(intel && intel.worthReviewing && !intel.actionable);
         var show = showActionable || showWorth;
         wrap.classList.toggle('is-visible', show);
-        if (!show) return;
+        if (!show) {
+            var contactsWrapEarly = document.getElementById('drawerContactsWrap');
+            if (contactsWrapEarly) {
+                contactsWrapEarly.style.display = 'none';
+                var contactsListEarly = document.getElementById('drawerContacts');
+                if (contactsListEarly) contactsListEarly.innerHTML = '';
+            }
+            return;
+        }
 
         var badgeEl = document.getElementById('drawerAnalysisModeBadge');
         if (badgeEl) {
@@ -452,6 +499,258 @@
                 watchingWrap.style.display = 'none';
                 watchingList.innerHTML = '';
             }
+        }
+
+        fillDrawerContacts(item, show);
+    }
+
+    function fillDrawerContacts(item, showActionSurface) {
+        var wrap = document.getElementById('drawerContactsWrap');
+        var list = document.getElementById('drawerContacts');
+        if (!wrap || !list) return;
+        if (!showActionSurface || !item || !item.id) {
+            wrap.style.display = 'none';
+            list.innerHTML = '';
+            return;
+        }
+        wrap.style.display = 'block';
+        list.innerHTML = '<p class="drawer-contacts-loading">Loading stakeholders…</p>';
+
+        ensureAuthHeaders()
+            .then(function (headers) {
+                return fetch('/api/market-alerts/' + encodeURIComponent(item.id) + '/contacts', {
+                    credentials: 'include',
+                    headers: Object.assign({ Accept: 'application/json' }, headers || {}),
+                });
+            })
+            .then(function (r) {
+                if (r.status === 401 || r.status === 403) {
+                    list.innerHTML =
+                        '<p class="drawer-contacts-empty">Sign in to view relevant contacts.</p>';
+                    return null;
+                }
+                if (!r.ok) throw new Error('contacts_http_' + r.status);
+                return r.json();
+            })
+            .then(function (data) {
+                if (!data) return;
+                if (data.moduleVisible === false) {
+                    wrap.style.display = 'none';
+                    list.innerHTML = '';
+                    return;
+                }
+                var stakeholders = (data.stakeholders || data.contacts || []).filter(Boolean);
+                if (!stakeholders.length) {
+                    wrap.style.display = 'none';
+                    list.innerHTML = '';
+                    return;
+                }
+                list.innerHTML = stakeholders
+                    .map(function (s) {
+                        return renderStakeholderCard(s, item);
+                    })
+                    .join('');
+                bindStakeholderActions(list, item);
+            })
+            .catch(function () {
+                list.innerHTML = '<p class="drawer-contacts-empty">Contacts unavailable right now.</p>';
+            });
+    }
+
+    function renderStakeholderCard(c, item) {
+        var lines = [];
+        var status = c.identificationStatus || '';
+        var lookup = c.contactLookupStatus || 'NOT_REQUESTED';
+        var hasPerson = !!(c.personName);
+        lines.push('<div class="drawer-contact-card" data-stakeholder-id="' + escapeHtml(c.stakeholderId || '') + '">');
+        lines.push('<p class="drawer-contact-meta">WHO TO CONTACT</p>');
+        if (hasPerson) {
+            lines.push('<p class="drawer-contact-name">' + escapeHtml(c.personName) + '</p>');
+            var titleCompany = [c.jobTitle, c.companyName].filter(Boolean).join(' · ');
+            if (titleCompany) {
+                lines.push('<p class="drawer-contact-title">' + escapeHtml(titleCompany) + '</p>');
+            }
+        } else {
+            lines.push('<p class="drawer-contact-name">' + escapeHtml(c.companyName || 'Organization') + '</p>');
+            if (c.jobTitle) {
+                lines.push(
+                    '<p class="drawer-contact-title">Suggested stakeholder: ' +
+                        escapeHtml(c.jobTitle) +
+                        '</p>'
+                );
+            }
+        }
+        if (c.whyRelevant || c.reasonSelected) {
+            lines.push(
+                '<p class="drawer-contact-why"><strong>Why' +
+                    (hasPerson ? ' this person' : '') +
+                    ':</strong> ' +
+                    escapeHtml(c.whyRelevant || c.reasonSelected) +
+                    '</p>'
+            );
+        }
+        if (c.confidence || c.matchConfidence) {
+            lines.push(
+                '<span class="drawer-contact-confidence">Confidence: ' +
+                    escapeHtml(c.confidence || c.matchConfidence) +
+                    '</span>'
+            );
+        }
+        if (c.articleDerived) {
+            lines.push(
+                '<p class="drawer-contact-meta">Article-derived' + (c.quoted ? ' · Quoted' : '') + '</p>'
+            );
+        }
+
+        var revealBox = '<div class="drawer-contact-reveal" data-reveal-slot></div>';
+
+        if (lookup === 'PENDING') {
+            lines.push('<p class="drawer-contacts-empty">Finding…</p>');
+        } else if (lookup === 'MISS') {
+            lines.push('<p class="drawer-contacts-empty">No verified contact details found</p>');
+        } else if (lookup === 'FAILED_RETRYABLE') {
+            lines.push('<p class="drawer-contacts-empty">Contact lookup temporarily unavailable</p>');
+        }
+
+        if (status === 'COMPANY_ONLY' || (!hasPerson && c.cta === 'FIND_DECISION_MAKER')) {
+            lines.push(
+                '<button type="button" class="drawer-contact-cta" data-action="find-person">Find decision maker</button>'
+            );
+        } else if (hasPerson) {
+            lines.push(
+                '<button type="button" class="drawer-contact-cta" data-action="reveal">Get contact details</button>'
+            );
+        }
+        lines.push(revealBox);
+        lines.push('</div>');
+        return lines.join('');
+    }
+
+    function bindStakeholderActions(listEl, item) {
+        if (!listEl) return;
+        listEl.querySelectorAll('[data-action]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var card = btn.closest('.drawer-contact-card');
+                var stakeholderId = card ? card.getAttribute('data-stakeholder-id') : '';
+                var action = btn.getAttribute('data-action');
+                var slot = card ? card.querySelector('[data-reveal-slot]') : null;
+                btn.disabled = true;
+                if (slot) slot.innerHTML = '<p class="drawer-contacts-empty">Finding…</p>';
+
+                ensureAuthHeaders()
+                    .then(function (headers) {
+                        var path =
+                            action === 'find-person'
+                                ? '/contacts/find-person'
+                                : '/contacts/reveal';
+                        return fetch(
+                            '/api/market-alerts/' + encodeURIComponent(item.id) + path,
+                            {
+                                method: 'POST',
+                                credentials: 'include',
+                                headers: Object.assign(
+                                    { Accept: 'application/json', 'Content-Type': 'application/json' },
+                                    headers || {}
+                                ),
+                                body: JSON.stringify({
+                                    stakeholderId: stakeholderId || null,
+                                    title: item.title || '',
+                                    summary: item.summary || '',
+                                    category: item.category || '',
+                                    sourceUrl: item.sourceUrl || item.url || '',
+                                    eventType: item.eventType || '',
+                                    actionable: item.actionable,
+                                    worthReviewing: item.worthReviewing,
+                                    ownerDeveloper: item.ownerDeveloper || null,
+                                    hotelProject: item.hotelProject || null,
+                                    brandInvolved: item.brandInvolved || null,
+                                    operatorInvolved: item.operatorInvolved || null,
+                                }),
+                            }
+                        );
+                    })
+                    .then(function (r) {
+                        return r.json().then(function (data) {
+                            return { okHttp: r.ok, data: data };
+                        });
+                    })
+                    .then(function (res) {
+                        btn.disabled = false;
+                        var data = res.data || {};
+                        if (action === 'find-person') {
+                            if (data.stakeholder || (data.stakeholders && data.stakeholders[0])) {
+                                fillDrawerContacts(item, true);
+                                return;
+                            }
+                            if (slot) {
+                                slot.innerHTML =
+                                    '<p class="drawer-contacts-empty">' +
+                                    escapeHtml(data.message || 'No verified decision maker found') +
+                                    '</p>';
+                            }
+                            return;
+                        }
+                        // reveal — ephemeral only; never write to localStorage
+                        if (data.pending) {
+                            if (slot) slot.innerHTML = '<p class="drawer-contacts-empty">Finding…</p>';
+                            return;
+                        }
+                        if (data.miss || !data.contactDetails) {
+                            if (slot) {
+                                slot.innerHTML =
+                                    '<p class="drawer-contacts-empty">' +
+                                    escapeHtml(data.message || 'No verified contact details found') +
+                                    '</p>';
+                            }
+                            return;
+                        }
+                        var d = data.contactDetails;
+                        var html = [];
+                        if (d.email) {
+                            html.push(
+                                '<p class="drawer-contact-row"><strong>Email:</strong> ' +
+                                    escapeHtml(d.email) +
+                                    '</p>'
+                            );
+                        }
+                        if (d.phone) {
+                            html.push(
+                                '<p class="drawer-contact-row"><strong>Phone:</strong> ' +
+                                    escapeHtml(d.phone) +
+                                    '</p>'
+                            );
+                        }
+                        if (d.linkedinUrl) {
+                            html.push(
+                                '<p class="drawer-contact-row"><strong>LinkedIn:</strong> <a href="' +
+                                    escapeHtml(d.linkedinUrl) +
+                                    '" target="_blank" rel="noopener">Open profile</a></p>'
+                            );
+                        }
+                        if (slot) slot.innerHTML = html.join('') || '<p class="drawer-contacts-empty">No verified contact details found</p>';
+                    })
+                    .catch(function () {
+                        btn.disabled = false;
+                        if (slot) {
+                            slot.innerHTML =
+                                '<p class="drawer-contacts-empty">Contact lookup temporarily unavailable</p>';
+                        }
+                    });
+            });
+        });
+    }
+
+    function renderContactCard(c) {
+        return renderStakeholderCard(c, {});
+    }
+
+    function formatContactDate(iso) {
+        try {
+            var d = new Date(iso);
+            if (isNaN(d.getTime())) return String(iso);
+            return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        } catch (e) {
+            return String(iso);
         }
     }
 

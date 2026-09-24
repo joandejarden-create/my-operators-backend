@@ -123,8 +123,8 @@ REUSABLE RULES:
 BRANCH: `deploy/adp-final-trust-closure-20260910`  
 STARTING SHA: `ded77484a6b71d7d128edc1600880b3051369389`  
 V11 CHECKPOINT SHA: `cbfd1af96de62e594f4f9d781f3572c1b69bc6f1`  
-V12 POST-COMMIT SHA: *(pending commit)*  
-WORKING TREE CLEAN: **NO** until V12 commit; unrelated dirty files remain
+V12 POST-COMMIT SHA: `4a2823fdfd67868d88fce694960260424fa5b728`  
+WORKING TREE CLEAN: **NO** (unrelated local dirty tree remains; V12 commit was focused)
 
 ## L. DECISION
 

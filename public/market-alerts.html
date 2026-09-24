@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Market Alerts - Dealality</title>
-    <meta name="dealality-market-alerts-ui" content="1.3.3">
+    <meta name="dealality-market-alerts-ui" content="1.3.5">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -209,6 +209,75 @@
         }
         .drawer-mode-badge.is-actionable { color: #86efac; }
         .drawer-mode-badge.is-worth { color: #c7d2fe; }
+        .drawer-contacts {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 8px;
+        }
+        .drawer-contact-card {
+            padding: 12px 0 4px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        .drawer-contact-card:first-child { border-top: none; padding-top: 4px; }
+        .drawer-contact-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #f8fafc;
+            margin: 0 0 2px;
+        }
+        .drawer-contact-title,
+        .drawer-contact-company,
+        .drawer-contact-meta {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin: 0 0 2px;
+            line-height: 1.4;
+        }
+        .drawer-contact-why {
+            font-size: 0.8rem;
+            color: #cbd5e1;
+            margin: 8px 0 6px;
+            line-height: 1.45;
+        }
+        .drawer-contact-row {
+            font-size: 0.8rem;
+            color: #e2e8f0;
+            margin: 3px 0;
+            line-height: 1.4;
+        }
+        .drawer-contact-row a { color: #93c5fd; }
+        .drawer-contact-confidence {
+            display: inline-block;
+            margin-top: 6px;
+            font-size: 0.7rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: #a5b4fc;
+        }
+        .drawer-contact-cta {
+            margin-top: 10px;
+            padding: 8px 12px;
+            border: 1px solid rgba(147, 197, 253, 0.45);
+            background: rgba(59, 130, 246, 0.15);
+            color: #e0f2fe;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .drawer-contact-cta:disabled {
+            opacity: 0.55;
+            cursor: wait;
+        }
+        .drawer-contact-cta:hover:not(:disabled) {
+            background: rgba(59, 130, 246, 0.28);
+        }
+        .drawer-contacts-empty,
+        .drawer-contacts-loading {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin: 4px 0 0;
+        }
         .drawer-timing-line {
             font-size: 12px;
             color: #cbd5e1;
@@ -1358,6 +1427,10 @@
                     <p class="drawer-section-label" style="margin:0;">What we're watching</p>
                     <ul id="drawerAnalysisWatching" class="analysis-watching"></ul>
                 </div>
+                <div class="analysis-block" id="drawerContactsWrap" style="display:none;">
+                    <p class="drawer-section-label" style="margin:0;">Relevant Contacts</p>
+                    <div id="drawerContacts" class="drawer-contacts" aria-live="polite"></div>
+                </div>
             </div>
             <div class="news-drawer-highlights">
                 <p class="drawer-section-label">Article Highlights</p>
@@ -1374,7 +1447,8 @@
         </div>
     </aside>
 
-    <script src="market-alerts.js?v=1.3.3"></script>
+    <script src="/js/dealality-memberstack-auth.js"></script>
+    <script src="market-alerts.js?v=1.4.0-stakeholder"></script>
     <script src="/embed-chrome.js" defer></script>
 
     <div class="success-message" id="successMessage" role="status" aria-live="polite">

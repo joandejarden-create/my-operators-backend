@@ -39,6 +39,9 @@ Dealality helps hotel owners, brands, operators, advisors, and capital partners 
 11. **Memberstack is identity/auth only**, not business-data source of truth.
 12. **Build for future workspace, region, and deal-level access layers.** Access assumptions should not be hardcoded against future needs.
 13. **UI should feel premium, calm, structured, and credible.** Hospitality-grade presentation matters.
+14. **Methodology is governed; quality controls learn.** For Existing Hotel ADP (and analogous measurement products), audits may strengthen implementation, entity resolution, reconciliation, regression tests, and release gates — they must not autonomously redefine approved measurement methodology, metric semantics, or comparability rules. Methodology changes require explicit founder governance.
+15. **Approved customer output is a versioned production contract.** A later change may not silently regress an earlier approved customer surface. Report snapshot version, renderer version, and data contract version must move together.
+16. **No fix is complete until it is in the customer-surface regression baseline.** New work may extend the product; it may not silently replace a verified customer output contract.
 
 ## AI Behavior Principles
 

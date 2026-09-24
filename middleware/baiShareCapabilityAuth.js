@@ -117,6 +117,17 @@ export function requireBaiShareCapability(opts = {}) {
     }
 
     req.baiShareAuth = { mode: "MEMBERSTACK" };
+    // Mirror ADP owner-app path: optionalDealalityAuth may already attach a governed
+    // local DEV_AUTH_BYPASS dealalityUser (X-Dealality-Owner-App + localhost). Do not
+    // re-resolve via Airtable Users for memberstackId=dev_bypass — that yields
+    // user_not_found and blocks legitimate local Owner-App measurement/QA.
+    if (
+      req.dealalityUser &&
+      req.memberstackVerifiedVia === "dev_bypass" &&
+      req.memberstackMemberId === "dev_bypass"
+    ) {
+      return requireBrandAiVisibilityAccess(req, res, next);
+    }
     return requireDealalityUser(req, res, () => requireBrandAiVisibilityAccess(req, res, next));
   };
 }

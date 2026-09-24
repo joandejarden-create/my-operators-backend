@@ -160,7 +160,54 @@
               return "<li>" + esc(s.title || s.source_id) + " · " + esc(s.authority || "") + "</li>";
             })
             .join("") +
-          "</ul></section>";
+          "</ul></section>" +
+          "<section id='oeContacts'><h2>Contact Intelligence</h2><p class='load'>Loading organization contact route…</p></section>";
+
+        var contactHost = document.getElementById("oeContacts");
+        fetch("/api/contact-intelligence/owners/" + encodeURIComponent(p.owner_entity_id || owner))
+          .then(function (r) { return r.json(); })
+          .then(function (ci) {
+            if (!contactHost) return;
+            if (!ci || !ci.success || !ci.package) {
+              contactHost.innerHTML =
+                "<h2>Contact Intelligence</h2><p class='load'>No organization contact route yet.</p>";
+              return;
+            }
+            var pkg = ci.package;
+            var channels = (pkg.organization_contact_route && pkg.organization_contact_route.channels) || pkg.channels || [];
+            var unresolved = pkg.unresolved_reasons || [];
+            contactHost.innerHTML =
+              "<h2>Contact Intelligence</h2>" +
+              "<p class='sub'>Organization contact route reusable across portfolio hotels. Paid enrichment disabled by default.</p>" +
+              (channels.length
+                ? "<table><thead><tr><th>Channel</th><th>Value</th><th>Attribution</th><th>Relevance</th></tr></thead><tbody>" +
+                  channels
+                    .map(function (ch) {
+                      return (
+                        "<tr><td>" +
+                        esc(ch.display_label || ch.kind) +
+                        "</td><td>" +
+                        esc(ch.value || "—") +
+                        "</td><td>" +
+                        esc(ch.attribution || "—") +
+                        "</td><td>" +
+                        esc(ch.property_relevance || "—") +
+                        "</td></tr>"
+                      );
+                    })
+                    .join("") +
+                  "</tbody></table>"
+                : "<p class='load'>No organization contact channels.</p>") +
+              (unresolved.length
+                ? "<p class='sub'>Unresolved: " + esc(unresolved.join(", ")) + "</p>"
+                : "");
+          })
+          .catch(function () {
+            if (contactHost) {
+              contactHost.innerHTML =
+                "<h2>Contact Intelligence</h2><p class='err'>Could not load contact intelligence.</p>";
+            }
+          });
       })
       .catch(function (err) {
         status.className = "err";

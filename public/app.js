@@ -65,7 +65,7 @@
     var authenticatedRole = '';
     var isDevMode = false;
 
-    var MARKET_ALERTS_EMBED_VERSION = '1.3.4';
+    var MARKET_ALERTS_EMBED_VERSION = '1.4.0-stakeholder';
 
     var ROUTES = {
         '/home': { file: '/app/home.html', title: 'Home' },
@@ -110,6 +110,34 @@
         '/ai-visibility-brand': { file: '/ai-visibility-brand.html', title: 'Brand AI Intelligence', roles: ['brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
         '/operator/ai-intelligence': { file: '/operator-ai-intelligence.html', title: 'Operator AI Intelligence', roles: ['operator', 'admin'], stakeholderProduct: 'operator_ai_intelligence' },
         '/owner/ai-demand': { file: '/owner-ai-demand.html', title: 'AI Demand Positioning', roles: ['owner', 'admin'] },
+        '/group-demand-intelligence': {
+            file: '/group-demand-intelligence.html',
+            title: 'Group & Demand Intelligence',
+            roles: ['owner', 'admin']
+        },
+        '/admin/ai-demand': {
+            file: '/app/admin/ai-demand-admin.html',
+            title: 'AI Demand Admin',
+            roles: ['admin'],
+            internalRunbookOnly: false,
+            adpMonthlyReviewAdmin: true
+        },
+        '/admin/ai-demand-reviews': {
+            file: '/app/admin/ai-demand-admin.html',
+            title: 'AI Demand Admin',
+            roles: ['admin'],
+            internalRunbookOnly: false,
+            adpMonthlyReviewAdmin: true,
+            defaultTab: 'reviews'
+        },
+        '/admin/adp-action-plan': {
+            file: '/app/admin/ai-demand-admin.html',
+            title: 'AI Demand Admin',
+            roles: ['admin'],
+            internalRunbookOnly: false,
+            adpMonthlyReviewAdmin: true,
+            defaultTab: 'action-plan'
+        },
         '/operator-development-dashboard': { file: '/operator-development-dashboard.html', title: 'My Operator Deals', roles: ['operator', 'admin'] },
         '/third-party-operator-intake': { file: '/third-party-operator-setup-new-two.html', title: 'Operator Setup' },
         '/third-party-operator-setup-sandbox': { file: '/third-party-operator-setup-sandbox.html', title: 'Operator Setup (Sandbox)' },
@@ -205,7 +233,8 @@
                         { label: 'LOI Market Hub', route: '/loi-database-dashboard', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Brand AI Intelligence', route: '/ai-visibility', roles: ['brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
                         { label: 'Operator AI Intelligence', route: '/operator/ai-intelligence', roles: ['operator', 'admin'], stakeholderProduct: 'operator_ai_intelligence' },
-                        { label: 'AI Demand Positioning', route: '/owner/ai-demand', roles: ['owner', 'admin'] }
+                        { label: 'AI Demand Positioning', route: '/owner/ai-demand', roles: ['owner', 'admin'] },
+                        { label: 'Group & Demand Intelligence', route: '/group-demand-intelligence', roles: ['owner', 'admin'] }
                     ]
                 },
                 {
@@ -294,6 +323,7 @@
                         { label: 'Owner Pilot Runbook', route: '/support/owner-pilot-provisioning', roles: ['admin'], internalRunbookOnly: true },
                         { label: 'Scoring Weight Model', route: '/support/scoring-weight-model', roles: ['admin'], internalRunbookOnly: true },
                         { label: 'Brand AI Visibility Reference', route: '/support/ai-visibility-benchmark-admin', roles: ['admin'], internalRunbookOnly: true },
+                        { label: 'AI Demand Admin', icon: NAV_ICONS.reports, route: '/admin/ai-demand', roles: ['admin'], adpMonthlyReviewAdmin: true },
                         { label: 'Route Map', route: '/route-map', roles: ['admin'], devOnly: true },
                         {
                             label: 'Validation Scorecard',
@@ -406,6 +436,17 @@
         if (!meContextLoaded || !meDealality) return false;
         if (meDealality.isAdmin === true) return true;
         if (meDealality.flags && meDealality.flags.isAdmin === true) return true;
+        return false;
+    }
+
+    /**
+     * ADP Action Plan / AI Demand Reviews — same flag as /api/me.adpMonthlyReviewAdmin
+     * (includes local QA admin for dealalitydemo@ on localhost). Nav/page/API parity.
+     */
+    function hasAdpMonthlyReviewAdminNavAccess() {
+        if (!meContextLoaded || !meDealality) return false;
+        if (meDealality.adpMonthlyReviewAdmin === true) return true;
+        if (meDealality.localDealalityAdminAccess === true) return true;
         return false;
     }
 
@@ -853,6 +894,9 @@
         if (normalized === '/ai-intelligence-validation' || normalized === '/ai-intelligence-golden-set-review') {
             return hasAdminNavAccess() || canShowFounderNavOverrides() || isDevMode;
         }
+        if (normalized === '/admin/ai-demand' || normalized === '/admin/ai-demand-reviews' || normalized === '/admin/adp-action-plan') {
+            return hasAdminNavAccess() || hasAdpMonthlyReviewAdminNavAccess();
+        }
         if (isAdminExclusiveRoute(normalized) && !hasAdminNavAccess()) return false;
         var navRole = resolveCurrentNavRole();
         if (isRouteAllowedForRole(normalized, navRole)) return true;
@@ -867,6 +911,7 @@
         if (normalized === '/support/owner-pilot-provisioning') return '/support';
         if (normalized === '/support/scoring-weight-model') return '/support';
         if (normalized === '/support/ai-visibility-benchmark-admin') return '/support';
+        if (normalized === '/admin/ai-demand' || normalized === '/admin/ai-demand-reviews' || normalized === '/admin/adp-action-plan') return '/home';
         return getLandingRouteForNavRole(resolveCurrentNavRole());
     }
 
@@ -999,10 +1044,13 @@
         try {
             var hashQs = getHashQueryParams();
             var u = new URL(url, window.location.origin);
-            ['recordId', 'operatorId', 'id'].forEach(function (key) {
+            ['recordId', 'operatorId', 'id', 'tab', 'propertyId'].forEach(function (key) {
                 var v = hashQs.get(key);
                 if (v && !u.searchParams.get(key)) u.searchParams.set(key, v);
             });
+            if (mapped.defaultTab && !u.searchParams.get('tab')) {
+                u.searchParams.set('tab', mapped.defaultTab);
+            }
             url = u.pathname + u.search;
         } catch (_hashQsErr) {
             /* keep base embed URL */
@@ -1118,10 +1166,25 @@
         if (child.validationScorecard) {
             return hasAdminNavAccess() || canShowFounderNavOverrides() || isDevMode;
         }
+        if (child.adpMonthlyReviewAdmin) {
+            return hasAdminNavAccess() || hasAdpMonthlyReviewAdminNavAccess();
+        }
         if (child.stakeholderProduct && window.DealalityStakeholderNav) {
             return window.DealalityStakeholderNav.stakeholderProductVisible(child.stakeholderProduct, role);
         }
         return canSee(role, child.roles, child.devOnly, child.internalRunbookOnly);
+    }
+
+    function isAdpAdminNavActive(childRoute, route) {
+        if (childRoute === route) return true;
+        if (childRoute === '/admin/ai-demand') {
+            return (
+                route === '/admin/ai-demand' ||
+                route === '/admin/ai-demand-reviews' ||
+                route === '/admin/adp-action-plan'
+            );
+        }
+        return false;
     }
 
     function renderNavGroupChildren(children, role) {
@@ -1142,7 +1205,8 @@
                 pendingDivider = false;
             }
             visibleBeforeDivider = true;
-            html += '<button type="button" class="nav-item nav-item-child' + (child.route === currentRoute ? ' active' : '') + '" data-href="' + child.route + '">' +
+            html += '<button type="button" class="nav-item nav-item-child' + (isAdpAdminNavActive(child.route, currentRoute) ? ' active' : '') + '" data-href="' + child.route + '">' +
+                (child.icon ? '<span class="nav-item-icon">' + child.icon + '</span>' : '') +
                 '<span class="nav-label">' + child.label + '</span>' +
             '</button>';
         });
@@ -1275,7 +1339,9 @@
                 }
 
                 var groupId = entry.label.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-                var hasActiveChild = visibleChildren.some(function (child) { return child.route === currentRoute; });
+                var hasActiveChild = visibleChildren.some(function (child) {
+                    return isAdpAdminNavActive(child.route, currentRoute) || child.route === currentRoute;
+                });
                 if (hasActiveChild && !openGroups[groupId]) openGroups[groupId] = true;
                 var isOpen = !!openGroups[groupId];
 

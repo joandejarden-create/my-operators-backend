@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env node
+#!/usr/bin/env node
 /**
  * Decision & Outcome regression suite â€” canonical layer + GDI/ADP bridges.
  * Forces filesystem persistence so unit tests stay offline.

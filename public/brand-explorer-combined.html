@@ -2528,8 +2528,9 @@
                 window.BrandExplorerFavorites && window.BrandExplorerFavorites.ready
                     ? window.BrandExplorerFavorites.ready()
                     : Promise.resolve();
-            var brandsUrl = '/api/brand-library/brands?refresh=1';
-            var brandsRes = await fetch(brandsUrl, { cache: 'no-store' });
+            // Use server TTL cache on ordinary loads; pass refresh=1 only for explicit bypass.
+            var brandsUrl = '/api/brand-library/brands';
+            var brandsRes = await fetch(brandsUrl);
             await favReady;
             if (!brandsRes.ok) throw new Error('Failed to fetch brands');
             var data = await brandsRes.json();

@@ -1,9 +1,13 @@
 /**
  * Restrict route to platform admins (Company Profile → Workspace Access Admin via dealalityUser).
  * Requires memberstackAuth + requireDealalityUser before this middleware.
+ *
+ * Local QA: approved demo identity may pass via hasLocalDealalityAdminAccess
+ * (localhost/dev only — never production email elevation).
  */
 
 import { WORKSPACE_ADMIN } from "../lib/company-workspace-access.js";
+import { hasLocalDealalityAdminAccess } from "../lib/dealality/local-dealality-admin-access.js";
 
 export function requireAdminAccess(req, res, next) {
   const u = req.dealalityUser;
@@ -22,6 +26,11 @@ export function requireAdminAccess(req, res, next) {
 
   const workspaces = Array.isArray(u.workspaceAccess) ? u.workspaceAccess : [];
   if (workspaces.includes(WORKSPACE_ADMIN)) {
+    return next();
+  }
+
+  // Local/dev only — never production email elevation
+  if (hasLocalDealalityAdminAccess(u, req)) {
     return next();
   }
 

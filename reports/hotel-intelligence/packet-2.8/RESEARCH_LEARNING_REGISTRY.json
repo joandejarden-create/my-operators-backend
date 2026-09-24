@@ -1,7 +1,7 @@
 {
   "registry_version": "research-learning-registry-v1",
   "auto_promote": false,
-  "updated_at": "2026-09-08T08:36:09.831Z",
+  "updated_at": "2026-09-16T13:35:13.584Z",
   "records": [
     {
       "learning_id": "learn_kgpv_full_hi_adjacent_asset",
@@ -121,25 +121,61 @@
         "aimbridge_as_owner",
         "sibling_hotel_merge"
       ],
-      "source_hierarchy": [],
-      "query_patterns": [],
-      "document_patterns": [],
-      "entity_patterns": [],
-      "temporal_patterns": [],
+      "source_hierarchy": [
+        "PROFECO_RPCA",
+        "OWNER_FIRST_PARTY",
+        "OPERATOR_FIRST_PARTY",
+        "BRAND_FIRST_PARTY",
+        "TRANSACTION_PRESS"
+      ],
+      "query_patterns": [
+        "\"{hotel}\" (propietario OR inmobiliaria OR \"razón social\" OR PROFECO OR \"contrato de adhesión\")",
+        "\"{hotel}\" (proveedor OR RPCA OR \"Registro Público de Contratos\")",
+        "site:rpca.profeco.gob.mx \"{hotel}\"",
+        "site:rpca.profeco.gob.mx \"{city}\" hotel (inmobiliaria OR adhesión)",
+        "\"{street}\" (inmobiliaria OR PROFECO OR propietario)",
+        "\"Inmobiliaria {sponsor_token}\" (PROFECO OR RFC OR RPCA)",
+        "site:rpca.profeco.gob.mx \"Inmobiliaria {sponsor_token}\""
+      ],
+      "document_patterns": [
+        "host:rpca.profeco.gob.mx /getDoc?p={NNNN}-{YYYY}",
+        "PROFECO RPCA consumer adhesion contract (not deed)",
+        "body contains razón social + RFC + representante legal / Escritura Pública"
+      ],
+      "entity_patterns": [
+        "Inmobiliaria {TOKEN}, S. de R.L. de C.V.",
+        "RFC [A-ZÑ&]{3,4}\\d{6}[A-Z0-9]{3}",
+        "sponsor token from \"by {TOKEN}\" / grupo inversor trade names"
+      ],
+      "temporal_patterns": [
+        "adhesion filing date != hotel opening date",
+        "former brand names remain useful discovery aliases"
+      ],
       "negative_screens": [
         "OPERATOR_NOT_OWNER",
         "TITLE_NOT_AUTHORITY",
         "SOURCE_NOT_DECISIVE"
       ],
-      "validation_rules": [],
-      "stop_condition": null,
-      "native_reproduction": "PARTIAL",
-      "native_reproduction_method": null,
-      "recommended_playbook_change": "MX-PRIVATE-PROPCO via consumer-protection/adhesion contracts",
+      "validation_rules": [
+        "SEARCH_SNIPPET_NOT_DECISIVE",
+        "follow_through_to_getDoc_or_PDF",
+        "adhesion_not_deed",
+        "OPERATOR_NOT_OWNER",
+        "no_gold_seed_of_propco_name_or_profeco_url"
+      ],
+      "stop_condition": "propco_legal_entity_extracted_from_followed_document_or_bounded_family_exhausted",
+      "native_reproduction": "YES",
+      "native_reproduction_method": "discoverDecisiveDocuments + MX-PRIVATE-PROPCO-01/02; SerpAPI Spanish queries; sponsor-token expansion; PROFECO RPCA followthrough via pdf-parse",
+      "recommended_playbook_change": "MX-PRIVATE-PROPCO via consumer-protection/adhesion contracts (mexico-private-propco-v1.json)",
       "new_eval": "propco_high_requires_rfc_or_deed",
-      "status": "CANDIDATE",
+      "status": "VALIDATED",
       "auto_promote_forbidden": true,
-      "created_at": "2026-09-08T08:36:09.831Z"
+      "created_at": "2026-09-08T08:36:09.831Z",
+      "transfer_status": "VALIDATED_MEXICO_METHOD",
+      "updated_at": "2026-09-16T13:35:13.584Z",
+      "out_of_sample_case": "GF-VOCO-CUN",
+      "out_of_sample_result": "TRANSFER_CONFIRMED",
+      "promotion_note": "Promote source-family/jurisdiction/query/alias/followthrough/routing patterns only — not hotel-specific PropCo facts. PROFECO is one family among MX decisive-document methods; voco used transaction-press + Parallel interpretation with PROFECO supporting/not decisive."
     },
     {
       "learning_id": "learn_voco_reflag_package_owner",
