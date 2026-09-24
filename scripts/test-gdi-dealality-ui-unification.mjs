@@ -510,10 +510,25 @@ check("css_defines_platform_tokens_and_page_header", () => {
 check("canonical_loading_toast_helpers", () => {
   assert.equal(typeof UI.setLoadingToast, "function");
   assert.equal(typeof UI.detailLoadingHtml, "function");
+  assert.equal(typeof UI.detailErrorHtml, "function");
   assert.match(UI.DEFAULT_PAGE_LOADING_MESSAGE, /Loading Group Demand Intelligence/);
   assert.equal(UI.DETAIL_LOADING_MESSAGE, "Loading…");
-  assert.match(UI.detailLoadingHtml(), /aiv-empty/);
-  assert.doesNotMatch(UI.detailLoadingHtml(), /Loading details/);
+  const detailLoad = UI.detailLoadingHtml();
+  assert.match(detailLoad, /gdi-detail-loading/);
+  assert.match(detailLoad, /bdd-toast/);
+  assert.match(detailLoad, /aiv-loading-toast/);
+  assert.match(detailLoad, /toast-wave-container/);
+  assert.match(detailLoad, /wave wave-1/);
+  assert.match(detailLoad, /Loading\u2026|Loading…/);
+  assert.doesNotMatch(detailLoad, /Loading details/);
+  assert.doesNotMatch(detailLoad, /gdi-muted/);
+  const detailErr = UI.detailErrorHtml("Unable to load opportunity detail.", {
+    retryOpportunityId: "recTest",
+  });
+  assert.match(detailErr, /gdi-detail-error/);
+  assert.match(detailErr, /gdi-error/);
+  assert.match(detailErr, /data-gdi-detail-retry="recTest"/);
+  assert.match(detailErr, /Try again/);
 });
 
 check("auth_and_share_use_aiv_loading_toast", () => {
@@ -530,10 +545,22 @@ check("auth_and_share_use_aiv_loading_toast", () => {
   }
   assert.match(app, /setLoadingToast/);
   assert.match(app, /detailLoadingHtml/);
+  assert.match(app, /detailErrorHtml/);
+  assert.match(app, /data-gdi-detail-retry/);
   assert.match(app, /Refreshing/);
   assert.doesNotMatch(app, /Running research/);
   assert.match(shareApp, /setLoadingToast/);
   assert.match(shareApp, /detailLoadingHtml/);
+  assert.match(shareApp, /detailErrorHtml/);
+  assert.match(shareApp, /data-gdi-detail-retry/);
+});
+
+check("drawer_detail_loading_css_static_in_body", () => {
+  const css = read("public/css/group-demand-intelligence.css");
+  assert.match(css, /\.gdi-detail-loading\.bdd-toast\.aiv-loading-toast/);
+  assert.match(css, /position:\s*static/);
+  assert.match(css, /prefers-reduced-motion/);
+  assert.doesNotMatch(css, /\.gdi-detail-loading\.aiv-empty/);
 });
 
 if (failed) {

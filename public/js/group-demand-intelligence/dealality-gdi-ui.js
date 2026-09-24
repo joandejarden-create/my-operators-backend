@@ -2350,12 +2350,58 @@
   var DEFAULT_PAGE_LOADING_MESSAGE = "Loading Group Demand Intelligence\u2026";
   var DETAIL_LOADING_MESSAGE = "Loading\u2026";
 
+  /** Shared wave-orb markup (same primitives as page .bdd-toast.aiv-loading-toast). */
+  function loadingWaveOrbHtml() {
+    return (
+      '<div class="toast-wave-container" aria-hidden="true">' +
+      '<div class="wave-container">' +
+      '<div class="wave wave-1"></div>' +
+      '<div class="wave wave-2"></div>' +
+      '<div class="wave wave-3"></div>' +
+      '<div class="wave-particles">' +
+      '<div class="particle"></div>' +
+      '<div class="particle"></div>' +
+      '<div class="particle"></div>' +
+      '<div class="particle"></div>' +
+      "</div></div></div>"
+    );
+  }
+
+  /**
+   * Inline drawer loader — same wave orb / typography as page toast, static in drawer body.
+   * Do not use the full-page fixed toast inside the drawer.
+   */
   function detailLoadingHtml() {
     return (
-      '<div class="gdi-detail-loading aiv-empty" role="status" aria-live="polite">' +
-      '<p class="gdi-muted">' +
+      '<div class="gdi-detail-loading bdd-toast aiv-loading-toast show" role="status" aria-live="polite" aria-busy="true">' +
+      loadingWaveOrbHtml() +
+      '<div class="toast-message">' +
       DETAIL_LOADING_MESSAGE +
-      "</p></div>"
+      "</div></div>"
+    );
+  }
+
+  /**
+   * Canonical drawer error — replaces loader; optional Try again when opportunity id known.
+   * @param {string} [message]
+   * @param {{ retryOpportunityId?: string }} [opts]
+   */
+  function detailErrorHtml(message, opts) {
+    opts = opts || {};
+    var msg = message || "Unable to load opportunity detail.";
+    var retryId = opts.retryOpportunityId ? String(opts.retryOpportunityId) : "";
+    var retryBtn = retryId
+      ? '<p class="gdi-detail-error__actions"><button type="button" class="gdi-btn gdi-btn-primary" data-gdi-detail-retry="' +
+        esc(retryId) +
+        '">Try again</button></p>'
+      : "";
+    return (
+      '<div class="gdi-error gdi-detail-error" role="alert">' +
+      "<p>" +
+      esc(msg) +
+      "</p>" +
+      retryBtn +
+      "</div>"
     );
   }
 
@@ -2448,6 +2494,7 @@
     DEFAULT_PAGE_LOADING_MESSAGE: DEFAULT_PAGE_LOADING_MESSAGE,
     DETAIL_LOADING_MESSAGE: DETAIL_LOADING_MESSAGE,
     detailLoadingHtml: detailLoadingHtml,
+    detailErrorHtml: detailErrorHtml,
     setLoadingToast: setLoadingToast,
     shareCustomerValidationFormHtml: shareCustomerValidationFormHtml,
     customerFeedbackLifecycleHtml: customerFeedbackLifecycleHtml,

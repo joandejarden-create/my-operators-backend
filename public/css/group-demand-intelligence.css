@@ -354,9 +354,43 @@ body.gdi-page.embed-mode .gdi-shell {
   color: var(--gdi-muted);
 }
 
-.gdi-detail-loading.aiv-empty {
-  margin: 0;
-  text-align: left;
+/*
+ * Drawer detail loader — reuse page toast wave orb / chrome, but static+centered in drawer body
+ * (not the fixed top-right toast). Particles inherit from ai-visibility-shared.css.
+ */
+.gdi-drawer-body .gdi-detail-loading.bdd-toast.aiv-loading-toast,
+.gdi-detail-loading.bdd-toast.aiv-loading-toast {
+  position: static;
+  top: auto;
+  right: auto;
+  left: auto;
+  transform: none;
+  opacity: 1;
+  display: flex !important;
+  margin: 28px auto 12px;
+  max-width: min(100%, 340px);
+  z-index: auto;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+}
+
+.gdi-detail-error {
+  margin: 20px 0;
+}
+
+.gdi-detail-error__actions {
+  margin: 14px 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gdi-detail-loading.bdd-toast.aiv-loading-toast {
+    transition: none !important;
+  }
+  .gdi-detail-loading.bdd-toast .wave-1,
+  .gdi-detail-loading.bdd-toast .wave-2,
+  .gdi-detail-loading.bdd-toast .wave-3,
+  .gdi-detail-loading.bdd-toast .particle {
+    animation: none !important;
+  }
 }
 
 .gdi-error {

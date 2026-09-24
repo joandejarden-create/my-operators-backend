@@ -772,10 +772,10 @@
         wireDetailLifecycleControls();
       })
       .catch(function (err) {
-        drawerBody.innerHTML =
-          '<div class="gdi-error" role="alert"><p>' +
-          esc((err && err.message) || "Unable to load opportunity detail.") +
-          "</p></div>";
+        drawerBody.innerHTML = UI.detailErrorHtml(
+          (err && err.message) || "Unable to load opportunity detail.",
+          { retryOpportunityId: id }
+        );
       });
   }
 
@@ -1195,6 +1195,13 @@
   drawerBody &&
     drawerBody.addEventListener("click", function (e) {
       var t = e.target;
+      var retryBtn =
+        t && t.closest ? t.closest("[data-gdi-detail-retry]") : null;
+      if (retryBtn) {
+        var retryId = retryBtn.getAttribute("data-gdi-detail-retry");
+        if (retryId) openDetail(retryId);
+        return;
+      }
 
       function showSaveOk(statusId, message) {
         var el = document.getElementById(statusId);

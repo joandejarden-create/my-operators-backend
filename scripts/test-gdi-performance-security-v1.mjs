@@ -75,7 +75,13 @@ check("share_openDetail_shows_immediate_shell", async () => {
     path.join(process.cwd(), "public/js/group-demand-intelligence/share-app.js"),
     "utf8"
   );
-  assert.match(share, /gdi-detail-loading/);
+  const ui = fs.readFileSync(
+    path.join(process.cwd(), "public/js/group-demand-intelligence/dealality-gdi-ui.js"),
+    "utf8"
+  );
+  assert.match(share, /detailLoadingHtml/);
+  assert.match(ui, /gdi-detail-loading/);
+  assert.match(ui, /toast-wave-container/);
   assert.match(share, /peekShareHotelId/);
   assert.match(share, /Promise\.all\(\[resolvePromise, oppsPromise\]\)/);
 });
@@ -87,7 +93,12 @@ check("auth_openDetail_shows_immediate_shell", async () => {
     path.join(process.cwd(), "public/js/group-demand-intelligence/app.js"),
     "utf8"
   );
-  assert.match(app, /gdi-detail-loading/);
+  const ui = fs.readFileSync(
+    path.join(process.cwd(), "public/js/group-demand-intelligence/dealality-gdi-ui.js"),
+    "utf8"
+  );
+  assert.match(app, /detailLoadingHtml/);
+  assert.match(ui, /gdi-detail-loading/);
 });
 
 console.log(JSON.stringify({ suite: "gdi-performance-security-v1", pass, fail }));
