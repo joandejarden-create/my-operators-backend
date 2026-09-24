@@ -20,8 +20,9 @@ GDI Fit + Research Target seed is now generic, fail-closed on Airtable base rout
 |-------|-------|
 | BRANCH | `deploy/gdi-pe-v1-7-customer-closure` |
 | START SHA | `3bd76bf0ee66ddbde672dda9e20e07eff1c025cc` (Replication Readiness V2) |
-| COMMITS | (see git log after push) |
-| PUSH | pending at report write |
+| COMMITS | `ef8a9fb` fail-closed bases · `e9a8354` pilot quarantine · `5bb7232` generic seed · `44c41c8` tests/report |
+| FINAL SHA | `44c41c8` |
+| PUSH | PASS |
 
 ## B. CANONICAL AIRTABLE
 
