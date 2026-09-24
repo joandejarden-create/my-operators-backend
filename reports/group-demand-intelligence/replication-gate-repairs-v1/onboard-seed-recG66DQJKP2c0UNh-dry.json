@@ -1,0 +1,240 @@
+{
+  "generatedAt": "2026-09-24T22:36:41.739Z",
+  "hotelId": "recG66DQJKP2c0UNh",
+  "dryRun": {
+    "fits": 8,
+    "targets": 16,
+    "generators": 8,
+    "programs": 8,
+    "rejected": 0,
+    "byType": {
+      "DEMAND_GENERATOR": 8,
+      "PROGRAM": 8
+    },
+    "byPriority": {
+      "HIGH": 4,
+      "MEDIUM": 12,
+      "LOW": 0
+    }
+  },
+  "canonicalBase": {
+    "expected": "appa2cE7FTRmIbB32",
+    "envReport": {
+      "canonicalExpected": "appa2cE7FTRmIbB32",
+      "legacyForbidden": "appvtnDurnMSjINP6",
+      "envKeys": {
+        "ADP_AIRTABLE_BASE_ID": "MISSING",
+        "AIRTABLE_GDI_BASE_ID": "SET_CANONICAL",
+        "GDI_OPPORTUNITIES_AIRTABLE_BASE_ID": "SET_CANONICAL",
+        "AIRTABLE_INTELLIGENCE_BASE_ID": "SET_CANONICAL",
+        "AIRTABLE_BASE_ID": "SET_NONCANONICAL"
+      },
+      "adpResolve": {
+        "status": "MISSING",
+        "source": null,
+        "ok": false,
+        "error": "ADP_CANONICAL_BASE_MISSING"
+      },
+      "gdiResolve": {
+        "status": "SET_CANONICAL",
+        "source": "AIRTABLE_GDI_BASE_ID",
+        "ok": true,
+        "error": null
+      }
+    },
+    "gdiResolve": {
+      "baseId": "appa2cE7FTRmIbB32",
+      "source": "AIRTABLE_GDI_BASE_ID",
+      "status": "SET_CANONICAL"
+    }
+  },
+  "adpPersistencePolicy": {
+    "version": "adp_persistence_policy_v1",
+    "PRIMARY_SOT": "FILESYSTEM_SNAPSHOT",
+    "LIVE_OVERLAY": "AIRTABLE_PUBLISHED_REPORTS",
+    "HISTORY_AIRTABLE": "DISABLED",
+    "historyEnableEnv": "ADP_HISTORY_AIRTABLE_WRITE_APPLY",
+    "liveOverlayBaseEnv": "ADP_AIRTABLE_BASE_ID",
+    "secondHotelHistoryRequired": false,
+    "secondHotelHistoryReason": "Filesystem published snapshots + Live overlay (when configured) are sufficient for second-hotel replication; Airtable history remains optional and gated."
+  },
+  "pilotLogicEnabled": false,
+  "profileCompleteness": {
+    "hotelId": "recG66DQJKP2c0UNh",
+    "hotelName": "Renaissance New York Times Square Hotel",
+    "brand": "Renaissance Hotels (Marriott)",
+    "market": "Manhattan Midtown / Times Square",
+    "rooms": 310,
+    "meetingSpaceSqFt": 5000,
+    "serviceLevel": "full_service_urban",
+    "hotelArchetype": "times_square_midtown_lifestyle",
+    "catchmentIncludes": [
+      "Times Square / Theater District",
+      "Midtown Manhattan where Renaissance is a credible alternative",
+      "selected Manhattan overflow only when housing access is realistic"
+    ]
+  },
+  "applied": {
+    "dryRun": true,
+    "writeStats": {
+      "generators": {
+        "create": 0,
+        "update": 0,
+        "preview": 8
+      },
+      "programs": {
+        "create": 0,
+        "update": 0,
+        "preview": 8
+      },
+      "fits": {
+        "create": 0,
+        "update": 0,
+        "preview": 8
+      },
+      "targets": {
+        "create": 0,
+        "update": 0,
+        "preview": 16
+      }
+    },
+    "performance": {
+      "runtimeMs": 32,
+      "airtableWrites": 0,
+      "airtableReadsEstimate": 0
+    },
+    "fits": 8,
+    "targets": 16
+  },
+  "recreateProof": {
+    "fitFirst": 8,
+    "fitRecreated": 8,
+    "fitOverlapCount": 8,
+    "fitOverlapPct": 100,
+    "targetFirst": 16,
+    "targetRecreated": 16,
+    "targetOverlapCount": 16,
+    "targetOverlapPct": 100,
+    "materialFitDiffs": [],
+    "materialTargetDiffs": [],
+    "deterministic": true,
+    "manualHotelSpecificInjection": false
+  },
+  "weeklyReadiness": {
+    "status": "WEEKLY_READY",
+    "blockers": [],
+    "targetCount": 16,
+    "fitCount": 8,
+    "note": "Seeded targets are structurally consumable by weekly discovery (no live run executed)"
+  },
+  "jevShadow": {
+    "ok": true,
+    "shadow": true,
+    "appliedToSeed": false,
+    "applyReady": false,
+    "calls": 12,
+    "latencyMs": 7237,
+    "agreement": 12,
+    "agreementPct": 100,
+    "jevBetter": 0,
+    "currentBetter": 0,
+    "unknown": 0,
+    "highConfWrong": 0,
+    "technicalFallbacks": 0,
+    "policyFallbacks": 0,
+    "note": "Seed-phase Jev quality mostly UNKNOWN without research outcomes; shadow only.",
+    "sample": [
+      {
+        "targetId": "gdirt_demand_generator_d3816192fb",
+        "targetType": "DEMAND_GENERATOR",
+        "deterministicPriority": "HIGH",
+        "deterministicPlaybook": "DEMAND_GENERATOR",
+        "jevPriority": "RESEARCH_NOW",
+        "jevPlaybook": "LODGING_HOUSING",
+        "finalPolicyPriority": "RESEARCH_NOW",
+        "finalPolicyPlaybook": "DEMAND_GENERATOR",
+        "shadow": true,
+        "appliedToSeed": false,
+        "agreement": true,
+        "technicalFallback": false
+      },
+      {
+        "targetId": "gdirt_demand_generator_e50f521757",
+        "targetType": "DEMAND_GENERATOR",
+        "deterministicPriority": "HIGH",
+        "deterministicPlaybook": "DEMAND_GENERATOR",
+        "jevPriority": "RESEARCH_NOW",
+        "jevPlaybook": "LODGING_HOUSING",
+        "finalPolicyPriority": "RESEARCH_NOW",
+        "finalPolicyPlaybook": "DEMAND_GENERATOR",
+        "shadow": true,
+        "appliedToSeed": false,
+        "agreement": true,
+        "technicalFallback": false
+      },
+      {
+        "targetId": "gdirt_demand_generator_8e26dc14d6",
+        "targetType": "DEMAND_GENERATOR",
+        "deterministicPriority": "MEDIUM",
+        "deterministicPlaybook": "DEMAND_GENERATOR",
+        "jevPriority": "RESEARCH_NOW",
+        "jevPlaybook": "LODGING_HOUSING",
+        "finalPolicyPriority": "DEFER",
+        "finalPolicyPlaybook": "DEMAND_GENERATOR",
+        "shadow": true,
+        "appliedToSeed": false,
+        "agreement": true,
+        "technicalFallback": false
+      },
+      {
+        "targetId": "gdirt_demand_generator_e3ee9bd909",
+        "targetType": "DEMAND_GENERATOR",
+        "deterministicPriority": "MEDIUM",
+        "deterministicPlaybook": "DEMAND_GENERATOR",
+        "jevPriority": "RESEARCH_NOW",
+        "jevPlaybook": "LODGING_HOUSING",
+        "finalPolicyPriority": "DEFER",
+        "finalPolicyPlaybook": "DEMAND_GENERATOR",
+        "shadow": true,
+        "appliedToSeed": false,
+        "agreement": true,
+        "technicalFallback": false
+      },
+      {
+        "targetId": "gdirt_demand_generator_ae11fa2617",
+        "targetType": "DEMAND_GENERATOR",
+        "deterministicPriority": "MEDIUM",
+        "deterministicPlaybook": "DEMAND_GENERATOR",
+        "jevPriority": "RESEARCH_NOW",
+        "jevPlaybook": "LODGING_HOUSING",
+        "finalPolicyPriority": "DEFER",
+        "finalPolicyPlaybook": "DEMAND_GENERATOR",
+        "shadow": true,
+        "appliedToSeed": false,
+        "agreement": true,
+        "technicalFallback": false
+      }
+    ]
+  },
+  "adpJevPrep": {
+    "shadowAdapterExists": false,
+    "productionAdpBehaviorChanged": false,
+    "lowRiskIntegrationPoints": [
+      "EVIDENCE_UTILITY — rank evidence packs after filesystem snapshot assemble",
+      "SOURCE_PRIORITY — order source follow-ups in research notes (shadow)",
+      "FOLLOWUP_RESEARCH_TYPE — suggest next research type without mutating report"
+    ],
+    "futureHook": "lib/ai-demand-positioning/ + shared lib/group-demand-intelligence/jev decide(); keep ADP filesystem PRIMARY_SOT; never let Jev authorize persistence"
+  },
+  "quality": {
+    "baselineCreatesWeeklyNew": false,
+    "baselineCreatesOpportunity": false,
+    "hotelNameSwitches": false,
+    "pilotBleedRejected": 0
+  },
+  "security": {
+    "hotelScoped": true,
+    "pilotBleedRejected": 0,
+    "bethesdaIdsInSeed": 0
+  }
+}
