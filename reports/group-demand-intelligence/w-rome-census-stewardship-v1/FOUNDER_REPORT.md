@@ -210,7 +210,7 @@ Generic fix: onboard seed resolves provisional/ADP aliases → canonical HPC id 
 
 **W ROME PROD HARDCODES:** NO · **ITALY PROD HARDCODES:** NO · **JEV PROD BEHAVIOR:** NO  
 
-**FINAL SHA:** *(after commit)* · **PUSH:** *(after push)*
+**FINAL SHA:** f5f08adbcd279eef5b3f929a515c512b0d75720e · **PUSH:** PASS
 
 ---
 
