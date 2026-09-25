@@ -1,0 +1,85 @@
+{
+  "generatedAt": "2026-09-25T11:05:00.000Z",
+  "propertyId": "adp_w_rome",
+  "censusRecordId": "rece0or38cxo3Fymb",
+  "originalCandidates": [
+    {
+      "candidate": "Rome Marriott Hotel",
+      "decision": "EXCLUDE",
+      "peerType": null,
+      "evidence": "rommc slug not verified as open centro Marriott Hotels; conflation risk with ROMAU Park Hotel Magliana/EUR",
+      "confidence": "STRONG",
+      "reason": "Identity/geo fail — cannot certify unverified or peripheral airport hotel as Via Liguria lifestyle peer"
+    },
+    {
+      "candidate": "The St. Regis Rome",
+      "decision": "APPROVE_CORE_PEER",
+      "peerType": "CORE",
+      "evidence": "marriott.com romxr · Via Vittorio E. Orlando 3 · 00185 · ~161 keys · Bonvoy luxury centro",
+      "confidence": "VERIFIED",
+      "reason": "same destination luxury + Bonvoy + centro + plausible AI substitution"
+    },
+    {
+      "candidate": "Hotel Eden, a Dorchester Collection Hotel",
+      "decision": "APPROVE_SECONDARY_PEER",
+      "peerType": "SECONDARY",
+      "evidence": "dorchestercollection.com hotel-eden · Via Veneto luxury lifestyle",
+      "confidence": "STRONG",
+      "reason": "independent luxury lifestyle · Via Veneto corridor · strong substitution framing (not brand-only)"
+    },
+    {
+      "candidate": "Hotel de Russie, a Rocco Forte Hotel",
+      "decision": "APPROVE_SECONDARY_PEER",
+      "peerType": "SECONDARY",
+      "evidence": "roccofortehotels.com · Via del Babuino 9 · 00187 (same postal as W Rome)",
+      "confidence": "VERIFIED",
+      "reason": "lifestyle luxury · centro · same catchment postal · plausible alternative"
+    },
+    {
+      "candidate": "JW Marriott Rome",
+      "decision": "EXCLUDE",
+      "peerType": null,
+      "evidence": "No JW Marriott Rome in Marriott Italy JW inventory (Venice only) / Wikipedia JW Europe list",
+      "confidence": "VERIFIED",
+      "reason": "Property does not exist — cannot invent peer"
+    }
+  ],
+  "postReviewStewardshipFills": [
+    {
+      "candidate": "The Westin Excelsior, Rome",
+      "decision": "APPROVE_CORE_PEER",
+      "peerType": "CORE",
+      "evidence": "marriott.com romwi · Via Vittorio Veneto 125 · 00187 · 281+35 keys",
+      "confidence": "VERIFIED",
+      "reason": "After 2 excludes, L1 Bonvoy Via Veneto fill to restore ADEQUATE without geography pad"
+    },
+    {
+      "candidate": "The Rome EDITION",
+      "decision": "APPROVE_CORE_PEER",
+      "peerType": "CORE",
+      "evidence": "editionhotels.com/rome · Salita di San Nicola da Tolentino 14 · 00187 · lifestyle luxury Bonvoy",
+      "confidence": "VERIFIED",
+      "reason": "Strongest lifestyle-luxury Bonvoy substitution peer for W in centro"
+    }
+  ],
+  "certifiedPack": {
+    "core": 3,
+    "secondary": 2,
+    "excluded": 3,
+    "adequacy": "ADEQUATE",
+    "version": "adp_w_rome_peer_pack_v1"
+  },
+  "scenarios": {
+    "start": 20,
+    "keep": 20,
+    "remove": 0,
+    "merge": 0,
+    "final": 20,
+    "bleedHits": 0,
+    "certified": true
+  },
+  "jevPeerShadow": {
+    "apply": false,
+    "note": "Jev not used to approve/exclude peers; only PEER_EVIDENCE_UTILITY shadow optional"
+  }
+}

@@ -1,0 +1,2543 @@
+{
+  "ok": true,
+  "publishedAt": "2026-09-25T11:05:23.684Z",
+  "productVersion": "ai_demand_positioning_v1",
+  "propertyId": "adp_w_rome",
+  "periodId": "adp_period_adp_w_rome_20260925105322_1192cf",
+  "censusRecordId": null,
+  "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1",
+  "reportEdition": "ORIGINAL_V1",
+  "payload": {
+    "ok": true,
+    "version": "ai_demand_positioning_v1",
+    "property": {
+      "propertyId": "adp_w_rome",
+      "name": "W Rome",
+      "city": "Rome",
+      "state": null,
+      "chainScale": "Luxury",
+      "affiliation": "W Hotels (Marriott)",
+      "rooms": 148,
+      "website": "https://www.marriott.com/en-us/hotels/romwv-w-rome/overview/",
+      "ownedDomains": [],
+      "officialBrandDomain": "marriott.com",
+      "officialPropertyPageUrl": "https://www.marriott.com/en-us/hotels/romwv-w-rome/overview/"
+    },
+    "period": {
+      "periodId": "adp_period_adp_w_rome_20260925105322_1192cf",
+      "executionDate": "2026-09-25T10:53:22.644Z",
+      "scenarioCount": 20,
+      "providerCount": 4,
+      "status": "PARSED"
+    },
+    "demandCapture": {
+      "overallRate": 60,
+      "totalScenarios": 20,
+      "capturedScenarios": 12,
+      "missedScenarios": 8,
+      "byIntent": {
+        "business": {
+          "total": 5,
+          "captured": 4,
+          "rate": 80
+        },
+        "leisure": {
+          "total": 4,
+          "captured": 3,
+          "rate": 75
+        },
+        "couples": {
+          "total": 2,
+          "captured": 1,
+          "rate": 50
+        },
+        "group_meeting": {
+          "total": 4,
+          "captured": 3,
+          "rate": 75
+        },
+        "celebration": {
+          "total": 2,
+          "captured": 1,
+          "rate": 50
+        },
+        "family": {
+          "total": 1,
+          "captured": 0,
+          "rate": 0
+        },
+        "wellness": {
+          "total": 1,
+          "captured": 0,
+          "rate": 0
+        },
+        "adventure": {
+          "total": 1,
+          "captured": 0,
+          "rate": 0
+        }
+      },
+      "display": "60.0%"
+    },
+    "intentPresenceIndex": {
+      "business": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Business Travel",
+        "status": "BENCHMARK_DEVELOPING",
+        "blockers": [
+          "scenario_density",
+          "zero_denominator",
+          "peer_identity"
+        ],
+        "index": null,
+        "myRate": 60,
+        "subjectRatePct": 60,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark not yet certified",
+        "coreCount": 4,
+        "scenarioCount": 5,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "comparableN": 20,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "leisure": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Leisure Travel",
+        "status": "BENCHMARK_DEVELOPING",
+        "blockers": [
+          "scenario_density",
+          "provider_scopes_lt_3",
+          "thin_observations",
+          "zero_denominator",
+          "peer_identity"
+        ],
+        "index": null,
+        "myRate": null,
+        "subjectRatePct": null,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark not yet certified",
+        "coreCount": 5,
+        "scenarioCount": 4,
+        "includedProviders": [],
+        "comparableN": 0,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "couples": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Couples / Romantic Stay",
+        "status": "BENCHMARK_DEVELOPING",
+        "blockers": [
+          "scenario_density",
+          "provider_scopes_lt_3",
+          "thin_observations",
+          "zero_denominator",
+          "peer_identity"
+        ],
+        "index": null,
+        "myRate": null,
+        "subjectRatePct": null,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark not yet certified",
+        "coreCount": 4,
+        "scenarioCount": 2,
+        "includedProviders": [],
+        "comparableN": 0,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "group_meeting": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Meetings & Groups",
+        "status": "BENCHMARK_DEVELOPING",
+        "blockers": [
+          "scenario_density",
+          "provider_scopes_lt_3",
+          "thin_observations",
+          "zero_denominator",
+          "peer_identity"
+        ],
+        "index": null,
+        "myRate": null,
+        "subjectRatePct": null,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark not yet certified",
+        "coreCount": 4,
+        "scenarioCount": 4,
+        "includedProviders": [],
+        "comparableN": 0,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "celebration": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Celebrations & Events",
+        "status": "BENCHMARK_DEVELOPING",
+        "blockers": [
+          "scenario_density",
+          "provider_scopes_lt_3",
+          "thin_observations",
+          "zero_denominator",
+          "peer_identity"
+        ],
+        "index": null,
+        "myRate": null,
+        "subjectRatePct": null,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark not yet certified",
+        "coreCount": 4,
+        "scenarioCount": 2,
+        "includedProviders": [],
+        "comparableN": 0,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "family": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Family Travel",
+        "status": "BENCHMARK_DEVELOPING",
+        "blockers": [
+          "scenario_density",
+          "provider_scopes_lt_3",
+          "thin_observations",
+          "zero_denominator",
+          "peer_identity"
+        ],
+        "index": null,
+        "myRate": null,
+        "subjectRatePct": null,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark not yet certified",
+        "coreCount": 4,
+        "scenarioCount": 1,
+        "includedProviders": [],
+        "comparableN": 0,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "wellness": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Wellness",
+        "status": "BENCHMARK_DEVELOPING",
+        "blockers": [
+          "core_lt_4",
+          "scenario_density",
+          "provider_scopes_lt_3",
+          "thin_observations",
+          "zero_denominator",
+          "peer_identity"
+        ],
+        "index": null,
+        "myRate": null,
+        "subjectRatePct": null,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark not yet certified",
+        "coreCount": 3,
+        "scenarioCount": 1,
+        "includedProviders": [],
+        "comparableN": 0,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "adventure": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Adventure & Experiences",
+        "status": "BENCHMARK_DEVELOPING",
+        "blockers": [
+          "core_lt_4",
+          "scenario_density",
+          "provider_scopes_lt_3",
+          "thin_observations",
+          "zero_denominator"
+        ],
+        "index": null,
+        "myRate": 0,
+        "subjectRatePct": 0,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark not yet certified",
+        "coreCount": 0,
+        "scenarioCount": 1,
+        "includedProviders": [],
+        "comparableN": 4,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      }
+    },
+    "lostDemand": {
+      "totalLost": 8,
+      "highRelevanceLost": 0,
+      "displacement": [],
+      "topReasons": [
+        {
+          "reason": "High competitor density. Stronger authority signals needed",
+          "count": 4
+        },
+        {
+          "reason": "Property may not be positioned as luxury tier by AI",
+          "count": 3
+        },
+        {
+          "reason": "Meeting/event capability may be underrepresented in AI sources",
+          "count": 1
+        }
+      ],
+      "scenarios": [
+        {
+          "intent": "business",
+          "competitorsPresent": [],
+          "likelyReason": "Property may not be positioned as luxury tier by AI",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "couples",
+          "competitorsPresent": [],
+          "likelyReason": "Property may not be positioned as luxury tier by AI",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "celebration",
+          "competitorsPresent": [],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "family",
+          "competitorsPresent": [],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "wellness",
+          "competitorsPresent": [],
+          "likelyReason": "Property may not be positioned as luxury tier by AI",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "adventure",
+          "competitorsPresent": [],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "group_meeting",
+          "competitorsPresent": [],
+          "likelyReason": "Meeting/event capability may be underrepresented in AI sources",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "leisure",
+          "competitorsPresent": [],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "LOW"
+        }
+      ]
+    },
+    "competitiveSet": {
+      "declaredCount": 5,
+      "observedCount": 0,
+      "overlapRate": 0,
+      "surprises": [],
+      "observed": [],
+      "declaredButNotObserved": [
+        "The St. Regis Rome",
+        "The Westin Excelsior, Rome",
+        "The Rome EDITION",
+        "Hotel Eden, a Dorchester Collection Hotel",
+        "Hotel de Russie, a Rocco Forte Hotel"
+      ]
+    },
+    "realityGap": {
+      "gapScore": 50,
+      "display": "50.0%",
+      "totalAttributes": 2,
+      "recognizedCount": 1,
+      "gapCount": 1,
+      "recognized": [
+        {
+          "attribute": "marriott_bonvoy",
+          "label": "Marriott Bonvoy Loyalty",
+          "recognitionRate": 52.4,
+          "count": 11,
+          "total": 21
+        }
+      ],
+      "gaps": [
+        {
+          "attribute": "full_service",
+          "label": "Full-Service Hotel",
+          "priority": "medium",
+          "recognitionRate": 0,
+          "count": 0,
+          "total": 21,
+          "severity": "HIGH"
+        }
+      ],
+      "totalPropertyMentions": 21
+    },
+    "whiteSpace": {
+      "totalOpportunities": 0,
+      "highOpportunities": 0,
+      "opportunities": []
+    },
+    "brief": {
+      "items": [
+        {
+          "type": "headline",
+          "text": "Your property captured 60.0% of relevant AI demand scenarios this period."
+        },
+        {
+          "type": "gap",
+          "text": "AI Reality Gap: 50.0%. AI misses or misrepresents 1 of your property's key attributes."
+        }
+      ],
+      "generatedAt": "2026-09-25T11:05:23.186Z"
+    },
+    "actions": [
+      {
+        "priority": "HIGH",
+        "category": "REALITY_GAP",
+        "title": "Improve AI representation of full-service hotel",
+        "description": "AI currently misses or underrepresents your full-service hotel. Review third-party content and authority signals for this attribute before estimating impact.",
+        "expectedImpact": null,
+        "impactNote": "Review evidence for this attribute gap before estimating scenario impact."
+      }
+    ],
+    "evidence": {
+      "citationRate": 25,
+      "avgSourcesPerCitation": 17,
+      "totalWithSources": 20,
+      "totalObservations": 80,
+      "scheduledObservations": 80,
+      "comparableObservations": 80,
+      "providerDenominatorGrain": "comparable_observations",
+      "topSources": [
+        {
+          "domain": "marriott.com",
+          "count": 13,
+          "frequency": 65
+        },
+        {
+          "domain": "tripadvisor.com",
+          "count": 13,
+          "frequency": 65
+        },
+        {
+          "domain": "thehotelguru.com",
+          "count": 11,
+          "frequency": 55
+        },
+        {
+          "domain": "expedia.com",
+          "count": 11,
+          "frequency": 55
+        },
+        {
+          "domain": "fivestaralliance.com",
+          "count": 8,
+          "frequency": 40
+        },
+        {
+          "domain": "booking.com",
+          "count": 8,
+          "frequency": 40
+        },
+        {
+          "domain": "nh-hotels.com",
+          "count": 7,
+          "frequency": 35
+        },
+        {
+          "domain": "us.trip.com",
+          "count": 6,
+          "frequency": 30
+        },
+        {
+          "domain": "hotels.com",
+          "count": 6,
+          "frequency": 30
+        },
+        {
+          "domain": "timeout.com",
+          "count": 6,
+          "frequency": 30
+        }
+      ],
+      "providers": [
+        {
+          "provider": "gemini",
+          "scenariosScheduled": 20,
+          "scheduled": 20,
+          "observationsCaptured": 20,
+          "comparable": 20,
+          "captured": 20,
+          "mentioned": 11,
+          "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
+          "denominatorGrain": "comparable_observations",
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 20,
+          "presence": 55,
+          "presenceUnavailable": false
+        },
+        {
+          "provider": "perplexity",
+          "scenariosScheduled": 20,
+          "scheduled": 20,
+          "observationsCaptured": 20,
+          "comparable": 20,
+          "captured": 20,
+          "mentioned": 5,
+          "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
+          "denominatorGrain": "comparable_observations",
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 20,
+          "presence": 25,
+          "presenceUnavailable": false
+        },
+        {
+          "provider": "claude",
+          "scenariosScheduled": 20,
+          "scheduled": 20,
+          "observationsCaptured": 20,
+          "comparable": 20,
+          "captured": 20,
+          "mentioned": 3,
+          "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
+          "denominatorGrain": "comparable_observations",
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 20,
+          "presence": 15,
+          "presenceUnavailable": false
+        },
+        {
+          "provider": "openai",
+          "scenariosScheduled": 20,
+          "scheduled": 20,
+          "observationsCaptured": 20,
+          "comparable": 20,
+          "captured": 20,
+          "mentioned": 2,
+          "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
+          "denominatorGrain": "comparable_observations",
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 20,
+          "presence": 10,
+          "presenceUnavailable": false
+        }
+      ],
+      "providerCitations": {
+        "openai": 0,
+        "gemini": 0,
+        "perplexity": 100,
+        "claude": 0
+      },
+      "discovery": [
+        {
+          "intent": "business",
+          "citationRate": 25,
+          "total": 20
+        },
+        {
+          "intent": "leisure",
+          "citationRate": 25,
+          "total": 16
+        },
+        {
+          "intent": "couples",
+          "citationRate": 25,
+          "total": 8
+        },
+        {
+          "intent": "group_meeting",
+          "citationRate": 25,
+          "total": 16
+        },
+        {
+          "intent": "celebration",
+          "citationRate": 25,
+          "total": 8
+        },
+        {
+          "intent": "family",
+          "citationRate": 25,
+          "total": 4
+        },
+        {
+          "intent": "wellness",
+          "citationRate": 25,
+          "total": 4
+        },
+        {
+          "intent": "adventure",
+          "citationRate": 25,
+          "total": 4
+        }
+      ],
+      "ownedSourceShare": 10,
+      "externalSourceShare": 90,
+      "unknownSourceShare": 0,
+      "ownedSourceMix": {
+        "version": "adp_owned_source_classification_v1",
+        "domainsConfigured": true,
+        "ownedSourceDefinition": "OWNED_SOURCE means a source directly controlled by (A) the subject hotel/property OR (B) the hotel's official parent brand/operator when the page directly represents the specific property. Brand corporate pages that do not represent the subject property are not owned. UNKNOWN is retained separately and must not silently become OWNED or EXTERNAL.",
+        "responsesWithCitations": 20,
+        "ownedResponses": 2,
+        "externalOnlyResponses": 18,
+        "unknownOnlyResponses": 0,
+        "ownedShare": 10,
+        "externalShare": 90,
+        "unknownShare": 0,
+        "grain": "RESPONSES_WITH_CITATIONS_UNIQUE_DOMAIN_PER_RESPONSE",
+        "customerNote": "Owned / External shares are observed citation presence among responses that included sources — not AI trust, preference, or influence."
+      },
+      "ownedDomainsConfigured": true
+    },
+    "executiveMetrics": {
+      "version": "adp_optional_executive_metrics_v2",
+      "considerationRate": {
+        "rate": 26.3,
+        "presentObservations": 21,
+        "comparableObservations": 80
+      },
+      "scenarioPresence": {
+        "rate": 60,
+        "capturedScenarios": 12,
+        "eligibleScenarios": 20
+      },
+      "rankMetrics": {
+        "rankEligibleN": 8,
+        "numberOneAppearanceRate": 37.5,
+        "topThreeAppearanceRate": 50,
+        "numberOneCount": 3,
+        "topThreeCount": 4
+      },
+      "competitorPresentScenarios": {
+        "scenarioCount": 18,
+        "observationCount": 58
+      }
+    },
+    "competitiveRankingByTerritory": {
+      "version": "adp_ai_competitive_set_overall_view_v1",
+      "coreTransparencyVersion": "adp_competitive_ranking_core_transparency_v1",
+      "byTerritory": {
+        "overall": {
+          "version": "adp_ai_competitive_set_overall_view_v1",
+          "viewType": "overall",
+          "intent": "overall",
+          "territory": "Overall",
+          "comparableN": 80,
+          "baseObservedRows": 10,
+          "displayRows": [
+            {
+              "entityId": "__subject__",
+              "name": "W Rome",
+              "isSubject": true,
+              "appearances": 21,
+              "aiPresenceRate": 0.2625,
+              "aiPresencePct": 26.3,
+              "relationship": "SUBJECT",
+              "isCore": false,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Business Travel",
+              "topDemandTerritoryIntent": "business",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": null
+              }
+            }
+          ],
+          "hideTerritoryColumn": false,
+          "territoryColumnMode": "top_demand_territory",
+          "reconciliation": null,
+          "meta": {
+            "RANKING_SCOPE": "FULL_PROPERTY_COMPARABLE_PERIOD",
+            "SUBJECT_ALWAYS_VISIBLE": true,
+            "SUBJECT_OUTSIDE_TOP10_BEHAVIOR": "TOP_9_PLUS_SUBJECT",
+            "TRUE_RANK_PRESERVED": true,
+            "OVERALL_CORE_BENCHMARK": false,
+            "OVERALL_AI_PRESENCE_INDEX": false,
+            "TOP_10_IS_MAXIMUM": true,
+            "TOP_DEMAND_TERRITORY_COLUMN": true
+          }
+        },
+        "business": {
+          "version": "adp_competitive_ranking_core_transparency_v1",
+          "intent": "business",
+          "territory": "Business Travel",
+          "coreCount": 4,
+          "coreIds": [
+            "peer_bonvoy_st_regis_rome",
+            "peer_bonvoy_westin_excelsior_rome",
+            "peer_bonvoy_rome_edition",
+            "peer_ind_hotel_eden_rome"
+          ],
+          "comparableN": 20,
+          "baseObservedRows": 10,
+          "displayRows": [
+            {
+              "entityId": "__subject__",
+              "name": "W Rome",
+              "isSubject": true,
+              "appearances": 12,
+              "aiPresenceRate": 0.6,
+              "aiPresencePct": 60,
+              "relationship": "SUBJECT",
+              "isCore": false,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": null
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_rome_edition",
+              "name": "Peer Bonvoy Rome Edition",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_bonvoy_rome_edition",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_st_regis_rome",
+              "name": "Peer Bonvoy St Regis Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_bonvoy_st_regis_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_westin_excelsior_rome",
+              "name": "Peer Bonvoy Westin Excelsior Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_bonvoy_westin_excelsior_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_eden_rome",
+              "name": "Peer Ind Hotel Eden Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_ind_hotel_eden_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            }
+          ],
+          "reconciliation": {
+            "CORE_COUNT": 4,
+            "CORE_IN_TOP_10": 0,
+            "CORE_APPENDED": 0,
+            "CORE_ZERO_PRESENCE": 4,
+            "IDENTIFIABLE_CORE_TOTAL": 4,
+            "COUNT_MATCH": true
+          },
+          "meta": {
+            "ALL_CORE_INCLUDED": true,
+            "TRUE_RANK_PRESERVED": true,
+            "TOP_10_IS_MAXIMUM": false
+          }
+        },
+        "leisure": {
+          "version": "adp_competitive_ranking_core_transparency_v1",
+          "intent": "leisure",
+          "territory": "Leisure Travel",
+          "coreCount": 5,
+          "coreIds": [
+            "peer_bonvoy_rome_edition",
+            "peer_ind_hotel_eden_rome",
+            "peer_ind_hotel_de_russie_rome",
+            "peer_bonvoy_st_regis_rome",
+            "peer_bonvoy_westin_excelsior_rome"
+          ],
+          "comparableN": 16,
+          "baseObservedRows": 10,
+          "displayRows": [
+            {
+              "entityId": "__subject__",
+              "name": "W Rome",
+              "isSubject": true,
+              "appearances": 3,
+              "aiPresenceRate": 0.1875,
+              "aiPresencePct": 18.8,
+              "relationship": "SUBJECT",
+              "isCore": false,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": null
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_rome_edition",
+              "name": "Peer Bonvoy Rome Edition",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_bonvoy_rome_edition",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_st_regis_rome",
+              "name": "Peer Bonvoy St Regis Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_bonvoy_st_regis_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_westin_excelsior_rome",
+              "name": "Peer Bonvoy Westin Excelsior Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_bonvoy_westin_excelsior_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_de_russie_rome",
+              "name": "Peer Ind Hotel De Russie Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_ind_hotel_de_russie_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_eden_rome",
+              "name": "Peer Ind Hotel Eden Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_ind_hotel_eden_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            }
+          ],
+          "reconciliation": {
+            "CORE_COUNT": 5,
+            "CORE_IN_TOP_10": 0,
+            "CORE_APPENDED": 0,
+            "CORE_ZERO_PRESENCE": 5,
+            "IDENTIFIABLE_CORE_TOTAL": 5,
+            "COUNT_MATCH": true
+          },
+          "meta": {
+            "ALL_CORE_INCLUDED": true,
+            "TRUE_RANK_PRESERVED": true,
+            "TOP_10_IS_MAXIMUM": false
+          }
+        },
+        "couples": {
+          "version": "adp_competitive_ranking_core_transparency_v1",
+          "intent": "couples",
+          "territory": "Couples / Romantic Stay",
+          "coreCount": 4,
+          "coreIds": [
+            "peer_bonvoy_rome_edition",
+            "peer_ind_hotel_de_russie_rome",
+            "peer_ind_hotel_eden_rome",
+            "peer_bonvoy_st_regis_rome"
+          ],
+          "comparableN": 8,
+          "baseObservedRows": 10,
+          "displayRows": [
+            {
+              "entityId": "__subject__",
+              "name": "W Rome",
+              "isSubject": true,
+              "appearances": 1,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "SUBJECT",
+              "isCore": false,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": null
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_rome_edition",
+              "name": "Peer Bonvoy Rome Edition",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_bonvoy_rome_edition",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_st_regis_rome",
+              "name": "Peer Bonvoy St Regis Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_bonvoy_st_regis_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_de_russie_rome",
+              "name": "Peer Ind Hotel De Russie Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_ind_hotel_de_russie_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_eden_rome",
+              "name": "Peer Ind Hotel Eden Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_ind_hotel_eden_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            }
+          ],
+          "reconciliation": {
+            "CORE_COUNT": 4,
+            "CORE_IN_TOP_10": 0,
+            "CORE_APPENDED": 0,
+            "CORE_ZERO_PRESENCE": 4,
+            "IDENTIFIABLE_CORE_TOTAL": 4,
+            "COUNT_MATCH": true
+          },
+          "meta": {
+            "ALL_CORE_INCLUDED": true,
+            "TRUE_RANK_PRESERVED": true,
+            "TOP_10_IS_MAXIMUM": false
+          }
+        },
+        "family": {
+          "version": "adp_competitive_ranking_core_transparency_v1",
+          "intent": "family",
+          "territory": "Family Travel",
+          "coreCount": 4,
+          "coreIds": [
+            "peer_bonvoy_westin_excelsior_rome",
+            "peer_bonvoy_st_regis_rome",
+            "peer_bonvoy_rome_edition",
+            "peer_ind_hotel_eden_rome"
+          ],
+          "comparableN": 4,
+          "baseObservedRows": 10,
+          "displayRows": [
+            {
+              "entityId": "peer_bonvoy_rome_edition",
+              "name": "Peer Bonvoy Rome Edition",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_bonvoy_rome_edition",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_st_regis_rome",
+              "name": "Peer Bonvoy St Regis Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_bonvoy_st_regis_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_westin_excelsior_rome",
+              "name": "Peer Bonvoy Westin Excelsior Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_bonvoy_westin_excelsior_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_eden_rome",
+              "name": "Peer Ind Hotel Eden Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_ind_hotel_eden_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            }
+          ],
+          "reconciliation": {
+            "CORE_COUNT": 4,
+            "CORE_IN_TOP_10": 0,
+            "CORE_APPENDED": 0,
+            "CORE_ZERO_PRESENCE": 4,
+            "IDENTIFIABLE_CORE_TOTAL": 4,
+            "COUNT_MATCH": true
+          },
+          "meta": {
+            "ALL_CORE_INCLUDED": true,
+            "TRUE_RANK_PRESERVED": true,
+            "TOP_10_IS_MAXIMUM": false
+          }
+        },
+        "group_meeting": {
+          "version": "adp_competitive_ranking_core_transparency_v1",
+          "intent": "group_meeting",
+          "territory": "Meetings & Groups",
+          "coreCount": 4,
+          "coreIds": [
+            "peer_bonvoy_westin_excelsior_rome",
+            "peer_bonvoy_st_regis_rome",
+            "peer_bonvoy_rome_edition",
+            "peer_ind_hotel_eden_rome"
+          ],
+          "comparableN": 16,
+          "baseObservedRows": 10,
+          "displayRows": [
+            {
+              "entityId": "__subject__",
+              "name": "W Rome",
+              "isSubject": true,
+              "appearances": 4,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "SUBJECT",
+              "isCore": false,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": null
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_rome_edition",
+              "name": "Peer Bonvoy Rome Edition",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_bonvoy_rome_edition",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_st_regis_rome",
+              "name": "Peer Bonvoy St Regis Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_bonvoy_st_regis_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_westin_excelsior_rome",
+              "name": "Peer Bonvoy Westin Excelsior Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_bonvoy_westin_excelsior_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_eden_rome",
+              "name": "Peer Ind Hotel Eden Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_ind_hotel_eden_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            }
+          ],
+          "reconciliation": {
+            "CORE_COUNT": 4,
+            "CORE_IN_TOP_10": 0,
+            "CORE_APPENDED": 0,
+            "CORE_ZERO_PRESENCE": 4,
+            "IDENTIFIABLE_CORE_TOTAL": 4,
+            "COUNT_MATCH": true
+          },
+          "meta": {
+            "ALL_CORE_INCLUDED": true,
+            "TRUE_RANK_PRESERVED": true,
+            "TOP_10_IS_MAXIMUM": false
+          }
+        },
+        "wellness": {
+          "version": "adp_competitive_ranking_core_transparency_v1",
+          "intent": "wellness",
+          "territory": "Wellness",
+          "coreCount": 3,
+          "coreIds": [
+            "peer_ind_hotel_de_russie_rome",
+            "peer_bonvoy_rome_edition",
+            "peer_bonvoy_st_regis_rome"
+          ],
+          "comparableN": 4,
+          "baseObservedRows": 10,
+          "displayRows": [
+            {
+              "entityId": "peer_bonvoy_rome_edition",
+              "name": "Peer Bonvoy Rome Edition",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_bonvoy_rome_edition",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_st_regis_rome",
+              "name": "Peer Bonvoy St Regis Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_bonvoy_st_regis_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_de_russie_rome",
+              "name": "Peer Ind Hotel De Russie Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_ind_hotel_de_russie_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            }
+          ],
+          "reconciliation": {
+            "CORE_COUNT": 3,
+            "CORE_IN_TOP_10": 0,
+            "CORE_APPENDED": 0,
+            "CORE_ZERO_PRESENCE": 3,
+            "IDENTIFIABLE_CORE_TOTAL": 3,
+            "COUNT_MATCH": true
+          },
+          "meta": {
+            "ALL_CORE_INCLUDED": true,
+            "TRUE_RANK_PRESERVED": true,
+            "TOP_10_IS_MAXIMUM": false
+          }
+        },
+        "celebration": {
+          "version": "adp_competitive_ranking_core_transparency_v1",
+          "intent": "celebration",
+          "territory": "Celebrations & Events",
+          "coreCount": 4,
+          "coreIds": [
+            "peer_bonvoy_rome_edition",
+            "peer_ind_hotel_eden_rome",
+            "peer_ind_hotel_de_russie_rome",
+            "peer_bonvoy_st_regis_rome"
+          ],
+          "comparableN": 8,
+          "baseObservedRows": 10,
+          "displayRows": [
+            {
+              "entityId": "__subject__",
+              "name": "W Rome",
+              "isSubject": true,
+              "appearances": 1,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "SUBJECT",
+              "isCore": false,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": null
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_rome_edition",
+              "name": "Peer Bonvoy Rome Edition",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_bonvoy_rome_edition",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_st_regis_rome",
+              "name": "Peer Bonvoy St Regis Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_bonvoy_st_regis_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_de_russie_rome",
+              "name": "Peer Ind Hotel De Russie Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_ind_hotel_de_russie_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_eden_rome",
+              "name": "Peer Ind Hotel Eden Rome",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_ind_hotel_eden_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            }
+          ],
+          "reconciliation": {
+            "CORE_COUNT": 4,
+            "CORE_IN_TOP_10": 0,
+            "CORE_APPENDED": 0,
+            "CORE_ZERO_PRESENCE": 4,
+            "IDENTIFIABLE_CORE_TOTAL": 4,
+            "COUNT_MATCH": true
+          },
+          "meta": {
+            "ALL_CORE_INCLUDED": true,
+            "TRUE_RANK_PRESERVED": true,
+            "TOP_10_IS_MAXIMUM": false
+          }
+        }
+      },
+      "selectorOrder": [
+        "overall",
+        "business",
+        "leisure",
+        "couples",
+        "family",
+        "group_meeting",
+        "wellness",
+        "celebration"
+      ],
+      "defaultView": "overall",
+      "reconciliation": [
+        {
+          "PROPERTY": "W Rome",
+          "TERRITORY": "Business Travel",
+          "intent": "business",
+          "CORE_COUNT": 4,
+          "CORE_IN_TOP_10": 0,
+          "CORE_APPENDED": 0,
+          "CORE_ZERO_PRESENCE": 4,
+          "IDENTIFIABLE_CORE_TOTAL": 4,
+          "COUNT_MATCH": "YES",
+          "VISIBLE_ROWS": 5
+        },
+        {
+          "PROPERTY": "W Rome",
+          "TERRITORY": "Leisure Travel",
+          "intent": "leisure",
+          "CORE_COUNT": 5,
+          "CORE_IN_TOP_10": 0,
+          "CORE_APPENDED": 0,
+          "CORE_ZERO_PRESENCE": 5,
+          "IDENTIFIABLE_CORE_TOTAL": 5,
+          "COUNT_MATCH": "YES",
+          "VISIBLE_ROWS": 6
+        },
+        {
+          "PROPERTY": "W Rome",
+          "TERRITORY": "Couples / Romantic Stay",
+          "intent": "couples",
+          "CORE_COUNT": 4,
+          "CORE_IN_TOP_10": 0,
+          "CORE_APPENDED": 0,
+          "CORE_ZERO_PRESENCE": 4,
+          "IDENTIFIABLE_CORE_TOTAL": 4,
+          "COUNT_MATCH": "YES",
+          "VISIBLE_ROWS": 5
+        },
+        {
+          "PROPERTY": "W Rome",
+          "TERRITORY": "Family Travel",
+          "intent": "family",
+          "CORE_COUNT": 4,
+          "CORE_IN_TOP_10": 0,
+          "CORE_APPENDED": 0,
+          "CORE_ZERO_PRESENCE": 4,
+          "IDENTIFIABLE_CORE_TOTAL": 4,
+          "COUNT_MATCH": "YES",
+          "VISIBLE_ROWS": 4
+        },
+        {
+          "PROPERTY": "W Rome",
+          "TERRITORY": "Meetings & Groups",
+          "intent": "group_meeting",
+          "CORE_COUNT": 4,
+          "CORE_IN_TOP_10": 0,
+          "CORE_APPENDED": 0,
+          "CORE_ZERO_PRESENCE": 4,
+          "IDENTIFIABLE_CORE_TOTAL": 4,
+          "COUNT_MATCH": "YES",
+          "VISIBLE_ROWS": 5
+        },
+        {
+          "PROPERTY": "W Rome",
+          "TERRITORY": "Wellness",
+          "intent": "wellness",
+          "CORE_COUNT": 3,
+          "CORE_IN_TOP_10": 0,
+          "CORE_APPENDED": 0,
+          "CORE_ZERO_PRESENCE": 3,
+          "IDENTIFIABLE_CORE_TOTAL": 3,
+          "COUNT_MATCH": "YES",
+          "VISIBLE_ROWS": 3
+        },
+        {
+          "PROPERTY": "W Rome",
+          "TERRITORY": "Celebrations & Events",
+          "intent": "celebration",
+          "CORE_COUNT": 4,
+          "CORE_IN_TOP_10": 0,
+          "CORE_APPENDED": 0,
+          "CORE_ZERO_PRESENCE": 4,
+          "IDENTIFIABLE_CORE_TOTAL": 4,
+          "COUNT_MATCH": "YES",
+          "VISIBLE_ROWS": 5
+        }
+      ],
+      "PROPERTY_SPECIFIC_RANKING_DISPLAY_CODE": 0,
+      "PROPERTY_SPECIFIC_OVERALL_RANKING_CODE": 0,
+      "displacementEvidenceVersion": "adp_displacement_evidence_consistency_v2",
+      "DISPLAY_AND_MODAL_SAME_SOURCE": true
+    },
+    "executiveRead": {
+      "version": "adp_executive_read_v1+adp_executive_read_ux_v2",
+      "PROPERTY_SPECIFIC_EXECUTIVE_READ_CODE": 0,
+      "available": true,
+      "CURRENT_READ_AVAILABLE": true,
+      "COMPARABLE_PRIOR_AVAILABLE": false,
+      "CURRENT_READ_INDEPENDENT_OF_TREND": true,
+      "current": {
+        "positionPattern": "PROPERTY_UNDERSTANDING_STRONGER_THAN_VISIBILITY",
+        "label": "stronger property representation than overall AI demand reach",
+        "narrative": "W Rome appears in 60% of monitored demand scenarios but in 26.3% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. The hotel ranks #1 in 37.5% of ranked responses where ranking is available. AI visibility is broader than consideration consistency: the hotel appears in 60% of monitored demand scenarios but only 26.3% of individual comparable AI responses.",
+        "primaryStrength": {
+          "key": "NUMBER_ONE_PROMINENCE",
+          "label": "#1 prominence"
+        },
+        "primaryConstraint": {
+          "key": "CONSIDERATION_CONSISTENCY",
+          "label": "Consideration consistency"
+        },
+        "benchmarkFinding": null
+      },
+      "trend": {
+        "state": "BASELINE_PERIOD",
+        "label": "This is the baseline monitoring period for this property.",
+        "narrative": "This is the baseline monitoring period for this property.",
+        "hasComparablePrior": false,
+        "priorComparablePeriodId": null,
+        "deltas": null,
+        "materialityPp": 2,
+        "materialityPolicy": "HEURISTIC_PENDING_LONGITUDINAL_VALIDATION"
+      },
+      "currentPosition": {
+        "pattern": "PROPERTY_UNDERSTANDING_STRONGER_THAN_VISIBILITY",
+        "label": "stronger property representation than overall AI demand reach"
+      },
+      "primaryStrength": {
+        "key": "NUMBER_ONE_PROMINENCE",
+        "label": "#1 prominence"
+      },
+      "primaryConstraint": {
+        "key": "CONSIDERATION_CONSISTENCY",
+        "label": "Consideration consistency"
+      },
+      "narrative": "W Rome appears in 60% of monitored demand scenarios but in 26.3% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. The hotel ranks #1 in 37.5% of ranked responses where ranking is available. AI visibility is broader than consideration consistency: the hotel appears in 60% of monitored demand scenarios but only 26.3% of individual comparable AI responses. This is the baseline monitoring period for this property.",
+      "meta": {
+        "overall": "This is the baseline monitoring period for this property",
+        "primaryStrength": "#1 prominence",
+        "primaryConstraint": "Consideration consistency"
+      },
+      "safety": {
+        "FREE_FORM_UNGOVERNED_NARRATIVE": 0,
+        "UNSUPPORTED_CAUSAL_CLAIMS": 0,
+        "VAGUE_UNEXPLAINED_PHRASES": 0,
+        "MARKETING_STYLE_LANGUAGE": 0,
+        "USES_ACTUAL_VALUES": 1,
+        "UNDEFINED_JARGON": 0,
+        "DUPLICATE_EXECUTIVE_FINDING_WITHOUT_NEW_MEANING": 0,
+        "PLAIN_BUSINESS_MEANING_FIRST": 1
+      },
+      "ux": {
+        "version": "adp_executive_read_ux_v2",
+        "businessLanguageVersion": "adp_executive_read_business_language_v3",
+        "layoutVersion": "adp_executive_read_left_box_layout_v1",
+        "layout": "two_column_v2",
+        "PROPERTY_SPECIFIC_EXECUTIVE_COPY_CODE": 0,
+        "biggestStrength": {
+          "sectionLabel": "BIGGEST STRENGTH",
+          "headline": "Still developing",
+          "body": "W Rome does not yet show a single dominant strength with enough comparable evidence in this period."
+        },
+        "biggestConstraint": {
+          "sectionLabel": "BIGGEST CONSTRAINT",
+          "headline": "Not appearing consistently in AI answers",
+          "body": "The hotel appeared in at least one AI answer for 60% of the traveler needs we tested, but across all individual AI answers it appeared 26.3% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced."
+        },
+        "changeSinceLastRun": {
+          "sectionLabel": "CHANGE SINCE LAST COMPARABLE RUN",
+          "headline": "No comparable prior official period yet",
+          "body": "No comparable prior official monitoring period is available yet. This period can be evaluated on its own; change over time is not shown."
+        },
+        "executiveSummary": {
+          "title": "WHAT THE DATA SAYS",
+          "narrative": "W Rome appeared in at least one AI answer for 60% of the traveler needs we tested, showing that AI recognizes the hotel as relevant across a broad range of stays. Across every individual AI answer, however, W Rome appeared 26.3% of the time. In practical terms, the hotel fits many of the searches being made, but a traveler will not consistently see W Rome in the hotel options surfaced.\n\nAmong AI answers where hotel ranking could be measured, W Rome appeared in the Top 3 50% of the time, showing how prominently it is positioned when AI includes it.\n\nThe main opportunity is consistency: the hotel is already relevant across many traveler needs, so the next focus is understanding where it is absent from individual AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
+        },
+        "safety": {
+          "VAGUE_UNEXPLAINED_PHRASES": 0,
+          "MARKETING_STYLE_LANGUAGE": 0,
+          "UNSUPPORTED_CAUSAL_CLAIMS": 0,
+          "USES_ACTUAL_VALUES": 1,
+          "UNDEFINED_JARGON": 0,
+          "DUPLICATE_EXECUTIVE_FINDING_WITHOUT_NEW_MEANING": 0,
+          "PLAIN_BUSINESS_MEANING_FIRST": 1
+        }
+      },
+      "summary": {
+        "biggestStrength": {
+          "sectionLabel": "BIGGEST STRENGTH",
+          "headline": "Still developing",
+          "body": "W Rome does not yet show a single dominant strength with enough comparable evidence in this period."
+        },
+        "biggestConstraint": {
+          "sectionLabel": "BIGGEST CONSTRAINT",
+          "headline": "Not appearing consistently in AI answers",
+          "body": "The hotel appeared in at least one AI answer for 60% of the traveler needs we tested, but across all individual AI answers it appeared 26.3% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced.",
+          "primaryIssueId": null,
+          "family": "GENERIC"
+        },
+        "changeSinceLastComparableRun": {
+          "sectionLabel": "CHANGE SINCE LAST COMPARABLE RUN",
+          "headline": "No comparable prior official period yet",
+          "body": "No comparable prior official monitoring period is available yet. This period can be evaluated on its own; change over time is not shown."
+        }
+      },
+      "writeup": {
+        "title": "WHAT THE DATA SAYS",
+        "body": "W Rome appeared in at least one AI answer for 60% of the traveler needs we tested, showing that AI recognizes the hotel as relevant across a broad range of stays. Across every individual AI answer, however, W Rome appeared 26.3% of the time. In practical terms, the hotel fits many of the searches being made, but a traveler will not consistently see W Rome in the hotel options surfaced.\n\nAmong AI answers where hotel ranking could be measured, W Rome appeared in the Top 3 50% of the time, showing how prominently it is positioned when AI includes it.\n\nThe main opportunity is consistency: the hotel is already relevant across many traveler needs, so the next focus is understanding where it is absent from individual AI results. No comparable prior official monitoring period is available yet, so change over time is not shown."
+      },
+      "scanLayer": {
+        "version": "adp_executive_scan_layer_v1",
+        "contract": "ADP_EXECUTIVE_SUMMARY_HYBRID_V3_LAYOUT",
+        "primaryIssueId": null,
+        "biggestStrength": {
+          "sectionLabel": "BIGGEST STRENGTH",
+          "headline": "Still developing",
+          "body": "W Rome does not yet show a single dominant strength with enough comparable evidence in this period."
+        },
+        "biggestConstraint": {
+          "sectionLabel": "BIGGEST CONSTRAINT",
+          "headline": "Not appearing consistently in AI answers",
+          "body": "The hotel appeared in at least one AI answer for 60% of the traveler needs we tested, but across all individual AI answers it appeared 26.3% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced.",
+          "primaryIssueId": null,
+          "family": "GENERIC"
+        },
+        "changeSincePrior": {
+          "sectionLabel": "CHANGE SINCE LAST COMPARABLE RUN",
+          "headline": "No comparable prior official period yet",
+          "body": "No comparable prior official monitoring period is available yet. This period can be evaluated on its own; change over time is not shown."
+        }
+      },
+      "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+      "compositionContract": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+      "sections": {
+        "headline": "W Rome reaches many monitored demand scenarios, but consideration consistency is the binding constraint.",
+        "keyInsight": "Scenario Presence is 60% while AI Consideration is 26.3%. The hotel is therefore relevant across a wide share of monitored traveler needs, yet it is not carried into individual answers nearly as consistently. Softness concentrates in Adventure & Experiences versus stronger Business Travel. That contrast is more important than either metric alone.",
+        "whyItMatters": "Broad scenario reach without consistent answer-level inclusion means the hotel is known in the demand set but not reliably carried into traveler-facing answers. Management attention should start with consistency of representation, not with assuming the hotel needs an entirely new competitive set.",
+        "focusNow": "Focus first on consistency of representation for Adventure & Experiences. Confirm priority sources present the same use cases and attributes that appear in scenarios where the hotel is absent, and close gaps that repeatedly coincide with answer-level misses.",
+        "watch": null,
+        "whatToReview": "Compare high-presence versus low-consideration scenarios and inspect which sources and attributes appear when the hotel is missing. Use that evidence pack before changing channel strategy."
+      },
+      "numericAnchors": [
+        {
+          "metricId": "executiveMetrics.scenarioPresence.rate",
+          "displayValue": "60%",
+          "section": "KEY_INSIGHT",
+          "reason": "Contradiction pair with consideration",
+          "paritySource": "executiveMetrics.scenarioPresence.rate",
+          "removingWeakensInsight": true,
+          "anchorType": "contradiction_pair"
+        },
+        {
+          "metricId": "executiveMetrics.considerationRate.rate",
+          "displayValue": "26.3%",
+          "section": "KEY_INSIGHT",
+          "reason": "Establishes severity of consideration / entry",
+          "paritySource": "executiveMetrics.considerationRate.rate",
+          "removingWeakensInsight": true,
+          "anchorType": "severity_indicator"
+        }
+      ],
+      "primaryIssueId": "answer_level_inclusion_consistency",
+      "insightArchetype": "BREADTH_PROBLEM",
+      "evidenceTrace": [
+        {
+          "kind": "metric",
+          "ref": "executiveMetrics.scenarioPresence.rate",
+          "value": 60
+        },
+        {
+          "kind": "metric",
+          "ref": "executiveMetrics.considerationRate.rate",
+          "value": 26.3
+        },
+        {
+          "kind": "numericAnchor",
+          "ref": "executiveMetrics.scenarioPresence.rate",
+          "displayValue": "60%"
+        },
+        {
+          "kind": "numericAnchor",
+          "ref": "executiveMetrics.considerationRate.rate",
+          "displayValue": "26.3%"
+        },
+        {
+          "kind": "period",
+          "ref": "adp_period_adp_w_rome_20260925105322_1192cf"
+        }
+      ],
+      "qualityGates": {
+        "gates": {
+          "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE": {
+            "pass": true,
+            "detail": "keyInsight length"
+          },
+          "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY": {
+            "pass": true,
+            "detail": "property name referenced"
+          },
+          "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_KPI_ENUMERATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_CLEAR_NOT_CLEVER": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST": {
+            "pass": true,
+            "detail": null
+          }
+        },
+        "gateIds": [
+          "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE",
+          "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY",
+          "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE",
+          "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE",
+          "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY",
+          "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY",
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE",
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE",
+          "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS",
+          "ADP_EXECUTIVE_NO_KPI_ENUMERATION",
+          "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY",
+          "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE",
+          "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION",
+          "ADP_EXECUTIVE_CLEAR_NOT_CLEVER",
+          "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK",
+          "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE",
+          "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY",
+          "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY",
+          "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION",
+          "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST",
+          "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH",
+          "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY",
+          "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE",
+          "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY"
+        ],
+        "claimDiscipline": {
+          "unsupportedCausalImplication": 0,
+          "overstated": 0,
+          "pass": true
+        },
+        "wordCount": 171,
+        "allRequiredPass": true,
+        "failed": []
+      },
+      "sourceSnapshotHash": "f8f1ab7591ba59d4",
+      "compositionHash": "4c72c5da2873a4ab",
+      "compositionV3": {
+        "ok": true,
+        "contract": "ADP_EXECUTIVE_READ_V3",
+        "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+        "compositionContract": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+        "generatedAt": "2026-09-25T11:05:23.352Z",
+        "propertyId": "adp_w_rome",
+        "propertyName": "W Rome",
+        "periodId": "adp_period_adp_w_rome_20260925105322_1192cf",
+        "primaryIssueId": "answer_level_inclusion_consistency",
+        "insightArchetype": "BREADTH_PROBLEM",
+        "constraintClass": "CONSISTENCY",
+        "sections": {
+          "headline": "W Rome reaches many monitored demand scenarios, but consideration consistency is the binding constraint.",
+          "keyInsight": "Scenario Presence is 60% while AI Consideration is 26.3%. The hotel is therefore relevant across a wide share of monitored traveler needs, yet it is not carried into individual answers nearly as consistently. Softness concentrates in Adventure & Experiences versus stronger Business Travel. That contrast is more important than either metric alone.",
+          "whyItMatters": "Broad scenario reach without consistent answer-level inclusion means the hotel is known in the demand set but not reliably carried into traveler-facing answers. Management attention should start with consistency of representation, not with assuming the hotel needs an entirely new competitive set.",
+          "focusNow": "Focus first on consistency of representation for Adventure & Experiences. Confirm priority sources present the same use cases and attributes that appear in scenarios where the hotel is absent, and close gaps that repeatedly coincide with answer-level misses.",
+          "watch": null,
+          "whatToReview": "Compare high-presence versus low-consideration scenarios and inspect which sources and attributes appear when the hotel is missing. Use that evidence pack before changing channel strategy."
+        },
+        "numericAnchors": [
+          {
+            "metricId": "executiveMetrics.scenarioPresence.rate",
+            "displayValue": "60%",
+            "section": "KEY_INSIGHT",
+            "reason": "Contradiction pair with consideration",
+            "paritySource": "executiveMetrics.scenarioPresence.rate",
+            "removingWeakensInsight": true,
+            "anchorType": "contradiction_pair"
+          },
+          {
+            "metricId": "executiveMetrics.considerationRate.rate",
+            "displayValue": "26.3%",
+            "section": "KEY_INSIGHT",
+            "reason": "Establishes severity of consideration / entry",
+            "paritySource": "executiveMetrics.considerationRate.rate",
+            "removingWeakensInsight": true,
+            "anchorType": "severity_indicator"
+          }
+        ],
+        "evidenceTrace": [
+          {
+            "kind": "metric",
+            "ref": "executiveMetrics.scenarioPresence.rate",
+            "value": 60
+          },
+          {
+            "kind": "metric",
+            "ref": "executiveMetrics.considerationRate.rate",
+            "value": 26.3
+          },
+          {
+            "kind": "numericAnchor",
+            "ref": "executiveMetrics.scenarioPresence.rate",
+            "displayValue": "60%"
+          },
+          {
+            "kind": "numericAnchor",
+            "ref": "executiveMetrics.considerationRate.rate",
+            "displayValue": "26.3%"
+          },
+          {
+            "kind": "period",
+            "ref": "adp_period_adp_w_rome_20260925105322_1192cf"
+          }
+        ],
+        "qualityGates": {
+          "gates": {
+            "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE": {
+              "pass": true,
+              "detail": "keyInsight length"
+            },
+            "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY": {
+              "pass": true,
+              "detail": "property name referenced"
+            },
+            "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_KPI_ENUMERATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_CLEAR_NOT_CLEVER": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST": {
+              "pass": true,
+              "detail": null
+            }
+          },
+          "gateIds": [
+            "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE",
+            "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY",
+            "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE",
+            "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE",
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY",
+            "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY",
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE",
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE",
+            "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS",
+            "ADP_EXECUTIVE_NO_KPI_ENUMERATION",
+            "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY",
+            "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE",
+            "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION",
+            "ADP_EXECUTIVE_CLEAR_NOT_CLEVER",
+            "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK",
+            "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE",
+            "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY",
+            "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY",
+            "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION",
+            "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST",
+            "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH",
+            "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY",
+            "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE",
+            "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY"
+          ],
+          "claimDiscipline": {
+            "unsupportedCausalImplication": 0,
+            "overstated": 0,
+            "pass": true
+          },
+          "wordCount": 171,
+          "allRequiredPass": true,
+          "failed": []
+        },
+        "sourceSnapshotHash": "f8f1ab7591ba59d4",
+        "compositionHash": "4c72c5da2873a4ab",
+        "activated": true,
+        "customerFacingDefault": true,
+        "zeroCodePath": true,
+        "usedHardcodedMap": false,
+        "historicalImmutability": {
+          "enforced": true,
+          "policy": {
+            "rule": "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY",
+            "previouslyIssuedReports": "IMMUTABLE_PRIOR_COMPOSITION",
+            "nonDistributedCurrentReport": "MAY_RECEIVE_V3_ONLY_VIA_NEW_IMMUTABLE_EDITION",
+            "futureReports": "V3_DEFAULT_ONLY_AFTER_ACTIVATION",
+            "silentInPlaceMutation": "PROHIBITED",
+            "activationRequiredForCustomerDefault": true
+          },
+          "writePolicy": {
+            "allowed": true,
+            "mode": "CUSTOMER_DEFAULT_V3",
+            "reason": "ACTIVATED",
+            "policy": {
+              "rule": "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY",
+              "previouslyIssuedReports": "IMMUTABLE_PRIOR_COMPOSITION",
+              "nonDistributedCurrentReport": "MAY_RECEIVE_V3_ONLY_VIA_NEW_IMMUTABLE_EDITION",
+              "futureReports": "V3_DEFAULT_ONLY_AFTER_ACTIVATION",
+              "silentInPlaceMutation": "PROHIBITED",
+              "activationRequiredForCustomerDefault": true
+            },
+            "enforced": true,
+            "customerDefault": true
+          }
+        },
+        "wordCount": 171,
+        "watchOmitted": true,
+        "candidates": [
+          {
+            "candidateId": "cand_breadth_sp_vs_consideration",
+            "archetype": "BREADTH_PROBLEM",
+            "priorityScore": 1.008,
+            "summary": "Scenario Presence 60% versus AI Consideration 26.3% — broad reach with weaker response-level inclusion."
+          },
+          {
+            "candidateId": "cand_rank_metrics_supporting_diagnostic",
+            "archetype": "OTHER_EVIDENCE_BACKED",
+            "priorityScore": 0.33299999999999996,
+            "summary": "Top-3 / #1 metrics are supporting diagnostic only (rank-eligible n=8)."
+          },
+          {
+            "candidateId": "cand_competitor_present_gaps",
+            "archetype": "COMPETITIVE_DISPLACEMENT",
+            "priorityScore": 0.7020000000000001,
+            "summary": "Competitors appear in a material share of scenarios where the hotel is absent (90%)."
+          },
+          {
+            "candidateId": "cand_reality_gap_full_service",
+            "archetype": "REALITY_DISCONNECT",
+            "priorityScore": 0.906,
+            "summary": "Full-Service Hotel is recognized in only 0% of monitored answers."
+          },
+          {
+            "candidateId": "cand_territory_spread",
+            "archetype": "CONSISTENCY_PROBLEM",
+            "priorityScore": 0.7974000000000001,
+            "summary": "Territory presence ranges from 0% (Adventure & Experiences) to 60% (Business Travel)."
+          }
+        ],
+        "selectionMeta": {
+          "rules": [
+            "ADP_EXECUTIVE_READ_INPUT_V3",
+            "ADP_EXECUTIVE_INSIGHT_CANDIDATE_GENERATION_V3",
+            "ADP_EXECUTIVE_INSIGHT_PRIORITY_V3",
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY"
+          ],
+          "supportingCandidateIds": [
+            "cand_territory_spread"
+          ]
+        },
+        "doctrine": [
+          "METHODOLOGY_IS_GOVERNED; QUALITY_CONTROLS_LEARN.",
+          "EXECUTIVE_INSIGHT_LEARNS_INTERPRETATION; MEASUREMENT_REMAINS_GOVERNED."
+        ],
+        "methodologyChanged": false,
+        "rendererViewModel": {
+          "ok": true,
+          "contract": "ADP_EXECUTIVE_READ_RENDERER_CONTRACT_V3",
+          "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+          "activated": true,
+          "primaryIssueId": "answer_level_inclusion_consistency",
+          "insightArchetype": "BREADTH_PROBLEM",
+          "sections": [
+            {
+              "key": "headline",
+              "label": "Headline",
+              "text": "W Rome reaches many monitored demand scenarios, but consideration consistency is the binding constraint.",
+              "anchors": []
+            },
+            {
+              "key": "keyInsight",
+              "label": "Key Insight",
+              "text": "Scenario Presence is 60% while AI Consideration is 26.3%. The hotel is therefore relevant across a wide share of monitored traveler needs, yet it is not carried into individual answers nearly as consistently. Softness concentrates in Adventure & Experiences versus stronger Business Travel. That contrast is more important than either metric alone.",
+              "anchors": [
+                {
+                  "metricId": "executiveMetrics.scenarioPresence.rate",
+                  "displayValue": "60%",
+                  "section": "KEY_INSIGHT",
+                  "reason": "Contradiction pair with consideration",
+                  "paritySource": "executiveMetrics.scenarioPresence.rate",
+                  "removingWeakensInsight": true,
+                  "anchorType": "contradiction_pair"
+                },
+                {
+                  "metricId": "executiveMetrics.considerationRate.rate",
+                  "displayValue": "26.3%",
+                  "section": "KEY_INSIGHT",
+                  "reason": "Establishes severity of consideration / entry",
+                  "paritySource": "executiveMetrics.considerationRate.rate",
+                  "removingWeakensInsight": true,
+                  "anchorType": "severity_indicator"
+                }
+              ]
+            },
+            {
+              "key": "whyItMatters",
+              "label": "Why It Matters",
+              "text": "Broad scenario reach without consistent answer-level inclusion means the hotel is known in the demand set but not reliably carried into traveler-facing answers. Management attention should start with consistency of representation, not with assuming the hotel needs an entirely new competitive set.",
+              "anchors": []
+            },
+            {
+              "key": "focusNow",
+              "label": "Focus Now",
+              "text": "Focus first on consistency of representation for Adventure & Experiences. Confirm priority sources present the same use cases and attributes that appear in scenarios where the hotel is absent, and close gaps that repeatedly coincide with answer-level misses.",
+              "anchors": []
+            },
+            {
+              "key": "whatToReview",
+              "label": "What to Review",
+              "text": "Compare high-presence versus low-consideration scenarios and inspect which sources and attributes appear when the hotel is missing. Use that evidence pack before changing channel strategy.",
+              "anchors": []
+            }
+          ],
+          "flattenedProseForLegacy": "W Rome reaches many monitored demand scenarios, but consideration consistency is the binding constraint.\n\nScenario Presence is 60% while AI Consideration is 26.3%. The hotel is therefore relevant across a wide share of monitored traveler needs, yet it is not carried into individual answers nearly as consistently. Softness concentrates in Adventure & Experiences versus stronger Business Travel. That contrast is more important than either metric alone.\n\nBroad scenario reach without consistent answer-level inclusion means the hotel is known in the demand set but not reliably carried into traveler-facing answers. Management attention should start with consistency of representation, not with assuming the hotel needs an entirely new competitive set.\n\nFocus first on consistency of representation for Adventure & Experiences. Confirm priority sources present the same use cases and attributes that appear in scenarios where the hotel is absent, and close gaps that repeatedly coincide with answer-level misses.\n\nCompare high-presence versus low-consideration scenarios and inspect which sources and attributes appear when the hotel is missing. Use that evidence pack before changing channel strategy."
+        }
+      }
+    },
+    "metricScopeLabels": {
+      "version": "adp_metric_scope_labels_v1",
+      "subjectObservationGrain": {
+        "productLabel": "AI Consideration",
+        "technicalLabel": "AI Consideration Rate",
+        "grain": "property × scenario × provider × period (comparable observations)",
+        "definition": "Share of comparable monitored AI responses where the subject hotel appears."
+      },
+      "subjectScenarioGrain": {
+        "productLabel": "AI Scenario Presence",
+        "technicalLabel": "Demand Scenario Coverage",
+        "grain": "property × scenario (aggregates providers)",
+        "definition": "Share of monitored demand scenarios where the subject hotel appears on at least one comparable provider."
+      },
+      "competitorScenarioAppearance": {
+        "productLabel": "Scenario Appearance",
+        "technicalLabel": "Competitor Scenario Appearance",
+        "grain": "non-subject hotel × scenario (within subject hotel report)",
+        "definition": "Share of monitored scenarios in this report where a competitor hotel appears. Not the same metric as that hotel's own AI Consideration.",
+        "forbiddenClientLabels": [
+          "Presence",
+          "AI Presence"
+        ]
+      },
+      "competitorObservationAppearance": {
+        "productLabel": "Observation Appearance",
+        "technicalLabel": "Competitor Observation Appearance",
+        "grain": "non-subject hotel × observation (within subject hotel report)",
+        "definition": "Share of comparable monitored answers in this report where a competitor hotel appears. Not interchangeable with subject AI Consideration unless same-scope certified."
+      },
+      "scopeRule": "SAME_SCOPE_SAME_CANONICAL_METRIC",
+      "ambiguityRule": "ADP_METRIC_SCOPE_UNAMBIGUOUS"
+    },
+    "trends": [
+      {
+        "periodId": "adp_period_adp_w_rome_20260925105322_1192cf",
+        "date": "2026-09-25T10:53:22.644Z",
+        "propertyRealityCoverage": 50,
+        "scenarioPresenceRate": 60,
+        "considerationRate": 26.3,
+        "providerCount": 4,
+        "observationCount": 80,
+        "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1",
+        "role": "current"
+      }
+    ]
+  }
+}
