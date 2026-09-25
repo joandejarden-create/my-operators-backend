@@ -1,10 +1,10 @@
 {
   "ok": true,
-  "publishedAt": "2026-09-25T11:05:23.684Z",
+  "publishedAt": "2026-09-25T11:38:32.978Z",
   "productVersion": "ai_demand_positioning_v1",
   "propertyId": "adp_w_rome",
   "periodId": "adp_period_adp_w_rome_20260925105322_1192cf",
-  "censusRecordId": null,
+  "censusRecordId": "rece0or38cxo3Fymb",
   "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1",
   "reportEdition": "ORIGINAL_V1",
   "payload": {
@@ -86,9 +86,7 @@
         "territory": "Business Travel",
         "status": "BENCHMARK_DEVELOPING",
         "blockers": [
-          "scenario_density",
-          "zero_denominator",
-          "peer_identity"
+          "scenario_density"
         ],
         "index": null,
         "myRate": 60,
@@ -126,8 +124,7 @@
           "scenario_density",
           "provider_scopes_lt_3",
           "thin_observations",
-          "zero_denominator",
-          "peer_identity"
+          "zero_denominator"
         ],
         "index": null,
         "myRate": null,
@@ -160,8 +157,7 @@
           "scenario_density",
           "provider_scopes_lt_3",
           "thin_observations",
-          "zero_denominator",
-          "peer_identity"
+          "zero_denominator"
         ],
         "index": null,
         "myRate": null,
@@ -194,8 +190,7 @@
           "scenario_density",
           "provider_scopes_lt_3",
           "thin_observations",
-          "zero_denominator",
-          "peer_identity"
+          "zero_denominator"
         ],
         "index": null,
         "myRate": null,
@@ -228,8 +223,7 @@
           "scenario_density",
           "provider_scopes_lt_3",
           "thin_observations",
-          "zero_denominator",
-          "peer_identity"
+          "zero_denominator"
         ],
         "index": null,
         "myRate": null,
@@ -262,8 +256,7 @@
           "scenario_density",
           "provider_scopes_lt_3",
           "thin_observations",
-          "zero_denominator",
-          "peer_identity"
+          "zero_denominator"
         ],
         "index": null,
         "myRate": null,
@@ -297,8 +290,7 @@
           "scenario_density",
           "provider_scopes_lt_3",
           "thin_observations",
-          "zero_denominator",
-          "peer_identity"
+          "zero_denominator"
         ],
         "index": null,
         "myRate": null,
@@ -360,7 +352,43 @@
     "lostDemand": {
       "totalLost": 8,
       "highRelevanceLost": 0,
-      "displacement": [],
+      "displacement": [
+        {
+          "entityId": "peer_ind_hotel_de_russie_rome",
+          "name": "Hotel de Russie, a Rocco Forte Hotel",
+          "displacementCount": 6,
+          "evidenceAvailable": true,
+          "supportSetVersion": "adp_canonical_displacement_support_set_v1"
+        },
+        {
+          "entityId": "peer_ind_hotel_eden_rome",
+          "name": "Hotel Eden, a Dorchester Collection Hotel",
+          "displacementCount": 6,
+          "evidenceAvailable": true,
+          "supportSetVersion": "adp_canonical_displacement_support_set_v1"
+        },
+        {
+          "entityId": "six_senses_rome",
+          "name": "Six Senses Rome",
+          "displacementCount": 5,
+          "evidenceAvailable": true,
+          "supportSetVersion": "adp_canonical_displacement_support_set_v1"
+        },
+        {
+          "entityId": "peer_bonvoy_st_regis_rome",
+          "name": "The St. Regis Rome",
+          "displacementCount": 4,
+          "evidenceAvailable": true,
+          "supportSetVersion": "adp_canonical_displacement_support_set_v1"
+        },
+        {
+          "entityId": "bulgari_hotel_roma",
+          "name": "Bulgari Hotel Roma",
+          "displacementCount": 3,
+          "evidenceAvailable": true,
+          "supportSetVersion": "adp_canonical_displacement_support_set_v1"
+        }
+      ],
       "topReasons": [
         {
           "reason": "High competitor density. Stronger authority signals needed",
@@ -377,50 +405,97 @@
       ],
       "scenarios": [
         {
+          "intent": "group_meeting",
+          "competitorsPresent": [
+            "The First Roma Arte",
+            "Hotel de Russie, a Rocco Forte Hotel",
+            "Hotel Vilòn",
+            "Sofitel Rome Villa Borghese",
+            "Six Senses Rome"
+          ],
+          "likelyReason": "Meeting/event capability may be underrepresented in AI sources",
+          "relevance": "MEDIUM"
+        },
+        {
           "intent": "business",
-          "competitorsPresent": [],
+          "competitorsPresent": [
+            "Baglioni Hotel Regina",
+            "InterContinental Rome Ambasciatori Palace",
+            "Hotel Eden, a Dorchester Collection Hotel",
+            "Hotel de Russie, a Rocco Forte Hotel",
+            "The St. Regis Rome"
+          ],
           "likelyReason": "Property may not be positioned as luxury tier by AI",
           "relevance": "LOW"
         },
         {
           "intent": "couples",
-          "competitorsPresent": [],
+          "competitorsPresent": [
+            "Hotel de Russie, a Rocco Forte Hotel",
+            "Hotel Eden, a Dorchester Collection Hotel",
+            "J.K. Place Roma",
+            "Six Senses Rome",
+            "Hotel Vilòn"
+          ],
           "likelyReason": "Property may not be positioned as luxury tier by AI",
           "relevance": "LOW"
         },
         {
           "intent": "celebration",
-          "competitorsPresent": [],
+          "competitorsPresent": [
+            "Rome Cavalieri, A Waldorf Astoria Hotel",
+            "The St. Regis Rome",
+            "Hotel de Russie, a Rocco Forte Hotel",
+            "Hotel Eden, a Dorchester Collection Hotel",
+            "Bulgari Hotel Roma"
+          ],
           "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "LOW"
         },
         {
           "intent": "family",
-          "competitorsPresent": [],
+          "competitorsPresent": [
+            "Rome Cavalieri, A Waldorf Astoria Hotel",
+            "Hotel de Russie, a Rocco Forte Hotel",
+            "The St. Regis Rome",
+            "Grand Hotel Via Veneto"
+          ],
           "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "LOW"
         },
         {
           "intent": "wellness",
-          "competitorsPresent": [],
+          "competitorsPresent": [
+            "Rome Marriott Grand Hotel Flora",
+            "Baglioni Hotel Regina",
+            "Hotel Eden, a Dorchester Collection Hotel",
+            "Bulgari Hotel Roma",
+            "Hotel de la Ville"
+          ],
           "likelyReason": "Property may not be positioned as luxury tier by AI",
           "relevance": "LOW"
         },
         {
           "intent": "adventure",
-          "competitorsPresent": [],
+          "competitorsPresent": [
+            "The St. Regis Rome",
+            "Hotel de Russie, a Rocco Forte Hotel",
+            "Hotel Hassler Roma",
+            "Hotel Eden, a Dorchester Collection Hotel",
+            "Six Senses Rome"
+          ],
           "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "LOW"
         },
         {
-          "intent": "group_meeting",
-          "competitorsPresent": [],
-          "likelyReason": "Meeting/event capability may be underrepresented in AI sources",
-          "relevance": "LOW"
-        },
-        {
           "intent": "leisure",
-          "competitorsPresent": [],
+          "competitorsPresent": [
+            "Rome Marriott Grand Hotel Flora",
+            "Sina Bernini Bristol",
+            "Hotel Raphael",
+            "Hotel Eden, a Dorchester Collection Hotel",
+            "Sofitel Rome Villa Borghese"
+          ],
           "likelyReason": "High competitor density. Stronger authority signals needed",
           "relevance": "LOW"
         }
@@ -428,30 +503,172 @@
     },
     "competitiveSet": {
       "declaredCount": 5,
-      "observedCount": 0,
-      "overlapRate": 0,
-      "surprises": [],
-      "observed": [],
-      "declaredButNotObserved": [
-        "The St. Regis Rome",
-        "The Westin Excelsior, Rome",
-        "The Rome EDITION",
-        "Hotel Eden, a Dorchester Collection Hotel",
-        "Hotel de Russie, a Rocco Forte Hotel"
-      ]
+      "observedCount": 22,
+      "overlapRate": 100,
+      "surprises": [
+        {
+          "name": "Baglioni Hotel Regina",
+          "mentions": 20,
+          "scenarioCount": 6,
+          "entityId": "baglioni_hotel_regina_rome",
+          "isCore": false
+        },
+        {
+          "name": "Rome Marriott Grand Hotel Flora",
+          "mentions": 20,
+          "scenarioCount": 4,
+          "entityId": "rome_marriott_grand_hotel_flora",
+          "isCore": false
+        },
+        {
+          "name": "J.K. Place Roma",
+          "mentions": 14,
+          "scenarioCount": 9,
+          "entityId": "jk_place_roma",
+          "isCore": false
+        },
+        {
+          "name": "Six Senses Rome",
+          "mentions": 13,
+          "scenarioCount": 11,
+          "entityId": "six_senses_rome",
+          "isCore": false
+        },
+        {
+          "name": "Bulgari Hotel Roma",
+          "mentions": 12,
+          "scenarioCount": 6,
+          "entityId": "bulgari_hotel_roma",
+          "isCore": false
+        }
+      ],
+      "observed": [
+        {
+          "name": "Hotel de Russie, a Rocco Forte Hotel",
+          "mentions": 40,
+          "scenarioCount": 15,
+          "entityId": "peer_ind_hotel_de_russie_rome",
+          "isCore": true
+        },
+        {
+          "name": "Hotel Eden, a Dorchester Collection Hotel",
+          "mentions": 36,
+          "scenarioCount": 12,
+          "entityId": "peer_ind_hotel_eden_rome",
+          "isCore": true
+        },
+        {
+          "name": "Baglioni Hotel Regina",
+          "mentions": 20,
+          "scenarioCount": 6,
+          "entityId": "baglioni_hotel_regina_rome",
+          "isCore": false
+        },
+        {
+          "name": "Rome Marriott Grand Hotel Flora",
+          "mentions": 20,
+          "scenarioCount": 4,
+          "entityId": "rome_marriott_grand_hotel_flora",
+          "isCore": false
+        },
+        {
+          "name": "The St. Regis Rome",
+          "mentions": 16,
+          "scenarioCount": 9,
+          "entityId": "peer_bonvoy_st_regis_rome",
+          "isCore": true
+        },
+        {
+          "name": "J.K. Place Roma",
+          "mentions": 14,
+          "scenarioCount": 9,
+          "entityId": "jk_place_roma",
+          "isCore": false
+        },
+        {
+          "name": "Six Senses Rome",
+          "mentions": 13,
+          "scenarioCount": 11,
+          "entityId": "six_senses_rome",
+          "isCore": false
+        },
+        {
+          "name": "Bulgari Hotel Roma",
+          "mentions": 12,
+          "scenarioCount": 6,
+          "entityId": "bulgari_hotel_roma",
+          "isCore": false
+        },
+        {
+          "name": "Rome Cavalieri, A Waldorf Astoria Hotel",
+          "mentions": 11,
+          "scenarioCount": 8,
+          "entityId": "rome_cavalieri_waldorf",
+          "isCore": false
+        },
+        {
+          "name": "Sofitel Rome Villa Borghese",
+          "mentions": 10,
+          "scenarioCount": 5,
+          "entityId": "sofitel_rome_villa_borghese",
+          "isCore": false
+        }
+      ],
+      "declaredButNotObserved": [],
+      "topObservedAlternative": {
+        "entityId": "peer_ind_hotel_de_russie_rome",
+        "name": "Hotel de Russie, a Rocco Forte Hotel",
+        "appearances": 34,
+        "aiPresencePct": 42.5,
+        "aiPresenceRate": 0.425,
+        "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+        "mentions": 34
+      },
+      "topObservedAlternativeMeta": {
+        "version": "adp_top_observed_ai_alternative_overall_presence_v1",
+        "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+        "tiedMaxSet": [
+          {
+            "entityId": "peer_ind_hotel_de_russie_rome",
+            "name": "Hotel de Russie, a Rocco Forte Hotel",
+            "appearances": 34
+          }
+        ]
+      }
     },
     "realityGap": {
-      "gapScore": 50,
-      "display": "50.0%",
-      "totalAttributes": 2,
-      "recognizedCount": 1,
-      "gapCount": 1,
+      "gapScore": 42.9,
+      "display": "42.9%",
+      "totalAttributes": 7,
+      "recognizedCount": 4,
+      "gapCount": 3,
       "recognized": [
         {
           "attribute": "marriott_bonvoy",
           "label": "Marriott Bonvoy Loyalty",
           "recognitionRate": 52.4,
           "count": 11,
+          "total": 21
+        },
+        {
+          "attribute": "luxury",
+          "label": "Luxury Positioning",
+          "recognitionRate": 90.5,
+          "count": 19,
+          "total": 21
+        },
+        {
+          "attribute": "design_forward",
+          "label": "Design-Forward Interiors",
+          "recognitionRate": 81,
+          "count": 17,
+          "total": 21
+        },
+        {
+          "attribute": "meeting_space",
+          "label": "Meeting & Event Space",
+          "recognitionRate": 42.9,
+          "count": 9,
           "total": 21
         }
       ],
@@ -464,14 +681,54 @@
           "count": 0,
           "total": 21,
           "severity": "HIGH"
+        },
+        {
+          "attribute": "urban_luxury",
+          "label": "Urban Luxury",
+          "priority": "medium",
+          "recognitionRate": 0,
+          "count": 0,
+          "total": 21,
+          "severity": "HIGH"
+        },
+        {
+          "attribute": "urban_lifestyle",
+          "label": "Urban Lifestyle Hotel",
+          "priority": "medium",
+          "recognitionRate": 33.3,
+          "count": 7,
+          "total": 21,
+          "severity": "LOW"
         }
       ],
       "totalPropertyMentions": 21
     },
     "whiteSpace": {
-      "totalOpportunities": 0,
+      "totalOpportunities": 1,
       "highOpportunities": 0,
-      "opportunities": []
+      "opportunities": [
+        {
+          "intent": "group_meeting",
+          "ownerIntentSummary": "Compare boutique meeting hotels in Rome for a 40-person comp...",
+          "opportunityScore": "MEDIUM",
+          "currentOwnership": "contested",
+          "rationale": "Competitor presence is inconsistent. Opportunity to establish authority. Your 18,899 sq ft event space is relevant.",
+          "topCompetitors": [
+            {
+              "name": "hotel de russie",
+              "count": 2
+            },
+            {
+              "name": "Sofitel Rome Villa Borghese",
+              "count": 2
+            },
+            {
+              "name": "The First Roma Arte",
+              "count": 1
+            }
+          ]
+        }
+      ]
     },
     "brief": {
       "items": [
@@ -480,11 +737,15 @@
           "text": "Your property captured 60.0% of relevant AI demand scenarios this period."
         },
         {
+          "type": "insight",
+          "text": "5 competitor(s) consistently appear in AI recommendations that are not in your declared comp set."
+        },
+        {
           "type": "gap",
-          "text": "AI Reality Gap: 50.0%. AI misses or misrepresents 1 of your property's key attributes."
+          "text": "AI Reality Gap: 42.9%. AI misses or misrepresents 3 of your property's key attributes."
         }
       ],
-      "generatedAt": "2026-09-25T11:05:23.186Z"
+      "generatedAt": "2026-09-25T11:38:30.201Z"
     },
     "actions": [
       {
@@ -494,6 +755,14 @@
         "description": "AI currently misses or underrepresents your full-service hotel. Review third-party content and authority signals for this attribute before estimating impact.",
         "expectedImpact": null,
         "impactNote": "Review evidence for this attribute gap before estimating scenario impact."
+      },
+      {
+        "priority": "MEDIUM",
+        "category": "DISPLACEMENT",
+        "title": "Address displacement by Hotel de Russie, a Rocco Forte Hotel",
+        "description": "Hotel de Russie, a Rocco Forte Hotel appears in 6 scenarios where you are absent. Analyze their positioning strengths and differentiate.",
+        "expectedImpact": null,
+        "impactNote": "Displacement count is observational; expected reduction is not certified."
       }
     ],
     "evidence": {
@@ -714,7 +983,7 @@
       },
       "competitorPresentScenarios": {
         "scenarioCount": 18,
-        "observationCount": 58
+        "observationCount": 59
       }
     },
     "competitiveRankingByTerritory": {
@@ -730,6 +999,54 @@
           "baseObservedRows": 10,
           "displayRows": [
             {
+              "entityId": "peer_ind_hotel_de_russie_rome",
+              "name": "Hotel de Russie, a Rocco Forte Hotel",
+              "isSubject": false,
+              "appearances": 34,
+              "aiPresenceRate": 0.425,
+              "aiPresencePct": 42.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Leisure Travel",
+              "topDemandTerritoryIntent": "leisure",
+              "displacement": {
+                "count": 6,
+                "evidenceAvailable": true,
+                "competitorId": "peer_ind_hotel_de_russie_rome",
+                "supportingObservationCount": 6,
+                "drawerItemCount": 6
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_eden_rome",
+              "name": "Hotel Eden, a Dorchester Collection Hotel",
+              "isSubject": false,
+              "appearances": 27,
+              "aiPresenceRate": 0.3375,
+              "aiPresencePct": 33.8,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 2,
+              "displayRank": 2,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Leisure Travel",
+              "topDemandTerritoryIntent": "leisure",
+              "displacement": {
+                "count": 6,
+                "evidenceAvailable": true,
+                "competitorId": "peer_ind_hotel_eden_rome",
+                "supportingObservationCount": 6,
+                "drawerItemCount": 6
+              }
+            },
+            {
               "entityId": "__subject__",
               "name": "W Rome",
               "isSubject": true,
@@ -738,8 +1055,8 @@
               "aiPresencePct": 26.3,
               "relationship": "SUBJECT",
               "isCore": false,
-              "observedRank": 1,
-              "displayRank": 1,
+              "observedRank": 3,
+              "displayRank": 3,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
@@ -749,6 +1066,174 @@
                 "count": 0,
                 "evidenceAvailable": false,
                 "competitorId": null
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_st_regis_rome",
+              "name": "The St. Regis Rome",
+              "isSubject": false,
+              "appearances": 16,
+              "aiPresenceRate": 0.2,
+              "aiPresencePct": 20,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Business Travel",
+              "topDemandTerritoryIntent": "business",
+              "displacement": {
+                "count": 4,
+                "evidenceAvailable": true,
+                "competitorId": "peer_bonvoy_st_regis_rome",
+                "supportingObservationCount": 4,
+                "drawerItemCount": 4
+              }
+            },
+            {
+              "entityId": "jk_place_roma",
+              "name": "J.K. Place Roma",
+              "isSubject": false,
+              "appearances": 14,
+              "aiPresenceRate": 0.175,
+              "aiPresencePct": 17.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Leisure Travel",
+              "topDemandTerritoryIntent": "leisure",
+              "displacement": {
+                "count": 3,
+                "evidenceAvailable": true,
+                "competitorId": "jk_place_roma",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
+              }
+            },
+            {
+              "entityId": "six_senses_rome",
+              "name": "Six Senses Rome",
+              "isSubject": false,
+              "appearances": 12,
+              "aiPresenceRate": 0.15,
+              "aiPresencePct": 15,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Leisure Travel",
+              "topDemandTerritoryIntent": "leisure",
+              "displacement": {
+                "count": 5,
+                "evidenceAvailable": true,
+                "competitorId": "six_senses_rome",
+                "supportingObservationCount": 5,
+                "drawerItemCount": 5
+              }
+            },
+            {
+              "entityId": "rome_cavalieri_waldorf",
+              "name": "Rome Cavalieri, A Waldorf Astoria Hotel",
+              "isSubject": false,
+              "appearances": 11,
+              "aiPresenceRate": 0.1375,
+              "aiPresencePct": 13.8,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Family Travel",
+              "topDemandTerritoryIntent": "family",
+              "displacement": {
+                "count": 3,
+                "evidenceAvailable": true,
+                "competitorId": "rome_cavalieri_waldorf",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
+              }
+            },
+            {
+              "entityId": "baglioni_hotel_regina_rome",
+              "name": "Baglioni Hotel Regina",
+              "isSubject": false,
+              "appearances": 9,
+              "aiPresenceRate": 0.1125,
+              "aiPresencePct": 11.3,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Business Travel",
+              "topDemandTerritoryIntent": "business",
+              "displacement": {
+                "count": 2,
+                "evidenceAvailable": true,
+                "competitorId": "baglioni_hotel_regina_rome",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_rome_edition",
+              "name": "The Rome EDITION",
+              "isSubject": false,
+              "appearances": 9,
+              "aiPresenceRate": 0.1125,
+              "aiPresencePct": 11.3,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 9,
+              "displayRank": 9,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Leisure Travel",
+              "topDemandTerritoryIntent": "leisure",
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "peer_bonvoy_rome_edition",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "intercontinental_rome_ambasadori",
+              "name": "InterContinental Rome Ambasciatori Palace",
+              "isSubject": false,
+              "appearances": 8,
+              "aiPresenceRate": 0.1,
+              "aiPresencePct": 10,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 10,
+              "displayRank": 10,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Business Travel",
+              "topDemandTerritoryIntent": "business",
+              "displacement": {
+                "count": 2,
+                "evidenceAvailable": true,
+                "competitorId": "intercontinental_rome_ambasadori",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
               }
             }
           ],
@@ -801,20 +1286,239 @@
               }
             },
             {
-              "entityId": "peer_bonvoy_rome_edition",
-              "name": "Peer Bonvoy Rome Edition",
+              "entityId": "peer_bonvoy_st_regis_rome",
+              "name": "The St. Regis Rome",
               "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
+              "appearances": 8,
+              "aiPresenceRate": 0.4,
+              "aiPresencePct": 40,
               "relationship": "CORE",
               "isCore": true,
+              "observedRank": 2,
+              "displayRank": 2,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "peer_bonvoy_st_regis_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_eden_rome",
+              "name": "Hotel Eden, a Dorchester Collection Hotel",
+              "isSubject": false,
+              "appearances": 5,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "peer_ind_hotel_eden_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "intercontinental_rome_ambasadori",
+              "name": "InterContinental Rome Ambasciatori Palace",
+              "isSubject": false,
+              "appearances": 4,
+              "aiPresenceRate": 0.2,
+              "aiPresencePct": 20,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "intercontinental_rome_ambasadori",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_de_russie_rome",
+              "name": "Hotel de Russie, a Rocco Forte Hotel",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.15,
+              "aiPresencePct": 15,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "peer_ind_hotel_de_russie_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "rome_marriott_grand_hotel_flora",
+              "name": "Rome Marriott Grand Hotel Flora",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.15,
+              "aiPresencePct": 15,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "rome_marriott_grand_hotel_flora",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "sofitel_rome_villa_borghese",
+              "name": "Sofitel Rome Villa Borghese",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.15,
+              "aiPresencePct": 15,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "sofitel_rome_villa_borghese",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "baglioni_hotel_regina_rome",
+              "name": "Baglioni Hotel Regina",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.1,
+              "aiPresencePct": 10,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "baglioni_hotel_regina_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "nh_collection_roma_vittorio_veneto",
+              "name": "NH Collection Roma Vittorio Veneto",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.1,
+              "aiPresencePct": 10,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 9,
+              "displayRank": 9,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "nh_collection_roma_vittorio_veneto",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "sina_bernini_bristol_rome",
+              "name": "Sina Bernini Bristol",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.1,
+              "aiPresencePct": 10,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 10,
+              "displayRank": 10,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "sina_bernini_bristol_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_westin_excelsior_rome",
+              "name": "The Westin Excelsior, Rome",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.1,
+              "aiPresencePct": 10,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 11,
               "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
+              "displayRank": 11,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "peer_bonvoy_westin_excelsior_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_rome_edition",
+              "name": "The Rome EDITION",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.05,
+              "aiPresencePct": 5,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 15,
+              "isAppendedCore": true,
+              "displayRank": 15,
+              "status": null,
+              "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
@@ -822,82 +1526,13 @@
                 "supportingObservationCount": 0,
                 "drawerItemCount": 0
               }
-            },
-            {
-              "entityId": "peer_bonvoy_st_regis_rome",
-              "name": "Peer Bonvoy St Regis Rome",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "peer_bonvoy_st_regis_rome",
-                "supportingObservationCount": 0,
-                "drawerItemCount": 0
-              }
-            },
-            {
-              "entityId": "peer_bonvoy_westin_excelsior_rome",
-              "name": "Peer Bonvoy Westin Excelsior Rome",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "peer_bonvoy_westin_excelsior_rome",
-                "supportingObservationCount": 0,
-                "drawerItemCount": 0
-              }
-            },
-            {
-              "entityId": "peer_ind_hotel_eden_rome",
-              "name": "Peer Ind Hotel Eden Rome",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "peer_ind_hotel_eden_rome",
-                "supportingObservationCount": 0,
-                "drawerItemCount": 0
-              }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 4,
-            "CORE_IN_TOP_10": 0,
-            "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 4,
+            "CORE_IN_TOP_10": 2,
+            "CORE_APPENDED": 2,
+            "CORE_ZERO_PRESENCE": 0,
             "IDENTIFIABLE_CORE_TOTAL": 4,
             "COUNT_MATCH": true
           },
@@ -923,6 +1558,116 @@
           "baseObservedRows": 10,
           "displayRows": [
             {
+              "entityId": "peer_ind_hotel_eden_rome",
+              "name": "Hotel Eden, a Dorchester Collection Hotel",
+              "isSubject": false,
+              "appearances": 8,
+              "aiPresenceRate": 0.5,
+              "aiPresencePct": 50,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "peer_ind_hotel_eden_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_de_russie_rome",
+              "name": "Hotel de Russie, a Rocco Forte Hotel",
+              "isSubject": false,
+              "appearances": 7,
+              "aiPresenceRate": 0.4375,
+              "aiPresencePct": 43.8,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 2,
+              "displayRank": 2,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_ind_hotel_de_russie_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "jk_place_roma",
+              "name": "J.K. Place Roma",
+              "isSubject": false,
+              "appearances": 4,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "jk_place_roma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "six_senses_rome",
+              "name": "Six Senses Rome",
+              "isSubject": false,
+              "appearances": 4,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "six_senses_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_rome_edition",
+              "name": "The Rome EDITION",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.1875,
+              "aiPresencePct": 18.8,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_bonvoy_rome_edition",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
               "entityId": "__subject__",
               "name": "W Rome",
               "isSubject": true,
@@ -931,8 +1676,8 @@
               "aiPresencePct": 18.8,
               "relationship": "SUBJECT",
               "isCore": false,
-              "observedRank": 1,
-              "displayRank": 1,
+              "observedRank": 6,
+              "displayRank": 6,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
@@ -943,43 +1688,107 @@
               }
             },
             {
-              "entityId": "peer_bonvoy_rome_edition",
-              "name": "Peer Bonvoy Rome Edition",
+              "entityId": "bulgari_hotel_roma",
+              "name": "Bulgari Hotel Roma",
               "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
+              "appearances": 2,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
-                "competitorId": "peer_bonvoy_rome_edition",
+                "competitorId": "bulgari_hotel_roma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "hotel_splendide_royal_rome",
+              "name": "Hotel Splendide Royal",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "hotel_splendide_royal_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "hotel_vilon_rome",
+              "name": "Hotel Vilòn",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 9,
+              "displayRank": 9,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "hotel_vilon_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "rome_cavalieri_waldorf",
+              "name": "Rome Cavalieri, A Waldorf Astoria Hotel",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 10,
+              "displayRank": 10,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "rome_cavalieri_waldorf",
                 "supportingObservationCount": 0,
                 "drawerItemCount": 0
               }
             },
             {
               "entityId": "peer_bonvoy_st_regis_rome",
-              "name": "Peer Bonvoy St Regis Rome",
+              "name": "The St. Regis Rome",
               "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
+              "appearances": 1,
+              "aiPresenceRate": 0.0625,
+              "aiPresencePct": 6.3,
               "relationship": "CORE",
               "isCore": true,
+              "observedRank": 16,
               "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
+              "displayRank": 16,
+              "status": null,
+              "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
@@ -990,19 +1799,18 @@
             },
             {
               "entityId": "peer_bonvoy_westin_excelsior_rome",
-              "name": "Peer Bonvoy Westin Excelsior Rome",
+              "name": "The Westin Excelsior, Rome",
               "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
+              "appearances": 1,
+              "aiPresenceRate": 0.0625,
+              "aiPresencePct": 6.3,
               "relationship": "CORE",
               "isCore": true,
+              "observedRank": 17,
               "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
+              "displayRank": 17,
+              "status": null,
+              "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
@@ -1010,59 +1818,13 @@
                 "supportingObservationCount": 0,
                 "drawerItemCount": 0
               }
-            },
-            {
-              "entityId": "peer_ind_hotel_de_russie_rome",
-              "name": "Peer Ind Hotel De Russie Rome",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "peer_ind_hotel_de_russie_rome",
-                "supportingObservationCount": 0,
-                "drawerItemCount": 0
-              }
-            },
-            {
-              "entityId": "peer_ind_hotel_eden_rome",
-              "name": "Peer Ind Hotel Eden Rome",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "peer_ind_hotel_eden_rome",
-                "supportingObservationCount": 0,
-                "drawerItemCount": 0
-              }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 5,
-            "CORE_IN_TOP_10": 0,
-            "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 5,
+            "CORE_IN_TOP_10": 3,
+            "CORE_APPENDED": 2,
+            "CORE_ZERO_PRESENCE": 0,
             "IDENTIFIABLE_CORE_TOTAL": 5,
             "COUNT_MATCH": true
           },
@@ -1087,6 +1849,226 @@
           "baseObservedRows": 10,
           "displayRows": [
             {
+              "entityId": "peer_ind_hotel_eden_rome",
+              "name": "Hotel Eden, a Dorchester Collection Hotel",
+              "isSubject": false,
+              "appearances": 6,
+              "aiPresenceRate": 0.75,
+              "aiPresencePct": 75,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "peer_ind_hotel_eden_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_de_russie_rome",
+              "name": "Hotel de Russie, a Rocco Forte Hotel",
+              "isSubject": false,
+              "appearances": 5,
+              "aiPresenceRate": 0.625,
+              "aiPresencePct": 62.5,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 2,
+              "displayRank": 2,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "peer_ind_hotel_de_russie_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "jk_place_roma",
+              "name": "J.K. Place Roma",
+              "isSubject": false,
+              "appearances": 4,
+              "aiPresenceRate": 0.5,
+              "aiPresencePct": 50,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "jk_place_roma",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "baglioni_hotel_regina_rome",
+              "name": "Baglioni Hotel Regina",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "baglioni_hotel_regina_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "hotel_splendide_royal_rome",
+              "name": "Hotel Splendide Royal",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "hotel_splendide_royal_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "hotel_vilon_rome",
+              "name": "Hotel Vilòn",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "hotel_vilon_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "hotel_de_la_ville_rome",
+              "name": "Hotel de la Ville",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "hotel_de_la_ville_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "intercontinental_rome_ambasadori",
+              "name": "InterContinental Rome Ambasciatori Palace",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "intercontinental_rome_ambasadori",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "six_senses_rome",
+              "name": "Six Senses Rome",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 9,
+              "displayRank": 9,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "six_senses_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_rome_edition",
+              "name": "The Rome EDITION",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 10,
+              "displayRank": 10,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_bonvoy_rome_edition",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
               "entityId": "__subject__",
               "name": "W Rome",
               "isSubject": true,
@@ -1095,8 +2077,9 @@
               "aiPresencePct": 12.5,
               "relationship": "SUBJECT",
               "isCore": false,
-              "observedRank": 1,
-              "displayRank": 1,
+              "observedRank": 12,
+              "isAppendedSubject": true,
+              "displayRank": 12,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
@@ -1107,31 +2090,8 @@
               }
             },
             {
-              "entityId": "peer_bonvoy_rome_edition",
-              "name": "Peer Bonvoy Rome Edition",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "peer_bonvoy_rome_edition",
-                "supportingObservationCount": 0,
-                "drawerItemCount": 0
-              }
-            },
-            {
               "entityId": "peer_bonvoy_st_regis_rome",
-              "name": "Peer Bonvoy St Regis Rome",
+              "name": "The St. Regis Rome",
               "isSubject": false,
               "appearances": 0,
               "aiPresenceRate": 0,
@@ -1151,59 +2111,13 @@
                 "supportingObservationCount": 0,
                 "drawerItemCount": 0
               }
-            },
-            {
-              "entityId": "peer_ind_hotel_de_russie_rome",
-              "name": "Peer Ind Hotel De Russie Rome",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "peer_ind_hotel_de_russie_rome",
-                "supportingObservationCount": 0,
-                "drawerItemCount": 0
-              }
-            },
-            {
-              "entityId": "peer_ind_hotel_eden_rome",
-              "name": "Peer Ind Hotel Eden Rome",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "peer_ind_hotel_eden_rome",
-                "supportingObservationCount": 0,
-                "drawerItemCount": 0
-              }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 4,
-            "CORE_IN_TOP_10": 0,
+            "CORE_IN_TOP_10": 3,
             "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 4,
+            "CORE_ZERO_PRESENCE": 1,
             "IDENTIFIABLE_CORE_TOTAL": 4,
             "COUNT_MATCH": true
           },
@@ -1228,8 +2142,119 @@
           "baseObservedRows": 10,
           "displayRows": [
             {
+              "entityId": "rome_cavalieri_waldorf",
+              "name": "Rome Cavalieri, A Waldorf Astoria Hotel",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.75,
+              "aiPresencePct": 75,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "rome_cavalieri_waldorf",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_de_russie_rome",
+              "name": "Hotel de Russie, a Rocco Forte Hotel",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.5,
+              "aiPresencePct": 50,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 2,
+              "displayRank": 2,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "peer_ind_hotel_de_russie_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_st_regis_rome",
+              "name": "The St. Regis Rome",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.5,
+              "aiPresencePct": 50,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "peer_bonvoy_st_regis_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "grand_hotel_via_veneto_rome",
+              "name": "Grand Hotel Via Veneto",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "grand_hotel_via_veneto_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_eden_rome",
+              "name": "Hotel Eden, a Dorchester Collection Hotel",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_ind_hotel_eden_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
               "entityId": "peer_bonvoy_rome_edition",
-              "name": "Peer Bonvoy Rome Edition",
+              "name": "The Rome EDITION",
               "isSubject": false,
               "appearances": 0,
               "aiPresenceRate": 0,
@@ -1251,31 +2276,8 @@
               }
             },
             {
-              "entityId": "peer_bonvoy_st_regis_rome",
-              "name": "Peer Bonvoy St Regis Rome",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "peer_bonvoy_st_regis_rome",
-                "supportingObservationCount": 0,
-                "drawerItemCount": 0
-              }
-            },
-            {
               "entityId": "peer_bonvoy_westin_excelsior_rome",
-              "name": "Peer Bonvoy Westin Excelsior Rome",
+              "name": "The Westin Excelsior, Rome",
               "isSubject": false,
               "appearances": 0,
               "aiPresenceRate": 0,
@@ -1295,36 +2297,13 @@
                 "supportingObservationCount": 0,
                 "drawerItemCount": 0
               }
-            },
-            {
-              "entityId": "peer_ind_hotel_eden_rome",
-              "name": "Peer Ind Hotel Eden Rome",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "peer_ind_hotel_eden_rome",
-                "supportingObservationCount": 0,
-                "drawerItemCount": 0
-              }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 4,
-            "CORE_IN_TOP_10": 0,
+            "CORE_IN_TOP_10": 1,
             "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 4,
+            "CORE_ZERO_PRESENCE": 3,
             "IDENTIFIABLE_CORE_TOTAL": 4,
             "COUNT_MATCH": true
           },
@@ -1349,6 +2328,50 @@
           "baseObservedRows": 10,
           "displayRows": [
             {
+              "entityId": "peer_ind_hotel_de_russie_rome",
+              "name": "Hotel de Russie, a Rocco Forte Hotel",
+              "isSubject": false,
+              "appearances": 7,
+              "aiPresenceRate": 0.4375,
+              "aiPresencePct": 43.8,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "peer_ind_hotel_de_russie_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "sofitel_rome_villa_borghese",
+              "name": "Sofitel Rome Villa Borghese",
+              "isSubject": false,
+              "appearances": 4,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 2,
+              "displayRank": 2,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "sofitel_rome_villa_borghese",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
               "entityId": "__subject__",
               "name": "W Rome",
               "isSubject": true,
@@ -1357,8 +2380,8 @@
               "aiPresencePct": 25,
               "relationship": "SUBJECT",
               "isCore": false,
-              "observedRank": 1,
-              "displayRank": 1,
+              "observedRank": 3,
+              "displayRank": 3,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
@@ -1369,20 +2392,173 @@
               }
             },
             {
-              "entityId": "peer_bonvoy_rome_edition",
-              "name": "Peer Bonvoy Rome Edition",
+              "entityId": "hotel_hassler_roma",
+              "name": "Hotel Hassler Roma",
               "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
+              "appearances": 3,
+              "aiPresenceRate": 0.1875,
+              "aiPresencePct": 18.8,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "hotel_hassler_roma",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "six_senses_rome",
+              "name": "Six Senses Rome",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.1875,
+              "aiPresencePct": 18.8,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "six_senses_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "baglioni_hotel_regina_rome",
+              "name": "Baglioni Hotel Regina",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "baglioni_hotel_regina_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "bulgari_hotel_roma",
+              "name": "Bulgari Hotel Roma",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "bulgari_hotel_roma",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_eden_rome",
+              "name": "Hotel Eden, a Dorchester Collection Hotel",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
               "relationship": "CORE",
               "isCore": true,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_ind_hotel_eden_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "intercontinental_rome_ambasadori",
+              "name": "InterContinental Rome Ambasciatori Palace",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 9,
+              "displayRank": 9,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "intercontinental_rome_ambasadori",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "rome_cavalieri_waldorf",
+              "name": "Rome Cavalieri, A Waldorf Astoria Hotel",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 10,
+              "displayRank": 10,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "rome_cavalieri_waldorf",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_rome_edition",
+              "name": "The Rome EDITION",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 11,
               "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
+              "displayRank": 11,
+              "status": null,
+              "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
@@ -1393,19 +2569,18 @@
             },
             {
               "entityId": "peer_bonvoy_st_regis_rome",
-              "name": "Peer Bonvoy St Regis Rome",
+              "name": "The St. Regis Rome",
               "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
+              "appearances": 1,
+              "aiPresenceRate": 0.0625,
+              "aiPresencePct": 6.3,
               "relationship": "CORE",
               "isCore": true,
+              "observedRank": 16,
               "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
+              "displayRank": 16,
+              "status": null,
+              "statusLabel": null,
               "displacement": {
                 "count": 0,
                 "evidenceAvailable": false,
@@ -1416,7 +2591,7 @@
             },
             {
               "entityId": "peer_bonvoy_westin_excelsior_rome",
-              "name": "Peer Bonvoy Westin Excelsior Rome",
+              "name": "The Westin Excelsior, Rome",
               "isSubject": false,
               "appearances": 0,
               "aiPresenceRate": 0,
@@ -1436,36 +2611,13 @@
                 "supportingObservationCount": 0,
                 "drawerItemCount": 0
               }
-            },
-            {
-              "entityId": "peer_ind_hotel_eden_rome",
-              "name": "Peer Ind Hotel Eden Rome",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "peer_ind_hotel_eden_rome",
-                "supportingObservationCount": 0,
-                "drawerItemCount": 0
-              }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 4,
-            "CORE_IN_TOP_10": 0,
-            "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 4,
+            "CORE_IN_TOP_10": 1,
+            "CORE_APPENDED": 2,
+            "CORE_ZERO_PRESENCE": 1,
             "IDENTIFIABLE_CORE_TOTAL": 4,
             "COUNT_MATCH": true
           },
@@ -1489,8 +2641,251 @@
           "baseObservedRows": 10,
           "displayRows": [
             {
+              "entityId": "baglioni_hotel_regina_rome",
+              "name": "Baglioni Hotel Regina",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.5,
+              "aiPresencePct": 50,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "baglioni_hotel_regina_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_eden_rome",
+              "name": "Hotel Eden, a Dorchester Collection Hotel",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.5,
+              "aiPresencePct": 50,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 2,
+              "displayRank": 2,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "peer_ind_hotel_eden_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "bulgari_hotel_roma",
+              "name": "Bulgari Hotel Roma",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "bulgari_hotel_roma",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "grand_hotel_via_veneto_rome",
+              "name": "Grand Hotel Via Veneto",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "grand_hotel_via_veneto_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "hotel_de_la_ville_rome",
+              "name": "Hotel de la Ville",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "hotel_de_la_ville_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "hotel_splendide_royal_rome",
+              "name": "Hotel Splendide Royal",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "hotel_splendide_royal_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "intercontinental_rome_ambasadori",
+              "name": "InterContinental Rome Ambasciatori Palace",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "intercontinental_rome_ambasadori",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "rome_cavalieri_waldorf",
+              "name": "Rome Cavalieri, A Waldorf Astoria Hotel",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "rome_cavalieri_waldorf",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "rome_marriott_grand_hotel_flora",
+              "name": "Rome Marriott Grand Hotel Flora",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 9,
+              "displayRank": 9,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "rome_marriott_grand_hotel_flora",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "six_senses_rome",
+              "name": "Six Senses Rome",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 10,
+              "displayRank": 10,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "six_senses_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_de_russie_rome",
+              "name": "Hotel de Russie, a Rocco Forte Hotel",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_ind_hotel_de_russie_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
               "entityId": "peer_bonvoy_rome_edition",
-              "name": "Peer Bonvoy Rome Edition",
+              "name": "The Rome EDITION",
               "isSubject": false,
               "appearances": 0,
               "aiPresenceRate": 0,
@@ -1513,7 +2908,7 @@
             },
             {
               "entityId": "peer_bonvoy_st_regis_rome",
-              "name": "Peer Bonvoy St Regis Rome",
+              "name": "The St. Regis Rome",
               "isSubject": false,
               "appearances": 0,
               "aiPresenceRate": 0,
@@ -1530,29 +2925,6 @@
                 "count": 0,
                 "evidenceAvailable": false,
                 "competitorId": "peer_bonvoy_st_regis_rome",
-                "supportingObservationCount": 0,
-                "drawerItemCount": 0
-              }
-            },
-            {
-              "entityId": "peer_ind_hotel_de_russie_rome",
-              "name": "Peer Ind Hotel De Russie Rome",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "peer_ind_hotel_de_russie_rome",
                 "supportingObservationCount": 0,
                 "drawerItemCount": 0
               }
@@ -1587,6 +2959,226 @@
           "baseObservedRows": 10,
           "displayRows": [
             {
+              "entityId": "peer_ind_hotel_de_russie_rome",
+              "name": "Hotel de Russie, a Rocco Forte Hotel",
+              "isSubject": false,
+              "appearances": 7,
+              "aiPresenceRate": 0.875,
+              "aiPresencePct": 87.5,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "peer_ind_hotel_de_russie_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "jk_place_roma",
+              "name": "J.K. Place Roma",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.375,
+              "aiPresencePct": 37.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 2,
+              "displayRank": 2,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "jk_place_roma",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_st_regis_rome",
+              "name": "The St. Regis Rome",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.375,
+              "aiPresencePct": 37.5,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "peer_bonvoy_st_regis_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "hotel_de_la_ville_rome",
+              "name": "Hotel de la Ville",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "hotel_de_la_ville_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "peer_ind_hotel_eden_rome",
+              "name": "Hotel Eden, a Dorchester Collection Hotel",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "peer_ind_hotel_eden_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "rome_cavalieri_waldorf",
+              "name": "Rome Cavalieri, A Waldorf Astoria Hotel",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "rome_cavalieri_waldorf",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "six_senses_rome",
+              "name": "Six Senses Rome",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "six_senses_rome",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "peer_bonvoy_rome_edition",
+              "name": "The Rome EDITION",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "peer_bonvoy_rome_edition",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "baglioni_hotel_regina_rome",
+              "name": "Baglioni Hotel Regina",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 9,
+              "displayRank": 9,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "baglioni_hotel_regina_rome",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "bulgari_hotel_roma",
+              "name": "Bulgari Hotel Roma",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 10,
+              "displayRank": 10,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "bulgari_hotel_roma",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
               "entityId": "__subject__",
               "name": "W Rome",
               "isSubject": true,
@@ -1595,8 +3187,9 @@
               "aiPresencePct": 12.5,
               "relationship": "SUBJECT",
               "isCore": false,
-              "observedRank": 1,
-              "displayRank": 1,
+              "observedRank": 14,
+              "isAppendedSubject": true,
+              "displayRank": 14,
               "isAppendedCore": false,
               "status": null,
               "statusLabel": null,
@@ -1605,105 +3198,13 @@
                 "evidenceAvailable": false,
                 "competitorId": null
               }
-            },
-            {
-              "entityId": "peer_bonvoy_rome_edition",
-              "name": "Peer Bonvoy Rome Edition",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "peer_bonvoy_rome_edition",
-                "supportingObservationCount": 0,
-                "drawerItemCount": 0
-              }
-            },
-            {
-              "entityId": "peer_bonvoy_st_regis_rome",
-              "name": "Peer Bonvoy St Regis Rome",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "peer_bonvoy_st_regis_rome",
-                "supportingObservationCount": 0,
-                "drawerItemCount": 0
-              }
-            },
-            {
-              "entityId": "peer_ind_hotel_de_russie_rome",
-              "name": "Peer Ind Hotel De Russie Rome",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "peer_ind_hotel_de_russie_rome",
-                "supportingObservationCount": 0,
-                "drawerItemCount": 0
-              }
-            },
-            {
-              "entityId": "peer_ind_hotel_eden_rome",
-              "name": "Peer Ind Hotel Eden Rome",
-              "isSubject": false,
-              "appearances": 0,
-              "aiPresenceRate": 0,
-              "aiPresencePct": 0,
-              "observedRank": null,
-              "displayRank": "—",
-              "relationship": "CORE",
-              "isCore": true,
-              "isAppendedCore": true,
-              "isZeroPresenceCore": true,
-              "status": "NOT_SURFACED",
-              "statusLabel": "Not surfaced this period",
-              "displacement": {
-                "count": 0,
-                "evidenceAvailable": false,
-                "competitorId": "peer_ind_hotel_eden_rome",
-                "supportingObservationCount": 0,
-                "drawerItemCount": 0
-              }
             }
           ],
           "reconciliation": {
             "CORE_COUNT": 4,
-            "CORE_IN_TOP_10": 0,
+            "CORE_IN_TOP_10": 4,
             "CORE_APPENDED": 0,
-            "CORE_ZERO_PRESENCE": 4,
+            "CORE_ZERO_PRESENCE": 0,
             "IDENTIFIABLE_CORE_TOTAL": 4,
             "COUNT_MATCH": true
           },
@@ -1731,60 +3232,60 @@
           "TERRITORY": "Business Travel",
           "intent": "business",
           "CORE_COUNT": 4,
-          "CORE_IN_TOP_10": 0,
-          "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 4,
+          "CORE_IN_TOP_10": 2,
+          "CORE_APPENDED": 2,
+          "CORE_ZERO_PRESENCE": 0,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 5
+          "VISIBLE_ROWS": 12
         },
         {
           "PROPERTY": "W Rome",
           "TERRITORY": "Leisure Travel",
           "intent": "leisure",
           "CORE_COUNT": 5,
-          "CORE_IN_TOP_10": 0,
-          "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 5,
+          "CORE_IN_TOP_10": 3,
+          "CORE_APPENDED": 2,
+          "CORE_ZERO_PRESENCE": 0,
           "IDENTIFIABLE_CORE_TOTAL": 5,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 6
+          "VISIBLE_ROWS": 12
         },
         {
           "PROPERTY": "W Rome",
           "TERRITORY": "Couples / Romantic Stay",
           "intent": "couples",
           "CORE_COUNT": 4,
-          "CORE_IN_TOP_10": 0,
+          "CORE_IN_TOP_10": 3,
           "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 4,
+          "CORE_ZERO_PRESENCE": 1,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 5
+          "VISIBLE_ROWS": 12
         },
         {
           "PROPERTY": "W Rome",
           "TERRITORY": "Family Travel",
           "intent": "family",
           "CORE_COUNT": 4,
-          "CORE_IN_TOP_10": 0,
+          "CORE_IN_TOP_10": 1,
           "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 4,
+          "CORE_ZERO_PRESENCE": 3,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 4
+          "VISIBLE_ROWS": 7
         },
         {
           "PROPERTY": "W Rome",
           "TERRITORY": "Meetings & Groups",
           "intent": "group_meeting",
           "CORE_COUNT": 4,
-          "CORE_IN_TOP_10": 0,
-          "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 4,
+          "CORE_IN_TOP_10": 1,
+          "CORE_APPENDED": 2,
+          "CORE_ZERO_PRESENCE": 1,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 5
+          "VISIBLE_ROWS": 13
         },
         {
           "PROPERTY": "W Rome",
@@ -1796,19 +3297,19 @@
           "CORE_ZERO_PRESENCE": 3,
           "IDENTIFIABLE_CORE_TOTAL": 3,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 3
+          "VISIBLE_ROWS": 13
         },
         {
           "PROPERTY": "W Rome",
           "TERRITORY": "Celebrations & Events",
           "intent": "celebration",
           "CORE_COUNT": 4,
-          "CORE_IN_TOP_10": 0,
+          "CORE_IN_TOP_10": 4,
           "CORE_APPENDED": 0,
-          "CORE_ZERO_PRESENCE": 4,
+          "CORE_ZERO_PRESENCE": 0,
           "IDENTIFIABLE_CORE_TOTAL": 4,
           "COUNT_MATCH": "YES",
-          "VISIBLE_ROWS": 5
+          "VISIBLE_ROWS": 11
         }
       ],
       "PROPERTY_SPECIFIC_RANKING_DISPLAY_CODE": 0,
@@ -1959,7 +3460,7 @@
       "compositionContract": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
       "sections": {
         "headline": "W Rome reaches many monitored demand scenarios, but consideration consistency is the binding constraint.",
-        "keyInsight": "Scenario Presence is 60% while AI Consideration is 26.3%. The hotel is therefore relevant across a wide share of monitored traveler needs, yet it is not carried into individual answers nearly as consistently. Softness concentrates in Adventure & Experiences versus stronger Business Travel. That contrast is more important than either metric alone.",
+        "keyInsight": "Scenario Presence is 60% while AI Consideration is 26.3%. The hotel is therefore relevant across a wide share of monitored traveler needs, yet it is not carried into individual answers nearly as consistently. Softness concentrates in Adventure & Experiences versus stronger Business Travel. Hotel de Russie, a Rocco Forte Hotel often fills absences in those weaker contexts. That contrast is more important than either metric alone.",
         "whyItMatters": "Broad scenario reach without consistent answer-level inclusion means the hotel is known in the demand set but not reliably carried into traveler-facing answers. Management attention should start with consistency of representation, not with assuming the hotel needs an entirely new competitive set.",
         "focusNow": "Focus first on consistency of representation for Adventure & Experiences. Confirm priority sources present the same use cases and attributes that appear in scenarios where the hotel is absent, and close gaps that repeatedly coincide with answer-level misses.",
         "watch": null,
@@ -2143,18 +3644,18 @@
           "overstated": 0,
           "pass": true
         },
-        "wordCount": 171,
+        "wordCount": 185,
         "allRequiredPass": true,
         "failed": []
       },
-      "sourceSnapshotHash": "f8f1ab7591ba59d4",
-      "compositionHash": "4c72c5da2873a4ab",
+      "sourceSnapshotHash": "efec5b85ba0e7044",
+      "compositionHash": "7d810e140c040e5a",
       "compositionV3": {
         "ok": true,
         "contract": "ADP_EXECUTIVE_READ_V3",
         "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
         "compositionContract": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
-        "generatedAt": "2026-09-25T11:05:23.352Z",
+        "generatedAt": "2026-09-25T11:38:30.702Z",
         "propertyId": "adp_w_rome",
         "propertyName": "W Rome",
         "periodId": "adp_period_adp_w_rome_20260925105322_1192cf",
@@ -2163,7 +3664,7 @@
         "constraintClass": "CONSISTENCY",
         "sections": {
           "headline": "W Rome reaches many monitored demand scenarios, but consideration consistency is the binding constraint.",
-          "keyInsight": "Scenario Presence is 60% while AI Consideration is 26.3%. The hotel is therefore relevant across a wide share of monitored traveler needs, yet it is not carried into individual answers nearly as consistently. Softness concentrates in Adventure & Experiences versus stronger Business Travel. That contrast is more important than either metric alone.",
+          "keyInsight": "Scenario Presence is 60% while AI Consideration is 26.3%. The hotel is therefore relevant across a wide share of monitored traveler needs, yet it is not carried into individual answers nearly as consistently. Softness concentrates in Adventure & Experiences versus stronger Business Travel. Hotel de Russie, a Rocco Forte Hotel often fills absences in those weaker contexts. That contrast is more important than either metric alone.",
           "whyItMatters": "Broad scenario reach without consistent answer-level inclusion means the hotel is known in the demand set but not reliably carried into traveler-facing answers. Management attention should start with consistency of representation, not with assuming the hotel needs an entirely new competitive set.",
           "focusNow": "Focus first on consistency of representation for Adventure & Experiences. Confirm priority sources present the same use cases and attributes that appear in scenarios where the hotel is absent, and close gaps that repeatedly coincide with answer-level misses.",
           "watch": null,
@@ -2345,12 +3846,12 @@
             "overstated": 0,
             "pass": true
           },
-          "wordCount": 171,
+          "wordCount": 185,
           "allRequiredPass": true,
           "failed": []
         },
-        "sourceSnapshotHash": "f8f1ab7591ba59d4",
-        "compositionHash": "4c72c5da2873a4ab",
+        "sourceSnapshotHash": "efec5b85ba0e7044",
+        "compositionHash": "7d810e140c040e5a",
         "activated": true,
         "customerFacingDefault": true,
         "zeroCodePath": true,
@@ -2381,7 +3882,7 @@
             "customerDefault": true
           }
         },
-        "wordCount": 171,
+        "wordCount": 185,
         "watchOmitted": true,
         "candidates": [
           {
@@ -2403,6 +3904,12 @@
             "summary": "Competitors appear in a material share of scenarios where the hotel is absent (90%)."
           },
           {
+            "candidateId": "cand_reality_gap_urban_luxury",
+            "archetype": "REALITY_DISCONNECT",
+            "priorityScore": 0.9252,
+            "summary": "Urban Luxury is recognized in only 0% of monitored answers."
+          },
+          {
             "candidateId": "cand_reality_gap_full_service",
             "archetype": "REALITY_DISCONNECT",
             "priorityScore": 0.906,
@@ -2413,6 +3920,12 @@
             "archetype": "CONSISTENCY_PROBLEM",
             "priorityScore": 0.7974000000000001,
             "summary": "Territory presence ranges from 0% (Adventure & Experiences) to 60% (Business Travel)."
+          },
+          {
+            "candidateId": "cand_top_observed_alternative",
+            "archetype": "COMPETITIVE_DISPLACEMENT",
+            "priorityScore": 0.774,
+            "summary": "Hotel de Russie, a Rocco Forte Hotel is the top observed AI alternative in the monitored set."
           }
         ],
         "selectionMeta": {
@@ -2448,7 +3961,7 @@
             {
               "key": "keyInsight",
               "label": "Key Insight",
-              "text": "Scenario Presence is 60% while AI Consideration is 26.3%. The hotel is therefore relevant across a wide share of monitored traveler needs, yet it is not carried into individual answers nearly as consistently. Softness concentrates in Adventure & Experiences versus stronger Business Travel. That contrast is more important than either metric alone.",
+              "text": "Scenario Presence is 60% while AI Consideration is 26.3%. The hotel is therefore relevant across a wide share of monitored traveler needs, yet it is not carried into individual answers nearly as consistently. Softness concentrates in Adventure & Experiences versus stronger Business Travel. Hotel de Russie, a Rocco Forte Hotel often fills absences in those weaker contexts. That contrast is more important than either metric alone.",
               "anchors": [
                 {
                   "metricId": "executiveMetrics.scenarioPresence.rate",
@@ -2489,7 +4002,7 @@
               "anchors": []
             }
           ],
-          "flattenedProseForLegacy": "W Rome reaches many monitored demand scenarios, but consideration consistency is the binding constraint.\n\nScenario Presence is 60% while AI Consideration is 26.3%. The hotel is therefore relevant across a wide share of monitored traveler needs, yet it is not carried into individual answers nearly as consistently. Softness concentrates in Adventure & Experiences versus stronger Business Travel. That contrast is more important than either metric alone.\n\nBroad scenario reach without consistent answer-level inclusion means the hotel is known in the demand set but not reliably carried into traveler-facing answers. Management attention should start with consistency of representation, not with assuming the hotel needs an entirely new competitive set.\n\nFocus first on consistency of representation for Adventure & Experiences. Confirm priority sources present the same use cases and attributes that appear in scenarios where the hotel is absent, and close gaps that repeatedly coincide with answer-level misses.\n\nCompare high-presence versus low-consideration scenarios and inspect which sources and attributes appear when the hotel is missing. Use that evidence pack before changing channel strategy."
+          "flattenedProseForLegacy": "W Rome reaches many monitored demand scenarios, but consideration consistency is the binding constraint.\n\nScenario Presence is 60% while AI Consideration is 26.3%. The hotel is therefore relevant across a wide share of monitored traveler needs, yet it is not carried into individual answers nearly as consistently. Softness concentrates in Adventure & Experiences versus stronger Business Travel. Hotel de Russie, a Rocco Forte Hotel often fills absences in those weaker contexts. That contrast is more important than either metric alone.\n\nBroad scenario reach without consistent answer-level inclusion means the hotel is known in the demand set but not reliably carried into traveler-facing answers. Management attention should start with consistency of representation, not with assuming the hotel needs an entirely new competitive set.\n\nFocus first on consistency of representation for Adventure & Experiences. Confirm priority sources present the same use cases and attributes that appear in scenarios where the hotel is absent, and close gaps that repeatedly coincide with answer-level misses.\n\nCompare high-presence versus low-consideration scenarios and inspect which sources and attributes appear when the hotel is missing. Use that evidence pack before changing channel strategy."
         }
       }
     },
@@ -2530,7 +4043,7 @@
       {
         "periodId": "adp_period_adp_w_rome_20260925105322_1192cf",
         "date": "2026-09-25T10:53:22.644Z",
-        "propertyRealityCoverage": 50,
+        "propertyRealityCoverage": 57.1,
         "scenarioPresenceRate": 60,
         "considerationRate": 26.3,
         "providerCount": 4,
