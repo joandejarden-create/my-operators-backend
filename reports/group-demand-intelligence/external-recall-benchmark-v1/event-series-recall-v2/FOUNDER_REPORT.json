@@ -1,0 +1,405 @@
+{
+  "ok": true,
+  "audit": "GDI_BETHESDA_EVENT_SERIES_RECALL_V2",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "webhound": "OFF",
+  "A_before": {
+    "BENCHMARK": 13,
+    "FOUND": 2,
+    "RECALL": "15.4%",
+    "MISSED": 11
+  },
+  "B_sourceForensics": {
+    "NIH": {
+      "searchGap": "PARTIAL — site:nih.gov ran in V1",
+      "fetchGap": "PARTIAL — calendar.nih.gov returned",
+      "parserGap": "YES — vague campus blob, not named series",
+      "seriesGap": "YES — no eventSeriesId for institute programs"
+    },
+    "Associations": {
+      "searchGap": "YES — generic future-meetings diluted; weak official ranking",
+      "fetchGap": "YES — aggregators preferred over org domains",
+      "parserGap": "PARTIAL",
+      "seriesGap": "YES — no durable series expansion"
+    },
+    "Sports": {
+      "searchGap": "YES — stay-to-play queries missed operator calendars",
+      "fetchGap": "YES — social/directory noise",
+      "parserGap": "PARTIAL",
+      "seriesGap": "YES — no operator→tournament series graph"
+    }
+  },
+  "C_parserReplay": {
+    "PAGES": 4,
+    "PAGES_OK": 1,
+    "SERIES": 0,
+    "FUTURE_CYCLES": 0,
+    "VALID_CANDIDATES": 0,
+    "pages": [
+      {
+        "url": "https://www.nih.gov/news-events/events",
+        "ok": false,
+        "error": 403
+      },
+      {
+        "url": "https://calendar.nih.gov/",
+        "ok": true,
+        "seriesCount": 0,
+        "cycleCount": 0,
+        "lineCandidates": 0,
+        "discoveryMode": "NIH_CALENDAR",
+        "officialScore": 62
+      },
+      {
+        "url": "https://commonfund.nih.gov/",
+        "ok": false,
+        "error": 403
+      },
+      {
+        "url": "https://www.nichd.nih.gov/about/advisory/council/futuremeetings",
+        "ok": false,
+        "error": 404
+      }
+    ]
+  },
+  "D_liveRun": {
+    "QUERIES": 24,
+    "FETCHES": 31,
+    "COST_EST_USD": 0.6,
+    "RUNTIME_MS": 524260
+  },
+  "E_modeYield": {
+    "NIH_CALENDAR": {
+      "queries": 5,
+      "officialSources": 1,
+      "series": 1,
+      "futureCycles": 1,
+      "valid": 1,
+      "benchmarkHits": 0
+    },
+    "EVENT_SERIES": {
+      "queries": 0,
+      "officialSources": 0,
+      "series": 0,
+      "futureCycles": 0,
+      "valid": 0,
+      "benchmarkHits": 0
+    },
+    "FUTURE_CALENDAR": {
+      "queries": 13,
+      "officialSources": 9,
+      "series": 10,
+      "futureCycles": 7,
+      "valid": 7,
+      "benchmarkHits": 0
+    },
+    "SPORTS": {
+      "queries": 4,
+      "officialSources": 1,
+      "series": 5,
+      "futureCycles": 5,
+      "valid": 5,
+      "benchmarkHits": 2
+    },
+    "HOUSING": {
+      "queries": 2,
+      "officialSources": 0,
+      "series": 0,
+      "futureCycles": 0,
+      "valid": 0,
+      "benchmarkHits": 0
+    }
+  },
+  "F_benchmarkMisses": [
+    {
+      "id": "b1",
+      "event": "2027 TOPMed Annual Meeting",
+      "before": "NOT_FOUND",
+      "after": "NOT_FOUND",
+      "mode": null,
+      "source": null,
+      "cq": null,
+      "matchedTitle": null,
+      "seriesId": null,
+      "cycleId": null
+    },
+    {
+      "id": "b2",
+      "event": "2027 CTN Annual Conference",
+      "before": "NOT_FOUND",
+      "after": "NOT_FOUND",
+      "mode": null,
+      "source": null,
+      "cq": null,
+      "matchedTitle": null,
+      "seriesId": null,
+      "cycleId": null
+    },
+    {
+      "id": "b3",
+      "event": "2027 NINDS CTE Summit",
+      "before": "NOT_FOUND",
+      "after": "NOT_FOUND",
+      "mode": null,
+      "source": null,
+      "cq": null,
+      "matchedTitle": null,
+      "seriesId": null,
+      "cycleId": null
+    },
+    {
+      "id": "b4",
+      "event": "2027 High-Risk, High-Reward Research Symposium",
+      "before": "NOT_FOUND",
+      "after": "NOT_FOUND",
+      "mode": null,
+      "source": null,
+      "cq": null,
+      "matchedTitle": null,
+      "seriesId": null,
+      "cycleId": null
+    },
+    {
+      "id": "b7",
+      "event": "iCAN 2027 Summit",
+      "before": "NOT_FOUND",
+      "after": "NOT_FOUND",
+      "mode": null,
+      "source": null,
+      "cq": null,
+      "matchedTitle": null,
+      "seriesId": null,
+      "cycleId": null
+    },
+    {
+      "id": "b8",
+      "event": "AAOS 2027 Combined NOLC/Fall Meeting",
+      "before": "NOT_FOUND",
+      "after": "NOT_FOUND",
+      "mode": null,
+      "source": null,
+      "cq": null,
+      "matchedTitle": null,
+      "seriesId": null,
+      "cycleId": null
+    },
+    {
+      "id": "b9",
+      "event": "AAPA 2027 Leadership & Advocacy Summit",
+      "before": "NOT_FOUND",
+      "after": "NOT_FOUND",
+      "mode": null,
+      "source": null,
+      "cq": null,
+      "matchedTitle": null,
+      "seriesId": null,
+      "cycleId": null
+    },
+    {
+      "id": "b11",
+      "event": "HFA Fly-In & Advocacy Summit 2027",
+      "before": "NOT_FOUND",
+      "after": "NOT_FOUND",
+      "mode": null,
+      "source": null,
+      "cq": null,
+      "matchedTitle": null,
+      "seriesId": null,
+      "cycleId": null
+    },
+    {
+      "id": "b12",
+      "event": "Fuel Medical Symposium 2027",
+      "before": "NOT_FOUND",
+      "after": "NOT_FOUND",
+      "mode": null,
+      "source": null,
+      "cq": null,
+      "matchedTitle": null,
+      "seriesId": null,
+      "cycleId": null
+    },
+    {
+      "id": "b15",
+      "event": "26th Crabtown Showdown — 2027",
+      "before": "NOT_FOUND",
+      "after": "FOUND",
+      "mode": "SPORTS",
+      "source": "https://showdowntournaments.com/tournament_highlights/",
+      "cq": "WATCH",
+      "matchedTitle": "2027 Crabtown Showdown",
+      "seriesId": "series:youth_hockey_tournament",
+      "cycleId": "cycle:series:youth_hockey_tournament|noyear"
+    },
+    {
+      "id": "b16",
+      "event": "18th Capital Showdown — 2027",
+      "before": "NOT_FOUND",
+      "after": "FOUND",
+      "mode": "SPORTS",
+      "source": "https://showdowntournaments.com/capital-washington-dc/",
+      "cq": "WATCH",
+      "matchedTitle": "Capital Showdown Youth Hockey Tournament",
+      "seriesId": "series:annual_youth_hockey_tournament",
+      "cycleId": "cycle:series:annual_youth_hockey_tournament|2027"
+    }
+  ],
+  "G_recall": {
+    "BEFORE": "2 / 13 = 15.4%",
+    "AFTER": "4 / 13 = 30.8%",
+    "GAIN_PP": 15.4,
+    "SERIES_RECALL_PCT": 18.2,
+    "PREVIOUSLY_MISSED_RECOVERED": 2
+  },
+  "H_precision": {
+    "CANDIDATES": 16,
+    "VALID": 13,
+    "INVALID": 3,
+    "PRECISION": 81.3
+  },
+  "I_nonBenchmarkSeries": [
+    {
+      "series": "AAO 2026 Annual Meeting",
+      "organization": "American Academy of Ophthalmology",
+      "futureCycle": "2026",
+      "mode": "FUTURE_CALENDAR",
+      "cq": "WATCH",
+      "source": "https://www.aao.org/young-ophthalmologists/yo-info/article/7-tips-to-help-you-land-the-right-job"
+    },
+    {
+      "series": "AHIMA26 Conference",
+      "organization": "AHIMA",
+      "futureCycle": "2026",
+      "mode": "FUTURE_CALENDAR",
+      "cq": "WATCH",
+      "source": "https://reg.ahimaevents.ahima.org/flow/ahima/ahima26/landingpage/page/attportalhome"
+    },
+    {
+      "series": "2027 DDAA Annual Conference",
+      "organization": "Development District Association of Appalachia (DDAA)",
+      "futureCycle": "2027",
+      "mode": "FUTURE_CALENDAR",
+      "cq": "WATCH",
+      "source": "https://www.appalachiandevelopment.org/author/dromerocrec-net/"
+    },
+    {
+      "series": "2028 NADO and DDAA Washington Conference",
+      "organization": "National Association of Development Organizations (NADO)",
+      "futureCycle": "2028",
+      "mode": "FUTURE_CALENDAR",
+      "cq": "WATCH",
+      "source": "https://www.appalachiandevelopment.org/author/dromerocrec-net/"
+    },
+    {
+      "series": "2026 NASBP Legislative Fly-In",
+      "organization": "NASBP",
+      "futureCycle": "2026",
+      "mode": "FUTURE_CALENDAR",
+      "cq": "WATCH",
+      "source": "https://www.nasbp.org/pipeline-newsletter/updates-from-capitol-hill-nasbp-advocacy-efforts/"
+    },
+    {
+      "series": "NCORP Annual Meeting",
+      "organization": "National Cancer Institute",
+      "futureCycle": "2027",
+      "mode": "NIH_CALENDAR",
+      "cq": "WATCH",
+      "source": "https://events.cancer.gov/nci/ncorp/venue"
+    },
+    {
+      "series": "AHIMA Advocacy Summit",
+      "organization": "AHIMA",
+      "futureCycle": "2027",
+      "mode": "FUTURE_CALENDAR",
+      "cq": "WATCH",
+      "source": "https://icd10monitor.medlearn.com/ahima-chief-shares-vision-in-talk-ten-tuesdays-appearance/"
+    },
+    {
+      "series": "ACC.27 Together With WCC (ACC.27-WCC)",
+      "organization": "American College of Cardiology",
+      "futureCycle": "2027",
+      "mode": "FUTURE_CALENDAR",
+      "cq": "WATCH",
+      "source": "https://www.acc.org/membership/sections-and-councils/reproductive-health-and-cardio-obstetrics-member-section/section-updates"
+    },
+    {
+      "series": "2027 SMS St Marys Cup",
+      "organization": "Maryland State Youth Soccer Association",
+      "futureCycle": "2027",
+      "mode": "SPORTS",
+      "cq": "WATCH",
+      "source": "https://www.msysa.org/wp-content/uploads/sites/227/2026/08/2027-SMS-St-Marys-Cup-Sanc-Docs.pdf"
+    }
+  ],
+  "J_persistence": {
+    "NEW_SERIES": 11,
+    "NEW_CYCLES": 14,
+    "NEW_TARGETS": 0,
+    "NEW_OPPORTUNITIES": 0,
+    "note": "Series graph persisted; opportunities not auto-promoted"
+  },
+  "K_attribution": {
+    "CORRECT_MODE_TAGGING": "PASS",
+    "DEFAULTED_OPEN_UNIVERSE": 0,
+    "modeCounts": {
+      "FUTURE_CALENDAR": 10,
+      "SPORTS": 5,
+      "NIH_CALENDAR": 1
+    }
+  },
+  "L_webhound": {
+    "CALLS": 0,
+    "REQUIRED": 0,
+    "FAILURE": 0,
+    "providerPath": {
+      "primary": "NATIVE",
+      "fallback": "PARALLEL",
+      "webhound": "UNAVAILABLE",
+      "classification": "EVALUATION_ONLY",
+      "gate": {
+        "escalate": true,
+        "triggers": [
+          "INSUFFICIENT_OFFICIAL_SOURCES",
+          "UNRESOLVED_VENUE_STATUS",
+          "UNRESOLVED_WHO"
+        ],
+        "rationale": "Escalate to Parallel: INSUFFICIENT_OFFICIAL_SOURCES, UNRESOLVED_VENUE_STATUS, UNRESOLVED_WHO",
+        "policy": {
+          "mode": "GATED_FALLBACK",
+          "neverAutomaticCoPrimary": true,
+          "parallelIsNotCanonicalTruth": true,
+          "minConfidenceToSkip": 55,
+          "minOfficialSourceCountToSkip": 1,
+          "maxNativeDiscoveriesBeforeSparse": 2
+        },
+        "hotelId": null,
+        "taskKind": null
+      },
+      "audit": {
+        "providerPath": "NATIVE_PLUS_GATED_PARALLEL",
+        "webhoundRequired": false
+      }
+    }
+  },
+  "M_jev": {
+    "CALLS": 0,
+    "USEFUL": 0,
+    "APPLY": "NO"
+  },
+  "N_decisions": {
+    "nihImproved": false,
+    "associationImproved": true,
+    "sportsImproved": true,
+    "missesRediscovered": 2,
+    "strictRecallImproved": true,
+    "sourceRankingHelped": true,
+    "parserReplayRecovered": false,
+    "provenanceOk": true,
+    "precisionOk": true,
+    "seriesDurable": true,
+    "dominantGap": "SEARCH_RECALL / named-series depth on official pages",
+    "readyHotel4": false
+  },
+  "O_verdict": "GDI SERIES RECALL IMPROVED — ONE SOURCE-RANKING GAP REMAINS",
+  "timestamp": "2026-09-25T13:38:38.173Z"
+}
