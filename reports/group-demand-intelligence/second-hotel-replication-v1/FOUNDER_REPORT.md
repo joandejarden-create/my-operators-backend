@@ -5,6 +5,8 @@
 **ADP property:** `adp_renaissance_times_square`  
 **Reference:** Bethesda Marriott `recLuxvwwxID7U2B8`  
 **Branch:** `deploy/gdi-pe-v1-7-customer-closure`  
+**FINAL SHA:** `7c824c8`  
+**PUSH:** PASS  
 **Date:** 2026-09-25
 
 ## T. FINAL VERDICT
