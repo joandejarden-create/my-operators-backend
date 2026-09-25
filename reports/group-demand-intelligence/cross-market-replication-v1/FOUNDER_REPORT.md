@@ -278,7 +278,7 @@ Vs Renaissance actual **6** — cross-market introduced **census stewardship deb
 **RENAISSANCE DEFAULT LOGIC:** NO  
 **JEV PRODUCTION BEHAVIOR CHANGED:** NO  
 
-**FINAL SHA:** `aed6fd88227bd2c4ade282f1c1c375c800ef919c`  
+**FINAL SHA:** `9edc930210b37638e055d6011b055fc60ad014b1` (architecture `aed6fd8`)  
 **PUSH:** PASS  
 **FILES LEFT DIRTY:** market-alerts worktree + unrelated local artifacts (not committed)
 
