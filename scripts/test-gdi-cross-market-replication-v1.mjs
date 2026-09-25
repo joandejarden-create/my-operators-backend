@@ -82,17 +82,16 @@ check("us_hotel_still_gets_us_templates", () => {
   assert.ok(domains.includes("asaecenter.org"));
 });
 
-check("w_rome_config_onboarded_provisional", () => {
+check("w_rome_config_onboarded_canonical", () => {
   assert.equal(isHotelOnboardedForGdi(W_ROME), true);
-  assert.equal(resolveCanonicalHotelId(W_ROME), null);
+  assert.equal(resolveCanonicalHotelId(W_ROME), "rece0or38cxo3Fymb");
   const cfg = JSON.parse(
     fs.readFileSync(
       path.join(ROOT, "config/group-demand-intelligence/hotels/gdi_hotel_w_rome.json"),
       "utf8"
     )
   );
-  assert.equal(cfg.country, "Italy");
-  assert.equal(cfg.aliases.censusRecordId, null);
+  assert.equal(cfg.redirectTo, "rece0or38cxo3Fymb");
 });
 
 check("generic_seed_w_rome_no_bleed", () => {

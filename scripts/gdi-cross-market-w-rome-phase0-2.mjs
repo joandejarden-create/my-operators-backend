@@ -95,19 +95,23 @@ async function main() {
         "locale pack IT from country",
         "catchment km bands from archetype",
       ],
-      MISSING: [
-        "Hotel Property Census record id",
-        "Italy census inventory",
-        "latitude/longitude company-validated (approx from address only)",
-        "owner / asset manager",
-        "year built / renovated",
-        "certified ADP peer pack",
-      ],
-      STEWARDSHIP_REQUIRED: [
-        "Europe / Italy HPC insert for W Rome",
-        "ADP peer set approval",
-        "promote provisional gdi_hotel_w_rome → HPC rec…",
-      ],
+      MISSING: canonical
+        ? ["company-validated owner/AM", "year built / renovated", "certified ADP peer pack"]
+        : [
+            "Hotel Property Census record id",
+            "Italy census inventory",
+            "latitude/longitude company-validated (approx from address only)",
+            "owner / asset manager",
+            "year built / renovated",
+            "certified ADP peer pack",
+          ],
+      STEWARDSHIP_REQUIRED: canonical
+        ? ["ADP peer set approval", "ADP baseline period"]
+        : [
+            "Europe / Italy HPC insert for W Rome",
+            "ADP peer set approval",
+            "promote provisional gdi_hotel_w_rome → HPC rec…",
+          ],
     },
     localeSupport: {
       itPackPresent: Boolean(LOCALE_PACKS.it),
@@ -117,6 +121,8 @@ async function main() {
   };
 
   fs.writeFileSync(path.join(OUT, "PHASE0_READINESS.json"), JSON.stringify(phase0, null, 2));
+
+  const seedHotelId = canonical || HOTEL_ID;
 
   if (APPLY && phase0.blockingForApply) {
     const refuse = {
@@ -131,8 +137,8 @@ async function main() {
     process.exit(2);
   }
 
-  const first = proposeHotelOnboardSeed(HOTEL_ID, { now: fixedNow });
-  const second = proposeHotelOnboardSeed(HOTEL_ID, { now: fixedNow });
+  const first = proposeHotelOnboardSeed(seedHotelId, { now: fixedNow });
+  const second = proposeHotelOnboardSeed(seedHotelId, { now: fixedNow });
   const recreate = compareOnboardSeedProposals(first, second);
   const weekly = assessWeeklyReadinessFromSeed(first);
 

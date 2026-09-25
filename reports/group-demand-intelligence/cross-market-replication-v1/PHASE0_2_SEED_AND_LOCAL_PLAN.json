@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-25T09:27:45.403Z",
+  "generatedAt": "2026-09-25T10:17:35.346Z",
   "hotelId": "gdi_hotel_w_rome",
   "phase0": {
     "hotel": "W Rome",
     "provisionalHotelId": "gdi_hotel_w_rome",
-    "canonicalHotelId": null,
-    "censusStatus": "MISSING_FROM_CENSUS_BLOCKING",
+    "canonicalHotelId": "rece0or38cxo3Fymb",
+    "censusStatus": "RESOLVED",
     "country": "Italy",
     "market": "Rome",
     "officialFacts": {
@@ -41,17 +41,13 @@
         "catchment km bands from archetype"
       ],
       "MISSING": [
-        "Hotel Property Census record id",
-        "Italy census inventory",
-        "latitude/longitude company-validated (approx from address only)",
-        "owner / asset manager",
+        "company-validated owner/AM",
         "year built / renovated",
         "certified ADP peer pack"
       ],
       "STEWARDSHIP_REQUIRED": [
-        "Europe / Italy HPC insert for W Rome",
         "ADP peer set approval",
-        "promote provisional gdi_hotel_w_rome → HPC rec…"
+        "ADP baseline period"
       ]
     },
     "localeSupport": {
@@ -64,7 +60,7 @@
         "gl": "it"
       }
     },
-    "blockingForApply": true
+    "blockingForApply": false
   },
   "seed": {
     "fits": 7,
@@ -163,174 +159,11 @@
     ],
     "note": "Shadow-only reuse of GDI Jev decide(); never mutates ADP snapshot or Airtable overlay."
   },
-  "jevSeed": {
-    "ok": true,
-    "shadow": true,
-    "appliedToSeed": false,
-    "applyReady": false,
-    "calls": 10,
-    "latencyMs": 5220,
-    "agreement": 10,
-    "agreementPct": 100,
-    "jevBetter": 0,
-    "currentBetter": 0,
-    "unknown": 0,
-    "highConfWrong": 0,
-    "technicalFallbacks": 0,
-    "policyFallbacks": 0,
-    "note": "Seed-phase Jev quality mostly UNKNOWN without research outcomes; shadow only.",
-    "sample": [
-      {
-        "targetId": "gdirt_demand_generator_10d76909d0",
-        "targetType": "DEMAND_GENERATOR",
-        "deterministicPriority": "HIGH",
-        "deterministicPlaybook": "DEMAND_GENERATOR",
-        "jevPriority": "RESEARCH_NOW",
-        "jevPlaybook": "LODGING_HOUSING",
-        "finalPolicyPriority": "RESEARCH_NOW",
-        "finalPolicyPlaybook": "DEMAND_GENERATOR",
-        "shadow": true,
-        "appliedToSeed": false,
-        "agreement": true,
-        "technicalFallback": false
-      },
-      {
-        "targetId": "gdirt_demand_generator_53296b34f8",
-        "targetType": "DEMAND_GENERATOR",
-        "deterministicPriority": "MEDIUM",
-        "deterministicPlaybook": "DEMAND_GENERATOR",
-        "jevPriority": "RESEARCH_NOW",
-        "jevPlaybook": "LODGING_HOUSING",
-        "finalPolicyPriority": "DEFER",
-        "finalPolicyPlaybook": "DEMAND_GENERATOR",
-        "shadow": true,
-        "appliedToSeed": false,
-        "agreement": true,
-        "technicalFallback": false
-      },
-      {
-        "targetId": "gdirt_demand_generator_198edcefd8",
-        "targetType": "DEMAND_GENERATOR",
-        "deterministicPriority": "MEDIUM",
-        "deterministicPlaybook": "DEMAND_GENERATOR",
-        "jevPriority": "RESEARCH_NOW",
-        "jevPlaybook": "LODGING_HOUSING",
-        "finalPolicyPriority": "DEFER",
-        "finalPolicyPlaybook": "DEMAND_GENERATOR",
-        "shadow": true,
-        "appliedToSeed": false,
-        "agreement": true,
-        "technicalFallback": false
-      },
-      {
-        "targetId": "gdirt_demand_generator_9e75b2b0f9",
-        "targetType": "DEMAND_GENERATOR",
-        "deterministicPriority": "MEDIUM",
-        "deterministicPlaybook": "DEMAND_GENERATOR",
-        "jevPriority": "RESEARCH_NOW",
-        "jevPlaybook": "LODGING_HOUSING",
-        "finalPolicyPriority": "DEFER",
-        "finalPolicyPlaybook": "DEMAND_GENERATOR",
-        "shadow": true,
-        "appliedToSeed": false,
-        "agreement": true,
-        "technicalFallback": false
-      },
-      {
-        "targetId": "gdirt_demand_generator_cad2869983",
-        "targetType": "DEMAND_GENERATOR",
-        "deterministicPriority": "HIGH",
-        "deterministicPlaybook": "DEMAND_GENERATOR",
-        "jevPriority": "RESEARCH_NOW",
-        "jevPlaybook": "LODGING_HOUSING",
-        "finalPolicyPriority": "RESEARCH_NOW",
-        "finalPolicyPlaybook": "DEMAND_GENERATOR",
-        "shadow": true,
-        "appliedToSeed": false,
-        "agreement": true,
-        "technicalFallback": false
-      }
-    ]
-  },
-  "jevAdp": {
-    "ok": true,
-    "version": "adp_jev_shadow_adapter_v1",
-    "shadow": true,
-    "appliedToAdp": false,
-    "apply": false,
-    "applyReady": false,
-    "productionAdpBehaviorChanged": false,
-    "calls": 4,
-    "latencyMs": 880,
-    "jevBetter": 0,
-    "currentBetter": 0,
-    "same": 4,
-    "unknown": 0,
-    "highConfWrong": 0,
-    "forbiddenEnforced": [
-      "finding_truth",
-      "root_cause_truth",
-      "competitor_identity",
-      "final_action",
-      "customer_narrative",
-      "persistence_authorization",
-      "canonical_identity"
-    ],
-    "sample": [
-      {
-        "label": "marriott_romwv",
-        "decisionType": "SOURCE_UTILITY",
-        "existingDecision": "PRIMARY_EVIDENCE",
-        "jevSelected": "PRIMARY_EVIDENCE",
-        "finalPolicyDecision": "PRIMARY_EVIDENCE",
-        "shadow": true,
-        "appliedToAdp": false,
-        "agreement": true,
-        "technicalFallback": false,
-        "confidence": 0.16
-      },
-      {
-        "label": "ufi",
-        "decisionType": "SOURCE_UTILITY",
-        "existingDecision": "PRIMARY_EVIDENCE",
-        "jevSelected": "NOISE",
-        "finalPolicyDecision": "PRIMARY_EVIDENCE",
-        "shadow": true,
-        "appliedToAdp": false,
-        "agreement": true,
-        "technicalFallback": false,
-        "confidence": 0.36
-      },
-      {
-        "label": "icca",
-        "decisionType": "SOURCE_UTILITY",
-        "existingDecision": "PRIMARY_EVIDENCE",
-        "jevSelected": "LOW_VALUE",
-        "finalPolicyDecision": "PRIMARY_EVIDENCE",
-        "shadow": true,
-        "appliedToAdp": false,
-        "agreement": true,
-        "technicalFallback": false,
-        "confidence": 0.31
-      },
-      {
-        "label": "f1",
-        "decisionType": "FOLLOWUP_TYPE",
-        "existingDecision": "SOURCE",
-        "jevSelected": "LODGING",
-        "finalPolicyDecision": "SOURCE",
-        "shadow": true,
-        "appliedToAdp": false,
-        "agreement": true,
-        "technicalFallback": false,
-        "confidence": 0.79
-      }
-    ],
-    "note": "ADP Jev shadow ranks evidence/source/follow-up only; findings untouched."
-  },
+  "jevSeed": null,
+  "jevAdp": null,
   "apply": {
     "attempted": false,
     "applied": false,
-    "reason": "census_missing"
+    "reason": "dry_run_default"
   }
 }
