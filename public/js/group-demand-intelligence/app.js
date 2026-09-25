@@ -804,6 +804,20 @@
     return kind || "UNKNOWN";
   }
 
+  /** Never show discovery vertical slugs (e.g. assoc_development_district_ass) in drawer. */
+  function customerFacingSegment(o) {
+    var seg = (o && o.segment) || "";
+    if (/^[a-z][a-z0-9]*(?:_[a-z0-9]+){1,8}$/.test(String(seg).trim()) && !/\s/.test(String(seg))) {
+      return (
+        o.demandSignalTypeLabel ||
+        o.opportunityTypeLabel ||
+        o.demandFamilyLabel ||
+        "Discovered"
+      );
+    }
+    return seg || o.opportunityTypeLabel || "—";
+  }
+
   function fitLabel(key) {
     var map = {
       physicalFit: "Physical Fit",
@@ -921,7 +935,7 @@
       "</p><p>" +
       esc(o.organizationName) +
       " · " +
-      esc(o.segment) +
+      esc(customerFacingSegment(o)) +
       " · " +
       esc(o.eventStartDate || "TBD") +
       " → " +
@@ -954,14 +968,12 @@
       esc(fmtVal(o.publishedPeakRooms)) +
       "</p></div>" +
       '<div class="gdi-section"><h3>6. Why This Hotel?</h3><p>' +
-      esc(o.summaryWhyHotel || o.fitExplanation) +
-      "</p>" +
-      (o.hotelOpportunityThesis || o.bethesdaWinThesis
-        ? "<p><strong>Hotel opportunity thesis:</strong> " +
-          esc(o.hotelOpportunityThesis || o.bethesdaWinThesis) +
-          "</p>"
-        : "") +
-      "</div>" +
+      esc(
+        o.summaryWhyHotel ||
+          o.fitExplanation ||
+          "Insufficient hotel-specific fit evidence after research."
+      ) +
+      "</p></div>" +
       '<div class="gdi-section"><h3>7. Why Now?</h3><p><strong>' +
       esc(o.bookingWindowLabel || o.bookingWindowStatus) +
       "</strong></p><p>" +

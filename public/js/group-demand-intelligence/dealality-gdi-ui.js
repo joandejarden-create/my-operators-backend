@@ -1182,6 +1182,14 @@
     var title = scrubEventDatesFromText(it.title || "") || "—";
     var org = it.organizationName || linked.organizationName || "—";
     var segment = it.segment || linked.segment || "";
+    if (/^[a-z][a-z0-9]*(?:_[a-z0-9]+){1,8}$/.test(String(segment).trim()) && !/\s/.test(String(segment))) {
+      segment =
+        linked.demandSignalTypeLabel ||
+        linked.opportunityTypeLabel ||
+        it.demandSignalTypeLabel ||
+        it.opportunityTypeLabel ||
+        "Discovered";
+    }
     var bookingStatus =
       linked.bookingWindowStatus || it.bookingWindowStatus || "";
     var summary = trunc(

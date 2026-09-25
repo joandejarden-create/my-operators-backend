@@ -188,8 +188,22 @@ function projectOpportunitiesCommercialQuality(opportunities, { nowDate } = {}) 
   return (opportunities || []).map((o) => {
     const cq = applyLiveCommercialQuality(o, { nowDate: nowDate || asOfToday() });
     const relatedIds = related[o.id] || [];
+    // Never leak discovery vertical slugs into customer segment
+    let segment = cq.segment;
+    if (
+      segment &&
+      /^[a-z][a-z0-9]*(?:_[a-z0-9]+){1,8}$/.test(String(segment).trim()) &&
+      !/\s/.test(String(segment))
+    ) {
+      segment =
+        cq.demandSignalTypeLabel ||
+        cq.opportunityTypeLabel ||
+        cq.demandFamilyLabel ||
+        "Discovered";
+    }
     return {
       ...cq,
+      segment,
       relatedOpportunityIds: relatedIds,
       relatedOpportunityCount: relatedIds.length,
     };
