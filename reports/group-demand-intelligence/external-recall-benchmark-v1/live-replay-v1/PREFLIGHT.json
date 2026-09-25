@@ -1,0 +1,157 @@
+{
+  "hotelId": "recLuxvwwxID7U2B8",
+  "hotelName": "Bethesda Marriott",
+  "webhound": "OFF",
+  "providerPath": {
+    "primary": "NATIVE",
+    "fallback": "PARALLEL",
+    "webhound": "UNAVAILABLE",
+    "classification": "EVALUATION_ONLY",
+    "gate": {
+      "escalate": true,
+      "triggers": [
+        "INSUFFICIENT_OFFICIAL_SOURCES",
+        "UNRESOLVED_VENUE_STATUS",
+        "UNRESOLVED_WHO"
+      ],
+      "rationale": "Escalate to Parallel: INSUFFICIENT_OFFICIAL_SOURCES, UNRESOLVED_VENUE_STATUS, UNRESOLVED_WHO",
+      "policy": {
+        "mode": "GATED_FALLBACK",
+        "neverAutomaticCoPrimary": true,
+        "parallelIsNotCanonicalTruth": true,
+        "minConfidenceToSkip": 55,
+        "minOfficialSourceCountToSkip": 1,
+        "maxNativeDiscoveriesBeforeSparse": 2
+      },
+      "hotelId": null,
+      "taskKind": null
+    },
+    "audit": {
+      "providerPath": "NATIVE_PLUS_GATED_PARALLEL",
+      "webhoundRequired": false
+    }
+  },
+  "budget": {
+    "maxQueries": 40,
+    "maxPagesPerQuery": 2,
+    "maxExtractBatches": 12,
+    "maxCostUsd": 8,
+    "maxRuntimeMinutes": 25
+  },
+  "themes": [
+    "MEDICAL_SCIENTIFIC",
+    "HEALTHCARE_ASSOCIATION",
+    "CORPORATE_HEALTHCARE",
+    "INSTITUTIONAL_CAMPUS_ADJACENT",
+    "GOVERNMENT_CONTRACTOR",
+    "FEDERAL_TECHNOLOGY",
+    "ASSOCIATION_ADVOCACY",
+    "UNIVERSITY",
+    "SPORTS_TOURNAMENT"
+  ],
+  "knownOrgsUsed": [
+    "National Institutes of Health",
+    "Walter Reed National Military Medical Center",
+    "National Association of Development Organizations (NADO) / DDAA",
+    "AHIMA",
+    "Maryland State Youth Soccer Association (MSYSA)",
+    "American College of Cardiology (ACC)",
+    "American Academy of Neurology",
+    "Potomac Soccer Association"
+  ],
+  "queryCountPlanned": 47,
+  "tasks": [
+    {
+      "vertical": "open_universe_sector",
+      "mode": "OPEN_UNIVERSE_DISCOVERY",
+      "queryCount": 6,
+      "note": "OPEN_UNIVERSE_DISCOVERY|sector_year_meeting"
+    },
+    {
+      "vertical": "open_universe_calendar",
+      "mode": "OPEN_UNIVERSE_DISCOVERY",
+      "queryCount": 4,
+      "note": "OPEN_UNIVERSE_DISCOVERY|future_meetings_calendar"
+    },
+    {
+      "vertical": "destination_tbd",
+      "mode": "OPEN_UNIVERSE_DISCOVERY",
+      "queryCount": 4,
+      "note": "OPEN_UNIVERSE_DISCOVERY|destination_tbd"
+    },
+    {
+      "vertical": "sports_stay",
+      "mode": "OPEN_UNIVERSE_DISCOVERY",
+      "queryCount": 1,
+      "note": "OPEN_UNIVERSE_DISCOVERY|sports_stay_to_play"
+    },
+    {
+      "vertical": "fixed_venue_housing",
+      "mode": "EVENT_SERIES_EXPANSION",
+      "queryCount": 1,
+      "note": "EVENT_SERIES_EXPANSION|fixed_venue_open_housing"
+    },
+    {
+      "vertical": "gdi-future-cal-01",
+      "mode": "EVENT_SERIES_EXPANSION",
+      "queryCount": 3,
+      "note": "EVENT_SERIES_EXPANSION|GDI-FUTURE-CAL-01"
+    },
+    {
+      "vertical": "gdi-fixed-venue-housing-01",
+      "mode": "EVENT_SERIES_EXPANSION",
+      "queryCount": 3,
+      "note": "EVENT_SERIES_EXPANSION|GDI-FIXED-VENUE-HOUSING-01"
+    },
+    {
+      "vertical": "gdi-sports-stay-01",
+      "mode": "OPEN_UNIVERSE_DISCOVERY",
+      "queryCount": 3,
+      "note": "OPEN_UNIVERSE_DISCOVERY|GDI-SPORTS-STAY-01"
+    },
+    {
+      "vertical": "event_series_national_institutes_of_h",
+      "mode": "EVENT_SERIES_EXPANSION",
+      "queryCount": 3,
+      "note": "EVENT_SERIES_EXPANSION|known_org:National Institutes of Health"
+    },
+    {
+      "vertical": "event_series_walter_reed_national_mil",
+      "mode": "EVENT_SERIES_EXPANSION",
+      "queryCount": 3,
+      "note": "EVENT_SERIES_EXPANSION|known_org:Walter Reed National Military Medical Center"
+    },
+    {
+      "vertical": "event_series_national_association_of_",
+      "mode": "EVENT_SERIES_EXPANSION",
+      "queryCount": 3,
+      "note": "EVENT_SERIES_EXPANSION|known_org:National Association of Development Organizations (NADO) / DDAA"
+    },
+    {
+      "vertical": "event_series_ahima",
+      "mode": "EVENT_SERIES_EXPANSION",
+      "queryCount": 3,
+      "note": "EVENT_SERIES_EXPANSION|known_org:AHIMA"
+    },
+    {
+      "vertical": "event_series_maryland_state_youth_soc",
+      "mode": "EVENT_SERIES_EXPANSION",
+      "queryCount": 3,
+      "note": "EVENT_SERIES_EXPANSION|known_org:Maryland State Youth Soccer Association (MSYSA)"
+    },
+    {
+      "vertical": "known_nih_calendar",
+      "mode": "KNOWN_TARGET_MONITORING",
+      "queryCount": 4,
+      "note": "KNOWN_TARGET_MONITORING|nih_demand_anchor_calendar"
+    },
+    {
+      "vertical": "advocacy_flyin",
+      "mode": "OPEN_UNIVERSE_DISCOVERY",
+      "queryCount": 3,
+      "note": "OPEN_UNIVERSE_DISCOVERY|advocacy_dmv"
+    }
+  ],
+  "benchmarkForbiddenGuard": "PASS",
+  "dryRun": false
+}
