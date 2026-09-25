@@ -1,0 +1,110 @@
+{
+  "hotelId": "gdi_hotel_w_rome",
+  "displayName": "W Rome",
+  "country": "Italy",
+  "city": "Rome",
+  "aliases": {
+    "adpPropertyId": "adp_w_rome",
+    "marriottPropertyCode": "ROMWV",
+    "censusRecordId": null,
+    "provisionalGdiHotelId": "gdi_hotel_w_rome",
+    "note": "Provisional GDI key — Hotel Property Census has no Italy/W Rome row yet. Promote to HPC rec… after Europe census stewardship insert; do not invent census ID."
+  },
+  "adpFixturePath": "fixtures/ai-demand-positioning/w-rome-property-profile.json",
+  "geo": {
+    "latitude": 41.9065,
+    "longitude": 12.4881
+  },
+  "commercialPriorities": {
+    "targetSegments": [],
+    "coreTargetPeakRoomsMin": 20,
+    "coreTargetPeakRoomsMax": 90,
+    "allowSmallerIfCommerciallyMeaningful": true,
+    "demandAnchorFocus": [],
+    "weekendFocus": false,
+    "notes": "HOTEL_SPECIFIC_DATA from official Marriott ROMWV facts (148 keys, ~60 m² / 646 sq ft meeting / 2 studios). Peak band sized for lifestyle/luxury primary pursuit; large citywide congress demand is overflow/destination-relevant only when housing access is evidenced. targetSegments intentionally empty — discovery must not be seeded with demand-type assumptions."
+  },
+  "capabilityProfile": {
+    "totalGuestrooms": 148,
+    "totalMeetingSpaceSqFt": 646,
+    "largestBallroomSqFt": 323,
+    "largestTheaterCapacity": 30,
+    "meetingRoomsIndoor": 2,
+    "outdoorEventSpace": false,
+    "softBrand": "W Hotels (Marriott)",
+    "serviceLevel": "lifestyle_luxury_urban",
+    "classification": "destination_lifestyle_luxury",
+    "country": "Italy",
+    "notes": "HOTEL_SPECIFIC_DATA from Marriott official events page + Cvent — not hardcoded into scoring engine. Compact meeting inventory vs large Rome congress hotels."
+  },
+  "demandTerritory": {
+    "label": "Rome / Centro destination",
+    "country": "Italy",
+    "includes": [
+      "Rome historic center where W Rome is a credible alternative",
+      "selected Rome destination demand when lodging access is realistic",
+      "selected Italy destination overflow only when housing access is evidenced"
+    ],
+    "evaluationQuestion": "Could W Rome realistically capture this group demand given rooms, meeting limits, lifestyle positioning, and Rome destination relevance?",
+    "classifications": [
+      "TERRITORY_CORE",
+      "TERRITORY_NEARBY",
+      "TERRITORY_COMPETITIVE",
+      "TERRITORY_STRETCH",
+      "OUTSIDE_REALISTIC_TERRITORY"
+    ],
+    "displayLabels": {
+      "TERRITORY_CORE": "Rome Center Core",
+      "TERRITORY_NEARBY": "Nearby Rome Corridor",
+      "TERRITORY_COMPETITIVE": "Rome Competitive",
+      "TERRITORY_STRETCH": "Italy Destination Stretch",
+      "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+    },
+    "classificationKeywords": {
+      "TERRITORY_CORE": [
+        "via veneto",
+        "via liguria",
+        "ludovisi",
+        "barberini",
+        "quirinale",
+        "centro storico"
+      ],
+      "TERRITORY_NEARBY": [
+        "trastevere",
+        "prati",
+        "parioli",
+        "termini",
+        "flaminio",
+        "vatican"
+      ],
+      "TERRITORY_COMPETITIVE": [
+        "rome",
+        "roma",
+        "lazio",
+        "fiumicino",
+        "eur"
+      ],
+      "TERRITORY_STRETCH": [
+        "italy",
+        "italia",
+        "milan",
+        "florence",
+        "naples"
+      ],
+      "OUTSIDE_REALISTIC_TERRITORY": [
+        "bethesda",
+        "dmv",
+        "times square",
+        "manhattan",
+        "new york"
+      ]
+    }
+  },
+  "gdiOnboarding": {
+    "status": "PROVISIONAL_PENDING_CENSUS",
+    "censusLinkStatus": "MISSING",
+    "blocking": ["Hotel Property Census record for W Rome / Italy"],
+    "officialWebsite": "https://www.marriott.com/en-us/hotels/romwv-w-rome/overview/",
+    "marsha": "ROMWV"
+  }
+}
