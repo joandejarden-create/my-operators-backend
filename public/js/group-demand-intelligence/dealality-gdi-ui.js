@@ -1515,10 +1515,16 @@
   function whoShouldSalesContactHtml(o, whoFn) {
     if (typeof whoFn === "function") return whoFn(o);
     var c = o.primaryContact;
-    var pathLabel = o.commercialContactPathLabel || o.commercialContactPath || null;
+    var drawer = o.customerContactDrawer || null;
+    var pathLabel =
+      (drawer && drawer.functionalPath) ||
+      o.commercialContactPathLabel ||
+      o.commercialContactPath ||
+      null;
     var tier = o.contactTier || (c && c.contactTier) || null;
     var tierLabel =
       o.contactTierLabel ||
+      (drawer && drawer.tierLabel) ||
       (tier === "NAMED_DIRECT"
         ? "Named decision-maker with direct reachability"
         : tier === "NAMED_PARTIAL"
@@ -1531,6 +1537,7 @@
                 ? "Generic inbox only"
                 : null);
     var officialUrl =
+      (drawer && drawer.source) ||
       o.contactOfficialUrl ||
       (c && (c.officialContactUrl || c.sourceUrl)) ||
       o.officialSource ||
@@ -1549,6 +1556,19 @@
       (tier === "NAMED_PARTIAL" || tier === "NAMED_DIRECT" || !tier)
         ? '<p class="gdi-contact-cta"><button type="button" class="gdi-btn gdi-btn--secondary" data-gdi-contact-cta="1">Get Contact Details</button></p>'
         : "";
+    var ceilingCopy =
+      (drawer && drawer.publicCeilingCopy) ||
+      (tier === "NO_CONTACT" || tier === "GENERIC_ONLY" || (!c && !pathLabel)
+        ? "Named event contact not publicly identified yet"
+        : null);
+    var whyRelevant =
+      (drawer && drawer.whyRelevant) ||
+      o.whoPrimaryReason ||
+      (c && c.whyThisContact) ||
+      o.whyThisContact ||
+      null;
+    var actionHint =
+      (drawer && drawer.recommendedAction) || o.recommendedContactAction || null;
 
     if (
       !c &&
@@ -1562,18 +1582,38 @@
         (tierLabel
           ? '<p class="gdi-contact-kind-label"><strong>' + esc(tierLabel) + "</strong></p>"
           : "") +
-        "<p><strong>Contact path:</strong> " +
+        "<p><strong>Primary Contact:</strong> " +
         esc(pathLabel || "Organization / official program contact path") +
         "</p>" +
+        (drawer && drawer.role
+          ? "<p><strong>Role:</strong> " + esc(drawer.role) + "</p>"
+          : "") +
+        (o.organizationName
+          ? "<p><strong>Organization:</strong> " + esc(o.organizationName) + "</p>"
+          : "") +
+        (whyRelevant
+          ? "<p><strong>Why Relevant:</strong> " + esc(whyRelevant) + "</p>"
+          : "") +
         officialLink +
-        '<p class="gdi-contact-quality-quiet">No named individual published — use the organization path.</p>'
+        '<p class="gdi-contact-quality-quiet">No named individual published — use the organization path.</p>' +
+        (actionHint
+          ? '<p class="gdi-contact-action">' + esc(actionHint) + "</p>"
+          : "")
       );
     }
 
     if (!c) {
       return (
-        '<p class="gdi-contact-quality-quiet">Contact research in progress for this opportunity.</p>' +
-        officialLink
+        '<p class="gdi-contact-quality-quiet">' +
+        esc(ceilingCopy || "Named event contact not publicly identified yet") +
+        "</p>" +
+        (pathLabel
+          ? "<p><strong>Functional Path:</strong> " + esc(pathLabel) + "</p>"
+          : "") +
+        officialLink +
+        (actionHint
+          ? '<p class="gdi-contact-action">' + esc(actionHint) + "</p>"
+          : "")
       );
     }
 
@@ -1607,11 +1647,11 @@
       (pathLabel
         ? "<p><strong>Contact path:</strong> " + esc(pathLabel) + "</p>"
         : "") +
-      "<p><strong>Name:</strong> " +
+      "<p><strong>Primary Contact:</strong> " +
       esc(c.name || "—") +
       "</p>" +
       "<p><strong>Role:</strong> " +
-      esc(c.role || c.title || "—") +
+      esc((drawer && drawer.role) || c.role || c.title || "—") +
       "</p>" +
       "<p><strong>Organization:</strong> " +
       esc(c.organization || o.organizationName || "—") +
@@ -1620,12 +1660,19 @@
       (c.phone ? "<p><strong>Phone:</strong> " + esc(c.phone) + "</p>" : "") +
       getDetailsCta +
       officialLink +
-      "<p><strong>Why this contact:</strong> " +
-      esc(o.whoPrimaryReason || c.whyThisContact || o.whyThisContact || "—") +
+      "<p><strong>Why Relevant:</strong> " +
+      esc(whyRelevant || "—") +
       "</p>" +
-      (o.contactGradeLabel || c.contactGradeLabel
+      (actionHint
+        ? '<p class="gdi-contact-action">' + esc(actionHint) + "</p>"
+        : "") +
+      (o.contactGradeLabel || c.contactGradeLabel || (drawer && drawer.grade)
         ? '<p class="gdi-contact-quality-quiet">Contact quality: ' +
-          esc(o.contactGradeLabel || c.contactGradeLabel) +
+          esc(
+            o.contactGradeLabel ||
+              c.contactGradeLabel ||
+              "Grade " + ((drawer && drawer.grade) || "")
+          ) +
           (o.contactConfidence != null || c.contactConfidence != null
             ? " · Confidence " + esc(o.contactConfidence ?? c.contactConfidence)
             : "") +
