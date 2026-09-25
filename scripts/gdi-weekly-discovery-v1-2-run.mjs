@@ -35,6 +35,8 @@ const FORCE_DUE = process.argv.includes("--force-due");
 const HOTEL_DEFAULT = "recLuxvwwxID7U2B8";
 const HOTEL_NAMES = {
   recLuxvwwxID7U2B8: "Bethesda Marriott",
+  recG66DQJKP2c0UNh: "Renaissance New York Times Square Hotel",
+  recIwaP1etgx2g9nA: "Cambridge Beaches Resort & Spa",
 };
 
 function argVal(flag) {
