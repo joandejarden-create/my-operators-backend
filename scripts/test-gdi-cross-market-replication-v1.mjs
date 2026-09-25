@@ -21,7 +21,10 @@ import {
   proposeMarketLocalTargets,
   classifyCatchmentBand,
   CATCHMENT_BAND,
+  mapEvidenceEntityKindToTargetType,
 } from "../lib/group-demand-intelligence/research-coverage/market-local-expansion.js";
+import { buildScenarioUniverse } from "../lib/ai-demand-positioning/prompt-universe/scenario-registry.js";
+import { loadPropertyProfile } from "../lib/ai-demand-positioning/data-model.js";
 import { COUNTRY_LOCALE, LOCALE_PACKS } from "../lib/group-demand-intelligence/discovery-recall-v4.js";
 import {
   describeAdpJevShadowAdapter,
@@ -169,6 +172,21 @@ check("no_w_rome_if_switches_in_lib", () => {
     assert.ok(!/hotelId\s*===\s*['\"]gdi_hotel_w_rome['\"]/.test(src));
     assert.ok(!/if\s*\(\s*country\s*===\s*['\"]Italy['\"]\s*&&\s*city/i.test(src));
   }
+});
+
+check("market_local_entity_kind_maps_to_valid_target_type", () => {
+  assert.equal(mapEvidenceEntityKindToTargetType("EVENT_SOURCE"), "OFFICIAL_CALENDAR");
+  assert.equal(mapEvidenceEntityKindToTargetType("VENUE"), "VENUE_PAGE");
+  assert.equal(mapEvidenceEntityKindToTargetType("PROGRAM"), "PROGRAM");
+});
+
+check("adp_generic_profile_scenarios_for_unpacked_markets", () => {
+  const profile = loadPropertyProfile("adp_w_rome");
+  assert.ok(profile);
+  const universe = buildScenarioUniverse(profile);
+  assert.ok(universe.length >= 10, "generic fallback should yield scenarios");
+  assert.ok(universe.every((s) => s.source === "generic_profile" || s.source === "standard" || s.source === "property_specific"));
+  assert.ok(!universe.some((s) => /bethesda|times square|nih|dmv/i.test(s.query || "")));
 });
 
 console.log(`\n${passed} passed, ${failed} failed`);

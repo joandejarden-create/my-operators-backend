@@ -1,6 +1,5 @@
 /**
- * Three-hotel share/auth isolation matrix — Bethesda, Renaissance, W Rome (provisional).
- * Structural capability isolation; does not require live Airtable rows for W Rome.
+ * Three-hotel share/auth isolation matrix — Bethesda, Renaissance, W Rome (canonical).
  */
 import assert from "node:assert/strict";
 import {
@@ -11,7 +10,7 @@ import {
 
 const BETHESDA = "recLuxvwwxID7U2B8";
 const RENAISSANCE = "recG66DQJKP2c0UNh";
-const W_ROME = "gdi_hotel_w_rome";
+const W_ROME = "rece0or38cxo3Fymb";
 const HOTELS = [BETHESDA, RENAISSANCE, W_ROME];
 
 process.env.GDI_SHARE_CAPABILITY_ALLOW_DEV_SECRET = "1";

@@ -33,15 +33,26 @@ const ROOT = path.resolve(__dirname, "..");
 const APPLY = process.argv.includes("--apply");
 const FORCE_DUE = process.argv.includes("--force-due");
 const HOTEL_DEFAULT = "recLuxvwwxID7U2B8";
-const HOTEL_NAMES = {
-  recLuxvwwxID7U2B8: "Bethesda Marriott",
-  recG66DQJKP2c0UNh: "Renaissance New York Times Square Hotel",
-  recIwaP1etgx2g9nA: "Cambridge Beaches Resort & Spa",
-};
 
 function argVal(flag) {
   const i = process.argv.indexOf(flag);
   return i >= 0 ? process.argv[i + 1] : null;
+}
+
+/** Resolve display name from hotel config when present — no hotel hardcodes. */
+function resolveHotelDisplayName(hotelId) {
+  const cfgPath = path.join(
+    ROOT,
+    "config/group-demand-intelligence/hotels",
+    `${hotelId}.json`
+  );
+  try {
+    if (!fs.existsSync(cfgPath)) return null;
+    const cfg = JSON.parse(fs.readFileSync(cfgPath, "utf8"));
+    return cfg.displayName || cfg.hotelName || null;
+  } catch {
+    return null;
+  }
 }
 
 function gitSha() {
@@ -54,7 +65,7 @@ function gitSha() {
 
 async function main() {
   const hotelId = argVal("--hotel") || HOTEL_DEFAULT;
-  const hotelName = HOTEL_NAMES[hotelId] || hotelId;
+  const hotelName = resolveHotelDisplayName(hotelId) || hotelId;
   const limit = Math.max(1, Number(argVal("--limit") || 8) || 8);
   const contactLimit = Math.max(0, Number(argVal("--contact-limit") || 8) || 8);
   const outDir = path.join(
