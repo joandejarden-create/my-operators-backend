@@ -1,0 +1,104 @@
+{
+  "hotelId": "rec35fExUxCClpOP6",
+  "displayName": "Hilton New York Times Square",
+  "aliases": {
+    "adpPropertyId": "adp_hilton_times_square",
+    "hiltonPropertyCode": "NYCTSHH",
+    "censusRecordId": "rec35fExUxCClpOP6",
+    "identityKey": "ind_hilton_us_nyctshh",
+    "note": "Canonical hotelId is HPC record. No provisional GDI key."
+  },
+  "adpFixturePath": "fixtures/ai-demand-positioning/hilton-times-square-property-profile.json",
+  "geo": {
+    "latitude": 40.755343,
+    "longitude": -73.986047
+  },
+  "commercialPriorities": {
+    "targetSegments": [],
+    "coreTargetPeakRoomsMin": 40,
+    "coreTargetPeakRoomsMax": 220,
+    "allowSmallerIfCommerciallyMeaningful": true,
+    "demandAnchorFocus": [],
+    "weekendFocus": false,
+    "notes": "HOTEL_SPECIFIC_DATA from Hilton NYCTSHH (478 keys, formal meeting ~300 sq ft / 1 private dining room; Sky Bar lounge 2,000 sq ft social-event only). Peak band sized for room-block / housing / overflow primary pursuit — not large in-house association meetings. targetSegments intentionally empty — discovery must not be seeded with demand-type assumptions."
+  },
+  "capabilityProfile": {
+    "totalGuestrooms": 478,
+    "totalMeetingSpaceSqFt": 300,
+    "largestBallroomSqFt": 300,
+    "largestTheaterCapacity": 15,
+    "meetingRoomsIndoor": 1,
+    "socialEventVenueSqFt": 2000,
+    "outdoorEventSpace": false,
+    "softBrand": "Hilton Hotels & Resorts",
+    "serviceLevel": "full_service_urban",
+    "classification": "times_square_midtown_full_service_limited_meetings",
+    "notes": "HOTEL_SPECIFIC_DATA from Hilton official events page — not hardcoded into scoring engine. High room count + limited formal meeting space; lounge is social/private-event product separate from formal meeting total."
+  },
+  "demandTerritory": {
+    "label": "Manhattan Midtown / Times Square",
+    "includes": [
+      "Times Square / Theater District",
+      "Midtown Manhattan where Hilton Times Square is a credible lodging alternative",
+      "selected Manhattan overflow / citywide housing only when lodging access is realistic"
+    ],
+    "evaluationQuestion": "Could Hilton New York Times Square realistically capture this group demand given 478 rooms, limited formal meeting space, and Midtown / Times Square positioning?",
+    "classifications": [
+      "TERRITORY_CORE",
+      "TERRITORY_NEARBY",
+      "TERRITORY_COMPETITIVE",
+      "TERRITORY_STRETCH",
+      "OUTSIDE_REALISTIC_TERRITORY"
+    ],
+    "displayLabels": {
+      "TERRITORY_CORE": "Times Square / Midtown Core",
+      "TERRITORY_NEARBY": "Nearby Manhattan Corridor",
+      "TERRITORY_COMPETITIVE": "Manhattan Competitive",
+      "TERRITORY_STRETCH": "NYC Stretch",
+      "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+    },
+    "classificationKeywords": {
+      "TERRITORY_CORE": [
+        "times square",
+        "theater district",
+        "broadway",
+        "midtown",
+        "42nd street",
+        "west 42"
+      ],
+      "TERRITORY_NEARBY": [
+        "herald square",
+        "penn station",
+        "bryant park",
+        "rockefeller",
+        "grand central",
+        "hells kitchen",
+        "chelsea",
+        "hudson yards"
+      ],
+      "TERRITORY_COMPETITIVE": [
+        "manhattan",
+        "nyc",
+        "new york city",
+        "javits",
+        "upper west",
+        "upper east",
+        "financial district"
+      ],
+      "TERRITORY_STRETCH": [
+        "brooklyn",
+        "queens",
+        "bronx",
+        "long island city",
+        "jersey city"
+      ],
+      "OUTSIDE_REALISTIC_TERRITORY": [
+        "westchester",
+        "long island",
+        "connecticut",
+        "philadelphia",
+        "boston"
+      ]
+    }
+  }
+}
