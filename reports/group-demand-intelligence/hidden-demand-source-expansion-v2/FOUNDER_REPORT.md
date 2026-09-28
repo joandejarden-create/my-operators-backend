@@ -205,4 +205,6 @@ LOCAL-ONLY DEPENDENCY: NO
 
 ## Q. FINAL VERDICT
 
-**GDI HIDDEN DEMAND V2 PASSES — ACTIONABLE HIDDEN DEMAND PROVEN**
+**GDI STRUCTURED EXTRACTION IMPROVED — LODGING SIGNAL STILL TOO WEAK**
+
+(Note: automated gate temporarily labeled ACTIONABLE PROVEN from fit×MEDIUM lodging on a few exhibitor rows; lodging-supported count is only 3 and residual directory/PDF noise remains — do not scale on lodging depth yet.)
