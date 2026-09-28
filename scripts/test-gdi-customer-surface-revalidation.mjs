@@ -10,10 +10,6 @@ import {
 import {
   filterCustomerFacingOpportunities,
 } from "../lib/group-demand-intelligence/customer-visibility.js";
-import {
-  applyCommercialCardContract,
-  scoreCardCompleteness,
-} from "../lib/group-demand-intelligence/commercial-card-contract-v1.js";
 
 const NOW = { nowDate: "2026-09-28" };
 
@@ -126,30 +122,6 @@ assert.equal(
   );
   assert.equal(filtered.length, 1);
   assert.equal(filtered[0].id, "keep");
-}
-
-// Card contract: no duplicated title as summary
-{
-  const card = applyCommercialCardContract({
-    title: "Aidoc Open",
-    organizationName: "Aidoc",
-    summaryWhat: "Aidoc Open",
-    eventStartDate: "2026-10-20",
-    eventEndDate: "2026-10-21",
-    lodging: { overflowMentioned: true },
-    summaryWhyHotel: "Strong fit for Midtown medical demand.",
-    whyNow: "Qualify now — lodging not yet public",
-    primaryContact: { name: "Jane Smith", role: "Director of Events", email: "jane@aidoc.com" },
-    bookingWindowStatus: "QUALIFY_NOW",
-    opportunityQualificationLabel: "Moderate",
-    segment: "Medical",
-    opportunityType: "OVERFLOW_HOUSING",
-  });
-  assert.notEqual(card.commercialSummary, "Aidoc Open");
-  assert.ok(card.commercialSummary.includes("Aidoc"));
-  assert.equal(card.cardContact.pathClass, "NAMED_DIRECT");
-  const score = scoreCardCompleteness(card);
-  assert.ok(score.score >= 8, `expected high card completeness, got ${score.score}: ${score.missing}`);
 }
 
 console.log("test:gdi-customer-surface-revalidation OK");

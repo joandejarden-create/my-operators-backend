@@ -1158,16 +1158,8 @@
       ),
       hotelFitScore: o.hotelFitScore,
       evidenceConfidence: o.evidenceConfidence,
-      summaryWhat: o.commercialSummary || o.summaryWhat,
-      commercialSummary: o.commercialSummary || null,
-      commercialMotion: o.commercialMotion || null,
-      commercialMotionLabel: o.commercialMotionLabel || null,
-      demandFamilyLabel: o.demandFamilyLabel || null,
-      cardHotelFitLine: o.cardHotelFitLine || null,
-      cardWhyNowLine: o.cardWhyNowLine || null,
-      cardFitBadge: o.cardFitBadge || null,
-      cardContact: o.cardContact || null,
-      whyNow: o.cardWhyNowLine || o.whyNow,
+      summaryWhat: o.summaryWhat,
+      whyNow: o.whyNow,
       recommendedNextStep: o.recommendedAction || o.recommendedNextStep,
       primaryContact: o.primaryContact,
       opportunityQualificationLabel:
@@ -1180,6 +1172,7 @@
   /**
    * Brand Explorer brand-card shell for opportunity tiles.
    * Classification: REUSABLE_PRODUCT_UI
+   * Presentation contract: pre-V5A Bethesda tile structure (eligibility is separate).
    */
   function opportunityTileHtml(it, linked, activeFilters) {
     linked = linked || {};
@@ -1200,85 +1193,36 @@
     }
     var bookingStatus =
       linked.bookingWindowStatus || it.bookingWindowStatus || "";
-    var motion =
-      linked.commercialMotionLabel ||
-      it.commercialMotionLabel ||
-      linked.commercialMotion ||
-      it.commercialMotion ||
-      "";
-    var family =
-      linked.demandFamilyLabel ||
-      it.demandFamilyLabel ||
-      segment ||
-      "";
-    var summaryRaw =
-      linked.commercialSummary ||
-      it.commercialSummary ||
-      it.summaryWhat ||
-      linked.summaryWhat ||
-      "";
-    // Never render duplicated title as description
-    if (
-      summaryRaw &&
-      String(summaryRaw).replace(/\s+/g, " ").trim().toLowerCase() ===
-        String(title).replace(/\s+/g, " ").trim().toLowerCase()
-    ) {
-      summaryRaw = "";
-    }
-    var summary = trunc(scrubEventDatesFromText(summaryRaw), 180);
-    var whyHotel = trunc(
-      scrubEventDatesFromText(
-        linked.cardHotelFitLine || it.cardHotelFitLine || ""
-      ),
-      120
+    var summary = trunc(
+      scrubEventDatesFromText(it.summaryWhat || linked.summaryWhat || ""),
+      160
     );
-    var whyNow = trunc(
-      scrubEventDatesFromText(linked.cardWhyNowLine || it.cardWhyNowLine || it.whyNow || ""),
-      120
-    );
-    if (/^future opportunity$/i.test(String(whyNow || "").trim())) whyNow = "";
-    var fitBadge = linked.cardFitBadge || it.cardFitBadge || "";
-    var cardContact = linked.cardContact || it.cardContact || null;
     var contact = linked.primaryContact || it.primaryContact || null;
+    var contactName =
+      contact && contact.name && contact.name !== "UNKNOWN" ? contact.name : "";
+    var contactEmail = contact && contact.email ? contact.email : "";
+    var contactPhone = contact && contact.phone ? contact.phone : "";
     var contactBits = [];
-    if (cardContact && cardContact.line) {
+    if (contactName) {
       contactBits.push(
-        '<div class="brand-card__contact-name">' + esc(cardContact.line) + "</div>"
+        '<div class="brand-card__contact-name">' + esc(contactName) + "</div>"
       );
-      if (cardContact.detail) {
-        contactBits.push(
-          '<div class="brand-card__contact-line">' + esc(cardContact.detail) + "</div>"
-        );
-      }
-    } else {
-      var contactName =
-        contact && contact.name && contact.name !== "UNKNOWN" ? contact.name : "";
-      var contactEmail = contact && contact.email ? contact.email : "";
-      var contactRole = contact && (contact.role || contact.title) ? contact.role || contact.title : "";
-      if (contactName) {
-        contactBits.push(
-          '<div class="brand-card__contact-name">' + esc(contactName) + "</div>"
-        );
-      }
-      if (contactRole) {
-        contactBits.push(
-          '<div class="brand-card__contact-line">' + esc(contactRole) + "</div>"
-        );
-      }
-      if (contactEmail) {
-        contactBits.push(
-          '<div class="brand-card__contact-line">' + esc(contactEmail) + "</div>"
-        );
-      }
-      if (!contactBits.length) {
-        contactBits.push(
-          '<div class="brand-card__contact-line brand-card__contact-line--empty">Named stakeholder not publicly identified yet</div>'
-        );
-      }
     }
-    var metaBits = [org];
-    if (family) metaBits.push(String(family));
-    if (motion) metaBits.push(String(motion));
+    if (contactEmail) {
+      contactBits.push(
+        '<div class="brand-card__contact-line">' + esc(contactEmail) + "</div>"
+      );
+    }
+    if (contactPhone) {
+      contactBits.push(
+        '<div class="brand-card__contact-line">' + esc(contactPhone) + "</div>"
+      );
+    }
+    if (!contactBits.length) {
+      contactBits.push(
+        '<div class="brand-card__contact-line brand-card__contact-line--empty">No primary contact</div>'
+      );
+    }
     return (
       '<article class="brand-card brand-card--gdi-opp ' +
       tone +
@@ -1294,16 +1238,14 @@
       weeklyDeltaPillHtml(linked) +
       tileActionPill(bookingStatus, priority, activeFilters) +
       tileEventDatePill(it, linked) +
-      (fitBadge
-        ? '<span class="gdi-pill gdi-pill--fit">' + esc(fitBadge) + "</span>"
-        : "") +
       commercialProgressionCompactPill(
         linked.commercialProgression || it.commercialProgression
       ) +
       "</div>" +
       weeklyDeltaMetaLine(linked) +
       '<div class="brand-card__meta">' +
-      esc(metaBits.join(" · ")) +
+      esc(org) +
+      (segment ? " · " + esc(String(segment).toUpperCase()) : "") +
       "</div>" +
       (function () {
         var dst =
@@ -1323,16 +1265,6 @@
       "</div></div>" +
       (summary
         ? '<div class="brand-card__description">' + esc(summary) + "</div>"
-        : "") +
-      (whyHotel
-        ? '<div class="brand-card__meta brand-card__meta--fit">' +
-          esc(whyHotel) +
-          "</div>"
-        : "") +
-      (whyNow
-        ? '<div class="brand-card__meta brand-card__meta--why-now">' +
-          esc(whyNow) +
-          "</div>"
         : "") +
       '<div class="brand-card__footer brand-card__footer--split">' +
       '<div class="brand-card__contact">' +
@@ -1405,7 +1337,7 @@
   function contactSummaryHtml(contact, opts) {
     opts = opts || {};
     if (!contact) {
-      return '<div class="gdi-contact-summary gdi-contact-summary--empty">Named stakeholder not publicly identified yet</div>';
+      return '<div class="gdi-contact-summary gdi-contact-summary--empty">No primary contact resolved.</div>';
     }
     var lines = [];
     lines.push(

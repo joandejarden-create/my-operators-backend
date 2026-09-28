@@ -1,10 +1,7 @@
 /**
- * Persist V5A customer-surface revalidation for Hilton + Renaissance Times Square.
+ * Persist V5A customer-surface revalidation (eligibility only).
  * Dry-run by default; pass --apply to write.
- *
- * Usage:
- *   node scripts/gdi-v5a-customer-surface-revalidate.mjs
- *   node scripts/gdi-v5a-customer-surface-revalidate.mjs --apply
+ * Does NOT stamp card-presentation fields — presentation is owned by the UI tile.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -18,10 +15,6 @@ import {
   revalidateCustomerSurfacePopulation,
   classifyCustomerSurfaceOpportunity,
 } from "../lib/group-demand-intelligence/customer-surface-revalidation-v1.js";
-import {
-  applyCommercialCardContract,
-  scoreCardCompleteness,
-} from "../lib/group-demand-intelligence/commercial-card-contract-v1.js";
 import { businessDateYmd } from "../lib/group-demand-intelligence/active-eligibility-v1.js";
 
 const APPLY = process.argv.includes("--apply");
@@ -62,9 +55,6 @@ for (const hotel of HOTELS) {
     { nowDate: NOW }
   ).length;
 
-  // Before counts for Hilton/Renaissance use pre-filter snapshot of prior visibility
-  // Re-compute "before" as rows that were salesperson-visible and not test,
-  // ignoring the new gate for the BEFORE number when disposition not yet applied:
   const beforeLegacy = all.filter(
     (o) =>
       o &&
@@ -77,11 +67,6 @@ for (const hotel of HOTELS) {
   const afterActive = result.opportunities.filter(
     (o) => o.customerActiveEligible === true && o.priority !== "DISQUALIFIED"
   );
-
-  const cardScores = afterActive.map((o) => {
-    const enriched = applyCommercialCardContract(o);
-    return { id: o.id, title: o.title, ...scoreCardCompleteness(enriched) };
-  });
 
   const defectExamples = {};
   for (const key of DEFECT_KEYS) {
@@ -97,7 +82,6 @@ for (const hotel of HOTELS) {
     }
   }
 
-  // Also classify any defect that was already removed from bag
   for (const key of DEFECT_KEYS) {
     if (defectExamples[key]) continue;
     const raw = all.find((o) => String(o.title || "").includes(key));
@@ -119,33 +103,10 @@ for (const hotel of HOTELS) {
     afterActive: afterActive.length,
     tally: result.tally,
     defectExamples,
-    cardCompleteness: {
-      retained: afterActive.length,
-      complete: cardScores.filter((c) => c.complete).length,
-      avgScore:
-        cardScores.length === 0
-          ? 0
-          : Number(
-              (
-                cardScores.reduce((s, c) => s + c.score, 0) / cardScores.length
-              ).toFixed(2)
-            ),
-      samples: cardScores.slice(0, 8),
-    },
     retainedTitles: afterActive.map((o) => o.title),
   };
 
-  if (APPLY && hotel.hotelId !== "recLuxvwwxID7U2B8") {
-    await saveOpportunitiesCanonical(hotel.hotelId, {
-      ...doc,
-      opportunities: result.opportunities,
-      updatedAt: new Date().toISOString(),
-      runId: doc.runId || null,
-      v5aCustomerSurfaceRevalidatedAt: new Date().toISOString(),
-      v5aBusinessDate: NOW,
-    });
-  } else if (APPLY && hotel.hotelId === "recLuxvwwxID7U2B8") {
-    // Bethesda: apply card contract enrichment only for KEEP_ACTIVE; still stamp dispositions
+  if (APPLY) {
     await saveOpportunitiesCanonical(hotel.hotelId, {
       ...doc,
       opportunities: result.opportunities,
@@ -157,16 +118,31 @@ for (const hotel of HOTELS) {
   }
 }
 
-const outPath = path.join(outDir, `revalidation-${NOW}${APPLY ? "-applied" : "-dry"}.json`);
+const outPath = path.join(
+  outDir,
+  `revalidation-${NOW}${APPLY ? "-applied" : "-dry"}.json`
+);
 fs.writeFileSync(outPath, JSON.stringify(report, null, 2));
-console.log(JSON.stringify({ ok: true, apply: APPLY, businessDate: NOW, outPath, summary: Object.fromEntries(
-  Object.entries(report.hotels).map(([id, h]) => [
-    id,
+console.log(
+  JSON.stringify(
     {
-      label: h.label,
-      beforeLegacy: h.beforeLegacyCustomerVisible,
-      afterActive: h.afterActive,
-      tally: h.tally,
+      ok: true,
+      apply: APPLY,
+      businessDate: NOW,
+      outPath,
+      summary: Object.fromEntries(
+        Object.entries(report.hotels).map(([id, h]) => [
+          id,
+          {
+            label: h.label,
+            beforeLegacy: h.beforeLegacyCustomerVisible,
+            afterActive: h.afterActive,
+            tally: h.tally,
+          },
+        ])
+      ),
     },
-  ])
-) }, null, 2));
+    null,
+    2
+  )
+);
