@@ -172,10 +172,12 @@ LIVE GDI VISIBILITY PASSES — CANONICAL/API/UI COUNTS RECONCILED
 
 ## PERSISTENCE / META
 
-FINAL SHA: 8d13d85639f61611437a87ccff3403ee86ed1951
-PUSH: PENDING
+FINAL SHA: 61ffae823b23b4bd86fdec3b2d93b9e31488e216
+PUSH: PASS
 DEPLOY: NOT_RUN
 CRON: HELD (READY_BUT_HELD_PENDING_VISIBILITY_AUDIT)
 Airtable base: appa2cE7FTRmIbB32 table: Group Demand Opportunities (tblRuReslJMwsfRQj)
+
+DIRTY LEFT: unrelated working-tree files (market-alerts, share tokens, other GDI scripts) — not included
 
 STOP.
