@@ -56,6 +56,11 @@ import {
   assertNotLegacyMvpCanonicalBase,
   getGdiOpportunitiesAirtableBaseId,
 } from "../lib/decision-outcomes/airtable-base.js";
+import {
+  assessSubstantiveResearchEvidence,
+  classifyGdiResearchMaturity,
+  isInitFootprintRun,
+} from "../lib/group-demand-intelligence/research-maturity-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -408,12 +413,31 @@ async function auditHotel(hotel) {
     ? await listByField("GDI Research Targets", TGT.hotelId, hotel.hpcId, [TGT.targetId])
     : [];
   const runs = hotel.hpcId
-    ? await listByField("GDI Research Runs", RUN.hotelId, hotel.hpcId, [RUN.runId])
+    ? await listByField("GDI Research Runs", RUN.hotelId, hotel.hpcId, [
+        RUN.runId,
+        RUN.notes,
+        RUN.queries,
+        RUN.fetches,
+        RUN.targetsAttempted,
+        RUN.targetsCompleted,
+        RUN.newSignals,
+        RUN.newOpportunities,
+        RUN.payloadJson,
+        RUN.status,
+        RUN.runType,
+      ])
     : [];
   let targetRuns = [];
   try {
     targetRuns = hotel.hpcId
-      ? await listByField("GDI Research Target Runs", "Hotel ID", hotel.hpcId, ["Target Run ID"])
+      ? await listByField("GDI Research Target Runs", "Hotel ID", hotel.hpcId, [
+          "Target Run ID",
+          "Target ID",
+          "Execution Status",
+          "Queries Used",
+          "Fetches Used",
+          "Source Count",
+        ])
       : [];
   } catch {
     targetRuns = [];
@@ -466,20 +490,67 @@ async function auditHotel(hotel) {
   else if (hotel.period) adpClass = "CERTIFIED_STALE";
   else if (hotel.profilePath) adpClass = "PROFILE_ONLY";
 
+  // Research maturity: INIT_FOOTPRINT / zero-activity runs ≠ researched.
+  const normRuns = runs.map((r) => {
+    const f = r.fields || {};
+    let payload = null;
+    try {
+      payload = f[RUN.payloadJson] ? JSON.parse(f[RUN.payloadJson]) : null;
+    } catch {
+      payload = null;
+    }
+    return {
+      runId: f[RUN.runId],
+      notes: f[RUN.notes],
+      queries: f[RUN.queries] || 0,
+      fetches: f[RUN.fetches] || 0,
+      targetsAttempted: f[RUN.targetsAttempted] || 0,
+      targetsCompleted: f[RUN.targetsCompleted] || 0,
+      newSignals: f[RUN.newSignals] || 0,
+      newOpportunities: f[RUN.newOpportunities] || 0,
+      payload,
+      payloadJson: f[RUN.payloadJson],
+    };
+  });
+  const evidence = assessSubstantiveResearchEvidence({
+    runs: normRuns,
+    targetRuns: targetRuns.map((r) => ({
+      targetId: r.fields?.["Target ID"],
+      executionStatus: r.fields?.["Execution Status"],
+      queriesUsed: r.fields?.["Queries Used"] || 0,
+      fetchesUsed: r.fields?.["Fetches Used"] || 0,
+      sourceCount: r.fields?.["Source Count"] || 0,
+    })),
+    customerReady: customer.length,
+  });
+  const maturityClass = classifyGdiResearchMaturity({
+    totalTargets: targets.length,
+    targetsResearched: evidence.researchedTargetIds.length,
+    customerReady: customer.length,
+    evidence,
+  });
+
   let gdiClass = "GDI_MISSING";
-  if (fits.length > 0 && targets.length > 0 && runs.length > 0) {
-    gdiClass = customer.length > 0 ? "GDI_READY" : "GDI_RESEARCHED_NO_READY";
-  } else if (fits.length > 0 && targets.length > 0) {
-    gdiClass = "GDI_PARTIAL";
-  } else if (fits.length > 0 || targets.length > 0) {
-    gdiClass = "GDI_PARTIAL";
-  }
+  if (customer.length > 0) gdiClass = "GDI_READY";
+  else if (maturityClass.maturity === "RESEARCHED_NO_READY") gdiClass = "GDI_RESEARCHED_NO_READY";
+  else if (maturityClass.maturity === "PARTIALLY_RESEARCHED") gdiClass = "GDI_PARTIAL";
+  else if (maturityClass.maturity === "INITIALIZED_ONLY") gdiClass = "GDI_INITIALIZED";
+  else if (fits.length > 0 || targets.length > 0) gdiClass = "GDI_PARTIAL";
+  else if (runs.length > 0 && normRuns.every((r) => isInitFootprintRun(r))) gdiClass = "GDI_INITIALIZED";
 
   let zeroOppReason = null;
   if (customer.length === 0) {
-    if (fits.length === 0 && targets.length === 0) zeroOppReason = "NOT_RESEARCHED";
-    else if (runs.length === 0) zeroOppReason = "NOT_RESEARCHED";
-    else zeroOppReason = "NO_READY_OPPORTUNITIES";
+    if (maturityClass.maturity === "INITIALIZED_ONLY" || (fits.length === 0 && targets.length === 0)) {
+      zeroOppReason = "INITIALIZED_NOT_RESEARCHED";
+    } else if (maturityClass.maturity === "PARTIALLY_RESEARCHED") {
+      zeroOppReason = "INSUFFICIENT_RESEARCH_COVERAGE";
+    } else if (maturityClass.maturity === "RESEARCHED_NO_READY") {
+      zeroOppReason = "NO_READY_OPPORTUNITIES";
+    } else if (runs.length === 0) {
+      zeroOppReason = "INITIALIZED_NOT_RESEARCHED";
+    } else {
+      zeroOppReason = "NO_READY_OPPORTUNITIES";
+    }
   }
 
   const before = {
@@ -502,6 +573,11 @@ async function auditHotel(hotel) {
     adp: { class: adpClass, period: hotel.period, publishStatus: hotel.publishStatus },
     gdi: {
       class: gdiClass,
+      maturity: maturityClass.maturity,
+      systemState: maturityClass.systemState,
+      maturityRationale: maturityClass.rationale,
+      evidenceStrength: evidence.strength,
+      initRuns: normRuns.filter((r) => isInitFootprintRun(r)).length,
       fits: fits.length,
       uniqueFits: new Set(fits.map((r) => r.fields[FIT.fitId] || r.id)).size,
       targets: targets.length,
