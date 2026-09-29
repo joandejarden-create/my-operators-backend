@@ -247,7 +247,7 @@ Accidentally re-exposed: 0
 ## L. DEPLOYMENT PRECHECK
 
 LOCAL SHA: 306c86be99393d69eee6399c75cfd44fa4119321
-PUSHED SHA: (pending this commit)
+PUSHED SHA: fdec61c41b8f2a57fee209df0004f1201cf74dc0
 PRODUCTION SHA: ef8949e26796f2c10963ccdebf50d02783f03f16
 RAILWAY SOURCE: GitHub deployments track main (serene-reverence / production)
 API MODULE PRESENT IN DEPLOY SOURCE: NO — production SHA lacks api/group-demand-intelligence.js
@@ -283,8 +283,8 @@ GDI READINESS/VISIBILITY CONVERGENCE PASSES — READY FOR PRODUCTION DEPLOY
 
 ## PERSISTENCE / META
 
-FINAL SHA: 306c86be99393d69eee6399c75cfd44fa4119321
-PUSH: PENDING
+FINAL SHA: fdec61c41b8f2a57fee209df0004f1201cf74dc0
+PUSH: PASS
 DEPLOY: NOT_RUN
 CRON: HELD
 DIRTY LEFT: unrelated working-tree files (market-alerts, share tokens, etc.)
