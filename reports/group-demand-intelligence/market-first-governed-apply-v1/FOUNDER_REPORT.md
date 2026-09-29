@@ -1,9 +1,11 @@
 # GDI Market-First Governed Apply V1 — Founder Report
 
 **Branch:** `deploy/gdi-pe-v1-7-customer-closure`  
-**Apply HEAD (pre-commit):** `f4b4eb7ef92ae72a8902bed14f1eb9c2d3a570e3`  
+**FINAL SHA:** `9a27d16641ae586fa328b5588a8e156060f839e6`  
+**PUSH:** PASS  
 **Generated:** 2026-09-29T23:03:56Z  
-**Cron:** HELD · **Deploy:** NOT RUN · **Webhound/Surfe AUTO:** OFF
+**Cron:** HELD · **Deploy:** NOT RUN · **Webhound/Surfe AUTO:** OFF  
+**DIRTY LEFT:** unrelated working-tree files preserved (not part of this commit)
 
 ---
 
