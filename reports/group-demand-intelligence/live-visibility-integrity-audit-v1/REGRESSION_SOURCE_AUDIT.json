@@ -1,0 +1,18 @@
+{
+  "proven63File": "reports/group-demand-intelligence/surface-eligibility-qualification-v1/PROVEN63_REGRESSION.json",
+  "proven63Logic": "scripts/gdi-surface-eligibility-qualification-v1.mjs — soft-preserve using isGdiSurfaceEligible on opportunity title/snippet; not live UI count",
+  "readyCountLogic": "Prior MODE B reports used loadOpportunitiesCanonical(hpc) + filterCustomerFacingOpportunities + isGdiCustomerOpportunityReady — same canonical facade as API when persistence=airtable",
+  "liveUiEndpoint": "GET /api/group-demand-intelligence/hotels/:hotelId/opportunities",
+  "liveUiHandler": "api/group-demand-intelligence.js → getGdiOpportunities",
+  "liveUiFilters": [
+    "projectOpportunitiesCommercialQuality",
+    "filterSalespersonView (unless includeDisqualified=1)",
+    "filterCustomerFacingOpportunities → isActiveCustomerOpportunity → isCustomerSurfaceActiveEligible",
+    "mapOpportunitiesToListDto (list view)"
+  ],
+  "frontendFetch": "public/js/group-demand-intelligence/app.js → api(.../opportunities)",
+  "sharePath": "public/js/group-demand-intelligence/share-app.js → /api/group-demand-intelligence/share/hotels/:id/opportunities",
+  "table": "Group Demand Opportunities",
+  "baseId": "appa2cE7FTRmIbB32",
+  "persistenceMode": "airtable"
+}

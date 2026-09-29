@@ -1,0 +1,24 @@
+{
+  "chain": [
+    "Airtable Group Demand Opportunities (tblRuReslJMwsfRQj / appa2cE7FTRmIbB32)",
+    "lib/group-demand-intelligence/airtable-opportunity-store.js → listOpportunitiesForHotel",
+    "lib/group-demand-intelligence/opportunity-persistence.js → loadOpportunitiesCanonical",
+    "api/group-demand-intelligence.js → loadOppDoc / getGdiOpportunities",
+    "filters: projectOpportunitiesCommercialQuality → filterSalespersonView → filterCustomerFacingOpportunities",
+    "NOTE: isGdiCustomerOpportunityReady is NOT applied on the list path",
+    "public/js/group-demand-intelligence/app.js fetches /api/group-demand-intelligence/hotels/:id/opportunities",
+    "share-app.js uses /api/group-demand-intelligence/share/hotels/:id/opportunities",
+    "UI client filters: priority / segment / booking / territory / weekly (incl. HIGH_PRIORITY chip) — default weekly=''"
+  ],
+  "files": {
+    "airtableStore": "lib/group-demand-intelligence/airtable-opportunity-store.js",
+    "persistence": "lib/group-demand-intelligence/opportunity-persistence.js",
+    "api": "api/group-demand-intelligence.js#getGdiOpportunities",
+    "readiness": "lib/group-demand-intelligence/customer-readiness-gate-v1.js",
+    "visibility": "lib/group-demand-intelligence/customer-visibility.js",
+    "surface": "lib/group-demand-intelligence/customer-surface-revalidation-v1.js",
+    "frontend": "public/js/group-demand-intelligence/app.js",
+    "uiFilters": "public/js/group-demand-intelligence/dealality-gdi-ui.js#applyOpportunityFilters",
+    "shareFrontend": "public/js/group-demand-intelligence/share-app.js"
+  }
+}
