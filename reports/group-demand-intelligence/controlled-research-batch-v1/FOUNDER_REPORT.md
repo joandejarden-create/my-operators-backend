@@ -298,8 +298,8 @@ LEAKS: **0** expected / observed (hotel-scoped Airtable filters; Bethesda counts
 
 ## Persistence
 
-FINAL SHA: `a8031b06e9e03c50e0eb02aa0bf0bdede1d9b389`  
-PUSH: (see agent push step)  
-DIRTY LEFT: unrelated pre-existing working tree files not touched by this batch
+FINAL SHA: `45bfa95ea8f921716486227c43944df4e5b78830`  
+PUSH: **PASS** (`origin/deploy/gdi-pe-v1-7-customer-closure`)  
+DIRTY LEFT: unrelated pre-existing working tree files not touched by this batch (market-alerts, share tokens, etc.)
 
 STOP. No additional hotels. Bethesda unmodified. Thresholds not relaxed.
