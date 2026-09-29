@@ -1,0 +1,103 @@
+{
+  "hotelId": "rec2PVBDavppGpenm",
+  "displayName": "AC Hotel A Coruña",
+  "country": "Spain",
+  "city": "A Coruña",
+  "aliases": {
+    "adpPropertyId": "adp_ac_hotel_a_coruna",
+    "marriottPropertyCode": "LCGCO",
+    "censusRecordId": "rec2PVBDavppGpenm",
+    "provisionalGdiHotelId": "gdi_hotel_ac_hotel_a_coruna",
+    "note": "Canonical hotelId is HPC record. Provisional GDI key retained as alias only."
+  },
+  "adpFixturePath": "fixtures/ai-demand-positioning/ac-hotel-a-coruna-property-profile.json",
+  "geo": {
+    "latitude": 43.339129,
+    "longitude": -8.404032
+  },
+  "commercialPriorities": {
+    "targetSegments": [],
+    "coreTargetPeakRoomsMin": 15,
+    "coreTargetPeakRoomsMax": 80,
+    "allowSmallerIfCommerciallyMeaningful": true,
+    "demandAnchorFocus": [],
+    "weekendFocus": false,
+    "notes": "HOTEL_SPECIFIC_DATA from Marriott LCGCO (116 keys, 674 m² / 6 event rooms, Banquets to 290). Peak band sized for urban business + mid-size meetings/social; large Palexco/Expocoruña citywide congress is overflow/destination-relevant only when housing access is evidenced. targetSegments empty — discovery must not be seeded with demand-type assumptions. Do NOT inherit Bethesda/NYC/Rome demand programs."
+  },
+  "capabilityProfile": {
+    "totalGuestrooms": 116,
+    "totalMeetingSpaceSqFt": 7254,
+    "totalMeetingSpaceSqM": 674,
+    "largestBallroomSqFt": 3251,
+    "largestBallroomSqM": 302,
+    "largestTheaterCapacity": 220,
+    "largestReceptionCapacity": 290,
+    "meetingRoomsIndoor": 6,
+    "outdoorEventSpace": false,
+    "softBrand": "AC Hotels by Marriott",
+    "serviceLevel": "upper_upscale_urban",
+    "classification": "urban_business_meetings",
+    "country": "Spain",
+    "notes": "HOTEL_SPECIFIC_DATA from Marriott official events page — not hardcoded into scoring engine."
+  },
+  "demandTerritory": {
+    "label": "A Coruña / Galicia urban",
+    "country": "Spain",
+    "includes": [
+      "A Coruña city and Matogrande / Expocoruña corridor where AC Hotel A Coruña is a credible alternative",
+      "selected Galicia urban demand when lodging access is realistic",
+      "selected Spain destination overflow only when housing access is evidenced"
+    ],
+    "evaluationQuestion": "Could AC Hotel A Coruña realistically capture this group demand given 116 rooms, 674 m² meeting inventory, Banquets to 290, Matogrande location, and A Coruña market relevance?",
+    "classifications": [
+      "TERRITORY_CORE",
+      "TERRITORY_NEARBY",
+      "TERRITORY_COMPETITIVE",
+      "TERRITORY_STRETCH",
+      "OUTSIDE_REALISTIC_TERRITORY"
+    ],
+    "displayLabels": {
+      "TERRITORY_CORE": "A Coruña Core",
+      "TERRITORY_NEARBY": "Nearby Galicia Corridor",
+      "TERRITORY_COMPETITIVE": "Galicia Competitive",
+      "TERRITORY_STRETCH": "Spain Destination Stretch",
+      "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+    },
+    "classificationKeywords": {
+      "TERRITORY_CORE": [
+        "a coruña",
+        "a coruna",
+        "matogrande",
+        "expocoruña",
+        "expocoruna",
+        "coliseum",
+        "enrique mariñas"
+      ],
+      "TERRITORY_NEARBY": [
+        "arteixo",
+        "oleiros",
+        "sada",
+        "culleredo",
+        "betanzos"
+      ],
+      "TERRITORY_COMPETITIVE": [
+        "santiago de compostela",
+        "vigo",
+        "lugo",
+        "pontevedra",
+        "galicia"
+      ],
+      "TERRITORY_STRETCH": [
+        "spain",
+        "españa",
+        "madrid",
+        "barcelona"
+      ]
+    }
+  },
+  "locale": {
+    "primary": "es",
+    "secondary": ["en", "gl"],
+    "notes": "Spanish primary; English secondary; Galician for source research where useful"
+  }
+}
