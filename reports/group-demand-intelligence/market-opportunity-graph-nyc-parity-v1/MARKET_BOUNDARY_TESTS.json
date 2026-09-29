@@ -1,0 +1,75 @@
+{
+  "boundary": {
+    "timesSquare": {
+      "level": 3,
+      "label": "Times Square Theater Cluster",
+      "metro": "New York City",
+      "borough": "Manhattan",
+      "submarket": "Times Square / Midtown West",
+      "microArea": "Times Square Theater Cluster",
+      "confidence": "SPECIFIC",
+      "evidenceBlobSample": "broadway league midtown meeting times square"
+    },
+    "javits": {
+      "level": 3,
+      "label": "Javits Convention Node",
+      "metro": "New York City",
+      "borough": "Manhattan",
+      "submarket": "Hudson Yards / Javits",
+      "microArea": "Javits Convention Node",
+      "confidence": "SPECIFIC",
+      "evidenceBlobSample": "trade show at javits center javits center"
+    },
+    "noho": {
+      "level": 3,
+      "label": "NoHo Lafayette Corridor",
+      "metro": "New York City",
+      "borough": "Manhattan",
+      "submarket": "NoHo / SoHo / Village",
+      "microArea": "NoHo Lafayette Corridor",
+      "confidence": "SPECIFIC",
+      "evidenceBlobSample": "nyu conference washington square noho"
+    },
+    "brooklyn": {
+      "level": 2,
+      "label": "Downtown Brooklyn",
+      "metro": "New York City",
+      "borough": "Brooklyn",
+      "submarket": "Downtown Brooklyn",
+      "microArea": null,
+      "confidence": "SPECIFIC",
+      "evidenceBlobSample": "brooklyn barclays sports housing downtown brooklyn"
+    },
+    "metroOnly": {
+      "level": 0,
+      "label": "New York City",
+      "metro": "New York City",
+      "borough": null,
+      "submarket": null,
+      "microArea": null,
+      "confidence": "METRO_ONLY",
+      "evidenceBlobSample": "association meeting new york city new york city"
+    }
+  },
+  "brooklynSafeguard": {
+    "brooklynOppGeo": {
+      "level": 2,
+      "label": "Downtown Brooklyn",
+      "metro": "New York City",
+      "borough": "Brooklyn",
+      "submarket": "Downtown Brooklyn",
+      "microArea": null,
+      "confidence": "SPECIFIC",
+      "evidenceBlobSample": "brooklyn barclays sports housing downtown brooklyn"
+    },
+    "wouldAutomaticallyReachMidtown": false,
+    "fanout": {
+      "policy": "AUTO_EVALUATE",
+      "autoEvaluateSameSubmarket": true,
+      "autoEvaluateSameBorough": false,
+      "autoEvaluateMetroWide": false,
+      "reason": "Specific submarket/micro-area — evaluate hotels in same submarket"
+    },
+    "expected": "NO"
+  }
+}

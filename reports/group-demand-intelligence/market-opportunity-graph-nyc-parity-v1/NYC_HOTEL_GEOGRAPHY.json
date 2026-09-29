@@ -1,0 +1,469 @@
+{
+  "RENAISSANCE": {
+    "hotelId": "recG66DQJKP2c0UNh",
+    "displayName": "Renaissance New York Times Square Hotel",
+    "address": null,
+    "lat": 40.758,
+    "lon": -73.9855,
+    "borough": "Manhattan",
+    "districtSector": "Midtown",
+    "submarket": "Times Square / Midtown West",
+    "microArea": "Times Square Theater Cluster",
+    "primaryDemandNodes": [
+      "Times Square / Theater District",
+      "Midtown Manhattan where Renaissance is a credible alternative",
+      "selected Manhattan overflow only when housing access is realistic"
+    ],
+    "secondaryDemandNodes": [
+      "herald square",
+      "penn station",
+      "bryant park",
+      "rockefeller",
+      "grand central",
+      "hells kitchen",
+      "chelsea"
+    ],
+    "territoryLabel": "Manhattan Midtown / Times Square",
+    "archetype": "times_square_midtown_lifestyle",
+    "rooms": 310,
+    "meetingSqFt": 5000,
+    "peakRoomsMin": 40,
+    "peakRoomsMax": 180,
+    "serviceLevel": "full_service_urban",
+    "softBrand": "Renaissance Hotels (Marriott)",
+    "config": {
+      "hotelId": "recG66DQJKP2c0UNh",
+      "displayName": "Renaissance New York Times Square Hotel",
+      "aliases": {
+        "adpPropertyId": "adp_renaissance_times_square",
+        "marriottPropertyCode": "NYCRN",
+        "censusRecordId": "recG66DQJKP2c0UNh",
+        "note": "Canonical hotelId is HPC record. Provisional GDI key retained as alias only.",
+        "provisionalGdiHotelId": "gdi_hotel_renaissance_times_square"
+      },
+      "adpFixturePath": "fixtures/ai-demand-positioning/renaissance-times-square-property-profile.json",
+      "commercialPriorities": {
+        "targetSegments": [],
+        "coreTargetPeakRoomsMin": 40,
+        "coreTargetPeakRoomsMax": 180,
+        "allowSmallerIfCommerciallyMeaningful": true,
+        "demandAnchorFocus": [],
+        "weekendFocus": false,
+        "notes": "HOTEL_SPECIFIC_DATA from ADP rooms=310 and modest meeting space (~5k sq ft / Broadway Ballroom ~200 theater). Peak band sized for realistic Midtown primary pursuit; citywide/Javits demand is overflow-only when housing access is evidenced. targetSegments intentionally empty — discovery must not be seeded with demand-type assumptions."
+      },
+      "capabilityProfile": {
+        "totalGuestrooms": 310,
+        "totalMeetingSpaceSqFt": 5000,
+        "largestBallroomSqFt": 2400,
+        "largestTheaterCapacity": 200,
+        "meetingRoomsIndoor": 4,
+        "outdoorEventSpace": false,
+        "softBrand": "Renaissance Hotels (Marriott)",
+        "serviceLevel": "full_service_urban",
+        "classification": "times_square_midtown_lifestyle",
+        "notes": "HOTEL_SPECIFIC_DATA from ADP RO fixture — not hardcoded into scoring engine. Limited meeting inventory vs large Manhattan convention hotels."
+      },
+      "demandTerritory": {
+        "label": "Manhattan Midtown / Times Square",
+        "includes": [
+          "Times Square / Theater District",
+          "Midtown Manhattan where Renaissance is a credible alternative",
+          "selected Manhattan overflow only when housing access is realistic"
+        ],
+        "evaluationQuestion": "Could Renaissance Times Square realistically capture this group demand given rooms, meeting limits, and Midtown positioning?",
+        "classifications": [
+          "TERRITORY_CORE",
+          "TERRITORY_NEARBY",
+          "TERRITORY_COMPETITIVE",
+          "TERRITORY_STRETCH",
+          "OUTSIDE_REALISTIC_TERRITORY"
+        ],
+        "displayLabels": {
+          "TERRITORY_CORE": "Times Square / Midtown Core",
+          "TERRITORY_NEARBY": "Nearby Manhattan Corridor",
+          "TERRITORY_COMPETITIVE": "Manhattan Competitive",
+          "TERRITORY_STRETCH": "NYC Stretch",
+          "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+        },
+        "classificationKeywords": {
+          "TERRITORY_CORE": [
+            "times square",
+            "theater district",
+            "broadway",
+            "midtown",
+            "42nd street",
+            "two times square"
+          ],
+          "TERRITORY_NEARBY": [
+            "herald square",
+            "penn station",
+            "bryant park",
+            "rockefeller",
+            "grand central",
+            "hells kitchen",
+            "chelsea"
+          ],
+          "TERRITORY_COMPETITIVE": [
+            "manhattan",
+            "nyc",
+            "new york city",
+            "upper west",
+            "upper east",
+            "financial district"
+          ],
+          "TERRITORY_STRETCH": [
+            "brooklyn",
+            "queens",
+            "javits",
+            "hudson yards",
+            "long island city"
+          ],
+          "OUTSIDE_REALISTIC_TERRITORY": [
+            "newark",
+            "jersey city",
+            "westchester",
+            "connecticut",
+            "philadelphia",
+            "boston"
+          ]
+        }
+      },
+      "strCompetitiveSet": [
+        "New York Marriott Marquis",
+        "W New York - Times Square",
+        "The Westin New York at Times Square",
+        "Crowne Plaza Times Square Manhattan",
+        "Hilton Times Square",
+        "The Knickerbocker"
+      ],
+      "gdiOnboarding": {
+        "status": "ONBOARDED",
+        "discoveryMode": "INDEPENDENT_CANDIDATES",
+        "paidEnrichmentEnabled": false,
+        "bethesdaSeedPathAllowed": false,
+        "dmvExpansionAllowed": false,
+        "notes": "Third-hotel portability stress test — precision over volume in NYC."
+      },
+      "hotelIdentityStatus": "CANONICAL_HPC"
+    },
+    "adpSubmarket": "Midtown Manhattan / Times Square"
+  },
+  "HILTON": {
+    "hotelId": "rec35fExUxCClpOP6",
+    "displayName": "Hilton New York Times Square",
+    "address": null,
+    "lat": 40.755343,
+    "lon": -73.986047,
+    "borough": "Manhattan",
+    "districtSector": "Midtown",
+    "submarket": "Times Square / Midtown West",
+    "microArea": "Times Square Theater Cluster",
+    "primaryDemandNodes": [
+      "Times Square / Theater District",
+      "Midtown Manhattan where Hilton Times Square is a credible lodging alternative",
+      "selected Manhattan overflow / citywide housing only when lodging access is realistic"
+    ],
+    "secondaryDemandNodes": [
+      "herald square",
+      "penn station",
+      "bryant park",
+      "rockefeller",
+      "grand central",
+      "hells kitchen",
+      "chelsea",
+      "hudson yards"
+    ],
+    "territoryLabel": "Manhattan Midtown / Times Square",
+    "archetype": "times_square_midtown_full_service_limited_meetings",
+    "rooms": 478,
+    "meetingSqFt": 300,
+    "peakRoomsMin": 40,
+    "peakRoomsMax": 220,
+    "serviceLevel": "full_service_urban",
+    "softBrand": "Hilton Hotels & Resorts",
+    "config": {
+      "hotelId": "rec35fExUxCClpOP6",
+      "displayName": "Hilton New York Times Square",
+      "aliases": {
+        "adpPropertyId": "adp_hilton_times_square",
+        "hiltonPropertyCode": "NYCTSHH",
+        "censusRecordId": "rec35fExUxCClpOP6",
+        "identityKey": "ind_hilton_us_nyctshh",
+        "note": "Canonical hotelId is HPC record. No provisional GDI key."
+      },
+      "adpFixturePath": "fixtures/ai-demand-positioning/hilton-times-square-property-profile.json",
+      "geo": {
+        "latitude": 40.755343,
+        "longitude": -73.986047
+      },
+      "commercialPriorities": {
+        "targetSegments": [],
+        "coreTargetPeakRoomsMin": 40,
+        "coreTargetPeakRoomsMax": 220,
+        "allowSmallerIfCommerciallyMeaningful": true,
+        "demandAnchorFocus": [],
+        "weekendFocus": false,
+        "notes": "HOTEL_SPECIFIC_DATA from Hilton NYCTSHH (478 keys, formal meeting ~300 sq ft / 1 private dining room; Sky Bar lounge 2,000 sq ft social-event only). Peak band sized for room-block / housing / overflow primary pursuit — not large in-house association meetings. targetSegments intentionally empty — discovery must not be seeded with demand-type assumptions."
+      },
+      "capabilityProfile": {
+        "totalGuestrooms": 478,
+        "totalMeetingSpaceSqFt": 300,
+        "largestBallroomSqFt": 300,
+        "largestTheaterCapacity": 15,
+        "meetingRoomsIndoor": 1,
+        "socialEventVenueSqFt": 2000,
+        "outdoorEventSpace": false,
+        "softBrand": "Hilton Hotels & Resorts",
+        "serviceLevel": "full_service_urban",
+        "classification": "times_square_midtown_full_service_limited_meetings",
+        "notes": "HOTEL_SPECIFIC_DATA from Hilton official events page — not hardcoded into scoring engine. High room count + limited formal meeting space; lounge is social/private-event product separate from formal meeting total."
+      },
+      "demandTerritory": {
+        "label": "Manhattan Midtown / Times Square",
+        "includes": [
+          "Times Square / Theater District",
+          "Midtown Manhattan where Hilton Times Square is a credible lodging alternative",
+          "selected Manhattan overflow / citywide housing only when lodging access is realistic"
+        ],
+        "evaluationQuestion": "Could Hilton New York Times Square realistically capture this group demand given 478 rooms, limited formal meeting space, and Midtown / Times Square positioning?",
+        "classifications": [
+          "TERRITORY_CORE",
+          "TERRITORY_NEARBY",
+          "TERRITORY_COMPETITIVE",
+          "TERRITORY_STRETCH",
+          "OUTSIDE_REALISTIC_TERRITORY"
+        ],
+        "displayLabels": {
+          "TERRITORY_CORE": "Times Square / Midtown Core",
+          "TERRITORY_NEARBY": "Nearby Manhattan Corridor",
+          "TERRITORY_COMPETITIVE": "Manhattan Competitive",
+          "TERRITORY_STRETCH": "NYC Stretch",
+          "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+        },
+        "classificationKeywords": {
+          "TERRITORY_CORE": [
+            "times square",
+            "theater district",
+            "broadway",
+            "midtown",
+            "42nd street",
+            "west 42"
+          ],
+          "TERRITORY_NEARBY": [
+            "herald square",
+            "penn station",
+            "bryant park",
+            "rockefeller",
+            "grand central",
+            "hells kitchen",
+            "chelsea",
+            "hudson yards"
+          ],
+          "TERRITORY_COMPETITIVE": [
+            "manhattan",
+            "nyc",
+            "new york city",
+            "javits",
+            "upper west",
+            "upper east",
+            "financial district"
+          ],
+          "TERRITORY_STRETCH": [
+            "brooklyn",
+            "queens",
+            "bronx",
+            "long island city",
+            "jersey city"
+          ],
+          "OUTSIDE_REALISTIC_TERRITORY": [
+            "westchester",
+            "long island",
+            "connecticut",
+            "philadelphia",
+            "boston"
+          ]
+        }
+      }
+    },
+    "adpSubmarket": "Times Square / Midtown West"
+  },
+  "NOW_NOW": {
+    "hotelId": "recGkME49yYuxQl0u",
+    "displayName": "NOW NOW NOHO",
+    "address": null,
+    "lat": 40.7237,
+    "lon": -73.9992,
+    "borough": "Manhattan",
+    "districtSector": "Downtown / Lower Manhattan",
+    "submarket": "NoHo / SoHo / Village",
+    "microArea": "NoHo Lafayette Corridor",
+    "primaryDemandNodes": [
+      "NoHo / Lafayette corridor",
+      "SoHo / Greenwich Village where NOW NOW is a credible boutique alternative",
+      "selected downtown Manhattan overflow when housing access is realistic"
+    ],
+    "secondaryDemandNodes": [
+      "tribeca",
+      "little italy",
+      "chinatown",
+      "hudson square",
+      "east village",
+      "west village",
+      "financial district"
+    ],
+    "territoryLabel": "Lower Manhattan / NoHo–SoHo–Village",
+    "archetype": "noho_lower_manhattan_lifestyle",
+    "rooms": 115,
+    "meetingSqFt": 2500,
+    "peakRoomsMin": 15,
+    "peakRoomsMax": 60,
+    "serviceLevel": "full_service_urban_boutique",
+    "softBrand": "Hyatt",
+    "config": {
+      "hotelId": "recGkME49yYuxQl0u",
+      "displayName": "NOW NOW NOHO",
+      "hotelIdentityStatus": "CANONICAL_HPC",
+      "aliases": {
+        "adpPropertyId": "adp_now_now_noho",
+        "censusRecordId": "recGkME49yYuxQl0u",
+        "note": "Canonical hotelId is HPC record. V8 3-hotel blind validation Hotel A."
+      },
+      "adpFixturePath": "fixtures/ai-demand-positioning/now-now-noho-property-profile.json",
+      "commercialPriorities": {
+        "targetSegments": [],
+        "coreTargetPeakRoomsMin": 15,
+        "coreTargetPeakRoomsMax": 60,
+        "allowSmallerIfCommerciallyMeaningful": true,
+        "demandAnchorFocus": [],
+        "weekendFocus": true,
+        "notes": "HOTEL_SPECIFIC_DATA from ADP rooms=115 and small meeting inventory (~2.5k sq ft). Peak band sized for boutique downtown primary pursuit; large Midtown/Javits is overflow-only when housing access is evidenced. targetSegments empty — no demand-type seeding."
+      },
+      "capabilityProfile": {
+        "totalGuestrooms": 115,
+        "totalMeetingSpaceSqFt": 2500,
+        "largestBallroomSqFt": 1200,
+        "largestTheaterCapacity": 60,
+        "meetingRoomsIndoor": 2,
+        "outdoorEventSpace": false,
+        "softBrand": "Hyatt",
+        "serviceLevel": "full_service_urban_boutique",
+        "classification": "noho_lower_manhattan_lifestyle",
+        "notes": "HOTEL_SPECIFIC_DATA from ADP RO fixture."
+      },
+      "demandTerritory": {
+        "label": "Lower Manhattan / NoHo–SoHo–Village",
+        "includes": [
+          "NoHo / Lafayette corridor",
+          "SoHo / Greenwich Village where NOW NOW is a credible boutique alternative",
+          "selected downtown Manhattan overflow when housing access is realistic"
+        ],
+        "evaluationQuestion": "Could NOW NOW NOHO realistically capture this group demand given boutique scale and downtown positioning?",
+        "classifications": [
+          "TERRITORY_CORE",
+          "TERRITORY_NEARBY",
+          "TERRITORY_COMPETITIVE",
+          "TERRITORY_STRETCH",
+          "OUTSIDE_REALISTIC_TERRITORY"
+        ],
+        "displayLabels": {
+          "TERRITORY_CORE": "NoHo / SoHo / Village Core",
+          "TERRITORY_NEARBY": "Nearby Downtown Corridor",
+          "TERRITORY_COMPETITIVE": "Manhattan Competitive",
+          "TERRITORY_STRETCH": "NYC Stretch",
+          "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+        },
+        "classificationKeywords": {
+          "TERRITORY_CORE": [
+            "noho",
+            "soho",
+            "greenwich village",
+            "lafayette",
+            "bowery",
+            "nyu",
+            "washington square"
+          ],
+          "TERRITORY_NEARBY": [
+            "tribeca",
+            "little italy",
+            "chinatown",
+            "hudson square",
+            "east village",
+            "west village",
+            "financial district"
+          ],
+          "TERRITORY_COMPETITIVE": [
+            "manhattan",
+            "nyc",
+            "new york city",
+            "downtown manhattan",
+            "lower manhattan"
+          ],
+          "TERRITORY_STRETCH": [
+            "midtown",
+            "chelsea",
+            "brooklyn",
+            "williamsburg",
+            "javits"
+          ],
+          "OUTSIDE_REALISTIC_TERRITORY": [
+            "newark",
+            "jersey city",
+            "westchester",
+            "philadelphia",
+            "boston",
+            "times square convention 5000"
+          ]
+        }
+      },
+      "competitiveContext": {
+        "strCompSet": [
+          {
+            "name": "The NoMad Hotel",
+            "class": "STR_COMP_SET",
+            "source": "adp_declared_comp_set_read_only"
+          },
+          {
+            "name": "The Standard, High Line",
+            "class": "STR_COMP_SET",
+            "source": "adp_declared_comp_set_read_only"
+          },
+          {
+            "name": "Crosby Street Hotel",
+            "class": "STR_COMP_SET",
+            "source": "adp_declared_comp_set_read_only"
+          },
+          {
+            "name": "The Greenwich Hotel",
+            "class": "STR_COMP_SET",
+            "source": "adp_declared_comp_set_read_only"
+          },
+          {
+            "name": "The Ludlow Hotel",
+            "class": "STR_COMP_SET",
+            "source": "adp_declared_comp_set_read_only"
+          },
+          {
+            "name": "Ace Hotel New York",
+            "class": "STR_COMP_SET",
+            "source": "adp_declared_comp_set_read_only"
+          }
+        ],
+        "relevantGroupDemandAlternatives": [],
+        "notes": "HOTEL_SPECIFIC_DATA from ADP declaredCompSet."
+      },
+      "identityExclusions": [],
+      "gdiOnboarding": {
+        "status": "V8_3HOTEL_BLIND_VALIDATION",
+        "validationMarker": "v8_3hotel_blind_validation_20260918",
+        "slot": "A_URBAN",
+        "reuseAdpProfile": true,
+        "paidEnrichmentEnabled": false,
+        "discoveryMode": "INDEPENDENT_WEB_RESEARCH_NO_DEMAND_SEEDING",
+        "bethesdaSeedPathAllowed": false,
+        "dmvExpansionAllowed": false,
+        "notes": "Hotel A — urban major-market generalization test. No Webhound. No mid-run WHO engine patches."
+      }
+    },
+    "adpSubmarket": "NoHo / Lower Manhattan"
+  }
+}
