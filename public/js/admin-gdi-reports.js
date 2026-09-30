@@ -7,6 +7,7 @@
 
   var catalog = [];
   var selectedId = "";
+  var externalLinks = null;
 
   function authFetch(url, opts) {
     opts = opts || {};
@@ -23,6 +24,71 @@
   function setMeta(html) {
     var el = $("gdiRptMeta");
     if (el) el.innerHTML = html;
+  }
+
+  function setExternalMeta(html) {
+    var el = $("gdiRptExternalMeta");
+    if (el) el.innerHTML = html;
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function (resolve, reject) {
+      try {
+        var ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        resolve();
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+
+  function updateExternalButtons() {
+    var adpOk = !!(externalLinks && externalLinks.adp && externalLinks.adp.available && externalLinks.adp.url);
+    var gdiOk = !!(externalLinks && externalLinks.gdi && externalLinks.gdi.available && externalLinks.gdi.url);
+    if ($("gdiRptAdpOpen")) $("gdiRptAdpOpen").disabled = !adpOk;
+    if ($("gdiRptAdpCopy")) $("gdiRptAdpCopy").disabled = !adpOk;
+    if ($("gdiRptGdiOpen")) $("gdiRptGdiOpen").disabled = !gdiOk;
+    if ($("gdiRptGdiCopy")) $("gdiRptGdiCopy").disabled = !gdiOk;
+    if (!selectedId) {
+      setExternalMeta("Select a hotel to load external client URLs.");
+      return;
+    }
+    var parts = [];
+    if (adpOk) parts.push("ADP client URL ready");
+    else parts.push("ADP: " + ((externalLinks && externalLinks.adp && externalLinks.adp.reason) || "unavailable"));
+    if (gdiOk) parts.push("GDI client URL ready");
+    else parts.push("GDI: " + ((externalLinks && externalLinks.gdi && externalLinks.gdi.reason) || "unavailable"));
+    setExternalMeta(parts.join(" · "));
+  }
+
+  async function loadExternalLinks() {
+    externalLinks = null;
+    updateExternalButtons();
+    if (!selectedId) return;
+    try {
+      var res = await authFetch(
+        "/api/admin/ai-demand/hotels/" +
+          encodeURIComponent(selectedId) +
+          "/external-client-links"
+      );
+      var json = await res.json();
+      if (!res.ok || !json.ok) {
+        setExternalMeta("Could not load external client URLs.");
+        return;
+      }
+      externalLinks = json;
+      updateExternalButtons();
+    } catch (err) {
+      setExternalMeta("Could not load external client URLs: " + String(err.message || err));
+    }
   }
 
   function updateButtons() {
@@ -219,6 +285,7 @@
       sel.addEventListener("change", function () {
         selectedId = sel.value || "";
         updateButtons();
+        loadExternalLinks();
       });
     }
     if ($("gdiRptGenerate")) $("gdiRptGenerate").addEventListener("click", generate);
@@ -229,6 +296,34 @@
     if ($("gdiRptDownload"))
       $("gdiRptDownload").addEventListener("click", function () {
         openPdf(true);
+      });
+    if ($("gdiRptAdpOpen"))
+      $("gdiRptAdpOpen").addEventListener("click", function () {
+        if (externalLinks && externalLinks.adp && externalLinks.adp.url) {
+          window.open(externalLinks.adp.url, "_blank");
+        }
+      });
+    if ($("gdiRptGdiOpen"))
+      $("gdiRptGdiOpen").addEventListener("click", function () {
+        if (externalLinks && externalLinks.gdi && externalLinks.gdi.url) {
+          window.open(externalLinks.gdi.url, "_blank");
+        }
+      });
+    if ($("gdiRptAdpCopy"))
+      $("gdiRptAdpCopy").addEventListener("click", function () {
+        var url = externalLinks && externalLinks.adp && externalLinks.adp.url;
+        if (!url) return;
+        copyText(url).then(function () {
+          setExternalMeta("Copied ADP External Client URL.");
+        });
+      });
+    if ($("gdiRptGdiCopy"))
+      $("gdiRptGdiCopy").addEventListener("click", function () {
+        var url = externalLinks && externalLinks.gdi && externalLinks.gdi.url;
+        if (!url) return;
+        copyText(url).then(function () {
+          setExternalMeta("Copied GDI External Client URL.");
+        });
       });
   }
 

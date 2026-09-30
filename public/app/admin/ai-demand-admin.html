@@ -147,6 +147,23 @@
         </button>
       </section>
 
+      <section class="adr-meta-panel" id="aapExternal" aria-label="External client facing links">
+        <h3 style="margin:0 0 8px;font-size:14px">External Client Facing</h3>
+        <div class="adr-filters" style="margin:0;flex-wrap:wrap;gap:8px">
+          <div>
+            <div style="font-size:12px;color:#4a5568;margin-bottom:4px">AI Demand Positioning — External Client URL</div>
+            <button type="button" class="adr-btn adr-btn--secondary" id="aapAdpOpen" disabled>Open Client View</button>
+            <button type="button" class="adr-btn adr-btn--secondary" id="aapAdpCopy" disabled>Copy Client URL</button>
+          </div>
+          <div>
+            <div style="font-size:12px;color:#4a5568;margin-bottom:4px">Group &amp; Demand Intelligence — External Client URL</div>
+            <button type="button" class="adr-btn adr-btn--secondary" id="aapGdiOpen" disabled>Open Client View</button>
+            <button type="button" class="adr-btn adr-btn--secondary" id="aapGdiCopy" disabled>Copy Client URL</button>
+          </div>
+        </div>
+        <p id="aapExternalMeta" style="margin:8px 0 0;font-size:13px;color:#4a5568">Select a hotel to load external client URLs.</p>
+      </section>
+
       <section class="adr-meta-panel" id="aapMeta" aria-live="polite">
         <p>Select a published ADP hotel to preview the Management Action Agenda.</p>
       </section>
@@ -194,6 +211,22 @@
         <button type="button" class="adr-btn adr-btn--secondary" id="gdiRptView" disabled>View PDF</button>
         <button type="button" class="adr-btn adr-btn--secondary" id="gdiRptDownload" disabled>Download PDF</button>
       </section>
+      <section class="adr-meta-panel" id="gdiRptExternal" aria-label="External client facing links">
+        <h3 style="margin:0 0 8px;font-size:14px">External Client Facing</h3>
+        <div class="adr-filters" style="margin:0;flex-wrap:wrap;gap:8px">
+          <div>
+            <div style="font-size:12px;color:#4a5568;margin-bottom:4px">AI Demand Positioning — External Client URL</div>
+            <button type="button" class="adr-btn adr-btn--secondary" id="gdiRptAdpOpen" disabled>Open Client View</button>
+            <button type="button" class="adr-btn adr-btn--secondary" id="gdiRptAdpCopy" disabled>Copy Client URL</button>
+          </div>
+          <div>
+            <div style="font-size:12px;color:#4a5568;margin-bottom:4px">Group &amp; Demand Intelligence — External Client URL</div>
+            <button type="button" class="adr-btn adr-btn--secondary" id="gdiRptGdiOpen" disabled>Open Client View</button>
+            <button type="button" class="adr-btn adr-btn--secondary" id="gdiRptGdiCopy" disabled>Copy Client URL</button>
+          </div>
+        </div>
+        <p id="gdiRptExternalMeta" style="margin:8px 0 0;font-size:13px;color:#4a5568">Select a hotel to load external client URLs.</p>
+      </section>
       <section class="adr-meta-panel" id="gdiRptMeta" aria-live="polite">
         <p>Select a hotel with Group &amp; Demand Intelligence data to generate or view its GDI PDF report.</p>
       </section>
@@ -229,8 +262,8 @@
   </script>
   <script src="/js/admin-ai-demand-admin.js?v=gdi-pdf-report-v1"></script>
   <script src="/js/admin-ai-demand-reviews.js?v=adp-perf-review-restore-v1"></script>
-  <script src="/js/admin-adp-action-plan.js?v=adp-perf-review-restore-v1"></script>
-  <script src="/js/admin-gdi-reports.js?v=gdi-pdf-report-v1"></script>
+  <script src="/js/admin-adp-action-plan.js?v=gdi-external-client-links-v1"></script>
+  <script src="/js/admin-gdi-reports.js?v=gdi-external-client-links-v1"></script>
   <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

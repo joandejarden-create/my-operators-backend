@@ -7,6 +7,7 @@ ADMIN INTEGRATION: PASS — new **GDI Reports** tab on AI Demand Admin
 BETHESDA PDF: PASS — generated, 16 pages, golden Top 5 + KPI story preserved from live data  
 GENERIC HOTEL SUPPORT: PASS — Renaissance / Hilton / NOW NOW render; Radisson correctly unavailable  
 ADP REPORT REGRESSION: PASS — ADP tabs/scripts/routes untouched; GDI is a separate report path  
+EXTERNAL CLIENT URLS: PASS — ADP + GDI stable share links surfaced in Admin; Bethesda GDI token preserved  
 
 ## B. Existing Report Architecture
 
@@ -136,7 +137,14 @@ Surfe data present? **NO**
 - `scripts/generate-gdi-pdf-report-v1.mjs`
 - `scripts/test-gdi-pdf-report-v1.mjs`
 - `scripts/gdi-pdf-bethesda-visual-qa-v1.mjs`
-- `package.json` (`test:gdi-pdf-report-v1`, `generate:gdi-pdf-report-v1`)
+- `package.json` (`test:gdi-pdf-report-v1`, `test:gdi-external-client-links-v1`, `generate:gdi-pdf-report-v1`)
+- `lib/admin/report-external-client-links-v1.js`
+- `api/admin-external-client-links.js`
+- `api/group-demand-intelligence.js` (share PDF report endpoints)
+- `public/js/admin-adp-action-plan.js` (External Client Facing)
+- `public/js/group-demand-intelligence/share-app.js` (View/Download PDF)
+- `public/group-demand-intelligence-share.html`
+- `scripts/test-gdi-external-client-links-v1.mjs`
 - `reports/group-demand-intelligence/gdi-pdf-report-v1/**`
 
 ## M. Recommended Next Step
@@ -145,8 +153,43 @@ Surfe data present? **NO**
 
 (Deploy not executed in this prompt. Cron held.)
 
+## External Client URLs
+
+ADP external route: `/owner-ai-demand-share.html?share=adpshare.v1.…`  
+GDI external route: `/group-demand-intelligence-share.html?share=gdishare.v1.…`  
+Token architecture: **C** — retain separate ADP + GDI signed-share registries; Admin reconstructs stable URLs (never hotel-id paths)  
+Backward compatibility: Bethesda contract token `gdisht_47c25d74c79216021fb36150` served from `production-share-contract-tokens.json` — **unchanged**  
+Admin UX: **External Client Facing** on GDI Reports + ADP Action Plan — Open Client View / Copy Client URL for ADP and GDI  
+Revocation supported: YES (existing ADP revoke + GDI durable revoke list)  
+Stable URL behavior: PDF regenerate / data refresh does **not** change client URL  
+
+Audit: `EXISTING_SHARE_ARCHITECTURE.json`  
+Tests: `EXTERNAL_CLIENT_LINKS_TEST.json`
+
+## Client View QA
+
+For Bethesda:
+
+ADP external: **PASS** (`adp_bethesda_marriott` / `sht_24ff4ada4a622db62a228d3f`)  
+GDI external: **PASS** (`gdisht_47c25d74c79216021fb36150`)  
+Admin login required? **NO**  
+Correct hotel? **YES**  
+Internal fields exposed? **NO** (share sanitize + PDF report strips IDs)  
+PDF access: **PASS** — share routes `…/pdf-report` + `…/report-pdf` + View/Download on share page when PDF exists  
+
+## Share Security
+
+Invalid token: rejected  
+Revoked token: durable revoke list (GDI) / registry REVOKED (ADP)  
+Cross-hotel leakage: blocked (scope check)  
+Cross-report leakage: separate ADP vs GDI token namespaces  
+Admin mutation exposure: none on public share routes (read-only PDF + report data)  
+Existing URL regression: Bethesda fingerprint unchanged (`sha12=9237540e872c`)  
+
+Hotel matrix: Bethesda ADP+GDI YES · Renaissance ADP+GDI YES · Hilton GDI YES / ADP NO (no census map) · NOW NOW ADP+GDI YES · Radisson ADP YES / GDI NO  
+
 ---
 
 ## FINAL VERDICT
 
-**GDI PDF REPORT PASSES — BETHESDA GOLDEN REFERENCE COMPLETE**
+**GDI PDF + CLIENT SHARING PASSES — READY FOR CONTROLLED DEPLOY**

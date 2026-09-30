@@ -937,6 +937,15 @@ export async function getGdiShareResolve(req, res) {
     opportunities: active,
     validationItems: validationDoc.items || [],
   });
+  let pdfAvailable = false;
+  try {
+    const { hasGdiReportPdf } = await import(
+      "../lib/group-demand-intelligence/reports/gdi-pdf-store-v1.js"
+    );
+    pdfAvailable = hasGdiReportPdf(hotelId);
+  } catch {
+    pdfAvailable = false;
+  }
   return res.json({
     ok: true,
     mode: "read_only",
@@ -952,6 +961,7 @@ export async function getGdiShareResolve(req, res) {
     city: profile?.identity?.city || null,
     state: profile?.identity?.state || null,
     surfaces: verified.claims.surfaces,
+    pdfAvailable,
     summary: {
       lastResearchAt: summary.lastResearchAt,
       qualifiedCount: summary.qualifiedCount,
@@ -970,6 +980,104 @@ export async function getGdiShareResolve(req, res) {
     validationSummary,
     expiresAt: verified.meta?.expiresAt || null,
   });
+}
+
+/** Client-safe GDI PDF report data (no Admin auth — share token only). */
+export async function getGdiSharePdfReportData(req, res) {
+  const verified = requireGdiShare(req, res, "summary");
+  if (!verified) return;
+  const hotelId = String(req.params.hotelId || "").trim();
+  if (hotelId !== verified.claims.hotelId) {
+    return res.status(403).json({
+      ok: false,
+      error: "SHARE_HOTEL_SCOPE",
+      message:
+        "This Dealality access link is no longer active. Please request an updated link from your Dealality contact.",
+    });
+  }
+  try {
+    const { getGdiPdfReportData } = await import(
+      "../lib/group-demand-intelligence/reports/gdi-pdf-report-data-v1.js"
+    );
+    const data = await getGdiPdfReportData(hotelId);
+    if (!data?.available) {
+      return res.status(404).json({
+        ok: false,
+        available: false,
+        error: "gdi_report_unavailable",
+        message:
+          "Group & Demand Intelligence is not currently available for this hotel.",
+      });
+    }
+    const safe = { ...data };
+    if (safe.reportMetadata) {
+      safe.reportMetadata = { ...safe.reportMetadata };
+      delete safe.reportMetadata.hotelId;
+    }
+    delete safe.hotelId;
+    // Strip opportunityId from cards for client payload
+    for (const key of ["topOpportunities", "immediatePursuits", "futureWatch"]) {
+      if (Array.isArray(safe[key])) {
+        safe[key] = safe[key].map((c) => {
+          const { opportunityId, actionabilityScore, ...rest } = c;
+          return rest;
+        });
+      }
+    }
+    return res.json({ ok: true, available: true, data: safe });
+  } catch (err) {
+    console.error("[gdi] share pdf-report data", err);
+    return res.status(500).json({ ok: false, error: "report_data_failed" });
+  }
+}
+
+/** Client PDF download/view via share token (no Admin auth). */
+export async function getGdiShareReportPdf(req, res) {
+  const verified = requireGdiShare(req, res, "summary");
+  if (!verified) return;
+  const hotelId = String(req.params.hotelId || "").trim();
+  if (hotelId !== verified.claims.hotelId) {
+    return res.status(403).json({
+      ok: false,
+      error: "SHARE_HOTEL_SCOPE",
+      message:
+        "This Dealality access link is no longer active. Please request an updated link from your Dealality contact.",
+    });
+  }
+  try {
+    const { hasGdiReportPdf, readGdiReportPdf } = await import(
+      "../lib/group-demand-intelligence/reports/gdi-pdf-store-v1.js"
+    );
+    const { buildGdiPdfFilename } = await import(
+      "../lib/group-demand-intelligence/reports/gdi-pdf-report-data-v1.js"
+    );
+    if (!hasGdiReportPdf(hotelId)) {
+      return res.status(404).json({
+        ok: false,
+        error: "pdf_not_available",
+        message: "A PDF report is not currently available for this hotel.",
+      });
+    }
+    const pack = readGdiReportPdf(hotelId);
+    if (!pack?.buffer || pack.buffer.slice(0, 5).toString() !== "%PDF-") {
+      return res.status(500).json({ ok: false, error: "pdf_invalid" });
+    }
+    const filename =
+      pack.meta?.filename ||
+      buildGdiPdfFilename(pack.meta?.hotelName || "Hotel", pack.meta?.reportDate);
+    const download = String(req.query.download || "") === "1";
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      `${download ? "attachment" : "inline"}; filename="${String(filename).replace(/"/g, "")}"`
+    );
+    res.setHeader("X-GDI-PDF-Filename", filename);
+    res.setHeader("Cache-Control", "private, no-store");
+    return res.send(pack.buffer);
+  } catch (err) {
+    console.error("[gdi] share report-pdf", err);
+    return res.status(500).json({ ok: false, error: "pdf_failed" });
+  }
 }
 
 export async function getGdiShareBrief(req, res) {

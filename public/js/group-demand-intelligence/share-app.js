@@ -723,6 +723,10 @@
         lastResearch: formatDate(s.lastResearchAt),
         runStatus: s.runStatus || "—",
         actionHtml:
+          (state.resolve && state.resolve.pdfAvailable
+            ? '<button type="button" class="btn-clear" id="gdiShareViewPdf">View PDF</button>' +
+              '<button type="button" class="btn-clear" id="gdiShareDownloadPdf">Download PDF</button>'
+            : "") +
           '<button type="button" class="btn-clear" id="gdiResetViewBtn">Reset View</button>',
       }) +
       '<div id="gdiTabBody">' +
@@ -731,6 +735,21 @@
       '<div class="gdi-disclaimer">Share brief for review only. Findings are research-assisted and should be validated by the hotel sales team before outreach.</div>';
 
     wireBrowseControls();
+
+    function openSharePdf(download) {
+      if (!state.hotelId || !share) return;
+      var url =
+        "/api/group-demand-intelligence/share/hotels/" +
+        encodeURIComponent(state.hotelId) +
+        "/report-pdf?share=" +
+        encodeURIComponent(share) +
+        (download ? "&download=1" : "");
+      window.open(url, "_blank");
+    }
+    var viewPdf = document.getElementById("gdiShareViewPdf");
+    if (viewPdf) viewPdf.addEventListener("click", function () { openSharePdf(false); });
+    var dlPdf = document.getElementById("gdiShareDownloadPdf");
+    if (dlPdf) dlPdf.addEventListener("click", function () { openSharePdf(true); });
 
     var weeklySelect = document.getElementById("gdiWeeklyFilter");
     if (weeklySelect) {

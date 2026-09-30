@@ -148,6 +148,7 @@ import {
   postAdminGdiReportGenerate,
   getAdminGdiReportPdf,
 } from "./api/admin-gdi-reports.js";
+import { getAdminExternalClientLinks } from "./api/admin-external-client-links.js";
 
 import { logAdpPublishedReadSourceAtStartup } from "./lib/ai-demand-positioning/published-read-service.js";
 import {
@@ -290,6 +291,8 @@ import {
   getGdiShareOpportunities,
   getGdiShareOpportunitiesExport,
   getGdiShareOpportunityDetail,
+  getGdiSharePdfReportData,
+  getGdiShareReportPdf,
   postGdiShareValidation,
   postGdiShareAction,
   postGdiShareOutcome,
@@ -1088,6 +1091,14 @@ app.post(
   "/api/group-demand-intelligence/share/hotels/:hotelId/opportunities/:opportunityId/outcomes",
   postGdiShareOutcome
 );
+app.get(
+  "/api/group-demand-intelligence/share/hotels/:hotelId/pdf-report",
+  getGdiSharePdfReportData
+);
+app.get(
+  "/api/group-demand-intelligence/share/hotels/:hotelId/report-pdf",
+  getGdiShareReportPdf
+);
 app.post(
   "/api/group-demand-intelligence/hotels/:hotelId/share/issue",
   memberstackAuth,
@@ -1453,6 +1464,11 @@ app.get(
   "/api/admin/group-demand-intelligence/hotels/:hotelId/report-pdf",
   ...adpMonthlyReviewAdminAuth,
   getAdminGdiReportPdf
+);
+app.get(
+  "/api/admin/ai-demand/hotels/:hotelId/external-client-links",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminExternalClientLinks
 );
 
 app.get("/api/adp-leak-audit/sample-report", getLeakAuditSampleReport);
