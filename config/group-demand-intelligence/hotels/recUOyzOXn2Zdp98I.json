@@ -1,0 +1,75 @@
+{
+  "hotelId": "recUOyzOXn2Zdp98I",
+  "displayName": "Radisson Hotel Santo Domingo",
+  "hotelIdentityStatus": "CANONICAL_HPC",
+  "aliases": {
+    "adpPropertyId": "adp_radisson_santo_domingo",
+    "censusRecordId": "recUOyzOXn2Zdp98I",
+    "note": "Controlled Expansion Wave 3 Hotel A — urban / meetings-heavy Naco corridor."
+  },
+  "adpFixturePath": "fixtures/ai-demand-positioning/radisson-santo-domingo-property-profile.json",
+  "commercialPriorities": {
+    "targetSegments": [],
+    "coreTargetPeakRoomsMin": 20,
+    "coreTargetPeakRoomsMax": 90,
+    "allowSmallerIfCommerciallyMeaningful": true,
+    "demandAnchorFocus": [],
+    "weekendFocus": false,
+    "notes": "HOTEL_SPECIFIC_DATA from ADP rooms=160 Naco. Peak band for upper-upscale urban pursuit. targetSegments empty — no demand-type seeding."
+  },
+  "capabilityProfile": {
+    "totalGuestrooms": 160,
+    "totalMeetingSpaceSqFt": null,
+    "largestBallroomSqFt": null,
+    "largestTheaterCapacity": null,
+    "meetingRoomsIndoor": null,
+    "outdoorEventSpace": false,
+    "softBrand": "Radisson",
+    "serviceLevel": "full_service_upper_upscale",
+    "classification": "santo_domingo_naco_urban_upper_upscale",
+    "notes": "HI Event Spaces RESEARCHED_EMPTY after official Choice/Radisson meetings page check (HI completeness onboarding V1). Do not treat null meeting inventory as unresearched."
+  },
+  "demandTerritory": {
+    "label": "Santo Domingo / Naco–Tiradentes",
+    "includes": [
+      "Naco / Tiradentes financial corridor",
+      "selected Piantini competitive when Radisson is a credible alternative",
+      "Distrito Nacional citywide overflow when housing access is evidenced"
+    ],
+    "evaluationQuestion": "Could Radisson Santo Domingo realistically capture this group demand given Naco upper-upscale positioning?",
+    "classifications": [
+      "TERRITORY_CORE",
+      "TERRITORY_NEARBY",
+      "TERRITORY_COMPETITIVE",
+      "TERRITORY_STRETCH",
+      "OUTSIDE_REALISTIC_TERRITORY"
+    ],
+    "displayLabels": {
+      "TERRITORY_CORE": "Naco / Tiradentes Core",
+      "TERRITORY_NEARBY": "Santo Domingo Nearby Corridor",
+      "TERRITORY_COMPETITIVE": "Santo Domingo Competitive",
+      "TERRITORY_STRETCH": "Dominican Republic Stretch",
+      "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+    },
+    "classificationKeywords": {
+      "TERRITORY_CORE": ["naco", "tiradentes", "presidente gonzalez"],
+      "TERRITORY_NEARBY": ["piantini", "bella vista", "gazcue", "zona colonial"],
+      "TERRITORY_COMPETITIVE": ["santo domingo", "distrito nacional"],
+      "TERRITORY_STRETCH": ["santiago dominican", "punta cana overflow"],
+      "OUTSIDE_REALISTIC_TERRITORY": ["miami only", "cancun mega", "cartagena only"]
+    }
+  },
+  "competitiveContext": {
+    "strCompSet": [],
+    "relevantGroupDemandAlternatives": [],
+    "notes": "HOTEL_SPECIFIC_DATA — empty avoids invented competitors."
+  },
+  "identityExclusions": [],
+  "gdiOnboarding": {
+    "status": "CONTROLLED_EXPANSION_WAVE3",
+    "validationMarker": "gdi_controlled_expansion_wave3_20260922",
+    "slot": "A_URBAN_MEETINGS",
+    "reuseAdpProfile": true,
+    "paidEnrichmentEnabled": false
+  }
+}
