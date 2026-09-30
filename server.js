@@ -142,6 +142,12 @@ import {
   getAdminActionPlanExport,
   getAdminActionPlanCatalog,
 } from "./api/admin-adp-monthly-reviews.js";
+import {
+  getAdminGdiReportCatalog,
+  getAdminGdiReportData,
+  postAdminGdiReportGenerate,
+  getAdminGdiReportPdf,
+} from "./api/admin-gdi-reports.js";
 
 import { logAdpPublishedReadSourceAtStartup } from "./lib/ai-demand-positioning/published-read-service.js";
 import {
@@ -1425,6 +1431,28 @@ app.get(
   memberstackAuth,
   requireDealalityUser,
   getAdpMonthlyExecutiveReview
+);
+
+// GDI PDF reports (ADMIN) — separate from ADP Performance Review PDFs
+app.get(
+  "/api/admin/group-demand-intelligence/reports",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminGdiReportCatalog
+);
+app.get(
+  "/api/admin/group-demand-intelligence/hotels/:hotelId/report-data",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminGdiReportData
+);
+app.post(
+  "/api/admin/group-demand-intelligence/hotels/:hotelId/report-pdf/generate",
+  ...adpMonthlyReviewAdminAuth,
+  postAdminGdiReportGenerate
+);
+app.get(
+  "/api/admin/group-demand-intelligence/hotels/:hotelId/report-pdf",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminGdiReportPdf
 );
 
 app.get("/api/adp-leak-audit/sample-report", getLeakAuditSampleReport);

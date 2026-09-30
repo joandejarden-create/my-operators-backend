@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>AI Demand Admin — Dealality</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/support-runbook.css" />
+  <link rel="stylesheet" href="/css/dealality-wave-loader.css" />
+  <link rel="stylesheet" href="/css/deal-workspace-shell.css" />
+  <link rel="stylesheet" href="/css/admin-ai-demand-reviews.css?v=adp-admin-workspace-v1" />
+  <link rel="stylesheet" href="/css/admin-ai-demand-admin.css?v=adp-admin-workspace-v1" />
+  <script>
+    (function () {
+      if (window.location.search.indexOf("embed=1") !== -1 || window !== window.top) {
+        document.documentElement.classList.add("embed-mode");
+      }
+    })();
+  </script>
+</head>
+<body class="support-page adr-page ada-page">
+  <div id="supportGateLoading" class="support-page-loading" aria-busy="true"></div>
+
+  <div id="supportGateDenied" class="support-gate-state" hidden>
+    <h1>Access restricted</h1>
+    <p data-gate-message>AI Demand Administration is for Dealality admin use only.</p>
+  </div>
+
+  <div class="support-page-shell adr-shell ada-shell" id="supportGateContent" hidden>
+    <header class="adr-header ada-header">
+      <div class="ada-header__title-row">
+        <span class="ada-header__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M3 20h18"/><rect x="5" y="11" width="3" height="7"/><rect x="10.5" y="8" width="3" height="10"/><rect x="16" y="5" width="3" height="13"/></svg>
+        </span>
+        <div>
+          <h1>AI Demand Admin</h1>
+          <p class="adr-subtitle">
+            Manage published AI Demand reviews and property action plans.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <nav class="bdd-section-nav aiv-section-nav ada-tabs" aria-label="AI Demand Admin views" role="tablist">
+      <button type="button" class="section-nav-item active" role="tab" aria-selected="true" data-tab="reviews" id="adaTabReviews">
+        <span class="section-nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8"/><path d="M8 12h8"/><path d="M8 16h5"/></svg>
+        </span>
+        <span class="section-nav-label">AI Demand<br>Reviews</span>
+      </button>
+      <button type="button" class="section-nav-item" role="tab" aria-selected="false" data-tab="action-plan" id="adaTabActionPlan">
+        <span class="section-nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg>
+        </span>
+        <span class="section-nav-label">ADP Action<br>Plan</span>
+      </button>
+      <button type="button" class="section-nav-item" role="tab" aria-selected="false" data-tab="gdi-reports" id="adaTabGdiReports">
+        <span class="section-nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>
+        </span>
+        <span class="section-nav-label">GDI<br>Reports</span>
+      </button>
+    </nav>
+
+    <section id="adaPanelReviews" class="ada-panel" data-panel="reviews" role="tabpanel">
+      <div class="adr-counts" id="adrCounts" aria-live="polite"></div>
+
+      <section class="adr-filters" aria-label="Review filters">
+        <label>
+          Search
+          <input type="search" id="adrSearch" placeholder="Hotel or market" />
+        </label>
+        <label>
+          Coverage
+          <select id="adrFilterCoverage">
+            <option value="">All</option>
+            <option value="READY">Ready</option>
+            <option value="NEEDS_REBUILD">Needs rebuild</option>
+            <option value="BLOCKED">Blocked</option>
+          </select>
+        </label>
+        <button type="button" class="adr-btn" id="adrApplyFilters">Apply</button>
+        <button type="button" class="adr-btn adr-btn--secondary" id="adrGenerateDraft">Generate New Draft</button>
+      </section>
+
+      <div class="adr-table-wrap">
+        <table class="adr-table" id="adrTable">
+          <thead>
+            <tr>
+              <th data-sort="propertyName">Hotel</th>
+              <th data-sort="market">Market</th>
+              <th data-sort="reportingMonth">Reporting Month</th>
+              <th data-sort="currentMonitoringDate">Current Monitoring</th>
+              <th data-sort="priorRunDate">Prior Run</th>
+              <th data-sort="versionLabel">Review Version</th>
+              <th data-sort="reviewStatus">Report Status</th>
+              <th data-sort="generationStatus">Generation Status</th>
+              <th data-sort="coverageStatus">Coverage</th>
+              <th data-sort="clientIssued">Client Issued</th>
+              <th data-sort="pdfStatus">PDF</th>
+              <th data-sort="actionCount">Action Plan</th>
+              <th data-sort="generatedAt">Last Generated</th>
+              <th>More</th>
+            </tr>
+          </thead>
+          <tbody id="adrTableBody">
+            <tr><td colspan="14">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <aside class="adr-drawer" id="adrDrawer" hidden>
+        <div class="adr-drawer__head">
+          <h2 id="adrDrawerTitle">Review Details</h2>
+          <button type="button" class="adr-btn adr-btn--secondary" id="adrDrawerClose">Close</button>
+        </div>
+        <div class="adr-drawer__body" id="adrDrawerBody"></div>
+      </aside>
+
+      <div class="adr-modal" id="adrModal" hidden>
+        <div class="adr-modal__panel" role="dialog" aria-modal="true" aria-labelledby="adrModalTitle">
+          <h2 id="adrModalTitle">Generate AI Demand Performance Review</h2>
+          <div id="adrModalBody"></div>
+          <div class="adr-modal__actions">
+            <button type="button" class="adr-btn adr-btn--secondary" id="adrModalCancel">Cancel</button>
+            <button type="button" class="adr-btn" id="adrModalConfirm">Generate Review</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="adaPanelActionPlan" class="ada-panel" data-panel="action-plan" role="tabpanel" hidden>
+      <div class="adr-counts" id="aapCounts" aria-live="polite"></div>
+
+      <section class="adr-filters" aria-label="Property selection">
+        <label>
+          Property
+          <select id="aapProperty">
+            <option value="">Loading published hotels…</option>
+          </select>
+        </label>
+        <button type="button" class="adr-btn" id="aapLoadPreview">Load Actions</button>
+        <button type="button" class="adr-btn adr-btn--secondary" id="aapDownload" disabled>
+          Download Action Plan (CSV)
+        </button>
+      </section>
+
+      <section class="adr-meta-panel" id="aapMeta" aria-live="polite">
+        <p>Select a published ADP hotel to preview the Management Action Agenda.</p>
+      </section>
+      <div class="adr-filters" style="margin-top:8px">
+        <button type="button" class="adr-btn adr-btn--secondary" id="aapViewPdf" disabled>
+          View PDF
+        </button>
+      </div>
+
+      <div class="adr-table-wrap">
+        <table class="adr-table" id="aapTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Title</th>
+              <th>Owner</th>
+              <th>Due</th>
+              <th>Observed Issue</th>
+              <th>Implementation Steps</th>
+              <th>Target Sources</th>
+              <th>Definition of Done</th>
+              <th>Expected Signal</th>
+              <th>Next Monitoring Check</th>
+            </tr>
+          </thead>
+          <tbody id="aapTableBody">
+            <tr><td colspan="12">No property selected.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="adaPanelGdiReports" class="ada-panel" data-panel="gdi-reports" role="tabpanel" hidden>
+      <div class="adr-counts" id="gdiRptCounts" aria-live="polite"></div>
+      <section class="adr-filters" aria-label="GDI report hotel selection">
+        <label>
+          Hotel
+          <select id="gdiRptHotel">
+            <option value="">Loading GDI hotels…</option>
+          </select>
+        </label>
+        <button type="button" class="adr-btn" id="gdiRptGenerate" disabled>Generate PDF</button>
+        <button type="button" class="adr-btn adr-btn--secondary" id="gdiRptView" disabled>View PDF</button>
+        <button type="button" class="adr-btn adr-btn--secondary" id="gdiRptDownload" disabled>Download PDF</button>
+      </section>
+      <section class="adr-meta-panel" id="gdiRptMeta" aria-live="polite">
+        <p>Select a hotel with Group &amp; Demand Intelligence data to generate or view its GDI PDF report.</p>
+      </section>
+      <div class="adr-table-wrap">
+        <table class="adr-table" id="gdiRptTable">
+          <thead>
+            <tr>
+              <th>Hotel</th>
+              <th>Ready</th>
+              <th>Action set</th>
+              <th>Watch</th>
+              <th>PDF</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="gdiRptTableBody">
+            <tr><td colspan="6">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script src="/js/dealality-wave-loader.js"></script>
+  <script src="/js/dealality-memberstack-auth.js"></script>
+  <script src="/js/support-admin-gate.js?v=adp-local-demo-user-v1"></script>
+  <script>
+    (function () {
+      if (window.SupportAdminGate) {
+        window.SupportAdminGate.showPageLoading("supportGateLoading", "Verifying access…");
+      }
+    })();
+  </script>
+  <script src="/js/admin-ai-demand-admin.js?v=gdi-pdf-report-v1"></script>
+  <script src="/js/admin-ai-demand-reviews.js?v=adp-perf-review-restore-v1"></script>
+  <script src="/js/admin-adp-action-plan.js?v=adp-perf-review-restore-v1"></script>
+  <script src="/js/admin-gdi-reports.js?v=gdi-pdf-report-v1"></script>
+  <script src="/embed-chrome.js" defer></script>
+</body>
+</html>

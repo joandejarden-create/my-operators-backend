@@ -1,0 +1,27 @@
+/**
+ * EXISTING_REPORT_ARCHITECTURE — Phase 0 audit snapshot
+ * GDI PDF Report Engine V1
+ */
+{
+  "auditedAt": "2026-09-30",
+  "verdict": "Three ADP PDF families exist (Current ADP, Performance Review, Leak Audit). All Chromium/Playwright (or Puppeteer QA). Shared DealalityReportPrintChrome + dealality-report-system-v1.css. GDI has no PDF path yet.",
+  "adminRoutes": {
+    "aiDemandAdmin": "/app/#/admin/ai-demand",
+    "html": "public/app/admin/ai-demand-admin.html",
+    "tabs": ["reviews", "action-plan"]
+  },
+  "renderer": "playwright chromium page.pdf A4",
+  "reusable": [
+    "public/js/dealality-report-print-chrome.js",
+    "public/css/dealality-report-print-chrome.css",
+    "public/css/dealality-report-system-v1.css",
+    "public/css/brand-alignment-snapshot.css",
+    "Playwright HTML→PDF pattern (generate-monthly-review-pdf-v1 / generate-canonical-pdf)"
+  ],
+  "adpSpecific": [
+    "lib/ai-demand-positioning/** monthly review archive",
+    "adp-monthly-review-report-pdf-v1.js",
+    "Leak Audit 3-page fixed layout"
+  ],
+  "gdiReuseStrategy": "Fork Playwright + print chrome + DRS CSS; new GDI data contract + HTML composer; Admin third tab; do not bind to ADP archive."
+}
