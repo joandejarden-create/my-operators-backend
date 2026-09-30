@@ -2,6 +2,8 @@
 
 **Branch:** `deploy/gdi-pe-v1-7-customer-closure`  
 **Preflight HEAD:** `eaafcedc2d02b6ca387669ede86252e877ef94e6`  
+**FINAL SHA:** `eb7f18daa204ca1994d952d919a3cbb346a9341c`  
+**PUSH:** PASS  
 **Shadow / apply HI:** Airtable HI writes applied for incomplete hotels · **No GDI discovery** · **No cron** · **No production deploy**
 
 ---
