@@ -1,10 +1,11 @@
 # GDI Market-First Discovery V1 — Santo Domingo — Founder Report
 
 **Branch:** `deploy/gdi-pe-v1-7-customer-closure`  
-**FINAL SHA:** _(set at commit)_  
-**PUSH:** pending  
+**FINAL SHA:** `0c463a576c2bbef0e6ec61b55f039fe54969f603`  
+**PUSH:** PASS  
 **Cron:** HELD · **Deploy:** NOT RUN · **Webhound/Surfe AUTO:** OFF  
-**Customer apply:** NOT RUN (0 hotel pairs reached CUSTOMER_READY)
+**Customer apply:** NOT RUN (0 hotel pairs reached CUSTOMER_READY)  
+**DIRTY LEFT:** unrelated working-tree files preserved
 
 ---
 
