@@ -19,15 +19,17 @@
   },
   "capabilityProfile": {
     "totalGuestrooms": 160,
-    "totalMeetingSpaceSqFt": null,
+    "totalMeetingSpaceSqFt": 8611,
     "largestBallroomSqFt": null,
-    "largestTheaterCapacity": null,
+    "largestTheaterCapacity": 500,
     "meetingRoomsIndoor": null,
     "outdoorEventSpace": false,
     "softBrand": "Radisson",
     "serviceLevel": "full_service_upper_upscale",
     "classification": "santo_domingo_naco_urban_upper_upscale",
-    "notes": "HI Event Spaces RESEARCHED_EMPTY after official Choice/Radisson meetings page check (HI completeness onboarding V1). Do not treat null meeting inventory as unresearched."
+    "notes": "HI Evidence Depth V2 populated meeting inventory from structured venue ladder (8611 sq ft / 9 rooms / largest 3875 / cap 500). Capability fields synced from Hotel Intelligence Airtable during GDI requalification portability V1.",
+    "meetingRoomCount": 9,
+    "largestMeetingRoomSqFt": 3875
   },
   "demandTerritory": {
     "label": "Santo Domingo / Naco–Tiradentes",
@@ -52,11 +54,30 @@
       "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
     },
     "classificationKeywords": {
-      "TERRITORY_CORE": ["naco", "tiradentes", "presidente gonzalez"],
-      "TERRITORY_NEARBY": ["piantini", "bella vista", "gazcue", "zona colonial"],
-      "TERRITORY_COMPETITIVE": ["santo domingo", "distrito nacional"],
-      "TERRITORY_STRETCH": ["santiago dominican", "punta cana overflow"],
-      "OUTSIDE_REALISTIC_TERRITORY": ["miami only", "cancun mega", "cartagena only"]
+      "TERRITORY_CORE": [
+        "naco",
+        "tiradentes",
+        "presidente gonzalez"
+      ],
+      "TERRITORY_NEARBY": [
+        "piantini",
+        "bella vista",
+        "gazcue",
+        "zona colonial"
+      ],
+      "TERRITORY_COMPETITIVE": [
+        "santo domingo",
+        "distrito nacional"
+      ],
+      "TERRITORY_STRETCH": [
+        "santiago dominican",
+        "punta cana overflow"
+      ],
+      "OUTSIDE_REALISTIC_TERRITORY": [
+        "miami only",
+        "cancun mega",
+        "cartagena only"
+      ]
     }
   },
   "competitiveContext": {
@@ -71,5 +92,9 @@
     "slot": "A_URBAN_MEETINGS",
     "reuseAdpProfile": true,
     "paidEnrichmentEnabled": false
+  },
+  "capabilityProfileSource": {
+    "hiRequalV1At": "2026-09-30T13:00:05.344Z",
+    "note": "Filled null/zero capability fields from Hotel Intelligence Airtable"
   }
 }

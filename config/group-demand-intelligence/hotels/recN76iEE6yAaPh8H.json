@@ -1,0 +1,101 @@
+{
+  "hotelId": "recN76iEE6yAaPh8H",
+  "displayName": "The St. Regis Cap Cana Resort",
+  "hotelIdentityStatus": "CANONICAL_HPC",
+  "aliases": {
+    "adpPropertyId": "adp_st_regis_cap_cana",
+    "censusRecordId": "recN76iEE6yAaPh8H",
+    "note": "Controlled Expansion Wave 1 Hotel B — resort destination leisure."
+  },
+  "adpFixturePath": "fixtures/ai-demand-positioning/st-regis-cap-cana-property-profile.json",
+  "commercialPriorities": {
+    "targetSegments": [],
+    "coreTargetPeakRoomsMin": 25,
+    "coreTargetPeakRoomsMax": 120,
+    "allowSmallerIfCommerciallyMeaningful": true,
+    "demandAnchorFocus": [],
+    "weekendFocus": true,
+    "notes": "HOTEL_SPECIFIC_DATA from ADP rooms=200 Cap Cana luxury resort. Peak band for destination leisure/incentive primary. targetSegments empty — no demand-type seeding."
+  },
+  "capabilityProfile": {
+    "totalGuestrooms": 200,
+    "totalMeetingSpaceSqFt": 7000,
+    "largestBallroomSqFt": null,
+    "largestTheaterCapacity": 15044,
+    "meetingRoomsIndoor": null,
+    "outdoorEventSpace": true,
+    "softBrand": "St. Regis",
+    "serviceLevel": "full_service_luxury_resort",
+    "classification": "cap_cana_punta_cana_resort_luxury",
+    "notes": "HOTEL_SPECIFIC_DATA from ADP RO fixture.",
+    "meetingRoomCount": 5
+  },
+  "demandTerritory": {
+    "label": "Cap Cana / Punta Cana",
+    "includes": [
+      "Cap Cana resort core",
+      "Punta Cana / Bávaro where St. Regis Cap Cana is a credible luxury alternative",
+      "selected Dominican destination overflow when housing access is evidenced"
+    ],
+    "evaluationQuestion": "Could The St. Regis Cap Cana Resort realistically capture this group demand given Cap Cana luxury resort positioning?",
+    "classifications": [
+      "TERRITORY_CORE",
+      "TERRITORY_NEARBY",
+      "TERRITORY_COMPETITIVE",
+      "TERRITORY_STRETCH",
+      "OUTSIDE_REALISTIC_TERRITORY"
+    ],
+    "displayLabels": {
+      "TERRITORY_CORE": "Cap Cana Core",
+      "TERRITORY_NEARBY": "Punta Cana Nearby",
+      "TERRITORY_COMPETITIVE": "East Coast DR Competitive",
+      "TERRITORY_STRETCH": "Dominican Republic Stretch",
+      "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+    },
+    "classificationKeywords": {
+      "TERRITORY_CORE": [
+        "cap cana",
+        "cap-cana"
+      ],
+      "TERRITORY_NEARBY": [
+        "punta cana",
+        "bavaro",
+        "bávaro",
+        "veron"
+      ],
+      "TERRITORY_COMPETITIVE": [
+        "la altagracia",
+        "dominican republic east",
+        "dr east coast"
+      ],
+      "TERRITORY_STRETCH": [
+        "santo domingo",
+        "la romana",
+        "casa de campo"
+      ],
+      "OUTSIDE_REALISTIC_TERRITORY": [
+        "cancun mega",
+        "miami only",
+        "las vegas",
+        "mexico city only"
+      ]
+    }
+  },
+  "competitiveContext": {
+    "strCompSet": [],
+    "relevantGroupDemandAlternatives": [],
+    "notes": "HOTEL_SPECIFIC_DATA — empty avoids invented competitors."
+  },
+  "identityExclusions": [],
+  "gdiOnboarding": {
+    "status": "CONTROLLED_EXPANSION_WAVE1",
+    "validationMarker": "gdi_controlled_expansion_wave1_20260921",
+    "slot": "B_RESORT_LEISURE",
+    "reuseAdpProfile": true,
+    "paidEnrichmentEnabled": false
+  },
+  "capabilityProfileSource": {
+    "hiRequalV1At": "2026-09-30T13:00:05.099Z",
+    "note": "Filled null/zero capability fields from Hotel Intelligence Airtable"
+  }
+}
