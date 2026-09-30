@@ -2,6 +2,7 @@
 
 **Branch:** `deploy/gdi-pe-v1-7-customer-closure`  
 **Preflight HEAD:** `9f1498a17130bcfd8f19b7bd7868b988cd8acec7`  
+**FINAL SHA:** `2b91132252dd63fc8a3bd6c85856e05725abd009`  
 **Shadow only:** yes · **Apply:** no · **Cron:** HELD · **Deploy:** NOT_RUN
 
 ---
@@ -183,3 +184,6 @@ VENUE_TBD PLAUSIBLE is SD-script-scoped — not applied to NYC corpus.
 ## PERSISTENCE / SAFETY
 
 No broad discovery · No new market · No Webhound · No Surfe AUTO · No Bethesda/NYC mutation · No production deploy · No cron · No portfolio migration · Shadow only
+
+**FINAL SHA:** `2b91132252dd63fc8a3bd6c85856e05725abd009`  
+**PUSH:** pending
