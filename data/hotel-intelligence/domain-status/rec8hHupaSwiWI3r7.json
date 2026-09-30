@@ -27,28 +27,85 @@
       "updatedAt": "2026-09-30T08:30:37.407Z"
     },
     "DEMAND_NODES": {
-      "domainStatus": "RESEARCHED_EMPTY",
-      "lastResearchedAt": "2026-09-30T08:30:37.409Z",
-      "researchRunId": "hi_onboard_2026-09-30T08-30-31-010Z_5e6ba5c3",
+      "domainStatus": "POPULATED",
+      "lastResearchedAt": "2026-09-30T09:31:19.581Z",
+      "researchRunId": "hi_demand_depth_v2_1790760679581",
       "evidenceCount": 2,
-      "rowCount": 0,
-      "sourceCoverage": [],
-      "notes": "no_supportable_demand_nodes",
+      "rowCount": 2,
+      "sourceCoverage": [
+        "FIRST_PARTY",
+        "CVENT",
+        "OTHER"
+      ],
+      "notes": "evidence_depth_v2_demand_populated depth=POPULATED",
       "blocker": null,
       "domain": "DEMAND_NODES",
-      "updatedAt": "2026-09-30T08:30:37.411Z"
+      "updatedAt": "2026-09-30T09:31:19.583Z",
+      "researchDepth": "POPULATED",
+      "sourcesAttempted": [
+        {
+          "family": "FIRST_PARTY",
+          "ok": false,
+          "url": "https://www.hilton.com/en/hotels/mkccuqq-hotel-phillips-kansas-city/"
+        },
+        {
+          "family": "CVENT",
+          "ok": true,
+          "url": "https://www.cvent.com/venues/es-ES/kansas-city/cvb/visit-kansas-city-visit-kc-/venue-043fa23e-bedb-40ae-9aa2-86f97c714de8",
+          "title": "Visit Kansas City (Visit KC)"
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://www.hmdb.org/m.asp?m=86215",
+          "title": "Convention Center"
+        }
+      ]
     },
     "SEASONALITY_NEED_PERIODS": {
-      "domainStatus": "RESEARCHED_EMPTY",
-      "lastResearchedAt": "2026-09-30T08:30:37.412Z",
-      "researchRunId": "hi_onboard_2026-09-30T08-30-31-010Z_5e6ba5c3",
-      "evidenceCount": 2,
-      "rowCount": 0,
-      "sourceCoverage": [],
-      "notes": "no_hotel_specific_need_period_evidence_by_policy",
+      "domainStatus": "POPULATED",
+      "lastResearchedAt": "2026-09-30T09:31:23.466Z",
+      "researchRunId": "hi_seasonality_depth_v2_1790760683466",
+      "evidenceCount": 3,
+      "rowCount": 1,
+      "sourceCoverage": [
+        "FIRST_PARTY",
+        "OTHER",
+        "OTHER",
+        "OTHER"
+      ],
+      "notes": "evidence_depth_v2_destination_seasonality_populated depth=POPULATED",
       "blocker": null,
       "domain": "SEASONALITY_NEED_PERIODS",
-      "updatedAt": "2026-09-30T08:30:37.414Z"
+      "updatedAt": "2026-09-30T09:31:23.469Z",
+      "researchDepth": "POPULATED",
+      "sourcesAttempted": [
+        {
+          "family": "FIRST_PARTY",
+          "ok": true,
+          "url": "https://www.hilton.com/en/hotels/mkccuqq-hotel-phillips-kansas-city/",
+          "note": "seasonality_first_party_probe"
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://www.shophighseason.com/",
+          "title": "HIGH SEASON - Inland Empire Cannabis Dispensary"
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://open.spotify.com/track/12LC7awzpu5knDZMM5LLxM",
+          "title": "High Season - song and lyrics by Jon Bryant"
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://www.instagram.com/highseasonmarket_/?hl=en",
+          "title": "High Season Market (@highseasonmarket_)"
+        }
+      ],
+      "destinationVsNeedPeriod": "DESTINATION_SEASONALITY_ONLY"
     },
     "HI_EVIDENCE": {
       "domainStatus": "POPULATED",
@@ -76,7 +133,7 @@
     }
   },
   "overallStatus": "HI_COMPLETE",
-  "updatedAt": "2026-09-30T08:30:37.422Z",
+  "updatedAt": "2026-09-30T09:31:23.469Z",
   "coverage": {
     "resolved": 6,
     "required": 6,

@@ -1,0 +1,117 @@
+{
+  "args": {
+    "mode": "apply",
+    "hotel": "recUOyzOXn2Zdp98I",
+    "batchRemaining": false,
+    "all": false,
+    "forceSecondary": true
+  },
+  "results": [
+    {
+      "hpcHotelId": "recUOyzOXn2Zdp98I",
+      "hotelName": "Radisson Hotel Santo Domingo",
+      "beforeEvent": "RESEARCHED_EMPTY",
+      "afterEvent": "POPULATED",
+      "populated": true,
+      "domainStatus": "POPULATED",
+      "researchDepth": "POPULATED",
+      "conflicts": [],
+      "jev": {
+        "action": "SEARCH_STRUCTURED_VENUE_PROFILE",
+        "rationale": "First-party incomplete for meeting inventory — search structured venue profiles",
+        "sourceFamily": "CVENT",
+        "queryHint": "\"Radisson Hotel Santo Domingo\" site:cvent.com/venues Santo Domingo",
+        "fallbackQueryHint": "\"Radisson Hotel Santo Domingo\" (\"meeting space\" OR \"meeting rooms\" OR \"salas de reuniones\" OR \"venue profile\") Santo Domingo"
+      },
+      "ledger": {
+        "queries": 1,
+        "fetches": 3,
+        "jevCalls": 1,
+        "jevMaterial": 1,
+        "sourcesAttempted": [
+          {
+            "family": "FIRST_PARTY",
+            "ok": false,
+            "url": "https://www.choicehotels.com/dominican-republic/santo-domingo/radisson-hotels/do003/meetings/"
+          },
+          {
+            "family": "FIRST_PARTY",
+            "ok": false,
+            "url": "https://www.choicehotels.com/dominican-republic/santo-domingo/radisson-hotels/do003/events/"
+          },
+          {
+            "family": "CVENT",
+            "ok": true,
+            "url": "https://www.cvent.com/venues/santo-domingo/hotel/radisson-hotel-santo-domingo/venue-be4cd9bd-a92e-4ed7-9d12-ea61824c61c2",
+            "title": "Radisson Hotel Santo Domingo"
+          }
+        ],
+        "sourceFamilyYield": {
+          "FIRST_PARTY": {
+            "attempts": 2,
+            "successes": 0,
+            "facts": 0
+          },
+          "CVENT": {
+            "attempts": 1,
+            "successes": 1,
+            "facts": 3
+          }
+        },
+        "queriesUsed": 1,
+        "fetchesUsed": 3
+      },
+      "discovered": {
+        "totalMeetingSpaceSqFt": 8611,
+        "meetingRoomCount": 9,
+        "largestMeetingSpaceSqFt": 3875,
+        "largestEventCapacity": 500,
+        "eventSpaceCount": 3,
+        "eventSpaceNames": [
+          "Largest meeting room",
+          "Second-largest meeting room",
+          "Aggregate meeting inventory (structured venue profile)"
+        ]
+      },
+      "sourcesChecked": [
+        {
+          "role": "official_meetings",
+          "family": "FIRST_PARTY",
+          "url": "https://www.choicehotels.com/dominican-republic/santo-domingo/radisson-hotels/do003/meetings/",
+          "ok": false,
+          "status": 403,
+          "title": null
+        },
+        {
+          "role": "official_meetings",
+          "family": "FIRST_PARTY",
+          "url": "https://www.choicehotels.com/dominican-republic/santo-domingo/radisson-hotels/do003/events/",
+          "ok": false,
+          "status": 403,
+          "title": null
+        },
+        {
+          "role": "structured_venue",
+          "family": "CVENT",
+          "url": "https://www.cvent.com/venues/santo-domingo/hotel/radisson-hotel-santo-domingo/venue-be4cd9bd-a92e-4ed7-9d12-ea61824c61c2",
+          "ok": true,
+          "status": 200,
+          "title": "Radisson Hotel Santo Domingo"
+        }
+      ],
+      "applyResult": {
+        "ok": true,
+        "eventSpaces": 3
+      },
+      "adpSync": {
+        "createCount": 8,
+        "updateCount": 25
+      },
+      "cventDiscovered": true,
+      "positiveControl": {
+        "pass": true,
+        "cventUrl": "https://www.cvent.com/venues/santo-domingo/hotel/radisson-hotel-santo-domingo/venue-be4cd9bd-a92e-4ed7-9d12-ea61824c61c2"
+      }
+    }
+  ]
+}

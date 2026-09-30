@@ -31,32 +31,78 @@
       "updatedAt": "2026-09-30T08:30:46.188Z"
     },
     "DEMAND_NODES": {
-      "domainStatus": "RESEARCHED_EMPTY",
-      "lastResearchedAt": "2026-09-30T08:30:46.190Z",
-      "researchRunId": "hi_onboard_2026-09-30T08-30-38-672Z_90b18a55",
-      "evidenceCount": 1,
-      "rowCount": 0,
+      "domainStatus": "POPULATED",
+      "lastResearchedAt": "2026-09-30T09:29:08.896Z",
+      "researchRunId": "hi_demand_depth_v2_1790760548896",
+      "evidenceCount": 4,
+      "rowCount": 4,
       "sourceCoverage": [
-        "official_property"
+        "FIRST_PARTY",
+        "OTHER",
+        "OTHER",
+        "OTHER",
+        "OTHER"
       ],
-      "notes": "no_supportable_demand_nodes",
+      "notes": "evidence_depth_v2_demand_populated depth=POPULATED",
       "blocker": null,
       "domain": "DEMAND_NODES",
-      "updatedAt": "2026-09-30T08:30:46.194Z"
+      "updatedAt": "2026-09-30T09:29:08.974Z",
+      "researchDepth": "POPULATED",
+      "sourcesAttempted": [
+        {
+          "family": "FIRST_PARTY",
+          "ok": true,
+          "url": "https://www.staynownow.com/"
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://ability360.org/es/venue/jacob-k-javits-convention-center-halls-1b-1c-429-11th-avenue-new-york-new-york-10014/",
+          "title": "Jacob K. Javits Convention Center - HALLS 1B & 1C 429 ..."
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://www.meetings-conventions.com/Meeting-Event-Venues/New-York-NY/Convention-Centers",
+          "title": "Convention Centers in New York"
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://www.ny.gov/events/meeting-directors-new-york-convention-center-development-corporation-esd-subsidiary-2",
+          "title": "Meeting of the Directors of the New York Convention Center ..."
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://www.mapquest.com/us/new-york/jacob-k-javits-convention-center-of-new-york-535583418",
+          "title": "Jacob K. Javits Convention Center of New York"
+        }
+      ]
     },
     "SEASONALITY_NEED_PERIODS": {
-      "domainStatus": "RESEARCHED_EMPTY",
-      "lastResearchedAt": "2026-09-30T08:30:46.196Z",
-      "researchRunId": "hi_onboard_2026-09-30T08-30-38-672Z_90b18a55",
-      "evidenceCount": 1,
+      "domainStatus": "PUBLIC_DATA_CEILING",
+      "lastResearchedAt": "2026-09-30T10:04:54.760Z",
+      "researchRunId": "hi_seasonality_depth_v2_1790762694760",
+      "evidenceCount": 0,
       "rowCount": 0,
       "sourceCoverage": [
-        "official_property"
+        "FIRST_PARTY"
       ],
-      "notes": "no_hotel_specific_need_period_evidence_by_policy",
-      "blocker": null,
+      "notes": "evidence_depth_v2_seasonality_ceiling depth=FIRST_PARTY_RESEARCHED",
+      "blocker": "PUBLIC_DATA_CEILING",
       "domain": "SEASONALITY_NEED_PERIODS",
-      "updatedAt": "2026-09-30T08:30:46.199Z"
+      "updatedAt": "2026-09-30T10:04:54.803Z",
+      "researchDepth": "FIRST_PARTY_RESEARCHED",
+      "sourcesAttempted": [
+        {
+          "family": "FIRST_PARTY",
+          "ok": true,
+          "url": "https://www.staynownow.com/",
+          "note": "seasonality_first_party_probe"
+        }
+      ],
+      "destinationVsNeedPeriod": "NO_SUPPORTABLE_PUBLIC_SEASONALITY"
     },
     "HI_EVIDENCE": {
       "domainStatus": "POPULATED",
@@ -86,7 +132,7 @@
     }
   },
   "overallStatus": "HI_COMPLETE",
-  "updatedAt": "2026-09-30T08:30:46.209Z",
+  "updatedAt": "2026-09-30T10:04:54.804Z",
   "coverage": {
     "resolved": 6,
     "required": 6,

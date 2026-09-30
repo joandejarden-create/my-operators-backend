@@ -31,32 +31,78 @@
       "updatedAt": "2026-09-30T08:29:14.874Z"
     },
     "DEMAND_NODES": {
-      "domainStatus": "RESEARCHED_EMPTY",
-      "lastResearchedAt": "2026-09-30T08:29:14.876Z",
-      "researchRunId": "hi_onboard_2026-09-30T08-29-07-704Z_23f7c70f",
+      "domainStatus": "POPULATED",
+      "lastResearchedAt": "2026-09-30T10:05:26.242Z",
+      "researchRunId": "hi_demand_depth_v2_1790762726242",
       "evidenceCount": 2,
-      "rowCount": 0,
+      "rowCount": 2,
       "sourceCoverage": [
-        "official_events"
+        "FIRST_PARTY",
+        "OTHER",
+        "OTHER"
       ],
-      "notes": "no_supportable_demand_nodes",
+      "notes": "evidence_depth_v2_demand_populated depth=POPULATED",
       "blocker": null,
       "domain": "DEMAND_NODES",
-      "updatedAt": "2026-09-30T08:29:14.878Z"
+      "updatedAt": "2026-09-30T10:05:26.255Z",
+      "researchDepth": "POPULATED",
+      "sourcesAttempted": [
+        {
+          "family": "FIRST_PARTY",
+          "ok": false,
+          "url": "https://www.marriott.com/en-us/hotels/mtyjw-jw-marriott-hotel-monterrey-valle/overview/"
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://www.meetings-conventions.com/Meeting-Event-Venues/Monterrey-Mexico/Convention-Hotel/Plaza-Monterrey-p56223175",
+          "title": "Monterrey, Nuevo Leon, Mexico Meeting Rooms & Event ..."
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://revenuebase.ai/companies/convention-center-operators/mexico",
+          "title": "Top 10 Convention center operators based in Mexico"
+        }
+      ]
     },
     "SEASONALITY_NEED_PERIODS": {
-      "domainStatus": "RESEARCHED_EMPTY",
-      "lastResearchedAt": "2026-09-30T08:29:14.879Z",
-      "researchRunId": "hi_onboard_2026-09-30T08-29-07-704Z_23f7c70f",
-      "evidenceCount": 2,
-      "rowCount": 0,
+      "domainStatus": "POPULATED",
+      "lastResearchedAt": "2026-09-30T10:05:31.334Z",
+      "researchRunId": "hi_seasonality_depth_v2_1790762731334",
+      "evidenceCount": 3,
+      "rowCount": 3,
       "sourceCoverage": [
-        "official_events"
+        "FIRST_PARTY",
+        "OTHER",
+        "OTHER"
       ],
-      "notes": "no_hotel_specific_need_period_evidence_by_policy",
+      "notes": "evidence_depth_v2_destination_seasonality_populated depth=POPULATED",
       "blocker": null,
       "domain": "SEASONALITY_NEED_PERIODS",
-      "updatedAt": "2026-09-30T08:29:14.881Z"
+      "updatedAt": "2026-09-30T10:05:31.347Z",
+      "researchDepth": "POPULATED",
+      "sourcesAttempted": [
+        {
+          "family": "FIRST_PARTY",
+          "ok": true,
+          "url": "https://www.marriott.com/en-us/hotels/mtyjw-jw-marriott-hotel-monterrey-valle/overview",
+          "note": "seasonality_first_party_probe"
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://swirvlehub.com/en/blog/high-and-low-season",
+          "title": "Peak and off-peak season: a guide for SMEs and physical stores"
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://www.facebook.com/lacrossetribune/posts/january-through-april-are-peak-season-across-the-worlds-sunbelt-especially-in-me/10157076241701379/",
+          "title": "January through April are peak season across the world's ..."
+        }
+      ],
+      "destinationVsNeedPeriod": "DESTINATION_SEASONALITY_ONLY"
     },
     "HI_EVIDENCE": {
       "domainStatus": "POPULATED",
@@ -86,7 +132,7 @@
     }
   },
   "overallStatus": "HI_COMPLETE",
-  "updatedAt": "2026-09-30T08:29:14.891Z",
+  "updatedAt": "2026-09-30T10:05:31.348Z",
   "coverage": {
     "resolved": 6,
     "required": 6,

@@ -33,34 +33,113 @@
       "updatedAt": "2026-09-30T08:29:47.788Z"
     },
     "DEMAND_NODES": {
-      "domainStatus": "RESEARCHED_EMPTY",
-      "lastResearchedAt": "2026-09-30T08:29:47.790Z",
-      "researchRunId": "hi_onboard_2026-09-30T08-29-32-723Z_cd5b97e2",
+      "domainStatus": "POPULATED",
+      "lastResearchedAt": "2026-09-30T09:35:52.930Z",
+      "researchRunId": "hi_demand_depth_v2_1790760952931",
       "evidenceCount": 4,
-      "rowCount": 0,
+      "rowCount": 4,
       "sourceCoverage": [
-        "official_property",
-        "official_events"
+        "FIRST_PARTY",
+        "OTHER",
+        "TOURISM_AUTHORITY",
+        "TOURISM_AUTHORITY",
+        "OTHER"
       ],
-      "notes": "no_supportable_demand_nodes",
+      "notes": "evidence_depth_v2_demand_populated depth=POPULATED",
       "blocker": null,
       "domain": "DEMAND_NODES",
-      "updatedAt": "2026-09-30T08:29:47.792Z"
+      "updatedAt": "2026-09-30T09:35:52.939Z",
+      "researchDepth": "POPULATED",
+      "sourcesAttempted": [
+        {
+          "family": "FIRST_PARTY",
+          "ok": false,
+          "url": "https://www.marriott.com/en-us/hotels/pujxr-the-st-regis-cap-cana-resort/overview/"
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://capcana.com/es/category/corporate/",
+          "title": "Corporate Archives"
+        },
+        {
+          "family": "TOURISM_AUTHORITY",
+          "ok": true,
+          "url": "https://capcana.com/es/category/destination/",
+          "title": "Destination Archives"
+        },
+        {
+          "family": "TOURISM_AUTHORITY",
+          "ok": true,
+          "url": "https://capcana.com/category/destination/hotels/",
+          "title": "Hotels Archives"
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://isleblue.co/magazine/discover-dominican-cap-cana/",
+          "title": "Discover Cap Cana"
+        }
+      ]
     },
     "SEASONALITY_NEED_PERIODS": {
-      "domainStatus": "RESEARCHED_EMPTY",
-      "lastResearchedAt": "2026-09-30T08:29:47.793Z",
-      "researchRunId": "hi_onboard_2026-09-30T08-29-32-723Z_cd5b97e2",
-      "evidenceCount": 4,
-      "rowCount": 0,
+      "domainStatus": "POPULATED",
+      "lastResearchedAt": "2026-09-30T09:35:57.382Z",
+      "researchRunId": "hi_seasonality_depth_v2_1790760957382",
+      "evidenceCount": 3,
+      "rowCount": 2,
       "sourceCoverage": [
-        "official_property",
-        "official_events"
+        "FIRST_PARTY",
+        "TOURISM_AUTHORITY",
+        "OTHER",
+        "OTHER",
+        "OTHER",
+        "CVB"
       ],
-      "notes": "no_hotel_specific_need_period_evidence_by_policy",
+      "notes": "evidence_depth_v2_destination_seasonality_populated depth=POPULATED",
       "blocker": null,
       "domain": "SEASONALITY_NEED_PERIODS",
-      "updatedAt": "2026-09-30T08:29:47.797Z"
+      "updatedAt": "2026-09-30T09:35:57.399Z",
+      "researchDepth": "POPULATED",
+      "sourcesAttempted": [
+        {
+          "family": "FIRST_PARTY",
+          "ok": true,
+          "url": "https://www.marriott.com/en-us/hotels/pujxr-the-st-regis-cap-cana-resort/overview",
+          "note": "seasonality_first_party_probe"
+        },
+        {
+          "family": "TOURISM_AUTHORITY",
+          "ok": true,
+          "url": "https://www.mahalotravels.com/destination/cap-cana",
+          "title": "Cap Cana & La Romana, Dominican Republic - Mahalo Travels"
+        },
+        {
+          "family": "OTHER",
+          "ok": false,
+          "url": "https://www.tripadvisor.in/ShowTopic-g16884615-i48184-k15523531-Travel_in_September-Cap_Cana_Punta_Cana_La_Altagracia_Province_Dominican_Republic.html",
+          "title": "Travel in September - Cap Cana Forum"
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://atlasranger.com/dominican-republic/punta-cana/best-time-to-visit/",
+          "title": "Best Time to Visit Punta Cana (2026) - Atlas Ranger"
+        },
+        {
+          "family": "OTHER",
+          "ok": false,
+          "url": "https://www.facebook.com/groups/2597173870478526/posts/3162214830641091/",
+          "title": "Best time to visit Punta Cana, La Altagracia Province for ..."
+        },
+        {
+          "family": "CVB",
+          "ok": true,
+          "url": "https://all-inclusive-guide.com/guides/best-time-to-visit-punta-cana-all-inclusive/",
+          "title": "Best Time to Go to Punta Cana 2026 - All-Inclusive Guide"
+        }
+      ],
+      "destinationVsNeedPeriod": "DESTINATION_SEASONALITY_ONLY"
     },
     "HI_EVIDENCE": {
       "domainStatus": "POPULATED",
@@ -91,7 +170,7 @@
     }
   },
   "overallStatus": "HI_COMPLETE",
-  "updatedAt": "2026-09-30T08:29:47.805Z",
+  "updatedAt": "2026-09-30T09:35:57.402Z",
   "coverage": {
     "resolved": 6,
     "required": 6,

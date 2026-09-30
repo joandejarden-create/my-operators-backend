@@ -27,28 +27,78 @@
       "updatedAt": "2026-09-30T08:30:54.656Z"
     },
     "DEMAND_NODES": {
-      "domainStatus": "RESEARCHED_EMPTY",
-      "lastResearchedAt": "2026-09-30T08:30:54.658Z",
-      "researchRunId": "hi_onboard_2026-09-30T08-30-47-950Z_7fe4cf0f",
-      "evidenceCount": 2,
-      "rowCount": 0,
-      "sourceCoverage": [],
-      "notes": "no_supportable_demand_nodes",
+      "domainStatus": "POPULATED",
+      "lastResearchedAt": "2026-09-30T09:28:52.148Z",
+      "researchRunId": "hi_demand_depth_v2_1790760532148",
+      "evidenceCount": 4,
+      "rowCount": 4,
+      "sourceCoverage": [
+        "FIRST_PARTY",
+        "OTHER",
+        "OTHER",
+        "OTHER",
+        "OTHER"
+      ],
+      "notes": "evidence_depth_v2_demand_populated depth=POPULATED",
       "blocker": null,
       "domain": "DEMAND_NODES",
-      "updatedAt": "2026-09-30T08:30:54.661Z"
+      "updatedAt": "2026-09-30T09:28:52.181Z",
+      "researchDepth": "POPULATED",
+      "sourcesAttempted": [
+        {
+          "family": "FIRST_PARTY",
+          "ok": false,
+          "url": "https://www.marriott.com/en-us/hotels/nycrn-renaissance-new-york-times-square-hotel/overview/"
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://ability360.org/es/venue/jacob-k-javits-convention-center-halls-1b-1c-429-11th-avenue-new-york-new-york-10014/",
+          "title": "Jacob K. Javits Convention Center - HALLS 1B & 1C 429 ..."
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://www.meetings-conventions.com/Meeting-Event-Venues/New-York-NY/Convention-Centers",
+          "title": "Convention Centers in New York"
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://www.ny.gov/events/meeting-directors-new-york-convention-center-development-corporation-esd-subsidiary-2",
+          "title": "Meeting of the Directors of the New York Convention Center ..."
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://www.mapquest.com/us/new-york/jacob-k-javits-convention-center-of-new-york-535583418",
+          "title": "Jacob K. Javits Convention Center of New York"
+        }
+      ]
     },
     "SEASONALITY_NEED_PERIODS": {
-      "domainStatus": "RESEARCHED_EMPTY",
-      "lastResearchedAt": "2026-09-30T08:30:54.663Z",
-      "researchRunId": "hi_onboard_2026-09-30T08-30-47-950Z_7fe4cf0f",
-      "evidenceCount": 2,
+      "domainStatus": "PUBLIC_DATA_CEILING",
+      "lastResearchedAt": "2026-09-30T10:04:46.409Z",
+      "researchRunId": "hi_seasonality_depth_v2_1790762686409",
+      "evidenceCount": 0,
       "rowCount": 0,
-      "sourceCoverage": [],
-      "notes": "no_hotel_specific_need_period_evidence_by_policy",
-      "blocker": null,
+      "sourceCoverage": [
+        "FIRST_PARTY"
+      ],
+      "notes": "evidence_depth_v2_seasonality_ceiling depth=FIRST_PARTY_RESEARCHED",
+      "blocker": "PUBLIC_DATA_CEILING",
       "domain": "SEASONALITY_NEED_PERIODS",
-      "updatedAt": "2026-09-30T08:30:54.666Z"
+      "updatedAt": "2026-09-30T10:04:46.651Z",
+      "researchDepth": "FIRST_PARTY_RESEARCHED",
+      "sourcesAttempted": [
+        {
+          "family": "FIRST_PARTY",
+          "ok": true,
+          "url": "https://www.marriott.com/en-us/hotels/nycrn-renaissance-new-york-times-square-hotel/overview/",
+          "note": "seasonality_first_party_probe"
+        }
+      ],
+      "destinationVsNeedPeriod": "NO_SUPPORTABLE_PUBLIC_SEASONALITY"
     },
     "HI_EVIDENCE": {
       "domainStatus": "POPULATED",
@@ -76,7 +126,7 @@
     }
   },
   "overallStatus": "HI_COMPLETE",
-  "updatedAt": "2026-09-30T08:30:54.675Z",
+  "updatedAt": "2026-09-30T10:04:46.653Z",
   "coverage": {
     "resolved": 6,
     "required": 6,

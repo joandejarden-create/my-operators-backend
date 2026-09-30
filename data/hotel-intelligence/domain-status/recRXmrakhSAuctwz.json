@@ -31,32 +31,99 @@
       "updatedAt": "2026-09-30T08:29:57.301Z"
     },
     "DEMAND_NODES": {
-      "domainStatus": "RESEARCHED_EMPTY",
-      "lastResearchedAt": "2026-09-30T08:29:57.303Z",
-      "researchRunId": "hi_onboard_2026-09-30T08-29-48-934Z_d4d864d1",
-      "evidenceCount": 3,
-      "rowCount": 0,
+      "domainStatus": "POPULATED",
+      "lastResearchedAt": "2026-09-30T09:34:08.843Z",
+      "researchRunId": "hi_demand_depth_v2_1790760848843",
+      "evidenceCount": 4,
+      "rowCount": 4,
       "sourceCoverage": [
-        "official_events"
+        "FIRST_PARTY",
+        "TOURISM_AUTHORITY",
+        "OTHER",
+        "OTHER",
+        "OTHER"
       ],
-      "notes": "no_supportable_demand_nodes",
+      "notes": "evidence_depth_v2_demand_populated depth=POPULATED",
       "blocker": null,
       "domain": "DEMAND_NODES",
-      "updatedAt": "2026-09-30T08:29:57.307Z"
+      "updatedAt": "2026-09-30T09:34:08.846Z",
+      "researchDepth": "POPULATED",
+      "sourcesAttempted": [
+        {
+          "family": "FIRST_PARTY",
+          "ok": false,
+          "url": "https://www.marriott.com/en-us/hotels/mexxr-the-st-regis-mexico-city/overview/"
+        },
+        {
+          "family": "TOURISM_AUTHORITY",
+          "ok": true,
+          "url": "https://www.iberia.com/ca/destination-guide/mexico/",
+          "title": "Travel guide: what to do and see in Mexico"
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://department.va.gov/center-for-minority-veterans/",
+          "title": "Center for Minority Veterans"
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://www.nifc.gov/",
+          "title": "National Interagency Fire Center: Welcome to the Nation's ..."
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://www.osc.org/",
+          "title": "Orlando Science Center | Science Museum in Central Florida"
+        }
+      ]
     },
     "SEASONALITY_NEED_PERIODS": {
-      "domainStatus": "RESEARCHED_EMPTY",
-      "lastResearchedAt": "2026-09-30T08:29:57.309Z",
-      "researchRunId": "hi_onboard_2026-09-30T08-29-48-934Z_d4d864d1",
-      "evidenceCount": 3,
-      "rowCount": 0,
+      "domainStatus": "POPULATED",
+      "lastResearchedAt": "2026-09-30T10:05:46.227Z",
+      "researchRunId": "hi_seasonality_depth_v2_1790762746227",
+      "evidenceCount": 4,
+      "rowCount": 3,
       "sourceCoverage": [
-        "official_events"
+        "FIRST_PARTY",
+        "OTHER",
+        "OTHER",
+        "OTHER"
       ],
-      "notes": "no_hotel_specific_need_period_evidence_by_policy",
+      "notes": "evidence_depth_v2_destination_seasonality_populated depth=POPULATED",
       "blocker": null,
       "domain": "SEASONALITY_NEED_PERIODS",
-      "updatedAt": "2026-09-30T08:29:57.312Z"
+      "updatedAt": "2026-09-30T10:05:46.234Z",
+      "researchDepth": "POPULATED",
+      "sourcesAttempted": [
+        {
+          "family": "FIRST_PARTY",
+          "ok": true,
+          "url": "https://www.marriott.com/en-us/hotels/mexxr-the-st-regis-mexico-city/overview",
+          "note": "seasonality_first_party_probe"
+        },
+        {
+          "family": "OTHER",
+          "ok": false,
+          "url": "https://mexicocityitinerary.com/best-time-to-visit",
+          "title": "Best Time to Visit Mexico City — Month-by-Month Guide 2026"
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://excellenceluxuryvillas.com/luxury-travel-guides/mexico-best-time-to-visit/",
+          "title": "Best Time To Visit Mexico: Month By Month Weather, ..."
+        },
+        {
+          "family": "OTHER",
+          "ok": true,
+          "url": "https://swirvlehub.com/en/blog/temporada-alta-y-baja-en-restaurantes",
+          "title": "Swirvle Business | Peak and off-peak seasons in restaurants ..."
+        }
+      ],
+      "destinationVsNeedPeriod": "DESTINATION_SEASONALITY_ONLY"
     },
     "HI_EVIDENCE": {
       "domainStatus": "POPULATED",
@@ -86,7 +153,7 @@
     }
   },
   "overallStatus": "HI_COMPLETE",
-  "updatedAt": "2026-09-30T08:29:57.321Z",
+  "updatedAt": "2026-09-30T10:05:46.235Z",
   "coverage": {
     "resolved": 6,
     "required": 6,
