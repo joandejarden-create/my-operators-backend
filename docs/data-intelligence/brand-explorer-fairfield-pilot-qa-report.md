@@ -1,9 +1,9 @@
 # Brand Explorer Pilot QA — Fairfield by Marriott
 
 > **Status:** READY FOR CHATGPT QA
-> **Generated:** 2026-10-01T11:26:53.398Z
+> **Generated:** 2026-10-01T12:05:37.312Z
 > **Fixture:** `fixtures/brand-explorer-presentation-fairfield-by-marriott-full.json` (101 rows)
-> **Brand source:** `fixture_stub`
+> **Brand source:** `airtable_live`
 
 ## Selected brand
 
@@ -26,8 +26,8 @@
 | Image uniqueness | PASS |
 | Image role match | PASS |
 | Content quality (semantic) | PASS (0 issues) |
-| External quality lock | DEFERRED (factory preview — expected until founder approval) |
-| External display state | `factory_preview_internal` |
+| External quality lock | PASS |
+| External display state | `active_profile_ready` |
 | Brand Website | `https://fairfield.marriott.com/` (PASS) |
 
 

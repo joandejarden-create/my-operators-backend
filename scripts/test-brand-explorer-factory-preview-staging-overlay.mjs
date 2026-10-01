@@ -71,13 +71,18 @@ function mainSync() {
     brandExplorerDisplayState: "profile_in_preparation",
   };
 
-  const production = applyFactoryPreviewStagingOverlay(liveParent, { factoryPreview: false });
+  const production = applyFactoryPreviewStagingOverlay(liveParent, {
+    factoryPreview: false,
+    env: { NODE_ENV: "production", BRAND_EXPLORER_LOCAL_STAGING: "0" },
+    host: "api.dealality.com",
+  });
   assert.equal(production.brandWebsite, PARENT_ROOT, "production path must keep live Brand Website");
   assert.equal(production.factoryPreviewStaging, undefined, "no staging meta on production path");
 
   const preview = applyFactoryPreviewStagingOverlay(liveParent, {
     factoryPreview: true,
     search: "?beInternalPreview=1&factoryPreview=1",
+    env: { NODE_ENV: "production", BRAND_EXPLORER_LOCAL_STAGING: "0" },
   });
   assert.equal(
     preview.brandWebsite,
@@ -142,66 +147,79 @@ function mainSync() {
 }
 
 async function mainLive() {
-  const prodBrand = await fetchBrand({ brandId: RECORD_ID, refresh: "1" });
-  const previewBrand = await fetchBrand({
-    brandId: RECORD_ID,
-    refresh: "1",
-    beInternalPreview: "1",
-    factoryPreview: "1",
-  });
+  const prevLocal = process.env.BRAND_EXPLORER_LOCAL_STAGING;
+  const prevNode = process.env.NODE_ENV;
+  try {
+    // Force production-like API behavior for the "unaffected" assertion.
+    process.env.BRAND_EXPLORER_LOCAL_STAGING = "0";
+    process.env.NODE_ENV = "production";
 
-  assert.equal(
-    previewBrand.brandWebsite,
-    FAIRFIELD_OFFICIAL_BRAND_WEBSITE,
-    `API factory preview brandWebsite must be ${FAIRFIELD_OFFICIAL_BRAND_WEBSITE}, got ${previewBrand.brandWebsite}`
-  );
-  assert.notEqual(
-    previewBrand.brandWebsite.replace(/\/$/, ""),
-    "https://marriott.com",
-    "API factory preview must not return parent root"
-  );
-  assert.equal(previewBrand.factoryPreviewStaging?.applied, true, "API staging applied");
-  assert.equal(previewBrand.factoryPreviewStaging?.airtableWrites, false);
+    const prodBrand = await fetchBrand({ brandId: RECORD_ID, refresh: "1" });
+    const previewBrand = await fetchBrand({
+      brandId: RECORD_ID,
+      refresh: "1",
+      beInternalPreview: "1",
+      factoryPreview: "1",
+    });
 
-  // Production path: either live Airtable value OR at least not forced to fixture when not previewing
-  assert.ok(prodBrand.brandWebsite != null, "production brandWebsite present");
-  if (String(prodBrand.brandWebsite).includes("fairfield.marriott.com")) {
-    console.log(
-      "[INFO] live Airtable Brand Website already brand-specific; production still returns it without staging meta"
+    assert.equal(
+      previewBrand.brandWebsite,
+      FAIRFIELD_OFFICIAL_BRAND_WEBSITE,
+      `API factory preview brandWebsite must be ${FAIRFIELD_OFFICIAL_BRAND_WEBSITE}, got ${previewBrand.brandWebsite}`
     );
-  } else {
+    assert.notEqual(
+      previewBrand.brandWebsite.replace(/\/$/, ""),
+      "https://marriott.com",
+      "API factory preview must not return parent root"
+    );
+    assert.equal(previewBrand.factoryPreviewStaging?.applied, true, "API staging applied");
+    assert.equal(previewBrand.factoryPreviewStaging?.airtableWrites, false);
+
+    assert.ok(prodBrand.brandWebsite != null, "production brandWebsite present");
     assert.notEqual(
       prodBrand.factoryPreviewStaging?.applied,
       true,
-      "production API must not apply staging overlay"
+      "production API must not apply staging overlay when local staging disabled"
     );
+    assert.ok(
+      !/^https?:\/\/fairfield\.marriott\.com\/?$/i.test(String(prodBrand.brandWebsite)),
+      "production path must keep live Airtable website (not staged fairfield host)"
+    );
+
+    const liveParentStub = {
+      ...prodBrand,
+      brandWebsite: PARENT_ROOT,
+      slug: SLUG,
+    };
+    const html = renderBrandExplorerHtmlForTest(liveParentStub, {
+      factoryPreview: true,
+      allPanels: true,
+    });
+    assert.match(html, /https:\/\/fairfield\.marriott\.com\/?/i);
+    assert.ok(
+      !html.includes(">" + PARENT_ROOT + "<") &&
+        !html.includes(">" + PARENT_ROOT.replace(/\/$/, "") + "<")
+    );
+
+    console.log("[PASS] live API: factory preview stages Fairfield brandWebsite; production unaffected");
+    console.log(
+      JSON.stringify(
+        {
+          productionWebsite: prodBrand.brandWebsite,
+          previewWebsite: previewBrand.brandWebsite,
+          staging: previewBrand.factoryPreviewStaging,
+          airtableWrites: false,
+        },
+        null,
+        2
+      )
+    );
+  } finally {
+    if (prevLocal === undefined) delete process.env.BRAND_EXPLORER_LOCAL_STAGING;
+    else process.env.BRAND_EXPLORER_LOCAL_STAGING = prevLocal;
+    if (prevNode === undefined) delete process.env.NODE_ENV;
+    else process.env.NODE_ENV = prevNode;
   }
-
-  const liveParentStub = {
-    ...prodBrand,
-    brandWebsite: PARENT_ROOT,
-    slug: SLUG,
-  };
-  const html = renderBrandExplorerHtmlForTest(liveParentStub, {
-    factoryPreview: true,
-    allPanels: true,
-  });
-  assert.match(html, /https:\/\/fairfield\.marriott\.com\/?/i);
-  assert.ok(!html.includes(">" + PARENT_ROOT + "<") && !html.includes(">" + PARENT_ROOT.replace(/\/$/, "") + "<"));
-
-  console.log("[PASS] live API: factory preview stages Fairfield brandWebsite; production unaffected");
-  console.log(
-    JSON.stringify(
-      {
-        productionWebsite: prodBrand.brandWebsite,
-        previewWebsite: previewBrand.brandWebsite,
-        staging: previewBrand.factoryPreviewStaging,
-        airtableWrites: false,
-      },
-      null,
-      2
-    )
-  );
 }
 
 mainSync();
