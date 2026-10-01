@@ -12,26 +12,53 @@ import { renderBrandExplorerHtmlForTest } from "../lib/partner-intelligence/bran
 import { evaluateBrandExternalQualityLock } from "../lib/partner-intelligence/brand-explorer-display-quality-lock.js";
 import { evaluateBrandExplorerOsBrand } from "../lib/partner-intelligence/brand-explorer-os-run.js";
 import { evaluatePilotContentQuality } from "../lib/partner-intelligence/brand-explorer-pilot-content-quality.js";
+import {
+  FACTORY_PREVIEW_DISPLAY_STATE,
+  buildFactoryPreviewApiMeta,
+  getFactoryPreviewIdentity,
+} from "../lib/partner-intelligence/brand-explorer-factory-preview-candidates.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const SLUG = "fairfield-by-marriott";
 const RECORD_ID = "recpUTDtwt1wPMDPj";
 const FIXTURE = path.join(ROOT, "fixtures", `brand-explorer-presentation-${SLUG}-full.json`);
+const MOMENTUM_SLOT = "footprint.momentum";
 
-/** Minimal brand shape for fixture-only pilot QA when Airtable auth is unavailable. */
+/** Production display states that mean defects / incomplete — block READY FOR CHATGPT QA. */
+const DEFECT_DISPLAY_STATES = new Set(["draft_applied_with_defects", "hidden_incomplete"]);
+
+/**
+ * Fixture-only brand shape for factory-preview pilot QA when Airtable is unavailable.
+ * Uses factory_preview_internal (not active_profile_ready) so production display is not
+ * inventively upgraded, and so resolveBrandExplorerDisplayState is not re-run without
+ * Brand Basics (which falsely yields draft_applied_with_defects).
+ */
 function buildFixtureOnlyBrandStub() {
-  return {
-    id: RECORD_ID,
-    recordId: RECORD_ID,
+  const identity = getFactoryPreviewIdentity(SLUG) || {
     slug: SLUG,
     name: "Fairfield by Marriott",
-    brandStatus: "Under Review",
+    recordId: RECORD_ID,
+  };
+  const base = {
+    id: identity.recordId || RECORD_ID,
+    recordId: identity.recordId || RECORD_ID,
+    slug: identity.slug || SLUG,
+    name: identity.name || "Fairfield by Marriott",
+    brandStatus: identity.recommendedStatusWhileInFactory || "Under Review",
     parentCompany: "Marriott International",
     brandExplorer: { version: 1, blocks: [] },
     guestPsychographics: "",
     brandPositioning: "",
+    brandExplorerDisplayState: FACTORY_PREVIEW_DISPLAY_STATE,
+    shouldRenderFullProfile: false,
+    shouldSuppressIncompleteExternalSections: true,
+    shouldHideExternalProfile: true,
     _fixtureOnlyBrandStub: true,
+  };
+  return {
+    ...base,
+    factoryPreview: buildFactoryPreviewApiMeta(base),
   };
 }
 
@@ -39,8 +66,10 @@ async function fetchBrand(brandId) {
   const hasCreds =
     Boolean(process.env.AIRTABLE_API_KEY) && Boolean(process.env.AIRTABLE_BASE_ID);
   if (!hasCreds) {
-    console.warn("[pilot-qa] Airtable credentials missing — using fixture-only brand stub");
-    return buildFixtureOnlyBrandStub();
+    console.warn(
+      "[pilot-qa] Airtable credentials missing — using fixture-only factory-preview brand stub"
+    );
+    return { brand: buildFixtureOnlyBrandStub(), brandSource: "fixture_stub" };
   }
   try {
     const { getBrandLibraryBrandById } = await import("../api/brand-library.js");
@@ -61,12 +90,12 @@ async function fetchBrand(brandId) {
     if (res.statusCode !== 200 || !res.payload?.brand) {
       throw new Error(`Brand fetch failed for ${brandId}`);
     }
-    return res.payload.brand;
+    return { brand: res.payload.brand, brandSource: "airtable_live" };
   } catch (err) {
     console.warn(
-      `[pilot-qa] Airtable brand fetch failed (${err?.message || err}) — using fixture-only brand stub`
+      `[pilot-qa] Airtable brand fetch failed (${err?.message || err}) — using fixture-only factory-preview brand stub`
     );
-    return buildFixtureOnlyBrandStub();
+    return { brand: buildFixtureOnlyBrandStub(), brandSource: "fixture_stub" };
   }
 }
 
@@ -115,6 +144,54 @@ function injectPresentationIntoBrand(brand, rows) {
   };
 }
 
+function listTabFactoryFailFindings(tabFactory) {
+  const findings = tabFactory?.findings || tabFactory?.completeness?.findings || [];
+  return findings
+    .filter(
+      (f) =>
+        f.status !== "pass" &&
+        f.status !== "should_suppress" &&
+        f.status !== "cleanly_unavailable" &&
+        f.recommendedAction !== "suppress_component"
+    )
+    .map((f) => ({
+      fieldName: f.fieldName || f.fieldId || null,
+      status: f.status,
+      recommendedAction: f.recommendedAction || null,
+      reason: f.reason || null,
+    }));
+}
+
+function computeReadyForChatGptQa({
+  tabFactory,
+  contentQuality,
+  galleryCount,
+  momentumCount,
+  externalDisplayState,
+}) {
+  const failFindings =
+    typeof tabFactory.failFindings === "number" ? tabFactory.failFindings : 0;
+  const blockers = [];
+  if (tabFactory.auditPass !== true) blockers.push("tabFactory.auditPass !== true");
+  if (failFindings > 0) blockers.push(`tabFactoryFailFindings=${failFindings}`);
+  if (tabFactory.golden?.pass !== true) blockers.push("goldenPass !== true");
+  if (tabFactory.provenance?.pass !== true) blockers.push("provenancePass !== true");
+  if (tabFactory.sectionPatternParity?.pass !== true) {
+    blockers.push("sectionPatternParityPass !== true");
+  }
+  if (tabFactory.gates?.image_distinctiveness !== true) {
+    blockers.push("image_distinctiveness !== true");
+  }
+  if (tabFactory.gates?.image_role_match !== true) blockers.push("image_role_match !== true");
+  if (contentQuality.pass !== true) blockers.push("contentQualityPass !== true");
+  if (galleryCount < 6) blockers.push("galleryCount < 6");
+  if (momentumCount < 2) blockers.push("momentumCount < 2");
+  if (DEFECT_DISPLAY_STATES.has(externalDisplayState)) {
+    blockers.push(`externalDisplayState=${externalDisplayState}`);
+  }
+  return { ready: blockers.length === 0, blockers };
+}
+
 async function main() {
   if (!fs.existsSync(FIXTURE)) {
     throw new Error(`Missing fixture: ${FIXTURE}. Run export-brand-explorer-wave16a-full-fixture first.`);
@@ -123,7 +200,7 @@ async function main() {
   const rows = fixtureRowsToPresentation(fixture.rows || []);
   console.log(`[pilot-qa] ${SLUG} fixture rows: ${rows.length}`);
 
-  const brand = await fetchBrand(RECORD_ID);
+  const { brand, brandSource } = await fetchBrand(RECORD_ID);
   const mergedBrand = injectPresentationIntoBrand(brand, rows);
   const html = renderBrandExplorerHtmlForTest(mergedBrand, {
     allPanels: true,
@@ -138,10 +215,10 @@ async function main() {
     brandSlug: SLUG,
   });
 
-  const externalLock = evaluateBrandExternalQualityLock(mergedBrand, {
+  // Correct signature: (brand, renderedHtml, options)
+  const externalLock = evaluateBrandExternalQualityLock(mergedBrand, html, {
     brandSlug: SLUG,
     presentationRows: rows,
-    html,
   });
 
   const contentQuality = evaluatePilotContentQuality(rows);
@@ -153,39 +230,60 @@ async function main() {
     console.warn(`OS evaluate skipped: ${err.message}`);
   }
 
+  const galleryCount = rows.filter((r) => /^materials\.gallery\./.test(r.slotKey)).length;
+  const momentumCount = rows.filter((r) => r.slotKey === MOMENTUM_SLOT).length;
+  const openingsCount = rows.filter((r) => r.slotKey === "footprint.openings").length;
+  const scenarioCount = rows.filter((r) => /^overview\.scenario\./.test(r.slotKey)).length;
+  const valueScenarioCount = rows.filter((r) => /^valueOwners\.scenario\./.test(r.slotKey)).length;
+  const externalDisplayState = externalLock.displayState || null;
+  const tabFactoryFailFindingsList = listTabFactoryFailFindings(tabFactory);
+
+  const ready = computeReadyForChatGptQa({
+    tabFactory,
+    contentQuality,
+    galleryCount,
+    momentumCount,
+    externalDisplayState,
+  });
+
+  // Internal consistency invariant: auditPass and failFindings must agree.
+  if (tabFactory.auditPass === true && (tabFactory.failFindings || 0) > 0) {
+    throw new Error(
+      `Inconsistent tab-factory result: auditPass=true with failFindings=${tabFactory.failFindings}`
+    );
+  }
+  if (tabFactory.auditPass !== true && (tabFactory.failFindings || 0) === 0) {
+    // Other gates can fail auditPass with zero field fails (e.g. golden/provenance).
+    // That is allowed; readyForChatGptQa still requires auditPass === true.
+  }
+
   const report = {
     slug: SLUG,
     fixturePath: FIXTURE,
+    brandSource,
     rowCount: rows.length,
-    tabFactoryAuditPass: tabFactory.auditPass,
-    tabFactoryFailFindings: tabFactory.failFindings,
-    goldenPass: tabFactory.golden?.pass,
-    provenancePass: tabFactory.provenance?.pass,
-    sectionPatternParityPass: tabFactory.sectionPatternParity?.pass,
-    imageUniquenessPass: tabFactory.imageUniqueness?.pass,
-    imageRoleMatchPass: tabFactory.imageRoleMatch?.pass,
+    tabFactoryAuditPass: tabFactory.auditPass === true,
+    tabFactoryFailFindings: tabFactory.failFindings || 0,
+    tabFactoryFailFindingsList,
+    goldenPass: tabFactory.golden?.pass === true,
+    provenancePass: tabFactory.provenance?.pass === true,
+    sectionPatternParityPass: tabFactory.sectionPatternParity?.pass === true,
+    imageUniquenessPass: tabFactory.imageUniqueness?.pass === true,
+    imageRoleMatchPass: tabFactory.imageRoleMatch?.pass === true,
     externalQualityLockPass: externalLock.externalQualityLockPass === true,
     externalQualityIssues: externalLock.issues || [],
-    contentQualityPass: contentQuality.pass,
+    contentQualityPass: contentQuality.pass === true,
     contentQualityIssueCount: contentQuality.issueCount,
     contentQualityIssues: contentQuality.issues,
     osState: os?.canonicalState || null,
-    galleryCount: rows.filter((r) => /^materials\.gallery\./.test(r.slotKey)).length,
-    momentumCount: rows.filter((r) => r.slotKey === "footprint.momentum").length,
-    openingsCount: rows.filter((r) => r.slotKey === "footprint.openings").length,
-    scenarioCount: rows.filter((r) => /^overview\.scenario\./.test(r.slotKey)).length,
-    valueScenarioCount: rows.filter((r) => /^valueOwners\.scenario\./.test(r.slotKey)).length,
-    externalDisplayState: externalLock.displayState || null,
-    readyForChatGptQa:
-      tabFactory.auditPass === true &&
-      tabFactory.golden?.pass === true &&
-      tabFactory.provenance?.pass === true &&
-      tabFactory.sectionPatternParity?.pass === true &&
-      tabFactory.gates?.image_distinctiveness === true &&
-      tabFactory.gates?.image_role_match === true &&
-      contentQuality.pass === true &&
-      rows.filter((r) => /^materials\.gallery\./.test(r.slotKey)).length >= 6 &&
-      rows.filter((r) => r.slotKey === "footprint.momentum").length >= 2,
+    galleryCount,
+    momentumCount,
+    openingsCount,
+    scenarioCount,
+    valueScenarioCount,
+    externalDisplayState,
+    readyForChatGptQaBlockers: ready.blockers,
+    readyForChatGptQa: ready.ready,
   };
 
   const outJson = path.join(ROOT, "reports", "brand-explorer-fairfield-pilot-qa.json");
@@ -193,11 +291,34 @@ async function main() {
   fs.mkdirSync(path.dirname(outJson), { recursive: true });
   fs.writeFileSync(outJson, JSON.stringify(report, null, 2), "utf8");
 
+  const failListMd =
+    report.tabFactoryFailFindingsList.length > 0
+      ? `### Tab factory fail findings\n\n${report.tabFactoryFailFindingsList
+          .map(
+            (i) =>
+              `- **${i.fieldName || "unknown"}** (${i.status}): ${i.reason || i.recommendedAction || ""}`
+          )
+          .join("\n")}\n`
+      : "";
+
+  const contentIssuesMd =
+    report.contentQualityIssues?.length > 0
+      ? `### Content quality issues\n\n${report.contentQualityIssues
+          .map((i) => `- **${i.code}** (${i.slotKey || "global"}): ${i.message}`)
+          .join("\n")}\n`
+      : "";
+
+  const blockersMd =
+    report.readyForChatGptQaBlockers.length > 0
+      ? `### Ready blockers\n\n${report.readyForChatGptQaBlockers.map((b) => `- ${b}`).join("\n")}\n`
+      : "";
+
   const md = `# Brand Explorer Pilot QA — Fairfield by Marriott
 
 > **Status:** ${report.readyForChatGptQa ? "READY FOR CHATGPT QA" : "NEEDS REMEDIATION"}
 > **Generated:** ${new Date().toISOString()}
 > **Fixture:** \`fixtures/brand-explorer-presentation-fairfield-by-marriott-full.json\` (${report.rowCount} rows)
+> **Brand source:** \`${report.brandSource}\`
 
 ## Selected brand
 
@@ -221,13 +342,9 @@ async function main() {
 | Image role match | ${report.imageRoleMatchPass ? "PASS" : "FAIL"} |
 | Content quality (semantic) | ${report.contentQualityPass ? "PASS" : "FAIL"} (${report.contentQualityIssueCount} issues) |
 | External quality lock | ${report.externalQualityLockPass ? "PASS" : "DEFERRED (factory preview — expected until founder approval)"} |
+| External display state | \`${report.externalDisplayState || "null"}\` |
 
-${
-  report.contentQualityIssues?.length
-    ? `### Content quality issues\n\n${report.contentQualityIssues.map((i) => `- **${i.code}** (${i.slotKey || "global"}): ${i.message}`).join("\n")}\n`
-    : ""
-}
-
+${failListMd}${contentIssuesMd}${blockersMd}
 ## ChatGPT QA remediation (2026-10-01)
 
 ### Round 1
@@ -244,6 +361,11 @@ ${
 - Replaced \`king-room prototype\` with \`rooms-focused select-service prototype\` in \`insight.similar\`
 - Expanded semantic gate (\`pilot-content-quality-v2\`) so malformed run-on joins fail automatically
 - Report: \`reports/brand-explorer-fairfield-pilot-remediation-round2.json\`
+
+### Round 3 (QA report consistency)
+- Root cause: \`evaluateTabFactoryFromPayload\` counted \`cleanly_unavailable\` Brand Basics snapshot fields as \`failFindings\` while \`completeness.auditPass\` correctly treated them as resolved → \`auditPass=true\` with \`failFindings=10\`
+- Root cause: pilot QA called \`evaluateBrandExternalQualityLock(brand, options)\` instead of \`(brand, html, options)\`, and the incomplete stub re-resolved production display without Brand Basics → false \`draft_applied_with_defects\`
+- Fix: align \`failFindings\` with completeness governance (\`auditPass\` requires \`failFindings === 0\`); correct external-lock call; factory-preview stub uses \`factory_preview_internal\`; \`readyForChatGptQa\` blocks on fail findings, audit fail, or defect display states
 
 ## Coverage
 

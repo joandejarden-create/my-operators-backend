@@ -1,8 +1,9 @@
 # Brand Explorer Pilot QA — Fairfield by Marriott
 
 > **Status:** READY FOR CHATGPT QA
-> **Generated:** 2026-10-01T10:15:16.496Z
+> **Generated:** 2026-10-01T10:26:52.638Z
 > **Fixture:** `fixtures/brand-explorer-presentation-fairfield-by-marriott-full.json` (101 rows)
+> **Brand source:** `fixture_stub`
 
 ## Selected brand
 
@@ -18,7 +19,7 @@
 
 | Gate | Result |
 | --- | --- |
-| Tab factory audit | PASS (10 fail findings) |
+| Tab factory audit | PASS (0 fail findings) |
 | Golden content | PASS |
 | Source provenance | PASS |
 | Section pattern parity | PASS |
@@ -26,7 +27,7 @@
 | Image role match | PASS |
 | Content quality (semantic) | PASS (0 issues) |
 | External quality lock | DEFERRED (factory preview — expected until founder approval) |
-
+| External display state | `factory_preview_internal` |
 
 
 ## ChatGPT QA remediation (2026-10-01)
@@ -45,6 +46,11 @@
 - Replaced `king-room prototype` with `rooms-focused select-service prototype` in `insight.similar`
 - Expanded semantic gate (`pilot-content-quality-v2`) so malformed run-on joins fail automatically
 - Report: `reports/brand-explorer-fairfield-pilot-remediation-round2.json`
+
+### Round 3 (QA report consistency)
+- Root cause: `evaluateTabFactoryFromPayload` counted `cleanly_unavailable` Brand Basics snapshot fields as `failFindings` while `completeness.auditPass` correctly treated them as resolved → `auditPass=true` with `failFindings=10`
+- Root cause: pilot QA called `evaluateBrandExternalQualityLock(brand, options)` instead of `(brand, html, options)`, and the incomplete stub re-resolved production display without Brand Basics → false `draft_applied_with_defects`
+- Fix: align `failFindings` with completeness governance (`auditPass` requires `failFindings === 0`); correct external-lock call; factory-preview stub uses `factory_preview_internal`; `readyForChatGptQa` blocks on fail findings, audit fail, or defect display states
 
 ## Coverage
 
