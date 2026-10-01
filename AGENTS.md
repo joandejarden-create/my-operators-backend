@@ -163,3 +163,8 @@ See **`docs/dealality-parallel-dry-run-experiment.md`** — start with read-only
 ## Planning multi-option UX
 
 Use Canvas or HTML mockups (see `engagements/*/`) before coding Webflow/JS when there are 3+ viable UX options. Schema/data tasks use markdown + dry-run reports, not mockups.
+
+## Cursor Cloud specific instructions
+
+- Install with `PUPPETEER_SKIP_DOWNLOAD=1 PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm ci`. A plain `npm ci` stalls while Puppeteer downloads Chrome. System Chrome is `/usr/bin/google-chrome`.
+- `server.js` exits unless `AIRTABLE_API_KEY` and `AIRTABLE_BASE_ID` are set. When `NODE_ENV` is not `production`, it also exits unless `process.cwd()` ends with `deal-capture-proxy`. Bind-mount the repo and start from that path: `sudo mount --bind /workspace /tmp/deal-capture-proxy`, then `cd /tmp/deal-capture-proxy && node server.js`. Default port is **8080** (`GET /health`). `npm run dev` only frees port 3000.
