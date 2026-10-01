@@ -171,7 +171,7 @@ Tests: `EXTERNAL_CLIENT_LINKS_TEST.json`
 For Bethesda:
 
 ADP external: **PASS** (`adp_bethesda_marriott` / `sht_24ff4ada4a622db62a228d3f`)  
-GDI external: **PASS** (`gdisht_47c25d74c79216021fb36150`)  
+GDI external: **PASS** (`gdisht_47c25d74c79216021fb36150`) — Demand Report tab (canonical PDF data contract) + Opportunities browse + View/Download PDF  
 Admin login required? **NO**  
 Correct hotel? **YES**  
 Internal fields exposed? **NO** (share sanitize + PDF report strips IDs)  

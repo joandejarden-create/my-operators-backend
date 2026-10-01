@@ -592,6 +592,10 @@
     id: "opportunities",
     label: "Group &\nDemand Intelligence",
   };
+  var GDI_REPORT_TAB = {
+    id: "report",
+    label: "Demand\nReport",
+  };
 
   function formatTabLabel(label) {
     var raw = String(label == null ? "" : label);
@@ -611,6 +615,8 @@
     var icons = {
       opportunities:
         '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
+      report:
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>',
       audit:
         '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8a2 2 0 0 1 2 2v14l-6-3-6 3V6a2 2 0 0 1 2-2z"/></svg>',
     };
@@ -2517,6 +2523,7 @@
     contentTabsHtml: contentTabsHtml,
     formatTabLabel: formatTabLabel,
     GDI_MAIN_TAB: GDI_MAIN_TAB,
+    GDI_REPORT_TAB: GDI_REPORT_TAB,
     countByPriority: countByPriority,
     countByActionStatus: countByActionStatus,
     facetCountByPriority: facetCountByPriority,

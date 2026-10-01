@@ -22,11 +22,13 @@
     resolve: null,
     opportunities: [],
     validationEnums: null,
-    tab: "opportunities",
+    tab: "report",
     sortKey: "priority",
     sortDir: 1,
     viewMode: "tiles",
     filters: { priority: "", segment: "", booking: "", territory: "", weekly: "" },
+    reportData: null,
+    reportError: null,
   };
 
   function readPersistedBrowse() {
@@ -673,31 +675,264 @@
       });
   }
 
-  function renderOpps() {
-    if (!state.opportunities.length) {
-      return '<div class="gdi-empty">No opportunities.</div>';
+  function money(n) {
+    if (n == null || !isFinite(Number(n))) return "—";
+    return "$" + Math.round(Number(n)).toLocaleString("en-US");
+  }
+
+  function whoLine(who) {
+    if (!who) return "Conference / Meetings Team";
+    if (who.kind === "NAMED" && who.name) {
+      return who.name + (who.title ? ", " + who.title : "");
     }
-    var rows = filteredSorted();
-    var chrome = UI.opportunityBrowseChromeHtml({
-      activePriority: state.filters.priority,
-      priorityCounts: UI.facetCountByPriority(state.opportunities, state.filters),
-      activeBooking: state.filters.booking,
-      actionCounts: UI.facetCountByActionStatus(state.opportunities, state.filters),
-      weeklyHeaderCounts: UI.weeklyDeltaHeaderCounts(state.opportunities),
-      shown: rows.length,
-      total: state.opportunities.length,
-      sort: state.sortKey,
-      viewMode: state.viewMode,
-      noun: "Opportunities",
-      exportHref: buildExportHref(),
-    });
-    if (!rows.length) {
+    return who.title || "Conference / Meetings Team";
+  }
+
+  function renderReport() {
+    if (state.reportError) {
       return (
-        chrome +
-        '<div class="gdi-empty">No opportunities match the current filters.</div>'
+        '<div class="gdi-empty">' +
+        esc(state.reportError) +
+        "</div>"
       );
     }
-    return chrome + UI.opportunityCardsGridHtml(rows, state.viewMode, state.filters);
+    if (!state.reportData) {
+      return '<div class="gdi-empty">Loading demand report…</div>';
+    }
+    var d = state.reportData;
+    var ex = d.executiveSummary || {};
+    var rev = ex.revenueScenario;
+    var html = "";
+    html +=
+      '<section class="gdi-report-client">' +
+      '<h2 class="gdi-h2">Commercial Demand Snapshot</h2>' +
+      '<div class="gdi-kpi-row">' +
+      kpi("Customer-ready", ex.customerReadyCount) +
+      kpi("Action set", ex.actionSetCount) +
+      kpi("High", ex.highPriority) +
+      kpi("Medium", ex.mediumPriority) +
+      kpi("Future watch", ex.futureWatchCount) +
+      kpi("Named contacts", (ex.namedContactCoveragePct != null ? ex.namedContactCoveragePct + "%" : "—")) +
+      "</div>";
+    if (rev) {
+      html +=
+        "<h3 class=\"gdi-h3\">Estimated room-revenue scenarios</h3>" +
+        '<div class="gdi-kpi-row">' +
+        kpi("Low", money(rev.low)) +
+        kpi("Base", money(rev.base)) +
+        kpi("High", money(rev.high)) +
+        "</div>" +
+        '<p class="gdi-disclaimer-inline">' +
+        esc(rev.disclaimer || "") +
+        "</p>" +
+        (rev.scopeNote
+          ? '<p class="gdi-muted">' + esc(rev.scopeNote) + "</p>"
+          : "");
+    }
+    html +=
+      '<p class="gdi-muted">Public contact path coverage: <strong>' +
+      esc(ex.publicContactPathCoveragePct != null ? ex.publicContactPathCoveragePct + "%" : "—") +
+      "</strong></p>";
+
+    html += '<h2 class="gdi-h2">Top Immediate Pursuits</h2>';
+    var imm = d.immediatePursuits || [];
+    if (!imm.length) {
+      html += '<div class="gdi-empty">No immediate pursuits in this snapshot.</div>';
+    } else {
+      imm.forEach(function (c, i) {
+        html += pursuitCard(c, i + 1);
+      });
+    }
+
+    html +=
+      '<h2 class="gdi-h2">Top Opportunities</h2>' +
+      '<p class="gdi-muted">Prioritized action set (' +
+      (d.topOpportunities || []).length +
+      ").</p>";
+    (d.topOpportunities || []).forEach(function (c) {
+      html += oppCard(c);
+    });
+
+    var plan = d.actionPlan || {};
+    html += '<h2 class="gdi-h2">30-Day Action Plan</h2>';
+    html += planTable("Act now", plan.actNow);
+    html += planTable("Develop", plan.develop);
+    html += '<h3 class="gdi-h3">Watch</h3>';
+    var watch = d.futureWatch || [];
+    if (!watch.length) {
+      html += '<div class="gdi-empty">No future-watch items in this snapshot.</div>';
+    } else {
+      watch.forEach(function (c) {
+        html +=
+          '<article class="gdi-card gdi-card--watch">' +
+          "<h4>" +
+          esc(c.opportunity) +
+          "</h4>" +
+          "<p><strong>Why it matters:</strong> " +
+          esc(c.whyNow || "—") +
+          "</p>" +
+          "<p><strong>Current status:</strong> " +
+          esc(c.currentBlocker || "Monitoring") +
+          "</p>" +
+          "<p><strong>Trigger:</strong> " +
+          esc(c.trigger || "Next public update") +
+          "</p></article>";
+      });
+    }
+
+    var hi = d.supportingIntelligence || {};
+    html +=
+      '<h2 class="gdi-h2">Supporting Hotel Intelligence</h2>' +
+      '<p class="gdi-muted">Why this hotel can compete for these groups.</p><ul class="gdi-list">';
+    if (hi.rooms != null) html += "<li><strong>Guestrooms:</strong> ~" + esc(hi.rooms) + "</li>";
+    if (hi.meetingSqFt != null)
+      html +=
+        "<li><strong>Total meeting space:</strong> ~" +
+        esc(Number(hi.meetingSqFt).toLocaleString("en-US")) +
+        " sq ft</li>";
+    if (hi.largestMeetingSqFt != null)
+      html +=
+        "<li><strong>Largest meeting room:</strong> ~" +
+        esc(Number(hi.largestMeetingSqFt).toLocaleString("en-US")) +
+        " sq ft</li>";
+    if (hi.territoryLabel)
+      html += "<li><strong>Demand territory:</strong> " + esc(hi.territoryLabel) + "</li>";
+    html += "</ul>";
+    if ((hi.demandAnchors || []).length) {
+      html +=
+        "<p><strong>Demand anchors:</strong> " +
+        esc((hi.demandAnchors || []).join("; ")) +
+        "</p>";
+    }
+
+    html +=
+      '<h2 class="gdi-h2">Notes</h2><ul class="gdi-list">' +
+      (d.methodology || [])
+        .map(function (m) {
+          return "<li>" + esc(m) + "</li>";
+        })
+        .join("") +
+      "</ul></section>";
+    return html;
+  }
+
+  function kpi(label, value) {
+    return (
+      '<div class="gdi-kpi"><div class="gdi-kpi__label">' +
+      esc(label) +
+      '</div><div class="gdi-kpi__value">' +
+      esc(value != null ? value : "—") +
+      "</div></div>"
+    );
+  }
+
+  function pursuitCard(c, n) {
+    return (
+      '<article class="gdi-card">' +
+      '<div class="gdi-card__head"><span class="gdi-pri">' +
+      esc(c.priority || "") +
+      '</span><span class="gdi-muted">#' +
+      n +
+      "</span></div>" +
+      "<h3>" +
+      esc(c.opportunity) +
+      "</h3>" +
+      '<p class="gdi-muted">' +
+      esc(c.organization || "") +
+      " · " +
+      esc(c.segment || "") +
+      " · " +
+      esc(c.datesCycle || "Dates TBD") +
+      "</p>" +
+      "<p><strong>Why it matters:</strong> " +
+      esc(c.whyNow || "—") +
+      "</p>" +
+      "<p><strong>Why this hotel:</strong> " +
+      esc(c.whyHotel || "—") +
+      "</p>" +
+      "<p><strong>Who:</strong> " +
+      esc(whoLine(c.who)) +
+      (c.contactPath && c.contactPath.display
+        ? " · " + esc(c.contactPath.display)
+        : "") +
+      "</p>" +
+      "<p><strong>Next action:</strong> " +
+      esc(c.recommendedAction || "—") +
+      "</p></article>"
+    );
+  }
+
+  function oppCard(c) {
+    return (
+      '<article class="gdi-card gdi-card--compact">' +
+      '<div class="gdi-card__head"><span class="gdi-pri">' +
+      esc(c.priority || "") +
+      '</span><span class="gdi-muted">' +
+      esc(c.segment || "") +
+      "</span></div>" +
+      "<h3>" +
+      esc(c.opportunity) +
+      "</h3>" +
+      '<p class="gdi-muted">' +
+      esc(c.organization || "") +
+      " · " +
+      esc(c.datesCycle || "Dates TBD") +
+      "</p>" +
+      "<p><strong>Why this hotel:</strong> " +
+      esc(c.whyHotel || "—") +
+      "</p>" +
+      "<p><strong>Who:</strong> " +
+      esc(whoLine(c.who)) +
+      " · " +
+      esc((c.contactPath && c.contactPath.display) || "Not yet supported") +
+      "</p>" +
+      "<p><strong>Action:</strong> " +
+      esc(c.recommendedAction || "—") +
+      "</p></article>"
+    );
+  }
+
+  function planTable(title, rows) {
+    rows = rows || [];
+    if (!rows.length) return "";
+    return (
+      "<h3 class=\"gdi-h3\">" +
+      esc(title) +
+      "</h3>" +
+      '<div class="gdi-table-wrap"><table class="gdi-table"><thead><tr>' +
+      "<th>Opportunity</th><th>Owner</th><th>Action</th><th>Outcome</th><th>Timing</th>" +
+      "</tr></thead><tbody>" +
+      rows
+        .map(function (r) {
+          return (
+            "<tr><td>" +
+            esc(r.opportunity) +
+            "</td><td>" +
+            esc(r.ownerRole) +
+            "</td><td>" +
+            esc(r.action) +
+            "</td><td>" +
+            esc(r.desiredOutcome) +
+            "</td><td>" +
+            esc(r.timing) +
+            "</td></tr>"
+          );
+        })
+        .join("") +
+      "</tbody></table></div>"
+    );
+  }
+
+  function shareTabs() {
+    return [
+      UI.GDI_REPORT_TAB || { id: "report", label: "Demand\nReport" },
+      UI.GDI_MAIN_TAB,
+    ];
+  }
+
+  function renderTabBody() {
+    if (state.tab === "report") return renderReport();
+    return renderOpps();
   }
 
   function render() {
@@ -714,7 +949,7 @@
         mode: "share",
         badges: { readOnly: true },
       }) +
-      UI.contentTabsHtml(state.tab, [UI.GDI_MAIN_TAB]) +
+      UI.contentTabsHtml(state.tab, shareTabs()) +
       UI.propertyBarHtml({
         mode: "share",
         hotel: hotel,
@@ -730,11 +965,20 @@
           '<button type="button" class="btn-clear" id="gdiResetViewBtn">Reset View</button>',
       }) +
       '<div id="gdiTabBody">' +
-      renderOpps() +
+      renderTabBody() +
       "</div>" +
-      '<div class="gdi-disclaimer">Share brief for review only. Findings are research-assisted and should be validated by the hotel sales team before outreach.</div>';
+      '<div class="gdi-disclaimer">Client view for review only. Findings are research-assisted and should be validated by the hotel sales team before outreach.</div>';
 
     wireBrowseControls();
+
+    root.querySelectorAll("[data-tab]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var next = btn.getAttribute("data-tab");
+        if (!next || next === state.tab) return;
+        state.tab = next;
+        render();
+      });
+    });
 
     function openSharePdf(download) {
       if (!state.hotelId || !share) return;
@@ -782,6 +1026,58 @@
         });
       }
     });
+  }
+
+  function loadReportData(hotelId) {
+    return api(
+      "/api/group-demand-intelligence/share/hotels/" +
+        encodeURIComponent(hotelId) +
+        "/pdf-report"
+    )
+      .then(function (json) {
+        if (!json || !json.ok || !json.available) {
+          state.reportData = null;
+          state.reportError =
+            (json && json.message) ||
+            "Group & Demand Intelligence is not currently available for this hotel.";
+          return;
+        }
+        state.reportData = json.data;
+        state.reportError = null;
+      })
+      .catch(function (err) {
+        state.reportData = null;
+        state.reportError =
+          (err && err.message) ||
+          "Group & Demand Intelligence is not currently available for this hotel.";
+      });
+  }
+
+  function renderOpps() {
+    if (!state.opportunities.length) {
+      return '<div class="gdi-empty">No opportunities.</div>';
+    }
+    var rows = filteredSorted();
+    var chrome = UI.opportunityBrowseChromeHtml({
+      activePriority: state.filters.priority,
+      priorityCounts: UI.facetCountByPriority(state.opportunities, state.filters),
+      activeBooking: state.filters.booking,
+      actionCounts: UI.facetCountByActionStatus(state.opportunities, state.filters),
+      weeklyHeaderCounts: UI.weeklyDeltaHeaderCounts(state.opportunities),
+      shown: rows.length,
+      total: state.opportunities.length,
+      sort: state.sortKey,
+      viewMode: state.viewMode,
+      noun: "Opportunities",
+      exportHref: buildExportHref(),
+    });
+    if (!rows.length) {
+      return (
+        chrome +
+        '<div class="gdi-empty">No opportunities match the current filters.</div>'
+      );
+    }
+    return chrome + UI.opportunityCardsGridHtml(rows, state.viewMode, state.filters);
   }
 
   if (!share) {
@@ -848,14 +1144,18 @@
       if (data && data.opportunities) {
         state.opportunities = data.opportunities || [];
         state.validationEnums = data.validationEnums || null;
-        render();
-        return null;
       }
-      return api(
-        "/api/group-demand-intelligence/share/hotels/" +
-          encodeURIComponent(resolve.hotelId) +
-          "/opportunities"
-      );
+      return loadReportData(resolve.hotelId).then(function () {
+        if (data && data.opportunities) {
+          render();
+          return null;
+        }
+        return api(
+          "/api/group-demand-intelligence/share/hotels/" +
+            encodeURIComponent(resolve.hotelId) +
+            "/opportunities"
+        );
+      });
     })
     .then(function (data) {
       if (!data) return;
