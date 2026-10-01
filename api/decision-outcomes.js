@@ -275,7 +275,7 @@ export async function postEnsureAdpDecision(req, res) {
   if (!hotelId) return;
   try {
     const { resolveCanonicalHotelId } = await import(
-      "../hotel-census/adp-gdi-canonical-identity.js"
+      "../lib/hotel-census/adp-gdi-canonical-identity.js"
     );
     const canonical = resolveCanonicalHotelId(hotelId);
     if (canonical) hotelId = canonical;

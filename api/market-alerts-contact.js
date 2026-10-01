@@ -25,7 +25,25 @@ import { IDENTIFICATION_STATUS } from "../lib/market-alerts-contact/stakeholder-
 import {
   loadMarketAlertById,
 } from "../lib/market-alerts-contact/alert-from-airtable.js";
+import {
+  ensureArticleBodyForStakeholderExtraction,
+} from "../lib/market-alerts-contact/fetch-article-body.js";
 import { logContactOp } from "../lib/market-alerts-contact/safe-log.js";
+
+/**
+ * Load alert + resolve article body for person extraction (no Surfe).
+ */
+async function loadAlertWithArticleBody(alertId) {
+  const loaded = await loadMarketAlertById(alertId);
+  if (!loaded) return null;
+  const ensured = await ensureArticleBodyForStakeholderExtraction(loaded);
+  return {
+    ...ensured.alert,
+    stakeholderExtractionSource: ensured.stakeholderExtractionSource,
+    _articleBodyFetched: ensured.fetched,
+    _articleBodyChars: ensured.bodyChars,
+  };
+}
 
 function getUserId(req) {
   if (req.user && (req.user.id || req.user.email)) return req.user.id || req.user.email;
@@ -78,12 +96,17 @@ export async function getMarketAlertContacts(req, res) {
 
     let rows = await listStakeholdersForAlert(alertId);
     let identificationStatus = IDENTIFICATION_STATUS.NOT_APPLICABLE;
+    let extractionSource = null;
+    let extractionStatus = null;
 
     if (!rows.length) {
-      const alert = await loadMarketAlertById(alertId);
+      const alert = await loadAlertWithArticleBody(alertId);
       if (alert) {
         const identification = identifyAlertStakeholders(alert);
         identificationStatus = identification.identificationStatus;
+        extractionSource =
+          identification.stakeholderExtractionSource || alert.stakeholderExtractionSource || null;
+        extractionStatus = identification.stakeholderExtractionStatus || null;
         if (identification.moduleVisible && identification.stakeholders.length) {
           await persistIdentificationResult(identification, { dryRun: false });
           rows = await listStakeholdersForAlert(alertId);
@@ -100,6 +123,8 @@ export async function getMarketAlertContacts(req, res) {
             pending: false,
             surfeContactDetails: null,
             skipReason: identification.skipReason || null,
+            stakeholderExtractionSource: extractionSource,
+            stakeholderExtractionStatus: extractionStatus,
           });
         }
       }
@@ -120,6 +145,8 @@ export async function getMarketAlertContacts(req, res) {
       contacts: stakeholders,
       pending: primary?.contactLookupStatus === "PENDING",
       surfeContactDetails: null,
+      stakeholderExtractionSource: extractionSource,
+      stakeholderExtractionStatus: extractionStatus,
     });
   } catch (err) {
     logContactOp("api_get_contacts_error", { message: String(err?.message || err).slice(0, 80) });
@@ -140,8 +167,11 @@ export async function postMarketAlertFindPerson(req, res) {
     const body = req.body || {};
     let alert = alertFromBody(alertId, body);
     if (!body.title && !body.summary) {
-      const loaded = await loadMarketAlertById(alertId);
+      const loaded = await loadAlertWithArticleBody(alertId);
       if (loaded) alert = { ...loaded, ...alert, id: alertId };
+    } else if (alert.sourceUrl && !alert.articleBody) {
+      const ensured = await ensureArticleBodyForStakeholderExtraction(alert);
+      alert = { ...ensured.alert, stakeholderExtractionSource: ensured.stakeholderExtractionSource };
     }
     const result = await findDecisionMakerOnDemand(alert, {
       stakeholderId: body.stakeholderId || null,
@@ -173,7 +203,7 @@ export async function postMarketAlertContactReveal(req, res) {
     const body = req.body || {};
     let alert = alertFromBody(alertId, body);
     if (!body.title && !body.summary) {
-      const loaded = await loadMarketAlertById(alertId);
+      const loaded = await loadAlertWithArticleBody(alertId);
       if (loaded) alert = { ...loaded, ...alert, id: alertId };
     }
     const result = await revealContactDetailsOnDemand(alert, {
@@ -214,8 +244,11 @@ export async function postMarketAlertContactEnrich(req, res) {
     const body = req.body || {};
     let alert = alertFromBody(alertId, body);
     if (!body.title && !body.summary) {
-      const loaded = await loadMarketAlertById(alertId);
+      const loaded = await loadAlertWithArticleBody(alertId);
       if (loaded) alert = { ...loaded, id: alertId };
+    } else if (alert.sourceUrl && !alert.articleBody) {
+      const ensured = await ensureArticleBodyForStakeholderExtraction(alert);
+      alert = { ...ensured.alert, stakeholderExtractionSource: ensured.stakeholderExtractionSource };
     }
     const identification = identifyAlertStakeholders(alert);
     if (identification.moduleVisible && identification.stakeholders.length) {
