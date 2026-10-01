@@ -11,6 +11,7 @@ import { evaluateTabFactoryFromPayload } from "../lib/partner-intelligence/brand
 import { renderBrandExplorerHtmlForTest } from "../lib/partner-intelligence/brand-explorer-atelier-render-test-loader.js";
 import { evaluateBrandExternalQualityLock } from "../lib/partner-intelligence/brand-explorer-display-quality-lock.js";
 import { evaluateBrandExplorerOsBrand } from "../lib/partner-intelligence/brand-explorer-os-run.js";
+import { evaluatePilotContentQuality } from "../lib/partner-intelligence/brand-explorer-pilot-content-quality.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -114,6 +115,8 @@ async function main() {
     html,
   });
 
+  const contentQuality = evaluatePilotContentQuality(rows);
+
   let os = null;
   try {
     os = await evaluateBrandExplorerOsBrand(SLUG);
@@ -132,15 +135,17 @@ async function main() {
     sectionPatternParityPass: tabFactory.sectionPatternParity?.pass,
     imageUniquenessPass: tabFactory.imageUniqueness?.pass,
     imageRoleMatchPass: tabFactory.imageRoleMatch?.pass,
-    externalQualityLockPass: externalLock.pass,
+    externalQualityLockPass: externalLock.externalQualityLockPass === true,
     externalQualityIssues: externalLock.issues || [],
+    contentQualityPass: contentQuality.pass,
+    contentQualityIssueCount: contentQuality.issueCount,
+    contentQualityIssues: contentQuality.issues,
     osState: os?.canonicalState || null,
     galleryCount: rows.filter((r) => /^materials\.gallery\./.test(r.slotKey)).length,
     momentumCount: rows.filter((r) => r.slotKey === "footprint.momentum").length,
     openingsCount: rows.filter((r) => r.slotKey === "footprint.openings").length,
     scenarioCount: rows.filter((r) => /^overview\.scenario\./.test(r.slotKey)).length,
     valueScenarioCount: rows.filter((r) => /^valueOwners\.scenario\./.test(r.slotKey)).length,
-    externalQualityLockPass: externalLock.externalQualityLockPass === true,
     externalDisplayState: externalLock.displayState || null,
     readyForChatGptQa:
       tabFactory.auditPass === true &&
@@ -149,6 +154,7 @@ async function main() {
       tabFactory.sectionPatternParity?.pass === true &&
       tabFactory.gates?.image_distinctiveness === true &&
       tabFactory.gates?.image_role_match === true &&
+      contentQuality.pass === true &&
       rows.filter((r) => /^materials\.gallery\./.test(r.slotKey)).length >= 6 &&
       rows.filter((r) => r.slotKey === "footprint.momentum").length >= 2,
   };
@@ -184,7 +190,22 @@ async function main() {
 | Section pattern parity | ${report.sectionPatternParityPass ? "PASS" : "FAIL"} |
 | Image uniqueness | ${report.imageUniquenessPass ? "PASS" : "FAIL"} |
 | Image role match | ${report.imageRoleMatchPass ? "PASS" : "FAIL"} |
+| Content quality (semantic) | ${report.contentQualityPass ? "PASS" : "FAIL"} (${report.contentQualityIssueCount} issues) |
 | External quality lock | ${report.externalQualityLockPass ? "PASS" : "DEFERRED (factory preview — expected until founder approval)"} |
+
+${
+  report.contentQualityIssues?.length
+    ? `### Content quality issues\n\n${report.contentQualityIssues.map((i) => `- **${i.code}** (${i.slotKey || "global"}): ${i.message}`).join("\n")}\n`
+    : ""
+}
+
+## ChatGPT QA remediation (2026-10-01)
+
+- Fixed grammar (\`a efficient\` → \`an efficient\`), double punctuation, and duplicated opening titles
+- Removed repeated boilerplate (\`Keep Fairfield by Marriott product and service responsibilities…\`)
+- Rewrote psychographics, \`insight.similar\` peer comparisons, and softened over-strong operating claims
+- Added semantic content-quality gate: \`npm run test:brand-explorer-pilot-content-quality\`
+- Remediation module: \`lib/partner-intelligence/brand-explorer-fairfield-content-remediation.js\`
 
 ## Coverage
 

@@ -1,7 +1,7 @@
 # Brand Explorer Pilot QA — Fairfield by Marriott
 
 > **Status:** READY FOR CHATGPT QA
-> **Generated:** 2026-10-01T09:10:34.309Z
+> **Generated:** 2026-10-01T09:21:17.498Z
 > **Fixture:** `fixtures/brand-explorer-presentation-fairfield-by-marriott-full.json` (101 rows)
 
 ## Selected brand
@@ -24,7 +24,18 @@
 | Section pattern parity | PASS |
 | Image uniqueness | PASS |
 | Image role match | PASS |
+| Content quality (semantic) | PASS (0 issues) |
 | External quality lock | DEFERRED (factory preview — expected until founder approval) |
+
+
+
+## ChatGPT QA remediation (2026-10-01)
+
+- Fixed grammar (`a efficient` → `an efficient`), double punctuation, and duplicated opening titles
+- Removed repeated boilerplate (`Keep Fairfield by Marriott product and service responsibilities…`)
+- Rewrote psychographics, `insight.similar` peer comparisons, and softened over-strong operating claims
+- Added semantic content-quality gate: `npm run test:brand-explorer-pilot-content-quality`
+- Remediation module: `lib/partner-intelligence/brand-explorer-fairfield-content-remediation.js`
 
 ## Coverage
 
