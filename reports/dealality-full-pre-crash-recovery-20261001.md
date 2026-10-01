@@ -119,4 +119,7 @@ HTTP smoke only (no Playwright browser console this pass). Auth-gated APIs may r
 
 ## Q–R. Commit / branch
 
-Recorded after commit+push in final agent response.
+- **Full commit SHA:** `47006b6e96210f45f594c45b57009e17466f502b`
+- **Branch:** `cursor/local-system-startup-recovery`
+- **GitHub:** https://github.com/joandejarden-create/my-operators-backend/tree/cursor/local-system-startup-recovery
+- Prior stack retained: `d272564` → `1f15440` → `0a9c265` → `47006b6`
