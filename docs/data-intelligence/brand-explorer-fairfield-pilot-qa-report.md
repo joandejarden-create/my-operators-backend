@@ -1,7 +1,7 @@
 # Brand Explorer Pilot QA — Fairfield by Marriott
 
 > **Status:** READY FOR CHATGPT QA
-> **Generated:** 2026-10-01T10:42:46.319Z
+> **Generated:** 2026-10-01T11:26:53.398Z
 > **Fixture:** `fixtures/brand-explorer-presentation-fairfield-by-marriott-full.json` (101 rows)
 > **Brand source:** `fixture_stub`
 

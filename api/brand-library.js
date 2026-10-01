@@ -19,6 +19,10 @@ import { getDiscoveryBrandConfig } from "../lib/partner-intelligence/brand-explo
 import { resolveBrandExplorerDisplayState } from "../lib/partner-intelligence/brand-explorer-display-state.js";
 import { buildFactoryPreviewApiMeta } from "../lib/partner-intelligence/brand-explorer-factory-preview-candidates.js";
 import {
+  applyFactoryPreviewStagingOverlay,
+  queryObjectToSearch,
+} from "../lib/partner-intelligence/brand-explorer-factory-preview-staging-overlay.js";
+import {
   getLegacySeedBrand,
   isLegacyApprovedSeedSlug,
   resolveLegacyApprovedSeed,
@@ -1420,6 +1424,24 @@ export async function getBrandsGroupedByParentCompany(req, res) {
   }
 }
 
+function respondBrandLibraryBrandPayload(req, res, payload, cacheHeader) {
+  // Factory Preview staging overlays are request-scoped and must NOT be cached into
+  // the production brand-detail payload. Apply after cache read/write.
+  const search = queryObjectToSearch(req.query || {});
+  let out = payload;
+  if (payload?.brand) {
+    const brand = applyFactoryPreviewStagingOverlay(payload.brand, {
+      search,
+      query: req.query,
+    });
+    if (brand !== payload.brand) {
+      out = { ...payload, brand };
+    }
+  }
+  if (cacheHeader) res.setHeader("X-Brand-Detail-Cache", cacheHeader);
+  return res.json(out);
+}
+
 // Get detailed brand information for a specific brand
 export async function getBrandLibraryBrandById(req, res) {
   try {
@@ -1439,15 +1461,13 @@ export async function getBrandLibraryBrandById(req, res) {
       const hit = brandDetailCache.get(decodedId);
       if (hit && Date.now() - hit.at < BRAND_DETAIL_CACHE_TTL_MS) {
         res.setHeader("Cache-Control", "private, max-age=60, stale-while-revalidate=120");
-        res.setHeader("X-Brand-Detail-Cache", "HIT");
-        return res.json(hit.payload);
+        return respondBrandLibraryBrandPayload(req, res, hit.payload, "HIT");
       }
       const inFlight = brandDetailLoadPromise.get(decodedId);
       if (inFlight) {
         const payload = await inFlight;
         res.setHeader("Cache-Control", "private, max-age=60, stale-while-revalidate=120");
-        res.setHeader("X-Brand-Detail-Cache", "HIT-INFLIGHT");
-        return res.json(payload);
+        return respondBrandLibraryBrandPayload(req, res, payload, "HIT-INFLIGHT");
       }
     }
 
@@ -2455,8 +2475,12 @@ export async function getBrandLibraryBrandById(req, res) {
         brandDetailCache.set(decodedId, { at: Date.now(), payload });
       }
       res.setHeader("Cache-Control", "private, max-age=60, stale-while-revalidate=120");
-      res.setHeader("X-Brand-Detail-Cache", bypassDetailCache ? "BYPASS" : "MISS");
-      res.json(payload);
+      return respondBrandLibraryBrandPayload(
+        req,
+        res,
+        payload,
+        bypassDetailCache ? "BYPASS" : "MISS"
+      );
     } catch (error) {
       if (error?.statusCode === 404 && error?.payload) {
         return res.status(404).json(error.payload);
