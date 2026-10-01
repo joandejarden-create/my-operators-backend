@@ -89,6 +89,19 @@ fixtures/research-engine-v2/*-sample.html
 data/_security-*.json
 scripts/_security-*.mjs
 
+# One-off recovery helpers (scripts/_*.mjs) — not product source
+scripts/_*.mjs
+
+# Census map Tier-C derived cache (boot rebuilds; filesystem backup protects)
+data/census-map/
+
+# Hotel Intelligence local research run artifacts (filesystem backup, not Git)
+data/hotel-intelligence/research/
+
+# Ephemeral startup / contact-intel recovery test dumps
+reports/startup-recovery-test-*.txt
+reports/ma-contact-intel-v1-*.txt
+
 data/ai-demand-positioning/share-registry/issued-share-urls.local.json
 data/ai-demand-positioning/share-registry/*.local.json
 data/ai-visibility/share-registry/issued-share-urls.local.json
