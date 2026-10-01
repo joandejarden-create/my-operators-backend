@@ -9,8 +9,12 @@
   /** @type {Map<string, { at: number, promise: Promise<any>, data: object|null }>} */
   var cache = new Map();
 
-  function cacheKey(brandId, useHpc) {
-    return String(brandId || '').trim() + (useHpc ? '|hpc' : '|legacy');
+  function cacheKey(brandId, useHpc, factoryPreview) {
+    return (
+      String(brandId || '').trim() +
+      (useHpc ? '|hpc' : '|legacy') +
+      (factoryPreview ? '|fp' : '')
+    );
   }
 
   function isFresh(entry) {
@@ -26,11 +30,25 @@
     }
   }
 
+  function isFactoryPreviewActive(options) {
+    if (options && options.factoryPreview === true) return true;
+    try {
+      var search = typeof window !== 'undefined' ? String(window.location.search || '') : '';
+      return (
+        /(?:\?|&)beInternalPreview=1(?:&|$)/.test(search) &&
+        /(?:\?|&)factoryPreview=1(?:&|$)/.test(search)
+      );
+    } catch (err) {
+      return false;
+    }
+  }
+
   function fetchBrandDetail(brandId, options) {
     options = options || {};
     var useHpc = beHpcActive();
-    var key = cacheKey(brandId, useHpc);
-    if (!key || key === '|legacy' || key === '|hpc') {
+    var factoryPreview = isFactoryPreviewActive(options);
+    var key = cacheKey(brandId, useHpc, factoryPreview);
+    if (!key || key === '|legacy' || key === '|hpc' || key === '|legacy|fp' || key === '|hpc|fp') {
       return Promise.reject(new Error('Brand id is required'));
     }
 
@@ -50,6 +68,23 @@
     }
     if (useHpc) {
       url += '&censusSource=hpc&product=brand-explorer&beHpc=1';
+    }
+    // Forward Factory Preview query so API can apply staged fixture overlays
+    // (e.g. brandWebsite) without writing Airtable.
+    try {
+      var search = typeof window !== 'undefined' ? String(window.location.search || '') : '';
+      if (/(?:\?|&)beInternalPreview=1(?:&|$)/.test(search)) {
+        url += '&beInternalPreview=1';
+      }
+      if (/(?:\?|&)factoryPreview=1(?:&|$)/.test(search)) {
+        url += '&factoryPreview=1';
+      }
+      if (options.factoryPreview === true) {
+        if (url.indexOf('beInternalPreview=1') === -1) url += '&beInternalPreview=1';
+        if (url.indexOf('factoryPreview=1') === -1) url += '&factoryPreview=1';
+      }
+    } catch (errFwd) {
+      /* ignore */
     }
 
     var headers = { Accept: 'application/json', 'ngrok-skip-browser-warning': 'true' };

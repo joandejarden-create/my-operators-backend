@@ -512,6 +512,9 @@
 
   /** Built-in factory candidate allowlist (mirrors server module; API may also set factoryPreview.eligible). */
   var FACTORY_PREVIEW_CANDIDATE_SLUGS = {
+    'fairfield-by-marriott': true,
+    'four-points-by-sheraton': true,
+    'delta-hotels-by-marriott': true,
     'tapestry-collection-by-hilton': true,
     'dazzler-by-wyndham': true,
     'trademark-collection-by-wyndham': true
@@ -537,6 +540,9 @@
       return String(brand.factoryPreview.slug).trim().toLowerCase();
     }
     var id = String(brand.id || '').trim();
+    if (id === 'recpUTDtwt1wPMDPj') return 'fairfield-by-marriott';
+    if (id === 'recH5ZF9V6ivz9p5h') return 'four-points-by-sheraton';
+    if (id === 'rec50qkCj6yt9fMPg') return 'delta-hotels-by-marriott';
     if (id === 'reccXxMHEh7NNRhIE') return 'tapestry-collection-by-hilton';
     if (id === 'rec5CNMM4ZUD7ZHlM') return 'dazzler-by-wyndham';
     if (id === 'recob7tgHRryRSbeO') return 'trademark-collection-by-wyndham';

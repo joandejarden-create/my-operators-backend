@@ -19,9 +19,14 @@ const cwd = process.cwd();
 console.log("Using server file:", serverPath);
 console.log("Working directory:", cwd);
 if (process.env.NODE_ENV !== "production") {
-  if (!cwd.endsWith("deal-capture-proxy")) {
+  const allowWorktree =
+    process.env.DEALALITY_ALLOW_WORKTREE_SERVER === "1" ||
+    cwd.endsWith("deal-capture-proxy") ||
+    /dealality-fairfield/i.test(cwd);
+  if (!allowWorktree) {
     console.error("ERROR: Server started from wrong directory:", cwd);
     console.error("Please run from: C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy");
+    console.error("Or set DEALALITY_ALLOW_WORKTREE_SERVER=1 for Brand Explorer factory-preview worktrees.");
     console.error("Stopping.");
     process.exit(1);
   }
