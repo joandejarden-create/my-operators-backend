@@ -17,6 +17,10 @@ import {
   buildFactoryPreviewApiMeta,
   getFactoryPreviewIdentity,
 } from "../lib/partner-intelligence/brand-explorer-factory-preview-candidates.js";
+import {
+  evaluateBrandWebsitePreference,
+  FAIRFIELD_OFFICIAL_BRAND_WEBSITE,
+} from "../lib/partner-intelligence/brand-explorer-brand-website-preference.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -34,12 +38,13 @@ const DEFECT_DISPLAY_STATES = new Set(["draft_applied_with_defects", "hidden_inc
  * inventively upgraded, and so resolveBrandExplorerDisplayState is not re-run without
  * Brand Basics (which falsely yields draft_applied_with_defects).
  */
-function buildFixtureOnlyBrandStub() {
+function buildFixtureOnlyBrandStub(fixtureBrandWebsite = "") {
   const identity = getFactoryPreviewIdentity(SLUG) || {
     slug: SLUG,
     name: "Fairfield by Marriott",
     recordId: RECORD_ID,
   };
+  const website = nzWebsite(fixtureBrandWebsite) || FAIRFIELD_OFFICIAL_BRAND_WEBSITE;
   const base = {
     id: identity.recordId || RECORD_ID,
     recordId: identity.recordId || RECORD_ID,
@@ -47,6 +52,7 @@ function buildFixtureOnlyBrandStub() {
     name: identity.name || "Fairfield by Marriott",
     brandStatus: identity.recommendedStatusWhileInFactory || "Under Review",
     parentCompany: "Marriott International",
+    brandWebsite: website,
     brandExplorer: { version: 1, blocks: [] },
     guestPsychographics: "",
     brandPositioning: "",
@@ -62,14 +68,18 @@ function buildFixtureOnlyBrandStub() {
   };
 }
 
-async function fetchBrand(brandId) {
+function nzWebsite(v) {
+  return v == null ? "" : String(v).trim();
+}
+
+async function fetchBrand(brandId, fixtureBrandWebsite = "") {
   const hasCreds =
     Boolean(process.env.AIRTABLE_API_KEY) && Boolean(process.env.AIRTABLE_BASE_ID);
   if (!hasCreds) {
     console.warn(
       "[pilot-qa] Airtable credentials missing — using fixture-only factory-preview brand stub"
     );
-    return { brand: buildFixtureOnlyBrandStub(), brandSource: "fixture_stub" };
+    return { brand: buildFixtureOnlyBrandStub(fixtureBrandWebsite), brandSource: "fixture_stub" };
   }
   try {
     const { getBrandLibraryBrandById } = await import("../api/brand-library.js");
@@ -95,7 +105,7 @@ async function fetchBrand(brandId) {
     console.warn(
       `[pilot-qa] Airtable brand fetch failed (${err?.message || err}) — using fixture-only factory-preview brand stub`
     );
-    return { brand: buildFixtureOnlyBrandStub(), brandSource: "fixture_stub" };
+    return { brand: buildFixtureOnlyBrandStub(fixtureBrandWebsite), brandSource: "fixture_stub" };
   }
 }
 
@@ -118,7 +128,7 @@ function slotBody(rows, slotKey) {
   return rows.find((r) => r.slotKey === slotKey)?.body || "";
 }
 
-function injectPresentationIntoBrand(brand, rows) {
+function injectPresentationIntoBrand(brand, rows, fixtureBrandWebsite = "") {
   const blocks = rows.map((r, i) => ({
     recordId: `fixture-${i}`,
     slotKey: r.slotKey,
@@ -134,12 +144,18 @@ function injectPresentationIntoBrand(brand, rows) {
   }));
   const guestPsychographics = slotBody(rows, "Guest Psychographics Description");
   const brandPositioning = slotBody(rows, "Brand Positioning");
+  const preferredWebsite =
+    nzWebsite(fixtureBrandWebsite) ||
+    FAIRFIELD_OFFICIAL_BRAND_WEBSITE ||
+    nzWebsite(brand.brandWebsite);
   return {
     ...brand,
     slug: SLUG,
     brandExplorer: { version: 1, blocks },
     guestPsychographics: guestPsychographics || brand.guestPsychographics,
     brandPositioning: brandPositioning || brand.brandPositioning,
+    // Fixture-canonical website wins over parent-company root from live Basics.
+    brandWebsite: preferredWebsite,
     _fixturePilotMerge: true,
   };
 }
@@ -168,6 +184,7 @@ function computeReadyForChatGptQa({
   galleryCount,
   momentumCount,
   externalDisplayState,
+  brandWebsitePreference,
 }) {
   const failFindings =
     typeof tabFactory.failFindings === "number" ? tabFactory.failFindings : 0;
@@ -189,6 +206,11 @@ function computeReadyForChatGptQa({
   if (DEFECT_DISPLAY_STATES.has(externalDisplayState)) {
     blockers.push(`externalDisplayState=${externalDisplayState}`);
   }
+  if (brandWebsitePreference && brandWebsitePreference.pass !== true) {
+    blockers.push(
+      `brandWebsitePreference:${brandWebsitePreference.code || "fail"}`
+    );
+  }
   return { ready: blockers.length === 0, blockers };
 }
 
@@ -198,10 +220,13 @@ async function main() {
   }
   const fixture = JSON.parse(fs.readFileSync(FIXTURE, "utf8"));
   const rows = fixtureRowsToPresentation(fixture.rows || []);
+  const fixtureBrandWebsite =
+    nzWebsite(fixture.brandWebsite) || FAIRFIELD_OFFICIAL_BRAND_WEBSITE;
   console.log(`[pilot-qa] ${SLUG} fixture rows: ${rows.length}`);
+  console.log(`[pilot-qa] brandWebsite: ${fixtureBrandWebsite}`);
 
-  const { brand, brandSource } = await fetchBrand(RECORD_ID);
-  const mergedBrand = injectPresentationIntoBrand(brand, rows);
+  const { brand, brandSource } = await fetchBrand(RECORD_ID, fixtureBrandWebsite);
+  const mergedBrand = injectPresentationIntoBrand(brand, rows, fixtureBrandWebsite);
   const html = renderBrandExplorerHtmlForTest(mergedBrand, {
     allPanels: true,
     internalPreview: true,
@@ -222,6 +247,10 @@ async function main() {
   });
 
   const contentQuality = evaluatePilotContentQuality(rows);
+  const brandWebsitePreference = evaluateBrandWebsitePreference({
+    brandSlug: SLUG,
+    brandWebsite: mergedBrand.brandWebsite,
+  });
 
   let os = null;
   try {
@@ -244,6 +273,7 @@ async function main() {
     galleryCount,
     momentumCount,
     externalDisplayState,
+    brandWebsitePreference,
   });
 
   // Internal consistency invariant: auditPass and failFindings must agree.
@@ -261,6 +291,9 @@ async function main() {
     slug: SLUG,
     fixturePath: FIXTURE,
     brandSource,
+    brandWebsite: mergedBrand.brandWebsite || null,
+    brandWebsitePreferencePass: brandWebsitePreference.pass === true,
+    brandWebsitePreference,
     rowCount: rows.length,
     tabFactoryAuditPass: tabFactory.auditPass === true,
     tabFactoryFailFindings: tabFactory.failFindings || 0,
@@ -343,6 +376,7 @@ async function main() {
 | Content quality (semantic) | ${report.contentQualityPass ? "PASS" : "FAIL"} (${report.contentQualityIssueCount} issues) |
 | External quality lock | ${report.externalQualityLockPass ? "PASS" : "DEFERRED (factory preview — expected until founder approval)"} |
 | External display state | \`${report.externalDisplayState || "null"}\` |
+| Brand Website | \`${report.brandWebsite || "(blank)"}\` (${report.brandWebsitePreferencePass ? "PASS" : "FAIL"}) |
 
 ${failListMd}${contentIssuesMd}${blockersMd}
 ## ChatGPT QA remediation (2026-10-01)
@@ -366,6 +400,10 @@ ${failListMd}${contentIssuesMd}${blockersMd}
 - Root cause: \`evaluateTabFactoryFromPayload\` counted \`cleanly_unavailable\` Brand Basics snapshot fields as \`failFindings\` while \`completeness.auditPass\` correctly treated them as resolved → \`auditPass=true\` with \`failFindings=10\`
 - Root cause: pilot QA called \`evaluateBrandExternalQualityLock(brand, options)\` instead of \`(brand, html, options)\`, and the incomplete stub re-resolved production display without Brand Basics → false \`draft_applied_with_defects\`
 - Fix: align \`failFindings\` with completeness governance (\`auditPass\` requires \`failFindings === 0\`); correct external-lock call; factory-preview stub uses \`factory_preview_internal\`; \`readyForChatGptQa\` blocks on fail findings, audit fail, or defect display states
+
+### Round 4 (Brand Website)
+- Fixture \`brandWebsite\` set to official brand-specific URL \`https://fairfield.marriott.com/\` (not parent root \`https://marriott.com/\`)
+- Validation: parent-company root websites fail when an official brand_page URL exists (\`brand-explorer-brand-website-preference.js\`); wired into Fairfield pilot QA \`readyForChatGptQa\`
 
 ## Coverage
 
