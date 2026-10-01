@@ -19,26 +19,55 @@ const SLUG = "fairfield-by-marriott";
 const RECORD_ID = "recpUTDtwt1wPMDPj";
 const FIXTURE = path.join(ROOT, "fixtures", `brand-explorer-presentation-${SLUG}-full.json`);
 
-async function fetchBrand(brandId) {
-  const { getBrandLibraryBrandById } = await import("../api/brand-library.js");
-  const res = {
-    statusCode: 200,
-    payload: null,
-    setHeader() {},
-    status(c) {
-      this.statusCode = c;
-      return this;
-    },
-    json(p) {
-      this.payload = p;
-      return this;
-    },
+/** Minimal brand shape for fixture-only pilot QA when Airtable auth is unavailable. */
+function buildFixtureOnlyBrandStub() {
+  return {
+    id: RECORD_ID,
+    recordId: RECORD_ID,
+    slug: SLUG,
+    name: "Fairfield by Marriott",
+    brandStatus: "Under Review",
+    parentCompany: "Marriott International",
+    brandExplorer: { version: 1, blocks: [] },
+    guestPsychographics: "",
+    brandPositioning: "",
+    _fixtureOnlyBrandStub: true,
   };
-  await getBrandLibraryBrandById({ query: { brandId, refresh: "1" }, headers: {} }, res);
-  if (res.statusCode !== 200 || !res.payload?.brand) {
-    throw new Error(`Brand fetch failed for ${brandId}`);
+}
+
+async function fetchBrand(brandId) {
+  const hasCreds =
+    Boolean(process.env.AIRTABLE_API_KEY) && Boolean(process.env.AIRTABLE_BASE_ID);
+  if (!hasCreds) {
+    console.warn("[pilot-qa] Airtable credentials missing — using fixture-only brand stub");
+    return buildFixtureOnlyBrandStub();
   }
-  return res.payload.brand;
+  try {
+    const { getBrandLibraryBrandById } = await import("../api/brand-library.js");
+    const res = {
+      statusCode: 200,
+      payload: null,
+      setHeader() {},
+      status(c) {
+        this.statusCode = c;
+        return this;
+      },
+      json(p) {
+        this.payload = p;
+        return this;
+      },
+    };
+    await getBrandLibraryBrandById({ query: { brandId, refresh: "1" }, headers: {} }, res);
+    if (res.statusCode !== 200 || !res.payload?.brand) {
+      throw new Error(`Brand fetch failed for ${brandId}`);
+    }
+    return res.payload.brand;
+  } catch (err) {
+    console.warn(
+      `[pilot-qa] Airtable brand fetch failed (${err?.message || err}) — using fixture-only brand stub`
+    );
+    return buildFixtureOnlyBrandStub();
+  }
 }
 
 function fixtureRowsToPresentation(rows) {
@@ -201,11 +230,20 @@ ${
 
 ## ChatGPT QA remediation (2026-10-01)
 
+### Round 1
 - Fixed grammar (\`a efficient\` → \`an efficient\`), double punctuation, and duplicated opening titles
 - Removed repeated boilerplate (\`Keep Fairfield by Marriott product and service responsibilities…\`)
 - Rewrote psychographics, \`insight.similar\` peer comparisons, and softened over-strong operating claims
 - Added semantic content-quality gate: \`npm run test:brand-explorer-pilot-content-quality\`
 - Remediation module: \`lib/partner-intelligence/brand-explorer-fairfield-content-remediation.js\`
+
+### Round 2 (second independent ChatGPT QA)
+- Fixed \`footprint.portfolio_mix\` run-on (\`weak fit Curated sample mix\` → proper paragraph break)
+- Canonicalized Cancún property name to \`Fairfield Inn & Suites Cancun Airport\` in \`footprint.region.cala\`
+- Removed unsourced \`rather than lifestyle-hotel personality\` contrast from psychographics
+- Replaced \`king-room prototype\` with \`rooms-focused select-service prototype\` in \`insight.similar\`
+- Expanded semantic gate (\`pilot-content-quality-v2\`) so malformed run-on joins fail automatically
+- Report: \`reports/brand-explorer-fairfield-pilot-remediation-round2.json\`
 
 ## Coverage
 

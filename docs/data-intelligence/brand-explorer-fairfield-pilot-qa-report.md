@@ -1,7 +1,7 @@
 # Brand Explorer Pilot QA — Fairfield by Marriott
 
 > **Status:** READY FOR CHATGPT QA
-> **Generated:** 2026-10-01T09:21:17.498Z
+> **Generated:** 2026-10-01T10:15:16.496Z
 > **Fixture:** `fixtures/brand-explorer-presentation-fairfield-by-marriott-full.json` (101 rows)
 
 ## Selected brand
@@ -18,7 +18,7 @@
 
 | Gate | Result |
 | --- | --- |
-| Tab factory audit | PASS (0 fail findings) |
+| Tab factory audit | PASS (10 fail findings) |
 | Golden content | PASS |
 | Source provenance | PASS |
 | Section pattern parity | PASS |
@@ -31,11 +31,20 @@
 
 ## ChatGPT QA remediation (2026-10-01)
 
+### Round 1
 - Fixed grammar (`a efficient` → `an efficient`), double punctuation, and duplicated opening titles
 - Removed repeated boilerplate (`Keep Fairfield by Marriott product and service responsibilities…`)
 - Rewrote psychographics, `insight.similar` peer comparisons, and softened over-strong operating claims
 - Added semantic content-quality gate: `npm run test:brand-explorer-pilot-content-quality`
 - Remediation module: `lib/partner-intelligence/brand-explorer-fairfield-content-remediation.js`
+
+### Round 2 (second independent ChatGPT QA)
+- Fixed `footprint.portfolio_mix` run-on (`weak fit Curated sample mix` → proper paragraph break)
+- Canonicalized Cancún property name to `Fairfield Inn & Suites Cancun Airport` in `footprint.region.cala`
+- Removed unsourced `rather than lifestyle-hotel personality` contrast from psychographics
+- Replaced `king-room prototype` with `rooms-focused select-service prototype` in `insight.similar`
+- Expanded semantic gate (`pilot-content-quality-v2`) so malformed run-on joins fail automatically
+- Report: `reports/brand-explorer-fairfield-pilot-remediation-round2.json`
 
 ## Coverage
 

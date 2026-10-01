@@ -35,11 +35,20 @@ const badRows = [
     body: "Corporate / Business, Leisure, Family. Evaluate demand behavior in each target market rather than generic chain-loyalty averages.",
     sort: 11,
   },
+  {
+    slotKey: "footprint.portfolio_mix",
+    body: "Suburban / employment corridors: primary\nAirport / highway nodes: strong secondary\nSecondary urban commercial: selective\nResort / meetings-led assets: weak fit Curated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+    sort: 460,
+  },
 ];
 
 const bad = evaluatePilotContentQuality(badRows);
 assert(bad.pass === false, "expected bad fixture to fail content quality");
-assert(bad.issueCount >= 4, `expected multiple issues, got ${bad.issueCount}`);
+assert(bad.issueCount >= 5, `expected multiple issues, got ${bad.issueCount}`);
+assert(
+  bad.issues.some((i) => i.code === "malformed_runon_join"),
+  "expected malformed_runon_join for portfolio_mix run-on"
+);
 
 const goodRows = [
   {
@@ -55,13 +64,18 @@ const goodRows = [
   },
   {
     slotKey: "Guest Psychographics Description",
-    body: "Fairfield by Marriott serves practical transient guests—business travelers, families, and leisure visitors who want reliable rooms, straightforward value, and Bonvoy consistency rather than lifestyle-hotel personality.",
+    body: "Fairfield by Marriott serves practical transient guests—business travelers, families, and leisure visitors who want reliable rooms, straightforward value, and Bonvoy consistency. Marriott's brand positioning emphasizes simplicity and select-service delivery for both business and leisure trips. Owners should validate local demand concentration across Corporate / Business, Leisure, and Family segments before assuming portfolio guest averages apply to the asset under review.",
     sort: 11,
   },
   {
     slotKey: "insight.similar",
     body: "Courtyard by Marriott sits adjacent but typically carries heavier F&B and meeting programming than Fairfield's rooms-first select-service lane.",
     sort: 700,
+  },
+  {
+    slotKey: "footprint.portfolio_mix",
+    body: "Suburban / employment corridors: primary\nAirport / highway nodes: strong secondary\nSecondary urban commercial: selective\nResort / meetings-led assets: weak fit\n\nCurated sample mix based on global brand positioning (illustrative, not a disclosed portfolio census).",
+    sort: 460,
   },
 ];
 
