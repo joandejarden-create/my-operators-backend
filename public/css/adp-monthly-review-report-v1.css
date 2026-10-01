@@ -1,0 +1,248 @@
+/**
+ * ADP Monthly Executive Review — PDF-only presentation (report family v1).
+ * Consumes the same canonical payload as live/meeting surfaces.
+ * Visual grammar: Dealality report family (Full Hotel Intelligence Investigation).
+ *
+ * Doctrine:
+ *   AI_DEMAND_REVIEW_NO_ORPHAN_COMPONENTS
+ *   EVERY_PAGE_HAS_A_CLEAR_MANAGEMENT_PURPOSE
+ *   NO_ACCIDENTAL_HALF_EMPTY_PAGES
+ */
+
+.adp-mr-pdf-host {
+  margin: 0;
+  padding: 0;
+  background: #fff;
+}
+
+.adp-mr-pdf-host .bas-cover-page.bas-book-page-surface {
+  width: 100%;
+  min-height: calc(297mm - 14mm - 20mm);
+  max-height: calc(297mm - 14mm - 20mm);
+  height: auto;
+  margin: 0;
+  box-shadow: none;
+  background: #080f25 !important;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  overflow: hidden;
+}
+
+.adp-mr-pdf-host .bas-cover-doc-type,
+.adp-mr-pdf-host .bas-cover-location,
+.adp-mr-pdf-host .bas-cover-sub,
+.adp-mr-pdf-host .bas-cover-confidential {
+  color: #d7def5 !important;
+  opacity: 1 !important;
+}
+
+.adp-mr-pdf-host .bas-cover-title {
+  max-width: 18ch;
+  color: #ffffff !important;
+}
+
+.adp-mr-pdf-host .bas-cover-date {
+  color: #fdb52a !important;
+}
+
+.adp-mr-pdf-host .bas-cover-sub {
+  max-width: 46em;
+}
+
+.adp-mr-pdf-host .hid-cover-page__foot,
+.adp-mr-pdf-host .bas-no-print {
+  display: none !important;
+}
+
+.adp-mr-report-body {
+  color: #101935;
+  background: #fff;
+}
+
+.adp-mr-disclosure {
+  margin: 0 0 12pt;
+  padding: 7pt 9pt;
+  border-left: 3px solid #9a6b00;
+  background: #fff8eb;
+  font-size: 8.5pt;
+  line-height: 1.4;
+  color: #4a5568;
+}
+
+.adp-mr-method {
+  margin: 10pt 0 0;
+  padding-top: 8pt;
+  border-top: 1px solid #d9e1fa;
+  font-size: 8pt;
+  line-height: 1.4;
+  color: #4a5568;
+}
+
+.adp-mr-scan-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8pt;
+  margin: 0 0 12pt;
+}
+
+.adp-mr-scan-card {
+  padding: 8pt 9pt;
+  border-top: 2px solid #1a2a5c;
+  background: #f5f7ff;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.adp-mr-scan-card--biggestStrength {
+  border-top-color: #1f7a4d;
+  background: #f1f8f4;
+}
+
+.adp-mr-scan-card--biggestConstraint {
+  border-top-color: #9a6b00;
+  background: #fff8eb;
+}
+
+.adp-mr-scan-card--changeSinceLastComparableRun {
+  border-top-color: #4a5568;
+  background: #f7f8fb;
+}
+
+.adp-mr-scan-card__label {
+  margin: 0 0 4pt;
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #4a5568;
+}
+
+.adp-mr-scan-card__headline {
+  margin: 0 0 4pt;
+  font-size: 9.5pt;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #101935;
+}
+
+.adp-mr-scan-card__body {
+  margin: 0;
+  font-size: 8pt;
+  line-height: 1.35;
+  color: #2d3748;
+}
+
+.adp-mr-expansion {
+  margin: 0 0 4pt;
+}
+
+.adp-mr-expand-block {
+  margin: 0 0 8pt;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.adp-mr-expand-block .drs-body {
+  margin: 0;
+  font-size: 9pt;
+  line-height: 1.4;
+}
+
+.adp-mr-section-insight {
+  margin: 0 0 8pt;
+  padding: 7pt 9pt;
+  border-left: 3px solid #1a2a5c;
+  background: #f5f7ff;
+  font-size: 9pt;
+  line-height: 1.4;
+  color: #1a202c;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.adp-mr-close-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8pt;
+  margin: 0 0 6pt;
+}
+
+.adp-mr-close-block {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.adp-mr-close-block .drs-subhead {
+  margin-bottom: 4pt;
+}
+
+.adp-mr-close-block .drs-body,
+.adp-mr-close-block .drs-list {
+  margin: 0;
+  font-size: 9pt;
+  line-height: 1.35;
+}
+
+.drs-action__keep {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 14mm 12mm 20mm;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+  }
+
+  .adp-mr-pdf-host .bas-cover-page.bas-book-page-surface {
+    break-after: page;
+    page-break-after: always;
+  }
+
+  /* Sections flow dynamically — no forced chapter page-break on movement.
+     Doctrine: AI_DEMAND_REVIEW_NO_ORPHAN_COMPONENTS */
+  .adp-mr-section--executive,
+  .adp-mr-section--movement,
+  .adp-mr-section--evidence,
+  .adp-mr-section--actions,
+  .adp-mr-section--accountability {
+    break-before: auto;
+    page-break-before: auto;
+  }
+
+  .drs-kpi-band,
+  .adp-mr-scan-grid,
+  .adp-mr-scan-card,
+  .adp-mr-expand-block,
+  .adp-mr-section-insight,
+  .drs-action__keep,
+  .drs-table-wrap,
+  .drs-evidence {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .adp-mr-section--accountability {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .adp-mr-close-grid,
+  .adp-mr-method {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Long action steps may flow; keep header+issue together via .drs-action__keep */
+  .drs-action {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+}

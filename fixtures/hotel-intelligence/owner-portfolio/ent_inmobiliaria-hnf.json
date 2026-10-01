@@ -1,0 +1,701 @@
+{
+  "profile": {
+    "schema_version": "owner-portfolio-factory-v1",
+    "owner_entity_id": "ent_inmobiliaria-hnf",
+    "owner_display_name": "Inmobiliaria HNF",
+    "owner_legal_name": "Inmobiliaria HNF",
+    "portfolio_status": "PARTIAL",
+    "completeness": "PARTIAL",
+    "customer_label": "Known Portfolio",
+    "completeness_detail": {
+      "version": "owner-portfolio-completeness-v1",
+      "completeness": "PARTIAL",
+      "customer_label": "Known Portfolio",
+      "do_not_say": [
+        "Full Portfolio",
+        "Complete Portfolio",
+        "All Hotels Owned"
+      ],
+      "rationale": {
+        "owned_controlled_count": 1,
+        "operated_managed_count": 0,
+        "source_count": 1,
+        "open_question_count": 6,
+        "disclosure_quality": "MEDIUM",
+        "known_gaps": [
+          "Broader owner portfolio beyond focus hotel still partial"
+        ],
+        "last_researched_at": "2026-09-08"
+      }
+    },
+    "last_researched_at": "2026-09-08",
+    "related_entities": [
+      {
+        "entity_id": "hotel:recsYJb2R1jarPpK3",
+        "display_name": "Sheraton Guadalajara Expo",
+        "legal_name": null,
+        "entity_type": "HOTEL",
+        "association_level": "CORE_CONTROL",
+        "aliases": [],
+        "jurisdiction": null,
+        "temporal_status": "CURRENT",
+        "evidence_ids": [
+          "src_mexico_deep"
+        ],
+        "confidence": "HIGH",
+        "via_edge_id": "hotel:recsYJb2R1jarPpK3__OWNED_BY__ent_inmobiliaria-hnf__CURRENT",
+        "via_relationship_type": "OWNED_BY",
+        "why_associated": "Legal / economic owner path from Mexico Explorer Full HI compile."
+      },
+      {
+        "entity_id": "ent_aimbridge-latam",
+        "display_name": "Aimbridge LATAM",
+        "legal_name": null,
+        "entity_type": "OPERATING_COMPANY",
+        "association_level": "OPERATING_ENTITY",
+        "aliases": [],
+        "jurisdiction": null,
+        "temporal_status": "CURRENT",
+        "evidence_ids": [
+          "src_mexico_deep"
+        ],
+        "confidence": "HIGH",
+        "via_edge_id": "hotel:recsYJb2R1jarPpK3__OPERATED_BY__ent_aimbridge-latam__CURRENT",
+        "via_relationship_type": "OPERATED_BY",
+        "why_associated": "Operator is separate from owner."
+      }
+    ],
+    "hotel_relationships": [
+      {
+        "hotel_id": null,
+        "airtable_record_id": "recsYJb2R1jarPpK3",
+        "hotel_name": "Sheraton Guadalajara Expo",
+        "owner_entity_id": "ent_inmobiliaria-hnf",
+        "relationship_type": "OWNED_BY",
+        "secondary_relationship_type": "OPERATED_BY",
+        "attribution_path": [
+          {
+            "step": 1,
+            "relationship_type": "OWNED_BY",
+            "to_entity_id": "ent_inmobiliaria-hnf",
+            "to_display_name": "Inmobiliaria HNF"
+          }
+        ],
+        "ownership_percentage": null,
+        "control_status": null,
+        "current_historical": "CURRENT",
+        "brand": "Sheraton Hotel",
+        "operator": "Aimbridge LATAM",
+        "market": "Guadalajara Expo",
+        "country": "Mexico",
+        "rooms": 216,
+        "confidence": "HIGH",
+        "source_ids": [
+          "src_mexico_deep"
+        ],
+        "focus_hotel": true,
+        "census_match_status": "MATCHED",
+        "bucket": "OWNED_CONTROLLED",
+        "include_as_owned": true,
+        "attribution_reason": "owned_or_controlled_path",
+        "note": "Owner ≠ operator enforced.",
+        "why_in_portfolio": "OWNED_BY → Inmobiliaria HNF"
+      },
+      {
+        "hotel_id": null,
+        "airtable_record_id": null,
+        "hotel_name": "Aloft Guadalajara Country Club",
+        "owner_entity_id": "ent_inmobiliaria-hnf",
+        "relationship_type": "RELATED",
+        "secondary_relationship_type": null,
+        "attribution_path": [
+          {
+            "step": 1,
+            "relationship_type": "RELATED",
+            "to_entity_id": "ent_inmobiliaria-hnf",
+            "to_display_name": "Inmobiliaria HNF"
+          }
+        ],
+        "ownership_percentage": null,
+        "control_status": null,
+        "current_historical": "CURRENT",
+        "brand": "Aloft",
+        "operator": null,
+        "market": "Guadalajara, Jalisco",
+        "country": "Mexico",
+        "rooms": 142,
+        "confidence": "HIGH",
+        "source_ids": [
+          "src_mexico_deep"
+        ],
+        "focus_hotel": false,
+        "census_match_status": "UNRESOLVED_HOTEL_CANDIDATE",
+        "bucket": "UNKNOWN_RELATIONSHIP",
+        "include_as_owned": false,
+        "attribution_reason": "unclassified",
+        "note": null,
+        "why_in_portfolio": "RELATED → Inmobiliaria HNF"
+      },
+      {
+        "hotel_id": null,
+        "airtable_record_id": null,
+        "hotel_name": "Gran Hotel de Puebla by HNF / Delta Hotels Puebla Mexico",
+        "owner_entity_id": "ent_inmobiliaria-hnf",
+        "relationship_type": "RELATED",
+        "secondary_relationship_type": null,
+        "attribution_path": [
+          {
+            "step": 1,
+            "relationship_type": "RELATED",
+            "to_entity_id": "ent_inmobiliaria-hnf",
+            "to_display_name": "Inmobiliaria HNF"
+          }
+        ],
+        "ownership_percentage": null,
+        "control_status": null,
+        "current_historical": "CURRENT",
+        "brand": "Delta Hotels",
+        "operator": null,
+        "market": "Puebla, Puebla",
+        "country": "Mexico",
+        "rooms": 154,
+        "confidence": "HIGH",
+        "source_ids": [
+          "src_mexico_deep"
+        ],
+        "focus_hotel": false,
+        "census_match_status": "UNRESOLVED_HOTEL_CANDIDATE",
+        "bucket": "UNKNOWN_RELATIONSHIP",
+        "include_as_owned": false,
+        "attribution_reason": "unclassified",
+        "note": null,
+        "why_in_portfolio": "RELATED → Inmobiliaria HNF"
+      }
+    ],
+    "buckets": {
+      "OWNED_CONTROLLED": [
+        {
+          "hotel_id": null,
+          "airtable_record_id": "recsYJb2R1jarPpK3",
+          "hotel_name": "Sheraton Guadalajara Expo",
+          "owner_entity_id": "ent_inmobiliaria-hnf",
+          "relationship_type": "OWNED_BY",
+          "secondary_relationship_type": "OPERATED_BY",
+          "attribution_path": [
+            {
+              "step": 1,
+              "relationship_type": "OWNED_BY",
+              "to_entity_id": "ent_inmobiliaria-hnf",
+              "to_display_name": "Inmobiliaria HNF"
+            }
+          ],
+          "ownership_percentage": null,
+          "control_status": null,
+          "current_historical": "CURRENT",
+          "brand": "Sheraton Hotel",
+          "operator": "Aimbridge LATAM",
+          "market": "Guadalajara Expo",
+          "country": "Mexico",
+          "rooms": 216,
+          "confidence": "HIGH",
+          "source_ids": [
+            "src_mexico_deep"
+          ],
+          "focus_hotel": true,
+          "census_match_status": "MATCHED",
+          "bucket": "OWNED_CONTROLLED",
+          "include_as_owned": true,
+          "attribution_reason": "owned_or_controlled_path",
+          "note": "Owner ≠ operator enforced.",
+          "why_in_portfolio": "OWNED_BY → Inmobiliaria HNF"
+        }
+      ],
+      "JV_PARTIAL": [],
+      "SPONSORED_ECONOMIC_INTEREST": [],
+      "OPERATED_MANAGED": [],
+      "DEVELOPED": [],
+      "HISTORICAL_DISPOSED": [],
+      "PIPELINE_ANNOUNCED": [],
+      "UNKNOWN_RELATIONSHIP": [
+        {
+          "hotel_id": null,
+          "airtable_record_id": null,
+          "hotel_name": "Aloft Guadalajara Country Club",
+          "owner_entity_id": "ent_inmobiliaria-hnf",
+          "relationship_type": "RELATED",
+          "secondary_relationship_type": null,
+          "attribution_path": [
+            {
+              "step": 1,
+              "relationship_type": "RELATED",
+              "to_entity_id": "ent_inmobiliaria-hnf",
+              "to_display_name": "Inmobiliaria HNF"
+            }
+          ],
+          "ownership_percentage": null,
+          "control_status": null,
+          "current_historical": "CURRENT",
+          "brand": "Aloft",
+          "operator": null,
+          "market": "Guadalajara, Jalisco",
+          "country": "Mexico",
+          "rooms": 142,
+          "confidence": "HIGH",
+          "source_ids": [
+            "src_mexico_deep"
+          ],
+          "focus_hotel": false,
+          "census_match_status": "UNRESOLVED_HOTEL_CANDIDATE",
+          "bucket": "UNKNOWN_RELATIONSHIP",
+          "include_as_owned": false,
+          "attribution_reason": "unclassified",
+          "note": null,
+          "why_in_portfolio": "RELATED → Inmobiliaria HNF"
+        },
+        {
+          "hotel_id": null,
+          "airtable_record_id": null,
+          "hotel_name": "Gran Hotel de Puebla by HNF / Delta Hotels Puebla Mexico",
+          "owner_entity_id": "ent_inmobiliaria-hnf",
+          "relationship_type": "RELATED",
+          "secondary_relationship_type": null,
+          "attribution_path": [
+            {
+              "step": 1,
+              "relationship_type": "RELATED",
+              "to_entity_id": "ent_inmobiliaria-hnf",
+              "to_display_name": "Inmobiliaria HNF"
+            }
+          ],
+          "ownership_percentage": null,
+          "control_status": null,
+          "current_historical": "CURRENT",
+          "brand": "Delta Hotels",
+          "operator": null,
+          "market": "Puebla, Puebla",
+          "country": "Mexico",
+          "rooms": 154,
+          "confidence": "HIGH",
+          "source_ids": [
+            "src_mexico_deep"
+          ],
+          "focus_hotel": false,
+          "census_match_status": "UNRESOLVED_HOTEL_CANDIDATE",
+          "bucket": "UNKNOWN_RELATIONSHIP",
+          "include_as_owned": false,
+          "attribution_reason": "unclassified",
+          "note": null,
+          "why_in_portfolio": "RELATED → Inmobiliaria HNF"
+        }
+      ]
+    },
+    "markets": [
+      "Guadalajara Expo",
+      "Guadalajara, Jalisco",
+      "Puebla, Puebla"
+    ],
+    "brands": [
+      "Aloft",
+      "Delta Hotels",
+      "Sheraton Hotel"
+    ],
+    "operators": [
+      "Aimbridge LATAM"
+    ],
+    "people": [
+      {
+        "name": "Julieta Fregoso",
+        "title": "General Manager, Sheraton Guadalajara Expo (Aimbridge LATAM)",
+        "organization": "Aimbridge LATAM",
+        "role_category": "Property Leadership",
+        "category": "Property Leadership",
+        "decision_authority_category": "Property Leadership",
+        "relationship_to_hotel": "Current on-property GM; previously GM under HS HOTSSON through Apr 2024",
+        "strategic_relevance": "Current on-property GM; previously GM under HS HOTSSON through Apr 2024",
+        "bio": "Property-level operating leader evidencing continuity across the HS HOTSSON → Sheraton conversion. LinkedIn shows employer shift to Aimbridge LATAM from April 2024.",
+        "person_verified": true,
+        "title_verified": true,
+        "organization_verified": true,
+        "decision_authority": "Authority Not Verified",
+        "legal_signing_authority": "Authority Not Verified",
+        "contact_verified": false,
+        "contact": null,
+        "confidence": "HIGH",
+        "authority_note": "TITLE_NOT_AUTHORITY — evidence-backed role only",
+        "sources": [
+          "webhound_full_hi_2026_09_08"
+        ],
+        "professional_profile": {
+          "type": "LINKEDIN",
+          "url": "https://mx.linkedin.com/in/julieta-fregoso-b8b1b9106",
+          "verified": true,
+          "match_status": "VERIFIED",
+          "match_basis": "Name + Sheraton Guadalajara Expo / Aimbridge GM signals",
+          "source": "webhound_full_hi_2026_09_08",
+          "verified_at": "2026-09-08T01:15:00.000Z"
+        },
+        "professional_profile_url": "https://mx.linkedin.com/in/julieta-fregoso-b8b1b9106",
+        "professional_profile_type": "LINKEDIN",
+        "professional_profile_verified": true,
+        "professional_profile_status": "VERIFIED",
+        "linkedin_url": "https://mx.linkedin.com/in/julieta-fregoso-b8b1b9106",
+        "professional_profiles": [
+          {
+            "type": "linkedin",
+            "url": "https://mx.linkedin.com/in/julieta-fregoso-b8b1b9106",
+            "status": "VERIFIED",
+            "source": "webhound_full_hi_2026_09_08",
+            "match_basis": "Name + Sheraton Guadalajara Expo / Aimbridge GM signals",
+            "verified_at": "2026-09-08T01:15:00.000Z"
+          }
+        ]
+      },
+      {
+        "name": "Patricia Olivia Newton Frausto",
+        "title": "Former Presidenta del Consejo / Directora, Inmobiliaria HNF",
+        "organization": "Inmobiliaria HNF",
+        "role_category": "Ownership / Control",
+        "category": "Ownership / Control",
+        "decision_authority_category": "Ownership / Control",
+        "relationship_to_hotel": "Key historically documented ownership-side principal for HNF vehicle",
+        "strategic_relevance": "Key historically documented ownership-side principal for HNF vehicle",
+        "bio": "Named as HNF chair/director in project-era coverage for the Guadalajara Expo hotel. Died February 2022 — predates hotel opening and Sheraton conversion; current HNF legal representative remains UNKNOWN.",
+        "person_verified": true,
+        "title_verified": true,
+        "organization_verified": true,
+        "decision_authority": "Authority Not Verified",
+        "legal_signing_authority": "Authority Not Verified",
+        "contact_verified": false,
+        "contact": null,
+        "confidence": "HIGH",
+        "authority_note": "Former principal; deceased Feb 2022 — not current decision authority. LinkedIn NOT_FOUND: no name+HNF/Frausto employer match (unrelated Patricia Newton profiles excluded).",
+        "sources": [
+          "webhound_full_hi_2026_09_08"
+        ],
+        "professional_profile_verified": false,
+        "professional_profile_status": "NOT_FOUND"
+      },
+      {
+        "name": "Alejandro Mateos Berlanga",
+        "title": "CEO / Director, CAPITALI Grupo Hotelero",
+        "organization": "CAPITALI Grupo Hotelero",
+        "role_category": "Former Operator Executive",
+        "category": "Former Operator Executive",
+        "decision_authority_category": "Former Operator Executive",
+        "relationship_to_hotel": "Original development/operator-side leader during HS HOTSSON era",
+        "strategic_relevance": "Original development/operator-side leader during HS HOTSSON era",
+        "bio": "Leads CAPITALI Grupo Hotelero, the HS HOTSSON-era developer/operator for this asset. No evidenced current operating role after Aimbridge conversion.",
+        "person_verified": true,
+        "title_verified": true,
+        "organization_verified": true,
+        "decision_authority": "Authority Not Verified",
+        "legal_signing_authority": "Authority Not Verified",
+        "contact_verified": false,
+        "contact": null,
+        "confidence": "HIGH",
+        "authority_note": "TITLE_NOT_AUTHORITY — evidence-backed role only",
+        "sources": [
+          "webhound_full_hi_2026_09_08"
+        ],
+        "professional_profile": {
+          "type": "LINKEDIN",
+          "url": "https://mx.linkedin.com/in/alejandro-mateos-1304b75a",
+          "verified": true,
+          "match_status": "VERIFIED",
+          "match_basis": "Name + employer/title signals from Webhound Full HI",
+          "source": "webhound_full_hi_2026_09_08",
+          "verified_at": "2026-09-08T01:15:00.000Z"
+        },
+        "professional_profile_url": "https://mx.linkedin.com/in/alejandro-mateos-1304b75a",
+        "professional_profile_type": "LINKEDIN",
+        "professional_profile_verified": true,
+        "professional_profile_status": "VERIFIED",
+        "linkedin_url": "https://mx.linkedin.com/in/alejandro-mateos-1304b75a",
+        "professional_profiles": [
+          {
+            "type": "linkedin",
+            "url": "https://mx.linkedin.com/in/alejandro-mateos-1304b75a",
+            "status": "VERIFIED",
+            "source": "webhound_full_hi_2026_09_08",
+            "match_basis": "Name + employer/title signals from Webhound Full HI",
+            "verified_at": "2026-09-08T01:15:00.000Z"
+          }
+        ]
+      },
+      {
+        "name": "Alex Fiz",
+        "title": "President, Aimbridge LATAM & All-Inclusive",
+        "organization": "Aimbridge LATAM",
+        "role_category": "Operator Executive",
+        "category": "Operator Executive",
+        "decision_authority_category": "Operator Executive",
+        "relationship_to_hotel": "Current senior operator-side executive over the platform managing this hotel",
+        "strategic_relevance": "Current senior operator-side executive over the platform managing this hotel",
+        "bio": "Appointed President of Aimbridge LATAM & All-Inclusive effective March 2, 2026 (Aimbridge Hospitality announcement). LinkedIn confirms current President Aimbridge LATAM & ALL-INCLUSIVE.",
+        "person_verified": true,
+        "title_verified": true,
+        "organization_verified": true,
+        "decision_authority": "Authority Not Verified",
+        "legal_signing_authority": "Authority Not Verified",
+        "contact_verified": false,
+        "contact": null,
+        "confidence": "HIGH",
+        "authority_note": "TITLE_NOT_AUTHORITY — evidence-backed role only",
+        "sources": [
+          "webhound_full_hi_2026_09_08",
+          "linkedin_alex_fiz_0b6104a"
+        ],
+        "professional_profile": {
+          "type": "LINKEDIN",
+          "url": "https://www.linkedin.com/in/alex-fiz-0b6104a",
+          "verified": true,
+          "match_status": "VERIFIED",
+          "match_basis": "Name + President Aimbridge LATAM & All-Inclusive",
+          "source": "linkedin_public_profile",
+          "verified_at": "2026-09-08T01:40:00.000Z"
+        },
+        "professional_profile_url": "https://www.linkedin.com/in/alex-fiz-0b6104a",
+        "professional_profile_type": "LINKEDIN",
+        "professional_profile_verified": true,
+        "professional_profile_status": "VERIFIED",
+        "linkedin_url": "https://www.linkedin.com/in/alex-fiz-0b6104a",
+        "professional_profiles": [
+          {
+            "type": "linkedin",
+            "url": "https://www.linkedin.com/in/alex-fiz-0b6104a",
+            "status": "VERIFIED",
+            "source": "linkedin_public_profile",
+            "match_basis": "Name + President Aimbridge LATAM & All-Inclusive",
+            "verified_at": "2026-09-08T01:40:00.000Z"
+          }
+        ]
+      },
+      {
+        "name": "Leandro Castillo",
+        "title": "Former President, Aimbridge LATAM",
+        "organization": "Aimbridge LATAM",
+        "role_category": "Former Operator Executive",
+        "category": "Former Operator Executive",
+        "decision_authority_category": "Former Operator Executive",
+        "relationship_to_hotel": "Operator-side executive at time of 2024 Marriott conversion relationship",
+        "strategic_relevance": "Operator-side executive at time of 2024 Marriott conversion relationship",
+        "bio": "President of Aimbridge LATAM during the Jan 2024 conversion package era; retired effective February 2026. Same LinkedIn profile used in Cancún Full HI compile.",
+        "person_verified": true,
+        "title_verified": true,
+        "organization_verified": true,
+        "decision_authority": "Authority Not Verified",
+        "legal_signing_authority": "Authority Not Verified",
+        "contact_verified": false,
+        "contact": null,
+        "confidence": "HIGH",
+        "authority_note": "TITLE_NOT_AUTHORITY — evidence-backed role only",
+        "sources": [
+          "webhound_full_hi_2026_09_08",
+          "linkedin_leandro_castillo_parada"
+        ],
+        "professional_profile": {
+          "type": "LINKEDIN",
+          "url": "https://mx.linkedin.com/in/leandro-castillo-parada-129400278",
+          "verified": true,
+          "match_status": "VERIFIED",
+          "match_basis": "Name Leandro Castillo Parada + Aimbridge LATAM President context (shared Cancún corpus)",
+          "source": "webhound_full_hi_real_inn_cancun",
+          "verified_at": "2026-09-08T01:40:00.000Z"
+        },
+        "professional_profile_url": "https://mx.linkedin.com/in/leandro-castillo-parada-129400278",
+        "professional_profile_type": "LINKEDIN",
+        "professional_profile_verified": true,
+        "professional_profile_status": "VERIFIED",
+        "linkedin_url": "https://mx.linkedin.com/in/leandro-castillo-parada-129400278",
+        "professional_profiles": [
+          {
+            "type": "linkedin",
+            "url": "https://mx.linkedin.com/in/leandro-castillo-parada-129400278",
+            "status": "VERIFIED",
+            "source": "webhound_full_hi_real_inn_cancun",
+            "match_basis": "Name Leandro Castillo Parada + Aimbridge LATAM President context",
+            "verified_at": "2026-09-08T01:40:00.000Z"
+          }
+        ]
+      },
+      {
+        "name": "Rafael Lizárraga Rocha",
+        "title": "Commercial Vice President (Vicepresidente comercial), Aimbridge LATAM",
+        "organization": "Aimbridge LATAM",
+        "role_category": "Operator Executive",
+        "category": "Operator Executive",
+        "decision_authority_category": "Operator Executive",
+        "relationship_to_hotel": "Quoted operator-side executive in Jan 2024 conversion announcement",
+        "strategic_relevance": "Quoted operator-side executive in Jan 2024 conversion announcement",
+        "bio": "Evidenced in Marriott/Aimbridge three-hotel Mexico conversion coverage. LinkedIn profile Rafael Lizárraga Rocha lists Vicepresidente comercial at Aimbridge LATAM.",
+        "person_verified": true,
+        "title_verified": true,
+        "organization_verified": true,
+        "decision_authority": "Authority Not Verified",
+        "legal_signing_authority": "Authority Not Verified",
+        "contact_verified": false,
+        "contact": null,
+        "confidence": "HIGH",
+        "authority_note": "TITLE_NOT_AUTHORITY — evidence-backed role only; later tenure end date may apply on LinkedIn chronology",
+        "sources": [
+          "webhound_full_hi_2026_09_08",
+          "linkedin_rafael_lizarraga_rocha"
+        ],
+        "professional_profile": {
+          "type": "LINKEDIN",
+          "url": "https://www.linkedin.com/in/rafael-lizarraga-rocha-046874260",
+          "verified": true,
+          "match_status": "VERIFIED",
+          "match_basis": "Name Rafael Lizárraga Rocha + Vicepresidente comercial Aimbridge LATAM",
+          "source": "linkedin_public_profile",
+          "verified_at": "2026-09-08T01:40:00.000Z"
+        },
+        "professional_profile_url": "https://www.linkedin.com/in/rafael-lizarraga-rocha-046874260",
+        "professional_profile_type": "LINKEDIN",
+        "professional_profile_verified": true,
+        "professional_profile_status": "VERIFIED",
+        "linkedin_url": "https://www.linkedin.com/in/rafael-lizarraga-rocha-046874260",
+        "professional_profiles": [
+          {
+            "type": "linkedin",
+            "url": "https://www.linkedin.com/in/rafael-lizarraga-rocha-046874260",
+            "status": "VERIFIED",
+            "source": "linkedin_public_profile",
+            "match_basis": "Name Rafael Lizárraga Rocha + Vicepresidente comercial Aimbridge LATAM",
+            "verified_at": "2026-09-08T01:40:00.000Z"
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "src_mexico_deep",
+        "title": "fixtures/golden-demo/sheraton-gdl-expo-deep-research-v1.json",
+        "authority": "dealality_compile"
+      }
+    ],
+    "open_questions": [
+      "Jalisco Registro Público title extract for Av. Mariano Otero 1510 (deed holder, folio, mortgages)",
+      "Current legal representative / members of Inmobiliaria HNF after Patricia Newton Frausto death",
+      "Marriott/Sheraton franchise counterparty entity",
+      "Exact Aimbridge management agreement effective date / CAPITALI exit date",
+      "Operator during Gran Hotel Expo Guadalajara by HNF interim period",
+      "Formal roles (if any) for Claudia/Jennifer Newton at HNF entities"
+    ],
+    "control_graph": {
+      "node_count": 3,
+      "edge_count": 2,
+      "version": "owner-control-graph-v1"
+    },
+    "metrics": {
+      "related_entities": 2,
+      "portfolio_hotels": 3,
+      "owned_controlled": 1,
+      "jv_partial": 0,
+      "operated_managed": 0,
+      "historical": 0,
+      "unresolved_census": 2
+    },
+    "meta": {
+      "factory_version": "owner-portfolio-factory-v1",
+      "compiled_at": "2026-10-01T15:57:39.237Z",
+      "slug": "inmobiliaria-hnf",
+      "pubco": false,
+      "disclosure_quality": "MEDIUM",
+      "last_researched_at": "2026-09-08",
+      "known_gaps": [
+        "Broader owner portfolio beyond focus hotel still partial"
+      ],
+      "archetype": "PRIVATE_LEGAL_OWNER_THIRD_PARTY_OPERATOR",
+      "webhound_runs": 0,
+      "external_spend_usd": 0
+    }
+  },
+  "graph": {
+    "schema_version": "owner-control-graph-v1",
+    "owner_entity_id": "ent_inmobiliaria-hnf",
+    "nodes": [
+      {
+        "entity_id": "ent_inmobiliaria-hnf",
+        "display_name": "Inmobiliaria HNF",
+        "legal_name": "Inmobiliaria HNF",
+        "entity_type": "COMPANY",
+        "association_level": "CORE_CONTROL",
+        "aliases": [],
+        "jurisdiction": null,
+        "temporal_status": "CURRENT",
+        "evidence_ids": [
+          "src_mexico_deep"
+        ],
+        "confidence": "HIGH"
+      },
+      {
+        "entity_id": "ent_aimbridge-latam",
+        "display_name": "Aimbridge LATAM",
+        "legal_name": null,
+        "entity_type": "OPERATING_COMPANY",
+        "association_level": "OPERATING_ENTITY",
+        "aliases": [],
+        "jurisdiction": null,
+        "temporal_status": "CURRENT",
+        "evidence_ids": [
+          "src_mexico_deep"
+        ],
+        "confidence": "HIGH"
+      },
+      {
+        "entity_id": "hotel:recsYJb2R1jarPpK3",
+        "display_name": "Sheraton Guadalajara Expo",
+        "legal_name": null,
+        "entity_type": "HOTEL",
+        "association_level": null,
+        "aliases": [],
+        "jurisdiction": null,
+        "temporal_status": "CURRENT",
+        "evidence_ids": [
+          "src_mexico_deep"
+        ],
+        "confidence": "HIGH"
+      }
+    ],
+    "edges": [
+      {
+        "edge_id": "hotel:recsYJb2R1jarPpK3__OWNED_BY__ent_inmobiliaria-hnf__CURRENT",
+        "from_entity_id": "hotel:recsYJb2R1jarPpK3",
+        "to_entity_id": "ent_inmobiliaria-hnf",
+        "relationship_type": "OWNED_BY",
+        "association_level": "CORE_CONTROL",
+        "temporal_status": "CURRENT",
+        "ownership_percentage": null,
+        "control_percentage_class": null,
+        "evidence_ids": [
+          "src_mexico_deep"
+        ],
+        "confidence": "HIGH",
+        "note": "Legal / economic owner path from Mexico Explorer Full HI compile."
+      },
+      {
+        "edge_id": "hotel:recsYJb2R1jarPpK3__OPERATED_BY__ent_aimbridge-latam__CURRENT",
+        "from_entity_id": "hotel:recsYJb2R1jarPpK3",
+        "to_entity_id": "ent_aimbridge-latam",
+        "relationship_type": "OPERATED_BY",
+        "association_level": "OPERATING_ENTITY",
+        "temporal_status": "CURRENT",
+        "ownership_percentage": null,
+        "control_percentage_class": null,
+        "evidence_ids": [
+          "src_mexico_deep"
+        ],
+        "confidence": "HIGH",
+        "note": "Operator is separate from owner."
+      }
+    ],
+    "meta": {
+      "compiled_at": "2026-10-01T15:57:39.234Z",
+      "source": "mexico_explorer_deep_research_compile",
+      "webhound_runs": 0,
+      "external_spend_usd": 0
+    }
+  },
+  "written_at": "2026-10-01T15:57:39.238Z"
+}

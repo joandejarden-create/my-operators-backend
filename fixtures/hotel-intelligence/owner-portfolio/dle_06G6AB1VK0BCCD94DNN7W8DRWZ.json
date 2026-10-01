@@ -1,0 +1,1312 @@
+{
+  "profile": {
+    "schema_version": "owner-portfolio-factory-v1",
+    "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+    "owner_display_name": "Grupo Hotelero Santa Fe",
+    "owner_legal_name": "Grupo Hotelero Santa Fe, S.A.B. de C.V.",
+    "portfolio_status": "PARTIAL",
+    "completeness": "PARTIAL",
+    "customer_label": "Known Portfolio",
+    "completeness_detail": {
+      "version": "owner-portfolio-completeness-v1",
+      "completeness": "PARTIAL",
+      "customer_label": "Known Portfolio",
+      "do_not_say": [
+        "Full Portfolio",
+        "Complete Portfolio",
+        "All Hotels Owned"
+      ],
+      "rationale": {
+        "owned_controlled_count": 1,
+        "operated_managed_count": 10,
+        "source_count": 6,
+        "open_question_count": 3,
+        "disclosure_quality": "HIGH",
+        "known_gaps": [
+          "Full consolidated owned-hotel list beyond KGPV not fully certified in this packet",
+          "Krystal Resort PV census identity unresolved"
+        ],
+        "last_researched_at": "2026-09-03"
+      }
+    },
+    "last_researched_at": "2026-09-03",
+    "related_entities": [
+      {
+        "entity_id": "ent_ihvsf_propco_vallarta",
+        "display_name": "Inmobiliaria en Hotelería Vallarta Santa Fe",
+        "legal_name": "Inmobiliaria en Hotelería Vallarta Santa Fe, S. de R.L. de C.V.",
+        "entity_type": "PROPCO",
+        "association_level": "PROPERTY_VEHICLE",
+        "aliases": [],
+        "jurisdiction": "Mexico",
+        "temporal_status": "CURRENT",
+        "evidence_ids": [
+          "src_kgpv_ownership_chain"
+        ],
+        "confidence": "HIGH",
+        "via_edge_id": "ent_ihvsf_propco_vallarta__CONTROLLED_BY__dle_06G6AB1VK0BCCD94DNN7W8DRWZ__CURRENT",
+        "via_relationship_type": "CONTROLLED_BY",
+        "why_associated": "IHVSF is GSF subsidiary / property vehicle for Krystal Grand PV thread."
+      },
+      {
+        "entity_id": "ent_grupo-chartwell",
+        "display_name": "Grupo Chartwell",
+        "legal_name": "Grupo Chartwell",
+        "entity_type": "COMPANY",
+        "association_level": "SHAREHOLDER_INFLUENCE",
+        "aliases": [
+          "Chartwell"
+        ],
+        "jurisdiction": "Mexico",
+        "temporal_status": "CURRENT",
+        "evidence_ids": [
+          "src_kgpv_ownership_chain"
+        ],
+        "confidence": "HIGH",
+        "via_edge_id": "ent_grupo-chartwell__RELATED__dle_06G6AB1VK0BCCD94DNN7W8DRWZ__CURRENT",
+        "via_relationship_type": "RELATED",
+        "why_associated": "Chartwell among principales accionistas; Ancira is GSF Board President. Not PropCo ownership of KGPV."
+      },
+      {
+        "entity_id": "hotel:recUNycnMwOVFX0hc",
+        "display_name": "Krystal Grand Puerto Vallarta",
+        "legal_name": null,
+        "entity_type": "HOTEL",
+        "association_level": "HISTORICAL_ASSOCIATION",
+        "aliases": [],
+        "jurisdiction": null,
+        "temporal_status": "CURRENT",
+        "evidence_ids": [
+          "src_kgpv_deep"
+        ],
+        "confidence": "HIGH",
+        "via_edge_id": "hotel:recUNycnMwOVFX0hc__OWNED_BY__ent_grupo-chartwell__FORMER",
+        "via_relationship_type": "OWNED_BY",
+        "why_associated": "Chartwell formerly co-owned Hilton PV; sold remaining 50% to GSF in 2014."
+      },
+      {
+        "entity_id": "candidate_krystal_resort_pv",
+        "display_name": "Krystal Resort Puerto Vallarta",
+        "legal_name": null,
+        "entity_type": "HOTEL",
+        "association_level": "JV_PARTNER",
+        "aliases": [],
+        "jurisdiction": null,
+        "temporal_status": "CURRENT",
+        "evidence_ids": [
+          "src_kgpv_adjacent"
+        ],
+        "confidence": "HIGH",
+        "via_edge_id": "candidate_krystal_resort_pv__OWNED_BY__ent_grupo-chartwell__CURRENT",
+        "via_relationship_type": "OWNED_BY",
+        "why_associated": "Krystal Resort PV owned by Grupo Chartwell — distinct from KGPV."
+      }
+    ],
+    "hotel_relationships": [
+      {
+        "hotel_id": "dhl_06G6AB2228339A12S2EZ7PZF5E",
+        "airtable_record_id": "recUNycnMwOVFX0hc",
+        "hotel_name": "Krystal Grand Puerto Vallarta",
+        "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+        "relationship_type": "OWNED_BY",
+        "secondary_relationship_type": "OPERATED_BY",
+        "attribution_path": [
+          {
+            "step": 1,
+            "relationship_type": "OWNED_BY",
+            "to_entity_id": "ent_ihvsf_propco_vallarta",
+            "to_display_name": "IHVSF (PropCo)"
+          },
+          {
+            "step": 2,
+            "relationship_type": "CONTROLLED_BY",
+            "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+            "to_display_name": "Grupo Hotelero Santa Fe"
+          }
+        ],
+        "ownership_percentage": null,
+        "control_status": null,
+        "current_historical": "CURRENT",
+        "brand": "Krystal Grand",
+        "operator": "Grupo Hotelero Santa Fe",
+        "market": "Puerto Vallarta / Riviera Nayarit",
+        "country": "Mexico",
+        "rooms": 451,
+        "confidence": "HIGH",
+        "source_ids": [
+          "src_kgpv_ownership_chain",
+          "src_gsf_securities"
+        ],
+        "focus_hotel": true,
+        "census_match_status": "MATCHED",
+        "bucket": "OWNED_CONTROLLED",
+        "include_as_owned": true,
+        "attribution_reason": "owned_or_controlled_path",
+        "note": "GSF-owned and self-operated.",
+        "why_in_portfolio": "OWNED_BY → IHVSF (PropCo) → CONTROLLED_BY → Grupo Hotelero Santa Fe"
+      },
+      {
+        "hotel_id": "dhl_06G6AB2590MDEKFC9577S1ED0H",
+        "airtable_record_id": "recId5nDFUgVbJnzH",
+        "hotel_name": "Krystal Grand Residences Villas San Miguel de Allende",
+        "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+        "relationship_type": "OPERATED_BY",
+        "secondary_relationship_type": null,
+        "attribution_path": [
+          {
+            "step": 1,
+            "relationship_type": "OPERATED_BY",
+            "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+            "to_display_name": "Grupo Hotelero Santa Fe"
+          }
+        ],
+        "ownership_percentage": null,
+        "control_status": null,
+        "current_historical": "CURRENT",
+        "brand": "Independent",
+        "operator": "Grupo Hotelero Santa Fe",
+        "market": "Mexico Central/Bajio",
+        "country": "Mexico",
+        "rooms": 22,
+        "confidence": "high",
+        "source_ids": [
+          "src_gsf_site"
+        ],
+        "focus_hotel": false,
+        "census_match_status": "MATCHED",
+        "bucket": "OPERATED_MANAGED",
+        "include_as_owned": false,
+        "attribution_reason": "operated_not_owned",
+        "note": "management_operating_relationship",
+        "why_in_portfolio": "OPERATED_BY → Grupo Hotelero Santa Fe"
+      },
+      {
+        "hotel_id": "dhl_06G6AB266G98PQAM4CV3WTF1YN",
+        "airtable_record_id": "recMWHByXsnVNjJEp",
+        "hotel_name": "Krystal Grand los Cabos",
+        "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+        "relationship_type": "OPERATED_BY",
+        "secondary_relationship_type": null,
+        "attribution_path": [
+          {
+            "step": 1,
+            "relationship_type": "OPERATED_BY",
+            "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+            "to_display_name": "Grupo Hotelero Santa Fe"
+          }
+        ],
+        "ownership_percentage": null,
+        "control_status": null,
+        "current_historical": "CURRENT",
+        "brand": "Independent",
+        "operator": "Grupo Hotelero Santa Fe",
+        "market": "Baja California",
+        "country": "Mexico",
+        "rooms": 454,
+        "confidence": "high",
+        "source_ids": [
+          "src_gsf_site"
+        ],
+        "focus_hotel": false,
+        "census_match_status": "MATCHED",
+        "bucket": "OPERATED_MANAGED",
+        "include_as_owned": false,
+        "attribution_reason": "operated_not_owned",
+        "note": "management_operating_relationship",
+        "why_in_portfolio": "OPERATED_BY → Grupo Hotelero Santa Fe"
+      },
+      {
+        "hotel_id": "dhl_06G6AB27Z0BADBTE8JCQZ5G7EN",
+        "airtable_record_id": "recPXRj13pXMi7IBV",
+        "hotel_name": "Krystal Grand Nuevo Vallarta",
+        "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+        "relationship_type": "OPERATED_BY",
+        "secondary_relationship_type": null,
+        "attribution_path": [
+          {
+            "step": 1,
+            "relationship_type": "OPERATED_BY",
+            "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+            "to_display_name": "Grupo Hotelero Santa Fe"
+          }
+        ],
+        "ownership_percentage": null,
+        "control_status": null,
+        "current_historical": "CURRENT",
+        "brand": "Independent",
+        "operator": "Grupo Hotelero Santa Fe",
+        "market": "Pacific Central",
+        "country": "Mexico",
+        "rooms": 481,
+        "confidence": "high",
+        "source_ids": [
+          "src_gsf_site"
+        ],
+        "focus_hotel": false,
+        "census_match_status": "MATCHED",
+        "bucket": "OPERATED_MANAGED",
+        "include_as_owned": false,
+        "attribution_reason": "operated_not_owned",
+        "note": "management_operating_relationship",
+        "why_in_portfolio": "OPERATED_BY → Grupo Hotelero Santa Fe"
+      },
+      {
+        "hotel_id": "dhl_06G6AB29J4GWRKR4TZGPDQ5DEE",
+        "airtable_record_id": "recb18R47T3rmciH5",
+        "hotel_name": "Krystal Ixtapa",
+        "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+        "relationship_type": "OPERATED_BY",
+        "secondary_relationship_type": null,
+        "attribution_path": [
+          {
+            "step": 1,
+            "relationship_type": "OPERATED_BY",
+            "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+            "to_display_name": "Grupo Hotelero Santa Fe"
+          }
+        ],
+        "ownership_percentage": null,
+        "control_status": null,
+        "current_historical": "CURRENT",
+        "brand": "Independent",
+        "operator": "Grupo Hotelero Santa Fe",
+        "market": "Pacific Central",
+        "country": "Mexico",
+        "rooms": 255,
+        "confidence": "high",
+        "source_ids": [
+          "src_gsf_site"
+        ],
+        "focus_hotel": false,
+        "census_match_status": "MATCHED",
+        "bucket": "OPERATED_MANAGED",
+        "include_as_owned": false,
+        "attribution_reason": "operated_not_owned",
+        "note": "management_operating_relationship",
+        "why_in_portfolio": "OPERATED_BY → Grupo Hotelero Santa Fe"
+      },
+      {
+        "hotel_id": "dhl_06G6AB2B5WJHY2DJ5YN3G5FQP7",
+        "airtable_record_id": "reca6eBmfjoInOpQE",
+        "hotel_name": "Krystal Beach Acapulco",
+        "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+        "relationship_type": "OPERATED_BY",
+        "secondary_relationship_type": null,
+        "attribution_path": [
+          {
+            "step": 1,
+            "relationship_type": "OPERATED_BY",
+            "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+            "to_display_name": "Grupo Hotelero Santa Fe"
+          }
+        ],
+        "ownership_percentage": null,
+        "control_status": null,
+        "current_historical": "CURRENT",
+        "brand": "Independent",
+        "operator": "Grupo Hotelero Santa Fe",
+        "market": "Pacific Central",
+        "country": "Mexico",
+        "rooms": 347,
+        "confidence": "high",
+        "source_ids": [
+          "src_gsf_site"
+        ],
+        "focus_hotel": false,
+        "census_match_status": "MATCHED",
+        "bucket": "OPERATED_MANAGED",
+        "include_as_owned": false,
+        "attribution_reason": "operated_not_owned",
+        "note": "management_operating_relationship",
+        "why_in_portfolio": "OPERATED_BY → Grupo Hotelero Santa Fe"
+      },
+      {
+        "hotel_id": "dhl_06G6AB2JP0YQE367ZRWVK525DR",
+        "airtable_record_id": "rec7e0E0PdtSccpK7",
+        "hotel_name": "Krystal Urban Guadalajara",
+        "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+        "relationship_type": "OPERATED_BY",
+        "secondary_relationship_type": null,
+        "attribution_path": [
+          {
+            "step": 1,
+            "relationship_type": "OPERATED_BY",
+            "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+            "to_display_name": "Grupo Hotelero Santa Fe"
+          }
+        ],
+        "ownership_percentage": null,
+        "control_status": null,
+        "current_historical": "CURRENT",
+        "brand": "Independent",
+        "operator": "Grupo Hotelero Santa Fe",
+        "market": "Pacific Central",
+        "country": "Mexico",
+        "rooms": 140,
+        "confidence": "high",
+        "source_ids": [
+          "src_gsf_site"
+        ],
+        "focus_hotel": false,
+        "census_match_status": "MATCHED",
+        "bucket": "OPERATED_MANAGED",
+        "include_as_owned": false,
+        "attribution_reason": "operated_not_owned",
+        "note": "management_operating_relationship",
+        "why_in_portfolio": "OPERATED_BY → Grupo Hotelero Santa Fe"
+      },
+      {
+        "hotel_id": "dhl_06G6AB2KMGBJWJF2TPES8B3QCB",
+        "airtable_record_id": "recp4CP1ThWYjL4a1",
+        "hotel_name": "Krystal Urban Monterrey",
+        "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+        "relationship_type": "OPERATED_BY",
+        "secondary_relationship_type": null,
+        "attribution_path": [
+          {
+            "step": 1,
+            "relationship_type": "OPERATED_BY",
+            "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+            "to_display_name": "Grupo Hotelero Santa Fe"
+          }
+        ],
+        "ownership_percentage": null,
+        "control_status": null,
+        "current_historical": "CURRENT",
+        "brand": "Independent",
+        "operator": "Grupo Hotelero Santa Fe",
+        "market": "Monterrey",
+        "country": "Mexico",
+        "rooms": 150,
+        "confidence": "high",
+        "source_ids": [
+          "src_gsf_site"
+        ],
+        "focus_hotel": false,
+        "census_match_status": "MATCHED",
+        "bucket": "OPERATED_MANAGED",
+        "include_as_owned": false,
+        "attribution_reason": "operated_not_owned",
+        "note": "management_operating_relationship",
+        "why_in_portfolio": "OPERATED_BY → Grupo Hotelero Santa Fe"
+      },
+      {
+        "hotel_id": "dhl_06G6AB2MX8NRZ1CHQ4F6XV0SCM",
+        "airtable_record_id": "rec51bQK61NFHO4rl",
+        "hotel_name": "Hyatt Regency Mexico City Insurgentes",
+        "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+        "relationship_type": "OPERATED_BY",
+        "secondary_relationship_type": null,
+        "attribution_path": [
+          {
+            "step": 1,
+            "relationship_type": "OPERATED_BY",
+            "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+            "to_display_name": "Grupo Hotelero Santa Fe"
+          }
+        ],
+        "ownership_percentage": null,
+        "control_status": null,
+        "current_historical": "CURRENT",
+        "brand": "Hyatt Regency",
+        "operator": "Grupo Hotelero Santa Fe",
+        "market": "Mexico City",
+        "country": "Mexico",
+        "rooms": 201,
+        "confidence": "high",
+        "source_ids": [
+          "src_gsf_site"
+        ],
+        "focus_hotel": false,
+        "census_match_status": "MATCHED",
+        "bucket": "OPERATED_MANAGED",
+        "include_as_owned": false,
+        "attribution_reason": "operated_not_owned",
+        "note": "management_operating_relationship",
+        "why_in_portfolio": "OPERATED_BY → Grupo Hotelero Santa Fe"
+      },
+      {
+        "hotel_id": "dhl_06G6AB2S5471QBQ8VH1343NYMT",
+        "airtable_record_id": "recz3ng6hNt1sBD8t",
+        "hotel_name": "Mahekal Beach Resort",
+        "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+        "relationship_type": "OPERATED_BY",
+        "secondary_relationship_type": null,
+        "attribution_path": [
+          {
+            "step": 1,
+            "relationship_type": "OPERATED_BY",
+            "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+            "to_display_name": "Grupo Hotelero Santa Fe"
+          }
+        ],
+        "ownership_percentage": null,
+        "control_status": null,
+        "current_historical": "CURRENT",
+        "brand": "Independent",
+        "operator": "Grupo Hotelero Santa Fe",
+        "market": "Mexican Caribbean",
+        "country": "Mexico",
+        "rooms": 195,
+        "confidence": "high",
+        "source_ids": [
+          "src_gsf_site"
+        ],
+        "focus_hotel": false,
+        "census_match_status": "MATCHED",
+        "bucket": "OPERATED_MANAGED",
+        "include_as_owned": false,
+        "attribution_reason": "operated_not_owned",
+        "note": "management_operating_relationship",
+        "why_in_portfolio": "OPERATED_BY → Grupo Hotelero Santa Fe"
+      },
+      {
+        "hotel_id": null,
+        "airtable_record_id": null,
+        "hotel_name": "Krystal Resort Puerto Vallarta",
+        "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+        "relationship_type": "OPERATED_BY",
+        "secondary_relationship_type": null,
+        "attribution_path": [
+          {
+            "step": 1,
+            "relationship_type": "OPERATED_BY",
+            "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+            "to_display_name": "Grupo Hotelero Santa Fe"
+          }
+        ],
+        "ownership_percentage": null,
+        "control_status": null,
+        "current_historical": "CURRENT",
+        "brand": "Krystal",
+        "operator": "Grupo Hotelero Santa Fe",
+        "market": "Puerto Vallarta / Riviera Nayarit",
+        "country": "Mexico",
+        "rooms": 530,
+        "confidence": "HIGH",
+        "source_ids": [
+          "src_kgpv_adjacent"
+        ],
+        "focus_hotel": false,
+        "census_match_status": "UNRESOLVED_HOTEL_CANDIDATE",
+        "bucket": "OPERATED_MANAGED",
+        "include_as_owned": false,
+        "attribution_reason": "operated_not_owned",
+        "note": "Chartwell-owned; GSF-managed. GSF_MANAGED_NOT_OWNED.",
+        "why_in_portfolio": "OPERATED_BY GSF — owner is Grupo Chartwell (not GSF-owned)"
+      }
+    ],
+    "buckets": {
+      "OWNED_CONTROLLED": [
+        {
+          "hotel_id": "dhl_06G6AB2228339A12S2EZ7PZF5E",
+          "airtable_record_id": "recUNycnMwOVFX0hc",
+          "hotel_name": "Krystal Grand Puerto Vallarta",
+          "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+          "relationship_type": "OWNED_BY",
+          "secondary_relationship_type": "OPERATED_BY",
+          "attribution_path": [
+            {
+              "step": 1,
+              "relationship_type": "OWNED_BY",
+              "to_entity_id": "ent_ihvsf_propco_vallarta",
+              "to_display_name": "IHVSF (PropCo)"
+            },
+            {
+              "step": 2,
+              "relationship_type": "CONTROLLED_BY",
+              "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+              "to_display_name": "Grupo Hotelero Santa Fe"
+            }
+          ],
+          "ownership_percentage": null,
+          "control_status": null,
+          "current_historical": "CURRENT",
+          "brand": "Krystal Grand",
+          "operator": "Grupo Hotelero Santa Fe",
+          "market": "Puerto Vallarta / Riviera Nayarit",
+          "country": "Mexico",
+          "rooms": 451,
+          "confidence": "HIGH",
+          "source_ids": [
+            "src_kgpv_ownership_chain",
+            "src_gsf_securities"
+          ],
+          "focus_hotel": true,
+          "census_match_status": "MATCHED",
+          "bucket": "OWNED_CONTROLLED",
+          "include_as_owned": true,
+          "attribution_reason": "owned_or_controlled_path",
+          "note": "GSF-owned and self-operated.",
+          "why_in_portfolio": "OWNED_BY → IHVSF (PropCo) → CONTROLLED_BY → Grupo Hotelero Santa Fe"
+        }
+      ],
+      "JV_PARTIAL": [],
+      "SPONSORED_ECONOMIC_INTEREST": [],
+      "OPERATED_MANAGED": [
+        {
+          "hotel_id": "dhl_06G6AB2590MDEKFC9577S1ED0H",
+          "airtable_record_id": "recId5nDFUgVbJnzH",
+          "hotel_name": "Krystal Grand Residences Villas San Miguel de Allende",
+          "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+          "relationship_type": "OPERATED_BY",
+          "secondary_relationship_type": null,
+          "attribution_path": [
+            {
+              "step": 1,
+              "relationship_type": "OPERATED_BY",
+              "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+              "to_display_name": "Grupo Hotelero Santa Fe"
+            }
+          ],
+          "ownership_percentage": null,
+          "control_status": null,
+          "current_historical": "CURRENT",
+          "brand": "Independent",
+          "operator": "Grupo Hotelero Santa Fe",
+          "market": "Mexico Central/Bajio",
+          "country": "Mexico",
+          "rooms": 22,
+          "confidence": "high",
+          "source_ids": [
+            "src_gsf_site"
+          ],
+          "focus_hotel": false,
+          "census_match_status": "MATCHED",
+          "bucket": "OPERATED_MANAGED",
+          "include_as_owned": false,
+          "attribution_reason": "operated_not_owned",
+          "note": "management_operating_relationship",
+          "why_in_portfolio": "OPERATED_BY → Grupo Hotelero Santa Fe"
+        },
+        {
+          "hotel_id": "dhl_06G6AB266G98PQAM4CV3WTF1YN",
+          "airtable_record_id": "recMWHByXsnVNjJEp",
+          "hotel_name": "Krystal Grand los Cabos",
+          "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+          "relationship_type": "OPERATED_BY",
+          "secondary_relationship_type": null,
+          "attribution_path": [
+            {
+              "step": 1,
+              "relationship_type": "OPERATED_BY",
+              "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+              "to_display_name": "Grupo Hotelero Santa Fe"
+            }
+          ],
+          "ownership_percentage": null,
+          "control_status": null,
+          "current_historical": "CURRENT",
+          "brand": "Independent",
+          "operator": "Grupo Hotelero Santa Fe",
+          "market": "Baja California",
+          "country": "Mexico",
+          "rooms": 454,
+          "confidence": "high",
+          "source_ids": [
+            "src_gsf_site"
+          ],
+          "focus_hotel": false,
+          "census_match_status": "MATCHED",
+          "bucket": "OPERATED_MANAGED",
+          "include_as_owned": false,
+          "attribution_reason": "operated_not_owned",
+          "note": "management_operating_relationship",
+          "why_in_portfolio": "OPERATED_BY → Grupo Hotelero Santa Fe"
+        },
+        {
+          "hotel_id": "dhl_06G6AB27Z0BADBTE8JCQZ5G7EN",
+          "airtable_record_id": "recPXRj13pXMi7IBV",
+          "hotel_name": "Krystal Grand Nuevo Vallarta",
+          "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+          "relationship_type": "OPERATED_BY",
+          "secondary_relationship_type": null,
+          "attribution_path": [
+            {
+              "step": 1,
+              "relationship_type": "OPERATED_BY",
+              "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+              "to_display_name": "Grupo Hotelero Santa Fe"
+            }
+          ],
+          "ownership_percentage": null,
+          "control_status": null,
+          "current_historical": "CURRENT",
+          "brand": "Independent",
+          "operator": "Grupo Hotelero Santa Fe",
+          "market": "Pacific Central",
+          "country": "Mexico",
+          "rooms": 481,
+          "confidence": "high",
+          "source_ids": [
+            "src_gsf_site"
+          ],
+          "focus_hotel": false,
+          "census_match_status": "MATCHED",
+          "bucket": "OPERATED_MANAGED",
+          "include_as_owned": false,
+          "attribution_reason": "operated_not_owned",
+          "note": "management_operating_relationship",
+          "why_in_portfolio": "OPERATED_BY → Grupo Hotelero Santa Fe"
+        },
+        {
+          "hotel_id": "dhl_06G6AB29J4GWRKR4TZGPDQ5DEE",
+          "airtable_record_id": "recb18R47T3rmciH5",
+          "hotel_name": "Krystal Ixtapa",
+          "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+          "relationship_type": "OPERATED_BY",
+          "secondary_relationship_type": null,
+          "attribution_path": [
+            {
+              "step": 1,
+              "relationship_type": "OPERATED_BY",
+              "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+              "to_display_name": "Grupo Hotelero Santa Fe"
+            }
+          ],
+          "ownership_percentage": null,
+          "control_status": null,
+          "current_historical": "CURRENT",
+          "brand": "Independent",
+          "operator": "Grupo Hotelero Santa Fe",
+          "market": "Pacific Central",
+          "country": "Mexico",
+          "rooms": 255,
+          "confidence": "high",
+          "source_ids": [
+            "src_gsf_site"
+          ],
+          "focus_hotel": false,
+          "census_match_status": "MATCHED",
+          "bucket": "OPERATED_MANAGED",
+          "include_as_owned": false,
+          "attribution_reason": "operated_not_owned",
+          "note": "management_operating_relationship",
+          "why_in_portfolio": "OPERATED_BY → Grupo Hotelero Santa Fe"
+        },
+        {
+          "hotel_id": "dhl_06G6AB2B5WJHY2DJ5YN3G5FQP7",
+          "airtable_record_id": "reca6eBmfjoInOpQE",
+          "hotel_name": "Krystal Beach Acapulco",
+          "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+          "relationship_type": "OPERATED_BY",
+          "secondary_relationship_type": null,
+          "attribution_path": [
+            {
+              "step": 1,
+              "relationship_type": "OPERATED_BY",
+              "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+              "to_display_name": "Grupo Hotelero Santa Fe"
+            }
+          ],
+          "ownership_percentage": null,
+          "control_status": null,
+          "current_historical": "CURRENT",
+          "brand": "Independent",
+          "operator": "Grupo Hotelero Santa Fe",
+          "market": "Pacific Central",
+          "country": "Mexico",
+          "rooms": 347,
+          "confidence": "high",
+          "source_ids": [
+            "src_gsf_site"
+          ],
+          "focus_hotel": false,
+          "census_match_status": "MATCHED",
+          "bucket": "OPERATED_MANAGED",
+          "include_as_owned": false,
+          "attribution_reason": "operated_not_owned",
+          "note": "management_operating_relationship",
+          "why_in_portfolio": "OPERATED_BY → Grupo Hotelero Santa Fe"
+        },
+        {
+          "hotel_id": "dhl_06G6AB2JP0YQE367ZRWVK525DR",
+          "airtable_record_id": "rec7e0E0PdtSccpK7",
+          "hotel_name": "Krystal Urban Guadalajara",
+          "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+          "relationship_type": "OPERATED_BY",
+          "secondary_relationship_type": null,
+          "attribution_path": [
+            {
+              "step": 1,
+              "relationship_type": "OPERATED_BY",
+              "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+              "to_display_name": "Grupo Hotelero Santa Fe"
+            }
+          ],
+          "ownership_percentage": null,
+          "control_status": null,
+          "current_historical": "CURRENT",
+          "brand": "Independent",
+          "operator": "Grupo Hotelero Santa Fe",
+          "market": "Pacific Central",
+          "country": "Mexico",
+          "rooms": 140,
+          "confidence": "high",
+          "source_ids": [
+            "src_gsf_site"
+          ],
+          "focus_hotel": false,
+          "census_match_status": "MATCHED",
+          "bucket": "OPERATED_MANAGED",
+          "include_as_owned": false,
+          "attribution_reason": "operated_not_owned",
+          "note": "management_operating_relationship",
+          "why_in_portfolio": "OPERATED_BY → Grupo Hotelero Santa Fe"
+        },
+        {
+          "hotel_id": "dhl_06G6AB2KMGBJWJF2TPES8B3QCB",
+          "airtable_record_id": "recp4CP1ThWYjL4a1",
+          "hotel_name": "Krystal Urban Monterrey",
+          "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+          "relationship_type": "OPERATED_BY",
+          "secondary_relationship_type": null,
+          "attribution_path": [
+            {
+              "step": 1,
+              "relationship_type": "OPERATED_BY",
+              "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+              "to_display_name": "Grupo Hotelero Santa Fe"
+            }
+          ],
+          "ownership_percentage": null,
+          "control_status": null,
+          "current_historical": "CURRENT",
+          "brand": "Independent",
+          "operator": "Grupo Hotelero Santa Fe",
+          "market": "Monterrey",
+          "country": "Mexico",
+          "rooms": 150,
+          "confidence": "high",
+          "source_ids": [
+            "src_gsf_site"
+          ],
+          "focus_hotel": false,
+          "census_match_status": "MATCHED",
+          "bucket": "OPERATED_MANAGED",
+          "include_as_owned": false,
+          "attribution_reason": "operated_not_owned",
+          "note": "management_operating_relationship",
+          "why_in_portfolio": "OPERATED_BY → Grupo Hotelero Santa Fe"
+        },
+        {
+          "hotel_id": "dhl_06G6AB2MX8NRZ1CHQ4F6XV0SCM",
+          "airtable_record_id": "rec51bQK61NFHO4rl",
+          "hotel_name": "Hyatt Regency Mexico City Insurgentes",
+          "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+          "relationship_type": "OPERATED_BY",
+          "secondary_relationship_type": null,
+          "attribution_path": [
+            {
+              "step": 1,
+              "relationship_type": "OPERATED_BY",
+              "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+              "to_display_name": "Grupo Hotelero Santa Fe"
+            }
+          ],
+          "ownership_percentage": null,
+          "control_status": null,
+          "current_historical": "CURRENT",
+          "brand": "Hyatt Regency",
+          "operator": "Grupo Hotelero Santa Fe",
+          "market": "Mexico City",
+          "country": "Mexico",
+          "rooms": 201,
+          "confidence": "high",
+          "source_ids": [
+            "src_gsf_site"
+          ],
+          "focus_hotel": false,
+          "census_match_status": "MATCHED",
+          "bucket": "OPERATED_MANAGED",
+          "include_as_owned": false,
+          "attribution_reason": "operated_not_owned",
+          "note": "management_operating_relationship",
+          "why_in_portfolio": "OPERATED_BY → Grupo Hotelero Santa Fe"
+        },
+        {
+          "hotel_id": "dhl_06G6AB2S5471QBQ8VH1343NYMT",
+          "airtable_record_id": "recz3ng6hNt1sBD8t",
+          "hotel_name": "Mahekal Beach Resort",
+          "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+          "relationship_type": "OPERATED_BY",
+          "secondary_relationship_type": null,
+          "attribution_path": [
+            {
+              "step": 1,
+              "relationship_type": "OPERATED_BY",
+              "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+              "to_display_name": "Grupo Hotelero Santa Fe"
+            }
+          ],
+          "ownership_percentage": null,
+          "control_status": null,
+          "current_historical": "CURRENT",
+          "brand": "Independent",
+          "operator": "Grupo Hotelero Santa Fe",
+          "market": "Mexican Caribbean",
+          "country": "Mexico",
+          "rooms": 195,
+          "confidence": "high",
+          "source_ids": [
+            "src_gsf_site"
+          ],
+          "focus_hotel": false,
+          "census_match_status": "MATCHED",
+          "bucket": "OPERATED_MANAGED",
+          "include_as_owned": false,
+          "attribution_reason": "operated_not_owned",
+          "note": "management_operating_relationship",
+          "why_in_portfolio": "OPERATED_BY → Grupo Hotelero Santa Fe"
+        },
+        {
+          "hotel_id": null,
+          "airtable_record_id": null,
+          "hotel_name": "Krystal Resort Puerto Vallarta",
+          "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+          "relationship_type": "OPERATED_BY",
+          "secondary_relationship_type": null,
+          "attribution_path": [
+            {
+              "step": 1,
+              "relationship_type": "OPERATED_BY",
+              "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+              "to_display_name": "Grupo Hotelero Santa Fe"
+            }
+          ],
+          "ownership_percentage": null,
+          "control_status": null,
+          "current_historical": "CURRENT",
+          "brand": "Krystal",
+          "operator": "Grupo Hotelero Santa Fe",
+          "market": "Puerto Vallarta / Riviera Nayarit",
+          "country": "Mexico",
+          "rooms": 530,
+          "confidence": "HIGH",
+          "source_ids": [
+            "src_kgpv_adjacent"
+          ],
+          "focus_hotel": false,
+          "census_match_status": "UNRESOLVED_HOTEL_CANDIDATE",
+          "bucket": "OPERATED_MANAGED",
+          "include_as_owned": false,
+          "attribution_reason": "operated_not_owned",
+          "note": "Chartwell-owned; GSF-managed. GSF_MANAGED_NOT_OWNED.",
+          "why_in_portfolio": "OPERATED_BY GSF — owner is Grupo Chartwell (not GSF-owned)"
+        }
+      ],
+      "DEVELOPED": [],
+      "HISTORICAL_DISPOSED": [],
+      "PIPELINE_ANNOUNCED": [],
+      "UNKNOWN_RELATIONSHIP": []
+    },
+    "markets": [
+      "Baja California",
+      "Mexican Caribbean",
+      "Mexico Central/Bajio",
+      "Mexico City",
+      "Monterrey",
+      "Pacific Central",
+      "Puerto Vallarta / Riviera Nayarit"
+    ],
+    "brands": [
+      "Hyatt Regency",
+      "Independent",
+      "Krystal",
+      "Krystal Grand"
+    ],
+    "operators": [
+      "Grupo Hotelero Santa Fe"
+    ],
+    "people": [
+      {
+        "name": "Francisco Medina Elizalde",
+        "title": "CEO / Director General",
+        "organization": "Grupo Hotelero Santa Fe",
+        "role_category": "Operator Executive",
+        "decision_authority": "Authority Not Verified",
+        "confidence": "HIGH"
+      },
+      {
+        "name": "Carlos Gerardo Ancira Elizondo",
+        "title": "Presidente del Consejo de Administración; leader of Grupo Chartwell",
+        "organization": "Grupo Hotelero Santa Fe / Grupo Chartwell",
+        "role_category": "Beneficial Owner / Principal",
+        "decision_authority": "Authority Not Verified",
+        "confidence": "HIGH"
+      },
+      {
+        "name": "Francisco Alejandro Zinser Cieslik",
+        "title": "Executive Vice Chairman / Vicepresidente Ejecutivo",
+        "organization": "Grupo Hotelero Santa Fe",
+        "role_category": "Development",
+        "decision_authority": "Authority Not Verified",
+        "confidence": "HIGH"
+      },
+      {
+        "name": "Enrique Gerardo Martínez Guerrero",
+        "title": "CFO",
+        "organization": "Grupo Hotelero Santa Fe",
+        "role_category": "Asset Management",
+        "decision_authority": "Authority Not Verified",
+        "confidence": "HIGH"
+      },
+      {
+        "name": "Gabriela Ríos Palacios",
+        "title": "Director of Operations",
+        "organization": "Grupo Hotelero Santa Fe",
+        "role_category": "Operator Executive",
+        "decision_authority": "Authority Not Verified",
+        "confidence": "HIGH"
+      },
+      {
+        "name": "Javier Coll",
+        "title": "Global Head of Hyatt Inclusive Collection Growth",
+        "organization": "Hyatt Hotels Corporation",
+        "role_category": "Brand / Franchise Development",
+        "decision_authority": "Authority Not Verified",
+        "confidence": "HIGH"
+      },
+      {
+        "name": "Camilo Bolaños",
+        "title": "SVP Development, Latin America & the Caribbean",
+        "organization": "Hyatt Hotels Corporation",
+        "role_category": "Brand / Franchise Development",
+        "decision_authority": "Authority Not Verified",
+        "confidence": "HIGH"
+      },
+      {
+        "name": "Maximilian Zimmermann",
+        "title": "Director of Investor Relations",
+        "organization": "Grupo Hotelero Santa Fe",
+        "role_category": "Commercial Leadership",
+        "decision_authority": "Authority Not Verified",
+        "confidence": "HIGH"
+      },
+      {
+        "name": "Luis Avelar",
+        "title": "Director General (property listing response)",
+        "organization": "Krystal Grand Puerto Vallarta / Grupo Hotelero Santa Fe",
+        "role_category": "Property Leadership",
+        "decision_authority": "Authority Not Verified",
+        "confidence": "PROBABLE"
+      },
+      {
+        "name": "Norma Garcia",
+        "title": "Directora de Ventas — Krystal Grand Puerto Vallarta & The Hacienda",
+        "organization": "Grupo Hotelero Santa Fe",
+        "role_category": "Commercial Leadership",
+        "decision_authority": "Authority Not Verified",
+        "confidence": "HIGH"
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "src_kgpv_deep",
+        "title": "KGPV deep research compile",
+        "authority": "dealality_compile"
+      },
+      {
+        "source_id": "src_kgpv_ownership_chain",
+        "title": "KGPV ownership chain (GSF securities / PropCo)",
+        "authority": "corporate_filings"
+      },
+      {
+        "source_id": "src_gsf_securities",
+        "title": "GSF public-company disclosures",
+        "authority": "corporate_filings"
+      },
+      {
+        "source_id": "src_gsf_site",
+        "title": "gsf-hotels.com",
+        "authority": "first_party"
+      },
+      {
+        "source_id": "src_kgpv_adjacent",
+        "title": "Adjacent Chartwell Krystal Resort PV separation",
+        "authority": "corporate_filings"
+      },
+      {
+        "source_id": "src_kgpv_people",
+        "title": "GSF people / Chartwell shareholder notes",
+        "authority": "corporate_filings"
+      }
+    ],
+    "open_questions": [
+      "Which additional Krystal Grand / Urban assets are consolidated as GSF-owned vs third-party managed?",
+      "Natural-person UBO beyond disclosed public-company / Chartwell principals",
+      "Census match for Krystal Resort Puerto Vallarta"
+    ],
+    "control_graph": {
+      "node_count": 6,
+      "edge_count": 9,
+      "version": "owner-control-graph-v1"
+    },
+    "metrics": {
+      "related_entities": 4,
+      "portfolio_hotels": 11,
+      "owned_controlled": 1,
+      "jv_partial": 0,
+      "operated_managed": 10,
+      "historical": 0,
+      "unresolved_census": 1
+    },
+    "meta": {
+      "factory_version": "owner-portfolio-factory-v1",
+      "compiled_at": "2026-10-01T15:57:39.133Z",
+      "slug": "grupo-hotelero-santa-fe",
+      "pubco": true,
+      "disclosure_quality": "HIGH",
+      "last_researched_at": "2026-09-03",
+      "known_gaps": [
+        "Full consolidated owned-hotel list beyond KGPV not fully certified in this packet",
+        "Krystal Resort PV census identity unresolved"
+      ],
+      "archetype": "PUBLIC_COMPANY_OWNER_OPERATOR",
+      "webhound_runs": 0,
+      "external_spend_usd": 0
+    }
+  },
+  "graph": {
+    "schema_version": "owner-control-graph-v1",
+    "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+    "nodes": [
+      {
+        "entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+        "display_name": "Grupo Hotelero Santa Fe",
+        "legal_name": "Grupo Hotelero Santa Fe, S.A.B. de C.V.",
+        "entity_type": "COMPANY",
+        "association_level": "CORE_CONTROL",
+        "aliases": [
+          "GSF",
+          "HOTEL",
+          "Grupo Hotelero Santa Fe SAB de CV"
+        ],
+        "jurisdiction": "Mexico",
+        "temporal_status": "CURRENT",
+        "evidence_ids": [
+          "src_gsf_securities",
+          "src_gsf_site"
+        ],
+        "confidence": "HIGH"
+      },
+      {
+        "entity_id": "ent_ihvsf_propco_vallarta",
+        "display_name": "Inmobiliaria en Hotelería Vallarta Santa Fe",
+        "legal_name": "Inmobiliaria en Hotelería Vallarta Santa Fe, S. de R.L. de C.V.",
+        "entity_type": "PROPCO",
+        "association_level": "PROPERTY_VEHICLE",
+        "aliases": [],
+        "jurisdiction": "Mexico",
+        "temporal_status": "CURRENT",
+        "evidence_ids": [
+          "src_kgpv_ownership_chain"
+        ],
+        "confidence": "HIGH"
+      },
+      {
+        "entity_id": "ent_grupo-chartwell",
+        "display_name": "Grupo Chartwell",
+        "legal_name": "Grupo Chartwell",
+        "entity_type": "COMPANY",
+        "association_level": "JV_PARTNER",
+        "aliases": [
+          "Chartwell"
+        ],
+        "jurisdiction": "Mexico",
+        "temporal_status": "CURRENT",
+        "evidence_ids": [
+          "src_kgpv_ownership_chain"
+        ],
+        "confidence": "HIGH"
+      },
+      {
+        "entity_id": "ent_carlos-ancira",
+        "display_name": "Carlos Gerardo Ancira Elizondo",
+        "legal_name": null,
+        "entity_type": "INDIVIDUAL",
+        "association_level": "SHAREHOLDER_INFLUENCE",
+        "aliases": [],
+        "jurisdiction": null,
+        "temporal_status": "CURRENT",
+        "evidence_ids": [
+          "src_kgpv_people"
+        ],
+        "confidence": "PROBABLE"
+      },
+      {
+        "entity_id": "hotel:recUNycnMwOVFX0hc",
+        "display_name": "Krystal Grand Puerto Vallarta",
+        "legal_name": null,
+        "entity_type": "HOTEL",
+        "association_level": "CORE_CONTROL",
+        "aliases": [],
+        "jurisdiction": null,
+        "temporal_status": "CURRENT",
+        "evidence_ids": [
+          "src_kgpv_deep"
+        ],
+        "confidence": "HIGH"
+      },
+      {
+        "entity_id": "candidate_krystal_resort_pv",
+        "display_name": "Krystal Resort Puerto Vallarta",
+        "legal_name": null,
+        "entity_type": "HOTEL",
+        "association_level": "OPERATING_ENTITY",
+        "aliases": [],
+        "jurisdiction": null,
+        "temporal_status": "CURRENT",
+        "evidence_ids": [
+          "src_kgpv_adjacent"
+        ],
+        "confidence": "HIGH"
+      }
+    ],
+    "edges": [
+      {
+        "edge_id": "ent_ihvsf_propco_vallarta__CONTROLLED_BY__dle_06G6AB1VK0BCCD94DNN7W8DRWZ__CURRENT",
+        "from_entity_id": "ent_ihvsf_propco_vallarta",
+        "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+        "relationship_type": "CONTROLLED_BY",
+        "association_level": "PROPERTY_VEHICLE",
+        "temporal_status": "CURRENT",
+        "ownership_percentage": null,
+        "control_percentage_class": null,
+        "evidence_ids": [
+          "src_kgpv_ownership_chain"
+        ],
+        "confidence": "HIGH",
+        "note": "IHVSF is GSF subsidiary / property vehicle for Krystal Grand PV thread."
+      },
+      {
+        "edge_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ__PARENT_OF__ent_ihvsf_propco_vallarta__CURRENT",
+        "from_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+        "to_entity_id": "ent_ihvsf_propco_vallarta",
+        "relationship_type": "PARENT_OF",
+        "association_level": "CONTROLLED_ENTITY",
+        "temporal_status": "CURRENT",
+        "ownership_percentage": null,
+        "control_percentage_class": null,
+        "evidence_ids": [
+          "src_kgpv_ownership_chain"
+        ],
+        "confidence": "HIGH",
+        "note": "GSF parent of IHVSF PropCo."
+      },
+      {
+        "edge_id": "ent_grupo-chartwell__RELATED__dle_06G6AB1VK0BCCD94DNN7W8DRWZ__CURRENT",
+        "from_entity_id": "ent_grupo-chartwell",
+        "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+        "relationship_type": "RELATED",
+        "association_level": "SHAREHOLDER_INFLUENCE",
+        "temporal_status": "CURRENT",
+        "ownership_percentage": null,
+        "control_percentage_class": null,
+        "evidence_ids": [
+          "src_kgpv_ownership_chain"
+        ],
+        "confidence": "PROBABLE",
+        "note": "Chartwell among principales accionistas; Ancira is GSF Board President. Not PropCo ownership of KGPV."
+      },
+      {
+        "edge_id": "hotel:recUNycnMwOVFX0hc__OWNED_BY__ent_grupo-chartwell__FORMER",
+        "from_entity_id": "hotel:recUNycnMwOVFX0hc",
+        "to_entity_id": "ent_grupo-chartwell",
+        "relationship_type": "OWNED_BY",
+        "association_level": "HISTORICAL_ASSOCIATION",
+        "temporal_status": "FORMER",
+        "ownership_percentage": null,
+        "control_percentage_class": null,
+        "evidence_ids": [
+          "src_kgpv_ownership_chain"
+        ],
+        "confidence": "HIGH",
+        "note": "Chartwell formerly co-owned Hilton PV; sold remaining 50% to GSF in 2014."
+      },
+      {
+        "edge_id": "hotel:recUNycnMwOVFX0hc__OWNED_BY__ent_ihvsf_propco_vallarta__CURRENT",
+        "from_entity_id": "hotel:recUNycnMwOVFX0hc",
+        "to_entity_id": "ent_ihvsf_propco_vallarta",
+        "relationship_type": "OWNED_BY",
+        "association_level": "PROPERTY_VEHICLE",
+        "temporal_status": "CURRENT",
+        "ownership_percentage": null,
+        "control_percentage_class": "FULL_100",
+        "evidence_ids": [
+          "src_kgpv_ownership_chain"
+        ],
+        "confidence": "HIGH",
+        "note": "KGPV owned via IHVSF PropCo vehicle."
+      },
+      {
+        "edge_id": "hotel:recUNycnMwOVFX0hc__OWNED_BY__dle_06G6AB1VK0BCCD94DNN7W8DRWZ__CURRENT",
+        "from_entity_id": "hotel:recUNycnMwOVFX0hc",
+        "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+        "relationship_type": "OWNED_BY",
+        "association_level": "CORE_CONTROL",
+        "temporal_status": "CURRENT",
+        "ownership_percentage": null,
+        "control_percentage_class": "FULL_100",
+        "evidence_ids": [
+          "src_kgpv_ownership_chain",
+          "src_gsf_securities"
+        ],
+        "confidence": "HIGH",
+        "note": "Economic owner GSF consolidates KGPV as owned asset."
+      },
+      {
+        "edge_id": "hotel:recUNycnMwOVFX0hc__OPERATED_BY__dle_06G6AB1VK0BCCD94DNN7W8DRWZ__CURRENT",
+        "from_entity_id": "hotel:recUNycnMwOVFX0hc",
+        "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+        "relationship_type": "OPERATED_BY",
+        "association_level": "OPERATING_ENTITY",
+        "temporal_status": "CURRENT",
+        "ownership_percentage": null,
+        "control_percentage_class": null,
+        "evidence_ids": [
+          "src_kgpv_deep"
+        ],
+        "confidence": "HIGH",
+        "note": "GSF self-operates KGPV."
+      },
+      {
+        "edge_id": "candidate_krystal_resort_pv__OWNED_BY__ent_grupo-chartwell__CURRENT",
+        "from_entity_id": "candidate_krystal_resort_pv",
+        "to_entity_id": "ent_grupo-chartwell",
+        "relationship_type": "OWNED_BY",
+        "association_level": "JV_PARTNER",
+        "temporal_status": "CURRENT",
+        "ownership_percentage": null,
+        "control_percentage_class": null,
+        "evidence_ids": [
+          "src_kgpv_adjacent"
+        ],
+        "confidence": "HIGH",
+        "note": "Krystal Resort PV owned by Grupo Chartwell — distinct from KGPV."
+      },
+      {
+        "edge_id": "candidate_krystal_resort_pv__OPERATED_BY__dle_06G6AB1VK0BCCD94DNN7W8DRWZ__CURRENT",
+        "from_entity_id": "candidate_krystal_resort_pv",
+        "to_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+        "relationship_type": "OPERATED_BY",
+        "association_level": "OPERATING_ENTITY",
+        "temporal_status": "CURRENT",
+        "ownership_percentage": null,
+        "control_percentage_class": null,
+        "evidence_ids": [
+          "src_kgpv_adjacent"
+        ],
+        "confidence": "HIGH",
+        "note": "GSF manages Chartwell-owned Krystal Resort PV. Must NOT attribute as GSF-owned."
+      }
+    ],
+    "meta": {
+      "compiled_at": "2026-10-01T15:57:39.120Z",
+      "source": "gsf_deep_research_plus_cohort_compile",
+      "webhound_runs": 0,
+      "external_spend_usd": 0
+    }
+  },
+  "written_at": "2026-10-01T15:57:39.134Z"
+}
