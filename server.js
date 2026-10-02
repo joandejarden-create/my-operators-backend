@@ -291,8 +291,6 @@ import {
   getGdiShareOpportunities,
   getGdiShareOpportunitiesExport,
   getGdiShareOpportunityDetail,
-  getGdiSharePdfReportData,
-  getGdiShareReportPdf,
   postGdiShareValidation,
   postGdiShareAction,
   postGdiShareOutcome,
@@ -1090,14 +1088,6 @@ app.post(
 app.post(
   "/api/group-demand-intelligence/share/hotels/:hotelId/opportunities/:opportunityId/outcomes",
   postGdiShareOutcome
-);
-app.get(
-  "/api/group-demand-intelligence/share/hotels/:hotelId/pdf-report",
-  getGdiSharePdfReportData
-);
-app.get(
-  "/api/group-demand-intelligence/share/hotels/:hotelId/report-pdf",
-  getGdiShareReportPdf
 );
 app.post(
   "/api/group-demand-intelligence/hotels/:hotelId/share/issue",
