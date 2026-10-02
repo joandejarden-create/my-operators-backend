@@ -1,0 +1,64 @@
+{
+  "schema": "GDI_ADMIN_REPORT_ROW_V1",
+  "generatedAt": "2026-10-02T17:30:00.000Z",
+  "source": "api/admin-gdi-reports.js → getAdminGdiReportCatalog",
+  "rowContract": {
+    "hotelId": "string (HPC rec…)",
+    "hotelName": "string",
+    "displayName": "string",
+    "market": "string|null",
+    "available": "boolean",
+    "readyCount": "number",
+    "actionSetCount": "number",
+    "watchCount": "number",
+    "ready": "number (alias of readyCount)",
+    "actionSet": "number (alias)",
+    "watch": "number (alias)",
+    "reportStatus": "READY|WATCH_ONLY|NO_READY_OPPORTUNITIES|NEEDS_BUILD|BLOCKED",
+    "pdf": {
+      "status": "READY|MISSING",
+      "available": "boolean",
+      "generatedAt": "ISO|null"
+    },
+    "pdfStatus": "alias of pdf.status",
+    "pdfReady": "alias of pdf.available",
+    "gdiClient": { "available": "boolean" },
+    "adpClient": { "available": "boolean" },
+    "gdiShareAvailable": "alias of gdiClient.available",
+    "adpShareAvailable": "alias of adpClient.available",
+    "lastGeneratedAt": "ISO|null (PDF meta.generatedAt preferred)",
+    "archiveCount": "number"
+  },
+  "security": {
+    "rawSignedUrlsInCatalog": false,
+    "rawTokensInCatalog": false,
+    "openCopyHandler": "/api/admin/ai-demand/hotels/:hotelId/external-client-links",
+    "createIfMissing": false
+  },
+  "auditSnapshot": {
+    "priorGap": "UI columns present; reportStatus/lastGenerated/share flags/summary counts not reliably wired from one row model",
+    "after": {
+      "Bethesda Marriott": {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "readyCount": 35,
+        "actionSetCount": 16,
+        "watchCount": 12,
+        "reportStatus": "READY",
+        "pdfStatus": "READY",
+        "pdfAvailable": true,
+        "pdfGeneratedAt": "2026-10-02T12:36:43.337Z",
+        "gdiShareAvailable": true,
+        "adpShareAvailable": true,
+        "lastGeneratedAt": "2026-10-02T12:36:43.337Z",
+        "gdiTokenIdStable": "gdisht_47c25d74c79216021fb36150",
+        "adpTokenIdStable": "sht_24ff4ada4a622db62a228d3f"
+      }
+    }
+  },
+  "modules": [
+    "lib/admin/gdi-admin-report-row-v1.js",
+    "api/admin-gdi-reports.js",
+    "public/js/admin-gdi-reports.js",
+    "lib/admin/report-external-client-links-v1.js"
+  ]
+}

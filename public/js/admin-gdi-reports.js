@@ -210,7 +210,9 @@
 
   function clientCell(kind, row) {
     var available =
-      kind === "gdi" ? !!row.gdiShareAvailable : !!row.adpShareAvailable;
+      kind === "gdi"
+        ? !!(row.gdiClient && row.gdiClient.available) || !!row.gdiShareAvailable
+        : !!(row.adpClient && row.adpClient.available) || !!row.adpShareAvailable;
     var id = esc(row.hotelId);
     if (!available) {
       return '<span class="adr-subtitle">—</span>';
@@ -225,14 +227,93 @@
       kind +
       '" data-hotel="' +
       id +
-      '">Copy URL</button>'
+      '">Copy URL</button>' +
+      '<span class="adr-subtitle" data-copy-toast hidden style="margin-left:6px;color:#276749">Copied</span>'
     );
+  }
+
+  function showCopiedToast(btn) {
+    var cell = btn && btn.closest ? btn.closest("td") : null;
+    var toast = cell ? cell.querySelector("[data-copy-toast]") : null;
+    if (!toast) return;
+    toast.hidden = false;
+    toast.textContent = "Copied";
+    clearTimeout(toast.__hideTimer);
+    toast.__hideTimer = setTimeout(function () {
+      toast.hidden = true;
+    }, 1600);
+  }
+
+  function normalizeCatalogRow(h) {
+    if (!h || typeof h !== "object") return h;
+    var ready = Number(h.readyCount != null ? h.readyCount : h.ready) || 0;
+    var actionSet = Number(h.actionSetCount != null ? h.actionSetCount : h.actionSet) || 0;
+    var watch = Number(h.watchCount != null ? h.watchCount : h.watch) || 0;
+    var pdfReady = !!(
+      (h.pdf && h.pdf.available) ||
+      h.pdfReady ||
+      h.pdfStatus === "READY"
+    );
+    var reportStatus = h.reportStatus;
+    if (!reportStatus) {
+      if (!h.available) reportStatus = "BLOCKED";
+      else if (ready > 0) reportStatus = "READY";
+      else if (watch > 0) reportStatus = "WATCH_ONLY";
+      else reportStatus = "NO_READY_OPPORTUNITIES";
+    }
+    var gdiAvail = !!(
+      (h.gdiClient && h.gdiClient.available) ||
+      h.gdiShareAvailable
+    );
+    var adpAvail = !!(
+      (h.adpClient && h.adpClient.available) ||
+      h.adpShareAvailable
+    );
+    var lastGeneratedAt =
+      h.lastGeneratedAt || (h.pdf && h.pdf.generatedAt) || null;
+    return Object.assign({}, h, {
+      ready: ready,
+      actionSet: actionSet,
+      watch: watch,
+      readyCount: ready,
+      actionSetCount: actionSet,
+      watchCount: watch,
+      reportStatus: reportStatus,
+      pdfReady: pdfReady,
+      pdfStatus: h.pdfStatus || (h.pdf && h.pdf.status) || (pdfReady ? "READY" : "MISSING"),
+      lastGeneratedAt: lastGeneratedAt,
+      gdiShareAvailable: gdiAvail,
+      adpShareAvailable: adpAvail,
+      gdiClient: { available: gdiAvail },
+      adpClient: { available: adpAvail },
+    });
+  }
+
+  function countsFromRows(rows) {
+    var list = rows || [];
+    return {
+      hotels: list.length,
+      reportReady: list.filter(function (r) {
+        return r.reportStatus === "READY";
+      }).length,
+      pdfReady: list.filter(function (r) {
+        return r.pdfReady || r.pdfStatus === "READY";
+      }).length,
+      needsPdf: list.filter(function (r) {
+        return r.available && !(r.pdfReady || r.pdfStatus === "READY");
+      }).length,
+      blocked: list.filter(function (r) {
+        return r.reportStatus === "BLOCKED" || r.reportStatus === "NEEDS_BUILD";
+      }).length,
+    };
   }
 
   function moreCell(row) {
     var id = esc(row.hotelId);
     var html = "";
-    if (row.gdiShareAvailable) {
+    var gdiAvail =
+      !!(row.gdiClient && row.gdiClient.available) || !!row.gdiShareAvailable;
+    if (gdiAvail) {
       html +=
         '<button type="button" class="adr-btn adr-btn--tiny" data-act="open-gdi" data-hotel="' +
         id +
@@ -314,9 +395,9 @@
     var res = await authFetch("/api/admin/group-demand-intelligence/reports");
     var json = await res.json();
     if (!res.ok || !json.ok) throw new Error((json && json.error) || "catalog_failed");
-    catalog = json.hotels || [];
-    counts = json.counts || {};
-    // Preserve transient GENERATING/FAILED overlays across refresh only briefly
+    catalog = (json.hotels || []).map(normalizeCatalogRow);
+    // Law: cards reconcile from the same normalized rows as the table.
+    counts = countsFromRows(catalog);
     renderCounts();
     renderTable();
   }
@@ -334,7 +415,7 @@
     return json;
   }
 
-  async function openOrCopyClient(hotelId, kind, mode) {
+  async function openOrCopyClient(hotelId, kind, mode, sourceBtn) {
     setStatus("Loading " + kind.toUpperCase() + " client link…");
     try {
       var links = await fetchExternalLinks(hotelId);
@@ -344,6 +425,13 @@
           (kind === "gdi" ? "GDI" : "ADP") +
             " client link unavailable" +
             (pack && pack.reason ? ": " + pack.reason : "")
+        );
+        return;
+      }
+      if (/localhost|127\.0\.0\.1/i.test(pack.url)) {
+        setStatus(
+          (kind === "gdi" ? "GDI" : "ADP") +
+            " client URL is not an external production client link."
         );
         return;
       }
@@ -359,6 +447,7 @@
         );
       } else {
         await copyText(pack.url);
+        showCopiedToast(sourceBtn);
         setStatus(
           "Copied " +
             (kind === "gdi" ? "GDI" : "ADP") +
@@ -489,10 +578,10 @@
     if (act === "view-pdf") openPdf(hotelId, false);
     else if (act === "download-pdf") openPdf(hotelId, true);
     else if (act === "generate" || act === "regenerate") generatePdf(hotelId);
-    else if (act === "open-gdi") openOrCopyClient(hotelId, "gdi", "open");
-    else if (act === "copy-gdi") openOrCopyClient(hotelId, "gdi", "copy");
-    else if (act === "open-adp") openOrCopyClient(hotelId, "adp", "open");
-    else if (act === "copy-adp") openOrCopyClient(hotelId, "adp", "copy");
+    else if (act === "open-gdi") openOrCopyClient(hotelId, "gdi", "open", btn);
+    else if (act === "copy-gdi") openOrCopyClient(hotelId, "gdi", "copy", btn);
+    else if (act === "open-adp") openOrCopyClient(hotelId, "adp", "open", btn);
+    else if (act === "copy-adp") openOrCopyClient(hotelId, "adp", "copy", btn);
     else if (act === "archive") {
       openArchive(hotelId, btn.getAttribute("data-name") || "");
     }

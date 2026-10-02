@@ -13,30 +13,15 @@ import {
   readGdiReportPdf,
 } from "../lib/group-demand-intelligence/reports/gdi-pdf-store-v1.js";
 import { listGdiSelectableHotels } from "../lib/group-demand-intelligence/index.js";
-import { resolveExternalClientLinks } from "../lib/admin/report-external-client-links-v1.js";
+import {
+  deriveGdiReportStatus,
+  normalizeGdiAdminReportRow,
+  reconcileGdiAdminReportCounts,
+  resolveGdiAdminShareFlags,
+  GDI_ADMIN_REPORT_ROW_SCHEMA,
+} from "../lib/admin/gdi-admin-report-row-v1.js";
 
-/**
- * Canonical report-status labels for Admin row chips.
- * Derived from existing GDI availability + opportunity counts — not a second state model.
- */
-export function deriveGdiReportStatus(summary) {
-  if (!summary?.available) {
-    const reason = String(summary?.reason || "").toLowerCase();
-    if (reason.includes("not configured") || reason.includes("needs build")) {
-      return "NEEDS_BUILD";
-    }
-    return "BLOCKED";
-  }
-  const ready = Number(summary.ready || 0);
-  const watch = Number(summary.watch || 0);
-  if (ready > 0) return "READY";
-  if (watch > 0) return "WATCH_ONLY";
-  return "NO_READY_OPPORTUNITIES";
-}
-
-function derivePdfStatus(pdfReady) {
-  return pdfReady ? "READY" : "MISSING";
-}
+export { deriveGdiReportStatus, GDI_ADMIN_REPORT_ROW_SCHEMA };
 
 export async function getAdminGdiReportCatalog(req, res) {
   try {
@@ -99,55 +84,44 @@ export async function getAdminGdiReportCatalog(req, res) {
         }
       }
 
-      // Share availability flags only — no signed URLs in catalog payload.
-      let gdiShareAvailable = false;
-      let adpShareAvailable = false;
-      try {
-        const links = resolveExternalClientLinks(hotelId, {
-          req,
-          createIfMissing: false,
-        });
-        gdiShareAvailable = !!links?.gdi?.available;
-        adpShareAvailable = !!links?.adp?.available;
-      } catch {
-        gdiShareAvailable = false;
-        adpShareAvailable = false;
-      }
-
-      const reportStatus = deriveGdiReportStatus(summary);
-      const pdfStatus = derivePdfStatus(pdfReady);
-
-      rows.push({
-        hotelId,
-        displayName: h.displayName || summary.hotelName || hotelId,
-        hotelName: summary.hotelName,
-        market: summary.market || null,
-        available: !!summary.available,
-        reason: summary.reason || null,
-        ready: summary.ready || 0,
-        actionSet: summary.actionSet || 0,
-        watch: summary.watch || 0,
-        reportStatus,
-        pdfReady,
-        pdfStatus,
-        lastGeneratedAt,
-        gdiShareAvailable,
-        adpShareAvailable,
+      // Share availability only — no signed URLs / tokens in catalog payload.
+      const shareFlags = resolveGdiAdminShareFlags(hotelId, {
+        req,
+        confirmUrls: true,
       });
+
+      rows.push(
+        normalizeGdiAdminReportRow({
+          hotelId,
+          displayName: h.displayName || summary.hotelName || hotelId,
+          hotelName: summary.hotelName,
+          market: summary.market || null,
+          available: !!summary.available,
+          reason: summary.reason || null,
+          ready: summary.ready || 0,
+          actionSet: summary.actionSet || 0,
+          watch: summary.watch || 0,
+          reportStatus: deriveGdiReportStatus(summary),
+          pdfReady,
+          pdfStatus: pdfReady ? "READY" : "MISSING",
+          lastGeneratedAt,
+          gdiShareAvailable: shareFlags.gdiShareAvailable,
+          adpShareAvailable: shareFlags.adpShareAvailable,
+          gdiClient: shareFlags.gdiClient,
+          adpClient: shareFlags.adpClient,
+        })
+      );
     }
 
-    const counts = {
-      hotels: rows.length,
-      reportReady: rows.filter((r) => r.reportStatus === "READY").length,
-      pdfReady: rows.filter((r) => r.pdfReady).length,
-      needsPdf: rows.filter((r) => r.available && !r.pdfReady).length,
-      blocked: rows.filter(
-        (r) => r.reportStatus === "BLOCKED" || r.reportStatus === "NEEDS_BUILD"
-      ).length,
-      watchOnly: rows.filter((r) => r.reportStatus === "WATCH_ONLY").length,
-    };
+    // Law: summary cards === table row model (no separate query).
+    const counts = reconcileGdiAdminReportCounts(rows);
 
-    res.json({ ok: true, counts, hotels: rows });
+    res.json({
+      ok: true,
+      schema: GDI_ADMIN_REPORT_ROW_SCHEMA,
+      counts,
+      hotels: rows,
+    });
   } catch (err) {
     console.error("[admin-gdi-reports] catalog", err);
     res.status(500).json({ ok: false, error: "catalog_failed" });
