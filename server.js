@@ -1781,6 +1781,20 @@ app.get("/hotel-intelligence-golden-demo.html", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, "public", "hotel-intelligence-golden-demo.html"));
 });
+// Hilton Development Radar / Scout Market Map share (curated pack, no login)
+app.get("/radar-share", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/radar-share.html" + q);
+});
+app.get("/radar-share/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/radar-share.html" + q);
+});
+app.get("/radar-share.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("X-Robots-Tag", "noindex, nofollow");
+    res.sendFile(path.join(__dirname, "public", "radar-share.html"));
+});
 app.get("/brand-explorer-share", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
     res.redirect(302, "/brand-explorer-share.html" + q);

@@ -1,0 +1,62 @@
+#!/usr/bin/env node
+/**
+ * Issue a read-only GDI share token.
+ *
+ *   GDI_SHARE_CAPABILITY_ALLOW_DEV_SECRET=1 node scripts/gdi-issue-share.mjs
+ *   node scripts/gdi-issue-share.mjs --hotelId=rec35fExUxCClpOP6 --label=hilton-ts-dev-share
+ *   node scripts/gdi-issue-share.mjs --expires=2026-12-31
+ *   node scripts/gdi-revoke-share.mjs --token-id=gdisht_...
+ *   node scripts/gdi-restore-share.mjs --share="https://…?share=gdishare.v1.…"
+ *
+ * Production note: keep GDI_SHARE_CAPABILITY_SECRET stable across Railway deploys.
+ * Signature self-heal re-seeds missing registry rows so client URLs survive
+ * ephemeral disk wipes. Still commit active-tokens.json for known client links,
+ * or mount GDI_SHARE_REGISTRY_DIR on a Railway volume for durable runtime writes.
+ */
+
+import {
+  issueGdiShareCapability,
+  PILOT_HOTEL_ID,
+} from "../lib/group-demand-intelligence/index.js";
+
+function arg(name) {
+  const prefix = `--${name}=`;
+  const hit = process.argv.find((a) => a.startsWith(prefix));
+  return hit ? hit.slice(prefix.length) : null;
+}
+
+const expires = arg("expires");
+const hotelId = arg("hotelId") || arg("hotel") || PILOT_HOTEL_ID;
+const tokenId = arg("token-id") || arg("tokenId") || null;
+const label =
+  arg("label") ||
+  (hotelId === PILOT_HOTEL_ID
+    ? "Bethesda Marriott GDI Pilot"
+    : `gdi-share:${hotelId}`);
+
+process.env.GDI_SHARE_CAPABILITY_ALLOW_DEV_SECRET =
+  process.env.GDI_SHARE_CAPABILITY_ALLOW_DEV_SECRET || "1";
+
+const issued = issueGdiShareCapability({
+  hotelId,
+  label,
+  expiresAt: expires || null,
+  tokenId: tokenId || null,
+});
+
+console.log(
+  JSON.stringify(
+    {
+      ok: true,
+      tokenId: issued.tokenId,
+      hotelId: issued.hotelId,
+      sharePath: issued.sharePath,
+      localUrlExample: `http://localhost:8080${issued.sharePath}`,
+      expiresAt: issued.meta.expiresAt,
+      mode: "read_only",
+      note: "Recipient cannot run research, edit data, or open Research Audit.",
+    },
+    null,
+    2
+  )
+);
