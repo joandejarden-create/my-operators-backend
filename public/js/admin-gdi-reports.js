@@ -349,10 +349,24 @@
       }
       if (mode === "open") {
         window.open(pack.url, "_blank", "noopener");
-        setStatus("Opened " + (kind === "gdi" ? "GDI" : "ADP") + " client view.");
+        setStatus(
+          "Opened " +
+            (kind === "gdi" ? "GDI" : "ADP") +
+            " client view." +
+            (pack.servedFromProductionHost
+              ? " (production host — stable Bethesda contract token)"
+              : "")
+        );
       } else {
         await copyText(pack.url);
-        setStatus("Copied " + (kind === "gdi" ? "GDI" : "ADP") + " External Client URL.");
+        setStatus(
+          "Copied " +
+            (kind === "gdi" ? "GDI" : "ADP") +
+            " External Client URL." +
+            (pack.servedFromProductionHost
+              ? " (production host — stable Bethesda contract token)"
+              : "")
+        );
       }
     } catch (err) {
       setStatus("Client link failed: " + String(err.message || err));

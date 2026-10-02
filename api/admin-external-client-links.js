@@ -59,6 +59,7 @@ export async function getAdminExternalClientLinks(req, res) {
         path: links.gdi.path,
         created: links.gdi.created,
         bethesdaContractPreserved: links.gdi.bethesdaContractPreserved,
+        servedFromProductionHost: links.gdi.servedFromProductionHost || false,
         contractTokenId:
           links.hpcId === "recLuxvwwxID7U2B8" ? BETHESDA_GDI_CONTRACT_TOKEN_ID : null,
       },
