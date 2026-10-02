@@ -160,15 +160,25 @@
   }
 
   function coveragePdfCell(row) {
+    var html = "";
+    if (row.propertyId) {
+      html +=
+        '<button type="button" class="adr-btn adr-btn--tiny" data-act="view-current-pdf" data-property="' +
+        esc(row.propertyId) +
+        '">View PDF</button>' +
+        '<button type="button" class="adr-btn adr-btn--tiny" data-act="download-current-pdf" data-property="' +
+        esc(row.propertyId) +
+        '">Download</button>';
+    }
     if (row.hasPdf && row.reviewId) {
-      return (
+      html +=
         '<button type="button" class="adr-btn adr-btn--tiny" data-act="view-pdf" data-id="' +
         esc(row.reviewId) +
         '" data-property="' +
         esc(row.propertyId) +
-        '">View PDF</button>'
-      );
+        '">Review PDF</button>';
     }
+    if (html) return html;
     if (row.pdfStatus === "PENDING_PDF" || row.coverageStatus === "NEEDS_REBUILD") {
       return (
         '<span class="adr-badge adr-badge--warn">' +
@@ -216,6 +226,20 @@
         esc(row.propertyId) +
         '">Generate New Draft</button>';
     }
+    html +=
+      '<button type="button" class="adr-btn adr-btn--tiny" data-act="open-adp-client" data-property="' +
+      esc(row.propertyId) +
+      '">Open ADP Client</button>';
+    html +=
+      '<button type="button" class="adr-btn adr-btn--tiny" data-act="copy-adp-client" data-property="' +
+      esc(row.propertyId) +
+      '">Copy ADP URL</button>';
+    html +=
+      '<button type="button" class="adr-btn adr-btn--tiny" data-act="open-archive" data-property="' +
+      esc(row.propertyId) +
+      '" data-hotel="' +
+      esc(row.censusRecordId || row.hotelId || "") +
+      '">Archive</button>';
     return html || "—";
   }
 
@@ -642,7 +666,7 @@
       "<dl>" +
       [
         ["Property", m.property],
-        ["Current Monitoring", m.currentMonitoring],
+        ["Last Measurement", m.currentMonitoring],
         ["Prior Run", m.priorRun],
         ["Review Builder", m.reviewBuilder],
         ["Action Library", m.actionLibrary],
@@ -750,6 +774,83 @@
         curBlob,
         cdName || hdrName || "Dealality - AI Demand Performance Review.pdf"
       );
+      return;
+    }
+    if (
+      (act === "view-current-pdf" || act === "download-current-pdf") &&
+      propertyId
+    ) {
+      var pdfUrl =
+        "/api/admin/ai-demand-positioning/current-report-pdf/" +
+        encodeURIComponent(propertyId) +
+        (act === "download-current-pdf" ? "?download=1" : "");
+      var pdfRes = await authFetch(pdfUrl);
+      if (!pdfRes.ok) {
+        alert("Current ADP PDF not available yet for this hotel.");
+        return;
+      }
+      var pdfCd = parseContentDispositionFilename(
+        pdfRes.headers.get("Content-Disposition")
+      );
+      var pdfHdr = pdfRes.headers.get("X-ADP-PDF-Filename") || "";
+      var pdfBlob = await pdfRes.blob();
+      if (act === "download-current-pdf") {
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(pdfBlob);
+        a.download =
+          pdfCd || pdfHdr || "Dealality_ADP_Current_Report.pdf";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(function () {
+          URL.revokeObjectURL(a.href);
+        }, 2000);
+      } else {
+        openPdfBlobWithCanonicalName(
+          pdfBlob,
+          pdfCd || pdfHdr || "Dealality_ADP_Current_Report.pdf"
+        );
+      }
+      return;
+    }
+    if (
+      (act === "open-adp-client" || act === "copy-adp-client") &&
+      propertyId
+    ) {
+      try {
+        var linkRes = await authFetch(
+          "/api/admin/ai-demand/hotels/" +
+            encodeURIComponent(propertyId) +
+            "/external-client-links"
+        );
+        var linkJson = await linkRes.json();
+        var adpUrl =
+          linkJson && linkJson.adp && linkJson.adp.url
+            ? linkJson.adp.url
+            : null;
+        if (!adpUrl) {
+          alert("ADP client URL not available for this hotel.");
+          return;
+        }
+        if (act === "copy-adp-client") {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(adpUrl);
+            alert("ADP client URL copied.");
+          } else {
+            prompt("Copy ADP client URL", adpUrl);
+          }
+        } else {
+          window.open(adpUrl, "_blank");
+        }
+      } catch (_err) {
+        alert("Could not resolve ADP client URL.");
+      }
+      return;
+    }
+    if (act === "open-archive") {
+      if (typeof window.__ADP_ADMIN_SET_TAB__ === "function") {
+        window.__ADP_ADMIN_SET_TAB__("report-archive");
+      }
       return;
     }
     var row = id ? findRow(id) : null;

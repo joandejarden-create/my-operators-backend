@@ -130,6 +130,7 @@ import {
   getAdminMonthlyReviewById,
   getAdminMonthlyReviewPdf,
   getAdminCurrentReportPdf,
+  postAdminCurrentReportPdfGenerate,
   postAdminMonthlyReviewRegenerate,
   postAdminMonthlyReviewGenerate,
   postAdminMonthlyReviewGenerateEligible,
@@ -149,6 +150,11 @@ import {
   getAdminGdiReportPdf,
 } from "./api/admin-gdi-reports.js";
 import { getAdminExternalClientLinks } from "./api/admin-external-client-links.js";
+import {
+  getAdminReportArchiveCatalog,
+  getAdminReportArchiveEntry,
+  getAdminReportArchivePdf,
+} from "./api/admin-report-archive.js";
 
 import { logAdpPublishedReadSourceAtStartup } from "./lib/ai-demand-positioning/published-read-service.js";
 import {
@@ -1371,6 +1377,11 @@ app.get(
   ...adpMonthlyReviewAdminAuth,
   getAdminCurrentReportPdf
 );
+app.post(
+  "/api/admin/ai-demand-positioning/current-report-pdf/:propertyId/generate",
+  ...adpMonthlyReviewAdminAuth,
+  postAdminCurrentReportPdfGenerate
+);
 app.get(
   "/api/admin/ai-demand-positioning/monthly-reviews/generate-preview",
   ...adpMonthlyReviewAdminAuth,
@@ -1459,6 +1470,23 @@ app.get(
   "/api/admin/ai-demand/hotels/:hotelId/external-client-links",
   ...adpMonthlyReviewAdminAuth,
   getAdminExternalClientLinks
+);
+
+// Report Archive — immutable published ADP/GDI artifacts
+app.get(
+  "/api/admin/report-archive",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminReportArchiveCatalog
+);
+app.get(
+  "/api/admin/report-archive/:archiveId",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminReportArchiveEntry
+);
+app.get(
+  "/api/admin/report-archive/:archiveId/pdf",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminReportArchivePdf
 );
 
 app.get("/api/adp-leak-audit/sample-report", getLeakAuditSampleReport);
