@@ -189,8 +189,19 @@
 }
 
 @media print {
+  /*
+   * Document shell — must match DealalityReportPrintChrome.pdfMargins()
+   * (14mm / 12mm / 20mm / 12mm). dealality-report-system-v1.css sets
+   * `@page :first { margin: 0 }` for dossier full-bleed covers; the
+   * executive report family (ADP + GDI via .adp-mr-pdf-host) MUST restore
+   * chrome margins on page 1 so the navy cover sits inset in a white page.
+   */
   @page {
     size: A4 portrait;
+    margin: 14mm 12mm 20mm;
+  }
+
+  @page :first {
     margin: 14mm 12mm 20mm;
   }
 
