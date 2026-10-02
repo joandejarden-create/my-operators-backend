@@ -73,3 +73,19 @@ Prior binaries preserved under `archive/`:
 GDI pages 2+ now use ADP heading rules, pale table headers, top-border callout cards, and shared KPI band. Content layouts remain GDI-specific by design.
 
 **BODY FAMILY PARITY:** PASS (visual system); intentional content-structure differences retained.
+
+---
+
+## Production
+
+| Item | Result |
+|------|--------|
+| Deploy | SUCCESS `495cf164` · `8acf832` |
+| Production PDF bytes | 254327 (matches local v6) |
+| Production cover geometry vs ADP SoT | **PASS** (81/69/68/119 · panel 1054×1485) |
+| Filename | `Dealality_GDI_Bethesda_Marriott_2026-10-01.pdf` |
+
+## FINAL VERDICT
+
+**GDI PDF DOCUMENT SHELL MATCHES ADP — COVER GEOMETRY PASS — READY FOR RAD**
+
