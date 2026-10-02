@@ -131,11 +131,20 @@
     return t.slice(0, 137).trim() + "…";
   }
 
+  /**
+   * Canonical cover — keep aligned with lib/dealality-report-family/dealality-report-cover-v1.js
+   */
   function renderCover(review) {
     var Chrome = global.DealalityReportPrintChrome;
     var logoUrl =
       (Chrome && Chrome.DEALALITY_LOGO_URL) ||
       "https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png";
+    if (
+      global.DealalityReportCoverV1 &&
+      typeof global.DealalityReportCoverV1.renderAdpMonthlyReviewCover === "function"
+    ) {
+      return global.DealalityReportCoverV1.renderAdpMonthlyReviewCover(review, logoUrl);
+    }
     var confidential =
       "DEALALITY AI DEMAND INTELLIGENCE · CONFIDENTIAL · FOR RECIPIENT ONLY";
     var prop = review.property || {};
