@@ -2,7 +2,8 @@
 
 **Date:** 2026-10-02  
 **Branch:** `cursor/local-system-startup-recovery`  
-**Local tip (pre-commit):** `8bbe8f6b30cf406307cc55982f1a3d6705789290`
+**FINAL SHA:** `e2a6a791c96c637147787e9f2c39c47ed218c7e0`  
+**Pushed:** `origin/cursor/local-system-startup-recovery`
 
 ## Verdict
 

@@ -42,4 +42,4 @@
 
 ## Production deployed
 
-**NO** (this pack verified locally; Railway tip not updated in this pass unless a follow-up deploy lands the commit).
+**NO** — commit `e2a6a79` is on `origin/cursor/local-system-startup-recovery` only. Railway production currently serves an older Admin GDI JS bundle (no `countsFromRows`). Merge/deploy this SHA to production, then re-run the checklist above.
