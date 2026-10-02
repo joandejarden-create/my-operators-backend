@@ -45,6 +45,30 @@
 
   var SCOUT_DEFAULT_COUNTRY = "Mexico";
 
+  function isScoutShareMode() {
+    try {
+      var params = new URLSearchParams(window.location.search || "");
+      return params.get("share") === "1" || params.get("embed") === "1";
+    } catch (_e) {
+      return false;
+    }
+  }
+
+  function shareQueryLocks() {
+    try {
+      var params = new URLSearchParams(window.location.search || "");
+      return {
+        country: String(params.get("country") || "").trim(),
+        market: String(params.get("market") || "").trim(),
+      };
+    } catch (_e) {
+      return { country: "", market: "" };
+    }
+  }
+
+  var SCOUT_SHARE_MODE = isScoutShareMode();
+  var SCOUT_SHARE_LOCKS = shareQueryLocks();
+
   var state = {
     activeView: "supply",
     data: null,
@@ -52,6 +76,7 @@
     signalById: {},
     map: null,
     demandAnchorsAvailable: true,
+    shareMode: SCOUT_SHARE_MODE,
     layers: {
       hotels: null,
       signals: null,
@@ -63,7 +88,7 @@
     overlays: {
       hotels: true,
       signals: true,
-      saved: true,
+      saved: !SCOUT_SHARE_MODE,
       travelInfra: true,
       demandAnchors: true,
     },
@@ -109,6 +134,14 @@
   }
 
   function ensureCountryForLoad(filters) {
+    if (state.shareMode && SCOUT_SHARE_LOCKS.country) {
+      filters.country = SCOUT_SHARE_LOCKS.country;
+      if (el("scoutMapCountry")) el("scoutMapCountry").value = SCOUT_SHARE_LOCKS.country;
+    }
+    if (state.shareMode && SCOUT_SHARE_LOCKS.market) {
+      filters.market = SCOUT_SHARE_LOCKS.market;
+      if (el("scoutMapMarket")) el("scoutMapMarket").value = SCOUT_SHARE_LOCKS.market;
+    }
     if (filters.country) return false;
     filters.country = SCOUT_DEFAULT_COUNTRY;
     if (el("scoutMapCountry")) el("scoutMapCountry").value = SCOUT_DEFAULT_COUNTRY;
@@ -167,6 +200,7 @@
   }
 
   function saveFiltersToStorage(filters) {
+    if (state.shareMode) return;
     try {
       localStorage.setItem(SCOUT_MAP_STORAGE_KEY, JSON.stringify(filters));
     } catch (_e) {}
@@ -1133,6 +1167,17 @@
   }
 
   function bindCardActions() {
+    if (state.shareMode) {
+      document.querySelectorAll(".scout-map-save-btn, .scout-map-patch-btn, .scout-map-insight-save-btn").forEach(function (btn) {
+        btn.hidden = true;
+        btn.disabled = true;
+        btn.onclick = function (evt) {
+          if (evt && evt.preventDefault) evt.preventDefault();
+          return false;
+        };
+      });
+      return;
+    }
     document.querySelectorAll(".scout-map-save-btn").forEach(function (btn) {
       btn.onclick = function () {
         var id = btn.getAttribute("data-signal-id");
@@ -1150,6 +1195,12 @@
   }
 
   function saveSignal(signalId, reviewStatus) {
+    if (state.shareMode) {
+      if (el("scoutMapLoadStatus")) {
+        el("scoutMapLoadStatus").textContent = "Read-only share — watchlist writes disabled";
+      }
+      return;
+    }
     var signal = state.signalById[signalId];
     if (!signal) return;
     el("scoutMapLoadStatus").textContent = "Saving…";
@@ -1172,6 +1223,12 @@
   }
 
   function patchSignal(signalId, body) {
+    if (state.shareMode) {
+      if (el("scoutMapLoadStatus")) {
+        el("scoutMapLoadStatus").textContent = "Read-only share — watchlist writes disabled";
+      }
+      return;
+    }
     el("scoutMapLoadStatus").textContent = "Updating…";
     fetch("/api/scout/opportunity-signals/" + encodeURIComponent(signalId), {
       method: "PATCH",
@@ -1189,6 +1246,44 @@
         setError(err.message);
         el("scoutMapLoadStatus").textContent = "Update failed";
       });
+  }
+
+  function applyShareModeChrome() {
+    if (!state.shareMode) return;
+    try {
+      document.documentElement.setAttribute("data-scout-share", "1");
+      document.body.classList.add("scout-map-share-mode");
+    } catch (_e) {}
+    var style = document.createElement("style");
+    style.setAttribute("data-scout-share-chrome", "1");
+    style.textContent =
+      "body.scout-map-share-mode .scout-map-save-btn," +
+      "body.scout-map-share-mode .scout-map-patch-btn," +
+      "body.scout-map-share-mode .scout-map-insight-save-btn{display:none!important;}" +
+      "body.scout-map-share-mode .scout-map-tab[data-view=\"watchlist\"]{display:none!important;}" +
+      "body.scout-map-share-mode .scout-map-header{padding-top:8px;}";
+    (document.head || document.documentElement).appendChild(style);
+
+    if (SCOUT_SHARE_LOCKS.country && el("scoutMapCountry")) {
+      el("scoutMapCountry").value = SCOUT_SHARE_LOCKS.country;
+      el("scoutMapCountry").disabled = true;
+      el("scoutMapCountry").setAttribute("title", "Locked for shared preview");
+    }
+    if (SCOUT_SHARE_LOCKS.market && el("scoutMapMarket")) {
+      el("scoutMapMarket").value = SCOUT_SHARE_LOCKS.market;
+      el("scoutMapMarket").disabled = true;
+      el("scoutMapMarket").setAttribute("title", "Locked for shared preview");
+    }
+    if (el("scoutMapShowSaved")) {
+      el("scoutMapShowSaved").checked = false;
+      el("scoutMapShowSaved").disabled = true;
+    }
+    // Keep country locked even if options rehydrate later
+    if (el("scoutMapCountry") && SCOUT_SHARE_LOCKS.country) {
+      el("scoutMapCountry").addEventListener("change", function () {
+        el("scoutMapCountry").value = SCOUT_SHARE_LOCKS.country;
+      });
+    }
   }
 
   function hydrateOverlayCategories(data) {
@@ -1345,7 +1440,8 @@
     populateSelect("scoutMapSignalType", SIGNAL_TYPES, "All signal types");
     populateSelect("scoutMapReviewStatus", REVIEW_STATUSES, "All review statuses");
     populateSelect("scoutMapOverlayCategory", [], "All categories");
-    var storedOverlays = loadOverlayToggles();
+    applyShareModeChrome();
+    var storedOverlays = state.shareMode ? null : loadOverlayToggles();
     if (storedOverlays) applyOverlayToggles(storedOverlays);
     else state.overlays = readOverlayToggles();
     bindOverlayToggles();
@@ -1354,6 +1450,23 @@
     renderLegend();
     el("scoutMapApplyBtn")?.addEventListener("click", loadData);
     el("scoutMapResetBtn")?.addEventListener("click", function () {
+      if (state.shareMode) {
+        if (SCOUT_SHARE_LOCKS.country && el("scoutMapCountry")) {
+          el("scoutMapCountry").value = SCOUT_SHARE_LOCKS.country;
+        }
+        if (SCOUT_SHARE_LOCKS.market && el("scoutMapMarket")) {
+          el("scoutMapMarket").value = SCOUT_SHARE_LOCKS.market;
+        }
+        document
+          .querySelectorAll(
+            ".scout-map-filters select:not(#scoutMapCountry):not(#scoutMapMarket), .scout-map-filters input"
+          )
+          .forEach(function (node) {
+            node.value = "";
+          });
+        loadData();
+        return;
+      }
       try {
         localStorage.removeItem(SCOUT_MAP_STORAGE_KEY);
       } catch (_e) {}
@@ -1362,8 +1475,17 @@
       });
       loadData();
     });
-    var stored = loadFiltersFromStorage();
-    if (stored) applyFiltersToForm(stored);
+    if (!state.shareMode) {
+      var stored = loadFiltersFromStorage();
+      if (stored) applyFiltersToForm(stored);
+    } else {
+      if (SCOUT_SHARE_LOCKS.country && el("scoutMapCountry")) {
+        el("scoutMapCountry").value = SCOUT_SHARE_LOCKS.country;
+      }
+      if (SCOUT_SHARE_LOCKS.market && el("scoutMapMarket")) {
+        el("scoutMapMarket").value = SCOUT_SHARE_LOCKS.market;
+      }
+    }
     loadData();
   }
 

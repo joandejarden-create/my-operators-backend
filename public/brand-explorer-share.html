@@ -56,6 +56,14 @@
         title: "Brand Explorer — IHG",
         metaList: "Shared IHG brand pack · no login required",
         metaDetail: "Shared IHG brand profile · no login required"
+      },
+      hilton: {
+        key: "hilton",
+        label: "Hilton Worldwide",
+        parentCompany: "Hilton Worldwide",
+        title: "Brand Explorer — Hilton",
+        metaList: "Shared Hilton brand pack · no login required",
+        metaDetail: "Shared Hilton brand profile · no login required"
       }
     };
 
@@ -260,7 +268,7 @@
       if (!pack) {
         showError(
           "Unknown share pack",
-          "Use <code>?pack=choice</code> or <code>?pack=ihg</code>."
+          "Use <code>?pack=choice</code>, <code>?pack=ihg</code>, or <code>?pack=hilton</code>."
         );
         return;
       }
