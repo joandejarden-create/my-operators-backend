@@ -62,6 +62,12 @@
         </span>
         <span class="section-nav-label">GDI<br>Reports</span>
       </button>
+      <button type="button" class="section-nav-item" role="tab" aria-selected="false" data-tab="report-archive" id="adaTabReportArchive">
+        <span class="section-nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16v4H4z"/><path d="M4 10h16v10H4z"/><path d="M8 14h8"/></svg>
+        </span>
+        <span class="section-nav-label">Report<br>Archive</span>
+      </button>
     </nav>
 
     <section id="adaPanelReviews" class="ada-panel" data-panel="reviews" role="tabpanel">
@@ -200,53 +206,113 @@
 
     <section id="adaPanelGdiReports" class="ada-panel" data-panel="gdi-reports" role="tabpanel" hidden>
       <div class="adr-counts" id="gdiRptCounts" aria-live="polite"></div>
-      <section class="adr-filters" aria-label="GDI report hotel selection">
+      <section class="adr-filters" aria-label="GDI report filters">
         <label>
-          Hotel
-          <select id="gdiRptHotel">
-            <option value="">Loading GDI hotels…</option>
+          Search
+          <input type="search" id="gdiRptSearch" placeholder="Hotel or market" />
+        </label>
+        <label>
+          Report Status
+          <select id="gdiRptFilterReport">
+            <option value="">All</option>
+            <option value="READY">READY</option>
+            <option value="WATCH_ONLY">WATCH ONLY</option>
+            <option value="NO_READY_OPPORTUNITIES">NO READY OPPORTUNITIES</option>
+            <option value="NEEDS_BUILD">NEEDS BUILD</option>
+            <option value="BLOCKED">BLOCKED</option>
           </select>
         </label>
-        <button type="button" class="adr-btn" id="gdiRptGenerate" disabled>Generate PDF</button>
-        <button type="button" class="adr-btn adr-btn--secondary" id="gdiRptView" disabled>View PDF</button>
-        <button type="button" class="adr-btn adr-btn--secondary" id="gdiRptDownload" disabled>Download PDF</button>
+        <label>
+          PDF Status
+          <select id="gdiRptFilterPdf">
+            <option value="">All</option>
+            <option value="READY">READY</option>
+            <option value="MISSING">MISSING</option>
+            <option value="GENERATING">GENERATING</option>
+            <option value="FAILED">FAILED</option>
+          </select>
+        </label>
+        <button type="button" class="adr-btn" id="gdiRptApplyFilters">Apply</button>
       </section>
-      <section class="adr-meta-panel" id="gdiRptExternal" aria-label="External client facing links">
-        <h3 style="margin:0 0 8px;font-size:14px">External Client Facing</h3>
-        <div class="adr-filters" style="margin:0;flex-wrap:wrap;gap:8px">
-          <div>
-            <div style="font-size:12px;color:#4a5568;margin-bottom:4px">AI Demand Positioning — External Client URL</div>
-            <button type="button" class="adr-btn adr-btn--secondary" id="gdiRptAdpOpen" disabled>Open Client View</button>
-            <button type="button" class="adr-btn adr-btn--secondary" id="gdiRptAdpCopy" disabled>Copy Client URL</button>
-          </div>
-          <div>
-            <div style="font-size:12px;color:#4a5568;margin-bottom:4px">Group &amp; Demand Intelligence — External Client URL</div>
-            <button type="button" class="adr-btn adr-btn--secondary" id="gdiRptGdiOpen" disabled>Open Client View</button>
-            <button type="button" class="adr-btn adr-btn--secondary" id="gdiRptGdiCopy" disabled>Copy Client URL</button>
-          </div>
-        </div>
-        <p id="gdiRptExternalMeta" style="margin:8px 0 0;font-size:13px;color:#4a5568">Select a hotel to load external client URLs.</p>
-      </section>
-      <section class="adr-meta-panel" id="gdiRptMeta" aria-live="polite">
-        <p>Select a hotel with Group &amp; Demand Intelligence data to generate or view its GDI PDF report.</p>
-      </section>
+      <p class="adr-subtitle" id="gdiRptStatusLine" aria-live="polite"></p>
       <div class="adr-table-wrap">
         <table class="adr-table" id="gdiRptTable">
           <thead>
             <tr>
               <th>Hotel</th>
               <th>Ready</th>
-              <th>Action set</th>
+              <th>Action Set</th>
               <th>Watch</th>
+              <th>Report Status</th>
               <th>PDF</th>
-              <th>Status</th>
+              <th>GDI Client</th>
+              <th>ADP Client</th>
+              <th>Last Generated</th>
+              <th>More</th>
             </tr>
           </thead>
           <tbody id="gdiRptTableBody">
-            <tr><td colspan="6">Loading…</td></tr>
+            <tr><td colspan="10">Loading…</td></tr>
           </tbody>
         </table>
       </div>
+    </section>
+
+    <section id="adaPanelReportArchive" class="ada-panel" data-panel="report-archive" role="tabpanel" hidden>
+      <div class="adr-counts" id="rarCounts" aria-live="polite"></div>
+      <section class="adr-filters" aria-label="Report archive filters">
+        <label>
+          Hotel ID / Property ID
+          <input type="search" id="rarHotel" placeholder="e.g. recLuxvwwxID7U2B8 or adp_bethesda_marriott" />
+        </label>
+        <label>
+          Type
+          <select id="rarType">
+            <option value="ALL">ALL</option>
+            <option value="ADP">ADP</option>
+            <option value="GDI">GDI</option>
+          </select>
+        </label>
+        <label>
+          Class
+          <select id="rarClass">
+            <option value="ALL">ALL</option>
+            <option value="BASELINE">BASELINE</option>
+            <option value="DAY1">DAY1</option>
+            <option value="WEEKLY">WEEKLY</option>
+            <option value="MONTHLY">MONTHLY</option>
+            <option value="REMEASUREMENT">REMEASUREMENT</option>
+            <option value="CURRENT">CURRENT</option>
+          </select>
+        </label>
+        <button type="button" class="adr-btn" id="rarApply">Apply</button>
+      </section>
+      <div class="adr-table-wrap">
+        <table class="adr-table" id="rarTable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Hotel</th>
+              <th>Type</th>
+              <th>Class</th>
+              <th>Version</th>
+              <th>PDF</th>
+              <th>Snapshot</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="rarTableBody">
+            <tr><td colspan="8">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <aside class="adr-drawer" id="rarDrawer" hidden>
+        <div class="adr-drawer__head">
+          <h2 id="rarDrawerTitle">Archive entry</h2>
+          <button type="button" class="adr-btn adr-btn--secondary" id="rarDrawerClose">Close</button>
+        </div>
+        <div class="adr-drawer__body" id="rarDrawerBody"></div>
+      </aside>
     </section>
   </div>
 
@@ -260,10 +326,11 @@
       }
     })();
   </script>
-  <script src="/js/admin-ai-demand-admin.js?v=gdi-pdf-report-v1"></script>
+  <script src="/js/admin-ai-demand-admin.js?v=report-archive-v1"></script>
   <script src="/js/admin-ai-demand-reviews.js?v=adp-perf-review-restore-v1"></script>
   <script src="/js/admin-adp-action-plan.js?v=gdi-external-client-links-v1"></script>
   <script src="/js/admin-gdi-reports.js?v=gdi-external-client-links-v1"></script>
+  <script src="/js/admin-report-archive.js?v=report-archive-v1"></script>
   <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

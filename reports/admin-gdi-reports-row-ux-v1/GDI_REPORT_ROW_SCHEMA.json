@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "gdi-admin-report-row-v1",
+  "source": "GET /api/admin/group-demand-intelligence/reports",
+  "counts": {
+    "hotels": "number — total GDI hotels in catalog",
+    "reportReady": "number — reportStatus === READY",
+    "pdfReady": "number — pdfReady === true",
+    "needsPdf": "number — available && !pdfReady",
+    "blocked": "number — reportStatus BLOCKED or NEEDS_BUILD",
+    "watchOnly": "number — reportStatus === WATCH_ONLY"
+  },
+  "hotelRow": {
+    "hotelId": "string — HPC rec… id",
+    "displayName": "string — hotel display name",
+    "hotelName": "string — report hotel name when available",
+    "market": "string|null — market/city line",
+    "available": "boolean — customer-ready GDI report data exists",
+    "reason": "string|null — unavailable reason",
+    "ready": "number — customerReadyCount",
+    "actionSet": "number — actionSetCount",
+    "watch": "number — futureWatchCount",
+    "reportStatus": {
+      "enum": [
+        "READY",
+        "WATCH_ONLY",
+        "NO_READY_OPPORTUNITIES",
+        "NEEDS_BUILD",
+        "BLOCKED"
+      ],
+      "derivation": "from available + ready/watch counts + reason (no second state model)"
+    },
+    "pdfReady": "boolean",
+    "pdfStatus": {
+      "enum": ["READY", "MISSING"],
+      "note": "Client may overlay GENERATING / FAILED during in-flight generate"
+    },
+    "lastGeneratedAt": "ISO string|null — from PDF store meta.generatedAt",
+    "gdiShareAvailable": "boolean — existing GDI share exists (no URL in catalog)",
+    "adpShareAvailable": "boolean — existing ADP share exists (no URL in catalog)"
+  },
+  "actions": {
+    "viewPdf": "GET /api/admin/group-demand-intelligence/hotels/:hotelId/report-pdf?generate=1",
+    "downloadPdf": "GET …/report-pdf?download=1",
+    "generatePdf": "POST …/report-pdf/generate",
+    "externalClientLinks": "GET /api/admin/ai-demand/hotels/:hotelId/external-client-links (on Open/Copy only; createIfMissing not used by default)",
+    "archive": "sessionStorage dealality_report_archive_focus → tab report-archive filtered hotelId + reportType=GDI"
+  },
+  "security": {
+    "catalogExcludes": [
+      "signed share tokens",
+      "share URLs",
+      "storage paths",
+      "bucket keys",
+      "secrets"
+    ]
+  }
+}

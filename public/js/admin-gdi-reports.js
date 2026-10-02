@@ -1,13 +1,16 @@
 /**
- * AI Demand Admin — GDI Reports tab
- * Generate / view / download hotel-specific GDI PDFs.
+ * AI Demand Admin — GDI Reports tab (row-based UX, parity with AI Demand Reviews).
+ * One hotel = one operating row for PDF + client links + archive.
  */
 (function () {
   "use strict";
 
   var catalog = [];
-  var selectedId = "";
-  var externalLinks = null;
+  var counts = {};
+  /** @type {Record<string, 'GENERATING'|'FAILED'>} */
+  var rowBusy = {};
+  /** @type {Record<string, string>} */
+  var rowErrors = {};
 
   function authFetch(url, opts) {
     opts = opts || {};
@@ -21,14 +24,45 @@
     return document.getElementById(id);
   }
 
-  function setMeta(html) {
-    var el = $("gdiRptMeta");
-    if (el) el.innerHTML = html;
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
   }
 
-  function setExternalMeta(html) {
-    var el = $("gdiRptExternalMeta");
-    if (el) el.innerHTML = html;
+  function setStatus(msg) {
+    var el = $("gdiRptStatusLine");
+    if (el) el.textContent = msg || "";
+  }
+
+  function fmtDateTime(iso) {
+    if (!iso) return "—";
+    var d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return String(iso);
+    return d.toISOString().replace("T", " ").slice(0, 16) + " UTC";
+  }
+
+  function statusBadge(kind, label) {
+    var cls = "adr-badge";
+    if (kind === "ok") cls += " adr-badge--ok";
+    if (kind === "warn") cls += " adr-badge--warn";
+    if (kind === "danger") cls += " adr-badge--danger";
+    return '<span class="' + cls + '">' + esc(label) + "</span>";
+  }
+
+  function reportStatusKind(s) {
+    if (s === "READY") return "ok";
+    if (s === "BLOCKED" || s === "NEEDS_BUILD") return "danger";
+    return "warn";
+  }
+
+  function reportStatusLabel(s) {
+    if (s === "WATCH_ONLY") return "WATCH ONLY";
+    if (s === "NO_READY_OPPORTUNITIES") return "NO READY OPPORTUNITIES";
+    if (s === "NEEDS_BUILD") return "NEEDS BUILD";
+    return s || "—";
   }
 
   function copyText(text) {
@@ -50,100 +84,198 @@
     });
   }
 
-  function updateExternalButtons() {
-    var adpOk = !!(externalLinks && externalLinks.adp && externalLinks.adp.available && externalLinks.adp.url);
-    var gdiOk = !!(externalLinks && externalLinks.gdi && externalLinks.gdi.available && externalLinks.gdi.url);
-    if ($("gdiRptAdpOpen")) $("gdiRptAdpOpen").disabled = !adpOk;
-    if ($("gdiRptAdpCopy")) $("gdiRptAdpCopy").disabled = !adpOk;
-    if ($("gdiRptGdiOpen")) $("gdiRptGdiOpen").disabled = !gdiOk;
-    if ($("gdiRptGdiCopy")) $("gdiRptGdiCopy").disabled = !gdiOk;
-    if (!selectedId) {
-      setExternalMeta("Select a hotel to load external client URLs.");
-      return;
-    }
-    var parts = [];
-    if (adpOk) parts.push("ADP client URL ready");
-    else parts.push("ADP: " + ((externalLinks && externalLinks.adp && externalLinks.adp.reason) || "unavailable"));
-    if (gdiOk) parts.push("GDI client URL ready");
-    else parts.push("GDI: " + ((externalLinks && externalLinks.gdi && externalLinks.gdi.reason) || "unavailable"));
-    setExternalMeta(parts.join(" · "));
+  function effectivePdfStatus(row) {
+    if (rowBusy[row.hotelId] === "GENERATING") return "GENERATING";
+    if (rowBusy[row.hotelId] === "FAILED") return "FAILED";
+    return row.pdfStatus || (row.pdfReady ? "READY" : "MISSING");
   }
 
-  async function loadExternalLinks() {
-    externalLinks = null;
-    updateExternalButtons();
-    if (!selectedId) return;
-    try {
-      var res = await authFetch(
-        "/api/admin/ai-demand/hotels/" +
-          encodeURIComponent(selectedId) +
-          "/external-client-links"
-      );
-      var json = await res.json();
-      if (!res.ok || !json.ok) {
-        setExternalMeta("Could not load external client URLs.");
-        return;
+  function sortRows(rows) {
+    var rank = {
+      READY: 0,
+      NO_READY_OPPORTUNITIES: 2,
+      WATCH_ONLY: 3,
+      NEEDS_BUILD: 4,
+      BLOCKED: 5,
+    };
+    return rows.slice().sort(function (a, b) {
+      var ar = rank[a.reportStatus] != null ? rank[a.reportStatus] : 9;
+      var br = rank[b.reportStatus] != null ? rank[b.reportStatus] : 9;
+      // Needs PDF among READY hotels first
+      if (ar === 0 && br === 0) {
+        var an = a.pdfReady ? 1 : 0;
+        var bn = b.pdfReady ? 1 : 0;
+        if (an !== bn) return an - bn;
       }
-      externalLinks = json;
-      updateExternalButtons();
-    } catch (err) {
-      setExternalMeta("Could not load external client URLs: " + String(err.message || err));
-    }
+      if (ar !== br) return ar - br;
+      return String(a.displayName || "").localeCompare(String(b.displayName || ""));
+    });
   }
 
-  function updateButtons() {
-    var row = catalog.find(function (h) {
-      return h.hotelId === selectedId;
-    });
-    var available = !!(row && row.available);
-    var pdfReady = !!(row && row.pdfReady);
-    if ($("gdiRptGenerate")) $("gdiRptGenerate").disabled = !available;
-    if ($("gdiRptView")) $("gdiRptView").disabled = !pdfReady && !available;
-    if ($("gdiRptDownload")) $("gdiRptDownload").disabled = !pdfReady && !available;
-    if (!selectedId) {
-      setMeta("<p>Select a hotel with Group &amp; Demand Intelligence data to generate or view its GDI PDF report.</p>");
-      return;
+  function filteredRows() {
+    var q = ($("gdiRptSearch") && $("gdiRptSearch").value.trim().toLowerCase()) || "";
+    var reportF = ($("gdiRptFilterReport") && $("gdiRptFilterReport").value) || "";
+    var pdfF = ($("gdiRptFilterPdf") && $("gdiRptFilterPdf").value) || "";
+    var rows = sortRows(catalog);
+    if (q) {
+      rows = rows.filter(function (r) {
+        var hay = (
+          (r.displayName || "") +
+          " " +
+          (r.hotelName || "") +
+          " " +
+          (r.market || "")
+        ).toLowerCase();
+        return hay.indexOf(q) !== -1;
+      });
     }
-    if (!available) {
-      setMeta(
-        "<p><strong>" +
-          (row && row.displayName ? row.displayName : selectedId) +
-          "</strong>: No customer-ready GDI report is currently available for this hotel." +
-          (row && row.reason ? " (" + row.reason + ")" : "") +
-          "</p>"
+    if (reportF) {
+      rows = rows.filter(function (r) {
+        return r.reportStatus === reportF;
+      });
+    }
+    if (pdfF) {
+      rows = rows.filter(function (r) {
+        return effectivePdfStatus(r) === pdfF;
+      });
+    }
+    return rows;
+  }
+
+  function renderCounts() {
+    var el = $("gdiRptCounts");
+    if (!el) return;
+    var c = counts || {};
+    var items = [
+      ["GDI Hotels", c.hotels || catalog.length || 0],
+      ["Report Ready", c.reportReady || 0],
+      ["PDF Ready", c.pdfReady || 0],
+      ["Needs PDF", c.needsPdf || 0],
+      ["Blocked", c.blocked || 0],
+    ];
+    el.innerHTML = items
+      .map(function (it) {
+        return (
+          '<div class="adr-count"><span class="adr-count__n">' +
+          it[1] +
+          '</span><span class="adr-count__l">' +
+          esc(it[0]) +
+          "</span></div>"
+        );
+      })
+      .join("");
+  }
+
+  function pdfCell(row) {
+    var st = effectivePdfStatus(row);
+    var id = esc(row.hotelId);
+    if (st === "GENERATING") {
+      return statusBadge("warn", "GENERATING");
+    }
+    if (st === "FAILED") {
+      return (
+        statusBadge("danger", "FAILED") +
+        ' <button type="button" class="adr-btn adr-btn--tiny" data-act="generate" data-hotel="' +
+        id +
+        '">Retry</button>' +
+        (rowErrors[row.hotelId]
+          ? '<div class="adr-subtitle" title="' +
+            esc(rowErrors[row.hotelId]) +
+            '">' +
+            esc(rowErrors[row.hotelId].slice(0, 80)) +
+            "</div>"
+          : "")
       );
-      return;
     }
-    setMeta(
-      "<p><strong>" +
-        (row.displayName || selectedId) +
-        "</strong> — Ready " +
-        (row.ready || 0) +
-        ", action set " +
-        (row.actionSet || 0) +
-        ", watch " +
-        (row.watch || 0) +
-        ". PDF: " +
-        (pdfReady ? "READY" : "not generated yet") +
-        ".</p>"
+    if (st === "READY" || row.pdfReady) {
+      return (
+        '<button type="button" class="adr-btn adr-btn--tiny" data-act="view-pdf" data-hotel="' +
+        id +
+        '">View PDF</button>' +
+        '<button type="button" class="adr-btn adr-btn--tiny" data-act="download-pdf" data-hotel="' +
+        id +
+        '">Download</button>'
+      );
+    }
+    if (!row.available) {
+      return statusBadge("danger", "—");
+    }
+    return (
+      statusBadge("warn", "MISSING") +
+      ' <button type="button" class="adr-btn adr-btn--tiny" data-act="generate" data-hotel="' +
+      id +
+      '">Generate PDF</button>'
     );
+  }
+
+  function clientCell(kind, row) {
+    var available =
+      kind === "gdi" ? !!row.gdiShareAvailable : !!row.adpShareAvailable;
+    var id = esc(row.hotelId);
+    if (!available) {
+      return '<span class="adr-subtitle">—</span>';
+    }
+    return (
+      '<button type="button" class="adr-btn adr-btn--tiny" data-act="open-' +
+      kind +
+      '" data-hotel="' +
+      id +
+      '">Open</button>' +
+      '<button type="button" class="adr-btn adr-btn--tiny" data-act="copy-' +
+      kind +
+      '" data-hotel="' +
+      id +
+      '">Copy URL</button>'
+    );
+  }
+
+  function moreCell(row) {
+    var id = esc(row.hotelId);
+    var html = "";
+    if (row.gdiShareAvailable) {
+      html +=
+        '<button type="button" class="adr-btn adr-btn--tiny" data-act="open-gdi" data-hotel="' +
+        id +
+        '">Open GDI</button>';
+    }
+    if (row.available) {
+      html +=
+        '<button type="button" class="adr-btn adr-btn--tiny" data-act="regenerate" data-hotel="' +
+        id +
+        '"' +
+        (rowBusy[row.hotelId] === "GENERATING" ? " disabled" : "") +
+        ">Regenerate</button>";
+    }
+    html +=
+      '<button type="button" class="adr-btn adr-btn--tiny" data-act="archive" data-hotel="' +
+      id +
+      '" data-name="' +
+      esc(row.displayName || row.hotelName || "") +
+      '">Archive</button>';
+    return html || "—";
   }
 
   function renderTable() {
     var body = $("gdiRptTableBody");
     if (!body) return;
-    if (!catalog.length) {
-      body.innerHTML = "<tr><td colspan='6'>No GDI hotels found.</td></tr>";
+    var rows = filteredRows();
+    if (!rows.length) {
+      body.innerHTML =
+        '<tr><td colspan="10">No GDI hotels match the current filters.</td></tr>';
       return;
     }
-    body.innerHTML = catalog
+    body.innerHTML = rows
       .map(function (h) {
+        var name = h.displayName || h.hotelName || h.hotelId;
+        var market = h.market ? '<div class="adr-subtitle">' + esc(h.market) + "</div>" : "";
         return (
-          "<tr data-hotel-id='" +
-          h.hotelId +
-          "'>" +
-          "<td>" +
-          (h.displayName || h.hotelId) +
+          '<tr data-hotel-id="' +
+          esc(h.hotelId) +
+          '">' +
+          "<td><strong>" +
+          esc(name) +
+          "</strong>" +
+          market +
           "</td>" +
           "<td>" +
           (h.available ? h.ready || 0 : "—") +
@@ -155,10 +287,22 @@
           (h.available ? h.watch || 0 : "—") +
           "</td>" +
           "<td>" +
-          (h.pdfReady ? "READY" : "—") +
+          statusBadge(reportStatusKind(h.reportStatus), reportStatusLabel(h.reportStatus)) +
+          "</td>" +
+          '<td class="adr-col-pdf" style="white-space:nowrap">' +
+          pdfCell(h) +
+          "</td>" +
+          '<td style="white-space:nowrap">' +
+          clientCell("gdi", h) +
+          "</td>" +
+          '<td style="white-space:nowrap">' +
+          clientCell("adp", h) +
           "</td>" +
           "<td>" +
-          (h.available ? "Available" : "Unavailable") +
+          esc(fmtDateTime(h.lastGeneratedAt)) +
+          "</td>" +
+          '<td class="adr-actions" style="white-space:nowrap">' +
+          moreCell(h) +
           "</td>" +
           "</tr>"
         );
@@ -166,179 +310,219 @@
       .join("");
   }
 
-  function fillSelect() {
-    var sel = $("gdiRptHotel");
-    if (!sel) return;
-    sel.innerHTML =
-      '<option value="">Select hotel…</option>' +
-      catalog
-        .map(function (h) {
-          return (
-            '<option value="' +
-            h.hotelId +
-            '">' +
-            (h.displayName || h.hotelId) +
-            (h.available ? "" : " (unavailable)") +
-            "</option>"
-          );
-        })
-        .join("");
-    if (selectedId) sel.value = selectedId;
-  }
-
   async function loadCatalog() {
     var res = await authFetch("/api/admin/group-demand-intelligence/reports");
     var json = await res.json();
     if (!res.ok || !json.ok) throw new Error((json && json.error) || "catalog_failed");
     catalog = json.hotels || [];
-    var counts = $("gdiRptCounts");
-    if (counts) {
-      var avail = catalog.filter(function (h) {
-        return h.available;
-      }).length;
-      counts.textContent =
-        catalog.length + " GDI hotels · " + avail + " report-available · " +
-        catalog.filter(function (h) {
-          return h.pdfReady;
-        }).length +
-        " PDF ready";
-    }
-    fillSelect();
+    counts = json.counts || {};
+    // Preserve transient GENERATING/FAILED overlays across refresh only briefly
+    renderCounts();
     renderTable();
-    updateButtons();
   }
 
-  async function openPdf(download) {
-    if (!selectedId) return;
-    var url =
-      "/api/admin/group-demand-intelligence/hotels/" +
-      encodeURIComponent(selectedId) +
-      "/report-pdf" +
-      (download ? "?download=1" : "?generate=1");
-    setMeta("<p>Preparing PDF…</p>");
-    var res = await authFetch(url);
-    if (!res.ok) {
-      var err = {};
-      try {
-        err = await res.json();
-      } catch (_e) {}
-      setMeta(
-        "<p>Could not open PDF: " +
-          (err.reason || err.error || res.status) +
-          "</p>"
-      );
-      return;
+  async function fetchExternalLinks(hotelId) {
+    var res = await authFetch(
+      "/api/admin/ai-demand/hotels/" +
+        encodeURIComponent(hotelId) +
+        "/external-client-links"
+    );
+    var json = await res.json();
+    if (!res.ok || !json.ok) {
+      throw new Error((json && json.error) || "external_links_failed");
     }
-    var blob = await res.blob();
-    var filename =
-      res.headers.get("X-GDI-PDF-Filename") || "Dealality_GDI_Report.pdf";
-    var objectUrl = URL.createObjectURL(blob);
-    if (download) {
-      var a = document.createElement("a");
-      a.href = objectUrl;
-      a.download = filename;
-      a.click();
-    } else {
-      window.open(objectUrl, "_blank");
-    }
-    await loadCatalog();
+    return json;
   }
 
-  async function generate() {
-    if (!selectedId) return;
-    setMeta("<p>Generating GDI PDF… this may take a minute.</p>");
-    if ($("gdiRptGenerate")) $("gdiRptGenerate").disabled = true;
+  async function openOrCopyClient(hotelId, kind, mode) {
+    setStatus("Loading " + kind.toUpperCase() + " client link…");
     try {
-      var res = await authFetch(
-        "/api/admin/group-demand-intelligence/hotels/" +
-          encodeURIComponent(selectedId) +
-          "/report-pdf/generate",
-        { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" }
-      );
-      var json = await res.json();
-      if (!res.ok || !json.ok) {
-        setMeta(
-          "<p>Generate failed: " +
-            (json.reason || json.message || json.error || res.status) +
-            "</p>"
+      var links = await fetchExternalLinks(hotelId);
+      var pack = kind === "gdi" ? links.gdi : links.adp;
+      if (!pack || !pack.available || !pack.url) {
+        setStatus(
+          (kind === "gdi" ? "GDI" : "ADP") +
+            " client link unavailable" +
+            (pack && pack.reason ? ": " + pack.reason : "")
         );
         return;
       }
-      setMeta(
-        "<p>Generated <strong>" +
+      if (mode === "open") {
+        window.open(pack.url, "_blank", "noopener");
+        setStatus("Opened " + (kind === "gdi" ? "GDI" : "ADP") + " client view.");
+      } else {
+        await copyText(pack.url);
+        setStatus("Copied " + (kind === "gdi" ? "GDI" : "ADP") + " External Client URL.");
+      }
+    } catch (err) {
+      setStatus("Client link failed: " + String(err.message || err));
+    }
+  }
+
+  async function openPdf(hotelId, download) {
+    var url =
+      "/api/admin/group-demand-intelligence/hotels/" +
+      encodeURIComponent(hotelId) +
+      "/report-pdf" +
+      (download ? "?download=1" : "?generate=1");
+    setStatus(download ? "Downloading PDF…" : "Opening PDF…");
+    try {
+      var res = await authFetch(url);
+      if (!res.ok) {
+        var err = {};
+        try {
+          err = await res.json();
+        } catch (_e) {}
+        setStatus(
+          "Could not open PDF: " + (err.reason || err.error || res.status)
+        );
+        return;
+      }
+      var blob = await res.blob();
+      var filename =
+        res.headers.get("X-GDI-PDF-Filename") || "Dealality_GDI_Report.pdf";
+      var objectUrl = URL.createObjectURL(blob);
+      if (download) {
+        var a = document.createElement("a");
+        a.href = objectUrl;
+        a.download = filename;
+        a.click();
+        setStatus("Downloaded " + filename);
+      } else {
+        window.open(objectUrl, "_blank", "noopener");
+        setStatus("Opened PDF.");
+      }
+      await loadCatalog();
+    } catch (err) {
+      setStatus("PDF failed: " + String(err.message || err));
+    }
+  }
+
+  async function generatePdf(hotelId) {
+    if (rowBusy[hotelId] === "GENERATING") return;
+    rowBusy[hotelId] = "GENERATING";
+    delete rowErrors[hotelId];
+    renderTable();
+    setStatus("Generating GDI PDF… this may take a minute.");
+    try {
+      var res = await authFetch(
+        "/api/admin/group-demand-intelligence/hotels/" +
+          encodeURIComponent(hotelId) +
+          "/report-pdf/generate",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: "{}",
+        }
+      );
+      var json = await res.json();
+      if (!res.ok || !json.ok) {
+        rowBusy[hotelId] = "FAILED";
+        rowErrors[hotelId] = String(
+          json.reason || json.message || json.error || res.status
+        );
+        setStatus("Generate failed: " + rowErrors[hotelId]);
+        renderTable();
+        return;
+      }
+      delete rowBusy[hotelId];
+      delete rowErrors[hotelId];
+      setStatus(
+        "Generated " +
           (json.filename || "PDF") +
-          "</strong> (" +
+          " (" +
           (json.byteLength || 0) +
           " bytes" +
           (json.pageCountHint != null ? ", ~" + json.pageCountHint + " pages" : "") +
-          ").</p>"
+          ")."
       );
       await loadCatalog();
-    } finally {
-      updateButtons();
+    } catch (err) {
+      rowBusy[hotelId] = "FAILED";
+      rowErrors[hotelId] = String(err.message || err);
+      setStatus("Generate failed: " + rowErrors[hotelId]);
+      renderTable();
+    }
+  }
+
+  function openArchive(hotelId, hotelName) {
+    try {
+      sessionStorage.setItem(
+        "dealality_report_archive_focus",
+        JSON.stringify({
+          hotelId: hotelId,
+          reportType: "GDI",
+          hotelName: hotelName || "",
+          ts: Date.now(),
+        })
+      );
+    } catch (_e) {}
+    if (typeof window.__ADP_ADMIN_SET_TAB__ === "function") {
+      window.__ADP_ADMIN_SET_TAB__("report-archive");
+    } else {
+      var btn = document.getElementById("adaTabReportArchive");
+      if (btn) btn.click();
+    }
+    setStatus("Opening Report Archive for " + (hotelName || hotelId) + " (GDI).");
+  }
+
+  function onTableClick(ev) {
+    var btn = ev.target.closest("button[data-act]");
+    if (!btn) return;
+    var act = btn.getAttribute("data-act");
+    var hotelId = btn.getAttribute("data-hotel");
+    if (!act || !hotelId) return;
+    if (act === "view-pdf") openPdf(hotelId, false);
+    else if (act === "download-pdf") openPdf(hotelId, true);
+    else if (act === "generate" || act === "regenerate") generatePdf(hotelId);
+    else if (act === "open-gdi") openOrCopyClient(hotelId, "gdi", "open");
+    else if (act === "copy-gdi") openOrCopyClient(hotelId, "gdi", "copy");
+    else if (act === "open-adp") openOrCopyClient(hotelId, "adp", "open");
+    else if (act === "copy-adp") openOrCopyClient(hotelId, "adp", "copy");
+    else if (act === "archive") {
+      openArchive(hotelId, btn.getAttribute("data-name") || "");
     }
   }
 
   function wire() {
-    var sel = $("gdiRptHotel");
-    if (sel) {
-      sel.addEventListener("change", function () {
-        selectedId = sel.value || "";
-        updateButtons();
-        loadExternalLinks();
+    if ($("gdiRptApplyFilters")) {
+      $("gdiRptApplyFilters").addEventListener("click", function () {
+        renderTable();
       });
     }
-    if ($("gdiRptGenerate")) $("gdiRptGenerate").addEventListener("click", generate);
-    if ($("gdiRptView"))
-      $("gdiRptView").addEventListener("click", function () {
-        openPdf(false);
-      });
-    if ($("gdiRptDownload"))
-      $("gdiRptDownload").addEventListener("click", function () {
-        openPdf(true);
-      });
-    if ($("gdiRptAdpOpen"))
-      $("gdiRptAdpOpen").addEventListener("click", function () {
-        if (externalLinks && externalLinks.adp && externalLinks.adp.url) {
-          window.open(externalLinks.adp.url, "_blank");
+    if ($("gdiRptSearch")) {
+      $("gdiRptSearch").addEventListener("keydown", function (ev) {
+        if (ev.key === "Enter") {
+          ev.preventDefault();
+          renderTable();
         }
       });
-    if ($("gdiRptGdiOpen"))
-      $("gdiRptGdiOpen").addEventListener("click", function () {
-        if (externalLinks && externalLinks.gdi && externalLinks.gdi.url) {
-          window.open(externalLinks.gdi.url, "_blank");
-        }
-      });
-    if ($("gdiRptAdpCopy"))
-      $("gdiRptAdpCopy").addEventListener("click", function () {
-        var url = externalLinks && externalLinks.adp && externalLinks.adp.url;
-        if (!url) return;
-        copyText(url).then(function () {
-          setExternalMeta("Copied ADP External Client URL.");
-        });
-      });
-    if ($("gdiRptGdiCopy"))
-      $("gdiRptGdiCopy").addEventListener("click", function () {
-        var url = externalLinks && externalLinks.gdi && externalLinks.gdi.url;
-        if (!url) return;
-        copyText(url).then(function () {
-          setExternalMeta("Copied GDI External Client URL.");
-        });
-      });
+    }
+    if ($("gdiRptTableBody")) {
+      $("gdiRptTableBody").addEventListener("click", onTableClick);
+    }
   }
 
-  async function boot() {
-    wire();
-    window.addEventListener("dealality-adp-admin-ready", function () {
-      loadCatalog().catch(function (err) {
-        setMeta("<p>Failed to load GDI report catalog: " + String(err.message || err) + "</p>");
-      });
-    });
-    if (window.__ADP_ADMIN_WORKSPACE_AUTH__) {
-      loadCatalog().catch(function (err) {
-        setMeta("<p>Failed to load GDI report catalog: " + String(err.message || err) + "</p>");
-      });
+  async function bootLoad() {
+    try {
+      await loadCatalog();
+      setStatus("");
+    } catch (err) {
+      setStatus("Failed to load GDI report catalog: " + String(err.message || err));
+      if ($("gdiRptTableBody")) {
+        $("gdiRptTableBody").innerHTML =
+          '<tr><td colspan="10">Failed to load catalog.</td></tr>';
+      }
     }
+  }
+
+  function boot() {
+    wire();
+    window.addEventListener("dealality-adp-admin-ready", bootLoad);
+    window.addEventListener("dealality-adp-admin-tab", function (ev) {
+      if (ev.detail && ev.detail.tab === "gdi-reports") bootLoad();
+    });
+    if (window.__ADP_ADMIN_WORKSPACE_AUTH__) bootLoad();
   }
 
   boot();
