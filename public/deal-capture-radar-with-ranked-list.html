@@ -91,6 +91,15 @@
             align-items: center;
         }
 
+        /*
+         * FOUC / twitch lock: map-layer toggles are relocated into the filter
+         * drawer on DOMContentLoaded (radar-page.js). Never paint them in the
+         * sticky header first — that flash + header height collapse is the twitch.
+         */
+        .mapping-header .header-actions {
+            display: none !important;
+        }
+
         .breadcrumb {
             display: flex;
             align-items: center;
@@ -2673,7 +2682,7 @@
     <script src="/js/hotel-detail-panel.js?v=54"></script>
     <script src="/js/radar-filter-drawer.js?v=12"></script>
     <script src="/js/radar-layer-drawer.js?v=24"></script>
-    <script src="radar-page.js?v=2"></script>
+    <script src="radar-page.js?v=3"></script>
     <script src="/js/radar-white-space.js?v=14"></script>
     <script src="/js/radar-territory.js?v=13"></script>
     <script src="brand-presence-mapping.js?v=246&t=1737210600&force=true&clean=true"></script>
