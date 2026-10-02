@@ -491,8 +491,12 @@ export function getAdminCurrentReportPdf(req, res) {
     }
     const meta = loadCurrentReportPdfMeta(propertyId);
     const filename = customerPdfFilename(propertyId);
+    const download = String(req.query.download || "") === "1";
     res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", `inline; filename="${filename}"`);
+    res.setHeader(
+      "Content-Disposition",
+      `${download ? "attachment" : "inline"}; filename="${filename}"`
+    );
     res.setHeader(
       "X-ADP-PDF-Gate",
       ADP_PDF_IS_A_PRINT_REPRESENTATION_OF_THE_CURRENT_PUBLISHED_ADP_REPORT
@@ -502,6 +506,67 @@ export function getAdminCurrentReportPdf(req, res) {
   } catch (err) {
     console.error("[ADP Admin] current report pdf error:", err);
     return res.status(500).json({ ok: false, error: "internal_error", message: err.message });
+  }
+}
+
+/**
+ * Generate (or regenerate) the current published ADP report PDF for a property.
+ * Uses the live print renderer + published SoT — no monthly-review composer.
+ */
+export async function postAdminCurrentReportPdfGenerate(req, res) {
+  try {
+    const propertyId = String(
+      req.params.propertyId || req.body?.propertyId || ""
+    ).trim();
+    if (!propertyId) {
+      return res.status(400).json({ ok: false, error: "propertyId_required" });
+    }
+    const { generateCurrentAdpReportPdfV1 } = await import(
+      "../lib/ai-demand-positioning/current-report-pdf/generate-current-adp-report-pdf-v1.mjs"
+    );
+    const proto = String(req.headers["x-forwarded-proto"] || req.protocol || "http")
+      .split(",")[0]
+      .trim();
+    const host = String(req.headers["x-forwarded-host"] || req.headers.host || "")
+      .split(",")[0]
+      .trim();
+    const envBase = String(
+      process.env.PUBLIC_APP_URL ||
+        process.env.DEALALITY_PUBLIC_BASE_URL ||
+        process.env.APP_BASE_URL ||
+        ""
+    )
+      .trim()
+      .replace(/\/$/, "");
+    const baseUrl =
+      envBase ||
+      (host ? `${proto}://${host}` : "http://127.0.0.1:8080");
+
+    const result = await generateCurrentAdpReportPdfV1({
+      baseUrl,
+      propertyId,
+      generatedBy: adminIdentity(req),
+    });
+    return res.status(201).json({
+      ok: true,
+      propertyId: result.propertyId,
+      propertyName: result.propertyName,
+      periodId: result.periodId,
+      filename: result.filename,
+      byteLength: result.buffer?.length || result.stored?.pdfBytes || null,
+      pdfFingerprint: result.stored?.pdfFingerprint || null,
+      actionCount: result.actionCount,
+      stored: result.stored,
+      gate: ADP_PDF_IS_A_PRINT_REPRESENTATION_OF_THE_CURRENT_PUBLISHED_ADP_REPORT,
+      liveProviderCalls: 0,
+    });
+  } catch (err) {
+    console.error("[ADP Admin] current report pdf generate error:", err);
+    return res.status(500).json({
+      ok: false,
+      error: "generate_failed",
+      message: String(err?.message || err).slice(0, 240),
+    });
   }
 }
 

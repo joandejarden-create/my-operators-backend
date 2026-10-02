@@ -6,7 +6,7 @@
   "use strict";
 
   var STORAGE_KEY = "dealality_adp_admin_tab";
-  var ALLOWED = { reviews: true, "action-plan": true, "gdi-reports": true };
+  var ALLOWED = { reviews: true, "action-plan": true, "gdi-reports": true, "report-archive": true };
 
   function readTabFromUrl() {
     try {
@@ -63,9 +63,11 @@
     var reviewsBtn = document.getElementById("adaTabReviews");
     var planBtn = document.getElementById("adaTabActionPlan");
     var gdiBtn = document.getElementById("adaTabGdiReports");
+    var archiveBtn = document.getElementById("adaTabReportArchive");
     var reviewsPanel = document.getElementById("adaPanelReviews");
     var planPanel = document.getElementById("adaPanelActionPlan");
     var gdiPanel = document.getElementById("adaPanelGdiReports");
+    var archivePanel = document.getElementById("adaPanelReportArchive");
 
     if (reviewsBtn) {
       reviewsBtn.classList.toggle("active", tab === "reviews");
@@ -79,9 +81,14 @@
       gdiBtn.classList.toggle("active", tab === "gdi-reports");
       gdiBtn.setAttribute("aria-selected", tab === "gdi-reports" ? "true" : "false");
     }
+    if (archiveBtn) {
+      archiveBtn.classList.toggle("active", tab === "report-archive");
+      archiveBtn.setAttribute("aria-selected", tab === "report-archive" ? "true" : "false");
+    }
     if (reviewsPanel) reviewsPanel.hidden = tab !== "reviews";
     if (planPanel) planPanel.hidden = tab !== "action-plan";
     if (gdiPanel) gdiPanel.hidden = tab !== "gdi-reports";
+    if (archivePanel) archivePanel.hidden = tab !== "report-archive";
 
     syncParentHash(tab);
     window.dispatchEvent(
