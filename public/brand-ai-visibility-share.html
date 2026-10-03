@@ -3,14 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Brand AI Intelligence — Dealality</title>
+  <title>Brand AI Intelligence - Dealality</title>
   <link rel="stylesheet" href="/css/deal-workspace-shell.css">
   <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=bai-cust-micro-polish-20260904e">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
   <script>
   (function() {
     var params = new URLSearchParams(window.location.search);
-    var shareToken = params.get('share') || '';
+    // Strip copy/paste smart quotes / non-ISO-8859-1 wrappers before any header use.
+    // Fetch RequestInit headers must be ISO-8859-1; Unicode here throws before the request starts.
+    function toHeaderSafeToken(raw) {
+      var s = String(raw || '').trim()
+        .replace(/^[\u201C\u201D\u2018\u2019"']+|[\u201C\u201D\u2018\u2019"']+$/g, '');
+      var out = '';
+      for (var i = 0; i < s.length; i++) {
+        if (s.charCodeAt(i) <= 255) out += s.charAt(i);
+      }
+      return out;
+    }
+    function isHeaderSafeValue(value) {
+      var s = String(value == null ? '' : value);
+      for (var i = 0; i < s.length; i++) {
+        if (s.charCodeAt(i) > 255) return false;
+      }
+      return true;
+    }
+    var shareToken = toHeaderSafeToken(params.get('share') || '');
     function appendShare(url) {
       if (!shareToken) return url;
       var sep = url.indexOf('?') >= 0 ? '&' : '?';
@@ -18,8 +36,17 @@
     }
     function shareFetch(url, opts) {
       opts = opts || {};
-      var headers = Object.assign({ Accept: 'application/json' }, opts.headers || {});
-      if (shareToken) {
+      var incoming = opts.headers || {};
+      var headers = { Accept: 'application/json' };
+      // Only copy header-safe values — never put Unicode labels/metadata in headers.
+      Object.keys(incoming).forEach(function (key) {
+        var val = incoming[key];
+        if (val == null) return;
+        if (isHeaderSafeValue(key) && isHeaderSafeValue(val)) {
+          headers[key] = val;
+        }
+      });
+      if (shareToken && isHeaderSafeValue(shareToken)) {
         headers['X-BAI-Share-Capability'] = shareToken;
       }
       var fetchOpts = Object.assign({}, opts, { headers: headers, credentials: 'omit' });
@@ -44,9 +71,9 @@
     } catch (_) {}
   })();
   </script>
-  <script src="/js/ai-visibility/ai-visibility-shared.js?v=bai-wave3-longitudinal-20260904" defer></script>
-  <script src="/js/ai-visibility/bai-customer-longitudinal.js?v=bai-cust-micro-polish-20260904e" defer></script>
-  <script src="/js/ai-visibility/ai-visibility-brand.js?v=bai-p2-longitudinal-surfaces-20260904" defer></script>
+  <script src="/js/ai-visibility/ai-visibility-shared.js?v=bai-hilton-share-recovery-20261003" defer></script>
+  <script src="/js/ai-visibility/bai-customer-longitudinal.js?v=bai-hilton-share-recovery-20261003" defer></script>
+  <script src="/js/ai-visibility/ai-visibility-brand.js?v=bai-hilton-share-recovery-20261003" defer></script>
 </head>
 <body class="aiv-page embed-mode">
   <div class="dashboard-container aiv-dashboard">

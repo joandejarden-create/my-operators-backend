@@ -4763,7 +4763,25 @@
       }
       nameEl.textContent = company;
       ctx.hidden = false;
-      document.title = company + " — Brand AI Intelligence";
+      // ASCII hyphen only — never put Unicode punctuation into document title
+      // paths that could leak into request metadata.
+      document.title = company + " - Brand AI Intelligence";
+      // Entitled brands come from the signed parent share; seed the brand
+      // selector even when portfolio/language gates temporarily return empty.
+      var resolveBrands = Array.isArray(res.brands) ? res.brands : [];
+      if (
+        resolveBrands.length &&
+        !(state.portfolio && state.portfolio.brands && state.portfolio.brands.length)
+      ) {
+        state.portfolio = state.portfolio || {};
+        state.portfolio.brands = resolveBrands.map(function (b) {
+          return {
+            brandId: b.brandId,
+            brandName: b.brandName || b.brandId,
+          };
+        });
+        fillBrandSelect(state.portfolio.brands);
+      }
     } catch (_) {
       ctx.hidden = true;
     }
