@@ -31,7 +31,7 @@ function fixtureHotelResponse(recordId) {
 const cache = new Map();
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes cache
 /** Bump when API response shape or fetched fields change (invalidates stale cache). */
-const CACHE_SCHEMA_VERSION = 7;
+const CACHE_SCHEMA_VERSION = 8;
 
 // Cache helper functions
 function getCacheKey(query) {
@@ -310,11 +310,16 @@ export async function getBrandPresenceHotelById(req, res) {
   }
 }
 
+function escapeAirtableString(value) {
+  return String(value || "").replace(/'/g, "\\'");
+}
+
 // Get brand presence data
 export async function getBrandPresence(req, res) {
   const requestedLimit = parseInt(req.query.limit, 10);
   const limit = Number.isFinite(requestedLimit) && requestedLimit > 0 ? requestedLimit : null;
   const { brand, status, region, search, page = 0 } = req.query;
+  const country = String(req.query.country || "").trim();
 
   function fixtureSearchResponse() {
     if (!shouldUseMexicoRadarFixtureFallback({ search, country: search })) return null;
@@ -346,7 +351,7 @@ export async function getBrandPresence(req, res) {
 
   try {
     // Check cache first
-    const cacheKey = getCacheKey({ brand, status, region, search, limit, page });
+    const cacheKey = getCacheKey({ brand, status, region, country, search, limit, page });
     const cachedData = getFromCache(cacheKey);
     
     if (cachedData) {
@@ -354,29 +359,35 @@ export async function getBrandPresence(req, res) {
       return res.json(cachedData);
     }
     
-    console.log('🔄 Fetching from Airtable:', { brand, status, region, search, limit, page });
+    console.log('🔄 Fetching from Airtable:', { brand, status, region, country, search, limit, page });
     
     // Build filter formula
     let filterFormula = '';
     const conditions = [];
     
     if (brand) {
-      conditions.push(`{${F.hotels.brand}} = '${brand}'`);
+      conditions.push(`{${F.hotels.brand}} = '${escapeAirtableString(brand)}'`);
     }
     
     if (status) {
-      conditions.push(`{${F.hotels.status}} = '${status}'`);
+      conditions.push(`{${F.hotels.status}} = '${escapeAirtableString(status)}'`);
     }
     
     if (region) {
-      conditions.push(`{${F.hotels.region}} = '${region}'`);
+      conditions.push(`{${F.hotels.region}} = '${escapeAirtableString(region)}'`);
+    }
+
+    // Share / scoped reads: filter at source so Mexico packs do not download all markets.
+    if (country) {
+      conditions.push(`{${F.hotels.country}} = '${escapeAirtableString(country)}'`);
     }
     
     if (search) {
+      const safeSearch = escapeAirtableString(search);
       const searchConditions = [
-        `SEARCH('${search}', {${F.hotels.name}})`,
-        `SEARCH('${search}', {${F.hotels.city}})`,
-        `SEARCH('${search}', {${F.hotels.country}})`
+        `SEARCH('${safeSearch}', {${F.hotels.name}})`,
+        `SEARCH('${safeSearch}', {${F.hotels.city}})`,
+        `SEARCH('${safeSearch}', {${F.hotels.country}})`
       ];
       conditions.push(`OR(${searchConditions.join(', ')})`);
     }

@@ -157,6 +157,7 @@ import {
 } from "./api/admin-report-archive.js";
 
 import { logAdpPublishedReadSourceAtStartup } from "./lib/ai-demand-positioning/published-read-service.js";
+import { logAdminShareHydrationStatus } from "./lib/admin/report-external-client-links-v1.js";
 import {
   requireAdpShareCapability,
   getAdpShareResolve,
@@ -2340,20 +2341,7 @@ app.get("/hotel-explorer-share.html", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, "public", "hotel-explorer-share.html"));
 });
-// Golden Four client share entry (must survive ADP-only CLI deploys that omit static fallthrough)
-app.get("/hotel-intelligence-golden-demo", (req, res) => {
-    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
-    res.redirect(302, "/hotel-intelligence-golden-demo.html" + q);
-});
-app.get("/hotel-intelligence-golden-demo/", (req, res) => {
-    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
-    res.redirect(302, "/hotel-intelligence-golden-demo.html" + q);
-});
-app.get("/hotel-intelligence-golden-demo.html", (req, res) => {
-    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    res.sendFile(path.join(__dirname, "public", "hotel-intelligence-golden-demo.html"));
-});
-// Hilton Development Radar / Scout Market Map share (curated pack, no login)
+// Radar / Scout Market Map external share (curated packs; no login)
 app.get("/radar-share", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
     res.redirect(302, "/radar-share.html" + q);
@@ -2366,6 +2354,33 @@ app.get("/radar-share.html", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.setHeader("X-Robots-Tag", "noindex, nofollow");
     res.sendFile(path.join(__dirname, "public", "radar-share.html"));
+});
+// Opportunity Radar external share (NOT Scout Market Map /radar-share)
+app.get("/opportunity-radar-share", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/opportunity-radar-share.html" + q);
+});
+app.get("/opportunity-radar-share/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/opportunity-radar-share.html" + q);
+});
+app.get("/opportunity-radar-share.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("X-Robots-Tag", "noindex, nofollow");
+    res.sendFile(path.join(__dirname, "public", "opportunity-radar-share.html"));
+});
+// Golden Four client share entry (must survive ADP-only CLI deploys that omit static fallthrough)
+app.get("/hotel-intelligence-golden-demo", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/hotel-intelligence-golden-demo.html" + q);
+});
+app.get("/hotel-intelligence-golden-demo/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/hotel-intelligence-golden-demo.html" + q);
+});
+app.get("/hotel-intelligence-golden-demo.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, "public", "hotel-intelligence-golden-demo.html"));
 });
 app.get("/brand-explorer-share", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
@@ -3473,6 +3488,11 @@ app.listen(PORT, () => {
     logAdpPublishedReadSourceAtStartup();
   } catch (err) {
     console.error("[ADP read] startup source log failed:", err.message);
+  }
+  try {
+    logAdminShareHydrationStatus();
+  } catch (err) {
+    console.error("[share-hydration] startup status log failed:", err.message);
   }
   // Census map snapshot — preload (or build once if missing). Non-blocking listen already done.
   import("./lib/hotel-census/census-map-snapshot.js")
