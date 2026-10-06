@@ -1,7 +1,7 @@
 {
   "version": "production-share-contract-tokens-v1",
-  "updatedAt": "2026-09-17",
-  "purpose": "Pre-existing client share tokens used for pre/post deploy durability regression. Do NOT regenerate these during the test — they prove backward compatibility.",
+  "updatedAt": "2026-10-06",
+  "purpose": "Pre-existing client share tokens used for pre/post deploy durability regression and localhost Admin Open/Copy hydration. Do NOT regenerate these — they prove backward compatibility and supply production-safe sealed envelopes when local signing secrets are absent.",
   "tokens": [
     {
       "product": "GDI",
@@ -15,7 +15,32 @@
         "/api/group-demand-intelligence/share/hotels/{hotelId}/weekly-brief",
         "/api/group-demand-intelligence/share/hotels/{hotelId}/opportunities"
       ],
-      "expectedCapabilities": ["CAN_VALIDATE", "CAN_READ_OPPORTUNITY_DETAIL"]
+      "expectedCapabilities": [
+        "CAN_VALIDATE",
+        "CAN_READ_OPPORTUNITY_DETAIL"
+      ]
+    },
+    {
+      "product": "ADP",
+      "label": "Bethesda Marriott — founder-review / publication-14 client URL",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "propertyId": "adp_bethesda_marriott",
+      "tokenId": "sht_24ff4ada4a622db62a228d3f",
+      "token": "adpshare.v1.eyJ2IjoxLCJ0aWQiOiJzaHRfMjRmZjRhZGE0YTYyMmRiNjJhMjI4ZDNmIiwicHJvcGVydHlJZCI6ImFkcF9iZXRoZXNkYV9tYXJyaW90dCIsInN1cmZhY2VzIjpbInJlcG9ydCIsImV2aWRlbmNlIiwicHJvcGVydGllcyIsInB1YmxpY2F0aW9uX21ldGEiXSwicmVwb3J0U2NvcGUiOiJjdXJyZW50X3B1Ymxpc2hlZCIsImlhdCI6MTc4ODk3NDE0NSwiZXhwIjpudWxsfQ.36r6JAyTO0NdjBpOuGMNJa1IKgCrsyP51iY-_o4FiJA",
+      "pagePath": "/owner-ai-demand-share.html",
+      "resolvePath": "/api/ai-demand-positioning/share/resolve",
+      "reportScope": "current_published"
+    },
+    {
+      "product": "ADP",
+      "label": "Hilton New York Times Square — client share",
+      "hotelId": "rec35fExUxCClpOP6",
+      "propertyId": "adp_hilton_times_square",
+      "tokenId": "sht_2fa10cb1596f38204b39fd61",
+      "token": "adpshare.v1.eyJ2IjoxLCJ0aWQiOiJzaHRfMmZhMTBjYjE1OTZmMzgyMDRiMzlmZDYxIiwicHJvcGVydHlJZCI6ImFkcF9oaWx0b25fdGltZXNfc3F1YXJlIiwic3VyZmFjZXMiOlsicmVwb3J0IiwiZXZpZGVuY2UiLCJwcm9wZXJ0aWVzIiwicHVibGljYXRpb25fbWV0YSJdLCJyZXBvcnRTY29wZSI6ImN1cnJlbnRfcHVibGlzaGVkIiwiaWF0IjoxNzkxMzA4NTY2LCJleHAiOm51bGx9.ns3cLGLM7tBp4dEAxUp2orhMVmCJ95eKRWBZ7XRm4hw",
+      "pagePath": "/owner-ai-demand-share.html",
+      "resolvePath": "/api/ai-demand-positioning/share/resolve",
+      "reportScope": "current_published"
     }
   ]
 }
