@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Harbour House — Negotiation Priorities</title>
+  <link rel="stylesheet" href="/marketing/product-assets/scenes/product-assets-scenes.css" />
+</head>
+<body class="pa-capture" data-scene="06-negotiation-priorities" data-stage="0">
+  <div class="pa-frame" id="capture-root">
+    <div class="pa-topline">
+      <div class="pa-brand-mark"><span class="pa-brand-mark__dot" aria-hidden="true"></span>Negotiation Priorities</div>
+      <span class="pa-illus">Illustrative Opportunity</span>
+    </div>
+
+    <header class="pa-header">
+      <h1>Resolve what still blocks commitment</h1>
+      <p class="pa-sub">Harbour House · missing terms · open questions · owner priorities</p>
+    </header>
+
+    <div class="pa-grid pa-grid--2" style="margin-top:18px">
+      <section class="pa-panel" data-fade data-on-stage="0">
+        <h3>Unresolved terms</h3>
+        <ul class="pa-list" id="unresolved">
+          <li><strong>Exclusivity language</strong> — CostaVista proposal silent on historic-centre protection</li>
+          <li><strong>Termination / exit</strong> — operator exit window and cure rights undefined</li>
+          <li><strong>Capital buyout formula</strong> — Andes Capital TBD mechanics</li>
+          <li><strong>Marketing fund detail</strong> — Aurelia soft-brand contribution unclear</li>
+          <li><strong>F&amp;B staffing model</strong> — operator assumption vs owner preference</li>
+        </ul>
+      </section>
+
+      <section class="pa-panel">
+        <h3>Prioritised negotiation list</h3>
+        <div class="pa-prio" data-prio="0">
+          <div class="pa-prio__rank">1</div>
+          <div class="pa-prio__body">
+            <strong>Lock exclusivity / territory</strong>
+            <span>Owner priority · protect Cartagena historic-centre positioning before LOI.</span>
+          </div>
+        </div>
+        <div class="pa-prio" data-prio="1">
+          <div class="pa-prio__rank">2</div>
+          <div class="pa-prio__body">
+            <strong>Define operator exit &amp; cure</strong>
+            <span>Required clarification · avoid open-ended management lock-in.</span>
+          </div>
+        </div>
+        <div class="pa-prio" data-prio="2">
+          <div class="pa-prio__rank">3</div>
+          <div class="pa-prio__body">
+            <strong>Capital buyout &amp; governance</strong>
+            <span>Board seat scope and pref. economics must be written before commitment.</span>
+          </div>
+        </div>
+        <div class="pa-prio" data-prio="3">
+          <div class="pa-prio__rank">4</div>
+          <div class="pa-prio__body">
+            <strong>PIP phasing &amp; marketing fund</strong>
+            <span>Commercial cleanup · sequence after structural terms.</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="pa-panel" style="margin-top:14px" data-fade data-on-stage="4">
+      <h3>Owner priority filter</h3>
+      <p style="margin:0;color:#dbe6f8;font-size:13px;line-height:1.5">
+        Do not advance to LOI until <strong style="color:#fff">exclusivity</strong> and <strong style="color:#fff">exit mechanics</strong> are clarified.
+        Fee polish is secondary to control and downside protection.
+      </p>
+    </section>
+
+    <p class="pa-disclaimer">Illustrative negotiation board for Harbour House sample opportunity only.</p>
+    <div class="pa-stage-label" id="stage-label">Stage 0</div>
+  </div>
+  <script src="/marketing/product-assets/scenes/scene-controller.js"></script>
+  <script>
+    window.__paSceneHooks = {
+      applyStage: function (stage) {
+        document.querySelectorAll('.pa-prio').forEach(function (el, i) {
+          el.classList.toggle('is-visible', stage >= i + 1);
+          el.classList.toggle('is-active', stage === i + 1 || (stage >= 4 && i === 0));
+        });
+      }
+    };
+  </script>
+</body>
+</html>
