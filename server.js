@@ -19,9 +19,11 @@ const cwd = process.cwd();
 console.log("Using server file:", serverPath);
 console.log("Working directory:", cwd);
 if (process.env.NODE_ENV !== "production") {
-  if (!cwd.endsWith("deal-capture-proxy")) {
+  const expectedRepo = "my-operators-backend";
+
+  if (!cwd.endsWith(expectedRepo)) {
     console.error("ERROR: Server started from wrong directory:", cwd);
-    console.error("Please run from: C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy");
+    console.error(`Please run from the ${expectedRepo} repository root.`);
     console.error("Stopping.");
     process.exit(1);
   }
