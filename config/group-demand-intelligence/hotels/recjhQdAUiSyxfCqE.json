@@ -1,0 +1,84 @@
+{
+  "hotelId": "recjhQdAUiSyxfCqE",
+  "displayName": "Sheraton Mallorca Arabella Golf Hotel",
+  "country": "Spain",
+  "city": "Palma de Mallorca",
+  "aliases": {
+    "adpPropertyId": "adp_sheraton_mallorca_arabella_golf",
+    "censusRecordId": "recjhQdAUiSyxfCqE",
+    "provisionalGdiHotelId": "gdi_hotel_sheraton_mallorca_arabella_golf",
+    "identityKey": "ind_marriott_es_pmisi",
+    "note": "Canonical hotelId is HPC record. Son Vida / Palma golf resort. Distinct from Castillo Hotel Son Vida (rec82D9zpB8fede1I / PMILC)."
+  },
+  "adpFixturePath": "fixtures/ai-demand-positioning/sheraton-mallorca-arabella-golf-property-profile.json",
+  "geo": {
+    "latitude": 39.5912,
+    "longitude": 2.5958,
+    "note": "Vinagrella Son Vida approximate centroid"
+  },
+  "locale": {
+    "primary": "es",
+    "secondary": ["en"],
+    "selective": ["ca"],
+    "note": "Spanish primary discovery; English international; Catalan/Mallorquín selective where sources use it"
+  },
+  "commercialPriorities": {
+    "targetSegments": [],
+    "coreTargetPeakRoomsMin": 10,
+    "coreTargetPeakRoomsMax": 80,
+    "allowSmallerIfCommerciallyMeaningful": true,
+    "demandAnchorFocus": [],
+    "weekendFocus": false,
+    "notes": "HOTEL_SPECIFIC_DATA from Marriott PMISI + Arabella.com (93 rooms; 2 meeting rooms max ~45 theater; golf resort; family-capable). targetSegments empty — discovery must not be seeded with demand-type assumptions. Distinct fit from Castillo PMILC."
+  },
+  "capabilityProfile": {
+    "totalGuestrooms": 93,
+    "totalMeetingSpaceSqFt": null,
+    "totalMeetingSpaceSqM": 110,
+    "largestBallroomSqFt": null,
+    "largestBallroomSqM": 67.76,
+    "largestTheaterCapacity": 45,
+    "largestReceptionCapacity": null,
+    "meetingRoomsIndoor": 2,
+    "outdoorEventSpace": true,
+    "softBrand": "Sheraton",
+    "serviceLevel": "upper_upscale_full_service",
+    "classification": "golf_resort_family_capable",
+    "country": "Spain",
+    "notes": "HOTEL_SPECIFIC_DATA from marriott.com PMISI + arabella.com. Golf course adjacency. Small meetings only — not large congress. Spa ~843 sqm.",
+    "meetingRoomCount": 2,
+    "adultsOnly": false
+  },
+  "demandTerritory": {
+    "label": "Mallorca / Son Vida / Palma Golf",
+    "country": "Spain",
+    "includes": [
+      "PRIMARY: Son Vida golf / sports / leisure group demand",
+      "SECONDARY: Island-wide Mallorca when Son Vida lodging is realistic",
+      "ADJACENT: Illes Balears golf and sports programs with Palma overnight evidence",
+      "STRETCH: Selected European golf travel only when Mallorca overnight is evidenced"
+    ],
+    "evaluationQuestion": "Could Sheraton Mallorca Arabella Golf Hotel realistically capture this group demand given 93 rooms, 2 small meeting rooms (max ~45), golf resort positioning, family capability, and Mallorca relevance — without requiring adults-only luxury castle or large ballroom capacity?",
+    "classifications": [
+      "TERRITORY_CORE",
+      "TERRITORY_NEARBY",
+      "TERRITORY_COMPETITIVE",
+      "TERRITORY_STRETCH",
+      "OUTSIDE_REALISTIC_TERRITORY"
+    ],
+    "displayLabels": {
+      "TERRITORY_CORE": "Son Vida Golf Core",
+      "TERRITORY_NEARBY": "Greater Mallorca Nearby",
+      "TERRITORY_COMPETITIVE": "Mallorca Competitive Set",
+      "TERRITORY_STRETCH": "Balearic / Iberia Stretch",
+      "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+    },
+    "classificationKeywords": {
+      "TERRITORY_CORE": ["son vida", "vinagrella", "arabella golf", "palma de mallorca"],
+      "TERRITORY_NEARBY": ["mallorca", "majorca", "illes balears", "islas baleares", "golf mallorca"],
+      "TERRITORY_COMPETITIVE": ["calvia", "santa ponsa", "bendinat", "alcudia"],
+      "TERRITORY_STRETCH": ["baleares", "ibiza", "menorca", "costa del sol golf"],
+      "OUTSIDE_REALISTIC_TERRITORY": ["madrid only", "canarias", "algarve only"]
+    }
+  }
+}

@@ -305,7 +305,10 @@
             font-size: 11px;
             font-weight: 600;
             color: var(--dc-accent);
-            margin-top: 6px;
+            margin-top: auto;
+            padding-top: 8px;
+            text-align: right;
+            align-self: flex-end;
         }
         .news-drawer-analysis {
             display: none;
@@ -1423,13 +1426,13 @@
                     <p class="drawer-section-label" style="margin:0;">Recommended next step</p>
                     <p id="drawerAnalysisAction"></p>
                 </div>
+                <div class="analysis-block" id="drawerContactsWrap" style="display:none;">
+                    <p class="drawer-section-label" style="margin:0;">Relevant People</p>
+                    <div id="drawerContacts" class="drawer-contacts" aria-live="polite"></div>
+                </div>
                 <div class="analysis-block" id="drawerAnalysisWatchingWrap" style="display:none;">
                     <p class="drawer-section-label" style="margin:0;">What we're watching</p>
                     <ul id="drawerAnalysisWatching" class="analysis-watching"></ul>
-                </div>
-                <div class="analysis-block" id="drawerContactsWrap" style="display:none;">
-                    <p class="drawer-section-label" style="margin:0;">Relevant Contacts</p>
-                    <div id="drawerContacts" class="drawer-contacts" aria-live="polite"></div>
                 </div>
             </div>
             <div class="news-drawer-highlights">
@@ -1448,7 +1451,7 @@
     </aside>
 
     <script src="/js/dealality-memberstack-auth.js"></script>
-    <script src="market-alerts.js?v=1.4.0-stakeholder"></script>
+    <script src="market-alerts.js?v=1.4.2-umusic-people"></script>
     <script src="/embed-chrome.js" defer></script>
 
     <div class="success-message" id="successMessage" role="status" aria-live="polite">

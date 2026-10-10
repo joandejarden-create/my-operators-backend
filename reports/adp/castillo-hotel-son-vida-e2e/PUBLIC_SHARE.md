@@ -1,0 +1,8 @@
+# Public Share
+
+URL: https://my-operators-backend-production.up.railway.app/owner-ai-demand-share.html?share=adpshare.v1.eyJ2IjoxLCJ0aWQiOiJzaHRfNjViNDg1ZDdhZWQ1ZDJmZGE3ZTNkNzJjIiwicHJvcGVydHlJZCI6ImFkcF9jYXN0aWxsb19ob3RlbF9zb25fdmlkYSIsInN1cmZhY2VzIjpbInJlcG9ydCIsImV2aWRlbmNlIiwicHJvcGVydGllcyIsInB1YmxpY2F0aW9uX21ldGEiXSwicmVwb3J0U2NvcGUiOiJjdXJyZW50X3B1Ymxpc2hlZCIsImlhdCI6MTc5MTQ1MTY5MCwiZXhwIjpudWxsfQ.pwBJU3iWf40AyLHp-VXdutOS7hI99IPahHzuOjpXInc
+
+Token: sht_65b485d7aed5d2fda7e3d72c
+Login required: NO (capability token)
+Period: adp_period_adp_castillo_hotel_son_vida_20261008084542_23b782
+HTTP verify: pending deploy of share registry to Railway

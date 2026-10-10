@@ -1,0 +1,58 @@
+{
+  "generatedAt": "2026-10-03T18:10:00.000Z",
+  "law": "HI_COMPLETE && ADP_TERMINAL && GDI_TERMINAL",
+  "adpReadyDoesNotCompleteOnboarding": true,
+  "gdiCurrentCycleRequirementAdded": true,
+  "gdiThresholdsChanged": false,
+  "bethesdaRegression": false,
+  "orchestratorRootCause": "onboardHotelIntelligence set adpGdiReady=true on HI-complete alone; multi-hotel sprint stopped after ADP READY without GDI cycle",
+  "orchestratorFix": "buildE2eOnboardingFlags wired into onboardHotelIntelligence; adpGdiReady always false as e2e signal; gdiResearchRequired until GDI terminal",
+  "hotels": {
+    "yotel": {
+      "hpc": "recrPQcZg7SFARRb2",
+      "hi": "COMPLETE",
+      "adp": "READY",
+      "gdiDiscoveryRun": true,
+      "market": "La Côte / Nyon / Geneva Airport / Founex corridor",
+      "discoveryCandidates": 12,
+      "qualified": 12,
+      "customerReady": 0,
+      "futureWatch": 1,
+      "topRejectionReasons": [
+        "INSUFFICIENT_EVIDENCE:11",
+        "NO_LODGING_SIGNAL:6",
+        "OTHER:6",
+        "FUTURE_UNCONFIRMED:1"
+      ],
+      "gdiTerminal": "PROCESSED_PUBLIC_DATA_CEILING",
+      "founderVerdict": "ADP READY — GDI VERIFIED PUBLIC DATA CEILING",
+      "e2eComplete": true
+    },
+    "spice": {
+      "hpc": "recKRJjcPnb4tVDDS",
+      "hi": "COMPLETE",
+      "adp": "READY",
+      "currentGdiCycleRun": true,
+      "discoveryCandidates": 17,
+      "customerReady": 0,
+      "futureWatch": 78,
+      "publicDataCeilingVerified": true,
+      "gdiTerminal": "PROCESSED_PUBLIC_DATA_CEILING",
+      "founderVerdict": "ADP READY — GDI VERIFIED PUBLIC DATA CEILING",
+      "e2eComplete": true
+    },
+    "ac": {
+      "hpc": "rec2PVBDavppGpenm",
+      "hi": "COMPLETE",
+      "adp": "READY",
+      "currentGdiCycleRun": true,
+      "discoveryCandidates": 11,
+      "customerReady": 0,
+      "futureWatch": 33,
+      "publicDataCeilingVerified": true,
+      "gdiTerminal": "PROCESSED_PUBLIC_DATA_CEILING",
+      "founderVerdict": "ADP READY — GDI VERIFIED PUBLIC DATA CEILING",
+      "e2eComplete": true
+    }
+  }
+}

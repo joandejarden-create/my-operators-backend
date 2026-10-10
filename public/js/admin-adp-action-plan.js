@@ -399,32 +399,44 @@
       var viewPdf = document.getElementById("aapViewPdf");
       if (viewPdf) {
         viewPdf.addEventListener("click", function () {
-          var reviewId =
-            viewPdf.getAttribute("data-review-id") ||
-            (state.preview && state.preview.reviewId) ||
-            "";
-          var prop = state.properties.find(function (p) {
-            return p.propertyId === (state.selectedId || "");
-          });
-          if (!reviewId && prop) reviewId = prop.reviewId || "";
-          if (!reviewId) {
-            alert("AI Demand Performance Review PDF not available yet.");
+          var propertyId = state.selectedId || "";
+          if (!propertyId) {
+            alert("Select a property first.");
             return;
           }
-          authFetch(
-            "/api/admin/ai-demand-positioning/monthly-reviews/" +
-              encodeURIComponent(reviewId) +
-              "/pdf"
-          )
+          var pdfUrl =
+            "/api/admin/ai-demand-positioning/current-report-pdf/" +
+            encodeURIComponent(propertyId);
+          authFetch(pdfUrl)
             .then(function (res) {
-              if (!res.ok) throw new Error("Performance Review PDF not available yet.");
-              return res.blob();
+              if (res.ok) return res.blob().then(function (blob) {
+                return { blob: blob, regenerated: false };
+              });
+              if (res.status !== 404) {
+                throw new Error("Current ADP PDF not available (" + res.status + ").");
+              }
+              // Generate-on-miss for current published ADP PDF
+              return authFetch(pdfUrl + "/generate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ propertyId: propertyId }),
+              }).then(function (genRes) {
+                if (!genRes.ok) {
+                  throw new Error("ADP PDF generate failed (" + genRes.status + ").");
+                }
+                return authFetch(pdfUrl).then(function (r2) {
+                  if (!r2.ok) throw new Error("ADP PDF missing after generate.");
+                  return r2.blob().then(function (blob) {
+                    return { blob: blob, regenerated: true };
+                  });
+                });
+              });
             })
-            .then(function (blob) {
-              window.open(URL.createObjectURL(blob), "_blank");
+            .then(function (pack) {
+              window.open(URL.createObjectURL(pack.blob), "_blank");
             })
             .catch(function (e) {
-              alert(e.message);
+              alert(e.message || "Unable to open ADP PDF.");
             });
         });
       }

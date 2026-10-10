@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 /**
- * Issue a read-only GDI share token for Bethesda pilot.
+ * Issue a read-only GDI share token.
  *
  *   GDI_SHARE_CAPABILITY_ALLOW_DEV_SECRET=1 node scripts/gdi-issue-share.mjs
+ *   node scripts/gdi-issue-share.mjs --hotelId=rec35fExUxCClpOP6 --label=hilton-ts-dev-share
  *   node scripts/gdi-issue-share.mjs --expires=2026-12-31
  *   node scripts/gdi-revoke-share.mjs --token-id=gdisht_...
  *   node scripts/gdi-restore-share.mjs --share="https://…?share=gdishare.v1.…"
@@ -25,15 +26,22 @@ function arg(name) {
 }
 
 const expires = arg("expires");
-const label = arg("label") || "Bethesda Marriott GDI Pilot";
+const hotelId = arg("hotelId") || arg("hotel") || PILOT_HOTEL_ID;
+const tokenId = arg("token-id") || arg("tokenId") || null;
+const label =
+  arg("label") ||
+  (hotelId === PILOT_HOTEL_ID
+    ? "Bethesda Marriott GDI Pilot"
+    : `gdi-share:${hotelId}`);
 
 process.env.GDI_SHARE_CAPABILITY_ALLOW_DEV_SECRET =
   process.env.GDI_SHARE_CAPABILITY_ALLOW_DEV_SECRET || "1";
 
 const issued = issueGdiShareCapability({
-  hotelId: PILOT_HOTEL_ID,
+  hotelId,
   label,
   expiresAt: expires || null,
+  tokenId: tokenId || null,
 });
 
 console.log(

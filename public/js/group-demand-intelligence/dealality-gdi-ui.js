@@ -14,7 +14,7 @@
 
   var ACTION_STATUS_DISPLAY = {
     CONTACT_NOW: "PURSUE NOW",
-    QUALIFY_NOW: "QUALIFY",
+    QUALIFY_NOW: "CONTACT",
     WATCH: "WATCH",
     TOO_EARLY: "TOO EARLY",
     CLOSED: "CLOSED",
@@ -27,7 +27,7 @@
       pillClass: "gdi-pill gdi-pill-action-pursue",
     },
     QUALIFY_NOW: {
-      label: "QUALIFY",
+      label: "CONTACT",
       pillClass: "gdi-pill gdi-pill-action-qualify",
     },
     WATCH: { label: "WATCH", pillClass: "gdi-pill gdi-pill-action-watch" },
@@ -975,7 +975,7 @@
       },
       {
         value: "QUALIFY_NOW",
-        label: "Qualify",
+        label: "Contact",
         swatch: ACTION_SWATCH.QUALIFY_NOW,
       },
       { value: "WATCH", label: "Watch", swatch: ACTION_SWATCH.WATCH },
@@ -1108,7 +1108,19 @@
         });
       }
     }
+    // Customer GDI no longer exposes an All/Ready/Watching workflow chip row.
+    // Ready vs Watch remains visible on cards; Priority + Action Window stay as browse filters.
     return rows;
+  }
+
+  /** @deprecated Customer workflow chip row removed — always empty. */
+  function normalizeCustomerWorkflowFilter() {
+    return "";
+  }
+
+  /** @deprecated Customer workflow chip row removed — render nothing. */
+  function workflowPresetHtml() {
+    return "";
   }
 
   function sortOpportunities(rows, sortKey, sortDir) {
@@ -1146,7 +1158,7 @@
     o = o || {};
     return {
       opportunityId: o.id,
-      title: o.title,
+      title: o.displayTitle || o.title,
       organizationName: o.organizationName,
       segment: o.segment,
       eventStartDate: o.eventStartDate || null,
@@ -1159,30 +1171,223 @@
       hotelFitScore: o.hotelFitScore,
       evidenceConfidence: o.evidenceConfidence,
       summaryWhat: o.summaryWhat,
-      whyNow: o.whyNow,
-      recommendedNextStep: o.recommendedAction || o.recommendedNextStep,
+      whyNow: o.watchCardWhenToAct || o.whyNow,
+      recommendedNextStep:
+        o.watchCardRecommendedNextStep ||
+        o.recommendedAction ||
+        o.recommendedNextStep,
+      watchCardWhyMatters: o.watchCardWhyMatters || null,
+      watchCardCurrentStatus: o.watchCardCurrentStatus || null,
+      watchCardLodgingController: o.watchCardLodgingController || null,
+      watchCardHotelSelectionStatus: o.watchCardHotelSelectionStatus || null,
+      watchCardWhenToAct: o.watchCardWhenToAct || null,
+      watchCardNextTrigger: o.watchCardNextTrigger || o.nextTriggerCondition || null,
+      watchCardMonitoringStatus: o.watchCardMonitoringStatus || null,
+      watchCardMonitoringLastChecked: o.watchCardMonitoringLastChecked || null,
+      watchCardMonitoringNextExpected: o.watchCardMonitoringNextExpected || null,
+      watchCardRecommendedNextStep: o.watchCardRecommendedNextStep || null,
       primaryContact: o.primaryContact,
+      buyerEntity: o.buyerEntity || null,
+      buyerRole: o.buyerRole || null,
+      publicContactPath: o.publicContactPath || null,
+      whoPathClass: o.whoPathClass || o.contactPathClass || null,
+      readinessState: o.readinessState || null,
+      customerFacingState: o.customerFacingState || null,
       opportunityQualificationLabel:
         o.opportunityQualificationLabel || o.opportunityQualification,
       priority: o.priority,
       bookingWindowStatus: o.bookingWindowStatus,
+      pursuitId: o.pursuitId || null,
+      pursuitStatus: o.pursuitStatus || null,
+      canStartPursuit: o.canStartPursuit === true,
+      outreachReadiness: o.outreachReadiness || null,
     };
   }
 
-  /**
-   * Brand Explorer brand-card shell for opportunity tiles.
-   * Classification: REUSABLE_PRODUCT_UI
-   * Presentation contract: pre-V5A Bethesda tile structure (eligibility is separate).
-   */
+  function pursuitActionButtonHtml(it, linked) {
+    linked = linked || {};
+    var pursuitId = linked.pursuitId || it.pursuitId;
+    var canStart = linked.canStartPursuit === true || it.canStartPursuit === true;
+    var openId = it.opportunityId || it.id;
+    if (pursuitId) {
+      return (
+        '<button type="button" class="gdi-btn gdi-btn-secondary" data-pursuit-view="' +
+        esc(pursuitId) +
+        '" data-open="' +
+        esc(openId) +
+        '">View Pursuit</button>'
+      );
+    }
+    if (canStart) {
+      return (
+        '<button type="button" class="gdi-btn gdi-btn-secondary" data-pursuit-start="' +
+        esc(openId) +
+        '">Start Pursuit</button>'
+      );
+    }
+    return "";
+  }
+
+  function pursuitPanelHtml(pursuit) {
+    if (!pursuit) {
+      return '<p class="gdi-muted">No active pursuit for this opportunity.</p>';
+    }
+    return (
+      '<div class="gdi-pursuit-panel">' +
+      "<ul>" +
+      "<li><strong>Pursuit status:</strong> " +
+      esc(pursuit.pursuitStatus || "—") +
+      "</li>" +
+      "<li><strong>GDI status:</strong> " +
+      esc(pursuit.gdiFacingState || "—") +
+      "</li>" +
+      "<li><strong>Outreach readiness:</strong> " +
+      esc(pursuit.outreachReadiness || "—") +
+      "</li>" +
+      "<li><strong>Hotel-selection status:</strong> " +
+      esc(pursuit.hotelInclusionStatus || "—") +
+      "</li>" +
+      "<li><strong>Controller:</strong> " +
+      esc(pursuit.contactOrganization || pursuit.controllerName || "—") +
+      "</li>" +
+      "<li><strong>Contact:</strong> " +
+      esc(
+        [pursuit.contactName, pursuit.contactRole, pursuit.contactEmail]
+          .filter(Boolean)
+          .join(" · ") || "—"
+      ) +
+      "</li>" +
+      (pursuit.controllerOutreachEvidenceQuestion || pursuit.evidenceQuestion
+        ? "<li><strong>Evidence question:</strong> " +
+          esc(pursuit.controllerOutreachEvidenceQuestion || pursuit.evidenceQuestion) +
+          "</li>"
+        : "") +
+      "<li><strong>Last outreach:</strong> " +
+      esc(pursuit.lastContactDate || "—") +
+      "</li>" +
+      "<li><strong>Sent status:</strong> " +
+      esc(
+        pursuit.responseStatus === "SENT" || pursuit.lastContactDate
+          ? "SENT"
+          : pursuit.draftMessage
+            ? "DRAFT_NOT_SENT"
+            : "—"
+      ) +
+      "</li>" +
+      "<li><strong>Next follow-up:</strong> " +
+      esc(pursuit.nextFollowUpDate || "—") +
+      "</li>" +
+      "<li><strong>Next action:</strong> " +
+      esc(pursuit.nextAction || "—") +
+      "</li>" +
+      "<li><strong>Next trigger:</strong> " +
+      esc(pursuit.nextTrigger || "—") +
+      "</li>" +
+      (pursuit.controllerOutreachStructuredFacts || pursuit.structuredResponseFacts
+        ? "<li><strong>Response facts:</strong> " +
+          esc(
+            typeof (pursuit.controllerOutreachStructuredFacts ||
+              pursuit.structuredResponseFacts) === "string"
+              ? pursuit.controllerOutreachStructuredFacts || pursuit.structuredResponseFacts
+              : JSON.stringify(
+                  pursuit.controllerOutreachStructuredFacts || pursuit.structuredResponseFacts
+                )
+          ) +
+          "</li>"
+        : "") +
+      "<li><strong>Decision window:</strong> " +
+      esc(
+        (pursuit.decisionWindowStart || "—") +
+          " → " +
+          (pursuit.decisionWindowEnd || "—")
+      ) +
+      "</li>" +
+      "<li><strong>Response:</strong> " +
+      esc(pursuit.responseStatus || "—") +
+      "</li>" +
+      "<li><strong>Outcome:</strong> " +
+      esc(pursuit.outcome || "—") +
+      "</li>" +
+      "<li><strong>Assigned:</strong> " +
+      esc(pursuit.assignedTo || "UNASSIGNED") +
+      "</li></ul>" +
+      (pursuit.draftSubject
+        ? '<div class="gdi-brief-block"><div class="gdi-meta-label">Draft subject</div><p>' +
+          esc(pursuit.draftSubject) +
+          "</p></div>"
+        : "") +
+      (pursuit.draftMessage
+        ? '<div class="gdi-brief-block"><div class="gdi-meta-label">Draft message (' +
+          esc(pursuit.draftLanguage || "es") +
+          ")</div><pre class=\"gdi-outreach-draft\">" +
+          esc(pursuit.draftMessage) +
+          "</pre></div>"
+        : "") +
+      (pursuit.notes
+        ? '<div class="gdi-brief-block"><div class="gdi-meta-label">Notes</div><p>' +
+          esc(pursuit.notes) +
+          "</p></div>"
+        : "") +
+      "</div>"
+    );
+  }
+
+  function readinessPillHtml(it, linked) {
+    // Maturity / readiness badges — QUALIFIED (pilot) vs ACTIONABLE (Ready) vs Future Watch.
+    var maturity = String(
+      (linked && linked.gdiMaturityState) || (it && it.gdiMaturityState) || ""
+    ).toUpperCase();
+    if (maturity === "QUALIFIED") {
+      return (
+        '<span class="gdi-tile-pill gdi-pill-action-qualify" data-facet="maturity">QUALIFIED</span>'
+      );
+    }
+    if (maturity === "ACTIONABLE") {
+      return (
+        '<span class="gdi-tile-pill gdi-pill-action-pursue" data-facet="maturity">ACTIONABLE</span>'
+      );
+    }
+    var facing = String(
+      (linked && linked.customerFacingState) ||
+        (it && it.customerFacingState) ||
+        ""
+    ).toUpperCase();
+    var readiness = String(
+      (linked && linked.readinessState) || (it && it.readinessState) || ""
+    ).toUpperCase();
+    if (
+      facing === "FUTURE_WATCH" ||
+      (/WATCH/.test(facing) && readiness !== "READY")
+    ) {
+      return (
+        '<span class="gdi-tile-pill gdi-pill-action-watch" data-facet="readiness">Future Watch</span>'
+      );
+    }
+    return "";
+  }
+
   function opportunityTileHtml(it, linked, activeFilters) {
     linked = linked || {};
     activeFilters = activeFilters || {};
     var priority = linked.priority || it.priority || "WATCHLIST";
     var tone = priorityToneClass(priority);
     var id = it.opportunityId || it.id;
-    var title = scrubEventDatesFromText(it.title || "") || "—";
+    var title =
+      scrubEventDatesFromText(
+        linked.displayTitle || it.title || linked.title || ""
+      ) || "—";
     var org = it.organizationName || linked.organizationName || "—";
     var segment = it.segment || linked.segment || "";
+    // Never show internal research jargon on customer tiles
+    if (/child account|demand campaign|generator|mega-event|plausible_fit/i.test(String(segment))) {
+      segment =
+        linked.participationRole ||
+        it.participationRole ||
+        linked.demandSignalTypeLabel ||
+        it.demandSignalTypeLabel ||
+        "";
+      segment = String(segment || "").replace(/_/g, " ");
+    }
     if (/^[a-z][a-z0-9]*(?:_[a-z0-9]+){1,8}$/.test(String(segment).trim()) && !/\s/.test(String(segment))) {
       segment =
         linked.demandSignalTypeLabel ||
@@ -1202,6 +1407,10 @@
       contact && contact.name && contact.name !== "UNKNOWN" ? contact.name : "";
     var contactEmail = contact && contact.email ? contact.email : "";
     var contactPhone = contact && contact.phone ? contact.phone : "";
+    var buyerEntity = linked.buyerEntity || it.buyerEntity || "";
+    var buyerRole = linked.buyerRole || it.buyerRole || "";
+    var contactPath =
+      linked.publicContactPath || it.publicContactPath || "";
     var contactBits = [];
     if (contactName) {
       contactBits.push(
@@ -1217,6 +1426,29 @@
       contactBits.push(
         '<div class="brand-card__contact-line">' + esc(contactPhone) + "</div>"
       );
+    }
+    // Org / role path when no named person (WHO ORG_PATH) — do not imply a person exists.
+    if (!contactName && (buyerEntity || buyerRole || contactPath)) {
+      if (buyerEntity) {
+        contactBits.push(
+          '<div class="brand-card__contact-name">' + esc(buyerEntity) + "</div>"
+        );
+      }
+      if (buyerRole) {
+        contactBits.push(
+          '<div class="brand-card__contact-line">' + esc(buyerRole) + "</div>"
+        );
+      }
+      // Hide generic homepage / root URLs from footer (not a buyer path)
+      var pathOk =
+        contactPath &&
+        !/^https?:\/\/[^/]+\/?$/i.test(String(contactPath).trim()) &&
+        !/\/(en\/)?home\/?$/i.test(String(contactPath));
+      if (pathOk) {
+        contactBits.push(
+          '<div class="brand-card__contact-line">' + esc(contactPath) + "</div>"
+        );
+      }
     }
     if (!contactBits.length) {
       contactBits.push(
@@ -1236,6 +1468,7 @@
       "</div>" +
       '<div class="brand-card__pills gdi-tile-pills">' +
       weeklyDeltaPillHtml(linked) +
+      readinessPillHtml(it, linked) +
       tileActionPill(bookingStatus, priority, activeFilters) +
       tileEventDatePill(it, linked) +
       commercialProgressionCompactPill(
@@ -1266,6 +1499,28 @@
       (summary
         ? '<div class="brand-card__description">' + esc(summary) + "</div>"
         : "") +
+      (function () {
+        var disc =
+          linked.modeledDemandDisclaimer || it.modeledDemandDisclaimer || "";
+        if (
+          !disc &&
+          linked.modeledRoomsMin != null &&
+          linked.modeledRoomsMax != null
+        ) {
+          disc =
+            "Estimated " +
+            linked.modeledRoomsMin +
+            "\u2013" +
+            linked.modeledRoomsMax +
+            " rooms. Modeled demand \u2014 lodging not verified.";
+        }
+        if (!disc) return "";
+        return (
+          '<div class="brand-card__meta brand-card__meta--modeled">' +
+          esc(disc) +
+          "</div>"
+        );
+      })() +
       '<div class="brand-card__footer brand-card__footer--split">' +
       '<div class="brand-card__contact">' +
       contactBits.join("") +
@@ -1420,13 +1675,82 @@
       esc(it.evidenceConfidence != null ? it.evidenceConfidence : "—") +
       "</strong></span></div>" +
       '<div class="gdi-brief-card__body">' +
-      '<div class="gdi-brief-block"><div class="gdi-meta-label">Why Now</div><p>' +
-      esc(it.whyNow || "—") +
-      '</p></div><div class="gdi-brief-block gdi-brief-block--action"><div class="gdi-meta-label">Recommended Action</div><p>' +
-      esc(it.recommendedNextStep || "—") +
-      "</p></div></div>" +
+      (String(
+        linked.customerFacingState || it.customerFacingState || ""
+      ).toUpperCase() === "FUTURE_WATCH" &&
+      (linked.watchCardWhyMatters || it.watchCardWhyMatters)
+        ? '<div class="gdi-brief-block"><div class="gdi-meta-label">Why this matters</div><p>' +
+          esc(linked.watchCardWhyMatters || it.watchCardWhyMatters || "—") +
+          '</p></div><div class="gdi-brief-block"><div class="gdi-meta-label">Current status</div><p>' +
+          esc(linked.watchCardCurrentStatus || it.watchCardCurrentStatus || "—") +
+          '</p></div><div class="gdi-brief-block"><div class="gdi-meta-label">Who controls lodging</div><p>' +
+          esc(
+            linked.watchCardLodgingController ||
+              it.watchCardLodgingController ||
+              "—"
+          ) +
+          '</p></div><div class="gdi-brief-block"><div class="gdi-meta-label">Hotel-selection status</div><p>' +
+          esc(
+            linked.watchCardHotelSelectionStatus ||
+              it.watchCardHotelSelectionStatus ||
+              "—"
+          ) +
+          '</p></div><div class="gdi-brief-block"><div class="gdi-meta-label">When to act</div><p>' +
+          esc(
+            linked.watchCardWhenToAct || it.watchCardWhenToAct || it.whyNow || "—"
+          ) +
+          '</p></div><div class="gdi-brief-block"><div class="gdi-meta-label">Next trigger</div><p>' +
+          esc(
+            linked.watchCardNextTrigger ||
+              it.watchCardNextTrigger ||
+              linked.nextTriggerCondition ||
+              "—"
+          ) +
+          "</p></div>" +
+          (linked.watchCardMonitoringStatus || it.watchCardMonitoringStatus
+            ? '<div class="gdi-brief-block"><div class="gdi-meta-label">Publication monitoring</div><p>' +
+              esc(
+                linked.watchCardMonitoringStatus ||
+                  it.watchCardMonitoringStatus ||
+                  "—"
+              ) +
+              (linked.watchCardMonitoringLastChecked ||
+              it.watchCardMonitoringLastChecked
+                ? "<br><span class=\"gdi-meta-quiet\">Last checked: " +
+                  esc(
+                    linked.watchCardMonitoringLastChecked ||
+                      it.watchCardMonitoringLastChecked
+                  ) +
+                  "</span>"
+                : "") +
+              (linked.watchCardMonitoringNextExpected ||
+              it.watchCardMonitoringNextExpected
+                ? "<br><span class=\"gdi-meta-quiet\">" +
+                  esc(
+                    linked.watchCardMonitoringNextExpected ||
+                      it.watchCardMonitoringNextExpected
+                  ) +
+                  "</span>"
+                : "") +
+              "</p></div>"
+            : "") +
+          '<div class="gdi-brief-block gdi-brief-block--action"><div class="gdi-meta-label">Recommended next step</div><p>' +
+          esc(
+            linked.watchCardRecommendedNextStep ||
+              it.watchCardRecommendedNextStep ||
+              it.recommendedNextStep ||
+              "—"
+          ) +
+          "</p></div>"
+        : '<div class="gdi-brief-block"><div class="gdi-meta-label">Why Now</div><p>' +
+          esc(it.whyNow || "—") +
+          '</p></div><div class="gdi-brief-block gdi-brief-block--action"><div class="gdi-meta-label">Recommended Action</div><p>' +
+          esc(it.recommendedNextStep || "—") +
+          "</p></div>") +
+      "</div>" +
       '<div class="gdi-brief-card__footer">' +
       contactSummaryHtml(contact) +
+      pursuitActionButtonHtml(it, linked) +
       '<button type="button" class="gdi-btn gdi-btn-primary" data-open="' +
       esc(openId) +
       '">View Details</button></div></article>'
@@ -2003,14 +2327,19 @@
       '<div class="gdi-score-grid">' +
       '<div class="gdi-score-cell"><div class="n">' +
       esc(o.hotelFitScore) +
-      '</div><div class="l">Hotel Fit</div></div>' +
+      '</div><div class="l">Overall Hotel Fit</div></div>' +
       Object.keys(comps)
         .map(function (k) {
+          var compLabel = labels[k] || fitLabel(k);
+          // Never re-label a component as "Hotel Fit" (duplicate of overall)
+          if (/^hotel\s*fit$/i.test(String(compLabel))) {
+            compLabel = fitLabel(k) !== "Hotel Fit" ? fitLabel(k) : k;
+          }
           return (
             '<div class="gdi-score-cell"><div class="n">' +
             esc(comps[k]) +
             '</div><div class="l">' +
-            esc(labels[k] || fitLabel(k)) +
+            esc(compLabel) +
             "</div></div>"
           );
         })
@@ -2118,7 +2447,7 @@
       esc((audit.hotelFit && audit.hotelFit.explanation) || o.fitExplanation || "") +
       "</p>" +
       '<div class="gdi-signal-row">' +
-      "<div><span class=\"gdi-meta-label\">Hotel Fit</span><strong>" +
+      "<div><span class=\"gdi-meta-label\">Overall Hotel Fit</span><strong>" +
       esc(o.hotelFitScore) +
       "</strong></div>" +
       "<div><span class=\"gdi-meta-label\">Opportunity Qualification</span><strong>" +
@@ -2127,10 +2456,44 @@
       "<div><span class=\"gdi-meta-label\">Evidence Confidence</span><strong>" +
       esc(o.evidenceConfidence) +
       "</strong></div></div></section>" +
+      (String(o.customerFacingState || "").toUpperCase() === "FUTURE_WATCH" &&
+      o.watchCardWhyMatters
+        ? '<section class="gdi-section gdi-section--watch-early"><h3>Early-warning lodging status</h3><ul>' +
+          "<li><strong>Why this matters:</strong> " +
+          esc(o.watchCardWhyMatters) +
+          "</li>" +
+          "<li><strong>Current status:</strong> " +
+          esc(o.watchCardCurrentStatus || "—") +
+          "</li>" +
+          "<li><strong>Who controls lodging:</strong> " +
+          esc(o.watchCardLodgingController || o.lodgingControlSummary || "—") +
+          "</li>" +
+          "<li><strong>Hotel-selection status:</strong> " +
+          esc(o.watchCardHotelSelectionStatus || o.hotelSelectionProcess || "—") +
+          "</li>" +
+          "<li><strong>When to act:</strong> " +
+          esc(o.watchCardWhenToAct || "—") +
+          "</li>" +
+          "<li><strong>Next trigger:</strong> " +
+          esc(o.watchCardNextTrigger || o.nextTriggerCondition || "—") +
+          "</li>" +
+          (o.watchCardMonitoringStatus
+            ? "<li><strong>Publication monitoring:</strong> " +
+              esc(o.watchCardMonitoringStatus) +
+              (o.watchCardMonitoringLastChecked
+                ? " · Last checked: " + esc(o.watchCardMonitoringLastChecked)
+                : "") +
+              (o.watchCardMonitoringNextExpected
+                ? " · " + esc(o.watchCardMonitoringNextExpected)
+                : "") +
+              "</li>"
+            : "") +
+          "</ul></section>"
+        : "") +
       '<section class="gdi-section gdi-section--now"><h3>Why Now</h3><p><strong>' +
       esc(actionStatusLabel(o.bookingWindowStatus) || o.bookingWindowLabel || "—") +
       "</strong></p><p>" +
-      esc(o.whyNow || "—") +
+      esc(o.watchCardWhenToAct || o.whyNow || "—") +
       "</p><p>Location: " +
       esc(o.eventLocationStatusLabel || o.eventLocationStatus || "—") +
       " · " +
@@ -2139,10 +2502,20 @@
       esc(o.demandTerritoryFitLabel || "—") +
       "</p></section>" +
       '<section class="gdi-section gdi-section--action"><h3>Suggested Action</h3><p>' +
-      esc(o.recommendedAction || "—") +
+      esc(o.watchCardRecommendedNextStep || o.recommendedAction || "—") +
       "</p>" +
       actionBasis +
-      "</section>" +
+      '<p class="gdi-pursuit-actions">' +
+      pursuitActionButtonHtml(
+        { opportunityId: o.id, id: o.id, canStartPursuit: o.canStartPursuit, pursuitId: o.pursuitId },
+        o
+      ) +
+      "</p></section>" +
+      (o._pursuitDto
+        ? '<section class="gdi-section gdi-section--pursuit"><h3>Pursuit</h3>' +
+          pursuitPanelHtml(o._pursuitDto) +
+          "</section>"
+        : "") +
       '<section class="gdi-section gdi-section--contact"><h3>Contact</h3>' +
       whoShouldSalesContactHtml(o, extras.whoContactHtml) +
       (o.contactPathClass
@@ -2524,10 +2897,14 @@
     reconcileBrowseFilters: reconcileBrowseFilters,
     actionPresetHtml: actionPresetHtml,
     priorityPresetHtml: priorityPresetHtml,
+    workflowPresetHtml: workflowPresetHtml,
+    normalizeCustomerWorkflowFilter: normalizeCustomerWorkflowFilter,
     resultsToolbarHtml: resultsToolbarHtml,
     filterOpportunities: filterOpportunities,
     sortOpportunities: sortOpportunities,
     opportunityToBriefItem: opportunityToBriefItem,
+    pursuitActionButtonHtml: pursuitActionButtonHtml,
+    pursuitPanelHtml: pursuitPanelHtml,
     opportunityTileHtml: opportunityTileHtml,
     opportunityCardsGridHtml: opportunityCardsGridHtml,
     opportunityBrowseChromeHtml: opportunityBrowseChromeHtml,

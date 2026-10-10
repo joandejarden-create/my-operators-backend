@@ -55,15 +55,15 @@ Internal QA only — see `SEP_VS_OCT2_QA.md`. Sept remains PRE_PILOT_REFERENCE; 
 
 ### I. Client View
 
-Published SoT → Oct 2. Pilot Start Oct 1 · Baseline Measurement Oct 2 · Last Measurement Oct 2 · Next Formal Remeasurement November 2026. No PoP delta yet.
+Production share (token unchanged) resolves to Oct 2 period `…62428a`. Live KPIs: Consideration 42.9 · Scenario Presence 76.2 · Reality Coverage 20.0 · 63×4. Trends: Baseline · October 2, 2026 · Monitoring Active · Next formal remeasurement November 2026. No PoP delta. No “Last Research” on ADP.
 
 ### J. PDF
 
-Generated from Oct 2 published edition (`periodId` …62428a). PASS.
+Generated from Oct 2 published edition (`periodId` …62428a). Archived + current-report-pdf store. PASS.
 
 ### K. Admin Row
 
-Labels: Last Measurement / Baseline·Monitoring. PDF View+Download + ADP Client Open/Copy + Archive wired. Report Archive API routes registered.
+Labels: Last Measurement / Baseline·Monitoring. PDF View+Download + ADP Client Open/Copy + Archive wired. Report Archive API + store module deployed (`94ad277` / `8bbe8f6`).
 
 ### L. Archive
 
@@ -72,6 +72,10 @@ Sep PRE_PILOT_REFERENCE + Oct 2 OFFICIAL_BASELINE archived (immutable). GDI Day-
 ### M. November Anchor
 
 November ADP compares to **Oct 2 official baseline** (not September).
+
+### N. Production deploy
+
+Railway SUCCESS `1de8092b-f35a-4e80-8006-39d0bfd6b021` · revision `8bbe8f6`. External ADP + GDI smoke PASS. Share token unchanged. GDI unchanged.
 
 ---
 

@@ -1,0 +1,63 @@
+{
+  "threeRows": [
+    {
+      "propertyId": "adp_cambridge_beaches_bermuda",
+      "rootCause": "FALSE_POSITIVE_REVIEW",
+      "detail": "Independent property-owned domain cambridgebeaches.com flagged as brand mismatch",
+      "fixed": "YES",
+      "rerunRequired": "NO",
+      "finalStatus": "CERTIFIED"
+    },
+    {
+      "propertyId": "adp_hotel_caribe_faranda_grand",
+      "rootCause": "FALSE_POSITIVE_REVIEW",
+      "detail": "choicehotels.com brand corporate citations ≠ owned-source rollup; hotelcaribe.com absent from citations (genuine owned share 0)",
+      "fixed": "YES",
+      "rerunRequired": "NO",
+      "finalStatus": "CERTIFIED"
+    },
+    {
+      "propertyId": "adp_now_now_noho",
+      "rootCause": "MIXED",
+      "detail": "OpenAI/Gemini/Claude confirmed real zero (raw has no NOW NOW); Perplexity 8/63 mentions; identity canary pass",
+      "fixed": "YES",
+      "rerunRequired": "NO",
+      "finalStatus": "CERTIFIED",
+      "zeroConfirmedReal": "YES"
+    }
+  ],
+  "yotelRunStatus": "CERTIFIED_COMPLETE",
+  "yotelCert": "CERTIFIED",
+  "yotelPublished": true,
+  "safe": true,
+  "enabled": true,
+  "smoke": [
+    {
+      "case": "CERTIFIED",
+      "pass": true,
+      "detail": "published"
+    },
+    {
+      "case": "QA_REVIEW_REQUIRED",
+      "pass": true,
+      "detail": "ADP_CERTIFICATION_REQUIRED: cannot publish official customer snapshot with certificationStatus=QA_REVIEW_REQUIRED"
+    },
+    {
+      "case": "QA_FAILED",
+      "pass": true,
+      "detail": "ADP_CERTIFICATION_REQUIRED: cannot publish official customer snapshot with certificationStatus=QA_FAILED"
+    },
+    {
+      "case": "LEGACY_UNCERTIFIED_PUBLISH",
+      "pass": true,
+      "detail": "blocked as expected for new official publish without CERTIFIED"
+    }
+  ],
+  "global": {
+    "certifiedCount": 3,
+    "reviewCount": 0,
+    "failCount": 0,
+    "legacyCount": 17,
+    "total": 20
+  }
+}

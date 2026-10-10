@@ -186,4 +186,6 @@ VENUE_TBD PLAUSIBLE is SD-script-scoped — not applied to NYC corpus.
 No broad discovery · No new market · No Webhound · No Surfe AUTO · No Bethesda/NYC mutation · No production deploy · No cron · No portfolio migration · Shadow only
 
 **FINAL SHA:** `2b91132252dd63fc8a3bd6c85856e05725abd009`  
-**PUSH:** pending
+**PUSH:** PASS
+
+DIRTY LEFT: unrelated workspace files preserved (market-alerts, share tokens, other GDI/HI paths, tmp).

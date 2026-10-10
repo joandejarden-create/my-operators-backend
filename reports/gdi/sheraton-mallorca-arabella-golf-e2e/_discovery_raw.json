@@ -1,0 +1,121 @@
+{
+  "hotelId": "recjhQdAUiSyxfCqE",
+  "startedAt": "2026-10-08T10:00:05.918Z",
+  "marketProfile": {
+    "market": "Mallorca",
+    "primaryLanguages": [
+      "es"
+    ],
+    "secondaryLanguages": [
+      "en"
+    ],
+    "selectiveLanguages": [
+      "ca"
+    ]
+  },
+  "idv2": {
+    "DEMAND_CONTROLLER_MODEL_IMPLEMENTED": true,
+    "PARTICIPANT_FIRST_IMPLEMENTED": true,
+    "DEMAND_CONTROLLER_FIRST_IMPLEMENTED": true,
+    "ACCOUNT_FIRST_IMPLEMENTED": true,
+    "HISTORICAL_PROCESS_FIRST_IMPLEMENTED": true,
+    "HOTEL_HISTORY_FIRST_IMPLEMENTED": true,
+    "ALL_PATHS_CONVERGE_TO_SAME_PACKET": true,
+    "MARKET_DISCOVERY_PROFILE_IMPLEMENTED": true,
+    "PATH_SELECTION_ENGINE_IMPLEMENTED": true,
+    "NEXT_BLOCKER_ENGINE_IMPLEMENTED": true,
+    "EQUIVALENT_EVIDENCE_POLICY_IMPLEMENTED": true,
+    "PURSUIT_HOTEL_SUPPLIED_EVIDENCE_LOOP_IMPLEMENTED": true,
+    "INTERMEDIARY_GRAPH_IMPLEMENTED": true,
+    "READY_THRESHOLD_CHANGED": false,
+    "WATCH_THRESHOLD_CHANGED": false,
+    "APIFY_USED": false
+  },
+  "spines": [
+    {
+      "spine": "PARTICIPANT_FIRST",
+      "basesOfDemand": [
+        "PUBLISHED_EVENT_DECOMPOSITION",
+        "PARTICIPANT_EXHIBITOR_SPONSOR_MINING",
+        "INTERNATIONAL_ORG_RECURRING_GROUPS"
+      ],
+      "convergesToSamePacket": true
+    },
+    {
+      "spine": "DEMAND_CONTROLLER_FIRST",
+      "basesOfDemand": [
+        "PUBLISHED_EVENT_DECOMPOSITION",
+        "INTERNATIONAL_ORG_RECURRING_GROUPS",
+        "PHARMA_MEDICAL_ECOSYSTEM"
+      ],
+      "convergesToSamePacket": true
+    },
+    {
+      "spine": "ACCOUNT_FIRST",
+      "basesOfDemand": [
+        "RECURRING_CORPORATE_MEETINGS",
+        "CORPORATE_TRIGGER_DEMAND",
+        "PROJECT_WORKFORCE_DEMAND"
+      ],
+      "convergesToSamePacket": true
+    },
+    {
+      "spine": "HISTORICAL_PROCESS_FIRST",
+      "basesOfDemand": [
+        "HISTORIC_ROTATION_PREDICTION",
+        "PUBLISHED_EVENT_DECOMPOSITION"
+      ],
+      "convergesToSamePacket": true
+    },
+    {
+      "spine": "HOTEL_HISTORY_FIRST",
+      "basesOfDemand": [
+        "HOTEL_HISTORY_LOOKALIKE",
+        "RECURRING_CORPORATE_MEETINGS"
+      ],
+      "convergesToSamePacket": true
+    }
+  ],
+  "spineRuns": {
+    "DEMAND_CONTROLLER_FIRST": {
+      "spine": "DEMAND_CONTROLLER_FIRST",
+      "queries": [
+        "organizer",
+        "secretariat",
+        "technical secretariat",
+        "PCO",
+        "DMC",
+        "housing",
+        "accommodation",
+        "official hotel"
+      ],
+      "controllers": [],
+      "packetHints": []
+    },
+    "ACCOUNT_FIRST": {
+      "spine": "ACCOUNT_FIRST",
+      "accounts": []
+    },
+    "HISTORICAL_PROCESS_FIRST": {
+      "spine": "HISTORICAL_PROCESS_FIRST",
+      "patterns": []
+    },
+    "HOTEL_HISTORY_FIRST": {
+      "spine": "HOTEL_HISTORY_FIRST",
+      "rows": []
+    },
+    "PARTICIPANT_FIRST": "WIRED_AND_USED_VIA_NATIVE_PIPELINE"
+  },
+  "pipeline": {
+    "nativeQueries": 30,
+    "pagesFetched": 33
+  },
+  "seedCampaigns": 10,
+  "discovered": 20,
+  "hygiene": {
+    "INVALID": 25,
+    "VALID_FUTURE": 1,
+    "VALID_WATCH": 1,
+    "INSUFFICIENT": 3
+  }
+}

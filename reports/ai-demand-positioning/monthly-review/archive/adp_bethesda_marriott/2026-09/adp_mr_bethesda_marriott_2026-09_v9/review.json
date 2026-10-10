@@ -1,0 +1,1689 @@
+{
+  "schema": "ADP_MONTHLY_EXECUTIVE_REVIEW_V1",
+  "contractVersion": "ADP_MONTHLY_EXECUTIVE_REVIEW_CONTRACT_V1",
+  "productTitle": "Dealality AI Demand Performance Review",
+  "productSubtitle": "Monthly Executive Review",
+  "editionLock": {
+    "gate": "AI_DEMAND_PERFORMANCE_REVIEW_SAME_EDITION_LOCK",
+    "propertyId": "adp_bethesda_marriott",
+    "periodId": "adp_period_adp_bethesda_marriott_20260909091016_9f3a60",
+    "editionId": "adp_er_v3_bethesda_marriott_mtvim1bn_dbbfe9",
+    "snapshotHash": "ec1a8749dad58595",
+    "compositionHash": "dbbfe99e42408f52",
+    "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+    "reportEdition": "ORIGINAL_V1",
+    "bppPublicationVersion": "bpp-customer-v1.1-20260902-p2",
+    "bppPeriodId": "bpp_second_cycle_2026-09-02T1947",
+    "displacementSupportSetVersion": "adp_canonical_displacement_support_set_v1",
+    "displacementEvidenceEditionId": "adp_period_adp_bethesda_marriott_20260909091016_9f3a60::displacement_support_adp_canonical_displacement_support_set_v1::dee0f3c97cb87866",
+    "generatedAt": "2026-09-11T13:15:53.627Z"
+  },
+  "property": {
+    "propertyId": "adp_bethesda_marriott",
+    "name": "Bethesda Marriott",
+    "city": "Bethesda",
+    "market": "Maryland",
+    "affiliation": "Marriott Hotels"
+  },
+  "reporting": {
+    "reportingMonth": "September 2026",
+    "currentMonitoringDate": "2026-09-09",
+    "priorRunDate": null,
+    "currentPeriodId": "adp_period_adp_bethesda_marriott_20260909091016_9f3a60",
+    "priorPeriodId": null,
+    "monitoringPeriodId": "adp_period_adp_bethesda_marriott_20260909091016_9f3a60",
+    "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1",
+    "comparability": {
+      "officialComparablePrior": false,
+      "trendPriorAvailable": false,
+      "historicalPriorRowPresent": false,
+      "disclosure": "No official comparable prior period is available. This review is a current-period baseline read; prior-run trend deltas are not shown.",
+      "gate": "PDF_COMPARABILITY_DISCLOSURE_PARITY"
+    }
+  },
+  "posture": "CORRECTIVE",
+  "reviewArchetype": "CORRECTIVE",
+  "eligibility": {
+    "status": "READY_WITH_DISCLOSURES",
+    "warnings": [
+      "NO_VALID_PRIOR — current-period position only; no invented delta"
+    ],
+    "hasComparablePrior": false,
+    "gate": "ADP_MONTHLY_REVIEW_ELIGIBILITY_FAIL_CLOSED"
+  },
+  "kpis": [
+    {
+      "id": "aiConsideration",
+      "label": "AI Consideration",
+      "currentDisplay": "42.1%",
+      "currentValue": 42.1,
+      "priorDisplay": null,
+      "priorValue": null,
+      "deltaDisplay": null,
+      "available": true,
+      "source": "executiveMetrics.considerationRate"
+    },
+    {
+      "id": "scenarioPresence",
+      "label": "Scenario Presence",
+      "currentDisplay": "81.0%",
+      "currentValue": 81,
+      "priorDisplay": null,
+      "priorValue": null,
+      "deltaDisplay": null,
+      "available": true,
+      "source": "executiveMetrics.scenarioPresence"
+    },
+    {
+      "id": "realityCoverage",
+      "label": "Reality Coverage",
+      "currentDisplay": "26.7%",
+      "currentValue": 26.7,
+      "priorDisplay": null,
+      "priorValue": null,
+      "deltaDisplay": null,
+      "available": true,
+      "source": "realityGap.recognizedCount/totalAttributes",
+      "help": "Share of monitored property facts and attributes reflected in AI answers (from published Reality Gap)."
+    },
+    {
+      "id": "competitivePosition",
+      "label": "Competitive Position",
+      "currentDisplay": "Hyatt Regency Bethesda",
+      "currentValue": 11,
+      "priorDisplay": null,
+      "priorValue": null,
+      "deltaDisplay": null,
+      "available": true,
+      "source": "lostDemand.displacement",
+      "meta": "Top displacement competitor · 11 scenarios where subject was absent"
+    },
+    {
+      "id": "bpp_portfolioAiPresence",
+      "label": "Brand Portfolio Position",
+      "currentDisplay": "42.1%",
+      "currentValue": 0.42063492063492064,
+      "priorDisplay": null,
+      "priorValue": null,
+      "deltaDisplay": null,
+      "available": true,
+      "source": "bpp.customerPublishedPack",
+      "family": "BPP",
+      "suppressedCompanion": "Portfolio Benchmark and Portfolio Presence Index are not shown because the Independent Positioning peer set has fewer than 5 hotels.",
+      "meta": "106 of 252 AI observations"
+    },
+    {
+      "id": "bpp_portfolioRank",
+      "label": "Portfolio Rank",
+      "currentDisplay": "#1 of 4",
+      "currentValue": 1,
+      "priorDisplay": null,
+      "priorValue": null,
+      "deltaDisplay": null,
+      "available": true,
+      "source": "bpp.customerPublishedPack",
+      "family": "BPP",
+      "suppressedCompanion": null,
+      "meta": "Among 4 relevant Marriott Bonvoy hotels"
+    }
+  ],
+  "executiveAssessment": {
+    "text": "Executive Conclusion. Bethesda Marriott reaches many monitored demand scenarios, but consideration consistency is the binding constraint.\n\nWhat the Data Is Telling Us. Scenario Presence is 81% while AI Consideration is 42.1%. The hotel is therefore relevant across a wide share of monitored traveler needs, yet it is not carried into individual answers nearly as consistently. Softness concentrates in Family Travel versus stronger Business Travel. Hyatt Regency Bethesda often fills absences in those weaker contexts. That contrast is more important than either metric alone.\n\nWhy It Matters. Broad scenario reach without consistent answer-level inclusion means the hotel is known in the demand set but not reliably carried into traveler-facing answers. Management attention should start with consistency of representation, not with assuming the hotel needs an entirely new competitive set.\n\nWhere the Pattern Is Concentrated. Family Travel shows the softest Scenario Capture (40.0%), while Adventure remains stronger (100.0%). That contrast supports a concentrated softness reading — not a uniform demand failure. Hyatt Regency Bethesda most often appears when the hotel is absent (11 scenarios) — useful for source and fact reconciliation, not as proof of cause. Reality Coverage is 26.7% (4/15 attributes). Material gaps include Montgomery County Location; 24-Hour Fitness Center; Peloton Fitness.\n\nWhat Management Should Focus On Now. Focus first on consistency of representation for Family Travel. Confirm priority sources present the same use cases and attributes that appear in scenarios where the hotel is absent, and close gaps that repeatedly coincide with answer-level misses.\n\nWhat Not to Overreact To. No comparable prior official monitoring period is available yet. This period can be evaluated on its own; change over time is not shown. Independent Positioning (#1 of 4; Portfolio AI Presence 42.1%) uses a different denominator than Core consideration — treat it as relative portfolio context, not a second Core score.\n\nWhat to Review Next. Compare high-presence versus low-consideration scenarios and inspect which sources and attributes appear when the hotel is missing. Use that evidence pack before changing channel strategy.",
+    "wordCount": 329,
+    "posture": "CORRECTIVE",
+    "expansion": {
+      "schema": "AI_DEMAND_PERFORMANCE_REVIEW_EXECUTIVE_EXPANSION_V3",
+      "gate": "PLATFORM_EXECUTIVE_READ_PDF_PRIMARY_ISSUE_PARITY",
+      "preserveGate": "PERFORMANCE_REVIEW_EXECUTIVE_EXPANSION_PRESERVES_PLATFORM_CONCLUSION",
+      "primaryIssueId": "answer_level_inclusion_consistency",
+      "platformSections": {
+        "headline": "Bethesda Marriott reaches many monitored demand scenarios, but consideration consistency is the binding constraint.",
+        "keyInsight": "Scenario Presence is 81% while AI Consideration is 42.1%. The hotel is therefore relevant across a wide share of monitored traveler needs, yet it is not carried into individual answers nearly as consistently. Softness concentrates in Family Travel versus stronger Business Travel. Hyatt Regency Bethesda often fills absences in those weaker contexts. That contrast is more important than either metric alone.",
+        "whyItMatters": "Broad scenario reach without consistent answer-level inclusion means the hotel is known in the demand set but not reliably carried into traveler-facing answers. Management attention should start with consistency of representation, not with assuming the hotel needs an entirely new competitive set.",
+        "focusNow": "Focus first on consistency of representation for Family Travel. Confirm priority sources present the same use cases and attributes that appear in scenarios where the hotel is absent, and close gaps that repeatedly coincide with answer-level misses.",
+        "whatToReview": "Compare high-presence versus low-consideration scenarios and inspect which sources and attributes appear when the hotel is missing. Use that evidence pack before changing channel strategy.",
+        "watch": null
+      },
+      "platformScan": {
+        "biggestStrength": {
+          "sectionLabel": "BIGGEST STRENGTH",
+          "headline": "Often placed near the top when AI ranks hotels",
+          "body": "Among AI answers where hotel ranking could be measured, Bethesda Marriott appeared in the Top 3 76.7% of the time. This shows how prominently the hotel is positioned when AI includes it."
+        },
+        "biggestConstraint": {
+          "sectionLabel": "BIGGEST CONSTRAINT",
+          "headline": "Not appearing consistently in AI answers",
+          "body": "The hotel appeared in at least one AI answer for 81% of the traveler needs we tested, but across all individual AI answers it appeared 42.1% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced."
+        },
+        "changeSinceLastComparableRun": {
+          "sectionLabel": "CHANGE SINCE LAST COMPARABLE RUN",
+          "headline": "No comparable prior official period yet",
+          "body": "No comparable prior official monitoring period is available yet. This period can be evaluated on its own; change over time is not shown."
+        }
+      },
+      "scanCards": {
+        "biggestStrength": {
+          "label": "BIGGEST STRENGTH",
+          "headline": "Often placed near the top when AI ranks hotels",
+          "body": "Among AI answers where hotel ranking could be measured, Bethesda Marriott appeared in the Top 3 76.7% of the time. This shows how prominently the hotel is positioned when AI includes it."
+        },
+        "biggestConstraint": {
+          "label": "BIGGEST CONSTRAINT",
+          "headline": "Not appearing consistently in AI answers",
+          "body": "The hotel appeared in at least one AI answer for 81% of the traveler needs we tested, but across all individual AI answers it appeared 42.1% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced."
+        },
+        "changeSinceLastComparableRun": {
+          "label": "CHANGE SINCE LAST COMPARABLE RUN",
+          "headline": "No comparable prior official period yet",
+          "body": "No comparable prior official monitoring period is available yet. This period can be evaluated on its own; change over time is not shown."
+        }
+      },
+      "blocks": {
+        "conclusion": "Bethesda Marriott reaches many monitored demand scenarios, but consideration consistency is the binding constraint.",
+        "whatDataTellsUs": "Scenario Presence is 81% while AI Consideration is 42.1%. The hotel is therefore relevant across a wide share of monitored traveler needs, yet it is not carried into individual answers nearly as consistently. Softness concentrates in Family Travel versus stronger Business Travel. Hyatt Regency Bethesda often fills absences in those weaker contexts. That contrast is more important than either metric alone.",
+        "whyItMatters": "Broad scenario reach without consistent answer-level inclusion means the hotel is known in the demand set but not reliably carried into traveler-facing answers. Management attention should start with consistency of representation, not with assuming the hotel needs an entirely new competitive set.",
+        "concentration": "Family Travel shows the softest Scenario Capture (40.0%), while Adventure remains stronger (100.0%). That contrast supports a concentrated softness reading — not a uniform demand failure. Hyatt Regency Bethesda most often appears when the hotel is absent (11 scenarios) — useful for source and fact reconciliation, not as proof of cause. Reality Coverage is 26.7% (4/15 attributes). Material gaps include Montgomery County Location; 24-Hour Fitness Center; Peloton Fitness.",
+        "focusNow": "Focus first on consistency of representation for Family Travel. Confirm priority sources present the same use cases and attributes that appear in scenarios where the hotel is absent, and close gaps that repeatedly coincide with answer-level misses.",
+        "reviewNext": "Compare high-presence versus low-consideration scenarios and inspect which sources and attributes appear when the hotel is missing. Use that evidence pack before changing channel strategy.",
+        "caution": "No comparable prior official monitoring period is available yet. This period can be evaluated on its own; change over time is not shown. Independent Positioning (#1 of 4; Portfolio AI Presence 42.1%) uses a different denominator than Core consideration — treat it as relative portfolio context, not a second Core score."
+      },
+      "expansion": {
+        "conclusion": "Bethesda Marriott reaches many monitored demand scenarios, but consideration consistency is the binding constraint.",
+        "whatDataTellsUs": "Scenario Presence is 81% while AI Consideration is 42.1%. The hotel is therefore relevant across a wide share of monitored traveler needs, yet it is not carried into individual answers nearly as consistently. Softness concentrates in Family Travel versus stronger Business Travel. Hyatt Regency Bethesda often fills absences in those weaker contexts. That contrast is more important than either metric alone.",
+        "whyItMatters": "Broad scenario reach without consistent answer-level inclusion means the hotel is known in the demand set but not reliably carried into traveler-facing answers. Management attention should start with consistency of representation, not with assuming the hotel needs an entirely new competitive set.",
+        "concentration": "Family Travel shows the softest Scenario Capture (40.0%), while Adventure remains stronger (100.0%). That contrast supports a concentrated softness reading — not a uniform demand failure. Hyatt Regency Bethesda most often appears when the hotel is absent (11 scenarios) — useful for source and fact reconciliation, not as proof of cause. Reality Coverage is 26.7% (4/15 attributes). Material gaps include Montgomery County Location; 24-Hour Fitness Center; Peloton Fitness.",
+        "focusNow": "Focus first on consistency of representation for Family Travel. Confirm priority sources present the same use cases and attributes that appear in scenarios where the hotel is absent, and close gaps that repeatedly coincide with answer-level misses.",
+        "reviewNext": "Compare high-presence versus low-consideration scenarios and inspect which sources and attributes appear when the hotel is missing. Use that evidence pack before changing channel strategy.",
+        "caution": "No comparable prior official monitoring period is available yet. This period can be evaluated on its own; change over time is not shown. Independent Positioning (#1 of 4; Portfolio AI Presence 42.1%) uses a different denominator than Core consideration — treat it as relative portfolio context, not a second Core score."
+      },
+      "sectionInsights": {
+        "demandMovement": {
+          "text": "Family Travel is the clearest current-period softness at 40.0% Scenario Capture. Business Travel, Celebration, and Leisure Travel show broader scenario coverage, suggesting the inclusion problem is concentrated rather than universal. These are absolute current-period levels — not period-over-period movement.",
+          "metricName": "scenario_capture_rate",
+          "sourceField": "demandCapture.byIntent"
+        },
+        "competitiveMovement": {
+          "text": "Hyatt Regency Bethesda is the most frequently observed alternative when Bethesda Marriott is absent, appearing in 11 displaced scenarios. Marriott Bethesda Downtown at Marriott HQ (9) and The Bethesdan Hotel, Tapestry Collection by Hilton (8) also appear frequently, indicating that displacement is spread across both same-brand and broader local alternatives. Counts are observational and do not establish why displacement occurs.",
+          "sourceField": "lostDemand.displacement"
+        },
+        "bpp": {
+          "text": "Within the Independent Positioning peer set, the hotel ranks #1 of 4 while Portfolio AI Presence is 42.1%. That portfolio presence level is directionally consistent with Core AI Consideration — relative standing inside the loyalty set can look strong even while absolute answer-level inclusion remains the binding constraint.",
+          "sourceField": "bpp.customerPublishedPack"
+        },
+        "realityGap": {
+          "text": "Only 4 of 15 monitored property attributes are consistently recognized (26.7% Reality Coverage). Highest-severity gaps today include Montgomery County Location; 24-Hour Fitness Center; Peloton Fitness. Prioritize attributes that overlap with weak traveler-need scenarios or displacement evidence — not every gap is equally material.",
+          "sourceField": "realityGap",
+          "realityCoverage": 26.7
+        }
+      },
+      "text": "Executive Conclusion. Bethesda Marriott reaches many monitored demand scenarios, but consideration consistency is the binding constraint.\n\nWhat the Data Is Telling Us. Scenario Presence is 81% while AI Consideration is 42.1%. The hotel is therefore relevant across a wide share of monitored traveler needs, yet it is not carried into individual answers nearly as consistently. Softness concentrates in Family Travel versus stronger Business Travel. Hyatt Regency Bethesda often fills absences in those weaker contexts. That contrast is more important than either metric alone.\n\nWhy It Matters. Broad scenario reach without consistent answer-level inclusion means the hotel is known in the demand set but not reliably carried into traveler-facing answers. Management attention should start with consistency of representation, not with assuming the hotel needs an entirely new competitive set.\n\nWhere the Pattern Is Concentrated. Family Travel shows the softest Scenario Capture (40.0%), while Adventure remains stronger (100.0%). That contrast supports a concentrated softness reading — not a uniform demand failure. Hyatt Regency Bethesda most often appears when the hotel is absent (11 scenarios) — useful for source and fact reconciliation, not as proof of cause. Reality Coverage is 26.7% (4/15 attributes). Material gaps include Montgomery County Location; 24-Hour Fitness Center; Peloton Fitness.\n\nWhat Management Should Focus On Now. Focus first on consistency of representation for Family Travel. Confirm priority sources present the same use cases and attributes that appear in scenarios where the hotel is absent, and close gaps that repeatedly coincide with answer-level misses.\n\nWhat Not to Overreact To. No comparable prior official monitoring period is available yet. This period can be evaluated on its own; change over time is not shown. Independent Positioning (#1 of 4; Portfolio AI Presence 42.1%) uses a different denominator than Core consideration — treat it as relative portfolio context, not a second Core score.\n\nWhat to Review Next. Compare high-presence versus low-consideration scenarios and inspect which sources and attributes appear when the hotel is missing. Use that evidence pack before changing channel strategy.",
+      "wordCount": 329,
+      "claims": [
+        {
+          "claimId": "executive_conclusion",
+          "sourceMetricId": "executiveRead.sections.headline",
+          "platformValue": "Bethesda Marriott reaches many monitored demand scenarios, but consideration consistency is the binding constraint.",
+          "pdfText": "Bethesda Marriott reaches many monitored demand scenarios, but consideration consistency is the binding constraint."
+        },
+        {
+          "claimId": "what_data_tells_us",
+          "sourceMetricId": "executiveRead.sections.keyInsight",
+          "platformValue": "Scenario Presence is 81% while AI Consideration is 42.1%. The hotel is therefore relevant across a wide share of monitored traveler needs, yet it is not carried into individual answers nearly as consistently. Softness concentrates in Family Travel versus stronger Business Travel. Hyatt Regency Bethesda often fills absences in those weaker contexts. That contrast is more important than either metric alone.",
+          "pdfText": "Scenario Presence is 81% while AI Consideration is 42.1%. The hotel is therefore relevant across a wide share of monitored traveler needs, yet it is not carried into individual answers nearly as consistently. Softness concentrates in Family Travel versus stronger Business Travel. Hyatt Regency Bethesda often fills absences in those weaker contexts. That contrast is more important than either metric alone."
+        },
+        {
+          "claimId": "why_it_matters",
+          "sourceMetricId": "executiveRead.sections.whyItMatters",
+          "platformValue": "Broad scenario reach without consistent answer-level inclusion means the hotel is known in the demand set but not reliably carried into traveler-facing answers. Management attention should start with consistency of representation, not with assuming the hotel needs an entirely new competitive set.",
+          "pdfText": "Broad scenario reach without consistent answer-level inclusion means the hotel is known in the demand set but not reliably carried into traveler-facing answers. Management attention should start with consistency of representation, not with assuming the hotel needs an entirely new competitive set."
+        },
+        {
+          "claimId": "concentration",
+          "sourceMetricId": "territory+displacement+realityGap",
+          "platformValue": {
+            "terr": {
+              "weakestLabel": "Family Travel",
+              "weakestRate": 40,
+              "strongestLabel": "Adventure",
+              "strongestRate": 100,
+              "strongLabels": [
+                "Business Travel",
+                "Celebration",
+                "Leisure Travel",
+                "Group / Meeting",
+                "Wellness",
+                "Adventure"
+              ],
+              "ranked": [
+                {
+                  "intent": "family",
+                  "rate": 40
+                },
+                {
+                  "intent": "couples",
+                  "rate": 55.6
+                },
+                {
+                  "intent": "business",
+                  "rate": 85.7
+                },
+                {
+                  "intent": "celebration",
+                  "rate": 85.7
+                },
+                {
+                  "intent": "leisure",
+                  "rate": 90.9
+                },
+                {
+                  "intent": "group_meeting",
+                  "rate": 90.9
+                },
+                {
+                  "intent": "wellness",
+                  "rate": 100
+                },
+                {
+                  "intent": "adventure",
+                  "rate": 100
+                }
+              ]
+            },
+            "topDisp": {
+              "entityId": "hyatt_regency_bethesda",
+              "name": "Hyatt Regency Bethesda",
+              "displacementCount": 11,
+              "evidenceAvailable": true,
+              "supportSetVersion": "adp_canonical_displacement_support_set_v1"
+            },
+            "reality": 26.7
+          },
+          "pdfText": "Family Travel shows the softest Scenario Capture (40.0%), while Adventure remains stronger (100.0%). That contrast supports a concentrated softness reading — not a uniform demand failure. Hyatt Regency Bethesda most often appears when the hotel is absent (11 scenarios) — useful for source and fact reconciliation, not as proof of cause. Reality Coverage is 26.7% (4/15 attributes). Material gaps include Montgomery County Location; 24-Hour Fitness Center; Peloton Fitness."
+        },
+        {
+          "claimId": "focus_now",
+          "sourceMetricId": "executiveRead.sections.focusNow",
+          "platformValue": "Focus first on consistency of representation for Family Travel. Confirm priority sources present the same use cases and attributes that appear in scenarios where the hotel is absent, and close gaps that repeatedly coincide with answer-level misses.",
+          "pdfText": "Focus first on consistency of representation for Family Travel. Confirm priority sources present the same use cases and attributes that appear in scenarios where the hotel is absent, and close gaps that repeatedly coincide with answer-level misses."
+        },
+        {
+          "claimId": "review_next",
+          "sourceMetricId": "executiveRead.sections.whatToReview",
+          "platformValue": "Compare high-presence versus low-consideration scenarios and inspect which sources and attributes appear when the hotel is missing. Use that evidence pack before changing channel strategy.",
+          "pdfText": "Compare high-presence versus low-consideration scenarios and inspect which sources and attributes appear when the hotel is missing. Use that evidence pack before changing channel strategy."
+        }
+      ],
+      "numericAnchors": [
+        {
+          "metricId": "executiveMetrics.scenarioPresence.rate",
+          "displayValue": "81%",
+          "section": "KEY_INSIGHT",
+          "reason": "Contradiction pair with consideration",
+          "paritySource": "executiveMetrics.scenarioPresence.rate",
+          "removingWeakensInsight": true,
+          "anchorType": "contradiction_pair"
+        },
+        {
+          "metricId": "executiveMetrics.considerationRate.rate",
+          "displayValue": "42.1%",
+          "section": "KEY_INSIGHT",
+          "reason": "Establishes severity of consideration / entry",
+          "paritySource": "executiveMetrics.considerationRate.rate",
+          "removingWeakensInsight": true,
+          "anchorType": "severity_indicator"
+        }
+      ],
+      "redundancyNote": "KPI band owns absolute rates; scan cards own platform strength/constraint; expansion owns interpretation — avoid restating the same sentence."
+    },
+    "blocks": {
+      "conclusion": "Bethesda Marriott reaches many monitored demand scenarios, but consideration consistency is the binding constraint.",
+      "whatDataTellsUs": "Scenario Presence is 81% while AI Consideration is 42.1%. The hotel is therefore relevant across a wide share of monitored traveler needs, yet it is not carried into individual answers nearly as consistently. Softness concentrates in Family Travel versus stronger Business Travel. Hyatt Regency Bethesda often fills absences in those weaker contexts. That contrast is more important than either metric alone.",
+      "whyItMatters": "Broad scenario reach without consistent answer-level inclusion means the hotel is known in the demand set but not reliably carried into traveler-facing answers. Management attention should start with consistency of representation, not with assuming the hotel needs an entirely new competitive set.",
+      "concentration": "Family Travel shows the softest Scenario Capture (40.0%), while Adventure remains stronger (100.0%). That contrast supports a concentrated softness reading — not a uniform demand failure. Hyatt Regency Bethesda most often appears when the hotel is absent (11 scenarios) — useful for source and fact reconciliation, not as proof of cause. Reality Coverage is 26.7% (4/15 attributes). Material gaps include Montgomery County Location; 24-Hour Fitness Center; Peloton Fitness.",
+      "focusNow": "Focus first on consistency of representation for Family Travel. Confirm priority sources present the same use cases and attributes that appear in scenarios where the hotel is absent, and close gaps that repeatedly coincide with answer-level misses.",
+      "reviewNext": "Compare high-presence versus low-consideration scenarios and inspect which sources and attributes appear when the hotel is missing. Use that evidence pack before changing channel strategy.",
+      "caution": "No comparable prior official monitoring period is available yet. This period can be evaluated on its own; change over time is not shown. Independent Positioning (#1 of 4; Portfolio AI Presence 42.1%) uses a different denominator than Core consideration — treat it as relative portfolio context, not a second Core score."
+    },
+    "scanCards": {
+      "biggestStrength": {
+        "label": "BIGGEST STRENGTH",
+        "headline": "Often placed near the top when AI ranks hotels",
+        "body": "Among AI answers where hotel ranking could be measured, Bethesda Marriott appeared in the Top 3 76.7% of the time. This shows how prominently the hotel is positioned when AI includes it."
+      },
+      "biggestConstraint": {
+        "label": "BIGGEST CONSTRAINT",
+        "headline": "Not appearing consistently in AI answers",
+        "body": "The hotel appeared in at least one AI answer for 81% of the traveler needs we tested, but across all individual AI answers it appeared 42.1% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced."
+      },
+      "changeSinceLastComparableRun": {
+        "label": "CHANGE SINCE LAST COMPARABLE RUN",
+        "headline": "No comparable prior official period yet",
+        "body": "No comparable prior official monitoring period is available yet. This period can be evaluated on its own; change over time is not shown."
+      }
+    },
+    "platformScan": {
+      "biggestStrength": {
+        "sectionLabel": "BIGGEST STRENGTH",
+        "headline": "Often placed near the top when AI ranks hotels",
+        "body": "Among AI answers where hotel ranking could be measured, Bethesda Marriott appeared in the Top 3 76.7% of the time. This shows how prominently the hotel is positioned when AI includes it."
+      },
+      "biggestConstraint": {
+        "sectionLabel": "BIGGEST CONSTRAINT",
+        "headline": "Not appearing consistently in AI answers",
+        "body": "The hotel appeared in at least one AI answer for 81% of the traveler needs we tested, but across all individual AI answers it appeared 42.1% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced."
+      },
+      "changeSinceLastComparableRun": {
+        "sectionLabel": "CHANGE SINCE LAST COMPARABLE RUN",
+        "headline": "No comparable prior official period yet",
+        "body": "No comparable prior official monitoring period is available yet. This period can be evaluated on its own; change over time is not shown."
+      }
+    },
+    "sectionInsights": {
+      "demandMovement": {
+        "text": "Family Travel is the clearest current-period softness at 40.0% Scenario Capture. Business Travel, Celebration, and Leisure Travel show broader scenario coverage, suggesting the inclusion problem is concentrated rather than universal. These are absolute current-period levels — not period-over-period movement.",
+        "metricName": "scenario_capture_rate",
+        "sourceField": "demandCapture.byIntent"
+      },
+      "competitiveMovement": {
+        "text": "Hyatt Regency Bethesda is the most frequently observed alternative when Bethesda Marriott is absent, appearing in 11 displaced scenarios. Marriott Bethesda Downtown at Marriott HQ (9) and The Bethesdan Hotel, Tapestry Collection by Hilton (8) also appear frequently, indicating that displacement is spread across both same-brand and broader local alternatives. Counts are observational and do not establish why displacement occurs.",
+        "sourceField": "lostDemand.displacement"
+      },
+      "bpp": {
+        "text": "Within the Independent Positioning peer set, the hotel ranks #1 of 4 while Portfolio AI Presence is 42.1%. That portfolio presence level is directionally consistent with Core AI Consideration — relative standing inside the loyalty set can look strong even while absolute answer-level inclusion remains the binding constraint.",
+        "sourceField": "bpp.customerPublishedPack"
+      },
+      "realityGap": {
+        "text": "Only 4 of 15 monitored property attributes are consistently recognized (26.7% Reality Coverage). Highest-severity gaps today include Montgomery County Location; 24-Hour Fitness Center; Peloton Fitness. Prioritize attributes that overlap with weak traveler-need scenarios or displacement evidence — not every gap is equally material.",
+        "sourceField": "realityGap",
+        "realityCoverage": 26.7
+      }
+    },
+    "primaryIssueId": "answer_level_inclusion_consistency",
+    "gate": "PLATFORM_EXECUTIVE_READ_PDF_PRIMARY_ISSUE_PARITY",
+    "preserveGate": "PERFORMANCE_REVIEW_EXECUTIVE_EXPANSION_PRESERVES_PLATFORM_CONCLUSION",
+    "schema": "AI_DEMAND_PERFORMANCE_REVIEW_EXECUTIVE_EXPANSION_V3"
+  },
+  "sectionInsights": {
+    "demandMovement": {
+      "text": "Family Travel is the clearest current-period softness at 40.0% Scenario Capture. Business Travel, Celebration, and Leisure Travel show broader scenario coverage, suggesting the inclusion problem is concentrated rather than universal. These are absolute current-period levels — not period-over-period movement.",
+      "metricName": "scenario_capture_rate",
+      "sourceField": "demandCapture.byIntent"
+    },
+    "competitiveMovement": {
+      "text": "Hyatt Regency Bethesda is the most frequently observed alternative when Bethesda Marriott is absent, appearing in 11 displaced scenarios. Marriott Bethesda Downtown at Marriott HQ (9) and The Bethesdan Hotel, Tapestry Collection by Hilton (8) also appear frequently, indicating that displacement is spread across both same-brand and broader local alternatives. Counts are observational and do not establish why displacement occurs.",
+      "sourceField": "lostDemand.displacement"
+    },
+    "bpp": {
+      "text": "Within the Independent Positioning peer set, the hotel ranks #1 of 4 while Portfolio AI Presence is 42.1%. That portfolio presence level is directionally consistent with Core AI Consideration — relative standing inside the loyalty set can look strong even while absolute answer-level inclusion remains the binding constraint.",
+      "sourceField": "bpp.customerPublishedPack"
+    },
+    "realityGap": {
+      "text": "Only 4 of 15 monitored property attributes are consistently recognized (26.7% Reality Coverage). Highest-severity gaps today include Montgomery County Location; 24-Hour Fitness Center; Peloton Fitness. Prioritize attributes that overlap with weak traveler-need scenarios or displacement evidence — not every gap is equally material.",
+      "sourceField": "realityGap",
+      "realityCoverage": 26.7
+    }
+  },
+  "callouts": {
+    "positiveSignal": {
+      "title": "Positive Signal",
+      "body": "Among AI answers where hotel ranking could be measured, Bethesda Marriott appeared in the Top 3 76.7% of the time. This shows how prominently the hotel is positioned when AI includes it.",
+      "source": "executiveRead.summary.biggestStrength"
+    },
+    "secondaryCallout": {
+      "title": "Watch Item",
+      "body": "The hotel appeared in at least one AI answer for 81% of the traveler needs we tested, but across all individual AI answers it appeared 42.1% of the time. In practical terms, AI recognizes the hotel as relevant for many types of trips, but a traveler will not consistently see it among the hotel options surfaced.",
+      "source": "executiveRead.summary.biggestConstraint"
+    },
+    "managementPriority": {
+      "title": "Management Priority",
+      "body": "Focus first on consistency of representation for Family Travel. Confirm priority sources present the same use cases and attributes that appear in scenarios where the hotel is absent, and close gaps that repeatedly coincide with answer-level misses.",
+      "source": "executiveRead.sections.focusNow"
+    }
+  },
+  "materialMovements": [],
+  "demandMovement": [
+    {
+      "demandTerritory": "Family",
+      "intent": "family",
+      "metricName": "scenario_capture_rate",
+      "metricLabel": "Scenario Capture",
+      "current": "40.0%",
+      "prior": null,
+      "delta": null,
+      "captured": "2 of 5",
+      "significance": "LEVEL_LOW",
+      "significanceLabel": "Low Capture",
+      "interpretation": "Low scenario-capture rate for this traveler need. Treat as a priority inspection area (absolute level — not a period-over-period decline).",
+      "note": "Metric = demandCapture.byIntent scenario capture (captured/total). Prior-run territory rates are not published as a comparable series in this edition.",
+      "materialityPpUsed": 2,
+      "sourceField": "demandCapture.byIntent.family.rate",
+      "gate": "PDF_DEMAND_TERRITORY_METRIC_SEMANTIC_PARITY"
+    },
+    {
+      "demandTerritory": "Couples / Romantic",
+      "intent": "couples",
+      "metricName": "scenario_capture_rate",
+      "metricLabel": "Scenario Capture",
+      "current": "55.6%",
+      "prior": null,
+      "delta": null,
+      "captured": "5 of 9",
+      "significance": "LEVEL_PARTIAL",
+      "significanceLabel": "Partial Capture",
+      "interpretation": "Partial scenario capture. Review whether missing scenarios share a common attribute or competitor pattern.",
+      "note": "Metric = demandCapture.byIntent scenario capture (captured/total). Prior-run territory rates are not published as a comparable series in this edition.",
+      "materialityPpUsed": 2,
+      "sourceField": "demandCapture.byIntent.couples.rate",
+      "gate": "PDF_DEMAND_TERRITORY_METRIC_SEMANTIC_PARITY"
+    },
+    {
+      "demandTerritory": "Business Travel",
+      "intent": "business",
+      "metricName": "scenario_capture_rate",
+      "metricLabel": "Scenario Capture",
+      "current": "85.7%",
+      "prior": null,
+      "delta": null,
+      "captured": "12 of 14",
+      "significance": "LEVEL_PARTIAL",
+      "significanceLabel": "Partial Capture",
+      "interpretation": "Partial scenario capture. Review whether missing scenarios share a common attribute or competitor pattern.",
+      "note": "Metric = demandCapture.byIntent scenario capture (captured/total). Prior-run territory rates are not published as a comparable series in this edition.",
+      "materialityPpUsed": 2,
+      "sourceField": "demandCapture.byIntent.business.rate",
+      "gate": "PDF_DEMAND_TERRITORY_METRIC_SEMANTIC_PARITY"
+    },
+    {
+      "demandTerritory": "Celebration",
+      "intent": "celebration",
+      "metricName": "scenario_capture_rate",
+      "metricLabel": "Scenario Capture",
+      "current": "85.7%",
+      "prior": null,
+      "delta": null,
+      "captured": "6 of 7",
+      "significance": "LEVEL_PARTIAL",
+      "significanceLabel": "Partial Capture",
+      "interpretation": "Partial scenario capture. Review whether missing scenarios share a common attribute or competitor pattern.",
+      "note": "Metric = demandCapture.byIntent scenario capture (captured/total). Prior-run territory rates are not published as a comparable series in this edition.",
+      "materialityPpUsed": 2,
+      "sourceField": "demandCapture.byIntent.celebration.rate",
+      "gate": "PDF_DEMAND_TERRITORY_METRIC_SEMANTIC_PARITY"
+    },
+    {
+      "demandTerritory": "Leisure Travel",
+      "intent": "leisure",
+      "metricName": "scenario_capture_rate",
+      "metricLabel": "Scenario Capture",
+      "current": "90.9%",
+      "prior": null,
+      "delta": null,
+      "captured": "10 of 11",
+      "significance": "LEVEL_HIGH",
+      "significanceLabel": "High Capture",
+      "interpretation": "High scenario-capture rate for this traveler need in the current period.",
+      "note": "Metric = demandCapture.byIntent scenario capture (captured/total). Prior-run territory rates are not published as a comparable series in this edition.",
+      "materialityPpUsed": 2,
+      "sourceField": "demandCapture.byIntent.leisure.rate",
+      "gate": "PDF_DEMAND_TERRITORY_METRIC_SEMANTIC_PARITY"
+    },
+    {
+      "demandTerritory": "Group / Meeting",
+      "intent": "group_meeting",
+      "metricName": "scenario_capture_rate",
+      "metricLabel": "Scenario Capture",
+      "current": "90.9%",
+      "prior": null,
+      "delta": null,
+      "captured": "10 of 11",
+      "significance": "LEVEL_HIGH",
+      "significanceLabel": "High Capture",
+      "interpretation": "High scenario-capture rate for this traveler need in the current period.",
+      "note": "Metric = demandCapture.byIntent scenario capture (captured/total). Prior-run territory rates are not published as a comparable series in this edition.",
+      "materialityPpUsed": 2,
+      "sourceField": "demandCapture.byIntent.group_meeting.rate",
+      "gate": "PDF_DEMAND_TERRITORY_METRIC_SEMANTIC_PARITY"
+    }
+  ],
+  "competitiveMovement": {
+    "summary": "When the property is absent, AI answers most often include Hyatt Regency Bethesda (11), Marriott Bethesda Downtown at Marriott HQ (9), The Bethesdan Hotel, Tapestry Collection by Hilton (8). Counts are observational and do not by themselves prove why displacement occurs.",
+    "displacementLeaders": [
+      {
+        "name": "Hyatt Regency Bethesda",
+        "displacementCount": 11,
+        "entityId": "hyatt_regency_bethesda"
+      },
+      {
+        "name": "Marriott Bethesda Downtown at Marriott HQ",
+        "displacementCount": 9,
+        "entityId": "marriott_bethesda_downtown"
+      },
+      {
+        "name": "The Bethesdan Hotel, Tapestry Collection by Hilton",
+        "displacementCount": 8,
+        "entityId": "the_bethesdan_hotel"
+      },
+      {
+        "name": "AC Hotel Bethesda Downtown",
+        "displacementCount": 5,
+        "entityId": "ac_hotel_bethesda_downtown"
+      },
+      {
+        "name": "Hilton Garden Inn Bethesda Downtown",
+        "displacementCount": 5,
+        "entityId": "hilton_garden_inn_bethesda"
+      }
+    ],
+    "topReasons": [
+      {
+        "reason": "High competitor density. Stronger authority signals needed",
+        "count": 12
+      }
+    ],
+    "observedCompetitors": [],
+    "caveat": "Competitive movement describes co-appearance and absence patterns in monitored answers. It does not establish causation."
+  },
+  "evidenceReview": [
+    {
+      "kind": "recurring_omission",
+      "travelerNeed": "business",
+      "provider": "gemini",
+      "observation": "For an upscale business trip to Bethesda, Maryland, the **AC Hotel Bethesda Downtown** and the **Hyatt Regency Bethesda** are the two best options, depending on the vibe and location you prefer. Here is the breakdown of the top choices to help you decide: --- ### 1. The Overall Best Modern Choice: **AC Hotel Bethesda Downtown** * **Vibe:** Sleek, modern, European-inspired luxury. * **Why it’s great for business:** O…",
+      "whyItMatters": "Shows a monitored case where the property was not mentioned while alternatives were surfaced.",
+      "managementReview": "Review whether property information for this traveler need is complete and consistently represented across first-party and major third-party sources.",
+      "evidenceId": "std_btmd_biz_01"
+    },
+    {
+      "kind": "competitive_displacement",
+      "travelerNeed": "Scenarios where subject is absent",
+      "provider": "Cross-provider",
+      "observation": "Hyatt Regency Bethesda appeared in 11 monitored scenarios where Bethesda Marriott was absent.",
+      "whyItMatters": "Identifies the competitor most often present when the subject hotel is missing from AI answers.",
+      "managementReview": "Compare public positioning and third-party descriptions against this competitor for the traveler needs where displacement concentrates.",
+      "evidenceId": "hyatt_regency_bethesda"
+    },
+    {
+      "kind": "factual_reality_gap",
+      "travelerNeed": "Property reality attributes",
+      "provider": "All providers (attribute recognition)",
+      "observation": "Montgomery County Location recognized in 8.5% of applicable monitored answers (9 of 106).",
+      "whyItMatters": "This attribute is part of the monitored property proposition but is infrequently reflected in AI answers.",
+      "managementReview": "Verify whether “Montgomery County Location” is accurately and consistently described on the hotel website and major booking/travel platforms.",
+      "evidenceId": "montgomery_county"
+    }
+  ],
+  "actionAgenda": [
+    {
+      "actionId": "adp_bethesda_marriott__adp_period_adp_bethesda_marriott_20260909091016_9f3a60__playbook_a1",
+      "propertyId": "adp_bethesda_marriott",
+      "monitoringPeriodId": "adp_period_adp_bethesda_marriott_20260909091016_9f3a60",
+      "actionTitle": "Complete the meetings decision package with missing capacity, space, and contact facts — focus: total meeting space, largest capacity, meeting sales contact",
+      "observedIssue": "Business/meeting demand opportunity remains contested (“Best upper-upscale hotel in Montgomery County for multi-day ...”) with weak competitor ownership in monitored answers.",
+      "recommendedAction": "Confirm the hotel’s canonical facts for Meetings information with the accountable owner (Bethesda Marriott). Complete the applicable checklist items: total meeting space; largest capacity; meeting sales contact; downloadable floorplans; event fact sheet. Audit each target source and record current wording/state: Hotel Website; Meeting / Event Fact Sheet; Google Business Profile. Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology. Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date). Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation.",
+      "rationale": "This action addresses an observed information/positioning gap in the current monitoring period. It does not claim a guaranteed metric uplift.",
+      "evidenceRefs": [
+        {
+          "observedMetric": "whiteSpace.business",
+          "scenarioOrTerritory": "Business Travel / Meetings",
+          "provider": "Cross-provider",
+          "evidenceExample": "Competitor presence is inconsistent. Opportunity to establish authority.",
+          "sourceGap": "meetings_decision_package_incomplete",
+          "actionPatternId": "ACTION_MEETINGS_DECISION_PACKAGE_COMPLETION"
+        }
+      ],
+      "accountableOwnerRole": "Commercial / Sales Lead",
+      "supportingTeam": "Meetings sales + Marketing content",
+      "createdDate": "2026-09-09",
+      "targetDate": null,
+      "status": "Open",
+      "completionDate": null,
+      "expectedSignal": "Dealality will monitor whether meetings information recognition and related scenario inclusion change in the next monitoring period. Monitoring alone does not establish causation.",
+      "nextPeriodResult": null,
+      "followUpAssessment": null,
+      "carriedForward": false,
+      "founderCustomerNotes": "actionPatternId=ACTION_MEETINGS_DECISION_PACKAGE_COMPLETION",
+      "impactTracking": {
+        "schema": "MONTHLY_REVIEW_ACTION_IMPACT_NONCAUSAL_TRACKING",
+        "before": {
+          "scenarioPresence": 81
+        },
+        "actionDate": null,
+        "nextRun": null,
+        "change": null,
+        "assessment": null,
+        "causationClaimed": false,
+        "note": "Later periods may record before/after measurement. Monitoring alone does not establish causation."
+      },
+      "actionPatternId": "ACTION_MEETINGS_DECISION_PACKAGE_COMPLETION",
+      "evidence": "whiteSpace.business",
+      "targetSources": [
+        "Hotel Website",
+        "Meeting / Event Fact Sheet",
+        "Google Business Profile"
+      ],
+      "implementationSteps": [
+        "Confirm the hotel’s canonical facts for Meetings information with the accountable owner (Bethesda Marriott).",
+        "Complete the applicable checklist items: total meeting space; largest capacity; meeting sales contact; downloadable floorplans; event fact sheet.",
+        "Audit each target source and record current wording/state: Hotel Website; Meeting / Event Fact Sheet; Google Business Profile.",
+        "Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology.",
+        "Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date).",
+        "Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation."
+      ],
+      "definitionOfDone": [
+        "Canonical facts for “Meetings information” are confirmed by hotel management.",
+        "Each target source is reviewed: Hotel Website; Meeting / Event Fact Sheet; Google Business Profile.",
+        "Sources that were incorrect or incomplete are corrected, with URLs or screenshots stored.",
+        "The specific missing/inconsistent items are resolved: total meeting space; largest capacity; meeting sales contact; downloadable floorplans; event fact sheet.",
+        "Accountable owner signs off with completion date."
+      ],
+      "nextMonitoringCheck": "Next published ADP run — review Meetings information attribute recognition, related demand-territory presence, and evidence excerpts for the corrected facts.",
+      "trace": {
+        "observedMetric": "whiteSpace.business",
+        "scenarioOrTerritory": "Business Travel / Meetings",
+        "provider": "Cross-provider",
+        "evidenceExample": "Competitor presence is inconsistent. Opportunity to establish authority.",
+        "sourceGap": "meetings_decision_package_incomplete",
+        "actionPatternId": "ACTION_MEETINGS_DECISION_PACKAGE_COMPLETION"
+      },
+      "learningRecord": {
+        "schema": "ADP_ACTION_LEARNING_RECORD_V1",
+        "actionInstanceId": "adp_bethesda_marriott__adp_period_adp_bethesda_marriott_20260909091016_9f3a60__playbook_a1",
+        "actionPatternId": "ACTION_MEETINGS_DECISION_PACKAGE_COMPLETION",
+        "variantId": null,
+        "propertyId": "adp_bethesda_marriott",
+        "hotelAttributes": {
+          "propertyName": "Bethesda Marriott"
+        },
+        "issuePattern": "meetings_decision_package_incomplete",
+        "implementationStepsUsed": [
+          "Confirm the hotel’s canonical facts for Meetings information with the accountable owner (Bethesda Marriott).",
+          "Complete the applicable checklist items: total meeting space; largest capacity; meeting sales contact; downloadable floorplans; event fact sheet.",
+          "Audit each target source and record current wording/state: Hotel Website; Meeting / Event Fact Sheet; Google Business Profile.",
+          "Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology.",
+          "Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date).",
+          "Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation."
+        ],
+        "sourcesChanged": [],
+        "completionTime": null,
+        "metricBefore": {
+          "scenarioPresence": 81
+        },
+        "metricNextRun": null,
+        "metricSecondNextRun": null,
+        "evidenceChanges": [],
+        "outcomeClassification": null,
+        "causationClaimed": false,
+        "note": "Subsequent monitoring may be recorded for learning. Monitoring alone does not establish causation."
+      }
+    },
+    {
+      "actionId": "adp_bethesda_marriott__adp_period_adp_bethesda_marriott_20260909091016_9f3a60__playbook_a2",
+      "propertyId": "adp_bethesda_marriott",
+      "monitoringPeriodId": "adp_period_adp_bethesda_marriott_20260909091016_9f3a60",
+      "actionTitle": "Reconcile public facts for traveler needs where a named competitor appears and the subject hotel is absent — focus: list traveler needs / scenarios where absence concentrates, identify subject facts that are missing or inconsistent on priority sources, update first-party pages covering those facts",
+      "observedIssue": "Hyatt Regency Bethesda appeared in 11 monitored scenarios where Bethesda Marriott was absent.",
+      "recommendedAction": "Confirm the hotel’s canonical facts for Competitive displacement with the accountable owner (Bethesda Marriott). Complete the applicable checklist items: list traveler needs / scenarios where absence concentrates; identify subject facts that are missing or inconsistent on priority sources; update first-party pages covering those facts. Audit each target source and record current wording/state: Hotel Website; TripAdvisor; Google Business Profile; Booking.com. Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology. Compare public facts credited to Hyatt Regency Bethesda in displacement evidence against the subject hotel’s corrected pages; close only evidence-backed gaps. Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date). Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation.",
+      "rationale": "This action addresses an observed information/positioning gap in the current monitoring period. It does not claim a guaranteed metric uplift.",
+      "evidenceRefs": [
+        {
+          "observedMetric": "displacement.hyatt_regency_bethesda=11",
+          "scenarioOrTerritory": "Scenarios where subject is absent",
+          "provider": "Cross-provider",
+          "evidenceExample": "Hyatt Regency Bethesda displacement count 11",
+          "sourceGap": "competitive_absence_vs_hyatt_regency_bethesda",
+          "actionPatternId": "ACTION_COMPETITIVE_ABSENCE_SOURCE_RECONCILIATION"
+        }
+      ],
+      "accountableOwnerRole": "General Manager + Marketing Lead",
+      "supportingTeam": "Marketing content + Distribution",
+      "createdDate": "2026-09-09",
+      "targetDate": null,
+      "status": "Open",
+      "completionDate": null,
+      "expectedSignal": "Dealality will monitor whether competitive displacement recognition and related scenario inclusion change in the next monitoring period. Monitoring alone does not establish causation.",
+      "nextPeriodResult": null,
+      "followUpAssessment": null,
+      "carriedForward": false,
+      "founderCustomerNotes": "actionPatternId=ACTION_COMPETITIVE_ABSENCE_SOURCE_RECONCILIATION",
+      "impactTracking": {
+        "schema": "MONTHLY_REVIEW_ACTION_IMPACT_NONCAUSAL_TRACKING",
+        "before": {
+          "aiConsideration": 42.1,
+          "displacementCount": 11
+        },
+        "actionDate": null,
+        "nextRun": null,
+        "change": null,
+        "assessment": null,
+        "causationClaimed": false,
+        "note": "Later periods may record before/after measurement. Monitoring alone does not establish causation."
+      },
+      "actionPatternId": "ACTION_COMPETITIVE_ABSENCE_SOURCE_RECONCILIATION",
+      "evidence": "lostDemand.displacement leader Hyatt Regency Bethesda (11).",
+      "targetSources": [
+        "Hotel Website",
+        "TripAdvisor",
+        "Google Business Profile",
+        "Booking.com"
+      ],
+      "implementationSteps": [
+        "Confirm the hotel’s canonical facts for Competitive displacement with the accountable owner (Bethesda Marriott).",
+        "Complete the applicable checklist items: list traveler needs / scenarios where absence concentrates; identify subject facts that are missing or inconsistent on priority sources; update first-party pages covering those facts.",
+        "Audit each target source and record current wording/state: Hotel Website; TripAdvisor; Google Business Profile; Booking.com.",
+        "Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology.",
+        "Compare public facts credited to Hyatt Regency Bethesda in displacement evidence against the subject hotel’s corrected pages; close only evidence-backed gaps.",
+        "Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date).",
+        "Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation."
+      ],
+      "definitionOfDone": [
+        "Canonical facts for “Competitive displacement” are confirmed by hotel management.",
+        "Each target source is reviewed: Hotel Website; TripAdvisor; Google Business Profile; Booking.com.",
+        "Sources that were incorrect or incomplete are corrected, with URLs or screenshots stored.",
+        "The specific missing/inconsistent items are resolved: list traveler needs / scenarios where absence concentrates; identify subject facts that are missing or inconsistent on priority sources; update first-party pages covering those facts.",
+        "Accountable owner signs off with completion date."
+      ],
+      "nextMonitoringCheck": "Next published ADP run — review Competitive displacement attribute recognition, related demand-territory presence, and evidence excerpts for the corrected facts.",
+      "trace": {
+        "observedMetric": "displacement.hyatt_regency_bethesda=11",
+        "scenarioOrTerritory": "Scenarios where subject is absent",
+        "provider": "Cross-provider",
+        "evidenceExample": "Hyatt Regency Bethesda displacement count 11",
+        "sourceGap": "competitive_absence_vs_hyatt_regency_bethesda",
+        "actionPatternId": "ACTION_COMPETITIVE_ABSENCE_SOURCE_RECONCILIATION"
+      },
+      "learningRecord": {
+        "schema": "ADP_ACTION_LEARNING_RECORD_V1",
+        "actionInstanceId": "adp_bethesda_marriott__adp_period_adp_bethesda_marriott_20260909091016_9f3a60__playbook_a2",
+        "actionPatternId": "ACTION_COMPETITIVE_ABSENCE_SOURCE_RECONCILIATION",
+        "variantId": null,
+        "propertyId": "adp_bethesda_marriott",
+        "hotelAttributes": {
+          "propertyName": "Bethesda Marriott"
+        },
+        "issuePattern": "competitive_absence_vs_hyatt_regency_bethesda",
+        "implementationStepsUsed": [
+          "Confirm the hotel’s canonical facts for Competitive displacement with the accountable owner (Bethesda Marriott).",
+          "Complete the applicable checklist items: list traveler needs / scenarios where absence concentrates; identify subject facts that are missing or inconsistent on priority sources; update first-party pages covering those facts.",
+          "Audit each target source and record current wording/state: Hotel Website; TripAdvisor; Google Business Profile; Booking.com.",
+          "Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology.",
+          "Compare public facts credited to Hyatt Regency Bethesda in displacement evidence against the subject hotel’s corrected pages; close only evidence-backed gaps.",
+          "Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date).",
+          "Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation."
+        ],
+        "sourcesChanged": [],
+        "completionTime": null,
+        "metricBefore": {
+          "aiConsideration": 42.1,
+          "displacementCount": 11
+        },
+        "metricNextRun": null,
+        "metricSecondNextRun": null,
+        "evidenceChanges": [],
+        "outcomeClassification": null,
+        "causationClaimed": false,
+        "note": "Subsequent monitoring may be recorded for learning. Monitoring alone does not establish causation."
+      }
+    },
+    {
+      "actionId": "adp_bethesda_marriott__adp_period_adp_bethesda_marriott_20260909091016_9f3a60__playbook_a3",
+      "propertyId": "adp_bethesda_marriott",
+      "monitoringPeriodId": "adp_period_adp_bethesda_marriott_20260909091016_9f3a60",
+      "actionTitle": "Stand up a TripAdvisor management-response program with owner, SLA, and theme tracking — focus: designate accountable owner, set response SLA, identify recurring complaint themes monthly",
+      "observedIssue": "TripAdvisor appears in 84.4% of cited sources in the current monitoring period (54 citations), making response quality and factual corrections operationally material when misconceptions appear.",
+      "recommendedAction": "Confirm the hotel’s canonical facts for TripAdvisor responses with the accountable owner (Bethesda Marriott). Complete the applicable checklist items: designate accountable owner; set response SLA (property-configured; do not invent a default unless governed); identify recurring complaint themes monthly; correct factual misconceptions where appropriate; track response rate. Audit each target source and record current wording/state: TripAdvisor. Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology. Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date). Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation.",
+      "rationale": "This action addresses an observed information/positioning gap in the current monitoring period. It does not claim a guaranteed metric uplift.",
+      "evidenceRefs": [
+        {
+          "observedMetric": "evidence.topSources.tripadvisor.frequency=84.4",
+          "scenarioOrTerritory": "Citation / reputation sources",
+          "provider": "Cross-provider citations",
+          "evidenceExample": "tripadvisor.com citation frequency 84.4%",
+          "sourceGap": "tripadvisor_management_response_program",
+          "actionPatternId": "ACTION_TRIPADVISOR_MANAGEMENT_RESPONSE_PROGRAM"
+        }
+      ],
+      "accountableOwnerRole": "Guest Experience / Reputation Owner",
+      "supportingTeam": "Front office + Marketing",
+      "createdDate": "2026-09-09",
+      "targetDate": null,
+      "status": "Open",
+      "completionDate": null,
+      "expectedSignal": "Dealality will monitor whether tripadvisor responses recognition and related scenario inclusion change in the next monitoring period. Monitoring alone does not establish causation.",
+      "nextPeriodResult": null,
+      "followUpAssessment": null,
+      "carriedForward": false,
+      "founderCustomerNotes": "actionPatternId=ACTION_TRIPADVISOR_MANAGEMENT_RESPONSE_PROGRAM",
+      "impactTracking": {
+        "schema": "MONTHLY_REVIEW_ACTION_IMPACT_NONCAUSAL_TRACKING",
+        "before": {
+          "tripadvisorCitationFrequency": 84.4
+        },
+        "actionDate": null,
+        "nextRun": null,
+        "change": null,
+        "assessment": null,
+        "causationClaimed": false,
+        "note": "Later periods may record before/after measurement. Monitoring alone does not establish causation."
+      },
+      "actionPatternId": "ACTION_TRIPADVISOR_MANAGEMENT_RESPONSE_PROGRAM",
+      "evidence": "report.evidence.topSources tripadvisor frequency 84.4%.",
+      "targetSources": [
+        "TripAdvisor"
+      ],
+      "implementationSteps": [
+        "Confirm the hotel’s canonical facts for TripAdvisor responses with the accountable owner (Bethesda Marriott).",
+        "Complete the applicable checklist items: designate accountable owner; set response SLA (property-configured; do not invent a default unless governed); identify recurring complaint themes monthly; correct factual misconceptions where appropriate; track response rate.",
+        "Audit each target source and record current wording/state: TripAdvisor.",
+        "Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology.",
+        "Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date).",
+        "Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation."
+      ],
+      "definitionOfDone": [
+        "Canonical facts for “TripAdvisor responses” are confirmed by hotel management.",
+        "Each target source is reviewed: TripAdvisor.",
+        "Sources that were incorrect or incomplete are corrected, with URLs or screenshots stored.",
+        "The specific missing/inconsistent items are resolved: designate accountable owner; set response SLA; identify recurring complaint themes monthly; correct factual misconceptions where appropriate; track response rate.",
+        "Accountable owner signs off with completion date."
+      ],
+      "nextMonitoringCheck": "Next published ADP run — review TripAdvisor responses attribute recognition, related demand-territory presence, and evidence excerpts for the corrected facts.",
+      "trace": {
+        "observedMetric": "evidence.topSources.tripadvisor.frequency=84.4",
+        "scenarioOrTerritory": "Citation / reputation sources",
+        "provider": "Cross-provider citations",
+        "evidenceExample": "tripadvisor.com citation frequency 84.4%",
+        "sourceGap": "tripadvisor_management_response_program",
+        "actionPatternId": "ACTION_TRIPADVISOR_MANAGEMENT_RESPONSE_PROGRAM"
+      },
+      "learningRecord": {
+        "schema": "ADP_ACTION_LEARNING_RECORD_V1",
+        "actionInstanceId": "adp_bethesda_marriott__adp_period_adp_bethesda_marriott_20260909091016_9f3a60__playbook_a3",
+        "actionPatternId": "ACTION_TRIPADVISOR_MANAGEMENT_RESPONSE_PROGRAM",
+        "variantId": null,
+        "propertyId": "adp_bethesda_marriott",
+        "hotelAttributes": {
+          "propertyName": "Bethesda Marriott"
+        },
+        "issuePattern": "tripadvisor_management_response_program",
+        "implementationStepsUsed": [
+          "Confirm the hotel’s canonical facts for TripAdvisor responses with the accountable owner (Bethesda Marriott).",
+          "Complete the applicable checklist items: designate accountable owner; set response SLA (property-configured; do not invent a default unless governed); identify recurring complaint themes monthly; correct factual misconceptions where appropriate; track response rate.",
+          "Audit each target source and record current wording/state: TripAdvisor.",
+          "Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology.",
+          "Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date).",
+          "Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation."
+        ],
+        "sourcesChanged": [],
+        "completionTime": null,
+        "metricBefore": {
+          "tripadvisorCitationFrequency": 84.4
+        },
+        "metricNextRun": null,
+        "metricSecondNextRun": null,
+        "evidenceChanges": [],
+        "outcomeClassification": null,
+        "causationClaimed": false,
+        "note": "Subsequent monitoring may be recorded for learning. Monitoring alone does not establish causation."
+      }
+    },
+    {
+      "actionId": "adp_bethesda_marriott__adp_period_adp_bethesda_marriott_20260909091016_9f3a60__playbook_a4",
+      "propertyId": "adp_bethesda_marriott",
+      "monitoringPeriodId": "adp_period_adp_bethesda_marriott_20260909091016_9f3a60",
+      "actionTitle": "Align first-party and OTA room descriptions with recurring expectation mismatches in evidence — focus: identify exact recurring expectation mismatch, update first-party room descriptions, verify OTA room-type descriptions",
+      "observedIssue": "AI Consideration is 42.1% with Reality Coverage 26.7%. High-severity reality gaps indicate stay-expectation descriptions may contribute to under-inclusion.",
+      "recommendedAction": "Confirm the hotel’s canonical facts for Room expectation alignment with the accountable owner (Bethesda Marriott). Complete the applicable checklist items: identify exact recurring expectation mismatch; update first-party room descriptions; verify OTA room-type descriptions; ensure imagery accurately reflects room type. Audit each target source and record current wording/state: Hotel Website; OTA Room-Type Descriptions; Booking.com; Expedia. Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology. Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date). Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation.",
+      "rationale": "This action addresses an observed information/positioning gap in the current monitoring period. It does not claim a guaranteed metric uplift.",
+      "evidenceRefs": [
+        {
+          "observedMetric": "consideration=42.1",
+          "scenarioOrTerritory": "Room / stay expectation",
+          "provider": "Cross-provider",
+          "evidenceExample": "Montgomery County Location",
+          "sourceGap": "room_expectation_mismatch",
+          "actionPatternId": "ACTION_ROOM_EXPECTATION_ALIGNMENT"
+        }
+      ],
+      "accountableOwnerRole": "Director of Marketing / Revenue Marketing",
+      "supportingTeam": "Content + Channel distribution + Revenue",
+      "createdDate": "2026-09-09",
+      "targetDate": null,
+      "status": "Open",
+      "completionDate": null,
+      "expectedSignal": "Dealality will monitor whether room expectation alignment recognition and related scenario inclusion change in the next monitoring period. Monitoring alone does not establish causation.",
+      "nextPeriodResult": null,
+      "followUpAssessment": null,
+      "carriedForward": false,
+      "founderCustomerNotes": "actionPatternId=ACTION_ROOM_EXPECTATION_ALIGNMENT",
+      "impactTracking": {
+        "schema": "MONTHLY_REVIEW_ACTION_IMPACT_NONCAUSAL_TRACKING",
+        "before": {
+          "aiConsideration": 42.1,
+          "realityCoverage": 26.7
+        },
+        "actionDate": null,
+        "nextRun": null,
+        "change": null,
+        "assessment": null,
+        "causationClaimed": false,
+        "note": "Later periods may record before/after measurement. Monitoring alone does not establish causation."
+      },
+      "actionPatternId": "ACTION_ROOM_EXPECTATION_ALIGNMENT",
+      "evidence": "Corrective posture from Core under-inclusion plus high-severity reality gaps (montgomery_county, fitness_center_24hr, peloton).",
+      "targetSources": [
+        "Hotel Website",
+        "OTA Room-Type Descriptions",
+        "Booking.com",
+        "Expedia"
+      ],
+      "implementationSteps": [
+        "Confirm the hotel’s canonical facts for Room expectation alignment with the accountable owner (Bethesda Marriott).",
+        "Complete the applicable checklist items: identify exact recurring expectation mismatch; update first-party room descriptions; verify OTA room-type descriptions; ensure imagery accurately reflects room type.",
+        "Audit each target source and record current wording/state: Hotel Website; OTA Room-Type Descriptions; Booking.com; Expedia.",
+        "Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology.",
+        "Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date).",
+        "Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation."
+      ],
+      "definitionOfDone": [
+        "Canonical facts for “Room expectation alignment” are confirmed by hotel management.",
+        "Each target source is reviewed: Hotel Website; OTA Room-Type Descriptions; Booking.com; Expedia.",
+        "Sources that were incorrect or incomplete are corrected, with URLs or screenshots stored.",
+        "The specific missing/inconsistent items are resolved: identify exact recurring expectation mismatch; update first-party room descriptions; verify OTA room-type descriptions; ensure imagery accurately reflects room type.",
+        "Accountable owner signs off with completion date."
+      ],
+      "nextMonitoringCheck": "Next published ADP run — review Room expectation alignment attribute recognition, related demand-territory presence, and evidence excerpts for the corrected facts.",
+      "trace": {
+        "observedMetric": "consideration=42.1",
+        "scenarioOrTerritory": "Room / stay expectation",
+        "provider": "Cross-provider",
+        "evidenceExample": "Montgomery County Location",
+        "sourceGap": "room_expectation_mismatch",
+        "actionPatternId": "ACTION_ROOM_EXPECTATION_ALIGNMENT"
+      },
+      "learningRecord": {
+        "schema": "ADP_ACTION_LEARNING_RECORD_V1",
+        "actionInstanceId": "adp_bethesda_marriott__adp_period_adp_bethesda_marriott_20260909091016_9f3a60__playbook_a4",
+        "actionPatternId": "ACTION_ROOM_EXPECTATION_ALIGNMENT",
+        "variantId": null,
+        "propertyId": "adp_bethesda_marriott",
+        "hotelAttributes": {
+          "propertyName": "Bethesda Marriott"
+        },
+        "issuePattern": "room_expectation_mismatch",
+        "implementationStepsUsed": [
+          "Confirm the hotel’s canonical facts for Room expectation alignment with the accountable owner (Bethesda Marriott).",
+          "Complete the applicable checklist items: identify exact recurring expectation mismatch; update first-party room descriptions; verify OTA room-type descriptions; ensure imagery accurately reflects room type.",
+          "Audit each target source and record current wording/state: Hotel Website; OTA Room-Type Descriptions; Booking.com; Expedia.",
+          "Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology.",
+          "Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date).",
+          "Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation."
+        ],
+        "sourcesChanged": [],
+        "completionTime": null,
+        "metricBefore": {
+          "aiConsideration": 42.1,
+          "realityCoverage": 26.7
+        },
+        "metricNextRun": null,
+        "metricSecondNextRun": null,
+        "evidenceChanges": [],
+        "outcomeClassification": null,
+        "causationClaimed": false,
+        "note": "Subsequent monitoring may be recorded for learning. Monitoring alone does not establish causation."
+      }
+    }
+  ],
+  "actionRegister": [
+    {
+      "actionId": "adp_bethesda_marriott__adp_period_adp_bethesda_marriott_20260909091016_9f3a60__playbook_a1",
+      "propertyId": "adp_bethesda_marriott",
+      "monitoringPeriodId": "adp_period_adp_bethesda_marriott_20260909091016_9f3a60",
+      "actionTitle": "Complete the meetings decision package with missing capacity, space, and contact facts — focus: total meeting space, largest capacity, meeting sales contact",
+      "observedIssue": "Business/meeting demand opportunity remains contested (“Best upper-upscale hotel in Montgomery County for multi-day ...”) with weak competitor ownership in monitored answers.",
+      "recommendedAction": "Confirm the hotel’s canonical facts for Meetings information with the accountable owner (Bethesda Marriott). Complete the applicable checklist items: total meeting space; largest capacity; meeting sales contact; downloadable floorplans; event fact sheet. Audit each target source and record current wording/state: Hotel Website; Meeting / Event Fact Sheet; Google Business Profile. Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology. Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date). Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation.",
+      "rationale": "This action addresses an observed information/positioning gap in the current monitoring period. It does not claim a guaranteed metric uplift.",
+      "evidenceRefs": [
+        {
+          "observedMetric": "whiteSpace.business",
+          "scenarioOrTerritory": "Business Travel / Meetings",
+          "provider": "Cross-provider",
+          "evidenceExample": "Competitor presence is inconsistent. Opportunity to establish authority.",
+          "sourceGap": "meetings_decision_package_incomplete",
+          "actionPatternId": "ACTION_MEETINGS_DECISION_PACKAGE_COMPLETION"
+        }
+      ],
+      "accountableOwnerRole": "Commercial / Sales Lead",
+      "supportingTeam": "Meetings sales + Marketing content",
+      "createdDate": "2026-09-09",
+      "targetDate": null,
+      "status": "Open",
+      "completionDate": null,
+      "expectedSignal": "Dealality will monitor whether meetings information recognition and related scenario inclusion change in the next monitoring period. Monitoring alone does not establish causation.",
+      "nextPeriodResult": null,
+      "followUpAssessment": null,
+      "carriedForward": false,
+      "founderCustomerNotes": "actionPatternId=ACTION_MEETINGS_DECISION_PACKAGE_COMPLETION",
+      "impactTracking": {
+        "schema": "MONTHLY_REVIEW_ACTION_IMPACT_NONCAUSAL_TRACKING",
+        "before": {
+          "scenarioPresence": 81
+        },
+        "actionDate": null,
+        "nextRun": null,
+        "change": null,
+        "assessment": null,
+        "causationClaimed": false,
+        "note": "Later periods may record before/after measurement. Monitoring alone does not establish causation."
+      },
+      "actionPatternId": "ACTION_MEETINGS_DECISION_PACKAGE_COMPLETION",
+      "evidence": "whiteSpace.business",
+      "targetSources": [
+        "Hotel Website",
+        "Meeting / Event Fact Sheet",
+        "Google Business Profile"
+      ],
+      "implementationSteps": [
+        "Confirm the hotel’s canonical facts for Meetings information with the accountable owner (Bethesda Marriott).",
+        "Complete the applicable checklist items: total meeting space; largest capacity; meeting sales contact; downloadable floorplans; event fact sheet.",
+        "Audit each target source and record current wording/state: Hotel Website; Meeting / Event Fact Sheet; Google Business Profile.",
+        "Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology.",
+        "Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date).",
+        "Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation."
+      ],
+      "definitionOfDone": [
+        "Canonical facts for “Meetings information” are confirmed by hotel management.",
+        "Each target source is reviewed: Hotel Website; Meeting / Event Fact Sheet; Google Business Profile.",
+        "Sources that were incorrect or incomplete are corrected, with URLs or screenshots stored.",
+        "The specific missing/inconsistent items are resolved: total meeting space; largest capacity; meeting sales contact; downloadable floorplans; event fact sheet.",
+        "Accountable owner signs off with completion date."
+      ],
+      "nextMonitoringCheck": "Next published ADP run — review Meetings information attribute recognition, related demand-territory presence, and evidence excerpts for the corrected facts.",
+      "trace": {
+        "observedMetric": "whiteSpace.business",
+        "scenarioOrTerritory": "Business Travel / Meetings",
+        "provider": "Cross-provider",
+        "evidenceExample": "Competitor presence is inconsistent. Opportunity to establish authority.",
+        "sourceGap": "meetings_decision_package_incomplete",
+        "actionPatternId": "ACTION_MEETINGS_DECISION_PACKAGE_COMPLETION"
+      },
+      "learningRecord": {
+        "schema": "ADP_ACTION_LEARNING_RECORD_V1",
+        "actionInstanceId": "adp_bethesda_marriott__adp_period_adp_bethesda_marriott_20260909091016_9f3a60__playbook_a1",
+        "actionPatternId": "ACTION_MEETINGS_DECISION_PACKAGE_COMPLETION",
+        "variantId": null,
+        "propertyId": "adp_bethesda_marriott",
+        "hotelAttributes": {
+          "propertyName": "Bethesda Marriott"
+        },
+        "issuePattern": "meetings_decision_package_incomplete",
+        "implementationStepsUsed": [
+          "Confirm the hotel’s canonical facts for Meetings information with the accountable owner (Bethesda Marriott).",
+          "Complete the applicable checklist items: total meeting space; largest capacity; meeting sales contact; downloadable floorplans; event fact sheet.",
+          "Audit each target source and record current wording/state: Hotel Website; Meeting / Event Fact Sheet; Google Business Profile.",
+          "Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology.",
+          "Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date).",
+          "Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation."
+        ],
+        "sourcesChanged": [],
+        "completionTime": null,
+        "metricBefore": {
+          "scenarioPresence": 81
+        },
+        "metricNextRun": null,
+        "metricSecondNextRun": null,
+        "evidenceChanges": [],
+        "outcomeClassification": null,
+        "causationClaimed": false,
+        "note": "Subsequent monitoring may be recorded for learning. Monitoring alone does not establish causation."
+      }
+    },
+    {
+      "actionId": "adp_bethesda_marriott__adp_period_adp_bethesda_marriott_20260909091016_9f3a60__playbook_a2",
+      "propertyId": "adp_bethesda_marriott",
+      "monitoringPeriodId": "adp_period_adp_bethesda_marriott_20260909091016_9f3a60",
+      "actionTitle": "Reconcile public facts for traveler needs where a named competitor appears and the subject hotel is absent — focus: list traveler needs / scenarios where absence concentrates, identify subject facts that are missing or inconsistent on priority sources, update first-party pages covering those facts",
+      "observedIssue": "Hyatt Regency Bethesda appeared in 11 monitored scenarios where Bethesda Marriott was absent.",
+      "recommendedAction": "Confirm the hotel’s canonical facts for Competitive displacement with the accountable owner (Bethesda Marriott). Complete the applicable checklist items: list traveler needs / scenarios where absence concentrates; identify subject facts that are missing or inconsistent on priority sources; update first-party pages covering those facts. Audit each target source and record current wording/state: Hotel Website; TripAdvisor; Google Business Profile; Booking.com. Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology. Compare public facts credited to Hyatt Regency Bethesda in displacement evidence against the subject hotel’s corrected pages; close only evidence-backed gaps. Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date). Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation.",
+      "rationale": "This action addresses an observed information/positioning gap in the current monitoring period. It does not claim a guaranteed metric uplift.",
+      "evidenceRefs": [
+        {
+          "observedMetric": "displacement.hyatt_regency_bethesda=11",
+          "scenarioOrTerritory": "Scenarios where subject is absent",
+          "provider": "Cross-provider",
+          "evidenceExample": "Hyatt Regency Bethesda displacement count 11",
+          "sourceGap": "competitive_absence_vs_hyatt_regency_bethesda",
+          "actionPatternId": "ACTION_COMPETITIVE_ABSENCE_SOURCE_RECONCILIATION"
+        }
+      ],
+      "accountableOwnerRole": "General Manager + Marketing Lead",
+      "supportingTeam": "Marketing content + Distribution",
+      "createdDate": "2026-09-09",
+      "targetDate": null,
+      "status": "Open",
+      "completionDate": null,
+      "expectedSignal": "Dealality will monitor whether competitive displacement recognition and related scenario inclusion change in the next monitoring period. Monitoring alone does not establish causation.",
+      "nextPeriodResult": null,
+      "followUpAssessment": null,
+      "carriedForward": false,
+      "founderCustomerNotes": "actionPatternId=ACTION_COMPETITIVE_ABSENCE_SOURCE_RECONCILIATION",
+      "impactTracking": {
+        "schema": "MONTHLY_REVIEW_ACTION_IMPACT_NONCAUSAL_TRACKING",
+        "before": {
+          "aiConsideration": 42.1,
+          "displacementCount": 11
+        },
+        "actionDate": null,
+        "nextRun": null,
+        "change": null,
+        "assessment": null,
+        "causationClaimed": false,
+        "note": "Later periods may record before/after measurement. Monitoring alone does not establish causation."
+      },
+      "actionPatternId": "ACTION_COMPETITIVE_ABSENCE_SOURCE_RECONCILIATION",
+      "evidence": "lostDemand.displacement leader Hyatt Regency Bethesda (11).",
+      "targetSources": [
+        "Hotel Website",
+        "TripAdvisor",
+        "Google Business Profile",
+        "Booking.com"
+      ],
+      "implementationSteps": [
+        "Confirm the hotel’s canonical facts for Competitive displacement with the accountable owner (Bethesda Marriott).",
+        "Complete the applicable checklist items: list traveler needs / scenarios where absence concentrates; identify subject facts that are missing or inconsistent on priority sources; update first-party pages covering those facts.",
+        "Audit each target source and record current wording/state: Hotel Website; TripAdvisor; Google Business Profile; Booking.com.",
+        "Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology.",
+        "Compare public facts credited to Hyatt Regency Bethesda in displacement evidence against the subject hotel’s corrected pages; close only evidence-backed gaps.",
+        "Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date).",
+        "Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation."
+      ],
+      "definitionOfDone": [
+        "Canonical facts for “Competitive displacement” are confirmed by hotel management.",
+        "Each target source is reviewed: Hotel Website; TripAdvisor; Google Business Profile; Booking.com.",
+        "Sources that were incorrect or incomplete are corrected, with URLs or screenshots stored.",
+        "The specific missing/inconsistent items are resolved: list traveler needs / scenarios where absence concentrates; identify subject facts that are missing or inconsistent on priority sources; update first-party pages covering those facts.",
+        "Accountable owner signs off with completion date."
+      ],
+      "nextMonitoringCheck": "Next published ADP run — review Competitive displacement attribute recognition, related demand-territory presence, and evidence excerpts for the corrected facts.",
+      "trace": {
+        "observedMetric": "displacement.hyatt_regency_bethesda=11",
+        "scenarioOrTerritory": "Scenarios where subject is absent",
+        "provider": "Cross-provider",
+        "evidenceExample": "Hyatt Regency Bethesda displacement count 11",
+        "sourceGap": "competitive_absence_vs_hyatt_regency_bethesda",
+        "actionPatternId": "ACTION_COMPETITIVE_ABSENCE_SOURCE_RECONCILIATION"
+      },
+      "learningRecord": {
+        "schema": "ADP_ACTION_LEARNING_RECORD_V1",
+        "actionInstanceId": "adp_bethesda_marriott__adp_period_adp_bethesda_marriott_20260909091016_9f3a60__playbook_a2",
+        "actionPatternId": "ACTION_COMPETITIVE_ABSENCE_SOURCE_RECONCILIATION",
+        "variantId": null,
+        "propertyId": "adp_bethesda_marriott",
+        "hotelAttributes": {
+          "propertyName": "Bethesda Marriott"
+        },
+        "issuePattern": "competitive_absence_vs_hyatt_regency_bethesda",
+        "implementationStepsUsed": [
+          "Confirm the hotel’s canonical facts for Competitive displacement with the accountable owner (Bethesda Marriott).",
+          "Complete the applicable checklist items: list traveler needs / scenarios where absence concentrates; identify subject facts that are missing or inconsistent on priority sources; update first-party pages covering those facts.",
+          "Audit each target source and record current wording/state: Hotel Website; TripAdvisor; Google Business Profile; Booking.com.",
+          "Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology.",
+          "Compare public facts credited to Hyatt Regency Bethesda in displacement evidence against the subject hotel’s corrected pages; close only evidence-backed gaps.",
+          "Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date).",
+          "Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation."
+        ],
+        "sourcesChanged": [],
+        "completionTime": null,
+        "metricBefore": {
+          "aiConsideration": 42.1,
+          "displacementCount": 11
+        },
+        "metricNextRun": null,
+        "metricSecondNextRun": null,
+        "evidenceChanges": [],
+        "outcomeClassification": null,
+        "causationClaimed": false,
+        "note": "Subsequent monitoring may be recorded for learning. Monitoring alone does not establish causation."
+      }
+    },
+    {
+      "actionId": "adp_bethesda_marriott__adp_period_adp_bethesda_marriott_20260909091016_9f3a60__playbook_a3",
+      "propertyId": "adp_bethesda_marriott",
+      "monitoringPeriodId": "adp_period_adp_bethesda_marriott_20260909091016_9f3a60",
+      "actionTitle": "Stand up a TripAdvisor management-response program with owner, SLA, and theme tracking — focus: designate accountable owner, set response SLA, identify recurring complaint themes monthly",
+      "observedIssue": "TripAdvisor appears in 84.4% of cited sources in the current monitoring period (54 citations), making response quality and factual corrections operationally material when misconceptions appear.",
+      "recommendedAction": "Confirm the hotel’s canonical facts for TripAdvisor responses with the accountable owner (Bethesda Marriott). Complete the applicable checklist items: designate accountable owner; set response SLA (property-configured; do not invent a default unless governed); identify recurring complaint themes monthly; correct factual misconceptions where appropriate; track response rate. Audit each target source and record current wording/state: TripAdvisor. Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology. Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date). Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation.",
+      "rationale": "This action addresses an observed information/positioning gap in the current monitoring period. It does not claim a guaranteed metric uplift.",
+      "evidenceRefs": [
+        {
+          "observedMetric": "evidence.topSources.tripadvisor.frequency=84.4",
+          "scenarioOrTerritory": "Citation / reputation sources",
+          "provider": "Cross-provider citations",
+          "evidenceExample": "tripadvisor.com citation frequency 84.4%",
+          "sourceGap": "tripadvisor_management_response_program",
+          "actionPatternId": "ACTION_TRIPADVISOR_MANAGEMENT_RESPONSE_PROGRAM"
+        }
+      ],
+      "accountableOwnerRole": "Guest Experience / Reputation Owner",
+      "supportingTeam": "Front office + Marketing",
+      "createdDate": "2026-09-09",
+      "targetDate": null,
+      "status": "Open",
+      "completionDate": null,
+      "expectedSignal": "Dealality will monitor whether tripadvisor responses recognition and related scenario inclusion change in the next monitoring period. Monitoring alone does not establish causation.",
+      "nextPeriodResult": null,
+      "followUpAssessment": null,
+      "carriedForward": false,
+      "founderCustomerNotes": "actionPatternId=ACTION_TRIPADVISOR_MANAGEMENT_RESPONSE_PROGRAM",
+      "impactTracking": {
+        "schema": "MONTHLY_REVIEW_ACTION_IMPACT_NONCAUSAL_TRACKING",
+        "before": {
+          "tripadvisorCitationFrequency": 84.4
+        },
+        "actionDate": null,
+        "nextRun": null,
+        "change": null,
+        "assessment": null,
+        "causationClaimed": false,
+        "note": "Later periods may record before/after measurement. Monitoring alone does not establish causation."
+      },
+      "actionPatternId": "ACTION_TRIPADVISOR_MANAGEMENT_RESPONSE_PROGRAM",
+      "evidence": "report.evidence.topSources tripadvisor frequency 84.4%.",
+      "targetSources": [
+        "TripAdvisor"
+      ],
+      "implementationSteps": [
+        "Confirm the hotel’s canonical facts for TripAdvisor responses with the accountable owner (Bethesda Marriott).",
+        "Complete the applicable checklist items: designate accountable owner; set response SLA (property-configured; do not invent a default unless governed); identify recurring complaint themes monthly; correct factual misconceptions where appropriate; track response rate.",
+        "Audit each target source and record current wording/state: TripAdvisor.",
+        "Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology.",
+        "Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date).",
+        "Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation."
+      ],
+      "definitionOfDone": [
+        "Canonical facts for “TripAdvisor responses” are confirmed by hotel management.",
+        "Each target source is reviewed: TripAdvisor.",
+        "Sources that were incorrect or incomplete are corrected, with URLs or screenshots stored.",
+        "The specific missing/inconsistent items are resolved: designate accountable owner; set response SLA; identify recurring complaint themes monthly; correct factual misconceptions where appropriate; track response rate.",
+        "Accountable owner signs off with completion date."
+      ],
+      "nextMonitoringCheck": "Next published ADP run — review TripAdvisor responses attribute recognition, related demand-territory presence, and evidence excerpts for the corrected facts.",
+      "trace": {
+        "observedMetric": "evidence.topSources.tripadvisor.frequency=84.4",
+        "scenarioOrTerritory": "Citation / reputation sources",
+        "provider": "Cross-provider citations",
+        "evidenceExample": "tripadvisor.com citation frequency 84.4%",
+        "sourceGap": "tripadvisor_management_response_program",
+        "actionPatternId": "ACTION_TRIPADVISOR_MANAGEMENT_RESPONSE_PROGRAM"
+      },
+      "learningRecord": {
+        "schema": "ADP_ACTION_LEARNING_RECORD_V1",
+        "actionInstanceId": "adp_bethesda_marriott__adp_period_adp_bethesda_marriott_20260909091016_9f3a60__playbook_a3",
+        "actionPatternId": "ACTION_TRIPADVISOR_MANAGEMENT_RESPONSE_PROGRAM",
+        "variantId": null,
+        "propertyId": "adp_bethesda_marriott",
+        "hotelAttributes": {
+          "propertyName": "Bethesda Marriott"
+        },
+        "issuePattern": "tripadvisor_management_response_program",
+        "implementationStepsUsed": [
+          "Confirm the hotel’s canonical facts for TripAdvisor responses with the accountable owner (Bethesda Marriott).",
+          "Complete the applicable checklist items: designate accountable owner; set response SLA (property-configured; do not invent a default unless governed); identify recurring complaint themes monthly; correct factual misconceptions where appropriate; track response rate.",
+          "Audit each target source and record current wording/state: TripAdvisor.",
+          "Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology.",
+          "Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date).",
+          "Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation."
+        ],
+        "sourcesChanged": [],
+        "completionTime": null,
+        "metricBefore": {
+          "tripadvisorCitationFrequency": 84.4
+        },
+        "metricNextRun": null,
+        "metricSecondNextRun": null,
+        "evidenceChanges": [],
+        "outcomeClassification": null,
+        "causationClaimed": false,
+        "note": "Subsequent monitoring may be recorded for learning. Monitoring alone does not establish causation."
+      }
+    },
+    {
+      "actionId": "adp_bethesda_marriott__adp_period_adp_bethesda_marriott_20260909091016_9f3a60__playbook_a4",
+      "propertyId": "adp_bethesda_marriott",
+      "monitoringPeriodId": "adp_period_adp_bethesda_marriott_20260909091016_9f3a60",
+      "actionTitle": "Align first-party and OTA room descriptions with recurring expectation mismatches in evidence — focus: identify exact recurring expectation mismatch, update first-party room descriptions, verify OTA room-type descriptions",
+      "observedIssue": "AI Consideration is 42.1% with Reality Coverage 26.7%. High-severity reality gaps indicate stay-expectation descriptions may contribute to under-inclusion.",
+      "recommendedAction": "Confirm the hotel’s canonical facts for Room expectation alignment with the accountable owner (Bethesda Marriott). Complete the applicable checklist items: identify exact recurring expectation mismatch; update first-party room descriptions; verify OTA room-type descriptions; ensure imagery accurately reflects room type. Audit each target source and record current wording/state: Hotel Website; OTA Room-Type Descriptions; Booking.com; Expedia. Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology. Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date). Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation.",
+      "rationale": "This action addresses an observed information/positioning gap in the current monitoring period. It does not claim a guaranteed metric uplift.",
+      "evidenceRefs": [
+        {
+          "observedMetric": "consideration=42.1",
+          "scenarioOrTerritory": "Room / stay expectation",
+          "provider": "Cross-provider",
+          "evidenceExample": "Montgomery County Location",
+          "sourceGap": "room_expectation_mismatch",
+          "actionPatternId": "ACTION_ROOM_EXPECTATION_ALIGNMENT"
+        }
+      ],
+      "accountableOwnerRole": "Director of Marketing / Revenue Marketing",
+      "supportingTeam": "Content + Channel distribution + Revenue",
+      "createdDate": "2026-09-09",
+      "targetDate": null,
+      "status": "Open",
+      "completionDate": null,
+      "expectedSignal": "Dealality will monitor whether room expectation alignment recognition and related scenario inclusion change in the next monitoring period. Monitoring alone does not establish causation.",
+      "nextPeriodResult": null,
+      "followUpAssessment": null,
+      "carriedForward": false,
+      "founderCustomerNotes": "actionPatternId=ACTION_ROOM_EXPECTATION_ALIGNMENT",
+      "impactTracking": {
+        "schema": "MONTHLY_REVIEW_ACTION_IMPACT_NONCAUSAL_TRACKING",
+        "before": {
+          "aiConsideration": 42.1,
+          "realityCoverage": 26.7
+        },
+        "actionDate": null,
+        "nextRun": null,
+        "change": null,
+        "assessment": null,
+        "causationClaimed": false,
+        "note": "Later periods may record before/after measurement. Monitoring alone does not establish causation."
+      },
+      "actionPatternId": "ACTION_ROOM_EXPECTATION_ALIGNMENT",
+      "evidence": "Corrective posture from Core under-inclusion plus high-severity reality gaps (montgomery_county, fitness_center_24hr, peloton).",
+      "targetSources": [
+        "Hotel Website",
+        "OTA Room-Type Descriptions",
+        "Booking.com",
+        "Expedia"
+      ],
+      "implementationSteps": [
+        "Confirm the hotel’s canonical facts for Room expectation alignment with the accountable owner (Bethesda Marriott).",
+        "Complete the applicable checklist items: identify exact recurring expectation mismatch; update first-party room descriptions; verify OTA room-type descriptions; ensure imagery accurately reflects room type.",
+        "Audit each target source and record current wording/state: Hotel Website; OTA Room-Type Descriptions; Booking.com; Expedia.",
+        "Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology.",
+        "Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date).",
+        "Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation."
+      ],
+      "definitionOfDone": [
+        "Canonical facts for “Room expectation alignment” are confirmed by hotel management.",
+        "Each target source is reviewed: Hotel Website; OTA Room-Type Descriptions; Booking.com; Expedia.",
+        "Sources that were incorrect or incomplete are corrected, with URLs or screenshots stored.",
+        "The specific missing/inconsistent items are resolved: identify exact recurring expectation mismatch; update first-party room descriptions; verify OTA room-type descriptions; ensure imagery accurately reflects room type.",
+        "Accountable owner signs off with completion date."
+      ],
+      "nextMonitoringCheck": "Next published ADP run — review Room expectation alignment attribute recognition, related demand-territory presence, and evidence excerpts for the corrected facts.",
+      "trace": {
+        "observedMetric": "consideration=42.1",
+        "scenarioOrTerritory": "Room / stay expectation",
+        "provider": "Cross-provider",
+        "evidenceExample": "Montgomery County Location",
+        "sourceGap": "room_expectation_mismatch",
+        "actionPatternId": "ACTION_ROOM_EXPECTATION_ALIGNMENT"
+      },
+      "learningRecord": {
+        "schema": "ADP_ACTION_LEARNING_RECORD_V1",
+        "actionInstanceId": "adp_bethesda_marriott__adp_period_adp_bethesda_marriott_20260909091016_9f3a60__playbook_a4",
+        "actionPatternId": "ACTION_ROOM_EXPECTATION_ALIGNMENT",
+        "variantId": null,
+        "propertyId": "adp_bethesda_marriott",
+        "hotelAttributes": {
+          "propertyName": "Bethesda Marriott"
+        },
+        "issuePattern": "room_expectation_mismatch",
+        "implementationStepsUsed": [
+          "Confirm the hotel’s canonical facts for Room expectation alignment with the accountable owner (Bethesda Marriott).",
+          "Complete the applicable checklist items: identify exact recurring expectation mismatch; update first-party room descriptions; verify OTA room-type descriptions; ensure imagery accurately reflects room type.",
+          "Audit each target source and record current wording/state: Hotel Website; OTA Room-Type Descriptions; Booking.com; Expedia.",
+          "Correct only the sources where facts are missing, conflicting, or outdated. Do not change measurement methodology.",
+          "Store completion evidence (canonical policy summary, sources reviewed, sources corrected, URLs/screenshots, completion date).",
+          "Notify Dealality of completion so the next monitoring period can check the expected signal without assuming causation."
+        ],
+        "sourcesChanged": [],
+        "completionTime": null,
+        "metricBefore": {
+          "aiConsideration": 42.1,
+          "realityCoverage": 26.7
+        },
+        "metricNextRun": null,
+        "metricSecondNextRun": null,
+        "evidenceChanges": [],
+        "outcomeClassification": null,
+        "causationClaimed": false,
+        "note": "Subsequent monitoring may be recorded for learning. Monitoring alone does not establish causation."
+      }
+    }
+  ],
+  "actionIntelligence": {
+    "version": "ADP_ACTION_INTELLIGENCE_V1",
+    "builderMode": "generic_evidence_driven_v1",
+    "rejectedGenericFinalRecommendations": [
+      "Improve AI representation",
+      "Strengthen overall AI authority signals",
+      "Improve OTA content",
+      "Pursue high-potential demand opportunities",
+      "Strengthen local positioning",
+      "Improve family content"
+    ],
+    "rejectedCandidates": [],
+    "executabilityGates": {
+      "ADP_ACTION_EXECUTABILITY_STANDARD": true,
+      "ADP_ACTION_DEFINITION_OF_DONE_COMPLETE": true,
+      "ADP_ACTION_TRACEABILITY": true,
+      "ADP_ACTION_TARGET_SOURCE_SPECIFICITY": true,
+      "ADP_ACTION_IMPLEMENTATION_STEPS_COMPLETE": true,
+      "ADP_ACTION_PATTERN_LEARNING_STRUCTURE_COMPLETE": true,
+      "ADP_ACTION_NO_GENERIC_FINAL_RECOMMENDATIONS": true
+    },
+    "governedPatternIds": [
+      "ACTION_PARKING_INFORMATION_RECONCILIATION",
+      "ACTION_PET_POLICY_RECONCILIATION",
+      "ACTION_FAMILY_TRAVEL_INFORMATION_COMPLETION",
+      "ACTION_ACCESSIBILITY_INFORMATION_COMPLETION",
+      "ACTION_MANDATORY_FEE_INFORMATION_RECONCILIATION",
+      "ACTION_ALL_INCLUSIVE_OFFER_RECONCILIATION",
+      "ACTION_MEETINGS_DECISION_PACKAGE_COMPLETION",
+      "ACTION_TRIPADVISOR_MANAGEMENT_RESPONSE_PROGRAM",
+      "ACTION_GOOGLE_BUSINESS_PROFILE_COMPLETENESS_AUDIT",
+      "ACTION_ROOM_EXPECTATION_ALIGNMENT",
+      "ACTION_NEIGHBORHOOD_USE_CASE_CONTENT",
+      "ACTION_COMPETITIVE_ABSENCE_SOURCE_RECONCILIATION"
+    ],
+    "governance": {
+      "llmMayPropose": true,
+      "llmMayAutoPromoteToGoverned": false,
+      "requiredApprover": "founder_or_product",
+      "lifecycleOrder": [
+        "DISCOVERED",
+        "DRAFT",
+        "REVIEWED",
+        "GOVERNED",
+        "REUSABLE"
+      ],
+      "startSmall": true,
+      "note": "New hotels create evidence-backed patterns. Do not invent a large generic library."
+    },
+    "recommenderDesign": {
+      "version": "ADP_ACTION_RECOMMENDER_DESIGN_V1",
+      "status": "DESIGN_ONLY",
+      "inputVector": [
+        "observedIssueVector",
+        "hotelType",
+        "travelerNeed",
+        "sourceGap",
+        "competitiveEvidence",
+        "historicalActionOutcomes"
+      ],
+      "rankDimensions": [
+        {
+          "id": "evidence_match",
+          "weightHint": "highest",
+          "note": "Observed issue vector match"
+        },
+        {
+          "id": "applicability",
+          "weightHint": "high",
+          "note": "Hotel type / traveler need fit"
+        },
+        {
+          "id": "specificity",
+          "weightHint": "high",
+          "note": "Playbook can be made property-specific"
+        },
+        {
+          "id": "operational_feasibility",
+          "weightHint": "medium",
+          "note": "Owner can execute with available sources"
+        },
+        {
+          "id": "historical_subsequent_outcomes",
+          "weightHint": "medium",
+          "note": "Never sole rank key"
+        },
+        {
+          "id": "confidence",
+          "weightHint": "medium",
+          "note": "Evidence completeness + source authority"
+        }
+      ],
+      "rule": "Candidate patterns are scored by evidence match first; historical outcomes never rank alone."
+    }
+  },
+  "priorActionReview": {
+    "available": false,
+    "message": "No prior monthly actions are available yet.",
+    "rows": [],
+    "note": "Prior Action Review resolves from the Action Register for prior review versions — not PDF text extraction."
+  },
+  "decisionsRequired": [
+    {
+      "id": "confirm_owners",
+      "text": "Confirm an accountable owner for each open action (role is pre-suggested; named owner still required)."
+    },
+    {
+      "id": "confirm_target_dates",
+      "text": "Confirm target completion dates for each open action."
+    },
+    {
+      "id": "confirm_priority_order",
+      "text": "Confirm whether the corrective action order matches management’s operating priority for the next 30 days."
+    },
+    {
+      "id": "confirm_property_facts",
+      "text": "Confirm whether any high-severity reality-gap attributes are outdated, incorrect, or intentionally not marketed."
+    },
+    {
+      "id": "set_target_dates",
+      "text": "Set target dates where currently blank (“Owner to be confirmed” / date pending)."
+    }
+  ],
+  "nextMonitoringPriorities": [
+    {
+      "text": "AI Consideration and Scenario Presence versus the next published monitoring run.",
+      "tiesTo": "material_risk_or_strength"
+    },
+    {
+      "text": "Reality Coverage and high-severity attribute recognition rates.",
+      "tiesTo": "reality_gap"
+    },
+    {
+      "text": "Displacement pattern involving Hyatt Regency Bethesda.",
+      "tiesTo": "competitive_movement"
+    },
+    {
+      "text": "Follow-up signal for action: Complete the meetings decision package with missing capacity, space, and contact facts — focus: total meeting space, largest capacity, meeting sales contact.",
+      "tiesTo": "open_action"
+    },
+    {
+      "text": "Follow-up signal for action: Reconcile public facts for traveler needs where a named competitor appears and the subject hotel is absent — focus: list traveler needs / scenarios where absence concentrates, identify subject facts that are missing or inconsistent on priority sources, update first-party pages covering those facts.",
+      "tiesTo": "open_action"
+    }
+  ],
+  "meetingMode": {
+    "topChanges": [],
+    "topActions": [
+      {
+        "title": "Complete the meetings decision package with missing capacity, space, and contact facts — focus: total meeting space, largest capacity, meeting sales contact",
+        "owner": "Commercial / Sales Lead",
+        "status": "Open",
+        "dueDate": "Date to be confirmed"
+      },
+      {
+        "title": "Reconcile public facts for traveler needs where a named competitor appears and the subject hotel is absent — focus: list traveler needs / scenarios where absence concentrates, identify subject facts that are missing or inconsistent on priority sources, update first-party pages covering those facts",
+        "owner": "General Manager + Marketing Lead",
+        "status": "Open",
+        "dueDate": "Date to be confirmed"
+      },
+      {
+        "title": "Stand up a TripAdvisor management-response program with owner, SLA, and theme tracking — focus: designate accountable owner, set response SLA, identify recurring complaint themes monthly",
+        "owner": "Guest Experience / Reputation Owner",
+        "status": "Open",
+        "dueDate": "Date to be confirmed"
+      }
+    ],
+    "priorOpenActions": [],
+    "decisionsRequired": [
+      "Confirm an accountable owner for each open action (role is pre-suggested; named owner still required).",
+      "Confirm target completion dates for each open action.",
+      "Confirm whether the corrective action order matches management’s operating priority for the next 30 days.",
+      "Confirm whether any high-severity reality-gap attributes are outdated, incorrect, or intentionally not marketed.",
+      "Set target dates where currently blank (“Owner to be confirmed” / date pending)."
+    ]
+  },
+  "methodologyNote": "This review is composed from the certified published Existing Hotel ADP customer report and the published Independent Positioning pack where available. It does not rerun providers, invent metrics, or claim causation from management actions. Final actions are executable playbooks with target sources, implementation steps, and definition of done.",
+  "sources": {
+    "manifestPath": "C:\\Dev\\deal-capture-proxy\\data\\ai-demand-positioning\\published\\adp_bethesda_marriott\\manifest.json",
+    "reportPath": "C:\\Dev\\deal-capture-proxy\\data\\ai-demand-positioning\\published\\adp_bethesda_marriott\\report-adp_period_adp_bethesda_marriott_20260909091016_9f3a60.json",
+    "evidencePath": "C:\\Dev\\deal-capture-proxy\\data\\ai-demand-positioning\\published\\adp_bethesda_marriott\\evidence-adp_period_adp_bethesda_marriott_20260909091016_9f3a60.json",
+    "bppPath": "C:\\Dev\\deal-capture-proxy\\config\\client-share\\bpp-customer-published-v1.json",
+    "bppPackMeta": {
+      "publicationVersion": "bpp-customer-v1.1-20260902-p2",
+      "periodId": "bpp_second_cycle_2026-09-02T1947",
+      "priorPeriodId": "bpp_first_cycle_2026-08-21T2057"
+    }
+  },
+  "gates": {
+    "MONTHLY_REVIEW_SINGLE_CANONICAL_PAYLOAD": true,
+    "PERFORMANCE_REVIEW_NUMBERS_MUST_TIE_EXACTLY_TO_CURRENT_PUBLISHED_ADP": true,
+    "AI_DEMAND_REVIEW_NO_PARALLEL_ANALYTICS": true,
+    "PDF_NO_RAW_NULL_ANALYTICAL_FIELDS": true,
+    "PDF_COMPARABILITY_DISCLOSURE_PARITY": true,
+    "PDF_DEMAND_TERRITORY_METRIC_SEMANTIC_PARITY": true,
+    "PLATFORM_EXECUTIVE_READ_PDF_PRIMARY_ISSUE_PARITY": true,
+    "AI_DEMAND_PERFORMANCE_REVIEW_EXECUTIVE_EXPANSION_V2": true,
+    "AI_DEMAND_PERFORMANCE_REVIEW_EXECUTIVE_EXPANSION_V3": true,
+    "PERFORMANCE_REVIEW_EXECUTIVE_EXPANSION_PRESERVES_PLATFORM_CONCLUSION": true,
+    "EXECUTIVE_REVIEW_NO_LOW_VALUE_REPETITION": true,
+    "NO_INTERNAL_ENUMS_IN_CLIENT_PDF": true,
+    "AI_DEMAND_REVIEW_NO_ORPHAN_COMPONENTS": true,
+    "AI_DEMAND_PERFORMANCE_REVIEW_SAME_EDITION_LOCK": true,
+    "ADP_MONTHLY_REVIEW_ELIGIBILITY_FAIL_CLOSED": true,
+    "ADP_MONTHLY_REVIEW_NO_PROPERTY_SPECIFIC_BUILDER_FORKS": true,
+    "ADP_MONTHLY_REVIEW_EXECUTIVE_ASSESSMENT_PROPERTY_SPECIFIC": true,
+    "ADP_MONTHLY_REVIEW_MOVEMENT_COMPARABILITY_INTEGRITY": true,
+    "MONTHLY_REVIEW_ACTION_ACCOUNTABILITY_COMPLETE": true,
+    "MONTHLY_REVIEW_ACTION_IMPACT_NONCAUSAL_TRACKING": true,
+    "MONTHLY_REVIEW_CLEAR_NOT_CLEVER_LANGUAGE": true,
+    "ACTION_CAUSATION_LANGUAGE_INTEGRITY": true,
+    "ADP_ACTION_EXECUTABILITY_STANDARD": true,
+    "ADP_ACTION_DEFINITION_OF_DONE_COMPLETE": true,
+    "ADP_ACTION_TRACEABILITY": true,
+    "ADP_ACTION_TARGET_SOURCE_SPECIFICITY": true,
+    "ADP_ACTION_IMPLEMENTATION_STEPS_COMPLETE": true,
+    "ADP_ACTION_PATTERN_LEARNING_STRUCTURE_COMPLETE": true,
+    "ADP_ACTION_NO_GENERIC_FINAL_RECOMMENDATIONS": true,
+    "accountabilityFailures": [],
+    "languageFlags": [],
+    "causationFlags": [],
+    "doctrine": {
+      "PERFORMANCE_REVIEW_NUMBERS_MUST_TIE_EXACTLY_TO_CURRENT_PUBLISHED_ADP": "PERFORMANCE_REVIEW_NUMBERS_MUST_TIE_EXACTLY_TO_CURRENT_PUBLISHED_ADP",
+      "AI_DEMAND_REVIEW_NO_PARALLEL_ANALYTICS": "AI_DEMAND_REVIEW_NO_PARALLEL_ANALYTICS",
+      "PDF_NO_RAW_NULL_ANALYTICAL_FIELDS": "PDF_NO_RAW_NULL_ANALYTICAL_FIELDS",
+      "PDF_COMPARABILITY_DISCLOSURE_PARITY": "PDF_COMPARABILITY_DISCLOSURE_PARITY",
+      "PDF_DEMAND_TERRITORY_METRIC_SEMANTIC_PARITY": "PDF_DEMAND_TERRITORY_METRIC_SEMANTIC_PARITY",
+      "PLATFORM_EXECUTIVE_READ_PDF_PRIMARY_ISSUE_PARITY": "PLATFORM_EXECUTIVE_READ_PDF_PRIMARY_ISSUE_PARITY",
+      "AI_DEMAND_PERFORMANCE_REVIEW_EXECUTIVE_EXPANSION_V2": "AI_DEMAND_PERFORMANCE_REVIEW_EXECUTIVE_EXPANSION_V2",
+      "AI_DEMAND_PERFORMANCE_REVIEW_EXECUTIVE_EXPANSION_V3": "AI_DEMAND_PERFORMANCE_REVIEW_EXECUTIVE_EXPANSION_V3"
+    }
+  },
+  "liveProviderCalls": 0,
+  "generatedAt": "2026-09-11T13:15:53.658Z"
+}

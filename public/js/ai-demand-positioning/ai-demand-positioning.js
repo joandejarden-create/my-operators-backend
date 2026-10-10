@@ -8,6 +8,47 @@
   var API_BASE = "/api/ai-demand-positioning";
   var currentPayload = null;
 
+
+  function adpCleanLocPart(v) {
+    if (v == null) return "";
+    var s = String(v).trim();
+    if (!s || s === "null" || s === "undefined") return "";
+    return s;
+  }
+  function adpHumanCountry(c) {
+    var raw = adpCleanLocPart(c);
+    if (!raw) return "";
+    var map = {
+      IT: "Italy",
+      CH: "Switzerland",
+      ES: "Spain",
+      US: "United States",
+      BM: "Bermuda",
+      GD: "Grenada",
+      MX: "Mexico",
+      DO: "Dominican Republic",
+    };
+    if (/^[A-Za-z]{2}$/.test(raw)) return map[raw.toUpperCase()] || raw.toUpperCase();
+    return raw;
+  }
+  function adpPropertyLocationLine(p) {
+    if (!p) return "";
+    if (p.locationLine) return p.locationLine;
+    var city = adpCleanLocPart(p.city);
+    var state = adpCleanLocPart(p.state) || adpCleanLocPart(p.region);
+    var country = adpHumanCountry(p.country);
+    if (city && state) return city + ", " + state;
+    if (city && country) return city + ", " + country;
+    return city || country || "";
+  }
+  function adpPropertySelectorLabel(p) {
+    if (!p) return "";
+    if (p.label || p.optionLabel) return p.label || p.optionLabel;
+    var name = adpCleanLocPart(p.name) || adpCleanLocPart(p.displayName) || "";
+    var loc = adpPropertyLocationLine(p);
+    return loc ? name + " — " + loc : name;
+  }
+
   function esc(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
   function toProperCase(s) { return (s || "").replace(/\b\w/g, function(c) { return c.toUpperCase(); }); }
 
@@ -419,7 +460,7 @@
     if (!sel) return;
     sel.disabled = false;
     sel.removeAttribute("aria-disabled");
-    sel.removeAttribute("title");
+    // Keep title as full selected label (not share-lock copy)
     sel.classList.remove("filter-select--share-locked");
   }
 
@@ -441,6 +482,14 @@
     var token = getAdpShareCapabilityToken();
     if (token) {
       fetchOpts.headers["X-ADP-Share-Capability"] = token;
+    }
+
+    // Admin/current-report PDF print path: Playwright fulfills APIs (or local
+    // DEV_AUTH_BYPASS). Never block on Memberstack login — that was the readiness timeout.
+    if (isAdpAdminPdfRender()) {
+      fetchOpts.headers["X-Dealality-Owner-App"] = "1";
+      fetchOpts.headers["X-ADP-Pdf-Render"] = "1";
+      return fetch(shareUrl, fetchOpts);
     }
 
     // Owner app: Memberstack JWT when available + owner-app marker (never require share token).
@@ -682,9 +731,21 @@
       (data.properties || []).forEach(function (p) {
         var opt = document.createElement("option");
         opt.value = p.propertyId;
-        opt.textContent = p.name + " — " + p.city + ", " + p.state;
+        var label = adpPropertySelectorLabel(p);
+        opt.textContent = label;
+        opt.title = label; // full title when horizontal space truncates
         sel.appendChild(opt);
       });
+      // Keep closed-state accessible name as full selected title
+      if (!sel._adpTitleSyncBound) {
+        sel._adpTitleSyncBound = true;
+        sel.addEventListener("change", function () {
+          var o = sel.options[sel.selectedIndex];
+          if (o) sel.title = o.title || o.textContent || "";
+        });
+      }
+      var selOpt = sel.options[sel.selectedIndex];
+      if (selOpt) sel.title = selOpt.title || selOpt.textContent || "";
       var requested = getQueryPropertyId();
       if (requested) {
         if (sel.querySelector('option[value="' + requested + '"]')) {
@@ -2112,17 +2173,22 @@
     if (!section || !row) return;
 
     var em = payload && payload.executiveMetrics;
+    var hasPrior = !!(em && em.currentVsPrior && em.currentVsPrior.deltas);
+    var baselineMeta = resolveBaselineMonitoringMeta(payload || {}, (payload && payload.trends) || []);
+    var baselineOnlySuffix = !hasPrior
+      ? " · Baseline · " + baselineMeta.baselineDateLabel
+      : "";
     var cards = [];
     var cr = em && em.considerationRate;
     if (isConsiderationCalculable(cr)) {
-      var crDelta = em.currentVsPrior && em.currentVsPrior.deltas
+      var crDelta = hasPrior
         ? formatPpDelta(em.currentVsPrior.deltas.considerationRate)
         : null;
       cards.push(kpiCardWithInfo(
         "AI Consideration Rate",
         fmtPct(cr.rate),
         (cr.presentObservations + " of " + cr.comparableObservations + " comparable AI responses") +
-          (crDelta ? " · " + crDelta : ""),
+          (crDelta ? " · " + crDelta : baselineOnlySuffix),
         adpExecutiveMetricTip("AI Consideration Rate", {
           summary: "This is about frequency — across all provider responses, how often you actually made the consideration set.",
           definition: "How often your hotel is named in the AI answers we collected for traveler questions that apply to your property.",
@@ -2151,14 +2217,14 @@
 
     var sp = em && em.scenarioPresence;
     if (isScenarioPresenceCalculable(sp)) {
-      var spDelta = em.currentVsPrior && em.currentVsPrior.deltas
+      var spDelta = hasPrior
         ? formatPpDelta(em.currentVsPrior.deltas.scenarioPresence)
         : null;
       cards.push(kpiCardWithInfo(
         "AI Scenario Presence",
         fmtPct(sp.rate),
         ("Present in " + sp.capturedScenarios + " of " + sp.eligibleScenarios + " monitored demand scenarios") +
-          (spDelta ? " · " + spDelta : ""),
+          (spDelta ? " · " + spDelta : baselineOnlySuffix),
         adpExecutiveMetricTip("AI Scenario Presence", {
           summary: "This is about breadth — how many different demand situations you participate in.",
           definition: "The share of traveler questions we monitor where at least one AI model mentioned your hotel.",
@@ -2187,14 +2253,14 @@
 
     var rm = em && em.rankMetrics;
     if (isRankMetricsCalculable(rm) && Number.isFinite(Number(rm.numberOneAppearanceRate))) {
-      var n1Delta = em.currentVsPrior && em.currentVsPrior.deltas
+      var n1Delta = hasPrior
         ? formatPpDelta(em.currentVsPrior.deltas.numberOneAppearanceRate)
         : null;
       cards.push(kpiCardWithInfo(
         "#1 Appearance Rate",
         fmtPct(rm.numberOneAppearanceRate),
         (rm.numberOneCount + " of " + rm.rankEligibleN + " ranked AI responses") +
-          (n1Delta ? " · " + n1Delta : ""),
+          (n1Delta ? " · " + n1Delta : baselineOnlySuffix),
         adpExecutiveMetricTip("#1 Appearance Rate", {
           definition: "When AI listed hotels in a clear order, how often was your hotel named first?",
           formula: "AI answers where your hotel is listed first, divided by AI answers that used a clear ranking (numbered list, ranked bullets, or a ranked table).",
@@ -2222,7 +2288,7 @@
       cards.push(kpiCardWithInfo(
         "Top-3 Appearance Rate",
         fmtPct(rm.topThreeAppearanceRate),
-        rm.topThreeCount + " of " + rm.rankEligibleN + " ranked AI responses",
+        rm.topThreeCount + " of " + rm.rankEligibleN + " ranked AI responses" + baselineOnlySuffix,
         adpExecutiveMetricTip("Top-3 Appearance Rate", {
           definition: "When AI listed hotels in a clear order, how often was your hotel in the first three names?",
           formula: "AI answers where your hotel is listed 1st, 2nd, or 3rd, divided by AI answers that used a clear ranking.",
@@ -2253,7 +2319,7 @@
       cards.push(kpiCardWithInfo(
         "Competitor-Present Scenarios",
         String(cpsCount) + " scenarios",
-        "Traveler questions where a comparable hotel appeared and yours did not",
+        "Traveler questions where a comparable hotel appeared and yours did not" + baselineOnlySuffix,
         adpExecutiveMetricTip("Competitor-Present Scenarios", {
           definition: "How many traveler questions had at least one AI answer that named a comparable hotel but not yours.",
           formula: "Count of traveler questions where your hotel was missing in at least one AI answer and a comparable hotel was named in that answer.",
@@ -2292,6 +2358,52 @@
 
   var adpTrendChart = null;
 
+  function formatBaselineDisplayDate(iso) {
+    if (!iso) return null;
+    var s = String(iso).slice(0, 10);
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+    if (!m) return s;
+    var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    var month = months[Number(m[2]) - 1];
+    if (!month) return s;
+    return month + " " + Number(m[3]) + ", " + m[1];
+  }
+
+  function nextRemeasurementLabelFromBaseline(iso) {
+    if (!iso) return null;
+    var s = String(iso).slice(0, 10);
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+    if (!m) return null;
+    var y = Number(m[1]);
+    var mo = Number(m[2]);
+    var nextMo = mo === 12 ? 1 : mo + 1;
+    var nextY = mo === 12 ? y + 1 : y;
+    var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    return months[nextMo - 1] + " " + nextY;
+  }
+
+  function resolveBaselineMonitoringMeta(d, trends) {
+    var bm = (d && d.baselineMonitoring) || {};
+    var period = (d && d.period) || {};
+    var first = trends && trends[0] ? trends[0] : null;
+    var baselineDate =
+      bm.baselineDate ||
+      period.baselineDate ||
+      (first && (first.baselineDate || first.date)) ||
+      null;
+    var nextLabel =
+      bm.nextFormalRemeasurementLabel ||
+      (first && first.nextFormalRemeasurementLabel) ||
+      nextRemeasurementLabelFromBaseline(baselineDate) ||
+      "Next scheduled remeasurement";
+    return {
+      baselineDate: baselineDate,
+      baselineDateLabel: formatBaselineDisplayDate(baselineDate) || "Baseline established",
+      nextFormalRemeasurementLabel: nextLabel,
+      monitoringStatus: bm.monitoringStatus || (first && first.monitoringStatus) || "ACTIVE"
+    };
+  }
+
   function renderTrends(d) {
     var emptyEl = document.getElementById("adpTrendEmpty");
     var summaryEl = document.getElementById("adpTrendSummary");
@@ -2304,13 +2416,14 @@
     var trends = d.trends;
     if (!trends || !trends.length) {
       emptyEl.hidden = false;
-      emptyEl.innerHTML = '<p class="aiv-empty__message">No official baseline monitoring period is available yet.</p>';
+      emptyEl.innerHTML = '<p class="aiv-empty__message">Official baseline not yet established.</p>';
       if (summaryEl) summaryEl.hidden = true;
       if (chartWrap) chartWrap.hidden = true;
       return;
     }
 
     var singlePeriod = trends.length === 1;
+    var monitorMeta = resolveBaselineMonitoringMeta(d, trends);
 
     // Fill missing single-period metric fields from live executive metrics when needed.
     if (singlePeriod) {
@@ -2324,10 +2437,12 @@
     }
 
     var labels = trends.map(function(t, idx) {
-      var s = t.date || "";
-      var dateLabel = s.slice(0, 10) + (s.slice(11, 16) ? " \u00b7 " + s.slice(11, 16) : "");
-      if (singlePeriod) return dateLabel;
+      var dateSrc = t.baselineDate || t.date || "";
+      var pretty = formatBaselineDisplayDate(dateSrc);
+      var dateLabel = pretty || (String(dateSrc).slice(0, 10) + (String(dateSrc).slice(11, 16) ? " \u00b7 " + String(dateSrc).slice(11, 16) : ""));
+      if (singlePeriod) return dateLabel + " \u00b7 Baseline";
       if (idx === trends.length - 1) return dateLabel + " \u00b7 Current";
+      if (idx === 0) return dateLabel + " \u00b7 Baseline";
       if (idx === trends.length - 2) return dateLabel + " \u00b7 Prior Run";
       return dateLabel;
     });
@@ -2346,15 +2461,18 @@
     if (summaryEl) {
       summaryEl.hidden = false;
       if (singlePeriod) {
-        // Same summary chrome as multi-period; KPI delta text is data-driven (no fabricated pp change).
-        // Lower chart callout intentionally omitted — see REDUNDANT_STATUS_CONTAINER.
+        // State 2: official baseline exists, no later official remeasurement yet.
+        var baselineSub =
+          "Baseline · " + monitorMeta.baselineDateLabel;
+        var monitoringSub =
+          "Monitoring Active · Next formal remeasurement " + monitorMeta.nextFormalRemeasurementLabel;
         summaryEl.setAttribute("data-adp-peer-grid", "trends-kpi");
         summaryEl.setAttribute("data-adp-peer-count", "4");
         summaryEl.innerHTML =
-          '<div class="aiv-detail-trend-stat" data-adp-peer-card="1"><div class="aiv-detail-trend-stat__label">Reality Coverage</div><div class="aiv-detail-trend-stat__value">' + (last.propertyRealityCoverage != null ? fmtPct(last.propertyRealityCoverage) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">Awaiting next comparable period</div></div>' +
-          '<div class="aiv-detail-trend-stat" data-adp-peer-card="2"><div class="aiv-detail-trend-stat__label">Scenario Presence</div><div class="aiv-detail-trend-stat__value">' + (last.scenarioPresenceRate != null ? fmtPct(last.scenarioPresenceRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">Awaiting next comparable period</div></div>' +
-          '<div class="aiv-detail-trend-stat" data-adp-peer-card="3"><div class="aiv-detail-trend-stat__label">Consideration Rate</div><div class="aiv-detail-trend-stat__value">' + (last.considerationRate != null ? fmtPct(last.considerationRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">Awaiting next comparable period</div></div>' +
-          '<div class="aiv-detail-trend-stat" data-adp-peer-card="4"><div class="aiv-detail-trend-stat__label">Periods</div><div class="aiv-detail-trend-stat__value">1</div></div>';
+          '<div class="aiv-detail-trend-stat" data-adp-peer-card="1"><div class="aiv-detail-trend-stat__label">Reality Coverage</div><div class="aiv-detail-trend-stat__value">' + (last.propertyRealityCoverage != null ? fmtPct(last.propertyRealityCoverage) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + esc(baselineSub) + '</div></div>' +
+          '<div class="aiv-detail-trend-stat" data-adp-peer-card="2"><div class="aiv-detail-trend-stat__label">Scenario Presence</div><div class="aiv-detail-trend-stat__value">' + (last.scenarioPresenceRate != null ? fmtPct(last.scenarioPresenceRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + esc(baselineSub) + '</div></div>' +
+          '<div class="aiv-detail-trend-stat" data-adp-peer-card="3"><div class="aiv-detail-trend-stat__label">Consideration Rate</div><div class="aiv-detail-trend-stat__value">' + (last.considerationRate != null ? fmtPct(last.considerationRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + esc(baselineSub) + '</div></div>' +
+          '<div class="aiv-detail-trend-stat" data-adp-peer-card="4"><div class="aiv-detail-trend-stat__label">Monitoring</div><div class="aiv-detail-trend-stat__value">Active</div><div class="aiv-detail-trend-stat__delta">' + esc(monitoringSub) + '</div></div>';
       } else {
         var rcCh = ppChange(last.propertyRealityCoverage, prev.propertyRealityCoverage);
         var spCh = ppChange(last.scenarioPresenceRate, prev.scenarioPresenceRate);
@@ -3808,8 +3926,9 @@
       var html = '<div class="aiv-citation-exec-top aiv-citation-exec-top--2x2">';
       html += '<article class="aiv-kpi"><h3>Citation Coverage</h3><div class="aiv-value">' + esc(ev.totalWithSources + ' of ' + ev.totalObservations) + '</div><div class="aiv-meta">' + esc(fmtPct(ev.citationRate) + ' of monitored responses included at least one citation.') + '</div></article>';
       html += '<article class="aiv-kpi"><h3>Avg Sources per Citation</h3><div class="aiv-value">' + esc(String(ev.avgSourcesPerCitation)) + '</div><div class="aiv-meta">Average number of sources cited per grounded response.</div></article>';
-      html += '<article class="aiv-kpi"><h3>Top Source</h3><div class="aiv-value aiv-value--domain">' + esc(topSource ? topSource.domain : '—') + '</div><div class="aiv-meta">' + (topSource ? esc(topSource.count + ' of ' + ev.totalWithSources + ' · ' + fmtPct(topSource.frequency)) : 'No sources observed.') + '</div></article>';
-      html += '<article class="aiv-kpi"><h3>Second Source</h3><div class="aiv-value aiv-value--domain">' + esc(secondSource ? secondSource.domain : '—') + '</div><div class="aiv-meta">' + (secondSource ? esc(secondSource.count + ' of ' + ev.totalWithSources + ' · ' + fmtPct(secondSource.frequency)) : 'No second source observed.') + '</div></article>';
+      // Competitive-universe citation frequency (not "sources supporting this property")
+      html += '<article class="aiv-kpi"><h3>Top Cited Source Across Monitored Responses</h3><div class="aiv-value aiv-value--domain">' + esc(topSource ? topSource.domain : '—') + '</div><div class="aiv-meta">' + (topSource ? esc(topSource.count + ' of ' + ev.totalWithSources + ' cited responses · ' + fmtPct(topSource.frequency) + ' — includes competitor-owned domains when AI cites them in market answers.') : 'No sources observed.') + '</div></article>';
+      html += '<article class="aiv-kpi"><h3>Second Cited Source Across Monitored Responses</h3><div class="aiv-value aiv-value--domain">' + esc(secondSource ? secondSource.domain : '—') + '</div><div class="aiv-meta">' + (secondSource ? esc(secondSource.count + ' of ' + ev.totalWithSources + ' · ' + fmtPct(secondSource.frequency)) : 'No second source observed.') + '</div></article>';
       html += '</div>';
 
       // Source Mix — Owned / External from governed ownership registry when configured
@@ -3884,7 +4003,7 @@
     var el = document.getElementById("adpBriefSection");
     if (!el || !brief) return;
     var html = '<div class="adp-card"><div class="adp-card-header"><h3>Monthly Owner Brief' + info(adpTipPlain('What is the executive summary of this period\u2019s AI demand position?', 'Owners need a quick read of wins, risks, and opportunities before drilling into tables.')) + '</h3></div>';
-    html += '<p style="font-size:0.85rem;color:var(--aiv-text-secondary);margin-bottom:1rem">' + esc(property.name) + ' &middot; ' + esc(property.affiliation) + ' &middot; ' + esc(property.city + ", " + property.state) + '</p>';
+    html += '<p style="font-size:0.85rem;color:var(--aiv-text-secondary);margin-bottom:1rem">' + esc(property.name) + ' &middot; ' + esc(property.affiliation) + ' &middot; ' + esc(adpPropertyLocationLine(property)) + '</p>';
     html += '<ul class="adp-brief-list">';
     brief.items.forEach(function (item) {
       var iconCls = "icon-" + item.type;
@@ -4136,11 +4255,15 @@
 
   function markAdpPdfError(message) {
     var boot = document.getElementById("adp-pdf-boot");
-    if (boot) {
-      boot.hidden = false;
-      boot.textContent = "PDF render failed: " + (message || "unknown_error");
-      boot.setAttribute("data-adp-pdf-error", "1");
+    if (!boot) {
+      boot = document.createElement("div");
+      boot.id = "adp-pdf-boot";
+      document.body.appendChild(boot);
     }
+    boot.hidden = false;
+    boot.textContent = "PDF render failed: " + (message || "unknown_error");
+    boot.setAttribute("data-adp-pdf-error", "1");
+    boot.setAttribute("data-adp-pdf-ready", "0");
   }
 
   // --- Init ---
@@ -4173,6 +4296,10 @@
           await _load();
           var success = document.getElementById("adpStateSuccess");
           if (currentPayload && success && !success.hidden) {
+            if (sel && currentPayload.property && currentPayload.property.name) {
+              var named = sel.options[sel.selectedIndex];
+              if (named) named.textContent = currentPayload.property.name;
+            }
             markAdpPdfReady(currentPayload);
           } else {
             var errEl = document.getElementById("adpErrorMessage");

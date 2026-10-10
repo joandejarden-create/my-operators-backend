@@ -1,6 +1,6 @@
 # GDI Jev Decision Layer V1 — Founder Report
 
-**Generated:** 2026-09-24T15:29:38.359Z
+**Generated:** 2026-09-25T08:06:28.481Z
 **Mode:** SHADOW (no production behavior change)
 
 ## A. JEV INTEGRATION
@@ -36,7 +36,7 @@ STOP/CONTINUE: YES
 
 ## C. HISTORICAL EVALUATION
 
-TOTAL DECISIONS: **15** (live=true)
+TOTAL DECISIONS: **20** (live=true)
 
 | Decision | N | Agreement | False Positive | False Negative | High-Conf Wrong |
 |----------|--:|----------:|---------------:|---------------:|----------------:|
@@ -44,11 +44,14 @@ TOTAL DECISIONS: **15** (live=true)
 | SIGNAL_RELEVANCE | 1 | 1.00 | 0 | 0 | 0 |
 | PRIVATE_EVENT_SIGNAL_QUALITY | 1 | 1.00 | 0 | 0 | 0 |
 | FOLLOWUP_VALUE | 1 | 1.00 | 0 | 0 | 0 |
-| STOP_CONTINUE | 1 | 0.00 | 0 | 0 | 0 |
+| STOP_CONTINUE | 1 | 0.00 | 0 | 0 | 1 |
 | MATERIAL_CHANGE | 2 | 1.00 | 0 | 0 | 0 |
 | EVENT_FORWARDNESS | 2 | 1.00 | 0 | 0 | 0 |
-| LODGING_SIGNAL_STRENGTH | 2 | 1.00 | 0 | 0 | 0 |
-| SOURCE_UTILITY | 1 | 0.00 | 0 | 0 | 1 |
+| LODGING_SIGNAL_STRENGTH | 2 | 0.50 | 0 | 0 | 0 |
+| SOURCE_UTILITY | 1 | 1.00 | 0 | 0 | 0 |
+| TARGET_RESEARCH_PRIORITY | 2 | 1.00 | 0 | 0 | 0 |
+| RESEARCH_PLAYBOOK | 2 | 1.00 | 0 | 0 | 0 |
+| GENERATOR_CADENCE | 1 | 0.00 | 0 | 0 | 0 |
 
 ## D. HIGH-RISK ERRORS
 
@@ -60,14 +63,14 @@ FULLY PLACED FALSE PURSUE: **0**
 
 ## E. LIVE SHADOW CANARY
 
-JEV CALLS: **45**  
-MATCH EXISTING: **18**  
-DISAGREEMENTS: **27**  
-HIGH-CONFIDENCE DISAGREEMENTS: **17**  
-FALLBACKS: **10**  
+JEV CALLS: **52**  
+MATCH EXISTING: **22**  
+DISAGREEMENTS: **30**  
+HIGH-CONFIDENCE DISAGREEMENTS: **22**  
+FALLBACKS: **9**  
 ERRORS: **0**  
 
-Bethesda targets available: 50 · sampled calls: 30
+Bethesda targets available: 50 · sampled calls: 0
 
 ## F. RESEARCH EFFICIENCY SIMULATION
 
@@ -79,14 +82,14 @@ TRUE RECOVERY LOST: **0** (stop logic not enabled)
 
 ## G. LATENCY
 
-P50: **224**  
-P95: **553**  
-P99: **741**  
+P50: **207**  
+P95: **511**  
+P99: **615**  
 
 ## H. COST
 
-JEV CALLS: **45**  
-ESTIMATED COST: **$0.000935**  
+JEV CALLS: **52**  
+ESTIMATED COST: **$0.001203**  
 COST PER TARGET: n/a until controlled apply  
 COST PER MATERIAL SIGNAL: n/a  
 
@@ -100,7 +103,7 @@ RAW PROVIDER PAYLOADS STORED IN AIRTABLE: **0**
 ## J. MULTI-HOTEL
 
 BETHESDA: **PASS**  
-RENAISSANCE: **PASS** (targets=0)  
+RENAISSANCE: **PASS** (targets=16)  
 CAMBRIDGE: **PASS** (targets=0)  
 HOTEL-SPECIFIC LOGIC: **NO**
 

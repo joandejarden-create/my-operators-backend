@@ -1,0 +1,145 @@
+{
+  "generatedAt": "2026-10-01",
+  "readOnly": true,
+  "zeroChangesMade": true,
+  "criticalCorrection": {
+    "statement": "C:\\Dev\\Backup-Staging is NOT referenced by the current Backup-Dealality.ps1",
+    "evidence": [
+      "findstr Backup-Staging on Backup-Dealality.ps1 returns no matches",
+      "Script local paths are exclusively under C:\\Dev\\dealality-backups",
+      "Active temp name is _NEW_BACKUP_TEMP inside dealality-backups",
+      "Staging snapshots include .git; current script excludes .git"
+    ],
+    "stagingHistoricalPattern": "Dated _0200 folders match scheduled-task clock; consistent with prior nightly architecture"
+  },
+  "scheduledTask": {
+    "name": "Dealality Nightly Backup",
+    "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\Dev\\Backup-Scripts\\Backup-Dealality.ps1\"",
+    "schedule": "Daily 2:00 AM",
+    "nextRun": "2026-10-02 2:00 AM",
+    "lastRun": "2026-10-01 2:00:01 AM",
+    "lastResult": -1073741510,
+    "state": "Ready"
+  },
+  "currentNightlyFlow": {
+    "sources": [
+      "C:\\Dev\\deal-capture-proxy",
+      "%APPDATA%\\Cursor\\User\\workspaceStorage"
+    ],
+    "exclusions": [
+      "node_modules", ".next", "dist", "build", "coverage",
+      ".cache", ".turbo", ".vercel", "tmp", "temp", ".git"
+    ],
+    "steps": [
+      "robocopy sources -> C:\\Dev\\dealality-backups\\_NEW_BACKUP_TEMP",
+      "Test-BackupVerified on _NEW_BACKUP_TEMP",
+      "swap: LATEST -> _PREVIOUS; _NEW_BACKUP_TEMP -> LATEST; delete _PREVIOUS",
+      "Test-PlaintextSecrets on LATEST",
+      "if secrets clear: tar ZIP to G:\\My Drive\\Dealality Backups\\{timestamp}\\Dealality-backup.zip"
+    ],
+    "verificationRequired": [
+      "package.json",
+      "server.js",
+      "AGENTS.md",
+      "reports\\ai-demand-positioning\\monthly-review\\archive\\index.json",
+      "public", "api", "lib",
+      "fileCount>=5000",
+      "size>=50MB"
+    ],
+    "backupStagingInFlow": false,
+    "visualMap": "SOURCE -> _NEW_BACKUP_TEMP -> verify -> LATEST -> (secrets gate) -> Google Drive ZIP"
+  },
+  "rootClassifications": [
+    {
+      "path": "C:\\Dev\\Backup-Scripts",
+      "class": "A. ACTIVE BACKUP WORKFLOW",
+      "cloudClass": "KEEP LOCAL — ACTIVE WORKFLOW / DO NOT TOUCH (script)",
+      "note": "Backup-Dealality.ps1 is scheduled-task entrypoint; dealality-snapshots are recovery-only freezes"
+    },
+    {
+      "path": "C:\\Dev\\dealality-backups",
+      "class": "A. ACTIVE BACKUP WORKFLOW + B. ACTIVE LOCAL RECOVERY SNAPSHOT",
+      "cloudClass": "KEEP LOCAL — ACTIVE WORKFLOW / RECOVERY",
+      "note": "LATEST is sole operational local snapshot; _NEW_BACKUP_TEMP is current-script temp staging"
+    },
+    {
+      "path": "C:\\Dev\\Backup-Staging",
+      "class": "C. HISTORICAL ARCHIVE + D. RECOVERY-ONLY ARCHIVE",
+      "cloudClass": "KEEP LOCAL — RECOVERY (Oct 1); MOVE TO GOOGLE DRIVE LATER after verify",
+      "note": "NOT used by current script; do not delete Oct 1 snapshot until LATEST+cloud catch up"
+    },
+    {
+      "path": "C:\\Dev\\Cursor-Recovery-Archive-2026-09-08",
+      "class": "D. RECOVERY-ONLY ARCHIVE",
+      "cloudClass": "KEEP LOCAL — RECOVERY then MOVE TO GOOGLE DRIVE LATER",
+      "note": "Unique chats + git-safety; not produced by nightly script"
+    },
+    {
+      "path": "C:\\Dev\\Nightly-Backups",
+      "class": "E. LEGACY / POSSIBLY REDUNDANT",
+      "cloudClass": "MOVE TO GOOGLE DRIVE LATER; SAFE TO CONSIDER DELETING AFTER CLOUD VERIFY",
+      "note": "Single 2026-07-30 snapshot"
+    }
+  ],
+  "backupStaging": {
+    "totalGB": "18.32",
+    "fileCount": 273719,
+    "snapshotCount": 2,
+    "oldest": "2026-08-22_0200",
+    "newest": "2026-10-01_0200",
+    "requiredByCurrentScript": false,
+    "autoSupersededByCurrentScript": false,
+    "canReduceWithoutBreakingNightly": true,
+    "mustNotDeleteUntilCloudVerified": ["2026-10-01_0200"],
+    "snapshots": [
+      {
+        "name": "2026-10-01_0200",
+        "sizeGB": "11.25",
+        "hasGit": true,
+        "hasMonthlyReviewArchive": true,
+        "archiveReviews": 136,
+        "archivePdfs": 131,
+        "uniqueVsLatest": "YES — archive present; LATEST missing archive; includes .git",
+        "requiredByScript": false
+      },
+      {
+        "name": "2026-08-22_0200",
+        "sizeGB": "7.07",
+        "hasGit": true,
+        "hasMonthlyReviewArchive": false,
+        "requiredByScript": false,
+        "note": "Older historical; candidate for cloud archive"
+      }
+    ]
+  },
+  "probes": {
+    "liveHasArchive": true,
+    "latestHasArchive": false,
+    "stagingOct1HasArchive": true,
+    "latestHasGit": false,
+    "stagingHasGit": true
+  },
+  "footprint": {
+    "totalLocalBackupGB": "46.67",
+    "uniqueEstimateGB": "15.30",
+    "redundantOverlapEstimateGB": "31.37",
+    "recommendedFutureLocalGB": "6-10 (LATEST + script + logs; interim keep Staging Oct1 + Cursor recovery)",
+    "recommendedGoogleDriveArchiveGB": "rolling nightly ZIPs + cold Archive for Nightly, Aug22 Staging, Cursor chats, then Oct1 Staging"
+  },
+  "preferredFutureArchitecture": {
+    "implementedInCurrentScript": true,
+    "design": "SOURCE -> temporary verified staging (_NEW_BACKUP_TEMP) -> local rolling LATEST -> Google Drive historical archive",
+    "blockers": [
+      "Secrets policy for cloud ZIP (live .env* detected)",
+      "LATEST missing monthly-review archive index (verify would fail until refresh after restore)",
+      "Staging Oct1 and Cursor recovery not yet cold-archived to Drive"
+    ],
+    "doNotImplementYet": true
+  },
+  "answers": {
+    "exactRoleOfBackupStaging": "Historical dated snapshot archive from a prior nightly design; not the active write target of current Backup-Dealality.ps1. Still KEEP for recovery (Oct 1 ADP provenance) until cloud verified.",
+    "exactNightlyFlow": "deal-capture-proxy + Cursor workspaceStorage -> dealality-backups\\_NEW_BACKUP_TEMP -> verify -> swap to LATEST -> secrets gate -> Google Drive ZIP",
+    "activeFolders": ["C:\\Dev\\Backup-Scripts\\Backup-Dealality.ps1", "C:\\Dev\\dealality-backups"],
+    "historicalFolders": ["C:\\Dev\\Backup-Staging", "C:\\Dev\\Nightly-Backups", "C:\\Dev\\Cursor-Recovery-Archive-2026-09-08", "C:\\Dev\\Backup-Scripts\\dealality-snapshots"]
+  }
+}

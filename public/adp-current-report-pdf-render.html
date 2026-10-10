@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Demand Positioning PDF Render | Dealality</title>
+  <link rel="stylesheet" href="/css/deal-workspace-shell.css">
+  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=adp-v91-bpp-rank-only-parity-20260910">
+  <link rel="stylesheet" href="/js/ai-demand-positioning/ai-demand-positioning.css?v=adp-v91-bpp-rank-only-parity-20260910">
+  <link rel="stylesheet" href="/js/ai-demand-positioning/adp-guided-report-tour.css?v=adp-guided-tour-v1-8-dt-before-pi-20260905">
+  <style id="adp-pdf-export-chrome-hide">
+    /* Admin/current ADP PDF: hide interactive chrome; print the published report body only. */
+    body.adp-pdf-export .aiv-filters-section,
+    body.adp-pdf-export .adp-section-nav-with-tour,
+    body.adp-pdf-export .adp-howto-read-btn,
+    body.adp-pdf-export .aiv-disclaimer-box,
+    body.adp-pdf-export #adpLoadReport,
+    body.adp-pdf-export #adpRetry,
+    body.adp-pdf-export .bdd-toast,
+    body.adp-pdf-export .aiv-loading-toast {
+      display: none !important;
+    }
+    body.adp-pdf-export .dashboard-header {
+      margin-bottom: 12px;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <!-- PDF render: no Memberstack — Playwright / generate path fulfills APIs -->
+  <script src="/js/ai-demand-positioning/ai-demand-positioning.js?v=adp-pdf-render-auth-bypass-20261002" defer></script>
+</head>
+<body class="aiv-page embed-mode">
+  <div class="dashboard-container aiv-dashboard">
+    <header class="dashboard-header aiv-dashboard-header">
+      <div class="dashboard-header-left">
+        <div class="dashboard-title-container">
+          <h1>AI Demand Positioning</h1>
+        </div>
+        <p class="aiv-header-subtitle">See how often AI mentions your hotel for different traveler needs, which competing hotels appear instead, and what to review next.</p>
+      </div>
+      <div class="aiv-disclaimer-box" role="note">
+        <div class="aiv-disclaimer-box__title">Methodology</div>
+        <ul class="aiv-disclaimer-box__list">
+          <li class="aiv-disclaimer-box__item">Based on structured monitoring of how multiple AI models answer traveler questions about hotels.</li>
+          <li class="aiv-disclaimer-box__item">Results are observational. AI answers can vary from one monitoring run to the next.</li>
+          <li class="aiv-disclaimer-box__item">Dealality checks measurement method, evidence, and monitoring consistency. It does not certify that AI answers are accurate.</li>
+        </ul>
+      </div>
+    </header>
+
+    <nav class="bdd-section-nav aiv-section-nav adp-section-nav-with-tour" aria-label="AI Demand Positioning views" role="tablist" data-adp-guided-tour-tab-row="1">
+      <button type="button" class="section-nav-item active" role="tab" aria-selected="true" data-tab="executive" id="adpTabExec" aria-controls="adpPanelExecutive">
+        <div class="section-nav-icon" title="Executive Summary">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+        </div>
+        <span class="section-nav-label">Executive<br>Summary</span>
+      </button>
+      <div class="adp-section-nav__actions">
+        <button
+          type="button"
+          class="adp-howto-read-btn"
+          id="adpHowToReadReport"
+          data-adp-guided-tour-entry="1"
+          aria-label="How to Read This Report"
+        >
+          <svg class="adp-howto-read-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 11v5"></path>
+            <circle cx="12" cy="8" r="0.75" fill="currentColor" stroke="none"></circle>
+          </svg>
+          <span class="adp-howto-read-btn__label">How to Read This Report</span>
+        </button>
+      </div>
+    </nav>
+
+    <section class="filters-section aiv-filters-section" aria-label="Property selection">
+      <div class="filter-group">
+        <label class="filter-label" for="adpProperty">Property</label>
+        <select class="filter-select" id="adpProperty"></select>
+      </div>
+      <div class="filter-group aiv-filter-actions">
+        <button type="button" class="aiv-btn-apply" id="adpLoadReport">Load Report</button>
+      </div>
+    </section>
+
+    <!-- States — loading toast matches Brand AI (.bdd-toast.aiv-loading-toast + .show) -->
+    <div id="adpStateLoading" hidden>
+      <div
+        class="bdd-toast aiv-loading-toast"
+        id="adpLoadingToast"
+        role="status"
+        aria-live="polite"
+        aria-busy="true"
+      >
+        <div class="toast-wave-container" aria-hidden="true">
+          <div class="wave-container">
+            <div class="wave wave-1"></div>
+            <div class="wave wave-2"></div>
+            <div class="wave wave-3"></div>
+            <div class="wave-particles">
+              <div class="particle"></div>
+              <div class="particle"></div>
+              <div class="particle"></div>
+              <div class="particle"></div>
+            </div>
+          </div>
+        </div>
+        <div class="toast-message" id="adpLoadingMessage">Loading AI Demand Intelligence…</div>
+      </div>
+    </div>
+    <div id="adpStateError" hidden>
+      <div class="aiv-empty-state">
+        <p class="aiv-error" id="adpErrorMessage">Unable to load report.</p>
+        <button type="button" class="aiv-btn-apply" id="adpRetry">Retry</button>
+      </div>
+    </div>
+    <div id="adpStateNoData" hidden>
+      <div class="aiv-empty-state">
+        <h2>No Monitoring Data Yet</h2>
+        <p>The first monitoring period has not been executed for this property. Once executed, your AI Demand Positioning report will appear here.</p>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div id="adpStateSuccess" hidden>
+
+      <!-- Executive Summary (Detailed View tab removed) -->
+      <div id="adpPanelExecutive" data-panel="executive" role="tabpanel" aria-labelledby="adpTabExec">
+
+        <div class="adp-layer adp-layer--executive" data-adp-layer="executive-summary">
+          <p class="adp-layer-label" hidden>Executive Summary</p>
+
+          <section class="aiv-theme-group adp-section-executive-read" aria-labelledby="adpThemeExecutiveRead" data-adp-section="executive-summary" data-adp-tour-target="executive-read" id="adpExecutiveReadSection">
+            <h2 id="adpThemeExecutiveRead" class="aiv-theme-title">Executive Summary</h2>
+            <p class="aiv-theme-help help-text">A plain language summary of where the hotel is strongest, where it is weakest, and what changed since the last monitoring period we can fairly compare against.</p>
+            <div class="adp-executive-read" id="adpExecutiveRead">
+              <div class="adp-executive-read__grid" id="adpExecutiveReadGrid" hidden>
+                <div class="adp-executive-read__summaries" id="adpExecutiveReadSummaries" aria-label="Executive summary highlights"></div>
+                <div class="adp-executive-read__main" id="adpExecutiveReadMain">
+                  <div class="adp-executive-read__main-chrome">
+                    <h3 class="adp-executive-read__main-title" id="adpExecutiveReadMainTitle">What The Data Says</h3>
+                    <button type="button" class="adp-er-print-btn" id="adpExecutiveReadPrintBtn" hidden title="Print Executive Summary">Print</button>
+                  </div>
+                  <div class="adp-executive-read__narrative" id="adpExecutiveReadNarrative" role="region" aria-label="Executive summary narrative"></div>
+                </div>
+              </div>
+              <p class="adp-executive-read__empty aiv-empty aiv-empty--compact" id="adpExecutiveReadEmpty" hidden>Executive summary is not available for this period.</p>
+            </div>
+          </section>
+
+          <section class="aiv-theme-group adp-section-snapshot" aria-labelledby="adpThemePosition" data-adp-section="property-snapshot">
+            <h2 id="adpThemePosition" class="aiv-theme-title">Property Snapshot</h2>
+            <p class="aiv-theme-help help-text">Key results for this hotel from the current monitoring period. These are observed facts, not a single overall score.</p>
+            <div class="aiv-kpi-row aiv-theme-kpis" id="adpKpiRow" aria-label="Headline KPIs"></div>
+          </section>
+
+          <section class="aiv-theme-group adp-section-metrics" id="adpExecutiveMetricsSection" aria-labelledby="adpThemeExecutiveMetrics" data-adp-section="ai-demand-positioning-metrics">
+            <h2 id="adpThemeExecutiveMetrics" class="aiv-theme-title">AI Demand Positioning Metrics</h2>
+            <p class="aiv-theme-help help-text">How often AI mentioned your hotel in the traveler questions we monitored this period. These are not bookings, market share, or guaranteed recommendations.</p>
+            <div class="aiv-kpi-row aiv-theme-kpis" id="adpExecutiveMetricsRow" aria-label="AI Demand Positioning Metrics"></div>
+          </section>
+
+          <section class="aiv-theme-group aiv-theme-group--secondary adp-section-territory" aria-labelledby="adpThemeDemand" data-adp-section="ai-presence-by-demand-territory" data-adp-tour-target="demand-territories">
+            <h2 id="adpThemeDemand" class="aiv-theme-title">AI Presence by Demand Territory</h2>
+            <p class="aiv-theme-help help-text">For each type of traveler need, how often your hotel appeared in AI answers compared with the comparable hotels used in this analysis. An index of 100 means your hotel appeared about as often as those comparable hotels.</p>
+            <div class="aiv-theme-card aiv-theme-card--flush">
+              <div class="deals-table-container aiv-portfolio-table-wrap aiv-coverage-table-wrap aiv-unified-intent-table-wrap">
+                <div id="adpIntentTableContainer"></div>
+              </div>
+            </div>
+            <p class="aiv-theme-help help-text" style="margin-top:8px;font-size:11px;color:var(--neutral--500)">Detailed missing traveler-need evidence is available in the territory table and evidence drawer.</p>
+          </section>
+        </div>
+
+        <div class="adp-layer adp-layer--detailed" data-adp-layer="detailed-intelligence">
+          <p class="adp-layer-label">Detailed Intelligence</p>
+
+          <section class="aiv-theme-group" aria-labelledby="adpThemeTrends" id="adpTrendSection" data-adp-section="trends" data-adp-tour-target="trends">
+            <h2 id="adpThemeTrends" class="aiv-theme-title">Trends</h2>
+            <p class="aiv-theme-help help-text">How these results change from one comparable monitoring period to the next.</p>
+            <div class="aiv-theme-card aiv-detail-trend-card" id="adpTrendCard">
+              <div class="aiv-detail-trend-summary" id="adpTrendSummary" hidden></div>
+              <div class="aiv-chart-container aiv-detail-trend-chart-wrap" id="adpTrendChartWrap" hidden>
+                <canvas id="adpTrendChart" aria-label="AI Presence over time for selected property"></canvas>
+              </div>
+              <div id="adpTrendEmpty" class="aiv-empty aiv-empty--compact"></div>
+            </div>
+          </section>
+
+          <section class="aiv-theme-group" aria-labelledby="adpThemeProviders" data-adp-section="provider-presence" data-adp-tour-target="provider-presence">
+            <h2 id="adpThemeProviders" class="aiv-theme-title">Provider Presence</h2>
+            <p class="aiv-theme-help help-text">How often each AI model mentioned your hotel when asked on its own. Each model is shown separately.</p>
+            <div class="aiv-theme-card aiv-theme-card--flush">
+              <div class="deals-table-container aiv-portfolio-table-wrap">
+                <div id="adpProviderTableContainer"></div>
+              </div>
+            </div>
+            <p class="aiv-theme-help help-text adp-provider-territory-note" style="margin-top:8px;font-size:11px;color:var(--neutral--500)">Territory totals can be higher than any single model because a traveler need counts if at least one model mentioned your hotel.</p>
+          </section>
+
+          <section class="aiv-theme-group" aria-labelledby="adpThemeBrandPortfolio" data-adp-section="brand-portfolio-position" id="adpBrandPortfolioSection">
+            <h2 id="adpThemeBrandPortfolio" class="aiv-theme-title">Brand &amp; Portfolio Position</h2>
+            <p class="aiv-theme-help help-text" id="adpBrandPortfolioSubtitle">How this hotel performs within its brand, collection, portfolio, or loyalty ecosystem.</p>
+            <p class="adp-bpp-lens-meta" id="adpBrandPortfolioLens" hidden></p>
+            <div id="adpBrandPortfolioKpis" class="aiv-kpi-row adp-bpp-kpi-row" hidden></div>
+            <div id="adpBrandPortfolioNarrative" hidden></div>
+            <div id="adpBrandPortfolioProviderHost" hidden></div>
+            <div id="adpBrandPortfolioEvidenceHost" hidden></div>
+            <div id="adpBrandPortfolioTerritoryWrap" hidden></div>
+            <div id="adpBrandPortfolioStatus" class="adp-bpp-status" hidden>
+              <h3 class="aiv-theme-label" id="adpBrandPortfolioStatusLabel"></h3>
+              <p class="adp-bpp-status__body" id="adpBrandPortfolioStatusBody"></p>
+              <p class="adp-bpp-status__secondary" id="adpBrandPortfolioStatusSecondary" hidden></p>
+            </div>
+            <div id="adpBrandPortfolioTableHost" hidden></div>
+          </section>
+
+          <section class="aiv-theme-group" aria-labelledby="adpThemeSignals" data-adp-section="ai-reality-gaps" data-adp-tour-target="reality-gaps">
+            <h2 id="adpThemeSignals" class="aiv-theme-title">AI Reality Gaps <span class="info-tooltip aiv-col-info" style="display:inline-flex;vertical-align:middle;margin-left:6px;"><span class="info-icon" role="button" tabindex="0" aria-label="About AI Reality Gaps"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>AI Reality Gaps</strong><br><br><strong>Question:</strong> Does AI accurately describe your property's key attributes?<br><br><strong>Why track it:</strong> If AI misses facts about your hotel, it will recommend rivals that are better described.</div></span></h2>
+            <p class="aiv-theme-help help-text">What AI gets right about your hotel and what it still misses.</p>
+            <div class="aiv-signals-grid aiv-signals-grid--three">
+              <div class="aiv-theme-card aiv-theme-card--signals">
+                <h3 class="aiv-theme-label">Reality Gap KPIs</h3>
+                <div id="adpRealityKpis"></div>
+              </div>
+              <div class="aiv-theme-card aiv-theme-card--signals">
+                <h3 class="aiv-theme-label">AI Recognizes</h3>
+                <p class="aiv-theme-block-help help-text">Facts about your hotel that AI regularly gets right.</p>
+                <div id="adpExecStrengths"></div>
+              </div>
+              <div class="aiv-theme-card aiv-theme-card--signals">
+                <h3 class="aiv-theme-label">AI Misses</h3>
+                <p class="aiv-theme-block-help help-text">Important facts about your hotel that AI often misses.</p>
+                <div id="adpExecGaps"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="aiv-theme-group aiv-portfolio-section" aria-labelledby="adpThemeCompSet" data-adp-section="ai-competitive-set">
+            <h2 id="adpThemeCompSet" class="aiv-theme-title">AI Competitive Set</h2>
+            <p class="aiv-theme-help help-text">The hotels AI mentions most often, plus all comparable hotels used in the selected territory analysis.</p>
+            <div id="adpCompTerritoryWrap" class="adp-comp-territory-wrap" hidden></div>
+            <div class="aiv-theme-card aiv-theme-card--flush">
+              <div class="adp-comp-overview-title-row">
+                <h3 class="aiv-theme-label adp-comp-overview-title">Competitive Overview</h3>
+                <div id="adpCompCoreMeta" class="adp-comp-core-meta" hidden></div>
+              </div>
+              <div class="deals-table-container aiv-portfolio-table-wrap">
+                <table class="deals-table aiv-portfolio-table adp-comp-table-fixed" id="adpCompTable">
+                  <colgroup>
+                    <col class="adp-comp-col adp-comp-col--rank" />
+                    <col class="adp-comp-col adp-comp-col--hotel" />
+                    <col class="adp-comp-col adp-comp-col--presence" />
+                    <col class="adp-comp-col adp-comp-col--chg" />
+                    <col class="adp-comp-col adp-comp-col--displacement" />
+                    <col class="adp-comp-col adp-comp-col--shared" />
+                    <col class="adp-comp-col adp-comp-col--territory" />
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th data-sort="rank"><span class="aiv-th-label"><span class="aiv-th-text">Rank</span><span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Rank"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Rank</strong><br><br><strong>Question:</strong> Where does this hotel rank by observed AI presence in this demand territory?<br><br><strong>Why track it:</strong> True observed rank is preserved. CORE hotels outside the top 10 keep their actual rank (e.g. #14). Zero-presence CORE hotels show — (Not surfaced).</div></span></span></th>
+                      <th data-sort="name"><span class="aiv-th-label"><span class="aiv-th-text">Hotel</span><span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Hotel"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Hotel</strong><br><br><strong>Question:</strong> Which hotel appears in monitored AI responses for this demand territory?<br><br><strong>Why track it:</strong> CORE = governed benchmark comparable; Observed = additional hotel AI surfaced. CORE badge indicates benchmark membership.</div></span></span></th>
+                      <th data-sort="presence"><span class="aiv-th-label"><span class="aiv-th-text">Scenario<br>Appearance</span><span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Scenario Appearance"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Scenario Appearance</strong><br><br><strong>Question:</strong> In what share of monitored scenarios in this report did AI mention this hotel?<br><br><strong>Why track it:</strong> Measures competitor (or subject) appearance inside this report’s monitored scenarios. It is not the same metric as another hotel’s own AI Consideration rate on its report.</div></span></span></th>
+                      <th data-sort="chg" class="aiv-chg-th"><span class="aiv-th-label"><span class="aiv-th-text">Δ vs<br>Prior Run</span><span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Change vs Prior"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Δ vs Prior Run</strong><br><br><strong>Question:</strong> Is this hotel's AI presence rising or falling compared with the last monitoring run?<br><br><strong>Why track it:</strong> Helps you spot rivals gaining ground or losing visibility over time.</div></span></span></th>
+                      <th data-sort="displacement"><span class="aiv-th-label"><span class="aiv-th-text">Displacement<br>vs You</span><span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Displacement"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Displacement vs You</strong><br><br><strong>Question:</strong> In how many scenarios does this competitor appear when your property does not?<br><br><strong>Why track it:</strong> These are direct steal moments: demand was active, you were absent, and this hotel was named.</div></span></span></th>
+                      <th data-sort="shared"><span class="aiv-th-label"><span class="aiv-th-text">Scenarios<br>Shared</span><span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Scenarios Shared"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Scenarios Shared</strong><br><br><strong>Question:</strong> In how many total scenarios was this competitor mentioned?<br><br><strong>Why track it:</strong> Raw count of where this hotel shows up in AI demand answers.</div></span></span></th>
+                      <th data-sort="territory"><span class="aiv-th-label"><span class="aiv-th-text">Top Demand<br>Territory</span><span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span><span class="info-tooltip aiv-col-info"><span class="info-icon" role="button" tabindex="0" aria-label="About Territory"><svg width="14" height="14" aria-hidden="true"><use href="#aiv-info-icon"></use></svg></span><div class="tooltip-content" hidden><strong>Top Demand Territory</strong><br><br><strong>Question:</strong> For which traveler need does this hotel appear most often in AI answers?<br><br><strong>Why track it:</strong> Shows each hotel's strongest demand category so you know where they win recommendations.</div></span></span></th>
+                    </tr>
+                  </thead>
+                  <tbody id="adpCompTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="aiv-theme-group" aria-labelledby="adpThemePeers" data-adp-section="competitive-context-priority-actions">
+            <h2 id="adpThemePeers" class="aiv-theme-title">Competitive Context &amp; Priority Actions</h2>
+            <p class="aiv-theme-help help-text">Where competing hotels appear when yours does not, and the priority actions to review next.</p>
+            <div class="aiv-peers-grid aiv-peers-grid--compact">
+              <div class="aiv-theme-card aiv-peers-card aiv-peers-card--competitive" data-adp-tour-target="competitive-displacement">
+                <h3 class="aiv-theme-label">Competitive Displacement</h3>
+                <div id="adpExecDisplacement"></div>
+              </div>
+              <div class="aiv-theme-card aiv-peers-card aiv-peers-card--priority">
+                <h3 class="aiv-theme-label">Priority Actions</h3>
+                <div id="adpExecActions"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="adp-layer adp-layer--evidence" data-adp-layer="evidence-discovery">
+          <section class="aiv-theme-group aiv-evidence-discovery" aria-labelledby="adpThemeEvidence" data-adp-section="evidence-sources-discovery" data-adp-tour-target="evidence">
+            <h2 id="adpThemeEvidence" class="aiv-theme-title">Evidence, Sources &amp; Discovery</h2>
+            <p class="aiv-theme-help help-text">Which websites AI cites when talking about your hotel or competing hotels. This shows which sources may be shaping those answers.</p>
+
+            <div class="aiv-evidence-exec-grid">
+              <div class="aiv-theme-card aiv-evidence-citation-col">
+                <h3 class="aiv-theme-label">Citation Intelligence</h3>
+                <div id="adpExecCitations" class="aiv-citation-exec"></div>
+              </div>
+
+              <div class="aiv-theme-card aiv-source-landscape">
+                <h3 class="aiv-theme-label">Source Landscape</h3>
+                <p class="aiv-theme-block-help help-text">Websites cited most often when AI mentions your hotel or competing hotels. Higher frequency means more citations in this period, not a quality score.</p>
+                <div id="adpExecSources"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div id="adpExecInsights" class="aiv-insight-row aiv-exec-insight-tiles" hidden data-adp-legacy="exec-insights"></div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <dialog id="adpEvidenceDrawer" class="aiv-drawer aiv-evidence-drawer">
+    <form method="dialog" class="aiv-drawer-inner">
+      <header class="aiv-evidence-header">
+        <h2 id="adpEvidenceTitle">Evidence</h2>
+        <button type="submit" class="aiv-evidence-close" aria-label="Close evidence" title="Close evidence">×</button>
+      </header>
+      <div id="adpEvidenceBody" class="aiv-evidence-body"></div>
+    </form>
+  </dialog>
+
+  <!-- Radar-style info icon sprite + fixed popup host (Brand AI parity) -->
+  <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
+    <symbol id="aiv-info-icon" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+      <path d="M12 16v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="12" cy="8" r="1" fill="currentColor"/>
+    </symbol>
+  </svg>
+  <div id="aivTooltipContainer" class="aiv-tooltip-container" aria-live="polite"></div>
+</body>
+</html>

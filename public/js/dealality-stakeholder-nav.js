@@ -5,7 +5,8 @@
  * Product naming (locked):
  * - Brand-Side → Brand AI Intelligence
  * - Operator-Side → Operator AI Intelligence
- * - Owner-Side → AI Recommendation Intelligence (future — not shown as Brand product)
+ * - Owner-Side → Brand AI Intelligence (development/brand-selection view) + AI Demand Positioning
+ *   (AI Recommendation Intelligence remains future — not shown as a separate Brand product)
  * - Admin / All Workspaces → governed access per existing admin conventions
  */
 (function (global) {
@@ -15,7 +16,9 @@
     brand_ai_visibility: {
       route: "/ai-visibility",
       label: "Brand AI Intelligence",
-      allowedNavRoles: ["brand", "admin"],
+      // Owner workspace: development / brand-selection perspective (how AI surfaces hotel brands).
+      // Brand workspace: brand-side monitoring. Admin: all workspaces.
+      allowedNavRoles: ["owner", "brand", "admin"],
     },
     operator_ai_intelligence: {
       route: "/operator/ai-intelligence",

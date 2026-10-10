@@ -26,6 +26,7 @@ function tileActionPill(){return "<span class=\\"gdi-tile-pill\\">WATCH</span>";
 function tileEventDatePill(){return "<span class=\\"gdi-tile-pill\\">2027</span>";}
 function commercialProgressionCompactPill(){return "";}
 function weeklyDeltaMetaLine(){return "";}
+function readinessPillHtml(){return "";}
 `;
 
 const fn = new Function(`${helpers}\n${m[0]}\nreturn opportunityTileHtml;`)();

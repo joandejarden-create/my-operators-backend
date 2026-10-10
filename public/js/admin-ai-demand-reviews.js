@@ -62,6 +62,35 @@
     return "warn";
   }
 
+  function showRenderError(message) {
+    var loadingEl = document.getElementById("supportGateLoading");
+    var deniedEl = document.getElementById("supportGateDenied");
+    var contentEl = document.getElementById("supportGateContent");
+    if (window.SupportAdminGate && loadingEl) {
+      window.SupportAdminGate.hidePageLoading(loadingEl);
+    } else if (loadingEl) {
+      loadingEl.hidden = true;
+    }
+    if (deniedEl) deniedEl.hidden = true;
+    if (contentEl) {
+      contentEl.hidden = false;
+      var host = document.getElementById("adrRenderError");
+      if (!host) {
+        host = document.createElement("div");
+        host.id = "adrRenderError";
+        host.className = "adr-subtitle";
+        host.style.cssText =
+          "margin:12px 0;padding:12px;border:1px solid #c53030;background:#fff5f5;color:#9b2c2c;border-radius:6px";
+        contentEl.insertBefore(host, contentEl.firstChild);
+      }
+      host.hidden = false;
+      host.textContent =
+        "AI Demand Admin failed to load reviews (render error — not an access denial): " +
+        String(message || "unknown");
+    }
+    console.error("[AI Demand Reviews] RENDER_RUNTIME_ERROR", message);
+  }
+
   function showDenied(message) {
     var loadingEl = document.getElementById("supportGateLoading");
     var deniedEl = document.getElementById("supportGateDenied");
@@ -160,36 +189,52 @@
   }
 
   function coveragePdfCell(row) {
-    var html = "";
-    if (row.propertyId) {
-      html +=
-        '<button type="button" class="adr-btn adr-btn--tiny" data-act="view-current-pdf" data-property="' +
-        esc(row.propertyId) +
-        '">View PDF</button>' +
-        '<button type="button" class="adr-btn adr-btn--tiny" data-act="download-current-pdf" data-property="' +
-        esc(row.propertyId) +
-        '">Download</button>';
-    }
+    // Canonical artifact = AI Demand Performance Review PDF for this reviewId.
+    // Never current-report web-print / window.print / Admin DOM.
     if (row.hasPdf && row.reviewId) {
-      html +=
+      return (
         '<button type="button" class="adr-btn adr-btn--tiny" data-act="view-pdf" data-id="' +
         esc(row.reviewId) +
         '" data-property="' +
         esc(row.propertyId) +
-        '">Review PDF</button>';
+        '">View PDF</button>' +
+        '<button type="button" class="adr-btn adr-btn--tiny" data-act="download-pdf" data-id="' +
+        esc(row.reviewId) +
+        '" data-property="' +
+        esc(row.propertyId) +
+        '">Download</button>'
+      );
     }
-    if (html) return html;
+    if (
+      row.pdfUnavailableReason ===
+        "performance_review_pdf_stale_vs_published_period" ||
+      row.coverageReason ===
+        "performance_review_pdf_stale_vs_published_period"
+    ) {
+      return (
+        '<span class="adr-badge adr-badge--warn">PDF NOT AVAILABLE</span>' +
+        '<div class="adr-subtitle">Performance Review PDF does not match current published period — prior-month artifact withheld</div>' +
+        '<button type="button" class="adr-btn adr-btn--tiny" data-act="draft" data-property="' +
+        esc(row.propertyId) +
+        '">Generate PDF</button>'
+      );
+    }
     if (row.pdfStatus === "PENDING_PDF" || row.coverageStatus === "NEEDS_REBUILD") {
       return (
-        '<span class="adr-badge adr-badge--warn">' +
-        esc(row.pdfStatus || "Generating") +
-        "</span>"
+        '<span class="adr-badge adr-badge--warn">PDF NOT AVAILABLE</span>' +
+        (row.propertyId
+          ? '<button type="button" class="adr-btn adr-btn--tiny" data-act="draft" data-property="' +
+            esc(row.propertyId) +
+            '">Generate PDF</button>'
+          : '<span class="adr-badge adr-badge--warn">' +
+            esc(row.pdfStatus || "Generating") +
+            "</span>")
       );
     }
     if (row.coverageStatus === "BLOCKED") {
       return '<span class="adr-badge adr-badge--danger">Blocked</span>';
     }
-    return '<span class="adr-badge adr-badge--warn">Generating</span>';
+    return '<span class="adr-badge adr-badge--warn">PDF NOT AVAILABLE</span>';
   }
 
   function coverageActionPlanCell(row) {
@@ -202,6 +247,37 @@
       esc(label) +
       "</button>"
     );
+  }
+
+  function coverageAdpClientCell(row) {
+    var available =
+      row &&
+      row.adpClient &&
+      row.adpClient.available === true;
+    if (!available) {
+      return '<span class="adr-subtitle" title="No valid ADP external client share">—</span>';
+    }
+    return (
+      '<button type="button" class="adr-btn adr-btn--tiny" data-act="open-adp-client" data-property="' +
+      esc(row.propertyId) +
+      '">Open</button>' +
+      '<button type="button" class="adr-btn adr-btn--tiny" data-act="copy-adp-client" data-property="' +
+      esc(row.propertyId) +
+      '">Copy URL</button>' +
+      '<span class="adr-subtitle adr-copy-toast" data-adp-copy-toast hidden style="margin-left:6px;color:#276749">Copied</span>'
+    );
+  }
+
+  function showAdpClientCopiedToast(btn) {
+    var cell = btn && btn.closest ? btn.closest("td") : null;
+    var toast = cell ? cell.querySelector("[data-adp-copy-toast]") : null;
+    if (!toast) return;
+    toast.hidden = false;
+    toast.textContent = "Copied";
+    clearTimeout(toast.__hideTimer);
+    toast.__hideTimer = setTimeout(function () {
+      toast.hidden = true;
+    }, 1600);
   }
 
   function coverageMoreActions(row) {
@@ -226,14 +302,6 @@
         esc(row.propertyId) +
         '">Generate New Draft</button>';
     }
-    html +=
-      '<button type="button" class="adr-btn adr-btn--tiny" data-act="open-adp-client" data-property="' +
-      esc(row.propertyId) +
-      '">Open ADP Client</button>';
-    html +=
-      '<button type="button" class="adr-btn adr-btn--tiny" data-act="copy-adp-client" data-property="' +
-      esc(row.propertyId) +
-      '">Copy ADP URL</button>';
     html +=
       '<button type="button" class="adr-btn adr-btn--tiny" data-act="open-archive" data-property="' +
       esc(row.propertyId) +
@@ -296,7 +364,7 @@
       }
       if (!rows.length) {
         tbody.innerHTML =
-          '<tr><td colspan="14">No published hotels match the current filters.</td></tr>';
+          '<tr><td colspan="15">No published hotels match the current filters.</td></tr>';
         return;
       }
       tbody.innerHTML = rows
@@ -350,6 +418,9 @@
             '<td class="adr-col-pdf">' +
             coveragePdfCell(r) +
             "</td>" +
+            '<td style="white-space:nowrap">' +
+            coverageAdpClientCell(r) +
+            "</td>" +
             '<td class="adr-col-action-plan">' +
             coverageActionPlanCell(r) +
             "</td>" +
@@ -367,7 +438,7 @@
     }
     if (!rows.length) {
       tbody.innerHTML =
-        '<tr><td colspan="12">No reviews match the current filters.</td></tr>';
+        '<tr><td colspan="15">No reviews match the current filters.</td></tr>';
       return;
     }
     tbody.innerHTML = rows
@@ -736,7 +807,57 @@
     }, 120000);
   }
 
-  async function onAction(act, id, propertyId) {
+  async function fetchPerformanceReviewPdf(reviewId, download) {
+    var url =
+      API +
+      "/" +
+      encodeURIComponent(reviewId) +
+      "/pdf" +
+      (download ? "?download=1" : "");
+    var res = await authFetch(url);
+    if (!res.ok) {
+      return { ok: false, res: res };
+    }
+    var cdName = parseContentDispositionFilename(
+      res.headers.get("Content-Disposition")
+    );
+    var hdrName = res.headers.get("X-ADP-PDF-Filename") || "";
+    var blob = await res.blob();
+    return {
+      ok: true,
+      blob: blob,
+      filename:
+        cdName || hdrName || "Dealality - AI Demand Performance Review.pdf",
+      contentType: res.headers.get("Content-Type") || "application/pdf",
+    };
+  }
+
+  function triggerPdfDownload(blob, filenameHint) {
+    var filename = String(filenameHint || "Dealality - AI Demand Performance Review.pdf");
+    if (!/\.pdf$/i.test(filename)) filename += ".pdf";
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () {
+      URL.revokeObjectURL(a.href);
+    }, 2000);
+  }
+
+  async function resolveCoverageReviewId(id, propertyId) {
+    var reviewId = id;
+    if (!reviewId && propertyId) {
+      var cov = (state.properties || []).find(function (p) {
+        return p.propertyId === propertyId;
+      });
+      reviewId = cov && cov.reviewId;
+    }
+    return reviewId || null;
+  }
+
+  async function onAction(act, id, propertyId, sourceBtn) {
     if (act === "goto-action-plan" && propertyId) {
       try {
         sessionStorage.setItem("dealality_adp_admin_property", propertyId);
@@ -746,71 +867,59 @@
       }
       return;
     }
-    if (act === "view-pdf" && (id || propertyId)) {
-      var reviewId = id;
-      if (!reviewId && propertyId) {
-        var cov = (state.properties || []).find(function (p) {
+    // Canonical Performance Review PDF (View / Download / Review alias).
+    // Never current-report web-print, never window.print(), never Admin DOM.
+    if (
+      (act === "view-pdf" || act === "download-pdf" || act === "pdf") &&
+      (id || propertyId)
+    ) {
+      var reviewId = await resolveCoverageReviewId(id, propertyId);
+      if (!reviewId) {
+        alert("PDF NOT AVAILABLE — AI Demand Performance Review not generated yet.");
+        return;
+      }
+      // Coverage current row View/Download: refuse stale Sep PDF when published period advanced.
+      // Historical Open PDF (act=pdf) always opens that exact reviewId artifact.
+      if (
+        (act === "view-pdf" || act === "download-pdf") &&
+        propertyId &&
+        state.coverageMode
+      ) {
+        var covRow = (state.properties || []).find(function (p) {
           return p.propertyId === propertyId;
         });
-        reviewId = cov && cov.reviewId;
+        if (
+          covRow &&
+          (covRow.pdfUnavailableReason ===
+            "performance_review_pdf_stale_vs_published_period" ||
+            covRow.coverageReason ===
+              "performance_review_pdf_stale_vs_published_period" ||
+            covRow.hasPdf === false)
+        ) {
+          alert(
+            "PDF NOT AVAILABLE — current published ADP has no matching Performance Review PDF. Generate a new review for the current period (do not open a prior-month artifact)."
+          );
+          return;
+        }
       }
-      if (!reviewId) {
-        alert("Performance Review PDF not available yet for this hotel.");
+      var wantDownload = act === "download-pdf";
+      var pdfPack = await fetchPerformanceReviewPdf(reviewId, wantDownload);
+      if (!pdfPack.ok) {
+        alert("PDF NOT AVAILABLE — AI Demand Performance Review PDF missing for this version.");
         return;
       }
-      var curPdf = await authFetch(
-        API + "/" + encodeURIComponent(reviewId) + "/pdf"
-      );
-      if (!curPdf.ok) {
-        alert("AI Demand Performance Review PDF not available yet.");
-        return;
+      if (wantDownload) {
+        triggerPdfDownload(pdfPack.blob, pdfPack.filename);
+      } else {
+        openPdfBlobWithCanonicalName(pdfPack.blob, pdfPack.filename);
       }
-      var cdName = parseContentDispositionFilename(
-        curPdf.headers.get("Content-Disposition")
-      );
-      var hdrName = curPdf.headers.get("X-ADP-PDF-Filename") || "";
-      var curBlob = await curPdf.blob();
-      openPdfBlobWithCanonicalName(
-        curBlob,
-        cdName || hdrName || "Dealality - AI Demand Performance Review.pdf"
-      );
       return;
     }
-    if (
-      (act === "view-current-pdf" || act === "download-current-pdf") &&
-      propertyId
-    ) {
-      var pdfUrl =
-        "/api/admin/ai-demand-positioning/current-report-pdf/" +
-        encodeURIComponent(propertyId) +
-        (act === "download-current-pdf" ? "?download=1" : "");
-      var pdfRes = await authFetch(pdfUrl);
-      if (!pdfRes.ok) {
-        alert("Current ADP PDF not available yet for this hotel.");
-        return;
-      }
-      var pdfCd = parseContentDispositionFilename(
-        pdfRes.headers.get("Content-Disposition")
+    if (act === "view-current-pdf" || act === "download-current-pdf") {
+      // Hard refuse: current-report web-print is NOT the Admin Reviews artifact.
+      alert(
+        "PDF NOT AVAILABLE — Admin Reviews uses the AI Demand Performance Review PDF only (not the live ADP web print)."
       );
-      var pdfHdr = pdfRes.headers.get("X-ADP-PDF-Filename") || "";
-      var pdfBlob = await pdfRes.blob();
-      if (act === "download-current-pdf") {
-        var a = document.createElement("a");
-        a.href = URL.createObjectURL(pdfBlob);
-        a.download =
-          pdfCd || pdfHdr || "Dealality_ADP_Current_Report.pdf";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        setTimeout(function () {
-          URL.revokeObjectURL(a.href);
-        }, 2000);
-      } else {
-        openPdfBlobWithCanonicalName(
-          pdfBlob,
-          pdfCd || pdfHdr || "Dealality_ADP_Current_Report.pdf"
-        );
-      }
       return;
     }
     if (
@@ -824,18 +933,24 @@
             "/external-client-links"
         );
         var linkJson = await linkRes.json();
+        var adpPack = linkJson && linkJson.adp ? linkJson.adp : null;
         var adpUrl =
-          linkJson && linkJson.adp && linkJson.adp.url
-            ? linkJson.adp.url
-            : null;
+          adpPack && adpPack.available && adpPack.url ? adpPack.url : null;
         if (!adpUrl) {
-          alert("ADP client URL not available for this hotel.");
+          alert(
+            (adpPack && adpPack.reason) ||
+              "ADP client URL not available for this hotel."
+          );
+          return;
+        }
+        if (/localhost|127\.0\.0\.1/i.test(adpUrl)) {
+          alert("ADP client URL is not an external production client link.");
           return;
         }
         if (act === "copy-adp-client") {
           if (navigator.clipboard && navigator.clipboard.writeText) {
             await navigator.clipboard.writeText(adpUrl);
-            alert("ADP client URL copied.");
+            showAdpClientCopiedToast(sourceBtn);
           } else {
             prompt("Copy ADP client URL", adpUrl);
           }
@@ -860,23 +975,6 @@
     }
     if (act === "meeting" && row) {
       window.open(openReviewUrl(row, "meeting"), "_blank");
-      return;
-    }
-    if (act === "pdf" && id) {
-      var pdfRes = await authFetch(API + "/" + encodeURIComponent(id) + "/pdf");
-      if (!pdfRes.ok) {
-        alert("PDF not available for this version.");
-        return;
-      }
-      var pdfCd = parseContentDispositionFilename(
-        pdfRes.headers.get("Content-Disposition")
-      );
-      var pdfHdr = pdfRes.headers.get("X-ADP-PDF-Filename") || "";
-      var blob = await pdfRes.blob();
-      openPdfBlobWithCanonicalName(
-        blob,
-        pdfCd || pdfHdr || "Dealality - AI Demand Performance Review.pdf"
-      );
       return;
     }
     if (act === "payload" && id) {
@@ -909,6 +1007,7 @@
         alert("Regenerate failed: " + (rJson.error || rRes.status));
         return;
       }
+      alert("Created " + (rJson.reviewId || rJson.newReviewId || "new version"));
       await loadList();
       if (rJson.newReviewId) openDetails(rJson.newReviewId);
       return;
@@ -982,7 +1081,7 @@
         var content = document.getElementById("supportGateContent");
         if (content) content.hidden = false;
       } catch (err) {
-        showDenied(
+        showRenderError(
           err && err.message
             ? err.message
             : "Unable to load AI Demand Reviews."
@@ -1051,7 +1150,8 @@
             onAction(
               btn.getAttribute("data-act"),
               btn.getAttribute("data-id"),
-              btn.getAttribute("data-property")
+              btn.getAttribute("data-property"),
+              btn
             ).catch(function (e) {
               alert(e.message);
             });

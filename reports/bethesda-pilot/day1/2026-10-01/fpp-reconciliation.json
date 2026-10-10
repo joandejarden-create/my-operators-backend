@@ -1,0 +1,99 @@
+{
+  "FOUNDER_PROJECT_PLAN_LIVE_READ": "UNAVAILABLE",
+  "httpStatus": 401,
+  "reason": "GTM Airtable token unauthorized/missing for live FPP read",
+  "searchedAt": "2026-10-01T20:47:00.000Z",
+  "sourceOfTruth": "Airtable GTM appKZuK006BWIVjNW / Founder Project Plan tblpCg0QZ0kIPXihE",
+  "bethesdaRowsFoundInLive": 0,
+  "bethesdaRowsFoundInRepoFppReports": 0,
+  "proposedWorkstream": "Bethesda Marriott | ADP + GDI Founding Pilot 001",
+  "proposedUpdates": [
+    {
+      "task": "Pilot master record + Founding Hotel Partner #001",
+      "statusBefore": "MISSING_IN_FPP",
+      "statusAfter": "Completed",
+      "evidence": "data/pilots/bethesda-marriott-001/pilot-master.json",
+      "owner": "Dealality",
+      "dueDate": "2026-10-01",
+      "milestone": "Day-1 Activation"
+    },
+    {
+      "task": "ADP official October 1 immutable baseline V1",
+      "statusBefore": "MISSING_IN_FPP",
+      "statusAfter": "Completed",
+      "evidence": "reports/bethesda-pilot/day1/2026-10-01/ADP_BASELINE_MANIFEST.json",
+      "owner": "Dealality",
+      "dueDate": "2026-10-01",
+      "milestone": "Day-1 Activation"
+    },
+    {
+      "task": "Lock October ADP control query set",
+      "statusBefore": "MISSING_IN_FPP",
+      "statusAfter": "Completed",
+      "evidence": "reports/bethesda-pilot/day1/2026-10-01/ADP_CONTROL_QUERY_SET.json",
+      "owner": "Dealality",
+      "dueDate": "2026-10-01",
+      "milestone": "Day-1 Activation"
+    },
+    {
+      "task": "GDI Day-1 measurement snapshot",
+      "statusBefore": "MISSING_IN_FPP",
+      "statusAfter": "Completed",
+      "evidence": "reports/bethesda-pilot/day1/2026-10-01/GDI_DAY1_SNAPSHOT.json",
+      "owner": "Dealality",
+      "dueDate": "2026-10-01",
+      "milestone": "Day-1 Activation"
+    },
+    {
+      "task": "Production deploy GDI PDF + client sharing",
+      "statusBefore": "MISSING_IN_FPP",
+      "statusAfter": "Completed",
+      "evidence": "reports/bethesda-pilot/day1/2026-10-01/DEPLOYMENT_RECORD.json deployment 3859b5dc",
+      "owner": "Dealality",
+      "dueDate": "2026-10-01",
+      "milestone": "Day-1 Activation"
+    },
+    {
+      "task": "Pilot commercial agreement + billing",
+      "statusBefore": "MISSING_IN_FPP",
+      "statusAfter": "Active",
+      "blocker": "No written agreement/billing artifacts in repo",
+      "owner": "Founder",
+      "dueDate": "2026-10-01",
+      "milestone": "Day-1 Activation"
+    },
+    {
+      "task": "Hotel stakeholder + commercial inputs package",
+      "statusBefore": "MISSING_IN_FPP",
+      "statusAfter": "Active",
+      "blocker": "Hotel inputs not received",
+      "owner": "Bethesda / Rad",
+      "dueDate": "2026-10-08",
+      "milestone": "First Week"
+    },
+    {
+      "task": "GDI Future Watch cron production enablement",
+      "statusBefore": "MISSING_IN_FPP",
+      "statusAfter": "Active",
+      "blocker": "Intentionally HELD — not required for Day-1 service delivery",
+      "owner": "Founder",
+      "dueDate": null,
+      "milestone": "Post Day-1"
+    },
+    {
+      "task": "November 1 ADP remeasurement vs October baseline",
+      "statusBefore": "MISSING_IN_FPP",
+      "statusAfter": "Active",
+      "owner": "Dealality",
+      "dueDate": "2026-11-01",
+      "milestone": "First Remeasurement"
+    }
+  ],
+  "exactCommandsWhenTokenAvailable": [
+    "node scripts/bethesda-day1-fpp-live-read.mjs",
+    "node scripts/apply-fpp-agent-task-update.mjs --record-id <rec> --status \"Needs Review\" --progress \"100%\" --worker cursor --dry-run",
+    "node scripts/upsert-dealality-master-todo.mjs --dry-run"
+  ],
+  "duplicatesCreated": 0,
+  "liveWriteExecuted": false
+}

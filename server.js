@@ -157,6 +157,7 @@ import {
 } from "./api/admin-report-archive.js";
 
 import { logAdpPublishedReadSourceAtStartup } from "./lib/ai-demand-positioning/published-read-service.js";
+import { logAdminShareHydrationStatus } from "./lib/admin/report-external-client-links-v1.js";
 import {
   requireAdpShareCapability,
   getAdpShareResolve,
@@ -283,6 +284,8 @@ import {
   getGdiSummary,
   getGdiProfile,
   getGdiOpportunities,
+  getGdiDemandCampaigns,
+  getGdiPublicationMonitors,
   getGdiOpportunitiesExport,
   getGdiOpportunityDetail,
   getGdiWeeklyBrief,
@@ -304,6 +307,17 @@ import {
   postGdiIssueShare,
   postGdiRevokeShare,
 } from "./api/group-demand-intelligence.js";
+import {
+  getGdiPursuitEnums,
+  getGdiPursuits,
+  getGdiPursuitById,
+  getGdiPursuitByOpportunity,
+  postGdiStartPursuit,
+  patchGdiPursuit,
+  postGdiPursuitResponse,
+  postGdiPursuitOutcome,
+  postGdiPursuitFollowUp,
+} from "./api/gdi-pursuit.js";
 import { assertGdiShareProductionConfig } from "./lib/group-demand-intelligence/share/gdi-signed-share-capability-v1.js";
 import {
   postDecision,
@@ -1014,6 +1028,16 @@ app.get(
   getGdiOpportunities
 );
 app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/demand-campaigns",
+  gdiPilotReadAuth,
+  getGdiDemandCampaigns
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/publication-monitors",
+  gdiPilotReadAuth,
+  getGdiPublicationMonitors
+);
+app.get(
   "/api/group-demand-intelligence/hotels/:hotelId/opportunities/export.csv",
   gdiPilotReadAuth,
   getGdiOpportunitiesExport
@@ -1054,6 +1078,57 @@ app.post(
   memberstackAuth,
   requireDealalityUser,
   postGdiCustomerValidation
+);
+// GDI Pursuit workflow (separate from Ready/Watch gates)
+app.get(
+  "/api/group-demand-intelligence/pursuit/enums",
+  gdiPilotReadAuth,
+  getGdiPursuitEnums
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/pursuits",
+  gdiPilotReadAuth,
+  getGdiPursuits
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/pursuits/:pursuitId",
+  gdiPilotReadAuth,
+  getGdiPursuitById
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/opportunities/:opportunityId/pursuit",
+  gdiPilotReadAuth,
+  getGdiPursuitByOpportunity
+);
+app.post(
+  "/api/group-demand-intelligence/hotels/:hotelId/opportunities/:opportunityId/pursuit/start",
+  memberstackAuth,
+  requireDealalityUser,
+  postGdiStartPursuit
+);
+app.patch(
+  "/api/group-demand-intelligence/hotels/:hotelId/pursuits/:pursuitId",
+  memberstackAuth,
+  requireDealalityUser,
+  patchGdiPursuit
+);
+app.post(
+  "/api/group-demand-intelligence/hotels/:hotelId/pursuits/:pursuitId/response",
+  memberstackAuth,
+  requireDealalityUser,
+  postGdiPursuitResponse
+);
+app.post(
+  "/api/group-demand-intelligence/hotels/:hotelId/pursuits/:pursuitId/outcome",
+  memberstackAuth,
+  requireDealalityUser,
+  postGdiPursuitOutcome
+);
+app.post(
+  "/api/group-demand-intelligence/hotels/:hotelId/pursuits/:pursuitId/follow-up",
+  memberstackAuth,
+  requireDealalityUser,
+  postGdiPursuitFollowUp
 );
 app.post(
   "/api/group-demand-intelligence/hotels/:hotelId/research/run",
@@ -2340,6 +2415,34 @@ app.get("/hotel-explorer-share.html", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, "public", "hotel-explorer-share.html"));
 });
+// Radar / Scout Market Map external share (curated packs; no login)
+app.get("/radar-share", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/radar-share.html" + q);
+});
+app.get("/radar-share/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/radar-share.html" + q);
+});
+app.get("/radar-share.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("X-Robots-Tag", "noindex, nofollow");
+    res.sendFile(path.join(__dirname, "public", "radar-share.html"));
+});
+// Opportunity Radar external share (NOT Scout Market Map /radar-share)
+app.get("/opportunity-radar-share", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/opportunity-radar-share.html" + q);
+});
+app.get("/opportunity-radar-share/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/opportunity-radar-share.html" + q);
+});
+app.get("/opportunity-radar-share.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("X-Robots-Tag", "noindex, nofollow");
+    res.sendFile(path.join(__dirname, "public", "opportunity-radar-share.html"));
+});
 // Golden Four client share entry (must survive ADP-only CLI deploys that omit static fallthrough)
 app.get("/hotel-intelligence-golden-demo", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
@@ -3459,6 +3562,11 @@ app.listen(PORT, () => {
     logAdpPublishedReadSourceAtStartup();
   } catch (err) {
     console.error("[ADP read] startup source log failed:", err.message);
+  }
+  try {
+    logAdminShareHydrationStatus();
+  } catch (err) {
+    console.error("[share-hydration] startup status log failed:", err.message);
   }
   // Census map snapshot — preload (or build once if missing). Non-blocking listen already done.
   import("./lib/hotel-census/census-map-snapshot.js")

@@ -1,0 +1,241 @@
+{
+  "counts": {
+    "total": 20,
+    "propertyQaPass": 20,
+    "propertyQaReview": 0,
+    "propertyQaFail": 0,
+    "certEraCertified": 3,
+    "legacyUncertifiedCurrent": 17,
+    "qaReviewPeriods": 0,
+    "qaFailedPeriods": 0,
+    "noOfficial": 0,
+    "publishAllowed": 3,
+    "publishBlocked": 0,
+    "publishGrandfathered": 17,
+    "assertions": [
+      {
+        "id": "SUM_PROPERTY_QA",
+        "pass": true
+      },
+      {
+        "id": "SUM_PERIOD_CERT_STATUS",
+        "pass": true,
+        "detail": {
+          "withPeriod": 20,
+          "periodStatusSum": 20,
+          "otherPeriod": 0
+        }
+      },
+      {
+        "id": "NO_CERTIFIED_WITHOUT_ERA",
+        "pass": true,
+        "detail": []
+      },
+      {
+        "id": "CERTIFIED_REQUIRES_MANIFEST",
+        "pass": true,
+        "detail": []
+      },
+      {
+        "id": "LEGACY_NOT_COUNTED_CERTIFIED",
+        "pass": true,
+        "detail": []
+      },
+      {
+        "id": "QA_PASS_DOES_NOT_IMPLLY_CERTIFIED",
+        "pass": true,
+        "detail": []
+      }
+    ],
+    "allAssertionsPass": true
+  },
+  "exactComparable": "EXACT_COMPARABLE",
+  "yotel": {
+    "expected": 252,
+    "successful": 251,
+    "failed": 0,
+    "timedOut": 1,
+    "recheck": "CERTIFIED",
+    "providerImbalance": [],
+    "considerationDenom": 251
+  },
+  "smoke": [
+    {
+      "case": "CERTIFIED_ALLOWED",
+      "pass": true,
+      "detail": "CERTIFIED → publish allowed under hard enforcement"
+    },
+    {
+      "case": "QA_REVIEW_BLOCKED",
+      "pass": true,
+      "detail": "ADP_CERTIFICATION_REQUIRED: cannot publish with certificationStatus=QA_REVIEW_REQUIRED"
+    },
+    {
+      "case": "QA_FAILED_BLOCKED",
+      "pass": true,
+      "detail": "ADP_CERTIFICATION_REQUIRED: cannot publish with certificationStatus=QA_FAILED"
+    },
+    {
+      "case": "LEGACY_NEW_PUBLISH_BLOCKED",
+      "pass": true,
+      "detail": "ADP_CERTIFICATION_REQUIRED: cannot publish with certificationStatus=LEGACY_UNCERTIFIED"
+    },
+    {
+      "case": "LEGACY_CANNOT_MASQUERADE",
+      "pass": true,
+      "detail": "ADP_CERTIFICATION_REQUIRED: cannot publish with certificationStatus=LEGACY_UNCERTIFIED"
+    },
+    {
+      "case": "ENV_FLAG_ON",
+      "pass": true,
+      "detail": "ADP_REQUIRE_CERTIFICATION_BEFORE_PUBLISH=1"
+    },
+    {
+      "case": "LEGACY_GRANDFATHER_READ",
+      "pass": true,
+      "detail": "Bethesda Live period=adp_period_adp_bethesda_marriott_20261002142154_62428a; stampedCert=null; inventory class=LEGACY_OFFICIAL"
+    }
+  ],
+  "rows": [
+    {
+      "hotelId": "adp_ac_hotel_a_coruna",
+      "propertyQaStatus": "PASS",
+      "periodCertificationStatus": "LEGACY_QA_PASS",
+      "currentPeriodClass": "LEGACY_OFFICIAL",
+      "publishEligibility": "GRANDFATHERED"
+    },
+    {
+      "hotelId": "adp_bethesda_marriott",
+      "propertyQaStatus": "PASS",
+      "periodCertificationStatus": "LEGACY_QA_PASS",
+      "currentPeriodClass": "LEGACY_OFFICIAL",
+      "publishEligibility": "GRANDFATHERED"
+    },
+    {
+      "hotelId": "adp_cambridge_beaches_bermuda",
+      "propertyQaStatus": "PASS",
+      "periodCertificationStatus": "LEGACY_QA_PASS",
+      "currentPeriodClass": "LEGACY_OFFICIAL",
+      "publishEligibility": "GRANDFATHERED"
+    },
+    {
+      "hotelId": "adp_casas_del_xvi",
+      "propertyQaStatus": "PASS",
+      "periodCertificationStatus": "LEGACY_QA_PASS",
+      "currentPeriodClass": "LEGACY_OFFICIAL",
+      "publishEligibility": "GRANDFATHERED"
+    },
+    {
+      "hotelId": "adp_faranda_collection_bogota",
+      "propertyQaStatus": "PASS",
+      "periodCertificationStatus": "LEGACY_QA_PASS",
+      "currentPeriodClass": "LEGACY_OFFICIAL",
+      "publishEligibility": "GRANDFATHERED"
+    },
+    {
+      "hotelId": "adp_hilton_times_square",
+      "propertyQaStatus": "PASS",
+      "periodCertificationStatus": "CERTIFIED",
+      "currentPeriodClass": "CERTIFICATION_ERA_OFFICIAL",
+      "publishEligibility": "ALLOWED"
+    },
+    {
+      "hotelId": "adp_hotel_caribe_faranda_grand",
+      "propertyQaStatus": "PASS",
+      "periodCertificationStatus": "LEGACY_QA_PASS",
+      "currentPeriodClass": "LEGACY_OFFICIAL",
+      "publishEligibility": "GRANDFATHERED"
+    },
+    {
+      "hotelId": "adp_hotel_phillips_kansas_city",
+      "propertyQaStatus": "PASS",
+      "periodCertificationStatus": "LEGACY_QA_PASS",
+      "currentPeriodClass": "LEGACY_OFFICIAL",
+      "publishEligibility": "GRANDFATHERED"
+    },
+    {
+      "hotelId": "adp_jw_marriott_monterrey_valle",
+      "propertyQaStatus": "PASS",
+      "periodCertificationStatus": "LEGACY_QA_PASS",
+      "currentPeriodClass": "LEGACY_OFFICIAL",
+      "publishEligibility": "GRANDFATHERED"
+    },
+    {
+      "hotelId": "adp_jw_marriott_santo_domingo",
+      "propertyQaStatus": "PASS",
+      "periodCertificationStatus": "LEGACY_QA_PASS",
+      "currentPeriodClass": "LEGACY_OFFICIAL",
+      "publishEligibility": "GRANDFATHERED"
+    },
+    {
+      "hotelId": "adp_now_now_noho",
+      "propertyQaStatus": "PASS",
+      "periodCertificationStatus": "LEGACY_QA_PASS",
+      "currentPeriodClass": "LEGACY_OFFICIAL",
+      "publishEligibility": "GRANDFATHERED"
+    },
+    {
+      "hotelId": "adp_radisson_santo_domingo",
+      "propertyQaStatus": "PASS",
+      "periodCertificationStatus": "LEGACY_QA_PASS",
+      "currentPeriodClass": "LEGACY_OFFICIAL",
+      "publishEligibility": "GRANDFATHERED"
+    },
+    {
+      "hotelId": "adp_renaissance_times_square",
+      "propertyQaStatus": "PASS",
+      "periodCertificationStatus": "CERTIFIED",
+      "currentPeriodClass": "CERTIFICATION_ERA_OFFICIAL",
+      "publishEligibility": "ALLOWED"
+    },
+    {
+      "hotelId": "adp_spice_island_beach_resort",
+      "propertyQaStatus": "PASS",
+      "periodCertificationStatus": "LEGACY_QA_PASS",
+      "currentPeriodClass": "LEGACY_OFFICIAL",
+      "publishEligibility": "GRANDFATHERED"
+    },
+    {
+      "hotelId": "adp_st_regis_cap_cana",
+      "propertyQaStatus": "PASS",
+      "periodCertificationStatus": "LEGACY_QA_PASS",
+      "currentPeriodClass": "LEGACY_OFFICIAL",
+      "publishEligibility": "GRANDFATHERED"
+    },
+    {
+      "hotelId": "adp_st_regis_mexico_city",
+      "propertyQaStatus": "PASS",
+      "periodCertificationStatus": "LEGACY_QA_PASS",
+      "currentPeriodClass": "LEGACY_OFFICIAL",
+      "publishEligibility": "GRANDFATHERED"
+    },
+    {
+      "hotelId": "adp_w_rome",
+      "propertyQaStatus": "PASS",
+      "periodCertificationStatus": "LEGACY_QA_PASS",
+      "currentPeriodClass": "LEGACY_OFFICIAL",
+      "publishEligibility": "GRANDFATHERED"
+    },
+    {
+      "hotelId": "adp_waterstone_boca_raton",
+      "propertyQaStatus": "PASS",
+      "periodCertificationStatus": "LEGACY_QA_PASS",
+      "currentPeriodClass": "LEGACY_OFFICIAL",
+      "publishEligibility": "GRANDFATHERED"
+    },
+    {
+      "hotelId": "adp_westin_monterrey_valle",
+      "propertyQaStatus": "PASS",
+      "periodCertificationStatus": "LEGACY_QA_PASS",
+      "currentPeriodClass": "LEGACY_OFFICIAL",
+      "publishEligibility": "GRANDFATHERED"
+    },
+    {
+      "hotelId": "adp_yotel_geneva_lake",
+      "propertyQaStatus": "PASS",
+      "periodCertificationStatus": "CERTIFIED",
+      "currentPeriodClass": "CERTIFICATION_ERA_OFFICIAL",
+      "publishEligibility": "ALLOWED"
+    }
+  ]
+}

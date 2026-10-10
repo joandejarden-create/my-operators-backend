@@ -1,0 +1,334 @@
+{
+  "id": "gdi_run_musomldj_845909bb",
+  "hotelId": "rec2PVBDavppGpenm",
+  "status": "COMPLETED",
+  "productVersion": "group-demand-intelligence-v1.0.0",
+  "startedAt": "2026-10-03T17:44:58.039Z",
+  "completedAt": "2026-10-03T17:44:58.142Z",
+  "trigger": "ac_hotel_a_coruna_current_closure_v2",
+  "discoveryMode": "INDEPENDENT_CANDIDATES",
+  "configuration": {
+    "demandConfig": {
+      "hotelId": "rec2PVBDavppGpenm",
+      "displayName": "AC Hotel A Coruña",
+      "country": "Spain",
+      "city": "A Coruña",
+      "aliases": {
+        "adpPropertyId": "adp_ac_hotel_a_coruna",
+        "marriottPropertyCode": "LCGCO",
+        "censusRecordId": "rec2PVBDavppGpenm",
+        "provisionalGdiHotelId": "gdi_hotel_ac_hotel_a_coruna",
+        "note": "Canonical hotelId is HPC record. Provisional GDI key retained as alias only."
+      },
+      "adpFixturePath": "fixtures/ai-demand-positioning/ac-hotel-a-coruna-property-profile.json",
+      "geo": {
+        "latitude": 43.339129,
+        "longitude": -8.404032
+      },
+      "commercialPriorities": {
+        "targetSegments": [],
+        "coreTargetPeakRoomsMin": 15,
+        "coreTargetPeakRoomsMax": 80,
+        "allowSmallerIfCommerciallyMeaningful": true,
+        "demandAnchorFocus": [],
+        "weekendFocus": false,
+        "notes": "HOTEL_SPECIFIC_DATA from Marriott LCGCO (116 keys, 674 m² / 6 event rooms, Banquets to 290). Peak band sized for urban business + mid-size meetings/social; large Palexco/Expocoruña citywide congress is overflow/destination-relevant only when housing access is evidenced. targetSegments empty — discovery must not be seeded with demand-type assumptions. Do NOT inherit Bethesda/NYC/Rome demand programs."
+      },
+      "capabilityProfile": {
+        "totalGuestrooms": 116,
+        "totalMeetingSpaceSqFt": 7254,
+        "totalMeetingSpaceSqM": 674,
+        "largestBallroomSqFt": 3251,
+        "largestBallroomSqM": 302,
+        "largestTheaterCapacity": 220,
+        "largestReceptionCapacity": 290,
+        "meetingRoomsIndoor": 6,
+        "outdoorEventSpace": false,
+        "softBrand": "AC Hotels by Marriott",
+        "serviceLevel": "upper_upscale_urban",
+        "classification": "urban_business_meetings",
+        "country": "Spain",
+        "notes": "HOTEL_SPECIFIC_DATA from Marriott official events page — not hardcoded into scoring engine.",
+        "meetingRoomCount": 6,
+        "largestMeetingRoomSqFt": 3251
+      },
+      "demandTerritory": {
+        "label": "A Coruña / Galicia urban",
+        "country": "Spain",
+        "includes": [
+          "A Coruña city and Matogrande / Expocoruña corridor where AC Hotel A Coruña is a credible alternative",
+          "selected Galicia urban demand when lodging access is realistic",
+          "selected Spain destination overflow only when housing access is evidenced"
+        ],
+        "evaluationQuestion": "Could AC Hotel A Coruña realistically capture this group demand given 116 rooms, 674 m² meeting inventory, Banquets to 290, Matogrande location, and A Coruña market relevance?",
+        "classifications": [
+          "TERRITORY_CORE",
+          "TERRITORY_NEARBY",
+          "TERRITORY_COMPETITIVE",
+          "TERRITORY_STRETCH",
+          "OUTSIDE_REALISTIC_TERRITORY"
+        ],
+        "displayLabels": {
+          "TERRITORY_CORE": "A Coruña Core",
+          "TERRITORY_NEARBY": "Nearby Galicia Corridor",
+          "TERRITORY_COMPETITIVE": "Galicia Competitive",
+          "TERRITORY_STRETCH": "Spain Destination Stretch",
+          "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+        },
+        "classificationKeywords": {
+          "TERRITORY_CORE": [
+            "a coruña",
+            "a coruna",
+            "matogrande",
+            "expocoruña",
+            "expocoruna",
+            "coliseum",
+            "enrique mariñas"
+          ],
+          "TERRITORY_NEARBY": [
+            "arteixo",
+            "oleiros",
+            "sada",
+            "culleredo",
+            "betanzos"
+          ],
+          "TERRITORY_COMPETITIVE": [
+            "santiago de compostela",
+            "vigo",
+            "lugo",
+            "pontevedra",
+            "galicia"
+          ],
+          "TERRITORY_STRETCH": [
+            "spain",
+            "españa",
+            "madrid",
+            "barcelona"
+          ]
+        }
+      },
+      "locale": {
+        "primary": "es",
+        "secondary": [
+          "en",
+          "gl"
+        ],
+        "notes": "Spanish primary; English secondary; Galician for source research where useful"
+      },
+      "capabilityProfileSource": {
+        "hiRequalV1At": "2026-09-30T13:00:05.544Z",
+        "note": "Filled null/zero capability fields from Hotel Intelligence Airtable"
+      }
+    },
+    "webhoundHardCapUsd": 15,
+    "ampfyStatus": {
+      "provider": "ampfy",
+      "status": "provider_not_configured",
+      "note": "Ampfy is not present in this repo. Level-4 uses Apify where applicable; Ampfy slot reserved."
+    },
+    "methodsVersion": "gdi-research-methods-v1-experimental"
+  },
+  "providers": {
+    "dealality_existing_knowledge": true,
+    "gdi_research_methods": true,
+    "standard_web": true,
+    "ampfy": "provider_not_configured",
+    "apify": "not_invoked_pilot_default",
+    "webhound": null
+  },
+  "researchMethods": [
+    "GDI-ASSOC-EVENT-01",
+    "GDI-MED-SCI-01",
+    "GDI-HIST-MEETING-01",
+    "GDI-GOV-EVENT-01",
+    "GDI-WEEKEND-01",
+    "GDI-CONTACT-01",
+    "GDI-VENUE-HOUSING-01",
+    "GDI-FUTURE-CAL-01",
+    "GDI-FIXED-VENUE-HOUSING-01",
+    "GDI-OPEN-UNIVERSE-01",
+    "GDI-SPORTS-STAY-01",
+    "GDI-ANCHOR-01"
+  ],
+  "metrics": {
+    "candidatesResearched": 11,
+    "opportunitiesQualified": 11,
+    "highPriorityCount": 0,
+    "mediumPriorityCount": 0,
+    "watchlistCount": 11,
+    "disqualifiedCount": 0,
+    "sourceCount": 10,
+    "duplicatesRemoved": 0,
+    "expiredRemoved": 0
+  },
+  "cost": {
+    "totalUsd": 0,
+    "webhoundUsd": 0,
+    "ampfyUsd": 0,
+    "apifyUsd": 0,
+    "serpApiUsd": 0,
+    "llmUsd": 0,
+    "standardSearchUsd": 0,
+    "otherUsd": 0,
+    "queryCount": 0,
+    "providerCallCount": 0,
+    "webhoundCalls": [],
+    "ampfyCalls": [],
+    "apifyCalls": [],
+    "escalationLog": [
+      {
+        "level": "L1_EXISTING_DEALALITY_KNOWLEDGE",
+        "question": "Load hotel group demand profile from Dealality knowledge",
+        "result": "started",
+        "at": "2026-10-03T17:44:58.042Z"
+      },
+      {
+        "level": "L1_EXISTING_DEALALITY_KNOWLEDGE",
+        "question": "Hotel profile from ADP RO fixture + GDI demand config",
+        "result": "ok",
+        "sources": [
+          "fixtures/ai-demand-positioning/ac-hotel-a-coruna-property-profile.json (READ_ONLY)",
+          "config/group-demand-intelligence/hotels/rec2PVBDavppGpenm.json"
+        ],
+        "adpCanonicalReuse": {
+          "classification": "HOTEL_SPECIFIC_DATA",
+          "reusedFields": [
+            "name",
+            "address/city/state",
+            "brand/affiliation",
+            "rooms",
+            "meetingSpace",
+            "declaredCompSet",
+            "positioning",
+            "geography",
+            "attributes"
+          ],
+          "missingGdiCriticalFields": [],
+          "newlyResearchedFields": [],
+          "adpFixturePath": "fixtures/ai-demand-positioning/ac-hotel-a-coruna-property-profile.json",
+          "note": "No duplicate hotel profile created — ADP fixture consumed read-only."
+        },
+        "at": "2026-10-03T17:44:58.045Z"
+      },
+      {
+        "level": "L2_CANONICAL_DEALALITY_RESEARCH_METHODS",
+        "question": "Apply GDI experimental research methods / seed qualification",
+        "methods": [
+          "GDI-ASSOC-EVENT-01",
+          "GDI-MED-SCI-01",
+          "GDI-HIST-MEETING-01",
+          "GDI-GOV-EVENT-01",
+          "GDI-WEEKEND-01",
+          "GDI-CONTACT-01",
+          "GDI-VENUE-HOUSING-01",
+          "GDI-FUTURE-CAL-01",
+          "GDI-FIXED-VENUE-HOUSING-01",
+          "GDI-OPEN-UNIVERSE-01",
+          "GDI-SPORTS-STAY-01",
+          "GDI-ANCHOR-01"
+        ],
+        "result": "ok",
+        "at": "2026-10-03T17:44:58.045Z"
+      },
+      {
+        "level": "L3_STANDARD_APPROVED_WEB_RESEARCH",
+        "question": "Independent discovery candidates (no Bethesda seed path)",
+        "result": "ok",
+        "note": "Candidates supplied via seedCandidates / Webhound import — not Bethesda demand-type seeds",
+        "at": "2026-10-03T17:44:58.045Z"
+      },
+      {
+        "level": "L4_AMPFY_APIFY_SUPPLEMENTAL",
+        "question": "Ampfy/Apify supplemental enrichment",
+        "result": "provider_not_configured",
+        "ampfy": {
+          "provider": "ampfy",
+          "status": "provider_not_configured",
+          "note": "Ampfy is not present in this repo. Level-4 uses Apify where applicable; Ampfy slot reserved."
+        },
+        "apify": "not_invoked_pilot_default",
+        "at": "2026-10-03T17:44:58.045Z"
+      },
+      {
+        "level": "L3_STANDARD_APPROVED_WEB_RESEARCH",
+        "question": "Ingest independent discovery candidates",
+        "result": "ok",
+        "candidateCount": 11,
+        "discoveryMode": "INDEPENDENT_CANDIDATES",
+        "note": "No Bethesda pilot seeds; no DMV expansion pass",
+        "at": "2026-10-03T17:44:58.097Z"
+      },
+      {
+        "level": "L5_WEBHOUND_DEEP_RESEARCH",
+        "question": "Selective deep research",
+        "result": "not_requested_this_run",
+        "hardCapUsd": 15,
+        "at": "2026-10-03T17:44:58.142Z"
+      }
+    ],
+    "incrementalRoi": [],
+    "radFeedbackEnrichment": {
+      "pass": "rad_feedback_dmv_product_quality_v1",
+      "webhoundSpentUsd": 0,
+      "webhoundCapUsd": 15,
+      "note": "Product-quality enrichment only. Webhound hard cap unchanged; no additional Webhound spend in this pass (prior pilot already at/near $15).",
+      "appliedAt": "2026-10-03T17:44:58.125Z"
+    },
+    "qualificationPrecision": {
+      "pass": "qualification_precision_v1",
+      "commercialQaPass": "commercial_qa_high_retention_v1_20260915",
+      "commercialQaApplied": [],
+      "mediumContactNotes": {
+        "gdi_opp_amwa_2027_annual": {
+          "bucket": "A_WEAK_OR_INCOMPLETE_QUALIFICATION",
+          "note": "Venue TBD is promising, but room demand remains UNKNOWN and contact is a generic association inbox. Medium is correct — not merely a named-contact miss."
+        },
+        "gdi_opp_nice_2027": {
+          "bucket": "B_STRONG_OPEN_MISSING_NAMED_CONTACT",
+          "note": "Qualification STRONG / venue open / estimated rooms / NIST-adjacent — blocked from High only by generic inbox (nice@nist.gov). High contact rule is appropriately strict for 'act this week'; Medium correctly preserves the opportunity for contact deepening."
+        },
+        "gdi_opp_acts_ts27": {
+          "bucket": "B_STRONG_OPEN_MISSING_NAMED_CONTACT",
+          "note": "Qualification STRONG / DC venue TBD / estimated rooms / NIH-adjacent — blocked from High by unnamed staff desk. Do not auto-promote; deepen named meetings contact first."
+        }
+      },
+      "webhoundSpentUsd": 0,
+      "webhoundCapUsd": 15,
+      "note": "Precision re-score + commercial QA High retention check — no broad discovery, no additional Webhound spend.",
+      "appliedAt": "2026-10-03T17:44:58.141Z",
+      "priorityCounts": {
+        "HIGH_PRIORITY": 0,
+        "MEDIUM_PRIORITY": 0,
+        "WATCHLIST": 11,
+        "DISQUALIFIED": 0
+      }
+    },
+    "costPerDiscoveredOpportunityUsd": null,
+    "costPerQualifiedOpportunityUsd": 0,
+    "costPerHighPriorityOpportunityUsd": 0,
+    "webhoundHardCapUsd": 15,
+    "webhoundRemainingUsd": 15,
+    "externalResearchEnabled": true
+  },
+  "opportunityIds": [
+    "gdi_opp_request_for_proposal_for_expocoruna_0",
+    "gdi_opp_corporate_meetings_in_matogrande_business_corrid_1",
+    "gdi_opp_misi_n_comercial_china_2",
+    "gdi_opp_174th_international_softwood_conference_isc_2026_3",
+    "gdi_opp_iberian_leadership_retreat_4",
+    "gdi_opp_new_residential_development_for_youth_5",
+    "gdi_opp_conference_at_a_coru_a_faculty_of_computer_scien_6",
+    "gdi_opp_conference_at_a_coru_a_faculty_of_computer_scien_7",
+    "gdi_opp_conference_at_a_coru_a_faculty_of_computer_scien_8",
+    "gdi_opp_conference_at_a_coru_a_faculty_of_computer_scien_9",
+    "gdi_opp_models_2026_10"
+  ],
+  "errors": [],
+  "adpTouched": false,
+  "censusWritten": false,
+  "portability": {
+    "bethesdaSeedPathUsed": false,
+    "dmvExpansionUsed": false,
+    "hotelConfigPath": "config/group-demand-intelligence/hotels/rec2PVBDavppGpenm.json"
+  }
+}

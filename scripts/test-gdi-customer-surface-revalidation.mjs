@@ -113,6 +113,9 @@ assert.equal(
         primaryContact: { name: "AMWA meetings staff", role: "Meetings", email: "associatedirector@amwa-doc.org" },
         whyNow: "CONTACT NOW: 2027 dates public; hotel not named",
         summaryWhat: "AMWA annual meeting announced for DC area; host hotel not named.",
+        officialSource: "https://www.amwa-doc.org/events/annual-meeting",
+        recommendedAction: "Contact AMWA meetings staff about host hotel / overflow for 2027 DC cycle.",
+        hotelFitScore: 72,
         opportunityQualificationLabel: "Verified Open",
         bookingWindowStatus: "CONTACT_NOW",
         segment: "Medical",
@@ -122,6 +125,58 @@ assert.equal(
   );
   assert.equal(filtered.length, 1);
   assert.equal(filtered[0].id, "keep");
+}
+
+// AidEx regression: boilerplate summaryWhyMatters must NOT discard overflow thesis /
+// accommodation housing source (surface eligibility bug fix 2026-10-03).
+{
+  const aidex = {
+    id: "gdi_opp_aidex_geneva_11",
+    title: "AidEx Geneva",
+    organizationName: "AidEx / Clarion Events",
+    opportunityType: "FUTURE_CYCLE",
+    eventStartDate: "2026-10-21",
+    eventEndDate: "2026-10-22",
+    venueStatus: "Unknown",
+    hotelOpportunityThesis:
+      "AidEx sits at Geneva Airport (Palexpo). YOTEL Geneva Lake serves the airport / La Côte corridor and can pursue overflow or preferred listing beyond onsite Ibis/Hilton inventory.",
+    summaryWhyMatters:
+      "Planning for hotel accommodations is essential as the event date approaches.",
+    whyNow: "Planning for hotel accommodations is essential as the event date approaches.",
+    summaryWhyHotel:
+      "YOTEL Geneva Lake: La Côte / Nyon / Geneva Airport corridor market access; 237 guestrooms.",
+    officialSource: "https://aid-expo.com/when-where",
+    discoverySource: "https://aid-expo.com/accommodation",
+    hotelFitScore: 57,
+    priority: "WATCHLIST",
+  };
+  const cls = classifyCustomerSurfaceOpportunity(aidex, { nowDate: "2026-10-03" });
+  assert.equal(
+    cls.disposition,
+    CUSTOMER_SURFACE_DISPOSITION.KEEP_ACTIVE,
+    `AidEx must KEEP_ACTIVE after surface bugfix; got ${cls.disposition} (${(cls.reasons || []).join(",")})`
+  );
+  assert.equal(cls.keepActive, true);
+}
+
+// Boilerplate-only (no thesis motion, no housing URL) still downgrades
+{
+  const bare = {
+    title: "Generic Industry Summit 2027",
+    organizationName: "Generic Industry Association",
+    opportunityType: "FUTURE_CYCLE",
+    eventStartDate: "2027-06-01",
+    eventEndDate: "2027-06-03",
+    venueStatus: "Unknown",
+    hotelOpportunityThesis: "The hotel has sufficient capacity for attendees.",
+    summaryWhyMatters:
+      "Planning for hotel accommodations is essential as the event date approaches.",
+    whyNow: "Planning for hotel accommodations is essential as the event date approaches.",
+    officialSource: "https://example-association.org/events/2027",
+    priority: "WATCHLIST",
+  };
+  const cls = classifyCustomerSurfaceOpportunity(bare, { nowDate: "2026-10-03" });
+  assert.notEqual(cls.disposition, CUSTOMER_SURFACE_DISPOSITION.KEEP_ACTIVE);
 }
 
 console.log("test:gdi-customer-surface-revalidation OK");

@@ -261,6 +261,11 @@
 
     <section id="adaPanelReportArchive" class="ada-panel" data-panel="report-archive" role="tabpanel" hidden>
       <div class="adr-counts" id="rarCounts" aria-live="polite"></div>
+      <div class="rar-type-chips" role="group" aria-label="Report type filter" style="display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px">
+        <button type="button" class="adr-btn adr-btn--secondary active" data-rar-type-chip="ALL" aria-pressed="true">All</button>
+        <button type="button" class="adr-btn adr-btn--secondary" data-rar-type-chip="ADP" aria-pressed="false">ADP</button>
+        <button type="button" class="adr-btn adr-btn--secondary" data-rar-type-chip="GDI" aria-pressed="false">GDI</button>
+      </div>
       <section class="adr-filters" aria-label="Report archive filters">
         <label>
           Hotel ID / Property ID
@@ -279,11 +284,13 @@
           <select id="rarClass">
             <option value="ALL">ALL</option>
             <option value="BASELINE">BASELINE</option>
+            <option value="OFFICIAL_BASELINE">OFFICIAL_BASELINE</option>
             <option value="DAY1">DAY1</option>
             <option value="WEEKLY">WEEKLY</option>
             <option value="MONTHLY">MONTHLY</option>
             <option value="REMEASUREMENT">REMEASUREMENT</option>
             <option value="CURRENT">CURRENT</option>
+            <option value="MANUAL">MANUAL</option>
           </select>
         </label>
         <button type="button" class="adr-btn" id="rarApply">Apply</button>
@@ -331,7 +338,7 @@
   <script src="/js/admin-ai-demand-reviews.js?v=adp-client-column-v1"></script>
   <script src="/js/admin-adp-action-plan.js?v=gdi-external-client-links-v1"></script>
   <script src="/js/admin-gdi-reports.js?v=gdi-row-hydration-v1"></script>
-  <script src="/js/admin-report-archive.js?v=report-archive-v1"></script>
+  <script src="/js/admin-report-archive.js?v=report-archive-v1b"></script>
   <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

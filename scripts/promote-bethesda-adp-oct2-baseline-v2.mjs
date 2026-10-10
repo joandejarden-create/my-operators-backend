@@ -181,15 +181,25 @@ async function main() {
     process.exit(3);
   }
 
-  // Bake Trends onto payload
+  // Bake Trends onto payload as a canonical ARRAY (never object-spread an array).
   const trend = buildFrozenTrendPoint(bundle.report || bundle, PERIOD_ID);
   if (bundle.report?.payload) {
-    bundle.report.payload.trends = {
-      ...(bundle.report.payload.trends || {}),
-      current: trend,
-      priorOfficialComparable: null,
-      note: "Official pilot baseline — no later official measurement yet; no period-over-period delta.",
-    };
+    const existing = Array.isArray(bundle.report.payload.trends)
+      ? bundle.report.payload.trends.filter(Boolean)
+      : [];
+    const withoutCurrent = existing.filter((t) => t && t.role !== "current");
+    bundle.report.payload.trends = [
+      ...withoutCurrent,
+      {
+        ...trend,
+        role: "current",
+        isOfficialBaseline: true,
+        monitoringStatus: "ACTIVE",
+        nextFormalRemeasurementLabel: "November 2026",
+        priorOfficialComparable: null,
+        note: "Official pilot baseline — no later official measurement yet; no period-over-period delta.",
+      },
+    ];
     bundle.report.payload.pilot = {
       pilotId: "Bethesda Marriott Founding Pilot 001",
       pilotStartDate: PILOT_START,

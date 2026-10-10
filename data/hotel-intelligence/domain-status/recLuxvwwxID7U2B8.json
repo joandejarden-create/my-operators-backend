@@ -48,22 +48,20 @@
       "updatedAt": "2026-09-30T08:30:21.813Z"
     },
     "SEASONALITY_NEED_PERIODS": {
-      "domainStatus": "POPULATED",
-      "lastResearchedAt": "2026-09-30T09:28:17.213Z",
-      "researchRunId": "hi_seasonality_depth_v2_1790760497213",
+      "domainStatus": "PUBLIC_DATA_CEILING",
+      "lastResearchedAt": "2026-10-02T07:54:34.958Z",
+      "researchRunId": "hi_day2_seasonality_cleanup_1790927674958",
       "evidenceCount": 4,
-      "rowCount": 2,
+      "rowCount": 0,
       "sourceCoverage": [
-        "FIRST_PARTY",
-        "OTHER",
-        "OTHER",
-        "OTHER"
+        "PUBLIC_REJECTED_NON_MARKET",
+        "HOTEL_NEED_PERIOD_NOT_PROVIDED"
       ],
-      "notes": "evidence_depth_v2_destination_seasonality_populated depth=POPULATED",
+      "notes": "Day-2: deactivated non-Bethesda public seasonality rows. Market seasonality research ceiling reached without reliable Bethesda-specific public seasonality. Hotel-supplied need periods = NOT_PROVIDED (not blocking). HI remains complete via PUBLIC_DATA_CEILING.",
       "blocker": null,
       "domain": "SEASONALITY_NEED_PERIODS",
-      "updatedAt": "2026-09-30T09:28:17.216Z",
-      "researchDepth": "POPULATED",
+      "updatedAt": "2026-10-02T07:54:34.959Z",
+      "researchDepth": "PUBLIC_DATA_CEILING",
       "sourcesAttempted": [
         {
           "family": "FIRST_PARTY",
@@ -90,7 +88,8 @@
           "title": "Bethesda Fountain New York City - Explore Tours"
         }
       ],
-      "destinationVsNeedPeriod": "DESTINATION_SEASONALITY_ONLY"
+      "destinationVsNeedPeriod": "DESTINATION_SEASONALITY_ONLY",
+      "hotelNeedPeriodStatus": "NOT_PROVIDED"
     },
     "HI_EVIDENCE": {
       "domainStatus": "POPULATED",
@@ -121,7 +120,7 @@
     }
   },
   "overallStatus": "HI_COMPLETE",
-  "updatedAt": "2026-09-30T09:28:17.218Z",
+  "updatedAt": "2026-10-02T07:54:34.960Z",
   "coverage": {
     "resolved": 6,
     "required": 6,

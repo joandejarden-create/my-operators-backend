@@ -5,6 +5,10 @@
  */
 
 import { loadPropertyProfile, listPropertyProfiles } from "../lib/ai-demand-positioning/data-model.js";
+import {
+  formatPropertyLocationLine,
+  formatPropertySelectorLabel,
+} from "../lib/dealality/property-display-label.js";
 import { buildScenarioUniverse } from "../lib/ai-demand-positioning/prompt-universe/scenario-registry.js";
 import { estimateCost } from "../lib/ai-demand-positioning/execution/multi-provider-runner.js";
 import {
@@ -316,6 +320,24 @@ export async function getAiDemandPositioningReport(req, res) {
         property: {
           ...(corePayload.property || {}),
           propertyId,
+          name: (corePayload.property || {}).name || profile.name,
+          city: (corePayload.property || {}).city || profile.city || "",
+          state: (corePayload.property || {}).state || profile.state || "",
+          region: (corePayload.property || {}).region || profile.region || "",
+          country: (corePayload.property || {}).country || profile.country || "",
+          locationLine: formatPropertyLocationLine({
+            city: (corePayload.property || {}).city || profile.city,
+            state: (corePayload.property || {}).state || profile.state,
+            region: (corePayload.property || {}).region || profile.region,
+            country: (corePayload.property || {}).country || profile.country,
+          }),
+          label: formatPropertySelectorLabel({
+            name: (corePayload.property || {}).name || profile.name,
+            city: (corePayload.property || {}).city || profile.city,
+            state: (corePayload.property || {}).state || profile.state,
+            region: (corePayload.property || {}).region || profile.region,
+            country: (corePayload.property || {}).country || profile.country,
+          }),
         },
         brandPortfolioPosition,
         _adpReadSource: result.readSource || {

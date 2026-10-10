@@ -1,0 +1,324 @@
+{
+  "id": "gdi_run_muxxxkdl_15c6d74f",
+  "hotelId": "recUOyzOXn2Zdp98I",
+  "status": "COMPLETED",
+  "productVersion": "group-demand-intelligence-v1.0.0",
+  "startedAt": "2026-10-07T10:04:17.386Z",
+  "completedAt": "2026-10-07T10:04:17.457Z",
+  "trigger": "radisson_sd_first_cycle",
+  "discoveryMode": "INDEPENDENT_CANDIDATES",
+  "configuration": {
+    "demandConfig": {
+      "hotelId": "recUOyzOXn2Zdp98I",
+      "displayName": "Radisson Hotel Santo Domingo",
+      "hotelIdentityStatus": "CANONICAL_HPC",
+      "aliases": {
+        "adpPropertyId": "adp_radisson_santo_domingo",
+        "censusRecordId": "recUOyzOXn2Zdp98I",
+        "note": "Controlled Expansion Wave 3 Hotel A — urban / meetings-heavy Naco corridor."
+      },
+      "adpFixturePath": "fixtures/ai-demand-positioning/radisson-santo-domingo-property-profile.json",
+      "commercialPriorities": {
+        "targetSegments": [],
+        "coreTargetPeakRoomsMin": 20,
+        "coreTargetPeakRoomsMax": 90,
+        "allowSmallerIfCommerciallyMeaningful": true,
+        "demandAnchorFocus": [],
+        "weekendFocus": false,
+        "notes": "HOTEL_SPECIFIC_DATA from ADP rooms=160 Naco. Peak band for upper-upscale urban pursuit. targetSegments empty — no demand-type seeding."
+      },
+      "capabilityProfile": {
+        "totalGuestrooms": 160,
+        "totalMeetingSpaceSqFt": 8611,
+        "largestBallroomSqFt": null,
+        "largestTheaterCapacity": 500,
+        "meetingRoomsIndoor": null,
+        "outdoorEventSpace": false,
+        "softBrand": "Radisson",
+        "serviceLevel": "full_service_upper_upscale",
+        "classification": "santo_domingo_naco_urban_upper_upscale",
+        "notes": "HI Evidence Depth V2 populated meeting inventory from structured venue ladder (8611 sq ft / 9 rooms / largest 3875 / cap 500). Capability fields synced from Hotel Intelligence Airtable during GDI requalification portability V1.",
+        "meetingRoomCount": 9,
+        "largestMeetingRoomSqFt": 3875
+      },
+      "demandTerritory": {
+        "label": "Santo Domingo / Naco–Tiradentes",
+        "includes": [
+          "Naco / Tiradentes financial corridor",
+          "selected Piantini competitive when Radisson is a credible alternative",
+          "Distrito Nacional citywide overflow when housing access is evidenced"
+        ],
+        "evaluationQuestion": "Could Radisson Santo Domingo realistically capture this group demand given Naco upper-upscale positioning?",
+        "classifications": [
+          "TERRITORY_CORE",
+          "TERRITORY_NEARBY",
+          "TERRITORY_COMPETITIVE",
+          "TERRITORY_STRETCH",
+          "OUTSIDE_REALISTIC_TERRITORY"
+        ],
+        "displayLabels": {
+          "TERRITORY_CORE": "Naco / Tiradentes Core",
+          "TERRITORY_NEARBY": "Santo Domingo Nearby Corridor",
+          "TERRITORY_COMPETITIVE": "Santo Domingo Competitive",
+          "TERRITORY_STRETCH": "Dominican Republic Stretch",
+          "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+        },
+        "classificationKeywords": {
+          "TERRITORY_CORE": [
+            "naco",
+            "tiradentes",
+            "presidente gonzalez"
+          ],
+          "TERRITORY_NEARBY": [
+            "piantini",
+            "bella vista",
+            "gazcue",
+            "zona colonial"
+          ],
+          "TERRITORY_COMPETITIVE": [
+            "santo domingo",
+            "distrito nacional"
+          ],
+          "TERRITORY_STRETCH": [
+            "santiago dominican",
+            "punta cana overflow"
+          ],
+          "OUTSIDE_REALISTIC_TERRITORY": [
+            "miami only",
+            "cancun mega",
+            "cartagena only"
+          ]
+        }
+      },
+      "competitiveContext": {
+        "strCompSet": [],
+        "relevantGroupDemandAlternatives": [],
+        "notes": "HOTEL_SPECIFIC_DATA — empty avoids invented competitors."
+      },
+      "identityExclusions": [],
+      "gdiOnboarding": {
+        "status": "CONTROLLED_EXPANSION_WAVE3",
+        "validationMarker": "gdi_controlled_expansion_wave3_20260922",
+        "slot": "A_URBAN_MEETINGS",
+        "reuseAdpProfile": true,
+        "paidEnrichmentEnabled": false
+      },
+      "capabilityProfileSource": {
+        "hiRequalV1At": "2026-09-30T13:00:05.344Z",
+        "note": "Filled null/zero capability fields from Hotel Intelligence Airtable"
+      }
+    },
+    "webhoundHardCapUsd": 15,
+    "ampfyStatus": {
+      "provider": "ampfy",
+      "status": "provider_not_configured",
+      "note": "Ampfy is not present in this repo. Level-4 uses Apify where applicable; Ampfy slot reserved."
+    },
+    "methodsVersion": "gdi-research-methods-v1-experimental"
+  },
+  "providers": {
+    "dealality_existing_knowledge": true,
+    "gdi_research_methods": true,
+    "standard_web": true,
+    "ampfy": "provider_not_configured",
+    "apify": "not_invoked_pilot_default",
+    "webhound": null
+  },
+  "researchMethods": [
+    "GDI-ASSOC-EVENT-01",
+    "GDI-MED-SCI-01",
+    "GDI-HIST-MEETING-01",
+    "GDI-GOV-EVENT-01",
+    "GDI-WEEKEND-01",
+    "GDI-CONTACT-01",
+    "GDI-VENUE-HOUSING-01",
+    "GDI-FUTURE-CAL-01",
+    "GDI-FIXED-VENUE-HOUSING-01",
+    "GDI-OPEN-UNIVERSE-01",
+    "GDI-SPORTS-STAY-01",
+    "GDI-ANCHOR-01"
+  ],
+  "metrics": {
+    "candidatesResearched": 13,
+    "opportunitiesQualified": 13,
+    "highPriorityCount": 0,
+    "mediumPriorityCount": 0,
+    "watchlistCount": 13,
+    "disqualifiedCount": 0,
+    "sourceCount": 13,
+    "duplicatesRemoved": 0,
+    "expiredRemoved": 0
+  },
+  "cost": {
+    "totalUsd": 0,
+    "webhoundUsd": 0,
+    "ampfyUsd": 0,
+    "apifyUsd": 0,
+    "serpApiUsd": 0,
+    "llmUsd": 0,
+    "standardSearchUsd": 0,
+    "otherUsd": 0,
+    "queryCount": 0,
+    "providerCallCount": 0,
+    "webhoundCalls": [],
+    "ampfyCalls": [],
+    "apifyCalls": [],
+    "escalationLog": [
+      {
+        "level": "L1_EXISTING_DEALALITY_KNOWLEDGE",
+        "question": "Load hotel group demand profile from Dealality knowledge",
+        "result": "started",
+        "at": "2026-10-07T10:04:17.387Z"
+      },
+      {
+        "level": "L1_EXISTING_DEALALITY_KNOWLEDGE",
+        "question": "Hotel profile from ADP RO fixture + GDI demand config",
+        "result": "ok",
+        "sources": [
+          "fixtures/ai-demand-positioning/radisson-santo-domingo-property-profile.json (READ_ONLY)",
+          "config/group-demand-intelligence/hotels/recUOyzOXn2Zdp98I.json"
+        ],
+        "adpCanonicalReuse": {
+          "classification": "HOTEL_SPECIFIC_DATA",
+          "reusedFields": [
+            "name",
+            "address/city/state",
+            "brand/affiliation",
+            "rooms",
+            "meetingSpace",
+            "declaredCompSet",
+            "positioning",
+            "geography",
+            "attributes"
+          ],
+          "missingGdiCriticalFields": [],
+          "newlyResearchedFields": [],
+          "adpFixturePath": "fixtures/ai-demand-positioning/radisson-santo-domingo-property-profile.json",
+          "note": "No duplicate hotel profile created — ADP fixture consumed read-only."
+        },
+        "at": "2026-10-07T10:04:17.390Z"
+      },
+      {
+        "level": "L2_CANONICAL_DEALALITY_RESEARCH_METHODS",
+        "question": "Apply GDI experimental research methods / seed qualification",
+        "methods": [
+          "GDI-ASSOC-EVENT-01",
+          "GDI-MED-SCI-01",
+          "GDI-HIST-MEETING-01",
+          "GDI-GOV-EVENT-01",
+          "GDI-WEEKEND-01",
+          "GDI-CONTACT-01",
+          "GDI-VENUE-HOUSING-01",
+          "GDI-FUTURE-CAL-01",
+          "GDI-FIXED-VENUE-HOUSING-01",
+          "GDI-OPEN-UNIVERSE-01",
+          "GDI-SPORTS-STAY-01",
+          "GDI-ANCHOR-01"
+        ],
+        "result": "ok",
+        "at": "2026-10-07T10:04:17.390Z"
+      },
+      {
+        "level": "L3_STANDARD_APPROVED_WEB_RESEARCH",
+        "question": "Independent discovery candidates (no Bethesda seed path)",
+        "result": "ok",
+        "note": "Candidates supplied via seedCandidates / Webhound import — not Bethesda demand-type seeds",
+        "at": "2026-10-07T10:04:17.390Z"
+      },
+      {
+        "level": "L4_AMPFY_APIFY_SUPPLEMENTAL",
+        "question": "Ampfy/Apify supplemental enrichment",
+        "result": "provider_not_configured",
+        "ampfy": {
+          "provider": "ampfy",
+          "status": "provider_not_configured",
+          "note": "Ampfy is not present in this repo. Level-4 uses Apify where applicable; Ampfy slot reserved."
+        },
+        "apify": "not_invoked_pilot_default",
+        "at": "2026-10-07T10:04:17.390Z"
+      },
+      {
+        "level": "L3_STANDARD_APPROVED_WEB_RESEARCH",
+        "question": "Ingest independent discovery candidates",
+        "result": "ok",
+        "candidateCount": 13,
+        "discoveryMode": "INDEPENDENT_CANDIDATES",
+        "note": "No Bethesda pilot seeds; no DMV expansion pass",
+        "at": "2026-10-07T10:04:17.424Z"
+      },
+      {
+        "level": "L5_WEBHOUND_DEEP_RESEARCH",
+        "question": "Selective deep research",
+        "result": "not_requested_this_run",
+        "hardCapUsd": 15,
+        "at": "2026-10-07T10:04:17.457Z"
+      }
+    ],
+    "incrementalRoi": [],
+    "radFeedbackEnrichment": {
+      "pass": "rad_feedback_dmv_product_quality_v1",
+      "webhoundSpentUsd": 0,
+      "webhoundCapUsd": 15,
+      "note": "Product-quality enrichment only. Webhound hard cap unchanged; no additional Webhound spend in this pass (prior pilot already at/near $15).",
+      "appliedAt": "2026-10-07T10:04:17.442Z"
+    },
+    "qualificationPrecision": {
+      "pass": "qualification_precision_v1",
+      "commercialQaPass": "commercial_qa_high_retention_v1_20260915",
+      "commercialQaApplied": [],
+      "mediumContactNotes": {
+        "gdi_opp_amwa_2027_annual": {
+          "bucket": "A_WEAK_OR_INCOMPLETE_QUALIFICATION",
+          "note": "Venue TBD is promising, but room demand remains UNKNOWN and contact is a generic association inbox. Medium is correct — not merely a named-contact miss."
+        },
+        "gdi_opp_nice_2027": {
+          "bucket": "B_STRONG_OPEN_MISSING_NAMED_CONTACT",
+          "note": "Qualification STRONG / venue open / estimated rooms / NIST-adjacent — blocked from High only by generic inbox (nice@nist.gov). High contact rule is appropriately strict for 'act this week'; Medium correctly preserves the opportunity for contact deepening."
+        },
+        "gdi_opp_acts_ts27": {
+          "bucket": "B_STRONG_OPEN_MISSING_NAMED_CONTACT",
+          "note": "Qualification STRONG / DC venue TBD / estimated rooms / NIH-adjacent — blocked from High by unnamed staff desk. Do not auto-promote; deepen named meetings contact first."
+        }
+      },
+      "webhoundSpentUsd": 0,
+      "webhoundCapUsd": 15,
+      "note": "Precision re-score + commercial QA High retention check — no broad discovery, no additional Webhound spend.",
+      "appliedAt": "2026-10-07T10:04:17.456Z",
+      "priorityCounts": {
+        "HIGH_PRIORITY": 0,
+        "MEDIUM_PRIORITY": 0,
+        "WATCHLIST": 13,
+        "DISQUALIFIED": 0
+      }
+    },
+    "costPerDiscoveredOpportunityUsd": null,
+    "costPerQualifiedOpportunityUsd": 0,
+    "costPerHighPriorityOpportunityUsd": 0,
+    "webhoundHardCapUsd": 15,
+    "webhoundRemainingUsd": 15,
+    "externalResearchEnabled": true
+  },
+  "opportunityIds": [
+    "gdi_opp_d_a_mundial_del_turismo_2026_0",
+    "gdi_opp_2026_eua_funding_forum_1",
+    "gdi_opp_2023_12u_pg_dominican_republic_baseball_classic_2",
+    "gdi_opp_annual_risk_conference_3",
+    "gdi_opp_naco_legislative_conference_4",
+    "gdi_opp_sdq_mice_2026_5",
+    "gdi_opp_xxv_central_american_caribbean_games_6",
+    "gdi_opp_scrum_conferences_7",
+    "gdi_opp_international_conference_on_development_economic_8",
+    "gdi_opp_international_conference_on_economics_and_busine_9",
+    "gdi_opp_sustainable_trends_summit_rep_blica_dominicana_2_10",
+    "gdi_opp_latinamerican_family_business_summit_11",
+    "gdi_opp_funds4impact_summit_2026_12"
+  ],
+  "errors": [],
+  "adpTouched": false,
+  "censusWritten": false,
+  "portability": {
+    "bethesdaSeedPathUsed": false,
+    "dmvExpansionUsed": false,
+    "hotelConfigPath": "config/group-demand-intelligence/hotels/recUOyzOXn2Zdp98I.json"
+  }
+}

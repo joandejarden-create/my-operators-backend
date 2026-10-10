@@ -1,0 +1,356 @@
+{
+  "id": "gdi_run_muyawil3_1090ee87",
+  "hotelId": "recFaxTEFF9ILHWC9",
+  "status": "COMPLETED",
+  "productVersion": "group-demand-intelligence-v1.0.0",
+  "startedAt": "2026-10-07T16:07:23.416Z",
+  "completedAt": "2026-10-07T16:07:23.506Z",
+  "trigger": "westin_grand_munchen_first_cycle",
+  "discoveryMode": "INDEPENDENT_CANDIDATES",
+  "configuration": {
+    "demandConfig": {
+      "hotelId": "recFaxTEFF9ILHWC9",
+      "displayName": "The Westin Grand München",
+      "country": "Germany",
+      "city": "Munich",
+      "aliases": {
+        "adpPropertyId": "adp_westin_grand_munchen",
+        "censusRecordId": "recFaxTEFF9ILHWC9",
+        "provisionalGdiHotelId": "gdi_hotel_westin_grand_munchen",
+        "identityKey": "ind_marriott_de_mucwi",
+        "note": "Canonical hotelId is HPC record. Arabellapark / Bogenhausen — not Marienplatz CBD. Not Westin Grand Cayman."
+      },
+      "adpFixturePath": "fixtures/ai-demand-positioning/westin-grand-munchen-property-profile.json",
+      "geo": {
+        "latitude": 48.1511,
+        "longitude": 11.6197,
+        "note": "Arabellastraße 6 approximate centroid"
+      },
+      "locale": {
+        "primary": "de",
+        "secondary": [
+          "en"
+        ],
+        "selective": [],
+        "note": "German primary discovery; English control / international congress"
+      },
+      "commercialPriorities": {
+        "targetSegments": [],
+        "coreTargetPeakRoomsMin": 30,
+        "coreTargetPeakRoomsMax": 250,
+        "allowSmallerIfCommerciallyMeaningful": true,
+        "demandAnchorFocus": [],
+        "weekendFocus": false,
+        "notes": "HOTEL_SPECIFIC_DATA from Marriott MUCWI (627 rooms, 21 meeting rooms, large ballroom). Peak band sized for congress/messe/corporate. targetSegments empty — discovery must not be seeded with demand-type assumptions. Not every Messe München event is automatic fit — geographic and capacity filters apply."
+      },
+      "capabilityProfile": {
+        "totalGuestrooms": 627,
+        "totalMeetingSpaceSqFt": null,
+        "totalMeetingSpaceSqM": 2810,
+        "largestBallroomSqFt": null,
+        "largestBallroomSqM": 1053,
+        "largestTheaterCapacity": 1105,
+        "largestReceptionCapacity": 1250,
+        "meetingRoomsIndoor": 21,
+        "outdoorEventSpace": false,
+        "softBrand": "Westin",
+        "serviceLevel": "upper_upscale_full_service",
+        "classification": "urban_meetings_congress_business",
+        "country": "Germany",
+        "notes": "HOTEL_SPECIFIC_DATA from marriott.com MUCWI events/rooms pages.",
+        "meetingRoomCount": 21,
+        "largestMeetingRoomSqM": 1053
+      },
+      "demandTerritory": {
+        "label": "Munich / Arabellapark / Bogenhausen",
+        "country": "Germany",
+        "includes": [
+          "PRIMARY: Arabellapark / Bogenhausen / Englischer Garten east",
+          "SECONDARY: Greater Munich city demand when lodging access is realistic",
+          "ADJACENT: Messe München / Riem when shuttle or metro access is acceptable",
+          "STRETCH: Selected Bavarian / DACH corporate programs only when Munich overnight is evidenced"
+        ],
+        "evaluationQuestion": "Could The Westin Grand München realistically capture this group demand given 627 rooms, 21 meeting rooms (ballroom ~1,053 sqm), Arabellapark location, and Munich relevance — without requiring Altstadt CBD positioning?",
+        "classifications": [
+          "TERRITORY_CORE",
+          "TERRITORY_NEARBY",
+          "TERRITORY_COMPETITIVE",
+          "TERRITORY_STRETCH",
+          "OUTSIDE_REALISTIC_TERRITORY"
+        ],
+        "displayLabels": {
+          "TERRITORY_CORE": "Arabellapark / Bogenhausen Core",
+          "TERRITORY_NEARBY": "Greater Munich Nearby",
+          "TERRITORY_COMPETITIVE": "Munich Competitive Set",
+          "TERRITORY_STRETCH": "Messe / Bavaria Stretch",
+          "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+        },
+        "classificationKeywords": {
+          "TERRITORY_CORE": [
+            "arabellapark",
+            "bogenhausen",
+            "arabellastraße",
+            "arabellastrasse",
+            "englischer garten"
+          ],
+          "TERRITORY_NEARBY": [
+            "munich",
+            "münchen",
+            "schwabing",
+            "haidhausen",
+            "lehel"
+          ],
+          "TERRITORY_COMPETITIVE": [
+            "marienplatz",
+            "altstadt",
+            "karlsplatz",
+            "hauptbahnhof"
+          ],
+          "TERRITORY_STRETCH": [
+            "messe münchen",
+            "messe munich",
+            "riem",
+            "airport munich",
+            "flughafen münchen"
+          ],
+          "OUTSIDE_REALISTIC_TERRITORY": [
+            "berlin",
+            "frankfurt",
+            "hamburg",
+            "vienna",
+            "salzburg only"
+          ]
+        }
+      }
+    },
+    "webhoundHardCapUsd": 15,
+    "ampfyStatus": {
+      "provider": "ampfy",
+      "status": "provider_not_configured",
+      "note": "Ampfy is not present in this repo. Level-4 uses Apify where applicable; Ampfy slot reserved."
+    },
+    "methodsVersion": "gdi-research-methods-v1-experimental"
+  },
+  "providers": {
+    "dealality_existing_knowledge": true,
+    "gdi_research_methods": true,
+    "standard_web": true,
+    "ampfy": "provider_not_configured",
+    "apify": "not_invoked_pilot_default",
+    "webhound": null
+  },
+  "researchMethods": [
+    "GDI-ASSOC-EVENT-01",
+    "GDI-MED-SCI-01",
+    "GDI-HIST-MEETING-01",
+    "GDI-GOV-EVENT-01",
+    "GDI-WEEKEND-01",
+    "GDI-CONTACT-01",
+    "GDI-VENUE-HOUSING-01",
+    "GDI-FUTURE-CAL-01",
+    "GDI-FIXED-VENUE-HOUSING-01",
+    "GDI-OPEN-UNIVERSE-01",
+    "GDI-SPORTS-STAY-01",
+    "GDI-ANCHOR-01"
+  ],
+  "metrics": {
+    "candidatesResearched": 22,
+    "opportunitiesQualified": 22,
+    "highPriorityCount": 0,
+    "mediumPriorityCount": 0,
+    "watchlistCount": 22,
+    "disqualifiedCount": 0,
+    "sourceCount": 24,
+    "duplicatesRemoved": 0,
+    "expiredRemoved": 0
+  },
+  "cost": {
+    "totalUsd": 0,
+    "webhoundUsd": 0,
+    "ampfyUsd": 0,
+    "apifyUsd": 0,
+    "serpApiUsd": 0,
+    "llmUsd": 0,
+    "standardSearchUsd": 0,
+    "otherUsd": 0,
+    "queryCount": 0,
+    "providerCallCount": 0,
+    "webhoundCalls": [],
+    "ampfyCalls": [],
+    "apifyCalls": [],
+    "escalationLog": [
+      {
+        "level": "L1_EXISTING_DEALALITY_KNOWLEDGE",
+        "question": "Load hotel group demand profile from Dealality knowledge",
+        "result": "started",
+        "at": "2026-10-07T16:07:23.417Z"
+      },
+      {
+        "level": "L1_EXISTING_DEALALITY_KNOWLEDGE",
+        "question": "Hotel profile from ADP RO fixture + GDI demand config",
+        "result": "ok",
+        "sources": [
+          "fixtures/ai-demand-positioning/westin-grand-munchen-property-profile.json (READ_ONLY)",
+          "config/group-demand-intelligence/hotels/recFaxTEFF9ILHWC9.json"
+        ],
+        "adpCanonicalReuse": {
+          "classification": "HOTEL_SPECIFIC_DATA",
+          "reusedFields": [
+            "name",
+            "address/city/state",
+            "brand/affiliation",
+            "rooms",
+            "meetingSpace",
+            "positioning",
+            "geography",
+            "attributes"
+          ],
+          "missingGdiCriticalFields": [
+            "totalMeetingSpaceSqFt"
+          ],
+          "newlyResearchedFields": [],
+          "adpFixturePath": "fixtures/ai-demand-positioning/westin-grand-munchen-property-profile.json",
+          "note": "No duplicate hotel profile created — ADP fixture consumed read-only."
+        },
+        "at": "2026-10-07T16:07:23.419Z"
+      },
+      {
+        "level": "L2_CANONICAL_DEALALITY_RESEARCH_METHODS",
+        "question": "Apply GDI experimental research methods / seed qualification",
+        "methods": [
+          "GDI-ASSOC-EVENT-01",
+          "GDI-MED-SCI-01",
+          "GDI-HIST-MEETING-01",
+          "GDI-GOV-EVENT-01",
+          "GDI-WEEKEND-01",
+          "GDI-CONTACT-01",
+          "GDI-VENUE-HOUSING-01",
+          "GDI-FUTURE-CAL-01",
+          "GDI-FIXED-VENUE-HOUSING-01",
+          "GDI-OPEN-UNIVERSE-01",
+          "GDI-SPORTS-STAY-01",
+          "GDI-ANCHOR-01"
+        ],
+        "result": "ok",
+        "at": "2026-10-07T16:07:23.419Z"
+      },
+      {
+        "level": "L3_STANDARD_APPROVED_WEB_RESEARCH",
+        "question": "Independent discovery candidates (no Bethesda seed path)",
+        "result": "ok",
+        "note": "Candidates supplied via seedCandidates / Webhound import — not Bethesda demand-type seeds",
+        "at": "2026-10-07T16:07:23.419Z"
+      },
+      {
+        "level": "L4_AMPFY_APIFY_SUPPLEMENTAL",
+        "question": "Ampfy/Apify supplemental enrichment",
+        "result": "provider_not_configured",
+        "ampfy": {
+          "provider": "ampfy",
+          "status": "provider_not_configured",
+          "note": "Ampfy is not present in this repo. Level-4 uses Apify where applicable; Ampfy slot reserved."
+        },
+        "apify": "not_invoked_pilot_default",
+        "at": "2026-10-07T16:07:23.419Z"
+      },
+      {
+        "level": "L3_STANDARD_APPROVED_WEB_RESEARCH",
+        "question": "Ingest independent discovery candidates",
+        "result": "ok",
+        "candidateCount": 22,
+        "discoveryMode": "INDEPENDENT_CANDIDATES",
+        "note": "No Bethesda pilot seeds; no DMV expansion pass",
+        "at": "2026-10-07T16:07:23.457Z"
+      },
+      {
+        "level": "L2_CANONICAL_DEALALITY_RESEARCH_METHODS",
+        "question": "Shared campaign decomposition",
+        "result": "skipped_no_visible_campaigns",
+        "hotelId": "recFaxTEFF9ILHWC9",
+        "at": "2026-10-07T16:07:23.506Z"
+      },
+      {
+        "level": "L5_WEBHOUND_DEEP_RESEARCH",
+        "question": "Selective deep research",
+        "result": "not_requested_this_run",
+        "hardCapUsd": 15,
+        "at": "2026-10-07T16:07:23.506Z"
+      }
+    ],
+    "incrementalRoi": [],
+    "radFeedbackEnrichment": {
+      "pass": "rad_feedback_dmv_product_quality_v1",
+      "webhoundSpentUsd": 0,
+      "webhoundCapUsd": 15,
+      "note": "Product-quality enrichment only. Webhound hard cap unchanged; no additional Webhound spend in this pass (prior pilot already at/near $15).",
+      "appliedAt": "2026-10-07T16:07:23.485Z"
+    },
+    "qualificationPrecision": {
+      "pass": "qualification_precision_v1",
+      "commercialQaPass": "commercial_qa_high_retention_v1_20260915",
+      "commercialQaApplied": [],
+      "mediumContactNotes": {
+        "gdi_opp_amwa_2027_annual": {
+          "bucket": "A_WEAK_OR_INCOMPLETE_QUALIFICATION",
+          "note": "Venue TBD is promising, but room demand remains UNKNOWN and contact is a generic association inbox. Medium is correct — not merely a named-contact miss."
+        },
+        "gdi_opp_nice_2027": {
+          "bucket": "B_STRONG_OPEN_MISSING_NAMED_CONTACT",
+          "note": "Qualification STRONG / venue open / estimated rooms / NIST-adjacent — blocked from High only by generic inbox (nice@nist.gov). High contact rule is appropriately strict for 'act this week'; Medium correctly preserves the opportunity for contact deepening."
+        },
+        "gdi_opp_acts_ts27": {
+          "bucket": "B_STRONG_OPEN_MISSING_NAMED_CONTACT",
+          "note": "Qualification STRONG / DC venue TBD / estimated rooms / NIH-adjacent — blocked from High by unnamed staff desk. Do not auto-promote; deepen named meetings contact first."
+        }
+      },
+      "webhoundSpentUsd": 0,
+      "webhoundCapUsd": 15,
+      "note": "Precision re-score + commercial QA High retention check — no broad discovery, no additional Webhound spend.",
+      "appliedAt": "2026-10-07T16:07:23.505Z",
+      "priorityCounts": {
+        "HIGH_PRIORITY": 0,
+        "MEDIUM_PRIORITY": 0,
+        "WATCHLIST": 22,
+        "DISQUALIFIED": 0
+      }
+    },
+    "costPerDiscoveredOpportunityUsd": null,
+    "costPerQualifiedOpportunityUsd": 0,
+    "costPerHighPriorityOpportunityUsd": 0,
+    "webhoundHardCapUsd": 15,
+    "webhoundRemainingUsd": 15,
+    "externalResearchEnabled": true
+  },
+  "opportunityIds": [
+    "gdi_opp_dld_munich_conference_2027_0_f9ilhwc9",
+    "gdi_opp_global_smart_manufacturing_summit_spring_2027_1_f9ilhwc9",
+    "gdi_opp_emerging_approaches_in_ai_explainability_machine_2_f9ilhwc9",
+    "gdi_opp_euralarm_s_annual_event_3_f9ilhwc9",
+    "gdi_opp_iaa_transportation_2026_4_f9ilhwc9",
+    "gdi_opp_typo3_developer_days_5_f9ilhwc9",
+    "gdi_opp_loop_one_festival_biathlon_opening_6_f9ilhwc9",
+    "gdi_opp_spartan_munich_7_f9ilhwc9",
+    "gdi_opp_stadtgeburtstag_2027_und_2028_8_f9ilhwc9",
+    "gdi_opp_eseiw_2026_9_f9ilhwc9",
+    "gdi_opp_independent_hotel_show_munich_2026_10_f9ilhwc9",
+    "gdi_opp_ai_strategy_conference_2026_11_f9ilhwc9",
+    "gdi_opp_munich_security_conference_2027_12_f9ilhwc9",
+    "gdi_opp_sounds_of_royalty_13_f9ilhwc9",
+    "gdi_opp_iba_m_forum_2026_14_f9ilhwc9",
+    "gdi_opp_bauma_2028_15_f9ilhwc9",
+    "gdi_opp_drupalcamp_munich_2027_16_f9ilhwc9",
+    "gdi_opp_leadership_retreat_17_f9ilhwc9",
+    "gdi_opp_championship_housing_18_f9ilhwc9",
+    "gdi_opp_munich_pharma_conference_venues_2026_19_f9ilhwc9",
+    "gdi_opp_information_technology_conferences_in_munich_20_f9ilhwc9",
+    "gdi_opp_munich_security_conference_2026_21_f9ilhwc9"
+  ],
+  "errors": [],
+  "adpTouched": false,
+  "censusWritten": false,
+  "portability": {
+    "bethesdaSeedPathUsed": false,
+    "dmvExpansionUsed": false,
+    "hotelConfigPath": "config/group-demand-intelligence/hotels/recFaxTEFF9ILHWC9.json"
+  }
+}

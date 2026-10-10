@@ -1,0 +1,15 @@
+# Response classification model
+
+Statuses: NO_RESPONSE, NEEDS_FOLLOW_UP, CONTROLLER_REDIRECT, HOTEL_LIST_OPEN, HOTEL_LIST_NOT_YET_OPEN, HOTEL_LIST_FINALIZED, TARGET_HOTEL_CAN_APPLY, TARGET_HOTEL_ADDED, TARGET_HOTEL_REJECTED, RATE_REQUESTED, PROPOSAL_REQUESTED, PCO_REDIRECT, SELF_BOOKING_ONLY, NO_HOTEL_PROGRAM, OTHER
+
+## Mapping highlights
+| Response | Selection | Lodging | Drop? |
+|----------|-----------|---------|-------|
+| RATE_REQUESTED / PROPOSAL_REQUESTED / TARGET_HOTEL_CAN_APPLY / HOTEL_LIST_OPEN | OPEN | STRONG_HOTEL_MOTION | No |
+| TARGET_HOTEL_ADDED | UNDER_REVIEW | DIRECT_LODGING_EVIDENCE | No |
+| HOTEL_LIST_FINALIZED / TARGET_HOTEL_REJECTED / NO_HOTEL_PROGRAM | CLOSED | — | Yes (current path) |
+| HOTEL_LIST_NOT_YET_OPEN | EXPECTED | PLAUSIBLE+ | Watch |
+| SELF_BOOKING_ONLY | self-book model | — | Evaluate account demand |
+| PCO_REDIRECT / CONTROLLER_REDIRECT | — | controller proven | Follow redirect |
+
+**Hard rule:** `readyEligibleFromResponseAlone = false` always.

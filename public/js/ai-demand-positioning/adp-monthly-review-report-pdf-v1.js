@@ -415,6 +415,7 @@
         ? renderTable(["Competitor", "Displacement count"], compHtml)
         : "") +
       (comp.caveat ? '<p class="drs-muted">' + esc(comp.caveat) + "</p>" : "") +
+      renderMatchedPeerComparison(review) +
       (insights.bpp && insights.bpp.text
         ? '<h3 class="drs-subhead">Independent Positioning Context</h3>' +
           renderSectionInsight(insights.bpp.text)
@@ -425,6 +426,96 @@
           renderRealityGapPriority(review)
         : "") +
       "</section>"
+    );
+  }
+
+  function renderMatchedPeerComparison(review) {
+    var peer = review.matchedPeerComparison;
+    if (!peer || peer.include !== true) return "";
+    var rows = peer.headlineRows || [];
+    var territory = peer.territoryRows || [];
+    var providers = peer.providerRows || [];
+    var headlineHtml = rows
+      .map(function (row) {
+        return (
+          "<tr><td>" +
+          esc(row.metric) +
+          '</td><td class="drs-num">' +
+          esc(row.subject) +
+          '</td><td class="drs-num">' +
+          esc(row.peer) +
+          "</td></tr>"
+        );
+      })
+      .join("");
+    var territoryHtml = territory
+      .map(function (row) {
+        return (
+          "<tr><td>" +
+          esc(row.territory) +
+          '</td><td class="drs-num">' +
+          esc(row.subject) +
+          '</td><td class="drs-num">' +
+          esc(row.peer) +
+          "</td></tr>"
+        );
+      })
+      .join("");
+    var providerHtml = providers
+      .map(function (row) {
+        return (
+          "<tr><td>" +
+          esc(row.provider) +
+          '</td><td class="drs-num">' +
+          esc(row.subject) +
+          '</td><td class="drs-num">' +
+          esc(row.peer) +
+          "</td></tr>"
+        );
+      })
+      .join("");
+    return (
+      '<h3 class="drs-subhead">' +
+      esc(peer.sectionTitle || "Matched Peer Comparison") +
+      "</h3>" +
+      (peer.framing
+        ? '<p class="drs-body">' + esc(peer.framing) + "</p>"
+        : "") +
+      (peer.comparabilityNote
+        ? '<p class="drs-muted">' + esc(peer.comparabilityNote) + "</p>"
+        : "") +
+      (headlineHtml
+        ? renderTable(
+            [
+              "Metric",
+              peer.subjectLabel || "Subject",
+              peer.peerLabel || "Peer",
+            ],
+            headlineHtml
+          )
+        : "") +
+      (territoryHtml
+        ? '<h3 class="drs-subhead">Territory Presence (matched pair)</h3>' +
+          renderTable(
+            [
+              "Demand Territory",
+              peer.subjectLabel || "Subject",
+              peer.peerLabel || "Peer",
+            ],
+            territoryHtml
+          )
+        : "") +
+      (providerHtml
+        ? '<h3 class="drs-subhead">Provider Presence (matched pair)</h3>' +
+          renderTable(
+            [
+              "Provider",
+              peer.subjectLabel || "Subject",
+              peer.peerLabel || "Peer",
+            ],
+            providerHtml
+          )
+        : "")
     );
   }
 
@@ -457,11 +548,45 @@
     );
   }
 
+  function renderSourceIntelligence(review) {
+    var src = review.sourceIntelligence;
+    if (!src || !src.rows || !src.rows.length) return "";
+    var html = src.rows
+      .map(function (row) {
+        return (
+          "<tr><td>" +
+          esc(row.label) +
+          "</td><td>" +
+          esc(row.domain) +
+          "</td><td>" +
+          esc(row.taxonomy || "") +
+          "</td></tr>"
+        );
+      })
+      .join("");
+    return (
+      '<h3 class="drs-subhead">Source Intelligence</h3>' +
+      (src.ownedBrandShareDisplay
+        ? '<p class="drs-body">Owned / brand source share: <strong>' +
+          esc(src.ownedBrandShareDisplay) +
+          "</strong>" +
+          (src.citationCoverageDisplay
+            ? " · Citation coverage: <strong>" +
+              esc(src.citationCoverageDisplay) +
+              "</strong>"
+            : "") +
+          "</p>"
+        : "") +
+      renderTable(["Source Role", "Domain", "Classification"], html)
+    );
+  }
+
   function renderEvidence(review) {
     var items = review.evidenceReview || [];
     return (
       '<section class="drs-section drs-section--flow adp-mr-section--evidence" data-adp-mr-section="evidence">' +
       '<h2 class="drs-section-h">3. Evidence Review</h2>' +
+      renderSourceIntelligence(review) +
       items
         .map(function (ex, i) {
           return (

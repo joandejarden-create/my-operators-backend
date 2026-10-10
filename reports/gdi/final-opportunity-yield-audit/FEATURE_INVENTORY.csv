@@ -1,0 +1,28 @@
+feature,status,files,notes
+10 Bases of Demand,REPORT_ONLY,lib/group-demand-intelligence/ten-bases-of-demand-v1/*; scripts/gdi-ten-bases-of-demand-v1-2026-10-04.mjs,runTenBasesForHotel not called from runGroupDemandResearch or API research/run
+Demand Generator visibility,LIVE_AND_USED,lib/group-demand-intelligence/demand-campaigns/*; api/group-demand-intelligence.js; server.js /demand-campaigns; public GDI app.js,YOTEL 10 campaigns FS+API+UI visible
+Signal / Research Lead / Candidate separation,LIVE_BUT_NOT_WIRED,lib/group-demand-intelligence/opportunity-discovery-v5/funnel.js; complete-demand-packet-v8/packet-schema.js,Funnel enums exist; production research path does not enforce V5 funnel end-to-end
+Complete Demand Packet,REPORT_ONLY,lib/group-demand-intelligence/complete-demand-packet-v8/*,V8 packet evaluation used in audit scripts; not required on live API write path
+Predicted Opportunity,REPORT_ONLY,lib/group-demand-intelligence/ten-bases-of-demand-v1/orchestrator.js (isPredicted),Emitted in ten-bases reports only; 0 customer-ready
+Comp-set demand mining,REPORT_ONLY,lib/group-demand-intelligence/comp-set-demand-mining-v1/*,Used by ten-bases/V8 report runners; not wired into live orchestrator
+Phone / alias / address pivots,PARTIAL,lib/group-demand-intelligence/complete-demand-packet-v8/*; commercial-evidence-v4,Pivot helpers exist; live yield path rarely invokes them
+Apify discovery layer,PARTIAL,lib/group-demand-intelligence (apify adapters in V8/ten-bases),Mapped in report runners; not default research/run
+Multilingual routing,REPORT_ONLY,ten-bases / V8 multilingual modules,Report yield only
+Feeder-market routing,REPORT_ONLY,ten-bases / V8 feeder modules,Report yield only
+Buyer-first research,PARTIAL,opportunity-who-resolution-v1.js; enrich-gdi-opportunity-for-customer.js; V8 buyer-resolution,WHO gate live on readiness; buyer-first discovery not default for YOTEL generators
+Participant / exhibitor / sponsor mining,REPORT_ONLY,ten-bases-of-demand-v1/decomposers.js decomposePublishedEventDemand + PARTICIPANT_*,Not invoked from demand-campaigns or research-orchestrator
+Delegation decomposition,REPORT_ONLY,ten-bases-of-demand-v1/decomposers.js decomposeIntlOrgMeeting,Same — report orchestrator only
+Rotation / repeat intelligence,PARTIAL,demonstrated-demand-v6; ten-bases rotation,Some live Bethesda patterns; YOTEL unused
+Corporate recurring intelligence,REPORT_ONLY,ten-bases RECURRING_CORPORATE_MEETINGS,Noise-heavy YOTEL report rows; not canonical
+Corporate trigger intelligence,REPORT_ONLY,ten-bases CORPORATE_TRIGGER_DEMAND,Report-only predicted leads
+Pharma ecosystem expansion,REPORT_ONLY,ten-bases PHARMA_MEDICAL_ECOSYSTEM,Report-only
+Project/workforce decomposition,REPORT_ONLY,ten-bases PROJECT_WORKFORCE_DEMAND,0 YOTEL yield in prior run
+Sports/production decomposition,REPORT_ONLY,ten-bases SPORTS_ENTERTAINMENT_PRODUCTION,Report-only; CHI not decomposed via campaign path
+Hotel history / lookalike engine,REPORT_ONLY,ten-bases HOTEL_HISTORY_LOOKALIKE,Report-only
+Jev research controller,LIVE_BUT_NOT_WIRED,lib/group-demand-intelligence/jev/*; jev-active-research-v2/*,Advisory functions live; not on demand-campaign child path; policy forbids fact/promote
+Next-best research,PARTIAL,jev-active-advisor.js buildDeterministicActiveAdvice,Used in V6/V8/ten-bases reports; not auto-scheduled for YOTEL campaigns
+Customer readiness,LIVE_AND_USED,customer-readiness-gate-v1.js isGdiCustomerOpportunityReady; api/group-demand-intelligence.js,Hard gate on customer list
+Future Watch,LIVE_AND_USED,future-watch/is-valid-future-watch-v1.js,Live watch validation
+Surface eligibility,LIVE_AND_USED,customer-surface-revalidation-v1.js; customer-visibility.js,Fixed FUTURE_WATCH≠exhibitor false positive this audit
+Admin snapshot,LIVE_AND_USED,api/admin-gdi-reports.js; reports/gdi-pdf-*,Uses filterSalespersonView + customer facing projection
+Client/external UI,LIVE_AND_USED,public GDI UI; api opportunities + demand-campaigns routes,Campaigns visible; child section depends on child opps

@@ -1,0 +1,10 @@
+# Regression Assertions
+
+- **SUM_PROPERTY_QA**: PASS 
+- **SUM_PERIOD_CERT_STATUS**: PASS — {"withPeriod":20,"periodStatusSum":20,"otherPeriod":0}
+- **NO_CERTIFIED_WITHOUT_ERA**: PASS — []
+- **CERTIFIED_REQUIRES_MANIFEST**: PASS — []
+- **LEGACY_NOT_COUNTED_CERTIFIED**: PASS — []
+- **QA_PASS_DOES_NOT_IMPLLY_CERTIFIED**: PASS — []
+
+**ALL PASS:** YES

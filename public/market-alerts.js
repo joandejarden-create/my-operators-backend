@@ -173,8 +173,92 @@
         s = s.replace(/<a\b[^>]*>([\s\S]*?)<\/a>/gi, '$1');
         s = s.replace(/<\/?[a-zA-Z][^>]*>/g, ' ');
         s = s.replace(/https?:\/\/news\.google\.com\/rss\/articles\/[^\s<>"']+/gi, ' ');
+        // Drop CMS/RSS leftover link placeholders (e.g. "LINK nky…", bare "LINK").
+        s = s.replace(/\bLINK\s+[A-Za-z0-9._-]{1,12}\b/gi, ' ');
+        s = s.replace(/(?:^|[\s\[(])LINK(?=[\s\])]|:|$)/gi, ' ');
+        s = s.replace(/\[\s*LINK\s*\]/gi, ' ');
         s = s.replace(/\s+/g, ' ').trim();
         return s;
+    }
+
+    function summaryCompareKey(text) {
+        var t = String(text || '').toLowerCase();
+        t = t.replace(/\s+[-–—|]\s+[a-z0-9 .,&'()]{2,80}$/i, '');
+        t = t.replace(/\s+\([^)]{2,60}\)\s*$/g, '');
+        t = t.replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+        return t;
+    }
+
+    /** True when Summary is empty or just repeats the headline (common Google News). */
+    function isTitleLikeSummary(title, summary) {
+        var s = String(summary || '').trim();
+        if (!s) return true;
+        var tKey = summaryCompareKey(title);
+        var sKey = summaryCompareKey(summary);
+        if (!sKey) return true;
+        if (!tKey) return false;
+        if (tKey === sKey) return true;
+        if (sKey.indexOf(tKey) === 0 && sKey.length - tKey.length <= 40) return true;
+        if (tKey.indexOf(sKey) === 0 && tKey.length - sKey.length <= 40) return true;
+        if (tKey.length >= 24 && sKey.length >= 24) {
+            if (tKey.indexOf(sKey) !== -1 || sKey.indexOf(tKey) !== -1) {
+                var longer = Math.max(tKey.length, sKey.length);
+                var shorter = Math.min(tKey.length, sKey.length);
+                if (shorter / longer >= 0.7) return true;
+            }
+        }
+        if (sKey.length < 48 && tKey.indexOf(sKey) === 0) return true;
+        return false;
+    }
+
+    /**
+     * Article Highlights should be a quick overview — never a second copy of the title.
+     * Prefer real summary; else compose from intelligence what/why/event.
+     */
+    function buildArticleHighlights(item) {
+        var title = String((item && item.title) || '').trim();
+        var summary = String((item && item.summary) || '').trim();
+        if (summary && !isTitleLikeSummary(title, summary)) return summary;
+
+        var intel = (item && item.intelligence) || {};
+        var ents = (item && item.entities) || intel.entities || {};
+        var hotel = (ents && ents.hotelProject) || item.hotelProject || '';
+        var what = String(intel.whatChanged || item.whatChanged || '').trim();
+        var why = String(intel.whyItMatters || '').trim();
+        var eventType = String(intel.eventType || item.eventType || '').trim();
+        var region = String((item && item.regionGroup) || '').trim();
+
+        if (what && !isTitleLikeSummary(title, what)) {
+            if (hotel) return hotel + ' — ' + what;
+            return what;
+        }
+        if (why) {
+            var m = why.match(/^(.+?[.!?])(?:\s|$)/);
+            var first = (m && m[1]) ? m[1] : why;
+            return String(first).slice(0, 360);
+        }
+        if (eventType && region && region !== 'Global') {
+            return eventType + ' reported in ' + region + '.';
+        }
+        if (eventType) return eventType + ' reported.';
+        return '';
+    }
+
+    /** Opinion / how-to columns are not commercial deal signals. */
+    function isOpinionOrHowToAlert(item) {
+        var title = String((item && item.title) || '');
+        var summary = String((item && item.summary) || '');
+        var text = title + ' ' + summary;
+        if (/\bare\b.{8,140}\?\s*[-–—]\s*by\s+/i.test(title)) return true;
+        if (/\b(-|\u2013|\u2014)\s*by\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)?\s*$/i.test(title)) {
+            if (/\b(really|should|how to|tips?|guide|playbook|implications|best practices)\b/i.test(text)) {
+                return true;
+            }
+        }
+        if (/\b(how to|playbook|tips? for hotels?|operational implications|ai-powered rfp|rfp responses?)\b/i.test(text)) {
+            return true;
+        }
+        return false;
     }
 
     function isInternalTagLabel(tag) {
@@ -283,11 +367,24 @@
         var f = apiItem.fields || apiItem;
         var publishedAt = f['Published At'] || f.publishedAt || null;
         var intel = apiItem.intelligence || f.intelligence || null;
+        var title = sanitizeDisplayText(f['Title'] || f.title || 'Untitled');
+        var summary = sanitizeDisplayText(f['Summary'] || f.summary || '');
+        var category = f['Category'] || f.category || '';
+        var worthReviewing = !!(intel && intel.worthReviewing) || !!f.worthReviewing;
+        var actionable = !!(intel && intel.actionable) || !!f.actionable;
+        if (isOpinionOrHowToAlert({ title: title, summary: summary })) {
+            // Presentation guard: opinion/how-to must not appear as Deals Act Now.
+            actionable = false;
+            worthReviewing = false;
+            if (!category || category === 'Deals' || category === 'Supply' || category === 'Capital') {
+                category = 'Demand';
+            }
+        }
         return {
             id: apiItem.id || f.id,
-            title: sanitizeDisplayText(f['Title'] || f.title || 'Untitled'),
-            summary: sanitizeDisplayText(f['Summary'] || f.summary || ''),
-            category: f['Category'] || f.category || '',
+            title: title,
+            summary: summary,
+            category: category,
             regionGroup: f['Region Group'] || f.regionGroup || 'Global',
             sourceName: getUserFacingSourceName(f['Source Name'] || f.sourceName || ''),
             sourceUrl: f['Source URL'] || f.sourceUrl || '',
@@ -296,8 +393,8 @@
             timeAgo: timeAgo(publishedAt),
             sortDate: publishedAt ? new Date(publishedAt).getTime() : 0,
             intelligence: intel,
-            worthReviewing: !!(intel && intel.worthReviewing) || !!f.worthReviewing,
-            actionable: !!(intel && intel.actionable) || !!f.actionable,
+            worthReviewing: worthReviewing,
+            actionable: actionable,
             signalType: getUserFacingSourceName((intel && intel.signalType) || f.signalType || ''),
             signalTiming: (intel && intel.signalTiming) || f.signalTiming || '',
             projectDirection: (intel && intel.projectDirection) || '',
@@ -563,7 +660,7 @@
         var lookup = c.contactLookupStatus || 'NOT_REQUESTED';
         var hasPerson = !!(c.personName);
         lines.push('<div class="drawer-contact-card" data-stakeholder-id="' + escapeHtml(c.stakeholderId || '') + '">');
-        lines.push('<p class="drawer-contact-meta">WHO TO CONTACT</p>');
+        lines.push('<p class="drawer-contact-meta">RELEVANT PEOPLE</p>');
         if (hasPerson) {
             lines.push('<p class="drawer-contact-name">' + escapeHtml(c.personName) + '</p>');
             var titleCompany = [c.jobTitle, c.companyName].filter(Boolean).join(' · ');
@@ -602,6 +699,15 @@
             );
         }
 
+        // Dealality-resolved LinkedIn only (never Surfe-persisted)
+        if (c.linkedinUrl && /^https?:\/\//i.test(String(c.linkedinUrl))) {
+            lines.push(
+                '<p class="drawer-contact-linkedin"><a href="' +
+                    escapeHtml(c.linkedinUrl) +
+                    '" target="_blank" rel="noopener noreferrer">LinkedIn</a></p>'
+            );
+        }
+
         var revealBox = '<div class="drawer-contact-reveal" data-reveal-slot></div>';
 
         if (lookup === 'PENDING') {
@@ -615,6 +721,10 @@
         if (status === 'COMPANY_ONLY' || (!hasPerson && c.cta === 'FIND_DECISION_MAKER')) {
             lines.push(
                 '<button type="button" class="drawer-contact-cta" data-action="find-person">Find decision maker</button>'
+            );
+        } else if (hasPerson && (c.companyName || c.company)) {
+            lines.push(
+                '<button type="button" class="drawer-contact-cta" data-action="reveal">Get contact details</button>'
             );
         } else if (hasPerson) {
             lines.push(
@@ -781,7 +891,9 @@
 
         fillDrawerAnalysis(item);
 
-        var summary = item.summary || '';
+        var summary = buildArticleHighlights(item);
+        var highlightsWrap = document.querySelector('.news-drawer-highlights');
+        if (highlightsWrap) highlightsWrap.style.display = summary ? '' : 'none';
         summaryEl.textContent = summary;
         var clampThreshold = 2400;
         var shouldClamp = summary.length > clampThreshold;
@@ -853,8 +965,9 @@
     function cardHtml(i) {
         var tag = escapeHtml(i.category || 'Alert');
         var title = escapeHtml(i.title);
-        var dek = escapeHtml((i.summary || '').slice(0, 220));
-        if (i.summary && i.summary.length > 220) dek += '\u2026';
+        var overview = buildArticleHighlights(i);
+        var dek = escapeHtml((overview || '').slice(0, 220));
+        if (overview && overview.length > 220) dek += '\u2026';
         var metaParts = [i.regionGroup, getUserFacingSourceName(i.sourceName), i.timeAgo].filter(Boolean);
         var meta = escapeHtml(metaParts.join(' \u2022 '));
         var saved = isSaved(i.id);
@@ -883,7 +996,7 @@
             '<div class="card-title">' + title + '</div>' +
             signalLine +
             (dek ? '<div class="card-dek">' + dek + '</div>' : '') +
-            ((actionable || worth) ? '<div class="card-view-analysis">View Analysis →</div>' : '') +
+            ((actionable || worth) ? '<div class="card-view-analysis">View Analysis</div>' : '') +
             '</div>';
     }
 

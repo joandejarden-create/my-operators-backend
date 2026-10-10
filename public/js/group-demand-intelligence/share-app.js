@@ -694,7 +694,7 @@
     if (!rows.length) {
       return (
         chrome +
-        '<div class="gdi-empty">No opportunities match the current filters.</div>'
+        '<div class="gdi-empty">No customer-ready opportunities are available for this property yet.</div>'
       );
     }
     return chrome + UI.opportunityCardsGridHtml(rows, state.viewMode, state.filters);

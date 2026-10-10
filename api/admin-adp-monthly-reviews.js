@@ -60,6 +60,10 @@ import {
   contentDispositionForAiDemandPerformanceReviewPdf,
 } from "../lib/ai-demand-positioning/monthly-review/ai-demand-performance-review-filename-v1.js";
 import { AI_DEMAND_PERFORMANCE_REVIEW_CURRENT_TEMPLATE_V1 } from "../lib/ai-demand-positioning/monthly-review/ai-demand-performance-review-template-v1.js";
+import {
+  resolveAdpReportPdf,
+  SINGLE_CANONICAL_AI_DEMAND_PERFORMANCE_REVIEW_PDF_RESOLVER_V1,
+} from "../lib/ai-demand-positioning/monthly-review/resolve-adp-report-pdf-v1.js";
 
 const ACTION_PLAN_EXPORT_GATE =
   "AI_DEMAND_REVIEW_ACTION_AGENDA_ADMIN_ACTION_PLAN_PARITY";
@@ -415,11 +419,20 @@ export function getAdminMonthlyReviewById(req, res) {
 
 export function getAdminMonthlyReviewPdf(req, res) {
   try {
-    const pack = loadReviewPayload(req.params.reviewId);
-    if (!pack) return res.status(404).json({ ok: false, error: "review_not_found" });
-    if (!fs.existsSync(pack.paths.reportPdf)) {
-      return res.status(404).json({ ok: false, error: "pdf_missing" });
+    const reviewId = String(req.params.reviewId || "").trim();
+    const resolved = resolveAdpReportPdf({ reviewId });
+    if (!resolved.reviewId || resolved.reason === "review_not_found") {
+      return res.status(404).json({ ok: false, error: "review_not_found" });
     }
+    if (!resolved.available || !resolved.pdfAbsolutePath) {
+      return res.status(404).json({
+        ok: false,
+        error: "pdf_missing",
+        reason: resolved.reason || "pdf_not_available",
+        gate: SINGLE_CANONICAL_AI_DEMAND_PERFORMANCE_REVIEW_PDF_RESOLVER_V1,
+      });
+    }
+    const pack = loadReviewPayload(reviewId);
     const download = String(req.query.download || "") === "1";
     const filename = buildAiDemandPerformanceReviewFilename({
       hotelName: pack.meta.propertyName,
@@ -436,8 +449,7 @@ export function getAdminMonthlyReviewPdf(req, res) {
         gate: "AI_DEMAND_PDF_TEMP_FILE_NAME_NEVER_USER_VISIBLE",
       });
     }
-    const stat = fs.statSync(pack.paths.reportPdf);
-    const fd = fs.openSync(pack.paths.reportPdf, "r");
+    const fd = fs.openSync(resolved.pdfAbsolutePath, "r");
     const magic = Buffer.alloc(5);
     fs.readSync(fd, magic, 0, 5, 0);
     fs.closeSync(fd);
@@ -456,15 +468,28 @@ export function getAdminMonthlyReviewPdf(req, res) {
         disposition: download ? "attachment" : "inline",
       })
     );
-    res.setHeader("Content-Length", String(stat.size));
+    res.setHeader("Content-Length", String(resolved.pdfBytes || 0));
     res.setHeader("X-ADP-PDF-Gate", PDF_RESPONSE_CONTRACT);
     res.setHeader(
       "X-ADP-PDF-Template",
       AI_DEMAND_PERFORMANCE_REVIEW_CURRENT_TEMPLATE_V1
     );
+    res.setHeader(
+      "X-ADP-PDF-Resolver",
+      SINGLE_CANONICAL_AI_DEMAND_PERFORMANCE_REVIEW_PDF_RESOLVER_V1
+    );
     res.setHeader("X-ADP-PDF-Filename", filename);
+    if (resolved.pdfFingerprint) {
+      res.setHeader("X-ADP-PDF-Fingerprint", resolved.pdfFingerprint);
+    }
+    if (resolved.periodId) {
+      res.setHeader("X-ADP-Review-Period-Id", String(resolved.periodId));
+    }
+    if (resolved.versionLabel) {
+      res.setHeader("X-ADP-Review-Version", String(resolved.versionLabel));
+    }
     // Filesystem temp/archive path must never leak into Content-Disposition.
-    return fs.createReadStream(pack.paths.reportPdf).pipe(res);
+    return fs.createReadStream(resolved.pdfAbsolutePath).pipe(res);
   } catch (err) {
     console.error("[ADP Monthly Review Admin] pdf error:", err);
     return res.status(500).json({ ok: false, error: "internal_error", message: err.message });
@@ -570,7 +595,7 @@ export async function postAdminCurrentReportPdfGenerate(req, res) {
   }
 }
 
-export function postAdminMonthlyReviewRegenerate(req, res) {
+export async function postAdminMonthlyReviewRegenerate(req, res) {
   try {
     const result = regenerateReviewFromArchive(req.params.reviewId, {
       generatedBy: adminIdentity(req),
@@ -584,9 +609,35 @@ export function postAdminMonthlyReviewRegenerate(req, res) {
         liveProviderCalls: 0,
       });
     }
+
+    let pdfAttach = null;
+    if (req.body?.skipPdf !== true && result.newReviewId) {
+      try {
+        const { renderAndAttachMonthlyReviewPdfV1 } = await import(
+          "../lib/ai-demand-positioning/monthly-review/admin/render-and-attach-monthly-review-pdf-v1.mjs"
+        );
+        pdfAttach = await renderAndAttachMonthlyReviewPdfV1({
+          reviewId: result.newReviewId,
+          propertyId: result.meta?.propertyId || result.propertyId,
+        });
+      } catch (pdfErr) {
+        console.error(
+          "[ADP Monthly Review Admin] PDF attach after regenerate failed:",
+          pdfErr
+        );
+        pdfAttach = {
+          ok: false,
+          error: String(pdfErr?.message || pdfErr),
+          reviewId: result.newReviewId,
+        };
+      }
+    }
+
     return res.status(201).json({
       ok: true,
       ...result,
+      pdfAttached: Boolean(pdfAttach?.ok && !pdfAttach?.error),
+      pdf: pdfAttach,
       gate: "ADP_MONTHLY_REVIEW_REGENERATION_CREATES_NEW_VERSION",
       immutability: "ADP_MONTHLY_REVIEW_REGENERATION_IMMUTABILITY",
     });
@@ -596,7 +647,7 @@ export function postAdminMonthlyReviewRegenerate(req, res) {
   }
 }
 
-export function postAdminMonthlyReviewGenerate(req, res) {
+export async function postAdminMonthlyReviewGenerate(req, res) {
   try {
     const propertyId = req.body?.propertyId;
     if (!propertyId) {
@@ -632,7 +683,39 @@ export function postAdminMonthlyReviewGenerate(req, res) {
         liveProviderCalls: 0,
       });
     }
-    return res.status(201).json({ ok: true, ...result });
+
+    // Shared workflow: draft → render PDF → attach to archive → Reviews tab READY.
+    // skipPdf:true keeps JSON-only generation for diagnostics.
+    let pdfAttach = null;
+    if (req.body?.skipPdf !== true) {
+      try {
+        const { renderAndAttachMonthlyReviewPdfV1 } = await import(
+          "../lib/ai-demand-positioning/monthly-review/admin/render-and-attach-monthly-review-pdf-v1.mjs"
+        );
+        pdfAttach = await renderAndAttachMonthlyReviewPdfV1({
+          reviewId: result.newReviewId,
+          propertyId,
+        });
+      } catch (pdfErr) {
+        console.error(
+          "[ADP Monthly Review Admin] PDF attach after generate failed:",
+          pdfErr
+        );
+        pdfAttach = {
+          ok: false,
+          error: String(pdfErr?.message || pdfErr),
+          reviewId: result.newReviewId,
+        };
+      }
+    }
+
+    return res.status(201).json({
+      ok: true,
+      ...result,
+      pdfAttached: Boolean(pdfAttach?.ok && !pdfAttach?.error),
+      pdf: pdfAttach,
+      gate: "ADP_MONTHLY_REVIEW_GENERATE_THEN_ATTACH_PDF_V1",
+    });
   } catch (err) {
     console.error("[ADP Monthly Review Admin] generate error:", err);
     return res.status(500).json({ ok: false, error: "internal_error", message: err.message });

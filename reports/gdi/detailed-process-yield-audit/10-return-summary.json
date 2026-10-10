@@ -1,0 +1,244 @@
+{
+  "runId": "gdi_yield_audit_20261005_6f8550",
+  "nowDate": "2026-10-05",
+  "TOTAL_SUCCESS_CONTROLS_ANALYZED": 37,
+  "TOTAL_FAILURE_CONTROLS_ANALYZED": 10,
+  "TOTAL_RAW_SIGNALS_ANALYZED": 1336,
+  "TOTAL_GENERATORS_ANALYZED": 957,
+  "TOTAL_CHILD_ACCOUNTS_ANALYZED": 612,
+  "TOTAL_RESEARCH_LEADS_ANALYZED": 149,
+  "TOTAL_COMPLETE_PACKETS_ANALYZED": 2,
+  "TOTAL_READY_ANALYZED": 70,
+  "READY_ACTIONABLE_PCT": 19.4,
+  "TOP_5_FAILURE_MODES": [
+    {
+      "failureType": "NO_TRAVELING_ENTITY",
+      "count": 188
+    },
+    {
+      "failureType": "ORGANIZER_AS_ACCOUNT_WITHOUT_HOUSING_ROLE",
+      "count": 92
+    },
+    {
+      "failureType": "ORPHAN_CHILD",
+      "count": 26
+    },
+    {
+      "failureType": "VENUE_AS_ACCOUNT",
+      "count": 14
+    },
+    {
+      "failureType": "GENERIC_CONTACT_AS_BUYER",
+      "count": 12
+    }
+  ],
+  "TOP_5_SOURCE_FAMILIES_BY_READY_YIELD": [
+    "evidence_backed_expansion_pilot (AidEx/W Rome official lists)",
+    "association_calendars (Bethesda/NYC)",
+    "linkedin_public_corporate (activation/events buyers)",
+    "official_exhibitor_lists",
+    "official_sponsor_lists"
+  ],
+  "BOTTOM_5_SOURCE_FAMILIES_BY_READY_YIELD": [
+    "apify Tripadvisor comps",
+    "hotel_venue_pages as account seeds",
+    "serp_web_search without named-org extract",
+    "procurement_rfp (unused)",
+    "broad corporate_trigger SERP"
+  ],
+  "TOP_5_SOURCE_FAMILIES_LIVE_BAG_RANK": [
+    "association_calendars (Ready=34)",
+    "demand_campaign_child (Ready=12)",
+    "curated_or_prior_research (Ready=8)",
+    "evidence_backed_expansion_pilot (Ready=6)",
+    "official_event_pages (Ready=5)"
+  ],
+  "BOTTOM_5_SOURCE_FAMILIES_LIVE_BAG_RANK": [
+    "procurement_rfp (Ready=0, n=3)",
+    "official_sponsor_lists (Ready=0, n=3)",
+    "public_pdfs (Ready=0, n=7)",
+    "official_exhibitor_lists (Ready=0, n=27)",
+    "serp_web_search (Ready=1, n=3)"
+  ],
+  "TOP_5_BASES_BY_READY_YIELD": [
+    "PARTICIPANT_EXHIBITOR_SPONSOR_MINING",
+    "PUBLISHED_EVENT_DECOMPOSITION",
+    "PHARMA_MEDICAL_ECOSYSTEM",
+    "SPORTS_ENTERTAINMENT_PRODUCTION",
+    "RECURRING_CORPORATE_MEETINGS"
+  ],
+  "TOP_5_BASES_BY_COMPLETE_PACKET_YIELD": [
+    "PUBLISHED_EVENT_DECOMPOSITION",
+    "PARTICIPANT_EXHIBITOR_SPONSOR_MINING",
+    "RECURRING_CORPORATE_MEETINGS",
+    "PHARMA_MEDICAL_ECOSYSTEM",
+    "SPORTS_ENTERTAINMENT_PRODUCTION"
+  ],
+  "HIGHEST_YIELD_DECOMPOSITION_METHOD": "official_exhibitor_sponsor_list → named account → relevant buyer function (AidEx pattern)",
+  "LOWEST_YIELD_DECOMPOSITION_METHOD": "event/venue SERP → organizer/homepage shell",
+  "VENUE_ORGANIZER_PLACEHOLDER_RATE_PCT": 29.1,
+  "NAMED_PARTICIPATING_ACCOUNT_RATE_PCT": 33.2,
+  "BUYER_ROLE_RESOLUTION_PCT": 20.1,
+  "RELEVANT_CONTACT_PATH_PCT": 21.4,
+  "LODGING_HOTEL_MOTION_SUPPORT_PCT": 69.5,
+  "FUTURE_DECISION_POINT_PCT": 77.8,
+  "LARGEST_FUNNEL_DROP_STAGE": "RESEARCH_LEAD→COMPLETE_PACKET (ten-bases 1.5%) + LIVE GENERATOR→CHILD (often unwired)",
+  "TOP_PACKET_BLOCKER": "GROUP_MOTION",
+  "WATCH_HIGH_POTENTIAL_PCT": 3,
+  "WATCH_LOW_INFORMATION_PCT": 36.8,
+  "APIFY_RECOMMENDATION": "STOP",
+  "JEV_RECOMMENDATION": "KEEP_SHADOW — next blocker / stop-continue only after deterministic admission",
+  "TOP_ROOT_CAUSE": "DECOMPOSITION_COVERAGE_NOT_ON_LIVE_PATH",
+  "SECOND_ROOT_CAUSE": "VENUE_ORGANIZER_PLACEHOLDER_CONTAMINATION",
+  "THIRD_ROOT_CAUSE": "BUYER_PATH_COMMERCIAL_RELEVANCE_FAILURES",
+  "P0_CHANGES_COUNT": 3,
+  "P1_CHANGES_COUNT": 3,
+  "P2_CHANGES_COUNT": 3,
+  "RECOMMENDED_NEXT_PILOT": "YOTEL second-generation decomposition",
+  "GDI_THRESHOLDS_CHANGED": false,
+  "READY_STANDARD_LOWERED": false,
+  "SPECULATIVE_ACCOUNTS_CREATED": false,
+  "ADP_CHANGED": false,
+  "SHARE_TOKENS_CHANGED": false,
+  "FINAL_VERDICT": "Increase useful yield by wiring official-list child decomposition + blocking venue/organizer shells + commercial buyer-path relevance — do not lower Ready.",
+  "liveReadyByHotel": {
+    "BETHESDA": {
+      "total": 54,
+      "facing": 28,
+      "ready": 28,
+      "readyNames": [
+        "AHIMA",
+        "Maryland State Youth Soccer Association (MSYSA)",
+        "American College of Cardiology (ACC)",
+        "Potomac Soccer Association",
+        "NIST / National Initiative for Cybersecurity Education (NICE)",
+        "NIH / NHLBI",
+        "Loudoun Soccer",
+        "American Medical Women's Association (AMWA)",
+        "World Biomaterials Congress / biomaterials community",
+        "American Society of Association Executives (ASAE)",
+        "Woman's Club of Bethesda",
+        "Arlington Soccer Association",
+        "Georgetown University",
+        "Development District Association of Appalachia (DDAA)",
+        "American Medical Women's Association (AMWA)",
+        "National Down Syndrome Society (NDSS)",
+        "National Association of REALTORS® (NAR)",
+        "American Academy of Dermatology (AAD)",
+        "AFCEA Bethesda Chapter",
+        "Association for Clinical and Translational Science (ACTS)",
+        "BioPharmaceutical Emerging Best Practices Association (BEBPA)",
+        "American Medical Women's Association (AMWA)",
+        "Association of Jewish Aging Services (AJAS)",
+        "The Electrochemical Society (ECS)",
+        "ACVNU",
+        "Council of Medical Specialty Societies (CMSS)",
+        "Bethesda Soccer Club",
+        "Alexandria Soccer Association"
+      ]
+    },
+    "YOTEL": {
+      "total": 108,
+      "facing": 17,
+      "ready": 24,
+      "readyNames": [
+        "Porsche Design",
+        "Grand Seiko",
+        "Access Partnership",
+        "TikTok",
+        "Cisco",
+        "Key Travel",
+        "AidEx / Clarion Events",
+        "Ministry of Internal Affairs and Communications of Japan",
+        "CHI de Genève / Concours Hippique International",
+        "Microsoft",
+        "Lee & Bae",
+        "Bremont",
+        "Lenovo",
+        "Google",
+        "Tang Contemporary Art",
+        "PixVerse",
+        "European Federation of Allergy and Airways Diseases Patients' Associations (EFA)",
+        "NOMOS Glashütte",
+        "Kuehne + Nagel",
+        "CEVA Logistics",
+        "Maersk Logistics & Services",
+        "Sinn Spezialuhren",
+        "Ministry of Science and ICT of the Republic of Korea",
+        "HP Inc."
+      ]
+    },
+    "W_ROME": {
+      "total": 13,
+      "facing": 5,
+      "ready": 2,
+      "readyNames": [
+        "Banca Ifis",
+        "Red Bull"
+      ]
+    },
+    "RENAISSANCE": {
+      "total": 29,
+      "facing": 8,
+      "ready": 8,
+      "readyNames": [
+        "Society for the Study of Social Problems",
+        "National Alliance for Musical Theatre",
+        "Boutique & Luxury Lodging Association",
+        "Society of Industrial and Office Realtors",
+        "New York State School Boards Association",
+        "Forum on Education Abroad",
+        "The Broadway League",
+        "ARIAS U.S."
+      ]
+    },
+    "HILTON": {
+      "total": 45,
+      "facing": 8,
+      "ready": 8,
+      "readyNames": [
+        "Boutique & Luxury Lodging Association",
+        "Society of Industrial and Office Realtors",
+        "Hotel & Travel Information",
+        "New York State School Boards Association",
+        "The Broadway League",
+        "ARIAS U.S.",
+        "National Alliance for Musical Theatre",
+        "Society for the Study of Social Problems"
+      ]
+    },
+    "AC": {
+      "total": 32,
+      "facing": 0,
+      "ready": 0,
+      "readyNames": []
+    },
+    "SPICE": {
+      "total": 77,
+      "facing": 0,
+      "ready": 0,
+      "readyNames": []
+    },
+    "CAMBRIDGE": {
+      "total": 8,
+      "facing": 0,
+      "ready": 0,
+      "readyNames": []
+    },
+    "NOW_NOW": {
+      "total": 8,
+      "facing": 0,
+      "ready": 0,
+      "readyNames": []
+    }
+  },
+  "featureInventoryPrior": 27,
+  "forensicV3Applied": [
+    "CEVA Logistics",
+    "Maersk Logistics & Services",
+    "Red Bull",
+    "Banca Ifis"
+  ],
+  "buyerPathV2ResolutionRate": 54.5,
+  "reportsDir": "reports/gdi/detailed-process-yield-audit/"
+}

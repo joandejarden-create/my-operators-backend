@@ -79,6 +79,68 @@ window.getRadarMapFilters = function getRadarMapFilters() {
     return currentFilters;
 };
 
+function isOpportunityRadarShareMode() {
+    try {
+        if (window.OpportunityRadarShareMode && window.OpportunityRadarShareMode.enabled) {
+            return true;
+        }
+        var params = new URLSearchParams(window.location.search || "");
+        return params.get("share") === "1" || !!params.get("sharePack");
+    } catch (_e) {
+        return false;
+    }
+}
+
+function opportunityRadarShareCountry() {
+    try {
+        if (window.OpportunityRadarShareMode && window.OpportunityRadarShareMode.locks) {
+            return String(window.OpportunityRadarShareMode.locks.country || "").trim();
+        }
+        var params = new URLSearchParams(window.location.search || "");
+        return String(params.get("country") || "").trim();
+    } catch (_e) {
+        return "";
+    }
+}
+
+function brandPresenceMapUrl(extraQuery) {
+    var base = "/api/brand-presence?view=map";
+    var q = extraQuery ? "&" + extraQuery : "";
+    var url = base + q;
+    var country = opportunityRadarShareCountry();
+    if (isOpportunityRadarShareMode() && country) {
+        url += (url.indexOf("?") >= 0 ? "&" : "?") + "country=" + encodeURIComponent(country);
+    }
+    return url;
+}
+
+function applyOpportunityRadarShareLocks() {
+    if (!isOpportunityRadarShareMode()) return;
+    var country = opportunityRadarShareCountry();
+    if (!country) return;
+    currentFilters.country = country;
+    ["countryFilter", "countryFilterDrawer"].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        if (![...el.options].some(function (o) { return o.value === country; })) {
+            var opt = document.createElement("option");
+            opt.value = country;
+            opt.textContent = country;
+            el.appendChild(opt);
+        }
+        el.value = country;
+        el.disabled = true;
+        el.setAttribute("aria-readonly", "true");
+        el.title = "Country locked for this shared preview";
+    });
+    if (
+        window.OpportunityRadarShareMode &&
+        typeof window.OpportunityRadarShareMode.applyCountryLock === "function"
+    ) {
+        window.OpportunityRadarShareMode.applyCountryLock();
+    }
+}
+
 // Toggle states
 let isHotelVisibilityEnabled = true;
 let isWhiteSpaceVisible = false;
@@ -807,8 +869,12 @@ async function loadHotelData() {
         // Progressive: city aggregates first (small payload) so the map is useful
         // before the full sparse map DTO finishes downloading/parsing.
         let earlyCitiesPainted = false;
+        if (isOpportunityRadarShareMode()) {
+            applyOpportunityRadarShareLocks();
+        }
+
         try {
-            const aggResponse = await fetch('/api/brand-presence?view=map&aggregate=city&limit=100000', {
+            const aggResponse = await fetch(brandPresenceMapUrl('aggregate=city&limit=100000'), {
                 headers: { 'ngrok-skip-browser-warning': 'true' }
             });
             const aggResult = await aggResponse.json();
@@ -825,7 +891,7 @@ async function loadHotelData() {
         
         // Sparse map DTO — full hotel detail stays on GET /api/brand-presence/hotel/:id
         // Retained for client-side filters/search until facet/server-filter path is complete.
-        const response = await fetch('/api/brand-presence?view=map&limit=100000', {
+        const response = await fetch(brandPresenceMapUrl('limit=100000'), {
             headers: {
                 'ngrok-skip-browser-warning': 'true'
             }
@@ -842,16 +908,28 @@ async function loadHotelData() {
             if (result.skippedNoCoordinates) console.warn(result.skippedNoCoordinates + " Airtable records have no coordinates and are not shown on the map.");
             
             updateSystemStatus('Displaying hotels on map…');
-            await displayHotels(hotelData);
+            if (isOpportunityRadarShareMode()) {
+                applyOpportunityRadarShareLocks();
+                applyFilters();
+            } else {
+                await displayHotels(hotelData);
+            }
+            // Mexico share: frame the country after first paint
+            if (isOpportunityRadarShareMode() && opportunityRadarShareCountry() === 'Mexico' && map) {
+                try {
+                    map.setView([23.6345, -102.5528], 5);
+                } catch (_zoomErr) { /* ignore */ }
+            }
             refreshMapSize({ pan: false, delay: 50 });
             showLoading(false);
             hideSystemStatus();
             // Defer sidebar stats so the map can paint first
             requestAnimationFrame(function () {
-                updateStatistics(hotelData);
-                updateBrandDistribution(hotelData);
-                generateInsights(hotelData);
+                updateStatistics(currentFilteredHotels.length ? currentFilteredHotels : hotelData);
+                updateBrandDistribution(currentFilteredHotels.length ? currentFilteredHotels : hotelData);
+                generateInsights(currentFilteredHotels.length ? currentFilteredHotels : hotelData);
                 updateAllDropdowns(hotelData);
+                applyOpportunityRadarShareLocks();
                 if (isCityAggregationEnabled || earlyCitiesPainted) renderCityAggregationMarkers();
             });
         } else {
@@ -4464,6 +4542,11 @@ function setupEventListeners() {
     const countryFilter = document.getElementById('countryFilter');
     if (countryFilter) {
         countryFilter.addEventListener('change', function (e) {
+            if (isOpportunityRadarShareMode() && opportunityRadarShareCountry()) {
+                e.target.value = opportunityRadarShareCountry();
+                currentFilters.country = opportunityRadarShareCountry();
+                return;
+            }
             currentFilters.country = e.target.value;
             clearGeographyFiltersBelow('country');
             applyFilters();
@@ -4723,6 +4806,10 @@ function initializeToggleSliders() {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+    if (isOpportunityRadarShareMode()) {
+        applyOpportunityRadarShareLocks();
+        document.body.classList.add('or-share-mode');
+    }
     initializeMap();
     setupEventListeners();
     initializeTooltips();

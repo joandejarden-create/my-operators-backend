@@ -21,6 +21,8 @@
 
 Gate criteria: A(ready≥2)=false · B(openTbd≥5)=true · C(structures)=true
 
+**Quality caveat:** Lodging lexicon matched many **hotel directory / OTA / travel-listing** pages (`quierohotel`, booking.com, concert hotel lists). Those inflate OPEN/TBD lodging-supported watch counts. Readiness gates correctly rejected them (`surface_eligibility`). True Bethesda-class sources = official event + host-hotel/housing/overflow pages tied to a named future program — only a minority of watch rows approach that bar (e.g. orchestra/Coliseum lodging posts, Palexco/Expocoruña-adjacent, UDC challenge). Native stack **can acquire** proven families without Webhound; **commercial yield** still needs tighter anti-directory filters + entity-first depth.
+
 ---
 
 ## B. Source Acquisition

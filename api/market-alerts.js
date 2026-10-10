@@ -6,6 +6,7 @@ import { resolveMarketAlertsAudience } from "../lib/market-alerts-audience-resol
 import { dedupeFeedItemsByEntityKey } from "../lib/market-alerts-correlation.js";
 import { sanitizeUserFacingTags } from "../lib/market-alerts-user-tags.js";
 import { getUserFacingSourceName } from "../lib/market-alerts-user-facing.js";
+import { isTitleDuplicateSummary } from "../lib/market-alerts-plain-text.js";
 
 // Airtable table + field configuration – MUST match contract in spec
 const TABLE_ALERTS = process.env.AIRTABLE_TABLE_MARKET_ALERTS || "MarketAlerts";
@@ -214,13 +215,16 @@ function mapAlertListItem(r, userStatusMap, audience) {
   const status = userStatusMap[r.id] || null;
   const intelligence = intelligencePayloadForAudience(fields, audience);
   const userTags = sanitizeUserFacingTags(fields[F_ALERT.tags] || []);
+  const title = sanitizeMarketAlertText(fields[F_ALERT.title] || "");
+  let summary = sanitizeMarketAlertText(fields[F_ALERT.summary] || "", {
+    preserveWhitespace: true,
+  });
+  if (isTitleDuplicateSummary(title, summary)) summary = "";
   return {
     id: r.id,
     fields: {
-      [F_ALERT.title]: sanitizeMarketAlertText(fields[F_ALERT.title] || ""),
-      [F_ALERT.summary]: sanitizeMarketAlertText(fields[F_ALERT.summary] || "", {
-        preserveWhitespace: true,
-      }),
+      [F_ALERT.title]: title,
+      [F_ALERT.summary]: summary,
       [F_ALERT.sourceName]: getUserFacingSourceName(
         sanitizeMarketAlertText(fields[F_ALERT.sourceName] || "")
       ),

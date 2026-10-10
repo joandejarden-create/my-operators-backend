@@ -7,6 +7,36 @@ import {
   loadReportArchiveEntry,
 } from "../lib/dealality-report-archive/report-archive-store-v1.js";
 
+/** Strip filesystem paths / internal storage refs from Admin JSON. */
+function publicCatalogEntry(e) {
+  return {
+    archiveId: e.archiveId,
+    hotelId: e.hotelId || e.hotelKey || null,
+    propertyId: e.propertyId || null,
+    hotelName: e.hotelName || null,
+    reportType: e.reportType,
+    reportClass: e.reportClass,
+    reportDate: e.reportDate,
+    snapshotDate: e.snapshotDate || e.reportDate || null,
+    version: e.version,
+    generatedAt: e.generatedAt,
+    archivedAt: e.archivedAt,
+    hasPdf: Boolean(e.hasPdf),
+    hasSnapshot: Boolean(e.hasSnapshot),
+    pdfMissingReason: e.pdfMissingReason || null,
+    supersedes: e.supersedes || null,
+  };
+}
+
+function publicMeta(meta) {
+  if (!meta) return null;
+  const {
+    pdfStorageRef: _pdfRef,
+    ...safe
+  } = meta;
+  return safe;
+}
+
 export async function getAdminReportArchiveCatalog(req, res) {
   try {
     const hotelId = String(req.query.hotelId || req.query.propertyId || "").trim() || null;
@@ -16,6 +46,19 @@ export async function getAdminReportArchiveCatalog(req, res) {
       hotelId,
       reportType,
       reportClass,
+    }).map((e) => {
+      // Enrich pdfMissingReason for older index rows that omit it
+      if (!e.hasPdf && !e.pdfMissingReason) {
+        try {
+          const pack = loadReportArchiveEntry(e.archiveId);
+          if (pack?.meta?.pdfMissingReason) {
+            e = { ...e, pdfMissingReason: pack.meta.pdfMissingReason };
+          }
+        } catch (_err) {
+          /* non-fatal */
+        }
+      }
+      return publicCatalogEntry(e);
     });
     res.json({ ok: true, count: entries.length, entries });
   } catch (err) {
@@ -32,7 +75,7 @@ export async function getAdminReportArchiveEntry(req, res) {
     if (!pack) return res.status(404).json({ ok: false, error: "not_found" });
     res.json({
       ok: true,
-      meta: pack.meta,
+      meta: publicMeta(pack.meta),
       snapshot: pack.snapshot,
       hasPdf: Boolean(pack.pdf),
       snapshotChecksumOk: pack.snapshotChecksumOk,

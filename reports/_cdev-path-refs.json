@@ -1,0 +1,25 @@
+﻿{
+    "hits":  [
+                 {
+                     "file":  "C:\\Dev\\Backup-Scripts\\Backup-Dealality.ps1",
+                     "line":  11,
+                     "match":  "C:\\Dev\\deal-capture-proxy"
+                 },
+                 {
+                     "file":  "C:\\Dev\\Backup-Scripts\\Backup-Dealality.ps1",
+                     "line":  14,
+                     "match":  "C:\\Dev\\dealality-backups"
+                 }
+             ],
+    "dealalityTasks":  [
+                           {
+                               "task":  "Dealality Nightly Backup",
+                               "actions":  "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\Dev\\Backup-Scripts\\Backup-Dealality.ps1\"",
+                               "state":  "Ready"
+                           }
+                       ],
+    "referencedFolders":  [
+                              "dealality-backups",
+                              "deal-capture-proxy"
+                          ]
+}

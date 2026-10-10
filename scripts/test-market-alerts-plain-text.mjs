@@ -1,5 +1,9 @@
 #!/usr/bin/env node
-import { sanitizeMarketAlertPlainText } from "../lib/market-alerts-plain-text.js";
+import {
+  sanitizeMarketAlertPlainText,
+  isTitleDuplicateSummary,
+  stripLinkPlaceholders,
+} from "../lib/market-alerts-plain-text.js";
 
 const dirtyEntity =
   '&lt;span class="field field--name-title field--type-string field--label-hidden"&gt;Former Full-Service Hotel in Downtown Springfield, IL for Sale&lt;/span&gt;&lt;div class="clearfix text-formatted field field--name-body field--type-text-with-summary field--label-hidden field__item"&gt;&lt;p data-pm-slice="1 1 []"&gt;The Hilco Global Real Estate Practice is managing the bankruptcy sale of the former Wyndham City Centre hotel.&lt;/p&gt;&lt;/div&gt;';
@@ -15,4 +19,29 @@ for (const [label, input] of [
   const ok = !out.includes("<") && out.includes("Hilco Global") && out.includes("Wyndham");
   console.log(ok ? "OK" : "FAIL", label, "=>", out);
   if (!ok) process.exitCode = 1;
+}
+
+const title =
+  "Office-to-Hotel Conversion Floated for Sydney’s Clarence Street - The Urban Developer";
+const titleDup =
+  "Office-to-Hotel Conversion Floated for Sydney’s Clarence Street The Urban Developer";
+const realSummary =
+  "Whitbread has completed the structural frame for a 187-room Premier Inn hotel on West Street in Brighton.";
+if (!isTitleDuplicateSummary(title, titleDup)) {
+  console.log("FAIL title-dup detection");
+  process.exitCode = 1;
+} else {
+  console.log("OK title-dup detection");
+}
+if (isTitleDuplicateSummary(title, realSummary)) {
+  console.log("FAIL false-positive title-dup on real summary");
+  process.exitCode = 1;
+} else {
+  console.log("OK real summary kept");
+}
+if (stripLinkPlaceholders("LINK nky Hotel sold") !== "Hotel sold") {
+  console.log("FAIL link placeholder strip");
+  process.exitCode = 1;
+} else {
+  console.log("OK link placeholder strip");
 }

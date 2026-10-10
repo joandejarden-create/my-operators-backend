@@ -171,7 +171,7 @@ async function processCandidate(c, runId, ledger) {
   const row = {
     candidateId: c.candidateId,
     hotel: c.hotel,
-    hotelShort,
+      hotelShort,
     hpc: c.hpc,
     event: c.eventResolved || c.event,
     eventSeries: null,
@@ -605,8 +605,8 @@ async function runPositiveControlShadow() {
         packet,
         primaryBlocker: EVIDENCE_DIMENSION.HOUSING_STATUS,
         hotelShort: "AC",
-        enableSafeApply: true,
-      });
+      enableSafeApply: true,
+    });
 
       const selected = decision.jevAction || decision.appliedAction;
       const hit =
@@ -616,7 +616,7 @@ async function runPositiveControlShadow() {
         selected === JEV_NEXT_ACTION.FIND_OFFICIAL_HOUSING_PAGE ||
         selected === JEV_NEXT_ACTION.FIND_REGISTRATION_PAGE;
 
-      results.push({
+    results.push({
         hotel: h.short,
         opportunityId: opp.id || opp.opportunityId,
         title: String(title).slice(0, 80),
@@ -633,15 +633,15 @@ async function runPositiveControlShadow() {
 
 function buildFounderReport(ctx) {
   const {
-    headBefore,
-    headAfter,
+  headBefore,
+  headAfter,
     dirtyLeft,
-    hqBefore,
-    results,
+  hqBefore,
+  results,
     ledger,
-    positiveControl,
-    regression,
-    pushStatus,
+  positiveControl,
+  regression,
+  pushStatus,
   } = ctx;
 
   const acStart = hqBefore.filter((c) => c.hotelShort === "AC").length;
@@ -729,7 +729,7 @@ function buildFounderReport(ctx) {
   lines.push("");
   for (const r of results) {
     if (!(r.jevActions || []).length) {
-      lines.push(
+    lines.push(
         `- **${r.candidateId}**: market prefilter rejected before Jev (${r.rejectionReason})`
       );
       continue;
@@ -1011,7 +1011,7 @@ async function main() {
   fs.writeFileSync(path.join(OUT, "FOUNDER_REPORT.md"), report.markdown, "utf8");
   writeJson("RUN_SUMMARY.json", {
     runId,
-    headBefore,
+        headBefore,
     apply: APPLY,
     ledger,
     verdict: report.verdict,
@@ -1021,7 +1021,7 @@ async function main() {
     results: results.length,
     positiveControlHits: positiveControl.filter((p) => p.hit).length,
     positiveControlN: positiveControl.length,
-    regression,
+        regression,
   });
 
   console.log(`\n[done] verdict=${report.verdict}`);

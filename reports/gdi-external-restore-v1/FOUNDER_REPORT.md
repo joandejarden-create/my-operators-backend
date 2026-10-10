@@ -43,6 +43,21 @@ Restored external surface only:
 - Surfaces remain: `brief`, `opportunities`, `opportunity_detail`, `summary` (no `report`/`pdf`/`archive`)
 - Admin GDI PDF / Report Archive routes **preserved**
 
-## Acceptance matrix (fill after deploy QA)
+## Acceptance matrix
 
-See `ACCEPTANCE.json`.
+See `ACCEPTANCE.json` — **FINAL_VERDICT: PASS**.
+
+| Check | Result |
+|-------|--------|
+| INTRODUCING | `2d6e79f` (PDF) → `fd919a1` (Demand Report) |
+| LAST_GOOD | `bed31c9` |
+| Demand Report / View PDF / Download PDF | REMOVED on external |
+| External share PDF routes | 404 |
+| Admin GDI PDF generate/view | 401 unauth (routes present) |
+| Bethesda token `gdisht_47c25d74…` | UNCHANGED (`sha12=9237540e872c`) |
+| Production deploy | `6e4b657f` SUCCESS |
+| Screenshots | `RESTORED_PRODUCTION.png` byte-size matches `LAST_GOOD_REFERENCE.png` (902232) |
+
+### Other shares browser smoke
+
+Do not create missing shares. Hilton NYTS: no active share. Renaissance / Waterstone / Cambridge Beaches / NOW NOW NOHO: restored layout (no Demand Report / PDF).

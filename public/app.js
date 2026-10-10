@@ -106,8 +106,8 @@
         '/my-brands': { file: '/all-brands-dashboard.html', title: 'My Brands' },
         '/my-operators': { file: '/my-third-party-operators-new.html', title: 'My Operators' },
         '/brand-development-dashboard': { file: '/brand-development-dashboard.html', title: 'My Brand Deals', roles: ['brand', 'admin'] },
-        '/ai-visibility': { file: '/ai-visibility-brand.html', title: 'Brand AI Intelligence', roles: ['brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
-        '/ai-visibility-brand': { file: '/ai-visibility-brand.html', title: 'Brand AI Intelligence', roles: ['brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
+        '/ai-visibility': { file: '/ai-visibility-brand.html', title: 'Brand AI Intelligence', roles: ['owner', 'brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
+        '/ai-visibility-brand': { file: '/ai-visibility-brand.html', title: 'Brand AI Intelligence', roles: ['owner', 'brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
         '/operator/ai-intelligence': { file: '/operator-ai-intelligence.html', title: 'Operator AI Intelligence', roles: ['operator', 'admin'], stakeholderProduct: 'operator_ai_intelligence' },
         '/owner/ai-demand': { file: '/owner-ai-demand.html', title: 'AI Demand Positioning', roles: ['owner', 'admin'] },
         '/group-demand-intelligence': {
@@ -231,7 +231,7 @@
                         { label: 'The Radar', route: '/opportunity-radar', roles: ['owner', 'brand', 'operator', 'admin'] },
                         { label: 'Market Alerts', route: '/market-alerts', roles: ['owner', 'brand', 'operator', 'admin'] },
                         { label: 'LOI Market Hub', route: '/loi-database-dashboard', roles: ['owner', 'brand', 'admin'] },
-                        { label: 'Brand AI Intelligence', route: '/ai-visibility', roles: ['brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
+                        { label: 'Brand AI Intelligence', route: '/ai-visibility', roles: ['owner', 'brand', 'admin'], stakeholderProduct: 'brand_ai_visibility' },
                         { label: 'Operator AI Intelligence', route: '/operator/ai-intelligence', roles: ['operator', 'admin'], stakeholderProduct: 'operator_ai_intelligence' },
                         { label: 'AI Demand Positioning', route: '/owner/ai-demand', roles: ['owner', 'admin'] },
                         { label: 'Group & Demand Intelligence', route: '/group-demand-intelligence', roles: ['owner', 'admin'] }
@@ -1170,7 +1170,15 @@
             return hasAdminNavAccess() || hasAdpMonthlyReviewAdminNavAccess();
         }
         if (child.stakeholderProduct && window.DealalityStakeholderNav) {
-            return window.DealalityStakeholderNav.stakeholderProductVisible(child.stakeholderProduct, role);
+            if (window.DealalityStakeholderNav.stakeholderProductVisible(child.stakeholderProduct, role)) {
+                return true;
+            }
+            // Admins retain cross-workspace nav visibility for products they can open.
+            if (hasAdminNavAccess() &&
+                window.DealalityStakeholderNav.stakeholderProductVisible(child.stakeholderProduct, 'admin')) {
+                return true;
+            }
+            return false;
         }
         return canSee(role, child.roles, child.devOnly, child.internalRunbookOnly);
     }

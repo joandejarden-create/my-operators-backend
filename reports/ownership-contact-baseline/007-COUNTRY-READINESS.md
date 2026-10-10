@@ -1,0 +1,32 @@
+# 007 — Country Readiness
+
+```json
+[
+  {
+    "country": "Mexico",
+    "hotels_audited": 20,
+    "any_owner_pct": 90,
+    "evidenced_owner_pct": 15,
+    "propco_pct": 5,
+    "sponsor_pct": 5,
+    "contactable_org_pct": 15,
+    "owner_actionable_pct": 10,
+    "dominant_failure": "CONTACT_PATH_INCOMPLETE",
+    "playbook_maturity": "MEDIUM",
+    "next_improvement": "DENUE + corporate registry → PropCo; then org contact before Surfe"
+  },
+  {
+    "country": "Bermuda",
+    "hotels_audited": 1,
+    "any_owner_pct": 100,
+    "evidenced_owner_pct": 100,
+    "propco_pct": 0,
+    "sponsor_pct": 0,
+    "contactable_org_pct": 100,
+    "owner_actionable_pct": 0,
+    "dominant_failure": "PERSON_KNOWN_NO_EMAIL / OWNER_KNOWN_CONTACTABLE_ORG_UNKNOWN",
+    "playbook_maturity": "LOW",
+    "next_improvement": "Corporate registry / filings for PropCo; public contact pages"
+  }
+]
+```

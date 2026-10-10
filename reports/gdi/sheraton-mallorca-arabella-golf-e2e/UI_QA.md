@@ -1,0 +1,1 @@
+# UI QA\n\n- Customer filters remain All / Ready / Watching\n- Campaigns internal only\n- Ready count: 0\n- Watch count: 2\n- No pursuit filters top-level\n

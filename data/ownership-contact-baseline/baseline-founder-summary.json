@@ -1,0 +1,35 @@
+{
+  "version": "ownership-contact-baseline-founder-summary-v1",
+  "mode": "READ_ONLY",
+  "audited_at": "2026-10-06T14:54:52.995Z",
+  "audit_universe": {
+    "planning_cala": 15000,
+    "hotels_actually_audited": 21,
+    "deep_sample": 21,
+    "deep_sample_cap_reason": "200–300 hotel deep sample NOT RELIABLY ACHIEVABLE — only hotels with stored ownership/contact artifacts exist in this checkout. Expanding to 240 would require inventing NO_RESEARCH rows without hotel identity store dump.",
+    "production_census_documented": 5956
+  },
+  "ownership_baseline": {
+    "any_owner_value": "19 / 21 (artifact set); 19 / 15000 (planning)",
+    "any_evidenced_owner": "4 / 21; 4 / 15000",
+    "propco": "1 / 21",
+    "sponsor": "1 / 21",
+    "contactable_owner_org": "2 / 21",
+    "resolved_owner_structure": "13 / 21",
+    "canonical_map_hotels": 4
+  },
+  "contact_baseline": {
+    "owner_plus_relevant_person": "4 / 21",
+    "owner_plus_public_email": "2 / 21",
+    "owner_plus_verified_email": "NOT RELIABLY MEASURABLE",
+    "owner_plus_phone": "1 / 21",
+    "owner_plus_fallback": "1 / 21",
+    "fully_owner_actionable": "2 / 21",
+    "OWNER_ACTIONABLE_RATE_audited_pct": 9.5,
+    "OWNER_ACTIONABLE_RATE_planning_pct": 0
+  },
+  "recommended_scale_strategy": "OWNER_PORTFOLIO_FIRST",
+  "recommended_scale_why": "Canonical ownership graph only has 4 hotels but portfolio fixtures already attach ~22 hotel relationships to 4 owners. Contact fails after owner is known. Enriching top owners once unlocks more hotels than country-wide cold research. Hybrid country playbooks still needed for PropCo resolution, but the dominant scaling lever is owner reuse + contact path.",
+  "single_next_action": "OWNERSHIP_CONTACT_25_HOTEL_END_TO_END_CANARY",
+  "most_important_finding": "We do not have a populated ownership graph for CALA — we have a 4-hotel demo map, empty Contact Intelligence store, and fixture/showcase paths that make coverage look farther along than it is. Evidenced ownership vs ~15k is effectively ~0.0x%; OWNER_ACTIONABLE is essentially 1 showcase hotel. The blocking issue is not 'another audit' — it is absence of persisted research outputs at scale plus contact path after owner."
+}

@@ -5,7 +5,7 @@ import {
   canonicalizeSourceUrl,
   normalizeAlertTitle,
 } from "../../lib/market-alerts-dedupe.js";
-import { sanitizeMarketAlertPlainText } from "../../lib/market-alerts-plain-text.js";
+import { sanitizeMarketAlertPlainText, isTitleDuplicateSummary } from "../../lib/market-alerts-plain-text.js";
 import { assessMarketAlertPublishReady } from "../../lib/market-alerts-publish-gate.js";
 import { REGION_GEO_REGEX } from "../../lib/market-alerts-geo-keywords.js";
 
@@ -142,13 +142,14 @@ export function patchMarketAlertTextFields(fields) {
 
 export function mapRssItemToAirtableFields(item) {
   const sourceUrl = (item.link || "").trim();
+  const title = sanitizeMarketAlertText(item.title || "(No title)").slice(0, 500);
+  let summary = sanitizeMarketAlertText(item.summary, { preserveWhitespace: true }).slice(0, 10000);
+  // Google News / thin feeds often repeat the headline as description — do not store as Summary.
+  if (isTitleDuplicateSummary(title, summary)) summary = "";
   const fields = {
-    [MAP_ALERT.title]: sanitizeMarketAlertText(item.title || "(No title)").slice(0, 500),
+    [MAP_ALERT.title]: title,
     [MAP_ALERT.dedupeId]: rssItemDedupeId(item),
-    [MAP_ALERT.summary]: sanitizeMarketAlertText(item.summary, { preserveWhitespace: true }).slice(
-      0,
-      10000
-    ),
+    [MAP_ALERT.summary]: summary,
     [MAP_ALERT.sourceName]: sanitizeMarketAlertText(item.source || "RSS").slice(0, 200),
     [MAP_ALERT.sourceUrl]: sourceUrl.slice(0, 1000),
     [MAP_ALERT.publishedAt]: parsePublishedAtIso(item.pubDate),

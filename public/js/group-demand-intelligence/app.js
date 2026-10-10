@@ -32,12 +32,23 @@
     hotelProfile: null,
     summary: null,
     opportunities: [],
+    // Demand campaigns / generators are INTERNAL research objects — never customer UI state.
+    demandCampaigns: [],
+    demandCampaignMeta: { visibleCount: 0, storedCount: 0 },
     runs: [],
     tab: "opportunities",
     sortKey: "priority",
     sortDir: 1,
     viewMode: "tiles",
-    filters: { priority: "", segment: "", booking: "", territory: "", weekly: "" },
+    filters: {
+      priority: "",
+      segment: "",
+      booking: "",
+      territory: "",
+      weekly: "",
+      workflow: "",
+    },
+    pursuitsById: {},
     isAdmin: false,
     flag: null,
   };
@@ -63,7 +74,14 @@
   }
 
   function resetBrowseView() {
-    state.filters = { priority: "", segment: "", booking: "", territory: "", weekly: "" };
+    state.filters = {
+      priority: "",
+      segment: "",
+      booking: "",
+      territory: "",
+      weekly: "",
+      workflow: "",
+    };
     state.sortKey = "priority";
     state.sortDir = 1;
     state.viewMode = "tiles";
@@ -294,7 +312,14 @@
     state.summary = null;
     state.opportunities = [];
     state.runs = [];
-    state.filters = { priority: "", segment: "", booking: "", territory: "", weekly: "" };
+    state.filters = {
+      priority: "",
+      segment: "",
+      booking: "",
+      territory: "",
+      weekly: "",
+      workflow: "",
+    };
     state.sortKey = "priority";
     state.sortDir = 1;
     state.viewMode = "tiles";
@@ -358,6 +383,9 @@
         state.summary = parts[1].summary;
         state.opportunities = parts[2].opportunities || [];
         state.hotelProfile = (parts[3] && parts[3].profile) || null;
+        // Campaigns/generators stay on internal APIs only — not customer load path.
+        state.demandCampaigns = [];
+        state.demandCampaignMeta = { visibleCount: 0, storedCount: 0 };
         render();
         return api("/api/group-demand-intelligence/hotels/" + id + "/research-runs")
           .then(function (runsPayload) {
@@ -434,6 +462,25 @@
         render();
       });
     });
+    root.querySelectorAll("[data-pursuit-start]").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var oppId = btn.getAttribute("data-pursuit-start");
+        if (!oppId) return;
+        startPursuit(oppId);
+      });
+    });
+    root.querySelectorAll("[data-pursuit-view]").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var pursuitId = btn.getAttribute("data-pursuit-view");
+        var oppId = btn.getAttribute("data-open");
+        if (oppId) openDetail(oppId);
+        else if (pursuitId) openPursuitDrawer(pursuitId);
+      });
+    });
     root.querySelectorAll("[data-gdi-tile-priority][data-gdi-tile-booking]").forEach(
       function (btn) {
         btn.addEventListener("click", function (e) {
@@ -476,7 +523,15 @@
 
   function renderOpportunityCards(rows) {
     if (!rows.length) {
-      return '<div class="gdi-empty">No opportunities match the current filters. Run research or clear filters.</div>';
+      var total = (state.opportunities || []).length;
+      if (total > 0) {
+        return (
+          '<div class="gdi-empty">No customer-ready opportunities match the current filters.</div>'
+        );
+      }
+      return (
+        '<div class="gdi-empty">No customer-ready opportunities are available for this property yet.</div>'
+      );
     }
     return UI.opportunityCardsGridHtml(rows, state.viewMode, state.filters);
   }
@@ -581,6 +636,7 @@
       noun: opts.noun || "Opportunities",
       exportHref: buildExportHref(),
     });
+    // Customer GDI: Priority + Action Window only — no All/Ready/Watching workflow row.
     return chrome + (opts.lede || "") + renderOpportunityCards(rows);
   }
 
@@ -723,6 +779,60 @@
     if (next) el.replaceWith(next);
   }
 
+  function startPursuit(opportunityId) {
+    setLoading(true, "Starting pursuit\u2026");
+    api(
+      "/api/group-demand-intelligence/hotels/" +
+        encodeURIComponent(state.hotelId) +
+        "/opportunities/" +
+        encodeURIComponent(opportunityId) +
+        "/pursuit/start",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}),
+      }
+    )
+      .then(function () {
+        return loadAll();
+      })
+      .then(function () {
+        openDetail(opportunityId);
+      })
+      .catch(function (err) {
+        showError((err && err.message) || "Could not start pursuit");
+      })
+      .finally(function () {
+        setLoading(false);
+      });
+  }
+
+  function openPursuitDrawer(pursuitId) {
+    drawerTitle.textContent = "Pursuit";
+    drawerBody.innerHTML = UI.detailLoadingHtml();
+    if (typeof drawer.showModal === "function") drawer.showModal();
+    else drawer.setAttribute("open", "open");
+    api(
+      "/api/group-demand-intelligence/hotels/" +
+        encodeURIComponent(state.hotelId) +
+        "/pursuits/" +
+        encodeURIComponent(pursuitId)
+    )
+      .then(function (data) {
+        drawerTitle.textContent =
+          (data.pursuit && data.pursuit.opportunityTitle) || "Pursuit";
+        drawerBody.innerHTML =
+          '<section class="gdi-section"><h3>Pursuit</h3>' +
+          UI.pursuitPanelHtml(data.pursuit) +
+          "</section>";
+      })
+      .catch(function (err) {
+        drawerBody.innerHTML = UI.detailErrorHtml(
+          (err && err.message) || "Unable to load pursuit."
+        );
+      });
+  }
+
   function openDetail(id) {
     var listRow = (state.opportunities || []).find(function (o) {
       return o && o.id === id;
@@ -743,17 +853,36 @@
       "/subjects/" +
       encodeURIComponent(id) +
       "/decision?module=GDI";
+    var pursuitUrl =
+      "/api/group-demand-intelligence/hotels/" +
+      encodeURIComponent(state.hotelId) +
+      "/opportunities/" +
+      encodeURIComponent(id) +
+      "/pursuit";
 
     Promise.all([
       api(oppUrl),
       api(decisionUrl).catch(function () {
         return null;
       }),
+      api(pursuitUrl).catch(function () {
+        return { pursuit: null };
+      }),
     ])
       .then(function (results) {
         var data = results[0];
         var decisionBundle = results[1];
+        var pursuitBundle = results[2];
         var o = data.opportunity;
+        if (o && pursuitBundle && pursuitBundle.pursuit) {
+          o._pursuitDto = pursuitBundle.pursuit;
+          o.pursuitId = pursuitBundle.pursuit.pursuitId;
+          o.pursuitStatus = pursuitBundle.pursuit.pursuitStatus;
+          o.canStartPursuit = false;
+        } else if (o && listRow) {
+          o.canStartPursuit = listRow.canStartPursuit === true;
+          o.pursuitId = listRow.pursuitId || null;
+        }
         var current =
           (decisionBundle && decisionBundle.current) ||
           (decisionBundle &&

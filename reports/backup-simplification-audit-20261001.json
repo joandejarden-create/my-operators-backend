@@ -1,0 +1,47 @@
+{
+  "schema": "dealality-backup-simplification-audit-v1",
+  "generatedAt": "2026-10-01",
+  "mode": "READ_ONLY",
+  "changesMade": 0,
+  "activeBackupScripts": 1,
+  "activeScheduledTasksDealality": 1,
+  "activeScript": "C:\\Dev\\Backup-Scripts\\Backup-Dealality.ps1",
+  "activeTask": "Dealality Nightly Backup",
+  "canonicalFlowAlreadyInScript": true,
+  "destinations": {
+    "activeLocal": "C:\\Dev\\dealality-backups\\LATEST",
+    "activeTemp": "C:\\Dev\\dealality-backups\\_NEW_BACKUP_TEMP",
+    "activeCloud": "G:\\My Drive\\Dealality Backups\\{yyyy-MM-dd_HHmm}",
+    "orphanHistorical": [
+      "C:\\Dev\\Backup-Staging",
+      "C:\\Dev\\Nightly-Backups",
+      "C:\\Dev\\Backup-Scripts\\dealality-snapshots",
+      "C:\\Dev\\Cursor-Recovery-Archive-2026-09-08"
+    ],
+    "legacyOneDrive": "%USERPROFILE%\\OneDrive\\Dealality Backups"
+  },
+  "sizesGB": {
+    "dealalityBackups": 6.05,
+    "backupStaging": 18.2,
+    "dealalitySnapshots": 13.78,
+    "cursorRecovery": 5.14,
+    "nightlyBackups": 3.31,
+    "approxTotal": 46.5,
+    "estimatedRecoverableAfterGates": "25-31"
+  },
+  "classifications": {
+    "dealality-backups": "KEEP AS ACTIVE",
+    "Backup-Scripts-script": "KEEP AS ACTIVE",
+    "Backup-Scripts-snapshots": "KEEP TEMPORARILY FOR RECOVERY",
+    "Backup-Staging": "REPLACE WITH CANONICAL FLOW + KEEP TEMPORARILY FOR RECOVERY",
+    "Nightly-Backups": "SAFE TO RETIRE AFTER VERIFICATION",
+    "Cursor-Recovery-Archive-2026-09-08": "KEEP TEMPORARILY FOR RECOVERY / MOVE UNIQUE TO GOOGLE DRIVE"
+  },
+  "uniqueGate": {
+    "latestHasAdpArchive": true,
+    "liveLatestStagingOct1ArchiveHashMatch": true,
+    "cursorRecoveryStillUnique": true,
+    "driveVerifiedZip": "G:\\My Drive\\Dealality Backups\\2026-10-01_2036\\Dealality-backup.zip"
+  },
+  "reportMarkdown": "reports/backup-simplification-audit-20261001.md"
+}

@@ -3,6 +3,10 @@
  */
 
 import {
+  formatPropertyLocationLine,
+  formatPropertySelectorLabel,
+} from "../lib/dealality/property-display-label.js";
+import {
   isGroupDemandIntelligenceEnabled,
   isGroupDemandIntelligencePilotReadAllowed,
   getGroupDemandIntelligenceFlagState,
@@ -85,6 +89,20 @@ import {
   toCustomerCommercialProgressionDto,
 } from "../lib/decision-outcomes/gdi-commercial-progression.js";
 import { withTimeout, gdiReadTimeoutMs } from "../lib/http/with-timeout.js";
+import {
+  listVisibleDemandCampaigns,
+  loadDemandCampaigns,
+  isGdiDemandGeneratorVisible,
+} from "../lib/group-demand-intelligence/demand-campaigns/index.js";
+import {
+  listPursuits,
+  applyFollowUpDue,
+  canStartPursuitFromOpportunity,
+} from "../lib/group-demand-intelligence/pursuit/index.js";
+import {
+  loadPublicationMonitors,
+  CUSTOMER_MONITORING_LABEL,
+} from "../lib/group-demand-intelligence/publication-monitor/index.js";
 
 /** Canonical opportunity load (Airtable primary when configured). Short-TTL cached. */
 async function loadOppDoc(hotelId) {
@@ -376,10 +394,17 @@ export function getGdiHotels(req, res) {
         brand: h.identity?.brand,
         city: h.identity?.city,
         state: h.identity?.state,
-        locationLine: [h.identity?.city, h.identity?.state].filter(Boolean).join(", "),
-        optionLabel: [h.identity?.hotelName || h.hotelId, [h.identity?.city, h.identity?.state].filter(Boolean).join(", ")]
-          .filter(Boolean)
-          .join(" — "),
+        locationLine: formatPropertyLocationLine({
+          city: h.identity?.city,
+          state: h.identity?.state,
+          country: h.identity?.country,
+        }),
+        optionLabel: formatPropertySelectorLabel({
+          hotelName: h.identity?.hotelName || h.hotelId,
+          city: h.identity?.city,
+          state: h.identity?.state,
+          country: h.identity?.country,
+        }),
         hasProfile: true,
         hasOpportunities: false,
         identityStatus: h.canonicalIds?.censusRecordId
@@ -405,6 +430,9 @@ export async function getGdiSummary(req, res) {
     const doc = await loadOppDoc(hotelId);
     const feedback = loadFeedback(hotelId);
     const pilotMetrics = buildPilotMetrics(doc.opportunities || [], feedback);
+    const campaignsVisible = listVisibleDemandCampaigns(hotelId, {
+      nowDate: asOfToday(),
+    });
     return res.json({
       ok: true,
       experimentalLabel: "EXPERIMENTAL / PILOT",
@@ -419,10 +447,98 @@ export async function getGdiSummary(req, res) {
           }
         : null,
       pilotMetrics,
+      demandCampaigns: {
+        visibleCount: campaignsVisible.count,
+        storedCount: campaignsVisible.totalStored,
+      },
       flag: getGroupDemandIntelligenceFlagState(),
     });
   } catch (err) {
     return sendGdiUpstreamError(res, err, "getGdiSummary");
+  }
+}
+
+/**
+ * Demand campaigns / generators — research universe layer.
+ * Visibility uses isGdiDemandGeneratorVisible — NOT customer-ready gate.
+ */
+export function getGdiDemandCampaigns(req, res) {
+  try {
+    if (!flagGate(req, res)) return;
+    const hotelId = String(req.params.hotelId || "").trim();
+    const includeHidden = String(req.query.includeHidden || "") === "1";
+    const nowDate = asOfToday();
+    if (includeHidden) {
+      const doc = loadDemandCampaigns(hotelId);
+      const rows = (doc.campaigns || []).map((c) => ({
+        ...c,
+        visibility: isGdiDemandGeneratorVisible(c, { nowDate }),
+      }));
+      return res.json({
+        ok: true,
+        hotelId,
+        updatedAt: doc.updatedAt,
+        count: rows.length,
+        campaigns: rows,
+        gate: "isGdiDemandGeneratorVisible",
+        note: "Campaigns are not customer-ready opportunities.",
+      });
+    }
+    const visible = listVisibleDemandCampaigns(hotelId, { nowDate });
+    return res.json({
+      ok: true,
+      hotelId,
+      updatedAt: visible.updatedAt,
+      count: visible.count,
+      storedCount: visible.totalStored,
+      campaigns: visible.campaigns,
+      gate: "isGdiDemandGeneratorVisible",
+      note: "Campaigns are not customer-ready opportunities.",
+    });
+  } catch (err) {
+    return sendGdiUpstreamError(res, err, "getGdiDemandCampaigns");
+  }
+}
+
+/**
+ * Publication-trigger monitors — internal research ops surface.
+ * Customer UI never sees crawler hashes; only watch-card safe fields on opportunities.
+ */
+export function getGdiPublicationMonitors(req, res) {
+  try {
+    if (!flagGate(req, res)) return;
+    const hotelId = String(req.params.hotelId || "").trim();
+    const customerSafe = String(req.query.customerSafe || "") === "1";
+    const doc = loadPublicationMonitors(hotelId);
+    const monitors = (doc.monitors || []).map((m) => {
+      if (!customerSafe) return m;
+      return {
+        monitorId: m.monitorId,
+        campaignId: m.campaignId,
+        campaignKey: m.campaignKey,
+        monitoringStatus: m.monitoringStatus,
+        customerMonitoringFor: m.customerMonitoringFor || [],
+        lastCheckedAt: m.lastCheckedAt || null,
+        nextCheckAt: m.nextCheckAt || null,
+        expectedPublicationWindowStart: m.expectedPublicationWindowStart || null,
+        expectedPublicationWindowEnd: m.expectedPublicationWindowEnd || null,
+        triggerLabels: (m.watchForTypes || []).map(
+          (t) => CUSTOMER_MONITORING_LABEL[t] || t
+        ),
+      };
+    });
+    return res.json({
+      ok: true,
+      hotelId,
+      updatedAt: doc.updatedAt,
+      count: monitors.length,
+      monitors,
+      note: customerSafe
+        ? "Customer-safe monitor summary — no content hashes or crawler debug."
+        : "Internal publication monitors (known official sources only).",
+    });
+  } catch (err) {
+    return sendGdiUpstreamError(res, err, "getGdiPublicationMonitors");
   }
 }
 
@@ -468,6 +584,28 @@ export async function getGdiOpportunities(req, res) {
       opportunities = mapOpportunitiesToListDto(opportunities);
     }
     opportunities = await attachCommercialProgression(hotelId, opportunities);
+    // Overlay pursuit workflow (sales status — independent of Ready/Watch)
+    try {
+      applyFollowUpDue(hotelId);
+      const byOpp = new Map(
+        listPursuits(hotelId).map((p) => [p.opportunityId, p])
+      );
+      opportunities = opportunities.map((o) => {
+        const p = byOpp.get(o.id);
+        return {
+          ...o,
+          pursuitId: p?.pursuitId || o.pursuitId || null,
+          pursuitStatus: p?.pursuitStatus || o.pursuitStatus || null,
+          canStartPursuit:
+            !p &&
+            canStartPursuitFromOpportunity({
+              outreachReadiness: o.outreachReadiness,
+            }),
+        };
+      });
+    } catch {
+      /* pursuit overlay optional */
+    }
     res.setHeader("X-GDI-Opportunity-View", wantFull ? "full" : "list");
     return res.json({
       ok: true,
