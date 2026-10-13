@@ -100,9 +100,18 @@ const update = buildCventLatamUpdatePatch(
   venue.sourceUrl,
   { today: "2026-08-08" }
 );
-assert.equal(update.ok, true);
-assert.equal(update.patch["Rooms / Keys"], 110);
-assert.equal(update.patch.Latitude, undefined);
+// source-policy-v1: Cvent venue Rooms/Keys are DISCOVERY_ONLY — no canonical write
+assert.ok(
+  !update.ok || !Object.prototype.hasOwnProperty.call(update.patch || {}, "Rooms / Keys")
+);
+assert.ok(
+  (update.discoveryCandidates || []).some((c) => c.field === "Rooms / Keys") ||
+    String(update.patch?.["Notes for Steward"] || update.reasons || "").includes(
+      "cvent_discovery"
+    ) ||
+    update.reason === "cvent_discovery_only_no_canonical_write"
+);
+assert.equal(update.patch?.Latitude, undefined);
 
 const insert = buildCventCensusOnlyInsertFields(
   {
@@ -119,6 +128,14 @@ const insert = buildCventCensusOnlyInsertFields(
 );
 assert.equal(insert.ok, true);
 assert.match(insert.identity_key, /^cvent_/);
+assert.ok(!Object.prototype.hasOwnProperty.call(insert.fields, "Rooms / Keys"));
+assert.ok(
+  !Object.prototype.hasOwnProperty.call(insert.fields, "Hotel Description - Source Text")
+);
+assert.ok(
+  (insert.blockedCanonicalFields || []).includes("Rooms / Keys") ||
+    String(insert.fields["Notes for Steward"] || "").includes("cvent_discovery_only")
+);
 assert.equal(
   insert.fields["Production Use Status"],
   INTERNAL_ONLY_INSERT_DEFAULTS["Production Use Status"]

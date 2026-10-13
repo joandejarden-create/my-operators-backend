@@ -1,0 +1,3953 @@
+{
+  "ok": true,
+  "publishedAt": "2026-09-27T13:58:11.057Z",
+  "productVersion": "ai_demand_positioning_v1",
+  "propertyId": "adp_hilton_times_square",
+  "periodId": "adp_period_adp_hilton_times_square_20260927133046_20958b",
+  "censusRecordId": null,
+  "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1",
+  "reportEdition": "ORIGINAL_V1",
+  "payload": {
+    "ok": true,
+    "version": "ai_demand_positioning_v1",
+    "property": {
+      "propertyId": "adp_hilton_times_square",
+      "name": "Hilton New York Times Square",
+      "city": "New York",
+      "state": "New York",
+      "chainScale": "Upper Upscale",
+      "affiliation": "Hilton Hotels & Resorts",
+      "rooms": 478,
+      "website": "https://www.hilton.com/en/hotels/nyctshh-hilton-times-square/",
+      "ownedDomains": [],
+      "officialBrandDomain": "hilton.com",
+      "officialPropertyPageUrl": "https://www.hilton.com/en/hotels/nyctshh-hilton-times-square/"
+    },
+    "period": {
+      "periodId": "adp_period_adp_hilton_times_square_20260927133046_20958b",
+      "executionDate": "2026-09-27T13:30:46.964Z",
+      "scenarioCount": 50,
+      "providerCount": 4,
+      "status": "PARSED"
+    },
+    "demandCapture": {
+      "overallRate": 12,
+      "totalScenarios": 50,
+      "capturedScenarios": 6,
+      "missedScenarios": 44,
+      "byIntent": {
+        "business": {
+          "total": 10,
+          "captured": 2,
+          "rate": 20
+        },
+        "leisure": {
+          "total": 8,
+          "captured": 2,
+          "rate": 25
+        },
+        "couples": {
+          "total": 7,
+          "captured": 0,
+          "rate": 0
+        },
+        "group_meeting": {
+          "total": 10,
+          "captured": 0,
+          "rate": 0
+        },
+        "family": {
+          "total": 5,
+          "captured": 2,
+          "rate": 40
+        },
+        "celebration": {
+          "total": 5,
+          "captured": 0,
+          "rate": 0
+        },
+        "wellness": {
+          "total": 2,
+          "captured": 0,
+          "rate": 0
+        },
+        "adventure": {
+          "total": 3,
+          "captured": 0,
+          "rate": 0
+        }
+      },
+      "display": "12.0%"
+    },
+    "intentPresenceIndex": {
+      "business": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Business Travel",
+        "status": "CONDITIONALLY_ELIGIBLE",
+        "blockers": [
+          "peer_identity"
+        ],
+        "index": null,
+        "myRate": 5,
+        "subjectRatePct": 5,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark not yet certified",
+        "coreCount": 4,
+        "scenarioCount": 10,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "comparableN": 40,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "leisure": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Leisure Travel",
+        "status": "CONDITIONALLY_ELIGIBLE",
+        "blockers": [
+          "peer_identity"
+        ],
+        "index": null,
+        "myRate": 6.3,
+        "subjectRatePct": 6.3,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark not yet certified",
+        "coreCount": 4,
+        "scenarioCount": 8,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "comparableN": 32,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "couples": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Couples / Romantic Stay",
+        "status": "BENCHMARK_DEVELOPING",
+        "blockers": [
+          "scenario_density",
+          "peer_identity"
+        ],
+        "index": null,
+        "myRate": 0,
+        "subjectRatePct": 0,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark not yet certified",
+        "coreCount": 4,
+        "scenarioCount": 7,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "comparableN": 28,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "group_meeting": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Meetings & Groups",
+        "status": "CONDITIONALLY_ELIGIBLE",
+        "blockers": [
+          "peer_identity"
+        ],
+        "index": null,
+        "myRate": 0,
+        "subjectRatePct": 0,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark not yet certified",
+        "coreCount": 4,
+        "scenarioCount": 10,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "comparableN": 40,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "family": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Family Travel",
+        "status": "BENCHMARK_DEVELOPING",
+        "blockers": [
+          "scenario_density",
+          "peer_identity",
+          "provider_concentration_core",
+          "provider_concentration"
+        ],
+        "index": null,
+        "myRate": 15,
+        "subjectRatePct": 15,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark not yet certified",
+        "coreCount": 4,
+        "scenarioCount": 5,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "comparableN": 20,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "celebration": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Celebrations & Events",
+        "status": "BENCHMARK_DEVELOPING",
+        "blockers": [
+          "scenario_density",
+          "peer_identity"
+        ],
+        "index": null,
+        "myRate": 0,
+        "subjectRatePct": 0,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark not yet certified",
+        "coreCount": 4,
+        "scenarioCount": 5,
+        "includedProviders": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "comparableN": 20,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "wellness": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Wellness",
+        "status": "BENCHMARK_DEVELOPING",
+        "blockers": [
+          "core_lt_4",
+          "scenario_density",
+          "provider_scopes_lt_3",
+          "thin_observations",
+          "zero_denominator"
+        ],
+        "index": null,
+        "myRate": null,
+        "subjectRatePct": null,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark not yet certified",
+        "coreCount": 1,
+        "scenarioCount": 2,
+        "includedProviders": [],
+        "comparableN": 0,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      },
+      "adventure": {
+        "methodology": "adp_governed_ai_presence_index_v2",
+        "customerRender": "governed",
+        "territory": "Adventure & Experiences",
+        "status": "BENCHMARK_DEVELOPING",
+        "blockers": [
+          "core_lt_4",
+          "scenario_density",
+          "provider_scopes_lt_3",
+          "thin_observations",
+          "zero_denominator"
+        ],
+        "index": null,
+        "myRate": 0,
+        "subjectRatePct": 0,
+        "coreBenchmarkRatePct": null,
+        "avgCompRate": 0,
+        "developing": true,
+        "developingLabel": "Benchmark not yet certified",
+        "coreCount": 0,
+        "scenarioCount": 3,
+        "includedProviders": [],
+        "comparableN": 12,
+        "zeroPresenceCoreIncluded": true,
+        "secondaryInDenominator": 0,
+        "scoreCap": "NONE",
+        "versions": {
+          "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1",
+          "ENTITY_RESOLUTION_VERSION": "adp_sf_entity_resolution_v2",
+          "ELIGIBILITY_VERSION": "adp_scenario_eligibility_v1",
+          "PRESENCE_INDEX_V2_METRIC_VERSION": "adp_presence_index_v2"
+        },
+        "PRESENCE_BENCHMARK_VERSION": "adp_presence_benchmark_v1"
+      }
+    },
+    "lostDemand": {
+      "totalLost": 44,
+      "highRelevanceLost": 0,
+      "displacement": [
+        {
+          "entityId": "marriott_marquis_nyc",
+          "name": "New York Marriott Marquis",
+          "displacementCount": 31,
+          "evidenceAvailable": true,
+          "supportSetVersion": "adp_canonical_displacement_support_set_v1"
+        },
+        {
+          "entityId": "westin_times_square",
+          "name": "The Westin New York at Times Square",
+          "displacementCount": 23,
+          "evidenceAvailable": true,
+          "supportSetVersion": "adp_canonical_displacement_support_set_v1"
+        },
+        {
+          "entityId": "knickerbocker_nyc",
+          "name": "The Knickerbocker",
+          "displacementCount": 21,
+          "evidenceAvailable": true,
+          "supportSetVersion": "adp_canonical_displacement_support_set_v1"
+        },
+        {
+          "entityId": "sheraton_nyc_times_square",
+          "name": "Sheraton New York Times Square Hotel",
+          "displacementCount": 13,
+          "evidenceAvailable": true,
+          "supportSetVersion": "adp_canonical_displacement_support_set_v1"
+        },
+        {
+          "entityId": "civil_hotel_nyc",
+          "name": "The Civilian Hotel",
+          "displacementCount": 10,
+          "evidenceAvailable": true,
+          "supportSetVersion": "adp_canonical_displacement_support_set_v1"
+        }
+      ],
+      "topReasons": [
+        {
+          "reason": "High competitor density. Stronger authority signals needed",
+          "count": 36
+        },
+        {
+          "reason": "Meeting/event capability may be underrepresented in AI sources",
+          "count": 8
+        }
+      ],
+      "scenarios": [
+        {
+          "intent": "business",
+          "competitorsPresent": [
+            "The Westin New York at Times Square",
+            "New York Marriott Marquis",
+            "Sheraton New York Times Square Hotel",
+            "The Knickerbocker"
+          ],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "business",
+          "competitorsPresent": [
+            "Baccarat Hotel New York"
+          ],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "business",
+          "competitorsPresent": [
+            "The Westin New York at Times Square",
+            "Park Central Hotel New York",
+            "New York Marriott Marquis",
+            "Equinox Hotel New York",
+            "Archer Hotel New York"
+          ],
+          "likelyReason": "Meeting/event capability may be underrepresented in AI sources",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "business",
+          "competitorsPresent": [
+            "New York Marriott Marquis",
+            "The Westin New York at Times Square",
+            "Sheraton New York Times Square Hotel",
+            "W New York - Times Square"
+          ],
+          "likelyReason": "Meeting/event capability may be underrepresented in AI sources",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "business",
+          "competitorsPresent": [
+            "New York Marriott Marquis",
+            "Kimpton Hotel Eventi",
+            "Archer Hotel New York",
+            "Refinery Hotel",
+            "The Westin New York at Times Square"
+          ],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "business",
+          "competitorsPresent": [
+            "The Westin New York at Times Square",
+            "New York Marriott Marquis",
+            "The Knickerbocker",
+            "Sheraton New York Times Square Hotel"
+          ],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "business",
+          "competitorsPresent": [
+            "The Westin New York at Times Square",
+            "New York Marriott Marquis",
+            "W New York - Times Square",
+            "Sheraton New York Times Square Hotel"
+          ],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "business",
+          "competitorsPresent": [
+            "The Whitby Hotel",
+            "Equinox Hotel New York",
+            "Four Seasons Hotel New York"
+          ],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "leisure",
+          "competitorsPresent": [
+            "The Knickerbocker",
+            "New York Marriott Marquis",
+            "The Civilian Hotel",
+            "Crowne Plaza Times Square Manhattan"
+          ],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "LOW"
+        },
+        {
+          "intent": "leisure",
+          "competitorsPresent": [
+            "The Westin New York at Times Square",
+            "New York Marriott Marquis",
+            "Margaritaville Resort Times Square",
+            "The Civilian Hotel",
+            "Archer Hotel New York"
+          ],
+          "likelyReason": "High competitor density. Stronger authority signals needed",
+          "relevance": "LOW"
+        }
+      ]
+    },
+    "competitiveSet": {
+      "declaredCount": 6,
+      "observedCount": 19,
+      "overlapRate": 100,
+      "surprises": [
+        {
+          "name": "The Knickerbocker",
+          "mentions": 55,
+          "scenarioCount": 26,
+          "entityId": "knickerbocker_nyc",
+          "isCore": false
+        },
+        {
+          "name": "The Civilian Hotel",
+          "mentions": 15,
+          "scenarioCount": 11,
+          "entityId": "civil_hotel_nyc",
+          "isCore": false
+        },
+        {
+          "name": "Hard Rock Hotel New York",
+          "mentions": 14,
+          "scenarioCount": 7,
+          "entityId": "hard_rock_nyc",
+          "isCore": false
+        },
+        {
+          "name": "Archer Hotel New York",
+          "mentions": 13,
+          "scenarioCount": 8,
+          "entityId": "archer_hotel_nyc",
+          "isCore": false
+        },
+        {
+          "name": "Baccarat Hotel New York",
+          "mentions": 13,
+          "scenarioCount": 10,
+          "entityId": "baccarat_hotel_nyc",
+          "isCore": false
+        }
+      ],
+      "observed": [
+        {
+          "name": "New York Marriott Marquis",
+          "mentions": 87,
+          "scenarioCount": 37,
+          "entityId": "marriott_marquis_nyc",
+          "isCore": true
+        },
+        {
+          "name": "The Knickerbocker",
+          "mentions": 55,
+          "scenarioCount": 26,
+          "entityId": "knickerbocker_nyc",
+          "isCore": false
+        },
+        {
+          "name": "The Westin New York at Times Square",
+          "mentions": 41,
+          "scenarioCount": 27,
+          "entityId": "westin_times_square",
+          "isCore": true
+        },
+        {
+          "name": "Sheraton New York Times Square Hotel",
+          "mentions": 26,
+          "scenarioCount": 17,
+          "entityId": "sheraton_nyc_times_square",
+          "isCore": true
+        },
+        {
+          "name": "The Civilian Hotel",
+          "mentions": 15,
+          "scenarioCount": 11,
+          "entityId": "civil_hotel_nyc",
+          "isCore": false
+        },
+        {
+          "name": "Margaritaville Resort Times Square",
+          "mentions": 15,
+          "scenarioCount": 6,
+          "entityId": "margaritaville_nyc",
+          "isCore": true
+        },
+        {
+          "name": "Hard Rock Hotel New York",
+          "mentions": 14,
+          "scenarioCount": 7,
+          "entityId": "hard_rock_nyc",
+          "isCore": false
+        },
+        {
+          "name": "Archer Hotel New York",
+          "mentions": 13,
+          "scenarioCount": 8,
+          "entityId": "archer_hotel_nyc",
+          "isCore": false
+        },
+        {
+          "name": "Baccarat Hotel New York",
+          "mentions": 13,
+          "scenarioCount": 10,
+          "entityId": "baccarat_hotel_nyc",
+          "isCore": false
+        },
+        {
+          "name": "W New York - Times Square",
+          "mentions": 11,
+          "scenarioCount": 9,
+          "entityId": "w_nyc_times_square",
+          "isCore": true
+        }
+      ],
+      "declaredButNotObserved": [
+        "New York Hilton Midtown"
+      ],
+      "topObservedAlternative": {
+        "entityId": "marriott_marquis_nyc",
+        "name": "New York Marriott Marquis",
+        "appearances": 87,
+        "aiPresencePct": 43.5,
+        "aiPresenceRate": 0.435,
+        "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+        "mentions": 87
+      },
+      "topObservedAlternativeMeta": {
+        "version": "adp_top_observed_ai_alternative_overall_presence_v1",
+        "rankingBasis": "OVERALL_UNIQUE_PER_OBSERVATION_PRESENCE",
+        "tiedMaxSet": [
+          {
+            "entityId": "marriott_marquis_nyc",
+            "name": "New York Marriott Marquis",
+            "appearances": 87
+          }
+        ]
+      }
+    },
+    "realityGap": {
+      "gapScore": 37.5,
+      "display": "37.5%",
+      "totalAttributes": 8,
+      "recognizedCount": 5,
+      "gapCount": 3,
+      "recognized": [
+        {
+          "attribute": "times_square_location",
+          "label": "Times Square Location",
+          "recognitionRate": 100,
+          "count": 7,
+          "total": 7
+        },
+        {
+          "attribute": "midtown_manhattan",
+          "label": "Midtown Manhattan",
+          "recognitionRate": 85.7,
+          "count": 6,
+          "total": 7
+        },
+        {
+          "attribute": "broadway_theater_district",
+          "label": "Broadway / Theater District",
+          "recognitionRate": 100,
+          "count": 7,
+          "total": 7
+        },
+        {
+          "attribute": "hilton_honors",
+          "label": "Hilton Honors Integration",
+          "recognitionRate": 100,
+          "count": 7,
+          "total": 7
+        },
+        {
+          "attribute": "full_service",
+          "label": "Full-Service Hotel",
+          "recognitionRate": 42.9,
+          "count": 3,
+          "total": 7
+        }
+      ],
+      "gaps": [
+        {
+          "attribute": "fitness_center",
+          "label": "Fitness Center",
+          "priority": "medium",
+          "recognitionRate": 14.3,
+          "count": 1,
+          "total": 7,
+          "severity": "MEDIUM"
+        },
+        {
+          "attribute": "concierge",
+          "label": "Concierge Service",
+          "priority": "low",
+          "recognitionRate": 14.3,
+          "count": 1,
+          "total": 7,
+          "severity": "MEDIUM"
+        },
+        {
+          "attribute": "pet_friendly",
+          "label": "Pet-Friendly",
+          "priority": "low",
+          "recognitionRate": 0,
+          "count": 0,
+          "total": 7,
+          "severity": "HIGH"
+        }
+      ],
+      "totalPropertyMentions": 7
+    },
+    "whiteSpace": {
+      "totalOpportunities": 3,
+      "highOpportunities": 0,
+      "opportunities": [
+        {
+          "intent": "leisure",
+          "ownerIntentSummary": "Best upscale hotel near Broadway theaters in New York",
+          "opportunityScore": "MEDIUM",
+          "currentOwnership": "contested",
+          "rationale": "Competitor presence is inconsistent. Opportunity to establish authority.",
+          "topCompetitors": [
+            {
+              "name": "The Knickerbocker Hotel",
+              "count": 2
+            },
+            {
+              "name": "The Chatwal, a Luxury Collection Hotel",
+              "count": 2
+            },
+            {
+              "name": "The Times Square EDITION",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "intent": "leisure",
+          "ownerIntentSummary": "Upscale hotel in Midtown with great views of NYC and",
+          "opportunityScore": "MEDIUM",
+          "currentOwnership": "unowned",
+          "rationale": "No clear leader in AI responses for this demand.",
+          "topCompetitors": [
+            {
+              "name": "Known for its opulence and historic charm, this hotel",
+              "count": 1
+            },
+            {
+              "name": "Nestled along Central Park South, this hotel",
+              "count": 1
+            },
+            {
+              "name": "The Peninsula New York",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "intent": "adventure",
+          "ownerIntentSummary": "Upscale hotel in Midtown for a food and theater enthusiast",
+          "opportunityScore": "MEDIUM",
+          "currentOwnership": "contested",
+          "rationale": "Competitor presence is inconsistent. Opportunity to establish authority.",
+          "topCompetitors": [
+            {
+              "name": "The St. Regis New York",
+              "count": 2
+            },
+            {
+              "name": "The Chatwal, a Luxury Collection Hotel",
+              "count": 2
+            },
+            {
+              "name": "The Peninsula is conveniently located for theatergoers and food lovers alike. The hotel",
+              "count": 1
+            }
+          ]
+        }
+      ]
+    },
+    "brief": {
+      "items": [
+        {
+          "type": "headline",
+          "text": "Your property captured 12.0% of relevant AI demand scenarios this period."
+        },
+        {
+          "type": "insight",
+          "text": "5 competitor(s) consistently appear in AI recommendations that are not in your declared comp set."
+        },
+        {
+          "type": "gap",
+          "text": "AI Reality Gap: 37.5%. AI misses or misrepresents 3 of your property's key attributes."
+        }
+      ],
+      "generatedAt": "2026-09-27T13:58:08.669Z"
+    },
+    "actions": [
+      {
+        "priority": "HIGH",
+        "category": "REALITY_GAP",
+        "title": "Improve AI representation of pet-friendly",
+        "description": "AI currently misses or underrepresents your pet-friendly. Review third-party content and authority signals for this attribute before estimating impact.",
+        "expectedImpact": null,
+        "impactNote": "Review evidence for this attribute gap before estimating scenario impact."
+      },
+      {
+        "priority": "MEDIUM",
+        "category": "DISPLACEMENT",
+        "title": "Address displacement by New York Marriott Marquis",
+        "description": "New York Marriott Marquis appears in 31 scenarios where you are absent. Analyze their positioning strengths and differentiate.",
+        "expectedImpact": null,
+        "impactNote": "Displacement count is observational; expected reduction is not certified."
+      },
+      {
+        "priority": "MEDIUM",
+        "category": "GENERAL",
+        "title": "Strengthen overall AI authority signals",
+        "description": "Your demand capture rate is below 40%. Consider improving third-party review presence, structured data, and authoritative content across all demand segments.",
+        "expectedImpact": null,
+        "impactNote": "Broad authority work may help multiple segments; no numeric uplift claimed."
+      }
+    ],
+    "evidence": {
+      "citationRate": 25.5,
+      "avgSourcesPerCitation": 18.1,
+      "totalWithSources": 51,
+      "totalObservations": 200,
+      "scheduledObservations": 200,
+      "comparableObservations": 200,
+      "providerDenominatorGrain": "comparable_observations",
+      "topSources": [
+        {
+          "domain": "marriott.com",
+          "count": 41,
+          "frequency": 80.4
+        },
+        {
+          "domain": "tripadvisor.com",
+          "count": 38,
+          "frequency": 74.5
+        },
+        {
+          "domain": "expedia.com",
+          "count": 32,
+          "frequency": 62.7
+        },
+        {
+          "domain": "timeout.com",
+          "count": 25,
+          "frequency": 49
+        },
+        {
+          "domain": "hyatt.com",
+          "count": 24,
+          "frequency": 47.1
+        },
+        {
+          "domain": "ihg.com",
+          "count": 23,
+          "frequency": 45.1
+        },
+        {
+          "domain": "hotels.com",
+          "count": 20,
+          "frequency": 39.2
+        },
+        {
+          "domain": "cvent.com",
+          "count": 18,
+          "frequency": 35.3
+        },
+        {
+          "domain": "hilton.com",
+          "count": 15,
+          "frequency": 29.4
+        },
+        {
+          "domain": "timessquarenyc.org",
+          "count": 13,
+          "frequency": 25.5
+        }
+      ],
+      "providers": [
+        {
+          "provider": "perplexity",
+          "scenariosScheduled": 50,
+          "scheduled": 50,
+          "observationsCaptured": 50,
+          "comparable": 50,
+          "captured": 50,
+          "mentioned": 4,
+          "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
+          "denominatorGrain": "comparable_observations",
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 50,
+          "presence": 8,
+          "presenceUnavailable": false
+        },
+        {
+          "provider": "gemini",
+          "scenariosScheduled": 50,
+          "scheduled": 50,
+          "observationsCaptured": 50,
+          "comparable": 50,
+          "captured": 50,
+          "mentioned": 3,
+          "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
+          "denominatorGrain": "comparable_observations",
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 50,
+          "presence": 6,
+          "presenceUnavailable": false
+        },
+        {
+          "provider": "openai",
+          "scenariosScheduled": 50,
+          "scheduled": 50,
+          "observationsCaptured": 50,
+          "comparable": 50,
+          "captured": 50,
+          "mentioned": 0,
+          "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
+          "denominatorGrain": "comparable_observations",
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 50,
+          "presence": 0,
+          "presenceUnavailable": false
+        },
+        {
+          "provider": "claude",
+          "scenariosScheduled": 50,
+          "scheduled": 50,
+          "observationsCaptured": 50,
+          "comparable": 50,
+          "captured": 50,
+          "mentioned": 0,
+          "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
+          "denominatorGrain": "comparable_observations",
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 50,
+          "presence": 0,
+          "presenceUnavailable": false
+        }
+      ],
+      "providerCitations": {
+        "openai": 0,
+        "gemini": 0,
+        "perplexity": 100,
+        "claude": 2
+      },
+      "discovery": [
+        {
+          "intent": "celebration",
+          "citationRate": 30,
+          "total": 20
+        },
+        {
+          "intent": "business",
+          "citationRate": 25,
+          "total": 40
+        },
+        {
+          "intent": "leisure",
+          "citationRate": 25,
+          "total": 32
+        },
+        {
+          "intent": "couples",
+          "citationRate": 25,
+          "total": 28
+        },
+        {
+          "intent": "group_meeting",
+          "citationRate": 25,
+          "total": 40
+        },
+        {
+          "intent": "family",
+          "citationRate": 25,
+          "total": 20
+        },
+        {
+          "intent": "wellness",
+          "citationRate": 25,
+          "total": 8
+        },
+        {
+          "intent": "adventure",
+          "citationRate": 25,
+          "total": 12
+        }
+      ],
+      "ownedSourceShare": 0,
+      "externalSourceShare": 100,
+      "unknownSourceShare": 0,
+      "ownedSourceMix": {
+        "version": "adp_owned_source_classification_v1",
+        "domainsConfigured": true,
+        "ownedSourceDefinition": "OWNED_SOURCE means a source directly controlled by (A) the subject hotel/property OR (B) the hotel's official parent brand/operator when the page directly represents the specific property. Brand corporate pages that do not represent the subject property are not owned. UNKNOWN is retained separately and must not silently become OWNED or EXTERNAL.",
+        "responsesWithCitations": 51,
+        "ownedResponses": 0,
+        "externalOnlyResponses": 51,
+        "unknownOnlyResponses": 0,
+        "ownedShare": 0,
+        "externalShare": 100,
+        "unknownShare": 0,
+        "grain": "RESPONSES_WITH_CITATIONS_UNIQUE_DOMAIN_PER_RESPONSE",
+        "customerNote": "Owned / External shares are observed citation presence among responses that included sources — not AI trust, preference, or influence."
+      },
+      "ownedDomainsConfigured": true
+    },
+    "executiveMetrics": {
+      "version": "adp_optional_executive_metrics_v2",
+      "considerationRate": {
+        "rate": 3.5,
+        "presentObservations": 7,
+        "comparableObservations": 200
+      },
+      "scenarioPresence": {
+        "rate": 12,
+        "capturedScenarios": 6,
+        "eligibleScenarios": 50
+      },
+      "competitorPresentScenarios": {
+        "scenarioCount": 46,
+        "observationCount": 192
+      }
+    },
+    "competitiveRankingByTerritory": {
+      "version": "adp_ai_competitive_set_overall_view_v1",
+      "coreTransparencyVersion": "adp_competitive_ranking_core_transparency_v1",
+      "byTerritory": {
+        "overall": {
+          "version": "adp_ai_competitive_set_overall_view_v1",
+          "viewType": "overall",
+          "intent": "overall",
+          "territory": "Overall",
+          "comparableN": 200,
+          "baseObservedRows": 10,
+          "displayRows": [
+            {
+              "entityId": "marriott_marquis_nyc",
+              "name": "New York Marriott Marquis",
+              "isSubject": false,
+              "appearances": 87,
+              "aiPresenceRate": 0.435,
+              "aiPresencePct": 43.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Meetings & Groups",
+              "topDemandTerritoryIntent": "group_meeting",
+              "displacement": {
+                "count": 31,
+                "evidenceAvailable": true,
+                "competitorId": "marriott_marquis_nyc",
+                "supportingObservationCount": 31,
+                "drawerItemCount": 31
+              }
+            },
+            {
+              "entityId": "knickerbocker_nyc",
+              "name": "The Knickerbocker",
+              "isSubject": false,
+              "appearances": 55,
+              "aiPresenceRate": 0.275,
+              "aiPresencePct": 27.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 2,
+              "displayRank": 2,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Couples / Romantic Stay",
+              "topDemandTerritoryIntent": "couples",
+              "displacement": {
+                "count": 21,
+                "evidenceAvailable": true,
+                "competitorId": "knickerbocker_nyc",
+                "supportingObservationCount": 21,
+                "drawerItemCount": 21
+              }
+            },
+            {
+              "entityId": "westin_times_square",
+              "name": "The Westin New York at Times Square",
+              "isSubject": false,
+              "appearances": 41,
+              "aiPresenceRate": 0.205,
+              "aiPresencePct": 20.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Meetings & Groups",
+              "topDemandTerritoryIntent": "group_meeting",
+              "displacement": {
+                "count": 23,
+                "evidenceAvailable": true,
+                "competitorId": "westin_times_square",
+                "supportingObservationCount": 23,
+                "drawerItemCount": 23
+              }
+            },
+            {
+              "entityId": "sheraton_nyc_times_square",
+              "name": "Sheraton New York Times Square Hotel",
+              "isSubject": false,
+              "appearances": 22,
+              "aiPresenceRate": 0.11,
+              "aiPresencePct": 11,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Meetings & Groups",
+              "topDemandTerritoryIntent": "group_meeting",
+              "displacement": {
+                "count": 13,
+                "evidenceAvailable": true,
+                "competitorId": "sheraton_nyc_times_square",
+                "supportingObservationCount": 13,
+                "drawerItemCount": 13
+              }
+            },
+            {
+              "entityId": "civil_hotel_nyc",
+              "name": "The Civilian Hotel",
+              "isSubject": false,
+              "appearances": 14,
+              "aiPresenceRate": 0.07,
+              "aiPresencePct": 7,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Business Travel",
+              "topDemandTerritoryIntent": "business",
+              "displacement": {
+                "count": 10,
+                "evidenceAvailable": true,
+                "competitorId": "civil_hotel_nyc",
+                "supportingObservationCount": 10,
+                "drawerItemCount": 10
+              }
+            },
+            {
+              "entityId": "baccarat_hotel_nyc",
+              "name": "Baccarat Hotel New York",
+              "isSubject": false,
+              "appearances": 13,
+              "aiPresenceRate": 0.065,
+              "aiPresencePct": 6.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Couples / Romantic Stay",
+              "topDemandTerritoryIntent": "couples",
+              "displacement": {
+                "count": 9,
+                "evidenceAvailable": true,
+                "competitorId": "baccarat_hotel_nyc",
+                "supportingObservationCount": 9,
+                "drawerItemCount": 9
+              }
+            },
+            {
+              "entityId": "w_nyc_times_square",
+              "name": "W New York - Times Square",
+              "isSubject": false,
+              "appearances": 11,
+              "aiPresenceRate": 0.055,
+              "aiPresencePct": 5.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Business Travel",
+              "topDemandTerritoryIntent": "business",
+              "displacement": {
+                "count": 9,
+                "evidenceAvailable": true,
+                "competitorId": "w_nyc_times_square",
+                "supportingObservationCount": 9,
+                "drawerItemCount": 9
+              }
+            },
+            {
+              "entityId": "archer_hotel_nyc",
+              "name": "Archer Hotel New York",
+              "isSubject": false,
+              "appearances": 9,
+              "aiPresenceRate": 0.045,
+              "aiPresencePct": 4.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Business Travel",
+              "topDemandTerritoryIntent": "business",
+              "displacement": {
+                "count": 7,
+                "evidenceAvailable": true,
+                "competitorId": "archer_hotel_nyc",
+                "supportingObservationCount": 7,
+                "drawerItemCount": 7
+              }
+            },
+            {
+              "entityId": "hard_rock_nyc",
+              "name": "Hard Rock Hotel New York",
+              "isSubject": false,
+              "appearances": 7,
+              "aiPresenceRate": 0.035,
+              "aiPresencePct": 3.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 9,
+              "displayRank": 9,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Celebrations & Events",
+              "topDemandTerritoryIntent": "celebration",
+              "displacement": {
+                "count": 6,
+                "evidenceAvailable": true,
+                "competitorId": "hard_rock_nyc",
+                "supportingObservationCount": 6,
+                "drawerItemCount": 6
+              }
+            },
+            {
+              "entityId": "__subject__",
+              "name": "Hilton New York Times Square",
+              "isSubject": true,
+              "appearances": 7,
+              "aiPresenceRate": 0.035,
+              "aiPresencePct": 3.5,
+              "relationship": "SUBJECT",
+              "isCore": false,
+              "observedRank": 10,
+              "displayRank": 10,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "topDemandTerritory": "Family Travel",
+              "topDemandTerritoryIntent": "family",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": null
+              }
+            }
+          ],
+          "hideTerritoryColumn": false,
+          "territoryColumnMode": "top_demand_territory",
+          "reconciliation": null,
+          "meta": {
+            "RANKING_SCOPE": "FULL_PROPERTY_COMPARABLE_PERIOD",
+            "SUBJECT_ALWAYS_VISIBLE": true,
+            "SUBJECT_OUTSIDE_TOP10_BEHAVIOR": "TOP_9_PLUS_SUBJECT",
+            "TRUE_RANK_PRESERVED": true,
+            "OVERALL_CORE_BENCHMARK": false,
+            "OVERALL_AI_PRESENCE_INDEX": false,
+            "TOP_10_IS_MAXIMUM": true,
+            "TOP_DEMAND_TERRITORY_COLUMN": true
+          }
+        },
+        "business": {
+          "version": "adp_competitive_ranking_core_transparency_v1",
+          "intent": "business",
+          "territory": "Business Travel",
+          "coreCount": 4,
+          "coreIds": [
+            "peer_honors_hilton_midtown",
+            "marriott_marquis_nyc",
+            "westin_times_square",
+            "sheraton_nyc_times_square"
+          ],
+          "comparableN": 40,
+          "baseObservedRows": 10,
+          "displayRows": [
+            {
+              "entityId": "marriott_marquis_nyc",
+              "name": "New York Marriott Marquis",
+              "isSubject": false,
+              "appearances": 22,
+              "aiPresenceRate": 0.55,
+              "aiPresencePct": 55,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 6,
+                "evidenceAvailable": true,
+                "competitorId": "marriott_marquis_nyc",
+                "supportingObservationCount": 6,
+                "drawerItemCount": 6
+              }
+            },
+            {
+              "entityId": "westin_times_square",
+              "name": "The Westin New York at Times Square",
+              "isSubject": false,
+              "appearances": 9,
+              "aiPresenceRate": 0.225,
+              "aiPresencePct": 22.5,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 2,
+              "displayRank": 2,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 6,
+                "evidenceAvailable": true,
+                "competitorId": "westin_times_square",
+                "supportingObservationCount": 6,
+                "drawerItemCount": 6
+              }
+            },
+            {
+              "entityId": "knickerbocker_nyc",
+              "name": "The Knickerbocker",
+              "isSubject": false,
+              "appearances": 8,
+              "aiPresenceRate": 0.2,
+              "aiPresencePct": 20,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 2,
+                "evidenceAvailable": true,
+                "competitorId": "knickerbocker_nyc",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
+              }
+            },
+            {
+              "entityId": "sheraton_nyc_times_square",
+              "name": "Sheraton New York Times Square Hotel",
+              "isSubject": false,
+              "appearances": 5,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 4,
+                "evidenceAvailable": true,
+                "competitorId": "sheraton_nyc_times_square",
+                "supportingObservationCount": 4,
+                "drawerItemCount": 4
+              }
+            },
+            {
+              "entityId": "archer_hotel_nyc",
+              "name": "Archer Hotel New York",
+              "isSubject": false,
+              "appearances": 4,
+              "aiPresenceRate": 0.1,
+              "aiPresencePct": 10,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 2,
+                "evidenceAvailable": true,
+                "competitorId": "archer_hotel_nyc",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
+              }
+            },
+            {
+              "entityId": "baccarat_hotel_nyc",
+              "name": "Baccarat Hotel New York",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.075,
+              "aiPresencePct": 7.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 2,
+                "evidenceAvailable": true,
+                "competitorId": "baccarat_hotel_nyc",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
+              }
+            },
+            {
+              "entityId": "civil_hotel_nyc",
+              "name": "The Civilian Hotel",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.075,
+              "aiPresencePct": 7.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "civil_hotel_nyc",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "w_nyc_times_square",
+              "name": "W New York - Times Square",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.075,
+              "aiPresencePct": 7.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 3,
+                "evidenceAvailable": true,
+                "competitorId": "w_nyc_times_square",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
+              }
+            },
+            {
+              "entityId": "equinox_hotel_nyc",
+              "name": "Equinox Hotel New York",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.05,
+              "aiPresencePct": 5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 9,
+              "displayRank": 9,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 2,
+                "evidenceAvailable": true,
+                "competitorId": "equinox_hotel_nyc",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
+              }
+            },
+            {
+              "entityId": "__subject__",
+              "name": "Hilton New York Times Square",
+              "isSubject": true,
+              "appearances": 2,
+              "aiPresenceRate": 0.05,
+              "aiPresencePct": 5,
+              "relationship": "SUBJECT",
+              "isCore": false,
+              "observedRank": 10,
+              "displayRank": 10,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": null
+              }
+            },
+            {
+              "entityId": "peer_honors_hilton_midtown",
+              "name": "Peer Honors Hilton Midtown",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_honors_hilton_midtown",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            }
+          ],
+          "reconciliation": {
+            "CORE_COUNT": 4,
+            "CORE_IN_TOP_10": 3,
+            "CORE_APPENDED": 0,
+            "CORE_ZERO_PRESENCE": 1,
+            "IDENTIFIABLE_CORE_TOTAL": 4,
+            "COUNT_MATCH": true
+          },
+          "meta": {
+            "ALL_CORE_INCLUDED": true,
+            "TRUE_RANK_PRESERVED": true,
+            "TOP_10_IS_MAXIMUM": false
+          }
+        },
+        "leisure": {
+          "version": "adp_competitive_ranking_core_transparency_v1",
+          "intent": "leisure",
+          "territory": "Leisure Travel",
+          "coreCount": 4,
+          "coreIds": [
+            "peer_honors_hilton_midtown",
+            "peer_honors_hgi_ts_central",
+            "w_nyc_times_square",
+            "knickerbocker_nyc"
+          ],
+          "comparableN": 32,
+          "baseObservedRows": 10,
+          "displayRows": [
+            {
+              "entityId": "marriott_marquis_nyc",
+              "name": "New York Marriott Marquis",
+              "isSubject": false,
+              "appearances": 12,
+              "aiPresenceRate": 0.375,
+              "aiPresencePct": 37.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 4,
+                "evidenceAvailable": true,
+                "competitorId": "marriott_marquis_nyc",
+                "supportingObservationCount": 4,
+                "drawerItemCount": 4
+              }
+            },
+            {
+              "entityId": "knickerbocker_nyc",
+              "name": "The Knickerbocker",
+              "isSubject": false,
+              "appearances": 11,
+              "aiPresenceRate": 0.34375,
+              "aiPresencePct": 34.4,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 2,
+              "displayRank": 2,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 4,
+                "evidenceAvailable": true,
+                "competitorId": "knickerbocker_nyc",
+                "supportingObservationCount": 4,
+                "drawerItemCount": 4
+              }
+            },
+            {
+              "entityId": "westin_times_square",
+              "name": "The Westin New York at Times Square",
+              "isSubject": false,
+              "appearances": 5,
+              "aiPresenceRate": 0.15625,
+              "aiPresencePct": 15.6,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 3,
+                "evidenceAvailable": true,
+                "competitorId": "westin_times_square",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
+              }
+            },
+            {
+              "entityId": "baccarat_hotel_nyc",
+              "name": "Baccarat Hotel New York",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.09375,
+              "aiPresencePct": 9.4,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 2,
+                "evidenceAvailable": true,
+                "competitorId": "baccarat_hotel_nyc",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
+              }
+            },
+            {
+              "entityId": "civil_hotel_nyc",
+              "name": "The Civilian Hotel",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.09375,
+              "aiPresencePct": 9.4,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 2,
+                "evidenceAvailable": true,
+                "competitorId": "civil_hotel_nyc",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
+              }
+            },
+            {
+              "entityId": "__subject__",
+              "name": "Hilton New York Times Square",
+              "isSubject": true,
+              "appearances": 2,
+              "aiPresenceRate": 0.0625,
+              "aiPresencePct": 6.3,
+              "relationship": "SUBJECT",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": null
+              }
+            },
+            {
+              "entityId": "park_central_nyc",
+              "name": "Park Central Hotel New York",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.0625,
+              "aiPresencePct": 6.3,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "park_central_nyc",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "sheraton_nyc_times_square",
+              "name": "Sheraton New York Times Square Hotel",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.0625,
+              "aiPresencePct": 6.3,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "sheraton_nyc_times_square",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "archer_hotel_nyc",
+              "name": "Archer Hotel New York",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.03125,
+              "aiPresencePct": 3.1,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 9,
+              "displayRank": 9,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "archer_hotel_nyc",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "crowne_plaza_times_square",
+              "name": "Crowne Plaza Times Square Manhattan",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.03125,
+              "aiPresencePct": 3.1,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 10,
+              "displayRank": 10,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "crowne_plaza_times_square",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "w_nyc_times_square",
+              "name": "W New York - Times Square",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.03125,
+              "aiPresencePct": 3.1,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 14,
+              "isAppendedCore": true,
+              "displayRank": 14,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "w_nyc_times_square",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "peer_honors_hgi_ts_central",
+              "name": "Peer Honors Hgi Ts Central",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_honors_hgi_ts_central",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_honors_hilton_midtown",
+              "name": "Peer Honors Hilton Midtown",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_honors_hilton_midtown",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            }
+          ],
+          "reconciliation": {
+            "CORE_COUNT": 4,
+            "CORE_IN_TOP_10": 1,
+            "CORE_APPENDED": 1,
+            "CORE_ZERO_PRESENCE": 2,
+            "IDENTIFIABLE_CORE_TOTAL": 4,
+            "COUNT_MATCH": true
+          },
+          "meta": {
+            "ALL_CORE_INCLUDED": true,
+            "TRUE_RANK_PRESERVED": true,
+            "TOP_10_IS_MAXIMUM": false
+          }
+        },
+        "couples": {
+          "version": "adp_competitive_ranking_core_transparency_v1",
+          "intent": "couples",
+          "territory": "Couples / Romantic Stay",
+          "coreCount": 4,
+          "coreIds": [
+            "peer_honors_hilton_midtown",
+            "w_nyc_times_square",
+            "knickerbocker_nyc",
+            "refinery_hotel_nyc"
+          ],
+          "comparableN": 28,
+          "baseObservedRows": 10,
+          "displayRows": [
+            {
+              "entityId": "knickerbocker_nyc",
+              "name": "The Knickerbocker",
+              "isSubject": false,
+              "appearances": 14,
+              "aiPresenceRate": 0.5,
+              "aiPresencePct": 50,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 5,
+                "evidenceAvailable": true,
+                "competitorId": "knickerbocker_nyc",
+                "supportingObservationCount": 5,
+                "drawerItemCount": 5
+              }
+            },
+            {
+              "entityId": "baccarat_hotel_nyc",
+              "name": "Baccarat Hotel New York",
+              "isSubject": false,
+              "appearances": 4,
+              "aiPresenceRate": 0.14285714285714285,
+              "aiPresencePct": 14.3,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 2,
+              "displayRank": 2,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 3,
+                "evidenceAvailable": true,
+                "competitorId": "baccarat_hotel_nyc",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
+              }
+            },
+            {
+              "entityId": "bryant_park_hotel",
+              "name": "Bryant Park Hotel",
+              "isSubject": false,
+              "appearances": 4,
+              "aiPresenceRate": 0.14285714285714285,
+              "aiPresencePct": 14.3,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 3,
+                "evidenceAvailable": true,
+                "competitorId": "bryant_park_hotel",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
+              }
+            },
+            {
+              "entityId": "marriott_marquis_nyc",
+              "name": "New York Marriott Marquis",
+              "isSubject": false,
+              "appearances": 4,
+              "aiPresenceRate": 0.14285714285714285,
+              "aiPresencePct": 14.3,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 4,
+                "evidenceAvailable": true,
+                "competitorId": "marriott_marquis_nyc",
+                "supportingObservationCount": 4,
+                "drawerItemCount": 4
+              }
+            },
+            {
+              "entityId": "westin_times_square",
+              "name": "The Westin New York at Times Square",
+              "isSubject": false,
+              "appearances": 4,
+              "aiPresenceRate": 0.14285714285714285,
+              "aiPresencePct": 14.3,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 3,
+                "evidenceAvailable": true,
+                "competitorId": "westin_times_square",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
+              }
+            },
+            {
+              "entityId": "archer_hotel_nyc",
+              "name": "Archer Hotel New York",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.10714285714285714,
+              "aiPresencePct": 10.7,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 3,
+                "evidenceAvailable": true,
+                "competitorId": "archer_hotel_nyc",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
+              }
+            },
+            {
+              "entityId": "whitby_hotel_nyc",
+              "name": "The Whitby Hotel",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.10714285714285714,
+              "aiPresencePct": 10.7,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 2,
+                "evidenceAvailable": true,
+                "competitorId": "whitby_hotel_nyc",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
+              }
+            },
+            {
+              "entityId": "refinery_hotel_nyc",
+              "name": "Refinery Hotel",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.07142857142857142,
+              "aiPresencePct": 7.1,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 2,
+                "evidenceAvailable": true,
+                "competitorId": "refinery_hotel_nyc",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
+              }
+            },
+            {
+              "entityId": "w_nyc_times_square",
+              "name": "W New York - Times Square",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.07142857142857142,
+              "aiPresencePct": 7.1,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 9,
+              "displayRank": 9,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "w_nyc_times_square",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "mandarin_oriental_nyc",
+              "name": "Mandarin Oriental, New York",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.03571428571428571,
+              "aiPresencePct": 3.6,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 10,
+              "displayRank": 10,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "mandarin_oriental_nyc",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "peer_honors_hilton_midtown",
+              "name": "Peer Honors Hilton Midtown",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_honors_hilton_midtown",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            }
+          ],
+          "reconciliation": {
+            "CORE_COUNT": 4,
+            "CORE_IN_TOP_10": 3,
+            "CORE_APPENDED": 0,
+            "CORE_ZERO_PRESENCE": 1,
+            "IDENTIFIABLE_CORE_TOTAL": 4,
+            "COUNT_MATCH": true
+          },
+          "meta": {
+            "ALL_CORE_INCLUDED": true,
+            "TRUE_RANK_PRESERVED": true,
+            "TOP_10_IS_MAXIMUM": false
+          }
+        },
+        "family": {
+          "version": "adp_competitive_ranking_core_transparency_v1",
+          "intent": "family",
+          "territory": "Family Travel",
+          "coreCount": 4,
+          "coreIds": [
+            "peer_honors_hilton_midtown",
+            "peer_honors_embassy_ts",
+            "marriott_marquis_nyc",
+            "westin_times_square"
+          ],
+          "comparableN": 20,
+          "baseObservedRows": 10,
+          "displayRows": [
+            {
+              "entityId": "marriott_marquis_nyc",
+              "name": "New York Marriott Marquis",
+              "isSubject": false,
+              "appearances": 9,
+              "aiPresenceRate": 0.45,
+              "aiPresencePct": 45,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 3,
+                "evidenceAvailable": true,
+                "competitorId": "marriott_marquis_nyc",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
+              }
+            },
+            {
+              "entityId": "westin_times_square",
+              "name": "The Westin New York at Times Square",
+              "isSubject": false,
+              "appearances": 8,
+              "aiPresenceRate": 0.4,
+              "aiPresencePct": 40,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 2,
+              "displayRank": 2,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 2,
+                "evidenceAvailable": true,
+                "competitorId": "westin_times_square",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
+              }
+            },
+            {
+              "entityId": "margaritaville_nyc",
+              "name": "Margaritaville Resort Times Square",
+              "isSubject": false,
+              "appearances": 4,
+              "aiPresenceRate": 0.2,
+              "aiPresencePct": 20,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "margaritaville_nyc",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "sheraton_nyc_times_square",
+              "name": "Sheraton New York Times Square Hotel",
+              "isSubject": false,
+              "appearances": 4,
+              "aiPresenceRate": 0.2,
+              "aiPresencePct": 20,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 2,
+                "evidenceAvailable": true,
+                "competitorId": "sheraton_nyc_times_square",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
+              }
+            },
+            {
+              "entityId": "__subject__",
+              "name": "Hilton New York Times Square",
+              "isSubject": true,
+              "appearances": 3,
+              "aiPresenceRate": 0.15,
+              "aiPresencePct": 15,
+              "relationship": "SUBJECT",
+              "isCore": false,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": null
+              }
+            },
+            {
+              "entityId": "hard_rock_nyc",
+              "name": "Hard Rock Hotel New York",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.05,
+              "aiPresencePct": 5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "hard_rock_nyc",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "park_central_nyc",
+              "name": "Park Central Hotel New York",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.05,
+              "aiPresencePct": 5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "park_central_nyc",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "knickerbocker_nyc",
+              "name": "The Knickerbocker",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.05,
+              "aiPresencePct": 5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "knickerbocker_nyc",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_honors_embassy_ts",
+              "name": "Peer Honors Embassy Ts",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_honors_embassy_ts",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            },
+            {
+              "entityId": "peer_honors_hilton_midtown",
+              "name": "Peer Honors Hilton Midtown",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_honors_hilton_midtown",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            }
+          ],
+          "reconciliation": {
+            "CORE_COUNT": 4,
+            "CORE_IN_TOP_10": 2,
+            "CORE_APPENDED": 0,
+            "CORE_ZERO_PRESENCE": 2,
+            "IDENTIFIABLE_CORE_TOTAL": 4,
+            "COUNT_MATCH": true
+          },
+          "meta": {
+            "ALL_CORE_INCLUDED": true,
+            "TRUE_RANK_PRESERVED": true,
+            "TOP_10_IS_MAXIMUM": false
+          }
+        },
+        "group_meeting": {
+          "version": "adp_competitive_ranking_core_transparency_v1",
+          "intent": "group_meeting",
+          "territory": "Meetings & Groups",
+          "coreCount": 4,
+          "coreIds": [
+            "peer_honors_hilton_midtown",
+            "marriott_marquis_nyc",
+            "westin_times_square",
+            "sheraton_nyc_times_square"
+          ],
+          "comparableN": 40,
+          "baseObservedRows": 10,
+          "displayRows": [
+            {
+              "entityId": "marriott_marquis_nyc",
+              "name": "New York Marriott Marquis",
+              "isSubject": false,
+              "appearances": 27,
+              "aiPresenceRate": 0.675,
+              "aiPresencePct": 67.5,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 9,
+                "evidenceAvailable": true,
+                "competitorId": "marriott_marquis_nyc",
+                "supportingObservationCount": 9,
+                "drawerItemCount": 9
+              }
+            },
+            {
+              "entityId": "sheraton_nyc_times_square",
+              "name": "Sheraton New York Times Square Hotel",
+              "isSubject": false,
+              "appearances": 10,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 2,
+              "displayRank": 2,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 5,
+                "evidenceAvailable": true,
+                "competitorId": "sheraton_nyc_times_square",
+                "supportingObservationCount": 5,
+                "drawerItemCount": 5
+              }
+            },
+            {
+              "entityId": "westin_times_square",
+              "name": "The Westin New York at Times Square",
+              "isSubject": false,
+              "appearances": 10,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 6,
+                "evidenceAvailable": true,
+                "competitorId": "westin_times_square",
+                "supportingObservationCount": 6,
+                "drawerItemCount": 6
+              }
+            },
+            {
+              "entityId": "knickerbocker_nyc",
+              "name": "The Knickerbocker",
+              "isSubject": false,
+              "appearances": 5,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 2,
+                "evidenceAvailable": true,
+                "competitorId": "knickerbocker_nyc",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
+              }
+            },
+            {
+              "entityId": "crowne_plaza_times_square",
+              "name": "Crowne Plaza Times Square Manhattan",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.05,
+              "aiPresencePct": 5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 2,
+                "evidenceAvailable": true,
+                "competitorId": "crowne_plaza_times_square",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
+              }
+            },
+            {
+              "entityId": "civil_hotel_nyc",
+              "name": "The Civilian Hotel",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.05,
+              "aiPresencePct": 5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 2,
+                "evidenceAvailable": true,
+                "competitorId": "civil_hotel_nyc",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
+              }
+            },
+            {
+              "entityId": "equinox_hotel_nyc",
+              "name": "Equinox Hotel New York",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.025,
+              "aiPresencePct": 2.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "equinox_hotel_nyc",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "hard_rock_nyc",
+              "name": "Hard Rock Hotel New York",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.025,
+              "aiPresencePct": 2.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "hard_rock_nyc",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "w_nyc_times_square",
+              "name": "W New York - Times Square",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.025,
+              "aiPresencePct": 2.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 9,
+              "displayRank": 9,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "w_nyc_times_square",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "peer_honors_hilton_midtown",
+              "name": "Peer Honors Hilton Midtown",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_honors_hilton_midtown",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            }
+          ],
+          "reconciliation": {
+            "CORE_COUNT": 4,
+            "CORE_IN_TOP_10": 3,
+            "CORE_APPENDED": 0,
+            "CORE_ZERO_PRESENCE": 1,
+            "IDENTIFIABLE_CORE_TOTAL": 4,
+            "COUNT_MATCH": true
+          },
+          "meta": {
+            "ALL_CORE_INCLUDED": true,
+            "TRUE_RANK_PRESERVED": true,
+            "TOP_10_IS_MAXIMUM": false
+          }
+        },
+        "wellness": {
+          "version": "adp_competitive_ranking_core_transparency_v1",
+          "intent": "wellness",
+          "territory": "Wellness",
+          "coreCount": 1,
+          "coreIds": [
+            "equinox_hotel_nyc"
+          ],
+          "comparableN": 8,
+          "baseObservedRows": 10,
+          "displayRows": [
+            {
+              "entityId": "baccarat_hotel_nyc",
+              "name": "Baccarat Hotel New York",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "baccarat_hotel_nyc",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "four_seasons_nyc",
+              "name": "Four Seasons Hotel New York",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 2,
+              "displayRank": 2,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "four_seasons_nyc",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "marriott_marquis_nyc",
+              "name": "New York Marriott Marquis",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "marriott_marquis_nyc",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "westin_times_square",
+              "name": "The Westin New York at Times Square",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.25,
+              "aiPresencePct": 25,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "westin_times_square",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "equinox_hotel_nyc",
+              "name": "Equinox Hotel New York",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "equinox_hotel_nyc",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "margaritaville_nyc",
+              "name": "Margaritaville Resort Times Square",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "margaritaville_nyc",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "sheraton_nyc_times_square",
+              "name": "Sheraton New York Times Square Hotel",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "sheraton_nyc_times_square",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "civil_hotel_nyc",
+              "name": "The Civilian Hotel",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "civil_hotel_nyc",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "knickerbocker_nyc",
+              "name": "The Knickerbocker",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.125,
+              "aiPresencePct": 12.5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 9,
+              "displayRank": 9,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "knickerbocker_nyc",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            }
+          ],
+          "reconciliation": {
+            "CORE_COUNT": 1,
+            "CORE_IN_TOP_10": 1,
+            "CORE_APPENDED": 0,
+            "CORE_ZERO_PRESENCE": 0,
+            "IDENTIFIABLE_CORE_TOTAL": 1,
+            "COUNT_MATCH": true
+          },
+          "meta": {
+            "ALL_CORE_INCLUDED": true,
+            "TRUE_RANK_PRESERVED": true,
+            "TOP_10_IS_MAXIMUM": false
+          }
+        },
+        "celebration": {
+          "version": "adp_competitive_ranking_core_transparency_v1",
+          "intent": "celebration",
+          "territory": "Celebrations & Events",
+          "coreCount": 4,
+          "coreIds": [
+            "peer_honors_hilton_midtown",
+            "knickerbocker_nyc",
+            "w_nyc_times_square",
+            "marriott_marquis_nyc"
+          ],
+          "comparableN": 20,
+          "baseObservedRows": 10,
+          "displayRows": [
+            {
+              "entityId": "knickerbocker_nyc",
+              "name": "The Knickerbocker",
+              "isSubject": false,
+              "appearances": 11,
+              "aiPresenceRate": 0.55,
+              "aiPresencePct": 55,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 1,
+              "displayRank": 1,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 5,
+                "evidenceAvailable": true,
+                "competitorId": "knickerbocker_nyc",
+                "supportingObservationCount": 5,
+                "drawerItemCount": 5
+              }
+            },
+            {
+              "entityId": "marriott_marquis_nyc",
+              "name": "New York Marriott Marquis",
+              "isSubject": false,
+              "appearances": 9,
+              "aiPresenceRate": 0.45,
+              "aiPresencePct": 45,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 2,
+              "displayRank": 2,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 3,
+                "evidenceAvailable": true,
+                "competitorId": "marriott_marquis_nyc",
+                "supportingObservationCount": 3,
+                "drawerItemCount": 3
+              }
+            },
+            {
+              "entityId": "westin_times_square",
+              "name": "The Westin New York at Times Square",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.15,
+              "aiPresencePct": 15,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 3,
+              "displayRank": 3,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 2,
+                "evidenceAvailable": true,
+                "competitorId": "westin_times_square",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
+              }
+            },
+            {
+              "entityId": "w_nyc_times_square",
+              "name": "W New York - Times Square",
+              "isSubject": false,
+              "appearances": 3,
+              "aiPresenceRate": 0.15,
+              "aiPresencePct": 15,
+              "relationship": "CORE",
+              "isCore": true,
+              "observedRank": 4,
+              "displayRank": 4,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 2,
+                "evidenceAvailable": true,
+                "competitorId": "w_nyc_times_square",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
+              }
+            },
+            {
+              "entityId": "hard_rock_nyc",
+              "name": "Hard Rock Hotel New York",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.1,
+              "aiPresencePct": 10,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 5,
+              "displayRank": 5,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 2,
+                "evidenceAvailable": true,
+                "competitorId": "hard_rock_nyc",
+                "supportingObservationCount": 2,
+                "drawerItemCount": 2
+              }
+            },
+            {
+              "entityId": "refinery_hotel_nyc",
+              "name": "Refinery Hotel",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.1,
+              "aiPresencePct": 10,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 6,
+              "displayRank": 6,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "refinery_hotel_nyc",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "civil_hotel_nyc",
+              "name": "The Civilian Hotel",
+              "isSubject": false,
+              "appearances": 2,
+              "aiPresenceRate": 0.1,
+              "aiPresencePct": 10,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 7,
+              "displayRank": 7,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "civil_hotel_nyc",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "archer_hotel_nyc",
+              "name": "Archer Hotel New York",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.05,
+              "aiPresencePct": 5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 8,
+              "displayRank": 8,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "archer_hotel_nyc",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "margaritaville_nyc",
+              "name": "Margaritaville Resort Times Square",
+              "isSubject": false,
+              "appearances": 1,
+              "aiPresenceRate": 0.05,
+              "aiPresencePct": 5,
+              "relationship": "OBSERVED_ALTERNATIVE",
+              "isCore": false,
+              "observedRank": 9,
+              "displayRank": 9,
+              "isAppendedCore": false,
+              "status": null,
+              "statusLabel": null,
+              "displacement": {
+                "count": 1,
+                "evidenceAvailable": true,
+                "competitorId": "margaritaville_nyc",
+                "supportingObservationCount": 1,
+                "drawerItemCount": 1
+              }
+            },
+            {
+              "entityId": "peer_honors_hilton_midtown",
+              "name": "Peer Honors Hilton Midtown",
+              "isSubject": false,
+              "appearances": 0,
+              "aiPresenceRate": 0,
+              "aiPresencePct": 0,
+              "observedRank": null,
+              "displayRank": "—",
+              "relationship": "CORE",
+              "isCore": true,
+              "isAppendedCore": true,
+              "isZeroPresenceCore": true,
+              "status": "NOT_SURFACED",
+              "statusLabel": "Not surfaced this period",
+              "displacement": {
+                "count": 0,
+                "evidenceAvailable": false,
+                "competitorId": "peer_honors_hilton_midtown",
+                "supportingObservationCount": 0,
+                "drawerItemCount": 0
+              }
+            }
+          ],
+          "reconciliation": {
+            "CORE_COUNT": 4,
+            "CORE_IN_TOP_10": 3,
+            "CORE_APPENDED": 0,
+            "CORE_ZERO_PRESENCE": 1,
+            "IDENTIFIABLE_CORE_TOTAL": 4,
+            "COUNT_MATCH": true
+          },
+          "meta": {
+            "ALL_CORE_INCLUDED": true,
+            "TRUE_RANK_PRESERVED": true,
+            "TOP_10_IS_MAXIMUM": false
+          }
+        }
+      },
+      "selectorOrder": [
+        "overall",
+        "business",
+        "leisure",
+        "couples",
+        "family",
+        "group_meeting",
+        "wellness",
+        "celebration"
+      ],
+      "defaultView": "overall",
+      "reconciliation": [
+        {
+          "PROPERTY": "Hilton New York Times Square",
+          "TERRITORY": "Business Travel",
+          "intent": "business",
+          "CORE_COUNT": 4,
+          "CORE_IN_TOP_10": 3,
+          "CORE_APPENDED": 0,
+          "CORE_ZERO_PRESENCE": 1,
+          "IDENTIFIABLE_CORE_TOTAL": 4,
+          "COUNT_MATCH": "YES",
+          "VISIBLE_ROWS": 11
+        },
+        {
+          "PROPERTY": "Hilton New York Times Square",
+          "TERRITORY": "Leisure Travel",
+          "intent": "leisure",
+          "CORE_COUNT": 4,
+          "CORE_IN_TOP_10": 1,
+          "CORE_APPENDED": 1,
+          "CORE_ZERO_PRESENCE": 2,
+          "IDENTIFIABLE_CORE_TOTAL": 4,
+          "COUNT_MATCH": "YES",
+          "VISIBLE_ROWS": 13
+        },
+        {
+          "PROPERTY": "Hilton New York Times Square",
+          "TERRITORY": "Couples / Romantic Stay",
+          "intent": "couples",
+          "CORE_COUNT": 4,
+          "CORE_IN_TOP_10": 3,
+          "CORE_APPENDED": 0,
+          "CORE_ZERO_PRESENCE": 1,
+          "IDENTIFIABLE_CORE_TOTAL": 4,
+          "COUNT_MATCH": "YES",
+          "VISIBLE_ROWS": 11
+        },
+        {
+          "PROPERTY": "Hilton New York Times Square",
+          "TERRITORY": "Family Travel",
+          "intent": "family",
+          "CORE_COUNT": 4,
+          "CORE_IN_TOP_10": 2,
+          "CORE_APPENDED": 0,
+          "CORE_ZERO_PRESENCE": 2,
+          "IDENTIFIABLE_CORE_TOTAL": 4,
+          "COUNT_MATCH": "YES",
+          "VISIBLE_ROWS": 10
+        },
+        {
+          "PROPERTY": "Hilton New York Times Square",
+          "TERRITORY": "Meetings & Groups",
+          "intent": "group_meeting",
+          "CORE_COUNT": 4,
+          "CORE_IN_TOP_10": 3,
+          "CORE_APPENDED": 0,
+          "CORE_ZERO_PRESENCE": 1,
+          "IDENTIFIABLE_CORE_TOTAL": 4,
+          "COUNT_MATCH": "YES",
+          "VISIBLE_ROWS": 10
+        },
+        {
+          "PROPERTY": "Hilton New York Times Square",
+          "TERRITORY": "Wellness",
+          "intent": "wellness",
+          "CORE_COUNT": 1,
+          "CORE_IN_TOP_10": 1,
+          "CORE_APPENDED": 0,
+          "CORE_ZERO_PRESENCE": 0,
+          "IDENTIFIABLE_CORE_TOTAL": 1,
+          "COUNT_MATCH": "YES",
+          "VISIBLE_ROWS": 9
+        },
+        {
+          "PROPERTY": "Hilton New York Times Square",
+          "TERRITORY": "Celebrations & Events",
+          "intent": "celebration",
+          "CORE_COUNT": 4,
+          "CORE_IN_TOP_10": 3,
+          "CORE_APPENDED": 0,
+          "CORE_ZERO_PRESENCE": 1,
+          "IDENTIFIABLE_CORE_TOTAL": 4,
+          "COUNT_MATCH": "YES",
+          "VISIBLE_ROWS": 10
+        }
+      ],
+      "PROPERTY_SPECIFIC_RANKING_DISPLAY_CODE": 0,
+      "PROPERTY_SPECIFIC_OVERALL_RANKING_CODE": 0,
+      "displacementEvidenceVersion": "adp_displacement_evidence_consistency_v2",
+      "DISPLAY_AND_MODAL_SAME_SOURCE": true
+    },
+    "executiveRead": {
+      "version": "adp_executive_read_v1+adp_executive_read_ux_v2",
+      "PROPERTY_SPECIFIC_EXECUTIVE_READ_CODE": 0,
+      "available": true,
+      "CURRENT_READ_AVAILABLE": true,
+      "COMPARABLE_PRIOR_AVAILABLE": false,
+      "CURRENT_READ_INDEPENDENT_OF_TREND": true,
+      "current": {
+        "positionPattern": "LIMITED_AI_DEMAND_REACH",
+        "label": "limited AI demand reach",
+        "narrative": "Hilton New York Times Square appears in 12% of monitored demand scenarios but in 3.5% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. Property Reality Coverage is 62.5%, indicating AI reflects a meaningful share of monitored property attributes. Demand reach is limited: the hotel appears in only 12% of monitored demand scenarios.",
+        "primaryStrength": {
+          "key": "PROPERTY_REPRESENTATION",
+          "label": "Property representation"
+        },
+        "primaryConstraint": {
+          "key": "DEMAND_REACH",
+          "label": "Demand reach"
+        },
+        "benchmarkFinding": null
+      },
+      "trend": {
+        "state": "BASELINE_PERIOD",
+        "label": "This is the baseline monitoring period for this property.",
+        "narrative": "This is the baseline monitoring period for this property.",
+        "hasComparablePrior": false,
+        "priorComparablePeriodId": null,
+        "deltas": null,
+        "materialityPp": 2,
+        "materialityPolicy": "HEURISTIC_PENDING_LONGITUDINAL_VALIDATION"
+      },
+      "currentPosition": {
+        "pattern": "LIMITED_AI_DEMAND_REACH",
+        "label": "limited AI demand reach"
+      },
+      "primaryStrength": {
+        "key": "PROPERTY_REPRESENTATION",
+        "label": "Property representation"
+      },
+      "primaryConstraint": {
+        "key": "DEMAND_REACH",
+        "label": "Demand reach"
+      },
+      "narrative": "Hilton New York Times Square appears in 12% of monitored demand scenarios but in 3.5% of individual comparable AI responses, meaning the hotel is relevant across monitored traveler needs but is not surfaced consistently in every AI response. Property Reality Coverage is 62.5%, indicating AI reflects a meaningful share of monitored property attributes. Demand reach is limited: the hotel appears in only 12% of monitored demand scenarios. This is the baseline monitoring period for this property.",
+      "meta": {
+        "overall": "This is the baseline monitoring period for this property",
+        "primaryStrength": "Property representation",
+        "primaryConstraint": "Demand reach"
+      },
+      "safety": {
+        "FREE_FORM_UNGOVERNED_NARRATIVE": 0,
+        "UNSUPPORTED_CAUSAL_CLAIMS": 0,
+        "VAGUE_UNEXPLAINED_PHRASES": 0,
+        "MARKETING_STYLE_LANGUAGE": 0,
+        "USES_ACTUAL_VALUES": 1,
+        "UNDEFINED_JARGON": 0,
+        "DUPLICATE_EXECUTIVE_FINDING_WITHOUT_NEW_MEANING": 0,
+        "PLAIN_BUSINESS_MEANING_FIRST": 1
+      },
+      "ux": {
+        "version": "adp_executive_read_ux_v2",
+        "businessLanguageVersion": "adp_executive_read_business_language_v3",
+        "layoutVersion": "adp_executive_read_left_box_layout_v1",
+        "layout": "two_column_v2",
+        "PROPERTY_SPECIFIC_EXECUTIVE_COPY_CODE": 0,
+        "biggestStrength": {
+          "sectionLabel": "BIGGEST STRENGTH",
+          "headline": "AI reflects key property facts",
+          "body": "AI currently reflects 62.5% of the monitored facts and attributes that define the hotel. This shows how completely AI represents what the property actually offers."
+        },
+        "biggestConstraint": {
+          "sectionLabel": "BIGGEST CONSTRAINT",
+          "headline": "Recognized for few traveler needs",
+          "body": "AI recognized the hotel as relevant for only 12% of the traveler needs tested. That means the hotel is absent from many types of trips and stay occasions AI was asked about."
+        },
+        "changeSinceLastRun": {
+          "sectionLabel": "CHANGE SINCE LAST COMPARABLE RUN",
+          "headline": "No comparable prior official period yet",
+          "body": "No comparable prior official monitoring period is available yet. This period can be evaluated on its own; change over time is not shown."
+        },
+        "executiveSummary": {
+          "title": "WHAT THE DATA SAYS",
+          "narrative": "Hilton New York Times Square appeared in at least one AI answer for 12% of the traveler needs we tested, and across every individual AI answer it appeared 3.5% of the time. Together, these results show how broadly AI recognizes the hotel and how consistently a traveler would encounter it.\n\nThe clearest strength in this period is ai reflects key property facts. See the summary at left for the supporting numbers.\n\nThe clearest current limitation is recognized for few traveler needs. No comparable prior official monitoring period is available yet, so change over time is not shown."
+        },
+        "safety": {
+          "VAGUE_UNEXPLAINED_PHRASES": 0,
+          "MARKETING_STYLE_LANGUAGE": 0,
+          "UNSUPPORTED_CAUSAL_CLAIMS": 0,
+          "USES_ACTUAL_VALUES": 1,
+          "UNDEFINED_JARGON": 0,
+          "DUPLICATE_EXECUTIVE_FINDING_WITHOUT_NEW_MEANING": 0,
+          "PLAIN_BUSINESS_MEANING_FIRST": 1
+        }
+      },
+      "summary": {
+        "biggestStrength": {
+          "sectionLabel": "BIGGEST STRENGTH",
+          "headline": "AI reflects key property facts",
+          "body": "AI currently reflects 62.5% of the monitored facts and attributes that define the hotel. This shows how completely AI represents what the property actually offers."
+        },
+        "biggestConstraint": {
+          "sectionLabel": "BIGGEST CONSTRAINT",
+          "headline": "Recognized for few traveler needs",
+          "body": "AI recognized the hotel as relevant for only 12% of the traveler needs tested. That means the hotel is absent from many types of trips and stay occasions AI was asked about.",
+          "primaryIssueId": null,
+          "family": "GENERIC"
+        },
+        "changeSinceLastComparableRun": {
+          "sectionLabel": "CHANGE SINCE LAST COMPARABLE RUN",
+          "headline": "No comparable prior official period yet",
+          "body": "No comparable prior official monitoring period is available yet. This period can be evaluated on its own; change over time is not shown."
+        }
+      },
+      "writeup": {
+        "title": "WHAT THE DATA SAYS",
+        "body": "Hilton New York Times Square appeared in at least one AI answer for 12% of the traveler needs we tested, and across every individual AI answer it appeared 3.5% of the time. Together, these results show how broadly AI recognizes the hotel and how consistently a traveler would encounter it.\n\nThe clearest strength in this period is ai reflects key property facts. See the summary at left for the supporting numbers.\n\nThe clearest current limitation is recognized for few traveler needs. No comparable prior official monitoring period is available yet, so change over time is not shown."
+      },
+      "scanLayer": {
+        "version": "adp_executive_scan_layer_v1",
+        "contract": "ADP_EXECUTIVE_SUMMARY_HYBRID_V3_LAYOUT",
+        "primaryIssueId": null,
+        "biggestStrength": {
+          "sectionLabel": "BIGGEST STRENGTH",
+          "headline": "AI reflects key property facts",
+          "body": "AI currently reflects 62.5% of the monitored facts and attributes that define the hotel. This shows how completely AI represents what the property actually offers."
+        },
+        "biggestConstraint": {
+          "sectionLabel": "BIGGEST CONSTRAINT",
+          "headline": "Recognized for few traveler needs",
+          "body": "AI recognized the hotel as relevant for only 12% of the traveler needs tested. That means the hotel is absent from many types of trips and stay occasions AI was asked about.",
+          "primaryIssueId": null,
+          "family": "GENERIC"
+        },
+        "changeSincePrior": {
+          "sectionLabel": "CHANGE SINCE LAST COMPARABLE RUN",
+          "headline": "No comparable prior official period yet",
+          "body": "No comparable prior official monitoring period is available yet. This period can be evaluated on its own; change over time is not shown."
+        }
+      },
+      "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+      "compositionContract": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+      "sections": {
+        "headline": "Hilton New York Times Square's primary issue is entering AI consideration at all, especially for Couples / Romantic Stay.",
+        "keyInsight": "AI Consideration is 3.5%, so the hotel appears in only a limited share of individual comparable responses. When the hotel is absent, New York Marriott Marquis repeatedly appears instead — a concentrated substitution pattern rather than a diffuse competitor list. Rank tactics have limited value until relevance improves. The binding constraint is becoming part of the answer set for the traveler needs the hotel currently misses.",
+        "whyItMatters": "Fine-tuning rank against individual competitors will have limited value until the hotel becomes relevant in more of the traveler needs it currently misses. Entry problems and rank problems require different management attention. If leadership optimizes competitor comparisons first, the hotel can look busy while still missing the larger answer-set gap.",
+        "focusNow": "Focus first on how the hotel is represented for Couples / Romantic Stay. Review whether the attributes, positioning, and use cases most relevant to those travelers are complete and consistently represented across priority sources. Treat competitor-rank tactics as secondary until entry improves.",
+        "watch": null,
+        "whatToReview": "Compare evidence from scenarios where New York Marriott Marquis appears with the property information currently available for Hilton New York Times Square. Check entry cues first — product type, occasion, and location framing — before broadening the review to secondary attributes."
+      },
+      "numericAnchors": [
+        {
+          "metricId": "executiveMetrics.considerationRate.rate",
+          "displayValue": "3.5%",
+          "section": "KEY_INSIGHT",
+          "reason": "Establishes severity of consideration / entry",
+          "paritySource": "executiveMetrics.considerationRate.rate",
+          "removingWeakensInsight": true,
+          "anchorType": "severity_indicator"
+        }
+      ],
+      "primaryIssueId": "lifestyle_couples_entry",
+      "insightArchetype": "HIDDEN_WEAKNESS",
+      "evidenceTrace": [
+        {
+          "kind": "metric",
+          "ref": "executiveMetrics.considerationRate.rate",
+          "value": 3.5
+        },
+        {
+          "kind": "territory",
+          "ref": "couples"
+        },
+        {
+          "kind": "numericAnchor",
+          "ref": "executiveMetrics.considerationRate.rate",
+          "displayValue": "3.5%"
+        },
+        {
+          "kind": "period",
+          "ref": "adp_period_adp_hilton_times_square_20260927133046_20958b"
+        }
+      ],
+      "qualityGates": {
+        "gates": {
+          "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE": {
+            "pass": true,
+            "detail": "keyInsight length"
+          },
+          "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY": {
+            "pass": true,
+            "detail": "property name referenced"
+          },
+          "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_KPI_ENUMERATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_CLEAR_NOT_CLEVER": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY": {
+            "pass": true,
+            "detail": null
+          },
+          "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST": {
+            "pass": true,
+            "detail": null
+          }
+        },
+        "gateIds": [
+          "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE",
+          "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY",
+          "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE",
+          "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE",
+          "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY",
+          "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY",
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE",
+          "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE",
+          "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS",
+          "ADP_EXECUTIVE_NO_KPI_ENUMERATION",
+          "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY",
+          "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE",
+          "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION",
+          "ADP_EXECUTIVE_CLEAR_NOT_CLEVER",
+          "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK",
+          "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE",
+          "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY",
+          "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY",
+          "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION",
+          "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST",
+          "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH",
+          "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY",
+          "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE",
+          "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY"
+        ],
+        "claimDiscipline": {
+          "unsupportedCausalImplication": 0,
+          "overstated": 0,
+          "pass": true
+        },
+        "wordCount": 218,
+        "allRequiredPass": true,
+        "failed": []
+      },
+      "sourceSnapshotHash": "0a95fec8d12c37ed",
+      "compositionHash": "896d8a7f9e6a9ff1",
+      "compositionV3": {
+        "ok": true,
+        "contract": "ADP_EXECUTIVE_READ_V3",
+        "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+        "compositionContract": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+        "generatedAt": "2026-09-27T13:58:09.133Z",
+        "propertyId": "adp_hilton_times_square",
+        "propertyName": "Hilton New York Times Square",
+        "periodId": "adp_period_adp_hilton_times_square_20260927133046_20958b",
+        "primaryIssueId": "lifestyle_couples_entry",
+        "insightArchetype": "HIDDEN_WEAKNESS",
+        "constraintClass": "ENTRY",
+        "sections": {
+          "headline": "Hilton New York Times Square's primary issue is entering AI consideration at all, especially for Couples / Romantic Stay.",
+          "keyInsight": "AI Consideration is 3.5%, so the hotel appears in only a limited share of individual comparable responses. When the hotel is absent, New York Marriott Marquis repeatedly appears instead — a concentrated substitution pattern rather than a diffuse competitor list. Rank tactics have limited value until relevance improves. The binding constraint is becoming part of the answer set for the traveler needs the hotel currently misses.",
+          "whyItMatters": "Fine-tuning rank against individual competitors will have limited value until the hotel becomes relevant in more of the traveler needs it currently misses. Entry problems and rank problems require different management attention. If leadership optimizes competitor comparisons first, the hotel can look busy while still missing the larger answer-set gap.",
+          "focusNow": "Focus first on how the hotel is represented for Couples / Romantic Stay. Review whether the attributes, positioning, and use cases most relevant to those travelers are complete and consistently represented across priority sources. Treat competitor-rank tactics as secondary until entry improves.",
+          "watch": null,
+          "whatToReview": "Compare evidence from scenarios where New York Marriott Marquis appears with the property information currently available for Hilton New York Times Square. Check entry cues first — product type, occasion, and location framing — before broadening the review to secondary attributes."
+        },
+        "numericAnchors": [
+          {
+            "metricId": "executiveMetrics.considerationRate.rate",
+            "displayValue": "3.5%",
+            "section": "KEY_INSIGHT",
+            "reason": "Establishes severity of consideration / entry",
+            "paritySource": "executiveMetrics.considerationRate.rate",
+            "removingWeakensInsight": true,
+            "anchorType": "severity_indicator"
+          }
+        ],
+        "evidenceTrace": [
+          {
+            "kind": "metric",
+            "ref": "executiveMetrics.considerationRate.rate",
+            "value": 3.5
+          },
+          {
+            "kind": "territory",
+            "ref": "couples"
+          },
+          {
+            "kind": "numericAnchor",
+            "ref": "executiveMetrics.considerationRate.rate",
+            "displayValue": "3.5%"
+          },
+          {
+            "kind": "period",
+            "ref": "adp_period_adp_hilton_times_square_20260927133046_20958b"
+          }
+        ],
+        "qualityGates": {
+          "gates": {
+            "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE": {
+              "pass": true,
+              "detail": "keyInsight length"
+            },
+            "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY": {
+              "pass": true,
+              "detail": "property name referenced"
+            },
+            "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_KPI_ENUMERATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_CLEAR_NOT_CLEVER": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY": {
+              "pass": true,
+              "detail": null
+            },
+            "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST": {
+              "pass": true,
+              "detail": null
+            }
+          },
+          "gateIds": [
+            "ADP_EXECUTIVE_SUMMARY_MUST_ADD_ANALYTICAL_VALUE",
+            "ADP_EXECUTIVE_SUMMARY_PROPERTY_SPECIFICITY",
+            "ADP_EXECUTIVE_KEY_INSIGHT_SUBSTANTIVE",
+            "ADP_EXECUTIVE_WHY_IT_MATTERS_SUBSTANTIVE",
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY",
+            "ADP_EXECUTIVE_FOCUS_NOW_FINAL_QUALITY",
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_ACTIONABLE",
+            "ADP_EXECUTIVE_WHAT_TO_REVIEW_INCREMENTAL_VALUE",
+            "ADP_EXECUTIVE_SELECTIVE_NUMERIC_ANCHORS",
+            "ADP_EXECUTIVE_NO_KPI_ENUMERATION",
+            "ADP_EXECUTIVE_NUMERIC_REFERENCE_PARITY",
+            "ADP_EXECUTIVE_NUMERIC_CONTRAST_VALUE",
+            "ADP_EXECUTIVE_NO_IMPLIED_CAUSATION",
+            "ADP_EXECUTIVE_CLEAR_NOT_CLEVER",
+            "ADP_EXECUTIVE_CUSTOMER_LANGUAGE_LOCK",
+            "ADP_EXECUTIVE_NO_CUSTOMER_FACING_METHODOLOGY_DEFENSE",
+            "ADP_EXECUTIVE_WATCH_EXECUTIVE_MATERIALITY",
+            "ADP_EXECUTIVE_READ_SECTION_TRACEABILITY",
+            "ADP_EXECUTIVE_READ_VS_MONTHLY_ACTION_LAYER_SEPARATION",
+            "ADP_EXECUTIVE_V3_FOUNDER_READ_TEST",
+            "ADP_EXECUTIVE_V3_FUTURE_PROPERTY_ZERO_CODE_PATH",
+            "ADP_EXECUTIVE_READ_CROSS_SURFACE_CANONICAL_PARITY",
+            "ADP_EXECUTIVE_NO_PROPERTY_HARDCODED_NARRATIVE",
+            "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY"
+          ],
+          "claimDiscipline": {
+            "unsupportedCausalImplication": 0,
+            "overstated": 0,
+            "pass": true
+          },
+          "wordCount": 218,
+          "allRequiredPass": true,
+          "failed": []
+        },
+        "sourceSnapshotHash": "0a95fec8d12c37ed",
+        "compositionHash": "896d8a7f9e6a9ff1",
+        "activated": true,
+        "customerFacingDefault": true,
+        "zeroCodePath": true,
+        "usedHardcodedMap": false,
+        "historicalImmutability": {
+          "enforced": true,
+          "policy": {
+            "rule": "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY",
+            "previouslyIssuedReports": "IMMUTABLE_PRIOR_COMPOSITION",
+            "nonDistributedCurrentReport": "MAY_RECEIVE_V3_ONLY_VIA_NEW_IMMUTABLE_EDITION",
+            "futureReports": "V3_DEFAULT_ONLY_AFTER_ACTIVATION",
+            "silentInPlaceMutation": "PROHIBITED",
+            "activationRequiredForCustomerDefault": true
+          },
+          "writePolicy": {
+            "allowed": true,
+            "mode": "CUSTOMER_DEFAULT_V3",
+            "reason": "ACTIVATED",
+            "policy": {
+              "rule": "ADP_EXECUTIVE_READ_HISTORICAL_IMMUTABILITY",
+              "previouslyIssuedReports": "IMMUTABLE_PRIOR_COMPOSITION",
+              "nonDistributedCurrentReport": "MAY_RECEIVE_V3_ONLY_VIA_NEW_IMMUTABLE_EDITION",
+              "futureReports": "V3_DEFAULT_ONLY_AFTER_ACTIVATION",
+              "silentInPlaceMutation": "PROHIBITED",
+              "activationRequiredForCustomerDefault": true
+            },
+            "enforced": true,
+            "customerDefault": true
+          }
+        },
+        "wordCount": 218,
+        "watchOmitted": true,
+        "candidates": [
+          {
+            "candidateId": "cand_concentrated_displacement",
+            "archetype": "COMPETITIVE_DISPLACEMENT",
+            "priorityScore": 0.969,
+            "summary": "New York Marriott Marquis appears in 31 monitored scenarios where the hotel is absent."
+          },
+          {
+            "candidateId": "cand_competitor_present_gaps",
+            "archetype": "COMPETITIVE_DISPLACEMENT",
+            "priorityScore": 0.7020000000000001,
+            "summary": "Competitors appear in a material share of scenarios where the hotel is absent (92%)."
+          },
+          {
+            "candidateId": "cand_reality_gap_fitness_center",
+            "archetype": "REALITY_DISCONNECT",
+            "priorityScore": 0.7565999999999999,
+            "summary": "Fitness Center is recognized in only 14.3% of monitored answers."
+          },
+          {
+            "candidateId": "cand_reality_gap_concierge",
+            "archetype": "REALITY_DISCONNECT",
+            "priorityScore": 0.7565999999999999,
+            "summary": "Concierge Service is recognized in only 14.3% of monitored answers."
+          },
+          {
+            "candidateId": "cand_entry_problem",
+            "archetype": "HIDDEN_WEAKNESS",
+            "priorityScore": 1.314,
+            "summary": "AI Consideration is 3.5% — the primary constraint is entering consideration, not rank after inclusion."
+          },
+          {
+            "candidateId": "cand_top_observed_alternative",
+            "archetype": "COMPETITIVE_DISPLACEMENT",
+            "priorityScore": 0.774,
+            "summary": "New York Marriott Marquis is the top observed AI alternative in the monitored set."
+          }
+        ],
+        "selectionMeta": {
+          "rules": [
+            "ADP_EXECUTIVE_READ_INPUT_V3",
+            "ADP_EXECUTIVE_INSIGHT_CANDIDATE_GENERATION_V3",
+            "ADP_EXECUTIVE_INSIGHT_PRIORITY_V3",
+            "ADP_EXECUTIVE_ONE_PRIMARY_PRIORITY"
+          ],
+          "supportingCandidateIds": []
+        },
+        "doctrine": [
+          "METHODOLOGY_IS_GOVERNED; QUALITY_CONTROLS_LEARN.",
+          "EXECUTIVE_INSIGHT_LEARNS_INTERPRETATION; MEASUREMENT_REMAINS_GOVERNED."
+        ],
+        "methodologyChanged": false,
+        "rendererViewModel": {
+          "ok": true,
+          "contract": "ADP_EXECUTIVE_READ_RENDERER_CONTRACT_V3",
+          "compositionVersion": "ADP_EXECUTIVE_READ_COMPOSITION_V3",
+          "activated": true,
+          "primaryIssueId": "lifestyle_couples_entry",
+          "insightArchetype": "HIDDEN_WEAKNESS",
+          "sections": [
+            {
+              "key": "headline",
+              "label": "Headline",
+              "text": "Hilton New York Times Square's primary issue is entering AI consideration at all, especially for Couples / Romantic Stay.",
+              "anchors": []
+            },
+            {
+              "key": "keyInsight",
+              "label": "Key Insight",
+              "text": "AI Consideration is 3.5%, so the hotel appears in only a limited share of individual comparable responses. When the hotel is absent, New York Marriott Marquis repeatedly appears instead — a concentrated substitution pattern rather than a diffuse competitor list. Rank tactics have limited value until relevance improves. The binding constraint is becoming part of the answer set for the traveler needs the hotel currently misses.",
+              "anchors": [
+                {
+                  "metricId": "executiveMetrics.considerationRate.rate",
+                  "displayValue": "3.5%",
+                  "section": "KEY_INSIGHT",
+                  "reason": "Establishes severity of consideration / entry",
+                  "paritySource": "executiveMetrics.considerationRate.rate",
+                  "removingWeakensInsight": true,
+                  "anchorType": "severity_indicator"
+                }
+              ]
+            },
+            {
+              "key": "whyItMatters",
+              "label": "Why It Matters",
+              "text": "Fine-tuning rank against individual competitors will have limited value until the hotel becomes relevant in more of the traveler needs it currently misses. Entry problems and rank problems require different management attention. If leadership optimizes competitor comparisons first, the hotel can look busy while still missing the larger answer-set gap.",
+              "anchors": []
+            },
+            {
+              "key": "focusNow",
+              "label": "Focus Now",
+              "text": "Focus first on how the hotel is represented for Couples / Romantic Stay. Review whether the attributes, positioning, and use cases most relevant to those travelers are complete and consistently represented across priority sources. Treat competitor-rank tactics as secondary until entry improves.",
+              "anchors": []
+            },
+            {
+              "key": "whatToReview",
+              "label": "What to Review",
+              "text": "Compare evidence from scenarios where New York Marriott Marquis appears with the property information currently available for Hilton New York Times Square. Check entry cues first — product type, occasion, and location framing — before broadening the review to secondary attributes.",
+              "anchors": []
+            }
+          ],
+          "flattenedProseForLegacy": "Hilton New York Times Square's primary issue is entering AI consideration at all, especially for Couples / Romantic Stay.\n\nAI Consideration is 3.5%, so the hotel appears in only a limited share of individual comparable responses. When the hotel is absent, New York Marriott Marquis repeatedly appears instead — a concentrated substitution pattern rather than a diffuse competitor list. Rank tactics have limited value until relevance improves. The binding constraint is becoming part of the answer set for the traveler needs the hotel currently misses.\n\nFine-tuning rank against individual competitors will have limited value until the hotel becomes relevant in more of the traveler needs it currently misses. Entry problems and rank problems require different management attention. If leadership optimizes competitor comparisons first, the hotel can look busy while still missing the larger answer-set gap.\n\nFocus first on how the hotel is represented for Couples / Romantic Stay. Review whether the attributes, positioning, and use cases most relevant to those travelers are complete and consistently represented across priority sources. Treat competitor-rank tactics as secondary until entry improves.\n\nCompare evidence from scenarios where New York Marriott Marquis appears with the property information currently available for Hilton New York Times Square. Check entry cues first — product type, occasion, and location framing — before broadening the review to secondary attributes."
+        }
+      }
+    },
+    "metricScopeLabels": {
+      "version": "adp_metric_scope_labels_v1",
+      "subjectObservationGrain": {
+        "productLabel": "AI Consideration",
+        "technicalLabel": "AI Consideration Rate",
+        "grain": "property × scenario × provider × period (comparable observations)",
+        "definition": "Share of comparable monitored AI responses where the subject hotel appears."
+      },
+      "subjectScenarioGrain": {
+        "productLabel": "AI Scenario Presence",
+        "technicalLabel": "Demand Scenario Coverage",
+        "grain": "property × scenario (aggregates providers)",
+        "definition": "Share of monitored demand scenarios where the subject hotel appears on at least one comparable provider."
+      },
+      "competitorScenarioAppearance": {
+        "productLabel": "Scenario Appearance",
+        "technicalLabel": "Competitor Scenario Appearance",
+        "grain": "non-subject hotel × scenario (within subject hotel report)",
+        "definition": "Share of monitored scenarios in this report where a competitor hotel appears. Not the same metric as that hotel's own AI Consideration.",
+        "forbiddenClientLabels": [
+          "Presence",
+          "AI Presence"
+        ]
+      },
+      "competitorObservationAppearance": {
+        "productLabel": "Observation Appearance",
+        "technicalLabel": "Competitor Observation Appearance",
+        "grain": "non-subject hotel × observation (within subject hotel report)",
+        "definition": "Share of comparable monitored answers in this report where a competitor hotel appears. Not interchangeable with subject AI Consideration unless same-scope certified."
+      },
+      "scopeRule": "SAME_SCOPE_SAME_CANONICAL_METRIC",
+      "ambiguityRule": "ADP_METRIC_SCOPE_UNAMBIGUOUS"
+    },
+    "trends": [
+      {
+        "periodId": "adp_period_adp_hilton_times_square_20260927133046_20958b",
+        "date": "2026-09-27T13:30:46.964Z",
+        "propertyRealityCoverage": 62.5,
+        "scenarioPresenceRate": 12,
+        "considerationRate": 3.5,
+        "providerCount": 4,
+        "observationCount": 200,
+        "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1",
+        "role": "current"
+      }
+    ]
+  }
+}

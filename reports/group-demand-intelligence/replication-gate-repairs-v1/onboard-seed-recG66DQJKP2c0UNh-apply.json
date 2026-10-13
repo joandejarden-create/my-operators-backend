@@ -1,0 +1,152 @@
+{
+  "generatedAt": "2026-09-24T22:38:27.341Z",
+  "hotelId": "recG66DQJKP2c0UNh",
+  "dryRun": {
+    "fits": 8,
+    "targets": 16,
+    "generators": 8,
+    "programs": 8,
+    "rejected": 0,
+    "byType": {
+      "DEMAND_GENERATOR": 8,
+      "PROGRAM": 8
+    },
+    "byPriority": {
+      "HIGH": 4,
+      "MEDIUM": 12,
+      "LOW": 0
+    }
+  },
+  "canonicalBase": {
+    "expected": "appa2cE7FTRmIbB32",
+    "envReport": {
+      "canonicalExpected": "appa2cE7FTRmIbB32",
+      "legacyForbidden": "appvtnDurnMSjINP6",
+      "envKeys": {
+        "ADP_AIRTABLE_BASE_ID": "MISSING",
+        "AIRTABLE_GDI_BASE_ID": "SET_CANONICAL",
+        "GDI_OPPORTUNITIES_AIRTABLE_BASE_ID": "SET_CANONICAL",
+        "AIRTABLE_INTELLIGENCE_BASE_ID": "SET_CANONICAL",
+        "AIRTABLE_BASE_ID": "SET_NONCANONICAL"
+      },
+      "adpResolve": {
+        "status": "SET_CANONICAL",
+        "source": "AIRTABLE_INTELLIGENCE_BASE_ID",
+        "ok": true,
+        "error": null
+      },
+      "gdiResolve": {
+        "status": "SET_CANONICAL",
+        "source": "AIRTABLE_GDI_BASE_ID",
+        "ok": true,
+        "error": null
+      }
+    },
+    "gdiResolve": {
+      "baseId": "appa2cE7FTRmIbB32",
+      "source": "AIRTABLE_GDI_BASE_ID",
+      "status": "SET_CANONICAL"
+    }
+  },
+  "adpPersistencePolicy": {
+    "version": "adp_persistence_policy_v1",
+    "PRIMARY_SOT": "FILESYSTEM_SNAPSHOT",
+    "LIVE_OVERLAY": "AIRTABLE_PUBLISHED_REPORTS",
+    "HISTORY_AIRTABLE": "DISABLED",
+    "historyEnableEnv": "ADP_HISTORY_AIRTABLE_WRITE_APPLY",
+    "liveOverlayBaseEnv": "ADP_AIRTABLE_BASE_ID",
+    "secondHotelHistoryRequired": false,
+    "secondHotelHistoryReason": "Filesystem published snapshots + Live overlay (when configured) are sufficient for second-hotel replication; Airtable history remains optional and gated."
+  },
+  "pilotLogicEnabled": false,
+  "profileCompleteness": {
+    "hotelId": "recG66DQJKP2c0UNh",
+    "hotelName": "Renaissance New York Times Square Hotel",
+    "brand": "Renaissance Hotels (Marriott)",
+    "market": "Manhattan Midtown / Times Square",
+    "rooms": 310,
+    "meetingSpaceSqFt": 5000,
+    "serviceLevel": "full_service_urban",
+    "hotelArchetype": "times_square_midtown_lifestyle",
+    "catchmentIncludes": [
+      "Times Square / Theater District",
+      "Midtown Manhattan where Renaissance is a credible alternative",
+      "selected Manhattan overflow only when housing access is realistic"
+    ]
+  },
+  "applied": {
+    "dryRun": false,
+    "writeStats": {
+      "generators": {
+        "create": 8,
+        "update": 0,
+        "preview": 0
+      },
+      "programs": {
+        "create": 8,
+        "update": 0,
+        "preview": 0
+      },
+      "fits": {
+        "create": 8,
+        "update": 0,
+        "preview": 0
+      },
+      "targets": {
+        "create": 16,
+        "update": 0,
+        "preview": 0
+      }
+    },
+    "performance": {
+      "runtimeMs": 23325,
+      "airtableWrites": 40,
+      "airtableReadsEstimate": 40
+    },
+    "fits": 8,
+    "targets": 16
+  },
+  "recreateProof": {
+    "fitFirst": 8,
+    "fitRecreated": 8,
+    "fitOverlapCount": 8,
+    "fitOverlapPct": 100,
+    "targetFirst": 16,
+    "targetRecreated": 16,
+    "targetOverlapCount": 16,
+    "targetOverlapPct": 100,
+    "materialFitDiffs": [],
+    "materialTargetDiffs": [],
+    "deterministic": true,
+    "manualHotelSpecificInjection": false
+  },
+  "weeklyReadiness": {
+    "status": "WEEKLY_READY",
+    "blockers": [],
+    "targetCount": 16,
+    "fitCount": 8,
+    "note": "Seeded targets are structurally consumable by weekly discovery (no live run executed)"
+  },
+  "jevShadow": null,
+  "adpJevPrep": {
+    "shadowAdapterExists": false,
+    "productionAdpBehaviorChanged": false,
+    "lowRiskIntegrationPoints": [
+      "EVIDENCE_UTILITY — rank evidence packs after filesystem snapshot assemble",
+      "SOURCE_PRIORITY — order source follow-ups in research notes (shadow)",
+      "FOLLOWUP_RESEARCH_TYPE — suggest next research type without mutating report"
+    ],
+    "futureHook": "lib/ai-demand-positioning/ + shared lib/group-demand-intelligence/jev decide(); keep ADP filesystem PRIMARY_SOT; never let Jev authorize persistence"
+  },
+  "quality": {
+    "baselineCreatesWeeklyNew": false,
+    "baselineCreatesOpportunity": false,
+    "hotelNameSwitches": false,
+    "pilotBleedRejected": 0
+  },
+  "security": {
+    "hotelScoped": true,
+    "pilotBleedRejected": 0,
+    "bethesdaIdsInSeed": 0
+  }
+}

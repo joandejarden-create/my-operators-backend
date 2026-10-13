@@ -1,0 +1,350 @@
+{
+  "id": "gdi_run_musogsfj_da103757",
+  "hotelId": "recKRJjcPnb4tVDDS",
+  "status": "COMPLETED",
+  "productVersion": "group-demand-intelligence-v1.0.0",
+  "startedAt": "2026-10-03T17:40:27.248Z",
+  "completedAt": "2026-10-03T17:40:27.483Z",
+  "trigger": "spice_island_current_closure_v2",
+  "discoveryMode": "INDEPENDENT_CANDIDATES",
+  "configuration": {
+    "demandConfig": {
+      "hotelId": "recKRJjcPnb4tVDDS",
+      "displayName": "Spice Island Beach Resort",
+      "country": "Grenada",
+      "city": "St George's",
+      "aliases": {
+        "adpPropertyId": "adp_spice_island_beach_resort",
+        "censusRecordId": "recKRJjcPnb4tVDDS",
+        "provisionalGdiHotelId": "gdi_hotel_spice_island_beach_resort",
+        "identityKey": "p55_gplace_ChIJtaIWROAgOIwRhr20ml2iNYQ",
+        "note": "Canonical hotelId is HPC record. Provisional GDI key retained as alias only."
+      },
+      "adpFixturePath": "fixtures/ai-demand-positioning/spice-island-beach-resort-property-profile.json",
+      "geo": {
+        "latitude": 12.022437,
+        "longitude": -61.764868
+      },
+      "commercialPriorities": {
+        "targetSegments": [],
+        "coreTargetPeakRoomsMin": 10,
+        "coreTargetPeakRoomsMax": 40,
+        "allowSmallerIfCommerciallyMeaningful": true,
+        "demandAnchorFocus": [],
+        "weekendFocus": true,
+        "notes": "HOTEL_SPECIFIC_DATA from ADP fixture (64 suites, all-inclusive option, Grand Anse beach). Peak band sized for boutique luxury resort leisure / wedding / honeymoon primary pursuit; large island-wide incentive is overflow only when housing access is evidenced. targetSegments intentionally empty — discovery must not be seeded with demand-type assumptions."
+      },
+      "capabilityProfile": {
+        "totalGuestrooms": 64,
+        "totalMeetingSpaceSqFt": null,
+        "largestBallroomSqFt": null,
+        "largestTheaterCapacity": null,
+        "meetingRoomsIndoor": null,
+        "outdoorEventSpace": true,
+        "softBrand": "Small Luxury Hotels of the World",
+        "serviceLevel": "luxury_all_inclusive_beach_resort",
+        "classification": "luxury_caribbean_all_inclusive_resort",
+        "country": "Grenada",
+        "notes": "HOTEL_SPECIFIC_DATA from official site + SLH listing — 64 suites, beachfront Grand Anse, outdoor events/weddings evidenced; indoor meeting inventory not quantified. Not hardcoded into scoring engine."
+      },
+      "demandTerritory": {
+        "label": "Grenada / Grand Anse",
+        "country": "Grenada",
+        "includes": [
+          "Grand Anse Beach core where Spice Island Beach Resort is a credible luxury alternative",
+          "selected Grenada island demand when lodging access is realistic",
+          "selected Windward Islands / Eastern Caribbean destination overflow only when housing access is evidenced"
+        ],
+        "evaluationQuestion": "Could Spice Island Beach Resort realistically capture this group demand given 64 suites, all-inclusive luxury beach positioning, outdoor wedding/event capability, and Grand Anse / Grenada relevance?",
+        "classifications": [
+          "TERRITORY_CORE",
+          "TERRITORY_NEARBY",
+          "TERRITORY_COMPETITIVE",
+          "TERRITORY_STRETCH",
+          "OUTSIDE_REALISTIC_TERRITORY"
+        ],
+        "displayLabels": {
+          "TERRITORY_CORE": "Grand Anse Core",
+          "TERRITORY_NEARBY": "Nearby Grenada Corridor",
+          "TERRITORY_COMPETITIVE": "Grenada Competitive",
+          "TERRITORY_STRETCH": "Eastern Caribbean Stretch",
+          "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+        },
+        "classificationKeywords": {
+          "TERRITORY_CORE": [
+            "grand anse",
+            "grand-anse",
+            "spice island beach resort",
+            "st george's",
+            "st georges"
+          ],
+          "TERRITORY_NEARBY": [
+            "lance aux epines",
+            "true blue",
+            "morne rouge",
+            "point salines",
+            "st george's parish"
+          ],
+          "TERRITORY_COMPETITIVE": [
+            "grenada",
+            "spice island",
+            "carriacou"
+          ],
+          "TERRITORY_STRETCH": [
+            "st lucia",
+            "saint lucia",
+            "barbados",
+            "antigua",
+            "tobago",
+            "eastern caribbean"
+          ],
+          "OUTSIDE_REALISTIC_TERRITORY": [
+            "bethesda",
+            "times square",
+            "rome",
+            "a coruña",
+            "a coruna",
+            "jamaica spice island inn",
+            "cancun mega",
+            "las vegas"
+          ]
+        }
+      },
+      "competitiveContext": {
+        "strCompSet": [],
+        "relevantGroupDemandAlternatives": [],
+        "notes": "HOTEL_SPECIFIC_DATA — empty avoids invented competitors."
+      },
+      "identityExclusions": [
+        "Spice Island Inn",
+        "Spice Island Inn Jamaica"
+      ],
+      "gdiOnboarding": {
+        "status": "CANONICAL",
+        "censusLinkStatus": "canonical",
+        "blocking": [],
+        "officialWebsite": "https://www.spiceislandbeachresort.com/",
+        "boundFromProvisional": "gdi_hotel_spice_island_beach_resort",
+        "boundAt": "2026-09-29T12:00:00.000Z"
+      }
+    },
+    "webhoundHardCapUsd": 15,
+    "ampfyStatus": {
+      "provider": "ampfy",
+      "status": "provider_not_configured",
+      "note": "Ampfy is not present in this repo. Level-4 uses Apify where applicable; Ampfy slot reserved."
+    },
+    "methodsVersion": "gdi-research-methods-v1-experimental"
+  },
+  "providers": {
+    "dealality_existing_knowledge": true,
+    "gdi_research_methods": true,
+    "standard_web": true,
+    "ampfy": "provider_not_configured",
+    "apify": "not_invoked_pilot_default",
+    "webhound": null
+  },
+  "researchMethods": [
+    "GDI-ASSOC-EVENT-01",
+    "GDI-MED-SCI-01",
+    "GDI-HIST-MEETING-01",
+    "GDI-GOV-EVENT-01",
+    "GDI-WEEKEND-01",
+    "GDI-CONTACT-01",
+    "GDI-VENUE-HOUSING-01",
+    "GDI-FUTURE-CAL-01",
+    "GDI-FIXED-VENUE-HOUSING-01",
+    "GDI-OPEN-UNIVERSE-01",
+    "GDI-SPORTS-STAY-01",
+    "GDI-ANCHOR-01"
+  ],
+  "metrics": {
+    "candidatesResearched": 17,
+    "opportunitiesQualified": 17,
+    "highPriorityCount": 0,
+    "mediumPriorityCount": 2,
+    "watchlistCount": 15,
+    "disqualifiedCount": 0,
+    "sourceCount": 15,
+    "duplicatesRemoved": 0,
+    "expiredRemoved": 0
+  },
+  "cost": {
+    "totalUsd": 0,
+    "webhoundUsd": 0,
+    "ampfyUsd": 0,
+    "apifyUsd": 0,
+    "serpApiUsd": 0,
+    "llmUsd": 0,
+    "standardSearchUsd": 0,
+    "otherUsd": 0,
+    "queryCount": 0,
+    "providerCallCount": 0,
+    "webhoundCalls": [],
+    "ampfyCalls": [],
+    "apifyCalls": [],
+    "escalationLog": [
+      {
+        "level": "L1_EXISTING_DEALALITY_KNOWLEDGE",
+        "question": "Load hotel group demand profile from Dealality knowledge",
+        "result": "started",
+        "at": "2026-10-03T17:40:27.279Z"
+      },
+      {
+        "level": "L1_EXISTING_DEALALITY_KNOWLEDGE",
+        "question": "Hotel profile from ADP RO fixture + GDI demand config",
+        "result": "ok",
+        "sources": [
+          "fixtures/ai-demand-positioning/spice-island-beach-resort-property-profile.json (READ_ONLY)",
+          "config/group-demand-intelligence/hotels/recKRJjcPnb4tVDDS.json"
+        ],
+        "adpCanonicalReuse": {
+          "classification": "HOTEL_SPECIFIC_DATA",
+          "reusedFields": [
+            "name",
+            "address/city/state",
+            "brand/affiliation",
+            "rooms",
+            "meetingSpace",
+            "declaredCompSet",
+            "positioning",
+            "geography",
+            "attributes"
+          ],
+          "missingGdiCriticalFields": [
+            "totalMeetingSpaceSqFt"
+          ],
+          "newlyResearchedFields": [],
+          "adpFixturePath": "fixtures/ai-demand-positioning/spice-island-beach-resort-property-profile.json",
+          "note": "No duplicate hotel profile created — ADP fixture consumed read-only."
+        },
+        "at": "2026-10-03T17:40:27.285Z"
+      },
+      {
+        "level": "L2_CANONICAL_DEALALITY_RESEARCH_METHODS",
+        "question": "Apply GDI experimental research methods / seed qualification",
+        "methods": [
+          "GDI-ASSOC-EVENT-01",
+          "GDI-MED-SCI-01",
+          "GDI-HIST-MEETING-01",
+          "GDI-GOV-EVENT-01",
+          "GDI-WEEKEND-01",
+          "GDI-CONTACT-01",
+          "GDI-VENUE-HOUSING-01",
+          "GDI-FUTURE-CAL-01",
+          "GDI-FIXED-VENUE-HOUSING-01",
+          "GDI-OPEN-UNIVERSE-01",
+          "GDI-SPORTS-STAY-01",
+          "GDI-ANCHOR-01"
+        ],
+        "result": "ok",
+        "at": "2026-10-03T17:40:27.285Z"
+      },
+      {
+        "level": "L3_STANDARD_APPROVED_WEB_RESEARCH",
+        "question": "Independent discovery candidates (no Bethesda seed path)",
+        "result": "ok",
+        "note": "Candidates supplied via seedCandidates / Webhound import — not Bethesda demand-type seeds",
+        "at": "2026-10-03T17:40:27.285Z"
+      },
+      {
+        "level": "L4_AMPFY_APIFY_SUPPLEMENTAL",
+        "question": "Ampfy/Apify supplemental enrichment",
+        "result": "provider_not_configured",
+        "ampfy": {
+          "provider": "ampfy",
+          "status": "provider_not_configured",
+          "note": "Ampfy is not present in this repo. Level-4 uses Apify where applicable; Ampfy slot reserved."
+        },
+        "apify": "not_invoked_pilot_default",
+        "at": "2026-10-03T17:40:27.285Z"
+      },
+      {
+        "level": "L3_STANDARD_APPROVED_WEB_RESEARCH",
+        "question": "Ingest independent discovery candidates",
+        "result": "ok",
+        "candidateCount": 17,
+        "discoveryMode": "INDEPENDENT_CANDIDATES",
+        "note": "No Bethesda pilot seeds; no DMV expansion pass",
+        "at": "2026-10-03T17:40:27.379Z"
+      },
+      {
+        "level": "L5_WEBHOUND_DEEP_RESEARCH",
+        "question": "Selective deep research",
+        "result": "not_requested_this_run",
+        "hardCapUsd": 15,
+        "at": "2026-10-03T17:40:27.482Z"
+      }
+    ],
+    "incrementalRoi": [],
+    "radFeedbackEnrichment": {
+      "pass": "rad_feedback_dmv_product_quality_v1",
+      "webhoundSpentUsd": 0,
+      "webhoundCapUsd": 15,
+      "note": "Product-quality enrichment only. Webhound hard cap unchanged; no additional Webhound spend in this pass (prior pilot already at/near $15).",
+      "appliedAt": "2026-10-03T17:40:27.434Z"
+    },
+    "qualificationPrecision": {
+      "pass": "qualification_precision_v1",
+      "commercialQaPass": "commercial_qa_high_retention_v1_20260915",
+      "commercialQaApplied": [],
+      "mediumContactNotes": {
+        "gdi_opp_amwa_2027_annual": {
+          "bucket": "A_WEAK_OR_INCOMPLETE_QUALIFICATION",
+          "note": "Venue TBD is promising, but room demand remains UNKNOWN and contact is a generic association inbox. Medium is correct — not merely a named-contact miss."
+        },
+        "gdi_opp_nice_2027": {
+          "bucket": "B_STRONG_OPEN_MISSING_NAMED_CONTACT",
+          "note": "Qualification STRONG / venue open / estimated rooms / NIST-adjacent — blocked from High only by generic inbox (nice@nist.gov). High contact rule is appropriately strict for 'act this week'; Medium correctly preserves the opportunity for contact deepening."
+        },
+        "gdi_opp_acts_ts27": {
+          "bucket": "B_STRONG_OPEN_MISSING_NAMED_CONTACT",
+          "note": "Qualification STRONG / DC venue TBD / estimated rooms / NIH-adjacent — blocked from High by unnamed staff desk. Do not auto-promote; deepen named meetings contact first."
+        }
+      },
+      "webhoundSpentUsd": 0,
+      "webhoundCapUsd": 15,
+      "note": "Precision re-score + commercial QA High retention check — no broad discovery, no additional Webhound spend.",
+      "appliedAt": "2026-10-03T17:40:27.482Z",
+      "priorityCounts": {
+        "HIGH_PRIORITY": 0,
+        "MEDIUM_PRIORITY": 2,
+        "WATCHLIST": 15,
+        "DISQUALIFIED": 0
+      }
+    },
+    "costPerDiscoveredOpportunityUsd": null,
+    "costPerQualifiedOpportunityUsd": 0,
+    "costPerHighPriorityOpportunityUsd": 0,
+    "webhoundHardCapUsd": 15,
+    "webhoundRemainingUsd": 15,
+    "externalResearchEnabled": true
+  },
+  "opportunityIds": [
+    "gdi_opp_grenada_voluntourism_program_0",
+    "gdi_opp_executive_retreats_at_spice_island_beach_resort_1",
+    "gdi_opp_destination_weddings_in_grenada_2",
+    "gdi_opp_luxury_travel_advisor_fam_3",
+    "gdi_opp_grenada_regional_association_annual_meeting_4",
+    "gdi_opp_yacht_charter_crew_lodging_5",
+    "gdi_opp_building_grenada_s_strategic_framework_to_enhanc_6",
+    "gdi_opp_incentive_travel_programs_7",
+    "gdi_opp_executive_retreats_8",
+    "gdi_opp_nabhood_annual_conference_9",
+    "gdi_opp_destination_weddings_at_spice_island_beach_resor_10",
+    "gdi_opp_grenada_incentive_travel_11",
+    "gdi_opp_yacht_charter_season_12",
+    "gdi_opp_grenada_executive_retreats_13",
+    "gdi_opp_grenada_destination_weddings_14",
+    "gdi_opp_travel_advisor_familiarization_trips_15",
+    "gdi_opp_grenada_2026_16"
+  ],
+  "errors": [],
+  "adpTouched": false,
+  "censusWritten": false,
+  "portability": {
+    "bethesdaSeedPathUsed": false,
+    "dmvExpansionUsed": false,
+    "hotelConfigPath": "config/group-demand-intelligence/hotels/recKRJjcPnb4tVDDS.json"
+  }
+}

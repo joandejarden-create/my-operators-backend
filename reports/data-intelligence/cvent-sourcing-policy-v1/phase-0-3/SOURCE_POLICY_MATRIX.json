@@ -1,0 +1,99 @@
+{
+  "sourcePolicyVersion": "source-policy-v1",
+  "generatedAt": "2026-10-03T15:59:00.000Z",
+  "roles": {
+    "VERIFIED_PRIMARY": {
+      "canPersistAsCanonical": true,
+      "canUseForScoring": true,
+      "canDisplayToCustomer": true,
+      "requiresIndependentVerification": false
+    },
+    "VERIFIED_SECONDARY": {
+      "canPersistAsCanonical": true,
+      "canUseForScoring": true,
+      "canDisplayToCustomer": true,
+      "requiresIndependentVerification": false
+    },
+    "DISCOVERY_ONLY": {
+      "canPersistAsCanonical": false,
+      "canUseForScoring": false,
+      "canDisplayToCustomer": false,
+      "requiresIndependentVerification": true
+    },
+    "UNVERIFIED": {
+      "canPersistAsCanonical": false,
+      "canUseForScoring": false,
+      "canDisplayToCustomer": false,
+      "requiresIndependentVerification": true
+    },
+    "BLOCKED": {
+      "canPersistAsCanonical": false,
+      "canUseForScoring": false,
+      "canDisplayToCustomer": false,
+      "requiresIndependentVerification": true
+    }
+  },
+  "domains": {
+    "CVENT_VENUE_HOTEL": {
+      "defaultRole": "DISCOVERY_ONLY",
+      "canPersistAsCanonical": false,
+      "canUseForScoring": false,
+      "canDisplayToCustomer": false,
+      "requiresIndependentVerification": true,
+      "urlPatterns": ["cvent.com/venues/", "cvent.com/.../hotel/.../venue-{uuid}"]
+    },
+    "CVENT_EVENT_PLATFORM": {
+      "defaultRole": "VERIFIED_SECONDARY",
+      "canPersistAsCanonical": "n/a_hotel_facts",
+      "canUseForScoring": "event_evidence_only",
+      "canDisplayToCustomer": "under_gdi_event_policy",
+      "requiresIndependentVerification": false,
+      "urlPatterns": ["web.cvent.com/event/", "registration/housing paths"],
+      "note": "Not globally banned; not used as hotel property SoT"
+    },
+    "FIRST_PARTY_HOTEL": {
+      "defaultRole": "VERIFIED_PRIMARY"
+    },
+    "BRAND_API": {
+      "defaultRole": "VERIFIED_PRIMARY"
+    },
+    "HBX": {
+      "defaultRole": "VERIFIED_SECONDARY"
+    },
+    "GIATA": {
+      "defaultRole": "VERIFIED_SECONDARY"
+    },
+    "OTA": {
+      "defaultRole": "UNVERIFIED"
+    },
+    "OSM_WIKIDATA": {
+      "defaultRole": "UNVERIFIED"
+    },
+    "SEARCH_RESULT": {
+      "defaultRole": "UNVERIFIED"
+    },
+    "OTHER": {
+      "defaultRole": "UNVERIFIED"
+    }
+  },
+  "cventVenueBlockedFields": [
+    "Rooms / Keys",
+    "roomsKeys",
+    "suites",
+    "totalMeetingSpaceSqFt",
+    "totalMeetingSpaceSqM",
+    "meetingRoomCount",
+    "largestMeetingSpaceSqFt",
+    "largestEventCapacity",
+    "Hotel Description - Source Text",
+    "Hotel Description - AI Summary",
+    "listingText",
+    "hotelOverview",
+    "yearBuilt",
+    "yearRenovated",
+    "airportDistanceMiles",
+    "Address",
+    "Phone",
+    "Current Brand"
+  ]
+}

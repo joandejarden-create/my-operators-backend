@@ -8,6 +8,47 @@
   var API_BASE = "/api/ai-demand-positioning";
   var currentPayload = null;
 
+
+  function adpCleanLocPart(v) {
+    if (v == null) return "";
+    var s = String(v).trim();
+    if (!s || s === "null" || s === "undefined") return "";
+    return s;
+  }
+  function adpHumanCountry(c) {
+    var raw = adpCleanLocPart(c);
+    if (!raw) return "";
+    var map = {
+      IT: "Italy",
+      CH: "Switzerland",
+      ES: "Spain",
+      US: "United States",
+      BM: "Bermuda",
+      GD: "Grenada",
+      MX: "Mexico",
+      DO: "Dominican Republic",
+    };
+    if (/^[A-Za-z]{2}$/.test(raw)) return map[raw.toUpperCase()] || raw.toUpperCase();
+    return raw;
+  }
+  function adpPropertyLocationLine(p) {
+    if (!p) return "";
+    if (p.locationLine) return p.locationLine;
+    var city = adpCleanLocPart(p.city);
+    var state = adpCleanLocPart(p.state) || adpCleanLocPart(p.region);
+    var country = adpHumanCountry(p.country);
+    if (city && state) return city + ", " + state;
+    if (city && country) return city + ", " + country;
+    return city || country || "";
+  }
+  function adpPropertySelectorLabel(p) {
+    if (!p) return "";
+    if (p.label || p.optionLabel) return p.label || p.optionLabel;
+    var name = adpCleanLocPart(p.name) || adpCleanLocPart(p.displayName) || "";
+    var loc = adpPropertyLocationLine(p);
+    return loc ? name + " — " + loc : name;
+  }
+
   function esc(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
   function toProperCase(s) { return (s || "").replace(/\b\w/g, function(c) { return c.toUpperCase(); }); }
 
@@ -419,7 +460,7 @@
     if (!sel) return;
     sel.disabled = false;
     sel.removeAttribute("aria-disabled");
-    sel.removeAttribute("title");
+    // Keep title as full selected label (not share-lock copy)
     sel.classList.remove("filter-select--share-locked");
   }
 
@@ -427,14 +468,28 @@
     opts = opts || {};
     var shareUrl = withAdpShareCapability(url);
     var auth = window.DealalityMemberstackAuth;
+    // Preserve method/body — owner-app feedback POSTs depend on this.
     var fetchOpts = {
+      method: opts.method || "GET",
       headers: { Accept: "application/json", ...(opts.headers || {}) },
-      credentials: "include",
+      credentials: opts.credentials || "include",
       cache: opts.cache || "no-store",
     };
+    if (opts.body != null) fetchOpts.body = opts.body;
+    if (opts.signal) fetchOpts.signal = opts.signal;
+    if (opts.mode) fetchOpts.mode = opts.mode;
+    if (opts.redirect) fetchOpts.redirect = opts.redirect;
     var token = getAdpShareCapabilityToken();
     if (token) {
       fetchOpts.headers["X-ADP-Share-Capability"] = token;
+    }
+
+    // Admin/current-report PDF print path: Playwright fulfills APIs (or local
+    // DEV_AUTH_BYPASS). Never block on Memberstack login — that was the readiness timeout.
+    if (isAdpAdminPdfRender()) {
+      fetchOpts.headers["X-Dealality-Owner-App"] = "1";
+      fetchOpts.headers["X-ADP-Pdf-Render"] = "1";
+      return fetch(shareUrl, fetchOpts);
     }
 
     // Owner app: Memberstack JWT when available + owner-app marker (never require share token).
@@ -473,8 +528,12 @@
       return auth.authFetch(shareUrl, {
         waitForLogin: true,
         maxWaitMs: 12000,
+        method: fetchOpts.method,
+        body: fetchOpts.body,
         cache: fetchOpts.cache,
+        credentials: fetchOpts.credentials,
         headers: fetchOpts.headers,
+        signal: fetchOpts.signal,
       });
     }
     return fetch(shareUrl, fetchOpts);
@@ -542,6 +601,43 @@
   function show(id) { var el = document.getElementById(id); if (el) el.hidden = false; }
   function hide(id) { var el = document.getElementById(id); if (el) el.hidden = true; }
   function hideAll() { ["adpStateLoading","adpStateError","adpStateNoData","adpStateSuccess"].forEach(hide); }
+
+  /** Brand AI–parity: .bdd-toast needs .show for display:flex + slide-in. */
+  function setAdpLoadingToast(on, message) {
+    var toast = document.getElementById("adpLoadingToast");
+    var msgEl = document.getElementById("adpLoadingMessage");
+    if (msgEl && message) msgEl.textContent = message;
+    if (!toast) return;
+    if (on) {
+      toast.hidden = false;
+      toast.style.display = "flex";
+      toast.setAttribute("aria-busy", "true");
+      toast.classList.remove("show");
+      void toast.offsetHeight;
+      requestAnimationFrame(function () {
+        toast.classList.add("show");
+      });
+    } else {
+      toast.classList.remove("show");
+      toast.setAttribute("aria-busy", "false");
+      setTimeout(function () {
+        if (!toast.classList.contains("show")) {
+          toast.style.display = "none";
+        }
+      }, 300);
+    }
+  }
+
+  function showLoadingState(message) {
+    hideAll();
+    show("adpStateLoading");
+    setAdpLoadingToast(true, message || "Loading AI Demand Intelligence\u2026");
+  }
+
+  function hideLoadingState() {
+    setAdpLoadingToast(false);
+    hide("adpStateLoading");
+  }
 
   // --- Tab management (Executive Summary only; Detailed View removed) ---
   function initTabs() {
@@ -635,9 +731,21 @@
       (data.properties || []).forEach(function (p) {
         var opt = document.createElement("option");
         opt.value = p.propertyId;
-        opt.textContent = p.name + " — " + p.city + ", " + p.state;
+        var label = adpPropertySelectorLabel(p);
+        opt.textContent = label;
+        opt.title = label; // full title when horizontal space truncates
         sel.appendChild(opt);
       });
+      // Keep closed-state accessible name as full selected title
+      if (!sel._adpTitleSyncBound) {
+        sel._adpTitleSyncBound = true;
+        sel.addEventListener("change", function () {
+          var o = sel.options[sel.selectedIndex];
+          if (o) sel.title = o.title || o.textContent || "";
+        });
+      }
+      var selOpt = sel.options[sel.selectedIndex];
+      if (selOpt) sel.title = selOpt.title || selOpt.textContent || "";
       var requested = getQueryPropertyId();
       if (requested) {
         if (sel.querySelector('option[value="' + requested + '"]')) {
@@ -691,7 +799,7 @@
   async function loadReport() {
     var sel = document.getElementById("adpProperty");
     if (!sel || !sel.value) return;
-    hideAll(); show("adpStateLoading");
+    hideAll(); showLoadingState();
     try {
       var pubMeta = (await fetchAdpPublicationMeta()) || readStoredBppMeta();
       var reportUrl = buildReportUrl(sel.value, pubMeta);
@@ -2065,17 +2173,22 @@
     if (!section || !row) return;
 
     var em = payload && payload.executiveMetrics;
+    var hasPrior = !!(em && em.currentVsPrior && em.currentVsPrior.deltas);
+    var baselineMeta = resolveBaselineMonitoringMeta(payload || {}, (payload && payload.trends) || []);
+    var baselineOnlySuffix = !hasPrior
+      ? " · Baseline · " + baselineMeta.baselineDateLabel
+      : "";
     var cards = [];
     var cr = em && em.considerationRate;
     if (isConsiderationCalculable(cr)) {
-      var crDelta = em.currentVsPrior && em.currentVsPrior.deltas
+      var crDelta = hasPrior
         ? formatPpDelta(em.currentVsPrior.deltas.considerationRate)
         : null;
       cards.push(kpiCardWithInfo(
         "AI Consideration Rate",
         fmtPct(cr.rate),
         (cr.presentObservations + " of " + cr.comparableObservations + " comparable AI responses") +
-          (crDelta ? " · " + crDelta : ""),
+          (crDelta ? " · " + crDelta : baselineOnlySuffix),
         adpExecutiveMetricTip("AI Consideration Rate", {
           summary: "This is about frequency — across all provider responses, how often you actually made the consideration set.",
           definition: "How often your hotel is named in the AI answers we collected for traveler questions that apply to your property.",
@@ -2104,14 +2217,14 @@
 
     var sp = em && em.scenarioPresence;
     if (isScenarioPresenceCalculable(sp)) {
-      var spDelta = em.currentVsPrior && em.currentVsPrior.deltas
+      var spDelta = hasPrior
         ? formatPpDelta(em.currentVsPrior.deltas.scenarioPresence)
         : null;
       cards.push(kpiCardWithInfo(
         "AI Scenario Presence",
         fmtPct(sp.rate),
         ("Present in " + sp.capturedScenarios + " of " + sp.eligibleScenarios + " monitored demand scenarios") +
-          (spDelta ? " · " + spDelta : ""),
+          (spDelta ? " · " + spDelta : baselineOnlySuffix),
         adpExecutiveMetricTip("AI Scenario Presence", {
           summary: "This is about breadth — how many different demand situations you participate in.",
           definition: "The share of traveler questions we monitor where at least one AI model mentioned your hotel.",
@@ -2140,14 +2253,14 @@
 
     var rm = em && em.rankMetrics;
     if (isRankMetricsCalculable(rm) && Number.isFinite(Number(rm.numberOneAppearanceRate))) {
-      var n1Delta = em.currentVsPrior && em.currentVsPrior.deltas
+      var n1Delta = hasPrior
         ? formatPpDelta(em.currentVsPrior.deltas.numberOneAppearanceRate)
         : null;
       cards.push(kpiCardWithInfo(
         "#1 Appearance Rate",
         fmtPct(rm.numberOneAppearanceRate),
         (rm.numberOneCount + " of " + rm.rankEligibleN + " ranked AI responses") +
-          (n1Delta ? " · " + n1Delta : ""),
+          (n1Delta ? " · " + n1Delta : baselineOnlySuffix),
         adpExecutiveMetricTip("#1 Appearance Rate", {
           definition: "When AI listed hotels in a clear order, how often was your hotel named first?",
           formula: "AI answers where your hotel is listed first, divided by AI answers that used a clear ranking (numbered list, ranked bullets, or a ranked table).",
@@ -2175,7 +2288,7 @@
       cards.push(kpiCardWithInfo(
         "Top-3 Appearance Rate",
         fmtPct(rm.topThreeAppearanceRate),
-        rm.topThreeCount + " of " + rm.rankEligibleN + " ranked AI responses",
+        rm.topThreeCount + " of " + rm.rankEligibleN + " ranked AI responses" + baselineOnlySuffix,
         adpExecutiveMetricTip("Top-3 Appearance Rate", {
           definition: "When AI listed hotels in a clear order, how often was your hotel in the first three names?",
           formula: "AI answers where your hotel is listed 1st, 2nd, or 3rd, divided by AI answers that used a clear ranking.",
@@ -2206,7 +2319,7 @@
       cards.push(kpiCardWithInfo(
         "Competitor-Present Scenarios",
         String(cpsCount) + " scenarios",
-        "Traveler questions where a comparable hotel appeared and yours did not",
+        "Traveler questions where a comparable hotel appeared and yours did not" + baselineOnlySuffix,
         adpExecutiveMetricTip("Competitor-Present Scenarios", {
           definition: "How many traveler questions had at least one AI answer that named a comparable hotel but not yours.",
           formula: "Count of traveler questions where your hotel was missing in at least one AI answer and a comparable hotel was named in that answer.",
@@ -2245,6 +2358,52 @@
 
   var adpTrendChart = null;
 
+  function formatBaselineDisplayDate(iso) {
+    if (!iso) return null;
+    var s = String(iso).slice(0, 10);
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+    if (!m) return s;
+    var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    var month = months[Number(m[2]) - 1];
+    if (!month) return s;
+    return month + " " + Number(m[3]) + ", " + m[1];
+  }
+
+  function nextRemeasurementLabelFromBaseline(iso) {
+    if (!iso) return null;
+    var s = String(iso).slice(0, 10);
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+    if (!m) return null;
+    var y = Number(m[1]);
+    var mo = Number(m[2]);
+    var nextMo = mo === 12 ? 1 : mo + 1;
+    var nextY = mo === 12 ? y + 1 : y;
+    var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    return months[nextMo - 1] + " " + nextY;
+  }
+
+  function resolveBaselineMonitoringMeta(d, trends) {
+    var bm = (d && d.baselineMonitoring) || {};
+    var period = (d && d.period) || {};
+    var first = trends && trends[0] ? trends[0] : null;
+    var baselineDate =
+      bm.baselineDate ||
+      period.baselineDate ||
+      (first && (first.baselineDate || first.date)) ||
+      null;
+    var nextLabel =
+      bm.nextFormalRemeasurementLabel ||
+      (first && first.nextFormalRemeasurementLabel) ||
+      nextRemeasurementLabelFromBaseline(baselineDate) ||
+      "Next scheduled remeasurement";
+    return {
+      baselineDate: baselineDate,
+      baselineDateLabel: formatBaselineDisplayDate(baselineDate) || "Baseline established",
+      nextFormalRemeasurementLabel: nextLabel,
+      monitoringStatus: bm.monitoringStatus || (first && first.monitoringStatus) || "ACTIVE"
+    };
+  }
+
   function renderTrends(d) {
     var emptyEl = document.getElementById("adpTrendEmpty");
     var summaryEl = document.getElementById("adpTrendSummary");
@@ -2257,13 +2416,14 @@
     var trends = d.trends;
     if (!trends || !trends.length) {
       emptyEl.hidden = false;
-      emptyEl.innerHTML = '<p class="aiv-empty__message">No official baseline monitoring period is available yet.</p>';
+      emptyEl.innerHTML = '<p class="aiv-empty__message">Official baseline not yet established.</p>';
       if (summaryEl) summaryEl.hidden = true;
       if (chartWrap) chartWrap.hidden = true;
       return;
     }
 
     var singlePeriod = trends.length === 1;
+    var monitorMeta = resolveBaselineMonitoringMeta(d, trends);
 
     // Fill missing single-period metric fields from live executive metrics when needed.
     if (singlePeriod) {
@@ -2277,10 +2437,12 @@
     }
 
     var labels = trends.map(function(t, idx) {
-      var s = t.date || "";
-      var dateLabel = s.slice(0, 10) + (s.slice(11, 16) ? " \u00b7 " + s.slice(11, 16) : "");
-      if (singlePeriod) return dateLabel;
+      var dateSrc = t.baselineDate || t.date || "";
+      var pretty = formatBaselineDisplayDate(dateSrc);
+      var dateLabel = pretty || (String(dateSrc).slice(0, 10) + (String(dateSrc).slice(11, 16) ? " \u00b7 " + String(dateSrc).slice(11, 16) : ""));
+      if (singlePeriod) return dateLabel + " \u00b7 Baseline";
       if (idx === trends.length - 1) return dateLabel + " \u00b7 Current";
+      if (idx === 0) return dateLabel + " \u00b7 Baseline";
       if (idx === trends.length - 2) return dateLabel + " \u00b7 Prior Run";
       return dateLabel;
     });
@@ -2299,15 +2461,18 @@
     if (summaryEl) {
       summaryEl.hidden = false;
       if (singlePeriod) {
-        // Same summary chrome as multi-period; KPI delta text is data-driven (no fabricated pp change).
-        // Lower chart callout intentionally omitted — see REDUNDANT_STATUS_CONTAINER.
+        // State 2: official baseline exists, no later official remeasurement yet.
+        var baselineSub =
+          "Baseline · " + monitorMeta.baselineDateLabel;
+        var monitoringSub =
+          "Monitoring Active · Next formal remeasurement " + monitorMeta.nextFormalRemeasurementLabel;
         summaryEl.setAttribute("data-adp-peer-grid", "trends-kpi");
         summaryEl.setAttribute("data-adp-peer-count", "4");
         summaryEl.innerHTML =
-          '<div class="aiv-detail-trend-stat" data-adp-peer-card="1"><div class="aiv-detail-trend-stat__label">Reality Coverage</div><div class="aiv-detail-trend-stat__value">' + (last.propertyRealityCoverage != null ? fmtPct(last.propertyRealityCoverage) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">Awaiting next comparable period</div></div>' +
-          '<div class="aiv-detail-trend-stat" data-adp-peer-card="2"><div class="aiv-detail-trend-stat__label">Scenario Presence</div><div class="aiv-detail-trend-stat__value">' + (last.scenarioPresenceRate != null ? fmtPct(last.scenarioPresenceRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">Awaiting next comparable period</div></div>' +
-          '<div class="aiv-detail-trend-stat" data-adp-peer-card="3"><div class="aiv-detail-trend-stat__label">Consideration Rate</div><div class="aiv-detail-trend-stat__value">' + (last.considerationRate != null ? fmtPct(last.considerationRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">Awaiting next comparable period</div></div>' +
-          '<div class="aiv-detail-trend-stat" data-adp-peer-card="4"><div class="aiv-detail-trend-stat__label">Periods</div><div class="aiv-detail-trend-stat__value">1</div></div>';
+          '<div class="aiv-detail-trend-stat" data-adp-peer-card="1"><div class="aiv-detail-trend-stat__label">Reality Coverage</div><div class="aiv-detail-trend-stat__value">' + (last.propertyRealityCoverage != null ? fmtPct(last.propertyRealityCoverage) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + esc(baselineSub) + '</div></div>' +
+          '<div class="aiv-detail-trend-stat" data-adp-peer-card="2"><div class="aiv-detail-trend-stat__label">Scenario Presence</div><div class="aiv-detail-trend-stat__value">' + (last.scenarioPresenceRate != null ? fmtPct(last.scenarioPresenceRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + esc(baselineSub) + '</div></div>' +
+          '<div class="aiv-detail-trend-stat" data-adp-peer-card="3"><div class="aiv-detail-trend-stat__label">Consideration Rate</div><div class="aiv-detail-trend-stat__value">' + (last.considerationRate != null ? fmtPct(last.considerationRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + esc(baselineSub) + '</div></div>' +
+          '<div class="aiv-detail-trend-stat" data-adp-peer-card="4"><div class="aiv-detail-trend-stat__label">Monitoring</div><div class="aiv-detail-trend-stat__value">Active</div><div class="aiv-detail-trend-stat__delta">' + esc(monitoringSub) + '</div></div>';
       } else {
         var rcCh = ppChange(last.propertyRealityCoverage, prev.propertyRealityCoverage);
         var spCh = ppChange(last.scenarioPresenceRate, prev.scenarioPresenceRate);
@@ -3493,14 +3658,241 @@
     var html = '<div class="aiv-hdv-review-grid">';
     actions.slice(0, 4).forEach(function (a, idx) {
       var title = toProperCase(a.title || "");
-      html += '<article class="aiv-theme-card aiv-hdv-review-card">' +
+      var findingId = String(a.id || a.findingId || a.actionId || ("adp_action_" + (idx + 1))).trim();
+      var recommendation = String(a.title || a.recommendation || "").trim() || title;
+      html += '<article class="aiv-theme-card aiv-hdv-review-card adp-action-with-feedback" data-finding-id="' + esc(findingId) + '">' +
         '<div class="aiv-hdv-review-index">' + (idx + 1) + '</div>' +
         '<h3 class="aiv-review-kind">' + esc(title) + '</h3>' +
         '<p class="aiv-hdv-review-desc">' + esc(a.description || "") + '</p>' +
+        '<div class="adp-hotel-feedback">' +
+        '<h4 class="adp-hotel-feedback__title">Hotel Feedback</h4>' +
+        '<p class="adp-hotel-feedback__lede">Response · What do you think of this recommendation?</p>' +
+        '<label class="adp-hotel-feedback__label">Response<select class="adp-fb-response" data-finding-id="' + esc(findingId) + '">' +
+        '<option value="">Select…</option>' +
+        '<option value="AGREE">Agree</option>' +
+        '<option value="DISAGREE">Disagree</option>' +
+        '<option value="ALREADY_ADDRESSING">Already addressing</option>' +
+        '<option value="ALREADY_COMPLETED">Already completed</option>' +
+        '<option value="NOT_ACTIONABLE">Not actionable</option>' +
+        '<option value="NEED_HELP">Need help</option>' +
+        '<option value="UNSURE">Unsure</option>' +
+        '</select></label>' +
+        '<p class="adp-hotel-feedback__lede">Action · What did the hotel do?</p>' +
+        '<label class="adp-hotel-feedback__label">Action<select class="adp-fb-action" data-finding-id="' + esc(findingId) + '">' +
+        '<option value="">Select…</option>' +
+        '<option value="WEBSITE_CONTENT_UPDATED">Website content updated</option>' +
+        '<option value="BRAND_SITE_CONTENT_REQUESTED">Brand site content requested</option>' +
+        '<option value="OTA_CONTENT_UPDATED">OTA content updated</option>' +
+        '<option value="LOCAL_CONTENT_UPDATED">Local content updated</option>' +
+        '<option value="STRUCTURED_DATA_UPDATED">Structured data updated</option>' +
+        '<option value="REVIEW_REPUTATION_ACTION">Review / reputation action</option>' +
+        '<option value="SOURCE_CITATION_ACTION">Source / citation action</option>' +
+        '<option value="MARKETING_ACTION">Marketing action</option>' +
+        '<option value="BRAND_ESCALATION">Brand escalation</option>' +
+        '<option value="OTHER_ACTION">Other action</option>' +
+        '<option value="NO_ACTION">No action</option>' +
+        '</select></label>' +
+        '<p class="adp-hotel-feedback__lede">Outcome · What happened afterward?</p>' +
+        '<label class="adp-hotel-feedback__label">Outcome<select class="adp-fb-outcome" data-finding-id="' + esc(findingId) + '">' +
+        '<option value="">Pending / select…</option>' +
+        '<option value="PRESENCE_IMPROVED">Presence improved</option>' +
+        '<option value="CONSIDERATION_IMPROVED">Consideration improved</option>' +
+        '<option value="SEGMENT_POSITION_IMPROVED">Segment position improved</option>' +
+        '<option value="CITATION_IMPROVED">Citation improved</option>' +
+        '<option value="COMPETITOR_DISPLACEMENT_IMPROVED">Competitor displacement improved</option>' +
+        '<option value="NO_MEASURABLE_CHANGE">No measurable change</option>' +
+        '<option value="DECLINED">Declined</option>' +
+        '<option value="TOO_EARLY_TO_MEASURE">Too early to measure</option>' +
+        '<option value="UNKNOWN">Unknown</option>' +
+        '</select></label>' +
+        '<div class="adp-hotel-feedback__actions">' +
+        '<button type="button" class="aiv-btn aiv-btn-primary adp-fb-save" data-finding-id="' + esc(findingId) + '" data-recommendation="' + esc(recommendation) + '">Save hotel feedback</button>' +
+        '<span class="adp-hotel-feedback__status" data-status-for="' + esc(findingId) + '" hidden></span>' +
+        '</div>' +
+        '<p class="adp-hotel-feedback__state" data-state-for="' + esc(findingId) + '"></p>' +
+        '</div>' +
         '</article>';
     });
     html += '</div>';
     el.innerHTML = html;
+    bindAdpHotelFeedbackHandlers(el);
+  }
+
+  function getAdpCanonicalHotelId() {
+    var d = currentPayload || {};
+    if (d.censusRecordId) return String(d.censusRecordId).trim();
+    if (d.property && d.property.censusRecordId) return String(d.property.censusRecordId).trim();
+    // Fallback: known ADP → HPC links (also resolved server-side on ensure-adp)
+    var pid = getActivePropertyId();
+    var map = {
+      adp_bethesda_marriott: "recLuxvwwxID7U2B8",
+      adp_waterstone_boca_raton: "recgMYovrrZDJMqzX",
+      adp_renaissance_times_square: "recG66DQJKP2c0UNh",
+      adp_now_now_noho: "recGkME49yYuxQl0u",
+      adp_hotel_phillips_kansas_city: "rec8hHupaSwiWI3r7",
+      adp_cambridge_beaches_bermuda: "recIwaP1etgx2g9nA",
+      adp_jw_marriott_monterrey_valle: "recsn3BUKJ9PNfeZW",
+      adp_westin_monterrey_valle: "recD17Kxn6BcJjGFh",
+      adp_st_regis_mexico_city: "recRXmrakhSAuctwz",
+      adp_st_regis_cap_cana: "recN76iEE6yAaPh8H",
+      adp_jw_marriott_santo_domingo: "recESHsNsWUFYZrxR",
+      adp_radisson_santo_domingo: "recUOyzOXn2Zdp98I",
+      adp_hotel_caribe_faranda_grand: "recCEpdskZeUBvQwG",
+      adp_faranda_collection_bogota: "rec9Tp0WBb2uk6w3u",
+      adp_casas_del_xvi: "recjDsNzu93CFfe87"
+    };
+    return map[pid] || pid;
+  }
+
+  function bindAdpHotelFeedbackHandlers(root) {
+    if (!root) return;
+    root.querySelectorAll(".adp-fb-save").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        saveAdpHotelFeedback(btn).catch(function (err) {
+          console.error("[ADP] hotel feedback save failed", err);
+        });
+      });
+    });
+  }
+
+  async function saveAdpHotelFeedback(btn) {
+    var findingId = btn.getAttribute("data-finding-id");
+    var recommendation = btn.getAttribute("data-recommendation") || findingId;
+    var hotelId = getAdpCanonicalHotelId();
+    var card = btn.closest(".adp-action-with-feedback");
+    var responseEl = card && card.querySelector(".adp-fb-response");
+    var actionEl = card && card.querySelector(".adp-fb-action");
+    var outcomeEl = card && card.querySelector(".adp-fb-outcome");
+    var statusEl = card && card.querySelector('[data-status-for="' + findingId + '"]');
+    var stateEl = card && card.querySelector('[data-state-for="' + findingId + '"]');
+    var validationValue = responseEl && responseEl.value;
+    var actionType = actionEl && actionEl.value;
+    var outcomeType = outcomeEl && outcomeEl.value;
+
+    function setStatus(msg, ok) {
+      if (!statusEl) return;
+      statusEl.hidden = false;
+      statusEl.textContent = msg;
+      statusEl.style.color = ok ? "var(--success--color, #34d399)" : "var(--danger--color, #f87171)";
+    }
+
+    if (!hotelId || !findingId) {
+      setStatus("Missing hotel or finding id", false);
+      return;
+    }
+    if (!validationValue && !actionType && !outcomeType) {
+      setStatus("Select a response, action, or outcome", false);
+      return;
+    }
+
+    btn.disabled = true;
+    setStatus("Saving…", true);
+    try {
+      var ensureRes = await authFetch(
+        "/api/hotels/" + encodeURIComponent(hotelId) + "/decisions/ensure-adp",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            findingId: findingId,
+            recommendation: recommendation,
+            recommendationSummary: recommendation,
+          }),
+        }
+      );
+      var ensureBody = await ensureRes.json().catch(function () { return null; });
+      if (!ensureRes.ok || !ensureBody || !ensureBody.ok) {
+        throw new Error((ensureBody && (ensureBody.message || ensureBody.error)) || "ensure_adp_failed");
+      }
+      var decisionId = ensureBody.decision && ensureBody.decision.decisionId;
+      var canonHotel = ensureBody.hotelId || hotelId;
+      if (!decisionId) throw new Error("decision_missing");
+
+      var saved = [];
+      if (validationValue) {
+        var vRes = await authFetch(
+          "/api/decisions/" + encodeURIComponent(decisionId) + "/validations",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              hotelId: canonHotel,
+              validationType: "HOTEL_RESPONSE",
+              validationValue: validationValue,
+              sourceSurface: "adp_ui",
+            }),
+          }
+        );
+        var vBody = await vRes.json().catch(function () { return null; });
+        if (!vRes.ok || !vBody || !vBody.ok) {
+          throw new Error((vBody && (vBody.message || vBody.error)) || "validation_failed");
+        }
+        saved.push("✓ Response saved");
+      }
+      if (actionType) {
+        var aRes = await authFetch(
+          "/api/decisions/" + encodeURIComponent(decisionId) + "/actions",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              hotelId: canonHotel,
+              actionType: actionType,
+              sourceSurface: "adp_ui",
+            }),
+          }
+        );
+        var aBody = await aRes.json().catch(function () { return null; });
+        if (!aRes.ok || !aBody || !aBody.ok) {
+          throw new Error((aBody && (aBody.message || aBody.error)) || "action_failed");
+        }
+        saved.push("✓ Action saved");
+      }
+      if (outcomeType) {
+        var oRes = await authFetch(
+          "/api/decisions/" + encodeURIComponent(decisionId) + "/outcomes",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              hotelId: canonHotel,
+              outcomeType: outcomeType,
+              causalConfidence: "TEMPORAL_ASSOCIATION_ONLY",
+              sourceSurface: "adp_ui",
+            }),
+          }
+        );
+        var oBody = await oRes.json().catch(function () { return null; });
+        if (!oRes.ok || !oBody || !oBody.ok) {
+          throw new Error((oBody && (oBody.message || oBody.error)) || "outcome_failed");
+        }
+        saved.push("✓ Outcome saved");
+      }
+
+      setStatus(saved.join(" · ") || "Saved", true);
+
+      var stateRes = await authFetch(
+        "/api/hotels/" + encodeURIComponent(canonHotel) + "/subjects/" + encodeURIComponent(findingId) + "/decision?module=ADP",
+        { cache: "no-store" }
+      );
+      var stateBody = await stateRes.json().catch(function () { return null; });
+      if (stateEl && stateBody && stateBody.ok && stateBody.current) {
+        var cs = stateBody.current;
+        var lastAct = (cs.latestAction && (cs.latestAction.actionType || cs.latestAction.eventValue)) || "—";
+        var lastOut = (cs.latestOutcome && (cs.latestOutcome.outcomeType || cs.latestOutcome.eventValue)) || "Pending";
+        stateEl.textContent =
+          "Current status: " +
+          (cs.decisionLifecycleStage || "—") +
+          " · Last action: " +
+          lastAct +
+          " · Latest outcome: " +
+          lastOut;
+      }
+    } catch (err) {
+      setStatus(err.message || "Save failed", false);
+    } finally {
+      btn.disabled = false;
+    }
   }
 
   function renderExecWhiteSpace(ws) {
@@ -3534,8 +3926,9 @@
       var html = '<div class="aiv-citation-exec-top aiv-citation-exec-top--2x2">';
       html += '<article class="aiv-kpi"><h3>Citation Coverage</h3><div class="aiv-value">' + esc(ev.totalWithSources + ' of ' + ev.totalObservations) + '</div><div class="aiv-meta">' + esc(fmtPct(ev.citationRate) + ' of monitored responses included at least one citation.') + '</div></article>';
       html += '<article class="aiv-kpi"><h3>Avg Sources per Citation</h3><div class="aiv-value">' + esc(String(ev.avgSourcesPerCitation)) + '</div><div class="aiv-meta">Average number of sources cited per grounded response.</div></article>';
-      html += '<article class="aiv-kpi"><h3>Top Source</h3><div class="aiv-value aiv-value--domain">' + esc(topSource ? topSource.domain : '—') + '</div><div class="aiv-meta">' + (topSource ? esc(topSource.count + ' of ' + ev.totalWithSources + ' · ' + fmtPct(topSource.frequency)) : 'No sources observed.') + '</div></article>';
-      html += '<article class="aiv-kpi"><h3>Second Source</h3><div class="aiv-value aiv-value--domain">' + esc(secondSource ? secondSource.domain : '—') + '</div><div class="aiv-meta">' + (secondSource ? esc(secondSource.count + ' of ' + ev.totalWithSources + ' · ' + fmtPct(secondSource.frequency)) : 'No second source observed.') + '</div></article>';
+      // Competitive-universe citation frequency (not "sources supporting this property")
+      html += '<article class="aiv-kpi"><h3>Top Cited Source Across Monitored Responses</h3><div class="aiv-value aiv-value--domain">' + esc(topSource ? topSource.domain : '—') + '</div><div class="aiv-meta">' + (topSource ? esc(topSource.count + ' of ' + ev.totalWithSources + ' cited responses · ' + fmtPct(topSource.frequency) + ' — includes competitor-owned domains when AI cites them in market answers.') : 'No sources observed.') + '</div></article>';
+      html += '<article class="aiv-kpi"><h3>Second Cited Source Across Monitored Responses</h3><div class="aiv-value aiv-value--domain">' + esc(secondSource ? secondSource.domain : '—') + '</div><div class="aiv-meta">' + (secondSource ? esc(secondSource.count + ' of ' + ev.totalWithSources + ' · ' + fmtPct(secondSource.frequency)) : 'No second source observed.') + '</div></article>';
       html += '</div>';
 
       // Source Mix — Owned / External from governed ownership registry when configured
@@ -3610,7 +4003,7 @@
     var el = document.getElementById("adpBriefSection");
     if (!el || !brief) return;
     var html = '<div class="adp-card"><div class="adp-card-header"><h3>Monthly Owner Brief' + info(adpTipPlain('What is the executive summary of this period\u2019s AI demand position?', 'Owners need a quick read of wins, risks, and opportunities before drilling into tables.')) + '</h3></div>';
-    html += '<p style="font-size:0.85rem;color:var(--aiv-text-secondary);margin-bottom:1rem">' + esc(property.name) + ' &middot; ' + esc(property.affiliation) + ' &middot; ' + esc(property.city + ", " + property.state) + '</p>';
+    html += '<p style="font-size:0.85rem;color:var(--aiv-text-secondary);margin-bottom:1rem">' + esc(property.name) + ' &middot; ' + esc(property.affiliation) + ' &middot; ' + esc(adpPropertyLocationLine(property)) + '</p>';
     html += '<ul class="adp-brief-list">';
     brief.items.forEach(function (item) {
       var iconCls = "icon-" + item.type;
@@ -3810,10 +4203,121 @@
     });
   }
 
+  function isAdpAdminPdfRender() {
+    if (window.__ADP_ADMIN_PDF_RENDER__) return true;
+    try {
+      return new URLSearchParams(window.location.search || "").get("pdfRender") === "1";
+    } catch (_e) {
+      return false;
+    }
+  }
+
+  function markAdpPdfReady(payload) {
+    var host = document.getElementById("adp-pdf-ready-host");
+    if (!host) {
+      host = document.createElement("div");
+      host.id = "adp-pdf-ready-host";
+      document.body.appendChild(host);
+    }
+    var actions = (payload && payload.actions) || [];
+    host.setAttribute("data-adp-pdf-ready", "1");
+    host.removeAttribute("hidden");
+    host.setAttribute("aria-hidden", "false");
+    // Keep marker out of print layout but visible to Playwright readiness checks.
+    host.style.cssText =
+      "position:fixed;left:0;top:0;width:1px;height:1px;opacity:0.01;z-index:99999;";
+    host.setAttribute(
+      "data-adp-property-id",
+      (payload && payload.property && payload.property.propertyId) ||
+        (payload && payload.propertyId) ||
+        ""
+    );
+    host.setAttribute(
+      "data-adp-property-name",
+      (payload && payload.property && payload.property.name) || ""
+    );
+    host.setAttribute(
+      "data-adp-period-id",
+      (payload && payload.period && payload.period.periodId) || ""
+    );
+    host.setAttribute("data-adp-action-count", String(actions.length));
+    host.setAttribute(
+      "data-adp-has-er",
+      payload && (payload.executiveRead || payload.executiveReadV3) ? "1" : "0"
+    );
+    host.setAttribute(
+      "data-adp-gate",
+      "ADP_ADMIN_PDF_USES_CURRENT_REPORT_PRINT_RENDERER"
+    );
+    var boot = document.getElementById("adp-pdf-boot");
+    if (boot) boot.hidden = true;
+  }
+
+  function markAdpPdfError(message) {
+    var boot = document.getElementById("adp-pdf-boot");
+    if (!boot) {
+      boot = document.createElement("div");
+      boot.id = "adp-pdf-boot";
+      document.body.appendChild(boot);
+    }
+    boot.hidden = false;
+    boot.textContent = "PDF render failed: " + (message || "unknown_error");
+    boot.setAttribute("data-adp-pdf-error", "1");
+    boot.setAttribute("data-adp-pdf-ready", "0");
+  }
+
   // --- Init ---
   document.addEventListener("DOMContentLoaded", function () {
     bindColumnInfo();
     initTabs();
+
+    if (isAdpAdminPdfRender()) {
+      // Admin PDF path: same live renderer + published payload; no guided tour.
+      document.body.classList.add("adp-pdf-export");
+      var propertyId = getQueryPropertyId();
+      var sel = document.getElementById("adpProperty");
+      if (!propertyId) {
+        markAdpPdfError("propertyId_required");
+        return;
+      }
+      if (sel) {
+        sel.innerHTML = "";
+        var opt = document.createElement("option");
+        opt.value = propertyId;
+        opt.textContent = propertyId;
+        sel.appendChild(opt);
+        sel.value = propertyId;
+      }
+      var originalRender = renderExecutive;
+      // Wrap completion after successful loadReport → renderExecutive
+      var _load = loadReport;
+      loadReport = async function () {
+        try {
+          await _load();
+          var success = document.getElementById("adpStateSuccess");
+          if (currentPayload && success && !success.hidden) {
+            if (sel && currentPayload.property && currentPayload.property.name) {
+              var named = sel.options[sel.selectedIndex];
+              if (named) named.textContent = currentPayload.property.name;
+            }
+            markAdpPdfReady(currentPayload);
+          } else {
+            var errEl = document.getElementById("adpErrorMessage");
+            markAdpPdfError(
+              (errEl && errEl.textContent) ||
+                (currentPayload && (currentPayload.message || currentPayload.error)) ||
+                "report_unavailable"
+            );
+          }
+        } catch (err) {
+          markAdpPdfError(err && err.message ? err.message : err);
+        }
+      };
+      void originalRender;
+      loadReport();
+      return;
+    }
+
     loadProperties();
     var btn = document.getElementById("adpLoadReport");
     if (btn) btn.addEventListener("click", loadReport);

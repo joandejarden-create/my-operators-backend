@@ -1,0 +1,840 @@
+{
+  "validationMarker": "gdi_wave2_discovery_hygiene_v3_20260921",
+  "version": "gdi_discovery_hygiene_v3",
+  "stackSha": "4a2823fdfd67868d88fce694960260424fa5b728",
+  "asOfDate": "2026-02-01",
+  "frozenAt": "2026-09-21T16:38:40.168Z",
+  "policy": {
+    "noNewDiscovery": true,
+    "noWhoUnlessPass": true,
+    "noProviders": true,
+    "wave2ArtifactsPreserved": true
+  },
+  "unknownNotOpenRegression": {
+    "ok": true,
+    "failures": []
+  },
+  "fixtureSource": "data/group-demand-intelligence/evals/gdi-wave2-discovery-v3-invalid-fixtures.json",
+  "failureFixtureCounts": {
+    "NO_OPEN_SOURCING": 0,
+    "HOST_LOCKED": 2,
+    "PAST_EVENT": 1,
+    "NON_EVENT": 1,
+    "NO_OVERFLOW": 2,
+    "OTHER": 1
+  },
+  "hotels": [
+    {
+      "slot": "A",
+      "hotelId": "recESHsNsWUFYZrxR",
+      "name": "JW Marriott Hotel Santo Domingo",
+      "candidates": 9,
+      "v3True": 0,
+      "manualTrueRetained": 0,
+      "falseActionable": 0,
+      "precisionPct": 100,
+      "byState": {
+        "INVALID": 5,
+        "INSUFFICIENT": 1,
+        "VALID_FUTURE": 1,
+        "VALID_WATCH": 2
+      }
+    },
+    {
+      "slot": "B",
+      "hotelId": "recCEpdskZeUBvQwG",
+      "name": "Hotel Caribe by Faranda Grand, Cartagena",
+      "candidates": 12,
+      "v3True": 2,
+      "manualTrueRetained": 2,
+      "falseActionable": 0,
+      "precisionPct": 100,
+      "byState": {
+        "INVALID": 2,
+        "VALID_WATCH": 7,
+        "TRUE_ACTIONABLE": 2,
+        "VALID_FUTURE": 1
+      }
+    },
+    {
+      "slot": "C",
+      "hotelId": "recD17Kxn6BcJjGFh",
+      "name": "The Westin Monterrey Valle",
+      "candidates": 9,
+      "v3True": 1,
+      "manualTrueRetained": 1,
+      "falseActionable": 0,
+      "precisionPct": 100,
+      "byState": {
+        "INVALID": 4,
+        "TRUE_ACTIONABLE": 1,
+        "VALID_WATCH": 4
+      }
+    }
+  ],
+  "metrics": {
+    "totalCandidates": 30,
+    "totalV3True": 3,
+    "manualTrueRetained": 3,
+    "minPrecisionPct": 100,
+    "discoveryPass": true
+  },
+  "perHotel": [
+    {
+      "hotel": {
+        "slot": "A",
+        "hotelId": "recESHsNsWUFYZrxR",
+        "slug": "jw-marriott-santo-domingo",
+        "name": "JW Marriott Hotel Santo Domingo"
+      },
+      "candidateCount": 9,
+      "v3True": 0,
+      "manualTrueRetained": 0,
+      "falseActionable": 0,
+      "precisionPct": 100,
+      "byState": {
+        "INVALID": 5,
+        "INSUFFICIENT": 1,
+        "VALID_FUTURE": 1,
+        "VALID_WATCH": 2
+      },
+      "filterCounts": {
+        "NO_OPEN_SOURCING_EVIDENCE": 1,
+        "COMPETITOR_HOST_LOCKED": 1,
+        "PAST_EVENT": 2,
+        "NON_EVENT_CONTENT": 0,
+        "NO_HOTEL_ROOM_THESIS": 1,
+        "NO_OVERFLOW_EVIDENCE": 1,
+        "EVENT_IDENTITY_WEAK": 0,
+        "DATE_UNCERTAIN": 0,
+        "SOURCE_SEMANTICS_FAILURE": 3,
+        "OTHER": 0
+      },
+      "trueActionable": [],
+      "rows": [
+        {
+          "id": "gdi_opp_congreso_de_sostenibilidad_financiera_y_tributar_1",
+          "title": "Congreso de Sostenibilidad Financiera y Tributaria",
+          "actionabilityV3": "INVALID",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "SOURCE_SEMANTICS_FAILURE",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:AGGREGATOR"
+          ]
+        },
+        {
+          "id": "gdi_opp_congreso_de_sostenibilidad_financiera_y_tributar_2",
+          "title": "Congreso de Sostenibilidad Financiera y Tributaria",
+          "actionabilityV3": "INSUFFICIENT",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "NO_HOTEL_ROOM_THESIS",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_3",
+            "demand:NONE",
+            "open:false/UNKNOWN",
+            "lock:false",
+            "overflow:false"
+          ]
+        },
+        {
+          "id": "gdi_opp_congreso_de_sostenibilidad_financiera_y_tributar_5",
+          "title": "Congreso de Sostenibilidad Financiera y Tributaria",
+          "actionabilityV3": "INVALID",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "SOURCE_SEMANTICS_FAILURE",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:AGGREGATOR"
+          ]
+        },
+        {
+          "id": "gdi_opp_santo_domingo_business_investment_summit_2025_3",
+          "title": "Santo Domingo Business & Investment Summit 2025",
+          "actionabilityV3": "INVALID",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "PAST_EVENT",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_PAST"
+          ]
+        },
+        {
+          "id": "gdi_opp_congreso_dominicano_de_cardiolog_a_2027_6",
+          "title": "Congreso Dominicano de Cardiología 2027",
+          "actionabilityV3": "VALID_FUTURE",
+          "opportunityType": "OVERFLOW_HOUSING",
+          "failureClass": "OTHER",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_3",
+            "demand:WEAK",
+            "open:false/UNKNOWN",
+            "lock:false",
+            "overflow:false",
+            "far_future"
+          ]
+        },
+        {
+          "id": "gdi_opp_tax_governance_summit_2026_4",
+          "title": "Tax & Governance Summit 2026",
+          "actionabilityV3": "INVALID",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "PAST_EVENT",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_PAST"
+          ]
+        },
+        {
+          "id": "gdi_opp_expo_parks_dominicana_2026_9",
+          "title": "Expo Parks Dominicana 2026",
+          "actionabilityV3": "VALID_WATCH",
+          "opportunityType": "FUTURE_CYCLE",
+          "failureClass": "NO_OVERFLOW_EVIDENCE",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_2",
+            "demand:WEAK",
+            "open:false/UNKNOWN",
+            "lock:true",
+            "overflow:false",
+            "host_locked_no_overflow_watch"
+          ]
+        },
+        {
+          "id": "gdi_opp_your_next_career_move_7",
+          "title": "Your Next Career Move",
+          "actionabilityV3": "INVALID",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "SOURCE_SEMANTICS_FAILURE",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:AGGREGATOR"
+          ]
+        },
+        {
+          "id": "gdi_opp_expoparks_2026_0",
+          "title": "EXPOPARKS 2026",
+          "actionabilityV3": "VALID_WATCH",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "NO_OPEN_SOURCING_EVIDENCE",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_3",
+            "demand:WEAK",
+            "open:false/UNKNOWN",
+            "lock:false",
+            "overflow:false"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel": {
+        "slot": "B",
+        "hotelId": "recCEpdskZeUBvQwG",
+        "slug": "hotel-caribe-cartagena",
+        "name": "Hotel Caribe by Faranda Grand, Cartagena"
+      },
+      "candidateCount": 12,
+      "v3True": 2,
+      "manualTrueRetained": 2,
+      "falseActionable": 0,
+      "precisionPct": 100,
+      "byState": {
+        "INVALID": 2,
+        "VALID_WATCH": 7,
+        "TRUE_ACTIONABLE": 2,
+        "VALID_FUTURE": 1
+      },
+      "filterCounts": {
+        "NO_OPEN_SOURCING_EVIDENCE": 7,
+        "COMPETITOR_HOST_LOCKED": 1,
+        "PAST_EVENT": 0,
+        "NON_EVENT_CONTENT": 0,
+        "NO_HOTEL_ROOM_THESIS": 0,
+        "NO_OVERFLOW_EVIDENCE": 0,
+        "EVENT_IDENTITY_WEAK": 0,
+        "DATE_UNCERTAIN": 0,
+        "SOURCE_SEMANTICS_FAILURE": 1,
+        "OTHER": 1
+      },
+      "trueActionable": [
+        {
+          "id": "gdi_opp_international_congress_of_radiology_icr_2026_4",
+          "title": "International Congress of Radiology (ICR) 2026",
+          "organizationName": "International Congress of Radiology",
+          "opportunityType": "OVERFLOW_HOUSING",
+          "eventStartDate": "2026-05-14",
+          "eventEndDate": "2026-05-16",
+          "destinationStatus": "Cartagena de Indias, Colombia",
+          "venueSourcingStatus": "UNKNOWN",
+          "roomDemandStatus": "ESTIMATED_ROOM_DEMAND",
+          "actionabilityV3": "TRUE_ACTIONABLE",
+          "hotelDemandThesis": {
+            "ok": true,
+            "strength": "STRONG",
+            "reasons": [
+              "overlay_hotel_demand_evidence"
+            ]
+          },
+          "openSourcing": {
+            "open": false,
+            "status": "UNKNOWN",
+            "supported": false,
+            "reasons": [
+              "status_unknown_not_open",
+              "downgraded_from:RFP_ACTIVE_SOURCING"
+            ],
+            "priorStatus": "RFP_ACTIVE_SOURCING",
+            "downgraded": true
+          },
+          "hostLock": {
+            "locked": true,
+            "hostName": "Cartagena Convention Center",
+            "meetingVenueOnly": true,
+            "fullyPlaced": false,
+            "reasons": [
+              "not_venue_locked",
+              "meeting_venue_rooms_open",
+              "meeting_venue:Cartagena Convention Center"
+            ],
+            "v11Substate": "NOT_VENUE_LOCKED",
+            "opportunityTypeHint": "PRIMARY_PURSUIT"
+          },
+          "overflow": {
+            "ok": true,
+            "reasons": [
+              "overlay_overflow_evidence"
+            ]
+          },
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_1",
+            "demand:STRONG",
+            "open:false/UNKNOWN",
+            "lock:true",
+            "overflow:true",
+            "true_actionable"
+          ],
+          "whyNow": "The event is scheduled for May 2026, making it a near-term opportunity.",
+          "hotelOpportunityThesis": "The event will attract a significant number of healthcare professionals requiring accommodation."
+        },
+        {
+          "id": "gdi_opp_weef_ifees_gedc_2026_0",
+          "title": "WEEF (IFEES & GEDC) 2026",
+          "organizationName": "Colombian Association of Engineering Schools (ACOFI)",
+          "opportunityType": "OVERFLOW_HOUSING",
+          "eventStartDate": "2026-09-21",
+          "eventEndDate": "2026-09-25",
+          "destinationStatus": "Cartagena de Indias, Colombia",
+          "venueSourcingStatus": "UNKNOWN",
+          "roomDemandStatus": "UNKNOWN",
+          "actionabilityV3": "TRUE_ACTIONABLE",
+          "hotelDemandThesis": {
+            "ok": true,
+            "strength": "STRONG",
+            "reasons": [
+              "overlay_hotel_demand_evidence"
+            ]
+          },
+          "openSourcing": {
+            "open": false,
+            "status": "UNKNOWN",
+            "supported": false,
+            "reasons": [
+              "status_unknown_not_open",
+              "downgraded_from:RFP_ACTIVE_SOURCING"
+            ],
+            "priorStatus": "RFP_ACTIVE_SOURCING",
+            "downgraded": true
+          },
+          "hostLock": {
+            "locked": true,
+            "hostName": "Cartagena Convention Center",
+            "meetingVenueOnly": true,
+            "fullyPlaced": false,
+            "reasons": [
+              "not_venue_locked",
+              "meeting_venue_rooms_open",
+              "meeting_venue:Cartagena Convention Center"
+            ],
+            "v11Substate": "NOT_VENUE_LOCKED",
+            "opportunityTypeHint": "PRIMARY_PURSUIT"
+          },
+          "overflow": {
+            "ok": true,
+            "reasons": [
+              "overlay_overflow_evidence"
+            ]
+          },
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_1",
+            "demand:STRONG",
+            "open:false/UNKNOWN",
+            "lock:true",
+            "overflow:true",
+            "true_actionable"
+          ],
+          "whyNow": "The event is scheduled for September 2026, making it a near-term opportunity.",
+          "hotelOpportunityThesis": "The event will require substantial hotel accommodations for attendees."
+        }
+      ],
+      "rows": [
+        {
+          "id": "gdi_opp_international_conference_on_healthcare_modeling__5",
+          "title": "International Conference on Healthcare Modeling, Medical Sciences and Technology (ICHMMST)",
+          "actionabilityV3": "INVALID",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "SOURCE_SEMANTICS_FAILURE",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:AGGREGATOR"
+          ]
+        },
+        {
+          "id": "gdi_opp_international_hydrographic_organization_symposiu_11",
+          "title": "International Hydrographic Organization Symposium 2026",
+          "actionabilityV3": "VALID_WATCH",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "NO_OPEN_SOURCING_EVIDENCE",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_3",
+            "demand:STRONG",
+            "open:false/UNKNOWN",
+            "lock:false",
+            "overflow:false"
+          ]
+        },
+        {
+          "id": "gdi_opp_1st_americas_awn_women_s_and_leadership_retreat_2",
+          "title": "1st Americas AWN Women's and Leadership Retreat",
+          "actionabilityV3": "INVALID",
+          "opportunityType": "CLOSED_DISQUALIFIED",
+          "failureClass": "COMPETITOR_HOST_LOCKED",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_1",
+            "demand:WEAK",
+            "open:false/UNKNOWN",
+            "lock:true",
+            "overflow:false"
+          ]
+        },
+        {
+          "id": "gdi_opp_international_congress_of_radiology_icr_2026_4",
+          "title": "International Congress of Radiology (ICR) 2026",
+          "actionabilityV3": "TRUE_ACTIONABLE",
+          "opportunityType": "OVERFLOW_HOUSING",
+          "failureClass": null,
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_1",
+            "demand:STRONG",
+            "open:false/UNKNOWN",
+            "lock:true",
+            "overflow:true",
+            "true_actionable"
+          ]
+        },
+        {
+          "id": "gdi_opp_international_meetings_incentive_summit_3",
+          "title": "International Meetings & Incentive Summit",
+          "actionabilityV3": "VALID_WATCH",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "NO_OPEN_SOURCING_EVIDENCE",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_3",
+            "demand:STRONG",
+            "open:false/UNKNOWN",
+            "lock:false",
+            "overflow:false"
+          ]
+        },
+        {
+          "id": "gdi_opp_weef_ifees_gedc_2026_0",
+          "title": "WEEF (IFEES & GEDC) 2026",
+          "actionabilityV3": "TRUE_ACTIONABLE",
+          "opportunityType": "OVERFLOW_HOUSING",
+          "failureClass": null,
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_1",
+            "demand:STRONG",
+            "open:false/UNKNOWN",
+            "lock:true",
+            "overflow:true",
+            "true_actionable"
+          ]
+        },
+        {
+          "id": "gdi_opp_healthcare_summit_2026_6",
+          "title": "Healthcare Summit 2026",
+          "actionabilityV3": "VALID_WATCH",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "NO_OPEN_SOURCING_EVIDENCE",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_3",
+            "demand:STRONG",
+            "open:false/UNKNOWN",
+            "lock:false",
+            "overflow:false"
+          ]
+        },
+        {
+          "id": "gdi_opp_gebco_symposium_2026_1",
+          "title": "GEBCO Symposium 2026",
+          "actionabilityV3": "VALID_WATCH",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "NO_OPEN_SOURCING_EVIDENCE",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_3",
+            "demand:STRONG",
+            "open:false/UNKNOWN",
+            "lock:false",
+            "overflow:false"
+          ]
+        },
+        {
+          "id": "gdi_opp_gebco_symposium_2026_7",
+          "title": "GEBCO Symposium 2026",
+          "actionabilityV3": "VALID_WATCH",
+          "opportunityType": "OVERFLOW_HOUSING",
+          "failureClass": "NO_OPEN_SOURCING_EVIDENCE",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_3",
+            "demand:STRONG",
+            "open:false/UNKNOWN",
+            "lock:false",
+            "overflow:false"
+          ]
+        },
+        {
+          "id": "gdi_opp_acuel_congress_2026_10",
+          "title": "Acuel Congress 2026",
+          "actionabilityV3": "VALID_WATCH",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "NO_OPEN_SOURCING_EVIDENCE",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_3",
+            "demand:STRONG",
+            "open:false/UNKNOWN",
+            "lock:false",
+            "overflow:false"
+          ]
+        },
+        {
+          "id": "gdi_opp_matsus_latam27_8",
+          "title": "MATSUS-LATAM27",
+          "actionabilityV3": "VALID_FUTURE",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "OTHER",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_1",
+            "demand:WEAK",
+            "open:false/UNKNOWN",
+            "lock:false",
+            "overflow:false",
+            "far_future"
+          ]
+        },
+        {
+          "id": "gdi_opp_iccn_2026_9",
+          "title": "ICCN 2026",
+          "actionabilityV3": "VALID_WATCH",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "NO_OPEN_SOURCING_EVIDENCE",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_3",
+            "demand:WEAK",
+            "open:false/UNKNOWN",
+            "lock:false",
+            "overflow:false"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel": {
+        "slot": "C",
+        "hotelId": "recD17Kxn6BcJjGFh",
+        "slug": "westin-monterrey-valle",
+        "name": "The Westin Monterrey Valle"
+      },
+      "candidateCount": 9,
+      "v3True": 1,
+      "manualTrueRetained": 1,
+      "falseActionable": 0,
+      "precisionPct": 100,
+      "byState": {
+        "INVALID": 4,
+        "TRUE_ACTIONABLE": 1,
+        "VALID_WATCH": 4
+      },
+      "filterCounts": {
+        "NO_OPEN_SOURCING_EVIDENCE": 4,
+        "COMPETITOR_HOST_LOCKED": 0,
+        "PAST_EVENT": 1,
+        "NON_EVENT_CONTENT": 1,
+        "NO_HOTEL_ROOM_THESIS": 0,
+        "NO_OVERFLOW_EVIDENCE": 0,
+        "EVENT_IDENTITY_WEAK": 0,
+        "DATE_UNCERTAIN": 0,
+        "SOURCE_SEMANTICS_FAILURE": 2,
+        "OTHER": 0
+      },
+      "trueActionable": [
+        {
+          "id": "gdi_opp_xviii_international_symposium_on_biosafety_and_b_5",
+          "title": "XVIII International Symposium on Biosafety and Biosecurity",
+          "organizationName": "ABSA International",
+          "opportunityType": "OVERFLOW_HOUSING",
+          "eventStartDate": "2026-10-01",
+          "eventEndDate": "2026-10-03",
+          "destinationStatus": "San Pedro Garza García",
+          "venueSourcingStatus": "UNKNOWN",
+          "roomDemandStatus": "UNKNOWN",
+          "actionabilityV3": "TRUE_ACTIONABLE",
+          "hotelDemandThesis": {
+            "ok": true,
+            "strength": "STRONG",
+            "reasons": [
+              "overlay_hotel_demand_evidence"
+            ]
+          },
+          "openSourcing": {
+            "open": false,
+            "status": "UNKNOWN",
+            "supported": false,
+            "reasons": [
+              "status_unknown_not_open",
+              "downgraded_from:RFP_ACTIVE_SOURCING"
+            ],
+            "priorStatus": "RFP_ACTIVE_SOURCING",
+            "downgraded": true
+          },
+          "hostLock": {
+            "locked": true,
+            "hostName": "Universidad de Monterrey ESTOA",
+            "meetingVenueOnly": true,
+            "fullyPlaced": false,
+            "reasons": [
+              "not_venue_locked",
+              "meeting_venue_rooms_open",
+              "meeting_venue:Universidad de Monterrey ESTOA"
+            ],
+            "v11Substate": "NOT_VENUE_LOCKED",
+            "opportunityTypeHint": "PRIMARY_PURSUIT"
+          },
+          "overflow": {
+            "ok": true,
+            "reasons": [
+              "overlay_overflow_evidence"
+            ]
+          },
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_1",
+            "demand:STRONG",
+            "open:false/UNKNOWN",
+            "lock:true",
+            "overflow:true",
+            "true_actionable"
+          ],
+          "whyNow": "The event is planned for 2026, providing ample time for hotel arrangements.",
+          "hotelOpportunityThesis": "The Westin Monterrey Valle can cater to the accommodation needs of attendees."
+        }
+      ],
+      "rows": [
+        {
+          "id": "gdi_opp_iv_conference_of_the_coalition_for_academic_free_7",
+          "title": "IV Conference of the Coalition for Academic Freedom in the Americas",
+          "actionabilityV3": "INVALID",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "PAST_EVENT",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_PAST"
+          ]
+        },
+        {
+          "id": "gdi_opp_12th_mexico_infrastructure_projects_forum_energy_3",
+          "title": "12th Mexico Infrastructure Projects Forum - Energy Leaders",
+          "actionabilityV3": "INVALID",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "SOURCE_SEMANTICS_FAILURE",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:AGGREGATOR"
+          ]
+        },
+        {
+          "id": "gdi_opp_xviii_international_symposium_on_biosafety_and_b_5",
+          "title": "XVIII International Symposium on Biosafety and Biosecurity",
+          "actionabilityV3": "TRUE_ACTIONABLE",
+          "opportunityType": "OVERFLOW_HOUSING",
+          "failureClass": null,
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_1",
+            "demand:STRONG",
+            "open:false/UNKNOWN",
+            "lock:true",
+            "overflow:true",
+            "true_actionable"
+          ]
+        },
+        {
+          "id": "gdi_opp_action_plan_san_pedro_garza_garc_a_2026_2027_9",
+          "title": "Action Plan San Pedro Garza García 2026-2027",
+          "actionabilityV3": "INVALID",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "NON_EVENT_CONTENT",
+          "notes": [
+            "semantic:PLAN"
+          ]
+        },
+        {
+          "id": "gdi_opp_estadio_bbva_monterrey_tours_2026_2",
+          "title": "Estadio BBVA Monterrey Tours 2026",
+          "actionabilityV3": "VALID_WATCH",
+          "opportunityType": "FUTURE_CYCLE",
+          "failureClass": "NO_OPEN_SOURCING_EVIDENCE",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_3",
+            "demand:WEAK",
+            "open:false/UNKNOWN",
+            "lock:false",
+            "overflow:false"
+          ]
+        },
+        {
+          "id": "gdi_opp_dfk_latam_annual_conference_0",
+          "title": "DFK LATAM Annual Conference",
+          "actionabilityV3": "INVALID",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "SOURCE_SEMANTICS_FAILURE",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:AGGREGATOR"
+          ]
+        },
+        {
+          "id": "gdi_opp_health_business_summit_4",
+          "title": "Health Business Summit",
+          "actionabilityV3": "VALID_WATCH",
+          "opportunityType": "OVERFLOW_HOUSING",
+          "failureClass": "NO_OPEN_SOURCING_EVIDENCE",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_3",
+            "demand:WEAK",
+            "open:false/UNKNOWN",
+            "lock:false",
+            "overflow:false"
+          ]
+        },
+        {
+          "id": "gdi_opp_wif_forum_latam_2026_1",
+          "title": "WiF FORUM LATAM 2026",
+          "actionabilityV3": "VALID_WATCH",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "NO_OPEN_SOURCING_EVIDENCE",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_3",
+            "demand:WEAK",
+            "open:false/UNKNOWN",
+            "lock:false",
+            "overflow:false"
+          ]
+        },
+        {
+          "id": "gdi_opp_facades_monterrey_8",
+          "title": "Facades+ Monterrey",
+          "actionabilityV3": "VALID_WATCH",
+          "opportunityType": "PRIMARY_PURSUIT",
+          "failureClass": "NO_OPEN_SOURCING_EVIDENCE",
+          "notes": [
+            "semantic:EVENT",
+            "date:DATE_CONFIRMED",
+            "geo:PRIMARY_MARKET",
+            "source:TIER_3",
+            "demand:WEAK",
+            "open:false/UNKNOWN",
+            "lock:false",
+            "overflow:false"
+          ]
+        }
+      ]
+    }
+  ]
+}

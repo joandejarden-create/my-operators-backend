@@ -1,0 +1,195 @@
+/* Dealality About page — company story + compact founder module */
+:root {
+  --ab-rail: 1120px;
+  --ab-pad-x: clamp(1.5rem, 4vw, 3rem);
+  --ab-gold: #d78e2c;
+  --ab-purple: #9b8afb;
+  --ab-text: #ffffff;
+  --ab-se: rgba(255, 255, 255, 0.78);
+  --ab-mu: rgba(255, 255, 255, 0.55);
+  --ab-bo: rgba(255, 255, 255, 0.1);
+}
+
+.ab-skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  background: #6c72ff;
+  color: #fff;
+  text-decoration: none;
+}
+
+.ab-skip:focus {
+  left: 1rem;
+  top: 1rem;
+}
+
+.ab-main {
+  color: var(--ab-text);
+  font-family: "Inter Tight", "Plus Jakarta Sans", system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+.ab-inner {
+  width: 100%;
+  max-width: var(--ab-rail);
+  margin: 0 auto;
+  padding-left: var(--ab-pad-x);
+  padding-right: var(--ab-pad-x);
+  box-sizing: border-box;
+}
+
+.ab-kicker {
+  margin: 0 0 0.85rem;
+  color: var(--ab-gold);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.ab-hero {
+  padding: clamp(2.5rem, 5vw, 4rem) 0 clamp(2rem, 4vw, 3rem);
+}
+
+.ab-hero h1 {
+  margin: 0 0 1.25rem;
+  max-width: 18em;
+  color: #ffffff;
+  font-size: clamp(2rem, 1.5rem + 1.6vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.ab-lead {
+  margin: 0;
+  max-width: 40rem;
+  color: var(--ab-se);
+  font-size: 1.1rem;
+  line-height: 1.65;
+}
+
+.ab-section {
+  padding: clamp(2.25rem, 4vw, 3.5rem) 0;
+  border-top: 1px solid var(--ab-bo);
+}
+
+.ab-section--alt {
+  background: #0d1530;
+}
+
+.ab-section h2 {
+  margin: 0 0 1rem;
+  max-width: 22em;
+  color: #ffffff;
+  font-size: clamp(1.35rem, 1.15rem + 0.7vw, 1.85rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.ab-section p {
+  margin: 0;
+  max-width: 42rem;
+  color: var(--ab-se);
+}
+
+/* Founder module */
+.ab-founder {
+  padding: clamp(2.75rem, 5vw, 4.25rem) 0;
+  background: #060b1a;
+  border-top: 1px solid var(--ab-bo);
+}
+
+.ab-founder-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(160px, 0.55fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: end;
+}
+
+.ab-founder h2 {
+  margin: 0 0 1.25rem;
+  max-width: 16em;
+  color: #ffffff;
+  font-size: clamp(1.45rem, 1.2rem + 0.8vw, 1.95rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.ab-founder-copy p {
+  margin: 0 0 1rem;
+  max-width: 38rem;
+  color: var(--ab-se);
+}
+
+.ab-founder-copy a {
+  color: var(--ab-purple);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.ab-founder-copy a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.ab-founder-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.35rem;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.ab-founder-cta {
+  color: #ffffff !important;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  padding-bottom: 0.1rem;
+}
+
+.ab-founder-cta:hover {
+  border-bottom-color: var(--ab-purple);
+}
+
+.ab-founder-secondary {
+  color: var(--ab-mu) !important;
+  font-weight: 500 !important;
+}
+
+.ab-founder-photo-wrap {
+  margin: 0;
+  justify-self: end;
+}
+
+.ab-founder-photo {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center 18%;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 800px) {
+  .ab-founder-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ab-founder-photo-wrap {
+    order: -1;
+    justify-self: start;
+  }
+
+  .ab-founder-photo {
+    max-width: 180px;
+  }
+}

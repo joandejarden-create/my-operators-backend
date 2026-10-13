@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dealality AI Demand Performance Review — PDF Render</title>
+  <!-- Report family: Full Hotel Intelligence Investigation visual system -->
+  <link rel="stylesheet" href="/css/brand-alignment-snapshot.css" />
+  <link rel="stylesheet" href="/css/dealality-report-print-chrome.css?v=4" />
+  <link rel="stylesheet" href="/css/dealality-report-system-v1.css?v=2" />
+  <link rel="stylesheet" href="/css/adp-monthly-review-report-v1.css?v=2" />
+  <style>
+    html, body { margin: 0; padding: 0; background: #fff; }
+    #adp-mr-pdf-boot { font-family: Inter, system-ui, sans-serif; padding: 24px; color: #333; }
+    #adp-mr-pdf-boot[hidden] { display: none !important; }
+  </style>
+</head>
+<body class="adp-mr-pdf-export">
+  <div id="adp-mr-pdf-boot">Preparing Monthly Review PDF…</div>
+  <script src="/js/dealality-report-print-chrome.js?v=4"></script>
+  <script src="/js/ai-demand-positioning/adp-monthly-review-report-pdf-v1.js?v=3"></script>
+  <script>
+    (async function () {
+      var boot = document.getElementById("adp-mr-pdf-boot");
+      var params = new URLSearchParams(window.location.search || "");
+      var propertyId = (params.get("propertyId") || "adp_cambridge_beaches_bermuda").trim();
+      var source = (params.get("source") || "golden").trim();
+      var reviewId = (params.get("reviewId") || "").trim();
+      var TEMPLATE_ID = "AI_DEMAND_PERFORMANCE_REVIEW_CURRENT_TEMPLATE_V1";
+      var RENDERER_ID = "AdpMonthlyReviewReportPdfV1";
+      try {
+        // Hard lock: only the single canonical PDF renderer may compose current reviews.
+        if (
+          !window.AdpMonthlyReviewReportPdfV1 ||
+          typeof window.AdpMonthlyReviewReportPdfV1.buildReportHtml !== "function"
+        ) {
+          throw new Error("SINGLE_CANONICAL_AI_DEMAND_PERFORMANCE_REVIEW_RENDERER_MISSING");
+        }
+        if (window.AdpMonthlyExecutiveReview && !window.AdpMonthlyReviewReportPdfV1) {
+          throw new Error("LEGACY_RENDERER_BLOCKED");
+        }
+        var qs = new URLSearchParams({ source: source });
+        if (reviewId) qs.set("reviewId", reviewId);
+        var res = await fetch(
+          "/api/ai-demand-positioning/monthly-review/" +
+            encodeURIComponent(propertyId) +
+            "?" +
+            qs.toString()
+        );
+        var json = await res.json();
+        if (!json.ok || !json.review) {
+          throw new Error(json.message || json.error || "review_not_found");
+        }
+        var review = json.review;
+        var html = window.AdpMonthlyReviewReportPdfV1.buildReportHtml(review);
+        if (!html) throw new Error("report_html_unavailable");
+        if (html.indexOf("drs-kpi-band") < 0) {
+          throw new Error("AI_DEMAND_REVIEW_KPI_GRID_COMPONENT_REQUIRED");
+        }
+        if (/adp-mr-kpi-row|class=\"adp-mr-kpi\"/.test(html)) {
+          throw new Error("LEGACY_KPI_MARKUP_FORBIDDEN_IN_CURRENT_PDF");
+        }
+        var old = document.getElementById("adp-mr-pdf-host");
+        if (old) old.remove();
+        var host = document.createElement("div");
+        host.id = "adp-mr-pdf-host";
+        host.className = "adp-mr-pdf-host hid-print-host--pdf-export";
+        host.setAttribute("data-adp-mr-pdf-ready", "1");
+        host.setAttribute("data-adp-mr-property-id", review.property?.propertyId || propertyId);
+        host.setAttribute("data-adp-mr-property-name", review.property?.name || "");
+        host.setAttribute("data-adp-mr-report-family", "dealality-report-system-v1");
+        host.setAttribute("data-adp-mr-template-id", TEMPLATE_ID);
+        host.setAttribute("data-adp-mr-renderer", RENDERER_ID);
+        host.innerHTML = html;
+        host.querySelectorAll("[data-dealality-report-footer]").forEach(function (el) {
+          el.remove();
+        });
+        document.body.appendChild(host);
+        boot.hidden = true;
+        document.title =
+          (review.property?.name || "Property") +
+          " — Dealality AI Demand Performance Review";
+      } catch (err) {
+        boot.hidden = false;
+        boot.textContent =
+          "PDF render failed: " + (err && err.message ? err.message : err);
+        boot.setAttribute("data-adp-mr-pdf-error", "1");
+      }
+    })();
+  </script>
+</body>
+</html>

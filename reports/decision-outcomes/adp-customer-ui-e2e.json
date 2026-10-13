@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "host": "http://127.0.0.1:8080",
+  "propertyId": "adp_bethesda_marriott",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "findingId": "adp_e2e_test_finding_v2",
+  "steps": {
+    "uiLoaded": true,
+    "validationSave": true,
+    "validationPersistAfterRefresh": true,
+    "validationPersistDetail": {
+      "decisionId": "dec_mu5s2mcs_3e5fb9be",
+      "validationValue": "AGREE",
+      "eventCount": 1
+    },
+    "actionSave": true,
+    "outcomeSave": true,
+    "refreshOk": true,
+    "subjectApi": {
+      "ok": true,
+      "decisionId": "dec_mu5s2mcs_3e5fb9be"
+    },
+    "airtable": {
+      "decisionCount": 1,
+      "eventCount": 3,
+      "hotelOk": true,
+      "moduleOk": true,
+      "subjectOk": true,
+      "hasValidation": true,
+      "hasAction": true,
+      "hasOutcome": true,
+      "noDuplicateDecision": true,
+      "validationValueOk": true,
+      "actionValueOk": true,
+      "outcomeValueOk": true
+    },
+    "uiQuality": {
+      "feedbackCardPresent": true,
+      "labelsFriendly": true,
+      "consoleErrorCount": 0,
+      "failedRequestCount": 0
+    }
+  },
+  "consoleErrors": [],
+  "failedRequests": [
+    {
+      "url": "http://127.0.0.1:8080/api/hotels/recLuxvwwxID7U2B8/subjects/adp_e2e_test_finding_v2/decision?module=ADP",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:8080/api/hotels/recLuxvwwxID7U2B8/subjects/adp_e2e_test_finding_v2/decision?module=ADP",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "airtable": {
+    "decisions": [
+      {
+        "decisionId": "dec_mu5s2mcs_3e5fb9be",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "productModule": "ADP",
+        "subjectId": "adp_e2e_test_finding_v2",
+        "status": "OUTCOME_RECORDED"
+      }
+    ],
+    "events": [
+      {
+        "eventId": "out_mu5s2qyu_32b3a7",
+        "decisionId": "dec_mu5s2mcs_3e5fb9be",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "eventType": "OUTCOME",
+        "eventValue": "TOO_EARLY_TO_MEASURE",
+        "subjectId": "adp_e2e_test_finding_v2"
+      },
+      {
+        "eventId": "act_mu5s2pwg_f23288",
+        "decisionId": "dec_mu5s2mcs_3e5fb9be",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "eventType": "ACTION",
+        "eventValue": "WEBSITE_CONTENT_UPDATED",
+        "subjectId": "adp_e2e_test_finding_v2"
+      },
+      {
+        "eventId": "val_mu5s2mxq_f1d162",
+        "decisionId": "dec_mu5s2mcs_3e5fb9be",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "eventType": "VALIDATION",
+        "eventValue": "AGREE",
+        "subjectId": "adp_e2e_test_finding_v2"
+      }
+    ]
+  },
+  "authNote": "Decision routes fulfilled via decision-outcomes service (same write path as API); Memberstack Users lookup bypassed for local E2E."
+}

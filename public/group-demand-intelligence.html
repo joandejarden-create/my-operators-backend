@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Group & Demand Intelligence — Dealality</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/deal-workspace-shell.css" />
+  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=gdi-drawer-load-20260924" />
+  <link rel="stylesheet" href="/css/group-demand-intelligence.css?v=gdi-remove-workflow-filters-v1" />
+</head>
+<body class="gdi-page aiv-page">
+  <script>
+    (function () {
+      try {
+        if (window !== window.top) document.body.classList.add("embed-mode");
+      } catch (e) {
+        document.body.classList.add("embed-mode");
+      }
+      if (/(?:^|[?&])embed=1(?:&|$)/.test(window.location.search || "")) {
+        document.body.classList.add("embed-mode");
+      }
+    })();
+  </script>
+  <!-- Canonical intelligence-product loading toast (Brand AI / ADP lineage) — outside root so render() does not destroy it -->
+  <div
+    class="bdd-toast aiv-loading-toast show"
+    id="gdiLoading"
+    role="status"
+    aria-live="polite"
+    aria-busy="true"
+    style="display: flex"
+  >
+    <div class="toast-wave-container" aria-hidden="true">
+      <div class="wave-container">
+        <div class="wave wave-1"></div>
+        <div class="wave wave-2"></div>
+        <div class="wave wave-3"></div>
+        <div class="wave-particles">
+          <div class="particle"></div>
+          <div class="particle"></div>
+          <div class="particle"></div>
+          <div class="particle"></div>
+        </div>
+      </div>
+    </div>
+    <div class="toast-message" id="gdiLoadingMessage">Loading Group Demand Intelligence…</div>
+  </div>
+  <div class="gdi-shell dashboard-container aiv-dashboard" id="gdiRoot"></div>
+  <dialog class="gdi-drawer" id="gdiDrawer" aria-label="Opportunity detail">
+    <div class="gdi-drawer-inner">
+      <header class="gdi-drawer-head">
+        <h2 id="gdiDrawerTitle">Opportunity</h2>
+        <button type="button" class="gdi-btn gdi-btn-ghost" id="gdiDrawerClose" aria-label="Close">Close</button>
+      </header>
+      <div class="gdi-drawer-body" id="gdiDrawerBody"></div>
+    </div>
+  </dialog>
+  <script src="/js/dealality-memberstack-auth.js"></script>
+  <script src="/js/group-demand-intelligence/dealality-gdi-ui.js?v=gdi-remove-workflow-filters-v1"></script>
+  <script src="/js/group-demand-intelligence/app.js?v=gdi-remove-workflow-filters-v1"></script>
+</body>
+</html>

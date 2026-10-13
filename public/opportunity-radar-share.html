@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Opportunity Radar — Mexico — Shared by Dealality</title>
+  <link rel="stylesheet" href="/css/radar-share-shell.css?v=or-share-1" />
+  <style>
+    body.rs-direct.or-share-shell {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+      background: #080f25;
+    }
+    .or-share-shell .rs-banner,
+    .or-share-shell .rs-toolbar,
+    .or-share-shell .rs-footer {
+      width: min(100%, 1600px);
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 16px;
+      padding-right: 16px;
+      box-sizing: border-box;
+    }
+    .or-share-frame-wrap {
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .or-share-frame {
+      flex: 1;
+      width: 100%;
+      min-height: calc(100vh - 140px);
+      border: 0;
+      background: #080f25;
+    }
+    .or-share-loading {
+      position: absolute;
+      inset: 120px 0 40px;
+      display: grid;
+      place-items: center;
+      color: #aeb9e1;
+      font-size: 14px;
+      pointer-events: none;
+    }
+    .or-share-loading[hidden] {
+      display: none !important;
+    }
+    .rs-readonly-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(253, 181, 42, 0.55);
+      color: #fdb52a;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+  </style>
+  <script>
+  /**
+   * Pack → share query contract BEFORE iframe boots.
+   * Product-scoped Opportunity Radar share (NOT Scout Market Map).
+   */
+  (function () {
+    "use strict";
+    var SHARE_PACKS = {
+      mexico: {
+        key: "mexico",
+        title: "Opportunity Radar — Mexico",
+        meta: "Dealality · Opportunity Radar · Mexico · Read-only · no login",
+        country: "Mexico",
+        market: ""
+      }
+    };
+    var ALIASES = { "mexico-demo": "mexico", mx: "mexico", "dev-mexico": "mexico" };
+    var params = new URLSearchParams(window.location.search || "");
+    var packKey = String(params.get("pack") || "mexico").trim().toLowerCase();
+    packKey = ALIASES[packKey] || packKey;
+    var pack = SHARE_PACKS[packKey] || SHARE_PACKS.mexico;
+    params.set("pack", pack.key);
+    params.set("share", "1");
+    params.set("sharePack", pack.key);
+    if (pack.country) params.set("country", pack.country);
+    if (pack.market) params.set("market", pack.market);
+    else params.delete("market");
+    var next = window.location.pathname + "?" + params.toString();
+    if (window.location.search !== "?" + params.toString()) {
+      window.history.replaceState(null, "", next);
+    }
+    window.__OR_SHARE_PACK__ = pack;
+    document.title = pack.title + " — Shared by Dealality";
+  })();
+  </script>
+</head>
+<body class="rs-direct or-share-shell">
+  <p class="rs-banner" id="orShareBanner">
+    <strong>Shared by Dealality.</strong>
+    Opportunity Radar preview — development opportunities and market signals · read-only · no login required.
+  </p>
+  <div class="rs-toolbar rs-toolbar--compact">
+    <div class="rs-brand">
+      <img
+        class="rs-logo"
+        src="/deal-capture-logo-outline.svg"
+        alt="Dealality"
+        onerror="this.style.display='none'"
+      />
+      <div>
+        <h1 class="rs-toolbar__title" id="orShareTitle">Opportunity Radar</h1>
+        <p class="rs-toolbar__meta" id="orShareMeta">Mexico · Shared by Dealality</p>
+      </div>
+    </div>
+    <div class="rs-actions">
+      <span class="rs-readonly-chip" aria-label="Read-only">Read-only</span>
+      <a class="rs-cta" href="https://www.dealality.com" target="_blank" rel="noopener noreferrer"
+        >Learn more about Dealality</a
+      >
+    </div>
+  </div>
+
+  <div class="or-share-frame-wrap" style="position: relative">
+    <div class="or-share-loading" id="orShareLoading" role="status">Loading Opportunity Radar…</div>
+    <iframe
+      class="or-share-frame"
+      id="orShareFrame"
+      title="Opportunity Radar — Mexico"
+      src="about:blank"
+    ></iframe>
+  </div>
+
+  <p class="rs-footer">Confidential preview · Shared by Dealality · Not for redistribution</p>
+
+  <script>
+  (function () {
+    "use strict";
+    var pack = window.__OR_SHARE_PACK__ || {
+      key: "mexico",
+      title: "Opportunity Radar — Mexico",
+      meta: "Dealality · Opportunity Radar · Mexico · Read-only",
+      country: "Mexico"
+    };
+    var titleEl = document.getElementById("orShareTitle");
+    var metaEl = document.getElementById("orShareMeta");
+    if (titleEl) titleEl.textContent = "Opportunity Radar";
+    if (metaEl) metaEl.textContent = pack.meta || "Mexico · Shared by Dealality";
+
+    var frame = document.getElementById("orShareFrame");
+    var loading = document.getElementById("orShareLoading");
+    var q = new URLSearchParams({
+      share: "1",
+      sharePack: pack.key || "mexico",
+      pack: pack.key || "mexico",
+      country: pack.country || "Mexico",
+      embed: "1"
+    });
+    if (pack.market) q.set("market", pack.market);
+    frame.src = "/deal-capture-radar-with-ranked-list.html?" + q.toString();
+    frame.addEventListener("load", function () {
+      if (loading) loading.hidden = true;
+    });
+    // Failsafe: hide loading after slow census fetch
+    setTimeout(function () {
+      if (loading) loading.hidden = true;
+    }, 45000);
+  })();
+  </script>
+</body>
+</html>

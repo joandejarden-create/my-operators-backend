@@ -1,0 +1,41 @@
+{
+  "scoringVersion": "gdi-hotel-fit-v1",
+  "reviewedAgainstGmFrameworkAt": "2026-09-13",
+  "weightsUnchangedNote": "GM requested 25/20/15/15/10/10/5. Existing DEFAULT_HOTEL_FIT_WEIGHTS already matched — no weight change this iteration. geographyFit is Demand Territory Fit in the UI.",
+  "hotelFitWeights": {
+    "physicalFit": 0.25,
+    "geographyFit": 0.2,
+    "timing": 0.15,
+    "commercialValue": 0.15,
+    "historicalFit": 0.1,
+    "competitiveAccessibility": 0.1,
+    "contactability": 0.05
+  },
+  "hotelFitComponentLabels": {
+    "physicalFit": "Physical Fit",
+    "geographyFit": "Demand Territory Fit",
+    "timing": "Timing / Winnability",
+    "commercialValue": "Commercial Potential",
+    "historicalFit": "Historical Hotel / Brand Fit",
+    "competitiveAccessibility": "Competitive Accessibility",
+    "contactability": "Contactability"
+  },
+  "priorityThresholds": {
+    "highFitMin": 75,
+    "highConfidenceMin": 55,
+    "mediumFitMin": 60,
+    "mediumConfidenceMin": 40
+  },
+  "qualificationPrecisionV1": {
+    "enabled": true,
+    "highRequiresOpportunityQualification": ["VERIFIED_OPEN", "STRONG"],
+    "highRequiresOpportunityType": ["PRIMARY_PURSUIT", "OVERFLOW_HOUSING"],
+    "highRequiresNamedOrHousingContact": true,
+    "hotelFitCannotOverrideClosedQualification": true,
+    "eventGeographyBeatsOrganizationName": true,
+    "attendanceIsNotRoomDemand": true,
+    "webhoundSpendUsd": 0
+  },
+  "webhoundHardCapUsd": 15,
+  "notes": "Single source of truth for GDI scoring documentation. Runtime still uses scoring.js + qualification-precision.js — keep in sync. Qualification Precision V1 (2026-09-15): venue/sourcing gate + opportunity type + room demand + contact quality run before final priority."
+}

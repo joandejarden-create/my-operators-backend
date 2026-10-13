@@ -1,0 +1,169 @@
+{
+  "generatedAt": "2026-09-25T10:17:35.346Z",
+  "hotelId": "gdi_hotel_w_rome",
+  "phase0": {
+    "hotel": "W Rome",
+    "provisionalHotelId": "gdi_hotel_w_rome",
+    "canonicalHotelId": "rece0or38cxo3Fymb",
+    "censusStatus": "RESOLVED",
+    "country": "Italy",
+    "market": "Rome",
+    "officialFacts": {
+      "name": "W Rome",
+      "marsha": "ROMWV",
+      "website": "https://www.marriott.com/en-us/hotels/romwv-w-rome/overview/",
+      "address": "26/36 Via Liguria, Rome, Italy, 00187",
+      "rooms": 148,
+      "meetingSpaceSqM": 60,
+      "meetingSpaceSqFt": 646,
+      "brand": "W Hotels",
+      "parent": "Marriott International",
+      "city": "Rome",
+      "country": "Italy"
+    },
+    "factsClassification": {
+      "AVAILABLE": [
+        "official name",
+        "MARSHA ROMWV",
+        "official Marriott URL",
+        "address",
+        "city",
+        "country",
+        "rooms (148)",
+        "meeting space (~60 m² / 646 sq ft)",
+        "brand W Hotels",
+        "parent Marriott"
+      ],
+      "DERIVABLE": [
+        "peak room planning band from rooms",
+        "demand archetype from capability",
+        "locale pack IT from country",
+        "catchment km bands from archetype"
+      ],
+      "MISSING": [
+        "company-validated owner/AM",
+        "year built / renovated",
+        "certified ADP peer pack"
+      ],
+      "STEWARDSHIP_REQUIRED": [
+        "ADP peer set approval",
+        "ADP baseline period"
+      ]
+    },
+    "localeSupport": {
+      "itPackPresent": true,
+      "countryLocaleIt": {
+        "languages": [
+          "it",
+          "en"
+        ],
+        "gl": "it"
+      }
+    },
+    "blockingForApply": false
+  },
+  "seed": {
+    "fits": 7,
+    "targets": 14,
+    "generators": 7,
+    "programs": 7,
+    "rejected": 0,
+    "byType": {
+      "DEMAND_GENERATOR": 7,
+      "PROGRAM": 7
+    },
+    "byPriority": {
+      "HIGH": 6,
+      "MEDIUM": 8,
+      "LOW": 0
+    },
+    "geoScopes": [
+      "EU",
+      "GLOBAL"
+    ],
+    "sampleOrgs": [
+      "Professional Convention Management Association",
+      "Meeting Professionals International",
+      "Society for Incentive Travel Excellence",
+      "Association of Corporate Travel Executives",
+      "International Congress and Convention Association",
+      "UFI — The Global Association of the Exhibition Industry",
+      "International Association of Professional Congress Organisers"
+    ]
+  },
+  "recreate": {
+    "fitFirst": 7,
+    "fitRecreated": 7,
+    "fitOverlapCount": 7,
+    "fitOverlapPct": 100,
+    "targetFirst": 14,
+    "targetRecreated": 14,
+    "targetOverlapCount": 14,
+    "targetOverlapPct": 100,
+    "materialFitDiffs": [],
+    "materialTargetDiffs": [],
+    "deterministic": true,
+    "manualHotelSpecificInjection": false
+  },
+  "weeklyReadiness": {
+    "status": "WEEKLY_READY",
+    "blockers": [],
+    "targetCount": 14,
+    "fitCount": 7,
+    "note": "Seeded targets are structurally consumable by weekly discovery (no live run executed)"
+  },
+  "quality": {
+    "geoScopes": [
+      "EU",
+      "GLOBAL"
+    ],
+    "pilotBleed": false,
+    "nycBleed": false,
+    "usOnlyAssociationCount": 0,
+    "hotelSpecificCode": 0,
+    "italyHardcodeInProdLogic": 0,
+    "romeHardcodeInProdLogic": 0
+  },
+  "marketLocal": {
+    "version": "gdi_market_local_expansion_v1",
+    "planTaskCount": 100,
+    "languages": [
+      "it",
+      "en"
+    ],
+    "categories": 25,
+    "discoveredEntities": 0,
+    "newTargets": 0,
+    "note": "Live evidence fetch deferred until census unlock; plan is country/locale generic."
+  },
+  "pilotLogicEnabled": false,
+  "adpJevAdapter": {
+    "version": "adp_jev_shadow_adapter_v1",
+    "shadowAdapterExists": true,
+    "productionAdpBehaviorChanged": false,
+    "apply": false,
+    "applyReady": false,
+    "allowed": [
+      "ADP_EVIDENCE_UTILITY",
+      "ADP_SOURCE_PRIORITY",
+      "ADP_FOLLOWUP_RESEARCH_TYPE"
+    ],
+    "forbidden": [
+      "finding_truth",
+      "root_cause_truth",
+      "competitor_identity",
+      "final_action",
+      "customer_narrative",
+      "persistence_authorization",
+      "canonical_identity"
+    ],
+    "note": "Shadow-only reuse of GDI Jev decide(); never mutates ADP snapshot or Airtable overlay."
+  },
+  "jevSeed": null,
+  "jevAdp": null,
+  "apply": {
+    "attempted": false,
+    "applied": false,
+    "reason": "dry_run_default"
+  }
+}

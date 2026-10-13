@@ -9,28 +9,18 @@
   /** @type {Map<string, { at: number, promise: Promise<any>, data: object|null }>} */
   var cache = new Map();
 
-  function cacheKey(brandId, useHpc) {
-    return String(brandId || '').trim() + (useHpc ? '|hpc' : '|legacy');
+  function cacheKey(brandId) {
+    return String(brandId || '').trim();
   }
 
   function isFresh(entry) {
     return entry && Date.now() - entry.at < CACHE_TTL_MS;
   }
 
-  function beHpcActive() {
-    try {
-      var src = typeof window !== 'undefined' && window.DealalityBrandExplorerCensusSource;
-      return !!(src && typeof src.isBeHpcOptInActive === 'function' && src.isBeHpcOptInActive());
-    } catch (err) {
-      return false;
-    }
-  }
-
   function fetchBrandDetail(brandId, options) {
     options = options || {};
-    var useHpc = beHpcActive();
-    var key = cacheKey(brandId, useHpc);
-    if (!key || key === '|legacy' || key === '|hpc') {
+    var key = cacheKey(brandId);
+    if (!key) {
       return Promise.reject(new Error('Brand id is required'));
     }
 
@@ -44,28 +34,12 @@
       }
     }
 
-    var url = '/api/brand-library/brand?brandId=' + encodeURIComponent(String(brandId || '').trim());
+    var url = '/api/brand-library/brand?brandId=' + encodeURIComponent(key);
     if (options.refresh) {
       url += '&refresh=1';
     }
-    if (useHpc) {
-      url += '&censusSource=hpc&product=brand-explorer&beHpc=1';
-    }
 
-    var headers = { Accept: 'application/json', 'ngrok-skip-browser-warning': 'true' };
-    try {
-      var src = typeof window !== 'undefined' && window.DealalityBrandExplorerCensusSource;
-      if (src && typeof src.beCensusHeaders === 'function') {
-        headers = src.beCensusHeaders();
-      } else if (useHpc) {
-        headers['X-Dealality-Census-Source'] = 'hpc';
-        headers['X-Dealality-Product'] = 'brand-explorer';
-      }
-    } catch (err) {
-      /* ignore */
-    }
-
-    var promise = fetch(url, { cache: 'no-store', headers: headers })
+    var promise = fetch(url, { cache: 'no-store' })
       .then(function (res) {
         if (!res.ok) {
           throw new Error('Failed to load brand (' + res.status + ')');
@@ -94,8 +68,7 @@
 
   function clearBrandDetailCache(brandId) {
     if (brandId) {
-      cache.delete(cacheKey(brandId, false));
-      cache.delete(cacheKey(brandId, true));
+      cache.delete(cacheKey(brandId));
       return;
     }
     cache.clear();
@@ -135,12 +108,12 @@
       return listCache.promise;
     }
 
-    var url = '/api/brand-library/brands?refresh=1';
-    if (options.refresh === false) {
-      url = '/api/brand-library/brands';
+    var url = '/api/brand-library/brands';
+    if (options.refresh) {
+      url = '/api/brand-library/brands?refresh=1';
     }
 
-    var promise = fetch(url, { cache: 'no-store' })
+    var promise = fetch(url, options.refresh ? { cache: 'no-store' } : undefined)
       .then(function (res) {
         if (!res.ok) {
           throw new Error('Failed to fetch brands (' + res.status + ')');

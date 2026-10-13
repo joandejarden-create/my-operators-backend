@@ -46,9 +46,15 @@ import {
 import { getMarketAlertsNews } from "./api/market-alerts-news.js";
 import { cronMarketAlertsRssSync } from "./api/run-market-alerts-rss-sync.js";
 import { startMarketAlertsRssScheduler } from "./api/market-alerts-rss-scheduler.js";
+import {
+  getMarketAlertContacts,
+  postMarketAlertContactEnrich,
+  postMarketAlertFindPerson,
+  postMarketAlertContactReveal,
+} from "./api/market-alerts-contact.js";
+import { postSurfeEnrichmentWebhook } from "./api/webhooks-surfe-enrichment.js";
 import { analyzeDeal } from "./api/deal-intelligence.js";
 import { getBrandPresence, getBrandPresenceHotelById, getBrandStatistics, getWhiteSpaceOpportunities, exportBrandPresenceData, getLocationTypes, getParentCompanies, getBrands, getChainScales } from "./api/brand-presence.js";
-import { getDealalityRuntimeFlagsHandler } from "./api/dealality-runtime-flags.js";
 import {
   getGoldenDemoOwnershipIndex,
   getGoldenDemoHotelOwnership,
@@ -56,11 +62,34 @@ import {
   getGoldenDemoOwnershipNeighbors,
 } from "./api/golden-demo-ownership.js";
 import {
+  getOwnerIntelligenceMeta,
+  listOwnerIntelligenceOwners,
+  getOwnerIntelligenceOwner,
+  getOwnerIntelligencePortfolio,
+  getOwnerIntelligenceRelated,
+  getOwnerIntelligenceHotels,
+  getOwnerIntelligencePeople,
+  getOwnerIntelligenceSources,
+  getHotelOwnerAnchor,
+} from "./api/owner-intelligence.js";
+
+import {
+  getContactIntelligenceMeta,
+  getContactIntelligenceHotel,
+  getContactIntelligenceOwner,
+  getContactIntelligenceSliceTen,
+  getContactIntelligenceBenchmark100,
+  getContactIntelligenceLiveSliceTen,
+  postContactIntelligenceHotelRefresh,
+} from "./api/contact-intelligence.js";
+
+import {
   listHotelIntelligenceDossiers,
   getHotelIntelligenceDossier,
   getHotelIntelligenceDossierForHotel,
   downloadHotelIntelligenceDossierPdf,
 } from "./api/hotel-intelligence-dossier.js";
+
 import {
   getHotelResearchCenter,
   listHotelResearchRequests,
@@ -81,8 +110,56 @@ import {
   getAiDemandPositioningEvidence,
   getAiDemandPositioningReadHealth,
   getAiDemandPositioningPublicationMeta,
+  getAdpMonthlyExecutiveReview,
 } from "./api/ai-demand-positioning.js";
+import {
+  getAdminLeakAuditMeta,
+  getAdminLeakAudits,
+  getAdminLeakAuditReportCatalog,
+  postAdminLeakAuditCreate,
+  getAdminLeakAuditById,
+  postAdminLeakAuditApprove,
+  postAdminLeakAuditRun,
+  postAdminLeakAuditMarkSent,
+  postAdminLeakAuditPromote,
+  getLeakAuditClientReport,
+  getLeakAuditSampleReport,
+  getLeakAuditPortfolioSampleReport,
+  getLeakAuditDemoDiagnostics,
+} from "./api/admin-adp-leak-audits.js";
+import {
+  getAdminMonthlyReviews,
+  getAdminMonthlyReviewById,
+  getAdminMonthlyReviewPdf,
+  getAdminCurrentReportPdf,
+  postAdminCurrentReportPdfGenerate,
+  postAdminMonthlyReviewRegenerate,
+  postAdminMonthlyReviewGenerate,
+  postAdminMonthlyReviewGenerateEligible,
+  postAdminMonthlyReviewArchive,
+  getAdminMonthlyReviewCompare,
+  postAdminActionFeedback,
+  postAdminReportFeedback,
+  postAdminMarkClientIssued,
+  getAdminGeneratePreview,
+  getAdminActionPlanExport,
+  getAdminActionPlanCatalog,
+} from "./api/admin-adp-monthly-reviews.js";
+import {
+  getAdminGdiReportCatalog,
+  getAdminGdiReportData,
+  postAdminGdiReportGenerate,
+  getAdminGdiReportPdf,
+} from "./api/admin-gdi-reports.js";
+import { getAdminExternalClientLinks } from "./api/admin-external-client-links.js";
+import {
+  getAdminReportArchiveCatalog,
+  getAdminReportArchiveEntry,
+  getAdminReportArchivePdf,
+} from "./api/admin-report-archive.js";
+
 import { logAdpPublishedReadSourceAtStartup } from "./lib/ai-demand-positioning/published-read-service.js";
+import { logAdminShareHydrationStatus } from "./lib/admin/report-external-client-links-v1.js";
 import {
   requireAdpShareCapability,
   getAdpShareResolve,
@@ -204,6 +281,61 @@ import {
   postPreviewDemandCenterImport,
 } from "./api/market-demand.js";
 import {
+  getGdiFlag,
+  getGdiHotels,
+  getGdiSummary,
+  getGdiProfile,
+  getGdiOpportunities,
+  getGdiDemandCampaigns,
+  getGdiPublicationMonitors,
+  getGdiOpportunitiesExport,
+  getGdiOpportunityDetail,
+  getGdiWeeklyBrief,
+  getGdiResearchRuns,
+  getGdiResearchRun,
+  postGdiRunResearch,
+  postGdiFeedback,
+  postGdiCustomerValidation,
+  getGdiFeedback,
+  getGdiShareResolve,
+  getGdiShareBrief,
+  getGdiShareOpportunities,
+  getGdiShareOpportunitiesExport,
+  getGdiShareOpportunityDetail,
+  postGdiShareValidation,
+  postGdiShareAction,
+  postGdiShareOutcome,
+  getGdiShareValidation,
+  postGdiIssueShare,
+  postGdiRevokeShare,
+} from "./api/group-demand-intelligence.js";
+import {
+  getGdiPursuitEnums,
+  getGdiPursuits,
+  getGdiPursuitById,
+  getGdiPursuitByOpportunity,
+  postGdiStartPursuit,
+  patchGdiPursuit,
+  postGdiPursuitResponse,
+  postGdiPursuitOutcome,
+  postGdiPursuitFollowUp,
+} from "./api/gdi-pursuit.js";
+import { assertGdiShareProductionConfig } from "./lib/group-demand-intelligence/share/gdi-signed-share-capability-v1.js";
+import {
+  postDecision,
+  getDecisionById,
+  getDecisionTimelineRoute,
+  postDecisionValidation,
+  postDecisionAction,
+  postDecisionOutcome,
+  getHotelDecisions,
+  getHotelDecisionMetricsRoute,
+  getSubjectDecisionRoute,
+  getAdminDecisionAudit,
+  postEnsureGdiDecision,
+  postEnsureAdpDecision,
+} from "./api/decision-outcomes.js";
+import {
   getOperatorAlignmentSnapshotProfile,
   getOperatorAlignmentSnapshotCompanies,
 } from "./api/operator-alignment-snapshot.js";
@@ -299,6 +431,7 @@ import {
 } from "./api/dealality-airtable-chatgpt.js";
 import { memberstackAuth } from "./middleware/memberstackAuth.js";
 import { requireDealalityUser } from "./middleware/requireDealalityUser.js";
+import { gdiPilotReadAuth } from "./middleware/gdiPilotReadAuth.js";
 import { requireMyDealsAccess } from "./middleware/requireMyDealsAccess.js";
 import { requireOperatorDealsAccess } from "./middleware/requireOperatorDealsAccess.js";
 import { requireBrandAiVisibilityAccess } from "./middleware/requireBrandAiVisibilityAccess.js";
@@ -396,6 +529,7 @@ import { requireDealRecordAccess } from "./middleware/requireDealRecordAccess.js
 import { mapBodyDealIdToRecordId } from "./middleware/mapBodyDealIdToRecordId.js";
 import { mapParamDealIdToRecordId } from "./middleware/mapParamDealIdToRecordId.js";
 import { requireAdminAccess } from "./middleware/requireAdminAccess.js";
+import { requireAdpMonthlyReviewAdminAccess } from "./middleware/requireAdpMonthlyReviewAdminAccess.js";
 import { requireInternalRunbookAdmin } from "./middleware/requireInternalRunbookAdmin.js";
 import {
   postAcquisitionConnectionsPreview,
@@ -741,9 +875,10 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Memberstack + Airtable user context (Phase A)
+
 // ============================================================
-// HOTEL / OWNER EXPLORER — MEXICO SHARE + GOLDEN DEMO ROUTES
-// Restored onto main so Railway deploys keep no-login share links.
+// HOTEL / OWNER EXPLORER — RECOVERED GOLDEN DEMO ROUTES
 // ============================================================
 
 // Golden Demo Ownership
@@ -761,23 +896,70 @@ app.get(
   getGoldenDemoHotelOwnership
 );
 
+// Packet 2.8B-2 — Owner Intelligence (org-level portfolio / control graph)
+app.get("/api/owner-intelligence/meta", getOwnerIntelligenceMeta);
+app.get("/api/owner-intelligence/owners", listOwnerIntelligenceOwners);
+app.get("/api/owner-intelligence/owners/:ownerId", getOwnerIntelligenceOwner);
+app.get(
+  "/api/owner-intelligence/owners/:ownerId/portfolio",
+  getOwnerIntelligencePortfolio
+);
+app.get(
+  "/api/owner-intelligence/owners/:ownerId/related-entities",
+  getOwnerIntelligenceRelated
+);
+app.get(
+  "/api/owner-intelligence/owners/:ownerId/hotels",
+  getOwnerIntelligenceHotels
+);
+app.get(
+  "/api/owner-intelligence/owners/:ownerId/people",
+  getOwnerIntelligencePeople
+);
+app.get(
+  "/api/owner-intelligence/owners/:ownerId/sources",
+  getOwnerIntelligenceSources
+);
+app.get(
+  "/api/owner-intelligence/hotels/:hotelId/owner-anchor",
+  getHotelOwnerAnchor
+);
+
+// Contact Intelligence V1 (Census + Hotel/Owner Explorer)
+app.get("/api/contact-intelligence/meta", getContactIntelligenceMeta);
+app.get("/api/contact-intelligence/slice/ten", getContactIntelligenceSliceTen);
+app.get("/api/contact-intelligence/benchmark/100", getContactIntelligenceBenchmark100);
+app.get("/api/contact-intelligence/hotels/:hotelId", getContactIntelligenceHotel);
+app.get("/api/contact-intelligence/owners/:ownerId", getContactIntelligenceOwner);
+app.get("/api/contact-intelligence/live-slice/ten", getContactIntelligenceLiveSliceTen);
+app.post(
+  "/api/contact-intelligence/hotels/:hotelId/refresh",
+  memberstackAuth,
+  requireDealalityUser,
+  postContactIntelligenceHotelRefresh
+);
+
 // Hotel Intelligence Dossiers
 app.get(
   "/api/hotel-intelligence/dossiers",
   listHotelIntelligenceDossiers
 );
+
 app.get(
   "/api/hotel-intelligence/dossiers/:dossierId",
   getHotelIntelligenceDossier
 );
+
 app.get(
   "/api/hotel-intelligence/dossiers/:dossierId/pdf",
   downloadHotelIntelligenceDossierPdf
 );
+
 app.get(
   "/api/hotel-intelligence/hotels/:recordId/dossiers",
   getHotelIntelligenceDossierForHotel
 );
+
 app.get(
   "/api/hotel-intelligence/hotels/:recordId/dossiers/pdf",
   function (req, res) {
@@ -792,36 +974,291 @@ app.get(
   "/api/hotel-intelligence/research/templates",
   listResearchTemplates
 );
+
 app.get(
   "/api/hotel-intelligence/research/reports/:reportId",
   getResearchReportMeta
 );
+
 app.get(
   "/api/hotel-intelligence/research/requests/:requestId",
   getResearchRequest
 );
+
 app.get(
   "/api/hotel-intelligence/hotels/:hotelId/research",
   getHotelResearchCenter
 );
+
 app.get(
   "/api/hotel-intelligence/hotels/:hotelId/research/requests",
   listHotelResearchRequests
 );
+
 app.post(
   "/api/hotel-intelligence/hotels/:hotelId/research/requests",
   createHotelResearchRequest
 );
+
 app.post(
   "/api/hotel-intelligence/hotels/:hotelId/research/enrich-profiles",
   enrichHotelPeopleProfiles
 );
 
 // ============================================================
-// END HOTEL / OWNER EXPLORER SHARE ROUTES
+// GROUP DEMAND INTELLIGENCE (EXPERIMENTAL / PILOT — not ADP)
 // ============================================================
+app.get("/api/group-demand-intelligence/flag", getGdiFlag);
+app.get(
+  "/api/group-demand-intelligence/hotels",
+  gdiPilotReadAuth,
+  getGdiHotels
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/summary",
+  gdiPilotReadAuth,
+  getGdiSummary
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/profile",
+  gdiPilotReadAuth,
+  getGdiProfile
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/opportunities",
+  gdiPilotReadAuth,
+  getGdiOpportunities
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/demand-campaigns",
+  gdiPilotReadAuth,
+  getGdiDemandCampaigns
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/publication-monitors",
+  gdiPilotReadAuth,
+  getGdiPublicationMonitors
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/opportunities/export.csv",
+  gdiPilotReadAuth,
+  getGdiOpportunitiesExport
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/opportunities/:opportunityId",
+  gdiPilotReadAuth,
+  getGdiOpportunityDetail
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/weekly-brief",
+  gdiPilotReadAuth,
+  getGdiWeeklyBrief
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/research-runs",
+  gdiPilotReadAuth,
+  getGdiResearchRuns
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/research-runs/:runId",
+  gdiPilotReadAuth,
+  getGdiResearchRun
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/feedback",
+  gdiPilotReadAuth,
+  getGdiFeedback
+);
+app.post(
+  "/api/group-demand-intelligence/hotels/:hotelId/opportunities/:opportunityId/feedback",
+  memberstackAuth,
+  requireDealalityUser,
+  postGdiFeedback
+);
+app.post(
+  "/api/group-demand-intelligence/hotels/:hotelId/opportunities/:opportunityId/customer-validation",
+  memberstackAuth,
+  requireDealalityUser,
+  postGdiCustomerValidation
+);
+// GDI Pursuit workflow (separate from Ready/Watch gates)
+app.get(
+  "/api/group-demand-intelligence/pursuit/enums",
+  gdiPilotReadAuth,
+  getGdiPursuitEnums
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/pursuits",
+  gdiPilotReadAuth,
+  getGdiPursuits
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/pursuits/:pursuitId",
+  gdiPilotReadAuth,
+  getGdiPursuitById
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/opportunities/:opportunityId/pursuit",
+  gdiPilotReadAuth,
+  getGdiPursuitByOpportunity
+);
+app.post(
+  "/api/group-demand-intelligence/hotels/:hotelId/opportunities/:opportunityId/pursuit/start",
+  memberstackAuth,
+  requireDealalityUser,
+  postGdiStartPursuit
+);
+app.patch(
+  "/api/group-demand-intelligence/hotels/:hotelId/pursuits/:pursuitId",
+  memberstackAuth,
+  requireDealalityUser,
+  patchGdiPursuit
+);
+app.post(
+  "/api/group-demand-intelligence/hotels/:hotelId/pursuits/:pursuitId/response",
+  memberstackAuth,
+  requireDealalityUser,
+  postGdiPursuitResponse
+);
+app.post(
+  "/api/group-demand-intelligence/hotels/:hotelId/pursuits/:pursuitId/outcome",
+  memberstackAuth,
+  requireDealalityUser,
+  postGdiPursuitOutcome
+);
+app.post(
+  "/api/group-demand-intelligence/hotels/:hotelId/pursuits/:pursuitId/follow-up",
+  memberstackAuth,
+  requireDealalityUser,
+  postGdiPursuitFollowUp
+);
+app.post(
+  "/api/group-demand-intelligence/hotels/:hotelId/research/run",
+  memberstackAuth,
+  requireDealalityUser,
+  requireAdminAccess,
+  postGdiRunResearch
+);
+app.get("/api/group-demand-intelligence/share/resolve", getGdiShareResolve);
+app.get(
+  "/api/group-demand-intelligence/share/hotels/:hotelId/weekly-brief",
+  getGdiShareBrief
+);
+app.get(
+  "/api/group-demand-intelligence/share/hotels/:hotelId/opportunities",
+  getGdiShareOpportunities
+);
+app.get(
+  "/api/group-demand-intelligence/share/hotels/:hotelId/opportunities/export.csv",
+  getGdiShareOpportunitiesExport
+);
+app.get(
+  "/api/group-demand-intelligence/share/hotels/:hotelId/opportunities/:opportunityId",
+  getGdiShareOpportunityDetail
+);
+app.get(
+  "/api/group-demand-intelligence/share/hotels/:hotelId/validation",
+  getGdiShareValidation
+);
+app.post(
+  "/api/group-demand-intelligence/share/hotels/:hotelId/opportunities/:opportunityId/validation",
+  postGdiShareValidation
+);
+app.post(
+  "/api/group-demand-intelligence/share/hotels/:hotelId/opportunities/:opportunityId/actions",
+  postGdiShareAction
+);
+app.post(
+  "/api/group-demand-intelligence/share/hotels/:hotelId/opportunities/:opportunityId/outcomes",
+  postGdiShareOutcome
+);
+app.post(
+  "/api/group-demand-intelligence/hotels/:hotelId/share/issue",
+  memberstackAuth,
+  requireDealalityUser,
+  requireAdminAccess,
+  postGdiIssueShare
+);
+app.post(
+  "/api/group-demand-intelligence/share/revoke",
+  memberstackAuth,
+  requireDealalityUser,
+  requireAdminAccess,
+  postGdiRevokeShare
+);
 
-// Memberstack + Airtable user context (Phase A)
+// Canonical Decision & Outcome layer (GDI + ADP shared)
+app.post("/api/decisions", memberstackAuth, requireDealalityUser, postDecision);
+app.get(
+  "/api/decisions/:decisionId",
+  memberstackAuth,
+  requireDealalityUser,
+  getDecisionById
+);
+app.get(
+  "/api/decisions/:decisionId/timeline",
+  memberstackAuth,
+  requireDealalityUser,
+  getDecisionTimelineRoute
+);
+app.post(
+  "/api/decisions/:decisionId/validations",
+  memberstackAuth,
+  requireDealalityUser,
+  postDecisionValidation
+);
+app.post(
+  "/api/decisions/:decisionId/actions",
+  memberstackAuth,
+  requireDealalityUser,
+  postDecisionAction
+);
+app.post(
+  "/api/decisions/:decisionId/outcomes",
+  memberstackAuth,
+  requireDealalityUser,
+  postDecisionOutcome
+);
+app.get(
+  "/api/hotels/:hotelId/decisions",
+  memberstackAuth,
+  requireDealalityUser,
+  getHotelDecisions
+);
+app.get(
+  "/api/hotels/:hotelId/decisions/metrics",
+  memberstackAuth,
+  requireDealalityUser,
+  getHotelDecisionMetricsRoute
+);
+app.get(
+  "/api/hotels/:hotelId/subjects/:subjectId/decision",
+  memberstackAuth,
+  requireDealalityUser,
+  getSubjectDecisionRoute
+);
+app.post(
+  "/api/hotels/:hotelId/decisions/ensure-gdi",
+  memberstackAuth,
+  requireDealalityUser,
+  postEnsureGdiDecision
+);
+app.post(
+  "/api/hotels/:hotelId/decisions/ensure-adp",
+  memberstackAuth,
+  requireDealalityUser,
+  postEnsureAdpDecision
+);
+app.get(
+  "/api/admin/decision-outcomes/audit",
+  memberstackAuth,
+  requireDealalityUser,
+  getAdminDecisionAudit
+);
+
+// ============================================================
+// END HOTEL / OWNER EXPLORER RECOVERY
+// ============================================================
 app.get("/api/me", getMe);
 app.post("/api/me", getMe);
 
@@ -954,6 +1391,186 @@ app.get(
   requireAdpShareCapability({ allowMemberstack: true }),
   getAiDemandPositioningCostEstimate
 );
+
+// AI Demand Leak Audit — free diagnostic (sample + client report + admin)
+const adpLeakAuditAdminAuth = adminAuth;
+app.get("/api/admin/adp-leak-audits/meta", ...adpLeakAuditAdminAuth, getAdminLeakAuditMeta);
+app.get(
+  "/api/admin/adp-leak-audits/report-catalog",
+  ...adpLeakAuditAdminAuth,
+  getAdminLeakAuditReportCatalog
+);
+app.get("/api/admin/adp-leak-audits", ...adpLeakAuditAdminAuth, getAdminLeakAudits);
+app.post("/api/admin/adp-leak-audits", ...adpLeakAuditAdminAuth, postAdminLeakAuditCreate);
+app.get(
+  "/api/admin/adp-leak-audits/:requestId",
+  ...adpLeakAuditAdminAuth,
+  getAdminLeakAuditById
+);
+app.post(
+  "/api/admin/adp-leak-audits/:requestId/approve",
+  ...adpLeakAuditAdminAuth,
+  postAdminLeakAuditApprove
+);
+app.post(
+  "/api/admin/adp-leak-audits/:requestId/run",
+  ...adpLeakAuditAdminAuth,
+  postAdminLeakAuditRun
+);
+app.post(
+  "/api/admin/adp-leak-audits/:requestId/mark-sent",
+  ...adpLeakAuditAdminAuth,
+  postAdminLeakAuditMarkSent
+);
+app.post(
+  "/api/admin/adp-leak-audits/:requestId/promote",
+  ...adpLeakAuditAdminAuth,
+  postAdminLeakAuditPromote
+);
+
+// ADP Monthly Executive Review admin archive + Action Plan export (ADMIN ONLY)
+const adpMonthlyReviewAdminAuth = [
+  memberstackAuth,
+  requireDealalityUser,
+  requireAdpMonthlyReviewAdminAccess,
+];
+app.get(
+  "/api/admin/ai-demand-positioning/monthly-reviews",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminMonthlyReviews
+);
+app.get(
+  "/api/admin/ai-demand-positioning/action-plan-export",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminActionPlanExport
+);
+app.get(
+  "/api/admin/ai-demand-positioning/action-plan-catalog",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminActionPlanCatalog
+);
+app.get(
+  "/api/admin/ai-demand-positioning/current-report-pdf/:propertyId",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminCurrentReportPdf
+);
+app.post(
+  "/api/admin/ai-demand-positioning/current-report-pdf/:propertyId/generate",
+  ...adpMonthlyReviewAdminAuth,
+  postAdminCurrentReportPdfGenerate
+);
+app.get(
+  "/api/admin/ai-demand-positioning/monthly-reviews/generate-preview",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminGeneratePreview
+);
+app.post(
+  "/api/admin/ai-demand-positioning/monthly-reviews/generate",
+  ...adpMonthlyReviewAdminAuth,
+  postAdminMonthlyReviewGenerate
+);
+app.post(
+  "/api/admin/ai-demand-positioning/monthly-reviews/generate-eligible",
+  ...adpMonthlyReviewAdminAuth,
+  postAdminMonthlyReviewGenerateEligible
+);
+app.get(
+  "/api/admin/ai-demand-positioning/monthly-reviews/:reviewId",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminMonthlyReviewById
+);
+app.get(
+  "/api/admin/ai-demand-positioning/monthly-reviews/:reviewId/pdf",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminMonthlyReviewPdf
+);
+app.get(
+  "/api/admin/ai-demand-positioning/monthly-reviews/:reviewId/compare",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminMonthlyReviewCompare
+);
+app.post(
+  "/api/admin/ai-demand-positioning/monthly-reviews/:reviewId/regenerate",
+  ...adpMonthlyReviewAdminAuth,
+  postAdminMonthlyReviewRegenerate
+);
+app.post(
+  "/api/admin/ai-demand-positioning/monthly-reviews/:reviewId/archive",
+  ...adpMonthlyReviewAdminAuth,
+  postAdminMonthlyReviewArchive
+);
+app.post(
+  "/api/admin/ai-demand-positioning/monthly-reviews/:reviewId/action-feedback",
+  ...adpMonthlyReviewAdminAuth,
+  postAdminActionFeedback
+);
+app.post(
+  "/api/admin/ai-demand-positioning/monthly-reviews/:reviewId/report-feedback",
+  ...adpMonthlyReviewAdminAuth,
+  postAdminReportFeedback
+);
+app.post(
+  "/api/admin/ai-demand-positioning/monthly-reviews/:reviewId/mark-client-issued",
+  ...adpMonthlyReviewAdminAuth,
+  postAdminMarkClientIssued
+);
+
+app.get(
+  "/api/ai-demand-positioning/monthly-review/:propertyId",
+  memberstackAuth,
+  requireDealalityUser,
+  getAdpMonthlyExecutiveReview
+);
+
+// GDI PDF reports (ADMIN) — separate from ADP Performance Review PDFs
+app.get(
+  "/api/admin/group-demand-intelligence/reports",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminGdiReportCatalog
+);
+app.get(
+  "/api/admin/group-demand-intelligence/hotels/:hotelId/report-data",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminGdiReportData
+);
+app.post(
+  "/api/admin/group-demand-intelligence/hotels/:hotelId/report-pdf/generate",
+  ...adpMonthlyReviewAdminAuth,
+  postAdminGdiReportGenerate
+);
+app.get(
+  "/api/admin/group-demand-intelligence/hotels/:hotelId/report-pdf",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminGdiReportPdf
+);
+app.get(
+  "/api/admin/ai-demand/hotels/:hotelId/external-client-links",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminExternalClientLinks
+);
+
+// Report Archive — immutable published ADP/GDI artifacts
+app.get(
+  "/api/admin/report-archive",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminReportArchiveCatalog
+);
+app.get(
+  "/api/admin/report-archive/:archiveId",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminReportArchiveEntry
+);
+app.get(
+  "/api/admin/report-archive/:archiveId/pdf",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminReportArchivePdf
+);
+
+app.get("/api/adp-leak-audit/sample-report", getLeakAuditSampleReport);
+app.get("/api/adp-leak-audit/sample-portfolio-report", getLeakAuditPortfolioSampleReport);
+app.get("/api/adp-leak-audit/demo-diagnostics", getLeakAuditDemoDiagnostics);
+app.get("/api/adp-leak-audit/report/:reportId", getLeakAuditClientReport);
+app.get("/api/adp-leak-audit/share/:shareToken", getLeakAuditClientReport);
 
 app.get(
   "/api/ai-intelligence/validation/summary",
@@ -1634,6 +2251,27 @@ app.get("/market-demand.html", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, "public", "market-demand.html"));
 });
+app.get("/group-demand-intelligence", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/group-demand-intelligence.html" + q);
+});
+app.get("/group-demand-intelligence/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/group-demand-intelligence.html" + q);
+});
+app.get("/group-demand-intelligence.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, "public", "group-demand-intelligence.html"));
+});
+app.get("/group-demand-intelligence-share", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/group-demand-intelligence-share.html" + q);
+});
+app.get("/group-demand-intelligence-share.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("X-Robots-Tag", "noindex, nofollow, noarchive");
+    res.sendFile(path.join(__dirname, "public", "group-demand-intelligence-share.html"));
+});
 app.get("/operator-alignment-snapshot", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
     res.redirect(302, "/operator-alignment-snapshot.html" + q);
@@ -1779,6 +2417,43 @@ app.get("/hotel-explorer-share.html", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, "public", "hotel-explorer-share.html"));
 });
+// Radar / Scout Market Map external share (curated packs; no login)
+app.get("/radar-share", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/radar-share.html" + q);
+});
+app.get("/radar-share/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/radar-share.html" + q);
+});
+app.get("/radar-share.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("X-Robots-Tag", "noindex, nofollow");
+    res.sendFile(path.join(__dirname, "public", "radar-share.html"));
+});
+// Opportunity Radar external share (NOT Scout Market Map /radar-share)
+app.get("/opportunity-radar-share", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/opportunity-radar-share.html" + q);
+});
+app.get("/opportunity-radar-share/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/opportunity-radar-share.html" + q);
+});
+app.get("/opportunity-radar-share.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("X-Robots-Tag", "noindex, nofollow");
+    res.sendFile(path.join(__dirname, "public", "opportunity-radar-share.html"));
+});
+// Golden Four client share entry (must survive ADP-only CLI deploys that omit static fallthrough)
+app.get("/hotel-intelligence-golden-demo", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/hotel-intelligence-golden-demo.html" + q);
+});
+app.get("/hotel-intelligence-golden-demo/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/hotel-intelligence-golden-demo.html" + q);
+});
 app.get("/hotel-intelligence-golden-demo.html", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, "public", "hotel-intelligence-golden-demo.html"));
@@ -1823,6 +2498,80 @@ app.get("/ai-demand-positioning-share/", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
     res.redirect(302, "/owner-ai-demand-share.html" + q);
 });
+
+app.get("/adp-leak-audit/sample", (req, res) => {
+  sendPublicNoStore(res, "adp-leak-audit-report.html");
+});
+app.get("/adp-leak-audit/sample/", (req, res) => {
+  sendPublicNoStore(res, "adp-leak-audit-report.html");
+});
+app.get("/adp-leak-audit/sample-portfolio", (req, res) => {
+  sendPublicNoStore(res, "adp-leak-audit-sample-portfolio.html");
+});
+app.get("/adp-leak-audit/sample-portfolio/", (req, res) => {
+  sendPublicNoStore(res, "adp-leak-audit-sample-portfolio.html");
+});
+app.get("/admin/adp-leak-audits", (req, res) => {
+  res.redirect(302, "/admin/adp-leak-audits/reports");
+});
+app.get("/admin/adp-leak-audits/", (req, res) => {
+  res.redirect(302, "/admin/adp-leak-audits/reports");
+});
+app.get("/admin/adp-leak-audits/reports", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-reports.html");
+});
+app.get("/admin/adp-leak-audits/reports/", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-reports.html");
+});
+app.get("/admin/adp-leak-audits/samples", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-samples.html");
+});
+app.get("/admin/adp-leak-audits/samples/", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-samples.html");
+});
+app.get("/admin/adp-leak-audits/portfolios", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-portfolios.html");
+});
+app.get("/admin/adp-leak-audits/portfolios/", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-portfolios.html");
+});
+app.get("/admin/adp-leak-audits/converted", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-converted.html");
+});
+app.get("/admin/adp-leak-audits/converted/", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-converted.html");
+});
+app.get("/admin/adp-leak-audits/queue", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits.html");
+});
+app.get("/admin/adp-leak-audits/queue/", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits.html");
+});
+app.get("/admin/adp-leak-audits/new", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-new.html");
+});
+app.get("/admin/adp-leak-audits/new/", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-new.html");
+});
+app.get("/admin/adp-leak-audits/workflow", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-workflow.html");
+});
+app.get("/admin/adp-leak-audits/workflow/", (req, res) => {
+  sendPublicNoStore(res, "admin/adp-leak-audits-workflow.html");
+});
+app.get("/adp-leak-audit/share/:shareToken", (req, res) => {
+  sendPublicNoStore(res, "adp-leak-audit-report.html");
+});
+app.get("/adp-leak-audit/share/:shareToken/", (req, res) => {
+  sendPublicNoStore(res, "adp-leak-audit-report.html");
+});
+app.get("/adp-leak-audit/:reportId", (req, res) => {
+  sendPublicNoStore(res, "adp-leak-audit-report.html");
+});
+app.get("/adp-leak-audit/:reportId/", (req, res) => {
+  sendPublicNoStore(res, "adp-leak-audit-report.html");
+});
+
 app.get("/getting-started", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, 'public', 'getting-started.html'));
@@ -2184,15 +2933,39 @@ app.get("/api/market-alerts/rail", getMarketAlertsRail);
 app.post("/api/market-alerts/:id/read", markAlertRead);
 app.post("/api/market-alerts/:id/save", saveAlert);
 app.post("/api/market-alerts/:id/dismiss", dismissAlert);
+app.get(
+  "/api/market-alerts/:id/contacts",
+  memberstackAuth,
+  requireDealalityUser,
+  getMarketAlertContacts
+);
+app.post(
+  "/api/market-alerts/:id/contacts/enrich",
+  memberstackAuth,
+  requireDealalityUser,
+  postMarketAlertContactEnrich
+);
+app.post(
+  "/api/market-alerts/:id/contacts/find-person",
+  memberstackAuth,
+  requireDealalityUser,
+  postMarketAlertFindPerson
+);
+app.post(
+  "/api/market-alerts/:id/contacts/reveal",
+  memberstackAuth,
+  requireDealalityUser,
+  postMarketAlertContactReveal
+);
 app.get("/api/market-alerts/news", getMarketAlertsNews);
 app.get("/api/cron/market-alerts-rss-sync", cronMarketAlertsRssSync);
 app.post("/api/cron/market-alerts-rss-sync", cronMarketAlertsRssSync);
+app.post("/api/webhooks/surfe-enrichment", postSurfeEnrichmentWebhook);
 
 // Deal Intelligence API endpoints
 app.post("/api/deal-intelligence/analyze", analyzeDeal);
 
 // Brand Presence API endpoints
-app.get("/api/dealality-runtime-flags", getDealalityRuntimeFlagsHandler);
 app.get("/api/brand-presence/hotel/:recordId", getBrandPresenceHotelById);
 app.get("/api/brand-presence", getBrandPresence);
 app.get("/api/brand-presence/statistics", getBrandStatistics);
@@ -2541,6 +3314,12 @@ app.get("/opportunity-review", (req, res) => {
 app.get("/opportunity-review/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "opportunity-review.html"));
 });
+app.get("/joan-dejarden", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "joan-dejarden.html"));
+});
+app.get("/joan-dejarden/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "joan-dejarden.html"));
+});
 app.get("/largest-operators-by-brand", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'largest-operators-by-brand.html'));
 });
@@ -2772,6 +3551,13 @@ app.use((req, res, next) => {
 
 const PORT = process.env.PORT || 8080;
 
+try {
+  assertGdiShareProductionConfig();
+} catch (err) {
+  console.error("[gdi-share] FATAL production config:", err.message);
+  process.exit(1);
+}
+
 app.listen(PORT, () => {
   console.log(`✅ Server running at http://localhost:${PORT}`);
   try {
@@ -2779,6 +3565,28 @@ app.listen(PORT, () => {
   } catch (err) {
     console.error("[ADP read] startup source log failed:", err.message);
   }
+  try {
+    logAdminShareHydrationStatus();
+  } catch (err) {
+    console.error("[share-hydration] startup status log failed:", err.message);
+  }
+  // Census map snapshot — preload (or build once if missing). Non-blocking listen already done.
+  import("./lib/hotel-census/census-map-snapshot.js")
+    .then(async (mod) => {
+      const rebuildMissing =
+        String(process.env.CENSUS_MAP_SNAPSHOT_BOOT_BUILD || "1").trim() !== "0";
+      const result = await mod.bootCensusMapSnapshot({
+        rebuildIfMissing: rebuildMissing,
+        rebuildIfStale: String(process.env.CENSUS_MAP_SNAPSHOT_BOOT_REBUILD_STALE || "").trim() === "1",
+      });
+      mod.startCensusMapSnapshotPeriodicRebuild();
+      if (!result.ok && !result.skipped) {
+        console.warn("[census-map-snapshot] boot incomplete:", result.reason || result.error);
+      }
+    })
+    .catch((err) => {
+      console.error("[census-map-snapshot] boot import failed:", err?.message || err);
+    });
   if (process.env.NODE_ENV !== "production") {
     let gitHead = "unavailable";
     try {

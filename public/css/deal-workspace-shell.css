@@ -1214,6 +1214,10 @@ body::-webkit-scrollbar-corner,
     padding: 10px 14px;
     border-radius: 8px;
     font-size: 0.875rem;
+    /* Reset inherited body/aiv-page line-height:1.5 — native <select> otherwise
+       clips glyphs top/bottom in the closed state (ADI #adpProperty title). */
+    line-height: normal;
+    min-height: 2.75rem;
     font-family: inherit;
     transition: border-color 0.2s, box-shadow 0.2s;
     width: 100%;
@@ -1221,6 +1225,29 @@ body::-webkit-scrollbar-corner,
     max-width: 100%;
     box-sizing: border-box;
     color-scheme: dark;
+}
+
+/* Native closed <select>: border-box height must exceed line-height + borders
+   or Windows UA clips descenders (ADI #adpProperty — e.g. “Galicia”). */
+select.filter-select {
+    box-sizing: border-box;
+    height: 3rem;
+    min-height: 3rem;
+    padding: 0 2rem 0 14px;
+    line-height: 1.35;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Property selectors (ADP #adpProperty, GDI #gdiHotel): keep room for long
+   "Hotel — City, Country" labels; full string remains on option title. */
+.filters-section .filter-group:has(#adpProperty),
+.filters-section .filter-group:has(#gdiHotel),
+.gdi-page .filter-group:has(#gdiHotel) {
+    flex: 1 1 280px;
+    min-width: 240px;
+    max-width: min(100%, 520px);
 }
 
 .filter-select:focus,

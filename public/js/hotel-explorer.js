@@ -8,6 +8,7 @@
   var TABS = [
     { id: "hotel", label: "Hotel<br>Overview" },
     { id: "ownership", label: "Ownership<br>Intelligence" },
+    { id: "contacts", label: "Contact<br>Intelligence" },
     { id: "organization", label: "Organization<br>&amp; Portfolio" },
     { id: "relationships", label: "Relationships<br>&amp; Structure" },
     { id: "submarket", label: "Submarket<br>Snapshot" },
@@ -23,6 +24,8 @@
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5L12 3l9 6.5"/><path d="M5 10v10h14V10"/></svg>',
     ownership:
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v2"/><path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3H7a2 2 0 0 1-2-2 2 2 0 0 1 2-2h16"/></svg>',
+    contacts:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h5"/><circle cx="17" cy="16" r="1.5"/></svg>',
     organization:
       '<svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>',
     relationships:
@@ -65,6 +68,7 @@
     relationships: "relationships",
     brand: "brand",
     sources: "sources",
+    contacts: "contacts",
   };
 
   var state = {
@@ -617,16 +621,21 @@
       radarHost.hidden = true;
       hiHost.hidden = false;
       setTabRenderSource("CANONICAL_HI");
-      var html = "";
-      if (window.HotelIntelligenceWorkspace && window.HotelIntelligenceWorkspace.renderTabHtml) {
-        html = window.HotelIntelligenceWorkspace.renderTabHtml(
-          HI_TABS[state.tab] || state.tab,
-          state.hotel,
-          state.ownership,
-          state.org
-        );
+      if (state.tab === "contacts" && window.HotelContactIntelligence) {
+        hiHost.innerHTML = window.HotelContactIntelligence.renderLoading();
+        window.HotelContactIntelligence.mount(hiHost, recordId(state.hotel));
+      } else {
+        var html = "";
+        if (window.HotelIntelligenceWorkspace && window.HotelIntelligenceWorkspace.renderTabHtml) {
+          html = window.HotelIntelligenceWorkspace.renderTabHtml(
+            HI_TABS[state.tab] || state.tab,
+            state.hotel,
+            state.ownership,
+            state.org
+          );
+        }
+        hiHost.innerHTML = html || '<p class="hex-card">This section is not available yet.</p>';
       }
-      hiHost.innerHTML = html || '<p class="hex-card">This section is not available yet.</p>';
     }
     writeDeepLink();
     refreshResearchBadge();

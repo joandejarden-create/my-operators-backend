@@ -1,0 +1,149 @@
+{
+  "hotelId": "recLuxvwwxID7U2B8",
+  "mode": "DRY_RUN",
+  "activeBefore": 46,
+  "activeAfter": 46,
+  "inactiveSuperseded": 45,
+  "duplicateActiveBefore": 0,
+  "duplicateActiveAfter": 0,
+  "proposedAttributeCount": 46,
+  "missingCritical": [],
+  "profileCompleteness": {
+    "identity": true,
+    "commercial": true,
+    "meeting": true,
+    "demandNodes": true,
+    "eventSpaces": true,
+    "seasonality": false,
+    "needPeriods": false,
+    "score": 5,
+    "max": 7,
+    "label": "5/7"
+  },
+  "deltas": [],
+  "unexpectedDriftCount": 0,
+  "unexpected": [],
+  "syncResult": {
+    "ok": true,
+    "dryRun": true,
+    "baseId": "appa2cE7FTRmIbB32",
+    "table": "Hotel ADP Attributes",
+    "hotelId": "recLuxvwwxID7U2B8",
+    "existingActive": 46,
+    "createCount": 0,
+    "updateCount": 46,
+    "deactivateCount": 0,
+    "preview": {
+      "creates": [],
+      "updates": [
+        {
+          "id": "recCrKoth3z5bc3AC",
+          "fields": {
+            "Attribute Key": "recLuxvwwxID7U2B8::identity::hotel_name::adp_attr_v1",
+            "Dedupe Key": "recLuxvwwxID7U2B8::identity::hotel_name::adp_attr_v1",
+            "HPC Hotel ID": "recLuxvwwxID7U2B8",
+            "Dealality Hotel ID": "dhl_06G8AHT6M0954GXW3SFBZBWA13",
+            "ADP Property ID": "adp_bethesda_marriott",
+            "Hotel Name": "Bethesda Marriott",
+            "Attribute Category": "Identity",
+            "Attribute Name": "Hotel Name",
+            "Attribute Value": "Bethesda Marriott",
+            "Normalized Value": "Bethesda Marriott",
+            "Used in ADP?": true,
+            "ADP Use Type": [
+              "Prompt Context",
+              "Query Generation",
+              "Exclusion Logic"
+            ],
+            "Source Type": "HPC",
+            "Source Record ID": "recLuxvwwxID7U2B8",
+            "Source Name": "Hotel Property Census / profile",
+            "Source URL": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "Confidence": "HIGH",
+            "Effective From": "2026-10-02",
+            "Attribute Version": "adp_attr_v1",
+            "Last Verified At": "2026-10-02T07:55:00.167Z",
+            "Active?": true,
+            "Notes": "Available in Hotel Intelligence; not currently wired into ADP consumption paths.",
+            "Schema Version": "hotel_adp_attributes_v1"
+          }
+        },
+        {
+          "id": "reczny9v6aNdbylLS",
+          "fields": {
+            "Attribute Key": "recLuxvwwxID7U2B8::positioning::brand::adp_attr_v1",
+            "Dedupe Key": "recLuxvwwxID7U2B8::positioning::brand::adp_attr_v1",
+            "HPC Hotel ID": "recLuxvwwxID7U2B8",
+            "Dealality Hotel ID": "dhl_06G8AHT6M0954GXW3SFBZBWA13",
+            "ADP Property ID": "adp_bethesda_marriott",
+            "Hotel Name": "Bethesda Marriott",
+            "Attribute Category": "Positioning",
+            "Attribute Name": "Brand",
+            "Attribute Value": "Marriott Hotels",
+            "Normalized Value": "Marriott Hotels",
+            "Used in ADP?": true,
+            "ADP Use Type": [
+              "Prompt Context",
+              "Query Generation",
+              "Recommendation Context"
+            ],
+            "Source Type": "HPC",
+            "Source Record ID": "recLuxvwwxID7U2B8",
+            "Source URL": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "Confidence": "HIGH",
+            "Effective From": "2026-10-02",
+            "Attribute Version": "adp_attr_v1",
+            "Last Verified At": "2026-10-02T07:55:00.167Z",
+            "Active?": true,
+            "Notes": "Brand/affiliation used in prompt context and peer framing. Consumed via propertyProfile.brand in generic-profile-scenarios / scenario-registry.",
+            "Schema Version": "hotel_adp_attributes_v1"
+          }
+        },
+        {
+          "id": "recl4Nx2ktUtrxyp3",
+          "fields": {
+            "Attribute Key": "recLuxvwwxID7U2B8::identity::property_identity_key::adp_attr_v1",
+            "Dedupe Key": "recLuxvwwxID7U2B8::identity::property_identity_key::adp_attr_v1",
+            "HPC Hotel ID": "recLuxvwwxID7U2B8",
+            "Dealality Hotel ID": "dhl_06G8AHT6M0954GXW3SFBZBWA13",
+            "ADP Property ID": "adp_bethesda_marriott",
+            "Hotel Name": "Bethesda Marriott",
+            "Attribute Category": "Identity",
+            "Attribute Name": "Property Identity Key",
+            "Attribute Value": "ind_marriott_us_wasbt",
+            "Normalized Value": "ind_marriott_us_wasbt",
+            "Used in ADP?": true,
+            "ADP Use Type": [
+              "Exclusion Logic",
+              "Reporting Only"
+            ],
+            "Source Type": "HPC",
+            "Source Record ID": "recLuxvwwxID7U2B8",
+            "Confidence": "HIGH",
+            "Effective From": "2026-10-02",
+            "Attribute Version": "adp_attr_v1",
+            "Last Verified At": "2026-10-02T07:55:00.167Z",
+            "Active?": true,
+            "Notes": "Available in Hotel Intelligence; not currently wired into ADP consumption paths. Canonical identity key; ADP uses for census linkage / confusable exclusion.",
+            "Schema Version": "hotel_adp_attributes_v1"
+          }
+        }
+      ],
+      "deactivates": []
+    }
+  },
+  "freezeUnchanged": true,
+  "freezeHashesBefore": {
+    "baseline": "7d18f8d88368214cc0546f3627be72ac2f736fc07f76b661c3a44a82cd3166ae",
+    "control": "39d5ec48c734431191600c87f77bc781fa87955960101e94cf579b0bb0457a4c",
+    "gdiSnap": "1b5e3030c5caf8de832a15f3f79bfe486606c007966325b49244e50c0adad8b8",
+    "pilot": "09f69298c7fbc451f30e8d30b9e436e407a29346094ea89f8e3672dfb774935f"
+  },
+  "freezeHashesAfter": {
+    "baseline": "7d18f8d88368214cc0546f3627be72ac2f736fc07f76b661c3a44a82cd3166ae",
+    "control": "39d5ec48c734431191600c87f77bc781fa87955960101e94cf579b0bb0457a4c",
+    "gdiSnap": "1b5e3030c5caf8de832a15f3f79bfe486606c007966325b49244e50c0adad8b8",
+    "pilot": "09f69298c7fbc451f30e8d30b9e436e407a29346094ea89f8e3672dfb774935f"
+  },
+  "generatedAt": "2026-10-02T07:55:00.368Z"
+}

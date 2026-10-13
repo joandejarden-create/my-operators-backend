@@ -1307,7 +1307,6 @@
 
     <script src="/js/explorer-filter-drawer.js?v=3"></script>
     <script src="/js/brand-explorer-favorites.js" defer></script>
-    <script src="/js/brand-explorer-census-source.js"></script>
     <script src="/js/brand-explorer-brand-fetch.js" defer></script>
     <script src="/js/profile-governance-trust-chip.js" defer></script>
     <script src="/js/brand-explorer-gold-detail.js" defer></script>
@@ -1317,12 +1316,6 @@
     <script defer>
 (function () {
     'use strict';
-
-    try {
-      if (window.DealalityBrandExplorerCensusSource && typeof window.DealalityBrandExplorerCensusSource.ensureFlags === 'function') {
-        window.DealalityBrandExplorerCensusSource.ensureFlags();
-      }
-    } catch (err) { /* ignore */ }
 
     var CHAIN_SCALE_ORDER = ['Luxury', 'Upper Upscale', 'Upscale', 'Upper Midscale', 'Midscale', 'Economy'];
     var BRAND_PROJECT_TYPE_FILTER_ALIASES = {
@@ -2535,8 +2528,9 @@
                 window.BrandExplorerFavorites && window.BrandExplorerFavorites.ready
                     ? window.BrandExplorerFavorites.ready()
                     : Promise.resolve();
-            var brandsUrl = '/api/brand-library/brands?refresh=1';
-            var brandsRes = await fetch(brandsUrl, { cache: 'no-store' });
+            // Use server TTL cache on ordinary loads; pass refresh=1 only for explicit bypass.
+            var brandsUrl = '/api/brand-library/brands';
+            var brandsRes = await fetch(brandsUrl);
             await favReady;
             if (!brandsRes.ok) throw new Error('Failed to fetch brands');
             var data = await brandsRes.json();

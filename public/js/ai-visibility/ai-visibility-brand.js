@@ -383,16 +383,40 @@
     setPartialBanner(freshness);
   }
 
+  function isBaiOwnerAppSurface() {
+    try {
+      var path = String(window.location.pathname || "");
+      if (/brand-ai-visibility-share\.html$/i.test(path)) return false;
+      if (/ai-visibility-brand\.html$/i.test(path)) return true;
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
+
   async function apiGet(path, opts) {
     var auth = window.DealalityMemberstackAuth;
     if (!auth || typeof auth.authFetch !== "function") {
       throw new Error("Sign in required to view Brand AI Visibility.");
     }
+    var ownerApp = isBaiOwnerAppSurface();
+    var embedded = false;
+    try {
+      embedded = window.self !== window.top;
+    } catch (_) {
+      embedded = true;
+    }
     var fetchOpts = {
       method: "GET",
+      // Standalone owner HTML: short wait — governed local DEV_AUTH_BYPASS can proceed
+      // with X-Dealality-Owner-App (same pattern as ADP). Embeds still wait for JWT.
       waitForLogin: true,
-      maxWaitMs: 20000,
+      maxWaitMs: ownerApp && !embedded ? 2500 : 20000,
+      headers: { Accept: "application/json" },
     };
+    if (ownerApp) {
+      fetchOpts.headers["X-Dealality-Owner-App"] = "1";
+    }
     if (opts && opts.signal) {
       fetchOpts.signal = opts.signal;
     }
@@ -4739,7 +4763,25 @@
       }
       nameEl.textContent = company;
       ctx.hidden = false;
-      document.title = company + " — Brand AI Intelligence";
+      // ASCII hyphen only — never put Unicode punctuation into document title
+      // paths that could leak into request metadata.
+      document.title = company + " - Brand AI Intelligence";
+      // Entitled brands come from the signed parent share; seed the brand
+      // selector even when portfolio/language gates temporarily return empty.
+      var resolveBrands = Array.isArray(res.brands) ? res.brands : [];
+      if (
+        resolveBrands.length &&
+        !(state.portfolio && state.portfolio.brands && state.portfolio.brands.length)
+      ) {
+        state.portfolio = state.portfolio || {};
+        state.portfolio.brands = resolveBrands.map(function (b) {
+          return {
+            brandId: b.brandId,
+            brandName: b.brandName || b.brandId,
+          };
+        });
+        fillBrandSelect(state.portfolio.brands);
+      }
     } catch (_) {
       ctx.hidden = true;
     }

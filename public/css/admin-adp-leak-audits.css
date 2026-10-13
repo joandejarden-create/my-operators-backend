@@ -1,0 +1,515 @@
+/* AI Demand Leak Audit — admin extras */
+.ala-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 220px;
+}
+
+.ala-demo-reports {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--runbook-border, #37446b);
+  border-radius: 10px;
+  background: rgba(108, 114, 255, 0.08);
+}
+
+.ala-demo-reports__title {
+  flex: 0 0 100%;
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fdb52a;
+}
+
+.ala-demo-reports__copy {
+  flex: 0 0 100%;
+  margin: 0 0 4px;
+  font-size: 13px;
+  color: var(--runbook-muted, #9aa6c7);
+}
+
+.ala-demo-reports {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--runbook-border, #37446b);
+  border-radius: 10px;
+  background: rgba(108, 114, 255, 0.08);
+}
+
+.ala-demo-reports__title {
+  flex: 0 0 100%;
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fdb52a;
+}
+
+.ala-demo-reports__copy {
+  flex: 0 0 100%;
+  margin: 0 0 4px;
+  font-size: 13px;
+  color: var(--runbook-muted, #9aa6c7);
+}
+
+.ala-form {
+  max-width: 920px;
+  margin-top: 8px;
+}
+
+.ala-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.ala-form label,
+.ala-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--runbook-muted);
+}
+
+.ala-form input,
+.ala-form select,
+.ala-form textarea {
+  background: var(--runbook-surface);
+  color: var(--runbook-heading);
+  border: 0.6px solid var(--runbook-border);
+  border-radius: 6px;
+  padding: 8px 9px;
+  font-size: 13px;
+}
+
+.ala-notes {
+  margin-bottom: 12px;
+}
+
+.ala-error {
+  color: #b42318;
+  margin: 0 0 10px;
+}
+
+.ala-success {
+  color: #027a48;
+  margin: 0 0 10px;
+}
+
+.ala-modal-copy {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--runbook-heading);
+}
+
+.ala-workflow {
+  margin: 18px 0 28px;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 16px;
+}
+
+.ala-workflow li {
+  background: var(--runbook-surface);
+  border: 0.6px solid var(--runbook-border);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.ala-workflow h2 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: var(--runbook-heading);
+}
+
+.ala-workflow p {
+  margin: 0 0 6px;
+  font-size: 14px;
+  color: var(--runbook-heading);
+  line-height: 1.45;
+}
+
+.ala-workflow-notes {
+  border-top: 0.6px solid var(--runbook-border);
+  padding-top: 16px;
+}
+
+.ala-workflow-notes ul {
+  margin: 8px 0 0;
+  padding-left: 1.2rem;
+  color: var(--runbook-heading);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.ala-admin-links {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--runbook-muted, #9aa6c7);
+}
+
+.ala-admin-links a {
+  color: #c9d2f0;
+}
+
+.ala-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 14px;
+  align-items: flex-end;
+}
+
+.ala-picker label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--runbook-muted, #9aa6c7);
+  min-width: 140px;
+}
+
+.ala-picker__report {
+  flex: 1 1 320px;
+  min-width: 260px;
+}
+
+.ala-picker select {
+  background: var(--runbook-surface, #101935);
+  color: var(--runbook-heading, #f4f6fb);
+  border: 0.6px solid var(--runbook-border, #37446b);
+  border-radius: 6px;
+  padding: 8px 9px;
+  font-size: 13px;
+  min-width: 140px;
+}
+
+.ala-picker__report select {
+  width: 100%;
+}
+
+.ala-picker__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex: 1 1 100%;
+}
+
+.ala-picker__status {
+  flex: 1 1 100%;
+  margin: 0;
+  font-size: 13px;
+  color: var(--runbook-muted, #9aa6c7);
+}
+
+.ala-reports-shell {
+  max-width: 1200px;
+}
+
+.ala-preview {
+  margin-top: 18px;
+  border: 0.6px solid var(--runbook-border, #37446b);
+  border-radius: 10px;
+  background: #050914;
+  min-height: 720px;
+  overflow: hidden;
+}
+
+.ala-preview__empty {
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--runbook-muted, #9aa6c7);
+  font-size: 14px;
+}
+
+.ala-preview__frame {
+  display: block;
+  width: 100%;
+  min-height: 1100px;
+  border: 0;
+  background: #080f25;
+}
+
+.ala-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(4, 8, 20, 0.72);
+}
+
+.ala-modal[hidden] {
+  display: none !important;
+}
+
+.ala-modal__card {
+  width: min(520px, 100%);
+  background: #101935;
+  border: 0.6px solid #37446b;
+  border-radius: 12px;
+  padding: 22px 22px 18px;
+  color: #f4f6fb;
+}
+
+.ala-modal__card h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.ala-modal__card p {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #c9d2f0;
+}
+
+.ala-modal__note {
+  font-size: 13px !important;
+  color: #9aa6c7 !important;
+}
+
+.ala-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.ala-card-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.ala-card {
+  border: 0.6px solid var(--runbook-border, #37446b);
+  border-radius: 10px;
+  padding: 16px 18px;
+  background: var(--runbook-surface, #101935);
+}
+
+.ala-card h2 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.ala-card p {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: var(--runbook-muted, #9aa6c7);
+  line-height: 1.45;
+}
+
+.ala-admin-links {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--runbook-muted, #9aa6c7);
+}
+
+.ala-admin-links a {
+  color: #c9d2f0;
+}
+
+.ala-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 14px;
+  align-items: flex-end;
+}
+
+.ala-picker label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--runbook-muted, #9aa6c7);
+  min-width: 140px;
+}
+
+.ala-picker__report {
+  flex: 1 1 320px;
+  min-width: 260px;
+}
+
+.ala-picker select {
+  background: var(--runbook-surface, #101935);
+  color: var(--runbook-heading, #f4f6fb);
+  border: 0.6px solid var(--runbook-border, #37446b);
+  border-radius: 6px;
+  padding: 8px 9px;
+  font-size: 13px;
+  min-width: 140px;
+}
+
+.ala-picker__report select {
+  width: 100%;
+}
+
+.ala-picker__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex: 1 1 100%;
+}
+
+.ala-picker__status {
+  flex: 1 1 100%;
+  margin: 0;
+  font-size: 13px;
+  color: var(--runbook-muted, #9aa6c7);
+}
+
+.ala-reports-shell {
+  max-width: 1200px;
+}
+
+.ala-preview {
+  margin-top: 18px;
+  border: 0.6px solid var(--runbook-border, #37446b);
+  border-radius: 10px;
+  background: #050914;
+  min-height: 720px;
+  overflow: hidden;
+}
+
+.ala-preview__empty {
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--runbook-muted, #9aa6c7);
+  font-size: 14px;
+}
+
+.ala-preview__frame {
+  display: block;
+  width: 100%;
+  min-height: 1100px;
+  border: 0;
+  background: #080f25;
+}
+
+.ala-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(4, 8, 20, 0.72);
+}
+
+.ala-modal[hidden] {
+  display: none !important;
+}
+
+.ala-modal__card {
+  width: min(520px, 100%);
+  background: #101935;
+  border: 0.6px solid #37446b;
+  border-radius: 12px;
+  padding: 22px 22px 18px;
+  color: #f4f6fb;
+}
+
+.ala-modal__card h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.ala-modal__card p {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #c9d2f0;
+}
+
+.ala-modal__note {
+  font-size: 13px !important;
+  color: #9aa6c7 !important;
+}
+
+.ala-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.ala-card-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.ala-card {
+  border: 0.6px solid var(--runbook-border, #37446b);
+  border-radius: 10px;
+  padding: 16px 18px;
+  background: var(--runbook-surface, #101935);
+}
+
+.ala-card h2 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.ala-card p {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: var(--runbook-muted, #9aa6c7);
+  line-height: 1.45;
+}
+
+.ala-workflow {
+  margin: 18px 0 28px;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 16px;
+}
+
+.ala-workflow li {
+  background: var(--runbook-surface);
+  border: 0.6px solid var(--runbook-border);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.ala-workflow h2 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: var(--runbook-heading);
+}
+
+.ala-workflow p {
+  margin: 0 0 6px;
+  font-size: 14px;
+  color: var(--runbook-heading);
+  line-height: 1.45;
+}
+
+.ala-workflow-notes {
+  border-top: 0.6px solid var(--runbook-border);
+  padding-top: 16px;
+}
+
+.ala-workflow-notes ul {
+  margin: 8px 0 0;
+  padding-left: 1.2rem;
+  color: var(--runbook-heading);
+  font-size: 14px;
+  line-height: 1.5;
+}

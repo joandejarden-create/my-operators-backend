@@ -325,13 +325,25 @@
 })();
 
 (function () {
+    /**
+     * Relocate map-layer toggles into the filter drawer before they can paint.
+     * Header host is CSS-hidden (see deal-capture-radar-with-ranked-list.html)
+     * so first paint never shows the pre-move horizontal toggle strip.
+     */
     function moveRadarToggles() {
         var mount = document.getElementById('radarFilterDrawerTogglesMount');
-        var headerActions = document.querySelector('.mapping-header .header-actions');
-        if (!mount || !headerActions) return;
-        var controls = headerActions.querySelector('.overlay-controls');
-        if (controls) mount.appendChild(controls);
-        headerActions.remove();
+        if (!mount) return;
+
+        var controls = mount.querySelector('.overlay-controls');
+        if (!controls) {
+            var headerActions = document.querySelector('.mapping-header .header-actions');
+            if (headerActions) {
+                controls = headerActions.querySelector('.overlay-controls');
+                if (controls) mount.appendChild(controls);
+                headerActions.remove();
+            }
+        }
+
         if (window.RadarLayerDrawer && typeof window.RadarLayerDrawer.enhance === 'function') {
             window.RadarLayerDrawer.enhance();
         }

@@ -1,0 +1,59 @@
+{
+  "asOf": "2026-09-23T09:51:25.388Z",
+  "base": "https://my-operators-backend-production.up.railway.app",
+  "findings": [
+    {
+      "severity": "INFO",
+      "surface": "share_resolve",
+      "reproduction": "valid Bethesda token",
+      "status": "PASS",
+      "detail": "status=200"
+    },
+    {
+      "severity": "INFO",
+      "surface": "share_opportunities",
+      "reproduction": "Bethesda token + Waterstone hotelId",
+      "status": "PASS",
+      "detail": "status=403"
+    },
+    {
+      "severity": "INFO",
+      "surface": "share_detail",
+      "reproduction": "Bethesda token + foreign hotelId detail",
+      "status": "PASS",
+      "detail": "status=403"
+    },
+    {
+      "severity": "INFO",
+      "surface": "share_token",
+      "reproduction": "tampered hotelId without valid signature",
+      "status": "PASS",
+      "detail": "status=403"
+    },
+    {
+      "severity": "INFO",
+      "surface": "share_token",
+      "reproduction": "malformed token",
+      "status": "PASS",
+      "detail": "status=403"
+    },
+    {
+      "severity": "INFO",
+      "surface": "share_export",
+      "reproduction": "Bethesda token export for Waterstone hotelId",
+      "status": "PASS",
+      "detail": "status=403"
+    },
+    {
+      "severity": "INFO",
+      "surface": "share_regression",
+      "reproduction": "Waterstone valid opportunities",
+      "status": "PASS",
+      "detail": "status=200"
+    }
+  ],
+  "critical": 0,
+  "high": 0,
+  "fail": 0,
+  "pass": 7
+}

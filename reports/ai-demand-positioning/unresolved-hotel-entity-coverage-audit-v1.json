@@ -1,115 +1,356 @@
 {
   "title": "ADP_UNRESOLVED_HOTEL_ENTITY_COVERAGE_AUDIT_V1",
   "TOTAL_UNRESOLVED_BEFORE": 2252,
-  "TOTAL_UNRESOLVED_AFTER": 1961,
-  "ALIASES_RESOLVED": 291,
+  "TOTAL_UNRESOLVED_AFTER": 3312,
+  "ALIASES_RESOLVED": 0,
   "classification": [
     {
       "CLASS": "NEW_VALID_HOTEL_ENTITY",
-      "COUNT": 1246,
-      "PCT": 63.5
-    },
-    {
-      "CLASS": "GENERIC_NON_HOTEL",
-      "COUNT": 276,
-      "PCT": 14.1
-    },
-    {
-      "CLASS": "MALFORMED_TEXT",
-      "COUNT": 210,
-      "PCT": 10.7
-    },
-    {
-      "CLASS": "RESTAURANT_CLUB_VENUE",
-      "COUNT": 197,
-      "PCT": 10
-    },
-    {
-      "CLASS": "BRAND_ONLY",
-      "COUNT": 24,
-      "PCT": 1.2
+      "COUNT": 1958,
+      "PCT": 59.1
     },
     {
       "CLASS": "OTHER",
-      "COUNT": 5,
-      "PCT": 0.3
+      "COUNT": 763,
+      "PCT": 23
+    },
+    {
+      "CLASS": "MALFORMED_TEXT",
+      "COUNT": 381,
+      "PCT": 11.5
+    },
+    {
+      "CLASS": "GENERIC_NON_HOTEL",
+      "COUNT": 148,
+      "PCT": 4.5
+    },
+    {
+      "CLASS": "KNOWN_HOTEL_NEW_ALIAS",
+      "COUNT": 45,
+      "PCT": 1.4
+    },
+    {
+      "CLASS": "BRAND_ONLY",
+      "COUNT": 13,
+      "PCT": 0.4
     },
     {
       "CLASS": "AMBIGUOUS_ENTITY",
-      "COUNT": 3,
-      "PCT": 0.2
+      "COUNT": 4,
+      "PCT": 0.1
     }
   ],
   "classCounts": {
-    "MALFORMED_TEXT": 210,
-    "GENERIC_NON_HOTEL": 276,
-    "NEW_VALID_HOTEL_ENTITY": 1246,
-    "BRAND_ONLY": 24,
-    "AMBIGUOUS_ENTITY": 3,
-    "RESTAURANT_CLUB_VENUE": 197,
-    "OTHER": 5
+    "MALFORMED_TEXT": 381,
+    "NEW_VALID_HOTEL_ENTITY": 1958,
+    "BRAND_ONLY": 13,
+    "OTHER": 763,
+    "GENERIC_NON_HOTEL": 148,
+    "AMBIGUOUS_ENTITY": 4,
+    "KNOWN_HOTEL_NEW_ALIAS": 45
   },
-  "GENERIC_NON_HOTEL": 276,
-  "BRAND_ONLY": 24,
-  "OTHER_NON_HOTEL": 412,
-  "RESTAURANT_CLUB_VENUE": 197,
-  "MALFORMED_TEXT": 210,
-  "AMBIGUOUS": 3,
-  "HIGH_CONFIDENCE_HOTEL_ALIASES_FOUND": 0,
-  "HIGH_CONFIDENCE_HOTEL_ALIAS_MENTIONS": 0,
-  "NEW_VALID_HOTELS_FOUND": 1042,
-  "NEW_VALID_HOTEL_MENTIONS": 1246,
-  "ALIASES_RESOLVED_IF_APPLIED": 291,
-  "TOTAL_UNRESOLVED_AFTER_IF_HIGH_CONF_APPLIED": 1961,
+  "GENERIC_NON_HOTEL": 148,
+  "BRAND_ONLY": 13,
+  "OTHER_NON_HOTEL": 1144,
+  "RESTAURANT_CLUB_VENUE": 0,
+  "MALFORMED_TEXT": 381,
+  "AMBIGUOUS": 4,
+  "HIGH_CONFIDENCE_HOTEL_ALIASES_FOUND": 16,
+  "HIGH_CONFIDENCE_HOTEL_ALIAS_MENTIONS": 45,
+  "NEW_VALID_HOTELS_FOUND": 1574,
+  "NEW_VALID_HOTEL_MENTIONS": 1958,
+  "ALIASES_RESOLVED_IF_APPLIED": 0,
+  "TOTAL_UNRESOLVED_AFTER_IF_HIGH_CONF_APPLIED": 3248,
   "residualByClass": {
-    "MALFORMED_TEXT": 210,
-    "GENERIC_NON_HOTEL": 276,
-    "NEW_VALID_HOTEL_ENTITY": 1246,
-    "BRAND_ONLY": 24,
-    "AMBIGUOUS_ENTITY": 3,
-    "RESTAURANT_CLUB_VENUE": 197,
-    "OTHER": 5
+    "MALFORMED_TEXT": 381,
+    "NEW_VALID_HOTEL_ENTITY": 1941,
+    "BRAND_ONLY": 13,
+    "OTHER": 763,
+    "GENERIC_NON_HOTEL": 146,
+    "AMBIGUOUS_ENTITY": 4
   },
   "residualUnsafe": [],
-  "CUSTOMER_METRICS_CHANGED": 0,
-  "RANKINGS_CHANGED": 2,
-  "customerMetricDeltas": [],
-  "aliasProposals": [],
+  "CUSTOMER_METRICS_CHANGED": 5,
+  "RANKINGS_CHANGED": 5,
+  "customerMetricDeltas": [
+    {
+      "PROPERTY": "Waterstone Resort & Marina",
+      "SCOPE": "Overall",
+      "HOTEL": "Four Seasons Resort Palm Beach",
+      "entityId": "four_seasons_palm_beach",
+      "OLD_APPEARANCES": 23,
+      "NEW_APPEARANCES": 26,
+      "OLD_PCT": 7.4
+    },
+    {
+      "PROPERTY": "Waterstone Resort & Marina",
+      "SCOPE": "Overall",
+      "HOTEL": "Embassy Suites by Hilton Boca Raton",
+      "entityId": "embassy_suites_boca",
+      "OLD_APPEARANCES": 13,
+      "NEW_APPEARANCES": 12,
+      "OLD_PCT": 4.2
+    },
+    {
+      "PROPERTY": "Renaissance New York Times Square Hotel",
+      "SCOPE": "Overall",
+      "HOTEL": "The Westin New York at Times Square",
+      "entityId": "westin_times_square",
+      "OLD_APPEARANCES": 45,
+      "NEW_APPEARANCES": 52,
+      "OLD_PCT": 17.3
+    },
+    {
+      "PROPERTY": "Cambridge Beaches Resort & Spa",
+      "SCOPE": "Overall",
+      "HOTEL": "Grotto Bay Beach Resort & Spa",
+      "entityId": "grotto_bay",
+      "OLD_APPEARANCES": 70,
+      "NEW_APPEARANCES": 71,
+      "OLD_PCT": 29.2
+    },
+    {
+      "PROPERTY": "NOW NOW NOHO",
+      "SCOPE": "Overall",
+      "HOTEL": "Four Seasons Hotel New York Downtown",
+      "entityId": "four_seasons_downtown_nyc",
+      "OLD_APPEARANCES": 22,
+      "NEW_APPEARANCES": 24,
+      "OLD_PCT": 8.7
+    }
+  ],
+  "aliasProposals": [
+    {
+      "propertyId": "adp_waterstone_boca_raton",
+      "rawAlias": "Waldorf Astoria Boca Raton",
+      "normalized": "waldorf astoria boca raton",
+      "entityId": "the_boca_raton",
+      "canonical": "The Boca Raton",
+      "matchedOn": "token_overlap",
+      "kind": "KNOWN_HOTEL_NEW_ALIAS",
+      "mentionCount": 9
+    },
+    {
+      "propertyId": "adp_renaissance_times_square",
+      "rawAlias": "1 Hotel Central Park",
+      "normalized": "1 hotel central park",
+      "entityId": "park_central_nyc",
+      "canonical": "Park Central Hotel New York",
+      "matchedOn": "token_overlap",
+      "kind": "KNOWN_HOTEL_NEW_ALIAS",
+      "mentionCount": 9
+    },
+    {
+      "propertyId": "adp_renaissance_times_square",
+      "rawAlias": "Sheraton Times Square",
+      "normalized": "sheraton times square",
+      "entityId": "westin_times_square",
+      "canonical": "The Westin New York at Times Square",
+      "matchedOn": "token_overlap",
+      "kind": "KNOWN_HOTEL_NEW_ALIAS",
+      "mentionCount": 7
+    },
+    {
+      "propertyId": "adp_waterstone_boca_raton",
+      "rawAlias": "Four Seasons Palm Beach",
+      "normalized": "four seasons palm beach",
+      "entityId": "four_seasons_palm_beach",
+      "canonical": "Four Seasons Resort Palm Beach",
+      "matchedOn": "token_overlap",
+      "kind": "KNOWN_HOTEL_NEW_ALIAS",
+      "mentionCount": 3
+    },
+    {
+      "propertyId": "adp_renaissance_times_square",
+      "rawAlias": "AC Hotel New York Times Square",
+      "normalized": "ac hotel new york times square",
+      "entityId": "westin_times_square",
+      "canonical": "The Westin New York at Times Square",
+      "matchedOn": "token_overlap",
+      "kind": "KNOWN_HOTEL_NEW_ALIAS",
+      "mentionCount": 3
+    },
+    {
+      "propertyId": "adp_waterstone_boca_raton",
+      "rawAlias": "Tideline Palm Beach Ocean Resort & Spa",
+      "normalized": "tideline palm beach ocean resort & spa",
+      "entityId": "tideline_ocean_resort",
+      "canonical": "Tideline Ocean Resort & Spa",
+      "matchedOn": "token_overlap",
+      "kind": "KNOWN_HOTEL_NEW_ALIAS",
+      "mentionCount": 2
+    },
+    {
+      "propertyId": "adp_now_now_noho",
+      "rawAlias": "Four Seasons Downtown",
+      "normalized": "four seasons downtown",
+      "entityId": "four_seasons_downtown_nyc",
+      "canonical": "Four Seasons Hotel New York Downtown",
+      "matchedOn": "token_overlap",
+      "kind": "KNOWN_HOTEL_NEW_ALIAS",
+      "mentionCount": 2
+    },
+    {
+      "propertyId": "adp_now_now_noho",
+      "rawAlias": "Marriott New York Downtown",
+      "normalized": "marriott new york downtown",
+      "entityId": "four_seasons_downtown_nyc",
+      "canonical": "Four Seasons Hotel New York Downtown",
+      "matchedOn": "token_overlap",
+      "kind": "KNOWN_HOTEL_NEW_ALIAS",
+      "mentionCount": 2
+    },
+    {
+      "propertyId": "adp_waterstone_boca_raton",
+      "rawAlias": "Tideline Palm Beach Ocean Resort and Spa",
+      "normalized": "tideline palm beach ocean resort and spa",
+      "entityId": "tideline_ocean_resort",
+      "canonical": "Tideline Ocean Resort & Spa",
+      "matchedOn": "token_overlap",
+      "kind": "KNOWN_HOTEL_NEW_ALIAS",
+      "mentionCount": 1
+    },
+    {
+      "propertyId": "adp_waterstone_boca_raton",
+      "rawAlias": "Boca Raton Marriott",
+      "normalized": "boca raton marriott",
+      "entityId": "the_boca_raton",
+      "canonical": "The Boca Raton",
+      "matchedOn": "token_overlap",
+      "kind": "KNOWN_HOTEL_NEW_ALIAS",
+      "mentionCount": 1
+    },
+    {
+      "propertyId": "adp_waterstone_boca_raton",
+      "rawAlias": "Sailfish Marina & Resort",
+      "normalized": "sailfish marina & resort",
+      "entityId": "sailfish_marina",
+      "canonical": "Sailfish Marina Resort",
+      "matchedOn": "token_overlap",
+      "kind": "KNOWN_HOTEL_NEW_ALIAS",
+      "mentionCount": 1
+    },
+    {
+      "propertyId": "adp_renaissance_times_square",
+      "rawAlias": "AC Hotel Times Square",
+      "normalized": "ac hotel times square",
+      "entityId": "westin_times_square",
+      "canonical": "The Westin New York at Times Square",
+      "matchedOn": "token_overlap",
+      "kind": "KNOWN_HOTEL_NEW_ALIAS",
+      "mentionCount": 1
+    },
+    {
+      "propertyId": "adp_cambridge_beaches_bermuda",
+      "rawAlias": "The Grotto Bay hotel",
+      "normalized": "the grotto bay hotel",
+      "entityId": "grotto_bay",
+      "canonical": "Grotto Bay Beach Resort & Spa",
+      "matchedOn": "token_overlap",
+      "kind": "KNOWN_HOTEL_NEW_ALIAS",
+      "mentionCount": 1
+    },
+    {
+      "propertyId": "adp_cambridge_beaches_bermuda",
+      "rawAlias": "Grotto Bay Resort",
+      "normalized": "grotto bay resort",
+      "entityId": "grotto_bay",
+      "canonical": "Grotto Bay Beach Resort & Spa",
+      "matchedOn": "token_overlap",
+      "kind": "KNOWN_HOTEL_NEW_ALIAS",
+      "mentionCount": 1
+    },
+    {
+      "propertyId": "adp_cambridge_beaches_bermuda",
+      "rawAlias": "Coco Reef Bermuda",
+      "normalized": "coco reef bermuda",
+      "entityId": "coco_reef_bermuda",
+      "canonical": "Coco Reef Resort Bermuda",
+      "matchedOn": "token_overlap",
+      "kind": "KNOWN_HOTEL_NEW_ALIAS",
+      "mentionCount": 1
+    },
+    {
+      "propertyId": "adp_now_now_noho",
+      "rawAlias": "Four Seasons New York Downtown",
+      "normalized": "four seasons new york downtown",
+      "entityId": "four_seasons_downtown_nyc",
+      "canonical": "Four Seasons Hotel New York Downtown",
+      "matchedOn": "token_overlap",
+      "kind": "KNOWN_HOTEL_NEW_ALIAS",
+      "mentionCount": 1
+    }
+  ],
   "impact": {
-    "AI_PRESENCE_UNDERCOUNT": 0,
+    "AI_PRESENCE_UNDERCOUNT": 44,
     "RANKING_FRAGMENTATION": 0,
     "DUPLICATE_VISIBLE_HOTELS": 0,
-    "MISSING_COMPETITIVE_SET_ENTITIES": 0,
+    "MISSING_COMPETITIVE_SET_ENTITIES": 1,
     "DISPLACEMENT_MISMATCH_RISK": "REGRESSION_ONLY_NOT_REQUANTIFIED",
     "SHARED_SCENARIO_MISMATCH_RISK": "REGRESSION_ONLY_NOT_REQUANTIFIED",
-    "CORE_IDENTITY_MISMATCH": 0
+    "CORE_IDENTITY_MISMATCH": 5
   },
   "gates": {
-    "CORE_UNRESOLVED_IDENTITY_ERRORS": 0,
+    "CORE_UNRESOLVED_IDENTITY_ERRORS": 7,
     "SUBJECT_UNRESOLVED_IDENTITY_ERRORS": 0,
-    "HIGH_CONFIDENCE_HOTEL_ALIAS_ERRORS": 0,
+    "HIGH_CONFIDENCE_HOTEL_ALIAS_ERRORS": 45,
     "VISIBLE_DUPLICATE_HOTEL_ENTITIES": 0
   },
   "samplesByClass": {
     "MALFORMED_TEXT": [
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "Situated in the heart of downtown, this hotel",
+        "name": "A reliable choice for business travelers, this hotel",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "Another excellent choice for business travelers, this hotel",
+        "name": "This iconic resort",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "Located a short drive from Mizner Park, this hotel",
+        "name": "a boutique-like experience with its central location and modern design. The hotel",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "Situated close to Mizner Park, this hotel",
+        "name": "Centrally located, this hotel",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Private beach club, spa, golf course, and several dining options. The hotel",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "For a more laid-back experience, this hotel",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "This luxury resort",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "The property also provides golf cart transportation to other parts of the resort",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "a pool with cabanas, and a marina with boat rentals. The hotel",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "a convenient location, The Westin is well-suited for executive gatherings. The hotel",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Known for its spacious suites, this hotel",
         "nearMiss": null
       },
       {
@@ -119,52 +360,188 @@
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "Conveniently located near the Palm Beach Convention Center, this hotel",
+        "name": "Offers beachside dining and access to the restaurants at the main resort",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "fine dining, you can enjoy diverse culinary experiences without leaving the resort",
+        "name": "a private beach, a world-class spa, golf courses, and pools. The resort",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "beach, several pools, a full-service spa, and multiple dining options. The resort",
+        "name": "location, Eau Palm Beach offers a serene and sophisticated atmosphere. The resort",
+        "nearMiss": null
+      }
+    ],
+    "NEW_VALID_HOTEL_ENTITY": [
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Hampton Inn Boca Raton",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "along the beach, or enjoy a drink at one of the resort",
+        "name": "A Curio Collection by Hilton hotel",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "Situated along the Intracoastal Waterway, the resort",
+        "name": "Fairfield Inn & Suites Boca Raton",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "property has undergone significant renovations and now offers luxurious rooms and suites",
+        "name": "Residence Inn Boca Raton",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "Known for its Mediterranean-style architecture, this hotel",
+        "name": "Fairfield Inn & Suites",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "Situated in the heart of Boca Raton, this hotel",
+        "name": "As the name suggests, this hotel offers suite",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "Known for its tranquil ambiance and focus on wellness, this hotel",
+        "name": "Offers a variety of rooms, suites",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "While part of a larger chain, this hotel",
+        "name": "Fairfield Inn & Suites Boca Raton:",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Best Western Plus University Inn:",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Boutique Hotel:",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Outdoor pool, fitness center, and a Mediterranean-inspired restaurant. The hotel",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Part of the Curio Collection by Hilton, this resort",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "While The Breakers is a luxurious and historic resort",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Palm Beach Marriott Singer Island Beach Resort & Spa",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Palm Beach Marriott Singer Island Beach Resort",
+        "nearMiss": null
+      }
+    ],
+    "BRAND_ONLY": [
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Fairfield Inn",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Hilton Garden Inn",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_renaissance_times_square",
+        "name": "Hilton Garden Inn",
+        "nearMiss": null
+      }
+    ],
+    "OTHER": [
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "The Breakers Palm Beach",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Hilton West Palm Beach",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Hilton Honors Benefits",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "The Chesterfield Palm Beach",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "JW Marriott Marquis Miami",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "FAU Executive Education",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Fontainebleau Miami Beach",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Family Entertainment Center",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Miami Beach Botanical Garden",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Hilton Fort Lauderdale Marina",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "The Pavilion Grille",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "South Beach Park",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Hyatt Place Downtown",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Meat Market Boca Raton",
+        "nearMiss": null
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Conrad Fort Lauderdale Beach",
         "nearMiss": null
       }
     ],
@@ -186,52 +563,7 @@
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "Waterfront Hotel",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_waterstone_boca_raton",
-        "name": "Top Hotel",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_waterstone_boca_raton",
-        "name": "Iconic Resort",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_waterstone_boca_raton",
-        "name": "Upscale resort",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_waterstone_boca_raton",
-        "name": "Luxury Resort",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_waterstone_boca_raton",
-        "name": "upscale hotel",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_waterstone_boca_raton",
-        "name": "upscale resort",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_waterstone_boca_raton",
-        "name": "luxury resort",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_waterstone_boca_raton",
-        "name": "Top Meeting Hotel",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_waterstone_boca_raton",
-        "name": "Premiere Hotel",
+        "name": "best hotel",
         "nearMiss": null
       },
       {
@@ -241,130 +573,71 @@
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "best hotel",
-        "nearMiss": null
-      }
-    ],
-    "NEW_VALID_HOTEL_ENTITY": [
-      {
-        "propertyId": "adp_waterstone_boca_raton",
-        "name": "PGA National Resort & Spa",
+        "name": "upscale resort",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "This iconic luxury hotel",
+        "name": "oceanfront resort",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "PGA National Resort",
+        "name": "boutique hotel",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "Equipped with meeting rooms and business centers, the resort",
+        "name": "Top Meeting Hotel",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "is renowned for its fresh seafood and vibrant atmosphere. The hotel",
+        "name": "family resort",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "Business travelers can take advantage of the hotel",
+        "name": "Ocean Resort",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "for classic brunch options. The hotel",
+        "name": "luxury resort",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "Besides dining, the resort",
+        "name": "Waterfront Resort",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "This prestigious resort",
+        "name": "South Florida Hotel",
         "nearMiss": null
       },
       {
         "propertyId": "adp_waterstone_boca_raton",
-        "name": "This all-suite hotel",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_waterstone_boca_raton",
-        "name": "Hampton Inn Boca Raton",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_waterstone_boca_raton",
-        "name": "Part of the Curio Collection by Hilton, this boutique resort",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_waterstone_boca_raton",
-        "name": "Offers a variety of accommodations, including rooms, suites",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_waterstone_boca_raton",
-        "name": "Offers modern and stylish rooms and suites",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_waterstone_boca_raton",
-        "name": "Travelers seeking a comprehensive resort",
-        "nearMiss": null
-      }
-    ],
-    "BRAND_ONLY": [
-      {
-        "propertyId": "adp_waterstone_boca_raton",
-        "name": "Hampton Inn",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_waterstone_boca_raton",
-        "name": "Hilton Garden Inn",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_waterstone_boca_raton",
-        "name": "Four Seasons Hotel",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_waterstone_boca_raton",
-        "name": "Homewood Suites",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_renaissance_times_square",
-        "name": "Hilton Garden Inn",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_renaissance_times_square",
-        "name": "Residence Inn",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_renaissance_times_square",
-        "name": "Hampton Inn",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_now_now_noho",
-        "name": "Hilton Garden Inn",
+        "name": "Upscale resort",
         "nearMiss": null
       }
     ],
     "AMBIGUOUS_ENTITY": [
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Amara Cay Resort",
+        "nearMiss": {
+          "entityId": "hawks_cay",
+          "canonical": "Hawks Cay Resort",
+          "matchedOn": "cay resort",
+          "kind": "KNOWN_HOTEL_MISSED_ALIAS",
+          "confidence": "MEDIUM",
+          "score": 0.9,
+          "conflicts": [
+            "amara"
+          ]
+        }
+      },
       {
         "propertyId": "adp_waterstone_boca_raton",
         "name": "Baker's Cay Resort",
@@ -381,93 +654,201 @@
         }
       }
     ],
-    "RESTAURANT_CLUB_VENUE": [
+    "KNOWN_HOTEL_NEW_ALIAS": [
       {
-        "propertyId": "adp_renaissance_times_square",
-        "name": "Marriott Vacation Club",
-        "nearMiss": null
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Tideline Palm Beach Ocean Resort & Spa",
+        "nearMiss": {
+          "entityId": "tideline_ocean_resort",
+          "canonical": "Tideline Ocean Resort & Spa",
+          "matchedOn": "token_overlap",
+          "kind": "KNOWN_HOTEL_NEW_ALIAS",
+          "confidence": "HIGH",
+          "score": 1,
+          "conflicts": []
+        }
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Tideline Palm Beach Ocean Resort and Spa",
+        "nearMiss": {
+          "entityId": "tideline_ocean_resort",
+          "canonical": "Tideline Ocean Resort & Spa",
+          "matchedOn": "token_overlap",
+          "kind": "KNOWN_HOTEL_NEW_ALIAS",
+          "confidence": "HIGH",
+          "score": 1,
+          "conflicts": []
+        }
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Four Seasons Palm Beach",
+        "nearMiss": {
+          "entityId": "four_seasons_palm_beach",
+          "canonical": "Four Seasons Resort Palm Beach",
+          "matchedOn": "token_overlap",
+          "kind": "KNOWN_HOTEL_NEW_ALIAS",
+          "confidence": "HIGH",
+          "score": 1,
+          "conflicts": []
+        }
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Boca Raton Marriott",
+        "nearMiss": {
+          "entityId": "the_boca_raton",
+          "canonical": "The Boca Raton",
+          "matchedOn": "token_overlap",
+          "kind": "KNOWN_HOTEL_NEW_ALIAS",
+          "confidence": "HIGH",
+          "score": 1,
+          "conflicts": []
+        }
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Sailfish Marina & Resort",
+        "nearMiss": {
+          "entityId": "sailfish_marina",
+          "canonical": "Sailfish Marina Resort",
+          "matchedOn": "token_overlap",
+          "kind": "KNOWN_HOTEL_NEW_ALIAS",
+          "confidence": "HIGH",
+          "score": 1,
+          "conflicts": []
+        }
+      },
+      {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Waldorf Astoria Boca Raton",
+        "nearMiss": {
+          "entityId": "the_boca_raton",
+          "canonical": "The Boca Raton",
+          "matchedOn": "token_overlap",
+          "kind": "KNOWN_HOTEL_NEW_ALIAS",
+          "confidence": "HIGH",
+          "score": 1,
+          "conflicts": []
+        }
       },
       {
         "propertyId": "adp_renaissance_times_square",
-        "name": "Private Club",
-        "nearMiss": null
+        "name": "1 Hotel Central Park",
+        "nearMiss": {
+          "entityId": "park_central_nyc",
+          "canonical": "Park Central Hotel New York",
+          "matchedOn": "token_overlap",
+          "kind": "KNOWN_HOTEL_NEW_ALIAS",
+          "confidence": "HIGH",
+          "score": 1,
+          "conflicts": []
+        }
       },
       {
         "propertyId": "adp_renaissance_times_square",
-        "name": "Harvard Club",
-        "nearMiss": null
+        "name": "AC Hotel New York Times Square",
+        "nearMiss": {
+          "entityId": "westin_times_square",
+          "canonical": "The Westin New York at Times Square",
+          "matchedOn": "token_overlap",
+          "kind": "KNOWN_HOTEL_NEW_ALIAS",
+          "confidence": "HIGH",
+          "score": 1,
+          "conflicts": []
+        }
       },
       {
         "propertyId": "adp_renaissance_times_square",
-        "name": "Yale Club",
-        "nearMiss": null
+        "name": "AC Hotel Times Square",
+        "nearMiss": {
+          "entityId": "westin_times_square",
+          "canonical": "The Westin New York at Times Square",
+          "matchedOn": "token_overlap",
+          "kind": "KNOWN_HOTEL_NEW_ALIAS",
+          "confidence": "HIGH",
+          "score": 1,
+          "conflicts": []
+        }
       },
       {
         "propertyId": "adp_renaissance_times_square",
-        "name": "The Westin Kids Club",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_renaissance_times_square",
-        "name": "The Paradise Club",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_renaissance_times_square",
-        "name": "Comedy Club",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_renaissance_times_square",
-        "name": "Their Lambs Club",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_renaissance_times_square",
-        "name": "The Club",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_renaissance_times_square",
-        "name": "Excellent Club",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_renaissance_times_square",
-        "name": "Lambs Club",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_renaissance_times_square",
-        "name": "Vintage Club",
-        "nearMiss": null
-      },
-      {
-        "propertyId": "adp_renaissance_times_square",
-        "name": "Equinox Hudson Yards Club",
-        "nearMiss": null
+        "name": "Sheraton Times Square",
+        "nearMiss": {
+          "entityId": "westin_times_square",
+          "canonical": "The Westin New York at Times Square",
+          "matchedOn": "token_overlap",
+          "kind": "KNOWN_HOTEL_NEW_ALIAS",
+          "confidence": "HIGH",
+          "score": 1,
+          "conflicts": []
+        }
       },
       {
         "propertyId": "adp_cambridge_beaches_bermuda",
-        "name": "Point Golf Club",
-        "nearMiss": null
+        "name": "The Grotto Bay hotel",
+        "nearMiss": {
+          "entityId": "grotto_bay",
+          "canonical": "Grotto Bay Beach Resort & Spa",
+          "matchedOn": "token_overlap",
+          "kind": "KNOWN_HOTEL_NEW_ALIAS",
+          "confidence": "HIGH",
+          "score": 1,
+          "conflicts": []
+        }
       },
       {
         "propertyId": "adp_cambridge_beaches_bermuda",
-        "name": "Hamilton Princess & Beach Club",
-        "nearMiss": null
-      }
-    ],
-    "OTHER": [
-      {
-        "propertyId": "adp_renaissance_times_square",
-        "name": "Waldorf Astoria",
-        "nearMiss": null
+        "name": "Grotto Bay Resort",
+        "nearMiss": {
+          "entityId": "grotto_bay",
+          "canonical": "Grotto Bay Beach Resort & Spa",
+          "matchedOn": "token_overlap",
+          "kind": "KNOWN_HOTEL_NEW_ALIAS",
+          "confidence": "HIGH",
+          "score": 1,
+          "conflicts": []
+        }
       },
       {
         "propertyId": "adp_cambridge_beaches_bermuda",
-        "name": "Royal Palm",
-        "nearMiss": null
+        "name": "Coco Reef Bermuda",
+        "nearMiss": {
+          "entityId": "coco_reef_bermuda",
+          "canonical": "Coco Reef Resort Bermuda",
+          "matchedOn": "token_overlap",
+          "kind": "KNOWN_HOTEL_NEW_ALIAS",
+          "confidence": "HIGH",
+          "score": 1,
+          "conflicts": []
+        }
+      },
+      {
+        "propertyId": "adp_now_now_noho",
+        "name": "Four Seasons Downtown",
+        "nearMiss": {
+          "entityId": "four_seasons_downtown_nyc",
+          "canonical": "Four Seasons Hotel New York Downtown",
+          "matchedOn": "token_overlap",
+          "kind": "KNOWN_HOTEL_NEW_ALIAS",
+          "confidence": "HIGH",
+          "score": 1,
+          "conflicts": []
+        }
+      },
+      {
+        "propertyId": "adp_now_now_noho",
+        "name": "Marriott New York Downtown",
+        "nearMiss": {
+          "entityId": "four_seasons_downtown_nyc",
+          "canonical": "Four Seasons Hotel New York Downtown",
+          "matchedOn": "token_overlap",
+          "kind": "KNOWN_HOTEL_NEW_ALIAS",
+          "confidence": "HIGH",
+          "score": 1,
+          "conflicts": []
+        }
       }
     ]
   },
@@ -477,7 +858,7 @@
     "Added Baccarat / Walker Hotel aliases",
     "Strengthened alias-containment matching in SF + property registries"
   ],
-  "P0_BASELINE_BLOCKER": "NO",
+  "P0_BASELINE_BLOCKER": "YES",
   "note": "TOTAL_UNRESOLVED_BEFORE is the pre-remediation baseline (2252). TOTAL_UNRESOLVED_AFTER is the live post-remediation canonicalize-null count. Residual should be generics/venues/brands/malformed/ambiguous/new hotels — not high-confidence known aliases. NEW_VALID_HOTEL_ENTITY are not auto-merged.",
   "execution": {
     "PROVIDER_CALLS": 0,

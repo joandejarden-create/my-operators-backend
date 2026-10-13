@@ -1,0 +1,81 @@
+{
+  "forensic": {
+    "RAW_SUCCESSFUL_RESPONSES": 251,
+    "RAW_UNIQUE_HOTEL_NAMES": 673,
+    "RESOLVED_UNIQUE_HOTEL_ENTITIES": 25,
+    "RESOLVED_COMPETITOR_COUNT": 24,
+    "PERSISTED_COMPETITOR_COUNT_ORIGINAL": 0,
+    "API_COMPETITOR_COUNT_ORIGINAL": 0,
+    "UI_COMPETITOR_COUNT_ORIGINAL": 0,
+    "THE_CHARLES_HOTEL_RAW_MENTIONS": 101,
+    "THE_CHARLES_HOTEL_RESOLVED": "YES",
+    "THE_CHARLES_HOTEL_PERSISTED_ORIGINAL": "NO",
+    "THE_CHARLES_HOTEL_API_ORIGINAL": "NO",
+    "THE_CHARLES_HOTEL_UI_ORIGINAL": "NO",
+    "THE_CHARLES_HOTEL_RECOMPUTED": "YES",
+    "ORIGINAL_TRACKED_ATTRIBUTES": 8,
+    "ELIGIBLE_CANONICAL_ATTRIBUTES": 10,
+    "RECOMPUTED_TRACKED_ATTRIBUTES": 10,
+    "TOP_OBSERVED_AI_ALTERNATIVE_ORIGINAL": null,
+    "TOP_OBSERVED_AI_ALTERNATIVE_RECOMPUTED": "The Charles Hotel",
+    "DISPLACEMENT_ORIGINAL": null,
+    "DISPLACEMENT_RECOMPUTED": "The Charles Hotel"
+  },
+  "rootCause": {
+    "FIRST_DIVERGENCE": "customer_entity_resolution_fail_closed_missing_munich_registry",
+    "ROOT_CAUSE_CLASS": "MULTIPLE",
+    "COMPETITOR_EXTRACTION_BUG": "NO",
+    "ENTITY_RESOLUTION_BUG": "YES",
+    "ATTRIBUTE_PIPELINE_BUG": "YES",
+    "PERSISTENCE_BUG": "NO",
+    "API_BUG": "NO",
+    "UI_BUG": "NO",
+    "CERTIFICATION_GAP": "YES",
+    "SECONDARY_DIVERGENCE": "canonical_presence_resolve_used_south_florida_fallback_when_property_not_in_GOVERNED_NON_WATERSTONE_PROPERTIES"
+  },
+  "repair": {
+    "FULL_PROVIDER_RERUN_REQUIRED": "NO",
+    "RAW_DATA_REUSED": "YES",
+    "SHARED_PIPELINE_FIXED": "YES",
+    "HOTEL_SPECIFIC_FIX_CREATED": "NO",
+    "NEW_SUCCESSOR_PERIOD_CREATED": "YES",
+    "NEW_PERIOD_ID": "adp_period_adp_westin_grand_munchen_20261007182141_4baab7",
+    "ORIGINAL_PERIOD_PRESERVED": "YES",
+    "ORIGINAL_PERIOD_ID": "adp_period_adp_westin_grand_munchen_20261007145836_73c25a",
+    "NEW_CERTIFICATION_STATUS": "CERTIFIED",
+    "INTERIM_SUCCESSOR_ALSO_CREATED": "adp_period_adp_westin_grand_munchen_20261007181650_0bff64"
+  },
+  "finalUi": {
+    "OVERALL_COMPETITIVE_SET_COUNT": 9,
+    "TOP_10_COMPETITORS": [
+      "The Charles Hotel",
+      "Hotel Vier Jahreszeiten Kempinski München",
+      "Sofitel Munich Bayerpost",
+      "Hotel Bayerischer Hof",
+      "Sheraton Munich Arabellapark Hotel",
+      "Mandarin Oriental Munich",
+      "Andaz Munich Schwabinger Tor",
+      "Cortiina Hotel",
+      "Hotel München Palace"
+    ],
+    "TOP_DISPLACEMENT_COMPETITOR": "The Charles Hotel",
+    "TOP_OBSERVED_AI_ALTERNATIVE": "The Charles Hotel",
+    "TRACKED_ATTRIBUTE_COUNT": 10,
+    "COMPETITIVE_DISPLACEMENT_DISPLAYED": "YES",
+    "TERRITORY_COMPETITIVE_SETS_WORK": "YES"
+  },
+  "regression": {
+    "HILTON": "YES",
+    "RENAISSANCE": "YES",
+    "YOTEL": "YES",
+    "GLOBAL_CERTIFICATION": "YES"
+  },
+  "final": {
+    "WAS_ORIGINAL_CUSTOMER_COMPLETE": "NO",
+    "WHY_CERTIFICATION_ALLOWED_IT": "No gate requiring non-empty customer competitive universe when raw bindable competitors exist; entity audit only inspected already-empty published competitors; ranking path also ignored unbound registries via SF fallback",
+    "PRIMARY_DEFECT": "Missing Munich market entity registry + ranking/displacement resolve gated on GOVERNED_NON_WATERSTONE_PROPERTIES only",
+    "ISSUE_CLASS": "MULTIPLE (entity resolution + derived ranking/displacement + certification gap + attribute dictionary)",
+    "CORRECTED_CUSTOMER_SAFE": "YES",
+    "FINAL_VERDICT": "Original CERTIFIED period was not customer-complete. Raw data was sufficient. Shared registry + resolve-path repair + successor republish from frozen raw restores The Charles Hotel competitive universe without provider rerun or metric fabrication."
+  }
+}

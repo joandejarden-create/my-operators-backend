@@ -1,0 +1,113 @@
+{
+  "hotelId": "recFaxTEFF9ILHWC9",
+  "displayName": "The Westin Grand München",
+  "country": "Germany",
+  "city": "Munich",
+  "aliases": {
+    "adpPropertyId": "adp_westin_grand_munchen",
+    "censusRecordId": "recFaxTEFF9ILHWC9",
+    "provisionalGdiHotelId": "gdi_hotel_westin_grand_munchen",
+    "identityKey": "ind_marriott_de_mucwi",
+    "note": "Canonical hotelId is HPC record. Arabellapark / Bogenhausen — not Marienplatz CBD. Not Westin Grand Cayman."
+  },
+  "adpFixturePath": "fixtures/ai-demand-positioning/westin-grand-munchen-property-profile.json",
+  "geo": {
+    "latitude": 48.1511,
+    "longitude": 11.6197,
+    "note": "Arabellastraße 6 approximate centroid"
+  },
+  "locale": {
+    "primary": "de",
+    "secondary": ["en"],
+    "selective": [],
+    "note": "German primary discovery; English control / international congress"
+  },
+  "commercialPriorities": {
+    "targetSegments": [],
+    "coreTargetPeakRoomsMin": 30,
+    "coreTargetPeakRoomsMax": 250,
+    "allowSmallerIfCommerciallyMeaningful": true,
+    "demandAnchorFocus": [],
+    "weekendFocus": false,
+    "notes": "HOTEL_SPECIFIC_DATA from Marriott MUCWI (627 rooms, 21 meeting rooms, large ballroom). Peak band sized for congress/messe/corporate. targetSegments empty — discovery must not be seeded with demand-type assumptions. Not every Messe München event is automatic fit — geographic and capacity filters apply."
+  },
+  "capabilityProfile": {
+    "totalGuestrooms": 627,
+    "totalMeetingSpaceSqFt": null,
+    "totalMeetingSpaceSqM": 2810,
+    "largestBallroomSqFt": null,
+    "largestBallroomSqM": 1053,
+    "largestTheaterCapacity": 1105,
+    "largestReceptionCapacity": 1250,
+    "meetingRoomsIndoor": 21,
+    "outdoorEventSpace": false,
+    "softBrand": "Westin",
+    "serviceLevel": "upper_upscale_full_service",
+    "classification": "urban_meetings_congress_business",
+    "country": "Germany",
+    "notes": "HOTEL_SPECIFIC_DATA from marriott.com MUCWI events/rooms pages.",
+    "meetingRoomCount": 21,
+    "largestMeetingRoomSqM": 1053
+  },
+  "demandTerritory": {
+    "label": "Munich / Arabellapark / Bogenhausen",
+    "country": "Germany",
+    "includes": [
+      "PRIMARY: Arabellapark / Bogenhausen / Englischer Garten east",
+      "SECONDARY: Greater Munich city demand when lodging access is realistic",
+      "ADJACENT: Messe München / Riem when shuttle or metro access is acceptable",
+      "STRETCH: Selected Bavarian / DACH corporate programs only when Munich overnight is evidenced"
+    ],
+    "evaluationQuestion": "Could The Westin Grand München realistically capture this group demand given 627 rooms, 21 meeting rooms (ballroom ~1,053 sqm), Arabellapark location, and Munich relevance — without requiring Altstadt CBD positioning?",
+    "classifications": [
+      "TERRITORY_CORE",
+      "TERRITORY_NEARBY",
+      "TERRITORY_COMPETITIVE",
+      "TERRITORY_STRETCH",
+      "OUTSIDE_REALISTIC_TERRITORY"
+    ],
+    "displayLabels": {
+      "TERRITORY_CORE": "Arabellapark / Bogenhausen Core",
+      "TERRITORY_NEARBY": "Greater Munich Nearby",
+      "TERRITORY_COMPETITIVE": "Munich Competitive Set",
+      "TERRITORY_STRETCH": "Messe / Bavaria Stretch",
+      "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+    },
+    "classificationKeywords": {
+      "TERRITORY_CORE": [
+        "arabellapark",
+        "bogenhausen",
+        "arabellastraße",
+        "arabellastrasse",
+        "englischer garten"
+      ],
+      "TERRITORY_NEARBY": [
+        "munich",
+        "münchen",
+        "schwabing",
+        "haidhausen",
+        "lehel"
+      ],
+      "TERRITORY_COMPETITIVE": [
+        "marienplatz",
+        "altstadt",
+        "karlsplatz",
+        "hauptbahnhof"
+      ],
+      "TERRITORY_STRETCH": [
+        "messe münchen",
+        "messe munich",
+        "riem",
+        "airport munich",
+        "flughafen münchen"
+      ],
+      "OUTSIDE_REALISTIC_TERRITORY": [
+        "berlin",
+        "frankfurt",
+        "hamburg",
+        "vienna",
+        "salzburg only"
+      ]
+    }
+  }
+}

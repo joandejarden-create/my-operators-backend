@@ -29,6 +29,7 @@ const PROFILE_PATHS = {
   adp_jw_marriott_santo_domingo:
     "fixtures/ai-demand-positioning/jw-marriott-santo-domingo-property-profile.json",
   adp_radisson_santo_domingo: "fixtures/ai-demand-positioning/radisson-santo-domingo-property-profile.json",
+  adp_casas_del_xvi: "fixtures/ai-demand-positioning/casas-del-xvi-property-profile.json",
   adp_hotel_caribe_faranda_grand:
     "fixtures/ai-demand-positioning/hotel-caribe-faranda-grand-property-profile.json",
   adp_faranda_collection_bogota:

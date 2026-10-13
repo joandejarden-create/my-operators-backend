@@ -1,0 +1,40 @@
+{
+  "audit": "W_ROME_ADP_BASELINE_COMPLETION_AUDIT_V1",
+  "timestamp": "2026-09-25T11:40:00.000Z",
+  "propertyId": "adp_w_rome",
+  "periodId": "adp_period_adp_w_rome_20260925105322_1192cf",
+  "rebuildVersion": "adp_w_rome_baseline_completion_rebuild_v1",
+  "newLlmCalls": 0,
+  "rootCauses": [
+    {
+      "defect": "empty_competitive_set_and_displacement",
+      "class": "IDENTITY_RESOLUTION_BLOCKED",
+      "detail": "adp_w_rome missing from PROPERTY_ENTITY_REGISTRY → resolveCustomerFacingEntity unbound_fail_closed for all hotel names; competitor-present=18 used fuzzy declaredCompSet matching (different gate)."
+    },
+    {
+      "defect": "two_attribute_reality_coverage",
+      "class": "ATTRIBUTE_DEFINITION_GAP",
+      "detail": "Profile used keys (w_hotels_lifestyle, rome_destination, via_veneto_corridor, luxury_urban, compact_meeting_inventory) absent from ATTRIBUTE_DEFINITIONS; only marriott_bonvoy + full_service scored."
+    },
+    {
+      "defect": "brand_portfolio_not_shown",
+      "class": "AFFILIATION_MAPPING_MISSING",
+      "detail": "adp_w_rome absent from ADP_PROPERTY_PORTFOLIO_MAPPING_V1 → NOT_CONFIGURED. Peer pack CERTIFIED but affiliation mapping independent."
+    },
+    {
+      "defect": "canonical_display_name_scenario_count_zero",
+      "class": "ALIAS_NORM_MISMATCH",
+      "detail": "Entity registry compared norm(raw) to un-normalized aliases; canonical labels with commas failed re-resolve."
+    }
+  ],
+  "peerVsObserved": {
+    "coupled": false,
+    "note": "Competitive set never filtered by peer pack; empty because registry missing. Observed-not-peer hotels (Six Senses, Baglioni, Bulgari) now bind via registry."
+  },
+  "citations": {
+    "responsesWithCitations": 20,
+    "avgSourcesPerCitedResponse": 17,
+    "verdict": "VALID",
+    "note": "Perplexity returns many distinct URLs per response; not a double-count bug."
+  }
+}

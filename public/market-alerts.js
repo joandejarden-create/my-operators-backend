@@ -75,8 +75,22 @@
         try {
             var auth = window.DealalityMemberstackAuth;
             if (auth && typeof auth.getAuthHeaders === 'function') {
-                var headers = await Promise.resolve(auth.getAuthHeaders());
-                if (headers && headers.Authorization) authHeaders = headers;
+                // getAuthHeaders returns { headers } | { error } — not a flat header map.
+                var embedded = false;
+                try {
+                    embedded = window.self !== window.top;
+                } catch (_) {
+                    embedded = true;
+                }
+                var result = await Promise.resolve(
+                    auth.getAuthHeaders(null, {
+                        waitForLogin: embedded,
+                        maxWaitMs: embedded ? 12000 : 2500,
+                    })
+                );
+                if (result && !result.error && result.headers && result.headers.Authorization) {
+                    authHeaders = result.headers;
+                }
             } else if (auth && typeof auth.getMemberstackJwt === 'function') {
                 var jwt = await Promise.resolve(auth.getMemberstackJwt());
                 if (jwt) authHeaders = { Authorization: 'Bearer ' + jwt };
@@ -98,6 +112,31 @@
         }
 
         updateFeedModeControls();
+    }
+
+    async function ensureAuthHeaders() {
+        if (authHeaders && authHeaders.Authorization) return authHeaders;
+        try {
+            var auth = window.DealalityMemberstackAuth;
+            if (auth && typeof auth.getAuthHeaders === 'function') {
+                var embedded = false;
+                try {
+                    embedded = window.self !== window.top;
+                } catch (_) {
+                    embedded = true;
+                }
+                var result = await Promise.resolve(
+                    auth.getAuthHeaders(null, {
+                        waitForLogin: true,
+                        maxWaitMs: embedded ? 12000 : 4000,
+                    })
+                );
+                if (result && !result.error && result.headers && result.headers.Authorization) {
+                    authHeaders = result.headers;
+                }
+            }
+        } catch (_) {}
+        return authHeaders;
     }
 
     function updateFeedModeControls() {
@@ -134,8 +173,92 @@
         s = s.replace(/<a\b[^>]*>([\s\S]*?)<\/a>/gi, '$1');
         s = s.replace(/<\/?[a-zA-Z][^>]*>/g, ' ');
         s = s.replace(/https?:\/\/news\.google\.com\/rss\/articles\/[^\s<>"']+/gi, ' ');
+        // Drop CMS/RSS leftover link placeholders (e.g. "LINK nky…", bare "LINK").
+        s = s.replace(/\bLINK\s+[A-Za-z0-9._-]{1,12}\b/gi, ' ');
+        s = s.replace(/(?:^|[\s\[(])LINK(?=[\s\])]|:|$)/gi, ' ');
+        s = s.replace(/\[\s*LINK\s*\]/gi, ' ');
         s = s.replace(/\s+/g, ' ').trim();
         return s;
+    }
+
+    function summaryCompareKey(text) {
+        var t = String(text || '').toLowerCase();
+        t = t.replace(/\s+[-–—|]\s+[a-z0-9 .,&'()]{2,80}$/i, '');
+        t = t.replace(/\s+\([^)]{2,60}\)\s*$/g, '');
+        t = t.replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+        return t;
+    }
+
+    /** True when Summary is empty or just repeats the headline (common Google News). */
+    function isTitleLikeSummary(title, summary) {
+        var s = String(summary || '').trim();
+        if (!s) return true;
+        var tKey = summaryCompareKey(title);
+        var sKey = summaryCompareKey(summary);
+        if (!sKey) return true;
+        if (!tKey) return false;
+        if (tKey === sKey) return true;
+        if (sKey.indexOf(tKey) === 0 && sKey.length - tKey.length <= 40) return true;
+        if (tKey.indexOf(sKey) === 0 && tKey.length - sKey.length <= 40) return true;
+        if (tKey.length >= 24 && sKey.length >= 24) {
+            if (tKey.indexOf(sKey) !== -1 || sKey.indexOf(tKey) !== -1) {
+                var longer = Math.max(tKey.length, sKey.length);
+                var shorter = Math.min(tKey.length, sKey.length);
+                if (shorter / longer >= 0.7) return true;
+            }
+        }
+        if (sKey.length < 48 && tKey.indexOf(sKey) === 0) return true;
+        return false;
+    }
+
+    /**
+     * Article Highlights should be a quick overview — never a second copy of the title.
+     * Prefer real summary; else compose from intelligence what/why/event.
+     */
+    function buildArticleHighlights(item) {
+        var title = String((item && item.title) || '').trim();
+        var summary = String((item && item.summary) || '').trim();
+        if (summary && !isTitleLikeSummary(title, summary)) return summary;
+
+        var intel = (item && item.intelligence) || {};
+        var ents = (item && item.entities) || intel.entities || {};
+        var hotel = (ents && ents.hotelProject) || item.hotelProject || '';
+        var what = String(intel.whatChanged || item.whatChanged || '').trim();
+        var why = String(intel.whyItMatters || '').trim();
+        var eventType = String(intel.eventType || item.eventType || '').trim();
+        var region = String((item && item.regionGroup) || '').trim();
+
+        if (what && !isTitleLikeSummary(title, what)) {
+            if (hotel) return hotel + ' — ' + what;
+            return what;
+        }
+        if (why) {
+            var m = why.match(/^(.+?[.!?])(?:\s|$)/);
+            var first = (m && m[1]) ? m[1] : why;
+            return String(first).slice(0, 360);
+        }
+        if (eventType && region && region !== 'Global') {
+            return eventType + ' reported in ' + region + '.';
+        }
+        if (eventType) return eventType + ' reported.';
+        return '';
+    }
+
+    /** Opinion / how-to columns are not commercial deal signals. */
+    function isOpinionOrHowToAlert(item) {
+        var title = String((item && item.title) || '');
+        var summary = String((item && item.summary) || '');
+        var text = title + ' ' + summary;
+        if (/\bare\b.{8,140}\?\s*[-–—]\s*by\s+/i.test(title)) return true;
+        if (/\b(-|\u2013|\u2014)\s*by\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)?\s*$/i.test(title)) {
+            if (/\b(really|should|how to|tips?|guide|playbook|implications|best practices)\b/i.test(text)) {
+                return true;
+            }
+        }
+        if (/\b(how to|playbook|tips? for hotels?|operational implications|ai-powered rfp|rfp responses?)\b/i.test(text)) {
+            return true;
+        }
+        return false;
     }
 
     function isInternalTagLabel(tag) {
@@ -244,11 +367,24 @@
         var f = apiItem.fields || apiItem;
         var publishedAt = f['Published At'] || f.publishedAt || null;
         var intel = apiItem.intelligence || f.intelligence || null;
+        var title = sanitizeDisplayText(f['Title'] || f.title || 'Untitled');
+        var summary = sanitizeDisplayText(f['Summary'] || f.summary || '');
+        var category = f['Category'] || f.category || '';
+        var worthReviewing = !!(intel && intel.worthReviewing) || !!f.worthReviewing;
+        var actionable = !!(intel && intel.actionable) || !!f.actionable;
+        if (isOpinionOrHowToAlert({ title: title, summary: summary })) {
+            // Presentation guard: opinion/how-to must not appear as Deals Act Now.
+            actionable = false;
+            worthReviewing = false;
+            if (!category || category === 'Deals' || category === 'Supply' || category === 'Capital') {
+                category = 'Demand';
+            }
+        }
         return {
             id: apiItem.id || f.id,
-            title: sanitizeDisplayText(f['Title'] || f.title || 'Untitled'),
-            summary: sanitizeDisplayText(f['Summary'] || f.summary || ''),
-            category: f['Category'] || f.category || '',
+            title: title,
+            summary: summary,
+            category: category,
             regionGroup: f['Region Group'] || f.regionGroup || 'Global',
             sourceName: getUserFacingSourceName(f['Source Name'] || f.sourceName || ''),
             sourceUrl: f['Source URL'] || f.sourceUrl || '',
@@ -257,8 +393,8 @@
             timeAgo: timeAgo(publishedAt),
             sortDate: publishedAt ? new Date(publishedAt).getTime() : 0,
             intelligence: intel,
-            worthReviewing: !!(intel && intel.worthReviewing) || !!f.worthReviewing,
-            actionable: !!(intel && intel.actionable) || !!f.actionable,
+            worthReviewing: worthReviewing,
+            actionable: actionable,
             signalType: getUserFacingSourceName((intel && intel.signalType) || f.signalType || ''),
             signalTiming: (intel && intel.signalTiming) || f.signalTiming || '',
             projectDirection: (intel && intel.projectDirection) || '',
@@ -373,7 +509,15 @@
         var showWorth = !!(intel && intel.worthReviewing && !intel.actionable);
         var show = showActionable || showWorth;
         wrap.classList.toggle('is-visible', show);
-        if (!show) return;
+        if (!show) {
+            var contactsWrapEarly = document.getElementById('drawerContactsWrap');
+            if (contactsWrapEarly) {
+                contactsWrapEarly.style.display = 'none';
+                var contactsListEarly = document.getElementById('drawerContacts');
+                if (contactsListEarly) contactsListEarly.innerHTML = '';
+            }
+            return;
+        }
 
         var badgeEl = document.getElementById('drawerAnalysisModeBadge');
         if (badgeEl) {
@@ -453,6 +597,271 @@
                 watchingList.innerHTML = '';
             }
         }
+
+        fillDrawerContacts(item, show);
+    }
+
+    function fillDrawerContacts(item, showActionSurface) {
+        var wrap = document.getElementById('drawerContactsWrap');
+        var list = document.getElementById('drawerContacts');
+        if (!wrap || !list) return;
+        if (!showActionSurface || !item || !item.id) {
+            wrap.style.display = 'none';
+            list.innerHTML = '';
+            return;
+        }
+        wrap.style.display = 'block';
+        list.innerHTML = '<p class="drawer-contacts-loading">Loading stakeholders…</p>';
+
+        ensureAuthHeaders()
+            .then(function (headers) {
+                return fetch('/api/market-alerts/' + encodeURIComponent(item.id) + '/contacts', {
+                    credentials: 'include',
+                    headers: Object.assign({ Accept: 'application/json' }, headers || {}),
+                });
+            })
+            .then(function (r) {
+                if (r.status === 401 || r.status === 403) {
+                    list.innerHTML =
+                        '<p class="drawer-contacts-empty">Sign in to view relevant contacts.</p>';
+                    return null;
+                }
+                if (!r.ok) throw new Error('contacts_http_' + r.status);
+                return r.json();
+            })
+            .then(function (data) {
+                if (!data) return;
+                if (data.moduleVisible === false) {
+                    wrap.style.display = 'none';
+                    list.innerHTML = '';
+                    return;
+                }
+                var stakeholders = (data.stakeholders || data.contacts || []).filter(Boolean);
+                if (!stakeholders.length) {
+                    wrap.style.display = 'none';
+                    list.innerHTML = '';
+                    return;
+                }
+                list.innerHTML = stakeholders
+                    .map(function (s) {
+                        return renderStakeholderCard(s, item);
+                    })
+                    .join('');
+                bindStakeholderActions(list, item);
+            })
+            .catch(function () {
+                list.innerHTML = '<p class="drawer-contacts-empty">Contacts unavailable right now.</p>';
+            });
+    }
+
+    function renderStakeholderCard(c, item) {
+        var lines = [];
+        var status = c.identificationStatus || '';
+        var lookup = c.contactLookupStatus || 'NOT_REQUESTED';
+        var hasPerson = !!(c.personName);
+        lines.push('<div class="drawer-contact-card" data-stakeholder-id="' + escapeHtml(c.stakeholderId || '') + '">');
+        lines.push('<p class="drawer-contact-meta">RELEVANT PEOPLE</p>');
+        if (hasPerson) {
+            lines.push('<p class="drawer-contact-name">' + escapeHtml(c.personName) + '</p>');
+            var titleCompany = [c.jobTitle, c.companyName].filter(Boolean).join(' · ');
+            if (titleCompany) {
+                lines.push('<p class="drawer-contact-title">' + escapeHtml(titleCompany) + '</p>');
+            }
+        } else {
+            lines.push('<p class="drawer-contact-name">' + escapeHtml(c.companyName || 'Organization') + '</p>');
+            if (c.jobTitle) {
+                lines.push(
+                    '<p class="drawer-contact-title">Suggested stakeholder: ' +
+                        escapeHtml(c.jobTitle) +
+                        '</p>'
+                );
+            }
+        }
+        if (c.whyRelevant || c.reasonSelected) {
+            lines.push(
+                '<p class="drawer-contact-why"><strong>Why' +
+                    (hasPerson ? ' this person' : '') +
+                    ':</strong> ' +
+                    escapeHtml(c.whyRelevant || c.reasonSelected) +
+                    '</p>'
+            );
+        }
+        if (c.confidence || c.matchConfidence) {
+            lines.push(
+                '<span class="drawer-contact-confidence">Confidence: ' +
+                    escapeHtml(c.confidence || c.matchConfidence) +
+                    '</span>'
+            );
+        }
+        if (c.articleDerived) {
+            lines.push(
+                '<p class="drawer-contact-meta">Article-derived' + (c.quoted ? ' · Quoted' : '') + '</p>'
+            );
+        }
+
+        // Dealality-resolved LinkedIn only (never Surfe-persisted)
+        if (c.linkedinUrl && /^https?:\/\//i.test(String(c.linkedinUrl))) {
+            lines.push(
+                '<p class="drawer-contact-linkedin"><a href="' +
+                    escapeHtml(c.linkedinUrl) +
+                    '" target="_blank" rel="noopener noreferrer">LinkedIn</a></p>'
+            );
+        }
+
+        var revealBox = '<div class="drawer-contact-reveal" data-reveal-slot></div>';
+
+        if (lookup === 'PENDING') {
+            lines.push('<p class="drawer-contacts-empty">Finding…</p>');
+        } else if (lookup === 'MISS') {
+            lines.push('<p class="drawer-contacts-empty">No verified contact details found</p>');
+        } else if (lookup === 'FAILED_RETRYABLE') {
+            lines.push('<p class="drawer-contacts-empty">Contact lookup temporarily unavailable</p>');
+        }
+
+        if (status === 'COMPANY_ONLY' || (!hasPerson && c.cta === 'FIND_DECISION_MAKER')) {
+            lines.push(
+                '<button type="button" class="drawer-contact-cta" data-action="find-person">Find decision maker</button>'
+            );
+        } else if (hasPerson && (c.companyName || c.company)) {
+            lines.push(
+                '<button type="button" class="drawer-contact-cta" data-action="reveal">Get contact details</button>'
+            );
+        } else if (hasPerson) {
+            lines.push(
+                '<button type="button" class="drawer-contact-cta" data-action="reveal">Get contact details</button>'
+            );
+        }
+        lines.push(revealBox);
+        lines.push('</div>');
+        return lines.join('');
+    }
+
+    function bindStakeholderActions(listEl, item) {
+        if (!listEl) return;
+        listEl.querySelectorAll('[data-action]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var card = btn.closest('.drawer-contact-card');
+                var stakeholderId = card ? card.getAttribute('data-stakeholder-id') : '';
+                var action = btn.getAttribute('data-action');
+                var slot = card ? card.querySelector('[data-reveal-slot]') : null;
+                btn.disabled = true;
+                if (slot) slot.innerHTML = '<p class="drawer-contacts-empty">Finding…</p>';
+
+                ensureAuthHeaders()
+                    .then(function (headers) {
+                        var path =
+                            action === 'find-person'
+                                ? '/contacts/find-person'
+                                : '/contacts/reveal';
+                        return fetch(
+                            '/api/market-alerts/' + encodeURIComponent(item.id) + path,
+                            {
+                                method: 'POST',
+                                credentials: 'include',
+                                headers: Object.assign(
+                                    { Accept: 'application/json', 'Content-Type': 'application/json' },
+                                    headers || {}
+                                ),
+                                body: JSON.stringify({
+                                    stakeholderId: stakeholderId || null,
+                                    title: item.title || '',
+                                    summary: item.summary || '',
+                                    category: item.category || '',
+                                    sourceUrl: item.sourceUrl || item.url || '',
+                                    eventType: item.eventType || '',
+                                    actionable: item.actionable,
+                                    worthReviewing: item.worthReviewing,
+                                    ownerDeveloper: item.ownerDeveloper || null,
+                                    hotelProject: item.hotelProject || null,
+                                    brandInvolved: item.brandInvolved || null,
+                                    operatorInvolved: item.operatorInvolved || null,
+                                }),
+                            }
+                        );
+                    })
+                    .then(function (r) {
+                        return r.json().then(function (data) {
+                            return { okHttp: r.ok, data: data };
+                        });
+                    })
+                    .then(function (res) {
+                        btn.disabled = false;
+                        var data = res.data || {};
+                        if (action === 'find-person') {
+                            if (data.stakeholder || (data.stakeholders && data.stakeholders[0])) {
+                                fillDrawerContacts(item, true);
+                                return;
+                            }
+                            if (slot) {
+                                slot.innerHTML =
+                                    '<p class="drawer-contacts-empty">' +
+                                    escapeHtml(data.message || 'No verified decision maker found') +
+                                    '</p>';
+                            }
+                            return;
+                        }
+                        // reveal — ephemeral only; never write to localStorage
+                        if (data.pending) {
+                            if (slot) slot.innerHTML = '<p class="drawer-contacts-empty">Finding…</p>';
+                            return;
+                        }
+                        if (data.miss || !data.contactDetails) {
+                            if (slot) {
+                                slot.innerHTML =
+                                    '<p class="drawer-contacts-empty">' +
+                                    escapeHtml(data.message || 'No verified contact details found') +
+                                    '</p>';
+                            }
+                            return;
+                        }
+                        var d = data.contactDetails;
+                        var html = [];
+                        if (d.email) {
+                            html.push(
+                                '<p class="drawer-contact-row"><strong>Email:</strong> ' +
+                                    escapeHtml(d.email) +
+                                    '</p>'
+                            );
+                        }
+                        if (d.phone) {
+                            html.push(
+                                '<p class="drawer-contact-row"><strong>Phone:</strong> ' +
+                                    escapeHtml(d.phone) +
+                                    '</p>'
+                            );
+                        }
+                        if (d.linkedinUrl) {
+                            html.push(
+                                '<p class="drawer-contact-row"><strong>LinkedIn:</strong> <a href="' +
+                                    escapeHtml(d.linkedinUrl) +
+                                    '" target="_blank" rel="noopener">Open profile</a></p>'
+                            );
+                        }
+                        if (slot) slot.innerHTML = html.join('') || '<p class="drawer-contacts-empty">No verified contact details found</p>';
+                    })
+                    .catch(function () {
+                        btn.disabled = false;
+                        if (slot) {
+                            slot.innerHTML =
+                                '<p class="drawer-contacts-empty">Contact lookup temporarily unavailable</p>';
+                        }
+                    });
+            });
+        });
+    }
+
+    function renderContactCard(c) {
+        return renderStakeholderCard(c, {});
+    }
+
+    function formatContactDate(iso) {
+        try {
+            var d = new Date(iso);
+            if (isNaN(d.getTime())) return String(iso);
+            return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        } catch (e) {
+            return String(iso);
+        }
     }
 
     function openDrawer(item) {
@@ -482,7 +891,9 @@
 
         fillDrawerAnalysis(item);
 
-        var summary = item.summary || '';
+        var summary = buildArticleHighlights(item);
+        var highlightsWrap = document.querySelector('.news-drawer-highlights');
+        if (highlightsWrap) highlightsWrap.style.display = summary ? '' : 'none';
         summaryEl.textContent = summary;
         var clampThreshold = 2400;
         var shouldClamp = summary.length > clampThreshold;
@@ -554,8 +965,9 @@
     function cardHtml(i) {
         var tag = escapeHtml(i.category || 'Alert');
         var title = escapeHtml(i.title);
-        var dek = escapeHtml((i.summary || '').slice(0, 220));
-        if (i.summary && i.summary.length > 220) dek += '\u2026';
+        var overview = buildArticleHighlights(i);
+        var dek = escapeHtml((overview || '').slice(0, 220));
+        if (overview && overview.length > 220) dek += '\u2026';
         var metaParts = [i.regionGroup, getUserFacingSourceName(i.sourceName), i.timeAgo].filter(Boolean);
         var meta = escapeHtml(metaParts.join(' \u2022 '));
         var saved = isSaved(i.id);
@@ -584,7 +996,7 @@
             '<div class="card-title">' + title + '</div>' +
             signalLine +
             (dek ? '<div class="card-dek">' + dek + '</div>' : '') +
-            ((actionable || worth) ? '<div class="card-view-analysis">View Analysis →</div>' : '') +
+            ((actionable || worth) ? '<div class="card-view-analysis">View Analysis</div>' : '') +
             '</div>';
     }
 

@@ -5,13 +5,12 @@
 
 import { buildMarketMapReport } from "../lib/scout/market-map.js";
 import { ensurePlatformConfig } from "../lib/hotel-census/platform-base.js";
-import { withScoutHpcQuery } from "../lib/scout/scout-hpc-request.js";
 
 export async function getScoutMarketMap(req, res) {
   if (!ensurePlatformConfig(res)) return;
 
   try {
-    const report = await buildMarketMapReport(withScoutHpcQuery(req, req.query || {}));
+    const report = await buildMarketMapReport(req.query || {});
 
     if (!report.ok) {
       return res.status(500).json({ success: false, error: report.error });

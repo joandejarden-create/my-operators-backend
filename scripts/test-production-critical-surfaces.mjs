@@ -17,13 +17,32 @@ const base =
   manifest.productionBaseUrl ||
   "https://my-operators-backend-production.up.railway.app";
 
-const paths = [...new Set(manifest.postdeploy_smoke?.static_paths || [])];
+const paths = [
+  "/health",
+  ...new Set(manifest.postdeploy_smoke?.static_paths || []),
+];
 const hotelIds = manifest.goldenFourHotelIds || [];
 const q = manifest.postdeploy_smoke?.golden_four_query || "autopen=1&share=1";
 
 async function head(url) {
-  const res = await fetch(url, { method: "GET", redirect: "follow" });
-  return { url, status: res.status };
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 15000);
+  try {
+    const res = await fetch(url, {
+      method: "GET",
+      redirect: "follow",
+      signal: ctrl.signal,
+    });
+    return { url, status: res.status };
+  } catch (err) {
+    return {
+      url,
+      status: 0,
+      error: err?.name === "AbortError" ? "TIMEOUT_15s" : err?.message || String(err),
+    };
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 const checks = [];

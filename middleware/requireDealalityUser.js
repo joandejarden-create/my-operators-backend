@@ -15,6 +15,10 @@ import {
   readDemoBrandPortfolioHeader,
 } from "../lib/dealality/demo-brand-portfolio-context.js";
 import { resolveWorkspaceOptions } from "../lib/dealality/resolve-workspace-options.js";
+import {
+  attachLocalDemoRequestContext,
+  resolveLocalDemoDealalityUser,
+} from "../lib/dealality/local-demo-dealality-user.js";
 
 export async function requireDealalityUser(req, res, next) {
   if (!req.memberstackMemberId) {
@@ -42,6 +46,20 @@ export async function requireDealalityUser(req, res, next) {
           status: result.status || null,
         });
       }
+
+      // LOCAL DEV ONLY — approved demo identity with no Airtable Users row.
+      // Production never activates (LOCAL_DEMO_USER_FALLBACK_DISABLED_IN_PRODUCTION).
+      const localDemo = resolveLocalDemoDealalityUser({
+        memberstackId: req.memberstackMemberId,
+        email: req.memberstackEmail,
+        req,
+      });
+      if (localDemo) {
+        const dealalityUser = attachLocalDemoRequestContext({ ...localDemo }, req);
+        req.dealalityUser = dealalityUser;
+        return next();
+      }
+
       return res.status(403).json({
         ok: false,
         success: false,
@@ -81,6 +99,8 @@ export async function requireDealalityUser(req, res, next) {
       reviewBeforeOutreach: result.reviewBeforeOutreach,
       userRecordId: result.userRecordId,
       activeWorkspace: result.activeWorkspace || null,
+      userSource: "AIRTABLE",
+      airtableUserFound: true,
     };
 
     // Demo Dealality stakeholder switching: header selects Owner/Brand/Operator context.

@@ -1,0 +1,71 @@
+{
+  "version": "ownership-contact-canary-v3-preflight-v1",
+  "mode": "READ_ONLY_PREFLIGHT",
+  "audited_at": "2026-10-06T15:05:00.000Z",
+  "repo": {
+    "path": "C:/Dev/deal-capture-proxy",
+    "expected_product": "Dealality deal-capture-proxy",
+    "confirmed_expected_repo": true,
+    "branch": "cursor/local-system-startup-recovery",
+    "commit": "40163550034dcabc6d899af536432993f15331e4",
+    "commit_short": "4016355",
+    "commit_subject": "Complete multi-hotel ADP+GDI onboarding sprint for YOTEL, Spice, and AC.",
+    "git_status": "DIRTY — many modified/untracked files unrelated to ownership-v3; no ownership-v3 paths present"
+  },
+  "v3_artifacts_search": {
+    "reports_ownership_v3": "ABSENT",
+    "data_ownership_v3": "ABSENT",
+    "git_log_grep_ownership_v3_V3_1B_V3_1C_decision_router": "0 commits",
+    "git_branches_matching_ownership_or_v3": "none",
+    "related_hi_branches_not_v3": [
+      "feature/hi-packet-2-8b2-owner-control-graph",
+      "feature/hi-packet-2-8c0-golden-four-reconstruction",
+      "feature/hi-packet-2-8c1-langchain-native-l3l4",
+      "feature/hi-packet-2-8c2-l3l4-hardening"
+    ]
+  },
+  "hardened_runtime_modules": {
+    "decision_router": "ABSENT",
+    "role_classifier": "ABSENT",
+    "temporal_resolver": "ABSENT",
+    "negative_screens": "PARTIAL — contact-intelligence/negative-screens.js + research/prompts/negative-screens-registry.js (not V3 ownership decision-router)",
+    "graph_reuse": "PARTIAL — adaptive-ownership-controller/owner-graph-reuse.js",
+    "routing_policy": "ABSENT",
+    "ownership_authority": "ABSENT — closest: ownership/claims/authority.js",
+    "document_discovery": "PARTIAL — ownership research stages / source-discovery (Packet 2.x)",
+    "jurisdiction_playbooks": "PARTIAL — ownership/research adapters + native-langchain jurisdiction-profiles",
+    "validated_mexico_method": "PARTIAL — DENUE/MX adapters exist; not V3-1C package",
+    "brazil_title_linkage": "PARTIAL — ownership/research Brazil CNPJ adapters",
+    "CONTACTABLE_OWNER_ORG_handoff": "ABSENT in lib/hotel-intelligence — showcase/UI/audit only"
+  },
+  "critical_safety_rules": {
+    "operator_not_owner": "PARTIAL",
+    "developer_not_owner": "PARTIAL (prompt alias)",
+    "brand_not_owner": "PARTIAL",
+    "sponsor_not_propco": "ABSENT as enforceable runtime gate",
+    "wrong_city_rejection": "ABSENT as WRONG_CITY gate",
+    "historical_not_current": "PARTIAL",
+    "announced_not_current": "PARTIAL",
+    "identity_mismatch_fail_closed": "PARTIAL / unknown completeness",
+    "unsafe_graph_fanout_blocked": "PARTIAL",
+    "decisive_document_routing_before_generic_search": "ABSENT as V3 policy",
+    "correct_abstention_allowed": "PARTIAL",
+    "UNRESOLVED_WITH_EXHAUSTIVE_SEARCH": "ABSENT in ownership runtime (baseline audit string only)"
+  },
+  "contactable_owner_handoff": {
+    "present": false,
+    "runtime_emits_CONTACTABLE_OWNER_ORG": false,
+    "runtime_emits_PROPERTY_OWNER_LEGAL_ENTITY": false,
+    "runtime_emits_OWNER_SPONSOR_GROUP": false,
+    "closest": "owner-target-resolver.js → ECONOMIC_OWNER via ownership-surface / HOTEL_TO_OWNER",
+    "showcase_only": "public/data/hotel-contact-intelligence/kgpv-recUNycnMwOVFX0hc.json + hotel-contact-intelligence.js"
+  },
+  "predecessor_stack_note": "Packet 2.x ownership + Contact Intelligence ownership-* modules exist and must NOT be treated as hardened V3-1B/V3-1C without explicit founder accept of a substitute + adapter.",
+  "classification": "RUNTIME_ABSENT_ARTIFACTS_ABSENT",
+  "preflight_decision": "STOP",
+  "stop_reason": "Hardened V3-1B/V3-1C ownership runtime module family (decision-router, role-classifier, temporal-resolver, routing-policy, ownership-authority) is not in this checkout, not in git history, and not on any local/remote branch. Critical role tokens CONTACTABLE_OWNER_ORG / PROPERTY_OWNER_LEGAL_ENTITY / OWNER_SPONSOR_GROUP / UNRESOLVED_WITH_EXHAUSTIVE_SEARCH are not emitted by ownership runtime under lib/hotel-intelligence. Live 25-hotel canary would run on an incomplete predecessor stack and violate packet safety requirements.",
+  "phase_b_executed": false,
+  "live_research_executed": false,
+  "provider_spend": 0,
+  "recommended_remediation_packet": "OWNERSHIP_V3_RUNTIME_RESTORE_OR_LOCATE"
+}

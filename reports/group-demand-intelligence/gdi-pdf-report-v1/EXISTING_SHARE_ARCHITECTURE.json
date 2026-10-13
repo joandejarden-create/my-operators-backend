@@ -1,0 +1,63 @@
+/**
+ * EXISTING_SHARE_ARCHITECTURE — Phase X1 audit (read-only).
+ * GDI PDF + External Client URLs integration.
+ */
+{
+  "auditedAt": "2026-09-30",
+  "adpExternalViewExists": "YES",
+  "gdiExternalViewExists": "YES",
+  "decision": "C — retain existing ADP-specific and GDI-specific signed-share architectures; Admin surfaces reconstructed stable URLs; do not merge registries.",
+  "tokenModel": {
+    "adp": {
+      "prefix": "adpshare.v1.",
+      "registry": "config/client-share/adp-share-registry/active-tokens.json",
+      "scopeKey": "propertyId (e.g. adp_bethesda_marriott)",
+      "page": "/owner-ai-demand-share.html?share=",
+      "resolveApi": "/api/ai-demand-positioning/share/resolve",
+      "auth": "HMAC capability + registry ACTIVE; Memberstack optional bypass on owner APIs"
+    },
+    "gdi": {
+      "prefix": "gdishare.v1.",
+      "registry": "config/client-share/gdi-share-registry/active-tokens.json",
+      "revokedList": "config/client-share/gdi-share-registry/revoked-token-ids.json",
+      "scopeKey": "hotelId (HPC rec…)",
+      "page": "/group-demand-intelligence-share.html?share=",
+      "resolveApi": "/api/group-demand-intelligence/share/resolve",
+      "auth": "HMAC + registry/self-heal + durable revoke list; no Admin login",
+      "bethesdaContractTokenId": "gdisht_47c25d74c79216021fb36150",
+      "bethesdaContractFile": "config/client-share/production-share-contract-tokens.json"
+    }
+  },
+  "routes": {
+    "adpPage": "/owner-ai-demand-share.html",
+    "gdiPage": "/group-demand-intelligence-share.html",
+    "adpResolve": "GET /api/ai-demand-positioning/share/resolve",
+    "gdiResolve": "GET /api/group-demand-intelligence/share/resolve",
+    "gdiIssue": "POST /api/group-demand-intelligence/hotels/:hotelId/share/issue (admin)",
+    "gdiRevoke": "POST /api/group-demand-intelligence/share/revoke"
+  },
+  "securityChecks": [
+    "High-entropy signed tokens (not hotel-id URLs)",
+    "Property/hotel scope binding on verified claims",
+    "Revoked/expired fail closed with customer-safe messages",
+    "Share APIs sanitize internal fields",
+    "Production GDI requires configured secret"
+  ],
+  "gaps": [
+    "AI Demand Admin does not yet display External Client URL / Copy Link for ADP+GDI",
+    "GDI share page lacks View/Download PDF for generated GDI report PDF",
+    "No single Admin API returning both ADP+GDI absolute client URLs for a selected hotel",
+    "Hilton Times Square may lack ADP share token / census link (GDI may still exist)"
+  ],
+  "reusable": [
+    "reconstruct ADP tokens from registry issuedAt (scripts/reconstruct-adp-share-urls-from-registry-v1.mjs)",
+    "production-share-contract-tokens.json for Bethesda GDI exact URL durability",
+    "census-links-v1.json bridges HPC ↔ ADP propertyId",
+    "existing owner-ai-demand-share.html and group-demand-intelligence-share.html"
+  ],
+  "laws": [
+    "Never rotate/overwrite gdisht_47c25d74c79216021fb36150",
+    "PDF regenerate must not change share URL",
+    "Prefer reconstruct over issue when ACTIVE token exists"
+  ]
+}
