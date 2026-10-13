@@ -151,7 +151,10 @@ import {
   postAdminGdiReportGenerate,
   getAdminGdiReportPdf,
 } from "./api/admin-gdi-reports.js";
-import { getAdminExternalClientLinks } from "./api/admin-external-client-links.js";
+import {
+  getAdminExternalClientLinks,
+  getInternalExternalClientLinks,
+} from "./api/admin-external-client-links.js";
 import {
   getAdminReportArchiveCatalog,
   getAdminReportArchiveEntry,
@@ -1547,6 +1550,11 @@ app.get(
   "/api/admin/ai-demand/hotels/:hotelId/external-client-links",
   ...adpMonthlyReviewAdminAuth,
   getAdminExternalClientLinks
+);
+
+app.get(
+  "/api/internal/external-client-links/:hotelId",
+  getInternalExternalClientLinks
 );
 
 // Report Archive — immutable published ADP/GDI artifacts
