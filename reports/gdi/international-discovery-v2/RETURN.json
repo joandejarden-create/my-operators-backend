@@ -1,0 +1,193 @@
+{
+  "architecture": {
+    "DEMAND_CONTROLLER_MODEL_IMPLEMENTED": true,
+    "PARTICIPANT_FIRST_IMPLEMENTED": true,
+    "DEMAND_CONTROLLER_FIRST_IMPLEMENTED": true,
+    "ACCOUNT_FIRST_IMPLEMENTED": true,
+    "HISTORICAL_PROCESS_FIRST_IMPLEMENTED": true,
+    "HOTEL_HISTORY_FIRST_IMPLEMENTED": true,
+    "ALL_PATHS_CONVERGE_TO_SAME_PACKET": true,
+    "MARKET_DISCOVERY_PROFILE_IMPLEMENTED": true,
+    "PATH_SELECTION_ENGINE_IMPLEMENTED": true,
+    "NEXT_BLOCKER_ENGINE_IMPLEMENTED": true,
+    "EQUIVALENT_EVIDENCE_POLICY_IMPLEMENTED": true,
+    "PURSUIT_HOTEL_SUPPLIED_EVIDENCE_LOOP_IMPLEMENTED": true,
+    "INTERMEDIARY_GRAPH_IMPLEMENTED": true,
+    "READY_THRESHOLD_CHANGED": false,
+    "WATCH_THRESHOLD_CHANGED": false,
+    "APIFY_USED": false
+  },
+  "usControlFunnel": {
+    "region": "US_CONTROL",
+    "hotel": "Bethesda Marriott",
+    "signals": 54,
+    "campaigns": 0,
+    "namedAccounts": 54,
+    "controllersResolved": "n/a_participant_first_dominant",
+    "travelingEntities": "high_via_lists",
+    "buyerContactPaths": "high",
+    "lodgingEvidence": "high_passkey_onpeak_lists",
+    "futureDecisions": "high",
+    "completePackets": 28,
+    "ready": 28,
+    "watch": 23
+  },
+  "internationalFunnel": [
+    {
+      "region": "INTL",
+      "hotel": "AC Hotel A Coruña",
+      "signals": 39,
+      "campaigns": 2,
+      "namedAccounts": 2,
+      "controllersResolved": 3,
+      "travelingEntities": 1,
+      "buyerContactPaths": 1,
+      "lodgingEvidence": 0,
+      "futureDecisions": 2,
+      "completePackets": 2,
+      "ready": 0,
+      "watch": 2
+    },
+    {
+      "region": "INTL",
+      "hotel": "Radisson Santo Domingo",
+      "signals": 16,
+      "campaigns": 3,
+      "namedAccounts": 3,
+      "controllersResolved": 6,
+      "travelingEntities": 3,
+      "buyerContactPaths": 0,
+      "lodgingEvidence": 0,
+      "futureDecisions": 3,
+      "completePackets": 3,
+      "ready": 0,
+      "watch": 3
+    },
+    {
+      "region": "INTL",
+      "hotel": "Westin Grand München",
+      "signals": 1,
+      "campaigns": 1,
+      "namedAccounts": 0,
+      "controllersResolved": 2,
+      "travelingEntities": 0,
+      "buyerContactPaths": 0,
+      "lodgingEvidence": 0,
+      "futureDecisions": 0,
+      "completePackets": 0,
+      "ready": 0,
+      "watch": 0
+    }
+  ],
+  "top5UsAdvantages": [
+    "Public exhibitor/participant lists",
+    "Public lodging/housing portals",
+    "Visible buyer/contact paths",
+    "RFP/procurement/convention transparency",
+    "Easier campaign→account→buyer→lodging progression"
+  ],
+  "top5IntlBlockers": [
+    "PUBLIC_DATA_CEILING / late list publication",
+    "Organizer shell without traveling entity",
+    "No public hotel list / unpublished convenio",
+    "Intermediary-controlled buying without housing authority proof",
+    "EN-centric contact recognition (mitigated in V2)"
+  ],
+  "largestConversionGapStage": "campaign_to_account",
+  "stallPctOldPath": {
+    "PUBLIC_DATA_CEILING": "100%",
+    "NO_CONTROLLER": "0%",
+    "NO_TRAVELING_ENTITY": "0%",
+    "NO_BUYER_PATH": "0%",
+    "NO_LODGING": "0%",
+    "NO_FUTURE_DECISION": "0%",
+    "OTHER": "0%"
+  },
+  "stallPctPillarsV2": {
+    "NO_CONTROLLER": "0%",
+    "NO_TRAVELING_ENTITY": "0%",
+    "NO_BUYER_PATH": "0%",
+    "NO_LODGING": "33%",
+    "NO_FUTURE_DECISION": "0%",
+    "OTHER": "0%"
+  },
+  "pilots": {
+    "ac": {
+      "oldPathReady": 0,
+      "v2Ready": 0,
+      "oldPathWatch": 2,
+      "v2Watch": 2,
+      "newControllers": 3,
+      "newNamedAccounts": 1,
+      "newTravelingEntities": 1,
+      "newBuyerPaths": 3,
+      "newLodgingEvidence": 1,
+      "newCompleteStrong": 0,
+      "newCompletePlausible": 2,
+      "topNewDiscoverySpine": "DEMAND_CONTROLLER_FIRST",
+      "topRemainingBlocker": "HOTEL_LODGING_EVIDENCE",
+      "pursuitEligible": 3
+    },
+    "rad": {
+      "oldPathReady": 0,
+      "v2Ready": 0,
+      "oldPathWatch": 3,
+      "v2Watch": 3,
+      "newControllers": 6,
+      "newNamedAccounts": 0,
+      "newTravelingEntities": 0,
+      "newBuyerPaths": 6,
+      "newLodgingEvidence": 4,
+      "newCompleteStrong": 0,
+      "newCompletePlausible": 3,
+      "topNewDiscoverySpine": "DEMAND_CONTROLLER_FIRST",
+      "topRemainingBlocker": "TARGET_HOTEL_FIT",
+      "pursuitEligible": 6
+    },
+    "west": {
+      "oldPathReady": 0,
+      "v2Ready": 0,
+      "oldPathWatch": 0,
+      "v2Watch": 0,
+      "newControllers": 2,
+      "newNamedAccounts": 1,
+      "newTravelingEntities": 1,
+      "newBuyerPaths": 1,
+      "newLodgingEvidence": 1,
+      "newCompleteStrong": 0,
+      "newCompletePlausible": 1,
+      "topNewDiscoverySpine": "DEMAND_CONTROLLER_FIRST",
+      "topRemainingBlocker": "HOTEL_LODGING_EVIDENCE",
+      "pursuitEligible": 1
+    }
+  },
+  "quality": {
+    "READY_THRESHOLD_CHANGED": false,
+    "WATCH_THRESHOLD_CHANGED": false,
+    "US_READY_STANDARD_WEAKENED": false,
+    "HISTORICAL_EVIDENCE_TREATED_AS_CURRENT": false,
+    "GENERIC_ORGANIZER_PROMOTED_TO_ACCOUNT": false,
+    "GENERIC_DMC_PROMOTED_WITHOUT_CAMPAIGN_LINK": false,
+    "SPECULATIVE_LODGING_CREATED": false,
+    "HOTEL_SUPPLIED_EVIDENCE_PROVENANCE_PRESERVED": true,
+    "MULTI_PATH_DUPLICATES_MERGED": true,
+    "APIFY_USED": false
+  },
+  "regression": {
+    "BETHESDA": true,
+    "YOTEL": true,
+    "AC": true,
+    "RADISSON": true,
+    "WESTIN": true,
+    "SURFACES_MATCH": true
+  },
+  "final": {
+    "biggestRootCause": "PUBLIC_DATA_CEILING — missing public participant/housing lists + intermediary unpublished selection (not missing Bases)",
+    "mostValuableSpine": "DEMAND_CONTROLLER_FIRST",
+    "mostValuableEvidenceRoute": "OFFICIAL_HOUSING_OR_SECRETARIAT_PCO_ACCOMMODATION",
+    "marketImprovedMost": "Radisson Santo Domingo",
+    "finalizedYieldImprovedWithoutLoweringStandards": "YES_ACTIONABILITY_NO_READY_INFLATION",
+    "topRemainingLimitation": "Current-cycle hotel-list/room-block publication still required for Ready; controllers unlock outreach routes",
+    "finalVerdict": "International Discovery V2 delivers same Ready standard with expanded evidence routes; ship and pursue via controllers while lists remain unpublished."
+  }
+}

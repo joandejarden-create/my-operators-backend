@@ -1,0 +1,133 @@
+{
+  "head": "9f1498a17130bcfd8f19b7bd7868b988cd8acec7",
+  "generatedAt": "2026-09-30T07:48:36.655Z",
+  "shadowOnly": true,
+  "apply": false,
+  "nycRegression": {
+    "renaissanceReady": 11,
+    "hiltonReady": 10,
+    "nowReady": 0,
+    "brooklynSafeguard": "PASS",
+    "timesSquareSpecific": "PASS",
+    "venueTbdNote": "VENUE_TBD PLAUSIBLE is SD-script-scoped; not applied to NYC corpus",
+    "duplicateSourcePackets": 0
+  },
+  "executive": {
+    "priorityOpenTbd": 12,
+    "locationStates": {
+      "SUBMARKET_KNOWN": 0,
+      "METRO_WIDE": 0,
+      "VENUE_TBD": 0,
+      "HOTEL_TBD": 0,
+      "LOCATION_UNKNOWN_RESEARCH_INCOMPLETE": 0,
+      "LOCATION_UNKNOWN_PUBLIC_DATA_CEILING": 4,
+      "WRONG_MARKET": 12
+    },
+    "jwShadowReady": 0,
+    "jwMatchedNeedsData": 4,
+    "radissonShadowReady": 0,
+    "radissonMatchedNeedsData": 4,
+    "both": 4,
+    "jwOnly": 0,
+    "radissonOnly": 0,
+    "neither": 12,
+    "needsMoreData": 0,
+    "closed": 0
+  },
+  "v1ToV2": {
+    "v1Pairs": 86,
+    "v1NotApplicable": 86,
+    "v2ReachHotelFit": 4,
+    "v2TrueNotApplicable": 12,
+    "v2NeedsLocationData": 0,
+    "falseHoldsRecovered": 4
+  },
+  "differentiation": {
+    "both": 4,
+    "jwOnly": 0,
+    "radOnly": 0,
+    "neither": 12,
+    "needsMoreData": 0,
+    "closed": 0
+  },
+  "jev": {
+    "marketLocationActions": 5,
+    "locationBlockersResolved": 0,
+    "pairEvaluationsUnlocked": 8,
+    "hotelPairActions": 0,
+    "stateAdvances": 0,
+    "fetches": 31,
+    "queries": 5,
+    "wrongRoutes": 0,
+    "pairEvalsUnlockedPerJevAction": 1.6
+  },
+  "hiDependency": {
+    "JW": {
+      "commercialProfile": "POPULATED",
+      "eventSpaces": "NOT_RESEARCHED",
+      "demandNodes": "POPULATED",
+      "submarket": "Piantini / Blue Mall",
+      "microArea": "Winston Churchill / Blue Mall node"
+    },
+    "RADISSON": {
+      "commercialProfile": "POPULATED",
+      "eventSpaces": "NOT_RESEARCHED",
+      "demandNodes": "POPULATED",
+      "submarket": "Naco / Tiradentes",
+      "microArea": "Tiradentes / Presidente González node"
+    },
+    "missingHiBlockedFit": false
+  },
+  "watch": {
+    "before": 24,
+    "after": 24
+  },
+  "scenarios": [
+    {
+      "scenario": "Piantini-specific",
+      "jw": "STRONG",
+      "radisson": "PLAUSIBLE",
+      "jwAllowsFit": true,
+      "radAllowsFit": true
+    },
+    {
+      "scenario": "Naco-specific",
+      "jw": "PLAUSIBLE",
+      "radisson": "DIRECT",
+      "jwAllowsFit": true,
+      "radAllowsFit": true
+    },
+    {
+      "scenario": "Zona Colonial",
+      "jw": "PLAUSIBLE",
+      "radisson": "PLAUSIBLE",
+      "jwAllowsFit": true,
+      "radAllowsFit": true
+    },
+    {
+      "scenario": "citywide metro",
+      "jw": "PLAUSIBLE",
+      "radisson": "PLAUSIBLE",
+      "jwAllowsFit": true,
+      "radAllowsFit": true
+    },
+    {
+      "scenario": "venue-TBD",
+      "jw": "PLAUSIBLE",
+      "radisson": "PLAUSIBLE",
+      "jwAllowsFit": true,
+      "radAllowsFit": true
+    },
+    {
+      "scenario": "hotel-TBD",
+      "jw": "STRONG",
+      "radisson": "PLAUSIBLE",
+      "jwAllowsFit": true,
+      "radAllowsFit": true
+    }
+  ],
+  "cron": "HELD",
+  "deploy": "NOT_RUN",
+  "customerMutationSd": false,
+  "customerMutationNyc": false
+}

@@ -60,70 +60,21 @@ function mexicoFixtureDemandResponse(query) {
   };
 }
 
-function slimMapPoint(point) {
-  if (!point || typeof point !== "object") return point;
-  const lat = point.latitude != null ? point.latitude : point.lat;
-  const lng = point.longitude != null ? point.longitude : point.lng;
-  const out = {
-    id: point.id,
-    name: point.name,
-    pointType: point.pointType || point.type,
-    pointSubtype: point.pointSubtype,
-    type: point.type || point.pointType,
-    latitude: lat,
-    longitude: lng,
-    lat,
-    lng,
-    city: point.city,
-    country: point.country,
-    region: point.region,
-    mapIconType: point.mapIconType,
-    includeOnRadarMap: point.includeOnRadarMap,
-    dataConfidence: point.dataConfidence,
-    demandSegment: point.demandSegment,
-    demandRelevance: point.demandRelevance,
-  };
-  for (const key of Object.keys(out)) {
-    if (out[key] == null || out[key] === "") delete out[key];
-  }
-  return out;
-}
-
 function buildRadarResponse(result, query) {
   const pointTypeFilter = query.pointTypeFilter || query.layerFilter || "";
   const grouped = groupDemandAnchorsLayers(result.points, pointTypeFilter);
   const stats = calculateDemandAnchorsStatistics(result.allPoints || result.points);
-  const countsOnly = query.countsOnly === true;
-  const mapView = query.view === "map";
-
-  if (countsOnly) {
-    return {
-      success: true,
-      setupNeeded: false,
-      tableName: result.tableName,
-      anchors: [],
-      points: [],
-      layers: {},
-      layerFilters: grouped.layerFilters,
-      statistics: stats,
-      totalCount: stats.totalDemandAnchors,
-      view: "counts",
-    };
-  }
-
-  const points = mapView ? grouped.points.map(slimMapPoint) : grouped.points;
 
   return {
     success: true,
     setupNeeded: false,
     tableName: result.tableName,
-    anchors: mapView ? points : result.anchors,
-    points,
-    layers: mapView ? undefined : grouped.layers,
+    anchors: result.anchors,
+    points: grouped.points,
+    layers: grouped.layers,
     layerFilters: grouped.layerFilters,
     statistics: stats,
     totalCount: stats.totalDemandAnchors,
-    view: mapView ? "map" : "full",
   };
 }
 
@@ -137,8 +88,6 @@ async function handleDemandAnchorsRequest(req, res) {
     dealId: req.query.dealId,
     dealRecordId: req.query.dealRecordId,
     includeHidden: parseBool(req.query.includeHidden),
-    countsOnly: parseBool(req.query.countsOnly),
-    view: String(req.query.view || "").trim().toLowerCase() === "map" ? "map" : "full",
   };
 
   const tryMexicoFixture = () => {

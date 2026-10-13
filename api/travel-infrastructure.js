@@ -48,69 +48,21 @@ function mexicoFixtureTravelResponse(query) {
   };
 }
 
-function slimMapPoint(point) {
-  if (!point || typeof point !== "object") return point;
-  const lat = point.latitude != null ? point.latitude : point.lat;
-  const lng = point.longitude != null ? point.longitude : point.lng;
-  const out = {
-    id: point.id,
-    name: point.name,
-    pointType: point.pointType || point.type,
-    pointSubtype: point.pointSubtype,
-    type: point.type || point.pointType,
-    latitude: lat,
-    longitude: lng,
-    lat,
-    lng,
-    city: point.city,
-    country: point.country,
-    region: point.region,
-    mapIconType: point.mapIconType,
-    includeOnRadarMap: point.includeOnRadarMap,
-    dataConfidence: point.dataConfidence,
-  };
-  for (const key of Object.keys(out)) {
-    if (out[key] == null || out[key] === "") delete out[key];
-  }
-  return out;
-}
-
 function buildRadarResponse(result, query) {
   const pointTypeFilter = query.pointTypeFilter || query.layerFilter || "";
   const grouped = groupTravelInfrastructureLayers(result.points, pointTypeFilter);
   const stats = calculateTravelInfrastructureStatistics(result.points);
-  const countsOnly = query.countsOnly === true;
-  const mapView = query.view === "map";
-
-  if (countsOnly) {
-    return {
-      success: true,
-      setupNeeded: false,
-      tableName: result.tableName,
-      infrastructure: [],
-      points: [],
-      layers: {},
-      layerFilters: TRAVEL_INFRA_LAYER_FILTERS,
-      statistics: stats,
-      totalCount: result.infrastructure.length,
-      view: "counts",
-    };
-  }
-
-  const points = mapView ? grouped.points.map(slimMapPoint) : grouped.points;
 
   return {
     success: true,
     setupNeeded: false,
     tableName: result.tableName,
-    // Avoid duplicating the full point array under `infrastructure` for map clients.
-    infrastructure: mapView ? points : result.infrastructure,
-    points,
-    layers: mapView ? undefined : grouped.layers,
+    infrastructure: result.infrastructure,
+    points: grouped.points,
+    layers: grouped.layers,
     layerFilters: TRAVEL_INFRA_LAYER_FILTERS,
     statistics: stats,
     totalCount: result.infrastructure.length,
-    view: mapView ? "map" : "full",
   };
 }
 
@@ -123,8 +75,6 @@ async function handleTravelInfrastructureRequest(req, res) {
     market: req.query.market,
     pointTypeFilter: req.query.pointTypeFilter || req.query.layerFilter,
     includeHidden: parseBool(req.query.includeHidden),
-    countsOnly: parseBool(req.query.countsOnly),
-    view: String(req.query.view || "").trim().toLowerCase() === "map" ? "map" : "full",
   };
 
   const emptyBody = {

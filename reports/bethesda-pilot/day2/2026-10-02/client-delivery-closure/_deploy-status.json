@@ -1,0 +1,78 @@
+﻿{
+    "id":  "6de62ff2-a4dd-4439-b1de-f7477b80f3f3",
+    "status":  "SUCCESS",
+    "createdAt":  "2026-10-02T09:59:56.478Z",
+    "meta":  {
+                 "buildOnly":  false,
+                 "cliMessage":  "deploy:client-delivery-closure HEAD ab00bf27 Bethesda PDF+archive",
+                 "configFile":  "/railway.toml",
+                 "fileServiceManifest":  {
+                                             "build":  {
+                                                           "builder":  "RAILPACK"
+                                                       },
+                                             "deploy":  {
+                                                            "healthcheckPath":  "/health",
+                                                            "healthcheckTimeout":  30,
+                                                            "restartPolicyMaxRetries":  10,
+                                                            "restartPolicyType":  "ON_FAILURE",
+                                                            "startCommand":  "node server.js"
+                                                        }
+                                         },
+                 "imageDigest":  "sha256:e3df83b1ec44659928b2b2708d0198a53000cee6213f084f1797be962a4b723f",
+                 "logsV2":  true,
+                 "nixpacksProviders":  [
+
+                                       ],
+                 "propertyFileMapping":  {
+                                             "build.builder":  "$.build.builder",
+                                             "deploy.healthcheckPath":  "$.deploy.healthcheckPath",
+                                             "deploy.healthcheckTimeout":  "$.deploy.healthcheckTimeout",
+                                             "deploy.restartPolicyMaxRetries":  "$.deploy.restartPolicyMaxRetries",
+                                             "deploy.restartPolicyType":  "$.deploy.restartPolicyType",
+                                             "deploy.startCommand":  "$.deploy.startCommand"
+                                         },
+                 "reason":  "deploy",
+                 "rootDirectory":  null,
+                 "runtime":  "V2",
+                 "serviceManifest":  {
+                                         "build":  {
+                                                       "buildCommand":  null,
+                                                       "buildEnvironment":  null,
+                                                       "builder":  "RAILPACK",
+                                                       "dockerfilePath":  null,
+                                                       "nixpacksConfigPath":  null,
+                                                       "nixpacksPlan":  null,
+                                                       "watchPatterns":  [
+
+                                                                         ]
+                                                   },
+                                         "deploy":  {
+                                                        "cronSchedule":  null,
+                                                        "drainingSeconds":  null,
+                                                        "healthcheckPath":  "/health",
+                                                        "healthcheckTimeout":  30,
+                                                        "ipv6EgressEnabled":  false,
+                                                        "limitOverride":  null,
+                                                        "multiRegionConfig":  {
+                                                                                  "us-east4-eqdc4a":  "@{numReplicas=1}"
+                                                                              },
+                                                        "numReplicas":  1,
+                                                        "overlapSeconds":  null,
+                                                        "preDeployCommand":  null,
+                                                        "preDeployTimeoutSeconds":  null,
+                                                        "region":  null,
+                                                        "registryCredentials":  null,
+                                                        "requiredMountPath":  null,
+                                                        "restartPolicyMaxRetries":  10,
+                                                        "restartPolicyType":  "ON_FAILURE",
+                                                        "runtime":  "V2",
+                                                        "sleepApplication":  false,
+                                                        "startCommand":  "node server.js",
+                                                        "useLegacyStacker":  false
+                                                    }
+                                     },
+                 "volumeMounts":  [
+
+                                  ]
+             }
+}

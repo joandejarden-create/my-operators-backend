@@ -1,0 +1,240 @@
+/**
+ * Shared + live client leak-audit report styles.
+ * Sample page adds /css/adp-leak-audit-sample.css on top.
+ */
+
+:root {
+  --ala-ink: #101935;
+  --ala-muted: #4a5568;
+  --ala-line: #d9e1fa;
+  --ala-bg: #f4f6fc;
+  --ala-paper: #ffffff;
+  --ala-navy: #080f25;
+  --ala-accent: #6c72ff;
+  --ala-gold: #fdb52a;
+  --ala-ok: #0f7a5a;
+  --ala-warn: #9a6b00;
+  --ala-chip: #eef1fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "DM Sans", "Mona Sans", system-ui, sans-serif;
+  color: var(--ala-ink);
+  background:
+    radial-gradient(900px 420px at 8% -8%, rgba(108, 114, 255, 0.12), transparent 55%),
+    linear-gradient(180deg, #eceff8 0%, var(--ala-bg) 42%, #e8ecf6 100%);
+  min-height: 100vh;
+}
+
+.ala-rpt-state {
+  max-width: 640px;
+  margin: 72px auto;
+  padding: 24px;
+  text-align: center;
+  color: var(--ala-muted);
+}
+
+.ala-rpt {
+  max-width: 760px;
+  margin: 40px auto 64px;
+  padding: 36px 40px 44px;
+  background: var(--ala-paper);
+  border: 1px solid var(--ala-line);
+  box-shadow: 0 18px 40px rgba(28, 36, 48, 0.08);
+}
+
+.ala-rpt__confidential {
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ala-accent);
+}
+
+.ala-rpt h1 {
+  margin: 0 0 10px;
+  font-family: Fraunces, Georgia, serif;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  line-height: 1.2;
+}
+
+.ala-rpt__meta {
+  margin: 0 0 12px;
+  color: var(--ala-muted);
+  font-size: 14px;
+}
+
+.ala-rpt__disclaimer {
+  margin: 0 0 28px;
+  padding: 12px 14px;
+  border-left: 3px solid var(--ala-warn);
+  background: #fff8eb;
+  color: var(--ala-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.ala-rpt section {
+  margin-bottom: 22px;
+}
+
+.ala-rpt h2 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ala-accent);
+}
+
+.ala-rpt p,
+.ala-rpt li {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.ala-rpt ol {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 8px;
+}
+
+.ala-rpt__comp {
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ala-line);
+}
+
+.ala-rpt__comp:last-child {
+  border-bottom: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.ala-rpt__excerpt {
+  margin-top: 8px !important;
+  font-style: italic;
+  color: var(--ala-muted);
+}
+
+.ala-rpt__fix {
+  margin-bottom: 18px;
+  padding: 14px 0 4px;
+  border-top: 1px solid var(--ala-line);
+}
+
+.ala-rpt__fix h3 {
+  margin: 0 0 10px;
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.05rem;
+}
+
+.ala-rpt__form p {
+  margin-bottom: 8px !important;
+}
+
+.ala-rpt__form ul {
+  margin: 0 0 10px;
+  padding-left: 1.1rem;
+}
+
+.ala-rpt__who {
+  margin-top: 8px;
+  padding: 16px 16px 8px;
+  background: rgba(108, 114, 255, 0.06);
+  border: 1px solid var(--ala-line);
+}
+
+.ala-rpt__who-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.ala-rpt__who-card h3 {
+  margin: 0 0 6px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ala-accent);
+}
+
+.ala-rpt__who-card ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.ala-rpt__sample-banner {
+  margin: -8px 0 18px;
+  padding: 10px 12px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7a3410;
+  background: #fff4e5;
+  border: 1px solid #f5d0a9;
+}
+
+.ala-howto-guide-entry {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 16px;
+  margin: 0 0 22px;
+  padding: 12px 14px;
+  border: 1px solid var(--ala-line);
+  border-left: 3px solid var(--ala-accent);
+  border-radius: 8px;
+  background: var(--ala-chip);
+}
+
+.ala-howto-guide-entry__copy {
+  margin: 0;
+  flex: 1 1 220px;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--ala-muted);
+}
+
+.ala-rpt .ala-howto-guide-entry .adp-howto-read-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 8px 14px;
+  background: var(--ala-navy);
+  border: 1px solid rgba(108, 114, 255, 0.45);
+  border-radius: 6px;
+  color: #f8fafc;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ala-rpt .ala-howto-guide-entry .adp-howto-read-btn[hidden] {
+  display: none !important;
+}
+
+@media (max-width: 640px) {
+  .ala-rpt {
+    margin: 16px;
+    padding: 24px 20px 32px;
+  }
+
+  .ala-rpt__who-grid {
+    grid-template-columns: 1fr;
+  }
+}

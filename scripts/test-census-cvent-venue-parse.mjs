@@ -27,7 +27,7 @@ const venue = parseCventVenueHtml(
 );
 
 assert.match(CVENT_VENUE_CLIENT_VERSION, /v4/);
-assert.match(CVENT_CHOICE_MATCHER_VERSION, /v2/);
+assert.match(CVENT_CHOICE_MATCHER_VERSION, /v3-discovery-only/);
 assert.equal(venue.title, "Comfort Inn Irapuato");
 assert.equal(venue.guestRooms, 110);
 assert.equal(venue.meetingRoomsCount, 1);
@@ -59,26 +59,33 @@ const patch = buildCventChoicePatch(
   { today: "2026-08-08" }
 );
 
-assert.equal(patch.ok, true);
-assert.equal(patch.patch["Rooms / Keys"], 110);
-assert.equal(
-  patch.patch["Official Property URL"],
-  "https://www.choicehotels.com/mexico/irapuato/comfort-inn-hotels/mx092"
+// source-policy-v1: Cvent venue facts are DISCOVERY_ONLY (steward notes / candidates)
+assert.ok(
+  !Object.prototype.hasOwnProperty.call(patch.patch || {}, "Rooms / Keys")
 );
-assert.equal(patch.patch["Meeting Space Flag"], true);
-assert.equal(patch.patch["Property Type"], "Hotel");
-assert.ok(patch.patch["Hotel Description - Source Text"]?.includes("sleeping rooms"));
-assert.ok(String(patch.patch["Notes for Steward"] || "").includes("cvent_extras"));
-assert.ok(String(patch.patch["Notes for Steward"] || "").includes("cvent_coords="));
+assert.ok(
+  !Object.prototype.hasOwnProperty.call(patch.patch || {}, "Official Property URL")
+);
+assert.ok(
+  !Object.prototype.hasOwnProperty.call(patch.patch || {}, "Meeting Space Flag")
+);
+assert.ok(
+  !Object.prototype.hasOwnProperty.call(patch.patch || {}, "Hotel Description - Source Text")
+);
+assert.ok(
+  (patch.discoveryCandidates || []).some((c) => c.field === "Rooms / Keys") ||
+    String(patch.patch?.["Notes for Steward"] || "").includes("cvent_discovery_only")
+);
+assert.ok(
+  String(patch.patch?.["Notes for Steward"] || "").includes("cvent_discovery_only") ||
+    String(patch.patch?.["Notes for Steward"] || "").includes("cvent_extras") ||
+    String(patch.patch?.["Notes for Steward"] || "").includes("cvent_coords=")
+);
 // Never write Cvent coords directly
-assert.equal(patch.patch.Latitude, undefined);
-assert.equal(patch.patch.Longitude, undefined);
-// Never write meeting room count as Rooms
-assert.notEqual(patch.patch["Rooms / Keys"], 1);
+assert.equal(patch.patch?.Latitude, undefined);
+assert.equal(patch.patch?.Longitude, undefined);
 
-// Airport Asset Context only when close — Irapuato ~26 mi must NOT set Airport
-assert.equal(patch.patch["Asset Context"], undefined);
-
+// Airport Asset Context also blocked as canonical Cvent venue write
 const airportVenue = {
   ...venue,
   airportDistance: { value: 0.5, unit: "mi", raw: "0.5 mi" },
@@ -96,7 +103,9 @@ const airportPatch = buildCventChoicePatch(
   venue.sourceUrl,
   { today: "2026-08-08" }
 );
-assert.equal(airportPatch.patch["Asset Context"], "Airport");
+assert.ok(
+  !Object.prototype.hasOwnProperty.call(airportPatch.patch || {}, "Asset Context")
+);
 
 console.log(
   JSON.stringify(

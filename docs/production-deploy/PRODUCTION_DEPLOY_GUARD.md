@@ -29,16 +29,18 @@ DEALALITY_ALLOW_RAW_RAILWAY_UP=1 railway up --detach
 | Hotfix from non-main | `DEALALITY_ALLOW_HOTFIX_DEPLOY=1` |
 | Dirty working tree | refused unless `DEALALITY_ALLOW_DIRTY_DEPLOY=1` |
 | Incomplete product tree | `assert:production-assets` fails before upload |
-| Postdeploy smoke | runs unless `DEALALITY_SKIP_POSTDEPLOY_SMOKE=1` |
+| ESM boot imports | `smoke:esm-imports` fails if critical modules cannot load |
+| Postdeploy smoke | runs unless `DEALALITY_SKIP_POSTDEPLOY_SMOKE=1` (includes `/health`, 15s timeout) |
 
 ## What the wrapper runs (order)
 
 1. Branch / dirty-tree guards
-2. `assert:production-assets` (manifest `config/production-required-assets.json`)
-3. Local route smoke (`test:production-routes-local` path inside wrapper)
-4. `railway up` (unless dry-run)
-5. Postdeploy smoke against https://my-operators-backend-production.up.railway.app
-6. Deploy record under `reports/deployments/`
+2. `smoke:esm-imports` (boot-critical ESM import check)
+3. `assert:production-assets` (manifest `config/production-required-assets.json`)
+4. Local route smoke (`test:production-routes-local` path inside wrapper)
+5. `railway up` (unless dry-run)
+6. Postdeploy smoke against https://my-operators-backend-production.up.railway.app (includes `/health`)
+7. Deploy record under `reports/deployments/`
 
 ## Hotfix example
 

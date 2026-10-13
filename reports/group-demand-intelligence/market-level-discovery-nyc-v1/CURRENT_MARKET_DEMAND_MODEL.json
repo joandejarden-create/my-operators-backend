@@ -1,0 +1,43 @@
+{
+  "decisionCandidate": "A_EXISTING_SUFFICIENT_WITH_SMALL_ADDITIVE_CODE",
+  "CURRENT_MARKET_DEMAND_MODEL": {
+    "topLevelObject": "marketOpportunityId + extractMarketOpportunityPacket (in-memory / stamped on hotel opp)",
+    "currentIds": [
+      "marketOpportunityId",
+      "eventSeriesId (partial coverage)",
+      "eventCycleId (partial coverage)",
+      "subEventId (sparse)",
+      "hotel opportunity id (gdi_opp_*)"
+    ],
+    "hotelIndependentFields": [
+      "organizationName",
+      "eventName/title",
+      "destination/geography",
+      "event dates/year",
+      "lodgingEvidence",
+      "commercialStatus/placement",
+      "sourceFamily",
+      "officialSource URLs",
+      "demand archetype (new canary stamp)"
+    ],
+    "hotelSpecificFields": [
+      "hotelFitScore",
+      "summaryWhyHotel",
+      "priority",
+      "customerFacingState",
+      "recommendedAction",
+      "contact path / WHO (when researched)",
+      "strict readiness"
+    ],
+    "evidenceRelationship": "sources[] on hotel opp; market packet reuses shared evidence URLs",
+    "hotelLinkage": "Hotel Demand Generator Fit + GDI Opportunities linked to HPC; marketOpportunityId stamps reuse",
+    "duplicationProblems": "Historical hotel-first SERP duplicated research; market IDs already shared Ren↔Hilton for portable demand",
+    "missingConcepts": [
+      "No dedicated Market Opportunity Airtable table (packet is derived)",
+      "Sub-event identity sparse",
+      "Explicit Future Watch trigger field not always populated"
+    ],
+    "schemaChangeForCanary": "NONE — reuse marketOpportunityId + buildHotelOpportunityFromMarketPacket; file-ledger under reports/",
+    "why": "Phase0/portability already prove market packet + hotel fit split works; new table would not unlock discovery yield"
+  }
+}

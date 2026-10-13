@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>AI Demand Leak Audit — Dealality ADP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Cover SoT = Hotel Intelligence / BAS cover system (do not re-skin) -->
+  <link rel="stylesheet" href="/css/brand-alignment-snapshot.css?v=leak5" />
+  <link rel="stylesheet" href="/css/hotel-intelligence-dossier.css?v=leak5" />
+  <link rel="stylesheet" href="/css/dealality-report-print-chrome.css?v=4" />
+  <link rel="stylesheet" href="/css/dealality-report-system-v1.css?v=1" />
+  <link rel="stylesheet" href="/css/adp-monthly-review-report-v1.css?v=2" />
+  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=leak5" />
+  <link rel="stylesheet" href="/js/ai-demand-positioning/adp-guided-report-tour.css?v=leak5" />
+  <link rel="stylesheet" href="/css/adp-leak-audit-report-v2.css?v=23-template-lock" />
+</head>
+<body class="ala-adp-host hid-reader brand-alignment-snapshot hotel-intelligence-dossier aiv-page">
+  <div id="aivTooltipContainer" class="aiv-tooltip-container" aria-live="polite"></div>
+  <div id="alaReportLoading" class="ala-boot">Loading report…</div>
+  <div id="alaReportError" class="ala-boot" hidden>
+    <h1>Report unavailable</h1>
+    <p id="alaReportErrorMsg">This report could not be loaded.</p>
+  </div>
+
+  <div
+    id="alaReport"
+    class="hid-print-host hid-print-host--flow hid-print-host--pdf-export ala-adp-report-host brand-alignment-snapshot hotel-intelligence-dossier"
+    hidden
+    data-adp-report-family="dealality-report-system-v1"
+    data-ala-layout="three_page_v1"
+    data-ala-cover-variant="intelligence"
+    data-cover-template="hotel-intelligence-dossier"
+  >
+    <!--
+      PAGE 1 COVER — exact Hotel Intelligence cover shell
+      (public/js/hotel-intelligence-dossier.js buildCoverHtml).
+      Text tokens only. Do not add leak-audit-only cover layout classes.
+    -->
+    <section
+      class="bas-cover-page bas-book-page-surface bas-avoid-break hid-cover-page"
+      data-ala-page="cover"
+      data-hid-section="cover"
+      data-hid-layout="COVER"
+      aria-label="Cover"
+    >
+      <div class="bas-cover-geometric" aria-hidden="true"></div>
+      <p class="bas-cover-confidential" id="alaConfidential">
+        Dealality AI Demand Positioning · Confidential · For recipient only
+      </p>
+      <div class="bas-cover-block">
+        <p class="bas-cover-doc-type" id="alaDocType">Limited AI Demand Leak Audit</p>
+        <h1 class="bas-cover-title" id="alaTitle">Cambridge Beaches Resort &amp; Spa</h1>
+        <p class="bas-cover-location" id="alaLocation">Sandys Parish, Bermuda</p>
+        <div class="bas-cover-accent-line" aria-hidden="true"></div>
+        <p class="bas-cover-sub" id="alaCoverSub">
+          AI Visibility · Demand Territories · Competitor Displacement · Action Priorities
+        </p>
+        <p class="bas-cover-date" id="alaCoverMetaPrimary">
+          PROVIDERS 4 · SCENARIOS 15 · OBSERVATIONS 60 · ACTION ITEMS 3
+        </p>
+        <p class="bas-cover-date" id="alaCoverMetaSecondary">
+          Generated September 7, 2026 · Limited diagnostic
+        </p>
+      </div>
+      <p class="bas-cover-disclaimer" id="alaDisclaimer">
+        This AI Demand Leak Audit is a limited diagnostic based on monitored AI responses.
+        It uses the same reading logic as Dealality AI Demand Positioning,
+        but is not a full monthly monitoring report. Findings do not prove
+        causation and should be reviewed alongside hotel commercial judgment.
+      </p>
+      <div class="bas-cover-hero">
+        <div class="bas-cover-logo-block">
+          <img id="alaCoverLogo" class="bas-cover-logo-img" alt="Dealality" width="140" height="auto" />
+        </div>
+      </div>
+      <footer class="hid-cover-page__foot" aria-hidden="false">
+        <span class="hid-chapter__foot-left" id="alaCoverFootLegal">Confidential · For recipient only · © 2026 Dealality</span>
+        <span class="hid-chapter__foot-right">Page 1 of 3</span>
+      </footer>
+    </section>
+
+    <!-- PAGE 2: Executive Diagnostic (ADP navy product surface) -->
+    <section
+      class="ala-adp-report-page ala-adp-report-page--exec aiv-report-surface"
+      data-ala-page="executive"
+      aria-label="Executive Diagnostic"
+    >
+      <div class="ala-adp-web-chrome ala-no-print aiv-section-nav adp-section-nav-with-tour" data-adp-guided-tour-tab-row="1">
+        <p class="ala-adp-web-chrome__copy">
+          New to ADP? Use this guide before reviewing the findings.
+        </p>
+        <div class="adp-section-nav__actions">
+          <button
+            type="button"
+            class="adp-howto-read-btn"
+            id="adpHowToReadReport"
+            data-adp-guided-tour-entry="1"
+            aria-label="How to Read This Report"
+            hidden
+          >
+            <svg class="adp-howto-read-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M12 11v5"></path>
+              <circle cx="12" cy="8" r="0.75" fill="currentColor" stroke="none"></circle>
+            </svg>
+            <span class="adp-howto-read-btn__label">How to Read This Report</span>
+          </button>
+        </div>
+      </div>
+      <p class="ala-adp-print-guide-note ala-print-only">
+        Need help reading this? Use the How to Read guide in the web report.
+      </p>
+
+      <section class="aiv-theme-group ala-sec" data-adp-tour-target="executive-summary">
+        <h2 class="aiv-theme-title">Executive Summary</h2>
+        <div id="alaExecSummary" class="ala-exec aiv-theme-body"></div>
+      </section>
+
+      <section class="aiv-theme-group ala-sec ala-sec--metrics" data-adp-tour-target="executive-signal">
+        <h2 class="aiv-theme-title">Executive Signal</h2>
+        <div class="aiv-kpi-row ala-adp-kpi-row ala-adp-kpi-row--5" id="alaKpis"></div>
+      </section>
+
+      <section class="aiv-theme-group ala-sec" data-adp-tour-target="demand-area">
+        <h2 class="aiv-theme-title">Demand Area to Review</h2>
+        <p class="ala-sec__p aiv-theme-body" id="alaDemandArea"></p>
+        <ul class="ala-ref-list" id="alaDemandRefs"></ul>
+      </section>
+
+      <section class="aiv-theme-group ala-sec" data-adp-tour-target="competitors">
+        <h2 class="aiv-theme-title">Competitors Showing Up Instead</h2>
+        <p class="ala-sec__note aiv-theme-help" id="alaCompetitorNote"></p>
+        <div class="ala-comp-table ala-adp-comp-grid" id="alaCompetitors"></div>
+      </section>
+
+      <section class="aiv-theme-group ala-sec" data-adp-tour-target="supporting-evidence">
+        <h2 class="aiv-theme-title">Supporting Evidence</h2>
+        <div class="ala-evidence-with-scenarios">
+          <div class="ala-evidence-examples ala-adp-evidence-grid" id="alaSupportingEvidence"></div>
+          <div id="alaScenariosMonitored" class="ala-scenarios-monitored" aria-label="Scenarios Monitored"></div>
+        </div>
+      </section>
+
+      <footer class="ala-page-foot">
+        <span class="ala-page-foot__left">Confidential · For recipient only · © 2026 Dealality</span>
+        <span class="ala-page-foot__right">Page 2 of 3</span>
+      </footer>
+    </section>
+
+    <!-- PAGE 3: Action + Conversion (ADP navy product surface) -->
+    <section
+      class="ala-adp-report-page ala-adp-report-page--actions aiv-report-surface"
+      data-ala-page="actions"
+      aria-label="Action and Conversion"
+    >
+      <section class="aiv-theme-group ala-sec" data-adp-tour-target="actions">
+        <h2 class="aiv-theme-title" id="alaActionsHeading">Priority AI Demand Improvements</h2>
+        <p class="aiv-theme-help" id="alaActionsSubtitle">
+          Targeted work to strengthen how AI presents this hotel — and close the demand gaps flagged in this diagnostic.
+        </p>
+        <div class="ala-adp-actions" id="alaFixes"></div>
+      </section>
+
+      <section class="aiv-theme-group ala-sec" data-adp-tour-target="who-does-work">
+        <h2 class="aiv-theme-title" id="alaWhoHeading">How We Partner on These Improvements</h2>
+        <p class="aiv-theme-help" id="alaWhoSubtitle">
+          A clear path from the priorities above to public updates — Dealality readies the work, you stay in control, and we stay with you through the next monitoring cycle.
+        </p>
+        <div class="ala-who ala-who--readable" id="alaWho"></div>
+      </section>
+
+      <section class="aiv-theme-group ala-sec ala-sec--next" data-adp-tour-target="next-step">
+        <h2 class="aiv-theme-title" id="alaNextHeading">Book Your ADP Walkthrough</h2>
+        <div class="ala-next ala-next--cta aiv-card" id="alaNext"></div>
+      </section>
+
+      <footer class="ala-page-foot">
+        <span class="ala-page-foot__left">Confidential · For recipient only · © 2026 Dealality</span>
+        <span class="ala-page-foot__right">Page 3 of 3</span>
+      </footer>
+    </section>
+  </div>
+
+  <!-- ADP-native evidence drawer (same classes as Brand AI / ADP product) -->
+  <dialog id="alaEvidenceDrawer" class="aiv-drawer aiv-evidence-drawer ala-drawer">
+    <form method="dialog" class="aiv-drawer-inner">
+      <header class="aiv-evidence-header">
+        <div>
+          <p class="ala-drawer__eyebrow">Client-safe ADP evidence</p>
+          <h2 id="alaEvidenceTitle">Evidence</h2>
+        </div>
+        <button type="submit" class="aiv-evidence-close" aria-label="Close evidence" title="Close evidence">×</button>
+      </header>
+      <div id="alaEvidenceBody" class="aiv-evidence-body ala-adp-evidence-host" data-ala-adp-evidence="1"></div>
+      <p class="ala-drawer__footer-note">Evidence supports review and does not prove causation.</p>
+    </form>
+  </dialog>
+
+  <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
+    <symbol id="aiv-info-icon" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+      <path d="M12 16v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="12" cy="8" r="1" fill="currentColor"/>
+    </symbol>
+  </svg>
+
+  <script src="/js/dealality-report-print-chrome.js?v=4"></script>
+  <script src="/js/adp-leak-audit-shared-ui.js?v=18-publish-4line-short"></script>
+  <script src="/js/ai-demand-positioning/adp-guided-report-tour.js?v=leak5"></script>
+  <script src="/js/adp-leak-audit-how-to-read-guide.js?v=11-template-lock-cta"></script>
+  <script src="/js/adp-leak-audit-report.js?v=24-cover-title-spaces"></script>
+</body>
+</html>

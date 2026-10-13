@@ -103,9 +103,7 @@
   }
 
   function getChainScale(hotel) {
-    // P8.6: Unknown is first-class — never invent Legacy scale; WS degrades safely
-    var raw = normalizeText(hotel && (hotel.chainScale || hotel.propertyType));
-    return raw || "Unknown";
+    return normalizeText(hotel && (hotel.chainScale || hotel.propertyType));
   }
 
   function parseRooms(hotel) {

@@ -1,0 +1,7 @@
+surface,expected,actual,note
+canonical_opportunities_file,13 YOTEL rows incl AidEx,13,12 DISQUALIFIED; 1 WATCHLIST AidEx
+salesperson_view,non-DQ rows,1,filterSalespersonView drops DISQUALIFIED
+customer_facing_opportunities,strict ready/legacy,1,AidEx passes live readiness when revalidated
+demand_campaigns_pre_seed,10 if previously registered,0,Pre-repair: campaigns file missing or empty
+demand_campaigns_post_seed_visible,10,10,isGdiDemandGeneratorVisible — not customer-ready gate
+ui_empty_state,campaign-aware empty copy when 0 ready children,FIXED_IN_APP_JS,public/js/group-demand-intelligence/app.js

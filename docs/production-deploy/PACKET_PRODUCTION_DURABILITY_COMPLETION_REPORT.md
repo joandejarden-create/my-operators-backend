@@ -34,10 +34,10 @@ Coexistence restore via gated tree: deploy `08b72ffc` — **HI + ADP + Brand/Ope
 | Gate | Status | Notes |
 |------|--------|-------|
 | `MAIN_ASSET_COMPLETENESS` | **FAIL** | Until PR #40 merges; `origin/main` `f509b87` lacks HI golden-demo |
-| `PR40_MERGE_READINESS` | **BLOCKED** | Needs approving review (cannot self-approve); MERGEABLE + gitleaks pass |
+| `PR40_MERGE_READINESS` | **BLOCKED** (review only) | Needs approving review (cannot self-approve); MERGEABLE; durability packet landed on PR head `ed05591` |
 | `PR40_HI_CONTENT` | **PASS** | HI share + Research Center CSS fix ready for main |
-| `PR40_DURABILITY_PACKET` | **FAIL** | Missing vs ADP branch: assert/deploy durability scripts; drawer visual gate |
-| `PRODUCTION_HI_HEALTH` | **PASS** | Hotfix tip restore; Golden Four HI share live |
+| `PR40_DURABILITY_PACKET` | **PASS** | assert/deploy scripts + drawer visual gate pushed on PR #40 (`ed05591`) |
+| `PRODUCTION_HI_HEALTH` | **PASS** | Coexistence deploy `08b72ffc`; Golden Four + ADP share HTTP 200 |
 | `GOLDEN_FOUR_REGRESSION` | **PASS** (prior restore) / **DEFERRED** re-run | Not re-run in this packet; production healthy after restore verification |
 | `SHARE_DRAWER_VISUAL` | **PASS** (prior restore) / **DEFERRED** re-run | Gate script exists on ADP branch; not on PR #40; not re-run in this packet |
 | `ADP_CASAS_REGISTRY_AFTER_HOTFIX` | **BLOCKED** / unknown risk | May have been wiped when hotfix redeployed; reconcile after main path stable |

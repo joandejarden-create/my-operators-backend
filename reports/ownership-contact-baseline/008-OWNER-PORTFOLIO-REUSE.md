@@ -1,0 +1,218 @@
+# 008 — Owner Portfolio Reuse
+
+```json
+{
+  "unique_owner_orgs": 9,
+  "unique_contactable_owner_orgs": 1,
+  "hotels_per_owner_org": [
+    {
+      "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+      "display_name": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+      "hotel_count": 11
+    },
+    {
+      "owner_entity_id": "ent_dovetail-hospitality",
+      "display_name": "ent_dovetail-hospitality",
+      "hotel_count": 7
+    },
+    {
+      "owner_entity_id": "ent_inmobiliaria-hnf",
+      "display_name": "ent_inmobiliaria-hnf",
+      "hotel_count": 3
+    },
+    {
+      "owner_entity_id": "ent_alliance-hotel-management",
+      "display_name": "ent_alliance-hotel-management",
+      "hotel_count": 1
+    },
+    {
+      "owner_entity_id": "dle_cambridge_dovetail_org_v1",
+      "display_name": "Dovetail + Co",
+      "hotel_count": 1
+    },
+    {
+      "owner_entity_id": "ent_barcelo-grupo",
+      "display_name": "Barceló Grupo (international hotel company) — economic owner PARTIAL",
+      "hotel_count": 1
+    },
+    {
+      "owner_entity_id": "ent_the-palace-company",
+      "display_name": "The Palace Company / Palace Resorts — family / private capital (PARTIAL)",
+      "hotel_count": 1
+    },
+    {
+      "owner_entity_id": "ent_peninsular-de-hoteles",
+      "display_name": "Peninsular de Hoteles / Grupo Peninsular — owner-operated platform (PARTIAL)",
+      "hotel_count": 1
+    },
+    {
+      "owner_entity_id": "ent_suites-amberes",
+      "display_name": "SUITES AMBERES — single-property / independent (PARTIAL registered business)",
+      "hotel_count": 1
+    }
+  ],
+  "top_25_owner_orgs": [
+    {
+      "owner_entity_id": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+      "display_name": "dle_06G6AB1VK0BCCD94DNN7W8DRWZ",
+      "hotel_count": 11,
+      "people_count": 10,
+      "people_with_email": 0,
+      "people_with_phone": 0,
+      "people_with_linkedin": 0,
+      "completeness": "PARTIAL",
+      "hotel_ids": [
+        "dhl_06G6AB2228339A12S2EZ7PZF5E",
+        "dhl_06G6AB2590MDEKFC9577S1ED0H",
+        "dhl_06G6AB266G98PQAM4CV3WTF1YN",
+        "dhl_06G6AB27Z0BADBTE8JCQZ5G7EN",
+        "dhl_06G6AB29J4GWRKR4TZGPDQ5DEE",
+        "dhl_06G6AB2B5WJHY2DJ5YN3G5FQP7",
+        "dhl_06G6AB2JP0YQE367ZRWVK525DR",
+        "dhl_06G6AB2KMGBJWJF2TPES8B3QCB",
+        "dhl_06G6AB2MX8NRZ1CHQ4F6XV0SCM",
+        "dhl_06G6AB2S5471QBQ8VH1343NYMT"
+      ],
+      "file": "fixtures/hotel-intelligence/owner-portfolio/dle_06G6AB1VK0BCCD94DNN7W8DRWZ.json",
+      "hotels_in_audit": 10,
+      "actionable_today": 1
+    },
+    {
+      "owner_entity_id": "ent_dovetail-hospitality",
+      "display_name": "ent_dovetail-hospitality",
+      "hotel_count": 7,
+      "people_count": 5,
+      "people_with_email": 0,
+      "people_with_phone": 0,
+      "people_with_linkedin": 1,
+      "completeness": "UNKNOWN",
+      "hotel_ids": [
+        "recIwaP1etgx2g9nA"
+      ],
+      "file": "fixtures/hotel-intelligence/owner-portfolio/ent_dovetail-hospitality.json",
+      "hotels_in_audit": 0,
+      "actionable_today": 0
+    },
+    {
+      "owner_entity_id": "ent_inmobiliaria-hnf",
+      "display_name": "ent_inmobiliaria-hnf",
+      "hotel_count": 3,
+      "people_count": 6,
+      "people_with_email": 0,
+      "people_with_phone": 0,
+      "people_with_linkedin": 5,
+      "completeness": "PARTIAL",
+      "hotel_ids": [
+        "recsYJb2R1jarPpK3"
+      ],
+      "file": "fixtures/hotel-intelligence/owner-portfolio/ent_inmobiliaria-hnf.json",
+      "hotels_in_audit": 0,
+      "actionable_today": 0
+    },
+    {
+      "owner_entity_id": "ent_alliance-hotel-management",
+      "display_name": "ent_alliance-hotel-management",
+      "hotel_count": 1,
+      "people_count": 8,
+      "people_with_email": 0,
+      "people_with_phone": 0,
+      "people_with_linkedin": 6,
+      "completeness": "PARTIAL",
+      "hotel_ids": [
+        "recTYaiA4S6fR6ixx"
+      ],
+      "file": "fixtures/hotel-intelligence/owner-portfolio/ent_alliance-hotel-management.json",
+      "hotels_in_audit": 3,
+      "actionable_today": 0
+    },
+    {
+      "owner_entity_id": "dle_cambridge_dovetail_org_v1",
+      "display_name": "Dovetail + Co",
+      "hotel_count": 1,
+      "hotel_ids": [
+        "recIwaP1etgx2g9nA"
+      ],
+      "people_count": 5,
+      "people_with_email": 0,
+      "people_with_phone": 0,
+      "people_with_linkedin": 1,
+      "hotels_in_audit": 1,
+      "actionable_today": 0,
+      "completeness": null,
+      "file": null
+    },
+    {
+      "owner_entity_id": "ent_barcelo-grupo",
+      "display_name": "Barceló Grupo (international hotel company) — economic owner PARTIAL",
+      "hotel_count": 1,
+      "hotel_ids": [
+        "rec19X4tsCUM1A2q6"
+      ],
+      "people_count": 0,
+      "people_with_email": 0,
+      "people_with_phone": 0,
+      "people_with_linkedin": 0,
+      "hotels_in_audit": 1,
+      "actionable_today": 0,
+      "completeness": null,
+      "file": null
+    },
+    {
+      "owner_entity_id": "ent_the-palace-company",
+      "display_name": "The Palace Company / Palace Resorts — family / private capital (PARTIAL)",
+      "hotel_count": 1,
+      "hotel_ids": [
+        "recL4PrLJpwXxyvV6"
+      ],
+      "people_count": 0,
+      "people_with_email": 0,
+      "people_with_phone": 0,
+      "people_with_linkedin": 0,
+      "hotels_in_audit": 1,
+      "actionable_today": 0,
+      "completeness": null,
+      "file": null
+    },
+    {
+      "owner_entity_id": "ent_peninsular-de-hoteles",
+      "display_name": "Peninsular de Hoteles / Grupo Peninsular — owner-operated platform (PARTIAL)",
+      "hotel_count": 1,
+      "hotel_ids": [
+        "rec2ossLX1BBaaZuw"
+      ],
+      "people_count": 0,
+      "people_with_email": 0,
+      "people_with_phone": 0,
+      "people_with_linkedin": 0,
+      "hotels_in_audit": 1,
+      "actionable_today": 0,
+      "completeness": null,
+      "file": null
+    },
+    {
+      "owner_entity_id": "ent_suites-amberes",
+      "display_name": "SUITES AMBERES — single-property / independent (PARTIAL registered business)",
+      "hotel_count": 1,
+      "hotel_ids": [
+        "recxjhraXKAz0BaVH"
+      ],
+      "people_count": 0,
+      "people_with_email": 0,
+      "people_with_phone": 0,
+      "people_with_linkedin": 0,
+      "hotels_in_audit": 1,
+      "actionable_today": 0,
+      "completeness": null,
+      "file": null
+    }
+  ],
+  "hotels_covered_by_top_10": 20,
+  "hotels_covered_by_top_25": 20,
+  "hotels_covered_by_top_50": 20,
+  "potential_hotels_actionable_by_enriching_top_25_once": {
+    "estimate": 27,
+    "already_actionable": 2,
+    "method": "Sum of portfolio hotel_relationships for top owner orgs + audit-linked hotels. Assumes one org-level contact enrichment unlocks all linked hotels. NOT a production guarantee."
+  }
+}
+```

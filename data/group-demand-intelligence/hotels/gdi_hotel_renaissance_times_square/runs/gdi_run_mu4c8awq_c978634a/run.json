@@ -1,0 +1,345 @@
+{
+  "id": "gdi_run_mu4c8awq_c978634a",
+  "hotelId": "gdi_hotel_renaissance_times_square",
+  "status": "COMPLETED",
+  "productVersion": "group-demand-intelligence-v1.0.0",
+  "startedAt": "2026-09-16T16:51:27.674Z",
+  "completedAt": "2026-09-16T16:51:27.758Z",
+  "trigger": "renaissance_gdi_second_run_future_cycle",
+  "discoveryMode": "INDEPENDENT_CANDIDATES",
+  "configuration": {
+    "demandConfig": {
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "displayName": "Renaissance New York Times Square Hotel",
+      "aliases": {
+        "adpPropertyId": "adp_renaissance_times_square",
+        "marriottPropertyCode": "NYCRN",
+        "censusRecordId": null,
+        "note": "HOTEL_SPECIFIC_DATA. Provisional GDI product key until Hotel Property Census link exists. ADP id is read-only alias."
+      },
+      "adpFixturePath": "fixtures/ai-demand-positioning/renaissance-times-square-property-profile.json",
+      "commercialPriorities": {
+        "targetSegments": [],
+        "coreTargetPeakRoomsMin": 40,
+        "coreTargetPeakRoomsMax": 180,
+        "allowSmallerIfCommerciallyMeaningful": true,
+        "demandAnchorFocus": [],
+        "weekendFocus": false,
+        "notes": "HOTEL_SPECIFIC_DATA from ADP rooms=310 and modest meeting space (~5k sq ft / Broadway Ballroom ~200 theater). Peak band sized for realistic Midtown primary pursuit; citywide/Javits demand is overflow-only when housing access is evidenced. targetSegments intentionally empty — discovery must not be seeded with demand-type assumptions."
+      },
+      "capabilityProfile": {
+        "totalGuestrooms": 310,
+        "totalMeetingSpaceSqFt": 5000,
+        "largestBallroomSqFt": 2400,
+        "largestTheaterCapacity": 200,
+        "meetingRoomsIndoor": 4,
+        "outdoorEventSpace": false,
+        "softBrand": "Renaissance Hotels (Marriott)",
+        "serviceLevel": "full_service_urban",
+        "classification": "times_square_midtown_lifestyle",
+        "notes": "HOTEL_SPECIFIC_DATA from ADP RO fixture — not hardcoded into scoring engine. Limited meeting inventory vs large Manhattan convention hotels."
+      },
+      "demandTerritory": {
+        "label": "Manhattan Midtown / Times Square",
+        "includes": [
+          "Times Square / Theater District",
+          "Midtown Manhattan where Renaissance is a credible alternative",
+          "selected Manhattan overflow only when housing access is realistic"
+        ],
+        "evaluationQuestion": "Could Renaissance Times Square realistically capture this group demand given rooms, meeting limits, and Midtown positioning?",
+        "classifications": [
+          "TERRITORY_CORE",
+          "TERRITORY_NEARBY",
+          "TERRITORY_COMPETITIVE",
+          "TERRITORY_STRETCH",
+          "OUTSIDE_REALISTIC_TERRITORY"
+        ],
+        "displayLabels": {
+          "TERRITORY_CORE": "Times Square / Midtown Core",
+          "TERRITORY_NEARBY": "Nearby Manhattan Corridor",
+          "TERRITORY_COMPETITIVE": "Manhattan Competitive",
+          "TERRITORY_STRETCH": "NYC Stretch",
+          "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+        },
+        "classificationKeywords": {
+          "TERRITORY_CORE": [
+            "times square",
+            "theater district",
+            "broadway",
+            "midtown",
+            "42nd street",
+            "two times square"
+          ],
+          "TERRITORY_NEARBY": [
+            "herald square",
+            "penn station",
+            "bryant park",
+            "rockefeller",
+            "grand central",
+            "hells kitchen",
+            "chelsea"
+          ],
+          "TERRITORY_COMPETITIVE": [
+            "manhattan",
+            "nyc",
+            "new york city",
+            "upper west",
+            "upper east",
+            "financial district"
+          ],
+          "TERRITORY_STRETCH": [
+            "brooklyn",
+            "queens",
+            "javits",
+            "hudson yards",
+            "long island city"
+          ],
+          "OUTSIDE_REALISTIC_TERRITORY": [
+            "newark",
+            "jersey city",
+            "westchester",
+            "connecticut",
+            "philadelphia",
+            "boston"
+          ]
+        }
+      },
+      "strCompetitiveSet": [
+        "New York Marriott Marquis",
+        "W New York - Times Square",
+        "The Westin New York at Times Square",
+        "Crowne Plaza Times Square Manhattan",
+        "Hilton Times Square",
+        "The Knickerbocker"
+      ],
+      "gdiOnboarding": {
+        "status": "ONBOARDED",
+        "discoveryMode": "INDEPENDENT_CANDIDATES",
+        "paidEnrichmentEnabled": false,
+        "bethesdaSeedPathAllowed": false,
+        "dmvExpansionAllowed": false,
+        "notes": "Third-hotel portability stress test — precision over volume in NYC."
+      }
+    },
+    "webhoundHardCapUsd": 15,
+    "ampfyStatus": {
+      "provider": "ampfy",
+      "status": "provider_not_configured",
+      "note": "Ampfy is not present in this repo. Level-4 uses Apify where applicable; Ampfy slot reserved."
+    },
+    "methodsVersion": "gdi-research-methods-v1-experimental"
+  },
+  "providers": {
+    "dealality_existing_knowledge": true,
+    "gdi_research_methods": true,
+    "standard_web": true,
+    "ampfy": "provider_not_configured",
+    "apify": "not_invoked_pilot_default",
+    "webhound": {
+      "sessions": [
+        {
+          "sessionId": "f8312628-e648-4028-bd58-389c7bbaa5db",
+          "costUsd": null,
+          "url": null,
+          "status": "pending_cost"
+        }
+      ],
+      "costUsd": 0,
+      "hardCapUsd": 15
+    }
+  },
+  "researchMethods": [
+    "GDI-ASSOC-EVENT-01",
+    "GDI-MED-SCI-01",
+    "GDI-HIST-MEETING-01",
+    "GDI-GOV-EVENT-01",
+    "GDI-WEEKEND-01",
+    "GDI-CONTACT-01",
+    "GDI-VENUE-HOUSING-01",
+    "GDI-ANCHOR-01"
+  ],
+  "metrics": {
+    "candidatesResearched": 16,
+    "opportunitiesQualified": 14,
+    "highPriorityCount": 1,
+    "mediumPriorityCount": 8,
+    "watchlistCount": 5,
+    "disqualifiedCount": 2,
+    "sourceCount": 19,
+    "duplicatesRemoved": 0,
+    "expiredRemoved": 0
+  },
+  "cost": {
+    "totalUsd": 0,
+    "webhoundUsd": 0,
+    "ampfyUsd": 0,
+    "apifyUsd": 0,
+    "serpApiUsd": 0,
+    "llmUsd": 0,
+    "standardSearchUsd": 0,
+    "otherUsd": 0,
+    "queryCount": 0,
+    "providerCallCount": 0,
+    "webhoundCalls": [],
+    "ampfyCalls": [],
+    "apifyCalls": [],
+    "escalationLog": [
+      {
+        "level": "L1_EXISTING_DEALALITY_KNOWLEDGE",
+        "question": "Load hotel group demand profile from Dealality knowledge",
+        "result": "started",
+        "at": "2026-09-16T16:51:27.676Z"
+      },
+      {
+        "level": "L1_EXISTING_DEALALITY_KNOWLEDGE",
+        "question": "Hotel profile from ADP RO fixture + GDI demand config",
+        "result": "ok",
+        "sources": [
+          "fixtures/ai-demand-positioning/renaissance-times-square-property-profile.json (READ_ONLY)",
+          "config/group-demand-intelligence/hotels/gdi_hotel_renaissance_times_square.json"
+        ],
+        "adpCanonicalReuse": {
+          "classification": "HOTEL_SPECIFIC_DATA",
+          "reusedFields": [
+            "name",
+            "address/city/state",
+            "brand/affiliation",
+            "rooms",
+            "meetingSpace",
+            "declaredCompSet",
+            "positioning",
+            "geography",
+            "attributes"
+          ],
+          "missingGdiCriticalFields": [
+            "censusRecordId (provisional GDI key in use)"
+          ],
+          "newlyResearchedFields": [],
+          "adpFixturePath": "fixtures/ai-demand-positioning/renaissance-times-square-property-profile.json",
+          "note": "No duplicate hotel profile created — ADP fixture consumed read-only."
+        },
+        "at": "2026-09-16T16:51:27.677Z"
+      },
+      {
+        "level": "L2_CANONICAL_DEALALITY_RESEARCH_METHODS",
+        "question": "Apply GDI experimental research methods / seed qualification",
+        "methods": [
+          "GDI-ASSOC-EVENT-01",
+          "GDI-MED-SCI-01",
+          "GDI-HIST-MEETING-01",
+          "GDI-GOV-EVENT-01",
+          "GDI-WEEKEND-01",
+          "GDI-CONTACT-01",
+          "GDI-VENUE-HOUSING-01",
+          "GDI-ANCHOR-01"
+        ],
+        "result": "ok",
+        "at": "2026-09-16T16:51:27.678Z"
+      },
+      {
+        "level": "L3_STANDARD_APPROVED_WEB_RESEARCH",
+        "question": "Independent discovery candidates (no Bethesda seed path)",
+        "result": "ok",
+        "note": "Candidates supplied via seedCandidates / Webhound import — not Bethesda demand-type seeds",
+        "at": "2026-09-16T16:51:27.678Z"
+      },
+      {
+        "level": "L4_AMPFY_APIFY_SUPPLEMENTAL",
+        "question": "Ampfy/Apify supplemental enrichment",
+        "result": "provider_not_configured",
+        "ampfy": {
+          "provider": "ampfy",
+          "status": "provider_not_configured",
+          "note": "Ampfy is not present in this repo. Level-4 uses Apify where applicable; Ampfy slot reserved."
+        },
+        "apify": "not_invoked_pilot_default",
+        "at": "2026-09-16T16:51:27.678Z"
+      },
+      {
+        "level": "L3_STANDARD_APPROVED_WEB_RESEARCH",
+        "question": "Ingest independent discovery candidates",
+        "result": "ok",
+        "candidateCount": 16,
+        "discoveryMode": "INDEPENDENT_CANDIDATES",
+        "note": "No Bethesda pilot seeds; no DMV expansion pass",
+        "at": "2026-09-16T16:51:27.738Z"
+      },
+      {
+        "level": "L5_WEBHOUND_DEEP_RESEARCH",
+        "question": "Renaissance TS second-run (future-cycle Watch gating)",
+        "result": "pending_cost",
+        "sessionId": "f8312628-e648-4028-bd58-389c7bbaa5db",
+        "at": "2026-09-16T16:51:27.758Z"
+      }
+    ],
+    "incrementalRoi": [],
+    "radFeedbackEnrichment": {
+      "pass": "rad_feedback_dmv_product_quality_v1",
+      "webhoundSpentUsd": 0,
+      "webhoundCapUsd": 15,
+      "note": "Product-quality enrichment only. Webhound hard cap unchanged; no additional Webhound spend in this pass (prior pilot already at/near $15).",
+      "appliedAt": "2026-09-16T16:51:27.750Z"
+    },
+    "qualificationPrecision": {
+      "pass": "qualification_precision_v1",
+      "commercialQaPass": "commercial_qa_high_retention_v1_20260915",
+      "commercialQaApplied": [],
+      "mediumContactNotes": {
+        "gdi_opp_amwa_2027_annual": {
+          "bucket": "A_WEAK_OR_INCOMPLETE_QUALIFICATION",
+          "note": "Venue TBD is promising, but room demand remains UNKNOWN and contact is a generic association inbox. Medium is correct — not merely a named-contact miss."
+        },
+        "gdi_opp_nice_2027": {
+          "bucket": "B_STRONG_OPEN_MISSING_NAMED_CONTACT",
+          "note": "Qualification STRONG / venue open / estimated rooms / NIST-adjacent — blocked from High only by generic inbox (nice@nist.gov). High contact rule is appropriately strict for 'act this week'; Medium correctly preserves the opportunity for contact deepening."
+        },
+        "gdi_opp_acts_ts27": {
+          "bucket": "B_STRONG_OPEN_MISSING_NAMED_CONTACT",
+          "note": "Qualification STRONG / DC venue TBD / estimated rooms / NIH-adjacent — blocked from High by unnamed staff desk. Do not auto-promote; deepen named meetings contact first."
+        }
+      },
+      "webhoundSpentUsd": 0,
+      "webhoundCapUsd": 15,
+      "note": "Precision re-score + commercial QA High retention check — no broad discovery, no additional Webhound spend.",
+      "appliedAt": "2026-09-16T16:51:27.757Z",
+      "priorityCounts": {
+        "HIGH_PRIORITY": 1,
+        "MEDIUM_PRIORITY": 8,
+        "WATCHLIST": 5,
+        "DISQUALIFIED": 2
+      }
+    },
+    "costPerDiscoveredOpportunityUsd": null,
+    "costPerQualifiedOpportunityUsd": 0,
+    "costPerHighPriorityOpportunityUsd": 0,
+    "webhoundHardCapUsd": 15,
+    "webhoundRemainingUsd": 15,
+    "externalResearchEnabled": false
+  },
+  "opportunityIds": [
+    "gdi_opp_namt_fall_conference_festival_of_new_musicals_0",
+    "gdi_opp_2026_education_engagement_forum_1",
+    "gdi_opp_spring_road_conference_2",
+    "gdi_opp_76th_annual_meeting_3",
+    "gdi_opp_arias_u_s_fall_conference_4",
+    "gdi_opp_13th_annual_buying_legal_conference_5",
+    "gdi_opp_plus_employment_practices_liability_symposium_6",
+    "gdi_opp_sior_fall_event_7",
+    "gdi_opp_scbwi_winter_conference_8",
+    "gdi_opp_the_event_planner_expo_9",
+    "gdi_opp_iafl_usa_canadian_chapter_meeting_10",
+    "gdi_opp_15th_annual_boutique_hotel_investment_conference_11",
+    "gdi_opp_apap_nyc_12",
+    "gdi_opp_nysba_annual_conference_13",
+    "gdi_opp_forum_on_education_abroad_annual_conference_14",
+    "gdi_opp_nyssba_annual_convention_education_expo_15"
+  ],
+  "errors": [],
+  "adpTouched": false,
+  "censusWritten": false,
+  "portability": {
+    "bethesdaSeedPathUsed": false,
+    "dmvExpansionUsed": false,
+    "hotelConfigPath": "config/group-demand-intelligence/hotels/gdi_hotel_renaissance_times_square.json"
+  }
+}

@@ -45,6 +45,30 @@
 
   var SCOUT_DEFAULT_COUNTRY = "Mexico";
 
+  function isScoutShareMode() {
+    try {
+      var params = new URLSearchParams(window.location.search || "");
+      return params.get("share") === "1" || params.get("embed") === "1";
+    } catch (_e) {
+      return false;
+    }
+  }
+
+  function shareQueryLocks() {
+    try {
+      var params = new URLSearchParams(window.location.search || "");
+      return {
+        country: String(params.get("country") || "").trim(),
+        market: String(params.get("market") || "").trim(),
+      };
+    } catch (_e) {
+      return { country: "", market: "" };
+    }
+  }
+
+  var SCOUT_SHARE_MODE = isScoutShareMode();
+  var SCOUT_SHARE_LOCKS = shareQueryLocks();
+
   var state = {
     activeView: "supply",
     data: null,
@@ -52,6 +76,7 @@
     signalById: {},
     map: null,
     demandAnchorsAvailable: true,
+    shareMode: SCOUT_SHARE_MODE,
     layers: {
       hotels: null,
       signals: null,
@@ -63,7 +88,7 @@
     overlays: {
       hotels: true,
       signals: true,
-      saved: true,
+      saved: !SCOUT_SHARE_MODE,
       travelInfra: true,
       demandAnchors: true,
     },
@@ -109,6 +134,14 @@
   }
 
   function ensureCountryForLoad(filters) {
+    if (state.shareMode && SCOUT_SHARE_LOCKS.country) {
+      filters.country = SCOUT_SHARE_LOCKS.country;
+      if (el("scoutMapCountry")) el("scoutMapCountry").value = SCOUT_SHARE_LOCKS.country;
+    }
+    if (state.shareMode && SCOUT_SHARE_LOCKS.market) {
+      filters.market = SCOUT_SHARE_LOCKS.market;
+      if (el("scoutMapMarket")) el("scoutMapMarket").value = SCOUT_SHARE_LOCKS.market;
+    }
     if (filters.country) return false;
     filters.country = SCOUT_DEFAULT_COUNTRY;
     if (el("scoutMapCountry")) el("scoutMapCountry").value = SCOUT_DEFAULT_COUNTRY;
@@ -167,6 +200,7 @@
   }
 
   function saveFiltersToStorage(filters) {
+    if (state.shareMode) return;
     try {
       localStorage.setItem(SCOUT_MAP_STORAGE_KEY, JSON.stringify(filters));
     } catch (_e) {}
@@ -213,19 +247,13 @@
         if (filters[key]) q.set(key, filters[key]);
       }
     );
-    var src = window.DealalityScoutCensusSource;
-    if (src && src.appendScoutCensusParams) src.appendScoutCensusParams(q);
     return q.toString();
   }
 
   function loadInsights(callback) {
     var filters = readFilters();
     el("scoutMapLoadStatus").textContent = "Loading market insights…";
-    var headers =
-      window.DealalityScoutCensusSource && window.DealalityScoutCensusSource.scoutCensusHeaders
-        ? window.DealalityScoutCensusSource.scoutCensusHeaders()
-        : { Accept: "application/json", "ngrok-skip-browser-warning": "true" };
-    fetch("/api/scout/market-insights?" + buildInsightQuery(filters), { headers: headers })
+    fetch("/api/scout/market-insights?" + buildInsightQuery(filters))
       .then(function (r) {
         return r.json();
       })
@@ -613,8 +641,6 @@
       if (filters[key]) q.set(key, filters[key]);
     });
     if (filters.overlayCategory) q.set("category", filters.overlayCategory);
-    var src = window.DealalityScoutCensusSource;
-    if (src && src.appendScoutCensusParams) src.appendScoutCensusParams(q);
     return q.toString();
   }
 
@@ -1141,6 +1167,17 @@
   }
 
   function bindCardActions() {
+    if (state.shareMode) {
+      document.querySelectorAll(".scout-map-save-btn, .scout-map-patch-btn, .scout-map-insight-save-btn").forEach(function (btn) {
+        btn.hidden = true;
+        btn.disabled = true;
+        btn.onclick = function (evt) {
+          if (evt && evt.preventDefault) evt.preventDefault();
+          return false;
+        };
+      });
+      return;
+    }
     document.querySelectorAll(".scout-map-save-btn").forEach(function (btn) {
       btn.onclick = function () {
         var id = btn.getAttribute("data-signal-id");
@@ -1158,6 +1195,12 @@
   }
 
   function saveSignal(signalId, reviewStatus) {
+    if (state.shareMode) {
+      if (el("scoutMapLoadStatus")) {
+        el("scoutMapLoadStatus").textContent = "Read-only share — watchlist writes disabled";
+      }
+      return;
+    }
     var signal = state.signalById[signalId];
     if (!signal) return;
     el("scoutMapLoadStatus").textContent = "Saving…";
@@ -1180,6 +1223,12 @@
   }
 
   function patchSignal(signalId, body) {
+    if (state.shareMode) {
+      if (el("scoutMapLoadStatus")) {
+        el("scoutMapLoadStatus").textContent = "Read-only share — watchlist writes disabled";
+      }
+      return;
+    }
     el("scoutMapLoadStatus").textContent = "Updating…";
     fetch("/api/scout/opportunity-signals/" + encodeURIComponent(signalId), {
       method: "PATCH",
@@ -1197,6 +1246,44 @@
         setError(err.message);
         el("scoutMapLoadStatus").textContent = "Update failed";
       });
+  }
+
+  function applyShareModeChrome() {
+    if (!state.shareMode) return;
+    try {
+      document.documentElement.setAttribute("data-scout-share", "1");
+      document.body.classList.add("scout-map-share-mode");
+    } catch (_e) {}
+    var style = document.createElement("style");
+    style.setAttribute("data-scout-share-chrome", "1");
+    style.textContent =
+      "body.scout-map-share-mode .scout-map-save-btn," +
+      "body.scout-map-share-mode .scout-map-patch-btn," +
+      "body.scout-map-share-mode .scout-map-insight-save-btn{display:none!important;}" +
+      "body.scout-map-share-mode .scout-map-tab[data-view=\"watchlist\"]{display:none!important;}" +
+      "body.scout-map-share-mode .scout-map-header{padding-top:8px;}";
+    (document.head || document.documentElement).appendChild(style);
+
+    if (SCOUT_SHARE_LOCKS.country && el("scoutMapCountry")) {
+      el("scoutMapCountry").value = SCOUT_SHARE_LOCKS.country;
+      el("scoutMapCountry").disabled = true;
+      el("scoutMapCountry").setAttribute("title", "Locked for shared preview");
+    }
+    if (SCOUT_SHARE_LOCKS.market && el("scoutMapMarket")) {
+      el("scoutMapMarket").value = SCOUT_SHARE_LOCKS.market;
+      el("scoutMapMarket").disabled = true;
+      el("scoutMapMarket").setAttribute("title", "Locked for shared preview");
+    }
+    if (el("scoutMapShowSaved")) {
+      el("scoutMapShowSaved").checked = false;
+      el("scoutMapShowSaved").disabled = true;
+    }
+    // Keep country locked even if options rehydrate later
+    if (el("scoutMapCountry") && SCOUT_SHARE_LOCKS.country) {
+      el("scoutMapCountry").addEventListener("change", function () {
+        el("scoutMapCountry").value = SCOUT_SHARE_LOCKS.country;
+      });
+    }
   }
 
   function hydrateOverlayCategories(data) {
@@ -1269,12 +1356,7 @@
       : "Loading Hotel Census and map layers (first load may take 15–30s)…";
     el("scoutMapResults").innerHTML = '<div class="scout-map-empty">Loading…</div>';
 
-    var headers =
-      window.DealalityScoutCensusSource && window.DealalityScoutCensusSource.scoutCensusHeaders
-        ? window.DealalityScoutCensusSource.scoutCensusHeaders()
-        : { Accept: "application/json", "ngrok-skip-browser-warning": "true" };
-
-    fetch("/api/scout/market-map?" + buildQuery(filters), { headers: headers })
+    fetch("/api/scout/market-map?" + buildQuery(filters))
       .then(function (r) {
         return r.json();
       })
@@ -1286,9 +1368,6 @@
         (json.generatedSignals || []).forEach(function (s) {
           state.signalById[s.signalId] = s;
         });
-        var srcLabel =
-          (json.source && json.source.hotelSource) ||
-          (json.source && json.source.censusSource === "hpc" ? "Hotel Property Census" : "Hotel Census");
         renderKpis(json.summary, json.demandOverlaySummary);
         updateDemandAnchorsAvailability(json);
         hydrateFilterOptions(json, filters);
@@ -1306,9 +1385,7 @@
         el("scoutMapLoadStatus").textContent =
           "Loaded " +
           (json.summary?.hotelMarkers || 0) +
-          " hotels · source " +
-          srcLabel +
-          " · " +
+          " hotels · " +
           ((json.demandOverlaySummary && json.demandOverlaySummary.overlayMarkers) || 0) +
           " demand drivers · read-only";
       })
@@ -1363,7 +1440,8 @@
     populateSelect("scoutMapSignalType", SIGNAL_TYPES, "All signal types");
     populateSelect("scoutMapReviewStatus", REVIEW_STATUSES, "All review statuses");
     populateSelect("scoutMapOverlayCategory", [], "All categories");
-    var storedOverlays = loadOverlayToggles();
+    applyShareModeChrome();
+    var storedOverlays = state.shareMode ? null : loadOverlayToggles();
     if (storedOverlays) applyOverlayToggles(storedOverlays);
     else state.overlays = readOverlayToggles();
     bindOverlayToggles();
@@ -1372,6 +1450,23 @@
     renderLegend();
     el("scoutMapApplyBtn")?.addEventListener("click", loadData);
     el("scoutMapResetBtn")?.addEventListener("click", function () {
+      if (state.shareMode) {
+        if (SCOUT_SHARE_LOCKS.country && el("scoutMapCountry")) {
+          el("scoutMapCountry").value = SCOUT_SHARE_LOCKS.country;
+        }
+        if (SCOUT_SHARE_LOCKS.market && el("scoutMapMarket")) {
+          el("scoutMapMarket").value = SCOUT_SHARE_LOCKS.market;
+        }
+        document
+          .querySelectorAll(
+            ".scout-map-filters select:not(#scoutMapCountry):not(#scoutMapMarket), .scout-map-filters input"
+          )
+          .forEach(function (node) {
+            node.value = "";
+          });
+        loadData();
+        return;
+      }
       try {
         localStorage.removeItem(SCOUT_MAP_STORAGE_KEY);
       } catch (_e) {}
@@ -1380,15 +1475,18 @@
       });
       loadData();
     });
-    var stored = loadFiltersFromStorage();
-    if (stored) applyFiltersToForm(stored);
-    var ready = Promise.resolve();
-    if (window.DealalityScoutCensusSource && window.DealalityScoutCensusSource.ensureFlags) {
-      ready = window.DealalityScoutCensusSource.ensureFlags();
+    if (!state.shareMode) {
+      var stored = loadFiltersFromStorage();
+      if (stored) applyFiltersToForm(stored);
+    } else {
+      if (SCOUT_SHARE_LOCKS.country && el("scoutMapCountry")) {
+        el("scoutMapCountry").value = SCOUT_SHARE_LOCKS.country;
+      }
+      if (SCOUT_SHARE_LOCKS.market && el("scoutMapMarket")) {
+        el("scoutMapMarket").value = SCOUT_SHARE_LOCKS.market;
+      }
     }
-    ready.finally(function () {
-      loadData();
-    });
+    loadData();
   }
 
   if (document.readyState === "loading") {

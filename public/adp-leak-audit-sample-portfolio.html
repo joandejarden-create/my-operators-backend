@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Sample Portfolio AI Demand Leak Audit — Dealality</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/brand-alignment-snapshot.css?v=leak1" />
+  <link rel="stylesheet" href="/css/dealality-report-print-chrome.css?v=4" />
+  <link rel="stylesheet" href="/css/dealality-report-system-v1.css?v=1" />
+  <link rel="stylesheet" href="/css/adp-monthly-review-report-v1.css?v=1" />
+  <link rel="stylesheet" href="/js/ai-demand-positioning/adp-guided-report-tour.css?v=leak1" />
+  <link rel="stylesheet" href="/css/adp-leak-audit-sample.css?v=9" />
+</head>
+<body class="ala-drs-host ala-adp-surface">
+  <div id="alaReportLoading" class="ala-rpt-state">Loading portfolio sample…</div>
+  <div id="alaReportError" class="ala-rpt-state" hidden>
+    <h1>Sample unavailable</h1>
+    <p id="alaReportErrorMsg">This portfolio sample could not be loaded.</p>
+  </div>
+
+  <article
+    id="alaReport"
+    class="brand-alignment-snapshot drs-report ala-leak-audit-report ala-rpt--sales-diagnostic ala-rpt--branded ala-rpt--portfolio"
+    hidden
+    data-adp-report-family="dealality-report-system-v1"
+  >
+    <section class="bas-cover-page bas-book-page-surface hid-cover-page drs-cover-shell" aria-label="Cover">
+      <div class="bas-cover-geometric" aria-hidden="true"></div>
+      <p class="bas-cover-confidential" id="alaConfidential"></p>
+      <div class="bas-cover-block">
+        <p class="bas-cover-doc-type" id="alaProductFamily">Dealality AI Demand Positioning (ADP)</p>
+        <h1 class="bas-cover-title" id="alaTitle"></h1>
+        <div class="bas-cover-accent-line" aria-hidden="true"></div>
+        <p class="bas-cover-sub" id="alaSampleBanner"></p>
+        <p class="bas-cover-date" id="alaSampleSubtext"></p>
+        <p class="bas-cover-date" id="alaCoverMeta"></p>
+      </div>
+      <p class="bas-cover-disclaimer" id="alaDisclaimer"></p>
+      <div class="bas-cover-hero">
+        <div class="bas-cover-logo-block">
+          <img id="alaCoverLogo" class="bas-cover-logo-img" alt="Dealality" width="140" height="auto" />
+        </div>
+      </div>
+    </section>
+
+    <div class="ala-drs-body">
+      <div class="ala-drs-meta" id="alaChips"></div>
+
+      <section class="ala-howto-guide-entry" aria-label="How to read this report">
+        <p class="ala-howto-guide-entry__copy">
+          New to ADP? Use this guide to understand how to read the audit before reviewing the findings.
+        </p>
+        <button
+          type="button"
+          class="adp-howto-read-btn"
+          id="adpHowToReadReport"
+          data-adp-guided-tour-entry="1"
+          aria-label="How to read this report"
+          hidden
+        >
+          <svg class="adp-howto-read-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 11v5"></path>
+            <circle cx="12" cy="8" r="0.75" fill="currentColor" stroke="none"></circle>
+          </svg>
+          <span class="adp-howto-read-btn__label">How to read this report</span>
+        </button>
+      </section>
+
+      <section class="drs-section" data-adp-tour-target="bottom-line">
+        <h2 class="drs-section-h">Portfolio Audit Context</h2>
+        <p class="drs-body" id="alaContext"></p>
+        <p class="drs-muted" id="alaSummary"></p>
+      </section>
+
+      <section class="drs-section ala-adp-metric-section">
+        <h2 class="drs-section-h">Executive Signal</h2>
+        <p class="drs-muted ala-adp-section-lede">
+          Portfolio ADP metrics from the monitored sample. Info icons use the same reading logic as the full ADP product.
+        </p>
+        <div class="ala-adp-metric-panel">
+          <div class="aiv-kpi-row ala-adp-kpi-row ala-kpi-grid--portfolio" id="alaKpis"></div>
+        </div>
+      </section>
+
+      <section class="drs-section" data-adp-tour-target="inferred-demand-leak">
+        <h2 class="drs-section-h">Hotels Needing Attention</h2>
+        <div class="drs-table-wrap" data-adp-tour-target="evidence">
+          <table class="drs-table drs-table--roomy">
+            <thead>
+              <tr>
+                <th>Hotel</th>
+                <th>Priority demand</th>
+                <th>AI visibility read</th>
+                <th>Main leak</th>
+                <th>Competitor showing up instead</th>
+                <th>First fix</th>
+              </tr>
+            </thead>
+            <tbody id="alaHotelsBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="drs-section" data-adp-tour-target="demand-territories">
+        <h2 class="drs-section-h">Inferred Demand Segments Leaking Most Often</h2>
+        <ol class="drs-list drs-list--numbered" id="alaSegments"></ol>
+      </section>
+
+      <section class="drs-section" data-adp-tour-target="competitor-displacement">
+        <h2 class="drs-section-h">Competitors Benefiting Most Often</h2>
+        <div id="alaCompetitors"></div>
+      </section>
+
+      <section class="drs-section" data-adp-tour-target="reality-coverage">
+        <h2 class="drs-section-h">Portfolio Pattern</h2>
+        <div class="drs-callout">
+          <p class="drs-callout__body" id="alaPattern"></p>
+        </div>
+      </section>
+
+      <section class="drs-section" data-adp-tour-target="first-3-fixes">
+        <h2 class="drs-section-h" id="alaActionsHeading">Priority AI Demand Improvements</h2>
+        <p class="drs-muted ala-adp-section-lede">
+          Portfolio actions Dealality can prepare for review, approval, and publishing across hotels.
+        </p>
+        <div id="alaActions"></div>
+      </section>
+
+      <section class="drs-section">
+        <h2 class="drs-section-h">How to Use This</h2>
+        <p class="drs-body" id="alaHowToUse"></p>
+      </section>
+
+      <section class="drs-section">
+        <h2 class="drs-section-h" id="alaNextHeading">Book Your ADP Walkthrough</h2>
+        <div class="ala-cta" id="alaNext"></div>
+      </section>
+    </div>
+  </article>
+
+  <script>
+    window.__ALA_SAMPLE_MODE__ = true;
+    window.__ALA_PORTFOLIO_MODE__ = true;
+    window.__ALA_SALES_DIAGNOSTIC__ = true;
+    window.__ALA_DRS_FAMILY__ = "dealality-report-system-v1";
+  </script>
+  <script src="/js/dealality-report-print-chrome.js?v=4"></script>
+  <script src="/js/adp-leak-audit-shared-ui.js?v=1"></script>
+  <script src="/js/ai-demand-positioning/adp-guided-report-tour.js?v=leak1"></script>
+  <script src="/js/adp-leak-audit-how-to-read-guide.js?v=10-adp-signal-look"></script>
+  <script src="/js/adp-leak-audit-sample-portfolio.js?v=9"></script>
+</body>
+</html>

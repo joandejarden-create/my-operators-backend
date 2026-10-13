@@ -1,0 +1,20 @@
+# Bethesda dry-run (pre-apply snapshot preserved in final)
+
+See `gdi-live-commercial-quality-v1-bethesda-final.md` — apply completed with same counts.
+
+TOTAL: 38
+- NO_CHANGE: 0
+- DATE_CORRECTION: 1
+- FUTURE_CYCLE_CORRECTION: 8
+- GEOGRAPHY_CORRECTION: 0
+- VENUE_CORRECTION: 0
+- OVERFLOW_CORRECTION: 0
+- ROOM_DEMAND_CORRECTION: 0
+- ATTENDANCE_ENRICHMENT: 0
+- PEAK_ROOMS_ENRICHMENT: 0
+- CONTACT_UPGRADE: 0
+- SOURCE_CORRECTION: 2
+- ACTION_CORRECTION: 3
+- SERIES_GROUPING: 38
+- DUPLICATE_RESOLUTION: 0
+- NEEDS_REVIEW: 0

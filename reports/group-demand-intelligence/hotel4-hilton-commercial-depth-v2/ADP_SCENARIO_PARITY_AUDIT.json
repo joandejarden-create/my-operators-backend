@@ -1,0 +1,18 @@
+{
+  "CURRENT_LIVE_BASELINE": 50,
+  "CURRENT_AFTER_FIX": 65,
+  "bySource": {
+    "standard": 50,
+    "generic_property_capability": 15
+  },
+  "PARITY_TARGET": {
+    "total": 63
+  },
+  "ROOT_CAUSE": "Market pack nyc_times_square returned 50 standard scenarios; property-capability layer was not merged because combined.length>0 short-circuited generic parity.",
+  "CLASSIFICATION": "MARKET_LAYER_PRESENT_BUT_CAPABILITY_LAYER_THIN",
+  "DEFECT": true,
+  "FIX": "buildScenarioUniverse now merges generateGenericPropertyCapabilityScenarios onto market packs",
+  "RERUN_REQUIRED": true,
+  "ESTIMATED_COST_USD": 8.45,
+  "NEW_SCENARIO_COUNT": 65
+}

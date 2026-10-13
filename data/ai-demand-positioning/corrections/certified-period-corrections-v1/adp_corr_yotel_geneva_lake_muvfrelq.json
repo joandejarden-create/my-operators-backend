@@ -1,0 +1,46 @@
+{
+  "schema": "ADP_CERTIFIED_PERIOD_CORRECTION_V1",
+  "correctionId": "adp_corr_yotel_geneva_lake_muvfrelq",
+  "propertyId": "adp_yotel_geneva_lake",
+  "periodId": "adp_period_adp_yotel_geneva_lake_20261005160004_d03a62",
+  "rootCause": "CLAUDE_TIMEOUT_ON_SCENARIO_RECOVERED",
+  "evidence": {
+    "originalPeriodId": "adp_period_adp_yotel_geneva_lake_20261005144555_b21d18",
+    "observationId": "obs_4d8d697a2caf",
+    "scenarioId": "gen_adp_yotel_geneva_lake_18",
+    "retryClass": "SUCCESS_NO_HOTEL_MENTION",
+    "hotelMentioned": false
+  },
+  "affectedMetrics": [
+    "AI_CONSIDERATION",
+    "SCENARIO_PRESENCE",
+    "CLAUDE_PRESENCE",
+    "PROVIDER_COMPLETENESS",
+    "OWNED_SOURCE_SHARE"
+  ],
+  "oldValues": {
+    "aiConsideration": 35.1,
+    "considerationNumerator": 88,
+    "considerationDenominator": 251,
+    "scenarioPresence": 90.5,
+    "claudePresence": 12.9,
+    "ownedSourceShare": 40.6,
+    "successfulResponses": 251
+  },
+  "newValues": {
+    "aiConsideration": 34.9,
+    "considerationNumerator": 88,
+    "considerationDenominator": 252,
+    "scenarioPresence": 90.5,
+    "claudePresence": 12.7,
+    "ownedSourceShare": 40.6,
+    "successfulResponses": 252
+  },
+  "correctionTimestamp": "2026-10-05T16:00:04.526Z",
+  "supersededVersion": "adp_period_adp_yotel_geneva_lake_20261005144555_b21d18",
+  "correctedVersion": "adp_period_adp_yotel_geneva_lake_20261005160004_d03a62",
+  "clientExposureStatus": "NOT_DISTRIBUTED_EXTERNALLY",
+  "externalShareDistributed": false,
+  "immutableLineage": true,
+  "notes": "Single Claude timeout recovery; original certified period immutable."
+}

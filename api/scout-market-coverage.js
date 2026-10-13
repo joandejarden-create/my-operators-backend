@@ -15,10 +15,9 @@ import {
   isAirtableCredentialError,
   shouldUseMexicoRadarFixtureFallback,
 } from "../lib/hotel-intelligence/golden-demo/mexico-radar-fixture-fallback.js";
-import { withScoutHpcQuery } from "../lib/scout/scout-hpc-request.js";
 
 export async function getScoutMarketCoverage(req, res) {
-  const query = withScoutHpcQuery(req, req.query || {});
+  const query = req.query || {};
 
   function fixtureResponse() {
     if (!shouldUseMexicoRadarFixtureFallback(query)) return null;
@@ -52,7 +51,6 @@ export async function getScoutMarketCoverage(req, res) {
       whiteSpace: report.whiteSpace,
       recordsSample: report.recordsSample,
       warnings: report.warnings,
-      hotelSource: report.hotelSource,
       source: report.source,
     });
   } catch (error) {

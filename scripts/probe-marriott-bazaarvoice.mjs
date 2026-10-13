@@ -23,7 +23,7 @@ for (const pat of [
 }
 
 // Try direct bazaarvoice with product id POPLC
-const passkey = "canCX9lvC812oa4Y6HYf4gmWK5uszkZCKThrdtYkZqcYE";
+const passkey = process.env.MARRIOTT_BAZAARVOICE_PASSKEY || "";
 for (const pid of ["POPLC", "poplc", "POPLC-the-ocean-club"]) {
   const url = `https://api.bazaarvoice.com/data/products.json?passkey=${passkey}&apiversion=5.5&filter=id:eq:${pid}`;
   const r = await fetch(url);

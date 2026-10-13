@@ -1,9 +1,218 @@
-# Gitleaks allowlist — Airtable record ID remaps are not secrets
-title = "Dealality gitleaks"
+# Dealality gitleaks config - extends defaults; scoped allowlists only.
+title = "Dealality secret scan"
 
+[extend]
+useDefault = true
+
+# Gitleaks 8.24.x uses the singular global allowlist.
+# OR means either an approved path OR an approved metadata-line pattern may match.
 [allowlist]
-description = "Hotel census Legacy→HPC id remap (Airtable rec ids)"
+description = "Known-safe Dealality metadata and generated identifiers"
+condition = "OR"
+regexTarget = "line"
+
 paths = [
-  '''config/hotel-census/legacy-to-hpc-id-map\.json''',
-  '''data/hotel-census-v2/.*/legacy-to-hpc-id-map\.json''',
+  '''config/client-share/.+-share-registry/active-tokens\.json$''',
+  '''data/.+/share-registry/active-tokens\.json$''',
+  '''scripts/playwright-adp-owner-app-shell-property-access-v1\.mjs$''',
+  '''lib/ai-demand-positioning/brand-portfolio/bpp-publication-meta-v1\.js$''',
+  '''data/ai-demand-positioning/published/_cache_token\.json$''',
+  '''public/adp-core-trends-p2-deploy-marker\.json$''',
+  '''data/ai-visibility/exports/_chrome-print-profile/Default/Extensions/lmjegmlicamnimmfhcmpkclmigmmcbeh/3\.10_0/manifest\.json$''',
+  '''data/ai-visibility/exports/_chrome-print-profile-howto/Default/Extensions/lmjegmlicamnimmfhcmpkclmigmmcbeh/3\.10_0/manifest\.json$''',
+  '''reports/ihg-destination-page-snippet\.html$''',
+  '''reports/ihg-dr-destination\.html$''',
+  '''reports/ihg-page-probe\.html$''',
+
+  # Generated Airtable schema inventories. Contain object IDs, not PAT credentials.
+  '''reports/operator-setup-form-field-coverage-matrix\.json$''',
+  '''reports/operator-field-usage-matrix\.json$''',
+  '''reports/operator-setup-field-inventory\.json$''',
+
+  # Captured public browser HTML.
+  '''reports/ihg-resources-page-snippet\.html$''',
+  '''reports/_tmp-even-dev\.html$''',
+  '''fixtures/choice-dev-site-home\.html$''',
+
+  # Static generated/cache artifacts already reviewed; findings are metadata/URLs/IDs.
+  '''data/contact-intelligence/evals/gdi-wave1-who-v11-refreeze\.json$''',
+  '''data/group-demand-intelligence/hotels/recLuxvwwxID7U2B8/opportunities\.json$''',
+  '''data/pilots/bethesda-marriott-001/pilot-master\.json$''',
+  '''data/research-engine-v2/serpapi-research-cache/raw/735f2e37c4df8c0d9bc4ba681ee114e8ab9bc6c7\.json$''',
+  '''data/research-engine-v2/serpapi-research-cache/raw/c9e2bf2439c5946e9040bd9d0dee0947b92e4a16\.json$''',
+  '''reports/bethesda-pilot/day1/2026-10-01/PILOT_MASTER_RECORD\.json$''',
+  '''reports/hotel-census/ac-spice-persistence-reconciliation-v1/PHASE0_1_INVENTORY\.json$''',
+  '''reports/hotel-intelligence/ac-spice-reconciliation-v1/SUMMARY-dry\.json$''',
+  '''reports/hotel-intelligence/ac-spice-reconciliation-v1/ac-hi-apply-dry\.json$''',
+  '''scripts/output/deal-readiness-field-audit-data\.json$''',
+]
+
+regexes = [
+  # Proven false positives: Dealality property/census identity metadata.
+  '''(?i)"identity_key"\s*:''',
+  '''(?i)Identity Key"\s*:''',
+
+  # Proven false positives: generated census/research identifier values.
+  '''"key"\s*:\s*"(?:ind|dfs|rb|osm)[-_:][A-Za-z0-9._:-]+"''',
+  '''"key"\s*:\s*"[A-Fa-f0-9]{40}"''',
+
+  '''(?i)"property_token"\s*:''',
+  '''(?i)"property_identity_key"\s*:''',
+  '''(?i)"census_identity_key"\s*:''',
+  '''(?i)"serpapi_property_token"\s*:''',
+  '''(?i)"slotKey"\s*:''',
+  '''(?i)"periodKey"\s*:''',
+  '''(?i)"propertyKey"\s*:''',
+  '''(?i)"identityKey"\s*:''',
+  '''(?i)"scenarioKey"\s*:''',
+
+  # Proven placeholders / metadata false positives.
+  '''(?i)Authorization:\s*Bearer\s+YOUR_TOKEN''',
+  '''(?i)const bannedKeys = \["email", "phone", "mobile", "linkedinUrl", "linkedInUrl", "providerPersonId", "emails", "phones"\];''',
+  '''https://v5\.airtableusercontent\.com/v3/u/''',
+
+  # Public client-side IHG config captured from HTML.
+  '''reports/ihg-destination-page-snippet\.html$''',
+  '''reports/ihg-dr-destination\.html$''',
+  '''reports/ihg-page-probe\.html$''',
+
+  # Generated Airtable schema inventories. Contain object IDs, not PAT credentials.
+  '''reports/operator-setup-form-field-coverage-matrix\.json$''',
+  '''reports/operator-field-usage-matrix\.json$''',
+  '''reports/operator-setup-field-inventory\.json$''',
+
+  # Captured public browser HTML.
+  '''reports/ihg-resources-page-snippet\.html$''',
+  '''reports/_tmp-even-dev\.html$''',
+  '''fixtures/choice-dev-site-home\.html$''',
+
+  # Static generated/cache artifacts already reviewed; findings are metadata/URLs/IDs.
+  '''data/contact-intelligence/evals/gdi-wave1-who-v11-refreeze\.json$''',
+  '''data/group-demand-intelligence/hotels/recLuxvwwxID7U2B8/opportunities\.json$''',
+  '''data/pilots/bethesda-marriott-001/pilot-master\.json$''',
+  '''data/research-engine-v2/serpapi-research-cache/raw/735f2e37c4df8c0d9bc4ba681ee114e8ab9bc6c7\.json$''',
+  '''data/research-engine-v2/serpapi-research-cache/raw/c9e2bf2439c5946e9040bd9d0dee0947b92e4a16\.json$''',
+  '''reports/bethesda-pilot/day1/2026-10-01/PILOT_MASTER_RECORD\.json$''',
+  '''reports/hotel-census/ac-spice-persistence-reconciliation-v1/PHASE0_1_INVENTORY\.json$''',
+  '''reports/hotel-intelligence/ac-spice-reconciliation-v1/SUMMARY-dry\.json$''',
+  '''reports/hotel-intelligence/ac-spice-reconciliation-v1/ac-hi-apply-dry\.json$''',
+  '''scripts/output/deal-readiness-field-audit-data\.json$''',
+
+  # Internal readiness markers, not credentials.
+  '''(?i)"finalToken"\s*:\s*"HOTEL_BRAND_[A-Z0-9_-]+"''',
+
+  # Dealality internal identifiers and metadata, not credentials.
+  '''(?i)"(?:tokenId|gdiTokenId|adpTokenId|baiTokenId|externalShareTokenId|shareTokenId|contractTokenId|bethesdaTokenId|bethesdaContractTokenId|gdiTokenIdStable|expectedTokenId)"\s*:\s*"(?:sht_|gdisht_)[A-Za-z0-9_-]+"''',
+  '''(?i)"(?:hotelKey|propertyKey|identityKey|identity_key|property_identity_key|proposedIdentityKey|expectedCanonicalKey|expectedIdempotencyKey|idempotencyKey|slotKey|Slot Key|formKey|pricing_tier_key|maturityFunnelEnvKey|wRomeExpansionPilotEnvKey)"\s*:\s*"[A-Za-z0-9._:-]+"''',
+  '''(?i)(?:propertyKey|identityKey|identity_key|property_identity_key|proposedIdentityKey|slotKey)\s*:\s*["''][A-Za-z0-9._:-]+["'']''',
+  '''(?i)(?:TOKEN_ID|BETHESDA_TOKEN|BETHESDA_GDI_CONTRACT_TOKEN_ID)\s*=\s*["''](?:sht_|gdisht_)[A-Za-z0-9_-]+["'']''',
+  '''(?i)(?:--token-id=|Token id:\s*`?|Token:\s*)(?:sht_|gdisht_)[A-Za-z0-9_-]+''',
+  '''(?i)"auth_sha"\s*:\s*"[A-Fa-f0-9]{64}"''',
+  '''(?i)"cohort_keys_hash"\s*:\s*"[A-Fa-f0-9]{40,64}"''',
+
+  # Known public/generated metadata.
+  '''(?i)LAST_APIFY_RUN:\s*[A-Za-z0-9_-]+''',
+  '''(?i)data-gigya-global-key=["''][A-Za-z0-9_-]+["'']''',
+  '''(?i)[''"]sitekey[''"]\s*:\s*[''"][A-Za-z0-9_-]+[''"]''',
+  '''(?i)data-cf-beacon=''[^'']+''',
+
+  # Environment variable references, not embedded values.
+  '''process\.env\.ACCOR_PUBLIC_API_KEY\s*\|\|''',
+
+  # Internal certification/readiness markers.
+  '''(?i)(?:let\s+)?finalToken\s*=\s*["'']HOTEL_BRAND_[A-Z0-9_-]+["'']''',
+  '''(?i)finalToken\s*:\s*["'']HOTEL_BRAND_[A-Z0-9_-]+["'']''',
+
+  # Internal Dealality keys and configuration labels.
+  '''(?i)(?:maturityFunnelEnvKey|pricing_tier_key)\s*:\s*["''][A-Za-z0-9._:-]+["'']''',
+  '''return\s+\{\s*\.\.\.BUDGETS\.OWNERSHIP_MX_L4,\s*key:\s*["'']OWNERSHIP_MX_L4["'']\s*\};''',
+  '''(?:if\s*\()?key\s*===\s*["''][A-Za-z0-9._:-]+["'']''',
+  '''\.\.\.myDealsDealAuth,''',
+
+  # Tool/provider labels and test/report prose.
+  '''tool_access:\s*["'']SerpAPI\+fetch["'']''',
+  '''["'']SerpApi["'']''',
+  '''readFileSync\(join\(root,\s*["'']api["'']''',
+  ''',"Secrets",''',
+  '''Rooms\s*/\s*Keys''',
+  '''The Keyes Company''',
+
+  # Airtable object IDs are metadata.
+  '''Use table ID for more reliable access:\s*tbl[A-Za-z0-9]+''',
+
+  # Empty/example environment declarations are not credentials.
+  '''^[A-Z][A-Z0-9_]*=$''',
+  '''^\s*#.*(?:app|rec|fld|tbl)[A-Za-z0-9]{14}\s*$''',
+
+  # Public URLs without query-string credentials.
+  '''(?i)"(?:sourceUrl|link|url)"\s*:\s*"https?://[^"?\s]+"''',
+
+  # Share capability IDs, not raw capability tokens.
+  '''(?i)"token"\s*:\s*"(?:sht_|gdisht_)[A-Za-z0-9_-]+"''',
+  '''(?i)preserveTokenId\s*:\s*["''](?:sht_|gdisht_)[A-Za-z0-9_-]+["'']''',
+  '''(?i)-\s*tokenId:\s*`?(?:sht_|gdisht_)[A-Za-z0-9_-]+`?''',
+  '''(?i)"(?:sht_|gdisht_)[A-Za-z0-9_-]+"\s*:\s*"[A-Z][A-Z0-9_]+"''',
+  '''(?i)"BETHESDA_SHARE_TOKEN"\s*:\s*"(?:sht_|gdisht_)[A-Za-z0-9_-]+"''',
+
+  # Internal report/property keys. Restrict to slug/composite or enum shapes.
+  '''"key"\s*:\s*"[a-z0-9]+(?:[-_:][a-z0-9]+)+"''',
+  '''"key"\s*:\s*"[A-Z][A-Z0-9_]+"''',
+  '''key\s*:\s*["''][A-Z][A-Z0-9_]+["'']''',
+
+  # Internal form/config keys.
+  '''(?i)"formKey"\s*:\s*"[A-Za-z0-9._:-]+"''',
+  '''(?i)maturityFunnelEnvKey\s*:\s*["''][A-Za-z0-9._:-]+["'']''',
+
+  # Known source-code identifier false positives.
+  '''propertyDedupeKey''',
+  '''archiveLaterCount''',
+  '''row\?\.slotKey\s*===\s*SCENARIO3_SLOT''',
+  '''slotKey:\s*SCENARIO3_SLOT''',
+  '''const\s+slotKey\s*=\s*v19Plan\.slotKey''',
+  '''assert\.equal\(accorDisc\.identity_key,''',
+  '''assert\.equal\(m\.proposedIdentityKey,''',
+
+  # Airtable field/key names, not PAT credentials.
+  '''(?i)["'']AIRTABLE_[A-Z0-9_]+["'']''',
+  '''(?i)["'']airtable[A-Za-z0-9_-]+["'']''',
+
+  # Blank/example env declarations only. Real populated values remain detectable.
+  '''^\s*[A-Z][A-Z0-9_]*\s*=\s*(?:#.*)?$''',
+
+  # Internal feature/config identifiers, not credentials.
+  '''(?i)^[ \t]*[A-Za-z_$][A-Za-z0-9_$]*\s*:\s*["''][A-Z][A-Z0-9_-]+["''],?\s*$''',
+  '''(?i)^[ \t]*key\s*:\s*["''][A-Za-z0-9._:-]+["''],?\s*$''',
+  '''(?i)^[ \t]*["'']formKey["'']\s*:\s*["''][A-Za-z0-9._:-]+["''],?\s*$''',
+
+  # Blank placeholders in .env.example.
+  '''^[ \t]*[A-Z][A-Z0-9_]*[ \t]*=[ \t]*$''',
+
+  # Internal config/registry identifiers.
+  '''(?i)^[ \t]*[A-Za-z_$][A-Za-z0-9_$]*\s*:\s*["''][A-Za-z0-9._:-]+["''],?\s*$''',
+  '''(?i)^[ \t]*key\s*:\s*["''][A-Za-z0-9._:/-]+["''],?\s*$''',
+
+  # Reviewed internal config identifiers.
+  '''^[ \t]*wRomeExpansionPilotEnvKey\s*:\s*["''][A-Z][A-Z0-9_]+["''],?\s*$''',
+  '''^[ \t]*key\s*:\s*["''][a-z0-9]+(?:[-_:][a-z0-9]+)+["''],?\s*$''',
+
+  # Exact reviewed false-positive lines.
+  '''^HBX_API_KEY=
+?$''',
+  '''^IHG_PUBLIC_GRAPHQL_API_KEY=
+?$''',
+  '''^\ \ \ \ wRomeExpansionPilotEnvKey:\ "GDI_WROME_EXPANSION_PILOT_V0",
+?$''',
+  '''^\ \ \ \ key:\ "rb-choice-fdd-2026",
+?$''',
+]
+# Airtable object identifiers are metadata, not API credentials.
+# Real Airtable PATs (pat...) remain detectable.
+[[rules]]
+id = "airtable-api-key"
+
+[rules.allowlist]
+description = "Allow Airtable base, record, field, and table identifiers"
+regexTarget = "secret"
+regexes = [
+  '''^(?:app|rec|fld|tbl)[A-Za-z0-9]{14}$''',
 ]

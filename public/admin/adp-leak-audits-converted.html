@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Converted Leak Audit Leads — Dealality Admin</title>
+  <link rel="stylesheet" href="/css/support-runbook.css" />
+  <link rel="stylesheet" href="/css/dealality-wave-loader.css" />
+  <link rel="stylesheet" href="/css/admin-ai-demand-reviews.css?v=1" />
+  <link rel="stylesheet" href="/css/admin-adp-leak-audits.css?v=2" />
+</head>
+<body class="support-page ala-page">
+  <div id="supportGateLoading" class="support-page-loading" aria-busy="true"></div>
+  <div id="supportGateDenied" class="support-gate-state" hidden>
+    <h1>Access restricted</h1>
+    <p data-gate-message>AI Demand Leak Audits is for Dealality admin use only.</p>
+  </div>
+  <div class="support-page-shell adr-shell" id="supportGateContent" hidden>
+    <header class="adr-header">
+      <h1>Converted Leads</h1>
+      <p class="adr-subtitle">
+        Leak Audits manually promoted to a paid ADP pilot stub. Leak Audit records remain separate from production ADP.
+      </p>
+      <p class="ala-admin-links">
+        <a href="/admin/adp-leak-audits/reports">Audit Reports</a>
+        ·
+        <a href="/admin/adp-leak-audits/queue">Request Queue</a>
+      </p>
+    </header>
+    <section class="adr-filters" aria-label="Converted leads">
+      <p id="alaConvertedStatus" class="ala-picker__status">Loading…</p>
+    </section>
+    <div class="adr-table-wrap">
+      <table class="adr-table" id="alaConvertedTable">
+        <thead>
+          <tr>
+            <th>Hotel</th>
+            <th>Contact</th>
+            <th>Source</th>
+            <th>Status</th>
+            <th>Report</th>
+          </tr>
+        </thead>
+        <tbody id="alaConvertedBody">
+          <tr><td colspan="5">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script src="/js/dealality-memberstack-auth.js"></script>
+  <script src="/js/support-admin-gate.js?v=adp-mr-admin-3"></script>
+  <script>
+    (async function () {
+      var gate = window.SupportAdminGate;
+      if (!gate) return;
+      gate.showPageLoading("supportGateLoading", "Verifying access…");
+      var ok = await gate.requireAdpMonthlyReviewAdmin({ contentId: "supportGateContent" });
+      if (!ok) return;
+
+      function authFetch(url) {
+        var auth = window.DealalityMemberstackAuth;
+        if (auth && auth.authFetch) return auth.authFetch(url);
+        return fetch(url, { credentials: "same-origin" });
+      }
+      function esc(s) {
+        return String(s == null ? "" : s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      try {
+        var res = await authFetch("/api/admin/adp-leak-audits?status=converted");
+        var data = await res.json();
+        var rows = (data && data.requests) || [];
+        var body = document.getElementById("alaConvertedBody");
+        var status = document.getElementById("alaConvertedStatus");
+        if (!rows.length) {
+          body.innerHTML = '<tr><td colspan="5">No converted leads yet. Promote from Audit Reports after a report is completed or sent.</td></tr>';
+          status.textContent = "0 converted leads";
+        } else {
+          status.textContent = rows.length + " converted lead(s)";
+          body.innerHTML = rows
+            .map(function (r) {
+              var report = r.reportId
+                ? '<a href="/adp-leak-audit/' + esc(r.reportId) + '" target="_blank" rel="noopener">Open</a>'
+                : "—";
+              return (
+                "<tr><td>" +
+                esc(r.hotelName) +
+                "</td><td>" +
+                esc(r.contactName || "—") +
+                "</td><td>" +
+                esc(r.source || "—") +
+                "</td><td>" +
+                esc(r.status) +
+                "</td><td>" +
+                report +
+                "</td></tr>"
+              );
+            })
+            .join("");
+        }
+        gate.hidePageLoading(document.getElementById("supportGateLoading"));
+        document.getElementById("supportGateContent").hidden = false;
+      } catch (err) {
+        gate.hidePageLoading(document.getElementById("supportGateLoading"));
+        document.getElementById("supportGateDenied").hidden = false;
+        var msg = document.querySelector("#supportGateDenied [data-gate-message]");
+        if (msg) msg.textContent = err.message || "Unable to load converted leads.";
+      }
+    })();
+  </script>
+</body>
+</html>

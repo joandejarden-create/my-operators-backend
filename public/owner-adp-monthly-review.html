@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dealality AI Demand Performance Review</title>
+  <style>
+    :root {
+      --mr-bg: #0b1224;
+      --mr-panel: rgba(255,255,255,0.03);
+      --mr-inner: rgba(15,23,42,0.45);
+      --mr-border: #37446b;
+      --mr-text: #f8fafc;
+      --mr-muted: #9aa6c7;
+      --mr-gap: 14px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      background: var(--mr-bg);
+      color: var(--mr-text);
+      line-height: 1.5;
+    }
+    .adp-mr-shell {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 20px 64px;
+    }
+    .adp-mr-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .adp-mr-toolbar select,
+    .adp-mr-toolbar button,
+    .adp-mr-toolbar a {
+      background: var(--mr-inner);
+      color: var(--mr-text);
+      border: 0.6px solid var(--mr-border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 13px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .adp-mr-status { color: var(--mr-muted); font-size: 13px; }
+    .adp-mr-admin-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+      padding: 10px 12px;
+      border: 0.6px solid var(--mr-border);
+      border-radius: 8px;
+      background: rgba(108, 114, 255, 0.12);
+      font-size: 13px;
+    }
+    .adp-mr-admin-bar a { color: #c7cbff; }
+    .adp-mr-admin-meta { color: var(--mr-muted); }
+    @media print {
+      .adp-mr-toolbar, .adp-mr-admin-bar { display: none !important; }
+    }
+    .adp-mr-header { margin-bottom: 18px; }
+    .adp-mr-eyebrow {
+      margin: 0 0 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 11px;
+      color: var(--mr-muted);
+      font-weight: 700;
+    }
+    .adp-mr-header h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      line-height: 1.2;
+      font-weight: 700;
+    }
+    .adp-mr-property {
+      margin: 0 0 6px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    .adp-mr-dates, .adp-mr-disclosure, .adp-mr-help, .adp-mr-method {
+      color: var(--mr-muted);
+      font-size: 13px;
+    }
+    .adp-mr-block {
+      background: var(--mr-panel);
+      border: 0.6px solid var(--mr-border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin: 0 0 var(--mr-gap);
+    }
+    .adp-mr-block h2 {
+      margin: 0 0 10px;
+      font-size: 17px;
+      font-weight: 600;
+    }
+    .adp-mr-block h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .adp-mr-kpi-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .adp-mr-kpi {
+      background: var(--mr-inner);
+      border: 0.6px solid var(--mr-border);
+      border-radius: 10px;
+      padding: 12px;
+      min-width: 0;
+    }
+    .adp-mr-kpi__label {
+      margin: 0 0 6px;
+      font-size: 10px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--mr-muted);
+      font-weight: 700;
+    }
+    .adp-mr-kpi__value {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--mr-text);
+    }
+    .adp-mr-kpi__delta {
+      margin: 4px 0 0;
+      font-size: 12px;
+      color: #c7d0e8;
+    }
+    .adp-mr-kpi__meta, .adp-mr-kpi__note {
+      margin: 6px 0 0;
+      font-size: 11px;
+      color: var(--mr-muted);
+      line-height: 1.4;
+    }
+    .adp-mr-assessment p,
+    .adp-mr-callout p,
+    .adp-mr-evidence p,
+    .adp-mr-action p {
+      margin: 0 0 8px;
+      color: var(--mr-text);
+      font-size: 14px;
+      font-weight: 500;
+      max-width: none;
+      width: 100%;
+    }
+    .adp-mr-callouts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .adp-mr-callout,
+    .adp-mr-evidence,
+    .adp-mr-action {
+      background: var(--mr-inner);
+      border: 0.6px solid var(--mr-border);
+      border-radius: 10px;
+      padding: 12px;
+      margin: 0 0 10px;
+    }
+    .adp-mr-table-wrap { overflow-x: auto; }
+    .adp-mr-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .adp-mr-table th,
+    .adp-mr-table td {
+      border-bottom: 0.6px solid rgba(55,68,107,0.55);
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    .adp-mr-table th {
+      color: var(--mr-muted);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .adp-mr-action__meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin: 10px 0;
+    }
+    .adp-mr-action__meta dt {
+      margin: 0;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--mr-muted);
+    }
+    .adp-mr-action__meta dd {
+      margin: 2px 0 0;
+      font-weight: 600;
+    }
+    .adp-mr-empty, .adp-mr-error {
+      padding: 24px;
+      border: 0.6px solid var(--mr-border);
+      border-radius: 12px;
+      background: var(--mr-panel);
+    }
+    @media (max-width: 960px) {
+      .adp-mr-kpi-row,
+      .adp-mr-callouts,
+      .adp-mr-action__meta {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media print {
+      body { background: #fff; color: #111; }
+      .adp-mr-toolbar { display: none !important; }
+      .adp-mr-shell { max-width: none; padding: 0; }
+      .adp-mr-block,
+      .adp-mr-kpi,
+      .adp-mr-callout,
+      .adp-mr-evidence,
+      .adp-mr-action {
+        background: #fff;
+        border-color: #ccc;
+        break-inside: avoid;
+      }
+      .adp-mr-kpi__value,
+      .adp-mr-assessment p,
+      .adp-mr-callout p,
+      .adp-mr-evidence p,
+      .adp-mr-action p { color: #111; }
+      .adp-mr-eyebrow,
+      .adp-mr-dates,
+      .adp-mr-disclosure,
+      .adp-mr-help,
+      .adp-mr-method,
+      .adp-mr-kpi__label,
+      .adp-mr-kpi__delta,
+      .adp-mr-kpi__meta,
+      .adp-mr-kpi__note,
+      .adp-mr-table th { color: #444; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="adp-mr-shell">
+    <div class="adp-mr-toolbar">
+      <label>
+        Property
+        <select id="adpMrProperty">
+          <option value="adp_waterstone_boca_raton">Waterstone Resort &amp; Marina</option>
+          <option value="adp_renaissance_times_square">Renaissance Times Square</option>
+          <option value="adp_hotel_phillips_kansas_city">Hotel Phillips Kansas City</option>
+          <option value="adp_cambridge_beaches_bermuda">Cambridge Beaches Resort &amp; Spa</option>
+          <option value="adp_now_now_noho">NOW NOW NOHO</option>
+        </select>
+      </label>
+      <label>
+        Mode
+        <select id="adpMrMode">
+          <option value="live">Live review</option>
+          <option value="meeting">Meeting mode</option>
+          <option value="print">Print / PDF</option>
+        </select>
+      </label>
+      <button type="button" id="adpMrReload">Reload</button>
+      <button type="button" id="adpMrPrint">Print</button>
+      <span class="adp-mr-status" id="adpMrStatus">Loading…</span>
+    </div>
+    <div id="adpMrRoot" class="adp-mr-empty" hidden>Loading monthly review…</div>
+    <div id="adpMrError" class="adp-mr-error" hidden></div>
+  </div>
+  <script src="/js/ai-demand-positioning/adp-monthly-executive-review.js?v=adp-mr-v1b"></script>
+  <script>
+    (function () {
+      var root = document.getElementById("adpMrRoot");
+      var err = document.getElementById("adpMrError");
+      var status = document.getElementById("adpMrStatus");
+      var propertyEl = document.getElementById("adpMrProperty");
+      var modeEl = document.getElementById("adpMrMode");
+      var params = new URLSearchParams(window.location.search);
+      var archiveReviewId = params.get("reviewId") || "";
+      var adminPreview = params.get("adminPreview") === "1";
+
+      function setStatus(msg) { status.textContent = msg; }
+
+      if (adminPreview) {
+        document.body.classList.add("adp-mr-admin-preview");
+        var toolbar = document.querySelector(".adp-mr-toolbar");
+        if (toolbar) {
+          var adminBar = document.createElement("div");
+          adminBar.className = "adp-mr-admin-bar";
+          adminBar.innerHTML =
+            '<a href="/app/#/admin/ai-demand-reviews">Back to AI Demand Reviews</a>' +
+            '<span class="adp-mr-admin-meta" id="adpMrAdminMeta"></span>';
+          toolbar.parentNode.insertBefore(adminBar, toolbar);
+        }
+      }
+
+      if (params.get("propertyId")) propertyEl.value = params.get("propertyId");
+      if (params.get("mode")) modeEl.value = params.get("mode");
+
+      async function loadReview() {
+        err.hidden = true;
+        root.hidden = false;
+        root.textContent = "Loading monthly review…";
+        var propertyId = propertyEl.value;
+        var mode = modeEl.value === "print" ? "live" : modeEl.value;
+        setStatus("Loading " + propertyId + "…");
+        try {
+          var qs = archiveReviewId
+            ? "?source=archive&reviewId=" + encodeURIComponent(archiveReviewId)
+            : "?source=golden";
+          var res = await fetch(
+            "/api/ai-demand-positioning/monthly-review/" +
+              encodeURIComponent(propertyId) +
+              qs,
+            { credentials: "same-origin" }
+          );
+          var json = await res.json();
+          if (!res.ok || !json.ok) {
+            throw new Error(json.error || ("HTTP " + res.status));
+          }
+          window.AdpMonthlyExecutiveReview.render(json.review, {
+            root: root,
+            mode: mode,
+          });
+          document.body.dataset.printReady = modeEl.value === "print" ? "1" : "0";
+          var metaEl = document.getElementById("adpMrAdminMeta");
+          if (metaEl) {
+            metaEl.textContent =
+              (json.review.property && json.review.property.name
+                ? json.review.property.name
+                : propertyId) +
+              " · " +
+              (json.review.reporting && json.review.reporting.reportingMonth
+                ? json.review.reporting.reportingMonth
+                : "") +
+              (archiveReviewId ? " · " + archiveReviewId : "");
+          }
+          setStatus(
+            json.review.property.name +
+              " · " +
+              json.review.posture +
+              " · " +
+              (json.review.actionAgenda || []).length +
+              " actions" +
+              (json.source === "archive" ? " · archive" : "")
+          );
+        } catch (e) {
+          root.hidden = true;
+          err.hidden = false;
+          err.textContent =
+            "Unable to load monthly review: " + (e && e.message ? e.message : e);
+          setStatus("Error");
+        }
+      }
+
+      propertyEl.addEventListener("change", loadReview);
+      modeEl.addEventListener("change", loadReview);
+      document.getElementById("adpMrReload").addEventListener("click", loadReview);
+      document.getElementById("adpMrPrint").addEventListener("click", function () {
+        window.print();
+      });
+
+      loadReview();
+    })();
+  </script>
+</body>
+</html>

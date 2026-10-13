@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 /**
- * Apply Cvent Supplier Network Guest Rooms (+ optional Address corroboration)
- * for Choice hard-cases. Medium confidence. Default dry-run.
+ * Cvent Supplier Network Guest Rooms discovery helper for Choice hard-cases.
+ *
+ * source-policy-v1: Cvent alone MUST NOT write canonical Rooms / Keys.
+ * Default dry-run. APPLY of rooms/address from Cvent is blocked unless
+ * --allow-cvent-canonical-override=1 (emergency only; still requires independent verify).
  */
 import "../load-env.js";
 import { mkdirSync, writeFileSync } from "fs";
@@ -23,6 +26,12 @@ import {
   productionHotelPropertyCensus,
   PRODUCTION_HOTEL_PROPERTY_CENSUS_TABLE_ID,
 } from "../lib/research-engine-v2/production-census-source-of-truth.js";
+import {
+  canPersistAsCanonical,
+  createDiscoveryResearchCandidate,
+  SourceContentDomain,
+  SOURCE_POLICY_VERSION,
+} from "../lib/data-intelligence/source-policy/v1/index.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..");
@@ -147,20 +156,60 @@ async function main() {
     const patch = {};
     const reasons = [];
 
+    const roomsGate = canPersistAsCanonical({
+      url: cfg.sourceUrl,
+      contentDomain: SourceContentDomain.CVENT_VENUE_HOTEL,
+      field: "Rooms / Keys",
+      candidateValue: cfg.rooms,
+    });
+    const addressGate = canPersistAsCanonical({
+      url: cfg.sourceUrl,
+      contentDomain: SourceContentDomain.CVENT_VENUE_HOTEL,
+      field: "Address",
+      candidateValue: cfg.address,
+    });
+    const allowOverride =
+      process.argv.includes("--allow-cvent-canonical-override=1") ||
+      process.env.ALLOW_CVENT_CANONICAL_OVERRIDE === "1";
+
     if (cfg.fillRoomsIfBlank && blank(f["Rooms / Keys"])) {
-      patch["Rooms / Keys"] = cfg.rooms;
-      patch["Rooms Confidence"] = "Medium";
-      patch["Rooms Source URL"] = cfg.sourceUrl;
-      patch["Last Reviewed Date"] = todayIsoDate();
-      reasons.push(`rooms_from_cvent_guest_rooms:${cfg.rooms}`);
+      if (!roomsGate.ok && !allowOverride) {
+        reasons.push(
+          `rooms_discovery_only_blocked:${cfg.rooms}:${SOURCE_POLICY_VERSION}`
+        );
+        patch.__discoveryCandidates = patch.__discoveryCandidates || [];
+        patch.__discoveryCandidates.push(
+          createDiscoveryResearchCandidate(
+            {
+              url: cfg.sourceUrl,
+              contentDomain: SourceContentDomain.CVENT_VENUE_HOTEL,
+              field: "Rooms / Keys",
+              candidateValue: cfg.rooms,
+            },
+            { notes: "Cvent rooms candidate — independent verification required" }
+          )
+        );
+      } else if (allowOverride) {
+        patch["Rooms / Keys"] = cfg.rooms;
+        patch["Rooms Confidence"] = "Medium";
+        patch["Rooms Source URL"] = cfg.sourceUrl;
+        patch["Last Reviewed Date"] = todayIsoDate();
+        reasons.push(
+          `rooms_from_cvent_OVERRIDE:${cfg.rooms}:${SOURCE_POLICY_VERSION}`
+        );
+      }
     }
 
     if (cfg.fillAddressIfBlank && blank(f.Address) && cfg.address) {
-      patch.Address = cfg.address;
-      patch["Address Confidence"] = "Medium";
-      patch["Address Source URL"] = cfg.sourceUrl;
-      patch["Last Reviewed Date"] = todayIsoDate();
-      reasons.push("address_from_cvent_venue");
+      if (!addressGate.ok && !allowOverride) {
+        reasons.push(`address_discovery_only_blocked:${SOURCE_POLICY_VERSION}`);
+      } else if (allowOverride) {
+        patch.Address = cfg.address;
+        patch["Address Confidence"] = "Medium";
+        patch["Address Source URL"] = cfg.sourceUrl;
+        patch["Last Reviewed Date"] = todayIsoDate();
+        reasons.push("address_from_cvent_OVERRIDE");
+      }
     }
 
     if (
@@ -193,12 +242,19 @@ async function main() {
       }
     }
 
-    if (!Object.keys(patch).length) {
+    const discoveryCandidates = patch.__discoveryCandidates || [];
+    delete patch.__discoveryCandidates;
+    const airtableFields = { ...patch };
+
+    if (!Object.keys(airtableFields).length) {
       skipped.push({
         id: rec.id,
         name,
         key,
-        reasons: ["nothing_to_write", `rooms=${f["Rooms / Keys"] || "blank"}`],
+        reasons: reasons.length
+          ? reasons
+          : ["nothing_to_write", `rooms=${f["Rooms / Keys"] || "blank"}`],
+        discoveryCandidates,
       });
       continue;
     }
@@ -207,8 +263,9 @@ async function main() {
       id: rec.id,
       property_name: name,
       identity_key: key,
-      patch,
+      patch: airtableFields,
       reasons,
+      discoveryCandidates,
     });
   }
 
@@ -216,16 +273,24 @@ async function main() {
   const doWrite = Boolean(args.apply && args.allConfirmsOk && envCheck.allOk);
   let patched = [];
   if (doWrite && proposals.length) {
+    // Final safety: strip any Rooms/Keys / Address sourced solely from Cvent venue
+    const writable = proposals.filter((p) => {
+      const blocked = (p.reasons || []).some((r) =>
+        /discovery_only_blocked|rooms_from_cvent(?!_OVERRIDE)/.test(String(r))
+      );
+      return !blocked;
+    });
     patched = await patchRecords(
       baseId,
       token,
-      proposals.map((p) => ({ id: p.id, fields: p.patch }))
+      writable.map((p) => ({ id: p.id, fields: p.patch }))
     );
   }
 
   const report = {
     status: doWrite ? "applied" : "dry_run",
-    hard_rule: "Cvent Guest Rooms Medium only; Choice-affiliated venue pages",
+    hard_rule: `${SOURCE_POLICY_VERSION}: Cvent venue Rooms/Keys CANNOT write canonical without override`,
+    source_policy_version: SOURCE_POLICY_VERSION,
     generated_at: new Date().toISOString(),
     proposals,
     skipped,

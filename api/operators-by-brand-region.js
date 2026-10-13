@@ -5,16 +5,6 @@
  */
 
 import Airtable from "airtable";
-import {
-  shouldUseHpcOperatorIntelligence,
-} from "../lib/hotel-census/brand-presence-hpc-request.js";
-import {
-  buildOperatorIntelligenceHpcReport,
-  buildOperatorIntelligenceHpcFilters,
-  OI_HPC_ADAPTER,
-  resetOperatorIntelligenceReadCounters,
-  snapshotOperatorIntelligenceReadCounters,
-} from "../lib/hotel-census/operator-intelligence-hpc.js";
 
 const AIRTABLE_KEY = process.env.AIRTABLE_API_KEY;
 const AIRTABLE_BASE = process.env.AIRTABLE_BASE_ID_ALT;
@@ -161,65 +151,8 @@ function matchesSearch(prop, searchStr) {
 /**
  * GET /api/operators-by-brand-region
  * Query: search, parentCompany, brand, status, chainScale, region, locationType, operationType
- *
- * When OPERATOR_INTELLIGENCE_HPC_V2=1 (+ BRAND_PRESENCE_HPC_V2): HPC path via
- * canonical operator↔hotel relationships (no Legacy Management Company).
  */
 export async function getLargestOperatorsByBrandRegion(req, res) {
-  if (shouldUseHpcOperatorIntelligence(req)) {
-    try {
-      resetOperatorIntelligenceReadCounters();
-      const report = await buildOperatorIntelligenceHpcReport({
-        region: req.query?.region,
-        brand: req.query?.brand,
-        country: req.query?.country,
-        search: req.query?.search,
-        limit: 200,
-        includePipeline: true,
-      });
-      if (!report.ok) {
-        return res.status(500).json({
-          success: false,
-          error: report.error || "Operator Intelligence HPC failed",
-          adapter: OI_HPC_ADAPTER,
-        });
-      }
-      const counters = snapshotOperatorIntelligenceReadCounters();
-      // UI-compatible shape (largest-operators / radar-with-list) + confirmed semantics.
-      return res.json({
-        success: true,
-        operators: report.operators || [],
-        brands: report.brands || [],
-        parent_companies: report.parent_companies || [],
-        regions: report.regions || [],
-        chain_scales: report.chain_scales || [],
-        statuses: report.statuses || [],
-        properties: report.properties || [],
-        total_properties: report.total_properties ?? (report.properties || []).length,
-        total_in_census: report.total_in_census,
-        pipeline_operators: report.pipeline_operators || [],
-        metrics: report.metrics,
-        metricSemantics: report.metricSemantics,
-        emptyState: report.emptyState,
-        filterSupport: report.filterSupport,
-        warnings: report.warnings || [],
-        source: {
-          ...(report.source || {}),
-          readCounters: counters,
-        },
-        adapter: OI_HPC_ADAPTER,
-        censusSource: "hpc",
-      });
-    } catch (err) {
-      console.error("[operators-by-brand-region] HPC path error:", err?.message || err);
-      return res.status(500).json({
-        success: false,
-        error: err?.message || "Operator Intelligence HPC error",
-        adapter: OI_HPC_ADAPTER,
-      });
-    }
-  }
-
   if (!ensureOperatorsByBrandRegionConfig(res)) return;
   try {
     const {
@@ -538,40 +471,6 @@ function getFieldValues(rec, ...keys) {
  * Returns parent companies, brands (Affiliation), and location types for dropdowns.
  */
 export async function getOperatorsByBrandRegionFilters(req, res) {
-  if (shouldUseHpcOperatorIntelligence(req)) {
-    try {
-      const filters = await buildOperatorIntelligenceHpcFilters();
-      if (!filters.ok) {
-        return res.status(500).json({
-          success: false,
-          error: filters.error || "Operator Intelligence HPC filters failed",
-          adapter: OI_HPC_ADAPTER,
-        });
-      }
-      return res.json({
-        success: true,
-        parentCompanies: filters.parentCompanies || [],
-        brands: filters.brands || [],
-        locationTypes: filters.locationTypes || [],
-        operationTypes: filters.operationTypes || [],
-        chainScales: filters.chainScales || [],
-        regions: filters.regions || [],
-        filterSupport: filters.filterSupport,
-        source: filters.source,
-        note: filters.note,
-        adapter: OI_HPC_ADAPTER,
-        censusSource: "hpc",
-      });
-    } catch (err) {
-      console.error("[operators-by-brand-region/filters] HPC path error:", err?.message || err);
-      return res.status(500).json({
-        success: false,
-        error: err?.message || "Operator Intelligence HPC filters error",
-        adapter: OI_HPC_ADAPTER,
-      });
-    }
-  }
-
   if (!ensureOperatorsByBrandRegionConfig(res)) return;
   try {
     const records = await base(F.table)

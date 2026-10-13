@@ -33,6 +33,7 @@ Use when reviewing extracted content before platform import or display.
 - [ ] Does it avoid "validated" unless supported?
 - [ ] Does it avoid legal/advisory language?
 - [ ] Does it sound like Dealality? See [../ai-build-system/NAMING_AND_COPY_GUIDE.md](../ai-build-system/NAMING_AND_COPY_GUIDE.md)
+- [ ] **External reports only:** no Dealality infrastructure terms (Census, Airtable, Webhound, Research Center, fixtures, auto_promote, ontology codes) — see [hotel-intelligence-external-facing-report-copy.md](./hotel-intelligence-external-facing-report-copy.md)
 
 ## Related Documentation
 
@@ -40,3 +41,4 @@ Use when reviewing extracted content before platform import or display.
 - [INTELLIGENCE_GOVERNANCE.md](./INTELLIGENCE_GOVERNANCE.md)
 - [CONTENT_EXTRACTION_TEMPLATE.md](./CONTENT_EXTRACTION_TEMPLATE.md)
 - [DATA_STATUS_WORKFLOW.md](./DATA_STATUS_WORKFLOW.md)
+- [hotel-intelligence-external-facing-report-copy.md](./hotel-intelligence-external-facing-report-copy.md)

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>AI Demand Leak Audits — Dealality Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/support-runbook.css" />
+  <link rel="stylesheet" href="/css/dealality-wave-loader.css" />
+  <link rel="stylesheet" href="/css/admin-ai-demand-reviews.css?v=1" />
+  <link rel="stylesheet" href="/css/admin-adp-leak-audits.css?v=1" />
+</head>
+<body class="support-page ala-page">
+  <div id="supportGateLoading" class="support-page-loading" aria-busy="true"></div>
+
+  <div id="supportGateDenied" class="support-gate-state" hidden>
+    <h1>Access restricted</h1>
+    <p data-gate-message>AI Demand Leak Audits is for Dealality admin use only.</p>
+  </div>
+
+  <div class="support-page-shell adr-shell" id="supportGateContent" hidden>
+    <header class="adr-header">
+      <h1>AI Demand Leak Audits — Request Queue</h1>
+      <p class="adr-subtitle">
+        Limited free diagnostic intake and runner. Writes stay isolated from production ADP, Census, and Explorer records.
+      </p>
+      <p class="ala-admin-links">
+        <a href="/admin/adp-leak-audits/reports">Audit Reports</a>
+        ·
+        <a href="/admin/adp-leak-audits/new">New Audit</a>
+        ·
+        <a href="/admin/adp-leak-audits/workflow">Workflow</a>
+      </p>
+      <div class="adr-counts" id="alaCounts" aria-live="polite"></div>
+    </header>
+
+    <section class="adr-filters ala-demo-reports" aria-label="Demo Reports">
+      <h2 class="ala-demo-reports__title">Demo Reports</h2>
+      <p class="ala-demo-reports__copy">
+        Open the client-safe sample diagnostics used for outreach. Hard-refresh if a cached page shows “Sample unavailable.”
+      </p>
+      <a class="adr-btn" href="/adp-leak-audit/sample" target="_blank" rel="noopener">Open Single-Property Sample</a>
+      <a class="adr-btn" href="/adp-leak-audit/sample-portfolio" target="_blank" rel="noopener">Open Portfolio Sample</a>
+      <a class="adr-btn adr-btn--secondary" href="/admin/adp-leak-audits/workflow">Open Workflow Checklist</a>
+      <a class="adr-btn adr-btn--secondary" href="/api/adp-leak-audit/demo-diagnostics" target="_blank" rel="noopener">Open Diagnostics JSON</a>
+    </section>
+
+    <section class="adr-filters" aria-label="Filters">
+      <label>
+        Search
+        <input type="search" id="alaSearch" placeholder="Hotel, contact, company" />
+      </label>
+      <label>
+        Status
+        <select id="alaFilterStatus">
+          <option value="">All</option>
+          <option value="requested">Requested</option>
+          <option value="approved">Approved</option>
+          <option value="running">Running</option>
+          <option value="completed">Completed</option>
+          <option value="sent">Sent</option>
+          <option value="converted">Converted</option>
+          <option value="rejected">Rejected</option>
+          <option value="error">Error</option>
+        </select>
+      </label>
+      <button type="button" class="adr-btn" id="alaApplyFilters">Apply</button>
+      <a class="adr-btn" href="/admin/adp-leak-audits/new">New Audit Request</a>
+      <a class="adr-btn adr-btn--secondary" href="/admin/adp-leak-audits/workflow">Workflow Checklist</a>
+    </section>
+
+    <div class="adr-table-wrap">
+      <table class="adr-table" id="alaTable">
+        <thead>
+          <tr>
+            <th>Hotel</th>
+            <th>Contact</th>
+            <th>Company</th>
+            <th>Demand Segment</th>
+            <th>Source</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="alaTableBody">
+          <tr><td colspan="8">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="adr-modal" id="alaPromoteModal" hidden>
+      <div class="adr-modal__panel" role="dialog" aria-modal="true" aria-labelledby="alaPromoteTitle">
+        <h2 id="alaPromoteTitle">Promote to Paid ADP Pilot</h2>
+        <p id="alaPromoteBody" class="ala-modal-copy"></p>
+        <div class="adr-modal__actions">
+          <button type="button" class="adr-btn adr-btn--secondary" id="alaPromoteCancel">Cancel</button>
+          <button type="button" class="adr-btn" id="alaPromoteConfirm">Confirm Promote</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/dealality-wave-loader.js"></script>
+  <script src="/js/dealality-memberstack-auth.js"></script>
+  <script src="/js/support-admin-gate.js?v=adp-mr-admin-3"></script>
+  <script>
+    (function () {
+      if (window.SupportAdminGate) {
+        window.SupportAdminGate.showPageLoading("supportGateLoading", "Verifying access…");
+      }
+    })();
+  </script>
+  <script src="/js/admin-adp-leak-audits.js?v=1"></script>
+</body>
+</html>

@@ -23,10 +23,12 @@ function assert(cond, msg) {
 
 {
   assert(
-    EARLY_SIGNAL_PRODUCTION_FAMILIES.length === 4 &&
+    EARLY_SIGNAL_PRODUCTION_FAMILIES.length === 8 &&
       EARLY_SIGNAL_PRODUCTION_FAMILIES.includes("planning") &&
-      EARLY_SIGNAL_PRODUCTION_FAMILIES.includes("adaptiveReuse"),
-    "production allowlist has four proven families"
+      EARLY_SIGNAL_PRODUCTION_FAMILIES.includes("adaptiveReuse") &&
+      EARLY_SIGNAL_PRODUCTION_FAMILIES.includes("landSite") &&
+      EARLY_SIGNAL_PRODUCTION_FAMILIES.includes("capitalFormation"),
+    "production allowlist has eight families including previously disabled packs"
   );
   for (const f of EARLY_SIGNAL_DISABLED_FAMILIES) {
     assert(!isProductionEarlySignalFamily(f), `disabled family ${f} not in production`);
@@ -41,11 +43,11 @@ function assert(cond, msg) {
     "noisy city council approves query removed"
   );
   const prodAll = listEarlySignalQueries(null, { productionOnly: true });
-  const disabledRaw = listEarlySignalQueries("landSite");
-  assert(prodAll.length > 0 && disabledRaw.length > 0, "productionOnly filters families");
+  const land = listEarlySignalQueries("landSite", { productionOnly: true });
+  assert(prodAll.length > 0 && land.length > 0, "productionOnly includes landSite");
   assert(
-    !prodAll.some((q) => q.family === "landSite"),
-    "landSite excluded from productionOnly"
+    prodAll.some((q) => q.family === "landSite"),
+    "landSite included in productionOnly"
   );
 }
 

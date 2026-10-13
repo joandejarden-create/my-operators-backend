@@ -1,0 +1,1969 @@
+{
+  "version": "gdi_commercial_depth_v2",
+  "apply": true,
+  "before": {
+    "bag": 16,
+    "customerVisible": 15,
+    "contacts": {
+      "NAMED_PARTIAL": 7,
+      "ORGANIZATION_PATH": 8
+    },
+    "coverage": {
+      "dates": {
+        "n": 14,
+        "pct": 93.3
+      },
+      "venueStatus": {
+        "n": 0,
+        "pct": 0
+      },
+      "roomDemand": {
+        "n": 7,
+        "pct": 46.7
+      },
+      "attendance": {
+        "n": 5,
+        "pct": 33.3
+      },
+      "peakRooms": {
+        "n": 5,
+        "pct": 33.3
+      },
+      "historicalHousing": {
+        "n": 0,
+        "pct": 0
+      },
+      "thesis": {
+        "n": 15,
+        "pct": 100
+      },
+      "whyHotel": {
+        "n": 15,
+        "pct": 100
+      },
+      "whyNow": {
+        "n": 15,
+        "pct": 100
+      },
+      "contact": {
+        "n": 15,
+        "pct": 100
+      },
+      "source": {
+        "n": 15,
+        "pct": 100
+      },
+      "action": {
+        "n": 15,
+        "pct": 100
+      }
+    }
+  },
+  "after": {
+    "customerVisible": 15,
+    "contacts": {
+      "NAMED_PARTIAL": 7,
+      "ORGANIZATION_PATH": 8
+    },
+    "coverage": {
+      "dates": {
+        "n": 14,
+        "pct": 93.3
+      },
+      "venueStatus": {
+        "n": 15,
+        "pct": 100
+      },
+      "roomDemand": {
+        "n": 8,
+        "pct": 53.3
+      },
+      "attendance": {
+        "n": 5,
+        "pct": 33.3
+      },
+      "peakRooms": {
+        "n": 5,
+        "pct": 33.3
+      },
+      "historicalHousing": {
+        "n": 0,
+        "pct": 0
+      },
+      "thesis": {
+        "n": 15,
+        "pct": 100
+      },
+      "whyHotel": {
+        "n": 15,
+        "pct": 100
+      },
+      "whyNow": {
+        "n": 15,
+        "pct": 100
+      },
+      "contact": {
+        "n": 15,
+        "pct": 100
+      },
+      "source": {
+        "n": 15,
+        "pct": 100
+      },
+      "action": {
+        "n": 15,
+        "pct": 100
+      }
+    },
+    "byFacing": {
+      "WATCH": 6,
+      "FUTURE_WATCH": 5,
+      "ACTIVE": 4
+    },
+    "byMotion": {
+      "OVERFLOW": 6,
+      "CORPORATE_BLOCK": 2,
+      "SOCIAL_HOUSING": 2,
+      "SPORTS_HOUSING": 4,
+      "ASSOCIATION_HOUSING": 1
+    }
+  },
+  "movement": {
+    "UNCHANGED_OR_WATCH": 11,
+    "WATCH_TO_FUTURE_WATCH": 5
+  },
+  "actionableNow": [],
+  "namedContacts": [
+    {
+      "opportunity": "CDA Annual Meeting 2026",
+      "person": "Colonial Dames",
+      "role": null,
+      "grade": "B"
+    },
+    {
+      "opportunity": "New York Forum on Economic Sanctions 2026",
+      "person": "Learning Futures New York",
+      "role": "Executive Knowledge Exchange 2026 An Executive Knowledge Exchange for senior le",
+      "grade": "B"
+    },
+    {
+      "opportunity": "Holiday Celebration Offer 2026",
+      "person": "Survey Software",
+      "role": "Event Venues",
+      "grade": "B"
+    },
+    {
+      "opportunity": "FIFA World Cup 2026",
+      "person": "Enquire Beyond",
+      "role": null,
+      "grade": "B"
+    },
+    {
+      "opportunity": "Scale Healthcare Leadership Conference",
+      "person": "David Kolb",
+      "role": "Vice President",
+      "grade": "B"
+    },
+    {
+      "opportunity": "Corporate Meetings in Times Square / Midtown West",
+      "person": "Climate Monitoring",
+      "role": null,
+      "grade": "B"
+    },
+    {
+      "opportunity": "IJCAI-ECAI 2026",
+      "person": "Diego Calvanese Free",
+      "role": null,
+      "grade": "B"
+    }
+  ],
+  "lodging": {
+    "housingPageFound": 9,
+    "roomBlockEvidence": 9,
+    "overflowEvidence": 6,
+    "attendanceKnown": 0,
+    "peakRoomsKnown": 0
+  },
+  "jev": {
+    "calls": 91,
+    "safeApply": 4,
+    "same": 74,
+    "helpfulDifferent": 0,
+    "wrong": 0,
+    "highConfWrong": 0,
+    "unknown": 17,
+    "contactUpgrades": 0,
+    "actionabilityUpgrades": 0,
+    "playbookApplies": 0
+  },
+  "adpParity": {
+    "CURRENT_LIVE_BASELINE": 50,
+    "CURRENT_AFTER_FIX": 65,
+    "bySource": {
+      "standard": 50,
+      "generic_property_capability": 15
+    },
+    "PARITY_TARGET": {
+      "total": 63
+    },
+    "ROOT_CAUSE": "Market pack nyc_times_square returned 50 standard scenarios; property-capability layer was not merged because combined.length>0 short-circuited generic parity.",
+    "CLASSIFICATION": "MARKET_LAYER_PRESENT_BUT_CAPABILITY_LAYER_THIN",
+    "DEFECT": true,
+    "FIX": "buildScenarioUniverse now merges generateGenericPropertyCapabilityScenarios onto market packs",
+    "RERUN_REQUIRED": true,
+    "ESTIMATED_COST_USD": 8.45,
+    "NEW_SCENARIO_COUNT": 65
+  },
+  "results": [
+    {
+      "id": "gdi_opp_cda_annual_meeting_2026_8",
+      "title": "CDA Annual Meeting 2026",
+      "contactBefore": "NAMED_PARTIAL",
+      "contactAfter": "NAMED_PARTIAL",
+      "gradeBefore": "B",
+      "gradeAfter": "B",
+      "lodging": {
+        "housingPage": true,
+        "roomBlock": true,
+        "overflow": true,
+        "attendance": null,
+        "peakRooms": null,
+        "housingOpen": null
+      },
+      "playbook": {
+        "defaultPlaybook": "LODGING_HOUSING",
+        "jevPlaybook": "LODGING_HOUSING",
+        "applied": false,
+        "agreement": true,
+        "confidence": 0.84,
+        "technicalFallback": false,
+        "result": {
+          "decisionType": "RESEARCH_PLAYBOOK",
+          "decisionId": "gdi_jev_3d1639e41f219da4",
+          "selected": "LODGING_HOUSING",
+          "probabilities": {
+            "GEO_VERIFICATION": 0,
+            "STOP": 0,
+            "DEMAND_GENERATOR": 0,
+            "LODGING_HOUSING": 0.86,
+            "GENERAL_FOLLOWUP": 0,
+            "GOVERNMENT_PROJECT": 0,
+            "VENUE_PARTNERSHIP": 0,
+            "SOURCE_AUTHORITY": 0,
+            "CORPORATE_MOBILIZATION": 0,
+            "EVENT_FUTURE_CYCLE": 0.14,
+            "TRAINING_PROGRAM": 0,
+            "SPORTS_HOUSING": 0
+          },
+          "confidence": 0.84,
+          "model": "jev-1.13.0",
+          "modelVersion": "gdi_jev_decision_v1.1",
+          "latencyMs": 331,
+          "providerRequestId": null,
+          "shadow": true,
+          "fallbackUsed": false,
+          "technicalFallback": false,
+          "policyFallback": false,
+          "fallbackCause": null,
+          "error": null,
+          "existingDecision": "LODGING_HOUSING",
+          "matchExisting": true,
+          "policy": {
+            "hardGates": [],
+            "threshold": 0.45,
+            "lowConfidence": false,
+            "policyOutcome": "JEV_CANDIDATE",
+            "acceptedJev": "LODGING_HOUSING",
+            "reason": "jev_above_threshold",
+            "shadow": true,
+            "finalPolicyDecision": "LODGING_HOUSING",
+            "matchExisting": true,
+            "blockedActions": {
+              "autoRetire": true,
+              "autoPromote": true,
+              "writeOpportunity": true
+            }
+          },
+          "inputHash": "c5b338dca39f456484d8cd0b",
+          "costUsd": 0.000031122000000000005,
+          "finalPolicyDecision": "LODGING_HOUSING",
+          "usage": {
+            "input_tokens": 741,
+            "output_tokens": 164
+          },
+          "choicesOffered": [
+            "EVENT_FUTURE_CYCLE",
+            "LODGING_HOUSING",
+            "GEO_VERIFICATION",
+            "SOURCE_AUTHORITY",
+            "TRAINING_PROGRAM",
+            "GOVERNMENT_PROJECT",
+            "CORPORATE_MOBILIZATION",
+            "SPORTS_HOUSING",
+            "VENUE_PARTNERSHIP",
+            "DEMAND_GENERATOR",
+            "GENERAL_FOLLOWUP",
+            "STOP"
+          ]
+        }
+      },
+      "contactJev": {
+        "calls": 5,
+        "safeApply": 1,
+        "quality": {
+          "SAME": 3,
+          "HELPFUL_DIFFERENT": 0,
+          "WRONG": 0,
+          "UNKNOWN": 2,
+          "HIGH_CONFIDENCE_WRONG": 0
+        }
+      },
+      "person": "Colonial Dames",
+      "role": null,
+      "whyNow": "Room-block / housing language found on official sources — confirm whether Midtown partners are still being accepted.",
+      "action": "Past cycle — do not pursue this cycle. Monitor for confirmed next cycle / relationship only.",
+      "customerFacingState": "WATCH",
+      "priority": "WATCHLIST"
+    },
+    {
+      "id": "gdi_opp_new_york_forum_on_economic_sanctions_2026_13",
+      "title": "New York Forum on Economic Sanctions 2026",
+      "contactBefore": "NAMED_PARTIAL",
+      "contactAfter": "NAMED_PARTIAL",
+      "gradeBefore": "B",
+      "gradeAfter": "B",
+      "lodging": {
+        "housingPage": false,
+        "roomBlock": false,
+        "overflow": false,
+        "attendance": null,
+        "peakRooms": null,
+        "housingOpen": null
+      },
+      "playbook": {
+        "defaultPlaybook": "LODGING_HOUSING",
+        "jevPlaybook": "LODGING_HOUSING",
+        "applied": false,
+        "agreement": true,
+        "confidence": 0.84,
+        "technicalFallback": false,
+        "result": {
+          "decisionType": "RESEARCH_PLAYBOOK",
+          "decisionId": "gdi_jev_808370a9664fb02f",
+          "selected": "LODGING_HOUSING",
+          "probabilities": {
+            "EVENT_FUTURE_CYCLE": 0.14,
+            "GEO_VERIFICATION": 0,
+            "GENERAL_FOLLOWUP": 0,
+            "CORPORATE_MOBILIZATION": 0,
+            "SOURCE_AUTHORITY": 0,
+            "SPORTS_HOUSING": 0,
+            "STOP": 0,
+            "VENUE_PARTNERSHIP": 0,
+            "GOVERNMENT_PROJECT": 0,
+            "TRAINING_PROGRAM": 0,
+            "LODGING_HOUSING": 0.86,
+            "DEMAND_GENERATOR": 0
+          },
+          "confidence": 0.84,
+          "model": "jev-1.13.0",
+          "modelVersion": "gdi_jev_decision_v1.1",
+          "latencyMs": 232,
+          "providerRequestId": null,
+          "shadow": true,
+          "fallbackUsed": false,
+          "technicalFallback": false,
+          "policyFallback": false,
+          "fallbackCause": null,
+          "error": null,
+          "existingDecision": "LODGING_HOUSING",
+          "matchExisting": true,
+          "policy": {
+            "hardGates": [],
+            "threshold": 0.45,
+            "lowConfidence": false,
+            "policyOutcome": "JEV_CANDIDATE",
+            "acceptedJev": "LODGING_HOUSING",
+            "reason": "jev_above_threshold",
+            "shadow": true,
+            "finalPolicyDecision": "LODGING_HOUSING",
+            "matchExisting": true,
+            "blockedActions": {
+              "autoRetire": true,
+              "autoPromote": true,
+              "writeOpportunity": true
+            }
+          },
+          "inputHash": "acf9ff9e5ea50612d4dab3f4",
+          "costUsd": 0.000030786000000000006,
+          "finalPolicyDecision": "LODGING_HOUSING",
+          "usage": {
+            "input_tokens": 733,
+            "output_tokens": 164
+          },
+          "choicesOffered": [
+            "EVENT_FUTURE_CYCLE",
+            "LODGING_HOUSING",
+            "GEO_VERIFICATION",
+            "SOURCE_AUTHORITY",
+            "TRAINING_PROGRAM",
+            "GOVERNMENT_PROJECT",
+            "CORPORATE_MOBILIZATION",
+            "SPORTS_HOUSING",
+            "VENUE_PARTNERSHIP",
+            "DEMAND_GENERATOR",
+            "GENERAL_FOLLOWUP",
+            "STOP"
+          ]
+        }
+      },
+      "contactJev": {
+        "calls": 5,
+        "safeApply": 0,
+        "quality": {
+          "SAME": 2,
+          "HELPFUL_DIFFERENT": 0,
+          "WRONG": 0,
+          "UNKNOWN": 3,
+          "HIGH_CONFIDENCE_WRONG": 0
+        }
+      },
+      "person": "Learning Futures New York",
+      "role": "Executive Knowledge Exchange 2026 An Executive Knowledge Exchange for senior le",
+      "whyNow": "Monitor — housing / hotel sourcing not yet public for the 2026 cycle.",
+      "action": "Do not aggressively sell the current cycle. Monitor venue/housing announcements, capture a future trigger date, and keep a light relationship touch.",
+      "customerFacingState": "FUTURE_WATCH",
+      "priority": "WATCHLIST"
+    },
+    {
+      "id": "gdi_opp_nyc_hotel_week_2",
+      "title": "NYC Hotel Week",
+      "contactBefore": "ORGANIZATION_PATH",
+      "contactAfter": "ORGANIZATION_PATH",
+      "gradeBefore": "D",
+      "gradeAfter": "D",
+      "lodging": {
+        "housingPage": false,
+        "roomBlock": false,
+        "overflow": false,
+        "attendance": null,
+        "peakRooms": null,
+        "housingOpen": null
+      },
+      "playbook": {
+        "defaultPlaybook": "LODGING_HOUSING",
+        "jevPlaybook": "LODGING_HOUSING",
+        "applied": false,
+        "agreement": true,
+        "confidence": 0.83,
+        "technicalFallback": false,
+        "result": {
+          "decisionType": "RESEARCH_PLAYBOOK",
+          "decisionId": "gdi_jev_808370a9664fb02f",
+          "selected": "LODGING_HOUSING",
+          "probabilities": {
+            "SPORTS_HOUSING": 0,
+            "EVENT_FUTURE_CYCLE": 0.15,
+            "DEMAND_GENERATOR": 0,
+            "CORPORATE_MOBILIZATION": 0,
+            "STOP": 0,
+            "GENERAL_FOLLOWUP": 0,
+            "GOVERNMENT_PROJECT": 0,
+            "SOURCE_AUTHORITY": 0,
+            "TRAINING_PROGRAM": 0,
+            "VENUE_PARTNERSHIP": 0,
+            "LODGING_HOUSING": 0.85,
+            "GEO_VERIFICATION": 0
+          },
+          "confidence": 0.83,
+          "model": "jev-1.13.0",
+          "modelVersion": "gdi_jev_decision_v1.1",
+          "latencyMs": 227,
+          "providerRequestId": null,
+          "shadow": true,
+          "fallbackUsed": false,
+          "technicalFallback": false,
+          "policyFallback": false,
+          "fallbackCause": null,
+          "error": null,
+          "existingDecision": "LODGING_HOUSING",
+          "matchExisting": true,
+          "policy": {
+            "hardGates": [],
+            "threshold": 0.45,
+            "lowConfidence": false,
+            "policyOutcome": "JEV_CANDIDATE",
+            "acceptedJev": "LODGING_HOUSING",
+            "reason": "jev_above_threshold",
+            "shadow": true,
+            "finalPolicyDecision": "LODGING_HOUSING",
+            "matchExisting": true,
+            "blockedActions": {
+              "autoRetire": true,
+              "autoPromote": true,
+              "writeOpportunity": true
+            }
+          },
+          "inputHash": "acf9ff9e5ea50612d4dab3f4",
+          "costUsd": 0.000030786000000000006,
+          "finalPolicyDecision": "LODGING_HOUSING",
+          "usage": {
+            "input_tokens": 733,
+            "output_tokens": 164
+          },
+          "choicesOffered": [
+            "EVENT_FUTURE_CYCLE",
+            "LODGING_HOUSING",
+            "GEO_VERIFICATION",
+            "SOURCE_AUTHORITY",
+            "TRAINING_PROGRAM",
+            "GOVERNMENT_PROJECT",
+            "CORPORATE_MOBILIZATION",
+            "SPORTS_HOUSING",
+            "VENUE_PARTNERSHIP",
+            "DEMAND_GENERATOR",
+            "GENERAL_FOLLOWUP",
+            "STOP"
+          ]
+        }
+      },
+      "contactJev": {
+        "calls": 5,
+        "safeApply": 0,
+        "quality": {
+          "SAME": 5,
+          "HELPFUL_DIFFERENT": 0,
+          "WRONG": 0,
+          "UNKNOWN": 0,
+          "HIGH_CONFIDENCE_WRONG": 0
+        }
+      },
+      "person": null,
+      "role": null,
+      "whyNow": "Monitor — housing / hotel sourcing not yet public for the 2026 cycle.",
+      "action": "Past cycle — do not pursue this cycle. Monitor for confirmed next cycle / relationship only.",
+      "customerFacingState": "FUTURE_WATCH",
+      "priority": "WATCHLIST"
+    },
+    {
+      "id": "gdi_opp_tech_conference_venues_in_new_york_2026_4",
+      "title": "Tech Conference Venues in New York 2026",
+      "contactBefore": "ORGANIZATION_PATH",
+      "contactAfter": "ORGANIZATION_PATH",
+      "gradeBefore": "D",
+      "gradeAfter": "D",
+      "lodging": {
+        "housingPage": true,
+        "roomBlock": true,
+        "overflow": true,
+        "attendance": null,
+        "peakRooms": null,
+        "housingOpen": null
+      },
+      "playbook": {
+        "defaultPlaybook": "LODGING_HOUSING",
+        "jevPlaybook": "LODGING_HOUSING",
+        "applied": false,
+        "agreement": true,
+        "confidence": 0.83,
+        "technicalFallback": false,
+        "result": {
+          "decisionType": "RESEARCH_PLAYBOOK",
+          "decisionId": "gdi_jev_3d1639e41f219da4",
+          "selected": "LODGING_HOUSING",
+          "probabilities": {
+            "GENERAL_FOLLOWUP": 0,
+            "DEMAND_GENERATOR": 0,
+            "SPORTS_HOUSING": 0,
+            "EVENT_FUTURE_CYCLE": 0.14,
+            "STOP": 0,
+            "LODGING_HOUSING": 0.86,
+            "SOURCE_AUTHORITY": 0,
+            "GEO_VERIFICATION": 0,
+            "CORPORATE_MOBILIZATION": 0,
+            "TRAINING_PROGRAM": 0,
+            "GOVERNMENT_PROJECT": 0,
+            "VENUE_PARTNERSHIP": 0
+          },
+          "confidence": 0.83,
+          "model": "jev-1.13.0",
+          "modelVersion": "gdi_jev_decision_v1.1",
+          "latencyMs": 207,
+          "providerRequestId": null,
+          "shadow": true,
+          "fallbackUsed": false,
+          "technicalFallback": false,
+          "policyFallback": false,
+          "fallbackCause": null,
+          "error": null,
+          "existingDecision": "LODGING_HOUSING",
+          "matchExisting": true,
+          "policy": {
+            "hardGates": [],
+            "threshold": 0.45,
+            "lowConfidence": false,
+            "policyOutcome": "JEV_CANDIDATE",
+            "acceptedJev": "LODGING_HOUSING",
+            "reason": "jev_above_threshold",
+            "shadow": true,
+            "finalPolicyDecision": "LODGING_HOUSING",
+            "matchExisting": true,
+            "blockedActions": {
+              "autoRetire": true,
+              "autoPromote": true,
+              "writeOpportunity": true
+            }
+          },
+          "inputHash": "c5b338dca39f456484d8cd0b",
+          "costUsd": 0.000031122000000000005,
+          "finalPolicyDecision": "LODGING_HOUSING",
+          "usage": {
+            "input_tokens": 741,
+            "output_tokens": 164
+          },
+          "choicesOffered": [
+            "EVENT_FUTURE_CYCLE",
+            "LODGING_HOUSING",
+            "GEO_VERIFICATION",
+            "SOURCE_AUTHORITY",
+            "TRAINING_PROGRAM",
+            "GOVERNMENT_PROJECT",
+            "CORPORATE_MOBILIZATION",
+            "SPORTS_HOUSING",
+            "VENUE_PARTNERSHIP",
+            "DEMAND_GENERATOR",
+            "GENERAL_FOLLOWUP",
+            "STOP"
+          ]
+        }
+      },
+      "contactJev": {
+        "calls": 5,
+        "safeApply": 0,
+        "quality": {
+          "SAME": 5,
+          "HELPFUL_DIFFERENT": 0,
+          "WRONG": 0,
+          "UNKNOWN": 0,
+          "HIGH_CONFIDENCE_WRONG": 0
+        }
+      },
+      "person": null,
+      "role": null,
+      "whyNow": "Room-block / housing language found on official sources — confirm whether Midtown partners are still being accepted.",
+      "action": "Contact the housing provider / tournament housing lead (not only the event brand), request housing-list inclusion, and confirm overflow peak-room needs and stay dates.",
+      "customerFacingState": "ACTIVE",
+      "priority": "WATCHLIST"
+    },
+    {
+      "id": "gdi_opp_holiday_celebration_offer_2026_3",
+      "title": "Holiday Celebration Offer 2026",
+      "contactBefore": "NAMED_PARTIAL",
+      "contactAfter": "NAMED_PARTIAL",
+      "gradeBefore": "B",
+      "gradeAfter": "B",
+      "lodging": {
+        "housingPage": false,
+        "roomBlock": false,
+        "overflow": false,
+        "attendance": null,
+        "peakRooms": null,
+        "housingOpen": null
+      },
+      "playbook": {
+        "defaultPlaybook": "LODGING_HOUSING",
+        "jevPlaybook": "LODGING_HOUSING",
+        "applied": false,
+        "agreement": true,
+        "confidence": 0.86,
+        "technicalFallback": false,
+        "result": {
+          "decisionType": "RESEARCH_PLAYBOOK",
+          "decisionId": "gdi_jev_808370a9664fb02f",
+          "selected": "LODGING_HOUSING",
+          "probabilities": {
+            "STOP": 0,
+            "CORPORATE_MOBILIZATION": 0,
+            "GOVERNMENT_PROJECT": 0,
+            "DEMAND_GENERATOR": 0,
+            "GEO_VERIFICATION": 0,
+            "TRAINING_PROGRAM": 0,
+            "GENERAL_FOLLOWUP": 0,
+            "LODGING_HOUSING": 0.87,
+            "EVENT_FUTURE_CYCLE": 0.13,
+            "SPORTS_HOUSING": 0,
+            "SOURCE_AUTHORITY": 0,
+            "VENUE_PARTNERSHIP": 0
+          },
+          "confidence": 0.86,
+          "model": "jev-1.13.0",
+          "modelVersion": "gdi_jev_decision_v1.1",
+          "latencyMs": 294,
+          "providerRequestId": null,
+          "shadow": true,
+          "fallbackUsed": false,
+          "technicalFallback": false,
+          "policyFallback": false,
+          "fallbackCause": null,
+          "error": null,
+          "existingDecision": "LODGING_HOUSING",
+          "matchExisting": true,
+          "policy": {
+            "hardGates": [],
+            "threshold": 0.45,
+            "lowConfidence": false,
+            "policyOutcome": "JEV_CANDIDATE",
+            "acceptedJev": "LODGING_HOUSING",
+            "reason": "jev_above_threshold",
+            "shadow": true,
+            "finalPolicyDecision": "LODGING_HOUSING",
+            "matchExisting": true,
+            "blockedActions": {
+              "autoRetire": true,
+              "autoPromote": true,
+              "writeOpportunity": true
+            }
+          },
+          "inputHash": "acf9ff9e5ea50612d4dab3f4",
+          "costUsd": 0.000030786000000000006,
+          "finalPolicyDecision": "LODGING_HOUSING",
+          "usage": {
+            "input_tokens": 733,
+            "output_tokens": 164
+          },
+          "choicesOffered": [
+            "EVENT_FUTURE_CYCLE",
+            "LODGING_HOUSING",
+            "GEO_VERIFICATION",
+            "SOURCE_AUTHORITY",
+            "TRAINING_PROGRAM",
+            "GOVERNMENT_PROJECT",
+            "CORPORATE_MOBILIZATION",
+            "SPORTS_HOUSING",
+            "VENUE_PARTNERSHIP",
+            "DEMAND_GENERATOR",
+            "GENERAL_FOLLOWUP",
+            "STOP"
+          ]
+        }
+      },
+      "contactJev": {
+        "calls": 5,
+        "safeApply": 0,
+        "quality": {
+          "SAME": 3,
+          "HELPFUL_DIFFERENT": 0,
+          "WRONG": 0,
+          "UNKNOWN": 2,
+          "HIGH_CONFIDENCE_WRONG": 0
+        }
+      },
+      "person": "Survey Software",
+      "role": "Event Venues",
+      "whyNow": "Monitor — housing / hotel sourcing not yet public for the 2026 cycle.",
+      "action": "Do not aggressively sell the current cycle. Monitor venue/housing announcements, capture a future trigger date, and keep a light relationship touch.",
+      "customerFacingState": "FUTURE_WATCH",
+      "priority": "WATCHLIST"
+    },
+    {
+      "id": "gdi_opp_aidoc_open_11",
+      "title": "Aidoc Open",
+      "contactBefore": "ORGANIZATION_PATH",
+      "contactAfter": "ORGANIZATION_PATH",
+      "gradeBefore": "D",
+      "gradeAfter": "D",
+      "lodging": {
+        "housingPage": false,
+        "roomBlock": false,
+        "overflow": true,
+        "attendance": null,
+        "peakRooms": null,
+        "housingOpen": null
+      },
+      "playbook": {
+        "defaultPlaybook": "LODGING_HOUSING",
+        "jevPlaybook": "LODGING_HOUSING",
+        "applied": false,
+        "agreement": true,
+        "confidence": 0.89,
+        "technicalFallback": false,
+        "result": {
+          "decisionType": "RESEARCH_PLAYBOOK",
+          "decisionId": "gdi_jev_3d1639e41f219da4",
+          "selected": "LODGING_HOUSING",
+          "probabilities": {
+            "GEO_VERIFICATION": 0,
+            "CORPORATE_MOBILIZATION": 0,
+            "EVENT_FUTURE_CYCLE": 0.1,
+            "GOVERNMENT_PROJECT": 0,
+            "STOP": 0,
+            "LODGING_HOUSING": 0.9,
+            "DEMAND_GENERATOR": 0,
+            "VENUE_PARTNERSHIP": 0,
+            "SPORTS_HOUSING": 0,
+            "GENERAL_FOLLOWUP": 0,
+            "SOURCE_AUTHORITY": 0,
+            "TRAINING_PROGRAM": 0
+          },
+          "confidence": 0.89,
+          "model": "jev-1.13.0",
+          "modelVersion": "gdi_jev_decision_v1.1",
+          "latencyMs": 229,
+          "providerRequestId": null,
+          "shadow": true,
+          "fallbackUsed": false,
+          "technicalFallback": false,
+          "policyFallback": false,
+          "fallbackCause": null,
+          "error": null,
+          "existingDecision": "LODGING_HOUSING",
+          "matchExisting": true,
+          "policy": {
+            "hardGates": [],
+            "threshold": 0.45,
+            "lowConfidence": false,
+            "policyOutcome": "JEV_CANDIDATE",
+            "acceptedJev": "LODGING_HOUSING",
+            "reason": "jev_above_threshold",
+            "shadow": true,
+            "finalPolicyDecision": "LODGING_HOUSING",
+            "matchExisting": true,
+            "blockedActions": {
+              "autoRetire": true,
+              "autoPromote": true,
+              "writeOpportunity": true
+            }
+          },
+          "inputHash": "c5b338dca39f456484d8cd0b",
+          "costUsd": 0.000031122000000000005,
+          "finalPolicyDecision": "LODGING_HOUSING",
+          "usage": {
+            "input_tokens": 741,
+            "output_tokens": 164
+          },
+          "choicesOffered": [
+            "EVENT_FUTURE_CYCLE",
+            "LODGING_HOUSING",
+            "GEO_VERIFICATION",
+            "SOURCE_AUTHORITY",
+            "TRAINING_PROGRAM",
+            "GOVERNMENT_PROJECT",
+            "CORPORATE_MOBILIZATION",
+            "SPORTS_HOUSING",
+            "VENUE_PARTNERSHIP",
+            "DEMAND_GENERATOR",
+            "GENERAL_FOLLOWUP",
+            "STOP"
+          ]
+        }
+      },
+      "contactJev": {
+        "calls": 5,
+        "safeApply": 0,
+        "quality": {
+          "SAME": 5,
+          "HELPFUL_DIFFERENT": 0,
+          "WRONG": 0,
+          "UNKNOWN": 0,
+          "HIGH_CONFIDENCE_WRONG": 0
+        }
+      },
+      "person": null,
+      "role": null,
+      "whyNow": "Monitor — housing / hotel sourcing not yet public for the 2026 cycle.",
+      "action": "Contact the housing provider / tournament housing lead (not only the event brand), request housing-list inclusion, and confirm overflow peak-room needs and stay dates.",
+      "customerFacingState": "ACTIVE",
+      "priority": "WATCHLIST"
+    },
+    {
+      "id": "gdi_opp_fifa_world_cup_2026_6",
+      "title": "FIFA World Cup 2026",
+      "contactBefore": "ORGANIZATION_PATH",
+      "contactAfter": "ORGANIZATION_PATH",
+      "gradeBefore": "D",
+      "gradeAfter": "D",
+      "lodging": {
+        "housingPage": true,
+        "roomBlock": true,
+        "overflow": false,
+        "attendance": null,
+        "peakRooms": null,
+        "housingOpen": null
+      },
+      "playbook": {
+        "defaultPlaybook": "LODGING_HOUSING",
+        "jevPlaybook": "LODGING_HOUSING",
+        "applied": false,
+        "agreement": true,
+        "confidence": 0.87,
+        "technicalFallback": false,
+        "result": {
+          "decisionType": "RESEARCH_PLAYBOOK",
+          "decisionId": "gdi_jev_3d1639e41f219da4",
+          "selected": "LODGING_HOUSING",
+          "probabilities": {
+            "CORPORATE_MOBILIZATION": 0,
+            "DEMAND_GENERATOR": 0,
+            "GENERAL_FOLLOWUP": 0,
+            "STOP": 0,
+            "TRAINING_PROGRAM": 0,
+            "VENUE_PARTNERSHIP": 0,
+            "SPORTS_HOUSING": 0,
+            "GOVERNMENT_PROJECT": 0,
+            "SOURCE_AUTHORITY": 0,
+            "LODGING_HOUSING": 0.89,
+            "GEO_VERIFICATION": 0,
+            "EVENT_FUTURE_CYCLE": 0.11
+          },
+          "confidence": 0.87,
+          "model": "jev-1.13.0",
+          "modelVersion": "gdi_jev_decision_v1.1",
+          "latencyMs": 247,
+          "providerRequestId": null,
+          "shadow": true,
+          "fallbackUsed": false,
+          "technicalFallback": false,
+          "policyFallback": false,
+          "fallbackCause": null,
+          "error": null,
+          "existingDecision": "LODGING_HOUSING",
+          "matchExisting": true,
+          "policy": {
+            "hardGates": [],
+            "threshold": 0.45,
+            "lowConfidence": false,
+            "policyOutcome": "JEV_CANDIDATE",
+            "acceptedJev": "LODGING_HOUSING",
+            "reason": "jev_above_threshold",
+            "shadow": true,
+            "finalPolicyDecision": "LODGING_HOUSING",
+            "matchExisting": true,
+            "blockedActions": {
+              "autoRetire": true,
+              "autoPromote": true,
+              "writeOpportunity": true
+            }
+          },
+          "inputHash": "c5b338dca39f456484d8cd0b",
+          "costUsd": 0.000031122000000000005,
+          "finalPolicyDecision": "LODGING_HOUSING",
+          "usage": {
+            "input_tokens": 741,
+            "output_tokens": 164
+          },
+          "choicesOffered": [
+            "EVENT_FUTURE_CYCLE",
+            "LODGING_HOUSING",
+            "GEO_VERIFICATION",
+            "SOURCE_AUTHORITY",
+            "TRAINING_PROGRAM",
+            "GOVERNMENT_PROJECT",
+            "CORPORATE_MOBILIZATION",
+            "SPORTS_HOUSING",
+            "VENUE_PARTNERSHIP",
+            "DEMAND_GENERATOR",
+            "GENERAL_FOLLOWUP",
+            "STOP"
+          ]
+        }
+      },
+      "contactJev": {
+        "calls": 5,
+        "safeApply": 0,
+        "quality": {
+          "SAME": 5,
+          "HELPFUL_DIFFERENT": 0,
+          "WRONG": 0,
+          "UNKNOWN": 0,
+          "HIGH_CONFIDENCE_WRONG": 0
+        }
+      },
+      "person": null,
+      "role": null,
+      "whyNow": "Room-block / housing language found on official sources — confirm whether Midtown partners are still being accepted.",
+      "action": "Past cycle — do not pursue this cycle. Monitor for confirmed next cycle / relationship only.",
+      "customerFacingState": "WATCH",
+      "priority": "WATCHLIST"
+    },
+    {
+      "id": "gdi_opp_la_2028_olympics_7",
+      "title": "LA 2028 Olympics",
+      "contactBefore": "ORGANIZATION_PATH",
+      "contactAfter": "ORGANIZATION_PATH",
+      "gradeBefore": "D",
+      "gradeAfter": "D",
+      "lodging": {
+        "housingPage": true,
+        "roomBlock": true,
+        "overflow": false,
+        "attendance": null,
+        "peakRooms": null,
+        "housingOpen": null
+      },
+      "playbook": {
+        "defaultPlaybook": "LODGING_HOUSING",
+        "jevPlaybook": "LODGING_HOUSING",
+        "applied": false,
+        "agreement": true,
+        "confidence": 0.79,
+        "technicalFallback": false,
+        "result": {
+          "decisionType": "RESEARCH_PLAYBOOK",
+          "decisionId": "gdi_jev_808370a9664fb02f",
+          "selected": "LODGING_HOUSING",
+          "probabilities": {
+            "STOP": 0,
+            "VENUE_PARTNERSHIP": 0,
+            "SPORTS_HOUSING": 0,
+            "TRAINING_PROGRAM": 0,
+            "GEO_VERIFICATION": 0,
+            "GENERAL_FOLLOWUP": 0,
+            "CORPORATE_MOBILIZATION": 0,
+            "SOURCE_AUTHORITY": 0,
+            "DEMAND_GENERATOR": 0,
+            "EVENT_FUTURE_CYCLE": 0.19,
+            "LODGING_HOUSING": 0.81,
+            "GOVERNMENT_PROJECT": 0
+          },
+          "confidence": 0.79,
+          "model": "jev-1.13.0",
+          "modelVersion": "gdi_jev_decision_v1.1",
+          "latencyMs": 267,
+          "providerRequestId": null,
+          "shadow": true,
+          "fallbackUsed": false,
+          "technicalFallback": false,
+          "policyFallback": false,
+          "fallbackCause": null,
+          "error": null,
+          "existingDecision": "LODGING_HOUSING",
+          "matchExisting": true,
+          "policy": {
+            "hardGates": [],
+            "threshold": 0.45,
+            "lowConfidence": false,
+            "policyOutcome": "JEV_CANDIDATE",
+            "acceptedJev": "LODGING_HOUSING",
+            "reason": "jev_above_threshold",
+            "shadow": true,
+            "finalPolicyDecision": "LODGING_HOUSING",
+            "matchExisting": true,
+            "blockedActions": {
+              "autoRetire": true,
+              "autoPromote": true,
+              "writeOpportunity": true
+            }
+          },
+          "inputHash": "acf9ff9e5ea50612d4dab3f4",
+          "costUsd": 0.000030786000000000006,
+          "finalPolicyDecision": "LODGING_HOUSING",
+          "usage": {
+            "input_tokens": 733,
+            "output_tokens": 164
+          },
+          "choicesOffered": [
+            "EVENT_FUTURE_CYCLE",
+            "LODGING_HOUSING",
+            "GEO_VERIFICATION",
+            "SOURCE_AUTHORITY",
+            "TRAINING_PROGRAM",
+            "GOVERNMENT_PROJECT",
+            "CORPORATE_MOBILIZATION",
+            "SPORTS_HOUSING",
+            "VENUE_PARTNERSHIP",
+            "DEMAND_GENERATOR",
+            "GENERAL_FOLLOWUP",
+            "STOP"
+          ]
+        }
+      },
+      "contactJev": null,
+      "person": null,
+      "role": null,
+      "whyNow": "Room-block / housing language found on official sources — confirm whether Midtown partners are still being accepted.",
+      "action": "Verify sourcing status is still open, then contact the identified planner to introduce Hilton New York Times Square, request RFP/site-visit inclusion, and position Manhattan Midtown / Times Square / Hilton Hotels & Resorts brand / meeting inventory / guestroom capacity.",
+      "customerFacingState": "CLOSED",
+      "priority": "DISQUALIFIED"
+    },
+    {
+      "id": "gdi_opp_fifa_world_cup_2026_1",
+      "title": "FIFA World Cup 2026",
+      "contactBefore": "NAMED_PARTIAL",
+      "contactAfter": "NAMED_PARTIAL",
+      "gradeBefore": "B",
+      "gradeAfter": "B",
+      "lodging": {
+        "housingPage": true,
+        "roomBlock": true,
+        "overflow": false,
+        "attendance": null,
+        "peakRooms": null,
+        "housingOpen": null
+      },
+      "playbook": {
+        "defaultPlaybook": "LODGING_HOUSING",
+        "jevPlaybook": "LODGING_HOUSING",
+        "applied": false,
+        "agreement": true,
+        "confidence": 0.81,
+        "technicalFallback": false,
+        "result": {
+          "decisionType": "RESEARCH_PLAYBOOK",
+          "decisionId": "gdi_jev_808370a9664fb02f",
+          "selected": "LODGING_HOUSING",
+          "probabilities": {
+            "STOP": 0,
+            "TRAINING_PROGRAM": 0,
+            "VENUE_PARTNERSHIP": 0,
+            "EVENT_FUTURE_CYCLE": 0.17,
+            "SPORTS_HOUSING": 0,
+            "CORPORATE_MOBILIZATION": 0,
+            "GOVERNMENT_PROJECT": 0,
+            "DEMAND_GENERATOR": 0,
+            "LODGING_HOUSING": 0.83,
+            "GENERAL_FOLLOWUP": 0,
+            "GEO_VERIFICATION": 0,
+            "SOURCE_AUTHORITY": 0
+          },
+          "confidence": 0.81,
+          "model": "jev-1.13.0",
+          "modelVersion": "gdi_jev_decision_v1.1",
+          "latencyMs": 229,
+          "providerRequestId": null,
+          "shadow": true,
+          "fallbackUsed": false,
+          "technicalFallback": false,
+          "policyFallback": false,
+          "fallbackCause": null,
+          "error": null,
+          "existingDecision": "LODGING_HOUSING",
+          "matchExisting": true,
+          "policy": {
+            "hardGates": [],
+            "threshold": 0.45,
+            "lowConfidence": false,
+            "policyOutcome": "JEV_CANDIDATE",
+            "acceptedJev": "LODGING_HOUSING",
+            "reason": "jev_above_threshold",
+            "shadow": true,
+            "finalPolicyDecision": "LODGING_HOUSING",
+            "matchExisting": true,
+            "blockedActions": {
+              "autoRetire": true,
+              "autoPromote": true,
+              "writeOpportunity": true
+            }
+          },
+          "inputHash": "acf9ff9e5ea50612d4dab3f4",
+          "costUsd": 0.000030786000000000006,
+          "finalPolicyDecision": "LODGING_HOUSING",
+          "usage": {
+            "input_tokens": 733,
+            "output_tokens": 164
+          },
+          "choicesOffered": [
+            "EVENT_FUTURE_CYCLE",
+            "LODGING_HOUSING",
+            "GEO_VERIFICATION",
+            "SOURCE_AUTHORITY",
+            "TRAINING_PROGRAM",
+            "GOVERNMENT_PROJECT",
+            "CORPORATE_MOBILIZATION",
+            "SPORTS_HOUSING",
+            "VENUE_PARTNERSHIP",
+            "DEMAND_GENERATOR",
+            "GENERAL_FOLLOWUP",
+            "STOP"
+          ]
+        }
+      },
+      "contactJev": {
+        "calls": 5,
+        "safeApply": 1,
+        "quality": {
+          "SAME": 3,
+          "HELPFUL_DIFFERENT": 0,
+          "WRONG": 0,
+          "UNKNOWN": 2,
+          "HIGH_CONFIDENCE_WRONG": 0
+        }
+      },
+      "person": "Enquire Beyond",
+      "role": null,
+      "whyNow": "Room-block / housing language found on official sources — confirm whether Midtown partners are still being accepted.",
+      "action": "Past cycle — do not pursue this cycle. Monitor for confirmed next cycle / relationship only.",
+      "customerFacingState": "WATCH",
+      "priority": "WATCHLIST"
+    },
+    {
+      "id": "gdi_opp_world_cup_2026_15",
+      "title": "World Cup 2026",
+      "contactBefore": "ORGANIZATION_PATH",
+      "contactAfter": "ORGANIZATION_PATH",
+      "gradeBefore": "D",
+      "gradeAfter": "D",
+      "lodging": {
+        "housingPage": true,
+        "roomBlock": true,
+        "overflow": false,
+        "attendance": null,
+        "peakRooms": null,
+        "housingOpen": null
+      },
+      "playbook": {
+        "defaultPlaybook": "LODGING_HOUSING",
+        "jevPlaybook": "LODGING_HOUSING",
+        "applied": false,
+        "agreement": true,
+        "confidence": 0.81,
+        "technicalFallback": false,
+        "result": {
+          "decisionType": "RESEARCH_PLAYBOOK",
+          "decisionId": "gdi_jev_808370a9664fb02f",
+          "selected": "LODGING_HOUSING",
+          "probabilities": {
+            "EVENT_FUTURE_CYCLE": 0.17,
+            "VENUE_PARTNERSHIP": 0,
+            "SPORTS_HOUSING": 0,
+            "LODGING_HOUSING": 0.83,
+            "GENERAL_FOLLOWUP": 0,
+            "GOVERNMENT_PROJECT": 0,
+            "DEMAND_GENERATOR": 0,
+            "TRAINING_PROGRAM": 0,
+            "CORPORATE_MOBILIZATION": 0,
+            "STOP": 0,
+            "SOURCE_AUTHORITY": 0,
+            "GEO_VERIFICATION": 0
+          },
+          "confidence": 0.81,
+          "model": "jev-1.13.0",
+          "modelVersion": "gdi_jev_decision_v1.1",
+          "latencyMs": 202,
+          "providerRequestId": null,
+          "shadow": true,
+          "fallbackUsed": false,
+          "technicalFallback": false,
+          "policyFallback": false,
+          "fallbackCause": null,
+          "error": null,
+          "existingDecision": "LODGING_HOUSING",
+          "matchExisting": true,
+          "policy": {
+            "hardGates": [],
+            "threshold": 0.45,
+            "lowConfidence": false,
+            "policyOutcome": "JEV_CANDIDATE",
+            "acceptedJev": "LODGING_HOUSING",
+            "reason": "jev_above_threshold",
+            "shadow": true,
+            "finalPolicyDecision": "LODGING_HOUSING",
+            "matchExisting": true,
+            "blockedActions": {
+              "autoRetire": true,
+              "autoPromote": true,
+              "writeOpportunity": true
+            }
+          },
+          "inputHash": "acf9ff9e5ea50612d4dab3f4",
+          "costUsd": 0.000030786000000000006,
+          "finalPolicyDecision": "LODGING_HOUSING",
+          "usage": {
+            "input_tokens": 733,
+            "output_tokens": 164
+          },
+          "choicesOffered": [
+            "EVENT_FUTURE_CYCLE",
+            "LODGING_HOUSING",
+            "GEO_VERIFICATION",
+            "SOURCE_AUTHORITY",
+            "TRAINING_PROGRAM",
+            "GOVERNMENT_PROJECT",
+            "CORPORATE_MOBILIZATION",
+            "SPORTS_HOUSING",
+            "VENUE_PARTNERSHIP",
+            "DEMAND_GENERATOR",
+            "GENERAL_FOLLOWUP",
+            "STOP"
+          ]
+        }
+      },
+      "contactJev": {
+        "calls": 5,
+        "safeApply": 0,
+        "quality": {
+          "SAME": 4,
+          "HELPFUL_DIFFERENT": 0,
+          "WRONG": 0,
+          "UNKNOWN": 1,
+          "HIGH_CONFIDENCE_WRONG": 0
+        }
+      },
+      "person": null,
+      "role": null,
+      "whyNow": "Room-block / housing language found on official sources — confirm whether Midtown partners are still being accepted.",
+      "action": "Past cycle — do not pursue this cycle. Monitor for confirmed next cycle / relationship only.",
+      "customerFacingState": "WATCH",
+      "priority": "WATCHLIST"
+    },
+    {
+      "id": "gdi_opp_scale_healthcare_leadership_conference_10",
+      "title": "Scale Healthcare Leadership Conference",
+      "contactBefore": "NAMED_PARTIAL",
+      "contactAfter": "NAMED_PARTIAL",
+      "gradeBefore": "B",
+      "gradeAfter": "B",
+      "lodging": {
+        "housingPage": false,
+        "roomBlock": false,
+        "overflow": true,
+        "attendance": null,
+        "peakRooms": null,
+        "housingOpen": null
+      },
+      "playbook": {
+        "defaultPlaybook": "LODGING_HOUSING",
+        "jevPlaybook": "LODGING_HOUSING",
+        "applied": false,
+        "agreement": true,
+        "confidence": 0.88,
+        "technicalFallback": false,
+        "result": {
+          "decisionType": "RESEARCH_PLAYBOOK",
+          "decisionId": "gdi_jev_3d1639e41f219da4",
+          "selected": "LODGING_HOUSING",
+          "probabilities": {
+            "STOP": 0,
+            "VENUE_PARTNERSHIP": 0,
+            "SPORTS_HOUSING": 0,
+            "CORPORATE_MOBILIZATION": 0,
+            "GENERAL_FOLLOWUP": 0,
+            "TRAINING_PROGRAM": 0,
+            "GEO_VERIFICATION": 0,
+            "SOURCE_AUTHORITY": 0,
+            "LODGING_HOUSING": 0.9,
+            "EVENT_FUTURE_CYCLE": 0.1,
+            "GOVERNMENT_PROJECT": 0,
+            "DEMAND_GENERATOR": 0
+          },
+          "confidence": 0.88,
+          "model": "jev-1.13.0",
+          "modelVersion": "gdi_jev_decision_v1.1",
+          "latencyMs": 302,
+          "providerRequestId": null,
+          "shadow": true,
+          "fallbackUsed": false,
+          "technicalFallback": false,
+          "policyFallback": false,
+          "fallbackCause": null,
+          "error": null,
+          "existingDecision": "LODGING_HOUSING",
+          "matchExisting": true,
+          "policy": {
+            "hardGates": [],
+            "threshold": 0.45,
+            "lowConfidence": false,
+            "policyOutcome": "JEV_CANDIDATE",
+            "acceptedJev": "LODGING_HOUSING",
+            "reason": "jev_above_threshold",
+            "shadow": true,
+            "finalPolicyDecision": "LODGING_HOUSING",
+            "matchExisting": true,
+            "blockedActions": {
+              "autoRetire": true,
+              "autoPromote": true,
+              "writeOpportunity": true
+            }
+          },
+          "inputHash": "c5b338dca39f456484d8cd0b",
+          "costUsd": 0.000031122000000000005,
+          "finalPolicyDecision": "LODGING_HOUSING",
+          "usage": {
+            "input_tokens": 741,
+            "output_tokens": 164
+          },
+          "choicesOffered": [
+            "EVENT_FUTURE_CYCLE",
+            "LODGING_HOUSING",
+            "GEO_VERIFICATION",
+            "SOURCE_AUTHORITY",
+            "TRAINING_PROGRAM",
+            "GOVERNMENT_PROJECT",
+            "CORPORATE_MOBILIZATION",
+            "SPORTS_HOUSING",
+            "VENUE_PARTNERSHIP",
+            "DEMAND_GENERATOR",
+            "GENERAL_FOLLOWUP",
+            "STOP"
+          ]
+        }
+      },
+      "contactJev": {
+        "calls": 5,
+        "safeApply": 0,
+        "quality": {
+          "SAME": 2,
+          "HELPFUL_DIFFERENT": 0,
+          "WRONG": 0,
+          "UNKNOWN": 3,
+          "HIGH_CONFIDENCE_WRONG": 0
+        }
+      },
+      "person": "David Kolb",
+      "role": "Vice President",
+      "whyNow": "Monitor — housing / hotel sourcing not yet public for the 2026 cycle.",
+      "action": "Contact the housing provider / tournament housing lead (not only the event brand), request housing-list inclusion, and confirm overflow peak-room needs and stay dates.",
+      "customerFacingState": "ACTIVE",
+      "priority": "WATCHLIST"
+    },
+    {
+      "id": "gdi_opp_u20_conference_0",
+      "title": "U20 Conference",
+      "contactBefore": "ORGANIZATION_PATH",
+      "contactAfter": "ORGANIZATION_PATH",
+      "gradeBefore": "D",
+      "gradeAfter": "D",
+      "lodging": {
+        "housingPage": false,
+        "roomBlock": false,
+        "overflow": false,
+        "attendance": null,
+        "peakRooms": null,
+        "housingOpen": null
+      },
+      "playbook": {
+        "defaultPlaybook": "LODGING_HOUSING",
+        "jevPlaybook": "LODGING_HOUSING",
+        "applied": false,
+        "agreement": true,
+        "confidence": 0.8,
+        "technicalFallback": false,
+        "result": {
+          "decisionType": "RESEARCH_PLAYBOOK",
+          "decisionId": "gdi_jev_808370a9664fb02f",
+          "selected": "LODGING_HOUSING",
+          "probabilities": {
+            "VENUE_PARTNERSHIP": 0,
+            "DEMAND_GENERATOR": 0,
+            "STOP": 0,
+            "CORPORATE_MOBILIZATION": 0,
+            "LODGING_HOUSING": 0.83,
+            "SPORTS_HOUSING": 0,
+            "SOURCE_AUTHORITY": 0,
+            "EVENT_FUTURE_CYCLE": 0.17,
+            "GOVERNMENT_PROJECT": 0,
+            "TRAINING_PROGRAM": 0,
+            "GEO_VERIFICATION": 0,
+            "GENERAL_FOLLOWUP": 0
+          },
+          "confidence": 0.8,
+          "model": "jev-1.13.0",
+          "modelVersion": "gdi_jev_decision_v1.1",
+          "latencyMs": 213,
+          "providerRequestId": null,
+          "shadow": true,
+          "fallbackUsed": false,
+          "technicalFallback": false,
+          "policyFallback": false,
+          "fallbackCause": null,
+          "error": null,
+          "existingDecision": "LODGING_HOUSING",
+          "matchExisting": true,
+          "policy": {
+            "hardGates": [],
+            "threshold": 0.45,
+            "lowConfidence": false,
+            "policyOutcome": "JEV_CANDIDATE",
+            "acceptedJev": "LODGING_HOUSING",
+            "reason": "jev_above_threshold",
+            "shadow": true,
+            "finalPolicyDecision": "LODGING_HOUSING",
+            "matchExisting": true,
+            "blockedActions": {
+              "autoRetire": true,
+              "autoPromote": true,
+              "writeOpportunity": true
+            }
+          },
+          "inputHash": "acf9ff9e5ea50612d4dab3f4",
+          "costUsd": 0.000030786000000000006,
+          "finalPolicyDecision": "LODGING_HOUSING",
+          "usage": {
+            "input_tokens": 733,
+            "output_tokens": 164
+          },
+          "choicesOffered": [
+            "EVENT_FUTURE_CYCLE",
+            "LODGING_HOUSING",
+            "GEO_VERIFICATION",
+            "SOURCE_AUTHORITY",
+            "TRAINING_PROGRAM",
+            "GOVERNMENT_PROJECT",
+            "CORPORATE_MOBILIZATION",
+            "SPORTS_HOUSING",
+            "VENUE_PARTNERSHIP",
+            "DEMAND_GENERATOR",
+            "GENERAL_FOLLOWUP",
+            "STOP"
+          ]
+        }
+      },
+      "contactJev": {
+        "calls": 5,
+        "safeApply": 0,
+        "quality": {
+          "SAME": 5,
+          "HELPFUL_DIFFERENT": 0,
+          "WRONG": 0,
+          "UNKNOWN": 0,
+          "HIGH_CONFIDENCE_WRONG": 0
+        }
+      },
+      "person": null,
+      "role": null,
+      "whyNow": "Monitor — housing / hotel sourcing not yet public for the 2026 cycle.",
+      "action": "Past cycle — do not pursue this cycle. Monitor for confirmed next cycle / relationship only.",
+      "customerFacingState": "FUTURE_WATCH",
+      "priority": "WATCHLIST"
+    },
+    {
+      "id": "gdi_opp_corporate_meetings_in_times_square_midtown_west_5",
+      "title": "Corporate Meetings in Times Square / Midtown West",
+      "contactBefore": "NAMED_PARTIAL",
+      "contactAfter": "NAMED_PARTIAL",
+      "gradeBefore": "B",
+      "gradeAfter": "B",
+      "lodging": {
+        "housingPage": true,
+        "roomBlock": true,
+        "overflow": false,
+        "attendance": null,
+        "peakRooms": null,
+        "housingOpen": null
+      },
+      "playbook": {
+        "defaultPlaybook": "LODGING_HOUSING",
+        "jevPlaybook": "LODGING_HOUSING",
+        "applied": false,
+        "agreement": true,
+        "confidence": 0.87,
+        "technicalFallback": false,
+        "result": {
+          "decisionType": "RESEARCH_PLAYBOOK",
+          "decisionId": "gdi_jev_3d1639e41f219da4",
+          "selected": "LODGING_HOUSING",
+          "probabilities": {
+            "TRAINING_PROGRAM": 0,
+            "DEMAND_GENERATOR": 0,
+            "GOVERNMENT_PROJECT": 0,
+            "SPORTS_HOUSING": 0,
+            "EVENT_FUTURE_CYCLE": 0.11,
+            "GENERAL_FOLLOWUP": 0,
+            "VENUE_PARTNERSHIP": 0,
+            "LODGING_HOUSING": 0.89,
+            "SOURCE_AUTHORITY": 0,
+            "STOP": 0,
+            "CORPORATE_MOBILIZATION": 0,
+            "GEO_VERIFICATION": 0
+          },
+          "confidence": 0.87,
+          "model": "jev-1.13.0",
+          "modelVersion": "gdi_jev_decision_v1.1",
+          "latencyMs": 319,
+          "providerRequestId": null,
+          "shadow": true,
+          "fallbackUsed": false,
+          "technicalFallback": false,
+          "policyFallback": false,
+          "fallbackCause": null,
+          "error": null,
+          "existingDecision": "LODGING_HOUSING",
+          "matchExisting": true,
+          "policy": {
+            "hardGates": [],
+            "threshold": 0.45,
+            "lowConfidence": false,
+            "policyOutcome": "JEV_CANDIDATE",
+            "acceptedJev": "LODGING_HOUSING",
+            "reason": "jev_above_threshold",
+            "shadow": true,
+            "finalPolicyDecision": "LODGING_HOUSING",
+            "matchExisting": true,
+            "blockedActions": {
+              "autoRetire": true,
+              "autoPromote": true,
+              "writeOpportunity": true
+            }
+          },
+          "inputHash": "c5b338dca39f456484d8cd0b",
+          "costUsd": 0.000031122000000000005,
+          "finalPolicyDecision": "LODGING_HOUSING",
+          "usage": {
+            "input_tokens": 741,
+            "output_tokens": 164
+          },
+          "choicesOffered": [
+            "EVENT_FUTURE_CYCLE",
+            "LODGING_HOUSING",
+            "GEO_VERIFICATION",
+            "SOURCE_AUTHORITY",
+            "TRAINING_PROGRAM",
+            "GOVERNMENT_PROJECT",
+            "CORPORATE_MOBILIZATION",
+            "SPORTS_HOUSING",
+            "VENUE_PARTNERSHIP",
+            "DEMAND_GENERATOR",
+            "GENERAL_FOLLOWUP",
+            "STOP"
+          ]
+        }
+      },
+      "contactJev": {
+        "calls": 5,
+        "safeApply": 1,
+        "quality": {
+          "SAME": 3,
+          "HELPFUL_DIFFERENT": 0,
+          "WRONG": 0,
+          "UNKNOWN": 2,
+          "HIGH_CONFIDENCE_WRONG": 0
+        }
+      },
+      "person": "Climate Monitoring",
+      "role": null,
+      "whyNow": "Room-block / housing language found on official sources — confirm whether Midtown partners are still being accepted.",
+      "action": "Verify sourcing status is still open, then contact Climate Monitoring to introduce Hilton New York Times Square, request RFP/site-visit inclusion, and position Manhattan Midtown / Times Square / Hilton Hotels & Resorts brand / meeting inventory / guestroom capacity.",
+      "customerFacingState": "ACTIVE",
+      "priority": "WATCHLIST"
+    },
+    {
+      "id": "gdi_opp_fearless_leadership_symposium_14",
+      "title": "Fearless Leadership Symposium",
+      "contactBefore": "ORGANIZATION_PATH",
+      "contactAfter": "ORGANIZATION_PATH",
+      "gradeBefore": "D",
+      "gradeAfter": "D",
+      "lodging": {
+        "housingPage": true,
+        "roomBlock": true,
+        "overflow": true,
+        "attendance": null,
+        "peakRooms": null,
+        "housingOpen": null
+      },
+      "playbook": {
+        "defaultPlaybook": "LODGING_HOUSING",
+        "jevPlaybook": "LODGING_HOUSING",
+        "applied": false,
+        "agreement": true,
+        "confidence": 0.82,
+        "technicalFallback": false,
+        "result": {
+          "decisionType": "RESEARCH_PLAYBOOK",
+          "decisionId": "gdi_jev_808370a9664fb02f",
+          "selected": "LODGING_HOUSING",
+          "probabilities": {
+            "SOURCE_AUTHORITY": 0,
+            "CORPORATE_MOBILIZATION": 0,
+            "GENERAL_FOLLOWUP": 0,
+            "EVENT_FUTURE_CYCLE": 0.16,
+            "TRAINING_PROGRAM": 0,
+            "LODGING_HOUSING": 0.84,
+            "GEO_VERIFICATION": 0,
+            "VENUE_PARTNERSHIP": 0,
+            "DEMAND_GENERATOR": 0,
+            "STOP": 0,
+            "GOVERNMENT_PROJECT": 0,
+            "SPORTS_HOUSING": 0
+          },
+          "confidence": 0.82,
+          "model": "jev-1.13.0",
+          "modelVersion": "gdi_jev_decision_v1.1",
+          "latencyMs": 236,
+          "providerRequestId": null,
+          "shadow": true,
+          "fallbackUsed": false,
+          "technicalFallback": false,
+          "policyFallback": false,
+          "fallbackCause": null,
+          "error": null,
+          "existingDecision": "LODGING_HOUSING",
+          "matchExisting": true,
+          "policy": {
+            "hardGates": [],
+            "threshold": 0.45,
+            "lowConfidence": false,
+            "policyOutcome": "JEV_CANDIDATE",
+            "acceptedJev": "LODGING_HOUSING",
+            "reason": "jev_above_threshold",
+            "shadow": true,
+            "finalPolicyDecision": "LODGING_HOUSING",
+            "matchExisting": true,
+            "blockedActions": {
+              "autoRetire": true,
+              "autoPromote": true,
+              "writeOpportunity": true
+            }
+          },
+          "inputHash": "acf9ff9e5ea50612d4dab3f4",
+          "costUsd": 0.000030786000000000006,
+          "finalPolicyDecision": "LODGING_HOUSING",
+          "usage": {
+            "input_tokens": 733,
+            "output_tokens": 164
+          },
+          "choicesOffered": [
+            "EVENT_FUTURE_CYCLE",
+            "LODGING_HOUSING",
+            "GEO_VERIFICATION",
+            "SOURCE_AUTHORITY",
+            "TRAINING_PROGRAM",
+            "GOVERNMENT_PROJECT",
+            "CORPORATE_MOBILIZATION",
+            "SPORTS_HOUSING",
+            "VENUE_PARTNERSHIP",
+            "DEMAND_GENERATOR",
+            "GENERAL_FOLLOWUP",
+            "STOP"
+          ]
+        }
+      },
+      "contactJev": {
+        "calls": 5,
+        "safeApply": 0,
+        "quality": {
+          "SAME": 5,
+          "HELPFUL_DIFFERENT": 0,
+          "WRONG": 0,
+          "UNKNOWN": 0,
+          "HIGH_CONFIDENCE_WRONG": 0
+        }
+      },
+      "person": null,
+      "role": null,
+      "whyNow": "Room-block / housing language found on official sources — confirm whether Midtown partners are still being accepted.",
+      "action": "Past cycle — do not pursue this cycle. Monitor for confirmed next cycle / relationship only.",
+      "customerFacingState": "WATCH",
+      "priority": "WATCHLIST"
+    },
+    {
+      "id": "gdi_opp_ijcai_ecai_2026_9",
+      "title": "IJCAI-ECAI 2026",
+      "contactBefore": "NAMED_PARTIAL",
+      "contactAfter": "NAMED_PARTIAL",
+      "gradeBefore": "B",
+      "gradeAfter": "B",
+      "lodging": {
+        "housingPage": true,
+        "roomBlock": true,
+        "overflow": true,
+        "attendance": null,
+        "peakRooms": null,
+        "housingOpen": null
+      },
+      "playbook": {
+        "defaultPlaybook": "LODGING_HOUSING",
+        "jevPlaybook": "LODGING_HOUSING",
+        "applied": false,
+        "agreement": true,
+        "confidence": 0.99,
+        "technicalFallback": false,
+        "result": {
+          "decisionType": "RESEARCH_PLAYBOOK",
+          "decisionId": "gdi_jev_cb5b3f9fdf9a01ab",
+          "selected": "LODGING_HOUSING",
+          "probabilities": {
+            "EVENT_FUTURE_CYCLE": 0,
+            "VENUE_PARTNERSHIP": 0,
+            "SPORTS_HOUSING": 0,
+            "LODGING_HOUSING": 1,
+            "GENERAL_FOLLOWUP": 0,
+            "GOVERNMENT_PROJECT": 0,
+            "DEMAND_GENERATOR": 0,
+            "TRAINING_PROGRAM": 0,
+            "CORPORATE_MOBILIZATION": 0,
+            "STOP": 0,
+            "SOURCE_AUTHORITY": 0,
+            "GEO_VERIFICATION": 0
+          },
+          "confidence": 0.99,
+          "model": "jev-1.13.0",
+          "modelVersion": "gdi_jev_decision_v1.1",
+          "latencyMs": 256,
+          "providerRequestId": null,
+          "shadow": true,
+          "fallbackUsed": false,
+          "technicalFallback": false,
+          "policyFallback": false,
+          "fallbackCause": null,
+          "error": null,
+          "existingDecision": "LODGING_HOUSING",
+          "matchExisting": true,
+          "policy": {
+            "hardGates": [],
+            "threshold": 0.45,
+            "lowConfidence": false,
+            "policyOutcome": "JEV_CANDIDATE",
+            "acceptedJev": "LODGING_HOUSING",
+            "reason": "jev_above_threshold",
+            "shadow": true,
+            "finalPolicyDecision": "LODGING_HOUSING",
+            "matchExisting": true,
+            "blockedActions": {
+              "autoRetire": true,
+              "autoPromote": true,
+              "writeOpportunity": true
+            }
+          },
+          "inputHash": "4437d2d635380fd0e4f2a729",
+          "costUsd": 0.000030954,
+          "finalPolicyDecision": "LODGING_HOUSING",
+          "usage": {
+            "input_tokens": 737,
+            "output_tokens": 164
+          },
+          "choicesOffered": [
+            "EVENT_FUTURE_CYCLE",
+            "LODGING_HOUSING",
+            "GEO_VERIFICATION",
+            "SOURCE_AUTHORITY",
+            "TRAINING_PROGRAM",
+            "GOVERNMENT_PROJECT",
+            "CORPORATE_MOBILIZATION",
+            "SPORTS_HOUSING",
+            "VENUE_PARTNERSHIP",
+            "DEMAND_GENERATOR",
+            "GENERAL_FOLLOWUP",
+            "STOP"
+          ]
+        }
+      },
+      "contactJev": {
+        "calls": 5,
+        "safeApply": 1,
+        "quality": {
+          "SAME": 3,
+          "HELPFUL_DIFFERENT": 0,
+          "WRONG": 0,
+          "UNKNOWN": 2,
+          "HIGH_CONFIDENCE_WRONG": 0
+        }
+      },
+      "person": "Diego Calvanese Free",
+      "role": null,
+      "whyNow": "Room-block / housing language found on official sources — confirm whether Midtown partners are still being accepted.",
+      "action": "Past cycle — do not pursue this cycle. Monitor for confirmed next cycle / relationship only.",
+      "customerFacingState": "WATCH",
+      "priority": "WATCHLIST"
+    },
+    {
+      "id": "gdi_opp_uscbs_annual_meeting_conference_12",
+      "title": "USCBS Annual Meeting & Conference",
+      "contactBefore": "ORGANIZATION_PATH",
+      "contactAfter": "ORGANIZATION_PATH",
+      "gradeBefore": "D",
+      "gradeAfter": "D",
+      "lodging": {
+        "housingPage": false,
+        "roomBlock": false,
+        "overflow": false,
+        "attendance": null,
+        "peakRooms": null,
+        "housingOpen": null
+      },
+      "playbook": {
+        "defaultPlaybook": "LODGING_HOUSING",
+        "jevPlaybook": "LODGING_HOUSING",
+        "applied": false,
+        "agreement": true,
+        "confidence": 0.82,
+        "technicalFallback": false,
+        "result": {
+          "decisionType": "RESEARCH_PLAYBOOK",
+          "decisionId": "gdi_jev_808370a9664fb02f",
+          "selected": "LODGING_HOUSING",
+          "probabilities": {
+            "CORPORATE_MOBILIZATION": 0,
+            "DEMAND_GENERATOR": 0,
+            "GENERAL_FOLLOWUP": 0,
+            "STOP": 0,
+            "TRAINING_PROGRAM": 0,
+            "VENUE_PARTNERSHIP": 0,
+            "SPORTS_HOUSING": 0,
+            "GOVERNMENT_PROJECT": 0,
+            "GEO_VERIFICATION": 0,
+            "LODGING_HOUSING": 0.84,
+            "SOURCE_AUTHORITY": 0,
+            "EVENT_FUTURE_CYCLE": 0.16
+          },
+          "confidence": 0.82,
+          "model": "jev-1.13.0",
+          "modelVersion": "gdi_jev_decision_v1.1",
+          "latencyMs": 201,
+          "providerRequestId": null,
+          "shadow": true,
+          "fallbackUsed": false,
+          "technicalFallback": false,
+          "policyFallback": false,
+          "fallbackCause": null,
+          "error": null,
+          "existingDecision": "LODGING_HOUSING",
+          "matchExisting": true,
+          "policy": {
+            "hardGates": [],
+            "threshold": 0.45,
+            "lowConfidence": false,
+            "policyOutcome": "JEV_CANDIDATE",
+            "acceptedJev": "LODGING_HOUSING",
+            "reason": "jev_above_threshold",
+            "shadow": true,
+            "finalPolicyDecision": "LODGING_HOUSING",
+            "matchExisting": true,
+            "blockedActions": {
+              "autoRetire": true,
+              "autoPromote": true,
+              "writeOpportunity": true
+            }
+          },
+          "inputHash": "acf9ff9e5ea50612d4dab3f4",
+          "costUsd": 0.000030786000000000006,
+          "finalPolicyDecision": "LODGING_HOUSING",
+          "usage": {
+            "input_tokens": 733,
+            "output_tokens": 164
+          },
+          "choicesOffered": [
+            "EVENT_FUTURE_CYCLE",
+            "LODGING_HOUSING",
+            "GEO_VERIFICATION",
+            "SOURCE_AUTHORITY",
+            "TRAINING_PROGRAM",
+            "GOVERNMENT_PROJECT",
+            "CORPORATE_MOBILIZATION",
+            "SPORTS_HOUSING",
+            "VENUE_PARTNERSHIP",
+            "DEMAND_GENERATOR",
+            "GENERAL_FOLLOWUP",
+            "STOP"
+          ]
+        }
+      },
+      "contactJev": {
+        "calls": 5,
+        "safeApply": 0,
+        "quality": {
+          "SAME": 5,
+          "HELPFUL_DIFFERENT": 0,
+          "WRONG": 0,
+          "UNKNOWN": 0,
+          "HIGH_CONFIDENCE_WRONG": 0
+        }
+      },
+      "person": null,
+      "role": null,
+      "whyNow": "Monitor — housing / hotel sourcing not yet public for the 2026 cycle.",
+      "action": "Past cycle — do not pursue this cycle. Monitor for confirmed next cycle / relationship only.",
+      "customerFacingState": "FUTURE_WATCH",
+      "priority": "WATCHLIST"
+    }
+  ]
+}

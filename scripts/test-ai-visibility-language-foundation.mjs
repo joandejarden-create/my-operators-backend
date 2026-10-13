@@ -263,6 +263,20 @@ async function run() {
     });
     assert.equal(explicitEsMissing.status, "not_monitored");
     assert.equal(explicitEsMissing.SILENT_LANGUAGE_FALLBACK, false);
+    const legacyEnEmptyIndex = resolveReadLanguage({
+      requested: "en",
+      availableLanguages: [],
+    });
+    assert.equal(legacyEnEmptyIndex.ok, true);
+    assert.equal(legacyEnEmptyIndex.status, "ok");
+    assert.equal(legacyEnEmptyIndex.language, "en");
+    assert.equal(legacyEnEmptyIndex.resolvedFrom, "legacy_en_empty_language_index");
+    assert.equal(legacyEnEmptyIndex.SILENT_LANGUAGE_FALLBACK, false);
+    const explicitEsEmptyIndex = resolveReadLanguage({
+      requested: "es",
+      availableLanguages: [],
+    });
+    assert.equal(explicitEsEmptyIndex.status, "not_monitored");
     const contract = buildLanguageFilterContract(["en", "es"]);
     assert.equal(contract.visible, true);
     assert.equal(contract.ALL_LANGUAGES_OPTION, false);

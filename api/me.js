@@ -45,6 +45,12 @@ import {
   profilePhotoUrlFromFields,
   PUF,
 } from "../lib/airtable/platform-users-table.js";
+import { hasLocalDealalityAdminAccess } from "../lib/dealality/local-dealality-admin-access.js";
+import { canAccessAdpMonthlyReviewAdmin } from "../middleware/requireAdpMonthlyReviewAdminAccess.js";
+import {
+  buildLocalDemoMeResponse,
+  isEligibleForLocalDemoUserResolution,
+} from "../lib/dealality/local-demo-dealality-user.js";
 
 const BRAND_BASICS_TABLE = process.env.AIRTABLE_BRAND_SETUP_BASICS_TABLE || "Brand Setup - Brand Basics";
 const BRAND_NAME_FIELD = process.env.AIRTABLE_BRAND_NAME_FIELD || "Brand Name";
@@ -61,7 +67,13 @@ const BRAND_LINK_FIELD =
 const REGIONS_FIELD =
   process.env.AIRTABLE_ME_USERS_REGIONS_FIELD || "HO - PI - Regions Where You Operate / Invest";
 
-const MEMBERSTACK_MATCH_FIELDS = (process.env.AIRTABLE_ME_USERS_MEMBERSTACK_FIELDS || INTAKE_USERS_UNIQUE_WEBFLOW_ID)
+/** Unique Webflow ID + Slug — Slug often holds the live mem_… id. */
+const DEFAULT_MEMBERSTACK_MATCH_FIELDS = [
+  INTAKE_USERS_UNIQUE_WEBFLOW_ID,
+  process.env.AIRTABLE_USERS_SLUG_FIELD || "fldEgbHu5MvfyrxgE",
+].join(",");
+
+const MEMBERSTACK_MATCH_FIELDS = (process.env.AIRTABLE_ME_USERS_MEMBERSTACK_FIELDS || DEFAULT_MEMBERSTACK_MATCH_FIELDS)
   .split(",")
   .map((s) => s.trim())
   .filter(Boolean);
@@ -175,42 +187,58 @@ async function getMe(req, res) {
   }
 
   const token = bearerToken(req);
-  if (!token) {
+  const devBypassEmail =
+    process.env.NODE_ENV !== "production" && process.env.DEV_AUTH_BYPASS_EMAIL
+      ? String(process.env.DEV_AUTH_BYPASS_EMAIL).trim().toLowerCase()
+      : "";
+
+  let memberstackId = null;
+  let emailFromToken = null;
+  let tokenPayload = {};
+  let verifiedVia = "memberstack_jwt";
+
+  if (!token && devBypassEmail) {
+    // Mirror memberstackAuth local bypass — never production.
+    memberstackId = "dev_bypass";
+    emailFromToken = devBypassEmail;
+    tokenPayload = { id: memberstackId, email: emailFromToken };
+    verifiedVia = "dev_bypass";
+  } else if (!token) {
     return res.status(401).json({
       success: false,
       error: "authentication_required",
       message: "Send Authorization: Bearer <Memberstack member JWT>.",
     });
+  } else {
+    let verified;
+    try {
+      verified = await verifyMemberstackToken(token);
+    } catch (err) {
+      const msg = (err && err.message) || String(err);
+      const expired = /expired|exp/i.test(msg);
+      return res.status(401).json({
+        success: false,
+        error: expired ? "token_expired" : "invalid_token",
+        message: expired ? "Token expired." : "Invalid or unverifiable Memberstack token.",
+      });
+    }
+
+    memberstackId = verified && verified.id;
+    if (!memberstackId || typeof memberstackId !== "string") {
+      return res.status(401).json({
+        success: false,
+        error: "invalid_token_payload",
+        message: "Verified token did not include a member id.",
+      });
+    }
+
+    emailFromToken =
+      (verified.email && String(verified.email).trim().toLowerCase()) ||
+      pickEmailFromPayload(verified.raw);
+
+    tokenPayload =
+      verified.raw && typeof verified.raw === "object" ? verified.raw : {};
   }
-
-  let verified;
-  try {
-    verified = await verifyMemberstackToken(token);
-  } catch (err) {
-    const msg = (err && err.message) || String(err);
-    const expired = /expired|exp/i.test(msg);
-    return res.status(401).json({
-      success: false,
-      error: expired ? "token_expired" : "invalid_token",
-      message: expired ? "Token expired." : "Invalid or unverifiable Memberstack token.",
-    });
-  }
-
-  const memberstackId = verified && verified.id;
-  if (!memberstackId || typeof memberstackId !== "string") {
-    return res.status(401).json({
-      success: false,
-      error: "invalid_token_payload",
-      message: "Verified token did not include a member id.",
-    });
-  }
-
-  const emailFromToken =
-    (verified.email && String(verified.email).trim().toLowerCase()) ||
-    pickEmailFromPayload(verified.raw);
-
-  const tokenPayload =
-    verified.raw && typeof verified.raw === "object" ? verified.raw : {};
 
   const apiKey = process.env.AIRTABLE_API_KEY;
   const baseId = process.env.AIRTABLE_BASE_ID;
@@ -239,6 +267,20 @@ async function getMe(req, res) {
   }
 
   if (!userRows.length) {
+    // LOCAL DEV ONLY — approved demo identity with no Airtable Users row.
+    if (isEligibleForLocalDemoUserResolution(emailFromToken, req)) {
+      const localPayload = buildLocalDemoMeResponse({
+        memberstackId,
+        email: emailFromToken,
+        req,
+        tokenPayload,
+        matchedBy:
+          verifiedVia === "dev_bypass" ? "local_demo_dev_bypass" : "local_demo_fallback",
+      });
+      if (localPayload) {
+        return res.json(localPayload);
+      }
+    }
     return res.status(404).json({
       success: false,
       error: "user_not_found",
@@ -481,6 +523,16 @@ async function getMe(req, res) {
     ...dealality,
     companyIds: companyProfileIds,
   });
+
+  // ADP admin tools — same decision as middleware (nav/page/API parity).
+  // Local QA: approved demo email on localhost/dev. Production: RBAC only.
+  const adminProbe = {
+    ...dealality,
+    email,
+    companyIds: companyProfileIds,
+  };
+  dealality.localDealalityAdminAccess = hasLocalDealalityAdminAccess(adminProbe, req);
+  dealality.adpMonthlyReviewAdmin = canAccessAdpMonthlyReviewAdmin(adminProbe, req);
 
   return res.json({
     success: true,

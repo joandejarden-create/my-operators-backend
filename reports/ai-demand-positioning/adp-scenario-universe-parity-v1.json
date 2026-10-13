@@ -1,0 +1,282 @@
+{
+  "ok": true,
+  "audit": "ADP_SCENARIO_UNIVERSE_PARITY_V1",
+  "timestamp": "2026-09-25T11:52:42.328Z",
+  "rootCauseOf20": "GENERIC_FALLBACK_PACK",
+  "rootCauseDetail": "Rome has no entry in resolveStandardScenarioMarket / getStandardScenarios; generatePropertyScenarios returns [] for adp_w_rome; buildScenarioUniverse fell through to the thin 20-row generateGenericProfileScenarios v1 pack. Not certification truncation. Not intentional methodology change.",
+  "classification": [
+    "GENERIC_FALLBACK_PACK",
+    "MARKET_LAYER_NOT_GENERATED",
+    "LEGACY_NEW-HOTEL_PATH"
+  ],
+  "canonicalFramework": {
+    "layers": [
+      "CORE_UNIVERSAL",
+      "HOTEL_ARCHETYPE",
+      "MARKET_DESTINATION",
+      "PROPERTY_CAPABILITY"
+    ],
+    "maturePath": "standard market pack (~45–50) + property-specific pack (~15) ≈ 60–65",
+    "newMarketPath": "generic parity pack v2 (destination/archetype ~48 + property-capability ~15) ≈ 63 — profile-driven, no market hardcodes"
+  },
+  "comparison": {
+    "bethesda": {
+      "propertyId": "adp_bethesda_marriott",
+      "name": "Bethesda Marriott",
+      "market": "Bethesda / Montgomery County",
+      "chainScale": "Upper Upscale",
+      "resolvedMarketKey": "bethesda_montgomery",
+      "standardPackCount": 48,
+      "propertySpecificCount": 15,
+      "universeCount": 63,
+      "bySource": {
+        "standard": 48,
+        "property_specific": 15
+      },
+      "byIntent": {
+        "business": 14,
+        "leisure": 11,
+        "couples": 9,
+        "group_meeting": 11,
+        "family": 5,
+        "celebration": 7,
+        "wellness": 4,
+        "adventure": 2
+      },
+      "certifiedMarketPack": true,
+      "propertyPack": true,
+      "fallbackUsed": false,
+      "storedPeriodId": "adp_period_adp_bethesda_marriott_20260909091016_9f3a60",
+      "storedObservationCount": 252,
+      "storedScenarioCount": 63,
+      "storedProviders": [
+        "openai",
+        "gemini",
+        "perplexity",
+        "claude"
+      ],
+      "scenarioUniverseVersion": "adp_scenario_universe_v1",
+      "certified": false,
+      "officialPeriod": true,
+      "expectedProviderPrompts": 252
+    },
+    "renaissance": {
+      "propertyId": "adp_renaissance_times_square",
+      "name": "Renaissance New York Times Square Hotel",
+      "market": "New York City",
+      "chainScale": "Upper Upscale",
+      "resolvedMarketKey": "nyc_times_square",
+      "standardPackCount": 50,
+      "propertySpecificCount": 15,
+      "universeCount": 65,
+      "bySource": {
+        "standard": 50,
+        "property_specific": 15
+      },
+      "byIntent": {
+        "business": 13,
+        "leisure": 13,
+        "couples": 9,
+        "group_meeting": 12,
+        "family": 6,
+        "celebration": 7,
+        "wellness": 2,
+        "adventure": 3
+      },
+      "certifiedMarketPack": true,
+      "propertyPack": true,
+      "fallbackUsed": false,
+      "storedPeriodId": "adp_period_adp_renaissance_times_square_20260902235427_7d74ca",
+      "storedObservationCount": 260,
+      "storedScenarioCount": 65,
+      "storedProviders": [
+        "openai",
+        "gemini",
+        "perplexity",
+        "claude"
+      ],
+      "scenarioUniverseVersion": "adp_scenario_universe_v1",
+      "certified": true,
+      "officialPeriod": true,
+      "expectedProviderPrompts": 260
+    },
+    "wRomeBefore": {
+      "propertyId": "adp_w_rome",
+      "name": "W Rome",
+      "market": "Rome",
+      "chainScale": "Luxury",
+      "resolvedMarketKey": "Rome",
+      "standardPackCount": 0,
+      "propertySpecificCount": 0,
+      "universeCount": 20,
+      "bySource": {
+        "generic_profile": 48,
+        "generic_property_capability": 15
+      },
+      "byIntent": {
+        "business": 13,
+        "leisure": 11,
+        "couples": 9,
+        "group_meeting": 11,
+        "celebration": 7,
+        "family": 5,
+        "wellness": 4,
+        "adventure": 3
+      },
+      "certifiedMarketPack": false,
+      "propertyPack": false,
+      "fallbackUsed": true,
+      "storedPeriodId": "adp_period_adp_w_rome_20260925105322_1192cf",
+      "storedObservationCount": 80,
+      "storedScenarioCount": 20,
+      "storedProviders": [
+        "openai",
+        "gemini",
+        "perplexity",
+        "claude"
+      ],
+      "scenarioUniverseVersion": "adp_generic_profile_scenarios_v1",
+      "certified": true,
+      "officialPeriod": true,
+      "expectedProviderPrompts": 252,
+      "note": "Stored baseline used adp_generic_profile_scenarios_v1 (20 rows)"
+    },
+    "wRomeCorrected": {
+      "propertyId": "adp_w_rome",
+      "version": "adp_generic_profile_scenarios_v2",
+      "universeCount": 63,
+      "layers": {
+        "core": 16,
+        "archetype": 16,
+        "market": 16,
+        "property_capability": 15,
+        "total": 63,
+        "destinationArchetypePack": 48
+      },
+      "bySource": {
+        "generic_profile": 48,
+        "generic_property_capability": 15
+      },
+      "byIntent": {
+        "business": 13,
+        "leisure": 11,
+        "couples": 9,
+        "group_meeting": 11,
+        "celebration": 7,
+        "family": 5,
+        "wellness": 4,
+        "adventure": 3
+      },
+      "certifiedMarketPack": false,
+      "fallbackUsed": true,
+      "fallbackClass": "GENERIC_PARITY_V2",
+      "expectedProviderPrompts": 252
+    }
+  },
+  "parityTable": {
+    "dimensions": [
+      "scenario_count",
+      "demand_territory_intents",
+      "provider_count",
+      "total_expected_provider_prompts",
+      "generic_scenarios",
+      "hotel_specific_scenarios",
+      "market_specific_scenarios",
+      "certified_scenario_pack",
+      "fallback_used"
+    ],
+    "Bethesda": {
+      "scenario_count": 63,
+      "demand_territory_intents": 8,
+      "provider_count": 4,
+      "total_expected_provider_prompts": 252,
+      "generic_scenarios": 0,
+      "hotel_specific_scenarios": 15,
+      "market_specific_scenarios": 48,
+      "certified_scenario_pack": true,
+      "fallback_used": false
+    },
+    "Renaissance": {
+      "scenario_count": 65,
+      "demand_territory_intents": 8,
+      "provider_count": 4,
+      "total_expected_provider_prompts": 260,
+      "generic_scenarios": 0,
+      "hotel_specific_scenarios": 15,
+      "market_specific_scenarios": 50,
+      "certified_scenario_pack": true,
+      "fallback_used": false
+    },
+    "WRomeBefore": {
+      "scenario_count": 20,
+      "demand_territory_intents": 8,
+      "provider_count": 4,
+      "total_expected_provider_prompts": 80,
+      "generic_scenarios": 20,
+      "hotel_specific_scenarios": 0,
+      "market_specific_scenarios": 0,
+      "certified_scenario_pack": false,
+      "fallback_used": true
+    },
+    "WRomeCorrected": {
+      "scenario_count": 63,
+      "demand_territory_intents": 8,
+      "provider_count": 4,
+      "total_expected_provider_prompts": 252,
+      "generic_scenarios": 48,
+      "hotel_specific_scenarios": 15,
+      "market_specific_scenarios": 0,
+      "certified_scenario_pack": false,
+      "fallback_used": true,
+      "fallback_note": "Generic parity v2 replaces thin v1; still no Rome market pack (by design — no Rome hardcodes)"
+    }
+  },
+  "proposedFullSet": {
+    "TOTAL": 63,
+    "CORE": 16,
+    "ARCHETYPE": 16,
+    "MARKET": 16,
+    "PROPERTY_CAPABILITY": 15,
+    "DEMAND_TERRITORIES": 8
+  },
+  "vsExisting20": {
+    "existing_scenarios_retained": 20,
+    "existing_scenarios_dropped": 0,
+    "new_scenarios_added": 43,
+    "duplicate_scenarios": 0,
+    "retained_scenario_ids_sample": [
+      "gen_adp_w_rome_01",
+      "gen_adp_w_rome_02",
+      "gen_adp_w_rome_03",
+      "gen_adp_w_rome_04",
+      "gen_adp_w_rome_05"
+    ],
+    "dropped_scenario_ids": [],
+    "v1_query_lock_preserved": true,
+    "note": "gen_adp_w_rome_01..20 IDs and queries preserved; prop_gen_* and gen_*21+ are new"
+  },
+  "selectiveRerun": {
+    "doNotRerunProvidersYet": true,
+    "existing20RerunRequired": false,
+    "existing20Reason": "Raw responses complete and valid; prompt definitions for gen_01..20 unchanged",
+    "newScenariosNeverAsked": 43,
+    "newProviderCallsRequired": 172,
+    "estimatedCostUsd": 5.59,
+    "fullBaselineCostUsd": 8.19,
+    "costBreakdownNew": {
+      "openai": 1.29,
+      "gemini": 0.86,
+      "perplexity": 2.15,
+      "claude": 1.29
+    },
+    "fullNewBaselineRequired": true,
+    "why": "Corrected universe uses scenarioUniverseVersion adp_generic_profile_scenarios_v2 and adds 43 never-asked scenarios. Methodology does not permit silently merging into the certified 20-scenario period; publish a new official baseline period that includes retained 20 + new 43 (or re-execute full 63 for period consistency).",
+    "mergeIntoExistingPeriodAllowed": false
+  },
+  "remainingDifferencesVsPeers": {
+    "bethesda": 63,
+    "renaissance": 65,
+    "wRomeCorrected": 63,
+    "explain": "Corrected W Rome (~63) matches Bethesda density via generic parity. Remains without a certified Rome market pack (intentional — no Rome/Italy production hardcodes). Intent mix may differ slightly from NYC/Bethesda market packs because destination prompts are profile-synthesized rather than stewarded market templates."
+  }
+}

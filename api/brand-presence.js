@@ -7,33 +7,12 @@ import {
   searchFixtureHotels,
   shouldUseMexicoRadarFixtureFallback,
 } from "../lib/hotel-intelligence/golden-demo/mexico-radar-fixture-fallback.js";
-import { applyProductCensusQuarantine } from "../lib/hotel-census/product-safe-census-fields.js";
-import {
-  BRAND_PRESENCE_HPC_V2_FLAG,
-  HPC_TABLE,
-  formatHpcHotelRecord,
-  getHpcTableSelectOptions,
-} from "../lib/hotel-census/brand-presence-hpc-adapter.js";
-import {
-  brandPresenceReadCounters,
-  resolveLegacyIdToHpcId,
-  shouldUseHpcBrandPresence,
-  snapshotBrandPresenceReadCounters,
-} from "../lib/hotel-census/brand-presence-hpc-request.js";
 
 const AIRTABLE_KEY = process.env.AIRTABLE_API_KEY;
 const AIRTABLE_BASE = process.env.AIRTABLE_BASE_ID_ALT;
 const base = (AIRTABLE_KEY && AIRTABLE_BASE)
   ? new Airtable({ apiKey: AIRTABLE_KEY }).base(AIRTABLE_BASE)
   : null;
-
-/**
- * P8.5: HPC only when flag ON *and* HE opt-in (censusSource=hpc / product=hotel-explorer).
- * Scout/Radar omit opt-in → Legacy. Never silent Legacy on HPC path.
- */
-function useHpcBrandPresence(req) {
-  return shouldUseHpcBrandPresence(req);
-}
 
 function ensureBrandPresenceConfig(res) {
   if (base) return true;
@@ -46,29 +25,6 @@ function fixtureHotelResponse(recordId) {
   if (!hotel) return null;
   hotel.amenitiesDisplay = buildHiltonAmenitiesDisplay(hotel);
   return { success: true, hotel, source: "golden_demo_radar_fixture" };
-}
-
-function fixtureSearchResponse({ search, limit, page = 0, view = "full" } = {}) {
-  if (!shouldUseMexicoRadarFixtureFallback({ search, country: search })) return null;
-  const hotels = searchFixtureHotels(search || "", { limit: limit || 400 });
-  if (!hotels.length) return null;
-  return {
-    success: true,
-    hotels,
-    statistics: {},
-    insights: [],
-    totalCount: hotels.length,
-    totalWithCoordinates: hotels.filter(
-      (h) => Number.isFinite(h.lat) && Number.isFinite(h.lng) && (h.lat !== 0 || h.lng !== 0)
-    ).length,
-    skippedNoCoordinates: 0,
-    hasMore: false,
-    page: parseInt(page, 10) || 0,
-    limit,
-    view,
-    cached: false,
-    source: "golden_demo_radar_fixture",
-  };
 }
 
 // In-memory cache for performance optimization
@@ -252,8 +208,7 @@ function formatHotelRecord(hotel) {
     spa: readYnFlag(fields, F.hotels.spa)
   };
 
-  // P8.1: quarantine high-risk legacy fields (STR Number) from product DTOs.
-  return applyProductCensusQuarantine({
+  return {
     id: hotel.id,
     name: readTextField(fields, F.hotels.name) || "Unknown Hotel",
     brand: readTextField(fields, F.hotels.brand) || "Unknown Brand",
@@ -295,7 +250,7 @@ function formatHotelRecord(hotel) {
     censusPropertyType: readTextField(fields, F.hotels.censusPropertyType),
     hotelServiceModel: readTextField(fields, F.hotels.hotelServiceModel),
     amenityFlags
-  });
+  };
 }
 
 // Single hotel detail — fresh read for detail panel (amenities, website, phone, etc.)
@@ -312,47 +267,6 @@ export async function getBrandPresenceHotelById(req, res) {
   }
 
   try {
-    if (useHpcBrandPresence(req)) {
-      // P8.5 HE path: HPC find by id, or frozen Legacy→HPC id map (not a Legacy table read).
-      let hpcRecordId = recordId;
-      let resolvedViaMap = false;
-      let hotel;
-      try {
-        hotel = await base(HPC_TABLE).find(hpcRecordId);
-      } catch (firstErr) {
-        if (firstErr?.statusCode === 404) {
-          const mapped = resolveLegacyIdToHpcId(recordId);
-          if (mapped) {
-            hpcRecordId = mapped;
-            resolvedViaMap = true;
-            brandPresenceReadCounters.legacyIdResolvedViaMap += 1;
-            hotel = await base(HPC_TABLE).find(hpcRecordId);
-          } else {
-            throw firstErr;
-          }
-        } else {
-          throw firstErr;
-        }
-      }
-      brandPresenceReadCounters.hpc += 1;
-      const formatted = formatHpcHotelRecord(hotel);
-      formatted.amenitiesDisplay = buildHiltonAmenitiesDisplay(formatted);
-      if (resolvedViaMap) {
-        formatted.legacyRecordId = recordId;
-      }
-      return res.json({
-        success: true,
-        hotel: formatted,
-        source: "hotel_property_census",
-        adapter: "brand-presence-hpc-v2",
-        flag: BRAND_PRESENCE_HPC_V2_FLAG,
-        resolvedViaLegacyIdMap: resolvedViaMap,
-        noLegacyFallback: true,
-        readCounters: snapshotBrandPresenceReadCounters(),
-      });
-    }
-
-    brandPresenceReadCounters.legacy += 1;
     const hotel = await base(F.hotels.table).find(recordId);
     const formatted = formatHotelRecord(hotel);
     formatted.amenitiesDisplay = buildHiltonAmenitiesDisplay(formatted);
@@ -369,32 +283,14 @@ export async function getBrandPresenceHotelById(req, res) {
         formatted.market = presentation.market || formatted.market;
         formatted.submarket = presentation.submarket || formatted.submarket;
         formatted.website = presentation.website || formatted.website;
-        // Fill narrative only when census is empty; never clobber richer census text with stubs.
-        if (!String(formatted.hotelDescription || "").trim() && presentation.hotelDescription) {
-          formatted.hotelDescription = presentation.hotelDescription;
-        }
-        if (!String(formatted.amenities || "").trim() && presentation.amenities) {
-          formatted.amenities = presentation.amenities;
-        }
+        formatted.hotelDescription =
+          presentation.hotelDescription || formatted.hotelDescription;
+        formatted.amenities = presentation.amenities || formatted.amenities;
         formatted.amenitiesDisplay = buildHiltonAmenitiesDisplay(formatted);
       }
     }
-
     res.json({ success: true, hotel: formatted });
   } catch (error) {
-    if (useHpcBrandPresence(req)) {
-      brandPresenceReadCounters.hpcMiss += 1;
-      const status = error?.statusCode === 404 ? 404 : 500;
-      console.error("[brand-presence-hpc-v2] hotel detail failed (no Legacy fallback):", error?.message || error);
-      return res.status(status).json({
-        success: false,
-        error: status === 404 ? "Hotel record not found in Hotel Property Census" : "Internal Server Error",
-        details: error.message,
-        adapter: "brand-presence-hpc-v2",
-        noLegacyFallback: true,
-        readCounters: snapshotBrandPresenceReadCounters(),
-      });
-    }
     const fixture = fixtureHotelResponse(recordId);
     if (fixture) {
       console.warn(
@@ -414,117 +310,84 @@ export async function getBrandPresenceHotelById(req, res) {
   }
 }
 
+function escapeAirtableString(value) {
+  return String(value || "").replace(/'/g, "\\'");
+}
+
 // Get brand presence data
 export async function getBrandPresence(req, res) {
   const requestedLimit = parseInt(req.query.limit, 10);
   const limit = Number.isFinite(requestedLimit) && requestedLimit > 0 ? requestedLimit : null;
   const { brand, status, region, search, page = 0 } = req.query;
-  const view = "full";
+  const country = String(req.query.country || "").trim();
+
+  function fixtureSearchResponse() {
+    if (!shouldUseMexicoRadarFixtureFallback({ search, country: search })) return null;
+    const hotels = searchFixtureHotels(search || "", { limit: limit || 400 });
+    if (!hotels.length) return null;
+    return {
+      success: true,
+      hotels,
+      statistics: {},
+      insights: [],
+      totalCount: hotels.length,
+      totalWithCoordinates: hotels.filter(
+        (h) => Number.isFinite(h.lat) && Number.isFinite(h.lng) && (h.lat !== 0 || h.lng !== 0)
+      ).length,
+      skippedNoCoordinates: 0,
+      hasMore: false,
+      page: parseInt(page, 10) || 0,
+      limit,
+      cached: false,
+      source: "golden_demo_radar_fixture",
+    };
+  }
 
   if (!base) {
-    const fixture = fixtureSearchResponse({ search, limit, page, view });
+    const fixture = fixtureSearchResponse();
     if (fixture) return res.json(fixture);
     return res.status(500).json({ error: "Missing Airtable API key or base id for brand presence" });
   }
 
   try {
     // Check cache first
-    const useHpc = useHpcBrandPresence(req);
-    const cacheKey = getCacheKey({
-      brand,
-      status,
-      region,
-      search,
-      limit,
-      page,
-      hpc: useHpc ? 1 : 0,
-    });
+    const cacheKey = getCacheKey({ brand, status, region, country, search, limit, page });
     const cachedData = getFromCache(cacheKey);
     
     if (cachedData) {
       console.log('📦 Serving from cache:', cacheKey);
       return res.json(cachedData);
     }
-
-    // P8.5 HE-opted HPC path — no Legacy Hotel Census query.
-    if (useHpc) {
-      brandPresenceReadCounters.hpc += 1;
-      console.log("🔄 Fetching Brand Presence from Hotel Property Census (HPC V2 / HE opt-in):", {
-        brand,
-        status,
-        region,
-        search,
-        limit,
-        page,
-      });
-      const selectOptions = getHpcTableSelectOptions({
-        limit,
-        page,
-        brand,
-        status,
-        region,
-        search,
-      });
-      selectOptions.sort = [{ field: "Property Name", direction: "asc" }];
-      const hotels = await base(HPC_TABLE).select(selectOptions).all();
-      let skippedNoCoordinates = 0;
-      const formattedHotels = hotels.map((hotel) => {
-        const formatted = formatHpcHotelRecord(hotel);
-        const hasCoords =
-          Number.isFinite(formatted.lat) &&
-          Number.isFinite(formatted.lng) &&
-          (formatted.lat !== 0 || formatted.lng !== 0);
-        if (!hasCoords) skippedNoCoordinates++;
-        return formatted;
-      });
-      const stats = calculateStatistics(formattedHotels);
-      const insights = generateInsights(formattedHotels);
-      const response = {
-        success: true,
-        hotels: formattedHotels,
-        statistics: stats,
-        insights,
-        totalCount: formattedHotels.length,
-        totalWithCoordinates: formattedHotels.length - skippedNoCoordinates,
-        skippedNoCoordinates,
-        hasMore: !!limit && hotels.length === limit,
-        page: parseInt(page, 10),
-        limit,
-        cached: false,
-        source: "hotel_property_census",
-        adapter: "brand-presence-hpc-v2",
-        flag: BRAND_PRESENCE_HPC_V2_FLAG,
-        noLegacyFallback: true,
-        readCounters: snapshotBrandPresenceReadCounters(),
-      };
-      setCache(cacheKey, response);
-      return res.json(response);
-    }
-
-    brandPresenceReadCounters.legacy += 1;
-    console.log('🔄 Fetching from Airtable:', { brand, status, region, search, limit, page });
+    
+    console.log('🔄 Fetching from Airtable:', { brand, status, region, country, search, limit, page });
     
     // Build filter formula
     let filterFormula = '';
     const conditions = [];
     
     if (brand) {
-      conditions.push(`{${F.hotels.brand}} = '${brand}'`);
+      conditions.push(`{${F.hotels.brand}} = '${escapeAirtableString(brand)}'`);
     }
     
     if (status) {
-      conditions.push(`{${F.hotels.status}} = '${status}'`);
+      conditions.push(`{${F.hotels.status}} = '${escapeAirtableString(status)}'`);
     }
     
     if (region) {
-      conditions.push(`{${F.hotels.region}} = '${region}'`);
+      conditions.push(`{${F.hotels.region}} = '${escapeAirtableString(region)}'`);
+    }
+
+    // Share / scoped reads: filter at source so Mexico packs do not download all markets.
+    if (country) {
+      conditions.push(`{${F.hotels.country}} = '${escapeAirtableString(country)}'`);
     }
     
     if (search) {
+      const safeSearch = escapeAirtableString(search);
       const searchConditions = [
-        `SEARCH('${search}', {${F.hotels.name}})`,
-        `SEARCH('${search}', {${F.hotels.city}})`,
-        `SEARCH('${search}', {${F.hotels.country}})`
+        `SEARCH('${safeSearch}', {${F.hotels.name}})`,
+        `SEARCH('${safeSearch}', {${F.hotels.city}})`,
+        `SEARCH('${safeSearch}', {${F.hotels.country}})`
       ];
       conditions.push(`OR(${searchConditions.join(', ')})`);
     }
@@ -552,16 +415,6 @@ export async function getBrandPresence(req, res) {
     try {
       hotels = await base(F.hotels.table).select(selectOptions).all();
     } catch (selectErr) {
-      if (isAirtableCredentialError(selectErr)) {
-        const fixture = fixtureSearchResponse({ search, limit, page, view });
-        if (fixture) {
-          console.warn(
-            "[brand-presence] search falling back to golden-demo fixture",
-            selectErr?.message || selectErr
-          );
-          return res.json(fixture);
-        }
-      }
       const msg = String(selectErr?.message || selectErr || "");
       if (
         selectErr?.error === "UNKNOWN_FIELD_NAME" ||
@@ -613,46 +466,21 @@ export async function getBrandPresence(req, res) {
     res.json(response);
     
   } catch (error) {
-    if (useHpcBrandPresence(req)) {
-      console.error("[brand-presence-hpc-v2] search failed (no Legacy fallback):", error?.message || error);
-      return res.status(500).json({
-        success: false,
-        error: "Internal Server Error",
-        details: error.message,
-        adapter: "brand-presence-hpc-v2",
-        noLegacyFallback: true,
-        readCounters: snapshotBrandPresenceReadCounters(),
-      });
-    }
-    if (isAirtableCredentialError(error)) {
-      const fixture = fixtureSearchResponse({
-        search: req.query?.search,
-        limit: Number.isFinite(parseInt(req.query?.limit, 10))
-          ? parseInt(req.query.limit, 10)
-          : null,
-        page: req.query?.page || 0,
-        view: "full",
-      });
+    const fixture = fixtureSearchResponse();
+    if (fixture || isAirtableCredentialError(error)) {
       if (fixture) {
         console.warn(
-          "[brand-presence] search catch falling back to golden-demo fixture",
+          "[brand-presence] search falling back to golden-demo fixture",
+          search,
           error?.message || error
         );
         return res.json(fixture);
       }
     }
-    const fixture = fixtureSearchResponse();
-    if (fixture) {
-      console.warn(
-        "[brand-presence] search catch falling back to golden-demo fixture",
-        error?.message || error
-      );
-      return res.json(fixture);
-    }
     console.error("Error getting brand presence data:", error);
     res.status(500).json({ 
-      error: "Internal Server Error", 
-      details: error.message 
+      error: "Internal Server Error",
+      details: error.message
     });
   }
 }
@@ -1024,12 +852,11 @@ export async function exportBrandPresenceData(req, res) {
 
 // Convert to CSV
 function convertToCSV(hotels) {
-  // P8.1: do not export quarantined STR Number in product CSV.
   const headers = [
-    'Name', 'Brand', 'Status', 'City', 'Country', 'Region',
-    'Rooms', 'Chain Scale', 'Project Phase'
+    'Name', 'Brand', 'Status', 'City', 'Country', 'Region', 
+    'Rooms', 'STR Number', 'Chain Scale', 'Project Phase'
   ];
-
+  
   const rows = hotels.map(hotel => [
     hotel.name,
     hotel.brand,
@@ -1038,11 +865,12 @@ function convertToCSV(hotels) {
     hotel.country,
     hotel.region,
     hotel.rooms,
+    hotel.strNumber || '',
     hotel.chainScale || '',
     hotel.projectPhase || ''
   ]);
-
-  return [headers, ...rows].map(row =>
+  
+  return [headers, ...rows].map(row => 
     row.map(field => `"${field}"`).join(',')
   ).join('\n');
 }

@@ -1,0 +1,10 @@
+# 003 — Ownership States
+
+```json
+{
+  "PROPCO_AND_SPONSOR": 1,
+  "RESOLVED_OWNER_STRUCTURE": 12,
+  "WEAK_EVIDENCE": 7,
+  "UNRESOLVED_WITH_EXHAUSTIVE_SEARCH": 1
+}
+```

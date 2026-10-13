@@ -1,0 +1,111 @@
+{
+  "hotelId": "recsn3BUKJ9PNfeZW",
+  "displayName": "JW Marriott Hotel Monterrey Valle",
+  "hotelIdentityStatus": "CANONICAL_HPC",
+  "aliases": {
+    "adpPropertyId": "adp_jw_marriott_monterrey_valle",
+    "marriottPropertyCode": "MTYJW",
+    "censusRecordId": "recsn3BUKJ9PNfeZW",
+    "note": "Canonical hotelId is HPC record. V8 3-hotel blind validation Hotel C."
+  },
+  "adpFixturePath": "fixtures/ai-demand-positioning/jw-marriott-monterrey-valle-property-profile.json",
+  "commercialPriorities": {
+    "targetSegments": [],
+    "coreTargetPeakRoomsMin": 40,
+    "coreTargetPeakRoomsMax": 150,
+    "allowSmallerIfCommerciallyMeaningful": true,
+    "demandAnchorFocus": [],
+    "weekendFocus": false,
+    "notes": "HOTEL_SPECIFIC_DATA from ADP rooms=250 and meeting capacity ~600. Peak band for Valle corporate primary pursuit. targetSegments empty — no demand-type seeding."
+  },
+  "capabilityProfile": {
+    "totalGuestrooms": 250,
+    "totalMeetingSpaceSqFt": null,
+    "largestBallroomSqFt": null,
+    "largestTheaterCapacity": 600,
+    "meetingRoomsIndoor": null,
+    "outdoorEventSpace": true,
+    "softBrand": "JW Marriott",
+    "serviceLevel": "full_service_luxury",
+    "classification": "monterrey_valle_corporate_luxury",
+    "notes": "HOTEL_SPECIFIC_DATA from ADP RO fixture — Aimbridge LATAM managed.",
+    "meetingRoomCount": 11
+  },
+  "demandTerritory": {
+    "label": "Monterrey Valle / San Pedro",
+    "includes": [
+      "San Pedro Garza García / Valle Oriente / Valle del Campestre",
+      "Monterrey metro where JW Valle is a credible luxury alternative",
+      "selected regional Mexico corporate demand when Monterrey destination is evidenced"
+    ],
+    "evaluationQuestion": "Could JW Marriott Monterrey Valle realistically capture this group demand given Valle corporate positioning?",
+    "classifications": [
+      "TERRITORY_CORE",
+      "TERRITORY_NEARBY",
+      "TERRITORY_COMPETITIVE",
+      "TERRITORY_STRETCH",
+      "OUTSIDE_REALISTIC_TERRITORY"
+    ],
+    "displayLabels": {
+      "TERRITORY_CORE": "Valle / San Pedro Core",
+      "TERRITORY_NEARBY": "Monterrey Metro Nearby",
+      "TERRITORY_COMPETITIVE": "Nuevo León Competitive",
+      "TERRITORY_STRETCH": "Northern Mexico Stretch",
+      "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+    },
+    "classificationKeywords": {
+      "TERRITORY_CORE": [
+        "san pedro",
+        "valle oriente",
+        "valle del campestre",
+        "monterrey valle",
+        "garza garcia"
+      ],
+      "TERRITORY_NEARBY": [
+        "monterrey",
+        "nuevo leon",
+        "nuevo león",
+        "santa catarina",
+        "san nicolas"
+      ],
+      "TERRITORY_COMPETITIVE": [
+        "monterrey mexico",
+        "mty",
+        "nuevo leon corporate"
+      ],
+      "TERRITORY_STRETCH": [
+        "saltillo",
+        "tampico",
+        "reynosa",
+        "northern mexico"
+      ],
+      "OUTSIDE_REALISTIC_TERRITORY": [
+        "mexico city convention 5000",
+        "cancun leisure mega",
+        "guadalajara only",
+        "las vegas"
+      ]
+    }
+  },
+  "competitiveContext": {
+    "strCompSet": [],
+    "relevantGroupDemandAlternatives": [],
+    "notes": "HOTEL_SPECIFIC_DATA — declare Valle luxury peers when ADP/comp-set confirmed; empty avoids invented competitors."
+  },
+  "identityExclusions": [],
+  "gdiOnboarding": {
+    "status": "V8_3HOTEL_BLIND_VALIDATION",
+    "validationMarker": "v8_3hotel_blind_validation_20260918",
+    "slot": "C_SUBURBAN_CORPORATE",
+    "reuseAdpProfile": true,
+    "paidEnrichmentEnabled": false,
+    "discoveryMode": "INDEPENDENT_WEB_RESEARCH_NO_DEMAND_SEEDING",
+    "bethesdaSeedPathAllowed": false,
+    "dmvExpansionAllowed": false,
+    "notes": "Hotel C — suburban/secondary corporate-group generalization test (LATAM). No Webhound. No mid-run WHO engine patches."
+  },
+  "capabilityProfileSource": {
+    "hiRequalV1At": "2026-09-30T13:00:04.995Z",
+    "note": "Filled null/zero capability fields from Hotel Intelligence Airtable"
+  }
+}

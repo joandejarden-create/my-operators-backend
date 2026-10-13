@@ -53,6 +53,7 @@ export const EVENT_TYPES = [
   "New Development",
   "Planning Approval",
   "Construction Start",
+  "Construction Progress",
   "Brand Signing",
   "Reflag",
   "Conversion",
@@ -65,6 +66,8 @@ export const EVENT_TYPES = [
   "Refinancing",
   "Major Renovation",
   "Repositioning",
+  "Pre-Opening Leadership",
+  "Commercialization",
 ];
 
 export const ASSET_PROJECT_STAGES = [

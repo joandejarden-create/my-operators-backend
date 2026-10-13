@@ -102,7 +102,7 @@ async function main() {
 
   // Try GraphQL with API key from public page config
   const gqlUrl = "https://apis.ihg.com/graphql/v1/hotels";
-  const apiKey = "hsL8GAAz7drdIbEjBCejdA1Ud2MVhxoo";
+  const apiKey = process.env.IHG_PUBLIC_GRAPHQL_API_KEY || "";
   try {
     const r = await fetch(gqlUrl, {
       method: "POST",

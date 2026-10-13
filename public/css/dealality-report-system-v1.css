@@ -1,0 +1,460 @@
+/**
+ * dealality-report-system-v1
+ *
+ * Shared Dealality institutional report primitives extracted from the
+ * Full Hotel Intelligence Investigation / Brand Alignment Snapshot family.
+ *
+ * Canonical style sources (do not diverge without founder approval):
+ * - public/css/brand-alignment-snapshot.css (cover + tokens + tables)
+ * - public/css/hotel-intelligence-dossier.css (chapter/body print grammar)
+ * - public/css/dealality-report-print-chrome.css (footer chrome)
+ * - public/js/dealality-report-print-chrome.js (Playwright footer/margins)
+ *
+ * Cover geometry/pattern: reuse .bas-cover-* under .brand-alignment-snapshot
+ * by linking brand-alignment-snapshot.css on the PDF render surface.
+ * This file adds report-family primitives that are not BAS-scoped.
+ */
+
+:root,
+.drs-report {
+  --drs-paper: #ffffff;
+  --drs-ink: #101935;
+  --drs-ink-muted: #4a5568;
+  --drs-border: #d9e1fa;
+  --drs-accent: #6c72ff;
+  --drs-accent-soft: rgba(108, 114, 255, 0.12);
+  --drs-badge-bg: #f4f6fc;
+  --drs-badge-border: #c5cee8;
+  --drs-surface: #f4f6fc;
+  --drs-gold: #fdb52a;
+  --drs-cover-bg: #080f25;
+  --drs-font: "Mona Sans", "Inter", system-ui, sans-serif;
+  --drs-page-w: 210mm;
+  --drs-margin-top: 14mm;
+  --drs-margin-right: 12mm;
+  --drs-margin-bottom: 20mm;
+  --drs-margin-left: 12mm;
+}
+
+.drs-report {
+  box-sizing: border-box;
+  background: var(--drs-paper);
+  color: var(--drs-ink);
+  font-family: var(--drs-font);
+  font-size: 10.5pt;
+  line-height: 1.45;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.drs-report *,
+.drs-report *::before,
+.drs-report *::after {
+  box-sizing: border-box;
+}
+
+/* ---- Section hierarchy (HID chapter weight) ---- */
+.drs-section {
+  margin: 0 0 18pt;
+  break-inside: avoid-page;
+}
+
+.drs-section--flow {
+  break-inside: auto;
+}
+
+.drs-section-h {
+  margin: 0 0 10pt;
+  padding-bottom: 6pt;
+  border-bottom: 2px solid var(--drs-ink);
+  font-size: 14.5pt;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--drs-ink);
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.drs-subhead {
+  margin: 12pt 0 6pt;
+  font-size: 11.5pt;
+  font-weight: 700;
+  color: var(--drs-ink);
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.drs-body {
+  margin: 0 0 8pt;
+  font-size: 10.5pt;
+  line-height: 1.55;
+  color: var(--drs-ink);
+  max-width: 62em;
+}
+
+.drs-muted {
+  margin: 0 0 8pt;
+  font-size: 9pt;
+  line-height: 1.45;
+  color: var(--drs-ink-muted);
+}
+
+.drs-label {
+  margin: 0 0 2pt;
+  font-size: 7.5pt;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--drs-ink-muted);
+}
+
+.drs-rule {
+  height: 1px;
+  margin: 10pt 0;
+  border: 0;
+  background: var(--drs-border);
+}
+
+.drs-accent-rule {
+  width: 48px;
+  height: 3px;
+  margin: 0 0 12pt;
+  border: 0;
+  border-radius: 2px;
+  background: var(--drs-accent);
+}
+
+/* ---- KPI band (editorial, not card stack) ---- */
+.drs-kpi-band {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin: 0 0 14pt;
+  border-top: 1px solid var(--drs-border);
+  border-bottom: 1px solid var(--drs-border);
+  background: var(--drs-surface);
+}
+
+.drs-kpi {
+  padding: 10pt 11pt;
+  border-right: 1px solid var(--drs-border);
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.drs-kpi:nth-child(3n) {
+  border-right: none;
+}
+
+.drs-kpi__label {
+  margin: 0 0 4pt;
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--drs-ink-muted);
+}
+
+.drs-kpi__value {
+  margin: 0;
+  font-size: 16pt;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--drs-ink);
+  line-height: 1.1;
+}
+
+.drs-kpi__delta {
+  margin: 3pt 0 0;
+  font-size: 8.5pt;
+  color: var(--drs-ink-muted);
+}
+
+.drs-kpi__meta {
+  margin: 2pt 0 0;
+  font-size: 8pt;
+  color: var(--drs-ink-muted);
+}
+
+/* ---- Callouts (left-rule, not cards) ---- */
+.drs-callout {
+  margin: 0 0 8pt;
+  padding: 8pt 10pt;
+  border-left: 3px solid var(--drs-accent);
+  background: #f5f7ff;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.drs-callout--positive {
+  border-left-color: #1f7a4d;
+  background: #f1f8f4;
+}
+
+.drs-callout--watch {
+  border-left-color: #9a6b00;
+  background: #fff8eb;
+}
+
+.drs-callout--priority {
+  border-left-color: var(--drs-accent);
+  background: #f5f7ff;
+}
+
+.drs-callout__title {
+  margin: 0 0 3pt;
+  font-size: 8pt;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--drs-ink);
+}
+
+.drs-callout__body {
+  margin: 0;
+  font-size: 9.5pt;
+  line-height: 1.45;
+  color: var(--drs-ink);
+}
+
+/* ---- Tables (BAS brief table grammar) ---- */
+.drs-table-wrap {
+  width: 100%;
+  margin: 0 0 10pt;
+  overflow: visible;
+}
+
+.drs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8.5pt;
+  color: var(--drs-ink);
+}
+
+.drs-table th,
+.drs-table td {
+  padding: 5pt 6pt;
+  border: 1px solid var(--drs-border);
+  vertical-align: top;
+  text-align: left;
+}
+
+.drs-table th {
+  background: var(--drs-surface);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--drs-ink-muted);
+}
+
+.drs-table td.drs-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.drs-table thead {
+  display: table-header-group;
+}
+
+.drs-table tr {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* ---- Status / priority pills (restrained) ---- */
+.drs-pill {
+  display: inline-block;
+  padding: 1pt 6pt;
+  border: 1px solid var(--drs-badge-border);
+  border-radius: 3px;
+  background: var(--drs-badge-bg);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--drs-ink-muted);
+  white-space: nowrap;
+}
+
+.drs-pill--high {
+  border-color: rgba(108, 114, 255, 0.45);
+  background: var(--drs-accent-soft);
+  color: #3d4499;
+}
+
+.drs-pill--open,
+.drs-pill--monitor {
+  border-color: #c5cee8;
+}
+
+.drs-pill--progress {
+  border-color: #f0c56e;
+  background: #fff8eb;
+  color: #7a5a00;
+}
+
+.drs-pill--done {
+  border-color: #9ecbb0;
+  background: #f1f8f4;
+  color: #1f7a4d;
+}
+
+/* ---- Evidence / action blocks ---- */
+.drs-evidence {
+  margin: 0 0 12pt;
+  padding: 0 0 10pt;
+  border-bottom: 1px solid var(--drs-border);
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.drs-evidence:last-child {
+  border-bottom: none;
+}
+
+.drs-evidence__title {
+  margin: 0 0 6pt;
+  font-size: 11pt;
+  font-weight: 700;
+  color: var(--drs-ink);
+}
+
+.drs-evidence__row {
+  margin: 0 0 4pt;
+  font-size: 9.5pt;
+  line-height: 1.45;
+}
+
+.drs-evidence__row strong {
+  font-weight: 700;
+  color: var(--drs-ink);
+}
+
+.drs-action {
+  margin: 0 0 12pt;
+  padding: 0 0 10pt;
+  border-bottom: 1px solid var(--drs-border);
+  /* Long playbooks may span pages; keep title cluster intact */
+  break-inside: auto;
+  page-break-inside: auto;
+}
+
+.drs-action:last-child {
+  border-bottom: none;
+}
+
+.drs-action__eyebrow {
+  margin: 0 0 3pt;
+  font-size: 7.5pt;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--drs-accent);
+}
+
+.drs-action__title {
+  margin: 0 0 6pt;
+  font-size: 11.5pt;
+  font-weight: 700;
+  color: var(--drs-ink);
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.drs-action__scan {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6pt 10pt;
+  align-items: center;
+  margin: 0 0 6pt;
+  break-after: avoid;
+  page-break-after: avoid;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.drs-action__scan-meta {
+  font-size: 8pt;
+  color: var(--drs-ink-muted);
+}
+
+.drs-action__field {
+  margin: 0 0 5pt;
+}
+
+.drs-action__field .drs-label {
+  margin-bottom: 1pt;
+}
+
+.drs-action__field p,
+.drs-action__field li {
+  margin: 0;
+  font-size: 9.5pt;
+  line-height: 1.45;
+  color: var(--drs-ink);
+}
+
+.drs-action__field ol,
+.drs-action__field ul {
+  margin: 2pt 0 0;
+  padding-left: 1.15rem;
+}
+
+.drs-action__field li {
+  margin: 0 0 3pt;
+}
+
+/* ---- Lists ---- */
+.drs-list {
+  margin: 0 0 10pt;
+  padding-left: 1.15rem;
+  font-size: 10pt;
+  line-height: 1.5;
+}
+
+.drs-list li {
+  margin: 0 0 4pt;
+}
+
+.drs-list--numbered {
+  list-style: decimal;
+}
+
+/* ---- Page break helpers ---- */
+.drs-page-break {
+  break-before: page;
+  page-break-before: always;
+}
+
+.drs-avoid-break {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.drs-keep-with-next {
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 14mm 12mm 20mm;
+  }
+
+  @page :first {
+    margin: 0;
+  }
+
+  .drs-report {
+    orphans: 3;
+    widows: 3;
+  }
+
+  .drs-cover-shell {
+    break-after: page;
+    page-break-after: always;
+  }
+}

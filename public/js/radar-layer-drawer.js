@@ -574,7 +574,8 @@
     bindTerritoryControls(mount);
     syncControls();
     mount.dataset.layerEnhanced = LAYER_UI_VERSION;
-    preloadInfraFilterChips();
+    // Do not prefetch multi-MB TI/demand payloads on page enhance.
+    // Chips load when the filter/layer drawer opens or a layer toggle is enabled.
   }
 
   function init() {
