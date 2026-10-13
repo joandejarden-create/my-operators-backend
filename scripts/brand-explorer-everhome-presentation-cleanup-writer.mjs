@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-everhome-presentation-cleanup-writer.mjs");
 /**
  * Brand Explorer Everhome Presentation Cleanup v32D.
  *

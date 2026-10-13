@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-public-profile-stabilization.mjs");
 /**
  * Public Profile Stabilization — dry-run by default; --apply with required flags.
  * Fixes only public-full profiles that fail PVQL (not locked / founder-preview).

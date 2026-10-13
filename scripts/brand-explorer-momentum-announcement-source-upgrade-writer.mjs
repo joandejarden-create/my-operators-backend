@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-momentum-announcement-source-upgrade-writer.mjs");
 /**
  * Brand Explorer Momentum Announcement Source Upgrade Writer v25C-3F.
  *

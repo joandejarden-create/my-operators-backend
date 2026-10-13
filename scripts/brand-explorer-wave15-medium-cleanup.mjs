@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-wave15-medium-cleanup.mjs");
 /**
  * Wave 15 Medium cleanup + Spark featured_application blocker.
  *

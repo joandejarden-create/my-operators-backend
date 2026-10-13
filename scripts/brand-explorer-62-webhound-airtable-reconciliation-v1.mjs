@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-62-webhound-airtable-reconciliation-v1.mjs");
 /**
  * Brand Explorer 62 — Webhound ↔ Airtable reconciliation (read-only).
  *

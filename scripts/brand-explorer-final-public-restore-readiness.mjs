@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-final-public-restore-readiness.mjs");
 /**
  * Final Public Restore Readiness Audit — read-only dry-run by default.
  * Does not apply public restore or write release / CV / Source / Registry fields.

@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-v42a-r2-founder-minor-cleanup-batch.mjs");
 /**
  * v42A-R2 — Founder minor cleanup batch (Indigo, MGallery, SLH).
  */

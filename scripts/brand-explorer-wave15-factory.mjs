@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-wave15-factory.mjs");
 /**
  * Brand Explorer Wave 15 factory CLI (Hilton Brand Family cohort).
  *

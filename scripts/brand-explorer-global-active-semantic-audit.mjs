@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-global-active-semantic-audit.mjs");
 /**
  * Global Active/Live Brand Explorer semantic QA audit — dry-run only.
  *

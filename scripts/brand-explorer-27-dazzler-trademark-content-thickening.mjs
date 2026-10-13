@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-27-dazzler-trademark-content-thickening.mjs");
 /**
  * Dazzler + Trademark content thickness cleanup for 27-brand PVQL.
  *

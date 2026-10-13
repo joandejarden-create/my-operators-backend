@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "dry-run-brand-explorer-trust-chip-basics-backfill.mjs");
 /**
  * Brand Basics P1 governance backfill for public-full brands missing the trust chip.
  * Default dry-run. Apply requires --apply --approve-trust-chip-basics-backfill.

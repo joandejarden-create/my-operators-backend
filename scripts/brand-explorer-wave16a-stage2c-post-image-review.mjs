@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-wave16a-stage2c-post-image-review.mjs");
 /**
  * Wave 16A Stage 2C — post-image review CLI.
  *

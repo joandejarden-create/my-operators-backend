@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-27-protected-pvql-regreen.mjs");
 /**
  * Protected 27 PVQL re-green — Preferred / RI / SLH Target Guest Segments only.
  * Dry-run by default.

@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-radisson-individuals-image-asset-openings-root-cause-audit.mjs");
 /**
  * Brand Explorer Radisson Individuals Image / Asset / Openings Root-Cause Audit v31I.
  *

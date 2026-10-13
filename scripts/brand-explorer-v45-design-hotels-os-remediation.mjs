@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-v45-design-hotels-os-remediation.mjs");
 /**
  * v45 — Design Hotels OS-Guided Remediation + Founder Review Reentry.
  * Default dry-run. Apply only with explicit confirms.

@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-everhome-active-profile-finalization-writer.mjs");
 /**
  * Brand Explorer Everhome Active Profile Finalization v32G.
  *

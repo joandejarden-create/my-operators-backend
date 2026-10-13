@@ -1,3 +1,5 @@
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "strip-brand-explorer-source-lines.mjs");
 /**
  * Remove "— Source: …" lines from Brand Explorer presentation rows in Airtable.
  * Brand Explorer is owner-facing — source evidence belongs in PI / Hero Data Source only.

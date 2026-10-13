@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-portfolio-context-ladder-mapping-repair.mjs");
 /**
  * Brand Explorer Portfolio Context Ladder Mapping Repair v25C-4D.
  */

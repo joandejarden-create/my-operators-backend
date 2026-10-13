@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-bonvoy-loyalty-detail-enhancement-package.mjs");
 /**
  * Brand Explorer Bonvoy Loyalty Detail Enhancement Package v25C-2E (read-only).
  *

@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-radisson-standards-requirement-normalization-writer.mjs");
 /**
  * Brand Explorer Radisson Standards Requirement Column Normalization Writer v27D.
  *

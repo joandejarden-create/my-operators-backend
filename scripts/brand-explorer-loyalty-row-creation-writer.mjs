@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-loyalty-row-creation-writer.mjs");
 /**
  * Brand Explorer Loyalty Row Creation Writer v25C-2D (Tribute Portfolio pilot).
  *

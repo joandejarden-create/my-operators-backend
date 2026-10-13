@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-everhome-openings-momentum-rebuild-writer.mjs");
 /**
  * Brand Explorer Everhome Openings Description + Momentum Parity v32E.
  *

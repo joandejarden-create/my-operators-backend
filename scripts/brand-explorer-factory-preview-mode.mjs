@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-factory-preview-mode.mjs");
 /**
  * Brand Explorer — Factory Preview Mode (read-only audit + plan).
  *

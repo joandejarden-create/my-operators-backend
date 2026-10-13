@@ -1,3 +1,5 @@
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-scenario-owner-value-mechanical-remediation.mjs");
 /**
  * Active + future scenario owner-value mechanical remediation (Title/Body).
  *

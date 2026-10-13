@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-lane2-founder-minor-cleanup.mjs");
 /**
  * Lane 2 — Founder Minor Cleanup (targeted Presentation + Brand Basics patches).
  * Dry-run by default. Apply requires all confirm flags.

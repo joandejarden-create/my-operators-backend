@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-24-tab-section-quality-audit.mjs");
 /**
  * 24-brand tab/section public-full quality audit — dry-run only, no Airtable writes.
  *

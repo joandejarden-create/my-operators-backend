@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-tribute-demand-scenario-row-creation-writer.mjs");
 /**
  * Brand Explorer Tribute Demand Scenario Row Creation Writer v25C-5B (Tribute Portfolio pilot).
  *

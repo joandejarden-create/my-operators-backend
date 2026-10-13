@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-radisson-individuals-final-qa-reconciliation-writer.mjs");
 /**
  * Brand Explorer Radisson Individuals Final QA + Featured Slot Reconciliation v31A-R1.
  *

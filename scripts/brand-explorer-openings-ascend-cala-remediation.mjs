@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-openings-ascend-cala-remediation.mjs");
 /**
  * Remediate footprint.openings for all Brand Explorer brands (active + true-incomplete):
  * Ascend card template + CALA-first property selection (fallback when no CALA).

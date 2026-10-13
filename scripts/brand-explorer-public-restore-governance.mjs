@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-public-restore-governance.mjs");
 /**
  * Public restore governance — dry-run by default.
  * Apply only with founder confirm flags (does not rewrite content/images/CV/Source/Registry).

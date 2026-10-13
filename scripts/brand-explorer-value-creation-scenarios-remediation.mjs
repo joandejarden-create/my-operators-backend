@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-value-creation-scenarios-remediation.mjs");
 /**
  * Value Creation Scenarios remediation CLI.
  *

@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-asset-review-decision-writer.mjs");
 /**
  * Brand Asset Review Decision Writer v5.1.
  *

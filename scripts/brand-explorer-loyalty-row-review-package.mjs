@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-loyalty-row-review-package.mjs");
 /**
  * Brand Explorer Loyalty Row Review Package v25C-2C (Tribute Portfolio pilot).
  *

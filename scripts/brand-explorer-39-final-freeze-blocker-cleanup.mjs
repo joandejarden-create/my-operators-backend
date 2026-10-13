@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-39-final-freeze-blocker-cleanup.mjs");
 import dotenv from "dotenv";
 dotenv.config();
 import { run39FinalFreezeBlockerCleanup } from "../lib/partner-intelligence/brand-explorer-39-final-freeze-blocker-cleanup.js";

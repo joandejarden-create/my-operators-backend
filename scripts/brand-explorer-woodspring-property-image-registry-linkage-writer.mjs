@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-woodspring-property-image-registry-linkage-writer.mjs");
 /**
  * Brand Explorer WoodSpring Property Image Registry Linkage Recognition v33C-R3.
  *

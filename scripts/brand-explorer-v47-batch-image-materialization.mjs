@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-v47-batch-image-materialization.mjs");
 /**
  * v47 — Batch image materialization + draft readiness (Indigo, MGallery, SLH).
  */

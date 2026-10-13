@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-wave12-scenario-owner-value-remediation.mjs");
 /**
  * Wave 12 scenario owner-value remediation CLI.
  *

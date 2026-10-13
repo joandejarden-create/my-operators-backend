@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-residences-legacy-migration-writer.mjs");
 import "../load-env.js";
 import { mkdirSync, writeFileSync } from "fs";
 import { dirname, join } from "path";

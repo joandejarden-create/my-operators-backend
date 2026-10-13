@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "seed-operator-brand-explorer-data.mjs");
 /**
  * Seed Brand & Relationships Explorer fields on Profile rows linked to Master.
  *

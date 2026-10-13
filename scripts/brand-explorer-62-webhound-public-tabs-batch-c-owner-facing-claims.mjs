@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-62-webhound-public-tabs-batch-c-owner-facing-claims.mjs");
 /**
  * Brand Explorer 62 — Webhound Public Tabs Batch C (owner-facing claims).
  *

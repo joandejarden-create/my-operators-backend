@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-choice-family-active-profile-repair-writer.mjs");
 /**
  * Brand Explorer Choice-Family Active Profile Repair Batch Writer v29A.
  *

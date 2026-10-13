@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-v40c-economics-chrome-remediation.mjs");
 /**
  * v40C — Economics chrome + residual owner-copy remediation.
  * Default dry-run. Apply requires all confirm flags; Presentation-only writes.

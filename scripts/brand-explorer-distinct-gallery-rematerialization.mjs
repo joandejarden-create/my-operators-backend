@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-distinct-gallery-rematerialization.mjs");
 /**
  * Distinct gallery rematerialization for MGallery + SLH.
  * Dry-run by default. Apply only with full confirmation flags.

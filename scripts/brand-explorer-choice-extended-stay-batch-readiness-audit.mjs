@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-choice-extended-stay-batch-readiness-audit.mjs");
 /**
  * Brand Explorer Choice Extended-Stay Batch Readiness + Source Audit v32A.
  *

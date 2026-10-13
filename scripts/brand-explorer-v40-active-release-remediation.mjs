@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-v40-active-release-remediation.mjs");
 /**
  * v40 — Brand Explorer Batch Active Release Remediation.
  *

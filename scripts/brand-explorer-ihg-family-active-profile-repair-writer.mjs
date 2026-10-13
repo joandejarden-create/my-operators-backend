@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-ihg-family-active-profile-repair-writer.mjs");
 /**
  * Brand Explorer IHG-Family Active Profile Repair Batch Writer v30A.
  *

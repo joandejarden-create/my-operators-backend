@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-profile-preparation-visibility-audit.mjs");
 /**
  * Brand Explorer — Profile in Preparation visibility audit (dry-run).
  */

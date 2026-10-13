@@ -1,0 +1,24 @@
+{
+  "version": "collection-cardinality-v1",
+  "modes": ["EXACT", "MINIMUM", "ALL_SOURCE_MEMBERS", "CONDITIONAL"],
+  "collections": [
+    { "id": "flexibility", "label": "Flexibility Indicators", "mode": "EXACT", "count": 6, "slotPattern": "operations.flexibility." },
+    { "id": "ownerOutcomes", "label": "Value Creation Scenarios", "mode": "EXACT", "count": 4, "slotPattern": "valueOwners.scenario." },
+    { "id": "keyDifferentiators", "label": "Key Differentiators", "mode": "MINIMUM", "count": 3, "groups": 2 },
+    { "id": "bestAt", "label": "Best At", "mode": "EXACT", "count": 3, "slotPattern": "overview.bestAt." },
+    { "id": "operatingModel", "label": "Operating Model", "mode": "MINIMUM", "count": 8, "slotPattern": "operations.model." },
+    { "id": "lifecycle", "label": "Owner Lifecycle", "mode": "EXACT", "count": 6, "slotPattern": "valueOwners.lifecycle." },
+    { "id": "similarBrands", "label": "Similar Brands", "mode": "MINIMUM", "count": 2, "childRule": "one child = one comparison brand" },
+    { "id": "commercialThemes", "label": "Commercial themes", "mode": "MINIMUM", "count": 3, "slot": "commercial.demand" },
+    { "id": "economicsItems", "label": "Opening path", "mode": "EXACT", "count": 5, "slotPattern": "economics.opening.step." },
+    { "id": "loyaltyBenefits", "label": "Loyalty Benefits", "mode": "CONDITIONAL", "when": "conventionalLoyaltyProgram", "count": 3, "countMode": "MINIMUM" },
+    { "id": "loyaltyTiers", "label": "Loyalty Tiers", "mode": "CONDITIONAL", "when": "conventionalLoyaltyProgram", "countMode": "ALL_SOURCE_MEMBERS" },
+    { "id": "loyaltyKpis", "label": "Loyalty KPIs", "mode": "CONDITIONAL", "when": "kpisDisclosed", "countMode": "ALL_SOURCE_MEMBERS" },
+    { "id": "geographicRegions", "label": "Geographic Regions", "mode": "EXACT", "count": 5 },
+    { "id": "portfolioPresence", "label": "Portfolio Presence", "mode": "MINIMUM", "count": 3 },
+    { "id": "growthThemes", "label": "Growth Themes", "mode": "MINIMUM", "count": 2 },
+    { "id": "representativeProperties", "label": "Representative Properties", "mode": "MINIMUM", "count": 3, "childRule": "one property card = one property" },
+    { "id": "recentMomentum", "label": "Recent Momentum", "mode": "MINIMUM", "count": 2, "childRule": "one child = one event", "unresolvedNote": "brand-explorer-recent-momentum-contract.js minimum is 2. required-section population contract still says 3. Canonical gate uses 2 until a founder pick." },
+    { "id": "brandMaterials", "label": "Brand Materials gallery", "mode": "EXACT", "count": 6, "slotPattern": "materials.gallery." }
+  ]
+}

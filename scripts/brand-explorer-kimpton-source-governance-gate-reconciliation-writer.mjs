@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-kimpton-source-governance-gate-reconciliation-writer.mjs");
 /**
  * Brand Explorer Kimpton Source Governance Gate Reconciliation Writer v30D.
  *

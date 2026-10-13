@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-built-blocked-remediation.mjs");
 /**
  * Built-but-Blocked Tab Factory Remediation — dry-run by default; --apply with required flags.
  * Field-level patches for 7 content_remediation_needed brands only.

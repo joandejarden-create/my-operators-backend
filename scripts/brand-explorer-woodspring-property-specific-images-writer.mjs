@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-woodspring-property-specific-images-writer.mjs");
 /**
  * Brand Explorer WoodSpring Property-Specific Hotel Image Correction v33C-R2.
  *

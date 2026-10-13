@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-radisson-individuals-approved-asset-materialization-writer.mjs");
 /**
  * Brand Explorer Radisson Individuals Approved Asset Materialization + Row Reactivation v31E.
  *

@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-62-safe-text-cleanup-batch-1.mjs");
 /**
  * Brand Explorer 62 — Safe Text Cleanup Batch 1 (founder review only).
  * Exact patch proposals. No production Airtable writes.
