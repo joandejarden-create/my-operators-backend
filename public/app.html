@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dealality – App</title>
-    <link rel="stylesheet" href="/app.css">
+    <link rel="stylesheet" href="/app.css?v=workspace-collapse-20261013">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -26,31 +26,38 @@
             <nav class="sidebar-nav" id="shellNav" aria-label="Main navigation"></nav>
 
             <div class="dev-workspace-wrap workspace-switcher-wrap" id="devWorkspaceWrap" hidden>
-                <label for="devWorkspaceSelect" class="dev-workspace-label workspace-switcher-label">Workspace</label>
-                <select id="devWorkspaceSelect" class="dev-workspace-select workspace-switcher-select" aria-label="Select active workspace">
-                </select>
-                <div class="workspace-demo-brand-portfolio" id="workspaceDemoBrandPortfolio" hidden>
-                    <label for="devBrandPortfolioSelect" class="dev-workspace-label">Brand Portfolio</label>
-                    <select id="devBrandPortfolioSelect" class="dev-workspace-select workspace-switcher-select" aria-label="Select demo Brand portfolio">
+                <button type="button" class="workspace-switcher-toggle" id="workspaceSwitcherToggle" aria-expanded="false" aria-controls="workspaceSwitcherPanel">
+                    <span class="workspace-switcher-toggle-copy">
+                        <span class="dev-workspace-label workspace-switcher-label">Workspace</span>
+                        <span class="workspace-switcher-summary" id="workspaceSwitcherSummary"></span>
+                    </span>
+                    <span class="nav-arrow nav-arrow-dropdown" aria-hidden="true">▾</span>
+                </button>
+                <div class="workspace-switcher-panel" id="workspaceSwitcherPanel">
+                    <select id="devWorkspaceSelect" class="dev-workspace-select workspace-switcher-select" aria-label="Select active workspace">
                     </select>
-                    <p class="workspace-demo-helper">Founder/demo QA only — simulates entitled Brand company portfolio.</p>
-                </div>
-                <div class="workspace-demo-context" id="workspaceDemoContext" hidden>
-                    <span class="workspace-demo-badge">Demo Mode</span>
-                    <p class="workspace-demo-helper">Preview workspace views without production permissions.</p>
-                </div>
-                <div class="workspace-dev-tools" id="workspaceDevTools" hidden>
-                    <select id="devNavOverrideSelect" class="dev-workspace-select workspace-dev-override-select" aria-label="Local dev navigation override">
-                        <option value="">— Production nav —</option>
-                        <option value="admin">Admin</option>
-                        <option value="all">All Workspaces</option>
-                    </select>
-                    <a href="/webflow-preview.html" target="_blank" rel="noopener noreferrer" class="dev-workspace-preview-btn">
-                        Open Webflow Preview
-                    </a>
+                    <div class="workspace-demo-brand-portfolio" id="workspaceDemoBrandPortfolio" hidden>
+                        <label for="devBrandPortfolioSelect" class="dev-workspace-label">Brand Portfolio</label>
+                        <select id="devBrandPortfolioSelect" class="dev-workspace-select workspace-switcher-select" aria-label="Select demo Brand portfolio">
+                        </select>
+                        <p class="workspace-demo-helper">Founder/demo QA only — simulates entitled Brand company portfolio.</p>
+                    </div>
+                    <div class="workspace-demo-context" id="workspaceDemoContext" hidden>
+                        <span class="workspace-demo-badge">Demo Mode</span>
+                        <p class="workspace-demo-helper">Preview workspace views without production permissions.</p>
+                    </div>
+                    <div class="workspace-dev-tools" id="workspaceDevTools" hidden>
+                        <select id="devNavOverrideSelect" class="dev-workspace-select workspace-dev-override-select" aria-label="Local dev navigation override">
+                            <option value="">— Production nav —</option>
+                            <option value="admin">Admin</option>
+                            <option value="all">All Workspaces</option>
+                        </select>
+                        <a href="/webflow-preview.html" target="_blank" rel="noopener noreferrer" class="dev-workspace-preview-btn">
+                            Open Webflow Preview
+                        </a>
+                    </div>
                 </div>
             </div>
-
             <div class="sidebar-footer" id="accountDropdownWrap">
                 <button type="button" class="user-block account-dropdown-trigger" id="accountDropdownTrigger" aria-haspopup="true" aria-expanded="false" aria-label="Account settings">
                     <span class="user-avatar" aria-hidden="true">D</span>
@@ -113,6 +120,6 @@
     <script src="/js/dealality-app-shell-auth.js"></script>
     <script src="/js/dealality-ui-labels.js"></script>
     <script src="/js/dealality-stakeholder-nav.js?v=brand-ai-owner-nav-v1"></script>
-    <script src="/app.js?v=brand-ai-owner-nav-v1" defer></script>
+    <script src="/app.js?v=brand-ai-owner-nav-v1-workspace-collapse-20261013" defer></script>
 </body>
 </html>

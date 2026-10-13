@@ -1645,6 +1645,53 @@
         }
         var labelEl = document.querySelector('.workspace-switcher-label, .dev-workspace-label');
         if (labelEl) labelEl.textContent = 'Workspace';
+        syncWorkspaceSwitcherSummary();
+    }
+
+    var WORKSPACE_SWITCHER_OPEN_KEY = 'dealalityWorkspaceSwitcherOpen';
+
+    function readWorkspaceSwitcherOpen() {
+        try {
+            return sessionStorage.getItem(WORKSPACE_SWITCHER_OPEN_KEY) === '1';
+        } catch (e) {
+            return false;
+        }
+    }
+
+    function setWorkspaceSwitcherOpen(open) {
+        if (!devWorkspaceWrap) return;
+        var isOpen = !!open;
+        devWorkspaceWrap.classList.toggle('is-open', isOpen);
+
+        var toggle = document.getElementById('workspaceSwitcherToggle');
+        if (toggle) toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+
+        try {
+            sessionStorage.setItem(WORKSPACE_SWITCHER_OPEN_KEY, isOpen ? '1' : '0');
+        } catch (e) {}
+    }
+
+    function syncWorkspaceSwitcherSummary() {
+        var summary = document.getElementById('workspaceSwitcherSummary');
+        if (!summary) return;
+
+        var text = '';
+
+        if (devWorkspaceSelect && devWorkspaceSelect.selectedIndex >= 0) {
+            text = devWorkspaceSelect.options[devWorkspaceSelect.selectedIndex].textContent || '';
+        }
+
+        if (
+            workspaceDemoBrandPortfolio &&
+            !workspaceDemoBrandPortfolio.hidden &&
+            devBrandPortfolioSelect &&
+            devBrandPortfolioSelect.selectedIndex >= 0
+        ) {
+            var portfolio = devBrandPortfolioSelect.options[devBrandPortfolioSelect.selectedIndex].textContent || '';
+            if (portfolio) text = portfolio;
+        }
+
+        summary.textContent = text || 'Workspace';
     }
 
     function applyActiveWorkspace(nextWorkspace) {
@@ -1686,6 +1733,16 @@
         if (!devWorkspaceWrap || !devWorkspaceSelect) return;
         var storedPortfolio = getStoredDemoBrandPortfolio();
         if (storedPortfolio) demoBrandPortfolioKey = storedPortfolio;
+
+        setWorkspaceSwitcherOpen(readWorkspaceSwitcherOpen());
+
+        var workspaceToggle = document.getElementById('workspaceSwitcherToggle');
+        if (workspaceToggle) {
+            workspaceToggle.addEventListener('click', function () {
+                setWorkspaceSwitcherOpen(!devWorkspaceWrap.classList.contains('is-open'));
+            });
+        }
+
         syncWorkspaceSwitcherUi();
         devWorkspaceSelect.addEventListener('change', function () {
             var selected = devWorkspaceSelect.value || '';
