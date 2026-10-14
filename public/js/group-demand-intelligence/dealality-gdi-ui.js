@@ -9,7 +9,8 @@
   var PRIORITY_DISPLAY = {
     HIGH_PRIORITY: { label: "HIGH", pillClass: "gdi-pill gdi-pill-high" },
     MEDIUM_PRIORITY: { label: "MEDIUM", pillClass: "gdi-pill gdi-pill-med" },
-    WATCHLIST: { label: "WATCH", pillClass: "gdi-pill gdi-pill-watch" },
+    // Distinct from Action Window "WATCH" — commercial browse priority only
+    WATCHLIST: { label: "Watchlist", pillClass: "gdi-pill gdi-pill-watch" },
   };
 
   var ACTION_STATUS_DISPLAY = {
@@ -202,6 +203,81 @@
     return ACTION_STATUS_DISPLAY[status] || String(status).replace(/_/g, " ");
   }
 
+  /** Customer-facing labels for internal enum / status codes. */
+  var CUSTOMER_STATUS_LABELS = {
+    FUTURE_CYCLE_EXPECTED: "Future cycle expected",
+    FUTURE_CYCLE_CONFIRMED: "Future cycle confirmed",
+    RECURRING_CYCLE_STRONG: "Recurring cycle (strong pattern)",
+    NO_FUTURE_CYCLE_EVIDENCE: "No future-cycle evidence yet",
+    LODGING_DEMAND_UNKNOWN: "Room demand not yet published",
+    UNKNOWN: "Not yet established",
+    PRIMARY_VENUE_SELECTED_OVERFLOW_POSSIBLE:
+      "Primary venue placed — overflow possible",
+    PRIMARY_VENUE_SELECTED: "Primary venue placed",
+    HOTEL_SOURCING_UNCONFIRMED: "Hotel sourcing unconfirmed",
+    CONTACT_NOW: "Pursue now",
+    QUALIFY_NOW: "Qualify now",
+    WATCH: "Watch",
+    TOO_EARLY: "Too early",
+  };
+
+  function customerStatusLabel(raw, fallback) {
+    if (raw == null || raw === "") return fallback || "—";
+    var s = String(raw).trim();
+    if (CUSTOMER_STATUS_LABELS[s]) return CUSTOMER_STATUS_LABELS[s];
+    if (CUSTOMER_STATUS_LABELS[s.toUpperCase()]) {
+      return CUSTOMER_STATUS_LABELS[s.toUpperCase()];
+    }
+    // Already human prose
+    if (/\s/.test(s) && !/^[A-Z0-9_]+$/.test(s)) return s;
+    if (/^[A-Z0-9_]+$/.test(s)) {
+      return s
+        .toLowerCase()
+        .split("_")
+        .map(function (w) {
+          return w.charAt(0).toUpperCase() + w.slice(1);
+        })
+        .join(" ");
+    }
+    return s;
+  }
+
+  function distinctProse() {
+    var seen = {};
+    var out = [];
+    for (var i = 0; i < arguments.length; i++) {
+      var t = String(arguments[i] == null ? "" : arguments[i]).trim();
+      if (!t || t === "—") continue;
+      // Strip customer-facing implementation notes; keep any remaining prose.
+      t = t
+        .replace(
+          /\s*No numeric score\s*[—–-]\s*reviewed package did not run canonical[^.]*\.?/gi,
+          ""
+        )
+        .replace(
+          /\s*reviewed package has no canonical[^.]*\.?/gi,
+          ""
+        )
+        .replace(/\s*Qualitative fit\s*[—–-]\s*no numeric score on this prospect\.?/gi, "")
+        .replace(/\s{2,}/g, " ")
+        .trim();
+      if (!t || t === "—") continue;
+      if (
+        /reviewed package did not run canonical|canonical (?:fit )?engine|canonical scoring|implementation note/i.test(
+          t
+        )
+      ) {
+        continue;
+      }
+      // Near-duplicate collapse (first 80 chars)
+      var key = t.toLowerCase().slice(0, 80);
+      if (seen[key]) continue;
+      seen[key] = true;
+      out.push(t);
+    }
+    return out;
+  }
+
   function hotelLocationLine(hotel) {
     hotel = hotel || {};
     var parts = [];
@@ -236,12 +312,30 @@
     "(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)";
 
   /**
-   * Remove event dates/years from tile title/summary copy.
+   * Clean tile/summary copy without destroying concise occasion titles.
+   * Keep years in titles like "AHIMA Advocacy Summit 2027".
+   * Strip month-day ranges when a date pill already carries timing.
    * Classification: REUSABLE_PRODUCT_UI
    */
-  function scrubEventDatesFromText(raw) {
+  function scrubEventDatesFromText(raw, opts) {
+    opts = opts || {};
     var s = String(raw == null ? "" : raw);
     if (!s) return "";
+
+    // Concise account/occasion titles — preserve year; only strip research-note junk.
+    var looksLikeCleanOccasion =
+      s.length <= 90 &&
+      !/verified via|verified:|hotel not named|hotel block tba|supported recurring|unconfirmed this pass/i.test(
+        s
+      ) &&
+      !new RegExp(
+        MONTH_NAME_RE + "\\.?\\s+\\d{1,2}(?:\\s*[–—\\-]\\s*\\d{1,2})?,\\s*20\\d{2}",
+        "i"
+      ).test(s);
+    if (looksLikeCleanOccasion && opts.preserveOccasionYear !== false) {
+      return s.replace(/\s{2,}/g, " ").trim();
+    }
+
     // Parenthetical ranges: (Jun 7-9), (Nov 13–15 & 20–22)
     s = s.replace(
       new RegExp(
@@ -269,22 +363,77 @@
       /\b20\d{2}-\d{2}-\d{2}(?:\s*[→\-–—]\s*20\d{2}-\d{2}-\d{2})?/g,
       ""
     );
-    // Year before em dash: "Expo 2027 —"
-    s = s.replace(/\s+20\d{2}(?=\s*[—\-–])/g, "");
-    // "in 2027" / "for 2027" / bare trailing year
-    s = s.replace(/\s+(?:in|for|of)\s+20\d{2}\b/gi, "");
-    s = s.replace(/\s+20\d{2}(?=\s*[.;,]|$)/g, "");
-    // Cleanup punctuation left behind
+    // Research-note leftovers after date strip: "Verified via …: , Washington"
+    s = s.replace(/\s*—\s*Verified[^—]*/gi, "");
+    s = s.replace(/\s*Verified via[^.;]*/gi, "");
+    s = s.replace(/\s*Verified:\s*/gi, "");
+    s = s.replace(/:\s*,/g, ":");
     s = s.replace(/\s*;\s*;/g, ";");
     s = s.replace(/\s*,\s*,/g, ",");
     s = s.replace(/\s*,\s*;/g, ";");
     s = s.replace(/;\s*$/g, "");
     s = s.replace(/,\s*$/g, "");
+    s = s.replace(/:\s*$/g, "");
     s = s.replace(/\.\s*$/g, ".");
     s = s.replace(/\s*[—\-–]\s*$/g, "");
     s = s.replace(/\s{2,}/g, " ").trim();
-    // Avoid orphan "with open venue selection." unfinished — keep as-is after year strip
     return s;
+  }
+
+  /**
+   * Meta line under title: useful segment/occasion class — not a full org repeat
+   * when the title already carries the account/occasion name.
+   */
+  function tileClassificationMeta(it, linked, titleText) {
+    linked = linked || {};
+    it = it || {};
+    var title = String(titleText || "");
+    var org = String(it.organizationName || linked.organizationName || "").trim();
+    var typeLbl =
+      linked.opportunityTypeLabel ||
+      it.opportunityTypeLabel ||
+      linked.demandSignalTypeLabel ||
+      it.demandSignalTypeLabel ||
+      "";
+    var segment = it.segment || linked.segment || "";
+    if (/child account|demand campaign|generator|mega-event|plausible_fit/i.test(String(segment))) {
+      segment = "";
+    }
+    if (
+      /^[a-z][a-z0-9]*(?:_[a-z0-9]+){1,8}$/.test(String(segment).trim()) &&
+      !/\s/.test(String(segment))
+    ) {
+      segment = typeLbl || "Association";
+    }
+    var classBits = [];
+    var typeRaw = String(
+      linked.opportunityType || it.opportunityType || typeLbl || ""
+    ).toUpperCase();
+    // Customer-facing classification — never dump FUTURE_CYCLE / enum codes.
+    if (typeRaw === "FUTURE_CYCLE" || /^future\s*cycle$/i.test(String(typeLbl))) {
+      classBits.push("Association occasion");
+    } else if (typeLbl && String(typeLbl).toUpperCase() !== "EVENT") {
+      classBits.push(customerStatusLabel(typeLbl, String(typeLbl)));
+    } else if (segment) {
+      classBits.push(String(segment));
+    } else {
+      classBits.push("Association");
+    }
+    var classLabel = classBits[0];
+    // Only echo a short org token when title does not already include it.
+    var orgShort = org.replace(/\s*\([^)]*\)\s*$/, "").trim();
+    var titleHasOrg =
+      org &&
+      (title.toLowerCase().indexOf(org.toLowerCase()) >= 0 ||
+        (orgShort.length >= 3 &&
+          title.toLowerCase().indexOf(orgShort.toLowerCase()) >= 0) ||
+        /\b(AHIMA|ACTS|ACC|AMWA|NDSS|NADO|NAR|AAD|NCHV|CMSS|HCAOA|USCM)\b/i.test(
+          title
+        ));
+    if (org && !titleHasOrg && orgShort.length <= 48) {
+      return esc(orgShort) + " · " + esc(classLabel);
+    }
+    return esc(classLabel);
   }
 
   /**
@@ -401,10 +550,17 @@
       esc(opts.lastResearch != null && opts.lastResearch !== "" ? opts.lastResearch : "—") +
       "</div></div>" +
       '<div class="filter-group gdi-property-stat">' +
-      '<span class="filter-label">Run Status</span>' +
+      '<span class="filter-label">Research Run</span>' +
       '<div class="gdi-property-stat__value">' +
       esc(opts.runStatus || "NEVER_RUN") +
       "</div></div>" +
+      (opts.lastReviewedImport
+        ? '<div class="filter-group gdi-property-stat">' +
+          '<span class="filter-label">Last Reviewed Import</span>' +
+          '<div class="gdi-property-stat__value">' +
+          esc(opts.lastReviewedImport) +
+          "</div></div>"
+        : "") +
       (opts.actionHtml
         ? '<div class="filter-group aiv-filter-actions">' + opts.actionHtml + "</div>"
         : "") +
@@ -1332,6 +1488,42 @@
     );
   }
 
+  /**
+   * Commercial class (Priority / Exploratory) — separate from Action Window and WATCH stamp.
+   */
+  function commercialClassPillHtml(it, linked) {
+    linked = linked || {};
+    it = it || {};
+    var section = String(
+      linked.prospectReviewSection || it.prospectReviewSection || ""
+    ).toUpperCase();
+    var label =
+      linked.prospectCustomerLabel ||
+      it.prospectCustomerLabel ||
+      linked.prospectCommercialLabel ||
+      it.prospectCommercialLabel ||
+      "";
+    var lbl = String(label || "");
+    if (section === "PRIORITY" || /prospect to qualify|priority/i.test(lbl)) {
+      return (
+        '<span class="gdi-tile-pill gdi-pill-high" data-facet="commercial-class">Priority</span>'
+      );
+    }
+    if (section === "EXPLORATORY" || /exploratory/i.test(lbl)) {
+      return (
+        '<span class="gdi-tile-pill gdi-pill-med" data-facet="commercial-class">Exploratory</span>'
+      );
+    }
+    if (lbl) {
+      return (
+        '<span class="gdi-tile-pill gdi-pill-watch" data-facet="commercial-class">' +
+        esc(lbl) +
+        "</span>"
+      );
+    }
+    return "";
+  }
+
   function readinessPillHtml(it, linked) {
     // Maturity / readiness badges — QUALIFIED (pilot) vs ACTIONABLE (Ready) vs Future Watch.
     var maturity = String(
@@ -1372,36 +1564,37 @@
     var priority = linked.priority || it.priority || "WATCHLIST";
     var tone = priorityToneClass(priority);
     var id = it.opportunityId || it.id;
-    var title =
-      scrubEventDatesFromText(
-        linked.displayTitle || it.title || linked.title || ""
-      ) || "—";
-    var org = it.organizationName || linked.organizationName || "—";
-    var segment = it.segment || linked.segment || "";
-    // Never show internal research jargon on customer tiles
-    if (/child account|demand campaign|generator|mega-event|plausible_fit/i.test(String(segment))) {
-      segment =
-        linked.participationRole ||
-        it.participationRole ||
-        linked.demandSignalTypeLabel ||
-        it.demandSignalTypeLabel ||
-        "";
-      segment = String(segment || "").replace(/_/g, " ");
-    }
-    if (/^[a-z][a-z0-9]*(?:_[a-z0-9]+){1,8}$/.test(String(segment).trim()) && !/\s/.test(String(segment))) {
-      segment =
-        linked.demandSignalTypeLabel ||
-        linked.opportunityTypeLabel ||
-        it.demandSignalTypeLabel ||
-        it.opportunityTypeLabel ||
-        "Discovered";
-    }
+    // Prefer DTO displayTitle (concise account/occasion). Raw title is fallback only.
+    // Precedence bug that caused stale screenshots: scrubbing years + prefixing org
+    // when Airtable already held clean titles — keep presentation on displayTitle.
+    var titleRaw =
+      linked.displayTitle ||
+      it.displayTitle ||
+      linked.title ||
+      it.title ||
+      "";
+    var title = scrubEventDatesFromText(titleRaw, { preserveOccasionYear: true }) || "—";
     var bookingStatus =
       linked.bookingWindowStatus || it.bookingWindowStatus || "";
-    var summary = trunc(
-      scrubEventDatesFromText(it.summaryWhat || linked.summaryWhat || ""),
-      160
-    );
+    // Prefer hotel-fit / opportunity summary over thin "what we know" stubs when richer.
+    var thesisRaw =
+      linked.hotelOpportunityThesis ||
+      it.hotelOpportunityThesis ||
+      linked.summaryWhyHotel ||
+      it.summaryWhyHotel ||
+      linked.fitExplanation ||
+      it.fitExplanation ||
+      "";
+    var whatRaw = it.summaryWhat || linked.summaryWhat || "";
+    var summaryRaw =
+      (thesisRaw && String(thesisRaw).length >= 40 ? thesisRaw : "") ||
+      whatRaw ||
+      thesisRaw ||
+      "";
+    var summary = trunc(scrubEventDatesFromText(summaryRaw, { preserveOccasionYear: true }), 180);
+    var sourcingLbl =
+      linked.venueSourcingStatusLabel || it.venueSourcingStatusLabel || "";
+    var commercialClassLbl = commercialClassPillHtml(it, linked);
     var contact = linked.primaryContact || it.primaryContact || null;
     var contactName =
       contact && contact.name && contact.name !== "UNKNOWN" ? contact.name : "";
@@ -1423,10 +1616,31 @@
       );
     }
     if (contactPhone) {
+      var phoneTypeLbl =
+        (contact && contact.phoneTypeLabel) ||
+        linked.primaryContactPhoneTypeLabel ||
+        it.primaryContactPhoneTypeLabel ||
+        "";
       contactBits.push(
-        '<div class="brand-card__contact-line">' + esc(contactPhone) + "</div>"
+        '<div class="brand-card__contact-line">' +
+          esc(contactPhone) +
+          (phoneTypeLbl ? " · " + esc(phoneTypeLbl) : "") +
+          "</div>"
       );
     }
+    var respLbl =
+      linked.bookingResponsibilityLabel || it.bookingResponsibilityLabel || "";
+    if (respLbl) {
+      contactBits.push(
+        '<div class="brand-card__contact-line">' + esc(respLbl) + "</div>"
+      );
+    }
+    var prospectLbl =
+      linked.prospectCustomerLabel ||
+      it.prospectCustomerLabel ||
+      linked.prospectCommercialLabel ||
+      it.prospectCommercialLabel ||
+      "";
     // Org / role path when no named person (WHO ORG_PATH) — do not imply a person exists.
     if (!contactName && (buyerEntity || buyerRole || contactPath)) {
       if (buyerEntity) {
@@ -1467,6 +1681,7 @@
       esc(title) +
       "</div>" +
       '<div class="brand-card__pills gdi-tile-pills">' +
+      commercialClassLbl +
       weeklyDeltaPillHtml(linked) +
       readinessPillHtml(it, linked) +
       tileActionPill(bookingStatus, priority, activeFilters) +
@@ -1477,24 +1692,11 @@
       "</div>" +
       weeklyDeltaMetaLine(linked) +
       '<div class="brand-card__meta">' +
-      esc(org) +
-      (segment ? " · " + esc(String(segment).toUpperCase()) : "") +
+      tileClassificationMeta(it, linked, title) +
+      (sourcingLbl
+        ? " · " + esc(String(sourcingLbl))
+        : "") +
       "</div>" +
-      (function () {
-        var dst =
-          linked.demandSignalTypeLabel ||
-          it.demandSignalTypeLabel ||
-          linked.demandSignalType ||
-          it.demandSignalType ||
-          "";
-        if (!dst || String(dst).toUpperCase() === "EVENT") return "";
-        return (
-          '<div class="brand-card__meta brand-card__meta--demand-type">' +
-          "<strong>" +
-          esc(String(dst).toUpperCase()) +
-          "</strong></div>"
-        );
-      })() +
       "</div></div>" +
       (summary
         ? '<div class="brand-card__description">' + esc(summary) + "</div>"
@@ -1830,9 +2032,18 @@
 
   function commercialProgressionCompactPill(progression) {
     if (!progression || !progression.compactStatusLabel) return "";
+    var raw = String(progression.compactStatusLabel);
+    // Do not show raw FUTURE_CYCLE_* codes on customer tiles.
+    var label = customerStatusLabel(
+      raw.replace(/\s+/g, "_").toUpperCase().replace(/_+/g, "_"),
+      raw
+    );
+    if (/^FUTURE\s*CYCLE$/i.test(raw.trim())) {
+      label = "Future cycle";
+    }
     return (
       '<span class="gdi-badge gdi-badge--progression">' +
-      esc(progression.compactStatusLabel) +
+      esc(label) +
       "</span>"
     );
   }
@@ -1982,7 +2193,20 @@
       esc(c.organization || o.organizationName || "—") +
       "</p>" +
       (c.email ? "<p><strong>Email:</strong> " + esc(c.email) + "</p>" : "") +
-      (c.phone ? "<p><strong>Phone:</strong> " + esc(c.phone) + "</p>" : "") +
+      (c.phone
+        ? "<p><strong>Phone:</strong> " +
+          esc(c.phone) +
+          (o.primaryContactPhoneTypeLabel || c.phoneTypeLabel || c.phoneType
+            ? " (" +
+              esc(
+                o.primaryContactPhoneTypeLabel ||
+                  c.phoneTypeLabel ||
+                  c.phoneType
+              ) +
+              ")"
+            : "") +
+          "</p>"
+        : "") +
       getDetailsCta +
       officialLink +
       "<p><strong>Why Relevant:</strong> " +
@@ -2297,165 +2521,206 @@
     var sources = sourceListHtml(o.sources);
 
     var thesis =
-      o.hotelDemandThesis || o.hotelOpportunityThesis || o.bethesdaWinThesis || "Not publicly found";
+      o.hotelOpportunityThesis ||
+      o.hotelDemandThesis ||
+      o.bethesdaWinThesis ||
+      "";
+    var fitText =
+      o.fitExplanation ||
+      o.fitRationale ||
+      o.hotelFitRationale ||
+      (audit.hotelFit && audit.hotelFit.explanation) ||
+      "";
+    var demandText =
+      o.whyHotelDemand ||
+      o.travelingCohort ||
+      o.relevantTravelers ||
+      "";
+    var occasionText = o.summaryWhat || "";
+    var whyMattersText = o.summaryWhyMatters || "";
+    var whyNowText = o.watchCardWhenToAct || o.whyNow || o.summaryWhyNow || "";
+    var actionText =
+      o.watchCardRecommendedNextStep ||
+      o.recommendedAction ||
+      o.recommendedNextStep ||
+      "";
+
     var dateLabel =
       o.eventDateDisplay ||
       eventDateRangeLabel(o.eventStartDate, o.eventEndDate, "Date not yet confirmed");
     var peakLabel = fmtVal(o.peakRooms ?? o.estimatedPeakRooms);
     var attLabel = fmtVal(o.attendance ?? o.estimatedAttendance);
-    if (!peakLabel || peakLabel === "—") peakLabel = "Not publicly found";
-    if (!attLabel || attLabel === "—") attLabel = "Not publicly found";
+    if (!peakLabel || peakLabel === "—") {
+      peakLabel =
+        customerStatusLabel(
+          o.roomDemandStatusLabel || o.roomDemandStatus,
+          "Not yet published"
+        );
+    }
+    if (!attLabel || attLabel === "—") attLabel = "Not yet published";
+
+    var sourcingLabel = customerStatusLabel(
+      o.venueSourcingStatusLabel || o.venueSourcingStatus,
+      "Hotel sourcing unconfirmed"
+    );
+    var roomDemandLabel = customerStatusLabel(
+      o.roomDemandLive || o.roomDemandStatusLabel || o.roomDemandStatus,
+      "Not yet established"
+    );
+    var cycleLabel = customerStatusLabel(
+      o.futureCycleEvidenceLabel || o.futureCycleEvidenceState,
+      ""
+    );
+    var locationLine =
+      o.eventLocationSummary ||
+      o.destinationStatus ||
+      [o.eventCity, o.venueCity, o.city].filter(Boolean).join(" · ") ||
+      "—";
+
+    var hasScore =
+      o.hotelFitScore != null &&
+      o.hotelFitScore !== "" &&
+      !Number.isNaN(Number(o.hotelFitScore));
+    var fitAssessmentParas = distinctProse(
+      fitText ||
+        (!hasScore
+          ? o.hotelFitScoreNote ||
+            "Qualitative fit — no numeric score on this prospect."
+          : "")
+    );
+    var scoreGrid = hasScore
+      ? '<div class="gdi-score-grid">' +
+        '<div class="gdi-score-cell"><div class="n">' +
+        esc(o.hotelFitScore) +
+        '</div><div class="l">Overall Hotel Fit</div></div>' +
+        Object.keys(comps)
+          .map(function (k) {
+            var compLabel = labels[k] || fitLabel(k);
+            if (/^hotel\s*fit$/i.test(String(compLabel))) {
+              compLabel = fitLabel(k) !== "Hotel Fit" ? fitLabel(k) : k;
+            }
+            return (
+              '<div class="gdi-score-cell"><div class="n">' +
+              esc(comps[k]) +
+              '</div><div class="l">' +
+              esc(compLabel) +
+              "</div></div>"
+            );
+          })
+          .join("") +
+        "</div>"
+      : "<div class=\"gdi-fit-qualitative\">" +
+        fitAssessmentParas
+          .map(function (p) {
+            return "<p>" + esc(p) + "</p>";
+          })
+          .join("") +
+        "</div>";
+
+    var evidenceConfLabel =
+      o.evidenceConfidence == null || o.evidenceConfidence === ""
+        ? "Not scored"
+        : o.evidenceConfidence;
+    var qualLabel =
+      o.opportunityQualificationLabel || o.opportunityQualification || "—";
+
+    var occasionParas = distinctProse(occasionText || o.title);
+    var demandParas = distinctProse(demandText, thesis);
+    // Keep "why this hotel" distinct from demand — drop thesis if already used above
+    var hotelParas = distinctProse(
+      whyMattersText,
+      thesis && demandParas.indexOf(thesis) < 0 ? thesis : ""
+    );
+    // Fit assessment renders once in the qualitative score block — not again here.
+    var limitParas = distinctProse(
+      o.competitiveContextNote,
+      o.venueHistoryNote,
+      o.roomDemandStatusNote && /not established|unknown|not published/i.test(String(o.roomDemandStatusNote))
+        ? o.roomDemandStatusNote
+        : ""
+    );
+    var whyNowParas = distinctProse(whyNowText);
+
     var relatedN = o.relatedOpportunityCount || (o.relatedOpportunityIds || []).length || 0;
     var relatedHtml =
       relatedN > 0
         ? '<p class="gdi-related"><strong>Related opportunities:</strong> ' +
           esc(relatedN) +
-          (o.eventSeriesId
-            ? " · series <code>" + esc(o.eventSeriesId) + "</code>"
-            : "") +
           "</p>"
         : "";
     var actionBasis = o.actionBasis
       ? "<p><strong>Why this action:</strong> " + esc(o.actionBasis) + "</p>"
       : "";
-    var nextCycle =
-      o.nextCycleDisplay
-        ? "<p><strong>Cycle:</strong> " + esc(o.nextCycleDisplay) + "</p>"
-        : "";
-
-    var scoreGrid =
-      '<div class="gdi-score-grid">' +
-      '<div class="gdi-score-cell"><div class="n">' +
-      esc(o.hotelFitScore) +
-      '</div><div class="l">Overall Hotel Fit</div></div>' +
-      Object.keys(comps)
-        .map(function (k) {
-          var compLabel = labels[k] || fitLabel(k);
-          // Never re-label a component as "Hotel Fit" (duplicate of overall)
-          if (/^hotel\s*fit$/i.test(String(compLabel))) {
-            compLabel = fitLabel(k) !== "Hotel Fit" ? fitLabel(k) : k;
-          }
-          return (
-            '<div class="gdi-score-cell"><div class="n">' +
-            esc(comps[k]) +
-            '</div><div class="l">' +
-            esc(compLabel) +
-            "</div></div>"
-          );
-        })
-        .join("") +
-      "</div>";
 
     return (
       '<div class="gdi-detail-framework">' +
       commercialProgressionHtml(o.commercialProgression) +
-      '<section class="gdi-section gdi-section--see"><h3>Event / Opportunity</h3>' +
-      "<p>" +
-      esc(o.summaryWhat || o.title || "—") +
-      "</p>" +
+      '<section class="gdi-section gdi-section--see"><h3>Account / occasion</h3>' +
+      occasionParas
+        .map(function (p) {
+          return "<p>" + esc(p) + "</p>";
+        })
+        .join("") +
       '<div class="gdi-detail-meta-row">' +
       "<span><strong>Date</strong> " +
       esc(dateLabel) +
-      (o.eventDateStatus ? " · " + esc(o.eventDateStatus) : "") +
       "</span>" +
-      "<span><strong>Demand type</strong> " +
-      esc(
-        o.demandSignalTypeLabel ||
-          o.demandSignalType ||
-          o.opportunityTypeLabel ||
-          o.opportunityType ||
-          "—"
-      ) +
+      "<span><strong>Location</strong> " +
+      esc(locationLine) +
       "</span>" +
-      "<span><strong>Demand family</strong> " +
-      esc(o.demandFamilyLabel || o.demandFamily || "—") +
-      "</span>" +
-      "<span><strong>Type</strong> " +
-      esc(o.opportunityTypeLabel || o.opportunityType || "—") +
-      "</span>" +
-      "<span><strong>Venue / sourcing</strong> " +
-      esc(o.venueSourcingStatusLabel || o.venueSourcingStatus || "Unknown") +
+      "<span><strong>Sourcing</strong> " +
+      esc(sourcingLabel) +
       "</span>" +
       "<span><strong>Room demand</strong> " +
-      esc(o.roomDemandLive || o.roomDemandStatusLabel || o.roomDemandStatus || "Unknown") +
-      "</span></div>" +
-      nextCycle +
-      "<p>" +
-      esc(o.venueSourcingRationale || "") +
-      "</p>" +
+      esc(roomDemandLabel) +
+      "</span>" +
+      (cycleLabel
+        ? "<span><strong>Cycle</strong> " + esc(cycleLabel) + "</span>"
+        : "") +
+      "</div>" +
       "<p>Attendance: " +
       esc(attLabel) +
-      (o.attendanceStatus ? " (" + esc(o.attendanceStatus) + ")" : "") +
       " · Peak rooms: " +
       esc(peakLabel) +
-      (o.peakRoomsStatus ? " (" + esc(o.peakRoomsStatus) + ")" : "") +
-      (o.potentialRoomNights != null
-        ? " · Potential room nights: " +
-          esc(o.potentialRoomNights) +
-          (o.potentialRoomNightsStatus
-            ? " (" + esc(o.potentialRoomNightsStatus) + ")"
-            : "")
-        : "") +
       "</p>" +
-      "<p><strong>Room-demand thesis:</strong> <em>" +
-      esc(thesis) +
-      "</em></p>" +
       relatedHtml +
       "</section>" +
-      '<section class="gdi-section gdi-section--hotel-demand"><h3>Why This May Create Hotel Demand</h3><p>' +
-      esc(
-        o.whyHotelDemand ||
-          o.hotelDemandThesis ||
-          o.hotelOpportunityThesis ||
-          o.summaryWhyHotel ||
-          "—"
-      ) +
-      "</p>" +
-      (o.commercialFactors
-        ? "<ul class=\"gdi-demand-factors\">" +
-          "<li><strong>Timing:</strong> " +
-          esc(o.timingClass || o.commercialFactors.timing || "—") +
-          "</li>" +
-          "<li><strong>Recurrence:</strong> " +
-          esc(o.recurrenceClass || o.commercialFactors.recurrence || "—") +
-          "</li>" +
-          "<li><strong>Buyer path:</strong> " +
-          esc(
-            o.buyerAccessibility ||
-              (o.commercialFactors.buyerAccessibility) ||
-              "—"
-          ) +
-          "</li>" +
-          "<li><strong>Geographic fit:</strong> " +
-          esc(
-            (o.commercialFactors.geographicFit &&
-              (o.commercialFactors.geographicFit.label ||
-                o.commercialFactors.geographicFit.status)) ||
-              o.demandTerritoryFitLabel ||
-              "—"
-          ) +
-          "</li></ul>"
-        : "") +
+      '<section class="gdi-section gdi-section--hotel-demand"><h3>Who could travel / why hotel business</h3>' +
+      demandParas
+        .map(function (p) {
+          return "<p>" + esc(p) + "</p>";
+        })
+        .join("") +
       "</section>" +
-      '<section class="gdi-section gdi-section--matters"><h3>Why It Matters</h3><p>' +
-      esc(o.summaryWhyMatters || "—") +
-      "</p><p>" +
-      esc(o.summaryWhyHotel || o.fitExplanation || "") +
-      "</p>" +
+      '<section class="gdi-section gdi-section--matters"><h3>Why this hotel</h3>' +
+      hotelParas
+        .map(function (p) {
+          return "<p>" + esc(p) + "</p>";
+        })
+        .join("") +
       scoreGrid +
-      "<p>" +
-      esc((audit.hotelFit && audit.hotelFit.explanation) || o.fitExplanation || "") +
-      "</p>" +
       '<div class="gdi-signal-row">' +
-      "<div><span class=\"gdi-meta-label\">Overall Hotel Fit</span><strong>" +
-      esc(o.hotelFitScore) +
+      "<div><span class=\"gdi-meta-label\">Hotel fit</span><strong>" +
+      esc(hasScore ? o.hotelFitScore : "Qualitative") +
       "</strong></div>" +
-      "<div><span class=\"gdi-meta-label\">Opportunity Qualification</span><strong>" +
-      esc(o.opportunityQualificationLabel || o.opportunityQualification || "—") +
+      "<div><span class=\"gdi-meta-label\">Sales posture</span><strong>" +
+      esc(qualLabel) +
       "</strong></div>" +
-      "<div><span class=\"gdi-meta-label\">Evidence Confidence</span><strong>" +
-      esc(o.evidenceConfidence) +
+      "<div><span class=\"gdi-meta-label\">Evidence confidence</span><strong>" +
+      esc(evidenceConfLabel) +
+      "</strong></div>" +
+      "<div><span class=\"gdi-meta-label\">Sales action</span><strong>" +
+      esc(actionStatusLabel(o.bookingWindowStatus) || "—") +
       "</strong></div></div></section>" +
+      (limitParas.length
+        ? '<section class="gdi-section gdi-section--limits"><h3>Limitations / competing arrangements</h3>' +
+          limitParas
+            .map(function (p) {
+              return "<p>" + esc(p) + "</p>";
+            })
+            .join("") +
+          "</section>"
+        : "") +
       (String(o.customerFacingState || "").toUpperCase() === "FUTURE_WATCH" &&
       o.watchCardWhyMatters
         ? '<section class="gdi-section gdi-section--watch-early"><h3>Early-warning lodging status</h3><ul>' +
@@ -2477,37 +2742,29 @@
           "<li><strong>Next trigger:</strong> " +
           esc(o.watchCardNextTrigger || o.nextTriggerCondition || "—") +
           "</li>" +
-          (o.watchCardMonitoringStatus
-            ? "<li><strong>Publication monitoring:</strong> " +
-              esc(o.watchCardMonitoringStatus) +
-              (o.watchCardMonitoringLastChecked
-                ? " · Last checked: " + esc(o.watchCardMonitoringLastChecked)
-                : "") +
-              (o.watchCardMonitoringNextExpected
-                ? " · " + esc(o.watchCardMonitoringNextExpected)
-                : "") +
-              "</li>"
-            : "") +
           "</ul></section>"
         : "") +
-      '<section class="gdi-section gdi-section--now"><h3>Why Now</h3><p><strong>' +
+      '<section class="gdi-section gdi-section--now"><h3>Why investigate now</h3><p><strong>' +
       esc(actionStatusLabel(o.bookingWindowStatus) || o.bookingWindowLabel || "—") +
-      "</strong></p><p>" +
-      esc(o.watchCardWhenToAct || o.whyNow || "—") +
-      "</p><p>Location: " +
-      esc(o.eventLocationStatusLabel || o.eventLocationStatus || "—") +
-      " · " +
-      esc(o.eventLocationSummary || o.destinationStatus || "—") +
-      "</p><p>Demand Territory: " +
-      esc(o.demandTerritoryFitLabel || "—") +
-      "</p></section>" +
-      '<section class="gdi-section gdi-section--action"><h3>Suggested Action</h3><p>' +
-      esc(o.watchCardRecommendedNextStep || o.recommendedAction || "—") +
+      "</strong></p>" +
+      whyNowParas
+        .map(function (p) {
+          return "<p>" + esc(p) + "</p>";
+        })
+        .join("") +
+      "</section>" +
+      '<section class="gdi-section gdi-section--action"><h3>Suggested action</h3><p>' +
+      esc(actionText || "—") +
       "</p>" +
       actionBasis +
       '<p class="gdi-pursuit-actions">' +
       pursuitActionButtonHtml(
-        { opportunityId: o.id, id: o.id, canStartPursuit: o.canStartPursuit, pursuitId: o.pursuitId },
+        {
+          opportunityId: o.id,
+          id: o.id,
+          canStartPursuit: o.canStartPursuit,
+          pursuitId: o.pursuitId,
+        },
         o
       ) +
       "</p></section>" +
@@ -2516,23 +2773,25 @@
           pursuitPanelHtml(o._pursuitDto) +
           "</section>"
         : "") +
-      '<section class="gdi-section gdi-section--contact"><h3>Contact</h3>' +
+      '<section class="gdi-section gdi-section--contact"><h3>Who sales should contact</h3>' +
       whoShouldSalesContactHtml(o, extras.whoContactHtml) +
-      (o.contactPathClass
-        ? '<p class="gdi-contact-quality-quiet">Contact path: ' +
-          esc(o.contactPathClass) +
-          "</p>"
-        : "") +
       "</section>" +
       '<section class="gdi-section gdi-section--evidence"><h3>Sources</h3>' +
-      "<p>" +
-      esc(o.evidenceConfidenceExplanation || audit.evidenceConfidenceExplanation || "") +
-      "</p>" +
-      "<p>Competitive context — STR: " +
-      esc(o.likelyStrCompetitor || "—") +
-      " · Group: " +
-      esc(o.likelyGroupCompetitor || "—") +
-      "</p><ul>" +
+      (function () {
+        var expl =
+          o.evidenceConfidenceExplanation ||
+          audit.evidenceConfidenceExplanation ||
+          "";
+        // Hide contradictory boilerplate when sources are present.
+        if (
+          /0 verified field|0 source\(s\) look first-party/i.test(expl) &&
+          (o.sources || []).length
+        ) {
+          return "";
+        }
+        return expl ? "<p>" + esc(expl) + "</p>" : "";
+      })() +
+      "<ul>" +
       sources +
       "</ul></section>" +
       (extras.validationHtml

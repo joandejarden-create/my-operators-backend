@@ -69,11 +69,19 @@ import {
   HOTEL_VALIDATION_REASON,
   HOTEL_VALIDATION_REASON_LABEL,
 } from "../lib/group-demand-intelligence/index.js";
-import { loadOpportunitiesCanonical } from "../lib/group-demand-intelligence/opportunity-persistence.js";
+import {
+  loadOpportunitiesCanonical,
+  getGdiOpportunityPersistenceMode,
+} from "../lib/group-demand-intelligence/opportunity-persistence.js";
 import {
   getCachedOpportunityDoc,
   invalidateGdiHotelReadCache,
 } from "../lib/group-demand-intelligence/read-cache.js";
+import {
+  REVIEWED_PROSPECT_PUBLICATION_BASIS,
+  isReviewedProspectPublicationEnabled,
+  isReviewedProspectHotelEnabled,
+} from "../lib/group-demand-intelligence/reviewed-prospect-publication-v1.js";
 import { enrichPrivateEventOpportunityDetail } from "../lib/group-demand-intelligence/private-events/customer-detail-enrichment.js";
 import {
   ingestGdiAuthFeedback,
@@ -153,6 +161,7 @@ async function loadOppDoc(hotelId) {
 /**
  * Prefer cached hotel doc; on miss load single Airtable row when possible
  * instead of re-listing the full hotel set for View Details.
+ * Filesystem persistence mode never falls through to Airtable (local/import roots).
  */
 async function loadOpportunityForDetail(hotelId, opportunityId) {
   const t0 = Date.now();
@@ -167,25 +176,28 @@ async function loadOpportunityForDetail(hotelId, opportunityId) {
       };
     }
   }
-  // Cache miss: try single-record Airtable path when configured
-  try {
-    const {
-      loadOpportunity,
-      isGdiOpportunityAirtableConfigured,
-    } = await import("../lib/group-demand-intelligence/airtable-opportunity-store.js");
-    if (isGdiOpportunityAirtableConfigured()) {
-      const one = await loadOpportunity(hotelId, opportunityId);
-      if (one) {
-        return {
-          opportunity: one,
-          source: "airtable_single",
-          durationMs: Date.now() - t0,
-        };
+  const persistenceMode = getGdiOpportunityPersistenceMode();
+  // Cache miss: single-record Airtable only when Airtable is the active persistence mode
+  if (persistenceMode === "airtable") {
+    try {
+      const {
+        loadOpportunity,
+        isGdiOpportunityAirtableConfigured,
+      } = await import("../lib/group-demand-intelligence/airtable-opportunity-store.js");
+      if (isGdiOpportunityAirtableConfigured()) {
+        const one = await loadOpportunity(hotelId, opportunityId);
+        if (one) {
+          return {
+            opportunity: one,
+            source: "airtable_single",
+            durationMs: Date.now() - t0,
+          };
+        }
       }
+    } catch (err) {
+      if (err?.code === "hotel_boundary_violation") throw err;
+      // fall through to full doc
     }
-  } catch (err) {
-    if (err?.code === "hotel_boundary_violation") throw err;
-    // fall through to full doc
   }
   const doc = await loadOppDoc(hotelId);
   const opportunity = (doc.opportunities || []).find((o) => o.id === opportunityId);
@@ -433,12 +445,22 @@ export async function getGdiSummary(req, res) {
     const campaignsVisible = listVisibleDemandCampaigns(hotelId, {
       nowDate: asOfToday(),
     });
+    // Honest split: NEVER_RUN means no tracked automated research runner.
+    // Reviewed-package imports are separate and must not be hidden or invented as runs.
+    const enrichedSummary = {
+      ...summary,
+      lastReviewedPackageImportAt:
+        doc?.reviewedProspectImport?.importedAt ||
+        summary.lastReviewedPackageImportAt ||
+        null,
+      automatedResearchRunStatus: summary.runStatus || "NEVER_RUN",
+    };
     return res.json({
       ok: true,
       experimentalLabel: "EXPERIMENTAL / PILOT",
       hotelId,
       profileReady: Boolean(profile),
-      summary,
+      summary: enrichedSummary,
       competitiveContext: profile
         ? {
             strCompSet: profile.strCompSet || [],
@@ -569,7 +591,11 @@ export async function getGdiOpportunities(req, res) {
     if (!includeDisqualified) {
       opportunities = filterSalespersonView(opportunities);
     }
-    opportunities = filterCustomerFacingOpportunities(opportunities);
+    const visibilityOpts = { hotelId };
+    opportunities = filterCustomerFacingOpportunities(
+      opportunities,
+      visibilityOpts
+    );
 
     // CSV via ?format=csv (compat path; dedicated /export.csv also exists)
     if (format === "csv") {
@@ -607,6 +633,28 @@ export async function getGdiOpportunities(req, res) {
       /* pursuit overlay optional */
     }
     res.setHeader("X-GDI-Opportunity-View", wantFull ? "full" : "list");
+    const reviewedInStore = (doc.opportunities || []).filter(
+      (o) =>
+        String(o?.prospectPublicationBasis || "") ===
+          REVIEWED_PROSPECT_PUBLICATION_BASIS &&
+        o?.prospectHotelFacing === true
+    ).length;
+    let visibilityWarning = null;
+    if (opportunities.length === 0 && reviewedInStore > 0) {
+      const publicationEnabled = isReviewedProspectPublicationEnabled();
+      const hotelEnabled = isReviewedProspectHotelEnabled(hotelId);
+      visibilityWarning = {
+        code: "REVIEWED_PROSPECTS_FILTERED",
+        reviewedInStore,
+        publicationEnabled,
+        hotelEnabled,
+        message: !publicationEnabled
+          ? "Reviewed prospects exist for this property but GDI_REVIEWED_PROSPECT_PUBLICATION_V1 is not enabled in this process."
+          : !hotelEnabled
+            ? "Reviewed prospects exist for this property but it is not on the reviewed-prospect hotel allowlist."
+            : "Reviewed prospects exist in storage but none passed customer-facing visibility filters.",
+      };
+    }
     return res.json({
       ok: true,
       hotelId,
@@ -616,6 +664,8 @@ export async function getGdiOpportunities(req, res) {
       view: wantFull ? "full" : "list",
       schemaVersion: wantFull ? null : GDI_OPPORTUNITY_LIST_SCHEMA,
       opportunities,
+      ...(visibilityWarning ? { visibilityWarning } : {}),
+      reviewedProspectImport: doc.reviewedProspectImport || null,
     });
   } catch (err) {
     return sendGdiUpstreamError(res, err, "getGdiOpportunities");
@@ -698,12 +748,31 @@ export async function getGdiOpportunityDetail(req, res) {
         })
       );
     }
+    const shareValidation = getShareValidationForOpportunity(
+      hotelId,
+      opportunityId
+    );
+    const opportunityPayload = {
+      ...opportunity,
+      ...(commercialProgression ? { commercialProgression } : {}),
+      ...(shareValidation
+        ? {
+            shareValidation: {
+              familiarityStatus: shareValidation.familiarityStatus,
+              commercialValue: shareValidation.commercialValue,
+              contactPersonAssessment: shareValidation.contactPersonAssessment,
+              emailAssessment: shareValidation.emailAssessment,
+              phoneAssessment: shareValidation.phoneAssessment,
+              note: shareValidation.note || "",
+              validatedAt: shareValidation.validatedAt,
+            },
+          }
+        : {}),
+    };
     res.setHeader("X-GDI-Detail-Source", loaded.source);
     return res.json({
       ok: true,
-      opportunity: commercialProgression
-        ? { ...opportunity, commercialProgression }
-        : opportunity,
+      opportunity: opportunityPayload,
       scoreAudit: reconstructScoreAudit(opportunity),
       validationReasons: HOTEL_VALIDATION_REASON,
       validationReasonLabels: HOTEL_VALIDATION_REASON_LABEL,
@@ -727,7 +796,7 @@ export async function getGdiOpportunitiesExport(req, res) {
   if (!includeDisqualified) {
     opportunities = filterSalespersonView(opportunities);
   }
-  opportunities = filterCustomerFacingOpportunities(opportunities);
+  opportunities = filterCustomerFacingOpportunities(opportunities, { hotelId });
   opportunities = filterOpportunitiesForExport(opportunities, req.query);
   opportunities = await attachCommercialProgression(hotelId, opportunities);
 
@@ -744,7 +813,7 @@ export async function getGdiWeeklyBrief(req, res) {
   const hotelId = String(req.params.hotelId || "").trim();
   const doc = await loadOppDoc(hotelId);
   const brief = buildWeeklyBrief(
-    filterCustomerFacingOpportunities(doc.opportunities || [])
+    filterCustomerFacingOpportunities(doc.opportunities || [], { hotelId })
   );
   const bySubject = await loadGdiCommercialProgressionBySubject(hotelId);
   const attachItems = (items) =>
@@ -1068,7 +1137,8 @@ export async function getGdiShareResolve(req, res) {
   const summary = loadLatestSummary(hotelId);
   const oppDoc = await loadOppDoc(hotelId);
   const active = filterCustomerFacingOpportunities(
-    filterSalespersonView(oppDoc.opportunities || [])
+    filterSalespersonView(oppDoc.opportunities || []),
+    { hotelId }
   );
   const validationDoc = loadShareValidation(hotelId);
   const validationSummary = buildShareValidationSummary({
@@ -1181,7 +1251,8 @@ export async function getGdiShareOpportunities(req, res) {
   }
 
   const opportunities = filterCustomerFacingOpportunities(
-    filterSalespersonView(doc.opportunities || [])
+    filterSalespersonView(doc.opportunities || []),
+    { hotelId }
   ).map((o) => {
     const sanitized = shareSanitizeWithCanonical(hotelId, o);
     const v = byVal.get(o.id);
@@ -1241,7 +1312,10 @@ export async function getGdiShareOpportunitiesExport(req, res) {
   }
   const doc = await loadOppDoc(hotelId);
   let opportunities = projectOpportunitiesCommercialQuality(
-    filterCustomerFacingOpportunities(filterSalespersonView(doc.opportunities || []))
+    filterCustomerFacingOpportunities(
+      filterSalespersonView(doc.opportunities || []),
+      { hotelId }
+    )
   );
   opportunities = filterOpportunitiesForExport(opportunities, req.query);
   opportunities = await attachCommercialProgression(hotelId, opportunities);
