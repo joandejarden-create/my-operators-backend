@@ -1,88 +1,60 @@
 # Production change set — GDI reviewed prospect publication
 
-**Status:** Ready for approval — **not deployed / not applied to production**  
-**Date prepared:** 2026-10-14
+**Status:** **Published** — Airtable applied; code deploy `cb4bd52d`; flag ON for Bethesda + Mayflower  
+**Date:** 2026-10-14
 
-## 1. Code & configuration to deploy
+## 1. Deployed code
 
-### Code
-
-- `lib/group-demand-intelligence/prospect-publication-eligibility-v1.js` (contract SoT)
-- `lib/group-demand-intelligence/reviewed-prospect-publication-v1.js`
-- `lib/group-demand-intelligence/reviewed-prospect-import-v1.js`
-- `lib/group-demand-intelligence/customer-visibility.js` (reviewed path)
-- `lib/group-demand-intelligence/feature-flag.js` (`GDI_REVIEWED_PROSPECT_PUBLICATION_V1`)
-- `lib/group-demand-intelligence/opportunity-list-dto.js` / UI labels in `dealality-gdi-ui.js`
-- `api/group-demand-intelligence.js` (filesystem-aware detail load; attach `shareValidation`)
-- `config/group-demand-intelligence/hotels/rec0eTEnCqlsGJJt9.json` (Mayflower registration)
-- `scripts/gdi-import-reviewed-prospects.mjs`
-- Focused tests: `scripts/test-gdi-prospect-publication-eligibility-v1.mjs`, `scripts/test-gdi-reviewed-prospect-publication-v1.mjs`
+- Branch: `gdi/prospect-publication-bethesda-mayflower`
+- Deploy SHA (working tree upload): `9b121257` (merge tip) + uncommitted/hotfix tree contents via `railway up`
+- Railway deployment: `a9ef91de-3a7e-4cc3-a082-469d7682a310` (**SUCCESS**)
+- Flag redeploy (env set): `4a5119f9-abc4-4303-b64a-1e4ac7ae7cc7` (triggered by `GDI_REVIEWED_PROSPECT_PUBLICATION_V1=1`)
 
 ### Runtime configuration
 
-| Variable | Production intent |
-|----------|-------------------|
-| `GDI_REVIEWED_PROSPECT_PUBLICATION_V1` | `1` to enable scoped reviewed path |
-| `GDI_REVIEWED_PROSPECT_HOTEL_IDS` | Optional override; default allowlist = Bethesda + Mayflower |
-| Persistence | Keep existing production Airtable (or declared mode); **do not** point production at the local `_local-gdi-data` root |
+| Variable | Value |
+|----------|-------|
+| `GDI_OPPORTUNITIES_PERSISTENCE` | `airtable` (production) |
+| `AIRTABLE_GDI_BASE_ID` | `appa2cE7FTRmIbB32` |
+| `GDI_REVIEWED_PROSPECT_PUBLICATION_V1` | set to `1` (awaiting redeploy SUCCESS) |
+| `GDI_REVIEWED_PROSPECT_HOTEL_IDS` | `recLuxvwwxID7U2B8,rec0eTEnCqlsGJJt9` |
 
-## 2. Package identities
+## 2. Adapter & schema
 
-| Artifact | Hash |
-|----------|------|
+- **Authoritative store:** Airtable GDI base via `opportunityPayloadJson` fidelity (`lib/group-demand-intelligence/airtable-opportunity-store.js` + `opportunity-persistence.js`)
+- **Not** filesystem SoT in production (FS mirror may exist; customer path uses Airtable)
+- Feedback / hotel validation: share-validation store + Decision Outcomes dual-write
+- Publication metadata: `prospectPublicationBasis=REVIEWED_PACKAGE_V1`, section, contact stamps on opportunity payload
+
+## 3. Package hashes
+
+| Artifact | SHA-256 |
+|----------|---------|
 | Register | `f5f348d67f26a06e5337f511175c6b1e65d42f64f2b04a4ef7bfcccf90bf1c3e` |
 | Contact packages | `b5ff071ab8e97050710553330d89d62a578854ecc3b71456f45819665bb70be3` |
 
-### Expected package counts (eligibility)
+### Expected reviewed membership
 
-| Hotel | Priority facing | Exploratory facing | Enrichment (internal only) |
-|-------|-----------------|--------------------|----------------------------|
-| Bethesda `recLuxvwwxID7U2B8` | 11 | 2 | 1 (CTN) |
-| Mayflower `rec0eTEnCqlsGJJt9` | 9 | 2 | 4 |
+| Hotel | Priority | Exploratory | Internal enrichment |
+|-------|----------|-------------|---------------------|
+| Bethesda | 11 | 2 | 1 (CTN) |
+| Mayflower | 9 | 2 | 4 |
 
-Record-level create/update/unchanged/conflict: see `import-manifest.csv` (local apply used as template). **Re-run dry-run against live production before apply** — local manifests must not overwrite newer production facts.
+## 4. Backups / rollback
 
-## 3. Preflight (required before production apply)
+- Pre-apply backups: `reports/gdi-prospect-publication-implementation/production-apply/backups/`
+- Rerun backups: `production-apply-rerun/backups/`
+- Rollback order: (1) set `GDI_REVIEWED_PROSPECT_PUBLICATION_V1=0` (2) restore only conflicting opportunity fields from backup while preserving post-import customer validation/feedback (3) do not wholesale-delete unmatched historical rows
 
-1. Deploy code + flags; confirm other hotels’ GDI pages unchanged.
-2. Fresh production pull/compare for both hotel opportunity docs vs local backup baseline.
-3. Dry-run import against production data root / Airtable mode with **no write**:
-   ```bash
-   node scripts/gdi-import-reviewed-prospects.mjs --both --dry-run
-   ```
-4. Review dry-run conflicts (user-edited fields, newer verification dates).
-5. Confirm Mayflower hotel config present; initialize store only via supported path if still empty.
-6. Backup production opportunity + validation docs for both hotels.
-7. Confirm `GDI_DATA_ROOT` is **unset** (or production path) so import does not hit the local proof folder.
+## 5. Auth feedback (production)
 
-## 4. Deployment / import sequence
+- Share-capability path verified for Bethesda contract hotel (authorized write 200; reload preserves note; no-token 403; cross-hotel 403 `SHARE_HOTEL_SCOPE`)
+- Reversible note on `gdi_opp_ndss_advocacy_2027` (familiarity `ALREADY_KNOWN` only — no fictitious “worth pursuing”)
+- Memberstack browser Save JWT path still requires interactive hotel-user sign-in (not claimed complete here)
 
-1. Deploy application build with reviewed-prospect code.
-2. Enable `GDI_REVIEWED_PROSPECT_PUBLICATION_V1=1` for the deployment environment.
-3. Production dry-run; approve manifest.
-4. Apply per hotel (or `--both`) with backups enabled.
-5. Immediate read-back: opportunities API facing counts + sample NDSS/CMSS contact fields.
-6. Browser check both preview/auth hotel pages (labels, helpline, sourcing).
-7. Spot-check feedback write on one record; confirm commercial status not auto-confirmed.
+## 6. Customer review routes (no secrets)
 
-## 5. Scoped rollback
-
-1. Disable `GDI_REVIEWED_PROSPECT_PUBLICATION_V1` (hides reviewed path; Ready/legacy unchanged).
-2. Restore opportunity docs from pre-import backup for the two hotels only.
-3. Restore share-validation / feedback if import touched them (importer should not wipe feedback; restore only if a mistaken apply did).
-4. Do not bulk-delete unmatched historical records.
-
-## 6. Post-publication checks
-
-- Bethesda: ≥11 priority + 2 exploratory reviewed labels; CTN absent from action list.
-- Mayflower: 9 + 2 facing; enrichment four absent from list.
-- No duplicate IDs; NADO 2027 ≠ 2028.
-- Print/export retains sourcing uncertainty language.
-- Unrelated hotels: no behavior change.
-
-## 7. Explicit non-goals of this change set
-
-- No outreach send.
-- No Parallel lab mutation.
-- No lowering Ready / inventing housing-control evidence.
-- No global surface-active bypass.
+- Production host: `https://my-operators-backend-production.up.railway.app`
+- Bethesda GDI page: `/group-demand-intelligence.html?hotelId=recLuxvwwxID7U2B8&share=<contract-token>`
+- Mayflower GDI page (authenticated/pilot-read): `/group-demand-intelligence.html?hotelId=rec0eTEnCqlsGJJt9`
+- Do not paste share tokens into reports

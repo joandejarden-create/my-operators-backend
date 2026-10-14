@@ -92,28 +92,35 @@ enrich_contacts → execute-targeted-contact-resolution-v1 (Surfe off unless --a
 
 ## 7. Review checkpoint
 
-`draft_review_package/human-review-checkpoint.json` — **pending** until humans approve/rewrite/reject.  
-San Diego / Renaissance new drafts: **review only** (not authorized for publication).
+Human review is a **quality decision on completed drafts** (approve / rewrite / reject / hold).  
+It is not a substitute for missing research or unwritten card copy.
+
+| Hotel | Review posture |
+|-------|----------------|
+| Bethesda / Mayflower | Reviewed packages published |
+| San Diego | Qualified package published (21 facing); incomplete candidates remain internal with reasons |
+| Renaissance | Drafts only unless a reviewed package is authorized |
 
 ---
 
 ## 8. Airtable persistence and publication
 
 ```bash
-# Dry-run first
-node scripts/gdi-import-reviewed-prospects.mjs --both --adapter airtable \
-  --content-overlay reports/gdi-drawer-completeness/sales-review-overlay.json \
-  --package-dir reports/gdi-bethesda-process-replication/hotel-review \
-  --out-dir reports/gdi-operational-baseline/drawer-repair-preflight
-
-# Authorized apply (completed this baseline)
+# Beth / May drawer repair (example)
 node scripts/gdi-import-reviewed-prospects.mjs --both --adapter airtable --apply \
   --content-overlay reports/gdi-drawer-completeness/sales-review-overlay.json \
   --package-dir reports/gdi-bethesda-process-replication/hotel-review \
   --out-dir reports/gdi-operational-baseline/drawer-repair-apply
+
+# San Diego reviewed package (executed 2026-10-14)
+node scripts/gdi-import-reviewed-prospects.mjs --hotel recnPB3Q02NO8Ma1o --adapter airtable --apply \
+  --content-overlay reports/gdi-operational-baseline/san-diego-publication-package/sales-review-overlay.json \
+  --package-dir reports/gdi-operational-baseline/san-diego-publication-package \
+  --out-dir reports/gdi-operational-baseline/san-diego-publication-apply
 ```
 
-Publication apply for SD/Ren prospects: **blocked** (not authorized).
+**Allowlist:** code default includes Beth + May + SD; production must set  
+`GDI_REVIEWED_PROSPECT_HOTEL_IDS=…,recnPB3Q02NO8Ma1o` and `GDI_REVIEWED_PROSPECT_PUBLICATION_V1=1`.
 
 ---
 
@@ -143,7 +150,7 @@ Screenshots: `reports/gdi-operational-baseline/screenshots/` (when captured).
 
 | Hotel | Purpose | Result |
 |-------|---------|--------|
-| Bethesda | Published drawer + presentation | Airtable content apply **executed**; UI code ready, production deploy **blocked** |
-| Mayflower | Same | Airtable apply **executed** |
-| San Diego | Fresh research → drafts | Live Parallel **executed**; program drafts **executed**; publication **blocked** (review) |
-| Renaissance | Reuse + drafts without bespoke package | Reuse/contact/draft path **executed**; publication **blocked** |
+| Bethesda | Published drawer + presentation | Airtable apply **executed**; production UI deploy **blocked** (Railway login) |
+| Mayflower | Shared Bethesda presentation | Titles/drawers cleaned; deploy **blocked** |
+| San Diego | Research → qualify → publish | **21 facing** published (19 Priority / 2 Exploratory PE referrals); deploy + Railway env allowlist required for customer UI |
+| Renaissance | Reuse + drafts without bespoke package | Reuse/contact/draft path **executed**; publication **not** authorized |

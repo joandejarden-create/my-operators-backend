@@ -237,12 +237,30 @@
     "(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)";
 
   /**
-   * Remove event dates/years from tile title/summary copy.
+   * Clean tile/summary copy without destroying concise occasion titles.
+   * Keep years in titles like "AHIMA Advocacy Summit 2027".
+   * Strip month-day ranges when a date pill already carries timing.
    * Classification: REUSABLE_PRODUCT_UI
    */
-  function scrubEventDatesFromText(raw) {
+  function scrubEventDatesFromText(raw, opts) {
+    opts = opts || {};
     var s = String(raw == null ? "" : raw);
     if (!s) return "";
+
+    // Concise account/occasion titles — preserve year; only strip research-note junk.
+    var looksLikeCleanOccasion =
+      s.length <= 90 &&
+      !/verified via|verified:|hotel not named|hotel block tba|supported recurring|unconfirmed this pass/i.test(
+        s
+      ) &&
+      !new RegExp(
+        MONTH_NAME_RE + "\\.?\\s+\\d{1,2}(?:\\s*[–—\\-]\\s*\\d{1,2})?,\\s*20\\d{2}",
+        "i"
+      ).test(s);
+    if (looksLikeCleanOccasion && opts.preserveOccasionYear !== false) {
+      return s.replace(/\s{2,}/g, " ").trim();
+    }
+
     // Parenthetical ranges: (Jun 7-9), (Nov 13–15 & 20–22)
     s = s.replace(
       new RegExp(
@@ -270,22 +288,70 @@
       /\b20\d{2}-\d{2}-\d{2}(?:\s*[→\-–—]\s*20\d{2}-\d{2}-\d{2})?/g,
       ""
     );
-    // Year before em dash: "Expo 2027 —"
-    s = s.replace(/\s+20\d{2}(?=\s*[—\-–])/g, "");
-    // "in 2027" / "for 2027" / bare trailing year
-    s = s.replace(/\s+(?:in|for|of)\s+20\d{2}\b/gi, "");
-    s = s.replace(/\s+20\d{2}(?=\s*[.;,]|$)/g, "");
-    // Cleanup punctuation left behind
+    // Research-note leftovers after date strip: "Verified via …: , Washington"
+    s = s.replace(/\s*—\s*Verified[^—]*/gi, "");
+    s = s.replace(/\s*Verified via[^.;]*/gi, "");
+    s = s.replace(/\s*Verified:\s*/gi, "");
+    s = s.replace(/:\s*,/g, ":");
     s = s.replace(/\s*;\s*;/g, ";");
     s = s.replace(/\s*,\s*,/g, ",");
     s = s.replace(/\s*,\s*;/g, ";");
     s = s.replace(/;\s*$/g, "");
     s = s.replace(/,\s*$/g, "");
+    s = s.replace(/:\s*$/g, "");
     s = s.replace(/\.\s*$/g, ".");
     s = s.replace(/\s*[—\-–]\s*$/g, "");
     s = s.replace(/\s{2,}/g, " ").trim();
-    // Avoid orphan "with open venue selection." unfinished — keep as-is after year strip
     return s;
+  }
+
+  /**
+   * Meta line under title: useful segment/occasion class — not a full org repeat
+   * when the title already carries the account/occasion name.
+   */
+  function tileClassificationMeta(it, linked, titleText) {
+    linked = linked || {};
+    it = it || {};
+    var title = String(titleText || "");
+    var org = String(it.organizationName || linked.organizationName || "").trim();
+    var typeLbl =
+      linked.opportunityTypeLabel ||
+      it.opportunityTypeLabel ||
+      linked.demandSignalTypeLabel ||
+      it.demandSignalTypeLabel ||
+      "";
+    var segment = it.segment || linked.segment || "";
+    if (/child account|demand campaign|generator|mega-event|plausible_fit/i.test(String(segment))) {
+      segment = "";
+    }
+    if (
+      /^[a-z][a-z0-9]*(?:_[a-z0-9]+){1,8}$/.test(String(segment).trim()) &&
+      !/\s/.test(String(segment))
+    ) {
+      segment = typeLbl || "Association";
+    }
+    var classBits = [];
+    if (typeLbl && String(typeLbl).toUpperCase() !== "EVENT") {
+      classBits.push(String(typeLbl));
+    } else if (segment) {
+      classBits.push(String(segment));
+    } else {
+      classBits.push("Association");
+    }
+    // Only echo a short org token when title does not already include it.
+    var orgShort = org.replace(/\s*\([^)]*\)\s*$/, "").trim();
+    var titleHasOrg =
+      org &&
+      (title.toLowerCase().indexOf(org.toLowerCase()) >= 0 ||
+        (orgShort.length >= 3 &&
+          title.toLowerCase().indexOf(orgShort.toLowerCase()) >= 0) ||
+        /\b(AHIMA|ACTS|ACC|AMWA|NDSS|NADO|NAR|AAD|NCHV|CMSS|HCAOA|USCM)\b/i.test(
+          title
+        ));
+    if (org && !titleHasOrg && orgShort.length <= 48) {
+      return esc(orgShort) + " · " + esc(classBits[0].toUpperCase());
+    }
+    return esc(classBits[0].toUpperCase());
   }
 
   /**
@@ -1416,41 +1482,36 @@
     var priority = linked.priority || it.priority || "WATCHLIST";
     var tone = priorityToneClass(priority);
     var id = it.opportunityId || it.id;
-    var title =
-      scrubEventDatesFromText(
-        linked.displayTitle || it.title || linked.title || ""
-      ) || "—";
-    var org = it.organizationName || linked.organizationName || "—";
-    var segment = it.segment || linked.segment || "";
-    // Never show internal research jargon on customer tiles
-    if (/child account|demand campaign|generator|mega-event|plausible_fit/i.test(String(segment))) {
-      segment =
-        linked.participationRole ||
-        it.participationRole ||
-        linked.demandSignalTypeLabel ||
-        it.demandSignalTypeLabel ||
-        "";
-      segment = String(segment || "").replace(/_/g, " ");
-    }
-    if (/^[a-z][a-z0-9]*(?:_[a-z0-9]+){1,8}$/.test(String(segment).trim()) && !/\s/.test(String(segment))) {
-      segment =
-        linked.demandSignalTypeLabel ||
-        linked.opportunityTypeLabel ||
-        it.demandSignalTypeLabel ||
-        it.opportunityTypeLabel ||
-        "Discovered";
-    }
+    // Prefer DTO displayTitle (concise account/occasion). Raw title is fallback only.
+    // Precedence bug that caused stale screenshots: scrubbing years + prefixing org
+    // when Airtable already held clean titles — keep presentation on displayTitle.
+    var titleRaw =
+      linked.displayTitle ||
+      it.displayTitle ||
+      linked.title ||
+      it.title ||
+      "";
+    var title = scrubEventDatesFromText(titleRaw, { preserveOccasionYear: true }) || "—";
     var bookingStatus =
       linked.bookingWindowStatus || it.bookingWindowStatus || "";
-    var summaryRaw =
-      it.summaryWhat ||
-      linked.summaryWhat ||
-      linked.summaryWhyHotel ||
-      it.summaryWhyHotel ||
+    // Prefer hotel-fit / opportunity summary over thin "what we know" stubs when richer.
+    var thesisRaw =
       linked.hotelOpportunityThesis ||
       it.hotelOpportunityThesis ||
+      linked.summaryWhyHotel ||
+      it.summaryWhyHotel ||
+      linked.fitExplanation ||
+      it.fitExplanation ||
       "";
-    var summary = trunc(scrubEventDatesFromText(summaryRaw), 160);
+    var whatRaw = it.summaryWhat || linked.summaryWhat || "";
+    var summaryRaw =
+      (thesisRaw && String(thesisRaw).length >= 40 ? thesisRaw : "") ||
+      whatRaw ||
+      thesisRaw ||
+      "";
+    var summary = trunc(scrubEventDatesFromText(summaryRaw, { preserveOccasionYear: true }), 180);
+    var sourcingLbl =
+      linked.venueSourcingStatusLabel || it.venueSourcingStatusLabel || "";
     var commercialClassLbl = commercialClassPillHtml(it, linked);
     var contact = linked.primaryContact || it.primaryContact || null;
     var contactName =
@@ -1549,24 +1610,11 @@
       "</div>" +
       weeklyDeltaMetaLine(linked) +
       '<div class="brand-card__meta">' +
-      esc(org) +
-      (segment ? " · " + esc(String(segment).toUpperCase()) : "") +
+      tileClassificationMeta(it, linked, title) +
+      (sourcingLbl
+        ? " · " + esc(String(sourcingLbl))
+        : "") +
       "</div>" +
-      (function () {
-        var dst =
-          linked.demandSignalTypeLabel ||
-          it.demandSignalTypeLabel ||
-          linked.demandSignalType ||
-          it.demandSignalType ||
-          "";
-        if (!dst || String(dst).toUpperCase() === "EVENT") return "";
-        return (
-          '<div class="brand-card__meta brand-card__meta--demand-type">' +
-          "<strong>" +
-          esc(String(dst).toUpperCase()) +
-          "</strong></div>"
-        );
-      })() +
       "</div></div>" +
       (summary
         ? '<div class="brand-card__description">' + esc(summary) + "</div>"
