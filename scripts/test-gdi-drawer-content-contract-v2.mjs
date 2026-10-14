@@ -239,6 +239,22 @@ assert.ok(
   "generic outreach replaced"
 );
 
+// Facing cards require coordinator hotel-relevance research (not hand overlay alone).
+const {
+  synthesizeHotelRelevanceResearch,
+  applyHotelRelevanceToOpportunity,
+} = await import(
+  "../lib/group-demand-intelligence/workflow/hotel-relevance-research-v1.js"
+);
+const relevance = synthesizeHotelRelevanceResearch(nado, { hotelId });
+const nadoWithResearch = applyHotelRelevanceToOpportunity(nado, relevance);
+assert.equal(
+  nadoWithResearch.hotelRelevanceDisposition,
+  "READY_FOR_CARD",
+  `hotel-relevance must be READY_FOR_CARD: ${JSON.stringify(relevance.completeness)}`
+);
+Object.assign(nado, nadoWithResearch);
+
 const afterEval = evaluateDrawerContentCompleteness(nado);
 assert.equal(
   afterEval.ok,
