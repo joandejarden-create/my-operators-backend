@@ -13,14 +13,16 @@
  *
  * Stages (resume via --resume-run <id> + stage ledger):
  *   validate_config → reuse_evidence → discover_gaps → assess_fit →
- *   identify_people → enrich_contacts → evaluate_eligibility →
- *   generate_cards → prepare_manifest → preview_verify → apply_publish
+ *   identify_people → enrich_contacts → synthesize_hotel_relevance →
+ *   evaluate_eligibility → generate_cards → prepare_manifest →
+ *   preview_verify → apply_publish
  *
  * v2 wiring inside those stages:
  *   reuse_evidence → reuse_prior_intelligence ledger
  *   discover_gaps → Parallel adapter (replay default; live plan only)
  *   assess_fit → independent hotel fit
  *   enrich_contacts → targeted contact plan (Surfe off by default)
+ *   synthesize_hotel_relevance → mandatory why-this-hotel research brief
  *   generate_cards → drawer completeness + optional Jev advisory
  */
 import "dotenv/config";
@@ -61,6 +63,11 @@ import {
   mapLabCardToDrawerShape,
 } from "../lib/group-demand-intelligence/workflow/drawer-content-contract-v1.js";
 import {
+  synthesizeHotelRelevanceResearchBatch,
+  researchBatchToSalesReviewOverlay,
+  HOTEL_RELEVANCE_RESEARCH_VERSION,
+} from "../lib/group-demand-intelligence/workflow/hotel-relevance-research-v1.js";
+import {
   runJevAdvisoryShadow,
   writeJevAdvisoryArtifacts,
 } from "../lib/group-demand-intelligence/workflow/jev-advisory-shadow-v1.js";
@@ -86,6 +93,7 @@ const STAGES = [
   "assess_fit",
   "identify_people",
   "enrich_contacts",
+  "synthesize_hotel_relevance",
   "evaluate_eligibility",
   "generate_cards",
   "prepare_manifest",
@@ -835,6 +843,88 @@ for (const stage of stagesToRun) {
       continue;
     }
 
+    if (stage === "synthesize_hotel_relevance") {
+      const relDir = path.join(runDir, "hotel_relevance_research");
+      fs.mkdirSync(relDir, { recursive: true });
+      const doc = await loadOpportunitiesCanonical(hotelId);
+      const ops = Array.isArray(doc?.opportunities) ? doc.opportunities : [];
+      const fitPath = path.join(
+        runDir,
+        "independent_hotel_fit",
+        "independent-hotel-fit.json"
+      );
+      const fitDoc = fs.existsSync(fitPath)
+        ? JSON.parse(fs.readFileSync(fitPath, "utf8"))
+        : null;
+      const contactSummaryPath = path.join(
+        runDir,
+        "targeted_contact",
+        "candidates",
+        "execution-summary.json"
+      );
+      const contactResults = fs.existsSync(contactSummaryPath)
+        ? JSON.parse(fs.readFileSync(contactSummaryPath, "utf8")).results || []
+        : [];
+      const batch = synthesizeHotelRelevanceResearchBatch(ops.slice(0, 60), hotelId, {
+        fitAssessments: (fitDoc?.store?.results || []).map((r) => ({
+          opportunityId: r.id || r.candidateId || r.opportunityId,
+          outcome: r.fit?.outcome || r.outcome || null,
+          ...r,
+        })),
+        contactResults,
+      });
+      const hotelKey =
+        hotelId === "rec0eTEnCqlsGJJt9"
+          ? "mayflower"
+          : hotelId === "recLuxvwwxID7U2B8"
+            ? "bethesda"
+            : hotelId === "recnPB3Q02NO8Ma1o"
+              ? "san-diego"
+              : hotelId === "recG66DQJKP2c0UNh"
+                ? "renaissance"
+                : hotelId.slice(0, 8);
+      const overlay = researchBatchToSalesReviewOverlay(batch, { hotelKey });
+      fs.writeFileSync(
+        path.join(relDir, "hotel-relevance-research.json"),
+        JSON.stringify(batch, null, 2) + "\n"
+      );
+      fs.writeFileSync(
+        path.join(relDir, "sales-review-overlay-from-research.json"),
+        JSON.stringify(overlay, null, 2) + "\n"
+      );
+      // Persist patched opportunities into draft sidecar for generate_cards
+      fs.writeFileSync(
+        path.join(relDir, "opportunities-with-relevance.json"),
+        JSON.stringify(
+          {
+            hotelId,
+            version: HOTEL_RELEVANCE_RESEARCH_VERSION,
+            opportunities: batch.results.map((r) => r.opportunity),
+          },
+          null,
+          2
+        ) + "\n"
+      );
+      ledger.hotelRelevanceResearch = {
+        path: path.join(relDir, "hotel-relevance-research.json"),
+        overlayPath: path.join(relDir, "sales-review-overlay-from-research.json"),
+        counts: batch.counts,
+        version: HOTEL_RELEVANCE_RESEARCH_VERSION,
+      };
+      mark(ledger, stage, "completed", {
+        module: HOTEL_RELEVANCE_RESEARCH_VERSION,
+        counts: batch.counts,
+        note: "Mandatory why-this-hotel research before eligibility/cards; gaps retained internal — no generic filler",
+      });
+      if (batch.counts.internalGap + batch.counts.insufficient > 0) {
+        ledger.remainingManualSteps.push({
+          step: "synthesize_hotel_relevance",
+          action: `${batch.counts.internalGap} internal-gap + ${batch.counts.insufficient} insufficient briefs — recover evidence or targeted research before publication`,
+        });
+      }
+      continue;
+    }
+
     if (stage === "evaluate_eligibility") {
       const test = spawnSync(
         process.execPath,
@@ -925,7 +1015,20 @@ for (const stage of stagesToRun) {
       if (!fs.existsSync(path.join(pkgDir, "final-prospect-register.csv"))) {
         // Generate draft package from store + contact candidates + supported PE (no hand CSV prerequisite)
         const doc = await loadOpportunitiesCanonical(hotelId);
-        const ops = Array.isArray(doc?.opportunities) ? doc.opportunities : [];
+        const relevancePath = path.join(
+          runDir,
+          "hotel_relevance_research",
+          "opportunities-with-relevance.json"
+        );
+        const relevanceDoc = fs.existsSync(relevancePath)
+          ? JSON.parse(fs.readFileSync(relevancePath, "utf8"))
+          : null;
+        // Prefer opportunities already stamped by synthesize_hotel_relevance
+        const ops = Array.isArray(relevanceDoc?.opportunities)
+          ? relevanceDoc.opportunities
+          : Array.isArray(doc?.opportunities)
+            ? doc.opportunities
+            : [];
         const contactSummaryPath = path.join(
           runDir,
           "targeted_contact",
@@ -955,6 +1058,7 @@ for (const stage of stagesToRun) {
             });
         const peDrafts = peSupportedCandidatesToDraftOpportunities(peDoc, hotelId);
         const draftDir = path.join(runDir, "draft_review_package");
+        fs.mkdirSync(draftDir, { recursive: true });
         const hotelKey =
           hotelId === "rec0eTEnCqlsGJJt9"
             ? "may"
@@ -963,6 +1067,18 @@ for (const stage of stagesToRun) {
               : hotelId === "recLuxvwwxID7U2B8"
                 ? "beth"
                 : hotelId.slice(0, 6);
+        // Copy research-generated overlay into draft package for importer path
+        const researchOverlayPath = path.join(
+          runDir,
+          "hotel_relevance_research",
+          "sales-review-overlay-from-research.json"
+        );
+        if (fs.existsSync(researchOverlayPath)) {
+          fs.copyFileSync(
+            researchOverlayPath,
+            path.join(draftDir, "sales-review-overlay.json")
+          );
+        }
         const draft = buildDraftReviewPackage({
           hotelId,
           hotelKey,
@@ -1168,10 +1284,24 @@ for (const stage of stagesToRun) {
           fs.copyFileSync(from, path.join(dst, f));
         }
       }
-      const overlayPath = path.join(
-        ROOT,
-        "reports/gdi-drawer-completeness/sales-review-overlay.json"
+      const researchOverlay = path.join(
+        runDir,
+        "hotel_relevance_research",
+        "sales-review-overlay-from-research.json"
       );
+      const draftOverlay = path.join(
+        runDir,
+        "draft_review_package",
+        "sales-review-overlay.json"
+      );
+      const overlayPath = fs.existsSync(researchOverlay)
+        ? researchOverlay
+        : fs.existsSync(draftOverlay)
+          ? draftOverlay
+          : path.join(
+              ROOT,
+              "reports/gdi-drawer-completeness/sales-review-overlay.json"
+            );
       const dryArgs = [
         path.join(ROOT, "scripts/gdi-import-reviewed-prospects.mjs"),
         "--hotel",

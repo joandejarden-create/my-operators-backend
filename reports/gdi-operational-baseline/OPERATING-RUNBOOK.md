@@ -79,14 +79,41 @@ enrich_contacts → execute-targeted-contact-resolution-v1 (Surfe off unless --a
 
 ---
 
+## 5b. Hotel-relevance research (mandatory before qualify / cards)
+
+```text
+enrich_contacts → synthesize_hotel_relevance → evaluate_eligibility → …
+```
+
+Module: `lib/group-demand-intelligence/workflow/hotel-relevance-research-v1.js`  
+Docs: `reports/gdi-operational-baseline/hotel-relevance-backfill/HOTEL-RELEVANCE-RESEARCH.md`
+
+| Step | Status |
+|------|--------|
+| 7-field why-this-hotel brief (FACT / INFERENCE labeled) | **executed** |
+| Gaps → INTERNAL_GAP (keep internal; no generic facing copy) | **executed** |
+| Card/drawer generated from research (not hand overlay) | **executed** |
+| Persist research + verification dates via importer → Airtable payload | **executed** (Mayflower backfill apply 2026-10-14) |
+| List DTO + reimport preserve `hotelRelevanceResearch*` | **executed** |
+
+```bash
+# Future hotel: coordinator stage produces research → overlay-from-research
+node scripts/gdi-research-to-page-workflow-v1.mjs --hotel <hotelId> --dry-run
+
+# Mayflower backfill (research stage, not one-off overlay)
+node scripts/gdi-backfill-hotel-relevance-research-v1.mjs --hotel rec0eTEnCqlsGJJt9 --adapter airtable --apply
+```
+
+---
+
 ## 6. Evidence-grounded card / drawer generation
 
 | Step | Status |
 |------|--------|
 | Draft review package + human checkpoint | **executed** |
-| Drawer content contract scoring | **executed** |
+| Drawer content contract scoring | **executed** (v3; requires hotel-relevance READY_FOR_CARD for facing) |
 | Shared UI: Priority/Exploratory pills, Watchlist ≠ Action WATCH, hide null fit scores, auth→intelligenceDetailHtml | **executed** (code; deploy **blocked** without Railway) |
-| Sales-review overlay → Airtable payload | **executed** (Beth/May apply) |
+| Sales-review overlay → Airtable payload | **executed** (Beth/May apply; Mayflower research-stage overlay) |
 
 ---
 
