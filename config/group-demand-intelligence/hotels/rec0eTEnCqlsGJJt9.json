@@ -1,0 +1,90 @@
+{
+  "hotelId": "rec0eTEnCqlsGJJt9",
+  "displayName": "The Mayflower Hotel, Autograph Collection",
+  "country": "United States",
+  "city": "Washington",
+  "aliases": {
+    "adpPropertyId": "adp_mayflower_hotel_washington_dc",
+    "censusRecordId": "rec0eTEnCqlsGJJt9",
+    "provisionalGdiHotelId": "gdi_hotel_mayflower_hotel_washington_dc",
+    "identityKey": "ind_marriott_us_wasak",
+    "note": "Canonical hotelId is HPC record. Marriott WASAK. Downtown Connecticut Avenue. Not Mayflower Suites Buenos Aires."
+  },
+  "adpFixturePath": "fixtures/ai-demand-positioning/mayflower-hotel-washington-dc-property-profile.json",
+  "geo": {
+    "latitude": 38.90447,
+    "longitude": -77.03929,
+    "note": "1127 Connecticut Avenue NW"
+  },
+  "locale": {
+    "primary": "en",
+    "secondary": [],
+    "selective": [],
+    "note": "English-language U.S. market"
+  },
+  "commercialPriorities": {
+    "targetSegments": [],
+    "coreTargetPeakRoomsMin": 30,
+    "coreTargetPeakRoomsMax": 250,
+    "allowSmallerIfCommerciallyMeaningful": true,
+    "demandAnchorFocus": [],
+    "weekendFocus": false,
+    "notes": "581 guest rooms and suites; 27 event rooms; 42,582 sq ft. Peak band sized for association, corporate, and social programs that fit a downtown historic hotel. targetSegments empty — discovery is not seeded with demand-type assumptions."
+  },
+  "capabilityProfile": {
+    "totalGuestrooms": 581,
+    "totalMeetingSpaceSqFt": 42582,
+    "totalMeetingSpaceSqM": null,
+    "largestBallroomSqFt": 10359,
+    "largestBallroomSqM": null,
+    "largestTheaterCapacity": 1000,
+    "largestReceptionCapacity": 1100,
+    "meetingRoomsIndoor": 27,
+    "outdoorEventSpace": false,
+    "softBrand": "Autograph Collection",
+    "serviceLevel": "upper_upscale_historic_full_service",
+    "classification": "historic_downtown_meetings_social",
+    "country": "United States",
+    "notes": "HOTEL_SPECIFIC_DATA from themayflowerhotel.com (581 rooms) and Marriott WASAK events page (27 rooms, 42,582 sq ft, combined ballroom reception 1,100).",
+    "meetingRoomCount": 27,
+    "largestMeetingRoomSqFt": 10359
+  },
+  "demandTerritory": {
+    "label": "Washington DC / Downtown / Connecticut Avenue",
+    "country": "United States",
+    "includes": [
+      "PRIMARY: Downtown Washington and Connecticut Avenue",
+      "SECONDARY: Dupont Circle and the downtown business district when walkable",
+      "ADJACENT: Capitol Hill, Foggy Bottom, and National Mall programs when downtown lodging is realistic",
+      "STRETCH: Regional DMV programs only when a downtown DC overnight is evidenced"
+    ],
+    "evaluationQuestion": "Could The Mayflower realistically capture this group demand given 581 rooms, 27 meeting rooms, historic downtown positioning, and Connecticut Avenue location — without treating every Washington event as automatic fit?",
+    "classifications": [
+      "TERRITORY_CORE",
+      "TERRITORY_NEARBY",
+      "TERRITORY_COMPETITIVE",
+      "TERRITORY_STRETCH",
+      "OUTSIDE_REALISTIC_TERRITORY"
+    ],
+    "displayLabels": {
+      "TERRITORY_CORE": "Downtown / Connecticut Avenue",
+      "TERRITORY_NEARBY": "Dupont Circle / Downtown Business District",
+      "TERRITORY_COMPETITIVE": "Washington DC Competitive Set",
+      "TERRITORY_STRETCH": "Capitol Hill / DMV Stretch",
+      "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+    },
+    "classificationKeywords": {
+      "TERRITORY_CORE": ["connecticut avenue", "downtown washington", "golden triangle", "farragut"],
+      "TERRITORY_NEARBY": ["dupont circle", "k street", "white house", "foggy bottom"],
+      "TERRITORY_COMPETITIVE": ["washington dc", "washington, dc", "district of columbia"],
+      "TERRITORY_STRETCH": ["capitol hill", "arlington", "bethesda", "national harbor"],
+      "OUTSIDE_REALISTIC_TERRITORY": ["baltimore only", "richmond only", "new york only"]
+    }
+  },
+  "gdiOnboarding": {
+    "status": "CANONICAL",
+    "pilotGeneration": 1,
+    "paidEnrichmentEnabled": false,
+    "discoveryMode": "INDEPENDENT_WEB_RESEARCH_NO_DEMAND_SEEDING"
+  }
+}

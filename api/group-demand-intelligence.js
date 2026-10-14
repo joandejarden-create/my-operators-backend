@@ -1411,6 +1411,7 @@ export async function postGdiShareValidation(req, res) {
 export async function getGdiShareValidation(req, res) {
   const verified = requireGdiShare(req, res, "opportunity_detail");
   if (!verified) return;
+  if (!requireShareCapability(verified, res, "CAN_VALIDATE")) return;
   const hotelId = String(req.params.hotelId || "").trim();
   if (hotelId !== verified.claims.hotelId) {
     return res.status(403).json({ ok: false, error: "SHARE_HOTEL_SCOPE" });
