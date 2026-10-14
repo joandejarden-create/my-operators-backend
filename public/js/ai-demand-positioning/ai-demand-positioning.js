@@ -1749,20 +1749,22 @@
             }
           }
         } else {
-          // Never claim affiliation is unresolved when a lens is already resolved.
+          // A named lens comes only from the payload. Never substitute another brand.
           if (bpp.lens && bpp.lens.label) {
-            if (statusLabel) statusLabel.textContent = "Brand & Portfolio measurement in progress";
+            if (statusLabel) statusLabel.textContent = "Portfolio measurement is being established";
             if (statusBody) {
               statusBody.textContent =
                 bpp.emptyMessage ||
-                "Brand & Portfolio insights will appear here after the first certified portfolio monitoring cycle for this hotel.";
+                "The governed lens for this hotel is " +
+                  bpp.lens.label +
+                  ". A certified portfolio monitoring cycle has not been run, so portfolio rank and peer comparison are not shown.";
             }
           } else {
-            if (statusLabel) statusLabel.textContent = "Brand & Portfolio not shown";
+            if (statusLabel) statusLabel.textContent = "Brand & Portfolio not yet available";
             if (statusBody) {
               statusBody.textContent =
                 bpp.emptyMessage ||
-                "Brand & Portfolio benchmarking is not shown for this period because the governed affiliation and peer path are not yet resolved for display.";
+                "We have not yet resolved the governed brand or portfolio path required for benchmarking.";
             }
           }
           if (statusSecondary) {
@@ -2312,10 +2314,10 @@
       ));
     }
 
-    if (hasComparableExecutiveEvidence(em, payload)) {
-      var cpsCount = em && em.competitorPresentScenarios && Number.isFinite(Number(em.competitorPresentScenarios.scenarioCount))
-        ? Number(em.competitorPresentScenarios.scenarioCount)
-        : 0;
+    var cpsCount = em && em.competitorPresentScenarios && Number.isFinite(Number(em.competitorPresentScenarios.scenarioCount))
+      ? Number(em.competitorPresentScenarios.scenarioCount)
+      : null;
+    if (hasComparableExecutiveEvidence(em, payload) && cpsCount != null) {
       cards.push(kpiCardWithInfo(
         "Competitor-Present Scenarios",
         String(cpsCount) + " scenarios",
