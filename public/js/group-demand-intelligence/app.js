@@ -51,6 +51,7 @@
     pursuitsById: {},
     isAdmin: false,
     flag: null,
+    visibilityWarning: null,
   };
 
   function readPersistedBrowse() {
@@ -311,6 +312,7 @@
     state.hotelProfile = null;
     state.summary = null;
     state.opportunities = [];
+    state.visibilityWarning = null;
     state.runs = [];
     state.filters = {
       priority: "",
@@ -382,6 +384,7 @@
         state.flag = parts[0].flag;
         state.summary = parts[1].summary;
         state.opportunities = parts[2].opportunities || [];
+        state.visibilityWarning = parts[2].visibilityWarning || null;
         state.hotelProfile = (parts[3] && parts[3].profile) || null;
         // Campaigns/generators stay on internal APIs only — not customer load path.
         state.demandCampaigns = [];
@@ -527,6 +530,22 @@
       if (total > 0) {
         return (
           '<div class="gdi-empty">No customer-ready opportunities match the current filters.</div>'
+        );
+      }
+      var warn = state.visibilityWarning;
+      if (warn && warn.message) {
+        return (
+          '<div class="gdi-empty gdi-empty--error" role="alert">' +
+          "<strong>Visibility configuration issue.</strong> " +
+          esc(warn.message) +
+          (warn.reviewedInStore
+            ? " (" +
+              Number(warn.reviewedInStore) +
+              " reviewed prospect" +
+              (Number(warn.reviewedInStore) === 1 ? "" : "s") +
+              " in storage.)"
+            : "") +
+          "</div>"
         );
       }
       return (
@@ -837,7 +856,8 @@
     var listRow = (state.opportunities || []).find(function (o) {
       return o && o.id === id;
     });
-    drawerTitle.textContent = (listRow && listRow.title) || "Opportunity";
+    drawerTitle.textContent =
+      (listRow && (listRow.displayTitle || listRow.title)) || "Opportunity";
     drawerBody.innerHTML = UI.detailLoadingHtml();
     if (typeof drawer.showModal === "function") drawer.showModal();
     else drawer.setAttribute("open", "open");
@@ -896,7 +916,10 @@
               })
             : { commercialProgression: o.commercialProgression };
         }
-        drawerTitle.textContent = o.title;
+        drawerTitle.textContent =
+          (o && (o.displayTitle || o.title)) ||
+          (listRow && (listRow.displayTitle || listRow.title)) ||
+          "Opportunity";
         drawerBody.innerHTML = renderDetail(o, data.scoreAudit, current);
         wireDetailLifecycleControls();
       })
@@ -975,16 +998,10 @@
   }
 
   function renderDetail(o, audit, decisionCurrent) {
-    // Private Events V1.6 — reuse shared type-aware detail layout
-    if (
-      UI &&
-      typeof UI.intelligenceDetailHtml === "function" &&
-      (o.detailLayout === "VENUE_PARTNERSHIP" ||
-        o.detailLayout === "SPECIFIC_PRIVATE_EVENT" ||
-        o.opportunityType === "VENUE_PARTNERSHIP" ||
-        o.opportunityType === "SPECIFIC_PRIVATE_EVENT")
-    ) {
-      var peValidation =
+    // Shared intelligence detail for all hotels (parity with share-app).
+    // Preserves feedback / action / outcome controls.
+    if (UI && typeof UI.intelligenceDetailHtml === "function") {
+      var validationHtml =
         UI.customerFeedbackLifecycleHtml
           ? UI.customerFeedbackLifecycleHtml(
               o,
@@ -1000,7 +1017,7 @@
             )
           : "";
       return UI.intelligenceDetailHtml(o, audit, {
-        validationHtml: peValidation,
+        validationHtml: validationHtml,
       });
     }
 
@@ -1264,6 +1281,7 @@
         weeklyCounts: UI.countByWeeklyDelta(state.opportunities),
         lastResearch: formatDate(s.lastResearchAt),
         runStatus: s.runStatus || "NEVER_RUN",
+        lastReviewedImport: formatDate(s.lastReviewedPackageImportAt),
         actionHtml: propertyBarActionsHtml(),
       }) +
       '<div id="gdiTabBody">' +

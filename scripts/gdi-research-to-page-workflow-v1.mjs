@@ -34,7 +34,10 @@ import {
   reuseLedgerToCsv,
   researchPathSelectionToCsv,
 } from "../lib/group-demand-intelligence/workflow/reuse-prior-intelligence-v1.js";
-import { peIntelligenceToCsv } from "../lib/group-demand-intelligence/workflow/private-event-intelligence-v1.js";
+import {
+  peIntelligenceToCsv,
+  peSupportedCandidatesToDraftOpportunities,
+} from "../lib/group-demand-intelligence/workflow/private-event-intelligence-v1.js";
 import { buildPrivateEventIntelligence } from "../lib/group-demand-intelligence/workflow/private-event-intelligence-v1.js";
 import { assessIndependentHotelFitBatch } from "../lib/group-demand-intelligence/workflow/independent-hotel-fit-v1.js";
 import {
@@ -42,7 +45,17 @@ import {
   writeDiscoveryStageArtifacts,
   DISCOVERY_MODE,
 } from "../lib/group-demand-intelligence/workflow/parallel-discovery-adapter-v1.js";
+import {
+  runNativeGeoResearchStage,
+  writeNativeGeoArtifacts,
+} from "../lib/group-demand-intelligence/workflow/native-geo-research-stage-v1.js";
+import { selectResearchPaths } from "../lib/group-demand-intelligence/workflow/research-path-selection-v1.js";
+import { buildOccasionDraftsFromPrograms } from "../lib/group-demand-intelligence/workflow/programs-occasion-draft-v1.js";
+import { proposeHotelVenueFits } from "../lib/group-demand-intelligence/workflow/proposed-hotel-venue-fit-v1.js";
 import { buildTargetedContactPlan } from "../lib/group-demand-intelligence/workflow/targeted-contact-plan-v1.js";
+import { executeTargetedContactResolution } from "../lib/group-demand-intelligence/workflow/execute-targeted-contact-resolution-v1.js";
+import { buildDraftReviewPackage } from "../lib/group-demand-intelligence/workflow/draft-review-package-v1.js";
+import { auditAirtableReuseForHotel } from "../lib/group-demand-intelligence/workflow/airtable-reuse-audit-v1.js";
 import {
   reportDrawerCompleteness,
   mapLabCardToDrawerShape,
@@ -98,8 +111,31 @@ const dryRun = !authorizePublish || has("--dry-run");
 const runDiscovery = has("--run-discovery");
 const authorizePaidDiscovery = has("--authorize-paid-discovery");
 const authorizeSurfe = has("--authorize-surfe");
+const authorizeNative = has("--authorize-native");
 const skipAirtableReuse = has("--skip-airtable-reuse");
 const runJevShadow = has("--jev-shadow");
+const discoveryModeArg = String(arg("--discovery-mode", "") || "")
+  .trim()
+  .toLowerCase();
+/** Explicit discovery execution kind when --run-discovery is set. */
+function resolveDiscoveryMode() {
+  if (!runDiscovery) return DISCOVERY_MODE.DRY_RUN_PLAN;
+  if (discoveryModeArg === "plan" || discoveryModeArg === "dry_run_plan") {
+    return DISCOVERY_MODE.DRY_RUN_PLAN;
+  }
+  if (discoveryModeArg === "live-mock" || discoveryModeArg === "live_mock") {
+    return DISCOVERY_MODE.LIVE_MOCK;
+  }
+  if (discoveryModeArg === "live") return DISCOVERY_MODE.LIVE;
+  if (authorizePaidDiscovery) return DISCOVERY_MODE.LIVE;
+  return DISCOVERY_MODE.REPLAY;
+}
+const discoveryMode = resolveDiscoveryMode();
+
+// Clear skip-airtable env unless explicitly opted out for this run
+if (!skipAirtableReuse && process.env.GDI_V2_SKIP_AIRTABLE === "1") {
+  delete process.env.GDI_V2_SKIP_AIRTABLE;
+}
 
 if (!hotelId) {
   console.error("Required: --hotel <canonicalHotelId>");
@@ -229,7 +265,19 @@ console.log(
       stagesToRun,
       ledgerPath,
       runDiscovery,
+      discoveryMode,
+      discoveryExecutionKind:
+        !runDiscovery
+          ? "plan_only"
+          : discoveryMode === DISCOVERY_MODE.REPLAY
+            ? "replay_frozen_fixtures"
+            : discoveryMode === DISCOVERY_MODE.LIVE_MOCK
+              ? "live_mock_transport"
+              : discoveryMode === DISCOVERY_MODE.LIVE
+                ? "live_or_plan_gated"
+                : "plan_only",
       authorizePaidDiscovery,
+      skipAirtableReuse,
       webhound: WEBHOUND_PROVIDER_STATUS.status,
     },
     null,
@@ -260,6 +308,13 @@ for (const stage of stagesToRun) {
       const store = resolveStoreDir(hotelId);
       const reuseDir = path.join(runDir, "reuse_prior_intelligence");
       fs.mkdirSync(reuseDir, { recursive: true });
+      const airtableAudit = await auditAirtableReuseForHotel(hotelId, {
+        skipAirtable: skipAirtableReuse,
+      });
+      fs.writeFileSync(
+        path.join(reuseDir, "airtable-reuse-audit.json"),
+        JSON.stringify(airtableAudit, null, 2) + "\n"
+      );
       const ledgerDoc = await buildReusePriorIntelligenceLedger(hotelId, {
         skipAirtable: skipAirtableReuse,
         runDiscovery,
@@ -293,6 +348,70 @@ for (const stage of stagesToRun) {
         path.join(reuseDir, "private-event-intelligence.csv"),
         peIntelligenceToCsv(peDoc)
       );
+      // Programs→occasion drafts when signals missing for fitted generators
+      const programRows = (ledgerDoc.rows || []).filter(
+        (r) => r.sourceType === "demand_program"
+      );
+      const signalRows = (ledgerDoc.rows || []).filter(
+        (r) => r.sourceType === "demand_generator_signal"
+      );
+      const fitRows = (ledgerDoc.rows || []).filter(
+        (r) => r.sourceType === "demand_generator_fit"
+      );
+      const cfgPathReuse = resolveConfigPath(hotelId);
+      const hotelCfg = fs.existsSync(cfgPathReuse)
+        ? JSON.parse(fs.readFileSync(cfgPathReuse, "utf8"))
+        : null;
+      const occasionDrafts = buildOccasionDraftsFromPrograms({
+        hotelId,
+        hotelLabel: hotelCfg?.displayName || null,
+        programs: programRows.map((r) => ({
+          programId: r.programId || r.sourceRecordId,
+          programName: r.title || r.organizationName,
+          demandGeneratorId: r.demandGeneratorId,
+          programType: r.programType,
+          market: null,
+          typicalTiming: null,
+          organizationName: r.organizationName,
+        })),
+        signals: signalRows.map((r) => ({
+          programId: r.programId,
+          signalId: r.sourceRecordId,
+        })),
+        fits: fitRows.map((r) => ({
+          demandGeneratorId: r.demandGeneratorId,
+          organizationName: r.organizationName,
+          fitRationale: r.reason,
+        })),
+        hotelConfig: hotelCfg,
+      });
+      fs.writeFileSync(
+        path.join(reuseDir, "programs-occasion-drafts.json"),
+        JSON.stringify(occasionDrafts, null, 2) + "\n"
+      );
+      const proposedFits = proposeHotelVenueFits({
+        hotelId,
+        hotelConfig: hotelCfg,
+        venues: peDoc.venues || [],
+        existingFits: peDoc.fits || [],
+      });
+      if ((peDoc.counts?.fits || 0) === 0 && (peDoc.counts?.venues || 0) > 0) {
+        fs.writeFileSync(
+          path.join(reuseDir, "proposed-hotel-venue-fits.json"),
+          JSON.stringify(proposedFits, null, 2) + "\n"
+        );
+      }
+      ledger.programsOccasionDrafts = {
+        path: path.join(reuseDir, "programs-occasion-drafts.json"),
+        draftCount: occasionDrafts.draftCount,
+      };
+      ledger.proposedHotelVenueFits =
+        (peDoc.counts?.fits || 0) === 0
+          ? {
+              path: path.join(reuseDir, "proposed-hotel-venue-fits.json"),
+              proposalCount: proposedFits.proposalCount,
+            }
+          : null;
       ledger.reusePriorIntelligence = {
         path: path.join(reuseDir, "reuse-ledger.json"),
         counts: ledgerDoc.counts,
@@ -300,15 +419,41 @@ for (const stage of stagesToRun) {
         demandGeneratorFit: ledgerDoc.demandGeneratorFit,
         privateEventIntelligence: ledgerDoc.privateEventIntelligence,
         researchPathSelectionSummary: ledgerDoc.researchPathSelection?.summary || null,
+        airtableReuseAudit: {
+          path: path.join(reuseDir, "airtable-reuse-audit.json"),
+          summary: airtableAudit.summary,
+          configured: airtableAudit.configured,
+          reason: airtableAudit.reason,
+        },
       };
       mark(ledger, stage, "completed", {
         module: "reuse_prior_intelligence_v1",
         storeDir: store,
         opportunityCount: ledgerDoc.opportunityCount,
         counts: ledgerDoc.counts,
+        demandPrograms: ledgerDoc.demandPrograms || null,
+        demandGeneratorSignals: ledgerDoc.demandGeneratorSignals || null,
+        feedbackDrivenResearch: ledgerDoc.feedbackDrivenResearch || null,
         gapsBeforePaidDiscovery: ledgerDoc.gapsBeforePaidDiscovery,
+        airtableReuse: {
+          skipped: airtableAudit.skipped === true,
+          reason: airtableAudit.reason,
+          tableSummary: airtableAudit.summary,
+          tables: (airtableAudit.tables || []).map((t) => ({
+            table: t.table,
+            status: t.status,
+            read: t.read,
+            matched: t.matched,
+            excluded: t.excluded,
+            unresolved: t.unresolved,
+            reason: t.reason,
+          })),
+        },
         privateEvent: {
           source: peDoc.source,
+          airtableOk: peDoc.airtableOk ?? null,
+          liveAirtable: peDoc.liveAirtable || null,
+          fixtureFallback: peDoc.fixtureFallback || null,
           venues: peDoc.counts?.venues,
           fits: peDoc.counts?.fits,
           signals: peDoc.counts?.signals,
@@ -316,7 +461,7 @@ for (const stage of stagesToRun) {
         },
         researchPathSelection: ledgerDoc.researchPathSelection?.summary || null,
         webhound: WEBHOUND_PROVIDER_STATUS,
-        note: "Prior intelligence + PE graph + path selection before paid discovery; DG/PE ≠ auto-qualify",
+        note: "Prior intelligence + live Airtable audit + PE graph + path selection before paid discovery; DG/PE ≠ auto-qualify",
       });
       continue;
     }
@@ -324,6 +469,78 @@ for (const stage of stagesToRun) {
     if (stage === "discover_gaps") {
       const discDir = path.join(runDir, "parallel_discovery");
       fs.mkdirSync(discDir, { recursive: true });
+
+      // Native + geographic research through coordinator (plan/dry-run default; no paid)
+      const nativeGeoDir = path.join(runDir, "native_geo_research");
+      const reuseLedgerPath = path.join(
+        runDir,
+        "reuse_prior_intelligence",
+        "reuse-ledger.json"
+      );
+      const reuseLedger = fs.existsSync(reuseLedgerPath)
+        ? JSON.parse(fs.readFileSync(reuseLedgerPath, "utf8"))
+        : null;
+      const feedbackHints =
+        reuseLedger?.feedbackDrivenResearch?.discoveryQueryHints || [];
+      const nativeGeo = await runNativeGeoResearchStage(hotelId, {
+        authorizeNative,
+        dryRun: !authorizeNative,
+        feedbackQueryHints: feedbackHints,
+        maxNativeQueries: Math.min(10, budgetSearches),
+        maxGeoQueries: 16,
+      });
+      writeNativeGeoArtifacts(nativeGeo, nativeGeoDir);
+      ledger.nativeGeoResearch = {
+        path: path.join(nativeGeoDir, "native-geo-research-stage.json"),
+        paidCalls: nativeGeo.paidCalls || 0,
+        nativeStatus: nativeGeo.native?.status || null,
+        geoQueryCount: nativeGeo.geographic?.queryCount || 0,
+        feedbackHintCount: nativeGeo.geographic?.feedbackHintCount || 0,
+      };
+      // Refresh path selection with native/geo execution evidence
+      const refreshedPaths = selectResearchPaths(hotelId, {
+        runDiscovery,
+        discoveryMode: discoveryMode || null,
+        evidenceHints: {
+          ...(reuseLedger?.researchPathSelection?.evidence || {}),
+          opportunityCount: reuseLedger?.opportunityCount ?? 0,
+          dgFitCount: reuseLedger?.demandGeneratorFit?.count ?? 0,
+          dgCount: reuseLedger?.demandGeneratorFit?.count ?? 0,
+          programCount: reuseLedger?.demandPrograms?.count ?? 0,
+          dgSignalCount: reuseLedger?.demandGeneratorSignals?.count ?? 0,
+          peVenueCount: reuseLedger?.privateEventIntelligence?.counts?.venues ?? 0,
+          peFitCount: reuseLedger?.privateEventIntelligence?.counts?.fits ?? 0,
+          peSignalCount: reuseLedger?.privateEventIntelligence?.counts?.signals ?? 0,
+          peFixtureUsed:
+            reuseLedger?.privateEventIntelligence?.fixtureFallback?.used === true,
+          feedbackCount:
+            (reuseLedger?.feedbackItemCount || 0) +
+            (reuseLedger?.shareValidationItemCount || 0),
+          feedbackDrivenHintCount: feedbackHints.length,
+          contactTargets:
+            reuseLedger?.gapsBeforePaidDiscovery?.enrichmentNeeded || 0,
+          geographicPlanned: true,
+          nativePlannedOrExecuted: true,
+          nativeMode: nativeGeo.native?.status || "planned_dry_run",
+        },
+      });
+      fs.writeFileSync(
+        path.join(
+          runDir,
+          "reuse_prior_intelligence",
+          "research-path-selection.json"
+        ),
+        JSON.stringify(refreshedPaths, null, 2) + "\n"
+      );
+      fs.writeFileSync(
+        path.join(
+          runDir,
+          "reuse_prior_intelligence",
+          "research-path-selection.csv"
+        ),
+        researchPathSelectionToCsv(refreshedPaths)
+      );
+
       if (!runDiscovery) {
         ledger.budget.incompleteCoverageReason =
           "new_external_discovery_not_run_reuse_only";
@@ -336,52 +553,98 @@ for (const stage of stagesToRun) {
         writeDiscoveryStageArtifacts(planOnly, discDir);
         mark(ledger, stage, "incomplete_coverage", {
           reason: "reuse_existing_evidence_only",
-          module: "parallel_discovery_adapter_v1",
+          module: "parallel_discovery_adapter_v1+native_geo_research_stage_v1",
           planPath: path.join(discDir, "bounded-live-discovery-plan.json"),
-          note: "Did not claim no demand. Pass --run-discovery for frozen Parallel replay (default) or bounded live plan.",
+          nativeGeo: ledger.nativeGeoResearch,
+          pathSelectionSummary: refreshedPaths.summary,
+          note: "Native/geo plan/dry-run executed via coordinator (0 paid). Parallel discovery not requested. Did not claim no demand.",
           budgetRemainingUsd: Math.max(0, budgetUsd - ledger.budget.usedUsd),
           webhound: WEBHOUND_PROVIDER_STATUS,
         });
         ledger.remainingManualSteps.push({
           step: "discover_gaps",
           action:
-            "Optionally: --run-discovery for frozen lab replay, or separately authorize a bounded live Parallel run",
+            "Optionally: --run-discovery for frozen lab replay; --authorize-native for paid Serp/OpenAI (not used this pass)",
         });
         continue;
       }
+      const peGaps = [];
+      if ((reuseLedger?.privateEventIntelligence?.counts?.fits || 0) === 0) {
+        peGaps.push(
+          "Hotel Venue Fit rows missing — research local private-event venues and lodging catchment for this hotel only (no Bethesda copy)"
+        );
+      }
+      if ((reuseLedger?.demandGeneratorSignals?.count || 0) === 0) {
+        peGaps.push(
+          "Demand Generator Signals empty for fitted generators — discover dated occasions under known Demand Programs"
+        );
+      }
+      const programDraftPath = path.join(
+        runDir,
+        "reuse_prior_intelligence",
+        "programs-occasion-drafts.json"
+      );
+      const programDraftDoc = fs.existsSync(programDraftPath)
+        ? JSON.parse(fs.readFileSync(programDraftPath, "utf8"))
+        : null;
+      const researchGaps = [
+        ...(reuseLedger?.feedbackDrivenResearch?.discoveryQueryHints || []),
+        ...((programDraftDoc?.drafts || [])
+          .slice(0, 6)
+          .map(
+            (d) =>
+              `Confirm dated cycle + lodging procurement for program: ${d.title || d.organizationName}`
+          ) || []),
+      ];
       const discovery = await runParallelDiscoveryStage(hotelId, {
         runDiscovery: true,
-        mode: authorizePaidDiscovery ? DISCOVERY_MODE.LIVE : DISCOVERY_MODE.REPLAY,
+        mode: discoveryMode,
         authorizePaidDiscovery,
         maxUsd: Math.min(budgetUsd, 2),
-        maxTasks: Math.min(8, budgetSearches),
+        maxTasks: Math.min(2, budgetSearches),
         maxPages: budgetPages,
+        researchGaps,
+        privateEventGaps: peGaps,
+        feedbackQueryHints: feedbackHints,
       });
       writeDiscoveryStageArtifacts(discovery, discDir);
       ledger.parallelDiscovery = {
         status: discovery.status,
+        mode: discovery.mode || discoveryMode,
+        executionKind: discovery.executionKind || null,
         paidCalls: discovery.paidCalls || 0,
         freshDiscoveryClaimed: discovery.freshDiscoveryClaimed === true,
         candidateCount: (discovery.candidates || []).length,
         path: path.join(discDir, "parallel-discovery-stage.json"),
       };
-      if (discovery.status === "completed_replay") {
+      if (
+        discovery.status === "completed_replay" ||
+        discovery.status === "completed_live_mock"
+      ) {
         mark(ledger, stage, "completed", {
-          module: "parallel_discovery_adapter_v1",
-          mode: "replay",
-          paidCalls: 0,
+          module: "parallel_discovery_adapter_v1+native_geo_research_stage_v1",
+          mode: discovery.mode || discoveryMode,
+          executionKind: discovery.executionKind,
+          paidCalls: (discovery.paidCalls || 0) + (nativeGeo.paidCalls || 0),
           freshDiscoveryClaimed: false,
           candidateCount: (discovery.candidates || []).length,
+          nativeGeo: ledger.nativeGeoResearch,
           reviewPackage: discovery.reviewPackage || null,
-          note: "Frozen Parallel lab replay — not a fresh discovery success claim",
+          note:
+            discovery.status === "completed_live_mock"
+              ? "Live mock transport + native/geo plan — not a paid Parallel call; not fresh discovery success"
+              : "Frozen Parallel fixture replay + native/geo plan — not a fresh discovery success claim",
         });
       } else {
         ledger.budget.incompleteCoverageReason =
           discovery.reason || "discovery_incomplete";
         mark(ledger, stage, "incomplete_coverage", {
-          module: "parallel_discovery_adapter_v1",
+          module: "parallel_discovery_adapter_v1+native_geo_research_stage_v1",
+          mode: discovery.mode || discoveryMode,
+          executionKind: discovery.executionKind || "plan_only",
           reason: discovery.reason,
-          paidCalls: discovery.paidCalls || 0,
+          paidCalls: (discovery.paidCalls || 0) + (nativeGeo.paidCalls || 0),
+          nativeGeo: ledger.nativeGeoResearch,
           note: discovery.note,
         });
         ledger.remainingManualSteps.push({
@@ -466,7 +729,8 @@ for (const stage of stagesToRun) {
 
     if (stage === "enrich_contacts") {
       const contactDir = path.join(runDir, "targeted_contact");
-      fs.mkdirSync(contactDir, { recursive: true });
+      const candidateDir = path.join(contactDir, "candidates");
+      fs.mkdirSync(candidateDir, { recursive: true });
       const doc = await loadOpportunitiesCanonical(hotelId);
       const ops = Array.isArray(doc?.opportunities) ? doc.opportunities : [];
       const reusePath = path.join(
@@ -488,17 +752,71 @@ for (const stage of stagesToRun) {
         path.join(contactDir, "targeted-contact-plan.json"),
         JSON.stringify(plan, null, 2) + "\n"
       );
+      const executed = await executeTargetedContactResolution({
+        hotelId,
+        opportunities: ops,
+        plan,
+        outDir: candidateDir,
+        authorizeSurfe,
+        maxExecute: 12,
+      });
       ledger.targetedContact = {
         path: path.join(contactDir, "targeted-contact-plan.json"),
+        candidatesPath: candidateDir,
         targetCount: plan.targetCount,
+        attempted: executed.attempted,
+        resolved: executed.resolved,
+        unresolved: executed.unresolved,
+        blocked: executed.blocked,
         surfeInvoked: false,
         authorizeSurfe,
       };
+      // Mark contact path executed in path selection
+      const pathJson = path.join(
+        runDir,
+        "reuse_prior_intelligence",
+        "research-path-selection.json"
+      );
+      if (fs.existsSync(pathJson)) {
+        try {
+          const prior = JSON.parse(fs.readFileSync(pathJson, "utf8"));
+          const withContact = selectResearchPaths(hotelId, {
+            runDiscovery,
+            evidenceHints: {
+              ...(prior.evidence || {}),
+              contactExecuted: true,
+              contactTargets: plan.targetCount,
+              geographicPlanned: true,
+              nativePlannedOrExecuted: true,
+              nativeMode:
+                ledger.nativeGeoResearch?.nativeStatus || "planned_dry_run",
+            },
+          });
+          fs.writeFileSync(pathJson, JSON.stringify(withContact, null, 2) + "\n");
+          fs.writeFileSync(
+            path.join(
+              runDir,
+              "reuse_prior_intelligence",
+              "research-path-selection.csv"
+            ),
+            researchPathSelectionToCsv(withContact)
+          );
+        } catch (err) {
+          console.warn(
+            "[gdi-workflow] path selection refresh after contact failed:",
+            err?.message || err
+          );
+        }
+      }
       mark(ledger, stage, "completed", {
-        module: "targeted_contact_plan_v1",
+        module: "execute_targeted_contact_resolution_v1",
         targetCount: plan.targetCount,
+        attempted: executed.attempted,
+        resolved: executed.resolved,
+        unresolved: executed.unresolved,
+        blocked: executed.blocked,
         surfe: authorizeSurfe
-          ? "authorized_but_not_invoked_in_dry_coordinator"
+          ? "authorized_but_not_invoked_this_pass"
           : "not_authorized",
         order: plan.targets[0]?.resolutionOrder || [
           "reuse_verified_existing",
@@ -506,12 +824,12 @@ for (const stage of stagesToRun) {
           "native_who",
           "surfe_if_authorized",
         ],
-        note: "Plan only — execute contact-resolution modules separately on listed IDs; Surfe off unless --authorize-surfe",
+        note: "Executed contact resolution into isolated candidate storage — no production writes; Surfe not called",
       });
-      if (plan.targetCount > 0) {
+      if (executed.unresolved > 0 || executed.blocked > 0) {
         ledger.remainingManualSteps.push({
           step: "enrich_contacts",
-          action: `Run contact-resolution on ${plan.targetCount} targeted IDs (existing records + official sources first)`,
+          action: `Human follow-up on ${executed.unresolved} unresolved + ${executed.blocked} blocked contact targets (candidates under ${candidateDir})`,
         });
       }
       continue;
@@ -535,20 +853,8 @@ for (const stage of stagesToRun) {
       const drawerDir = path.join(runDir, "drawer_completeness");
       fs.mkdirSync(drawerDir, { recursive: true });
 
-      if (hotelId === "recG66DQJKP2c0UNh") {
-        const builder = path.join(
-          outDir,
-          "_build-renaissance-package.mjs"
-        );
-        const r = spawnSync(process.execPath, [builder], {
-          cwd: ROOT,
-          encoding: "utf8",
-        });
-        if (r.status !== 0) {
-          mark(ledger, stage, "failed", { stderr: r.stderr?.slice(0, 500) });
-          throw new Error("renaissance_package_build_failed");
-        }
-      }
+      // Renaissance (and any hotel without a hand package) uses draft package
+      // generation below — do not require a hotel-specific builder script.
 
       // San Diego: evaluate frozen lab cards for drawer contract (no package CSV required)
       if (hotelId === "recnPB3Q02NO8Ma1o") {
@@ -617,15 +923,87 @@ for (const stage of stagesToRun) {
       }
 
       if (!fs.existsSync(path.join(pkgDir, "final-prospect-register.csv"))) {
-        // Still score store opportunities for drawer when package missing
+        // Generate draft package from store + contact candidates + supported PE (no hand CSV prerequisite)
         const doc = await loadOpportunitiesCanonical(hotelId);
         const ops = Array.isArray(doc?.opportunities) ? doc.opportunities : [];
-        const drawerReport = reportDrawerCompleteness(ops.slice(0, 40), {
+        const contactSummaryPath = path.join(
+          runDir,
+          "targeted_contact",
+          "candidates",
+          "execution-summary.json"
+        );
+        const contactResults = fs.existsSync(contactSummaryPath)
+          ? JSON.parse(fs.readFileSync(contactSummaryPath, "utf8")).results || []
+          : [];
+        const fitPath = path.join(
+          runDir,
+          "independent_hotel_fit",
+          "independent-hotel-fit.json"
+        );
+        const fitDoc = fs.existsSync(fitPath)
+          ? JSON.parse(fs.readFileSync(fitPath, "utf8"))
+          : null;
+        const pePath = path.join(
+          runDir,
+          "reuse_prior_intelligence",
+          "private-event-intelligence.json"
+        );
+        const peDoc = fs.existsSync(pePath)
+          ? JSON.parse(fs.readFileSync(pePath, "utf8"))
+          : await buildPrivateEventIntelligence(hotelId, {
+              skipAirtable: skipAirtableReuse,
+            });
+        const peDrafts = peSupportedCandidatesToDraftOpportunities(peDoc, hotelId);
+        const draftDir = path.join(runDir, "draft_review_package");
+        const hotelKey =
+          hotelId === "rec0eTEnCqlsGJJt9"
+            ? "may"
+            : hotelId === "recG66DQJKP2c0UNh"
+              ? "ren"
+              : hotelId === "recLuxvwwxID7U2B8"
+                ? "beth"
+                : hotelId.slice(0, 6);
+        const draft = buildDraftReviewPackage({
+          hotelId,
+          hotelKey,
+          hotelLabel:
+            hotelId === "rec0eTEnCqlsGJJt9"
+              ? "Mayflower"
+              : hotelId === "recG66DQJKP2c0UNh"
+                ? "Renaissance"
+                : hotelId === "recLuxvwwxID7U2B8"
+                  ? "Bethesda"
+                  : hotelId,
+          opportunities: ops,
+          peDraftOpportunities: peDrafts,
+          contactResults,
+          fitAssessments: (fitDoc?.store?.results || []).map((r) => ({
+            opportunityId: r.id || r.candidateId || r.opportunityId,
+            outcome: r.fit?.outcome || r.outcome || null,
+            ...r,
+          })),
+          outDir: draftDir,
+        });
+        const drawerPool = [...ops.slice(0, 40), ...peDrafts];
+        const drawerReport = reportDrawerCompleteness(drawerPool, {
           hotelId,
         });
         fs.writeFileSync(
           path.join(drawerDir, "drawer-completeness.json"),
           JSON.stringify(drawerReport, null, 2) + "\n"
+        );
+        fs.writeFileSync(
+          path.join(draftDir, "pe-draft-candidates.json"),
+          JSON.stringify(
+            {
+              hotelId,
+              count: peDrafts.length,
+              candidates: peDrafts,
+              note: "Supported PE dispositions only — human review checkpoint required; not auto-published",
+            },
+            null,
+            2
+          ) + "\n"
         );
         ledger.drawerCompleteness = {
           path: path.join(drawerDir, "drawer-completeness.json"),
@@ -633,25 +1011,87 @@ for (const stage of stagesToRun) {
           fail: drawerReport.fail,
           total: drawerReport.total,
         };
-        mark(ledger, stage, "incomplete_coverage", {
-          error: "package_missing",
-          pkgDir,
+        ledger.draftReviewPackage = draft;
+        mark(ledger, stage, "completed", {
+          mode: "draft_package_from_candidates_and_pe",
+          packageDir: draftDir,
+          draft,
+          peDraftCount: peDrafts.length,
           drawerCompleteness: ledger.drawerCompleteness,
-          note: "Package CSV missing — drawer scored on store opportunities only",
+          note: "Draft package from store/candidates + supported PE — human review checkpoint pending before publication",
         });
         ledger.remainingManualSteps.push({
           step: "generate_cards",
-          action: `Provide reviewed package at ${pkgDir} or build hotel-specific shortlist`,
+          action: `Record human review decisions in ${path.join(draftDir, "human-review-checkpoint.json")} before treating package as reviewed`,
         });
         continue;
       }
 
       const doc = await loadOpportunitiesCanonical(hotelId);
       const ops = Array.isArray(doc?.opportunities) ? doc.opportunities : [];
-      const drawerReport = reportDrawerCompleteness(ops, { hotelId });
+      // Supported PE candidates → draft sidecar (does not overwrite reviewed package)
+      const pePathReviewed = path.join(
+        runDir,
+        "reuse_prior_intelligence",
+        "private-event-intelligence.json"
+      );
+      const peDocReviewed = fs.existsSync(pePathReviewed)
+        ? JSON.parse(fs.readFileSync(pePathReviewed, "utf8"))
+        : null;
+      const peDraftsReviewed = peDocReviewed
+        ? peSupportedCandidatesToDraftOpportunities(peDocReviewed, hotelId)
+        : [];
+      const peDraftDir = path.join(runDir, "draft_review_package");
+      if (peDraftsReviewed.length) {
+        const peDraft = buildDraftReviewPackage({
+          hotelId,
+          hotelKey:
+            hotelId === "rec0eTEnCqlsGJJt9"
+              ? "may"
+              : hotelId === "recLuxvwwxID7U2B8"
+                ? "beth"
+                : hotelId.slice(0, 6),
+          hotelLabel: hotelId,
+          opportunities: [],
+          peDraftOpportunities: peDraftsReviewed,
+          outDir: peDraftDir,
+        });
+        ledger.peDraftReviewPackage = peDraft;
+      }
+      const drawerReport = reportDrawerCompleteness(
+        [...ops, ...peDraftsReviewed],
+        { hotelId }
+      );
       fs.writeFileSync(
         path.join(drawerDir, "drawer-completeness.json"),
         JSON.stringify(drawerReport, null, 2) + "\n"
+      );
+      const threeLayer = {
+        version: "gdi-publication-readiness-layers-v1",
+        hotelId,
+        note: "Commercial eligibility, contact completeness, and drawer content are separately inspectable.",
+        commercialEligibility: {
+          hotelFacing: ops.filter((o) => o.prospectHotelFacing === true).length,
+          enrichmentQueue: ops.filter((o) => o.prospectEnrichmentQueue === true)
+            .length,
+        },
+        contactCompleteness: {
+          byGroup: [1, 2, 3, 4].reduce((acc, g) => {
+            acc[g] = ops.filter((o) => o.contactCompletenessGroup === g).length;
+            return acc;
+          }, {}),
+        },
+        drawerContent: {
+          pass: drawerReport.pass,
+          fail: drawerReport.fail,
+          total: drawerReport.total,
+          path: path.join(drawerDir, "drawer-completeness.json"),
+        },
+        peDraftCandidates: peDraftsReviewed.length,
+      };
+      fs.writeFileSync(
+        path.join(drawerDir, "publication-readiness-layers.json"),
+        JSON.stringify(threeLayer, null, 2) + "\n"
       );
       const jev = runJevAdvisoryShadow({
         hotelId,
@@ -665,11 +1105,13 @@ for (const stage of stagesToRun) {
         fail: drawerReport.fail,
         total: drawerReport.total,
       };
+      ledger.publicationReadinessLayers = threeLayer;
       mark(ledger, stage, "completed", {
         packageDir: pkgDir,
         registerHash: shaFile(path.join(pkgDir, "final-prospect-register.csv")),
         packagesHash: shaFile(path.join(pkgDir, "contact-packages.json")),
         drawerCompleteness: ledger.drawerCompleteness,
+        publicationReadinessLayers: threeLayer,
         jevAdvisory: "deterministic_shadow_only",
       });
       continue;
@@ -691,6 +1133,29 @@ for (const stage of stagesToRun) {
         });
         continue;
       }
+      const draftPkgDir = path.join(runDir, "draft_review_package");
+      const effectivePkgDir = fs.existsSync(
+        path.join(pkgDir, "final-prospect-register.csv")
+      )
+        ? pkgDir
+        : fs.existsSync(path.join(draftPkgDir, "final-prospect-register.csv"))
+          ? draftPkgDir
+          : pkgDir;
+      if (
+        !fs.existsSync(path.join(effectivePkgDir, "final-prospect-register.csv"))
+      ) {
+        mark(ledger, stage, "incomplete_coverage", {
+          reason: "no_reviewed_or_draft_package",
+          pkgDir,
+          draftPkgDir,
+          note: "No hand package or draft package available for import dry-run",
+        });
+        ledger.remainingManualSteps.push({
+          step: "prepare_manifest",
+          action: "Complete generate_cards draft package or supply reviewed package CSV",
+        });
+        continue;
+      }
       const dataRoot = path.join(outDir, "_local-preview");
       fs.mkdirSync(dataRoot, { recursive: true });
       // Seed local preview store from canonical FS hotel pack when present
@@ -703,6 +1168,10 @@ for (const stage of stagesToRun) {
           fs.copyFileSync(from, path.join(dst, f));
         }
       }
+      const overlayPath = path.join(
+        ROOT,
+        "reports/gdi-drawer-completeness/sales-review-overlay.json"
+      );
       const dryArgs = [
         path.join(ROOT, "scripts/gdi-import-reviewed-prospects.mjs"),
         "--hotel",
@@ -713,10 +1182,13 @@ for (const stage of stagesToRun) {
         "--data-root",
         dataRoot,
         "--package-dir",
-        pkgDir,
+        effectivePkgDir,
         "--out-dir",
         path.join(runDir, "manifest-dryrun"),
       ];
+      if (fs.existsSync(overlayPath)) {
+        dryArgs.push("--content-overlay", overlayPath);
+      }
       const r = spawnSync(process.execPath, dryArgs, {
         cwd: ROOT,
         encoding: "utf8",
@@ -726,10 +1198,40 @@ for (const stage of stagesToRun) {
         path.join(runDir, "manifest-dryrun-stdout.txt"),
         r.stdout || ""
       );
+      let drawerFromImport = null;
+      try {
+        const importResultGlob = fs
+          .readdirSync(path.join(runDir, "manifest-dryrun"))
+          .filter((f) => f.startsWith("import-result-"))
+          .sort()
+          .pop();
+        if (importResultGlob) {
+          const ir = JSON.parse(
+            fs.readFileSync(
+              path.join(runDir, "manifest-dryrun", importResultGlob),
+              "utf8"
+            )
+          );
+          drawerFromImport = ir.results?.[0]?.drawerCompleteness || null;
+        }
+      } catch {
+        drawerFromImport = null;
+      }
       mark(ledger, stage, r.status === 0 ? "completed" : "failed", {
         exitCode: r.status,
         dataRoot,
-        note: "Dry-run import manifest prepared; see runDir/manifest-dryrun",
+        packageDirUsed: effectivePkgDir,
+        draftPackage:
+          effectivePkgDir === draftPkgDir
+            ? "used_draft_pending_human_review"
+            : "used_reviewed_package",
+        contentOverlay: fs.existsSync(overlayPath) ? overlayPath : null,
+        publicationReadinessLayers: {
+          commercialEligibility: "see import manifest hotelFacing / enrichmentQueue",
+          contactCompleteness: "see import manifest contactGroup",
+          drawerContent: drawerFromImport,
+        },
+        note: "Dry-run import manifest prepared; eligibility, contact group, and drawer completeness reported separately",
       });
       if (r.status !== 0) throw new Error("manifest_dryrun_failed");
       continue;
@@ -746,6 +1248,23 @@ for (const stage of stagesToRun) {
         });
         continue;
       }
+      const draftPkgDir = path.join(runDir, "draft_review_package");
+      const effectivePkgDir = fs.existsSync(
+        path.join(pkgDir, "final-prospect-register.csv")
+      )
+        ? pkgDir
+        : fs.existsSync(path.join(draftPkgDir, "final-prospect-register.csv"))
+          ? draftPkgDir
+          : pkgDir;
+      if (
+        !fs.existsSync(path.join(effectivePkgDir, "final-prospect-register.csv"))
+      ) {
+        mark(ledger, stage, "incomplete_coverage", {
+          reason: "no_package_for_preview",
+          note: "No reviewed or draft package for local preview apply",
+        });
+        continue;
+      }
       const dataRoot = path.join(outDir, "_local-preview");
       const applyArgs = [
         path.join(ROOT, "scripts/gdi-import-reviewed-prospects.mjs"),
@@ -757,7 +1276,7 @@ for (const stage of stagesToRun) {
         "--data-root",
         dataRoot,
         "--package-dir",
-        pkgDir,
+        effectivePkgDir,
         "--out-dir",
         path.join(runDir, "preview-apply"),
         "--backup-dir",

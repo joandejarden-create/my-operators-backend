@@ -9,7 +9,8 @@
   var PRIORITY_DISPLAY = {
     HIGH_PRIORITY: { label: "HIGH", pillClass: "gdi-pill gdi-pill-high" },
     MEDIUM_PRIORITY: { label: "MEDIUM", pillClass: "gdi-pill gdi-pill-med" },
-    WATCHLIST: { label: "WATCH", pillClass: "gdi-pill gdi-pill-watch" },
+    // Distinct from Action Window "WATCH" — commercial browse priority only
+    WATCHLIST: { label: "Watchlist", pillClass: "gdi-pill gdi-pill-watch" },
   };
 
   var ACTION_STATUS_DISPLAY = {
@@ -401,10 +402,17 @@
       esc(opts.lastResearch != null && opts.lastResearch !== "" ? opts.lastResearch : "—") +
       "</div></div>" +
       '<div class="filter-group gdi-property-stat">' +
-      '<span class="filter-label">Run Status</span>' +
+      '<span class="filter-label">Research Run</span>' +
       '<div class="gdi-property-stat__value">' +
       esc(opts.runStatus || "NEVER_RUN") +
       "</div></div>" +
+      (opts.lastReviewedImport
+        ? '<div class="filter-group gdi-property-stat">' +
+          '<span class="filter-label">Last Reviewed Import</span>' +
+          '<div class="gdi-property-stat__value">' +
+          esc(opts.lastReviewedImport) +
+          "</div></div>"
+        : "") +
       (opts.actionHtml
         ? '<div class="filter-group aiv-filter-actions">' + opts.actionHtml + "</div>"
         : "") +
@@ -1332,6 +1340,42 @@
     );
   }
 
+  /**
+   * Commercial class (Priority / Exploratory) — separate from Action Window and WATCH stamp.
+   */
+  function commercialClassPillHtml(it, linked) {
+    linked = linked || {};
+    it = it || {};
+    var section = String(
+      linked.prospectReviewSection || it.prospectReviewSection || ""
+    ).toUpperCase();
+    var label =
+      linked.prospectCustomerLabel ||
+      it.prospectCustomerLabel ||
+      linked.prospectCommercialLabel ||
+      it.prospectCommercialLabel ||
+      "";
+    var lbl = String(label || "");
+    if (section === "PRIORITY" || /prospect to qualify|priority/i.test(lbl)) {
+      return (
+        '<span class="gdi-tile-pill gdi-pill-high" data-facet="commercial-class">Priority</span>'
+      );
+    }
+    if (section === "EXPLORATORY" || /exploratory/i.test(lbl)) {
+      return (
+        '<span class="gdi-tile-pill gdi-pill-med" data-facet="commercial-class">Exploratory</span>'
+      );
+    }
+    if (lbl) {
+      return (
+        '<span class="gdi-tile-pill gdi-pill-watch" data-facet="commercial-class">' +
+        esc(lbl) +
+        "</span>"
+      );
+    }
+    return "";
+  }
+
   function readinessPillHtml(it, linked) {
     // Maturity / readiness badges — QUALIFIED (pilot) vs ACTIONABLE (Ready) vs Future Watch.
     var maturity = String(
@@ -1398,10 +1442,16 @@
     }
     var bookingStatus =
       linked.bookingWindowStatus || it.bookingWindowStatus || "";
-    var summary = trunc(
-      scrubEventDatesFromText(it.summaryWhat || linked.summaryWhat || ""),
-      160
-    );
+    var summaryRaw =
+      it.summaryWhat ||
+      linked.summaryWhat ||
+      linked.summaryWhyHotel ||
+      it.summaryWhyHotel ||
+      linked.hotelOpportunityThesis ||
+      it.hotelOpportunityThesis ||
+      "";
+    var summary = trunc(scrubEventDatesFromText(summaryRaw), 160);
+    var commercialClassLbl = commercialClassPillHtml(it, linked);
     var contact = linked.primaryContact || it.primaryContact || null;
     var contactName =
       contact && contact.name && contact.name !== "UNKNOWN" ? contact.name : "";
@@ -1448,11 +1498,6 @@
       linked.prospectCommercialLabel ||
       it.prospectCommercialLabel ||
       "";
-    if (prospectLbl && contactBits.length) {
-      contactBits.unshift(
-        '<div class="brand-card__contact-line">' + esc(prospectLbl) + "</div>"
-      );
-    }
     // Org / role path when no named person (WHO ORG_PATH) — do not imply a person exists.
     if (!contactName && (buyerEntity || buyerRole || contactPath)) {
       if (buyerEntity) {
@@ -1493,6 +1538,7 @@
       esc(title) +
       "</div>" +
       '<div class="brand-card__pills gdi-tile-pills">' +
+      commercialClassLbl +
       weeklyDeltaPillHtml(linked) +
       readinessPillHtml(it, linked) +
       tileActionPill(bookingStatus, priority, activeFilters) +
@@ -2362,28 +2408,34 @@
         ? "<p><strong>Cycle:</strong> " + esc(o.nextCycleDisplay) + "</p>"
         : "";
 
-    var scoreGrid =
-      '<div class="gdi-score-grid">' +
-      '<div class="gdi-score-cell"><div class="n">' +
-      esc(o.hotelFitScore) +
-      '</div><div class="l">Overall Hotel Fit</div></div>' +
-      Object.keys(comps)
-        .map(function (k) {
-          var compLabel = labels[k] || fitLabel(k);
-          // Never re-label a component as "Hotel Fit" (duplicate of overall)
-          if (/^hotel\s*fit$/i.test(String(compLabel))) {
-            compLabel = fitLabel(k) !== "Hotel Fit" ? fitLabel(k) : k;
-          }
-          return (
-            '<div class="gdi-score-cell"><div class="n">' +
-            esc(comps[k]) +
-            '</div><div class="l">' +
-            esc(compLabel) +
-            "</div></div>"
-          );
-        })
-        .join("") +
-      "</div>";
+    var hasScore =
+      o.hotelFitScore != null &&
+      o.hotelFitScore !== "" &&
+      !Number.isNaN(Number(o.hotelFitScore));
+    var scoreGrid = hasScore
+      ? '<div class="gdi-score-grid">' +
+        '<div class="gdi-score-cell"><div class="n">' +
+        esc(o.hotelFitScore) +
+        '</div><div class="l">Overall Hotel Fit</div></div>' +
+        Object.keys(comps)
+          .map(function (k) {
+            var compLabel = labels[k] || fitLabel(k);
+            if (/^hotel\s*fit$/i.test(String(compLabel))) {
+              compLabel = fitLabel(k) !== "Hotel Fit" ? fitLabel(k) : k;
+            }
+            return (
+              '<div class="gdi-score-cell"><div class="n">' +
+              esc(comps[k]) +
+              '</div><div class="l">' +
+              esc(compLabel) +
+              "</div></div>"
+            );
+          })
+          .join("") +
+        "</div>"
+      : o.hotelFitScoreNote
+        ? "<p><em>" + esc(o.hotelFitScoreNote) + "</em></p>"
+        : "<p><em>Hotel fit is qualitative for this card — no unexplained numeric score.</em></p>";
 
     return (
       '<div class="gdi-detail-framework">' +

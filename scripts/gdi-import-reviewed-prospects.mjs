@@ -48,6 +48,9 @@ const adapter = String(arg("--adapter", "") || "")
 const packageDir =
   arg("--package-dir") ||
   path.join(ROOT, "reports/gdi-bethesda-process-replication/hotel-review");
+const contentOverlayPath =
+  arg("--content-overlay") ||
+  path.join(ROOT, "reports/gdi-drawer-completeness/sales-review-overlay.json");
 const outDir =
   arg("--out-dir") ||
   path.join(ROOT, "reports/gdi-prospect-publication-implementation");
@@ -98,6 +101,7 @@ const results = both
       dryRun,
       backupDir: dryRun ? null : backupDir,
       hotelIds: REVIEWED_PROSPECT_HOTEL_IDS,
+      contentOverlayPath,
     })
   : [
       await importReviewedProspectsForHotel({
@@ -105,6 +109,7 @@ const results = both
         packageDir,
         dryRun,
         backupDir: dryRun ? null : backupDir,
+        contentOverlayPath,
       }),
     ];
 
