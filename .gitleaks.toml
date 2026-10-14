@@ -65,6 +65,8 @@ regexes = [
   '''(?i)"propertyKey"\s*:''',
   '''(?i)"identityKey"\s*:''',
   '''(?i)"scenarioKey"\s*:''',
+  # GDI Parallel fixture/report identity keys (org_slug__YYYY-MM-DD), not API secrets.
+  '''(?i)"dedupeKey"\s*:''',
 
   # Proven placeholders / metadata false positives.
   '''(?i)Authorization:\s*Bearer\s+YOUR_TOKEN''',
