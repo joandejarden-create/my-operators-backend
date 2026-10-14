@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Harbour House — Opportunity Preparation & Outreach</title>
+  <link rel="stylesheet" href="/marketing/product-assets/scenes/product-assets-scenes.css" />
+</head>
+<body class="pa-capture" data-scene="04-opportunity-outreach" data-stage="0">
+  <div class="pa-frame" id="capture-root">
+    <div class="pa-topline">
+      <div class="pa-brand-mark"><span class="pa-brand-mark__dot" aria-hidden="true"></span>Preparation &amp; Outreach</div>
+      <span class="pa-illus">Illustrative Opportunity</span>
+    </div>
+
+    <header class="pa-header">
+      <h1>Present Harbour House consistently</h1>
+      <p class="pa-sub">One brief · selected counterparties · readiness, NDA, and response tracking</p>
+    </header>
+
+    <div class="pa-grid pa-grid--2" style="margin-top:18px">
+      <section class="pa-panel" data-fade data-on-stage="0">
+        <h3>Opportunity brief readiness</h3>
+        <ul class="pa-list">
+          <li><strong>Asset summary</strong> · 118 keys · Cartagena · upscale independent</li>
+          <li><strong>Owner objectives</strong> · ADR quality · control · flexibility</li>
+          <li><strong>Path shortlist</strong> · soft brand · operator · capital</li>
+          <li><strong>Documents</strong> · teaser + CIP outline · sample only</li>
+          <li><strong>Readiness</strong> · <span class="pa-status pa-status--ok">Brief approved</span></li>
+        </ul>
+      </section>
+
+      <section class="pa-panel" data-fade data-on-stage="1">
+        <h3>Selected counterparties</h3>
+        <table class="mkt-deals-table" style="width:100%">
+          <thead>
+            <tr><th>Party</th><th>Role</th><th>NDA</th><th>Response</th></tr>
+          </thead>
+          <tbody>
+            <tr data-row="0">
+              <td>Aurelia Collection</td>
+              <td>Soft brand</td>
+              <td><span class="pa-status pa-status--ok">Signed</span></td>
+              <td><span class="pa-status pa-status--ok">Terms in</span></td>
+            </tr>
+            <tr data-row="1">
+              <td>CostaVista Hospitality</td>
+              <td>Operator</td>
+              <td><span class="pa-status pa-status--ok">Signed</span></td>
+              <td><span class="pa-status pa-status--wait">Reviewing</span></td>
+            </tr>
+            <tr data-row="2">
+              <td>Andes Capital Partners</td>
+              <td>Capital</td>
+              <td><span class="pa-status pa-status--wait">Pending</span></td>
+              <td><span class="pa-status">Invited</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+    <div class="pa-grid pa-grid--3" style="margin-top:14px">
+      <section class="pa-panel" data-fade data-on-stage="2">
+        <h3>Outreach sequence</h3>
+        <ul class="pa-list">
+          <li>Wave 1 · soft brand + operator</li>
+          <li>Wave 2 · capital after NDA</li>
+          <li>Shared brief version · v1.3 sample</li>
+        </ul>
+      </section>
+      <section class="pa-panel" data-fade data-on-stage="2">
+        <h3>Engagement tracker</h3>
+        <ul class="pa-list">
+          <li>Opened · 3 / 3 invited</li>
+          <li>NDA complete · 2 / 3</li>
+          <li>Responses · 1 terms pack</li>
+        </ul>
+      </section>
+      <section class="pa-panel" data-fade data-on-stage="3">
+        <h3>Next actions</h3>
+        <ul class="pa-list">
+          <li>Follow up Andes Capital NDA</li>
+          <li>Schedule CostaVista clarification</li>
+          <li>Load Aurelia terms into compare</li>
+        </ul>
+      </section>
+    </div>
+
+    <p class="pa-disclaimer">Sample outreach board. All parties, documents, and statuses are fictional for marketing demonstration.</p>
+    <div class="pa-stage-label" id="stage-label">Stage 0</div>
+  </div>
+  <script src="/marketing/product-assets/scenes/scene-controller.js"></script>
+  <script>
+    window.__paSceneHooks = {
+      applyStage: function (stage) {
+        document.querySelectorAll('tbody tr').forEach(function (tr, i) {
+          tr.style.transition = 'background 0.4s ease';
+          tr.style.background = (stage >= 2 && i === Math.min(stage - 2, 2))
+            ? 'rgba(108,114,255,0.14)'
+            : 'transparent';
+        });
+      }
+    };
+  </script>
+</body>
+</html>
