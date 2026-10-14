@@ -44,7 +44,8 @@ await check("issue_and_verify", async () => {
   });
   const v = mod.verifyGdiShareCapability(issued.token);
   assert.equal(v.ok, true);
-  assert.ok(v.capabilities.includes(mod.GDI_SHARE_CAPABILITY.CAN_VALIDATE));
+  assert.ok(v.capabilities.includes(mod.GDI_SHARE_CAPABILITY.CAN_READ_OPPORTUNITIES));
+  assert.equal(v.capabilities.includes(mod.GDI_SHARE_CAPABILITY.CAN_VALIDATE), false);
 });
 
 await check("previous_secret_verifies", async () => {

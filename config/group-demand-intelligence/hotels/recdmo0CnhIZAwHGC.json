@@ -1,0 +1,90 @@
+{
+  "hotelId": "recdmo0CnhIZAwHGC",
+  "displayName": "The Westin Tampa Waterside",
+  "country": "United States",
+  "city": "Tampa",
+  "aliases": {
+    "adpPropertyId": "adp_westin_tampa_waterside",
+    "censusRecordId": "recdmo0CnhIZAwHGC",
+    "provisionalGdiHotelId": "gdi_hotel_westin_tampa_waterside",
+    "identityKey": "ind_marriott_us_tpawh",
+    "note": "Canonical hotelId is HPC record. Harbour Island / downtown waterfront. Marriott TPAWH. Not Westin Grand München or Westin Grand Cayman."
+  },
+  "adpFixturePath": "fixtures/ai-demand-positioning/westin-tampa-waterside-property-profile.json",
+  "geo": {
+    "latitude": 27.93849,
+    "longitude": -82.45399,
+    "note": "725 South Harbour Island Boulevard"
+  },
+  "locale": {
+    "primary": "en",
+    "secondary": [],
+    "selective": [],
+    "note": "English-language U.S. market"
+  },
+  "commercialPriorities": {
+    "targetSegments": [],
+    "coreTargetPeakRoomsMin": 20,
+    "coreTargetPeakRoomsMax": 180,
+    "allowSmallerIfCommerciallyMeaningful": true,
+    "demandAnchorFocus": [],
+    "weekendFocus": false,
+    "notes": "Guestroom count is unknown on the Marriott pages retrieved 2026-10-13, so the peak band is a planning range from meeting inventory (15 rooms, 23,331 sq ft, Oasis Ballroom reception 800), not a claimed room count. targetSegments empty — discovery is not seeded with demand-type assumptions."
+  },
+  "capabilityProfile": {
+    "totalGuestrooms": null,
+    "totalMeetingSpaceSqFt": 23331,
+    "totalMeetingSpaceSqM": null,
+    "largestBallroomSqFt": 4760,
+    "largestBallroomSqM": null,
+    "largestTheaterCapacity": 600,
+    "largestReceptionCapacity": 800,
+    "meetingRoomsIndoor": 15,
+    "outdoorEventSpace": false,
+    "softBrand": "Westin",
+    "serviceLevel": "upper_upscale_full_service",
+    "classification": "waterfront_meetings_convention_adjacent",
+    "country": "United States",
+    "notes": "HOTEL_SPECIFIC_DATA from Marriott TPAWH events/overview. Theater 600 and reception 800 are Oasis Ballroom figures on the Marriott events chart.",
+    "meetingRoomCount": 15,
+    "largestMeetingRoomSqFt": 4760
+  },
+  "demandTerritory": {
+    "label": "Tampa / Harbour Island / Downtown Waterfront",
+    "country": "United States",
+    "includes": [
+      "PRIMARY: Harbour Island and downtown Tampa waterfront",
+      "SECONDARY: Tampa Convention Center walkable demand",
+      "ADJACENT: Greater Tampa when downtown or convention lodging is realistic",
+      "STRETCH: Airport or regional programs only when a Tampa overnight is evidenced"
+    ],
+    "evaluationQuestion": "Could The Westin Tampa Waterside realistically capture this group demand given Harbour Island location, 15 meeting rooms, and convention-center proximity — without treating every Tampa event as automatic fit?",
+    "classifications": [
+      "TERRITORY_CORE",
+      "TERRITORY_NEARBY",
+      "TERRITORY_COMPETITIVE",
+      "TERRITORY_STRETCH",
+      "OUTSIDE_REALISTIC_TERRITORY"
+    ],
+    "displayLabels": {
+      "TERRITORY_CORE": "Harbour Island / Downtown Waterfront",
+      "TERRITORY_NEARBY": "Downtown Tampa / Convention Center",
+      "TERRITORY_COMPETITIVE": "Greater Tampa Competitive Set",
+      "TERRITORY_STRETCH": "Airport / Regional Stretch",
+      "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+    },
+    "classificationKeywords": {
+      "TERRITORY_CORE": ["harbour island", "harbor island", "channelside", "water street tampa"],
+      "TERRITORY_NEARBY": ["tampa convention center", "downtown tampa", "sparkman wharf", "amalie arena"],
+      "TERRITORY_COMPETITIVE": ["tampa", "hillsborough"],
+      "TERRITORY_STRETCH": ["tampa international", "tpa airport", "st. petersburg", "clearwater"],
+      "OUTSIDE_REALISTIC_TERRITORY": ["orlando", "miami", "jacksonville only"]
+    }
+  },
+  "gdiOnboarding": {
+    "status": "CANONICAL",
+    "pilotGeneration": 1,
+    "paidEnrichmentEnabled": false,
+    "discoveryMode": "INDEPENDENT_WEB_RESEARCH_NO_DEMAND_SEEDING"
+  }
+}

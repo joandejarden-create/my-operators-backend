@@ -1,0 +1,90 @@
+{
+  "hotelId": "recnPB3Q02NO8Ma1o",
+  "displayName": "Wyndham San Diego Bayside",
+  "country": "United States",
+  "city": "San Diego",
+  "aliases": {
+    "adpPropertyId": "adp_wyndham_san_diego_bayside",
+    "censusRecordId": "recnPB3Q02NO8Ma1o",
+    "provisionalGdiHotelId": "gdi_hotel_wyndham_san_diego_bayside",
+    "identityKey": "ind_wyndham_us_47150",
+    "note": "Canonical hotelId is HPC record. Wyndham property 47150. North Harbor Drive. Former Holiday Inn San Diego on the Bay is historical only."
+  },
+  "adpFixturePath": "fixtures/ai-demand-positioning/wyndham-san-diego-bayside-property-profile.json",
+  "geo": {
+    "latitude": 32.71817,
+    "longitude": -117.17269,
+    "note": "1355 North Harbor Drive"
+  },
+  "locale": {
+    "primary": "en",
+    "secondary": [],
+    "selective": [],
+    "note": "English-language U.S. market"
+  },
+  "commercialPriorities": {
+    "targetSegments": [],
+    "coreTargetPeakRoomsMin": 30,
+    "coreTargetPeakRoomsMax": 250,
+    "allowSmallerIfCommerciallyMeaningful": true,
+    "demandAnchorFocus": [],
+    "weekendFocus": false,
+    "notes": "600 rooms, 10 suites, 15 event rooms, 27,187 sq ft. Peak band sized for convention, corporate, and waterfront group programs that fit a 600-room bayfront hotel. targetSegments empty — discovery is not seeded with demand-type assumptions."
+  },
+  "capabilityProfile": {
+    "totalGuestrooms": 600,
+    "totalMeetingSpaceSqFt": 27187,
+    "totalMeetingSpaceSqM": null,
+    "largestBallroomSqFt": 10384,
+    "largestBallroomSqM": null,
+    "largestTheaterCapacity": null,
+    "largestReceptionCapacity": 1500,
+    "meetingRoomsIndoor": 15,
+    "outdoorEventSpace": true,
+    "softBrand": "Wyndham",
+    "serviceLevel": "upscale_full_service",
+    "classification": "bayfront_meetings_convention_adjacent",
+    "country": "United States",
+    "notes": "HOTEL_SPECIFIC_DATA from Wyndham brand accommodations (600/10) and meetings page (15 rooms, 27,187 sq ft, largest 10,384 sq ft, up to 1,500). Outdoor terraces from the property meetings page.",
+    "meetingRoomCount": 15,
+    "largestMeetingRoomSqFt": 10384
+  },
+  "demandTerritory": {
+    "label": "San Diego / North Harbor Drive / Downtown Waterfront",
+    "country": "United States",
+    "includes": [
+      "PRIMARY: North Harbor Drive and the downtown bayfront",
+      "SECONDARY: Gaslamp, Little Italy, and Convention Center demand when bayfront lodging is realistic",
+      "ADJACENT: Airport-adjacent programs within about 2 miles",
+      "STRETCH: Countywide San Diego programs only when a downtown overnight is evidenced"
+    ],
+    "evaluationQuestion": "Could Wyndham San Diego Bayside realistically capture this group demand given 600 rooms, 15 meeting rooms, bayfront location, and convention-center proximity — without treating every San Diego event as automatic fit?",
+    "classifications": [
+      "TERRITORY_CORE",
+      "TERRITORY_NEARBY",
+      "TERRITORY_COMPETITIVE",
+      "TERRITORY_STRETCH",
+      "OUTSIDE_REALISTIC_TERRITORY"
+    ],
+    "displayLabels": {
+      "TERRITORY_CORE": "North Harbor Drive / Downtown Waterfront",
+      "TERRITORY_NEARBY": "Gaslamp / Convention Center / Little Italy",
+      "TERRITORY_COMPETITIVE": "Downtown San Diego Competitive Set",
+      "TERRITORY_STRETCH": "Airport / County Stretch",
+      "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+    },
+    "classificationKeywords": {
+      "TERRITORY_CORE": ["north harbor drive", "harbor drive", "bayside", "san diego bay"],
+      "TERRITORY_NEARBY": ["gaslamp", "convention center", "little italy", "seaport village"],
+      "TERRITORY_COMPETITIVE": ["downtown san diego", "san diego"],
+      "TERRITORY_STRETCH": ["san diego international", "san airport", "mission valley", "la jolla"],
+      "OUTSIDE_REALISTIC_TERRITORY": ["los angeles only", "orange county only", "tijuana only"]
+    }
+  },
+  "gdiOnboarding": {
+    "status": "CANONICAL",
+    "pilotGeneration": 1,
+    "paidEnrichmentEnabled": false,
+    "discoveryMode": "INDEPENDENT_WEB_RESEARCH_NO_DEMAND_SEEDING"
+  }
+}
