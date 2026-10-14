@@ -1224,9 +1224,8 @@
       esc(cost.webhoundUsd || 0) +
       " / hard cap $" +
       esc(cost.webhoundHardCapUsd || 5) +
-      "</p><pre>" +
-      esc(JSON.stringify(latest, null, 2)) +
-      "</pre></div>"
+      "</p>" +
+      "<p>Research traces, campaign ids, and internal statuses stay off this page.</p></div>"
     );
   }
 
