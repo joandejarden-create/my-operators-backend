@@ -1423,8 +1423,34 @@
       );
     }
     if (contactPhone) {
+      var phoneTypeLbl =
+        (contact && contact.phoneTypeLabel) ||
+        linked.primaryContactPhoneTypeLabel ||
+        it.primaryContactPhoneTypeLabel ||
+        "";
       contactBits.push(
-        '<div class="brand-card__contact-line">' + esc(contactPhone) + "</div>"
+        '<div class="brand-card__contact-line">' +
+          esc(contactPhone) +
+          (phoneTypeLbl ? " · " + esc(phoneTypeLbl) : "") +
+          "</div>"
+      );
+    }
+    var respLbl =
+      linked.bookingResponsibilityLabel || it.bookingResponsibilityLabel || "";
+    if (respLbl) {
+      contactBits.push(
+        '<div class="brand-card__contact-line">' + esc(respLbl) + "</div>"
+      );
+    }
+    var prospectLbl =
+      linked.prospectCustomerLabel ||
+      it.prospectCustomerLabel ||
+      linked.prospectCommercialLabel ||
+      it.prospectCommercialLabel ||
+      "";
+    if (prospectLbl && contactBits.length) {
+      contactBits.unshift(
+        '<div class="brand-card__contact-line">' + esc(prospectLbl) + "</div>"
       );
     }
     // Org / role path when no named person (WHO ORG_PATH) — do not imply a person exists.
@@ -1982,7 +2008,20 @@
       esc(c.organization || o.organizationName || "—") +
       "</p>" +
       (c.email ? "<p><strong>Email:</strong> " + esc(c.email) + "</p>" : "") +
-      (c.phone ? "<p><strong>Phone:</strong> " + esc(c.phone) + "</p>" : "") +
+      (c.phone
+        ? "<p><strong>Phone:</strong> " +
+          esc(c.phone) +
+          (o.primaryContactPhoneTypeLabel || c.phoneTypeLabel || c.phoneType
+            ? " (" +
+              esc(
+                o.primaryContactPhoneTypeLabel ||
+                  c.phoneTypeLabel ||
+                  c.phoneType
+              ) +
+              ")"
+            : "") +
+          "</p>"
+        : "") +
       getDetailsCta +
       officialLink +
       "<p><strong>Why Relevant:</strong> " +

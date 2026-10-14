@@ -69,7 +69,10 @@ import {
   HOTEL_VALIDATION_REASON,
   HOTEL_VALIDATION_REASON_LABEL,
 } from "../lib/group-demand-intelligence/index.js";
-import { loadOpportunitiesCanonical } from "../lib/group-demand-intelligence/opportunity-persistence.js";
+import {
+  loadOpportunitiesCanonical,
+  getGdiOpportunityPersistenceMode,
+} from "../lib/group-demand-intelligence/opportunity-persistence.js";
 import {
   getCachedOpportunityDoc,
   invalidateGdiHotelReadCache,
@@ -153,6 +156,7 @@ async function loadOppDoc(hotelId) {
 /**
  * Prefer cached hotel doc; on miss load single Airtable row when possible
  * instead of re-listing the full hotel set for View Details.
+ * Filesystem persistence mode never falls through to Airtable (local/import roots).
  */
 async function loadOpportunityForDetail(hotelId, opportunityId) {
   const t0 = Date.now();
@@ -167,25 +171,28 @@ async function loadOpportunityForDetail(hotelId, opportunityId) {
       };
     }
   }
-  // Cache miss: try single-record Airtable path when configured
-  try {
-    const {
-      loadOpportunity,
-      isGdiOpportunityAirtableConfigured,
-    } = await import("../lib/group-demand-intelligence/airtable-opportunity-store.js");
-    if (isGdiOpportunityAirtableConfigured()) {
-      const one = await loadOpportunity(hotelId, opportunityId);
-      if (one) {
-        return {
-          opportunity: one,
-          source: "airtable_single",
-          durationMs: Date.now() - t0,
-        };
+  const persistenceMode = getGdiOpportunityPersistenceMode();
+  // Cache miss: single-record Airtable only when Airtable is the active persistence mode
+  if (persistenceMode === "airtable") {
+    try {
+      const {
+        loadOpportunity,
+        isGdiOpportunityAirtableConfigured,
+      } = await import("../lib/group-demand-intelligence/airtable-opportunity-store.js");
+      if (isGdiOpportunityAirtableConfigured()) {
+        const one = await loadOpportunity(hotelId, opportunityId);
+        if (one) {
+          return {
+            opportunity: one,
+            source: "airtable_single",
+            durationMs: Date.now() - t0,
+          };
+        }
       }
+    } catch (err) {
+      if (err?.code === "hotel_boundary_violation") throw err;
+      // fall through to full doc
     }
-  } catch (err) {
-    if (err?.code === "hotel_boundary_violation") throw err;
-    // fall through to full doc
   }
   const doc = await loadOppDoc(hotelId);
   const opportunity = (doc.opportunities || []).find((o) => o.id === opportunityId);
@@ -698,12 +705,31 @@ export async function getGdiOpportunityDetail(req, res) {
         })
       );
     }
+    const shareValidation = getShareValidationForOpportunity(
+      hotelId,
+      opportunityId
+    );
+    const opportunityPayload = {
+      ...opportunity,
+      ...(commercialProgression ? { commercialProgression } : {}),
+      ...(shareValidation
+        ? {
+            shareValidation: {
+              familiarityStatus: shareValidation.familiarityStatus,
+              commercialValue: shareValidation.commercialValue,
+              contactPersonAssessment: shareValidation.contactPersonAssessment,
+              emailAssessment: shareValidation.emailAssessment,
+              phoneAssessment: shareValidation.phoneAssessment,
+              note: shareValidation.note || "",
+              validatedAt: shareValidation.validatedAt,
+            },
+          }
+        : {}),
+    };
     res.setHeader("X-GDI-Detail-Source", loaded.source);
     return res.json({
       ok: true,
-      opportunity: commercialProgression
-        ? { ...opportunity, commercialProgression }
-        : opportunity,
+      opportunity: opportunityPayload,
       scoreAudit: reconstructScoreAudit(opportunity),
       validationReasons: HOTEL_VALIDATION_REASON,
       validationReasonLabels: HOTEL_VALIDATION_REASON_LABEL,
