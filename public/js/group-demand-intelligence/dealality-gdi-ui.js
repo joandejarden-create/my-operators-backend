@@ -203,6 +203,81 @@
     return ACTION_STATUS_DISPLAY[status] || String(status).replace(/_/g, " ");
   }
 
+  /** Customer-facing labels for internal enum / status codes. */
+  var CUSTOMER_STATUS_LABELS = {
+    FUTURE_CYCLE_EXPECTED: "Future cycle expected",
+    FUTURE_CYCLE_CONFIRMED: "Future cycle confirmed",
+    RECURRING_CYCLE_STRONG: "Recurring cycle (strong pattern)",
+    NO_FUTURE_CYCLE_EVIDENCE: "No future-cycle evidence yet",
+    LODGING_DEMAND_UNKNOWN: "Room demand not yet published",
+    UNKNOWN: "Not yet established",
+    PRIMARY_VENUE_SELECTED_OVERFLOW_POSSIBLE:
+      "Primary venue placed — overflow possible",
+    PRIMARY_VENUE_SELECTED: "Primary venue placed",
+    HOTEL_SOURCING_UNCONFIRMED: "Hotel sourcing unconfirmed",
+    CONTACT_NOW: "Pursue now",
+    QUALIFY_NOW: "Qualify now",
+    WATCH: "Watch",
+    TOO_EARLY: "Too early",
+  };
+
+  function customerStatusLabel(raw, fallback) {
+    if (raw == null || raw === "") return fallback || "—";
+    var s = String(raw).trim();
+    if (CUSTOMER_STATUS_LABELS[s]) return CUSTOMER_STATUS_LABELS[s];
+    if (CUSTOMER_STATUS_LABELS[s.toUpperCase()]) {
+      return CUSTOMER_STATUS_LABELS[s.toUpperCase()];
+    }
+    // Already human prose
+    if (/\s/.test(s) && !/^[A-Z0-9_]+$/.test(s)) return s;
+    if (/^[A-Z0-9_]+$/.test(s)) {
+      return s
+        .toLowerCase()
+        .split("_")
+        .map(function (w) {
+          return w.charAt(0).toUpperCase() + w.slice(1);
+        })
+        .join(" ");
+    }
+    return s;
+  }
+
+  function distinctProse() {
+    var seen = {};
+    var out = [];
+    for (var i = 0; i < arguments.length; i++) {
+      var t = String(arguments[i] == null ? "" : arguments[i]).trim();
+      if (!t || t === "—") continue;
+      // Strip customer-facing implementation notes; keep any remaining prose.
+      t = t
+        .replace(
+          /\s*No numeric score\s*[—–-]\s*reviewed package did not run canonical[^.]*\.?/gi,
+          ""
+        )
+        .replace(
+          /\s*reviewed package has no canonical[^.]*\.?/gi,
+          ""
+        )
+        .replace(/\s*Qualitative fit\s*[—–-]\s*no numeric score on this prospect\.?/gi, "")
+        .replace(/\s{2,}/g, " ")
+        .trim();
+      if (!t || t === "—") continue;
+      if (
+        /reviewed package did not run canonical|canonical (?:fit )?engine|canonical scoring|implementation note/i.test(
+          t
+        )
+      ) {
+        continue;
+      }
+      // Near-duplicate collapse (first 80 chars)
+      var key = t.toLowerCase().slice(0, 80);
+      if (seen[key]) continue;
+      seen[key] = true;
+      out.push(t);
+    }
+    return out;
+  }
+
   function hotelLocationLine(hotel) {
     hotel = hotel || {};
     var parts = [];
@@ -331,13 +406,20 @@
       segment = typeLbl || "Association";
     }
     var classBits = [];
-    if (typeLbl && String(typeLbl).toUpperCase() !== "EVENT") {
-      classBits.push(String(typeLbl));
+    var typeRaw = String(
+      linked.opportunityType || it.opportunityType || typeLbl || ""
+    ).toUpperCase();
+    // Customer-facing classification — never dump FUTURE_CYCLE / enum codes.
+    if (typeRaw === "FUTURE_CYCLE" || /^future\s*cycle$/i.test(String(typeLbl))) {
+      classBits.push("Association occasion");
+    } else if (typeLbl && String(typeLbl).toUpperCase() !== "EVENT") {
+      classBits.push(customerStatusLabel(typeLbl, String(typeLbl)));
     } else if (segment) {
       classBits.push(String(segment));
     } else {
       classBits.push("Association");
     }
+    var classLabel = classBits[0];
     // Only echo a short org token when title does not already include it.
     var orgShort = org.replace(/\s*\([^)]*\)\s*$/, "").trim();
     var titleHasOrg =
@@ -349,9 +431,9 @@
           title
         ));
     if (org && !titleHasOrg && orgShort.length <= 48) {
-      return esc(orgShort) + " · " + esc(classBits[0].toUpperCase());
+      return esc(orgShort) + " · " + esc(classLabel);
     }
-    return esc(classBits[0].toUpperCase());
+    return esc(classLabel);
   }
 
   /**
@@ -1950,9 +2032,18 @@
 
   function commercialProgressionCompactPill(progression) {
     if (!progression || !progression.compactStatusLabel) return "";
+    var raw = String(progression.compactStatusLabel);
+    // Do not show raw FUTURE_CYCLE_* codes on customer tiles.
+    var label = customerStatusLabel(
+      raw.replace(/\s+/g, "_").toUpperCase().replace(/_+/g, "_"),
+      raw
+    );
+    if (/^FUTURE\s*CYCLE$/i.test(raw.trim())) {
+      label = "Future cycle";
+    }
     return (
       '<span class="gdi-badge gdi-badge--progression">' +
-      esc(progression.compactStatusLabel) +
+      esc(label) +
       "</span>"
     );
   }
@@ -2430,36 +2521,73 @@
     var sources = sourceListHtml(o.sources);
 
     var thesis =
-      o.hotelDemandThesis || o.hotelOpportunityThesis || o.bethesdaWinThesis || "Not publicly found";
+      o.hotelOpportunityThesis ||
+      o.hotelDemandThesis ||
+      o.bethesdaWinThesis ||
+      "";
+    var fitText =
+      o.fitExplanation ||
+      o.fitRationale ||
+      o.hotelFitRationale ||
+      (audit.hotelFit && audit.hotelFit.explanation) ||
+      "";
+    var demandText =
+      o.whyHotelDemand ||
+      o.travelingCohort ||
+      o.relevantTravelers ||
+      "";
+    var occasionText = o.summaryWhat || "";
+    var whyMattersText = o.summaryWhyMatters || "";
+    var whyNowText = o.watchCardWhenToAct || o.whyNow || o.summaryWhyNow || "";
+    var actionText =
+      o.watchCardRecommendedNextStep ||
+      o.recommendedAction ||
+      o.recommendedNextStep ||
+      "";
+
     var dateLabel =
       o.eventDateDisplay ||
       eventDateRangeLabel(o.eventStartDate, o.eventEndDate, "Date not yet confirmed");
     var peakLabel = fmtVal(o.peakRooms ?? o.estimatedPeakRooms);
     var attLabel = fmtVal(o.attendance ?? o.estimatedAttendance);
-    if (!peakLabel || peakLabel === "—") peakLabel = "Not publicly found";
-    if (!attLabel || attLabel === "—") attLabel = "Not publicly found";
-    var relatedN = o.relatedOpportunityCount || (o.relatedOpportunityIds || []).length || 0;
-    var relatedHtml =
-      relatedN > 0
-        ? '<p class="gdi-related"><strong>Related opportunities:</strong> ' +
-          esc(relatedN) +
-          (o.eventSeriesId
-            ? " · series <code>" + esc(o.eventSeriesId) + "</code>"
-            : "") +
-          "</p>"
-        : "";
-    var actionBasis = o.actionBasis
-      ? "<p><strong>Why this action:</strong> " + esc(o.actionBasis) + "</p>"
-      : "";
-    var nextCycle =
-      o.nextCycleDisplay
-        ? "<p><strong>Cycle:</strong> " + esc(o.nextCycleDisplay) + "</p>"
-        : "";
+    if (!peakLabel || peakLabel === "—") {
+      peakLabel =
+        customerStatusLabel(
+          o.roomDemandStatusLabel || o.roomDemandStatus,
+          "Not yet published"
+        );
+    }
+    if (!attLabel || attLabel === "—") attLabel = "Not yet published";
+
+    var sourcingLabel = customerStatusLabel(
+      o.venueSourcingStatusLabel || o.venueSourcingStatus,
+      "Hotel sourcing unconfirmed"
+    );
+    var roomDemandLabel = customerStatusLabel(
+      o.roomDemandLive || o.roomDemandStatusLabel || o.roomDemandStatus,
+      "Not yet established"
+    );
+    var cycleLabel = customerStatusLabel(
+      o.futureCycleEvidenceLabel || o.futureCycleEvidenceState,
+      ""
+    );
+    var locationLine =
+      o.eventLocationSummary ||
+      o.destinationStatus ||
+      [o.eventCity, o.venueCity, o.city].filter(Boolean).join(" · ") ||
+      "—";
 
     var hasScore =
       o.hotelFitScore != null &&
       o.hotelFitScore !== "" &&
       !Number.isNaN(Number(o.hotelFitScore));
+    var fitAssessmentParas = distinctProse(
+      fitText ||
+        (!hasScore
+          ? o.hotelFitScoreNote ||
+            "Qualitative fit — no numeric score on this prospect."
+          : "")
+    );
     var scoreGrid = hasScore
       ? '<div class="gdi-score-grid">' +
         '<div class="gdi-score-cell"><div class="n">' +
@@ -2481,120 +2609,118 @@
           })
           .join("") +
         "</div>"
-      : o.hotelFitScoreNote
-        ? "<p><em>" + esc(o.hotelFitScoreNote) + "</em></p>"
-        : "<p><em>Hotel fit is qualitative for this card — no unexplained numeric score.</em></p>";
+      : "<div class=\"gdi-fit-qualitative\">" +
+        fitAssessmentParas
+          .map(function (p) {
+            return "<p>" + esc(p) + "</p>";
+          })
+          .join("") +
+        "</div>";
+
+    var evidenceConfLabel =
+      o.evidenceConfidence == null || o.evidenceConfidence === ""
+        ? "Not scored"
+        : o.evidenceConfidence;
+    var qualLabel =
+      o.opportunityQualificationLabel || o.opportunityQualification || "—";
+
+    var occasionParas = distinctProse(occasionText || o.title);
+    var demandParas = distinctProse(demandText, thesis);
+    // Keep "why this hotel" distinct from demand — drop thesis if already used above
+    var hotelParas = distinctProse(
+      whyMattersText,
+      thesis && demandParas.indexOf(thesis) < 0 ? thesis : ""
+    );
+    // Fit assessment renders once in the qualitative score block — not again here.
+    var limitParas = distinctProse(
+      o.competitiveContextNote,
+      o.venueHistoryNote,
+      o.roomDemandStatusNote && /not established|unknown|not published/i.test(String(o.roomDemandStatusNote))
+        ? o.roomDemandStatusNote
+        : ""
+    );
+    var whyNowParas = distinctProse(whyNowText);
+
+    var relatedN = o.relatedOpportunityCount || (o.relatedOpportunityIds || []).length || 0;
+    var relatedHtml =
+      relatedN > 0
+        ? '<p class="gdi-related"><strong>Related opportunities:</strong> ' +
+          esc(relatedN) +
+          "</p>"
+        : "";
+    var actionBasis = o.actionBasis
+      ? "<p><strong>Why this action:</strong> " + esc(o.actionBasis) + "</p>"
+      : "";
 
     return (
       '<div class="gdi-detail-framework">' +
       commercialProgressionHtml(o.commercialProgression) +
-      '<section class="gdi-section gdi-section--see"><h3>Event / Opportunity</h3>' +
-      "<p>" +
-      esc(o.summaryWhat || o.title || "—") +
-      "</p>" +
+      '<section class="gdi-section gdi-section--see"><h3>Account / occasion</h3>' +
+      occasionParas
+        .map(function (p) {
+          return "<p>" + esc(p) + "</p>";
+        })
+        .join("") +
       '<div class="gdi-detail-meta-row">' +
       "<span><strong>Date</strong> " +
       esc(dateLabel) +
-      (o.eventDateStatus ? " · " + esc(o.eventDateStatus) : "") +
       "</span>" +
-      "<span><strong>Demand type</strong> " +
-      esc(
-        o.demandSignalTypeLabel ||
-          o.demandSignalType ||
-          o.opportunityTypeLabel ||
-          o.opportunityType ||
-          "—"
-      ) +
+      "<span><strong>Location</strong> " +
+      esc(locationLine) +
       "</span>" +
-      "<span><strong>Demand family</strong> " +
-      esc(o.demandFamilyLabel || o.demandFamily || "—") +
-      "</span>" +
-      "<span><strong>Type</strong> " +
-      esc(o.opportunityTypeLabel || o.opportunityType || "—") +
-      "</span>" +
-      "<span><strong>Venue / sourcing</strong> " +
-      esc(o.venueSourcingStatusLabel || o.venueSourcingStatus || "Unknown") +
+      "<span><strong>Sourcing</strong> " +
+      esc(sourcingLabel) +
       "</span>" +
       "<span><strong>Room demand</strong> " +
-      esc(o.roomDemandLive || o.roomDemandStatusLabel || o.roomDemandStatus || "Unknown") +
-      "</span></div>" +
-      nextCycle +
-      "<p>" +
-      esc(o.venueSourcingRationale || "") +
-      "</p>" +
+      esc(roomDemandLabel) +
+      "</span>" +
+      (cycleLabel
+        ? "<span><strong>Cycle</strong> " + esc(cycleLabel) + "</span>"
+        : "") +
+      "</div>" +
       "<p>Attendance: " +
       esc(attLabel) +
-      (o.attendanceStatus ? " (" + esc(o.attendanceStatus) + ")" : "") +
       " · Peak rooms: " +
       esc(peakLabel) +
-      (o.peakRoomsStatus ? " (" + esc(o.peakRoomsStatus) + ")" : "") +
-      (o.potentialRoomNights != null
-        ? " · Potential room nights: " +
-          esc(o.potentialRoomNights) +
-          (o.potentialRoomNightsStatus
-            ? " (" + esc(o.potentialRoomNightsStatus) + ")"
-            : "")
-        : "") +
       "</p>" +
-      "<p><strong>Room-demand thesis:</strong> <em>" +
-      esc(thesis) +
-      "</em></p>" +
       relatedHtml +
       "</section>" +
-      '<section class="gdi-section gdi-section--hotel-demand"><h3>Why This May Create Hotel Demand</h3><p>' +
-      esc(
-        o.whyHotelDemand ||
-          o.hotelDemandThesis ||
-          o.hotelOpportunityThesis ||
-          o.summaryWhyHotel ||
-          "—"
-      ) +
-      "</p>" +
-      (o.commercialFactors
-        ? "<ul class=\"gdi-demand-factors\">" +
-          "<li><strong>Timing:</strong> " +
-          esc(o.timingClass || o.commercialFactors.timing || "—") +
-          "</li>" +
-          "<li><strong>Recurrence:</strong> " +
-          esc(o.recurrenceClass || o.commercialFactors.recurrence || "—") +
-          "</li>" +
-          "<li><strong>Buyer path:</strong> " +
-          esc(
-            o.buyerAccessibility ||
-              (o.commercialFactors.buyerAccessibility) ||
-              "—"
-          ) +
-          "</li>" +
-          "<li><strong>Geographic fit:</strong> " +
-          esc(
-            (o.commercialFactors.geographicFit &&
-              (o.commercialFactors.geographicFit.label ||
-                o.commercialFactors.geographicFit.status)) ||
-              o.demandTerritoryFitLabel ||
-              "—"
-          ) +
-          "</li></ul>"
-        : "") +
+      '<section class="gdi-section gdi-section--hotel-demand"><h3>Who could travel / why hotel business</h3>' +
+      demandParas
+        .map(function (p) {
+          return "<p>" + esc(p) + "</p>";
+        })
+        .join("") +
       "</section>" +
-      '<section class="gdi-section gdi-section--matters"><h3>Why It Matters</h3><p>' +
-      esc(o.summaryWhyMatters || "—") +
-      "</p><p>" +
-      esc(o.summaryWhyHotel || o.fitExplanation || "") +
-      "</p>" +
+      '<section class="gdi-section gdi-section--matters"><h3>Why this hotel</h3>' +
+      hotelParas
+        .map(function (p) {
+          return "<p>" + esc(p) + "</p>";
+        })
+        .join("") +
       scoreGrid +
-      "<p>" +
-      esc((audit.hotelFit && audit.hotelFit.explanation) || o.fitExplanation || "") +
-      "</p>" +
       '<div class="gdi-signal-row">' +
-      "<div><span class=\"gdi-meta-label\">Overall Hotel Fit</span><strong>" +
-      esc(o.hotelFitScore) +
+      "<div><span class=\"gdi-meta-label\">Hotel fit</span><strong>" +
+      esc(hasScore ? o.hotelFitScore : "Qualitative") +
       "</strong></div>" +
-      "<div><span class=\"gdi-meta-label\">Opportunity Qualification</span><strong>" +
-      esc(o.opportunityQualificationLabel || o.opportunityQualification || "—") +
+      "<div><span class=\"gdi-meta-label\">Sales posture</span><strong>" +
+      esc(qualLabel) +
       "</strong></div>" +
-      "<div><span class=\"gdi-meta-label\">Evidence Confidence</span><strong>" +
-      esc(o.evidenceConfidence) +
+      "<div><span class=\"gdi-meta-label\">Evidence confidence</span><strong>" +
+      esc(evidenceConfLabel) +
+      "</strong></div>" +
+      "<div><span class=\"gdi-meta-label\">Sales action</span><strong>" +
+      esc(actionStatusLabel(o.bookingWindowStatus) || "—") +
       "</strong></div></div></section>" +
+      (limitParas.length
+        ? '<section class="gdi-section gdi-section--limits"><h3>Limitations / competing arrangements</h3>' +
+          limitParas
+            .map(function (p) {
+              return "<p>" + esc(p) + "</p>";
+            })
+            .join("") +
+          "</section>"
+        : "") +
       (String(o.customerFacingState || "").toUpperCase() === "FUTURE_WATCH" &&
       o.watchCardWhyMatters
         ? '<section class="gdi-section gdi-section--watch-early"><h3>Early-warning lodging status</h3><ul>' +
@@ -2616,37 +2742,29 @@
           "<li><strong>Next trigger:</strong> " +
           esc(o.watchCardNextTrigger || o.nextTriggerCondition || "—") +
           "</li>" +
-          (o.watchCardMonitoringStatus
-            ? "<li><strong>Publication monitoring:</strong> " +
-              esc(o.watchCardMonitoringStatus) +
-              (o.watchCardMonitoringLastChecked
-                ? " · Last checked: " + esc(o.watchCardMonitoringLastChecked)
-                : "") +
-              (o.watchCardMonitoringNextExpected
-                ? " · " + esc(o.watchCardMonitoringNextExpected)
-                : "") +
-              "</li>"
-            : "") +
           "</ul></section>"
         : "") +
-      '<section class="gdi-section gdi-section--now"><h3>Why Now</h3><p><strong>' +
+      '<section class="gdi-section gdi-section--now"><h3>Why investigate now</h3><p><strong>' +
       esc(actionStatusLabel(o.bookingWindowStatus) || o.bookingWindowLabel || "—") +
-      "</strong></p><p>" +
-      esc(o.watchCardWhenToAct || o.whyNow || "—") +
-      "</p><p>Location: " +
-      esc(o.eventLocationStatusLabel || o.eventLocationStatus || "—") +
-      " · " +
-      esc(o.eventLocationSummary || o.destinationStatus || "—") +
-      "</p><p>Demand Territory: " +
-      esc(o.demandTerritoryFitLabel || "—") +
-      "</p></section>" +
-      '<section class="gdi-section gdi-section--action"><h3>Suggested Action</h3><p>' +
-      esc(o.watchCardRecommendedNextStep || o.recommendedAction || "—") +
+      "</strong></p>" +
+      whyNowParas
+        .map(function (p) {
+          return "<p>" + esc(p) + "</p>";
+        })
+        .join("") +
+      "</section>" +
+      '<section class="gdi-section gdi-section--action"><h3>Suggested action</h3><p>' +
+      esc(actionText || "—") +
       "</p>" +
       actionBasis +
       '<p class="gdi-pursuit-actions">' +
       pursuitActionButtonHtml(
-        { opportunityId: o.id, id: o.id, canStartPursuit: o.canStartPursuit, pursuitId: o.pursuitId },
+        {
+          opportunityId: o.id,
+          id: o.id,
+          canStartPursuit: o.canStartPursuit,
+          pursuitId: o.pursuitId,
+        },
         o
       ) +
       "</p></section>" +
@@ -2655,23 +2773,25 @@
           pursuitPanelHtml(o._pursuitDto) +
           "</section>"
         : "") +
-      '<section class="gdi-section gdi-section--contact"><h3>Contact</h3>' +
+      '<section class="gdi-section gdi-section--contact"><h3>Who sales should contact</h3>' +
       whoShouldSalesContactHtml(o, extras.whoContactHtml) +
-      (o.contactPathClass
-        ? '<p class="gdi-contact-quality-quiet">Contact path: ' +
-          esc(o.contactPathClass) +
-          "</p>"
-        : "") +
       "</section>" +
       '<section class="gdi-section gdi-section--evidence"><h3>Sources</h3>' +
-      "<p>" +
-      esc(o.evidenceConfidenceExplanation || audit.evidenceConfidenceExplanation || "") +
-      "</p>" +
-      "<p>Competitive context — STR: " +
-      esc(o.likelyStrCompetitor || "—") +
-      " · Group: " +
-      esc(o.likelyGroupCompetitor || "—") +
-      "</p><ul>" +
+      (function () {
+        var expl =
+          o.evidenceConfidenceExplanation ||
+          audit.evidenceConfidenceExplanation ||
+          "";
+        // Hide contradictory boilerplate when sources are present.
+        if (
+          /0 verified field|0 source\(s\) look first-party/i.test(expl) &&
+          (o.sources || []).length
+        ) {
+          return "";
+        }
+        return expl ? "<p>" + esc(expl) + "</p>" : "";
+      })() +
+      "<ul>" +
       sources +
       "</ul></section>" +
       (extras.validationHtml
