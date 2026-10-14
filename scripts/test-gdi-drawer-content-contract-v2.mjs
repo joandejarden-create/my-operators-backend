@@ -30,7 +30,7 @@ const OVERLAY_PATH = path.join(
   "reports/gdi-drawer-completeness/sales-review-overlay.json"
 );
 
-assert.equal(DRAWER_CONTENT_CONTRACT_VERSION, "gdi-drawer-content-contract-v2");
+assert.equal(DRAWER_CONTENT_CONTRACT_VERSION, "gdi-drawer-content-contract-v3");
 assert.equal(isGenericThesis("Prospect to qualify"), true);
 assert.equal(isGenericThesis("Prospect to qualify — hotel sourcing unconfirmed."), true);
 assert.equal(
