@@ -181,10 +181,11 @@ if (dryRun) {
 }
 
 console.log("\n--- railway up --detach ---");
+// Railway CLI 4.x dropped `--message`; keep the string on the deploy record only.
 const msg = `deploy:production ${branch} ${sha.slice(0, 7)}`;
 const up = spawnSync(
   "railway",
-  ["up", "--detach", "--message", msg],
+  ["up", "--detach"],
   { cwd: root, stdio: "inherit", env: { ...process.env, CI: "true" } }
 );
 if (up.status !== 0) {
