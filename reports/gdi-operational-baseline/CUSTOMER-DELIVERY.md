@@ -2,6 +2,7 @@
 
 **As of:** 2026-10-14 / 2026-10-15  
 **Branch:** `gdi/parallel-provider-san-diego`  
+**Commit:** `aa2a8ae1`  
 **Airtable publication:** executed for Wyndham San Diego Bayside (`recnPB3Q02NO8Ma1o`)  
 **Production UI deploy:** blocked on `railway login` (see §6)
 
@@ -19,7 +20,7 @@
 | Drawer contract pass (post URL-route align) | **21 / 21** |
 | Prior production unmatched rows preserved | **25** |
 
-**Contact-route types (facing):** email / phone / intermediary / functional_contact_url (housing & plan-an-event pages count). Named person optional; functional or intermediary routes accepted.
+**Contact-route types (facing):** email **18**, phone **1**, functional_contact_url **2** (housing & plan-an-event pages). Named person optional; functional routes accepted.
 
 **Allowlist:** `GDI_REVIEWED_PROSPECT_HOTEL_IDS` must include `recnPB3Q02NO8Ma1o` (local `.env` updated). **Railway production env must set the same** or SD facing stays 0 after deploy.
 
