@@ -185,9 +185,13 @@ console.log("\n--- railway up --detach ---");
 const msg = `deploy:production ${branch} ${sha.slice(0, 7)}`;
 // Windows npm shims are railway.cmd / railway.ps1 ? bare `railway` ENOENTs under spawnSync.
 const railwayBin = process.platform === "win32" ? "railway.cmd" : "railway";
+const railwayService =
+  process.env.RAILWAY_SERVICE ||
+  process.env.DEALALITY_RAILWAY_SERVICE ||
+  "my-operators-backend";
 const up = spawnSync(
   railwayBin,
-  ["up", "--detach"],
+  ["up", "--detach", "--service", railwayService],
   // Do not force CI=true ? Railway CLI 4.x/5.x treats it as non-upload CI mode.
   {
     cwd: root,
