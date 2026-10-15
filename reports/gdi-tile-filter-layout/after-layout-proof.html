@@ -4777,7 +4777,7 @@ button.gdi-tile-pill.is-filter-active {
 
 .gdi-page .results-toolbar-sort {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   gap: 8px;
   flex-shrink: 0;
   margin-left: auto;
@@ -4845,6 +4845,19 @@ button.gdi-tile-pill.is-filter-active {
 .gdi-page .sort-select {
   min-width: 150px;
   max-width: min(220px, 28vw);
+}
+
+/* Toolbar Priority dropdown must match Export CSV / sort icon / List·Tiles (36px),
+   not the taller property-bar filter-select (3rem). */
+.gdi-page .results-toolbar-sort select.sort-select,
+.gdi-page .results-toolbar-sort select.filter-select {
+  height: 36px;
+  min-height: 36px;
+  max-height: 36px;
+  padding: 0 2rem 0 12px;
+  font-size: 13px;
+  line-height: 1.2;
+  width: auto;
 }
 
 .gdi-page .gdi-view-toggle {
@@ -5359,16 +5372,17 @@ button.gdi-tile-pill.is-filter-active {
 .gdi-score-summary {
   list-style: none;
   cursor: pointer;
-  padding: 10px 8px;
+  padding: 12px 10px 10px;
   text-align: center;
   min-width: 0;
-  min-height: 5.5rem;
+  min-height: 6.25rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: 2px;
+  gap: 4px;
   box-sizing: border-box;
+  overflow: visible;
 }
 
 .gdi-score-summary::-webkit-details-marker,
@@ -5380,10 +5394,11 @@ button.gdi-tile-pill.is-filter-active {
   font-size: 15px;
   font-weight: 700;
   color: #fff;
-  line-height: 1.25;
+  line-height: 1.3;
   word-break: break-word;
   overflow-wrap: anywhere;
   max-width: 100%;
+  padding: 0 2px;
 }
 
 .gdi-score-cell .l {
@@ -5397,10 +5412,11 @@ button.gdi-tile-pill.is-filter-active {
   margin-top: 2px;
   line-height: 1.35;
   white-space: normal;
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
   word-break: normal;
   hyphens: auto;
   max-width: 100%;
+  padding: 0 2px;
 }
 
 .gdi-fit-status {
@@ -5847,17 +5863,21 @@ button.gdi-tile-pill.is-filter-active {
   }
 }
 
-/* Live Commercial Quality V1  export control */
+/* Live Commercial Quality V1 — export control */
 .gdi-export-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 36px;
   margin-right: 0.5rem;
-  padding: 0.35rem 0.7rem;
+  padding: 0 0.7rem;
   border: 1px solid var(--gdi-border-strong);
   border-radius: 6px;
   background: transparent;
   color: var(--neutral--100);
   font-size: 0.8rem;
+  line-height: 1;
   text-decoration: none;
   cursor: pointer;
 }
@@ -5884,16 +5904,16 @@ body{margin:0;background:#0b0d12;color:#fff;font-family:Inter,system-ui,sans-ser
 
   <h2>Mayflower — compact contact tiles</h2>
   <div class="grid">
-    <div><p class="note">Named + usable person channel</p><article class="brand-card brand-card--gdi-opp gdi-priority-med" data-open="gdi_opp_prospect_mv8fnmju_53cfad28" role="button" tabindex="0"><div class="brand-card__header brand-card__header--no-logo"><div class="brand-card__info"><div class="brand-card__name">AHIMA Advocacy Summit 2027</div><div class="brand-card__pills gdi-tile-pills"><span class="gdi-tile-pill gdi-pill-high" data-facet="commercial-class">Core prospect</span><button type="button" class="gdi-tile-pill gdi-tile-pill--action gdi-pill gdi-pill-action-qualify" data-gdi-tile-priority="MEDIUM_PRIORITY" data-gdi-tile-booking="QUALIFY_NOW" aria-pressed="false">CONTACT</button><span class="gdi-tile-pill gdi-tile-pill--date gdi-pill gdi-pill-date">Mar 15-16, 2027</span></div><div class="brand-card__meta">Association occasion · Hotel sourcing unconfirmed</div></div></div><div class="brand-card__description">AHIMA Advocacy Summit 2027 is dated in Washington, DC — downtown advocacy lodging; 2027 hotel TBA with hotel sourcing unconfirmed — a plausible group-lodging conversation for The M…</div><div class="brand-card__footer brand-card__footer--split"><div class="brand-card__contact"><div class="brand-card__contact-name">Referral contact</div><div class="brand-card__contact-line brand-card__contact-line--role">Sabrina Bracken · SPARGO sponsorship / exhibition…</div><div class="brand-card__contact-line">sabrina.bracken@spargoinc.com</div></div><button type="button" class="brand-card__more-btn" data-open="gdi_opp_prospect_mv8fnmju_53cfad28">View Details</button></div></article></div>
-    <div><p class="note">Organization / company route</p><article class="brand-card brand-card--gdi-opp gdi-priority-med" data-open="gdi_sc_43a6be41ced811a0" role="button" tabindex="0"><div class="brand-card__header brand-card__header--no-logo"><div class="brand-card__info"><div class="brand-card__name">Quorum — Scaling Corporate Account</div><div class="brand-card__pills gdi-tile-pills"><span class="gdi-tile-pill gdi-pill-med" data-facet="commercial-class">Exploratory</span><button type="button" class="gdi-tile-pill gdi-tile-pill--action gdi-pill gdi-pill-action-qualify" data-gdi-tile-priority="MEDIUM_PRIORITY" data-gdi-tile-booking="QUALIFY_NOW" aria-pressed="false">CONTACT</button><span class="gdi-tile-pill gdi-tile-pill--date gdi-pill gdi-pill-date">Dates TBD</span></div><div class="brand-card__meta">Corporate Account Relationship</div></div></div><div class="brand-card__description">Quorum has a verified downtown DC office and a product-expansion story that creates a plausible need for customer education and team coordination. The Mayflower Hotel, Autograph Co…</div><div class="brand-card__footer brand-card__footer--split"><div class="brand-card__contact"><div class="brand-card__contact-name">Organization contact</div><div class="brand-card__contact-line">TalentandCulture@quorum.us</div></div><button type="button" class="brand-card__more-btn" data-open="gdi_sc_43a6be41ced811a0">View Details</button></div></article></div>
-    <div><p class="note">Named without personal channel → org fallback</p><article class="brand-card brand-card--gdi-opp gdi-priority-med" data-open="gdi_sc_43a6be41ced811a0" role="button" tabindex="0"><div class="brand-card__header brand-card__header--no-logo"><div class="brand-card__info"><div class="brand-card__name">Quorum — Scaling Corporate Account</div><div class="brand-card__pills gdi-tile-pills"><span class="gdi-tile-pill gdi-pill-med" data-facet="commercial-class">Exploratory</span><button type="button" class="gdi-tile-pill gdi-tile-pill--action gdi-pill gdi-pill-action-qualify" data-gdi-tile-priority="MEDIUM_PRIORITY" data-gdi-tile-booking="QUALIFY_NOW" aria-pressed="false">CONTACT</button><span class="gdi-tile-pill gdi-tile-pill--date gdi-pill gdi-pill-date">Dates TBD</span></div><div class="brand-card__meta">Corporate Account Relationship</div></div></div><div class="brand-card__description">Quorum has a verified downtown DC office and a product-expansion story that creates a plausible need for customer education and team coordination. The Mayflower Hotel, Autograph Co…</div><div class="brand-card__footer brand-card__footer--split"><div class="brand-card__contact"><div class="brand-card__contact-name">Organization contact</div><div class="brand-card__contact-line">TalentandCulture@quorum.us</div></div><button type="button" class="brand-card__more-btn" data-open="gdi_sc_43a6be41ced811a0">View Details</button></div></article></div>
+    <div><p class="note">Named + usable person channel</p><article class="brand-card brand-card--gdi-opp gdi-priority-med" data-open="gdi_opp_prospect_mv8fnmju_53cfad28" role="button" tabindex="0"><div class="brand-card__header brand-card__header--no-logo"><div class="brand-card__info"><div class="brand-card__name">AHIMA Advocacy Summit 2027</div><div class="brand-card__pills gdi-tile-pills"><span class="gdi-tile-pill gdi-pill-high" data-facet="commercial-class">Core prospect</span><button type="button" class="gdi-tile-pill gdi-tile-pill--action gdi-pill gdi-pill-action-qualify" data-gdi-tile-priority="MEDIUM_PRIORITY" data-gdi-tile-booking="QUALIFY_NOW" aria-pressed="false">CONTACT</button><span class="gdi-tile-pill gdi-tile-pill--date gdi-pill gdi-pill-date">Mar 15-16, 2027</span></div><div class="brand-card__meta">Association occasion · Hotel sourcing unconfirmed</div></div></div><div class="brand-card__description">AHIMA Advocacy Summit 2027 is dated in Washington, DC — downtown advocacy lodging; 2027 hotel TBA with hotel sourcing unconfirmed — a plausible group-lodging conversation for The M…</div><div class="brand-card__footer brand-card__footer--split"><div class="brand-card__contact"><div class="brand-card__contact-name">Sabrina Bracken</div><div class="brand-card__contact-line brand-card__contact-line--role">Referral contact</div><div class="brand-card__contact-line">sabrina.bracken@spargoinc.com</div></div><button type="button" class="brand-card__more-btn" data-open="gdi_opp_prospect_mv8fnmju_53cfad28">View Details</button></div></article></div>
+    <div><p class="note">Organization / company route</p><article class="brand-card brand-card--gdi-opp gdi-priority-med" data-open="gdi_sc_43a6be41ced811a0" role="button" tabindex="0"><div class="brand-card__header brand-card__header--no-logo"><div class="brand-card__info"><div class="brand-card__name">Quorum — Scaling Corporate Account</div><div class="brand-card__pills gdi-tile-pills"><span class="gdi-tile-pill gdi-pill-med" data-facet="commercial-class">Exploratory</span><button type="button" class="gdi-tile-pill gdi-tile-pill--action gdi-pill gdi-pill-action-qualify" data-gdi-tile-priority="MEDIUM_PRIORITY" data-gdi-tile-booking="QUALIFY_NOW" aria-pressed="false">CONTACT</button><span class="gdi-tile-pill gdi-tile-pill--date gdi-pill gdi-pill-date">Dates TBD</span></div><div class="brand-card__meta">Corporate Account Relationship</div></div></div><div class="brand-card__description">Quorum has a verified downtown DC office and a product-expansion story that creates a plausible need for customer education and team coordination. The Mayflower Hotel, Autograph Co…</div><div class="brand-card__footer brand-card__footer--split"><div class="brand-card__contact"><div class="brand-card__contact-name">Quorum</div><div class="brand-card__contact-line">TalentandCulture@quorum.us</div></div><button type="button" class="brand-card__more-btn" data-open="gdi_sc_43a6be41ced811a0">View Details</button></div></article></div>
+    <div><p class="note">Named without personal channel → org fallback</p><article class="brand-card brand-card--gdi-opp gdi-priority-med" data-open="gdi_sc_43a6be41ced811a0" role="button" tabindex="0"><div class="brand-card__header brand-card__header--no-logo"><div class="brand-card__info"><div class="brand-card__name">Quorum — Scaling Corporate Account</div><div class="brand-card__pills gdi-tile-pills"><span class="gdi-tile-pill gdi-pill-med" data-facet="commercial-class">Exploratory</span><button type="button" class="gdi-tile-pill gdi-tile-pill--action gdi-pill gdi-pill-action-qualify" data-gdi-tile-priority="MEDIUM_PRIORITY" data-gdi-tile-booking="QUALIFY_NOW" aria-pressed="false">CONTACT</button><span class="gdi-tile-pill gdi-tile-pill--date gdi-pill gdi-pill-date">Dates TBD</span></div><div class="brand-card__meta">Corporate Account Relationship</div></div></div><div class="brand-card__description">Quorum has a verified downtown DC office and a product-expansion story that creates a plausible need for customer education and team coordination. The Mayflower Hotel, Autograph Co…</div><div class="brand-card__footer brand-card__footer--split"><div class="brand-card__contact"><div class="brand-card__contact-name">Quorum</div><div class="brand-card__contact-line">TalentandCulture@quorum.us</div></div><button type="button" class="brand-card__more-btn" data-open="gdi_sc_43a6be41ced811a0">View Details</button></div></article></div>
   </div>
 
   <h2>San Diego — form / org spot-check</h2>
   <div class="grid">
-    <div><p class="note">Named person</p><article class="brand-card brand-card--gdi-opp gdi-priority-med" data-open="gdi_lmc_e30f688f4646cf21" role="button" tabindex="0"><div class="brand-card__header brand-card__header--no-logo"><div class="brand-card__info"><div class="brand-card__name">Urban League of San Diego County — Local Meetings &amp; Catering</div><div class="brand-card__pills gdi-tile-pills"><span class="gdi-tile-pill gdi-pill-med" data-facet="commercial-class">Exploratory</span><button type="button" class="gdi-tile-pill gdi-tile-pill--action gdi-pill gdi-pill-action-qualify" data-gdi-tile-priority="MEDIUM_PRIORITY" data-gdi-tile-booking="QUALIFY_NOW" aria-pressed="false">CONTACT</button><span class="gdi-tile-pill gdi-tile-pill--date gdi-pill gdi-pill-date">Dates TBD</span></div><div class="brand-card__meta">Corporate Account Relationship</div></div></div><div class="brand-card__description">A downtown awards dinner is a strong geographic and function-type fit for Wyndham Bayside's meeting facilities. Its 15 meeting rooms and 600 guestrooms are supplied property facts,…</div><div class="brand-card__footer brand-card__footer--split"><div class="brand-card__contact"><div class="brand-card__contact-name">Referral contact</div><div class="brand-card__contact-line brand-card__contact-line--role">Kea · Press inquiries contact; not identified as the…</div><div class="brand-card__contact-line">kea@sdul.org</div></div><button type="button" class="brand-card__more-btn" data-open="gdi_lmc_e30f688f4646cf21">View Details</button></div></article></div>
-    <div><p class="note">Organization email</p><article class="brand-card brand-card--gdi-opp gdi-priority-med" data-open="gdi_sc_2bbedff8a9581056" role="button" tabindex="0"><div class="brand-card__header brand-card__header--no-logo"><div class="brand-card__info"><div class="brand-card__name">Shield AI — Scaling Corporate Account</div><div class="brand-card__pills gdi-tile-pills"><span class="gdi-tile-pill gdi-pill-med" data-facet="commercial-class">Exploratory</span><button type="button" class="gdi-tile-pill gdi-tile-pill--action gdi-pill gdi-pill-action-qualify" data-gdi-tile-priority="MEDIUM_PRIORITY" data-gdi-tile-booking="QUALIFY_NOW" aria-pressed="false">CONTACT</button><span class="gdi-tile-pill gdi-tile-pill--date gdi-pill gdi-pill-date">Dates TBD</span></div><div class="brand-card__meta">Corporate Account Relationship</div></div></div><div class="brand-card__description">Wyndham San Diego Bayside at 1355 North Harbor Drive serves the same downtown waterfront market as the West Broadway office. The supplied 600 guestrooms and 15 meeting rooms make t…</div><div class="brand-card__footer brand-card__footer--split"><div class="brand-card__contact"><div class="brand-card__contact-name">Organization contact</div><div class="brand-card__contact-line">info@shield.ai</div></div><button type="button" class="brand-card__more-btn" data-open="gdi_sc_2bbedff8a9581056">View Details</button></div></article></div>
-    <div><p class="note">Form / contact page</p><article class="brand-card brand-card--gdi-opp gdi-priority-med" data-open="gdi_pe_25302cd1b15b8054" role="button" tabindex="0"><div class="brand-card__header brand-card__header--no-logo"><div class="brand-card__info"><div class="brand-card__name">Port Pavilion at Broadway Pier — Preferred Lodging Partnership</div><div class="brand-card__pills gdi-tile-pills"><span class="gdi-tile-pill gdi-pill-high" data-facet="commercial-class">Core prospect</span><span class="gdi-pill gdi-pill-delta gdi-pill-delta-new" title="NEW this week"><span class="gdi-pill-delta-dot" aria-hidden="true"></span>NEW</span><button type="button" class="gdi-tile-pill gdi-tile-pill--action gdi-pill gdi-pill-action-qualify" data-gdi-tile-priority="MEDIUM_PRIORITY" data-gdi-tile-booking="QUALIFY_NOW" aria-pressed="false">CONTACT</button><span class="gdi-tile-pill gdi-tile-pill--date gdi-pill gdi-pill-date">Dates TBD</span></div><div class="brand-card__meta">Venue Partnership</div></div></div><div class="brand-card__description">Port Pavilion at Broadway Pier is ~0.4 mi from Wyndham San Diego Bayside on the same Harbor Drive / Embarcadero spine. Port facility has no lodging inventory; public pages do not n…</div><div class="brand-card__footer brand-card__footer--split"><div class="brand-card__contact"><div class="brand-card__contact-name">Organization contact</div><div class="brand-card__contact-line"><a class="brand-card__contact-link" href="https://www.portofsandiego.org/waterfront-development/broadway-pier" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Contact page</a></div></div><button type="button" class="brand-card__more-btn" data-open="gdi_pe_25302cd1b15b8054">View Details</button></div></article></div>
+    <div><p class="note">Named person</p><article class="brand-card brand-card--gdi-opp gdi-priority-med" data-open="gdi_lmc_e30f688f4646cf21" role="button" tabindex="0"><div class="brand-card__header brand-card__header--no-logo"><div class="brand-card__info"><div class="brand-card__name">Urban League of San Diego County — Local Meetings &amp; Catering</div><div class="brand-card__pills gdi-tile-pills"><span class="gdi-tile-pill gdi-pill-med" data-facet="commercial-class">Exploratory</span><button type="button" class="gdi-tile-pill gdi-tile-pill--action gdi-pill gdi-pill-action-qualify" data-gdi-tile-priority="MEDIUM_PRIORITY" data-gdi-tile-booking="QUALIFY_NOW" aria-pressed="false">CONTACT</button><span class="gdi-tile-pill gdi-tile-pill--date gdi-pill gdi-pill-date">Dates TBD</span></div><div class="brand-card__meta">Corporate Account Relationship</div></div></div><div class="brand-card__description">A downtown awards dinner is a strong geographic and function-type fit for Wyndham Bayside's meeting facilities. Its 15 meeting rooms and 600 guestrooms are supplied property facts,…</div><div class="brand-card__footer brand-card__footer--split"><div class="brand-card__contact"><div class="brand-card__contact-name">Kea</div><div class="brand-card__contact-line brand-card__contact-line--role">Referral contact</div><div class="brand-card__contact-line">kea@sdul.org</div></div><button type="button" class="brand-card__more-btn" data-open="gdi_lmc_e30f688f4646cf21">View Details</button></div></article></div>
+    <div><p class="note">Organization email</p><article class="brand-card brand-card--gdi-opp gdi-priority-med" data-open="gdi_sc_2bbedff8a9581056" role="button" tabindex="0"><div class="brand-card__header brand-card__header--no-logo"><div class="brand-card__info"><div class="brand-card__name">Shield AI — Scaling Corporate Account</div><div class="brand-card__pills gdi-tile-pills"><span class="gdi-tile-pill gdi-pill-med" data-facet="commercial-class">Exploratory</span><button type="button" class="gdi-tile-pill gdi-tile-pill--action gdi-pill gdi-pill-action-qualify" data-gdi-tile-priority="MEDIUM_PRIORITY" data-gdi-tile-booking="QUALIFY_NOW" aria-pressed="false">CONTACT</button><span class="gdi-tile-pill gdi-tile-pill--date gdi-pill gdi-pill-date">Dates TBD</span></div><div class="brand-card__meta">Corporate Account Relationship</div></div></div><div class="brand-card__description">Wyndham San Diego Bayside at 1355 North Harbor Drive serves the same downtown waterfront market as the West Broadway office. The supplied 600 guestrooms and 15 meeting rooms make t…</div><div class="brand-card__footer brand-card__footer--split"><div class="brand-card__contact"><div class="brand-card__contact-name">Shield AI</div><div class="brand-card__contact-line">info@shield.ai</div></div><button type="button" class="brand-card__more-btn" data-open="gdi_sc_2bbedff8a9581056">View Details</button></div></article></div>
+    <div><p class="note">Form / contact page</p><article class="brand-card brand-card--gdi-opp gdi-priority-watch" data-open="gdi_synthetic_form_only_v1" role="button" tabindex="0"><div class="brand-card__header brand-card__header--no-logo"><div class="brand-card__info"><div class="brand-card__name">Harbor Events Center — Preferred Lodging Partnership</div><div class="brand-card__pills gdi-tile-pills"><span class="gdi-tile-pill gdi-tile-pill--date gdi-pill gdi-pill-date">Dates TBD</span></div><div class="brand-card__meta">Association</div></div></div><div class="brand-card__description">Nearby venue without lodging; public contact form is the only published route.</div><div class="brand-card__footer brand-card__footer--split"><div class="brand-card__contact"><div class="brand-card__contact-name">Harbor Events Center</div><div class="brand-card__contact-line"><a class="brand-card__contact-link" href="https://example.com/contact-us/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Contact form</a></div></div><button type="button" class="brand-card__more-btn" data-open="gdi_synthetic_form_only_v1">View Details</button></div></article></div>
   </div>
 
   <h2>Drawer retains person + organization channels</h2>

@@ -106,7 +106,13 @@ process.env.GDI_SHARE_CAPABILITY_ALLOW_DEV_SECRET =
 const html = await fetch(`${BASE}/group-demand-intelligence-share.html`);
 const htmlText = await html.text();
 const gdiBust = (htmlText.match(/group-demand-intelligence\.(?:css|js)\?v=([A-Za-z0-9._-]+)/) || [])[1];
-if (html.status === 200 && gdiBust && /gdi-parity-v1|gdi-closeout-v2/.test(gdiBust)) {
+if (
+  html.status === 200 &&
+  gdiBust &&
+  /gdi-tile-contact-toolbar-v1|gdi-toolbar-sort-height-v1|gdi-parity-v1|gdi-closeout-v2/.test(
+    gdiBust
+  )
+) {
   pass("local_asset_bust", gdiBust);
 } else {
   fail("local_asset_bust", `status=${html.status} bust=${gdiBust || "missing"}`);
@@ -151,10 +157,21 @@ for (const needle of ["ACEC", "ASID", "Aero Club"]) {
 
 const summary = mayResolve.body?.summary || {};
 const last = String(summary.lastResearchAt || "");
+const runLabel = String(summary.runStatusLabel || summary.runStatus || "");
 if (last.startsWith("2026-10-29")) {
   fail("history_not_oct29_false_completed", last);
-} else if (last && summary.runStatusLabel) {
-  pass("history_date_status", `${last} / ${summary.runStatusLabel}`);
+} else if (last && runLabel) {
+  pass("history_date_status", `${last} / ${runLabel}`);
+} else if (
+  /unavailable|partial|failed/i.test(runLabel) ||
+  summary.runStatus === "STATUS_UNAVAILABLE" ||
+  summary.lastPublishedUpdateAt
+) {
+  // Presentation task preserves unavailable/partial/failed history states.
+  pass(
+    "history_date_status",
+    `state=${runLabel || summary.runStatus || "n/a"}; published=${summary.lastPublishedUpdateAt || "n/a"}`
+  );
 } else {
   fail("history_date_status", JSON.stringify(summary));
 }

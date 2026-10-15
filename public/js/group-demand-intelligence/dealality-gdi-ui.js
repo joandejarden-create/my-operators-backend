@@ -2034,27 +2034,39 @@
       orgName &&
       String(contactName).toLowerCase() === String(orgName).toLowerCase();
     var hasPersonChannel = Boolean(personEmail || personPhone);
+    var orgTileName =
+      deptLabel ||
+      (orgName ? shortContactRoleLabel(orgName) : "") ||
+      "Organization contact";
 
+    // Named person with a usable personal channel. Referral keeps the person
+    // name and uses a short "Referral contact" role — never dump narratives.
     if (contactName && hasPersonChannel && !nameLooksLikeOrgEntity) {
       return {
         kind: isReferral ? "referral" : "person",
-        name: isReferral ? "Referral contact" : contactName,
-        role: isReferral
-          ? shortContactRoleLabel(contactName + (role ? " · " + role : ""))
-          : role,
+        name: contactName,
+        role: isReferral ? "Referral contact" : role,
         channelKind: personEmail ? "email" : "phone",
         channelText: personEmail || personPhone,
         channelHref: "",
       };
     }
 
-    // Named org entity with a switchboard / team phone — treat as organization route
+    // Org-named "contact" rows often misfile the venue/department email as
+    // person_specific — promote that email as the organization channel before
+    // falling through to a form/page URL.
+    if (nameLooksLikeOrgEntity && !orgEmail && personEmail) {
+      orgEmail = personEmail;
+      personEmail = "";
+    }
+
+    // Named org entity with a usable organization route
     if (nameLooksLikeOrgEntity && (personPhone || companyPhone || orgEmail || contactPath)) {
       if (orgEmail) {
         return {
           kind: "organization",
-          name: deptLabel || contactName || "Organization contact",
-          role: shortContactRoleLabel(role),
+          name: orgTileName === "Organization contact" ? contactName || orgTileName : orgTileName,
+          role: "",
           channelKind: "email",
           channelText: orgEmail,
           channelHref: "",
@@ -2063,8 +2075,8 @@
       if (personPhone || companyPhone) {
         return {
           kind: "organization",
-          name: deptLabel || contactName || "Organization contact",
-          role: shortContactRoleLabel(role),
+          name: orgTileName === "Organization contact" ? contactName || orgTileName : orgTileName,
+          role: "",
           channelKind: "phone",
           channelText: personPhone || companyPhone,
           channelHref: "",
@@ -2075,7 +2087,7 @@
     if (orgEmail) {
       return {
         kind: "organization",
-        name: deptLabel || "Organization contact",
+        name: orgTileName,
         role: "",
         channelKind: "email",
         channelText: orgEmail,
@@ -2085,7 +2097,7 @@
     if (companyPhone) {
       return {
         kind: "organization",
-        name: deptLabel || "Organization contact",
+        name: orgTileName,
         role: "",
         channelKind: "phone",
         channelText: companyPhone,
@@ -2098,7 +2110,7 @@
       );
       return {
         kind: "organization",
-        name: deptLabel || "Organization contact",
+        name: orgTileName,
         role: "",
         channelKind: "form",
         channelText: formLike ? "Contact form" : "Contact page",
@@ -3455,110 +3467,6 @@
     // never as a visible lead paragraph above the score grid.
     var fitText = isAssessmentStatusProse(fitTextRaw) ? "" : fitTextRaw;
 
-    function dimStateLabel(status, scoreVal) {
-      if (status === "not_applicable") return "Not applicable";
-      if (status === "insufficient_evidence") return "Needs verification";
-      if (scoreVal != null && !Number.isNaN(Number(scoreVal))) {
-        return "Assessed · " + scoreVal;
-      }
-      if (status === "assessed") return "Assessed";
-      return "Not established";
-    }
-
-    function dimDetailBody(d, status, scoreVal) {
-      var parts = [];
-      parts.push(
-        "<p><strong>Status:</strong> " +
-          esc(dimStateLabel(status, scoreVal)) +
-          "</p>"
-      );
-      if (d && d.level) {
-        parts.push("<p><strong>Reading:</strong> " + esc(d.level) + "</p>");
-      }
-      if (d && d.rationale) {
-        parts.push(
-          "<p><strong>Dimension rationale:</strong> " + esc(d.rationale) + "</p>"
-        );
-      } else if (status === "not_applicable") {
-        parts.push(
-          "<p>This dimension does not apply to the proposed hotel use for this prospect.</p>"
-        );
-      } else if (status === "insufficient_evidence") {
-        parts.push(
-          "<p>Applicable to this use case, but supporting evidence is not yet sufficient to score.</p>"
-        );
-      } else if (!d || scoreVal == null) {
-        parts.push(
-          "<p>No saved assessment state for this dimension yet — not treated as zero.</p>"
-        );
-      }
-      var facts = d && Array.isArray(d.inputFacts) ? d.inputFacts : [];
-      if (facts.length) {
-        parts.push(
-          "<p><strong>Supporting facts:</strong></p><ul>" +
-            facts
-              .map(function (f) {
-                return "<li>" + esc(f) + "</li>";
-              })
-              .join("") +
-            "</ul>"
-        );
-      }
-      var inferences = d && Array.isArray(d.inferences) ? d.inferences : [];
-      if (inferences.length) {
-        parts.push(
-          "<p><strong>Inferences:</strong></p><ul>" +
-            inferences
-              .map(function (f) {
-                return "<li>" + esc(f) + "</li>";
-              })
-              .join("") +
-            "</ul>"
-        );
-      }
-      var refs = d && Array.isArray(d.evidenceRefs) ? d.evidenceRefs : [];
-      if (refs.length) {
-        parts.push(
-          "<p><strong>Sources:</strong></p><ul>" +
-            refs
-              .map(function (r) {
-                var url = typeof r === "string" ? r : r && (r.url || r.sourceUrl);
-                var label =
-                  (typeof r === "string" ? r : r && (r.label || r.title || url)) ||
-                  "";
-                if (url && isSafeHttpUrl(url)) {
-                  return (
-                    '<li><a href="' +
-                    esc(url) +
-                    '" target="_blank" rel="noopener" class="gdi-break-url">' +
-                    esc(label || url) +
-                    "</a></li>"
-                  );
-                }
-                return "<li>" + esc(label) + "</li>";
-              })
-              .join("") +
-            "</ul>"
-        );
-      }
-      if (d && d.assessmentDate) {
-        parts.push(
-          "<p><strong>Assessed:</strong> " +
-            esc(String(d.assessmentDate).slice(0, 10)) +
-            "</p>"
-        );
-      }
-      if (d && d.ruleVersion) {
-        parts.push(
-          "<p><strong>Rule version:</strong> " + esc(d.ruleVersion) + "</p>"
-        );
-      }
-      if (d && d.limitations) {
-        parts.push("<p><strong>Limits:</strong> " + esc(d.limitations) + "</p>");
-      }
-      return parts.join("");
-    }
-
     function dimTileHtml(k) {
       var compLabel = labels[k] || fitLabel(k);
       var d = (dimAssess && dimAssess[k]) || (qualComps && qualComps[k]) || null;
@@ -3575,42 +3483,30 @@
               : null;
       var displayN;
       var statusClass = "";
-      var statusHint = "";
       if (status === "not_applicable") {
         displayN = "Not applicable";
         statusClass = " is-na";
-        statusHint = "Excluded from overall weights";
       } else if (status === "insufficient_evidence") {
         displayN = "Needs verification";
         statusClass = " is-gap";
-        statusHint = "Applicable — evidence incomplete";
       } else if (scoreVal != null) {
         displayN = String(scoreVal);
       } else {
         displayN = "Not established";
         statusClass = " is-gap";
-        statusHint = "No saved score for this dimension";
       }
-      var detail = dimDetailBody(d, status, scoreVal);
+      // Static tile: score/status + title only (no Details expansion).
       return (
-        '<details class="gdi-score-cell gdi-score-cell--expandable' +
+        '<div class="gdi-score-cell' +
         statusClass +
         '">' +
-        '<summary class="gdi-score-summary">' +
         '<div class="n">' +
         esc(displayN) +
         "</div>" +
         '<div class="l">' +
         esc(compLabel) +
         "</div>" +
-        (statusHint
-          ? '<div class="gdi-fit-status">' + esc(statusHint) + "</div>"
-          : "") +
-        '<span class="gdi-score-expand-hint">Details</span>' +
-        "</summary>" +
-        '<div class="gdi-score-detail">' +
-        detail +
-        "</div></details>"
+        "</div>"
       );
     }
 
@@ -3634,83 +3530,6 @@
       : withheld
         ? "Withheld"
         : "Not established";
-    var overallDetail = "";
-    overallDetail +=
-      "<p><strong>Overall:</strong> " +
-      esc(
-        hasScore
-          ? provisional
-            ? String(numericScore) + " (provisional)"
-            : String(numericScore)
-          : withheld
-            ? "Withheld — insufficient assessed applicable dimensions (not shown as a numeric score)"
-            : "Not established"
-      ) +
-      "</p>";
-    if (provisional && hasScore) {
-      overallDetail +=
-        "<p>Provisional: one or more applicable dimensions still lack evidence. Gaps were not scored as zero.</p>";
-    }
-    if (basis.assessedKeys && basis.assessedKeys.length) {
-      overallDetail +=
-        "<p><strong>Dimensions that contributed:</strong> " +
-        esc(
-          basis.assessedKeys
-            .map(function (k) {
-              return labels[k] || fitLabel(k);
-            })
-            .join(", ")
-        ) +
-        "</p>";
-    }
-    if (basis.notApplicableKeys && basis.notApplicableKeys.length) {
-      overallDetail +=
-        "<p><strong>Not applicable (excluded from weights):</strong> " +
-        esc(
-          basis.notApplicableKeys
-            .map(function (k) {
-              return labels[k] || fitLabel(k);
-            })
-            .join(", ")
-        ) +
-        "</p>";
-    }
-    if (basis.insufficientKeys && basis.insufficientKeys.length) {
-      overallDetail +=
-        "<p><strong>Applicable but lacking evidence (not scored as zero):</strong> " +
-        esc(
-          basis.insufficientKeys
-            .map(function (k) {
-              return labels[k] || fitLabel(k);
-            })
-            .join(", ")
-        ) +
-        "</p>";
-    }
-    if (basis.note && !/overall numeric withheld/i.test(fitText || "")) {
-      overallDetail += "<p>" + esc(basis.note) + "</p>";
-    }
-    if (fitText) {
-      // Avoid repeating a withheld claim when the tile already shows a provisional numeric.
-      if (!(hasScore && /withheld/i.test(fitText))) {
-        overallDetail += "<p>" + esc(fitText) + "</p>";
-      }
-    }
-    if (o.hotelFitAssessmentVersion || o.hotelFitAssessedAt) {
-      overallDetail +=
-        "<p><strong>Assessment:</strong> " +
-        esc(
-          [
-            o.hotelFitAssessmentVersion || null,
-            o.hotelFitAssessedAt
-              ? String(o.hotelFitAssessedAt).slice(0, 10)
-              : null,
-          ]
-            .filter(Boolean)
-            .join(" · ")
-        ) +
-        "</p>";
-    }
 
     var evidenceConfLabel = (function () {
       if (o.evidenceConfidence == null || o.evidenceConfidence === "") {
@@ -3744,11 +3563,10 @@
     return (
       '<div class="gdi-hotel-fit-block">' +
       '<div class="gdi-score-grid">' +
-      '<details class="gdi-score-cell gdi-score-cell--expandable gdi-score-cell--overall' +
+      '<div class="gdi-score-cell gdi-score-cell--overall' +
       (provisional ? " is-provisional" : "") +
       (withheld && !hasScore ? " is-gap" : "") +
       '">' +
-      '<summary class="gdi-score-summary">' +
       '<div class="n">' +
       esc(overallDisplay) +
       "</div>" +
@@ -3759,11 +3577,7 @@
           ? ' <span class="gdi-fit-status">(withheld)</span>'
           : "") +
       "</div>" +
-      '<span class="gdi-score-expand-hint">Details</span>' +
-      "</summary>" +
-      '<div class="gdi-score-detail">' +
-      overallDetail +
-      "</div></details>" +
+      "</div>" +
       dimTiles +
       "</div>" +
       '<div class="gdi-signal-row gdi-signal-row--fit">' +
