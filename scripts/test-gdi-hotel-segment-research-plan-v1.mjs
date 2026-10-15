@@ -54,6 +54,10 @@ assert.equal(
   mayApp[RESEARCH_SEGMENT.SPORTS].applicability,
   APPLICABILITY.APPLICABLE
 );
+assert.equal(
+  mayApp[RESEARCH_SEGMENT.SCALING_COMPANIES].applicability,
+  APPLICABILITY.APPLICABLE
+);
 
 const sdApp = assessSegmentApplicability(sdCfg);
 assert.equal(

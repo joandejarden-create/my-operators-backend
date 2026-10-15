@@ -61,6 +61,11 @@ import {
   segmentResearchPlanToMarkdown,
   loadHotelConfig as loadHotelSegmentConfig,
 } from "../lib/group-demand-intelligence/workflow/hotel-segment-research-plan-v1.js";
+import {
+  assessScalingCompaniesApplicability,
+  buildScalingCompanyResearchQueries,
+  isScalingCompanyOpportunity,
+} from "../lib/group-demand-intelligence/workflow/scaling-companies-research-v1.js";
 import { buildOccasionDraftsFromPrograms } from "../lib/group-demand-intelligence/workflow/programs-occasion-draft-v1.js";
 import { proposeHotelVenueFits } from "../lib/group-demand-intelligence/workflow/proposed-hotel-venue-fit-v1.js";
 import { buildTargetedContactPlan } from "../lib/group-demand-intelligence/workflow/targeted-contact-plan-v1.js";
@@ -499,6 +504,37 @@ for (const stage of stagesToRun) {
             label: s.label,
             researchCoverage: s.researchCoverage,
           })),
+      };
+
+      // Scaling companies / emerging corporate accounts — plan + reuse only (no paid)
+      const scApp = assessScalingCompaniesApplicability(segCfg);
+      const scExisting = segOpps.filter((o) => isScalingCompanyOpportunity(o));
+      const scPlan = {
+        version: "gdi-scaling-companies-coordinator-v1",
+        hotelId,
+        applicability: scApp,
+        existingOpportunityCount: scExisting.length,
+        existingOpportunityIds: scExisting.map((o) => o.id || o.opportunityId),
+        researchQueries: buildScalingCompanyResearchQueries(segCfg),
+        paidBudgetApproved: authorizePaidDiscovery === true,
+        note: authorizePaidDiscovery
+          ? "Paid discovery authorized separately — still require local connection + dated growth + hotel-use thesis"
+          : "No paid calls in this stage — reuse existing accounts; native/unpaid query plan only",
+        invariants: [
+          "Funding / hiring page / startup directory alone is insufficient",
+          "Standing CORPORATE_ACCOUNT_RELATIONSHIP — do not invent event dates",
+          "One undifferentiated account → one opportunity (dedupe growth signals)",
+          "Founder is not automatically the hotel buyer",
+        ],
+      };
+      fs.writeFileSync(
+        path.join(reuseDir, "scaling-companies-research-plan.json"),
+        JSON.stringify(scPlan, null, 2) + "\n"
+      );
+      ledger.scalingCompaniesResearch = {
+        path: path.join(reuseDir, "scaling-companies-research-plan.json"),
+        applicable: scApp.applicable === true,
+        existingCount: scExisting.length,
       };
 
       ledger.reusePriorIntelligence = {
