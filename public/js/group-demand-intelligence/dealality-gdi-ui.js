@@ -595,42 +595,50 @@
         "</option></select></div>";
     }
 
-    var publishedLabel = opts.publishedUpdateLabel || "Last Published Update";
     var publishedValue =
       opts.lastPublishedUpdate != null && opts.lastPublishedUpdate !== ""
         ? opts.lastPublishedUpdate
         : opts.lastReviewedImport != null && opts.lastReviewedImport !== ""
           ? opts.lastReviewedImport
           : "";
+    var lastResearchVal =
+      opts.lastResearch != null && opts.lastResearch !== ""
+        ? opts.lastResearch
+        : "History unavailable";
+    var runStatusVal =
+      opts.runStatusLabel || opts.runStatus || "History unavailable";
+    var publishedVal = publishedValue || "History unavailable";
     return (
       '<section class="filters-section aiv-filters-section gdi-property-bar" aria-label="Property selection">' +
+      '<div class="gdi-property-bar__primary">' +
       propertyField +
       weeklyThisWeekFilterHtml(opts) +
       opportunityTypeFilterHtml(opts) +
-      '<div class="filter-group gdi-property-stat">' +
-      '<span class="filter-label">Last Research</span>' +
-      '<div class="gdi-property-stat__value">' +
-      esc(
-        opts.lastResearch != null && opts.lastResearch !== ""
-          ? opts.lastResearch
-          : "History unavailable"
-      ) +
-      "</div></div>" +
-      '<div class="filter-group gdi-property-stat">' +
-      '<span class="filter-label">Research Run</span>' +
-      '<div class="gdi-property-stat__value">' +
-      esc(opts.runStatusLabel || opts.runStatus || "History unavailable") +
-      "</div></div>" +
-      '<div class="filter-group gdi-property-stat">' +
-      '<span class="filter-label">' +
-      esc(publishedLabel) +
-      "</span>" +
-      '<div class="gdi-property-stat__value">' +
-      esc(publishedValue || "History unavailable") +
-      "</div></div>" +
       (opts.actionHtml
-        ? '<div class="filter-group aiv-filter-actions">' + opts.actionHtml + "</div>"
+        ? '<div class="filter-group aiv-filter-actions gdi-property-bar__actions">' +
+          opts.actionHtml +
+          "</div>"
         : "") +
+      "</div>" +
+      '<footer class="gdi-property-bar__history" aria-label="Research activity">' +
+      '<span class="gdi-property-bar__history-item">' +
+      '<span class="gdi-property-bar__history-label">Last research:</span> ' +
+      '<span class="gdi-property-bar__history-value">' +
+      esc(lastResearchVal) +
+      "</span></span>" +
+      '<span class="gdi-property-bar__history-sep" aria-hidden="true">·</span>' +
+      '<span class="gdi-property-bar__history-item">' +
+      '<span class="gdi-property-bar__history-label">Run:</span> ' +
+      '<span class="gdi-property-bar__history-value">' +
+      esc(runStatusVal) +
+      "</span></span>" +
+      '<span class="gdi-property-bar__history-sep" aria-hidden="true">·</span>' +
+      '<span class="gdi-property-bar__history-item">' +
+      '<span class="gdi-property-bar__history-label">Last published:</span> ' +
+      '<span class="gdi-property-bar__history-value">' +
+      esc(publishedVal) +
+      "</span></span>" +
+      "</footer>" +
       "</section>"
     );
   }
@@ -1811,6 +1819,334 @@
     return "";
   }
 
+  /**
+   * Presentation-only: pick ONE compact contact block for the opportunity tile.
+   * Full person + organization routes stay in the drawer / detail payloads.
+   */
+  function isGenericOrgEmailLocal(email) {
+    var raw = String(email || "").trim();
+    var e = raw.toLowerCase();
+    if (!e || e.indexOf("@") < 0) return false;
+    var localRaw = raw.split("@")[0] || "";
+    var local = e.split("@")[0] || "";
+    if (
+      /^(info|contact|hello|office|admin|support|sales|inquiries|enquiry|enquiries|reception|front.?desk|general|mail|team|hr|press|media|pr|federal|help|customerservice|customer.?service|newbiz|events|meetings|talentandculture|talent.?culture)$/i.test(
+        local
+      )
+    ) {
+      return true;
+    }
+    // CamelCase or concatenated department inboxes (TalentandCulture, NewBiz) are org routes
+    if (
+      !/[._-]/.test(localRaw) &&
+      (/[a-z][A-Z]/.test(localRaw) ||
+        /(talent|culture|people|federal|press|media|events|meetings|support|sales|office|admin)/i.test(
+          local
+        ))
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  function shortContactRoleLabel(role) {
+    var r = String(role || "")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (!r) return "";
+    if (r.length > 56) {
+      var cut = r.slice(0, 56);
+      var sp = cut.lastIndexOf(" ");
+      r = (sp > 28 ? cut.slice(0, sp) : cut).trim() + "…";
+    }
+    return r;
+  }
+
+  function isReferralContactRole(it, linked, role) {
+    var blob = [
+      role,
+      linked.contactResponsibilityClass || it.contactResponsibilityClass || "",
+      linked.contactResponsibility || it.contactResponsibility || "",
+      linked.recommendedAction || it.recommendedAction || "",
+    ].join(" ");
+    return (
+      linked.contactResponsibilityClass === "REFERRAL_ENTRY" ||
+      it.contactResponsibilityClass === "REFERRAL_ENTRY" ||
+      /intermediary|referral|not (a )?verified|not confirmed|lead to verify|not automatically the hotel buyer|not identified as the event buyer|sponsorship \/ exhibition|press inquiries/i.test(
+        blob
+      )
+    );
+  }
+
+  function usableContactPath(url) {
+    var u = String(url || "").trim();
+    if (!u) return "";
+    if (/^https?:\/\/[^/]+\/?$/i.test(u)) return "";
+    if (/\/(en\/)?home\/?$/i.test(u)) return "";
+    return u;
+  }
+
+  function selectCompactTileContact(it, linked) {
+    linked = linked || {};
+    it = it || {};
+    var contact = linked.primaryContact || it.primaryContact || null;
+    var contactName =
+      contact && contact.name && contact.name !== "UNKNOWN" ? contact.name : "";
+    var contactEmail = contact && contact.email ? String(contact.email).trim() : "";
+    var contactPhone = contact && contact.phone ? String(contact.phone).trim() : "";
+    var role = shortContactRoleLabel(
+      (contact && (contact.role || contact.title)) ||
+        linked.primaryContactRole ||
+        it.primaryContactRole ||
+        linked.buyerRole ||
+        it.buyerRole ||
+        linked.contactRole ||
+        it.contactRole ||
+        ""
+    );
+    var channelSep = linked.contactChannelSeparation || it.contactChannelSeparation || {};
+    var personEmail =
+      (channelSep.personSpecificEmail && String(channelSep.personSpecificEmail).trim()) ||
+      contactEmail ||
+      "";
+    var personPhone =
+      (channelSep.personSpecificPhone && String(channelSep.personSpecificPhone).trim()) ||
+      contactPhone ||
+      "";
+    if (personEmail && isGenericOrgEmailLocal(personEmail)) personEmail = "";
+    if (
+      contact &&
+      contact.emailOwnership === "organization_or_department" &&
+      personEmail
+    ) {
+      personEmail = "";
+    }
+
+    var orgEmail =
+      linked.organizationContactEmail ||
+      it.organizationContactEmail ||
+      linked.functionalContactEmail ||
+      it.functionalContactEmail ||
+      (channelSep.organizationRoute &&
+      String(channelSep.organizationRoute).indexOf("@") >= 0
+        ? channelSep.organizationRoute
+        : "") ||
+      "";
+    if (
+      !orgEmail &&
+      linked.contactEmail &&
+      isGenericOrgEmailLocal(linked.contactEmail)
+    ) {
+      orgEmail = linked.contactEmail;
+    }
+    if (
+      !orgEmail &&
+      it.contactEmail &&
+      isGenericOrgEmailLocal(it.contactEmail)
+    ) {
+      orgEmail = it.contactEmail;
+    }
+    // Misfiled person_specific that is actually the org inbox
+    if (
+      !orgEmail &&
+      contactEmail &&
+      isGenericOrgEmailLocal(contactEmail)
+    ) {
+      orgEmail = contactEmail;
+    }
+    orgEmail = orgEmail ? String(orgEmail).trim() : "";
+    if (
+      personEmail &&
+      orgEmail &&
+      personEmail.toLowerCase() === orgEmail.toLowerCase()
+    ) {
+      if (isGenericOrgEmailLocal(personEmail)) {
+        // Shared department inbox — do not attribute to the person on the tile
+        personEmail = "";
+      } else {
+        // Person-looking email duplicated onto org fields — keep as personal channel
+        orgEmail = "";
+      }
+    }
+    if (
+      !orgEmail &&
+      channelSep.organizationRoute &&
+      String(channelSep.organizationRoute).indexOf("@") >= 0 &&
+      isGenericOrgEmailLocal(channelSep.organizationRoute)
+    ) {
+      orgEmail = String(channelSep.organizationRoute).trim();
+    }
+
+    var companyPhone =
+      linked.companyPhone ||
+      it.companyPhone ||
+      (channelSep.companyPhone ? channelSep.companyPhone : "") ||
+      "";
+    if (!companyPhone && !personPhone) {
+      companyPhone = linked.contactPhone || it.contactPhone || "";
+    }
+    companyPhone = companyPhone ? String(companyPhone).trim() : "";
+    if (
+      companyPhone &&
+      personPhone &&
+      companyPhone.replace(/\D/g, "") === personPhone.replace(/\D/g, "")
+    ) {
+      companyPhone = "";
+    }
+
+    var contactPath = usableContactPath(
+      linked.contactUrl ||
+        it.contactUrl ||
+        linked.publicContactPath ||
+        it.publicContactPath ||
+        (channelSep.organizationRoute &&
+        String(channelSep.organizationRoute).indexOf("@") < 0
+          ? channelSep.organizationRoute
+          : "") ||
+        ""
+    );
+    var deptLabel = shortContactRoleLabel(
+      linked.buyerEntity ||
+        it.buyerEntity ||
+        linked.functionalContactLabel ||
+        it.functionalContactLabel ||
+        ""
+    );
+    var isReferral = isReferralContactRole(it, linked, role);
+    var orgName =
+      linked.organizationName ||
+      it.organizationName ||
+      linked.buyerEntity ||
+      it.buyerEntity ||
+      "";
+    var nameLooksLikeOrgEntity =
+      contactName &&
+      orgName &&
+      String(contactName).toLowerCase() === String(orgName).toLowerCase();
+    var hasPersonChannel = Boolean(personEmail || personPhone);
+
+    if (contactName && hasPersonChannel && !nameLooksLikeOrgEntity) {
+      return {
+        kind: isReferral ? "referral" : "person",
+        name: isReferral ? "Referral contact" : contactName,
+        role: isReferral
+          ? shortContactRoleLabel(contactName + (role ? " · " + role : ""))
+          : role,
+        channelKind: personEmail ? "email" : "phone",
+        channelText: personEmail || personPhone,
+        channelHref: "",
+      };
+    }
+
+    // Named org entity with a switchboard / team phone — treat as organization route
+    if (nameLooksLikeOrgEntity && (personPhone || companyPhone || orgEmail || contactPath)) {
+      if (orgEmail) {
+        return {
+          kind: "organization",
+          name: deptLabel || contactName || "Organization contact",
+          role: shortContactRoleLabel(role),
+          channelKind: "email",
+          channelText: orgEmail,
+          channelHref: "",
+        };
+      }
+      if (personPhone || companyPhone) {
+        return {
+          kind: "organization",
+          name: deptLabel || contactName || "Organization contact",
+          role: shortContactRoleLabel(role),
+          channelKind: "phone",
+          channelText: personPhone || companyPhone,
+          channelHref: "",
+        };
+      }
+    }
+
+    if (orgEmail) {
+      return {
+        kind: "organization",
+        name: deptLabel || "Organization contact",
+        role: "",
+        channelKind: "email",
+        channelText: orgEmail,
+        channelHref: "",
+      };
+    }
+    if (companyPhone) {
+      return {
+        kind: "organization",
+        name: deptLabel || "Organization contact",
+        role: "",
+        channelKind: "phone",
+        channelText: companyPhone,
+        channelHref: "",
+      };
+    }
+    if (contactPath) {
+      var formLike = /contact|form|inquiry|enquiry|reach|get.?in.?touch/i.test(
+        contactPath
+      );
+      return {
+        kind: "organization",
+        name: deptLabel || "Organization contact",
+        role: "",
+        channelKind: "form",
+        channelText: formLike ? "Contact form" : "Contact page",
+        channelHref: isSafeHttpUrl(contactPath) ? contactPath : "",
+      };
+    }
+
+    return {
+      kind: "empty",
+      name: "",
+      role: "",
+      channelKind: "",
+      channelText: "Office operations contact not yet identified",
+      channelHref: "",
+    };
+  }
+
+  function compactTileContactHtml(block) {
+    block = block || {};
+    if (block.kind === "empty") {
+      return (
+        '<div class="brand-card__contact-line brand-card__contact-line--empty">' +
+        esc(block.channelText || "Office operations contact not yet identified") +
+        "</div>"
+      );
+    }
+    var bits = [];
+    if (block.name) {
+      bits.push(
+        '<div class="brand-card__contact-name">' + esc(block.name) + "</div>"
+      );
+    }
+    if (block.role) {
+      bits.push(
+        '<div class="brand-card__contact-line brand-card__contact-line--role">' +
+          esc(block.role) +
+          "</div>"
+      );
+    }
+    if (block.channelKind === "form" && block.channelHref) {
+      bits.push(
+        '<div class="brand-card__contact-line">' +
+          '<a class="brand-card__contact-link" href="' +
+          esc(block.channelHref) +
+          '" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">' +
+          esc(block.channelText || "Contact form") +
+          "</a></div>"
+      );
+    } else if (block.channelText) {
+      bits.push(
+        '<div class="brand-card__contact-line">' +
+          esc(block.channelText) +
+          "</div>"
+      );
+    }
+    return bits.join("");
+  }
+
   function opportunityTileHtml(it, linked, activeFilters) {
     linked = linked || {};
     activeFilters = activeFilters || {};
@@ -1850,191 +2186,9 @@
     var sourcingLbl =
       linked.venueSourcingStatusLabel || it.venueSourcingStatusLabel || "";
     var commercialClassLbl = commercialClassPillHtml(it, linked);
-    var contact = linked.primaryContact || it.primaryContact || null;
-    var contactName =
-      contact && contact.name && contact.name !== "UNKNOWN" ? contact.name : "";
-    var contactEmail = contact && contact.email ? contact.email : "";
-    var contactPhone = contact && contact.phone ? contact.phone : "";
-    var buyerEntity = linked.buyerEntity || it.buyerEntity || "";
-    var buyerRole = linked.buyerRole || it.buyerRole || "";
-    var contactPath =
-      linked.publicContactPath ||
-      it.publicContactPath ||
-      linked.contactUrl ||
-      it.contactUrl ||
-      "";
-    var companyPhone =
-      linked.companyPhone ||
-      it.companyPhone ||
-      linked.contactPhone ||
-      it.contactPhone ||
-      "";
-    var companyPhoneLabel =
-      linked.companyPhoneLabel || it.companyPhoneLabel || "Company / office phone";
-    var orgEmail =
-      linked.organizationContactEmail ||
-      it.organizationContactEmail ||
-      linked.functionalContactEmail ||
-      it.functionalContactEmail ||
-      linked.contactEmail ||
-      it.contactEmail ||
-      "";
-    // Never show org inbox as if it were the named person's email
-    if (
-      contactName &&
-      orgEmail &&
-      contactEmail &&
-      String(orgEmail).toLowerCase() === String(contactEmail).toLowerCase()
-    ) {
-      orgEmail = "";
-    }
-    if (
-      contactName &&
-      orgEmail &&
-      !contactEmail &&
-      /^(info|contact|hello|office|admin|support|sales|pr|press|federal)@/i.test(
-        String(orgEmail)
-      )
-    ) {
-      // keep as org route only
-    } else if (
-      !contactName &&
-      orgEmail &&
-      /^(info|contact|hello|office|admin|support|sales|pr|press|federal)@/i.test(
-        String(orgEmail)
-      )
-    ) {
-      // org route
-    } else if (!contactName && orgEmail && !contactEmail) {
-      // usable org/person-looking email without a name — show as organization route
-    }
-    var displayLines =
-      linked.contactDisplayLines || it.contactDisplayLines || null;
-    var contactBits = [];
-    if (Array.isArray(displayLines) && displayLines.length) {
-      displayLines.forEach(function (line) {
-        if (!line || !line.text) return;
-        if (line.kind === "name") {
-          contactBits.push(
-            '<div class="brand-card__contact-name">' + esc(line.text) + "</div>"
-          );
-        } else if (line.kind === "empty") {
-          contactBits.push(
-            '<div class="brand-card__contact-line brand-card__contact-line--empty">' +
-              esc(line.text) +
-              "</div>"
-          );
-        } else {
-          var prefix = line.label ? esc(line.label) + ": " : "";
-          contactBits.push(
-            '<div class="brand-card__contact-line">' +
-              prefix +
-              esc(line.text) +
-              "</div>"
-          );
-        }
-      });
-    } else {
-      if (contactName) {
-        contactBits.push(
-          '<div class="brand-card__contact-name">' + esc(contactName) + "</div>"
-        );
-      }
-      if (contactEmail) {
-        contactBits.push(
-          '<div class="brand-card__contact-line">' + esc(contactEmail) + "</div>"
-        );
-      }
-      if (contactPhone) {
-        var phoneTypeLbl =
-          (contact && contact.phoneTypeLabel) ||
-          linked.primaryContactPhoneTypeLabel ||
-          it.primaryContactPhoneTypeLabel ||
-          "";
-        contactBits.push(
-          '<div class="brand-card__contact-line">' +
-            esc(contactPhone) +
-            (phoneTypeLbl ? " · " + esc(phoneTypeLbl) : "") +
-            "</div>"
-        );
-      }
-      if (!contactName) {
-        if (orgEmail) {
-          contactBits.push(
-            '<div class="brand-card__contact-line">Organization email: ' +
-              esc(orgEmail) +
-              "</div>"
-          );
-        }
-        if (companyPhone && companyPhone !== contactPhone) {
-          contactBits.push(
-            '<div class="brand-card__contact-line">' +
-              esc(companyPhoneLabel) +
-              ": " +
-              esc(companyPhone) +
-              "</div>"
-          );
-        } else if (companyPhone && !contactPhone) {
-          contactBits.push(
-            '<div class="brand-card__contact-line">' +
-              esc(companyPhoneLabel) +
-              ": " +
-              esc(companyPhone) +
-              "</div>"
-          );
-        }
-      } else if (orgEmail && orgEmail !== contactEmail) {
-        contactBits.push(
-          '<div class="brand-card__contact-line">Organization route: ' +
-            esc(orgEmail) +
-            "</div>"
-        );
-      }
-      var respLbl =
-        linked.bookingResponsibilityLabel || it.bookingResponsibilityLabel || "";
-      if (respLbl) {
-        contactBits.push(
-          '<div class="brand-card__contact-line">' + esc(respLbl) + "</div>"
-        );
-      }
-      // Org / role path when no named person (WHO ORG_PATH) — do not imply a person exists.
-      if (!contactName && (buyerEntity || buyerRole || contactPath)) {
-        if (buyerEntity && contactBits.length < 2) {
-          contactBits.push(
-            '<div class="brand-card__contact-name">' + esc(buyerEntity) + "</div>"
-          );
-        }
-        if (buyerRole) {
-          contactBits.push(
-            '<div class="brand-card__contact-line">' + esc(buyerRole) + "</div>"
-          );
-        }
-        var pathOk =
-          contactPath &&
-          !/^https?:\/\/[^/]+\/?$/i.test(String(contactPath).trim()) &&
-          !/\/(en\/)?home\/?$/i.test(String(contactPath));
-        if (pathOk) {
-          contactBits.push(
-            '<div class="brand-card__contact-line">' + esc(contactPath) + "</div>"
-          );
-        }
-      }
-      if (!contactBits.length) {
-        contactBits.push(
-          '<div class="brand-card__contact-line brand-card__contact-line--empty">Office operations contact not yet identified</div>'
-        );
-      } else if (!contactName && (orgEmail || companyPhone)) {
-        // Ensure status line exists when we only have fallbacks
-        var hasStatus = contactBits.some(function (b) {
-          return /not yet identified|Organization email|Company|office/i.test(b);
-        });
-        if (!hasStatus) {
-          contactBits.unshift(
-            '<div class="brand-card__contact-line brand-card__contact-line--empty">Office operations contact not yet identified</div>'
-          );
-        }
-      }
-    }
+    var contactBits = [
+      compactTileContactHtml(selectCompactTileContact(it, linked)),
+    ];
     var prospectLbl =
       linked.prospectCustomerLabel ||
       it.prospectCustomerLabel ||
@@ -2553,8 +2707,10 @@
       );
     }
 
-    var primaryKind =
-      c.contactKind === "FUNCTIONAL" || c.functionalEntity || tier === "FUNCTIONAL_CONTACT"
+    var isReferralDrawer = isReferralContactRole(o, o, c.role || c.title || "");
+    var primaryKind = isReferralDrawer
+      ? "Referral contact"
+      : c.contactKind === "FUNCTIONAL" || c.functionalEntity || tier === "FUNCTIONAL_CONTACT"
         ? "Functional / organization contact"
         : tierLabel || "Who sales should contact";
     var channelSep = o.contactChannelSeparation || null;
@@ -2562,19 +2718,37 @@
       (channelSep && channelSep.organizationRoute) ||
       o.functionalContactEmail ||
       o.organizationContactEmail ||
-      (c.organizationContactRoute) ||
+      c.organizationContactRoute ||
       null;
+    if (orgRoute && String(orgRoute).indexOf("@") < 0) orgRoute = null;
     var orgRouteIsNotPersonEmail =
       !c.email ||
       !orgRoute ||
       String(c.email).toLowerCase() !== String(orgRoute).toLowerCase();
-    var suggestedLabel =
-      (c.suggestedContactLabel) ||
-      (c.name
-        ? "Suggested contact: " +
-          c.name +
-          (c.role || c.title ? " (" + (c.role || c.title) + ")" : "")
-        : null);
+    var companyPhoneDrawer =
+      o.companyPhone ||
+      (channelSep && channelSep.companyPhone) ||
+      null;
+    if (
+      companyPhoneDrawer &&
+      c.phone &&
+      String(companyPhoneDrawer).replace(/\D/g, "") ===
+        String(c.phone).replace(/\D/g, "")
+    ) {
+      companyPhoneDrawer = null;
+    }
+    var companyPhoneLbl =
+      o.companyPhoneLabel || "Company / office phone";
+    var suggestedLabel = isReferralDrawer
+      ? "Referral contact: " +
+        (c.name || "—") +
+        (c.role || c.title ? " (" + (c.role || c.title) + ")" : "")
+      : c.suggestedContactLabel ||
+        (c.name
+          ? "Suggested contact: " +
+            c.name +
+            (c.role || c.title ? " (" + (c.role || c.title) + ")" : "")
+          : null);
     var askDirected =
       (channelSep && channelSep.askToBeDirectedTo) ||
       c.askToBeDirectedTo ||
@@ -2585,6 +2759,64 @@
           c.name +
           ")"
         : null);
+    var seenChannels = {};
+    function markChannel(v) {
+      var key = String(v || "")
+        .toLowerCase()
+        .replace(/\s+/g, "");
+      if (!key || seenChannels[key]) return false;
+      seenChannels[key] = true;
+      return true;
+    }
+    var personEmailIsOrg =
+      c.email &&
+      (isGenericOrgEmailLocal(c.email) ||
+        c.emailOwnership === "organization_or_department" ||
+        (orgRoute &&
+          String(c.email).toLowerCase() === String(orgRoute).toLowerCase() &&
+          isGenericOrgEmailLocal(c.email)));
+    var personEmailHtml =
+      c.email && !personEmailIsOrg && markChannel(c.email)
+        ? "<p><strong>Person email:</strong> " + esc(c.email) + "</p>"
+        : "";
+    var orgEmailFromPerson =
+      c.email && personEmailIsOrg && markChannel(c.email)
+        ? "<p><strong>Organization email:</strong> " + esc(c.email) + "</p>"
+        : "";
+    var orgEmailHtml =
+      orgEmailFromPerson ||
+      (orgRoute && orgRouteIsNotPersonEmail && markChannel(orgRoute)
+        ? "<p><strong>Organization email:</strong> " + esc(orgRoute) + "</p>"
+        : !c.email && orgRoute && markChannel(orgRoute)
+          ? "<p><strong>Organization email:</strong> " + esc(orgRoute) + "</p>"
+          : "");
+    var personPhoneHtml =
+      c.phone && markChannel(c.phone)
+        ? "<p><strong>Person phone:</strong> " +
+          esc(c.phone) +
+          (o.primaryContactPhoneTypeLabel || c.phoneTypeLabel || c.phoneType
+            ? " (" +
+              esc(
+                o.primaryContactPhoneTypeLabel ||
+                  c.phoneTypeLabel ||
+                  c.phoneType
+              ) +
+              ")"
+            : "") +
+          "</p>"
+        : "";
+    var companyPhoneHtml =
+      companyPhoneDrawer && markChannel(companyPhoneDrawer)
+        ? "<p><strong>" +
+          esc(companyPhoneLbl) +
+          ":</strong> " +
+          esc(companyPhoneDrawer) +
+          "</p>"
+        : "";
+    var pathHtml =
+      pathLabel && pathLabel !== orgRoute && markChannel(pathLabel)
+        ? "<p><strong>Contact path:</strong> " + esc(pathLabel) + "</p>"
+        : "";
     var backups = (o.backupContacts || [])
       .map(function (b) {
         var kind =
@@ -2617,38 +2849,14 @@
       "<p><strong>Organization:</strong> " +
       esc(c.organization || o.organizationName || "—") +
       "</p>" +
-      (c.email
-        ? "<p><strong>Person email:</strong> " + esc(c.email) + "</p>"
-        : "") +
-      (orgRoute && orgRouteIsNotPersonEmail
-        ? "<p><strong>Organization contact route:</strong> " +
-          esc(orgRoute) +
-          "</p>"
-        : orgRoute && !c.email
-          ? "<p><strong>Organization contact route:</strong> " +
-            esc(orgRoute) +
-            "</p>"
-          : "") +
+      personEmailHtml +
+      orgEmailHtml +
+      personPhoneHtml +
+      companyPhoneHtml +
       (askDirected
         ? '<p class="gdi-contact-action">' + esc(askDirected) + "</p>"
         : "") +
-      (pathLabel && pathLabel !== orgRoute
-        ? "<p><strong>Contact path:</strong> " + esc(pathLabel) + "</p>"
-        : "") +
-      (c.phone
-        ? "<p><strong>Phone:</strong> " +
-          esc(c.phone) +
-          (o.primaryContactPhoneTypeLabel || c.phoneTypeLabel || c.phoneType
-            ? " (" +
-              esc(
-                o.primaryContactPhoneTypeLabel ||
-                  c.phoneTypeLabel ||
-                  c.phoneType
-              ) +
-              ")"
-            : "") +
-          "</p>"
-        : "") +
+      pathHtml +
       getDetailsCta +
       officialLink +
       "<p><strong>Why Relevant:</strong> " +
@@ -4247,6 +4455,8 @@
     pursuitActionButtonHtml: pursuitActionButtonHtml,
     pursuitPanelHtml: pursuitPanelHtml,
     opportunityTileHtml: opportunityTileHtml,
+    selectCompactTileContact: selectCompactTileContact,
+    compactTileContactHtml: compactTileContactHtml,
     opportunityCardsGridHtml: opportunityCardsGridHtml,
     opportunityBrowseChromeHtml: opportunityBrowseChromeHtml,
     weeklyDeltaPillHtml: weeklyDeltaPillHtml,
