@@ -1,0 +1,295 @@
+{
+  "version": "gdi-quality-fixtures-v1",
+  "note": "Deterministic synthetic fixtures for regression — not for production writes.",
+  "hotels": {
+    "rec0eTEnCqlsGJJt9": { "label": "Mayflower", "role": "primary" },
+    "recnPB3Q02NO8Ma1o": { "label": "Wyndham San Diego Bayside", "role": "primary" },
+    "recLuxvwwxID7U2B8": { "label": "Bethesda", "role": "regression" },
+    "recgMYovrrZDJMqzX": { "label": "Waterstone", "role": "regression" },
+    "recG66DQJKP2c0UNh": { "label": "Renaissance", "role": "regression" }
+  },
+  "opportunities": [
+    {
+      "id": "fixture_assoc_dated_v1",
+      "scenario": "dated_association_group",
+      "hotelId": "rec0eTEnCqlsGJJt9",
+      "researchSegment": "associations_government",
+      "opportunityType": "ASSOCIATION_MEETING",
+      "organizationName": "Fixture Medical Association",
+      "title": "Fixture Medical Association — 2027 Annual Meeting",
+      "eventStartDate": "2027-06-12",
+      "eventEndDate": "2027-06-15",
+      "guestRoomsPeak": 180,
+      "prospectHotelFacing": true,
+      "customerVisible": true,
+      "primaryContact": {
+        "name": "Jordan Lee",
+        "role": "Meetings Manager",
+        "email": "meetings@fixture-assoc.example",
+        "emailOwnership": "person_specific"
+      },
+      "companyPhone": "+1 202-555-0100",
+      "companyPhoneLabel": "Washington office",
+      "functionalContactEmail": "info@fixture-assoc.example",
+      "hotelFitScore": 72,
+      "hotelFitProvisional": false,
+      "hotelFitDimensionAssessments": {
+        "physicalFit": {
+          "status": "assessed",
+          "score": 70,
+          "rationale": "Peak room need within hotel capacity band for fixture.",
+          "assessmentDate": "2026-10-15",
+          "evidenceRefs": [{ "url": "https://example.com/fixture-rfp", "label": "Fixture RFP" }]
+        },
+        "geographyFit": { "status": "assessed", "score": 80, "rationale": "DC metro association." },
+        "timing": { "status": "assessed", "score": 65, "rationale": "Dated future meeting." },
+        "commercialValue": { "status": "assessed", "score": 70, "rationale": "Multi-night peak." },
+        "historicalFit": { "status": "insufficient_evidence", "rationale": "No prior hotel stay evidenced." },
+        "competitiveAccessibility": { "status": "assessed", "score": 55, "rationale": "Multiple DC hotels viable." },
+        "contactability": { "status": "assessed", "score": 85, "rationale": "Named meetings manager with email." }
+      }
+    },
+    {
+      "id": "fixture_scaling_named_v1",
+      "scenario": "scaling_company_named_contact",
+      "hotelId": "rec0eTEnCqlsGJJt9",
+      "researchSegment": "scaling_companies",
+      "opportunityType": "CORPORATE_ACCOUNT_RELATIONSHIP",
+      "organizationName": "Fixture Scale Co",
+      "title": "Fixture Scale Co — Scaling Corporate Account",
+      "prospectHotelFacing": true,
+      "customerVisible": true,
+      "primaryContact": {
+        "name": "Alex Rivera",
+        "role": "VP, People",
+        "email": "alex.rivera@fixturescale.example",
+        "emailOwnership": "person_specific"
+      },
+      "companyPhone": "+1 202-555-0199",
+      "companyPhoneLabel": "Washington office",
+      "functionalContactEmail": "talent@fixturescale.example",
+      "contactResponsibilityClass": "POTENTIALLY_RELEVANT_CONTACT",
+      "namedContactResearchStatus": "NAMED_PERSON_CHANNEL_PENDING",
+      "hotelFitScore": 68,
+      "hotelFitProvisional": true
+    },
+    {
+      "id": "fixture_scaling_org_only_v1",
+      "scenario": "organization_only_contact",
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "researchSegment": "scaling_companies",
+      "opportunityType": "CORPORATE_ACCOUNT_RELATIONSHIP",
+      "organizationName": "Fixture Org Route Inc",
+      "title": "Fixture Org Route Inc — Scaling Corporate Account",
+      "prospectHotelFacing": true,
+      "customerVisible": true,
+      "primaryContact": null,
+      "companyPhone": "619-555-0144",
+      "companyPhoneLabel": "San Diego office (published on firm contact page)",
+      "functionalContactEmail": "info@fixtureorg.example",
+      "contactUrl": "https://fixtureorg.example/contact",
+      "namedContactResearchStatus": "NAMED_BUYER_NOT_YET_ESTABLISHED",
+      "hotelFitScore": 60,
+      "hotelFitProvisional": true
+    },
+    {
+      "id": "fixture_lmc_no_rooms_v1",
+      "scenario": "local_catering_no_guestrooms",
+      "hotelId": "rec0eTEnCqlsGJJt9",
+      "researchSegment": "local_meetings_catering",
+      "opportunityType": "LOCAL_MEETINGS_CATERING",
+      "organizationName": "Fixture Chapter Gala",
+      "title": "Fixture Chapter Gala — Local Catering",
+      "guestRoomsPeak": null,
+      "prospectHotelFacing": true,
+      "customerVisible": true,
+      "functionalContactEmail": "events@fixturechapter.example",
+      "hotelFitScore": 74,
+      "hotelFitProvisional": false,
+      "hotelFitDimensionAssessments": {
+        "physicalFit": {
+          "status": "not_applicable",
+          "rationale": "Catering-only local event — guestroom peak not applicable."
+        },
+        "geographyFit": { "status": "assessed", "score": 90, "rationale": "Local chapter." },
+        "timing": { "status": "assessed", "score": 70, "rationale": "Annual gala cadence." },
+        "commercialValue": { "status": "assessed", "score": 75, "rationale": "Banquet F&B." },
+        "historicalFit": { "status": "assessed", "score": 85, "rationale": "Prior banquet at hotel evidenced in fixture." },
+        "competitiveAccessibility": { "status": "assessed", "score": 60, "rationale": "Other ballrooms nearby." },
+        "contactability": { "status": "assessed", "score": 70, "rationale": "Org events inbox." }
+      }
+    },
+    {
+      "id": "fixture_pe_venue_v1",
+      "scenario": "pe_venue_referral",
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "researchSegment": "private_events_venues",
+      "opportunityType": "VENUE_PARTNERSHIP",
+      "organizationName": "Fixture Hall",
+      "venueName": "Fixture Hall Ballroom A",
+      "title": "Fixture Hall Ballroom A — Venue Partnership",
+      "prospectHotelFacing": true,
+      "customerVisible": true,
+      "officialDomain": "fixturehall.example",
+      "contactUrl": "https://fixturehall.example/events",
+      "hotelFitScore": 58,
+      "hotelFitProvisional": true,
+      "hotelOpportunityThesis": "Nearby venue may generate overnight overflow for visiting guests — referral partnership, not owned inventory."
+    },
+    {
+      "id": "fixture_pe_venue_sibling_v1",
+      "scenario": "same_domain_distinct_venue",
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "researchSegment": "private_events_venues",
+      "opportunityType": "VENUE_PARTNERSHIP",
+      "organizationName": "Fixture Hall",
+      "venueName": "Fixture Hall Rooftop",
+      "title": "Fixture Hall Rooftop — Venue Partnership",
+      "prospectHotelFacing": true,
+      "customerVisible": true,
+      "officialDomain": "fixturehall.example",
+      "contactUrl": "https://fixturehall.example/rooftop"
+    },
+    {
+      "id": "fixture_stretch_provisional_v1",
+      "scenario": "stretch_fit_provisional",
+      "hotelId": "rec0eTEnCqlsGJJt9",
+      "researchSegment": "associations_government",
+      "opportunityType": "ASSOCIATION_MEETING",
+      "organizationName": "Fixture Stretch Association",
+      "title": "Fixture Stretch Association — Large Peak",
+      "guestRoomsPeak": 900,
+      "prospectHotelFacing": true,
+      "customerVisible": true,
+      "hotelFitScore": 42,
+      "hotelFitProvisional": true,
+      "hotelFitOverallStatus": "provisional",
+      "hotelFitDimensionAssessments": {
+        "physicalFit": {
+          "status": "assessed",
+          "score": 25,
+          "rationale": "Peak rooms exceed hotel inventory — stretch / citywide candidate."
+        },
+        "geographyFit": { "status": "assessed", "score": 70, "rationale": "DC destination." },
+        "timing": { "status": "insufficient_evidence" },
+        "commercialValue": { "status": "assessed", "score": 50, "rationale": "Large peak if citywide." },
+        "historicalFit": { "status": "insufficient_evidence" },
+        "competitiveAccessibility": { "status": "assessed", "score": 40, "rationale": "Many competitors." },
+        "contactability": { "status": "insufficient_evidence" }
+      }
+    },
+    {
+      "id": "fixture_legacy_minimal_v1",
+      "scenario": "legacy_record",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "researchSegment": "associations_government",
+      "organizationName": "Legacy Fixture Org",
+      "title": "Legacy Fixture Org",
+      "prospectHotelFacing": true,
+      "customerVisible": true,
+      "contactEmail": "info@legacyfixture.example",
+      "hotelFitScore": null
+    },
+    {
+      "id": "fixture_bethesda_assoc_withheld_v1",
+      "scenario": "third_hotel_generic_path_withheld",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "researchSegment": "associations_government",
+      "opportunityType": "ASSOCIATION_MEETING",
+      "organizationName": "Bethesda Fixture Association",
+      "title": "Bethesda Fixture Association — 2027 Regional Forum",
+      "eventStartDate": "2027-09-14",
+      "eventEndDate": "2027-09-16",
+      "guestRoomsPeak": 120,
+      "prospectHotelFacing": true,
+      "customerVisible": true,
+      "summaryWhat": "Regional association forum with published lodging interest near Bethesda.",
+      "hotelOpportunityThesis": "Dimension-level hotel-fit assessment; overall numeric withheld — insufficient assessed applicable dimensions (weights renormalized).",
+      "whyThisHotel": "Property meeting inventory and walkable Bethesda Metro access support a mid-size regional forum without inventing a citywide block.",
+      "hotelFitScore": 61,
+      "hotelFitOverallStatus": "insufficient_evidence",
+      "hotelFitRationale": "Overall numeric withheld — insufficient assessed applicable dimensions (no invented defaults).",
+      "hotelFitCalculationBasis": {
+        "numericScoreEmitted": false,
+        "reason": "Overall numeric withheld — insufficient assessed applicable dimensions"
+      },
+      "hotelFitAssessedAt": "2026-10-15",
+      "hotelFitAssessmentVersion": "gdi-hotel-fit-assessment-v2",
+      "primaryContact": {
+        "name": "Casey Nguyen",
+        "role": "Meetings Director",
+        "email": "casey.nguyen@bethesda-fixture.example",
+        "emailOwnership": "person_specific",
+        "whyThisContact": "Named meetings director; Surfe only if person email still missing after public path."
+      },
+      "whoPrimaryReason": "Surfe only if public meetings path cannot establish a named buyer.",
+      "functionalContactEmail": "meetings@bethesda-fixture.example",
+      "companyPhone": "+1 301-555-0177",
+      "companyPhoneLabel": "Bethesda chapter office",
+      "evidenceConfidence": 44,
+      "evidenceConfidenceExplanation": "Thin public sourcing; lodging path partial.",
+      "opportunityQualificationLabel": "Qualify further",
+      "recommendedAction": "Introductory outreach via meetings director",
+      "venueSourcingStatusLabel": "Hotel sourcing unconfirmed",
+      "hotelFitDimensionAssessments": {
+        "physicalFit": {
+          "status": "insufficient_evidence",
+          "score": null,
+          "rationale": "Peak room need not yet evidence-backed for this hotel.",
+          "assessmentDate": "2026-10-15",
+          "ruleVersion": "gdi-hotel-fit-dim-rules-v2"
+        },
+        "geographyFit": {
+          "status": "assessed",
+          "score": 78,
+          "rationale": "Bethesda / Montgomery corridor destination fit.",
+          "assessmentDate": "2026-10-15",
+          "ruleVersion": "gdi-hotel-fit-dim-rules-v2"
+        },
+        "timing": { "status": "assessed", "score": 70, "rationale": "Dated 2027 forum." },
+        "commercialValue": { "status": "insufficient_evidence", "score": null },
+        "historicalFit": {
+          "status": "not_applicable",
+          "score": null,
+          "rationale": "No prior stay pattern claimed."
+        },
+        "competitiveAccessibility": { "status": "assessed", "score": 55, "rationale": "Multiple Bethesda hotels viable." },
+        "contactability": { "status": "assessed", "score": 82, "rationale": "Named meetings director with person email." }
+      }
+    },
+    {
+      "id": "fixture_bad_channel_ownership_v1",
+      "scenario": "channel_ownership_defect_candidate",
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "researchSegment": "scaling_companies",
+      "organizationName": "Fixture Bad Channels",
+      "title": "Fixture Bad Channels — Scaling",
+      "prospectHotelFacing": true,
+      "customerVisible": true,
+      "primaryContact": {
+        "name": null,
+        "email": "info@fixturebad.example",
+        "phone": "619-555-0999"
+      },
+      "companyPhone": "619-555-0999",
+      "functionalContactEmail": "info@fixturebad.example"
+    },
+    {
+      "id": "fixture_provider_leak_v1",
+      "scenario": "provider_metadata_leak_candidate",
+      "hotelId": "rec0eTEnCqlsGJJt9",
+      "researchSegment": "scaling_companies",
+      "organizationName": "Fixture Leak Co",
+      "title": "Fixture Leak Co",
+      "prospectHotelFacing": true,
+      "customerVisible": true,
+      "primaryContact": {
+        "name": "Sam Leak",
+        "email": "sam@fixtureleak.example",
+        "relevanceEvidence": "Person email previously verified via Surfe."
+      },
+      "surfeRequestId": "should-not-customer-leak",
+      "providerCreditsConsumed": 1
+    }
+  ]
+}

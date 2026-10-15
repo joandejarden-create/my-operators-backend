@@ -151,6 +151,30 @@ const genericOpen = UI.whyThisHotelOpeningHtml({
 if (/not yet established/i.test(genericOpen)) pass("why_this_hotel_rejects_generic_dup");
 else fail("why_this_hotel_rejects_generic_dup", genericOpen);
 
+const assessmentLeak = UI.whyThisHotelOpeningHtml({
+  summaryWhat: "AHIMA Advocacy Summit 2027 in Washington.",
+  hotelOpportunityThesis:
+    "Dimension-level hotel-fit assessment; overall numeric withheld — insufficient assessed applicable dimensions (weights renormalized).",
+  whyThisHotel: "",
+  summaryWhyHotel: "",
+  fitExplanation: "",
+});
+if (/not yet established/i.test(assessmentLeak) && !/Dimension-level/i.test(assessmentLeak)) {
+  pass("why_this_hotel_skips_assessment_prose");
+} else fail("why_this_hotel_skips_assessment_prose", assessmentLeak);
+
+{
+  // Source contract: hotel-name hardcoding must not live in the picker
+  const src = fs.readFileSync(uiPath, "utf8");
+  const fn = src.slice(
+    src.indexOf("function whyThisHotelOpeningHtml"),
+    src.indexOf("function hotelFitAssessmentSectionHtml")
+  );
+  if (/mayflower|wyndham/i.test(fn)) {
+    fail("why_this_hotel_fn_no_hotel_name_hardcode", "hardcoded hotel names");
+  } else pass("why_this_hotel_fn_no_hotel_name_hardcode");
+}
+
 if (failed) {
   console.error(`\n${failed} failed`);
   process.exit(1);

@@ -3128,7 +3128,11 @@
           .replace(/\s+/g, " ")
           .trim();
       })
-      .filter(Boolean);
+      .filter(function (v) {
+        // Assessment-status prose belongs in fit caveats, not Why This Hotel.
+        // Hotel-agnostic: never prefer a candidate because it names a specific property brand.
+        return Boolean(v) && !isAssessmentStatusProse(v);
+      });
     var opportunityDesc = String(o.summaryWhat || o.title || "")
       .replace(/\s+/g, " ")
       .trim();
@@ -3141,9 +3145,10 @@
       ) {
         continue;
       }
-      // Prefer paragraphs that mention hotel attributes / location / facilities
+      // Prefer paragraphs that mention property attributes / location / facilities
+      // (generic cues only — no hotel-name hardcoding)
       if (
-        /hotel|mayflower|wyndham|bayside|downtown|connecticut|broadway|meeting|guestroom|location|lobby|suite|autograph|marriott/i.test(
+        /hotel|property|downtown|meeting|guestroom|location|lobby|suite|ballroom|venue|proximity|walkable|transit|airport|capacity|rooms?\b/i.test(
           candidate
         ) ||
         candidate.length > 40
