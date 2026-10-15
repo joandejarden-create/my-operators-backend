@@ -55,6 +55,12 @@ import {
   writeNativeGeoArtifacts,
 } from "../lib/group-demand-intelligence/workflow/native-geo-research-stage-v1.js";
 import { selectResearchPaths } from "../lib/group-demand-intelligence/workflow/research-path-selection-v1.js";
+import {
+  buildHotelSegmentResearchPlan,
+  segmentResearchPlanToCsv,
+  segmentResearchPlanToMarkdown,
+  loadHotelConfig as loadHotelSegmentConfig,
+} from "../lib/group-demand-intelligence/workflow/hotel-segment-research-plan-v1.js";
 import { buildOccasionDraftsFromPrograms } from "../lib/group-demand-intelligence/workflow/programs-occasion-draft-v1.js";
 import { proposeHotelVenueFits } from "../lib/group-demand-intelligence/workflow/proposed-hotel-venue-fit-v1.js";
 import { buildTargetedContactPlan } from "../lib/group-demand-intelligence/workflow/targeted-contact-plan-v1.js";
@@ -440,6 +446,61 @@ for (const stage of stagesToRun) {
               proposalCount: proposedFits.proposalCount,
             }
           : null;
+
+      // Multi-segment research plan — association volume ≠ full hotel coverage
+      const segCfg = loadHotelSegmentConfig(hotelId) || hotelCfg;
+      const segOpps = Array.isArray(ledgerDoc.opportunities)
+        ? ledgerDoc.opportunities
+        : (await loadOpportunitiesCanonical(hotelId))?.opportunities || [];
+      const pePkgPath = path.join(
+        ROOT,
+        "reports/gdi-operational-baseline/pe-canonical-persist/venue-partnership-packages.json"
+      );
+      let peVenueCount = 0;
+      if (fs.existsSync(pePkgPath)) {
+        const pePkgs = JSON.parse(fs.readFileSync(pePkgPath, "utf8")).packages || [];
+        peVenueCount = pePkgs.filter(
+          (p) => (p.hotel?.hotelId || p.hotel?.id) === hotelId && p.publish !== false
+        ).length;
+      }
+      const segmentPlan = buildHotelSegmentResearchPlan({
+        hotelId,
+        hotelConfig: segCfg,
+        opportunities: segOpps,
+        artifacts: {
+          peCanonicalPersisted: peVenueCount > 0 || (peDoc.counts?.venues || 0) > 0,
+          peVenueCount: peVenueCount || peDoc.counts?.venues || 0,
+          paidBudgetApproved: authorizePaidDiscovery === true,
+        },
+      });
+      fs.writeFileSync(
+        path.join(reuseDir, "segment-research-plan.json"),
+        JSON.stringify(segmentPlan, null, 2) + "\n"
+      );
+      fs.writeFileSync(
+        path.join(reuseDir, "segment-research-plan.csv"),
+        segmentResearchPlanToCsv(segmentPlan)
+      );
+      fs.writeFileSync(
+        path.join(reuseDir, "segment-research-plan.md"),
+        segmentResearchPlanToMarkdown(segmentPlan)
+      );
+      ledger.segmentResearchPlan = {
+        path: path.join(reuseDir, "segment-research-plan.json"),
+        summary: segmentPlan.summary,
+        applicableGaps: (segmentPlan.segments || [])
+          .filter(
+            (s) =>
+              s.applicability === "applicable" &&
+              s.researchCoverage !== "researched"
+          )
+          .map((s) => ({
+            segmentId: s.segmentId,
+            label: s.label,
+            researchCoverage: s.researchCoverage,
+          })),
+      };
+
       ledger.reusePriorIntelligence = {
         path: path.join(reuseDir, "reuse-ledger.json"),
         counts: ledgerDoc.counts,
@@ -487,9 +548,10 @@ for (const stage of stagesToRun) {
           signals: peDoc.counts?.signals,
           dispositions: peDoc.counts?.byDisposition,
         },
+        segmentResearchPlan: ledger.segmentResearchPlan || null,
         researchPathSelection: ledgerDoc.researchPathSelection?.summary || null,
         webhound: WEBHOUND_PROVIDER_STATUS,
-        note: "Prior intelligence + live Airtable audit + PE graph + path selection before paid discovery; DG/PE ≠ auto-qualify",
+        note: "Prior intelligence + live Airtable audit + PE graph + multi-segment plan + path selection before paid discovery; association research ≠ full hotel coverage; DG/PE ≠ auto-qualify",
       });
       continue;
     }
