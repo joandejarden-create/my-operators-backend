@@ -242,52 +242,25 @@
     return s;
   }
 
-  function stripEvidenceLabels(raw) {
-    var t = String(raw == null ? "" : raw).trim();
+  function stripEvidenceClaimPrefixes(raw) {
+    var t = String(raw == null ? "" : raw).replace(/\s+/g, " ").trim();
     if (!t) return "";
-    return t
-      .replace(/^(FACT|INFERENCE|HYPOTHESIS|MIXED|UNKNOWN|FACT\/FIT-GATE)\s*:\s*/i, "")
-      .replace(/\s*\((hotel\/host not confirmed[—–-][^)]*)\)\s*$/i, "")
+    var prefixRe = /^(?:FACT(?:\/FIT-GATE)?|INFERENCE|MIXED|HYPOTHESIS|UNKNOWN)\s*:\s*/i;
+    while (prefixRe.test(t)) {
+      t = t.replace(prefixRe, "").trim();
+    }
+    t = t
+      .replace(/\b(?:FACT(?:\/FIT-GATE)?|INFERENCE|MIXED|HYPOTHESIS)\s*:\s*/gi, "")
       .replace(/\s{2,}/g, " ")
       .trim();
-  }
-
-  function isNumericPeakRooms(v) {
-    if (v == null || v === "" || v === "UNKNOWN") return false;
-    var s = String(v).trim();
-    if (/housing|program|overflow only|verified|status|unknown/i.test(s) && !/\d/.test(s)) {
-      return false;
-    }
-    return /\d/.test(s);
-  }
-
-  function occasionLocationLine(o) {
-    o = o || {};
-    var dest = String(o.destinationStatus || "").trim();
-    var summary = String(o.eventLocationSummary || "").trim();
-    // Prefer multi-site / field geography over a hotel-city shorthand.
-    if (
-      dest &&
-      (/multi-site|not bethesda-centered|soccerplex|boyds|poolesville|olney|marlboro|alexandria/i.test(
-        dest
-      ) ||
-        (summary &&
-          /^(bethesda|washington|arlington)(,?\s*(md|va|dc))?$/i.test(summary) &&
-          dest.length > summary.length + 10))
-    ) {
-      return dest;
-    }
-    if (summary) return summary;
-    if (dest) return dest;
-    var parts = [o.eventCity, o.venueCity].filter(Boolean);
-    return parts.length ? parts.join(" · ") : "—";
+    return t;
   }
 
   function distinctProse() {
-    var seen = {};
+    var seen = [];
     var out = [];
     for (var i = 0; i < arguments.length; i++) {
-      var t = stripEvidenceLabels(arguments[i]);
+      var t = stripEvidenceClaimPrefixes(arguments[i]);
       if (!t || t === "—") continue;
       // Strip customer-facing implementation notes; keep any remaining prose.
       t = t
@@ -300,7 +273,6 @@
           ""
         )
         .replace(/\s*Qualitative fit\s*[—–-]\s*no numeric score on this prospect\.?/gi, "")
-        .replace(/\s*Qualitative hotel-fit assessment[^.]*\.?/gi, "")
         .replace(/\s{2,}/g, " ")
         .trim();
       if (!t || t === "—") continue;
@@ -311,28 +283,54 @@
       ) {
         continue;
       }
-      // Near-duplicate collapse: exact prefix key, or one paragraph contained in another.
-      var key = t.toLowerCase().slice(0, 80);
-      var tl = t.toLowerCase();
-      var dupIdx = -1;
-      for (var j = 0; j < out.length; j++) {
-        var ol = out[j].toLowerCase();
-        if (ol === tl || ol.slice(0, 80) === key) {
-          dupIdx = j;
-          break;
-        }
-        if (ol.indexOf(tl) === 0 || tl.indexOf(ol) === 0) {
-          // Keep the longer / more informative paragraph only.
-          if (t.length > out[j].length) out[j] = t;
-          dupIdx = j;
+      var key = t
+        .toLowerCase()
+        .replace(/[^\w\s]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+        .slice(0, 96);
+      if (!key) continue;
+      var dup = false;
+      for (var s = 0; s < seen.length; s++) {
+        var prev = seen[s];
+        if (
+          prev === key ||
+          (key.length >= 48 && prev.indexOf(key.slice(0, 48)) >= 0) ||
+          (prev.length >= 48 && key.indexOf(prev.slice(0, 48)) >= 0)
+        ) {
+          dup = true;
           break;
         }
       }
-      if (dupIdx >= 0) continue;
-      seen[key] = true;
+      if (dup) continue;
+      seen.push(key);
       out.push(t);
     }
     return out;
+  }
+
+  function formatPeakRoomsLabel(o) {
+    var peak = o.peakRooms ?? o.estimatedPeakRooms ?? o.publishedPeakRooms;
+    if (peak != null && peak !== "" && !Number.isNaN(Number(peak))) {
+      return String(peak);
+    }
+    if (typeof peak === "string" && /\d/.test(peak) && !/housing|program|verified/i.test(peak)) {
+      return peak;
+    }
+    return "Not yet published";
+  }
+
+  function formatHousingProgramLabel(o) {
+    var status = String(o.housingProgramStatus || o.roomDemandStatus || "").toUpperCase();
+    var label = o.housingProgramStatusLabel || o.roomDemandStatusLabel || "";
+    if (
+      status === "VERIFIED_HOUSING_PROGRAM" ||
+      /verified housing program/i.test(String(label))
+    ) {
+      return label || "Verified housing program";
+    }
+    if (o.housingStatus) return customerStatusLabel(o.housingStatus, "");
+    return "";
   }
 
   function hotelLocationLine(hotel) {
@@ -1561,9 +1559,10 @@
       it.prospectCommercialLabel ||
       "";
     var lbl = String(label || "");
-    if (section === "PRIORITY" || /prospect to qualify|priority/i.test(lbl)) {
+    // Packaging class — must not read as the Priority High/Medium/Watch filter.
+    if (section === "PRIORITY" || /prospect to qualify|core prospect/i.test(lbl)) {
       return (
-        '<span class="gdi-tile-pill gdi-pill-high" data-facet="commercial-class">Priority</span>'
+        '<span class="gdi-tile-pill gdi-pill-high" data-facet="commercial-class">Core prospect</span>'
       );
     }
     if (section === "EXPLORATORY" || /exploratory/i.test(lbl)) {
@@ -2578,41 +2577,35 @@
     var sources = sourceListHtml(o.sources);
 
     var thesis =
-      stripEvidenceLabels(
-        o.hotelOpportunityThesis ||
-          o.hotelDemandThesis ||
-          o.bethesdaWinThesis ||
-          ""
-      );
-    var fitText = stripEvidenceLabels(
+      o.hotelOpportunityThesis ||
+      o.hotelDemandThesis ||
+      o.bethesdaWinThesis ||
+      "";
+    var fitText =
       o.fitExplanation ||
-        o.fitRationale ||
-        o.hotelFitRationale ||
-        (audit.hotelFit && audit.hotelFit.explanation) ||
-        ""
-    );
-    var cohortText = stripEvidenceLabels(
-      o.travelingCohort || o.relevantTravelers || ""
-    );
-    var demandMechText = stripEvidenceLabels(o.whyHotelDemand || "");
-    var occasionText = stripEvidenceLabels(o.summaryWhat || "");
-    var whyNowText = stripEvidenceLabels(
-      o.watchCardWhenToAct || o.whyNow || o.summaryWhyNow || ""
-    );
-    var actionText = stripEvidenceLabels(
+      o.fitRationale ||
+      o.hotelFitRationale ||
+      (audit.hotelFit && audit.hotelFit.explanation) ||
+      "";
+    var demandText =
+      o.whyHotelDemand ||
+      o.travelingCohort ||
+      o.relevantTravelers ||
+      "";
+    var occasionText = o.summaryWhat || "";
+    var whyMattersText = o.summaryWhyMatters || "";
+    var whyNowText = o.watchCardWhenToAct || o.whyNow || o.summaryWhyNow || "";
+    var actionText =
       o.watchCardRecommendedNextStep ||
-        o.recommendedAction ||
-        o.recommendedNextStep ||
-        ""
-    );
+      o.recommendedAction ||
+      o.recommendedNextStep ||
+      "";
 
     var dateLabel =
       o.eventDateDisplay ||
       eventDateRangeLabel(o.eventStartDate, o.eventEndDate, "Date not yet confirmed");
-    var peakRaw = o.peakRooms ?? o.estimatedPeakRooms;
-    var peakLabel = isNumericPeakRooms(peakRaw)
-      ? String(peakRaw).trim()
-      : "Not yet published";
+    var peakLabel = formatPeakRoomsLabel(o);
+    var housingProgramLabel = formatHousingProgramLabel(o);
     var attLabel = fmtVal(o.attendance ?? o.estimatedAttendance);
     if (!attLabel || attLabel === "—") attLabel = "Not yet published";
 
@@ -2620,33 +2613,53 @@
       o.venueSourcingStatusLabel || o.venueSourcingStatus,
       "Hotel sourcing unconfirmed"
     );
+    // Room-demand commercial state — never substitute housing-program label for peak rooms
     var roomDemandLabel = customerStatusLabel(
-      o.roomDemandLive || o.roomDemandStatusLabel || o.roomDemandStatus,
-      "Not yet established"
-    );
-    var housingLabel = customerStatusLabel(
-      o.housingStatusLabel || o.housingStatus,
-      ""
+      o.roomDemandLive ||
+        (housingProgramLabel
+          ? null
+          : o.roomDemandStatusLabel || o.roomDemandStatus),
+      housingProgramLabel ? "Housing program evidenced; peak rooms unknown" : "Not yet established"
     );
     var cycleLabel = customerStatusLabel(
       o.futureCycleEvidenceLabel || o.futureCycleEvidenceState,
       ""
     );
-    var locationLine = occasionLocationLine(o);
+    var locationLine =
+      o.eventLocationSummary ||
+      o.destinationStatus ||
+      [o.eventCity, o.venueCity, o.city].filter(Boolean).join(" · ") ||
+      "—";
 
     var hasScore =
       o.hotelFitScore != null &&
       o.hotelFitScore !== "" &&
       !Number.isNaN(Number(o.hotelFitScore));
-    var dimAssess =
-      o.hotelFitDimensionAssessments ||
-      (o.hotelFitAssessment && o.hotelFitAssessment.dimensions) ||
-      {};
-    var dimKeys = Object.keys(dimAssess);
-    var fitAssessmentHtml = "";
-    if (hasScore) {
-      fitAssessmentHtml =
-        '<div class="gdi-score-grid">' +
+    var qualComps = o.hotelFitQualitativeComponents || {};
+    var fitAssessmentParas = distinctProse(
+      fitText ||
+        o.hotelFitRationale ||
+        o.hotelFitScoreNote ||
+        (!hasScore && !Object.keys(qualComps).length
+          ? "Hotel-fit dimensions not yet assessed for this prospect."
+          : "")
+    );
+    var qualDimHtml = Object.keys(qualComps)
+      .map(function (k) {
+        var d = qualComps[k] || {};
+        var compLabel = labels[k] || fitLabel(k);
+        return (
+          "<li><strong>" +
+          esc(compLabel) +
+          ":</strong> " +
+          esc(d.level || "Not assessed") +
+          (d.rationale ? " — " + esc(stripEvidenceClaimPrefixes(d.rationale)) : "") +
+          "</li>"
+        );
+      })
+      .join("");
+    var scoreGrid = hasScore
+      ? '<div class="gdi-score-grid">' +
         '<div class="gdi-score-cell"><div class="n">' +
         esc(o.hotelFitScore) +
         '</div><div class="l">Overall Hotel Fit</div></div>' +
@@ -2665,69 +2678,65 @@
             );
           })
           .join("") +
-        "</div>";
-    } else if (dimKeys.length) {
-      fitAssessmentHtml =
-        '<div class="gdi-fit-qualitative gdi-fit-dimensions"><ul>' +
-        dimKeys
-          .map(function (k) {
-            var d = dimAssess[k] || {};
-            var lab = d.label || labels[k] || fitLabel(k) || k;
-            var body = stripEvidenceLabels(d.assessment || "");
-            if (!body) return "";
-            return (
-              "<li><strong>" +
-              esc(lab) +
-              ":</strong> " +
-              esc(body) +
-              "</li>"
-            );
-          })
-          .filter(Boolean)
-          .join("") +
-        "</ul></div>";
-    } else {
-      var fitAssessmentParas = distinctProse(fitText || thesis);
-      fitAssessmentHtml =
-        '<div class="gdi-fit-qualitative">' +
+        "</div>" +
+        (o.hotelFitScoreBasis
+          ? '<p class="gdi-fit-score-meta">Scoring: ' + esc(o.hotelFitScoreBasis) + "</p>"
+          : "")
+      : '<div class="gdi-fit-qualitative">' +
         fitAssessmentParas
           .map(function (p) {
             return "<p>" + esc(p) + "</p>";
           })
           .join("") +
+        (qualDimHtml ? "<ul class=\"gdi-fit-dimensions\">" + qualDimHtml + "</ul>" : "") +
         "</div>";
-    }
-    var scoreGrid = fitAssessmentHtml;
 
     var evidenceConfLabel =
       o.evidenceConfidence == null || o.evidenceConfidence === ""
         ? "Not scored"
         : o.evidenceConfidence;
     var qualLabel =
-      o.opportunityQualificationLabel ||
-      o.opportunityQualification ||
-      o.prospectCustomerLabel ||
-      "—";
+      o.opportunityQualificationLabel || o.opportunityQualification || "—";
 
     var occasionParas = distinctProse(occasionText || o.title);
-    // Demand section: cohort + mechanism only — never reuse hotel thesis
-    var demandParas = distinctProse(cohortText, demandMechText);
-    // Why this hotel: thesis once (not summaryWhyMatters copy of same text)
-    var hotelParas = distinctProse(
-      thesis && fitText && thesis.slice(0, 80) === fitText.slice(0, 80)
-        ? thesis
-        : thesis || fitText
+    // Who travels vs why hotel business — keep distinct; never dump fit thesis here
+    var demandParas = distinctProse(
+      o.travelingCohort || o.relevantTravelers || "",
+      o.whyHotelDemand &&
+        proseDedupeKeySafe(o.whyHotelDemand) !==
+          proseDedupeKeySafe(o.travelingCohort || o.relevantTravelers)
+        ? o.whyHotelDemand
+        : demandText && proseDedupeKeySafe(demandText) !== proseDedupeKeySafe(o.travelingCohort)
+          ? demandText
+          : ""
     );
-    // Limitations: competing / host pattern only — drop lines already in hotel thesis
+    function proseDedupeKeySafe(v) {
+      return stripEvidenceClaimPrefixes(v)
+        .toLowerCase()
+        .replace(/[^\w\s]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+        .slice(0, 96);
+    }
+    // Why this hotel — fit / hotel thesis only (not demand cohort)
+    var hotelParas = distinctProse(
+      whyMattersText,
+      thesis && demandParas.indexOf(thesis) < 0 ? thesis : "",
+      fitText && !hasScore ? "" : "" // fit body lives in scoreGrid once
+    );
+    // Limitations — competing arrangements / host pattern only
     var limitParas = distinctProse(
       o.competitiveContextNote,
-      o.venueHistoryNote
-    ).filter(function (p) {
-      var k = p.toLowerCase().slice(0, 60);
-      return !hotelParas.some(function (h) {
-        return h.toLowerCase().indexOf(k) === 0 || k.indexOf(h.toLowerCase().slice(0, 40)) === 0;
-      });
-    });
+      o.venueHistoryNote &&
+        proseDedupeKeySafe(o.venueHistoryNote) !==
+          proseDedupeKeySafe(o.competitiveContextNote)
+        ? o.venueHistoryNote
+        : "",
+      o.roomDemandStatusNote &&
+        /not established|unknown|not published/i.test(String(o.roomDemandStatusNote))
+        ? o.roomDemandStatusNote
+        : ""
+    );
     var whyNowParas = distinctProse(whyNowText);
 
     var relatedN = o.relatedOpportunityCount || (o.relatedOpportunityIds || []).length || 0;
@@ -2763,9 +2772,6 @@
       "<span><strong>Room demand</strong> " +
       esc(roomDemandLabel) +
       "</span>" +
-      (housingLabel
-        ? "<span><strong>Housing</strong> " + esc(housingLabel) + "</span>"
-        : "") +
       (cycleLabel
         ? "<span><strong>Cycle</strong> " + esc(cycleLabel) + "</span>"
         : "") +
@@ -2774,17 +2780,18 @@
       esc(attLabel) +
       " · Peak rooms: " +
       esc(peakLabel) +
+      (housingProgramLabel
+        ? " · Housing program: " + esc(housingProgramLabel)
+        : "") +
       "</p>" +
       relatedHtml +
       "</section>" +
       '<section class="gdi-section gdi-section--hotel-demand"><h3>Who could travel / why hotel business</h3>' +
-      (demandParas.length
-        ? demandParas
-            .map(function (p) {
-              return "<p>" + esc(p) + "</p>";
-            })
-            .join("")
-        : "<p>—</p>") +
+      demandParas
+        .map(function (p) {
+          return "<p>" + esc(p) + "</p>";
+        })
+        .join("") +
       "</section>" +
       '<section class="gdi-section gdi-section--matters"><h3>Why this hotel</h3>' +
       hotelParas
@@ -2798,15 +2805,11 @@
       esc(
         hasScore
           ? o.hotelFitScore
-          : dimKeys.length
-            ? String(
-                (o.hotelFitAssessment && o.hotelFitAssessment.posture) || ""
-              )
-                .replace(/_/g, " ")
-                .replace(/\bEXPLORATORY STRETCH\b/i, "Exploratory / stretch")
-                .replace(/\bEXPLORATORY\b/i, "Exploratory") ||
-              "By dimension"
-            : "Assessment pending"
+          : o.hotelFitPosture === "EXPLORATORY_STRETCH"
+            ? "Exploratory / stretch"
+            : Object.keys(qualComps).length
+              ? "Dimension assessment"
+              : "Not scored"
       ) +
       "</strong></div>" +
       "<div><span class=\"gdi-meta-label\">Sales posture</span><strong>" +
