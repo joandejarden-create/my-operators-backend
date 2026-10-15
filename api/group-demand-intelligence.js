@@ -73,6 +73,7 @@ import {
   loadOpportunitiesCanonical,
   getGdiOpportunityPersistenceMode,
 } from "../lib/group-demand-intelligence/opportunity-persistence.js";
+import { sanitizeOpportunityForCustomerPresentation } from "../lib/group-demand-intelligence/customer-presentation-sanitize-v1.js";
 import {
   getCachedOpportunityDoc,
   invalidateGdiHotelReadCache,
@@ -252,12 +253,14 @@ function projectOpportunitiesCommercialQuality(opportunities, { nowDate } = {}) 
         cq.demandFamilyLabel ||
         "Discovered";
     }
-    return {
+    // Shared list+detail customer presentation: scrub assessment prose, provider
+    // brands, and withheld-score fallbacks. Hotel-agnostic — no property bypasses.
+    return sanitizeOpportunityForCustomerPresentation({
       ...cq,
       segment,
       relatedOpportunityIds: relatedIds,
       relatedOpportunityCount: relatedIds.length,
-    };
+    });
   });
 }
 
