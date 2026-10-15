@@ -9,8 +9,8 @@
 
 | Environment | URL | Source folder | Branch/SHA | Data adapter | Checks |
 | --- | --- | --- | --- | --- | --- |
-| Local (primary) | http://127.0.0.1:8080 | `C:\Dev\dealality\my-operators-backend` | `gdi/local-production-parity` @ pre-merge work; assets `gdi-parity-v1` | `GDI_OPPORTUNITIES_PERSISTENCE=airtable` (canonical Airtable read) | `npm run gdi:local:acceptance` PASS; Mayflower ACEC/ASID/Aero fallbacks; AHIMA drawer; history Oct 15 Completed (not Oct 29) |
-| Production | https://my-operators-backend-production.up.railway.app | Railway from clean `main` | Deploy after merge (see deploy record) | Airtable (production) | Same acceptance cases post-deploy |
+| Local (primary) | http://127.0.0.1:8080 | `C:\Dev\dealality\my-operators-backend` | `main` @ `150bd37a`; assets `gdi-parity-v1` | `GDI_OPPORTUNITIES_PERSISTENCE=airtable` (canonical Airtable read) | `npm run gdi:local:acceptance` PASS; Mayflower ACEC/ASID/Aero fallbacks; AHIMA drawer; history Oct 15 Completed (not Oct 29) |
+| Production | https://my-operators-backend-production.up.railway.app | Railway from clean `main` | `150bd37a` / Railway deploy `6455b4e1…` SUCCESS; assets `gdi-parity-v1` | Airtable (production) | Post-deploy ACEC/ASID/Aero fallbacks PASS; history Oct 15 Completed |
 | Hold / unfinished tree | n/a (do not serve) | `C:\Dev\dealality\gdi-release-main` | `gdi/parallel-provider-san-diego` dirty | Mixed FS pilot data | Preserve ADP/census/unrelated work; do not use as primary server |
 | Consolidate hold | n/a | `C:\Dev\dealality\gdi-main-consolidate` | `gdi/consolidate-hold` @ prior main | n/a | Non-destructive hold after main ownership moved |
 
