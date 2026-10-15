@@ -740,8 +740,7 @@
     var hotelId = wrap && wrap.getAttribute("data-hotel");
     var hotelName = wrap && wrap.getAttribute("data-name");
     if (!act || !hotelId || act === "noop") return;
-    var more = btn.closest("details.ada-more");
-    if (more) more.open = false;
+    if (T && typeof T.closeMoreMenu === "function") T.closeMoreMenu();
     if (act === "view-pdf") openPdf(hotelId, false);
     else if (act === "download-pdf") openPdf(hotelId, true);
     else if (act === "generate" || act === "regenerate") generatePdf(hotelId);

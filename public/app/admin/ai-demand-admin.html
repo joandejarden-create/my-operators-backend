@@ -196,8 +196,8 @@
         </button>
       </div>
 
-      <div class="adr-table-wrap">
-        <table class="adr-table" id="aapTable">
+      <div class="adr-table-wrap ada-table-shell">
+        <table class="adr-table ada-table" id="aapTable">
           <thead>
             <tr>
               <th>#</th>
@@ -223,12 +223,15 @@
 
     <section id="adaPanelGdiReports" class="ada-panel" data-panel="gdi-reports" role="tabpanel" hidden>
       <div class="adr-counts" id="gdiRptCounts" aria-live="polite"></div>
-      <p class="ada-metric-note">
-        <strong>Ready / Action Set / Watch</strong> are counts from the current GDI report data
-        executive summary (customer-ready prospects, action-set recommendations, future-watch),
-        loaded when this catalog is built — not a separate live list inventory and not PDF snapshot
-        archives. <strong>Last Generated</strong> is the PDF store generation time.
-      </p>
+      <details class="ada-metric-disclosure">
+        <summary>About Ready / Action Set / Watch metrics</summary>
+        <p>
+          These columns count opportunities from the current GDI report executive summary
+          (customer-ready, action-set, future-watch) when the catalog is built — not a separate
+          live inventory and not PDF archives. <strong>Last Generated</strong> is the PDF store
+          generation time.
+        </p>
+      </details>
       <div class="ada-toolbar">
         <section class="adr-filters" aria-label="GDI report filters">
           <label>
@@ -301,9 +304,13 @@
         <button type="button" class="adr-btn adr-btn--secondary" data-rar-type-chip="ADP" aria-pressed="false">ADP</button>
         <button type="button" class="adr-btn adr-btn--secondary" data-rar-type-chip="GDI" aria-pressed="false">GDI</button>
       </div>
-      <p class="ada-metric-note">
-        Archive rows are <strong>report versions</strong> (not unique hotels). Counts show versions matching filters.
-      </p>
+      <details class="ada-metric-disclosure">
+        <summary>About archive counts</summary>
+        <p>
+          Archive rows are <strong>report versions</strong> (not unique hotels). Counts show
+          versions matching the current filters.
+        </p>
+      </details>
       <div class="ada-toolbar">
         <section class="adr-filters" aria-label="Report archive filters">
           <label>

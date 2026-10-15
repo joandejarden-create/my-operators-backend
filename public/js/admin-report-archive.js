@@ -324,8 +324,7 @@
         var wrap = btn.closest("[data-id]");
         var id = (wrap && wrap.getAttribute("data-id")) || btn.getAttribute("data-id");
         var act = btn.getAttribute("data-act");
-        var more = btn.closest("details.ada-more");
-        if (more) more.open = false;
+        if (T && typeof T.closeMoreMenu === "function") T.closeMoreMenu();
         if (act === "view-pdf") openPdf(id, false);
         else if (act === "download-pdf") openPdf(id, true);
         else if (act === "view-data") openData(id);
