@@ -3,6 +3,9 @@
 Generated: 2026-10-15  
 Eligibility unchanged by this history fix. Counts explained only.
 
+**Record-level inventory (stable IDs, timestamps, categories):**  
+[`../gdi-quality-review/INVENTORY_RECONCILIATION_RECORD_LEVEL.md`](../gdi-quality-review/INVENTORY_RECONCILIATION_RECORD_LEVEL.md)
+
 ## Snapshot sources
 
 | Snapshot | Source | Mayflower | San Diego |
@@ -45,3 +48,10 @@ Reconstruct: current 38 + 8 excluded-not-in-current = 46. One prior exclusion (`
 ## Consistency
 
 Type counts, list totals, and exports must continue to use the **same** customer-facing filter as the list API. This history work does not alter that filter.
+
+## Live production after `fed35cc7` deploy (2026-10-15)
+
+| Hotel | Live facing | Notes |
+|-------|------------:|-------|
+| Mayflower | **30** | Matches freeze / reviewed-path total |
+| San Diego | **45** | Live list is above freeze 38 and below earlier broad 46; PE preferred-lodging rows that were out of the freeze reviewed-path set are visible again (e.g. Sparks Gallery, City Cruises). No eligibility code change in this history PR — count drift is inventory/filter state on Airtable, not forced restore/removal. |

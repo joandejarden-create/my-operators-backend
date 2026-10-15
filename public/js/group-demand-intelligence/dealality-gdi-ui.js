@@ -3905,29 +3905,8 @@
         .trim()
         .slice(0, 96);
     }
-    // Why this hotel — property × prospect only (not demand cohort / opportunity blurb)
-    var hotelParas = distinctProse(
-      o.whyThisHotel,
-      thesis &&
-        demandParas.indexOf(thesis) < 0 &&
-        String(thesis).toLowerCase() !==
-          String(o.summaryWhat || "").toLowerCase()
-        ? thesis
-        : "",
-      whyMattersText &&
-        String(whyMattersText).toLowerCase() !==
-          String(o.summaryWhat || "").toLowerCase() &&
-        /hotel|location|meeting|guestroom|downtown|facility|suit/i.test(
-          String(whyMattersText)
-        )
-        ? whyMattersText
-        : ""
-    );
-    if (!hotelParas.length) {
-      hotelParas = [
-        "Hotel-specific rationale not yet established for this prospect — see dimension assessments below.",
-      ];
-    }
+    // Why this hotel — shared opener rejects assessment prose + occasion duplicates
+    var whyHotelOpening = whyThisHotelOpeningHtml(o);
     // Limitations — competing arrangements / host pattern only
     var limitParas = distinctProse(
       o.competitiveContextNote,
@@ -3998,11 +3977,7 @@
         .join("") +
       "</section>" +
       '<section class="gdi-section gdi-section--matters"><h3>Why this hotel</h3>' +
-      hotelParas
-        .map(function (p) {
-          return "<p>" + esc(p) + "</p>";
-        })
-        .join("") +
+      whyHotelOpening +
       scoreGrid +
       "</section>" +
       (limitParas.length

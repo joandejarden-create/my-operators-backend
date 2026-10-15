@@ -1602,6 +1602,17 @@
     "test:gdi-contact-completeness-v1": "node scripts/test-gdi-contact-completeness-v1.mjs",
     "gdi:contact-completeness-v1-canary": "node scripts/gdi-contact-completeness-v1-canary.mjs",
     "test:property-display-label": "node scripts/test-property-display-label.mjs",
+    "gdi:quality:quick": "node scripts/gdi-quality-quick.mjs",
+    "gdi:quality:full": "node scripts/gdi-quality-full.mjs",
+    "gdi:test:integrity": "node scripts/test-gdi-quality-integrity-v1.mjs",
+    "gdi:test:integrity:live": "node scripts/test-gdi-quality-integrity-v1.mjs --live",
+    "gdi:test:visual": "node scripts/gdi-quality-visual-playwright-v1.mjs",
+    "gdi:test:access": "node scripts/test-gdi-quality-access-control-v1.mjs",
+    "gdi:test:copy": "node scripts/gdi-quality-customer-copy-scan-v1.mjs",
+    "gdi:test:links": "node scripts/gdi-quality-link-check-v1.mjs",
+    "gdi:quality:format-check": "prettier --config config/gdi-quality/.prettierrc.json --ignore-path config/gdi-quality/.prettierignore --check lib/group-demand-intelligence/customer-presentation-sanitize-v1.js scripts/test-gdi-customer-presentation-sanitize-v2.mjs scripts/gdi-repair-provisional-withheld-narrative-v1.mjs scripts/gdi-quality-quick.mjs",
+    "test:gdi-customer-presentation-sanitize-v2": "node scripts/test-gdi-customer-presentation-sanitize-v2.mjs",
+    "gdi:quality:stylelint": "stylelint --config config/gdi-quality/stylelint.config.cjs public/css/group-demand-intelligence.css",
     "gdi:local:diagnostic": "node scripts/gdi-local-build-diagnostic-v1.mjs",
     "gdi:local:acceptance": "node scripts/gdi-local-acceptance-parity-v1.mjs",
     "gdi:test:drawer-fit": "node scripts/test-gdi-drawer-hotel-fit-display-v1.mjs",
@@ -1627,9 +1638,14 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "axe-core": "^4.10.3",
     "kill-port": "^2.0.0",
+    "knip": "^5.66.2",
     "nodemon": "^3.0.0",
-    "playwright": "^1.49.1"
+    "playwright": "^1.49.1",
+    "prettier": "^3.6.2",
+    "stylelint": "^16.25.0",
+    "stylelint-config-standard": "^39.0.1"
   },
   "keywords": [
     "web-scraping",
