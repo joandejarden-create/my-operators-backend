@@ -620,7 +620,10 @@ export async function getGdiOpportunities(req, res) {
     const format = String(req.query.format || "").trim().toLowerCase();
     const wantFull = view === "full" || view === "complete";
     const doc = await loadOppDoc(hotelId);
-    let opportunities = projectOpportunitiesCommercialQuality(doc.opportunities || []);
+    // Visibility must run on canonical fields before presentation sanitize.
+    // Sanitizer may fill summaryWhat from summaryWhyMatters/thesis, which
+    // incorrectly satisfies travel_or_recurring_evidence and widens the list.
+    let opportunities = doc.opportunities || [];
     if (!includeDisqualified) {
       opportunities = filterSalespersonView(opportunities);
     }
@@ -629,6 +632,7 @@ export async function getGdiOpportunities(req, res) {
       opportunities,
       visibilityOpts
     );
+    opportunities = projectOpportunitiesCommercialQuality(opportunities);
 
     // CSV via ?format=csv (compat path; dedicated /export.csv also exists)
     if (format === "csv") {
@@ -825,11 +829,13 @@ export async function getGdiOpportunitiesExport(req, res) {
   const includeDisqualified = String(req.query.includeDisqualified || "") === "1";
 
   const doc = await loadOppDoc(hotelId);
-  let opportunities = projectOpportunitiesCommercialQuality(doc.opportunities || []);
+  // Same order as getGdiOpportunities: filter on canonical, then present.
+  let opportunities = doc.opportunities || [];
   if (!includeDisqualified) {
     opportunities = filterSalespersonView(opportunities);
   }
   opportunities = filterCustomerFacingOpportunities(opportunities, { hotelId });
+  opportunities = projectOpportunitiesCommercialQuality(opportunities);
   opportunities = filterOpportunitiesForExport(opportunities, req.query);
   opportunities = await attachCommercialProgression(hotelId, opportunities);
 

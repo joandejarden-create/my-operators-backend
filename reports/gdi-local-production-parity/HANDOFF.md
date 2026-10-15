@@ -9,16 +9,30 @@
 
 | Environment | URL | Source folder | Branch/SHA | Data adapter | Checks |
 | --- | --- | --- | --- | --- | --- |
-| Local (primary) | http://127.0.0.1:8080 | `C:\Dev\dealality\my-operators-backend` | `main` @ `150bd37a`; assets `gdi-parity-v1` | `GDI_OPPORTUNITIES_PERSISTENCE=airtable` (canonical Airtable read) | `npm run gdi:local:acceptance` PASS; Mayflower ACEC/ASID/Aero fallbacks; AHIMA drawer; history Oct 15 Completed (not Oct 29) |
-| Production | https://my-operators-backend-production.up.railway.app | Railway from clean `main` | `150bd37a` / Railway deploy `6455b4e1…` SUCCESS; assets `gdi-parity-v1` | Airtable (production) | Post-deploy ACEC/ASID/Aero fallbacks PASS; history Oct 15 Completed |
-| Hold / unfinished tree | n/a (do not serve) | `C:\Dev\dealality\gdi-release-main` | `gdi/parallel-provider-san-diego` dirty | Mixed FS pilot data | Preserve ADP/census/unrelated work; do not use as primary server |
-| Consolidate hold | n/a | `C:\Dev\dealality\gdi-main-consolidate` | `gdi/consolidate-hold` @ prior main | n/a | Non-destructive hold after main ownership moved |
+| Local (primary) | http://127.0.0.1:8080 | `C:\Dev\dealality\my-operators-backend` | see reconciliation closeout; assets `gdi-tile-contact-toolbar-v1` | `GDI_OPPORTUNITIES_PERSISTENCE=airtable` | `npm run gdi:local:acceptance` — Mayflower **30**, San Diego **38** |
+| Production | Railway | clean `main` deploy | see `reports/gdi-release-reconciliation/FOUNDER_REPORT.md` | Airtable | Auth GDI path; DEV share secret **0** |
+| Hold | n/a | `C:\Dev\dealality\gdi-release-main` | concurrent ADP/census | Mixed FS | Do not serve as primary |
+| Consolidate hold | n/a | `C:\Dev\dealality\gdi-main-consolidate` | hold | n/a | Preserve |
 
-## What caused the divergence
+## Authoritative customer-list counts (post filter-order fix)
 
-`my-operators-backend` was left on a detached obsolete checkout (`0d2ca4f3`) while production deploys came from `gdi-main-consolidate` / later closeout merges. Local Node on :8080/:8081 was still serving older assets (`gdi-drawer-quality-v1`). Matching opportunity counts alone did not mean code parity.
+| Hotel | Customer list (`isCustomerFacingOpportunity` on canonical fields) | Broad stamp | Notes |
+| --- | ---: | ---: | --- |
+| Mayflower `rec0eTEnCqlsGJJt9` | **30** | 35 | 5 overflow/missing-basis rows retained in store, not on list |
+| San Diego `recnPB3Q02NO8Ma1o` | **38** | 46 | 7 PE enrichment-queue + Shipyard missing basis; do not treat pre-fix API **45** as inventory truth |
 
-## Local start (required first step)
+Full ID tables: `reports/gdi-release-reconciliation/FOUNDER_REPORT.md`.
+
+## Presentation release (PR #95) + reconciliation fix
+
+1. Compact tile contact + toolbar row + static hotel-fit tiles — asset `gdi-tile-contact-toolbar-v1`.
+2. **Reconciliation fix:** auth list/export must **filter before presentation sanitize** so sanitize cannot invent travel evidence via `summaryWhat` fallback.
+
+## Research history (honest)
+
+Footer may show History/Status unavailable while Last published / Last source verification show Oct 15 stamps. Oct 29 simulation remains excluded. Do not invent Completed from runId alone.
+
+## Local start
 
 ```powershell
 cd C:\Dev\dealality\my-operators-backend
@@ -28,44 +42,20 @@ $env:GDI_SHARE_CAPABILITY_ALLOW_DEV_SECRET='1'
 npm start
 ```
 
-Then:
-
 ```powershell
 npm run gdi:local:diagnostic
 npm run gdi:local:acceptance
-npm run gdi:test:drawer-fit
-npm run gdi:test:history-type
+npm run test:gdi-compact-tile-contact-v1
+npm run test:gdi-list-visibility-before-sanitize-v1
 ```
 
-Obsolete preview ports: **8081**, **3000** (do not use for GDI parity).
-
-## Fixes in this parity pass
-
-1. **Share sanitize no longer drops company-contact fields** before list DTO (`contactEmail` / `contactPhone` / org routes).
-2. **Contact display surface** treats `administrator@` as org route; promotes firstname@ + role evidence (Aero Club → Stephanie); unused stored emails become usable org fallbacks (ACEC / ASID).
-3. Asset bust **`gdi-parity-v1`**.
-4. Repeatable scripts: `gdi:local:diagnostic`, `gdi:local:acceptance`.
-
-## Local acceptance (Mayflower)
-
-- Duplicate Hotel Fit: single Overall provisional tile on AHIMA.
-- Contactability visible; dimension tiles labeled (“Needs verification”), not blank.
-- Provisional Overall **61** (not withheld+number contradiction); Evidence confidence **38 / 100**.
-- ACEC: `info@acecmw.org` + `202-644-8260`.
-- ASID: `administrator@dcmetro.asid.org`.
-- Aero Club: Stephanie + `stephanie@aeroclub.org` + company phone.
-- Research history: **Oct 15, 2026 / Completed** (Oct 29 false Completed not shown).
-- Opportunity Type filter categories present (Scaling / PE / Association / Corporate Meetings).
-
-## Deploy gate
-
-Only after local acceptance PASS:
+## Deploy
 
 ```powershell
 npm run deploy:production
 ```
 
-No dirty/hotfix override.
+No dirty/hotfix override. Keep `GDI_SHARE_CAPABILITY_ALLOW_DEV_SECRET=0` in production.
 
 ## Open in Cursor
 
