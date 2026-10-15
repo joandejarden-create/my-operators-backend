@@ -1174,12 +1174,16 @@ for (const stage of stagesToRun) {
         path.join(buyerDir, "buyer-contact-enrichment-queue.json"),
         JSON.stringify(queue, null, 2) + "\n"
       );
-      if (!authorizeSurfe && !has("--run-buyer-enrichment")) {
+      // Contact-depth is a required stage: always execute the shared buyer pass.
+      // Public/canonical research runs by default. Surfe remains opt-in (--authorize-surfe).
+      // Opt out of execution only with --skip-buyer-enrichment-execute (queue-only debug).
+      const skipBuyerExecute = has("--skip-buyer-enrichment-execute");
+      if (skipBuyerExecute) {
         mark(ledger, stage, "completed", {
           module: "buyer_contact_enrichment_v1",
           mode: "queue_only",
           queueCount: queue.items?.length || 0,
-          note: "Named-buyer enrichment queue built. Pass --run-buyer-enrichment and optionally --authorize-surfe to execute within remaining $11 shared envelope.",
+          note: "Debug queue-only (--skip-buyer-enrichment-execute). Standard runs execute contact-depth; Surfe still requires --authorize-surfe.",
         });
         continue;
       }
