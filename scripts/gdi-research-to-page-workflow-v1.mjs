@@ -15,7 +15,10 @@
  *   validate_config → reuse_evidence → discover_gaps → assess_fit →
  *   identify_people → enrich_contacts → synthesize_hotel_relevance →
  *   evaluate_eligibility → generate_cards → prepare_manifest →
- *   preview_verify → apply_publish
+ *   preview_verify → apply_pe_canonical → apply_publish
+ *
+ * apply_pe_canonical (authorize with --authorize-publish or --authorize-pe-persist):
+ *   venue → signals → hotel fit → GDI link via canonical-persist-and-link-v1
  *
  * v2 wiring inside those stages:
  *   reuse_evidence → reuse_prior_intelligence ledger
@@ -52,6 +55,17 @@ import {
   writeNativeGeoArtifacts,
 } from "../lib/group-demand-intelligence/workflow/native-geo-research-stage-v1.js";
 import { selectResearchPaths } from "../lib/group-demand-intelligence/workflow/research-path-selection-v1.js";
+import {
+  buildHotelSegmentResearchPlan,
+  segmentResearchPlanToCsv,
+  segmentResearchPlanToMarkdown,
+  loadHotelConfig as loadHotelSegmentConfig,
+} from "../lib/group-demand-intelligence/workflow/hotel-segment-research-plan-v1.js";
+import {
+  assessScalingCompaniesApplicability,
+  buildScalingCompanyResearchQueries,
+  isScalingCompanyOpportunity,
+} from "../lib/group-demand-intelligence/workflow/scaling-companies-research-v1.js";
 import { buildOccasionDraftsFromPrograms } from "../lib/group-demand-intelligence/workflow/programs-occasion-draft-v1.js";
 import { proposeHotelVenueFits } from "../lib/group-demand-intelligence/workflow/proposed-hotel-venue-fit-v1.js";
 import { buildTargetedContactPlan } from "../lib/group-demand-intelligence/workflow/targeted-contact-plan-v1.js";
@@ -73,6 +87,16 @@ import {
 } from "../lib/group-demand-intelligence/workflow/jev-advisory-shadow-v1.js";
 import { WEBHOUND_PROVIDER_STATUS } from "../lib/group-demand-intelligence/workflow/webhound-retired-v1.js";
 import { loadOpportunitiesCanonical } from "../lib/group-demand-intelligence/opportunity-persistence.js";
+import {
+  loadVenuePartnershipPackagesFromFile,
+  persistVenuePartnershipPackages,
+} from "../lib/group-demand-intelligence/private-events/canonical-persist-and-link-v1.js";
+import { enrichPrivateEventOpportunityDetail } from "../lib/group-demand-intelligence/private-events/customer-detail-enrichment.js";
+import {
+  findOpportunityRecordById,
+  airtableRecordToOpportunity,
+} from "../lib/group-demand-intelligence/airtable-opportunity-store.js";
+import { invalidateGdiHotelReadCache } from "../lib/group-demand-intelligence/read-cache.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -98,6 +122,7 @@ const STAGES = [
   "generate_cards",
   "prepare_manifest",
   "preview_verify",
+  "apply_pe_canonical",
   "apply_publish",
 ];
 
@@ -115,7 +140,13 @@ const outDir =
 const resumeRun = arg("--resume-run");
 const stageOnly = arg("--stage");
 const authorizePublish = has("--authorize-publish");
+const authorizePePersist =
+  has("--authorize-pe-persist") || authorizePublish;
 const dryRun = !authorizePublish || has("--dry-run");
+const PE_PACKAGE_PATH = path.join(
+  ROOT,
+  "reports/gdi-operational-baseline/pe-canonical-persist/venue-partnership-packages.json"
+);
 const runDiscovery = has("--run-discovery");
 const authorizePaidDiscovery = has("--authorize-paid-discovery");
 const authorizeSurfe = has("--authorize-surfe");
@@ -420,6 +451,92 @@ for (const stage of stagesToRun) {
               proposalCount: proposedFits.proposalCount,
             }
           : null;
+
+      // Multi-segment research plan — association volume ≠ full hotel coverage
+      const segCfg = loadHotelSegmentConfig(hotelId) || hotelCfg;
+      const segOpps = Array.isArray(ledgerDoc.opportunities)
+        ? ledgerDoc.opportunities
+        : (await loadOpportunitiesCanonical(hotelId))?.opportunities || [];
+      const pePkgPath = path.join(
+        ROOT,
+        "reports/gdi-operational-baseline/pe-canonical-persist/venue-partnership-packages.json"
+      );
+      let peVenueCount = 0;
+      if (fs.existsSync(pePkgPath)) {
+        const pePkgs = JSON.parse(fs.readFileSync(pePkgPath, "utf8")).packages || [];
+        peVenueCount = pePkgs.filter(
+          (p) => (p.hotel?.hotelId || p.hotel?.id) === hotelId && p.publish !== false
+        ).length;
+      }
+      const segmentPlan = buildHotelSegmentResearchPlan({
+        hotelId,
+        hotelConfig: segCfg,
+        opportunities: segOpps,
+        artifacts: {
+          peCanonicalPersisted: peVenueCount > 0 || (peDoc.counts?.venues || 0) > 0,
+          peVenueCount: peVenueCount || peDoc.counts?.venues || 0,
+          paidBudgetApproved: authorizePaidDiscovery === true,
+        },
+      });
+      fs.writeFileSync(
+        path.join(reuseDir, "segment-research-plan.json"),
+        JSON.stringify(segmentPlan, null, 2) + "\n"
+      );
+      fs.writeFileSync(
+        path.join(reuseDir, "segment-research-plan.csv"),
+        segmentResearchPlanToCsv(segmentPlan)
+      );
+      fs.writeFileSync(
+        path.join(reuseDir, "segment-research-plan.md"),
+        segmentResearchPlanToMarkdown(segmentPlan)
+      );
+      ledger.segmentResearchPlan = {
+        path: path.join(reuseDir, "segment-research-plan.json"),
+        summary: segmentPlan.summary,
+        applicableGaps: (segmentPlan.segments || [])
+          .filter(
+            (s) =>
+              s.applicability === "applicable" &&
+              s.researchCoverage !== "researched"
+          )
+          .map((s) => ({
+            segmentId: s.segmentId,
+            label: s.label,
+            researchCoverage: s.researchCoverage,
+          })),
+      };
+
+      // Scaling companies / emerging corporate accounts — plan + reuse only (no paid)
+      const scApp = assessScalingCompaniesApplicability(segCfg);
+      const scExisting = segOpps.filter((o) => isScalingCompanyOpportunity(o));
+      const scPlan = {
+        version: "gdi-scaling-companies-coordinator-v1",
+        hotelId,
+        applicability: scApp,
+        existingOpportunityCount: scExisting.length,
+        existingOpportunityIds: scExisting.map((o) => o.id || o.opportunityId),
+        researchQueries: buildScalingCompanyResearchQueries(segCfg),
+        paidBudgetApproved: authorizePaidDiscovery === true,
+        note: authorizePaidDiscovery
+          ? "Paid discovery authorized separately — still require local connection + dated growth + hotel-use thesis"
+          : "No paid calls in this stage — reuse existing accounts; native/unpaid query plan only",
+        invariants: [
+          "Funding / hiring page / startup directory alone is insufficient",
+          "Standing CORPORATE_ACCOUNT_RELATIONSHIP — do not invent event dates",
+          "One undifferentiated account → one opportunity (dedupe growth signals)",
+          "Founder is not automatically the hotel buyer",
+        ],
+      };
+      fs.writeFileSync(
+        path.join(reuseDir, "scaling-companies-research-plan.json"),
+        JSON.stringify(scPlan, null, 2) + "\n"
+      );
+      ledger.scalingCompaniesResearch = {
+        path: path.join(reuseDir, "scaling-companies-research-plan.json"),
+        applicable: scApp.applicable === true,
+        existingCount: scExisting.length,
+      };
+
       ledger.reusePriorIntelligence = {
         path: path.join(reuseDir, "reuse-ledger.json"),
         counts: ledgerDoc.counts,
@@ -467,9 +584,10 @@ for (const stage of stagesToRun) {
           signals: peDoc.counts?.signals,
           dispositions: peDoc.counts?.byDisposition,
         },
+        segmentResearchPlan: ledger.segmentResearchPlan || null,
         researchPathSelection: ledgerDoc.researchPathSelection?.summary || null,
         webhound: WEBHOUND_PROVIDER_STATUS,
-        note: "Prior intelligence + live Airtable audit + PE graph + path selection before paid discovery; DG/PE ≠ auto-qualify",
+        note: "Prior intelligence + live Airtable audit + PE graph + multi-segment plan + path selection before paid discovery; association research ≠ full hotel coverage; DG/PE ≠ auto-qualify",
       });
       continue;
     }
@@ -1461,6 +1579,114 @@ for (const stage of stagesToRun) {
       });
       if (r1.status !== 0 || r2.status !== 0) {
         throw new Error("preview_import_failed");
+      }
+      continue;
+    }
+
+    if (stage === "apply_pe_canonical") {
+      // Research → venue/signals → hotel fit → GDI link (idempotent).
+      // Dry-run by default; live writes require --authorize-pe-persist or --authorize-publish.
+      if (!fs.existsSync(PE_PACKAGE_PATH)) {
+        mark(ledger, stage, "skipped", {
+          reason: "no_venue_partnership_packages",
+          path: PE_PACKAGE_PATH,
+        });
+        continue;
+      }
+      const allPkgs = loadVenuePartnershipPackagesFromFile(PE_PACKAGE_PATH);
+      const hotelPkgs = allPkgs.filter(
+        (p) => (p.hotel?.hotelId || p.hotel?.id) === hotelId
+      );
+      if (!hotelPkgs.length) {
+        mark(ledger, stage, "skipped", {
+          reason: "no_packages_for_hotel",
+          hotelId,
+          packageCount: allPkgs.length,
+        });
+        continue;
+      }
+      const peOut = path.join(runDir, "pe_canonical_persist");
+      fs.mkdirSync(peOut, { recursive: true });
+      const peDry = !authorizePePersist || has("--dry-run");
+      const peSummary = await persistVenuePartnershipPackages(hotelPkgs, {
+        dryRun: peDry,
+        outDir: peOut,
+      });
+      const drawerProof = [];
+      if (!peDry) {
+        for (const r of peSummary.results || []) {
+          if (!r.opportunityId) continue;
+          invalidateGdiHotelReadCache(hotelId);
+          const rec = await findOpportunityRecordById(r.opportunityId);
+          if (!rec) {
+            drawerProof.push({
+              opportunityId: r.opportunityId,
+              ok: false,
+              reason: "missing_opportunity",
+            });
+            continue;
+          }
+          const raw = airtableRecordToOpportunity(rec);
+          const { opportunity: enriched, peEnriched } =
+            await enrichPrivateEventOpportunityDetail(raw);
+          drawerProof.push({
+            opportunityId: r.opportunityId,
+            venueName: r.venueName,
+            peVenueId: enriched.peVenueId || r.venueId,
+            hotelVenueFitId: enriched.hotelVenueFitId,
+            peSignalId: enriched.peSignalId,
+            detailLayout: enriched.detailLayout,
+            peEnriched: Boolean(peEnriched),
+            ok:
+              Boolean(peEnriched) &&
+              enriched.detailLayout === "VENUE_PARTNERSHIP" &&
+              Boolean(enriched.peVenueId),
+          });
+        }
+        // Idempotency: immediate rerun must UPDATE only (no duplicate GDI cards)
+        const rerun = await persistVenuePartnershipPackages(hotelPkgs, {
+          dryRun: false,
+          outDir: null,
+        });
+        peSummary.rerun = {
+          byVerdict: rerun.byVerdict,
+          modes: (rerun.results || []).map((r) => ({
+            venueName: r.venueName,
+            venueAction: r.steps?.venue?.action,
+            fitAction: r.steps?.fit?.action,
+            oppMode: r.steps?.opportunityMatch?.mode,
+          })),
+        };
+      }
+      fs.writeFileSync(
+        path.join(peOut, "coordinator-pe-apply.json"),
+        JSON.stringify(
+          {
+            hotelId,
+            dryRun: peDry,
+            authorizePePersist,
+            summary: peSummary,
+            drawerProof,
+          },
+          null,
+          2
+        ) + "\n"
+      );
+      const duplicateCreate = (peSummary.rerun?.modes || []).some(
+        (m) => m.oppMode === "CREATE"
+      );
+      mark(ledger, stage, peDry || !duplicateCreate ? "completed" : "failed", {
+        dryRun: peDry,
+        packageCount: hotelPkgs.length,
+        byVerdict: peSummary.byVerdict,
+        drawerProof,
+        rerunModes: peSummary.rerun?.modes || null,
+        note: peDry
+          ? "PE canonical persist dry-run — pass --authorize-pe-persist or --authorize-publish to write"
+          : "PE canonical persist applied; rerun must UPDATE existing venues/fits/opps",
+      });
+      if (!peDry && duplicateCreate) {
+        throw new Error("pe_canonical_rerun_created_duplicates");
       }
       continue;
     }

@@ -2552,9 +2552,150 @@
   }
 
   /**
+   * Scaling / emerging corporate account — standing relationship (no invented event date).
+   */
+  function corporateAccountRelationshipDetailHtml(o, audit, extras) {
+    extras = extras || {};
+    audit = audit || {};
+    var sources = sourceListHtml(o.sources);
+    var growthLabels = Array.isArray(o.growthSignalLabels)
+      ? o.growthSignalLabels.join("; ")
+      : Array.isArray(o.growthSignals)
+        ? o.growthSignals.join("; ")
+        : o.growthSignal || "";
+    var facts = Array.isArray(o.establishedFacts) ? o.establishedFacts : [];
+    var inferred = Array.isArray(o.inferredHotelDemand)
+      ? o.inferredHotelDemand
+      : [];
+    var constraints = Array.isArray(o.constraints)
+      ? o.constraints
+      : Array.isArray(o.uncertainties)
+        ? o.uncertainties
+        : [];
+    function listHtml(items) {
+      if (!items || !items.length) return "";
+      return (
+        "<ul>" +
+        items
+          .map(function (t) {
+            return "<li>" + esc(t) + "</li>";
+          })
+          .join("") +
+        "</ul>"
+      );
+    }
+    return (
+      '<div class="gdi-detail-framework gdi-detail-framework--corporate-account">' +
+      commercialProgressionHtml(o.commercialProgression) +
+      '<section class="gdi-section"><h3>Opportunity Summary</h3><p>' +
+      esc(o.summaryWhat || o.title || "—") +
+      "</p>" +
+      '<div class="gdi-detail-meta-row">' +
+      "<span><strong>Type</strong> " +
+      esc(
+        o.opportunityTypeLabel ||
+          o.opportunityType ||
+          "Corporate Account Relationship"
+      ) +
+      "</span>" +
+      "<span><strong>Timing</strong> " +
+      esc(o.eventDateDisplay || o.timing || "Ongoing corporate relationship") +
+      "</span>" +
+      "<span><strong>Segment</strong> " +
+      esc(o.segment || "Scaling Companies / Emerging Corporate Accounts") +
+      "</span></div></section>" +
+      '<section class="gdi-section"><h3>Company and local presence</h3><p><strong>' +
+      esc(o.organizationName || o.company || "—") +
+      "</strong></p><p>" +
+      esc(o.localPresence || o.localConnection || "—") +
+      "</p></section>" +
+      '<section class="gdi-section"><h3>Growth signal</h3><p>' +
+      esc(growthLabels || "—") +
+      "</p>" +
+      (o.growthEvidenceDate
+        ? "<p><strong>Verification date:</strong> " +
+          esc(o.growthEvidenceDate) +
+          "</p>"
+        : "") +
+      (o.datedGrowthEvidence
+        ? "<p>" + esc(o.datedGrowthEvidence) + "</p>"
+        : "") +
+      "</section>" +
+      '<section class="gdi-section"><h3>Potential hotel use cases</h3><p>' +
+      esc(o.proposedHotelUse || o.potentialHotelUseCases || o.summaryWhyMatters || "—") +
+      "</p></section>" +
+      '<section class="gdi-section gdi-section--matters"><h3>Why this hotel</h3><p>' +
+      esc(
+        o.whyThisHotel ||
+          o.hotelOpportunityThesis ||
+          o.fitExplanation ||
+          o.summaryWhyHotel ||
+          "—"
+      ) +
+      "</p></section>" +
+      '<section class="gdi-section"><h3>Why establish contact now</h3><p>' +
+      esc(o.whyEstablishContactNow || o.whyNow || o.summaryWhyNow || "—") +
+      "</p></section>" +
+      (facts.length || inferred.length
+        ? '<section class="gdi-section"><h3>Facts vs inferred demand</h3>' +
+          (facts.length
+            ? "<p><strong>Established facts</strong></p>" + listHtml(facts)
+            : "") +
+          (inferred.length
+            ? "<p><strong>Inferred hotel demand</strong> (not proven volume)</p>" +
+              listHtml(inferred)
+            : "") +
+          "</section>"
+        : "") +
+      (constraints.length
+        ? '<section class="gdi-section"><h3>Constraints and uncertainties</h3>' +
+          listHtml(constraints) +
+          "</section>"
+        : "") +
+      '<section class="gdi-section gdi-section--contact"><h3>Contact relevance</h3><p><strong>Role / responsibility:</strong> ' +
+      esc(
+        o.contactResponsibility ||
+          o.contactRole ||
+          o.commercialContactPathLabel ||
+          "—"
+      ) +
+      "</p>" +
+      (o.contactName ? "<p><strong>Person:</strong> " + esc(o.contactName) + "</p>" : "") +
+      (o.contactEmail ? "<p><strong>Email:</strong> " + esc(o.contactEmail) + "</p>" : "") +
+      (o.contactPhone ? "<p><strong>Phone:</strong> " + esc(o.contactPhone) + "</p>" : "") +
+      (o.contactUrl
+        ? '<p><strong>Route:</strong> <a href="' +
+          esc(o.contactUrl) +
+          '" target="_blank" rel="noopener">' +
+          esc(o.contactUrl) +
+          "</a></p>"
+        : "") +
+      "<p class=\"gdi-muted\">A founder is not automatically the right hotel buyer — role selected for the proposed use case.</p></section>" +
+      '<section class="gdi-section gdi-section--action"><h3>Recommended action</h3><p>' +
+      esc(o.recommendedAction || o.recommendedNextStep || "—") +
+      "</p>" +
+      "<p class=\"gdi-muted\">Priority, recommended action, and sourcing availability are tracked separately. Introductory contact may be warranted without confirmed procurement.</p></section>" +
+      '<section class="gdi-section gdi-section--evidence"><h3>Evidence</h3>' +
+      (sources || "<p>—</p>") +
+      (o.evidenceFreshnessAt
+        ? "<p><strong>Evidence freshness:</strong> " +
+          esc(o.evidenceFreshnessAt) +
+          "</p>"
+        : "") +
+      "</section>" +
+      (extras.validationHtml
+        ? '<section class="gdi-section gdi-section--validation gdi-validation-panel"><h3>Hotel Validation / Action / Outcome</h3>' +
+          extras.validationHtml +
+          "</section>"
+        : "") +
+      "</div>"
+    );
+  }
+
+  /**
    * Intelligence-to-action detail framework.
    * WHAT WE SEE / WHY IT MATTERS / WHY NOW / RECOMMENDED ACTION / CONTACT / EVIDENCE / VALIDATION
-   * Type-aware: VENUE_PARTNERSHIP / SPECIFIC_PRIVATE_EVENT use PE layouts.
+   * Type-aware: VENUE_PARTNERSHIP / SPECIFIC_PRIVATE_EVENT / CORPORATE_ACCOUNT_RELATIONSHIP layouts.
    */
   function intelligenceDetailHtml(o, audit, extras) {
     extras = extras || {};
@@ -2569,6 +2710,12 @@
       o.opportunityType === "SPECIFIC_PRIVATE_EVENT"
     ) {
       return specificPrivateEventDetailHtml(o, audit, extras);
+    }
+    if (
+      o.detailLayout === "CORPORATE_ACCOUNT_RELATIONSHIP" ||
+      o.opportunityType === "CORPORATE_ACCOUNT_RELATIONSHIP"
+    ) {
+      return corporateAccountRelationshipDetailHtml(o, audit, extras);
     }
 
     audit = audit || {};
