@@ -1,6 +1,11 @@
 /**
  * Regression: customer list visibility must not widen when presentation
  * sanitize fills summaryWhat from summaryWhyMatters / thesis prose.
+ *
+ * PR #96: filter-before-sanitize order.
+ * Use-case integrity: summaryWhat alone is not travel evidence — even if
+ * sanitize runs first, suitability must stay false without research-backed
+ * lodging/travel fields.
  */
 import assert from "node:assert/strict";
 import { filterCustomerFacingOpportunities } from "../lib/group-demand-intelligence/customer-visibility.js";
@@ -54,13 +59,13 @@ assert.ok(
 );
 assert.equal(
   evaluateProspectSuitability(sanitized).ok,
-  true,
-  "sanitize accidentally satisfies travel evidence"
+  false,
+  "sanitize-filled summaryWhat must not satisfy travel evidence"
 );
 assert.equal(
   isReviewedProspectCustomerVisible(sanitized, { hotelId: HOTEL }),
-  true,
-  "sanitize-then-gate would wrongly admit the row"
+  false,
+  "sanitize-then-gate must not wrongly admit the row"
 );
 
 const afterSanitizeThenFilter = filterCustomerFacingOpportunities(
@@ -71,8 +76,8 @@ const afterSanitizeThenFilter = filterCustomerFacingOpportunities(
 );
 assert.equal(
   afterSanitizeThenFilter.length,
-  1,
-  "broken order admits PE row"
+  0,
+  "sanitize-then-filter must keep PE row off the customer list"
 );
 
 const afterFilterThenSanitize = filterCustomerFacingOpportunities(
@@ -82,7 +87,7 @@ const afterFilterThenSanitize = filterCustomerFacingOpportunities(
 assert.equal(
   afterFilterThenSanitize.length,
   0,
-  "correct order keeps PE row off the customer list"
+  "correct filter-then-sanitize order keeps PE row off the customer list"
 );
 
 console.log("PASS test-gdi-list-visibility-before-sanitize-v1");
