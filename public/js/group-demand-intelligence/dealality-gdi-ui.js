@@ -474,6 +474,7 @@
     } else {
       classBits.push("Association");
     }
+    // Meta line stays ALL CAPS via CSS (.brand-card__meta); do not Proper-Case here.
     var classLabel = classBits[0];
     // Only echo a short org token when title does not already include it.
     var orgShort = org.replace(/\s*\([^)]*\)\s*$/, "").trim();

@@ -1,0 +1,69 @@
+{
+  "version": "gdi-three-hotel-execution-history-v1",
+  "recordedAt": "2026-10-15T21:43:33.656Z",
+  "runId": "gdi_three_hotel_integrity_2026-10-15T21-43-33-656Z",
+  "hotelsInScope": [
+    {
+      "hotelId": "rec0eTEnCqlsGJJt9",
+      "role": "active_research"
+    },
+    {
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "role": "active_research"
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "role": "reference_regression_only"
+    }
+  ],
+  "queuedNotStarted": [
+    "Renaissance Times Square",
+    "Falls Church Marriott Fairview Park",
+    "Renaissance Arlington Capital View"
+  ],
+  "stages": [
+    {
+      "stage": "lmc_planner_expansion_paid_parallel",
+      "status": "completed",
+      "hotels": [
+        "rec0eTEnCqlsGJJt9",
+        "recnPB3Q02NO8Ma1o"
+      ],
+      "providerRunIds": [
+        "trun_567f3335d0c140ad84cb51c43c0b4baa",
+        "trun_567f3335d0c140ad8222efec4611b85a",
+        "trun_567f3335d0c140ad8b6191e9c2922d9f",
+        "trun_567f3335d0c140ad8e3066a4795127f5"
+      ],
+      "estimatedUsd": 1.4,
+      "note": "Fresh Parallel discovery — distinct job keys; not reuse-only.",
+      "publicationEvent": "13 qualified; 12 published facing; 1 internal (WHF)"
+    },
+    {
+      "stage": "use_case_qualification_contract",
+      "status": "completed",
+      "mode": "unpaid_code_fix",
+      "note": "Replaced summaryWhat prose shortcut with use-case evidence checks."
+    },
+    {
+      "stage": "pe_seven_individual_reassessment",
+      "status": "completed",
+      "mode": "unpaid_read_only",
+      "publicationEvent": "change set prepared — unapplied"
+    },
+    {
+      "stage": "wisedocs_shipyard_basis_trace",
+      "status": "completed",
+      "mode": "unpaid_read_only",
+      "publicationEvent": "basis repair prepared — unapplied"
+    }
+  ],
+  "finalRunStatus": "partial_segment_coverage_explicit",
+  "finalRunStatusNote": "LMC/planner expansion completed for May+SD. PE seven restore and scaling basis repair remain unapplied pending review. Bethesda reference only. Queued hotels not started. Provider task completion ≠ whole-hotel research complete.",
+  "exclusionsFromHistory": [
+    "dry_runs",
+    "fixtures",
+    "replay_only_simulations",
+    "simulated_clocks"
+  ]
+}

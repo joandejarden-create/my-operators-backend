@@ -16,6 +16,8 @@ const base = {
   organizationName: "Example Association",
   title: "Example Advocacy Meeting 2027",
   timing: "Verified: April 1–2, 2027",
+  // Travel evidence must be research-backed — summaryWhat alone is not enough
+  travelEvidenceNote: "Delegates travel from chapter markets for the advocacy meeting",
   fitExplanation: "Downtown Autograph fit for Hill advocacy",
   hotelFitScore: 60,
   officialSource: "https://example.org/events/2027",
