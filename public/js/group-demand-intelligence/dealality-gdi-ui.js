@@ -311,9 +311,24 @@
       ) {
         continue;
       }
-      // Near-duplicate collapse (first 80 chars)
+      // Near-duplicate collapse: exact prefix key, or one paragraph contained in another.
       var key = t.toLowerCase().slice(0, 80);
-      if (seen[key]) continue;
+      var tl = t.toLowerCase();
+      var dupIdx = -1;
+      for (var j = 0; j < out.length; j++) {
+        var ol = out[j].toLowerCase();
+        if (ol === tl || ol.slice(0, 80) === key) {
+          dupIdx = j;
+          break;
+        }
+        if (ol.indexOf(tl) === 0 || tl.indexOf(ol) === 0) {
+          // Keep the longer / more informative paragraph only.
+          if (t.length > out[j].length) out[j] = t;
+          dupIdx = j;
+          break;
+        }
+      }
+      if (dupIdx >= 0) continue;
       seen[key] = true;
       out.push(t);
     }
@@ -2784,7 +2799,12 @@
         hasScore
           ? o.hotelFitScore
           : dimKeys.length
-            ? (o.hotelFitAssessment && o.hotelFitAssessment.posture) ||
+            ? String(
+                (o.hotelFitAssessment && o.hotelFitAssessment.posture) || ""
+              )
+                .replace(/_/g, " ")
+                .replace(/\bEXPLORATORY STRETCH\b/i, "Exploratory / stretch")
+                .replace(/\bEXPLORATORY\b/i, "Exploratory") ||
               "By dimension"
             : "Assessment pending"
       ) +
