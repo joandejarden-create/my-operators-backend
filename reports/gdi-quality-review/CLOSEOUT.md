@@ -63,3 +63,16 @@ Actual `gdi:quality:quick` on this branch: **PASS** (integrity fixtures, hotel-f
 - San Diego live list **45** vs freeze **38** â€” explained as PE visibility drift; no eligibility code change in this PR.
 - Share-token crypto verify still environment-dependent.
 - Narrative-repair backups contain full opportunity JSON â€” kept local / untracked on purpose.
+
+## Release SHAs (2026-10-15 closeout)
+
+| Item | SHA / ID |
+|------|----------|
+| Merge (squash to main) | `d0c61133` (PR #92) |
+| Product commit (pre-squash on branch) | `459bcee9` |
+| Quality tooling commit (pre-squash) | `cc41b857` |
+| Cursor rule commit (pre-squash) | `d9b0014e` |
+| Deployed | `d0c61133` · Railway `8af3285a` SUCCESS · assets `gdi-drawer-history-inventory-v1` |
+| Hotfix override | false |
+
+Production HCAOA after deploy: Why this hotel = not-yet-established (no occasion/withheld copy); Overall 63 provisional once; dims Needs verification; evidence 36/100; history History unavailable / Oct 15 published.
