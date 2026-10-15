@@ -68,7 +68,21 @@ function pickCases(opps, UI) {
       x.block.kind === "organization" &&
       x.block.channelText
   )?.o;
-  return { named, org, form, namedNoChannel };
+  // Live inventory may currently lack form-only routes; keep a synthetic case so
+  // visual proof covers Contact form link text without mutating Airtable.
+  const formSynthetic = {
+    id: "gdi_synthetic_form_only_v1",
+    opportunityId: "gdi_synthetic_form_only_v1",
+    title: "Harbor Events Center — Preferred Lodging Partnership",
+    displayTitle: "Harbor Events Center — Preferred Lodging Partnership",
+    organizationName: "Harbor Events Center",
+    summaryWhat:
+      "Nearby venue without lodging; public contact form is the only published route.",
+    opportunityType: "VENUE_PARTNERSHIP",
+    publicContactPath: "https://example.com/contact-us/",
+    priority: "WATCHLIST",
+  };
+  return { named, org, form: form || formSynthetic, namedNoChannel };
 }
 
 const UI = loadUi();
