@@ -93,16 +93,21 @@ function enrichSummaryWithHotelActivity(hotelId, summary, opportunityDoc) {
     opportunities,
     opportunityDoc,
   });
+  // Customer history is authoritative from eligible activity only — do not
+  // fall back to loadLatestSummary stamps that mix verification / dry-runs.
   return {
     ...summary,
-    lastResearchAt: history.lastResearchAt || summary.lastResearchAt || null,
-    runStatus: history.runStatus || summary.runStatus || "NOT_YET_RUN",
-    runStatusLabel: history.runStatusLabel || null,
-    latestRunId: history.latestRunId || summary.latestRunId || null,
+    lastResearchAt: history.lastResearchAt || null,
+    lastSourceVerificationAt: history.lastSourceVerificationAt || null,
+    lastSourceVerificationLabel: history.lastSourceVerificationLabel || null,
+    runStatus: history.runStatus || "HISTORY_UNAVAILABLE",
+    runStatusLabel: history.runStatusLabel || "History unavailable",
+    latestRunId: history.latestRunId || null,
     runHistoryProvenance: history.runHistoryProvenance || null,
     lastReviewedPackageImportAt: history.lastReviewedPackageImportAt || null,
     lastPublishedUpdateAt: history.lastPublishedUpdateAt || null,
     activityHistoryVersion: history.version,
+    excludedFromCustomerHistory: history.excludedFromCustomerHistory || null,
   };
 }
 import {

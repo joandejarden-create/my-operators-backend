@@ -21,7 +21,9 @@ const MAY = "rec0eTEnCqlsGJJt9";
 const SD = "recnPB3Q02NO8Ma1o";
 
 function testHistoryDefinitions() {
-  const may = buildHotelActivityHistory(MAY, {
+  const now = "2026-10-15T18:00:00.000Z";
+  // runId + lastVerifiedAt alone must NOT invent Completed / Last Research
+  const may = buildHotelActivityHistory("hotel_runid_only_zzz", {
     opportunities: [
       {
         id: "a",
@@ -34,16 +36,19 @@ function testHistoryDefinitions() {
     opportunityDoc: {
       reviewedProspectImport: { importedAt: "2026-10-14T18:00:00.000Z" },
     },
+    now,
   });
-  assert.ok(may.lastResearchAt, "Last Research from evidence/runs");
-  assert.notEqual(may.runStatus, "NEVER_RUN");
-  assert.notEqual(may.runStatusLabel, "Never");
+  assert.equal(may.lastResearchAt, null, "verification/runId ≠ Last Research");
+  assert.ok(may.lastSourceVerificationAt);
+  assert.equal(may.runStatus, "STATUS_UNAVAILABLE");
+  assert.equal(may.runStatusLabel, "Status unavailable");
   assert.ok(may.lastPublishedUpdateAt, "Last Published Update from import/basis");
   assert.equal(may.lastPublishedUpdateLabel, "Last Published Update");
 
   const missing = buildHotelActivityHistory("hotel_with_no_history_zzz", {
     opportunities: [],
     opportunityDoc: {},
+    now,
   });
   assert.equal(missing.runStatus, "NOT_YET_RUN");
   assert.equal(missing.runStatusLabel, "Not yet run");
@@ -59,8 +64,10 @@ function testHistoryDefinitions() {
       },
     ],
     opportunityDoc: {},
+    now,
   });
-  assert.ok(evidenceOnly.lastResearchAt);
+  assert.equal(evidenceOnly.lastResearchAt, null);
+  assert.ok(evidenceOnly.lastSourceVerificationAt);
   assert.equal(evidenceOnly.runStatus, "HISTORY_UNAVAILABLE");
   assert.equal(
     formatRunStatusForCustomer(evidenceOnly.runStatus, evidenceOnly.runStatusLabel),
@@ -81,6 +88,7 @@ function testHistoryDefinitions() {
       updatedAt: "2026-10-15T12:00:00.000Z",
       reviewedProspectImport: { importedAt: "2026-08-01T00:00:00.000Z" },
     },
+    now,
   });
   assert.equal(importOnly.lastResearchAt, null);
   assert.ok(importOnly.lastPublishedUpdateAt);
@@ -204,7 +212,12 @@ function testLiveHotelsInventoryFreeze() {
           lastReviewedPackageImportAt: hist.lastReviewedPackageImportAt,
         };
         assert.notEqual(hist.runStatus, "NEVER_RUN");
-        assert.ok(hist.lastResearchAt || hist.runStatus === "NOT_YET_RUN");
+        assert.ok(
+          hist.lastResearchAt ||
+            hist.runStatus === "NOT_YET_RUN" ||
+            hist.runStatus === "HISTORY_UNAVAILABLE" ||
+            hist.runStatus === "STATUS_UNAVAILABLE"
+        );
       }
       // Local FS snapshot is optional (production reads Airtable). Skip hard
       // inventory assert when this worktree has no hotel opportunity files.

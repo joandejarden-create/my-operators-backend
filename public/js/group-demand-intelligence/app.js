@@ -1321,8 +1321,13 @@
         lastResearch: formatHistoryDate(s.lastResearchAt),
         runStatusLabel:
           s.runStatusLabel ||
-          (s.runStatus === "NEVER_RUN" ? "History unavailable" : s.runStatus) ||
+          (s.runStatus === "NEVER_RUN" || s.runStatus === "STATUS_UNAVAILABLE"
+            ? s.runStatus === "STATUS_UNAVAILABLE"
+              ? "Status unavailable"
+              : "History unavailable"
+            : s.runStatus) ||
           "History unavailable",
+        lastSourceVerification: formatHistoryDate(s.lastSourceVerificationAt),
         lastPublishedUpdate: formatHistoryDate(
           s.lastPublishedUpdateAt || s.lastReviewedPackageImportAt
         ),
