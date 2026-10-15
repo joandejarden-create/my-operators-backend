@@ -1,0 +1,80 @@
+{
+  "version": "gdi-execution-history-classification-v2",
+  "recordedAt": "2026-10-15T22:08:20.395Z",
+  "corrects": "gdi_three_hotel_integrity_2026-10-15T21-44-42-649Z",
+  "activeHotels": [
+    {
+      "hotelId": "rec0eTEnCqlsGJJt9",
+      "role": "active_research_and_publication_repair"
+    },
+    {
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "role": "active_research_and_publication_repair"
+    }
+  ],
+  "referenceOnly": [
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "role": "reference_regression_only"
+    }
+  ],
+  "queuedNotStarted": [
+    "Renaissance Times Square",
+    "Falls Church Marriott Fairview Park",
+    "Renaissance Arlington Capital View"
+  ],
+  "events": [
+    {
+      "classification": "actual_mayflower_sd_research",
+      "stage": "lmc_planner_expansion_paid_parallel",
+      "hotels": [
+        "rec0eTEnCqlsGJJt9",
+        "recnPB3Q02NO8Ma1o"
+      ],
+      "note": "Fresh Parallel LMC/planner discovery — not a qualification repair."
+    },
+    {
+      "classification": "contract_testing_or_preparation",
+      "stage": "use_case_qualification_contract",
+      "mode": "unpaid_code_fix",
+      "customerResearchHistory": false,
+      "note": "Code/contract change — not a research run; exclude from customer research history."
+    },
+    {
+      "classification": "replay_simulation",
+      "stage": "pe_seven_individual_reassessment",
+      "mode": "unpaid_read_only_then_authorized_release",
+      "customerResearchHistory": false,
+      "note": "Reassessment + authorized restore — publication repair, not new discovery research."
+    },
+    {
+      "classification": "publication_repair",
+      "stage": "wisedocs_shipyard_basis_repair",
+      "mode": "authorized_canonical_promotion",
+      "customerResearchHistory": false,
+      "note": "Basis repair via authorizeProspectPublicationPromotion — not a research run."
+    },
+    {
+      "classification": "segment_coverage",
+      "status": "partial_segment_coverage_explicit",
+      "note": "LMC/planner + PE restore + scaling basis repair for May+SD only. Queued six-hotel batch not started. Task completion ≠ whole-market coverage."
+    }
+  ],
+  "priorMislabelCorrections": [
+    {
+      "prior": "pe_seven / wisedocs stages as publicationEvent without clarifying not research",
+      "correction": "Reclassified as publication_repair / replay_simulation; excluded from customer research history."
+    }
+  ],
+  "exclusionsFromCustomerResearchHistory": [
+    "dry_runs",
+    "fixtures",
+    "replay_only_simulations",
+    "simulated_clocks",
+    "contract_testing_or_preparation",
+    "publication_repair",
+    "qualification_deployment_without_new_research"
+  ],
+  "finalRunStatus": "partial_segment_coverage_explicit",
+  "queuedBatchStatus": "not_started"
+}

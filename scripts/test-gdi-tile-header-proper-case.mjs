@@ -23,7 +23,6 @@ const samples = [
     "CSI DMC - Washington, DC — Professional planners & intermediaries with recurring event business",
     "CSI DMC - Washington, DC — Professional Planners & Intermediaries With Recurring Event Business",
   ],
-  ["CORPORATE ACCOUNT RELATIONSHIP", "Corporate Account Relationship"],
   ["Local Meetings & Catering", "Local Meetings & Catering"],
 ];
 
@@ -47,7 +46,11 @@ const uiPath = path.join(
 const uiSrc = fs.readFileSync(uiPath, "utf8");
 assert.match(uiSrc, /function toProperCaseDisplayTitle\s*\(/);
 assert.match(uiSrc, /toProperCaseDisplayTitle\(\s*scrubEventDatesFromText\(titleRaw/);
-assert.match(uiSrc, /var classLabel = toProperCaseDisplayTitle\(classBits\[0\]\)/);
+// Meta classification must NOT be Proper-Cased in JS — CSS keeps ALL CAPS
+assert.doesNotMatch(
+  uiSrc,
+  /var classLabel = toProperCaseDisplayTitle\(classBits\[0\]\)/
+);
 
 const cssPath = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -56,7 +59,7 @@ const cssPath = path.join(
 const cssSrc = fs.readFileSync(cssPath, "utf8");
 assert.match(
   cssSrc,
-  /\.gdi-page \.brand-card__meta \{[\s\S]*?text-transform:\s*none;/
+  /\.gdi-page \.brand-card__meta \{[\s\S]*?text-transform:\s*uppercase;/
 );
 
 console.log("test:gdi-tile-header-proper-case OK");
