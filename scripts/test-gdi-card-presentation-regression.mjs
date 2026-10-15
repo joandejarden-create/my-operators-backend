@@ -18,7 +18,8 @@ const src = fs.readFileSync(uiPath, "utf8");
 // Extract opportunityTileHtml body markers from source (structure lock)
 assert.match(src, /function opportunityTileHtml\s*\(/);
 assert.match(src, /brand-card__description/);
-assert.match(src, /No primary contact/);
+assert.match(src, /Office operations contact not yet identified/);
+assert.match(src, /selectCompactTileContact/);
 assert.match(src, /View Details/);
 
 // Must NOT contain V5A presentation additions in the tile renderer
@@ -85,7 +86,8 @@ assert.ok(tileMatch, "opportunityTileHtml function body required");
 // Lightweight structural probe without full GDI UI bootstrap:
 const htmlProbe = tileMatch[0];
 assert.match(htmlProbe, /brand-card__meta/);
-assert.match(htmlProbe, /segment \? " · " \+ esc\(String\(segment\)\.toUpperCase\(\)\)/);
+assert.match(htmlProbe, /tileClassificationMeta\(it, linked, title\)/);
+assert.match(htmlProbe, /selectCompactTileContact\(it, linked\)/);
 assert.doesNotMatch(htmlProbe, /whyHotel/);
 assert.doesNotMatch(htmlProbe, /cardWhyNowLine/);
 assert.doesNotMatch(htmlProbe, /metaBits/);

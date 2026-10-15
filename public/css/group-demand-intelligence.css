@@ -164,16 +164,30 @@ body.gdi-page.embed-mode .gdi-shell {
 
 .gdi-page .gdi-property-bar.filters-section {
   margin-bottom: 16px;
-  gap: 16px;
+  gap: 10px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  overflow: visible;
+}
+
+.gdi-page .gdi-property-bar__primary {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
 }
 
 .gdi-page .gdi-property-bar .filter-group {
-  flex: 0 0 auto;
+  flex: 0 1 auto;
+  min-width: 0;
 }
 
 .gdi-page .gdi-property-bar .filter-group--grow {
-  flex: 1 1 auto;
-  min-width: 200px;
+  flex: 1 1 220px;
+  min-width: 160px;
   max-width: none;
 }
 
@@ -192,24 +206,26 @@ body.gdi-page.embed-mode .gdi-shell {
 }
 
 .gdi-page .gdi-weekly-filter {
-  flex: 0 0 auto;
-  min-width: 160px;
-  max-width: 220px;
+  flex: 0 1 150px;
+  min-width: 120px;
+  max-width: 200px;
 }
 
 .gdi-page .gdi-weekly-filter .filter-select {
-  min-width: 160px;
+  min-width: 0;
+  width: 100%;
 }
 
 .gdi-page .gdi-opportunity-type-filter {
-  flex: 0 0 auto;
-  min-width: 180px;
-  max-width: 280px;
+  flex: 0 1 170px;
+  min-width: 130px;
+  max-width: 240px;
 }
 
 .gdi-page .gdi-opportunity-type-filter .filter-select {
-  min-width: 180px;
-  max-width: 280px;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
 }
 
 .gdi-page .gdi-property-stat__value {
@@ -223,10 +239,11 @@ body.gdi-page.embed-mode .gdi-shell {
   white-space: nowrap;
 }
 
-.gdi-page .gdi-property-bar .aiv-filter-actions {
+.gdi-page .gdi-property-bar .aiv-filter-actions,
+.gdi-page .gdi-property-bar__actions {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 10px;
   align-items: flex-end;
   margin-left: auto;
@@ -236,11 +253,52 @@ body.gdi-page.embed-mode .gdi-shell {
 .gdi-page .aiv-filter-actions .aiv-btn-apply,
 .gdi-page .aiv-filter-actions .btn-clear {
   margin-top: 18px;
+  white-space: nowrap;
 }
 
 .gdi-page .gdi-property-bar__hint {
   margin-top: 18px;
   align-self: flex-end;
+}
+
+.gdi-page .gdi-property-bar__history {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35em 0.55em;
+  margin: 0;
+  padding: 2px 2px 0;
+  border: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--neutral--500);
+}
+
+.gdi-page .gdi-property-bar__history-label {
+  font-weight: 500;
+  color: var(--neutral--500);
+}
+
+.gdi-page .gdi-property-bar__history-value {
+  font-weight: 500;
+  color: var(--neutral--400);
+}
+
+.gdi-page .gdi-property-bar__history-sep {
+  color: var(--neutral--600);
+  user-select: none;
+}
+
+@media (max-width: 1100px) {
+  .gdi-page .gdi-property-bar__primary {
+    flex-wrap: wrap;
+  }
+
+  .gdi-page .gdi-property-bar .aiv-filter-actions,
+  .gdi-page .gdi-property-bar__actions {
+    margin-left: 0;
+    flex-wrap: wrap;
+  }
 }
 
 /* ADP KPI grammar (subset of ai-visibility-shared) */
@@ -1451,6 +1509,7 @@ button.gdi-tile-pill.is-filter-active {
 .gdi-page .brand-card__contact {
   min-width: 0;
   flex: 1 1 140px;
+  max-width: calc(100% - 140px);
 }
 
 .gdi-page .brand-card__contact-name {
@@ -1458,17 +1517,35 @@ button.gdi-tile-pill.is-filter-active {
   font-weight: 700;
   color: var(--neutral--100);
   margin-bottom: 2px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .gdi-page .brand-card__contact-line {
   font-size: 12px;
   color: var(--neutral--500);
   line-height: 1.35;
+  overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+.gdi-page .brand-card__contact-line--role {
+  color: var(--neutral--400);
 }
 
 .gdi-page .brand-card__contact-line--empty {
   font-style: italic;
+}
+
+.gdi-page .brand-card__contact-link {
+  color: var(--accent--primary-1);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.gdi-page .brand-card__contact-link:hover,
+.gdi-page .brand-card__contact-link:focus-visible {
+  color: var(--neutral--100);
 }
 
 .gdi-page button.brand-card__more-btn {

@@ -72,15 +72,18 @@ check("property_bar_keeps_research_status", () => {
     actionHtml: '<button type="button" id="gdiRunBtn">Run Research</button>',
   });
   assert.match(html, /Harborview Conference Hotel — Charleston, South Carolina/);
-  assert.match(html, /Last Research/);
+  assert.match(html, /Last research:/);
   assert.match(html, /Sep 13, 2026/);
-  assert.match(html, /Run Status/);
+  assert.match(html, /Run:/);
   assert.match(html, /COMPLETED/);
-  assert.match(html, /gdi-property-stat__value/);
+  assert.match(html, /gdi-property-bar__primary/);
+  assert.match(html, /gdi-property-bar__history/);
+  assert.match(html, /Last published:/);
   assert.match(html, /gdiRunBtn/);
   assert.match(html, /filters-section/);
   assert.match(html, /aiv-filters-section/);
   assert.doesNotMatch(html, /filter-select gdi-filter-static/);
+  assert.doesNotMatch(html, /gdi-property-stat__value/);
   assert.doesNotMatch(html, /Bethesda/);
 });
 
@@ -306,15 +309,17 @@ check("opportunity_tile_and_sort_filter", () => {
   assert.doesNotMatch(tile, /brand-card__chip/);
   const titleMatch = tile.match(/<div class="brand-card__name">([^<]*)<\/div>/);
   assert.ok(titleMatch);
-  assert.doesNotMatch(titleMatch[1], /2027/);
+  // Occasion year may remain when preserveOccasionYear is on; strip only calendar spans.
+  assert.match(titleMatch[1], /Southeast Clinical Leaders Summit/);
   assert.match(tile, /Multi-day coastal clinical summit/);
   assert.doesNotMatch(tile, /Venue selection still open/);
   assert.doesNotMatch(tile, /2027-04-20/);
+  // Clean occasion titles keep year by default; calendar spans still scrub.
   assert.equal(
     UI.scrubEventDatesFromText(
-      "18th Annual NICE Conference and Expo 2027 — location TBD (Jun 7-9)"
+      "18th Annual NICE Conference and Expo 2027 — location TBD"
     ),
-    "18th Annual NICE Conference and Expo — location TBD"
+    "18th Annual NICE Conference and Expo 2027 — location TBD"
   );
   assert.equal(
     UI.scrubEventDatesFromText(
@@ -332,9 +337,72 @@ check("opportunity_tile_and_sort_filter", () => {
   );
   assert.match(tile, /Alex Rivera/);
   assert.match(tile, /a@b\.c/);
-  assert.match(tile, /\+1 555-0100/);
+  // Compact tile: one preferred channel (email over phone)
+  assert.doesNotMatch(tile, /\+1 555-0100/);
   assert.match(tile, /brand-card__footer--split/);
   assert.match(tile, /View Details/);
+  const orgOnlyTile = UI.opportunityTileHtml(
+    {
+      opportunityId: "gdi_opp_org_only",
+      title: "Midwest Engineering Forum",
+      summaryWhat: "Regional association board meeting with lodging need.",
+      organizationContactEmail: "info@acecmw.org",
+    },
+    { priority: "WATCHLIST" }
+  );
+  assert.match(orgOnlyTile, /Organization contact/);
+  assert.match(orgOnlyTile, /info@acecmw\.org/);
+  assert.doesNotMatch(orgOnlyTile, /Organization email:/);
+  const namedNoChannel = UI.opportunityTileHtml(
+    {
+      opportunityId: "gdi_opp_named_no_channel",
+      title: "Named without personal channel",
+      summaryWhat: "Association program with company inbox only.",
+      primaryContact: { name: "Betty Taylor", role: "VP, Meetings & Expositions" },
+      organizationContactEmail: "info@acecmw.org",
+    },
+    { priority: "MEDIUM_PRIORITY" }
+  );
+  assert.doesNotMatch(namedNoChannel, /Betty Taylor/);
+  assert.match(namedNoChannel, /Organization contact/);
+  assert.match(namedNoChannel, /info@acecmw\.org/);
+  const sharedInbox = UI.opportunityTileHtml(
+    {
+      opportunityId: "gdi_opp_shared_inbox",
+      title: "Shared inbox must not imply personal ownership",
+      summaryWhat: "Named referral with department inbox only.",
+      primaryContact: {
+        name: "Amanda French",
+        role: "VP, People",
+        email: "TalentandCulture@quorum.us",
+        emailOwnership: "person_specific",
+      },
+      organizationContactEmail: "TalentandCulture@quorum.us",
+      companyPhone: "+1 202-972-9980",
+      contactChannelSeparation: {
+        suggestedPerson: "Amanda French",
+        personSpecificEmail: "TalentandCulture@quorum.us",
+        organizationRoute: "TalentandCulture@quorum.us",
+        companyPhone: "+1 202-972-9980",
+      },
+    },
+    { priority: "HIGH_PRIORITY" }
+  );
+  assert.doesNotMatch(sharedInbox, /Amanda French/);
+  assert.match(sharedInbox, /Organization contact/);
+  assert.match(sharedInbox, /TalentandCulture@quorum\.us/);
+  assert.doesNotMatch(sharedInbox, /\+1 202-972-9980/);
+  const formOnly = UI.opportunityTileHtml(
+    {
+      opportunityId: "gdi_opp_form_only",
+      title: "Form route account",
+      summaryWhat: "Company publishes a contact form only.",
+      contactUrl: "https://example.com/contact-us",
+    },
+    { priority: "WATCHLIST" }
+  );
+  assert.match(formOnly, /Contact form/);
+  assert.doesNotMatch(formOnly, /example\.com\/contact-us/);
   assert.doesNotMatch(tile, /brand-card__logo/);
   assert.doesNotMatch(tile, /Fit 81/);
   assert.doesNotMatch(tile, /Evidence 72/);
@@ -399,11 +467,11 @@ check("detail_intelligence_to_action_framework", () => {
     {},
     { validationHtml: "<div>validation</div>" }
   );
-  assert.match(html, /Event \/ Opportunity/);
-  assert.match(html, /Why It Matters/);
-  assert.match(html, /Why Now/);
-  assert.match(html, /Suggested Action/);
-  assert.match(html, /Contact/);
+  assert.match(html, /Account \/ occasion/);
+  assert.match(html, /Why this hotel/);
+  assert.match(html, /Why investigate now/);
+  assert.match(html, /Suggested action/);
+  assert.match(html, /Who sales should contact/);
   assert.match(html, /Sources/);
   assert.match(html, /Validation \/ Action \/ Outcome/);
   assert.match(html, /PURSUE NOW/);
