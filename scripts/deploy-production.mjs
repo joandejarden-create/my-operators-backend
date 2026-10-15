@@ -186,7 +186,8 @@ const msg = `deploy:production ${branch} ${sha.slice(0, 7)}`;
 const up = spawnSync(
   "railway",
   ["up", "--detach"],
-  { cwd: root, stdio: "inherit", env: { ...process.env, CI: "true" } }
+  // Do not force CI=true — Railway CLI 4.x/5.x treats it as non-upload CI mode.
+  { cwd: root, stdio: "inherit", env: process.env }
 );
 if (up.status !== 0) {
   record.status = "RAILWAY_UP_FAILED";
