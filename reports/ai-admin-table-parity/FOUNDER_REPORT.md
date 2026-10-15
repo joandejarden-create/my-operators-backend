@@ -31,16 +31,15 @@ Applied via shared `DealalityAiAdminTable.actionsHtml` on **AI Demand Reviews**,
 
 ## Release references
 
-Filled after merge/deploy:
-
 | Item | Value |
 |------|-------|
 | Branch | `gdi/ai-admin-table-menu-layering` |
-| PR | _(pending)_ |
-| Deploy SHA | _(pending)_ |
-| Local `:8080` | _(pending)_ |
-| Production open-menu | _(pending)_ |
+| PR | [#104](https://github.com/joandejarden-create/my-operators-backend/pull/104) merged |
+| Deploy SHA | `8148eed9618f8f43326dbe3564c157b57de32edd` |
+| Railway | `1371c41d-764c-4664-9184-e70810bd4a9d` SUCCESS |
+| Local `:8080` | Served `admin-ai-demand-table.js` includes `openMoreMenu` / `ada-more-trigger` |
+| Production asset | `https://…/js/admin-ai-demand-table.js` — `hasPortal=true`, `hasTrigger=true`, no legacy `ada-more__menu` |
 
 ## Remaining verification blocker
 
-Authenticated production AI Admin open-menu screenshot requires Memberstack admin session. Fixture browser proof covers layering/clicks; production UI confirmation follows deploy when admin auth is available.
+Authenticated production AI Admin **interactive** open-menu screenshot (live Reviews/GDI tab with Memberstack admin session) was not captured in this pass. Fixture Playwright proof + production static asset SHA alignment confirm the released implementation; an authenticated browser open-menu shot remains a follow-up if required for visual sign-off.
