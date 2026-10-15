@@ -255,25 +255,336 @@
     );
   }
 
-  function selectionBarHtml(selectedCount, pageCount) {
+  function selectionBarHtml(selectedCount, pageSelectHint) {
     return (
       '<div class="ada-selection-bar" role="status">' +
       '<span class="ada-selection-count">' +
       esc(selectedCount) +
       " selected</span>" +
-      (pageCount
-        ? '<span class="ada-selection-hint"> · page select ≠ all filtered</span>'
+      (pageSelectHint
+        ? '<span class="ada-selection-hint" title="The header checkbox selects only the rows on this page, not every filtered row."> · Select this page</span>'
         : "") +
       "</div>"
     );
   }
 
+  function iconSvg(name) {
+    var common =
+      ' viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
+    if (name === "file") {
+      return (
+        "<svg" +
+        common +
+        '><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>'
+      );
+    }
+    if (name === "download") {
+      return (
+        "<svg" +
+        common +
+        '><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'
+      );
+    }
+    if (name === "external") {
+      return (
+        "<svg" +
+        common +
+        '><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
+      );
+    }
+    if (name === "refresh") {
+      return (
+        "<svg" +
+        common +
+        '><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>'
+      );
+    }
+    if (name === "copy") {
+      return (
+        "<svg" +
+        common +
+        '><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>'
+      );
+    }
+    if (name === "archive") {
+      return (
+        "<svg" +
+        common +
+        '><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>'
+      );
+    }
+    if (name === "users") {
+      return (
+        "<svg" +
+        common +
+        '><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>'
+      );
+    }
+    if (name === "list") {
+      return (
+        "<svg" +
+        common +
+        '><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>'
+      );
+    }
+    if (name === "more") {
+      return (
+        "<svg" +
+        common +
+        '><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>'
+      );
+    }
+    if (name === "ban") {
+      return (
+        "<svg" +
+        common +
+        '><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>'
+      );
+    }
+    return (
+      "<svg" +
+      common +
+      '><circle cx="12" cy="12" r="9"/></svg>'
+    );
+  }
+
+  function iconForAct(act, disabled) {
+    if (disabled && (act === "noop" || !act)) return "ban";
+    var map = {
+      "view-pdf": "file",
+      "download-pdf": "download",
+      open: "external",
+      "open-gdi": "external",
+      "open-adp": "external",
+      "open-adp-client": "external",
+      "open-action-plan": "list",
+      "goto-action-plan": "list",
+      generate: "refresh",
+      regenerate: "refresh",
+      draft: "refresh",
+      "copy-gdi": "copy",
+      "copy-adp": "copy",
+      "copy-adp-client": "copy",
+      archive: "archive",
+      "open-archive": "archive",
+      meeting: "users",
+      "view-data": "list",
+      noop: "ban",
+    };
+    return map[act] || "external";
+  }
+
+  /** Portal menu state (My Deals pattern: fixed to document.body — escapes sticky stacking). */
+  var moreMenuState = {
+    el: null,
+    trigger: null,
+    onDocClick: null,
+    onKey: null,
+    onReposition: null,
+  };
+
+  function closeMoreMenu() {
+    if (moreMenuState.trigger) {
+      moreMenuState.trigger.setAttribute("aria-expanded", "false");
+      moreMenuState.trigger.classList.remove("is-open");
+    }
+    if (moreMenuState.el && moreMenuState.el.parentNode) {
+      moreMenuState.el.parentNode.removeChild(moreMenuState.el);
+    }
+    if (moreMenuState.onDocClick) {
+      document.removeEventListener("mousedown", moreMenuState.onDocClick, true);
+      document.removeEventListener("click", moreMenuState.onDocClick, true);
+    }
+    if (moreMenuState.onKey) {
+      document.removeEventListener("keydown", moreMenuState.onKey, true);
+    }
+    if (moreMenuState.onReposition) {
+      window.removeEventListener("scroll", moreMenuState.onReposition, true);
+      window.removeEventListener("resize", moreMenuState.onReposition);
+    }
+    var restore = moreMenuState.trigger;
+    moreMenuState.el = null;
+    moreMenuState.trigger = null;
+    moreMenuState.onDocClick = null;
+    moreMenuState.onKey = null;
+    moreMenuState.onReposition = null;
+    if (restore && typeof restore.focus === "function") {
+      try {
+        restore.focus();
+      } catch (_e) {}
+    }
+  }
+
+  function positionMoreMenu(menu, trigger) {
+    if (!menu || !trigger) return;
+    var rect = trigger.getBoundingClientRect();
+    var pad = 8;
+    var mw = Math.max(menu.offsetWidth || 220, 200);
+    var mh = menu.offsetHeight || 160;
+    var left = Math.min(
+      Math.max(pad, rect.right - mw),
+      Math.max(pad, window.innerWidth - mw - pad)
+    );
+    var below = rect.bottom + 6;
+    var above = rect.top - mh - 6;
+    var top;
+    if (below + mh <= window.innerHeight - pad) top = below;
+    else if (above >= pad) top = above;
+    else {
+      top = Math.min(
+        Math.max(pad, below),
+        Math.max(pad, window.innerHeight - mh - pad)
+      );
+    }
+    menu.style.position = "fixed";
+    menu.style.left = Math.round(left) + "px";
+    menu.style.top = Math.round(top) + "px";
+    menu.style.right = "auto";
+    menu.style.bottom = "auto";
+    menu.style.zIndex = "10050";
+  }
+
+  function fireRowAct(trigger, act) {
+    var wrap = trigger && trigger.closest(".ada-row-actions");
+    if (!wrap || !act) return;
+    var proxy = document.createElement("button");
+    proxy.type = "button";
+    proxy.setAttribute("data-act", act);
+    proxy.className = "ada-action-proxy";
+    proxy.style.cssText =
+      "position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;left:0;top:0;";
+    wrap.appendChild(proxy);
+    try {
+      proxy.click();
+    } finally {
+      if (proxy.parentNode) proxy.parentNode.removeChild(proxy);
+    }
+  }
+
+  function openMoreMenu(trigger) {
+    if (!trigger || !document.body) return;
+    if (moreMenuState.trigger === trigger) {
+      closeMoreMenu();
+      return;
+    }
+    closeMoreMenu();
+
+    var template = trigger.parentNode
+      ? trigger.parentNode.querySelector("template.ada-more-template")
+      : null;
+    if (!template) return;
+
+    var menu = document.createElement("div");
+    menu.className = "ada-more-menu";
+    menu.setAttribute("role", "menu");
+    menu.setAttribute("data-ada-portal-menu", "1");
+    menu.appendChild(template.content.cloneNode(true));
+
+    document.body.appendChild(menu);
+    moreMenuState.el = menu;
+    moreMenuState.trigger = trigger;
+    trigger.setAttribute("aria-expanded", "true");
+    trigger.classList.add("is-open");
+
+    positionMoreMenu(menu, trigger);
+
+    var items = menu.querySelectorAll('[role="menuitem"]');
+    if (items.length) {
+      try {
+        items[0].focus();
+      } catch (_e) {}
+    }
+
+    moreMenuState.onDocClick = function (evt) {
+      if (!moreMenuState.el) return;
+      if (moreMenuState.el.contains(evt.target)) return;
+      if (moreMenuState.trigger && moreMenuState.trigger.contains(evt.target)) {
+        return;
+      }
+      closeMoreMenu();
+    };
+    moreMenuState.onKey = function (evt) {
+      if (!moreMenuState.el) return;
+      if (evt.key === "Escape") {
+        evt.preventDefault();
+        closeMoreMenu();
+        return;
+      }
+      if (evt.key !== "ArrowDown" && evt.key !== "ArrowUp" && evt.key !== "Home" && evt.key !== "End") {
+        return;
+      }
+      var list = Array.prototype.slice.call(
+        moreMenuState.el.querySelectorAll('[role="menuitem"]:not([disabled])')
+      );
+      if (!list.length) return;
+      var idx = list.indexOf(document.activeElement);
+      evt.preventDefault();
+      if (evt.key === "Home") list[0].focus();
+      else if (evt.key === "End") list[list.length - 1].focus();
+      else if (evt.key === "ArrowDown") {
+        list[(idx + 1) % list.length].focus();
+      } else if (evt.key === "ArrowUp") {
+        list[(idx <= 0 ? list.length : idx) - 1].focus();
+      }
+    };
+    moreMenuState.onReposition = function () {
+      if (!moreMenuState.el || !moreMenuState.trigger) return;
+      if (!document.body.contains(moreMenuState.trigger)) {
+        closeMoreMenu();
+        return;
+      }
+      positionMoreMenu(moreMenuState.el, moreMenuState.trigger);
+    };
+
+    document.addEventListener("mousedown", moreMenuState.onDocClick, true);
+    document.addEventListener("keydown", moreMenuState.onKey, true);
+    window.addEventListener("scroll", moreMenuState.onReposition, true);
+    window.addEventListener("resize", moreMenuState.onReposition);
+
+    menu.addEventListener("click", function (evt) {
+      var item = evt.target.closest("[data-act]");
+      if (!item || !menu.contains(item)) return;
+      evt.preventDefault();
+      evt.stopPropagation();
+      if (item.disabled || item.classList.contains("is-disabled")) return;
+      var act = item.getAttribute("data-act");
+      var anchor = moreMenuState.trigger;
+      closeMoreMenu();
+      fireRowAct(anchor, act);
+    });
+  }
+
+  function installMoreMenuOnce() {
+    if (global.__ADA_MORE_MENU_INSTALLED__) return;
+    global.__ADA_MORE_MENU_INSTALLED__ = true;
+    document.addEventListener(
+      "click",
+      function (ev) {
+        var trigger = ev.target.closest(".ada-more-trigger");
+        if (!trigger) return;
+        ev.preventDefault();
+        ev.stopPropagation();
+        openMoreMenu(trigger);
+      },
+      true
+    );
+  }
+
+  if (typeof document !== "undefined") {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", installMoreMenuOnce);
+    } else {
+      installMoreMenuOnce();
+    }
+  }
+
   /**
-   * Compact actions: primary buttons + More menu.
-   * @param {{ primary?: {label, act, disabled?, title?}[], more?: {label, act, disabled?, title?}[] }} pack
+   * Compact icon actions + portal More menu (escapes sticky Actions stacking).
+   * @param {{ primary?: {label, act, disabled?, title?, icon?}[], more?: {label, act, disabled?, title?, icon?}[] }} pack
    */
   function actionsHtml(pack, dataAttrs) {
     pack = pack || {};
+    installMoreMenuOnce();
     var attrs = "";
     Object.keys(dataAttrs || {}).forEach(function (k) {
       attrs += " data-" + k + '="' + esc(dataAttrs[k]) + '"';
@@ -281,43 +592,58 @@
     var html = '<div class="ada-row-actions"' + attrs + ">";
     (pack.primary || []).forEach(function (a) {
       if (!a) return;
+      var label = a.label || a.act || "Action";
+      var title = a.title || label;
+      var icon = a.icon || iconForAct(a.act, a.disabled);
       html +=
-        '<button type="button" class="ada-icon-btn' +
+        '<button type="button" class="ada-action-icon' +
         (a.disabled ? " is-disabled" : "") +
         '" data-act="' +
         esc(a.act) +
         '"' +
         (a.disabled ? " disabled" : "") +
         ' title="' +
-        esc(a.title || a.label) +
+        esc(title) +
         '" aria-label="' +
-        esc(a.label) +
+        esc(label) +
         '">' +
-        esc(a.label) +
+        iconSvg(icon) +
         "</button>";
     });
     if (pack.more && pack.more.length) {
       html +=
-        '<details class="ada-more"><summary class="ada-icon-btn ada-more__sum" aria-label="More actions">More</summary><div class="ada-more__menu" role="menu">';
+        '<button type="button" class="ada-action-icon ada-more-trigger" aria-label="More actions" title="More actions" aria-haspopup="menu" aria-expanded="false">' +
+        iconSvg("more") +
+        "</button>";
+      html += '<template class="ada-more-template">';
       pack.more.forEach(function (a) {
         if (!a) return;
+        var label = a.label || a.act || "Action";
+        var title = a.title || label;
+        var icon = a.icon || iconForAct(a.act, a.disabled);
         html +=
-          '<button type="button" role="menuitem" class="ada-more__item' +
+          '<button type="button" role="menuitem" class="ada-more-menu__item' +
           (a.disabled ? " is-disabled" : "") +
           '" data-act="' +
           esc(a.act) +
           '"' +
           (a.disabled ? " disabled" : "") +
           ' title="' +
-          esc(a.title || a.label) +
+          esc(title) +
+          '" aria-label="' +
+          esc(label) +
           '">' +
-          esc(a.label) +
+          '<span class="ada-more-menu__icon" aria-hidden="true">' +
+          iconSvg(icon) +
+          '</span><span class="ada-more-menu__label">' +
+          esc(label) +
+          "</span>" +
           (a.disabled && a.title
-            ? '<span class="ada-more__why">' + esc(a.title) + "</span>"
+            ? '<span class="ada-more-menu__why">' + esc(a.title) + "</span>"
             : "") +
           "</button>";
       });
-      html += "</div></details>";
+      html += "</template>";
     }
     html += "</div>";
     return html;
@@ -338,7 +664,7 @@
   function selectAllHeader(checked, indeterminate) {
     return (
       '<th class="ada-cell-check ada-th--check" scope="col">' +
-      '<input type="checkbox" class="ada-select-page" title="Select all on this page" aria-label="Select all on this page"' +
+      '<input type="checkbox" class="ada-select-page" title="Select this page (does not select every filtered row)" aria-label="Select this page"' +
       (checked ? " checked" : "") +
       (indeterminate ? " data-indeterminate=1" : "") +
       " />" +
@@ -404,6 +730,9 @@
     resultsCountHtml: resultsCountHtml,
     selectionBarHtml: selectionBarHtml,
     actionsHtml: actionsHtml,
+    closeMoreMenu: closeMoreMenu,
+    openMoreMenu: openMoreMenu,
+    installMoreMenuOnce: installMoreMenuOnce,
     checkboxCell: checkboxCell,
     selectAllHeader: selectAllHeader,
     hotelLinkCell: hotelLinkCell,

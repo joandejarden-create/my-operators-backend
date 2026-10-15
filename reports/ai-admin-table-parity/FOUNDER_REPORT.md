@@ -1,37 +1,46 @@
-# AI Demand Admin table parity (My Deals pattern)
+# AI Admin table presentation — More menu layering fix
 
-## Result
+## Root cause
 
-Shared `DealalityAiAdminTable` pattern applied across AI Demand Admin tabs without redesigning My Deals or customer GDI cards.
+Sticky Actions cells use `position: sticky; right: 0; z-index: 3`, so **each cell is its own stacking context**. The More menu lived inside that cell as `position: absolute; z-index: 40`. Raising the menu z-index could not escape the cell context, so later sticky Actions cells painted over the open menu.
 
-| Capability | Reviews | ADP Action Plan | GDI Reports | Report Archive |
-|------------|---------|-----------------|-------------|----------------|
-| Sortable headers (typed sort) | Yes | Hotel picker sort preserved | Yes | Yes |
-| Location column | Yes | — | Yes | Yes |
-| Reset View | Yes | — | Yes | Yes |
-| Result count | Yes | Counts tiles | Yes | Yes (versions) |
-| Row selection | Yes | — | Yes | — |
-| Compact sticky Actions | Yes | — | Yes (fixes clip) | Yes |
-| Safe bulk | Selection UI | — | Missing PDFs + CSV export | — |
+## Shared fix
 
-## Metric semantics (GDI)
+| Change | Detail |
+|--------|--------|
+| Portal menu | My Deals–style `position: fixed` menu appended to `document.body` (`openMoreMenu` / `closeMoreMenu` in `admin-ai-demand-table.js`) |
+| Positioning | Anchored to trigger; flips upward near viewport bottom; clamped horizontally; repositions on scroll/resize |
+| Interaction | One menu at a time; Escape + outside click close; focus returns to trigger; keyboard arrow navigation on items |
+| Row height | Trigger is a button (not `<details>`), so opening does not change row height or select the row |
+| Actions | Icon primary controls + vertical-ellipsis More (tooltips + `aria-label`); secondary actions in the portal menu |
+| Handlers | Menu item clicks proxy through the row `.ada-row-actions` wrap so existing `data-act` handlers keep working |
+| Copy | “Select this page” replaces “page select ≠ all filtered” |
+| Metrics | Ready/Watch / archive notes moved into compact `<details class="ada-metric-disclosure">` |
 
-Ready / Action Set / Watch = **current GDI report-data executive summary** counts from `getGdiPdfReportData`, reconciled with table rows via `normalizeGdiAdminReportRow`. Last Generated = PDF store time. Not renamed to imply live list inventory equivalence.
+Applied via shared `DealalityAiAdminTable.actionsHtml` on **AI Demand Reviews**, **GDI Reports**, and **Report Archive**. **ADP Action Plan** does not use row More menus; its preview table is wrapped in `ada-table-shell` to contain horizontal overflow.
 
-## Planner discovery (research path)
+## Verification
 
-Extended LMC (`v1.2`) with professional planner specialties, relationship status (existing / previously pursued / not yet confirmed), influence roles, and DG-not-PE-venue persist. Directory/top-list alone fails. Deduped under `PROFESSIONAL_PLANNERS_INTERMEDIARIES` subsegment. No separate pipeline.
+| Check | Result |
+|-------|--------|
+| Unit | `node scripts/test-admin-ai-demand-table-v1.mjs` PASS |
+| Browser | `node scripts/playwright-ai-admin-more-menu-layering-v1.mjs` PASS — `elementFromPoint` hits menu; item click fires row act |
+| Viewports | First / middle / last rows; horizontal + vertical scroll; narrow; ~150–200% scale |
+| Before/after | `before-open-menu-obscured.png` vs `after-open-menu-unobscured.png` (+ last/narrow/zoom shots) |
+| Scope | No GDI research, qualification, Airtable writes, or count changes |
 
-## Tests
+## Release references
 
-- `node scripts/test-admin-ai-demand-table-v1.mjs` — PASS
-- `node scripts/test-gdi-local-meetings-catering-research-v1.mjs` — PASS (includes planner)
+Filled after merge/deploy:
 
-## Local / production
+| Item | Value |
+|------|-------|
+| Branch | `gdi/ai-admin-table-menu-layering` |
+| PR | _(pending)_ |
+| Deploy SHA | _(pending)_ |
+| Local `:8080` | _(pending)_ |
+| Production open-menu | _(pending)_ |
 
-See `VERIFICATION.md` for :8080 and production auth checks after deploy.
+## Remaining verification blocker
 
-## Unavailable backend capability
-
-- “Select all filtered results across pages” as a distinct server-side operation — UI retains page selection vs filtered set; GDI catalog is typically one page.
-- Live published-prospect count column separate from report-data Ready — not dual-wired in this pass; metric note documents the report-data source instead of fabricating a second count.
+Authenticated production AI Admin open-menu screenshot requires Memberstack admin session. Fixture browser proof covers layering/clicks; production UI confirmation follows deploy when admin auth is available.

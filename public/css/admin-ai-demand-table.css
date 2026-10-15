@@ -8,6 +8,7 @@
   max-width: min(1600px, 100%);
   width: 100%;
   box-sizing: border-box;
+  overflow-x: clip;
 }
 
 .ada-toolbar {
@@ -49,7 +50,7 @@
 }
 
 .ada-selection-hint {
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
 .ada-bulk-wrap {
@@ -57,6 +58,7 @@
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
+  position: relative;
 }
 
 .ada-bulk-btn {
@@ -250,7 +252,7 @@
   max-width: 160px;
 }
 
-/* Sticky actions column — keeps right-side actions reachable while scrolling */
+/* Sticky actions column — reachable while scrolling; menu is portaled (not clipped here). */
 .ada-table-shell .adr-table th.ada-col-actions,
 .ada-table-shell .adr-table td.ada-col-actions,
 .ada-table th.ada-col-actions,
@@ -261,8 +263,13 @@
   background: #0d152c;
   box-shadow: -8px 0 12px rgba(0, 0, 0, 0.25);
   white-space: nowrap !important;
-  min-width: 200px;
+  min-width: 120px;
+  width: 1%;
   vertical-align: middle;
+}
+
+.ada-table-shell .adr-table thead th.ada-col-actions {
+  z-index: 4;
 }
 
 .ada-table-shell .adr-table tbody tr:hover td.ada-col-actions {
@@ -274,14 +281,64 @@
   align-items: center;
   gap: 4px;
   flex-wrap: nowrap;
+  position: relative;
 }
 
+/* My Deals–style icon controls — readable hit targets, not crowded text chips */
+.ada-action-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  margin: 0;
+  color: #aeb9e1;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  line-height: 1;
+  flex: 0 0 auto;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.ada-action-icon svg {
+  display: block;
+  pointer-events: none;
+  width: 18px;
+  height: 18px;
+}
+
+.ada-action-icon:hover:not(:disabled):not(.is-disabled) {
+  color: #6c72ff;
+  background: rgba(108, 114, 255, 0.12);
+}
+
+.ada-action-icon:focus-visible {
+  outline: 2px solid #6c72ff;
+  outline-offset: 2px;
+}
+
+.ada-action-icon:disabled,
+.ada-action-icon.is-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ada-action-icon.is-open,
+.ada-more-trigger[aria-expanded="true"] {
+  color: #6c72ff;
+  background: rgba(108, 114, 255, 0.16);
+}
+
+/* Legacy text chip (kept for non-row toolbars if any remain) */
 .ada-icon-btn {
   background: transparent;
   color: var(--runbook-heading, #e8ecf4);
   border: 0.6px solid var(--runbook-border, #2a3550);
   border-radius: 5px;
-  padding: 3px 8px;
+  padding: 6px 10px;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
@@ -300,68 +357,119 @@
   cursor: not-allowed;
 }
 
-.ada-more {
-  position: relative;
-  display: inline-block;
-}
-
-.ada-more__sum {
-  list-style: none;
-}
-
-.ada-more__sum::-webkit-details-marker {
-  display: none;
-}
-
-.ada-more__menu {
-  position: absolute;
-  right: 0;
-  top: calc(100% + 4px);
-  z-index: 40;
-  min-width: 200px;
+/*
+ * Portal More menu — fixed on document.body (My Deals deal-info-more-menu pattern).
+ * Must NOT live inside sticky td stacking contexts.
+ */
+.ada-more-menu {
+  position: fixed;
+  z-index: 10050;
+  min-width: 220px;
+  max-width: min(320px, calc(100vw - 16px));
+  max-height: min(70vh, 420px);
+  overflow-y: auto;
   background: #0b1224;
   border: 0.6px solid var(--runbook-border, #2a3550);
-  border-radius: 8px;
-  padding: 4px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  padding: 6px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  box-sizing: border-box;
 }
 
-.ada-more__item {
-  display: block;
+.ada-more-menu__item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
   width: 100%;
   text-align: left;
   background: transparent;
   border: none;
   color: var(--runbook-heading, #e8ecf4);
-  padding: 7px 10px;
-  font-size: 12px;
-  border-radius: 5px;
+  padding: 9px 10px;
+  font-size: 13px;
+  border-radius: 8px;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
-.ada-more__item:hover:not(:disabled) {
-  background: rgba(108, 114, 255, 0.12);
+.ada-more-menu__item:hover:not(:disabled):not(.is-disabled),
+.ada-more-menu__item:focus-visible {
+  background: rgba(108, 114, 255, 0.14);
+  outline: none;
 }
 
-.ada-more__item:disabled,
-.ada-more__item.is-disabled {
-  opacity: 0.45;
+.ada-more-menu__item:disabled,
+.ada-more-menu__item.is-disabled {
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-.ada-more__why {
-  display: block;
-  font-size: 10px;
-  color: var(--runbook-muted, #8b95a8);
-  margin-top: 2px;
-  white-space: normal;
+.ada-more-menu__icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  color: #aeb9e1;
 }
 
-.ada-metric-note {
+.ada-more-menu__icon svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.ada-more-menu__label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ada-more-menu__why {
+  flex: 1 0 100%;
+  padding-left: 26px;
   font-size: 11px;
   color: var(--runbook-muted, #8b95a8);
+  white-space: normal;
+  line-height: 1.35;
+}
+
+/* Compact metric definitions — no large technical paragraph dominating the table */
+.ada-metric-note,
+.ada-metric-disclosure {
+  font-size: 12px;
+  color: var(--runbook-muted, #8b95a8);
   margin: 0 0 10px;
-  max-width: 72rem;
+  max-width: 48rem;
+}
+
+.ada-metric-disclosure {
+  border: 0.6px solid var(--runbook-border, #2a3550);
+  border-radius: 8px;
+  padding: 6px 10px;
+  background: rgba(13, 21, 44, 0.6);
+}
+
+.ada-metric-disclosure > summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--runbook-heading, #e8ecf4);
+  list-style: none;
+}
+
+.ada-metric-disclosure > summary::-webkit-details-marker {
+  display: none;
+}
+
+.ada-metric-disclosure > summary::before {
+  content: "▸ ";
+  color: #8b95a8;
+}
+
+.ada-metric-disclosure[open] > summary::before {
+  content: "▾ ";
+}
+
+.ada-metric-disclosure > p {
+  margin: 8px 0 2px;
+  line-height: 1.45;
 }
 
 .ada-btn-reset {
@@ -395,7 +503,12 @@
 @media (max-width: 900px) {
   .ada-table-shell .adr-table th.ada-col-actions,
   .ada-table-shell .adr-table td.ada-col-actions {
-    min-width: 160px;
+    min-width: 108px;
+  }
+
+  .ada-action-icon {
+    width: 32px;
+    height: 32px;
   }
 }
 

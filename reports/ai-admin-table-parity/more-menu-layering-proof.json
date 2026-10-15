@@ -1,0 +1,26 @@
+{
+  "ok": true,
+  "generatedAt": "2026-10-15T22:52:21.895Z",
+  "rootCause": "Sticky Actions cells (z-index:3) each create a stacking context; absolutely positioned More menus (z-index:40) stayed inside those contexts so later rows painted over the open menu.",
+  "fix": "Portal More menu to document.body with position:fixed (My Deals pattern); icon primary actions; plain-language Select this page.",
+  "screenshots": {
+    "before": "before-open-menu-obscured.png",
+    "after": [
+      "after-open-menu-unobscured.png",
+      "after-open-menu-last-row.png",
+      "after-open-menu-narrow.png",
+      "after-open-menu-zoom200.png"
+    ]
+  },
+  "checks": [
+    "portal_menu_on_body",
+    "elementFromPoint_hits_menu",
+    "menu_item_click_fires_row_act",
+    "escape_closes",
+    "first_middle_last_rows",
+    "horizontal_scroll",
+    "vertical_scroll_flip",
+    "narrow_viewport",
+    "zoom_200"
+  ]
+}

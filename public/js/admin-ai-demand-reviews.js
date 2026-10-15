@@ -1322,8 +1322,7 @@
           var btn = ev.target.closest("button[data-act]");
           if (btn) {
             var wrap = btn.closest("[data-id], [data-property]");
-            var more = btn.closest("details.ada-more");
-            if (more) more.open = false;
+            if (T && typeof T.closeMoreMenu === "function") T.closeMoreMenu();
             onAction(
               btn.getAttribute("data-act"),
               btn.getAttribute("data-id") ||

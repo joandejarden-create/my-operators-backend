@@ -1,31 +1,34 @@
-# Verification checklist
+# AI Admin table presentation — verification
 
-## Automated
+## Defect reproduced
 
-- [x] `test-admin-ai-demand-table-v1.mjs`
-- [x] `test-gdi-local-meetings-catering-research-v1.mjs`
+Legacy fixture `before-open-menu-obscured.png`: Hotel 5 More is expanded (`<details open>`) but menu items are not visible — neighboring sticky Actions cells paint over the in-cell absolute menu.
 
-## Local :8080 (authenticated admin)
+## After fix
 
-- [ ] AI Demand Reviews — sort asc/desc, search, coverage + PDF filters, Reset View, selection, sticky Actions
-- [ ] ADP Action Plan — load from Reviews Action plan handoff
-- [ ] GDI Reports — Location column, typed sort, date range on Last Generated, sticky Actions not clipped, bulk CSV (safe), bulk PDF only with confirm
-- [ ] Report Archive — version counts, location, Reset View, compact actions
-- [ ] Smaller viewport / 200% zoom — toolbar wraps; table scrolls horizontally inside shell
-- [ ] Keyboard — sortable headers focusable; icon buttons have aria-label
-- [ ] My Deals + customer GDI — no code paths changed in those UIs
+| Artifact | Proof |
+|----------|-------|
+| `after-open-menu-unobscured.png` | Portal menu fully visible with icons + disabled why-line |
+| `after-open-menu-last-row.png` | Bottom-row flip stays in viewport |
+| `after-open-menu-narrow.png` | Narrow viewport |
+| `after-open-menu-zoom200.png` | Scaled layout |
+| `more-menu-layering-proof.json` | `elementFromPoint` hits menu; archive click fires `data-act` |
 
-## Production (after clean-main deploy)
+Commands:
 
-- [ ] Authenticated AI Admin tabs load `admin-ai-demand-table.js?v=ada-table-parity-v1`
-- [ ] GDI Actions column reachable without page overflow
-- [ ] Counts match prior catalog semantics (no invented zeros)
+```bash
+node scripts/test-admin-ai-demand-table-v1.mjs
+node scripts/playwright-ai-admin-more-menu-layering-v1.mjs
+```
 
-## Screenshots
+## Tabs covered by shared `actionsHtml`
 
-Place before/after captures in `screenshots/` when available from authenticated local/prod sessions:
+- AI Demand Reviews
+- GDI Reports
+- Report Archive
 
-- `reviews-before.png` / `reviews-after.png`
-- `gdi-before.png` / `gdi-after.png`
-- `archive-before.png` / `archive-after.png`
-- `action-plan-after.png`
+ADP Action Plan: overflow shell only (no row More).
+
+## Non-goals confirmed
+
+- No research runs, Airtable mutations, or count formula changes during QA
