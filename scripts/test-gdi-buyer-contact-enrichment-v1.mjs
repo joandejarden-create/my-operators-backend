@@ -16,6 +16,7 @@ import {
   classifyPersonResponsibility as classifyResp,
   buildBuyerContactEnrichmentQueue,
 } from "../lib/group-demand-intelligence/workflow/buyer-contact-enrichment-v1.js";
+import { buildContactDisplaySurface } from "../lib/group-demand-intelligence/contact-display-surface-v1.js";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -313,6 +314,59 @@ import { preservePublicationMetadata } from "../lib/group-demand-intelligence/pr
   assert.match(weekly, /authorizeSurfe:\s*opts\.authorizeSurfe\s*===\s*true/);
   assert.match(weekly, /execute_public_contact_depth/);
   assert.doesNotMatch(weekly, /authorizeSurfe:\s*true/);
+}
+
+// R. Organization fallback must not invent a person from org-local email (WHF)
+{
+  const s = buildContactDisplaySurface({
+    organizationName: "Women in Housing & Finance, Inc.",
+    contactEmail: "whf@whfdc.org",
+    functionalContactEmail: "whf@whfdc.org",
+    publicContactPath: "https://whfdc.org/general/?type=CONTACT",
+    companyPhone: "703-683-4742",
+    namedContactResearchStatus: NAMED_RESEARCH_STATUS.EXHAUSTED_ORG_FALLBACK,
+    primaryContact: {
+      name: null,
+      email: null,
+      organizationContactRoute: "whf@whfdc.org",
+    },
+  });
+  assert.equal(s.hasNamedPerson, false);
+  assert.equal(s.primaryContact, null);
+  assert.equal(s.organizationContactEmail, "whf@whfdc.org");
+  assert.equal(s.namedBuyerEnrichmentComplete, false);
+  const dto = toOpportunityListDto({
+    id: "gdi_test_whf",
+    title: "WHF",
+    organizationName: "WHF",
+    contactEmail: "whf@whfdc.org",
+    functionalContactEmail: "whf@whfdc.org",
+    namedContactResearchStatus: NAMED_RESEARCH_STATUS.EXHAUSTED_ORG_FALLBACK,
+    publicContactPath: "https://whfdc.org/general/?type=CONTACT",
+  });
+  assert.equal(dto.primaryContact, null);
+  assert.equal(dto.organizationContactEmail, "whf@whfdc.org");
+}
+
+// S. Named person + shared org inbox: keep person, demote shared inbox to org route
+{
+  const s = buildContactDisplaySurface({
+    primaryContactName: "Sin Bosier",
+    primaryContact: {
+      name: "Sin Bosier",
+      role: "President & CEO",
+      email: null,
+      relevanceEvidence:
+        "enrichment provider returned sin@clubvipsd.com — quarantined as employer/domain conflict vs Gaslamp",
+    },
+    contactEmail: "gaslampevent@gmail.com",
+    functionalContactEmail: "gaslampevent@gmail.com",
+  });
+  assert.equal(s.primaryContact.name, "Sin Bosier");
+  assert.equal(s.primaryContact.email, null);
+  assert.equal(s.organizationContactEmail, "gaslampevent@gmail.com");
+  assert.equal(s.namedBuyerEnrichmentComplete, false);
+  assert.doesNotMatch(s.primaryContact.relevanceEvidence || "", /clubvipsd/i);
 }
 
 console.log("test-gdi-buyer-contact-enrichment-v1: PASS");
