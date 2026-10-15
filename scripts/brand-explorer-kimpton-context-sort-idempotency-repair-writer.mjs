@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-kimpton-context-sort-idempotency-repair-writer.mjs");
 /**
  * Brand Explorer Kimpton Portfolio Context + Sort-Order Idempotency Repair v30A-R1.
  *

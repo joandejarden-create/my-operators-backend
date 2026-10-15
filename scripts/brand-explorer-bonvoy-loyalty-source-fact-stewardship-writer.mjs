@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-bonvoy-loyalty-source-fact-stewardship-writer.mjs");
 /**
  * Brand Explorer Bonvoy Loyalty Rich Source + Fact Stewardship Writer v25C-2F.
  *

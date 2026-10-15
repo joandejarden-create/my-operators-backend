@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-wave17-prebuild-normalization.mjs");
 /**
  * Wave 17 pre-build normalization CLI.
  *

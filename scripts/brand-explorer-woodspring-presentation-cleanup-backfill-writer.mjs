@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-woodspring-presentation-cleanup-backfill-writer.mjs");
 /**
  * Brand Explorer WoodSpring Presentation Cleanup + Backfill v33B.
  *

@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-v43-lifestyle-value-prop-scrub.mjs");
 /**
  * Post-v43: rewrite stub Brand Value Proposition / Key Brand Differentiators
  * that render as forbidden incomplete chips on external full profiles.

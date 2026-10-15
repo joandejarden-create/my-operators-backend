@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-radisson-individuals-openings-suppression-writer.mjs");
 /**
  * Brand Explorer Radisson Individuals Openings Suppression + UI Copy Quarantine v31C.
  *

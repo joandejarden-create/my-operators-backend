@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-openings-momentum-row-review-package.mjs");
 /**
  * Brand Explorer Openings + Momentum Row Review Package v25C-3B (read-only).
  *

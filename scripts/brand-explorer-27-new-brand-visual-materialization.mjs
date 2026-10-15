@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-27-new-brand-visual-materialization.mjs");
 /**
  * Visual / gallery materialization for Tapestry, Dazzler, Trademark.
  *

@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-active-profile-readiness-prioritization-audit.mjs");
 /**
  * Brand Explorer Active Profile Readiness Prioritization Audit v28A (read-only).
  *

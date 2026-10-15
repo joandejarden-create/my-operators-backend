@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-built-blocked-founder-review-prep.mjs");
 /**
  * Built-blocked cohort — Founder Visual Review + Public Restore Prep (read-only).
  *

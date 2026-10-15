@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-woodspring-source-registry-readiness-writer.mjs");
 /**
  * Brand Explorer WoodSpring Source Stewardship + Profile Build Readiness v33A.
  *

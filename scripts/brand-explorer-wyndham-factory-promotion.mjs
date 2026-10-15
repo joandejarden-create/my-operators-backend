@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-wyndham-factory-promotion.mjs");
 /**
  * Wyndham factory promotion — Dazzler / Trademark.
  *

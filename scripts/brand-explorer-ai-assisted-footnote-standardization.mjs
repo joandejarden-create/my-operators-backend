@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-ai-assisted-footnote-standardization.mjs");
 /**
  * Brand Explorer — AI-Assisted Profile footnote standardization CLI.
  *

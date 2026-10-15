@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-radisson-individuals-durable-gallery-source-repair-writer.mjs");
 /**
  * Brand Explorer Radisson Individuals Durable Gallery Source + Registry Repair v31J.
  *

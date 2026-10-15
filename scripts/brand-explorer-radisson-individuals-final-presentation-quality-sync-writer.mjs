@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-radisson-individuals-final-presentation-quality-sync-writer.mjs");
 /**
  * Brand Explorer Radisson Individuals Final Presentation Quality Sync v31N.
  *

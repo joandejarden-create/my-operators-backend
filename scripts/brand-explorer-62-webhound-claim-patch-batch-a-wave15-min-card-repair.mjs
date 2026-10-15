@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-62-webhound-claim-patch-batch-a-wave15-min-card-repair.mjs");
 /**
  * Batch A Wave15 min-card gate repair.
  *

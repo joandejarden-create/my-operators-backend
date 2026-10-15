@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-tribute-geographic-footprint-refinement-writer.mjs");
 /**
  * Brand Explorer Tribute Geographic Footprint Refinement Writer v25C-5D.
  *

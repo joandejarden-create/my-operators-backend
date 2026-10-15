@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-openings-momentum-row-creation-writer.mjs");
 /**
  * Brand Explorer Openings + Momentum Row Creation Writer v25C-3C (Tribute Portfolio pilot).
  *

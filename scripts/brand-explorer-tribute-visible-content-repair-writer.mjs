@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-tribute-visible-content-repair-writer.mjs");
 /**
  * Brand Explorer Tribute Visible Content Repair Writer v25C-4A.
  *

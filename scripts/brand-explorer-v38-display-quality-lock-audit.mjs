@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-v38-display-quality-lock-audit.mjs");
 /**
  * v38 — Brand Explorer display quality lock audit.
  */

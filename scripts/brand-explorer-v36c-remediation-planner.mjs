@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-v36c-remediation-planner.mjs");
 /**
  * Brand Explorer v36C remediation planner (read-only).
  *

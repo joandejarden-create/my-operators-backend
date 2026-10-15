@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-62-webhound-claim-patch-batch-a-pvql-min-card-repair.mjs");
 /**
  * Batch A PVQL repair: restore/soften remaining min-card + dated-card blockers.
  */

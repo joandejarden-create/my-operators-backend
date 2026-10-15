@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-62-background-validation.mjs");
 /**
  * Brand Explorer 62 — background validation vs new Hotel Property Census.
  * Read-only. Patch proposals only.

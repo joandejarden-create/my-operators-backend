@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-wave17-batch-a-images.mjs");
 /**
  * Wave 17 Batch A — LOW-risk image materialization CLI.
  *

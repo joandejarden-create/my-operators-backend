@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-full-tab-factory-build.mjs");
 /**
  * Full Tab Factory Presentation build (dry-run by default).
  *

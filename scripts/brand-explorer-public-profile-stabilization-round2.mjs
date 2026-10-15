@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-public-profile-stabilization-round2.mjs");
 /**
  * Public Profile Stabilization — Round 2 residual apply.
  * Clears remaining PVQL defects after field-gate pack apply.

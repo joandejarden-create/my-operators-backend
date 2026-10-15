@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-portfolio-mix-context-normalization-writer.mjs");
 /**
  * Brand Explorer Portfolio Mix + Portfolio Context Normalization Writer v25C-4C.
  */

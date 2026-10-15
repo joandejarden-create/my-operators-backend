@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-asset-download-attachment-writer.mjs");
 /**
  * Brand Asset Download & Attachment Writer v6.
  *

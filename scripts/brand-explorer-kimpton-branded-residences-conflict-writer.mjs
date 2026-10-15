@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-kimpton-branded-residences-conflict-writer.mjs");
 /**
  * Brand Explorer Kimpton Branded Residences Conflict Resolution Writer v30C.
  *

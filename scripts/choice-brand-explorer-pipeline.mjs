@@ -1,3 +1,5 @@
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "choice-brand-explorer-pipeline.mjs");
 /**
  * Repeatable Choice Brand Explorer pipeline — one brand at a time toward Radisson Blu parity.
  *

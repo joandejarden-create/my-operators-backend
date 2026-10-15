@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-v44-release-baseline.mjs");
 /**
  * v44 — Brand Explorer OS Release Baseline + Next Batch Router (read-only).
  */

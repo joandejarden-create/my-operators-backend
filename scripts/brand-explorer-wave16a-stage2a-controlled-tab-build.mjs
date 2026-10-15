@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-wave16a-stage2a-controlled-tab-build.mjs");
 /**
  * Wave 16A Stage 2A — Controlled tab build (Fairfield, Four Points, Delta).
  *

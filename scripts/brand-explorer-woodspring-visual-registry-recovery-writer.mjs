@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-woodspring-visual-registry-recovery-writer.mjs");
 /**
  * Brand Explorer WoodSpring Visual Registry Recovery v33D-R2.
  *

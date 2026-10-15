@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-choice-extended-stay-source-capture-writer.mjs");
 /**
  * Brand Explorer Choice Extended-Stay Source Capture Writer v32B.
  *

@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-brand-asset-registry-discovery-writer.mjs");
 /**
  * Brand Explorer Brand Asset Registry Discovery + Approval Queue v31B.
  *

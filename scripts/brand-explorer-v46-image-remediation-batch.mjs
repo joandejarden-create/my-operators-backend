@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-v46-image-remediation-batch.mjs");
 /**
  * v46 — Image remediation batch for Hotel Indigo, MGallery, SLH (read-only).
  */

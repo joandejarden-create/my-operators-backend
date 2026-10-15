@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-ihg-family-pending-fact-stewardship-writer.mjs");
 /**
  * Brand Explorer IHG-Family Pending Fact Stewardship Writer v30B.
  *

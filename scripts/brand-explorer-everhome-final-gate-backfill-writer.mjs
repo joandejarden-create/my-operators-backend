@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-everhome-final-gate-backfill-writer.mjs");
 /**
  * Brand Explorer Everhome Final Gate Backfill v32H.
  *

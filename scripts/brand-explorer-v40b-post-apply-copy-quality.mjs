@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-v40b-post-apply-copy-quality.mjs");
 /**
  * v40B — Post-apply copy quality audit + founder review packets (read-only).
  *

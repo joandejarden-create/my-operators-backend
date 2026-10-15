@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-source-evidence-visual-completion-writer.mjs");
 /**
  * Brand Explorer Source Evidence + Cross-Section Visual Completion Writer v24C.
  *

@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-v43-lifestyle-opening-modal-fill.mjs");
 /**
  * Pre-v43: fill Case Summary modal fields on lifestyle CALA openings.
  */

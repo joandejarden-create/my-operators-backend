@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-46-accor-baseline-reconciliation.mjs");
 /**
  * Protected 46 Accor Wave 13 baseline reconciliation (code/report only).
  *

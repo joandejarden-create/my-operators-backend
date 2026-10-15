@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-radisson-individuals-overview-scenario-reactivation-writer.mjs");
 /**
  * Brand Explorer Radisson Individuals Overview Scenario Reactivation v31H-R1.
  *

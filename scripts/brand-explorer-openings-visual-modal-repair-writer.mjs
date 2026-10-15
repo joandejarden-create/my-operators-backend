@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-openings-visual-modal-repair-writer.mjs");
 /**
  * Brand Explorer Openings / Examples Visual + Modal Repair Writer v25C-3D.
  *

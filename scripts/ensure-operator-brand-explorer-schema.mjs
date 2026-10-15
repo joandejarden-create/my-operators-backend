@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "ensure-operator-brand-explorer-schema.mjs");
 /**
  * Create Brand & Relationships Explorer fields on Operator Setup — Profile (if missing).
  *

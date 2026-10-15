@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-momentum-editorial-link-repair-writer.mjs");
 /**
  * Brand Explorer Momentum Editorial + Link Repair Writer v25C-3E.
  *

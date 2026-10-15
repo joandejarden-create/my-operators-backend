@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-section-pattern-parity-remediation.mjs");
 /**
  * Section Pattern Parity remediation — dry-run by default; --apply needs confirmation flags.
  */

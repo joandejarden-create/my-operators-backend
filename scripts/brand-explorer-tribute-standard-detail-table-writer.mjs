@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-tribute-standard-detail-table-writer.mjs");
 /**
  * Brand Explorer Tribute Standard Detail Table Writer v25C-4B.
  *

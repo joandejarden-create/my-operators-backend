@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-tapestry-factory-promotion.mjs");
 /**
  * Tapestry Collection by Hilton — Setup AI Factory promotion orchestrator.
  *

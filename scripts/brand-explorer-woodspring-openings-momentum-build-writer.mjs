@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-woodspring-openings-momentum-build-writer.mjs");
 /**
  * Brand Explorer WoodSpring Openings + Momentum Build v33C.
  *

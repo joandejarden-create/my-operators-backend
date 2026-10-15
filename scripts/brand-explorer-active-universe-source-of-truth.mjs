@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-active-universe-source-of-truth.mjs");
 /**
  * Brand Explorer Active Universe Source-of-Truth — read-only dry-run audit.
  */

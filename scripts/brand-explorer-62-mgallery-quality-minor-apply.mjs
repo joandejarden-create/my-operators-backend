@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-62-mgallery-quality-minor-apply.mjs");
 /**
  * MGallery Collection — quality minor resolution (smallest Presentation patch).
  *

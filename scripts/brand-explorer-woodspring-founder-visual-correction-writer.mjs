@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-woodspring-founder-visual-correction-writer.mjs");
 /**
  * Brand Explorer WoodSpring Founder Visual QA Correction v33G.
  *

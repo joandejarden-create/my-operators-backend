@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-woodspring-six-image-gallery-completion-writer.mjs");
 /**
  * Brand Explorer WoodSpring Six-Image Gallery Completion v33H.
  *

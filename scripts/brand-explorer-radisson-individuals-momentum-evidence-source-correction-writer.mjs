@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { refuseLegacyApply } from "../lib/brand-explorer/canonical/legacy-apply-guard.js";
+refuseLegacyApply(process.argv, "brand-explorer-radisson-individuals-momentum-evidence-source-correction-writer.mjs");
 /**
  * Brand Explorer Radisson Individuals Momentum Evidence-Source Correction v31M-R3.
  *
