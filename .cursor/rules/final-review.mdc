@@ -1,0 +1,39 @@
+---
+description: Scoped GDI quality review rules — apply when editing Group Demand Intelligence surfaces
+globs:
+  - lib/group-demand-intelligence/**
+  - public/js/group-demand-intelligence/**
+  - public/css/group-demand-intelligence.css
+  - public/group-demand-intelligence*.html
+  - api/group-demand-intelligence.js
+  - scripts/gdi-*.mjs
+  - scripts/test-gdi-*.mjs
+  - scripts/gdi-quality-*.mjs
+  - fixtures/gdi-quality/**
+  - reports/gdi-quality-review/**
+alwaysApply: false
+---
+
+# GDI final review (scoped)
+
+Use these rules for GDI changes only. Do **not** force a full-platform audit for unrelated edits.
+
+## Required behaviors
+
+- Prefer shared components (`dealality-gdi-ui.js`, `contact-display-surface-v1`, list/detail DTOs) — no hotel-specific CSS/templates.
+- Keep Airtable → canonical writer → list/detail DTO → renderer mappings consistent.
+- Hotel-fit scores need rationale, evidence refs, assessment date/rule version where assessed; unknown ≠ zero; N/A ≠ insufficient.
+- Contact ownership: person email/phone must not display organization channels; fallbacks remain usable without claiming named-buyer completion.
+- Surfe/provider request IDs, credits, and costs stay backend-only; scrub provider brands from customer copy.
+- Named research complete ≠ buying authority or deliverability.
+
+## Verification
+
+- Changed behavior: run focused tests (`npm run gdi:quality:quick` or the specific `test:gdi-*` / `gdi:test:*` script).
+- Before scoped GDI release: `npm run gdi:quality:full` (add `-- --live` for production reads).
+- Do **not** auto-delete “unused” code from Knip or auto-accept Playwright snapshots to silence failures.
+- Do **not** block unrelated deploys on flaky external-link 403/429 results.
+
+## Out of scope for this rule
+
+Brand Explorer, Operator Explorer, census pipelines, and non-GDI surfaces unless they share a touched GDI dependency.
