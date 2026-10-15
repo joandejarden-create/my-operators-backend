@@ -1,0 +1,82 @@
+{
+  "runId": "gdi_workflow_recnPB3Q_2026-10-15T06-47-50-931Z_a03a2d",
+  "hotelId": "recnPB3Q02NO8Ma1o",
+  "horizon": "18m",
+  "targetEnv": "local",
+  "adapter": "filesystem",
+  "budget": {
+    "maxUsd": 5,
+    "maxSearches": 60,
+    "maxPages": 100,
+    "usedUsd": 0,
+    "usedSearches": 0,
+    "usedPages": 0,
+    "exhausted": false,
+    "incompleteCoverageReason": null
+  },
+  "authorizePublish": false,
+  "dryRun": true,
+  "startedAt": "2026-10-15T06:47:50.933Z",
+  "stages": {
+    "apply_pe_canonical": {
+      "status": "completed",
+      "at": "2026-10-15T06:48:01.205Z",
+      "dryRun": false,
+      "packageCount": 2,
+      "byVerdict": {
+        "PERSISTED_AND_LINKED": 2
+      },
+      "drawerProof": [
+        {
+          "opportunityId": "gdi_opp_prospect_mv8p5ddk_c3ef825a",
+          "venueName": "USS Midway Museum",
+          "peVenueId": "pev_7aa5dae26f771584",
+          "hotelVenueFitId": "hvf_3200e740958b1a",
+          "peSignalId": "pes_1695ba0a0e800e",
+          "detailLayout": "VENUE_PARTNERSHIP",
+          "peEnriched": true,
+          "ok": true
+        },
+        {
+          "opportunityId": "gdi_opp_prospect_mv8p5ddl_acb56fba",
+          "venueName": "Embarcadero Marina Park South",
+          "peVenueId": "pev_4d8c16746660b2ec",
+          "hotelVenueFitId": "hvf_71f3112abb962c",
+          "peSignalId": "pes_6ddccbef26c948",
+          "detailLayout": "VENUE_PARTNERSHIP",
+          "peEnriched": true,
+          "ok": true
+        }
+      ],
+      "rerunModes": [
+        {
+          "venueName": "USS Midway Museum",
+          "venueAction": "update",
+          "fitAction": "update",
+          "oppMode": "UPDATE"
+        },
+        {
+          "venueName": "Embarcadero Marina Park South",
+          "venueAction": "update",
+          "fitAction": "update",
+          "oppMode": "UPDATE"
+        }
+      ],
+      "note": "PE canonical persist applied; rerun must UPDATE existing venues/fits/opps"
+    }
+  },
+  "remainingManualSteps": [],
+  "failures": [],
+  "horizonResolved": {
+    "requested": "18m",
+    "canonicalPrimary": {
+      "start": "2026-10-14",
+      "end": "2028-04-14",
+      "months": 18
+    },
+    "note": "Using canonical 18-month primary horizon (2026-10-14 → 2028-04-14)."
+  },
+  "updatedAt": "2026-10-15T06:48:01.209Z",
+  "finishedAt": "2026-10-15T06:48:01.209Z",
+  "status": "ok"
+}

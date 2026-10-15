@@ -1,0 +1,82 @@
+{
+  "runId": "gdi_workflow_rec0eTEn_2026-10-15T06-48-01-385Z_9ea445",
+  "hotelId": "rec0eTEnCqlsGJJt9",
+  "horizon": "18m",
+  "targetEnv": "local",
+  "adapter": "filesystem",
+  "budget": {
+    "maxUsd": 5,
+    "maxSearches": 60,
+    "maxPages": 100,
+    "usedUsd": 0,
+    "usedSearches": 0,
+    "usedPages": 0,
+    "exhausted": false,
+    "incompleteCoverageReason": null
+  },
+  "authorizePublish": false,
+  "dryRun": true,
+  "startedAt": "2026-10-15T06:48:01.387Z",
+  "stages": {
+    "apply_pe_canonical": {
+      "status": "completed",
+      "at": "2026-10-15T06:48:11.462Z",
+      "dryRun": false,
+      "packageCount": 2,
+      "byVerdict": {
+        "PERSISTED_AND_LINKED": 2
+      },
+      "drawerProof": [
+        {
+          "opportunityId": "gdi_pe_1e87cdb00b80fc5f",
+          "venueName": "Anderson House",
+          "peVenueId": "pev_097b4cd1fa2280c2",
+          "hotelVenueFitId": "hvf_f427d6324a797c",
+          "peSignalId": "pes_4cb8495e9ccfbf",
+          "detailLayout": "VENUE_PARTNERSHIP",
+          "peEnriched": true,
+          "ok": true
+        },
+        {
+          "opportunityId": "gdi_pe_b4de27f6743c03c5",
+          "venueName": "DAR Headquarters",
+          "peVenueId": "pev_177defed35e357e0",
+          "hotelVenueFitId": "hvf_76007339df08b8",
+          "peSignalId": "pes_4175ca63e896a9",
+          "detailLayout": "VENUE_PARTNERSHIP",
+          "peEnriched": true,
+          "ok": true
+        }
+      ],
+      "rerunModes": [
+        {
+          "venueName": "Anderson House",
+          "venueAction": "update",
+          "fitAction": "update",
+          "oppMode": "UPDATE"
+        },
+        {
+          "venueName": "DAR Headquarters",
+          "venueAction": "update",
+          "fitAction": "update",
+          "oppMode": "UPDATE"
+        }
+      ],
+      "note": "PE canonical persist applied; rerun must UPDATE existing venues/fits/opps"
+    }
+  },
+  "remainingManualSteps": [],
+  "failures": [],
+  "horizonResolved": {
+    "requested": "18m",
+    "canonicalPrimary": {
+      "start": "2026-10-14",
+      "end": "2028-04-14",
+      "months": 18
+    },
+    "note": "Using canonical 18-month primary horizon (2026-10-14 → 2028-04-14)."
+  },
+  "updatedAt": "2026-10-15T06:48:11.463Z",
+  "finishedAt": "2026-10-15T06:48:11.463Z",
+  "status": "ok"
+}

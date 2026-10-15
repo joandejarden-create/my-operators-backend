@@ -15,7 +15,10 @@
  *   validate_config → reuse_evidence → discover_gaps → assess_fit →
  *   identify_people → enrich_contacts → synthesize_hotel_relevance →
  *   evaluate_eligibility → generate_cards → prepare_manifest →
- *   preview_verify → apply_publish
+ *   preview_verify → apply_pe_canonical → apply_publish
+ *
+ * apply_pe_canonical (authorize with --authorize-publish or --authorize-pe-persist):
+ *   venue → signals → hotel fit → GDI link via canonical-persist-and-link-v1
  *
  * v2 wiring inside those stages:
  *   reuse_evidence → reuse_prior_intelligence ledger
@@ -73,6 +76,16 @@ import {
 } from "../lib/group-demand-intelligence/workflow/jev-advisory-shadow-v1.js";
 import { WEBHOUND_PROVIDER_STATUS } from "../lib/group-demand-intelligence/workflow/webhound-retired-v1.js";
 import { loadOpportunitiesCanonical } from "../lib/group-demand-intelligence/opportunity-persistence.js";
+import {
+  loadVenuePartnershipPackagesFromFile,
+  persistVenuePartnershipPackages,
+} from "../lib/group-demand-intelligence/private-events/canonical-persist-and-link-v1.js";
+import { enrichPrivateEventOpportunityDetail } from "../lib/group-demand-intelligence/private-events/customer-detail-enrichment.js";
+import {
+  findOpportunityRecordById,
+  airtableRecordToOpportunity,
+} from "../lib/group-demand-intelligence/airtable-opportunity-store.js";
+import { invalidateGdiHotelReadCache } from "../lib/group-demand-intelligence/read-cache.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -98,6 +111,7 @@ const STAGES = [
   "generate_cards",
   "prepare_manifest",
   "preview_verify",
+  "apply_pe_canonical",
   "apply_publish",
 ];
 
@@ -115,7 +129,13 @@ const outDir =
 const resumeRun = arg("--resume-run");
 const stageOnly = arg("--stage");
 const authorizePublish = has("--authorize-publish");
+const authorizePePersist =
+  has("--authorize-pe-persist") || authorizePublish;
 const dryRun = !authorizePublish || has("--dry-run");
+const PE_PACKAGE_PATH = path.join(
+  ROOT,
+  "reports/gdi-operational-baseline/pe-canonical-persist/venue-partnership-packages.json"
+);
 const runDiscovery = has("--run-discovery");
 const authorizePaidDiscovery = has("--authorize-paid-discovery");
 const authorizeSurfe = has("--authorize-surfe");
@@ -1461,6 +1481,114 @@ for (const stage of stagesToRun) {
       });
       if (r1.status !== 0 || r2.status !== 0) {
         throw new Error("preview_import_failed");
+      }
+      continue;
+    }
+
+    if (stage === "apply_pe_canonical") {
+      // Research → venue/signals → hotel fit → GDI link (idempotent).
+      // Dry-run by default; live writes require --authorize-pe-persist or --authorize-publish.
+      if (!fs.existsSync(PE_PACKAGE_PATH)) {
+        mark(ledger, stage, "skipped", {
+          reason: "no_venue_partnership_packages",
+          path: PE_PACKAGE_PATH,
+        });
+        continue;
+      }
+      const allPkgs = loadVenuePartnershipPackagesFromFile(PE_PACKAGE_PATH);
+      const hotelPkgs = allPkgs.filter(
+        (p) => (p.hotel?.hotelId || p.hotel?.id) === hotelId
+      );
+      if (!hotelPkgs.length) {
+        mark(ledger, stage, "skipped", {
+          reason: "no_packages_for_hotel",
+          hotelId,
+          packageCount: allPkgs.length,
+        });
+        continue;
+      }
+      const peOut = path.join(runDir, "pe_canonical_persist");
+      fs.mkdirSync(peOut, { recursive: true });
+      const peDry = !authorizePePersist || has("--dry-run");
+      const peSummary = await persistVenuePartnershipPackages(hotelPkgs, {
+        dryRun: peDry,
+        outDir: peOut,
+      });
+      const drawerProof = [];
+      if (!peDry) {
+        for (const r of peSummary.results || []) {
+          if (!r.opportunityId) continue;
+          invalidateGdiHotelReadCache(hotelId);
+          const rec = await findOpportunityRecordById(r.opportunityId);
+          if (!rec) {
+            drawerProof.push({
+              opportunityId: r.opportunityId,
+              ok: false,
+              reason: "missing_opportunity",
+            });
+            continue;
+          }
+          const raw = airtableRecordToOpportunity(rec);
+          const { opportunity: enriched, peEnriched } =
+            await enrichPrivateEventOpportunityDetail(raw);
+          drawerProof.push({
+            opportunityId: r.opportunityId,
+            venueName: r.venueName,
+            peVenueId: enriched.peVenueId || r.venueId,
+            hotelVenueFitId: enriched.hotelVenueFitId,
+            peSignalId: enriched.peSignalId,
+            detailLayout: enriched.detailLayout,
+            peEnriched: Boolean(peEnriched),
+            ok:
+              Boolean(peEnriched) &&
+              enriched.detailLayout === "VENUE_PARTNERSHIP" &&
+              Boolean(enriched.peVenueId),
+          });
+        }
+        // Idempotency: immediate rerun must UPDATE only (no duplicate GDI cards)
+        const rerun = await persistVenuePartnershipPackages(hotelPkgs, {
+          dryRun: false,
+          outDir: null,
+        });
+        peSummary.rerun = {
+          byVerdict: rerun.byVerdict,
+          modes: (rerun.results || []).map((r) => ({
+            venueName: r.venueName,
+            venueAction: r.steps?.venue?.action,
+            fitAction: r.steps?.fit?.action,
+            oppMode: r.steps?.opportunityMatch?.mode,
+          })),
+        };
+      }
+      fs.writeFileSync(
+        path.join(peOut, "coordinator-pe-apply.json"),
+        JSON.stringify(
+          {
+            hotelId,
+            dryRun: peDry,
+            authorizePePersist,
+            summary: peSummary,
+            drawerProof,
+          },
+          null,
+          2
+        ) + "\n"
+      );
+      const duplicateCreate = (peSummary.rerun?.modes || []).some(
+        (m) => m.oppMode === "CREATE"
+      );
+      mark(ledger, stage, peDry || !duplicateCreate ? "completed" : "failed", {
+        dryRun: peDry,
+        packageCount: hotelPkgs.length,
+        byVerdict: peSummary.byVerdict,
+        drawerProof,
+        rerunModes: peSummary.rerun?.modes || null,
+        note: peDry
+          ? "PE canonical persist dry-run — pass --authorize-pe-persist or --authorize-publish to write"
+          : "PE canonical persist applied; rerun must UPDATE existing venues/fits/opps",
+      });
+      if (!peDry && duplicateCreate) {
+        throw new Error("pe_canonical_rerun_created_duplicates");
       }
       continue;
     }
