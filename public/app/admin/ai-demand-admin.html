@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="/css/deal-workspace-shell.css" />
   <link rel="stylesheet" href="/css/admin-ai-demand-reviews.css?v=adp-admin-workspace-v1" />
   <link rel="stylesheet" href="/css/admin-ai-demand-admin.css?v=adp-admin-workspace-v1" />
+  <link rel="stylesheet" href="/css/admin-ai-demand-table.css?v=ada-table-parity-v1" />
   <script>
     (function () {
       if (window.location.search.indexOf("embed=1") !== -1 || window !== window.top) {
@@ -73,43 +74,58 @@
     <section id="adaPanelReviews" class="ada-panel" data-panel="reviews" role="tabpanel">
       <div class="adr-counts" id="adrCounts" aria-live="polite"></div>
 
-      <section class="adr-filters" aria-label="Review filters">
-        <label>
-          Search
-          <input type="search" id="adrSearch" placeholder="Hotel or market" />
-        </label>
-        <label>
-          Coverage
-          <select id="adrFilterCoverage">
-            <option value="">All</option>
-            <option value="READY">Ready</option>
-            <option value="NEEDS_REBUILD">Needs rebuild</option>
-            <option value="BLOCKED">Blocked</option>
-          </select>
-        </label>
-        <button type="button" class="adr-btn" id="adrApplyFilters">Apply</button>
-        <button type="button" class="adr-btn adr-btn--secondary" id="adrGenerateDraft">Generate New Draft</button>
-      </section>
+      <div class="ada-toolbar">
+        <section class="adr-filters" aria-label="Review filters">
+          <label>
+            Search hotel or location
+            <input type="search" id="adrSearch" placeholder="Hotel or market" />
+          </label>
+          <label>
+            Coverage
+            <select id="adrFilterCoverage">
+              <option value="">All</option>
+              <option value="READY">Ready</option>
+              <option value="NEEDS_REBUILD">Needs rebuild</option>
+              <option value="BLOCKED">Blocked</option>
+            </select>
+          </label>
+          <label>
+            PDF Status
+            <select id="adrFilterPdf">
+              <option value="">All</option>
+              <option value="READY">READY</option>
+              <option value="MISSING">MISSING</option>
+              <option value="FAILED">FAILED</option>
+            </select>
+          </label>
+          <button type="button" class="adr-btn" id="adrApplyFilters">Apply</button>
+          <button type="button" class="ada-btn-reset" id="adrResetView">Reset View</button>
+          <button type="button" class="adr-btn adr-btn--secondary" id="adrGenerateDraft">Generate New Draft</button>
+        </section>
+      </div>
+      <div class="ada-results-row" id="adrResultsRow"></div>
 
-      <div class="adr-table-wrap">
-        <table class="adr-table" id="adrTable">
-          <thead>
+      <div class="adr-table-wrap ada-table-shell">
+        <table class="adr-table ada-table" id="adrTable">
+          <thead id="adrTableHead">
             <tr>
-              <th data-sort="propertyName">Hotel</th>
-              <th data-sort="market">Market</th>
-              <th data-sort="reportingMonth">Baseline / Monitoring</th>
-              <th data-sort="currentMonitoringDate">Last Measurement</th>
-              <th data-sort="priorRunDate">Prior Run</th>
-              <th data-sort="versionLabel">Review Version</th>
-              <th data-sort="reviewStatus">Report Status</th>
-              <th data-sort="generationStatus">Generation Status</th>
-              <th data-sort="coverageStatus">Coverage</th>
-              <th data-sort="clientIssued">Client Issued</th>
-              <th data-sort="pdfStatus">PDF</th>
-              <th>ADP Client</th>
-              <th data-sort="actionCount">Action Plan</th>
-              <th data-sort="generatedAt">Last Generated</th>
-              <th>More / Archive</th>
+              <th class="ada-cell-check ada-th--check" scope="col">
+                <input type="checkbox" class="ada-select-page" id="adrSelectPage" title="Select all on this page" aria-label="Select all on this page" />
+              </th>
+              <th data-sort="propertyName"><span class="ada-th-label">Hotel</span></th>
+              <th data-sort="market"><span class="ada-th-label">Location</span></th>
+              <th data-sort="reportingMonth"><span class="ada-th-label">Baseline / Monitoring</span></th>
+              <th data-sort="currentMonitoringDate"><span class="ada-th-label">Last Measurement</span></th>
+              <th data-sort="priorRunDate"><span class="ada-th-label">Prior Run</span></th>
+              <th data-sort="versionLabel"><span class="ada-th-label">Review Version</span></th>
+              <th data-sort="reviewStatus"><span class="ada-th-label">Report Status</span></th>
+              <th data-sort="generationStatus"><span class="ada-th-label">Generation Status</span></th>
+              <th data-sort="coverageStatus"><span class="ada-th-label">Coverage</span></th>
+              <th data-sort="clientIssued"><span class="ada-th-label">Client Issued</span></th>
+              <th data-sort="pdfStatus"><span class="ada-th-label">PDF</span></th>
+              <th data-sort="actionCount"><span class="ada-th-label">Action Plan</span></th>
+              <th data-sort="generatedAt"><span class="ada-th-label">Last Generated</span></th>
+              <th class="ada-col-actions no-sort">Actions</th>
             </tr>
           </thead>
           <tbody id="adrTableBody">
@@ -207,53 +223,72 @@
 
     <section id="adaPanelGdiReports" class="ada-panel" data-panel="gdi-reports" role="tabpanel" hidden>
       <div class="adr-counts" id="gdiRptCounts" aria-live="polite"></div>
-      <section class="adr-filters" aria-label="GDI report filters">
-        <label>
-          Search
-          <input type="search" id="gdiRptSearch" placeholder="Hotel or market" />
-        </label>
-        <label>
-          Report Status
-          <select id="gdiRptFilterReport">
-            <option value="">All</option>
-            <option value="READY">READY</option>
-            <option value="WATCH_ONLY">WATCH ONLY</option>
-            <option value="NO_READY_OPPORTUNITIES">NO READY OPPORTUNITIES</option>
-            <option value="NEEDS_BUILD">NEEDS BUILD</option>
-            <option value="BLOCKED">BLOCKED</option>
-          </select>
-        </label>
-        <label>
-          PDF Status
-          <select id="gdiRptFilterPdf">
-            <option value="">All</option>
-            <option value="READY">READY</option>
-            <option value="MISSING">MISSING</option>
-            <option value="GENERATING">GENERATING</option>
-            <option value="FAILED">FAILED</option>
-          </select>
-        </label>
-        <button type="button" class="adr-btn" id="gdiRptApplyFilters">Apply</button>
-      </section>
+      <p class="ada-metric-note">
+        <strong>Ready / Action Set / Watch</strong> are counts from the current GDI report data
+        executive summary (customer-ready prospects, action-set recommendations, future-watch),
+        loaded when this catalog is built — not a separate live list inventory and not PDF snapshot
+        archives. <strong>Last Generated</strong> is the PDF store generation time.
+      </p>
+      <div class="ada-toolbar">
+        <section class="adr-filters" aria-label="GDI report filters">
+          <label>
+            Search hotel or location
+            <input type="search" id="gdiRptSearch" placeholder="Hotel or market" />
+          </label>
+          <label>
+            Report Status
+            <select id="gdiRptFilterReport">
+              <option value="">All</option>
+              <option value="READY">READY</option>
+              <option value="WATCH_ONLY">WATCH ONLY</option>
+              <option value="NO_READY_OPPORTUNITIES">NO READY OPPORTUNITIES</option>
+              <option value="NEEDS_BUILD">NEEDS BUILD</option>
+              <option value="BLOCKED">BLOCKED</option>
+            </select>
+          </label>
+          <label>
+            PDF Status
+            <select id="gdiRptFilterPdf">
+              <option value="">All</option>
+              <option value="READY">READY</option>
+              <option value="MISSING">MISSING</option>
+              <option value="GENERATING">GENERATING</option>
+              <option value="FAILED">FAILED</option>
+            </select>
+          </label>
+          <label>
+            Last generated from
+            <input type="date" id="gdiRptDateFrom" />
+          </label>
+          <label>
+            Last generated to
+            <input type="date" id="gdiRptDateTo" />
+          </label>
+          <button type="button" class="adr-btn" id="gdiRptApplyFilters">Apply</button>
+        </section>
+      </div>
+      <div class="ada-results-row" id="gdiRptResultsRow"></div>
       <p class="adr-subtitle" id="gdiRptStatusLine" aria-live="polite"></p>
-      <div class="adr-table-wrap">
-        <table class="adr-table" id="gdiRptTable">
-          <thead>
+      <div class="adr-table-wrap ada-table-shell">
+        <table class="adr-table ada-table" id="gdiRptTable">
+          <thead id="gdiRptTableHead">
             <tr>
-              <th>Hotel</th>
-              <th>Ready</th>
-              <th>Action Set</th>
-              <th>Watch</th>
-              <th>Report Status</th>
-              <th>PDF</th>
-              <th>GDI Client</th>
-              <th>ADP Client</th>
-              <th>Last Generated</th>
-              <th>More</th>
+              <th class="ada-cell-check ada-th--check" scope="col">
+                <input type="checkbox" class="ada-select-page" title="Select all on this page" aria-label="Select all on this page" />
+              </th>
+              <th data-sort="displayName"><span class="ada-th-label">Hotel</span></th>
+              <th data-sort="market"><span class="ada-th-label">Location</span></th>
+              <th data-sort="readyCount" title="Customer-ready prospects in current GDI report data"><span class="ada-th-label">Ready</span></th>
+              <th data-sort="actionSetCount" title="Action-set recommendations in current GDI report data"><span class="ada-th-label">Action Set</span></th>
+              <th data-sort="watchCount" title="Future-watch prospects in current GDI report data"><span class="ada-th-label">Watch</span></th>
+              <th data-sort="reportStatus"><span class="ada-th-label">Report Status</span></th>
+              <th data-sort="pdfStatus"><span class="ada-th-label">PDF</span></th>
+              <th data-sort="lastGeneratedAt" title="PDF store generation timestamp"><span class="ada-th-label">Last Generated</span></th>
+              <th class="ada-col-actions no-sort">Actions</th>
             </tr>
           </thead>
           <tbody id="gdiRptTableBody">
-            <tr><td colspan="10">Loading…</td></tr>
+            <tr><td colspan="11">Loading…</td></tr>
           </tbody>
         </table>
       </div>
@@ -266,51 +301,67 @@
         <button type="button" class="adr-btn adr-btn--secondary" data-rar-type-chip="ADP" aria-pressed="false">ADP</button>
         <button type="button" class="adr-btn adr-btn--secondary" data-rar-type-chip="GDI" aria-pressed="false">GDI</button>
       </div>
-      <section class="adr-filters" aria-label="Report archive filters">
-        <label>
-          Hotel ID / Property ID
-          <input type="search" id="rarHotel" placeholder="e.g. recLuxvwwxID7U2B8 or adp_bethesda_marriott" />
-        </label>
-        <label>
-          Type
-          <select id="rarType">
-            <option value="ALL">ALL</option>
-            <option value="ADP">ADP</option>
-            <option value="GDI">GDI</option>
-          </select>
-        </label>
-        <label>
-          Class
-          <select id="rarClass">
-            <option value="ALL">ALL</option>
-            <option value="BASELINE">BASELINE</option>
-            <option value="OFFICIAL_BASELINE">OFFICIAL_BASELINE</option>
-            <option value="DAY1">DAY1</option>
-            <option value="WEEKLY">WEEKLY</option>
-            <option value="MONTHLY">MONTHLY</option>
-            <option value="REMEASUREMENT">REMEASUREMENT</option>
-            <option value="CURRENT">CURRENT</option>
-            <option value="MANUAL">MANUAL</option>
-          </select>
-        </label>
-        <button type="button" class="adr-btn" id="rarApply">Apply</button>
-      </section>
-      <div class="adr-table-wrap">
-        <table class="adr-table" id="rarTable">
-          <thead>
+      <p class="ada-metric-note">
+        Archive rows are <strong>report versions</strong> (not unique hotels). Counts show versions matching filters.
+      </p>
+      <div class="ada-toolbar">
+        <section class="adr-filters" aria-label="Report archive filters">
+          <label>
+            Hotel or location search
+            <input type="search" id="rarHotel" placeholder="Hotel name, HPC, or property id" />
+          </label>
+          <label>
+            Type
+            <select id="rarType">
+              <option value="ALL">ALL</option>
+              <option value="ADP">ADP</option>
+              <option value="GDI">GDI</option>
+            </select>
+          </label>
+          <label>
+            Class
+            <select id="rarClass">
+              <option value="ALL">ALL</option>
+              <option value="BASELINE">BASELINE</option>
+              <option value="OFFICIAL_BASELINE">OFFICIAL_BASELINE</option>
+              <option value="DAY1">DAY1</option>
+              <option value="WEEKLY">WEEKLY</option>
+              <option value="MONTHLY">MONTHLY</option>
+              <option value="REMEASUREMENT">REMEASUREMENT</option>
+              <option value="CURRENT">CURRENT</option>
+              <option value="MANUAL">MANUAL</option>
+            </select>
+          </label>
+          <label>
+            Archived from
+            <input type="date" id="rarDateFrom" />
+          </label>
+          <label>
+            Archived to
+            <input type="date" id="rarDateTo" />
+          </label>
+          <button type="button" class="adr-btn" id="rarApply">Apply</button>
+          <button type="button" class="ada-btn-reset" id="rarResetView">Reset View</button>
+        </section>
+      </div>
+      <div class="ada-results-row" id="rarResultsRow"></div>
+      <div class="adr-table-wrap ada-table-shell">
+        <table class="adr-table ada-table" id="rarTable">
+          <thead id="rarTableHead">
             <tr>
-              <th>Date</th>
-              <th>Hotel</th>
-              <th>Type</th>
-              <th>Class</th>
-              <th>Version</th>
-              <th>PDF</th>
+              <th data-sort="archivedAt"><span class="ada-th-label">Date</span></th>
+              <th data-sort="hotelName"><span class="ada-th-label">Hotel</span></th>
+              <th data-sort="location"><span class="ada-th-label">Location</span></th>
+              <th data-sort="reportType"><span class="ada-th-label">Type</span></th>
+              <th data-sort="reportClass"><span class="ada-th-label">Class</span></th>
+              <th data-sort="versionLabel"><span class="ada-th-label">Version</span></th>
+              <th data-sort="pdfStatus"><span class="ada-th-label">PDF</span></th>
               <th>Snapshot</th>
-              <th>Actions</th>
+              <th class="ada-col-actions no-sort">Actions</th>
             </tr>
           </thead>
           <tbody id="rarTableBody">
-            <tr><td colspan="8">Loading…</td></tr>
+            <tr><td colspan="9">Loading…</td></tr>
           </tbody>
         </table>
       </div>
@@ -334,11 +385,12 @@
       }
     })();
   </script>
-  <script src="/js/admin-ai-demand-admin.js?v=report-archive-v1"></script>
-  <script src="/js/admin-ai-demand-reviews.js?v=adp-client-column-v1"></script>
-  <script src="/js/admin-adp-action-plan.js?v=gdi-external-client-links-v1"></script>
-  <script src="/js/admin-gdi-reports.js?v=gdi-row-hydration-v1"></script>
-  <script src="/js/admin-report-archive.js?v=report-archive-v1b"></script>
+  <script src="/js/admin-ai-demand-table.js?v=ada-table-parity-v1"></script>
+  <script src="/js/admin-ai-demand-admin.js?v=ada-table-parity-v1"></script>
+  <script src="/js/admin-ai-demand-reviews.js?v=ada-table-parity-v1"></script>
+  <script src="/js/admin-adp-action-plan.js?v=ada-table-parity-v1"></script>
+  <script src="/js/admin-gdi-reports.js?v=ada-table-parity-v1"></script>
+  <script src="/js/admin-report-archive.js?v=ada-table-parity-v1"></script>
   <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,1167 @@
+{
+  "version": "gdi-local-meetings-catering-research-v1.1",
+  "generatedAt": "2026-10-15T20:37:16.825Z",
+  "hotels": [
+    {
+      "hotelId": "rec0eTEnCqlsGJJt9",
+      "short": "Mayflower",
+      "displayName": "The Mayflower Hotel, Autograph Collection",
+      "city": "Washington",
+      "lmcApplicable": true,
+      "needsProfileEnrichment": true,
+      "rationale": "Hotel publishes meeting inventory (27 rooms, 42582 sq ft) supporting Local Meetings & Catering. Applicable subsegments: Corporate meetings, training, board meetings & workshops; Meeting-room rental & recurring professional gatherings; Association lunches, chapter meetings & awards dinners; Nonprofit fundraisers, galas & community receptions. Guestrooms not required for qualification. Preferred lodging with outside venues remains Private Events.",
+      "hotelMeetingSnapshot": {
+        "meetingRoomCount": 27,
+        "totalMeetingSpaceSqFt": 42582,
+        "largestReceptionCapacity": 1100,
+        "largestBallroomSqFt": 10359,
+        "outdoorEventSpace": false,
+        "serviceLevel": "upper_upscale_historic_full_service",
+        "classification": "historic_downtown_meetings_social",
+        "city": "Washington",
+        "catchment": "Washington DC / Downtown / Connecticut Avenue"
+      },
+      "constraints": {
+        "outsideCateringAllowed": "unknown_needs_verification",
+        "certifiedKosherCatering": "unknown_needs_verification",
+        "audiovisualSupport": "unknown_needs_verification",
+        "accessibilityVerified": "unknown_needs_verification",
+        "parkingAccess": "unknown_needs_verification",
+        "kosherInferencePolicy": "Do not infer certified kosher catering or religious-accommodation capability. Mark unknown until verified.",
+        "notesForVerification": [
+          "outside_catering_policy_unknown",
+          "certified_kosher_catering_unknown",
+          "av_capabilities_unknown"
+        ]
+      },
+      "applicableSubsegmentIds": [
+        "corporate_meetings_training_board",
+        "meeting_room_rental_recurring_professional",
+        "association_lunches_chapter_awards",
+        "nonprofit_fundraisers_galas_receptions",
+        "social_celebrations_catering",
+        "professional_planners_intermediaries"
+      ],
+      "subsegments": [
+        {
+          "id": "corporate_meetings_training_board",
+          "label": "Corporate meetings, training, board meetings & workshops",
+          "applicable": true,
+          "rationale": "Meeting inventory and positioning support corporate meetings, training, board, and workshop use."
+        },
+        {
+          "id": "meeting_room_rental_recurring_professional",
+          "label": "Meeting-room rental & recurring professional gatherings",
+          "applicable": true,
+          "rationale": "Published meeting rooms support rental and recurring professional gatherings."
+        },
+        {
+          "id": "association_lunches_chapter_awards",
+          "label": "Association lunches, chapter meetings & awards dinners",
+          "applicable": true,
+          "rationale": "Function space supports association lunches, chapter meetings, and awards dinners."
+        },
+        {
+          "id": "nonprofit_fundraisers_galas_receptions",
+          "label": "Nonprofit fundraisers, galas & community receptions",
+          "applicable": true,
+          "rationale": "Reception/ballroom inventory supports nonprofit fundraisers, galas, and community receptions."
+        },
+        {
+          "id": "social_celebrations_catering",
+          "label": "Social catering & celebrations (incl. mitzvah / wedding / milestone)",
+          "applicable": true,
+          "rationale": "Function/F&B inventory can support social catering and celebrations when buyer need and hotel policies fit — kosher and outside-catering remain verification items, never assumed."
+        },
+        {
+          "id": "professional_planners_intermediaries",
+          "label": "Professional planners & intermediaries with recurring event business",
+          "applicable": true,
+          "rationale": "Hotel meetings/F&B product supports researching professional planners and intermediaries with recurring local event business (Demand Generator path — not Private Event Venues)."
+        }
+      ],
+      "researchQueries": [
+        {
+          "subsegment": "corporate_meetings_training_board",
+          "intent": "corporate_training_board_workshops",
+          "query": "\"Washington\" (corporate training OR \"board meeting\" OR workshop OR \"offsite meeting\") (hotel OR \"meeting room\" OR banquet) -crunchbase -yelp"
+        },
+        {
+          "subsegment": "meeting_room_rental_recurring_professional",
+          "intent": "recurring_professional_room_rental",
+          "query": "\"Washington\" (\"monthly meeting\" OR \"continuing education\" OR \"professional development\") (\"meeting space\" OR \"conference room\" OR hotel) contact -directory"
+        },
+        {
+          "subsegment": "association_lunches_chapter_awards",
+          "intent": "chapter_awards_dinners",
+          "query": "\"Washington\" (awards gala OR holiday luncheon OR chapter dinner OR \"engineering excellence\") (hotel OR banquet) -crunchbase"
+        },
+        {
+          "subsegment": "nonprofit_fundraisers_galas_receptions",
+          "intent": "nonprofit_fundraisers",
+          "query": "\"Washington\" (nonprofit OR foundation) (gala OR fundraiser OR awards) (downtown OR banquet) contact -yelp"
+        },
+        {
+          "subsegment": "social_celebrations_catering",
+          "intent": "social_celebrations_planners",
+          "query": "\"Washington\" (\"event planner\" OR \"social events\" OR \"private dining\" OR mitzvah OR quinceañera OR anniversary) (hotel OR catering OR banquet) -guestlist -children",
+          "notes": [
+            "Do not collect children's details, private family info, or infer religion.",
+            "Do not assume certified kosher catering — mark hotel constraint unknown until verified.",
+            "A directory listing is a discovery lead, not qualification."
+          ]
+        },
+        {
+          "subsegment": "professional_planners_intermediaries",
+          "intent": "professional_planners_intermediaries",
+          "query": "\"Washington\" (\"meeting planner\" OR \"event planner\" OR \"destination management\" OR \"corporate events\") (hotel OR catering) (portfolio OR clients) -yelp",
+          "notes": [
+            "Persist planners as Demand Generators — not Private Event Venues.",
+            "Planner ≠ confirmed buyer without authority evidence."
+          ]
+        }
+      ],
+      "existingInventory": {
+        "lmcTotal": 4,
+        "publishedFacing": 4,
+        "cateringProspects": [
+          {
+            "id": "gdi_lmc_6a144810692f8a23",
+            "title": "Mortgage Bankers Association of Metropolitan Washington — Local Meetings & Catering",
+            "organizationName": "Mortgage Bankers Association of Metropolitan Washington",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "info@mbamw.org",
+            "contactRoute": "info@mbamw.org"
+          },
+          {
+            "id": "gdi_lmc_6268043898e92fc3",
+            "title": "ACEC Metropolitan Washington — Local Meetings & Catering",
+            "organizationName": "ACEC Metropolitan Washington",
+            "lmcSubsegment": null,
+            "guestroomStatus": "POTENTIAL_ADDITIONAL_USE",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "info@acecmw.org",
+            "contactRoute": "info@acecmw.org"
+          },
+          {
+            "id": "gdi_lmc_0ccfca01a22ed264",
+            "title": "ASID DC Metro — Local Meetings & Catering",
+            "organizationName": "ASID DC Metro",
+            "lmcSubsegment": null,
+            "guestroomStatus": "POTENTIAL_ADDITIONAL_USE",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "administrator@dcmetro.asid.org",
+            "contactRoute": "administrator@dcmetro.asid.org"
+          },
+          {
+            "id": "gdi_lmc_5f7f334ef133fdb4",
+            "title": "Aero Club of Washington — Local Meetings & Catering",
+            "organizationName": "Aero Club of Washington",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "stephanie@aeroclub.org",
+            "contactRoute": "stephanie@aeroclub.org"
+          }
+        ],
+        "meetingSpaceProspects": [
+          {
+            "id": "gdi_lmc_6a144810692f8a23",
+            "title": "Mortgage Bankers Association of Metropolitan Washington — Local Meetings & Catering",
+            "organizationName": "Mortgage Bankers Association of Metropolitan Washington",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "info@mbamw.org",
+            "contactRoute": "info@mbamw.org"
+          },
+          {
+            "id": "gdi_lmc_6268043898e92fc3",
+            "title": "ACEC Metropolitan Washington — Local Meetings & Catering",
+            "organizationName": "ACEC Metropolitan Washington",
+            "lmcSubsegment": null,
+            "guestroomStatus": "POTENTIAL_ADDITIONAL_USE",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "info@acecmw.org",
+            "contactRoute": "info@acecmw.org"
+          },
+          {
+            "id": "gdi_lmc_0ccfca01a22ed264",
+            "title": "ASID DC Metro — Local Meetings & Catering",
+            "organizationName": "ASID DC Metro",
+            "lmcSubsegment": null,
+            "guestroomStatus": "POTENTIAL_ADDITIONAL_USE",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "administrator@dcmetro.asid.org",
+            "contactRoute": "administrator@dcmetro.asid.org"
+          },
+          {
+            "id": "gdi_lmc_5f7f334ef133fdb4",
+            "title": "Aero Club of Washington — Local Meetings & Catering",
+            "organizationName": "Aero Club of Washington",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "stephanie@aeroclub.org",
+            "contactRoute": "stephanie@aeroclub.org"
+          }
+        ],
+        "socialOrPlannerProspects": [
+          {
+            "id": "gdi_lmc_0ccfca01a22ed264",
+            "title": "ASID DC Metro — Local Meetings & Catering",
+            "organizationName": "ASID DC Metro",
+            "lmcSubsegment": null,
+            "guestroomStatus": "POTENTIAL_ADDITIONAL_USE",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "administrator@dcmetro.asid.org",
+            "contactRoute": "administrator@dcmetro.asid.org"
+          }
+        ],
+        "outsideVenueLodgingPartnerships": [
+          {
+            "id": "gdi_pe_6e20211edf688737",
+            "title": "Decatur House — Preferred Lodging Partnership",
+            "organizationName": "Decatur House",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "asmirne@whha.org",
+            "contactRoute": "asmirne@whha.org"
+          },
+          {
+            "id": "gdi_pe_0d1c606f41f7847b",
+            "title": "Whittemore House — Preferred Lodging Partnership",
+            "organizationName": "Whittemore House",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": null,
+            "contactRoute": "202-232-7363"
+          },
+          {
+            "id": "gdi_pe_b4de27f6743c03c5",
+            "title": "DAR Headquarters — Preferred Lodging Partnership",
+            "organizationName": "DAR Headquarters",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "events@dar.org",
+            "contactRoute": "events@dar.org"
+          },
+          {
+            "id": "gdi_pe_de84e0fdf4d690e3",
+            "title": "Meridian International Center — Preferred Lodging Partnership",
+            "organizationName": "Meridian International Center",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "EventRentals@meridian.org",
+            "contactRoute": "EventRentals@meridian.org"
+          },
+          {
+            "id": "gdi_pe_1cb2413a839e3e31",
+            "title": "National Press Club — Preferred Lodging Partnership",
+            "organizationName": "National Press Club",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "events@press.org",
+            "contactRoute": "events@press.org"
+          },
+          {
+            "id": "gdi_pe_8601eb15f47ad808",
+            "title": "The Page House — Preferred Lodging Partnership",
+            "organizationName": "The Page House",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "jenna@hiveconsultingdc.com",
+            "contactRoute": "jenna@hiveconsultingdc.com"
+          },
+          {
+            "id": "gdi_pe_1e87cdb00b80fc5f",
+            "title": "Anderson House — Preferred Lodging Partnership",
+            "organizationName": "Anderson House",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "jblanco@societyofthecincinnati.org",
+            "contactRoute": "jblanco@societyofthecincinnati.org"
+          }
+        ],
+        "namedContacts": 0,
+        "fallbackRoutes": 4,
+        "datedOccasions": 0,
+        "standingRelationships": 4,
+        "allLmc": [
+          {
+            "id": "gdi_lmc_6a144810692f8a23",
+            "title": "Mortgage Bankers Association of Metropolitan Washington — Local Meetings & Catering",
+            "organizationName": "Mortgage Bankers Association of Metropolitan Washington",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "info@mbamw.org",
+            "contactRoute": "info@mbamw.org"
+          },
+          {
+            "id": "gdi_lmc_6268043898e92fc3",
+            "title": "ACEC Metropolitan Washington — Local Meetings & Catering",
+            "organizationName": "ACEC Metropolitan Washington",
+            "lmcSubsegment": null,
+            "guestroomStatus": "POTENTIAL_ADDITIONAL_USE",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "info@acecmw.org",
+            "contactRoute": "info@acecmw.org"
+          },
+          {
+            "id": "gdi_lmc_0ccfca01a22ed264",
+            "title": "ASID DC Metro — Local Meetings & Catering",
+            "organizationName": "ASID DC Metro",
+            "lmcSubsegment": null,
+            "guestroomStatus": "POTENTIAL_ADDITIONAL_USE",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "administrator@dcmetro.asid.org",
+            "contactRoute": "administrator@dcmetro.asid.org"
+          },
+          {
+            "id": "gdi_lmc_5f7f334ef133fdb4",
+            "title": "Aero Club of Washington — Local Meetings & Catering",
+            "organizationName": "Aero Club of Washington",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "stephanie@aeroclub.org",
+            "contactRoute": "stephanie@aeroclub.org"
+          }
+        ]
+      },
+      "remainingGaps": [
+        "outside_catering_policy_unknown",
+        "certified_kosher_catering_unknown",
+        "av_capabilities_unknown",
+        "subsegment_research_gap:corporate_meetings_training_board",
+        "subsegment_research_gap:meeting_room_rental_recurring_professional",
+        "subsegment_research_gap:social_celebrations_catering",
+        "subsegment_research_gap:professional_planners_intermediaries",
+        "named_contact_gaps:4_of_4_use_org_fallback",
+        "Existing LMC cards lack lmcSubsegment tags until next enrich/refresh pass",
+        "Do not force equal quotas or invent mitzvah/social counts",
+        "Continue unpaid research; paid spend stays within consolidated $11 proposal LMC line ($2) — no silent increase"
+      ],
+      "pePathNote": "Outside-venue preferred lodging partnerships remain on Private Events — cross-reference only.",
+      "briefId": "brief_rec0eTEnCqlsGJJt9_local_meetings_catering_v1",
+      "scorecardShell": {
+        "version": "gdi-research-scorecard-v1",
+        "segmentCoverageStatus": "not_started",
+        "lmcSubsegmentCoverageTotals": {
+          "applicableSubsegments": 6,
+          "researched": 0,
+          "accountsAssessed": 0,
+          "qualified": 0,
+          "published": 0,
+          "held": 0
+        },
+        "coverageGaps": [
+          "lmc_subsegment_not_researched:corporate_meetings_training_board",
+          "lmc_subsegment_not_researched:meeting_room_rental_recurring_professional",
+          "lmc_subsegment_not_researched:association_lunches_chapter_awards",
+          "lmc_subsegment_not_researched:nonprofit_fundraisers_galas_receptions",
+          "lmc_subsegment_not_researched:social_celebrations_catering",
+          "lmc_subsegment_not_researched:professional_planners_intermediaries"
+        ]
+      },
+      "budgetNote": "LMC subsegment expansion is included in the existing three-hotel consolidated paid-research proposal. Do not silently increase budget or strip other applicable segments."
+    },
+    {
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "short": "SanDiego",
+      "displayName": "Wyndham San Diego Bayside",
+      "city": "San Diego",
+      "lmcApplicable": true,
+      "needsProfileEnrichment": true,
+      "rationale": "Hotel publishes meeting inventory (15 rooms, 27187 sq ft) supporting Local Meetings & Catering. Applicable subsegments: Corporate meetings, training, board meetings & workshops; Meeting-room rental & recurring professional gatherings; Association lunches, chapter meetings & awards dinners; Nonprofit fundraisers, galas & community receptions. Guestrooms not required for qualification. Preferred lodging with outside venues remains Private Events.",
+      "hotelMeetingSnapshot": {
+        "meetingRoomCount": 15,
+        "totalMeetingSpaceSqFt": 27187,
+        "largestReceptionCapacity": 1500,
+        "largestBallroomSqFt": 10384,
+        "outdoorEventSpace": true,
+        "serviceLevel": "upscale_full_service",
+        "classification": "bayfront_meetings_convention_adjacent",
+        "city": "San Diego",
+        "catchment": "San Diego / North Harbor Drive / Downtown Waterfront"
+      },
+      "constraints": {
+        "outsideCateringAllowed": "unknown_needs_verification",
+        "certifiedKosherCatering": "unknown_needs_verification",
+        "audiovisualSupport": "unknown_needs_verification",
+        "accessibilityVerified": "unknown_needs_verification",
+        "parkingAccess": "unknown_needs_verification",
+        "kosherInferencePolicy": "Do not infer certified kosher catering or religious-accommodation capability. Mark unknown until verified.",
+        "notesForVerification": [
+          "outside_catering_policy_unknown",
+          "certified_kosher_catering_unknown",
+          "av_capabilities_unknown"
+        ]
+      },
+      "applicableSubsegmentIds": [
+        "corporate_meetings_training_board",
+        "meeting_room_rental_recurring_professional",
+        "association_lunches_chapter_awards",
+        "nonprofit_fundraisers_galas_receptions",
+        "social_celebrations_catering",
+        "professional_planners_intermediaries"
+      ],
+      "subsegments": [
+        {
+          "id": "corporate_meetings_training_board",
+          "label": "Corporate meetings, training, board meetings & workshops",
+          "applicable": true,
+          "rationale": "Meeting inventory and positioning support corporate meetings, training, board, and workshop use."
+        },
+        {
+          "id": "meeting_room_rental_recurring_professional",
+          "label": "Meeting-room rental & recurring professional gatherings",
+          "applicable": true,
+          "rationale": "Published meeting rooms support rental and recurring professional gatherings."
+        },
+        {
+          "id": "association_lunches_chapter_awards",
+          "label": "Association lunches, chapter meetings & awards dinners",
+          "applicable": true,
+          "rationale": "Function space supports association lunches, chapter meetings, and awards dinners."
+        },
+        {
+          "id": "nonprofit_fundraisers_galas_receptions",
+          "label": "Nonprofit fundraisers, galas & community receptions",
+          "applicable": true,
+          "rationale": "Reception/ballroom inventory supports nonprofit fundraisers, galas, and community receptions."
+        },
+        {
+          "id": "social_celebrations_catering",
+          "label": "Social catering & celebrations (incl. mitzvah / wedding / milestone)",
+          "applicable": true,
+          "rationale": "Function/F&B inventory can support social catering and celebrations when buyer need and hotel policies fit — kosher and outside-catering remain verification items, never assumed."
+        },
+        {
+          "id": "professional_planners_intermediaries",
+          "label": "Professional planners & intermediaries with recurring event business",
+          "applicable": true,
+          "rationale": "Hotel meetings/F&B product supports researching professional planners and intermediaries with recurring local event business (Demand Generator path — not Private Event Venues)."
+        }
+      ],
+      "researchQueries": [
+        {
+          "subsegment": "corporate_meetings_training_board",
+          "intent": "corporate_training_board_workshops",
+          "query": "\"San Diego\" (corporate training OR \"board meeting\" OR workshop OR \"offsite meeting\") (hotel OR \"meeting room\" OR banquet) -crunchbase -yelp"
+        },
+        {
+          "subsegment": "meeting_room_rental_recurring_professional",
+          "intent": "recurring_professional_room_rental",
+          "query": "\"San Diego\" (\"monthly meeting\" OR \"continuing education\" OR \"professional development\") (\"meeting space\" OR \"conference room\" OR hotel) contact -directory"
+        },
+        {
+          "subsegment": "association_lunches_chapter_awards",
+          "intent": "chapter_awards_dinners",
+          "query": "\"San Diego\" (awards gala OR holiday luncheon OR chapter dinner OR \"engineering excellence\") (hotel OR banquet) -crunchbase"
+        },
+        {
+          "subsegment": "nonprofit_fundraisers_galas_receptions",
+          "intent": "nonprofit_fundraisers",
+          "query": "\"San Diego\" (nonprofit OR foundation) (gala OR fundraiser OR awards) (downtown OR banquet) contact -yelp"
+        },
+        {
+          "subsegment": "social_celebrations_catering",
+          "intent": "social_celebrations_planners",
+          "query": "\"San Diego\" (\"event planner\" OR \"social events\" OR \"private dining\" OR mitzvah OR quinceañera OR anniversary) (hotel OR catering OR banquet) -guestlist -children",
+          "notes": [
+            "Do not collect children's details, private family info, or infer religion.",
+            "Do not assume certified kosher catering — mark hotel constraint unknown until verified.",
+            "A directory listing is a discovery lead, not qualification."
+          ]
+        },
+        {
+          "subsegment": "professional_planners_intermediaries",
+          "intent": "professional_planners_intermediaries",
+          "query": "\"San Diego\" (\"meeting planner\" OR \"event planner\" OR \"destination management\" OR \"corporate events\") (hotel OR catering) (portfolio OR clients) -yelp",
+          "notes": [
+            "Persist planners as Demand Generators — not Private Event Venues.",
+            "Planner ≠ confirmed buyer without authority evidence."
+          ]
+        }
+      ],
+      "existingInventory": {
+        "lmcTotal": 5,
+        "publishedFacing": 5,
+        "cateringProspects": [
+          {
+            "id": "gdi_lmc_e30f688f4646cf21",
+            "title": "Urban League of San Diego County — Local Meetings & Catering",
+            "organizationName": "Urban League of San Diego County",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "kea@sdul.org",
+            "contactRoute": "kea@sdul.org"
+          },
+          {
+            "id": "gdi_lmc_facf2492a770343b",
+            "title": "The Arc of San Diego — Local Meetings & Catering",
+            "organizationName": "The Arc of San Diego",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "JNavarra@arc-sd.com",
+            "contactRoute": "JNavarra@arc-sd.com"
+          },
+          {
+            "id": "gdi_lmc_00562bf81b1e1957",
+            "title": "CMAA San Diego Chapter — Local Meetings & Catering",
+            "organizationName": "CMAA San Diego Chapter",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "infosdcmaa@gmail.com",
+            "contactRoute": "infosdcmaa@gmail.com"
+          },
+          {
+            "id": "gdi_lmc_b8ba887bff4dfc2e",
+            "title": "BOMA San Diego — Local Meetings & Catering",
+            "organizationName": "BOMA San Diego",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": "Brooke Wheeler",
+            "contactEmail": "bwheeler@labahns.com",
+            "contactRoute": "bwheeler@labahns.com"
+          },
+          {
+            "id": "gdi_lmc_2f01609319f56f89",
+            "title": "Downtown San Diego Partnership — Local Meetings & Catering",
+            "organizationName": "Downtown San Diego Partnership",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": "Kathryn Newstead",
+            "contactEmail": "knewstead@downtownsandiego.org",
+            "contactRoute": "knewstead@downtownsandiego.org"
+          }
+        ],
+        "meetingSpaceProspects": [
+          {
+            "id": "gdi_lmc_e30f688f4646cf21",
+            "title": "Urban League of San Diego County — Local Meetings & Catering",
+            "organizationName": "Urban League of San Diego County",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "kea@sdul.org",
+            "contactRoute": "kea@sdul.org"
+          },
+          {
+            "id": "gdi_lmc_facf2492a770343b",
+            "title": "The Arc of San Diego — Local Meetings & Catering",
+            "organizationName": "The Arc of San Diego",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "JNavarra@arc-sd.com",
+            "contactRoute": "JNavarra@arc-sd.com"
+          },
+          {
+            "id": "gdi_lmc_00562bf81b1e1957",
+            "title": "CMAA San Diego Chapter — Local Meetings & Catering",
+            "organizationName": "CMAA San Diego Chapter",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "infosdcmaa@gmail.com",
+            "contactRoute": "infosdcmaa@gmail.com"
+          },
+          {
+            "id": "gdi_lmc_b8ba887bff4dfc2e",
+            "title": "BOMA San Diego — Local Meetings & Catering",
+            "organizationName": "BOMA San Diego",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": "Brooke Wheeler",
+            "contactEmail": "bwheeler@labahns.com",
+            "contactRoute": "bwheeler@labahns.com"
+          },
+          {
+            "id": "gdi_lmc_2f01609319f56f89",
+            "title": "Downtown San Diego Partnership — Local Meetings & Catering",
+            "organizationName": "Downtown San Diego Partnership",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": "Kathryn Newstead",
+            "contactEmail": "knewstead@downtownsandiego.org",
+            "contactRoute": "knewstead@downtownsandiego.org"
+          }
+        ],
+        "socialOrPlannerProspects": [],
+        "outsideVenueLodgingPartnerships": [
+          {
+            "id": "gdi_opp_prospect_mv8p5ddk_c3ef825a",
+            "title": "USS Midway Museum — Preferred Lodging Partnership",
+            "organizationName": "USS Midway Museum",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": null,
+            "contactRoute": "619-544-9600"
+          },
+          {
+            "id": "gdi_pe_53cbb8d64a69948b",
+            "title": " — Preferred Lodging Partnership",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": false,
+            "contactName": null,
+            "contactEmail": null,
+            "contactRoute": null
+          },
+          {
+            "id": "gdi_pe_295cfef5822e63c3",
+            "title": "Sparks Gallery — Preferred Lodging Partnership",
+            "organizationName": "Sparks Gallery",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "levi@sparksgallery.com",
+            "contactRoute": "levi@sparksgallery.com"
+          },
+          {
+            "id": "gdi_pe_25302cd1b15b8054",
+            "title": "Port Pavilion at Broadway Pier — Preferred Lodging Partnership",
+            "organizationName": "Port Pavilion at Broadway Pier",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "portpavilion@portofsandiego.org",
+            "contactRoute": "portpavilion@portofsandiego.org"
+          },
+          {
+            "id": "gdi_pe_b2ce53d26ad0b1a8",
+            "title": " — Preferred Lodging Partnership",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": false,
+            "contactName": null,
+            "contactEmail": null,
+            "contactRoute": null
+          },
+          {
+            "id": "gdi_pe_879047c3211d2e82",
+            "title": "City Cruises San Diego — Preferred Lodging Partnership",
+            "organizationName": "City Cruises San Diego",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": null,
+            "contactRoute": "1-800-459-8105"
+          },
+          {
+            "id": "gdi_pe_1a43c470b7a35409",
+            "title": " — Preferred Lodging Partnership",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": false,
+            "contactName": null,
+            "contactEmail": null,
+            "contactRoute": null
+          },
+          {
+            "id": "gdi_pe_5ce20a54b903e243",
+            "title": "University Club San Diego — Preferred Lodging Partnership",
+            "organizationName": "University Club San Diego",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": null,
+            "contactRoute": "619-234-5200"
+          },
+          {
+            "id": "gdi_pe_ca47fef6aa622566",
+            "title": "deck655 — Preferred Lodging Partnership",
+            "organizationName": "deck655",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "events@deck655.com",
+            "contactRoute": "events@deck655.com"
+          },
+          {
+            "id": "gdi_pe_5f72b9d7665314b5",
+            "title": "Flagship Cruises & Events — Preferred Lodging Partnership",
+            "organizationName": "Flagship Cruises & Events",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": null,
+            "contactRoute": "(619) 234-4111"
+          },
+          {
+            "id": "gdi_pe_24b8f0a3f3d4dcf6",
+            "title": " — Preferred Lodging Partnership",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": false,
+            "contactName": null,
+            "contactEmail": null,
+            "contactRoute": null
+          },
+          {
+            "id": "gdi_pe_6b3ff5b57b64a8aa",
+            "title": " — Preferred Lodging Partnership",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": false,
+            "contactName": null,
+            "contactEmail": null,
+            "contactRoute": null
+          },
+          {
+            "id": "gdi_pe_9600662bc6529ffd",
+            "title": " — Preferred Lodging Partnership",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": false,
+            "contactName": null,
+            "contactEmail": null,
+            "contactRoute": null
+          },
+          {
+            "id": "gdi_pe_bb5abfa56a5bfbd2",
+            "title": "The Lane — Preferred Lodging Partnership",
+            "organizationName": "The Lane",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "info@thelanevenue.com",
+            "contactRoute": "info@thelanevenue.com"
+          },
+          {
+            "id": "gdi_opp_prospect_mv8p5ddl_acb56fba",
+            "title": "Embarcadero Marina Park South — Preferred Lodging Partnership",
+            "organizationName": "Embarcadero Marina Park South",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "parkpermits@portofsandiego.org",
+            "contactRoute": "parkpermits@portofsandiego.org"
+          },
+          {
+            "id": "gdi_pe_4b9b49bae4136428",
+            "title": "Nolita House — Preferred Lodging Partnership",
+            "organizationName": "Nolita House",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": null,
+            "contactRoute": "(619) 255-8000"
+          },
+          {
+            "id": "gdi_pe_36d76cec9421e842",
+            "title": "Maritime Museum of San Diego — Preferred Lodging Partnership",
+            "organizationName": "Maritime Museum of San Diego",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "specialevents@sdmaritime.org",
+            "contactRoute": "specialevents@sdmaritime.org"
+          },
+          {
+            "id": "gdi_pe_a7a2fda2a474aa0b",
+            "title": "The House Next Door — Preferred Lodging Partnership",
+            "organizationName": "The House Next Door",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": null,
+            "contactRoute": "(619) 255-8000"
+          }
+        ],
+        "namedContacts": 2,
+        "fallbackRoutes": 3,
+        "datedOccasions": 0,
+        "standingRelationships": 5,
+        "allLmc": [
+          {
+            "id": "gdi_lmc_e30f688f4646cf21",
+            "title": "Urban League of San Diego County — Local Meetings & Catering",
+            "organizationName": "Urban League of San Diego County",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "kea@sdul.org",
+            "contactRoute": "kea@sdul.org"
+          },
+          {
+            "id": "gdi_lmc_facf2492a770343b",
+            "title": "The Arc of San Diego — Local Meetings & Catering",
+            "organizationName": "The Arc of San Diego",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "JNavarra@arc-sd.com",
+            "contactRoute": "JNavarra@arc-sd.com"
+          },
+          {
+            "id": "gdi_lmc_00562bf81b1e1957",
+            "title": "CMAA San Diego Chapter — Local Meetings & Catering",
+            "organizationName": "CMAA San Diego Chapter",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": "infosdcmaa@gmail.com",
+            "contactRoute": "infosdcmaa@gmail.com"
+          },
+          {
+            "id": "gdi_lmc_b8ba887bff4dfc2e",
+            "title": "BOMA San Diego — Local Meetings & Catering",
+            "organizationName": "BOMA San Diego",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": "Brooke Wheeler",
+            "contactEmail": "bwheeler@labahns.com",
+            "contactRoute": "bwheeler@labahns.com"
+          },
+          {
+            "id": "gdi_lmc_2f01609319f56f89",
+            "title": "Downtown San Diego Partnership — Local Meetings & Catering",
+            "organizationName": "Downtown San Diego Partnership",
+            "lmcSubsegment": null,
+            "guestroomStatus": "NOT_REQUIRED",
+            "relationshipGrain": "STANDING_ACCOUNT",
+            "customerVisible": true,
+            "contactName": "Kathryn Newstead",
+            "contactEmail": "knewstead@downtownsandiego.org",
+            "contactRoute": "knewstead@downtownsandiego.org"
+          }
+        ]
+      },
+      "remainingGaps": [
+        "outside_catering_policy_unknown",
+        "certified_kosher_catering_unknown",
+        "av_capabilities_unknown",
+        "subsegment_research_gap:corporate_meetings_training_board",
+        "subsegment_research_gap:meeting_room_rental_recurring_professional",
+        "subsegment_research_gap:social_celebrations_catering",
+        "subsegment_research_gap:professional_planners_intermediaries",
+        "named_contact_gaps:3_of_5_use_org_fallback",
+        "Existing LMC cards lack lmcSubsegment tags until next enrich/refresh pass",
+        "Do not force equal quotas or invent mitzvah/social counts",
+        "Continue unpaid research; paid spend stays within consolidated $11 proposal LMC line ($2) — no silent increase"
+      ],
+      "pePathNote": "Outside-venue preferred lodging partnerships remain on Private Events — cross-reference only.",
+      "briefId": "brief_recnPB3Q02NO8Ma1o_local_meetings_catering_v1",
+      "scorecardShell": {
+        "version": "gdi-research-scorecard-v1",
+        "segmentCoverageStatus": "not_started",
+        "lmcSubsegmentCoverageTotals": {
+          "applicableSubsegments": 6,
+          "researched": 0,
+          "accountsAssessed": 0,
+          "qualified": 0,
+          "published": 0,
+          "held": 0
+        },
+        "coverageGaps": [
+          "lmc_subsegment_not_researched:corporate_meetings_training_board",
+          "lmc_subsegment_not_researched:meeting_room_rental_recurring_professional",
+          "lmc_subsegment_not_researched:association_lunches_chapter_awards",
+          "lmc_subsegment_not_researched:nonprofit_fundraisers_galas_receptions",
+          "lmc_subsegment_not_researched:social_celebrations_catering",
+          "lmc_subsegment_not_researched:professional_planners_intermediaries"
+        ]
+      },
+      "budgetNote": "LMC subsegment expansion is included in the existing three-hotel consolidated paid-research proposal. Do not silently increase budget or strip other applicable segments."
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "short": "Bethesda",
+      "displayName": "Bethesda Marriott",
+      "city": null,
+      "lmcApplicable": true,
+      "needsProfileEnrichment": true,
+      "rationale": "Hotel publishes meeting inventory (27 rooms, 18719 sq ft) supporting Local Meetings & Catering. Applicable subsegments: Corporate meetings, training, board meetings & workshops; Meeting-room rental & recurring professional gatherings; Association lunches, chapter meetings & awards dinners; Nonprofit fundraisers, galas & community receptions. Guestrooms not required for qualification. Preferred lodging with outside venues remains Private Events.",
+      "hotelMeetingSnapshot": {
+        "meetingRoomCount": 27,
+        "totalMeetingSpaceSqFt": 18719,
+        "largestReceptionCapacity": null,
+        "largestBallroomSqFt": null,
+        "outdoorEventSpace": null,
+        "serviceLevel": null,
+        "classification": null,
+        "city": null,
+        "catchment": "DMV"
+      },
+      "constraints": {
+        "outsideCateringAllowed": "unknown_needs_verification",
+        "certifiedKosherCatering": "unknown_needs_verification",
+        "audiovisualSupport": "unknown_needs_verification",
+        "accessibilityVerified": "unknown_needs_verification",
+        "parkingAccess": "unknown_needs_verification",
+        "kosherInferencePolicy": "Do not infer certified kosher catering or religious-accommodation capability. Mark unknown until verified.",
+        "notesForVerification": [
+          "outside_catering_policy_unknown",
+          "certified_kosher_catering_unknown",
+          "av_capabilities_unknown"
+        ]
+      },
+      "applicableSubsegmentIds": [
+        "corporate_meetings_training_board",
+        "meeting_room_rental_recurring_professional",
+        "association_lunches_chapter_awards",
+        "nonprofit_fundraisers_galas_receptions",
+        "social_celebrations_catering",
+        "professional_planners_intermediaries"
+      ],
+      "subsegments": [
+        {
+          "id": "corporate_meetings_training_board",
+          "label": "Corporate meetings, training, board meetings & workshops",
+          "applicable": true,
+          "rationale": "Meeting inventory and positioning support corporate meetings, training, board, and workshop use."
+        },
+        {
+          "id": "meeting_room_rental_recurring_professional",
+          "label": "Meeting-room rental & recurring professional gatherings",
+          "applicable": true,
+          "rationale": "Published meeting rooms support rental and recurring professional gatherings."
+        },
+        {
+          "id": "association_lunches_chapter_awards",
+          "label": "Association lunches, chapter meetings & awards dinners",
+          "applicable": true,
+          "rationale": "Function space supports association lunches, chapter meetings, and awards dinners."
+        },
+        {
+          "id": "nonprofit_fundraisers_galas_receptions",
+          "label": "Nonprofit fundraisers, galas & community receptions",
+          "applicable": true,
+          "rationale": "Reception/ballroom inventory supports nonprofit fundraisers, galas, and community receptions."
+        },
+        {
+          "id": "social_celebrations_catering",
+          "label": "Social catering & celebrations (incl. mitzvah / wedding / milestone)",
+          "applicable": true,
+          "rationale": "Function/F&B inventory can support social catering and celebrations when buyer need and hotel policies fit — kosher and outside-catering remain verification items, never assumed."
+        },
+        {
+          "id": "professional_planners_intermediaries",
+          "label": "Professional planners & intermediaries with recurring event business",
+          "applicable": true,
+          "rationale": "Hotel meetings/F&B product supports researching professional planners and intermediaries with recurring local event business (Demand Generator path — not Private Event Venues)."
+        }
+      ],
+      "researchQueries": [
+        {
+          "subsegment": "corporate_meetings_training_board",
+          "intent": "corporate_training_board_workshops",
+          "query": "\"market\" (corporate training OR \"board meeting\" OR workshop OR \"offsite meeting\") (hotel OR \"meeting room\" OR banquet) -crunchbase -yelp"
+        },
+        {
+          "subsegment": "meeting_room_rental_recurring_professional",
+          "intent": "recurring_professional_room_rental",
+          "query": "\"market\" (\"monthly meeting\" OR \"continuing education\" OR \"professional development\") (\"meeting space\" OR \"conference room\" OR hotel) contact -directory"
+        },
+        {
+          "subsegment": "association_lunches_chapter_awards",
+          "intent": "chapter_awards_dinners",
+          "query": "\"market\" (awards gala OR holiday luncheon OR chapter dinner OR \"engineering excellence\") (hotel OR banquet) -crunchbase"
+        },
+        {
+          "subsegment": "nonprofit_fundraisers_galas_receptions",
+          "intent": "nonprofit_fundraisers",
+          "query": "\"market\" (nonprofit OR foundation) (gala OR fundraiser OR awards) (downtown OR banquet) contact -yelp"
+        },
+        {
+          "subsegment": "social_celebrations_catering",
+          "intent": "social_celebrations_planners",
+          "query": "\"market\" (\"event planner\" OR \"social events\" OR \"private dining\" OR mitzvah OR quinceañera OR anniversary) (hotel OR catering OR banquet) -guestlist -children",
+          "notes": [
+            "Do not collect children's details, private family info, or infer religion.",
+            "Do not assume certified kosher catering — mark hotel constraint unknown until verified.",
+            "A directory listing is a discovery lead, not qualification."
+          ]
+        },
+        {
+          "subsegment": "professional_planners_intermediaries",
+          "intent": "professional_planners_intermediaries",
+          "query": "\"market\" (\"meeting planner\" OR \"event planner\" OR \"destination management\" OR \"corporate events\") (hotel OR catering) (portfolio OR clients) -yelp",
+          "notes": [
+            "Persist planners as Demand Generators — not Private Event Venues.",
+            "Planner ≠ confirmed buyer without authority evidence."
+          ]
+        }
+      ],
+      "existingInventory": {
+        "lmcTotal": 0,
+        "publishedFacing": 0,
+        "cateringProspects": [],
+        "meetingSpaceProspects": [],
+        "socialOrPlannerProspects": [],
+        "outsideVenueLodgingPartnerships": [
+          {
+            "id": "gdi_pe_781f12393f8117e7",
+            "title": "Woman's Club of Bethesda — Preferred Lodging Partnership",
+            "organizationName": "Woman's Club of Bethesda",
+            "lmcSubsegment": null,
+            "guestroomStatus": null,
+            "relationshipGrain": null,
+            "customerVisible": true,
+            "contactName": null,
+            "contactEmail": null,
+            "contactRoute": null
+          }
+        ],
+        "namedContacts": 0,
+        "fallbackRoutes": 0,
+        "datedOccasions": 0,
+        "standingRelationships": 0,
+        "allLmc": []
+      },
+      "remainingGaps": [
+        "outside_catering_policy_unknown",
+        "certified_kosher_catering_unknown",
+        "av_capabilities_unknown",
+        "subsegment_research_gap:corporate_meetings_training_board",
+        "subsegment_research_gap:meeting_room_rental_recurring_professional",
+        "subsegment_research_gap:association_lunches_chapter_awards",
+        "subsegment_research_gap:nonprofit_fundraisers_galas_receptions",
+        "subsegment_research_gap:social_celebrations_catering",
+        "subsegment_research_gap:professional_planners_intermediaries",
+        "Existing LMC cards lack lmcSubsegment tags until next enrich/refresh pass",
+        "Do not force equal quotas or invent mitzvah/social counts",
+        "Continue unpaid research; paid spend stays within consolidated $11 proposal LMC line ($2) — no silent increase"
+      ],
+      "pePathNote": "Outside-venue preferred lodging partnerships remain on Private Events — cross-reference only.",
+      "briefId": "brief_recLuxvwwxID7U2B8_local_meetings_catering_v1",
+      "scorecardShell": {
+        "version": "gdi-research-scorecard-v1",
+        "segmentCoverageStatus": "not_started",
+        "lmcSubsegmentCoverageTotals": {
+          "applicableSubsegments": 6,
+          "researched": 0,
+          "accountsAssessed": 0,
+          "qualified": 0,
+          "published": 0,
+          "held": 0
+        },
+        "coverageGaps": [
+          "lmc_subsegment_not_researched:corporate_meetings_training_board",
+          "lmc_subsegment_not_researched:meeting_room_rental_recurring_professional",
+          "lmc_subsegment_not_researched:association_lunches_chapter_awards",
+          "lmc_subsegment_not_researched:nonprofit_fundraisers_galas_receptions",
+          "lmc_subsegment_not_researched:social_celebrations_catering",
+          "lmc_subsegment_not_researched:professional_planners_intermediaries"
+        ]
+      },
+      "budgetNote": "LMC subsegment expansion is included in the existing three-hotel consolidated paid-research proposal. Do not silently increase budget or strip other applicable segments."
+    }
+  ],
+  "budgetNote": "Include LMC expansion in existing three-hotel consolidated paid-research proposal — no silent budget increase."
+}

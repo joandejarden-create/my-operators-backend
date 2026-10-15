@@ -5,6 +5,15 @@
   "use strict";
 
   var API = "/api/admin/ai-demand-positioning/monthly-reviews";
+  var T = window.DealalityAiAdminTable;
+  var selection = T ? T.createSelectionStore() : null;
+  var DATE_SORT_KEYS = {
+    currentMonitoringDate: true,
+    priorRunDate: true,
+    generatedAt: true,
+  };
+  var NUM_SORT_KEYS = { actionCount: true };
+
   var state = {
     reviews: [],
     properties: [],
@@ -172,6 +181,24 @@
     var rows = state.coverageMode ? state.properties.slice() : state.reviews.slice();
     var key = state.sortKey;
     var dir = state.sortDir;
+    if (T) {
+      var type = DATE_SORT_KEYS[key]
+        ? "date"
+        : NUM_SORT_KEYS[key]
+          ? "number"
+          : key === "clientIssued"
+            ? "number"
+            : "string";
+      return T.sortRows(
+        rows,
+        { key: key, dir: dir, type: type, tieBreak: "propertyName" },
+        function (row, k) {
+          if (k === "clientIssued") return row.clientIssued ? 1 : 0;
+          if (k === "market") return row.market || row.location || "";
+          return row[k];
+        }
+      );
+    }
     rows.sort(function (a, b) {
       var av = a[key];
       var bv = b[key];
@@ -179,13 +206,74 @@
         av = a.clientIssued ? 1 : 0;
         bv = b.clientIssued ? 1 : 0;
       }
-      if (av == null) av = "";
-      if (bv == null) bv = "";
+      if (av == null || av === "") return 1;
+      if (bv == null || bv === "") return -1;
       if (av < bv) return -1 * dir;
       if (av > bv) return 1 * dir;
-      return 0;
+      return String(a.propertyName || "").localeCompare(String(b.propertyName || ""));
     });
     return rows;
+  }
+
+  function rowStableId(r) {
+    return String(r.reviewId || r.propertyId || "");
+  }
+
+  function renderResultsRow(showing, total) {
+    var host = document.getElementById("adrResultsRow");
+    if (!host) return;
+    if (!T) {
+      host.textContent = "Showing " + showing + " of " + total + " hotels";
+      return;
+    }
+    host.innerHTML =
+      T.resultsCountHtml(showing, total, state.coverageMode ? "hotels" : "reviews") +
+      '<div class="ada-bulk-wrap">' +
+      (selection
+        ? T.selectionBarHtml(selection.count(), true)
+        : "") +
+      "</div>";
+  }
+
+  function compactCoverageActions(r) {
+    if (!T) return coverageMoreActions(r);
+    var adpOk = !!(r.adpClient && r.adpClient.available === true);
+    var primary = [];
+    var more = [];
+    if (r.hasPdf && r.reviewId) {
+      primary.push({ label: "View PDF", act: "view-pdf", title: "View performance review PDF" });
+      more.push({ label: "Download PDF", act: "download-pdf" });
+    } else if (r.propertyId && r.coverageStatus !== "BLOCKED") {
+      primary.push({ label: "Generate PDF", act: "draft", title: "Generate performance review PDF" });
+    }
+    if (r.reviewId) {
+      primary.push({ label: "Open review", act: "open", title: "Open review in client preview" });
+      more.push({ label: "Meeting mode", act: "meeting" });
+      more.push({ label: "Regenerate", act: "regenerate" });
+    }
+    more.push({
+      label: "Open ADP client",
+      act: "open-adp-client",
+      disabled: !adpOk,
+      title: adpOk ? "Open ADP client view" : "No authorized ADP share link",
+    });
+    more.push({
+      label: "Copy ADP URL",
+      act: "copy-adp-client",
+      disabled: !adpOk,
+      title: adpOk ? "Copy ADP client URL" : "No authorized ADP share link",
+    });
+    more.push({
+      label: "Action plan",
+      act: "open-action-plan",
+      disabled: !r.propertyId,
+      title: "Open ADP Action Plan for this hotel",
+    });
+    more.push({ label: "Report Archive", act: "open-archive" });
+    return T.actionsHtml({ primary: primary, more: more }, {
+      id: r.reviewId || "",
+      property: r.propertyId || "",
+    });
   }
 
   function coveragePdfCell(row) {
@@ -362,6 +450,19 @@
           return r.coverageStatus === covVal;
         });
       }
+      var pdfFilter = document.getElementById("adrFilterPdf");
+      var pdfVal = pdfFilter ? pdfFilter.value : "";
+      if (pdfVal) {
+        rows = rows.filter(function (r) {
+          var st = r.hasPdf ? "READY" : r.coverageStatus === "BLOCKED" ? "FAILED" : "MISSING";
+          if (r.pdfStatus === "FAILED" || r.generationStatus === "GENERATION_FAILED") st = "FAILED";
+          return st === pdfVal;
+        });
+      }
+      renderResultsRow(rows.length, state.properties.length);
+      if (selection) {
+        selection.retain(rows.map(rowStableId));
+      }
       if (!rows.length) {
         tbody.innerHTML =
           '<tr><td colspan="15">No published hotels match the current filters.</td></tr>';
@@ -369,16 +470,25 @@
       }
       tbody.innerHTML = rows
         .map(function (r) {
+          var sid = rowStableId(r);
           return (
             '<tr data-property="' +
             esc(r.propertyId) +
             '"' +
             (r.reviewId ? ' data-id="' + esc(r.reviewId) + '"' : "") +
+            (selection && selection.has(sid) ? ' class="is-selected"' : "") +
             ">" +
-            "<td>" +
+            (T
+              ? T.checkboxCell(sid, selection && selection.has(sid))
+              : "<td></td>") +
+            "<td class=\"ada-cell-hotel\"><strong>" +
             esc(r.propertyName) +
+            "</strong>" +
+            (r.propertyId
+              ? '<div class="ada-subtitle">' + esc(r.propertyId) + "</div>"
+              : "") +
             "</td>" +
-            "<td>" +
+            "<td class=\"ada-cell-loc\">" +
             esc(r.market || "—") +
             "</td>" +
             "<td>" +
@@ -415,20 +525,17 @@
             "<td>" +
             (r.clientIssued ? "Yes" : "No") +
             "</td>" +
-            '<td class="adr-col-pdf">' +
-            coveragePdfCell(r) +
+            "<td>" +
+            (r.hasPdf ? statusBadge("ok", "READY") : statusBadge("warn", "MISSING")) +
             "</td>" +
-            '<td style="white-space:nowrap">' +
-            coverageAdpClientCell(r) +
-            "</td>" +
-            '<td class="adr-col-action-plan">' +
-            coverageActionPlanCell(r) +
+            '<td class="ada-cell-num">' +
+            esc(r.actionCount != null ? r.actionCount : "—") +
             "</td>" +
             "<td>" +
             esc(fmtDateTime(r.generatedAt)) +
             "</td>" +
-            '<td class="adr-actions">' +
-            coverageMoreActions(r) +
+            '<td class="ada-col-actions">' +
+            compactCoverageActions(r) +
             "</td>" +
             "</tr>"
           );
@@ -511,9 +618,16 @@
   }
 
   function findRow(id) {
-    return state.reviews.find(function (r) {
+    if (!id) return null;
+    var fromReviews = state.reviews.find(function (r) {
       return r.reviewId === id;
     });
+    if (fromReviews) return fromReviews;
+    return (
+      state.properties.find(function (r) {
+        return r.reviewId === id || r.propertyId === id;
+      }) || null
+    );
   }
 
   async function openDetails(reviewId, view) {
@@ -963,8 +1077,27 @@
       return;
     }
     if (act === "open-archive") {
+      try {
+        sessionStorage.setItem(
+          "dealality_report_archive_focus",
+          JSON.stringify({
+            hotelId: propertyId || "",
+            reportType: "ADP",
+            ts: Date.now(),
+          })
+        );
+      } catch (_e) {}
       if (typeof window.__ADP_ADMIN_SET_TAB__ === "function") {
         window.__ADP_ADMIN_SET_TAB__("report-archive");
+      }
+      return;
+    }
+    if (act === "open-action-plan" && propertyId) {
+      try {
+        sessionStorage.setItem("dealality_adp_admin_property", propertyId);
+      } catch (_e2) {}
+      if (typeof window.__ADP_ADMIN_SET_TAB__ === "function") {
+        window.__ADP_ADMIN_SET_TAB__("action-plan");
       }
       return;
     }
@@ -1131,6 +1264,39 @@
         });
       }
 
+      var resetBtn = document.getElementById("adrResetView");
+      if (resetBtn) {
+        resetBtn.addEventListener("click", function () {
+          var s = document.getElementById("adrSearch");
+          var c = document.getElementById("adrFilterCoverage");
+          var p = document.getElementById("adrFilterPdf");
+          if (s) s.value = "";
+          if (c) c.value = "";
+          if (p) p.value = "";
+          state.sortKey = "propertyName";
+          state.sortDir = 1;
+          if (selection) selection.clear();
+          loadList().catch(function (e) {
+            alert(e.message);
+          });
+        });
+      }
+      var selectPage = document.getElementById("adrSelectPage");
+      if (selectPage && selection) {
+        selectPage.addEventListener("change", function () {
+          var rows = sortedRows();
+          var covFilter = document.getElementById("adrFilterCoverage");
+          var covVal = covFilter ? covFilter.value : "";
+          if (covVal) {
+            rows = rows.filter(function (r) {
+              return r.coverageStatus === covVal;
+            });
+          }
+          selection.setPage(rows.map(rowStableId), selectPage.checked);
+          renderTable();
+        });
+      }
+
       var table = document.getElementById("adrTable");
       if (table) {
         table.addEventListener("click", function (ev) {
@@ -1145,12 +1311,25 @@
             renderTable();
             return;
           }
+          var check = ev.target.closest("input.ada-row-check");
+          if (check && selection) {
+            var cid = check.getAttribute("data-id");
+            if (check.checked) selection.add(cid);
+            else selection.remove(cid);
+            renderTable();
+            return;
+          }
           var btn = ev.target.closest("button[data-act]");
           if (btn) {
+            var wrap = btn.closest("[data-id], [data-property]");
+            var more = btn.closest("details.ada-more");
+            if (more) more.open = false;
             onAction(
               btn.getAttribute("data-act"),
-              btn.getAttribute("data-id"),
-              btn.getAttribute("data-property"),
+              btn.getAttribute("data-id") ||
+                (wrap && wrap.getAttribute("data-id")),
+              btn.getAttribute("data-property") ||
+                (wrap && wrap.getAttribute("data-property")),
               btn
             ).catch(function (e) {
               alert(e.message);

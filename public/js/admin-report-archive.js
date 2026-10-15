@@ -1,10 +1,41 @@
 /**
- * AI Demand Admin — Report Archive tab
+ * AI Demand Admin — Report Archive tab (shared table pattern).
+ * Rows are report versions, not unique hotels.
  */
 (function () {
   "use strict";
 
+  var T = window.DealalityAiAdminTable;
   var entries = [];
+  var ctrl = T
+    ? T.createTableController({
+        defaultSortKey: "archivedAt",
+        defaultSortDir: -1,
+        idKey: "archiveId",
+        tieBreak: "archiveId",
+        sortTypes: {
+          archivedAt: "date",
+          hotelName: "string",
+          location: "string",
+          reportType: "string",
+          reportClass: "string",
+          versionLabel: "string",
+          pdfStatus: "string",
+        },
+        onResetFilters: function () {
+          if ($("rarHotel")) $("rarHotel").value = "";
+          if ($("rarType")) $("rarType").value = "ALL";
+          if ($("rarClass")) $("rarClass").value = "ALL";
+          if ($("rarDateFrom")) $("rarDateFrom").value = "";
+          if ($("rarDateTo")) $("rarDateTo").value = "";
+          document.querySelectorAll("[data-rar-type-chip]").forEach(function (b) {
+            var on = b.getAttribute("data-rar-type-chip") === "ALL";
+            b.classList.toggle("active", on);
+            b.setAttribute("aria-pressed", on ? "true" : "false");
+          });
+        },
+      })
+    : null;
 
   function authFetch(url, opts) {
     opts = opts || {};
@@ -19,11 +50,7 @@
   }
 
   function esc(s) {
-    return String(s == null ? "" : s)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
+    return T ? T.esc(s) : String(s == null ? "" : s);
   }
 
   function emptyMessage() {
@@ -32,48 +59,115 @@
     return "No archived reports match these filters.";
   }
 
-  function renderRows(rows) {
+  function normalize(e) {
+    return Object.assign({}, e, {
+      archivedAt: e.archivedAt || e.reportDate || e.createdAt || null,
+      hotelName: e.hotelName || e.displayName || e.hotelId || "",
+      location: e.location || e.market || e.city || "",
+      versionLabel: e.version || e.versionLabel || "",
+      pdfStatus: e.hasPdf ? "READY" : "MISSING",
+    });
+  }
+
+  function filterFn(e) {
+    var q = ($("rarHotel") && $("rarHotel").value.trim().toLowerCase()) || "";
+    var type = ($("rarType") && $("rarType").value) || "ALL";
+    var cls = ($("rarClass") && $("rarClass").value) || "ALL";
+    var from = ($("rarDateFrom") && $("rarDateFrom").value) || "";
+    var to = ($("rarDateTo") && $("rarDateTo").value) || "";
+    if (q) {
+      var hay = (
+        (e.hotelName || "") +
+        " " +
+        (e.hotelId || "") +
+        " " +
+        (e.propertyId || "") +
+        " " +
+        (e.location || "")
+      ).toLowerCase();
+      if (hay.indexOf(q) === -1) return false;
+    }
+    if (type && type !== "ALL" && e.reportType !== type) return false;
+    if (cls && cls !== "ALL" && e.reportClass !== cls) return false;
+    if (from || to) {
+      var ts = e.archivedAt ? new Date(e.archivedAt).getTime() : null;
+      if (ts == null || Number.isNaN(ts)) return false;
+      if (from && ts < new Date(from + "T00:00:00.000Z").getTime()) return false;
+      if (to && ts > new Date(to + "T23:59:59.999Z").getTime()) return false;
+    }
+    return true;
+  }
+
+  function renderRows() {
     var body = $("rarTableBody");
     var counts = $("rarCounts");
+    var results = $("rarResultsRow");
+    var thead = $("rarTableHead");
     if (!body) return;
-    if (!rows.length) {
-      body.innerHTML =
-        '<tr><td colspan="8" class="rar-empty">' + esc(emptyMessage()) + "</td></tr>";
-      if (counts) counts.textContent = "0 archived reports";
-      return;
+
+    var view = ctrl
+      ? ctrl.apply(entries, filterFn)
+      : { rows: entries.filter(filterFn), total: entries.length, showing: 0 };
+    if (!ctrl) view.showing = view.rows.length;
+
+    if (ctrl) ctrl.paintSortHeaders(thead);
+    if (results && T) {
+      results.innerHTML =
+        T.resultsCountHtml(view.showing, view.total, "report versions") +
+        '<div class="ada-bulk-wrap"></div>';
     }
     if (counts) {
-      counts.textContent =
-        rows.length + " archived report" + (rows.length === 1 ? "" : "s");
+      counts.innerHTML =
+        '<div class="adr-count"><span class="adr-count__n">' +
+        view.total +
+        '</span><span class="adr-count__l">Archived versions</span></div>';
     }
-    body.innerHTML = rows
+
+    if (!view.rows.length) {
+      body.innerHTML =
+        '<tr><td colspan="9" class="rar-empty">' + esc(emptyMessage()) + "</td></tr>";
+      return;
+    }
+
+    body.innerHTML = view.rows
       .map(function (e) {
-        var pdfCell = e.hasPdf
-          ? "YES"
-          : e.pdfMissingReason
-            ? '<span title="' +
-              esc(e.pdfMissingReason) +
-              '">NO <small>(not previously archived)</small></span>'
-            : "NO";
-        var actions =
-          (e.hasPdf
-            ? '<button type="button" class="adr-btn adr-btn--secondary rar-view" data-id="' +
-              esc(e.archiveId) +
-              '">View PDF</button> ' +
-              '<button type="button" class="adr-btn adr-btn--secondary rar-dl" data-id="' +
-              esc(e.archiveId) +
-              '">Download</button> '
-            : "") +
-          '<button type="button" class="adr-btn adr-btn--secondary rar-data" data-id="' +
-          esc(e.archiveId) +
-          '">View Data</button>';
+        var actions = T
+          ? T.actionsHtml(
+              {
+                primary: e.hasPdf
+                  ? [{ label: "View PDF", act: "view-pdf", title: "View archived PDF" }]
+                  : [
+                      {
+                        label: "PDF missing",
+                        act: "noop",
+                        disabled: true,
+                        title: e.pdfMissingReason || "PDF was not archived",
+                      },
+                    ],
+                more: [
+                  e.hasPdf
+                    ? { label: "Download PDF", act: "download-pdf" }
+                    : null,
+                  { label: "View data", act: "view-data" },
+                ].filter(Boolean),
+              },
+              { id: e.archiveId }
+            )
+          : "";
         return (
           "<tr>" +
           "<td>" +
-          esc(e.reportDate || "—") +
+          esc(T ? T.fmtDate(e.archivedAt) : e.reportDate || "—") +
           "</td>" +
-          "<td>" +
-          esc(e.hotelName || e.hotelId || "—") +
+          '<td class="ada-cell-hotel"><strong>' +
+          esc(e.hotelName || "—") +
+          "</strong>" +
+          (e.hotelId
+            ? '<div class="ada-subtitle">' + esc(e.hotelId) + "</div>"
+            : "") +
+          "</td>" +
+          '<td class="ada-cell-loc">' +
+          esc(e.location || "—") +
           "</td>" +
           "<td>" +
           esc(e.reportType) +
@@ -82,15 +176,19 @@
           esc(e.reportClass) +
           "</td>" +
           "<td>" +
-          esc(e.version) +
+          esc(e.versionLabel) +
           "</td>" +
           "<td>" +
-          pdfCell +
+          (T
+            ? T.statusBadge(e.hasPdf ? "ok" : "warn", e.pdfStatus)
+            : e.hasPdf
+              ? "YES"
+              : "NO") +
           "</td>" +
           "<td>" +
           (e.hasSnapshot ? "YES" : "NO") +
           "</td>" +
-          '<td style="white-space:nowrap">' +
+          '<td class="ada-col-actions">' +
           actions +
           "</td>" +
           "</tr>"
@@ -109,33 +207,44 @@
     if (cls) q.set("reportClass", cls);
     if ($("rarTableBody")) {
       $("rarTableBody").innerHTML =
-        '<tr><td colspan="8">Loading…</td></tr>';
+        '<tr><td colspan="9">Loading…</td></tr>';
     }
     var res = await authFetch("/api/admin/report-archive?" + q.toString());
     var json = await res.json();
     if (!res.ok || !json.ok) {
       if ($("rarTableBody")) {
         $("rarTableBody").innerHTML =
-          '<tr><td colspan="8">Failed to load archive' +
+          '<tr><td colspan="9">Failed to load archive' +
           (json.error ? ": " + esc(json.error) : "") +
-          ". Retry or check Admin auth.</td></tr>";
+          "</td></tr>";
       }
-      if ($("rarCounts")) $("rarCounts").textContent = "Error loading archive";
       return;
     }
-    entries = json.entries || [];
-    renderRows(entries);
+    entries = (json.entries || json.items || []).map(normalize);
+    renderRows();
   }
 
-  function detailRow(label, value) {
-    if (value == null || value === "") return "";
-    return (
-      "<div class=\"rar-detail-row\"><dt>" +
-      esc(label) +
-      "</dt><dd>" +
-      esc(String(value)) +
-      "</dd></div>"
+  async function openPdf(archiveId, download) {
+    var res = await authFetch(
+      "/api/admin/report-archive/" +
+        encodeURIComponent(archiveId) +
+        "/pdf" +
+        (download ? "?download=1" : "")
     );
+    if (!res.ok) {
+      alert("PDF unavailable for this archive entry.");
+      return;
+    }
+    var blob = await res.blob();
+    var url = URL.createObjectURL(blob);
+    if (download) {
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = "Dealality_Archive.pdf";
+      a.click();
+    } else {
+      window.open(url, "_blank", "noopener");
+    }
   }
 
   async function openData(archiveId) {
@@ -143,151 +252,97 @@
       "/api/admin/report-archive/" + encodeURIComponent(archiveId)
     );
     var json = await res.json();
+    if (!res.ok || !json.ok) {
+      alert("Could not load archive data.");
+      return;
+    }
     var drawer = $("rarDrawer");
     var body = $("rarDrawerBody");
     var title = $("rarDrawerTitle");
-    if (!drawer || !body) return;
-    if (!res.ok || !json.ok) {
-      body.textContent = "Failed to load archive entry.";
-      drawer.hidden = false;
-      return;
+    if (title) title.textContent = "Archive " + archiveId;
+    if (body) {
+      body.innerHTML =
+        "<pre style=\"white-space:pre-wrap;font-size:12px\">" +
+        esc(JSON.stringify(json.entry || json, null, 2)) +
+        "</pre>";
     }
-    var m = json.meta || {};
-    if (title) {
-      title.textContent =
-        (m.hotelName || m.hotelId || "Hotel") +
-        " · " +
-        (m.reportType || "") +
-        " · " +
-        (m.reportDate || "");
-    }
-    var summary =
-      '<dl class="rar-detail">' +
-      detailRow("Hotel", m.hotelName || m.hotelId) +
-      detailRow("Report Type", m.reportType) +
-      detailRow("Report Date", m.reportDate) +
-      detailRow("Version", m.version) +
-      detailRow("Report Class", m.reportClass) +
-      detailRow("Snapshot Date", m.snapshotDate) +
-      detailRow("Generated At", m.generatedAt) +
-      detailRow("Archived At", m.archivedAt) +
-      detailRow("Status", m.immutable ? "IMMUTABLE" : "—") +
-      detailRow("Methodology Version", m.methodologyVersion) +
-      detailRow("Query Set", m.querySetId) +
-      detailRow("Baseline ID", m.baselineId) +
-      detailRow("PDF", json.hasPdf ? "Archived" : m.pdfMissingReason || "Not archived") +
-      detailRow("Data Snapshot", json.snapshot ? "Archived" : "Missing") +
-      detailRow(
-        "PDF Checksum OK",
-        json.pdfChecksumOk == null ? "n/a" : json.pdfChecksumOk ? "YES" : "NO"
-      ) +
-      detailRow(
-        "Snapshot Checksum OK",
-        json.snapshotChecksumOk == null
-          ? "n/a"
-          : json.snapshotChecksumOk
-            ? "YES"
-            : "NO"
-      ) +
-      detailRow("PDF Checksum", m.pdfChecksumSha256) +
-      detailRow("Snapshot Checksum", m.snapshotChecksumSha256) +
-      detailRow("Code SHA", m.codeSha) +
-      detailRow("External Share Token", m.externalShareTokenId ? "(present)" : null) +
-      detailRow("Notes", m.notes) +
-      "</dl>";
-    var snapPreview =
-      '<details open><summary>Archived data snapshot</summary>' +
-      '<pre style="white-space:pre-wrap;font-size:12px;max-height:50vh;overflow:auto">' +
-      esc(JSON.stringify(json.snapshot, null, 2)) +
-      "</pre></details>";
-    body.innerHTML = summary + snapPreview;
-    drawer.hidden = false;
+    if (drawer) drawer.hidden = false;
   }
 
-  function openPdf(archiveId, download) {
-    var url =
-      "/api/admin/report-archive/" +
-      encodeURIComponent(archiveId) +
-      "/pdf" +
-      (download ? "?download=1" : "");
-    window.open(url, "_blank", "noopener");
-  }
-
-  /**
-   * Apply focus handed off from GDI Reports (or other tabs):
-   * sessionStorage dealality_report_archive_focus = { hotelId, reportType, hotelName }
-   */
-  function applyArchiveFocus() {
+  function applyFocusFromHandoff() {
     try {
       var raw = sessionStorage.getItem("dealality_report_archive_focus");
-      if (!raw) return false;
+      if (!raw) return;
       sessionStorage.removeItem("dealality_report_archive_focus");
       var focus = JSON.parse(raw);
-      if (!focus || !focus.hotelId) return false;
-      if ($("rarHotel")) $("rarHotel").value = String(focus.hotelId);
-      if ($("rarType") && focus.reportType) {
-        $("rarType").value = String(focus.reportType);
-      }
-      return true;
-    } catch (_e) {
-      return false;
-    }
-  }
-
-  function setTypeChip(type) {
-    if ($("rarType")) $("rarType").value = type || "ALL";
-    var chips = document.querySelectorAll("[data-rar-type-chip]");
-    chips.forEach(function (btn) {
-      var t = btn.getAttribute("data-rar-type-chip");
-      btn.classList.toggle("active", t === (type || "ALL"));
-      btn.setAttribute("aria-pressed", t === (type || "ALL") ? "true" : "false");
-    });
-    loadCatalog();
+      if (focus.hotelId && $("rarHotel")) $("rarHotel").value = focus.hotelId;
+      if (focus.reportType && $("rarType")) $("rarType").value = focus.reportType;
+      document.querySelectorAll("[data-rar-type-chip]").forEach(function (b) {
+        var t = b.getAttribute("data-rar-type-chip");
+        var on = t === (focus.reportType || "ALL") || (t === "ALL" && !focus.reportType);
+        b.classList.toggle("active", on);
+        b.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+    } catch (_e) {}
   }
 
   function wire() {
-    if ($("rarApply")) $("rarApply").addEventListener("click", loadCatalog);
+    if ($("rarApply")) $("rarApply").addEventListener("click", function () {
+      loadCatalog();
+    });
+    if ($("rarResetView") && ctrl) {
+      $("rarResetView").addEventListener("click", function () {
+        ctrl.resetView();
+        loadCatalog();
+      });
+    }
     if ($("rarDrawerClose")) {
       $("rarDrawerClose").addEventListener("click", function () {
         if ($("rarDrawer")) $("rarDrawer").hidden = true;
       });
     }
-    if ($("rarTableBody")) {
-      $("rarTableBody").addEventListener("click", function (ev) {
-        var btn = ev.target.closest("button[data-id]");
-        if (!btn) return;
-        var id = btn.getAttribute("data-id");
-        if (btn.classList.contains("rar-view")) openPdf(id, false);
-        else if (btn.classList.contains("rar-dl")) openPdf(id, true);
-        else if (btn.classList.contains("rar-data")) openData(id);
-      });
-    }
     document.querySelectorAll("[data-rar-type-chip]").forEach(function (btn) {
       btn.addEventListener("click", function () {
-        setTypeChip(btn.getAttribute("data-rar-type-chip"));
+        var t = btn.getAttribute("data-rar-type-chip");
+        document.querySelectorAll("[data-rar-type-chip]").forEach(function (b) {
+          var on = b === btn;
+          b.classList.toggle("active", on);
+          b.setAttribute("aria-pressed", on ? "true" : "false");
+        });
+        if ($("rarType")) $("rarType").value = t || "ALL";
+        loadCatalog();
       });
     });
-    // Default Bethesda pilot hotel for convenience (unless a focus handoff is pending)
-    if (
-      $("rarHotel") &&
-      !$("rarHotel").value &&
-      !sessionStorage.getItem("dealality_report_archive_focus")
-    ) {
-      $("rarHotel").value = "recLuxvwwxID7U2B8";
+    if (ctrl && $("rarTableHead")) {
+      ctrl.wireSortHeaders($("rarTableHead"), renderRows);
+      ctrl.paintSortHeaders($("rarTableHead"));
+    }
+    if ($("rarTableBody")) {
+      $("rarTableBody").addEventListener("click", function (ev) {
+        var btn = ev.target.closest("button[data-act]");
+        if (!btn || btn.disabled) return;
+        var wrap = btn.closest("[data-id]");
+        var id = (wrap && wrap.getAttribute("data-id")) || btn.getAttribute("data-id");
+        var act = btn.getAttribute("data-act");
+        var more = btn.closest("details.ada-more");
+        if (more) more.open = false;
+        if (act === "view-pdf") openPdf(id, false);
+        else if (act === "download-pdf") openPdf(id, true);
+        else if (act === "view-data") openData(id);
+      });
     }
   }
 
   function onReady() {
-    if (!window.__ADP_ADMIN_WORKSPACE_AUTH__) return;
+    applyFocusFromHandoff();
     wire();
-    applyArchiveFocus();
     loadCatalog();
   }
 
   window.addEventListener("dealality-adp-admin-ready", onReady);
   window.addEventListener("dealality-adp-admin-tab", function (ev) {
     if (ev.detail && ev.detail.tab === "report-archive") {
-      applyArchiveFocus();
+      applyFocusFromHandoff();
       loadCatalog();
     }
   });
