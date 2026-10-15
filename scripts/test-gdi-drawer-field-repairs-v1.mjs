@@ -18,6 +18,7 @@ import {
   isReviewedProspectHotelEnabled,
   REVIEWED_PROSPECT_HOTEL_IDS,
 } from "../lib/group-demand-intelligence/reviewed-prospect-publication-v1.js";
+import { sanitizeOpportunityForShare } from "../lib/group-demand-intelligence/share/gdi-signed-share-capability-v1.js";
 
 assert.equal(stripClaimLabel("MIXED: WashCon attendees (hotel/host not confirmed — x)."), "WashCon attendees");
 assert.equal(toCustomerProse("INFERENCE: Teams travel overnight."), "Teams travel overnight.");
@@ -103,5 +104,18 @@ assert.notEqual(applied.summaryWhat, applied.whyHotelDemand);
 assert.notEqual(applied.travelingCohort, applied.hotelOpportunityThesis);
 assert.equal(applied.prospectReviewSection, "EXPLORATORY");
 assert.ok(applied.hotelFitDimensionAssessments || applied.hotelFitAssessment);
+
+const shared = sanitizeOpportunityForShare({
+  ...applied,
+  hotelFitAssessment: applied.hotelFitAssessment,
+  hotelFitDimensionAssessments: applied.hotelFitDimensionAssessments,
+  sources: [],
+});
+assert.ok(shared.hotelFitAssessment?.dimensions?.geographyFit?.assessment);
+assert.ok(shared.hotelFitDimensionAssessments?.geographyFit?.assessment);
+assert.ok(shared.travelingCohort);
+assert.ok(shared.whyHotelDemand);
+assert.ok(!JSON.stringify(shared).includes("MIXED:"));
+assert.equal(shared.hotelFitAssessment.weights, undefined);
 
 console.log("PASS test-gdi-drawer-field-repairs-v1");
