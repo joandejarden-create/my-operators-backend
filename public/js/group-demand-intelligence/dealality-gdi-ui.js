@@ -2784,7 +2784,8 @@
         hasScore
           ? o.hotelFitScore
           : dimKeys.length
-            ? "Dimension assessment"
+            ? (o.hotelFitAssessment && o.hotelFitAssessment.posture) ||
+              "By dimension"
             : "Assessment pending"
       ) +
       "</strong></div>" +
