@@ -828,7 +828,7 @@
     var t = String(text || "");
     return (
       /dimension-level hotel-fit assessment/i.test(t) ||
-      /overall numeric (provisional\/)?withheld/i.test(t) ||
+      /overall numeric (?:score )?(provisional\/)?withheld/i.test(t) ||
       /weights renormalized/i.test(t) ||
       /applicable dimensions still lacking evidence/i.test(t) ||
       /^provisional hotel-fit score\b/i.test(t)
@@ -3227,12 +3227,15 @@
       "competitiveAccessibility",
       "contactability",
     ];
-    var fitText =
+    var fitTextRaw =
       o.fitExplanation ||
       o.fitRationale ||
       o.hotelFitRationale ||
       (audit.hotelFit && audit.hotelFit.explanation) ||
       "";
+    // Assessment-status prose belongs in expandable Overall details caveats only —
+    // never as a visible lead paragraph above the score grid.
+    var fitText = isAssessmentStatusProse(fitTextRaw) ? "" : fitTextRaw;
 
     function dimStateLabel(status, scoreVal) {
       if (status === "not_applicable") return "Not applicable";
@@ -3598,24 +3601,29 @@
     audit = audit || {};
     var sources = sourceListHtml(o.sources);
 
-    var thesis =
+    var thesisRaw =
       o.hotelOpportunityThesis ||
       o.hotelDemandThesis ||
       o.bethesdaWinThesis ||
       "";
-    var fitText =
+    var thesis = isAssessmentStatusProse(thesisRaw) ? "" : thesisRaw;
+    var fitTextRaw =
       o.fitExplanation ||
       o.fitRationale ||
       o.hotelFitRationale ||
       (audit.hotelFit && audit.hotelFit.explanation) ||
       "";
+    var fitText = isAssessmentStatusProse(fitTextRaw) ? "" : fitTextRaw;
     var demandText =
       o.whyHotelDemand ||
       o.travelingCohort ||
       o.relevantTravelers ||
       "";
     var occasionText = o.summaryWhat || "";
-    var whyMattersText = o.summaryWhyMatters || "";
+    var whyMattersRaw = o.summaryWhyMatters || "";
+    var whyMattersText = isAssessmentStatusProse(whyMattersRaw)
+      ? ""
+      : whyMattersRaw;
     var whyNowText = o.watchCardWhenToAct || o.whyNow || o.summaryWhyNow || "";
     var actionText =
       o.watchCardRecommendedNextStep ||
