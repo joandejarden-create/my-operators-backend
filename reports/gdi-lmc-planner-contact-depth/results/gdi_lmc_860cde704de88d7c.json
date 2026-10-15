@@ -1,0 +1,468 @@
+{
+  "version": "gdi-buyer-contact-enrichment-v1",
+  "contractVersion": "gdi-buyer-contact-enrichment-contract-v1",
+  "opportunityId": "gdi_lmc_860cde704de88d7c",
+  "hotelId": "rec0eTEnCqlsGJJt9",
+  "before": {
+    "axes": {
+      "version": "gdi-buyer-contact-enrichment-contract-v1",
+      "publicationContactStatus": "USABLE_ROUTE",
+      "namedResearchStatus": "NAMED_RESEARCH_NOT_ATTEMPTED",
+      "contactDepthOutcome": "research_not_yet_attempted",
+      "namedResearchAttempted": false,
+      "responsibilityClass": "RESPONSIBILITY_UNCONFIRMED",
+      "enrichmentQueue": true,
+      "queueReasons": [
+        "functional_route_only_named_enrichment_pending",
+        "named_person_research_not_yet_attempted"
+      ],
+      "customerMessageWhenNamedPending": "A named buyer has not yet been established for this opportunity.",
+      "doNotClaim": "Do not claim that no named contact exists when research is unfinished; do not treat an organization route as named-person research complete"
+    },
+    "eligibility": "HOTEL_FACING",
+    "contact": {
+      "name": null,
+      "email": null,
+      "phone": null
+    }
+  },
+  "after": {
+    "axes": {
+      "version": "gdi-buyer-contact-enrichment-contract-v1",
+      "publicationContactStatus": "USABLE_ROUTE",
+      "namedResearchStatus": "NAMED_PERSON_CHANNEL_PENDING",
+      "contactDepthOutcome": "relevant_named_contact_with_channels_pending",
+      "namedResearchAttempted": true,
+      "responsibilityClass": "CONFIRMED_RELEVANT_RESPONSIBILITY",
+      "enrichmentQueue": true,
+      "queueReasons": [
+        "named_person_established_person_specific_channel_still_pending"
+      ],
+      "customerMessageWhenNamedPending": "A named buyer has not yet been established for this opportunity.",
+      "doNotClaim": "Do not claim that no named contact exists when research is unfinished; do not treat an organization route as named-person research complete"
+    },
+    "eligibility": "HOTEL_FACING",
+    "customerContact": {
+      "name": "André Wells",
+      "role": "Founder / CEO",
+      "title": "Founder / CEO",
+      "organization": "Events by Andre Wells",
+      "email": null,
+      "emailOwnership": null,
+      "phone": null,
+      "phoneOwnership": null,
+      "phoneType": null,
+      "phoneTypeLabel": null,
+      "relevanceEvidence": "Owner/principal is a target role for professional planner accounts; affiliation evidence exists",
+      "whyThisContact": "Owner/principal is a target role for professional planner accounts; affiliation evidence exists",
+      "publicProfileUrl": "https://eventsbyandrewells.com/about/",
+      "verificationDate": "2026-10-15",
+      "responsibilityUncertainty": null,
+      "suggestedContactLabel": "Suggested contact: André Wells (Founder / CEO)",
+      "organizationContactRoute": "https://eventsbyandrewells.com/contact/",
+      "organizationContactRouteLabel": "Organization contact route: https://eventsbyandrewells.com/contact/",
+      "askToBeDirectedTo": "Ask to be directed to Founder / CEO (André Wells)"
+    },
+    "responsibility": {
+      "class": "CONFIRMED_RELEVANT_RESPONSIBILITY",
+      "rationale": "Owner/principal is a target role for professional planner accounts; affiliation evidence exists"
+    }
+  },
+  "surfe": {
+    "status": "identity_conflict",
+    "reason": null,
+    "channelOutcome": "IDENTITY_CONFLICT",
+    "enrichmentId": "c556f7fd-ad77-4968-b2d3-42553d56c60e",
+    "creditsConsumed": null,
+    "estimatedCostUsd": null,
+    "emailAccepted": false
+  },
+  "provenanceBag": {
+    "version": "gdi-contact-field-provenance-v1",
+    "personIdentityKey": "85e1a37f8126d651",
+    "personName": "André Wells",
+    "organization": "Events by Andre Wells",
+    "domain": "eventsbyandrewells.com",
+    "responsibilityClass": "CONFIRMED_RELEVANT_RESPONSIBILITY",
+    "relevanceEvidence": "Owner/principal is a target role for professional planner accounts; affiliation evidence exists",
+    "fields": {
+      "name": {
+        "version": "gdi-contact-field-provenance-v1",
+        "fieldKind": "name",
+        "value": "André Wells",
+        "originalSourceProvider": "official_page",
+        "discoveryMethod": "official_about_page",
+        "sourceUrl": "https://eventsbyandrewells.com/about/",
+        "providerResponseRef": null,
+        "providerRequestId": null,
+        "retrievalDate": "2026-10-15",
+        "verificationStatus": "LEAD_UNVERIFIED",
+        "verificationDate": null,
+        "selectedForCustomerDisplay": true,
+        "phoneType": null,
+        "channelOutcome": null,
+        "supersessionHistory": [],
+        "corroborations": []
+      },
+      "employer_title": {
+        "version": "gdi-contact-field-provenance-v1",
+        "fieldKind": "employer_title",
+        "value": "Founder / CEO",
+        "originalSourceProvider": "official_page",
+        "discoveryMethod": null,
+        "sourceUrl": "https://eventsbyandrewells.com/about/",
+        "providerResponseRef": null,
+        "providerRequestId": null,
+        "retrievalDate": "2026-10-15",
+        "verificationStatus": "LEAD_UNVERIFIED",
+        "verificationDate": null,
+        "selectedForCustomerDisplay": true,
+        "phoneType": null,
+        "channelOutcome": null,
+        "supersessionHistory": [],
+        "corroborations": []
+      },
+      "profile_url": {
+        "version": "gdi-contact-field-provenance-v1",
+        "fieldKind": "profile_url",
+        "value": "https://eventsbyandrewells.com/about/",
+        "originalSourceProvider": "public_professional_profile",
+        "discoveryMethod": null,
+        "sourceUrl": "https://eventsbyandrewells.com/about/",
+        "providerResponseRef": null,
+        "providerRequestId": null,
+        "retrievalDate": "2026-10-15",
+        "verificationStatus": "UNKNOWN",
+        "verificationDate": null,
+        "selectedForCustomerDisplay": true,
+        "phoneType": null,
+        "channelOutcome": null,
+        "supersessionHistory": [],
+        "corroborations": []
+      }
+    },
+    "fallbackRoute": {
+      "email": null,
+      "phone": null,
+      "url": "https://eventsbyandrewells.com/contact/",
+      "label": "Organization contact route",
+      "ownership": "organization_or_department"
+    },
+    "enrichmentStatus": "NAMED_RESEARCH_NOT_ATTEMPTED",
+    "unresolvedGaps": [
+      "functional_route_only_named_enrichment_pending",
+      "named_person_research_not_yet_attempted"
+    ],
+    "lastChecked": "2026-10-15",
+    "nextRefreshDate": "2026-11-14",
+    "usageLedgerRefs": [
+      "surfe:c556f7fd-ad77-4968-b2d3-42553d56c60e"
+    ],
+    "internalOnly": true
+  },
+  "patchedOpportunity": {
+    "id": "gdi_lmc_860cde704de88d7c",
+    "opportunityId": "gdi_lmc_860cde704de88d7c",
+    "hotelId": "rec0eTEnCqlsGJJt9",
+    "organizationName": "Events by Andre Wells",
+    "company": "Events by Andre Wells",
+    "title": "Events by Andre Wells — Professional planners & intermediaries with recurring event business",
+    "opportunityName": "Events by Andre Wells — Professional planners & intermediaries with recurring event business",
+    "opportunityType": "CORPORATE_ACCOUNT_RELATIONSHIP",
+    "opportunityTypeLabel": "Corporate Account Relationship",
+    "detailLayout": "CORPORATE_ACCOUNT_RELATIONSHIP",
+    "demandFamily": "GROUP_MEETINGS",
+    "demandSignalType": "CORPORATE_MEETING",
+    "segment": "Local Meetings & Catering",
+    "researchSegment": "local_meetings_catering",
+    "lmcSubsegment": "professional_planners_intermediaries",
+    "lmcSubsegmentLabel": "Professional planners & intermediaries with recurring event business",
+    "relationshipGrain": "STANDING_ACCOUNT",
+    "demandUseCases": [
+      "MEETINGS_AND_CATERING"
+    ],
+    "standingOpportunity": true,
+    "cateringOnly": true,
+    "guestroomStatus": "NOT_REQUIRED",
+    "guestroomStatusLabel": "Not required for this opportunity",
+    "roomDemandStatus": "NOT_REQUIRED",
+    "hotelFitAssessmentProfile": "local_meetings_catering",
+    "guestroomDimensionsMode": "not_applicable",
+    "eventStartDate": null,
+    "eventEndDate": null,
+    "eventDateDisplay": "Standing local meetings / catering relationship",
+    "timing": "An established, multi-event planning practice is documented. The frequency of current downtown hotel referrals is not publicly established.",
+    "functionType": "Professional planner relationship for hotel-hosted corporate events, receptions and social celebrations; not a private event venue or lodging-only referral.",
+    "attendanceNote": null,
+    "spaceNeedsNote": null,
+    "meetingCateringNeeds": "The official biography describes corporate activations, inaugural balls, society weddings and other professionally produced events. The press archive references a Washington event previously held at the St. Regis Hotel, providing historical downtown hotel-event evidence.",
+    "localPresence": "The firm's official biography identifies it as a full-service event-planning firm based in Washington, DC. Its official press archive references Washington events and previous event activity at the St. Regis Hotel.",
+    "localConnection": "The firm's official biography identifies it as a full-service event-planning firm based in Washington, DC. Its official press archive references Washington events and previous event activity at the St. Regis Hotel.",
+    "eventActivityEvidence": "The official biography describes corporate activations, inaugural balls, society weddings and other professionally produced events. The press archive references a Washington event previously held at the St. Regis Hotel, providing historical downtown hotel-event evidence.",
+    "proposedHotelUse": "meetings and catering",
+    "whyThisHotel": "The Mayflower Hotel, Autograph Collection's 27 event rooms and approximately 43,000 square feet of meeting and ballroom space provide options for corporate gatherings and receptions. A planner introduction should focus on matching individual client briefs to those facilities rather than assuming a large event or room block.",
+    "hotelOpportunityThesis": "The Mayflower Hotel, Autograph Collection's 27 event rooms and approximately 43,000 square feet of meeting and ballroom space provide options for corporate gatherings and receptions. A planner introduction should focus on matching individual client briefs to those facilities rather than assuming a large event or room block.",
+    "fitExplanation": "The Mayflower Hotel, Autograph Collection's 27 event rooms and approximately 43,000 square feet of meeting and ballroom space provide options for corporate gatherings and receptions. A planner introduction should focus on matching individual client briefs to those facilities rather than assuming a large event or room block.",
+    "summaryWhyHotel": "The Mayflower Hotel, Autograph Collection's 27 event rooms and approximately 43,000 square feet of meeting and ballroom space provide options for corporate gatherings and receptions. A planner introduction should focus on matching individual client briefs to those facilities rather than assuming a large event or room block.",
+    "summaryWhat": "Events by Andre Wells: The official biography describes corporate activations, inaugural balls, society weddings and other professionally produced events. The press archive references a Washington event previously held at the St. Regis Hotel, providing historical downtown hotel-event evidence.",
+    "summaryWhyMatters": "A Washington professional planner with historical downtown hotel-event experience can generate multiple client opportunities rather than a single organizational booking.",
+    "whyNow": "Standing local meeting/catering demand — no invented urgency; introduce hotel meeting product and ask how venues are currently selected.",
+    "whyEstablishContactNow": "Local organizer with evidenced meeting/banquet activity in catchment.",
+    "constraints": [
+      "Do not invent attendance, budgets, or room nights.",
+      "Guestrooms are not required for this opportunity.",
+      "outside_catering_policy_unknown",
+      "certified_kosher_catering_unknown",
+      "av_capabilities_unknown"
+    ],
+    "hotelConstraints": {
+      "outsideCateringAllowed": "unknown_needs_verification",
+      "certifiedKosherCatering": "unknown_needs_verification",
+      "audiovisualSupport": "unknown_needs_verification",
+      "accessibilityVerified": "unknown_needs_verification",
+      "parkingAccess": "unknown_needs_verification",
+      "kosherInferencePolicy": "Do not infer certified kosher catering or religious-accommodation capability. Mark unknown until verified.",
+      "notesForVerification": [
+        "outside_catering_policy_unknown",
+        "certified_kosher_catering_unknown",
+        "av_capabilities_unknown"
+      ]
+    },
+    "uncertainties": [
+      "Open sourcing / exclusive venue relationships not fully known from public pages.",
+      "outside_catering_policy_unknown",
+      "certified_kosher_catering_unknown",
+      "av_capabilities_unknown"
+    ],
+    "establishedFacts": [
+      "The official biography describes corporate activations, inaugural balls, society weddings and other professionally produced events. The press archive references a Washington event previously held at the St. Regis Hotel, providing historical downtown hotel-event evidence.",
+      "The firm's official biography identifies it as a full-service event-planning firm based in Washington, DC. Its official press archive references Washington events and previous event activity at the St. Regis Hotel.",
+      "Subsegment: Professional planners & intermediaries with recurring event business",
+      "Contact route: organization fallback: info@eventsbyandrewells.com"
+    ],
+    "inferredHotelDemand": [
+      "Hypothesis: hotel meeting rooms and catering can serve this organizer's local functions when capacity and positioning fit."
+    ],
+    "contactName": null,
+    "contactEmail": "info@eventsbyandrewells.com",
+    "contactPhone": null,
+    "contactUrl": "https://eventsbyandrewells.com/contact/",
+    "contactRole": "Founder and CEO; venue-selection or booking authority for individual client events is not confirmed.",
+    "contactResponsibility": "Founder and CEO; venue-selection or booking authority for individual client events is not confirmed.",
+    "contactIsNamedPerson": false,
+    "contactIsOrgFallback": true,
+    "commercialContactPath": "ORGANIZATION_PATH",
+    "recommendedAction": "Email the public organization inbox to request a professional planner introduction and a Mayflower site visit focused on corporate receptions and local celebrations. Ask which current client briefs require downtown hotel function space without accommodation.",
+    "recommendedNextStep": "Email the public organization inbox to request a professional planner introduction and a Mayflower site visit focused on corporate receptions and local celebrations. Ask which current client briefs require downtown hotel function space without accommodation.",
+    "priority": "MEDIUM_PRIORITY",
+    "venueSourcingStatus": "OPEN_UNRESOLVED",
+    "doNotEstimateAnnualRevenue": true,
+    "customerFacingState": "ACTIONABLE_NOW",
+    "customerVisible": true,
+    "actionable": true,
+    "prospectPublicationBasis": "REVIEWED_PACKAGE_V1",
+    "prospectHotelFacing": true,
+    "prospectReviewSection": "EXPLORATORY",
+    "prospectCommercialLabel": "Professional planners & intermediaries with recurring event business",
+    "persistPath": "demand_generator_not_pe_venue",
+    "relatedPrivateEventVenueId": null,
+    "peCrossReferenceOnly": false,
+    "dgGeneratorId": "dg_210dba614463fad1",
+    "hotelGeneratorFitId": "hdgf_4b89ee8ff22e2b",
+    "schemaVersion": "gdi-local-meetings-catering-research-v1.2",
+    "researchVersion": "gdi-local-meetings-catering-research-v1.2",
+    "evidenceFreshnessAt": "2026-10-15",
+    "lastVerifiedAt": "2026-10-15T21:30:01.791Z",
+    "firstSeenAt": "2026-10-15T21:30:01.791Z",
+    "updatedAt": "2026-10-15T21:30:01.791Z",
+    "sources": [
+      {
+        "url": "https://eventsbyandrewells.com/about",
+        "type": "event_activity",
+        "title": "Event activity evidence"
+      },
+      {
+        "url": "https://eventsbyandrewells.com/",
+        "type": "event_activity",
+        "title": "Event activity evidence"
+      },
+      {
+        "url": "https://eventsbyandrewells.com/site/press",
+        "type": "event_activity",
+        "title": "Event activity evidence"
+      },
+      {
+        "url": "https://www.marriott.com/en-us/hotels/wasak-the-mayflower-hotel-autograph-collection/events",
+        "type": "event_activity",
+        "title": "Event activity evidence"
+      }
+    ],
+    "officialSource": "https://eventsbyandrewells.com/about",
+    "hotelMeetingSnapshot": {
+      "meetingRoomCount": 27,
+      "totalMeetingSpaceSqFt": 42582,
+      "largestReceptionCapacity": 1100,
+      "largestBallroomSqFt": 10359,
+      "outdoorEventSpace": false,
+      "serviceLevel": "upper_upscale_historic_full_service",
+      "classification": "historic_downtown_meetings_social",
+      "city": "Washington",
+      "catchment": "Washington DC / Downtown / Connecticut Avenue"
+    },
+    "decisionId": null,
+    "peVenueId": null,
+    "peSignalId": null,
+    "hotelVenueFitId": null,
+    "isTestData": false,
+    "_airtableRecordId": "rec9qhrNuPTJNYrUE",
+    "primaryContact": {
+      "name": "André Wells",
+      "role": "Founder / CEO",
+      "title": "Founder / CEO",
+      "organization": "Events by Andre Wells",
+      "email": null,
+      "emailOwnership": null,
+      "phone": null,
+      "phoneOwnership": null,
+      "phoneType": null,
+      "phoneTypeLabel": null,
+      "relevanceEvidence": "Owner/principal is a target role for professional planner accounts; affiliation evidence exists",
+      "whyThisContact": "Owner/principal is a target role for professional planner accounts; affiliation evidence exists",
+      "publicProfileUrl": "https://eventsbyandrewells.com/about/",
+      "verificationDate": "2026-10-15",
+      "responsibilityUncertainty": null,
+      "suggestedContactLabel": "Suggested contact: André Wells (Founder / CEO)",
+      "organizationContactRoute": "https://eventsbyandrewells.com/contact/",
+      "organizationContactRouteLabel": "Organization contact route: https://eventsbyandrewells.com/contact/",
+      "askToBeDirectedTo": "Ask to be directed to Founder / CEO (André Wells)"
+    },
+    "primaryContactName": "André Wells",
+    "primaryContactRole": "Founder / CEO",
+    "primaryContactEmail": null,
+    "primaryContactPhone": null,
+    "primaryContactPhoneType": null,
+    "primaryContactPhoneTypeLabel": null,
+    "functionalContactEmail": null,
+    "organizationContactEmail": null,
+    "contactResponsibilityClass": "CONFIRMED_RELEVANT_RESPONSIBILITY",
+    "namedContactResearchStatus": "NAMED_PERSON_CHANNEL_PENDING",
+    "namedContactResearchAttempted": true,
+    "namedContactResearchCompletedAt": "2026-10-15T21:59:20.747Z",
+    "contactDepthResearch": {
+      "version": "gdi-buyer-contact-enrichment-v1",
+      "attemptedAt": "2026-10-15T21:59:20.747Z",
+      "targetRoles": {
+        "bucket": "PROFESSIONAL_PLANNER",
+        "roles": [
+          "owner_principal",
+          "event_director",
+          "corporate_events_lead",
+          "destination_services_lead",
+          "venue_sourcing_lead"
+        ],
+        "note": "Founder/president/senior executive is not automatically the booking buyer"
+      },
+      "sourcesChecked": [
+        "https://eventsbyandrewells.com/about/",
+        "https://eventsbyandrewells.com/contact/"
+      ],
+      "namedResearchStatus": "NAMED_PERSON_CHANNEL_PENDING",
+      "outcome": "identity_conflict",
+      "unresolvedReason": "named_research_incomplete",
+      "nextStep": null,
+      "nextReviewDate": "2026-11-14"
+    },
+    "contactChannelSeparation": {
+      "suggestedPerson": "André Wells",
+      "personSpecificEmail": null,
+      "personSpecificPhone": null,
+      "organizationRoute": "https://eventsbyandrewells.com/contact/",
+      "askToBeDirectedTo": "Ask to be directed to Founder / CEO (André Wells)"
+    },
+    "_internalContactProvenance": {
+      "version": "gdi-contact-field-provenance-v1",
+      "personIdentityKey": "85e1a37f8126d651",
+      "personName": "André Wells",
+      "organization": "Events by Andre Wells",
+      "domain": "eventsbyandrewells.com",
+      "responsibilityClass": "CONFIRMED_RELEVANT_RESPONSIBILITY",
+      "relevanceEvidence": "Owner/principal is a target role for professional planner accounts; affiliation evidence exists",
+      "fields": {
+        "name": {
+          "version": "gdi-contact-field-provenance-v1",
+          "fieldKind": "name",
+          "value": "André Wells",
+          "originalSourceProvider": "official_page",
+          "discoveryMethod": "official_about_page",
+          "sourceUrl": "https://eventsbyandrewells.com/about/",
+          "providerResponseRef": null,
+          "providerRequestId": null,
+          "retrievalDate": "2026-10-15",
+          "verificationStatus": "LEAD_UNVERIFIED",
+          "verificationDate": null,
+          "selectedForCustomerDisplay": true,
+          "phoneType": null,
+          "channelOutcome": null,
+          "supersessionHistory": [],
+          "corroborations": []
+        },
+        "employer_title": {
+          "version": "gdi-contact-field-provenance-v1",
+          "fieldKind": "employer_title",
+          "value": "Founder / CEO",
+          "originalSourceProvider": "official_page",
+          "discoveryMethod": null,
+          "sourceUrl": "https://eventsbyandrewells.com/about/",
+          "providerResponseRef": null,
+          "providerRequestId": null,
+          "retrievalDate": "2026-10-15",
+          "verificationStatus": "LEAD_UNVERIFIED",
+          "verificationDate": null,
+          "selectedForCustomerDisplay": true,
+          "phoneType": null,
+          "channelOutcome": null,
+          "supersessionHistory": [],
+          "corroborations": []
+        },
+        "profile_url": {
+          "version": "gdi-contact-field-provenance-v1",
+          "fieldKind": "profile_url",
+          "value": "https://eventsbyandrewells.com/about/",
+          "originalSourceProvider": "public_professional_profile",
+          "discoveryMethod": null,
+          "sourceUrl": "https://eventsbyandrewells.com/about/",
+          "providerResponseRef": null,
+          "providerRequestId": null,
+          "retrievalDate": "2026-10-15",
+          "verificationStatus": "UNKNOWN",
+          "verificationDate": null,
+          "selectedForCustomerDisplay": true,
+          "phoneType": null,
+          "channelOutcome": null,
+          "supersessionHistory": [],
+          "corroborations": []
+        }
+      },
+      "fallbackRoute": {
+        "email": null,
+        "phone": null,
+        "url": "https://eventsbyandrewells.com/contact/",
+        "label": "Organization contact route",
+        "ownership": "organization_or_department"
+      },
+      "enrichmentStatus": "NAMED_RESEARCH_NOT_ATTEMPTED",
+      "unresolvedGaps": [
+        "functional_route_only_named_enrichment_pending",
+        "named_person_research_not_yet_attempted"
+      ],
+      "lastChecked": "2026-10-15",
+      "nextRefreshDate": "2026-11-14",
+      "usageLedgerRefs": [
+        "surfe:c556f7fd-ad77-4968-b2d3-42553d56c60e"
+      ],
+      "internalOnly": true
+    }
+  },
+  "materialImprovement": true,
+  "publicationPreserved": true
+}
