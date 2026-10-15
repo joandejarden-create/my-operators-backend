@@ -367,6 +367,21 @@
     "(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)";
 
   /**
+   * Tile header Proper Case (presentation only).
+   * Preserves short ALL-CAPS acronyms (CSI, DMC, DC, MBA…).
+   * Classification: REUSABLE_PRODUCT_UI
+   */
+  function toProperCaseDisplayTitle(raw) {
+    var s = String(raw == null ? "" : raw).replace(/\s+/g, " ").trim();
+    if (!s) return s;
+    return s.replace(/\b([A-Za-z][A-Za-z0-9']*)\b/g, function (word) {
+      if (/^[A-Z]{2,6}$/.test(word)) return word;
+      if (/^[A-Z0-9]{2,6}$/.test(word) && /[0-9]/.test(word)) return word;
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    });
+  }
+
+  /**
    * Clean tile/summary copy without destroying concise occasion titles.
    * Keep years in titles like "AHIMA Advocacy Summit 2027".
    * Strip month-day ranges when a date pill already carries timing.
@@ -474,9 +489,9 @@
     } else {
       classBits.push("Association");
     }
-    // Meta line stays ALL CAPS via CSS (.brand-card__meta); do not Proper-Case here.
-    var classLabel = classBits[0];
+    var classLabel = toProperCaseDisplayTitle(classBits[0]);
     // Only echo a short org token when title does not already include it.
+    // Org echo uses Proper Case too; raw organizationName elsewhere stays as stored.
     var orgShort = org.replace(/\s*\([^)]*\)\s*$/, "").trim();
     var titleHasOrg =
       org &&
@@ -487,7 +502,7 @@
           title
         ));
     if (org && !titleHasOrg && orgShort.length <= 48) {
-      return esc(orgShort) + " · " + esc(classLabel);
+      return esc(toProperCaseDisplayTitle(orgShort)) + " · " + esc(classLabel);
     }
     return esc(classLabel);
   }
@@ -2185,7 +2200,10 @@
       linked.title ||
       it.title ||
       "";
-    var title = scrubEventDatesFromText(titleRaw, { preserveOccasionYear: true }) || "—";
+    var title =
+      toProperCaseDisplayTitle(
+        scrubEventDatesFromText(titleRaw, { preserveOccasionYear: true })
+      ) || "—";
     var bookingStatus =
       linked.bookingWindowStatus || it.bookingWindowStatus || "";
     // Prefer hotel-specific thesis over thin stubs — never surface assessment-status prose as the card summary.
@@ -4218,6 +4236,7 @@
     isSafeHttpUrl: isSafeHttpUrl,
     fmtVal: fmtVal,
     trunc: trunc,
+    toProperCaseDisplayTitle: toProperCaseDisplayTitle,
     scrubEventDatesFromText: scrubEventDatesFromText,
     eventDateRangeLabel: eventDateRangeLabel,
     priorityPill: priorityPill,
