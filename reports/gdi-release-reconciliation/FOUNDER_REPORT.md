@@ -149,7 +149,14 @@ Cases: Mayflower HCAOA + Quorum; San Diego list; org fallback (ACEC/ASID); form-
 | Local post-fix counts | Mayflower **30**, San Diego **38** |
 | HANDOFF | Updated in this PR under `reports/gdi-local-production-parity/HANDOFF.md` |
 
-Deploy SHA / Railway ID: filled after clean `deploy:production`.
+| Merge SHA (PR #96) | `ce21196a` |
+| Deployed code SHA | `ce21196a` |
+| Railway deploy | `42538409-1b4f-41c4-bafe-272334f6fab7` (from clean main; dirty/hotfix false) |
+| Local runtime | `ce21196a` @ `:8080`, asset `gdi-tile-contact-toolbar-v1` |
+| Production list counts (post-deploy) | Mayflower **30**, San Diego **38** |
+| Production DEV share secret | `GDI_SHARE_CAPABILITY_ALLOW_DEV_SECRET=0` |
+
+Note: local `.env` share secret drifted vs contract token; deploy used `railway run npm run deploy:production` so verification used Railway secrets without dirty/hotfix overrides.
 
 ---
 
@@ -157,4 +164,5 @@ Deploy SHA / Railway ID: filled after clean `deploy:production`.
 
 1. **History unavailable** remains honest until a non-dry-run, non-simulated research completion is recorded in the durable ledger.  
 2. Seven SD PE rows stay off the customer list until durable travel/recurring evidence satisfies suitability (product decision — not auto-restored).  
-3. Shipyard remains off list until `prospectPublicationBasis` is set intentionally.
+3. Shipyard remains off list until `prospectPublicationBasis` is set intentionally.  
+4. Local deploy gate requires Railway-aligned `GDI_SHARE_CAPABILITY_SECRET` (or `railway run`) — not a product defect, ops hygiene.
