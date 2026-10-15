@@ -595,27 +595,39 @@
         "</option></select></div>";
     }
 
+    var publishedLabel = opts.publishedUpdateLabel || "Last Published Update";
+    var publishedValue =
+      opts.lastPublishedUpdate != null && opts.lastPublishedUpdate !== ""
+        ? opts.lastPublishedUpdate
+        : opts.lastReviewedImport != null && opts.lastReviewedImport !== ""
+          ? opts.lastReviewedImport
+          : "";
     return (
       '<section class="filters-section aiv-filters-section gdi-property-bar" aria-label="Property selection">' +
       propertyField +
       weeklyThisWeekFilterHtml(opts) +
+      opportunityTypeFilterHtml(opts) +
       '<div class="filter-group gdi-property-stat">' +
       '<span class="filter-label">Last Research</span>' +
       '<div class="gdi-property-stat__value">' +
-      esc(opts.lastResearch != null && opts.lastResearch !== "" ? opts.lastResearch : "—") +
+      esc(
+        opts.lastResearch != null && opts.lastResearch !== ""
+          ? opts.lastResearch
+          : "History unavailable"
+      ) +
       "</div></div>" +
       '<div class="filter-group gdi-property-stat">' +
       '<span class="filter-label">Research Run</span>' +
       '<div class="gdi-property-stat__value">' +
-      esc(opts.runStatus || "NEVER_RUN") +
+      esc(opts.runStatusLabel || opts.runStatus || "History unavailable") +
       "</div></div>" +
-      (opts.lastReviewedImport
-        ? '<div class="filter-group gdi-property-stat">' +
-          '<span class="filter-label">Last Reviewed Import</span>' +
-          '<div class="gdi-property-stat__value">' +
-          esc(opts.lastReviewedImport) +
-          "</div></div>"
-        : "") +
+      '<div class="filter-group gdi-property-stat">' +
+      '<span class="filter-label">' +
+      esc(publishedLabel) +
+      "</span>" +
+      '<div class="gdi-property-stat__value">' +
+      esc(publishedValue || "History unavailable") +
+      "</div></div>" +
       (opts.actionHtml
         ? '<div class="filter-group aiv-filter-actions">' + opts.actionHtml + "</div>"
         : "") +
@@ -662,6 +674,164 @@
         })
         .join("") +
       "</select></div>"
+    );
+  }
+
+  /**
+   * Opportunity Type filter — next to This Week.
+   * Counts come from other active filters (before applying the selected type).
+   */
+  function opportunityTypeFilterHtml(opts) {
+    opts = opts || {};
+    if (opts.showOpportunityTypeFilter === false) return "";
+    var active = opts.activeOpportunityType != null ? opts.activeOpportunityType : "";
+    var options = Array.isArray(opts.opportunityTypeOptions)
+      ? opts.opportunityTypeOptions
+      : [{ value: "", label: "All types", count: null }];
+    // If active type vanished after hotel switch, fall back to All types
+    var activeStillValid = options.some(function (o) {
+      return o.value === active;
+    });
+    if (!activeStillValid) active = "";
+    return (
+      '<div class="filter-group gdi-opportunity-type-filter">' +
+      '<label class="filter-label" for="gdiOpportunityTypeFilter">Opportunity Type</label>' +
+      '<select class="filter-select" id="gdiOpportunityTypeFilter" aria-label="Filter by opportunity type">' +
+      options
+        .map(function (o) {
+          var text =
+            o.count == null || o.count === ""
+              ? o.label
+              : o.label + " (" + o.count + ")";
+          return (
+            '<option value="' +
+            esc(o.value) +
+            '"' +
+            (active === o.value ? " selected" : "") +
+            ">" +
+            esc(text) +
+            "</option>"
+          );
+        })
+        .join("") +
+      "</select></div>"
+    );
+  }
+
+  /** Structured opportunity-type category (mirrors opportunity-type-filter-v1). */
+  function classifyOpportunityTypeFilter(o) {
+    o = o || {};
+    if (o.opportunityTypeFilterCategory) {
+      return String(o.opportunityTypeFilterCategory);
+    }
+    var segment = String(o.researchSegment || o.segment || "")
+      .trim()
+      .toLowerCase();
+    var type = String(o.opportunityType || "").toUpperCase();
+    var signal = String(o.demandSignalType || o.demandFamily || "")
+      .trim()
+      .toLowerCase();
+    var family = String(o.demandFamily || "")
+      .trim()
+      .toLowerCase();
+    if (
+      segment === "scaling_companies" ||
+      segment.indexOf("scaling") >= 0 ||
+      signal.indexOf("scaling") >= 0
+    ) {
+      return "SCALING_COMPANY";
+    }
+    if (
+      segment === "local_meetings_catering" ||
+      segment.indexOf("local_meetings") >= 0 ||
+      signal.indexOf("local_meetings") >= 0
+    ) {
+      return "LOCAL_MEETINGS_CATERING";
+    }
+    if (
+      type === "VENUE_PARTNERSHIP" ||
+      segment === "private events" ||
+      segment === "private_events" ||
+      signal.indexOf("venue_partnership") >= 0 ||
+      signal.indexOf("preferred_lodging") >= 0
+    ) {
+      return "PREFERRED_LODGING_PARTNERSHIP";
+    }
+    if (type === "SPECIFIC_PRIVATE_EVENT") return "SPECIFIC_PRIVATE_EVENT";
+    if (
+      segment.indexOf("sport") >= 0 ||
+      signal.indexOf("sport") >= 0 ||
+      family.indexOf("sport") >= 0
+    ) {
+      return "SPORTS_GROUP";
+    }
+    if (
+      segment === "association" ||
+      segment.indexOf("assoc") >= 0 ||
+      type === "OVERFLOW_HOUSING" ||
+      type === "PRIMARY_PURSUIT" ||
+      type === "FIXED_VENUE_OPEN_HOUSING" ||
+      signal.indexOf("association") >= 0 ||
+      signal.indexOf("conference") >= 0
+    ) {
+      return "ASSOCIATION_CONFERENCE_GROUP";
+    }
+    if (
+      type === "CORPORATE_ACCOUNT_RELATIONSHIP" ||
+      segment.indexOf("corporate") >= 0 ||
+      signal.indexOf("corporate") >= 0
+    ) {
+      return "CORPORATE_MEETINGS_TRAINING";
+    }
+    return "OTHER_UNCLASSIFIED";
+  }
+
+  var OPPORTUNITY_TYPE_FILTER_LABELS = {
+    SCALING_COMPANY: "Scaling Company",
+    PREFERRED_LODGING_PARTNERSHIP: "Preferred Lodging Partnership",
+    ASSOCIATION_CONFERENCE_GROUP: "Association / Conference Group",
+    LOCAL_MEETINGS_CATERING: "Local Meetings & Catering",
+    CORPORATE_MEETINGS_TRAINING: "Corporate Meetings / Training",
+    SPORTS_GROUP: "Sports Group",
+    SPECIFIC_PRIVATE_EVENT: "Specific Private Event",
+    OTHER_UNCLASSIFIED: "Other / Unclassified",
+  };
+
+  function countByOpportunityTypeFilter(opportunities) {
+    var counts = { all: 0 };
+    (opportunities || []).forEach(function (o) {
+      counts.all += 1;
+      var c = classifyOpportunityTypeFilter(o);
+      counts[c] = (counts[c] || 0) + 1;
+    });
+    return counts;
+  }
+
+  function opportunityTypeFilterOptionsFromCounts(counts) {
+    counts = counts || {};
+    var options = [{ value: "", label: "All types", count: counts.all || 0 }];
+    Object.keys(OPPORTUNITY_TYPE_FILTER_LABELS).forEach(function (value) {
+      var n = counts[value] || 0;
+      if (n > 0) {
+        options.push({
+          value: value,
+          label: OPPORTUNITY_TYPE_FILTER_LABELS[value],
+          count: n,
+        });
+      }
+    });
+    return options;
+  }
+
+  /** Assessment-status prose must not masquerade as a sales opportunity summary. */
+  function isAssessmentStatusProse(text) {
+    var t = String(text || "");
+    return (
+      /dimension-level hotel-fit assessment/i.test(t) ||
+      /overall numeric (provisional\/)?withheld/i.test(t) ||
+      /weights renormalized/i.test(t) ||
+      /applicable dimensions still lacking evidence/i.test(t) ||
+      /^provisional hotel-fit score\b/i.test(t)
     );
   }
 
@@ -945,7 +1115,24 @@
   }
 
   /**
-   * Clear the companion filter when the pair would return zero rows.
+   * Type facet counts from other active browse filters (before selected type).
+   * Classification: REUSABLE_PRODUCT_UI
+   */
+  function opportunityTypeCountsForFilters(opportunities, filters) {
+    filters = filters || {};
+    var subset = filterOpportunities(opportunities, {
+      priority: filters.priority || "",
+      booking: filters.booking || "",
+      segment: filters.segment || "",
+      territory: filters.territory || "",
+      weekly: filters.weekly || "",
+      // intentionally omit opportunityType so counts reflect other active filters
+    });
+    return countByOpportunityTypeFilter(subset);
+  }
+
+  /**
+   * Clear companion filters when the pair would return zero rows.
    * Classification: REUSABLE_PRODUCT_UI
    */
   function reconcileBrowseFilters(opportunities, filters, changedKey) {
@@ -956,6 +1143,7 @@
         segment: "",
         territory: "",
         weekly: "",
+        opportunityType: "",
       },
       filters || {}
     );
@@ -965,6 +1153,10 @@
       else if (changedKey === "weekly") {
         filters.priority = "";
         filters.booking = "";
+      } else if (changedKey === "opportunityType") {
+        filters.priority = "";
+        filters.booking = "";
+        filters.weekly = "";
       }
     }
     return filters;
@@ -1319,6 +1511,11 @@
         });
       }
     }
+    if (filters.opportunityType) {
+      rows = rows.filter(function (o) {
+        return classifyOpportunityTypeFilter(o) === filters.opportunityType;
+      });
+    }
     // Customer GDI no longer exposes an All/Ready/Watching workflow chip row.
     // Ready vs Watch remains visible on cards; Priority + Action Window stay as browse filters.
     return rows;
@@ -1632,7 +1829,7 @@
     var title = scrubEventDatesFromText(titleRaw, { preserveOccasionYear: true }) || "—";
     var bookingStatus =
       linked.bookingWindowStatus || it.bookingWindowStatus || "";
-    // Prefer hotel-fit / opportunity summary over thin "what we know" stubs when richer.
+    // Prefer hotel-specific thesis over thin stubs — never surface assessment-status prose as the card summary.
     var thesisRaw =
       linked.hotelOpportunityThesis ||
       it.hotelOpportunityThesis ||
@@ -1641,7 +1838,9 @@
       linked.fitExplanation ||
       it.fitExplanation ||
       "";
+    if (isAssessmentStatusProse(thesisRaw)) thesisRaw = "";
     var whatRaw = it.summaryWhat || linked.summaryWhat || "";
+    if (isAssessmentStatusProse(whatRaw)) whatRaw = "";
     var summaryRaw =
       (thesisRaw && String(thesisRaw).length >= 40 ? thesisRaw : "") ||
       whatRaw ||
@@ -1659,37 +1858,182 @@
     var buyerEntity = linked.buyerEntity || it.buyerEntity || "";
     var buyerRole = linked.buyerRole || it.buyerRole || "";
     var contactPath =
-      linked.publicContactPath || it.publicContactPath || "";
+      linked.publicContactPath ||
+      it.publicContactPath ||
+      linked.contactUrl ||
+      it.contactUrl ||
+      "";
+    var companyPhone =
+      linked.companyPhone ||
+      it.companyPhone ||
+      linked.contactPhone ||
+      it.contactPhone ||
+      "";
+    var companyPhoneLabel =
+      linked.companyPhoneLabel || it.companyPhoneLabel || "Company / office phone";
+    var orgEmail =
+      linked.organizationContactEmail ||
+      it.organizationContactEmail ||
+      linked.functionalContactEmail ||
+      it.functionalContactEmail ||
+      linked.contactEmail ||
+      it.contactEmail ||
+      "";
+    // Never show org inbox as if it were the named person's email
+    if (
+      contactName &&
+      orgEmail &&
+      contactEmail &&
+      String(orgEmail).toLowerCase() === String(contactEmail).toLowerCase()
+    ) {
+      orgEmail = "";
+    }
+    if (
+      contactName &&
+      orgEmail &&
+      !contactEmail &&
+      /^(info|contact|hello|office|admin|support|sales|pr|press|federal)@/i.test(
+        String(orgEmail)
+      )
+    ) {
+      // keep as org route only
+    } else if (
+      !contactName &&
+      orgEmail &&
+      /^(info|contact|hello|office|admin|support|sales|pr|press|federal)@/i.test(
+        String(orgEmail)
+      )
+    ) {
+      // org route
+    } else if (!contactName && orgEmail && !contactEmail) {
+      // usable org/person-looking email without a name — show as organization route
+    }
+    var displayLines =
+      linked.contactDisplayLines || it.contactDisplayLines || null;
     var contactBits = [];
-    if (contactName) {
-      contactBits.push(
-        '<div class="brand-card__contact-name">' + esc(contactName) + "</div>"
-      );
-    }
-    if (contactEmail) {
-      contactBits.push(
-        '<div class="brand-card__contact-line">' + esc(contactEmail) + "</div>"
-      );
-    }
-    if (contactPhone) {
-      var phoneTypeLbl =
-        (contact && contact.phoneTypeLabel) ||
-        linked.primaryContactPhoneTypeLabel ||
-        it.primaryContactPhoneTypeLabel ||
-        "";
-      contactBits.push(
-        '<div class="brand-card__contact-line">' +
-          esc(contactPhone) +
-          (phoneTypeLbl ? " · " + esc(phoneTypeLbl) : "") +
-          "</div>"
-      );
-    }
-    var respLbl =
-      linked.bookingResponsibilityLabel || it.bookingResponsibilityLabel || "";
-    if (respLbl) {
-      contactBits.push(
-        '<div class="brand-card__contact-line">' + esc(respLbl) + "</div>"
-      );
+    if (Array.isArray(displayLines) && displayLines.length) {
+      displayLines.forEach(function (line) {
+        if (!line || !line.text) return;
+        if (line.kind === "name") {
+          contactBits.push(
+            '<div class="brand-card__contact-name">' + esc(line.text) + "</div>"
+          );
+        } else if (line.kind === "empty") {
+          contactBits.push(
+            '<div class="brand-card__contact-line brand-card__contact-line--empty">' +
+              esc(line.text) +
+              "</div>"
+          );
+        } else {
+          var prefix = line.label ? esc(line.label) + ": " : "";
+          contactBits.push(
+            '<div class="brand-card__contact-line">' +
+              prefix +
+              esc(line.text) +
+              "</div>"
+          );
+        }
+      });
+    } else {
+      if (contactName) {
+        contactBits.push(
+          '<div class="brand-card__contact-name">' + esc(contactName) + "</div>"
+        );
+      }
+      if (contactEmail) {
+        contactBits.push(
+          '<div class="brand-card__contact-line">' + esc(contactEmail) + "</div>"
+        );
+      }
+      if (contactPhone) {
+        var phoneTypeLbl =
+          (contact && contact.phoneTypeLabel) ||
+          linked.primaryContactPhoneTypeLabel ||
+          it.primaryContactPhoneTypeLabel ||
+          "";
+        contactBits.push(
+          '<div class="brand-card__contact-line">' +
+            esc(contactPhone) +
+            (phoneTypeLbl ? " · " + esc(phoneTypeLbl) : "") +
+            "</div>"
+        );
+      }
+      if (!contactName) {
+        if (orgEmail) {
+          contactBits.push(
+            '<div class="brand-card__contact-line">Organization email: ' +
+              esc(orgEmail) +
+              "</div>"
+          );
+        }
+        if (companyPhone && companyPhone !== contactPhone) {
+          contactBits.push(
+            '<div class="brand-card__contact-line">' +
+              esc(companyPhoneLabel) +
+              ": " +
+              esc(companyPhone) +
+              "</div>"
+          );
+        } else if (companyPhone && !contactPhone) {
+          contactBits.push(
+            '<div class="brand-card__contact-line">' +
+              esc(companyPhoneLabel) +
+              ": " +
+              esc(companyPhone) +
+              "</div>"
+          );
+        }
+      } else if (orgEmail && orgEmail !== contactEmail) {
+        contactBits.push(
+          '<div class="brand-card__contact-line">Organization route: ' +
+            esc(orgEmail) +
+            "</div>"
+        );
+      }
+      var respLbl =
+        linked.bookingResponsibilityLabel || it.bookingResponsibilityLabel || "";
+      if (respLbl) {
+        contactBits.push(
+          '<div class="brand-card__contact-line">' + esc(respLbl) + "</div>"
+        );
+      }
+      // Org / role path when no named person (WHO ORG_PATH) — do not imply a person exists.
+      if (!contactName && (buyerEntity || buyerRole || contactPath)) {
+        if (buyerEntity && contactBits.length < 2) {
+          contactBits.push(
+            '<div class="brand-card__contact-name">' + esc(buyerEntity) + "</div>"
+          );
+        }
+        if (buyerRole) {
+          contactBits.push(
+            '<div class="brand-card__contact-line">' + esc(buyerRole) + "</div>"
+          );
+        }
+        var pathOk =
+          contactPath &&
+          !/^https?:\/\/[^/]+\/?$/i.test(String(contactPath).trim()) &&
+          !/\/(en\/)?home\/?$/i.test(String(contactPath));
+        if (pathOk) {
+          contactBits.push(
+            '<div class="brand-card__contact-line">' + esc(contactPath) + "</div>"
+          );
+        }
+      }
+      if (!contactBits.length) {
+        contactBits.push(
+          '<div class="brand-card__contact-line brand-card__contact-line--empty">Office operations contact not yet identified</div>'
+        );
+      } else if (!contactName && (orgEmail || companyPhone)) {
+        // Ensure status line exists when we only have fallbacks
+        var hasStatus = contactBits.some(function (b) {
+          return /not yet identified|Organization email|Company|office/i.test(b);
+        });
+        if (!hasStatus) {
+          contactBits.unshift(
+            '<div class="brand-card__contact-line brand-card__contact-line--empty">Office operations contact not yet identified</div>'
+          );
+        }
+      }
     }
     var prospectLbl =
       linked.prospectCustomerLabel ||
@@ -1697,34 +2041,6 @@
       linked.prospectCommercialLabel ||
       it.prospectCommercialLabel ||
       "";
-    // Org / role path when no named person (WHO ORG_PATH) — do not imply a person exists.
-    if (!contactName && (buyerEntity || buyerRole || contactPath)) {
-      if (buyerEntity) {
-        contactBits.push(
-          '<div class="brand-card__contact-name">' + esc(buyerEntity) + "</div>"
-        );
-      }
-      if (buyerRole) {
-        contactBits.push(
-          '<div class="brand-card__contact-line">' + esc(buyerRole) + "</div>"
-        );
-      }
-      // Hide generic homepage / root URLs from footer (not a buyer path)
-      var pathOk =
-        contactPath &&
-        !/^https?:\/\/[^/]+\/?$/i.test(String(contactPath).trim()) &&
-        !/\/(en\/)?home\/?$/i.test(String(contactPath));
-      if (pathOk) {
-        contactBits.push(
-          '<div class="brand-card__contact-line">' + esc(contactPath) + "</div>"
-        );
-      }
-    }
-    if (!contactBits.length) {
-      contactBits.push(
-        '<div class="brand-card__contact-line brand-card__contact-line--empty">No primary contact</div>'
-      );
-    }
     return (
       '<article class="brand-card brand-card--gdi-opp ' +
       tone +
@@ -1850,7 +2166,7 @@
   function contactSummaryHtml(contact, opts) {
     opts = opts || {};
     if (!contact) {
-      return '<div class="gdi-contact-summary gdi-contact-summary--empty">No primary contact resolved.</div>';
+      return '<div class="gdi-contact-summary gdi-contact-summary--empty">Office operations contact not yet identified</div>';
     }
     var lines = [];
     lines.push(
@@ -2195,17 +2511,45 @@
     }
 
     if (!c) {
+      var orgEmailFallback =
+        o.organizationContactEmail ||
+        o.functionalContactEmail ||
+        o.contactEmail ||
+        null;
+      var companyPhoneFallback =
+        o.companyPhone || o.contactPhone || null;
+      var companyPhoneLbl =
+        o.companyPhoneLabel || "Company / office phone";
+      var askFallback =
+        (o.contactChannelSeparation &&
+          o.contactChannelSeparation.askToBeDirectedTo) ||
+        "Ask for the person managing staff travel or internal meetings.";
       return (
         '<p class="gdi-contact-quality-quiet">' +
-        esc(ceilingCopy || "Named event contact not publicly identified yet") +
+        esc(
+          ceilingCopy ||
+            "Office operations contact not yet identified"
+        ) +
         "</p>" +
+        (orgEmailFallback
+          ? "<p><strong>Organization email:</strong> " +
+            esc(orgEmailFallback) +
+            "</p>"
+          : "") +
+        (companyPhoneFallback
+          ? "<p><strong>" +
+            esc(companyPhoneLbl) +
+            ":</strong> " +
+            esc(companyPhoneFallback) +
+            "</p>"
+          : "") +
         (pathLabel
           ? "<p><strong>Functional Path:</strong> " + esc(pathLabel) + "</p>"
           : "") +
         officialLink +
-        (actionHint
-          ? '<p class="gdi-contact-action">' + esc(actionHint) + "</p>"
-          : "")
+        '<p class="gdi-contact-action">' +
+        esc(actionHint || askFallback) +
+        "</p>"
       );
     }
 
@@ -2213,6 +2557,34 @@
       c.contactKind === "FUNCTIONAL" || c.functionalEntity || tier === "FUNCTIONAL_CONTACT"
         ? "Functional / organization contact"
         : tierLabel || "Who sales should contact";
+    var channelSep = o.contactChannelSeparation || null;
+    var orgRoute =
+      (channelSep && channelSep.organizationRoute) ||
+      o.functionalContactEmail ||
+      o.organizationContactEmail ||
+      (c.organizationContactRoute) ||
+      null;
+    var orgRouteIsNotPersonEmail =
+      !c.email ||
+      !orgRoute ||
+      String(c.email).toLowerCase() !== String(orgRoute).toLowerCase();
+    var suggestedLabel =
+      (c.suggestedContactLabel) ||
+      (c.name
+        ? "Suggested contact: " +
+          c.name +
+          (c.role || c.title ? " (" + (c.role || c.title) + ")" : "")
+        : null);
+    var askDirected =
+      (channelSep && channelSep.askToBeDirectedTo) ||
+      c.askToBeDirectedTo ||
+      (c.name && orgRoute
+        ? "Ask to be directed to " +
+          (c.role || c.title || "the relevant function") +
+          " (" +
+          c.name +
+          ")"
+        : null);
     var backups = (o.backupContacts || [])
       .map(function (b) {
         var kind =
@@ -2236,19 +2608,33 @@
       '<p class="gdi-contact-kind-label"><strong>' +
       esc(primaryKind) +
       "</strong></p>" +
-      (pathLabel
-        ? "<p><strong>Contact path:</strong> " + esc(pathLabel) + "</p>"
-        : "") +
-      "<p><strong>Primary Contact:</strong> " +
-      esc(c.name || "—") +
-      "</p>" +
+      (suggestedLabel
+        ? "<p><strong>" + esc(suggestedLabel) + "</strong></p>"
+        : "<p><strong>Primary Contact:</strong> " + esc(c.name || "—") + "</p>") +
       "<p><strong>Role:</strong> " +
       esc((drawer && drawer.role) || c.role || c.title || "—") +
       "</p>" +
       "<p><strong>Organization:</strong> " +
       esc(c.organization || o.organizationName || "—") +
       "</p>" +
-      (c.email ? "<p><strong>Email:</strong> " + esc(c.email) + "</p>" : "") +
+      (c.email
+        ? "<p><strong>Person email:</strong> " + esc(c.email) + "</p>"
+        : "") +
+      (orgRoute && orgRouteIsNotPersonEmail
+        ? "<p><strong>Organization contact route:</strong> " +
+          esc(orgRoute) +
+          "</p>"
+        : orgRoute && !c.email
+          ? "<p><strong>Organization contact route:</strong> " +
+            esc(orgRoute) +
+            "</p>"
+          : "") +
+      (askDirected
+        ? '<p class="gdi-contact-action">' + esc(askDirected) + "</p>"
+        : "") +
+      (pathLabel && pathLabel !== orgRoute
+        ? "<p><strong>Contact path:</strong> " + esc(pathLabel) + "</p>"
+        : "") +
       (c.phone
         ? "<p><strong>Phone:</strong> " +
           esc(c.phone) +
@@ -2378,16 +2764,28 @@
       "</p>" +
       '<div class="gdi-detail-meta-row">' +
       "<span><strong>Type</strong> " +
-      esc(o.opportunityTypeLabel || o.opportunityType || "Venue Partnership") +
+      esc(
+        o.opportunityTypeLabel ||
+          customerStatusLabel(o.opportunityType, "Venue Partnership")
+      ) +
       "</span>" +
       "<span><strong>Demand family</strong> " +
-      esc(o.demandFamilyLabel || o.demandFamily || "Private Events") +
+      esc(
+        o.demandFamilyLabel ||
+          customerStatusLabel(o.demandFamily, "Private Events")
+      ) +
       "</span>" +
       "<span><strong>Timing</strong> " +
       esc(o.eventDateDisplay || "Ongoing partnership opportunity") +
       "</span>" +
       "<span><strong>Evidence</strong> " +
-      esc(o.evidenceConfidence != null ? o.evidenceConfidence : "—") +
+      esc(
+        o.evidenceConfidence != null && o.evidenceConfidence !== ""
+          ? (Number(o.evidenceConfidence) <= 1 && Number(o.evidenceConfidence) > 0
+              ? Math.round(Number(o.evidenceConfidence) * 100)
+              : Math.round(Number(o.evidenceConfidence))) + " / 100"
+          : "—"
+      ) +
       "</span></div></section>" +
       '<section class="gdi-section"><h3>Venue</h3>' +
       "<p><strong>" +
@@ -2429,10 +2827,11 @@
       '<section class="gdi-section"><h3>Why This Matters</h3><p>' +
       esc(o.summaryWhyMatters || o.hotelOpportunityThesis || o.whyNow || "—") +
       "</p></section>" +
-      '<section class="gdi-section"><h3>Hotel Fit</h3><ul>' +
-      (fitRows || "<li>Fit details not available.</li>") +
-      "</ul>" +
-      (o.fitRationale ? "<p>" + esc(o.fitRationale) + "</p>" : "") +
+      '<section class="gdi-section gdi-section--matters"><h3>Why this hotel</h3>' +
+      hotelFitAssessmentSectionHtml(o, audit) +
+      (fitRows
+        ? '<ul class="gdi-pe-fit-legacy-meta">' + fitRows + "</ul>"
+        : "") +
       "</section>" +
       '<section class="gdi-section"><h3>Partnership Status</h3><ul>' +
       "<li><strong>Partner status:</strong> " +
@@ -2514,10 +2913,16 @@
       esc(dateLabel) +
       "</span>" +
       "<span><strong>Type</strong> " +
-      esc(o.opportunityTypeLabel || o.opportunityType || "Specific Private Event") +
+      esc(
+        o.opportunityTypeLabel ||
+          customerStatusLabel(o.opportunityType, "Specific Private Event")
+      ) +
       "</span>" +
       "<span><strong>Demand family</strong> " +
-      esc(o.demandFamilyLabel || o.demandFamily || "Private Events") +
+      esc(
+        o.demandFamilyLabel ||
+          customerStatusLabel(o.demandFamily, "Private Events")
+      ) +
       "</span></div></section>" +
       '<section class="gdi-section"><h3>Venue</h3><p><strong>' +
       esc(o.venueName || o.organizationName || "—") +
@@ -2529,7 +2934,16 @@
       " · Peak rooms: " +
       esc(fmtVal(o.peakRooms ?? o.estimatedPeakRooms)) +
       "</p><p>" +
-      esc(o.summaryWhyMatters || o.hotelOpportunityThesis || "—") +
+      esc(
+        (isAssessmentStatusProse(o.summaryWhyMatters)
+          ? ""
+          : o.summaryWhyMatters) ||
+          (isAssessmentStatusProse(o.hotelOpportunityThesis)
+            ? ""
+            : o.hotelOpportunityThesis) ||
+          o.summaryWhat ||
+          "—"
+      ) +
       "</p></section>" +
       '<section class="gdi-section"><h3>Who Sales Should Contact</h3>' +
       whoShouldSalesContactHtml(o, extras.whoContactHtml) +
@@ -2594,8 +3008,10 @@
       "<span><strong>Type</strong> " +
       esc(
         o.opportunityTypeLabel ||
-          o.opportunityType ||
-          "Corporate Account Relationship"
+          customerStatusLabel(
+            o.opportunityType,
+            "Corporate Account Relationship"
+          )
       ) +
       "</span>" +
       "<span><strong>Timing</strong> " +
@@ -2622,17 +3038,20 @@
         : "") +
       "</section>" +
       '<section class="gdi-section"><h3>Potential hotel use cases</h3><p>' +
-      esc(o.proposedHotelUse || o.potentialHotelUseCases || o.summaryWhyMatters || "—") +
-      "</p></section>" +
-      '<section class="gdi-section gdi-section--matters"><h3>Why this hotel</h3><p>' +
-      esc(
-        o.whyThisHotel ||
-          o.hotelOpportunityThesis ||
-          o.fitExplanation ||
-          o.summaryWhyHotel ||
-          "—"
-      ) +
-      "</p></section>" +
+      esc(o.proposedHotelUse || o.potentialHotelUseCases || "—") +
+      "</p>" +
+      (o.summaryWhat &&
+      o.proposedHotelUse &&
+      String(o.summaryWhat) !== String(o.proposedHotelUse)
+        ? '<p class="gdi-muted">Opportunity context: ' +
+          esc(o.summaryWhat) +
+          "</p>"
+        : "") +
+      "</section>" +
+      '<section class="gdi-section gdi-section--matters"><h3>Why this hotel</h3>' +
+      whyThisHotelOpeningHtml(o) +
+      hotelFitAssessmentSectionHtml(o, audit) +
+      "</section>" +
       '<section class="gdi-section"><h3>Why establish contact now</h3><p>' +
       esc(o.whyEstablishContactNow || o.whyNow || o.summaryWhyNow || "—") +
       "</p></section>" +
@@ -2676,7 +3095,7 @@
       "</p>" +
       "<p class=\"gdi-muted\">Priority, recommended action, and sourcing availability are tracked separately. Introductory contact may be warranted without confirmed procurement.</p></section>" +
       '<section class="gdi-section gdi-section--evidence"><h3>Evidence</h3>' +
-      (sources || "<p>—</p>") +
+      (sources ? "<ul>" + sources + "</ul>" : "<p>—</p>") +
       (o.evidenceFreshnessAt
         ? "<p><strong>Evidence freshness:</strong> " +
           esc(o.evidenceFreshnessAt) +
@@ -2689,6 +3108,459 @@
           "</section>"
         : "") +
       "</div>"
+    );
+  }
+
+  /**
+   * Opening "Why this hotel" copy — property × prospect fit only.
+   * Does not reuse opportunity description / growth signal as a hotel thesis.
+   */
+  function whyThisHotelOpeningHtml(o) {
+    o = o || {};
+    var hotelSpecific = [
+      o.whyThisHotel,
+      o.hotelOpportunityThesis,
+      o.summaryWhyHotel,
+      o.fitExplanation,
+    ]
+      .map(function (v) {
+        return String(v || "")
+          .replace(/\s+/g, " ")
+          .trim();
+      })
+      .filter(Boolean);
+    var opportunityDesc = String(o.summaryWhat || o.title || "")
+      .replace(/\s+/g, " ")
+      .trim();
+    var pick = "";
+    for (var i = 0; i < hotelSpecific.length; i++) {
+      var candidate = hotelSpecific[i];
+      if (
+        opportunityDesc &&
+        candidate.toLowerCase() === opportunityDesc.toLowerCase()
+      ) {
+        continue;
+      }
+      // Prefer paragraphs that mention hotel attributes / location / facilities
+      if (
+        /hotel|mayflower|wyndham|bayside|downtown|connecticut|broadway|meeting|guestroom|location|lobby|suite|autograph|marriott/i.test(
+          candidate
+        ) ||
+        candidate.length > 40
+      ) {
+        pick = candidate;
+        break;
+      }
+      if (!pick) pick = candidate;
+    }
+    if (!pick) {
+      return (
+        "<p class=\"gdi-muted\">Hotel-specific rationale not yet established for this prospect — see dimension assessments below. Opportunity description alone is not treated as hotel fit.</p>"
+      );
+    }
+    var sourcingNote = "";
+    if (o.venueSourcingStatusLabel || o.venueSourcingStatus || o.sourcingStatus) {
+      sourcingNote =
+        '<p class="gdi-muted"><strong>Sourcing status:</strong> ' +
+        esc(
+          customerStatusLabel(
+            o.venueSourcingStatusLabel || o.venueSourcingStatus || o.sourcingStatus,
+            "Hotel sourcing unconfirmed"
+          )
+        ) +
+        " — distinct from why this property could serve the use case.</p>";
+    }
+    return "<p>" + esc(pick) + "</p>" + sourcingNote;
+  }
+
+  /**
+   * Shared hotel-fit assessment renderer (all opportunity types).
+   * Expandable dimension tiles: score/status, rationale, facts, sources, date.
+   * Keyboard + touch: <details>/<summary>. No fixed heights that clip labels.
+   */
+  function hotelFitAssessmentSectionHtml(o, audit) {
+    audit = audit || {};
+    o = o || {};
+    var comps = (audit.hotelFit && audit.hotelFit.components) || {};
+    var labels = o.hotelFitComponentLabels || {};
+    var basis = o.hotelFitCalculationBasis || {};
+    var overallStatus = String(o.hotelFitOverallStatus || "").toLowerCase();
+    var withheld =
+      basis.numericScoreEmitted === false ||
+      overallStatus === "insufficient_evidence" ||
+      /overall numeric withheld/i.test(String(basis.reason || "")) ||
+      /overall numeric withheld|withheld — insufficient/i.test(
+        String(o.hotelFitRationale || o.hotelFitScoreNote || "")
+      );
+    var rawScore = o.hotelFitScore;
+    var numericScore =
+      !withheld &&
+      rawScore != null &&
+      rawScore !== "" &&
+      !Number.isNaN(Number(rawScore))
+        ? Number(rawScore)
+        : null;
+    var hasScore = numericScore != null;
+    var provisional =
+      hasScore &&
+      (o.hotelFitProvisional === true ||
+        overallStatus === "provisional" ||
+        basis.provisional === true ||
+        (o.hotelFitScoreBasis &&
+          String(o.hotelFitScoreBasis).indexOf("provisional") >= 0));
+    var dimAssess =
+      o.hotelFitDimensionAssessments ||
+      (audit.hotelFit && audit.hotelFit.dimensionAssessments) ||
+      null;
+    var qualComps = o.hotelFitQualitativeComponents || {};
+    var dimKeys = [
+      "physicalFit",
+      "geographyFit",
+      "timing",
+      "commercialValue",
+      "historicalFit",
+      "competitiveAccessibility",
+      "contactability",
+    ];
+    var fitText =
+      o.fitExplanation ||
+      o.fitRationale ||
+      o.hotelFitRationale ||
+      (audit.hotelFit && audit.hotelFit.explanation) ||
+      "";
+
+    function dimStateLabel(status, scoreVal) {
+      if (status === "not_applicable") return "Not applicable";
+      if (status === "insufficient_evidence") return "Needs verification";
+      if (scoreVal != null && !Number.isNaN(Number(scoreVal))) {
+        return "Assessed · " + scoreVal;
+      }
+      if (status === "assessed") return "Assessed";
+      return "Not established";
+    }
+
+    function dimDetailBody(d, status, scoreVal) {
+      var parts = [];
+      parts.push(
+        "<p><strong>Status:</strong> " +
+          esc(dimStateLabel(status, scoreVal)) +
+          "</p>"
+      );
+      if (d && d.level) {
+        parts.push("<p><strong>Reading:</strong> " + esc(d.level) + "</p>");
+      }
+      if (d && d.rationale) {
+        parts.push(
+          "<p><strong>Dimension rationale:</strong> " + esc(d.rationale) + "</p>"
+        );
+      } else if (status === "not_applicable") {
+        parts.push(
+          "<p>This dimension does not apply to the proposed hotel use for this prospect.</p>"
+        );
+      } else if (status === "insufficient_evidence") {
+        parts.push(
+          "<p>Applicable to this use case, but supporting evidence is not yet sufficient to score.</p>"
+        );
+      } else if (!d || scoreVal == null) {
+        parts.push(
+          "<p>No saved assessment state for this dimension yet — not treated as zero.</p>"
+        );
+      }
+      var facts = d && Array.isArray(d.inputFacts) ? d.inputFacts : [];
+      if (facts.length) {
+        parts.push(
+          "<p><strong>Supporting facts:</strong></p><ul>" +
+            facts
+              .map(function (f) {
+                return "<li>" + esc(f) + "</li>";
+              })
+              .join("") +
+            "</ul>"
+        );
+      }
+      var inferences = d && Array.isArray(d.inferences) ? d.inferences : [];
+      if (inferences.length) {
+        parts.push(
+          "<p><strong>Inferences:</strong></p><ul>" +
+            inferences
+              .map(function (f) {
+                return "<li>" + esc(f) + "</li>";
+              })
+              .join("") +
+            "</ul>"
+        );
+      }
+      var refs = d && Array.isArray(d.evidenceRefs) ? d.evidenceRefs : [];
+      if (refs.length) {
+        parts.push(
+          "<p><strong>Sources:</strong></p><ul>" +
+            refs
+              .map(function (r) {
+                var url = typeof r === "string" ? r : r && (r.url || r.sourceUrl);
+                var label =
+                  (typeof r === "string" ? r : r && (r.label || r.title || url)) ||
+                  "";
+                if (url && isSafeHttpUrl(url)) {
+                  return (
+                    '<li><a href="' +
+                    esc(url) +
+                    '" target="_blank" rel="noopener" class="gdi-break-url">' +
+                    esc(label || url) +
+                    "</a></li>"
+                  );
+                }
+                return "<li>" + esc(label) + "</li>";
+              })
+              .join("") +
+            "</ul>"
+        );
+      }
+      if (d && d.assessmentDate) {
+        parts.push(
+          "<p><strong>Assessed:</strong> " +
+            esc(String(d.assessmentDate).slice(0, 10)) +
+            "</p>"
+        );
+      }
+      if (d && d.ruleVersion) {
+        parts.push(
+          "<p><strong>Rule version:</strong> " + esc(d.ruleVersion) + "</p>"
+        );
+      }
+      if (d && d.limitations) {
+        parts.push("<p><strong>Limits:</strong> " + esc(d.limitations) + "</p>");
+      }
+      return parts.join("");
+    }
+
+    function dimTileHtml(k) {
+      var compLabel = labels[k] || fitLabel(k);
+      var d = (dimAssess && dimAssess[k]) || (qualComps && qualComps[k]) || null;
+      var status = d && d.status ? d.status : null;
+      var scoreVal =
+        status === "not_applicable" || status === "insufficient_evidence"
+          ? null
+          : comps[k] != null &&
+              comps[k] !== "" &&
+              !Number.isNaN(Number(comps[k]))
+            ? Number(comps[k])
+            : d && d.score != null
+              ? Number(d.score)
+              : null;
+      var displayN;
+      var statusClass = "";
+      var statusHint = "";
+      if (status === "not_applicable") {
+        displayN = "Not applicable";
+        statusClass = " is-na";
+        statusHint = "Excluded from overall weights";
+      } else if (status === "insufficient_evidence") {
+        displayN = "Needs verification";
+        statusClass = " is-gap";
+        statusHint = "Applicable — evidence incomplete";
+      } else if (scoreVal != null) {
+        displayN = String(scoreVal);
+      } else {
+        displayN = "Not established";
+        statusClass = " is-gap";
+        statusHint = "No saved score for this dimension";
+      }
+      var detail = dimDetailBody(d, status, scoreVal);
+      return (
+        '<details class="gdi-score-cell gdi-score-cell--expandable' +
+        statusClass +
+        '">' +
+        '<summary class="gdi-score-summary">' +
+        '<div class="n">' +
+        esc(displayN) +
+        "</div>" +
+        '<div class="l">' +
+        esc(compLabel) +
+        "</div>" +
+        (statusHint
+          ? '<div class="gdi-fit-status">' + esc(statusHint) + "</div>"
+          : "") +
+        '<span class="gdi-score-expand-hint">Details</span>' +
+        "</summary>" +
+        '<div class="gdi-score-detail">' +
+        detail +
+        "</div></details>"
+      );
+    }
+
+    var showAllDims = Boolean(dimAssess) || Boolean(qualComps) || hasScore || withheld;
+    var dimTiles = showAllDims
+      ? dimKeys.map(dimTileHtml).join("")
+      : dimKeys.map(dimTileHtml).filter(Boolean).join("");
+    var hasDimTiles = Boolean(dimTiles);
+    if (!hasScore && !hasDimTiles && !withheld) {
+      return (
+        '<div class="gdi-fit-qualitative">' +
+        (fitText
+          ? "<p>" + esc(fitText) + "</p>"
+          : "<p>Hotel-fit dimensions not yet assessed for this prospect.</p>") +
+        "</div>"
+      );
+    }
+
+    var overallDisplay = hasScore
+      ? String(numericScore)
+      : withheld
+        ? "Withheld"
+        : "Not established";
+    var overallDetail = "";
+    overallDetail +=
+      "<p><strong>Overall:</strong> " +
+      esc(
+        hasScore
+          ? provisional
+            ? String(numericScore) + " (provisional)"
+            : String(numericScore)
+          : withheld
+            ? "Withheld — insufficient assessed applicable dimensions (not shown as a numeric score)"
+            : "Not established"
+      ) +
+      "</p>";
+    if (provisional && hasScore) {
+      overallDetail +=
+        "<p>Provisional: one or more applicable dimensions still lack evidence. Gaps were not scored as zero.</p>";
+    }
+    if (basis.assessedKeys && basis.assessedKeys.length) {
+      overallDetail +=
+        "<p><strong>Dimensions that contributed:</strong> " +
+        esc(
+          basis.assessedKeys
+            .map(function (k) {
+              return labels[k] || fitLabel(k);
+            })
+            .join(", ")
+        ) +
+        "</p>";
+    }
+    if (basis.notApplicableKeys && basis.notApplicableKeys.length) {
+      overallDetail +=
+        "<p><strong>Not applicable (excluded from weights):</strong> " +
+        esc(
+          basis.notApplicableKeys
+            .map(function (k) {
+              return labels[k] || fitLabel(k);
+            })
+            .join(", ")
+        ) +
+        "</p>";
+    }
+    if (basis.insufficientKeys && basis.insufficientKeys.length) {
+      overallDetail +=
+        "<p><strong>Applicable but lacking evidence (not scored as zero):</strong> " +
+        esc(
+          basis.insufficientKeys
+            .map(function (k) {
+              return labels[k] || fitLabel(k);
+            })
+            .join(", ")
+        ) +
+        "</p>";
+    }
+    if (basis.note && !/overall numeric withheld/i.test(fitText || "")) {
+      overallDetail += "<p>" + esc(basis.note) + "</p>";
+    }
+    if (fitText) {
+      // Avoid repeating a withheld claim when the tile already shows a provisional numeric.
+      if (!(hasScore && /withheld/i.test(fitText))) {
+        overallDetail += "<p>" + esc(fitText) + "</p>";
+      }
+    }
+    if (o.hotelFitAssessmentVersion || o.hotelFitAssessedAt) {
+      overallDetail +=
+        "<p><strong>Assessment:</strong> " +
+        esc(
+          [
+            o.hotelFitAssessmentVersion || null,
+            o.hotelFitAssessedAt
+              ? String(o.hotelFitAssessedAt).slice(0, 10)
+              : null,
+          ]
+            .filter(Boolean)
+            .join(" · ")
+        ) +
+        "</p>";
+    }
+
+    var evidenceConfLabel = (function () {
+      if (o.evidenceConfidence == null || o.evidenceConfidence === "") {
+        return "Not scored";
+      }
+      var n = Number(o.evidenceConfidence);
+      if (Number.isNaN(n)) return String(o.evidenceConfidence);
+      if (n > 0 && n <= 1) n = Math.round(n * 100);
+      return String(Math.round(n)) + " / 100";
+    })();
+
+    var postureLabel = customerStatusLabel(
+      o.opportunityQualificationLabel || o.opportunityQualification,
+      "—"
+    );
+    var postureNote =
+      o.hotelFitPostureNote ||
+      "Sales posture is derived from hotel fit and territory evidence — not a separate win-probability analysis.";
+    var salesActionLabel =
+      o.recommendedAction ||
+      o.recommendedNextStep ||
+      customerStatusLabel(
+        o.bookingWindowLabel || o.bookingWindowStatus,
+        actionStatusLabel(o.bookingWindowStatus) || "—"
+      );
+    var timingLabel = customerStatusLabel(
+      o.bookingWindowLabel || o.bookingWindowStatus,
+      actionStatusLabel(o.bookingWindowStatus) || "—"
+    );
+
+    return (
+      '<div class="gdi-hotel-fit-block">' +
+      '<div class="gdi-score-grid">' +
+      '<details class="gdi-score-cell gdi-score-cell--expandable gdi-score-cell--overall' +
+      (provisional ? " is-provisional" : "") +
+      (withheld && !hasScore ? " is-gap" : "") +
+      '">' +
+      '<summary class="gdi-score-summary">' +
+      '<div class="n">' +
+      esc(overallDisplay) +
+      "</div>" +
+      '<div class="l">Overall Hotel Fit' +
+      (provisional
+        ? ' <span class="gdi-fit-status">(provisional)</span>'
+        : withheld && !hasScore
+          ? ' <span class="gdi-fit-status">(withheld)</span>'
+          : "") +
+      "</div>" +
+      '<span class="gdi-score-expand-hint">Details</span>' +
+      "</summary>" +
+      '<div class="gdi-score-detail">' +
+      overallDetail +
+      "</div></details>" +
+      dimTiles +
+      "</div>" +
+      '<div class="gdi-signal-row gdi-signal-row--fit">' +
+      "<div><span class=\"gdi-meta-label\">Sales posture</span><strong>" +
+      esc(postureLabel) +
+      '</strong><span class="gdi-muted gdi-posture-note"> · ' +
+      esc(postureNote) +
+      "</span></div>" +
+      "<div><span class=\"gdi-meta-label\">Evidence confidence</span><strong>" +
+      esc(evidenceConfLabel) +
+      "</strong>" +
+      (o.evidenceConfidenceExplanation
+        ? '<details class="gdi-inline-details"><summary>What this means</summary><p>' +
+          esc(o.evidenceConfidenceExplanation) +
+          "</p><p class=\"gdi-muted\">Evidence confidence is not hotel fit, commercial availability, or win probability.</p></details>"
+        : '<p class="gdi-muted gdi-posture-note">Scale 0–100 · distinct from hotel fit</p>') +
+      "</div>" +
+      "<div><span class=\"gdi-meta-label\">Sales action</span><strong>" +
+      esc(salesActionLabel) +
+      "</strong></div>" +
+      "<div><span class=\"gdi-meta-label\">Recommended timing</span><strong>" +
+      esc(timingLabel) +
+      "</strong></div></div></div>"
     );
   }
 
@@ -2719,8 +3591,6 @@
     }
 
     audit = audit || {};
-    var comps = (audit.hotelFit && audit.hotelFit.components) || {};
-    var labels = o.hotelFitComponentLabels || {};
     var sources = sourceListHtml(o.sources);
 
     var thesis =
@@ -2782,68 +3652,7 @@
       o.hotelFitScore != null &&
       o.hotelFitScore !== "" &&
       !Number.isNaN(Number(o.hotelFitScore));
-    var qualComps = o.hotelFitQualitativeComponents || {};
-    var fitAssessmentParas = distinctProse(
-      fitText ||
-        o.hotelFitRationale ||
-        o.hotelFitScoreNote ||
-        (!hasScore && !Object.keys(qualComps).length
-          ? "Hotel-fit dimensions not yet assessed for this prospect."
-          : "")
-    );
-    var qualDimHtml = Object.keys(qualComps)
-      .map(function (k) {
-        var d = qualComps[k] || {};
-        var compLabel = labels[k] || fitLabel(k);
-        return (
-          "<li><strong>" +
-          esc(compLabel) +
-          ":</strong> " +
-          esc(d.level || "Not assessed") +
-          (d.rationale ? " — " + esc(stripEvidenceClaimPrefixes(d.rationale)) : "") +
-          "</li>"
-        );
-      })
-      .join("");
-    var scoreGrid = hasScore
-      ? '<div class="gdi-score-grid">' +
-        '<div class="gdi-score-cell"><div class="n">' +
-        esc(o.hotelFitScore) +
-        '</div><div class="l">Overall Hotel Fit</div></div>' +
-        Object.keys(comps)
-          .map(function (k) {
-            var compLabel = labels[k] || fitLabel(k);
-            if (/^hotel\s*fit$/i.test(String(compLabel))) {
-              compLabel = fitLabel(k) !== "Hotel Fit" ? fitLabel(k) : k;
-            }
-            return (
-              '<div class="gdi-score-cell"><div class="n">' +
-              esc(comps[k]) +
-              '</div><div class="l">' +
-              esc(compLabel) +
-              "</div></div>"
-            );
-          })
-          .join("") +
-        "</div>" +
-        (o.hotelFitScoreBasis
-          ? '<p class="gdi-fit-score-meta">Scoring: ' + esc(o.hotelFitScoreBasis) + "</p>"
-          : "")
-      : '<div class="gdi-fit-qualitative">' +
-        fitAssessmentParas
-          .map(function (p) {
-            return "<p>" + esc(p) + "</p>";
-          })
-          .join("") +
-        (qualDimHtml ? "<ul class=\"gdi-fit-dimensions\">" + qualDimHtml + "</ul>" : "") +
-        "</div>";
-
-    var evidenceConfLabel =
-      o.evidenceConfidence == null || o.evidenceConfidence === ""
-        ? "Not scored"
-        : o.evidenceConfidence;
-    var qualLabel =
-      o.opportunityQualificationLabel || o.opportunityQualification || "—";
+    var scoreGrid = hotelFitAssessmentSectionHtml(o, audit);
 
     var occasionParas = distinctProse(occasionText || o.title);
     // Who travels vs why hotel business — keep distinct; never dump fit thesis here
@@ -2865,12 +3674,29 @@
         .trim()
         .slice(0, 96);
     }
-    // Why this hotel — fit / hotel thesis only (not demand cohort)
+    // Why this hotel — property × prospect only (not demand cohort / opportunity blurb)
     var hotelParas = distinctProse(
-      whyMattersText,
-      thesis && demandParas.indexOf(thesis) < 0 ? thesis : "",
-      fitText && !hasScore ? "" : "" // fit body lives in scoreGrid once
+      o.whyThisHotel,
+      thesis &&
+        demandParas.indexOf(thesis) < 0 &&
+        String(thesis).toLowerCase() !==
+          String(o.summaryWhat || "").toLowerCase()
+        ? thesis
+        : "",
+      whyMattersText &&
+        String(whyMattersText).toLowerCase() !==
+          String(o.summaryWhat || "").toLowerCase() &&
+        /hotel|location|meeting|guestroom|downtown|facility|suit/i.test(
+          String(whyMattersText)
+        )
+        ? whyMattersText
+        : ""
     );
+    if (!hotelParas.length) {
+      hotelParas = [
+        "Hotel-specific rationale not yet established for this prospect — see dimension assessments below.",
+      ];
+    }
     // Limitations — competing arrangements / host pattern only
     var limitParas = distinctProse(
       o.competitiveContextNote,
@@ -2947,27 +3773,7 @@
         })
         .join("") +
       scoreGrid +
-      '<div class="gdi-signal-row">' +
-      "<div><span class=\"gdi-meta-label\">Hotel fit</span><strong>" +
-      esc(
-        hasScore
-          ? o.hotelFitScore
-          : o.hotelFitPosture === "EXPLORATORY_STRETCH"
-            ? "Exploratory / stretch"
-            : Object.keys(qualComps).length
-              ? "Dimension assessment"
-              : "Not scored"
-      ) +
-      "</strong></div>" +
-      "<div><span class=\"gdi-meta-label\">Sales posture</span><strong>" +
-      esc(qualLabel) +
-      "</strong></div>" +
-      "<div><span class=\"gdi-meta-label\">Evidence confidence</span><strong>" +
-      esc(evidenceConfLabel) +
-      "</strong></div>" +
-      "<div><span class=\"gdi-meta-label\">Sales action</span><strong>" +
-      esc(actionStatusLabel(o.bookingWindowStatus) || "—") +
-      "</strong></div></div></section>" +
+      "</section>" +
       (limitParas.length
         ? '<section class="gdi-section gdi-section--limits"><h3>Limitations / competing arrangements</h3>' +
           limitParas
@@ -3399,6 +4205,13 @@
     statusBadgesHtml: statusBadgesHtml,
     hotelShellHtml: hotelShellHtml,
     propertyBarHtml: propertyBarHtml,
+    weeklyThisWeekFilterHtml: weeklyThisWeekFilterHtml,
+    opportunityTypeFilterHtml: opportunityTypeFilterHtml,
+    classifyOpportunityTypeFilter: classifyOpportunityTypeFilter,
+    countByOpportunityTypeFilter: countByOpportunityTypeFilter,
+    opportunityTypeFilterOptionsFromCounts: opportunityTypeFilterOptionsFromCounts,
+    opportunityTypeCountsForFilters: opportunityTypeCountsForFilters,
+    isAssessmentStatusProse: isAssessmentStatusProse,
     primaryKpiHtml: primaryKpiHtml,
     secondarySummaryHtml: secondarySummaryHtml,
     buildMetricModel: buildMetricModel,
@@ -3435,6 +4248,8 @@
     intelligenceDetailHtml: intelligenceDetailHtml,
     venuePartnershipDetailHtml: venuePartnershipDetailHtml,
     specificPrivateEventDetailHtml: specificPrivateEventDetailHtml,
+    hotelFitAssessmentSectionHtml: hotelFitAssessmentSectionHtml,
+    whyThisHotelOpeningHtml: whyThisHotelOpeningHtml,
     sourceListHtml: sourceListHtml,
     whoShouldSalesContactHtml: whoShouldSalesContactHtml,
     fitLabel: fitLabel,

@@ -66,6 +66,29 @@ import {
   buildScalingCompanyResearchQueries,
   isScalingCompanyOpportunity,
 } from "../lib/group-demand-intelligence/workflow/scaling-companies-research-v1.js";
+import { runWeeklyRefreshCycle } from "../lib/group-demand-intelligence/workflow/weekly-refresh-orchestrator-v1.js";
+import { RUN_TRIGGER } from "../lib/group-demand-intelligence/workflow/weekly-refresh-contract-v1.js";
+import {
+  buildPaidMultisegmentAllocation,
+  runPaidMultisegmentResearchPass,
+  writePaidMultisegmentArtifacts,
+  AUTHORIZED_NEW_SPEND_USD,
+} from "../lib/group-demand-intelligence/workflow/paid-multisegment-research-v1.js";
+import {
+  buildBuyerContactEnrichmentQueue,
+  runBuyerContactEnrichmentPass,
+  writeBuyerEnrichmentArtifacts,
+} from "../lib/group-demand-intelligence/workflow/buyer-contact-enrichment-v1.js";
+import { summarizeSurfeUsage } from "../lib/group-demand-intelligence/workflow/surfe-usage-ledger-v1.js";
+import {
+  buildHotelSegmentResearchBriefs,
+  selectContinuationPriorityBriefs,
+} from "../lib/group-demand-intelligence/workflow/hotel-segment-research-brief-v1.js";
+import {
+  packagesFromDispositions,
+  persistCorporatePackageDocument,
+  persistBuyerContactPatchedOpportunity,
+} from "../lib/group-demand-intelligence/workflow/corporate-package-persist-v1.js";
 import { buildOccasionDraftsFromPrograms } from "../lib/group-demand-intelligence/workflow/programs-occasion-draft-v1.js";
 import { proposeHotelVenueFits } from "../lib/group-demand-intelligence/workflow/proposed-hotel-venue-fit-v1.js";
 import { buildTargetedContactPlan } from "../lib/group-demand-intelligence/workflow/targeted-contact-plan-v1.js";
@@ -113,15 +136,19 @@ function has(flag) {
 const STAGES = [
   "validate_config",
   "reuse_evidence",
+  "weekly_refresh",
   "discover_gaps",
+  "paid_multisegment",
   "assess_fit",
   "identify_people",
   "enrich_contacts",
+  "buyer_contact_enrichment",
   "synthesize_hotel_relevance",
   "evaluate_eligibility",
   "generate_cards",
   "prepare_manifest",
   "preview_verify",
+  "apply_corporate_packages",
   "apply_pe_canonical",
   "apply_publish",
 ];
@@ -143,10 +170,20 @@ const authorizePublish = has("--authorize-publish");
 const authorizePePersist =
   has("--authorize-pe-persist") || authorizePublish;
 const dryRun = !authorizePublish || has("--dry-run");
-const PE_PACKAGE_PATH = path.join(
-  ROOT,
-  "reports/gdi-operational-baseline/pe-canonical-persist/venue-partnership-packages.json"
-);
+/** Prefer nested paid-MS PE packages (adapter reshapes); fallback to operational baseline. */
+const PE_PACKAGE_PATH_CANDIDATES = [
+  path.join(
+    ROOT,
+    "reports/gdi-paid-multisegment-validation/pe-venue-packages.json"
+  ),
+  path.join(
+    ROOT,
+    "reports/gdi-operational-baseline/pe-canonical-persist/venue-partnership-packages.json"
+  ),
+];
+const PE_PACKAGE_PATH =
+  PE_PACKAGE_PATH_CANDIDATES.find((p) => fs.existsSync(p)) ||
+  PE_PACKAGE_PATH_CANDIDATES[0];
 const runDiscovery = has("--run-discovery");
 const authorizePaidDiscovery = has("--authorize-paid-discovery");
 const authorizeSurfe = has("--authorize-surfe");
@@ -592,6 +629,101 @@ for (const stage of stagesToRun) {
       continue;
     }
 
+    if (stage === "weekly_refresh") {
+      const wrDir = path.join(runDir, "weekly_refresh");
+      fs.mkdirSync(wrDir, { recursive: true });
+      let opps = [];
+      try {
+        const bag = await loadOpportunitiesCanonical(hotelId, {
+          preferAirtable: !skipAirtableReuse,
+        });
+        opps = bag?.opportunities || bag || [];
+        if (!Array.isArray(opps)) opps = [];
+      } catch (err) {
+        opps = [];
+        console.warn(
+          "[gdi-workflow] weekly_refresh opportunity load:",
+          err?.message || err
+        );
+      }
+      process.env.GDI_WEEKLY_REFRESH_PERSIST_STATE_ON_DRY_RUN = "1";
+      const wr = await runWeeklyRefreshCycle({
+        hotelId,
+        opportunities: opps,
+        trigger: RUN_TRIGGER.MANUAL,
+        now: new Date(),
+        dryRun: true,
+      });
+      fs.writeFileSync(
+        path.join(wrDir, "weekly-refresh-cycle.json"),
+        JSON.stringify(wr, null, 2) + "\n"
+      );
+      if (wr.summary) {
+        fs.writeFileSync(
+          path.join(wrDir, "weekly-hotel-summary.json"),
+          JSON.stringify(wr.summary, null, 2) + "\n"
+        );
+      }
+      if (wr.scorecard) {
+        fs.writeFileSync(
+          path.join(wrDir, "research-scorecard.json"),
+          JSON.stringify(wr.scorecard, null, 2) + "\n"
+        );
+      }
+      const briefPack = buildHotelSegmentResearchBriefs({
+        hotelId,
+        opportunities: opps,
+      });
+      const priority = selectContinuationPriorityBriefs(briefPack, {
+        avoidPeExpansion: true,
+      });
+      fs.writeFileSync(
+        path.join(wrDir, "hotel-segment-research-briefs.json"),
+        JSON.stringify(
+          {
+            ...briefPack,
+            prioritySelection: priority.selectedBriefs,
+          },
+          null,
+          2
+        ) + "\n"
+      );
+      if (wr.downstreamWorkflow) {
+        fs.writeFileSync(
+          path.join(wrDir, "weekly-downstream-workflow.json"),
+          JSON.stringify(wr.downstreamWorkflow, null, 2) + "\n"
+        );
+      }
+      ledger.weeklyRefresh = {
+        path: path.join(wrDir, "weekly-refresh-cycle.json"),
+        runId: wr.runId || null,
+        status: wr.status,
+        runMode: wr.runMode || null,
+        summary: wr.summary || null,
+        scorecardTaskCount: wr.scorecard?.tasks?.length ?? null,
+        priorityBriefCount: priority.selectedBriefs?.length ?? null,
+        downstreamChainSteps:
+          wr.downstreamWorkflow?.chain?.map((c) => c.step) || null,
+        downstreamComplete:
+          wr.downstreamWorkflow?.completePublicationReadyPackage ?? null,
+        autoPublish: false,
+        note: "Weekly refresh stage — coverage backlog + refresh queue + scorecard/briefs + same downstream adapters (PE/corporate/fit/contact); auto-publish OFF; no paid spend",
+      };
+      mark(ledger, stage, wr.ok ? "completed" : "failed", {
+        module: "weekly_refresh_orchestrator_v1",
+        status: wr.status,
+        runMode: wr.runMode,
+        coverageGaps: wr.summary?.segmentCoverageGaps || [],
+        unchangedChecked: wr.summary?.unchangedRecordsChecked ?? null,
+        scorecardTaskCount: wr.scorecard?.tasks?.length ?? null,
+        downstreamInvoked: Boolean(wr.downstreamWorkflow),
+        downstreamChainSteps:
+          wr.downstreamWorkflow?.chain?.map((c) => c.step) || null,
+        autoPublishEnabled: false,
+      });
+      continue;
+    }
+
     if (stage === "discover_gaps") {
       const discDir = path.join(runDir, "parallel_discovery");
       fs.mkdirSync(discDir, { recursive: true });
@@ -722,12 +854,19 @@ for (const stage of stagesToRun) {
               `Confirm dated cycle + lodging procurement for program: ${d.title || d.organizationName}`
           ) || []),
       ];
+      const authorizedEnvelope = Number(
+        process.env.GDI_PARALLEL_AUTHORIZED_USD || budgetUsd || 2
+      );
       const discovery = await runParallelDiscoveryStage(hotelId, {
         runDiscovery: true,
         mode: discoveryMode,
         authorizePaidDiscovery,
-        maxUsd: Math.min(budgetUsd, 2),
-        maxTasks: Math.min(2, budgetSearches),
+        maxUsd: Math.min(budgetUsd, authorizedEnvelope),
+        absoluteMaxUsd: authorizedEnvelope,
+        maxTasks: Math.min(
+          authorizePaidDiscovery ? Math.max(2, Math.floor(budgetSearches / 8)) : 2,
+          budgetSearches
+        ),
         maxPages: budgetPages,
         researchGaps,
         privateEventGaps: peGaps,
@@ -778,6 +917,68 @@ for (const stage of stagesToRun) {
           action: discovery.note || "Review bounded live plan; do not treat stop as no demand",
         });
       }
+      continue;
+    }
+
+    if (stage === "paid_multisegment") {
+      const paidDir = path.join(runDir, "paid_multisegment");
+      fs.mkdirSync(paidDir, { recursive: true });
+      if (!authorizePaidDiscovery) {
+        const allocation = buildPaidMultisegmentAllocation({
+          authorizedUsd: Math.min(budgetUsd, AUTHORIZED_NEW_SPEND_USD),
+        });
+        fs.writeFileSync(
+          path.join(paidDir, "task-allocation.json"),
+          JSON.stringify(allocation, null, 2) + "\n"
+        );
+        mark(ledger, stage, "skipped", {
+          reason: "authorize_paid_discovery_required",
+          module: "paid_multisegment_research_v1",
+          allocationPath: path.join(paidDir, "task-allocation.json"),
+          note: "Pass --authorize-paid-discovery --budget-usd <N> with GDI_PARALLEL_ENABLED=1 and hotel allowlist to execute within authorized envelope",
+        });
+        continue;
+      }
+      const oppDoc = await loadOpportunitiesCanonical(hotelId);
+      const existingNames = (oppDoc?.opportunities || [])
+        .map((o) => o.organizationName || o.company || o.title)
+        .filter(Boolean);
+      const pass = await runPaidMultisegmentResearchPass({
+        hotelIds: [hotelId],
+        dryRun: false,
+        timeoutMs: Number(process.env.GDI_PARALLEL_TIMEOUT_MS || 300000),
+        existingOrganizationNamesByHotel: { [hotelId]: existingNames },
+        allocation: buildPaidMultisegmentAllocation({
+          authorizedUsd: Math.min(
+            Number(process.env.GDI_PARALLEL_AUTHORIZED_USD || budgetUsd),
+            AUTHORIZED_NEW_SPEND_USD
+          ),
+        }),
+      });
+      writePaidMultisegmentArtifacts(pass, paidDir);
+      ledger.paidMultisegment = {
+        path: path.join(paidDir, "paid-multisegment-pass.json"),
+        spend: pass.spend,
+        taskCount: (pass.taskResults || []).length,
+        dispositionCount: (pass.dispositions || []).length,
+        scorecardPath: path.join(paidDir, "scorecard", "research-scorecard.json"),
+        briefsPath: path.join(paidDir, "hotel-segment-research-briefs.json"),
+      };
+      ledger.budget.usedUsd = Number(
+        (
+          Number(ledger.budget.usedUsd || 0) + Number(pass.spend?.actualBilledUsd || 0)
+        ).toFixed(4)
+      );
+      mark(ledger, stage, "completed", {
+        module: "paid_multisegment_research_v1",
+        spend: pass.spend,
+        taskStatuses: (pass.taskResults || []).map((t) => ({
+          taskId: t.taskId,
+          status: t.status,
+          paidCalls: t.paidCalls || 0,
+        })),
+        note: "Paid multi-segment Parallel tasks executed within authorized envelope — candidates NOT auto-published",
+      });
       continue;
     }
 
@@ -941,16 +1142,14 @@ for (const stage of stagesToRun) {
         resolved: executed.resolved,
         unresolved: executed.unresolved,
         blocked: executed.blocked,
-        surfe: authorizeSurfe
-          ? "authorized_but_not_invoked_this_pass"
-          : "not_authorized",
+        surfe: executed.surfe || (authorizeSurfe ? "authorized" : "not_authorized"),
         order: plan.targets[0]?.resolutionOrder || [
           "reuse_verified_existing",
           "official_sources",
           "native_who",
           "surfe_if_authorized",
         ],
-        note: "Executed contact resolution into isolated candidate storage — no production writes; Surfe not called",
+        note: "Executed contact resolution into isolated candidate storage — no production writes from this stage; Surfe invoked only when authorized + flag + named person",
       });
       if (executed.unresolved > 0 || executed.blocked > 0) {
         ledger.remainingManualSteps.push({
@@ -958,6 +1157,150 @@ for (const stage of stagesToRun) {
           action: `Human follow-up on ${executed.unresolved} unresolved + ${executed.blocked} blocked contact targets (candidates under ${candidateDir})`,
         });
       }
+      continue;
+    }
+
+    if (stage === "buyer_contact_enrichment") {
+      const buyerDir = path.join(runDir, "buyer_contact_enrichment");
+      fs.mkdirSync(buyerDir, { recursive: true });
+      const doc = await loadOpportunitiesCanonical(hotelId);
+      const ops = Array.isArray(doc?.opportunities) ? doc.opportunities : [];
+      const queue = buildBuyerContactEnrichmentQueue({
+        hotelId,
+        opportunities: ops,
+        maxItems: 12,
+      });
+      fs.writeFileSync(
+        path.join(buyerDir, "buyer-contact-enrichment-queue.json"),
+        JSON.stringify(queue, null, 2) + "\n"
+      );
+      if (!authorizeSurfe && !has("--run-buyer-enrichment")) {
+        mark(ledger, stage, "completed", {
+          module: "buyer_contact_enrichment_v1",
+          mode: "queue_only",
+          queueCount: queue.items?.length || 0,
+          note: "Named-buyer enrichment queue built. Pass --run-buyer-enrichment and optionally --authorize-surfe to execute within remaining $11 shared envelope.",
+        });
+        continue;
+      }
+      const pass = await runBuyerContactEnrichmentPass({
+        hotelId,
+        opportunities: ops,
+        queueItems: queue,
+        authorizeSurfe,
+        workflowRunId: runId,
+        outDir: path.join(buyerDir, "results"),
+      });
+      writeBuyerEnrichmentArtifacts(pass, buyerDir);
+      const usage = summarizeSurfeUsage();
+      fs.writeFileSync(
+        path.join(buyerDir, "surfe-usage-summary.json"),
+        JSON.stringify(usage, null, 2) + "\n"
+      );
+      // Optional canonical apply of material contact improvements (no handwritten patches)
+      const applyBuyer = has("--apply-buyer-enrichment") || authorizePublish;
+      const applyReports = [];
+      if (applyBuyer) {
+        for (const r of pass.results || []) {
+          if (!r.materialImprovement || !r.patchedOpportunity) continue;
+          const ar = await persistBuyerContactPatchedOpportunity(
+            r.patchedOpportunity,
+            { dryRun: !authorizePublish, hotelId }
+          );
+          applyReports.push(ar);
+        }
+        fs.writeFileSync(
+          path.join(buyerDir, "buyer-contact-apply-report.json"),
+          JSON.stringify(
+            { dryRun: !authorizePublish, rows: applyReports },
+            null,
+            2
+          ) + "\n"
+        );
+      }
+      ledger.buyerContactEnrichment = {
+        path: path.join(buyerDir, "buyer-contact-enrichment-pass.json"),
+        resultCount: (pass.results || []).length,
+        materialImprovements: (pass.results || []).filter((r) => r.materialImprovement)
+          .length,
+        surfeUsage: usage,
+        remainingSharedBudgetUsd: pass.remainingSharedBudgetUsd,
+        apply: applyBuyer
+          ? { dryRun: !authorizePublish, count: applyReports.length }
+          : { skipped: true },
+      };
+      mark(ledger, stage, "completed", {
+        module: "buyer_contact_enrichment_v1",
+        resultCount: (pass.results || []).length,
+        materialImprovements: ledger.buyerContactEnrichment.materialImprovements,
+        surfePaidRequests: usage.paidRequests,
+        remainingSharedBudgetUsd: pass.remainingSharedBudgetUsd,
+        note: "Buyer enrichment executed; org vs person channels separated; Surfe metadata internal-only; apply via --authorize-publish or --apply-buyer-enrichment",
+      });
+      continue;
+    }
+
+    if (stage === "apply_corporate_packages") {
+      const corpDir = path.join(runDir, "apply_corporate_packages");
+      fs.mkdirSync(corpDir, { recursive: true });
+      // Prefer dispositions from this run's paid_multisegment, else report artifacts
+      const dispPathCandidates = [
+        path.join(runDir, "paid_multisegment", "candidate-dispositions.json"),
+        path.join(
+          ROOT,
+          "reports/gdi-paid-multisegment-validation/candidate-dispositions.json"
+        ),
+      ];
+      let dispositions = [];
+      for (const p of dispPathCandidates) {
+        if (fs.existsSync(p)) {
+          const doc = JSON.parse(fs.readFileSync(p, "utf8"));
+          dispositions = doc.rows || doc.dispositions || doc || [];
+          break;
+        }
+      }
+      const hotelDispositions = (dispositions || []).filter(
+        (d) => !d.hotelId || d.hotelId === hotelId
+      );
+      const packages = packagesFromDispositions(hotelDispositions);
+      fs.writeFileSync(
+        path.join(corpDir, "auto-packages-from-dispositions.json"),
+        JSON.stringify(packages, null, 2) + "\n"
+      );
+      if (!authorizePublish) {
+        const preview = await persistCorporatePackageDocument(packages, {
+          dryRun: true,
+          hotelIds: [hotelId],
+        });
+        fs.writeFileSync(
+          path.join(corpDir, "corporate-persist-dry-run.json"),
+          JSON.stringify(preview, null, 2) + "\n"
+        );
+        mark(ledger, stage, "completed", {
+          module: "corporate_package_persist_v1",
+          mode: "dry_run",
+          packageCount:
+            (packages.scalingCompanies?.length || 0) +
+            (packages.localMeetingsCatering?.length || 0),
+          note: "Auto packages from dispositions — pass --authorize-publish to persist via canonical writers (no handwritten swap)",
+        });
+        continue;
+      }
+      const applied = await persistCorporatePackageDocument(packages, {
+        dryRun: false,
+        hotelIds: [hotelId],
+      });
+      fs.writeFileSync(
+        path.join(corpDir, "corporate-persist-apply.json"),
+        JSON.stringify(applied, null, 2) + "\n"
+      );
+      mark(ledger, stage, "completed", {
+        module: "corporate_package_persist_v1",
+        mode: "applied",
+        published: applied.published,
+        failed: applied.failed,
+        note: "Canonical DG + opportunity persist from auto disposition packages",
+      });
       continue;
     }
 
