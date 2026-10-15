@@ -181,11 +181,20 @@ if (dryRun) {
 }
 
 console.log("\n--- railway up --detach ---");
+// Railway CLI 4.x dropped `--message`; keep the string on the deploy record only.
 const msg = `deploy:production ${branch} ${sha.slice(0, 7)}`;
+// Windows npm shims are railway.cmd / railway.ps1 ? bare `railway` ENOENTs under spawnSync.
+const railwayBin = process.platform === "win32" ? "railway.cmd" : "railway";
 const up = spawnSync(
-  "railway",
-  ["up", "--detach", "--message", msg],
-  { cwd: root, stdio: "inherit", env: { ...process.env, CI: "true" } }
+  railwayBin,
+  ["up", "--detach"],
+  // Do not force CI=true ? Railway CLI 4.x/5.x treats it as non-upload CI mode.
+  {
+    cwd: root,
+    stdio: "inherit",
+    env: process.env,
+    shell: process.platform === "win32",
+  }
 );
 if (up.status !== 0) {
   record.status = "RAILWAY_UP_FAILED";
