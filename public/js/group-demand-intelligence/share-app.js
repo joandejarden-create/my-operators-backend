@@ -26,8 +26,30 @@
     sortKey: "priority",
     sortDir: 1,
     viewMode: "tiles",
-    filters: { priority: "", segment: "", booking: "", territory: "", weekly: "" },
+    filters: {
+      priority: "",
+      segment: "",
+      booking: "",
+      territory: "",
+      weekly: "",
+      opportunityType: "",
+    },
+    drawerReturnFocusEl: null,
   };
+
+  function closeDrawerAndRestoreFocus() {
+    if (typeof drawer.close === "function") drawer.close();
+    else drawer.removeAttribute("open");
+    var el = state.drawerReturnFocusEl;
+    state.drawerReturnFocusEl = null;
+    if (el && typeof el.focus === "function") {
+      try {
+        el.focus();
+      } catch (e) {
+        /* ignore */
+      }
+    }
+  }
 
   function readPersistedBrowse() {
     try {
@@ -50,7 +72,14 @@
   }
 
   function resetBrowseView() {
-    state.filters = { priority: "", segment: "", booking: "", territory: "" };
+    state.filters = {
+      priority: "",
+      segment: "",
+      booking: "",
+      territory: "",
+      weekly: "",
+      opportunityType: "",
+    };
     state.sortKey = "priority";
     state.sortDir = 1;
     state.viewMode = "tiles";
@@ -81,15 +110,26 @@
     root.innerHTML = '<div class="gdi-error" role="alert"><p>' + esc(customerMsg) + "</p></div>";
   }
 
-  function formatDate(iso) {
-    if (!iso) return "—";
+  function formatHistoryDate(iso) {
+    if (!iso) return "History unavailable";
     var d = new Date(iso);
     if (isNaN(d.getTime())) return String(iso);
-    return d.toLocaleDateString(undefined, {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
+    try {
+      return d.toLocaleString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZoneName: "short",
+      });
+    } catch (e) {
+      return d.toISOString();
+    }
+  }
+
+  function formatDate(iso) {
+    return formatHistoryDate(iso);
   }
 
   function api(path) {
@@ -173,12 +213,10 @@
           state.resolve.surfaces.indexOf("opportunity_detail") >= 0));
     var canRecordAction =
       state.resolve &&
-      (state.resolve.canRecordAction === true ||
-        caps.indexOf("CAN_RECORD_ACTION") >= 0);
+      (state.resolve.canRecordAction === true || caps.indexOf("CAN_RECORD_ACTION") >= 0);
     var canRecordOutcome =
       state.resolve &&
-      (state.resolve.canRecordOutcome === true ||
-        caps.indexOf("CAN_RECORD_OUTCOME") >= 0);
+      (state.resolve.canRecordOutcome === true || caps.indexOf("CAN_RECORD_OUTCOME") >= 0);
     if (UI.customerFeedbackLifecycleHtml) {
       return UI.customerFeedbackLifecycleHtml(
         o,
@@ -246,8 +284,7 @@
             if (data.commercialProgression) {
               for (var i = 0; i < state.opportunities.length; i++) {
                 if (state.opportunities[i].id === opportunityId) {
-                  state.opportunities[i].commercialProgression =
-                    data.commercialProgression;
+                  state.opportunities[i].commercialProgression = data.commercialProgression;
                   break;
                 }
               }
@@ -263,14 +300,12 @@
     var outcomeBtn = document.getElementById("gdiDoOutcomeSave");
     if (outcomeBtn) {
       outcomeBtn.addEventListener("click", function () {
-        var outcomeType =
-          (document.getElementById("gdiDoOutcome") || {}).value || "";
+        var outcomeType = (document.getElementById("gdiDoOutcome") || {}).value || "";
         if (!outcomeType) {
           showStatus("gdiDoOutcomeSaveStatus", "Select outcome...");
           return;
         }
-        var lossReason =
-          (document.getElementById("gdiDoLoss") || {}).value || null;
+        var lossReason = (document.getElementById("gdiDoLoss") || {}).value || null;
         showStatus("gdiDoOutcomeSaveStatus", "Saving…");
         apiPost(
           "/api/group-demand-intelligence/share/hotels/" +
@@ -288,8 +323,7 @@
             if (data.commercialProgression) {
               for (var j = 0; j < state.opportunities.length; j++) {
                 if (state.opportunities[j].id === opportunityId) {
-                  state.opportunities[j].commercialProgression =
-                    data.commercialProgression;
+                  state.opportunities[j].commercialProgression = data.commercialProgression;
                   break;
                 }
               }
@@ -362,8 +396,14 @@
     }
     var saveBtn = document.getElementById("gdiSvSave");
     var nextBtn = document.getElementById("gdiSvSaveNext");
-    if (saveBtn) saveBtn.addEventListener("click", function () { save(false); });
-    if (nextBtn) nextBtn.addEventListener("click", function () { save(true); });
+    if (saveBtn)
+      saveBtn.addEventListener("click", function () {
+        save(false);
+      });
+    if (nextBtn)
+      nextBtn.addEventListener("click", function () {
+        save(true);
+      });
   }
 
   function priorityPill(p) {
@@ -429,9 +469,7 @@
       "</p>" +
       "<p>Phone: " +
       esc(c.phone || "—") +
-      (c.phoneTypeLabel || c.phoneType
-        ? " (" + esc(c.phoneTypeLabel || c.phoneType) + ")"
-        : "") +
+      (c.phoneTypeLabel || c.phoneType ? " (" + esc(c.phoneTypeLabel || c.phoneType) + ")" : "") +
       "</p>" +
       "<p>Contact Quality: <strong>" +
       esc(o.contactGradeLabel || c.contactGradeLabel || o.contactQualityLabel || "—") +
@@ -487,11 +525,24 @@
     var listRow = (state.opportunities || []).find(function (o) {
       return o.id === id;
     });
+    state.drawerReturnFocusEl =
+      (document.activeElement &&
+        document.activeElement.closest &&
+        document.activeElement.closest("[data-open]")) ||
+      document.activeElement ||
+      null;
     // Immediate visual acknowledgement (<100ms target)
     drawerTitle.textContent = (listRow && listRow.title) || "Opportunity";
     drawerBody.innerHTML = UI.detailLoadingHtml();
     if (typeof drawer.showModal === "function") drawer.showModal();
     else drawer.setAttribute("open", "open");
+    if (drawerClose && typeof drawerClose.focus === "function") {
+      try {
+        drawerClose.focus();
+      } catch (e) {
+        /* ignore */
+      }
+    }
 
     api(
       "/api/group-demand-intelligence/share/hotels/" +
@@ -539,27 +590,20 @@
     root.querySelectorAll("[data-gdi-priority]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         state.filters.priority = btn.getAttribute("data-gdi-priority") || "";
-        state.filters = UI.reconcileBrowseFilters(
-          state.opportunities,
-          state.filters,
-          "priority"
-        );
+        state.filters = UI.reconcileBrowseFilters(state.opportunities, state.filters, "priority");
         render();
       });
     });
     root.querySelectorAll("[data-gdi-booking]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         state.filters.booking = btn.getAttribute("data-gdi-booking") || "";
-        state.filters = UI.reconcileBrowseFilters(
-          state.opportunities,
-          state.filters,
-          "booking"
-        );
+        state.filters = UI.reconcileBrowseFilters(state.opportunities, state.filters, "booking");
         render();
       });
     });
-    root.querySelectorAll("[data-gdi-tile-priority][data-gdi-tile-booking]").forEach(
-      function (btn) {
+    root
+      .querySelectorAll("[data-gdi-tile-priority][data-gdi-tile-booking]")
+      .forEach(function (btn) {
         btn.addEventListener("click", function (e) {
           applyTilePairFilter(
             btn.getAttribute("data-gdi-tile-priority"),
@@ -567,8 +611,7 @@
             e
           );
         });
-      }
-    );
+      });
     var sortSel = document.getElementById("gdiSortSelect");
     if (sortSel) {
       sortSel.addEventListener("change", function () {
@@ -720,8 +763,19 @@
         hotel: hotel,
         activeWeekly: state.filters.weekly,
         weeklyCounts: UI.countByWeeklyDelta(state.opportunities),
-        lastResearch: formatDate(s.lastResearchAt),
-        runStatus: s.runStatus || "—",
+        activeOpportunityType: state.filters.opportunityType || "",
+        opportunityTypeOptions: UI.opportunityTypeFilterOptionsFromCounts(
+          UI.opportunityTypeCountsForFilters(state.opportunities, state.filters)
+        ),
+        lastResearch: formatHistoryDate(s.lastResearchAt),
+        runStatusLabel:
+          s.runStatusLabel ||
+          (s.runStatus === "NEVER_RUN" ? "History unavailable" : s.runStatus) ||
+          "History unavailable",
+        lastPublishedUpdate: formatHistoryDate(
+          s.lastPublishedUpdateAt || s.lastReviewedPackageImportAt
+        ),
+        publishedUpdateLabel: "Last Published Update",
         actionHtml:
           '<button type="button" class="btn-clear" id="gdiResetViewBtn">Reset View</button>',
       }) +
@@ -736,10 +790,19 @@
     if (weeklySelect) {
       weeklySelect.addEventListener("change", function () {
         state.filters.weekly = weeklySelect.value || "";
+        state.filters = UI.reconcileBrowseFilters(state.opportunities, state.filters, "weekly");
+        render();
+      });
+    }
+
+    var typeSelect = document.getElementById("gdiOpportunityTypeFilter");
+    if (typeSelect) {
+      typeSelect.addEventListener("change", function () {
+        state.filters.opportunityType = typeSelect.value || "";
         state.filters = UI.reconcileBrowseFilters(
           state.opportunities,
           state.filters,
-          "weekly"
+          "opportunityType"
         );
         render();
       });
@@ -789,16 +852,31 @@
 
   if (drawerClose) {
     drawerClose.addEventListener("click", function () {
-      if (typeof drawer.close === "function") drawer.close();
-      else drawer.removeAttribute("open");
+      closeDrawerAndRestoreFocus();
+    });
+  }
+  if (drawer) {
+    drawer.addEventListener("close", function () {
+      var el = state.drawerReturnFocusEl;
+      state.drawerReturnFocusEl = null;
+      if (el && typeof el.focus === "function") {
+        try {
+          el.focus();
+        } catch (e) {
+          /* ignore */
+        }
+      }
+    });
+    drawer.addEventListener("cancel", function () {
+      // Native <dialog> Escape — ensure focus restore via close handler
+      state.drawerReturnFocusEl = state.drawerReturnFocusEl || document.activeElement;
     });
   }
 
   if (drawerBody) {
     drawerBody.addEventListener("click", function (e) {
       var t = e.target;
-      var retryBtn =
-        t && t.closest ? t.closest("[data-gdi-detail-retry]") : null;
+      var retryBtn = t && t.closest ? t.closest("[data-gdi-detail-retry]") : null;
       if (retryBtn) {
         var retryId = retryBtn.getAttribute("data-gdi-detail-retry");
         if (retryId) openDetail(retryId);

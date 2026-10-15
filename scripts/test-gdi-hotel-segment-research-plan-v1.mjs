@@ -156,7 +156,42 @@ const pePlan = buildHotelSegmentResearchPlan({
 const peSeg = pePlan.segments.find(
   (s) => s.segmentId === RESEARCH_SEGMENT.WEDDINGS_SOCIAL_PRIVATE_EVENTS
 );
-assert.equal(peSeg.researchCoverage, RESEARCH_COVERAGE.RESEARCHED);
+// Prospect count / PE cards alone must NOT mark completed coverage
+assert.equal(peSeg.researchCoverage, RESEARCH_COVERAGE.PARTIALLY_RESEARCHED);
 assert.equal(pePlan.summary.associationOnlyTrap, false);
+
+const peCompletePlan = buildHotelSegmentResearchPlan({
+  hotelId: "recnPB3Q02NO8Ma1o",
+  hotelConfig: sdCfg,
+  opportunities: [
+    {
+      id: "pe1",
+      title: "USS Midway Museum — Preferred Lodging Partnership",
+      segment: "Private Events",
+      demandFamily: "PRIVATE_EVENTS",
+      opportunityType: "VENUE_PARTNERSHIP",
+      organizationName: "USS Midway Museum",
+      peVenueId: "pev_7aa5",
+      hotelOpportunityThesis: "Bayfront catchment referral",
+      summaryWhat: "Evening events without on-site lodging",
+      contactUrl: "https://www.midway.org/plan-an-event/evening-events",
+      sources: [{ url: "https://www.midway.org/plan-an-event/evening-events" }],
+      prospectPublicationBasis: "REVIEWED_PACKAGE_V1",
+      prospectHotelFacing: true,
+    },
+  ],
+  artifacts: {
+    peCanonicalPersisted: true,
+    peVenueCount: 1,
+    coverageStatusBySegment: {
+      [RESEARCH_SEGMENT.WEDDINGS_SOCIAL_PRIVATE_EVENTS]:
+        "completed_for_declared_scope",
+    },
+  },
+});
+const peSegComplete = peCompletePlan.segments.find(
+  (s) => s.segmentId === RESEARCH_SEGMENT.WEDDINGS_SOCIAL_PRIVATE_EVENTS
+);
+assert.equal(peSegComplete.researchCoverage, RESEARCH_COVERAGE.RESEARCHED);
 
 console.log("PASS test-gdi-hotel-segment-research-plan-v1");

@@ -83,6 +83,27 @@ import {
   isReviewedProspectHotelEnabled,
 } from "../lib/group-demand-intelligence/reviewed-prospect-publication-v1.js";
 import { enrichPrivateEventOpportunityDetail } from "../lib/group-demand-intelligence/private-events/customer-detail-enrichment.js";
+import { buildHotelActivityHistory } from "../lib/group-demand-intelligence/hotel-activity-history-v1.js";
+import { opportunityMatchesTypeFilter } from "../lib/group-demand-intelligence/opportunity-type-filter-v1.js";
+
+function enrichSummaryWithHotelActivity(hotelId, summary, opportunityDoc) {
+  const opportunities = opportunityDoc?.opportunities || [];
+  const history = buildHotelActivityHistory(hotelId, {
+    opportunities,
+    opportunityDoc,
+  });
+  return {
+    ...summary,
+    lastResearchAt: history.lastResearchAt || summary.lastResearchAt || null,
+    runStatus: history.runStatus || summary.runStatus || "NOT_YET_RUN",
+    runStatusLabel: history.runStatusLabel || null,
+    latestRunId: history.latestRunId || summary.latestRunId || null,
+    runHistoryProvenance: history.runHistoryProvenance || null,
+    lastReviewedPackageImportAt: history.lastReviewedPackageImportAt || null,
+    lastPublishedUpdateAt: history.lastPublishedUpdateAt || null,
+    activityHistoryVersion: history.version,
+  };
+}
 import {
   ingestGdiAuthFeedback,
   ingestGdiShareValidation,
@@ -291,6 +312,7 @@ function filterOpportunitiesForExport(opportunities, query = {}) {
   const booking = String(query.booking || "").trim().toUpperCase();
   const segment = String(query.segment || "").trim();
   const territory = String(query.territory || "").trim().toUpperCase();
+  const opportunityType = String(query.opportunityType || "").trim();
   if (weekly && weekly !== "ALL") {
     rows = rows.filter((o) => {
       if (weekly === "NEW") return o.isNewThisWeek === true || o.weeklyDeltaState === "NEW";
@@ -312,6 +334,9 @@ function filterOpportunitiesForExport(opportunities, query = {}) {
     rows = rows.filter(
       (o) => String(o.demandTerritoryFit || "").toUpperCase() === territory
     );
+  }
+  if (opportunityType && opportunityType.toUpperCase() !== "ALL") {
+    rows = rows.filter((o) => opportunityMatchesTypeFilter(o, opportunityType));
   }
   return rows;
 }
@@ -437,24 +462,24 @@ export async function getGdiSummary(req, res) {
   try {
     if (!flagGate(req, res)) return;
     const hotelId = String(req.params.hotelId || "").trim();
-    const summary = loadLatestSummary(hotelId);
     const profile = loadHotelProfile(hotelId);
     const doc = await loadOppDoc(hotelId);
+    const summary = loadLatestSummary(hotelId, {
+      opportunities: doc.opportunities || [],
+      opportunityDoc: doc,
+    });
     const feedback = loadFeedback(hotelId);
     const pilotMetrics = buildPilotMetrics(doc.opportunities || [], feedback);
     const campaignsVisible = listVisibleDemandCampaigns(hotelId, {
       nowDate: asOfToday(),
     });
-    // Honest split: NEVER_RUN means no tracked automated research runner.
-    // Reviewed-package imports are separate and must not be hidden or invented as runs.
+    // Research runs ≠ reviewed imports ≠ canonical publication. NEVER_RUN only
+    // when history proves no run; otherwise prefer HISTORY_UNAVAILABLE / recovered runs.
     const enrichedSummary = {
-      ...summary,
-      lastReviewedPackageImportAt:
-        doc?.reviewedProspectImport?.importedAt ||
-        summary.lastReviewedPackageImportAt ||
-        null,
-      automatedResearchRunStatus: summary.runStatus || "NEVER_RUN",
+      ...enrichSummaryWithHotelActivity(hotelId, summary, doc),
+      automatedResearchRunStatus: null, // prefer runStatusLabel for customers
     };
+    enrichedSummary.automatedResearchRunStatus = enrichedSummary.runStatus;
     return res.json({
       ok: true,
       experimentalLabel: "EXPERIMENTAL / PILOT",
@@ -1134,8 +1159,15 @@ export async function getGdiShareResolve(req, res) {
   }
   const hotelId = verified.claims.hotelId;
   const profile = loadHotelProfile(hotelId);
-  const summary = loadLatestSummary(hotelId);
   const oppDoc = await loadOppDoc(hotelId);
+  const summary = enrichSummaryWithHotelActivity(
+    hotelId,
+    loadLatestSummary(hotelId, {
+      opportunities: oppDoc.opportunities || [],
+      opportunityDoc: oppDoc,
+    }),
+    oppDoc
+  );
   const active = filterCustomerFacingOpportunities(
     filterSalespersonView(oppDoc.opportunities || []),
     { hotelId }
@@ -1162,6 +1194,11 @@ export async function getGdiShareResolve(req, res) {
     surfaces: verified.claims.surfaces,
     summary: {
       lastResearchAt: summary.lastResearchAt,
+      runStatus: summary.runStatus,
+      runStatusLabel: summary.runStatusLabel,
+      latestRunId: summary.latestRunId,
+      lastReviewedPackageImportAt: summary.lastReviewedPackageImportAt,
+      lastPublishedUpdateAt: summary.lastPublishedUpdateAt,
       qualifiedCount: summary.qualifiedCount,
       highPriorityCount: summary.highPriorityCount,
       mediumPriorityCount: summary.mediumPriorityCount,

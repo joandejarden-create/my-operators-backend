@@ -124,7 +124,9 @@ const pkg = buildScalingCompanyDemandGeneratorPackage(
   { hotelId: "recnPB3Q02NO8Ma1o", hotelConfig: hotel }
 );
 assert.equal(pkg.ok, true);
-assert.equal(pkg.demandGenerator.organizationType, "SCALING_COMPANY");
+// Airtable select lacks SCALING_COMPANY — persist LARGE_EMPLOYER; scaling on opportunity
+assert.equal(pkg.demandGenerator.organizationType, "LARGE_EMPLOYER");
+assert.equal(pkg.opportunity.researchSegment, "scaling_companies");
 assert.equal(pkg.signal.standingCorporateRelationship, true);
 
 const id1 = computeScalingCompanyOpportunityId(

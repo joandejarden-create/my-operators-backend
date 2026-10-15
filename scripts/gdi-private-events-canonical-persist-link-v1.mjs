@@ -5,7 +5,7 @@
  *   node scripts/gdi-private-events-canonical-persist-link-v1.mjs
  *   node scripts/gdi-private-events-canonical-persist-link-v1.mjs --apply
  *   node scripts/gdi-private-events-canonical-persist-link-v1.mjs --apply --hotels=san_diego,mayflower
- *   node scripts/gdi-private-events-canonical-persist-link-v1.mjs --apply --rerun
+ *   node scripts/gdi-private-events-canonical-persist-link-v1.mjs --apply --packages=path/to/packages.json
  */
 
 import "dotenv/config";
@@ -20,9 +20,8 @@ import {
 import { enrichPrivateEventOpportunityDetail } from "../lib/group-demand-intelligence/private-events/customer-detail-enrichment.js";
 import {
   findOpportunityRecordById,
-  listOpportunitiesForHotel,
+  airtableRecordToOpportunity,
 } from "../lib/group-demand-intelligence/airtable-opportunity-store.js";
-import { loadOpportunitiesCanonical } from "../lib/group-demand-intelligence/opportunity-persistence.js";
 import { invalidateGdiHotelReadCache } from "../lib/group-demand-intelligence/read-cache.js";
 import { isPeAirtableConfigured } from "../lib/group-demand-intelligence/private-events/airtable-client.js";
 import { listVenuesFromAirtable } from "../lib/group-demand-intelligence/private-events/airtable-venue-store.js";
@@ -35,7 +34,16 @@ const OUT = path.join(
   ROOT,
   "reports/gdi-operational-baseline/pe-canonical-persist"
 );
-const PACKAGE_PATH = path.join(OUT, "venue-partnership-packages.json");
+const DEFAULT_PACKAGE_PATH = path.join(OUT, "venue-partnership-packages.json");
+
+function resolvePackagePath() {
+  const arg = process.argv.find((a) => a.startsWith("--packages="));
+  if (!arg) return DEFAULT_PACKAGE_PATH;
+  const raw = arg.slice("--packages=".length).trim();
+  return path.isAbsolute(raw) ? raw : path.resolve(ROOT, raw);
+}
+
+const PACKAGE_PATH = resolvePackagePath();
 
 const HOTEL_ALIASES = {
   san_diego: "recnPB3Q02NO8Ma1o",
@@ -63,9 +71,6 @@ async function verifyDetail(opportunityId, hotelId) {
   invalidateGdiHotelReadCache(hotelId);
   const rec = await findOpportunityRecordById(opportunityId);
   if (!rec) return { ok: false, reason: "missing_opportunity" };
-  const { airtableRecordToOpportunity } = await import(
-    "../lib/group-demand-intelligence/airtable-opportunity-store.js"
-  );
   const raw = airtableRecordToOpportunity(rec);
   const { opportunity: enriched, peEnriched, venueLoaded, fitLoaded } =
     await enrichPrivateEventOpportunityDetail(raw);
@@ -95,9 +100,7 @@ async function verifyDetail(opportunityId, hotelId) {
 
 async function main() {
   fs.mkdirSync(OUT, { recursive: true });
-  if (!isPeAirtableConfigured()) {
-    throw new Error("pe_airtable_not_configured");
-  }
+  if (!isPeAirtableConfigured()) throw new Error("pe_airtable_not_configured");
 
   const hotelFilter = parseHotelFilter();
   let packages = loadVenuePartnershipPackagesFromFile(PACKAGE_PATH);
@@ -111,7 +114,7 @@ async function main() {
     JSON.stringify(
       {
         apply: APPLY,
-        rerun: RERUN,
+        packagePath: PACKAGE_PATH,
         packageCount: packages.length,
         hotels: [...new Set(packages.map((p) => p.hotel?.hotelId))],
       },
@@ -129,17 +132,15 @@ async function main() {
     const verification = [];
     for (const r of summary.results) {
       if (!r.opportunityId) continue;
-      const v = await verifyDetail(r.opportunityId, r.hotelId);
       verification.push({
         hotelId: r.hotelId,
         opportunityId: r.opportunityId,
         venueId: r.venueId,
-        ...v,
+        ...(await verifyDetail(r.opportunityId, r.hotelId)),
       });
     }
     summary.verification = verification;
 
-    // Rerun unchanged check
     if (RERUN || APPLY) {
       const rerun = await persistVenuePartnershipPackages(packages, {
         dryRun: false,
@@ -157,7 +158,6 @@ async function main() {
       };
     }
 
-    // Hotel rollup
     const byHotel = {};
     for (const r of summary.results) {
       const id = r.hotelId;
@@ -183,9 +183,7 @@ async function main() {
         action: r.steps?.fit?.action,
         recordId: r.steps?.fit?.recordId,
       });
-      for (const s of r.steps?.signals || []) {
-        byHotel[id].signals.push(s);
-      }
+      for (const s of r.steps?.signals || []) byHotel[id].signals.push(s);
       byHotel[id].opportunities.push({
         opportunityId: r.opportunityId,
         mode: r.steps?.opportunityMatch?.mode,
@@ -199,7 +197,11 @@ async function main() {
     const venuesAfter = await listVenuesFromAirtable({ maxRecords: 200 });
     summary.venueInventoryAfter = {
       total: venuesAfter.length,
-      names: venuesAfter.map((v) => ({ id: v.venueId, name: v.venueName, city: v.city })),
+      names: venuesAfter.map((v) => ({
+        id: v.venueId,
+        name: v.venueName,
+        city: v.city,
+      })),
     };
   }
 
@@ -208,33 +210,6 @@ async function main() {
     APPLY ? "FOUNDER_APPLY_REPORT.json" : "FOUNDER_DRY_RUN.json"
   );
   fs.writeFileSync(reportPath, JSON.stringify(summary, null, 2) + "\n");
-
-  const md = [
-    `# Private Events canonical persist — ${APPLY ? "APPLY" : "DRY RUN"}`,
-    "",
-    `- Generated: ${summary.generatedAt}`,
-    `- Packages: ${summary.count}`,
-    `- Verdicts: ${JSON.stringify(summary.byVerdict)}`,
-    "",
-    ...(summary.results || []).map(
-      (r) =>
-        `- **${r.venueName}** (${r.hotelId}): venue=${r.steps?.venue?.action} fit=${r.steps?.fit?.fitId} opp=${r.opportunityId} → ${r.verdict}`
-    ),
-    "",
-  ];
-  if (summary.verification) {
-    md.push("## Detail verification", "");
-    for (const v of summary.verification) {
-      md.push(
-        `- ${v.opportunityId}: ok=${v.ok} layout=${v.detailLayout} contact=${v.contactGradeLabel} path=${v.commercialContactPathLabel} contradiction=${v.contradiction}`
-      );
-    }
-  }
-  fs.writeFileSync(
-    path.join(OUT, APPLY ? "FOUNDER_APPLY_REPORT.md" : "FOUNDER_DRY_RUN.md"),
-    md.join("\n") + "\n"
-  );
-
   console.log(
     JSON.stringify(
       {
