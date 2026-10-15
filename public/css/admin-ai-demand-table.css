@@ -1,0 +1,407 @@
+/**
+ * Shared AI Demand Admin table presentation (My Deals–inspired).
+ * Loaded alongside admin-ai-demand-reviews.css — does not redesign My Deals.
+ */
+
+.ada-shell,
+.adr-shell.ada-shell {
+  max-width: min(1600px, 100%);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ada-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  align-items: flex-end;
+  margin-bottom: 10px;
+}
+
+.ada-toolbar .adr-filters {
+  flex: 1 1 auto;
+  margin-bottom: 0;
+  min-width: 0;
+}
+
+.ada-results-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin: 0 0 10px;
+}
+
+.ada-results-count {
+  font-size: 13px;
+  color: var(--runbook-muted, #8b95a8);
+}
+
+.ada-results-count strong {
+  color: var(--runbook-heading, #e8ecf4);
+  font-weight: 600;
+}
+
+.ada-selection-bar {
+  font-size: 12px;
+  color: var(--runbook-muted, #8b95a8);
+}
+
+.ada-selection-hint {
+  opacity: 0.85;
+}
+
+.ada-bulk-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ada-bulk-btn {
+  background: transparent;
+  color: var(--runbook-heading, #e8ecf4);
+  border: 0.6px solid var(--runbook-border, #2a3550);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ada-bulk-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ada-bulk-menu {
+  position: absolute;
+  z-index: 30;
+  margin-top: 4px;
+  min-width: 220px;
+  background: #0d152c;
+  border: 0.6px solid var(--runbook-border, #2a3550);
+  border-radius: 8px;
+  padding: 6px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.ada-bulk-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--runbook-heading, #e8ecf4);
+  padding: 8px 10px;
+  font-size: 13px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.ada-bulk-menu button:hover:not(:disabled) {
+  background: rgba(108, 114, 255, 0.12);
+}
+
+.ada-bulk-menu button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Table shell: horizontal scroll contained here — not the page */
+.ada-table-shell,
+.adr-table-wrap.ada-table-shell {
+  overflow-x: auto;
+  overflow-y: visible;
+  max-width: 100%;
+  border: 0.6px solid var(--runbook-border, #2a3550);
+  border-radius: 10px;
+  background: var(--runbook-surface, #0d152c);
+  -webkit-overflow-scrolling: touch;
+}
+
+.ada-table-shell .adr-table,
+.ada-table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
+  table-layout: auto;
+}
+
+.ada-table-shell .adr-table th,
+.ada-table-shell .adr-table td,
+.ada-table th,
+.ada-table td {
+  padding: 7px 10px;
+  border-bottom: 0.6px solid var(--runbook-border, #2a3550);
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+  line-height: 1.35;
+}
+
+.ada-table-shell .adr-table th,
+.ada-table th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #0d152c;
+  color: var(--runbook-heading, #e8ecf4);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.01em;
+}
+
+.ada-th--sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.ada-th--sortable:hover {
+  color: #9aa3ff;
+}
+
+.ada-th-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ada-sort-indicator {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0.35;
+  margin-left: 2px;
+}
+
+.ada-th--sortable:hover .ada-sort-indicator,
+.ada-th--sortable.sort-asc .ada-sort-indicator,
+.ada-th--sortable.sort-desc .ada-sort-indicator {
+  opacity: 1;
+}
+
+.ada-sort-arrow {
+  width: 0;
+  height: 0;
+  border-left: 3.5px solid transparent;
+  border-right: 3.5px solid transparent;
+}
+
+.ada-sort-arrow--up {
+  border-bottom: 4px solid #8b95a8;
+}
+
+.ada-sort-arrow--down {
+  border-top: 4px solid #8b95a8;
+}
+
+.ada-th--sortable.sort-asc .ada-sort-arrow--up {
+  border-bottom-color: #6c72ff;
+}
+
+.ada-th--sortable.sort-desc .ada-sort-arrow--down {
+  border-top-color: #6c72ff;
+}
+
+.ada-cell-check {
+  width: 36px;
+  text-align: center;
+  padding-left: 8px !important;
+  padding-right: 4px !important;
+}
+
+.ada-cell-hotel {
+  white-space: normal !important;
+  min-width: 160px;
+  max-width: 280px;
+}
+
+.ada-hotel-link {
+  color: #9aa3ff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.ada-hotel-link:hover {
+  text-decoration: underline;
+}
+
+.ada-subtitle,
+.ada-hotel-id {
+  font-size: 11px;
+  color: var(--runbook-muted, #8b95a8);
+  margin-top: 2px;
+  white-space: normal;
+}
+
+.ada-cell-num {
+  text-align: right !important;
+  font-variant-numeric: tabular-nums;
+  min-width: 52px;
+}
+
+.ada-cell-loc {
+  white-space: normal !important;
+  min-width: 100px;
+  max-width: 160px;
+}
+
+/* Sticky actions column — keeps right-side actions reachable while scrolling */
+.ada-table-shell .adr-table th.ada-col-actions,
+.ada-table-shell .adr-table td.ada-col-actions,
+.ada-table th.ada-col-actions,
+.ada-table td.ada-col-actions {
+  position: sticky;
+  right: 0;
+  z-index: 3;
+  background: #0d152c;
+  box-shadow: -8px 0 12px rgba(0, 0, 0, 0.25);
+  white-space: nowrap !important;
+  min-width: 200px;
+  vertical-align: middle;
+}
+
+.ada-table-shell .adr-table tbody tr:hover td.ada-col-actions {
+  background: #121a33;
+}
+
+.ada-row-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+}
+
+.ada-icon-btn {
+  background: transparent;
+  color: var(--runbook-heading, #e8ecf4);
+  border: 0.6px solid var(--runbook-border, #2a3550);
+  border-radius: 5px;
+  padding: 3px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1.3;
+}
+
+.ada-icon-btn:hover:not(:disabled):not(.is-disabled) {
+  border-color: #6c72ff;
+  color: #c5c8ff;
+}
+
+.ada-icon-btn:disabled,
+.ada-icon-btn.is-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ada-more {
+  position: relative;
+  display: inline-block;
+}
+
+.ada-more__sum {
+  list-style: none;
+}
+
+.ada-more__sum::-webkit-details-marker {
+  display: none;
+}
+
+.ada-more__menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 40;
+  min-width: 200px;
+  background: #0b1224;
+  border: 0.6px solid var(--runbook-border, #2a3550);
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+}
+
+.ada-more__item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--runbook-heading, #e8ecf4);
+  padding: 7px 10px;
+  font-size: 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.ada-more__item:hover:not(:disabled) {
+  background: rgba(108, 114, 255, 0.12);
+}
+
+.ada-more__item:disabled,
+.ada-more__item.is-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ada-more__why {
+  display: block;
+  font-size: 10px;
+  color: var(--runbook-muted, #8b95a8);
+  margin-top: 2px;
+  white-space: normal;
+}
+
+.ada-metric-note {
+  font-size: 11px;
+  color: var(--runbook-muted, #8b95a8);
+  margin: 0 0 10px;
+  max-width: 72rem;
+}
+
+.ada-btn-reset {
+  background: #fdb52a;
+  color: #1a1a1a;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ada-btn-reset:hover {
+  filter: brightness(1.05);
+}
+
+.ada-filter-badge {
+  display: inline-block;
+  margin-left: 6px;
+  min-width: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #1a1a1a;
+  color: #fdb52a;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .ada-table-shell .adr-table th.ada-col-actions,
+  .ada-table-shell .adr-table td.ada-col-actions {
+    min-width: 160px;
+  }
+}
+
+/* Prefer wrapping toolbar over shrinking text at 200% zoom */
+@media (max-width: 700px), (min-resolution: 2dppx) {
+  .ada-toolbar {
+    align-items: stretch;
+  }
+}
