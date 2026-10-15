@@ -608,6 +608,15 @@
     var runStatusVal =
       opts.runStatusLabel || opts.runStatus || "History unavailable";
     var publishedVal = publishedValue || "History unavailable";
+    var sourceVerificationHtml =
+      opts.lastSourceVerification != null && opts.lastSourceVerification !== ""
+        ? '<span class="gdi-property-bar__history-sep" aria-hidden="true">·</span>' +
+          '<span class="gdi-property-bar__history-item">' +
+          '<span class="gdi-property-bar__history-label">Last source verification:</span> ' +
+          '<span class="gdi-property-bar__history-value">' +
+          esc(opts.lastSourceVerification) +
+          "</span></span>"
+        : "";
     return (
       '<section class="filters-section aiv-filters-section gdi-property-bar" aria-label="Property selection">' +
       '<div class="gdi-property-bar__primary">' +
@@ -632,6 +641,7 @@
       '<span class="gdi-property-bar__history-value">' +
       esc(runStatusVal) +
       "</span></span>" +
+      sourceVerificationHtml +
       '<span class="gdi-property-bar__history-sep" aria-hidden="true">·</span>' +
       '<span class="gdi-property-bar__history-item">' +
       '<span class="gdi-property-bar__history-label">Last published:</span> ' +
