@@ -311,9 +311,11 @@ import { preservePublicationMetadata } from "../lib/group-demand-intelligence/pr
     ),
     "utf8"
   );
-  assert.match(weekly, /authorizeSurfe:\s*opts\.authorizeSurfe\s*===\s*true/);
+  // Surfe stays opt-in via destructured authorizeSurfe (default false) — never hard-true.
+  assert.match(weekly, /authorizeSurfe:\s*authorizeSurfe\s*===\s*true/);
+  assert.match(weekly, /authorizeSurfe\s*=\s*false/);
   assert.match(weekly, /execute_public_contact_depth/);
-  assert.doesNotMatch(weekly, /authorizeSurfe:\s*true/);
+  assert.doesNotMatch(weekly, /authorizeSurfe:\s*true\b/);
 }
 
 // R. Organization fallback must not invent a person from org-local email (WHF)

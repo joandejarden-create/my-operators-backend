@@ -69,8 +69,14 @@ saveOpportunities(hotelId, {
     hotelId,
     title: "Example Advocacy 2027",
     organizationName: "Example Association",
-    fitExplanation: "Downtown fit",
+    fitExplanation: "Downtown fit for association lodging",
     hotelFitScore: 60,
+    hotelFitScoreBasis: "gdi-hotel-fit-v1",
+    hotelOpportunityThesis:
+      "Downtown lodging for association attendees traveling for the multi-day conference",
+    travelEvidenceNote:
+      "Delegates travel overnight for the multi-day advocacy conference; room block expected",
+    roomDemandStatus: "REQUIRED",
     officialSource: "https://example.org/events/2027",
     sources: [{ url: "https://example.org/events/2027" }],
     timing: "Verified: April 1–2, 2027",
