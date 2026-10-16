@@ -1,9 +1,11 @@
 # Full GDI E2E — Operator Runbook
 
-**Contract version:** `gdi-full-e2e-contract-v1`  
+**Contract version:** `gdi-full-e2e-contract-v1.1` (fail-closed)  
 **Coordinator:** `scripts/gdi-research-to-page-workflow-v1.mjs`  
 **Evaluator:** `lib/group-demand-intelligence/workflow/full-e2e-completion-evaluator-v1.js`  
-**Status CLI (read-only):** `scripts/gdi-full-e2e-status-v1.mjs`
+**Status CLI (read-only):** `scripts/gdi-full-e2e-status-v1.mjs` — writes only under `--out-dir`, never into the source run journal  
+
+Research spend authorization (`--authorize-paid-discovery` / `--authorize-surfe`) is **separate** from publication (`--authorize-publish`). `--dry-run` overrides every paid/write flag.
 
 Distinctions enforced by the contract:
 

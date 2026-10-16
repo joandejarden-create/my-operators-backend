@@ -127,19 +127,18 @@ if (hotelId && input.hotelId && hotelId !== input.hotelId) {
 }
 
 const completion = evaluateFullE2eCompletion(input);
-const statusOut = path.join(runDir, "full_e2e");
-fs.mkdirSync(statusOut, { recursive: true });
+// Read-only: never write into the source run directory / journal.
+fs.mkdirSync(outDir, { recursive: true });
+const mirrorName = `completion-${ledger.hotelId || hotelId || "unknown"}-${ledger.runId || "run"}`;
+const statusOut = path.join(outDir, mirrorName);
 const artifacts = writeFullE2eArtifacts({
   outDir: statusOut,
   contractDoc: buildFullE2eContractDocument(),
   completion,
   inputSnapshot: input,
 });
-// Also mirror into reports pack (read-only evaluation copy — does not claim run ownership)
-fs.mkdirSync(outDir, { recursive: true });
-const mirrorName = `completion-${ledger.hotelId || hotelId || "unknown"}-${ledger.runId || "run"}.json`;
 fs.writeFileSync(
-  path.join(outDir, mirrorName),
+  path.join(outDir, `${mirrorName}.json`),
   JSON.stringify(
     {
       evaluatedAt: new Date().toISOString(),
@@ -148,6 +147,7 @@ fs.writeFileSync(
       readOnly: true,
       didNotResubmitResearch: true,
       didNotMutateJournal: true,
+      wroteOnlyTo: statusOut,
       completion,
     },
     null,
@@ -166,10 +166,10 @@ console.log(
       canClaimComplete: completion.canClaimComplete,
       segmentSummary: completion.segmentSummary,
       artifacts,
-      mirror: path.join(outDir, mirrorName),
+      mirror: path.join(outDir, `${mirrorName}.json`),
       reasons: completion.reasons,
       blockers: completion.blockers,
-      note: "Read-only evaluation. Do not treat as a new Full E2E execution.",
+      note: "Read-only evaluation — artifacts written only under --out-dir, never into the source run journal.",
     },
     null,
     2

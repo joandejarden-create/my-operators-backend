@@ -1,5 +1,5 @@
 {
-  "version": "gdi-full-e2e-contract-v1",
+  "version": "gdi-full-e2e-contract-v1.1",
   "generatedFor": "Full GDI E2E",
   "distinctions": {
     "taskExecution": "Coordinator stage completed or failed",
@@ -50,7 +50,7 @@
       "authorization": "none",
       "failurePartial": "missing config → FAILED/BLOCKED",
       "retryResume": "re-run validate_config",
-      "contractVersion": "gdi-full-e2e-contract-v1"
+      "contractVersion": "gdi-full-e2e-contract-v1.1"
     },
     {
       "id": "B_verify_hotel_profile",
@@ -79,7 +79,7 @@
       "authorization": "none",
       "failurePartial": "critical profile gaps → PARTIAL/BLOCKED",
       "retryResume": "resume after profile repair",
-      "contractVersion": "gdi-full-e2e-contract-v1"
+      "contractVersion": "gdi-full-e2e-contract-v1.1"
     },
     {
       "id": "C_freeze_inventory_reuse",
@@ -108,7 +108,7 @@
       "authorization": "none",
       "failurePartial": "missing freeze → cannot claim COMPLETE",
       "retryResume": "idempotent re-freeze",
-      "contractVersion": "gdi-full-e2e-contract-v1"
+      "contractVersion": "gdi-full-e2e-contract-v1.1"
     },
     {
       "id": "D_segment_applicability_scope",
@@ -138,7 +138,7 @@
       "authorization": "none",
       "failurePartial": "unsupported NOT_APPLICABLE without rationale rejected",
       "retryResume": "scope change requires recorded before/after",
-      "contractVersion": "gdi-full-e2e-contract-v1"
+      "contractVersion": "gdi-full-e2e-contract-v1.1"
     },
     {
       "id": "E_substantive_multisegment_research",
@@ -173,7 +173,7 @@
       "authorization": "--authorize-paid-discovery / paid-MS envelope",
       "failurePartial": "plan_only applicable segment → cannot COMPLETE",
       "retryResume": "resume skips completed provider jobs by jobKey",
-      "contractVersion": "gdi-full-e2e-contract-v1"
+      "contractVersion": "gdi-full-e2e-contract-v1.1"
     },
     {
       "id": "F_qualify_deduplicate",
@@ -204,7 +204,7 @@
       "authorization": "none",
       "failurePartial": "unreconciled dispositions → PARTIAL",
       "retryResume": "idempotent by opportunity identity",
-      "contractVersion": "gdi-full-e2e-contract-v1"
+      "contractVersion": "gdi-full-e2e-contract-v1.1"
     },
     {
       "id": "G_contact_depth",
@@ -236,7 +236,7 @@
       "authorization": "--authorize-surfe",
       "failurePartial": "NOT_ATTEMPTED remaining on required queue → PARTIAL",
       "retryResume": "reuse accepted Surfe results by person identity",
-      "contractVersion": "gdi-full-e2e-contract-v1"
+      "contractVersion": "gdi-full-e2e-contract-v1.1"
     },
     {
       "id": "H_hotel_fit_narratives",
@@ -267,7 +267,7 @@
       "authorization": "none",
       "failurePartial": "missing narratives on published set → PARTIAL",
       "retryResume": "re-run synthesize stage",
-      "contractVersion": "gdi-full-e2e-contract-v1"
+      "contractVersion": "gdi-full-e2e-contract-v1.1"
     },
     {
       "id": "I_cards_drawers_quality",
@@ -294,7 +294,7 @@
       "authorization": "none",
       "failurePartial": "quality review cannot replace missing research",
       "retryResume": "re-run generate_cards",
-      "contractVersion": "gdi-full-e2e-contract-v1"
+      "contractVersion": "gdi-full-e2e-contract-v1.1"
     },
     {
       "id": "J_publication_diff_backups",
@@ -324,7 +324,7 @@
       "authorization": "none for prep",
       "failurePartial": "missing backups → cannot COMPLETE publish path",
       "retryResume": "idempotent backup",
-      "contractVersion": "gdi-full-e2e-contract-v1"
+      "contractVersion": "gdi-full-e2e-contract-v1.1"
     },
     {
       "id": "K_canonical_persistence",
@@ -355,7 +355,7 @@
       "authorization": "--authorize-publish / --authorize-pe-persist",
       "failurePartial": "qualified publish OK while other segments partial → overall PARTIAL",
       "retryResume": "idempotent upsert by opportunity id",
-      "contractVersion": "gdi-full-e2e-contract-v1"
+      "contractVersion": "gdi-full-e2e-contract-v1.1"
     },
     {
       "id": "L_reports_external_links",
@@ -385,7 +385,7 @@
       "authorization": "share mint uses production secret when issuing",
       "failurePartial": "missing required deliverable without gap record → not COMPLETE",
       "retryResume": "re-verify links",
-      "contractVersion": "gdi-full-e2e-contract-v1"
+      "contractVersion": "gdi-full-e2e-contract-v1.1"
     },
     {
       "id": "M_local_delivery_verify",
@@ -416,7 +416,7 @@
       "authorization": "none",
       "failurePartial": "auth-blocked browser check → BLOCKED/NOT_RUN (not pass)",
       "retryResume": "re-run after local restart",
-      "contractVersion": "gdi-full-e2e-contract-v1"
+      "contractVersion": "gdi-full-e2e-contract-v1.1"
     },
     {
       "id": "N_production_delivery_verify",
@@ -447,7 +447,7 @@
       "authorization": "normal clean-main deploy process",
       "failurePartial": "Airtable write alone ≠ production delivery",
       "retryResume": "invalidate stale proofs on later mutation",
-      "contractVersion": "gdi-full-e2e-contract-v1"
+      "contractVersion": "gdi-full-e2e-contract-v1.1"
     },
     {
       "id": "O_reconcile_budget_history_backlog",
@@ -478,7 +478,7 @@
       "authorization": "none",
       "failurePartial": "unresolved reservations/holds recorded; may force PARTIAL",
       "retryResume": "idempotent reconcile",
-      "contractVersion": "gdi-full-e2e-contract-v1"
+      "contractVersion": "gdi-full-e2e-contract-v1.1"
     }
   ],
   "segmentTaxonomy": [
@@ -597,12 +597,14 @@
       "id": "gdi_report_pdf",
       "label": "GDI report/PDF where supported",
       "required": true,
+      "allowNotApplicable": true,
       "allowGapIfUnsupported": true
     },
     {
       "id": "exports",
       "label": "Appropriate exports",
       "required": true,
+      "allowNotApplicable": true,
       "allowGapIfUnsupported": true
     },
     {
@@ -647,5 +649,5 @@
   "weeklyRefreshNote": "Weekly refresh uses the same quality/persistence rules but does not imply full initial market coverage COMPLETE",
   "zeroQualifiedProspectsValid": true,
   "cardQuotasForbidden": true,
-  "contractVersion": "gdi-full-e2e-contract-v1"
+  "contractVersion": "gdi-full-e2e-contract-v1.1"
 }
