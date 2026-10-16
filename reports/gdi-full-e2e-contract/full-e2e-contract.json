@@ -1,5 +1,5 @@
 {
-  "version": "gdi-full-e2e-contract-v1.1",
+  "version": "gdi-full-e2e-contract-v1.2",
   "generatedFor": "Full GDI E2E",
   "distinctions": {
     "taskExecution": "Coordinator stage completed or failed",
@@ -50,7 +50,7 @@
       "authorization": "none",
       "failurePartial": "missing config → FAILED/BLOCKED",
       "retryResume": "re-run validate_config",
-      "contractVersion": "gdi-full-e2e-contract-v1.1"
+      "contractVersion": "gdi-full-e2e-contract-v1.2"
     },
     {
       "id": "B_verify_hotel_profile",
@@ -79,7 +79,7 @@
       "authorization": "none",
       "failurePartial": "critical profile gaps → PARTIAL/BLOCKED",
       "retryResume": "resume after profile repair",
-      "contractVersion": "gdi-full-e2e-contract-v1.1"
+      "contractVersion": "gdi-full-e2e-contract-v1.2"
     },
     {
       "id": "C_freeze_inventory_reuse",
@@ -108,7 +108,7 @@
       "authorization": "none",
       "failurePartial": "missing freeze → cannot claim COMPLETE",
       "retryResume": "idempotent re-freeze",
-      "contractVersion": "gdi-full-e2e-contract-v1.1"
+      "contractVersion": "gdi-full-e2e-contract-v1.2"
     },
     {
       "id": "D_segment_applicability_scope",
@@ -138,7 +138,7 @@
       "authorization": "none",
       "failurePartial": "unsupported NOT_APPLICABLE without rationale rejected",
       "retryResume": "scope change requires recorded before/after",
-      "contractVersion": "gdi-full-e2e-contract-v1.1"
+      "contractVersion": "gdi-full-e2e-contract-v1.2"
     },
     {
       "id": "E_substantive_multisegment_research",
@@ -173,7 +173,7 @@
       "authorization": "--authorize-paid-discovery / paid-MS envelope",
       "failurePartial": "plan_only applicable segment → cannot COMPLETE",
       "retryResume": "resume skips completed provider jobs by jobKey",
-      "contractVersion": "gdi-full-e2e-contract-v1.1"
+      "contractVersion": "gdi-full-e2e-contract-v1.2"
     },
     {
       "id": "F_qualify_deduplicate",
@@ -204,7 +204,7 @@
       "authorization": "none",
       "failurePartial": "unreconciled dispositions → PARTIAL",
       "retryResume": "idempotent by opportunity identity",
-      "contractVersion": "gdi-full-e2e-contract-v1.1"
+      "contractVersion": "gdi-full-e2e-contract-v1.2"
     },
     {
       "id": "G_contact_depth",
@@ -236,7 +236,7 @@
       "authorization": "--authorize-surfe",
       "failurePartial": "NOT_ATTEMPTED remaining on required queue → PARTIAL",
       "retryResume": "reuse accepted Surfe results by person identity",
-      "contractVersion": "gdi-full-e2e-contract-v1.1"
+      "contractVersion": "gdi-full-e2e-contract-v1.2"
     },
     {
       "id": "H_hotel_fit_narratives",
@@ -267,7 +267,7 @@
       "authorization": "none",
       "failurePartial": "missing narratives on published set → PARTIAL",
       "retryResume": "re-run synthesize stage",
-      "contractVersion": "gdi-full-e2e-contract-v1.1"
+      "contractVersion": "gdi-full-e2e-contract-v1.2"
     },
     {
       "id": "I_cards_drawers_quality",
@@ -294,7 +294,7 @@
       "authorization": "none",
       "failurePartial": "quality review cannot replace missing research",
       "retryResume": "re-run generate_cards",
-      "contractVersion": "gdi-full-e2e-contract-v1.1"
+      "contractVersion": "gdi-full-e2e-contract-v1.2"
     },
     {
       "id": "J_publication_diff_backups",
@@ -324,7 +324,7 @@
       "authorization": "none for prep",
       "failurePartial": "missing backups → cannot COMPLETE publish path",
       "retryResume": "idempotent backup",
-      "contractVersion": "gdi-full-e2e-contract-v1.1"
+      "contractVersion": "gdi-full-e2e-contract-v1.2"
     },
     {
       "id": "K_canonical_persistence",
@@ -355,7 +355,7 @@
       "authorization": "--authorize-publish / --authorize-pe-persist",
       "failurePartial": "qualified publish OK while other segments partial → overall PARTIAL",
       "retryResume": "idempotent upsert by opportunity id",
-      "contractVersion": "gdi-full-e2e-contract-v1.1"
+      "contractVersion": "gdi-full-e2e-contract-v1.2"
     },
     {
       "id": "L_reports_external_links",
@@ -385,7 +385,7 @@
       "authorization": "share mint uses production secret when issuing",
       "failurePartial": "missing required deliverable without gap record → not COMPLETE",
       "retryResume": "re-verify links",
-      "contractVersion": "gdi-full-e2e-contract-v1.1"
+      "contractVersion": "gdi-full-e2e-contract-v1.2"
     },
     {
       "id": "M_local_delivery_verify",
@@ -416,7 +416,7 @@
       "authorization": "none",
       "failurePartial": "auth-blocked browser check → BLOCKED/NOT_RUN (not pass)",
       "retryResume": "re-run after local restart",
-      "contractVersion": "gdi-full-e2e-contract-v1.1"
+      "contractVersion": "gdi-full-e2e-contract-v1.2"
     },
     {
       "id": "N_production_delivery_verify",
@@ -447,7 +447,7 @@
       "authorization": "normal clean-main deploy process",
       "failurePartial": "Airtable write alone ≠ production delivery",
       "retryResume": "invalidate stale proofs on later mutation",
-      "contractVersion": "gdi-full-e2e-contract-v1.1"
+      "contractVersion": "gdi-full-e2e-contract-v1.2"
     },
     {
       "id": "O_reconcile_budget_history_backlog",
@@ -478,7 +478,7 @@
       "authorization": "none",
       "failurePartial": "unresolved reservations/holds recorded; may force PARTIAL",
       "retryResume": "idempotent reconcile",
-      "contractVersion": "gdi-full-e2e-contract-v1.1"
+      "contractVersion": "gdi-full-e2e-contract-v1.2"
     }
   ],
   "segmentTaxonomy": [
@@ -577,6 +577,18 @@
     {
       "id": "plan_only_not_execution",
       "description": "A brief or query plan is not execution"
+    },
+    {
+      "id": "sports_proxy_not_independent",
+      "description": "Exhibitor or association proxy does not complete independent sports coverage"
+    },
+    {
+      "id": "educational_proxy_not_independent",
+      "description": "Sports/medical/association proxy does not complete independent educational/tour coverage"
+    },
+    {
+      "id": "org_route_skips_contact_depth",
+      "description": "An organization contact route does not skip required contact-depth research"
     }
   ],
   "forbiddenNotApplicableReasons": [
@@ -645,9 +657,127 @@
     "reconcile_run",
     "evaluate_completion"
   ],
+  "lessonRegister": [
+    {
+      "id": "applicable_segment_declared_depth",
+      "title": "Research every applicable segment to a declared depth",
+      "defect": "Plan-only / label-only researched treated as coverage",
+      "implementation": "assessApplicableSegmentCompletion + DEPTH_INADEQUACY_RULES + E2E_SEGMENT_TAXONOMY",
+      "test": "test-gdi-full-e2e-contract-v1.mjs (plan_only, researched label, depth evidence)",
+      "release": "PR #119 / v1.1+",
+      "status": "IMPLEMENTED_AND_TESTED"
+    },
+    {
+      "id": "missing_and_plan_only_block_complete",
+      "title": "Missing segments and plan-only stages prevent COMPLETE",
+      "defect": "Empty/omitted axes or plan_only still COMPLETE",
+      "implementation": "validateSegmentCoverageAxes + isPlanOnlyExecution",
+      "test": "empty/omitted/plan_only adversarial cases",
+      "release": "PR #119 / v1.1+",
+      "status": "IMPLEMENTED_AND_TESTED"
+    },
+    {
+      "id": "assoc_contacts_not_planner",
+      "title": "Association contacts do not satisfy planner discovery",
+      "defect": "Association named contacts counted as planner coverage",
+      "implementation": "planner axis + assoc_contact_not_planner_coverage rule",
+      "test": "planner via association contacts → PARTIAL",
+      "release": "PR #119 / v1.1+",
+      "status": "IMPLEMENTED_AND_TESTED"
+    },
+    {
+      "id": "sports_edu_independent",
+      "title": "Sports and educational coverage require independent assessment",
+      "defect": "Proxy satisfaction from exhibitor/medical/association",
+      "implementation": "evaluateIndependentSegmentAxes (publication-quality v1)",
+      "test": "sports/edu proxy → incomplete",
+      "release": "v1.2",
+      "status": "IMPLEMENTED_AND_TESTED"
+    },
+    {
+      "id": "contact_depth_with_org_fallback",
+      "title": "Contact depth is mandatory even when an organization fallback exists",
+      "defect": "Org route skipped contact-depth attempt",
+      "implementation": "CONTACT_QUEUE_DISPOSITIONS + evaluateContactDepthOrgRoutePolicy",
+      "test": "org fallback after documented attempt; skip-for-org blocked",
+      "release": "PR #119 + v1.2",
+      "status": "IMPLEMENTED_AND_TESTED"
+    },
+    {
+      "id": "hotel_fit_drawers_before_publish",
+      "title": "Structured hotel-fit assessments and complete drawers before publication",
+      "defect": "Lean packages published without fit tiles / incomplete drawers",
+      "implementation": "evaluatePublicationQuality",
+      "test": "publication without fit/drawers blocked",
+      "release": "v1.2",
+      "status": "IMPLEMENTED_AND_TESTED"
+    },
+    {
+      "id": "canonical_writers_no_post_import_repair",
+      "title": "Canonical writers must work without post-import eligibility repairs",
+      "defect": "upsert omitted eligibility fields; repair script required",
+      "implementation": "assertCanonicalWriteEligibilityFields + corporate-package-persist gate",
+      "test": "eligibility field assert + postImportEligibilityRepairRequired blocks COMPLETE",
+      "release": "v1.2",
+      "status": "IMPLEMENTED_AND_TESTED"
+    },
+    {
+      "id": "dedupe_preserve_history",
+      "title": "New records are not necessarily new opportunities; reconcile duplicates",
+      "defect": "Create counted as net-new without identity reconcile",
+      "implementation": "evaluatePublicationQuality identityDedupeReconciled",
+      "test": "unreconciled identity → not COMPLETE",
+      "release": "v1.2",
+      "status": "IMPLEMENTED_AND_TESTED"
+    },
+    {
+      "id": "delivery_checks_required",
+      "title": "Required reports, PDFs, links, local and production checks are delivery",
+      "defect": "gapRecorded / not_run verification still COMPLETE",
+      "implementation": "E2E_REQUIRED_DELIVERABLES + verification adapters",
+      "test": "gap deliverable + not_run / stale verification adversarial",
+      "release": "PR #119 / v1.1+",
+      "status": "IMPLEMENTED_AND_TESTED"
+    },
+    {
+      "id": "completion_from_evidence",
+      "title": "Completion derives from current execution evidence, not manual status",
+      "defect": "operator passed overrode failed machine checks",
+      "implementation": "normalizeVerification + operator override blockers",
+      "test": "manual passed vs failed machine → FAILED",
+      "release": "PR #119 / v1.1+",
+      "status": "IMPLEMENTED_AND_TESTED"
+    },
+    {
+      "id": "resume_without_paid_repeat",
+      "title": "Resume revisits unfinished/stale stages without repeating paid research",
+      "defect": "status=completed skipped stale verify; or re-paid on resume",
+      "implementation": "verificationNeedsRerun + fingerprint invalidation",
+      "test": "verificationNeedsRerun + buildCompletionInputFromRun read-only",
+      "release": "PR #119 / v1.1+",
+      "status": "IMPLEMENTED_AND_TESTED"
+    },
+    {
+      "id": "hotel_product_budget_isolation",
+      "title": "Hotel/product budgets remain separate",
+      "defect": "Copied/combined budget fields marked reconciled",
+      "implementation": "reconcileAuthoritativeBudget + evaluateBudgetIsolation",
+      "test": "non-authoritative budget + cross-scope combined blocked",
+      "release": "PR #119 + v1.2",
+      "status": "IMPLEMENTED_AND_TESTED"
+    }
+  ],
+  "lessonStatusEnum": {
+    "IMPLEMENTED_AND_TESTED": "IMPLEMENTED_AND_TESTED",
+    "IMPLEMENTED_NOT_VERIFIED": "IMPLEMENTED_NOT_VERIFIED",
+    "DOCUMENTED_ONLY": "DOCUMENTED_ONLY",
+    "BLOCKED": "BLOCKED"
+  },
   "weeklyRefreshDistinct": true,
   "weeklyRefreshNote": "Weekly refresh uses the same quality/persistence rules but does not imply full initial market coverage COMPLETE",
   "zeroQualifiedProspectsValid": true,
   "cardQuotasForbidden": true,
-  "contractVersion": "gdi-full-e2e-contract-v1.1"
+  "standardEntryPoint": "node scripts/gdi-research-to-page-workflow-v1.mjs --hotel <id> --mode full-e2e …",
+  "hotelSpecificRepairScriptsForbidden": true,
+  "contractVersion": "gdi-full-e2e-contract-v1.2"
 }

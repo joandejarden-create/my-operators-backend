@@ -30,6 +30,9 @@ Applicability derives from hotel profile, catchment, and supported demand use ca
 | `funding_alone_not_scaling` | Funding alone does not qualify a scaling company |
 | `local_sports_calendar_not_travel` | A local sports calendar does not establish traveling demand |
 | `plan_only_not_execution` | A brief or query plan is not execution |
+| `sports_proxy_not_independent` | Exhibitor/association proxy ≠ independent sports coverage |
+| `educational_proxy_not_independent` | Sports/medical/association proxy ≠ independent educational/tour coverage |
+| `org_route_skips_contact_depth` | Organization route does not skip contact-depth research |
 
 ## Brief ≠ execution
 

@@ -15,6 +15,9 @@ import {
   E2E_EXPECTED_SEGMENT_IDS,
   DEPTH_INADEQUACY_RULES,
   FORBIDDEN_NOT_APPLICABLE_REASONS,
+  FULL_E2E_LESSON_REGISTER,
+  LESSON_STATUS,
+  listProvenLessons,
   isForbiddenNotApplicableReason,
   isPlanOnlyExecution,
   buildFullE2eContractDocument,
@@ -33,6 +36,9 @@ import {
   reconcileAuthoritativeBudget,
   verificationNeedsRerun,
 } from "../lib/group-demand-intelligence/workflow/full-e2e-verification-adapters-v1.js";
+import {
+  assertCanonicalWriteEligibilityFields,
+} from "../lib/group-demand-intelligence/workflow/full-e2e-publication-quality-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -145,6 +151,7 @@ function assertFailed(result, msg) {
 {
   const doc = buildFullE2eContractDocument();
   assert.equal(doc.version, FULL_E2E_CONTRACT_VERSION);
+  assert.ok(doc.version.startsWith("gdi-full-e2e-contract-v1.2"));
   assert.ok(doc.stages.length >= 15);
   assert.equal(E2E_EXPECTED_SEGMENT_IDS.length, 11);
   assert.ok(DEPTH_INADEQUACY_RULES.length >= 6);
@@ -152,13 +159,32 @@ function assertFailed(result, msg) {
   assert.ok(FULL_E2E_COORDINATOR_STAGES.includes("evaluate_completion"));
   assert.ok(isPlanOnlyExecution("plan_only"));
   assert.ok(isForbiddenNotApplicableReason("provider returned nothing useful"));
+  assert.ok(Array.isArray(doc.lessonRegister));
+  assert.equal(doc.lessonRegister.length, FULL_E2E_LESSON_REGISTER.length);
+  assert.ok(listProvenLessons().length === FULL_E2E_LESSON_REGISTER.length);
+  assert.ok(
+    listProvenLessons().every((l) => l.status === LESSON_STATUS.IMPLEMENTED_AND_TESTED)
+  );
+  assert.ok(doc.hotelSpecificRepairScriptsForbidden === true);
+  assert.ok(String(doc.standardEntryPoint).includes("--mode full-e2e"));
 }
 
 const baseOk = {
   hotelId: "recTEST",
   runId: "run_test_1",
   contactDepth: okContact(),
-  publication: { qualifiedPublished: true, readbackOk: true, backupsPresent: true },
+  publication: {
+    qualifiedPublished: true,
+    readbackOk: true,
+    backupsPresent: true,
+    structuredHotelFitOk: true,
+    drawersComplete: true,
+    eligibilityWriteComplete: true,
+    identityDedupeReconciled: true,
+    postImportEligibilityRepairRequired: false,
+    newRecordCount: 1,
+    newOpportunityCount: 1,
+  },
   localVerification: {
     status: "passed",
     hotelId: "recTEST",
@@ -677,6 +703,149 @@ const baseOk = {
   ]) {
     assert.ok(src.includes(flag), `missing flag ${flag}`);
   }
+}
+
+// --- Renaissance lessons institutionalized (v1.2) ---
+
+// 26) Sports proxy / non-independent assessment blocks COMPLETE
+{
+  const r = evaluateFullE2eCompletion({
+    ...baseOk,
+    segmentCoverage: allAxesNaExcept([
+      {
+        ...completeSegment("sports"),
+        satisfiedByExhibitorProxy: true,
+        independentAssessment: false,
+      },
+    ]),
+  });
+  assert.ok(r.blockers.some((b) => b.code === "independent_segment_assessment_missing"));
+  assert.notEqual(r.overallStatus, E2E_OVERALL_STATUS.COMPLETE);
+}
+
+// 27) Educational proxy from sports blocks COMPLETE
+{
+  const r = evaluateFullE2eCompletion({
+    ...baseOk,
+    segmentCoverage: allAxesNaExcept([
+      {
+        ...completeSegment("tours_educational_specialist"),
+        satisfiedBySportsProxy: true,
+      },
+    ]),
+  });
+  assert.ok(r.blockers.some((b) => b.code === "independent_segment_assessment_missing"));
+  assert.notEqual(r.overallStatus, E2E_OVERALL_STATUS.COMPLETE);
+}
+
+// 28) Contact depth skipped because org route exists → blocked
+{
+  const r = evaluateFullE2eCompletion({
+    ...baseOk,
+    segmentCoverage: allAxesNaExcept([completeSegment("associations_government")]),
+    contactDepth: {
+      ...okContact(),
+      skippedBecauseOrgRouteExists: true,
+      status: "skipped_org_route_exists",
+    },
+  });
+  assert.ok(r.blockers.some((b) => b.code === "contact_depth_skipped_for_org_route"));
+  assert.notEqual(r.overallStatus, E2E_OVERALL_STATUS.COMPLETE);
+}
+
+// 29) Publication without structured hotel-fit / drawers blocked
+{
+  const r = evaluateFullE2eCompletion({
+    ...baseOk,
+    segmentCoverage: allAxesNaExcept([completeSegment("associations_government")]),
+    publication: {
+      ...baseOk.publication,
+      structuredHotelFitOk: false,
+      drawersComplete: false,
+    },
+  });
+  assert.ok(r.blockers.some((b) => b.code === "publication_without_structured_hotel_fit"));
+  assert.ok(r.blockers.some((b) => b.code === "publication_without_complete_drawers"));
+  assert.notEqual(r.overallStatus, E2E_OVERALL_STATUS.COMPLETE);
+}
+
+// 30) Post-import eligibility repair required → not COMPLETE
+{
+  const r = evaluateFullE2eCompletion({
+    ...baseOk,
+    segmentCoverage: allAxesNaExcept([completeSegment("associations_government")]),
+    publication: {
+      ...baseOk.publication,
+      postImportEligibilityRepairRequired: true,
+    },
+  });
+  assert.ok(r.blockers.some((b) => b.code === "post_import_eligibility_repair_required"));
+  assert.notEqual(r.overallStatus, E2E_OVERALL_STATUS.COMPLETE);
+}
+
+// 31) Identity dedupe unreconciled → not COMPLETE
+{
+  const r = evaluateFullE2eCompletion({
+    ...baseOk,
+    segmentCoverage: allAxesNaExcept([completeSegment("associations_government")]),
+    publication: {
+      ...baseOk.publication,
+      identityDedupeReconciled: false,
+      newRecordCount: 5,
+      newOpportunityCount: 5,
+    },
+  });
+  assert.ok(r.blockers.some((b) => b.code === "identity_dedupe_unreconciled"));
+  assert.notEqual(r.overallStatus, E2E_OVERALL_STATUS.COMPLETE);
+}
+
+// 32) Cross hotel/product budget combination blocked
+{
+  const r = evaluateFullE2eCompletion({
+    ...baseOk,
+    segmentCoverage: allAxesNaExcept([completeSegment("associations_government")]),
+    budget: { ...okBudget(), crossProductCombined: true },
+  });
+  assert.ok(r.blockers.some((b) => b.code === "budget_cross_scope_combined"));
+  assert.notEqual(r.overallStatus, E2E_OVERALL_STATUS.COMPLETE);
+}
+
+// 33) Canonical write eligibility fields assert (no post-import repair)
+{
+  const bad = assertCanonicalWriteEligibilityFields({
+    title: "x",
+    prospectHotelFacing: true,
+  });
+  assert.equal(bad.ok, false);
+  assert.ok(bad.missing.includes("hotelFitRationale"));
+  assert.ok(bad.missing.includes("localConnection"));
+  const good = assertCanonicalWriteEligibilityFields({
+    hotelFitRationale: "Walkable to Midtown training venues",
+    localConnection: "HQ within 2 miles",
+    travelEvidenceNote: "Regional trainers overnight",
+  });
+  assert.equal(good.ok, true);
+}
+
+// 34) Standard entry point is shared coordinator (not Renaissance repair script)
+{
+  const src = fs.readFileSync(
+    path.join(ROOT, "scripts/gdi-research-to-page-workflow-v1.mjs"),
+    "utf8"
+  );
+  assert.ok(src.includes("--mode") && src.includes("full-e2e"));
+  assert.ok(src.includes("evaluateFullE2eCompletion"));
+  assert.ok(
+    !fs.existsSync(
+      path.join(ROOT, "scripts/gdi-renaissance-eligibility-repair-v1.mjs")
+    ),
+    "must not require a Renaissance-specific eligibility repair entry point"
+  );
+  const persist = fs.readFileSync(
+    path.join(ROOT, "lib/group-demand-intelligence/workflow/corporate-package-persist-v1.js"),
+    "utf8"
+  );
+  assert.ok(persist.includes("assertCanonicalWriteEligibilityFields"));
 }
 
 console.log("test-gdi-full-e2e-contract-v1: PASS");
