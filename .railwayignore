@@ -15,16 +15,8 @@ reports/*
 !reports/ai-demand-positioning/
 reports/ai-demand-positioning/**
 !reports/ai-demand-positioning/ADP_BRAND_PORTFOLIO_CUSTOMER_PUBLISHED_V1.json
-# Keep required PDF surface paths that production assert/share may need (re-unignore narrowly).
-!reports/ai-demand-positioning/current-report-pdf/
-!reports/ai-demand-positioning/current-report-pdf/**
-!reports/ai-demand-positioning/monthly-review/
-!reports/ai-demand-positioning/monthly-review/archive/
-!reports/ai-demand-positioning/monthly-review/archive/index.json
-!reports/ai-demand-positioning/monthly-review/archive/adp_bethesda_marriott/
-!reports/ai-demand-positioning/monthly-review/archive/adp_bethesda_marriott/**
-!reports/ai-demand-positioning/monthly-review/archive/adp_renaissance_times_square/
-!reports/ai-demand-positioning/monthly-review/archive/adp_renaissance_times_square/**
+# RAILWAY_LEAN_ADP_UPLOAD_V2 — do not re-unignore monthly-review / current-report-pdf trees (73MB+).
+# PDFs remain in dealality-report-archive / prior Railway volumes; assert gate does not require these report trees.
 # Fixtures are not production runtime assets (assert gate does not require this tree).
 fixtures/
 uploads/
@@ -173,7 +165,17 @@ _archive/
 !reports/ai-demand-positioning/monthly-review/archive/adp_bethesda_marriott/**
 
 
-# Drop bulky published evidence corpora from Railway upload (SoT manifests/reports remain).
+# RAILWAY_LEAN_PUBLISHED_V2 — keep published tree structure but drop bulky blobs.
 data/ai-demand-positioning/published/**/evidence-*.json
 data/ai-demand-positioning/published/**/rebuild-backup/
 data/ai-demand-positioning/published/**/rebuild-backup/**
+data/ai-demand-positioning/published/**/*.pdf
+data/ai-demand-positioning/published/**/*.png
+data/ai-demand-positioning/published/**/*.jpg
+data/ai-demand-positioning/published/**/pdf-visual/
+data/ai-demand-positioning/published/**/pdf-visual/**
+data/ai-demand-positioning/published/**/pdf-history/
+data/ai-demand-positioning/published/**/pdf-history/**
+
+# Docs are not Railway runtime assets.
+docs/
