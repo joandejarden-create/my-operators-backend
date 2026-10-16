@@ -24,7 +24,15 @@ import {
   isPlanOnlyExecution,
   buildFullE2eContractDocument,
   FULL_E2E_COORDINATOR_STAGES,
+  E2E_STAGE,
 } from "../lib/group-demand-intelligence/workflow/full-e2e-contract-v1.js";
+import {
+  buildLessonsCaptureArtifact,
+  assertDefectFixIncludesLessonCapture,
+  nextHotelInheritsAutomatically,
+  evaluateLessonsCaptureCompleteness,
+  LESSONS_CAPTURE_VERSION,
+} from "../lib/group-demand-intelligence/workflow/full-e2e-lessons-capture-v1.js";
 import {
   evaluateFullE2eCompletion,
   allStagesPassed,
@@ -161,12 +169,24 @@ function assertFailed(result, msg) {
   const doc = buildFullE2eContractDocument();
   assert.equal(doc.version, FULL_E2E_CONTRACT_VERSION);
   assert.ok(doc.version.startsWith("gdi-full-e2e-contract-v1."));
-  assert.ok(doc.stages.length >= 15);
+  assert.ok(doc.stages.length >= 16);
+  assert.ok(doc.lessonsCaptureRequired === true);
+  assert.ok(FULL_E2E_COORDINATOR_STAGES.includes("capture_lessons"));
+  assert.ok(doc.stages.some((s) => s.id === E2E_STAGE.P_LESSONS_CAPTURE));
   assert.equal(E2E_EXPECTED_SEGMENT_IDS.length, 11);
   assert.ok(DEPTH_INADEQUACY_RULES.length >= 6);
   assert.ok(FORBIDDEN_NOT_APPLICABLE_REASONS.includes("budget_exhausted"));
   assert.ok(FULL_E2E_COORDINATOR_STAGES.includes("evaluate_completion"));
   assert.ok(isPlanOnlyExecution("plan_only"));
+  assert.ok(
+    FULL_E2E_LESSON_REGISTER.some((l) => l.id === "lessons_capture_required")
+  );
+  assert.ok(
+    FULL_E2E_LESSON_REGISTER.some((l) => l.id === "provider_leak_customer_sanitize")
+  );
+  assert.ok(
+    FULL_E2E_LESSON_REGISTER.some((l) => l.id === "false_contact_exhaustion_forbidden")
+  );
   assert.ok(isForbiddenNotApplicableReason("provider returned nothing useful"));
   assert.ok(Array.isArray(doc.lessonRegister));
   assert.equal(doc.lessonRegister.length, FULL_E2E_LESSON_REGISTER.length);
@@ -237,6 +257,11 @@ const baseOk = {
   budget: okBudget(),
   stageResults: allStagesPassed(),
   ledger: { startedAt: "2026-10-16T00:00:00Z", stages: {} },
+  lessonsCapture: buildLessonsCaptureArtifact({
+    runId: "run_test_1",
+    hotelId: "recTEST",
+    incorporatedThisRunIds: ["lessons_capture_required"],
+  }),
 };
 
 // 1) Association-only + plan-only applicable → PARTIAL
@@ -1275,6 +1300,84 @@ function jsonResponse(status, body, headers = {}) {
   assert.notEqual(rows[0].disposition, "quarantined_wrong_market");
   assert.notEqual(rows[0].reason, "unhandled_segment_or_kind");
   assert.ok(rows[0].package?.localConnection);
+}
+
+// 46) Lessons capture missing blocks COMPLETE
+{
+  const r = evaluateFullE2eCompletion({
+    ...baseOk,
+    segmentCoverage: allAxesNaExcept([
+      completeSegment("associations_government"),
+    ]),
+    lessonsCapture: null,
+  });
+  assert.ok(r.blockers.some((b) => b.code === "lessons_capture_missing"));
+  assert.notEqual(r.overallStatus, E2E_OVERALL_STATUS.COMPLETE);
+}
+
+// 47) Hotel-specific repair claimed complete without shared path is blocked
+{
+  const capture = buildLessonsCaptureArtifact({
+    runId: "run_test_1",
+    hotelId: "recTEST",
+    incorporatedThisRunIds: ["provider_leak_customer_sanitize"],
+  });
+  capture.hotelSpecificRepairsClaimedComplete = [
+    { id: "ren_only_payload_rewrite", sharedPathPreventsRecurrence: false },
+  ];
+  const evalCap = evaluateLessonsCaptureCompleteness(capture);
+  assert.equal(evalCap.ok, false);
+  assert.ok(
+    evalCap.blockers.some((b) => b.code === "hotel_repair_not_process_improvement")
+  );
+  const r = evaluateFullE2eCompletion({
+    ...baseOk,
+    segmentCoverage: allAxesNaExcept([completeSegment("associations_government")]),
+    lessonsCapture: capture,
+  });
+  assert.ok(
+    r.blockers.some((b) => b.code === "hotel_repair_not_process_improvement")
+  );
+}
+
+// 48) Defect-fix checklist requires shared path + test + register + runbook/prompt
+{
+  const bad = assertDefectFixIncludesLessonCapture({
+    sharedImplementation: "customer-presentation-sanitize-v3",
+    // missing test / register / prompt
+  });
+  assert.equal(bad.ok, false);
+  assert.ok(bad.missing.includes("regressionOrIntegrationTest"));
+  assert.ok(bad.missing.includes("lessonRegisterUpdated"));
+  assert.ok(bad.missing.includes("runbookAndCursorPromptUpdated"));
+
+  const good = assertDefectFixIncludesLessonCapture({
+    sharedImplementation: "customer-presentation-sanitize-v3",
+    regressionOrIntegrationTest: "test:gdi-customer-provider-leak-sanitize-v3",
+    lessonRegisterUpdated: true,
+    runbookAndCursorPromptUpdated: true,
+  });
+  assert.equal(good.ok, true);
+}
+
+// 49) Next hotel inherits when shared path + test exist (prod may still be open)
+{
+  const leak = FULL_E2E_LESSON_REGISTER.find(
+    (l) => l.id === "provider_leak_customer_sanitize"
+  );
+  assert.ok(leak);
+  assert.equal(nextHotelInheritsAutomatically(leak), true);
+  assert.equal(leak.proof.productionVerified, false);
+  const capture = buildLessonsCaptureArtifact({
+    incorporatedThisRunIds: ["provider_leak_customer_sanitize"],
+  });
+  assert.equal(capture.version, LESSONS_CAPTURE_VERSION);
+  assert.ok(
+    capture.nextHotelInheritance.inheritsAutomatically.includes(
+      "provider_leak_customer_sanitize"
+    )
+  );
+  assert.ok(Array.isArray(capture.remainingImplementationOrVerificationGaps));
 }
 
 console.log("test-gdi-full-e2e-contract-v1: PASS");

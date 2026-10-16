@@ -39,7 +39,7 @@
  *   evaluate_eligibility → generate_cards → prepare_manifest →
  *   preview_verify → apply_pe_canonical → apply_publish
  *   [full-e2e adds] local_delivery_verify → production_delivery_verify →
- *                   reconcile_run → evaluate_completion
+ *                   reconcile_run → capture_lessons → evaluate_completion
  *
  * apply_pe_canonical (authorize with --authorize-publish or --authorize-pe-persist):
  *   venue → signals → hotel fit → GDI link via canonical-persist-and-link-v1
@@ -156,6 +156,10 @@ import {
   buildCompletionInputFromRun,
   writeFullE2eArtifacts,
 } from "../lib/group-demand-intelligence/workflow/full-e2e-completion-input-v1.js";
+import {
+  buildLessonsCaptureArtifact,
+  evaluateLessonsCaptureCompleteness,
+} from "../lib/group-demand-intelligence/workflow/full-e2e-lessons-capture-v1.js";
 import {
   runLocalDeliveryVerification,
   runProductionDeliveryVerification,
@@ -429,6 +433,7 @@ const stagesToRun = stageOnly
           s === "local_delivery_verify" ||
           s === "production_delivery_verify" ||
           s === "reconcile_run" ||
+          s === "capture_lessons" ||
           s === "evaluate_completion"
         ) {
           return verificationNeedsRerun(prev, currentFingerprints);
@@ -2562,6 +2567,63 @@ for (const stage of stagesToRun) {
       continue;
     }
 
+    if (stage === "capture_lessons") {
+      const e2eDir = path.join(runDir, "full_e2e");
+      fs.mkdirSync(e2eDir, { recursive: true });
+      const overlay = completionEvidencePath
+        ? JSON.parse(fs.readFileSync(completionEvidencePath, "utf8"))
+        : fs.existsSync(path.join(runDir, "full-e2e-evidence.json"))
+          ? JSON.parse(
+              fs.readFileSync(path.join(runDir, "full-e2e-evidence.json"), "utf8")
+            )
+          : {};
+      const incorporatedLessonIds =
+        overlay.incorporatedLessonIds ||
+        ledger.fullE2e?.incorporatedLessonIds ||
+        [];
+      const capture = buildLessonsCaptureArtifact({
+        runId,
+        hotelId,
+        releaseRef:
+          overlay.releaseRef ||
+          ledger.fullE2e?.releaseRef ||
+          FULL_E2E_CONTRACT_VERSION,
+        incorporatedThisRunIds: incorporatedLessonIds,
+      });
+      // Hotel-only repairs claimed complete without shared-path prevention fail closed.
+      if (Array.isArray(overlay.hotelSpecificRepairsClaimedComplete)) {
+        capture.hotelSpecificRepairsClaimedComplete =
+          overlay.hotelSpecificRepairsClaimedComplete;
+        capture.evaluation = evaluateLessonsCaptureCompleteness(capture);
+      }
+      const capturePath = path.join(e2eDir, "lessons-capture-v1.json");
+      fs.writeFileSync(capturePath, JSON.stringify(capture, null, 2) + "\n");
+      ledger.fullE2e = {
+        ...(ledger.fullE2e || {}),
+        lessonsCapture: capture,
+        incorporatedLessonIds,
+        lessonsCapturePath: capturePath,
+      };
+      mark(
+        ledger,
+        stage,
+        capture.evaluation?.ok === false ? "failed" : "completed",
+        {
+          incorporatedCount: (capture.lessonsIncorporatedThisRun || []).length,
+          gapCount: (
+            capture.remainingImplementationOrVerificationGaps || []
+          ).length,
+          inheritsAutomatically: (
+            capture.nextHotelInheritance?.inheritsAutomatically || []
+          ).length,
+          capturePath,
+          note:
+            "Lessons capture is required on the Full E2E path. Defect fixes must update shared impl + test + register + runbook/prompt in the same task.",
+        }
+      );
+      continue;
+    }
+
     if (stage === "evaluate_completion") {
       const e2eDir = path.join(runDir, "full_e2e");
       fs.mkdirSync(e2eDir, { recursive: true });
@@ -2596,6 +2658,15 @@ for (const stage of stagesToRun) {
       }
       if (ledger.fullE2e?.budget && !overlay.budget) {
         overlay.budget = ledger.fullE2e.budget;
+      }
+      if (ledger.fullE2e?.lessonsCapture && !overlay.lessonsCapture) {
+        overlay.lessonsCapture = ledger.fullE2e.lessonsCapture;
+      }
+      if (
+        ledger.fullE2e?.incorporatedLessonIds &&
+        !overlay.incorporatedLessonIds
+      ) {
+        overlay.incorporatedLessonIds = ledger.fullE2e.incorporatedLessonIds;
       }
 
       const input = buildCompletionInputFromRun({
