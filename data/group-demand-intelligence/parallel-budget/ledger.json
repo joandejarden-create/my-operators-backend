@@ -3,11 +3,65 @@
   "currency": "USD",
   "budgetUsd": 2,
   "reservedUsd": 0,
-  "estimatedSpentUsd": 1.5,
+  "estimatedSpentUsd": 2,
   "actualBilledUsd": null,
-  "entries": [],
-  "updatedAt": "2026-10-16T12:10:00.000Z",
+  "closedToAdditionalSpend": true,
   "historicalPilot": true,
-  "note": "Historical Parallel pilot — preserved separately from  paid-MS envelope. Do not merge or reset. Balances from reports/gdi-operational-baseline/budget-reconciliation/parallel-budget-reconciliation.json (after probe). Entry detail not re-invented here.",
-  "reconstructionSource": "reports/gdi-operational-baseline/budget-reconciliation/parallel-budget-reconciliation.json"
+  "entries": [
+    {
+      "reservationId": "rsv_pilot_contaminated_research",
+      "jobKey": "pilot:contaminated_research",
+      "label": "Historical pilot contaminated research",
+      "processor": "pro",
+      "estimatedUsd": 1,
+      "status": "spent",
+      "providerRunId": "trun_567f3335d0c140ad8e87120211c6f61f",
+      "spentAt": null,
+      "spentAtProvenance": "unknown_provider_submission_time",
+      "reconstructionSource": "reports/gdi-operational-baseline/FINAL-REPORT.md",
+      "note": "Estimated only; entry restored from final pilot reconciliation — not invented invoice line."
+    },
+    {
+      "reservationId": "rsv_pilot_connectivity_probe",
+      "jobKey": "pilot:connectivity_probe",
+      "label": "Historical pilot connectivity probe",
+      "processor": "base",
+      "estimatedUsd": 0.5,
+      "status": "spent",
+      "providerRunId": "trun_567f3335d0c140ad9269500c06dc2b38",
+      "spentAt": null,
+      "spentAtProvenance": "unknown_provider_submission_time",
+      "reconstructionSource": "reports/gdi-operational-baseline/FINAL-REPORT.md",
+      "note": "Was missing from intermediate after-probe snapshot; counted toward $2 cap; actual billed UNKNOWN."
+    },
+    {
+      "reservationId": "rsv_pilot_identity_lock_corrected",
+      "jobKey": "pilot:identity_lock_corrected",
+      "label": "Historical pilot corrected identity-lock live",
+      "processor": "base",
+      "estimatedUsd": 0.5,
+      "status": "spent",
+      "providerRunId": "trun_567f3335d0c140ad8fc1b7a929f468b3",
+      "spentAt": null,
+      "spentAtProvenance": "unknown_provider_submission_time",
+      "actualBilledUsd": 0.5,
+      "actualBilledProvenance": "provider payload on corrected run",
+      "reconstructionSource": "reports/gdi-operational-baseline/FINAL-REPORT.md",
+      "note": "Do not reopen $0.50 capacity from incomplete intermediate ledger."
+    }
+  ],
+  "updatedAt": "2026-10-16T13:05:00.000Z",
+  "reconciliation": {
+    "reconciledAt": "2026-10-16T13:05:00.000Z",
+    "sourceFinalReport": "reports/gdi-operational-baseline/FINAL-REPORT.md",
+    "rejectedIncompleteSnapshot": "reports/gdi-operational-baseline/budget-reconciliation/parallel-budget-reconciliation.json (after probe only; omitted corrected run)",
+    "supportedEstimatedIncurredUsd": 2,
+    "unresolvedHistoricalExposureUsd": null,
+    "actualBilledUsd": null,
+    "actualBilledStatus": "PARTIAL_KNOWN_THIRD_RUN_ONLY",
+    "closedToAdditionalSpend": true,
+    "separateFromPaidMsAuthorizationUsd": 11,
+    "note": "Pilot exhausted across original research + probe + corrected identity-lock. Separate from Mayflower/SD $11 and all new-hotel budgets."
+  },
+  "note": "Historical Parallel $2 pilot — closed to additional spending. Separate from paid-MS $11 envelope."
 }

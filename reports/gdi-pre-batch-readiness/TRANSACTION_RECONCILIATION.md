@@ -1,118 +1,133 @@
-# Transaction-level reconciliation — LMC Parallel / Surfe correction
+﻿# Transaction-level reconciliation — LMC Parallel / Surfe hold correction
 
-**Generated:** 2026-10-16T12:10:00Z  
+**Generated:** 2026-10-16T13:05:00Z  
 **Authoritative ledger:** `data/group-demand-intelligence/paid-multisegment-budget/authorization-ledger-v1.json`  
-**Pilot ledger (separate):** `data/group-demand-intelligence/parallel-budget/ledger.json` ($2 historical — preserved, not merged)  
-**Backup before this correction:** `reports/gdi-pre-batch-readiness/budget-ledger-audit/20261016-120717-tx-match-correction/`  
+**Pilot ledger (separate, closed):** `data/group-demand-intelligence/parallel-budget/ledger.json` ($2 historical — exhausted)  
+**Backup before this correction:** `reports/gdi-pre-batch-readiness/budget-ledger-audit/20261016-150125-hold-surfe-correction/`  
 **No new paid requests.** No invented charges/credits. No PE/scaling relabel as LMC.
 
-## Corrected gap math
+## Corrected balances (authoritative)
 
-| Narrative (prior operational claim) | USD |
+| Item | USD |
 |-------------------------------------|----:|
-| Spent before LMC expansion | 3.85 |
-| Four LMC Parallel × $0.35 | +1.40 |
-| LMC contact-depth Surfe ≈ | +1.25 |
-| Claimed total spent / remaining | **6.50 / 4.50** |
-
-| Authoritative after this correction | USD |
-|-------------------------------------|----:|
-| Supported estimated incurred (incl. four MATCHED LMC Parallel) | **5.25** |
+| Authorization (Mayflower/SD paid-MS) | **11.00** |
+| Supported estimated incurred | **5.25** |
 | Outstanding provider reservations | **0.00** |
-| Historical unresolved accounting hold (Surfe envelope) | **1.25** |
-| Safely available (= 11 − 5.25 − 1.25) | **4.50** |
+| Unresolved accounting hold | **1.25** |
+| Safely available (= 11 − 5.25 − 0 − 1.25) | **4.50** |
 | Actual billed | **UNKNOWN** |
 
-Original disputed **$2.65** hold: **$1.40 converted** into incurred when LMC Parallel tasks were MATCHED and restored; **$1.25 retained** as accounting hold (not incurred, not a reservation).
+Hold composition after overlap release (not a second deduction of already-incurred LMC Surfe):
+
+| Claimed execution | Already in incurred | Additional exposure | Hold allocated | Disposition |
+|-------------------|--------------------:|--------------------:|---------------:|-------------|
+| Four LMC Surfe (Danielle, Roger, Jodi, André) | **1.00** | **0.00** | **0.00** (released) | **MATCHED** — request IDs null; missing ID ≠ extra hold |
+| Fifth LMC Surfe credit (FOUNDER 5×$0.25) | 0.00 | 0.25 | 0.25 | **UNRESOLVED** |
+| Scaling Stephanie + Yessica Surfe | 0.00 | 0.50 | 0.50 | **EXECUTED_UNMATCHED** |
+| Wisedocs Manal + Shipyard Traci original Surfe | 0.00 | 0.50 | 0.50 | **EXECUTED_UNMATCHED** |
 
 Machine table: `TRANSACTION_RECONCILIATION.csv` / `.json`
 
 ---
 
-## Prior incorrect claims (PR #109) — corrected
+## Four claimed LMC Parallel tasks ($1.40) — MATCHED (preserved)
 
-| Claim | Why wrong | Correction |
-|-------|-----------|------------|
-| Four LMC Parallel = `pe_sd_gaslamp_yacht` + `scaling_discovery_may_v2` + `scaling_discovery_sd_v2` (+ one NOT_EXECUTED) | Equal **$0.35** cost ≠ transaction identity; different job keys / purposes / run IDs | Match the four **LMC** discovery runs below |
-| Fourth Parallel **NOT_EXECUTED** | Missing folder / absent run in wrong matching set ≠ nonexecution | All four LMC runs evidenced → **MATCHED**; do not use NOT_EXECUTED without stronger nonexecution proof |
-| Surfe $1.25 **DUPLICATE** of AMWA + 4 LMC already in $3.85 | Substituted prior AMWA into a later LMC pass; FOUNDER contact-depth claimed **this pass** 5 × $0.25 | Reconcile Surfe separately (below); keep AMWA as prior paid-MS only |
-| Gap closed → safely available **$7.15** | Left omitted LMC Parallel out of ledger and treated hold as closed | Restore LMC Parallel; retain Surfe hold; available **$4.50** |
+| # | Job key | Hotel | Provider run ID | Est. | Disposition |
+|---|---------|-------|-----------------|----:|-------------|
+| 1 | `paid_ms:lmc_planners_social_may_v1` | Mayflower | `trun_567f3335d0c140ad84cb51c43c0b4baa` | 0.35 | **MATCHED** |
+| 2 | `paid_ms:lmc_corporate_assoc_may_v1` | Mayflower | `trun_567f3335d0c140ad8222efec4611b85a` | 0.35 | **MATCHED** |
+| 3 | `paid_ms:lmc_planners_social_sd_v1` | San Diego | `trun_567f3335d0c140ad8b6191e9c2922d9f` | 0.35 | **MATCHED** |
+| 4 | `paid_ms:lmc_corporate_assoc_sd_v1` | San Diego | `trun_567f3335d0c140ad8e3066a4795127f5` | 0.35 | **MATCHED** |
 
-`pe_sd_gaslamp_yacht` and `scaling_discovery_*_v2` remain **their own** prior spent rows. They are **not** LMC expansion executions.
+**Timestamp provenance:** ledger `spentAt` **2026-10-15T21:35:00.000Z** is a **report timestamp** from `reports/gdi-lmc-planner-expansion/FOUNDER_REPORT.md` — **not** a verified provider submission time. Execution-history stage stamp **2026-10-15T21:44:42.649Z** is separately labeled. Actual billed: **UNKNOWN**.
 
----
-
-## Four claimed LMC Parallel tasks ($1.40) — MATCHED
-
-Evidence: `reports/gdi-lmc-planner-expansion/FOUNDER_REPORT.md`, `data/group-demand-intelligence/execution-history/gdi_three_hotel_integrity_2026-10-15T21-44-42-649Z.json`, script `scripts/gdi-lmc-planner-expansion-execute-v1.mjs` (task defs).  
-Authorization: existing Mayflower/SD **$11** paid-MS envelope (no new allowance). Surfe on this expansion pass: **$0** (no named person yet).
-
-| # | Job key | Hotel | Purpose | Provider run ID | Est. | Ledger reservation | Disposition |
-|---|---------|-------|---------|-----------------|----:|--------------------|-------------|
-| 1 | `paid_ms:lmc_planners_social_may_v1` | Mayflower `rec0eTEnCqlsGJJt9` | LMC planners + social catering discovery | `trun_567f3335d0c140ad84cb51c43c0b4baa` | 0.35 | `rsv_recon_paid_ms_lmc_planners_social_may_v1` | **MATCHED** (restored) |
-| 2 | `paid_ms:lmc_corporate_assoc_may_v1` | Mayflower `rec0eTEnCqlsGJJt9` | LMC corporate / room rental / association / nonprofit | `trun_567f3335d0c140ad8222efec4611b85a` | 0.35 | `rsv_recon_paid_ms_lmc_corporate_assoc_may_v1` | **MATCHED** (restored) |
-| 3 | `paid_ms:lmc_planners_social_sd_v1` | San Diego `recnPB3Q02NO8Ma1o` | LMC planners + social catering discovery | `trun_567f3335d0c140ad8b6191e9c2922d9f` | 0.35 | `rsv_recon_paid_ms_lmc_planners_social_sd_v1` | **MATCHED** (restored) |
-| 4 | `paid_ms:lmc_corporate_assoc_sd_v1` | San Diego `recnPB3Q02NO8Ma1o` | LMC corporate / association / nonprofit | `trun_567f3335d0c140ad8e3066a4795127f5` | 0.35 | `rsv_recon_paid_ms_lmc_corporate_assoc_sd_v1` | **MATCHED** (restored) |
-
-Submission timestamp (report): **2026-10-15T21:35:00.000Z** (expansion FOUNDER). Execution-history stage recorded **2026-10-15T21:44:42.649Z**. Actual billed: **UNKNOWN**.
-
-### 13 fresh LMC/planner accounts — provenance
-
-Expansion FOUNDER: **13 unique** new LMC/planner prospects from these four Parallel runs (16 raw → dedupe → 13; **12** published facing, **1** internal WHF). Source runs = the four `trun_` IDs above — not PE/scaling jobs.
+`pe_sd_gaslamp_yacht` and `scaling_discovery_*_v2` remain their own prior spent rows — **not** LMC expansion.
 
 ---
 
-## Surfe — separate from Parallel; do not substitute AMWA
+## Surfe disputed attempts (corrected dispositions)
 
-### Later LMC / planner contact-depth pass (disputed ~$1.25)
+### A. LMC / planner contact-depth (~$1.25 claimed this pass)
 
 Evidence: `reports/gdi-lmc-planner-contact-depth/FOUNDER_REPORT.md`, `account-contact-depth-register.json`.  
-FOUNDER claimed **5 × $0.25 ≈ $1.25 this pass**. Register evidences **four** Surfe outcomes (no provider request IDs retained). Later queue-only re-runs with `surfe.status=skipped` are **not** proof the earlier pass never ran.
+Queue-only / `surfe.status=skipped` re-runs are a **different pass** and do not prove the earlier enrichment never ran.
 
-| # | Person / opportunity | Employer / channel | Request ID | Est. | Ledger | Disposition |
-|---|----------------------|--------------------|------------|----:|--------|-------------|
-| 1 | Danielle Kambic / `gdi_lmc_5b4d51be7726617c` | CSI DMC — person email via Surfe | **null** | 0.25 | `rsv_recon_surfe_lmc_danielle_kambic` | **MATCHED** (est.; request ID **UNRESOLVED**) |
-| 2 | Roger J. Whyte II / `gdi_lmc_00cd663a9f282697` | Stratus Firm — person email via Surfe | **null** | 0.25 | `rsv_recon_surfe_lmc_roger_whyte` | **MATCHED** (est.; request ID **UNRESOLVED**) |
-| 3 | Jodi Moraru / `gdi_lmc_d670fde177ad418b` | Evoke — person email via Surfe | **null** | 0.25 | `rsv_recon_surfe_lmc_jodi_moraru` | **MATCHED** (est.; request ID **UNRESOLVED**) |
-| 4 | André Wells / `gdi_lmc_860cde704de88d7c` | Events by Andre Wells — identity conflict | **null** | 0.25 | `rsv_recon_surfe_lmc_andre_wells_conflict` | **MATCHED** (invoked; cost not zeroed; request ID **UNRESOLVED**) |
-| 5 | FOUNDER “5th” $0.25 this pass | — | none located | 0.25 | — | **UNRESOLVED** (insufficient to add charge or declare NOT_EXECUTED) |
+| Person | Employer / opp | Channel | Timestamp provenance | Request ID | Ledger | Disposition |
+|--------|----------------|---------|----------------------|------------|--------|-------------|
+| Danielle Kambic | CSI DMC / `gdi_lmc_5b4d51be7726617c` | person email | FOUNDER ~2026-10-15T22:00Z (report) | null | `rsv_recon_surfe_lmc_danielle_kambic` ($0.25 incurred) | **MATCHED** |
+| Roger J. Whyte II | Stratus / `gdi_lmc_00cd663a9f282697` | person email | report | null | incurred $0.25 | **MATCHED** |
+| Jodi Moraru | Evoke / `gdi_lmc_d670fde177ad418b` | person email | report | null | incurred $0.25 | **MATCHED** |
+| André Wells | Events by Andre Wells / `gdi_lmc_860cde704de88d7c` | email attempt → identity conflict | report | null | incurred $0.25 (cost not zeroed) | **MATCHED** |
+| FOUNDER “5th” $0.25 | — | — | — | none | hold $0.25 | **UNRESOLVED** |
 
-**Accounting hold $1.25** covers the unresolved Surfe enrichment envelope (request IDs + fifth-credit identity). Hold ≠ incurred ≠ reservation.
+### B. Scaling-contact Surfe (~$0.50) — not NOT_EXECUTED
 
-### Prior / other Surfe (reference only — already handled; do not re-add)
+Evidence: `reports/gdi-buyer-contact-enrichment/ANSWERS_A-G_SCALING_CONTACTS.md` (gdi-release-main + mirrored claims). CONTINUATION skip reports are a **different** pass.
 
-| Item | Evidence | In $11 ledger? | Note |
-|------|----------|----------------|------|
-| Prior AMWA named-contact Surfe $0.25 | `bcb0a16b-063e-4654-8569-f87e707c9bf6` / `rsv_recon_surfe_amwa` | **Yes** | Prior paid-MS — **not** the later LMC pass |
-| Wisedocs / Shipyard Surfe | CONTINUATION / TASK_BY_SEGMENT: Surfe **skipped** (usable org email) | Parallel contact rows only (`contact_wisedocs_may` / `contact_shipyard_sd` @ $0.15 each) | Surfe **$0** — not a missing Surfe charge |
-| Scaling-contact Surfe | CONTINUATION_SUMMARY: skipped | No Surfe rows | Surfe **$0** this continuation |
+| Person | Employer / purpose | Channel | Est. | Request ID | In $11 Surfe rows? | Disposition |
+|--------|--------------------|---------|----:|------------|--------------------|-------------|
+| Stephanie Pursglove | ESET — Office Manager person email | Surfe → identity_conflict | 0.25 | not retained in this worktree | **No** | **EXECUTED_UNMATCHED** |
+| Yessica Trujillo | SOCi — People Ops | Surfe email accepted then quarantined (`kts-law.com`) | 0.25 | not retained | **No** | **EXECUTED_UNMATCHED** |
 
----
+Hold allocates **$0.50**. Do not invent ledger rows or claim precise billed cost.
 
-## Balances (authoritative)
+### C. Wisedocs / Shipyard original person-email Surfe (~$0.50) — not NOT_EXECUTED from skip reports
 
-| Item | USD | Role |
-|------|----:|------|
-| Authorized ($11 Mayflower/SD) | **11.00** | Cap |
-| Supported estimated incurred | **5.25** | Incurred (estimate) |
-| Actual billed | **UNKNOWN** | Invoice |
-| Outstanding provider reservations | **0.00** | Reservation |
-| Historical unresolved accounting hold | **1.25** | Hold (Surfe envelope) |
-| Safely available | **4.50** | Available pending Surfe reconciliation |
+| Person | Employer / opp | Evidence | Est. | Request ID | In $11 Surfe rows? | Disposition |
+|--------|----------------|----------|----:|------------|--------------------|-------------|
+| Manal Abu-Shawar | Wisedocs / `gdi_sc_0fe98055e8df9f75` | Provider-returned `manal@wisedocs.ai` (Surfe) — `wisedocs-domain-corroboration.md`; scaling answers: prior named enrichment complete | ~0.25 | not in this ledger | **No** (Parallel `contact_wisedocs_may` $0.15 is separate) | **EXECUTED_UNMATCHED** |
+| Traci Hetherington | The Shipyard / `gdi_sc_188e25b6b3b56637` | Scaling/completion docs: prior Surfe person email retained; continuation intentionally skipped repeat | ~0.25 | not in this ledger | **No** (Parallel `contact_shipyard_sd` $0.15 separate) | **EXECUTED_UNMATCHED** |
 
-Controls: fail-closed missing authorization ledger (`PAID_MS_LEDGER_MISSING`); `accountingHoldUsd` reduces available via `remainingParallelBudgetUsd` (not counted as spent or reserved). Historical $2 pilot path unchanged / restored separately.
+A later skip because usable channel exists does **not** establish that the earlier paid attempt never ran. Populated email alone does not prove billed cost; missing request ID does not prove zero. Hold allocates **$0.50**.
 
-**Workroot note:** Authoritative corrected copy lives under `my-operators-backend`. If shell `GDI_DATA_ROOT` points at another worktree (observed: `gdi-release-main`), that on-disk authorization ledger must be kept in sync — a missing/stale folder in one tree is not proof of nonexecution, and unequal trees reintroduce the empty-bootstrap class of error.
+### D. Prior AMWA Surfe — MATCHED (reference)
+
+`bcb0a16b-063e-4654-8569-f87e707c9bf6` / `rsv_recon_surfe_amwa` $0.25 — already in incurred; **not** the LMC pass.
 
 ---
 
-## Hotel activation (independent authorizations)
+## Historical $2 pilot — closed to spending
 
-| Scope | Cap | Status | Ownership |
-|-------|----:|--------|-----------|
-| Renaissance GDI (`recG66DQJKP2c0UNh`) | **$12** | **AUTHORIZED_NOT_STARTED** | `reports/gdi-six-hotel-e2e/RENAISSANCE_ACTIVATION_PLAN.md` |
-| Renaissance ADP (same hotel) | **$15** | **COMPLETE** (PR #110 @ `2c58fef4`, deploy SUCCESS) | `reports/adp-six-hotel-e2e/renaissance/` |
-| Other five hotels | proposed GDI $30 / ADP $57 | **Not approved** | Queued only |
-| Waterstone distribution | — | **HOLD** intact | — |
+Source: `reports/gdi-operational-baseline/FINAL-REPORT.md` (final), not the intermediate after-probe snapshot alone.
 
-Mayflower/SD $11 funds **not** transferred. Authorization ≠ execution for GDI Renaissance. This accounting task did **not** launch GDI/ADP runs or paid requests.
+| Run | Role | Est. |
+|-----|------|----:|
+| `trun_567f3335d0c140ad8e87120211c6f61f` | Contaminated research | 1.00 |
+| `trun_567f3335d0c140ad9269500c06dc2b38` | Connectivity probe | 0.50 |
+| `trun_567f3335d0c140ad8fc1b7a929f468b3` | Corrected identity-lock | 0.50 (provider actual 0.50 on this run) |
+
+| Cap | Supported estimated incurred | Remaining | Closed? |
+|----:|-----------------------------:|----------:|---------|
+| 2.00 | **2.00** | **0.00** | **Yes** |
+
+Actual billed total still **UNKNOWN** beyond the third-run provider payload. Separate from Mayflower/SD $11 and all new-hotel budgets. Do not reopen $0.50 capacity.
+
+---
+
+## Budget-control enforcement
+
+`remainingParallelBudgetUsd` / Surfe `reserveSurfeSpend` → same authorization ledger:
+
+**available = authorized − estimated incurred − active reservations − unresolved accounting hold**
+
+- Missing authorization ledger → fail closed (`PAID_MS_LEDGER_MISSING`)
+- Invalid / non-finite / negative hold → fail closed (`ACCOUNTING_HOLD_INVALID`)
+- Missing hold field → 0 only for valid legacy ledger
+- Hold persists through reserve/commit/release
+- `releaseAccountingHold` / `increaseAccountingHold` / `convertAccountingHoldToIncurred` are idempotent; converting hold to incurred does not double-deduct a released overlap
+- Dry-run never submits paid Surfe or production writes (`test-gdi-dry-run-paid-isolation-v1.mjs`)
+
+Focused regressions: Parallel hold block, **Surfe** hold block, invalid hold, persistence, idempotent recon, dry-run isolation.
+
+---
+
+## Hotel activation statuses (independent)
+
+| Scope | Cap | Actual status | Notes |
+|-------|----:|---------------|-------|
+| Renaissance GDI `recG66DQJKP2c0UNh` | **$12** | **PUBLISHED_VERIFIED / completed** | Owner `cursor-agent-renaissance-gdi-exec`; run `gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d`; Parallel `trun_567f3335d0c140adbc64e005916c92ac` ~$0.21; production list 15. Evidence: `gdi-renaissance-exec` `EXECUTION_OWNERSHIP.json` / `FOUNDER_DELIVERY_REPORT.md`. This accounting task did **not** launch or interrupt that run. |
+| Renaissance ADP (same hotel) | **$15** | Research **complete**; production share **blocked** (`invalid_share_signature`); Airtable Live upsert **blocked** (payload size); customer delivery **incomplete** | PR #110 @ `2c58fef4` deployed research/publish path. Do not label entire delivery COMPLETE. |
+| Tampa Airport Marriott | — | Config **NOT_READY**; **no explicit paid ADP/GDI cap authorized** in this tree | Do not infer cap from six-hotel proposals. Paid discovery not authorized. |
+| Other hotel scopes | — | Independent | Waterstone distribution **HOLD** intact. |
+
+Mayflower/SD $11 funds not transferred. This task is not a Renaissance activation gate.

@@ -1,22 +1,5 @@
-section,index,jobKey,hotelId,purpose,providerRunId,reservationId,estimatedUsd,disposition,notes
-lmc_parallel,1,paid_ms:lmc_planners_social_may_v1,rec0eTEnCqlsGJJt9,LMC planners/social Mayflower,trun_567f3335d0c140ad84cb51c43c0b4baa,rsv_recon_paid_ms_lmc_planners_social_may_v1,0.35,MATCHED,restored; not pe/scaling
-lmc_parallel,2,paid_ms:lmc_corporate_assoc_may_v1,rec0eTEnCqlsGJJt9,LMC corporate/assoc Mayflower,trun_567f3335d0c140ad8222efec4611b85a,rsv_recon_paid_ms_lmc_corporate_assoc_may_v1,0.35,MATCHED,restored
-lmc_parallel,3,paid_ms:lmc_planners_social_sd_v1,recnPB3Q02NO8Ma1o,LMC planners/social San Diego,trun_567f3335d0c140ad8b6191e9c2922d9f,rsv_recon_paid_ms_lmc_planners_social_sd_v1,0.35,MATCHED,restored
-lmc_parallel,4,paid_ms:lmc_corporate_assoc_sd_v1,recnPB3Q02NO8Ma1o,LMC corporate/assoc San Diego,trun_567f3335d0c140ad8e3066a4795127f5,rsv_recon_paid_ms_lmc_corporate_assoc_sd_v1,0.35,MATCHED,restored
-not_lmc_equal_cost,1,paid_ms:pe_sd_gaslamp_yacht,recnPB3Q02NO8Ma1o,PE Gaslamp/yacht,trun_567f3335d0c140ad9bc68e2c107a280e,rsv_recon_paid_ms_pe_sd_gaslamp_yacht,0.35,MATCHED_SEPARATE,kept; not LMC
-not_lmc_equal_cost,2,paid_ms:scaling_discovery_may_v2,rec0eTEnCqlsGJJt9,Scaling continuation,trun_567f3335d0c140adb82a54365648fad5,rsv_recon_paid_ms_scaling_discovery_may_v2,0.35,MATCHED_SEPARATE,kept; not LMC
-not_lmc_equal_cost,3,paid_ms:scaling_discovery_sd_v2,recnPB3Q02NO8Ma1o,Scaling continuation,trun_567f3335d0c140ad949f162eb795ee58,rsv_recon_paid_ms_scaling_discovery_sd_v2,0.35,MATCHED_SEPARATE,kept; not LMC
-surfe_lmc,1,surfe:gdi_lmc_5b4d51be7726617c:email,rec0eTEnCqlsGJJt9,Danielle Kambic,,rsv_recon_surfe_lmc_danielle_kambic,0.25,MATCHED,request ID UNRESOLVED
-surfe_lmc,2,surfe:gdi_lmc_00cd663a9f282697:email,rec0eTEnCqlsGJJt9,Roger Whyte,,rsv_recon_surfe_lmc_roger_whyte,0.25,MATCHED,request ID UNRESOLVED
-surfe_lmc,3,surfe:gdi_lmc_d670fde177ad418b:email,rec0eTEnCqlsGJJt9,Jodi Moraru,,rsv_recon_surfe_lmc_jodi_moraru,0.25,MATCHED,request ID UNRESOLVED
-surfe_lmc,4,surfe:gdi_lmc_860cde704de88d7c:email,rec0eTEnCqlsGJJt9,Andre Wells identity conflict,,rsv_recon_surfe_lmc_andre_wells_conflict,0.25,MATCHED,request ID UNRESOLVED
-surfe_lmc,5,,,FOUNDER claimed 5th this pass,,,0.25,UNRESOLVED,no artifact located; not added
-surfe_other,1,surfe:amwa_prior,rec0eTEnCqlsGJJt9,Prior AMWA,bcb0a16b-063e-4654-8569-f87e707c9bf6,rsv_recon_surfe_amwa,0.25,MATCHED,not later LMC pass
-surfe_other,2,surfe:wisedocs_shipyard,,,Skipped usable org email,,,0,NOT_EXECUTED,Parallel contact rows only
-surfe_other,3,surfe:scaling_contact_continuation,,,Skipped usable channel,,,0,NOT_EXECUTED,CONTINUATION_SUMMARY
-balances,authorized,,,,11,,AUTHORIZED,
-balances,estimated_incurred,,,,5.25,,INCURRED_ESTIMATE,
-balances,reservations,,,,0,,RESERVATION,
-balances,accounting_hold,,,,1.25,,HOLD_NOT_INCURRED,
-balances,available,,,,4.5,,AVAILABLE,
-balances,actual_billed,,,,,UNKNOWN,
+﻿claimed_execution,already_in_incurred_usd,potential_additional_exposure_usd,hold_allocated_usd,disposition,action,reason
+Four LMC Surfe (Danielle/Roger/Jodi/Andre),1.00,0.00,0.00,MATCHED,RELEASED_OVERLAP,Already in estimatedSpent; missing request ID does not add hold
+Fifth LMC Surfe FOUNDER credit,0.00,0.25,0.25,UNRESOLVED,RETAIN_HOLD,Fifth credit not located in register
+Scaling Stephanie+Yessica Surfe,0.00,0.50,0.50,EXECUTED_UNMATCHED,RETAIN_HOLD,ANSWERS claims 0.50; not in ledger Surfe rows; skip reports are different pass
+Wisedocs Manal + Shipyard Traci original Surfe,0.00,0.50,0.50,EXECUTED_UNMATCHED,RETAIN_HOLD,Provider email evidence; continuation skip != nonexecution of earlier pass

@@ -209,7 +209,10 @@
       "evidenceAlso": [
         "data/group-demand-intelligence/execution-history/gdi_three_hotel_integrity_2026-10-15T21-44-42-649Z.json"
       ],
-      "note": "LMC planners/social Mayflower — restored 2026-10-16 tx-match correction; not pe_sd/scaling_v2"
+      "note": "LMC planners/social Mayflower — restored 2026-10-16 tx-match correction; not pe_sd/scaling_v2",
+      "spentAtProvenance": "report_timestamp:reports/gdi-lmc-planner-expansion/FOUNDER_REPORT.md (not verified provider submission time)",
+      "executionHistoryRecordedAt": "2026-10-15T21:44:42.649Z",
+      "executionHistoryRecordedAtProvenance": "data/group-demand-intelligence/execution-history/gdi_three_hotel_integrity_2026-10-15T21-44-42-649Z.json stage stamp"
     },
     {
       "reservationId": "rsv_recon_paid_ms_lmc_corporate_assoc_may_v1",
@@ -225,7 +228,10 @@
       "evidenceAlso": [
         "data/group-demand-intelligence/execution-history/gdi_three_hotel_integrity_2026-10-15T21-44-42-649Z.json"
       ],
-      "note": "LMC corporate/assoc Mayflower — restored 2026-10-16 tx-match correction"
+      "note": "LMC corporate/assoc Mayflower — restored 2026-10-16 tx-match correction",
+      "spentAtProvenance": "report_timestamp:reports/gdi-lmc-planner-expansion/FOUNDER_REPORT.md (not verified provider submission time)",
+      "executionHistoryRecordedAt": "2026-10-15T21:44:42.649Z",
+      "executionHistoryRecordedAtProvenance": "data/group-demand-intelligence/execution-history/gdi_three_hotel_integrity_2026-10-15T21-44-42-649Z.json stage stamp"
     },
     {
       "reservationId": "rsv_recon_paid_ms_lmc_planners_social_sd_v1",
@@ -241,7 +247,10 @@
       "evidenceAlso": [
         "data/group-demand-intelligence/execution-history/gdi_three_hotel_integrity_2026-10-15T21-44-42-649Z.json"
       ],
-      "note": "LMC planners/social San Diego — restored 2026-10-16 tx-match correction"
+      "note": "LMC planners/social San Diego — restored 2026-10-16 tx-match correction",
+      "spentAtProvenance": "report_timestamp:reports/gdi-lmc-planner-expansion/FOUNDER_REPORT.md (not verified provider submission time)",
+      "executionHistoryRecordedAt": "2026-10-15T21:44:42.649Z",
+      "executionHistoryRecordedAtProvenance": "data/group-demand-intelligence/execution-history/gdi_three_hotel_integrity_2026-10-15T21-44-42-649Z.json stage stamp"
     },
     {
       "reservationId": "rsv_recon_paid_ms_lmc_corporate_assoc_sd_v1",
@@ -257,15 +266,18 @@
       "evidenceAlso": [
         "data/group-demand-intelligence/execution-history/gdi_three_hotel_integrity_2026-10-15T21-44-42-649Z.json"
       ],
-      "note": "LMC corporate/assoc San Diego — restored 2026-10-16 tx-match correction"
+      "note": "LMC corporate/assoc San Diego — restored 2026-10-16 tx-match correction",
+      "spentAtProvenance": "report_timestamp:reports/gdi-lmc-planner-expansion/FOUNDER_REPORT.md (not verified provider submission time)",
+      "executionHistoryRecordedAt": "2026-10-15T21:44:42.649Z",
+      "executionHistoryRecordedAtProvenance": "data/group-demand-intelligence/execution-history/gdi_three_hotel_integrity_2026-10-15T21-44-42-649Z.json stage stamp"
     }
   ],
-  "updatedAt": "2026-10-16T12:10:00.000Z",
+  "updatedAt": "2026-10-16T13:05:00.000Z",
   "reconciliation": {
-    "reconciledAt": "2026-10-16T12:10:00.000Z",
+    "reconciledAt": "2026-10-16T13:05:00.000Z",
     "priorIncorrectGap265CloseoutAt": "2026-10-16T10:20:00.000Z",
     "correctionRef": "reports/gdi-pre-batch-readiness/TRANSACTION_RECONCILIATION.md",
-    "rootCause": "PR #109 matched pe_sd_gaslamp_yacht + scaling_discovery_may_v2 + scaling_discovery_sd_v2 to claimed LMC Parallel by equal cost only. Those are different tasks. Four LMC Parallel runs with distinct trun_ IDs were omitted.",
+    "rootCause": "PR #111 retained $1.25 hold that overlapped $1.00 already incurred for four LMC Surfe outcomes, and labeled later Surfe claims NOT_EXECUTED from skip-only continuation reports.",
     "authoritativePath": "data/group-demand-intelligence/paid-multisegment-budget/authorization-ledger-v1.json",
     "historicalPilotUsdSeparate": 2,
     "supportedEstimatedIncurredUsd": 5.25,
@@ -278,8 +290,54 @@
     "safelyAvailableUsd": 4.5,
     "actualBilledUsd": null,
     "estimatedSpentLackingProviderRequestIdUsd": 1,
-    "backupBeforeCorrection": "reports/gdi-pre-batch-readiness/budget-ledger-audit/20261016-120717-tx-match-correction/authorization-ledger-v1.pre-tx-match-correction.json",
-    "note": "pe_sd / scaling_v2 remain as their own prior spent rows. Equal cost ≠ transaction identity. Historical  pilot separate."
+    "backupBeforeCorrection": "reports/gdi-pre-batch-readiness/budget-ledger-audit/20261016-150125-hold-surfe-correction/authorization-ledger-v1.pre-hold-surfe-correction.json",
+    "note": "Hold amount remains $1.25 after reallocating away from already-incurred LMC Surfe. Available formula: authorized − incurred − reserved − hold.",
+    "correctionPass": "hold-surfe-overlap-v1",
+    "priorTxMatchCorrectionAt": "2026-10-16T12:10:00.000Z",
+    "accountingHoldComposition": [
+      {
+        "claim": "LMC contact-depth fifth Surfe credit",
+        "amountUsd": 0.25,
+        "disposition": "UNRESOLVED",
+        "alreadyInIncurredUsd": 0,
+        "holdAllocatedUsd": 0.25
+      },
+      {
+        "claim": "Scaling Stephanie Pursglove + Yessica Trujillo Surfe",
+        "amountUsd": 0.5,
+        "disposition": "EXECUTED_UNMATCHED",
+        "alreadyInIncurredUsd": 0,
+        "holdAllocatedUsd": 0.5
+      },
+      {
+        "claim": "Wisedocs Manal + Shipyard Traci original Surfe person-email",
+        "amountUsd": 0.5,
+        "disposition": "EXECUTED_UNMATCHED",
+        "alreadyInIncurredUsd": 0,
+        "holdAllocatedUsd": 0.5
+      }
+    ],
+    "accountingHoldReleasedOverlapUsd": 1,
+    "accountingHoldReleasedOverlapNote": "Released $1.00 hold that double-counted four MATCHED LMC Surfe rows already in estimatedSpentUsd.",
+    "accountingHoldIncreasedUsd": 1,
+    "accountingHoldIncreasedNote": "Increased $1.00 for EXECUTED_UNMATCHED scaling + Wisedocs/Shipyard Surfe claims not present as Surfe rows in this ledger."
   },
-  "accountingHoldUsd": 1.25
+  "accountingHoldUsd": 1.25,
+  "path": "data/group-demand-intelligence/paid-multisegment-budget/authorization-ledger-v1.json",
+  "holdReleases": [
+    {
+      "releaseId": "rel_lmc_surfe_already_incurred_v1",
+      "amountUsd": 1,
+      "reason": "Four LMC Surfe outcomes already booked in estimatedSpentUsd ($1.00). Missing request IDs do not justify a second hold on the same exposure.",
+      "releasedAt": "2026-10-16T13:01:25.905Z"
+    }
+  ],
+  "holdIncreases": [
+    {
+      "holdId": "hold_scaling_wisedocs_shipyard_unmatched_v1",
+      "amountUsd": 1,
+      "reason": "Additional unresolved Surfe exposure not in incurred: scaling Stephanie+Yessica ~$0.50 EXECUTED_UNMATCHED + Wisedocs/Shipyard original person-email Surfe ~$0.50 EXECUTED_UNMATCHED. Fifth LMC $0.25 remains from prior hold after overlap release.",
+      "increasedAt": "2026-10-16T13:01:25.911Z"
+    }
+  ]
 }
