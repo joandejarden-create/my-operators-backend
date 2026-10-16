@@ -105,10 +105,10 @@ Journal was **not** mutated (status writes only under `reports/gdi-full-e2e-cont
 | Item | Status |
 |------|--------|
 | Code fix PR | [#119](https://github.com/joandejarden-create/my-operators-backend/pull/119) merged @ `e6d9a609` |
-| Lean upload PR | `fix/railway-lean-413-gdi-reports` — pack estimate **~173 MB** (GDI reports PDF-only; marketing CDN source textures excluded) |
-| Deployed SHA | *Fill after clean-main `npm run deploy:production`* |
+| Lean ignore PR | [#120](https://github.com/joandejarden-create/my-operators-backend/pull/120) merged @ `acc380bf` |
+| Deployed SHA | **`acc380bf`** (lean-stage upload; Railway deploy `8cd94aaf` SUCCESS; postdeploy smoke PASS) |
 | Remains blocked | Full E2E COMPLETE for Renaissance until segmentCoverage artifacts, deliverable verification, and Full E2E stage ledger rows are produced by a governed Full E2E run (no new paid spend authorized by this task) |
-| Railway 413 | Corrected: removed blanket `!reports/group-demand-intelligence/` (was shipping research dumps). No dirty/hotfix deploy. |
+| Railway 413 | Corrected: PDF-only GDI reports un-ignore + marketing CDN texture excludes + **lean-stage `railway up --path-as-root`** (direct CLI pack still ~340MB / 413). No dirty/hotfix deploy. |
 
 ---
 
