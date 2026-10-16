@@ -1,6 +1,30 @@
 {
-  "generatedAt": "2026-10-16T07:30:00.000Z",
+  "generatedAt": "2026-10-16T10:20:00.000Z",
   "result": "RECONCILED",
+  "gap265Closeout": {
+    "closedAt": "2026-10-16T10:20:00.000Z",
+    "gapUsd": 2.65,
+    "priorNarrativeSpentUsd": 6.5,
+    "priorNarrativeRemainingUsd": 4.5,
+    "reconstructedSpentUsd": 3.85,
+    "reconstructedRemainingUsd": 7.15,
+    "decomposition": {
+      "duplicateSurfeAlreadyInLedgerUsd": 1.25,
+      "duplicateParallelPoint35AlreadyInLedgerUsd": 1.05,
+      "notExecutedFourthParallelUsd": 0.35,
+      "sumUsd": 2.65
+    },
+    "ledgerMutation": {
+      "entriesAdded": 0,
+      "entriesRemoved": 0,
+      "entriesMatched": 8,
+      "notExecutedExcluded": 1
+    },
+    "transactionTable": "reports/gdi-pre-batch-readiness/TRANSACTION_RECONCILIATION.md",
+    "backupBeforeCloseout": "reports/gdi-pre-batch-readiness/budget-ledger-audit/20261016-101429-gap265/authorization-ledger-v1.pre-gap265.json",
+    "forcedBalances": false,
+    "note": "Prior ~$6.50 spent / ~$4.50 remaining stacked later Parallel+Surfe passes on top of reconstructed $3.85. Those passes were already INCLUDED (or one Parallel NOT_EXECUTED). No invented charges/credits."
+  },
   "rootCause": {
     "code": "SILENT_EMPTY_LEDGER_BOOTSTRAP_ON_MISSING_PATH",
     "summary": "readParallelBudgetLedger auto-created an empty $11 authorization ledger when the file was missing under a worktree/GDI_DATA_ROOT path. Observed empty file at gdi-release-main data path with updatedAt 2026-10-15T23:19:05.285Z (0 entries, $0 spent). Prior spend evidence remained in operational reports only.",
@@ -11,18 +35,34 @@
     "GDI_PAID_MS_BUDGET_LEDGER_PATH",
     "GDI_DATA_ROOT"
   ],
+  "callersResolveSameLedger": [
+    "lib/group-demand-intelligence/workflow/paid-multisegment-research-v1.js",
+    "lib/group-demand-intelligence/workflow/surfe-usage-ledger-v1.js",
+    "lib/group-demand-intelligence/parallel/budget-ledger-v1.js"
+  ],
   "historicalPilotSeparate": {
     "path": "data/group-demand-intelligence/parallel-budget/ledger.json",
     "budgetUsd": 2,
-    "note": "Preserved separately; not merged into $11 envelope"
+    "note": "Preserved separately; not merged into $11 envelope; Mayflower/SD funds not transferred to six-hotel proposal"
   },
   "evidenceSources": [
     "reports/gdi-paid-multisegment-validation/TASK_BY_SEGMENT_RECONCILIATION.md",
     "reports/gdi-paid-multisegment-validation/CONTINUATION_SUMMARY.json",
     "reports/gdi-paid-multisegment-validation/budget-ledger-reconciled.json",
-    "reports/gdi-lmc-planner-contact-depth/FOUNDER_REPORT.md"
+    "reports/gdi-lmc-planner-contact-depth/FOUNDER_REPORT.md",
+    "reports/gdi-pre-batch-readiness/TRANSACTION_RECONCILIATION.md"
   ],
   "backupOfEmptyCopy": "reports/gdi-pre-batch-readiness/budget-ledger-audit/20261016-091655/authorization-ledger-v1.empty-observed.json",
+  "balances": {
+    "authorizedUsd": 11,
+    "supportedEstimatedIncurredUsd": 3.85,
+    "outstandingReservationsUsd": 0,
+    "unresolvedSpendingExposureBeyondLedgerUsd": 0,
+    "estimatedSpentLackingProviderRequestIdUsd": 1.0,
+    "safelyAvailableUsd": 7.15,
+    "actualBilledUsd": null,
+    "actualBilledStatus": "UNKNOWN"
+  },
   "reconstructed": {
     "budgetUsd": 11,
     "estimatedSpentUsd": 3.85,
@@ -33,7 +73,7 @@
     "dedupeKey": "providerRunId || jobKey",
     "priorNarrativeRemainingUsd": 4.5,
     "forcedToPriorNarrative": false,
-    "note": "Reconstructed from provider run IDs + LMC Surfe outcomes. Prior ~$4.50 remaining claim is documented but not forced. Actual billed remains unknown until invoices."
+    "note": "Reconstructed from provider run IDs + LMC Surfe outcomes. Prior ~$4.50 remaining claim is documented but not forced. Actual billed remains unknown until invoices. Gap $2.65 closed as duplicate narrative + one NOT_EXECUTED Parallel."
   },
   "failClosed": {
     "test": "scripts/test-gdi-paid-ms-ledger-fail-closed-v1.mjs",
@@ -42,6 +82,7 @@
   },
   "policy": {
     "transferMayflowerSdToSixHotel": false,
-    "newPaidCallsThisTask": false
+    "newPaidCallsThisTask": false,
+    "renaissanceActivation": "NOT_STARTED"
   }
 }
