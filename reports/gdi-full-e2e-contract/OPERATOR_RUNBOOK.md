@@ -1,11 +1,15 @@
 # Full GDI E2E — Operator Runbook
 
-**Contract version:** `gdi-full-e2e-contract-v1.1` (fail-closed)  
+**Contract version:** `gdi-full-e2e-contract-v1.2` (fail-closed)  
 **Coordinator:** `scripts/gdi-research-to-page-workflow-v1.mjs`  
 **Evaluator:** `lib/group-demand-intelligence/workflow/full-e2e-completion-evaluator-v1.js`  
+**Publication quality:** `lib/group-demand-intelligence/workflow/full-e2e-publication-quality-v1.js`  
 **Status CLI (read-only):** `scripts/gdi-full-e2e-status-v1.mjs` — writes only under `--out-dir`, never into the source run journal  
+**Lesson register:** `LESSON_REGISTER.md` · reusable Cursor prompt: `CURSOR_PROMPT_FULL_E2E.md`
 
 Research spend authorization (`--authorize-paid-discovery` / `--authorize-surfe`) is **separate** from publication (`--authorize-publish`). `--dry-run` overrides every paid/write flag.
+
+**Next hotel uses this entry point only** — do not create a hotel-specific eligibility-repair or overlay script as the primary path.
 
 Distinctions enforced by the contract:
 
@@ -13,10 +17,10 @@ Distinctions enforced by the contract:
 |--------|---------|
 | Task execution | Coordinator stage completed/failed |
 | Research coverage | Declared segment scope satisfied with evidence |
-| Publication | Qualified opportunities persisted |
+| Publication | Qualified opportunities persisted **with** fit/drawers/eligibility/dedupe gates |
 | Customer delivery | Local **and** production verification of list/drawers/reports/links |
 
-Association-only publication while other applicable segments remain plan-only **never** yields `COMPLETE`.
+Association-only publication while other applicable segments remain plan-only **never** yields `COMPLETE`. Sports/educational axes require independent assessment. Contact depth cannot be skipped because an organization route exists.
 
 ---
 
