@@ -33,7 +33,7 @@ Post-merge API verify copy (aside): `C:\Dev\dealality\_aside-six-combo-consolida
 | Westin Tampa Waterside | ADP | READY (current-report PDF) | Verified | Verified | **Not** in monthly-reviews → `review_artifact_missing` for monthly path is accurate; do not force READY |
 | Westin Tampa Waterside | GDI | BLOCKED / unavailable | Share opens; **0 facing** | PDF present | Accurate zero-facing; no publication reclassification |
 | Wyndham SD Bayside | ADP | READY (current-report PDF) | Verified | Verified | Same monthly-review note as Westin ADP |
-| Wyndham SD Bayside | GDI | Local catalog BLOCKED (`ready=0`) | External share Verified (**51 facing**) | Verified | Local Admin catalog not Airtable-parity; production client is customer-ready |
+| Wyndham SD Bayside | GDI | READY (local filesystem mirror) | External share Verified (**51 facing**) | Verified | Airtable mirror: 82 opportunities, 51 facing, customer-ready 5, future-watch 11. Facing prospects are not reclassified as customer-ready. |
 
 ### Verification scope honesty
 
@@ -54,7 +54,7 @@ Do **not** restore older Mayflower/SD summaries ($3.85 / $7.15) from other workt
 ## Backups / aside (not deleted)
 
 - `C:\Dev\dealality\_aside-six-combo-consolidate-20261017-002537` — pre-integration dirty snapshot  
-- `C:\Dev\dealality\_aside-six-combo-untracked-opps-20261017` — uncommitted Westin/Wyndham `opportunities.json` (not merged; avoid accidental publication side effects)
+- `C:\Dev\dealality\_aside-six-combo-untracked-opps-20261017` — held Westin/Wyndham snapshots. Wyndham publication fields matched live Airtable (0 mismatches) and the mirror was rewritten from that read. Westin snapshot stays unmerged (0 facing).
 
 ## Held worktrees (leave inactive)
 
@@ -66,12 +66,15 @@ Do **not** restore older Mayflower/SD summaries ($3.85 / $7.15) from other workt
 | `tampa-airport-adp-gdi` | **Deferred** Tampa Airport activation — preserve instructions; do not run |
 | `gdi-main-consolidate`, `xps-*`, `october-recovery-test`, `adp-share-unknown-fix`, etc. | Unrelated |
 
+## Completed after this handoff
+
+- **Local GDI Admin catalog parity** for Wyndham — filesystem mirror of the published Airtable set (`ready=5`, 51 facing, status READY). No Airtable write. Westin remains unmirrored. Gate: `npm run test:admin-wyndham-gdi-catalog-parity`.
+
 ## Deferred tasks
 
 1. **Tampa Airport Marriott** ADP/GDI activation — deferred; do not execute from this chat.  
 2. **Memberstack-authenticated Admin UI click** pass for Open/Copy/View/Download on all six (shell Access restricted under local bypass alone).  
-3. **Local GDI Admin catalog parity** for Wyndham (local `ready=0` / BLOCKED vs production 51 facing) — data sync, not paid research.  
-4. Optional: add Westin/Wyndham to ADP Action Plan catalog if product requires that tab (current-report PDF path already works).
+3. Optional: add Westin/Wyndham to ADP Action Plan catalog if product requires that tab (current-report PDF path already works).
 
 ## Operating rule going forward
 
