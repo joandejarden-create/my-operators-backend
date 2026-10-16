@@ -18,10 +18,12 @@ assert.ok(
   "sanitize version must be v3+"
 );
 
+// Original Renaissance pre-deploy leak field shape (legacy conference cards):
+// evidence[].researchProvider === "webhound" (not SSSP withdrawal).
 const leakingLegacyShape = {
-  id: "gdi_opp_example_legacy_assoc_1",
-  title: "Example Annual Meeting",
-  organizationName: "Example Association",
+  id: "gdi_opp_namt_fall_conference_festival_of_new_musicals_0",
+  title: "NAMT Fall Conference + Festival of New Musicals",
+  organizationName: "National Alliance for Musical Theatre",
   summaryWhat: "Credible overflow housing conversation in Midtown.",
   hotelOpportunityThesis:
     "Times Square location supports overflow when the host hotel fills.",
@@ -47,7 +49,7 @@ const leakingLegacyShape = {
       field: "source",
       value: "Official annual meeting page",
       claimKind: "FACT",
-      sourceUrl: "https://www.example.org/annual-meeting",
+      sourceUrl: "https://www.namt.org/festival",
       sourceTitle: "Official Annual Meeting",
       sourceAuthority: "Tier_B",
       accessDate: "2026-09-16",
@@ -58,7 +60,7 @@ const leakingLegacyShape = {
   sources: [
     {
       name: "Official Annual Meeting",
-      url: "https://www.example.org/annual-meeting",
+      url: "https://www.namt.org/festival",
       date: "2026-09-16",
     },
   ],
@@ -73,10 +75,10 @@ assert.ok(!cleaned.evidence?.[0]?.researchProvider);
 assert.ok(!cleaned.evidence?.[0]?.researchLevel);
 assert.equal(
   cleaned.evidence?.[0]?.sourceUrl,
-  "https://www.example.org/annual-meeting",
+  "https://www.namt.org/festival",
   "legitimate source URL must be preserved"
 );
-assert.equal(cleaned.sources?.[0]?.url, "https://www.example.org/annual-meeting");
+assert.equal(cleaned.sources?.[0]?.url, "https://www.namt.org/festival");
 assert.equal(cleaned.phoneSource, "FIRST_PARTY");
 assert.equal(cleaned.primaryContact?.phoneSource, "FIRST_PARTY");
 assert.equal(cleaned.primaryContact?.provider, undefined);
