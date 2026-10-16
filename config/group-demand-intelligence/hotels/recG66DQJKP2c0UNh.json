@@ -3,7 +3,7 @@
   "displayName": "Renaissance New York Times Square Hotel",
   "aliases": {
     "adpPropertyId": "adp_renaissance_times_square",
-    "marriottPropertyCode": "NYCRN",
+    "marriottPropertyCode": "NYCRT",
     "censusRecordId": "recG66DQJKP2c0UNh",
     "note": "Canonical hotelId is HPC record. Provisional GDI key retained as alias only.",
     "provisionalGdiHotelId": "gdi_hotel_renaissance_times_square"
@@ -16,21 +16,21 @@
     "allowSmallerIfCommerciallyMeaningful": true,
     "demandAnchorFocus": [],
     "weekendFocus": false,
-    "notes": "HOTEL_SPECIFIC_DATA from ADP rooms=310 and modest meeting space (~5k sq ft / Broadway Ballroom ~200 theater). Peak band sized for realistic Midtown primary pursuit; citywide/Javits demand is overflow-only when housing access is evidenced. targetSegments intentionally empty — discovery must not be seeded with demand-type assumptions."
+    "notes": "HOTEL_SPECIFIC_DATA from ADP-verified profile (rooms=317; modest meeting inventory ~5k sq ft / largest listed Bowtie Bar ~1,591 sq ft theater 100). Peak band sized for realistic Midtown primary pursuit; citywide/Javits demand is overflow-only when housing access is evidenced. targetSegments intentionally empty — discovery must not be seeded with demand-type assumptions."
   },
   "capabilityProfile": {
-    "totalGuestrooms": 310,
+    "totalGuestrooms": 317,
     "totalMeetingSpaceSqFt": 5000,
-    "largestBallroomSqFt": 2400,
-    "largestTheaterCapacity": 200,
+    "largestBallroomSqFt": 1591,
+    "largestTheaterCapacity": 100,
     "meetingRoomsIndoor": 4,
     "outdoorEventSpace": false,
     "softBrand": "Renaissance Hotels (Marriott)",
     "serviceLevel": "full_service_urban",
     "classification": "times_square_midtown_lifestyle",
-    "notes": "HOTEL_SPECIFIC_DATA from ADP RO fixture — not hardcoded into scoring engine. Limited meeting inventory vs large Manhattan convention hotels.",
+    "notes": "HOTEL_SPECIFIC_DATA from ADP-verified Marriott NYCRT events page — not hardcoded into scoring engine. Limited meeting inventory vs large Manhattan convention hotels. Legacy Broadway Ballroom claim contradicted.",
     "meetingRoomCount": 4,
-    "largestMeetingRoomSqFt": 2400
+    "largestMeetingRoomSqFt": 1591
   },
   "demandTerritory": {
     "label": "Manhattan Midtown / Times Square",
@@ -116,6 +116,7 @@
   "hotelIdentityStatus": "CANONICAL_HPC",
   "capabilityProfileSource": {
     "hiRequalV1At": "2026-09-30T13:00:04.960Z",
-    "note": "Filled null/zero capability fields from Hotel Intelligence Airtable"
+    "note": "Synced from ADP Renaissance profile verification (317 rooms, NYCRT, Bowtie Bar largest listed space).",
+    "adpVerifiedAt": "2026-10-16"
   }
 }

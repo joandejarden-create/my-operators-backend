@@ -1,0 +1,2521 @@
+{
+  "runId": "gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d",
+  "hotelId": "recG66DQJKP2c0UNh",
+  "horizon": "18m",
+  "targetEnv": "local",
+  "adapter": "filesystem",
+  "budget": {
+    "maxUsd": 12,
+    "maxSearches": 60,
+    "maxPages": 100,
+    "usedUsd": 0,
+    "usedSearches": 0,
+    "usedPages": 0,
+    "exhausted": false,
+    "incompleteCoverageReason": "discovery_incomplete"
+  },
+  "authorizePublish": false,
+  "dryRun": true,
+  "startedAt": "2026-10-16T10:27:56.908Z",
+  "stages": {
+    "validate_config": {
+      "status": "completed",
+      "at": "2026-10-16T10:27:57.165Z",
+      "configPath": "C:\\Dev\\dealality\\gdi-renaissance-exec\\config\\group-demand-intelligence\\hotels\\recG66DQJKP2c0UNh.json",
+      "displayName": "Renaissance New York Times Square Hotel",
+      "onboarding": "ONBOARDED",
+      "rooms": 310
+    },
+    "reuse_evidence": {
+      "status": "completed",
+      "at": "2026-10-16T10:28:20.095Z",
+      "module": "reuse_prior_intelligence_v1",
+      "storeDir": "C:\\Dev\\dealality\\gdi-renaissance-exec\\data\\group-demand-intelligence\\hotels\\recG66DQJKP2c0UNh",
+      "opportunityCount": 29,
+      "counts": {
+        "already_facing": 8,
+        "enrichment_needed": 19,
+        "fit_assessment_needed": 0,
+        "stale_evidence": 0,
+        "rejected_with_reason": 2,
+        "unresolved": 0,
+        "demand_generator_candidate": 16,
+        "feedback_disposition": 0,
+        "private_event_intelligence": 34
+      },
+      "demandPrograms": {
+        "ok": true,
+        "reason": "airtable_filtered_by_fitted_generators",
+        "status": "executed",
+        "count": 8
+      },
+      "demandGeneratorSignals": {
+        "ok": true,
+        "reason": "empty_success_zero_records",
+        "status": "empty_success",
+        "count": 0
+      },
+      "feedbackDrivenResearch": {
+        "hintCount": 0,
+        "discoveryQueryHints": [],
+        "note": "Feedback/share-validation drives nextResearchNeed and optional discovery hints; does not auto-qualify"
+      },
+      "gapsBeforePaidDiscovery": {
+        "enrichmentNeeded": 19,
+        "fitAssessmentNeeded": 0,
+        "dgCandidatesNotFacing": 16,
+        "privateEventRows": 34,
+        "unresolved": 0,
+        "stale": 0,
+        "feedbackDisposition": 0
+      },
+      "airtableReuse": {
+        "skipped": false,
+        "reason": null,
+        "tableSummary": {
+          "executed": 7,
+          "empty_success": 2,
+          "failed": 0,
+          "skipped": 0
+        },
+        "tables": [
+          {
+            "table": "Hotel Demand Generator Fit",
+            "status": "executed",
+            "read": 8,
+            "matched": 8,
+            "excluded": 0,
+            "unresolved": 0,
+            "reason": "hotel_scoped_read"
+          },
+          {
+            "table": "Demand Generators",
+            "status": "executed",
+            "read": 50,
+            "matched": 50,
+            "excluded": 0,
+            "unresolved": 0,
+            "reason": "universe_sample_read_not_hotel_filtered"
+          },
+          {
+            "table": "Demand Programs",
+            "status": "executed",
+            "read": 50,
+            "matched": 50,
+            "excluded": 0,
+            "unresolved": 0,
+            "reason": "universe_sample_read"
+          },
+          {
+            "table": "Demand Generator Signals",
+            "status": "executed",
+            "read": 23,
+            "matched": 23,
+            "excluded": 0,
+            "unresolved": 0,
+            "reason": "universe_sample_read"
+          },
+          {
+            "table": "Group Demand Opportunities",
+            "status": "executed",
+            "read": 29,
+            "matched": 29,
+            "excluded": 0,
+            "unresolved": 0,
+            "reason": "canonical_load persistence=airtable"
+          },
+          {
+            "table": "Hotel Feedback (local share-validation / feedback store)",
+            "status": "empty_success",
+            "read": 0,
+            "matched": 0,
+            "excluded": 0,
+            "unresolved": 0,
+            "reason": "local_feedback_store"
+          },
+          {
+            "table": "Private Event Venues",
+            "status": "executed",
+            "read": 31,
+            "matched": 31,
+            "excluded": 0,
+            "unresolved": 0,
+            "reason": "pe_venues_universe_read"
+          },
+          {
+            "table": "Hotel Venue Fit",
+            "status": "empty_success",
+            "read": 0,
+            "matched": 0,
+            "excluded": 0,
+            "unresolved": 0,
+            "reason": "no_pe_fit_rows_for_hotel"
+          },
+          {
+            "table": "Private Event Signals",
+            "status": "executed",
+            "read": 19,
+            "matched": 19,
+            "excluded": 0,
+            "unresolved": 0,
+            "reason": "pe_signals_universe_sample"
+          }
+        ]
+      },
+      "privateEvent": {
+        "source": "airtable",
+        "airtableOk": true,
+        "liveAirtable": {
+          "attempted": true,
+          "ok": true,
+          "reason": "live_read",
+          "venues": 31,
+          "fits": 0,
+          "signals": 19
+        },
+        "fixtureFallback": {
+          "used": false,
+          "reason": null,
+          "corpusHotelId": null
+        },
+        "venues": 31,
+        "fits": 0,
+        "signals": 19,
+        "dispositions": {
+          "venue_referral_partnership_account": 0,
+          "specific_event_related_lodging_prospect": 1,
+          "potential_meeting_or_ancillary_hospitality": 0,
+          "background_market_intelligence_only": 1,
+          "rejected_insufficient_travel_or_procurement": 32,
+          "internal_only_not_customer_facing": 0,
+          "already_linked_gdi_opportunity": 0
+        }
+      },
+      "segmentResearchPlan": {
+        "path": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\reuse_prior_intelligence\\segment-research-plan.json",
+        "summary": {
+          "applicableCount": 8,
+          "researchedCount": 0,
+          "partiallyResearchedCount": 5,
+          "notYetResearchedCount": 3,
+          "notApplicableCount": 2,
+          "associationOnlyIsNotFullCoverage": true,
+          "associationOnlyTrap": false,
+          "associationOnlyTrapNote": null,
+          "fullCoverageClaimAllowed": false,
+          "fullCoverageNote": "Full hotel coverage requires applicable segments to be researched or explicitly not_applicable — association volume alone never qualifies."
+        },
+        "applicableGaps": [
+          {
+            "segmentId": "associations_government",
+            "label": "Associations / government",
+            "researchCoverage": "partially_researched"
+          },
+          {
+            "segmentId": "sports",
+            "label": "Sports",
+            "researchCoverage": "partially_researched"
+          },
+          {
+            "segmentId": "corporate_meetings_training",
+            "label": "Corporate meetings, training, and project teams",
+            "researchCoverage": "partially_researched"
+          },
+          {
+            "segmentId": "local_meetings_catering",
+            "label": "Local Meetings & Catering (incl. no-guestroom)",
+            "researchCoverage": "not_yet_researched"
+          },
+          {
+            "segmentId": "scaling_companies",
+            "label": "Scaling Companies / Emerging Corporate Accounts",
+            "researchCoverage": "not_yet_researched"
+          },
+          {
+            "segmentId": "medical_academic",
+            "label": "Medical / academic",
+            "researchCoverage": "partially_researched"
+          },
+          {
+            "segmentId": "weddings_social_private_events",
+            "label": "Weddings, social groups, and nearby private-event venues",
+            "researchCoverage": "partially_researched"
+          },
+          {
+            "segmentId": "entertainment_production",
+            "label": "Entertainment / production crews",
+            "researchCoverage": "not_yet_researched"
+          }
+        ]
+      },
+      "researchPathSelection": {
+        "executed": 0,
+        "reused_existing_evidence": 6,
+        "not_applicable": 0,
+        "blocked": 0,
+        "incomplete": 7
+      },
+      "webhound": {
+        "status": "RETIRED",
+        "liveInvocationAllowed": false,
+        "preserveHistoricalEvidence": true,
+        "note": "Webhound historical packets and source URLs remain reusable research evidence. New discovery uses Parallel (optional) or other active providers."
+      },
+      "note": "Prior intelligence + live Airtable audit + PE graph + multi-segment plan + path selection before paid discovery; association research ≠ full hotel coverage; DG/PE ≠ auto-qualify"
+    },
+    "discover_gaps": {
+      "status": "incomplete_coverage",
+      "at": "2026-10-16T10:31:46.001Z",
+      "module": "parallel_discovery_adapter_v1+native_geo_research_stage_v1",
+      "mode": "live",
+      "executionKind": "live_submit_poll_map",
+      "paidCalls": 1,
+      "nativeGeo": {
+        "path": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\native_geo_research\\native-geo-research-stage.json",
+        "paidCalls": 0,
+        "nativeStatus": "planned_dry_run",
+        "geoQueryCount": 8,
+        "feedbackHintCount": 0
+      },
+      "note": "Live Parallel submit/poll/map completed within $12 cap. Wrong-market quarantined before fit. Candidates are NOT auto-published."
+    },
+    "assess_fit": {
+      "status": "completed",
+      "at": "2026-10-16T10:32:42.958Z",
+      "module": "independent_hotel_fit_v1",
+      "counts": {
+        "FITS_THIS_HOTEL": 21,
+        "POSSIBLE_FIT": 0,
+        "OUT_OF_TERRITORY": 0,
+        "UNSUPPORTED_ORG": 8,
+        "NEEDS_HUMAN_REVIEW": 0,
+        "INSUFFICIENT_EVIDENCE": 0
+      },
+      "discoveryReplayCounts": {
+        "FITS_THIS_HOTEL": 0,
+        "POSSIBLE_FIT": 0,
+        "OUT_OF_TERRITORY": 0,
+        "UNSUPPORTED_ORG": 0,
+        "NEEDS_HUMAN_REVIEW": 0,
+        "INSUFFICIENT_EVIDENCE": 0
+      },
+      "note": "Independent per-hotel fit; sports not copied to Mayflower; unsupported orgs not promoted"
+    },
+    "identify_people": {
+      "status": "completed",
+      "at": "2026-10-16T10:33:04.813Z",
+      "mode": "deferred_to_enrich_contacts_targets",
+      "note": "People identification runs only for targeted contact plan on qualified/enrichment candidates"
+    },
+    "enrich_contacts": {
+      "status": "completed",
+      "at": "2026-10-16T10:35:16.848Z",
+      "module": "execute_targeted_contact_resolution_v1",
+      "targetCount": 25,
+      "attempted": 12,
+      "resolved": 7,
+      "unresolved": 5,
+      "blocked": 0,
+      "surfe": "invoked",
+      "order": [
+        "reuse_existing_verified_records",
+        "official_organization_or_event_sources",
+        "native_who_public_professional",
+        "surfe_skipped_not_eligible_or_not_authorized"
+      ],
+      "note": "Executed contact resolution into isolated candidate storage — no production writes from this stage; Surfe invoked only when authorized + flag + named person"
+    },
+    "buyer_contact_enrichment": {
+      "status": "completed",
+      "at": "2026-10-16T10:35:17.936Z",
+      "module": "buyer_contact_enrichment_v1",
+      "resultCount": 12,
+      "materialImprovements": 0,
+      "surfePaidRequests": 0,
+      "remainingSharedBudgetUsd": 11.79,
+      "note": "Buyer enrichment executed; org vs person channels separated; Surfe metadata internal-only; apply via --authorize-publish or --apply-buyer-enrichment"
+    },
+    "synthesize_hotel_relevance": {
+      "status": "completed",
+      "at": "2026-10-16T10:35:18.845Z",
+      "module": "gdi-hotel-relevance-research-v1",
+      "counts": {
+        "total": 29,
+        "readyForCard": 22,
+        "internalGap": 7,
+        "insufficient": 0
+      },
+      "note": "Mandatory why-this-hotel research before eligibility/cards; gaps retained internal — no generic filler"
+    },
+    "evaluate_eligibility": {
+      "status": "completed",
+      "at": "2026-10-16T10:35:19.158Z",
+      "exitCode": 0,
+      "note": "Eligibility SoT gate (prospect-publication-eligibility-v1)"
+    },
+    "generate_cards": {
+      "status": "completed",
+      "at": "2026-10-16T10:35:20.096Z",
+      "mode": "draft_package_from_candidates_and_pe",
+      "packageDir": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\draft_review_package",
+      "draft": {
+        "version": "gdi-draft-review-package-v1",
+        "hotelId": "recG66DQJKP2c0UNh",
+        "packageDir": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\draft_review_package",
+        "registerCount": 28,
+        "packageCount": 28,
+        "peDraftCount": 1,
+        "pendingHumanReviews": 28,
+        "drawerPass": 11,
+        "drawerFail": 17,
+        "humanReviewCheckpointPath": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\draft_review_package\\human-review-checkpoint.json"
+      },
+      "peDraftCount": 1,
+      "drawerCompleteness": {
+        "path": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\drawer_completeness\\drawer-completeness.json",
+        "pass": 11,
+        "fail": 19,
+        "total": 30
+      },
+      "note": "Draft package from store/candidates + supported PE — human review checkpoint pending before publication"
+    },
+    "prepare_manifest": {
+      "status": "completed",
+      "at": "2026-10-16T10:35:20.555Z",
+      "exitCode": 0,
+      "dataRoot": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\_local-preview",
+      "packageDirUsed": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\draft_review_package",
+      "draftPackage": "used_draft_pending_human_review",
+      "contentOverlay": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\hotel_relevance_research\\sales-review-overlay-from-research.json",
+      "publicationReadinessLayers": {
+        "commercialEligibility": "see import manifest hotelFacing / enrichmentQueue",
+        "contactCompleteness": "see import manifest contactGroup",
+        "drawerContent": {
+          "version": "gdi-drawer-content-contract-v2",
+          "facingTotal": 0,
+          "pass": 0,
+          "fail": 0,
+          "results": [
+            {
+              "cardId": "ren-society-for-the-study-of-social-problems-2027",
+              "opportunityId": "gdi_opp_prospect_mvau05z9_925c1e63",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "concrete_next_sales_action"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 1,
+                  "route": {
+                    "hasRoute": true,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": true,
+                    "phone": true,
+                    "form": false,
+                    "relevance": "Official Meeting Manager for SSSP Annual Meeting (Westin New York at Times Square 2026).",
+                    "responsibilityClass": "Influences hotel selection, housing, or room-block inclusion"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "concrete_next_sales_action"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-how-to-manage-the-paper-and-the-computer-2027",
+              "opportunityId": "gdi_opp_prospect_mvau05zh_df1c2e0e",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "why_consider_now",
+                "usable_contact_route"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 4,
+                  "route": {
+                    "hasRoute": false,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": false,
+                    "phone": false,
+                    "form": false,
+                    "relevance": "Not established — confirm role vs lodging authority before outreach.",
+                    "responsibilityClass": "POTENTIAL_RELEVANT_CONTACT"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "why_consider_now",
+                    "usable_contact_route"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-onda-castellon-spain-http-www-gayafores--2027",
+              "opportunityId": "gdi_opp_prospect_mvau05zi_d030f916",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "why_consider_now"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 2,
+                  "route": {
+                    "hasRoute": true,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": true,
+                    "phone": false,
+                    "form": false,
+                    "relevance": "Extracted from official event/organization page",
+                    "responsibilityClass": "Influences hotel selection, housing, or room-block inclusion"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "why_consider_now"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-national-alliance-for-musical-theatre-2027",
+              "opportunityId": "gdi_opp_prospect_mvau05zj_86a11e7c",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "concrete_next_sales_action"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 1,
+                  "route": {
+                    "hasRoute": true,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": true,
+                    "phone": true,
+                    "form": false,
+                    "relevance": "Not established — confirm role vs lodging authority before outreach.",
+                    "responsibilityClass": "POTENTIAL_RELEVANT_CONTACT"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "concrete_next_sales_action"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-boutique-luxury-lodging-association-2027",
+              "opportunityId": "gdi_opp_prospect_mvau05zk_2d35c66d",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "concrete_next_sales_action"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 2,
+                  "route": {
+                    "hasRoute": true,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": true,
+                    "phone": false,
+                    "form": false,
+                    "relevance": "Ariela Kiradjian owns or co-owns event / meetings delivery for this opportunity (Partner & COO), so they are the primary outreach path.",
+                    "responsibilityClass": "Influences hotel selection, housing, or room-block inclusion"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "concrete_next_sales_action"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-explore-your-exhibitor-console-2027",
+              "opportunityId": "gdi_opp_prospect_mvau05zk_089d3c57",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "why_consider_now"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 2,
+                  "route": {
+                    "hasRoute": true,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": true,
+                    "phone": false,
+                    "form": false,
+                    "relevance": "Extracted from official event/organization page",
+                    "responsibilityClass": "Influences hotel selection, housing, or room-block inclusion"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "why_consider_now"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-powered-by-a2z-events-2027",
+              "opportunityId": "gdi_opp_prospect_mvau05zl_1a2ca5a9",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "why_consider_now",
+                "usable_contact_route"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 4,
+                  "route": {
+                    "hasRoute": false,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": false,
+                    "phone": false,
+                    "form": false,
+                    "relevance": "Named on opportunity research evidence for Powered by A2Z Events — VENDOR BLOCK.",
+                    "responsibilityClass": "Influences hotel selection, housing, or room-block inclusion"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "why_consider_now",
+                    "usable_contact_route"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-the-broadway-league-2026",
+              "opportunityId": "gdi_opp_prospect_mvau05zl_6d5f7901",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 1,
+                  "route": {
+                    "hasRoute": true,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": true,
+                    "phone": true,
+                    "form": false,
+                    "relevance": "Historical/org phone retained as backup behind direct/mobile",
+                    "responsibilityClass": "Influences hotel selection, housing, or room-block inclusion"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-supporters-sponsors-2027",
+              "opportunityId": "gdi_opp_prospect_mvau05zl_d9b7a50c",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "why_consider_now",
+                "usable_contact_route"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 4,
+                  "route": {
+                    "hasRoute": false,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": false,
+                    "phone": false,
+                    "form": false,
+                    "relevance": "Named on opportunity research evidence for Supporters & Sponsors — VENDOR BLOCK.",
+                    "responsibilityClass": "Influences hotel selection, housing, or room-block inclusion"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "why_consider_now",
+                    "usable_contact_route"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-exhibitor-application-2027",
+              "opportunityId": "gdi_opp_prospect_mvau05zm_76671238",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "why_consider_now"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 2,
+                  "route": {
+                    "hasRoute": true,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": true,
+                    "phone": false,
+                    "form": false,
+                    "relevance": "Public source lists Nadine Thompson as staff for this event/program.",
+                    "responsibilityClass": "Influences hotel selection, housing, or room-block inclusion"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "why_consider_now"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-scan-exhibitors-with-colleqt-2027",
+              "opportunityId": "gdi_opp_prospect_mvau05zm_8cee0fbe",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "why_consider_now",
+                "usable_contact_route"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 4,
+                  "route": {
+                    "hasRoute": false,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": false,
+                    "phone": false,
+                    "form": false,
+                    "relevance": "Named on opportunity research evidence for Scan Exhibitors with Colleqt — VENDOR BLOCK.",
+                    "responsibilityClass": "Influences hotel selection, housing, or room-block inclusion"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "why_consider_now",
+                    "usable_contact_route"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-society-of-industrial-and-office-realtor-2026",
+              "opportunityId": "gdi_opp_prospect_mvau05zn_b0e672ad",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 1,
+                  "route": {
+                    "hasRoute": true,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": true,
+                    "phone": true,
+                    "form": false,
+                    "relevance": "Official SIOR Director of Events and Programs for Fall Event hotel/block coordination path.",
+                    "responsibilityClass": "Influences hotel selection, housing, or room-block inclusion"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-interested-in-exhibiting-2027",
+              "opportunityId": "gdi_opp_prospect_mvau05zn_1c3d0191",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "why_consider_now",
+                "usable_contact_route"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 4,
+                  "route": {
+                    "hasRoute": false,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": false,
+                    "phone": false,
+                    "form": false,
+                    "relevance": "Named on opportunity research evidence for Interested in Exhibiting — VENDOR BLOCK.",
+                    "responsibilityClass": "Influences hotel selection, housing, or room-block inclusion"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "why_consider_now",
+                    "usable_contact_route"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-interiors-from-spain-2027",
+              "opportunityId": "gdi_opp_prospect_mvau05zn_ae36827b",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "why_consider_now",
+                "usable_contact_route"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 4,
+                  "route": {
+                    "hasRoute": false,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": false,
+                    "phone": false,
+                    "form": false,
+                    "relevance": "Not established — confirm role vs lodging authority before outreach.",
+                    "responsibilityClass": "POTENTIAL_RELEVANT_CONTACT"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "why_consider_now",
+                    "usable_contact_route"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-the-undated",
+              "opportunityId": "gdi_opp_prospect_mvau05zn_100eb60e",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "usable_contact_route"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "supported_occasion_or_timing",
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 4,
+                  "route": {
+                    "hasRoute": false,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": false,
+                    "phone": false,
+                    "form": false,
+                    "relevance": "Not established — confirm role vs lodging authority before outreach.",
+                    "responsibilityClass": "POTENTIAL_RELEVANT_CONTACT"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "usable_contact_route"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-new-york-state-school-boards-association-2028",
+              "opportunityId": "gdi_opp_prospect_mvau05zo_fa17d9bd",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 1,
+                  "route": {
+                    "hasRoute": true,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": true,
+                    "phone": true,
+                    "form": false,
+                    "relevance": "Not established — confirm role vs lodging authority before outreach.",
+                    "responsibilityClass": "POTENTIAL_RELEVANT_CONTACT"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-forum-on-education-abroad-2027",
+              "opportunityId": "gdi_opp_prospect_mvau05zo_325e5636",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "concrete_next_sales_action"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 1,
+                  "route": {
+                    "hasRoute": true,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": true,
+                    "phone": true,
+                    "form": false,
+                    "relevance": "Not established — confirm role vs lodging authority before outreach.",
+                    "responsibilityClass": "POTENTIAL_RELEVANT_CONTACT"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "concrete_next_sales_action"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-italian-trade-agency-ceramics-of-italy-2027",
+              "opportunityId": "gdi_opp_prospect_mvau05zo_ba0f9125",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "why_consider_now",
+                "usable_contact_route"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 4,
+                  "route": {
+                    "hasRoute": false,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": false,
+                    "phone": false,
+                    "form": false,
+                    "relevance": "Not established — confirm role vs lodging authority before outreach.",
+                    "responsibilityClass": "POTENTIAL_RELEVANT_CONTACT"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "why_consider_now",
+                    "usable_contact_route"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-buying-legal-council-2026",
+              "opportunityId": "gdi_opp_prospect_mvau05zp_84bb91e8",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "usable_contact_route"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 4,
+                  "route": {
+                    "hasRoute": false,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": false,
+                    "phone": false,
+                    "form": false,
+                    "relevance": "Not established — confirm role vs lodging authority before outreach.",
+                    "responsibilityClass": "POTENTIAL_RELEVANT_CONTACT"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "usable_contact_route"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-the-broadway-league-2027",
+              "opportunityId": "gdi_opp_prospect_mvau05zp_146f3fde",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "concrete_next_sales_action"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 1,
+                  "route": {
+                    "hasRoute": true,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": true,
+                    "phone": true,
+                    "form": false,
+                    "relevance": "Not established — confirm role vs lodging authority before outreach.",
+                    "responsibilityClass": "POTENTIAL_RELEVANT_CONTACT"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "concrete_next_sales_action"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-professional-liability-underwriting-soci-2027",
+              "opportunityId": "gdi_opp_prospect_mvau05zp_08186c87",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "concrete_next_sales_action"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 1,
+                  "route": {
+                    "hasRoute": true,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": true,
+                    "phone": true,
+                    "form": false,
+                    "relevance": "Not established — confirm role vs lodging authority before outreach.",
+                    "responsibilityClass": "POTENTIAL_RELEVANT_CONTACT"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "concrete_next_sales_action"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-emrg-media-2027",
+              "opportunityId": "gdi_opp_prospect_mvau05zp_aa8597aa",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 1,
+                  "route": {
+                    "hasRoute": true,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": true,
+                    "phone": true,
+                    "form": false,
+                    "relevance": "Not established — confirm role vs lodging authority before outreach.",
+                    "responsibilityClass": "POTENTIAL_RELEVANT_CONTACT"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-gboc-korea-co-ltd-2027",
+              "opportunityId": "gdi_opp_prospect_mvau05zp_cbb8c10d",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "why_consider_now",
+                "usable_contact_route"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 4,
+                  "route": {
+                    "hasRoute": false,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": false,
+                    "phone": false,
+                    "form": false,
+                    "relevance": "Not established — confirm role vs lodging authority before outreach.",
+                    "responsibilityClass": "POTENTIAL_RELEVANT_CONTACT"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "why_consider_now",
+                    "usable_contact_route"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-decor-singapore-pte-ltd-aerahaus-2027",
+              "opportunityId": "gdi_opp_prospect_mvau05zq_da5344dd",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "why_consider_now",
+                "usable_contact_route"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 4,
+                  "route": {
+                    "hasRoute": false,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": false,
+                    "phone": false,
+                    "form": false,
+                    "relevance": "Not established — confirm role vs lodging authority before outreach.",
+                    "responsibilityClass": "POTENTIAL_RELEVANT_CONTACT"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "why_consider_now",
+                    "usable_contact_route"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-new-york-state-bar-association-2027",
+              "opportunityId": "gdi_opp_prospect_mvau05zq_175f5c90",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "usable_contact_route"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 4,
+                  "route": {
+                    "hasRoute": false,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": false,
+                    "phone": false,
+                    "form": false,
+                    "relevance": "Not established — confirm role vs lodging authority before outreach.",
+                    "responsibilityClass": "POTENTIAL_RELEVANT_CONTACT"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "usable_contact_route"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-arias-u-s-2026",
+              "opportunityId": "gdi_opp_prospect_mvau05zq_c51a510f",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "concrete_next_sales_action"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 1,
+                  "route": {
+                    "hasRoute": true,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": true,
+                    "phone": true,
+                    "form": false,
+                    "relevance": "Not established — confirm role vs lodging authority before outreach.",
+                    "responsibilityClass": "POTENTIAL_RELEVANT_CONTACT"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "concrete_next_sales_action"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-society-of-children-s-book-writers-and-i-2027",
+              "opportunityId": "gdi_opp_prospect_mvau05zq_f3cad8ee",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "usable_contact_route"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "travel_need_evidence",
+                    "hotel_fit"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 4,
+                  "route": {
+                    "hasRoute": false,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": false,
+                    "phone": false,
+                    "form": false,
+                    "relevance": "Not established — confirm role vs lodging authority before outreach.",
+                    "responsibilityClass": "POTENTIAL_RELEVANT_CONTACT"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "usable_contact_route"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            },
+            {
+              "cardId": "ren-rock-creek-mansion-undated",
+              "opportunityId": "gdi_opp_prospect_mvau05zr_e0c6bd46",
+              "hotelFacing": false,
+              "drawerOk": false,
+              "failed": [
+                "location",
+                "hotel_specific_thesis",
+                "hotel_fit_rationale",
+                "usable_contact_route",
+                "sources_for_material_claims"
+              ],
+              "warnings": [
+                "unknown_room_volume_allowed",
+                "unconfirmed_sourcing_allowed"
+              ],
+              "layers": {
+                "qualification": {
+                  "eligibility": "ENRICHMENT_QUEUE",
+                  "hotelFacing": false,
+                  "enrichmentQueue": true,
+                  "reasons": [
+                    "supported_occasion_or_timing",
+                    "travel_need_evidence",
+                    "hotel_fit",
+                    "source"
+                  ]
+                },
+                "contactCompleteness": {
+                  "group": 4,
+                  "route": {
+                    "hasRoute": false,
+                    "namedPerson": true,
+                    "routingOnly": false,
+                    "email": false,
+                    "phone": false,
+                    "form": false,
+                    "relevance": "Not established — confirm role vs lodging authority before outreach.",
+                    "responsibilityClass": "POTENTIAL_RELEVANT_CONTACT"
+                  }
+                },
+                "drawerContent": {
+                  "ok": false,
+                  "failed": [
+                    "location",
+                    "hotel_specific_thesis",
+                    "hotel_fit_rationale",
+                    "usable_contact_route",
+                    "sources_for_material_claims"
+                  ]
+                },
+                "drawerQuality": {
+                  "ok": true,
+                  "failed": [],
+                  "uniqueSectionProse": 2,
+                  "hotelSpecificTokenPresent": false
+                },
+                "legacyDrawerReady": {
+                  "ok": false,
+                  "failed": [
+                    "qualification",
+                    "source",
+                    "hotelFit",
+                    "thesis",
+                    "enrichment_version"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "note": "Dry-run import manifest prepared; eligibility, contact group, and drawer completeness reported separately"
+    },
+    "preview_verify": {
+      "status": "completed",
+      "at": "2026-10-16T10:35:21.471Z",
+      "apply1": 0,
+      "apply2": 0,
+      "apply3_after_feedback": 0,
+      "feedbackPreserved": true,
+      "previewDataRoot": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\_local-preview",
+      "previewUrlHint": "/group-demand-intelligence.html?hotelId=recG66DQJKP2c0UNh&embed=1",
+      "note": "Local FS preview only — not production publication"
+    },
+    "apply_publish": {
+      "status": "completed",
+      "at": "2026-10-16T11:30:51.478Z",
+      "exitCode": 0,
+      "note": "Airtable apply with reviewed-prospect publication enabled for authorized hotels"
+    }
+  },
+  "remainingManualSteps": [
+    {
+      "step": "discover_gaps",
+      "action": "Live Parallel submit/poll/map completed within $12 cap. Wrong-market quarantined before fit. Candidates are NOT auto-published."
+    },
+    {
+      "step": "assess_fit",
+      "action": "Human shortlist of NEEDS_HUMAN_REVIEW / POSSIBLE_FIT; do not auto-publish fit outcomes"
+    },
+    {
+      "step": "enrich_contacts",
+      "action": "Human follow-up on 5 unresolved + 0 blocked contact targets (candidates under C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\targeted_contact\\candidates)"
+    },
+    {
+      "step": "synthesize_hotel_relevance",
+      "action": "7 internal-gap + 0 insufficient briefs — recover evidence or targeted research before publication"
+    },
+    {
+      "step": "generate_cards",
+      "action": "Record human review decisions in C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\draft_review_package\\human-review-checkpoint.json before treating package as reviewed"
+    }
+  ],
+  "failures": [],
+  "executionOwner": "cursor-agent-renaissance-gdi-exec",
+  "authorizationId": "auth_gdi_renaissance_ts_12usd_v1",
+  "horizonResolved": {
+    "requested": "18m",
+    "canonicalPrimary": {
+      "start": "2026-10-14",
+      "end": "2028-04-14",
+      "months": 18
+    },
+    "note": "Using canonical 18-month primary horizon (2026-10-14 → 2028-04-14)."
+  },
+  "updatedAt": "2026-10-16T11:30:51.480Z",
+  "finishedAt": "2026-10-16T11:30:51.480Z",
+  "status": "ok",
+  "programsOccasionDrafts": {
+    "path": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\reuse_prior_intelligence\\programs-occasion-drafts.json",
+    "draftCount": 8
+  },
+  "proposedHotelVenueFits": {
+    "path": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\reuse_prior_intelligence\\proposed-hotel-venue-fits.json",
+    "proposalCount": 12
+  },
+  "segmentResearchPlan": {
+    "path": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\reuse_prior_intelligence\\segment-research-plan.json",
+    "summary": {
+      "applicableCount": 8,
+      "researchedCount": 0,
+      "partiallyResearchedCount": 5,
+      "notYetResearchedCount": 3,
+      "notApplicableCount": 2,
+      "associationOnlyIsNotFullCoverage": true,
+      "associationOnlyTrap": false,
+      "associationOnlyTrapNote": null,
+      "fullCoverageClaimAllowed": false,
+      "fullCoverageNote": "Full hotel coverage requires applicable segments to be researched or explicitly not_applicable — association volume alone never qualifies."
+    },
+    "applicableGaps": [
+      {
+        "segmentId": "associations_government",
+        "label": "Associations / government",
+        "researchCoverage": "partially_researched"
+      },
+      {
+        "segmentId": "sports",
+        "label": "Sports",
+        "researchCoverage": "partially_researched"
+      },
+      {
+        "segmentId": "corporate_meetings_training",
+        "label": "Corporate meetings, training, and project teams",
+        "researchCoverage": "partially_researched"
+      },
+      {
+        "segmentId": "local_meetings_catering",
+        "label": "Local Meetings & Catering (incl. no-guestroom)",
+        "researchCoverage": "not_yet_researched"
+      },
+      {
+        "segmentId": "scaling_companies",
+        "label": "Scaling Companies / Emerging Corporate Accounts",
+        "researchCoverage": "not_yet_researched"
+      },
+      {
+        "segmentId": "medical_academic",
+        "label": "Medical / academic",
+        "researchCoverage": "partially_researched"
+      },
+      {
+        "segmentId": "weddings_social_private_events",
+        "label": "Weddings, social groups, and nearby private-event venues",
+        "researchCoverage": "partially_researched"
+      },
+      {
+        "segmentId": "entertainment_production",
+        "label": "Entertainment / production crews",
+        "researchCoverage": "not_yet_researched"
+      }
+    ]
+  },
+  "scalingCompaniesResearch": {
+    "path": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\reuse_prior_intelligence\\scaling-companies-research-plan.json",
+    "applicable": true,
+    "existingCount": 0
+  },
+  "reusePriorIntelligence": {
+    "path": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\reuse_prior_intelligence\\reuse-ledger.json",
+    "counts": {
+      "already_facing": 8,
+      "enrichment_needed": 19,
+      "fit_assessment_needed": 0,
+      "stale_evidence": 0,
+      "rejected_with_reason": 2,
+      "unresolved": 0,
+      "demand_generator_candidate": 16,
+      "feedback_disposition": 0,
+      "private_event_intelligence": 34
+    },
+    "gapsBeforePaidDiscovery": {
+      "enrichmentNeeded": 19,
+      "fitAssessmentNeeded": 0,
+      "dgCandidatesNotFacing": 16,
+      "privateEventRows": 34,
+      "unresolved": 0,
+      "stale": 0,
+      "feedbackDisposition": 0
+    },
+    "demandGeneratorFit": {
+      "ok": true,
+      "reason": "airtable",
+      "status": "executed",
+      "count": 8
+    },
+    "privateEventIntelligence": {
+      "source": "airtable",
+      "airtableOk": true,
+      "airtableReason": null,
+      "liveAirtable": {
+        "attempted": true,
+        "ok": true,
+        "reason": "live_read",
+        "venues": 31,
+        "fits": 0,
+        "signals": 19
+      },
+      "fixtureFallback": {
+        "used": false,
+        "reason": null,
+        "corpusHotelId": null
+      },
+      "counts": {
+        "venues": 31,
+        "fits": 0,
+        "signals": 19,
+        "rows": 34,
+        "byDisposition": {
+          "venue_referral_partnership_account": 0,
+          "specific_event_related_lodging_prospect": 1,
+          "potential_meeting_or_ancillary_hospitality": 0,
+          "background_market_intelligence_only": 1,
+          "rejected_insufficient_travel_or_procurement": 32,
+          "internal_only_not_customer_facing": 0,
+          "already_linked_gdi_opportunity": 0
+        }
+      }
+    },
+    "researchPathSelectionSummary": {
+      "executed": 0,
+      "reused_existing_evidence": 6,
+      "not_applicable": 0,
+      "blocked": 0,
+      "incomplete": 7
+    },
+    "airtableReuseAudit": {
+      "path": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\reuse_prior_intelligence\\airtable-reuse-audit.json",
+      "summary": {
+        "executed": 7,
+        "empty_success": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      "configured": {
+        "tokenPresent": true,
+        "gdiBaseIdPresent": true,
+        "opportunitiesConfigured": true,
+        "peConfigured": true
+      },
+      "reason": null
+    }
+  },
+  "nativeGeoResearch": {
+    "path": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\native_geo_research\\native-geo-research-stage.json",
+    "paidCalls": 0,
+    "nativeStatus": "planned_dry_run",
+    "geoQueryCount": 8,
+    "feedbackHintCount": 0
+  },
+  "parallelDiscovery": {
+    "status": "completed_live",
+    "mode": "live",
+    "executionKind": "live_submit_poll_map",
+    "paidCalls": 1,
+    "freshDiscoveryClaimed": true,
+    "candidateCount": 0,
+    "path": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\parallel_discovery\\parallel-discovery-stage.json"
+  },
+  "independentHotelFit": {
+    "path": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\independent_hotel_fit\\independent-hotel-fit.json",
+    "counts": {
+      "FITS_THIS_HOTEL": 21,
+      "POSSIBLE_FIT": 0,
+      "OUT_OF_TERRITORY": 0,
+      "UNSUPPORTED_ORG": 8,
+      "NEEDS_HUMAN_REVIEW": 0,
+      "INSUFFICIENT_EVIDENCE": 0
+    },
+    "discoveryReplayCounts": {
+      "FITS_THIS_HOTEL": 0,
+      "POSSIBLE_FIT": 0,
+      "OUT_OF_TERRITORY": 0,
+      "UNSUPPORTED_ORG": 0,
+      "NEEDS_HUMAN_REVIEW": 0,
+      "INSUFFICIENT_EVIDENCE": 0
+    }
+  },
+  "targetedContact": {
+    "path": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\targeted_contact\\targeted-contact-plan.json",
+    "candidatesPath": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\targeted_contact\\candidates",
+    "targetCount": 25,
+    "attempted": 12,
+    "resolved": 7,
+    "unresolved": 5,
+    "blocked": 0,
+    "surfeInvoked": false,
+    "authorizeSurfe": true
+  },
+  "buyerContactEnrichment": {
+    "path": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\buyer_contact_enrichment\\buyer-contact-enrichment-pass.json",
+    "resultCount": 12,
+    "materialImprovements": 0,
+    "surfeUsage": {
+      "version": "gdi-surfe-usage-ledger-v1",
+      "paidRequests": 0,
+      "reuseCacheHits": 0,
+      "uniquePeopleEnriched": 0,
+      "acceptedEmails": 0,
+      "acceptedPhones": 0,
+      "opportunitiesImproved": 0,
+      "creditsConsumed": 0,
+      "creditsUnknownCount": 0,
+      "estimatedCostUsd": 0,
+      "actualBilledCostUsd": null,
+      "remainingSharedBudgetUsd": 11.79,
+      "path": "C:\\Dev\\dealality\\gdi-renaissance-exec\\data\\group-demand-intelligence\\surfe-usage\\ledger-v1.json"
+    },
+    "remainingSharedBudgetUsd": 11.79,
+    "apply": {
+      "skipped": true
+    }
+  },
+  "hotelRelevanceResearch": {
+    "path": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\hotel_relevance_research\\hotel-relevance-research.json",
+    "overlayPath": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\hotel_relevance_research\\sales-review-overlay-from-research.json",
+    "counts": {
+      "total": 29,
+      "readyForCard": 22,
+      "internalGap": 7,
+      "insufficient": 0
+    },
+    "version": "gdi-hotel-relevance-research-v1"
+  },
+  "drawerCompleteness": {
+    "path": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\drawer_completeness\\drawer-completeness.json",
+    "pass": 11,
+    "fail": 19,
+    "total": 30
+  },
+  "draftReviewPackage": {
+    "version": "gdi-draft-review-package-v1",
+    "hotelId": "recG66DQJKP2c0UNh",
+    "packageDir": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\draft_review_package",
+    "registerCount": 28,
+    "packageCount": 28,
+    "peDraftCount": 1,
+    "pendingHumanReviews": 28,
+    "drawerPass": 11,
+    "drawerFail": 17,
+    "humanReviewCheckpointPath": "C:\\Dev\\dealality\\gdi-renaissance-exec\\reports\\gdi-repeatable-workflow-v1\\runs\\gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d\\draft_review_package\\human-review-checkpoint.json"
+  }
+}

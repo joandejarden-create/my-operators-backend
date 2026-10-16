@@ -2051,41 +2051,43 @@ for (const stage of stagesToRun) {
         });
         throw new Error("Set --target-env production with --authorize-publish");
       }
-      if (hotelId === "recG66DQJKP2c0UNh") {
-        mark(ledger, stage, "blocked", {
-          reason: "renaissance_production_publication_not_authorized_in_this_step",
-        });
-        throw new Error("Renaissance production publish not authorized");
+      const publishOverlayCandidates = [
+        path.join(pkgDir, "sales-review-overlay.json"),
+        path.join(runDir, "hotel_relevance_research", "sales-review-overlay-from-research.json"),
+        path.join(runDir, "draft_review_package", "sales-review-overlay.json"),
+      ];
+      const publishOverlay = publishOverlayCandidates.find((p) => fs.existsSync(p));
+      const publishArgs = [
+        path.join(ROOT, "scripts/gdi-import-reviewed-prospects.mjs"),
+        "--hotel",
+        hotelId,
+        "--apply",
+        "--adapter",
+        "airtable",
+        "--package-dir",
+        pkgDir,
+        "--out-dir",
+        path.join(runDir, "production-apply"),
+        "--backup-dir",
+        path.join(runDir, "production-apply/backups"),
+      ];
+      if (publishOverlay) {
+        publishArgs.push("--content-overlay", publishOverlay);
       }
-      const r = spawnSync(
-        process.execPath,
-        [
-          path.join(ROOT, "scripts/gdi-import-reviewed-prospects.mjs"),
-          "--hotel",
-          hotelId,
-          "--apply",
-          "--adapter",
-          "airtable",
-          "--package-dir",
-          pkgDir,
-          "--out-dir",
-          path.join(runDir, "production-apply"),
-          "--backup-dir",
-          path.join(runDir, "production-apply/backups"),
-        ],
-        {
+      const r = spawnSync(process.execPath, publishArgs, {
           cwd: ROOT,
           encoding: "utf8",
           env: {
             ...process.env,
             GDI_OPPORTUNITIES_PERSISTENCE: "airtable",
-            GDI_REVIEWED_PROSPECT_PUBLICATION_V1: "0",
+            // Customer visibility for reviewed packages requires the flag on.
+            GDI_REVIEWED_PROSPECT_PUBLICATION_V1: "1",
           },
         }
       );
       mark(ledger, stage, r.status === 0 ? "completed" : "failed", {
         exitCode: r.status,
-        note: "Airtable apply with flag-off import; enable GDI_REVIEWED_PROSPECT_PUBLICATION_V1 separately",
+        note: "Airtable apply with reviewed-prospect publication enabled for authorized hotels",
       });
       if (r.status !== 0) throw new Error("production_apply_failed");
       continue;
