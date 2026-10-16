@@ -1,4 +1,4 @@
-# Pre-batch readiness closeout (score / dry-run / budget / deploy)
+﻿# Pre-batch readiness closeout (score / dry-run / budget / deploy)
 
 Generated: 2026-10-16T07:30:00Z  
 Workroot: `C:\Dev\dealality\my-operators-backend`  
@@ -47,3 +47,4 @@ Unchanged from preflight: **not activated**. Do not start Renaissance or other q
 | Paid six-hotel E2E | Not started; requires explicit activation + separate budget (not Mayflower/SD transfer) |
 | Authenticated AI Admin interactive | NOT RUN unless admin session available |
 | Weekly scheduling / unattended publish | Off |
+
