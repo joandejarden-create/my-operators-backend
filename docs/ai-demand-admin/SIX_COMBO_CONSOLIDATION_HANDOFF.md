@@ -68,7 +68,7 @@ Do **not** restore older Mayflower/SD summaries ($3.85 / $7.15) from other workt
 
 ## Completed after this handoff
 
-- **Local GDI Admin catalog parity** for Wyndham — filesystem mirror of the published Airtable set (`ready=5`, 51 facing, status READY). No Airtable write. Westin remains unmirrored. Gate: `npm run test:admin-wyndham-gdi-catalog-parity`.
+- **Admin GDI catalog source** — report/catalog reads follow `GDI_OPPORTUNITIES_PERSISTENCE` and do not require a per-hotel `opportunities.json` commit. Gate: `npm run test:admin-gdi-catalog-canonical-source`. The Wyndham snapshot from #129 stays tracked for the non-admin filesystem fallback; it is not the Admin source of truth.
 
 ## Deferred tasks
 
