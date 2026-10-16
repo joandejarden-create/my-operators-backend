@@ -19,11 +19,11 @@ Earlier $4.06 readings came from a stale MOB/worktree copy that lacked this thir
 
 ## 2. Wyndham San Diego ≠ new research authorization
 
-| Envelope | Hotels | Cap | Incurred | Available | Notes |
-|----------|--------|----:|---------:|----------:|-------|
-| Mayflower / San Diego GDI (shared) | Mayflower `rec0eTEnCqlsGJJt9`, Wyndham SD `recnPB3Q02NO8Ma1o` | **$11.00** | **$3.85** | **$7.15** | `paid-multisegment-budget/authorization-ledger-v1.json` — existing shared authorization |
-| Renaissance GDI | Ren NYTS only | $12.00 | $4.31 | $7.69 | Separate — do not draw Mayflower/SD funds |
-| ADP Renaissance | Ren NYTS ADP only | $15.00 | $10.53 | ~$4.47 | Separate from all GDI envelopes |
+| Envelope | Hotels | Cap | Incurred | Reserved | Accounting hold | Available | Notes |
+|----------|--------|----:|---------:|---------:|----------------:|----------:|-------|
+| Mayflower / San Diego GDI (shared) | Mayflower `rec0eTEnCqlsGJJt9`, Wyndham SD `recnPB3Q02NO8Ma1o` | **$11.00** | **$5.25** | **$0** | **$1.25** | **$4.50** | Authoritative ledger `paid-multisegment-budget/authorization-ledger-v1.json` (`reconciliation.safelyAvailableUsd`). The earlier $3.85 / $7.15 worktree reading is stale. Hold and restored LMC transactions stay in the ledger. |
+| Renaissance GDI | Ren NYTS only | $12.00 | $4.31 | $0 | $0 | $7.69 | Separate — do not draw Mayflower/SD funds. AlphaSense $0.25 is the third `surfe_contact_enrichment` row already inside $4.31. |
+| ADP Renaissance | Ren NYTS ADP only | $15.00 | $10.53 | — | — | ~$4.47 | Separate from all GDI envelopes |
 
 Wyndham Admin client-link / PDF delivery uses **existing** Mayflower/SD research already in Airtable (82 opportunities / 51 customer-facing). It does **not** authorize new paid research scope for Wyndham or Westin.
 

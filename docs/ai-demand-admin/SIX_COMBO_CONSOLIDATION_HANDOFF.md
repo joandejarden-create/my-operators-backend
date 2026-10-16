@@ -30,9 +30,9 @@ Post-merge API verify copy (aside): `C:\Dev\dealality\_aside-six-combo-consolida
 |---|---|---|---|---|---|
 | Renaissance NYTS | ADP | READY (current-report PDF) | Verified | Verified | Monthly-review row also exists; distinct from current-report PDF |
 | Renaissance NYTS | GDI | READY | Verified (44 facing) | Verified | |
-| Westin Tampa Waterside | ADP | READY (current-report PDF) | Verified | Verified | **Not** in monthly-reviews → `review_artifact_missing` for monthly path is accurate; do not force READY |
+| Westin Tampa Waterside | ADP | READY (monthly performance review V1) | Verified | Verified | October 2026 edition, monitoring 2026-10-13. Current-report PDF remains a separate artifact and does not satisfy this row. |
 | Westin Tampa Waterside | GDI | BLOCKED / unavailable | Share opens; **0 facing** | PDF present | Accurate zero-facing; no publication reclassification |
-| Wyndham SD Bayside | ADP | READY (current-report PDF) | Verified | Verified | Same monthly-review note as Westin ADP |
+| Wyndham SD Bayside | ADP | READY (monthly performance review V1) | Verified | Verified | October 2026 edition, monitoring 2026-10-13. Current-report PDF remains a separate artifact and does not satisfy this row. |
 | Wyndham SD Bayside | GDI | READY (local filesystem mirror) | External share Verified (**51 facing**) | Verified | Airtable mirror: 82 opportunities, 51 facing, customer-ready 5, future-watch 11. Facing prospects are not reclassified as customer-ready. |
 
 ### Verification scope honesty
