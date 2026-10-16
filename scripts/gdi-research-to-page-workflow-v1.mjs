@@ -39,7 +39,7 @@
  *   evaluate_eligibility → generate_cards → prepare_manifest →
  *   preview_verify → apply_pe_canonical → apply_publish
  *   [full-e2e adds] local_delivery_verify → production_delivery_verify →
- *                   reconcile_run → evaluate_completion
+ *                   reconcile_run → capture_lessons → evaluate_completion
  *
  * apply_pe_canonical (authorize with --authorize-publish or --authorize-pe-persist):
  *   venue → signals → hotel fit → GDI link via canonical-persist-and-link-v1
@@ -157,11 +157,16 @@ import {
   writeFullE2eArtifacts,
 } from "../lib/group-demand-intelligence/workflow/full-e2e-completion-input-v1.js";
 import {
+  buildLessonsCaptureArtifact,
+  evaluateLessonsCaptureCompleteness,
+} from "../lib/group-demand-intelligence/workflow/full-e2e-lessons-capture-v1.js";
+import {
   runLocalDeliveryVerification,
   runProductionDeliveryVerification,
   reconcileAuthoritativeBudget,
   computeRunArtifactFingerprint,
   verificationNeedsRerun,
+  loadPublicationManifestFromRun,
 } from "../lib/group-demand-intelligence/workflow/full-e2e-verification-adapters-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -428,6 +433,7 @@ const stagesToRun = stageOnly
           s === "local_delivery_verify" ||
           s === "production_delivery_verify" ||
           s === "reconcile_run" ||
+          s === "capture_lessons" ||
           s === "evaluate_completion"
         ) {
           return verificationNeedsRerun(prev, currentFingerprints);
@@ -2225,14 +2231,67 @@ for (const stage of stagesToRun) {
         });
         throw new Error("Set --target-env production with --authorize-publish");
       }
-      if (hotelId === "recG66DQJKP2c0UNh") {
+      // Assessment / drawer readiness before authorized publication writes.
+      // Incomplete/unknown states block — they do not invent PASS.
+      const {
+        assertPublicationWriteReadiness,
+      } = await import(
+        "../lib/group-demand-intelligence/workflow/full-e2e-publication-quality-v1.js"
+      );
+      const readinessBlockers = [];
+      const pkgCandidates = [];
+      if (pkgDir && fs.existsSync(pkgDir)) {
+        for (const f of fs.readdirSync(pkgDir)) {
+          if (!/\.json$/i.test(f)) continue;
+          try {
+            const doc = JSON.parse(
+              fs.readFileSync(path.join(pkgDir, f), "utf8")
+            );
+            const rows = []
+              .concat(doc.opportunities || [])
+              .concat(doc.prospects || [])
+              .concat(Array.isArray(doc) ? doc : []);
+            for (const row of rows) {
+              if (row && typeof row === "object") pkgCandidates.push(row);
+            }
+          } catch {
+            /* skip unreadable package files */
+          }
+        }
+      }
+      const facing = pkgCandidates.filter(
+        (o) => o.prospectHotelFacing === true || o.prospectPublicationBasis
+      );
+      for (const opp of facing.slice(0, 50)) {
+        const ready = assertPublicationWriteReadiness(opp);
+        if (!ready.ok) {
+          readinessBlockers.push({
+            opportunityId: opp.id || opp.opportunityId || null,
+            incomplete: ready.incomplete,
+            unknown: ready.unknown,
+            blockers: ready.blockers,
+            reasons: ready.reasons,
+          });
+        }
+      }
+      if (facing.length > 0 && readinessBlockers.length > 0) {
         mark(ledger, stage, "blocked", {
-          reason: "renaissance_production_publication_not_authorized_in_this_step",
+          reason: "publication_write_readiness_failed",
+          blockerCount: readinessBlockers.length,
+          facingCount: facing.length,
+          sample: readinessBlockers.slice(0, 5),
         });
-        throw new Error("Renaissance production publish not authorized");
+        throw new Error(
+          "Assessment/drawer readiness required before authorized publication writes"
+        );
       }
       if (ledger.fullE2e) {
         ledger.fullE2e.productionWritesAttempted = true;
+        ledger.fullE2e.publicationWriteReadiness = {
+          facingCount: facing.length,
+          blockedCount: readinessBlockers.length,
+          sample: readinessBlockers.slice(0, 5),
+        };
       }
       const r = spawnSync(
         process.execPath,
@@ -2256,13 +2315,19 @@ for (const stage of stagesToRun) {
           env: {
             ...process.env,
             GDI_OPPORTUNITIES_PERSISTENCE: "airtable",
-            GDI_REVIEWED_PROSPECT_PUBLICATION_V1: "0",
+            // Reviewed-package path is the standard publication basis for
+            // Mayflower / San Diego / Renaissance allowlisted hotels.
+            GDI_REVIEWED_PROSPECT_PUBLICATION_V1: "1",
           },
         }
       );
       mark(ledger, stage, r.status === 0 ? "completed" : "failed", {
         exitCode: r.status,
-        note: "Airtable apply with flag-off import; enable GDI_REVIEWED_PROSPECT_PUBLICATION_V1 separately",
+        publicationWriteReadiness: {
+          facingCount: facing.length,
+          blockedCount: readinessBlockers.length,
+        },
+        note: "Airtable apply via reviewed-prospect publication path (assessment/drawer readiness gated)",
       });
       if (r.status !== 0) throw new Error("production_apply_failed");
       if (r.status === 0 && ledger.fullE2e) {
@@ -2282,12 +2347,25 @@ for (const stage of stagesToRun) {
               fs.readFileSync(path.join(runDir, "full-e2e-evidence.json"), "utf8")
             )
           : {};
+      const publicationManifest =
+        ledger.fullE2e?.publicationManifest ||
+        overlay.publicationManifest ||
+        loadPublicationManifestFromRun(runDir);
       const machine = await runLocalDeliveryVerification({
         hotelId,
         runId,
         baseUrl: process.env.GDI_LOCAL_BASE_URL || "http://127.0.0.1:8080",
-        dataRevision: currentFingerprints.dataRevision,
-        buildSha: currentFingerprints.buildSha,
+        // Only compare content fingerprint when a prior observed revision exists —
+        // never treat run artifactFingerprint as intended data revision.
+        intendedDataRevision:
+          ledger.fullE2e?.observedDataRevision ||
+          overlay.intendedDataRevision ||
+          null,
+        intendedBuildSha: currentFingerprints.buildSha || null,
+        publicationManifest,
+        requirePublicationManifest: Boolean(fullE2eMode && publicationManifest),
+        // Local: only require observed build when an intended SHA is asserted
+        requireBuildIdentity: Boolean(currentFingerprints.buildSha),
       });
       // Operator overlay cannot upgrade failed/blocked/not_run machine results
       const local =
@@ -2325,6 +2403,12 @@ for (const stage of stagesToRun) {
       ledger.fullE2e = ledger.fullE2e || {};
       ledger.fullE2e.localVerification = local;
       ledger.fullE2e.localVerificationMachine = machine;
+      if (machine.checks?.observedDataRevision) {
+        ledger.fullE2e.observedDataRevision = machine.checks.observedDataRevision;
+      }
+      if (machine.checks?.observedBuildSha) {
+        ledger.fullE2e.observedBuildSha = machine.checks.observedBuildSha;
+      }
       const status =
         local.status === "passed"
           ? "completed"
@@ -2354,11 +2438,21 @@ for (const stage of stagesToRun) {
               fs.readFileSync(path.join(runDir, "full-e2e-evidence.json"), "utf8")
             )
           : {};
+      const publicationManifest =
+        ledger.fullE2e?.publicationManifest ||
+        overlay.publicationManifest ||
+        loadPublicationManifestFromRun(runDir);
       const machine = await runProductionDeliveryVerification({
         hotelId,
         runId,
-        dataRevision: currentFingerprints.dataRevision,
-        buildSha: currentFingerprints.buildSha,
+        intendedDataRevision:
+          ledger.fullE2e?.observedDataRevision ||
+          overlay.intendedDataRevision ||
+          null,
+        intendedBuildSha: currentFingerprints.buildSha || null,
+        publicationManifest,
+        requirePublicationManifest: Boolean(fullE2eMode && publicationManifest),
+        requireBuildIdentity: Boolean(currentFingerprints.buildSha),
       });
       const prod =
         machine.status === "passed" && overlay.productionVerification?.status === "passed"
@@ -2392,6 +2486,12 @@ for (const stage of stagesToRun) {
       ledger.fullE2e = ledger.fullE2e || {};
       ledger.fullE2e.productionVerification = prod;
       ledger.fullE2e.productionVerificationMachine = machine;
+      if (machine.checks?.observedDataRevision) {
+        ledger.fullE2e.observedDataRevision = machine.checks.observedDataRevision;
+      }
+      if (machine.checks?.observedBuildSha) {
+        ledger.fullE2e.observedBuildSha = machine.checks.observedBuildSha;
+      }
       const status =
         prod.status === "passed"
           ? "completed"
@@ -2467,6 +2567,63 @@ for (const stage of stagesToRun) {
       continue;
     }
 
+    if (stage === "capture_lessons") {
+      const e2eDir = path.join(runDir, "full_e2e");
+      fs.mkdirSync(e2eDir, { recursive: true });
+      const overlay = completionEvidencePath
+        ? JSON.parse(fs.readFileSync(completionEvidencePath, "utf8"))
+        : fs.existsSync(path.join(runDir, "full-e2e-evidence.json"))
+          ? JSON.parse(
+              fs.readFileSync(path.join(runDir, "full-e2e-evidence.json"), "utf8")
+            )
+          : {};
+      const incorporatedLessonIds =
+        overlay.incorporatedLessonIds ||
+        ledger.fullE2e?.incorporatedLessonIds ||
+        [];
+      const capture = buildLessonsCaptureArtifact({
+        runId,
+        hotelId,
+        releaseRef:
+          overlay.releaseRef ||
+          ledger.fullE2e?.releaseRef ||
+          FULL_E2E_CONTRACT_VERSION,
+        incorporatedThisRunIds: incorporatedLessonIds,
+      });
+      // Hotel-only repairs claimed complete without shared-path prevention fail closed.
+      if (Array.isArray(overlay.hotelSpecificRepairsClaimedComplete)) {
+        capture.hotelSpecificRepairsClaimedComplete =
+          overlay.hotelSpecificRepairsClaimedComplete;
+        capture.evaluation = evaluateLessonsCaptureCompleteness(capture);
+      }
+      const capturePath = path.join(e2eDir, "lessons-capture-v1.json");
+      fs.writeFileSync(capturePath, JSON.stringify(capture, null, 2) + "\n");
+      ledger.fullE2e = {
+        ...(ledger.fullE2e || {}),
+        lessonsCapture: capture,
+        incorporatedLessonIds,
+        lessonsCapturePath: capturePath,
+      };
+      mark(
+        ledger,
+        stage,
+        capture.evaluation?.ok === false ? "failed" : "completed",
+        {
+          incorporatedCount: (capture.lessonsIncorporatedThisRun || []).length,
+          gapCount: (
+            capture.remainingImplementationOrVerificationGaps || []
+          ).length,
+          inheritsAutomatically: (
+            capture.nextHotelInheritance?.inheritsAutomatically || []
+          ).length,
+          capturePath,
+          note:
+            "Lessons capture is required on the Full E2E path. Defect fixes must update shared impl + test + register + runbook/prompt in the same task.",
+        }
+      );
+      continue;
+    }
+
     if (stage === "evaluate_completion") {
       const e2eDir = path.join(runDir, "full_e2e");
       fs.mkdirSync(e2eDir, { recursive: true });
@@ -2501,6 +2658,15 @@ for (const stage of stagesToRun) {
       }
       if (ledger.fullE2e?.budget && !overlay.budget) {
         overlay.budget = ledger.fullE2e.budget;
+      }
+      if (ledger.fullE2e?.lessonsCapture && !overlay.lessonsCapture) {
+        overlay.lessonsCapture = ledger.fullE2e.lessonsCapture;
+      }
+      if (
+        ledger.fullE2e?.incorporatedLessonIds &&
+        !overlay.incorporatedLessonIds
+      ) {
+        overlay.incorporatedLessonIds = ledger.fullE2e.incorporatedLessonIds;
       }
 
       const input = buildCompletionInputFromRun({

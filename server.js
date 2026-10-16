@@ -2923,7 +2923,17 @@ app.get("/financial-term-library-term", (req, res) => {
 
 
 // Basic routing/test endpoints for Railway + Webflow embedding verification
-app.get("/health", (req, res) => res.json({ ok: true }));
+app.get("/health", (req, res) => {
+  // Optional runtime identity for delivery verification — never invent a SHA.
+  const buildSha =
+    process.env.RAILWAY_GIT_COMMIT_SHA ||
+    process.env.GITHUB_SHA ||
+    process.env.COMMIT_SHA ||
+    null;
+  const payload = { ok: true };
+  if (buildSha) payload.buildSha = String(buildSha);
+  return res.json(payload);
+});
 
 // API endpoints
 app.post("/api/intake/deal", dealIntake);
