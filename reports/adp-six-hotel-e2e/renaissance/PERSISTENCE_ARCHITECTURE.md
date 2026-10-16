@@ -32,6 +32,15 @@ Airtable Live is not re-enabled unless `ADP_AIRTABLE_READ_LIVE=1` / explicit sou
 - Stubs whole nested keys with `{ storageOnly, payloadStoreRef, field, periodId, propertyId }`  
 - Full payload remains on PRIMARY_SOT  
 
+`resolveCompactedAirtablePayload` / `loadPublishedReportFromAirtable`:
+
+- Resolve stubs from validated PRIMARY_SOT paths only  
+- Reject traversal, cross-hotel, wrong period, missing files  
+- On failure return null → filesystem fallback — **never** return storageOnly stubs to customers  
+- Evidence stubs follow the same rule  
+
+Proof: `COMPACTION_READ_PATH_PROOF.md` + `scripts/test-adp-airtable-payload-compaction-v1.mjs`
+
 ## Durability proof status
 
 | Check | Result |
@@ -41,9 +50,10 @@ Airtable Live is not re-enabled unless `ADP_AIRTABLE_READ_LIVE=1` / explicit sou
 | Retry does not duplicate research | PASS (no rerun; resume ledger notes no duplicate submits) |
 | Partial Airtable overlay does not replace filesystem edition | PASS (overlay stubs; SoT = filesystem) |
 | Customer actions independent of regen | Report actions baked in payload; monthly 5-action set is separate review agenda |
+| Isolated PRIMARY_SOT write→read→cleanup probe | PASS — `DURABILITY_PROBE.json` (non-customer) |
 | Redeploy survives for **bundled** published artifacts | Expected after PR deploy |
-| Redeploy survives for **new ephemeral runtime-only** writes | **NOT PROVEN** without durable volume — do not treat local file existence alone as proof |
+| Redeploy survives for **new ephemeral runtime-only** writes | **NOT PROVEN** without durable volume — precise unresolved blocker |
 
 ## Failure injection
 
-Isolated unit tests cover Airtable compaction and dry-run longitudinal exclusion. No destructive injection against live customer Airtable/actions.
+Isolated unit tests cover Airtable compaction/resolve and dry-run longitudinal exclusion. Durability probe uses disposable `_durability_probe_*` property only. No destructive injection against live customer Airtable/actions.

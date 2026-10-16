@@ -1,25 +1,16 @@
-# Renaissance GDI status (do not conflate with ADP)
+# Renaissance GDI status (separate from ADP closeout)
 
-## Distinct tracks
+**Do not** use September historical GDI runs to claim the new $12 E2E completed.  
+**Do not** launch or interrupt GDI from the ADP closeout.
 
-| Track | Authorization | This ADP closeout |
-|-------|---------------|-------------------|
-| ADP Renaissance | `$15` | In progress / closing |
-| GDI Renaissance | Separate `$12` | **Not started here**; no duplicate job |
+| Item | Status |
+|------|--------|
+| Authorization | `auth_gdi_renaissance_ts_12usd_v1` — **$12** (distinct from ADP $15) |
+| Execution | **PUBLISHED_VERIFIED** (2026-10-16) |
+| Run ID | `gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d` |
+| Spend | ~$0.21 Parallel (estimated); Surfe $0 |
+| Delivery | 7 reviewed PRIORITY prospects in Airtable; production customer list **15** after Railway allowlist |
+| Owner / report | `reports/gdi-six-hotel-e2e/renaissance/` |
+| Branch | `exec/gdi-renaissance-ts-12usd` (separate worktree) |
 
-## Actual GDI execution ownership (read-only)
-
-Canonical hotel: `recG66DQJKP2c0UNh`  
-Prior COMPLETED runs on disk:
-
-- `gdi_run_mu44bpo8_54f62d7a` — COMPLETED (2026-09-16), Webhound ~$10 recorded  
-- `gdi_run_mu4c8awq_c978634a` — COMPLETED follow-on / gating pass  
-
-Therefore batch docs must **not** say Renaissance GDI is simply “not activated.”  
-Correct statement: **prior GDI research runs completed under earlier cycles; a separate `$12` authorization exists for further GDI work and was not executed in this ADP closeout.**
-
-## Still queued / unapproved (unchanged)
-
-- Other five ADP hotels  
-- Proposed ADP `$57` for the remaining five — **unapproved**  
-- Waterstone external distribution **HOLD** intact  
+ADP closeout must not modify GDI ledgers, packages, or production GDI allowlist except where already completed by the GDI execution owner.
