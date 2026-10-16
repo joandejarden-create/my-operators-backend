@@ -26,7 +26,8 @@ GDI `identity.address` is currently **null**. City/state/geo (40.7580, -73.9855)
 ## Concurrent GDI
 
 - GDI profile path preserved; ADP refresh does not rewrite whole GDI documents.
-- GDI Renaissance $12 authorization remains separate; this ADP run uses `$15` ADP ledger only.
+- GDI Renaissance `$12` authorization remains separate; this ADP run uses `$15` ADP ledger only.
+- Profile facts re-verified 2026-10-16 against Marriott `nycrt` + Cvent — see `PROFILE_FACT_RECONCILIATION.md` (rooms 317, Bowtie Bar, no Broadway Ballroom, no on-site Shake Shack).
 - GDI six-hotel activation remains unstarted (prep only).
 - No GDI opportunities created/reclassified from ADP.
 

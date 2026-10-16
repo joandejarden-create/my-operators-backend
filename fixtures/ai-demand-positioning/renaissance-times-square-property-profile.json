@@ -6,12 +6,12 @@
   "country": "US",
   "market": "New York City",
   "submarket": "Midtown Manhattan / Times Square",
-  "website": "https://www.marriott.com/en-us/hotels/nycrn-renaissance-new-york-times-square-hotel/overview/",
+  "website": "https://www.marriott.com/en-us/hotels/nycrt-renaissance-new-york-times-square-hotel/overview/",
   "canonicalPropertyDomain": null,
   "ownedDomains": [],
   "officialBrandDomain": "marriott.com",
-  "officialPropertyPageUrl": "https://www.marriott.com/en-us/hotels/nycrn-renaissance-new-york-times-square-hotel/overview/",
-  "brandPropertyPathHints": ["nycrn", "renaissance-new-york-times-square"],
+  "officialPropertyPageUrl": "https://www.marriott.com/en-us/hotels/nycrt-renaissance-new-york-times-square-hotel/overview/",
+  "brandPropertyPathHints": ["nycrt", "renaissance-new-york-times-square"],
   "chainScale": "Upper Upscale",
   "affiliation": "Renaissance Hotels (Marriott)",
   "brand": "Renaissance Hotels",
@@ -23,52 +23,108 @@
     "Renaissance Hotel Times Square",
     "Renaissance NYC Times Square",
     "The Renaissance Times Square",
+    "NYCRT",
     "NYCRN"
   ],
   "identityConfusableExclusions": [
     "Renaissance New York Midtown Hotel",
     "Renaissance New York Chelsea",
     "Renaissance New York Harlem",
-    "Renaissance Downtown"
+    "Renaissance Downtown",
+    "The Westin New York at Times Square"
   ],
   "owner": null,
   "assetManager": null,
   "yearBuilt": 1992,
-  "yearRenovated": 2016,
-  "rooms": 310,
+  "yearRenovated": 2025,
+  "rooms": 317,
   "floors": 26,
   "meetingSpace": {
     "totalSqFt": 5000,
     "meetingRooms": 4,
-    "largestRoom": { "name": "Broadway Ballroom", "sqFt": 2400, "capacity": 200 },
+    "largestRoom": {
+      "name": "Bowtie Bar",
+      "sqFt": 1591,
+      "capacityTheater": 100,
+      "capacityReception": 130,
+      "source": "marriott_events_page_nycrt",
+      "notes": "Official Marriott events table lists Bowtie Bar at 1,591 sq ft (theater 100 / reception 130). Cvent also lists a combined 'Bowtie Bar & Main Floor' at 2,500 sq ft / 200 cocktail — not a 'Broadway Ballroom'."
+    },
     "rooms": [
-      { "name": "Broadway Ballroom", "sqFt": 2400, "floor": 3, "maxCapacity": 200 },
-      { "name": "Times Square Room", "sqFt": 1200, "floor": 3, "maxCapacity": 80 },
-      { "name": "Midtown Room", "sqFt": 800, "floor": 3, "maxCapacity": 50 },
-      { "name": "Boardroom", "sqFt": 600, "floor": 3, "maxCapacity": 20 }
-    ]
+      { "name": "Gotham", "sqFt": 448, "theater": 22, "reception": 35, "source": "marriott_events_page_nycrt" },
+      { "name": "Vivid", "sqFt": 1104, "theater": 70, "reception": 120, "source": "marriott_events_page_nycrt" },
+      { "name": "Bowtie Bar", "sqFt": 1591, "theater": 100, "reception": 130, "source": "marriott_events_page_nycrt" },
+      { "name": "Glass Patio", "sqFt": 187, "reception": 25, "source": "marriott_events_page_nycrt" }
+    ],
+    "provenance": {
+      "officialEventsUrl": "https://www.marriott.com/en-us/hotels/nycrt-renaissance-new-york-times-square-hotel/events/",
+      "cventUrl": "https://www.cvent.com/venues/new-york/hotel/renaissance-new-york-times-square-hotel/venue-1f92fe84-fe4c-41a0-8c6a-f7fdbfccbd01",
+      "verifiedAt": "2026-10-16",
+      "contradictedLegacyClaims": [
+        "Broadway Ballroom 2,400 sq ft / theater 200 (belongs to Westin Times Square / incompatible with NYCRT room inventory)"
+      ]
+    }
   },
   "restaurants": [
-    { "name": "R Lounge", "cuisine": "American / Cocktails", "setting": "Rooftop with Times Square views" },
-    { "name": "Shake Shack (ground floor)", "cuisine": "Casual / Burgers", "setting": "Street level" }
+    {
+      "name": "Bowtie Bar Restaurant",
+      "cuisine": "American / NYC dishes",
+      "setting": "On-site lounge and bar with Times Square views",
+      "onSite": true,
+      "source": "marriott_overview_nycrt"
+    },
+    {
+      "name": "Bowtie Bar",
+      "cuisine": "Cocktails / elevated bites",
+      "setting": "On-site bar with panoramic Times Square views (renovated / rebranded)",
+      "onSite": true,
+      "source": "marriott_overview_nycrt"
+    },
+    {
+      "name": "The Market",
+      "cuisine": "Grab-and-go (La Colombe coffee, pastries, sandwiches)",
+      "setting": "On-site market",
+      "onSite": true,
+      "source": "marriott_overview_nycrt"
+    }
   ],
+  "diningNotes": {
+    "rLoungeStatus": "Supported but freshness uncertain — older Marriott NYE/terrace copy still mentions R Lounge; current overview emphasizes Bowtie Bar rebrand. Do not assert R Lounge as current primary outlet without reconfirmation.",
+    "shakeShackStatus": "Contradicted as an on-site hotel restaurant — not listed on official Marriott dining for NYCRT; nearby street-level Shake Shack is not a Renaissance outlet.",
+    "rooftopBarStatus": "Contradicted as a traditional rooftop bar. Hotel markets terrace rooms and Times Square views from Bowtie Bar; not an open rooftop bar product."
+  },
   "attributes": [
-    "times_square_location", "broadway_theater_district", "midtown_manhattan", "rooftop_bar",
-    "times_square_views", "business_center", "fitness_center", "marriott_bonvoy",
-    "walking_distance_broadway", "near_central_park", "near_rockefeller_center",
-    "near_penn_station", "meeting_space", "urban_lifestyle", "design_forward",
-    "neighborhood_navigator", "full_service", "concierge", "valet_parking",
+    "times_square_location",
+    "broadway_theater_district",
+    "midtown_manhattan",
+    "times_square_views",
+    "terrace_rooms",
+    "business_center",
+    "fitness_center",
+    "marriott_bonvoy",
+    "walking_distance_broadway",
+    "near_central_park",
+    "near_rockefeller_center",
+    "near_penn_station",
+    "meeting_space",
+    "urban_lifestyle",
+    "design_forward",
+    "neighborhood_navigator",
+    "full_service",
+    "concierge",
+    "valet_parking",
     "pet_friendly"
   ],
   "positioning": {
     "primary": "Design-forward lifestyle hotel in the heart of Times Square",
     "differentiators": [
-      "Prime Times Square location at Two Times Square",
-      "R Lounge rooftop bar with iconic NYC views",
+      "Prime Times Square location at Two Times Square / 714 Seventh Avenue",
+      "Terrace rooms and suites with Times Square views",
+      "Bowtie Bar on-site dining and cocktails with square views",
       "Renaissance Navigator program for local discovery",
-      "Walkable to 40+ Broadway theaters",
+      "Walkable to Broadway theaters",
       "Marriott Bonvoy integration for loyalty guests",
-      "Recently renovated modern interiors"
+      "Recently renovated public spaces and Bowtie Bar"
     ],
     "targetSegments": [
       "Leisure travelers seeking Times Square immersion",
@@ -89,10 +145,45 @@
   "geography": {
     "latitude": 40.7580,
     "longitude": -73.9855,
+    "streetAddress": "Two Times Square, 714 Seventh Avenue at W. 48th Street, New York, NY 10036",
     "nearbyAttractions": [
-      "Times Square", "Broadway Theater District", "Rockefeller Center",
-      "Central Park", "Bryant Park", "Grand Central Terminal"
+      "Times Square",
+      "Broadway Theater District",
+      "Rockefeller Center",
+      "Central Park",
+      "Bryant Park",
+      "Grand Central Terminal"
     ]
+  },
+  "factVerification": {
+    "verifiedAt": "2026-10-16",
+    "sources": [
+      {
+        "label": "Marriott official overview (nycrt)",
+        "url": "https://www.marriott.com/en-us/hotels/nycrt-renaissance-new-york-times-square-hotel/overview/"
+      },
+      {
+        "label": "Marriott official events (nycrt)",
+        "url": "https://www.marriott.com/en-us/hotels/nycrt-renaissance-new-york-times-square-hotel/events/"
+      },
+      {
+        "label": "Cvent venue profile",
+        "url": "https://www.cvent.com/venues/new-york/hotel/renaissance-new-york-times-square-hotel/venue-1f92fe84-fe4c-41a0-8c6a-f7fdbfccbd01"
+      }
+    ],
+    "classifications": {
+      "officialIdentityUrl": "Supported and current (nycrt; prior nycrn overview 404)",
+      "streetAddress": "Supported and current",
+      "guestroomCount317": "Supported and current (Cvent 317; Marriott overview does not publish a count on-page)",
+      "guestroomCount310": "Contradicted (stale fixture)",
+      "meetingSpace5000SqFt": "Supported and current (Marriott events + Cvent)",
+      "meetingRoomsFour": "Supported and current (Marriott events FAQ: 4 event rooms)",
+      "broadwayBallroom2400Theater200": "Contradicted (not on NYCRT inventory; Broadway Ballroom is Westin Times Square)",
+      "bowtieBarLargestRoom": "Supported and current (Marriott events)",
+      "rLounge": "Supported but freshness uncertain",
+      "shakeShackOnSite": "Contradicted",
+      "rooftopBar": "Contradicted as traditional rooftop bar"
+    }
   },
   "censusRecordId": "recG66DQJKP2c0UNh",
   "customerDropdownVisible": true

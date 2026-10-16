@@ -1,7 +1,9 @@
 # ADP six-hotel batch — preparation summary
 
 **Workroot:** `C:\Dev\dealality\my-operators-backend` @ `248a3098`  
-**Status:** Prepared — **not activated**. No AI research, paid ADP calls, or customer publication launched.  
+**Status:** Renaissance ADP delivery closeout in progress/closing under its own `$15` authorization.  
+**Still not activated:** other five hotels · Waterstone HOLD · proposed ADP `$57`.  
+**GDI Renaissance:** separate `$12` authorization; prior COMPLETED GDI runs exist — do not describe as blank “not activated” (see `renaissance/GDI_STATUS_NOTE.md`).  
 **GDI:** Complementary offering; budgets/ledgers/publication kept distinct. Mayflower/San Diego untouched.
 
 ## Deliverables in `reports/adp-six-hotel-e2e/`
