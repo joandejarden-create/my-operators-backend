@@ -1,4 +1,4 @@
-﻿{
+{
   "generatedAt": "2026-10-16T13:05:00.000Z",
   "correctionOf": "PR #111 Surfe NOT_EXECUTED + hold double-count of incurred LMC Surfe",
   "backupBeforeCorrection": "reports/gdi-pre-batch-readiness/budget-ledger-audit/20261016-150125-hold-surfe-correction/",
@@ -16,16 +16,16 @@
   "exposureTable": [
     {
       "claimedExecution": "Four LMC Surfe (Danielle, Roger, Jodi, Andre)",
-      "amountAlreadyInIncurredUsd": 1.0,
-      "potentialAdditionalExposureUsd": 0.0,
-      "holdAllocatedUsd": 0.0,
+      "amountAlreadyInIncurredUsd": 1,
+      "potentialAdditionalExposureUsd": 0,
+      "holdAllocatedUsd": 0,
       "disposition": "MATCHED",
       "action": "RELEASED_OVERLAP",
       "reason": "Already deducted in estimatedSpent; missing request IDs do not justify additional hold"
     },
     {
       "claimedExecution": "Fifth LMC Surfe credit",
-      "amountAlreadyInIncurredUsd": 0.0,
+      "amountAlreadyInIncurredUsd": 0,
       "potentialAdditionalExposureUsd": 0.25,
       "holdAllocatedUsd": 0.25,
       "disposition": "UNRESOLVED",
@@ -34,7 +34,7 @@
     },
     {
       "claimedExecution": "Scaling Stephanie Pursglove + Yessica Trujillo Surfe",
-      "amountAlreadyInIncurredUsd": 0.0,
+      "amountAlreadyInIncurredUsd": 0,
       "potentialAdditionalExposureUsd": 0.5,
       "holdAllocatedUsd": 0.5,
       "disposition": "EXECUTED_UNMATCHED",
@@ -43,7 +43,7 @@
     },
     {
       "claimedExecution": "Wisedocs Manal + Shipyard Traci original Surfe",
-      "amountAlreadyInIncurredUsd": 0.0,
+      "amountAlreadyInIncurredUsd": 0,
       "potentialAdditionalExposureUsd": 0.5,
       "holdAllocatedUsd": 0.5,
       "disposition": "EXECUTED_UNMATCHED",
@@ -204,14 +204,14 @@
   ],
   "historicalPilot": {
     "budgetUsd": 2,
-    "supportedEstimatedIncurredUsd": 2.0,
+    "supportedEstimatedIncurredUsd": 2,
     "remainingUsd": 0,
     "closedToAdditionalSpend": true,
     "actualBilledStatus": "PARTIAL_KNOWN_THIRD_RUN_ONLY",
     "runs": [
       {
         "providerRunId": "trun_567f3335d0c140ad8e87120211c6f61f",
-        "estimatedUsd": 1.0
+        "estimatedUsd": 1
       },
       {
         "providerRunId": "trun_567f3335d0c140ad9269500c06dc2b38",
@@ -232,16 +232,23 @@
       "status": "PUBLISHED_VERIFIED",
       "runId": "gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d",
       "owner": "cursor-agent-renaissance-gdi-exec",
-      "evidence": "C:/Dev/dealality/gdi-renaissance-exec/reports/gdi-six-hotel-e2e/renaissance/EXECUTION_OWNERSHIP.json"
+      "evidence": "C:/Dev/dealality/gdi-renaissance-exec/reports/gdi-six-hotel-e2e/renaissance/EXECUTION_OWNERSHIP.json",
+      "note": "Confirmed by GDI_STATUS_NOTE.md on main; this PR did not launch or interrupt"
     },
     "renaissanceAdp": {
       "hotelId": "recG66DQJKP2c0UNh",
       "authorizedUsd": 15,
       "researchStatus": "complete",
-      "productionShareStatus": "blocked_invalid_share_signature",
-      "persistenceStatus": "filesystem_ok_airtable_live_blocked",
-      "customerDeliveryStatus": "incomplete",
-      "mergeSha": "2c58fef4"
+      "productionShareStatus": "issued_pr112_proof_redacted",
+      "persistenceStatus": "filesystem_primary_airtable_overlay_applied_compaction_contract",
+      "customerDeliveryStatus": "substantially_complete_pending_post_deploy_pdf_click_verify",
+      "evidence": [
+        "reports/adp-six-hotel-e2e/renaissance/FOUNDER_CLOSEOUT_A_H.md",
+        "reports/adp-six-hotel-e2e/renaissance/PRODUCTION_SHARE_PROOF_REDACTED.json",
+        "reports/adp-six-hotel-e2e/renaissance/GDI_STATUS_NOTE.md"
+      ],
+      "mergeShaCloseout": "7e0609b2",
+      "note": "PR #112 fixed prior invalid_share_signature blocker; do not repeat stale share-blocked claim"
     },
     "tampa": {
       "hotel": "Tampa Airport Marriott",
