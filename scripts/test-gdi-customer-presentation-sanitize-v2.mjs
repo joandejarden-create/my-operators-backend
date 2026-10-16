@@ -18,9 +18,12 @@ function fail(n, d) {
   console.error("FAIL", n, d || "");
 }
 
-if (CUSTOMER_PRESENTATION_SANITIZE_VERSION.includes("v2")) {
-  pass("sanitize_version_v2");
-} else fail("sanitize_version_v2", CUSTOMER_PRESENTATION_SANITIZE_VERSION);
+if (
+  CUSTOMER_PRESENTATION_SANITIZE_VERSION.includes("v2") ||
+  CUSTOMER_PRESENTATION_SANITIZE_VERSION.includes("v3")
+) {
+  pass("sanitize_version_v2_or_v3");
+} else fail("sanitize_version_v2_or_v3", CUSTOMER_PRESENTATION_SANITIZE_VERSION);
 
 const occasion =
   "HCAOA Annual Meeting 2027 is dated in Washington, DC advocacy day — hotel TBA with hotel sourcing unconfirmed — a plausible group-lodging conversation for The Mayflower Hotel, Autograph Collection, not proof of an open room block or RFP. Hotel/host is not confirmed — do not treat as open buying.";

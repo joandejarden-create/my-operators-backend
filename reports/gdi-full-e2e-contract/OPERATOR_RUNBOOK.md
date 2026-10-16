@@ -1,8 +1,9 @@
 # Full GDI E2E — Operator Runbook
 
-**Contract version:** `gdi-full-e2e-contract-v1.2` (fail-closed)  
+**Contract version:** `gdi-full-e2e-contract-v1.4` (fail-closed; honest multi-axis lesson proof)  
 **Coordinator:** `scripts/gdi-research-to-page-workflow-v1.mjs`  
 **Evaluator:** `lib/group-demand-intelligence/workflow/full-e2e-completion-evaluator-v1.js`  
+**Verification adapters:** `lib/group-demand-intelligence/workflow/full-e2e-verification-adapters-v1.js`  
 **Publication quality:** `lib/group-demand-intelligence/workflow/full-e2e-publication-quality-v1.js`  
 **Status CLI (read-only):** `scripts/gdi-full-e2e-status-v1.mjs` — writes only under `--out-dir`, never into the source run journal  
 **Lesson register:** `LESSON_REGISTER.md` · reusable Cursor prompt: `CURSOR_PROMPT_FULL_E2E.md`
@@ -20,7 +21,7 @@ Distinctions enforced by the contract:
 | Publication | Qualified opportunities persisted **with** fit/drawers/eligibility/dedupe gates |
 | Customer delivery | Local **and** production verification of list/drawers/reports/links |
 
-Association-only publication while other applicable segments remain plan-only **never** yields `COMPLETE`. Sports/educational axes require independent assessment. Contact depth cannot be skipped because an organization route exists.
+Association-only publication while other applicable segments remain plan-only **never** yields `COMPLETE`. Sports/educational axes require **supported** independent assessment (not merely absence of a proxy flag). Contact depth cannot be skipped because an organization route exists. Canonical eligibility uses the use-case suitability contract — `whyThisMatters` / `proposedHotelUse` alone are insufficient. Assessment/drawer readiness gates authorized publication writes. Lesson register statuses are multi-axis — do not treat fixture rejects as full production proof.
 
 ---
 
@@ -117,6 +118,31 @@ node scripts/gdi-research-to-page-workflow-v1.mjs \
 ```
 
 A completed weekly refresh **must not** be relabeled as full initial market coverage `COMPLETE`.
+
+---
+
+## Delivery verification + budget reconcile (v1.3 fail-closed)
+
+Adapters: `runLocalDeliveryVerification` / `runProductionDeliveryVerification` / `reconcileAuthoritativeBudget`.
+
+**Delivery is not proven by** HTTP 200 alone, empty JSON fallback, asset presence, or a caller-supplied SHA.
+
+Required for `passed`:
+
+1. Valid JSON object schema with `opportunities` array  
+2. Served `hotelId` matches expected hotel  
+3. Published IDs reconciled to the publication manifest (legacy IDs explicit)  
+4. List/detail parity sample for scoped published IDs  
+5. Zero prohibited provider metadata in customer DTOs (`trun_`, Surfe/Parallel cost fields, etc.)  
+6. When an intended build SHA is asserted: **observed** runtime identity from `/health` (or supported headers) must match — caller SHA is not observation  
+
+API · browser · share · PDF · narrative remain **separate** surfaces.
+
+**Budget reconcile:** read `authorization` / `authorizationId` from the ledger **first**, then compare to `--authorization-ref`. Mismatch, missing identity, wrong hotel scope, invalid cap/amounts → `reconciled: false`. Never bootstrap an empty ledger or mint allowance from CLI args.
+
+```bash
+npm run test:gdi-full-e2e-contract
+```
 
 ---
 

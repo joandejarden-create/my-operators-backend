@@ -18,6 +18,8 @@ import {
   FULL_E2E_LESSON_REGISTER,
   LESSON_STATUS,
   listProvenLessons,
+  summarizeLessonRegister,
+  rollupLessonStatus,
   isForbiddenNotApplicableReason,
   isPlanOnlyExecution,
   buildFullE2eContractDocument,
@@ -35,9 +37,16 @@ import {
 import {
   reconcileAuthoritativeBudget,
   verificationNeedsRerun,
+  runLocalDeliveryVerification,
+  parseJsonBodyStrict,
+  detectProviderMetadataLeaks,
+  computeOpportunityListFingerprint,
 } from "../lib/group-demand-intelligence/workflow/full-e2e-verification-adapters-v1.js";
 import {
   assertCanonicalWriteEligibilityFields,
+  hasSupportedIndependentSegmentAssessment,
+  assertPublicationWriteReadiness,
+  derivePublicationQualityFromPersistOutputs,
 } from "../lib/group-demand-intelligence/workflow/full-e2e-publication-quality-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -151,7 +160,7 @@ function assertFailed(result, msg) {
 {
   const doc = buildFullE2eContractDocument();
   assert.equal(doc.version, FULL_E2E_CONTRACT_VERSION);
-  assert.ok(doc.version.startsWith("gdi-full-e2e-contract-v1.2"));
+  assert.ok(doc.version.startsWith("gdi-full-e2e-contract-v1."));
   assert.ok(doc.stages.length >= 15);
   assert.equal(E2E_EXPECTED_SEGMENT_IDS.length, 11);
   assert.ok(DEPTH_INADEQUACY_RULES.length >= 6);
@@ -161,9 +170,33 @@ function assertFailed(result, msg) {
   assert.ok(isForbiddenNotApplicableReason("provider returned nothing useful"));
   assert.ok(Array.isArray(doc.lessonRegister));
   assert.equal(doc.lessonRegister.length, FULL_E2E_LESSON_REGISTER.length);
-  assert.ok(listProvenLessons().length === FULL_E2E_LESSON_REGISTER.length);
+  // Honest register: not every lesson is IMPLEMENTED_AND_TESTED.
+  const summary = summarizeLessonRegister();
+  assert.ok(summary.total === FULL_E2E_LESSON_REGISTER.length);
+  assert.ok(listProvenLessons().length < FULL_E2E_LESSON_REGISTER.length);
+  assert.ok(summary.incomplete.length > 0);
   assert.ok(
     listProvenLessons().every((l) => l.status === LESSON_STATUS.IMPLEMENTED_AND_TESTED)
+  );
+  assert.ok(
+    FULL_E2E_LESSON_REGISTER.every(
+      (l) =>
+        l.proof &&
+        typeof l.proof.ruleImplemented === "boolean" &&
+        typeof l.proof.executionPathWired === "boolean" &&
+        typeof l.proof.evidenceGeneratedAutomatically === "boolean" &&
+        typeof l.proof.regressionIntegrationVerified === "boolean"
+    )
+  );
+  assert.equal(
+    rollupLessonStatus({
+      ruleImplemented: true,
+      executionPathWired: true,
+      evidenceGeneratedAutomatically: false,
+      regressionIntegrationVerified: true,
+      productionVerified: false,
+    }),
+    LESSON_STATUS.IMPLEMENTED_NOT_VERIFIED
   );
   assert.ok(doc.hotelSpecificRepairScriptsForbidden === true);
   assert.ok(String(doc.standardEntryPoint).includes("--mode full-e2e"));
@@ -810,7 +843,7 @@ const baseOk = {
   assert.notEqual(r.overallStatus, E2E_OVERALL_STATUS.COMPLETE);
 }
 
-// 33) Canonical write eligibility fields assert (no post-import repair)
+// 33) Canonical write eligibility uses use-case contract — not prose presence
 {
   const bad = assertCanonicalWriteEligibilityFields({
     title: "x",
@@ -819,12 +852,65 @@ const baseOk = {
   assert.equal(bad.ok, false);
   assert.ok(bad.missing.includes("hotelFitRationale"));
   assert.ok(bad.missing.includes("localConnection"));
-  const good = assertCanonicalWriteEligibilityFields({
-    hotelFitRationale: "Walkable to Midtown training venues",
+
+  // whyThisMatters / proposedHotelUse alone must not establish eligibility
+  const proseOnly = assertCanonicalWriteEligibilityFields({
+    organizationName: "Acme Co",
+    title: "Important account",
+    hotelFitRationale: "Walkable to Midtown training venues for overnight stays",
     localConnection: "HQ within 2 miles",
+    whyThisMatters: "Strategic Midtown account for Renaissance",
+    proposedHotelUse: "Could host meetings at the hotel",
+  });
+  assert.equal(proseOnly.ok, false);
+
+  const good = assertCanonicalWriteEligibilityFields({
+    organizationName: "Acme Training Co",
+    title: "2027 Midtown Trainer Summit",
+    eventStartDate: "2027-03-15",
+    hotelFitRationale:
+      "Walkable to Midtown training venues and overnight room blocks for regional trainers",
+    localConnection: "HQ within 2 miles of Times Square",
     travelEvidenceNote: "Regional trainers overnight",
+    roomDemandStatus: "EVIDENCED",
+    sourceUrl: "https://example.com/summit-2027",
   });
   assert.equal(good.ok, true);
+}
+
+// 33b) Independent segment requires supported assessment, not anti-proxy silence
+{
+  assert.equal(
+    hasSupportedIndependentSegmentAssessment({
+      segmentId: "sports",
+      executionMode: "fresh_research",
+      coverageStatus: "completed_for_declared_scope",
+      // no provider runs, no independentAssessment flag
+    }),
+    false
+  );
+  assert.equal(
+    hasSupportedIndependentSegmentAssessment(completeSegment("sports")),
+    true
+  );
+  const silentSports = evaluateFullE2eCompletion({
+    ...baseOk,
+    segmentCoverage: allAxesNaExcept([
+      {
+        segmentId: "sports",
+        applicability: "applicable",
+        executionMode: "fresh_research",
+        coverageStatus: "completed_for_declared_scope",
+        declaredScope: { version: "v1" },
+        depthOk: true,
+        researchedZeroYield: true,
+        // deliberately omit providerRunIds + independentAssessment
+      },
+    ]),
+  });
+  assert.ok(
+    silentSports.blockers.some((b) => b.code === "independent_segment_assessment_missing")
+  );
 }
 
 // 34) Standard entry point is shared coordinator (not Renaissance repair script)
@@ -846,6 +932,349 @@ const baseOk = {
     "utf8"
   );
   assert.ok(persist.includes("assertCanonicalWriteEligibilityFields"));
+}
+
+// --- Delivery verification + auth reconcile hardening (v1.3) ---
+
+function mockFetchSequence(handlers) {
+  let i = 0;
+  return async (url, init) => {
+    const h = handlers[Math.min(i, handlers.length - 1)];
+    i += 1;
+    return h(String(url), init);
+  };
+}
+
+function jsonResponse(status, body, headers = {}) {
+  const headerMap = new Map(
+    Object.entries(headers).map(([k, v]) => [k.toLowerCase(), String(v)])
+  );
+  return {
+    ok: status >= 200 && status < 300,
+    status,
+    headers: { get: (k) => headerMap.get(String(k).toLowerCase()) || null },
+    text: async () =>
+      typeof body === "string" ? body : JSON.stringify(body),
+    json: async () => {
+      if (typeof body === "string") return JSON.parse(body);
+      return body;
+    },
+  };
+}
+
+// 35) HTTP 200 with invalid JSON must fail (empty fallback not accepted)
+{
+  assert.equal(parseJsonBodyStrict("not-json{").ok, false);
+  const r = await runLocalDeliveryVerification({
+    hotelId: "recH",
+    requireBuildIdentity: false,
+    fetchImpl: mockFetchSequence([
+      () => jsonResponse(200, "not-json{"),
+    ]),
+  });
+  assert.equal(r.status, "failed");
+  assert.equal(r.checks.parseReason, "invalid_json");
+}
+
+// 36) Wrong-hotel response fails
+{
+  const r = await runLocalDeliveryVerification({
+    hotelId: "recExpected",
+    requireBuildIdentity: false,
+    fetchImpl: mockFetchSequence([
+      () =>
+        jsonResponse(200, {
+          ok: true,
+          hotelId: "recOther",
+          updatedAt: "2026-10-16T00:00:00Z",
+          opportunities: [{ id: "opp1" }],
+        }),
+    ]),
+  });
+  assert.equal(r.status, "failed");
+  assert.equal(r.checks.hotelIdentityOk, false);
+}
+
+// 37) Missing expected published IDs fails
+{
+  const r = await runLocalDeliveryVerification({
+    hotelId: "recH",
+    requireBuildIdentity: false,
+    expectedPublishedIds: ["oppA", "oppB"],
+    fetchImpl: mockFetchSequence([
+      () =>
+        jsonResponse(200, {
+          ok: true,
+          hotelId: "recH",
+          updatedAt: "2026-10-16T00:00:00Z",
+          opportunities: [{ id: "oppA" }],
+        }),
+    ]),
+  });
+  assert.equal(r.status, "failed");
+  assert.equal(
+    r.checks.publicationReconcile.reason,
+    "missing_expected_published_ids"
+  );
+}
+
+// 38) List/detail mismatch fails
+{
+  const r = await runLocalDeliveryVerification({
+    hotelId: "recH",
+    requireBuildIdentity: false,
+    expectedPublishedIds: ["oppA"],
+    detailSampleLimit: 1,
+    fetchImpl: mockFetchSequence([
+      () =>
+        jsonResponse(200, {
+          ok: true,
+          hotelId: "recH",
+          updatedAt: "2026-10-16T00:00:00Z",
+          opportunities: [{ id: "oppA" }],
+        }),
+      () =>
+        jsonResponse(200, {
+          ok: true,
+          hotelId: "recH",
+          opportunity: { id: "oppOTHER", hotelId: "recH" },
+        }),
+    ]),
+  });
+  assert.equal(r.status, "failed");
+  assert.equal(r.checks.listDetail.status, "failed");
+}
+
+// 39) Provider metadata leakage fails (not merely noted)
+{
+  assert.equal(
+    detectProviderMetadataLeaks({
+      opportunities: [{ id: "x", note: "trun_abc123deadbeef" }],
+    }).leaked,
+    true
+  );
+  const r = await runLocalDeliveryVerification({
+    hotelId: "recH",
+    requireBuildIdentity: false,
+    fetchImpl: mockFetchSequence([
+      () =>
+        jsonResponse(200, {
+          ok: true,
+          hotelId: "recH",
+          updatedAt: "2026-10-16T00:00:00Z",
+          opportunities: [
+            { id: "oppA", evidence: "trun_567f3335d0c140adbc64e005916c92ac" },
+          ],
+        }),
+    ]),
+  });
+  assert.equal(r.status, "failed");
+  assert.equal(r.checks.providerMetadataLeaks, 1);
+}
+
+// 40) Intended build SHA without observed identity → blocked (caller SHA ≠ proof)
+{
+  const r = await runLocalDeliveryVerification({
+    hotelId: "recH",
+    intendedBuildSha: "abc123deadbeef",
+    requireBuildIdentity: true,
+    detailSampleLimit: 1,
+    fetchImpl: mockFetchSequence([
+      () =>
+        jsonResponse(200, {
+          ok: true,
+          hotelId: "recH",
+          updatedAt: "2026-10-16T00:00:00Z",
+          opportunities: [{ id: "oppA" }],
+        }),
+      // list/detail sample
+      () =>
+        jsonResponse(200, {
+          ok: true,
+          hotelId: "recH",
+          opportunity: { id: "oppA", hotelId: "recH" },
+        }),
+      // health probes — no sha
+      () => jsonResponse(200, { ok: true }),
+      () => jsonResponse(200, { ok: true }),
+      () => jsonResponse(200, { ok: true }),
+    ]),
+  });
+  assert.equal(r.status, "blocked");
+  assert.equal(r.checks.buildIdentityOk, false);
+}
+
+// 41) Authorization mismatch despite supplied authorizationId (ledger identity first)
+{
+  const mismatch = reconcileAuthoritativeBudget({
+    authorizationId: "auth_requested_wrong",
+    hotelId: "recH",
+    ledgerDoc: {
+      authorization: "auth_ledger_real",
+      hotelId: "recH",
+      budgetUsd: 12,
+      estimatedSpentUsd: 1,
+      accountingHoldUsd: 0,
+      entries: [{ jobKey: "a", status: "spent", estimatedUsd: 1 }],
+    },
+  });
+  assert.equal(mismatch.reconciled, false);
+  assert.equal(mismatch.reason, "authorization_mismatch");
+  assert.equal(mismatch.authorizationId, "auth_ledger_real");
+  assert.equal(mismatch.requestedAuthorizationId, "auth_requested_wrong");
+}
+
+// 42) Missing / malformed / wrong-scope ledger fail closed
+{
+  assert.equal(
+    reconcileAuthoritativeBudget({ authorizationId: "x" }).reason,
+    "ledger_missing"
+  );
+  assert.equal(
+    reconcileAuthoritativeBudget({
+      authorizationId: "auth_x",
+      hotelId: "recH",
+      ledgerDoc: {
+        // no authorization identity on ledger
+        hotelId: "recH",
+        budgetUsd: 12,
+        estimatedSpentUsd: 0,
+        entries: [],
+      },
+    }).reason,
+    "authorization_identity_missing"
+  );
+  assert.equal(
+    reconcileAuthoritativeBudget({
+      authorizationId: "auth_x",
+      hotelId: "recOTHER",
+      ledgerDoc: {
+        authorization: "auth_x",
+        hotelId: "recH",
+        budgetUsd: 12,
+        estimatedSpentUsd: 0,
+        entries: [],
+      },
+    }).reason,
+    "hotel_mismatch"
+  );
+  assert.equal(
+    reconcileAuthoritativeBudget({
+      authorizationId: "auth_x",
+      hotelId: "recH",
+      ledgerDoc: {
+        authorization: "auth_x",
+        hotelId: "recH",
+        budgetUsd: "not-a-number",
+        estimatedSpentUsd: 0,
+        entries: [],
+      },
+    }).reason,
+    "cap_invalid"
+  );
+}
+
+// 43) Happy-path delivery with manifest + list/detail + observed build header
+{
+  const listBody = {
+    ok: true,
+    hotelId: "recH",
+    updatedAt: "2026-10-16T00:00:00Z",
+    opportunities: [{ id: "oppA" }, { id: "oppLegacy" }],
+  };
+  const fp = computeOpportunityListFingerprint(listBody);
+  const r = await runLocalDeliveryVerification({
+    hotelId: "recH",
+    intendedBuildSha: "shippedsha1",
+    publicationManifest: {
+      publishedIds: ["oppA"],
+      legacyPreservedIds: ["oppLegacy"],
+    },
+    fetchImpl: mockFetchSequence([
+      () =>
+        jsonResponse(200, listBody, {
+          "x-dealality-build-sha": "shippedsha1",
+        }),
+      () =>
+        jsonResponse(200, {
+          ok: true,
+          hotelId: "recH",
+          opportunity: { id: "oppA", hotelId: "recH", title: "A" },
+        }),
+    ]),
+  });
+  assert.equal(r.status, "passed");
+  assert.equal(r.buildSha, "shippedsha1");
+  assert.equal(r.checks.observedDataRevision, fp);
+  assert.equal(r.checks.publicationReconcile.status, "passed");
+}
+
+// 44) NYC Midtown geo: Times Square / New York are local for Renaissance, not foreign
+{
+  const {
+    assessGeographicRelevance,
+  } = await import(
+    "../lib/group-demand-intelligence/workflow/geographic-relevance-gate-v1.js"
+  );
+  const cfg = {
+    hotelId: "recG66DQJKP2c0UNh",
+    demandTerritory: {
+      label: "Manhattan Midtown / Times Square",
+      includes: ["Times Square / Theater District", "Midtown Manhattan"],
+    },
+  };
+  const geo = assessGeographicRelevance(
+    {
+      organizationName: "Sports Traveler",
+      localConnection:
+        "2026 US Open finals package includes three nights at the Marriott Marquis New York Times Square",
+    },
+    cfg,
+    { hotelId: "recG66DQJKP2c0UNh" }
+  );
+  assert.equal(geo.quarantine, false);
+  assert.ok(geo.localHits.length > 0);
+}
+
+// 45) Disposition geo probe must not drop localConnection (generic segments)
+{
+  const {
+    dispositionPaidCandidates,
+  } = await import(
+    "../lib/group-demand-intelligence/workflow/paid-multisegment-research-v1.js"
+  );
+  const rows = dispositionPaidCandidates(
+    {
+      hotelId: "recG66DQJKP2c0UNh",
+      segment: "sports",
+      kind: "discovery",
+      candidates: [
+        {
+          organizationName: "Example Sports Travel Co",
+          localConnection:
+            "Midtown Manhattan overnight packages near Times Square for race weekends",
+          proposedHotelUse: "Group lodging blocks for visiting runners",
+          hotelFitRationale:
+            "317-room Midtown hotel can host race-weekend overflow lodging",
+          contactEmail: "groups@example.com",
+          sourceUrls: ["https://example.com/nyc"],
+        },
+      ],
+    },
+    {
+      hotelConfig: {
+        hotelId: "recG66DQJKP2c0UNh",
+        demandTerritory: {
+          label: "Manhattan Midtown / Times Square",
+          includes: ["Times Square / Theater District"],
+        },
+      },
+    }
+  );
+  assert.equal(rows.length, 1);
+  assert.notEqual(rows[0].disposition, "quarantined_wrong_market");
+  assert.notEqual(rows[0].reason, "unhandled_segment_or_kind");
+  assert.ok(rows[0].package?.localConnection);
 }
 
 console.log("test-gdi-full-e2e-contract-v1: PASS");
