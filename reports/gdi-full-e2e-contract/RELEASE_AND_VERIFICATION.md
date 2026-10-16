@@ -11,7 +11,8 @@
 
 ## Deploy policy
 
-- Deploy shared code from **clean main** via the normal release process when this PR merges.
+- Deploy shared code from **clean main** via `npm run deploy:production` (never raw `railway up`).
+- Pack lean: `.railwayignore` must keep estimated upload **under ~200 MB** Cloudflare CLI limit. GDI customer PDFs only under `reports/group-demand-intelligence/pdf/`; do not un-ignore the whole GDI reports tree. Marketing multi-MB local textures stay ignored when CDN hosts them.
 - Data-only hotel updates still require production verification proofs; deploy SUCCESS alone ≠ delivery.
 - Do not interrupt active Renaissance / Tampa / ADP execution ownership.
 - Preserve current customer inventory; this contract does not authorize new research spend or hotel activation.

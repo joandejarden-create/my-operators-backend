@@ -40,6 +40,19 @@ _railway-test.tgz
 # Non-runtime marketing / fixture / docs bulk (safe for share surfaces)
 public/marketing/qa-shots/
 public/marketing/screenshots/
+# RAILWAY_LEAN_MARKETING_ASSETS_V1 — local source textures; live pages use Webflow CDN URLs.
+# Keep marketing JS/CSS/HTML; do not ship multi-MB local PNG/JPG duplicates.
+public/marketing/assets/globe-texture-3.jpg
+public/marketing/assets/fs-globe-image-3.jpg
+public/marketing/assets/fs-globe-image-4.jpg
+public/marketing/assets/dealality-globe-texture.jpg
+public/marketing/old-home-problem-historic-renovated.png
+public/marketing/old-home-problem-historic-unrenovated.png
+public/marketing/old-home-problem-hotel-renovated.png
+public/marketing/old-home-problem-hotel-unrenovated.png
+public/marketing/old-home-problem-highrise-renovated.png
+public/marketing/old-home-problem-highrise-unrenovated.png
+public/marketing/deal-desk-assets/coastal-hotel.png
 fixtures/choice-fdd-text/
 docs/old-home-problem-deal-desk-snapshots-cinematic/
 docs/old-home-problem-deal-desk-snapshots-cinematic-webflow/
@@ -152,7 +165,9 @@ _archive/
 !data/dealality-report-archive/**
 !data/pilots/
 !data/pilots/**
-!reports/group-demand-intelligence/
+# RAILWAY_LEAN_GDI_REPORTS_V2 — do NOT un-ignore the whole reports/group-demand-intelligence/
+# tree (was shipping hidden-demand dumps + research corpora ~22MB and defeating lean upload).
+# Customer PDFs only:
 !reports/group-demand-intelligence/pdf/
 !reports/group-demand-intelligence/pdf/**
 # RAILWAY_LEAN_ADP_UPLOAD_V3 — removed late re-unignores of current-report-pdf / monthly-review (were defeating V2 lean).
@@ -160,6 +175,20 @@ _archive/
 # RAILWAY_LEAN_GDI_E2E_V1 — GDI Full E2E / six-hotel / repeatable-workflow report trees stay under reports/*
 # (already ignored). Do not un-ignore raw research dumps. Runtime hotel packs remain under
 # data/group-demand-intelligence/hotels/** only.
+
+# Local Python / scratch (never Railway runtime)
+.venv/
+venv/
+tmp-*.png
+tmp-*.jpg
+tmp-*.webp
+tmp-*.html
+tmp-*.json
+tmp-*.mjs
+tmp-*.cjs
+tmp-*.txt
+tmp-pr-number.txt
+tmp-merge-sha.txt
 
 
 # RAILWAY_LEAN_PUBLISHED_V2 — keep published tree structure but drop bulky blobs.
