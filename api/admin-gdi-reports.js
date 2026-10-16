@@ -33,43 +33,66 @@ export async function getAdminGdiReportCatalog(req, res) {
       let summary = {
         available: false,
         reason: "unavailable",
+        readFailed: false,
         ready: 0,
         watch: 0,
         actionSet: 0,
+        customerFacing: 0,
         hotelName: h.displayName || hotelId,
         market: h.locationLine || h.city || h.market || null,
       };
       try {
         const data = await getGdiPdfReportData(hotelId);
-        if (data?.available) {
+        const facing =
+          data?.executiveSummary?.customerFacingProspectCount ??
+          data?.customerFacingProspectCount;
+        if (data?.readFailed) {
+          summary = {
+            available: false,
+            readFailed: true,
+            reason: data.reason || "canonical_opportunity_read_failed",
+            ready: 0,
+            watch: 0,
+            actionSet: 0,
+            customerFacing: null,
+            hotelName: data.hotelName || h.displayName || hotelId,
+            market: h.locationLine || h.city || h.market || null,
+          };
+        } else if (data?.available) {
           summary = {
             available: true,
+            readFailed: false,
             ready: data.executiveSummary?.customerReadyCount ?? 0,
             watch: data.executiveSummary?.futureWatchCount ?? 0,
             actionSet: data.executiveSummary?.actionSetCount ?? 0,
+            customerFacing: facing ?? 0,
             hotelName: data.hotel?.name || h.displayName || hotelId,
             market: data.hotel?.market || h.locationLine || h.city || null,
           };
         } else {
           summary = {
             available: false,
+            readFailed: false,
             reason: data?.reason || "unavailable",
-            ready: 0,
-            watch: 0,
+            ready: data?.customerReadyCount ?? 0,
+            watch: data?.futureWatchCount ?? 0,
             actionSet: 0,
-            hotelName: h.displayName || hotelId,
-            market: h.locationLine || h.city || null,
+            customerFacing: facing ?? 0,
+            hotelName: data?.hotelName || h.displayName || hotelId,
+            market: h.locationLine || h.city || h.market || null,
           };
         }
       } catch (err) {
         summary = {
           available: false,
+          readFailed: true,
           reason: String(err?.message || err).slice(0, 120),
           ready: 0,
           watch: 0,
           actionSet: 0,
+          customerFacing: null,
           hotelName: h.displayName || hotelId,
-          market: h.locationLine || h.city || null,
+          market: h.locationLine || h.city || h.market || null,
         };
       }
 
@@ -97,10 +120,12 @@ export async function getAdminGdiReportCatalog(req, res) {
           hotelName: summary.hotelName,
           market: summary.market || null,
           available: !!summary.available,
+          readFailed: !!summary.readFailed,
           reason: summary.reason || null,
           ready: summary.ready || 0,
           actionSet: summary.actionSet || 0,
           watch: summary.watch || 0,
+          customerFacingCount: summary.customerFacing,
           reportStatus: deriveGdiReportStatus(summary),
           pdfReady,
           pdfStatus: pdfReady ? "READY" : "MISSING",
