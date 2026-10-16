@@ -189,17 +189,37 @@ const railwayService =
   process.env.RAILWAY_SERVICE ||
   process.env.DEALALITY_RAILWAY_SERVICE ||
   "my-operators-backend";
-const up = spawnSync(
-  railwayBin,
-  ["up", "--detach", "--service", railwayService],
+// Railway CLI ignore-crate packing has repeatedly exceeded Cloudflare's ~200MB
+// upload limit on this repo even when .railwayignore estimates ~173MB. Default to
+// an explicit filtered staging tree (same keep-set as .railwayignore) unless
+// DEALALITY_RAILWAY_DIRECT_UP=1 is set for emergency debugging.
+const useLeanStage = process.env.DEALALITY_RAILWAY_DIRECT_UP !== "1";
+let uploadCwd = root;
+let upArgs = ["up", "--detach", "--service", railwayService];
+if (useLeanStage) {
+  const stageRoot =
+    process.env.DEALALITY_RAILWAY_LEAN_STAGE_DIR ||
+    path.join(root, "..", "_railway-lean-stage");
+  console.log(`\n--- build lean Railway stage → ${stageRoot} ---`);
+  runNode("scripts/build-railway-lean-stage.mjs", ["--out", stageRoot]);
+  uploadCwd = root; // keep linked project context
+  upArgs = [
+    "up",
+    stageRoot,
+    "--detach",
+    "--service",
+    railwayService,
+    "--path-as-root",
+  ];
+  record.leanStage = { path: stageRoot, mode: "path-as-root" };
+}
+const up = spawnSync(railwayBin, upArgs, {
   // Do not force CI=true ? Railway CLI 4.x/5.x treats it as non-upload CI mode.
-  {
-    cwd: root,
-    stdio: "inherit",
-    env: process.env,
-    shell: process.platform === "win32",
-  }
-);
+  cwd: uploadCwd,
+  stdio: "inherit",
+  env: process.env,
+  shell: process.platform === "win32",
+});
 if (up.status !== 0) {
   record.status = "RAILWAY_UP_FAILED";
   record.finishedAt = new Date().toISOString();
