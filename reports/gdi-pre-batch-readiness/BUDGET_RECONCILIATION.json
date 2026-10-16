@@ -1,88 +1,62 @@
 {
-  "generatedAt": "2026-10-16T10:20:00.000Z",
-  "result": "RECONCILED",
-  "gap265Closeout": {
-    "closedAt": "2026-10-16T10:20:00.000Z",
-    "gapUsd": 2.65,
-    "priorNarrativeSpentUsd": 6.5,
-    "priorNarrativeRemainingUsd": 4.5,
-    "reconstructedSpentUsd": 3.85,
-    "reconstructedRemainingUsd": 7.15,
-    "decomposition": {
-      "duplicateSurfeAlreadyInLedgerUsd": 1.25,
-      "duplicateParallelPoint35AlreadyInLedgerUsd": 1.05,
-      "notExecutedFourthParallelUsd": 0.35,
-      "sumUsd": 2.65
-    },
+  "generatedAt": "2026-10-16T12:10:00.000Z",
+  "result": "CORRECTED_HOLD_ACTIVE",
+  "correctionOfPr109": {
+    "correctedAt": "2026-10-16T12:10:00.000Z",
+    "error": "Equal-cost matching of pe_sd_gaslamp_yacht + scaling_discovery_*_v2 to claimed LMC Parallel tasks; fourth Parallel labeled NOT_EXECUTED; Surfe closed via AMWA substitution",
+    "fix": "Match four LMC Parallel trun_ IDs; restore $1.40 incurred; retain $1.25 Surfe accounting hold; available $4.50"
+  },
+  "gap265": {
+    "originalDisputedUsd": 2.65,
+    "convertedToIncurredUsd": 1.4,
+    "retainedAccountingHoldUsd": 1.25,
     "ledgerMutation": {
-      "entriesAdded": 0,
-      "entriesRemoved": 0,
-      "entriesMatched": 8,
-      "notExecutedExcluded": 1
+      "lmcParallelEntriesRestored": 4,
+      "peScalingRowsRelabeledAsLmc": false,
+      "surfeEntriesInvented": false
     },
     "transactionTable": "reports/gdi-pre-batch-readiness/TRANSACTION_RECONCILIATION.md",
-    "backupBeforeCloseout": "reports/gdi-pre-batch-readiness/budget-ledger-audit/20261016-101429-gap265/authorization-ledger-v1.pre-gap265.json",
-    "forcedBalances": false,
-    "note": "Prior ~$6.50 spent / ~$4.50 remaining stacked later Parallel+Surfe passes on top of reconstructed $3.85. Those passes were already INCLUDED (or one Parallel NOT_EXECUTED). No invented charges/credits."
-  },
-  "rootCause": {
-    "code": "SILENT_EMPTY_LEDGER_BOOTSTRAP_ON_MISSING_PATH",
-    "summary": "readParallelBudgetLedger auto-created an empty $11 authorization ledger when the file was missing under a worktree/GDI_DATA_ROOT path. Observed empty file at gdi-release-main data path with updatedAt 2026-10-15T23:19:05.285Z (0 entries, $0 spent). Prior spend evidence remained in operational reports only.",
-    "notAFreshAllowance": true
+    "backupBeforeCorrection": "reports/gdi-pre-batch-readiness/budget-ledger-audit/20261016-120717-tx-match-correction/authorization-ledger-v1.pre-tx-match-correction.json"
   },
   "authoritativePath": "data/group-demand-intelligence/paid-multisegment-budget/authorization-ledger-v1.json",
-  "envOverrides": [
-    "GDI_PAID_MS_BUDGET_LEDGER_PATH",
-    "GDI_DATA_ROOT"
-  ],
-  "callersResolveSameLedger": [
-    "lib/group-demand-intelligence/workflow/paid-multisegment-research-v1.js",
-    "lib/group-demand-intelligence/workflow/surfe-usage-ledger-v1.js",
-    "lib/group-demand-intelligence/parallel/budget-ledger-v1.js"
-  ],
   "historicalPilotSeparate": {
     "path": "data/group-demand-intelligence/parallel-budget/ledger.json",
     "budgetUsd": 2,
-    "note": "Preserved separately; not merged into $11 envelope; Mayflower/SD funds not transferred to six-hotel proposal"
+    "estimatedSpentUsd": 1.5,
+    "note": "Preserved separately; not merged into $11 envelope"
   },
-  "evidenceSources": [
-    "reports/gdi-paid-multisegment-validation/TASK_BY_SEGMENT_RECONCILIATION.md",
-    "reports/gdi-paid-multisegment-validation/CONTINUATION_SUMMARY.json",
-    "reports/gdi-paid-multisegment-validation/budget-ledger-reconciled.json",
-    "reports/gdi-lmc-planner-contact-depth/FOUNDER_REPORT.md",
-    "reports/gdi-pre-batch-readiness/TRANSACTION_RECONCILIATION.md"
-  ],
-  "backupOfEmptyCopy": "reports/gdi-pre-batch-readiness/budget-ledger-audit/20261016-091655/authorization-ledger-v1.empty-observed.json",
   "balances": {
     "authorizedUsd": 11,
-    "supportedEstimatedIncurredUsd": 3.85,
+    "supportedEstimatedIncurredUsd": 5.25,
     "outstandingReservationsUsd": 0,
-    "unresolvedSpendingExposureBeyondLedgerUsd": 0,
-    "estimatedSpentLackingProviderRequestIdUsd": 1.0,
-    "safelyAvailableUsd": 7.15,
+    "accountingHoldUsd": 1.25,
+    "safelyAvailableUsd": 4.5,
     "actualBilledUsd": null,
-    "actualBilledStatus": "UNKNOWN"
-  },
-  "reconstructed": {
-    "budgetUsd": 11,
-    "estimatedSpentUsd": 3.85,
-    "reservedUsd": 0,
-    "actualBilledUsd": null,
-    "remainingUsd": 7.15,
-    "spentEntryCount": 15,
-    "dedupeKey": "providerRunId || jobKey",
-    "priorNarrativeRemainingUsd": 4.5,
-    "forcedToPriorNarrative": false,
-    "note": "Reconstructed from provider run IDs + LMC Surfe outcomes. Prior ~$4.50 remaining claim is documented but not forced. Actual billed remains unknown until invoices. Gap $2.65 closed as duplicate narrative + one NOT_EXECUTED Parallel."
+    "actualBilledStatus": "UNKNOWN",
+    "estimatedSpentLackingProviderRequestIdUsd": 1
   },
   "failClosed": {
     "test": "scripts/test-gdi-paid-ms-ledger-fail-closed-v1.mjs",
-    "result": "PASS",
-    "behavior": "Missing authorization ledger throws PAID_MS_LEDGER_MISSING; paid execution cannot silently acquire a fresh empty $11 ledger"
+    "behavior": "Missing authorization ledger throws PAID_MS_LEDGER_MISSING; accountingHoldUsd reduces remainingParallelBudgetUsd"
   },
   "policy": {
     "transferMayflowerSdToSixHotel": false,
     "newPaidCallsThisTask": false,
-    "renaissanceActivation": "NOT_STARTED"
-  }
+    "renaissanceGdi": "AUTHORIZED_NOT_STARTED",
+    "renaissanceAdp": "COMPLETE"
+  },
+  "authorizedUsd": 11,
+  "supportedEstimatedIncurredUsd": 5.25,
+  "outstandingReservationsUsd": 0,
+  "accountingHoldUsd": 1.25,
+  "safelyAvailableUsd": 4.5,
+  "actualBilledUsd": null,
+  "historicalPilot": {
+    "budgetUsd": 2,
+    "estimatedIncurredUsd": 2,
+    "remainingUsd": 0,
+    "closedToAdditionalSpend": true
+  },
+  "updatedAt": "2026-10-16T13:05:00.000Z",
+  "note": "Hold reallocated after Surfe overlap correction; see TRANSACTION_RECONCILIATION.md"
 }

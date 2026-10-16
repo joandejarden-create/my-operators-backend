@@ -1,183 +1,266 @@
 {
-  "generatedAt": "2026-10-16T10:15:00.000Z",
-  "gapUsd": 2.65,
-  "gapDecomposition": {
-    "duplicateSurfeAlreadyInLedgerUsd": 1.25,
-    "duplicateParallelPoint35AlreadyInLedgerUsd": 1.05,
-    "notExecutedFourthParallelUsd": 0.35,
-    "sumUsd": 2.65
-  },
-  "priorNarrative": {
-    "spentBeforeLaterPassesUsd": 3.85,
-    "claimedFourParallelUsd": 1.4,
-    "claimedSurfeUsd": 1.25,
-    "claimedTotalSpentUsd": 6.5,
-    "claimedRemainingUsd": 4.5
-  },
+  "generatedAt": "2026-10-16T13:05:00.000Z",
+  "correctionOf": "PR #111 Surfe NOT_EXECUTED + hold double-count of incurred LMC Surfe",
+  "backupBeforeCorrection": "reports/gdi-pre-batch-readiness/budget-ledger-audit/20261016-150125-hold-surfe-correction/",
   "authoritativeBalances": {
     "authorizedUsd": 11,
-    "estimatedSpentUsd": 3.85,
+    "supportedEstimatedIncurredUsd": 5.25,
     "outstandingReservationsUsd": 0,
-    "unresolvedSpendingExposureBeyondLedgerUsd": 0,
-    "estimatedSpentLackingProviderRequestIdUsd": 1.0,
-    "safelyAvailableUsd": 7.15,
-    "actualBilledUsd": null
+    "accountingHoldUsd": 1.25,
+    "safelyAvailableUsd": 4.5,
+    "actualBilledUsd": null,
+    "actualBilledStatus": "UNKNOWN",
+    "historicalPilotUsdSeparate": 2,
+    "historicalPilotClosedToSpend": true
   },
-  "parallelPoint35Claimed": [
+  "exposureTable": [
     {
-      "index": 1,
-      "jobKey": "paid_ms:pe_sd_gaslamp_yacht",
-      "hotelId": "recnPB3Q02NO8Ma1o",
-      "provider": "parallel",
-      "providerRunId": "trun_567f3335d0c140ad9bc68e2c107a280e",
-      "reservationId": "rsv_recon_paid_ms_pe_sd_gaslamp_yacht",
-      "executionStatus": "spent",
-      "estimatedUsd": 0.35,
-      "actualBilledUsd": null,
-      "inReconstructedLedger": true,
-      "dedupeKey": "trun_567f3335d0c140ad9bc68e2c107a280e",
-      "disposition": "INCLUDED",
-      "artifact": "reports/gdi-paid-multisegment-validation/TASK_BY_SEGMENT_RECONCILIATION.md"
+      "claimedExecution": "Four LMC Surfe (Danielle, Roger, Jodi, Andre)",
+      "amountAlreadyInIncurredUsd": 1,
+      "potentialAdditionalExposureUsd": 0,
+      "holdAllocatedUsd": 0,
+      "disposition": "MATCHED",
+      "action": "RELEASED_OVERLAP",
+      "reason": "Already deducted in estimatedSpent; missing request IDs do not justify additional hold"
     },
     {
-      "index": 2,
-      "jobKey": "paid_ms:scaling_discovery_may_v2",
-      "hotelId": "rec0eTEnCqlsGJJt9",
-      "provider": "parallel",
-      "providerRunId": "trun_567f3335d0c140adb82a54365648fad5",
-      "reservationId": "rsv_recon_paid_ms_scaling_discovery_may_v2",
-      "executionStatus": "spent",
-      "estimatedUsd": 0.35,
-      "actualBilledUsd": null,
-      "inReconstructedLedger": true,
-      "dedupeKey": "trun_567f3335d0c140adb82a54365648fad5",
-      "disposition": "INCLUDED",
-      "artifact": "reports/gdi-paid-multisegment-validation/CONTINUATION_SUMMARY.json"
+      "claimedExecution": "Fifth LMC Surfe credit",
+      "amountAlreadyInIncurredUsd": 0,
+      "potentialAdditionalExposureUsd": 0.25,
+      "holdAllocatedUsd": 0.25,
+      "disposition": "UNRESOLVED",
+      "action": "RETAIN_HOLD",
+      "reason": "FOUNDER claimed 5x0.25; fifth not located in register"
     },
     {
-      "index": 3,
-      "jobKey": "paid_ms:scaling_discovery_sd_v2",
-      "hotelId": "recnPB3Q02NO8Ma1o",
-      "provider": "parallel",
-      "providerRunId": "trun_567f3335d0c140ad949f162eb795ee58",
-      "reservationId": "rsv_recon_paid_ms_scaling_discovery_sd_v2",
-      "executionStatus": "spent",
-      "estimatedUsd": 0.35,
-      "actualBilledUsd": null,
-      "inReconstructedLedger": true,
-      "dedupeKey": "trun_567f3335d0c140ad949f162eb795ee58",
-      "disposition": "INCLUDED",
-      "artifact": "reports/gdi-paid-multisegment-validation/CONTINUATION_SUMMARY.json"
+      "claimedExecution": "Scaling Stephanie Pursglove + Yessica Trujillo Surfe",
+      "amountAlreadyInIncurredUsd": 0,
+      "potentialAdditionalExposureUsd": 0.5,
+      "holdAllocatedUsd": 0.5,
+      "disposition": "EXECUTED_UNMATCHED",
+      "action": "RETAIN_HOLD",
+      "reason": "ANSWERS_A-G_SCALING_CONTACTS claims $0.50; no Surfe rows in $11 ledger; continuation skip is different pass"
     },
     {
-      "index": 4,
-      "jobKey": null,
-      "hotelId": null,
-      "provider": "parallel",
-      "providerRunId": null,
-      "reservationId": null,
-      "executionStatus": "not_found",
-      "estimatedUsd": 0.35,
-      "actualBilledUsd": null,
-      "inReconstructedLedger": false,
-      "dedupeKey": null,
-      "disposition": "NOT_EXECUTED",
-      "artifact": "No matching trun_/job in paid-MS or LMC reports; gdi-lmc-planner-expansion path absent"
+      "claimedExecution": "Wisedocs Manal + Shipyard Traci original Surfe",
+      "amountAlreadyInIncurredUsd": 0,
+      "potentialAdditionalExposureUsd": 0.5,
+      "holdAllocatedUsd": 0.5,
+      "disposition": "EXECUTED_UNMATCHED",
+      "action": "RETAIN_HOLD",
+      "reason": "Provider-returned emails evidenced; skip-only continuation does not prove nonexecution of earlier pass"
     }
   ],
-  "surfeClaimed": [
+  "lmcParallelClaimed": [
     {
-      "index": 1,
-      "jobKey": "surfe:amwa_prior",
-      "hotelId": "rec0eTEnCqlsGJJt9",
-      "provider": "surfe",
-      "providerRunId": "bcb0a16b-063e-4654-8569-f87e707c9bf6",
-      "reservationId": "rsv_recon_surfe_amwa",
-      "executionStatus": "spent",
-      "estimatedUsd": 0.25,
-      "actualBilledUsd": null,
-      "inReconstructedLedger": true,
-      "dedupeKey": "bcb0a16b-063e-4654-8569-f87e707c9bf6",
-      "disposition": "INCLUDED",
-      "note": "Prior paid-MS Surfe; part of $1.25 Surfe total already in $3.85"
+      "jobKey": "paid_ms:lmc_planners_social_may_v1",
+      "providerRunId": "trun_567f3335d0c140ad84cb51c43c0b4baa",
+      "estimatedUsd": 0.35,
+      "disposition": "MATCHED",
+      "spentAt": "2026-10-15T21:35:00.000Z",
+      "spentAtProvenance": "report_timestamp:reports/gdi-lmc-planner-expansion/FOUNDER_REPORT.md"
     },
     {
-      "index": 2,
-      "jobKey": "surfe:gdi_lmc_5b4d51be7726617c:email",
-      "hotelId": "rec0eTEnCqlsGJJt9",
+      "jobKey": "paid_ms:lmc_corporate_assoc_may_v1",
+      "providerRunId": "trun_567f3335d0c140ad8222efec4611b85a",
+      "estimatedUsd": 0.35,
+      "disposition": "MATCHED",
+      "spentAt": "2026-10-15T21:35:00.000Z",
+      "spentAtProvenance": "report_timestamp:reports/gdi-lmc-planner-expansion/FOUNDER_REPORT.md"
+    },
+    {
+      "jobKey": "paid_ms:lmc_planners_social_sd_v1",
+      "providerRunId": "trun_567f3335d0c140ad8b6191e9c2922d9f",
+      "estimatedUsd": 0.35,
+      "disposition": "MATCHED",
+      "spentAt": "2026-10-15T21:35:00.000Z",
+      "spentAtProvenance": "report_timestamp:reports/gdi-lmc-planner-expansion/FOUNDER_REPORT.md"
+    },
+    {
+      "jobKey": "paid_ms:lmc_corporate_assoc_sd_v1",
+      "providerRunId": "trun_567f3335d0c140ad8e3066a4795127f5",
+      "estimatedUsd": 0.35,
+      "disposition": "MATCHED",
+      "spentAt": "2026-10-15T21:35:00.000Z",
+      "spentAtProvenance": "report_timestamp:reports/gdi-lmc-planner-expansion/FOUNDER_REPORT.md"
+    }
+  ],
+  "surfeDisputedAttempts": [
+    {
+      "label": "LMC Danielle Kambic",
+      "person": "Danielle Kambic",
+      "employer": "CSI DMC",
       "opportunityId": "gdi_lmc_5b4d51be7726617c",
-      "provider": "surfe",
-      "providerRunId": null,
-      "reservationId": "rsv_recon_surfe_lmc_danielle_kambic",
-      "executionStatus": "spent_estimated",
+      "hotelId": "rec0eTEnCqlsGJJt9",
+      "purpose": "LMC contact-depth person email",
+      "channel": "email",
       "estimatedUsd": 0.25,
-      "actualBilledUsd": null,
-      "inReconstructedLedger": true,
-      "dedupeKey": "surfe:gdi_lmc_5b4d51be7726617c:email",
-      "disposition": "INCLUDED",
-      "providerRequestIdStatus": "UNRESOLVED",
-      "artifact": "reports/gdi-lmc-planner-contact-depth/FOUNDER_REPORT.md"
+      "providerRequestId": null,
+      "ledgerReservationId": "rsv_recon_surfe_lmc_danielle_kambic",
+      "disposition": "MATCHED",
+      "samePassAsSkipReports": false
     },
     {
-      "index": 3,
-      "jobKey": "surfe:gdi_lmc_00cd663a9f282697:email",
-      "hotelId": "rec0eTEnCqlsGJJt9",
+      "label": "LMC Roger Whyte",
+      "person": "Roger J. Whyte II",
+      "employer": "Stratus Firm",
       "opportunityId": "gdi_lmc_00cd663a9f282697",
-      "provider": "surfe",
-      "providerRunId": null,
-      "reservationId": "rsv_recon_surfe_lmc_roger_whyte",
-      "executionStatus": "spent_estimated",
       "estimatedUsd": 0.25,
-      "actualBilledUsd": null,
-      "inReconstructedLedger": true,
-      "dedupeKey": "surfe:gdi_lmc_00cd663a9f282697:email",
-      "disposition": "INCLUDED",
-      "providerRequestIdStatus": "UNRESOLVED",
-      "artifact": "reports/gdi-lmc-planner-contact-depth/FOUNDER_REPORT.md"
+      "providerRequestId": null,
+      "ledgerReservationId": "rsv_recon_surfe_lmc_roger_whyte",
+      "disposition": "MATCHED"
     },
     {
-      "index": 4,
-      "jobKey": "surfe:gdi_lmc_d670fde177ad418b:email",
-      "hotelId": "rec0eTEnCqlsGJJt9",
+      "label": "LMC Jodi Moraru",
+      "person": "Jodi Moraru",
+      "employer": "Evoke",
       "opportunityId": "gdi_lmc_d670fde177ad418b",
-      "provider": "surfe",
-      "providerRunId": null,
-      "reservationId": "rsv_recon_surfe_lmc_jodi_moraru",
-      "executionStatus": "spent_estimated",
       "estimatedUsd": 0.25,
-      "actualBilledUsd": null,
-      "inReconstructedLedger": true,
-      "dedupeKey": "surfe:gdi_lmc_d670fde177ad418b:email",
-      "disposition": "INCLUDED",
-      "providerRequestIdStatus": "UNRESOLVED",
-      "artifact": "reports/gdi-lmc-planner-contact-depth/FOUNDER_REPORT.md"
+      "providerRequestId": null,
+      "ledgerReservationId": "rsv_recon_surfe_lmc_jodi_moraru",
+      "disposition": "MATCHED"
     },
     {
-      "index": 5,
-      "jobKey": "surfe:gdi_lmc_860cde704de88d7c:email",
-      "hotelId": "rec0eTEnCqlsGJJt9",
+      "label": "LMC Andre Wells",
+      "person": "Andre Wells",
+      "employer": "Events by Andre Wells",
       "opportunityId": "gdi_lmc_860cde704de88d7c",
-      "provider": "surfe",
-      "providerRunId": null,
-      "reservationId": "rsv_recon_surfe_lmc_andre_wells_conflict",
-      "executionStatus": "spent_estimated_identity_conflict",
       "estimatedUsd": 0.25,
-      "actualBilledUsd": null,
-      "inReconstructedLedger": true,
-      "dedupeKey": "surfe:gdi_lmc_860cde704de88d7c:email",
-      "disposition": "INCLUDED",
-      "providerRequestIdStatus": "UNRESOLVED",
-      "note": "Surfe invoked; identity conflict; cost not inferred as zero"
+      "outcome": "identity_conflict",
+      "providerRequestId": null,
+      "ledgerReservationId": "rsv_recon_surfe_lmc_andre_wells_conflict",
+      "disposition": "MATCHED"
+    },
+    {
+      "label": "LMC fifth FOUNDER credit",
+      "estimatedUsd": 0.25,
+      "disposition": "UNRESOLVED"
+    },
+    {
+      "label": "Scaling Stephanie Pursglove",
+      "person": "Stephanie Pursglove",
+      "employer": "ESET",
+      "purpose": "scaling contact person email",
+      "channel": "email",
+      "estimatedUsd": 0.25,
+      "outcome": "identity_conflict",
+      "providerRequestId": null,
+      "ledgerReservationId": null,
+      "evidence": "reports/gdi-buyer-contact-enrichment/ANSWERS_A-G_SCALING_CONTACTS.md",
+      "disposition": "EXECUTED_UNMATCHED",
+      "note": "Continuation surfe skipped is a different pass"
+    },
+    {
+      "label": "Scaling Yessica Trujillo",
+      "person": "Yessica Trujillo",
+      "employer": "SOCi",
+      "purpose": "scaling contact person email",
+      "channel": "email",
+      "estimatedUsd": 0.25,
+      "outcome": "accepted_then_quarantined_wrong_domain",
+      "providerRequestId": null,
+      "ledgerReservationId": null,
+      "evidence": "reports/gdi-buyer-contact-enrichment/ANSWERS_A-G_SCALING_CONTACTS.md",
+      "disposition": "EXECUTED_UNMATCHED"
+    },
+    {
+      "label": "Wisedocs Manal Abu-Shawar original Surfe",
+      "person": "Manal Abu-Shawar",
+      "employer": "Wisedocs",
+      "opportunityId": "gdi_sc_0fe98055e8df9f75",
+      "purpose": "person-email enrichment",
+      "channel": "email",
+      "estimatedUsd": 0.25,
+      "artifactEmail": "manal@wisedocs.ai",
+      "providerRequestId": null,
+      "ledgerReservationId": null,
+      "evidence": [
+        "reports/gdi-research-workflow-completion/wisedocs-domain-corroboration.md",
+        "reports/gdi-buyer-contact-enrichment/ANSWERS_A-G_SCALING_CONTACTS.md"
+      ],
+      "disposition": "EXECUTED_UNMATCHED",
+      "note": "NOT_EXECUTED from continuation skip is incorrect for this earlier pass"
+    },
+    {
+      "label": "Shipyard Traci Hetherington original Surfe",
+      "person": "Traci Hetherington",
+      "employer": "The Shipyard",
+      "opportunityId": "gdi_sc_188e25b6b3b56637",
+      "purpose": "person-email enrichment",
+      "channel": "email",
+      "estimatedUsd": 0.25,
+      "providerRequestId": null,
+      "ledgerReservationId": null,
+      "evidence": "reports/gdi-buyer-contact-enrichment/ANSWERS_A-G_SCALING_CONTACTS.md",
+      "disposition": "EXECUTED_UNMATCHED"
+    },
+    {
+      "label": "AMWA prior",
+      "providerRequestId": "bcb0a16b-063e-4654-8569-f87e707c9bf6",
+      "estimatedUsd": 0.25,
+      "disposition": "MATCHED",
+      "inLedger": true
     }
   ],
-  "ledgerMutationThisTask": {
-    "entriesAdded": 0,
-    "entriesRemoved": 0,
-    "entriesMatched": 8,
-    "notExecutedExcludedFromSpend": 1,
-    "note": "No charge/credit invented. Metadata-only gap closeout on reconciliation docs + ledger.reconciliation block."
+  "historicalPilot": {
+    "budgetUsd": 2,
+    "supportedEstimatedIncurredUsd": 2,
+    "remainingUsd": 0,
+    "closedToAdditionalSpend": true,
+    "actualBilledStatus": "PARTIAL_KNOWN_THIRD_RUN_ONLY",
+    "runs": [
+      {
+        "providerRunId": "trun_567f3335d0c140ad8e87120211c6f61f",
+        "estimatedUsd": 1
+      },
+      {
+        "providerRunId": "trun_567f3335d0c140ad9269500c06dc2b38",
+        "estimatedUsd": 0.5
+      },
+      {
+        "providerRunId": "trun_567f3335d0c140ad8fc1b7a929f468b3",
+        "estimatedUsd": 0.5,
+        "actualBilledUsd": 0.5
+      }
+    ],
+    "source": "reports/gdi-operational-baseline/FINAL-REPORT.md"
   },
-  "callersAuthoritativePath": "data/group-demand-intelligence/paid-multisegment-budget/authorization-ledger-v1.json",
-  "envOverrides": ["GDI_PAID_MS_BUDGET_LEDGER_PATH", "GDI_DATA_ROOT"],
-  "historicalPilotPreserved": true
+  "hotelStatuses": {
+    "renaissanceGdi": {
+      "hotelId": "recG66DQJKP2c0UNh",
+      "authorizedUsd": 12,
+      "status": "PUBLISHED_VERIFIED",
+      "runId": "gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d",
+      "owner": "cursor-agent-renaissance-gdi-exec",
+      "evidence": "C:/Dev/dealality/gdi-renaissance-exec/reports/gdi-six-hotel-e2e/renaissance/EXECUTION_OWNERSHIP.json",
+      "note": "Confirmed by GDI_STATUS_NOTE.md on main; this PR did not launch or interrupt"
+    },
+    "renaissanceAdp": {
+      "hotelId": "recG66DQJKP2c0UNh",
+      "authorizedUsd": 15,
+      "researchStatus": "complete",
+      "productionShareStatus": "issued_pr112_proof_redacted",
+      "persistenceStatus": "filesystem_primary_airtable_overlay_applied_compaction_contract",
+      "customerDeliveryStatus": "substantially_complete_pending_post_deploy_pdf_click_verify",
+      "evidence": [
+        "reports/adp-six-hotel-e2e/renaissance/FOUNDER_CLOSEOUT_A_H.md",
+        "reports/adp-six-hotel-e2e/renaissance/PRODUCTION_SHARE_PROOF_REDACTED.json",
+        "reports/adp-six-hotel-e2e/renaissance/GDI_STATUS_NOTE.md"
+      ],
+      "mergeShaCloseout": "7e0609b2",
+      "note": "PR #112 fixed prior invalid_share_signature blocker; do not repeat stale share-blocked claim"
+    },
+    "tampa": {
+      "hotel": "Tampa Airport Marriott",
+      "paidCapAuthorized": false,
+      "configReadiness": "NOT_READY_MISSING_CONFIG",
+      "note": "Do not infer paid cap from six-hotel proposals; paid discovery not authorized"
+    },
+    "waterstoneDistribution": "HOLD"
+  },
+  "thisTask": {
+    "newPaidRequests": false,
+    "duplicateHotelRunsInitiated": false,
+    "interruptedRenaissanceExecution": false
+  }
 }

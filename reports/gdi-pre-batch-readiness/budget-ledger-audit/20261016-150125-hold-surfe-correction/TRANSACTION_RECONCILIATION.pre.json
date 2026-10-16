@@ -1,0 +1,247 @@
+{
+  "generatedAt": "2026-10-16T12:10:00.000Z",
+  "correctionOf": "PR #109 incorrect equal-cost matching",
+  "gapUsdOriginalDispute": 2.65,
+  "holdConversion": {
+    "originalHoldUsd": 2.65,
+    "convertedToIncurredUsd": 1.4,
+    "retainedAccountingHoldUsd": 1.25,
+    "convertedReason": "Four LMC Parallel tasks MATCHED and restored to ledger",
+    "retainedReason": "Surfe LMC enrichment envelope unresolved (request IDs + FOUNDER 5th credit)"
+  },
+  "priorNarrative": {
+    "spentBeforeLaterPassesUsd": 3.85,
+    "claimedFourLmcParallelUsd": 1.4,
+    "claimedSurfeUsd": 1.25,
+    "claimedTotalSpentUsd": 6.5,
+    "claimedRemainingUsd": 4.5
+  },
+  "authoritativeBalances": {
+    "authorizedUsd": 11,
+    "supportedEstimatedIncurredUsd": 5.25,
+    "outstandingReservationsUsd": 0,
+    "accountingHoldUsd": 1.25,
+    "accountingHoldIsNotIncurred": true,
+    "accountingHoldIsNotReservation": true,
+    "safelyAvailableUsd": 4.5,
+    "actualBilledUsd": null,
+    "actualBilledStatus": "UNKNOWN",
+    "estimatedSpentLackingProviderRequestIdUsd": 1.0,
+    "historicalPilotUsdSeparate": 2
+  },
+  "correctedPriorClaims": [
+    {
+      "claim": "Matched pe_sd_gaslamp_yacht + scaling_discovery_may_v2 + scaling_discovery_sd_v2 as the four LMC Parallel tasks",
+      "disposition": "CORRECTED",
+      "reason": "Equal cost does not establish transaction identity"
+    },
+    {
+      "claim": "Fourth Parallel NOT_EXECUTED",
+      "disposition": "CORRECTED",
+      "reason": "All four LMC Parallel runs evidenced with distinct trun_ IDs; missing folder ≠ nonexecution"
+    },
+    {
+      "claim": "Surfe $1.25 DUPLICATE via AMWA + 4 LMC already closing the gap",
+      "disposition": "CORRECTED",
+      "reason": "Do not substitute prior AMWA for later LMC pass; Surfe held separately"
+    },
+    {
+      "claim": "Safely available $7.15 with gap closed",
+      "disposition": "CORRECTED",
+      "reason": "Available $4.50 after restoring LMC Parallel and retaining Surfe hold"
+    }
+  ],
+  "lmcParallelClaimed": [
+    {
+      "index": 1,
+      "jobKey": "paid_ms:lmc_planners_social_may_v1",
+      "hotelId": "rec0eTEnCqlsGJJt9",
+      "hotel": "Mayflower",
+      "purpose": "LMC professional planners + social celebrations/catering discovery",
+      "provider": "parallel",
+      "providerRunId": "trun_567f3335d0c140ad84cb51c43c0b4baa",
+      "reservationId": "rsv_recon_paid_ms_lmc_planners_social_may_v1",
+      "submissionTimestamp": "2026-10-15T21:35:00.000Z",
+      "estimatedUsd": 0.35,
+      "actualBilledUsd": null,
+      "inLedger": true,
+      "disposition": "MATCHED",
+      "artifacts": [
+        "reports/gdi-lmc-planner-expansion/FOUNDER_REPORT.md",
+        "data/group-demand-intelligence/execution-history/gdi_three_hotel_integrity_2026-10-15T21-44-42-649Z.json"
+      ]
+    },
+    {
+      "index": 2,
+      "jobKey": "paid_ms:lmc_corporate_assoc_may_v1",
+      "hotelId": "rec0eTEnCqlsGJJt9",
+      "hotel": "Mayflower",
+      "purpose": "LMC corporate meetings / room rental / association / nonprofit discovery",
+      "provider": "parallel",
+      "providerRunId": "trun_567f3335d0c140ad8222efec4611b85a",
+      "reservationId": "rsv_recon_paid_ms_lmc_corporate_assoc_may_v1",
+      "submissionTimestamp": "2026-10-15T21:35:00.000Z",
+      "estimatedUsd": 0.35,
+      "actualBilledUsd": null,
+      "inLedger": true,
+      "disposition": "MATCHED",
+      "artifacts": [
+        "reports/gdi-lmc-planner-expansion/FOUNDER_REPORT.md",
+        "data/group-demand-intelligence/execution-history/gdi_three_hotel_integrity_2026-10-15T21-44-42-649Z.json"
+      ]
+    },
+    {
+      "index": 3,
+      "jobKey": "paid_ms:lmc_planners_social_sd_v1",
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "hotel": "Wyndham San Diego Bayside",
+      "purpose": "LMC professional planners + social celebrations/catering discovery",
+      "provider": "parallel",
+      "providerRunId": "trun_567f3335d0c140ad8b6191e9c2922d9f",
+      "reservationId": "rsv_recon_paid_ms_lmc_planners_social_sd_v1",
+      "submissionTimestamp": "2026-10-15T21:35:00.000Z",
+      "estimatedUsd": 0.35,
+      "actualBilledUsd": null,
+      "inLedger": true,
+      "disposition": "MATCHED",
+      "artifacts": [
+        "reports/gdi-lmc-planner-expansion/FOUNDER_REPORT.md",
+        "data/group-demand-intelligence/execution-history/gdi_three_hotel_integrity_2026-10-15T21-44-42-649Z.json"
+      ]
+    },
+    {
+      "index": 4,
+      "jobKey": "paid_ms:lmc_corporate_assoc_sd_v1",
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "hotel": "Wyndham San Diego Bayside",
+      "purpose": "LMC corporate meetings / association / nonprofit discovery",
+      "provider": "parallel",
+      "providerRunId": "trun_567f3335d0c140ad8e3066a4795127f5",
+      "reservationId": "rsv_recon_paid_ms_lmc_corporate_assoc_sd_v1",
+      "submissionTimestamp": "2026-10-15T21:35:00.000Z",
+      "estimatedUsd": 0.35,
+      "actualBilledUsd": null,
+      "inLedger": true,
+      "disposition": "MATCHED",
+      "artifacts": [
+        "reports/gdi-lmc-planner-expansion/FOUNDER_REPORT.md",
+        "data/group-demand-intelligence/execution-history/gdi_three_hotel_integrity_2026-10-15T21-44-42-649Z.json"
+      ]
+    }
+  ],
+  "notLmcEqualCostRowsKeptSeparate": [
+    {
+      "jobKey": "paid_ms:pe_sd_gaslamp_yacht",
+      "providerRunId": "trun_567f3335d0c140ad9bc68e2c107a280e",
+      "estimatedUsd": 0.35,
+      "note": "PE Gaslamp/yacht — not LMC expansion"
+    },
+    {
+      "jobKey": "paid_ms:scaling_discovery_may_v2",
+      "providerRunId": "trun_567f3335d0c140adb82a54365648fad5",
+      "estimatedUsd": 0.35,
+      "note": "Scaling continuation — not LMC expansion"
+    },
+    {
+      "jobKey": "paid_ms:scaling_discovery_sd_v2",
+      "providerRunId": "trun_567f3335d0c140ad949f162eb795ee58",
+      "estimatedUsd": 0.35,
+      "note": "Scaling continuation — not LMC expansion"
+    }
+  ],
+  "freshLmcAccountsProvenance": {
+    "uniqueNewAccounts": 13,
+    "publishedFacing": 12,
+    "internalHeld": 1,
+    "sourceParallelRunIds": [
+      "trun_567f3335d0c140ad84cb51c43c0b4baa",
+      "trun_567f3335d0c140ad8222efec4611b85a",
+      "trun_567f3335d0c140ad8b6191e9c2922d9f",
+      "trun_567f3335d0c140ad8e3066a4795127f5"
+    ],
+    "artifact": "reports/gdi-lmc-planner-expansion/FOUNDER_REPORT.md"
+  },
+  "surfeLmcContactDepth": [
+    {
+      "person": "Danielle Kambic",
+      "opportunityId": "gdi_lmc_5b4d51be7726617c",
+      "providerRequestId": null,
+      "estimatedUsd": 0.25,
+      "disposition": "MATCHED",
+      "requestIdStatus": "UNRESOLVED"
+    },
+    {
+      "person": "Roger J. Whyte II",
+      "opportunityId": "gdi_lmc_00cd663a9f282697",
+      "providerRequestId": null,
+      "estimatedUsd": 0.25,
+      "disposition": "MATCHED",
+      "requestIdStatus": "UNRESOLVED"
+    },
+    {
+      "person": "Jodi Moraru",
+      "opportunityId": "gdi_lmc_d670fde177ad418b",
+      "providerRequestId": null,
+      "estimatedUsd": 0.25,
+      "disposition": "MATCHED",
+      "requestIdStatus": "UNRESOLVED"
+    },
+    {
+      "person": "André Wells",
+      "opportunityId": "gdi_lmc_860cde704de88d7c",
+      "providerRequestId": null,
+      "estimatedUsd": 0.25,
+      "outcome": "identity_conflict",
+      "disposition": "MATCHED",
+      "requestIdStatus": "UNRESOLVED"
+    },
+    {
+      "person": null,
+      "note": "FOUNDER_REPORT claimed 5 x $0.25 this pass; fifth not located in register",
+      "estimatedUsd": 0.25,
+      "disposition": "UNRESOLVED"
+    }
+  ],
+  "surfeOtherReferenced": [
+    {
+      "label": "AMWA prior",
+      "providerRequestId": "bcb0a16b-063e-4654-8569-f87e707c9bf6",
+      "estimatedUsd": 0.25,
+      "inLedger": true,
+      "disposition": "MATCHED",
+      "note": "Prior paid-MS — not later LMC pass"
+    },
+    {
+      "label": "Wisedocs/Shipyard Surfe",
+      "estimatedUsd": 0,
+      "disposition": "NOT_EXECUTED",
+      "note": "Surfe skipped; Parallel contact_wisedocs_may / contact_shipyard_sd rows represent Parallel spend only"
+    },
+    {
+      "label": "Scaling-contact Surfe continuation",
+      "estimatedUsd": 0,
+      "disposition": "NOT_EXECUTED",
+      "note": "Skipped usable_channel_exists"
+    }
+  ],
+  "renaissance": {
+    "gdi": {
+      "hotelId": "recG66DQJKP2c0UNh",
+      "authorizedUsd": 12,
+      "status": "AUTHORIZED_NOT_STARTED",
+      "owningPlan": "reports/gdi-six-hotel-e2e/RENAISSANCE_ACTIVATION_PLAN.md"
+    },
+    "adp": {
+      "hotelId": "recG66DQJKP2c0UNh",
+      "authorizedUsd": 15,
+      "status": "COMPLETE",
+      "evidence": "reports/adp-six-hotel-e2e/renaissance/FOUNDER_SUMMARY.md",
+      "mergeSha": "2c58fef4"
+    }
+  },
+  "thisTask": {
+    "newPaidRequests": false,
+    "duplicateRunsInitiated": false,
+    "interruptedRenaissanceExecution": false
+  }
+}
