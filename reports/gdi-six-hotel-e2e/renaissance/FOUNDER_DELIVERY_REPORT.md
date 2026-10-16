@@ -12,7 +12,7 @@
 
 ## Verdict
 
-Research-to-page execution **ran and published** 7 reviewed PRIORITY prospects to Airtable with named contacts and complete drawers. Local `:8080` customer list shows **15** (legacy surface + 7 reviewed). Production customer list still shows **8** legacy-visible until Railway `GDI_REVIEWED_PROSPECT_HOTEL_IDS` includes Renaissance (flag is already ON; allowlist currently Bethesda+Mayflower only).
+Research-to-page execution **ran and published** 7 reviewed PRIORITY prospects to Airtable with named contacts and complete drawers. Local `:8080` and production both show **15** customer-visible opportunities after Railway allowlist update (`recG66DQJKP2c0UNh` added; redeploy `f622fc6e` SUCCESS).
 
 ---
 
@@ -106,21 +106,22 @@ Synced from ADP-verified profile (do not trust Broadway Ballroom / Shake Shack /
 | Airtable apply | **7 create**, 0 quarantine, 7 drawer pass, 29 unmatched preserved |
 | Airtable re-read | 36 total; 7 `REVIEWED_PACKAGE_V1`; 7 customer-visible when flag+allowlist ON |
 | Local `:8080` list | **15** opportunities; reviewed cards + contacts present; detail OK for PLUS |
-| Production list | **8** legacy surface — reviewed cards **hidden** until Railway allowlist adds `recG66DQJKP2c0UNh` |
+| Production list | **15** after allowlist env update + redeploy SUCCESS |
+| Production detail/contact | Verified for sample reviewed cards (named person + email) |
 | Outreach | **Not sent** |
 | Recurring schedule | **Not activated** |
 
 Production host: `https://my-operators-backend-production.up.railway.app`  
 Page: `/group-demand-intelligence.html?hotelId=recG66DQJKP2c0UNh`
 
-### Required production env (manual / Railway)
+### Production env (applied)
 
 ```
 GDI_REVIEWED_PROSPECT_PUBLICATION_V1=1
 GDI_REVIEWED_PROSPECT_HOTEL_IDS=recLuxvwwxID7U2B8,rec0eTEnCqlsGJJt9,recnPB3Q02NO8Ma1o,recG66DQJKP2c0UNh
 ```
 
-Preserve existing Bethesda/Mayflower/SD entries. Redeploy after env change. Code default allowlist also updated in PR.
+Code default allowlist also updated on branch `exec/gdi-renaissance-ts-12usd` (PR open link below).
 
 ---
 
@@ -138,8 +139,8 @@ Preserve existing Bethesda/Mayflower/SD entries. Redeploy after env change. Code
 - LMC, scaling companies, PE partnerships — not published this pass  
 - Quarantined overflow/competing-venue live discoveries — need explicit supported-fit path if pursued  
 - Segment breadth beyond associations incomplete by design (precision over padding)  
-- Production customer visibility blocked on allowlist until env deploy  
-- Weekly refresh backlog seeded only — **schedule not activated**
+- Weekly refresh backlog seeded only — **schedule not activated**  
+- Legacy + reviewed title pairs coexist (e.g. “76th Annual Meeting” and “Society for the Study of Social Problems 2027”) — legacy not removed
 
 ---
 
