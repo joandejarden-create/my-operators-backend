@@ -2387,14 +2387,28 @@
   function resolveBaselineMonitoringMeta(d, trends) {
     var bm = (d && d.baselineMonitoring) || {};
     var period = (d && d.period) || {};
-    var first = trends && trends[0] ? trends[0] : null;
+    var list = Array.isArray(trends) ? trends : [];
+    var currentPt = null;
+    for (var i = 0; i < list.length; i++) {
+      if (list[i] && list[i].role === "current") {
+        currentPt = list[i];
+        break;
+      }
+    }
+    if (!currentPt && list.length) currentPt = list[list.length - 1];
+    var first = list[0] || null;
+    // Prefer the current monitoring period date — never label current KPIs with an older
+    // historical trend point's date when that point is only retained for context.
     var baselineDate =
       bm.baselineDate ||
       period.baselineDate ||
+      period.executionDate ||
+      (currentPt && (currentPt.baselineDate || currentPt.date)) ||
       (first && (first.baselineDate || first.date)) ||
       null;
     var nextLabel =
       bm.nextFormalRemeasurementLabel ||
+      (currentPt && currentPt.nextFormalRemeasurementLabel) ||
       (first && first.nextFormalRemeasurementLabel) ||
       nextRemeasurementLabelFromBaseline(baselineDate) ||
       "Next scheduled remeasurement";
@@ -2402,8 +2416,16 @@
       baselineDate: baselineDate,
       baselineDateLabel: formatBaselineDisplayDate(baselineDate) || "Baseline established",
       nextFormalRemeasurementLabel: nextLabel,
-      monitoringStatus: bm.monitoringStatus || (first && first.monitoringStatus) || "ACTIVE"
+      monitoringStatus: bm.monitoringStatus || (currentPt && currentPt.monitoringStatus) || (first && first.monitoringStatus) || "ACTIVE"
     };
+  }
+
+  function trendsHaveComparableScope(trends) {
+    if (!Array.isArray(trends) || trends.length < 2) return true;
+    for (var i = 0; i < trends.length; i++) {
+      if (trends[i] && trends[i].comparableScopeNote) return false;
+    }
+    return true;
   }
 
   function renderTrends(d) {
@@ -2476,15 +2498,17 @@
           '<div class="aiv-detail-trend-stat" data-adp-peer-card="3"><div class="aiv-detail-trend-stat__label">Consideration Rate</div><div class="aiv-detail-trend-stat__value">' + (last.considerationRate != null ? fmtPct(last.considerationRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + esc(baselineSub) + '</div></div>' +
           '<div class="aiv-detail-trend-stat" data-adp-peer-card="4"><div class="aiv-detail-trend-stat__label">Monitoring</div><div class="aiv-detail-trend-stat__value">Active</div><div class="aiv-detail-trend-stat__delta">' + esc(monitoringSub) + '</div></div>';
       } else {
-        var rcCh = ppChange(last.propertyRealityCoverage, prev.propertyRealityCoverage);
-        var spCh = ppChange(last.scenarioPresenceRate, prev.scenarioPresenceRate);
-        var crCh = ppChange(last.considerationRate, prev.considerationRate);
+        var scopeOk = trendsHaveComparableScope(trends);
+        var rcCh = scopeOk ? ppChange(last.propertyRealityCoverage, prev.propertyRealityCoverage) : null;
+        var spCh = scopeOk ? ppChange(last.scenarioPresenceRate, prev.scenarioPresenceRate) : null;
+        var crCh = scopeOk ? ppChange(last.considerationRate, prev.considerationRate) : null;
+        var scopeDeltaNote = scopeOk ? "" : "Not comparable scope";
         summaryEl.setAttribute("data-adp-peer-grid", "trends-kpi");
         summaryEl.setAttribute("data-adp-peer-count", "4");
         summaryEl.innerHTML =
-          '<div class="aiv-detail-trend-stat" data-adp-peer-card="1"><div class="aiv-detail-trend-stat__label">Reality Coverage</div><div class="aiv-detail-trend-stat__value">' + (last.propertyRealityCoverage != null ? fmtPct(last.propertyRealityCoverage) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + (rcCh == null ? "" : (rcCh > 0 ? "+" : "") + rcCh + " pp") + '</div></div>' +
-          '<div class="aiv-detail-trend-stat" data-adp-peer-card="2"><div class="aiv-detail-trend-stat__label">Scenario Presence</div><div class="aiv-detail-trend-stat__value">' + (last.scenarioPresenceRate != null ? fmtPct(last.scenarioPresenceRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + (spCh == null ? "" : (spCh > 0 ? "+" : "") + spCh + " pp") + '</div></div>' +
-          '<div class="aiv-detail-trend-stat" data-adp-peer-card="3"><div class="aiv-detail-trend-stat__label">Consideration Rate</div><div class="aiv-detail-trend-stat__value">' + (last.considerationRate != null ? fmtPct(last.considerationRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + (crCh == null ? "" : (crCh > 0 ? "+" : "") + crCh + " pp") + '</div></div>' +
+          '<div class="aiv-detail-trend-stat" data-adp-peer-card="1"><div class="aiv-detail-trend-stat__label">Reality Coverage</div><div class="aiv-detail-trend-stat__value">' + (last.propertyRealityCoverage != null ? fmtPct(last.propertyRealityCoverage) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + (rcCh == null ? esc(scopeDeltaNote) : (rcCh > 0 ? "+" : "") + rcCh + " pp") + '</div></div>' +
+          '<div class="aiv-detail-trend-stat" data-adp-peer-card="2"><div class="aiv-detail-trend-stat__label">Scenario Presence</div><div class="aiv-detail-trend-stat__value">' + (last.scenarioPresenceRate != null ? fmtPct(last.scenarioPresenceRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + (spCh == null ? esc(scopeDeltaNote) : (spCh > 0 ? "+" : "") + spCh + " pp") + '</div></div>' +
+          '<div class="aiv-detail-trend-stat" data-adp-peer-card="3"><div class="aiv-detail-trend-stat__label">Consideration Rate</div><div class="aiv-detail-trend-stat__value">' + (last.considerationRate != null ? fmtPct(last.considerationRate) : "\u2014") + '</div><div class="aiv-detail-trend-stat__delta">' + (crCh == null ? esc(scopeDeltaNote) : (crCh > 0 ? "+" : "") + crCh + " pp") + '</div></div>' +
           '<div class="aiv-detail-trend-stat" data-adp-peer-card="4"><div class="aiv-detail-trend-stat__label">Periods</div><div class="aiv-detail-trend-stat__value">' + trends.length + '</div></div>';
       }
     }

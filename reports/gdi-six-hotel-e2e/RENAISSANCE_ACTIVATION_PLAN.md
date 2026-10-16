@@ -174,3 +174,4 @@ Resume: `--resume-run <runId>` with stage ledger under `reports/gdi-repeatable-w
 
 This accounting/docs task does **not** own live GDI execution and must not launch duplicate paid runs.
 
+

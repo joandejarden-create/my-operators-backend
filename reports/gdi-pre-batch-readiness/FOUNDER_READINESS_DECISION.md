@@ -6,7 +6,7 @@
 
 Six-hotel batch (other five): **queued only — not approved**. Do not infer Tampa paid caps from proposals.  
 Renaissance GDI: **PUBLISHED_VERIFIED / completed** ($12) — owner `cursor-agent-renaissance-gdi-exec`; this accounting task did not launch or interrupt that run.  
-Renaissance ADP: research **complete**; production share **blocked**; customer delivery **incomplete** ($15).  
+Renaissance ADP: research **complete**; production share **issued** (PR #112); customer delivery substantially complete pending post-deploy PDF verify ($15).  
 Tampa: config **NOT_READY**; **no explicit paid cap authorized**.  
 Waterstone distribution: **HOLD** intact.
 
@@ -67,3 +67,4 @@ Authenticated AI Admin interaction remains **NOT RUN** — admin-operations gap,
 | Historical pilot (separate, closed) | 2.00 / remaining 0.00 |
 
 Details: `TRANSACTION_RECONCILIATION.md`.
+

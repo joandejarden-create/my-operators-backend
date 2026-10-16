@@ -126,8 +126,9 @@ Focused regressions: Parallel hold block, **Surfe** hold block, invalid hold, pe
 | Scope | Cap | Actual status | Notes |
 |-------|----:|---------------|-------|
 | Renaissance GDI `recG66DQJKP2c0UNh` | **$12** | **PUBLISHED_VERIFIED / completed** | Owner `cursor-agent-renaissance-gdi-exec`; run `gdi_workflow_recG66DQ_2026-10-16T10-26-54-849Z_80516d`; Parallel `trun_567f3335d0c140adbc64e005916c92ac` ~$0.21; production list 15. Evidence: `gdi-renaissance-exec` `EXECUTION_OWNERSHIP.json` / `FOUNDER_DELIVERY_REPORT.md`. This accounting task did **not** launch or interrupt that run. |
-| Renaissance ADP (same hotel) | **$15** | Research **complete**; production share **blocked** (`invalid_share_signature`); Airtable Live upsert **blocked** (payload size); customer delivery **incomplete** | PR #110 @ `2c58fef4` deployed research/publish path. Do not label entire delivery COMPLETE. |
+| Renaissance ADP (same hotel) | **$15** | Research **complete**; production share **issued** (PR #112 proof); persistence filesystem+Airtable overlay/compaction contract; post-deploy PDF click verify still noted | See `FOUNDER_CLOSEOUT_A_H.md` / `PRODUCTION_SHARE_PROOF_REDACTED.json`. Do not repeat stale share-blocked claim. |
 | Tampa Airport Marriott | — | Config **NOT_READY**; **no explicit paid ADP/GDI cap authorized** in this tree | Do not infer cap from six-hotel proposals. Paid discovery not authorized. |
 | Other hotel scopes | — | Independent | Waterstone distribution **HOLD** intact. |
 
 Mayflower/SD $11 funds not transferred. This task is not a Renaissance activation gate.
+

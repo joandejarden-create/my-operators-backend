@@ -3,89 +3,48 @@
 **Hotel:** Renaissance New York Times Square Hotel (`adp_renaissance_times_square` / `recG66DQJKP2c0UNh`)  
 **Authorization:** `$15` ADP-only (`auth_adp_renaissance_ts_15usd_v1`)  
 **Period:** `adp_period_adp_renaissance_times_square_20261016083441_2ff16a`  
-**Status:** Research + certify + filesystem publish + PDF + monthly review + local share verified. PR **#110** merged @ `2c58fef4` and **deploy:production SUCCESS**. Production share API still returns `invalid_share_signature` for locally issued tokens (needs re-issue with Railway `ADP_SHARE_CAPABILITY_SECRET`).  
-**Related authorizations (independent):** GDI Renaissance **$12** = **AUTHORIZED_NOT_STARTED** (`reports/gdi-six-hotel-e2e/RENAISSANCE_ACTIVATION_PLAN.md`) — do not combine ledgers. **Not approved:** other five hotels · Waterstone distribution HOLD · ADP `$57` batch.
+**Status:** Research preserved · production share issued · Airtable overlay applied · profile facts corrected · PDFs visually accepted · **deploy PR required** for production SoT sync.  
+
+**Unchanged holds:** other five hotels queued · Waterstone HOLD · ADP `$57` unapproved.  
+**GDI:** separate `$12` authorization; prior COMPLETED GDI runs exist — see `GDI_STATUS_NOTE.md`. Not executed in this ADP closeout.
+
+Full A–H: `FOUNDER_CLOSEOUT_A_H.md`.
 
 ---
 
 ## A. What research actually ran?
 
-Fresh live multi-provider monitoring: **80 scenarios × 4 providers = 320 calls**, all successful (0 failed).  
-Entry: `run-ai-demand-positioning.mjs --apply` with resume after a hung first process.  
-Period CERTIFIED and published to filesystem SoT. Monthly review `2026-10` **v2** generated; current-report PDF + monthly-review PDF attached.
+Fresh live multi-provider monitoring: **80 scenarios × 4 providers = 320 calls**, all successful.  
+Period CERTIFIED and published to filesystem SoT. No full rematrix in closeout.
 
-## B. Which providers and scenarios were completed or omitted?
+## B. Providers
 
-| Provider | Model | Completed | Omitted |
-|----------|-------|----------:|---------|
-| openai | gpt-4o | 80/80 | — |
-| gemini | gemini-3.6-flash | 80/80 | — |
-| perplexity | sonar | 80/80 | — |
-| claude | claude-sonnet-4-6 | 80/80 | — |
+| Provider | Model | Completed |
+|----------|-------|----------:|
+| openai | gpt-4o | 80/80 |
+| gemini | gemini-3.6-flash | 80/80 |
+| perplexity | sonar | 80/80 |
+| claude | claude-sonnet-4-6 | 80/80 |
 
-No providers omitted. Scenario mix: business 16 · leisure 16 · couples 11 · group_meeting 15 · family 6 · celebration 9 · wellness 3 · adventure 4 (matrix: `QUERY_PROVIDER_SAMPLE_MATRIX.json`).
+## C. Comparable change
 
-## C. What changed versus the previous assessment, where comparable?
-
-| | Prior (2026-10-05) | New (2026-10-16) |
+| | Prior (65 scen) | New (80 scen) |
 |--|--:|--:|
 | Demand capture | 40.0% (26/65) | 45.0% (36/80) |
-| Lost demand | 39 | 44 |
-| Competitive observed | 20 | 19 |
-| Payload actions | 2 | 2 |
 
-**Scope disclosure:** denominator moved **65 → 80** (builder universe). Do **not** treat the rate delta as a certified improvement/decline. Intent-level patterns that remain comparable in direction: family still **0%**; business/leisure mid; group_meeting relatively weaker; celebration relatively stronger. Marquis displacement action persists.
+**Scope disclosure:** do **not** treat as certified improvement. Family still **0%** in sample.
 
-## D. Strongest findings and recommended hotel actions
+## D. Strongest findings / actions
 
-**Findings (evidence-backed):**
-- Solid mid-pack capture on Times Square business/leisure/celebration intents; **family** still invisible in this sample.
-- AI-observed competitors remain Times Square peers (Marquis displacement recurring).
-- Broadway / walking-distance representation flagged for improvement in the new action set.
+1. Improve AI representation of walking distance to Broadway  
+2. Address displacement by New York Marriott Marquis (28 scenarios absent)
 
-**Payload actions (reconciled, not reset):**
-1. Improve AI representation of walking distance to Broadway.  
-2. Address displacement by New York Marriott Marquis.
+Monthly review expands operational agenda without contradicting these two.
 
-Monthly review expands to a 5-action corrective posture library pack (`adp_mr_renaissance_times_square_2026-10_v2`) without wiping prior edition backup.
+## E. Cost
 
-## E. Are page, action plan, PDF, and share persisted and verified?
+Estimated incurred **$10.53** · remaining **$4.47** · actual billed **UNKNOWN**. Closeout spent **$0** additional provider budget.
 
-| Surface | Status |
-|---------|--------|
-| Published snapshot + CERTIFIED manifest | Yes (filesystem) |
-| Current report PDF | Yes · 341,976 bytes · `%PDF` + `%%EOF` |
-| Monthly review + PDF | Yes · v2 · PDF READY |
-| Local share API | Yes · 200 · period + 45.0% |
-| Production deploy | Yes · `2c58fef4` SUCCESS (assets/smoke/share-contract gates PASS) |
-| Production share | **Gap remains** — Railway rejects locally signed token (`invalid_share_signature`); re-issue with production secret |
-| Airtable Live upsert | **Blocked** — payload exceeds Airtable long-text limit; filesystem SoT retained |
+## F. Delivery gates
 
-## F. Were existing customer inputs and concurrent GDI work preserved?
-
-- Prior published edition backed up under `renaissance/backups/pre-refresh-20261016/`.  
-- GDI profile not wholesale-overwritten; ADP did not create/reclassify GDI opportunities.  
-- Mayflower/SD and Waterstone HOLD untouched.  
-- Historical `$2` GDI pilot and Mayflower/SD `$11` unused.
-
-## G. Estimated cost, actual known cost, and elapsed time?
-
-| Item | USD |
-|------|----:|
-| Authorized | 15.00 |
-| Estimated incurred | **10.53** |
-| Safely available | **4.47** |
-| Actual billed | **UNKNOWN** |
-
-Research wall-clock (not concurrent-summed): ~**65 minutes** including hang + resume (approx 08:34–09:39 UTC).
-
-## H. Did any step require bespoke code or manual payload rewriting?
-
-**Scoped shared fixes (not Renaissance-only workarounds):** ADP authorization ledger; run-script budget + certify publish + resume; runner resume/hard-timeout; repo-root paths; null-safe publish return.  
-**Manual:** kill hung process; resume; Airtable upsert blocked by platform limit (documented, not hand-rewritten payload).  
-No customer payload hand-editing.
-
-## I. Is the ADP process ready for the next hotel?
-
-**Conditionally yes** for the next *authorized* hotel after: (1) merge/deploy of shared fixes + published Ren artifacts, (2) production share re-issue with production secret, (3) explicit activation + separate budget.  
-Waterstone remains HOLD for external distribution. Four Marriott hotels remain identity-blocked. Proposed `$57` remains **unapproved**.
+See `FOUNDER_CLOSEOUT_A_H.md` answers A–H.

@@ -212,9 +212,9 @@
     LODGING_DEMAND_UNKNOWN: "Room demand not yet published",
     UNKNOWN: "Not yet established",
     PRIMARY_VENUE_SELECTED_OVERFLOW_POSSIBLE:
-      "Primary venue placed — overflow possible",
-    PRIMARY_VENUE_SELECTED: "Primary venue placed",
-    HOTEL_SOURCING_UNCONFIRMED: "Hotel sourcing unconfirmed",
+      "Primary Venue Selected / Overflow Possible",
+    PRIMARY_VENUE_SELECTED: "Primary Venue Selected",
+    HOTEL_SOURCING_UNCONFIRMED: "Hotel Sourcing Unconfirmed",
     CONTACT_NOW: "Pursue now",
     QUALIFY_NOW: "Qualify now",
     WATCH: "Watch",
@@ -367,18 +367,107 @@
     "(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)";
 
   /**
+   * Acronyms preserved in tile secondary-headline Proper Case (presentation only).
+   * Matched case-insensitively so enum leftovers / sentence-case labels stay readable.
+   */
+  var TILE_SECONDARY_HEADLINE_ACRONYMS = {
+    plus: "PLUS",
+    arias: "ARIAS",
+    nih: "NIH",
+    nyc: "NYC",
+    dmc: "DMC",
+    rfp: "RFP",
+    tbd: "TBD",
+    mba: "MBA",
+    csi: "CSI",
+    dc: "DC",
+  };
+
+  /**
+   * Explicit customer-facing secondary-headline labels (classification + sourcing).
+   * Keys are uppercase enums or lowercase normalized prose.
+   * Classification: REUSABLE_PRODUCT_UI
+   */
+  var TILE_SECONDARY_HEADLINE_LABELS = {
+    HOTEL_SOURCING_UNCONFIRMED: "Hotel Sourcing Unconfirmed",
+    "hotel sourcing unconfirmed": "Hotel Sourcing Unconfirmed",
+    PRIMARY_VENUE_SELECTED_OVERFLOW_POSSIBLE:
+      "Primary Venue Selected / Overflow Possible",
+    "primary venue selected / overflow possible":
+      "Primary Venue Selected / Overflow Possible",
+    PRIMARY_VENUE_SELECTED_NO_OVERFLOW_EVIDENCE:
+      "Primary Venue Selected / No Overflow Evidence",
+    "primary venue selected / no overflow evidence":
+      "Primary Venue Selected / No Overflow Evidence",
+    PRIMARY_VENUE_SELECTED: "Primary Venue Selected",
+    "primary venue selected": "Primary Venue Selected",
+    OPEN_UNRESOLVED: "Open / Unresolved",
+    "open / unresolved": "Open / Unresolved",
+    RFP_ACTIVE_SOURCING: "RFP / Active Sourcing",
+    "rfp / active sourcing": "RFP / Active Sourcing",
+    HOTEL_VENUE_TBD: "Hotel / Venue TBD",
+    "hotel / venue tbd": "Hotel / Venue TBD",
+    DESTINATION_TBD: "Destination TBD",
+    "destination tbd": "Destination TBD",
+    HOUSING_PENDING: "Housing Pending",
+    "housing pending": "Housing Pending",
+    REGISTRATION_OPEN_HOTEL_UNANNOUNCED:
+      "Registration Open / Hotel Unannounced",
+    "registration open / hotel unannounced":
+      "Registration Open / Hotel Unannounced",
+    PARTIALLY_PLACED: "Partially Placed",
+    "partially placed": "Partially Placed",
+    FULLY_PLACED: "Fully Placed",
+    "fully placed": "Fully Placed",
+    CURRENT_CYCLE_CLOSED: "Current Cycle Closed",
+    "current cycle closed": "Current Cycle Closed",
+    ASSOCIATION_OCCASION: "Association Occasion",
+    "association occasion": "Association Occasion",
+    PREFERRED_LODGING_PARTNERSHIP: "Preferred Lodging Partnership",
+    "preferred lodging partnership": "Preferred Lodging Partnership",
+    SCALING_COMPANY: "Scaling Company",
+    "scaling company": "Scaling Company",
+    LOCAL_MEETINGS_CATERING: "Local Meetings & Catering",
+    "local meetings & catering": "Local Meetings & Catering",
+    "local meetings and catering": "Local Meetings & Catering",
+  };
+
+  /**
    * Tile header Proper Case (presentation only).
-   * Preserves short ALL-CAPS acronyms (CSI, DMC, DC, MBA…).
+   * Preserves short ALL-CAPS acronyms and known hospitality/event acronyms.
    * Classification: REUSABLE_PRODUCT_UI
    */
   function toProperCaseDisplayTitle(raw) {
     var s = String(raw == null ? "" : raw).replace(/\s+/g, " ").trim();
     if (!s) return s;
     return s.replace(/\b([A-Za-z][A-Za-z0-9']*)\b/g, function (word) {
+      var lower = word.toLowerCase();
+      if (TILE_SECONDARY_HEADLINE_ACRONYMS[lower]) {
+        return TILE_SECONDARY_HEADLINE_ACRONYMS[lower];
+      }
       if (/^[A-Z]{2,6}$/.test(word)) return word;
       if (/^[A-Z0-9]{2,6}$/.test(word) && /[0-9]/.test(word)) return word;
       return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
     });
+  }
+
+  /**
+   * Format classification / sourcing / short-org tokens for the tile meta line.
+   * Prefer explicit taxonomy labels; fall back to Proper Case. Presentation only.
+   */
+  function formatTileSecondaryHeadlineLabel(raw) {
+    var s = String(raw == null ? "" : raw).replace(/\s+/g, " ").trim();
+    if (!s) return s;
+    if (TILE_SECONDARY_HEADLINE_LABELS[s]) return TILE_SECONDARY_HEADLINE_LABELS[s];
+    var upper = s.toUpperCase();
+    if (TILE_SECONDARY_HEADLINE_LABELS[upper]) {
+      return TILE_SECONDARY_HEADLINE_LABELS[upper];
+    }
+    var lower = s.toLowerCase();
+    if (TILE_SECONDARY_HEADLINE_LABELS[lower]) {
+      return TILE_SECONDARY_HEADLINE_LABELS[lower];
+    }
+    return toProperCaseDisplayTitle(s);
   }
 
   /**
@@ -489,7 +578,7 @@
     } else {
       classBits.push("Association");
     }
-    var classLabel = toProperCaseDisplayTitle(classBits[0]);
+    var classLabel = formatTileSecondaryHeadlineLabel(classBits[0]);
     // Only echo a short org token when title does not already include it.
     // Org echo uses Proper Case too; raw organizationName elsewhere stays as stored.
     var orgShort = org.replace(/\s*\([^)]*\)\s*$/, "").trim();
@@ -502,7 +591,11 @@
           title
         ));
     if (org && !titleHasOrg && orgShort.length <= 48) {
-      return esc(toProperCaseDisplayTitle(orgShort)) + " · " + esc(classLabel);
+      return (
+        esc(formatTileSecondaryHeadlineLabel(orgShort)) +
+        " · " +
+        esc(classLabel)
+      );
     }
     return esc(classLabel);
   }
@@ -2261,7 +2354,7 @@
       '<div class="brand-card__meta">' +
       tileClassificationMeta(it, linked, title) +
       (sourcingLbl
-        ? " · " + esc(String(sourcingLbl))
+        ? " · " + esc(formatTileSecondaryHeadlineLabel(sourcingLbl))
         : "") +
       "</div>" +
       "</div></div>" +
@@ -3417,9 +3510,13 @@
       sourcingNote =
         '<p class="gdi-muted"><strong>Sourcing status:</strong> ' +
         esc(
-          customerStatusLabel(
-            o.venueSourcingStatusLabel || o.venueSourcingStatus || o.sourcingStatus,
-            "Hotel sourcing unconfirmed"
+          formatTileSecondaryHeadlineLabel(
+            customerStatusLabel(
+              o.venueSourcingStatusLabel ||
+                o.venueSourcingStatus ||
+                o.sourcingStatus,
+              "Hotel Sourcing Unconfirmed"
+            )
           )
         ) +
         " — distinct from why this property could serve the use case.</p>";
@@ -3690,9 +3787,11 @@
     var attLabel = fmtVal(o.attendance ?? o.estimatedAttendance);
     if (!attLabel || attLabel === "—") attLabel = "Not yet published";
 
-    var sourcingLabel = customerStatusLabel(
-      o.venueSourcingStatusLabel || o.venueSourcingStatus,
-      "Hotel sourcing unconfirmed"
+    var sourcingLabel = formatTileSecondaryHeadlineLabel(
+      customerStatusLabel(
+        o.venueSourcingStatusLabel || o.venueSourcingStatus,
+        "Hotel Sourcing Unconfirmed"
+      )
     );
     // Room-demand commercial state — never substitute housing-program label for peak rooms
     var roomDemandLabel = customerStatusLabel(
@@ -4237,6 +4336,7 @@
     fmtVal: fmtVal,
     trunc: trunc,
     toProperCaseDisplayTitle: toProperCaseDisplayTitle,
+    formatTileSecondaryHeadlineLabel: formatTileSecondaryHeadlineLabel,
     scrubEventDatesFromText: scrubEventDatesFromText,
     eventDateRangeLabel: eventDateRangeLabel,
     priorityPill: priorityPill,

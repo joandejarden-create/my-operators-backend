@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "adapter": "filesystem_PRIMARY_SOT_published",
+  "probeId": "_durability_probe_mvawor6b",
+  "checks": [
+    "write_atomic",
+    "read_back",
+    "checksum_stable",
+    "reread_after_close",
+    "cleanup_removed"
+  ],
+  "note": "Proves filesystem published adapter write/read/idempotent cleanup for the same root used by customer editions. Does NOT prove Railway ephemeral disk survives redeploy without a volume — that remains an infra limitation unless a durable volume is mounted.",
+  "railwayEphemeralRuntimeWrites": "NOT_PROVEN_BY_THIS_TEST"
+}
