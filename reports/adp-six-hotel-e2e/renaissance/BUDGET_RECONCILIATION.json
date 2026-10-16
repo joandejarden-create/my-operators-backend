@@ -1,0 +1,48 @@
+{
+  "authorizationId": "auth_adp_renaissance_ts_15usd_v1",
+  "ledgerPath": "data/ai-demand-positioning/budget/authorization-ledger-v1.json",
+  "authorizedUsd": 15,
+  "separateFrom": [
+    "GDI Renaissance $12",
+    "GDI Mayflower/SD $11",
+    "ADP remaining-five $57 NOT approved",
+    "GDI $2 pilot"
+  ],
+  "providerConfigCostsUsd": {
+    "openai": 0.03,
+    "gemini": 0.02,
+    "perplexity": 0.05,
+    "claude": 0.03
+  },
+  "entries": [
+    {
+      "reservationId": "rsv_adp_mvapopzx_3cdee8",
+      "label": "adp_provider_smoke_renaissance_ts",
+      "estimatedUsd": 0.13,
+      "status": "spent",
+      "actualBilledUsd": null
+    },
+    {
+      "reservationId": "rsv_adp_mvapp0kl_518b7b",
+      "label": "adp_monitoring:adp_renaissance_times_square",
+      "jobKey": "adp_apply:adp_renaissance_times_square:80:openai+gemini+perplexity+claude",
+      "estimatedUsd": 10.4,
+      "status": "spent",
+      "periodId": "adp_period_adp_renaissance_times_square_20261016083441_2ff16a",
+      "actualBilledUsd": null,
+      "note": "320/320 successful calls; resume skipped first 50 openai after hang — no duplicate submits for those pairs"
+    }
+  ],
+  "totals": {
+    "supportedEstimatedIncurredUsd": 10.53,
+    "outstandingReservationsUsd": 0,
+    "safelyAvailableUsd": 4.47,
+    "actualBilledUsd": null,
+    "actualBilledStatus": "UNKNOWN"
+  },
+  "wallClockResearchApprox": {
+    "note": "Do not sum concurrent task durations. Research wall clock from first live apply start through EXECUTION_COMPLETE approximately 08:34–09:39 UTC (~65 minutes including hang/resume).",
+    "researchStartUtc": "2026-10-16T08:34:41.000Z",
+    "researchCompleteUtc": "2026-10-16T09:39:00.000Z"
+  }
+}
