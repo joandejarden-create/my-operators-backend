@@ -1,0 +1,651 @@
+{
+  "version": "gdi-full-e2e-contract-v1",
+  "generatedFor": "Full GDI E2E",
+  "distinctions": {
+    "taskExecution": "Coordinator stage completed or failed",
+    "researchCoverage": "Declared segment scope satisfied with evidence",
+    "publication": "Qualified opportunities persisted for hotel-facing use",
+    "customerDelivery": "Local + production verification of list/drawers/reports/links"
+  },
+  "overallStatuses": {
+    "NOT_STARTED": "NOT_STARTED",
+    "RUNNING": "RUNNING",
+    "PARTIAL": "PARTIAL",
+    "BLOCKED": "BLOCKED",
+    "COMPLETE": "COMPLETE",
+    "FAILED": "FAILED"
+  },
+  "runModes": {
+    "FULL_E2E": "full_e2e",
+    "STANDARD_COORDINATOR": "standard_coordinator",
+    "WEEKLY_REFRESH": "weekly_refresh",
+    "STATUS_ONLY": "status_only",
+    "DRY_RUN_PREFLIGHT": "dry_run_preflight"
+  },
+  "stages": [
+    {
+      "id": "A_resolve_hotel_identity",
+      "letter": "A",
+      "title": "Resolve canonical hotel identity",
+      "coordinatorStages": [
+        "validate_config"
+      ],
+      "inputs": [
+        "--hotel canonicalHotelId",
+        "config/group-demand-intelligence/hotels/<id>.json"
+      ],
+      "outputs": [
+        "resolved hotelConfig",
+        "canonical hotelId"
+      ],
+      "evidenceRequired": [
+        "hotel_config_present",
+        "canonical_hotel_id_match"
+      ],
+      "executionModes": [
+        "live",
+        "dry_run"
+      ],
+      "sideEffects": "none",
+      "authorization": "none",
+      "failurePartial": "missing config → FAILED/BLOCKED",
+      "retryResume": "re-run validate_config",
+      "contractVersion": "gdi-full-e2e-contract-v1"
+    },
+    {
+      "id": "B_verify_hotel_profile",
+      "letter": "B",
+      "title": "Verify hotel profile, facilities, positioning, catchment, constraints",
+      "coordinatorStages": [
+        "validate_config",
+        "reuse_evidence"
+      ],
+      "inputs": [
+        "hotelConfig.capabilityProfile",
+        "market/geography profile"
+      ],
+      "outputs": [
+        "profile verification record"
+      ],
+      "evidenceRequired": [
+        "profile_fields_present_or_gaps_recorded"
+      ],
+      "executionModes": [
+        "reuse",
+        "fresh_research",
+        "dry_run"
+      ],
+      "sideEffects": "none (read/verify)",
+      "authorization": "none",
+      "failurePartial": "critical profile gaps → PARTIAL/BLOCKED",
+      "retryResume": "resume after profile repair",
+      "contractVersion": "gdi-full-e2e-contract-v1"
+    },
+    {
+      "id": "C_freeze_inventory_reuse",
+      "letter": "C",
+      "title": "Freeze existing inventory and reuse prior intelligence/feedback",
+      "coordinatorStages": [
+        "reuse_evidence"
+      ],
+      "inputs": [
+        "Airtable/filesystem opportunities",
+        "feedback/actions"
+      ],
+      "outputs": [
+        "reuse ledger",
+        "inventory freeze snapshot"
+      ],
+      "evidenceRequired": [
+        "inventory_freeze_artifact",
+        "reuse_ledger"
+      ],
+      "executionModes": [
+        "reuse",
+        "dry_run"
+      ],
+      "sideEffects": "read-only freeze artifact write under run dir",
+      "authorization": "none",
+      "failurePartial": "missing freeze → cannot claim COMPLETE",
+      "retryResume": "idempotent re-freeze",
+      "contractVersion": "gdi-full-e2e-contract-v1"
+    },
+    {
+      "id": "D_segment_applicability_scope",
+      "letter": "D",
+      "title": "Determine segment applicability and research scope",
+      "coordinatorStages": [
+        "reuse_evidence",
+        "discover_gaps"
+      ],
+      "inputs": [
+        "hotel profile",
+        "segment research plan"
+      ],
+      "outputs": [
+        "frozen segment scope",
+        "briefs for applicable segments"
+      ],
+      "evidenceRequired": [
+        "segment_scope_freeze",
+        "applicability_rationales"
+      ],
+      "executionModes": [
+        "plan",
+        "dry_run"
+      ],
+      "sideEffects": "scope freeze write under run dir",
+      "authorization": "none",
+      "failurePartial": "unsupported NOT_APPLICABLE without rationale rejected",
+      "retryResume": "scope change requires recorded before/after",
+      "contractVersion": "gdi-full-e2e-contract-v1"
+    },
+    {
+      "id": "E_substantive_multisegment_research",
+      "letter": "E",
+      "title": "Execute substantive research for every applicable segment",
+      "coordinatorStages": [
+        "discover_gaps",
+        "paid_multisegment"
+      ],
+      "inputs": [
+        "frozen briefs",
+        "budget ledger",
+        "authorization"
+      ],
+      "outputs": [
+        "provider run IDs",
+        "scorecard rows",
+        "candidates"
+      ],
+      "evidenceRequired": [
+        "every_applicable_segment_not_plan_only",
+        "coverage_status_per_segment",
+        "depth_checks_or_partial_reason"
+      ],
+      "executionModes": [
+        "reuse",
+        "fresh_research",
+        "replay",
+        "live"
+      ],
+      "sideEffects": "paid provider calls when authorized",
+      "authorization": "--authorize-paid-discovery / paid-MS envelope",
+      "failurePartial": "plan_only applicable segment → cannot COMPLETE",
+      "retryResume": "resume skips completed provider jobs by jobKey",
+      "contractVersion": "gdi-full-e2e-contract-v1"
+    },
+    {
+      "id": "F_qualify_deduplicate",
+      "letter": "F",
+      "title": "Qualify and deduplicate candidates",
+      "coordinatorStages": [
+        "evaluate_eligibility",
+        "assess_fit"
+      ],
+      "inputs": [
+        "candidates",
+        "use-case contracts"
+      ],
+      "outputs": [
+        "qualification dispositions",
+        "change ledger"
+      ],
+      "evidenceRequired": [
+        "disposition_per_candidate",
+        "dedupe_identity_keys"
+      ],
+      "executionModes": [
+        "reuse",
+        "fresh_research",
+        "dry_run"
+      ],
+      "sideEffects": "internal artifacts",
+      "authorization": "none",
+      "failurePartial": "unreconciled dispositions → PARTIAL",
+      "retryResume": "idempotent by opportunity identity",
+      "contractVersion": "gdi-full-e2e-contract-v1"
+    },
+    {
+      "id": "G_contact_depth",
+      "letter": "G",
+      "title": "Execute contact-depth research",
+      "coordinatorStages": [
+        "identify_people",
+        "enrich_contacts",
+        "buyer_contact_enrichment"
+      ],
+      "inputs": [
+        "credible candidates",
+        "Surfe auth flag"
+      ],
+      "outputs": [
+        "named research status",
+        "channel provenance"
+      ],
+      "evidenceRequired": [
+        "contact_depth_attempt_records",
+        "no_silent_not_attempted_to_exhausted"
+      ],
+      "executionModes": [
+        "public",
+        "surfe_authorized",
+        "dry_run"
+      ],
+      "sideEffects": "Surfe spend when --authorize-surfe",
+      "authorization": "--authorize-surfe",
+      "failurePartial": "NOT_ATTEMPTED remaining on required queue → PARTIAL",
+      "retryResume": "reuse accepted Surfe results by person identity",
+      "contractVersion": "gdi-full-e2e-contract-v1"
+    },
+    {
+      "id": "H_hotel_fit_narratives",
+      "letter": "H",
+      "title": "Synthesize independent hotel fit and sales narratives",
+      "coordinatorStages": [
+        "synthesize_hotel_relevance",
+        "assess_fit"
+      ],
+      "inputs": [
+        "qualified opportunities",
+        "hotel profile"
+      ],
+      "outputs": [
+        "hotel-fit assessments",
+        "why-this-hotel prose"
+      ],
+      "evidenceRequired": [
+        "fit_assessment_or_insufficient_evidence",
+        "no_invented_scores"
+      ],
+      "executionModes": [
+        "reuse",
+        "fresh_research",
+        "dry_run"
+      ],
+      "sideEffects": "artifact writes",
+      "authorization": "none",
+      "failurePartial": "missing narratives on published set → PARTIAL",
+      "retryResume": "re-run synthesize stage",
+      "contractVersion": "gdi-full-e2e-contract-v1"
+    },
+    {
+      "id": "I_cards_drawers_quality",
+      "letter": "I",
+      "title": "Generate and quality-check cards/drawers",
+      "coordinatorStages": [
+        "generate_cards"
+      ],
+      "inputs": [
+        "opportunities",
+        "drawer contract"
+      ],
+      "outputs": [
+        "drawer completeness report"
+      ],
+      "evidenceRequired": [
+        "drawer_completeness_report"
+      ],
+      "executionModes": [
+        "dry_run",
+        "live"
+      ],
+      "sideEffects": "artifact writes",
+      "authorization": "none",
+      "failurePartial": "quality review cannot replace missing research",
+      "retryResume": "re-run generate_cards",
+      "contractVersion": "gdi-full-e2e-contract-v1"
+    },
+    {
+      "id": "J_publication_diff_backups",
+      "letter": "J",
+      "title": "Prepare publication diff and backups",
+      "coordinatorStages": [
+        "prepare_manifest",
+        "preview_verify"
+      ],
+      "inputs": [
+        "package dir",
+        "production snapshot"
+      ],
+      "outputs": [
+        "diff",
+        "backups"
+      ],
+      "evidenceRequired": [
+        "publication_diff",
+        "backup_paths"
+      ],
+      "executionModes": [
+        "dry_run",
+        "live"
+      ],
+      "sideEffects": "backup writes under run dir",
+      "authorization": "none for prep",
+      "failurePartial": "missing backups → cannot COMPLETE publish path",
+      "retryResume": "idempotent backup",
+      "contractVersion": "gdi-full-e2e-contract-v1"
+    },
+    {
+      "id": "K_canonical_persistence",
+      "letter": "K",
+      "title": "Persist canonical entities and qualified opportunities",
+      "coordinatorStages": [
+        "apply_corporate_packages",
+        "apply_pe_canonical",
+        "apply_publish"
+      ],
+      "inputs": [
+        "qualified package",
+        "--authorize-publish"
+      ],
+      "outputs": [
+        "Airtable/filesystem persistence proof",
+        "read-back"
+      ],
+      "evidenceRequired": [
+        "persist_readback",
+        "idempotency_check"
+      ],
+      "executionModes": [
+        "dry_run_blocks_writes",
+        "authorized_apply"
+      ],
+      "sideEffects": "production writes when authorized",
+      "authorization": "--authorize-publish / --authorize-pe-persist",
+      "failurePartial": "qualified publish OK while other segments partial → overall PARTIAL",
+      "retryResume": "idempotent upsert by opportunity id",
+      "contractVersion": "gdi-full-e2e-contract-v1"
+    },
+    {
+      "id": "L_reports_external_links",
+      "letter": "L",
+      "title": "Generate/update required reports and external links",
+      "coordinatorStages": [
+        "reconcile_run",
+        "evaluate_completion"
+      ],
+      "inputs": [
+        "persisted inventory",
+        "share registry"
+      ],
+      "outputs": [
+        "report/PDF meta",
+        "hotel-scoped share reference (no raw token in git)"
+      ],
+      "evidenceRequired": [
+        "deliverable_inventory_checked",
+        "share_path_or_gap_recorded"
+      ],
+      "executionModes": [
+        "verify",
+        "generate"
+      ],
+      "sideEffects": "report artifacts; no token commit",
+      "authorization": "share mint uses production secret when issuing",
+      "failurePartial": "missing required deliverable without gap record → not COMPLETE",
+      "retryResume": "re-verify links",
+      "contractVersion": "gdi-full-e2e-contract-v1"
+    },
+    {
+      "id": "M_local_delivery_verify",
+      "letter": "M",
+      "title": "Verify local delivery",
+      "coordinatorStages": [
+        "local_delivery_verify",
+        "preview_verify"
+      ],
+      "inputs": [
+        ":8080 or declared local process",
+        "flags/allowlist",
+        "data root"
+      ],
+      "outputs": [
+        "local verification proof"
+      ],
+      "evidenceRequired": [
+        "local_serving_process",
+        "local_list_detail_check"
+      ],
+      "executionModes": [
+        "browser",
+        "api",
+        "asset"
+      ],
+      "sideEffects": "none",
+      "authorization": "none",
+      "failurePartial": "auth-blocked browser check → BLOCKED/NOT_RUN (not pass)",
+      "retryResume": "re-run after local restart",
+      "contractVersion": "gdi-full-e2e-contract-v1"
+    },
+    {
+      "id": "N_production_delivery_verify",
+      "letter": "N",
+      "title": "Deploy when needed and verify production delivery",
+      "coordinatorStages": [
+        "production_delivery_verify"
+      ],
+      "inputs": [
+        "deployed sha",
+        "production URL",
+        "canonical data"
+      ],
+      "outputs": [
+        "production verification proof"
+      ],
+      "evidenceRequired": [
+        "deployed_code_or_data_revision",
+        "production_list_detail_share_check",
+        "no_provider_metadata_leak"
+      ],
+      "executionModes": [
+        "api",
+        "browser",
+        "deploy_then_verify"
+      ],
+      "sideEffects": "deploy only when code requires it",
+      "authorization": "normal clean-main deploy process",
+      "failurePartial": "Airtable write alone ≠ production delivery",
+      "retryResume": "invalidate stale proofs on later mutation",
+      "contractVersion": "gdi-full-e2e-contract-v1"
+    },
+    {
+      "id": "O_reconcile_budget_history_backlog",
+      "letter": "O",
+      "title": "Reconcile results, budget, execution history, refresh backlog",
+      "coordinatorStages": [
+        "reconcile_run",
+        "evaluate_completion"
+      ],
+      "inputs": [
+        "ledgers",
+        "scorecards",
+        "change ledger"
+      ],
+      "outputs": [
+        "reconciliation",
+        "computed overall status",
+        "backlog seed"
+      ],
+      "evidenceRequired": [
+        "budget_reconciled",
+        "overall_status_from_evaluator"
+      ],
+      "executionModes": [
+        "always"
+      ],
+      "sideEffects": "artifact writes under run dir",
+      "authorization": "none",
+      "failurePartial": "unresolved reservations/holds recorded; may force PARTIAL",
+      "retryResume": "idempotent reconcile",
+      "contractVersion": "gdi-full-e2e-contract-v1"
+    }
+  ],
+  "segmentTaxonomy": [
+    {
+      "id": "associations_government",
+      "label": "Associations / government",
+      "primary": true
+    },
+    {
+      "id": "corporate_meetings_training",
+      "label": "Corporate meetings, training, and project teams",
+      "primary": true
+    },
+    {
+      "id": "scaling_companies",
+      "label": "Scaling Companies / Emerging Corporate Accounts",
+      "primary": true
+    },
+    {
+      "id": "local_meetings_catering",
+      "label": "Local Meetings & Catering (incl. no-guestroom)",
+      "primary": true,
+      "includesSubsegments": [
+        "corporate_room_rental",
+        "social_celebrations",
+        "nonprofit_assoc_local"
+      ]
+    },
+    {
+      "id": "professional_planners_dmc",
+      "label": "Professional planners / DMCs / intermediaries",
+      "primary": true,
+      "mapsToResearchSegment": "local_meetings_catering",
+      "coverageAxis": "planner_intermediary_discovery",
+      "note": "Association contacts do not satisfy planner-discovery coverage"
+    },
+    {
+      "id": "weddings_social_private_events",
+      "label": "Weddings, social groups, and nearby private-event venues",
+      "primary": true,
+      "includesSubsegments": [
+        "venue_lodging_referral"
+      ]
+    },
+    {
+      "id": "entertainment_production",
+      "label": "Entertainment / production crews",
+      "primary": true
+    },
+    {
+      "id": "exhibitor_sponsor_teams",
+      "label": "Exhibitor / sponsor teams",
+      "primary": true
+    },
+    {
+      "id": "sports",
+      "label": "Sports",
+      "primary": true
+    },
+    {
+      "id": "medical_academic",
+      "label": "Medical / academic",
+      "primary": true
+    },
+    {
+      "id": "tours_educational_specialist",
+      "label": "Tours / educational / specialist groups",
+      "primary": true
+    }
+  ],
+  "depthInadequacyRules": [
+    {
+      "id": "single_broad_competing_hotels",
+      "description": "A single broad query returning competing hotels does not complete buyer discovery"
+    },
+    {
+      "id": "directory_only_unverified",
+      "description": "Directory-only results require source checking before qualification"
+    },
+    {
+      "id": "assoc_contact_not_planner_coverage",
+      "description": "An association contact does not establish professional-planner coverage"
+    },
+    {
+      "id": "venue_list_not_activity",
+      "description": "A venue list does not establish venue activity, lodging/referral potential, or hotel fit"
+    },
+    {
+      "id": "funding_alone_not_scaling",
+      "description": "Funding alone does not qualify a scaling company"
+    },
+    {
+      "id": "local_sports_calendar_not_travel",
+      "description": "A local sports calendar does not establish traveling demand"
+    },
+    {
+      "id": "plan_only_not_execution",
+      "description": "A brief or query plan is not execution"
+    }
+  ],
+  "forbiddenNotApplicableReasons": [
+    "research_inconvenient",
+    "provider_returned_nothing_useful",
+    "budget_exhausted",
+    "no_cards_published_yet",
+    "skipped_for_time",
+    "will_do_later"
+  ],
+  "requiredDeliverables": [
+    {
+      "id": "customer_list_drawers",
+      "label": "Customer list and drawers",
+      "required": true
+    },
+    {
+      "id": "gdi_report_pdf",
+      "label": "GDI report/PDF where supported",
+      "required": true,
+      "allowGapIfUnsupported": true
+    },
+    {
+      "id": "exports",
+      "label": "Appropriate exports",
+      "required": true,
+      "allowGapIfUnsupported": true
+    },
+    {
+      "id": "hotel_scoped_share_link",
+      "label": "Valid hotel-scoped external share link",
+      "required": true
+    },
+    {
+      "id": "admin_report_share_refs",
+      "label": "Correct Admin report/share references",
+      "required": true
+    },
+    {
+      "id": "research_publication_history",
+      "label": "Research and publication history",
+      "required": true
+    }
+  ],
+  "coordinatorStagesFullE2e": [
+    "validate_config",
+    "reuse_evidence",
+    "discover_gaps",
+    "paid_multisegment",
+    "assess_fit",
+    "identify_people",
+    "enrich_contacts",
+    "buyer_contact_enrichment",
+    "synthesize_hotel_relevance",
+    "evaluate_eligibility",
+    "generate_cards",
+    "prepare_manifest",
+    "preview_verify",
+    "apply_corporate_packages",
+    "apply_pe_canonical",
+    "apply_publish",
+    "local_delivery_verify",
+    "production_delivery_verify",
+    "reconcile_run",
+    "evaluate_completion"
+  ],
+  "weeklyRefreshDistinct": true,
+  "weeklyRefreshNote": "Weekly refresh uses the same quality/persistence rules but does not imply full initial market coverage COMPLETE",
+  "zeroQualifiedProspectsValid": true,
+  "cardQuotasForbidden": true,
+  "contractVersion": "gdi-full-e2e-contract-v1"
+}

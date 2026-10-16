@@ -11,11 +11,22 @@
  *   node scripts/gdi-research-to-page-workflow-v1.mjs --hotel recnPB3Q02NO8Ma1o --run-discovery --stage discover_gaps
  *   node scripts/gdi-research-to-page-workflow-v1.mjs --hotel recG66DQJKP2c0UNh --stage preview
  *
+ * Full GDI E2E (enforced contract — see full-e2e-contract-v1.js):
+ *   node scripts/gdi-research-to-page-workflow-v1.mjs --hotel <id> --mode full-e2e --dry-run
+ *   node scripts/gdi-research-to-page-workflow-v1.mjs --hotel <id> --mode full-e2e --resume-run <runId>
+ *   node scripts/gdi-full-e2e-status-v1.mjs --hotel <id> --run-dir <path>   # read-only evaluate
+ *
+ * Authorization refs (required for paid / publish; never invent flags):
+ *   --authorization-ref <text>   recorded on ledger for Full E2E
+ *   --authorize-paid-discovery / --authorize-surfe / --authorize-publish
+ *
  * Stages (resume via --resume-run <id> + stage ledger):
  *   validate_config → reuse_evidence → discover_gaps → assess_fit →
  *   identify_people → enrich_contacts → synthesize_hotel_relevance →
  *   evaluate_eligibility → generate_cards → prepare_manifest →
  *   preview_verify → apply_pe_canonical → apply_publish
+ *   [full-e2e adds] local_delivery_verify → production_delivery_verify →
+ *                   reconcile_run → evaluate_completion
  *
  * apply_pe_canonical (authorize with --authorize-publish or --authorize-pe-persist):
  *   venue → signals → hotel fit → GDI link via canonical-persist-and-link-v1
@@ -120,6 +131,18 @@ import {
   airtableRecordToOpportunity,
 } from "../lib/group-demand-intelligence/airtable-opportunity-store.js";
 import { invalidateGdiHotelReadCache } from "../lib/group-demand-intelligence/read-cache.js";
+import {
+  FULL_E2E_CONTRACT_VERSION,
+  FULL_E2E_COORDINATOR_STAGES,
+  E2E_OVERALL_STATUS,
+  E2E_RUN_MODE,
+  buildFullE2eContractDocument,
+} from "../lib/group-demand-intelligence/workflow/full-e2e-contract-v1.js";
+import { evaluateFullE2eCompletion } from "../lib/group-demand-intelligence/workflow/full-e2e-completion-evaluator-v1.js";
+import {
+  buildCompletionInputFromRun,
+  writeFullE2eArtifacts,
+} from "../lib/group-demand-intelligence/workflow/full-e2e-completion-input-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -166,10 +189,21 @@ const outDir =
   path.join(ROOT, "reports/gdi-repeatable-workflow-v1");
 const resumeRun = arg("--resume-run");
 const stageOnly = arg("--stage");
+const workflowModeRaw = String(arg("--mode", "") || "")
+  .trim()
+  .toLowerCase();
+const fullE2eMode =
+  workflowModeRaw === "full-e2e" ||
+  workflowModeRaw === "full_e2e" ||
+  workflowModeRaw === "e2e";
+const authorizationRef = String(arg("--authorization-ref", "") || "").trim();
+const completionEvidencePath = arg("--completion-evidence");
 const authorizePublish = has("--authorize-publish");
 const authorizePePersist =
   has("--authorize-pe-persist") || authorizePublish;
-const dryRun = !authorizePublish || has("--dry-run");
+/** Explicit --dry-run blocks paid + production writes even if other authorize flags are present. */
+const explicitDryRun = has("--dry-run");
+const dryRun = !authorizePublish || explicitDryRun;
 /** Prefer nested paid-MS PE packages (adapter reshapes); fallback to operational baseline. */
 const PE_PACKAGE_PATH_CANDIDATES = [
   path.join(
@@ -195,6 +229,8 @@ const discoveryModeArg = String(arg("--discovery-mode", "") || "")
   .toLowerCase();
 /** Explicit discovery execution kind when --run-discovery is set. */
 function resolveDiscoveryMode() {
+  // Explicit --dry-run always plan-only for Parallel (no paid), even with authorize flags.
+  if (explicitDryRun) return DISCOVERY_MODE.DRY_RUN_PLAN;
   if (!runDiscovery) return DISCOVERY_MODE.DRY_RUN_PLAN;
   if (discoveryModeArg === "plan" || discoveryModeArg === "dry_run_plan") {
     return DISCOVERY_MODE.DRY_RUN_PLAN;
@@ -250,6 +286,15 @@ function loadLedger() {
     },
     authorizePublish,
     dryRun,
+    workflowMode: fullE2eMode ? E2E_RUN_MODE.FULL_E2E : E2E_RUN_MODE.STANDARD_COORDINATOR,
+    fullE2e: fullE2eMode
+      ? {
+          contractVersion: FULL_E2E_CONTRACT_VERSION,
+          authorizationRef: authorizationRef || null,
+          paidCallsAttempted: false,
+          productionWritesAttempted: false,
+        }
+      : undefined,
     startedAt: new Date().toISOString(),
     stages: {},
     remainingManualSteps: [],
@@ -305,6 +350,20 @@ function defaultPackageDir(id) {
 }
 
 const ledger = loadLedger();
+if (fullE2eMode) {
+  ledger.workflowMode = E2E_RUN_MODE.FULL_E2E;
+  ledger.fullE2e = {
+    ...(ledger.fullE2e || {}),
+    contractVersion: FULL_E2E_CONTRACT_VERSION,
+    authorizationRef:
+      authorizationRef || ledger.fullE2e?.authorizationRef || null,
+  };
+  if (dryRun) {
+    // Fail closed: dry-run must not attempt paid or production writes
+    ledger.fullE2e.paidCallsAttempted = false;
+    ledger.fullE2e.productionWritesAttempted = false;
+  }
+}
 ledger.horizonResolved = {
   requested: horizon,
   canonicalPrimary: {
@@ -319,12 +378,27 @@ ledger.horizonResolved = {
 };
 
 const pkgDir = defaultPackageDir(hotelId);
+const stageCatalog = fullE2eMode
+  ? [...FULL_E2E_COORDINATOR_STAGES]
+  : STAGES;
 const stagesToRun = stageOnly
   ? [stageOnly]
-  : STAGES.filter((s) => {
+  : stageCatalog.filter((s) => {
       const prev = ledger.stages[s];
       if (resumeRun && prev?.status === "completed") return false;
       if (s === "apply_publish" && dryRun) return false;
+      // Full E2E: weekly_refresh is a distinct mode — not part of initial full coverage
+      if (fullE2eMode && s === "weekly_refresh") return false;
+      // Dry-run blocks production verify apply path but still evaluates completion
+      if (
+        dryRun &&
+        (s === "production_delivery_verify" || s === "local_delivery_verify") &&
+        !completionEvidencePath &&
+        !fs.existsSync(path.join(runDir, "full-e2e-evidence.json"))
+      ) {
+        // Still run these stages — they record NOT_RUN/BLOCKED honestly
+        return true;
+      }
       return true;
     });
 
@@ -335,6 +409,9 @@ console.log(
       hotelId,
       dryRun,
       authorizePublish,
+      workflowMode: fullE2eMode ? E2E_RUN_MODE.FULL_E2E : E2E_RUN_MODE.STANDARD_COORDINATOR,
+      fullE2eContractVersion: fullE2eMode ? FULL_E2E_CONTRACT_VERSION : null,
+      authorizationRef: authorizationRef || null,
       targetEnv,
       adapter,
       packageDir: pkgDir,
@@ -923,6 +1000,30 @@ for (const stage of stagesToRun) {
     if (stage === "paid_multisegment") {
       const paidDir = path.join(runDir, "paid_multisegment");
       fs.mkdirSync(paidDir, { recursive: true });
+      if (explicitDryRun) {
+        const allocation = buildPaidMultisegmentAllocation({
+          authorizedUsd: Math.min(budgetUsd, AUTHORIZED_NEW_SPEND_USD),
+        });
+        fs.writeFileSync(
+          path.join(paidDir, "task-allocation.json"),
+          JSON.stringify(
+            {
+              ...allocation,
+              dryRunBlocked: true,
+              note: "Explicit --dry-run blocks paid Parallel calls even with --authorize-paid-discovery",
+            },
+            null,
+            2
+          ) + "\n"
+        );
+        if (ledger.fullE2e) ledger.fullE2e.paidCallsAttempted = false;
+        mark(ledger, stage, "skipped", {
+          reason: "dry_run_blocks_paid_calls",
+          module: "paid_multisegment_research_v1",
+          note: "Full E2E / coordinator: --dry-run blocks paid calls even when authorize flags are true",
+        });
+        continue;
+      }
       if (!authorizePaidDiscovery) {
         const allocation = buildPaidMultisegmentAllocation({
           authorizedUsd: Math.min(budgetUsd, AUTHORIZED_NEW_SPEND_USD),
@@ -939,6 +1040,7 @@ for (const stage of stagesToRun) {
         });
         continue;
       }
+      if (ledger.fullE2e) ledger.fullE2e.paidCallsAttempted = true;
       const oppDoc = await loadOpportunitiesCanonical(hotelId);
       const existingNames = (oppDoc?.opportunities || [])
         .map((o) => o.organizationName || o.company || o.title)
@@ -2045,6 +2147,12 @@ for (const stage of stagesToRun) {
         mark(ledger, stage, "skipped", { reason: "authorize_publish_required" });
         continue;
       }
+      if (dryRun) {
+        mark(ledger, stage, "blocked", {
+          reason: "dry_run_blocks_production_writes",
+        });
+        continue;
+      }
       if (targetEnv !== "production") {
         mark(ledger, stage, "failed", {
           error: "target_env_must_be_production_for_publish",
@@ -2056,6 +2164,9 @@ for (const stage of stagesToRun) {
           reason: "renaissance_production_publication_not_authorized_in_this_step",
         });
         throw new Error("Renaissance production publish not authorized");
+      }
+      if (ledger.fullE2e) {
+        ledger.fullE2e.productionWritesAttempted = true;
       }
       const r = spawnSync(
         process.execPath,
@@ -2091,6 +2202,180 @@ for (const stage of stagesToRun) {
       continue;
     }
 
+    if (stage === "local_delivery_verify") {
+      const e2eDir = path.join(runDir, "full_e2e");
+      fs.mkdirSync(e2eDir, { recursive: true });
+      const overlay = completionEvidencePath
+        ? JSON.parse(fs.readFileSync(completionEvidencePath, "utf8"))
+        : fs.existsSync(path.join(runDir, "full-e2e-evidence.json"))
+          ? JSON.parse(
+              fs.readFileSync(path.join(runDir, "full-e2e-evidence.json"), "utf8")
+            )
+          : {};
+      const local = overlay.localVerification || {
+        status: "not_run",
+        notes:
+          "Record localVerification in full-e2e-evidence.json after verifying :8080 list/drawers/reports/links. Do not substitute asset-only checks as passed.",
+      };
+      fs.writeFileSync(
+        path.join(e2eDir, "local-delivery-verify.json"),
+        JSON.stringify(
+          {
+            hotelId,
+            runId,
+            recordedAt: new Date().toISOString(),
+            verification: local,
+            primaryLocalPort: 8080,
+          },
+          null,
+          2
+        ) + "\n"
+      );
+      ledger.fullE2e = ledger.fullE2e || {};
+      ledger.fullE2e.localVerification = local;
+      const status =
+        local.status === "passed"
+          ? "completed"
+          : local.status === "blocked"
+            ? "blocked"
+            : "completed";
+      mark(ledger, stage, status, {
+        verificationStatus: local.status,
+        note: local.notes || null,
+      });
+      continue;
+    }
+
+    if (stage === "production_delivery_verify") {
+      const e2eDir = path.join(runDir, "full_e2e");
+      fs.mkdirSync(e2eDir, { recursive: true });
+      const overlay = completionEvidencePath
+        ? JSON.parse(fs.readFileSync(completionEvidencePath, "utf8"))
+        : fs.existsSync(path.join(runDir, "full-e2e-evidence.json"))
+          ? JSON.parse(
+              fs.readFileSync(path.join(runDir, "full-e2e-evidence.json"), "utf8")
+            )
+          : {};
+      const prod = overlay.productionVerification || {
+        status: "not_run",
+        notes:
+          "Record productionVerification after real production list/detail/share/PDF checks. Airtable write or deploy SUCCESS alone is insufficient.",
+      };
+      fs.writeFileSync(
+        path.join(e2eDir, "production-delivery-verify.json"),
+        JSON.stringify(
+          {
+            hotelId,
+            runId,
+            recordedAt: new Date().toISOString(),
+            verification: prod,
+          },
+          null,
+          2
+        ) + "\n"
+      );
+      ledger.fullE2e = ledger.fullE2e || {};
+      ledger.fullE2e.productionVerification = prod;
+      mark(ledger, stage, "completed", {
+        verificationStatus: prod.status,
+        note: prod.notes || null,
+      });
+      continue;
+    }
+
+    if (stage === "reconcile_run") {
+      const e2eDir = path.join(runDir, "full_e2e");
+      fs.mkdirSync(e2eDir, { recursive: true });
+      const reconcile = {
+        hotelId,
+        runId,
+        at: new Date().toISOString(),
+        budget: ledger.budget || {},
+        failures: ledger.failures || [],
+        remainingManualSteps: ledger.remainingManualSteps || [],
+        authorizationRef: ledger.fullE2e?.authorizationRef || authorizationRef || null,
+        note:
+          "Budget/reservations must be reconciled in hotel budget ledger before COMPLETE. Missing required ledgers fail closed.",
+      };
+      fs.writeFileSync(
+        path.join(e2eDir, "reconcile-run.json"),
+        JSON.stringify(reconcile, null, 2) + "\n"
+      );
+      mark(ledger, stage, "completed", {
+        budgetExhausted: ledger.budget?.exhausted === true,
+        failureCount: (ledger.failures || []).length,
+      });
+      continue;
+    }
+
+    if (stage === "evaluate_completion") {
+      const e2eDir = path.join(runDir, "full_e2e");
+      fs.mkdirSync(e2eDir, { recursive: true });
+      const overlay = completionEvidencePath
+        ? JSON.parse(fs.readFileSync(completionEvidencePath, "utf8"))
+        : fs.existsSync(path.join(runDir, "full-e2e-evidence.json"))
+          ? JSON.parse(
+              fs.readFileSync(path.join(runDir, "full-e2e-evidence.json"), "utf8")
+            )
+          : {};
+      // Merge stage-recorded verifications into overlay defaults
+      if (ledger.fullE2e?.localVerification && !overlay.localVerification) {
+        overlay.localVerification = ledger.fullE2e.localVerification;
+      }
+      if (
+        ledger.fullE2e?.productionVerification &&
+        !overlay.productionVerification
+      ) {
+        overlay.productionVerification = ledger.fullE2e.productionVerification;
+      }
+      if (ledger.fullE2e?.segmentCoverage && !overlay.segmentCoverage) {
+        overlay.segmentCoverage = ledger.fullE2e.segmentCoverage;
+      }
+      if (ledger.fullE2e?.contactDepth && !overlay.contactDepth) {
+        overlay.contactDepth = ledger.fullE2e.contactDepth;
+      }
+      if (ledger.fullE2e?.publication && !overlay.publication) {
+        overlay.publication = ledger.fullE2e.publication;
+      }
+      if (ledger.fullE2e?.deliverables && !overlay.deliverables) {
+        overlay.deliverables = ledger.fullE2e.deliverables;
+      }
+      if (ledger.fullE2e?.budget && !overlay.budget) {
+        overlay.budget = ledger.fullE2e.budget;
+      }
+
+      const input = buildCompletionInputFromRun({
+        ledger,
+        runDir,
+        overlay,
+        runMode: E2E_RUN_MODE.FULL_E2E,
+      });
+      const completion = evaluateFullE2eCompletion(input);
+      const contractDoc = buildFullE2eContractDocument();
+      writeFullE2eArtifacts({
+        outDir: e2eDir,
+        contractDoc,
+        completion,
+        inputSnapshot: input,
+      });
+      ledger.fullE2e = {
+        ...(ledger.fullE2e || {}),
+        contractVersion: FULL_E2E_CONTRACT_VERSION,
+        overallStatus: completion.overallStatus,
+        canClaimComplete: completion.canClaimComplete,
+        completionPath: path.join(e2eDir, "full-e2e-completion.json"),
+      };
+      ledger.computedOverallStatus = completion.overallStatus;
+      mark(ledger, stage, "completed", {
+        overallStatus: completion.overallStatus,
+        canClaimComplete: completion.canClaimComplete,
+        reasonCount: (completion.reasons || []).length,
+        blockerCount: (completion.blockers || []).length,
+        note: "Founder/Admin must consume computedOverallStatus — do not independently write COMPLETE",
+      });
+      continue;
+    }
+
     mark(ledger, stage, "skipped", { reason: "unknown_stage" });
   } catch (err) {
     ledger.failures.push({
@@ -2105,7 +2390,11 @@ for (const stage of stagesToRun) {
 }
 
 ledger.finishedAt = new Date().toISOString();
-ledger.status = "ok";
+if (fullE2eMode && ledger.computedOverallStatus) {
+  ledger.status = ledger.computedOverallStatus;
+} else {
+  ledger.status = "ok";
+}
 saveLedger(ledger);
 // Convenience copy for deliverable path
 fs.copyFileSync(
@@ -2113,7 +2402,23 @@ fs.copyFileSync(
   path.join(outDir, "stage-completion-ledger.json")
 );
 console.log(
-  JSON.stringify({ ok: true, runId, ledgerPath, copiedLedger: path.join(outDir, "stage-completion-ledger.json") }, null, 2)
+  JSON.stringify(
+    {
+      ok: true,
+      runId,
+      ledgerPath,
+      copiedLedger: path.join(outDir, "stage-completion-ledger.json"),
+      workflowMode: ledger.workflowMode || null,
+      computedOverallStatus: ledger.computedOverallStatus || null,
+      fullE2eCompletion:
+        ledger.fullE2e?.completionPath ||
+        (fullE2eMode
+          ? path.join(runDir, "full_e2e", "full-e2e-completion.json")
+          : null),
+    },
+    null,
+    2
+  )
 );
 }
 
