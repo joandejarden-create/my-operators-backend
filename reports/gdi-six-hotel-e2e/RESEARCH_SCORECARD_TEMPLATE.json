@@ -1,0 +1,41 @@
+{
+  "version": "gdi-research-scorecard-v1-template",
+  "generatedAt": "2026-10-16T06:50:00.000Z",
+  "mode": "template_pre_activation",
+  "grain": "hotel × segment/subsegment",
+  "rows": [],
+  "requiredColumns": [
+    "hotelId",
+    "segmentId",
+    "applicability",
+    "declaredScope",
+    "reuseVsFreshVsReplay",
+    "taskExecutionStatus",
+    "segmentCoverageStatus",
+    "queriesOrPages",
+    "startedAt",
+    "endedAt",
+    "elapsedWallClock",
+    "estimatedUsd",
+    "reservedUsd",
+    "actualBilledUsd",
+    "candidatesAssessed",
+    "uniqueNewProspects",
+    "enriched",
+    "restored",
+    "duplicate",
+    "rejected",
+    "internal",
+    "published",
+    "namedContactCoverage",
+    "orgFallbackCoverage",
+    "stopReason",
+    "nextResearchNeed"
+  ],
+  "rules": [
+    "Do not sum concurrent task durations as total elapsed",
+    "Restorations and contact enrichment are not net-new discovery",
+    "Dry-run/fixture/replay/simulated-clock excluded from live completion history",
+    "Never infer Completed from a run ID alone"
+  ]
+}

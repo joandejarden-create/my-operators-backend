@@ -1,9 +1,10 @@
 ﻿# Pre-batch readiness closeout (score / dry-run / budget / deploy)
 
-Generated: 2026-10-16T10:20:00Z  
+Generated: 2026-10-16T12:10:00Z  
 Workroot: `C:\Dev\dealality\my-operators-backend`  
 PR #108: merged @ `248a3098` (score-precedence, dry-run isolation, budget fail-closed) — deployed SUCCESS.  
-PR #109: docs closeout + $2.65 gap reconciliation (this branch).
+PR #109: prior docs closeout — **transaction matching corrected** (this follow-up).  
+PR #110: Renaissance ADP refresh — complete @ `2c58fef4`.
 
 ## A. Can a withheld score return after import?
 
@@ -17,46 +18,48 @@ PR #109: docs closeout + $2.65 gap reconciliation (this branch).
 
 **Silent empty bootstrap on missing path.** `readParallelBudgetLedger` created a fresh `$11 / $0 spent / 0 entries` file when the authorization ledger was absent under a worktree/data-root. That wiped/lost prior accounting relative to operational reports. Historical `$2` pilot ledger is separate and was not the cause. Fail-closed safeguard (`PAID_MS_LEDGER_MISSING`) shipped in PR #108.
 
-## D. Supported estimated spending, reservations, and remaining balance?
+## D. Supported estimated spending, reservations, hold, and remaining balance?
 
 | Item | USD |
 |------|----:|
 | Authorized ($11 Mayflower/SD envelope) | 11.00 |
 | Historical pilot (separate) | 2.00 |
-| Supported estimated incurred | **3.85** |
+| Supported estimated incurred | **5.25** |
 | Outstanding reservations | **0.00** |
-| Unresolved spending exposure beyond ledger | **0.00** |
-| Of estimated spent lacking provider request ID | **1.00** (4 LMC Surfe — already in $3.85) |
-| Safely available | **7.15** |
+| Historical unresolved accounting hold (Surfe) | **1.25** |
+| Of estimated spent lacking provider request ID | **1.00** (4 LMC Surfe) |
+| Safely available | **4.50** |
 | Actual billed | **UNKNOWN** (null; not inferred as zero) |
 
-### $2.65 gap ($1.40 Parallel + ~$1.25 Surfe)
-
-Prior narrative (~$6.50 spent / ~$4.50 remaining) stacked later passes on top of reconstructed $3.85. Transaction evidence:
+### $2.65 dispute — corrected (not closed by equal-cost PE/scaling)
 
 | Component | USD | Disposition |
 |-----------|----:|-------------|
-| Surfe already in ledger (AMWA + 4 LMC) | 1.25 | DUPLICATE if stacked again |
-| Three Parallel $0.35 already in ledger | 1.05 | DUPLICATE if stacked again |
-| Fourth Parallel $0.35 | 0.35 | NOT_EXECUTED (no run/artifact) |
-| **Sum** | **2.65** | Explains $6.50 vs $3.85 |
+| Four LMC Parallel (`lmc_planners_social_*` / `lmc_corporate_assoc_*`) | 1.40 | **MATCHED** — restored to ledger; hold converted |
+| Surfe LMC contact-depth envelope | 1.25 | **Hold retained** — 4 MATCHED est. (null request IDs) + 5th UNRESOLVED; AMWA not a substitute |
+| `pe_sd` / `scaling_*_v2` @ $0.35 | — | **Separate prior spends** — not LMC identity |
 
-No ledger spend rows added or removed this closeout. Table: `TRANSACTION_RECONCILIATION.md` / `.csv` / `.json`. Authoritative path: `data/group-demand-intelligence/paid-multisegment-budget/authorization-ledger-v1.json`. Details: `BUDGET_RECONCILIATION.json`.
+Table: `TRANSACTION_RECONCILIATION.md` / `.csv` / `.json`. Authoritative path: `data/group-demand-intelligence/paid-multisegment-budget/authorization-ledger-v1.json`.
 
 ## E. Are the fixes deployed and verified locally and in production?
 
 | Layer | Evidence | Result |
 |-------|----------|--------|
-| Git merge | PR #108 → `248a30981b4582efa3ba2bda23b90fce487f09b0` merged 2026-10-16T07:28:57Z | Verified |
-| Deployment record | `reports/deployments/2026-10-16T07-29-42-437Z-production.json` + `latest-production.json` — SUCCESS, dirty=false, gates PASS | Verified |
-| Local/API | `LOCAL_PRODUCTION_VERIFICATION.json` — local:8080 and production `/app.js` nav aligned to `248a3098`; inventory baseline read-only | Verified |
+| Git merge | PR #108 → `248a3098`; PR #110 ADP → `2c58fef4` | Verified |
+| Deployment record | Production SUCCESS for those merges | Verified |
+| Local/API | `LOCAL_PRODUCTION_VERIFICATION.json` (score/dry-run era) | Verified for PR #108 scope |
 | Authenticated browser (AI Admin interactive) | Legitimate admin Memberstack session | **NOT RUN** |
 
-Do not imply AI Admin interactive verification from deploy smoke or nav-alignment alone.
+This accounting correction is **documentation + ledger-control**; no application deploy required unless merging the `accountingHoldUsd` code path.
 
-## F. Is Renaissance New York Times Square ready for an explicitly activated E2E run?
+## F. Renaissance New York Times Square
 
-**Not activated.** Prep package present (do not duplicate): `reports/gdi-six-hotel-e2e/RENAISSANCE_ACTIVATION_PLAN.md`, `BASELINE_RECONCILIATION.md`. Mayflower/SD $11 funds must **not** transfer into the proposed six-hotel budget. Remaining decision: explicit founder activation of Renaissance-only E2E under a separate paid authorization (not this Mayflower/SD envelope).
+| Product | Cap | Status |
+|---------|----:|--------|
+| GDI | **$12** | **AUTHORIZED_NOT_STARTED** — owning plan `reports/gdi-six-hotel-e2e/RENAISSANCE_ACTIVATION_PLAN.md` |
+| ADP | **$15** | **COMPLETE** — `reports/adp-six-hotel-e2e/renaissance/FOUNDER_SUMMARY.md` |
+
+Independent authorizations. Mayflower/SD $11 **not** transferred. Other five hotels remain queued (proposed GDI $30 / ADP $57 **not** approved). Waterstone distribution HOLD intact. No further founder “go” required for these already-authorized Renaissance scopes — authorization ≠ execution for GDI.
 
 ## Remaining blockers by capability
 
@@ -64,8 +67,9 @@ Do not imply AI Admin interactive verification from deploy smoke or nav-alignmen
 |------------|--------|
 | Score import precedence | Closed (PR #108 deployed) |
 | Dry-run paid/write isolation | Closed (PR #108 deployed) |
-| Budget ledger accounting + $2.65 gap | Reconciled; fail-closed on missing; safely available **$7.15** estimated |
-| Paid six-hotel E2E | Not started; separate budget; no Mayflower/SD transfer |
+| Budget ledger transaction matching | Corrected; Surfe hold $1.25; available **$4.50** |
+| Paid six-hotel batch (other five) | Not approved |
 | Authenticated AI Admin interactive | NOT RUN |
 | Weekly scheduling / unattended publish | Off |
-| Renaissance-only activation | Prep ready; awaiting explicit activation decision |
+| Renaissance GDI execution | AUTHORIZED_NOT_STARTED (separate owning activation) |
+| Renaissance ADP | COMPLETE |

@@ -11,6 +11,8 @@ import {
   readParallelBudgetLedger,
   paidMultisegmentAuthorizationLedgerPath,
   remainingParallelBudgetUsd,
+  accountingHoldUsd,
+  reserveParallelBudget,
 } from "../lib/group-demand-intelligence/parallel/budget-ledger-v1.js";
 import { remainingSharedBudgetUsd } from "../lib/group-demand-intelligence/workflow/surfe-usage-ledger-v1.js";
 
@@ -114,6 +116,56 @@ const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "gdi-ledger-fc-"));
   assert.equal(ledger.budgetUsd, 2);
   assert.ok(fs.existsSync(pilotPath));
   console.log("PASS pilot_ledger_may_bootstrap");
+}
+
+// Accounting hold reduces available and is not treated as reservation/incurred
+{
+  const holdPath = path.join(tmp, "hold-tree", "paid-multisegment-budget", "authorization-ledger-v1.json");
+  fs.mkdirSync(path.dirname(holdPath), { recursive: true });
+  const ledgerDoc = {
+    version: "gdi-parallel-budget-ledger-v1",
+    currency: "USD",
+    budgetUsd: 11,
+    reservedUsd: 0,
+    estimatedSpentUsd: 5.25,
+    accountingHoldUsd: 1.25,
+    actualBilledUsd: null,
+    entries: [],
+    updatedAt: new Date().toISOString(),
+  };
+  fs.writeFileSync(holdPath, JSON.stringify(ledgerDoc, null, 2) + "\n");
+  const ledger = readParallelBudgetLedger({
+    ledgerPath: holdPath,
+    authorizationEnvelope: true,
+    budgetUsd: 11,
+    env: {},
+  });
+  assert.equal(accountingHoldUsd(ledger), 1.25);
+  assert.equal(Number(remainingParallelBudgetUsd(ledger).toFixed(2)), 4.5);
+  assert.equal(Number(ledger.reservedUsd || 0), 0);
+  assert.equal(Number(ledger.estimatedSpentUsd || 0), 5.25);
+
+  let blocked = null;
+  try {
+    reserveParallelBudget({
+      label: "test_hold_block",
+      estimatedUsd: 4.51,
+      reservationId: "rsv_test_hold_block",
+      jobKey: "test:hold_block",
+      ledgerPath: holdPath,
+      env: {
+        GDI_PARALLEL_ENABLED: "1",
+        GDI_PARALLEL_KILL_SWITCH: "0",
+        GDI_PARALLEL_BUDGET_REQUIRE_FLAG: "0",
+      },
+    });
+  } catch (err) {
+    blocked = err;
+  }
+  assert.ok(blocked, "hold must block over-available reserve");
+  assert.equal(blocked.code, "PARALLEL_BUDGET_EXHAUSTED");
+  assert.equal(Number(Number(blocked.remainingUsd).toFixed(2)), 4.5);
+  console.log("PASS accounting_hold_reduces_available");
 }
 
 console.log("OK gdi-paid-ms-ledger-fail-closed-v1");

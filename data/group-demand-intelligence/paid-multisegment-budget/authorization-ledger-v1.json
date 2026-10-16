@@ -3,7 +3,7 @@
   "currency": "USD",
   "budgetUsd": 11,
   "reservedUsd": 0,
-  "estimatedSpentUsd": 3.85,
+  "estimatedSpentUsd": 5.25,
   "actualBilledUsd": null,
   "entries": [
     {
@@ -194,29 +194,92 @@
       "spentAt": "2026-10-15T22:00:00.000Z",
       "reconstructionSource": "reports/gdi-lmc-planner-contact-depth/FOUNDER_REPORT.md",
       "note": "Surfe invoked; identity conflict — no person email accepted. Cost not inferred as zero from missing invoice; estimated Surfe email credit retained."
+    },
+    {
+      "reservationId": "rsv_recon_paid_ms_lmc_planners_social_may_v1",
+      "jobKey": "paid_ms:lmc_planners_social_may_v1",
+      "hotelId": "rec0eTEnCqlsGJJt9",
+      "label": "paid_ms:lmc_planners_social_may_v1",
+      "processor": "pro",
+      "estimatedUsd": 0.35,
+      "status": "spent",
+      "providerRunId": "trun_567f3335d0c140ad84cb51c43c0b4baa",
+      "spentAt": "2026-10-15T21:35:00.000Z",
+      "reconstructionSource": "reports/gdi-lmc-planner-expansion/FOUNDER_REPORT.md",
+      "evidenceAlso": [
+        "data/group-demand-intelligence/execution-history/gdi_three_hotel_integrity_2026-10-15T21-44-42-649Z.json"
+      ],
+      "note": "LMC planners/social Mayflower — restored 2026-10-16 tx-match correction; not pe_sd/scaling_v2"
+    },
+    {
+      "reservationId": "rsv_recon_paid_ms_lmc_corporate_assoc_may_v1",
+      "jobKey": "paid_ms:lmc_corporate_assoc_may_v1",
+      "hotelId": "rec0eTEnCqlsGJJt9",
+      "label": "paid_ms:lmc_corporate_assoc_may_v1",
+      "processor": "pro",
+      "estimatedUsd": 0.35,
+      "status": "spent",
+      "providerRunId": "trun_567f3335d0c140ad8222efec4611b85a",
+      "spentAt": "2026-10-15T21:35:00.000Z",
+      "reconstructionSource": "reports/gdi-lmc-planner-expansion/FOUNDER_REPORT.md",
+      "evidenceAlso": [
+        "data/group-demand-intelligence/execution-history/gdi_three_hotel_integrity_2026-10-15T21-44-42-649Z.json"
+      ],
+      "note": "LMC corporate/assoc Mayflower — restored 2026-10-16 tx-match correction"
+    },
+    {
+      "reservationId": "rsv_recon_paid_ms_lmc_planners_social_sd_v1",
+      "jobKey": "paid_ms:lmc_planners_social_sd_v1",
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "label": "paid_ms:lmc_planners_social_sd_v1",
+      "processor": "pro",
+      "estimatedUsd": 0.35,
+      "status": "spent",
+      "providerRunId": "trun_567f3335d0c140ad8b6191e9c2922d9f",
+      "spentAt": "2026-10-15T21:35:00.000Z",
+      "reconstructionSource": "reports/gdi-lmc-planner-expansion/FOUNDER_REPORT.md",
+      "evidenceAlso": [
+        "data/group-demand-intelligence/execution-history/gdi_three_hotel_integrity_2026-10-15T21-44-42-649Z.json"
+      ],
+      "note": "LMC planners/social San Diego — restored 2026-10-16 tx-match correction"
+    },
+    {
+      "reservationId": "rsv_recon_paid_ms_lmc_corporate_assoc_sd_v1",
+      "jobKey": "paid_ms:lmc_corporate_assoc_sd_v1",
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "label": "paid_ms:lmc_corporate_assoc_sd_v1",
+      "processor": "pro",
+      "estimatedUsd": 0.35,
+      "status": "spent",
+      "providerRunId": "trun_567f3335d0c140ad8e3066a4795127f5",
+      "spentAt": "2026-10-15T21:35:00.000Z",
+      "reconstructionSource": "reports/gdi-lmc-planner-expansion/FOUNDER_REPORT.md",
+      "evidenceAlso": [
+        "data/group-demand-intelligence/execution-history/gdi_three_hotel_integrity_2026-10-15T21-44-42-649Z.json"
+      ],
+      "note": "LMC corporate/assoc San Diego — restored 2026-10-16 tx-match correction"
     }
   ],
-  "updatedAt": "2026-10-16T10:20:00.000Z",
+  "updatedAt": "2026-10-16T12:10:00.000Z",
   "reconciliation": {
-    "reconciledAt": "2026-10-16T07:20:00.000Z",
-    "gap265ClosedAt": "2026-10-16T10:20:00.000Z",
-    "rootCause": "readParallelBudgetLedger auto-created an empty $11 authorization ledger when the file was missing under a worktree/data-root path (observed empty file updatedAt 2026-10-15T23:19:05.285Z). Prior spend lived in operational reports, not in the wiped on-disk copy.",
+    "reconciledAt": "2026-10-16T12:10:00.000Z",
+    "priorIncorrectGap265CloseoutAt": "2026-10-16T10:20:00.000Z",
+    "correctionRef": "reports/gdi-pre-batch-readiness/TRANSACTION_RECONCILIATION.md",
+    "rootCause": "PR #109 matched pe_sd_gaslamp_yacht + scaling_discovery_may_v2 + scaling_discovery_sd_v2 to claimed LMC Parallel by equal cost only. Those are different tasks. Four LMC Parallel runs with distinct trun_ IDs were omitted.",
     "authoritativePath": "data/group-demand-intelligence/paid-multisegment-budget/authorization-ledger-v1.json",
     "historicalPilotUsdSeparate": 2,
-    "priorOperationalClaimRemainingUsd": 4.5,
-    "priorNarrativeSpentUsd": 6.5,
-    "reconstructedEstimatedSpentUsd": 3.85,
-    "reconstructedRemainingUsd": 7.15,
-    "safelyAvailableUsd": 7.15,
+    "supportedEstimatedIncurredUsd": 5.25,
     "outstandingReservationsUsd": 0,
-    "unresolvedSpendingExposureBeyondLedgerUsd": 0,
-    "estimatedSpentLackingProviderRequestIdUsd": 1.0,
+    "accountingHoldUsd": 1.25,
+    "accountingHoldReason": "Historical unresolved Surfe LMC enrichment envelope (~.25): FOUNDER claimed 5×.25 this pass; register evidences 4 Surfe outcomes with null request IDs; do not substitute AMWA or invent a 5th charge. Hold is not incurred and not a reservation.",
+    "accountingHoldConvertedUsd": 1.4,
+    "accountingHoldConvertedNote": "Converted .40 of original .65 hold into incurred when four LMC Parallel tasks were MATCHED and restored.",
+    "originalDisputedHoldUsd": 2.65,
+    "safelyAvailableUsd": 4.5,
     "actualBilledUsd": null,
-    "gap265Usd": 2.65,
-    "gap265Disposition": "DUPLICATE narrative stack of Surfe $1.25 + three Parallel $0.35 already in ledger + one Parallel $0.35 NOT_EXECUTED; no spend entries added/removed",
-    "backupBeforeGap265": "reports/gdi-pre-batch-readiness/budget-ledger-audit/20261016-101429-gap265/authorization-ledger-v1.pre-gap265.json",
-    "transactionTable": "reports/gdi-pre-batch-readiness/TRANSACTION_RECONCILIATION.md",
-    "note": "Do not force reconstructed remaining to equal the prior ~$4.50 narrative. Deduped by providerRunId / jobKey. Resumptions not counted as new submissions. Missing Surfe request IDs for LMC pass kept as estimated-only reconstructed rows. Mayflower/SD envelope not transferred to six-hotel proposal."
-  }
+    "estimatedSpentLackingProviderRequestIdUsd": 1,
+    "backupBeforeCorrection": "reports/gdi-pre-batch-readiness/budget-ledger-audit/20261016-120717-tx-match-correction/authorization-ledger-v1.pre-tx-match-correction.json",
+    "note": "pe_sd / scaling_v2 remain as their own prior spent rows. Equal cost ≠ transaction identity. Historical  pilot separate."
+  },
+  "accountingHoldUsd": 1.25
 }
-

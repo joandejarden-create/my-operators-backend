@@ -3,8 +3,8 @@
 **Hotel:** Renaissance New York Times Square Hotel (`adp_renaissance_times_square` / `recG66DQJKP2c0UNh`)  
 **Authorization:** `$15` ADP-only (`auth_adp_renaissance_ts_15usd_v1`)  
 **Period:** `adp_period_adp_renaissance_times_square_20261016083441_2ff16a`  
-**Status:** Research + certify + filesystem publish + PDF + monthly review + local share verified. Production share verify pending deploy of published artifacts / production signing secret.  
-**Not activated:** other five hotels · Waterstone HOLD · ADP `$57` · GDI `$12` Renaissance.
+**Status:** Research + certify + filesystem publish + PDF + monthly review + local share verified. PR **#110** merged @ `2c58fef4` and **deploy:production SUCCESS**. Production share API still returns `invalid_share_signature` for locally issued tokens (needs re-issue with Railway `ADP_SHARE_CAPABILITY_SECRET`).  
+**Related authorizations (independent):** GDI Renaissance **$12** = **AUTHORIZED_NOT_STARTED** (`reports/gdi-six-hotel-e2e/RENAISSANCE_ACTIVATION_PLAN.md`) — do not combine ledgers. **Not approved:** other five hotels · Waterstone distribution HOLD · ADP `$57` batch.
 
 ---
 
@@ -57,7 +57,8 @@ Monthly review expands to a 5-action corrective posture library pack (`adp_mr_re
 | Current report PDF | Yes · 341,976 bytes · `%PDF` + `%%EOF` |
 | Monthly review + PDF | Yes · v2 · PDF READY |
 | Local share API | Yes · 200 · period + 45.0% |
-| Production share | **Pending** — local DEV-signed token rejected on Railway (`invalid_share_signature`); needs deploy of artifacts + issue with production secret |
+| Production deploy | Yes · `2c58fef4` SUCCESS (assets/smoke/share-contract gates PASS) |
+| Production share | **Gap remains** — Railway rejects locally signed token (`invalid_share_signature`); re-issue with production secret |
 | Airtable Live upsert | **Blocked** — payload exceeds Airtable long-text limit; filesystem SoT retained |
 
 ## F. Were existing customer inputs and concurrent GDI work preserved?

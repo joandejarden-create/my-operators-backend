@@ -1,0 +1,137 @@
+{
+  "generatedAt": "2026-10-16T07:50:00.000Z",
+  "mode": "preparation_only_no_batch_launch",
+  "codeBaseline": {
+    "originMain": "248a30981b4582efa3ba2bda23b90fce487f09b0",
+    "readinessPr": 108,
+    "readinessPrState": "MERGED",
+    "productionDeploy": "SUCCESS",
+    "note": "Identity V4 complete; four missing hotels VERIFIED_ABSENT pending steward HPC create."
+  },
+  "hpcTable": {
+    "baseId": "appCCUsuGsE1ifoLk",
+    "tableId": "tbl9aY5ijiuIzzWam",
+    "tableName": "Hotel Property Census"
+  },
+  "hpcRequiredForGdiIdentity": true,
+  "hpcRequiredRationale": "GDI hotelId for US Marriott queue equals HPC record id (config aliases.censusRecordId). Coordinator keys off that id. No alternate canonical registry match for the four absences.",
+  "evidence": [
+    "HOTEL_IDENTITY_HPC_SEARCH_V4.json",
+    "HOTEL_IDENTITY_RESOLUTION.md"
+  ],
+  "hotels": [
+    {
+      "queueOrder": 1,
+      "displayName": "Renaissance New York Times Square Hotel",
+      "canonicalHotelId": "recG66DQJKP2c0UNh",
+      "resolution": "EXISTING_CANONICAL_MATCH",
+      "marriottPropertyCode": "NYCRN",
+      "gdiConfigPath": "config/group-demand-intelligence/hotels/recG66DQJKP2c0UNh.json",
+      "configReady": true,
+      "roomsFromConfig": 310,
+      "meetingSqFtFromConfig": 5000,
+      "market": "Manhattan Midtown / Times Square",
+      "activationEligibleWhenAuthorized": true,
+      "doNotDuplicate": true
+    },
+    {
+      "queueOrder": 2,
+      "displayName": "Falls Church Marriott Fairview Park",
+      "canonicalHotelId": null,
+      "resolution": "VERIFIED_ABSENT",
+      "marriottPropertyCode": "WASFP",
+      "officialUrl": "https://www.marriott.com/en-us/hotels/wasfp-falls-church-marriott-fairview-park/overview/",
+      "officialAddressLead": "3111 Fairview Park Drive, Falls Church, Virginia, USA, 22042",
+      "configReady": false,
+      "activationEligibleWhenAuthorized": false,
+      "blocker": "Steward HPC create then GDI hotel config before coordinator run",
+      "searchEvidence": [
+        "HOTEL_IDENTITY_HPC_SEARCH_V4.json"
+      ],
+      "ambiguousMatches": [],
+      "excludedNearMisses": []
+    },
+    {
+      "queueOrder": 3,
+      "displayName": "Renaissance Arlington Capital View Hotel",
+      "canonicalHotelId": null,
+      "resolution": "VERIFIED_ABSENT",
+      "marriottPropertyCode": "WASPY",
+      "officialUrl": "https://www.marriott.com/en-us/hotels/waspy-renaissance-arlington-capital-view-hotel/overview/",
+      "officialAddressLead": "2800 South Potomac Ave, Arlington, Virginia, USA, 22202",
+      "identityCaution": "Connected to Residence Inn Arlington Capital View — do not merge or use Residence Inn as this hotel",
+      "configReady": false,
+      "activationEligibleWhenAuthorized": false,
+      "blocker": "Steward HPC create then GDI hotel config before coordinator run",
+      "ambiguousMatches": [],
+      "excludedNearMisses": []
+    },
+    {
+      "queueOrder": 4,
+      "displayName": "Charlotte Marriott City Center",
+      "canonicalHotelId": null,
+      "resolution": "VERIFIED_ABSENT",
+      "marriottPropertyCode": "CLTCC",
+      "officialUrl": "https://www.marriott.com/en-us/hotels/cltcc-charlotte-marriott-city-center/overview/",
+      "officialAddressLead": "100 West Trade Street, Charlotte, North Carolina, USA, 28202",
+      "identityCaution": "Do not confuse with other Charlotte Marriott properties or Charlotte Amalie USVI",
+      "configReady": false,
+      "activationEligibleWhenAuthorized": false,
+      "blocker": "Steward HPC create then GDI hotel config before coordinator run",
+      "excludedNearMisses": [
+        {
+          "id": "rec2lHaSs1FtMX4ae",
+          "reason": "false_positive_charlotte_amalie_usvi_not_charlotte_nc"
+        }
+      ]
+    },
+    {
+      "queueOrder": 5,
+      "displayName": "Tampa Airport Marriott",
+      "canonicalHotelId": null,
+      "resolution": "VERIFIED_ABSENT",
+      "marriottPropertyCode": "TPAAP",
+      "officialUrl": "https://www.marriott.com/en-us/hotels/tpaap-tampa-airport-marriott/overview/",
+      "officialAddressLead": "Tampa International Airport, 4200 George J. Bean Parkway, Tampa, Florida, USA, 33607",
+      "identityCaution": "Do not confuse with Sao Paulo Airport Marriott or Westin Tampa Waterside",
+      "configReady": false,
+      "activationEligibleWhenAuthorized": false,
+      "blocker": "Steward HPC create then GDI hotel config before coordinator run",
+      "excludedNearMisses": [
+        {
+          "id": "recRDhyQHkPiwkC3K",
+          "reason": "false_positive_sao_paulo_airport_marriott"
+        },
+        {
+          "id": "recdmo0CnhIZAwHGC",
+          "reason": "false_positive_westin_tampa_waterside_not_tpaap"
+        }
+      ]
+    },
+    {
+      "queueOrder": 6,
+      "displayName": "Waterstone Resort & Marina Boca Raton",
+      "canonicalHotelId": "recgMYovrrZDJMqzX",
+      "resolution": "EXISTING_CANONICAL_MATCH",
+      "hiltonPathAlias": "bocar-curio",
+      "gdiConfigPath": "config/group-demand-intelligence/hotels/recgMYovrrZDJMqzX.json",
+      "configReady": true,
+      "roomsFromConfig": 139,
+      "meetingSqFtFromConfig": 18899,
+      "market": "South Florida / Palm Beach",
+      "activationEligibleWhenAuthorized": true,
+      "doNotCreateSecondRecord": true,
+      "reuseFirst": true,
+      "reuseOnly": false,
+      "reuseNote": "Reuse-first: revalidate existing intelligence, identify segment/contact gaps, run fresh research when justified and authorized — not permanently reuse-only."
+    }
+  ],
+  "summary": {
+    "existingCanonicalMatch": 2,
+    "verifiedAbsent": 4,
+    "ambiguousMatch": 0,
+    "lookupBlocked": 0,
+    "readyForCoordinatorWhenActivated": ["recG66DQJKP2c0UNh", "recgMYovrrZDJMqzX"],
+    "blockedUntilHpcAndConfig": ["WASFP", "WASPY", "CLTCC", "TPAAP"]
+  }
+}

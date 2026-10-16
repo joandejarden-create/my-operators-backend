@@ -1,35 +1,38 @@
 ﻿{
-  "generatedAt": "2026-10-16T10:20:00.000Z",
+  "generatedAt": "2026-10-16T12:10:00.000Z",
   "authoritativeLedgerPath": "data/group-demand-intelligence/paid-multisegment-budget/authorization-ledger-v1.json",
   "observedOnDisk": {
     "version": "gdi-parallel-budget-ledger-v1",
     "budgetUsd": 11,
     "reservedUsd": 0,
-    "estimatedSpentUsd": 3.85,
+    "estimatedSpentUsd": 5.25,
+    "accountingHoldUsd": 1.25,
     "actualBilledUsd": null,
-    "entries": 15,
-    "remainingComputedUsd": 7.15,
-    "safelyAvailableUsd": 7.15,
-    "updatedAt": "2026-10-16T10:20:00.000Z",
-    "status": "RECONCILED",
-    "gap265Closed": true
+    "spentEntries": 19,
+    "remainingComputedUsd": 4.5,
+    "safelyAvailableUsd": 4.5,
+    "updatedAt": "2026-10-16T12:10:00.000Z",
+    "status": "CORRECTED_HOLD_ACTIVE",
+    "gap265ClosedIncorrectlyInPr109": true,
+    "gap265Corrected": true
   },
   "priorOperationalReport": {
     "approxRemainingUsd": 4.5,
     "approxSpentUsd": 6.5,
     "authorizationUsd": 11,
-    "note": "Prior ~$6.50 spent / ~$4.50 remaining narrative retained for audit only. Gap $2.65 = duplicate Surfe $1.25 + duplicate Parallel $1.05 + NOT_EXECUTED Parallel $0.35. Reconstructed remaining 7.15 not forced to 4.50."
+    "note": "Prior ~$6.50 / ~$4.50 narrative. After MATCHING four LMC Parallel ($1.40 restored) and retaining Surfe hold ($1.25): incurred $5.25, available $4.50."
   },
   "rootCause": "SILENT_EMPTY_LEDGER_BOOTSTRAP_ON_MISSING_PATH",
   "failClosed": true,
+  "accountingHoldReducesAvailable": true,
   "policyThisReview": {
     "newPaidResearch": false,
     "newPaidQaServices": false,
     "autoBudgetRenewal": false,
     "unattendedPublication": false,
-    "transferMayflowerSdToSixHotel": false
+    "transferMayflowerSdToSixHotel": false,
+    "duplicateRenaissanceRuns": false
   },
   "detailArtifact": "BUDGET_RECONCILIATION.json",
   "transactionTable": "TRANSACTION_RECONCILIATION.md"
 }
-
