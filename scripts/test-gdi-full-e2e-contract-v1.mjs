@@ -1360,14 +1360,14 @@ function jsonResponse(status, body, headers = {}) {
   assert.equal(good.ok, true);
 }
 
-// 49) Next hotel inherits when shared path + test exist (prod may still be open)
+// 49) Next hotel inherits when shared path + test exist; leak now production-verified
 {
   const leak = FULL_E2E_LESSON_REGISTER.find(
     (l) => l.id === "provider_leak_customer_sanitize"
   );
   assert.ok(leak);
   assert.equal(nextHotelInheritsAutomatically(leak), true);
-  assert.equal(leak.proof.productionVerified, false);
+  assert.equal(leak.proof.productionVerified, true);
   const capture = buildLessonsCaptureArtifact({
     incorporatedThisRunIds: ["provider_leak_customer_sanitize"],
   });
