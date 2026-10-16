@@ -179,11 +179,13 @@ Evidence overlay may declare what this run incorporated:
 
 Closeout **must** identify:
 
-1. Lessons incorporated during this run (with code / test / evidence / release refs)  
+1. Lessons incorporated during this run (with code / test / evidence / release refs), **or** `noNewLessonsThisRun=true` with coordinator execution proof  
 2. Remaining implementation or verification gaps (five-axis)  
-3. Whether the next hotel inherits each correction automatically  
+3. Next-hotel inheritance **by mode**: automatically_performs · automatically_validates · detects_gap_requires_operator · not_yet_released  
 
-Missing capture, empty register, missing inheritance/gaps, or hotel-only repair claimed complete without shared-path prevention → **cannot COMPLETE**.
+`coordinatorExecutionProof` must include `runId`, `hotelId`, `artifactPath`, `capture_lessons`, and `gitSha`/`releaseRef`. A generated checklist alone does **not** satisfy the gate.
+
+Missing capture, empty register, missing inheritance/gaps, missing execution proof on a no-new-lessons run, or hotel-only repair claimed complete without shared-path prevention → **cannot COMPLETE**.
 
 ---
 

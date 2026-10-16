@@ -31,6 +31,8 @@ import {
   assertDefectFixIncludesLessonCapture,
   nextHotelInheritsAutomatically,
   evaluateLessonsCaptureCompleteness,
+  classifyNextHotelInheritance,
+  NEXT_HOTEL_INHERITANCE_MODE,
   LESSONS_CAPTURE_VERSION,
 } from "../lib/group-demand-intelligence/workflow/full-e2e-lessons-capture-v1.js";
 import {
@@ -1368,6 +1370,10 @@ function jsonResponse(status, body, headers = {}) {
   assert.ok(leak);
   assert.equal(nextHotelInheritsAutomatically(leak), true);
   assert.equal(leak.proof.productionVerified, true);
+  assert.equal(
+    classifyNextHotelInheritance(leak).mode,
+    NEXT_HOTEL_INHERITANCE_MODE.AUTOMATICALLY_PERFORMS
+  );
   const capture = buildLessonsCaptureArtifact({
     incorporatedThisRunIds: ["provider_leak_customer_sanitize"],
   });
@@ -1378,6 +1384,73 @@ function jsonResponse(status, body, headers = {}) {
     )
   );
   assert.ok(Array.isArray(capture.remainingImplementationOrVerificationGaps));
+  assert.ok(capture.nextHotelInheritance.byMode);
+}
+
+// 50) No new lessons is valid with coordinator execution proof (do not invent lessons)
+{
+  const proof = {
+    coordinatorStage: "capture_lessons",
+    runId: "run_test_1",
+    hotelId: "recTEST",
+    artifactPath: "full_e2e/lessons-capture-v1.json",
+    gitSha: "sha_test",
+    contractVersion: FULL_E2E_CONTRACT_VERSION,
+  };
+  const capture = buildLessonsCaptureArtifact({
+    runId: "run_test_1",
+    hotelId: "recTEST",
+    incorporatedThisRunIds: [],
+    noNewLessonsThisRun: true,
+    coordinatorExecutionProof: proof,
+  });
+  assert.equal(capture.noNewLessonsThisRun, true);
+  assert.equal(capture.lessonsIncorporatedThisRun.length, 0);
+  const evalCap = evaluateLessonsCaptureCompleteness(capture);
+  assert.equal(evalCap.ok, true);
+  const r = evaluateFullE2eCompletion({
+    ...baseOk,
+    segmentCoverage: allAxesNaExcept([
+      completeSegment("associations_government"),
+    ]),
+    lessonsCapture: capture,
+  });
+  assert.ok(!r.blockers.some((b) => String(b.code || "").startsWith("lessons_")));
+}
+
+// 51) Empty incorporated list without execution proof cannot satisfy the gate
+{
+  const capture = buildLessonsCaptureArtifact({
+    runId: "run_test_1",
+    hotelId: "recTEST",
+    incorporatedThisRunIds: [],
+    noNewLessonsThisRun: true,
+    // missing coordinatorExecutionProof
+  });
+  const evalCap = evaluateLessonsCaptureCompleteness(capture);
+  assert.equal(evalCap.ok, false);
+  assert.ok(
+    evalCap.blockers.some((b) => b.code === "lessons_capture_execution_proof_missing")
+  );
+}
+
+// 52) Inheritance modes distinguish performs / validates / operator / not released
+{
+  const inv = FULL_E2E_LESSON_REGISTER.find(
+    (l) => l.id === "inventory_facing_vs_unique_count"
+  );
+  assert.equal(
+    classifyNextHotelInheritance(inv).mode,
+    NEXT_HOTEL_INHERITANCE_MODE.DETECTS_GAP_REQUIRES_OPERATOR
+  );
+  assert.ok(classifyNextHotelInheritance(inv).operatorStep);
+  const missing = FULL_E2E_LESSON_REGISTER.find(
+    (l) => l.id === "missing_and_plan_only_block_complete"
+  );
+  assert.equal(
+    classifyNextHotelInheritance(missing).mode,
+    NEXT_HOTEL_INHERITANCE_MODE.AUTOMATICALLY_VALIDATES
+  );
 }
 
 console.log("test-gdi-full-e2e-contract-v1: PASS");

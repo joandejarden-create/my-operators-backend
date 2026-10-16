@@ -2581,14 +2581,38 @@ for (const stage of stagesToRun) {
         overlay.incorporatedLessonIds ||
         ledger.fullE2e?.incorporatedLessonIds ||
         [];
+      const capturePath = path.join(e2eDir, "lessons-capture-v1.json");
+      const gitSha =
+        process.env.RAILWAY_GIT_COMMIT_SHA ||
+        process.env.GITHUB_SHA ||
+        currentFingerprints?.buildSha ||
+        null;
+      const releaseRef =
+        overlay.releaseRef ||
+        ledger.fullE2e?.releaseRef ||
+        FULL_E2E_CONTRACT_VERSION;
+      const noNewLessonsThisRun =
+        overlay.noNewLessonsThisRun === true ||
+        (incorporatedLessonIds.length === 0 &&
+          overlay.noNewLessonsThisRun !== false);
+      const coordinatorExecutionProof = {
+        coordinatorStage: "capture_lessons",
+        runId,
+        hotelId,
+        artifactPath: capturePath,
+        releaseRef,
+        contractVersion: FULL_E2E_CONTRACT_VERSION,
+        gitSha,
+        recordedAt: new Date().toISOString(),
+        source: "gdi-research-to-page-workflow-v1.mjs",
+      };
       const capture = buildLessonsCaptureArtifact({
         runId,
         hotelId,
-        releaseRef:
-          overlay.releaseRef ||
-          ledger.fullE2e?.releaseRef ||
-          FULL_E2E_CONTRACT_VERSION,
+        releaseRef,
         incorporatedThisRunIds: incorporatedLessonIds,
+        noNewLessonsThisRun,
+        coordinatorExecutionProof,
       });
       // Hotel-only repairs claimed complete without shared-path prevention fail closed.
       if (Array.isArray(overlay.hotelSpecificRepairsClaimedComplete)) {
@@ -2596,13 +2620,14 @@ for (const stage of stagesToRun) {
           overlay.hotelSpecificRepairsClaimedComplete;
         capture.evaluation = evaluateLessonsCaptureCompleteness(capture);
       }
-      const capturePath = path.join(e2eDir, "lessons-capture-v1.json");
       fs.writeFileSync(capturePath, JSON.stringify(capture, null, 2) + "\n");
       ledger.fullE2e = {
         ...(ledger.fullE2e || {}),
         lessonsCapture: capture,
         incorporatedLessonIds,
+        noNewLessonsThisRun: capture.noNewLessonsThisRun === true,
         lessonsCapturePath: capturePath,
+        lessonsCaptureRevision: gitSha,
       };
       mark(
         ledger,
@@ -2610,6 +2635,7 @@ for (const stage of stagesToRun) {
         capture.evaluation?.ok === false ? "failed" : "completed",
         {
           incorporatedCount: (capture.lessonsIncorporatedThisRun || []).length,
+          noNewLessonsThisRun: capture.noNewLessonsThisRun === true,
           gapCount: (
             capture.remainingImplementationOrVerificationGaps || []
           ).length,
@@ -2617,8 +2643,9 @@ for (const stage of stagesToRun) {
             capture.nextHotelInheritance?.inheritsAutomatically || []
           ).length,
           capturePath,
+          gitSha,
           note:
-            "Lessons capture is required on the Full E2E path. Defect fixes must update shared impl + test + register + runbook/prompt in the same task.",
+            "Lessons capture is required on the Full E2E path. Empty incorporated list is valid only with noNewLessonsThisRun + coordinatorExecutionProof.",
         }
       );
       continue;
