@@ -1,0 +1,111 @@
+{
+  "generatedAt": "2026-10-16T06:32:36.122Z",
+  "note": "Read-only config inspection only — no discovery/enrichment/publication",
+  "hotels": [
+    {
+      "hotel": "Renaissance New York Times Square",
+      "hotelId": "recG66DQJKP2c0UNh",
+      "resolved": true,
+      "displayName": "Renaissance New York Times Square Hotel",
+      "rooms": 310,
+      "meetingSqFt": 5000,
+      "market": "Manhattan Midtown / Times Square",
+      "dataArtifacts": [
+        "opportunities.json",
+        "profile.json",
+        "runs"
+      ],
+      "missingInputs": [],
+      "bespokeDependency": "none_observed_in_config_layer",
+      "publicationPrereq": "standard_coordinator_path",
+      "readiness": "CONFIG_READY_NO_RESEARCH"
+    },
+    {
+      "hotel": "Falls Church Marriott Fairview Park",
+      "hotelId": null,
+      "resolved": false,
+      "displayName": null,
+      "rooms": null,
+      "meetingSqFt": null,
+      "market": null,
+      "dataArtifacts": [],
+      "missingInputs": [
+        "hotel_config_json"
+      ],
+      "bespokeDependency": "none_observed_in_config_layer",
+      "publicationPrereq": "blocked_until_config",
+      "readiness": "NOT_READY_MISSING_CONFIG"
+    },
+    {
+      "hotel": "Renaissance Arlington Capital View",
+      "hotelId": null,
+      "resolved": false,
+      "displayName": null,
+      "rooms": null,
+      "meetingSqFt": null,
+      "market": null,
+      "dataArtifacts": [],
+      "missingInputs": [
+        "hotel_config_json"
+      ],
+      "bespokeDependency": "none_observed_in_config_layer",
+      "publicationPrereq": "blocked_until_config",
+      "readiness": "NOT_READY_MISSING_CONFIG"
+    },
+    {
+      "hotel": "Charlotte Marriott City Center",
+      "hotelId": null,
+      "resolved": false,
+      "displayName": null,
+      "rooms": null,
+      "meetingSqFt": null,
+      "market": null,
+      "dataArtifacts": [],
+      "missingInputs": [
+        "hotel_config_json"
+      ],
+      "bespokeDependency": "none_observed_in_config_layer",
+      "publicationPrereq": "blocked_until_config",
+      "readiness": "NOT_READY_MISSING_CONFIG"
+    },
+    {
+      "hotel": "Tampa Airport Marriott",
+      "hotelId": null,
+      "resolved": false,
+      "displayName": null,
+      "rooms": null,
+      "meetingSqFt": null,
+      "market": null,
+      "dataArtifacts": [],
+      "missingInputs": [
+        "hotel_config_json"
+      ],
+      "bespokeDependency": "none_observed_in_config_layer",
+      "publicationPrereq": "blocked_until_config",
+      "readiness": "NOT_READY_MISSING_CONFIG"
+    },
+    {
+      "hotel": "Waterstone Resort & Marina",
+      "hotelId": "recgMYovrrZDJMqzX",
+      "resolved": true,
+      "displayName": "Waterstone Resort & Marina Boca Raton",
+      "rooms": 139,
+      "meetingSqFt": 18899,
+      "market": "South Florida / Palm Beach",
+      "dataArtifacts": [
+        "opportunities.json",
+        "profile.json",
+        "runs"
+      ],
+      "missingInputs": [],
+      "bespokeDependency": "none_observed_in_config_layer",
+      "publicationPrereq": "standard_coordinator_path",
+      "readiness": "CONFIG_READY_NO_RESEARCH"
+    }
+  ],
+  "recommendedFirstE2E": {
+    "hotelId": "recG66DQJKP2c0UNh",
+    "name": "Renaissance New York Times Square Hotel",
+    "reason": "Only queued urban meetings hotel with complete canonical config + prior GDI data footprint (gdi_hotel_renaissance_times_square / recG66…); closest parity to Bethesda/Mayflower association+LMC workflow without inventing Falls Church/Charlotte/Tampa configs."
+  }
+}

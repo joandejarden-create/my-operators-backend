@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-10-16T07:30:00.000Z",
+  "test": "scripts/test-gdi-hotel-fit-score-precedence-v1.mjs",
+  "result": "PASS",
+  "contract": "resolveStructuredHotelFitNumericScore (hotel-fit-assessment-v1)",
+  "cases": [
+    { "id": "version_scored_false_stale", "result": "PASS", "score": null },
+    { "id": "withheld_stale_flat", "result": "PASS", "score": null },
+    { "id": "insufficient_stale_legacy", "result": "PASS", "score": null },
+    { "id": "valid_assessed", "result": "PASS", "score": 74 },
+    { "id": "valid_provisional", "result": "PASS", "score": 63 },
+    { "id": "legitimate_zero", "result": "PASS", "score": 0 },
+    { "id": "version_alone", "result": "PASS", "score": null },
+    { "id": "display_dto_withheld", "result": "PASS" },
+    { "id": "persist_reimport_withheld", "result": "PASS" },
+    { "id": "display_provisional_kept", "result": "PASS" }
+  ],
+  "importerFix": "reviewed-prospect-import-v1 no longer accepts scoringVersion alone; shared contract precedes stale flats"
+}

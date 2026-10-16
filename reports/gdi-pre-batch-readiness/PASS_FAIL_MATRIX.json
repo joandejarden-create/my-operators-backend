@@ -1,0 +1,51 @@
+{
+  "generatedAt": "2026-10-16T06:30:00.000Z",
+  "baselineCodeSha": "11379922ff7abadec790059cf65d3f1916b55e61",
+  "defectFixBranch": "fix/gdi-pre-batch-readiness-defects",
+  "productionDeploy": {
+    "sha": "11379922ff7abadec790059cf65d3f1916b55e61",
+    "status": "SUCCESS",
+    "finishedAt": "2026-10-15T23:44:42.939Z",
+    "gates": {
+      "assertProductionAssets": "PASS",
+      "localRouteSmoke": "PASS",
+      "postdeploySmoke": "PASS",
+      "postdeployShareContract": "PASS"
+    }
+  },
+  "completedWorkAcceptedAsRegressionEvidence": {
+    "A_qualification_publication_repair": {
+      "status": "PASS",
+      "evidence": "PRs #101–#103 / release b571d945 lineage; nine restored records read-back facing with REVIEWED_PACKAGE_V1; facing Mayflower 38 / SD 51 observational"
+    },
+    "B_ai_admin_menu_fix": {
+      "status": "PASS_CODE_AND_AUTOMATED",
+      "authenticatedProductionInteraction": "NOT_RUN",
+      "evidence": "PR #104 merged 8148eed9; test-admin-ai-demand-table-v1 PASS; Reviews/GDI Reports/Report Archive share portal; ADP Action Plan overflow-shell only"
+    },
+    "C_contact_depth_delivery": {
+      "status": "PASS",
+      "evidence": "PR #99 closed superseded by #106 (0206afff) + #107 (11379922); 13/13 LMC/planner contacts facing; clubvip leaks 0"
+    }
+  },
+  "checks": [
+    { "id": "qualification_integrity", "result": "PASS", "artifact": "scripts/test-gdi-use-case-qualification-integrity-v1.mjs" },
+    { "id": "publication_eligibility", "result": "PASS", "artifact": "scripts/test-gdi-prospect-publication-eligibility-v1.mjs" },
+    { "id": "reviewed_prospect_visibility", "result": "PASS", "artifact": "scripts/test-gdi-reviewed-prospect-publication-v1.mjs", "note": "Fixture updated with travel_need_evidence after qualification integrity" },
+    { "id": "publication_invariants", "result": "PASS", "artifact": "scripts/test-gdi-customer-publication-invariants-v1.mjs" },
+    { "id": "list_visibility_before_sanitize", "result": "PASS", "artifact": "scripts/test-gdi-list-visibility-before-sanitize-v1.mjs" },
+    { "id": "customer_presentation_boundary", "result": "PASS", "artifact": "scripts/test-gdi-customer-presentation-boundary-v1.mjs" },
+    { "id": "contact_depth_wiring", "result": "PASS", "artifact": "scripts/test-gdi-contact-depth-stage-wiring-v1.mjs" },
+    { "id": "buyer_contact_enrichment", "result": "PASS", "artifact": "scripts/test-gdi-buyer-contact-enrichment-v1.mjs" },
+    { "id": "drawer_content_contract", "result": "PASS", "artifact": "scripts/test-gdi-drawer-content-contract-v2.mjs", "note": "Unexplained fit 55 cleared on import after overwrite fix" },
+    { "id": "drawer_hotel_fit_display", "result": "PASS", "artifact": "scripts/test-gdi-drawer-hotel-fit-display-v1.mjs" },
+    { "id": "weekly_refresh_isolation", "result": "PASS", "artifact": "scripts/test-gdi-weekly-refresh-v1.mjs", "note": "Two isolated cycles + future clock; opts ReferenceError fixed" },
+    { "id": "ai_admin_table_string", "result": "PASS", "artifact": "scripts/test-admin-ai-demand-table-v1.mjs" },
+    { "id": "ai_admin_authenticated_production", "result": "NOT_RUN", "reason": "No legitimate Memberstack admin session available in this review" },
+    { "id": "inventory_nine_thirteen", "result": "PASS", "artifact": "INVENTORY_AND_REGRESSION.json" },
+    { "id": "budget_ledger_read", "result": "PASS_WITH_NOTE", "artifact": "BUDGET_VERIFICATION.json" },
+    { "id": "six_hotel_preflight_readonly", "result": "PASS", "artifact": "SIX_HOTEL_PREFLIGHT.json" },
+    { "id": "paid_research", "result": "NOT_RUN_BY_DESIGN", "note": "No new paid enrichment authorized" },
+    { "id": "six_hotel_batch_activation", "result": "NOT_STARTED_BY_DESIGN" }
+  ]
+}
