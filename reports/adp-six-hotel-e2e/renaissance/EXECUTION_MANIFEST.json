@@ -1,0 +1,59 @@
+{
+  "hotelRunId": "adp_renaissance_ts_refresh_20261016",
+  "authorizationId": "auth_adp_renaissance_ts_15usd_v1",
+  "propertyId": "adp_renaissance_times_square",
+  "hotelId": "recG66DQJKP2c0UNh",
+  "periodId": "adp_period_adp_renaissance_times_square_20261016083441_2ff16a",
+  "entryPoint": "scripts/run-ai-demand-positioning.mjs --property adp_renaissance_times_square --apply --resume <periodId>",
+  "startedAt": "2026-10-16T08:34:41.000Z",
+  "researchCompletedAt": "2026-10-16T09:39:00.000Z",
+  "publishedAt": "2026-10-16T09:39:46.966Z",
+  "status": "COMPLETED_WITH_FOLLOW_ON_PUBLISH_FIX",
+  "stages": {
+    "authorization": "PASS",
+    "baselineFreeze": "PASS",
+    "profileVerification": "PASS",
+    "queryMatrixFreeze": "PASS",
+    "providerSmoke": "PASS_4_OF_4",
+    "liveResearch": "PASS_320_OF_320",
+    "scoringPayload": "PASS",
+    "certification": "CERTIFIED",
+    "publishedSnapshot": "PASS",
+    "competitiveHistory": "PASS_AFTER_NULL_FIX",
+    "monthlyReview": "PASS_v2",
+    "currentReportPdf": "PASS_341976_bytes",
+    "monthlyReviewPdf": "PASS_READY",
+    "shareIssue": "PASS_LOCAL_SECRET",
+    "airtableLiveUpsert": "BLOCKED_PAYLOAD_OVER_FIELD_LIMIT",
+    "productionShareVerify": "PENDING_DEPLOY_OR_PROD_SECRET"
+  },
+  "providersExecuted": {
+    "openai": { "model": "gpt-4o", "attempted": 80, "success": 80, "failed": 0 },
+    "gemini": { "model": "gemini-3.6-flash", "attempted": 80, "success": 80, "failed": 0 },
+    "perplexity": { "model": "sonar", "attempted": 80, "success": 80, "failed": 0 },
+    "claude": { "model": "claude-sonnet-4-6", "attempted": 80, "success": 80, "failed": 0 }
+  },
+  "providersOmitted": [],
+  "scenarioCount": 80,
+  "freshVsCached": "FRESH_LIVE_PROVIDER_CALLS",
+  "demandCaptureDisplay": "45.0%",
+  "manualInterventions": [
+    "Killed hung Start-Process job (wrong WorkingDirectory / post-checkpoint hang)",
+    "Resumed period with --resume to avoid duplicate openai 1-50",
+    "Fixed publishExistingHotelAdpSnapshot null certificationRecord on return path",
+    "Repo-root absolute paths for runtime/published dirs"
+  ],
+  "sharedFixes": [
+    "lib/ai-demand-positioning/budget/authorization-ledger-v1.js (new)",
+    "scripts/run-ai-demand-positioning.mjs (budget + certify publish + resume)",
+    "lib/ai-demand-positioning/execution/multi-provider-runner.js (resume + hard timeout + denser checkpoints)",
+    "lib/ai-demand-positioning/data-model.js (repo-root runtime path)",
+    "lib/ai-demand-positioning/published-snapshot.js (null-safe cert record + repo-root published path)"
+  ],
+  "notActivated": [
+    "Waterstone and remaining four hotels",
+    "ADP $57 remaining allocation",
+    "GDI Renaissance $12 research",
+    "Recurring ADP schedules"
+  ]
+}

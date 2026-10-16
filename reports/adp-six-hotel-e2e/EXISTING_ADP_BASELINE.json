@@ -1,0 +1,698 @@
+{
+  "generatedAt": "2026-10-16T07:57:31.280Z",
+  "mode": "adp_six_hotel_preparation_baseline_freeze_read_only",
+  "codeBaseline": {
+    "originMain": "248a30981b4582efa3ba2bda23b90fce487f09b0",
+    "note": "No research launched; no paid ADP calls; no customer publication"
+  },
+  "gdiIdentityCoordination": {
+    "register": "reports/gdi-six-hotel-e2e/HOTEL_IDENTITY_REGISTER.json",
+    "resolutionDoc": "reports/gdi-six-hotel-e2e/HOTEL_IDENTITY_RESOLUTION.md",
+    "gdiBudgetSeparate": "reports/gdi-six-hotel-e2e/PAID_RESEARCH_BUDGET_PROPOSAL.md",
+    "note": "ADP budget must not reuse GDI  or Mayflower/SD  ledger"
+  },
+  "canonicalWorkflow": {
+    "coordinator": "scripts/run-ai-demand-positioning.mjs",
+    "flags": [
+      "--property <adpPropertyId>",
+      "--dry-run (default)",
+      "--apply",
+      "--providers a,b,c"
+    ],
+    "firstBaselinePattern": "scripts/run-adp-<hotel>-baseline-period-001.mjs --preflight-only|--dry-run|--apply --certify",
+    "publishAirtableEnv": "ADP_AIRTABLE_PUBLISH_APPLY=true",
+    "share": "scripts/issue-adp-share-capability-v1.mjs --property <adpPropertyId>",
+    "providers": [
+      "openai",
+      "gemini",
+      "perplexity",
+      "claude"
+    ],
+    "travelerIntents": {
+      "BUSINESS": "business",
+      "LEISURE": "leisure",
+      "COUPLES": "couples",
+      "FAMILY": "family",
+      "GROUP_MEETING": "group_meeting",
+      "WELLNESS": "wellness",
+      "ADVENTURE": "adventure",
+      "CELEBRATION": "celebration"
+    },
+    "notGdi": "Do not use scripts/gdi-research-to-page-workflow-v1.mjs for ADP"
+  },
+  "hotels": [
+    {
+      "queueOrder": 1,
+      "displayName": "Renaissance New York Times Square Hotel",
+      "adpPropertyId": "adp_renaissance_times_square",
+      "marriottCode": "NYCRN",
+      "hpcId": "recG66DQJKP2c0UNh",
+      "gdiResolution": "EXISTING_CANONICAL_MATCH",
+      "readiness": "READY_FOR_REFRESH_OR_REMEASURE",
+      "blockers": [],
+      "publishedBaseline": {
+        "status": "EXISTING_COMPLETED_RESEARCH",
+        "manifest": {
+          "propertyId": "adp_renaissance_times_square",
+          "propertyName": "Renaissance New York Times Square Hotel",
+          "city": "New York",
+          "state": "New York",
+          "market": "New York City",
+          "latestPeriodId": "adp_period_adp_renaissance_times_square_20261005130233_4ec990",
+          "latestPublishedAt": "2026-10-05T13:39:12.263Z",
+          "productVersion": "ai_demand_positioning_v1",
+          "censusRecordId": null,
+          "publishStatus": "Live",
+          "reportFile": "report-adp_period_adp_renaissance_times_square_20261005130233_4ec990.json",
+          "evidenceFile": "evidence-adp_period_adp_renaissance_times_square_20261005130233_4ec990.json",
+          "demandCaptureRate": 40,
+          "providerCount": 4,
+          "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1",
+          "reportEdition": "ORIGINAL_V1",
+          "certificationStatus": "CERTIFIED",
+          "globalCertificationEngineVersion": "adp_global_certification_engine_v1",
+          "assuranceVersion": "adp_global_certification_engine_v1",
+          "certificationTimestamp": "2026-10-05T14:31:33.763Z"
+        },
+        "periodId": "adp_period_adp_renaissance_times_square_20261005130233_4ec990",
+        "publishedAt": "2026-10-05T13:39:12.263Z",
+        "demandCaptureRate": 40,
+        "certificationStatus": "CERTIFIED",
+        "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1",
+        "providerCount": 4,
+        "reportFile": "report-adp_period_adp_renaissance_times_square_20261005130233_4ec990.json",
+        "evidenceFile": "evidence-adp_period_adp_renaissance_times_square_20261005130233_4ec990.json",
+        "demandCapture": {
+          "overallRate": 40,
+          "totalScenarios": 65,
+          "capturedScenarios": 26,
+          "missedScenarios": 39,
+          "byIntent": {
+            "business": {
+              "total": 13,
+              "captured": 7,
+              "rate": 53.8
+            },
+            "leisure": {
+              "total": 11,
+              "captured": 5,
+              "rate": 45.5
+            },
+            "couples": {
+              "total": 9,
+              "captured": 3,
+              "rate": 33.3
+            },
+            "group_meeting": {
+              "total": 13,
+              "captured": 4,
+              "rate": 30.8
+            },
+            "family": {
+              "total": 5,
+              "captured": 0,
+              "rate": 0
+            },
+            "celebration": {
+              "total": 7,
+              "captured": 4,
+              "rate": 57.1
+            },
+            "wellness": {
+              "total": 3,
+              "captured": 1,
+              "rate": 33.3
+            },
+            "adventure": {
+              "total": 4,
+              "captured": 2,
+              "rate": 50
+            }
+          },
+          "display": "40.0%"
+        },
+        "lostDemandTotal": 39,
+        "competitiveObserved": 20,
+        "actionCount": 2,
+        "externalDistributionHold": null,
+        "monthlyReviewArchive": {
+          "2026-09": [
+            "adp_mr_renaissance_times_square_2026-09_v1",
+            "adp_mr_renaissance_times_square_2026-09_v2",
+            "adp_mr_renaissance_times_square_2026-09_v3",
+            "adp_mr_renaissance_times_square_2026-09_v4",
+            "adp_mr_renaissance_times_square_2026-09_v5",
+            "adp_mr_renaissance_times_square_2026-09_v6",
+            "adp_mr_renaissance_times_square_2026-09_v7",
+            "adp_mr_renaissance_times_square_2026-09_v8"
+          ],
+          "2026-10": [
+            "adp_mr_renaissance_times_square_2026-10_v1"
+          ]
+        },
+        "pdfBackfillFiles": [
+          "adp_renaissance_times_square-adp_mr_renaissance_times_square_2026-09_v1.pdf",
+          "adp_renaissance_times_square-adp_mr_renaissance_times_square_2026-09_v2.pdf",
+          "adp_renaissance_times_square-adp_mr_renaissance_times_square_2026-09_v4.pdf",
+          "adp_renaissance_times_square-adp_mr_renaissance_times_square_2026-09_v5.pdf",
+          "adp_renaissance_times_square-adp_mr_renaissance_times_square_2026-09_v6.pdf",
+          "adp_renaissance_times_square-adp_mr_renaissance_times_square_2026-09_v7.pdf",
+          "adp_renaissance_times_square-adp_mr_renaissance_times_square_2026-09_v8.pdf"
+        ],
+        "censusRecordIdOnManifest": null
+      },
+      "profileAudit": {
+        "profilePresent": true,
+        "name": "Renaissance New York Times Square Hotel",
+        "rooms": 310,
+        "meetingSpaceTotalSqFt": 5000,
+        "meetingRooms": 4,
+        "city": "New York",
+        "state": "New York",
+        "market": "New York City",
+        "submarket": "Midtown Manhattan / Times Square",
+        "brand": "Renaissance Hotels",
+        "affiliation": "Renaissance Hotels (Marriott)",
+        "officialPropertyPageUrl": "https://www.marriott.com/en-us/hotels/nycrn-renaissance-new-york-times-square-hotel/overview/",
+        "declaredCompSet": [
+          "New York Marriott Marquis",
+          "W New York - Times Square",
+          "The Westin New York at Times Square",
+          "Crowne Plaza Times Square Manhattan",
+          "Hilton Times Square",
+          "The Knickerbocker"
+        ],
+        "identityConfusableExclusions": [
+          "Renaissance New York Midtown Hotel",
+          "Renaissance New York Chelsea",
+          "Renaissance New York Harlem",
+          "Renaissance Downtown"
+        ],
+        "censusLink": {
+          "censusRecordId": "recG66DQJKP2c0UNh",
+          "propertyName": "Renaissance New York Times Square Hotel",
+          "canonicalHotelId": "ind_marriott_us_nycrn",
+          "linkStatus": "linked",
+          "notes": "ADP_GDI_HPC_CANONICALIZE · identity_key ind_marriott_us_nycrn"
+        },
+        "profileCensusRecordId": "recG66DQJKP2c0UNh",
+        "customerDropdownVisible": true,
+        "sourceTruthComplete": false,
+        "scenarioUniversePlanned": {
+          "total": 80,
+          "standard": 50,
+          "propertySpecific": 15,
+          "byIntent": {
+            "business": 16,
+            "leisure": 16,
+            "couples": 11,
+            "group_meeting": 15,
+            "family": 6,
+            "celebration": 9,
+            "wellness": 3,
+            "adventure": 4
+          }
+        },
+        "costEstimateUsd": {
+          "total": 10.4,
+          "byProvider": {
+            "openai": 2.4,
+            "gemini": 1.6,
+            "perplexity": 4,
+            "claude": 2.4
+          },
+          "providers": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "providerConfigs": {
+            "openai": {
+              "model": "gpt-4o",
+              "maxTokens": 2000,
+              "costPerCall": 0.03,
+              "delayMs": 1000
+            },
+            "gemini": {
+              "model": "gemini-3.6-flash",
+              "maxTokens": 2000,
+              "costPerCall": 0.02,
+              "delayMs": 800
+            },
+            "perplexity": {
+              "model": "sonar",
+              "maxTokens": 2000,
+              "costPerCall": 0.05,
+              "delayMs": 1500
+            },
+            "claude": {
+              "model": "claude-sonnet-4-6",
+              "maxTokens": 2000,
+              "costPerCall": 0.03,
+              "delayMs": 1000
+            }
+          },
+          "calls": 320,
+          "note": "estimateCost uses configured per-call rates; actual billed may differ; UNKNOWN until reconciled"
+        }
+      },
+      "factLead": {
+        "marriottCode": "NYCRN",
+        "name": "Renaissance New York Times Square Hotel",
+        "canonicalHotelId": "recG66DQJKP2c0UNh",
+        "note": "Use existing GDI config + HPC; ADP-derived capability already on file — re-verify on activation rather than re-seed."
+      }
+    },
+    {
+      "queueOrder": 2,
+      "displayName": "Falls Church Marriott Fairview Park",
+      "adpPropertyId": null,
+      "proposedAdpPropertyId": "adp_falls_church_marriott_fairview_park",
+      "marriottCode": "WASFP",
+      "hpcId": null,
+      "gdiResolution": "VERIFIED_ABSENT",
+      "readiness": "BLOCKED_IDENTITY",
+      "blockers": [
+        "HPC_VERIFIED_ABSENT_STEWARD_CREATE_REQUIRED",
+        "ADP_PROPERTY_PROFILE_MISSING"
+      ],
+      "publishedBaseline": {
+        "status": "NO_PRIOR_ADP",
+        "reason": "no_adp_property_id"
+      },
+      "profileAudit": {
+        "profilePresent": false
+      },
+      "factLead": {
+        "marriottCode": "WASFP",
+        "name": "Falls Church Marriott Fairview Park",
+        "sourceUrl": "https://www.marriott.com/en-us/hotels/wasfp-falls-church-marriott-fairview-park/overview/",
+        "leads": {
+          "address": "3111 Fairview Park Drive, Falls Church, Virginia, USA, 22042",
+          "phone": "+1 703-849-9400",
+          "meetingSpaceClaimSqFt": 27000,
+          "meetingSpaceClaimLabel": "modern indoor ballrooms + outdoor event spaces (marketing)",
+          "guestroomCount": null,
+          "guestroomCountStatus": "NOT_STATED_ON_OVERVIEW_FETCH",
+          "neighborhoodShuttle": "Complimentary neighborhood shuttle to Mosaic District and Metro Station (not airport)",
+          "airportShuttleDca": false,
+          "airportShuttleIad": false,
+          "dcaDistanceMilesClaim": 12,
+          "iadDistanceMilesClaim": 19.3,
+          "kosherCatering": "UNKNOWN_DO_NOT_ASSUME",
+          "outsideCateringPermission": "UNKNOWN_DO_NOT_ASSUME"
+        }
+      }
+    },
+    {
+      "queueOrder": 3,
+      "displayName": "Renaissance Arlington Capital View Hotel",
+      "adpPropertyId": null,
+      "proposedAdpPropertyId": "adp_renaissance_arlington_capital_view",
+      "marriottCode": "WASPY",
+      "hpcId": null,
+      "gdiResolution": "VERIFIED_ABSENT",
+      "caution": "Do not confuse with Residence Inn Arlington Capital View",
+      "readiness": "BLOCKED_IDENTITY",
+      "blockers": [
+        "HPC_VERIFIED_ABSENT_STEWARD_CREATE_REQUIRED",
+        "ADP_PROPERTY_PROFILE_MISSING"
+      ],
+      "publishedBaseline": {
+        "status": "NO_PRIOR_ADP",
+        "reason": "no_adp_property_id"
+      },
+      "profileAudit": {
+        "profilePresent": false
+      },
+      "factLead": {
+        "marriottCode": "WASPY",
+        "name": "Renaissance Arlington Capital View Hotel",
+        "sourceUrl": "https://www.marriott.com/en-us/hotels/waspy-renaissance-arlington-capital-view-hotel/overview/",
+        "leads": {
+          "address": "2800 South Potomac Ave, Arlington, Virginia, USA, 22202",
+          "phone": "+1 703-413-1300",
+          "meetingSpaceClaimSqFt": 17000,
+          "guestroomCount": null,
+          "guestroomCountStatus": "NOT_STATED_ON_OVERVIEW_FETCH",
+          "connectedPropertyCaution": "Direct attachment to Residence Inn by Marriott Arlington Capital View — keep identities distinct",
+          "shuttle": {
+            "dca": "Complimentary scheduled shuttle claimed",
+            "metro": "Crystal City Metro complimentary shuttle claimed",
+            "pentagonAmazon": "Mon–Fri by request claimed"
+          },
+          "leedClaim": "LEED Gold (marketing/certification claim — verify before product copy)",
+          "kosherCatering": "UNKNOWN_DO_NOT_ASSUME",
+          "outsideCateringPermission": "UNKNOWN_DO_NOT_ASSUME"
+        }
+      }
+    },
+    {
+      "queueOrder": 4,
+      "displayName": "Charlotte Marriott City Center",
+      "adpPropertyId": null,
+      "proposedAdpPropertyId": "adp_charlotte_marriott_city_center",
+      "marriottCode": "CLTCC",
+      "hpcId": null,
+      "gdiResolution": "VERIFIED_ABSENT",
+      "readiness": "BLOCKED_IDENTITY",
+      "blockers": [
+        "HPC_VERIFIED_ABSENT_STEWARD_CREATE_REQUIRED",
+        "ADP_PROPERTY_PROFILE_MISSING"
+      ],
+      "publishedBaseline": {
+        "status": "NO_PRIOR_ADP",
+        "reason": "no_adp_property_id"
+      },
+      "profileAudit": {
+        "profilePresent": false
+      },
+      "factLead": {
+        "marriottCode": "CLTCC",
+        "name": "Charlotte Marriott City Center",
+        "sourceUrl": "https://www.marriott.com/en-us/hotels/cltcc-charlotte-marriott-city-center/overview/",
+        "eventsUrl": "https://www.marriott.com/en-us/hotels/cltcc-charlotte-marriott-city-center/events/",
+        "leads": {
+          "address": "100 West Trade Street, Charlotte, North Carolina, USA, 28202",
+          "phone": "+1 704-333-9000",
+          "meetingSpaceClaimsSqFt": [
+            20000,
+            23011,
+            23000
+          ],
+          "meetingSpaceStatus": "CONFLICTING_MARKETING_FIGURES_NEED_VERIFICATION",
+          "breakoutRoomsClaim": 13,
+          "mClubLounge": "Present as M Club Lounge on official pages",
+          "mBetaDesignation": "NOT_CONFIRMED_ON_OVERVIEW_FETCH — verify current M Beta / M Club product designation separately before product copy",
+          "conventionCenterConnectionClaim": true,
+          "walkingDistanceClaims": "UNVERIFIED_MARKETING — do not persist as verified distances without measurement source",
+          "guestroomCount": null,
+          "guestroomCountStatus": "NOT_STATED_ON_OVERVIEW_FETCH",
+          "airportShuttle": false,
+          "cltDistanceMilesClaim": 7.3
+        }
+      }
+    },
+    {
+      "queueOrder": 5,
+      "displayName": "Tampa Airport Marriott",
+      "adpPropertyId": null,
+      "proposedAdpPropertyId": "adp_tampa_airport_marriott",
+      "marriottCode": "TPAAP",
+      "hpcId": null,
+      "gdiResolution": "VERIFIED_ABSENT",
+      "caution": "Not Sao Paulo Airport Marriott; not Westin Tampa Waterside; terminal≠unrestricted gate access",
+      "readiness": "BLOCKED_IDENTITY",
+      "blockers": [
+        "HPC_VERIFIED_ABSENT_STEWARD_CREATE_REQUIRED",
+        "ADP_PROPERTY_PROFILE_MISSING"
+      ],
+      "publishedBaseline": {
+        "status": "NO_PRIOR_ADP",
+        "reason": "no_adp_property_id"
+      },
+      "profileAudit": {
+        "profilePresent": false
+      },
+      "factLead": {
+        "marriottCode": "TPAAP",
+        "name": "Tampa Airport Marriott",
+        "sourceUrl": "https://www.marriott.com/en-us/hotels/tpaap-tampa-airport-marriott/overview/",
+        "mapPdfLead": "https://www.marriott.com/content/dam/marriott-digital/mc/us-canada/hws/t/tpaap/en_us/document/assets/mc-tpaap-hotel-map-and-attractions-40076.pdf",
+        "leads": {
+          "address": "Tampa International Airport, 4200 George J. Bean Parkway, Tampa, Florida, USA, 33607",
+          "phone": "+1 813-879-5151",
+          "terminalAccessClaim": "Located inside TPA / connected to main terminal (third level lobby access claimed on meetings contact page)",
+          "departureGateAccess": "NOT_ESTABLISHED — terminal connection ≠ access to every departure gate; verify walking path vs airside constraints",
+          "meetingSpaceClaimSqFt": 25416,
+          "rooftopEventVenueClaim": "Enclosed rooftop banquet space with city views claimed on map PDF / overview — verify before product copy",
+          "guestroomCountMapPdfClaim": 298,
+          "guestroomCountStatus": "MAP_PDF_LEAD_NEEDS_CANONICAL_VERIFY",
+          "dayUseRooms": true,
+          "airlineCrewContracts": "DO_NOT_ASSUME",
+          "disruptedPassengerDemand": "DO_NOT_ASSUME_AS_AVAILABLE_BUSINESS"
+        }
+      }
+    },
+    {
+      "queueOrder": 6,
+      "displayName": "Waterstone Resort & Marina Boca Raton",
+      "adpPropertyId": "adp_waterstone_boca_raton",
+      "marriottCode": null,
+      "hiltonPath": "bocar-curio",
+      "hpcId": "recgMYovrrZDJMqzX",
+      "gdiResolution": "EXISTING_CANONICAL_MATCH",
+      "readiness": "READY_FOR_RESEARCH_PUBLICATION_GATED",
+      "blockers": [
+        "EXTERNAL_DISTRIBUTION_HOLD_ON_EXISTING_PUBLISH"
+      ],
+      "publishedBaseline": {
+        "status": "EXISTING_COMPLETED_RESEARCH",
+        "manifest": {
+          "propertyId": "adp_waterstone_boca_raton",
+          "propertyName": "Waterstone Resort & Marina",
+          "city": "Boca Raton",
+          "state": "Florida",
+          "market": "South Florida",
+          "latestPeriodId": "adp_period_adp_waterstone_boca_raton_20260902231159_77334c",
+          "latestPublishedAt": "2026-09-10T11:04:32.682Z",
+          "productVersion": "ai_demand_positioning_v1",
+          "censusRecordId": null,
+          "publishStatus": "Live",
+          "reportFile": "report-adp_period_adp_waterstone_boca_raton_20260902231159_77334c.json",
+          "evidenceFile": "evidence-adp_period_adp_waterstone_boca_raton_20260902231159_77334c.json",
+          "demandCaptureRate": 73.1,
+          "providerCount": 4,
+          "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1",
+          "reportEdition": "ORIGINAL_V1",
+          "certified": true,
+          "certificationStatus": "CERTIFIED",
+          "clientReadinessCorrectionVersion": "adp_full_universe_competitor_extract_reprocess_v1_20260910",
+          "clientReadinessCorrectionAt": "2026-09-10T11:04:32.684Z",
+          "supersedesCorrectionId": "adp_corr_waterstone_boca_raton_mtvf6wal",
+          "forensicClientReadyStatus": "CLIENT_READY_PENDING_FORENSIC_REVALIDATION",
+          "externalDistributionHold": {
+            "status": "HOLD",
+            "reason": "Full forensic analytical integrity audit in progress after customer-facing contradictions (JW Santo Domingo evidence modal).",
+            "doctrine": [
+              "RAW_OBSERVATION_IS_THE_ULTIMATE_EVIDENCE_SOURCE",
+              "ONE_OBSERVATION_MUST_HAVE_ONE_CANONICAL_INTERPRETATION",
+              "NO_PARALLEL_ENTITY_RANK_PRESENCE_EVIDENCE_PATHS"
+            ],
+            "allowExistingUrls": true,
+            "allowNewExternalCommunications": false,
+            "allowNewClientReadyEditions": false
+          },
+          "displacementSupportSetVersion": "adp_canonical_displacement_support_set_v1",
+          "displacementEvidenceCorrectedAt": "2026-09-10T17:36:43.850Z",
+          "displacementEvidenceEditionId": "adp_period_adp_waterstone_boca_raton_20260902231159_77334c::displacement_support_adp_canonical_displacement_support_set_v1::de93c107b4c9df8c"
+        },
+        "periodId": "adp_period_adp_waterstone_boca_raton_20260902231159_77334c",
+        "publishedAt": "2026-09-10T11:04:32.682Z",
+        "demandCaptureRate": 73.1,
+        "certificationStatus": "CERTIFIED",
+        "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1",
+        "providerCount": 4,
+        "reportFile": "report-adp_period_adp_waterstone_boca_raton_20260902231159_77334c.json",
+        "evidenceFile": "evidence-adp_period_adp_waterstone_boca_raton_20260902231159_77334c.json",
+        "demandCapture": {
+          "overallRate": 73.1,
+          "totalScenarios": 78,
+          "capturedScenarios": 57,
+          "missedScenarios": 21,
+          "byIntent": {
+            "business": {
+              "total": 12,
+              "captured": 11,
+              "rate": 91.7
+            },
+            "leisure": {
+              "total": 12,
+              "captured": 9,
+              "rate": 75
+            },
+            "couples": {
+              "total": 9,
+              "captured": 7,
+              "rate": 77.8
+            },
+            "group_meeting": {
+              "total": 13,
+              "captured": 9,
+              "rate": 69.2
+            },
+            "family": {
+              "total": 9,
+              "captured": 6,
+              "rate": 66.7
+            },
+            "celebration": {
+              "total": 8,
+              "captured": 6,
+              "rate": 75
+            },
+            "wellness": {
+              "total": 8,
+              "captured": 4,
+              "rate": 50
+            },
+            "adventure": {
+              "total": 7,
+              "captured": 5,
+              "rate": 71.4
+            }
+          },
+          "display": "73.1%"
+        },
+        "lostDemandTotal": 21,
+        "competitiveObserved": 33,
+        "actionCount": 3,
+        "externalDistributionHold": {
+          "status": "HOLD",
+          "reason": "Full forensic analytical integrity audit in progress after customer-facing contradictions (JW Santo Domingo evidence modal).",
+          "doctrine": [
+            "RAW_OBSERVATION_IS_THE_ULTIMATE_EVIDENCE_SOURCE",
+            "ONE_OBSERVATION_MUST_HAVE_ONE_CANONICAL_INTERPRETATION",
+            "NO_PARALLEL_ENTITY_RANK_PRESENCE_EVIDENCE_PATHS"
+          ],
+          "allowExistingUrls": true,
+          "allowNewExternalCommunications": false,
+          "allowNewClientReadyEditions": false
+        },
+        "monthlyReviewArchive": {
+          "2026-09": [
+            "adp_mr_waterstone_boca_raton_2026-09_v1",
+            "adp_mr_waterstone_boca_raton_2026-09_v2",
+            "adp_mr_waterstone_boca_raton_2026-09_v3",
+            "adp_mr_waterstone_boca_raton_2026-09_v4",
+            "adp_mr_waterstone_boca_raton_2026-09_v5",
+            "adp_mr_waterstone_boca_raton_2026-09_v6",
+            "adp_mr_waterstone_boca_raton_2026-09_v7",
+            "adp_mr_waterstone_boca_raton_2026-09_v8"
+          ]
+        },
+        "pdfBackfillFiles": [
+          "adp_waterstone_boca_raton-adp_mr_waterstone_boca_raton_2026-09_v1.pdf",
+          "adp_waterstone_boca_raton-adp_mr_waterstone_boca_raton_2026-09_v2.pdf",
+          "adp_waterstone_boca_raton-adp_mr_waterstone_boca_raton_2026-09_v4.pdf",
+          "adp_waterstone_boca_raton-adp_mr_waterstone_boca_raton_2026-09_v5.pdf",
+          "adp_waterstone_boca_raton-adp_mr_waterstone_boca_raton_2026-09_v6.pdf",
+          "adp_waterstone_boca_raton-adp_mr_waterstone_boca_raton_2026-09_v7.pdf",
+          "adp_waterstone_boca_raton-adp_mr_waterstone_boca_raton_2026-09_v8.pdf"
+        ],
+        "censusRecordIdOnManifest": null
+      },
+      "profileAudit": {
+        "profilePresent": true,
+        "name": "Waterstone Resort & Marina",
+        "rooms": 139,
+        "meetingSpaceTotalSqFt": 18899,
+        "meetingRooms": 4,
+        "city": "Boca Raton",
+        "state": "Florida",
+        "market": "South Florida",
+        "submarket": "Boca Raton / Palm Beach County",
+        "brand": "Curio Collection",
+        "affiliation": "Curio Collection by Hilton",
+        "officialPropertyPageUrl": "https://www.hilton.com/en/hotels/bocar-curio-waterstone-resort-marina-boca-raton/",
+        "declaredCompSet": [
+          "The Boca Raton (Waldorf Astoria)",
+          "Boca Beach Club",
+          "Renaissance Boca Raton",
+          "Wyndham Boca Raton",
+          "Marriott Boca Raton",
+          "Hilton Boca Raton Suites"
+        ],
+        "identityConfusableExclusions": [],
+        "censusLink": {
+          "censusRecordId": "recgMYovrrZDJMqzX",
+          "propertyName": "Waterstone Resort & Marina",
+          "canonicalHotelId": "ind_hilton_us_bocar",
+          "linkStatus": "linked",
+          "notes": "ADP_GDI_HPC_CANONICALIZE · identity_key ind_hilton_us_bocar"
+        },
+        "profileCensusRecordId": null,
+        "customerDropdownVisible": false,
+        "sourceTruthComplete": false,
+        "scenarioUniversePlanned": {
+          "total": 93,
+          "standard": 63,
+          "propertySpecific": 15,
+          "byIntent": {
+            "business": 15,
+            "leisure": 15,
+            "couples": 11,
+            "group_meeting": 16,
+            "family": 9,
+            "celebration": 10,
+            "wellness": 9,
+            "adventure": 8
+          }
+        },
+        "costEstimateUsd": {
+          "total": 12.09,
+          "byProvider": {
+            "openai": 2.79,
+            "gemini": 1.86,
+            "perplexity": 4.65,
+            "claude": 2.79
+          },
+          "providers": [
+            "openai",
+            "gemini",
+            "perplexity",
+            "claude"
+          ],
+          "providerConfigs": {
+            "openai": {
+              "model": "gpt-4o",
+              "maxTokens": 2000,
+              "costPerCall": 0.03,
+              "delayMs": 1000
+            },
+            "gemini": {
+              "model": "gemini-3.6-flash",
+              "maxTokens": 2000,
+              "costPerCall": 0.02,
+              "delayMs": 800
+            },
+            "perplexity": {
+              "model": "sonar",
+              "maxTokens": 2000,
+              "costPerCall": 0.05,
+              "delayMs": 1500
+            },
+            "claude": {
+              "model": "claude-sonnet-4-6",
+              "maxTokens": 2000,
+              "costPerCall": 0.03,
+              "delayMs": 1000
+            }
+          },
+          "calls": 372,
+          "note": "estimateCost uses configured per-call rates; actual billed may differ; UNKNOWN until reconciled"
+        }
+      },
+      "factLead": {
+        "name": "Waterstone Resort & Marina Boca Raton",
+        "canonicalHotelId": "recgMYovrrZDJMqzX",
+        "note": "Reuse existing canonical record/config/research; do not create a second Waterstone record."
+      }
+    }
+  ],
+  "summary": {
+    "readyForRefreshOrRemeasure": [
+      "Renaissance New York Times Square Hotel"
+    ],
+    "readyResearchPublicationGated": [
+      "Waterstone Resort & Marina Boca Raton"
+    ],
+    "blockedIdentity": [
+      "Falls Church Marriott Fairview Park",
+      "Renaissance Arlington Capital View Hotel",
+      "Charlotte Marriott City Center",
+      "Tampa Airport Marriott"
+    ]
+  }
+}

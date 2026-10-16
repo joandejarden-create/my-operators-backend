@@ -1,0 +1,59 @@
+{
+  "frozenAt": "2026-10-16T08:35:00.000Z",
+  "propertyId": "adp_renaissance_times_square",
+  "hotelId": "recG66DQJKP2c0UNh",
+  "hotelName": "Renaissance New York Times Square Hotel",
+  "codeBaseline": "origin/main@d31a04be",
+  "priorAssessment": {
+    "periodId": "adp_period_adp_renaissance_times_square_20261005130233_4ec990",
+    "publishedAt": "2026-10-05T13:39:12.263Z",
+    "certificationStatus": "CERTIFIED",
+    "productVersion": "ai_demand_positioning_v1",
+    "measurementContractVersion": "ADP_MEASUREMENT_CONTRACT_V1",
+    "demandCaptureRate": 40,
+    "capturedScenarios": 26,
+    "totalScenariosInPayload": 65,
+    "lostDemandScenarios": 39,
+    "providerCount": 4,
+    "actionsInPayload": 2,
+    "reportFile": "report-adp_period_adp_renaissance_times_square_20261005130233_4ec990.json",
+    "evidenceFile": "evidence-adp_period_adp_renaissance_times_square_20261005130233_4ec990.json",
+    "monthlyReviewArchive": "reports/ai-demand-positioning/monthly-review/archive/adp_renaissance_times_square/2026-10/adp_mr_renaissance_times_square_2026-10_v1",
+    "priorPeriodsOnDisk": [
+      "adp_period_adp_renaissance_times_square_20260820131042_18731c",
+      "adp_period_adp_renaissance_times_square_20260902235427_7d74ca",
+      "adp_period_adp_renaissance_times_square_20261005130233_4ec990"
+    ]
+  },
+  "profileFactsFrozen": {
+    "rooms": 310,
+    "meetingSpaceTotalSqFt": 5000,
+    "meetingRooms": 4,
+    "largestRoom": "Broadway Ballroom 2400 sq ft / 200 capacity",
+    "officialUrl": "https://www.marriott.com/en-us/hotels/nycrn-renaissance-new-york-times-square-hotel/overview/",
+    "brand": "Renaissance Hotels",
+    "submarket": "Midtown Manhattan / Times Square",
+    "note": "Do not confuse guestrooms (310) with meeting-room count (4). Distinct from Renaissance Midtown/Chelsea/Harlem/Downtown."
+  },
+  "gdiCoordination": {
+    "gdiProfilePath": "data/group-demand-intelligence/hotels/recG66DQJKP2c0UNh/profile.json",
+    "gdiActivationStatus": "PREP_ONLY_NOT_ACTIVATED_THIS_SESSION",
+    "gdiSeparateAuthorizationUsd": 12,
+    "adpTouchedByGdiRuns": false,
+    "sharedIdentity": "recG66DQJKP2c0UNh / adp_renaissance_times_square",
+    "rule": "Reuse verified profile facts; do not overwrite whole GDI documents; do not create GDI opportunities from ADP"
+  },
+  "customerEditionPreservation": {
+    "backupDir": "reports/adp-six-hotel-e2e/renaissance/backups/pre-refresh-20261016",
+    "keepPriorEditionUntilReplacementPassesChecks": true
+  },
+  "plannedRefresh": {
+    "entryPoint": "scripts/run-ai-demand-positioning.mjs --property adp_renaissance_times_square --apply",
+    "plannedScenariosFromBuilder": 80,
+    "plannedProviders": ["openai", "gemini", "perplexity", "claude"],
+    "estimatedCostUsd": 10.4,
+    "authorizationCapUsd": 15,
+    "authorizationLedger": "data/ai-demand-positioning/budget/authorization-ledger-v1.json",
+    "authorizationId": "auth_adp_renaissance_ts_15usd_v1"
+  }
+}
