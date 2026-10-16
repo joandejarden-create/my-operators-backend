@@ -23,9 +23,20 @@ Do **not** claim a lesson is fully incorporated from a status label alone. Each 
 3. This lesson register  
 4. Full E2E runbook + reusable Cursor prompt  
 
-A **hotel-specific repair is not a completed process improvement** until the shared path prevents recurrence or explicitly detects and routes it. Next hotel inherits when axes 1â€“4 are true on the shared path (productionVerified may still be open for the current hotel).
+A **hotel-specific repair is not a completed process improvement** until the shared path prevents recurrence or explicitly detects and routes it.
 
-Hotel-specific repair scripts, overlays, or prompts are **not** the standard entry point. Next hotel: `scripts/gdi-research-to-page-workflow-v1.mjs --mode full-e2e â€¦`.
+Next-hotel inheritance modes (do not collapse to a single "yes"):
+
+| Mode | Meaning |
+|------|---------|
+| `automatically_performs` | Shared path runs the correction every hotel |
+| `automatically_validates` | Shared evaluator/adapters fail-closed if missing/wrong |
+| `detects_gap_requires_operator` | Shared path detects a gap; operator must still assemble evidence or complete a product step |
+| `not_yet_released` | Shared impl/test incomplete |
+
+Do **not** claim "no bespoke work remains" while inventory freeze assembly, share-capability mint, or PDF/report surfaces still need operator steps. Empty `incorporatedThisRun` is valid only with `noNewLessonsThisRun=true` **and** coordinator `capture_lessons` execution proof — do not invent lessons.
+
+Hotel-specific repair scripts, overlays, or prompts are **not** the standard entry point. Next hotel: `scripts/gdi-research-to-page-workflow-v1.mjs --mode full-e2e …`.
 
 ## Status summary (honest)
 
