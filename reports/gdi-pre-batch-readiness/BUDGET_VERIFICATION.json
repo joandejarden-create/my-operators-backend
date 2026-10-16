@@ -1,5 +1,5 @@
 ﻿{
-  "generatedAt": "2026-10-16T07:30:00.000Z",
+  "generatedAt": "2026-10-16T10:20:00.000Z",
   "authoritativeLedgerPath": "data/group-demand-intelligence/paid-multisegment-budget/authorization-ledger-v1.json",
   "observedOnDisk": {
     "version": "gdi-parallel-budget-ledger-v1",
@@ -9,13 +9,16 @@
     "actualBilledUsd": null,
     "entries": 15,
     "remainingComputedUsd": 7.15,
-    "updatedAt": "2026-10-16T07:20:00.000Z",
-    "status": "RECONCILED"
+    "safelyAvailableUsd": 7.15,
+    "updatedAt": "2026-10-16T10:20:00.000Z",
+    "status": "RECONCILED",
+    "gap265Closed": true
   },
   "priorOperationalReport": {
     "approxRemainingUsd": 4.5,
+    "approxSpentUsd": 6.5,
     "authorizationUsd": 11,
-    "note": "Prior ~$4.50 remaining narrative retained for audit only; reconstructed remaining is 7.15 from evidence-backed entries (not forced to 4.50)."
+    "note": "Prior ~$6.50 spent / ~$4.50 remaining narrative retained for audit only. Gap $2.65 = duplicate Surfe $1.25 + duplicate Parallel $1.05 + NOT_EXECUTED Parallel $0.35. Reconstructed remaining 7.15 not forced to 4.50."
   },
   "rootCause": "SILENT_EMPTY_LEDGER_BOOTSTRAP_ON_MISSING_PATH",
   "failClosed": true,
@@ -23,7 +26,10 @@
     "newPaidResearch": false,
     "newPaidQaServices": false,
     "autoBudgetRenewal": false,
-    "unattendedPublication": false
+    "unattendedPublication": false,
+    "transferMayflowerSdToSixHotel": false
   },
-  "detailArtifact": "BUDGET_RECONCILIATION.json"
+  "detailArtifact": "BUDGET_RECONCILIATION.json",
+  "transactionTable": "TRANSACTION_RECONCILIATION.md"
 }
+

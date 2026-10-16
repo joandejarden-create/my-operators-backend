@@ -196,17 +196,27 @@
       "note": "Surfe invoked; identity conflict — no person email accepted. Cost not inferred as zero from missing invoice; estimated Surfe email credit retained."
     }
   ],
-  "updatedAt": "2026-10-16T07:20:00.000Z",
+  "updatedAt": "2026-10-16T10:20:00.000Z",
   "reconciliation": {
     "reconciledAt": "2026-10-16T07:20:00.000Z",
+    "gap265ClosedAt": "2026-10-16T10:20:00.000Z",
     "rootCause": "readParallelBudgetLedger auto-created an empty $11 authorization ledger when the file was missing under a worktree/data-root path (observed empty file updatedAt 2026-10-15T23:19:05.285Z). Prior spend lived in operational reports, not in the wiped on-disk copy.",
     "authoritativePath": "data/group-demand-intelligence/paid-multisegment-budget/authorization-ledger-v1.json",
     "historicalPilotUsdSeparate": 2,
     "priorOperationalClaimRemainingUsd": 4.5,
+    "priorNarrativeSpentUsd": 6.5,
     "reconstructedEstimatedSpentUsd": 3.85,
     "reconstructedRemainingUsd": 7.15,
+    "safelyAvailableUsd": 7.15,
     "outstandingReservationsUsd": 0,
+    "unresolvedSpendingExposureBeyondLedgerUsd": 0,
+    "estimatedSpentLackingProviderRequestIdUsd": 1.0,
     "actualBilledUsd": null,
-    "note": "Do not force reconstructed remaining to equal the prior ~$4.50 narrative. Deduped by providerRunId / jobKey. Resumptions not counted as new submissions. Missing Surfe request IDs for LMC pass kept as estimated-only reconstructed rows."
+    "gap265Usd": 2.65,
+    "gap265Disposition": "DUPLICATE narrative stack of Surfe $1.25 + three Parallel $0.35 already in ledger + one Parallel $0.35 NOT_EXECUTED; no spend entries added/removed",
+    "backupBeforeGap265": "reports/gdi-pre-batch-readiness/budget-ledger-audit/20261016-101429-gap265/authorization-ledger-v1.pre-gap265.json",
+    "transactionTable": "reports/gdi-pre-batch-readiness/TRANSACTION_RECONCILIATION.md",
+    "note": "Do not force reconstructed remaining to equal the prior ~$4.50 narrative. Deduped by providerRunId / jobKey. Resumptions not counted as new submissions. Missing Surfe request IDs for LMC pass kept as estimated-only reconstructed rows. Mayflower/SD envelope not transferred to six-hotel proposal."
   }
 }
+
