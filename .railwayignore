@@ -9,9 +9,24 @@ data/census-map/
 data/decision-outcomes/
 matcha/
 # Lean-exclude report trees, but keep the customer BPP published pack deployable.
+# RAILWAY_LEAN_ADP_UPLOAD_V1 — directory un-ignore previously re-included entire tree (~77MB) and
+# combined with fixtures/published corpora exceeded Cloudflare 413 (~450MB).
 reports/*
 !reports/ai-demand-positioning/
+reports/ai-demand-positioning/**
 !reports/ai-demand-positioning/ADP_BRAND_PORTFOLIO_CUSTOMER_PUBLISHED_V1.json
+# Keep required PDF surface paths that production assert/share may need (re-unignore narrowly).
+!reports/ai-demand-positioning/current-report-pdf/
+!reports/ai-demand-positioning/current-report-pdf/**
+!reports/ai-demand-positioning/monthly-review/
+!reports/ai-demand-positioning/monthly-review/archive/
+!reports/ai-demand-positioning/monthly-review/archive/index.json
+!reports/ai-demand-positioning/monthly-review/archive/adp_bethesda_marriott/
+!reports/ai-demand-positioning/monthly-review/archive/adp_bethesda_marriott/**
+!reports/ai-demand-positioning/monthly-review/archive/adp_renaissance_times_square/
+!reports/ai-demand-positioning/monthly-review/archive/adp_renaissance_times_square/**
+# Fixtures are not production runtime assets (assert gate does not require this tree).
+fixtures/
 uploads/
 engagements/
 rail-explore/
@@ -157,3 +172,8 @@ _archive/
 !reports/ai-demand-positioning/monthly-review/archive/adp_bethesda_marriott/
 !reports/ai-demand-positioning/monthly-review/archive/adp_bethesda_marriott/**
 
+
+# Drop bulky published evidence corpora from Railway upload (SoT manifests/reports remain).
+data/ai-demand-positioning/published/**/evidence-*.json
+data/ai-demand-positioning/published/**/rebuild-backup/
+data/ai-demand-positioning/published/**/rebuild-backup/**
