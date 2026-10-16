@@ -323,7 +323,7 @@
                         { label: 'Owner Pilot Runbook', route: '/support/owner-pilot-provisioning', roles: ['admin'], internalRunbookOnly: true },
                         { label: 'Scoring Weight Model', route: '/support/scoring-weight-model', roles: ['admin'], internalRunbookOnly: true },
                         { label: 'Brand AI Visibility Reference', route: '/support/ai-visibility-benchmark-admin', roles: ['admin'], internalRunbookOnly: true },
-                        { label: 'AI Demand Admin', icon: NAV_ICONS.reports, route: '/admin/ai-demand', roles: ['admin'], adpMonthlyReviewAdmin: true },
+                        { label: 'AI Demand Admin', route: '/admin/ai-demand', roles: ['admin'], adpMonthlyReviewAdmin: true },
                         { label: 'Route Map', route: '/route-map', roles: ['admin'], devOnly: true },
                         {
                             label: 'Validation Scorecard',

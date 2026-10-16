@@ -1192,8 +1192,10 @@ for (const stage of stagesToRun) {
         opportunities: ops,
         queueItems: queue,
         authorizeSurfe,
+        dryRun,
         workflowRunId: runId,
         outDir: path.join(buyerDir, "results"),
+        persistCanonical: !dryRun,
       });
       writeBuyerEnrichmentArtifacts(pass, buyerDir);
       const usage = summarizeSurfeUsage();

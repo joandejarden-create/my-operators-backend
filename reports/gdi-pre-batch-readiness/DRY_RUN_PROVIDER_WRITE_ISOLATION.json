@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-10-16T07:30:00.000Z",
+  "test": "scripts/test-gdi-dry-run-paid-isolation-v1.mjs",
+  "result": "PASS",
+  "proofMethod": "injected surfeCaller + canonicalWriter spies that throw on forbidden calls; no live paid requests",
+  "cases": [
+    { "id": "effective_surfe_auth", "result": "PASS", "note": "dryRun wins over authorizeSurfe" },
+    { "id": "direct_enrich_dry_run", "result": "PASS" },
+    { "id": "live_surfe_not_authorized", "result": "PASS" },
+    { "id": "pass_dry_run_beats_restored_auth", "result": "PASS", "note": "resume-restored authorizeSurfe still blocked by dryRun" },
+    { "id": "weekly_dry_run_isolation", "result": "PASS" }
+  ],
+  "wiring": {
+    "weekly": "invokeWeeklyDownstreamWorkflow forwards dryRun + authorizeSurfe; persistCanonical false on dryRun",
+    "coordinator": "gdi-research-to-page-workflow-v1 buyer stage passes dryRun",
+    "nested": "resolveEffectiveSurfeAuthorization + surfeCaller injection"
+  }
+}

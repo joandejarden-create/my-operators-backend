@@ -1,26 +1,29 @@
-{
-  "generatedAt": "2026-10-16T06:30:00.000Z",
+﻿{
+  "generatedAt": "2026-10-16T07:30:00.000Z",
   "authoritativeLedgerPath": "data/group-demand-intelligence/paid-multisegment-budget/authorization-ledger-v1.json",
   "observedOnDisk": {
-    "workspaceCopy": "C:/Dev/dealality/gdi-release-main/data/group-demand-intelligence/paid-multisegment-budget/authorization-ledger-v1.json",
     "version": "gdi-parallel-budget-ledger-v1",
     "budgetUsd": 11,
     "reservedUsd": 0,
-    "estimatedSpentUsd": 0,
+    "estimatedSpentUsd": 3.85,
     "actualBilledUsd": null,
-    "entries": 0,
-    "remainingComputedUsd": 11,
-    "updatedAt": "2026-10-15T23:19:05.285Z"
+    "entries": 15,
+    "remainingComputedUsd": 7.15,
+    "updatedAt": "2026-10-16T07:20:00.000Z",
+    "status": "RECONCILED"
   },
   "priorOperationalReport": {
     "approxRemainingUsd": 4.5,
     "authorizationUsd": 11,
-    "note": "Earlier Mayflower/SD paid-MS notes cited ~$4.50 remaining from the same $11 envelope; historical $2 is separate. Current on-disk ledger entries are empty (remaining 11). Do not hardcode 4.50; reconcile spend provenance before any new paid run."
+    "note": "Prior ~$4.50 remaining narrative retained for audit only; reconstructed remaining is 7.15 from evidence-backed entries (not forced to 4.50)."
   },
+  "rootCause": "SILENT_EMPTY_LEDGER_BOOTSTRAP_ON_MISSING_PATH",
+  "failClosed": true,
   "policyThisReview": {
     "newPaidResearch": false,
     "newPaidQaServices": false,
     "autoBudgetRenewal": false,
     "unattendedPublication": false
-  }
+  },
+  "detailArtifact": "BUDGET_RECONCILIATION.json"
 }
