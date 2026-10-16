@@ -12,13 +12,26 @@
  *   node scripts/gdi-research-to-page-workflow-v1.mjs --hotel recG66DQJKP2c0UNh --stage preview
  *
  * Full GDI E2E (enforced contract — see full-e2e-contract-v1.js):
+ *   # Preflight / dry-run (blocks all paid + production writes)
  *   node scripts/gdi-research-to-page-workflow-v1.mjs --hotel <id> --mode full-e2e --dry-run
+ *   # Authorized research without publication
+ *   node scripts/gdi-research-to-page-workflow-v1.mjs --hotel <id> --mode full-e2e \\
+ *     --run-discovery --authorize-paid-discovery --budget-usd <N> \\
+ *     --authorization-ref <auth_id> --target-env local
+ *   # Full authorized research + publication
+ *   node scripts/gdi-research-to-page-workflow-v1.mjs --hotel <id> --mode full-e2e \\
+ *     --run-discovery --authorize-paid-discovery --authorize-surfe --authorize-publish \\
+ *     --budget-usd <N> --authorization-ref <auth_id> --target-env production
+ *   # Resume unfinished / stale verification without duplicating paid research
  *   node scripts/gdi-research-to-page-workflow-v1.mjs --hotel <id> --mode full-e2e --resume-run <runId>
- *   node scripts/gdi-full-e2e-status-v1.mjs --hotel <id> --run-dir <path>   # read-only evaluate
+ *   # Read-only status evaluation
+ *   node scripts/gdi-full-e2e-status-v1.mjs --hotel <id> --run-dir <path>
  *
- * Authorization refs (required for paid / publish; never invent flags):
- *   --authorization-ref <text>   recorded on ledger for Full E2E
- *   --authorize-paid-discovery / --authorize-surfe / --authorize-publish
+ * Authorization (research spend ≠ publication permission):
+ *   --authorization-ref <ledger_auth_id>  validated against hotel/product ledger (does not mint allowance)
+ *   --authorize-paid-discovery / --authorize-surfe   research only
+ *   --authorize-publish / --authorize-pe-persist     publication writes
+ *   --dry-run                                        overrides every paid/write flag
  *
  * Stages (resume via --resume-run <id> + stage ledger):
  *   validate_config → reuse_evidence → discover_gaps → assess_fit →
@@ -143,6 +156,13 @@ import {
   buildCompletionInputFromRun,
   writeFullE2eArtifacts,
 } from "../lib/group-demand-intelligence/workflow/full-e2e-completion-input-v1.js";
+import {
+  runLocalDeliveryVerification,
+  runProductionDeliveryVerification,
+  reconcileAuthoritativeBudget,
+  computeRunArtifactFingerprint,
+  verificationNeedsRerun,
+} from "../lib/group-demand-intelligence/workflow/full-e2e-verification-adapters-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -203,7 +223,13 @@ const authorizePePersist =
   has("--authorize-pe-persist") || authorizePublish;
 /** Explicit --dry-run blocks paid + production writes even if other authorize flags are present. */
 const explicitDryRun = has("--dry-run");
-const dryRun = !authorizePublish || explicitDryRun;
+/**
+ * Research spend authorization is separate from publication.
+ * dryRun (publication/write guard) is true when publish is not authorized OR --dry-run.
+ * Paid discovery still requires --authorize-paid-discovery and is independently blocked by --dry-run.
+ */
+const dryRun = explicitDryRun || !authorizePublish;
+const researchWritesBlocked = explicitDryRun;
 /** Prefer nested paid-MS PE packages (adapter reshapes); fallback to operational baseline. */
 const PE_PACKAGE_PATH_CANDIDATES = [
   path.join(
@@ -381,34 +407,74 @@ const pkgDir = defaultPackageDir(hotelId);
 const stageCatalog = fullE2eMode
   ? [...FULL_E2E_COORDINATOR_STAGES]
   : STAGES;
+const artifactFingerprint = computeRunArtifactFingerprint(runDir);
+const currentFingerprints = {
+  artifactFingerprint,
+  dataRevision: ledger.fullE2e?.dataRevision || artifactFingerprint,
+  buildSha:
+    process.env.RAILWAY_GIT_COMMIT_SHA ||
+    process.env.GITHUB_SHA ||
+    ledger.fullE2e?.buildSha ||
+    null,
+};
 const stagesToRun = stageOnly
   ? [stageOnly]
   : stageCatalog.filter((s) => {
       const prev = ledger.stages[s];
-      if (resumeRun && prev?.status === "completed") return false;
+      // Resume: do not skip verify/reconcile merely because status=completed —
+      // re-run when verification was not_run/failed/stale or fingerprints changed.
+      if (resumeRun && prev?.status === "completed") {
+        if (
+          s === "local_delivery_verify" ||
+          s === "production_delivery_verify" ||
+          s === "reconcile_run" ||
+          s === "evaluate_completion"
+        ) {
+          return verificationNeedsRerun(prev, currentFingerprints);
+        }
+        // Paid research / publish: preserve completed work (no duplicate spend)
+        return false;
+      }
       if (s === "apply_publish" && dryRun) return false;
       // Full E2E: weekly_refresh is a distinct mode — not part of initial full coverage
       if (fullE2eMode && s === "weekly_refresh") return false;
-      // Dry-run blocks production verify apply path but still evaluates completion
-      if (
-        dryRun &&
-        (s === "production_delivery_verify" || s === "local_delivery_verify") &&
-        !completionEvidencePath &&
-        !fs.existsSync(path.join(runDir, "full-e2e-evidence.json"))
-      ) {
-        // Still run these stages — they record NOT_RUN/BLOCKED honestly
-        return true;
-      }
       return true;
     });
+
+const budgetLedgerPath =
+  process.env.GDI_PARALLEL_BUDGET_LEDGER_PATH ||
+  process.env.GDI_PAID_MS_BUDGET_LEDGER_PATH ||
+  null;
 
 console.log(
   JSON.stringify(
     {
+      executionSummary: {
+        hotelId,
+        scope: fullE2eMode ? "full_e2e" : "standard_coordinator",
+        mode: workflowModeRaw || "standard",
+        researchPermissions: {
+          authorizePaidDiscovery,
+          authorizeSurfe,
+          authorizeNative,
+          blockedByDryRun: researchWritesBlocked,
+        },
+        publicationPermissions: {
+          authorizePublish,
+          authorizePePersist,
+          dryRun,
+        },
+        authorizationRef: authorizationRef || null,
+        ledgerPath: budgetLedgerPath || ledgerPath,
+        stagesToRun,
+      },
       runId,
       hotelId,
       dryRun,
+      explicitDryRun,
+      researchWritesBlocked,
       authorizePublish,
+      authorizePaidDiscovery,
       workflowMode: fullE2eMode ? E2E_RUN_MODE.FULL_E2E : E2E_RUN_MODE.STANDARD_COORDINATOR,
       fullE2eContractVersion: fullE2eMode ? FULL_E2E_CONTRACT_VERSION : null,
       authorizationRef: authorizationRef || null,
@@ -2199,6 +2265,10 @@ for (const stage of stagesToRun) {
         note: "Airtable apply with flag-off import; enable GDI_REVIEWED_PROSPECT_PUBLICATION_V1 separately",
       });
       if (r.status !== 0) throw new Error("production_apply_failed");
+      if (r.status === 0 && ledger.fullE2e) {
+        ledger.fullE2e.productionWritesAttempted = true;
+        saveLedger(ledger);
+      }
       continue;
     }
 
@@ -2212,11 +2282,30 @@ for (const stage of stagesToRun) {
               fs.readFileSync(path.join(runDir, "full-e2e-evidence.json"), "utf8")
             )
           : {};
-      const local = overlay.localVerification || {
-        status: "not_run",
-        notes:
-          "Record localVerification in full-e2e-evidence.json after verifying :8080 list/drawers/reports/links. Do not substitute asset-only checks as passed.",
-      };
+      const machine = await runLocalDeliveryVerification({
+        hotelId,
+        runId,
+        baseUrl: process.env.GDI_LOCAL_BASE_URL || "http://127.0.0.1:8080",
+        dataRevision: currentFingerprints.dataRevision,
+        buildSha: currentFingerprints.buildSha,
+      });
+      // Operator overlay cannot upgrade failed/blocked/not_run machine results
+      const local =
+        machine.status === "passed" && overlay.localVerification
+          ? { ...machine, ...overlay.localVerification, machineStatus: machine.status, status: overlay.localVerification.status === "passed" ? "passed" : machine.status }
+          : machine.status === "passed"
+            ? machine
+            : {
+                ...machine,
+                ...(overlay.localVerification || {}),
+                status: machine.status,
+                machineStatus: machine.status,
+                notes: `${machine.notes || ""}${
+                  overlay.localVerification?.status === "passed"
+                    ? " (operator passed ignored — machine not passed)"
+                    : ""
+                }`,
+              };
       fs.writeFileSync(
         path.join(e2eDir, "local-delivery-verify.json"),
         JSON.stringify(
@@ -2225,7 +2314,9 @@ for (const stage of stagesToRun) {
             runId,
             recordedAt: new Date().toISOString(),
             verification: local,
+            machine,
             primaryLocalPort: 8080,
+            artifactFingerprint: currentFingerprints.artifactFingerprint,
           },
           null,
           2
@@ -2233,14 +2324,21 @@ for (const stage of stagesToRun) {
       );
       ledger.fullE2e = ledger.fullE2e || {};
       ledger.fullE2e.localVerification = local;
+      ledger.fullE2e.localVerificationMachine = machine;
       const status =
         local.status === "passed"
           ? "completed"
           : local.status === "blocked"
             ? "blocked"
-            : "completed";
+            : local.status === "failed"
+              ? "failed"
+              : "completed";
       mark(ledger, stage, status, {
         verificationStatus: local.status,
+        machineStatus: machine.status,
+        dataRevision: local.dataRevision || currentFingerprints.dataRevision,
+        buildSha: local.buildSha || currentFingerprints.buildSha,
+        artifactFingerprint: currentFingerprints.artifactFingerprint,
         note: local.notes || null,
       });
       continue;
@@ -2256,11 +2354,26 @@ for (const stage of stagesToRun) {
               fs.readFileSync(path.join(runDir, "full-e2e-evidence.json"), "utf8")
             )
           : {};
-      const prod = overlay.productionVerification || {
-        status: "not_run",
-        notes:
-          "Record productionVerification after real production list/detail/share/PDF checks. Airtable write or deploy SUCCESS alone is insufficient.",
-      };
+      const machine = await runProductionDeliveryVerification({
+        hotelId,
+        runId,
+        dataRevision: currentFingerprints.dataRevision,
+        buildSha: currentFingerprints.buildSha,
+      });
+      const prod =
+        machine.status === "passed" && overlay.productionVerification?.status === "passed"
+          ? { ...machine, ...overlay.productionVerification, machineStatus: "passed", status: "passed" }
+          : {
+              ...machine,
+              status: machine.status,
+              machineStatus: machine.status,
+              notes: `${machine.notes || ""}${
+                overlay.productionVerification?.status === "passed" &&
+                machine.status !== "passed"
+                  ? " (operator passed ignored — machine not passed)"
+                  : ""
+              }`,
+            };
       fs.writeFileSync(
         path.join(e2eDir, "production-delivery-verify.json"),
         JSON.stringify(
@@ -2269,6 +2382,8 @@ for (const stage of stagesToRun) {
             runId,
             recordedAt: new Date().toISOString(),
             verification: prod,
+            machine,
+            artifactFingerprint: currentFingerprints.artifactFingerprint,
           },
           null,
           2
@@ -2276,8 +2391,21 @@ for (const stage of stagesToRun) {
       );
       ledger.fullE2e = ledger.fullE2e || {};
       ledger.fullE2e.productionVerification = prod;
-      mark(ledger, stage, "completed", {
+      ledger.fullE2e.productionVerificationMachine = machine;
+      const status =
+        prod.status === "passed"
+          ? "completed"
+          : prod.status === "blocked"
+            ? "blocked"
+            : prod.status === "failed"
+              ? "failed"
+              : "completed";
+      mark(ledger, stage, status, {
         verificationStatus: prod.status,
+        machineStatus: machine.status,
+        dataRevision: prod.dataRevision || currentFingerprints.dataRevision,
+        buildSha: prod.buildSha || currentFingerprints.buildSha,
+        artifactFingerprint: currentFingerprints.artifactFingerprint,
         note: prod.notes || null,
       });
       continue;
@@ -2286,24 +2414,55 @@ for (const stage of stagesToRun) {
     if (stage === "reconcile_run") {
       const e2eDir = path.join(runDir, "full_e2e");
       fs.mkdirSync(e2eDir, { recursive: true });
+      const authRef =
+        ledger.fullE2e?.authorizationRef || authorizationRef || null;
+      const budget = reconcileAuthoritativeBudget({
+        ledgerPath: budgetLedgerPath,
+        authorizationId: authRef,
+        hotelId,
+      });
+      // Free-text authorizationRef must not mint allowance — mismatch fails closed
+      if (
+        authRef &&
+        budget.authoritative &&
+        budget.authorizationId &&
+        String(authRef) !== String(budget.authorizationId)
+      ) {
+        budget.reconciled = false;
+        budget.reason = "authorization_ref_mismatch_does_not_mint_allowance";
+      }
+      if (!budgetLedgerPath && !budget.authoritative) {
+        budget.reconciled = false;
+        budget.reason = budget.reason || "authoritative_ledger_path_missing";
+      }
+      ledger.budget = {
+        ...(ledger.budget || {}),
+        ...budget,
+        reconciled: budget.reconciled === true,
+      };
+      ledger.fullE2e = ledger.fullE2e || {};
+      ledger.fullE2e.budget = budget;
       const reconcile = {
         hotelId,
         runId,
         at: new Date().toISOString(),
-        budget: ledger.budget || {},
+        budget,
+        ledgerPath: budgetLedgerPath,
         failures: ledger.failures || [],
         remainingManualSteps: ledger.remainingManualSteps || [],
-        authorizationRef: ledger.fullE2e?.authorizationRef || authorizationRef || null,
+        authorizationRef: authRef,
         note:
-          "Budget/reservations must be reconciled in hotel budget ledger before COMPLETE. Missing required ledgers fail closed.",
+          "Authoritative hotel/product ledger inspected. Copied budget fields alone do not reconcile.",
       };
       fs.writeFileSync(
         path.join(e2eDir, "reconcile-run.json"),
         JSON.stringify(reconcile, null, 2) + "\n"
       );
-      mark(ledger, stage, "completed", {
-        budgetExhausted: ledger.budget?.exhausted === true,
+      mark(ledger, stage, budget.reconciled ? "completed" : "failed", {
+        budgetExhausted: budget.exhausted === true,
+        authoritative: budget.authoritative === true,
         failureCount: (ledger.failures || []).length,
+        reason: budget.reason || null,
       });
       continue;
     }
@@ -2349,7 +2508,14 @@ for (const stage of stagesToRun) {
         runDir,
         overlay,
         runMode: E2E_RUN_MODE.FULL_E2E,
+        budgetLedgerPath,
+        authorizationRef:
+          authorizationRef || ledger.fullE2e?.authorizationRef || null,
       });
+      input.currentFingerprints = {
+        ...(input.currentFingerprints || {}),
+        ...currentFingerprints,
+      };
       const completion = evaluateFullE2eCompletion(input);
       const contractDoc = buildFullE2eContractDocument();
       writeFullE2eArtifacts({

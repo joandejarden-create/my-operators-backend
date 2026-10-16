@@ -1,21 +1,20 @@
-# Known implementation gaps (honest)
+# Known implementation gaps (v1.1 fail-closed)
 
-This release wires the **contract, evaluator, coordinator mode, status CLI, and regressions**. It does **not** auto-complete Mayflower/SD-class delivery for a new hotel without authorized research and recorded local/production proofs.
+## Corrected since #118
 
-## Gaps / still manual
+- Empty / omitted / unknown / duplicate segment axes fail closed.  
+- Deliverable `gapRecorded` no longer satisfies COMPLETE.  
+- Contact queue reconciliation from buyer-enrichment artifacts.  
+- Local/production stages execute API adapters (not status copy).  
+- Resume re-runs stale/not_run verification via fingerprints.  
+- Budget reconcile inspects authoritative ledger.  
+- Research auth ≠ publish auth; `--dry-run` overrides all paid/writes.  
+- Status CLI writes **only** under `--out-dir` (never mutates source run journals).
 
-1. **Segment coverage evidence overlay** — Operator (or upstream scorecard writer) must populate `full-e2e-evidence.json` / `ledger.fullE2e.segmentCoverage` with applicability, execution mode, coverage status, depth failures, and reuse satisfaction. Derivation from segment-research-plan defaults remaining applicable rows to `plan_only` until research executes.
-2. **Local / production browser proofs** — Stages `local_delivery_verify` and `production_delivery_verify` record operator-supplied verification status; they do not drive a headless browser themselves in this PR. Auth-blocked checks must be `blocked`/`not_run`.
-3. **Share-link minting** — Contract requires a verified hotel-scoped share link; minting still uses existing share paths. Do not commit active tokens.
-4. **PDF layout validation** — Required where PDF is generated; automated clipping/pagination checks remain the existing PDF quality tests / manual confirmation when a PDF route runs.
-5. **Automatic scorecard→evaluator bridge** — Paid-MS / buyer-contact artifacts can be read when present; full automatic mapping of every Mayflower/SD scorecard row into evaluator input is incremental. Until present, use evidence overlay.
-6. **Active Renaissance / Tampa / ADP** — Status CLI evaluates existing run dirs read-only. This PR does not mutate their journals or start a competing run.
-7. **No new hotel activation / no new paid batch** authorized by this task.
+## Still gaps / manual
 
-## Not gaps (already enforced)
-
-- Association-only + plan-only applicable → cannot `COMPLETE`  
-- Dry-run blocks paid + production writes even with authorize flags  
-- Weekly refresh distinct from Full E2E  
-- Contact-depth stage remains on the Full E2E coordinator path  
-- Founder/Admin must consume `computedOverallStatus` / `full-e2e-completion.json`
+1. Authenticated Memberstack browser drawer walkthrough (API list/detail automated).  
+2. Cross-run join of continuation scorecards into an older ledger’s segmentCoverage.  
+3. Share-link mint UX (existing paths; no tokens in git).  
+4. PDF visual clipping QA when PDF routes run.  
+5. No new hotel activation / no new paid batch in this correction task.
