@@ -7,6 +7,7 @@ import {
   evaluateProspectPublicationEligibility,
   hasUsableContactRoute,
   applyContactPackageToOpportunity,
+  pickPreferredContactUrl,
   CONTACT_COMPLETENESS_GROUP,
 } from "../lib/group-demand-intelligence/prospect-publication-eligibility-v1.js";
 import { isGdiCustomerOpportunityReady } from "../lib/group-demand-intelligence/customer-readiness-gate-v1.js";
@@ -163,6 +164,53 @@ const base = {
   );
   const ready = isGdiCustomerOpportunityReady(thin, { nowDate: "2026-10-14" });
   assert.equal(ready.ok, false, "helper must not make incomplete packets Ready");
+}
+
+// 8) Functional contact-us must win over LinkedIn company / careers discovery URLs
+{
+  assert.equal(
+    pickPreferredContactUrl([
+      "https://linkedin.com/company/eliseai",
+      "https://eliseai.com/contact-us",
+    ]),
+    "https://eliseai.com/contact-us"
+  );
+  assert.equal(
+    pickPreferredContactUrl([
+      "https://www.cyera.com/careers",
+      "https://www.cyera.com/contact-us",
+    ]),
+    "https://www.cyera.com/contact-us"
+  );
+  const cyeraLike = {
+    ...base,
+    prospectHotelFacing: true,
+    prospectPublicationBasis: "REVIEWED_PACKAGE_V1",
+    contactOfficialUrl: "https://www.cyera.com/careers",
+    contactSourceUrl: "https://www.cyera.com/careers",
+    contactUrl: "https://www.cyera.com/contact-us",
+    primaryContact: {
+      name: null,
+      organizationContactRoute: "https://www.cyera.com/contact-us",
+    },
+  };
+  const route = hasUsableContactRoute(cyeraLike);
+  assert.equal(route.ok, true, "careers discovery must not shadow contact-us");
+  assert.equal(route.surface.contactUrl, "https://www.cyera.com/contact-us");
+  assert.equal(evaluateProspectPublicationEligibility(cyeraLike).hotelFacing, true);
+
+  const eliseLike = {
+    ...base,
+    contactOfficialUrl: "https://linkedin.com/company/eliseai",
+    contactSourceUrl: "https://linkedin.com/company/eliseai",
+    contactUrl: "https://eliseai.com/contact-us",
+    contactChannelSeparation: {
+      organizationRoute: "https://eliseai.com/contact-us",
+    },
+  };
+  const eliseRoute = hasUsableContactRoute(eliseLike);
+  assert.equal(eliseRoute.ok, true, "LinkedIn company must not shadow contact-us");
+  assert.equal(eliseRoute.surface.contactUrl, "https://eliseai.com/contact-us");
 }
 
 console.log("test-gdi-prospect-publication-eligibility-v1: PASS");
