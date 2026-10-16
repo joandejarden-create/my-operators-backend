@@ -142,3 +142,5 @@ Prior PDF bytes preserved under `pdf-history/` and archive editions `v1`…`v4`.
 | Current PDF archive | `adp_current_2026-10-16_adp_renaissance_times_square_v4` |
 | Monthly review | `adp_mr_renaissance_times_square_2026-10_v2` |
 | Base commit | `2c58fef4` (PR #110 merge) |
+| Closeout commit | `3512e0da` on `fix/adp-renaissance-delivery-closeout` (pushed) |
+| PR | Open from https://github.com/joandejarden-create/my-operators-backend/pull/new/fix/adp-renaissance-delivery-closeout (`gh` not authenticated in this environment) |
