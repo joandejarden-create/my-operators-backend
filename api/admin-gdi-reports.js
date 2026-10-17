@@ -154,6 +154,7 @@ export async function getAdminGdiReportCatalog(req, res) {
             : summary.clientOpportunityCount,
           customerFacingCount: summary.customerFacing,
           gdiShareReason: shareFlags.gdiShareReason || null,
+          gdiShareVerified: shareFlags.gdiShareVerified === true,
           reportStatus: deriveGdiReportStatus(summary),
           pdfReady,
           pdfStatus: pdfReady ? "READY" : "MISSING",

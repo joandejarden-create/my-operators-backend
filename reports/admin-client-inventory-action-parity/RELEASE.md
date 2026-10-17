@@ -2,7 +2,8 @@
 
 - Branch: `fix/admin-gdi-client-inventory`
 - PR: https://github.com/joandejarden-create/my-operators-backend/pull/133
-- Head: `be598155`
-- Merge SHA: not merged. `gh` is not logged in, and the merge command was blocked pending approval.
-- Deployment ID: not deployed. Production `/health` is `{ok:true}` with no build SHA. Production Admin script still serves the pre-change `Open GDI` gate until this PR is merged and `npm run deploy:production` runs from clean `main`.
+- Head: pending the sealed-link commit on `fix/admin-gdi-client-inventory`
+- Merge SHA: not merged. GitHub authentication still has to be restored by the founder before this PR can be pushed and merged. Do not recover the previously exposed credential from logs.
+- Deployment ID: not deployed. This PR is not on the production Admin page.
+- buildSha follow-up: `GET /health` returned `{ok:true}` and did not include `buildSha`. No production SHA was observed from the running service. Do not treat a deploy-record SHA as the serving revision until `/health` (or another runtime field) returns it after Railway SUCCESS.
 - Nobu London Portman work remains in stash `preserve nobu london portman e2e wip — do not pop during admin client inventory`. It was not included in this branch.

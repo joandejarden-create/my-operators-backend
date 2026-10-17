@@ -14,6 +14,8 @@ import { applyContactPackageToOpportunity } from "../lib/group-demand-intelligen
 import { stampLegacyVisibilityPreserved } from "../lib/group-demand-intelligence/legacy-visibility-compatibility-v1.js";
 import { REVIEWED_PROSPECT_PUBLICATION_BASIS } from "../lib/group-demand-intelligence/reviewed-prospect-publication-v1.js";
 import {
+  assessSealedShareToken,
+  CLIENT_LINK_UNAVAILABLE,
   getAdpPropertyIdForHpc,
   resolveExternalClientLinks,
 } from "../lib/admin/report-external-client-links-v1.js";
@@ -436,6 +438,186 @@ assert.equal(sealed.adp.tokenId, "sht_06ba4cd8b5a5cdb865d5109a");
 assert.equal(sealed.adp.created, false);
 assert.match(sealed.adp.url || "", /^https:\/\/my-operators-backend-production\.up\.railway\.app\/owner-ai-demand-share\.html\?share=/);
 assert.doesNotMatch(sealed.adp.url || "", /localhost/);
+const sealedToken = new URL(sealed.adp.url).searchParams.get("share");
+assert.equal(
+  assessSealedShareToken(sealedToken, {
+    product: "ADP",
+    propertyId: "adp_renaissance_times_square",
+    tokenId: "sht_06ba4cd8b5a5cdb865d5109a",
+  }).ok,
+  true
+);
+
+function fakeShareToken(prefix, payload) {
+  const body = Buffer.from(JSON.stringify(payload)).toString("base64url");
+  return `${prefix}${body}.not-a-signature`;
+}
+const renaissanceRegistry = {
+  tokens: {
+    sht_test_scope: {
+      status: "ACTIVE",
+      propertyId: "adp_renaissance_times_square",
+      reportScope: "draft_internal",
+      revokedAt: null,
+    },
+    sht_test_revoked: {
+      status: "REVOKED",
+      propertyId: "adp_renaissance_times_square",
+      reportScope: "current_published",
+      revokedAt: "2026-10-01T00:00:00.000Z",
+    },
+  },
+};
+assert.equal(
+  assessSealedShareToken(
+    fakeShareToken("adpshare.v1.", {
+      v: 1,
+      tid: "sht_06ba4cd8b5a5cdb865d5109a",
+      propertyId: "adp_other_hotel",
+      surfaces: ["report"],
+      reportScope: "current_published",
+      exp: null,
+    }),
+    {
+      product: "ADP",
+      propertyId: "adp_renaissance_times_square",
+      tokenId: "sht_06ba4cd8b5a5cdb865d5109a",
+    }
+  ).code,
+  "SHARE_PROPERTY_SCOPE"
+);
+assert.equal(
+  assessSealedShareToken(
+    fakeShareToken("adpshare.v1.", {
+      v: 1,
+      tid: "sht_06ba4cd8b5a5cdb865d5109a",
+      propertyId: "adp_renaissance_times_square",
+      surfaces: ["report"],
+      reportScope: "draft_internal",
+      exp: null,
+    }),
+    {
+      product: "ADP",
+      propertyId: "adp_renaissance_times_square",
+      tokenId: "sht_06ba4cd8b5a5cdb865d5109a",
+    }
+  ).code,
+  "SHARE_SCOPE"
+);
+assert.equal(
+  assessSealedShareToken(
+    fakeShareToken("adpshare.v1.", {
+      v: 1,
+      tid: "sht_test_scope",
+      propertyId: "adp_renaissance_times_square",
+      surfaces: ["report"],
+      reportScope: "current_published",
+      exp: null,
+    }),
+    {
+      product: "ADP",
+      propertyId: "adp_renaissance_times_square",
+      tokenId: "sht_test_scope",
+      registry: renaissanceRegistry,
+      revoked: false,
+    }
+  ).code,
+  "SHARE_SCOPE"
+);
+assert.equal(
+  assessSealedShareToken(
+    fakeShareToken("adpshare.v1.", {
+      v: 1,
+      tid: "sht_06ba4cd8b5a5cdb865d5109a",
+      propertyId: "adp_renaissance_times_square",
+      surfaces: ["report"],
+      reportScope: "current_published",
+      exp: 1,
+    }),
+    {
+      product: "ADP",
+      propertyId: "adp_renaissance_times_square",
+      tokenId: "sht_06ba4cd8b5a5cdb865d5109a",
+    }
+  ).code,
+  "SHARE_EXPIRED"
+);
+assert.equal(
+  assessSealedShareToken(
+    fakeShareToken("adpshare.v1.", {
+      v: 1,
+      tid: "sht_test_revoked",
+      propertyId: "adp_renaissance_times_square",
+      surfaces: ["report"],
+      reportScope: "current_published",
+      exp: null,
+    }),
+    {
+      product: "ADP",
+      propertyId: "adp_renaissance_times_square",
+      tokenId: "sht_test_revoked",
+      registry: renaissanceRegistry,
+      revoked: false,
+    }
+  ).code,
+  "SHARE_REVOKED"
+);
+
+const unknownActions = api.buildActions({
+  hotelId: HOTEL,
+  available: true,
+  readFailed: false,
+  clientOpportunityCount: null,
+  gdiShareAvailable: true,
+  pdfReady: false,
+});
+assert.doesNotMatch(
+  unknownActions.primary.find((a) => a.act === "open-gdi").title,
+  /No published opportunities/
+);
+const unknownCell = api.clientInventoryCell({
+  readFailed: false,
+  clientOpportunityCount: null,
+  reason: "canonical_opportunity_read_failed",
+});
+assert.match(unknownCell, /Unavailable/);
+assert.doesNotMatch(unknownCell, /No Published Opportunities/);
+const zeroCell = api.clientInventoryCell({
+  readFailed: false,
+  clientOpportunityCount: 0,
+  gdiShareAvailable: false,
+  gdiShareReason: `${CLIENT_LINK_UNAVAILABLE} Active share is issued.`,
+});
+assert.match(zeroCell, /No Published Opportunities/);
+assert.match(zeroCell, /Client link unavailable in this environment/);
+assert.doesNotMatch(zeroCell, /Working/);
+
+delete process.env.GDI_SHARE_CAPABILITY_SECRET;
+process.env.DEALALITY_SHARE_SEALED_LOCAL = "0";
+const secretlessBethesda = resolveExternalClientLinks("recLuxvwwxID7U2B8", {
+  createIfMissing: false,
+});
+assert.equal(secretlessBethesda.gdi.available, true);
+assert.equal(secretlessBethesda.gdi.tokenId, "gdisht_47c25d74c79216021fb36150");
+assert.match(
+  secretlessBethesda.gdi.url || "",
+  /^https:\/\/my-operators-backend-production\.up\.railway\.app\/group-demand-intelligence-share\.html\?share=/
+);
+assert.equal(
+  assessSealedShareToken(new URL(secretlessBethesda.gdi.url).searchParams.get("share"), {
+    product: "GDI",
+    hotelId: "recLuxvwwxID7U2B8",
+    tokenId: "gdisht_47c25d74c79216021fb36150",
+  }).ok,
+  true
+);
+for (const hotelId of ["recdmo0CnhIZAwHGC", "recnPB3Q02NO8Ma1o", HOTEL]) {
+  const unresolved = resolveExternalClientLinks(hotelId, { createIfMissing: false });
+  assert.equal(unresolved.gdi.available, false);
+  assert.equal(unresolved.gdi.url, null);
+  assert.match(unresolved.gdi.reason || "", new RegExp(CLIENT_LINK_UNAVAILABLE));
+  assert.doesNotMatch(unresolved.gdi.reason || "", /gdishare\.v1/);
+}
 
 console.log(
   JSON.stringify({

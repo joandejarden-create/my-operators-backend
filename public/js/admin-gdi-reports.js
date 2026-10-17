@@ -305,8 +305,12 @@
       });
     }
 
+    var knownClientCount =
+      !row.readFailed &&
+      row.clientOpportunityCount != null &&
+      row.clientOpportunityCount !== "";
     var emptyClient =
-      !row.readFailed && Number(row.clientOpportunityCount) === 0;
+      knownClientCount && Number(row.clientOpportunityCount) === 0;
     if (gdiAvail) {
       primary.push({
         label: "Open Client Link",
@@ -329,7 +333,9 @@
         label: "Open Client Link",
         act: "open-gdi",
         disabled: true,
-        title: row.gdiShareReason || "No valid GDI client link for this hotel",
+        title:
+          row.gdiShareReason ||
+          "Client link unavailable in this environment.",
       });
     }
     if (adpAvail) {
@@ -546,10 +552,12 @@
     var notes = "";
     if (n === 0) {
       notes += '<span class="ada-cell-note">No Published Opportunities</span>';
-      notes +=
-        '<span class="ada-cell-note">' +
-        (h.gdiShareAvailable ? "Working empty share" : "Client link missing") +
-        "</span>";
+      if (!h.gdiShareAvailable) {
+        notes +=
+          '<span class="ada-cell-note" title="' +
+          T.esc(h.gdiShareReason || "Client link unavailable in this environment.") +
+          '">Client link unavailable in this environment</span>';
+      }
     }
     return '<td class="ada-cell-num">' + T.esc(n) + notes + "</td>";
   }
