@@ -1,84 +1,69 @@
 {
-  "at": "2026-10-17T09:30:26.331Z",
+  "at": "2026-10-17T09:33:30.000Z",
   "serving": {
-    "checkout": "C:\\\\Dev\\\\dealality\\\\my-operators-backend",
+    "checkout": "C:\\Dev\\dealality\\my-operators-backend",
     "branch": "main",
+    "sha": "b9a84611",
     "processPid": 2960,
     "command": "node server.js",
-    "listen": "8080",
-    "note": "Hotel config + reviewed constant added on working tree; restart applied"
+    "listen": "8080"
+  },
+  "executionOwner": {
+    "worktree": "C:\\Dev\\dealality\\worktrees\\nobu-london-portman",
+    "branch": "exec/nobu-london-portman-e2e",
+    "sha": "69f1f563",
+    "runDir": "reports/gdi-full-e2e-contract/runs/gdi_workflow_recC2kbC_2026-10-17T01-03-22-228Z_d3c49d",
+    "gdiAuth": "auth_gdi_nobu_london_portman_22usd_v1",
+    "adpAuth": "auth_adp_nobu_london_portman_14usd_v1"
   },
   "budget": {
-    "gdiAuthorizationId": "auth_gdi_nobu_london_portman_22usd_v1",
     "gdiEstimatedIncurredUsd": 4.4,
     "gdiRemainingEstimatedUsd": 17.6,
-    "gdiTaskCount": 11,
-    "gdiNote": "Eleven spent entries at .40 including planner/DMC — do not double-count",
-    "adpAuthorizationId": "auth_adp_nobu_london_portman_14usd_v1",
+    "gdiSpentEntries": 11,
+    "gdiNote": "Eleven × $0.40 including planner/DMC — not $21.60 remaining from a single task",
     "adpEstimatedIncurredUsd": 9.23,
-    "adpRemainingEstimatedUsd": 4.77
+    "adpRemainingEstimatedUsd": 4.77,
+    "billingBasis": "estimated"
   },
   "rootCause": {
-    "primaryMissingFromAdmin": "Missing config/group-demand-intelligence/hotels/recC2kbCaS48jFjFF.json in primary checkout so listGdiSelectableHotels omitted Nobu",
-    "notMissingFromAirtable": "Primary loadOpportunitiesCanonical returned 8 REVIEWED_PACKAGE_V1 records",
-    "eightRecordSource": "Airtable via loadOpportunitiesCanonical(strictCanonical) from primary AND nobu worktree; live GET /api/group-demand-intelligence/hotels/recC2kbCaS48jFjFF/opportunities count=8",
-    "pdfUnavailableReason": "No Ready and no Future Watch cards — reportStatus BLOCKED with clientOpportunityCount=8 is accurate pending/partial",
+    "primaryMissingFromAdmin": "Missing config/group-demand-intelligence/hotels/recC2kbCaS48jFjFF.json in the serving checkout, so listGdiSelectableHotels omitted Nobu",
+    "notMissingFromAirtable": "Primary loadOpportunitiesCanonical already returned 8 REVIEWED_PACKAGE_V1 records before the config fix",
+    "eightRecordSource": "Airtable via corporate-persist-apply (published:8) + live GET /api/group-demand-intelligence/hotels/recC2kbCaS48jFjFF/opportunities count=8",
+    "pdfUnavailableReason": "No Ready and no Future Watch cards — Admin reportStatus BLOCKED with clientOpportunityCount=8 is accurate pending/partial",
     "share": "No GDI client share issued yet"
   },
-  "adminRow": {
-    "schema": "GDI_ADMIN_REPORT_ROW_V1",
-    "hotelId": "recC2kbCaS48jFjFF",
-    "hotelName": "Nobu Hotel London Portman Square",
-    "displayName": "Nobu Hotel London Portman Square",
-    "market": "London, United Kingdom",
-    "available": false,
-    "reason": "No customer-ready GDI report is currently available for this hotel.",
-    "readyCount": 0,
-    "actionSetCount": 0,
-    "watchCount": 0,
-    "watchTotal": 0,
-    "watchCapped": false,
-    "clientOpportunityCount": 8,
-    "customerFacingCount": null,
-    "readFailed": false,
-    "gdiShareReason": "Client link unavailable in this environment. No active GDI client share is issued for this hotel.",
-    "gdiShareVerified": false,
-    "ready": 0,
-    "actionSet": 0,
-    "watch": 0,
-    "reportStatus": "BLOCKED",
-    "pdf": {
-      "status": "MISSING",
-      "available": false,
-      "generatedAt": null
-    },
-    "pdfReady": false,
-    "pdfStatus": "MISSING",
-    "gdiClient": {
-      "available": false
-    },
-    "adpClient": {
-      "available": false
-    },
-    "gdiShareAvailable": false,
-    "adpShareAvailable": false,
-    "lastGeneratedAt": null,
-    "archiveCount": 0
-  },
-  "apiOpportunityCount": 8,
-  "opportunityNames": [
-    "ElevenLabs",
-    "Sarasin & Partners LLP",
-    "Women in Business Network - Marylebone Group",
-    "Marylebone Association",
-    "VenueCrew",
-    "Synthesia",
-    "Venue Search London",
-    "Baker Street Quarter Partnership"
-  ],
-  "routes": {
-    "adminShell": "http://localhost:8080/app#/admin/ai-demand?tab=gdi-reports",
+  "visibilityNow": {
+    "selectable": true,
     "gdiPage": "http://localhost:8080/group-demand-intelligence.html?hotelId=recC2kbCaS48jFjFF",
-    "opportunitiesApi": "http://127.0.0.1:8080/api/group-demand-intelligence/hotels/recC2kbCaS48jFjFF/opportunities"
-  }
+    "adminShell": "http://localhost:8080/app#/admin/ai-demand?tab=gdi-reports",
+    "clientOpportunityCount": 8,
+    "customerVisible": 8,
+    "canonicalTotalAfterApply": 40,
+    "nonFacingPendingContentReview": 32,
+    "readyCount": 0,
+    "watchCount": 0
+  },
+  "candidateOutcomesAfterApply": {
+    "total": 45,
+    "written": 32,
+    "held": 5,
+    "duplicate": 8,
+    "rejected": 0,
+    "failed": 0,
+    "heldBreakdown": {
+      "weddings_social_private_events_drawer_incomplete": 4,
+      "local_meetings_catering_remaining": 1
+    },
+    "note": "Written shells are non-facing (customerVisible=false, HELD_PENDING_CONTENT_REVIEW). Client list stays at 8."
+  },
+  "pendingDelivery": [
+    "Issue production GDI client share for Nobu",
+    "Build Ready/Watch inventory or accept BLOCKED PDF until Ready exists",
+    "Generate GDI PDF once Ready/Watch exist",
+    "Content-review then face the 32 non-facing shells where justified",
+    "Resolve 4 PE wedding drawer_content_incomplete holds",
+    "Authenticated Admin row screenshot (Memberstack on shell route)",
+    "Production lean deploy already has Admin inventory; Nobu config is now on main (b9a84611) — production deploy of hotel config still pending if production catalog must list Nobu"
+  ],
+  "pr": "https://github.com/joandejarden-create/my-operators-backend/pull/135"
 }
