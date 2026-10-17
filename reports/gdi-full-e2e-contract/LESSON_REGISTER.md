@@ -78,6 +78,7 @@ Run `summarizeLessonRegister()` / see `lessonRegisterSummary` on the contract do
 | inventory_facing_vs_unique_count | MF/SD/Ren | yes | yes | yes | **no** | **no** | IMPLEMENTED_NOT_VERIFIED | yes* |
 | assessment_unknown_vs_unfinished | MF/SD/Ren | yes | yes | yes | yes | **no** | IMPLEMENTED_NOT_VERIFIED | yes* |
 | lessons_capture_required | MF/SD/Ren | yes | yes | yes | yes | n/a | IMPLEMENTED_AND_TESTED | yes |
+| share_valid_is_not_report_available | Ren/Westin/Wyndham | yes | yes | yes | yes | **no** | IMPLEMENTED_NOT_VERIFIED | yes* |
 
 \*Shared path + test exist â†’ next hotel inherits the correction automatically; current-hotel **productionVerified** may still be open until clean-main deploy / live verify.
 
@@ -90,6 +91,7 @@ Run `summarizeLessonRegister()` / see `lessonRegisterSummary` on the contract do
 | inventory_facing_vs_unique_count | inventory freeze + identity count blockers | identity_count_inconsistent | Ren `CLOSEOUT_A_K.md` Â§F; freeze JSON |
 | assessment_unknown_vs_unfinished | `assertPublicationWriteReadiness` never_executed vs provisional | readiness fixtures | Ren fit batch + readiness unit |
 | lessons_capture_required | `full-e2e-lessons-capture-v1` + stage P | contract cases 46â€“49 | coordinator `capture_lessons` |
+| share_valid_is_not_report_available | `loadPropertyProfile` published-manifest fallback | `npm run test:adp-published-profile-without-fixtures` | Production probe: share resolve 200, report 404 `property_not_found` while fixtures are omitted from the lean image |
 | dedupe_preserve_history | supersession + publication quality identity | unreconciled identity blocked | Ren SSSP `02-sssp-duplicate-resolution.json` |
 | contact_depth_with_org_fallback | queue dispositions + enrichment | org-fallback / false EXHAUSTED | Ren contact-depth continuation |
 
@@ -102,6 +104,7 @@ Run `summarizeLessonRegister()` / see `lessonRegisterSummary` on the contract do
 - **delivery_verify_fail_closed / delivery_checks_required / local_production_parity / provider_leak** â€” clean-main production deploy of verify-harden still pending â†’ productionVerified=false.  
 - **contact_depth_with_org_fallback / false_contact_exhaustion** â€” named-buyer depth still open for many Ren accounts; false EXHAUSTED without sources forbidden on shared path.  
 - **assessment_unknown_vs_unfinished** â€” provisional/unknown after assessment â‰  unfinished never_executed work.
+- **share_valid_is_not_report_available** — a verified share, a monthly-review PDF, and an HTML shell are separate from the current published report rendering. `property_not_found`, `no_monitoring_data`, and invalid-share errors stay distinct. Authenticated Admin clicks are a further check, not a substitute for the external report.
 
 ## Still not fully automated (gaps â€” not status inflation)
 

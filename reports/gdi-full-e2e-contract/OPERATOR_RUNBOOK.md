@@ -211,6 +211,18 @@ Record verification outcomes in the run directory as `full-e2e-evidence.json` (o
 
 Primary local service remains **`:8080`**. Auth-blocked browser checks must be `blocked` / `not_run` — never substituted with a weaker asset check and called passed.
 
+Client delivery has five separate proofs. Do not collapse them:
+
+| Proof | What it shows |
+|-------|----------------|
+| Share validity | Token verifies, is not revoked or expired, and is scoped to this hotel |
+| Property and report availability | The published report payload loads for that property |
+| PDF availability | The monthly-review PDF or current-report PDF file for that product opens |
+| Browser rendering | The external page shows the hotel report, not only HTTP 200 on the HTML shell |
+| Authenticated Admin actions | Open, Copy, View, and Download were clicked in a real Memberstack admin session |
+
+ADP property lookup uses the property profile fixture when it is present, and otherwise the shipped published manifest. A lean image that omits `fixtures/` must still serve `data/ai-demand-positioning/published/<propertyId>/`. That lookup does not read Group Demand Intelligence files.
+
 ---
 
 ## Regression
@@ -218,4 +230,5 @@ Primary local service remains **`:8080`**. Auth-blocked browser checks must be `
 ```bash
 npm run test:gdi-full-e2e-contract
 npm run test:gdi-customer-provider-leak-sanitize-v3
+npm run test:adp-published-profile-without-fixtures
 ```
