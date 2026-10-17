@@ -13,7 +13,10 @@ import { isGdiCustomerOpportunityReady } from "../lib/group-demand-intelligence/
 import { applyContactPackageToOpportunity } from "../lib/group-demand-intelligence/prospect-publication-eligibility-v1.js";
 import { stampLegacyVisibilityPreserved } from "../lib/group-demand-intelligence/legacy-visibility-compatibility-v1.js";
 import { REVIEWED_PROSPECT_PUBLICATION_BASIS } from "../lib/group-demand-intelligence/reviewed-prospect-publication-v1.js";
-import { getAdpPropertyIdForHpc } from "../lib/admin/report-external-client-links-v1.js";
+import {
+  getAdpPropertyIdForHpc,
+  resolveExternalClientLinks,
+} from "../lib/admin/report-external-client-links-v1.js";
 import { normalizeGdiAdminReportRow } from "../lib/admin/gdi-admin-report-row-v1.js";
 
 const root = fs.mkdtempSync(path.join(os.tmpdir(), "gdi-admin-client-"));
@@ -420,6 +423,19 @@ assert.ok(
   )
 );
 assert.ok(!fetched.some((u) => u.includes("adp_tampa_airport_marriott")));
+
+process.env.NODE_ENV = "production";
+process.env.ADP_SHARE_CAPABILITY_SECRET =
+  process.env.ADP_SHARE_CAPABILITY_SECRET ||
+  "test-secret-not-used-for-sealed-renaissance-32";
+const sealed = resolveExternalClientLinks("adp_renaissance_times_square", {
+  createIfMissing: false,
+});
+assert.equal(sealed.adp.available, true);
+assert.equal(sealed.adp.tokenId, "sht_06ba4cd8b5a5cdb865d5109a");
+assert.equal(sealed.adp.created, false);
+assert.match(sealed.adp.url || "", /^https:\/\/my-operators-backend-production\.up\.railway\.app\/owner-ai-demand-share\.html\?share=/);
+assert.doesNotMatch(sealed.adp.url || "", /localhost/);
 
 console.log(
   JSON.stringify({
