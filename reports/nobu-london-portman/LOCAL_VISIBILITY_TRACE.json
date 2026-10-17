@@ -1,0 +1,84 @@
+{
+  "at": "2026-10-17T09:30:26.331Z",
+  "serving": {
+    "checkout": "C:\\\\Dev\\\\dealality\\\\my-operators-backend",
+    "branch": "main",
+    "processPid": 2960,
+    "command": "node server.js",
+    "listen": "8080",
+    "note": "Hotel config + reviewed constant added on working tree; restart applied"
+  },
+  "budget": {
+    "gdiAuthorizationId": "auth_gdi_nobu_london_portman_22usd_v1",
+    "gdiEstimatedIncurredUsd": 4.4,
+    "gdiRemainingEstimatedUsd": 17.6,
+    "gdiTaskCount": 11,
+    "gdiNote": "Eleven spent entries at .40 including planner/DMC — do not double-count",
+    "adpAuthorizationId": "auth_adp_nobu_london_portman_14usd_v1",
+    "adpEstimatedIncurredUsd": 9.23,
+    "adpRemainingEstimatedUsd": 4.77
+  },
+  "rootCause": {
+    "primaryMissingFromAdmin": "Missing config/group-demand-intelligence/hotels/recC2kbCaS48jFjFF.json in primary checkout so listGdiSelectableHotels omitted Nobu",
+    "notMissingFromAirtable": "Primary loadOpportunitiesCanonical returned 8 REVIEWED_PACKAGE_V1 records",
+    "eightRecordSource": "Airtable via loadOpportunitiesCanonical(strictCanonical) from primary AND nobu worktree; live GET /api/group-demand-intelligence/hotels/recC2kbCaS48jFjFF/opportunities count=8",
+    "pdfUnavailableReason": "No Ready and no Future Watch cards — reportStatus BLOCKED with clientOpportunityCount=8 is accurate pending/partial",
+    "share": "No GDI client share issued yet"
+  },
+  "adminRow": {
+    "schema": "GDI_ADMIN_REPORT_ROW_V1",
+    "hotelId": "recC2kbCaS48jFjFF",
+    "hotelName": "Nobu Hotel London Portman Square",
+    "displayName": "Nobu Hotel London Portman Square",
+    "market": "London, United Kingdom",
+    "available": false,
+    "reason": "No customer-ready GDI report is currently available for this hotel.",
+    "readyCount": 0,
+    "actionSetCount": 0,
+    "watchCount": 0,
+    "watchTotal": 0,
+    "watchCapped": false,
+    "clientOpportunityCount": 8,
+    "customerFacingCount": null,
+    "readFailed": false,
+    "gdiShareReason": "Client link unavailable in this environment. No active GDI client share is issued for this hotel.",
+    "gdiShareVerified": false,
+    "ready": 0,
+    "actionSet": 0,
+    "watch": 0,
+    "reportStatus": "BLOCKED",
+    "pdf": {
+      "status": "MISSING",
+      "available": false,
+      "generatedAt": null
+    },
+    "pdfReady": false,
+    "pdfStatus": "MISSING",
+    "gdiClient": {
+      "available": false
+    },
+    "adpClient": {
+      "available": false
+    },
+    "gdiShareAvailable": false,
+    "adpShareAvailable": false,
+    "lastGeneratedAt": null,
+    "archiveCount": 0
+  },
+  "apiOpportunityCount": 8,
+  "opportunityNames": [
+    "ElevenLabs",
+    "Sarasin & Partners LLP",
+    "Women in Business Network - Marylebone Group",
+    "Marylebone Association",
+    "VenueCrew",
+    "Synthesia",
+    "Venue Search London",
+    "Baker Street Quarter Partnership"
+  ],
+  "routes": {
+    "adminShell": "http://localhost:8080/app#/admin/ai-demand?tab=gdi-reports",
+    "gdiPage": "http://localhost:8080/group-demand-intelligence.html?hotelId=recC2kbCaS48jFjFF",
+    "opportunitiesApi": "http://127.0.0.1:8080/api/group-demand-intelligence/hotels/recC2kbCaS48jFjFF/opportunities"
+  }
+}
