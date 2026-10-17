@@ -21,6 +21,24 @@
   stroke-width: 1.6;
 }
 
+/*
+ * Shared Admin tab strip layout.
+ * .bdd-section-nav is sticky (deal-workspace-shell). In the app-shell iframe
+ * that sticky strip floats over table rows. Keep tabs in document flow for the
+ * Admin workspace; full-width background preserves contrast when sticky is used
+ * on the standalone page.
+ */
+.ada-page .ada-tabs.bdd-section-nav {
+  position: static;
+  top: auto;
+  z-index: auto;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 8px 0 18px;
+  background-color: var(--neutral--800, #080f25);
+}
+
 .ada-tabs {
   margin: 8px 0 18px;
 }
@@ -35,4 +53,19 @@
   fill: none;
   stroke: currentColor;
   stroke-width: 1.6;
+}
+
+/* Narrow / zoom: keep tab labels readable without overlapping the table */
+@media (max-width: 720px), (min-resolution: 1.5dppx) {
+  .ada-page .ada-tabs.bdd-section-nav {
+    gap: 0;
+    margin-bottom: 14px;
+  }
+
+  .ada-page .ada-tabs.bdd-section-nav .section-nav-item {
+    min-width: 0;
+    max-width: none;
+    flex: 1 1 auto;
+    padding: 8px 6px;
+  }
 }

@@ -363,11 +363,23 @@ const noShare = api.buildActions({
   gdiShareAvailable: false,
   gdiShareReason: "GDI share secret not configured in this environment.",
 });
-assert.ok(!noShare.primary.some((a) => a.act === "open-gdi"));
+// Open/Copy stay visible in Actions (disabled) so link status is not confused
+// with inventory/PDF; the reason lives on the control title.
+assert.ok(
+  noShare.primary.some(
+    (a) => a.act === "open-gdi" && a.disabled === true
+  )
+);
+assert.ok(
+  noShare.primary.some(
+    (a) => a.act === "copy-gdi" && a.disabled === true
+  )
+);
 assert.equal(
-  noShare.more.find((a) => a.act === "open-gdi").title,
+  noShare.primary.find((a) => a.act === "open-gdi").title,
   "GDI share secret not configured in this environment."
 );
+assert.ok(!noShare.more.some((a) => a.act === "open-gdi"));
 
 assert.match(gdiJs, /encodeURIComponent\(hotelId\)/);
 assert.match(gdiJs, /\/report-pdf/);
@@ -581,15 +593,16 @@ const unknownCell = api.clientInventoryCell({
   reason: "canonical_opportunity_read_failed",
 });
 assert.match(unknownCell, /Unavailable/);
-assert.doesNotMatch(unknownCell, /No Published Opportunities/);
+assert.doesNotMatch(unknownCell, /No published opportunities/i);
 const zeroCell = api.clientInventoryCell({
   readFailed: false,
   clientOpportunityCount: 0,
   gdiShareAvailable: false,
   gdiShareReason: `${CLIENT_LINK_UNAVAILABLE} Active share is issued.`,
 });
-assert.match(zeroCell, /No Published Opportunities/);
-assert.match(zeroCell, /Client link unavailable in this environment/);
+assert.match(zeroCell, /No published opportunities/);
+// Link unavailability belongs on Actions (tooltip), not repeated in the count cell.
+assert.doesNotMatch(zeroCell, /Client link unavailable in this environment/);
 assert.doesNotMatch(zeroCell, /Working/);
 
 delete process.env.GDI_SHARE_CAPABILITY_SECRET;
