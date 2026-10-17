@@ -290,8 +290,17 @@
   font-size: 11px;
   line-height: 1.3;
   color: #9aa6c8;
-  white-space: normal;
-  max-width: 140px;
+  white-space: nowrap;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Disabled Open/Copy stay visible; detail is on title/tooltip only */
+.ada-action-icon:disabled,
+.ada-action-icon[aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 /* My Deals–style icon controls — readable hit targets, not crowded text chips */

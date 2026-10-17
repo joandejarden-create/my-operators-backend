@@ -311,13 +311,15 @@
       row.clientOpportunityCount !== "";
     var emptyClient =
       knownClientCount && Number(row.clientOpportunityCount) === 0;
+    var linkUnavailableReason =
+      row.gdiShareReason || "Client link unavailable in this environment.";
     if (gdiAvail) {
       primary.push({
         label: "Open Client Link",
         act: "open-gdi",
         icon: "external",
         title: emptyClient
-          ? "Open client link. No published opportunities."
+          ? "Open empty client preview. No published opportunities on this share."
           : "Open client link",
       });
       primary.push({
@@ -325,17 +327,25 @@
         act: "copy-gdi",
         icon: "copy",
         title: emptyClient
-          ? "Copy client link. No published opportunities."
+          ? "Copy empty client preview link. No published opportunities on this share."
           : "Copy client link",
       });
     } else {
-      more.push({
+      // Keep Open/Copy visible in the Actions column (disabled) so link status
+      // is not confused with inventory/PDF status. Detail lives on the control.
+      primary.push({
         label: "Open Client Link",
         act: "open-gdi",
+        icon: "external",
         disabled: true,
-        title:
-          row.gdiShareReason ||
-          "Client link unavailable in this environment.",
+        title: linkUnavailableReason,
+      });
+      primary.push({
+        label: "Copy Client Link",
+        act: "copy-gdi",
+        icon: "copy",
+        disabled: true,
+        title: linkUnavailableReason,
       });
     }
     if (adpAvail) {
@@ -549,17 +559,21 @@
   function clientInventoryCell(h) {
     if (h.readFailed || h.clientOpportunityCount == null) return unavailableCell(h.reason);
     var n = Number(h.clientOpportunityCount);
-    var notes = "";
+    // Keep the count cell numeric/sortable. Zero inventory gets one compact
+    // label. Link availability belongs on Actions (tooltip), not repeated here.
     if (n === 0) {
-      notes += '<span class="ada-cell-note">No Published Opportunities</span>';
-      if (!h.gdiShareAvailable) {
-        notes +=
-          '<span class="ada-cell-note" title="' +
-          T.esc(h.gdiShareReason || "Client link unavailable in this environment.") +
-          '">Client link unavailable in this environment</span>';
-      }
+      return (
+        '<td class="ada-cell-num" data-sort-value="0" title="Verified empty client inventory">' +
+        '0<span class="ada-cell-note">No published opportunities</span></td>'
+      );
     }
-    return '<td class="ada-cell-num">' + T.esc(n) + notes + "</td>";
+    return (
+      '<td class="ada-cell-num" data-sort-value="' +
+      T.esc(String(n)) +
+      '">' +
+      T.esc(n) +
+      "</td>"
+    );
   }
 
   function metricCell(h, value) {
