@@ -6,9 +6,10 @@
 |--------|---------|--------|
 | Hotel | Display name (primary) | `listGdiSelectableHotels` + report data hotel name |
 | Location | Market / city | Report data `hotel.market` or hotel config location |
-| Ready | Customer-ready prospect count in **current GDI report data** executive summary | `getGdiPdfReportData` → `executiveSummary.customerReadyCount` |
+| Client Opportunities | External client-list count, same visibility policy as the share list, before presentation sanitization | `filterCustomerFacingOpportunities(filterSalespersonView(canonical opportunities))` |
+| Ready | Strict customer-ready count in **current GDI report data**. Not the client-list count | `getGdiPdfReportData` → `executiveSummary.customerReadyCount` |
 | Action Set | Action-set recommendation count in current GDI report data | `executiveSummary.actionSetCount` |
-| Watch | Future-watch count in current GDI report data | `executiveSummary.futureWatchCount` |
+| Watch | Future-watch cards included in the current report. When the builder caps the sample, the cell is labeled `sample of {total}` | sample: `executiveSummary.futureWatchCount`; total: `executiveSummary.futureWatchTotal` |
 | Report Status | READY / WATCH ONLY / NO READY OPPORTUNITIES / NEEDS BUILD / BLOCKED | `deriveGdiReportStatus(summary)` |
 | PDF | READY / MISSING / GENERATING / FAILED | PDF store `hasGdiReportPdf` + in-flight UI state |
 | Last Generated | PDF artifact generation time (not research date) | PDF store `meta.generatedAt` |

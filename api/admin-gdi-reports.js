@@ -38,6 +38,9 @@ export async function getAdminGdiReportCatalog(req, res) {
         watch: 0,
         actionSet: 0,
         customerFacing: 0,
+        clientOpportunityCount: null,
+        watchTotal: null,
+        watchCapped: false,
         hotelName: h.displayName || hotelId,
         market: h.locationLine || h.city || h.market || null,
       };
@@ -55,6 +58,9 @@ export async function getAdminGdiReportCatalog(req, res) {
             watch: 0,
             actionSet: 0,
             customerFacing: null,
+            clientOpportunityCount: null,
+            watchTotal: null,
+            watchCapped: false,
             hotelName: data.hotelName || h.displayName || hotelId,
             market: h.locationLine || h.city || h.market || null,
           };
@@ -66,6 +72,16 @@ export async function getAdminGdiReportCatalog(req, res) {
             watch: data.executiveSummary?.futureWatchCount ?? 0,
             actionSet: data.executiveSummary?.actionSetCount ?? 0,
             customerFacing: facing ?? 0,
+            clientOpportunityCount:
+              data.executiveSummary?.clientOpportunityCount ??
+              data.clientOpportunityCount ??
+              0,
+            watchTotal:
+              data.executiveSummary?.futureWatchTotal ??
+              data.futureWatchTotal ??
+              data.executiveSummary?.futureWatchCount ??
+              0,
+            watchCapped: Boolean(data.executiveSummary?.watchSampleCapped),
             hotelName: data.hotel?.name || h.displayName || hotelId,
             market: data.hotel?.market || h.locationLine || h.city || null,
           };
@@ -78,6 +94,9 @@ export async function getAdminGdiReportCatalog(req, res) {
             watch: data?.futureWatchCount ?? 0,
             actionSet: 0,
             customerFacing: facing ?? 0,
+            clientOpportunityCount: data?.clientOpportunityCount ?? 0,
+            watchTotal: data?.futureWatchTotal ?? 0,
+            watchCapped: false,
             hotelName: data?.hotelName || h.displayName || hotelId,
             market: h.locationLine || h.city || h.market || null,
           };
@@ -91,6 +110,9 @@ export async function getAdminGdiReportCatalog(req, res) {
           watch: 0,
           actionSet: 0,
           customerFacing: null,
+          clientOpportunityCount: null,
+          watchTotal: null,
+          watchCapped: false,
           hotelName: h.displayName || hotelId,
           market: h.locationLine || h.city || h.market || null,
         };
@@ -122,10 +144,17 @@ export async function getAdminGdiReportCatalog(req, res) {
           available: !!summary.available,
           readFailed: !!summary.readFailed,
           reason: summary.reason || null,
-          ready: summary.ready || 0,
-          actionSet: summary.actionSet || 0,
-          watch: summary.watch || 0,
+          ready: summary.readFailed ? null : summary.ready || 0,
+          actionSet: summary.readFailed ? null : summary.actionSet || 0,
+          watch: summary.readFailed ? null : summary.watch || 0,
+          watchTotal: summary.readFailed ? null : summary.watchTotal,
+          watchCapped: summary.readFailed ? false : !!summary.watchCapped,
+          clientOpportunityCount: summary.readFailed
+            ? null
+            : summary.clientOpportunityCount,
           customerFacingCount: summary.customerFacing,
+          gdiShareReason: shareFlags.gdiShareReason || null,
+          gdiShareVerified: shareFlags.gdiShareVerified === true,
           reportStatus: deriveGdiReportStatus(summary),
           pdfReady,
           pdfStatus: pdfReady ? "READY" : "MISSING",

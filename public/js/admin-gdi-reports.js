@@ -1,9 +1,9 @@
 /**
  * AI Demand Admin — GDI Reports tab.
  * Shared AI Admin table pattern (sort / filter / select / compact actions).
- * Metrics: Ready / Action Set / Watch = current GDI PDF report data executive
- * summary (customer-ready / action-set / future-watch), not a separate live
- * list inventory. Labels stay distinct from report/PDF generation dates.
+ * Client Opportunities = external client-list count (before sanitization).
+ * Ready / Action Set = strict report metrics. Watch may be a capped report sample.
+ * Open/Copy Client Link follow a valid share and do not require Ready > 0 or a PDF.
  */
 (function () {
   "use strict";
@@ -29,6 +29,7 @@
     sortTypes: {
       displayName: "string",
       market: "string",
+      clientOpportunityCount: "number",
       readyCount: "number",
       actionSetCount: "number",
       watchCount: "number",
@@ -76,22 +77,29 @@
   }
 
   function copyText(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      return navigator.clipboard.writeText(text);
+    function legacyCopy() {
+      return new Promise(function (resolve, reject) {
+        try {
+          var ta = document.createElement("textarea");
+          ta.value = text;
+          ta.setAttribute("readonly", "readonly");
+          ta.style.position = "fixed";
+          ta.style.left = "-9999px";
+          document.body.appendChild(ta);
+          ta.select();
+          var ok = document.execCommand("copy");
+          ta.remove();
+          if (!ok) reject(new Error("copy_failed"));
+          else resolve();
+        } catch (e) {
+          reject(e);
+        }
+      });
     }
-    return new Promise(function (resolve, reject) {
-      try {
-        var ta = document.createElement("textarea");
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand("copy");
-        ta.remove();
-        resolve();
-      } catch (e) {
-        reject(e);
-      }
-    });
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).catch(legacyCopy);
+    }
+    return legacyCopy();
   }
 
   function effectivePdfStatus(row) {
@@ -102,9 +110,26 @@
 
   function normalizeCatalogRow(h) {
     if (!h || typeof h !== "object") return h;
-    var ready = Number(h.readyCount != null ? h.readyCount : h.ready) || 0;
-    var actionSet = Number(h.actionSetCount != null ? h.actionSetCount : h.actionSet) || 0;
-    var watch = Number(h.watchCount != null ? h.watchCount : h.watch) || 0;
+    var readFailed = !!h.readFailed;
+    var ready = readFailed
+      ? null
+      : Number(h.readyCount != null ? h.readyCount : h.ready) || 0;
+    var actionSet = readFailed
+      ? null
+      : Number(h.actionSetCount != null ? h.actionSetCount : h.actionSet) || 0;
+    var watch = readFailed
+      ? null
+      : Number(h.watchCount != null ? h.watchCount : h.watch) || 0;
+    var watchTotal = readFailed
+      ? null
+      : h.watchTotal == null
+        ? watch
+        : Number(h.watchTotal) || 0;
+    var clientOpportunityCount = readFailed
+      ? null
+      : h.clientOpportunityCount == null
+        ? null
+        : Number(h.clientOpportunityCount) || 0;
     var pdfReady = !!(
       (h.pdf && h.pdf.available) ||
       h.pdfReady ||
@@ -128,12 +153,17 @@
     var lastGeneratedAt =
       h.lastGeneratedAt || (h.pdf && h.pdf.generatedAt) || null;
     return Object.assign({}, h, {
+      readFailed: readFailed,
       ready: ready,
       actionSet: actionSet,
       watch: watch,
       readyCount: ready,
       actionSetCount: actionSet,
       watchCount: watch,
+      watchTotal: watchTotal,
+      watchCapped: !readFailed && watchTotal != null && watch != null && watchTotal > watch,
+      clientOpportunityCount: clientOpportunityCount,
+      gdiShareReason: h.gdiShareReason || (h.gdiClient && h.gdiClient.reason) || null,
       reportStatus: reportStatus,
       pdfReady: pdfReady,
       pdfStatus: h.pdfStatus || (h.pdf && h.pdf.status) || (pdfReady ? "READY" : "MISSING"),
@@ -275,15 +305,37 @@
       });
     }
 
+    var knownClientCount =
+      !row.readFailed &&
+      row.clientOpportunityCount != null &&
+      row.clientOpportunityCount !== "";
+    var emptyClient =
+      knownClientCount && Number(row.clientOpportunityCount) === 0;
     if (gdiAvail) {
-      primary.push({ label: "Open GDI", act: "open-gdi", title: "Open GDI client view" });
-      more.push({ label: "Copy GDI URL", act: "copy-gdi" });
+      primary.push({
+        label: "Open Client Link",
+        act: "open-gdi",
+        icon: "external",
+        title: emptyClient
+          ? "Open client link. No published opportunities."
+          : "Open client link",
+      });
+      primary.push({
+        label: "Copy Client Link",
+        act: "copy-gdi",
+        icon: "copy",
+        title: emptyClient
+          ? "Copy client link. No published opportunities."
+          : "Copy client link",
+      });
     } else {
       more.push({
-        label: "Open GDI",
+        label: "Open Client Link",
         act: "open-gdi",
         disabled: true,
-        title: "No authorized GDI share link for this hotel",
+        title:
+          row.gdiShareReason ||
+          "Client link unavailable in this environment.",
       });
     }
     if (adpAvail) {
@@ -486,6 +538,57 @@
     );
   }
 
+  function unavailableCell(reason) {
+    return (
+      '<td class="ada-cell-num" title="' +
+      T.esc(reason || "Canonical opportunity read failed. Retry after the source is available.") +
+      '">Unavailable</td>'
+    );
+  }
+
+  function clientInventoryCell(h) {
+    if (h.readFailed || h.clientOpportunityCount == null) return unavailableCell(h.reason);
+    var n = Number(h.clientOpportunityCount);
+    var notes = "";
+    if (n === 0) {
+      notes += '<span class="ada-cell-note">No Published Opportunities</span>';
+      if (!h.gdiShareAvailable) {
+        notes +=
+          '<span class="ada-cell-note" title="' +
+          T.esc(h.gdiShareReason || "Client link unavailable in this environment.") +
+          '">Client link unavailable in this environment</span>';
+      }
+    }
+    return '<td class="ada-cell-num">' + T.esc(n) + notes + "</td>";
+  }
+
+  function metricCell(h, value) {
+    if (h.readFailed || value == null) return unavailableCell(h.reason);
+    return T.numCell(value);
+  }
+
+  function watchCell(h) {
+    if (h.readFailed || h.watchCount == null) return unavailableCell(h.reason);
+    if (h.watchCapped && h.watchTotal != null) {
+      return (
+        '<td class="ada-cell-num" title="' +
+        T.esc(
+          "Report sample " +
+            h.watchCount +
+            " of " +
+            h.watchTotal +
+            ". Not the full Watch inventory."
+        ) +
+        '">' +
+        T.esc(h.watchCount) +
+        '<span class="ada-cell-note">sample of ' +
+        T.esc(h.watchTotal) +
+        "</span></td>"
+      );
+    }
+    return T.numCell(h.watchCount);
+  }
+
   function renderTable() {
     var body = $("gdiRptTableBody");
     var thead = $("gdiRptTableHead");
@@ -533,9 +636,10 @@
           T.checkboxCell(h.hotelId, ctrl.selection.has(h.hotelId)) +
           T.hotelLinkCell(name, null, h.hotelId) +
           T.textCell(h.market || "—", "ada-cell-loc") +
-          T.numCell(h.available ? h.readyCount : null) +
-          T.numCell(h.available ? h.actionSetCount : null) +
-          T.numCell(h.available ? h.watchCount : null) +
+          clientInventoryCell(h) +
+          metricCell(h, h.readyCount) +
+          metricCell(h, h.actionSetCount) +
+          watchCell(h) +
           "<td>" +
           T.statusBadge(reportStatusKind(h.reportStatus), reportStatusLabel(h.reportStatus)) +
           "</td>" +
@@ -817,6 +921,11 @@
       if (ev.detail && ev.detail.tab === "gdi-reports") bootLoad();
     });
     if (window.__ADP_ADMIN_WORKSPACE_AUTH__) bootLoad();
+  window.DealalityGdiAdminReports = {
+    buildActions: buildActions,
+    clientInventoryCell: clientInventoryCell,
+    watchCell: watchCell,
+  };
   }
 
   boot();
