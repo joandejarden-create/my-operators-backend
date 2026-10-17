@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="/css/deal-workspace-shell.css" />
   <link rel="stylesheet" href="/css/admin-ai-demand-reviews.css?v=adp-admin-workspace-v1" />
   <link rel="stylesheet" href="/css/admin-ai-demand-admin.css?v=adp-admin-workspace-v1" />
-  <link rel="stylesheet" href="/css/admin-ai-demand-table.css?v=ada-table-parity-v1" />
+  <link rel="stylesheet" href="/css/admin-ai-demand-table.css?v=ada-client-inventory-v1" />
   <script>
     (function () {
       if (window.location.search.indexOf("embed=1") !== -1 || window !== window.top) {
@@ -224,12 +224,15 @@
     <section id="adaPanelGdiReports" class="ada-panel" data-panel="gdi-reports" role="tabpanel" hidden>
       <div class="adr-counts" id="gdiRptCounts" aria-live="polite"></div>
       <details class="ada-metric-disclosure">
-        <summary>About Ready / Action Set / Watch metrics</summary>
+        <summary>About Client Opportunities / Ready / Action Set / Watch</summary>
         <p>
-          These columns count opportunities from the current GDI report executive summary
-          (customer-ready, action-set, future-watch) when the catalog is built — not a separate
-          live inventory and not PDF archives. <strong>Last Generated</strong> is the PDF store
-          generation time.
+          <strong>Client Opportunities</strong> is the external client-list count, using the same
+          visibility policy as the client page, counted before presentation sanitization.
+          <strong>Ready</strong> and <strong>Action Set</strong> stay the strict current-report
+          metrics. <strong>Watch</strong> is the future-watch sample in the current report; when
+          the builder caps that sample, the cell says so and is not the full Watch inventory.
+          <strong>Last Generated</strong> is the PDF store generation time. A PDF or a client link
+          does not by itself mean opportunities are published.
         </p>
       </details>
       <div class="ada-toolbar">
@@ -281,9 +284,10 @@
               </th>
               <th data-sort="displayName"><span class="ada-th-label">Hotel</span></th>
               <th data-sort="market"><span class="ada-th-label">Location</span></th>
-              <th data-sort="readyCount" title="Customer-ready prospects in current GDI report data"><span class="ada-th-label">Ready</span></th>
-              <th data-sort="actionSetCount" title="Action-set recommendations in current GDI report data"><span class="ada-th-label">Action Set</span></th>
-              <th data-sort="watchCount" title="Future-watch prospects in current GDI report data"><span class="ada-th-label">Watch</span></th>
+              <th data-sort="clientOpportunityCount" title="Opportunities on the external client list. Same visibility policy as the client page, counted before presentation sanitization. This is not the Ready count."><span class="ada-th-label">Client Opportunities</span></th>
+              <th data-sort="readyCount" title="Strict customer-ready prospects in the current GDI report. Not the client-list count."><span class="ada-th-label">Ready</span></th>
+              <th data-sort="actionSetCount" title="Action-set recommendations in the current GDI report."><span class="ada-th-label">Action Set</span></th>
+              <th data-sort="watchCount" title="Future-watch cards in the current GDI report. A capped report sample is labeled and is not the full Watch inventory."><span class="ada-th-label">Watch</span></th>
               <th data-sort="reportStatus"><span class="ada-th-label">Report Status</span></th>
               <th data-sort="pdfStatus"><span class="ada-th-label">PDF</span></th>
               <th data-sort="lastGeneratedAt" title="PDF store generation timestamp"><span class="ada-th-label">Last Generated</span></th>
@@ -396,7 +400,7 @@
   <script src="/js/admin-ai-demand-admin.js?v=ada-table-parity-v1"></script>
   <script src="/js/admin-ai-demand-reviews.js?v=ada-table-parity-v1"></script>
   <script src="/js/admin-adp-action-plan.js?v=ada-table-parity-v1"></script>
-  <script src="/js/admin-gdi-reports.js?v=ada-table-parity-v1"></script>
+  <script src="/js/admin-gdi-reports.js?v=ada-client-inventory-v1"></script>
   <script src="/js/admin-report-archive.js?v=ada-table-parity-v1"></script>
   <script src="/embed-chrome.js" defer></script>
 </body>
