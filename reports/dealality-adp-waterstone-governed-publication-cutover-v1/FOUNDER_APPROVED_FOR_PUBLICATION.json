@@ -1,0 +1,60 @@
+{
+  "contract": "ADP_WATERSTONE_GOVERNED_PUBLICATION_CUTOVER_V1",
+  "authorizationType": "FOUNDER_APPROVED_FOR_PUBLICATION",
+  "status": "ACTIVE",
+  "active": true,
+  "propertyId": "adp_waterstone_boca_raton",
+  "hotelName": "Waterstone Resort & Marina",
+  "stagedVersionId": "staged_mw14o9lq_bb8bd9570c",
+  "methodologyId": "ADP_AI_CONSIDERATION_INDEPENDENT_UNPROMPTED_V1",
+  "periodId": null,
+  "stagedFileSha256": "9fe5fb1929ce3f745ed1c50f74285fba0d1015efa061eb6caa855ae512ca33c6",
+  "pdfSha256": "c8b8d6df17810fd47f2f8f25001cf18af79a82af603c782591553d14ab776ecf",
+  "expectedKpis": {
+    "considerationRate": 53.5,
+    "scenarioPresenceRate": 76.6,
+    "realityCoverage": 24.1,
+    "realityGap": 69,
+    "competitiveRank": 2,
+    "providerDenominator": 64,
+    "comparableObservations": 256,
+    "subjectMentions": 137,
+    "presenceScenarios": 49,
+    "providerMentions": {
+      "gemini": 44,
+      "perplexity": 33,
+      "claude": 32,
+      "openai": 28
+    }
+  },
+  "externalShare": {
+    "shareId": "sht_e0b96090b0246151ec2db44a",
+    "reportScope": "current_published",
+    "rotateToken": false,
+    "createSecondShare": false,
+    "keepDistributionHoldUntilPostPubCert": true
+  },
+  "cutoverRules": {
+    "publishOnlyExactStagedSuccessor": true,
+    "preservePriorPublished": true,
+    "doNotModifyUnrelatedHotels": true,
+    "preferPublishInPlace": true
+  },
+  "supersedes": {
+    "priorCandidateStagedVersionId": "staged_mw134onw_939c6994bf",
+    "priorMixedGrainCandidate": "staged_mw0jzj3n_90c1663c9f",
+    "certifiedReference": "staged_mw14o9lq_bb8bd9570c",
+    "reason": "Founder authorized publication of certified grain-corrected successor staged_mw14o9lq_bb8bd9570c. Prior auth candidate staged_mw134onw_939c6994bf is void."
+  },
+  "prePublicationChecksPass": true,
+  "preparedAt": "2026-11-03T20:35:40.578Z",
+  "founderSignature": "Founder",
+  "founderSignedAt": "2026-11-03T21:01:00.000Z",
+  "explicitPhrase": "FOUNDER_APPROVED_FOR_PUBLICATION staged_mw14o9lq_bb8bd9570c",
+  "requiredPhrase": "FOUNDER_APPROVED_FOR_PUBLICATION staged_mw14o9lq_bb8bd9570c",
+  "authorizationSource": "Founder chat authorization 2026-11-03 — exclusive to Waterstone certified successor and existing external client report",
+  "activationInstructions": [
+    "ACTIVE — founder authorization recorded",
+    "Run: node scripts/dealality-adp-waterstone-governed-publication-cutover-v1.mjs --authorize-publish"
+  ]
+}
