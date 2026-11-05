@@ -1,0 +1,30 @@
+{
+  "ciStatus": "FAILURE",
+  "ciDetailsUrl": "https://github.com/joandejarden-create/my-operators-backend/actions/runs/42056226014/job/127345225926",
+  "findings": [
+    {
+      "ruleId": "generic-api-key",
+      "files": [
+        "scripts/dealality-adp-waterstone-governed-publication-cutover-v1.mjs",
+        "reports/dealality-adp-waterstone-governed-publication-cutover-v1/PRE_PUBLICATION_CHECKS.json"
+      ],
+      "fieldNames": [
+        "PRIOR_AUTH_CANDIDATE",
+        "priorAuthCandidateSuperseded"
+      ],
+      "kind": "staged_publication_artifact_id",
+      "prefix": "staged_",
+      "genuineLiveCredential": false,
+      "rotationRequired": false,
+      "rationale": "Value is a superseded ADP staged publication artifact id (staged_*), not an API key, HMAC secret, or share bearer. Same class as sht_/gdisht_ public identifiers already allowlisted.",
+      "remediation": "Scoped .gitleaks.toml allowlist for staged_* publication artifact IDs (protections retained). Commit + push to PR #136 and re-run Secret scan."
+    }
+  ],
+  "allowlistPatchedLocally": true,
+  "localScan": {
+    "localBinary": false,
+    "classification": "staged_publication_artifact_id_false_positive_generic_api_key",
+    "note": "No local gitleaks binary; remediation allowlist added to .gitleaks.toml for staged_* publication artifact IDs. CI re-run required after commit/push."
+  },
+  "mergeBlockedUntilCiGreen": true
+}

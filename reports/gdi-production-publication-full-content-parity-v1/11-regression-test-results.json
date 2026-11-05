@@ -1,0 +1,54 @@
+{
+  "contractGate": {
+    "script": "scripts/test-gdi-publication-full-content-contract-v1.mjs",
+    "ok": true,
+    "tests": [
+      "lean_gate_reject",
+      "enriched_gate_accept",
+      "publish",
+      "lean_publish_blocked",
+      "registry_reload",
+      "incremental_update",
+      "share_sanitize_retention"
+    ]
+  },
+  "sevenIdParityRebuild": {
+    "script": "scripts/gdi-production-publication-full-content-parity-v1.mjs",
+    "ok": true,
+    "publishedVersions": 2,
+    "classCounts": { "SALES_READY": 1, "ACCOUNT_DEVELOPMENT": 6 }
+  },
+  "registryOnlyShareVerify": {
+    "script": "scripts/gdi-verify-enriched-registry-share-local-v1.mjs",
+    "ok": true,
+    "mode": "registry_only_no_local_shadow",
+    "count": 7
+  },
+  "localBrowserShare": {
+    "urlBase": "http://127.0.0.1:8089/group-demand-intelligence-share.html",
+    "tiles": 7,
+    "hangersDrawerSectionsPresent": [
+      "opportunity_overview",
+      "what_is_happening",
+      "potential_business",
+      "why_this_hotel",
+      "why_act_now",
+      "facts_and_uncertainties",
+      "who_to_contact",
+      "recommended_next_step",
+      "supporting_evidence"
+    ],
+    "screenshots": [
+      "screenshots/01-local-share-seven-tiles.png",
+      "screenshots/02-local-share-hangers-drawer.png"
+    ]
+  },
+  "productionContrast": {
+    "stillLean": true,
+    "hangersWhatIsHappening": "Hangers Weddings & Events",
+    "hangersPotential": "—",
+    "hangersWhyActNow": "—",
+    "hangersFacts": "empty / no separately listed facts",
+    "screenshot": "screenshots/03-production-hangers-drawer-still-lean.png"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "status": "FOUNDER_GO_REQUIRED_FOR_DEPLOYMENT",
+  "customerReady": false,
+  "hotelId": "recKRJjcPnb4tVDDS",
+  "hotelName": "Spice Island Beach Resort",
+  "rootCause": "Lean durable snapshots + missing local-shadow on production + share sanitize dropping eventsDrawerModel",
+  "localRepair": {
+    "stagingSnapshotsEnriched": true,
+    "publicationGate": true,
+    "classCounts": {
+      "SALES_READY": 1,
+      "ACCOUNT_DEVELOPMENT": 6
+    },
+    "preservedIds": [
+      "gdi_s4912_ba7b1cb8a3ab",
+      "gdi_s4912_b956aa67a4a2",
+      "gdi_s4912_b6d9b1929c05",
+      "gdi_s4912_cb2d71ab1b15",
+      "gdi_s4912_cc2a8da6ca6e",
+      "gdi_s4912_03deda917778",
+      "gdi_s4912_3cafec77a21f"
+    ]
+  },
+  "requiredBeforeDeploy": [
+    "Merge or pin PR #136 so GitHub auto-deploy cannot wipe registry-capable build",
+    "Deploy code with full-content snapshot contract + share sanitize drawer retention",
+    "Update production durable registry snapshots for the same 7 IDs (volume write / updatePublishedOpportunity) without classification changes",
+    "Re-verify logged-out share drawers field-by-field"
+  ],
+  "doNotClaimCustomerReady": true
+}
