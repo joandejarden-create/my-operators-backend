@@ -6,36 +6,251 @@
 (function (root) {
   "use strict";
 
+  // Labels must match Priority / Action Timing filter legends exactly.
   var PRIORITY_DISPLAY = {
-    HIGH_PRIORITY: { label: "HIGH", pillClass: "gdi-pill gdi-pill-high" },
-    MEDIUM_PRIORITY: { label: "MEDIUM", pillClass: "gdi-pill gdi-pill-med" },
-    // Distinct from Action Window "WATCH" — commercial browse priority only
-    WATCHLIST: { label: "Watchlist", pillClass: "gdi-pill gdi-pill-watch" },
+    HIGH_PRIORITY: { label: "High", pillClass: "gdi-pill gdi-pill-high" },
+    MEDIUM_PRIORITY: { label: "Medium", pillClass: "gdi-pill gdi-pill-med" },
+    // Distinct from Action Timing "Future Watch" — commercial browse priority only
+    WATCHLIST: { label: "Watch", pillClass: "gdi-pill gdi-pill-watch" },
+    UNCLASSIFIED: { label: "Unclassified", pillClass: "gdi-pill gdi-pill-watch" },
+  };
+
+  /**
+   * Universal Sales Action Pill V1 — middle tile pill (exactly eight values).
+   * Commercial Stage remains internal; never customer-facing middle pill.
+   */
+  var SALES_ACTION_PILL = {
+    BUILD_ACCOUNT: {
+      label: "Build Account",
+      pillClass: "gdi-pill gdi-pill-sales-build-account",
+    },
+    CONTACT_BUYER: {
+      label: "Contact Buyer",
+      pillClass: "gdi-pill gdi-pill-sales-contact-buyer",
+    },
+    WIN_ROOM_BLOCK: {
+      label: "Win Room Block",
+      pillClass: "gdi-pill gdi-pill-sales-win-room-block",
+    },
+    BUILD_VENUE_PARTNERSHIP: {
+      label: "Build Venue Partnership",
+      pillClass: "gdi-pill gdi-pill-sales-build-venue",
+    },
+    ENGAGE_PLANNER: {
+      label: "Engage Planner",
+      pillClass: "gdi-pill gdi-pill-sales-engage-planner",
+    },
+    PURSUE_CATERING: {
+      label: "Pursue Catering",
+      pillClass: "gdi-pill gdi-pill-sales-pursue-catering",
+    },
+    QUALIFY_OPPORTUNITY: {
+      label: "Qualify Opportunity",
+      pillClass: "gdi-pill gdi-pill-sales-qualify",
+    },
+    MONITOR: {
+      label: "Monitor",
+      pillClass: "gdi-pill gdi-pill-sales-monitor",
+    },
+  };
+
+  var CANONICAL_SALES_ACTION_KEYS = {
+    BUILD_ACCOUNT: 1,
+    CONTACT_BUYER: 1,
+    WIN_ROOM_BLOCK: 1,
+    BUILD_VENUE_PARTNERSHIP: 1,
+    ENGAGE_PLANNER: 1,
+    PURSUE_CATERING: 1,
+    QUALIFY_OPPORTUNITY: 1,
+    MONITOR: 1,
+  };
+
+  /**
+   * Research-to-Drawer V2 — expandable Layer 2 under Sales Brief sections.
+   * Expects opportunity.researchToDrawerV2 from merge overlay / API DTO.
+   */
+  function researchDetailExpandableHtml(opp, detailKey, summaryLabel, helpers) {
+    var h = helpers || {};
+    var escFn = typeof h.esc === "function" ? h.esc : function (s) { return String(s || ""); };
+    var proseFn =
+      typeof h.prose === "function"
+        ? h.prose
+        : function (v) {
+            return v == null ? "" : String(v).replace(/\s+/g, " ").trim();
+          };
+    var cleanListFn =
+      typeof h.cleanList === "function"
+        ? h.cleanList
+        : function (items) {
+            return Array.isArray(items)
+              ? items.map(proseFn).filter(Boolean)
+              : [];
+          };
+    var listHtmlFn =
+      typeof h.listHtml === "function"
+        ? h.listHtml
+        : function (items) {
+            if (!items || !items.length) return "";
+            return (
+              "<ul>" +
+              items
+                .map(function (t) {
+                  return "<li>" + escFn(t) + "</li>";
+                })
+                .join("") +
+              "</ul>"
+            );
+          };
+    var v2 = opp && opp.researchToDrawerV2;
+    var detail = v2 && v2.researchDetail ? v2.researchDetail : null;
+    if (!detail) return "";
+    var body = proseFn(detail[detailKey]);
+    var extraLists = [];
+    if (detailKey === "potentialBusinessForThisHotel") {
+      if (cleanListFn(detail.demandAssumptions).length) {
+        extraLists.push(
+          "<p><strong>Assumptions / gaps</strong></p>" +
+            listHtmlFn(cleanListFn(detail.demandAssumptions))
+        );
+      }
+      if (proseFn(detail.programmeDetails)) {
+        extraLists.push(
+          "<p><strong>Programme detail</strong></p><p>" +
+            escFn(proseFn(detail.programmeDetails)) +
+            "</p>"
+        );
+      }
+    }
+    if (detailKey === "whyThisHotel" && detail.competitiveIntelligence) {
+      var ci = detail.competitiveIntelligence;
+      var ciBits = [];
+      if (proseFn(ci.sourcingLabel)) {
+        ciBits.push(
+          "<li><strong>Sourcing:</strong> " + escFn(proseFn(ci.sourcingLabel)) + "</li>"
+        );
+      }
+      if (proseFn(ci.incumbentVenue)) {
+        ciBits.push(
+          "<li><strong>Incumbent / venue:</strong> " +
+            escFn(proseFn(ci.incumbentVenue)) +
+            "</li>"
+        );
+      }
+      if (cleanListFn(ci.historicalVenues).length) {
+        ciBits.push(
+          "<li><strong>Historical venues:</strong> " +
+            escFn(cleanListFn(ci.historicalVenues).join("; ")) +
+            "</li>"
+        );
+      }
+      if (proseFn(ci.note)) {
+        ciBits.push("<li>" + escFn(proseFn(ci.note)) + "</li>");
+      }
+      if (ciBits.length) {
+        extraLists.push(
+          "<p><strong>Competitive / sourcing</strong></p><ul>" +
+            ciBits.join("") +
+            "</ul>"
+        );
+      }
+    }
+    if (
+      detailKey === "buyerResearch" &&
+      Array.isArray(detail.buyerResearch) &&
+      detail.buyerResearch.length
+    ) {
+      extraLists.push(
+        "<ul>" +
+          detail.buyerResearch
+            .map(function (c) {
+              return (
+                "<li><strong>" +
+                escFn(proseFn(c.name) || "Contact") +
+                "</strong>" +
+                (proseFn(c.title) ? " — " + escFn(proseFn(c.title)) : "") +
+                (proseFn(c.whyRelevant)
+                  ? '<div class="gdi-muted">' + escFn(proseFn(c.whyRelevant)) + "</div>"
+                  : "") +
+                "</li>"
+              );
+            })
+            .join("") +
+          "</ul>"
+      );
+      body = body || "Verified contact research retained from source investigation.";
+    }
+    if (!body && !extraLists.length) return "";
+    return (
+      '<details class="gdi-research-detail-expand" data-research-detail="' +
+      escFn(detailKey) +
+      '"><summary>' +
+      escFn(summaryLabel || "Additional research detail") +
+      '</summary><div class="gdi-research-detail-body">' +
+      (body ? "<p>" + escFn(body) + "</p>" : "") +
+      extraLists.join("") +
+      "</div></details>"
+    );
+  }
+
+  /** Internal commercial-stage map (filters / research only — not middle pill). */
+  var COMMERCIAL_STAGE_PILL = {
+    PURSUE_NOW: {
+      label: "Pursue Now",
+      pillClass: "gdi-pill gdi-pill-stage-pursue",
+    },
+    FUTURE_CAPTURE: {
+      label: "Future Capture",
+      pillClass: "gdi-pill gdi-pill-stage-future",
+    },
+    RELATIONSHIP_DEVELOPMENT: {
+      label: "Relationship Development",
+      pillClass: "gdi-pill gdi-pill-stage-relationship",
+    },
+    QUALIFICATION_NEEDED: {
+      label: "Qualification Needed",
+      pillClass: "gdi-pill gdi-pill-stage-qualify",
+    },
   };
 
   var ACTION_STATUS_DISPLAY = {
-    CONTACT_NOW: "PURSUE NOW",
-    QUALIFY_NOW: "CONTACT",
-    WATCH: "WATCH",
-    TOO_EARLY: "TOO EARLY",
-    CLOSED: "CLOSED",
-    NOT_ACTIONABLE: "NOT ACTIONABLE",
+    CONTACT_NOW: "Pursue Now",
+    QUALIFY_NOW: "Needs qualification",
+    WATCH: "Future Watch",
+    TOO_EARLY: "Too Early",
+    UNCLASSIFIED: "Unclassified",
+    CLOSED: "Closed",
+    NOT_ACTIONABLE: "Not actionable",
   };
 
   var ACTION_PILL_DISPLAY = {
     CONTACT_NOW: {
-      label: "PURSUE NOW",
+      label: "Pursue Now",
       pillClass: "gdi-pill gdi-pill-action-pursue",
     },
     QUALIFY_NOW: {
-      label: "CONTACT",
+      label: "Needs qualification",
       pillClass: "gdi-pill gdi-pill-action-qualify",
     },
-    WATCH: { label: "WATCH", pillClass: "gdi-pill gdi-pill-action-watch" },
+    WATCH: {
+      label: "Future Watch",
+      pillClass: "gdi-pill gdi-pill-action-watch",
+    },
     TOO_EARLY: {
-      label: "TOO EARLY",
+      label: "Too Early",
       pillClass: "gdi-pill gdi-pill-action-too-early",
     },
+    UNCLASSIFIED: {
+      label: "Unclassified",
+      pillClass: "gdi-pill gdi-pill-action-watch",
+    },
+  };
+
+  /** Non-canonical timing codes — never show as Action Timing pills. */
+  var NON_CANONICAL_ACTION_TIMING = {
+    OPEN_ENDED: 1,
+    FUTURE_WINDOW: 1,
+    UNDETERMINED: 1,
+    UNKNOWN: 1,
   };
 
   function esc(s) {
@@ -56,6 +271,88 @@
     } catch (e) {
       return false;
     }
+  }
+
+  /** Normalize bare www./domain values to https:// for href use. */
+  function normalizeHttpUrlCandidate(raw) {
+    var s = String(raw == null ? "" : raw).trim();
+    if (!s) return "";
+    if (/^https?:\/\//i.test(s)) return s;
+    if (
+      /^www\./i.test(s) ||
+      /^[a-z0-9][a-z0-9.-]*\.[a-z]{2,}([\/?#].*)?$/i.test(s)
+    ) {
+      return "https://" + s;
+    }
+    return s;
+  }
+
+  function looksLikeStandaloneWebsite(raw) {
+    var s = String(raw == null ? "" : raw).trim();
+    if (!s || /\s/.test(s)) return false;
+    return (
+      /^(https?:\/\/|www\.)/i.test(s) ||
+      /^[a-z0-9][a-z0-9.-]*\.[a-z]{2,}([\/?#].*)?$/i.test(s)
+    );
+  }
+
+  /**
+   * Drawer field values: safe http(s) websites become clickable links.
+   * Escapes all non-URL text. Used for Venue/Planner intelligence and meta lists.
+   */
+  function formatDrawerFieldValueHtml(value) {
+    var raw = String(value == null ? "" : value).trim();
+    if (!raw) return "—";
+    if (looksLikeStandaloneWebsite(raw)) {
+      var href = normalizeHttpUrlCandidate(raw);
+      if (isSafeHttpUrl(href)) {
+        return (
+          '<a href="' +
+          esc(href) +
+          '" target="_blank" rel="noopener noreferrer">' +
+          esc(raw) +
+          "</a>"
+        );
+      }
+    }
+    // Linkify embedded http(s) / www. URLs inside longer notes.
+    var re = /(https?:\/\/[^\s<>"')\]]+|www\.[^\s<>"')\]]+)/gi;
+    var out = "";
+    var last = 0;
+    var m;
+    while ((m = re.exec(raw))) {
+      out += esc(raw.slice(last, m.index));
+      var matched = m[0];
+      var trimmed = matched.replace(/[.,;:!?)]+$/, "");
+      var trailing = matched.slice(trimmed.length);
+      var linkHref = normalizeHttpUrlCandidate(trimmed);
+      if (isSafeHttpUrl(linkHref)) {
+        out +=
+          '<a href="' +
+          esc(linkHref) +
+          '" target="_blank" rel="noopener noreferrer">' +
+          esc(trimmed) +
+          "</a>" +
+          esc(trailing);
+      } else {
+        out += esc(matched);
+      }
+      last = m.index + matched.length;
+    }
+    out += esc(raw.slice(last));
+    return out;
+  }
+
+  /** Label + value meta row; websites render as hyperlinks. */
+  function drawerMetaFieldRowHtml(label, value) {
+    if (value == null || value === "") return "";
+    return (
+      "<li><strong>" +
+      esc(label) +
+      ":</strong> " +
+      formatDrawerFieldValueHtml(value) +
+      "</li>"
+    );
   }
 
   function fmtVal(v) {
@@ -107,11 +404,12 @@
       return "Dates TBD";
     }
     var startMon = MONTH_SHORT[start.month - 1];
+    // Single verified day — founder standard: "Apr 30, 2027" (not "Apr 30-30, 2027")
     if (!end || (end.year === start.year && end.month === start.month && end.day === start.day)) {
-      return startMon + " " + start.day + "-" + start.day + ", " + start.year;
+      return startMon + " " + start.day + ", " + start.year;
     }
     if (end.year === start.year && end.month === start.month) {
-      return startMon + " " + start.day + "-" + end.day + ", " + start.year;
+      return startMon + " " + start.day + "\u2013" + end.day + ", " + start.year;
     }
     var endMon = MONTH_SHORT[end.month - 1];
     if (end.year === start.year) {
@@ -147,23 +445,206 @@
     return '<span class="' + meta.pillClass + '">' + esc(meta.label) + "</span>";
   }
 
+  function isEventsOpportunityTile(it, linked) {
+    linked = linked || {};
+    it = it || {};
+    if (
+      linked.opportunityTypeFilterCategory === "ASSOCIATION_CONFERENCE_GROUP" ||
+      it.opportunityTypeFilterCategory === "ASSOCIATION_CONFERENCE_GROUP"
+    ) {
+      return true;
+    }
+    if (
+      linked.researchSegment === "associations_government" ||
+      it.researchSegment === "associations_government"
+    ) {
+      return true;
+    }
+    return Boolean(
+      (linked.eventsOpportunityOverview || it.eventsOpportunityOverview) &&
+        linked.opportunityTypeFilterCategory !== "SCALING_COMPANY" &&
+        it.opportunityTypeFilterCategory !== "SCALING_COMPANY"
+    );
+  }
+
   function tileEventDatePill(it, linked) {
     linked = linked || {};
     it = it || {};
-    var label = eventDateRangeLabel(
-      linked.eventStartDate || it.eventStartDate,
-      linked.eventEndDate || it.eventEndDate,
-      it.eventTiming || linked.eventTiming
-    );
+    var plan = linked.tileBadgePlan || it.tileBadgePlan || {};
+    var timing =
+      linked.canonicalTiming || it.canonicalTiming || plan.canonicalTiming || {};
+    // Prefer canonical display label (month-only, Multiple Dates, Ongoing, single day).
+    var display =
+      plan.datePillDisplayLabel ||
+      linked.datePillDisplayLabel ||
+      it.datePillDisplayLabel ||
+      timing.displayLabel ||
+      linked.eventDateDisplay ||
+      it.eventDateDisplay ||
+      "";
+    display = String(display || "").trim();
+    if (
+      display &&
+      !/^dates tbd$/i.test(display) &&
+      !/^date not yet confirmed$/i.test(display) &&
+      display !== "VERIFIED_DATE" &&
+      !/^open[_\s-]?ended$/i.test(display)
+    ) {
+      var titleAttr = "";
+      if (
+        /multiple dates/i.test(display) &&
+        Array.isArray(timing.occurrences) &&
+        timing.occurrences.length
+      ) {
+        var occ = timing.occurrences
+          .map(function (x) {
+            return x && (x.startDate || x.date || "");
+          })
+          .filter(Boolean)
+          .join(", ");
+        if (occ) {
+          titleAttr = ' title="' + esc(occ) + '" aria-label="Dates: ' + esc(occ) + '"';
+        }
+      }
+      return (
+        '<span class="gdi-tile-pill gdi-tile-pill--date gdi-pill gdi-pill-date" data-facet="event-date"' +
+        titleAttr +
+        ">" +
+        esc(display) +
+        "</span>"
+      );
+    }
+    // Events: prefer DTO-resolved upcoming dates (never historical-as-future).
+    var start =
+      linked.tileEventStartDate ||
+      it.tileEventStartDate ||
+      plan.tileEventStartDate ||
+      (isEventsOpportunityTile(it, linked)
+        ? null
+        : linked.eventStartDate || it.eventStartDate);
+    var end =
+      linked.tileEventEndDate ||
+      it.tileEventEndDate ||
+      plan.tileEventEndDate ||
+      linked.eventEndDate ||
+      it.eventEndDate;
+    if (!start && !isEventsOpportunityTile(it, linked)) {
+      start = linked.eventStartDate || it.eventStartDate;
+    }
+    // Pill 3 — verified demand/event date, else customer-facing "Dates TBD".
+    // Never surface OPEN_ENDED or announcement-only dates as the demand window.
+    if (parseIsoDateParts(start)) {
+      var label = eventDateRangeLabel(start, end, null);
+      if (label && !/dates tbd/i.test(label)) {
+        return (
+          '<span class="gdi-tile-pill gdi-tile-pill--date gdi-pill gdi-pill-date" data-facet="event-date">' +
+          esc(label) +
+          "</span>"
+        );
+      }
+    }
     return (
-      '<span class="gdi-tile-pill gdi-tile-pill--date gdi-pill gdi-pill-date">' +
-      esc(label || "Dates TBD") +
+      '<span class="gdi-tile-pill gdi-tile-pill--date gdi-pill gdi-pill-date" data-facet="event-date">Dates TBD</span>'
+    );
+  }
+
+  function tilePriorityPill(priority, activeFilters) {
+    var key = normalizePriorityFilterKey(priority);
+    activeFilters = activeFilters || {};
+    var isActive = activeFilters.priority === key;
+    // Events customer contract: never render Unclassified — fall back to Watch.
+    var meta =
+      PRIORITY_DISPLAY[key] ||
+      (key === "UNCLASSIFIED"
+        ? PRIORITY_DISPLAY.WATCHLIST
+        : PRIORITY_DISPLAY.WATCHLIST);
+    var label =
+      key === "UNCLASSIFIED" ? PRIORITY_DISPLAY.WATCHLIST.label : meta.label;
+    var filterKey = key === "UNCLASSIFIED" ? "WATCHLIST" : key;
+    return (
+      '<button type="button" class="gdi-tile-pill gdi-tile-pill--priority ' +
+      (filterKey === "WATCHLIST"
+        ? PRIORITY_DISPLAY.WATCHLIST.pillClass
+        : meta.pillClass) +
+      (isActive || activeFilters.priority === filterKey
+        ? " is-filter-active"
+        : "") +
+      '" data-gdi-tile-priority="' +
+      esc(filterKey) +
+      '" data-facet="priority" aria-pressed="' +
+      (isActive || activeFilters.priority === filterKey) +
+      '">' +
+      esc(label) +
+      "</button>"
+    );
+  }
+
+  function normalizeSalesActionPillKey(raw) {
+    var key = String(raw || "")
+      .trim()
+      .toUpperCase()
+      .replace(/[\s-]+/g, "_");
+    if (CANONICAL_SALES_ACTION_KEYS[key]) return key;
+    return "QUALIFY_OPPORTUNITY";
+  }
+
+  /**
+   * Pill 2 — Recommended Sales Action (eight approved labels). Always a colored badge.
+   * Never Commercial Stage terminology.
+   */
+  function tileSalesActionPill(it, linked) {
+    linked = linked || {};
+    it = it || {};
+    var plan = linked.tileBadgePlan || it.tileBadgePlan || {};
+    var rawKey =
+      linked.salesActionKey ||
+      it.salesActionKey ||
+      plan.salesActionKey ||
+      "";
+    var rawLabel =
+      linked.salesActionPillLabel ||
+      it.salesActionPillLabel ||
+      plan.salesActionPillLabel ||
+      "";
+    var key = normalizeSalesActionPillKey(rawKey || rawLabel);
+    var meta = SALES_ACTION_PILL[key] || SALES_ACTION_PILL.QUALIFY_OPPORTUNITY;
+    var label = rawLabel && SALES_ACTION_PILL[normalizeSalesActionPillKey(rawLabel)]
+      ? String(rawLabel).trim()
+      : meta.label;
+    // Reject commercial-stage / legacy classification labels if they leak through.
+    if (
+      /^(Pursue Now|Future Capture|Relationship Development|Qualification Needed|Account Development|Exploratory|Sales Opportunity|Future Opportunity|Research Needed)$/i.test(
+        String(label),
+      )
+    ) {
+      label = meta.label;
+    }
+    return (
+      '<span class="gdi-tile-pill gdi-tile-pill--sales-action ' +
+      meta.pillClass +
+      '" data-facet="sales-action" data-sales-action="' +
+      esc(key) +
+      '">' +
+      esc(label) +
       "</span>"
     );
   }
 
   function tileActionPill(status, priority, activeFilters) {
     if (!status) return "";
+    var raw = String(status).trim().toUpperCase();
+    // Qualification / open-ended CAR / legacy codes are not Action Timing pills.
+    if (
+      raw === "QUALIFY_NOW" ||
+      raw === "RESEARCH_FURTHER" ||
+      NON_CANONICAL_ACTION_TIMING[raw]
+    ) {
+      return "";
+    }
+    // Only canonical Action Timing filter values appear as pills.
+    if (raw !== "CONTACT_NOW" && raw !== "WATCH" && raw !== "TOO_EARLY") {
+      return "";
+    }
     activeFilters = activeFilters || {};
     var isActive = activeFilters.booking === status;
     var meta = ACTION_PILL_DISPLAY[status];
@@ -216,9 +697,12 @@
     PRIMARY_VENUE_SELECTED: "Primary Venue Selected",
     HOTEL_SOURCING_UNCONFIRMED: "Hotel Sourcing Unconfirmed",
     CONTACT_NOW: "Pursue now",
-    QUALIFY_NOW: "Qualify now",
-    WATCH: "Watch",
+    QUALIFY_NOW: "Needs qualification",
+    WATCH: "Future watch",
     TOO_EARLY: "Too early",
+    UNCLASSIFIED: "Unclassified",
+    RESEARCH_CONTINUATION: "Research continuation",
+    QUALIFIED: "Qualified",
   };
 
   function customerStatusLabel(raw, fallback) {
@@ -381,6 +865,18 @@
     mba: "MBA",
     csi: "CSI",
     dc: "DC",
+    anade: "ANADE",
+    canaco: "CANACO",
+    amexcap: "AMEXCAP",
+    icuh: "ICUH",
+    lasa: "LASA",
+    andellac: "ANDELLAC",
+    amrob: "AMRob",
+    comrob: "COMRob",
+    smne: "SMNE",
+    cdmx: "CDMX",
+    mpi: "MPI",
+    pco: "PCO",
   };
 
   /**
@@ -389,42 +885,70 @@
    * Classification: REUSABLE_PRODUCT_UI
    */
   var TILE_SECONDARY_HEADLINE_LABELS = {
+    // Approved four Hotel Sourcing statuses (Events tile + drawer)
+    HOTEL_SOURCING_OPEN: "Hotel Sourcing Open",
+    "hotel sourcing open": "Hotel Sourcing Open",
+    SOURCING_CONFIRMED_OPEN: "Hotel Sourcing Open",
     HOTEL_SOURCING_UNCONFIRMED: "Hotel Sourcing Unconfirmed",
     "hotel sourcing unconfirmed": "Hotel Sourcing Unconfirmed",
-    PRIMARY_VENUE_SELECTED_OVERFLOW_POSSIBLE:
-      "Primary Venue Selected / Overflow Possible",
-    "primary venue selected / overflow possible":
-      "Primary Venue Selected / Overflow Possible",
-    PRIMARY_VENUE_SELECTED_NO_OVERFLOW_EVIDENCE:
-      "Primary Venue Selected / No Overflow Evidence",
-    "primary venue selected / no overflow evidence":
-      "Primary Venue Selected / No Overflow Evidence",
-    PRIMARY_VENUE_SELECTED: "Primary Venue Selected",
-    "primary venue selected": "Primary Venue Selected",
-    OPEN_UNRESOLVED: "Open / Unresolved",
-    "open / unresolved": "Open / Unresolved",
-    RFP_ACTIVE_SOURCING: "RFP / Active Sourcing",
-    "rfp / active sourcing": "RFP / Active Sourcing",
-    HOTEL_VENUE_TBD: "Hotel / Venue TBD",
-    "hotel / venue tbd": "Hotel / Venue TBD",
-    DESTINATION_TBD: "Destination TBD",
-    "destination tbd": "Destination TBD",
-    HOUSING_PENDING: "Housing Pending",
-    "housing pending": "Housing Pending",
-    REGISTRATION_OPEN_HOTEL_UNANNOUNCED:
-      "Registration Open / Hotel Unannounced",
-    "registration open / hotel unannounced":
-      "Registration Open / Hotel Unannounced",
-    PARTIALLY_PLACED: "Partially Placed",
-    "partially placed": "Partially Placed",
-    FULLY_PLACED: "Fully Placed",
-    "fully placed": "Fully Placed",
-    CURRENT_CYCLE_CLOSED: "Current Cycle Closed",
-    "current cycle closed": "Current Cycle Closed",
-    ASSOCIATION_OCCASION: "Association Occasion",
-    "association occasion": "Association Occasion",
+    SOURCING_UNCONFIRMED: "Hotel Sourcing Unconfirmed",
+    VENUE_CONFIRMED: "Venue Confirmed",
+    "venue confirmed": "Venue Confirmed",
+    COMMITTED_ELSEWHERE: "Venue Confirmed",
+    "committed elsewhere": "Venue Confirmed",
+    HISTORICAL_VENUE_ONLY: "Historical Venue Only",
+    "historical venue only": "Historical Venue Only",
+    // Event type labels
+    CORPORATE_INCENTIVE: "Corporate Incentive",
+    "corporate incentive": "Corporate Incentive",
+    ASSOCIATION_CONFERENCE: "Association Conference",
+    "association conference": "Association Conference",
+    ASSOCIATION_MEETING: "Association Meeting",
+    "association meeting": "Association Meeting",
+    CORPORATE_MEETING: "Corporate Meeting",
+    "corporate meeting": "Corporate Meeting",
+    LEADERSHIP_RETREAT: "Leadership Retreat",
+    "leadership retreat": "Leadership Retreat",
+    TRAINING_EVENT: "Training Event",
+    "training event": "Training Event",
+    INDUSTRY_CONFERENCE: "Industry Conference",
+    "industry conference": "Industry Conference",
+    TRADE_SHOW: "Trade Show",
+    "trade show": "Trade Show",
+    CORPORATE_EVENT: "Corporate Event",
+    "corporate event": "Corporate Event",
+    PRIMARY_VENUE_SELECTED_OVERFLOW_POSSIBLE: "Venue Confirmed",
+    "primary venue selected / overflow possible": "Venue Confirmed",
+    PRIMARY_VENUE_SELECTED_NO_OVERFLOW_EVIDENCE: "Venue Confirmed",
+    "primary venue selected / no overflow evidence": "Venue Confirmed",
+    PRIMARY_VENUE_SELECTED: "Venue Confirmed",
+    "primary venue selected": "Venue Confirmed",
+    OPEN_UNRESOLVED: "Hotel Sourcing Unconfirmed",
+    "open / unresolved": "Hotel Sourcing Unconfirmed",
+    RFP_ACTIVE_SOURCING: "Hotel Sourcing Open",
+    "rfp / active sourcing": "Hotel Sourcing Open",
+    HOTEL_VENUE_TBD: "Hotel Sourcing Unconfirmed",
+    "hotel / venue tbd": "Hotel Sourcing Unconfirmed",
+    DESTINATION_TBD: "Hotel Sourcing Unconfirmed",
+    "destination tbd": "Hotel Sourcing Unconfirmed",
+    HOUSING_PENDING: "Hotel Sourcing Unconfirmed",
+    "housing pending": "Hotel Sourcing Unconfirmed",
+    REGISTRATION_OPEN_HOTEL_UNANNOUNCED: "Hotel Sourcing Unconfirmed",
+    "registration open / hotel unannounced": "Hotel Sourcing Unconfirmed",
+    PARTIALLY_PLACED: "Venue Confirmed",
+    "partially placed": "Venue Confirmed",
+    FULLY_PLACED: "Venue Confirmed",
+    "fully placed": "Venue Confirmed",
+    CURRENT_CYCLE_CLOSED: "Venue Confirmed",
+    "current cycle closed": "Venue Confirmed",
+    ASSOCIATION_OCCASION: "Association Conference",
+    "association occasion": "Association Conference",
     PREFERRED_LODGING_PARTNERSHIP: "Preferred Lodging Partnership",
     "preferred lodging partnership": "Preferred Lodging Partnership",
+    PROFESSIONAL_EVENT_PLANNER_PARTNERSHIP:
+      "Professional Event Planner Partnership",
+    "professional event planner partnership":
+      "Professional Event Planner Partnership",
     SCALING_COMPANY: "Scaling Company",
     "scaling company": "Scaling Company",
     LOCAL_MEETINGS_CATERING: "Local Meetings & Catering",
@@ -440,15 +964,70 @@
   function toProperCaseDisplayTitle(raw) {
     var s = String(raw == null ? "" : raw).replace(/\s+/g, " ").trim();
     if (!s) return s;
-    return s.replace(/\b([A-Za-z][A-Za-z0-9']*)\b/g, function (word) {
-      var lower = word.toLowerCase();
-      if (TILE_SECONDARY_HEADLINE_ACRONYMS[lower]) {
-        return TILE_SECONDARY_HEADLINE_ACRONYMS[lower];
-      }
-      if (/^[A-Z]{2,6}$/.test(word)) return word;
-      if (/^[A-Z0-9]{2,6}$/.test(word) && /[0-9]/.test(word)) return word;
-      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-    });
+    // Accent-safe: do not use \\b (breaks "Médicos" into "Mé"+"Dicos").
+    if (/[a-záéíóúñ]/.test(s) && /[A-ZÁÉÍÓÚÑ]/.test(s) && s !== s.toUpperCase()) {
+      return s
+        .split(/(\s+|[-–—|:/,()]+)/)
+        .map(function (tok) {
+          var lower = tok.toLowerCase();
+          if (TILE_SECONDARY_HEADLINE_ACRONYMS[lower]) {
+            return TILE_SECONDARY_HEADLINE_ACRONYMS[lower];
+          }
+          return tok;
+        })
+        .join("");
+    }
+    return s
+      .split(/(\s+|[-–—|:/,()]+)/)
+      .map(function (tok) {
+        if (!/[A-Za-zÁÉÍÓÚÑáéíóúñ]/.test(tok)) return tok;
+        var lower = tok.toLowerCase();
+        if (TILE_SECONDARY_HEADLINE_ACRONYMS[lower]) {
+          return TILE_SECONDARY_HEADLINE_ACRONYMS[lower];
+        }
+        if (/^[A-Z]{2,8}$/.test(tok)) return tok;
+        if (/^[A-Z0-9]{2,8}$/.test(tok) && /[0-9]/.test(tok)) return tok;
+        return tok.charAt(0).toUpperCase() + tok.slice(1).toLowerCase();
+      })
+      .join("");
+  }
+
+  /**
+   * Contact-role line under the person name on tiles — always Proper Case every word.
+   * Unlike toProperCaseDisplayTitle, does not early-return on sentence-case strings
+   * ("Event confirmation / routing contact" → "Event Confirmation / Routing Contact").
+   * Classification: REUSABLE_PRODUCT_UI
+   */
+  function toProperCaseContactRoleLabel(raw) {
+    var s = String(raw == null ? "" : raw).replace(/\s+/g, " ").trim();
+    if (!s) return s;
+    return s
+      .split(/(\s+|[-–—|:/,()&]+)/)
+      .map(function (tok) {
+        if (!/[A-Za-zÁÉÍÓÚÑáéíóúñ]/.test(tok)) return tok;
+        var lower = tok.toLowerCase();
+        if (TILE_SECONDARY_HEADLINE_ACRONYMS[lower]) {
+          return TILE_SECONDARY_HEADLINE_ACRONYMS[lower];
+        }
+        if (
+          /^(ceo|cfo|cto|coo|vp|svp|evp|md|cmp|des|phd|mba|cmo|cro)$/i.test(
+            tok.replace(/\.$/, "")
+          )
+        ) {
+          return tok.replace(/\.$/, "").toUpperCase() + (/\.$/.test(tok) ? "." : "");
+        }
+        if (/^(dr|mr|mrs|ms|prof)\.?$/i.test(tok)) {
+          return (
+            tok.charAt(0).toUpperCase() +
+            tok.slice(1, tok.length - (/\.$/.test(tok) ? 1 : 0)).toLowerCase() +
+            (/\.$/.test(tok) ? "." : "")
+          );
+        }
+        if (/^[A-Z]{2,8}$/.test(tok)) return tok;
+        if (/^[A-Z0-9]{2,8}$/.test(tok) && /[0-9]/.test(tok)) return tok;
+        return tok.charAt(0).toUpperCase() + tok.slice(1).toLowerCase();
+      })
+      .join("");
   }
 
   /**
@@ -547,13 +1126,26 @@
     linked = linked || {};
     it = it || {};
     var title = String(titleText || "");
-    var org = String(it.organizationName || linked.organizationName || "").trim();
+    var org = String(
+      it.displayCompanyName ||
+        linked.displayCompanyName ||
+        it.organizationName ||
+        linked.organizationName ||
+        ""
+    ).trim();
     var typeLbl =
       linked.opportunityTypeLabel ||
       it.opportunityTypeLabel ||
+      linked.segmentDisplayLabel ||
+      it.segmentDisplayLabel ||
       linked.demandSignalTypeLabel ||
       it.demandSignalTypeLabel ||
       "";
+    // Founder: Scaling tiles must keep "Corporate Account Relationship" visible —
+    // never replace with the filter label "Scaling Company".
+    if (/^scaling company$/i.test(String(typeLbl).trim())) {
+      typeLbl = "Corporate Account Relationship";
+    }
     var segment = it.segment || linked.segment || "";
     if (/child account|demand campaign|generator|mega-event|plausible_fit/i.test(String(segment))) {
       segment = "";
@@ -568,20 +1160,97 @@
     var typeRaw = String(
       linked.opportunityType || it.opportunityType || typeLbl || ""
     ).toUpperCase();
+    var isScalingTile =
+      linked.researchSegment === "scaling_companies" ||
+      it.researchSegment === "scaling_companies" ||
+      /SCALING_COMPANY/i.test(
+        String(linked.demandFamily || it.demandFamily || linked.demandSignalType || it.demandSignalType || "")
+      ) ||
+      /scaling/i.test(String(segment));
+    var isEventsTile =
+      !isScalingTile &&
+      (classifyOpportunityTypeFilter(linked) === "ASSOCIATION_CONFERENCE_GROUP" ||
+        classifyOpportunityTypeFilter(it) === "ASSOCIATION_CONFERENCE_GROUP" ||
+        linked.researchSegment === "associations_government" ||
+        it.researchSegment === "associations_government" ||
+        Boolean(
+          (linked.eventsOpportunityOverview || it.eventsOpportunityOverview) &&
+            !isScalingTile
+        ));
+
+    // Events tile meta: Organizer · Event Type · Hotel Sourcing Status
+    if (isEventsTile) {
+      var ov = linked.eventsOpportunityOverview || it.eventsOpportunityOverview || {};
+      if (ov.tileClassificationLine) {
+        return esc(ov.tileClassificationLine);
+      }
+      var orgShortEvents = org.replace(/\s*\([^)]*\)\s*$/, "").trim();
+      orgShortEvents = orgShortEvents
+        .replace(
+          /,?\s*(S\.?\s*C\.?|S\.?\s*A\.?\s*(?:de\s*)?C\.?\s*V\.?|S\.?\s*de\s*R\.?\s*L\.?[^.]*|Inc\.?|LLC|Ltd\.?)\s*$/i,
+          ""
+        )
+        .trim();
+      var eventType =
+        linked.eventTypeLabel ||
+        it.eventTypeLabel ||
+        ov.eventTypeLabel ||
+        "";
+      if (!eventType) {
+        var sub = String(linked.eventSubtype || it.eventSubtype || "").toLowerCase();
+        if (/incentive/.test(sub)) eventType = "Corporate Incentive";
+        else if (/trade/.test(sub)) eventType = "Trade Show";
+        else if (/retreat|leadership/.test(sub)) eventType = "Leadership Retreat";
+        else if (/training/.test(sub)) eventType = "Training Event";
+        else if (/corporate_meeting|meeting/.test(sub)) eventType = "Corporate Meeting";
+        else if (/assoc|conference|medical/.test(sub)) eventType = "Association Conference";
+        else if (/corporate_event|other/.test(sub)) eventType = "Corporate Event";
+        else eventType = "Corporate Event";
+      }
+      var sourcing =
+        ov.hotelSourcing ||
+        linked.hotelSourcingStatusLabel ||
+        it.hotelSourcingStatusLabel ||
+        linked.venueSourcingStatusLabel ||
+        it.venueSourcingStatusLabel ||
+        "Hotel Sourcing Unconfirmed";
+      sourcing = formatTileSecondaryHeadlineLabel(sourcing);
+      eventType = formatTileSecondaryHeadlineLabel(eventType);
+      var bits = [];
+      if (orgShortEvents) bits.push(formatTileSecondaryHeadlineLabel(orgShortEvents));
+      if (eventType) bits.push(eventType);
+      if (sourcing) bits.push(sourcing);
+      return esc(bits.join(" · "));
+    }
+
     // Customer-facing classification — never dump FUTURE_CYCLE / enum codes.
-    if (typeRaw === "FUTURE_CYCLE" || /^future\s*cycle$/i.test(String(typeLbl))) {
-      classBits.push("Association occasion");
+    if (isScalingTile) {
+      classBits.push("Corporate Account Relationship");
+    } else if (typeRaw === "FUTURE_CYCLE" || /^future\s*cycle$/i.test(String(typeLbl))) {
+      classBits.push("Association Conference");
     } else if (typeLbl && String(typeLbl).toUpperCase() !== "EVENT") {
       classBits.push(customerStatusLabel(typeLbl, String(typeLbl)));
     } else if (segment) {
       classBits.push(String(segment));
     } else {
-      classBits.push("Association");
+      classBits.push("Association Conference");
     }
     var classLabel = formatTileSecondaryHeadlineLabel(classBits[0]);
+    // Scaling tiles: classification only — never echo legal-entity organizationName
+    // beside a clean displayCompanyName heading (founder tile contract).
+    if (isScalingTile || /^corporate account relationship$/i.test(classLabel)) {
+      return esc(classLabel);
+    }
     // Only echo a short org token when title does not already include it.
     // Org echo uses Proper Case too; raw organizationName elsewhere stays as stored.
     var orgShort = org.replace(/\s*\([^)]*\)\s*$/, "").trim();
+    // Strip legal suffixes before length check so "Roland Berger, S.C." does not leak.
+    orgShort = orgShort
+      .replace(
+        /,?\s*(S\.?\s*C\.?|S\.?\s*A\.?\s*(?:de\s*)?C\.?\s*V\.?|S\.?\s*de\s*R\.?\s*L\.?[^.]*|Inc\.?|LLC|Ltd\.?)\s*$/i,
+        ""
+      )
+      .trim();
     var titleHasOrg =
       org &&
       (title.toLowerCase().indexOf(org.toLowerCase()) >= 0 ||
@@ -590,7 +1259,7 @@
         /\b(AHIMA|ACTS|ACC|AMWA|NDSS|NADO|NAR|AAD|NCHV|CMSS|HCAOA|USCM)\b/i.test(
           title
         ));
-    if (org && !titleHasOrg && orgShort.length <= 48) {
+    if (org && !titleHasOrg && orgShort.length >= 3 && orgShort.length <= 48) {
       return (
         esc(formatTileSecondaryHeadlineLabel(orgShort)) +
         " · " +
@@ -763,8 +1432,8 @@
   }
 
   /**
-   * This Week delta filter — compact select in the property bar (left of Last Research).
-   * Classification: REUSABLE_PRODUCT_UI
+   * Weekly Change filter — research-freshness / inventory delta (NOT action timing).
+   * Distinct from Action Timing (bookingWindowStatus). Classification: REUSABLE_PRODUCT_UI
    */
   function weeklyThisWeekFilterHtml(opts) {
     opts = opts || {};
@@ -773,15 +1442,15 @@
     var counts = opts.weeklyCounts || {};
     var options = [
       { value: "", label: "All", countKey: "all" },
-      { value: "NEW", label: "New This Week", countKey: "NEW" },
+      { value: "NEW", label: "New this week", countKey: "NEW" },
       { value: "UPDATED", label: "Updated", countKey: "UPDATED" },
       { value: "REACTIVATED", label: "Reactivated", countKey: "REACTIVATED" },
       { value: "HIGH_PRIORITY", label: "High Priority", countKey: "HIGH_PRIORITY" },
     ];
     return (
       '<div class="filter-group gdi-weekly-filter">' +
-      '<label class="filter-label" for="gdiWeeklyFilter">This Week</label>' +
-      '<select class="filter-select" id="gdiWeeklyFilter" aria-label="Filter by weekly change">' +
+      '<label class="filter-label" for="gdiWeeklyFilter">Weekly Change</label>' +
+      '<select class="filter-select" id="gdiWeeklyFilter" aria-label="Filter by research freshness this week" title="Filters by when Dealality added or updated the opportunity — not when to call the buyer.">' +
       options
         .map(function (o) {
           var n = counts[o.countKey];
@@ -845,15 +1514,56 @@
     );
   }
 
-  /** Structured opportunity-type category (mirrors opportunity-type-filter-v1). */
+  /** Structured opportunity-type category (mirrors opportunity-type-filter-v2). */
   function classifyOpportunityTypeFilter(o) {
     o = o || {};
     if (o.opportunityTypeFilterCategory) {
       return String(o.opportunityTypeFilterCategory);
     }
+    var subtypeEarly = String(
+      o.demandOpportunitySubtype || o.opportunityType || ""
+    ).toUpperCase();
+    if (
+      subtypeEarly === "PREFERRED_LODGING_PARTNERSHIP" ||
+      o.preferredLodgingPartnershipV1 === true
+    ) {
+      return "PREFERRED_LODGING_PARTNERSHIP";
+    }
+    if (
+      subtypeEarly === "PROFESSIONAL_EVENT_PLANNER_PARTNERSHIP" ||
+      o.professionalEventPlannerPartnershipV1 === true
+    ) {
+      return "PROFESSIONAL_EVENT_PLANNER_PARTNERSHIP";
+    }
+    var demandId = String(
+      o.demandSegmentId || o.customerDemandSegmentId || ""
+    )
+      .trim()
+      .toLowerCase();
+    var SEGMENT_TO_FILTER = {
+      corporate_accounts_scaling: "SCALING_COMPANY",
+      associations_conferences_events: "ASSOCIATION_CONFERENCE_GROUP",
+      corporate_meetings_incentives: "CORPORATE_MEETINGS_INCENTIVES",
+      government_public_sector: "GOVERNMENT_PUBLIC_SECTOR",
+      sports_entertainment: "SPORTS_ENTERTAINMENT",
+      education_scientific: "EDUCATION_SCIENTIFIC",
+      projects_infrastructure: "PROJECTS_INFRASTRUCTURE",
+      social_special_events: "SOCIAL_SPECIAL_EVENTS",
+      local_catering_day_meetings: "LOCAL_CATERING_DAY_MEETINGS",
+      corporate_celebrations_private_events:
+        "CORPORATE_CELEBRATIONS_PRIVATE_EVENTS",
+      travel_trade_group_intermediaries: "TRAVEL_TRADE_GROUP_INTERMEDIARIES",
+      relocation_extended_stay: "RELOCATION_EXTENDED_STAY",
+    };
+    if (demandId && SEGMENT_TO_FILTER[demandId]) {
+      return SEGMENT_TO_FILTER[demandId];
+    }
     var segment = String(o.researchSegment || o.segment || "")
       .trim()
       .toLowerCase();
+    if (segment && SEGMENT_TO_FILTER[segment]) {
+      return SEGMENT_TO_FILTER[segment];
+    }
     var type = String(o.opportunityType || "").toUpperCase();
     var signal = String(o.demandSignalType || o.demandFamily || "")
       .trim()
@@ -869,11 +1579,29 @@
       return "SCALING_COMPANY";
     }
     if (
+      segment === "local_catering_day_meetings" ||
+      segment.indexOf("local_catering") >= 0 ||
       segment === "local_meetings_catering" ||
       segment.indexOf("local_meetings") >= 0 ||
-      signal.indexOf("local_meetings") >= 0
+      signal.indexOf("local_meetings") >= 0 ||
+      signal.indexOf("local_catering") >= 0
     ) {
-      return "LOCAL_MEETINGS_CATERING";
+      return "LOCAL_CATERING_DAY_MEETINGS";
+    }
+    if (
+      segment === "government_public_sector" ||
+      segment.indexOf("government") >= 0 ||
+      signal.indexOf("government") >= 0
+    ) {
+      return "GOVERNMENT_PUBLIC_SECTOR";
+    }
+    if (
+      segment === "relocation_extended_stay" ||
+      segment.indexOf("relocation") >= 0 ||
+      segment.indexOf("extended_stay") >= 0 ||
+      signal.indexOf("relocation") >= 0
+    ) {
+      return "RELOCATION_EXTENDED_STAY";
     }
     if (
       type === "VENUE_PARTNERSHIP" ||
@@ -890,7 +1618,7 @@
       signal.indexOf("sport") >= 0 ||
       family.indexOf("sport") >= 0
     ) {
-      return "SPORTS_GROUP";
+      return "SPORTS_ENTERTAINMENT";
     }
     if (
       segment === "association" ||
@@ -915,8 +1643,21 @@
 
   var OPPORTUNITY_TYPE_FILTER_LABELS = {
     SCALING_COMPANY: "Scaling Company",
+    ASSOCIATION_CONFERENCE_GROUP: "Association / Conference / Events",
+    GOVERNMENT_PUBLIC_SECTOR: "Government & Public Sector",
+    LOCAL_CATERING_DAY_MEETINGS: "Local Catering & Day Meetings",
+    RELOCATION_EXTENDED_STAY: "Relocation & Extended Stay",
+    CORPORATE_MEETINGS_INCENTIVES: "Corporate Meetings & Incentives",
+    SPORTS_ENTERTAINMENT: "Sports & Entertainment",
+    EDUCATION_SCIENTIFIC: "Education & Scientific",
+    PROJECTS_INFRASTRUCTURE: "Projects & Infrastructure",
+    SOCIAL_SPECIAL_EVENTS: "Social & Special Events",
+    CORPORATE_CELEBRATIONS_PRIVATE_EVENTS:
+      "Corporate Celebrations & Private Events",
+    TRAVEL_TRADE_GROUP_INTERMEDIARIES: "Travel Trade & Group Intermediaries",
     PREFERRED_LODGING_PARTNERSHIP: "Preferred Lodging Partnership",
-    ASSOCIATION_CONFERENCE_GROUP: "Association / Conference Group",
+    PROFESSIONAL_EVENT_PLANNER_PARTNERSHIP:
+      "Professional Event Planner Partnership",
     LOCAL_MEETINGS_CATERING: "Local Meetings & Catering",
     CORPORATE_MEETINGS_TRAINING: "Corporate Meetings / Training",
     SPORTS_GROUP: "Sports Group",
@@ -1121,6 +1862,8 @@
         '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
       audit:
         '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8a2 2 0 0 1 2 2v14l-6-3-6 3V6a2 2 0 0 1 2-2z"/></svg>',
+      priorities:
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>',
     };
     if (!tabs.length) return "";
     return (
@@ -1130,22 +1873,43 @@
           var isActive = activeTab === t.id;
           var label = formatTabLabel(t.label || t.id);
           var icon = icons[t.id] || icons.opportunities;
-          return (
-            '<button type="button" class="section-nav-item' +
+          var plainLabel = String(t.label || t.id).replace(/\n/g, " ");
+          var commonAttrs =
+            ' class="section-nav-item' +
             (isActive ? " active" : "") +
             '" role="tab" aria-selected="' +
             isActive +
             '" data-tab="' +
             esc(t.id) +
-            '">' +
+            '"' +
+            (t.href ? ' data-href="' + esc(t.href) + '"' : "");
+          var inner =
             '<div class="section-nav-icon" title="' +
-            esc(t.label) +
+            esc(plainLabel) +
             '">' +
             icon +
             "</div>" +
             '<span class="section-nav-label">' +
             label +
-            "</span></button>"
+            "</span>";
+          // External destinations use an <a> so hotelId is preserved and styling matches peers.
+          if (t.href) {
+            return (
+              '<a href="' +
+              esc(t.href) +
+              '"' +
+              commonAttrs +
+              ">" +
+              inner +
+              "</a>"
+            );
+          }
+          return (
+            '<button type="button"' +
+            commonAttrs +
+            ">" +
+            inner +
+            "</button>"
           );
         })
         .join("") +
@@ -1154,6 +1918,14 @@
   }
 
   var PRIORITY_RANK = { HIGH_PRIORITY: 0, MEDIUM_PRIORITY: 1, WATCHLIST: 2 };
+  /** Inventory Visibility V1 — sales → account development → future → research → excluded */
+  var INVENTORY_LANE_RANK = {
+    SALES_OPPORTUNITY: 0,
+    ACCOUNT_DEVELOPMENT: 1,
+    FUTURE_OPPORTUNITY: 2,
+    RESEARCH_WATCHLIST: 3,
+    EXCLUDED: 4,
+  };
   /* Priority palette — green / amber / slate (distinct from Action Window). */
   var PRIORITY_SWATCH = {
     HIGH_PRIORITY: "#14ca74",
@@ -1174,11 +1946,269 @@
   }
   var SORT_OPTIONS = [
     { value: "priority", label: "Priority" },
+    { value: "salesRelevance", label: "Sales relevance" },
     { value: "hotelFitScore", label: "Hotel Fit" },
     { value: "evidenceConfidence", label: "Evidence" },
-    { value: "eventStartDate", label: "Event date" },
+    { value: "eventStartDate", label: "Nearest future date" },
     { value: "title", label: "Name (A-Z)" },
   ];
+
+  /** Sales Opportunities quick-filter chip keys (DTO: salesOpportunityQuickFilterKeys). */
+  var SALES_OPPORTUNITY_FILTER = {
+    ALL: "",
+    HOTEL_SOURCING_NOT_CONFIRMED: "HOTEL_SOURCING_NOT_CONFIRMED",
+    PURSUE_NOW: "PURSUE_NOW",
+    FUTURE_GROUP_BUSINESS: "FUTURE_GROUP_BUSINESS",
+    COMPETITOR_CAPTURE: "COMPETITOR_CAPTURE",
+    PARTNERSHIP_OPPORTUNITIES: "PARTNERSHIP_OPPORTUNITIES",
+    LOCAL_CATERING: "LOCAL_CATERING",
+  };
+
+  /** Compact chip labels — filter IDs/predicates unchanged. */
+  var SALES_OPPORTUNITY_FILTER_LABEL = {
+    "": "All",
+    HOTEL_SOURCING_NOT_CONFIRMED: "Hotel Unconfirmed",
+    PURSUE_NOW: "Pursue Now",
+    FUTURE_GROUP_BUSINESS: "Future Groups",
+    COMPETITOR_CAPTURE: "Competitor",
+    PARTNERSHIP_OPPORTUNITIES: "Partnerships",
+    LOCAL_CATERING: "Catering",
+  };
+
+  /** Full names for title / aria-label tooltips. */
+  var SALES_OPPORTUNITY_FILTER_LABEL_FULL = {
+    "": "All Opportunities",
+    HOTEL_SOURCING_NOT_CONFIRMED: "Hotel Sourcing Not Confirmed",
+    PURSUE_NOW: "Pursue Now",
+    FUTURE_GROUP_BUSINESS: "Future Group Business",
+    COMPETITOR_CAPTURE: "Competitor Capture",
+    PARTNERSHIP_OPPORTUNITIES: "Partnership Opportunities",
+    LOCAL_CATERING: "Local Catering",
+  };
+
+  var HOTEL_SOURCING_SUBGROUP = {
+    BOTH: "BOTH",
+    OPEN: "OPEN",
+    UNCONFIRMED: "UNCONFIRMED",
+  };
+
+  var COMMERCIAL_STAGE_FILTER = {
+    ALL: "",
+    PURSUE_NOW: "PURSUE_NOW",
+    FUTURE_CAPTURE: "FUTURE_CAPTURE",
+    RELATIONSHIP_DEVELOPMENT: "RELATIONSHIP_DEVELOPMENT",
+    QUALIFICATION_NEEDED: "QUALIFICATION_NEEDED",
+  };
+
+  var COMMERCIAL_STAGE_FILTER_LABEL = {
+    PURSUE_NOW: "Pursue Now",
+    FUTURE_CAPTURE: "Future Capture",
+    RELATIONSHIP_DEVELOPMENT: "Relationship Development",
+    QUALIFICATION_NEEDED: "Qualification Needed",
+  };
+
+  var COMMERCIAL_STAGE_SWATCH = {
+    PURSUE_NOW: "#a855f7",
+    FUTURE_CAPTURE: "#06b6d4",
+    RELATIONSHIP_DEVELOPMENT: "#f97316",
+    QUALIFICATION_NEEDED: "#7e89ac",
+  };
+
+  var SALES_OPPORTUNITY_SWATCH = {
+    HOTEL_SOURCING_NOT_CONFIRMED: "#38bdf8",
+    PURSUE_NOW: "#a855f7",
+    FUTURE_GROUP_BUSINESS: "#34d399",
+    COMPETITOR_CAPTURE: "#fb7185",
+    PARTNERSHIP_OPPORTUNITIES: "#c084fc",
+    LOCAL_CATERING: "#fbbf24",
+  };
+
+  /** Sales Focus — canonical salesActivationCategory lanes (not Priority / Commercial Stage). */
+  var SALES_FOCUS_FILTER = {
+    ALL: "",
+    PURSUE_NOW: "PURSUE_NOW",
+    SALES_QUALIFICATION: "SALES_QUALIFICATION",
+  };
+
+  var SALES_FOCUS_FILTER_LABEL = {
+    "": "All",
+    PURSUE_NOW: "Pursue Now",
+    SALES_QUALIFICATION: "Sales Qualification",
+  };
+
+  var SALES_FOCUS_SWATCH = {
+    PURSUE_NOW: "#a855f7",
+    SALES_QUALIFICATION: "#38bdf8",
+  };
+
+  function normalizeSalesFocusKey(o) {
+    var raw = String(
+      (o && (o.salesActivationCategory || o.salesActivationKey)) || ""
+    )
+      .trim()
+      .toUpperCase();
+    if (raw === "PURSUE_NOW") return "PURSUE_NOW";
+    if (raw === "SALES_QUALIFICATION" || raw === "QUALIFY_NOW") {
+      return "SALES_QUALIFICATION";
+    }
+    return "";
+  }
+
+  function matchesSalesFocusFilter(o, filterKey) {
+    if (!filterKey) return true;
+    if (isExcludedFromSalesFilterInventory(o)) return false;
+    return normalizeSalesFocusKey(o) === filterKey;
+  }
+
+  function isExcludedFromSalesFilterInventory(o) {
+    if (!o) return true;
+    if (o.archived === true || o.isArchived === true) return true;
+    if (o.certificationFixtureOnly === true) return true;
+    if (o.isTestData === true) return true;
+    if (o.customerVisible === false) return true;
+    if (o.prospectSuppressed === true) return true;
+    if (o.localActiveInventory === false || o.localInventorySuperseded === true) {
+      return true;
+    }
+    return false;
+  }
+
+  function normalizeCommercialStageFilterKey(o) {
+    if (o && o.commercialStageFilterKey) {
+      return String(o.commercialStageFilterKey).trim() || null;
+    }
+    var key = String(
+      (o && (o.commercialStageKey || (o.tileBadgePlan && o.tileBadgePlan.commercialStageKey))) ||
+        ""
+    )
+      .trim()
+      .toUpperCase();
+    if (key === "PURSUE_NOW" || key === "SALES_OPPORTUNITY") return "PURSUE_NOW";
+    if (key === "FUTURE_CAPTURE" || key === "FUTURE_OPPORTUNITY") return "FUTURE_CAPTURE";
+    if (key === "RELATIONSHIP_DEVELOPMENT" || key === "ACCOUNT_DEVELOPMENT") {
+      return "RELATIONSHIP_DEVELOPMENT";
+    }
+    if (
+      key === "RESEARCH_NEEDED" ||
+      key === "RESEARCH_WATCHLIST" ||
+      key === "QUALIFICATION_NEEDED"
+    ) {
+      return "QUALIFICATION_NEEDED";
+    }
+    var lane = String((o && o.inventoryLane) || "")
+      .trim()
+      .toUpperCase();
+    if (lane === "SALES_OPPORTUNITY") return "PURSUE_NOW";
+    if (lane === "FUTURE_OPPORTUNITY") return "FUTURE_CAPTURE";
+    if (lane === "ACCOUNT_DEVELOPMENT") return "RELATIONSHIP_DEVELOPMENT";
+    if (lane === "RESEARCH_WATCHLIST") return "QUALIFICATION_NEEDED";
+    return null;
+  }
+
+  function normalizeHotelSourcingForFilter(o) {
+    if (o && o.hotelSourcingStatusNormalized) {
+      return String(o.hotelSourcingStatusNormalized).trim();
+    }
+    var raw = String(
+      (o &&
+        ((o.eventsOpportunityOverview && o.eventsOpportunityOverview.hotelSourcing) ||
+          o.hotelSourcingStatusLabel ||
+          o.hotelSourcingStatus)) ||
+        ""
+    ).trim();
+    if (!raw) return null;
+    if (/Hotel Sourcing Open/i.test(raw)) return "Hotel Sourcing Open";
+    if (/Hotel Sourcing Unconfirmed/i.test(raw)) return "Hotel Sourcing Unconfirmed";
+    if (/Venue Confirmed/i.test(raw)) return "Venue Confirmed";
+    if (/Historical Venue Only/i.test(raw)) return "Historical Venue Only";
+    return null;
+  }
+
+  function salesOpportunityKeysOf(o) {
+    if (Array.isArray(o && o.salesOpportunityQuickFilterKeys)) {
+      return o.salesOpportunityQuickFilterKeys;
+    }
+    return [];
+  }
+
+  function matchesHotelSourcingNotConfirmedFilter(o, subgroup) {
+    var sourcing = normalizeHotelSourcingForFilter(o);
+    if (!sourcing) return false;
+    var isOpen = sourcing === "Hotel Sourcing Open";
+    var isUnconfirmed = sourcing === "Hotel Sourcing Unconfirmed";
+    if (!isOpen && !isUnconfirmed) return false;
+    if (subgroup === HOTEL_SOURCING_SUBGROUP.OPEN) return isOpen;
+    if (subgroup === HOTEL_SOURCING_SUBGROUP.UNCONFIRMED) return isUnconfirmed;
+    return true;
+  }
+
+  function matchesSalesOpportunityFilter(o, filterKey, sourcingSubgroup) {
+    if (!filterKey) return !isExcludedFromSalesFilterInventory(o);
+    if (isExcludedFromSalesFilterInventory(o)) return false;
+    if (filterKey === SALES_OPPORTUNITY_FILTER.HOTEL_SOURCING_NOT_CONFIRMED) {
+      return matchesHotelSourcingNotConfirmedFilter(
+        o,
+        sourcingSubgroup || HOTEL_SOURCING_SUBGROUP.BOTH
+      );
+    }
+    var keys = salesOpportunityKeysOf(o);
+    return keys.indexOf(filterKey) !== -1;
+  }
+
+  function salesRelevanceRank(o) {
+    var priority = String(
+      (o && (o.priorityFilterKey || o.priority)) || ""
+    ).toUpperCase();
+    var pRank =
+      priority === "HIGH_PRIORITY"
+        ? 0
+        : priority === "MEDIUM_PRIORITY"
+          ? 1
+          : priority === "WATCHLIST" || priority === "WATCH"
+            ? 2
+            : 3;
+    var stage = normalizeCommercialStageFilterKey(o);
+    var sRank =
+      stage === "PURSUE_NOW"
+        ? 0
+        : stage === "FUTURE_CAPTURE"
+          ? 1
+          : stage === "RELATIONSHIP_DEVELOPMENT"
+            ? 2
+            : 3;
+    var sourcing = normalizeHotelSourcingForFilter(o);
+    var srcRank =
+      sourcing === "Hotel Sourcing Open"
+        ? 0
+        : sourcing === "Hotel Sourcing Unconfirmed"
+          ? 1
+          : sourcing === "Historical Venue Only"
+            ? 2
+            : 3;
+    var fit =
+      typeof (o && o.hotelFitScore) === "number"
+        ? Math.max(0, 100 - o.hotelFitScore)
+        : 50;
+    var buyer =
+      o &&
+      (o.hasVerifiedNamedRelevantContact === true ||
+        o.hasCredibleOutreachRoute === true)
+        ? 0
+        : 1;
+    return pRank * 10000 + sRank * 1000 + srcRank * 100 + fit + buyer;
+  }
+
+  function normalizePriorityFilterKey(priority) {
+    var p = String(priority || "")
+      .trim()
+      .toUpperCase();
+    // Accept overlay aliases so Sales Ready High/Medium never render as Watch.
+    if (p === "HIGH_PRIORITY" || p === "HIGH") return "HIGH_PRIORITY";
+    if (p === "MEDIUM_PRIORITY" || p === "MEDIUM") return "MEDIUM_PRIORITY";
+    if (p === "WATCHLIST" || p === "WATCH" || p === "LOW") return "WATCHLIST";
+    if (p === "DISQUALIFIED") return "DISQUALIFIED";
+    return "UNCLASSIFIED";
+  }
 
   function countByPriority(opportunities) {
     var counts = {
@@ -1186,29 +2216,48 @@
       HIGH_PRIORITY: 0,
       MEDIUM_PRIORITY: 0,
       WATCHLIST: 0,
+      UNCLASSIFIED: 0,
     };
     (opportunities || []).forEach(function (o) {
       counts[""] += 1;
-      var p = o.priority || "WATCHLIST";
+      // Prefer DTO filter key when present; never silently default missing → Watch.
+      var p =
+        o.priorityFilterKey ||
+        normalizePriorityFilterKey(o.priority);
       if (counts[p] == null) counts[p] = 0;
       counts[p] += 1;
     });
     return counts;
   }
 
+  function normalizeBookingWindowStatus(o) {
+    if (o && o.actionTimingFilterKey) {
+      return String(o.actionTimingFilterKey).trim() || "UNCLASSIFIED";
+    }
+    var s =
+      o && o.bookingWindowStatus != null
+        ? String(o.bookingWindowStatus).trim().toUpperCase()
+        : "";
+    if (!s || NON_CANONICAL_ACTION_TIMING[s]) return "UNCLASSIFIED";
+    if (s === "CONTACT_NOW" || s === "WATCH" || s === "TOO_EARLY") return s;
+    if (s === "LIKELY_TOO_LATE") return "TOO_EARLY";
+    // QUALIFY_NOW and other postures are not Action Timing filter members.
+    return "UNCLASSIFIED";
+  }
+
   function countByActionStatus(opportunities) {
     var counts = {
       "": 0,
       CONTACT_NOW: 0,
-      QUALIFY_NOW: 0,
       WATCH: 0,
       TOO_EARLY: 0,
+      UNCLASSIFIED: 0,
     };
     (opportunities || []).forEach(function (o) {
       counts[""] += 1;
-      var s = o.bookingWindowStatus || "";
+      var s = normalizeBookingWindowStatus(o);
       if (counts[s] == null) counts[s] = 0;
-      if (s) counts[s] += 1;
+      counts[s] += 1;
     });
     return counts;
   }
@@ -1221,10 +2270,48 @@
     filters = filters || {};
     var subset = filterOpportunities(opportunities, {
       booking: filters.booking || "",
+      commercialStage: filters.commercialStage || "",
+      salesOpportunity: filters.salesOpportunity || "",
+      salesFocus: filters.salesFocus || "",
+      sourcingSubgroup: filters.sourcingSubgroup || HOTEL_SOURCING_SUBGROUP.BOTH,
       segment: filters.segment || "",
       territory: filters.territory || "",
+      weekly: filters.weekly || "",
+      opportunityType: filters.opportunityType || "",
     });
     return countByPriority(subset);
+  }
+
+  function countBySalesFocus(opportunities) {
+    var counts = {
+      "": 0,
+      PURSUE_NOW: 0,
+      SALES_QUALIFICATION: 0,
+    };
+    (opportunities || []).forEach(function (o) {
+      if (isExcludedFromSalesFilterInventory(o)) return;
+      counts[""] += 1;
+      var key = normalizeSalesFocusKey(o);
+      if (key && counts[key] != null) counts[key] += 1;
+    });
+    return counts;
+  }
+
+  function facetCountBySalesFocus(opportunities, filters) {
+    filters = filters || {};
+    var subset = filterOpportunities(opportunities, {
+      priority: filters.priority || "",
+      booking: filters.booking || "",
+      commercialStage: filters.commercialStage || "",
+      salesOpportunity: filters.salesOpportunity || "",
+      sourcingSubgroup: filters.sourcingSubgroup || HOTEL_SOURCING_SUBGROUP.BOTH,
+      segment: filters.segment || "",
+      territory: filters.territory || "",
+      weekly: filters.weekly || "",
+      opportunityType: filters.opportunityType || "",
+      // omit salesFocus so facet counts reflect other active filters
+    });
+    return countBySalesFocus(subset);
   }
 
   /**
@@ -1235,10 +2322,118 @@
     filters = filters || {};
     var subset = filterOpportunities(opportunities, {
       priority: filters.priority || "",
+      commercialStage: filters.commercialStage || "",
+      salesOpportunity: filters.salesOpportunity || "",
+      salesFocus: filters.salesFocus || "",
+      sourcingSubgroup: filters.sourcingSubgroup || HOTEL_SOURCING_SUBGROUP.BOTH,
       segment: filters.segment || "",
       territory: filters.territory || "",
+      weekly: filters.weekly || "",
+      opportunityType: filters.opportunityType || "",
     });
     return countByActionStatus(subset);
+  }
+
+  function countByCommercialStage(opportunities) {
+    var counts = {
+      "": 0,
+      PURSUE_NOW: 0,
+      FUTURE_CAPTURE: 0,
+      RELATIONSHIP_DEVELOPMENT: 0,
+      QUALIFICATION_NEEDED: 0,
+      UNCLASSIFIED: 0,
+    };
+    (opportunities || []).forEach(function (o) {
+      if (isExcludedFromSalesFilterInventory(o)) return;
+      counts[""] += 1;
+      var stage = normalizeCommercialStageFilterKey(o);
+      if (stage && counts[stage] != null) counts[stage] += 1;
+      else counts.UNCLASSIFIED += 1;
+    });
+    return counts;
+  }
+
+  function facetCountByCommercialStage(opportunities, filters) {
+    filters = filters || {};
+    var subset = filterOpportunities(opportunities, {
+      priority: filters.priority || "",
+      booking: filters.booking || "",
+      salesOpportunity: filters.salesOpportunity || "",
+      salesFocus: filters.salesFocus || "",
+      sourcingSubgroup: filters.sourcingSubgroup || HOTEL_SOURCING_SUBGROUP.BOTH,
+      segment: filters.segment || "",
+      territory: filters.territory || "",
+      weekly: filters.weekly || "",
+      opportunityType: filters.opportunityType || "",
+    });
+    return countByCommercialStage(subset);
+  }
+
+  function countBySalesOpportunity(opportunities, sourcingSubgroup) {
+    var counts = {
+      "": 0,
+      HOTEL_SOURCING_NOT_CONFIRMED: 0,
+      PURSUE_NOW: 0,
+      FUTURE_GROUP_BUSINESS: 0,
+      COMPETITOR_CAPTURE: 0,
+      PARTNERSHIP_OPPORTUNITIES: 0,
+      LOCAL_CATERING: 0,
+      sourcingOpen: 0,
+      sourcingUnconfirmed: 0,
+    };
+    (opportunities || []).forEach(function (o) {
+      if (isExcludedFromSalesFilterInventory(o)) return;
+      counts[""] += 1;
+      var keys = salesOpportunityKeysOf(o);
+      keys.forEach(function (k) {
+        if (counts[k] != null) counts[k] += 1;
+      });
+      // Hotel Sourcing Not Confirmed parent count respects subgroup when counting chip
+      if (
+        matchesHotelSourcingNotConfirmedFilter(
+          o,
+          sourcingSubgroup || HOTEL_SOURCING_SUBGROUP.BOTH
+        )
+      ) {
+        // already counted via keys when BOTH; for OPEN/UNCONFIRMED subgroup recount
+      }
+      var sourcing = normalizeHotelSourcingForFilter(o);
+      if (sourcing === "Hotel Sourcing Open") counts.sourcingOpen += 1;
+      if (sourcing === "Hotel Sourcing Unconfirmed") counts.sourcingUnconfirmed += 1;
+    });
+    // Recalculate HOTEL_SOURCING_NOT_CONFIRMED against active subgroup
+    counts.HOTEL_SOURCING_NOT_CONFIRMED = 0;
+    (opportunities || []).forEach(function (o) {
+      if (isExcludedFromSalesFilterInventory(o)) return;
+      if (
+        matchesHotelSourcingNotConfirmedFilter(
+          o,
+          sourcingSubgroup || HOTEL_SOURCING_SUBGROUP.BOTH
+        )
+      ) {
+        counts.HOTEL_SOURCING_NOT_CONFIRMED += 1;
+      }
+    });
+    return counts;
+  }
+
+  function facetCountBySalesOpportunity(opportunities, filters) {
+    filters = filters || {};
+    var subset = filterOpportunities(opportunities, {
+      priority: filters.priority || "",
+      booking: filters.booking || "",
+      commercialStage: filters.commercialStage || "",
+      salesFocus: filters.salesFocus || "",
+      segment: filters.segment || "",
+      territory: filters.territory || "",
+      weekly: filters.weekly || "",
+      opportunityType: filters.opportunityType || "",
+      // omit salesOpportunity + sourcingSubgroup for facet base
+    });
+    return countBySalesOpportunity(
+      subset,
+      filters.sourcingSubgroup || HOTEL_SOURCING_SUBGROUP.BOTH
+    );
   }
 
   /**
@@ -1250,6 +2445,10 @@
     var subset = filterOpportunities(opportunities, {
       priority: filters.priority || "",
       booking: filters.booking || "",
+      commercialStage: filters.commercialStage || "",
+      salesOpportunity: filters.salesOpportunity || "",
+      salesFocus: filters.salesFocus || "",
+      sourcingSubgroup: filters.sourcingSubgroup || HOTEL_SOURCING_SUBGROUP.BOTH,
       segment: filters.segment || "",
       territory: filters.territory || "",
       weekly: filters.weekly || "",
@@ -1267,6 +2466,10 @@
       {
         priority: "",
         booking: "",
+        commercialStage: "",
+        salesOpportunity: "",
+        salesFocus: "",
+        sourcingSubgroup: HOTEL_SOURCING_SUBGROUP.BOTH,
         segment: "",
         territory: "",
         weekly: "",
@@ -1274,10 +2477,19 @@
       },
       filters || {}
     );
+    if (!filters.sourcingSubgroup) {
+      filters.sourcingSubgroup = HOTEL_SOURCING_SUBGROUP.BOTH;
+    }
     if (!filterOpportunities(opportunities, filters).length) {
-      if (changedKey === "priority") filters.booking = "";
-      else if (changedKey === "booking") filters.priority = "";
-      else if (changedKey === "weekly") {
+      if (changedKey === "priority") {
+        filters.booking = "";
+      } else if (changedKey === "booking") {
+        filters.priority = "";
+      } else if (changedKey === "commercialStage") {
+        filters.salesOpportunity = "";
+      } else if (changedKey === "salesOpportunity") {
+        filters.commercialStage = "";
+      } else if (changedKey === "weekly") {
         filters.priority = "";
         filters.booking = "";
       } else if (changedKey === "opportunityType") {
@@ -1287,6 +2499,20 @@
       }
     }
     return filters;
+  }
+
+  function resetBrowseFilters() {
+    return {
+      priority: "",
+      booking: "",
+      commercialStage: "",
+      salesOpportunity: "",
+      sourcingSubgroup: HOTEL_SOURCING_SUBGROUP.BOTH,
+      segment: "",
+      territory: "",
+      weekly: "",
+      opportunityType: "",
+    };
   }
 
   function weeklyDeltaStateOf(opp) {
@@ -1371,7 +2597,7 @@
     ];
     return (
       '<div class="chain-scale-legend gdi-browse-legend" role="group" aria-label="Weekly change filters">' +
-      "<span>This Week</span>" +
+      "<span>Weekly Change</span>" +
       presets
         .map(function (p) {
           var n =
@@ -1438,6 +2664,8 @@
     opts = opts || {};
     var active = opts.active != null ? opts.active : "";
     var counts = opts.counts || {};
+    // Customer-facing Priority presets: All / High / Medium / Watch only.
+    // Unclassified remains an internal data-quality key — never a preset chip.
     var presets = [
       { value: "", label: "All", swatch: null },
       {
@@ -1457,8 +2685,10 @@
       },
     ];
     return (
-      '<div class="chain-scale-legend gdi-browse-legend" role="group" aria-label="Priority filters">' +
-      "<span>Priority</span>" +
+      '<div class="gdi-browse-preset gdi-browse-preset--priority">' +
+      '<div class="chain-scale-legend gdi-browse-legend gdi-browse-legend--priority gdi-preset-panel" role="group" aria-label="Priority filters">' +
+      '<span class="gdi-preset-panel__title">Priority</span>' +
+      '<div class="gdi-preset-panel__chips">' +
       presets
         .map(function (p) {
           var n = counts[p.value] != null ? counts[p.value] : 0;
@@ -1484,12 +2714,13 @@
           );
         })
         .join("") +
-      "</div>"
+      "</div></div></div>"
     );
   }
 
   /**
-   * Action Window legend — booking-window presets with opportunity counts.
+   * Action Timing legend — when a salesperson should act (bookingWindowStatus).
+   * Distinct from Weekly Change (research freshness) and Event Date.
    * Classification: REUSABLE_PRODUCT_UI
    */
   function actionPresetHtml(opts) {
@@ -1504,23 +2735,34 @@
         swatch: ACTION_SWATCH.CONTACT_NOW,
       },
       {
-        value: "QUALIFY_NOW",
-        label: "Contact",
-        swatch: ACTION_SWATCH.QUALIFY_NOW,
+        value: "WATCH",
+        label: "Future Watch",
+        swatch: ACTION_SWATCH.WATCH,
       },
-      { value: "WATCH", label: "Watch", swatch: ACTION_SWATCH.WATCH },
       {
         value: "TOO_EARLY",
-        label: "Watch - Too Early",
+        label: "Too Early",
         swatch: ACTION_SWATCH.TOO_EARLY,
+      },
+      {
+        value: "UNCLASSIFIED",
+        label: "Unclassified",
+        swatch: ACTION_SWATCH.WATCH,
       },
     ];
     return (
-      '<div class="chain-scale-legend gdi-browse-legend" role="group" aria-label="Action Window filters">' +
-      "<span>Action Window</span>" +
+      '<div class="chain-scale-legend gdi-browse-legend" role="group" aria-label="Action Timing filters" title="When sales should investigate or contact — not the event date, and not research freshness.">' +
+      "<span>Action Timing</span>" +
       presets
         .map(function (p) {
-          var n = counts[p.value] != null ? counts[p.value] : 0;
+          var n =
+            p.value === ""
+              ? counts[""] != null
+                ? counts[""]
+                : 0
+              : counts[p.value] != null
+                ? counts[p.value]
+                : 0;
           var isActive = active === p.value;
           var noRecords = p.value !== "" && n === 0;
           return (
@@ -1609,7 +2851,9 @@
     rows = (rows || []).slice();
     if (filters.priority) {
       rows = rows.filter(function (o) {
-        return o.priority === filters.priority;
+        var key =
+          o.priorityFilterKey || normalizePriorityFilterKey(o.priority);
+        return key === filters.priority;
       });
     }
     if (filters.segment) {
@@ -1619,7 +2863,29 @@
     }
     if (filters.booking) {
       rows = rows.filter(function (o) {
-        return o.bookingWindowStatus === filters.booking;
+        return normalizeBookingWindowStatus(o) === filters.booking;
+      });
+    }
+    if (filters.commercialStage) {
+      rows = rows.filter(function (o) {
+        if (isExcludedFromSalesFilterInventory(o)) return false;
+        return (
+          normalizeCommercialStageFilterKey(o) === filters.commercialStage
+        );
+      });
+    }
+    if (filters.salesOpportunity) {
+      rows = rows.filter(function (o) {
+        return matchesSalesOpportunityFilter(
+          o,
+          filters.salesOpportunity,
+          filters.sourcingSubgroup || HOTEL_SOURCING_SUBGROUP.BOTH
+        );
+      });
+    }
+    if (filters.salesFocus) {
+      rows = rows.filter(function (o) {
+        return matchesSalesFocusFilter(o, filters.salesFocus);
       });
     }
     if (filters.territory) {
@@ -1643,8 +2909,8 @@
         return classifyOpportunityTypeFilter(o) === filters.opportunityType;
       });
     }
-    // Customer GDI no longer exposes an All/Ready/Watching workflow chip row.
-    // Ready vs Watch remains visible on cards; Priority + Action Window stay as browse filters.
+    // Customer GDI: Priority + Sales Opportunities (+ Commercial Stage when set in state).
+    // Ready vs Watch remains visible on cards; Action Timing remains available when set.
     return rows;
   }
 
@@ -1665,10 +2931,33 @@
     rows.sort(function (a, b) {
       var av = a[key];
       var bv = b[key];
+      if (key === "salesRelevance") {
+        var d = salesRelevanceRank(a) - salesRelevanceRank(b);
+        if (d !== 0) return d * dir;
+        av = a.eventStartDate || a.tileEventStartDate || "";
+        bv = b.eventStartDate || b.tileEventStartDate || "";
+        if (av && bv && av !== bv) return String(av).localeCompare(String(bv)) * dir;
+        return String(a.displayTitle || a.title || "").localeCompare(
+          String(b.displayTitle || b.title || "")
+        );
+      }
       if (key === "priority") {
-        av = PRIORITY_RANK[a.priority] != null ? PRIORITY_RANK[a.priority] : 9;
-        bv = PRIORITY_RANK[b.priority] != null ? PRIORITY_RANK[b.priority] : 9;
-        return (av - bv) * dir;
+        // Prefer High → Medium → Watch, then sales relevance, then date
+        av = PRIORITY_RANK[a.priorityFilterKey || a.priority];
+        bv = PRIORITY_RANK[b.priorityFilterKey || b.priority];
+        av = av != null ? av : 9;
+        bv = bv != null ? bv : 9;
+        if (av !== bv) return (av - bv) * dir;
+        var sr = salesRelevanceRank(a) - salesRelevanceRank(b);
+        if (sr !== 0) return sr * dir;
+        var aLane = INVENTORY_LANE_RANK[a.inventoryLane];
+        var bLane = INVENTORY_LANE_RANK[b.inventoryLane];
+        if (aLane != null || bLane != null) {
+          av = aLane != null ? aLane : 9;
+          bv = bLane != null ? bLane : 9;
+          if (av !== bv) return (av - bv) * dir;
+        }
+        return 0;
       }
       if (key === "hotelFitScore" || key === "evidenceConfidence") {
         av = typeof av === "number" ? av : -1;
@@ -1676,8 +2965,11 @@
         return (bv - av) * dir;
       }
       if (key === "eventStartDate") {
-        av = a.eventStartDate || a.eventTiming || "";
-        bv = b.eventStartDate || b.eventTiming || "";
+        av = a.eventStartDate || a.tileEventStartDate || a.eventTiming || "";
+        bv = b.eventStartDate || b.tileEventStartDate || b.eventTiming || "";
+        // Empty dates sort after dated future events
+        if (!av && bv) return 1 * dir;
+        if (av && !bv) return -1 * dir;
         return String(av).localeCompare(String(bv)) * dir;
       }
       if (key === "title") {
@@ -1876,11 +3168,30 @@
     var section = String(
       linked.prospectReviewSection || it.prospectReviewSection || ""
     ).toUpperCase();
+    // Prefer opportunity-specific commercial category over generic
+    // "Corporate Account Relationship" repeated across cards.
+    var specific =
+      linked.commercialCategory ||
+      it.commercialCategory ||
+      linked.opportunityTypeLabel ||
+      it.opportunityTypeLabel ||
+      "";
+    if (
+      specific &&
+      !/^corporate account relationship$/i.test(String(specific).trim())
+    ) {
+      return (
+        '<span class="gdi-tile-pill gdi-pill-watch" data-facet="commercial-class">' +
+        esc(specific) +
+        "</span>"
+      );
+    }
     var label =
       linked.prospectCustomerLabel ||
       it.prospectCustomerLabel ||
       linked.prospectCommercialLabel ||
       it.prospectCommercialLabel ||
+      specific ||
       "";
     var lbl = String(label || "");
     // Packaging class — must not read as the Priority High/Medium/Watch filter.
@@ -1891,10 +3202,10 @@
     }
     if (section === "EXPLORATORY" || /exploratory/i.test(lbl)) {
       return (
-        '<span class="gdi-tile-pill gdi-pill-med" data-facet="commercial-class">Exploratory</span>'
+        '<span class="gdi-tile-pill gdi-pill-med" data-facet="commercial-class">Potential opportunity</span>'
       );
     }
-    if (lbl) {
+    if (lbl && !/^corporate account relationship$/i.test(lbl.trim())) {
       return (
         '<span class="gdi-tile-pill gdi-pill-watch" data-facet="commercial-class">' +
         esc(lbl) +
@@ -1905,6 +3216,39 @@
   }
 
   function readinessPillHtml(it, linked) {
+    // Inventory Visibility V1 — honest lane label (does not claim Ready).
+    var invLane = String(
+      (linked && linked.inventoryLane) || (it && it.inventoryLane) || ""
+    ).toUpperCase();
+    var invLabel =
+      (linked && linked.inventoryLaneLabel) ||
+      (it && it.inventoryLaneLabel) ||
+      "";
+    if (invLane && invLabel) {
+      var invCls =
+        invLane === "SALES_OPPORTUNITY"
+          ? "gdi-pill-high"
+          : invLane === "ACCOUNT_DEVELOPMENT"
+            ? "gdi-pill-med"
+            : invLane === "EXCLUDED"
+              ? "gdi-pill-watch"
+              : "gdi-pill-action-watch";
+      return (
+        '<span class="gdi-tile-pill ' +
+        invCls +
+        '" data-facet="inventory-lane" title="' +
+        esc(
+          ((linked && linked.inventoryWhyNotSalesReady) ||
+            (it && it.inventoryWhyNotSalesReady) ||
+            [])
+            .slice(0, 4)
+            .join(", ")
+        ) +
+        '">' +
+        esc(invLabel) +
+        "</span>"
+      );
+    }
     // Maturity / readiness badges — QUALIFIED (pilot) vs ACTIONABLE (Ready) vs Future Watch.
     var maturity = String(
       (linked && linked.gdiMaturityState) || (it && it.gdiMaturityState) || ""
@@ -2105,6 +3449,21 @@
       companyPhone = linked.contactPhone || it.contactPhone || "";
     }
     companyPhone = companyPhone ? String(companyPhone).trim() : "";
+    // Reject ISO dates / research timestamps mistaken for telephone numbers
+    if (
+      companyPhone &&
+      (/^(?:19|20)\d{2}[-/.]\d{1,2}(?:[-/.]\d{1,2})?$/.test(companyPhone) ||
+        companyPhone.replace(/\D/g, "").length < 8)
+    ) {
+      companyPhone = "";
+    }
+    if (
+      personPhone &&
+      (/^(?:19|20)\d{2}[-/.]\d{1,2}(?:[-/.]\d{1,2})?$/.test(String(personPhone).trim()) ||
+        String(personPhone).replace(/\D/g, "").length < 8)
+    ) {
+      personPhone = "";
+    }
     if (
       companyPhone &&
       personPhone &&
@@ -2157,6 +3516,18 @@
         role: isReferral ? "Referral contact" : role,
         channelKind: personEmail ? "email" : "phone",
         channelText: personEmail || personPhone,
+        channelHref: "",
+      };
+    }
+    // Named verified person without personal email/phone yet — still show
+    // name + role on Scaling tiles (Surfe retrieve lives in the drawer).
+    if (contactName && !nameLooksLikeOrgEntity && looksLikePersonNameLocal(contactName)) {
+      return {
+        kind: isReferral ? "referral" : "person",
+        name: contactName,
+        role: isReferral ? "Referral contact" : role || "Relevant contact",
+        channelKind: "",
+        channelText: "",
         channelHref: "",
       };
     }
@@ -2237,45 +3608,586 @@
     };
   }
 
+  /**
+   * Universal tile contact footer V2 — ONE name + verified professional title
+   * (else opportunity role, else Role Not Yet Verified). Or Buyer Not Yet Identified.
+   * Never shows Contact Under Review / eligibility enums on the tile.
+   */
+  function resolveTileContactPreviewBlock(it, linked) {
+    linked = linked || {};
+    it = it || {};
+    var preview =
+      linked.tileContactPreview ||
+      it.tileContactPreview ||
+      null;
+    var FORBIDDEN = {
+      "Contact Under Review": true,
+      "Relevant Contact": true,
+      "Relevant contact": true,
+      CONTACT_RELEVANT: true,
+      INELIGIBLE_UNSPECIFIED: true,
+      "Buyer Eligibility Pending": true,
+      "Unverified Buyer": true,
+      "Role Unverified": true,
+      "Relevant Influencer": true,
+      "Potential Buyer": true,
+      "Decision Maker": true,
+    };
+    var OPPORTUNITY_ROLES = {
+      "Event Organizer": true,
+      "Meeting Planner": true,
+      "Group Travel Coordinator": true,
+      "Group Travel Contact": true,
+      "Corporate Travel Contact": true,
+      "Referral Contact": true,
+    };
+    function sanitizeDisplayRole(raw) {
+      var r = shortContactRoleLabel(raw);
+      if (!r || FORBIDDEN[r]) return "Role Not Yet Verified";
+      if (/^relevant contact$/i.test(r)) return "Role Not Yet Verified";
+      if (/referral/i.test(r)) return "Referral Contact";
+      if (/event organizer/i.test(r)) return "Event Organizer";
+      if (/meeting planner/i.test(r)) return "Meeting Planner";
+      if (/corporate travel/i.test(r)) return "Corporate Travel Contact";
+      if (/group travel|hotel sourc/i.test(r)) return "Group Travel Coordinator";
+      if (/decision[-\s]?maker|potential buyer|contact under review|role unverified/i.test(r)) {
+        return "Role Not Yet Verified";
+      }
+      return toProperCaseContactRoleLabel(r);
+    }
+    if (preview && preview.kind === "named" && preview.name) {
+      var role = sanitizeDisplayRole(
+        preview.displayRole || preview.roleLabel || ""
+      );
+      return {
+        kind: "named",
+        name: String(preview.name).replace(/\s+/g, " ").trim(),
+        role: role,
+      };
+    }
+    if (
+      preview &&
+      (preview.kind === "none" ||
+        preview.displayName === "Buyer Not Yet Identified")
+    ) {
+      return { kind: "none", name: "Buyer Not Yet Identified", role: "" };
+    }
+    // Client fallback when DTO missing — title first, then opportunity role.
+    function fallbackRoleFromPerson(person) {
+      person = person || {};
+      var title = shortContactRoleLabel(
+        person.professionalTitle || person.jobTitle || person.title || ""
+      );
+      if (
+        title &&
+        !FORBIDDEN[title] &&
+        !OPPORTUNITY_ROLES[title] &&
+        !/^(decision[-\s]?maker|potential buyer)$/i.test(title)
+      ) {
+        return title;
+      }
+      var classLabel = shortContactRoleLabel(
+        person.contactClassificationLabel || person.roleClass || person.role || ""
+      );
+      if (OPPORTUNITY_ROLES[classLabel]) return classLabel;
+      if (/event organizer/i.test(classLabel)) return "Event Organizer";
+      if (/meeting planner/i.test(classLabel)) return "Meeting Planner";
+      if (/referral/i.test(classLabel)) return "Referral Contact";
+      if (/corporate travel/i.test(classLabel)) return "Corporate Travel Contact";
+      if (/group travel|hotel sourc/i.test(classLabel)) {
+        return "Group Travel Coordinator";
+      }
+      return "Role Not Yet Verified";
+    }
+    var two = linked.scalingTwoContactPresentation || it.scalingTwoContactPresentation;
+    var slot =
+      (two &&
+        two.primary &&
+        two.primary.customerFacingNamed &&
+        two.primary.name &&
+        looksLikePersonNameLocal(two.primary.name) &&
+        two.primary) ||
+      (two &&
+        two.secondary &&
+        two.secondary.customerFacingNamed &&
+        two.secondary.name &&
+        looksLikePersonNameLocal(two.secondary.name) &&
+        two.secondary) ||
+      null;
+    if (slot && slot.name) {
+      return {
+        kind: "named",
+        name: String(slot.name).replace(/\s+/g, " ").trim(),
+        role: toProperCaseContactRoleLabel(fallbackRoleFromPerson(slot)),
+      };
+    }
+    var pc =
+      (linked.primaryContact && linked.primaryContact.name && linked.primaryContact) ||
+      (it.primaryContact && it.primaryContact.name && it.primaryContact) ||
+      null;
+    if (pc && looksLikePersonNameLocal(pc.name)) {
+      return {
+        kind: "named",
+        name: String(pc.name).replace(/\s+/g, " ").trim(),
+        role: toProperCaseContactRoleLabel(fallbackRoleFromPerson(pc)),
+      };
+    }
+    var sc =
+      (linked.secondaryContact && linked.secondaryContact.name && linked.secondaryContact) ||
+      (it.secondaryContact && it.secondaryContact.name && it.secondaryContact) ||
+      null;
+    if (sc && looksLikePersonNameLocal(sc.name)) {
+      return {
+        kind: "named",
+        name: String(sc.name).replace(/\s+/g, " ").trim(),
+        role: toProperCaseContactRoleLabel(fallbackRoleFromPerson(sc)),
+      };
+    }
+    return { kind: "none", name: "Buyer Not Yet Identified", role: "" };
+  }
+
   function compactTileContactHtml(block) {
     block = block || {};
-    if (block.kind === "empty") {
+    if (block.kind === "none" || block.kind === "empty" || !block.name) {
       return (
-        '<div class="brand-card__contact-line brand-card__contact-line--empty">' +
-        esc(block.channelText || "Office operations contact not yet identified") +
+        '<div class="brand-card__contact-name brand-card__contact-name--unidentified">' +
+        esc(block.name || "Buyer Not Yet Identified") +
         "</div>"
       );
     }
     var bits = [];
-    if (block.name) {
-      bits.push(
-        '<div class="brand-card__contact-name">' + esc(block.name) + "</div>"
-      );
-    }
+    bits.push(
+      '<div class="brand-card__contact-name">' + esc(block.name) + "</div>"
+    );
     if (block.role) {
       bits.push(
         '<div class="brand-card__contact-line brand-card__contact-line--role">' +
-          esc(block.role) +
-          "</div>"
-      );
-    }
-    if (block.channelKind === "form" && block.channelHref) {
-      bits.push(
-        '<div class="brand-card__contact-line">' +
-          '<a class="brand-card__contact-link" href="' +
-          esc(block.channelHref) +
-          '" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">' +
-          esc(block.channelText || "Contact form") +
-          "</a></div>"
-      );
-    } else if (block.channelText) {
-      bits.push(
-        '<div class="brand-card__contact-line">' +
-          esc(block.channelText) +
+          esc(toProperCaseContactRoleLabel(block.role)) +
           "</div>"
       );
     }
     return bits.join("");
+  }
+
+  /** Canonical revenue-stream classes — shared with multi-revenue qualification V1. */
+  var HOTEL_REVENUE_STREAM_CLASS = {
+    GUESTROOMS_ONLY: "GUESTROOMS_ONLY",
+    EVENT_FNB_ONLY: "EVENT_FNB_ONLY",
+    COMBINED_GUESTROOMS_EVENT_FNB: "COMBINED_GUESTROOMS_EVENT_FNB",
+    REVENUE_STREAM_UNCONFIRMED: "REVENUE_STREAM_UNCONFIRMED",
+  };
+
+  var REVENUE_STREAM_ICON_LABEL = {
+    guestrooms: "Guestrooms",
+    eventFnb: "Meetings, Events & Catering",
+  };
+
+  /** Lucide-compatible bed-double path set (24×24, stroke currentColor). */
+  function gdiSvgBedDouble() {
+    return (
+      '<svg class="gdi-revenue-stream-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' +
+      '<path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"/>' +
+      '<path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/>' +
+      '<path d="M12 4v6"/>' +
+      '<path d="M2 18h20"/>' +
+      "</svg>"
+    );
+  }
+
+  /** Lucide-compatible utensils path set. */
+  function gdiSvgUtensils() {
+    return (
+      '<svg class="gdi-revenue-stream-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' +
+      '<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/>' +
+      '<path d="M7 2v20"/>' +
+      '<path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>' +
+      "</svg>"
+    );
+  }
+
+  /** Lucide-compatible calendar-check (verified need-date match). */
+  function gdiSvgCalendarCheck() {
+    return (
+      '<svg class="gdi-need-date-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' +
+      '<path d="M8 2v4"/>' +
+      '<path d="M16 2v4"/>' +
+      '<rect width="18" height="18" x="3" y="4" rx="2"/>' +
+      '<path d="M3 10h18"/>' +
+      '<path d="m9 16 2 2 4-4"/>' +
+      "</svg>"
+    );
+  }
+
+  /** Lucide-compatible calendar-clock (potentially flexible). */
+  function gdiSvgCalendarClock() {
+    return (
+      '<svg class="gdi-need-date-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' +
+      '<path d="M16 14v2.2l1.6 1"/>' +
+      '<path d="M16 2v4"/>' +
+      '<path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7.5"/>' +
+      '<path d="M3 10h5"/>' +
+      '<path d="M8 2v4"/>' +
+      '<circle cx="16" cy="16" r="6"/>' +
+      "</svg>"
+    );
+  }
+
+  /** Lucide-compatible calendar-search (timing research required). */
+  function gdiSvgCalendarSearch() {
+    return (
+      '<svg class="gdi-need-date-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' +
+      '<path d="M16 2v4"/>' +
+      '<path d="M21 14v-8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8"/>' +
+      '<path d="M3 10h18"/>' +
+      '<path d="M8 2v4"/>' +
+      '<circle cx="18" cy="18" r="3"/>' +
+      '<path d="m22 22-1.5-1.5"/>' +
+      "</svg>"
+    );
+  }
+
+  /**
+   * Need-Date Intelligence calendar icon — hidden when no meaningful hotel match.
+   * Informational only — not clickable (V1).
+   */
+  function needDateIntelligenceIconHtml(it, linked) {
+    linked = linked || {};
+    it = it || {};
+    var preview = linked.tileNeedDatePreview || it.tileNeedDatePreview || null;
+    if (!preview || preview.visible !== true || !preview.indicatorState) {
+      return "";
+    }
+    var state = String(preview.indicatorState || "");
+    if (state === "NO_MEANINGFUL_MATCH") return "";
+    var icon =
+      preview.icon ||
+      (state === "VERIFIED_DATE_MATCH"
+        ? "calendar-check"
+        : state === "POTENTIALLY_FLEXIBLE"
+          ? "calendar-clock"
+          : state === "TIMING_RESEARCH_REQUIRED"
+            ? "calendar-search"
+            : "");
+    if (!icon) return "";
+    var colorClass =
+      preview.colorClass ||
+      (state === "VERIFIED_DATE_MATCH"
+        ? "gdi-need-date-icon--verified"
+        : state === "POTENTIALLY_FLEXIBLE"
+          ? "gdi-need-date-icon--flexible"
+          : state === "TIMING_RESEARCH_REQUIRED"
+            ? "gdi-need-date-icon--research"
+            : "");
+    var tip = String(preview.tooltipText || "Need-date intelligence");
+    var aria = String(preview.accessibleLabel || tip);
+    var svg =
+      icon === "calendar-check"
+        ? gdiSvgCalendarCheck()
+        : icon === "calendar-clock"
+          ? gdiSvgCalendarClock()
+          : icon === "calendar-search"
+            ? gdiSvgCalendarSearch()
+            : "";
+    if (!svg) return "";
+    return (
+      '<span class="gdi-need-date-icon ' +
+      colorClass +
+      '" data-need-date-state="' +
+      esc(state) +
+      '" data-need-date-icon="' +
+      esc(icon) +
+      '" title="' +
+      esc(tip) +
+      '" role="img" aria-label="' +
+      esc(aria) +
+      '">' +
+      svg +
+      '<span class="gdi-sr-only">' +
+      esc(aria) +
+      "</span>" +
+      "</span>"
+    );
+  }
+
+  /** Conditional Hotel Need-Date Match drawer block (does not replace ten sections). */
+  function needDateMatchDrawerSectionHtml(o) {
+    o = o || {};
+    var block = o.needDateMatchV1 || null;
+    var preview = o.tileNeedDatePreview || null;
+    if (!block && !(preview && preview.visible)) return "";
+    var title =
+      (block && block.title) ||
+      (preview && preview.drawerTitle) ||
+      "Hotel Need-Date Match";
+    var months =
+      (block && (block.needPeriodLabel || block.needPeriodRange)) ||
+      (preview &&
+        preview.displayMonthLabels &&
+        preview.displayMonthLabels.join(", ")) ||
+      "";
+    var why =
+      (block && block.whyThisMatches) ||
+      (preview && preview.recommendedSalesApproach) ||
+      "";
+    var action =
+      (block && block.suggestedSalesAction) ||
+      (preview && preview.qualificationQuestion) ||
+      "";
+    var flex =
+      (block && block.flexibilityClassification) ||
+      (preview && preview.flexibilityClassification) ||
+      "";
+    var access =
+      (block && block.commercialAccessibilityQualification) ||
+      (preview && preview.commercialAccessibilityQualification) ||
+      "";
+    var timing =
+      (block && (block.timingOverlapLabel || block.timingOverlapStatus)) ||
+      (preview && preview.dateEvidenceStatus) ||
+      "";
+    var state =
+      (block && block.tileIndicatorState) ||
+      (preview && preview.indicatorState) ||
+      "";
+    if (!why && !months) return "";
+    var oppTiming =
+      (o.eventDateDisplay ||
+        o.datePillDisplayLabel ||
+        o.tileEventStartDate ||
+        o.eventStartDate ||
+        "") +
+      (o.eventEndDate && o.eventStartDate && o.eventEndDate !== o.eventStartDate
+        ? " – " + o.eventEndDate
+        : "");
+    var bits = "";
+    if (months) {
+      bits +=
+        '<p><strong>Hotel need period(s):</strong> ' + esc(months) + "</p>";
+    }
+    if (oppTiming) {
+      bits +=
+        '<p><strong>Opportunity timing:</strong> ' + esc(oppTiming) + "</p>";
+    }
+    if (state || timing) {
+      bits +=
+        '<p><strong>Date-match classification:</strong> ' +
+        esc(state || timing) +
+        (timing && state ? " · " + esc(timing) : "") +
+        "</p>";
+    }
+    if (flex) {
+      bits +=
+        '<p><strong>Flexibility status:</strong> ' +
+        esc(flex) +
+        (preview && preview.flexibilityMayPresentAsConfirmed
+          ? " (buyer-confirmed)"
+          : " — not buyer-confirmed unless evidenced") +
+        "</p>";
+    }
+    if (access) {
+      bits +=
+        '<p><strong>Commercial accessibility:</strong> ' +
+        esc(access) +
+        "</p>";
+    }
+    if (why) bits += "<p>" + esc(why) + "</p>";
+    if (state === "POTENTIALLY_FLEXIBLE") {
+      bits +=
+        "<p>Potential timing flexibility identified. Confirm event or travel dates with the organizer.</p>";
+    }
+    if (state === "TIMING_RESEARCH_REQUIRED") {
+      bits +=
+        "<p>Opportunity timing has not been confirmed. Further qualification is required before treating this as a Need-Date match.</p>";
+    }
+    if (action) {
+      bits +=
+        '<p><strong>What sales should verify next:</strong> ' +
+        esc(action) +
+        "</p>";
+    }
+    bits +=
+      '<p class="gdi-muted">Date match does not prove hotel sourcing is open, rooms are available, a rate was offered, or business was secured.</p>';
+    return (
+      '<section class="gdi-section gdi-section--need-date-match" data-section-id="hotel_need_date_match"><h3>' +
+      esc(title) +
+      "</h3>" +
+      bits +
+      "</section>"
+    );
+  }
+
+  function normalizeRevenueStreamClassUi(raw) {
+    var c = String(raw || "")
+      .trim()
+      .toUpperCase()
+      .replace(/\s+/g, "_");
+    if (
+      c === HOTEL_REVENUE_STREAM_CLASS.GUESTROOMS_ONLY ||
+      c === HOTEL_REVENUE_STREAM_CLASS.EVENT_FNB_ONLY ||
+      c === HOTEL_REVENUE_STREAM_CLASS.COMBINED_GUESTROOMS_EVENT_FNB ||
+      c === HOTEL_REVENUE_STREAM_CLASS.REVENUE_STREAM_UNCONFIRMED
+    ) {
+      return c;
+    }
+    return HOTEL_REVENUE_STREAM_CLASS.REVENUE_STREAM_UNCONFIRMED;
+  }
+
+  function thesisPresentUi(t) {
+    var s = String(t || "").replace(/\s+/g, " ").trim();
+    if (!s) return false;
+    if (/^(unsupported|not supported|no evidence|none|n\/a|null|unverified)\b/i.test(s)) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Resolve icon states from DTO (prefer API-attached revenueStreamIcons /
+   * revenueStreamClass). Fallback derives only from thesis fields — never from
+   * demand segment alone.
+   */
+  function resolveRevenueStreamIconState(it, linked) {
+    linked = linked || {};
+    it = it || {};
+    var iconsDto = linked.revenueStreamIcons || it.revenueStreamIcons;
+    var cls = normalizeRevenueStreamClassUi(
+      linked.revenueStreamClass ||
+        it.revenueStreamClass ||
+        linked.applicableHotelRevenueStreams ||
+        it.applicableHotelRevenueStreams
+    );
+    var guestThesis =
+      linked.guestroomThesis ||
+      it.guestroomThesis ||
+      (linked.hotelDemandHypotheses && linked.hotelDemandHypotheses.guestroomHypothesis) ||
+      (it.hotelDemandHypotheses && it.hotelDemandHypotheses.guestroomHypothesis) ||
+      linked.potentialGuestroomDemand ||
+      it.potentialGuestroomDemand ||
+      "";
+    var eventThesis =
+      linked.eventFnbThesis ||
+      it.eventFnbThesis ||
+      (linked.hotelDemandHypotheses && linked.hotelDemandHypotheses.meetingsHypothesis) ||
+      (linked.hotelDemandHypotheses && linked.hotelDemandHypotheses.cateringHypothesis) ||
+      (it.hotelDemandHypotheses && it.hotelDemandHypotheses.meetingsHypothesis) ||
+      (it.hotelDemandHypotheses && it.hotelDemandHypotheses.cateringHypothesis) ||
+      linked.potentialMeetingDemand ||
+      it.potentialMeetingDemand ||
+      linked.potentialCateringDemand ||
+      it.potentialCateringDemand ||
+      "";
+
+    var guestrooms = "muted";
+    var eventFnb = "muted";
+
+    if (iconsDto && (iconsDto.guestrooms || iconsDto.eventFnb)) {
+      guestrooms = iconsDto.guestrooms === "active" ? "active" : "muted";
+      eventFnb = iconsDto.eventFnb === "active" ? "active" : "muted";
+    } else if (cls === HOTEL_REVENUE_STREAM_CLASS.GUESTROOMS_ONLY) {
+      guestrooms = "active";
+    } else if (cls === HOTEL_REVENUE_STREAM_CLASS.EVENT_FNB_ONLY) {
+      eventFnb = "active";
+    } else if (cls === HOTEL_REVENUE_STREAM_CLASS.COMBINED_GUESTROOMS_EVENT_FNB) {
+      guestrooms = "active";
+      eventFnb = "active";
+    } else {
+      // Unconfirmed / missing class: only light icons when theses are present
+      if (thesisPresentUi(guestThesis)) guestrooms = "active";
+      if (thesisPresentUi(eventThesis)) eventFnb = "active";
+    }
+
+    // Drawer consistency — do not highlight without supporting thesis/evidence text
+    // when the opposite stream is the only one with prose (combined demotion).
+    if (guestrooms === "active" && !thesisPresentUi(guestThesis) && eventFnb === "active") {
+      guestrooms = "muted";
+    }
+    if (eventFnb === "active" && !thesisPresentUi(eventThesis) && guestrooms === "active") {
+      eventFnb = "muted";
+    }
+    // Single-stream classes from API may omit thesis prose on older rows — keep
+    // class-driven highlight when only one side is active.
+    if (
+      cls === HOTEL_REVENUE_STREAM_CLASS.GUESTROOMS_ONLY &&
+      guestrooms === "muted" &&
+      thesisPresentUi(guestThesis)
+    ) {
+      guestrooms = "active";
+    }
+    if (
+      cls === HOTEL_REVENUE_STREAM_CLASS.EVENT_FNB_ONLY &&
+      eventFnb === "muted" &&
+      thesisPresentUi(eventThesis)
+    ) {
+      eventFnb = "active";
+    }
+
+    var guestWord = guestrooms === "active" ? "applicable" : "not indicated";
+    var eventWord = eventFnb === "active" ? "applicable" : "not indicated";
+    return {
+      revenueStreamClass: cls,
+      guestrooms: guestrooms,
+      eventFnb: eventFnb,
+      ariaGuestrooms: REVENUE_STREAM_ICON_LABEL.guestrooms + " — " + guestWord,
+      ariaEventFnb: REVENUE_STREAM_ICON_LABEL.eventFnb + " — " + eventWord,
+      ariaGroup:
+        "Revenue streams: " +
+        REVENUE_STREAM_ICON_LABEL.guestrooms +
+        " " +
+        guestWord +
+        "; " +
+        REVENUE_STREAM_ICON_LABEL.eventFnb +
+        " " +
+        eventWord,
+    };
+  }
+
+  /**
+   * Shared SVG revenue-stream indicators for all customer-facing GDI tiles.
+   * Informational only — not clickable.
+   */
+  function revenueStreamIconsHtml(it, linked) {
+    var state = resolveRevenueStreamIconState(it, linked);
+    function iconSpan(kind, active, label, aria) {
+      return (
+        '<span class="gdi-revenue-stream-icon gdi-revenue-stream-icon--' +
+        kind +
+        (active ? " gdi-revenue-stream-icon--active" : " gdi-revenue-stream-icon--muted") +
+        '" data-revenue-stream="' +
+        esc(kind) +
+        '" data-state="' +
+        (active ? "active" : "muted") +
+        '" title="' +
+        esc(label) +
+        '" role="img" aria-label="' +
+        esc(aria) +
+        '">' +
+        (kind === "guestrooms" ? gdiSvgBedDouble() : gdiSvgUtensils()) +
+        '<span class="gdi-sr-only">' +
+        esc(aria) +
+        "</span>" +
+        "</span>"
+      );
+    }
+    return (
+      '<div class="gdi-revenue-stream-icons" role="group" aria-label="' +
+      esc(state.ariaGroup) +
+      '" data-revenue-stream-class="' +
+      esc(state.revenueStreamClass) +
+      '">' +
+      iconSpan(
+        "guestrooms",
+        state.guestrooms === "active",
+        REVENUE_STREAM_ICON_LABEL.guestrooms,
+        state.ariaGuestrooms
+      ) +
+      iconSpan(
+        "eventFnb",
+        state.eventFnb === "active",
+        REVENUE_STREAM_ICON_LABEL.eventFnb,
+        state.ariaEventFnb
+      ) +
+      "</div>"
+    );
   }
 
   function opportunityTileHtml(it, linked, activeFilters) {
@@ -2284,12 +4196,17 @@
     var priority = linked.priority || it.priority || "WATCHLIST";
     var tone = priorityToneClass(priority);
     var id = it.opportunityId || it.id;
-    // Prefer DTO displayTitle (concise account/occasion). Raw title is fallback only.
-    // Precedence bug that caused stale screenshots: scrubbing years + prefixing org
-    // when Airtable already held clean titles — keep presentation on displayTitle.
+    // Prefer DTO displayTitle (canonical customer-facing title). Drawer header
+    // must match the same value — never prefer a stale independent header string.
     var titleRaw =
       linked.displayTitle ||
       it.displayTitle ||
+      linked.drawerHeaderTitle ||
+      it.drawerHeaderTitle ||
+      (linked.eventsOpportunityOverview &&
+        linked.eventsOpportunityOverview.drawerHeaderTitle) ||
+      (it.eventsOpportunityOverview &&
+        it.eventsOpportunityOverview.drawerHeaderTitle) ||
       linked.title ||
       it.title ||
       "";
@@ -2299,7 +4216,56 @@
       ) || "—";
     var bookingStatus =
       linked.bookingWindowStatus || it.bookingWindowStatus || "";
-    // Prefer hotel-specific thesis over thin stubs — never surface assessment-status prose as the card summary.
+    // Prefer org-specific sales summary over hotel inventory thesis (room-count
+    // boilerplate repeated across cards). Hotel fit stays in the drawer.
+    // Do not use whyNow / recommendedAction as summary fallbacks — those belong
+    // in the detail drawer only (compact-tile presentation contract).
+    // Read whyNow/recommendedAction only to scrub them out of tile summaries —
+    // never render as compact-tile "Why now:" / "Next:" lines (drawer-only).
+    var whyNowRaw = linked.whyNow || it.whyNow || "";
+    var nextActRaw =
+      linked.recommendedAction ||
+      it.recommendedAction ||
+      linked.recommendedNextStep ||
+      it.recommendedNextStep ||
+      "";
+    function isActionOrWhyNowContamination(text) {
+      var t = String(text || "").trim();
+      if (!t) return false;
+      if (/^(why\s*now|next|timing)\s*:/i.test(t)) return true;
+      var wn = String(whyNowRaw || "").trim();
+      var na = String(nextActRaw || "").trim();
+      if (wn && t === wn) return true;
+      if (na && t === na) return true;
+      return false;
+    }
+    // Tile body = "What is happening" executive summary (not Opportunity overview).
+    var whatRaw =
+      it.tileCustomerSummary ||
+      linked.tileCustomerSummary ||
+      it.whatIsHappening ||
+      linked.whatIsHappening ||
+      it.summaryWhat ||
+      linked.summaryWhat ||
+      "";
+    // Scrub broken research lead-ins that survived older shadow rows
+    whatRaw = String(whatRaw || "")
+      .replace(/^On\s*,\s*/i, "")
+      .replace(/^On\s+\d{4}-\d{2}-\d{2},\s*public materials described\s+/i, "")
+      // Title/label debris only — do not strip intentional "scaling corporate account" prose.
+      .replace(/\bScaling Corporate Account\b/g, "corporate account")
+      .replace(/\b(local activity|local growth activity)\b/gi, "commercial expansion")
+      .trim();
+    if (isAssessmentStatusProse(whatRaw) || isActionOrWhyNowContamination(whatRaw)) {
+      whatRaw = "";
+    }
+    // Never fall back to Opportunity overview / hotel-demand mechanism boilerplate on the tile.
+    if (
+      /\bplausible hotel-demand mechanism\b/i.test(whatRaw) ||
+      /\bdocumented [\w-]*related commercial activity\b/i.test(whatRaw)
+    ) {
+      whatRaw = "";
+    }
     var thesisRaw =
       linked.hotelOpportunityThesis ||
       it.hotelOpportunityThesis ||
@@ -2308,27 +4274,70 @@
       linked.fitExplanation ||
       it.fitExplanation ||
       "";
-    if (isAssessmentStatusProse(thesisRaw)) thesisRaw = "";
-    var whatRaw = it.summaryWhat || linked.summaryWhat || "";
-    if (isAssessmentStatusProse(whatRaw)) whatRaw = "";
+    if (isAssessmentStatusProse(thesisRaw) || isActionOrWhyNowContamination(thesisRaw)) {
+      thesisRaw = "";
+    }
+    // Drop inventory-only thesis when it lacks org/event specificity
+    if (
+      thesisRaw &&
+      /Luxury lifestyle inventory|\d+\s*keys?|private dining\s*\/\s*boardroom stock/i.test(
+        thesisRaw
+      ) &&
+      whatRaw
+    ) {
+      thesisRaw = "";
+    }
     var summaryRaw =
-      (thesisRaw && String(thesisRaw).length >= 40 ? thesisRaw : "") ||
+      (whatRaw && String(whatRaw).length >= 40 ? whatRaw : "") ||
       whatRaw ||
+      (thesisRaw && String(thesisRaw).length >= 40 ? thesisRaw : "") ||
       thesisRaw ||
       "";
-    var summary = trunc(scrubEventDatesFromText(summaryRaw, { preserveOccasionYear: true }), 180);
+    // Scaling tiles: keep verified activity dates in the body ("opened on April 8,
+    // 2026"). Association tiles still scrub month-day ranges when the date pill
+    // already carries timing. Never leave "on ." holes after a date strip.
+    var isScalingTile =
+      linked.opportunityTypeFilterCategory === "SCALING_COMPANY" ||
+      it.opportunityTypeFilterCategory === "SCALING_COMPANY" ||
+      linked.demandFamily === "SCALING_COMPANY" ||
+      it.demandFamily === "SCALING_COMPANY" ||
+      /Corporate Account Relationship/i.test(
+        String(
+          linked.opportunityTypeLabel ||
+            it.opportunityTypeLabel ||
+            linked.segmentDisplayLabel ||
+            it.segmentDisplayLabel ||
+            "",
+        ),
+      );
+    var summaryBody = isScalingTile
+      ? String(summaryRaw || "")
+          .replace(/\bon\s*\.\s*/gi, " ")
+          .replace(/\s{2,}/g, " ")
+          .trim()
+      : scrubEventDatesFromText(summaryRaw, { preserveOccasionYear: true });
+    var summary = trunc(summaryBody, 320);
     var sourcingLbl =
-      linked.venueSourcingStatusLabel || it.venueSourcingStatusLabel || "";
-    var commercialClassLbl = commercialClassPillHtml(it, linked);
-    var contactBits = [
-      compactTileContactHtml(selectCompactTileContact(it, linked)),
-    ];
-    var prospectLbl =
-      linked.prospectCustomerLabel ||
-      it.prospectCustomerLabel ||
-      linked.prospectCommercialLabel ||
-      it.prospectCommercialLabel ||
+      linked.hotelSourcingStatusLabel ||
+      it.hotelSourcingStatusLabel ||
+      linked.venueSourcingStatusLabel ||
+      it.venueSourcingStatusLabel ||
       "";
+    var classMeta = tileClassificationMeta(it, linked, title);
+    // Events meta already includes Hotel Sourcing — do not append again.
+    var eventsMetaIncludesSourcing =
+      /Hotel Sourcing Open|Hotel Sourcing Unconfirmed|Venue Confirmed|Historical Venue Only/i.test(
+        classMeta
+      );
+    // Universal Sales Action Pill V1: Priority · Recommended Sales Action · Timing.
+    // Commercial Stage stays internal. Weekly delta is meta-line only — never a fourth pill.
+    var priorityKey =
+      linked.priorityFilterKey ||
+      it.priorityFilterKey ||
+      normalizePriorityFilterKey(priority);
+    var contactBits = [
+      compactTileContactHtml(resolveTileContactPreviewBlock(it, linked)),
+    ];
     return (
       '<article class="brand-card brand-card--gdi-opp ' +
       tone +
@@ -2337,23 +4346,22 @@
       '" role="button" tabindex="0">' +
       '<div class="brand-card__header brand-card__header--no-logo">' +
       '<div class="brand-card__info">' +
+      '<div class="brand-card__name-row">' +
       '<div class="brand-card__name">' +
       esc(title) +
       "</div>" +
+      revenueStreamIconsHtml(it, linked) +
+      needDateIntelligenceIconHtml(it, linked) +
+      "</div>" +
       '<div class="brand-card__pills gdi-tile-pills">' +
-      commercialClassLbl +
-      weeklyDeltaPillHtml(linked) +
-      readinessPillHtml(it, linked) +
-      tileActionPill(bookingStatus, priority, activeFilters) +
+      tilePriorityPill(priorityKey, activeFilters) +
+      tileSalesActionPill(it, linked) +
       tileEventDatePill(it, linked) +
-      commercialProgressionCompactPill(
-        linked.commercialProgression || it.commercialProgression
-      ) +
       "</div>" +
       weeklyDeltaMetaLine(linked) +
       '<div class="brand-card__meta">' +
-      tileClassificationMeta(it, linked, title) +
-      (sourcingLbl
+      classMeta +
+      (!eventsMetaIncludesSourcing && sourcingLbl
         ? " · " + esc(formatTileSecondaryHeadlineLabel(sourcingLbl))
         : "") +
       "</div>" +
@@ -2383,6 +4391,8 @@
           "</div>"
         );
       })() +
+      // Intentionally omit research "Evidence: …" labels from customer cards.
+      // Evidence classification remains internal; commercial stage uses pills above.
       '<div class="brand-card__footer brand-card__footer--split">' +
       '<div class="brand-card__contact">' +
       contactBits.join("") +
@@ -2419,8 +4429,202 @@
     );
   }
 
+  function commercialStagePresetHtml(opts) {
+    opts = opts || {};
+    var active = opts.active != null ? opts.active : "";
+    var counts = opts.counts || {};
+    var presets = [
+      { value: "", label: "All", swatch: null },
+      {
+        value: "PURSUE_NOW",
+        label: "Pursue Now",
+        swatch: COMMERCIAL_STAGE_SWATCH.PURSUE_NOW,
+      },
+      {
+        value: "FUTURE_CAPTURE",
+        label: "Future Capture",
+        swatch: COMMERCIAL_STAGE_SWATCH.FUTURE_CAPTURE,
+      },
+      {
+        value: "RELATIONSHIP_DEVELOPMENT",
+        label: "Relationship Development",
+        swatch: COMMERCIAL_STAGE_SWATCH.RELATIONSHIP_DEVELOPMENT,
+      },
+      {
+        value: "QUALIFICATION_NEEDED",
+        label: "Qualification Needed",
+        swatch: COMMERCIAL_STAGE_SWATCH.QUALIFICATION_NEEDED,
+      },
+    ];
+    return (
+      '<div class="chain-scale-legend gdi-browse-legend" role="group" aria-label="Commercial Stage filters" title="Commercial opportunity stage — distinct from Priority and from Hotel Sourcing status.">' +
+      "<span>Commercial Stage</span>" +
+      presets
+        .map(function (p) {
+          var n = counts[p.value] != null ? counts[p.value] : 0;
+          var isActive = active === p.value;
+          var noRecords = p.value !== "" && n === 0;
+          return (
+            '<button type="button" class="chain-scale-legend-item' +
+            (isActive ? " active" : "") +
+            (noRecords ? " no-records" : "") +
+            '" data-gdi-commercial-stage="' +
+            esc(p.value) +
+            '" aria-pressed="' +
+            isActive +
+            '">' +
+            (p.swatch
+              ? '<div class="chain-scale-legend-swatch" style="background:' +
+                esc(p.swatch) +
+                ';"></div>'
+              : "") +
+            '<span class="chain-scale-legend-label">' +
+            esc(presetLabelWithCount(p.label, n)) +
+            "</span></button>"
+          );
+        })
+        .join("") +
+      "</div>"
+    );
+  }
+
+  function salesFocusPresetHtml(opts) {
+    // Sales Focus preset group removed from customer GDI UI (2026-11).
+    // salesActivationCategory / Pursue Now / Sales Qualification remain on DTOs.
+    return "";
+  }
+  function salesOpportunityPresetHtml(opts) {
+    opts = opts || {};
+    var active = opts.active != null ? opts.active : "";
+    var counts = opts.counts || {};
+    var subgroup = opts.sourcingSubgroup || HOTEL_SOURCING_SUBGROUP.BOTH;
+    var presets = [
+      { value: "", label: SALES_OPPORTUNITY_FILTER_LABEL[""], swatch: null },
+      {
+        value: "HOTEL_SOURCING_NOT_CONFIRMED",
+        label: SALES_OPPORTUNITY_FILTER_LABEL.HOTEL_SOURCING_NOT_CONFIRMED,
+        swatch: SALES_OPPORTUNITY_SWATCH.HOTEL_SOURCING_NOT_CONFIRMED,
+      },
+      {
+        value: "PURSUE_NOW",
+        label: SALES_OPPORTUNITY_FILTER_LABEL.PURSUE_NOW,
+        swatch: SALES_OPPORTUNITY_SWATCH.PURSUE_NOW,
+      },
+      {
+        value: "FUTURE_GROUP_BUSINESS",
+        label: SALES_OPPORTUNITY_FILTER_LABEL.FUTURE_GROUP_BUSINESS,
+        swatch: SALES_OPPORTUNITY_SWATCH.FUTURE_GROUP_BUSINESS,
+      },
+      {
+        value: "COMPETITOR_CAPTURE",
+        label: SALES_OPPORTUNITY_FILTER_LABEL.COMPETITOR_CAPTURE,
+        swatch: SALES_OPPORTUNITY_SWATCH.COMPETITOR_CAPTURE,
+      },
+      {
+        value: "PARTNERSHIP_OPPORTUNITIES",
+        label: SALES_OPPORTUNITY_FILTER_LABEL.PARTNERSHIP_OPPORTUNITIES,
+        swatch: SALES_OPPORTUNITY_SWATCH.PARTNERSHIP_OPPORTUNITIES,
+      },
+      {
+        value: "LOCAL_CATERING",
+        label: SALES_OPPORTUNITY_FILTER_LABEL.LOCAL_CATERING,
+        swatch: SALES_OPPORTUNITY_SWATCH.LOCAL_CATERING,
+      },
+    ];
+    var chips = presets
+      .map(function (p) {
+        var n = counts[p.value] != null ? counts[p.value] : 0;
+        var isActive = active === p.value;
+        var noRecords = p.value !== "" && n === 0;
+        var fullName =
+          SALES_OPPORTUNITY_FILTER_LABEL_FULL[p.value] || p.label;
+        var tip = presetLabelWithCount(fullName, n);
+        return (
+          '<button type="button" class="chain-scale-legend-item' +
+          (isActive ? " active" : "") +
+          (noRecords ? " no-records" : "") +
+          '" data-gdi-sales-opportunity="' +
+          esc(p.value) +
+          '" aria-pressed="' +
+          isActive +
+          '" title="' +
+          esc(tip) +
+          '" aria-label="' +
+          esc(tip) +
+          '">' +
+          (p.swatch
+            ? '<div class="chain-scale-legend-swatch" style="background:' +
+              esc(p.swatch) +
+              ';"></div>'
+            : "") +
+          '<span class="chain-scale-legend-label">' +
+          esc(presetLabelWithCount(p.label, n)) +
+          "</span></button>"
+        );
+      })
+      .join("");
+
+    var showSub =
+      active === SALES_OPPORTUNITY_FILTER.HOTEL_SOURCING_NOT_CONFIRMED;
+    var subHtml = "";
+    if (showSub) {
+      var subs = [
+        {
+          value: HOTEL_SOURCING_SUBGROUP.BOTH,
+          label: "Both",
+          n:
+            (counts.sourcingOpen || 0) + (counts.sourcingUnconfirmed || 0),
+        },
+        {
+          value: HOTEL_SOURCING_SUBGROUP.OPEN,
+          label: "Confirmed Open",
+          n: counts.sourcingOpen || 0,
+        },
+        {
+          value: HOTEL_SOURCING_SUBGROUP.UNCONFIRMED,
+          label: "Unconfirmed",
+          n: counts.sourcingUnconfirmed || 0,
+        },
+      ];
+      subHtml =
+        '<div class="gdi-sourcing-subgroup" role="group" aria-label="Hotel sourcing subgroup">' +
+        '<span class="gdi-sourcing-subgroup__label">Sourcing focus</span>' +
+        subs
+          .map(function (s) {
+            var isActive = subgroup === s.value;
+            return (
+              '<button type="button" class="chain-scale-legend-item gdi-sourcing-subgroup__btn' +
+              (isActive ? " active" : "") +
+              '" data-gdi-sourcing-subgroup="' +
+              esc(s.value) +
+              '" aria-pressed="' +
+              isActive +
+              '"><span class="chain-scale-legend-label">' +
+              esc(presetLabelWithCount(s.label, s.n)) +
+              "</span></button>"
+            );
+          })
+          .join("") +
+        "</div>";
+    }
+
+    return (
+      '<div class="gdi-sales-opportunity-filters">' +
+      '<div class="chain-scale-legend gdi-browse-legend gdi-browse-legend--sales gdi-preset-panel" role="group" aria-label="Sales Opportunities quick filters" title="Find commercially attractive demand — Hotel Sourcing Open is not inferred from a missing venue announcement.">' +
+      '<span class="gdi-preset-panel__title">Sales Opportunities</span>' +
+      '<div class="gdi-preset-panel__chips">' +
+      chips +
+      "</div></div>" +
+      subHtml +
+      "</div>"
+    );
+  }
+
   /**
-   * Full browse chrome: Action Window + Priority presets + toolbar.
+   * Full browse chrome: Priority + Sales Opportunities + toolbar.
+   * Sales Focus preset group removed (UI only) — salesActivationCategory remains
+   * on DTOs / drawers. Commercial Stage remains on opportunity DTOs / tile pills.
+   * Reset is the top-level Reset View control (not duplicated here).
    * Classification: REUSABLE_PRODUCT_UI
    */
   function opportunityBrowseChromeHtml(opts) {
@@ -2434,9 +4638,14 @@
         active: opts.activePriority != null ? opts.activePriority : "",
         counts: opts.priorityCounts || {},
       }) +
-      actionPresetHtml({
-        active: opts.activeBooking != null ? opts.activeBooking : "",
-        counts: opts.actionCounts || {},
+      salesOpportunityPresetHtml({
+        active:
+          opts.activeSalesOpportunity != null
+            ? opts.activeSalesOpportunity
+            : "",
+        counts: opts.salesOpportunityCounts || {},
+        sourcingSubgroup:
+          opts.sourcingSubgroup || HOTEL_SOURCING_SUBGROUP.BOTH,
       }) +
       "</div>" +
       resultsToolbarHtml({
@@ -2708,15 +4917,415 @@
     );
   }
 
+  function secondaryHasUsableRoute(s) {
+    if (!s || !s.name) return false;
+    if (s.email) return true;
+    if (s.phone) return true;
+    if (s.organizationRoutingAlternative) return true;
+    // Stage D: named CONTACT_RELEVANT secondary with role evidence / source is displayable
+    // without fabricating email/phone (on-demand enrichment remains separate).
+    if (s.whyThisContact || s.commercialRelevance || s.sourceUrl || s.profileUrl) {
+      return true;
+    }
+    if (s.contactRelevanceLabel === "CONTACT_RELEVANT") return true;
+    return false;
+  }
+
+  function secondaryNamedContactHtml(o) {
+    var s = o && o.secondaryContact;
+    if (!secondaryHasUsableRoute(s)) return "";
+    var classLabel =
+      s.contactClassificationLabel ||
+      (s.commercialClass === "hotel_sourcing_decision_maker"
+        ? "Hotel-sourcing decision-maker"
+        : s.commercialClass === "operational_buyer_or_coordinator"
+          ? "Operational buyer / coordinator"
+          : s.commercialClass === "commercial_influencer_or_referral"
+            ? "Commercial influencer / referral"
+            : s.contactClassification === "VERIFIED_HOTEL_BUYER"
+              ? "Verified hotel / meeting buyer"
+              : s.contactClassification === "POTENTIAL_BUYER"
+                ? "Potential buyer"
+                : s.contactClassification === "INFLUENCER"
+                  ? "Influencer"
+                  : s.contactClassification === "LOCAL_OPERATIONS"
+                    ? "Local operations / workplace contact"
+                    : "Referral contact");
+    var authorityNote =
+      s.contractingAuthorityStatus === "CONTRACTING_AUTHORITY_VERIFIED"
+        ? "Contracting authority verified"
+        : s.contactRelevanceLabel === "CONTACT_RELEVANT"
+          ? "Commercially relevant contact — contracting authority not verified"
+          : "";
+    var routeLabel =
+      s.organizationRoutingLabel ||
+      (s.organizationRoutingAlternative &&
+      String(s.organizationRoutingAlternative).indexOf("@") >= 0
+        ? "Company email — ask for " + s.name
+        : "Company office — ask for " + s.name);
+    var profileUrl = s.profileUrl || s.sourceUrl || null;
+    var profile =
+      profileUrl && isSafeHttpUrl(profileUrl)
+        ? '<p><a href="' +
+          esc(profileUrl) +
+          '" target="_blank" rel="noopener noreferrer">Supporting profile / source</a></p>'
+        : "";
+    var evidence =
+      Array.isArray(s.evidenceUrls) && s.evidenceUrls.length
+        ? '<p class="gdi-muted"><a href="' +
+          esc(s.evidenceUrls[0]) +
+          '" target="_blank" rel="noopener noreferrer">Source</a></p>'
+        : "";
+    var why =
+      s.whyThisContact ||
+      s.commercialRelevance ||
+      s.relationshipToOpportunity ||
+      "";
+    return (
+      '<div class="gdi-secondary-contact">' +
+      "<h4>Secondary contact</h4>" +
+      "<p><strong>" +
+      esc(s.name) +
+      "</strong>" +
+      (s.title || s.role ? " · " + esc(s.title || s.role) : "") +
+      (s.organization ? " · " + esc(s.organization) : "") +
+      "</p>" +
+      "<p><strong>Why relevant:</strong> " +
+      esc(classLabel) +
+      (why ? " — " + esc(why) : "") +
+      "</p>" +
+      (authorityNote
+        ? '<p class="gdi-muted">' + esc(authorityNote) + "</p>"
+        : "") +
+      (s.email
+        ? "<p><strong>Direct email (verified):</strong> <a href=\"mailto:" +
+          esc(s.email) +
+          '">' +
+          esc(s.email) +
+          "</a></p>"
+        : "") +
+      (s.phone
+        ? "<p><strong>Direct phone (verified):</strong> <a href=\"tel:" +
+          esc(String(s.phone).replace(/[^\d+]/g, "")) +
+          '">' +
+          esc(s.phone) +
+          "</a></p>"
+        : "") +
+      (s.organizationRoutingAlternative
+        ? "<p><strong>" +
+          esc(routeLabel) +
+          ":</strong> " +
+          (String(s.organizationRoutingAlternative).indexOf("@") >= 0
+            ? '<a href="mailto:' +
+              esc(s.organizationRoutingAlternative) +
+              '">' +
+              esc(s.organizationRoutingAlternative) +
+              "</a>"
+            : '<a href="tel:' +
+              esc(String(s.organizationRoutingAlternative).replace(/[^\d+]/g, "")) +
+              '">' +
+              esc(s.organizationRoutingAlternative) +
+              "</a>") +
+          "</p>"
+        : "") +
+      (s.companyPhone &&
+      (!s.organizationRoutingAlternative ||
+        String(s.organizationRoutingAlternative).indexOf("@") >= 0)
+        ? "<p><strong>Company office — ask for " +
+          esc(s.name) +
+          ":</strong> <a href=\"tel:" +
+          esc(String(s.companyPhone).replace(/[^\d+]/g, "")) +
+          '">' +
+          esc(s.companyPhone) +
+          "</a></p>"
+        : "") +
+      profile +
+      evidence +
+      "</div>"
+    );
+  }
+
+  function looksLikePersonNameLocal(name) {
+    var n = String(name || "").replace(/\s+/g, " ").trim();
+    if (!n || n === "UNKNOWN" || n === "—") return false;
+    if (
+      /\b(association|conference|university|inc\.?|llc|corp\.?|group|desk|services|housing|registration|committee|department|team|staff|office)\b/i.test(
+        n
+      )
+    ) {
+      return false;
+    }
+    return /^[A-Z][a-zA-Z'.-]+(?:\s+[A-Z][a-zA-Z'.-]+){1,3}$/.test(n);
+  }
+
+  function isPollutedPhoneDisplay(raw) {
+    var t = String(raw || "").trim();
+    if (!t) return true;
+    if (/^(?:19|20)\d{2}[-/.]\d{1,2}(?:[-/.]\d{1,2})?$/.test(t)) return true;
+    if (t.replace(/\D/g, "").length < 8) return true;
+    return false;
+  }
+
+  function surfeCtaLabel(channel) {
+    if (channel === "email") return "Find email";
+    if (channel === "phone") return "Find phone";
+    return "Find email & phone";
+  }
+
+  /** Strip internal eligibility enums from customer-facing Why relevant copy. */
+  function scrubCustomerContactWhyProse(raw) {
+    var s = String(raw || "").replace(/\s+/g, " ").trim();
+    if (!s) return "";
+    s = s
+      .replace(/\bCONTACT_RELEVANT\b\.?\s*/gi, "")
+      .replace(/\bINELIGIBLE_UNSPECIFIED\b\.?\s*/gi, "")
+      .replace(/\bCONTRACTING_AUTHORITY_VERIFIED\b/gi, "contracting authority")
+      .replace(/\bREFERRAL\b(?=\s*\.|$)/g, "referral route")
+      .replace(/\s{2,}/g, " ")
+      .replace(/^[\s.;:—-]+/, "")
+      .trim();
+    return s;
+  }
+
+  function twoContactSlotHtml(slot, opts) {
+    if (!slot) return "";
+    var oppId =
+      (opts && opts.opportunityId) ||
+      "";
+    var slotCompanyPhone =
+      slot.companyPhone && !isPollutedPhoneDisplay(slot.companyPhone)
+        ? slot.companyPhone
+        : "";
+    var slotPersonPhone =
+      slot.phone && !isPollutedPhoneDisplay(slot.phone) ? slot.phone : "";
+    if (!slot.customerFacingNamed) {
+      var hasOrgRoute = !!(slot.organizationEmail || slotCompanyPhone);
+      // Secondary research-gap with no org route and no name: one quiet line only
+      // when primary already shows the company path — never an empty named card.
+      if (
+        opts &&
+        opts.omitEmptySecondaryGap &&
+        slot.slot === "SECONDARY" &&
+        !hasOrgRoute
+      ) {
+        return (
+          '<p class="gdi-contact-quality-quiet">' +
+          esc(slot.researchGapCopy || "Buyer Not Yet Identified.") +
+          "</p>"
+        );
+      }
+      return (
+        '<div class="gdi-contact-slot gdi-contact-slot--gap">' +
+        "<h4>" +
+        esc(slot.displayLabel || "Contact") +
+        "</h4>" +
+        '<p class="gdi-contact-quality-quiet">' +
+        esc(slot.researchGapCopy || "Buyer Not Yet Identified.") +
+        "</p>" +
+        (slot.organizationEmail
+          ? "<p><strong>" +
+            esc(slot.organizationEmailLabel || "Organization email") +
+            ":</strong> " +
+            esc(slot.organizationEmail) +
+            "</p>"
+          : "") +
+        (slotCompanyPhone
+          ? "<p><strong>" +
+            esc(slot.companyPhoneLabel || "Organization phone") +
+            ":</strong> " +
+            esc(slotCompanyPhone) +
+            "</p>"
+          : "") +
+        (slot.officialContactUrl && isSafeHttpUrl(slot.officialContactUrl)
+          ? '<p><a href="' +
+            esc(slot.officialContactUrl) +
+            '" target="_blank" rel="noopener noreferrer">Official contact / program page</a></p>'
+          : "") +
+        "</div>"
+      );
+    }
+    var linkedIn =
+      (slot.linkedInUrl && isSafeHttpUrl(slot.linkedInUrl) && slot.linkedInUrl) ||
+      (slot.profileUrl &&
+      isSafeHttpUrl(slot.profileUrl) &&
+      /linkedin\.com/i.test(slot.profileUrl)
+        ? slot.profileUrl
+        : "");
+    var otherProfile =
+      !linkedIn && slot.profileUrl && isSafeHttpUrl(slot.profileUrl)
+        ? slot.profileUrl
+        : "";
+    var pathLabelRaw = String(slot.commercialContactPathLabel || "").trim();
+    var pathLabelUseful =
+      pathLabelRaw &&
+      !/not yet established|research incomplete|no contact/i.test(pathLabelRaw);
+    var pathLabel = pathLabelUseful
+      ? '<p class="gdi-contact-kind-label"><strong>Contact path:</strong> ' +
+        esc(pathLabelRaw) +
+        "</p>"
+      : slot.customerFacingNamed && !slot.email && !slot.phone
+        ? '<p class="gdi-contact-kind-label"><strong>Contact path:</strong> Named person — profile / referral route</p>'
+        : "";
+    var surfeBtn = "";
+    if (slot.surfeEnrichmentEligible && slot.surfeEnrichmentChannel && slot.name) {
+      surfeBtn =
+        '<div class="gdi-contact-reveal" data-gdi-contact-reveal-root="1">' +
+        '<p class="gdi-contact-cta"><button type="button" class="gdi-btn gdi-btn--secondary" data-gdi-contact-cta="1" data-gdi-contact-channel="' +
+        esc(slot.surfeEnrichmentChannel) +
+        '" data-contact-name="' +
+        esc(slot.name) +
+        '" data-opportunity-id="' +
+        esc(oppId) +
+        '">' +
+        esc(surfeCtaLabel(slot.surfeEnrichmentChannel)) +
+        "</button></p>" +
+        '<p class="gdi-muted gdi-contact-cta-note">Ready to retrieve. Results stay in this session only and are not saved to Dealality records.</p>' +
+        '<p class="gdi-contact-reveal-status" data-gdi-contact-reveal-status hidden></p>' +
+        "</div>";
+    }
+    return (
+      '<div class="gdi-contact-slot" data-contact-slot="' +
+      esc(slot.slot || "") +
+      '">' +
+      "<h4>" +
+      esc(slot.displayLabel || "Contact") +
+      "</h4>" +
+      pathLabel +
+      "<p><strong>Suggested contact:</strong> " +
+      esc(slot.name) +
+      "</p>" +
+      (slot.title
+        ? "<p><strong>Role:</strong> " + esc(slot.title) + "</p>"
+        : "") +
+      (slot.organization
+        ? "<p><strong>Organization:</strong> " + esc(slot.organization) + "</p>"
+        : "") +
+      (slot.whyContact
+        ? "<p><strong>Why relevant:</strong> " +
+          esc(scrubCustomerContactWhyProse(slot.whyContact)) +
+          "</p>"
+        : "") +
+      (slot.email
+        ? "<p><strong>" +
+          esc(slot.emailLabel || "Direct work email") +
+          ":</strong> " +
+          esc(slot.email) +
+          "</p>"
+        : "") +
+      (slot.organizationEmail
+        ? "<p><strong>" +
+          esc(slot.organizationEmailLabel || "Organization email") +
+          ":</strong> " +
+          esc(slot.organizationEmail) +
+          "</p>"
+        : "") +
+      (slotPersonPhone
+        ? "<p><strong>" +
+          esc(slot.phoneLabel || "Direct phone") +
+          ":</strong> " +
+          esc(slotPersonPhone) +
+          "</p>"
+        : "") +
+      (slotCompanyPhone
+        ? "<p><strong>" +
+          esc(slot.companyPhoneLabel || "Organization phone") +
+          ":</strong> " +
+          esc(slotCompanyPhone) +
+          "</p>"
+        : "") +
+      (slot.officialContactUrl && isSafeHttpUrl(slot.officialContactUrl)
+        ? '<p><strong>Official contact / program page:</strong> <a href="' +
+          esc(slot.officialContactUrl) +
+          '" target="_blank" rel="noopener noreferrer">' +
+          esc(slot.officialContactUrl) +
+          "</a></p>"
+        : "") +
+      (linkedIn
+        ? '<p><strong>LinkedIn:</strong> <a href="' +
+          esc(linkedIn) +
+          '" target="_blank" rel="noopener noreferrer">' +
+          esc(linkedIn) +
+          "</a></p>"
+        : otherProfile
+          ? '<p><a href="' +
+            esc(otherProfile) +
+            '" target="_blank" rel="noopener noreferrer">Professional profile</a></p>'
+          : "") +
+      surfeBtn +
+      "</div>"
+    );
+  }
+
+  function scalingTwoContactPresentationHtml(o) {
+    var p = o && o.scalingTwoContactPresentation;
+    if (!p || !p.primary) return "";
+    var primaryNamed = !!p.primary.customerFacingNamed;
+    var oppId = o.opportunityId || o.id || "";
+    var routeLabel = String(
+      p.primaryRouteTypeLabel ||
+        p.primary.commercialContactPathLabel ||
+        o.primaryRouteTypeLabel ||
+        o.commercialContactPathLabel ||
+        "",
+    ).trim();
+    var routeHtml =
+      routeLabel &&
+      !/not yet established|research incomplete|^NO_CONTACT$|^[A-Z0-9_]+$/i.test(
+        routeLabel,
+      )
+        ? '<p class="gdi-muted gdi-primary-route-type"><strong>Primary route type:</strong> ' +
+          esc(routeLabel) +
+          "</p>"
+        : "";
+    return (
+      '<div class="gdi-two-contact-standard" data-universal-who-to-contact="v2">' +
+      routeHtml +
+      twoContactSlotHtml(p.primary, { opportunityId: oppId }) +
+      twoContactSlotHtml(p.secondary, {
+        omitEmptySecondaryGap: primaryNamed,
+        opportunityId: oppId,
+      }) +
+      "</div>"
+    );
+  }
+
   function whoShouldSalesContactHtml(o, whoFn) {
-    if (typeof whoFn === "function") return whoFn(o);
+    // Unified Who to Contact: Scaling gold-standard two-contact slots win for
+    // every segment (Events + Scaling). Segment-only whoFn is fallback only.
+    var twoContactHtml = scalingTwoContactPresentationHtml(o);
+    if (twoContactHtml) return twoContactHtml;
+    if (typeof whoFn === "function") {
+      return whoFn(o) + secondaryNamedContactHtml(o);
+    }
+
     var c = o.primaryContact;
+    // Org-only primaryContact shells (phone/role without a person name) must not
+    // render as named "Referral contact: —" / "Person phone".
+    if (c && !looksLikePersonNameLocal(c.name || o.contactName)) {
+      c = null;
+    }
     var drawer = o.customerContactDrawer || null;
+    function withSecondary(html) {
+      return html + secondaryNamedContactHtml(o);
+    }
+    var rawPath = o.commercialContactPath || null;
+    // Never display raw internal enums (NAMED_DIRECT, ORGANIZATION_PATH, …) as the contact name.
     var pathLabel =
       (drawer && drawer.functionalPath) ||
       o.commercialContactPathLabel ||
-      o.commercialContactPath ||
-      null;
+      (rawPath === "NAMED_DIRECT"
+        ? "Named person — direct business email"
+        : rawPath === "NAMED_PHONE"
+          ? "Named person — phone route"
+          : rawPath === "ORGANIZATION_PATH"
+            ? "Company contact path"
+            : rawPath === "FUNCTIONAL_CONTACT"
+              ? "Functional / department email"
+              : rawPath === "NO_CONTACT"
+                ? "Contact route not yet established"
+                : rawPath && !/^[A-Z0-9_]+$/.test(String(rawPath))
+                  ? rawPath
+                  : null);
     var tier = o.contactTier || (c && c.contactTier) || null;
     var tierLabel =
       o.contactTierLabel ||
@@ -2732,11 +5341,24 @@
               : tier === "GENERIC_ONLY"
                 ? "Generic inbox only"
                 : null);
+    var briefRoutes =
+      (o.salesBrief && o.salesBrief.whoToContact && o.salesBrief.whoToContact.routes) ||
+      (o.commercialIntelligenceBrief &&
+        o.commercialIntelligenceBrief.whoToContact &&
+        o.commercialIntelligenceBrief.whoToContact.routes) ||
+      null;
+    if (!o.organizationContactEmail && briefRoutes && briefRoutes.email) {
+      o.organizationContactEmail = briefRoutes.email;
+    }
+    if (!o.contactUrl && briefRoutes && briefRoutes.url) {
+      o.contactUrl = briefRoutes.url;
+    }
     var officialUrl =
       (drawer && drawer.source) ||
       o.contactOfficialUrl ||
       (c && (c.officialContactUrl || c.sourceUrl)) ||
       o.officialSource ||
+      (briefRoutes && briefRoutes.url) ||
       null;
     var officialLink =
       officialUrl && isSafeHttpUrl(officialUrl)
@@ -2750,7 +5372,13 @@
       !c.email &&
       !c.phone &&
       (tier === "NAMED_PARTIAL" || tier === "NAMED_DIRECT" || !tier)
-        ? '<p class="gdi-contact-cta"><button type="button" class="gdi-btn gdi-btn--secondary" data-gdi-contact-cta="1">Get Contact Details</button></p>'
+        ? '<p class="gdi-contact-cta"><button type="button" class="gdi-btn gdi-btn--secondary" data-gdi-contact-cta="1" data-gdi-contact-channel="both" data-opportunity-id="' +
+          esc(o.opportunityId || o.id || "") +
+          '">Get Contact Details</button></p><p class="gdi-contact-cta gdi-contact-cta--channels"><button type="button" class="gdi-btn gdi-btn--secondary" data-gdi-contact-cta="1" data-gdi-contact-channel="email" data-opportunity-id="' +
+          esc(o.opportunityId || o.id || "") +
+          '">Retrieve Email</button> <button type="button" class="gdi-btn gdi-btn--secondary" data-gdi-contact-cta="1" data-gdi-contact-channel="phone" data-opportunity-id="' +
+          esc(o.opportunityId || o.id || "") +
+          '">Retrieve Phone</button></p>'
         : "";
     var ceilingCopy =
       (drawer && drawer.publicCeilingCopy) ||
@@ -2774,27 +5402,27 @@
         tier === "ORGANIZATION_PATH" ||
         officialUrl)
     ) {
-      return (
+      return withSecondary(
         (tierLabel
           ? '<p class="gdi-contact-kind-label"><strong>' + esc(tierLabel) + "</strong></p>"
           : "") +
-        "<p><strong>Primary Contact:</strong> " +
-        esc(pathLabel || "Organization / official program contact path") +
-        "</p>" +
-        (drawer && drawer.role
-          ? "<p><strong>Role:</strong> " + esc(drawer.role) + "</p>"
-          : "") +
-        (o.organizationName
-          ? "<p><strong>Organization:</strong> " + esc(o.organizationName) + "</p>"
-          : "") +
-        (whyRelevant
-          ? "<p><strong>Why Relevant:</strong> " + esc(whyRelevant) + "</p>"
-          : "") +
-        officialLink +
-        '<p class="gdi-contact-quality-quiet">No named individual published — use the organization path.</p>' +
-        (actionHint
-          ? '<p class="gdi-contact-action">' + esc(actionHint) + "</p>"
-          : "")
+          "<p><strong>Primary Contact:</strong> " +
+          esc(pathLabel || "Organization / official program contact path") +
+          "</p>" +
+          (drawer && drawer.role
+            ? "<p><strong>Role:</strong> " + esc(drawer.role) + "</p>"
+            : "") +
+          (o.organizationName
+            ? "<p><strong>Organization:</strong> " + esc(o.organizationName) + "</p>"
+            : "") +
+          (whyRelevant
+            ? "<p><strong>Why Relevant:</strong> " + esc(whyRelevant) + "</p>"
+            : "") +
+          officialLink +
+          '<p class="gdi-contact-quality-quiet">No named individual published — use the organization path.</p>' +
+          (actionHint
+            ? '<p class="gdi-contact-action">' + esc(actionHint) + "</p>"
+            : "")
       );
     }
 
@@ -2806,38 +5434,47 @@
         null;
       var companyPhoneFallback =
         o.companyPhone || o.contactPhone || null;
+      if (
+        companyPhoneFallback &&
+        (/^(?:19|20)\d{2}[-/.]\d{1,2}(?:[-/.]\d{1,2})?$/.test(
+          String(companyPhoneFallback).trim()
+        ) ||
+          String(companyPhoneFallback).replace(/\D/g, "").length < 8)
+      ) {
+        companyPhoneFallback = null;
+      }
       var companyPhoneLbl =
         o.companyPhoneLabel || "Company / office phone";
       var askFallback =
         (o.contactChannelSeparation &&
           o.contactChannelSeparation.askToBeDirectedTo) ||
         "Ask for the person managing staff travel or internal meetings.";
-      return (
+      return withSecondary(
         '<p class="gdi-contact-quality-quiet">' +
-        esc(
-          ceilingCopy ||
-            "Office operations contact not yet identified"
-        ) +
-        "</p>" +
-        (orgEmailFallback
-          ? "<p><strong>Organization email:</strong> " +
-            esc(orgEmailFallback) +
-            "</p>"
-          : "") +
-        (companyPhoneFallback
-          ? "<p><strong>" +
-            esc(companyPhoneLbl) +
-            ":</strong> " +
-            esc(companyPhoneFallback) +
-            "</p>"
-          : "") +
-        (pathLabel
-          ? "<p><strong>Functional Path:</strong> " + esc(pathLabel) + "</p>"
-          : "") +
-        officialLink +
-        '<p class="gdi-contact-action">' +
-        esc(actionHint || askFallback) +
-        "</p>"
+          esc(
+            ceilingCopy ||
+              "Office operations contact not yet identified"
+          ) +
+          "</p>" +
+          (orgEmailFallback
+            ? "<p><strong>Organization email:</strong> " +
+              esc(orgEmailFallback) +
+              "</p>"
+            : "") +
+          (companyPhoneFallback
+            ? "<p><strong>" +
+              esc(companyPhoneLbl) +
+              ":</strong> " +
+              esc(companyPhoneFallback) +
+              "</p>"
+            : "") +
+          (pathLabel
+            ? "<p><strong>Functional Path:</strong> " + esc(pathLabel) + "</p>"
+            : "") +
+          officialLink +
+          '<p class="gdi-contact-action">' +
+          esc(actionHint || askFallback) +
+          "</p>"
       );
     }
 
@@ -2863,6 +5500,15 @@
       o.companyPhone ||
       (channelSep && channelSep.companyPhone) ||
       null;
+    if (
+      companyPhoneDrawer &&
+      (/^(?:19|20)\d{2}[-/.]\d{1,2}(?:[-/.]\d{1,2})?$/.test(
+        String(companyPhoneDrawer).trim()
+      ) ||
+        String(companyPhoneDrawer).replace(/\D/g, "").length < 8)
+    ) {
+      companyPhoneDrawer = null;
+    }
     if (
       companyPhoneDrawer &&
       c.phone &&
@@ -2970,50 +5616,50 @@
         );
       })
       .join("");
-    return (
+    return withSecondary(
       '<p class="gdi-contact-kind-label"><strong>' +
-      esc(primaryKind) +
-      "</strong></p>" +
-      (suggestedLabel
-        ? "<p><strong>" + esc(suggestedLabel) + "</strong></p>"
-        : "<p><strong>Primary Contact:</strong> " + esc(c.name || "—") + "</p>") +
-      "<p><strong>Role:</strong> " +
-      esc((drawer && drawer.role) || c.role || c.title || "—") +
-      "</p>" +
-      "<p><strong>Organization:</strong> " +
-      esc(c.organization || o.organizationName || "—") +
-      "</p>" +
-      personEmailHtml +
-      orgEmailHtml +
-      personPhoneHtml +
-      companyPhoneHtml +
-      (askDirected
-        ? '<p class="gdi-contact-action">' + esc(askDirected) + "</p>"
-        : "") +
-      pathHtml +
-      getDetailsCta +
-      officialLink +
-      "<p><strong>Why Relevant:</strong> " +
-      esc(whyRelevant || "—") +
-      "</p>" +
-      (actionHint
-        ? '<p class="gdi-contact-action">' + esc(actionHint) + "</p>"
-        : "") +
-      (o.contactGradeLabel || c.contactGradeLabel || (drawer && drawer.grade)
-        ? '<p class="gdi-contact-quality-quiet">Contact quality: ' +
-          esc(
-            o.contactGradeLabel ||
-              c.contactGradeLabel ||
-              "Grade " + ((drawer && drawer.grade) || "")
-          ) +
-          (o.contactConfidence != null || c.contactConfidence != null
-            ? " · Confidence " + esc(o.contactConfidence ?? c.contactConfidence)
-            : "") +
-          "</p>"
-        : "") +
-      (backups
-        ? "<h4>Backup / functional contacts</h4><ul>" + backups + "</ul>"
-        : "")
+        esc(primaryKind) +
+        "</strong></p>" +
+        (suggestedLabel
+          ? "<p><strong>" + esc(suggestedLabel) + "</strong></p>"
+          : "<p><strong>Primary Contact:</strong> " + esc(c.name || "—") + "</p>") +
+        "<p><strong>Role:</strong> " +
+        esc((drawer && drawer.role) || c.role || c.title || "—") +
+        "</p>" +
+        "<p><strong>Organization:</strong> " +
+        esc(c.organization || o.organizationName || "—") +
+        "</p>" +
+        personEmailHtml +
+        orgEmailHtml +
+        personPhoneHtml +
+        companyPhoneHtml +
+        (askDirected
+          ? '<p class="gdi-contact-action">' + esc(askDirected) + "</p>"
+          : "") +
+        pathHtml +
+        getDetailsCta +
+        officialLink +
+        "<p><strong>Why Relevant:</strong> " +
+        esc(whyRelevant || "—") +
+        "</p>" +
+        (actionHint
+          ? '<p class="gdi-contact-action">' + esc(actionHint) + "</p>"
+          : "") +
+        (o.contactGradeLabel || c.contactGradeLabel || (drawer && drawer.grade)
+          ? '<p class="gdi-contact-quality-quiet">Contact quality: ' +
+            esc(
+              o.contactGradeLabel ||
+                c.contactGradeLabel ||
+                "Grade " + ((drawer && drawer.grade) || "")
+            ) +
+            (o.contactConfidence != null || c.contactConfidence != null
+              ? " · Confidence " + esc(o.contactConfidence ?? c.contactConfidence)
+              : "") +
+            "</p>"
+          : "") +
+        (backups
+          ? "<h4>Backup / functional contacts</h4><ul>" + backups + "</ul>"
+          : "")
     );
   }
 
@@ -3092,9 +5738,7 @@
         return r[1];
       })
       .map(function (r) {
-        return (
-          "<li><strong>" + esc(r[0]) + ":</strong> " + esc(r[1]) + "</li>"
-        );
+        return drawerMetaFieldRowHtml(r[0], r[1]);
       })
       .join("");
 
@@ -3137,6 +5781,15 @@
       "</p>" +
       (address ? "<p>" + esc(address) + "</p>" : "") +
       "<ul>" +
+      (o.website || o.venueWebsite || o.organizationWebsite || o.contactUrl
+        ? drawerMetaFieldRowHtml(
+            "Website",
+            o.website ||
+              o.venueWebsite ||
+              o.organizationWebsite ||
+              o.contactUrl
+          )
+        : "") +
       (o.distanceMiles != null
         ? "<li><strong>Distance:</strong> " + esc(o.distanceMiles) + " mi from hotel</li>"
         : "") +
@@ -3167,7 +5820,20 @@
         : "") +
       "</ul></section>" +
       '<section class="gdi-section"><h3>Why This Matters</h3><p>' +
-      esc(o.summaryWhyMatters || o.hotelOpportunityThesis || o.whyNow || "—") +
+      esc(
+        o.summaryWhat ||
+          o.summaryWhyMatters ||
+          o.whyNow ||
+          "—"
+      ) +
+      (o.evidenceStatusLabel
+        ? '</p><p class="gdi-meta-value"><strong>Evidence status:</strong> ' +
+          esc(o.evidenceStatusLabel) +
+          (o.demandEvidenceLabel ? " (" + esc(o.demandEvidenceLabel) + ")" : "")
+        : "") +
+      "</p></section>" +
+      '<section class="gdi-section"><h3>Recommended sales action</h3><p>' +
+      esc(o.recommendedAction || o.recommendedNextStep || "—") +
       "</p></section>" +
       '<section class="gdi-section gdi-section--matters"><h3>Why this hotel</h3>' +
       hotelFitAssessmentSectionHtml(o, audit) +
@@ -3308,26 +5974,30 @@
   }
 
   /**
-   * Scaling / emerging corporate account — standing relationship (no invented event date).
+   * Scaling Companies — ONE canonical 10-section corporate drawer.
+   * Renders o.scalingDrawerModel when present (API sanitize); otherwise builds a
+   * minimal same-ID structure so layout never degrades by content presence.
+   * Forbidden top-level: Commercial context / Why Dealality selected / Company background.
    */
   function corporateAccountRelationshipDetailHtml(o, audit, extras) {
     extras = extras || {};
     audit = audit || {};
-    var sources = sourceListHtml(o.sources);
-    var growthLabels = Array.isArray(o.growthSignalLabels)
-      ? o.growthSignalLabels.join("; ")
-      : Array.isArray(o.growthSignals)
-        ? o.growthSignals.join("; ")
-        : o.growthSignal || "";
-    var facts = Array.isArray(o.establishedFacts) ? o.establishedFacts : [];
-    var inferred = Array.isArray(o.inferredHotelDemand)
-      ? o.inferredHotelDemand
-      : [];
-    var constraints = Array.isArray(o.constraints)
-      ? o.constraints
-      : Array.isArray(o.uncertainties)
-        ? o.uncertainties
-        : [];
+    o = o || {};
+
+    function prose(v) {
+      return String(v || "")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+    function cleanList(items) {
+      if (!Array.isArray(items)) return [];
+      return items
+        .map(prose)
+        .filter(Boolean)
+        .filter(function (t) {
+          return !/^—+$/.test(t) && t !== "-" && t !== "•";
+        });
+    }
     function listHtml(items) {
       if (!items || !items.length) return "";
       return (
@@ -3340,115 +6010,546 @@
         "</ul>"
       );
     }
+    function sourceListFromModel(sources, evidenceGroups, sourcesFull) {
+      if ((!sources || !sources.length) && (!sourcesFull || !sourcesFull.length)) {
+        return '<p class="gdi-muted">No source URLs attached yet.</p>';
+      }
+      function renderOne(s) {
+        var url = prose(s && s.url);
+        if (!url) return "";
+        var title = prose(s && s.title) || url;
+        var publisher = prose(s && s.publisher);
+        var date = prose(s && (s.publicationDate || s.publishedDate));
+        var establishes = prose(s && s.establishes);
+        var bits =
+          "<li class=\"gdi-evidence-item\">" +
+          "<div class=\"gdi-evidence-title\"><strong>" +
+          esc(title) +
+          "</strong></div>";
+        if (publisher) {
+          bits +=
+            "<div class=\"gdi-muted\">Publisher: " + esc(publisher) + "</div>";
+        }
+        if (date) {
+          bits += "<div class=\"gdi-muted\">Date: " + esc(date) + "</div>";
+        }
+        if (establishes && establishes.length <= 120) {
+          bits +=
+            '<div class="gdi-muted">' + esc(establishes) + "</div>";
+        }
+        bits +=
+          "<div><a href=\"" +
+          esc(url) +
+          "\" target=\"_blank\" rel=\"noopener noreferrer\">" +
+          esc(url) +
+          "</a></div></li>";
+        return bits;
+      }
+      var defaultHtml = "";
+      if (evidenceGroups && evidenceGroups.length) {
+        defaultHtml = evidenceGroups
+          .map(function (g) {
+            var rows = (g.sources || []).map(renderOne).filter(Boolean);
+            if (!rows.length) return "";
+            return (
+              "<div class=\"gdi-evidence-group\">" +
+              "<p><strong>" +
+              esc(prose(g.label) || "Evidence") +
+              "</strong></p><ul>" +
+              rows.join("") +
+              "</ul></div>"
+            );
+          })
+          .filter(Boolean)
+          .join("");
+      } else if (sources && sources.length) {
+        defaultHtml =
+          "<ul class=\"gdi-evidence-default\">" +
+          sources.map(renderOne).filter(Boolean).join("") +
+          "</ul>";
+      }
+      var full = Array.isArray(sourcesFull) ? sourcesFull : [];
+      var defaultCount = (sources && sources.length) || 0;
+      if (full.length > defaultCount && full.length > 0) {
+        defaultHtml +=
+          '<details class="gdi-evidence-expand">' +
+          "<summary>View all supporting evidence (" +
+          full.length +
+          ")</summary>" +
+          '<ul class="gdi-evidence-full">' +
+          full.map(renderOne).filter(Boolean).join("") +
+          "</ul></details>";
+      }
+      return defaultHtml || '<p class="gdi-muted">No source URLs attached yet.</p>';
+    }
+
+    var model = o.scalingDrawerModel || null;
+    if (!model || !model.sections) {
+      // Client-side structural fallback — same 10 IDs; content from available fields only.
+      var brief =
+        o.commercialIntelligenceBrief || o.salesBrief || {};
+      var what =
+        prose(o.tileCustomerSummary) ||
+        prose(o.whatIsHappening) ||
+        prose(o.summaryWhat) ||
+        prose(brief.companyAndLocalActivity) ||
+        "This company is tracked as a scaling corporate account; public expansion signals still need qualification before treating lodging demand as confirmed.";
+      var pot =
+        prose(brief.potentialBusinessForThisHotel) ||
+        prose(o.potentialHotelBusiness) ||
+        prose(o.summaryWhyMatters) ||
+        "Hotel demand is not yet verified from public research.";
+      var whyH =
+        prose(o.whyThisHotel) ||
+        prose(brief.whyThisHotel) ||
+        "Property-specific fit is not yet established beyond geography.";
+      var whyNow =
+        prose(o.whyEstablishContactNow || o.whyNow || brief.whyActNow) ||
+        "No time-critical trigger is established. Monitor until a travel/meetings owner is confirmed.";
+      var next =
+        prose(o.recommendedAction) ||
+        "Identify who owns corporate travel and visiting-staff lodging for this account; introduce the hotel and confirm whether a preferred-hotel pattern exists.";
+      if (
+        /association staff\s*vs\s*PCO|host\/overflow|meetings\s*\/\s*congress\s*\/\s*operations route/i.test(
+          next
+        )
+      ) {
+        next =
+          "Identify who owns corporate travel and visiting-staff lodging for this account; introduce the hotel and confirm whether a preferred-hotel pattern exists.";
+      }
+      model = {
+        sectionIds: [
+          "opportunity_overview",
+          "what_is_happening",
+          "potential_business",
+          "why_this_hotel",
+          "why_act_now",
+          "facts_and_uncertainties",
+          "who_to_contact",
+          "recommended_next_step",
+          "supporting_evidence",
+          "hotel_validation",
+        ],
+        organizationName: prose(o.organizationName || o.company) || "Organization",
+        opportunityTypeLabel:
+          prose(o.opportunityTypeLabel) || "Corporate Account Relationship",
+        sections: {
+          opportunity_overview: {
+            organizationName: prose(o.organizationName || o.company) || "Organization",
+            typeLabel:
+              prose(o.opportunityTypeLabel) || "Corporate Account Relationship",
+            demandStage:
+              prose(o.demandStageLabel) ||
+              "Potential business opportunity; hotel needs not yet confirmed",
+            timing: prose(o.eventDateDisplay || o.timing) || "Timing to be confirmed",
+          },
+          what_is_happening: { body: what, activityDate: null },
+          potential_business: { body: pot, inferred: [] },
+          why_this_hotel: (function () {
+            var advF = cleanList(brief.whyThisHotelAdvantages);
+            var limF = cleanList(brief.whyThisHotelLimitations);
+            var bodyF = whyH;
+            if (advF.length || limF.length) {
+              var packF = advF.concat(limF).join(" ").toLowerCase();
+              if (
+                bodyF &&
+                packF.indexOf(
+                  bodyF.toLowerCase().slice(0, Math.min(80, bodyF.length))
+                ) !== -1
+              ) {
+                bodyF = "";
+              }
+            }
+            return { body: bodyF, advantages: advF, limitations: limF };
+          })(),
+          why_act_now: { body: whyNow },
+          facts_and_uncertainties: {
+            facts: cleanList(
+              o.establishedFacts ||
+                brief.establishedFacts ||
+                (brief.establishedFactsAndUncertainties &&
+                  brief.establishedFactsAndUncertainties.facts)
+            ),
+            uncertainties: cleanList(
+              (brief.establishedFactsAndUncertainties &&
+                brief.establishedFactsAndUncertainties.uncertainties) ||
+                (brief.evidenceAndUncertainty &&
+                  brief.evidenceAndUncertainty.uncertainties) ||
+                o.uncertainties ||
+                o.constraints
+            ),
+            factsEmptyNote:
+              "No separately listed established facts beyond the activity narrative above.",
+            uncEmptyNote:
+              "Material unknowns remain (travel volume, budgets, buying authority) unless confirmed with the account.",
+          },
+          who_to_contact: {
+            contactPathLabel: prose(o.commercialContactPathLabel) || null,
+          },
+          recommended_next_step: {
+            body: next,
+            qualificationQuestions: cleanList(
+              brief.qualificationQuestions ||
+                (brief.recommendedSalesApproach &&
+                  brief.recommendedSalesApproach.qualificationQuestions) ||
+                o.qualificationQuestions ||
+                o.suggestedQualificationQuestions
+            ),
+          },
+          supporting_evidence: {
+            sources: (o.sources || [])
+              .map(function (src) {
+                return {
+                  url: prose(src && (src.url || src)),
+                  title: prose(src && src.title) || null,
+                };
+              })
+              .filter(function (x) {
+                return x.url;
+              }),
+            activityDate: null,
+            researchVerificationDate: null,
+          },
+          hotel_validation: {},
+        },
+      };
+    }
+
+    var sec = model.sections;
+    var ov = sec.opportunity_overview || {};
+    var whatS = sec.what_is_happening || {};
+    var potS = sec.potential_business || {};
+    var whyS = sec.why_this_hotel || {};
+    var nowS = sec.why_act_now || {};
+    var factS = sec.facts_and_uncertainties || {};
+    var whoS = sec.who_to_contact || {};
+    var nextS = sec.recommended_next_step || {};
+    var evS = sec.supporting_evidence || {};
+
+    var contactNameSafe = o.contactName;
+    if (
+      contactNameSafe &&
+      /^(Riviera Maya|Meetings Content Managers|Mexico City|Cancun|Cancún)$/i.test(
+        String(contactNameSafe).trim()
+      )
+    ) {
+      contactNameSafe = null;
+    }
+    var primaryContactSafe = o.primaryContact || null;
+    if (
+      primaryContactSafe &&
+      primaryContactSafe.name &&
+      /^(Riviera Maya|Meetings Content Managers|Mexico City|Cancun|Cancún)$/i.test(
+        String(primaryContactSafe.name).trim()
+      )
+    ) {
+      primaryContactSafe = Object.assign({}, primaryContactSafe, { name: null });
+    }
+    if (
+      primaryContactSafe &&
+      !looksLikePersonNameLocal(
+        primaryContactSafe.name || contactNameSafe || o.contactName
+      )
+    ) {
+      primaryContactSafe = Object.assign({}, primaryContactSafe, {
+        name: null,
+        phone: null,
+      });
+    }
+
+    var factsHtml = "";
+    var factsList = cleanList(factS.facts);
+    var uncList = cleanList(factS.uncertainties);
+    if (factsList.length) {
+      factsHtml += "<p><strong>Established facts</strong></p>" + listHtml(factsList);
+    } else if (factS.factsEmptyNote) {
+      factsHtml += "<p class=\"gdi-muted\">" + esc(factS.factsEmptyNote) + "</p>";
+    }
+    if (uncList.length) {
+      factsHtml += "<p><strong>Uncertainties</strong></p>" + listHtml(uncList);
+    } else if (factS.uncEmptyNote) {
+      factsHtml += "<p class=\"gdi-muted\">" + esc(factS.uncEmptyNote) + "</p>";
+    }
+
+    var whyBody = prose(whyS.body);
+    var adv = cleanList(whyS.advantages);
+    var lim = cleanList(whyS.limitations);
+    // Prefer structured lists; never echo the same sentences as body + lists.
+    if (adv.length || lim.length) {
+      var packWhy = adv.concat(lim).join(" ").toLowerCase();
+      if (
+        whyBody &&
+        packWhy.indexOf(
+          whyBody.toLowerCase().slice(0, Math.min(80, whyBody.length))
+        ) !== -1
+      ) {
+        whyBody = "";
+      }
+      if (whyBody) {
+        adv = adv.filter(function (a) {
+          return whyBody.toLowerCase().indexOf(a.toLowerCase().slice(0, 48)) === -1;
+        });
+        lim = lim.filter(function (a) {
+          return whyBody.toLowerCase().indexOf(a.toLowerCase().slice(0, 48)) === -1;
+        });
+      }
+    }
+    var whyBits = whyBody ? "<p>" + esc(whyBody) + "</p>" : "";
+    if (adv.length) {
+      whyBits += "<p><strong>Advantages</strong></p>" + listHtml(adv);
+    }
+    if (lim.length) {
+      whyBits += "<p><strong>Limitations / trade-offs</strong></p>" + listHtml(lim);
+    }
+    if (!whyBits) {
+      whyBits = "<p>—</p>";
+    }
+
+    var qHtml = "";
+    var qs = cleanList(nextS.qualificationQuestions);
+    if (qs.length) {
+      qHtml =
+        "<p><strong>Qualification questions</strong></p>" + listHtml(qs);
+    }
+
+    function sharedSegmentOverviewHtml(opp) {
+      var sov =
+        (opp && opp.segmentOverviewModel) ||
+        (opp &&
+          opp.sharedTenSectionDrawer &&
+          opp.sharedTenSectionDrawer.overviewModel) ||
+        null;
+      if (!sov || sov.structuredGrid !== true) return "";
+      var fields = Array.isArray(sov.fields) ? sov.fields : [];
+      var values = sov.values || sov;
+      function row(label, value) {
+        return (
+          '<div class="gdi-events-overview-item"><span class="gdi-events-overview-label">' +
+          esc(label) +
+          '</span><span class="gdi-events-overview-value">' +
+          esc(value || "Not yet verified") +
+          "</span></div>"
+        );
+      }
+      var grid = fields
+        .map(function (f) {
+          var key = f.key || f;
+          var label = f.label || key;
+          var val = (values && values[key]) || sov[key] || "Not yet verified";
+          return row(label, val);
+        })
+        .join("");
+      return (
+        '<div class="gdi-events-opportunity-overview" data-overview-version="' +
+        esc(sov.overviewMode || "segment-overview") +
+        '">' +
+        '<p class="gdi-events-overview-identity">' +
+        esc(sov.identityLine || opp.organizationName || "—") +
+        "</p>" +
+        '<div class="gdi-events-overview-grid">' +
+        grid +
+        "</div></div>"
+      );
+    }
+    var structuredOverviewHtml = sharedSegmentOverviewHtml(o);
+    var overviewSectionInner = structuredOverviewHtml
+      ? structuredOverviewHtml
+      : "<p><strong>" +
+        esc(
+          o.displayCompanyName ||
+            ov.organizationName ||
+            model.organizationName ||
+            "Organization"
+        ) +
+        "</strong>" +
+        (function () {
+          var typeLbl =
+            ov.typeLabel ||
+            model.opportunityTypeLabel ||
+            o.opportunityTypeLabel ||
+            model.segmentDisplayLabel ||
+            o.segmentDisplayLabel ||
+            "Corporate Account Relationship";
+          if (/^scaling company$/i.test(String(typeLbl))) {
+            typeLbl = "Corporate Account Relationship";
+          }
+          return " · " + esc(typeLbl);
+        })() +
+        "</p>" +
+        (ov.body || model.overviewBody
+          ? "<p>" + esc(prose(ov.body || model.overviewBody)) + "</p>"
+          : "") +
+        '<div class="gdi-detail-meta-row">' +
+        "<span><strong>Demand stage</strong> " +
+        esc(ov.demandStage || "—") +
+        "</span>" +
+        "<span><strong>Timing</strong> " +
+        esc(ov.timing || "Timing to be confirmed") +
+        "</span></div>";
+
     return (
-      '<div class="gdi-detail-framework gdi-detail-framework--corporate-account">' +
+      '<div class="gdi-detail-framework gdi-detail-framework--corporate-account gdi-detail-framework--scaling-canonical">' +
       commercialProgressionHtml(o.commercialProgression) +
-      '<section class="gdi-section"><h3>Opportunity Summary</h3><p>' +
-      esc(o.summaryWhat || o.title || "—") +
-      "</p>" +
-      '<div class="gdi-detail-meta-row">' +
-      "<span><strong>Type</strong> " +
-      esc(
-        o.opportunityTypeLabel ||
-          customerStatusLabel(
-            o.opportunityType,
-            "Corporate Account Relationship"
+      '<section class="gdi-section" data-section-id="opportunity_overview"><h3>Opportunity overview</h3>' +
+      overviewSectionInner +
+      "</section>" +
+      needDateMatchDrawerSectionHtml(o) +
+      (function () {
+        if (
+          !(
+            o.venueIntelligence &&
+            (o.preferredLodgingPartnershipV1 === true ||
+              o.demandOpportunitySubtype === "PREFERRED_LODGING_PARTNERSHIP" ||
+              o.opportunityType === "PREFERRED_LODGING_PARTNERSHIP")
           )
-      ) +
-      "</span>" +
-      "<span><strong>Timing</strong> " +
-      esc(o.eventDateDisplay || o.timing || "Ongoing corporate relationship") +
-      "</span>" +
-      "<span><strong>Segment</strong> " +
-      esc(o.segment || "Scaling Companies / Emerging Corporate Accounts") +
-      "</span></div></section>" +
-      '<section class="gdi-section"><h3>Company and local presence</h3><p><strong>' +
-      esc(o.organizationName || o.company || "—") +
-      "</strong></p><p>" +
-      esc(o.localPresence || o.localConnection || "—") +
+        ) {
+          return "";
+        }
+        var viRows =
+          Array.isArray(o.venueIntelligenceFieldRows) &&
+          o.venueIntelligenceFieldRows.length
+            ? o.venueIntelligenceFieldRows
+            : [];
+        var viLis = viRows
+          .map(function (r) {
+            return drawerMetaFieldRowHtml(r[0], r[1]);
+          })
+          .join("");
+        return (
+          '<section class="gdi-section" data-section-id="venue_intelligence"><h3>Venue Intelligence</h3>' +
+          (viLis
+            ? '<ul class="gdi-meta-list">' + viLis + "</ul>"
+            : '<p class="gdi-muted">Venue intelligence fields pending verification.</p>') +
+          "</section>"
+        );
+      })() +
+      (function () {
+        if (
+          !(
+            o.plannerIntelligence &&
+            (o.professionalEventPlannerPartnershipV1 === true ||
+              o.demandOpportunitySubtype ===
+                "PROFESSIONAL_EVENT_PLANNER_PARTNERSHIP" ||
+              o.opportunityType === "PROFESSIONAL_EVENT_PLANNER_PARTNERSHIP")
+          )
+        ) {
+          return "";
+        }
+        var piRows =
+          Array.isArray(o.plannerIntelligenceFieldRows) &&
+          o.plannerIntelligenceFieldRows.length
+            ? o.plannerIntelligenceFieldRows
+            : [];
+        var piLis = piRows
+          .map(function (r) {
+            return drawerMetaFieldRowHtml(r[0], r[1]);
+          })
+          .join("");
+        return (
+          '<section class="gdi-section" data-section-id="planner_intelligence"><h3>Planner &amp; Intermediary Intelligence</h3>' +
+          (piLis
+            ? '<ul class="gdi-meta-list">' + piLis + "</ul>"
+            : '<p class="gdi-muted">Planner intelligence fields pending verification.</p>') +
+          "</section>"
+        );
+      })() +
+      '<section class="gdi-section" data-section-id="what_is_happening"><h3>What is happening</h3><p>' +
+      esc(prose(whatS.body) || "—") +
+      "</p>" +
+      (whatS.activityDate
+        ? "<p><strong>Original activity date:</strong> " +
+          esc(whatS.activityDate) +
+          "</p>"
+        : "") +
+      "</section>" +
+      '<section class="gdi-section" data-section-id="potential_business"><h3>Potential business for this hotel</h3><p>' +
+      esc(prose(potS.body) || "—") +
+      "</p>" +
+      (cleanList(potS.inferred).length
+        ? "<p><strong>Inferred (not verified volume)</strong></p>" +
+          listHtml(cleanList(potS.inferred))
+        : "") +
+      researchDetailExpandableHtml(o, "potentialBusinessForThisHotel", "Additional demand research", {
+        esc: esc,
+        prose: prose,
+        cleanList: cleanList,
+        listHtml: listHtml,
+      }) +
+      "</section>" +
+      '<section class="gdi-section gdi-section--matters" data-section-id="why_this_hotel"><h3>Why this hotel</h3>' +
+      whyBits +
+      researchDetailExpandableHtml(o, "whyThisHotel", "Additional hotel-fit research", {
+        esc: esc,
+        prose: prose,
+        cleanList: cleanList,
+        listHtml: listHtml,
+      }) +
+      "</section>" +
+      '<section class="gdi-section" data-section-id="why_act_now"><h3>Why act now</h3><p>' +
+      esc(prose(nowS.body) || "—") +
       "</p></section>" +
-      '<section class="gdi-section"><h3>Growth signal</h3><p>' +
-      esc(growthLabels || "—") +
-      "</p>" +
-      (o.growthEvidenceDate
-        ? "<p><strong>Verification date:</strong> " +
-          esc(o.growthEvidenceDate) +
+      '<section class="gdi-section" data-section-id="facts_and_uncertainties"><h3>Established facts and uncertainties</h3>' +
+      factsHtml +
+      "</section>" +
+      '<section class="gdi-section gdi-section--contact" data-section-id="who_to_contact"><h3>Who to contact</h3>' +
+      (whoS.contactPathLabel &&
+      !/not yet established|research incomplete|^NO_CONTACT$/i.test(
+        String(whoS.contactPathLabel)
+      )
+        ? '<p class="gdi-muted"><strong>Primary route type:</strong> ' +
+          esc(whoS.contactPathLabel) +
           "</p>"
         : "") +
-      (o.datedGrowthEvidence
-        ? "<p>" + esc(o.datedGrowthEvidence) + "</p>"
-        : "") +
-      "</section>" +
-      '<section class="gdi-section"><h3>Potential hotel use cases</h3><p>' +
-      esc(o.proposedHotelUse || o.potentialHotelUseCases || "—") +
-      "</p>" +
-      (o.summaryWhat &&
-      o.proposedHotelUse &&
-      String(o.summaryWhat) !== String(o.proposedHotelUse)
-        ? '<p class="gdi-muted">Opportunity context: ' +
-          esc(o.summaryWhat) +
-          "</p>"
-        : "") +
-      "</section>" +
-      '<section class="gdi-section gdi-section--matters"><h3>Why this hotel</h3>' +
-      whyThisHotelOpeningHtml(o) +
-      hotelFitAssessmentSectionHtml(o, audit) +
-      "</section>" +
-      '<section class="gdi-section"><h3>Why establish contact now</h3><p>' +
-      esc(o.whyEstablishContactNow || o.whyNow || o.summaryWhyNow || "—") +
-      "</p></section>" +
-      (facts.length || inferred.length
-        ? '<section class="gdi-section"><h3>Facts vs inferred demand</h3>' +
-          (facts.length
-            ? "<p><strong>Established facts</strong></p>" + listHtml(facts)
-            : "") +
-          (inferred.length
-            ? "<p><strong>Inferred hotel demand</strong> (not proven volume)</p>" +
-              listHtml(inferred)
-            : "") +
-          "</section>"
-        : "") +
-      (constraints.length
-        ? '<section class="gdi-section"><h3>Constraints and uncertainties</h3>' +
-          listHtml(constraints) +
-          "</section>"
-        : "") +
-      '<section class="gdi-section gdi-section--contact"><h3>Contact relevance</h3><p><strong>Role / responsibility:</strong> ' +
-      esc(
-        o.contactResponsibility ||
-          o.contactRole ||
-          o.commercialContactPathLabel ||
-          "—"
+      whoShouldSalesContactHtml(
+        Object.assign({}, o, {
+          contactName: contactNameSafe,
+          primaryContact: primaryContactSafe ||
+            (contactNameSafe || o.contactEmail || o.contactPhone || o.contactUrl
+              ? {
+                  name: contactNameSafe || null,
+                  role: o.contactResponsibility || o.contactRole || null,
+                  email: o.contactEmail || null,
+                  phone: o.contactPhone || null,
+                  officialContactUrl: o.contactUrl || null,
+                }
+              : null),
+          organizationContactEmail:
+            o.organizationContactEmail || o.contactEmail || null,
+          companyPhone: o.companyPhone || null,
+          contactOfficialUrl: o.contactUrl || o.contactOfficialUrl || null,
+          commercialContactPathLabel: whoS.contactPathLabel || null,
+        }),
+        extras.whoContactHtml
       ) +
+      researchDetailExpandableHtml(o, "buyerResearch", "Buyer research detail", {
+        esc: esc,
+        prose: prose,
+        cleanList: cleanList,
+        listHtml: listHtml,
+      }) +
+      "</section>" +
+      '<section class="gdi-section gdi-section--action" data-section-id="recommended_next_step"><h3>Recommended next step</h3><p>' +
+      esc(prose(nextS.body) || "—") +
       "</p>" +
-      (o.contactName ? "<p><strong>Person:</strong> " + esc(o.contactName) + "</p>" : "") +
-      (o.contactEmail ? "<p><strong>Email:</strong> " + esc(o.contactEmail) + "</p>" : "") +
-      (o.contactPhone ? "<p><strong>Phone:</strong> " + esc(o.contactPhone) + "</p>" : "") +
-      (o.contactUrl
-        ? '<p><strong>Route:</strong> <a href="' +
-          esc(o.contactUrl) +
-          '" target="_blank" rel="noopener">' +
-          esc(o.contactUrl) +
-          "</a></p>"
-        : "") +
-      "<p class=\"gdi-muted\">A founder is not automatically the right hotel buyer — role selected for the proposed use case.</p></section>" +
-      '<section class="gdi-section gdi-section--action"><h3>Recommended action</h3><p>' +
-      esc(o.recommendedAction || o.recommendedNextStep || "—") +
-      "</p>" +
-      "<p class=\"gdi-muted\">Priority, recommended action, and sourcing availability are tracked separately. Introductory contact may be warranted without confirmed procurement.</p></section>" +
-      '<section class="gdi-section gdi-section--evidence"><h3>Evidence</h3>' +
-      (sources ? "<ul>" + sources + "</ul>" : "<p>—</p>") +
-      (o.evidenceFreshnessAt
-        ? "<p><strong>Evidence freshness:</strong> " +
-          esc(o.evidenceFreshnessAt) +
+      qHtml +
+      "</section>" +
+      '<section class="gdi-section gdi-section--evidence" data-section-id="supporting_evidence"><h3>Supporting evidence</h3>' +
+      sourceListFromModel(evS.sources, evS.evidenceGroups, evS.sourcesFull) +
+      (evS.activityDate
+        ? "<p><strong>Original activity date:</strong> " +
+          esc(evS.activityDate) +
           "</p>"
         : "") +
-      "</section>" +
-      (extras.validationHtml
-        ? '<section class="gdi-section gdi-section--validation gdi-validation-panel"><h3>Hotel Validation / Action / Outcome</h3>' +
-          extras.validationHtml +
-          "</section>"
+      (evS.researchVerificationDate
+        ? "<p><strong>Research verification date:</strong> " +
+          esc(evS.researchVerificationDate) +
+          " (not the activity date)</p>"
         : "") +
+      "</section>" +
+      '<section class="gdi-section gdi-section--validation gdi-validation-panel" data-section-id="hotel_validation"><h3>Hotel Validation / Action / Outcome</h3>' +
+      (extras.validationHtml ||
+        '<p class="gdi-muted">Validation controls load with the live drawer.</p>') +
+      "</section>" +
       "</div>"
     );
   }
@@ -3457,18 +6558,118 @@
    * Opening "Why this hotel" copy — property × prospect fit only.
    * Does not reuse opportunity description / growth signal as a hotel thesis.
    */
+  function dedupeRepeatedFacilityProse(raw) {
+    var s = String(raw || "").replace(/\s+/g, " ").trim();
+    if (!s) return "";
+    // Collapse duplicated Chapultepec/facility boilerplate joined without punctuation.
+    var chunks = s.split(/(?=Limitation to respect:)|(?=Chapultepec \/ Polanco)/i);
+    var seen = {};
+    var out = [];
+    for (var i = 0; i < chunks.length; i++) {
+      var c = String(chunks[i] || "").replace(/\s+/g, " ").trim();
+      if (!c) continue;
+      var k = c.toLowerCase();
+      if (seen[k]) continue;
+      seen[k] = true;
+      out.push(c);
+    }
+    return out.join(" ");
+  }
+
+  /**
+   * run-052 Issue 2 — authoritative sales action from segment gold brief.
+   * Association: associationEventsGoldBrief
+   * Scaling: commercialIntelligenceBrief (then salesBrief) — never AEGB first
+   * Top-level recommendedAction is fallback only when no gold approach exists.
+   */
+  function resolveAuthoritativeSalesActionText(o) {
+    o = o || {};
+    function approachText(brief) {
+      if (!brief || !brief.recommendedSalesApproach) return "";
+      var a = brief.recommendedSalesApproach;
+      if (typeof a === "string") return String(a).replace(/\s+/g, " ").trim();
+      if (a && typeof a === "object") {
+        return String(a.nextAction || a.openingApproach || "")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+      return "";
+    }
+    function isAssocProcurement(s) {
+      return /association staff\s*vs\s*PCO|PCO vs housing|host\/overflow|meetings\s*\/\s*congress\s*\/\s*operations route|Organizer TBD/i.test(
+        String(s || "")
+      );
+    }
+    function preferCertified(candidate) {
+      var certified = String(o.recommendedNextStep || "")
+        .replace(/\s+/g, " ")
+        .trim();
+      var c = String(candidate || "")
+        .replace(/\s+/g, " ")
+        .trim();
+      if (certified && (!c || isAssocProcurement(c))) return certified;
+      if (c && !isAssocProcurement(c)) return c;
+      return certified || c || "";
+    }
+    var isScaling =
+      /scaling/i.test(String(o.researchSegment || o.segment || "")) ||
+      String(o.opportunityType || o.detailLayout || "").toUpperCase() ===
+        "CORPORATE_ACCOUNT_RELATIONSHIP";
+    if (isScaling) {
+      // Prefer API-sanitized recommendedAction when present (already scrubbed).
+      var top = String(
+        o.recommendedAction || o.recommendedNextStep || o.salesActionRecommended || ""
+      )
+        .replace(/\s+/g, " ")
+        .trim();
+      if (top && !isAssocProcurement(top)) return top;
+      var scaling = approachText(o.commercialIntelligenceBrief);
+      if (scaling && !isAssocProcurement(scaling)) return scaling;
+      var salesSc = approachText(o.salesBrief);
+      if (salesSc && !isAssocProcurement(salesSc)) return salesSc;
+      return preferCertified(top || scaling || salesSc || "");
+    }
+    var assoc = approachText(o.associationEventsGoldBrief);
+    if (assoc && !isAssocProcurement(assoc)) return assoc;
+    var scalingFallback = approachText(o.commercialIntelligenceBrief);
+    if (scalingFallback && !isAssocProcurement(scalingFallback)) {
+      return scalingFallback;
+    }
+    var sales = approachText(o.salesBrief);
+    if (sales && !isAssocProcurement(sales)) return sales;
+    return preferCertified(
+      o.recommendedAction || o.recommendedNextStep || o.salesActionRecommended || assoc || ""
+    );
+  }
+
   function whyThisHotelOpeningHtml(o) {
     o = o || {};
+    // run-052 Issue 2: prefer segment gold / CIB whyThisHotel over legacy salesBrief facilities copy.
+    // Scaling: never prefer associationEventsGoldBrief over CIB.
+    var isScalingWhy =
+      /scaling/i.test(String(o.researchSegment || o.segment || "")) ||
+      String(o.opportunityType || o.detailLayout || "").toUpperCase() ===
+        "CORPORATE_ACCOUNT_RELATIONSHIP";
+    var briefWhy = isScalingWhy
+      ? (o.commercialIntelligenceBrief &&
+          o.commercialIntelligenceBrief.whyThisHotel) ||
+        (o.salesBrief && o.salesBrief.whyThisHotel) ||
+        o.whyThisHotel ||
+        null
+      : (o.associationEventsGoldBrief && o.associationEventsGoldBrief.whyThisHotel) ||
+        (o.commercialIntelligenceBrief &&
+          o.commercialIntelligenceBrief.whyThisHotel) ||
+        (o.salesBrief && o.salesBrief.whyThisHotel) ||
+        null;
     var hotelSpecific = [
+      briefWhy,
       o.whyThisHotel,
       o.hotelOpportunityThesis,
       o.summaryWhyHotel,
       o.fitExplanation,
     ]
       .map(function (v) {
-        return String(v || "")
-          .replace(/\s+/g, " ")
-          .trim();
+        return dedupeRepeatedFacilityProse(v);
       })
       .filter(function (v) {
         // Assessment-status prose belongs in fit caveats, not Why This Hotel.
@@ -3505,18 +6706,26 @@
         "<p class=\"gdi-muted\">Hotel-specific rationale not yet established for this prospect — see dimension assessments below. Opportunity description alone is not treated as hotel fit.</p>"
       );
     }
+    // Scaling / corporate-account relationships are not venue-sourcing RFPs —
+    // never echo internal enums like OPEN_UNRESOLVED as "Sourcing status".
+    var isCorporateAccount =
+      String(o.opportunityType || o.detailLayout || "").toUpperCase() ===
+        "CORPORATE_ACCOUNT_RELATIONSHIP" ||
+      /scaling/i.test(String(o.researchSegment || o.segment || ""));
     var sourcingNote = "";
-    if (o.venueSourcingStatusLabel || o.venueSourcingStatus || o.sourcingStatus) {
+    var rawSourcing =
+      o.venueSourcingStatusLabel || o.venueSourcingStatus || o.sourcingStatus || "";
+    if (
+      !isCorporateAccount &&
+      rawSourcing &&
+      !/^OPEN_UNRESOLVED$/i.test(String(rawSourcing)) &&
+      !/open\s*\/?\s*unresolved/i.test(String(rawSourcing))
+    ) {
       sourcingNote =
         '<p class="gdi-muted"><strong>Sourcing status:</strong> ' +
         esc(
           formatTileSecondaryHeadlineLabel(
-            customerStatusLabel(
-              o.venueSourcingStatusLabel ||
-                o.venueSourcingStatus ||
-                o.sourcingStatus,
-              "Hotel Sourcing Unconfirmed"
-            )
+            customerStatusLabel(rawSourcing, "Hotel Sourcing Unconfirmed")
           )
         ) +
         " — distinct from why this property could serve the use case.</p>";
@@ -3626,55 +6835,117 @@
       );
     }
 
-    var showAllDims = Boolean(dimAssess) || Boolean(qualComps) || hasScore || withheld;
-    var dimTiles = showAllDims
-      ? dimKeys.map(dimTileHtml).join("")
-      : dimKeys.map(dimTileHtml).filter(Boolean).join("");
-    var hasDimTiles = Boolean(dimTiles);
-    if (!hasScore && !hasDimTiles && !withheld) {
-      return (
-        '<div class="gdi-fit-qualitative">' +
-        (fitText
-          ? "<p>" + esc(fitText) + "</p>"
-          : "<p>Hotel-fit dimensions not yet assessed for this prospect.</p>") +
-        "</div>"
-      );
+    // run-052 Issue 6 (RC-07): never paint seven empty "Not established" tiles
+    // merely because the renderer can emit them. Require real dimension evidence
+    // or an overall score/withheld state from a real assessment pass.
+    function hasUsableDimAssessment(src) {
+      if (!src || typeof src !== "object") return false;
+      var keys = Object.keys(src);
+      if (!keys.length) return false;
+      for (var i = 0; i < keys.length; i++) {
+        var d = src[keys[i]];
+        if (!d || typeof d !== "object") continue;
+        var st = String(d.status || "").toLowerCase();
+        if (
+          st === "assessed" ||
+          st === "insufficient_evidence" ||
+          st === "not_applicable" ||
+          st === "provisional"
+        ) {
+          return true;
+        }
+        if (d.score != null && !Number.isNaN(Number(d.score))) return true;
+        if (d.rationale || d.summary || d.explanation) return true;
+      }
+      return false;
     }
+    var usableDims =
+      o.hotelFitShowDimensionGrid === true ||
+      hasUsableDimAssessment(dimAssess) ||
+      hasUsableDimAssessment(qualComps);
+    // Explicit false from sanitize wins over empty shells.
+    if (o.hotelFitShowDimensionGrid === false) usableDims = false;
+    var showDimGrid = usableDims || hasScore || withheld;
+    var dimTiles = showDimGrid ? dimKeys.map(dimTileHtml).join("") : "";
+    var hasDimTiles = Boolean(dimTiles);
 
     var overallDisplay = hasScore
       ? String(numericScore)
       : withheld
         ? "Withheld"
-        : "Not established";
+        : showDimGrid
+          ? "Not established"
+          : "Not assessed";
 
-    var evidenceConfLabel = (function () {
-      if (o.evidenceConfidence == null || o.evidenceConfidence === "") {
-        return "Not scored";
-      }
-      var n = Number(o.evidenceConfidence);
-      if (Number.isNaN(n)) return String(o.evidenceConfidence);
-      if (n > 0 && n <= 1) n = Math.round(n * 100);
-      return String(Math.round(n)) + " / 100";
-    })();
+    var signalRowHtml =
+      '<div class="gdi-signal-row gdi-signal-row--fit">' +
+      "<div><span class=\"gdi-meta-label\">Sales posture</span><strong>" +
+      esc(
+        customerStatusLabel(
+          o.opportunityQualificationLabel || o.opportunityQualification,
+          "—"
+        )
+      ) +
+      '</strong><span class="gdi-muted gdi-posture-note"> · ' +
+      esc(
+        o.hotelFitPostureNote ||
+          "Sales posture is derived from hotel fit and territory evidence — not a separate win-probability analysis."
+      ) +
+      "</span></div>" +
+      "<div><span class=\"gdi-meta-label\">Evidence confidence</span><strong>" +
+      esc(
+        (function () {
+          if (o.evidenceConfidence == null || o.evidenceConfidence === "") {
+            return "Not scored";
+          }
+          var n = Number(o.evidenceConfidence);
+          if (Number.isNaN(n)) return String(o.evidenceConfidence);
+          if (n > 0 && n <= 1) n = Math.round(n * 100);
+          return String(Math.round(n)) + " / 100";
+        })()
+      ) +
+      "</strong>" +
+      (o.evidenceConfidenceExplanation
+        ? '<details class="gdi-inline-details"><summary>What this means</summary><p>' +
+          esc(o.evidenceConfidenceExplanation) +
+          "</p><p class=\"gdi-muted\">Evidence confidence is not hotel fit, commercial availability, or win probability.</p></details>"
+        : '<p class="gdi-muted gdi-posture-note">Scale 0–100 · distinct from hotel fit</p>') +
+      "</div>" +
+      "<div><span class=\"gdi-meta-label\">Sales action</span><strong>" +
+      esc(
+        resolveAuthoritativeSalesActionText(o) ||
+          customerStatusLabel(
+            o.bookingWindowLabel || o.bookingWindowStatus,
+            actionStatusLabel(o.bookingWindowStatus) || "—"
+          )
+      ) +
+      "</strong></div>" +
+      "<div><span class=\"gdi-meta-label\">Recommended timing</span><strong>" +
+      esc(
+        customerStatusLabel(
+          o.bookingWindowLabel || o.bookingWindowStatus,
+          actionStatusLabel(o.bookingWindowStatus) || "—"
+        )
+      ) +
+      "</strong></div></div>";
 
-    var postureLabel = customerStatusLabel(
-      o.opportunityQualificationLabel || o.opportunityQualification,
-      "—"
-    );
-    var postureNote =
-      o.hotelFitPostureNote ||
-      "Sales posture is derived from hotel fit and territory evidence — not a separate win-probability analysis.";
-    var salesActionLabel =
-      o.recommendedAction ||
-      o.recommendedNextStep ||
-      customerStatusLabel(
-        o.bookingWindowLabel || o.bookingWindowStatus,
-        actionStatusLabel(o.bookingWindowStatus) || "—"
+    if (!hasScore && !hasDimTiles && !withheld) {
+      return (
+        '<div class="gdi-hotel-fit-block">' +
+        '<div class="gdi-fit-qualitative">' +
+        (fitText
+          ? "<p>" + esc(fitText) + "</p>"
+          : "<p>" +
+            esc(
+              o.hotelFitUnassessedCustomerNote ||
+                "Hotel-fit dimensions have not been assessed for this prospect. Territory notes above are not a completed dimension scorecard."
+            ) +
+            "</p>") +
+        "</div>" +
+        signalRowHtml +
+        "</div>"
       );
-    var timingLabel = customerStatusLabel(
-      o.bookingWindowLabel || o.bookingWindowStatus,
-      actionStatusLabel(o.bookingWindowStatus) || "—"
-    );
+    }
 
     return (
       '<div class="gdi-hotel-fit-block">' +
@@ -3696,27 +6967,8 @@
       "</div>" +
       dimTiles +
       "</div>" +
-      '<div class="gdi-signal-row gdi-signal-row--fit">' +
-      "<div><span class=\"gdi-meta-label\">Sales posture</span><strong>" +
-      esc(postureLabel) +
-      '</strong><span class="gdi-muted gdi-posture-note"> · ' +
-      esc(postureNote) +
-      "</span></div>" +
-      "<div><span class=\"gdi-meta-label\">Evidence confidence</span><strong>" +
-      esc(evidenceConfLabel) +
-      "</strong>" +
-      (o.evidenceConfidenceExplanation
-        ? '<details class="gdi-inline-details"><summary>What this means</summary><p>' +
-          esc(o.evidenceConfidenceExplanation) +
-          "</p><p class=\"gdi-muted\">Evidence confidence is not hotel fit, commercial availability, or win probability.</p></details>"
-        : '<p class="gdi-muted gdi-posture-note">Scale 0–100 · distinct from hotel fit</p>') +
-      "</div>" +
-      "<div><span class=\"gdi-meta-label\">Sales action</span><strong>" +
-      esc(salesActionLabel) +
-      "</strong></div>" +
-      "<div><span class=\"gdi-meta-label\">Recommended timing</span><strong>" +
-      esc(timingLabel) +
-      "</strong></div></div></div>"
+      signalRowHtml +
+      "</div>"
     );
   }
 
@@ -3725,11 +6977,526 @@
    * WHAT WE SEE / WHY IT MATTERS / WHY NOW / RECOMMENDED ACTION / CONTACT / EVIDENCE / VALIDATION
    * Type-aware: VENUE_PARTNERSHIP / SPECIFIC_PRIVATE_EVENT / CORPORATE_ACCOUNT_RELATIONSHIP layouts.
    */
+  function isAssociationConferenceEventsOpportunityUi(o) {
+    o = o || {};
+    if (classifyOpportunityTypeFilter(o) === "ASSOCIATION_CONFERENCE_GROUP") {
+      return true;
+    }
+    var seg = String(o.researchSegment || o.segment || "").toLowerCase();
+    if (seg.indexOf("assoc") >= 0 || seg.indexOf("conference") >= 0) return true;
+    if (o.associationEventsGoldBrief && seg.indexOf("scaling") < 0) return true;
+    if (
+      o.segmentReclassificationPreview === true &&
+      seg === "associations_government"
+    ) {
+      return true;
+    }
+    // Event-shaped rows that historically fell through to legacy Account/occasion
+    // (MICE / incentive / closed programmes with event dates).
+    if (/\bmice\b|\bincentive/.test(seg)) return true;
+    if (o.eventsDrawerModel || o.eventsOpportunityOverview) return true;
+    if (
+      (o.eventStartDate || o.eventEndDate || o.eventDateDisplay) &&
+      !/scaling/i.test(seg) &&
+      (o.opportunityType === "CLOSED_DISQUALIFIED" ||
+        o.opportunityType === "ASSOCIATION_CONFERENCE" ||
+        /event|conference|congress|summit|incentive/i.test(
+          String(o.opportunityTypeLabel || o.title || "")
+        ))
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Shared structured Section 1 grid for demand segments 3–8 (Events CSS reuse).
+   * One layout system — identity line + labeled field grid.
+   */
+  function structuredSegmentOverviewHtml(overview) {
+    var ov = overview || {};
+    var fields = Array.isArray(ov.fields) ? ov.fields : [];
+    var values = ov.values || ov;
+    function row(label, value) {
+      return (
+        '<div class="gdi-events-overview-item"><span class="gdi-events-overview-label">' +
+        esc(label) +
+        '</span><span class="gdi-events-overview-value">' +
+        esc(value || "—") +
+        "</span></div>"
+      );
+    }
+    var grid = "";
+    if (fields.length) {
+      for (var i = 0; i < fields.length; i++) {
+        var f = fields[i];
+        var key = f && f.key ? f.key : "";
+        var label = f && f.label ? f.label : key;
+        grid += row(label, values[key]);
+      }
+    }
+    return (
+      '<div class="gdi-events-opportunity-overview" data-overview-version="' +
+      esc(ov.overviewMode || "segment_structured_overview_v1") +
+      '" data-segment-id="' +
+      esc(ov.segmentId || "") +
+      '">' +
+      '<p class="gdi-events-overview-identity">' +
+      esc(ov.identityLine || "—") +
+      "</p>" +
+      '<div class="gdi-events-overview-grid">' +
+      grid +
+      "</div></div>"
+    );
+  }
+
+  function eventsOpportunityOverviewHtml(o) {
+    var ov =
+      (o && o.eventsOpportunityOverview) ||
+      (o &&
+        o.commercialIntelligenceBrief &&
+        o.commercialIntelligenceBrief.eventsOpportunityOverview) ||
+      (o &&
+        o.associationEventsGoldBrief &&
+        o.associationEventsGoldBrief.eventsOpportunityOverview) ||
+      null;
+    if (!ov) {
+      // Client-side fallback when sanitize has not attached overview yet.
+      // Never prefer series-identity slugs (normalizedEventName / underscore tokens).
+      function isSlugToken(s) {
+        var t = String(s || "").trim();
+        if (!t) return true;
+        if (/^[a-z0-9]+(_[a-z0-9]+)+$/.test(t)) return true;
+        if (!/\s/.test(t) && !/[A-ZÁÉÍÓÚÑ]/.test(t) && /^[a-z0-9_.-]{2,64}$/.test(t)) {
+          return true;
+        }
+        return false;
+      }
+      var org =
+        String(o.displayCompanyName || o.organizationName || o.companyName || "").trim() ||
+        "Organizer TBD";
+      var rawCandidates = [
+        o.eventDisplayName,
+        o.eventName,
+        o.title,
+        o.displayTitle,
+        o.canonicalEventName,
+      ];
+      var ev = "";
+      for (var ci = 0; ci < rawCandidates.length; ci++) {
+        var cand = String(rawCandidates[ci] || "").trim();
+        if (!cand || isSlugToken(cand)) continue;
+        if (cand.toLowerCase() === org.toLowerCase()) continue;
+        ev = cand;
+        break;
+      }
+      if (!ev) ev = "Programme TBD";
+      var identity =
+        org.toLowerCase() === ev.toLowerCase() ? org : org + " — " + ev;
+      ov = {
+        identityLine: identity,
+        timing:
+          eventDateRangeLabel(o.eventStartDate, o.eventEndDate, "Dates TBD") ||
+          "Dates TBD",
+        location:
+          o.eventLocationSummary ||
+          [o.eventLocationCity || o.eventCity, o.venueCity, o.city]
+            .filter(Boolean)
+            .join(", ") ||
+          "Location TBD",
+        hotelSourcing: "Sourcing unconfirmed",
+        roomDemand: "Room demand not yet published",
+        demandCycle: "Future cycle expected",
+        attendance: "Not yet published",
+        peakRooms: "Not yet published",
+      };
+    }
+    function row(label, value) {
+      return (
+        '<div class="gdi-events-overview-item"><span class="gdi-events-overview-label">' +
+        esc(label) +
+        '</span><span class="gdi-events-overview-value">' +
+        esc(value || "—") +
+        "</span></div>"
+      );
+    }
+    return (
+      '<div class="gdi-events-opportunity-overview" data-overview-version="gdi-events-opportunity-overview-v1">' +
+      '<p class="gdi-events-overview-identity">' +
+      esc(ov.identityLine || "—") +
+      "</p>" +
+      '<div class="gdi-events-overview-grid">' +
+
+      row("Timing", ov.timing) +
+      row("Location", ov.location) +
+      row("Hotel sourcing", ov.hotelSourcing) +
+      row("Room demand", ov.roomDemand) +
+      row("Demand cycle", ov.demandCycle) +
+      row("Attendance", ov.attendance) +
+      row("Peak rooms", ov.peakRooms) +
+      "</div>" +
+      (ov.venueConfirmationNote
+        ? '<p class="gdi-events-overview-venue-note gdi-muted">' +
+          esc(ov.venueConfirmationNote) +
+          "</p>"
+        : "") +
+      "</div>"
+    );
+  }
+
+  /**
+   * Association / Conference / Events — ten-section drawer.
+   * Section 1 = structured Events overview grid (NOT Scaling narrative).
+   * Sections 2–10 = same hierarchy / subsections as Scaling Companies gold.
+   */
+  function associationConferenceEventsDetailHtml(o, audit, extras) {
+    extras = extras || {};
+    o = o || {};
+
+    function prose(v) {
+      return String(v || "")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+    function cleanList(items) {
+      if (!Array.isArray(items)) return [];
+      return items
+        .map(prose)
+        .filter(Boolean)
+        .filter(function (t) {
+          return !/^—+$/.test(t) && t !== "-" && t !== "•";
+        });
+    }
+    function listHtml(items) {
+      if (!items || !items.length) return "";
+      return (
+        "<ul>" +
+        items
+          .map(function (t) {
+            return "<li>" + esc(t) + "</li>";
+          })
+          .join("") +
+        "</ul>"
+      );
+    }
+    function sourceListFromModel(sources, evidenceGroups, sourcesFull) {
+      if ((!sources || !sources.length) && (!sourcesFull || !sourcesFull.length)) {
+        return '<p class="gdi-muted">No source URLs attached yet.</p>';
+      }
+      function renderOne(s) {
+        var url = prose(s && s.url);
+        if (!url) return "";
+        var title = prose(s && s.title) || url;
+        var publisher = prose(s && s.publisher);
+        var date = prose(s && (s.publicationDate || s.publishedDate));
+        var establishes = prose(s && s.establishes);
+        var bits =
+          '<li class="gdi-evidence-item">' +
+          '<div class="gdi-evidence-title"><strong>' +
+          esc(title) +
+          "</strong></div>";
+        if (publisher) {
+          bits +=
+            '<div class="gdi-muted">Publisher: ' + esc(publisher) + "</div>";
+        }
+        if (date) {
+          bits += '<div class="gdi-muted">Date: ' + esc(date) + "</div>";
+        }
+        if (establishes && establishes.length <= 120) {
+          bits += '<div class="gdi-muted">' + esc(establishes) + "</div>";
+        }
+        bits +=
+          '<div><a href="' +
+          esc(url) +
+          '" target="_blank" rel="noopener noreferrer">' +
+          esc(url) +
+          "</a></div></li>";
+        return bits;
+      }
+      var defaultHtml = "";
+      if (sources && sources.length) {
+        defaultHtml =
+          '<ul class="gdi-evidence-default">' +
+          sources.map(renderOne).filter(Boolean).join("") +
+          "</ul>";
+      }
+      var full = Array.isArray(sourcesFull) ? sourcesFull : [];
+      var defaultCount = (sources && sources.length) || 0;
+      if (full.length > defaultCount && full.length > 0) {
+        defaultHtml +=
+          '<details class="gdi-evidence-expand">' +
+          "<summary>View all supporting evidence (" +
+          full.length +
+          ")</summary>" +
+          '<ul class="gdi-evidence-full">' +
+          full.map(renderOne).filter(Boolean).join("") +
+          "</ul></details>";
+      }
+      return defaultHtml || '<p class="gdi-muted">No source URLs attached yet.</p>';
+    }
+
+    var model = o.eventsDrawerModel || null;
+    if (!model || !model.sections) {
+      var cib = o.commercialIntelligenceBrief || o.salesBrief || {};
+      var aegb = o.associationEventsGoldBrief || {};
+      function pick() {
+        for (var i = 0; i < arguments.length; i++) {
+          var v = arguments[i];
+          if (v == null) continue;
+          var s = String(v).replace(/\s+/g, " ").trim();
+          if (s) return s;
+        }
+        return "";
+      }
+      model = {
+        overviewMode: "events_structured_grid_v1",
+        sections: {
+          what_is_happening: {
+            body: pick(
+              cib.whatIsHappening,
+              aegb.eventHistoryAndActivity,
+              o.summaryWhat,
+              o.whatIsHappening
+            ),
+            activityDate: null,
+          },
+          potential_business: {
+            body: pick(
+              cib.potentialBusinessForThisHotel,
+              cib.potentialHotelBusiness,
+              aegb.potentialBusinessForHotel,
+              o.whyHotelDemand,
+              o.proposedHotelUse
+            ),
+            inferred: [],
+          },
+          why_this_hotel: {
+            body: pick(cib.whyThisHotel, aegb.whyThisHotel, o.whyThisHotel),
+            advantages: cleanList(cib.whyThisHotelAdvantages),
+            limitations: cleanList(cib.whyThisHotelLimitations),
+          },
+          why_act_now: {
+            body: pick(cib.whyActNow, o.whyNow, o.summaryWhyNow),
+          },
+          facts_and_uncertainties: {
+            facts: cleanList(
+              cib.establishedFacts ||
+                (cib.establishedFactsAndUncertainties &&
+                  cib.establishedFactsAndUncertainties.facts) ||
+                (cib.evidenceAndUncertainty &&
+                  cib.evidenceAndUncertainty.facts) ||
+                o.establishedFacts
+            ),
+            uncertainties: cleanList(
+              (cib.establishedFactsAndUncertainties &&
+                cib.establishedFactsAndUncertainties.uncertainties) ||
+                (cib.evidenceAndUncertainty &&
+                  cib.evidenceAndUncertainty.uncertainties) ||
+                o.uncertainties
+            ),
+            factsEmptyNote:
+              "No separately listed established facts beyond the activity narrative above.",
+          },
+          who_to_contact: {
+            contactPathLabel: prose(o.commercialContactPathLabel) || null,
+          },
+          recommended_next_step: {
+            body: pick(
+              resolveAuthoritativeSalesActionText(o),
+              cib.recommendedNextStep,
+              o.recommendedAction
+            ),
+            qualificationQuestions: cleanList(
+              cib.qualificationQuestions ||
+                (cib.recommendedSalesApproach &&
+                  cib.recommendedSalesApproach.qualificationQuestions) ||
+                o.qualificationQuestions ||
+                o.suggestedQualificationQuestions
+            ),
+          },
+          supporting_evidence: {
+            sources: (o.sources || [])
+              .map(function (src) {
+                return {
+                  url: prose(src && (src.url || src)),
+                  title: prose(src && src.title) || null,
+                };
+              })
+              .filter(function (x) {
+                return x.url;
+              }),
+            sourcesFull: [],
+          },
+        },
+      };
+    }
+
+    var sec = model.sections;
+    var whatS = sec.what_is_happening || {};
+    var potS = sec.potential_business || {};
+    var whyS = sec.why_this_hotel || {};
+    var nowS = sec.why_act_now || {};
+    var factS = sec.facts_and_uncertainties || {};
+    var whoS = sec.who_to_contact || {};
+    var nextS = sec.recommended_next_step || {};
+    var evS = sec.supporting_evidence || {};
+
+    var factsHtml = "";
+    var factsList = cleanList(factS.facts);
+    var uncList = cleanList(factS.uncertainties);
+    if (factsList.length) {
+      factsHtml +=
+        "<p><strong>Established facts</strong></p>" + listHtml(factsList);
+    } else if (factS.factsEmptyNote) {
+      factsHtml +=
+        '<p class="gdi-muted">' + esc(factS.factsEmptyNote) + "</p>";
+    }
+    if (uncList.length) {
+      factsHtml +=
+        "<p><strong>Uncertainties</strong></p>" + listHtml(uncList);
+    }
+
+    var whyBody = prose(whyS.body);
+    var adv = cleanList(whyS.advantages);
+    var lim = cleanList(whyS.limitations);
+    if (adv.length || lim.length) {
+      var packWhy = adv.concat(lim).join(" ").toLowerCase();
+      if (
+        whyBody &&
+        packWhy.indexOf(
+          whyBody.toLowerCase().slice(0, Math.min(80, whyBody.length))
+        ) !== -1
+      ) {
+        whyBody = "";
+      }
+    }
+    var whyBits = whyBody ? "<p>" + esc(whyBody) + "</p>" : "";
+    if (adv.length) {
+      whyBits += "<p><strong>Advantages</strong></p>" + listHtml(adv);
+    }
+    if (lim.length) {
+      whyBits +=
+        "<p><strong>Limitations / trade-offs</strong></p>" + listHtml(lim);
+    }
+    if (!whyBits) whyBits = "<p>—</p>";
+
+    var qHtml = "";
+    var qs = cleanList(nextS.qualificationQuestions);
+    if (qs.length) {
+      qHtml =
+        "<p><strong>Qualification questions</strong></p>" + listHtml(qs);
+    }
+
+    return (
+      '<div class="gdi-detail-framework gdi-detail-framework--events-canonical gdi-detail-framework--scaling-parity" data-events-overview-mode="structured_grid_v1">' +
+      commercialProgressionHtml(o.commercialProgression) +
+      '<section class="gdi-section" data-section-id="opportunity_overview"><h3>Opportunity overview</h3>' +
+      eventsOpportunityOverviewHtml(o) +
+      "</section>" +
+      needDateMatchDrawerSectionHtml(o) +
+      '<section class="gdi-section" data-section-id="what_is_happening"><h3>What is happening</h3><p>' +
+      esc(prose(whatS.body) || "—") +
+      "</p>" +
+      (whatS.activityDate
+        ? "<p><strong>Original activity date:</strong> " +
+          esc(whatS.activityDate) +
+          "</p>"
+        : "") +
+      "</section>" +
+      '<section class="gdi-section" data-section-id="potential_business"><h3>Potential business for this hotel</h3><p>' +
+      esc(prose(potS.body) || "—") +
+      "</p>" +
+      (cleanList(potS.inferred).length
+        ? "<p><strong>Inferred (not verified volume)</strong></p>" +
+          listHtml(cleanList(potS.inferred))
+        : "") +
+      researchDetailExpandableHtml(o, "potentialBusinessForThisHotel", "Additional demand research", {
+        esc: esc,
+        prose: prose,
+        cleanList: cleanList,
+        listHtml: listHtml,
+      }) +
+      "</section>" +
+      '<section class="gdi-section gdi-section--matters" data-section-id="why_this_hotel"><h3>Why this hotel</h3>' +
+      whyBits +
+      researchDetailExpandableHtml(o, "whyThisHotel", "Additional hotel-fit research", {
+        esc: esc,
+        prose: prose,
+        cleanList: cleanList,
+        listHtml: listHtml,
+      }) +
+      "</section>" +
+      '<section class="gdi-section" data-section-id="why_act_now"><h3>Why act now</h3><p>' +
+      esc(prose(nowS.body) || "—") +
+      "</p></section>" +
+      '<section class="gdi-section" data-section-id="facts_and_uncertainties"><h3>Established facts and uncertainties</h3>' +
+      factsHtml +
+      "</section>" +
+      '<section class="gdi-section gdi-section--contact" data-section-id="who_to_contact"><h3>Who to contact</h3>' +
+      (whoS.contactPathLabel &&
+      !/not yet established|research incomplete|^NO_CONTACT$/i.test(
+        String(whoS.contactPathLabel)
+      )
+        ? '<p class="gdi-muted"><strong>Primary route type:</strong> ' +
+          esc(whoS.contactPathLabel) +
+          "</p>"
+        : "") +
+      whoShouldSalesContactHtml(o, extras.whoContactHtml) +
+      researchDetailExpandableHtml(o, "buyerResearch", "Buyer research detail", {
+        esc: esc,
+        prose: prose,
+        cleanList: cleanList,
+        listHtml: listHtml,
+      }) +
+      "</section>" +
+      '<section class="gdi-section gdi-section--action" data-section-id="recommended_next_step"><h3>Recommended next step</h3><p>' +
+      esc(prose(nextS.body) || "—") +
+      "</p>" +
+      qHtml +
+      "</section>" +
+      '<section class="gdi-section gdi-section--evidence" data-section-id="supporting_evidence"><h3>Supporting evidence</h3>' +
+      sourceListFromModel(evS.sources, evS.evidenceGroups, evS.sourcesFull) +
+      (evS.activityDate
+        ? "<p><strong>Original activity date:</strong> " +
+          esc(evS.activityDate) +
+          "</p>"
+        : "") +
+      (evS.researchVerificationDate
+        ? "<p><strong>Research verification date:</strong> " +
+          esc(evS.researchVerificationDate) +
+          " (not the activity date)</p>"
+        : "") +
+      "</section>" +
+      '<section class="gdi-section gdi-section--validation gdi-validation-panel" data-section-id="hotel_validation"><h3>Hotel Validation / Action / Outcome</h3>' +
+      (extras.validationHtml ||
+        '<p class="gdi-muted">Validation controls load with the live drawer.</p>') +
+      "</section>" +
+      "</div>"
+    );
+  }
+
   function intelligenceDetailHtml(o, audit, extras) {
     extras = extras || {};
+    // Segment 8 subtypes use shared ten-section drawer + conditional intelligence
+    // sections — not the legacy standalone venue layout.
+    var isPreferredLodgingShared =
+      o.preferredLodgingPartnershipV1 === true ||
+      o.demandOpportunitySubtype === "PREFERRED_LODGING_PARTNERSHIP" ||
+      o.opportunityType === "PREFERRED_LODGING_PARTNERSHIP" ||
+      o.detailLayout === "PREFERRED_LODGING_PARTNERSHIP_SHARED_DRAWER" ||
+      Boolean(o.venueIntelligence && o.sharedTenSectionDrawer);
+    var isProfessionalEventPlannerShared =
+      o.professionalEventPlannerPartnershipV1 === true ||
+      o.demandOpportunitySubtype ===
+        "PROFESSIONAL_EVENT_PLANNER_PARTNERSHIP" ||
+      o.opportunityType === "PROFESSIONAL_EVENT_PLANNER_PARTNERSHIP" ||
+      o.detailLayout === "PROFESSIONAL_EVENT_PLANNER_SHARED_DRAWER" ||
+      Boolean(o.plannerIntelligence && o.sharedTenSectionDrawer);
     if (
-      o.detailLayout === "VENUE_PARTNERSHIP" ||
-      o.opportunityType === "VENUE_PARTNERSHIP"
+      !isPreferredLodgingShared &&
+      !isProfessionalEventPlannerShared &&
+      (o.detailLayout === "VENUE_PARTNERSHIP" ||
+        o.opportunityType === "VENUE_PARTNERSHIP")
     ) {
       return venuePartnershipDetailHtml(o, audit, extras);
     }
@@ -3739,268 +7506,77 @@
     ) {
       return specificPrivateEventDetailHtml(o, audit, extras);
     }
-    if (
-      o.detailLayout === "CORPORATE_ACCOUNT_RELATIONSHIP" ||
-      o.opportunityType === "CORPORATE_ACCOUNT_RELATIONSHIP"
-    ) {
+    // Scaling Companies → corporate-account layout. Segment wins over missing
+    // opportunityType/detailLayout and over a stray associationEventsGoldBrief.
+    var segUi = String(o.researchSegment || o.segment || "").toLowerCase();
+    var demandId = String(o.demandSegmentId || "").toLowerCase();
+    var reclassEvents =
+      o.segmentReclassificationPreview === true && segUi.indexOf("assoc") >= 0;
+    var isScalingDrawer =
+      !reclassEvents &&
+      segUi !== "associations_government" &&
+      (o.detailLayout === "CORPORATE_ACCOUNT_RELATIONSHIP" ||
+        o.opportunityType === "CORPORATE_ACCOUNT_RELATIONSHIP" ||
+        classifyOpportunityTypeFilter(o) === "SCALING_COMPANY" ||
+        /scaling/i.test(segUi));
+    // Shared twelve-segment drawers (Gov / Local Catering / Relocation / …):
+    // same ten-section Scaling renderer + segment-specific Section 1 grid.
+    // Must never fall through to legacy Account/occasion headings.
+    var SHARED_SEGMENT_IDS = {
+      government_public_sector: 1,
+      local_catering_day_meetings: 1,
+      relocation_extended_stay: 1,
+      corporate_meetings_incentives: 1,
+      sports_entertainment: 1,
+      education_scientific: 1,
+      projects_infrastructure: 1,
+      social_special_events: 1,
+      corporate_celebrations_private_events: 1,
+      travel_trade_group_intermediaries: 1,
+    };
+    var isSharedSegmentDrawer =
+      !reclassEvents &&
+      (SHARED_SEGMENT_IDS[demandId] === 1 ||
+        SHARED_SEGMENT_IDS[segUi] === 1 ||
+        Boolean(o.sharedTenSectionDrawer) ||
+        Boolean(o.segmentOverviewModel && o.segmentOverviewModel.structuredGrid) ||
+        String(o.id || "").indexOf("gdi_s4912_") === 0);
+    // Events must not use Scaling overview — route Association/Conference first
+    // unless this row is genuinely Scaling Companies.
+    if (!isScalingDrawer && isAssociationConferenceEventsOpportunityUi(o)) {
+      return associationConferenceEventsDetailHtml(o, audit, extras);
+    }
+    if (isScalingDrawer || isSharedSegmentDrawer) {
       return corporateAccountRelationshipDetailHtml(o, audit, extras);
     }
-
-    audit = audit || {};
-    var sources = sourceListHtml(o.sources);
-
-    var thesisRaw =
-      o.hotelOpportunityThesis ||
-      o.hotelDemandThesis ||
-      o.bethesdaWinThesis ||
-      "";
-    var thesis = isAssessmentStatusProse(thesisRaw) ? "" : thesisRaw;
-    var fitTextRaw =
-      o.fitExplanation ||
-      o.fitRationale ||
-      o.hotelFitRationale ||
-      (audit.hotelFit && audit.hotelFit.explanation) ||
-      "";
-    var fitText = isAssessmentStatusProse(fitTextRaw) ? "" : fitTextRaw;
-    var demandText =
-      o.whyHotelDemand ||
-      o.travelingCohort ||
-      o.relevantTravelers ||
-      "";
-    var occasionText = o.summaryWhat || "";
-    var whyMattersRaw = o.summaryWhyMatters || "";
-    var whyMattersText = isAssessmentStatusProse(whyMattersRaw)
-      ? ""
-      : whyMattersRaw;
-    var whyNowText = o.watchCardWhenToAct || o.whyNow || o.summaryWhyNow || "";
-    var actionText =
-      o.watchCardRecommendedNextStep ||
-      o.recommendedAction ||
-      o.recommendedNextStep ||
-      "";
-
-    var dateLabel =
-      o.eventDateDisplay ||
-      eventDateRangeLabel(o.eventStartDate, o.eventEndDate, "Date not yet confirmed");
-    var peakLabel = formatPeakRoomsLabel(o);
-    var housingProgramLabel = formatHousingProgramLabel(o);
-    var attLabel = fmtVal(o.attendance ?? o.estimatedAttendance);
-    if (!attLabel || attLabel === "—") attLabel = "Not yet published";
-
-    var sourcingLabel = formatTileSecondaryHeadlineLabel(
-      customerStatusLabel(
-        o.venueSourcingStatusLabel || o.venueSourcingStatus,
-        "Hotel Sourcing Unconfirmed"
-      )
-    );
-    // Room-demand commercial state — never substitute housing-program label for peak rooms
-    var roomDemandLabel = customerStatusLabel(
-      o.roomDemandLive ||
-        (housingProgramLabel
-          ? null
-          : o.roomDemandStatusLabel || o.roomDemandStatus),
-      housingProgramLabel ? "Housing program evidenced; peak rooms unknown" : "Not yet established"
-    );
-    var cycleLabel = customerStatusLabel(
-      o.futureCycleEvidenceLabel || o.futureCycleEvidenceState,
-      ""
-    );
-    var locationLine =
-      o.eventLocationSummary ||
-      o.destinationStatus ||
-      [o.eventCity, o.venueCity, o.city].filter(Boolean).join(" · ") ||
-      "—";
-
-    var hasScore =
-      o.hotelFitScore != null &&
-      o.hotelFitScore !== "" &&
-      !Number.isNaN(Number(o.hotelFitScore));
-    var scoreGrid = hotelFitAssessmentSectionHtml(o, audit);
-
-    var occasionParas = distinctProse(occasionText || o.title);
-    // Who travels vs why hotel business — keep distinct; never dump fit thesis here
-    var demandParas = distinctProse(
-      o.travelingCohort || o.relevantTravelers || "",
-      o.whyHotelDemand &&
-        proseDedupeKeySafe(o.whyHotelDemand) !==
-          proseDedupeKeySafe(o.travelingCohort || o.relevantTravelers)
-        ? o.whyHotelDemand
-        : demandText && proseDedupeKeySafe(demandText) !== proseDedupeKeySafe(o.travelingCohort)
-          ? demandText
-          : ""
-    );
-    function proseDedupeKeySafe(v) {
-      return stripEvidenceClaimPrefixes(v)
-        .toLowerCase()
-        .replace(/[^\w\s]/g, " ")
-        .replace(/\s+/g, " ")
-        .trim()
-        .slice(0, 96);
+    // Remaining Association-shaped rows still get Events ten-section
+    if (isAssociationConferenceEventsOpportunityUi(o)) {
+      return associationConferenceEventsDetailHtml(o, audit, extras);
     }
-    // Why this hotel — shared opener rejects assessment prose + occasion duplicates
-    var whyHotelOpening = whyThisHotelOpeningHtml(o);
-    // Limitations — competing arrangements / host pattern only
-    var limitParas = distinctProse(
-      o.competitiveContextNote,
-      o.venueHistoryNote &&
-        proseDedupeKeySafe(o.venueHistoryNote) !==
-          proseDedupeKeySafe(o.competitiveContextNote)
-        ? o.venueHistoryNote
-        : "",
-      o.roomDemandStatusNote &&
-        /not established|unknown|not published/i.test(String(o.roomDemandStatusNote))
-        ? o.roomDemandStatusNote
-        : ""
-    );
-    var whyNowParas = distinctProse(whyNowText);
 
-    var relatedN = o.relatedOpportunityCount || (o.relatedOpportunityIds || []).length || 0;
-    var relatedHtml =
-      relatedN > 0
-        ? '<p class="gdi-related"><strong>Related opportunities:</strong> ' +
-          esc(relatedN) +
-          "</p>"
-        : "";
-    var actionBasis = o.actionBasis
-      ? "<p><strong>Why this action:</strong> " + esc(o.actionBasis) + "</p>"
-      : "";
+    // UNIVERSAL DRAWER MANDATE — never render legacy Account / occasion headings.
+    // Normalize unrouted rows into Events (event-shaped) or Scaling ten-section.
+    if (
+      o.eventStartDate ||
+      o.eventEndDate ||
+      o.eventDateDisplay ||
+      o.eventsDrawerModel ||
+      /event|conference|congress|summit|incentive|mice|association/i.test(
+        String(
+          (o.researchSegment || "") +
+            " " +
+            (o.segment || "") +
+            " " +
+            (o.opportunityType || "") +
+            " " +
+            (o.title || "")
+        )
+      )
+    ) {
+      return associationConferenceEventsDetailHtml(o, audit, extras);
+    }
+    return corporateAccountRelationshipDetailHtml(o, audit, extras);
 
-    return (
-      '<div class="gdi-detail-framework">' +
-      commercialProgressionHtml(o.commercialProgression) +
-      '<section class="gdi-section gdi-section--see"><h3>Account / occasion</h3>' +
-      occasionParas
-        .map(function (p) {
-          return "<p>" + esc(p) + "</p>";
-        })
-        .join("") +
-      '<div class="gdi-detail-meta-row">' +
-      "<span><strong>Date</strong> " +
-      esc(dateLabel) +
-      "</span>" +
-      "<span><strong>Location</strong> " +
-      esc(locationLine) +
-      "</span>" +
-      "<span><strong>Sourcing</strong> " +
-      esc(sourcingLabel) +
-      "</span>" +
-      "<span><strong>Room demand</strong> " +
-      esc(roomDemandLabel) +
-      "</span>" +
-      (cycleLabel
-        ? "<span><strong>Cycle</strong> " + esc(cycleLabel) + "</span>"
-        : "") +
-      "</div>" +
-      "<p>Attendance: " +
-      esc(attLabel) +
-      " · Peak rooms: " +
-      esc(peakLabel) +
-      (housingProgramLabel
-        ? " · Housing program: " + esc(housingProgramLabel)
-        : "") +
-      "</p>" +
-      relatedHtml +
-      "</section>" +
-      '<section class="gdi-section gdi-section--hotel-demand"><h3>Who could travel / why hotel business</h3>' +
-      demandParas
-        .map(function (p) {
-          return "<p>" + esc(p) + "</p>";
-        })
-        .join("") +
-      "</section>" +
-      '<section class="gdi-section gdi-section--matters"><h3>Why this hotel</h3>' +
-      whyHotelOpening +
-      scoreGrid +
-      "</section>" +
-      (limitParas.length
-        ? '<section class="gdi-section gdi-section--limits"><h3>Limitations / competing arrangements</h3>' +
-          limitParas
-            .map(function (p) {
-              return "<p>" + esc(p) + "</p>";
-            })
-            .join("") +
-          "</section>"
-        : "") +
-      (String(o.customerFacingState || "").toUpperCase() === "FUTURE_WATCH" &&
-      o.watchCardWhyMatters
-        ? '<section class="gdi-section gdi-section--watch-early"><h3>Early-warning lodging status</h3><ul>' +
-          "<li><strong>Why this matters:</strong> " +
-          esc(o.watchCardWhyMatters) +
-          "</li>" +
-          "<li><strong>Current status:</strong> " +
-          esc(o.watchCardCurrentStatus || "—") +
-          "</li>" +
-          "<li><strong>Who controls lodging:</strong> " +
-          esc(o.watchCardLodgingController || o.lodgingControlSummary || "—") +
-          "</li>" +
-          "<li><strong>Hotel-selection status:</strong> " +
-          esc(o.watchCardHotelSelectionStatus || o.hotelSelectionProcess || "—") +
-          "</li>" +
-          "<li><strong>When to act:</strong> " +
-          esc(o.watchCardWhenToAct || "—") +
-          "</li>" +
-          "<li><strong>Next trigger:</strong> " +
-          esc(o.watchCardNextTrigger || o.nextTriggerCondition || "—") +
-          "</li>" +
-          "</ul></section>"
-        : "") +
-      '<section class="gdi-section gdi-section--now"><h3>Why investigate now</h3><p><strong>' +
-      esc(actionStatusLabel(o.bookingWindowStatus) || o.bookingWindowLabel || "—") +
-      "</strong></p>" +
-      whyNowParas
-        .map(function (p) {
-          return "<p>" + esc(p) + "</p>";
-        })
-        .join("") +
-      "</section>" +
-      '<section class="gdi-section gdi-section--action"><h3>Suggested action</h3><p>' +
-      esc(actionText || "—") +
-      "</p>" +
-      actionBasis +
-      '<p class="gdi-pursuit-actions">' +
-      pursuitActionButtonHtml(
-        {
-          opportunityId: o.id,
-          id: o.id,
-          canStartPursuit: o.canStartPursuit,
-          pursuitId: o.pursuitId,
-        },
-        o
-      ) +
-      "</p></section>" +
-      (o._pursuitDto
-        ? '<section class="gdi-section gdi-section--pursuit"><h3>Pursuit</h3>' +
-          pursuitPanelHtml(o._pursuitDto) +
-          "</section>"
-        : "") +
-      '<section class="gdi-section gdi-section--contact"><h3>Who sales should contact</h3>' +
-      whoShouldSalesContactHtml(o, extras.whoContactHtml) +
-      "</section>" +
-      '<section class="gdi-section gdi-section--evidence"><h3>Sources</h3>' +
-      (function () {
-        var expl =
-          o.evidenceConfidenceExplanation ||
-          audit.evidenceConfidenceExplanation ||
-          "";
-        // Hide contradictory boilerplate when sources are present.
-        if (
-          /0 verified field|0 source\(s\) look first-party/i.test(expl) &&
-          (o.sources || []).length
-        ) {
-          return "";
-        }
-        return expl ? "<p>" + esc(expl) + "</p>" : "";
-      })() +
-      "<ul>" +
-      sources +
-      "</ul></section>" +
-      (extras.validationHtml
-        ? '<section class="gdi-section gdi-section--validation gdi-validation-panel"><h3>Validation / Action / Outcome</h3>' +
-          extras.validationHtml +
-          "</section>"
-        : "") +
-      "</div>"
-    );
   }
 
   function assertNoHotelHardcode(sourceText) {
@@ -4123,8 +7699,23 @@
       "<label>Phone Quality<select id=\"gdiSvPhone\">" +
       enumSelectOptions(e.phoneAssessment, e.phoneAssessmentLabels, v.phoneAssessment) +
       "</select></label>" +
+      "<label>Founder review (local)<select id=\"gdiSvFounderReview\">" +
+      '<option value="">—</option>' +
+      '<option value="ASSIGN_NOW"' +
+      ((o && o.founderReviewDecision) === "ASSIGN_NOW" ? " selected" : "") +
+      ">ASSIGN_NOW</option>" +
+      '<option value="ASSIGN_FOR_DISCOVERY"' +
+      ((o && o.founderReviewDecision) === "ASSIGN_FOR_DISCOVERY" ? " selected" : "") +
+      ">ASSIGN_FOR_DISCOVERY</option>" +
+      '<option value="RESEARCH_FIRST"' +
+      ((o && o.founderReviewDecision) === "RESEARCH_FIRST" ? " selected" : "") +
+      ">RESEARCH_FIRST</option>" +
+      '<option value="DO_NOT_PURSUE"' +
+      ((o && o.founderReviewDecision) === "DO_NOT_PURSUE" ? " selected" : "") +
+      ">DO_NOT_PURSUE</option>" +
+      "</select></label>" +
       '<textarea id="gdiSvNote" placeholder="Optional note" rows="2">' +
-      esc(v.note || "") +
+      esc(v.note || (o && o.founderReviewComment) || "") +
       "</textarea>" +
       '<div class="gdi-validation-actions">' +
       '<button type="button" class="gdi-btn gdi-btn-primary" id="gdiSvSave" data-id="' +
@@ -4333,9 +7924,12 @@
     SORT_OPTIONS: SORT_OPTIONS,
     esc: esc,
     isSafeHttpUrl: isSafeHttpUrl,
+    formatDrawerFieldValueHtml: formatDrawerFieldValueHtml,
+    drawerMetaFieldRowHtml: drawerMetaFieldRowHtml,
     fmtVal: fmtVal,
     trunc: trunc,
     toProperCaseDisplayTitle: toProperCaseDisplayTitle,
+    toProperCaseContactRoleLabel: toProperCaseContactRoleLabel,
     formatTileSecondaryHeadlineLabel: formatTileSecondaryHeadlineLabel,
     scrubEventDatesFromText: scrubEventDatesFromText,
     eventDateRangeLabel: eventDateRangeLabel,
@@ -4362,9 +7956,19 @@
     countByActionStatus: countByActionStatus,
     facetCountByPriority: facetCountByPriority,
     facetCountByActionStatus: facetCountByActionStatus,
+    facetCountByCommercialStage: facetCountByCommercialStage,
+    facetCountBySalesOpportunity: facetCountBySalesOpportunity,
+    facetCountBySalesFocus: facetCountBySalesFocus,
+    countByCommercialStage: countByCommercialStage,
+    countBySalesOpportunity: countBySalesOpportunity,
+    countBySalesFocus: countBySalesFocus,
     reconcileBrowseFilters: reconcileBrowseFilters,
+    resetBrowseFilters: resetBrowseFilters,
     actionPresetHtml: actionPresetHtml,
     priorityPresetHtml: priorityPresetHtml,
+    commercialStagePresetHtml: commercialStagePresetHtml,
+    salesFocusPresetHtml: salesFocusPresetHtml,
+    salesOpportunityPresetHtml: salesOpportunityPresetHtml,
     workflowPresetHtml: workflowPresetHtml,
     normalizeCustomerWorkflowFilter: normalizeCustomerWorkflowFilter,
     resultsToolbarHtml: resultsToolbarHtml,
@@ -4374,7 +7978,18 @@
     pursuitActionButtonHtml: pursuitActionButtonHtml,
     pursuitPanelHtml: pursuitPanelHtml,
     opportunityTileHtml: opportunityTileHtml,
+    revenueStreamIconsHtml: revenueStreamIconsHtml,
+    resolveRevenueStreamIconState: resolveRevenueStreamIconState,
+    needDateIntelligenceIconHtml: needDateIntelligenceIconHtml,
+    needDateMatchDrawerSectionHtml: needDateMatchDrawerSectionHtml,
+    gdiSvgCalendarCheck: gdiSvgCalendarCheck,
+    gdiSvgCalendarClock: gdiSvgCalendarClock,
+    gdiSvgCalendarSearch: gdiSvgCalendarSearch,
+    tilePriorityPill: tilePriorityPill,
+    tileSalesActionPill: tileSalesActionPill,
+    tileEventDatePill: tileEventDatePill,
     selectCompactTileContact: selectCompactTileContact,
+    resolveTileContactPreviewBlock: resolveTileContactPreviewBlock,
     compactTileContactHtml: compactTileContactHtml,
     opportunityCardsGridHtml: opportunityCardsGridHtml,
     opportunityBrowseChromeHtml: opportunityBrowseChromeHtml,
@@ -4388,12 +8003,15 @@
     contactSummaryHtml: contactSummaryHtml,
     weeklyBriefCardHtml: weeklyBriefCardHtml,
     intelligenceDetailHtml: intelligenceDetailHtml,
+    resolveAuthoritativeSalesActionText: resolveAuthoritativeSalesActionText,
     venuePartnershipDetailHtml: venuePartnershipDetailHtml,
     specificPrivateEventDetailHtml: specificPrivateEventDetailHtml,
+    corporateAccountRelationshipDetailHtml: corporateAccountRelationshipDetailHtml,
     hotelFitAssessmentSectionHtml: hotelFitAssessmentSectionHtml,
     whyThisHotelOpeningHtml: whyThisHotelOpeningHtml,
     sourceListHtml: sourceListHtml,
     whoShouldSalesContactHtml: whoShouldSalesContactHtml,
+    secondaryNamedContactHtml: secondaryNamedContactHtml,
     fitLabel: fitLabel,
     assertNoHotelHardcode: assertNoHotelHardcode,
     DEFAULT_PAGE_LOADING_MESSAGE: DEFAULT_PAGE_LOADING_MESSAGE,

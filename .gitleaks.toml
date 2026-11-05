@@ -153,6 +153,7 @@ regexes = [
   # Share capability IDs, not raw capability tokens.
   '''(?i)"token"\s*:\s*"(?:sht_|gdisht_)[A-Za-z0-9_-]+"''',
   '''(?i)preserveTokenId\s*:\s*["''](?:sht_|gdisht_)[A-Za-z0-9_-]+["'']''',
+  '''(?i)"(?:preserveShareTokenId|preserveTokenId|shareTokenId)"\s*:\s*"(?:sht_|gdisht_)[A-Za-z0-9_-]+"''',
   '''(?i)-\s*tokenId:\s*`?(?:sht_|gdisht_)[A-Za-z0-9_-]+`?''',
   '''(?i)"(?:sht_|gdisht_)[A-Za-z0-9_-]+"\s*:\s*"[A-Z][A-Z0-9_]+"''',
   '''(?i)"BETHESDA_SHARE_TOKEN"\s*:\s*"(?:sht_|gdisht_)[A-Za-z0-9_-]+"''',
@@ -184,6 +185,13 @@ regexes = [
 
   # Share capability token ids (sht_ / gdisht_). Public identifiers, not bearers or signing secrets.
   '''(?i)(?:tokenId|tid)\s*[,:]?\s*["''](?:gdi)?sht_[0-9a-f]{16,}["'']''',
+
+  # ADP staged publication artifact IDs (staged_*), not API keys / signing secrets.
+  # Used as superseded-auth / cutover content labels in governed publication reports.
+  '''(?i)(?:PRIOR_AUTH_CANDIDATE|priorAuthCandidateSuperseded|priorCandidateStagedVersionId)\s*[:=]\s*["'']staged_[A-Za-z0-9_]+["'']''',
+  '''(?i)"(?:priorAuthCandidateSuperseded|priorCandidateStagedVersionId|stagedVersionId|expectedStaged)"\s*:\s*"staged_[A-Za-z0-9_]+"''',
+  '''(?i)(?:EXPECTED_STAGED|PRIOR_AUTH_CANDIDATE)\s*=\s*["'']staged_[A-Za-z0-9_]+["'']''',
+  '''"staged_[a-z0-9_]+"''',
 
   # Internal feature/config identifiers, not credentials.
   '''(?i)^[ \t]*[A-Za-z_$][A-Za-z0-9_$]*\s*:\s*["''][A-Z][A-Z0-9_-]+["''],?\s*$''',

@@ -1,0 +1,30 @@
+{
+  "status": "FOUNDER_GO_REQUIRED_FOR_DEPLOYMENT",
+  "pr136": {
+    "url": "https://github.com/joandejarden-create/my-operators-backend/pull/136",
+    "state": "OPEN",
+    "mergeable": "MERGEABLE",
+    "headRefName": "feat/gdi-spice-published-inventory-registry-v1",
+    "baseRefName": "main",
+    "blockingCheck": {
+      "name": "gitleaks",
+      "conclusion": "FAILURE",
+      "detailsUrl": "https://github.com/joandejarden-create/my-operators-backend/actions/runs/42056226014/job/127345225926"
+    },
+    "risk": "GitHub auto-deploy from main can overwrite a lean Railway image that lacks registry-capable code / this full-content repair."
+  },
+  "railwayProduction": {
+    "service": "my-operators-backend",
+    "deploymentId": "4f2b8d24-bdee-4737-ab62-574c8cc297df",
+    "repo": "joandejarden-create/my-operators-backend",
+    "volume": "adp-durable-published → /app/data/adp-durable-published",
+    "note": "Current production still serves lean published snapshots. Durable volume can hold enriched snaps, but code+sanitize fixes from this package are not on production yet.",
+    "autoDeployRisk": "HIGH until PR #136 merged (or deploy source pinned) AND this full-content package is included in the deploy revision."
+  },
+  "doNotDeployWithout": [
+    "PR #136 merge or explicit deploy-source pin",
+    "Code deploy including gdi-customer-facing-published-snapshot-v1 + share sanitize drawer retention",
+    "Volume updatePublishedOpportunity for the same 7 IDs with enriched snapshots (no classification changes)",
+    "Logged-out share re-verify of Hangers + all seven drawers"
+  ]
+}

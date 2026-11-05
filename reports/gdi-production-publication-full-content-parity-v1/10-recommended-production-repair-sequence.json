@@ -1,0 +1,58 @@
+{
+  "status": "FOUNDER_GO_REQUIRED_FOR_DEPLOYMENT",
+  "preserve": {
+    "opportunityIds": [
+      "gdi_s4912_ba7b1cb8a3ab",
+      "gdi_s4912_b956aa67a4a2",
+      "gdi_s4912_b6d9b1929c05",
+      "gdi_s4912_cb2d71ab1b15",
+      "gdi_s4912_cc2a8da6ca6e",
+      "gdi_s4912_03deda917778",
+      "gdi_s4912_3cafec77a21f"
+    ],
+    "classifications": {
+      "SALES_READY": 1,
+      "ACCOUNT_DEVELOPMENT": 6
+    },
+    "exclude": ["gdi_sc_f255eb5e9202"]
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "action": "Resolve PR #136 gitleaks failure and merge, OR pin Railway deploy source so GitHub main auto-deploy cannot wipe registry-capable build."
+    },
+    {
+      "step": 2,
+      "action": "Deploy application revision that includes full-content published snapshot contract, publication content gate, share sanitize events/shared drawer retention, and CIB alias hydration."
+    },
+    {
+      "step": 3,
+      "action": "On production volume only: updatePublishedOpportunity for the seven IDs using enriched snapshots from reports/gdi-production-publication-full-content-parity-v1/enriched-snapshots/ (or re-run rebuild script against GDI_PUBLISHED_INVENTORY_ROOT). Do not change classifications, do not publish new IDs, do not rewrite Airtable."
+    },
+    {
+      "step": 4,
+      "action": "Restart/reload not required for FS registry reads, but verify process sees new snapshot versions."
+    },
+    {
+      "step": 5,
+      "action": "Logged-out share verify: count 7; Sales Ready 1 / Account Development 6; Hangers drawer shows What/Potential/Why Act Now/Facts/Uncertainties/Secondary/QQ; no title-as-what substitution."
+    },
+    {
+      "step": 6,
+      "action": "Regression: Bethesda + Waterstone share counts unchanged; no paid research; no token rotation."
+    }
+  ],
+  "forbiddenInThisRepair": [
+    "paid research",
+    "new opportunity promotions",
+    "classification changes",
+    "Airtable rewrites",
+    "token rotation",
+    "publication of additional opportunities"
+  ],
+  "localArtifactsReady": {
+    "enrichedSnapshots": "reports/gdi-production-publication-full-content-parity-v1/enriched-snapshots/",
+    "stagingRegistryUpdatedToV2": "reports/gdi-spice-island-production-activation-v1/staging-published-inventory/",
+    "registryOnlyVerifyPass": true
+  }
+}

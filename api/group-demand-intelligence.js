@@ -735,6 +735,11 @@ export async function getGdiOpportunities(req, res) {
     }
 
     if (!wantFull) {
+      const { prepareCustomerFacingOpportunity: prepareAuthFacing } =
+        await import(
+          "../lib/group-demand-intelligence/share/gdi-customer-facing-opportunity-contract-v1.js"
+        );
+      opportunities = opportunities.map((o) => prepareAuthFacing(o));
       opportunities = mapOpportunitiesToListDto(opportunities, { hotelId });
     }
     opportunities = await attachCommercialProgression(hotelId, opportunities);
@@ -2042,13 +2047,17 @@ export async function getGdiShareOpportunities(req, res) {
   // Same commercial projection as auth list — do NOT re-run per-row canonical
   // overlay here (that path drifted Sales Action / Pursue Now vs auth).
   facing = projectOpportunitiesCommercialQuality(facing);
+  const { prepareCustomerFacingOpportunity: prepareShareFacing } = await import(
+    "../lib/group-demand-intelligence/share/gdi-customer-facing-opportunity-contract-v1.js"
+  );
   const opportunities = facing.map((o) => {
+    const prepared = prepareShareFacing(o);
     // Presentation DTO from projected canonical — NEVER from sanitize whitelist.
-    const sanitized = sanitizeOpportunityForShare(o);
+    const sanitized = sanitizeOpportunityForShare(prepared);
     const v = byVal.get(o.id);
     const base = wantFull
-      ? buildShareOpportunityDetailDto(o, sanitized, { hotelId })
-      : buildShareOpportunityListDto(o, { hotelId });
+      ? buildShareOpportunityDetailDto(prepared, sanitized, { hotelId })
+      : buildShareOpportunityListDto(prepared, { hotelId });
     return {
       ...base,
       shareValidation: v
@@ -2177,8 +2186,12 @@ export async function getGdiShareOpportunityDetail(req, res) {
   }
   // Match share list projection so drawer sales action / pills stay consistent.
   const [projected] = projectOpportunitiesCommercialQuality([opportunity]);
-  const sanitized = sanitizeOpportunityForShare(projected);
-  const shareDetail = buildShareOpportunityDetailDto(projected, sanitized, {
+  const { prepareCustomerFacingOpportunity } = await import(
+    "../lib/group-demand-intelligence/share/gdi-customer-facing-opportunity-contract-v1.js"
+  );
+  const prepared = prepareCustomerFacingOpportunity(projected);
+  const sanitized = sanitizeOpportunityForShare(prepared);
+  const shareDetail = buildShareOpportunityDetailDto(prepared, sanitized, {
     hotelId,
   });
   const validation = getShareValidationForOpportunity(hotelId, opportunityId);
