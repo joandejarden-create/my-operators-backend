@@ -63,17 +63,26 @@ function readRailwayIgnorePatterns() {
     .filter((l) => l && !l.startsWith("#"));
 }
 
-/** Conservative: fail if a required path is explicitly ignored (no negation support beyond common !patterns). */
+/**
+ * Gitignore-style last-match wins for ignore vs negation (!).
+ * Required so RAILWAY_LEAN_AVA_V1 un-ignore patterns are honored after data/* / reports/*.
+ */
 function isExplicitlyIgnored(rel, patterns) {
   const norm = rel.replace(/\\/g, "/");
-  for (const pat of patterns) {
-    if (pat.startsWith("!")) continue;
-    if (pat === norm || pat === `${norm}/`) return true;
-    if (pat.endsWith("/*") && norm.startsWith(pat.slice(0, -1))) return true;
-    if (pat.endsWith("/") && norm.startsWith(pat)) return true;
-    if (pat === "public" || pat === "public/") return true;
+  let ignored = false;
+  for (const raw of patterns) {
+    const isNeg = raw.startsWith("!");
+    const pat = isNeg ? raw.slice(1) : raw;
+    let matches = false;
+    if (pat === norm || pat === `${norm}/`) matches = true;
+    else if (pat.endsWith("/**") && norm.startsWith(pat.slice(0, -3))) matches = true;
+    else if (pat.endsWith("/*") && norm.startsWith(pat.slice(0, -1))) matches = true;
+    else if (pat.endsWith("/") && norm.startsWith(pat)) matches = true;
+    else if (!pat.includes("*") && (norm === pat || norm.startsWith(`${pat}/`))) matches = true;
+    if (!matches) continue;
+    ignored = !isNeg;
   }
-  return false;
+  return ignored;
 }
 
 function parseLocalAssetRefs(htmlRel) {
