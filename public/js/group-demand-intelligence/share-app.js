@@ -12,6 +12,8 @@
 
   var UI = window.DealalityGdiUi;
   if (!UI) throw new Error("DealalityGdiUi missing");
+  var PC = window.DealalityGdiUniversalPresentationController;
+  if (!PC) throw new Error("DealalityGdiUniversalPresentationController missing");
   var esc = UI.esc;
   var fmtVal = UI.fmtVal;
   var trunc = UI.trunc;
@@ -26,14 +28,8 @@
     sortKey: "priority",
     sortDir: 1,
     viewMode: "tiles",
-    filters: {
-      priority: "",
-      segment: "",
-      booking: "",
-      territory: "",
-      weekly: "",
-      opportunityType: "",
-    },
+    // Same filter object as authenticated GDI — share only hides capability-gated controls.
+    filters: PC.createDefaultFilters(),
     drawerReturnFocusEl: null,
   };
 
@@ -72,14 +68,7 @@
   }
 
   function resetBrowseView() {
-    state.filters = {
-      priority: "",
-      segment: "",
-      booking: "",
-      territory: "",
-      weekly: "",
-      opportunityType: "",
-    };
+    state.filters = PC.createDefaultFilters();
     state.sortKey = "priority";
     state.sortDir = 1;
     state.viewMode = "tiles";
@@ -522,123 +511,47 @@
   }
 
   function openDetail(id) {
-    var listRow = (state.opportunities || []).find(function (o) {
-      return o.id === id;
-    });
-    state.drawerReturnFocusEl =
-      (document.activeElement &&
-        document.activeElement.closest &&
-        document.activeElement.closest("[data-open]")) ||
-      document.activeElement ||
-      null;
-    // Immediate visual acknowledgement (<100ms target)
-    drawerTitle.textContent = (listRow && listRow.title) || "Opportunity";
-    drawerBody.innerHTML = UI.detailLoadingHtml();
-    if (typeof drawer.showModal === "function") drawer.showModal();
-    else drawer.setAttribute("open", "open");
-    if (drawerClose && typeof drawerClose.focus === "function") {
-      try {
-        drawerClose.focus();
-      } catch (e) {
-        /* ignore */
-      }
-    }
-
-    api(
-      "/api/group-demand-intelligence/share/hotels/" +
-        encodeURIComponent(state.hotelId) +
-        "/opportunities/" +
-        encodeURIComponent(id)
-    )
-      .then(function (data) {
-        var o = data.opportunity;
-        var audit = data.scoreAudit || {};
-        drawerTitle.textContent = o.title;
-        drawerBody.innerHTML = UI.intelligenceDetailHtml(o, audit, {
-          validationHtml: validationFormHtml(o),
-          whoContactHtml: whoShouldSalesContactHtml,
-        });
-        wireLifecycleControls(o.id);
-      })
-      .catch(function (err) {
-        drawerBody.innerHTML = UI.detailErrorHtml(
-          err.message || "Unable to load opportunity detail.",
-          { retryOpportunityId: id }
+    return PC.openOpportunityDetail({
+      UI: UI,
+      state: state,
+      drawer: drawer,
+      drawerTitle: drawerTitle,
+      drawerBody: drawerBody,
+      drawerClose: drawerClose,
+      opportunityId: id,
+      mode: "share",
+      whoContactHtml: whoShouldSalesContactHtml,
+      api: api,
+      detailUrl: function (oppId) {
+        return (
+          "/api/group-demand-intelligence/share/hotels/" +
+          encodeURIComponent(state.hotelId) +
+          "/opportunities/" +
+          encodeURIComponent(oppId)
         );
-      });
+      },
+      buildValidationHtml: function (o) {
+        return validationFormHtml(o);
+      },
+      afterDetailRender: function (o) {
+        if (o && o.id) wireLifecycleControls(o.id);
+      },
+    });
   }
 
   function filteredSorted() {
-    return UI.sortOpportunities(
-      UI.filterOpportunities(state.opportunities, state.filters),
-      state.sortKey,
-      state.sortDir
-    );
-  }
-
-  function applyTilePairFilter(priority, booking, e) {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    state.filters.priority = priority || "";
-    state.filters.booking = booking || "";
-    render();
+    return PC.filteredSorted(state, UI);
   }
 
   function wireBrowseControls() {
-    root.querySelectorAll("[data-gdi-priority]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        state.filters.priority = btn.getAttribute("data-gdi-priority") || "";
-        state.filters = UI.reconcileBrowseFilters(state.opportunities, state.filters, "priority");
-        render();
-      });
+    PC.wireBrowseFilterControls({
+      root: root,
+      state: state,
+      UI: UI,
+      render: render,
+      persistBrowse: persistBrowse,
+      onExport: downloadCustomerCsv,
     });
-    root.querySelectorAll("[data-gdi-booking]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        state.filters.booking = btn.getAttribute("data-gdi-booking") || "";
-        state.filters = UI.reconcileBrowseFilters(state.opportunities, state.filters, "booking");
-        render();
-      });
-    });
-    root
-      .querySelectorAll("[data-gdi-tile-priority][data-gdi-tile-booking]")
-      .forEach(function (btn) {
-        btn.addEventListener("click", function (e) {
-          applyTilePairFilter(
-            btn.getAttribute("data-gdi-tile-priority"),
-            btn.getAttribute("data-gdi-tile-booking"),
-            e
-          );
-        });
-      });
-    var sortSel = document.getElementById("gdiSortSelect");
-    if (sortSel) {
-      sortSel.addEventListener("change", function () {
-        state.sortKey = sortSel.value || "priority";
-        state.sortDir = 1;
-        persistBrowse();
-        render();
-      });
-    }
-    var sortDirBtn = document.getElementById("gdiSortDirBtn");
-    if (sortDirBtn) {
-      sortDirBtn.addEventListener("click", function () {
-        state.sortDir = state.sortDir === 1 ? -1 : 1;
-        render();
-      });
-    }
-    root.querySelectorAll("[data-gdi-view]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        state.viewMode = btn.getAttribute("data-gdi-view") === "tiles" ? "tiles" : "list";
-        persistBrowse();
-        render();
-      });
-    });
-    var exportBtn = document.getElementById("gdiExportCsvBtn");
-    if (exportBtn) {
-      exportBtn.addEventListener("click", downloadCustomerCsv);
-    }
   }
 
   function buildExportHref() {
@@ -721,26 +634,20 @@
       return '<div class="gdi-empty">No opportunities.</div>';
     }
     var rows = filteredSorted();
-    var chrome = UI.opportunityBrowseChromeHtml({
-      activePriority: state.filters.priority,
-      priorityCounts: UI.facetCountByPriority(state.opportunities, state.filters),
-      activeBooking: state.filters.booking,
-      actionCounts: UI.facetCountByActionStatus(state.opportunities, state.filters),
-      weeklyHeaderCounts: UI.weeklyDeltaHeaderCounts(state.opportunities),
-      shown: rows.length,
-      total: state.opportunities.length,
-      sort: state.sortKey,
-      viewMode: state.viewMode,
+    var chromeOpts = PC.buildBrowseChromeOptions(state, UI, {
+      mode: "share",
       noun: "Opportunities",
       exportHref: buildExportHref(),
     });
+    chromeOpts.exportHref = buildExportHref();
+    var chrome = UI.opportunityBrowseChromeHtml(chromeOpts);
     if (!rows.length) {
       return (
         chrome +
         '<div class="gdi-empty">No customer-ready opportunities are available for this property yet.</div>'
       );
     }
-    return chrome + UI.opportunityCardsGridHtml(rows, state.viewMode, state.filters);
+    return chrome + PC.renderOpportunityCardsHtml(state, UI, rows);
   }
 
   function render() {
