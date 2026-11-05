@@ -181,7 +181,7 @@ async function loadOppDoc(hotelId) {
       "gdi_load_opportunities"
     );
     let opportunities = doc?.opportunities || [];
-    // Durable published inventory registry only — no Waterstone/local-shadow merges.
+    // Durable published inventory registry (Spice allowlist) — no local-shadow merges.
     try {
       const { isGdiPublishedInventoryRegistryEnabledForHotel } = await import(
         "../lib/group-demand-intelligence/durable-publication/resolve-gdi-published-registry-root-v1.js"
@@ -200,6 +200,19 @@ async function loadOppDoc(hotelId) {
       console.error(
         "[gdi] published inventory registry merge failed",
         pubErr?.message || pubErr
+      );
+    }
+    // Waterstone clean-28 share merge — peer regression lock for existing client share.
+    // Idempotent; does not touch Spice registry hotels or rotate share tokens.
+    try {
+      const { mergeWaterstoneClean28ForShare } = await import(
+        "../lib/group-demand-intelligence/waterstone-clean-28-share-merge-v1.js"
+      );
+      opportunities = mergeWaterstoneClean28ForShare(hotelId, opportunities);
+    } catch (wsErr) {
+      console.error(
+        "[gdi] waterstone clean-28 share merge failed",
+        wsErr?.message || wsErr
       );
     }
     const merged = {
