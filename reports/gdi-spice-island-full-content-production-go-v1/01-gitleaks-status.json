@@ -1,6 +1,7 @@
 {
-  "ciStatus": "FAILURE",
-  "ciDetailsUrl": "https://github.com/joandejarden-create/my-operators-backend/actions/runs/42056226014/job/127345225926",
+  "ciStatus": "SUCCESS",
+  "ciDetailsUrl": "https://github.com/joandejarden-create/my-operators-backend/actions/runs/42084574545/job/127446114817",
+  "priorFailureRunId": "42056226014",
   "findings": [
     {
       "ruleId": "generic-api-key",
@@ -17,14 +18,10 @@
       "genuineLiveCredential": false,
       "rotationRequired": false,
       "rationale": "Value is a superseded ADP staged publication artifact id (staged_*), not an API key, HMAC secret, or share bearer. Same class as sht_/gdisht_ public identifiers already allowlisted.",
-      "remediation": "Scoped .gitleaks.toml allowlist for staged_* publication artifact IDs (protections retained). Commit + push to PR #136 and re-run Secret scan."
+      "remediation": "Scoped .gitleaks.toml allowlist for staged_* publication artifact IDs + preserveShareTokenId gdisht_ pattern. Committed on 28893cf80; CI Secret scan PASS."
     }
   ],
-  "allowlistPatchedLocally": true,
-  "localScan": {
-    "localBinary": false,
-    "classification": "staged_publication_artifact_id_false_positive_generic_api_key",
-    "note": "No local gitleaks binary; remediation allowlist added to .gitleaks.toml for staged_* publication artifact IDs. CI re-run required after commit/push."
-  },
-  "mergeBlockedUntilCiGreen": true
+  "allowlistOnPr": true,
+  "mergeBlockedUntilCiGreen": false,
+  "ciGreen": true
 }

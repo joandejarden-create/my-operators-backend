@@ -1,0 +1,55 @@
+{
+  "ranAt": "2026-11-05T18:40:00Z",
+  "ok": true,
+  "results": [
+    {
+      "name": "test:gdi-publication-full-content-contract-v1",
+      "command": "node scripts/test-gdi-publication-full-content-contract-v1.mjs",
+      "ok": true,
+      "coverage": [
+        "lean_gate_reject",
+        "enriched_gate_accept",
+        "publish",
+        "lean_publish_blocked",
+        "registry_reload",
+        "incremental_update",
+        "share_sanitize_retention"
+      ]
+    },
+    {
+      "name": "test:gdi-published-inventory-registry-v1",
+      "command": "node scripts/test-gdi-published-inventory-registry-v1.mjs",
+      "ok": true,
+      "passed": 11,
+      "failed": 0,
+      "note": "Fixtures upgraded to V2 content-gate compliant snaps"
+    },
+    {
+      "name": "gdi-verify-enriched-registry-share-local-v1",
+      "command": "node scripts/gdi-verify-enriched-registry-share-local-v1.mjs",
+      "ok": true,
+      "classCounts": {
+        "SALES_READY": 1,
+        "ACCOUNT_DEVELOPMENT": 6
+      }
+    },
+    {
+      "name": "gdi-spice-island-full-content-production-go-preflight-v1",
+      "command": "node scripts/gdi-spice-island-full-content-production-go-preflight-v1.mjs",
+      "ok": true,
+      "hangersOk": true,
+      "allSevenOk": true,
+      "peers": {
+        "spice": 7,
+        "bethesda": 30,
+        "waterstone": 28
+      }
+    },
+    {
+      "name": "gitleaks_ci",
+      "ok": true,
+      "runId": "42084574545",
+      "conclusion": "success"
+    }
+  ]
+}
