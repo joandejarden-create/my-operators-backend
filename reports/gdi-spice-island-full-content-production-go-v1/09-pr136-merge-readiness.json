@@ -1,28 +1,35 @@
 {
   "pr": {
+    "number": 136,
     "baseRefName": "main",
     "headRefName": "feat/gdi-spice-published-inventory-registry-v1",
+    "headRefOid": "28893cf80a835cf75727f449b3fba5c278abc035",
     "mergeable": "MERGEABLE",
+    "mergeStateStatus": "CLEAN",
     "state": "OPEN",
+    "title": "Activate GDI published inventory registry for Spice Island",
+    "url": "https://github.com/joandejarden-create/my-operators-backend/pull/136",
     "statusCheckRollup": [
       {
-        "__typename": "CheckRun",
-        "completedAt": "2026-11-05T15:35:16Z",
-        "conclusion": "FAILURE",
-        "detailsUrl": "https://github.com/joandejarden-create/my-operators-backend/actions/runs/42056226014/job/127345225926",
         "name": "gitleaks",
-        "startedAt": "2026-11-05T15:33:48Z",
+        "conclusion": "SUCCESS",
         "status": "COMPLETED",
-        "workflowName": "Secret scan (PR)"
+        "workflowName": "Secret scan (PR)",
+        "detailsUrl": "https://github.com/joandejarden-create/my-operators-backend/actions/runs/42084574545/job/127446114817"
       }
-    ],
-    "title": "Activate GDI published inventory registry for Spice Island",
-    "url": "https://github.com/joandejarden-create/my-operators-backend/pull/136"
+    ]
   },
-  "mergeReady": false,
-  "reasons": [
-    "PR_136_GITLEAKS_NOT_GREEN",
-    "V2_FULL_CONTENT_CONTRACT_NOT_ON_PR_BRANCH",
-    "DEPLOYMENT_SOURCE_PARITY_FAIL"
-  ]
+  "deploySourceComplete": true,
+  "includes": {
+    "gitleaksStagedAllowlist": true,
+    "v2CustomerFacingSnapshotContract": true,
+    "publicationContentGate": true,
+    "shareSanitizeDrawerRetention": true,
+    "registryActivation": true,
+    "sevenEnrichedSnapshots": true,
+    "sevenIdMigrationManifest": true
+  },
+  "mergeReadyTechnically": true,
+  "mergeAuthorized": false,
+  "stopGate": "FOUNDER_GO_REQUIRED_FOR_PRODUCTION_MERGE_AND_V2_MIGRATION"
 }

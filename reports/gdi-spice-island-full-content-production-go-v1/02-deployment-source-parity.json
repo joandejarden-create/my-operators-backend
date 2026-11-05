@@ -1,13 +1,16 @@
 {
   "ok": false,
+  "parityPass": false,
+  "reason": "EXPECTED_PRE_MERGE — origin/main and live Railway still lack this PR head until founder-authorized merge + deploy.",
   "railwayDeploymentId": "4f2b8d24-bdee-4737-ab62-574c8cc297df",
   "originMain": "b9a84611f1d71f9c3354d3136074b82d53e2c3b1",
-  "prBranchHead": "34236376ff7bcf75e351f8ca8ba739401452f653",
-  "localHead": "34236376ff7bcf75e351f8ca8ba739401452f653",
+  "prBranchHead": "28893cf80a835cf75727f449b3fba5c278abc035",
+  "localHead": "28893cf80a835cf75727f449b3fba5c278abc035",
   "v2SnapshotContractOnDisk": true,
-  "v2SnapshotContractOnPrBranch": false,
+  "v2SnapshotContractOnPrBranch": true,
   "registryActivationOnPrBranch": true,
-  "risk": "GitHub auto-deploy from origin/main lacks registry + V2 full-content contract. Current Railway lean recovery (4f2b8d24) can be overwritten. PR #136 has registry activation but NOT the V2 full-content contract until working-tree changes are committed.",
-  "requiredBeforeMerge": "Commit V2 contract + share sanitize + publication gate + gitleaks allowlist onto PR #136; CI green; then merge or pin Railway source.",
-  "parityPass": false
+  "gitleaksAllowlistOnPrBranch": true,
+  "sevenEnrichedSnapshotsOnPrBranch": true,
+  "risk": "GitHub auto-deploy from origin/main lacks registry + V2 full-content contract. Current Railway lean recovery (4f2b8d24) can be overwritten by an unrelated main deploy. PR #136 HEAD now includes the full deploy source.",
+  "requiredBeforeProductionRepair": "FOUNDER GO: merge PR #136 (or pin Railway to 28893cf80+), deploy app, then run seven-ID volume migration from prepared manifest."
 }

@@ -34,6 +34,38 @@ const approval = {
 const HOTEL_A = "recHotelA_sim";
 const HOTEL_B = "recHotelB_sim";
 
+/** Minimal V2 customer-facing snapshot — satisfies publication content gate. */
+function v2Snap(id, title, extras = {}) {
+  return {
+    id,
+    title,
+    whatIsHappening: `${title} commercial activity narrative for selective lodging.`,
+    potentialHotelBusiness: `Qualified lodging and ancillary hospitality demand for ${title}.`,
+    whyThisHotel: "Selective lodging pathway in the same commercial market.",
+    whyActNow: "No time-critical sourcing trigger; monitor until programme dates confirm.",
+    establishedFacts: [
+      "Public programme or planner activity is documented.",
+      "Organization maintains a published contact channel.",
+    ],
+    uncertainties: ["No verified hotel booking or RFP is established."],
+    recommendedNextStep: "Send a short permission-based B2B introduction to the published inbox.",
+    primaryContact: {
+      name: "Sim Primary Contact",
+      title: "Programme lead",
+      organization: title,
+      whyRelevant: "Named public contact for outreach.",
+    },
+    secondaryContact: {
+      name: "Sim Secondary Contact",
+      title: "Coordination contact",
+      organization: title,
+      whyRelevant: "Secondary routing candidate.",
+    },
+    sources: [{ url: "https://example.com/sim-source", title: "Simulation source" }],
+    ...extras,
+  };
+}
+
 check("publish_approved_opportunity", () => {
   const reg = createGdiPublishedInventoryRegistry({ root: tmp });
   const { row } = reg.publishOpportunity({
@@ -42,11 +74,7 @@ check("publish_approved_opportunity", () => {
     classification: COMMERCIAL_PUBLICATION_CLASS.SALES_READY,
     approval,
     sourceResearchReference: "sim/research/v1",
-    snapshot: {
-      id: "gdi_sim_001",
-      title: "Sim Future Conference",
-      whyThisHotel: "Selective lodging pathway",
-    },
+    snapshot: v2Snap("gdi_sim_001", "Sim Future Conference"),
   });
   assert.equal(row.publicationState, PUBLICATION_STATE.PUBLISHED);
   assert.equal(row.publishedVersion, 1);
@@ -60,11 +88,9 @@ check("update_existing_published_opportunity_preserves_history", () => {
     hotelId: HOTEL_A,
     opportunityId: "gdi_sim_001",
     approval,
-    snapshot: {
-      id: "gdi_sim_001",
-      title: "Sim Future Conference — updated thesis",
-      whyThisHotel: "Updated selective lodging pathway",
-    },
+    snapshot: v2Snap("gdi_sim_001", "Sim Future Conference", {
+      whyThisHotel: "Updated selective lodging pathway for the confirmed programme.",
+    }),
   });
   const hist = reg.getHistory(HOTEL_A, "gdi_sim_001");
   assert.ok(hist.some((h) => h.type === "PUBLISH"));
@@ -82,7 +108,7 @@ check("revoke_publication_hides_from_customer_list", () => {
     opportunityId: "gdi_sim_002",
     classification: COMMERCIAL_PUBLICATION_CLASS.ACCOUNT_DEVELOPMENT,
     approval,
-    snapshot: { id: "gdi_sim_002", title: "Sim DMC Account" },
+    snapshot: v2Snap("gdi_sim_002", "Sim DMC Account"),
   });
   reg.revokePublication({
     hotelId: HOTEL_A,
@@ -112,7 +138,7 @@ check("prevent_unauthorized_promotion_without_approval", () => {
         opportunityId: "gdi_sim_unauth",
         classification: COMMERCIAL_PUBLICATION_CLASS.SALES_READY,
         approval: { authorized: false },
-        snapshot: { id: "gdi_sim_unauth" },
+        snapshot: v2Snap("gdi_sim_unauth", "Unauth Sim"),
       }),
     /PUBLICATION_REQUIRES_EXPLICIT_APPROVAL/
   );
@@ -127,7 +153,7 @@ check("reject_non_customer_facing_classification", () => {
         opportunityId: "gdi_sim_watch",
         classification: "WATCH",
         approval,
-        snapshot: { id: "gdi_sim_watch" },
+        snapshot: v2Snap("gdi_sim_watch", "Watch Sim"),
       }),
     /UNAUTHORIZED_PUBLICATION_CLASS/
   );
@@ -140,7 +166,7 @@ check("survive_process_restart_reload_from_disk", () => {
     opportunityId: "gdi_sim_hotel_b",
     classification: COMMERCIAL_PUBLICATION_CLASS.ACCOUNT_DEVELOPMENT,
     approval,
-    snapshot: { id: "gdi_sim_hotel_b", title: "Hotel B AD" },
+    snapshot: v2Snap("gdi_sim_hotel_b", "Hotel B AD"),
   });
   // New process simulation = new registry instance same root
   const reg2 = createGdiPublishedInventoryRegistry({ root: tmp });
@@ -157,7 +183,7 @@ check("survive_simulated_railway_redeploy_new_ephemeral_cwd", () => {
     opportunityId: "gdi_sim_volume",
     classification: COMMERCIAL_PUBLICATION_CLASS.SALES_READY,
     approval,
-    snapshot: { id: "gdi_sim_volume", title: "Volume durable" },
+    snapshot: v2Snap("gdi_sim_volume", "Volume durable"),
   });
   const regB = createGdiPublishedInventoryRegistry({
     root: volumeRoot,
@@ -184,7 +210,7 @@ check("weekly_incremental_update_without_full_republish_of_others", () => {
     classification: COMMERCIAL_PUBLICATION_CLASS.ACCOUNT_DEVELOPMENT,
     approval,
     sourceResearchReference: "weekly-refresh/2026-W45",
-    snapshot: { id: "gdi_sim_weekly_new", title: "Weekly net-new AD" },
+    snapshot: v2Snap("gdi_sim_weekly_new", "Weekly net-new AD"),
   });
   const after = reg.getPublishedOpportunityIds(HOTEL_A);
   assert.ok(after.includes("gdi_sim_weekly_new"));
