@@ -210,6 +210,41 @@
         "express.static"
       ],
       "html_entrypoints_for_static_refs": []
+    },
+    "AI_VISIBILITY_AUDIT": {
+      "label": "AI Visibility Audit & Action Plan (admin staged)",
+      "required_files": [
+        "api/admin-ai-visibility-audit.js",
+        "lib/ai-visibility-audit-action-plan/adp-baseline-loader-v1.js",
+        "lib/ai-visibility-audit-action-plan/audit-store-v1.js",
+        "lib/ai-visibility-audit-action-plan/lifecycle-v1.js",
+        "lib/ai-visibility-audit-action-plan/certified-baseline-paths-v1.js",
+        "public/js/admin-ai-visibility-audit.js",
+        "public/app/admin/ai-demand-admin.html",
+        "public/adp-ai-visibility-audit-pdf-render.html",
+        "public/css/adp-ai-visibility-audit-report-v1.css",
+        "data/ai-visibility-audit-action-plan/certified-baselines/index.json",
+        "reports/ai-visibility-audit-action-plan/archive/index.json"
+      ],
+      "required_static_assets": [
+        "/app/admin/ai-demand-admin.html",
+        "/js/admin-ai-visibility-audit.js",
+        "/adp-ai-visibility-audit-pdf-render.html"
+      ],
+      "required_routes": [
+        "/app/admin/ai-demand-admin.html"
+      ],
+      "required_api_routes": [
+        "/api/admin/ai-visibility-audit/meta",
+        "/api/admin/ai-visibility-audit/hotels"
+      ],
+      "required_server_route_markers": [
+        "/api/admin/ai-visibility-audit/"
+      ],
+      "html_entrypoints_for_static_refs": [
+        "public/app/admin/ai-demand-admin.html"
+      ],
+      "main_status_note": "Durability via lean certified baselines + production store + archive PDFs (RAILWAY_LEAN_AVA_V1). Not customer-published."
     }
   },
   "postdeploy_smoke": {

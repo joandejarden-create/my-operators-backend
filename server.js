@@ -160,6 +160,21 @@ import {
   getAdminReportArchiveEntry,
   getAdminReportArchivePdf,
 } from "./api/admin-report-archive.js";
+import {
+  getAdminAvaMeta,
+  getAdminAvaHotels,
+  getAdminAvaHotel,
+  postAdminAvaEvidenceValidation,
+  postAdminAvaEvidenceManualVerification,
+  postAdminAvaStatus,
+  getAdminAvaVersion,
+  postAdminAvaActionDecision,
+  getAdminAvaPdf,
+  postAdminAvaValidatePayload,
+  getAdminAvaRecommendations,
+  postAdminAvaGeneratePdf,
+  getAdminAvaStorageStatus,
+} from "./api/admin-ai-visibility-audit.js";
 
 import { logAdpPublishedReadSourceAtStartup } from "./lib/ai-demand-positioning/published-read-service.js";
 import { logAdminShareHydrationStatus } from "./lib/admin/report-external-client-links-v1.js";
@@ -1581,6 +1596,21 @@ app.get(
   ...adpMonthlyReviewAdminAuth,
   getAdminReportArchivePdf
 );
+// AI Visibility Audit & Action Plan (admin staged; same auth as ADP monthly reviews)
+app.get("/api/admin/ai-visibility-audit/meta", ...adpMonthlyReviewAdminAuth, getAdminAvaMeta);
+app.get("/api/admin/ai-visibility-audit/hotels", ...adpMonthlyReviewAdminAuth, getAdminAvaHotels);
+app.get("/api/admin/ai-visibility-audit/storage-status", ...adpMonthlyReviewAdminAuth, getAdminAvaStorageStatus);
+app.get("/api/admin/ai-visibility-audit/:propertyId", ...adpMonthlyReviewAdminAuth, getAdminAvaHotel);
+app.get("/api/admin/ai-visibility-audit/:propertyId/pdf", ...adpMonthlyReviewAdminAuth, getAdminAvaPdf);
+app.get("/api/admin/ai-visibility-audit/:propertyId/recommendations", ...adpMonthlyReviewAdminAuth, getAdminAvaRecommendations);
+app.get("/api/admin/ai-visibility-audit/:propertyId/versions/:versionId", ...adpMonthlyReviewAdminAuth, getAdminAvaVersion);
+app.post("/api/admin/ai-visibility-audit/:propertyId/validate-payload", ...adpMonthlyReviewAdminAuth, postAdminAvaValidatePayload);
+app.post("/api/admin/ai-visibility-audit/:propertyId/evidence-validation", ...adpMonthlyReviewAdminAuth, postAdminAvaEvidenceValidation);
+app.post("/api/admin/ai-visibility-audit/:propertyId/evidence-manual-verification", ...adpMonthlyReviewAdminAuth, postAdminAvaEvidenceManualVerification);
+app.post("/api/admin/ai-visibility-audit/:propertyId/status", ...adpMonthlyReviewAdminAuth, postAdminAvaStatus);
+app.post("/api/admin/ai-visibility-audit/:propertyId/action-decision", ...adpMonthlyReviewAdminAuth, postAdminAvaActionDecision);
+app.post("/api/admin/ai-visibility-audit/:propertyId/generate-pdf", ...adpMonthlyReviewAdminAuth, postAdminAvaGeneratePdf);
+
 
 app.get("/api/adp-leak-audit/sample-report", getLeakAuditSampleReport);
 app.get("/api/adp-leak-audit/sample-portfolio-report", getLeakAuditPortfolioSampleReport);

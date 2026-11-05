@@ -1,0 +1,83 @@
+{
+  "packageId": "AVA_PRODUCTION_DEPLOYMENT_PACKAGE_V1",
+  "preparedAt": "2026-11-05T11:35:00.000Z",
+  "authorizationRequired": true,
+  "deployAuthorized": false,
+  "deployMethod": "npm run deploy:production (Railway CLI via deploy-production.mjs)",
+  "productionBaseUrl": "https://my-operators-backend-production.up.railway.app",
+  "immutableArtifactSupported": false,
+  "notes": [
+    "Railway CLI uploads the working tree subject to .railwayignore.",
+    "Current .railwayignore excludes reports/* (except ADP monthly-review allowlists) and does not allowlist data/ai-visibility-audit-action-plan or AVA PDFs.",
+    "Full data/ai-demand-positioning/staged is ~299MB and cannot be wholesale uploaded (Cloudflare 413 risk).",
+    "Code under lib/ai-visibility-audit-action-plan and api/admin-ai-visibility-audit.js is currently untracked and must be committed before a guarded deploy."
+  ],
+  "codeFiles": [
+    "api/admin-ai-visibility-audit.js",
+    "lib/ai-visibility-audit-action-plan/adp-baseline-loader-v1.js",
+    "lib/ai-visibility-audit-action-plan/audit-pdf-contract-v1.js",
+    "lib/ai-visibility-audit-action-plan/audit-store-v1.js",
+    "lib/ai-visibility-audit-action-plan/audit-to-monthly-action-register-bridge-v1.js",
+    "lib/ai-visibility-audit-action-plan/build-audit-pdf-html-v1.js",
+    "lib/ai-visibility-audit-action-plan/generate-audit-pdf-v1.mjs",
+    "lib/ai-visibility-audit-action-plan/lifecycle-v1.js",
+    "lib/ai-visibility-audit-action-plan/modules-v1.js",
+    "lib/ai-visibility-audit-action-plan/recommendation-qualification-v1.js",
+    "lib/ai-visibility-audit-action-plan/payloads/spice-island-beach-resort-v1.json",
+    "lib/ai-visibility-audit-action-plan/payloads/wyndham-san-diego-bayside-v1.json",
+    "lib/ai-visibility-audit-action-plan/payloads/waterstone-boca-raton-v1.json",
+    "lib/ai-visibility-audit-action-plan/payloads/bethesda-marriott-v1.json",
+    "lib/ai-visibility-audit-action-plan/payloads/castillo-hotel-son-vida-v1.json",
+    "lib/ai-visibility-audit-action-plan/payloads/sheraton-mallorca-arabella-golf-v1.json",
+    "server.js",
+    "public/js/admin-ai-visibility-audit.js",
+    "public/app/admin/ai-demand-admin.html",
+    "public/adp-ai-visibility-audit-pdf-render.html",
+    "public/css/adp-ai-visibility-audit-report-v1.css",
+    "public/js/ai-demand-positioning/adp-ai-visibility-audit-pdf-v1.js",
+    "public/css/dealality-report-system-v1.css",
+    "public/css/adp-monthly-review-report-v1.css",
+    "public/css/dealality-report-print-chrome.css",
+    "public/js/dealality-report-print-chrome.js"
+  ],
+  "dataArtifactsRequiredForParity": [
+    "data/ai-visibility-audit-action-plan/store/** (6 hotel metas + versions)",
+    "reports/dealality-ai-visibility-audit-action-plan-pilot-v1/*/pdf-staged/*.pdf (latest staged PDFs only; exclude page-previews to stay lean)",
+    "Lean ADP baseline source for 38 eligible hotels OR loader fallback to published/runtime (staged full tree ~299MB is not deployable as-is)"
+  ],
+  "railwayIgnoreRemediationRequired": [
+    "!reports/dealality-ai-visibility-audit-action-plan-pilot-v1/",
+    "!reports/dealality-ai-visibility-audit-action-plan-pilot-v1/*/pdf-staged/",
+    "!reports/dealality-ai-visibility-audit-action-plan-pilot-v1/*/pdf-staged/*.pdf",
+    "!data/ai-visibility-audit-action-plan/",
+    "!data/ai-visibility-audit-action-plan/store/",
+    "!data/ai-visibility-audit-action-plan/store/**",
+    "Plus lean baseline allowlist strategy (not full staged/)"
+  ],
+  "environmentVariables": {
+    "requiredExisting": [
+      "MEMBERSTACK_* / memberstack auth secrets already used by AI Demand Admin",
+      "AIRTABLE_* as used by requireDealalityUser (existing)",
+      "NODE_ENV=production"
+    ],
+    "mustRemainUnsetOrIneffectiveInProduction": [
+      "DEV_AUTH_BYPASS_EMAIL (ignored when NODE_ENV=production; must not be relied upon)"
+    ],
+    "notRequiredForInitialDeploy": [
+      "No new paid research keys",
+      "No new Airtable AVA tables (file store)"
+    ]
+  },
+  "runtimeDependencies": {
+    "playwright": "chromium.launch headless — same pattern as ADP monthly-review PDF generation (already used in production)",
+    "auth": "adpMonthlyReviewAdminAuth = memberstackAuth + requireDealalityUser + requireAdpMonthlyReviewAdminAccess"
+  },
+  "rollback": {
+    "method": "Redeploy previous known-good production tree via npm run deploy:production from the prior commit/tag",
+    "preserves": [
+      "Published ADP customer reports under existing ADP allowlisted paths",
+      "Existing customer share tokens / published snapshots"
+    ],
+    "risk": "If AVA store/PDFs were only on ephemeral disk and not re-uploaded, AVA history created after deploy would be lost on rollback/redeploy — another reason durable allowlist or volume is required before go-live"
+  }
+}
