@@ -1,0 +1,171 @@
+{
+  "contract": "GDI_DURABLE_PUBLICATION_REGISTRY_SPICE_ISLAND_V1",
+  "generatedAt": "2026-11-05T12:52:20.646Z",
+  "status": "FOUNDER_GO_REQUIRED_FOR_PRODUCTION_ACTIVATION",
+  "hotel": {
+    "id": "recKRJjcPnb4tVDDS",
+    "name": "Spice Island Beach Resort"
+  },
+  "classificationApprovalHonored": true,
+  "publicationAuthorized": false,
+  "exactSevenPublicationIds": [
+    "gdi_s4912_ba7b1cb8a3ab",
+    "gdi_s4912_b956aa67a4a2",
+    "gdi_s4912_b6d9b1929c05",
+    "gdi_s4912_cb2d71ab1b15",
+    "gdi_s4912_cc2a8da6ca6e",
+    "gdi_s4912_03deda917778",
+    "gdi_s4912_3cafec77a21f"
+  ],
+  "excluded": [
+    {
+      "opportunityId": "gdi_sc_f255eb5e9202",
+      "reason": "Aventa PAST_CLOSED — founder rejected"
+    }
+  ],
+  "manifestValidation": {
+    "ok": true,
+    "validationFailures": [],
+    "duplicateCheck": {
+      "approvedCount": 7,
+      "uniqueIds": 7,
+      "ok": true
+    }
+  },
+  "durabilityTests": {
+    "suite": "scripts/test-gdi-published-inventory-registry-v1.mjs",
+    "ok": true,
+    "passed": 11,
+    "failed": 0,
+    "exitCode": 0
+  },
+  "simulationPublish": {
+    "root": "C:\\Users\\joand\\AppData\\Local\\Temp\\gdi-spice-pub-prep-1793883140502",
+    "note": "Isolated temp simulation only — not production",
+    "rows": [
+      {
+        "opportunityId": "gdi_s4912_ba7b1cb8a3ab",
+        "publishedVersion": 1,
+        "state": "PUBLISHED"
+      },
+      {
+        "opportunityId": "gdi_s4912_b956aa67a4a2",
+        "publishedVersion": 1,
+        "state": "PUBLISHED"
+      },
+      {
+        "opportunityId": "gdi_s4912_b6d9b1929c05",
+        "publishedVersion": 1,
+        "state": "PUBLISHED"
+      },
+      {
+        "opportunityId": "gdi_s4912_cb2d71ab1b15",
+        "publishedVersion": 1,
+        "state": "PUBLISHED"
+      },
+      {
+        "opportunityId": "gdi_s4912_cc2a8da6ca6e",
+        "publishedVersion": 1,
+        "state": "PUBLISHED"
+      },
+      {
+        "opportunityId": "gdi_s4912_03deda917778",
+        "publishedVersion": 1,
+        "state": "PUBLISHED"
+      },
+      {
+        "opportunityId": "gdi_s4912_3cafec77a21f",
+        "publishedVersion": 1,
+        "state": "PUBLISHED"
+      }
+    ],
+    "avantaExcludedFromStrictMerge": true
+  },
+  "recommendedStorageArchitecture": {
+    "recommended": {
+      "primarySoT": "Airtable GDI base (opportunity payload + publication registry fields/table)",
+      "rationale": [
+        "Production already uses GDI_OPPORTUNITIES_PERSISTENCE=airtable — weekly upserts need no Railway redeploy",
+        "Spice Island already on GDI_REVIEWED_PROSPECT_HOTEL_IDS / built-in 33-hotel allowlist",
+        "Avoids per-hotel lib/ packs (Waterstone clean-28 is a lean-deploy fallback, not weekly SoT)",
+        "Share path already loads via loadOpportunitiesCanonical → filterCustomerFacingOpportunities"
+      ],
+      "secondaryMirror": "Filesystem registry on Railway volume (GDI_PUBLISHED_INVENTORY_ROOT) — same schema as local simulation; mirrors ADP durable-publication pattern; required for share-token registry parity (GDI_SHARE_REGISTRY_DIR already volume-oriented)",
+      "notRecommendedAsPrimary": [
+        "lib/ client-facing JSON packs — require code deploy for inventory changes",
+        "Ephemeral container disk / data/* railwayignored local-shadow alone"
+      ]
+    },
+    "existingCompatibility": {
+      "airtableGdiBase": "AIRTABLE_GDI_BASE_ID / opportunity-persistence.js",
+      "reviewedProspectAllowlist": "Spice Island already authorized for list path",
+      "gdishareV1": "issueGdiShareCapability + /group-demand-intelligence-share.html; reads hotel opportunities via loadOppDoc",
+      "waterstoneLibPack": "Keep as emergency freeze fallback only; migrate Waterstone IDs into registry later under separate GO",
+      "adpFilesystemDurableStore": "Pattern reuse for volume layout + atomic writes + history"
+    },
+    "schema": {
+      "contract": "GDI_PUBLISHED_INVENTORY_REGISTRY_V1",
+      "requiredFields": [
+        "hotelId",
+        "opportunityId",
+        "commercialClassification (SALES_READY | ACCOUNT_DEVELOPMENT)",
+        "publicationState (STAGED | PUBLISHED | REVOKED | SUPERSEDED)",
+        "publishedVersion",
+        "publishedAt",
+        "sourceResearchReference",
+        "approval { authorized, authorizedBy, authorizedAt, authorizationPhrase }",
+        "revokedAt / revokeReason",
+        "lastVerifiedAt",
+        "contentHash",
+        "audit history (append-only PUBLISH|UPDATE|REVOKE events)"
+      ],
+      "separation": "Research eligibility computed at read time; publication requires explicit approval record — never auto-promote",
+      "accountDevelopmentFirstClass": true
+    }
+  },
+  "migrationAndRollback": {
+    "migrate": [
+      "1. Deploy registry module + merge hook behind GDI_PUBLISHED_INVENTORY_REGISTRY_V1=0 (no behavior change)",
+      "2. Create Airtable publication registry table (or payload stamps) matching schema",
+      "3. Mount Railway volume; set GDI_PUBLISHED_INVENTORY_ROOT (mirror) + keep GDI_SHARE_REGISTRY_DIR",
+      "4. Dual-write publish API: Airtable primary, FS mirror secondary",
+      "5. Enable merge flag per hotel after founder GO — Spice first",
+      "6. Do not migrate Waterstone/Bethesda inventories until separate authorization"
+    ],
+    "rollback": [
+      "Set GDI_PUBLISHED_INVENTORY_REGISTRY_V1=0",
+      "Revoke Spice rows in registry (history preserved)",
+      "Share continues on prior Airtable/reviewed-prospect path",
+      "Lib-pack Waterstone fallback unchanged"
+    ]
+  },
+  "productionDeploymentRisks": [
+    "Enabling merge without dual-write could hide Airtable-only rows if strictPublishedOnly mis-set — default merge is additive",
+    "Railway volume not yet attached — FS mirror empty until mount + env",
+    "Migrating Waterstone away from lib pack without registry rows would drop share inventory — out of scope until separate GO",
+    "Share token issuance still requires production GDI_SHARE_CAPABILITY_SECRET (already configured)",
+    "Classification approval ≠ publication approval — this package stops before sync/token"
+  ],
+  "activationSequence": {
+    "status": "PREPARED_NOT_EXECUTED",
+    "steps": [
+      "Deploy validated publication infrastructure (flag off initially)",
+      "Verify preservation of all existing published GDI opportunities (Bethesda/Waterstone/etc.)",
+      "Synchronize Spice Island seven approved records into durable registry + Airtable",
+      "Verify production inventory count/classes/titles for Spice",
+      "Issue Spice Island gdishare.v1 capability via issueGdiShareCapability",
+      "Test logged-out external access on /group-demand-intelligence-share.html",
+      "Return verified URL for Sheldon"
+    ],
+    "gdishareReadPath": "After flag enable: loadOppDoc → mergePublishedInventoryIntoOpportunities(hotelId, opportunities) before filterCustomerFacingOpportunities; share sanitize continues unchanged"
+  },
+  "exactAuthorizationPhraseRequired": "FOUNDER GO — GDI durable publication registry production activation: deploy GDI_PUBLISHED_INVENTORY_REGISTRY_V1, preserve existing published inventories, sync Spice Island exact seven IDs, verify production, issue gdishare.v1 for recKRJjcPnb4tVDDS",
+  "notExecuted": [
+    "production writes",
+    "Railway deployments",
+    "Airtable publication upserts",
+    "paid research",
+    "share-token issuance",
+    "existing inventory migration"
+  ]
+}
