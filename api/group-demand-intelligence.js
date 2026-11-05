@@ -180,54 +180,8 @@ async function loadOppDoc(hotelId) {
       gdiReadTimeoutMs(),
       "gdi_load_opportunities"
     );
-    // Local shadow commercial overlay (Waterstone + Chapultepec founder workspace)
     let opportunities = doc?.opportunities || [];
-    let waterstonePackDebug = null;
-    try {
-      const { mergeLocalShadowCommercialOpportunities } = await import(
-        "../lib/group-demand-intelligence/local-shadow-commercial-portfolio-v1.js"
-      );
-      opportunities = mergeLocalShadowCommercialOpportunities(hotelId, opportunities);
-    } catch (overlayErr) {
-      console.error(
-        "[gdi] local shadow overlay failed",
-        overlayErr?.message || overlayErr
-      );
-    }
-    // Waterstone clean-28 share merge — always apply (idempotent). Survives when
-    // local-shadow is absent from a lean/production tree so client-share cannot
-    // fall back to stale historical inventory alone.
-    try {
-      const { mergeWaterstoneClean28ForShare } = await import(
-        "../lib/group-demand-intelligence/waterstone-clean-28-share-merge-v1.js"
-      );
-      opportunities = mergeWaterstoneClean28ForShare(hotelId, opportunities);
-      if (hotelId === "recgMYovrrZDJMqzX") {
-        waterstonePackDebug = {
-          mergedCount: opportunities.length,
-          packCount: opportunities.filter(
-            (o) => o?.waterstoneClean28ClientPack === true,
-          ).length,
-          primaryCount: opportunities.filter(
-            (o) => o?.waterstonePrimarySalesInventory === true,
-          ).length,
-          overlayError: null,
-        };
-      }
-    } catch (wsErr) {
-      const overlayError = String(wsErr?.message || wsErr);
-      console.error("[gdi] waterstone clean-28 share merge failed", overlayError);
-      if (hotelId === "recgMYovrrZDJMqzX") {
-        waterstonePackDebug = {
-          mergedCount: opportunities.length,
-          packCount: 0,
-          primaryCount: 0,
-          overlayError,
-        };
-      }
-    }
-    // GDI published inventory registry (volume mirror). Hotel-scoped flag; default OFF.
-    // When enabled for a hotel, strictPublishedOnly hides unpublished research.
+    // Durable published inventory registry only — no Waterstone/local-shadow merges.
     try {
       const { isGdiPublishedInventoryRegistryEnabledForHotel } = await import(
         "../lib/group-demand-intelligence/durable-publication/resolve-gdi-published-registry-root-v1.js"
@@ -251,7 +205,6 @@ async function loadOppDoc(hotelId) {
     const merged = {
       ...doc,
       opportunities,
-      ...(waterstonePackDebug ? { __waterstonePackDebug: waterstonePackDebug } : {}),
     };
     const ms = Date.now() - t0;
     if (ms >= 1000 || process.env.GDI_PERF_LOG === "1") {
@@ -262,7 +215,9 @@ async function loadOppDoc(hotelId) {
           hotelId,
           durationMs: ms,
           cacheHit: doc?.cacheHit === true,
-          recordCount: Array.isArray(merged?.opportunities) ? merged.opportunities.length : 0,
+          recordCount: Array.isArray(merged?.opportunities)
+            ? merged.opportunities.length
+            : 0,
         })
       );
     }
@@ -714,17 +669,6 @@ export async function getGdiOpportunities(req, res) {
     );
     opportunities = applyApprovedBethesdaCustomerProjection(opportunities);
     opportunities = projectOpportunitiesCommercialQuality(opportunities);
-    try {
-      const { reassertWaterstoneCommercialEligibilityOverlay } = await import(
-        "../lib/group-demand-intelligence/waterstone-commercial-eligibility-overlay-v1.js"
-      );
-      opportunities = reassertWaterstoneCommercialEligibilityOverlay(
-        opportunities,
-        hotelId,
-      );
-    } catch {
-      /* optional local overlay reassert */
-    }
     // Hotel-scoped Need-Date tile icons — one period load per request (no N+1).
     try {
       const { attachHotelNeedDateTilePreviews } = await import(
@@ -840,17 +784,6 @@ export async function getGdiOpportunityDetail(req, res) {
     }
     const projected = projectOpportunitiesCommercialQuality([loaded.opportunity]);
     let opportunity = projected[0];
-    try {
-      const { reassertWaterstoneCommercialEligibilityOverlay } = await import(
-        "../lib/group-demand-intelligence/waterstone-commercial-eligibility-overlay-v1.js"
-      );
-      opportunity = reassertWaterstoneCommercialEligibilityOverlay(
-        [opportunity],
-        hotelId,
-      )[0];
-    } catch {
-      /* optional local overlay reassert */
-    }
     try {
       const { attachHotelNeedDateTilePreviews } = await import(
         "../lib/group-demand-intelligence/need-date-demand/opportunity-need-date-tile-preview-v1.js"
@@ -1387,27 +1320,10 @@ export async function postGdiCustomerValidation(req, res) {
         body.phoneAssessment
     );
 
-    // Local-only founder DOS review can be saved without hotel validation enums
+    // Local shadow founder DOS review is not included in the production release package.
     let founderReview = null;
     if (founderDecision) {
-      const {
-        saveFounderReview,
-        isLocalShadowCommercialHotel,
-      } = await import(
-        "../lib/group-demand-intelligence/local-shadow-commercial-portfolio-v1.js"
-      );
-      if (isLocalShadowCommercialHotel(hotelId)) {
-        founderReview = saveFounderReview(hotelId, {
-          opportunityId,
-          decision: founderDecision,
-          comment: body.note || body.founderReviewComment || "",
-          actor:
-            req.dealalityUser?.email ||
-            req.dealalityUser?.id ||
-            body.validator ||
-            "founder_local",
-        });
-      }
+      /* intentionally no-op in production packaging */
     }
 
     let item = null;
@@ -1836,56 +1752,15 @@ export async function postGdiPublishHotelInventory(req, res) {
   }
 }
 
-/** Local-only founder review (DOS grades) for shadow commercial hotels. */
+/** Local-only founder review — disabled in production release packaging. */
 export async function postGdiFounderReview(req, res) {
   if (!flagGate(req, res)) return;
-  const hotelId = String(req.params.hotelId || "").trim();
-  const opportunityId = String(req.params.opportunityId || "").trim();
-  try {
-    const {
-      saveFounderReview,
-      isLocalShadowCommercialHotel,
-      founderReviewAllowedDecisions,
-      loadFounderReviews,
-    } = await import(
-      "../lib/group-demand-intelligence/local-shadow-commercial-portfolio-v1.js"
-    );
-    if (!isLocalShadowCommercialHotel(hotelId)) {
-      return res.status(403).json({
-        ok: false,
-        error: "founder_review_hotel_not_enabled",
-        message: "Founder review is enabled only for local shadow commercial hotels.",
-      });
-    }
-    const body = req.body || {};
-    const saved = saveFounderReview(hotelId, {
-      opportunityId,
-      decision: body.decision || body.founderReviewDecision || body.dosGrade,
-      comment: body.comment || body.note || "",
-      actor:
-        req.dealalityUser?.email ||
-        req.dealalityUser?.id ||
-        body.actor ||
-        "founder_local",
-    });
-    return res.json({
-      ok: true,
-      founderReview: saved,
-      allowed: founderReviewAllowedDecisions(),
-      hotelReviews: loadFounderReviews(hotelId),
-    });
-  } catch (err) {
-    if (err.code === "invalid_founder_review") {
-      return res.status(400).json({
-        ok: false,
-        error: err.code,
-        message: err.message,
-        allowed: err.allowed || null,
-      });
-    }
-    console.error("[gdi] founder review failed", err);
-    return res.status(500).json({ ok: false, error: "founder_review_failed" });
-  }
+  return res.status(501).json({
+    ok: false,
+    error: "founder_review_not_in_production_release",
+    message:
+      "Local shadow founder review is not part of the GDI one-click production release.",
+  });
 }
 
 export function getGdiFeedback(req, res) {
@@ -2142,32 +2017,9 @@ export async function getGdiShareOpportunities(req, res) {
   let salesView = isInventoryVisibilityHotelEnabled(hotelId)
     ? doc.opportunities || []
     : filterSalespersonView(doc.opportunities || []);
-  if (hotelId === "recgMYovrrZDJMqzX") {
-    const mergedRows = doc.opportunities || [];
-    res.setHeader("X-GDI-WS-Merged", String(mergedRows.length));
-    res.setHeader(
-      "X-GDI-WS-Pack",
-      String(mergedRows.filter((o) => o?.waterstoneClean28ClientPack === true).length),
-    );
-    res.setHeader(
-      "X-GDI-WS-Primary",
-      String(
-        mergedRows.filter((o) => o?.waterstonePrimarySalesInventory === true)
-          .length,
-      ),
-    );
-  }
   let facing = applyApprovedBethesdaCustomerProjection(
     filterCustomerFacingOpportunities(salesView, { hotelId })
   );
-  try {
-    const { reassertWaterstoneCommercialEligibilityOverlay } = await import(
-      "../lib/group-demand-intelligence/waterstone-commercial-eligibility-overlay-v1.js"
-    );
-    facing = reassertWaterstoneCommercialEligibilityOverlay(facing, hotelId);
-  } catch {
-    /* optional local overlay reassert */
-  }
   try {
     const { attachHotelNeedDateTilePreviews } = await import(
       "../lib/group-demand-intelligence/need-date-demand/opportunity-need-date-tile-preview-v1.js"
