@@ -104,12 +104,106 @@
     if (memberFetch) {
       return (
         '<button type="button" class="aiv-btn-apply" id="gdiRunBtn">Run Research</button>' +
+        '<button type="button" class="aiv-btn-apply" id="gdiPublishBtn" title="Publish the local opportunity list to the customer share link">Publish</button>' +
         resetBtn
       );
     }
     return (
       '<span class="gdi-muted gdi-property-bar__hint">Sign in for research writes</span>' + resetBtn
     );
+  }
+
+  function publishHotelInventory() {
+    if (!memberFetch || !state.hotelId) return;
+    var btn = document.getElementById("gdiPublishBtn");
+    if (btn) btn.disabled = true;
+    var url =
+      "/api/group-demand-intelligence/hotels/" +
+      encodeURIComponent(state.hotelId) +
+      "/publish";
+
+    function finish(msg, ok) {
+      if (btn) btn.disabled = false;
+      if (msg) window.alert(msg);
+      if (ok) loadAll();
+    }
+
+    fetchFn(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ dryRun: true }),
+    })
+      .then(function (r) {
+        return r.json().then(function (body) {
+          return { status: r.status, body: body };
+        });
+      })
+      .then(function (dry) {
+        var result = (dry.body && dry.body.result) || {};
+        if (!dry.body || dry.body.ok !== true) {
+          finish(
+            "Publish validation failed: " +
+              (result.code || (dry.body && dry.body.error) || "unknown"),
+            false
+          );
+          return null;
+        }
+        var plan = result.plan || {};
+        var counts = plan.classificationCounts || {};
+        var confirmed = window.confirm(
+          "Publish " +
+            (plan.opportunityCount || 0) +
+            " approved opportunities to the customer link?\n\n" +
+            "Sales Ready: " +
+            (counts.SALES_READY || 0) +
+            " · Account Development: " +
+            (counts.ACCOUNT_DEVELOPMENT || 0) +
+            "\n\nPrevious publication is preserved for rollback. Share token is unchanged."
+        );
+        if (!confirmed) {
+          finish(null, false);
+          return null;
+        }
+        return fetchFn(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            dryRun: false,
+            approval: {
+              authorized: true,
+              authorizationPhrase: "GDI_ONE_CLICK_HOTEL_PUBLISH_V1",
+            },
+          }),
+        }).then(function (r) {
+          return r.json().then(function (body) {
+            return { status: r.status, body: body };
+          });
+        });
+      })
+      .then(function (apply) {
+        if (!apply) return;
+        var result = (apply.body && apply.body.result) || {};
+        if (apply.body && apply.body.ok === true && result.advanced === true) {
+          finish(
+            "Published. Customer share links now serve the approved inventory (" +
+              ((result.plan && result.plan.opportunityCount) || 0) +
+              " opportunities).",
+            true
+          );
+          return;
+        }
+        finish(
+          "Publish did not advance: " +
+            (result.code || (apply.body && apply.body.error) || "unknown"),
+          false
+        );
+      })
+      .catch(function (err) {
+        finish(
+          "Publish failed: " + String(err && err.message ? err.message : err),
+          false
+        );
+      });
   }
 
   readPersistedBrowse();
@@ -1371,6 +1465,8 @@
 
     var runBtn = document.getElementById("gdiRunBtn");
     if (runBtn) runBtn.addEventListener("click", runResearch);
+    var publishBtn = document.getElementById("gdiPublishBtn");
+    if (publishBtn) publishBtn.addEventListener("click", publishHotelInventory);
     var resetBtn = document.getElementById("gdiResetViewBtn");
     if (resetBtn) resetBtn.addEventListener("click", resetBrowseView);
 

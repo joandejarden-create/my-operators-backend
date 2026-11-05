@@ -4627,12 +4627,19 @@
    * Reset is the top-level Reset View control (not duplicated here).
    * Classification: REUSABLE_PRODUCT_UI
    */
+  function inventoryViewToggleHtml(opts) {
+    // Dual inventory UI removed (FOUNDER): one opportunity list only.
+    // Research ledger remains backend-internal — never a second inventory surface.
+    return "";
+  }
+
   function opportunityBrowseChromeHtml(opts) {
     opts = opts || {};
     return (
       '<div class="gdi-browse">' +
       (opts.weeklySummaryHtml ||
         weeklyDeltaHeaderSummaryHtml(opts.weeklyHeaderCounts || {})) +
+      inventoryViewToggleHtml(opts) +
       '<div class="gdi-browse-presets">' +
       priorityPresetHtml({
         active: opts.activePriority != null ? opts.activePriority : "",
@@ -7993,6 +8000,7 @@
     compactTileContactHtml: compactTileContactHtml,
     opportunityCardsGridHtml: opportunityCardsGridHtml,
     opportunityBrowseChromeHtml: opportunityBrowseChromeHtml,
+    inventoryViewToggleHtml: inventoryViewToggleHtml,
     weeklyDeltaPillHtml: weeklyDeltaPillHtml,
     weeklyDeltaPresetHtml: weeklyDeltaPresetHtml,
     weeklyThisWeekFilterHtml: weeklyThisWeekFilterHtml,

@@ -1,0 +1,121 @@
+{
+  "verdict": "BLOCKED",
+  "asOf": "2026-11-05T20:10:00Z",
+  "auditedHeadOnRemote": "cc62f243758a7fc512125d30ffeab3b1207f782c",
+  "oneClickPresentOnRemoteHead": false,
+  "gates": [
+    {
+      "id": 1,
+      "name": "PR #136 merge readiness and green CI",
+      "status": "PARTIAL",
+      "detail": "PR OPEN, MERGEABLE, mergeStateStatus CLEAN, gitleaks SUCCESS. One-click architecture is NOT on head oid cc62f243 — still working-tree only."
+    },
+    {
+      "id": 2,
+      "name": "Exact deployment files and commit",
+      "status": "FAIL",
+      "detail": "No deployable commit contains one-click publish. Working tree also contains large unrelated diffs (package.json +589 scripts; server.js ADP/admin routes; app.js non-scoped churn)."
+    },
+    {
+      "id": 3,
+      "name": "Unrelated working-tree changes excluded",
+      "status": "FAIL",
+      "detail": "Cannot deploy dirty worktree. Must commit a scoped package only (see deployAllowlist)."
+    },
+    {
+      "id": 4,
+      "name": "Existing production registry and volume backed up",
+      "status": "FAIL",
+      "detail": "No backup-volume-snapshots-BEFORE_MIGRATION artifact present. Prior GO docs require backup; not executed this session (production writes forbidden)."
+    },
+    {
+      "id": 5,
+      "name": "Authorized administrator-only publish endpoint",
+      "status": "FIXED_IN_WORKING_TREE",
+      "detail": "Was memberstackAuth+requireDealalityUser only. requireAdminAccess added to POST /hotels/:hotelId/publish (matches share/issue). Still uncommitted."
+    },
+    {
+      "id": 6,
+      "name": "External share tokens remain strictly read-only",
+      "status": "PASS",
+      "detail": "Publish is authenticated admin route only. Share routes remain GET/validation/action/outcome; no publish mutation on share token paths."
+    },
+    {
+      "id": 7,
+      "name": "Atomic publication with crash-safe pointer advancement",
+      "status": "PASS",
+      "detail": "Hotel lock + atomicWriteJson registry save advances currentPublication with opportunity rows in one rename. Mid-loop crash leaves orphan versioned snaps but prior pointer continues to serve."
+    },
+    {
+      "id": 8,
+      "name": "Durable rollback of failed publication verification",
+      "status": "PASS",
+      "detail": "PUBLICATION_VERIFY_FAILED restores prior currentPublication under hotel lock. Versioned snaps retained. Residual risk only if process dies between verify-fail and rollback write."
+    },
+    {
+      "id": 9,
+      "name": "Spice Island seven enriched V2 snapshots validated",
+      "status": "PASS",
+      "detail": "prepare + isolated apply + tests PASS after title-preservation fix. 1 SALES_READY / 6 ACCOUNT_DEVELOPMENT. Aventa excluded."
+    },
+    {
+      "id": 10,
+      "name": "Existing share token and publication history preserved",
+      "status": "PASS_BY_DESIGN",
+      "detail": "One-click does not rotate share tokens. History append-only. Live production preservation not re-executed this session."
+    },
+    {
+      "id": 11,
+      "name": "Bethesda 30 and Waterstone 28 unchanged",
+      "status": "PASS_BY_PRIOR_EVIDENCE_NOT_LIVE_RECHECK",
+      "detail": "Hotel-scoped publish; local registry Spice-only. Last production peer check (share recovery): Bethesda 30 / Waterstone 28 on deploy 4f2b8d24. Live re-verify required after any volume write."
+    },
+    {
+      "id": 12,
+      "name": "No impact on ADP durable publication infrastructure",
+      "status": "PASS_BY_DESIGN",
+      "detail": "GDI root via GDI_PUBLISHED_INVENTORY_ROOT / GDI data tree. ADP uses separate published-read paths. Shared Railway volume parent possible — backup + Spice-only hotel scope required to avoid collateral."
+    },
+    {
+      "id": 13,
+      "name": "Approved local preview vs candidate publication field-for-field",
+      "status": "PASS_AFTER_TITLE_FIX",
+      "detail": "Discovered defect: snapshot builder preferred organizationName over approved title (3/7 would rewrite). Fixed in one-click prepare via canonicalTitle. Re-check: 7/7 content fields match."
+    }
+  ],
+  "blockingItems": [
+    "Commit scoped one-click package to PR #136 (not currently on cc62f243)",
+    "Exclude unrelated working-tree noise from that commit (especially package.json script inflation and unrelated server.js routes)",
+    "Take production volume/registry backup before any Spice apply",
+    "Push commit so CI re-runs green on the actual deploy revision",
+    "Founder GO still required after above — no production execution in this audit"
+  ],
+  "deployAllowlist": [
+    "lib/group-demand-intelligence/durable-publication/gdi-one-click-hotel-publish-v1.js",
+    "lib/group-demand-intelligence/durable-publication/gdi-published-inventory-registry-v1.js",
+    "api/group-demand-intelligence.js",
+    "server.js (publish route + requireAdminAccess only — do not ship unrelated ADP/admin route churn)",
+    "public/js/group-demand-intelligence/app.js (Publish button + handler only)",
+    "package.json (add only test:gdi-one-click-hotel-publish-v1 and gdi:one-click-publish-spice-dry-run)",
+    "scripts/test-gdi-one-click-hotel-publish-v1.mjs",
+    "scripts/gdi-one-click-publish-spice-island-dry-run-v1.mjs",
+    "reports/gdi-one-click-publication-architecture-v1/**"
+  ],
+  "ci": {
+    "pr": 136,
+    "url": "https://github.com/joandejarden-create/my-operators-backend/pull/136",
+    "headRefOid": "cc62f243758a7fc512125d30ffeab3b1207f782c",
+    "mergeable": "MERGEABLE",
+    "gitleaks": "SUCCESS",
+    "note": "CI green on HEAD that LACKS one-click; must re-verify after scoped push"
+  },
+  "backupConfirmation": false,
+  "publishDryRun": {
+    "localIsolated": "PASS",
+    "production": "NOT_EXECUTED"
+  },
+  "rollbackVerification": {
+    "codePath": "PASS (pointer restore on verify fail; priorPublicationId retained)",
+    "productionDrill": "NOT_EXECUTED"
+  }
+}
