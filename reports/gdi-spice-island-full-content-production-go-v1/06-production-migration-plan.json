@@ -1,0 +1,80 @@
+{
+  "mode": "DRY_PLAN_ONLY_NO_EXECUTE",
+  "backup": {
+    "from": "/app/data/adp-durable-published/gdi-published-inventory (or GDI_PUBLISHED_INVENTORY_ROOT)",
+    "copyTo": "reports/gdi-spice-island-full-content-production-go-v1/backup-volume-snapshots-BEFORE_MIGRATION/",
+    "include": [
+      "snapshots/recKRJjcPnb4tVDDS/gdi_s4912_ba7b1cb8a3ab/v*.json",
+      "snapshots/recKRJjcPnb4tVDDS/gdi_s4912_b956aa67a4a2/v*.json",
+      "snapshots/recKRJjcPnb4tVDDS/gdi_s4912_b6d9b1929c05/v*.json",
+      "snapshots/recKRJjcPnb4tVDDS/gdi_s4912_cb2d71ab1b15/v*.json",
+      "snapshots/recKRJjcPnb4tVDDS/gdi_s4912_cc2a8da6ca6e/v*.json",
+      "snapshots/recKRJjcPnb4tVDDS/gdi_s4912_03deda917778/v*.json",
+      "snapshots/recKRJjcPnb4tVDDS/gdi_s4912_3cafec77a21f/v*.json"
+    ]
+  },
+  "migrate": [
+    {
+      "opportunityId": "gdi_s4912_ba7b1cb8a3ab",
+      "keepClassification": "SALES_READY",
+      "sourceEnrichedSnapshot": "reports/gdi-production-publication-full-content-parity-v1/enriched-snapshots/gdi_s4912_ba7b1cb8a3ab.json",
+      "action": "updatePublishedOpportunity",
+      "skipIfContentHashMatches": true
+    },
+    {
+      "opportunityId": "gdi_s4912_b956aa67a4a2",
+      "keepClassification": "ACCOUNT_DEVELOPMENT",
+      "sourceEnrichedSnapshot": "reports/gdi-production-publication-full-content-parity-v1/enriched-snapshots/gdi_s4912_b956aa67a4a2.json",
+      "action": "updatePublishedOpportunity",
+      "skipIfContentHashMatches": true
+    },
+    {
+      "opportunityId": "gdi_s4912_b6d9b1929c05",
+      "keepClassification": "ACCOUNT_DEVELOPMENT",
+      "sourceEnrichedSnapshot": "reports/gdi-production-publication-full-content-parity-v1/enriched-snapshots/gdi_s4912_b6d9b1929c05.json",
+      "action": "updatePublishedOpportunity",
+      "skipIfContentHashMatches": true
+    },
+    {
+      "opportunityId": "gdi_s4912_cb2d71ab1b15",
+      "keepClassification": "ACCOUNT_DEVELOPMENT",
+      "sourceEnrichedSnapshot": "reports/gdi-production-publication-full-content-parity-v1/enriched-snapshots/gdi_s4912_cb2d71ab1b15.json",
+      "action": "updatePublishedOpportunity",
+      "skipIfContentHashMatches": true
+    },
+    {
+      "opportunityId": "gdi_s4912_cc2a8da6ca6e",
+      "keepClassification": "ACCOUNT_DEVELOPMENT",
+      "sourceEnrichedSnapshot": "reports/gdi-production-publication-full-content-parity-v1/enriched-snapshots/gdi_s4912_cc2a8da6ca6e.json",
+      "action": "updatePublishedOpportunity",
+      "skipIfContentHashMatches": true
+    },
+    {
+      "opportunityId": "gdi_s4912_03deda917778",
+      "keepClassification": "ACCOUNT_DEVELOPMENT",
+      "sourceEnrichedSnapshot": "reports/gdi-production-publication-full-content-parity-v1/enriched-snapshots/gdi_s4912_03deda917778.json",
+      "action": "updatePublishedOpportunity",
+      "skipIfContentHashMatches": true
+    },
+    {
+      "opportunityId": "gdi_s4912_3cafec77a21f",
+      "keepClassification": "ACCOUNT_DEVELOPMENT",
+      "sourceEnrichedSnapshot": "reports/gdi-production-publication-full-content-parity-v1/enriched-snapshots/gdi_s4912_3cafec77a21f.json",
+      "action": "updatePublishedOpportunity",
+      "skipIfContentHashMatches": true
+    }
+  ],
+  "preserveShareTokenId": "gdisht_spice_island_mw3olaq5",
+  "forbid": [
+    "new opportunity IDs",
+    "classification changes",
+    "Airtable rewrites",
+    "token rotation",
+    "paid research"
+  ],
+  "postMigrateExpect": {
+    "publishedCount": 7,
+    "SALES_READY": 1,
+    "ACCOUNT_DEVELOPMENT": 6
+  }
+}

@@ -1,0 +1,58 @@
+﻿{
+  "contract": "GDI_FINAL_UNIVERSAL_PRESENTATION_CONSOLIDATION",
+  "generatedAtUtc": "2026-11-05T21:40:00.000Z",
+  "duplicationInventory": [
+    {
+      "id": "DUP_APP_BROWSE_VS_PC",
+      "was": "app.js reimplemented filter/sort/tile/drawer browse independently of gdi-universal-presentation-controller.js while share-app.js already used PC",
+      "fix": "app.js now requires PC and delegates filteredSorted, applyTilePairFilter, wireBrowseFilterControls, buildBrowseChromeOptions, openOpportunityDetail",
+      "status": "ELIMINATED"
+    },
+    {
+      "id": "DUP_API_AUTH_SHARE_DTO",
+      "was": "Auth list used prepare+mapOpportunitiesToListDto; share list/detail used prepare+sanitize+buildShareOpportunity* independently",
+      "fix": "Auth list + share list/detail + auth detail route through projectOpportunityForPresentation / mapOpportunitiesToPresentationDtos",
+      "status": "ELIMINATED"
+    },
+    {
+      "id": "DUP_LOCKED_RESANITIZE",
+      "was": "publishedPresentationLocked snapshots still ran sanitizeOpportunityForCustomerPresentation (drawer/title rebuild risk)",
+      "fix": "Locked path uses prepareCustomerFacingOpportunity only (hydrate/stamp). Pipeline skips live sanitize when locked",
+      "status": "ELIMINATED"
+    },
+    {
+      "id": "DUP_SHARE_SOURCES_RESHAPE",
+      "was": "buildShareOpportunityDetailDto preferred sanitize-reshaped sources over approved opportunity.sources",
+      "fix": "Approved opportunity.sources are authoritative",
+      "status": "ELIMINATED"
+    },
+    {
+      "id": "REMAINING_LEGACY_RENDERDETAIL_FALLBACK",
+      "was": "app.js still contains unused legacy renderDetail HTML fallback after UI.intelligenceDetailHtml",
+      "fix": "Primary path uses shared UI; dead fallback left for safety, not used when DealalityGdiUi present",
+      "status": "NON_BLOCKING_DEAD_CODE"
+    },
+    {
+      "id": "REMAINING_NEED_DATE_ATTACH",
+      "was": "Need-date tile preview attach still runs on list paths for non-locked rows",
+      "fix": "Intentional enrichment for live research inventory; locked published rows skip live CQ/sanitize",
+      "status": "ACCEPTED_LIVE_ONLY"
+    }
+  ],
+  "filesConsolidated": [
+    "lib/group-demand-intelligence/presentation/gdi-universal-presentation-pipeline-v1.js",
+    "lib/group-demand-intelligence/contracts/gdi-canonical-opportunity-contract-v1.js",
+    "lib/group-demand-intelligence/contracts/gdi-presentation-contract-v1.js",
+    "lib/group-demand-intelligence/share/share-customer-presentation-parity-v1.js",
+    "api/group-demand-intelligence.js",
+    "public/js/group-demand-intelligence/app.js",
+    "public/group-demand-intelligence.html",
+    "public/group-demand-intelligence-share.html",
+    "scripts/test-gdi-hangers-universal-presentation-parity-v1.mjs",
+    "scripts/test-gdi-universal-presentation-publication-parity-v1.mjs"
+  ],
+  "canonicalObject": "buildCanonicalPresentationObject() in gdi-canonical-opportunity-contract-v1.js",
+  "cacheBust": "gdi-universal-one-object-v1",
+  "oneTemplate": "DealalityGdiUi + gdi-universal-presentation-controller",
+  "onePublish": "gdi-one-click-hotel-publish-v1"
+}

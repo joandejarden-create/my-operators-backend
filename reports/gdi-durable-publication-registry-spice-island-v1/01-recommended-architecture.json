@@ -1,0 +1,42 @@
+{
+  "recommended": {
+    "primarySoT": "Airtable GDI base (opportunity payload + publication registry fields/table)",
+    "rationale": [
+      "Production already uses GDI_OPPORTUNITIES_PERSISTENCE=airtable — weekly upserts need no Railway redeploy",
+      "Spice Island already on GDI_REVIEWED_PROSPECT_HOTEL_IDS / built-in 33-hotel allowlist",
+      "Avoids per-hotel lib/ packs (Waterstone clean-28 is a lean-deploy fallback, not weekly SoT)",
+      "Share path already loads via loadOpportunitiesCanonical → filterCustomerFacingOpportunities"
+    ],
+    "secondaryMirror": "Filesystem registry on Railway volume (GDI_PUBLISHED_INVENTORY_ROOT) — same schema as local simulation; mirrors ADP durable-publication pattern; required for share-token registry parity (GDI_SHARE_REGISTRY_DIR already volume-oriented)",
+    "notRecommendedAsPrimary": [
+      "lib/ client-facing JSON packs — require code deploy for inventory changes",
+      "Ephemeral container disk / data/* railwayignored local-shadow alone"
+    ]
+  },
+  "existingCompatibility": {
+    "airtableGdiBase": "AIRTABLE_GDI_BASE_ID / opportunity-persistence.js",
+    "reviewedProspectAllowlist": "Spice Island already authorized for list path",
+    "gdishareV1": "issueGdiShareCapability + /group-demand-intelligence-share.html; reads hotel opportunities via loadOppDoc",
+    "waterstoneLibPack": "Keep as emergency freeze fallback only; migrate Waterstone IDs into registry later under separate GO",
+    "adpFilesystemDurableStore": "Pattern reuse for volume layout + atomic writes + history"
+  },
+  "schema": {
+    "contract": "GDI_PUBLISHED_INVENTORY_REGISTRY_V1",
+    "requiredFields": [
+      "hotelId",
+      "opportunityId",
+      "commercialClassification (SALES_READY | ACCOUNT_DEVELOPMENT)",
+      "publicationState (STAGED | PUBLISHED | REVOKED | SUPERSEDED)",
+      "publishedVersion",
+      "publishedAt",
+      "sourceResearchReference",
+      "approval { authorized, authorizedBy, authorizedAt, authorizationPhrase }",
+      "revokedAt / revokeReason",
+      "lastVerifiedAt",
+      "contentHash",
+      "audit history (append-only PUBLISH|UPDATE|REVOKE events)"
+    ],
+    "separation": "Research eligibility computed at read time; publication requires explicit approval record — never auto-promote",
+    "accountDevelopmentFirstClass": true
+  }
+}

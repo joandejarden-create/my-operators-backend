@@ -1,0 +1,58 @@
+{
+  "status": "AWAITING_FOUNDER_GO",
+  "doNotExecuteUntilAuthorized": true,
+  "steps": [
+    {
+      "id": 1,
+      "action": "Merge PR #136 (or pin Railway deploy source to feat/gdi-spice-published-inventory-registry-v1 including one-click commits)",
+      "risk": "Without this, main auto-deploy can serve a build that lacks registry V2 / one-click / locked presentation"
+    },
+    {
+      "id": 2,
+      "action": "Deploy application revision containing gdi-one-click-hotel-publish-v1 + Publish API/UI",
+      "verify": "GET health + feature flag; confirm POST /hotels/:hotelId/publish exists"
+    },
+    {
+      "id": 3,
+      "action": "Spice Island dry-run on production host (or volume-mounted CLI) with seven IDs",
+      "commandHint": "POST .../hotels/recKRJjcPnb4tVDDS/publish { dryRun: true, opportunityIds: SEVEN }",
+      "expect": "ok=true, count=7, SALES_READY=1, ACCOUNT_DEVELOPMENT=6, aventa absent"
+    },
+    {
+      "id": 4,
+      "action": "Founder authorize live apply for Spice only",
+      "payload": {
+        "dryRun": false,
+        "opportunityIds": [
+          "gdi_s4912_ba7b1cb8a3ab",
+          "gdi_s4912_b956aa67a4a2",
+          "gdi_s4912_b6d9b1929c05",
+          "gdi_s4912_cb2d71ab1b15",
+          "gdi_s4912_cc2a8da6ca6e",
+          "gdi_s4912_03deda917778",
+          "gdi_s4912_3cafec77a21f"
+        ],
+        "revokeMissingPublishedIds": true,
+        "approval": {
+          "authorized": true,
+          "authorizationPhrase": "FOUNDER_GO_SPICE_ONE_CLICK_PUBLISH_V1"
+        }
+      },
+      "preserve": ["share token", "publication history", "Bethesda", "Waterstone", "all other hotels"]
+    },
+    {
+      "id": 5,
+      "action": "Verify customer share API returns approved full-content seven",
+      "checks": [
+        "exact opportunity IDs",
+        "full-content hashes / drawer fields",
+        "classifications and contacts",
+        "publishedPresentationLocked true"
+      ]
+    },
+    {
+      "id": 6,
+      "action": "Rollback if needed: restore prior currentPublication pointer (versioned snaps remain on disk)"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "status": "FOUNDER_GO_REQUIRED_FOR_PRODUCTION_MERGE_AND_V2_MIGRATION",
+  "customerReady": false,
+  "blockers": [
+    "PRODUCTION_MERGE_NOT_AUTHORIZED",
+    "RAILWAY_DEPLOY_NOT_AUTHORIZED",
+    "VOLUME_V2_MIGRATION_NOT_AUTHORIZED"
+  ],
+  "cleared": [
+    "PR_136_V2_CONTRACT_COMMITTED",
+    "PR_136_GITLEAKS_GREEN",
+    "LOCAL_SEVEN_ID_V2_VALIDATION",
+    "REGISTRY_DURABILITY_V2_FIXTURES",
+    "SHARE_SANITIZE_RETENTION",
+    "BETHESDA_WATERSTONE_REGRESSION_PROBE"
+  ],
+  "localV2Validation": {
+    "sevenSnapshotsOk": true,
+    "hangersOk": true,
+    "classOk": true,
+    "salesReady": 1,
+    "accountDevelopment": 6
+  },
+  "gitleaks": {
+    "classification": "false_positive_staged_publication_artifact_id",
+    "rotationRequired": false,
+    "allowlistPrepared": true,
+    "ciGreen": true,
+    "runId": "42084574545"
+  },
+  "prHead": "28893cf80a835cf75727f449b3fba5c278abc035",
+  "noProductionWritesPerformed": true,
+  "note": "DEPLOYMENT_SOURCE_PARITY remains false until main merge + Railway deploy of this SHA; expected pre-merge state."
+}

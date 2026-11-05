@@ -1,0 +1,52 @@
+{
+  "contract": "gdi-one-click-hotel-publish-v1",
+  "asOf": "2026-11-05",
+  "branch": "feat/gdi-spice-published-inventory-registry-v1",
+  "headAtImplementation": "cc62f2437",
+  "pr136": {
+    "url": "https://github.com/joandejarden-create/my-operators-backend/pull/136",
+    "state": "OPEN",
+    "mergeable": "MERGEABLE",
+    "gitleaks": "SUCCESS",
+    "mergeAuthorized": false
+  },
+  "simplified": [
+    "One atomic hotel publish: local display-eligible set → full-content freeze → registry batch → pointer advance → verify",
+    "Published snapshots stamp publishedPresentationLocked; share/auth skip live commercial-quality recomputation",
+    "Single local opportunity list is the publish candidate (no Customer/Research toggle)",
+    "Presentation-only UI changes ship via app deploy; inventory republish not required for styling"
+  ],
+  "duplicatePathwaysRemoved": [
+    "Manual per-opportunity volume migrations for normal hotel publishes",
+    "Independent share recomputation of classification / actions / narratives for locked published rows",
+    "Lean snapshot publication path (content gate fails closed)",
+    "Separate Customer Opportunities vs Research Inventory publish surfaces"
+  ],
+  "oneClickEndToEnd": {
+    "localPipeline": "PASS",
+    "apiRoute": "POST /api/group-demand-intelligence/hotels/:hotelId/publish (dryRun default true)",
+    "uiButton": "Publish in local GDI property bar (dry-run → confirm → apply)",
+    "isolatedApplyVerify": "PASS (Spice seven)",
+    "productionLivePublish": "NOT_EXECUTED — founder GO required"
+  },
+  "spiceIslandProductionReadiness": {
+    "approvedSet": "seven enriched V2 IDs",
+    "classCounts": { "SALES_READY": 1, "ACCOUNT_DEVELOPMENT": 6 },
+    "aventaExcluded": true,
+    "shareTokenPreserve": true,
+    "publicationHistoryPreserve": true,
+    "isolatedDryRun": "PASS",
+    "productionRepair": "READY_PENDING_FOUNDER_GO",
+    "blockers": [
+      "PR #136 must merge (or Railway deploy source pinned to this branch) before live volume write",
+      "Explicit founder GO for production one-click apply on Spice only"
+    ]
+  },
+  "otherHotelsProtected": true,
+  "remainingGenuineBlockers": [
+    "Production deploy source: PR #136 still open — GitHub main auto-deploy can serve a build without this architecture until merge/pin",
+    "Production Spice volume still lean until founder-authorized one-click apply after deploy",
+    "Uncommitted working-tree noise on this branch — ship only the one-click / registry / publish UI+API files"
+  ],
+  "stopGate": "NO_PRODUCTION_DEPLOY_OR_PUBLICATION_WITHOUT_EXPLICIT_FOUNDER_GO"
+}

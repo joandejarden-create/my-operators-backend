@@ -311,6 +311,7 @@ import {
   getGdiShareValidation,
   postGdiIssueShare,
   postGdiRevokeShare,
+  postGdiPublishHotelInventory,
 } from "./api/group-demand-intelligence.js";
 import {
   getGdiPursuitEnums,
@@ -1083,6 +1084,13 @@ app.post(
   memberstackAuth,
   requireDealalityUser,
   postGdiCustomerValidation
+);
+app.post(
+  "/api/group-demand-intelligence/hotels/:hotelId/publish",
+  memberstackAuth,
+  requireDealalityUser,
+  requireAdminAccess,
+  postGdiPublishHotelInventory
 );
 // GDI Pursuit workflow (separate from Ready/Watch gates)
 app.get(

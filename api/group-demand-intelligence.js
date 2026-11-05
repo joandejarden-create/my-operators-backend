@@ -2,6 +2,29 @@
  * Group Demand Intelligence API — standalone; does not alter ADP.
  */
 
+import { listDiscoveryCandidates } from "../lib/group-demand-intelligence/research/discovery-to-decision/discovery-candidate-ledger-v1.js";
+import {
+  aggregateResearchFunnel,
+  funnelReconciles,
+} from "../lib/group-demand-intelligence/research/discovery-to-decision/research-funnel-aggregate-v1.js";
+import { whyIsntThisShowing } from "../lib/group-demand-intelligence/research/discovery-to-decision/why-isnt-this-showing-v1.js";
+import { applyApprovedBethesdaCustomerProjection } from "../lib/group-demand-intelligence/workflow/gdi-bethesda-publication-v1.js";
+import {
+  RESEARCH_PREVIEW_DISCLAIMER,
+  RESEARCH_PREVIEW_SCOPE,
+  RESEARCH_PREVIEW_TITLE,
+  isResearchPreviewClaim,
+  researchPreviewForClaim,
+  researchPreviewManifestForHotel,
+} from "../lib/group-demand-intelligence/research-preview-v1.js";
+import {
+  assertFounderCanarySession,
+  loadTrustedConsumedFounderIdentity,
+  requestFounderApproval,
+} from "../lib/group-demand-intelligence/workflow/gdi-founder-approval-v1.js";
+import path from "node:path";
+import { createHash } from "node:crypto";
+import { fileURLToPath } from "node:url";
 import {
   formatPropertyLocationLine,
   formatPropertySelectorLabel,
@@ -44,7 +67,6 @@ import {
   issueGdiShareCapability,
   revokeGdiShareCapability,
   applyCanonicalOverlaysToOpportunities,
-  resolveCanonicalOverlayForOpportunity,
   loadShareValidation,
   saveShareValidationItem,
   getShareValidationForOpportunity,
@@ -74,6 +96,12 @@ import {
   getGdiOpportunityPersistenceMode,
 } from "../lib/group-demand-intelligence/opportunity-persistence.js";
 import { sanitizeOpportunityForCustomerPresentation } from "../lib/group-demand-intelligence/customer-presentation-sanitize-v1.js";
+import { prepareCustomerFacingOpportunity } from "../lib/group-demand-intelligence/share/gdi-customer-facing-opportunity-contract-v1.js";
+import {
+  mapOpportunitiesToPresentationDtos,
+  projectOpportunityForPresentation,
+} from "../lib/group-demand-intelligence/presentation/gdi-universal-presentation-pipeline-v1.js";
+import { GDI_PRESENTATION_SURFACES } from "../lib/group-demand-intelligence/contracts/gdi-presentation-contract-v1.js";
 import {
   getCachedOpportunityDoc,
   invalidateGdiHotelReadCache,
@@ -86,6 +114,10 @@ import {
 import { enrichPrivateEventOpportunityDetail } from "../lib/group-demand-intelligence/private-events/customer-detail-enrichment.js";
 import { buildHotelActivityHistory } from "../lib/group-demand-intelligence/hotel-activity-history-v1.js";
 import { opportunityMatchesTypeFilter } from "../lib/group-demand-intelligence/opportunity-type-filter-v1.js";
+import {
+  buildShareOpportunityDetailDto,
+  buildShareOpportunityListDto,
+} from "../lib/group-demand-intelligence/share/share-customer-presentation-parity-v1.js";
 
 function enrichSummaryWithHotelActivity(hotelId, summary, opportunityDoc) {
   const opportunities = opportunityDoc?.opportunities || [];
@@ -148,6 +180,32 @@ async function loadOppDoc(hotelId) {
       gdiReadTimeoutMs(),
       "gdi_load_opportunities"
     );
+    let opportunities = doc?.opportunities || [];
+    // Durable published inventory registry only — no Waterstone/local-shadow merges.
+    try {
+      const { isGdiPublishedInventoryRegistryEnabledForHotel } = await import(
+        "../lib/group-demand-intelligence/durable-publication/resolve-gdi-published-registry-root-v1.js"
+      );
+      if (isGdiPublishedInventoryRegistryEnabledForHotel(hotelId)) {
+        const { mergePublishedInventoryIntoOpportunities } = await import(
+          "../lib/group-demand-intelligence/durable-publication/gdi-published-inventory-registry-v1.js"
+        );
+        opportunities = mergePublishedInventoryIntoOpportunities(
+          hotelId,
+          opportunities,
+          { strictPublishedOnly: true }
+        );
+      }
+    } catch (pubErr) {
+      console.error(
+        "[gdi] published inventory registry merge failed",
+        pubErr?.message || pubErr
+      );
+    }
+    const merged = {
+      ...doc,
+      opportunities,
+    };
     const ms = Date.now() - t0;
     if (ms >= 1000 || process.env.GDI_PERF_LOG === "1") {
       console.info(
@@ -157,11 +215,13 @@ async function loadOppDoc(hotelId) {
           hotelId,
           durationMs: ms,
           cacheHit: doc?.cacheHit === true,
-          recordCount: Array.isArray(doc?.opportunities) ? doc.opportunities.length : 0,
+          recordCount: Array.isArray(merged?.opportunities)
+            ? merged.opportunities.length
+            : 0,
         })
       );
     }
-    return doc;
+    return merged;
   } catch (err) {
     if (err?.code === "UPSTREAM_TIMEOUT") {
       console.error(
@@ -192,45 +252,13 @@ async function loadOppDoc(hotelId) {
  */
 async function loadOpportunityForDetail(hotelId, opportunityId) {
   const t0 = Date.now();
-  const cached = getCachedOpportunityDoc(hotelId);
-  if (cached) {
-    const found = (cached.opportunities || []).find((o) => o.id === opportunityId);
-    if (found) {
-      return {
-        opportunity: found,
-        source: "cache",
-        durationMs: Date.now() - t0,
-      };
-    }
-  }
-  const persistenceMode = getGdiOpportunityPersistenceMode();
-  // Cache miss: single-record Airtable only when Airtable is the active persistence mode
-  if (persistenceMode === "airtable") {
-    try {
-      const {
-        loadOpportunity,
-        isGdiOpportunityAirtableConfigured,
-      } = await import("../lib/group-demand-intelligence/airtable-opportunity-store.js");
-      if (isGdiOpportunityAirtableConfigured()) {
-        const one = await loadOpportunity(hotelId, opportunityId);
-        if (one) {
-          return {
-            opportunity: one,
-            source: "airtable_single",
-            durationMs: Date.now() - t0,
-          };
-        }
-      }
-    } catch (err) {
-      if (err?.code === "hotel_boundary_violation") throw err;
-      // fall through to full doc
-    }
-  }
+  // Always use loadOppDoc so local shadow merge + founder reviews apply.
+  // (Cached canonical docs alone omit shadow association rows / tier overlays.)
   const doc = await loadOppDoc(hotelId);
   const opportunity = (doc.opportunities || []).find((o) => o.id === opportunityId);
   return {
     opportunity: opportunity || null,
-    source: "full_doc",
+    source: doc?.cacheHit ? "cache_with_shadow" : "full_doc",
     durationMs: Date.now() - t0,
   };
 }
@@ -243,8 +271,20 @@ function asOfToday() {
 function projectOpportunitiesCommercialQuality(opportunities, { nowDate } = {}) {
   const related = buildRelatedOpportunityGroups(opportunities || []);
   return (opportunities || []).map((o) => {
-    const cq = applyLiveCommercialQuality(o, { nowDate: nowDate || asOfToday() });
     const relatedIds = related[o.id] || [];
+    // Published snapshots are authoritative. Hydrate/stamp only — never rebuild
+    // titles, classifications, or drawer commercial copy via live sanitize.
+    if (
+      o?.publishedPresentationLocked === true ||
+      o?.gdiPublishedInventoryRegistry === true
+    ) {
+      return prepareCustomerFacingOpportunity({
+        ...o,
+        relatedOpportunityIds: relatedIds,
+        relatedOpportunityCount: relatedIds.length,
+      });
+    }
+    const cq = applyLiveCommercialQuality(o, { nowDate: nowDate || asOfToday() });
     // Never leak discovery vertical slugs into customer segment
     let segment = cq.segment;
     if (
@@ -267,15 +307,6 @@ function projectOpportunitiesCommercialQuality(opportunities, { nowDate } = {}) 
       relatedOpportunityCount: relatedIds.length,
     });
   });
-}
-
-function shareSanitizeWithCanonical(hotelId, opportunity) {
-  const { opportunity: overlaid } = resolveCanonicalOverlayForOpportunity(
-    hotelId,
-    opportunity
-  );
-  const [projected] = projectOpportunitiesCommercialQuality([overlaid]);
-  return sanitizeOpportunityForShare(projected);
 }
 
 async function attachCommercialProgression(hotelId, opportunities) {
@@ -624,7 +655,11 @@ export async function getGdiOpportunities(req, res) {
     // Sanitizer may fill summaryWhat from summaryWhyMatters/thesis, which
     // incorrectly satisfies travel_or_recurring_evidence and widens the list.
     let opportunities = doc.opportunities || [];
-    if (!includeDisqualified) {
+    const { isInventoryVisibilityHotelEnabled } = await import(
+      "../lib/group-demand-intelligence/inventory-visibility-v1.js"
+    );
+    // Inventory visibility (Waterstone): keep DISQUALIFIED for Excluded/history lanes.
+    if (!includeDisqualified && !isInventoryVisibilityHotelEnabled(hotelId)) {
       opportunities = filterSalespersonView(opportunities);
     }
     const visibilityOpts = { hotelId };
@@ -632,7 +667,25 @@ export async function getGdiOpportunities(req, res) {
       opportunities,
       visibilityOpts
     );
+    opportunities = applyApprovedBethesdaCustomerProjection(opportunities);
     opportunities = projectOpportunitiesCommercialQuality(opportunities);
+    // Hotel-scoped Need-Date tile icons — one period load per request (no N+1).
+    try {
+      const { attachHotelNeedDateTilePreviews } = await import(
+        "../lib/group-demand-intelligence/need-date-demand/opportunity-need-date-tile-preview-v1.js"
+      );
+      const hotels = listRegisteredHotels();
+      const hotelMeta =
+        hotels.find((h) => h.hotelId === hotelId) || { hotelId, name: hotelId };
+      opportunities = await attachHotelNeedDateTilePreviews(hotelId, opportunities, {
+        hotelName: hotelMeta.name || hotelMeta.hotelName || null,
+      });
+    } catch (needDateTileErr) {
+      console.error(
+        "[gdi] need-date tile preview attach failed",
+        needDateTileErr?.message || needDateTileErr,
+      );
+    }
 
     // CSV via ?format=csv (compat path; dedicated /export.csv also exists)
     if (format === "csv") {
@@ -644,7 +697,11 @@ export async function getGdiOpportunities(req, res) {
     }
 
     if (!wantFull) {
-      opportunities = mapOpportunitiesToListDto(opportunities);
+      // Single universal list projection (same prepare → DTO path as share).
+      opportunities = mapOpportunitiesToPresentationDtos(opportunities, {
+        hotelId,
+        surface: GDI_PRESENTATION_SURFACES.LOCAL_AUTH,
+      });
     }
     opportunities = await attachCommercialProgression(hotelId, opportunities);
     // Overlay pursuit workflow (sales status — independent of Ready/Watch)
@@ -670,6 +727,8 @@ export async function getGdiOpportunities(req, res) {
       /* pursuit overlay optional */
     }
     res.setHeader("X-GDI-Opportunity-View", wantFull ? "full" : "list");
+    res.setHeader("X-GDI-List-Scope", "CUSTOMER_FACING");
+    res.setHeader("X-GDI-Already-Filtered", "1");
     const reviewedInStore = (doc.opportunities || []).filter(
       (o) =>
         String(o?.prospectPublicationBasis || "") ===
@@ -725,7 +784,34 @@ export async function getGdiOpportunityDetail(req, res) {
     }
     const projected = projectOpportunitiesCommercialQuality([loaded.opportunity]);
     let opportunity = projected[0];
-    if (isGdiTestOrFixtureOpportunity(opportunity)) {
+    try {
+      const { attachHotelNeedDateTilePreviews } = await import(
+        "../lib/group-demand-intelligence/need-date-demand/opportunity-need-date-tile-preview-v1.js"
+      );
+      const hotels = listRegisteredHotels();
+      const hotelMeta =
+        hotels.find((h) => h.hotelId === hotelId) || { hotelId, name: hotelId };
+      opportunity = (
+        await attachHotelNeedDateTilePreviews(hotelId, [opportunity], {
+          hotelName: hotelMeta.name || hotelMeta.hotelName || null,
+        })
+      )[0];
+    } catch (needDateTileErr) {
+      console.error(
+        "[gdi] need-date tile preview detail attach failed",
+        needDateTileErr?.message || needDateTileErr,
+      );
+    }
+    // Local-only certification fixtures may open in founder GDI UI for subtype
+    // drawer FullE2E — never share/production (doesNotAffectProduction + localDev).
+    const allowLocalCertFixture =
+      opportunity?.certificationFixtureOnly === true &&
+      opportunity?.doesNotAffectProduction === true &&
+      (opportunity?.localShadowOnly === true ||
+        opportunity?.localShadowPortfolio === true) &&
+      process.env.NODE_ENV !== "production" &&
+      String(process.env.GDI_BLOCK_LOCAL_CERT_FIXTURE_DETAIL || "").trim() !== "1";
+    if (isGdiTestOrFixtureOpportunity(opportunity) && !allowLocalCertFixture) {
       return res.status(404).json({ ok: false, error: "opportunity_not_found" });
     }
     try {
@@ -789,8 +875,13 @@ export async function getGdiOpportunityDetail(req, res) {
       hotelId,
       opportunityId
     );
+    const authProjected = projectOpportunityForPresentation(opportunity, {
+      hotelId,
+      surface: GDI_PRESENTATION_SURFACES.LOCAL_AUTH,
+      view: "detail",
+    });
     const opportunityPayload = {
-      ...opportunity,
+      ...authProjected.dto,
       ...(commercialProgression ? { commercialProgression } : {}),
       ...(shareValidation
         ? {
@@ -807,6 +898,7 @@ export async function getGdiOpportunityDetail(req, res) {
         : {}),
     };
     res.setHeader("X-GDI-Detail-Source", loaded.source);
+    res.setHeader("X-GDI-Universal-Presentation", "v1");
     return res.json({
       ok: true,
       opportunity: opportunityPayload,
@@ -834,7 +926,9 @@ export async function getGdiOpportunitiesExport(req, res) {
   if (!includeDisqualified) {
     opportunities = filterSalespersonView(opportunities);
   }
-  opportunities = filterCustomerFacingOpportunities(opportunities, { hotelId });
+  opportunities = applyApprovedBethesdaCustomerProjection(
+    filterCustomerFacingOpportunities(opportunities, { hotelId })
+  );
   opportunities = projectOpportunitiesCommercialQuality(opportunities);
   opportunities = filterOpportunitiesForExport(opportunities, req.query);
   opportunities = await attachCommercialProgression(hotelId, opportunities);
@@ -852,7 +946,9 @@ export async function getGdiWeeklyBrief(req, res) {
   const hotelId = String(req.params.hotelId || "").trim();
   const doc = await loadOppDoc(hotelId);
   const brief = buildWeeklyBrief(
-    filterCustomerFacingOpportunities(doc.opportunities || [], { hotelId })
+    applyApprovedBethesdaCustomerProjection(
+      filterCustomerFacingOpportunities(doc.opportunities || [], { hotelId })
+    )
   );
   const bySubject = await loadGdiCommercialProgressionBySubject(hotelId);
   const attachItems = (items) =>
@@ -892,6 +988,135 @@ export function getGdiResearchRun(req, res) {
     return res.status(404).json({ ok: false, error: "run_not_found" });
   }
   return res.json({ ok: true, run });
+}
+
+/**
+ * Internal Research Audit — discovery funnel (V37).
+ * Never expose via share capability routes.
+ */
+export function getGdiResearchFunnel(req, res) {
+  if (!flagGate(req, res)) return;
+  const hotelId = String(req.params.hotelId || "").trim();
+  const campaignId =
+    String(req.query.campaignId || "").trim() ||
+    "four-hotel-14-workflow-full-e2e-v1";
+  try {
+    const { candidates, document } = listDiscoveryCandidates(hotelId, {
+      campaignId,
+      workflowId: req.query.workflowId || undefined,
+      researchStatus: req.query.status || undefined,
+      dispositionCode: req.query.dispositionReason || undefined,
+      organization: req.query.organization || undefined,
+      language: req.query.language || undefined,
+      from: req.query.from || undefined,
+      to: req.query.to || undefined,
+      q: req.query.q || undefined,
+    });
+    const funnel = aggregateResearchFunnel(candidates);
+    return res.json({
+      ok: true,
+      hotelId,
+      campaignId,
+      internalOnly: true,
+      documentMeta: {
+        hotelName: document.hotelName || null,
+        candidateCount: document.candidateCount || candidates.length,
+        generatedAt: document.generatedAt || null,
+      },
+      funnel,
+      reconcile: funnelReconciles(funnel),
+    });
+  } catch (err) {
+    return res.status(500).json({
+      ok: false,
+      error: "research_funnel_failed",
+      message: String(err?.message || err),
+    });
+  }
+}
+
+export function getGdiDiscoveryCandidates(req, res) {
+  if (!flagGate(req, res)) return;
+  const hotelId = String(req.params.hotelId || "").trim();
+  const campaignId =
+    String(req.query.campaignId || "").trim() ||
+    "four-hotel-14-workflow-full-e2e-v1";
+  const limit = Math.min(500, Math.max(1, Number(req.query.limit) || 100));
+  try {
+    const { candidates, document } = listDiscoveryCandidates(hotelId, {
+      campaignId,
+      workflowId: req.query.workflowId || undefined,
+      researchStatus: req.query.status || undefined,
+      dispositionCode: req.query.dispositionReason || undefined,
+      organization: req.query.organization || undefined,
+      language: req.query.language || undefined,
+      from: req.query.from || undefined,
+      to: req.query.to || undefined,
+      q: req.query.q || undefined,
+    });
+    // Sanitize: never return raw provider envelopes / prompts
+    const rows = candidates.slice(0, limit).map((c) => ({
+      discoveryId: c.discoveryId,
+      hotelId: c.hotelId,
+      workflowId: c.workflowId,
+      powershell: c.powershell,
+      organizationName: c.organizationName,
+      programmeName: c.programmeName,
+      opportunityId: c.opportunityId,
+      researchStatus: c.researchStatus,
+      disposition: c.disposition,
+      originalSourceUrls: c.originalSourceUrls,
+      exaRunId: c.exaRunId,
+      queryTimestamp: c.queryTimestamp,
+      deepArtifactPath: c.deepArtifactPath || null,
+      staged: Boolean(c.staged),
+      customerFacing: Boolean(c.customerFacing),
+      awaitingFounderPromotion: Boolean(c.awaitingFounderPromotion),
+      researchCostUsd:
+        (Number(c.researchCostUsd) || 0) + (Number(c.deepResearchCostUsd) || 0),
+      provenance: {
+        available: c.provenance?.available !== false,
+        gaps: c.provenance?.gaps || [],
+        artifactPath: c.provenance?.artifactPath || null,
+        rawProviderEnvelopePersisted: false,
+      },
+    }));
+    return res.json({
+      ok: true,
+      hotelId,
+      campaignId,
+      internalOnly: true,
+      total: candidates.length,
+      returned: rows.length,
+      candidates: rows,
+      generatedAt: document.generatedAt || null,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      ok: false,
+      error: "discovery_candidates_failed",
+      message: String(err?.message || err),
+    });
+  }
+}
+
+export function getGdiWhyIsntThisShowing(req, res) {
+  if (!flagGate(req, res)) return;
+  const hotelId = String(req.params.hotelId || "").trim();
+  const q = String(req.query.q || "").trim();
+  const campaignId =
+    String(req.query.campaignId || "").trim() ||
+    "four-hotel-14-workflow-full-e2e-v1";
+  try {
+    const result = whyIsntThisShowing({ hotelId, q, campaignId });
+    return res.json({ ...result, internalOnly: true });
+  } catch (err) {
+    return res.status(500).json({
+      ok: false,
+      error: "why_isnt_this_showing_failed",
+      message: String(err?.message || err),
+    });
+  }
 }
 
 export async function postGdiRunResearch(req, res) {
@@ -1084,51 +1309,458 @@ export async function postGdiCustomerValidation(req, res) {
   }
   try {
     const body = req.body || {};
-    const { item } = saveShareValidationItem(hotelId, {
-      opportunityId,
-      validator:
-        body.validator ||
-        req.dealalityUser?.email ||
-        req.dealalityUser?.id ||
-        "AUTH_REVIEWER",
-      familiarityStatus: body.familiarityStatus || null,
-      commercialValue: body.commercialValue || null,
-      contactPersonAssessment: body.contactPersonAssessment || null,
-      emailAssessment: body.emailAssessment || null,
-      phoneAssessment: body.phoneAssessment || null,
-      note: body.note || "",
-    });
+    const founderDecision = String(
+      body.founderReviewDecision || body.dosGrade || ""
+    ).trim();
+    const hasHotelValidation = Boolean(
+      body.familiarityStatus ||
+        body.commercialValue ||
+        body.contactPersonAssessment ||
+        body.emailAssessment ||
+        body.phoneAssessment
+    );
 
-    await ingestGdiShareValidation({
-      hotelId,
-      opportunityId,
-      opportunity,
-      validation: item,
-      actor: {
-        userId: req.dealalityUser?.email || req.dealalityUser?.id || "AUTH_REVIEWER",
-        role: req.dealalityUser?.role || "OTHER",
-      },
-    });
+    // Local shadow founder DOS review is not included in the production release package.
+    let founderReview = null;
+    if (founderDecision) {
+      /* intentionally no-op in production packaging */
+    }
+
+    let item = null;
+    if (hasHotelValidation) {
+      const saved = saveShareValidationItem(hotelId, {
+        opportunityId,
+        validator:
+          body.validator ||
+          req.dealalityUser?.email ||
+          req.dealalityUser?.id ||
+          "AUTH_REVIEWER",
+        familiarityStatus: body.familiarityStatus || null,
+        commercialValue: body.commercialValue || null,
+        contactPersonAssessment: body.contactPersonAssessment || null,
+        emailAssessment: body.emailAssessment || null,
+        phoneAssessment: body.phoneAssessment || null,
+        note: body.note || "",
+      });
+      item = saved.item;
+      await ingestGdiShareValidation({
+        hotelId,
+        opportunityId,
+        opportunity,
+        validation: item,
+        actor: {
+          userId: req.dealalityUser?.email || req.dealalityUser?.id || "AUTH_REVIEWER",
+          role: req.dealalityUser?.role || "OTHER",
+        },
+      });
+    } else if (!founderReview) {
+      return res.status(400).json({
+        ok: false,
+        error: "validation_or_founder_review_required",
+      });
+    }
 
     return res.json({
       ok: true,
-      validation: {
-        familiarityStatus: item.familiarityStatus,
-        commercialValue: item.commercialValue,
-        contactPersonAssessment: item.contactPersonAssessment,
-        emailAssessment: item.emailAssessment,
-        phoneAssessment: item.phoneAssessment,
-        note: item.note || "",
-        validatedAt: item.validatedAt,
-      },
+      validation: item
+        ? {
+            familiarityStatus: item.familiarityStatus,
+            commercialValue: item.commercialValue,
+            contactPersonAssessment: item.contactPersonAssessment,
+            emailAssessment: item.emailAssessment,
+            phoneAssessment: item.phoneAssessment,
+            note: item.note || "",
+            validatedAt: item.validatedAt,
+          }
+        : null,
+      ...(founderReview ? { founderReview } : {}),
     });
   } catch (err) {
     if (err.code === "invalid_share_validation") {
       return res.status(400).json({ ok: false, error: err.code, errors: err.errors });
     }
+    if (err.code === "invalid_founder_review") {
+      return res.status(400).json({
+        ok: false,
+        error: err.code,
+        message: err.message,
+        allowed: err.allowed || null,
+      });
+    }
     console.error("[gdi] auth customer validation failed", err);
     return res.status(500).json({ ok: false, error: "customer_validation_failed" });
   }
+}
+
+/**
+ * User-initiated contact email/phone reveal (ephemeral).
+ * Never persists Surfe/provider PII. Live provider requires body.authorizeLiveProvider=true
+ * AND an injected/live adapter (default returns LIVE_PROVIDER_NOT_AUTHORIZED / NOT_WIRED).
+ *
+ * POST .../opportunities/:opportunityId/contacts/reveal
+ * body: { channel: 'email'|'phone'|'both', contactName?, authorizeLiveProvider?, useMock?: boolean }
+ */
+export async function postGdiContactReveal(req, res) {
+  if (!flagGate(req, res)) return;
+  const hotelId = String(req.params.hotelId || "").trim();
+  const opportunityId = String(req.params.opportunityId || "").trim();
+  const body = req.body || {};
+  const channel = String(body.channel || "both").toLowerCase();
+
+  let doc;
+  try {
+    doc = await loadOppDoc(hotelId);
+  } catch (err) {
+    return res.status(500).json({ ok: false, error: "load_failed" });
+  }
+  const opportunity = (doc.opportunities || []).find(
+    (o) =>
+      o.id === opportunityId ||
+      o.opportunityId === opportunityId ||
+      String(o.opportunityId || "") === opportunityId,
+  );
+  if (!opportunity) {
+    return res.status(404).json({ ok: false, error: "opportunity_not_found" });
+  }
+
+  const { revealGdiContactOnDemand, createMockGdiContactRevealProvider } =
+    await import(
+      "../lib/group-demand-intelligence/gdi-contact-on-demand-reveal-v1.js"
+    );
+  const { createGdiSurfeContactRevealProvider } = await import(
+    "../lib/group-demand-intelligence/gdi-surfe-contact-provider-v1.js"
+  );
+
+  const contactName =
+    String(body.contactName || "").trim() ||
+    opportunity.primaryContact?.name ||
+    opportunity.contactName ||
+    null;
+
+  // Resolve selected person from primary/secondary/buyerCandidates so Surfe uses the clicked card.
+  const secondary = opportunity.secondaryContact || null;
+  const primary = opportunity.primaryContact || null;
+  const buyers = [
+    ...(opportunity.buyerCandidates || []),
+    ...(opportunity.contactPackage?.buyerCandidates || []),
+  ];
+  const buyerMatch = contactName
+    ? buyers.find(
+        (b) =>
+          String(b.fullName || b.name || "")
+            .trim()
+            .toLowerCase() === contactName.toLowerCase(),
+      )
+    : null;
+  const selectedContact =
+    (secondary &&
+      contactName &&
+      String(secondary.name || "").trim().toLowerCase() ===
+        contactName.toLowerCase() &&
+      secondary) ||
+    (primary &&
+      contactName &&
+      String(primary.name || "").trim().toLowerCase() ===
+        contactName.toLowerCase() &&
+      primary) ||
+    (buyerMatch
+      ? {
+          name: buyerMatch.fullName || buyerMatch.name,
+          role: buyerMatch.role || buyerMatch.title,
+          title: buyerMatch.title || buyerMatch.role,
+          linkedinUrl: buyerMatch.sourceUrl || buyerMatch.linkedinUrl || null,
+          profileUrl: buyerMatch.sourceUrl || buyerMatch.linkedinUrl || null,
+          sourceUrl: buyerMatch.sourceUrl || null,
+        }
+      : null) ||
+    (primary &&
+      (!contactName ||
+        String(primary.name || "").trim().toLowerCase() ===
+          contactName.toLowerCase()) &&
+      primary) ||
+    primary ||
+    secondary ||
+    null;
+
+  const useMock = body.useMock === true || process.env.GDI_CONTACT_REVEAL_MOCK === "1";
+  // Authenticated click (memberstackAuth + requireDealalityUser already ran) +
+  // explicit authorizeLiveProvider from the user-initiated button.
+  const authorizeLive =
+    body.authorizeLiveProvider === true &&
+    Boolean(req.dealalityUser || req.memberstackMemberId);
+
+  const {
+    contactRevealIdentityKey,
+    preflightSurfeCredits,
+    beginSurfeInFlight,
+    endSurfeInFlight,
+    appendSurfeLiveAccounting,
+  } = await import(
+    "../lib/group-demand-intelligence/gdi-surfe-live-gate-v1.js"
+  );
+
+  const resolvedName = contactName || selectedContact?.name || null;
+  const identityKey = contactRevealIdentityKey({
+    hotelId,
+    opportunityId,
+    contactName: resolvedName,
+    channel,
+  });
+
+  let creditsBefore = null;
+  let provider = null;
+  if (useMock) {
+    provider = createMockGdiContactRevealProvider(String(body.mockScenario || "hit"));
+  } else if (authorizeLive) {
+    const pre = await preflightSurfeCredits(channel);
+    if (!pre.ok) {
+      return res.status(pre.error === "INSUFFICIENT_CREDITS" ? 402 : 503).json({
+        ok: false,
+        ephemeral: true,
+        persisted: false,
+        surfePiiPersisted: false,
+        error: pre.error,
+        message: pre.message,
+        contactDetails: null,
+        credits: pre.credits,
+        hotelId,
+        opportunityId,
+      });
+    }
+    creditsBefore = pre.credits;
+    const flight = beginSurfeInFlight(identityKey);
+    if (!flight.ok) {
+      return res.status(409).json({
+        ok: false,
+        ephemeral: true,
+        persisted: false,
+        surfePiiPersisted: false,
+        error: flight.error,
+        message: flight.message,
+        contactDetails: null,
+        hotelId,
+        opportunityId,
+      });
+    }
+    provider = createGdiSurfeContactRevealProvider({
+      pollOnEnrich: true,
+      maxPollWaitMs: Number(process.env.GDI_SURFE_POLL_MS || 90000),
+    });
+  }
+
+  let result;
+  try {
+    result = await revealGdiContactOnDemand({
+      channel,
+      contact: {
+        name: resolvedName,
+        role:
+          selectedContact?.role ||
+          selectedContact?.title ||
+          opportunity.contactRole ||
+          null,
+        linkedinUrl:
+          selectedContact?.linkedinUrl ||
+          selectedContact?.profileUrl ||
+          selectedContact?.sourceUrl ||
+          null,
+        profileUrl:
+          selectedContact?.profileUrl ||
+          selectedContact?.linkedinUrl ||
+          selectedContact?.sourceUrl ||
+          null,
+      },
+      organization: {
+        name:
+          opportunity.displayCompanyName ||
+          opportunity.organizationName ||
+          opportunity.company ||
+          null,
+      },
+      provider,
+      authorizeLiveProvider: authorizeLive,
+    });
+  } finally {
+    if (authorizeLive && !useMock) endSurfeInFlight(identityKey);
+  }
+
+  let creditsAfter = null;
+  if (authorizeLive && !useMock) {
+    try {
+      const after = await preflightSurfeCredits(channel);
+      creditsAfter = after.credits;
+    } catch {
+      creditsAfter = null;
+    }
+    appendSurfeLiveAccounting({
+      hotelId,
+      opportunityId,
+      identityKey,
+      channel,
+      enrichmentId: result?.enrichmentId || null,
+      ok: result?.ok === true,
+      miss: result?.miss === true,
+      error: result?.error || null,
+      creditsBefore,
+      creditsAfter,
+      emailReturned: Boolean(result?.contactDetails?.email),
+      phoneReturned: Boolean(result?.contactDetails?.phone),
+    });
+  }
+
+  const status =
+    result.error === "NO_NAMED_CONTACT_SELECTED"
+      ? 400
+      : result.error === "LIVE_PROVIDER_NOT_AUTHORIZED" ||
+          result.error === "PROVIDER_ADAPTER_NOT_WIRED" ||
+          result.error === "CONTACT_ENRICHMENT_DISABLED"
+        ? 403
+        : result.error === "INSUFFICIENT_CREDITS"
+          ? 402
+          : result.ok
+            ? 200
+            : 502;
+
+  // Never echo Surfe PII into logs — only return in this response body for the active session.
+  return res.status(status).json({
+    ...result,
+    hotelId,
+    opportunityId,
+    contactName: resolvedName,
+    // Explicit contract: never claim persistence
+    persisted: false,
+    surfePiiPersisted: false,
+    creditsBefore: creditsBefore || undefined,
+    creditsAfter: creditsAfter || undefined,
+  });
+}
+
+
+/**
+ * One-click hotel publication (permanent architecture).
+ * Default dryRun=true. Apply requires explicit founder approval payload.
+ * Never mutates other hotels. Never rotates share tokens.
+ * Admin-only at the route layer (requireAdminAccess).
+ */
+export async function postGdiPublishHotelInventory(req, res) {
+  if (!flagGate(req, res)) return;
+  const hotelId = String(req.params.hotelId || "").trim();
+  try {
+    const body = req.body || {};
+    const dryRun = body.dryRun !== false; // safe default
+
+    // Local preview set (may be incomplete in production research docs).
+    const doc = await loadOppDoc(hotelId);
+    let localOpportunities = filterCustomerFacingOpportunities(
+      doc.opportunities || [],
+      { hotelId },
+    );
+    try {
+      // CANONICAL_DISPLAY: one opportunity list — display eligibility == publication candidate set.
+      const {
+        selectDisplayEligibleOpportunities,
+        GDI_CANONICAL_DISPLAY_ELIGIBILITY_CONTRACT_V1,
+      } = await import(
+        "../lib/group-demand-intelligence/commercial-inventory/gdi-canonical-display-eligibility-contract-v1.js"
+      );
+      void GDI_CANONICAL_DISPLAY_ELIGIBILITY_CONTRACT_V1;
+      localOpportunities = selectDisplayEligibleOpportunities(
+        hotelId,
+        localOpportunities,
+      ).opportunities;
+    } catch (eligErr) {
+      console.warn("[gdi] display eligibility unavailable for publish", eligErr?.message || eligErr);
+    }
+
+    const opportunityIds = Array.isArray(body.opportunityIds)
+      ? body.opportunityIds.map(String)
+      : null;
+
+    const {
+      resolveApprovedPublicationOpportunities,
+      assertApprovedEventTitlesPreserved,
+    } = await import(
+      "../lib/group-demand-intelligence/durable-publication/gdi-approved-publication-opportunity-source-v1.js"
+    );
+    const resolved = resolveApprovedPublicationOpportunities({
+      hotelId,
+      opportunities: localOpportunities,
+      opportunityIds: opportunityIds || undefined,
+    });
+    if (!resolved.ok) {
+      return res.status(422).json({
+        ok: false,
+        error: "APPROVED_PUBLICATION_SOURCE_INCOMPLETE",
+        hotelId,
+        missing: resolved.missing,
+        sources: resolved.sources,
+        packDir: resolved.packDir,
+      });
+    }
+    const titleGate = assertApprovedEventTitlesPreserved(resolved.opportunities);
+    if (!titleGate.ok) {
+      return res.status(422).json({
+        ok: false,
+        error: "APPROVED_EVENT_TITLE_MISMATCH",
+        fails: titleGate.fails,
+      });
+    }
+
+    const { publishHotelInventoryOneClick } = await import(
+      "../lib/group-demand-intelligence/durable-publication/gdi-one-click-hotel-publish-v1.js"
+    );
+
+    const approval =
+      body.approval && typeof body.approval === "object"
+        ? {
+            ...body.approval,
+            authorized: body.approval.authorized === true,
+            authorizedBy:
+              body.approval.authorizedBy ||
+              req.dealalityUser?.email ||
+              req.dealalityUser?.id ||
+              "founder",
+            authorizedAt: body.approval.authorizedAt || new Date().toISOString(),
+          }
+        : null;
+
+    const result = publishHotelInventoryOneClick({
+      hotelId,
+      opportunities: resolved.opportunities,
+      opportunityIds: opportunityIds || resolved.opportunityIds,
+      approval,
+      dryRun,
+      revokeMissingPublishedIds: body.revokeMissingPublishedIds === true,
+      sourceResearchReference: body.sourceResearchReference || null,
+    });
+
+    const status = result.ok ? 200 : dryRun ? 422 : 409;
+    return res.status(status).json({
+      ok: result.ok === true,
+      oneClickPublish: "gdi-one-click-hotel-publish-v1",
+      hotelId,
+      dryRun,
+      approvedSource: {
+        contract: resolved.contract,
+        sources: resolved.sources,
+        packDir: resolved.packDir,
+      },
+      result,
+    });
+  } catch (err) {
+    return sendGdiUpstreamError(res, err, "postGdiPublishHotelInventory");
+  }
+}
+
+/** Local-only founder review — disabled in production release packaging. */
+export async function postGdiFounderReview(req, res) {
+  if (!flagGate(req, res)) return;
+  return res.status(501).json({
+    ok: false,
+    error: "founder_review_not_in_production_release",
+    message:
+      "Local shadow founder review is not part of the GDI one-click production release.",
+  });
 }
 
 export function getGdiFeedback(req, res) {
@@ -1157,6 +1789,20 @@ function requireGdiShare(req, res, requiredSurface) {
   return verified;
 }
 
+function researchPreviewDocument(verified) {
+  return isResearchPreviewClaim(verified?.claims) ? researchPreviewForClaim(verified.claims) : null;
+}
+
+function rejectResearchPreviewWrite(verified, res) {
+  if (!isResearchPreviewClaim(verified?.claims)) return false;
+  res.status(403).json({
+    ok: false,
+    error: "RESEARCH_PREVIEW_READ_ONLY",
+    message: "A research preview is read-only and cannot record validation, actions, or outcomes.",
+  });
+  return true;
+}
+
 /** Public resolve — no Memberstack; token is the auth. */
 export async function getGdiShareResolve(req, res) {
   const token = extractGdiShareCapabilityFromRequest(req);
@@ -1172,7 +1818,43 @@ export async function getGdiShareResolve(req, res) {
     });
   }
   const hotelId = verified.claims.hotelId;
+  const preview = researchPreviewDocument(verified);
+  if (isResearchPreviewClaim(verified.claims)) {
+    if (!preview || preview.hotelId !== hotelId) {
+      return res.status(403).json({ ok: false, error: "RESEARCH_PREVIEW_SCOPE" });
+    }
+    const profile = loadHotelProfile(hotelId);
+    return res.json({
+      ok: true,
+      mode: "read_only",
+      accessScope: RESEARCH_PREVIEW_SCOPE,
+      researchPreview: true,
+      pageTitle: preview.title || RESEARCH_PREVIEW_TITLE,
+      disclaimer: preview.disclaimer || RESEARCH_PREVIEW_DISCLAIMER,
+      commerciallyReady: false,
+      customerReady: false,
+      publicationStatus: "not_published",
+      hotelId,
+      hotelName: profile?.identity?.hotelName || hotelId,
+      city: profile?.identity?.city || null,
+      state: profile?.identity?.state || null,
+      opportunityCount: preview.opportunities.length,
+      capabilities: verified.claims.capabilities || [],
+      canValidate: false,
+      canRecordAction: false,
+      canRecordOutcome: false,
+    });
+  }
   const profile = loadHotelProfile(hotelId);
+  let hotelConfig = null;
+  try {
+    const { loadHotelDemandConfig } = await import(
+      "../lib/group-demand-intelligence/hotel-profile.js"
+    );
+    hotelConfig = loadHotelDemandConfig(hotelId);
+  } catch {
+    hotelConfig = null;
+  }
   const oppDoc = await loadOppDoc(hotelId);
   const summary = enrichSummaryWithHotelActivity(
     hotelId,
@@ -1182,15 +1864,22 @@ export async function getGdiShareResolve(req, res) {
     }),
     oppDoc
   );
-  const active = filterCustomerFacingOpportunities(
-    filterSalespersonView(oppDoc.opportunities || []),
-    { hotelId }
+  const { isInventoryVisibilityHotelEnabled: invHotelShareSummary } =
+    await import("../lib/group-demand-intelligence/inventory-visibility-v1.js");
+  const shareSummaryBase = invHotelShareSummary(hotelId)
+    ? oppDoc.opportunities || []
+    : filterSalespersonView(oppDoc.opportunities || []);
+  const active = applyApprovedBethesdaCustomerProjection(
+    filterCustomerFacingOpportunities(shareSummaryBase, { hotelId })
   );
   const validationDoc = loadShareValidation(hotelId);
   const validationSummary = buildShareValidationSummary({
     opportunities: active,
     validationItems: validationDoc.items || [],
   });
+  // Prefer customer-facing inventory length over filesystem summary counts
+  // so Waterstone inventory mode does not show a stale ~11 KPI.
+  const inventoryFacingCount = active.length;
   return res.json({
     ok: true,
     mode: "read_only",
@@ -1202,8 +1891,11 @@ export async function getGdiShareResolve(req, res) {
     ),
     pilotLabel: "Pilot",
     hotelId,
-    hotelName: profile?.identity?.hotelName || "Hotel",
-    city: profile?.identity?.city || null,
+    hotelName:
+      profile?.identity?.hotelName ||
+      hotelConfig?.displayName ||
+      "Hotel",
+    city: profile?.identity?.city || hotelConfig?.city || null,
     state: profile?.identity?.state || null,
     surfaces: verified.claims.surfaces,
     summary: {
@@ -1213,10 +1905,12 @@ export async function getGdiShareResolve(req, res) {
       latestRunId: summary.latestRunId,
       lastReviewedPackageImportAt: summary.lastReviewedPackageImportAt,
       lastPublishedUpdateAt: summary.lastPublishedUpdateAt,
-      qualifiedCount: summary.qualifiedCount,
-      highPriorityCount: summary.highPriorityCount,
-      mediumPriorityCount: summary.mediumPriorityCount,
-      watchlistCount: summary.watchlistCount,
+      qualifiedCount: inventoryFacingCount,
+      highPriorityCount: active.filter((o) => o.priority === "HIGH_PRIORITY")
+        .length,
+      mediumPriorityCount: active.filter((o) => o.priority === "MEDIUM_PRIORITY")
+        .length,
+      watchlistCount: active.filter((o) => o.priority === "WATCHLIST").length,
       // hotel-confirmed validation KPIs only
       validated: validationSummary.validated,
       pendingValidation: validationSummary.pendingValidation,
@@ -1290,6 +1984,22 @@ export async function getGdiShareOpportunities(req, res) {
   if (hotelId !== verified.claims.hotelId) {
     return res.status(403).json({ ok: false, error: "SHARE_HOTEL_SCOPE" });
   }
+  const preview = researchPreviewDocument(verified);
+  if (isResearchPreviewClaim(verified.claims)) {
+    if (!preview) return res.status(403).json({ ok: false, error: "RESEARCH_PREVIEW_SCOPE" });
+    return res.json({
+      ok: true,
+      mode: "read_only",
+      accessScope: RESEARCH_PREVIEW_SCOPE,
+      researchPreview: true,
+      pageTitle: preview.title || RESEARCH_PREVIEW_TITLE,
+      disclaimer: preview.disclaimer || RESEARCH_PREVIEW_DISCLAIMER,
+      commerciallyReady: false,
+      customerReady: false,
+      count: preview.opportunities.length,
+      opportunities: preview.opportunities,
+    });
+  }
   const doc = await loadOppDoc(hotelId);
   const validationDoc = loadShareValidation(hotelId);
   const byVal = new Map((validationDoc.items || []).map((v) => [v.opportunityId, v]));
@@ -1301,15 +2011,42 @@ export async function getGdiShareOpportunities(req, res) {
     return getGdiShareOpportunitiesExport(req, res);
   }
 
-  const opportunities = filterCustomerFacingOpportunities(
-    filterSalespersonView(doc.opportunities || []),
-    { hotelId }
-  ).map((o) => {
-    const sanitized = shareSanitizeWithCanonical(hotelId, o);
+  const { isInventoryVisibilityHotelEnabled } = await import(
+    "../lib/group-demand-intelligence/inventory-visibility-v1.js"
+  );
+  let salesView = isInventoryVisibilityHotelEnabled(hotelId)
+    ? doc.opportunities || []
+    : filterSalespersonView(doc.opportunities || []);
+  let facing = applyApprovedBethesdaCustomerProjection(
+    filterCustomerFacingOpportunities(salesView, { hotelId })
+  );
+  try {
+    const { attachHotelNeedDateTilePreviews } = await import(
+      "../lib/group-demand-intelligence/need-date-demand/opportunity-need-date-tile-preview-v1.js"
+    );
+    const hotels = listRegisteredHotels();
+    const hotelMeta =
+      hotels.find((h) => h.hotelId === hotelId) || { hotelId, name: hotelId };
+    facing = await attachHotelNeedDateTilePreviews(hotelId, facing, {
+      hotelName: hotelMeta.name || hotelMeta.hotelName || null,
+    });
+  } catch (needDateTileErr) {
+    console.error(
+      "[gdi] share need-date tile preview attach failed",
+      needDateTileErr?.message || needDateTileErr,
+    );
+  }
+  // Same commercial projection as auth list — locked snaps stay frozen.
+  facing = projectOpportunitiesCommercialQuality(facing);
+  const opportunities = facing.map((o) => {
+    const projected = projectOpportunityForPresentation(o, {
+      hotelId,
+      surface: GDI_PRESENTATION_SURFACES.EXTERNAL_SHARE,
+      view: wantFull ? "detail" : "list",
+    });
     const v = byVal.get(o.id);
-    const base = wantFull ? sanitized : toOpportunityListDto(sanitized);
     return {
-      ...base,
+      ...projected.dto,
       shareValidation: v
         ? {
             familiarityStatus: v.familiarityStatus,
@@ -1328,6 +2065,7 @@ export async function getGdiShareOpportunities(req, res) {
     opportunities
   );
   res.setHeader("X-GDI-Opportunity-View", wantFull ? "full" : "list");
+  res.setHeader("X-GDI-Share-Presentation-Parity", "v1");
   return res.json({
     ok: true,
     mode: "read_only",
@@ -1361,11 +2099,18 @@ export async function getGdiShareOpportunitiesExport(req, res) {
   if (hotelId !== verified.claims.hotelId) {
     return res.status(403).json({ ok: false, error: "SHARE_HOTEL_SCOPE" });
   }
+  if (isResearchPreviewClaim(verified.claims)) {
+    return res.status(403).json({ ok: false, error: "RESEARCH_PREVIEW_READ_ONLY" });
+  }
   const doc = await loadOppDoc(hotelId);
+  const { isInventoryVisibilityHotelEnabled: invHotelShareExport } =
+    await import("../lib/group-demand-intelligence/inventory-visibility-v1.js");
+  const shareExportBase = invHotelShareExport(hotelId)
+    ? doc.opportunities || []
+    : filterSalespersonView(doc.opportunities || []);
   let opportunities = projectOpportunitiesCommercialQuality(
-    filterCustomerFacingOpportunities(
-      filterSalespersonView(doc.opportunities || []),
-      { hotelId }
+    applyApprovedBethesdaCustomerProjection(
+      filterCustomerFacingOpportunities(shareExportBase, { hotelId })
     )
   );
   opportunities = filterOpportunitiesForExport(opportunities, req.query);
@@ -1383,6 +2128,20 @@ export async function getGdiShareOpportunityDetail(req, res) {
   if (hotelId !== verified.claims.hotelId) {
     return res.status(403).json({ ok: false, error: "SHARE_HOTEL_SCOPE" });
   }
+  const preview = researchPreviewDocument(verified);
+  if (isResearchPreviewClaim(verified.claims)) {
+    const card = preview?.opportunities?.find((row) => row.id === opportunityId);
+    if (!card) return res.status(404).json({ ok: false, error: "opportunity_not_found" });
+    return res.json({
+      ok: true,
+      mode: "read_only",
+      researchPreview: true,
+      disclaimer: preview.disclaimer || RESEARCH_PREVIEW_DISCLAIMER,
+      commerciallyReady: false,
+      customerReady: false,
+      opportunity: card,
+    });
+  }
   const t0 = Date.now();
   const loaded = await loadOpportunityForDetail(hotelId, opportunityId);
   let opportunity = loaded.opportunity;
@@ -1399,7 +2158,27 @@ export async function getGdiShareOpportunityDetail(req, res) {
   } catch (peErr) {
     console.error("[gdi] share PE detail enrichment failed", peErr?.message || peErr);
   }
-  const sanitized = shareSanitizeWithCanonical(hotelId, opportunity);
+  // Prefer clean-28 merged row from loadOppDoc (same source as share list).
+  try {
+    const mergedDoc = await loadOppDoc(hotelId);
+    const fromMerged = (mergedDoc?.opportunities || []).find(
+      (row) => row?.id === opportunityId,
+    );
+    if (fromMerged) opportunity = fromMerged;
+  } catch (mergeReadErr) {
+    console.error(
+      "[gdi] share detail merge reload failed",
+      mergeReadErr?.message || mergeReadErr,
+    );
+  }
+  // Universal presentation pipeline — same object path as auth + share list.
+  const [projected] = projectOpportunitiesCommercialQuality([opportunity]);
+  const shareProjected = projectOpportunityForPresentation(projected, {
+    hotelId,
+    surface: GDI_PRESENTATION_SURFACES.EXTERNAL_SHARE,
+    view: "detail",
+  });
+  const shareDetail = shareProjected.dto;
   const validation = getShareValidationForOpportunity(hotelId, opportunityId);
   const bySubject = await loadGdiCommercialProgressionBySubject(hotelId);
   const commercialProgression = toCustomerCommercialProgressionDto(
@@ -1419,11 +2198,13 @@ export async function getGdiShareOpportunityDetail(req, res) {
     );
   }
   res.setHeader("X-GDI-Detail-Source", loaded.source);
+  res.setHeader("X-GDI-Share-Presentation-Parity", "v1");
+  res.setHeader("X-GDI-Universal-Presentation", "v1");
   return res.json({
     ok: true,
     mode: "read_only",
     opportunity: {
-      ...sanitized,
+      ...shareDetail,
       ...(commercialProgression ? { commercialProgression } : {}),
       shareValidation: validation
         ? {
@@ -1448,6 +2229,7 @@ export async function getGdiShareOpportunityDetail(req, res) {
 export async function postGdiShareValidation(req, res) {
   const verified = requireGdiShare(req, res, "opportunity_detail");
   if (!verified) return;
+  if (rejectResearchPreviewWrite(verified, res)) return;
   const caps = verified.capabilities || [];
   if (!caps.includes("CAN_VALIDATE")) {
     return res.status(403).json({
@@ -1586,6 +2368,7 @@ function requireShareCapability(verified, res, capability) {
 export async function postGdiShareAction(req, res) {
   const verified = requireGdiShare(req, res, "opportunity_detail");
   if (!verified) return;
+  if (rejectResearchPreviewWrite(verified, res)) return;
   if (!requireShareCapability(verified, res, "CAN_RECORD_ACTION")) return;
 
   const hotelId = String(req.params.hotelId || "").trim();
@@ -1652,6 +2435,7 @@ export async function postGdiShareAction(req, res) {
 export async function postGdiShareOutcome(req, res) {
   const verified = requireGdiShare(req, res, "opportunity_detail");
   if (!verified) return;
+  if (rejectResearchPreviewWrite(verified, res)) return;
   if (!requireShareCapability(verified, res, "CAN_RECORD_OUTCOME")) return;
 
   const hotelId = String(req.params.hotelId || "").trim();
@@ -1740,6 +2524,68 @@ export function postGdiIssueShare(req, res) {
       error: "issue_share_failed",
       message: err.message,
     });
+  }
+}
+
+const researchPreviewLedger = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "..",
+  "data/group-demand-intelligence/gdi-founder-approval-v1/approval-ledger-v1.json"
+);
+
+export async function postGdiIssueResearchPreview(req, res) {
+  const hotelId = String(req.params.hotelId || "").trim();
+  const manifest = researchPreviewManifestForHotel(hotelId);
+  if (!manifest) return res.status(404).json({ ok: false, reason: "NO_RESEARCH_PREVIEW_MANIFEST", written: false });
+  const trusted = loadTrustedConsumedFounderIdentity();
+  const gate = assertFounderCanarySession({
+    verifiedVia: req.memberstackVerifiedVia,
+    email: req.memberstackEmail,
+    trustedEmail: trusted.ok ? trusted.email : "",
+  });
+  if (!gate.ok) return res.status(403).json({ ok: false, reason: gate.reason, written: false });
+  const snapshot = researchPreviewForClaim({
+    accessScope: RESEARCH_PREVIEW_SCOPE,
+    previewManifestId: manifest.manifestId,
+    hotelId,
+  });
+  if (!snapshot || snapshot.opportunities.length !== manifest.opportunityIds.length) {
+    return res.status(409).json({ ok: false, reason: "RESEARCH_PREVIEW_SNAPSHOT_MISSING", written: false });
+  }
+  const sourceHash = createHash("sha256").update(JSON.stringify(manifest.opportunityIds)).digest("hex");
+  const match = String(req.headers.authorization || req.headers.Authorization || "").match(/^Bearer\s+(\S+)$/i);
+  const approval = await requestFounderApproval({
+    token: match ? match[1] : "",
+    operation: "RESEARCH_PREVIEW",
+    hotelIds: [hotelId],
+    sourceHash,
+    opportunityIds: [...manifest.opportunityIds],
+    customerAccessScope: RESEARCH_PREVIEW_SCOPE,
+    restrictions: ["read_only", "not_customer_publication", "no_customer_visible_change", "no_commercial_ready_change"],
+    expiresAt: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
+    ledgerPath: researchPreviewLedger,
+  });
+  if (!approval.ok) return res.status(401).json(approval);
+  try {
+    const issued = issueGdiShareCapability({
+      hotelId,
+      label: `Research Preview ${manifest.manifestId}`,
+      accessScope: RESEARCH_PREVIEW_SCOPE,
+      previewManifestId: manifest.manifestId,
+    });
+    return res.json({
+      ok: true,
+      researchPreview: true,
+      commerciallyReady: false,
+      customerReady: false,
+      publicationStatus: "not_published",
+      approvalId: approval.approvalId,
+      tokenId: issued.tokenId,
+      sharePath: issued.sharePath,
+      opportunityCount: snapshot.opportunities.length,
+    });
+  } catch (err) {
+    return res.status(500).json({ ok: false, reason: "PREVIEW_ISSUE_FAILED", message: err.message });
   }
 }
 
