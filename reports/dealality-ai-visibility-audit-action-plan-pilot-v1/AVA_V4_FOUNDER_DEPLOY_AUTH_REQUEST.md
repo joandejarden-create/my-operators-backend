@@ -11,7 +11,7 @@ Generated: 2026-11-05
 | Item | Value |
 |---|---|
 | Branch | `release/ava-v4-portfolio-certified` |
-| Commit | `ae907633c90d5e63d42b294fe6c0710e9934c220` |
+| Content commit (security-cleaned) | `2f14f0e6bea272b02e8c1f367f0b0e26e0e0544c` |
 | Base | `origin/main` |
 | Hotels certified | 38 / 38 |
 | Manifest hash matches | 38 / 38 (reused unchanged) |
@@ -30,7 +30,7 @@ Generated: 2026-11-05
 **A. Production deploy + transfer of 38 certified PDFs into durable Admin drafts**
 
 Reply with explicit approval to:
-1. Deploy commit `ae907633c90d5e63d42b294fe6c0710e9934c220`
+1. Deploy the PR #138 branch tip (includes content commit `2f14f0e6bea272b02e8c1f367f0b0e26e0e0544c`)
 2. Run production draft transfer with `--authorize-production-draft-transfer`
 
 **B. Customer publication** — not requested yet (separate gate).
@@ -38,8 +38,6 @@ Reply with explicit approval to:
 ## Not done / not requested
 
 - Production deploy
-- Production draft write
 - Customer publication
 - Share-token rotation
-- ADP/GDI changes
-
+- ADP methodology or GDI changes

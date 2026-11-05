@@ -6,7 +6,7 @@
 ## Exact release identity
 
 - Branch: `release/ava-v4-portfolio-certified`
-- Commit: _(filled after commit)_
+- Content commit: `2f14f0e6bea272b02e8c1f367f0b0e26e0e0544c`
 - Base: `origin/main`
 - Artifact inventory: `reports/dealality-ai-visibility-audit-action-plan-pilot-v1/AVA_38_HOTEL_FINAL_MANIFEST.json`
 
@@ -25,7 +25,7 @@ AVA_STORAGE_MODE=local node scripts/ava-v4-stage-certified-drafts-v1.mjs --dry-r
 
 1. Record authorization in chat / ticket.
 2. Backup production AVA published PDFs + meta (if any exist on Railway volume).
-3. `npm run deploy:production` from this commit only.
+3. `npm run deploy:production` from the authorized PR tip only.
 4. On production host / with production storage credentials:
    ```bash
    AVA_STORAGE_MODE=required NODE_ENV=production \
@@ -59,5 +59,3 @@ Fail-closed on SHA mismatch. Prior published.pdf saved as published.prev.pdf.
 - No GDI opportunity changes
 - No share-token registry changes
 - No automatic customer publication
-
-
