@@ -310,6 +310,18 @@ function asOfToday() {
 function projectOpportunitiesCommercialQuality(opportunities, { nowDate } = {}) {
   const related = buildRelatedOpportunityGroups(opportunities || []);
   return (opportunities || []).map((o) => {
+    // Published snapshots are authoritative for approved customer-facing content.
+    // Do not recompute classifications / actions / commercial narratives.
+    if (
+      o?.publishedPresentationLocked === true ||
+      o?.gdiPublishedInventoryRegistry === true
+    ) {
+      const relatedIds = related[o.id] || [];
+      return sanitizeOpportunityForCustomerPresentation({
+        ...o,
+        relatedOpportunityIds: relatedIds,
+      });
+    }
     const cq = applyLiveCommercialQuality(o, { nowDate: nowDate || asOfToday() });
     const relatedIds = related[o.id] || [];
     // Never leak discovery vertical slugs into customer segment
@@ -1694,6 +1706,123 @@ export async function postGdiContactReveal(req, res) {
     creditsBefore: creditsBefore || undefined,
     creditsAfter: creditsAfter || undefined,
   });
+}
+
+
+/**
+ * One-click hotel publication (permanent architecture).
+ * Default dryRun=true. Apply requires explicit founder approval payload.
+ * Never mutates other hotels. Never rotates share tokens.
+ * Admin-only at the route layer (requireAdminAccess).
+ */
+export async function postGdiPublishHotelInventory(req, res) {
+  if (!flagGate(req, res)) return;
+  const hotelId = String(req.params.hotelId || "").trim();
+  try {
+    const body = req.body || {};
+    const dryRun = body.dryRun !== false; // safe default
+
+    // Local preview set (may be incomplete in production research docs).
+    const doc = await loadOppDoc(hotelId);
+    let localOpportunities = filterCustomerFacingOpportunities(
+      doc.opportunities || [],
+      { hotelId },
+    );
+    try {
+      // CANONICAL_DISPLAY: one opportunity list — display eligibility == publication candidate set.
+      const {
+        selectDisplayEligibleOpportunities,
+        GDI_CANONICAL_DISPLAY_ELIGIBILITY_CONTRACT_V1,
+      } = await import(
+        "../lib/group-demand-intelligence/commercial-inventory/gdi-canonical-display-eligibility-contract-v1.js"
+      );
+      void GDI_CANONICAL_DISPLAY_ELIGIBILITY_CONTRACT_V1;
+      localOpportunities = selectDisplayEligibleOpportunities(
+        hotelId,
+        localOpportunities,
+      ).opportunities;
+    } catch (eligErr) {
+      console.warn("[gdi] display eligibility unavailable for publish", eligErr?.message || eligErr);
+    }
+
+    const opportunityIds = Array.isArray(body.opportunityIds)
+      ? body.opportunityIds.map(String)
+      : null;
+
+    const {
+      resolveApprovedPublicationOpportunities,
+      assertApprovedEventTitlesPreserved,
+    } = await import(
+      "../lib/group-demand-intelligence/durable-publication/gdi-approved-publication-opportunity-source-v1.js"
+    );
+    const resolved = resolveApprovedPublicationOpportunities({
+      hotelId,
+      opportunities: localOpportunities,
+      opportunityIds: opportunityIds || undefined,
+    });
+    if (!resolved.ok) {
+      return res.status(422).json({
+        ok: false,
+        error: "APPROVED_PUBLICATION_SOURCE_INCOMPLETE",
+        hotelId,
+        missing: resolved.missing,
+        sources: resolved.sources,
+        packDir: resolved.packDir,
+      });
+    }
+    const titleGate = assertApprovedEventTitlesPreserved(resolved.opportunities);
+    if (!titleGate.ok) {
+      return res.status(422).json({
+        ok: false,
+        error: "APPROVED_EVENT_TITLE_MISMATCH",
+        fails: titleGate.fails,
+      });
+    }
+
+    const { publishHotelInventoryOneClick } = await import(
+      "../lib/group-demand-intelligence/durable-publication/gdi-one-click-hotel-publish-v1.js"
+    );
+
+    const approval =
+      body.approval && typeof body.approval === "object"
+        ? {
+            ...body.approval,
+            authorized: body.approval.authorized === true,
+            authorizedBy:
+              body.approval.authorizedBy ||
+              req.dealalityUser?.email ||
+              req.dealalityUser?.id ||
+              "founder",
+            authorizedAt: body.approval.authorizedAt || new Date().toISOString(),
+          }
+        : null;
+
+    const result = publishHotelInventoryOneClick({
+      hotelId,
+      opportunities: resolved.opportunities,
+      opportunityIds: opportunityIds || resolved.opportunityIds,
+      approval,
+      dryRun,
+      revokeMissingPublishedIds: body.revokeMissingPublishedIds === true,
+      sourceResearchReference: body.sourceResearchReference || null,
+    });
+
+    const status = result.ok ? 200 : dryRun ? 422 : 409;
+    return res.status(status).json({
+      ok: result.ok === true,
+      oneClickPublish: "gdi-one-click-hotel-publish-v1",
+      hotelId,
+      dryRun,
+      approvedSource: {
+        contract: resolved.contract,
+        sources: resolved.sources,
+        packDir: resolved.packDir,
+      },
+      result,
+    });
+  } catch (err) {
+    return sendGdiUpstreamError(res, err, "postGdiPublishHotelInventory");
+  }
 }
 
 /** Local-only founder review (DOS grades) for shadow commercial hotels. */
