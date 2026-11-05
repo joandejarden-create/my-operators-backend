@@ -1,0 +1,52 @@
+{
+  "ok": true,
+  "modeSample": "required",
+  "checks": [
+    {
+      "name": "storage_status_route_uses_admin_auth",
+      "ok": true,
+      "detail": "storage-status must sit behind adpMonthlyReviewAdminAuth"
+    },
+    {
+      "name": "pdf_route_uses_admin_auth",
+      "ok": true,
+      "detail": "PDF remains under admin auth (not public)"
+    },
+    {
+      "name": "no_dev_auth_bypass_in_production_path",
+      "ok": true,
+      "detail": "AVA admin API must not implement its own auth bypass"
+    },
+    {
+      "name": "audit_validated_not_customer_ready",
+      "ok": true,
+      "detail": "AUDIT_VALIDATED ≠ founder/customer approval"
+    },
+    {
+      "name": "publication_requires_explicit_flags",
+      "ok": true,
+      "detail": "CUSTOMER_READY blocked without explicit publication authorizations"
+    },
+    {
+      "name": "validated_cannot_skip_to_published",
+      "ok": true,
+      "detail": "Publication still gated"
+    },
+    {
+      "name": "local_durable_writable",
+      "ok": true,
+      "detail": "C:\\Dev\\dealality\\my-operators-backend-ava-v4-release\\data\\ava-data"
+    },
+    {
+      "name": "required_mode_fails_closed_on_bad_root",
+      "ok": true,
+      "detail": "AVA durable storage unavailable at C:\\Dev\\dealality\\my-operators-backend-ava-v4-release\\tmp\\ava-not-a-dir-file: ENOTDIR: not a directory, mkdir 'C:\\Dev\\dealality\\my-operators-backend-ava-v4-release\\tmp\\ava-not-a-dir-file\\audits'. Set a writable AVA_STORAGE_ROOT (Railway Volume mount /app/ava-data) or set AVA_STORAGE_MODE=off for legacy ephemeral paths."
+    },
+    {
+      "name": "recommended_mount_documented",
+      "ok": true,
+      "detail": "/app/ava-data"
+    }
+  ],
+  "failed": []
+}

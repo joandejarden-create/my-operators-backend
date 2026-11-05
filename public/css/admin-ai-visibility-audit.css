@@ -1,0 +1,193 @@
+/* AI Visibility Audit — layout polish on shared AI Demand Admin table patterns */
+
+.ava-summary-counts {
+  margin-bottom: 14px;
+}
+
+.ava-table-shell {
+  overflow-x: auto;
+}
+
+.ava-table {
+  table-layout: fixed;
+  width: 100%;
+  min-width: 960px;
+}
+
+.ava-table th,
+.ava-table td {
+  vertical-align: middle;
+}
+
+.ava-table .ada-cell-check {
+  width: 40px;
+}
+
+.ava-table .ada-cell-hotel {
+  width: 26%;
+  min-width: 200px;
+  max-width: none !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  word-break: break-word;
+}
+
+.ava-table .ada-cell-hotel strong,
+.ava-table .ada-cell-hotel .ada-hotel-link {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  display: block;
+  line-height: 1.25;
+}
+
+.ava-table .ada-cell-loc {
+  width: 14%;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.ava-table .ava-col-baseline {
+  width: 10%;
+  white-space: nowrap;
+}
+
+.ava-table .ava-col-status {
+  width: 12%;
+}
+
+.ava-table .ava-col-recs {
+  width: 8%;
+  text-align: center;
+}
+
+.ava-table .ava-col-pdf,
+.ava-table .ava-col-approval {
+  width: 11%;
+}
+
+.ava-table .ada-col-actions {
+  min-width: 188px;
+  width: 188px;
+}
+
+.ava-evidence-failures {
+  margin-top: 10px;
+}
+
+.ava-evidence-fail-list {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.ava-evidence-fail-list li {
+  margin: 0 0 10px;
+}
+
+.ava-drawer-section {
+  margin: 0 0 18px;
+  padding-bottom: 14px;
+  border-bottom: 0.6px solid var(--runbook-border, #e2e8f0);
+}
+
+.ava-drawer-section:last-child {
+  border-bottom: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.ava-drawer-section h3 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--runbook-muted, #64748b);
+}
+
+.ava-drawer-grid {
+  display: grid;
+  grid-template-columns: minmax(120px, 160px) 1fr;
+  gap: 6px 12px;
+  font-size: 13px;
+}
+
+.ava-drawer-grid dt {
+  color: var(--runbook-muted, #64748b);
+  margin: 0;
+}
+
+.ava-drawer-grid dd {
+  margin: 0;
+  color: var(--runbook-heading, #1a202c);
+  word-break: break-word;
+}
+
+.ava-rec-card {
+  border: 0.6px solid var(--runbook-border, #e2e8f0);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 0 0 10px;
+  background: var(--runbook-surface, #fff);
+}
+
+.ava-rec-card__title {
+  font-weight: 650;
+  font-size: 13px;
+  margin: 0 0 4px;
+  color: var(--runbook-heading, #1a202c);
+}
+
+.ava-rec-card__meta {
+  font-size: 12px;
+  color: var(--runbook-muted, #64748b);
+  margin: 0 0 8px;
+}
+
+.ava-rec-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ava-drawer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.ava-version-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ava-version-list li {
+  font-size: 13px;
+  padding: 6px 0;
+  border-bottom: 0.6px solid var(--runbook-border, #e2e8f0);
+}
+
+.ava-version-list li:last-child {
+  border-bottom: 0;
+}
+
+.ava-muted {
+  font-size: 12px;
+  color: var(--runbook-muted, #64748b);
+}
+
+.ava-gate-note {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--runbook-muted, #64748b);
+  line-height: 1.4;
+}
+
+@media (max-width: 1100px) {
+  .ava-table {
+    min-width: 880px;
+  }
+}

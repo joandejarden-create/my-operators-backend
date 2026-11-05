@@ -1,0 +1,57 @@
+{
+  "manifestId": "AVA_PRODUCTION_DEPLOYMENT_MANIFEST_V1",
+  "preparedAt": "2026-11-05",
+  "deployAuthorized": false,
+  "canonicalDeployCommand": "npm run deploy:production",
+  "storageModel": "ADP_MONTHLY_REVIEW_ARCHIVE_PATTERN",
+  "storageRationale": "Reuse Dealality Railway allowlisted filesystem artifacts (same pattern as ADP monthly-review archive and published snapshots). No new object-storage service. Runtime writes land in allowlisted production/store + archive; redeploys must re-include those trees.",
+  "code": [
+    "api/admin-ai-visibility-audit.js",
+    "lib/ai-visibility-audit-action-plan/**",
+    "public/js/admin-ai-visibility-audit.js",
+    "public/app/admin/ai-demand-admin.html",
+    "public/adp-ai-visibility-audit-pdf-render.html",
+    "public/css/adp-ai-visibility-audit-report-v1.css",
+    "public/js/ai-demand-positioning/adp-ai-visibility-audit-pdf-v1.js",
+    "server.js",
+    ".railwayignore",
+    "config/production-required-assets.json",
+    "config/ava-production-deployment-manifest-v1.json",
+    "scripts/ava-build-lean-certified-baselines-v1.mjs",
+    "scripts/ava-migrate-production-archive-v1.mjs",
+    "scripts/ava-durability-verification-v1.mjs"
+  ],
+  "dataArtifacts": [
+    "data/ai-visibility-audit-action-plan/certified-baselines/**",
+    "data/ai-visibility-audit-action-plan/production/store/**",
+    "reports/ai-visibility-audit-action-plan/archive/**"
+  ],
+  "excludedFromDeploy": [
+    "data/ai-demand-positioning/staged/** (~299MB)",
+    "data/ai-visibility-audit-action-plan/store/** (legacy pilot)",
+    "reports/dealality-ai-visibility-audit-action-plan-pilot-v1/**/page-previews*/**",
+    "reports/dealality-ai-visibility-audit-action-plan-pilot-v1/** (pilot tree; archive is SoT)"
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "DEV_AUTH_BYPASS_EMAIL": "must remain ineffective in production",
+    "AVA_STORE_ROOT": "optional override; default resolves to production/store when migrated"
+  },
+  "preDeploy": [
+    "Commit AVA code + lean baselines + production store + archive",
+    "node scripts/ava-durability-verification-v1.mjs",
+    "Confirm .railwayignore contains RAILWAY_LEAN_AVA_V1",
+    "Record founder deploy authorization"
+  ],
+  "postDeploy": [
+    "Authorized admin: GET /api/admin/ai-visibility-audit/hotels → 38",
+    "Open six audits; PDF preview 200",
+    "Confirm publish flags still blocked",
+    "Confirm ADP monthly-reviews still 200"
+  ],
+  "rollback": [
+    "Redeploy prior production commit via npm run deploy:production",
+    "Restore AVA production/store + archive from pre-deploy backup tarball if post-deploy writes occurred",
+    "Do not wipe ADP published customer artifacts"
+  ]
+}

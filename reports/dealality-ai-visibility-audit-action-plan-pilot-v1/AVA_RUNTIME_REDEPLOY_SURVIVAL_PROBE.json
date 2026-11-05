@@ -1,0 +1,39 @@
+{
+  "ok": true,
+  "probe": "AVA_RUNTIME_REDEPLOY_SURVIVAL_V1",
+  "question": "Do newly generated audits/PDFs/decisions/founder approvals survive a fresh Railway deploy when NOT included in the new deployment artifact?",
+  "verdict": "FAIL",
+  "beforeRedeploy": {
+    "runtimeMetaExists": true,
+    "runtimePdfExists": true,
+    "runtimePdfSha": "8c7a7e2e43a4bc2d5e6cd363408f06789d566d82e219ba9ee763550a5f582e57",
+    "founderApprovedForCustomer": true,
+    "decisionCount": 2
+  },
+  "afterRedeploy": {
+    "runtimeMetaExists": false,
+    "runtimePdfExists": false,
+    "packagedSpiceSurvivedBecauseIncludedInArtifact": true
+  },
+  "durableStoreToday": {
+    "mechanism": "application_local_filesystem_paths_uploaded_with_deploy",
+    "storeRoot": "data/ai-visibility-audit-action-plan/production/store",
+    "pdfArchiveRoot": "reports/ai-visibility-audit-action-plan/archive",
+    "externalDurableBackend": null,
+    "railwayVolumeConfigured": false,
+    "survivesRedeployWithoutReupload": false
+  },
+  "recoveryToday": {
+    "howRecoveredIfLost": "ONLY if the runtime files were pulled back into the deploy workstation/git artifact before the next railway up",
+    "automaticRecovery": false
+  },
+  "architectureFact": "Dealality production deploys via Railway CLI working-tree upload that replaces the entire service filesystem (docs/production-deploy/CURRENT_PRODUCTION_DEPLOY_ARCHITECTURE.md). AVA writes to local paths under data/.../production/store and reports/.../archive with no volume mount and no external object store.",
+  "smallestDurableFix": {
+    "recommendation": "RAILWAY_VOLUME_MOUNT",
+    "mountPath": "/app/data/ai-visibility-audit-action-plan/production",
+    "alsoMountOrSymlinkPdfs": "/app/reports/ai-visibility-audit-action-plan/archive",
+    "whySmallest": "Keeps existing file-store API unchanged; only Railway service config + path ensure. No new S3/Airtable schema. Packaged lean baselines can stay in the deploy artifact; runtime store/PDFs live on the volume.",
+    "alternative": "Object storage (R2/S3) for PDFs + JSON metas — larger change, better multi-instance sharing later.",
+    "requiredBeforeProdEnablementOfRuntimeWrites": true
+  }
+}

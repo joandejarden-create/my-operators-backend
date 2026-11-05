@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dealality AI Visibility Audit &amp; Action Plan — PDF Render</title>
+  <link rel="stylesheet" href="/css/brand-alignment-snapshot.css" />
+  <link rel="stylesheet" href="/css/dealality-report-print-chrome.css?v=4" />
+  <link rel="stylesheet" href="/css/dealality-report-system-v1.css?v=2" />
+  <link rel="stylesheet" href="/css/adp-monthly-review-report-v1.css?v=2" />
+  <link rel="stylesheet" href="/css/adp-ai-visibility-audit-report-v1.css?v=1" />
+  <style>
+    html, body { margin: 0; padding: 0; background: #fff; }
+    #ava-pdf-boot { font-family: Inter, system-ui, sans-serif; padding: 24px; color: #333; }
+    #ava-pdf-boot[hidden] { display: none !important; }
+  </style>
+</head>
+<body class="adp-mr-pdf-export ava-pdf-export">
+  <div id="ava-pdf-boot">Preparing AI Visibility Audit PDF…</div>
+  <script src="/js/dealality-report-print-chrome.js?v=4"></script>
+  <script src="/js/ai-demand-positioning/adp-ai-visibility-audit-pdf-v1.js?v=1"></script>
+  <script>
+    (async function () {
+      var boot = document.getElementById("ava-pdf-boot");
+      try {
+        if (!window.AdpAiVisibilityAuditPdfV1 || typeof window.AdpAiVisibilityAuditPdfV1.mount !== "function") {
+          throw new Error("AdpAiVisibilityAuditPdfV1_missing");
+        }
+        var res = await fetch("/__ava_audit_pdf_payload__");
+        if (!res.ok) throw new Error("payload_fetch_failed_" + res.status);
+        var pack = await res.json();
+        if (!pack || !pack.html) throw new Error("payload_html_missing");
+        window.AdpAiVisibilityAuditPdfV1.mount(pack.html, {
+          propertyId: pack.propertyId || "",
+          propertyName: pack.propertyName || "",
+        });
+      } catch (err) {
+        if (boot) {
+          boot.hidden = false;
+          boot.textContent = "AI Visibility Audit PDF failed: " + (err && err.message ? err.message : String(err));
+        }
+        console.error(err);
+      }
+    })();
+  </script>
+</body>
+</html>

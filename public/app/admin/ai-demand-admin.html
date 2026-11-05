@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="/css/admin-ai-demand-reviews.css?v=adp-admin-workspace-v1" />
   <link rel="stylesheet" href="/css/admin-ai-demand-admin.css?v=ada-shell-layout-v2" />
   <link rel="stylesheet" href="/css/admin-ai-demand-table.css?v=ada-client-inventory-v2" />
+  <link rel="stylesheet" href="/css/admin-ai-visibility-audit.css?v=ava-ui-v1" />
   <script>
     (function () {
       if (window.location.search.indexOf("embed=1") !== -1 || window !== window.top) {
@@ -69,6 +70,13 @@
         </span>
         <span class="section-nav-label">Report<br>Archive</span>
       </button>
+      <button type="button" class="section-nav-item" role="tab" aria-selected="false" data-tab="visibility-audit" id="adaTabVisibilityAudit">
+        <span class="section-nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 3l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+        </span>
+        <span class="section-nav-label">AI Visibility<br>Audit</span>
+      </button>
+
     </nav>
 
     <section id="adaPanelReviews" class="ada-panel" data-panel="reviews" role="tabpanel">
@@ -386,6 +394,69 @@
     </section>
   </div>
 
+  <section id="adaPanelVisibilityAudit" class="ada-panel" data-panel="visibility-audit" role="tabpanel" hidden>
+      <div class="adr-counts ava-summary-counts" id="avaSummaryCards" aria-live="polite">
+        <div class="adr-count">
+          <span class="adr-count__n" id="avaCardEligible">—</span>
+          <span class="adr-count__l">Eligible Hotels</span>
+        </div>
+        <div class="adr-count">
+          <span class="adr-count__n" id="avaCardCreated">—</span>
+          <span class="adr-count__l">Audits Created</span>
+        </div>
+        <div class="adr-count">
+          <span class="adr-count__n" id="avaCardValidated">—</span>
+          <span class="adr-count__l">Audits Validated</span>
+        </div>
+        <div class="adr-count">
+          <span class="adr-count__n" id="avaCardApproved">—</span>
+          <span class="adr-count__l">Approved for Customer</span>
+        </div>
+      </div>
+
+      <details class="ada-metric-disclosure">
+        <summary>About AI Visibility Audit &amp; Action Plan</summary>
+        <p>
+          Onboarding companion to ADP. Reuses certified ADP baselines; does not remeasure CORE.
+          PDF staging and <strong>AUDIT_VALIDATED</strong> do <strong>not</strong> authorize customer
+          distribution. <strong>FOUNDER_APPROVED_FOR_CUSTOMER</strong> is a separate founder gate.
+          Paid research and publication still require explicit authorization.
+        </p>
+      </details>
+
+      <div class="ada-toolbar">
+        <section class="adr-filters" aria-label="Visibility audit filters">
+          <label>
+            Search hotel or location
+            <input type="search" id="avaSearch" placeholder="Hotel or market" />
+          </label>
+          <label>
+            Audit status
+            <select id="avaFilterStatus">
+              <option value="">All</option>
+              <option value="BASELINE_READY">Not Started</option>
+              <option value="PDF_STAGED">Draft Available</option>
+              <option value="VALIDATION_REQUIRED">Needs Review</option>
+              <option value="AUDIT_VALIDATED">Validated</option>
+              <option value="FOUNDER_REVIEWED_STAGED">Founder Reviewed</option>
+              <option value="FOUNDER_APPROVED_FOR_CUSTOMER">Founder Approved</option>
+              <option value="CUSTOMER_READY">Customer Ready</option>
+              <option value="BLOCKED">Blocked</option>
+            </select>
+          </label>
+          <label>
+            PDF availability
+            <select id="avaFilterPdf">
+              <option value="">All</option>
+              <option value="AVAILABLE">Available</option>
+              <option value="MISSING">Missing</option>
+            </select>
+          </label>
+          <button type="button" class="adr-btn" id="avaApplyFilters">Apply</button>
+          <button type="button" class="ada-btn-reset" id="avaResetView">Reset View</button>
+          <button type="button" class="adr-btn adr-btn--secondary" id="avaRefresh">Refresh</button>
+        </section>
+
   <script src="/js/dealality-wave-loader.js"></script>
   <script src="/js/dealality-memberstack-auth.js"></script>
   <script src="/js/support-admin-gate.js?v=adp-local-demo-user-v1"></script>
@@ -402,6 +473,7 @@
   <script src="/js/admin-adp-action-plan.js?v=ada-table-parity-v1"></script>
   <script src="/js/admin-gdi-reports.js?v=ada-client-inventory-v2"></script>
   <script src="/js/admin-report-archive.js?v=ada-table-parity-v1"></script>
+  <script src="/js/admin-ai-visibility-audit.js?v=ava-pdf-channels-v2"></script>
   <script src="/embed-chrome.js" defer></script>
 </body>
 </html>
