@@ -96,6 +96,12 @@ import {
   getGdiOpportunityPersistenceMode,
 } from "../lib/group-demand-intelligence/opportunity-persistence.js";
 import { sanitizeOpportunityForCustomerPresentation } from "../lib/group-demand-intelligence/customer-presentation-sanitize-v1.js";
+import { prepareCustomerFacingOpportunity } from "../lib/group-demand-intelligence/share/gdi-customer-facing-opportunity-contract-v1.js";
+import {
+  mapOpportunitiesToPresentationDtos,
+  projectOpportunityForPresentation,
+} from "../lib/group-demand-intelligence/presentation/gdi-universal-presentation-pipeline-v1.js";
+import { GDI_PRESENTATION_SURFACES } from "../lib/group-demand-intelligence/contracts/gdi-presentation-contract-v1.js";
 import {
   getCachedOpportunityDoc,
   invalidateGdiHotelReadCache,
@@ -310,20 +316,20 @@ function asOfToday() {
 function projectOpportunitiesCommercialQuality(opportunities, { nowDate } = {}) {
   const related = buildRelatedOpportunityGroups(opportunities || []);
   return (opportunities || []).map((o) => {
-    // Published snapshots are authoritative for approved customer-facing content.
-    // Do not recompute classifications / actions / commercial narratives.
+    const relatedIds = related[o.id] || [];
+    // Published snapshots are authoritative. Hydrate/stamp only — never rebuild
+    // titles, classifications, or drawer commercial copy via live sanitize.
     if (
       o?.publishedPresentationLocked === true ||
       o?.gdiPublishedInventoryRegistry === true
     ) {
-      const relatedIds = related[o.id] || [];
-      return sanitizeOpportunityForCustomerPresentation({
+      return prepareCustomerFacingOpportunity({
         ...o,
         relatedOpportunityIds: relatedIds,
+        relatedOpportunityCount: relatedIds.length,
       });
     }
     const cq = applyLiveCommercialQuality(o, { nowDate: nowDate || asOfToday() });
-    const relatedIds = related[o.id] || [];
     // Never leak discovery vertical slugs into customer segment
     let segment = cq.segment;
     if (
@@ -747,12 +753,11 @@ export async function getGdiOpportunities(req, res) {
     }
 
     if (!wantFull) {
-      const { prepareCustomerFacingOpportunity: prepareAuthFacing } =
-        await import(
-          "../lib/group-demand-intelligence/share/gdi-customer-facing-opportunity-contract-v1.js"
-        );
-      opportunities = opportunities.map((o) => prepareAuthFacing(o));
-      opportunities = mapOpportunitiesToListDto(opportunities, { hotelId });
+      // Single universal list projection (same prepare → DTO path as share).
+      opportunities = mapOpportunitiesToPresentationDtos(opportunities, {
+        hotelId,
+        surface: GDI_PRESENTATION_SURFACES.LOCAL_AUTH,
+      });
     }
     opportunities = await attachCommercialProgression(hotelId, opportunities);
     // Overlay pursuit workflow (sales status — independent of Ready/Watch)
@@ -937,8 +942,13 @@ export async function getGdiOpportunityDetail(req, res) {
       hotelId,
       opportunityId
     );
+    const authProjected = projectOpportunityForPresentation(opportunity, {
+      hotelId,
+      surface: GDI_PRESENTATION_SURFACES.LOCAL_AUTH,
+      view: "detail",
+    });
     const opportunityPayload = {
-      ...opportunity,
+      ...authProjected.dto,
       ...(commercialProgression ? { commercialProgression } : {}),
       ...(shareValidation
         ? {
@@ -955,6 +965,7 @@ export async function getGdiOpportunityDetail(req, res) {
         : {}),
     };
     res.setHeader("X-GDI-Detail-Source", loaded.source);
+    res.setHeader("X-GDI-Universal-Presentation", "v1");
     return res.json({
       ok: true,
       opportunity: opportunityPayload,
@@ -2173,22 +2184,17 @@ export async function getGdiShareOpportunities(req, res) {
       needDateTileErr?.message || needDateTileErr,
     );
   }
-  // Same commercial projection as auth list — do NOT re-run per-row canonical
-  // overlay here (that path drifted Sales Action / Pursue Now vs auth).
+  // Same commercial projection as auth list — locked snaps stay frozen.
   facing = projectOpportunitiesCommercialQuality(facing);
-  const { prepareCustomerFacingOpportunity: prepareShareFacing } = await import(
-    "../lib/group-demand-intelligence/share/gdi-customer-facing-opportunity-contract-v1.js"
-  );
   const opportunities = facing.map((o) => {
-    const prepared = prepareShareFacing(o);
-    // Presentation DTO from projected canonical — NEVER from sanitize whitelist.
-    const sanitized = sanitizeOpportunityForShare(prepared);
+    const projected = projectOpportunityForPresentation(o, {
+      hotelId,
+      surface: GDI_PRESENTATION_SURFACES.EXTERNAL_SHARE,
+      view: wantFull ? "detail" : "list",
+    });
     const v = byVal.get(o.id);
-    const base = wantFull
-      ? buildShareOpportunityDetailDto(prepared, sanitized, { hotelId })
-      : buildShareOpportunityListDto(prepared, { hotelId });
     return {
-      ...base,
+      ...projected.dto,
       shareValidation: v
         ? {
             familiarityStatus: v.familiarityStatus,
@@ -2313,16 +2319,14 @@ export async function getGdiShareOpportunityDetail(req, res) {
       mergeReadErr?.message || mergeReadErr,
     );
   }
-  // Match share list projection so drawer sales action / pills stay consistent.
+  // Universal presentation pipeline — same object path as auth + share list.
   const [projected] = projectOpportunitiesCommercialQuality([opportunity]);
-  const { prepareCustomerFacingOpportunity } = await import(
-    "../lib/group-demand-intelligence/share/gdi-customer-facing-opportunity-contract-v1.js"
-  );
-  const prepared = prepareCustomerFacingOpportunity(projected);
-  const sanitized = sanitizeOpportunityForShare(prepared);
-  const shareDetail = buildShareOpportunityDetailDto(prepared, sanitized, {
+  const shareProjected = projectOpportunityForPresentation(projected, {
     hotelId,
+    surface: GDI_PRESENTATION_SURFACES.EXTERNAL_SHARE,
+    view: "detail",
   });
+  const shareDetail = shareProjected.dto;
   const validation = getShareValidationForOpportunity(hotelId, opportunityId);
   const bySubject = await loadGdiCommercialProgressionBySubject(hotelId);
   const commercialProgression = toCustomerCommercialProgressionDto(
@@ -2343,6 +2347,7 @@ export async function getGdiShareOpportunityDetail(req, res) {
   }
   res.setHeader("X-GDI-Detail-Source", loaded.source);
   res.setHeader("X-GDI-Share-Presentation-Parity", "v1");
+  res.setHeader("X-GDI-Universal-Presentation", "v1");
   return res.json({
     ok: true,
     mode: "read_only",

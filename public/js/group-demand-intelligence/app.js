@@ -3,6 +3,8 @@
 
   var UI = window.DealalityGdiUi;
   if (!UI) throw new Error("DealalityGdiUi missing");
+  var PC = window.DealalityGdiUniversalPresentationController;
+  if (!PC) throw new Error("DealalityGdiUniversalPresentationController missing");
 
   // Pilot default hotelId only (HOTEL_SPECIFIC_DATA). Display names come from profile/API.
   var DEFAULT_HOTEL_ID = "recLuxvwwxID7U2B8";
@@ -40,15 +42,7 @@
     sortKey: "priority",
     sortDir: 1,
     viewMode: "tiles",
-    filters: {
-      priority: "",
-      segment: "",
-      booking: "",
-      territory: "",
-      weekly: "",
-      opportunityType: "",
-      workflow: "",
-    },
+    filters: PC.createDefaultFilters(),
     pursuitsById: {},
     isAdmin: false,
     flag: null,
@@ -77,15 +71,7 @@
   }
 
   function resetBrowseView() {
-    state.filters = {
-      priority: "",
-      segment: "",
-      booking: "",
-      territory: "",
-      weekly: "",
-      opportunityType: "",
-      workflow: "",
-    };
+    state.filters = PC.createDefaultFilters();
     state.sortKey = "priority";
     state.sortDir = 1;
     state.viewMode = "tiles";
@@ -536,38 +522,23 @@
   }
 
   function filteredSorted() {
-    return UI.sortOpportunities(
-      UI.filterOpportunities(state.opportunities, state.filters),
-      state.sortKey,
-      state.sortDir
-    );
+    return PC.filteredSorted(state, UI);
   }
 
-  function applyTilePairFilter(priority, booking, e) {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    state.filters.priority = priority || "";
-    state.filters.booking = booking || "";
-    render();
+    function applyTilePairFilter(priority, booking, e) {
+    PC.applyTilePairFilter(state, priority, booking, e, render);
   }
 
-  function wireBrowseControls() {
-    root.querySelectorAll("[data-gdi-priority]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        state.filters.priority = btn.getAttribute("data-gdi-priority") || "";
-        state.filters = UI.reconcileBrowseFilters(state.opportunities, state.filters, "priority");
-        render();
-      });
+    function wireBrowseControls() {
+    PC.wireBrowseFilterControls({
+      root: root,
+      state: state,
+      UI: UI,
+      render: render,
+      persistBrowse: persistBrowse,
+      onExport: downloadCustomerCsv,
     });
-    root.querySelectorAll("[data-gdi-booking]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        state.filters.booking = btn.getAttribute("data-gdi-booking") || "";
-        state.filters = UI.reconcileBrowseFilters(state.opportunities, state.filters, "booking");
-        render();
-      });
-    });
+    // Auth-only pursuit controls (capability-gated; not on share).
     root.querySelectorAll("[data-pursuit-start]").forEach(function (btn) {
       btn.addEventListener("click", function (e) {
         e.preventDefault();
@@ -587,44 +558,6 @@
         else if (pursuitId) openPursuitDrawer(pursuitId);
       });
     });
-    root
-      .querySelectorAll("[data-gdi-tile-priority][data-gdi-tile-booking]")
-      .forEach(function (btn) {
-        btn.addEventListener("click", function (e) {
-          applyTilePairFilter(
-            btn.getAttribute("data-gdi-tile-priority"),
-            btn.getAttribute("data-gdi-tile-booking"),
-            e
-          );
-        });
-      });
-    var sortSel = document.getElementById("gdiSortSelect");
-    if (sortSel) {
-      sortSel.addEventListener("change", function () {
-        state.sortKey = sortSel.value || "priority";
-        state.sortDir = 1;
-        persistBrowse();
-        render();
-      });
-    }
-    var sortDirBtn = document.getElementById("gdiSortDirBtn");
-    if (sortDirBtn) {
-      sortDirBtn.addEventListener("click", function () {
-        state.sortDir = state.sortDir === 1 ? -1 : 1;
-        render();
-      });
-    }
-    root.querySelectorAll("[data-gdi-view]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        state.viewMode = btn.getAttribute("data-gdi-view") === "tiles" ? "tiles" : "list";
-        persistBrowse();
-        render();
-      });
-    });
-    var exportBtn = document.getElementById("gdiExportCsvBtn");
-    if (exportBtn) {
-      exportBtn.addEventListener("click", downloadCustomerCsv);
-    }
   }
 
   function renderOpportunityCards(rows) {
@@ -740,20 +673,13 @@
   function renderBrowseBody(opts) {
     opts = opts || {};
     var rows = filteredSorted();
-    var total = state.opportunities.length;
-    var chrome = UI.opportunityBrowseChromeHtml({
-      activePriority: state.filters.priority,
-      priorityCounts: UI.facetCountByPriority(state.opportunities, state.filters),
-      activeBooking: state.filters.booking,
-      actionCounts: UI.facetCountByActionStatus(state.opportunities, state.filters),
-      weeklyHeaderCounts: UI.weeklyDeltaHeaderCounts(state.opportunities),
-      shown: rows.length,
-      total: total,
-      sort: state.sortKey,
-      viewMode: state.viewMode,
+    var chromeOpts = PC.buildBrowseChromeOptions(state, UI, {
+      mode: "auth",
       noun: opts.noun || "Opportunities",
       exportHref: buildExportHref(),
     });
+    chromeOpts.exportHref = buildExportHref();
+    var chrome = UI.opportunityBrowseChromeHtml(chromeOpts);
     // Customer GDI: Priority + Action Window only — no All/Ready/Watching workflow row.
     return chrome + (opts.lede || "") + renderOpportunityCards(rows);
   }
@@ -945,89 +871,92 @@
     var listRow = (state.opportunities || []).find(function (o) {
       return o && o.id === id;
     });
-    state.drawerReturnFocusEl =
-      (document.activeElement &&
-        document.activeElement.closest &&
-        document.activeElement.closest("[data-open]")) ||
-      document.activeElement ||
-      null;
-    drawerTitle.textContent = (listRow && (listRow.displayTitle || listRow.title)) || "Opportunity";
-    drawerBody.innerHTML = UI.detailLoadingHtml();
-    if (typeof drawer.showModal === "function") drawer.showModal();
-    else drawer.setAttribute("open", "open");
-    if (drawerClose && typeof drawerClose.focus === "function") {
-      try {
-        drawerClose.focus();
-      } catch (e) {
-        /* ignore */
-      }
-    }
-
-    var oppUrl =
-      "/api/group-demand-intelligence/hotels/" +
-      encodeURIComponent(state.hotelId) +
-      "/opportunities/" +
-      encodeURIComponent(id);
-    var decisionUrl =
-      "/api/hotels/" +
-      encodeURIComponent(state.hotelId) +
-      "/subjects/" +
-      encodeURIComponent(id) +
-      "/decision?module=GDI";
-    var pursuitUrl =
-      "/api/group-demand-intelligence/hotels/" +
-      encodeURIComponent(state.hotelId) +
-      "/opportunities/" +
-      encodeURIComponent(id) +
-      "/pursuit";
-
-    Promise.all([
-      api(oppUrl),
-      api(decisionUrl).catch(function () {
-        return null;
-      }),
-      api(pursuitUrl).catch(function () {
-        return { pursuit: null };
-      }),
-    ])
-      .then(function (results) {
-        var data = results[0];
-        var decisionBundle = results[1];
-        var pursuitBundle = results[2];
-        var o = data.opportunity;
-        if (o && pursuitBundle && pursuitBundle.pursuit) {
-          o._pursuitDto = pursuitBundle.pursuit;
-          o.pursuitId = pursuitBundle.pursuit.pursuitId;
-          o.pursuitStatus = pursuitBundle.pursuit.pursuitStatus;
-          o.canStartPursuit = false;
-        } else if (o && listRow) {
-          o.canStartPursuit = listRow.canStartPursuit === true;
-          o.pursuitId = listRow.pursuitId || null;
-        }
-        var current =
-          (decisionBundle && decisionBundle.current) ||
-          (decisionBundle && decisionBundle.decision && decisionBundle.current) ||
-          null;
-        if (o && o.commercialProgression) {
-          current = current
-            ? Object.assign({}, current, {
-                commercialProgression: o.commercialProgression,
-              })
-            : { commercialProgression: o.commercialProgression };
-        }
-        drawerTitle.textContent =
-          (o && (o.displayTitle || o.title)) ||
-          (listRow && (listRow.displayTitle || listRow.title)) ||
-          "Opportunity";
-        drawerBody.innerHTML = renderDetail(o, data.scoreAudit, current);
-        wireDetailLifecycleControls();
-      })
-      .catch(function (err) {
-        drawerBody.innerHTML = UI.detailErrorHtml(
-          (err && err.message) || "Unable to load opportunity detail.",
-          { retryOpportunityId: id }
+    return PC.openOpportunityDetail({
+      UI: UI,
+      state: state,
+      drawer: drawer,
+      drawerTitle: drawerTitle,
+      drawerBody: drawerBody,
+      drawerClose: drawerClose,
+      opportunityId: id,
+      mode: "auth",
+      api: function (url) {
+        var decisionUrl =
+          "/api/hotels/" +
+          encodeURIComponent(state.hotelId) +
+          "/subjects/" +
+          encodeURIComponent(id) +
+          "/decision?module=GDI";
+        var pursuitUrl =
+          "/api/group-demand-intelligence/hotels/" +
+          encodeURIComponent(state.hotelId) +
+          "/opportunities/" +
+          encodeURIComponent(id) +
+          "/pursuit";
+        return Promise.all([
+          api(url),
+          api(decisionUrl).catch(function () {
+            return null;
+          }),
+          api(pursuitUrl).catch(function () {
+            return { pursuit: null };
+          }),
+        ]).then(function (results) {
+          var data = results[0] || {};
+          var decisionBundle = results[1];
+          var pursuitBundle = results[2];
+          var o = data.opportunity || data;
+          if (o && pursuitBundle && pursuitBundle.pursuit) {
+            o._pursuitDto = pursuitBundle.pursuit;
+            o.pursuitId = pursuitBundle.pursuit.pursuitId;
+            o.pursuitStatus = pursuitBundle.pursuit.pursuitStatus;
+            o.canStartPursuit = false;
+          } else if (o && listRow) {
+            o.canStartPursuit = listRow.canStartPursuit === true;
+            o.pursuitId = listRow.pursuitId || null;
+          }
+          var current =
+            (decisionBundle && decisionBundle.current) ||
+            (decisionBundle && decisionBundle.decision && decisionBundle.current) ||
+            null;
+          if (o && o.commercialProgression) {
+            current = current
+              ? Object.assign({}, current, {
+                  commercialProgression: o.commercialProgression,
+                })
+              : { commercialProgression: o.commercialProgression };
+          }
+          data.opportunity = o;
+          data._decisionCurrent = current;
+          return data;
+        });
+      },
+      detailUrl: function (oppId) {
+        return (
+          "/api/group-demand-intelligence/hotels/" +
+          encodeURIComponent(state.hotelId) +
+          "/opportunities/" +
+          encodeURIComponent(oppId)
         );
-      });
+      },
+      buildValidationHtml: function (o) {
+        if (!UI.customerFeedbackLifecycleHtml) return "";
+        var dataCurrent = o && o.commercialProgression ? o.commercialProgression : null;
+        return UI.customerFeedbackLifecycleHtml(
+          o,
+          UI.CUSTOMER_VALIDATION_ENUMS || {},
+          {
+            canValidate: true,
+            canRecordAction: true,
+            canRecordOutcome: true,
+          },
+          dataCurrent
+        );
+      },
+      afterDetailRender: function () {
+        wireDetailLifecycleControls();
+      },
+    });
   }
 
   function wireDetailLifecycleControls() {
