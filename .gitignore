@@ -129,5 +129,25 @@ reports/ai-admin-table-parity/_more-menu-fixture*.html
 # Local-only ADP share bearer (never commit)
 reports/adp-six-hotel-e2e/**/PRODUCTION_SHARE_URL.local.txt
 reports/**/*.local.txt
+reports/**/*.local.json
+reports/**/_local_only_share_tokens/
 config/client-share/production-share-sealed.local.json
 config/client-share/production-share-sealed.drop.json
+
+# Content-addressed ADP certified baseline backups (local; may contain confidential corpora)
+backups/ADP_CERTIFIED_31_HOTEL_BASELINE_*/
+backups/ADP_CERTIFIED_31_HOTEL_BASELINE_*/**
+
+# Local Railway CLI binary / temp variable dumps (never commit secrets)
+tools/railway-cli/
+
+# ADP durable published store (local/dev mirror of Railway volume — never commit live customer snapshots)
+data/adp-durable-published/**
+!data/adp-durable-published/.gitkeep
+reports/dealality-adp-durable-publication-storage-v1/local-durable-store/
+
+# AVA durable runtime store (local mirror of Railway volume /app/ava-data — never commit runtime audits/PDFs)
+data/ava-data/
+data/ava-data/**
+!data/ava-data/.gitkeep
+reports/dealality-ai-visibility-audit-action-plan-pilot-v1/_durable-runtime-cert/

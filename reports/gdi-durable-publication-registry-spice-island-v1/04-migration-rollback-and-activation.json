@@ -1,0 +1,38 @@
+{
+  "migrationRollback": {
+    "migrate": [
+      "1. Deploy registry module + merge hook behind GDI_PUBLISHED_INVENTORY_REGISTRY_V1=0 (no behavior change)",
+      "2. Create Airtable publication registry table (or payload stamps) matching schema",
+      "3. Mount Railway volume; set GDI_PUBLISHED_INVENTORY_ROOT (mirror) + keep GDI_SHARE_REGISTRY_DIR",
+      "4. Dual-write publish API: Airtable primary, FS mirror secondary",
+      "5. Enable merge flag per hotel after founder GO — Spice first",
+      "6. Do not migrate Waterstone/Bethesda inventories until separate authorization"
+    ],
+    "rollback": [
+      "Set GDI_PUBLISHED_INVENTORY_REGISTRY_V1=0",
+      "Revoke Spice rows in registry (history preserved)",
+      "Share continues on prior Airtable/reviewed-prospect path",
+      "Lib-pack Waterstone fallback unchanged"
+    ]
+  },
+  "activationSequence": {
+    "status": "PREPARED_NOT_EXECUTED",
+    "steps": [
+      "Deploy validated publication infrastructure (flag off initially)",
+      "Verify preservation of all existing published GDI opportunities (Bethesda/Waterstone/etc.)",
+      "Synchronize Spice Island seven approved records into durable registry + Airtable",
+      "Verify production inventory count/classes/titles for Spice",
+      "Issue Spice Island gdishare.v1 capability via issueGdiShareCapability",
+      "Test logged-out external access on /group-demand-intelligence-share.html",
+      "Return verified URL for Sheldon"
+    ],
+    "gdishareReadPath": "After flag enable: loadOppDoc → mergePublishedInventoryIntoOpportunities(hotelId, opportunities) before filterCustomerFacingOpportunities; share sanitize continues unchanged"
+  },
+  "risks": [
+    "Enabling merge without dual-write could hide Airtable-only rows if strictPublishedOnly mis-set — default merge is additive",
+    "Railway volume not yet attached — FS mirror empty until mount + env",
+    "Migrating Waterstone away from lib pack without registry rows would drop share inventory — out of scope until separate GO",
+    "Share token issuance still requires production GDI_SHARE_CAPABILITY_SECRET (already configured)",
+    "Classification approval ≠ publication approval — this package stops before sync/token"
+  ]
+}
