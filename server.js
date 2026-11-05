@@ -2166,6 +2166,7 @@ app.get("/app/home-original.html", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'app', 'home-original.html'));
 });
 // Serve app subfolder assets (dashboard.css, dashboard.js, dashboard-adapter.js)
+// AVA Admin UI lives at /app/admin/ai-demand-admin.html (public/app/admin/ai-demand-admin.html).
 app.use("/app", express.static(path.join(__dirname, 'public', 'app')));
 app.get("/brand-setup", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'brand-setup.html'));
