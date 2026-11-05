@@ -1,0 +1,442 @@
+/**
+ * AI Visibility Audit & Action Plan — PDF presentation additions.
+ * Cover chrome must match ADP monthly review host rules exactly
+ * (adp-monthly-review-report-v1.css .adp-mr-pdf-host .bas-cover-*).
+ * This file only adds audit-specific layout helpers.
+ */
+
+/* Ensure shared ADP cover sizing applies when mounted under ava host */
+.ava-pdf-host.adp-mr-pdf-host .bas-cover-page.bas-book-page-surface,
+.adp-mr-pdf-host .bas-cover-page.bas-book-page-surface {
+  width: 100%;
+  min-height: calc(297mm - 14mm - 20mm);
+  max-height: calc(297mm - 14mm - 20mm);
+  height: auto;
+  margin: 0;
+  box-shadow: none;
+  background: #080f25 !important;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  overflow: hidden;
+}
+
+.ava-pdf-host .bas-cover-geometric,
+.ava-pdf-host .bas-cover-geometric::before,
+.ava-pdf-host .bas-cover-geometric::after {
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+  opacity: 1 !important;
+}
+
+.ava-report-body {
+  color: #101935;
+  background: #fff;
+}
+
+.ava-section {
+  break-inside: auto;
+  page-break-inside: auto;
+}
+
+/* Executive briefing — prefer keeping together, but NEVER clip overflow.
+   V4 reports allow natural page breaks so long summaries are not truncated. */
+.ava-exec-page {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.ava-report-v4 .ava-exec-page {
+  break-inside: auto;
+  page-break-inside: auto;
+}
+
+.ava-report-v4 .ava-exec-takeaway {
+  break-inside: auto;
+  page-break-inside: auto;
+}
+
+.ava-exec-page .drs-section-h {
+  margin-bottom: 6pt;
+}
+
+.ava-exec-assessment {
+  margin: 0 0 7pt;
+}
+
+.ava-exec-assessment__headline {
+  margin: 0 0 4pt;
+  font-size: 11.5pt;
+  font-weight: 700;
+  line-height: 1.28;
+  color: #101935;
+}
+
+.ava-exec-assessment__lead {
+  margin: 0 0 3pt;
+  max-width: none;
+}
+
+.ava-exec-assessment__lead:last-child {
+  margin-bottom: 0;
+}
+
+.ava-exec-subhead {
+  margin: 8pt 0 4pt;
+}
+
+.ava-exec-page .drs-kpi-band {
+  margin: 0 0 3pt;
+}
+
+.ava-exec-page .drs-kpi {
+  padding: 6pt 9pt;
+}
+
+.ava-exec-metrics-note {
+  margin: 0 0 1pt;
+  font-size: 8.5pt;
+  line-height: 1.35;
+}
+
+.ava-exec-themes {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 5pt;
+  margin: 0 0 1pt;
+}
+
+.ava-exec-theme {
+  margin: 0;
+  padding: 4pt 0 4pt 8pt;
+  border-left: 3px solid #c5c9f5;
+}
+
+.ava-exec-theme__title {
+  margin: 0 0 2pt;
+  font-size: 10pt;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #101935;
+}
+
+.ava-exec-theme__what,
+.ava-exec-theme__why {
+  margin: 0;
+  font-size: 9.5pt;
+  line-height: 1.38;
+  color: #101935;
+}
+
+.ava-exec-theme__why {
+  margin-top: 1pt;
+  color: #2d3748;
+}
+
+.ava-exec-theme__why-label {
+  font-weight: 700;
+  color: #101935;
+}
+
+.ava-exec-priority-table {
+  margin: 0 0 7pt;
+}
+
+.ava-exec-priority-table th,
+.ava-exec-priority-table td {
+  vertical-align: top;
+  padding-top: 3pt;
+  padding-bottom: 3pt;
+}
+
+.ava-exec-takeaway {
+  margin: 0;
+  padding: 6pt 9pt;
+  background: #f4f6fc;
+  border-left: 3px solid #6c72ff;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.ava-exec-takeaway__label {
+  margin: 0 0 2pt;
+  font-size: 7.5pt;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6c72ff;
+}
+
+.ava-exec-takeaway__text {
+  margin: 0;
+  font-size: 10pt;
+  line-height: 1.38;
+  font-weight: 600;
+  color: #101935;
+}
+
+.ava-finding-title {
+  margin: 0 0 4pt;
+  font-size: 11pt;
+  color: #101935;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.ava-report .drs-callout__eyebrow {
+  margin: 0 0 2pt;
+  font-size: 7.5pt;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6c72ff;
+  font-weight: 700;
+}
+
+.ava-decision-list {
+  margin: 6pt 0 0;
+  padding-left: 1.2rem;
+}
+
+.ava-decision-item {
+  margin: 0 0 8pt;
+  break-inside: avoid;
+}
+
+.ava-decision-title {
+  margin: 0 0 2pt;
+  font-size: 10.5pt;
+  font-weight: 700;
+  color: #101935;
+}
+
+.ava-evidence-list {
+  margin: 2pt 0 0;
+  padding-left: 1.1rem;
+}
+
+.ava-evidence-item {
+  margin: 0 0 3pt;
+  font-size: 9pt;
+  line-height: 1.4;
+  color: #101935;
+}
+
+.ava-evidence-kind {
+  display: block;
+  font-size: 7pt;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6c72ff;
+  font-weight: 700;
+  margin-bottom: 1pt;
+}
+
+.ava-evidence-link {
+  color: #3b45c8;
+  text-decoration: underline;
+  word-break: break-word;
+}
+
+.ava-evidence-note {
+  color: #4a5568;
+}
+
+.ava-tech-panel {
+  margin: 8pt 0 0;
+  padding: 8pt 10pt;
+  background: #f7f8fc;
+  border: 1px solid #d9e1fa;
+  border-left: 3px solid #6c72ff;
+}
+
+.ava-tech-panel__title {
+  margin: 0 0 2pt;
+  font-size: 9pt;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #101935;
+}
+
+.ava-overview-keep {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.ava-overview-table table,
+.ava-roadmap-table table {
+  font-size: 8.5pt;
+}
+
+.ava-overview-table th,
+.ava-overview-table td,
+.ava-roadmap-table th,
+.ava-roadmap-table td {
+  vertical-align: top;
+}
+
+.ava-overview-relevance {
+  display: inline-block;
+  margin-top: 2pt;
+  color: #4a5568;
+  font-size: 8pt;
+  line-height: 1.35;
+}
+
+.ava-completion-list {
+  margin: 2pt 0 0;
+  padding-left: 1.1rem;
+}
+
+.ava-completion-list li {
+  margin: 0 0 3pt;
+  font-size: 9pt;
+  line-height: 1.4;
+}
+
+.ava-action .drs-action__keep {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.ava-method-close {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  /* Clean end after Suggested Next Step; confidentiality stays in the print footer only. */
+  padding-bottom: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.ava-da-section {
+  break-inside: auto;
+  page-break-inside: auto;
+}
+
+.ava-da-mode,
+.ava-da-disclaimer {
+  font-size: 8.5pt;
+  line-height: 1.35;
+  margin: 0 0 8pt;
+}
+
+.ava-da-exec {
+  margin: 0 0 10pt;
+  padding: 6pt 9pt;
+  background: #f4f6fc;
+  border-left: 3px solid #6c72ff;
+}
+
+.ava-da-opps {
+  display: grid;
+  gap: 7pt;
+  margin: 0 0 8pt;
+}
+
+.ava-da-opp {
+  padding: 4pt 0 4pt 8pt;
+  border-left: 3px solid #c5c9f5;
+}
+
+.ava-da-opp__title {
+  margin: 0 0 2pt;
+  font-size: 10pt;
+  font-weight: 700;
+  color: #101935;
+}
+
+.ava-da-opp__meta {
+  margin: 0 0 2pt;
+  font-size: 8pt;
+  color: #4a5568;
+}
+
+.ava-da-opp__link {
+  margin: 2pt 0 0;
+  font-size: 8.5pt;
+}
+
+.ava-da-gap-list,
+.ava-da-action-list {
+  margin: 0 0 8pt;
+  padding-left: 1.15rem;
+  font-size: 9.5pt;
+  line-height: 1.4;
+}
+
+.ava-dcr-section .ava-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 10pt;
+  font-size: 8.5pt;
+  line-height: 1.35;
+}
+
+.ava-dcr-section .ava-table th,
+.ava-dcr-section .ava-table td {
+  border: 1px solid #d7dbe7;
+  padding: 4pt 5pt;
+  vertical-align: top;
+  text-align: left;
+}
+
+.ava-dcr-section .ava-table th {
+  background: #eef1f8;
+  color: #101935;
+  font-weight: 700;
+}
+
+/* V4 closing: keep methodology with roadmap and never orphan trailing words */
+.ava-report-v4 .ava-v4-methodology {
+  margin-top: 10px;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  break-before: avoid-page;
+  page-break-before: avoid;
+}
+
+.ava-report-v4 .ava-v4-methodology__body {
+  margin: 0;
+  orphans: 4;
+  widows: 4;
+}
+
+.ava-report-v4 .ava-v4-closing-block {
+  break-inside: auto;
+}
+
+@media print {
+  .ava-tech-panel {
+    break-inside: auto;
+  }
+  .ava-evidence-link {
+    color: #3b45c8 !important;
+    text-decoration: underline !important;
+  }
+  .ava-section > .drs-section-h,
+  .ava-dcr-section > .drs-section-h,
+  .ava-da-section > .drs-section-h {
+    break-after: avoid-page;
+    page-break-after: avoid;
+  }
+  .ava-section,
+  .ava-da-section,
+  .ava-dcr-section {
+    break-inside: auto;
+  }
+  .ava-report-v4 .ava-v4-methodology {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    break-before: avoid-page;
+    page-break-before: avoid;
+  }
+  .ava-report-v4 .ava-v4-methodology__body {
+    orphans: 4;
+    widows: 4;
+  }
+  .drs-action__keep,
+  .ava-overview-keep,
+  .drs-callout {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}

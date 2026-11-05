@@ -1,0 +1,151 @@
+{
+  "ok": true,
+  "at": "2026-11-05T11:32:04.724Z",
+  "base": "http://localhost:8081",
+  "checks": [
+    {
+      "id": "hotels-load",
+      "pass": true,
+      "detail": {
+        "status": 200,
+        "count": 38
+      }
+    },
+    {
+      "id": "bethesda-present",
+      "pass": true,
+      "detail": {
+        "propertyId": "adp_bethesda_marriott",
+        "name": "Bethesda Marriott",
+        "market": "Bethesda",
+        "website": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+        "adpBaselinePeriodId": "adp_period_adp_bethesda_marriott_20261002142154_62428a",
+        "adpBaselineOk": true,
+        "auditStatus": "AUDIT_VALIDATED",
+        "acceptedRecommendationCount": 4,
+        "researchCostUsd": 0,
+        "evidenceReviewStatus": "AUDIT_VALIDATED",
+        "pdfStatus": "STAGED",
+        "customerReadinessStatus": "NOT_CUSTOMER_READY",
+        "publicationAuthorizationStatus": "NOT_AUTHORIZED",
+        "latestVersionId": "ava_v1_phase8_bethesda_marriott_phase8_direct_decision_decision_decision"
+      }
+    },
+    {
+      "id": "bethesda-evidence-aligned",
+      "pass": true,
+      "detail": {
+        "auditStatus": "AUDIT_VALIDATED",
+        "evidenceReviewStatus": "AUDIT_VALIDATED"
+      }
+    },
+    {
+      "id": "waterstone-three-actions",
+      "pass": true,
+      "detail": {
+        "propertyId": "adp_waterstone_boca_raton",
+        "name": "Waterstone Resort & Marina",
+        "market": "Boca Raton",
+        "website": "https://www.waterstoneresort.com/",
+        "adpBaselinePeriodId": "adp_period_adp_waterstone_boca_raton_20260902231159_77334c",
+        "adpBaselineOk": true,
+        "auditStatus": "AUDIT_VALIDATED",
+        "acceptedRecommendationCount": 3,
+        "researchCostUsd": 0,
+        "evidenceReviewStatus": "AUDIT_VALIDATED",
+        "pdfStatus": "STAGED",
+        "customerReadinessStatus": "NOT_CUSTOMER_READY",
+        "publicationAuthorizationStatus": "NOT_AUTHORIZED",
+        "latestVersionId": "ava_v1_phase8_waterstone_boca_raton"
+      }
+    },
+    {
+      "id": "decision-persist",
+      "pass": true,
+      "detail": {
+        "status": 200,
+        "evidenceReviewStatus": "AUDIT_VALIDATED",
+        "auditStatus": "AUDIT_VALIDATED"
+      }
+    },
+    {
+      "id": "decision-no-evidence-downgrade",
+      "pass": true,
+      "detail": "AUDIT_VALIDATED"
+    },
+    {
+      "id": "decision-no-status-change",
+      "pass": true,
+      "detail": "AUDIT_VALIDATED"
+    },
+    {
+      "id": "version-history-grew",
+      "pass": true,
+      "detail": {
+        "before": "ava_v1_phase8_bethesda_marriott_phase8_direct_decision_decision_decision",
+        "after": "ava_v1_phase8_bethesda_marriott_phase8_direct_decision_decision_decision_decision"
+      }
+    },
+    {
+      "id": "prior-version-accessible",
+      "pass": true,
+      "detail": "ava_v1_phase8_bethesda_marriott_phase8_direct_decision_decision_decision"
+    },
+    {
+      "id": "generate-cannot-publish",
+      "pass": true,
+      "detail": {
+        "status": 403,
+        "error": "PUBLICATION_BLOCKED"
+      }
+    },
+    {
+      "id": "founder-requires-flag",
+      "pass": true,
+      "detail": {
+        "status": 403,
+        "error": "FOUNDER_APPROVAL_FLAG_REQUIRED"
+      }
+    },
+    {
+      "id": "pdf-preview",
+      "pass": true,
+      "detail": {
+        "status": 200,
+        "type": "application/pdf"
+      }
+    },
+    {
+      "id": "recommendations",
+      "pass": true,
+      "detail": {
+        "count": 4
+      }
+    },
+    {
+      "id": "regression:/api/admin/ai-demand-positioning/monthly-reviews",
+      "pass": true,
+      "detail": 200
+    },
+    {
+      "id": "regression:/api/admin/ai-demand-positioning/action-plan-catalog",
+      "pass": true,
+      "detail": 200
+    },
+    {
+      "id": "regression:/app/admin/ai-demand-admin.html",
+      "pass": true,
+      "detail": 200
+    },
+    {
+      "id": "no-customer-ready",
+      "pass": true,
+      "detail": {
+        "customer": "NOT_CUSTOMER_READY",
+        "publication": "NOT_AUTHORIZED",
+        "status": "AUDIT_VALIDATED"
+      }
+    }
+  ],
+  "failed": []
+}
