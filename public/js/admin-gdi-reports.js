@@ -174,7 +174,52 @@
       adpClient: { available: adpAvail },
       displayName: h.displayName || h.hotelName || h.hotelId,
       market: h.market || null,
+      fullContentParityStatus: h.fullContentParityStatus || null,
+      publishedOpportunityCount:
+        h.publishedOpportunityCount == null
+          ? null
+          : Number(h.publishedOpportunityCount) || 0,
+      publicationVersion: h.publicationVersion || null,
+      lastParityVerifiedAt: h.lastParityVerifiedAt || null,
+      parityCriticalDifferenceCount:
+        Number(h.parityCriticalDifferenceCount || 0) || 0,
+      parityDifferences: Array.isArray(h.parityDifferences)
+        ? h.parityDifferences
+        : [],
+      parityMigrationCandidate: h.parityMigrationCandidate || null,
     });
+  }
+
+  function parityStatusKind(status) {
+    var s = String(status || "").toUpperCase();
+    if (s === "VERIFIED") return "ok";
+    if (s === "MISMATCH") return "warn";
+    if (s === "NOT_VERIFIABLE") return "warn";
+    if (s === "VERIFICATION_PENDING") return "warn";
+    return "muted";
+  }
+
+  function parityCell(h) {
+    var st = h.fullContentParityStatus || "NOT_PUBLISHED";
+    var titleParts = [
+      "Published: " +
+        (h.publishedOpportunityCount == null ? "—" : h.publishedOpportunityCount),
+      "Version: " + (h.publicationVersion || "—"),
+      "Last verify: " + (T.fmtDateTime(h.lastParityVerifiedAt) || "—"),
+    ];
+    if (h.parityCriticalDifferenceCount) {
+      titleParts.push("Differences: " + h.parityCriticalDifferenceCount);
+    }
+    if (h.parityMigrationCandidate) {
+      titleParts.push("Migration: " + h.parityMigrationCandidate);
+    }
+    return (
+      "<td title=\"" +
+      T.esc(titleParts.join(" · ")) +
+      "\">" +
+      T.statusBadge(parityStatusKind(st), st) +
+      "</td>"
+    );
   }
 
   function countsFromRows(rows) {
@@ -368,6 +413,18 @@
           rowBusy[row.hotelId] === "GENERATING"
             ? "Generation already running"
             : "Regenerate GDI PDF",
+      });
+    }
+    more.push({
+      label: "Verify Full Content Parity",
+      act: "verify-parity",
+      title: "Compare approved / published / share presentation (read-only)",
+    });
+    if (row.parityCriticalDifferenceCount > 0) {
+      more.push({
+        label: "View Parity Differences",
+        act: "view-parity-diffs",
+        title: row.parityCriticalDifferenceCount + " difference(s) detected",
       });
     }
     more.push({ label: "Report Archive", act: "archive" });
@@ -633,7 +690,7 @@
 
     if (!view.rows.length) {
       body.innerHTML =
-        '<tr><td colspan="11">No GDI hotels match the current filters.</td></tr>';
+        '<tr><td colspan="12">No GDI hotels match the current filters.</td></tr>';
       return;
     }
 
@@ -657,6 +714,7 @@
           "<td>" +
           T.statusBadge(reportStatusKind(h.reportStatus), reportStatusLabel(h.reportStatus)) +
           "</td>" +
+          parityCell(h) +
           "<td>" +
           T.statusBadge(
             st === "READY" ? "ok" : st === "FAILED" || st === "MISSING" ? "warn" : "warn",
@@ -842,6 +900,83 @@
     setStatus("Opening Report Archive for " + (hotelName || hotelId) + " (GDI).");
   }
 
+  async function verifyParity(hotelId) {
+    setStatus("Verifying full-content parity for " + hotelId + "…");
+    try {
+      var res = await authFetch(
+        "/api/admin/group-demand-intelligence/hotels/" +
+          encodeURIComponent(hotelId) +
+          "/full-content-parity/verify",
+        { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" }
+      );
+      var json = await res.json();
+      if (!res.ok) {
+        setStatus(
+          "Parity verify failed: " + ((json && json.error) || res.status)
+        );
+        return;
+      }
+      setStatus(
+        "Parity " +
+          (json.status || (json.ok ? "VERIFIED" : "MISMATCH")) +
+          " · " +
+          ((json.verify && json.verify.publishedOpportunityCount) || 0) +
+          " published · " +
+          ((json.verify &&
+            json.verify.criticalDifferences &&
+            json.verify.criticalDifferences.length) ||
+            0) +
+          " critical differences"
+      );
+      await loadCatalog();
+    } catch (err) {
+      setStatus("Parity verify failed: " + String(err.message || err));
+    }
+  }
+
+  function viewParityDiffs(hotelId) {
+    var row = catalog.find(function (r) {
+      return r.hotelId === hotelId;
+    });
+    if (!row) {
+      setStatus("Hotel not found in catalog.");
+      return;
+    }
+    var diffs = row.parityDifferences || [];
+    if (!diffs.length) {
+      setStatus(
+        "No stored differences for " +
+          (row.displayName || hotelId) +
+          ". Run Verify Full Content Parity first."
+      );
+      return;
+    }
+    var lines = diffs.slice(0, 25).map(function (d, i) {
+      return (
+        i +
+        1 +
+        ". " +
+        (d.opportunityId || "?") +
+        " · " +
+        (d.fieldPath || "?") +
+        "\n   approved: " +
+        JSON.stringify(d.approvedValue) +
+        "\n   published: " +
+        JSON.stringify(d.publishedValue) +
+        "\n   cause: " +
+        (d.rootCause || "—")
+      );
+    });
+    window.alert(
+      "Full Content Parity differences — " +
+        (row.displayName || hotelId) +
+        "\nStatus: " +
+        (row.fullContentParityStatus || "—") +
+        "\n\n" +
+        lines.join("\n\n")
+    );
+  }
+
   function onTableClick(ev) {
     var check = ev.target.closest("input.ada-row-check");
     if (check) {
@@ -866,6 +1001,8 @@
     else if (act === "copy-gdi") openOrCopyClient(hotelId, "gdi", "copy");
     else if (act === "open-adp") openOrCopyClient(hotelId, "adp", "open");
     else if (act === "copy-adp") openOrCopyClient(hotelId, "adp", "copy");
+    else if (act === "verify-parity") verifyParity(hotelId);
+    else if (act === "view-parity-diffs") viewParityDiffs(hotelId);
     else if (act === "archive") openArchive(hotelId, hotelName || "");
   }
 

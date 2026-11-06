@@ -152,6 +152,10 @@ import {
   getAdminGdiReportPdf,
 } from "./api/admin-gdi-reports.js";
 import {
+  getAdminGdiFullContentParityInventory,
+  postAdminGdiFullContentParityVerify,
+} from "./api/admin-gdi-full-content-parity.js";
+import {
   getAdminExternalClientLinks,
   getInternalExternalClientLinks,
 } from "./api/admin-external-client-links.js";
@@ -1571,6 +1575,16 @@ app.get(
   "/api/admin/group-demand-intelligence/hotels/:hotelId/report-pdf",
   ...adpMonthlyReviewAdminAuth,
   getAdminGdiReportPdf
+);
+app.get(
+  "/api/admin/group-demand-intelligence/full-content-parity",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminGdiFullContentParityInventory
+);
+app.post(
+  "/api/admin/group-demand-intelligence/hotels/:hotelId/full-content-parity/verify",
+  ...adpMonthlyReviewAdminAuth,
+  postAdminGdiFullContentParityVerify
 );
 app.get(
   "/api/admin/ai-demand/hotels/:hotelId/external-client-links",

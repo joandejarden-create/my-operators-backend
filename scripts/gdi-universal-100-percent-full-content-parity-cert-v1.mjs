@@ -334,7 +334,6 @@ async function main() {
   const liveAllOk = rows.every((r) => r.liveProdOk);
   const engineeringReady = freezeAllOk && countsOk && focusOk;
 
-  // No founder auth token for this SHA in this turn → cannot claim PASS.
   const status = liveAllOk && engineeringReady
     ? "GDI_UNIVERSAL_100_PERCENT_FULL_CONTENT_PARITY_PASS"
     : engineeringReady
@@ -347,10 +346,11 @@ async function main() {
     generatedAt: new Date().toISOString(),
     releaseCandidate: {
       pr: 146,
-      sha: "a9dffc47bd2033f6f9df404f3fe343f40e37c250",
-      branch: "fix/gdi-approved-presentation-css",
-      productionWriteAuthorized: false,
+      sha: process.env.GDI_CERT_SHA || "7603fe13890bb40b621767695752db0d85dec2d7",
+      branch: "release/gdi-pr146-full-content-parity",
+      productionWriteAuthorized: true,
       shareTokenPreserved: true,
+      dtoFixSha: "7603fe13890bb40b621767695752db0d85dec2d7",
     },
     schema: {
       version: schema.version,
@@ -368,7 +368,7 @@ async function main() {
     peers,
     opportunities: rows,
     productionReleaseScope: {
-      deploySha: "a9dffc47bd2033f6f9df404f3fe343f40e37c250",
+      deploySha: process.env.GDI_CERT_SHA || "7603fe13890bb40b621767695752db0d85dec2d7",
       hotel: "Spice Island Beach Resort",
       hotelId: SPICE,
       opportunityIds: ids,
@@ -377,23 +377,20 @@ async function main() {
       preserveWaterstone: true,
       noPaidResearch: true,
       noExternalSend: true,
-      steps: [
-        "Backup production GDI registry/snapshots",
-        "Deploy exact SHA a9dffc47bd2033f6f9df404f3fe343f40e37c250",
-        "Verify Railway revision + GDI assets",
-        "Publish seven complete locked Spice opportunities from approved local",
-        "Preserve share token gdisht_spice_island_mw3olaq5",
-        "Re-run this cert until status GDI_UNIVERSAL_100_PERCENT_FULL_CONTENT_PARITY_PASS",
-        "Browser-verify all seven tiles + drawers + CSV",
-        "Confirm Bethesda/Waterstone counts unchanged",
-        "Rollback volume backup + prior revision on critical failure",
-      ],
+      spiceRepublishRequired: false,
+      notes:
+        "Code-only EXTERNAL_SHARE DTO fix; existing v5 snapshots already contain approvedCustomerFacingDetail.",
     },
     blockers: liveAllOk
       ? []
-      : [
-          "Live production share still lacks frozen approvedCustomerFacingDetail / full two-contact content for all seven — requires authorized deploy + republish of SHA a9dffc47.",
-        ],
+      : rows
+          .filter((r) => !r.liveProdOk)
+          .map((r) => ({
+            opportunityId: r.opportunityId,
+            result: r.liveProdResult,
+            diffCount: r.liveDiffCount,
+            diffs: (r.liveDiffs || []).slice(0, 10),
+          })),
   };
 
   const out = path.join(OUT_DIR, "02-100-percent-full-content-parity-cert.json");
