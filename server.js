@@ -20,7 +20,7 @@ const serverPath = new URL(import.meta.url).pathname;
 const cwd = process.cwd();
 const cwdBase = cwd.replace(/[\\/]+$/, "").split(/[\\/]/).pop() || "";
 const listenPort = Number(process.env.PORT || 8080);
-const isCanonicalCheckout = cwdBase === "my-operators-backend";
+const isCanonicalCheckout = cwdBase === "my-operators-backend" || cwdBase === "my-operators-backend-canonical-main" || process.env.DEALALITY_CANONICAL_CHECKOUT === "1";
 const isDealalityWorktree = /^my-operators-backend($|-)/.test(cwdBase);
 console.log("Using server file:", serverPath);
 console.log("Working directory:", cwd);
@@ -3690,7 +3690,7 @@ try {
   process.exit(1);
 }
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`✅ Server running at http://localhost:${PORT}`);
   try {
     logAdpPublishedReadSourceAtStartup();
@@ -3766,4 +3766,12 @@ app.listen(PORT, () => {
   console.log("   GET /api/operator-alignment-snapshot/:dealId/profile");
   console.log("   GET /api/operator-alignment-snapshot/:dealId/companies");
   startMarketAlertsRssScheduler();
+});
+
+server.on("error", (err) => {
+  if (err && err.code === "EADDRINUSE") {
+    console.error(`[dealality-dev] FATAL: port ${PORT} is already in use.`);
+    process.exit(1);
+  }
+  throw err;
 });

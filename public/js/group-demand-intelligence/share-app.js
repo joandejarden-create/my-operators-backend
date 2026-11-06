@@ -647,7 +647,11 @@
     if (!rows.length) {
       return (
         chrome +
-        '<div class="gdi-empty">No customer-ready opportunities are available for this property yet.</div>'
+        '<div class="gdi-empty">' +
+          (state.visibilityWarning && state.visibilityWarning.publicationDataConnection === false
+            ? "Unable to load approved opportunities. Check publication data connection."
+            : "No customer-ready opportunities are available for this property yet.") +
+          "</div>"
       );
     }
     return chrome + PC.renderOpportunityCardsHtml(state, UI, rows);

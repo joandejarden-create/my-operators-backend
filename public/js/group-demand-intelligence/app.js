@@ -583,9 +583,16 @@
       }
       var warn = state.visibilityWarning;
       if (warn && warn.message) {
+        var pubFail =
+          warn.publicationDataConnection === false ||
+          String(warn.code || "").indexOf("REGISTRY") === 0 ||
+          String(warn.code || "") === "HOTEL_NOT_IN_ALLOWLIST" ||
+          String(warn.code || "") === "REGISTRY_FLAG_OFF";
         return (
           '<div class="gdi-empty gdi-empty--error" role="alert">' +
-          "<strong>Visibility configuration issue.</strong> " +
+          (pubFail
+            ? "<strong>Unable to load approved opportunities.</strong> "
+            : "<strong>Visibility configuration issue.</strong> ") +
           esc(warn.message) +
           (warn.reviewedInStore
             ? " (" +
