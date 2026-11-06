@@ -47,20 +47,28 @@ async function runHotelA() {
 }
 
 async function runHotelB() {
+  // After 17-hotel current-period refresh, Cambridge is pinned to current ADP
+  // (…20261105215424_e93d82). Historical measured-zero handling is covered by
+  // permanent-runner regression 5b + AC Coruña versioning/compare below.
   const r = await runPermanentAvaAudit("adp_cambridge_beaches_bermuda", {
     mode: "certify-only",
   });
-  const isHistorical =
-    r.crossReport?.status === "CERTIFIED_HISTORICAL_REFERENCE" ||
-    r.identity?.certificationStatus === "HISTORICAL_REFERENCE";
+  const periodAligned =
+    Boolean(r.identity?.adpPeriodId) &&
+    r.identity?.adpPeriodId === r.inputManifest?.adp?.selectedPeriodId;
+  const isCurrentMatch =
+    r.crossReport?.status === "CERTIFIED_MATCH" && periodAligned;
   const wronglyShownAsCurrentMatch =
-    r.crossReport?.status === "CERTIFIED_MATCH" &&
-    r.identity?.adpPeriodId !== r.inputManifest?.adp?.selectedPeriodId;
+    r.crossReport?.status === "CERTIFIED_MATCH" && !periodAligned;
   return {
     hotel: "Cambridge Beaches Resort & Spa",
     propertyId: "adp_cambridge_beaches_bermuda",
-    purpose: "historical-period handling",
-    ok: r.ok === true && isHistorical && r.crossReport?.jointPublicationAllowed !== true,
+    purpose: "current-period CERTIFIED_MATCH after ADP re-pin",
+    ok:
+      r.ok === true &&
+      isCurrentMatch &&
+      r.crossReport?.jointPublicationAllowed === true &&
+      !wronglyShownAsCurrentMatch,
     exitCode: r.exitCode,
     auditRunId: r.auditRunId,
     crossReportStatus: r.crossReport?.status,
@@ -68,7 +76,8 @@ async function runHotelB() {
     jointPublicationAllowed: r.crossReport?.jointPublicationAllowed === true,
     avaPeriodId: r.identity?.adpPeriodId,
     selectedCustomerPeriodId: r.inputManifest?.adp?.selectedPeriodId,
-    historicalExplicit: isHistorical,
+    historicalExplicit: false,
+    currentPeriodCertifiedMatch: isCurrentMatch,
     notSilentCurrentMatch: !wronglyShownAsCurrentMatch,
     pdfSha256: r.pdfSha256,
     archiveDir: r.archiveDir,
@@ -316,7 +325,11 @@ report.admin.acV2 = await adminApiProbe(
 
 report.summary = {
   spiceCertifiedMatch: report.hotels.spice.crossReportStatus === "CERTIFIED_MATCH",
-  cambridgeHistorical: report.hotels.cambridge.historicalExplicit === true,
+  cambridgeCurrentPeriodMatch:
+    report.hotels.cambridge.currentPeriodCertifiedMatch === true &&
+    report.hotels.cambridge.ok === true,
+  // Retained for manifest compatibility; Cambridge is no longer a historical pin.
+  cambridgeHistorical: false,
   acVersioning: report.hotels.acCoruna.ok === true,
   reproductionClass: report.reproduction.classification,
   adminPdfIntegrity:
@@ -331,7 +344,7 @@ fs.writeFileSync(out, `${JSON.stringify(report, null, 2)}\n`);
 console.log(JSON.stringify({ out, summary: report.summary }, null, 2));
 process.exit(
   report.summary.spiceCertifiedMatch &&
-    report.summary.cambridgeHistorical &&
+    report.summary.cambridgeCurrentPeriodMatch &&
     report.summary.acVersioning &&
     report.summary.adminPdfIntegrity
     ? 0

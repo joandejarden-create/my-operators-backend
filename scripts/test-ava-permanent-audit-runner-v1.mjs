@@ -23,6 +23,7 @@ import {
 import { loadAuditRun, listAuditRunsForProperty } from "../lib/ai-visibility-audit-action-plan/ava-audit-run-archive-v1.js";
 import {
   reconcileAvaPayloadAgainstAdp,
+  loadAuthoritativeAdpReference,
   ZERO_VERDICTS,
 } from "../lib/ai-visibility-audit-action-plan/adp-ava-reference-contract-v1.js";
 import {
@@ -30,6 +31,49 @@ import {
   ADP_AVA_CERTIFICATION_STATUS,
 } from "../lib/ai-visibility-audit-action-plan/adp-ava-permanent-cross-report-certification-v1.js";
 import { AVA_AUDIT_EXECUTION_CONTRACT } from "../lib/ai-visibility-audit-action-plan/ava-audit-execution-contract-v1.js";
+
+/** Version-bound pin for Cambridge current-period ADP (values loaded live from lean/realityGap). */
+const CAMBRIDGE_CURRENT_PERIOD_PIN = Object.freeze({
+  propertyId: "adp_cambridge_beaches_bermuda",
+  periodId: "adp_period_adp_cambridge_beaches_bermuda_20261105215424_e93d82",
+  leanBaselineSha256:
+    "bfb1396373e9002ae3164b6f32ecf637a996ebfbc2ccff3d25ec1a69686d6aae",
+  historicalPeriodId:
+    "adp_period_adp_cambridge_beaches_bermuda_20260903010829_044437",
+  attributeId: "on_site_restaurant",
+  attributeLabel: "On-Site Restaurant",
+});
+
+function cambridgeOnSiteRestaurantFromAdp() {
+  const adp = loadAuthoritativeAdpReference(CAMBRIDGE_CURRENT_PERIOD_PIN.propertyId);
+  assert.equal(adp.ok, true, adp.error || "Cambridge lean pin missing");
+  assert.equal(adp.periodId, CAMBRIDGE_CURRENT_PERIOD_PIN.periodId);
+  assert.equal(adp.baselineSha256, CAMBRIDGE_CURRENT_PERIOD_PIN.leanBaselineSha256);
+  const rows = [
+    ...(adp.realityGap?.gaps || []),
+    ...(adp.realityGap?.recognized || []),
+    ...(adp.realityGap?.attributes || []),
+  ];
+  const attr = rows.find(
+    (a) => String(a.attribute || "") === CAMBRIDGE_CURRENT_PERIOD_PIN.attributeId
+  );
+  assert.ok(attr, "current-period ADP realityGap missing on_site_restaurant");
+  assert.equal(attr.measurementState, "TESTED_RECOGNIZED");
+  assert.ok(Number(attr.total) > 0, "eligible denominator required");
+  assert.notEqual(attr.recognitionRate, null);
+  // recognitionRate must equal count/total (certified measurement math)
+  const derived =
+    Math.round((Number(attr.count) / Number(attr.total)) * 1000) / 10;
+  assert.equal(Number(attr.recognitionRate), derived);
+  return {
+    adp,
+    attr,
+    recognitionRate: Number(attr.recognitionRate),
+    numerator: Number(attr.count),
+    denominator: Number(attr.total),
+    measurementState: String(attr.measurementState),
+  };
+}
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PAYLOAD_DIR = path.join(ROOT, "lib/ai-visibility-audit-action-plan/payloads");
@@ -85,19 +129,95 @@ console.log("4) Full portfolio dry-run (38)");
   assert.ok(all.results.every((r) => r.dryRun === true));
 }
 
-console.log("5) Measured zero preserved");
+console.log("5a) Cambridge current-period On-Site Restaurant matches certified ADP recognitionRate");
 {
-  const result = reconcileAvaPayloadAgainstAdp(loadPayload("cambridge-beaches-bermuda-v1.json"));
-  const zeros = (result.zeros || []).filter((z) =>
-    /restaurant/i.test(z.label || "")
+  const certified = cambridgeOnSiteRestaurantFromAdp();
+  const payload = loadPayload("cambridge-beaches-bermuda-v1.json");
+  assert.equal(
+    payload.reporting?.adpPeriodId,
+    CAMBRIDGE_CURRENT_PERIOD_PIN.periodId,
+    "AVA payload must bind current ADP period"
   );
-  assert.ok(zeros.length >= 1 || (result.zeros || []).some((z) => z.zeroVerdict === ZERO_VERDICTS.MEASURED_ZERO));
-  for (const z of result.zeros || []) {
-    if (z.zeroVerdict === ZERO_VERDICTS.MEASURED_ZERO) {
-      assert.equal(z.adp, 0);
-      assert.ok(Number(z.denominator) > 0);
-    }
-  }
+  const result = reconcileAvaPayloadAgainstAdp(payload);
+  assert.equal(result.ok, true, JSON.stringify(result.defects, null, 2));
+  const rest = (result.refs || []).find(
+    (r) =>
+      r.kind === "ATTRIBUTE_RECOGNITION" &&
+      /on.?site.?restaurant/i.test(String(r.label || ""))
+  );
+  assert.ok(rest, "AVA must cite On-Site Restaurant from current ADP realityGap");
+  assert.equal(rest.adp, certified.recognitionRate);
+  assert.equal(rest.ava, certified.recognitionRate);
+  assert.equal(rest.match, true);
+  assert.equal(rest.numerator, certified.numerator);
+  assert.equal(rest.denominator, certified.denominator);
+  assert.equal(rest.measurementState, certified.measurementState);
+  // Stale historical 0% must not appear as the current-period certified value
+  assert.notEqual(certified.recognitionRate, 0);
+  assert.notEqual(rest.ava, 0);
+}
+
+console.log("5b) Historical measured-zero cannot overwrite current-period certified recognition");
+{
+  const certified = cambridgeOnSiteRestaurantFromAdp();
+  assert.ok(certified.recognitionRate > 0);
+  assert.notEqual(ZERO_VERDICTS.MEASURED_ZERO, ZERO_VERDICTS.NOT_MEASURED);
+
+  // Historical observation: measured zero (tested, eligible n>0, rate 0) — distinct from NOT_MEASURED
+  const historicalMeasuredZero = {
+    attribute: CAMBRIDGE_CURRENT_PERIOD_PIN.attributeId,
+    label: CAMBRIDGE_CURRENT_PERIOD_PIN.attributeLabel,
+    recognitionRate: 0,
+    count: 0,
+    total: certified.denominator,
+    measurementState: "TESTED_NOT_RECOGNIZED",
+  };
+  assert.equal(historicalMeasuredZero.recognitionRate, 0);
+  assert.ok(historicalMeasuredZero.total > 0);
+  assert.match(historicalMeasuredZero.measurementState, /TESTED/i);
+  assert.notEqual(historicalMeasuredZero.recognitionRate, certified.recognitionRate);
+
+  // If AVA still narrated the historical 0%, lean/current cert must reject it
+  const stale = structuredClone(loadPayload("cambridge-beaches-bermuda-v1.json"));
+  const staleClaim = `0% recognition for ${CAMBRIDGE_CURRENT_PERIOD_PIN.attributeLabel}`;
+  const currentClaim = `${certified.recognitionRate}% recognition for ${CAMBRIDGE_CURRENT_PERIOD_PIN.attributeLabel}`;
+  const blob = JSON.stringify(stale);
+  assert.ok(blob.includes(currentClaim) || blob.includes(`${certified.recognitionRate}%`), "fixture must contain current rate");
+  const poisoned = JSON.parse(
+    blob.split(String(certified.recognitionRate) + "%").join("0%")
+  );
+  poisoned.reporting = {
+    ...poisoned.reporting,
+    adpPeriodId: CAMBRIDGE_CURRENT_PERIOD_PIN.periodId,
+    adpHistoricalPeriodSuperseded: CAMBRIDGE_CURRENT_PERIOD_PIN.historicalPeriodId,
+  };
+  const staleParity = reconcileAvaPayloadAgainstAdp(poisoned);
+  assert.equal(staleParity.ok, false, "historical 0% must not pass against current ADP pin");
+  assert.ok(
+    (staleParity.defects || []).some(
+      (d) =>
+        d.type === "METRIC_MISMATCH" &&
+        /restaurant/i.test(String(d.metric || d.label || ""))
+    ) ||
+      (staleParity.zeros || []).some(
+        (z) =>
+          /restaurant/i.test(String(z.label || "")) &&
+          z.ava === 0 &&
+          z.adp === certified.recognitionRate
+      ),
+    JSON.stringify(
+      {
+        defects: staleParity.defects,
+        zeros: staleParity.zeros,
+        expectedAdp: certified.recognitionRate,
+        staleClaim,
+      },
+      null,
+      2
+    )
+  );
+  const staleCert = await certifyAvaAgainstCustomerFacingAdp(poisoned);
+  assert.notEqual(staleCert.status, ADP_AVA_CERTIFICATION_STATUS.CERTIFIED_MATCH);
 }
 
 console.log("6) Cross-report mismatch blocks certification");
@@ -228,16 +348,18 @@ console.log("14) Missing audit run reproduce fails explicitly");
   assert.ok(/NOT_FOUND|AUDIT_RUN/i.test(bad.error || ""));
 }
 
-console.log("15) Historical package is not treated as current-period match");
+console.log("15) Cambridge current-period dry-run is CERTIFIED_MATCH (historical pin superseded)");
 {
   const cam = await runPermanentAvaAudit("adp_cambridge_beaches_bermuda", {
     mode: "dry-run",
     env,
   });
-  if (cam.crossReport?.status === "CERTIFIED_HISTORICAL_REFERENCE") {
-    assert.equal(cam.crossReport.jointPublicationAllowed, false);
-    assert.notEqual(cam.crossReport.status, "CERTIFIED_MATCH");
-  }
+  assert.equal(cam.crossReport?.status, ADP_AVA_CERTIFICATION_STATUS.CERTIFIED_MATCH);
+  assert.equal(cam.crossReport?.jointPublicationAllowed, true);
+  assert.equal(
+    cam.identity?.adpPeriodId || cam.crossReport?.crossReportIdentity?.adpPeriodId || null,
+    CAMBRIDGE_CURRENT_PERIOD_PIN.periodId
+  );
 }
 
 console.log("16) Incomplete historical archive download contract");

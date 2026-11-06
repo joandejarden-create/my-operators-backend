@@ -61,7 +61,7 @@ const threeJson = fs.existsSync(threePath)
 gates.AUDIT_EXECUTION_PASS = {
   result:
     threeJson?.summary?.spiceCertifiedMatch &&
-    threeJson?.summary?.cambridgeHistorical &&
+    threeJson?.summary?.cambridgeCurrentPeriodMatch &&
     threeJson?.summary?.acVersioning
       ? "PASS"
       : "FAIL",
@@ -69,10 +69,11 @@ gates.AUDIT_EXECUTION_PASS = {
 };
 
 gates.ADP_AVA_CERTIFICATION_PASS = {
+  // Cambridge re-pinned to current ADP period — expect CERTIFIED_MATCH (not HISTORICAL_REFERENCE).
   result:
     threeJson?.hotels?.spice?.crossReportStatus === "CERTIFIED_MATCH" &&
-    threeJson?.hotels?.cambridge?.crossReportStatus ===
-      "CERTIFIED_HISTORICAL_REFERENCE"
+    threeJson?.hotels?.cambridge?.crossReportStatus === "CERTIFIED_MATCH" &&
+    threeJson?.hotels?.acCoruna?.version2?.crossReportStatus === "CERTIFIED_MATCH"
       ? "PASS"
       : "FAIL",
   evidence: {
