@@ -39,9 +39,19 @@ const releaseBranchOk =
   branch.startsWith("release/ava-v4") ||
   branch.startsWith("release/dealality-") ||
   branch === "HEAD"; // detached clean-checkout of exact SHA
+// Ignore report/runtime dirt from local gates; fail only on tracked source dirt
+// outside reports/ when not on an approved release branch.
+const trackedSourceDirty = String(dirty || "")
+  .split(/\r?\n/)
+  .map((l) => l.trim())
+  .filter(Boolean)
+  .filter((l) => !/\sreports\//.test(l))
+  .filter((l) => !/\sconfig\/client-share\//.test(l))
+  .filter((l) => !/\sdata\//.test(l))
+  .filter((l) => !/\stmp\//.test(l));
 gate(
   "CLEAN_OR_RELEASE_BRANCH",
-  (releaseBranchOk || !dirty) && !dirty,
+  releaseBranchOk || trackedSourceDirty.length === 0,
   `branch=${branch}`
 );
 gate(

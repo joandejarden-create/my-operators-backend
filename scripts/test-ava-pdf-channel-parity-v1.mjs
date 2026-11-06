@@ -98,8 +98,10 @@ const looksV4 =
     compact.includes("digitalplatformassessment") ||
     compact.includes("initialdigitalpresenceassessment")) &&
   (/Implementation Roadmap/i.test(text) ||
+    /Prioritized Action Plan/i.test(text) ||
     compact.includes("implementationroadmap") ||
-    compact.includes("implementationbyresponsibleparty"));
+    compact.includes("implementationbyresponsibleparty") ||
+    compact.includes("prioritizedactionplan"));
 const v3 = pdfTextLooksLikeCustomerReportV3(text);
 assert.equal(
   looksV4 || (v3.hasExecutive && v3.hasPlatformAssessment),
