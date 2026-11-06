@@ -21,6 +21,10 @@ import {
   readActiveLock,
   resolveLockRoot,
 } from "../lib/dealality-production-release/release-lock-v1.js";
+import {
+  assertReleaseChannelAllowed,
+  GITHUB_ACTIONS_CHANNEL,
+} from "../lib/dealality-production-release/release-channel-v1.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -44,6 +48,10 @@ const dryRun = has("--dry-run");
 const authorized = has("--authorize-production-release");
 const statusOnly = has("--status");
 const releaseOnly = has("--release-lock");
+const channelArg = String(arg("--channel") || "").trim();
+if (channelArg) {
+  process.env.DEALALITY_RELEASE_CHANNEL = channelArg;
+}
 const owner =
   String(arg("--owner") || process.env.DEALALITY_RELEASE_OWNER || "").trim() ||
   `${os.hostname()}:${process.pid}`;
@@ -79,6 +87,14 @@ if (!authorized) {
   );
 }
 
+const channelGate = assertReleaseChannelAllowed(process.env, {
+  liveDeploy: !dryRun,
+  channel: process.env.DEALALITY_RELEASE_CHANNEL,
+});
+if (!channelGate.ok) {
+  fail(channelGate.code, channelGate.message, { channel: channelGate.channel });
+}
+
 // Verify working tree SHA when not dry-simulation
 const head = spawnSync("git", ["rev-parse", "HEAD"], {
   cwd: ROOT,
@@ -95,6 +111,7 @@ const acquired = acquireReleaseLock({
   owner,
   authorized: true,
   note: arg("--note") || `coordinator ${product}`,
+  // Local unit tests pass requireSharedRoot:false via env ALLOW_LOCAL / SHARED.
 });
 if (!acquired.ok) {
   fail(acquired.code || "LOCK_FAILED", acquired.message || "lock failed", {
@@ -129,6 +146,8 @@ function writeManifest(phase, extra = {}) {
       shareTokenRotation: false,
       paidResearch: false,
     },
+    channel: channelGate.channel || process.env.DEALALITY_RELEASE_CHANNEL || null,
+    requiredLiveChannel: GITHUB_ACTIONS_CHANNEL,
     ...extra,
   };
   fs.writeFileSync(manifestPath, `${JSON.stringify(body, null, 2)}\n`);
@@ -198,6 +217,8 @@ writeManifest("DEPLOYING", { checkpoint: "deploy_production_start" });
 process.env.DEALALITY_RELEASE_OWNER = owner;
 process.env.DEALALITY_RELEASE_ID = acquired.lock.releaseId;
 process.env.DEALALITY_REQUIRE_RELEASE_LOCK = "1";
+process.env.DEALALITY_RELEASE_CHANNEL =
+  process.env.DEALALITY_RELEASE_CHANNEL || GITHUB_ACTIONS_CHANNEL;
 
 const deploy = spawnSync(
   process.platform === "win32" ? "npm.cmd" : "npm",
@@ -215,9 +236,16 @@ if (deploy.status !== 0) {
     checkpoint: "deploy_failed",
     deployStatus: deploy.status,
   });
+  releaseLock({
+    owner,
+    finalPhase: "FAILED",
+    reason: "deploy_failed",
+  });
   fail("DEPLOY_FAILED", "npm run deploy:production failed", {
     deployStatus: deploy.status,
     manifestPath,
+    recovery:
+      "Do not cancel Railway. Wait for terminal state, then re-dispatch workflow with same or rollback SHA.",
   });
 }
 
