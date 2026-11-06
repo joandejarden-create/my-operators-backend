@@ -64,30 +64,38 @@
     ],
     "priorities": [
       {
-        "priority": "High",
-        "action": "Hotel Operations / Marriott Digital: Resolve the Open-Ended 2024 Pool-Maintenance Alert",
-        "desiredOutcome": "Hotel leadership records the approved source of truth and scope."
+        "actionId": "AVA-JWSD-001",
+        "priority": "HIGH",
+        "action": "Resolve the Open-Ended 2024 Pool-Maintenance Alert",
+        "desiredOutcome": "Verified completion of “Resolve the Open-Ended 2024 Pool-Maintenance Alert” on the affected pages, with before/after evidence retained.",
+        "owner": "Hotel Operations / Marriott Digital"
       },
       {
-        "priority": "High",
-        "action": "Director of Sales / Hotel Operations: Reconcile Event-Room and Venue Terminology",
-        "desiredOutcome": "Hotel leadership records the approved source of truth and scope."
+        "actionId": "AVA-JWSD-002",
+        "priority": "HIGH",
+        "action": "Reconcile Event-Room and Venue Terminology",
+        "desiredOutcome": "An approved room-by-room capacity schedule matching live hotel and brand pages.",
+        "owner": "Director of Sales / Hotel Operations"
       },
       {
-        "priority": "High",
-        "action": "Hotel Commercial Leadership: Strengthen Dining and Piantini/BlueMall Decision Context",
-        "desiredOutcome": "Hotel leadership records the approved source of truth and scope."
+        "actionId": "AVA-JWSD-003",
+        "priority": "MEDIUM",
+        "action": "Strengthen Dining and Piantini/BlueMall Decision Context",
+        "desiredOutcome": "Verified outlet descriptions aligned across priority hotel and brand channels.",
+        "owner": "Hotel Commercial Leadership"
       },
       {
-        "priority": "Medium",
-        "action": "Marriott Digital / CDN Security Owner: Review Marriott Origin Access for Intended Crawlers",
-        "desiredOutcome": "Hotel leadership records the approved source of truth and scope."
+        "actionId": "AVA-JWSD-004",
+        "priority": "MEDIUM",
+        "action": "Review Marriott Origin Access for Intended Crawlers",
+        "desiredOutcome": "Documented crawler-access decision with verified live robots/CDN behavior.",
+        "owner": "Marriott Digital / CDN Security Owner"
       }
     ],
     "successLooksLike": "The pool status is current and dated; event-space labels reconcile to one signed schedule; dining and BlueMall/Piantini facts are consistent across priority pages; and Marriott documents the intended automated-access posture.",
     "closing": "The hotel already has exceptional measured presence. The practical task is to protect that position with current operating facts, internally consistent event inventory, and clear commercial context."
   },
-  "actionOverviewIntro": "5 hotel-specific actions at a glance; detailed evidence and agency steps follow.",
+  "actionOverviewIntro": "4 hotel-specific actions at a glance; detailed evidence and agency steps follow.",
   "actionOverview": [
     {
       "actionId": "AVA-JWSD-001",
@@ -95,6 +103,7 @@
       "headline": "Resolve the Open-Ended 2024 Pool-Maintenance Alert",
       "businessRelevance": "An undated current-state conflict can mislead prospective guests and downstream systems.",
       "accountableOwner": "Hotel Operations / Marriott Digital",
+      "desiredOutcome": "Verified completion of “Resolve the Open-Ended 2024 Pool-Maintenance Alert” on the affected pages, with before/after evidence retained.",
       "suggestedTimeframe": "Within 30 days"
     },
     {
@@ -103,6 +112,7 @@
       "headline": "Reconcile Event-Room and Venue Terminology",
       "businessRelevance": "Planners need one setup-qualified inventory rather than competing headline counts.",
       "accountableOwner": "Director of Sales / Hotel Operations",
+      "desiredOutcome": "An approved room-by-room capacity schedule matching live hotel and brand pages.",
       "suggestedTimeframe": "Within 30 days"
     },
     {
@@ -111,22 +121,16 @@
       "headline": "Strengthen Dining and Piantini/BlueMall Decision Context",
       "businessRelevance": "Clear, consistent facts can improve buyer context, although no ranking or booking outcome is promised.",
       "accountableOwner": "Hotel Commercial Leadership",
+      "desiredOutcome": "Verified outlet descriptions aligned across priority hotel and brand channels.",
       "suggestedTimeframe": "Within 30 days"
     },
     {
       "actionId": "AVA-JWSD-004",
       "priority": "MEDIUM",
       "headline": "Review Marriott Origin Access for Intended Crawlers",
-      "businessRelevance": "The mixed result warrants a security-aligned review but does not establish a general outage or indexing failure.",
+      "businessRelevance": "Consistent, approved public facts reduce guest and partner confusion and limit incorrect AI repetition of property details.",
       "accountableOwner": "Marriott Digital / CDN Security Owner",
-      "suggestedTimeframe": "Within 30 days"
-    },
-    {
-      "actionId": "AVA-JMSD-DA-001",
-      "priority": "MEDIUM",
-      "headline": "Qualify Destination/Partner Listing With Official URL",
-      "businessRelevance": "GMs need specific outreach targets, not SEO volume claims.",
-      "accountableOwner": "Hotel Sales / Marketing",
+      "desiredOutcome": "Documented crawler-access decision with verified live robots/CDN behavior.",
       "suggestedTimeframe": "Within 30 days"
     }
   ],
@@ -258,9 +262,11 @@
       "whyItMatters": "An undated current-state conflict can mislead prospective guests and downstream systems.",
       "recommendedSteps": [
         "Operations confirms current pool status.",
+        "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
         "Digital removes the alert or adds an accurate end date and status.",
         "Align overview, amenities, booking disclosures, and partner feeds.",
-        "Archive live verification."
+        "Archive live verification.",
+        "Compare current public copy with the hotel-approved source of truth."
       ],
       "accountableOwner": "Hotel Operations / Marriott Digital",
       "supportingParties": [
@@ -279,22 +285,30 @@
       "supportingEvidence": [
         {
           "label": "Marriott overview",
-          "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-          "note": "Contains both the January 21, 2024 maintenance notice and current outdoor-pool marketing."
+          "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
         }
       ],
       "technicalDetails": {
-        "targetUrls": [
-          "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
-        ],
         "urls": [
-          "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
+          {
+            "label": "Marriott overview",
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
+            "kind": "VERIFIED_PUBLIC"
+          }
         ],
         "changesOrInvestigation": [
+          "Operations confirms current pool status.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Digital removes the alert or adds an accurate end date and status.",
+          "Align overview, amenities, booking disclosures, and partner feeds.",
+          "Archive live verification.",
           "Compare current public copy with the hotel-approved source of truth."
         ],
         "evidence": [
-          "Marriott overview: Contains both the January 21, 2024 maintenance notice and current outdoor-pool marketing."
+          {
+            "label": "Marriott overview",
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
+          }
         ],
         "verificationMethod": "Re-fetch the named pages and compare rendered facts with the approved record.",
         "dependencies": [
@@ -305,7 +319,15 @@
       },
       "implementationStatus": "NOT_STARTED",
       "claimType": "VERIFIED_ISSUE",
-      "estimatedEffort": "MEDIUM"
+      "estimatedEffort": "MEDIUM",
+      "actionTitle": "Resolve the Open-Ended 2024 Pool-Maintenance Alert",
+      "desiredOutcome": "Verified completion of “Resolve the Open-Ended 2024 Pool-Maintenance Alert” on the affected pages, with before/after evidence retained.",
+      "classification": "MAINTENANCE",
+      "workstreamTheme": "unique:AVA-JWSD-001",
+      "primaryOwner": "Hotel Operations / Marriott Digital",
+      "affectedPlatform": "Marriott overview",
+      "businessRelevance": "An undated current-state conflict can mislead prospective guests and downstream systems.",
+      "recommendedAction": "Resolve the Open-Ended 2024 Pool-Maintenance Alert"
     },
     {
       "actionId": "AVA-JWSD-002",
@@ -316,9 +338,11 @@
       "whyItMatters": "Planners need one setup-qualified inventory rather than competing headline counts.",
       "recommendedSteps": [
         "Sales signs a space-by-space inventory.",
+        "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
         "Define room, venue, breakout, and divisible-section counting rules.",
         "Update headline labels without double-counting.",
-        "Verify capacities against the signed chart."
+        "Verify capacities against the signed chart.",
+        "Compare current public copy with the hotel-approved source of truth."
       ],
       "accountableOwner": "Director of Sales / Hotel Operations",
       "supportingParties": [
@@ -336,31 +360,44 @@
       "hotelApprovalNotes": "Hotel leadership must approve facts and public changes before implementation.",
       "supportingEvidence": [
         {
-          "label": "Marriott overview",
-          "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-          "note": "Markets nine elegant venues."
+          "label": "Official website",
+          "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
         },
         {
           "label": "Marriott events",
-          "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/events/",
-          "note": "Reports five event rooms, seven breakout rooms, and detailed capacities."
+          "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/events/"
         }
       ],
       "technicalDetails": {
-        "targetUrls": [
-          "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-          "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/events/"
-        ],
         "urls": [
-          "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-          "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/events/"
+          {
+            "label": "Official website",
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
+            "kind": "VERIFIED_PUBLIC"
+          },
+          {
+            "label": "Marriott events",
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/events/",
+            "kind": "VERIFIED_PUBLIC"
+          }
         ],
         "changesOrInvestigation": [
+          "Sales signs a space-by-space inventory.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Define room, venue, breakout, and divisible-section counting rules.",
+          "Update headline labels without double-counting.",
+          "Verify capacities against the signed chart.",
           "Compare current public copy with the hotel-approved source of truth."
         ],
         "evidence": [
-          "Marriott overview: Markets nine elegant venues.",
-          "Marriott events: Reports five event rooms, seven breakout rooms, and detailed capacities."
+          {
+            "label": "Official website",
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
+          },
+          {
+            "label": "Marriott events",
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/events/"
+          }
         ],
         "verificationMethod": "Re-fetch the named pages and compare rendered facts with the approved record.",
         "dependencies": [
@@ -371,20 +408,30 @@
       },
       "implementationStatus": "NOT_STARTED",
       "claimType": "VERIFIED_ISSUE",
-      "estimatedEffort": "MEDIUM"
+      "estimatedEffort": "MEDIUM",
+      "actionTitle": "Reconcile Event-Room and Venue Terminology",
+      "desiredOutcome": "An approved room-by-room capacity schedule matching live hotel and brand pages.",
+      "classification": "VERIFIED_CONTENT_IMPROVEMENT",
+      "workstreamTheme": "meeting_space_reconciliation",
+      "primaryOwner": "Director of Sales / Hotel Operations",
+      "affectedPlatform": "Marriott overview",
+      "businessRelevance": "Planners need one setup-qualified inventory rather than competing headline counts.",
+      "recommendedAction": "Reconcile Event-Room and Venue Terminology"
     },
     {
       "actionId": "AVA-JWSD-003",
       "headline": "Strengthen Dining and Piantini/BlueMall Decision Context",
-      "priority": "HIGH",
+      "priority": "MEDIUM",
       "priorityWhy": "Verified commercial assets are materially under-recognized in the certified attribute baseline.",
       "whatWeFound": "ADP recorded 0% recognition for on-site restaurant and in-room dining, 16.6% for business-district location, and 27.1% for BlueMall adjacency; official sources describe Winston's, Vertygo 101, 24-hour in-room dining, Piantini, and the BlueMall location.",
       "whyItMatters": "Clear, consistent facts can improve buyer context, although no ranking or booking outcome is promised.",
       "recommendedSteps": [
         "Approve exact meal periods, 24-hour service, and outlet descriptions.",
+        "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
         "Confirm the approved relationship to BlueMall and Piantini.",
         "Map the facts to overview, dining, location, and structured fields.",
-        "QA rendered and machine-readable content."
+        "QA rendered and machine-readable content.",
+        "Compare current public copy with the hotel-approved source of truth."
       ],
       "accountableOwner": "Hotel Commercial Leadership",
       "supportingParties": [
@@ -403,38 +450,56 @@
       "supportingEvidence": [
         {
           "label": "Marriott dining",
-          "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/dining/",
-          "note": "Official outlet and 24-hour in-room dining details."
+          "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/dining/"
         },
         {
           "label": "Marriott overview",
-          "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-          "note": "Official Piantini positioning and amenity list."
+          "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
         },
         {
           "label": "BlueMall hotel listing",
-          "url": "https://bluemall.com.do/jw-marriot/",
-          "note": "Places the hotel at BlueMall; hotel should confirm approved wording."
+          "url": "https://bluemall.com.do/jw-marriot/"
         }
       ],
       "technicalDetails": {
-        "targetUrls": [
-          "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/dining/",
-          "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-          "https://bluemall.com.do/jw-marriot/"
-        ],
         "urls": [
-          "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/dining/",
-          "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-          "https://bluemall.com.do/jw-marriot/"
+          {
+            "label": "Marriott dining",
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/dining/",
+            "kind": "VERIFIED_PUBLIC"
+          },
+          {
+            "label": "Marriott overview",
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
+            "kind": "VERIFIED_PUBLIC"
+          },
+          {
+            "label": "BlueMall hotel listing",
+            "url": "https://bluemall.com.do/jw-marriot/",
+            "kind": "VERIFIED_PUBLIC"
+          }
         ],
         "changesOrInvestigation": [
+          "Approve exact meal periods, 24-hour service, and outlet descriptions.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Confirm the approved relationship to BlueMall and Piantini.",
+          "Map the facts to overview, dining, location, and structured fields.",
+          "QA rendered and machine-readable content.",
           "Compare current public copy with the hotel-approved source of truth."
         ],
         "evidence": [
-          "Marriott dining: Official outlet and 24-hour in-room dining details.",
-          "Marriott overview: Official Piantini positioning and amenity list.",
-          "BlueMall hotel listing: Places the hotel at BlueMall; hotel should confirm approved wording."
+          {
+            "label": "Marriott dining",
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/dining/"
+          },
+          {
+            "label": "Marriott overview",
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
+          },
+          {
+            "label": "BlueMall hotel listing",
+            "url": "https://bluemall.com.do/jw-marriot/"
+          }
         ],
         "verificationMethod": "Re-fetch the named pages and compare rendered facts with the approved record.",
         "dependencies": [
@@ -445,19 +510,29 @@
       },
       "implementationStatus": "NOT_STARTED",
       "claimType": "RECOMMENDED_INVESTIGATION",
-      "estimatedEffort": "MEDIUM"
+      "estimatedEffort": "MEDIUM",
+      "actionTitle": "Strengthen Dining and Piantini/BlueMall Decision Context",
+      "desiredOutcome": "Verified outlet descriptions aligned across priority hotel and brand channels.",
+      "classification": "VERIFIED_CONTENT_IMPROVEMENT",
+      "workstreamTheme": "positioning_content",
+      "primaryOwner": "Hotel Commercial Leadership",
+      "affectedPlatform": "Marriott dining",
+      "businessRelevance": "Clear, consistent facts can improve buyer context, although no ranking or booking outcome is promised.",
+      "recommendedAction": "Strengthen Dining and Piantini/BlueMall Decision Context"
     },
     {
       "actionId": "AVA-JWSD-004",
       "headline": "Review Marriott Origin Access for Intended Crawlers",
       "priority": "MEDIUM",
       "priorityWhy": "The bounded probe returned different GET and HEAD behavior at the Marriott origin.",
-      "whyItMatters": "The mixed result warrants a security-aligned review but does not establish a general outage or indexing failure.",
+      "whyItMatters": "Consistent, approved public facts reduce guest and partner confusion and limit incorrect AI repetition of property details.",
       "recommendedSteps": [
         "Open a Marriott CDN/WAF review with the exact user agent and redirect chain.",
+        "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
         "Confirm intended crawler policy.",
         "Make only narrow approved changes if a conflict is verified.",
-        "Retest origin and hotel URLs."
+        "Retest origin and hotel URLs.",
+        "Compare current public copy with the hotel-approved source of truth."
       ],
       "accountableOwner": "Marriott Digital / CDN Security Owner",
       "supportingParties": [
@@ -475,30 +550,31 @@
       "hotelApprovalNotes": "Hotel leadership must approve facts and public changes before implementation.",
       "supportingEvidence": [
         {
-          "label": "Marriott origin",
-          "url": null,
-          "note": "Bounded probe GET returned 403 and redirected to default.mi. Customer hyperlink removed after automated access restriction; claim retained only if otherwise supported.",
-          "kind": "ACCESS_NOTE"
-        },
-        {
           "label": "JW Marriott overview",
-          "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-          "note": "Hotel page was retrievable through separate public web fetch."
+          "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
         }
       ],
       "technicalDetails": {
-        "targetUrls": [
-          "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
-        ],
         "urls": [
-          "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
+          {
+            "label": "JW Marriott overview",
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
+            "kind": "VERIFIED_PUBLIC"
+          }
         ],
         "changesOrInvestigation": [
+          "Open a Marriott CDN/WAF review with the exact user agent and redirect chain.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Confirm intended crawler policy.",
+          "Make only narrow approved changes if a conflict is verified.",
+          "Retest origin and hotel URLs.",
           "Compare current public copy with the hotel-approved source of truth."
         ],
         "evidence": [
-          "Marriott origin: Bounded probe GET returned 403 and redirected to default.mi.",
-          "JW Marriott overview: Hotel page was retrievable through separate public web fetch."
+          {
+            "label": "JW Marriott overview",
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
+          }
         ],
         "verificationMethod": "Re-fetch the named pages and compare rendered facts with the approved record.",
         "dependencies": [
@@ -510,136 +586,15 @@
       "implementationStatus": "NOT_STARTED",
       "claimType": "RECOMMENDED_INVESTIGATION",
       "whatWeFound": "The mixed result warrants a security-aligned review but does not establish a general outage or indexing failure.",
-      "estimatedEffort": "MEDIUM"
-    },
-    {
-      "actionId": "AVA-JMSD-DA-001",
-      "headline": "Qualify Destination/Partner Listing With Official URL",
-      "priority": "MEDIUM",
-      "priorityWhy": "Authority after fact accuracy.",
-      "whatWeFound": "not a comprehensive paid link inventory. Official site is the canonical URL for outreach.",
-      "whyItMatters": "GMs need specific outreach targets, not SEO volume claims.",
-      "recommendedSteps": [
-        "Identify one credible inventory.",
-        "Submit approved profile + official URL.",
-        "Classify honestly (backlink vs mention)."
-      ],
-      "accountableOwner": "Hotel Sales / Marketing",
-      "supportingParties": [
-        "Brand Content Team"
-      ],
-      "suggestedTimeframe": "45 days",
-      "estimatedEffort": "LOW",
-      "implementationStatus": "Awaiting hotel decision",
-      "claimType": "OPTIONAL_COMMERCIAL_OPPORTUNITY",
-      "evidenceLinks": [
-        {
-          "label": "Official website",
-          "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
-        }
-      ],
-      "completionCriteria": {
-        "investigationCompleted": "Opportunity owner and required facts confirmed with hotel leadership.",
-        "correctionSubmitted": "Outreach or listing update request filed with supporting evidence.",
-        "correctionVerifiedLive": "Live destination/partner page checked and archived after update (or documented refusal).",
-        "noChangeRequired": "Valid if leadership documents that the opportunity is out of scope with evidence retained."
-      },
-      "requiresHotelApproval": true,
-      "hotelApprovalNotes": "Approve outreach copy, official URL, and factual claims before partner contact.",
-      "supportingEvidence": [
-        {
-          "label": "Official website",
-          "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-          "kind": "VERIFIED_PUBLIC"
-        }
-      ],
-      "technicalDetails": {
-        "urls": [
-          {
-            "label": "Official website",
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-            "kind": "VERIFIED_PUBLIC"
-          }
-        ],
-        "changesOrInvestigation": [
-          "Identify one credible inventory.",
-          "Submit approved profile + official URL.",
-          "Classify honestly (backlink vs mention)."
-        ],
-        "evidence": [
-          {
-            "label": "Official website",
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-            "kind": "VERIFIED_PUBLIC"
-          }
-        ],
-        "verificationMethod": "Live-page QA with archived screenshots and classification note.",
-        "dependencies": [
-          "Hotel leadership approves facts before outreach."
-        ],
-        "notes": "Public partial Digital Authority research only; no paid SEO metrics invented."
-      }
-    },
-    {
-      "actionId": "JMSD-DCR-ACT-001",
-      "priority": "HIGH",
-      "headline": "Confirm and align official facts for JW Marriott Hotel Santo Domingo",
-      "priorityWhy": "Inconsistent official facts confuse planners and AI answers.",
-      "whatWeFound": "Confirm that meetings, dining, and amenities facts on the official page match the hotel’s approved source of truth; align third-party listings after confirmation.",
-      "whyItMatters": "Digital content readiness depends on one approved source of truth before third-party outreach.",
-      "recommendedSteps": [
-        "Establish one approved fact sheet; update the official page first; then cascade to GBP/OTAs when values are confirmed.",
-        "Do not change unconfirmed values on OTAs until the hotel approves the fact sheet."
-      ],
-      "accountableOwner": "Hotel Sales & Marketing",
-      "supportingParties": [
-        "Brand Content Team",
-        "Digital Marketing Agency"
-      ],
-      "suggestedTimeframe": "2–4 weeks",
-      "claimType": "REQUIRES_HOTEL_CONFIRMATION",
-      "supportingEvidence": [
-        {
-          "label": "Official website",
-          "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-          "kind": "VERIFIED_PUBLIC"
-        }
-      ],
       "estimatedEffort": "MEDIUM",
-      "completionCriteria": {
-        "investigationCompleted": "Opportunity owner and required facts confirmed with hotel leadership.",
-        "correctionSubmitted": "Outreach or listing update request filed with supporting evidence.",
-        "correctionVerifiedLive": "Live destination/partner page checked and archived after update (or documented refusal).",
-        "noChangeRequired": "Valid if leadership documents that the opportunity is out of scope with evidence retained."
-      },
-      "requiresHotelApproval": true,
-      "hotelApprovalNotes": "Approve outreach copy, official URL, and factual claims before partner contact.",
-      "technicalDetails": {
-        "urls": [
-          {
-            "label": "Official website",
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-            "kind": "VERIFIED_PUBLIC"
-          }
-        ],
-        "changesOrInvestigation": [
-          "Establish one approved fact sheet; update the official page first; then cascade to GBP/OTAs when values are confirmed.",
-          "Do not change unconfirmed values on OTAs until the hotel approves the fact sheet."
-        ],
-        "evidence": [
-          {
-            "label": "Official website",
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-            "kind": "VERIFIED_PUBLIC"
-          }
-        ],
-        "verificationMethod": "Live-page QA with archived screenshots and classification note.",
-        "dependencies": [
-          "Hotel leadership approves facts before outreach."
-        ],
-        "notes": "Public partial Digital Authority research only; no paid SEO metrics invented."
-      },
-      "implementationStatus": "Awaiting hotel decision"
+      "actionTitle": "Review Marriott Origin Access for Intended Crawlers",
+      "desiredOutcome": "Documented crawler-access decision with verified live robots/CDN behavior.",
+      "classification": "VERIFIED_CONTENT_IMPROVEMENT",
+      "workstreamTheme": "technical_access_review",
+      "primaryOwner": "Marriott Digital / CDN Security Owner",
+      "affectedPlatform": "JW Marriott overview",
+      "businessRelevance": "Consistent, approved public facts reduce guest and partner confusion and limit incorrect AI repetition of property details.",
+      "recommendedAction": "Review Marriott Origin Access for Intended Crawlers"
     }
   ],
   "methodology": {
@@ -1096,432 +1051,6 @@
     },
     "consistencyFindings": []
   },
-  "customerActionRegister": {
-    "contract": "AVA_CANONICAL_ACTION_REGISTER_V1",
-    "propertyId": "adp_jw_marriott_santo_domingo",
-    "generatedAt": "2026-11-05T21:50:21.931Z",
-    "sourceActionCount": 6,
-    "canonicalActionCount": 5,
-    "consolidated": [
-      {
-        "theme": "meeting_space_reconciliation",
-        "keptActionId": "AVA-JWSD-002",
-        "mergedActionIds": [
-          "AVA-JWSD-002",
-          "JMSD-DCR-ACT-001"
-        ],
-        "reason": "Same corrective objective (meeting_space_reconciliation)"
-      }
-    ],
-    "actions": [
-      {
-        "actionId": "AVA-JWSD-001",
-        "propertyId": "adp_jw_marriott_santo_domingo",
-        "findingIds": [
-          "AVA-JWSD-001"
-        ],
-        "mergedFromActionIds": [
-          "AVA-JWSD-001"
-        ],
-        "workstreamTheme": "unique:AVA-JWSD-001",
-        "actionTitle": "Resolve the Open-Ended 2024 Pool-Maintenance Alert",
-        "classification": "MAINTENANCE",
-        "priority": "HIGH",
-        "prioritySource": "HIGH",
-        "platform": "Marriott overview",
-        "affectedUrls": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-            "label": "Marriott overview"
-          }
-        ],
-        "verifiedObservation": "The official overview says the pool will remain closed for maintenance from January 21, 2024, gives no end date, and also lists a complimentary outdoor pool and infinity-pool experience.",
-        "commercialRationale": "An undated current-state conflict can mislead prospective guests and downstream systems.",
-        "recommendedSteps": [
-          "Operations confirms current pool status.",
-          "Digital removes the alert or adds an accurate end date and status.",
-          "Align overview, amenities, booking disclosures, and partner feeds.",
-          "Archive live verification.",
-          "Hotel leadership records the approved source of truth and scope.",
-          "Approved field-level changes are submitted to the responsible channel."
-        ],
-        "primaryOwner": "Hotel Operations / Marriott Digital",
-        "supportingOwners": [
-          "Hotel commercial leadership",
-          "Digital content owner"
-        ],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-            "label": "Marriott overview"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Resolve the Open-Ended 2024 Pool-Maintenance Alert",
-        "whatWeFound": "The official overview says the pool will remain closed for maintenance from January 21, 2024, gives no end date, and also lists a complimentary outdoor pool and infinity-pool experience.",
-        "recommendedAction": "Resolve the Open-Ended 2024 Pool-Maintenance Alert",
-        "accountableOwner": "Hotel Operations / Marriott Digital",
-        "businessRelevance": "An undated current-state conflict can mislead prospective guests and downstream systems.",
-        "whyItMatters": "An undated current-state conflict can mislead prospective guests and downstream systems.",
-        "affectedPlatform": "Marriott overview",
-        "supportingEvidence": [
-          {
-            "label": "Marriott overview",
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Marriott overview",
-              "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "AVA-JWSD-002",
-        "propertyId": "adp_jw_marriott_santo_domingo",
-        "findingIds": [
-          "AVA-JWSD-002",
-          "JMSD-DCR-ACT-001"
-        ],
-        "mergedFromActionIds": [
-          "AVA-JWSD-002",
-          "JMSD-DCR-ACT-001"
-        ],
-        "workstreamTheme": "meeting_space_reconciliation",
-        "actionTitle": "Reconcile Event-Room and Venue Terminology",
-        "classification": "VERIFIED_CONTENT_IMPROVEMENT",
-        "priority": "HIGH",
-        "prioritySource": "HIGH",
-        "platform": "Marriott overview",
-        "affectedUrls": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-            "label": "Official website"
-          },
-          {
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/events/",
-            "label": "Marriott events"
-          }
-        ],
-        "verifiedObservation": "The overview says nine elegant venues; the events page reports 5 event rooms, 7 breakout rooms, 9,250 square feet, and a capacity chart with divisible spaces.",
-        "commercialRationale": "Planners need one setup-qualified inventory rather than competing headline counts.",
-        "recommendedSteps": [
-          "Sales signs a space-by-space inventory.",
-          "Define room, venue, breakout, and divisible-section counting rules.",
-          "Update headline labels without double-counting.",
-          "Verify capacities against the signed chart.",
-          "Hotel leadership records the approved source of truth and scope.",
-          "Approved field-level changes are submitted to the responsible channel."
-        ],
-        "primaryOwner": "Director of Sales / Hotel Operations",
-        "supportingOwners": [
-          "Hotel commercial leadership",
-          "Digital content owner"
-        ],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-            "label": "Marriott overview"
-          },
-          {
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/events/",
-            "label": "Marriott events"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Reconcile Event-Room and Venue Terminology",
-        "whatWeFound": "The overview says nine elegant venues; the events page reports 5 event rooms, 7 breakout rooms, 9,250 square feet, and a capacity chart with divisible spaces.",
-        "recommendedAction": "Reconcile Event-Room and Venue Terminology",
-        "accountableOwner": "Director of Sales / Hotel Operations",
-        "businessRelevance": "Planners need one setup-qualified inventory rather than competing headline counts.",
-        "whyItMatters": "Planners need one setup-qualified inventory rather than competing headline counts.",
-        "affectedPlatform": "Marriott overview",
-        "supportingEvidence": [
-          {
-            "label": "Official website",
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
-          },
-          {
-            "label": "Marriott events",
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/events/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Official website",
-              "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "Marriott events",
-              "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/events/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "AVA-JWSD-003",
-        "propertyId": "adp_jw_marriott_santo_domingo",
-        "findingIds": [
-          "AVA-JWSD-003"
-        ],
-        "mergedFromActionIds": [
-          "AVA-JWSD-003"
-        ],
-        "workstreamTheme": "positioning_content",
-        "actionTitle": "Strengthen Dining and Piantini/BlueMall Decision Context",
-        "classification": "VERIFIED_CONTENT_IMPROVEMENT",
-        "priority": "MEDIUM",
-        "prioritySource": "HIGH",
-        "platform": "Marriott dining",
-        "affectedUrls": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/dining/",
-            "label": "Marriott dining"
-          },
-          {
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-            "label": "Marriott overview"
-          },
-          {
-            "url": "https://bluemall.com.do/jw-marriot/",
-            "label": "BlueMall hotel listing"
-          }
-        ],
-        "verifiedObservation": "ADP recorded 0% recognition for on-site restaurant and in-room dining, 16.6% for business-district location, and 27.1% for BlueMall adjacency; official sources describe Winston's, Vertygo 101, 24-hour in-room dining, Piantini, and the BlueMall location.",
-        "commercialRationale": "Clear, consistent facts can improve buyer context, although no ranking or booking outcome is promised.",
-        "recommendedSteps": [
-          "Approve exact meal periods, 24-hour service, and outlet descriptions.",
-          "Confirm the approved relationship to BlueMall and Piantini.",
-          "Map the facts to overview, dining, location, and structured fields.",
-          "QA rendered and machine-readable content.",
-          "Hotel leadership records the approved source of truth and scope.",
-          "Approved field-level changes are submitted to the responsible channel."
-        ],
-        "primaryOwner": "Hotel Commercial Leadership",
-        "supportingOwners": [
-          "Hotel commercial leadership",
-          "Digital content owner"
-        ],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/dining/",
-            "label": "Marriott dining"
-          },
-          {
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-            "label": "Marriott overview"
-          },
-          {
-            "url": "https://bluemall.com.do/jw-marriot/",
-            "label": "BlueMall hotel listing"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Strengthen Dining and Piantini/BlueMall Decision Context",
-        "whatWeFound": "ADP recorded 0% recognition for on-site restaurant and in-room dining, 16.6% for business-district location, and 27.1% for BlueMall adjacency; official sources describe Winston's, Vertygo 101, 24-hour in-room dining, Piantini, and the BlueMall location.",
-        "recommendedAction": "Strengthen Dining and Piantini/BlueMall Decision Context",
-        "accountableOwner": "Hotel Commercial Leadership",
-        "businessRelevance": "Clear, consistent facts can improve buyer context, although no ranking or booking outcome is promised.",
-        "whyItMatters": "Clear, consistent facts can improve buyer context, although no ranking or booking outcome is promised.",
-        "affectedPlatform": "Marriott dining",
-        "supportingEvidence": [
-          {
-            "label": "Marriott dining",
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/dining/"
-          },
-          {
-            "label": "Marriott overview",
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
-          },
-          {
-            "label": "BlueMall hotel listing",
-            "url": "https://bluemall.com.do/jw-marriot/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Marriott dining",
-              "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/dining/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "Marriott overview",
-              "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "BlueMall hotel listing",
-              "url": "https://bluemall.com.do/jw-marriot/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "AVA-JWSD-004",
-        "propertyId": "adp_jw_marriott_santo_domingo",
-        "findingIds": [
-          "AVA-JWSD-004"
-        ],
-        "mergedFromActionIds": [
-          "AVA-JWSD-004"
-        ],
-        "workstreamTheme": "technical_access_review",
-        "actionTitle": "Review Marriott Origin Access for Intended Crawlers",
-        "classification": "VERIFIED_CONTENT_IMPROVEMENT",
-        "priority": "MEDIUM",
-        "prioritySource": "MEDIUM",
-        "platform": "JW Marriott overview",
-        "affectedUrls": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-            "label": "JW Marriott overview"
-          }
-        ],
-        "verifiedObservation": "The mixed result warrants a security-aligned review but does not establish a general outage or indexing failure.",
-        "commercialRationale": "The mixed result warrants a security-aligned review but does not establish a general outage or indexing failure.",
-        "recommendedSteps": [
-          "Open a Marriott CDN/WAF review with the exact user agent and redirect chain.",
-          "Confirm intended crawler policy.",
-          "Make only narrow approved changes if a conflict is verified.",
-          "Retest origin and hotel URLs.",
-          "Hotel leadership records the approved source of truth and scope.",
-          "Approved field-level changes are submitted to the responsible channel."
-        ],
-        "primaryOwner": "Marriott Digital / CDN Security Owner",
-        "supportingOwners": [
-          "Hotel commercial leadership",
-          "Digital content owner"
-        ],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-            "label": "JW Marriott overview"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Review Marriott Origin Access for Intended Crawlers",
-        "whatWeFound": "The mixed result warrants a security-aligned review but does not establish a general outage or indexing failure.",
-        "recommendedAction": "Review Marriott Origin Access for Intended Crawlers",
-        "accountableOwner": "Marriott Digital / CDN Security Owner",
-        "businessRelevance": "The mixed result warrants a security-aligned review but does not establish a general outage or indexing failure.",
-        "whyItMatters": "The mixed result warrants a security-aligned review but does not establish a general outage or indexing failure.",
-        "affectedPlatform": "JW Marriott overview",
-        "supportingEvidence": [
-          {
-            "label": "JW Marriott overview",
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "JW Marriott overview",
-              "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "AVA-JMSD-DA-001",
-        "propertyId": "adp_jw_marriott_santo_domingo",
-        "findingIds": [
-          "AVA-JMSD-DA-001"
-        ],
-        "mergedFromActionIds": [
-          "AVA-JMSD-DA-001"
-        ],
-        "workstreamTheme": "unique:AVA-JMSD-DA-001",
-        "actionTitle": "Qualify Destination/Partner Listing With Official URL",
-        "classification": "DISTRIBUTION_OPPORTUNITY",
-        "priority": "MEDIUM",
-        "prioritySource": "MEDIUM",
-        "platform": "Official website",
-        "affectedUrls": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-            "label": "Official website"
-          }
-        ],
-        "verifiedObservation": "not a comprehensive paid link inventory. Official site is the canonical URL for outreach.",
-        "commercialRationale": "GMs need specific outreach targets, not SEO volume claims.",
-        "recommendedSteps": [
-          "Identify one credible inventory.",
-          "Submit approved profile + official URL.",
-          "Classify honestly (backlink vs mention).",
-          "Opportunity owner and required facts confirmed with hotel leadership.",
-          "Outreach or listing update request filed with supporting evidence.",
-          "Live destination/partner page checked and archived after update (or documented refusal)."
-        ],
-        "primaryOwner": "Hotel Sales / Marketing",
-        "supportingOwners": [
-          "Brand Content Team"
-        ],
-        "estimatedEffort": "LOW",
-        "evidenceRefs": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-            "label": "Official website"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Qualify Destination/Partner Listing With Official URL",
-        "whatWeFound": "not a comprehensive paid link inventory. Official site is the canonical URL for outreach.",
-        "recommendedAction": "Qualify Destination/Partner Listing With Official URL",
-        "accountableOwner": "Hotel Sales / Marketing",
-        "businessRelevance": "GMs need specific outreach targets, not SEO volume claims.",
-        "whyItMatters": "GMs need specific outreach targets, not SEO volume claims.",
-        "affectedPlatform": "Official website",
-        "supportingEvidence": [
-          {
-            "label": "Official website",
-            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Official website",
-              "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      }
-    ],
-    "integrity": {
-      "titleOnlySteps": [],
-      "titleStepMisaligned": []
-    }
-  },
   "actionsResearchRecord": [
     {
       "actionId": "AVA-JWSD-001",
@@ -1915,5 +1444,366 @@
       },
       "implementationStatus": "Awaiting hotel decision"
     }
-  ]
+  ],
+  "customerActionRegister": {
+    "contract": "AVA_CANONICAL_ACTION_REGISTER_V1",
+    "propertyId": "adp_jw_marriott_santo_domingo",
+    "generatedAt": "2026-11-06T00:41:37.222Z",
+    "sourceActionCount": 5,
+    "canonicalActionCount": 4,
+    "consolidated": [
+      {
+        "theme": "meeting_space_reconciliation",
+        "keptActionId": "AVA-JWSD-002",
+        "mergedActionIds": [
+          "AVA-JWSD-002",
+          "JMSD-DCR-ACT-001"
+        ],
+        "reason": "Same corrective objective (meeting_space_reconciliation)"
+      }
+    ],
+    "actions": [
+      {
+        "actionId": "AVA-JWSD-001",
+        "propertyId": "adp_jw_marriott_santo_domingo",
+        "findingIds": [
+          "AVA-JWSD-001"
+        ],
+        "mergedFromActionIds": [
+          "AVA-JWSD-001"
+        ],
+        "workstreamTheme": "unique:AVA-JWSD-001",
+        "actionTitle": "Resolve the Open-Ended 2024 Pool-Maintenance Alert",
+        "classification": "MAINTENANCE",
+        "priority": "HIGH",
+        "prioritySource": "HIGH",
+        "platform": "Marriott overview",
+        "affectedUrls": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
+            "label": "Marriott overview"
+          }
+        ],
+        "verifiedObservation": "The official overview says the pool will remain closed for maintenance from January 21, 2024, gives no end date, and also lists a complimentary outdoor pool and infinity-pool experience.",
+        "commercialRationale": "An undated current-state conflict can mislead prospective guests and downstream systems.",
+        "recommendedSteps": [
+          "Operations confirms current pool status.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Digital removes the alert or adds an accurate end date and status.",
+          "Align overview, amenities, booking disclosures, and partner feeds.",
+          "Archive live verification.",
+          "Compare current public copy with the hotel-approved source of truth."
+        ],
+        "desiredOutcome": "Verified completion of “Resolve the Open-Ended 2024 Pool-Maintenance Alert” on the affected pages, with before/after evidence retained.",
+        "primaryOwner": "Hotel Operations / Marriott Digital",
+        "supportingOwners": [
+          "Hotel commercial leadership",
+          "Digital content owner"
+        ],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
+            "label": "Marriott overview"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Resolve the Open-Ended 2024 Pool-Maintenance Alert",
+        "whatWeFound": "The official overview says the pool will remain closed for maintenance from January 21, 2024, gives no end date, and also lists a complimentary outdoor pool and infinity-pool experience.",
+        "recommendedAction": "Resolve the Open-Ended 2024 Pool-Maintenance Alert",
+        "accountableOwner": "Hotel Operations / Marriott Digital",
+        "businessRelevance": "An undated current-state conflict can mislead prospective guests and downstream systems.",
+        "whyItMatters": "An undated current-state conflict can mislead prospective guests and downstream systems.",
+        "affectedPlatform": "Marriott overview",
+        "supportingEvidence": [
+          {
+            "label": "Marriott overview",
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Marriott overview",
+              "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "AVA-JWSD-002",
+        "propertyId": "adp_jw_marriott_santo_domingo",
+        "findingIds": [
+          "AVA-JWSD-002",
+          "JMSD-DCR-ACT-001"
+        ],
+        "mergedFromActionIds": [
+          "AVA-JWSD-002",
+          "JMSD-DCR-ACT-001"
+        ],
+        "workstreamTheme": "meeting_space_reconciliation",
+        "actionTitle": "Reconcile Event-Room and Venue Terminology",
+        "classification": "VERIFIED_CONTENT_IMPROVEMENT",
+        "priority": "HIGH",
+        "prioritySource": "HIGH",
+        "platform": "Marriott overview",
+        "affectedUrls": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
+            "label": "Official website"
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/events/",
+            "label": "Marriott events"
+          }
+        ],
+        "verifiedObservation": "The overview says nine elegant venues; the events page reports 5 event rooms, 7 breakout rooms, 9,250 square feet, and a capacity chart with divisible spaces.",
+        "commercialRationale": "Planners need one setup-qualified inventory rather than competing headline counts.",
+        "recommendedSteps": [
+          "Sales signs a space-by-space inventory.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Define room, venue, breakout, and divisible-section counting rules.",
+          "Update headline labels without double-counting.",
+          "Verify capacities against the signed chart.",
+          "Compare current public copy with the hotel-approved source of truth."
+        ],
+        "desiredOutcome": "An approved room-by-room capacity schedule matching live hotel and brand pages.",
+        "primaryOwner": "Director of Sales / Hotel Operations",
+        "supportingOwners": [
+          "Hotel commercial leadership",
+          "Digital content owner"
+        ],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
+            "label": "Marriott overview"
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/events/",
+            "label": "Marriott events"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Reconcile Event-Room and Venue Terminology",
+        "whatWeFound": "The overview says nine elegant venues; the events page reports 5 event rooms, 7 breakout rooms, 9,250 square feet, and a capacity chart with divisible spaces.",
+        "recommendedAction": "Reconcile Event-Room and Venue Terminology",
+        "accountableOwner": "Director of Sales / Hotel Operations",
+        "businessRelevance": "Planners need one setup-qualified inventory rather than competing headline counts.",
+        "whyItMatters": "Planners need one setup-qualified inventory rather than competing headline counts.",
+        "affectedPlatform": "Marriott overview",
+        "supportingEvidence": [
+          {
+            "label": "Official website",
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
+          },
+          {
+            "label": "Marriott events",
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/events/"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Official website",
+              "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "Marriott events",
+              "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/events/",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "AVA-JWSD-003",
+        "propertyId": "adp_jw_marriott_santo_domingo",
+        "findingIds": [
+          "AVA-JWSD-003"
+        ],
+        "mergedFromActionIds": [
+          "AVA-JWSD-003"
+        ],
+        "workstreamTheme": "positioning_content",
+        "actionTitle": "Strengthen Dining and Piantini/BlueMall Decision Context",
+        "classification": "VERIFIED_CONTENT_IMPROVEMENT",
+        "priority": "MEDIUM",
+        "prioritySource": "HIGH",
+        "platform": "Marriott dining",
+        "affectedUrls": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/dining/",
+            "label": "Marriott dining"
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
+            "label": "Marriott overview"
+          },
+          {
+            "url": "https://bluemall.com.do/jw-marriot/",
+            "label": "BlueMall hotel listing"
+          }
+        ],
+        "verifiedObservation": "ADP recorded 0% recognition for on-site restaurant and in-room dining, 16.6% for business-district location, and 27.1% for BlueMall adjacency; official sources describe Winston's, Vertygo 101, 24-hour in-room dining, Piantini, and the BlueMall location.",
+        "commercialRationale": "Clear, consistent facts can improve buyer context, although no ranking or booking outcome is promised.",
+        "recommendedSteps": [
+          "Approve exact meal periods, 24-hour service, and outlet descriptions.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Confirm the approved relationship to BlueMall and Piantini.",
+          "Map the facts to overview, dining, location, and structured fields.",
+          "QA rendered and machine-readable content.",
+          "Compare current public copy with the hotel-approved source of truth."
+        ],
+        "desiredOutcome": "Verified outlet descriptions aligned across priority hotel and brand channels.",
+        "primaryOwner": "Hotel Commercial Leadership",
+        "supportingOwners": [
+          "Hotel commercial leadership",
+          "Digital content owner"
+        ],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/dining/",
+            "label": "Marriott dining"
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
+            "label": "Marriott overview"
+          },
+          {
+            "url": "https://bluemall.com.do/jw-marriot/",
+            "label": "BlueMall hotel listing"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Strengthen Dining and Piantini/BlueMall Decision Context",
+        "whatWeFound": "ADP recorded 0% recognition for on-site restaurant and in-room dining, 16.6% for business-district location, and 27.1% for BlueMall adjacency; official sources describe Winston's, Vertygo 101, 24-hour in-room dining, Piantini, and the BlueMall location.",
+        "recommendedAction": "Strengthen Dining and Piantini/BlueMall Decision Context",
+        "accountableOwner": "Hotel Commercial Leadership",
+        "businessRelevance": "Clear, consistent facts can improve buyer context, although no ranking or booking outcome is promised.",
+        "whyItMatters": "Clear, consistent facts can improve buyer context, although no ranking or booking outcome is promised.",
+        "affectedPlatform": "Marriott dining",
+        "supportingEvidence": [
+          {
+            "label": "Marriott dining",
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/dining/"
+          },
+          {
+            "label": "Marriott overview",
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
+          },
+          {
+            "label": "BlueMall hotel listing",
+            "url": "https://bluemall.com.do/jw-marriot/"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Marriott dining",
+              "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/dining/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "Marriott overview",
+              "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "BlueMall hotel listing",
+              "url": "https://bluemall.com.do/jw-marriot/",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "AVA-JWSD-004",
+        "propertyId": "adp_jw_marriott_santo_domingo",
+        "findingIds": [
+          "AVA-JWSD-004"
+        ],
+        "mergedFromActionIds": [
+          "AVA-JWSD-004"
+        ],
+        "workstreamTheme": "technical_access_review",
+        "actionTitle": "Review Marriott Origin Access for Intended Crawlers",
+        "classification": "VERIFIED_CONTENT_IMPROVEMENT",
+        "priority": "MEDIUM",
+        "prioritySource": "MEDIUM",
+        "platform": "JW Marriott overview",
+        "affectedUrls": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
+            "label": "JW Marriott overview"
+          }
+        ],
+        "verifiedObservation": "The mixed result warrants a security-aligned review but does not establish a general outage or indexing failure.",
+        "commercialRationale": "Consistent, approved public facts reduce guest and partner confusion and limit incorrect AI repetition of property details.",
+        "recommendedSteps": [
+          "Open a Marriott CDN/WAF review with the exact user agent and redirect chain.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Confirm intended crawler policy.",
+          "Make only narrow approved changes if a conflict is verified.",
+          "Retest origin and hotel URLs.",
+          "Compare current public copy with the hotel-approved source of truth."
+        ],
+        "desiredOutcome": "Documented crawler-access decision with verified live robots/CDN behavior.",
+        "primaryOwner": "Marriott Digital / CDN Security Owner",
+        "supportingOwners": [
+          "Hotel commercial leadership",
+          "Digital content owner"
+        ],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
+            "label": "JW Marriott overview"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Review Marriott Origin Access for Intended Crawlers",
+        "whatWeFound": "The mixed result warrants a security-aligned review but does not establish a general outage or indexing failure.",
+        "recommendedAction": "Review Marriott Origin Access for Intended Crawlers",
+        "accountableOwner": "Marriott Digital / CDN Security Owner",
+        "businessRelevance": "Consistent, approved public facts reduce guest and partner confusion and limit incorrect AI repetition of property details.",
+        "whyItMatters": "Consistent, approved public facts reduce guest and partner confusion and limit incorrect AI repetition of property details.",
+        "affectedPlatform": "JW Marriott overview",
+        "supportingEvidence": [
+          {
+            "label": "JW Marriott overview",
+            "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "JW Marriott overview",
+              "url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview/",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      }
+    ],
+    "integrity": {
+      "titleOnlySteps": [],
+      "titleStepMisaligned": []
+    }
+  }
 }

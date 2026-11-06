@@ -64,24 +64,46 @@
     ],
     "priorities": [
       {
-        "priority": "High",
-        "action": "IHG content: correct mixed-language room headings",
-        "desiredOutcome": "Consistent English presentation"
+        "actionId": "AVA-VOC-001",
+        "priority": "HIGH",
+        "action": "Correct Mixed-Language Room Headings",
+        "desiredOutcome": "The English page renders approved English headings across supported views.",
+        "owner": "IHG Digital Content / Hotel Marketing"
       },
       {
-        "priority": "High",
-        "action": "Commercial team: approve location and meetings fact set",
-        "desiredOutcome": "Clear Playa Langosta and three-room proposition"
+        "actionId": "AVA-VOC-002",
+        "priority": "HIGH",
+        "action": "Clarify Location and Meetings Facts",
+        "desiredOutcome": "Live pages use the signed location and setup-qualified meeting language.",
+        "owner": "Hotel Commercial Leadership"
       },
       {
-        "priority": "Medium",
-        "action": "Operations and marketing: align dining, pool, and pet facts",
-        "desiredOutcome": "Accurate amenity and fee presentation"
+        "actionId": "AVA-VOC-003",
+        "priority": "MEDIUM",
+        "action": "Align Dining, Pool, and Pet-Policy Signals",
+        "desiredOutcome": "Verified outlet descriptions aligned across priority hotel and brand channels.",
+        "owner": "Hotel Operations / Marketing"
       },
       {
-        "priority": "Medium",
-        "action": "IHG digital: review bounded WAF/bot responses",
-        "desiredOutcome": "Documented security-aligned access posture"
+        "actionId": "AVA-VOC-004",
+        "priority": "MEDIUM",
+        "action": "Review IHG Automated-Access Posture",
+        "desiredOutcome": "Agreed clients receive the intended response without weakening unrelated protections.",
+        "owner": "IHG Digital / WAF Security Owner"
+      },
+      {
+        "actionId": "AVA-VOCO-DA-001",
+        "priority": "MEDIUM",
+        "action": "Pursue Turismo Cancún Lodging Profile With Official IHG URL",
+        "desiredOutcome": "Verified CVB or partner listing fields corrected with the approved property URL and a working official hyperlink, or documented decline retained.",
+        "owner": "Hotel Commercial / IHG brand content"
+      },
+      {
+        "actionId": "VCZH-DCR-ACT-001",
+        "priority": "MEDIUM",
+        "action": "Confirm and align official facts for voco Cancún Zona Hotelera",
+        "desiredOutcome": "One hotel-approved fact sheet reflected on the official site and spot-checked on priority listings.",
+        "owner": "Hotel Sales & Marketing"
       }
     ],
     "successLooksLike": "The English page uses consistent English room headings; official and priority partner content accurately explains the Playa Langosta location, Isla Mujeres ferry context, named Cancún anchors, three meeting rooms and setup-qualified capacities; dining, pool, and pet terms are current; and IHG documents the intended automated-access posture.",
@@ -90,19 +112,21 @@
   "actionOverviewIntro": "6 hotel-specific actions at a glance; detailed evidence and agency steps follow.",
   "actionOverview": [
     {
+      "actionId": "AVA-VOC-001",
+      "priority": "HIGH",
+      "headline": "Correct Mixed-Language Room Headings",
+      "businessRelevance": "Mixed-language headings can interrupt comprehension and create inconsistent reusable content for partners and automated systems.",
+      "accountableOwner": "IHG Digital Content / Hotel Marketing",
+      "desiredOutcome": "The English page renders approved English headings across supported views.",
+      "suggestedTimeframe": "Within 30 days"
+    },
+    {
       "actionId": "AVA-VOC-002",
       "priority": "HIGH",
       "headline": "Clarify Location and Meetings Facts",
       "businessRelevance": "A signed fact set can improve buyer decision context, but the audit does not claim content caused the measured result or would change measured bookings.",
       "accountableOwner": "Hotel Commercial Leadership",
-      "suggestedTimeframe": "Within 30 days"
-    },
-    {
-      "actionId": "AVA-VOC-001",
-      "priority": "MEDIUM",
-      "headline": "Correct Mixed-Language Room Headings",
-      "businessRelevance": "Mixed-language headings can interrupt comprehension and create inconsistent reusable content for partners and automated systems.",
-      "accountableOwner": "IHG Digital Content / Hotel Marketing",
+      "desiredOutcome": "Live pages use the signed location and setup-qualified meeting language.",
       "suggestedTimeframe": "Within 30 days"
     },
     {
@@ -111,14 +135,16 @@
       "headline": "Align Dining, Pool, and Pet-Policy Signals",
       "businessRelevance": "Accurate descriptions help guests assess fit and total cost; the Reality Gap does not prove these facts are missing because of a website defect.",
       "accountableOwner": "Hotel Operations / Marketing",
+      "desiredOutcome": "Verified outlet descriptions aligned across priority hotel and brand channels.",
       "suggestedTimeframe": "Within 30 days"
     },
     {
       "actionId": "AVA-VOC-004",
       "priority": "MEDIUM",
       "headline": "Review IHG Automated-Access Posture",
-      "businessRelevance": "An unintended policy mismatch could limit intended automated clients, but a single research environment does not establish a general outage.",
+      "businessRelevance": "Consistent, approved public facts reduce guest and partner confusion and limit incorrect AI repetition of property details.",
       "accountableOwner": "IHG Digital / WAF Security Owner",
+      "desiredOutcome": "Agreed clients receive the intended response without weakening unrelated protections.",
       "suggestedTimeframe": "Within 30 days"
     },
     {
@@ -127,6 +153,7 @@
       "headline": "Pursue Turismo Cancún Lodging Profile With Official IHG URL",
       "businessRelevance": "Leisure AI and planners often reuse destination inventories.",
       "accountableOwner": "Hotel Commercial / IHG brand content",
+      "desiredOutcome": "Verified CVB or partner listing fields corrected with the approved property URL and a working official hyperlink, or documented decline retained.",
       "suggestedTimeframe": "Within 30 days"
     },
     {
@@ -135,6 +162,7 @@
       "headline": "Confirm and align official facts for voco Cancún Zona Hotelera",
       "businessRelevance": "Digital content readiness depends on one approved source of truth before third-party outreach.",
       "accountableOwner": "Hotel Sales & Marketing",
+      "desiredOutcome": "One hotel-approved fact sheet reflected on the official site and spot-checked on priority listings.",
       "suggestedTimeframe": "Within 30 days"
     }
   ],
@@ -254,9 +282,11 @@
       "whyItMatters": "Mixed-language headings can interrupt comprehension and create inconsistent reusable content for partners and automated systems.",
       "recommendedSteps": [
         "Capture each mixed-language field and its intended room category.",
+        "Apply the change on the verified page (turismocancun.mx) and retain before/after evidence.",
         "Hotel and IHG approve accurate English replacements.",
         "Submit field-level corrections through IHG content controls.",
-        "Verify desktop and mobile rendered English pages."
+        "Verify desktop and mobile rendered English pages.",
+        "Identify source fields, locale inheritance, and approved English replacements."
       ],
       "accountableOwner": "IHG Digital Content / Hotel Marketing",
       "supportingParties": [
@@ -276,24 +306,30 @@
       "supportingEvidence": [
         {
           "label": "Official hotel page",
-          "url": "https://turismocancun.mx/",
-          "note": "Mixed-language room headings on the English variant. IHG property URLs returned HTTP 403 to automated and browser probes; not used as customer-facing hyperlinks. Claims that depend on IHG page copy require hotel/IHG confirmation.",
-          "kind": "VERIFIED_PUBLIC"
+          "url": "https://turismocancun.mx/"
         }
       ],
       "technicalDetails": {
-        "targetUrls": [
-          "https://turismocancun.mx/"
-        ],
         "urls": [
-          "https://turismocancun.mx/"
+          {
+            "label": "Official hotel page",
+            "url": "https://turismocancun.mx/",
+            "kind": "VERIFIED_PUBLIC"
+          }
         ],
         "changesOrInvestigation": [
+          "Capture each mixed-language field and its intended room category.",
+          "Apply the change on the verified page (turismocancun.mx) and retain before/after evidence.",
+          "Hotel and IHG approve accurate English replacements.",
+          "Submit field-level corrections through IHG content controls.",
+          "Verify desktop and mobile rendered English pages.",
           "Identify source fields, locale inheritance, and approved English replacements."
         ],
         "evidence": [
-          "Before/after captures",
-          "IHG content ticket"
+          {
+            "label": "Official hotel page",
+            "url": "https://turismocancun.mx/"
+          }
         ],
         "verificationMethod": "Load the English page in clean sessions and confirm all room headings are English and category-accurate.",
         "dependencies": [
@@ -304,7 +340,15 @@
       },
       "implementationStatus": "NOT_STARTED",
       "claimType": "VERIFIED_ISSUE",
-      "estimatedEffort": "MEDIUM"
+      "estimatedEffort": "MEDIUM",
+      "actionTitle": "Correct Mixed-Language Room Headings",
+      "desiredOutcome": "The English page renders approved English headings across supported views.",
+      "classification": "MAINTENANCE",
+      "workstreamTheme": "unique:AVA-VOC-001",
+      "primaryOwner": "IHG Digital Content / Hotel Marketing",
+      "affectedPlatform": "Official hotel page",
+      "businessRelevance": "Mixed-language headings can interrupt comprehension and create inconsistent reusable content for partners and automated systems.",
+      "recommendedAction": "Correct Mixed-Language Room Headings"
     },
     {
       "actionId": "AVA-VOC-002",
@@ -315,9 +359,11 @@
       "whyItMatters": "A signed fact set can improve buyer decision context, but the audit does not claim content caused the measured result or would change measured bookings.",
       "recommendedSteps": [
         "Sales and operations sign exact location relationships and travel wording.",
+        "Apply the change on the verified page (turismocancun.mx) and retain before/after evidence.",
         "Sign room-by-room areas and setup-qualified capacities.",
         "Create concise location and meetings copy using only approved facts.",
-        "Align the hotel page, meetings page, sales collateral, and priority listings."
+        "Align the hotel page, meetings page, sales collateral, and priority listings.",
+        "Map approved location and meetings facts to IHG-supported fields."
       ],
       "accountableOwner": "Hotel Commercial Leadership",
       "supportingParties": [
@@ -337,32 +383,30 @@
       "supportingEvidence": [
         {
           "label": "Official hotel page",
-          "url": "https://turismocancun.mx/",
-          "note": "Location and hotel positioning. IHG property URLs returned HTTP 403 to automated and browser probes; not used as customer-facing hyperlinks. Claims that depend on IHG page copy require hotel/IHG confirmation.",
-          "kind": "VERIFIED_PUBLIC"
-        },
-        {
-          "label": "Official meetings page",
-          "url": "https://turismocancun.mx/",
-          "note": "Three-room meetings offer and capacities. IHG property URLs returned HTTP 403 to automated and browser probes; not used as customer-facing hyperlinks. Claims that depend on IHG page copy require hotel/IHG confirmation.",
-          "kind": "VERIFIED_PUBLIC"
+          "url": "https://turismocancun.mx/"
         }
       ],
       "technicalDetails": {
-        "targetUrls": [
-          "https://turismocancun.mx/",
-          "https://turismocancun.mx/"
-        ],
         "urls": [
-          "https://turismocancun.mx/",
-          "https://turismocancun.mx/"
+          {
+            "label": "Official hotel page",
+            "url": "https://turismocancun.mx/",
+            "kind": "VERIFIED_PUBLIC"
+          }
         ],
         "changesOrInvestigation": [
+          "Sales and operations sign exact location relationships and travel wording.",
+          "Apply the change on the verified page (turismocancun.mx) and retain before/after evidence.",
+          "Sign room-by-room areas and setup-qualified capacities.",
+          "Create concise location and meetings copy using only approved facts.",
+          "Align the hotel page, meetings page, sales collateral, and priority listings.",
           "Map approved location and meetings facts to IHG-supported fields."
         ],
         "evidence": [
-          "Signed fact brief",
-          "Live-page QA"
+          {
+            "label": "Official hotel page",
+            "url": "https://turismocancun.mx/"
+          }
         ],
         "verificationMethod": "Compare live location, room-name, and capacity statements against the signed brief.",
         "dependencies": [
@@ -372,7 +416,15 @@
       },
       "implementationStatus": "NOT_STARTED",
       "claimType": "REQUIRES_HOTEL_CONFIRMATION",
-      "estimatedEffort": "MEDIUM"
+      "estimatedEffort": "MEDIUM",
+      "actionTitle": "Clarify Location and Meetings Facts",
+      "desiredOutcome": "Live pages use the signed location and setup-qualified meeting language.",
+      "classification": "MAINTENANCE",
+      "workstreamTheme": "unique:AVA-VOC-002",
+      "primaryOwner": "Hotel Commercial Leadership",
+      "affectedPlatform": "Official hotel page",
+      "businessRelevance": "A signed fact set can improve buyer decision context, but the audit does not claim content caused the measured result or would change measured bookings.",
+      "recommendedAction": "Clarify Location and Meetings Facts"
     },
     {
       "actionId": "AVA-VOC-003",
@@ -383,9 +435,11 @@
       "whyItMatters": "Accurate descriptions help guests assess fit and total cost; the Reality Gap does not prove these facts are missing because of a website defect.",
       "recommendedSteps": [
         "Operations signs current outlet names, service periods, pool description, and pet terms.",
+        "Apply the change on the verified page (turismocancun.mx) and retain before/after evidence.",
         "Audit official and priority partner pages against that fact sheet.",
         "Submit only factual corrections or clarifications.",
-        "Retain live verification and an update owner."
+        "Retain live verification and an update owner.",
+        "Audit visible copy and supported structured fields against current operations."
       ],
       "accountableOwner": "Hotel Operations / Marketing",
       "supportingParties": [
@@ -405,24 +459,30 @@
       "supportingEvidence": [
         {
           "label": "Official hotel page",
-          "url": "https://turismocancun.mx/",
-          "note": "Official dining, pool, and pet-policy details. IHG property URLs returned HTTP 403 to automated and browser probes; not used as customer-facing hyperlinks. Claims that depend on IHG page copy require hotel/IHG confirmation.",
-          "kind": "VERIFIED_PUBLIC"
+          "url": "https://turismocancun.mx/"
         }
       ],
       "technicalDetails": {
-        "targetUrls": [
-          "https://turismocancun.mx/"
-        ],
         "urls": [
-          "https://turismocancun.mx/"
+          {
+            "label": "Official hotel page",
+            "url": "https://turismocancun.mx/",
+            "kind": "VERIFIED_PUBLIC"
+          }
         ],
         "changesOrInvestigation": [
+          "Operations signs current outlet names, service periods, pool description, and pet terms.",
+          "Apply the change on the verified page (turismocancun.mx) and retain before/after evidence.",
+          "Audit official and priority partner pages against that fact sheet.",
+          "Submit only factual corrections or clarifications.",
+          "Retain live verification and an update owner.",
           "Audit visible copy and supported structured fields against current operations."
         ],
         "evidence": [
-          "Signed operations fact sheet",
-          "Live-page captures"
+          {
+            "label": "Official hotel page",
+            "url": "https://turismocancun.mx/"
+          }
         ],
         "verificationMethod": "Confirm restaurant count, bar types, pool description, and pet terms on live pages.",
         "dependencies": [
@@ -432,19 +492,29 @@
       },
       "implementationStatus": "NOT_STARTED",
       "claimType": "REQUIRES_HOTEL_CONFIRMATION",
-      "estimatedEffort": "MEDIUM"
+      "estimatedEffort": "MEDIUM",
+      "actionTitle": "Align Dining, Pool, and Pet-Policy Signals",
+      "desiredOutcome": "Verified outlet descriptions aligned across priority hotel and brand channels.",
+      "classification": "VERIFIED_CONTENT_IMPROVEMENT",
+      "workstreamTheme": "positioning_content",
+      "primaryOwner": "Hotel Operations / Marketing",
+      "affectedPlatform": "Official hotel page",
+      "businessRelevance": "Accurate descriptions help guests assess fit and total cost; the Reality Gap does not prove these facts are missing because of a website defect.",
+      "recommendedAction": "Align Dining, Pool, and Pet-Policy Signals"
     },
     {
       "actionId": "AVA-VOC-004",
       "headline": "Review IHG Automated-Access Posture",
       "priority": "MEDIUM",
       "priorityWhy": "A bounded research client received 403 responses across several IHG endpoints.",
-      "whyItMatters": "An unintended policy mismatch could limit intended automated clients, but a single research environment does not establish a general outage.",
+      "whyItMatters": "Consistent, approved public facts reduce guest and partner confusion and limit incorrect AI repetition of property details.",
       "recommendedSteps": [
         "Open an IHG WAF/bot-management ticket with the exact request context.",
+        "Apply the change on the verified page (turismocancun.mx) and retain before/after evidence.",
         "Define intended crawler and partner access policy.",
         "Approve only narrow security-safe changes if a conflict is confirmed.",
-        "Retest agreed endpoints from intended clients."
+        "Retest agreed endpoints from intended clients.",
+        "Reproduce IHG URL access in an ordinary authenticated/browser session."
       ],
       "accountableOwner": "IHG Digital / WAF Security Owner",
       "supportingParties": [
@@ -463,9 +533,7 @@
       "supportingEvidence": [
         {
           "label": "Turismo Cancún",
-          "url": "https://turismocancun.mx/",
-          "kind": "VERIFIED_PUBLIC",
-          "note": "Reachable destination authority used while IHG URLs remain bot-blocked."
+          "url": "https://turismocancun.mx/"
         }
       ],
       "technicalDetails": {
@@ -477,16 +545,17 @@
           }
         ],
         "changesOrInvestigation": [
-          "Reproduce IHG URL access in an ordinary authenticated/browser session.",
-          "Confirm WAF/bot intent with IHG security.",
-          "Do not restore customer hyperlinks to IHG URLs until claim-verified.",
-          "Keep Turismo Cancún / approved partner evidence for destination context."
+          "Open an IHG WAF/bot-management ticket with the exact request context.",
+          "Apply the change on the verified page (turismocancun.mx) and retain before/after evidence.",
+          "Define intended crawler and partner access policy.",
+          "Approve only narrow security-safe changes if a conflict is confirmed.",
+          "Retest agreed endpoints from intended clients.",
+          "Reproduce IHG URL access in an ordinary authenticated/browser session."
         ],
         "evidence": [
           {
             "label": "Turismo Cancún",
-            "url": "https://turismocancun.mx/",
-            "kind": "VERIFIED_PUBLIC"
+            "url": "https://turismocancun.mx/"
           }
         ],
         "verificationMethod": "Manual IHG browser confirmation logged in Admin; customer PDF uses only reachable evidence URLs.",
@@ -498,17 +567,26 @@
       "implementationStatus": "NOT_STARTED",
       "claimType": "RECOMMENDED_INVESTIGATION",
       "estimatedEffort": "MEDIUM",
-      "whatWeFound": "An unintended policy mismatch could limit intended automated clients, but a single research environment does not establish a general outage."
+      "whatWeFound": "An unintended policy mismatch could limit intended automated clients, but a single research environment does not establish a general outage.",
+      "actionTitle": "Review IHG Automated-Access Posture",
+      "desiredOutcome": "Agreed clients receive the intended response without weakening unrelated protections.",
+      "classification": "MAINTENANCE",
+      "workstreamTheme": "unique:AVA-VOC-004",
+      "primaryOwner": "IHG Digital / WAF Security Owner",
+      "affectedPlatform": "Turismo Cancún",
+      "businessRelevance": "Consistent, approved public facts reduce guest and partner confusion and limit incorrect AI repetition of property details.",
+      "recommendedAction": "Review IHG Automated-Access Posture"
     },
     {
       "actionId": "AVA-VOCO-DA-001",
       "headline": "Pursue Turismo Cancún Lodging Profile With Official IHG URL",
-      "priority": "HIGH",
+      "priority": "MEDIUM",
       "priorityWhy": "Absolute consideration is near zero; destination inclusion is a concrete authority path once on-page hygiene is clean.",
       "whatWeFound": "Turismo Cancún is a credible destination authority; hotel-specific outbound IHG backlink was not confirmed in this public pass.",
       "whyItMatters": "Leisure AI and planners often reuse destination inventories.",
       "recommendedSteps": [
         "Finish EN page / room-label hygiene actions.",
+        "Apply the change on the verified page (turismocancun.mx) and retain before/after evidence.",
         "Contact Turismo Cancún lodging inventory owner.",
         "Submit approved profile + IHG canonical URL.",
         "Re-check live listing."
@@ -538,8 +616,7 @@
       "supportingEvidence": [
         {
           "label": "Turismo Cancún",
-          "url": "https://turismocancun.mx/",
-          "kind": "VERIFIED_PUBLIC"
+          "url": "https://turismocancun.mx/"
         }
       ],
       "technicalDetails": {
@@ -552,6 +629,7 @@
         ],
         "changesOrInvestigation": [
           "Finish EN page / room-label hygiene actions.",
+          "Apply the change on the verified page (turismocancun.mx) and retain before/after evidence.",
           "Contact Turismo Cancún lodging inventory owner.",
           "Submit approved profile + IHG canonical URL.",
           "Re-check live listing."
@@ -559,8 +637,7 @@
         "evidence": [
           {
             "label": "Turismo Cancún",
-            "url": "https://turismocancun.mx/",
-            "kind": "VERIFIED_PUBLIC"
+            "url": "https://turismocancun.mx/"
           }
         ],
         "verificationMethod": "Live-page QA with archived screenshots and classification note.",
@@ -568,17 +645,26 @@
           "Hotel leadership approves facts before outreach."
         ],
         "notes": "Public partial Digital Authority research only; no paid SEO metrics invented."
-      }
+      },
+      "actionTitle": "Pursue Turismo Cancún Lodging Profile With Official IHG URL",
+      "desiredOutcome": "Verified CVB or partner listing fields corrected with the approved property URL and a working official hyperlink, or documented decline retained.",
+      "classification": "MAINTENANCE",
+      "workstreamTheme": "digital_authority_outreach",
+      "primaryOwner": "Hotel Commercial / IHG brand content",
+      "affectedPlatform": "Turismo Cancún",
+      "businessRelevance": "Leisure AI and planners often reuse destination inventories.",
+      "recommendedAction": "Pursue Turismo Cancún Lodging Profile With Official IHG URL"
     },
     {
       "actionId": "VCZH-DCR-ACT-001",
-      "priority": "HIGH",
+      "priority": "MEDIUM",
       "headline": "Confirm and align official facts for voco Cancún Zona Hotelera",
       "priorityWhy": "Inconsistent official facts confuse planners and AI answers.",
       "whatWeFound": "Confirm that meetings, dining, and amenities facts on the official page match the hotel’s approved source of truth; align third-party listings after confirmation.",
       "whyItMatters": "Digital content readiness depends on one approved source of truth before third-party outreach.",
       "recommendedSteps": [
         "Establish one approved fact sheet; update the official page first; then cascade to GBP/OTAs when values are confirmed.",
+        "Apply the change on the verified page (ihg.com) and retain before/after evidence.",
         "Do not change unconfirmed values on OTAs until the hotel approves the fact sheet."
       ],
       "accountableOwner": "Hotel Sales & Marketing",
@@ -591,8 +677,7 @@
       "supportingEvidence": [
         {
           "label": "Official website",
-          "url": "https://www.ihg.com/voco/hotels/us/en/cancun/cuncn/hoteldetail",
-          "kind": "VERIFIED_PUBLIC"
+          "url": "https://www.ihg.com/voco/hotels/us/en/cancun/cuncn/hoteldetail"
         }
       ],
       "estimatedEffort": "MEDIUM",
@@ -614,13 +699,13 @@
         ],
         "changesOrInvestigation": [
           "Establish one approved fact sheet; update the official page first; then cascade to GBP/OTAs when values are confirmed.",
+          "Apply the change on the verified page (ihg.com) and retain before/after evidence.",
           "Do not change unconfirmed values on OTAs until the hotel approves the fact sheet."
         ],
         "evidence": [
           {
             "label": "Official website",
-            "url": "https://www.ihg.com/voco/hotels/us/en/cancun/cuncn/hoteldetail",
-            "kind": "VERIFIED_PUBLIC"
+            "url": "https://www.ihg.com/voco/hotels/us/en/cancun/cuncn/hoteldetail"
           }
         ],
         "verificationMethod": "Live-page QA with archived screenshots and classification note.",
@@ -629,7 +714,15 @@
         ],
         "notes": "Public partial Digital Authority research only; no paid SEO metrics invented."
       },
-      "implementationStatus": "Awaiting hotel decision"
+      "implementationStatus": "Awaiting hotel decision",
+      "actionTitle": "Confirm and align official facts for voco Cancún Zona Hotelera",
+      "desiredOutcome": "One hotel-approved fact sheet reflected on the official site and spot-checked on priority listings.",
+      "classification": "VERIFIED_CONTENT_IMPROVEMENT",
+      "workstreamTheme": "meeting_space_reconciliation",
+      "primaryOwner": "Hotel Sales & Marketing",
+      "affectedPlatform": "Official website",
+      "businessRelevance": "Digital content readiness depends on one approved source of truth before third-party outreach.",
+      "recommendedAction": "Confirm and align official facts for voco Cancún Zona Hotelera"
     }
   ],
   "methodology": {
@@ -1008,441 +1101,6 @@
       "SPECIALIST_DIRECTORY": "IDENTIFIED_NOT_ASSESSED"
     },
     "consistencyFindings": []
-  },
-  "customerActionRegister": {
-    "contract": "AVA_CANONICAL_ACTION_REGISTER_V1",
-    "propertyId": "adp_voco_cancun_zona_hotelera",
-    "generatedAt": "2026-11-05T21:50:55.414Z",
-    "sourceActionCount": 6,
-    "canonicalActionCount": 6,
-    "consolidated": [],
-    "actions": [
-      {
-        "actionId": "AVA-VOC-002",
-        "propertyId": "adp_voco_cancun_zona_hotelera",
-        "findingIds": [
-          "AVA-VOC-002"
-        ],
-        "mergedFromActionIds": [
-          "AVA-VOC-002"
-        ],
-        "workstreamTheme": "unique:AVA-VOC-002",
-        "actionTitle": "Clarify Location and Meetings Facts",
-        "classification": "MAINTENANCE",
-        "priority": "HIGH",
-        "prioritySource": "HIGH",
-        "platform": "Official hotel page",
-        "affectedUrls": [
-          {
-            "url": "https://turismocancun.mx/",
-            "label": "Official hotel page"
-          }
-        ],
-        "verifiedObservation": "Official content places the hotel across from Playa Langosta and near the Isla Mujeres ferry, Puerto Cancún, La Isla, and the Convention Center; meetings content describes Ibiza at 126, Bora Bora at 150, and combined Mexico up to 300.",
-        "commercialRationale": "A signed fact set can improve buyer decision context, but the audit does not claim content caused the measured result or would change measured bookings.",
-        "recommendedSteps": [
-          "Sales and operations sign exact location relationships and travel wording.",
-          "Sign room-by-room areas and setup-qualified capacities.",
-          "Create concise location and meetings copy using only approved facts.",
-          "Align the hotel page, meetings page, sales collateral, and priority listings.",
-          "A signed brief records approved location and meeting facts.",
-          "Approved content requests are filed for priority pages."
-        ],
-        "primaryOwner": "Hotel Commercial Leadership",
-        "supportingOwners": [
-          "Director of Sales",
-          "Events operations",
-          "IHG digital content"
-        ],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://turismocancun.mx/",
-            "label": "Official hotel page"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Clarify Location and Meetings Facts",
-        "whatWeFound": "Official content places the hotel across from Playa Langosta and near the Isla Mujeres ferry, Puerto Cancún, La Isla, and the Convention Center; meetings content describes Ibiza at 126, Bora Bora at 150, and combined Mexico up to 300.",
-        "recommendedAction": "Clarify Location and Meetings Facts",
-        "accountableOwner": "Hotel Commercial Leadership",
-        "businessRelevance": "A signed fact set can improve buyer decision context, but the audit does not claim content caused the measured result or would change measured bookings.",
-        "whyItMatters": "A signed fact set can improve buyer decision context, but the audit does not claim content caused the measured result or would change measured bookings.",
-        "affectedPlatform": "Official hotel page",
-        "supportingEvidence": [
-          {
-            "label": "Official hotel page",
-            "url": "https://turismocancun.mx/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Official hotel page",
-              "url": "https://turismocancun.mx/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "AVA-VOC-001",
-        "propertyId": "adp_voco_cancun_zona_hotelera",
-        "findingIds": [
-          "AVA-VOC-001"
-        ],
-        "mergedFromActionIds": [
-          "AVA-VOC-001"
-        ],
-        "workstreamTheme": "unique:AVA-VOC-001",
-        "actionTitle": "Correct Mixed-Language Room Headings",
-        "classification": "DISTRIBUTION_OPPORTUNITY",
-        "priority": "MEDIUM",
-        "prioritySource": "HIGH",
-        "platform": "Official hotel page",
-        "affectedUrls": [
-          {
-            "url": "https://turismocancun.mx/",
-            "label": "Official hotel page"
-          }
-        ],
-        "verifiedObservation": "Room content on the English page includes “Ultimos pisos” and “Habitaciones modernas...” alongside English content.",
-        "commercialRationale": "Mixed-language headings can interrupt comprehension and create inconsistent reusable content for partners and automated systems.",
-        "recommendedSteps": [
-          "Capture each mixed-language field and its intended room category.",
-          "Hotel and IHG approve accurate English replacements.",
-          "Submit field-level corrections through IHG content controls.",
-          "Verify desktop and mobile rendered English pages.",
-          "A field list maps each Spanish heading to approved English copy.",
-          "The field-level IHG correction request is filed with screenshots."
-        ],
-        "primaryOwner": "IHG Digital Content / Hotel Marketing",
-        "supportingOwners": [
-          "Rooms leadership",
-          "Hotel operations",
-          "IHG brand content"
-        ],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://turismocancun.mx/",
-            "label": "Official hotel page"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Correct Mixed-Language Room Headings",
-        "whatWeFound": "Room content on the English page includes “Ultimos pisos” and “Habitaciones modernas...” alongside English content.",
-        "recommendedAction": "Correct Mixed-Language Room Headings",
-        "accountableOwner": "IHG Digital Content / Hotel Marketing",
-        "businessRelevance": "Mixed-language headings can interrupt comprehension and create inconsistent reusable content for partners and automated systems.",
-        "whyItMatters": "Mixed-language headings can interrupt comprehension and create inconsistent reusable content for partners and automated systems.",
-        "affectedPlatform": "Official hotel page",
-        "supportingEvidence": [
-          {
-            "label": "Official hotel page",
-            "url": "https://turismocancun.mx/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Official hotel page",
-              "url": "https://turismocancun.mx/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "AVA-VOC-003",
-        "propertyId": "adp_voco_cancun_zona_hotelera",
-        "findingIds": [
-          "AVA-VOC-003"
-        ],
-        "mergedFromActionIds": [
-          "AVA-VOC-003"
-        ],
-        "workstreamTheme": "positioning_content",
-        "actionTitle": "Align Dining, Pool, and Pet-Policy Signals",
-        "classification": "VERIFIED_CONTENT_IMPROVEMENT",
-        "priority": "MEDIUM",
-        "prioritySource": "MEDIUM",
-        "platform": "Official hotel page",
-        "affectedUrls": [
-          {
-            "url": "https://turismocancun.mx/",
-            "label": "Official hotel page"
-          }
-        ],
-        "verifiedObservation": "Official content identifies two on-site restaurants, Lobby and Pool bars, a lagoon-view pool, and a pet fee of 1,100 MXN.",
-        "commercialRationale": "Accurate descriptions help guests assess fit and total cost; the Reality Gap does not prove these facts are missing because of a website defect.",
-        "recommendedSteps": [
-          "Operations signs current outlet names, service periods, pool description, and pet terms.",
-          "Audit official and priority partner pages against that fact sheet.",
-          "Submit only factual corrections or clarifications.",
-          "Retain live verification and an update owner.",
-          "Operations signs a current amenity and policy fact sheet.",
-          "Approved corrections are filed for mismatched fields."
-        ],
-        "primaryOwner": "Hotel Operations / Marketing",
-        "supportingOwners": [
-          "Food and beverage",
-          "Front office",
-          "IHG digital content"
-        ],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://turismocancun.mx/",
-            "label": "Official hotel page"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Align Dining, Pool, and Pet-Policy Signals",
-        "whatWeFound": "Official content identifies two on-site restaurants, Lobby and Pool bars, a lagoon-view pool, and a pet fee of 1,100 MXN.",
-        "recommendedAction": "Align Dining, Pool, and Pet-Policy Signals",
-        "accountableOwner": "Hotel Operations / Marketing",
-        "businessRelevance": "Accurate descriptions help guests assess fit and total cost; the Reality Gap does not prove these facts are missing because of a website defect.",
-        "whyItMatters": "Accurate descriptions help guests assess fit and total cost; the Reality Gap does not prove these facts are missing because of a website defect.",
-        "affectedPlatform": "Official hotel page",
-        "supportingEvidence": [
-          {
-            "label": "Official hotel page",
-            "url": "https://turismocancun.mx/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Official hotel page",
-              "url": "https://turismocancun.mx/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "AVA-VOC-004",
-        "propertyId": "adp_voco_cancun_zona_hotelera",
-        "findingIds": [
-          "AVA-VOC-004"
-        ],
-        "mergedFromActionIds": [
-          "AVA-VOC-004"
-        ],
-        "workstreamTheme": "unique:AVA-VOC-004",
-        "actionTitle": "Review IHG Automated-Access Posture",
-        "classification": "MAINTENANCE",
-        "priority": "MEDIUM",
-        "prioritySource": "MEDIUM",
-        "platform": "Turismo Cancún",
-        "affectedUrls": [
-          {
-            "url": "https://turismocancun.mx/",
-            "label": "Turismo Cancún"
-          }
-        ],
-        "verifiedObservation": "An unintended policy mismatch could limit intended automated clients, but a single research environment does not establish a general outage.",
-        "commercialRationale": "An unintended policy mismatch could limit intended automated clients, but a single research environment does not establish a general outage.",
-        "recommendedSteps": [
-          "Open an IHG WAF/bot-management ticket with the exact request context.",
-          "Define intended crawler and partner access policy.",
-          "Approve only narrow security-safe changes if a conflict is confirmed.",
-          "Retest agreed endpoints from intended clients.",
-          "A technical note explains the 403 behavior and intended policy.",
-          "Any required rule change is approved through IHG security governance."
-        ],
-        "primaryOwner": "IHG Digital / WAF Security Owner",
-        "supportingOwners": [
-          "Hotel digital marketing",
-          "IHG brand content"
-        ],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://turismocancun.mx/",
-            "label": "Turismo Cancún"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Review IHG Automated-Access Posture",
-        "whatWeFound": "An unintended policy mismatch could limit intended automated clients, but a single research environment does not establish a general outage.",
-        "recommendedAction": "Review IHG Automated-Access Posture",
-        "accountableOwner": "IHG Digital / WAF Security Owner",
-        "businessRelevance": "An unintended policy mismatch could limit intended automated clients, but a single research environment does not establish a general outage.",
-        "whyItMatters": "An unintended policy mismatch could limit intended automated clients, but a single research environment does not establish a general outage.",
-        "affectedPlatform": "Turismo Cancún",
-        "supportingEvidence": [
-          {
-            "label": "Turismo Cancún",
-            "url": "https://turismocancun.mx/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Turismo Cancún",
-              "url": "https://turismocancun.mx/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "AVA-VOCO-DA-001",
-        "propertyId": "adp_voco_cancun_zona_hotelera",
-        "findingIds": [
-          "AVA-VOCO-DA-001"
-        ],
-        "mergedFromActionIds": [
-          "AVA-VOCO-DA-001"
-        ],
-        "workstreamTheme": "digital_authority_outreach",
-        "actionTitle": "Pursue Turismo Cancún Lodging Profile With Official IHG URL",
-        "classification": "MAINTENANCE",
-        "priority": "MEDIUM",
-        "prioritySource": "HIGH",
-        "platform": "Turismo Cancún",
-        "affectedUrls": [
-          {
-            "url": "https://turismocancun.mx/",
-            "label": "Turismo Cancún"
-          }
-        ],
-        "verifiedObservation": "Turismo Cancún is a credible destination authority; hotel-specific outbound IHG backlink was not confirmed in this public pass.",
-        "commercialRationale": "Leisure AI and planners often reuse destination inventories.",
-        "recommendedSteps": [
-          "Finish EN page / room-label hygiene actions.",
-          "Contact Turismo Cancún lodging inventory owner.",
-          "Submit approved profile + IHG canonical URL.",
-          "Re-check live listing.",
-          "Opportunity owner and required facts confirmed with hotel leadership.",
-          "Outreach or listing update request filed with supporting evidence."
-        ],
-        "primaryOwner": "Hotel Commercial / IHG brand content",
-        "supportingOwners": [
-          "Brand Content Team"
-        ],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://turismocancun.mx/",
-            "label": "Turismo Cancún"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Pursue Turismo Cancún Lodging Profile With Official IHG URL",
-        "whatWeFound": "Turismo Cancún is a credible destination authority; hotel-specific outbound IHG backlink was not confirmed in this public pass.",
-        "recommendedAction": "Pursue Turismo Cancún Lodging Profile With Official IHG URL",
-        "accountableOwner": "Hotel Commercial / IHG brand content",
-        "businessRelevance": "Leisure AI and planners often reuse destination inventories.",
-        "whyItMatters": "Leisure AI and planners often reuse destination inventories.",
-        "affectedPlatform": "Turismo Cancún",
-        "supportingEvidence": [
-          {
-            "label": "Turismo Cancún",
-            "url": "https://turismocancun.mx/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Turismo Cancún",
-              "url": "https://turismocancun.mx/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "VCZH-DCR-ACT-001",
-        "propertyId": "adp_voco_cancun_zona_hotelera",
-        "findingIds": [
-          "VCZH-DCR-ACT-001"
-        ],
-        "mergedFromActionIds": [
-          "VCZH-DCR-ACT-001"
-        ],
-        "workstreamTheme": "meeting_space_reconciliation",
-        "actionTitle": "Confirm and align official facts for voco Cancún Zona Hotelera",
-        "classification": "DISTRIBUTION_OPPORTUNITY",
-        "priority": "MEDIUM",
-        "prioritySource": "HIGH",
-        "platform": "Official website",
-        "affectedUrls": [
-          {
-            "url": "https://www.ihg.com/voco/hotels/us/en/cancun/cuncn/hoteldetail",
-            "label": "Official website"
-          }
-        ],
-        "verifiedObservation": "Confirm that meetings, dining, and amenities facts on the official page match the hotel’s approved source of truth; align third-party listings after confirmation.",
-        "commercialRationale": "Digital content readiness depends on one approved source of truth before third-party outreach.",
-        "recommendedSteps": [
-          "Establish one approved fact sheet; update the official page first; then cascade to GBP/OTAs when values are confirmed.",
-          "Do not change unconfirmed values on OTAs until the hotel approves the fact sheet.",
-          "Opportunity owner and required facts confirmed with hotel leadership.",
-          "Outreach or listing update request filed with supporting evidence.",
-          "Live destination/partner page checked and archived after update (or documented refusal)."
-        ],
-        "primaryOwner": "Hotel Sales & Marketing",
-        "supportingOwners": [
-          "Brand Content Team",
-          "Digital Marketing Agency"
-        ],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://www.ihg.com/voco/hotels/us/en/cancun/cuncn/hoteldetail",
-            "label": "Official website"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Confirm and align official facts for voco Cancún Zona Hotelera",
-        "whatWeFound": "Confirm that meetings, dining, and amenities facts on the official page match the hotel’s approved source of truth; align third-party listings after confirmation.",
-        "recommendedAction": "Confirm and align official facts for voco Cancún Zona Hotelera",
-        "accountableOwner": "Hotel Sales & Marketing",
-        "businessRelevance": "Digital content readiness depends on one approved source of truth before third-party outreach.",
-        "whyItMatters": "Digital content readiness depends on one approved source of truth before third-party outreach.",
-        "affectedPlatform": "Official website",
-        "supportingEvidence": [
-          {
-            "label": "Official website",
-            "url": "https://www.ihg.com/voco/hotels/us/en/cancun/cuncn/hoteldetail"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Official website",
-              "url": "https://www.ihg.com/voco/hotels/us/en/cancun/cuncn/hoteldetail",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      }
-    ],
-    "integrity": {
-      "titleOnlySteps": [],
-      "titleStepMisaligned": []
-    }
   },
   "actionsResearchRecord": [
     {
@@ -1831,5 +1489,443 @@
       },
       "implementationStatus": "Awaiting hotel decision"
     }
-  ]
+  ],
+  "customerActionRegister": {
+    "contract": "AVA_CANONICAL_ACTION_REGISTER_V1",
+    "propertyId": "adp_voco_cancun_zona_hotelera",
+    "generatedAt": "2026-11-06T00:42:09.654Z",
+    "sourceActionCount": 6,
+    "canonicalActionCount": 6,
+    "consolidated": [],
+    "actions": [
+      {
+        "actionId": "AVA-VOC-001",
+        "propertyId": "adp_voco_cancun_zona_hotelera",
+        "findingIds": [
+          "AVA-VOC-001"
+        ],
+        "mergedFromActionIds": [
+          "AVA-VOC-001"
+        ],
+        "workstreamTheme": "unique:AVA-VOC-001",
+        "actionTitle": "Correct Mixed-Language Room Headings",
+        "classification": "MAINTENANCE",
+        "priority": "HIGH",
+        "prioritySource": "HIGH",
+        "platform": "Official hotel page",
+        "affectedUrls": [
+          {
+            "url": "https://turismocancun.mx/",
+            "label": "Official hotel page"
+          }
+        ],
+        "verifiedObservation": "Room content on the English page includes “Ultimos pisos” and “Habitaciones modernas...” alongside English content.",
+        "commercialRationale": "Mixed-language headings can interrupt comprehension and create inconsistent reusable content for partners and automated systems.",
+        "recommendedSteps": [
+          "Capture each mixed-language field and its intended room category.",
+          "Apply the change on the verified page (turismocancun.mx) and retain before/after evidence.",
+          "Hotel and IHG approve accurate English replacements.",
+          "Submit field-level corrections through IHG content controls.",
+          "Verify desktop and mobile rendered English pages.",
+          "Identify source fields, locale inheritance, and approved English replacements."
+        ],
+        "desiredOutcome": "The English page renders approved English headings across supported views.",
+        "primaryOwner": "IHG Digital Content / Hotel Marketing",
+        "supportingOwners": [
+          "Rooms leadership",
+          "Hotel operations",
+          "IHG brand content"
+        ],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://turismocancun.mx/",
+            "label": "Official hotel page"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Correct Mixed-Language Room Headings",
+        "whatWeFound": "Room content on the English page includes “Ultimos pisos” and “Habitaciones modernas...” alongside English content.",
+        "recommendedAction": "Correct Mixed-Language Room Headings",
+        "accountableOwner": "IHG Digital Content / Hotel Marketing",
+        "businessRelevance": "Mixed-language headings can interrupt comprehension and create inconsistent reusable content for partners and automated systems.",
+        "whyItMatters": "Mixed-language headings can interrupt comprehension and create inconsistent reusable content for partners and automated systems.",
+        "affectedPlatform": "Official hotel page",
+        "supportingEvidence": [
+          {
+            "label": "Official hotel page",
+            "url": "https://turismocancun.mx/"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Official hotel page",
+              "url": "https://turismocancun.mx/",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "AVA-VOC-002",
+        "propertyId": "adp_voco_cancun_zona_hotelera",
+        "findingIds": [
+          "AVA-VOC-002"
+        ],
+        "mergedFromActionIds": [
+          "AVA-VOC-002"
+        ],
+        "workstreamTheme": "unique:AVA-VOC-002",
+        "actionTitle": "Clarify Location and Meetings Facts",
+        "classification": "MAINTENANCE",
+        "priority": "HIGH",
+        "prioritySource": "HIGH",
+        "platform": "Official hotel page",
+        "affectedUrls": [
+          {
+            "url": "https://turismocancun.mx/",
+            "label": "Official hotel page"
+          }
+        ],
+        "verifiedObservation": "Official content places the hotel across from Playa Langosta and near the Isla Mujeres ferry, Puerto Cancún, La Isla, and the Convention Center; meetings content describes Ibiza at 126, Bora Bora at 150, and combined Mexico up to 300.",
+        "commercialRationale": "A signed fact set can improve buyer decision context, but the audit does not claim content caused the measured result or would change measured bookings.",
+        "recommendedSteps": [
+          "Sales and operations sign exact location relationships and travel wording.",
+          "Apply the change on the verified page (turismocancun.mx) and retain before/after evidence.",
+          "Sign room-by-room areas and setup-qualified capacities.",
+          "Create concise location and meetings copy using only approved facts.",
+          "Align the hotel page, meetings page, sales collateral, and priority listings.",
+          "Map approved location and meetings facts to IHG-supported fields."
+        ],
+        "desiredOutcome": "Live pages use the signed location and setup-qualified meeting language.",
+        "primaryOwner": "Hotel Commercial Leadership",
+        "supportingOwners": [
+          "Director of Sales",
+          "Events operations",
+          "IHG digital content"
+        ],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://turismocancun.mx/",
+            "label": "Official hotel page"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Clarify Location and Meetings Facts",
+        "whatWeFound": "Official content places the hotel across from Playa Langosta and near the Isla Mujeres ferry, Puerto Cancún, La Isla, and the Convention Center; meetings content describes Ibiza at 126, Bora Bora at 150, and combined Mexico up to 300.",
+        "recommendedAction": "Clarify Location and Meetings Facts",
+        "accountableOwner": "Hotel Commercial Leadership",
+        "businessRelevance": "A signed fact set can improve buyer decision context, but the audit does not claim content caused the measured result or would change measured bookings.",
+        "whyItMatters": "A signed fact set can improve buyer decision context, but the audit does not claim content caused the measured result or would change measured bookings.",
+        "affectedPlatform": "Official hotel page",
+        "supportingEvidence": [
+          {
+            "label": "Official hotel page",
+            "url": "https://turismocancun.mx/"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Official hotel page",
+              "url": "https://turismocancun.mx/",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "AVA-VOC-003",
+        "propertyId": "adp_voco_cancun_zona_hotelera",
+        "findingIds": [
+          "AVA-VOC-003"
+        ],
+        "mergedFromActionIds": [
+          "AVA-VOC-003"
+        ],
+        "workstreamTheme": "positioning_content",
+        "actionTitle": "Align Dining, Pool, and Pet-Policy Signals",
+        "classification": "VERIFIED_CONTENT_IMPROVEMENT",
+        "priority": "MEDIUM",
+        "prioritySource": "MEDIUM",
+        "platform": "Official hotel page",
+        "affectedUrls": [
+          {
+            "url": "https://turismocancun.mx/",
+            "label": "Official hotel page"
+          }
+        ],
+        "verifiedObservation": "Official content identifies two on-site restaurants, Lobby and Pool bars, a lagoon-view pool, and a pet fee of 1,100 MXN.",
+        "commercialRationale": "Accurate descriptions help guests assess fit and total cost; the Reality Gap does not prove these facts are missing because of a website defect.",
+        "recommendedSteps": [
+          "Operations signs current outlet names, service periods, pool description, and pet terms.",
+          "Apply the change on the verified page (turismocancun.mx) and retain before/after evidence.",
+          "Audit official and priority partner pages against that fact sheet.",
+          "Submit only factual corrections or clarifications.",
+          "Retain live verification and an update owner.",
+          "Audit visible copy and supported structured fields against current operations."
+        ],
+        "desiredOutcome": "Verified outlet descriptions aligned across priority hotel and brand channels.",
+        "primaryOwner": "Hotel Operations / Marketing",
+        "supportingOwners": [
+          "Food and beverage",
+          "Front office",
+          "IHG digital content"
+        ],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://turismocancun.mx/",
+            "label": "Official hotel page"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Align Dining, Pool, and Pet-Policy Signals",
+        "whatWeFound": "Official content identifies two on-site restaurants, Lobby and Pool bars, a lagoon-view pool, and a pet fee of 1,100 MXN.",
+        "recommendedAction": "Align Dining, Pool, and Pet-Policy Signals",
+        "accountableOwner": "Hotel Operations / Marketing",
+        "businessRelevance": "Accurate descriptions help guests assess fit and total cost; the Reality Gap does not prove these facts are missing because of a website defect.",
+        "whyItMatters": "Accurate descriptions help guests assess fit and total cost; the Reality Gap does not prove these facts are missing because of a website defect.",
+        "affectedPlatform": "Official hotel page",
+        "supportingEvidence": [
+          {
+            "label": "Official hotel page",
+            "url": "https://turismocancun.mx/"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Official hotel page",
+              "url": "https://turismocancun.mx/",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "AVA-VOC-004",
+        "propertyId": "adp_voco_cancun_zona_hotelera",
+        "findingIds": [
+          "AVA-VOC-004"
+        ],
+        "mergedFromActionIds": [
+          "AVA-VOC-004"
+        ],
+        "workstreamTheme": "unique:AVA-VOC-004",
+        "actionTitle": "Review IHG Automated-Access Posture",
+        "classification": "MAINTENANCE",
+        "priority": "MEDIUM",
+        "prioritySource": "MEDIUM",
+        "platform": "Turismo Cancún",
+        "affectedUrls": [
+          {
+            "url": "https://turismocancun.mx/",
+            "label": "Turismo Cancún"
+          }
+        ],
+        "verifiedObservation": "An unintended policy mismatch could limit intended automated clients, but a single research environment does not establish a general outage.",
+        "commercialRationale": "Consistent, approved public facts reduce guest and partner confusion and limit incorrect AI repetition of property details.",
+        "recommendedSteps": [
+          "Open an IHG WAF/bot-management ticket with the exact request context.",
+          "Apply the change on the verified page (turismocancun.mx) and retain before/after evidence.",
+          "Define intended crawler and partner access policy.",
+          "Approve only narrow security-safe changes if a conflict is confirmed.",
+          "Retest agreed endpoints from intended clients.",
+          "Reproduce IHG URL access in an ordinary authenticated/browser session."
+        ],
+        "desiredOutcome": "Agreed clients receive the intended response without weakening unrelated protections.",
+        "primaryOwner": "IHG Digital / WAF Security Owner",
+        "supportingOwners": [
+          "Hotel digital marketing",
+          "IHG brand content"
+        ],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://turismocancun.mx/",
+            "label": "Turismo Cancún"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Review IHG Automated-Access Posture",
+        "whatWeFound": "An unintended policy mismatch could limit intended automated clients, but a single research environment does not establish a general outage.",
+        "recommendedAction": "Review IHG Automated-Access Posture",
+        "accountableOwner": "IHG Digital / WAF Security Owner",
+        "businessRelevance": "Consistent, approved public facts reduce guest and partner confusion and limit incorrect AI repetition of property details.",
+        "whyItMatters": "Consistent, approved public facts reduce guest and partner confusion and limit incorrect AI repetition of property details.",
+        "affectedPlatform": "Turismo Cancún",
+        "supportingEvidence": [
+          {
+            "label": "Turismo Cancún",
+            "url": "https://turismocancun.mx/"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Turismo Cancún",
+              "url": "https://turismocancun.mx/",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "AVA-VOCO-DA-001",
+        "propertyId": "adp_voco_cancun_zona_hotelera",
+        "findingIds": [
+          "AVA-VOCO-DA-001"
+        ],
+        "mergedFromActionIds": [
+          "AVA-VOCO-DA-001"
+        ],
+        "workstreamTheme": "digital_authority_outreach",
+        "actionTitle": "Pursue Turismo Cancún Lodging Profile With Official IHG URL",
+        "classification": "MAINTENANCE",
+        "priority": "MEDIUM",
+        "prioritySource": "HIGH",
+        "platform": "Turismo Cancún",
+        "affectedUrls": [
+          {
+            "url": "https://turismocancun.mx/",
+            "label": "Turismo Cancún"
+          }
+        ],
+        "verifiedObservation": "Turismo Cancún is a credible destination authority; hotel-specific outbound IHG backlink was not confirmed in this public pass.",
+        "commercialRationale": "Leisure AI and planners often reuse destination inventories.",
+        "recommendedSteps": [
+          "Finish EN page / room-label hygiene actions.",
+          "Apply the change on the verified page (turismocancun.mx) and retain before/after evidence.",
+          "Contact Turismo Cancún lodging inventory owner.",
+          "Submit approved profile + IHG canonical URL.",
+          "Re-check live listing."
+        ],
+        "desiredOutcome": "Verified CVB or partner listing fields corrected with the approved property URL and a working official hyperlink, or documented decline retained.",
+        "primaryOwner": "Hotel Commercial / IHG brand content",
+        "supportingOwners": [
+          "Brand Content Team"
+        ],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://turismocancun.mx/",
+            "label": "Turismo Cancún"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Pursue Turismo Cancún Lodging Profile With Official IHG URL",
+        "whatWeFound": "Turismo Cancún is a credible destination authority; hotel-specific outbound IHG backlink was not confirmed in this public pass.",
+        "recommendedAction": "Pursue Turismo Cancún Lodging Profile With Official IHG URL",
+        "accountableOwner": "Hotel Commercial / IHG brand content",
+        "businessRelevance": "Leisure AI and planners often reuse destination inventories.",
+        "whyItMatters": "Leisure AI and planners often reuse destination inventories.",
+        "affectedPlatform": "Turismo Cancún",
+        "supportingEvidence": [
+          {
+            "label": "Turismo Cancún",
+            "url": "https://turismocancun.mx/"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Turismo Cancún",
+              "url": "https://turismocancun.mx/",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "VCZH-DCR-ACT-001",
+        "propertyId": "adp_voco_cancun_zona_hotelera",
+        "findingIds": [
+          "VCZH-DCR-ACT-001"
+        ],
+        "mergedFromActionIds": [
+          "VCZH-DCR-ACT-001"
+        ],
+        "workstreamTheme": "meeting_space_reconciliation",
+        "actionTitle": "Confirm and align official facts for voco Cancún Zona Hotelera",
+        "classification": "VERIFIED_CONTENT_IMPROVEMENT",
+        "priority": "MEDIUM",
+        "prioritySource": "HIGH",
+        "platform": "Official website",
+        "affectedUrls": [
+          {
+            "url": "https://www.ihg.com/voco/hotels/us/en/cancun/cuncn/hoteldetail",
+            "label": "Official website"
+          }
+        ],
+        "verifiedObservation": "Confirm that meetings, dining, and amenities facts on the official page match the hotel’s approved source of truth; align third-party listings after confirmation.",
+        "commercialRationale": "Digital content readiness depends on one approved source of truth before third-party outreach.",
+        "recommendedSteps": [
+          "Establish one approved fact sheet; update the official page first; then cascade to GBP/OTAs when values are confirmed.",
+          "Apply the change on the verified page (ihg.com) and retain before/after evidence.",
+          "Do not change unconfirmed values on OTAs until the hotel approves the fact sheet."
+        ],
+        "desiredOutcome": "One hotel-approved fact sheet reflected on the official site and spot-checked on priority listings.",
+        "primaryOwner": "Hotel Sales & Marketing",
+        "supportingOwners": [
+          "Brand Content Team",
+          "Digital Marketing Agency"
+        ],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://www.ihg.com/voco/hotels/us/en/cancun/cuncn/hoteldetail",
+            "label": "Official website"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Confirm and align official facts for voco Cancún Zona Hotelera",
+        "whatWeFound": "Confirm that meetings, dining, and amenities facts on the official page match the hotel’s approved source of truth; align third-party listings after confirmation.",
+        "recommendedAction": "Confirm and align official facts for voco Cancún Zona Hotelera",
+        "accountableOwner": "Hotel Sales & Marketing",
+        "businessRelevance": "Digital content readiness depends on one approved source of truth before third-party outreach.",
+        "whyItMatters": "Digital content readiness depends on one approved source of truth before third-party outreach.",
+        "affectedPlatform": "Official website",
+        "supportingEvidence": [
+          {
+            "label": "Official website",
+            "url": "https://www.ihg.com/voco/hotels/us/en/cancun/cuncn/hoteldetail"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Official website",
+              "url": "https://www.ihg.com/voco/hotels/us/en/cancun/cuncn/hoteldetail",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      }
+    ],
+    "integrity": {
+      "titleOnlySteps": [],
+      "titleStepMisaligned": []
+    }
+  }
 }

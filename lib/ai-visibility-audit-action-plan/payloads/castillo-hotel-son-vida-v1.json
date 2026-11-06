@@ -66,24 +66,39 @@
     ],
     "priorities": [
       {
-        "priority": "High",
-        "action": "Spa operations and Marriott content: reconcile 900 versus 990 m²",
-        "desiredOutcome": "One approved spa specification"
+        "actionId": "AVA-CSV-001",
+        "priority": "HIGH",
+        "action": "Reconcile and Correct Spa Size Information",
+        "desiredOutcome": "One confirmed spa measurement published consistently on official brand and hotel pages.",
+        "owner": "Hotel GM / Spa Operations"
       },
       {
-        "priority": "High",
-        "action": "Commercial team: align castle, adults-only, golf, wellness, and events facts",
-        "desiredOutcome": "Coherent luxury proposition"
+        "actionId": "AVA-CSV-002",
+        "priority": "MEDIUM",
+        "action": "Align Castle, Adults-Only, Golf, Wellness, and Events Facts",
+        "desiredOutcome": "Approved “Align Castle, Adults-Only, Golf, Wellness, and Events Facts” facts published and spot-checked on Official Marriott property overview.",
+        "owner": "Hotel Commercial Leadership"
       },
       {
-        "priority": "Medium",
-        "action": "Marriott platform support: investigate bounded access behavior",
-        "desiredOutcome": "Documented crawler-access decision"
+        "actionId": "AVA-CSV-003",
+        "priority": "MEDIUM",
+        "action": "Investigate Marriott Property-Page Access for Intended Crawlers",
+        "desiredOutcome": "Documented crawler-access decision with verified live robots/CDN behavior.",
+        "owner": "Marriott Digital Content / Platform Support"
       },
       {
-        "priority": "Medium",
-        "action": "Commercial team: review only three Saratoga scenarios",
-        "desiredOutcome": "Proportionate content decision"
+        "actionId": "AVA-CSV-004",
+        "priority": "MEDIUM",
+        "action": "Review the Three Hotel Saratoga Displacement Scenarios",
+        "desiredOutcome": "Published changes match approved facts and contain no unsupported comparative claim.",
+        "owner": "Hotel Commercial Leadership"
+      },
+      {
+        "actionId": "AVA-CSV-DA-001",
+        "priority": "MEDIUM",
+        "action": "Protect Visit Palma Backlink Asset with Accurate Luxury Facts",
+        "desiredOutcome": "Verified CVB or partner listing fields corrected with the approved property URL and a working official hyperlink, or documented decline retained.",
+        "owner": "Hotel Commercial / Revenue"
       }
     ],
     "successLooksLike": "The spa has one hotel-approved measurement or clearly labeled scopes, the luxury proposition is consistent across official pages, and narrow technical and competitive reviews have documented outcomes.",
@@ -97,6 +112,7 @@
       "headline": "Reconcile and Correct Spa Size Information",
       "businessRelevance": "The conflict is verified, but the correct figure is not. Spa operations must confirm measurement scope before correction; the audit must not infer which number wins.",
       "accountableOwner": "Hotel GM / Spa Operations",
+      "desiredOutcome": "One confirmed spa measurement published consistently on official brand and hotel pages.",
       "suggestedTimeframe": "Within 30 days"
     },
     {
@@ -105,6 +121,7 @@
       "headline": "Align Castle, Adults-Only, Golf, Wellness, and Events Facts",
       "businessRelevance": "A signed fact architecture helps guests and planners understand what is on property, partner-provided, seasonal, or subject to policy without diluting the hotel’s distinctive luxury story.",
       "accountableOwner": "Hotel Commercial Leadership",
+      "desiredOutcome": "Approved “Align Castle, Adults-Only, Golf, Wellness, and Events Facts” facts published and spot-checked on Official Marriott property overview.",
       "suggestedTimeframe": "Within 30 days"
     },
     {
@@ -113,6 +130,7 @@
       "headline": "Investigate Marriott Property-Page Access for Intended Crawlers",
       "businessRelevance": "Marriott should verify intended behavior before any platform change. The probe does not establish a public outage or universal crawler block.",
       "accountableOwner": "Marriott Digital Content / Platform Support",
+      "desiredOutcome": "Documented crawler-access decision with verified live robots/CDN behavior.",
       "suggestedTimeframe": "Within 30 days"
     },
     {
@@ -121,6 +139,7 @@
       "headline": "Review the Three Hotel Saratoga Displacement Scenarios",
       "businessRelevance": "A light review can determine whether the scenarios fit Castillo’s adults-only luxury, golf, wellness, meetings, or wedding strategy without overreacting to a narrow signal.",
       "accountableOwner": "Hotel Commercial Leadership",
+      "desiredOutcome": "Published changes match approved facts and contain no unsupported comparative claim.",
       "suggestedTimeframe": "Within 30 days"
     },
     {
@@ -129,6 +148,7 @@
       "headline": "Protect Visit Palma Backlink Asset with Accurate Luxury Facts",
       "businessRelevance": "Destination backlinks are rare, high-credibility surfaces for Palma luxury demand.",
       "accountableOwner": "Hotel Commercial / Revenue",
+      "desiredOutcome": "Verified CVB or partner listing fields corrected with the approved property URL and a working official hyperlink, or documented decline retained.",
       "suggestedTimeframe": "Within 30 days"
     }
   ],
@@ -292,19 +312,22 @@
   "actions": [
     {
       "actionId": "AVA-CSV-001",
-      "headline": "Correct the Conflicting Spa Size on the Marriott Overview",
+      "headline": "Reconcile and Correct Spa Size Information",
       "priority": "HIGH",
       "priorityWhy": "The same official page gives two different measurements for one core luxury amenity.",
       "whatWeFound": "The same Marriott overview describes the spa as 900 square metres in one section and 990 square metres in another; both appear to refer to the same facility.",
       "whyItMatters": "The conflict is verified, but the correct figure is not. Spa operations must confirm measurement scope before correction; the audit must not infer which number wins.",
       "recommendedSteps": [
-        "Spa operations confirms the measured and approved figure.",
-        "Marriott content support identifies every occurrence and structured field.",
-        "Replace the incorrect value and align units and formatting.",
-        "Archive before-and-after evidence."
+        "Spa operations confirms the correct measurement and scope.",
+        "Hotel management approves the authoritative spa specification.",
+        "Brand digital updates confirmed incorrect brand-page content.",
+        "Marketing checks relevant destination and distribution pages for the same figure."
       ],
       "accountableOwner": "Hotel GM / Spa Operations",
-      "supportingParties": "Marriott digital content team; hotel marketing",
+      "supportingParties": [
+        "Brand Digital",
+        "Hotel Marketing"
+      ],
       "suggestedTimeframe": "Confirmation in 1 week; correction within 2–3 weeks",
       "timeframeNote": "Timing is proposed and requires accountable-owner agreement.",
       "completionCriteria": {
@@ -317,31 +340,41 @@
       "hotelApprovalNotes": "Spa operations must confirm the correct measurement and whether any figures use different scopes.",
       "supportingEvidence": [
         {
-          "label": "Official Marriott overview — 900/990-square-metre conflict",
-          "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-          "kind": "VERIFIED_PUBLIC",
-          "note": "URL removed from customer evidence after verification failure."
+          "label": "Marriott overview",
+          "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/"
+        },
+        {
+          "label": "Visit Palma",
+          "url": "http://www.visit-palma.com/hotel-castillo-son-vida"
         }
       ],
       "technicalDetails": {
         "urls": [
           {
-            "label": "Official Marriott overview — 900/990-square-metre conflict",
+            "label": "Marriott overview",
             "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
+            "kind": "VERIFIED_PUBLIC"
+          },
+          {
+            "label": "Visit Palma",
+            "url": "http://www.visit-palma.com/hotel-castillo-son-vida",
             "kind": "VERIFIED_PUBLIC"
           }
         ],
         "changesOrInvestigation": [
-          "Locate both spa-size strings and related metadata.",
-          "Confirm measurement scope and approved value.",
-          "Update introduction, amenities copy, and any structured field.",
-          "Retain screenshots and ticket history."
+          "Spa operations confirms the correct measurement and scope.",
+          "Hotel management approves the authoritative spa specification.",
+          "Brand digital updates confirmed incorrect brand-page content.",
+          "Marketing checks relevant destination and distribution pages for the same figure."
         ],
         "evidence": [
           {
-            "label": "Official Marriott overview — 900/990-square-metre conflict",
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-            "kind": "VERIFIED_PUBLIC"
+            "label": "Marriott overview",
+            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/"
+          },
+          {
+            "label": "Visit Palma",
+            "url": "http://www.visit-palma.com/hotel-castillo-son-vida"
           }
         ],
         "verificationMethod": "Spa sign-off plus live-page text search and source/structured-data review.",
@@ -358,20 +391,29 @@
       "estimatedEffort": "MEDIUM",
       "affectedPlatform": "Official Marriott overview — 900/990-square-metre conflict",
       "specificIssue": "The same Marriott overview describes the spa as 900 square metres in one section and 990 square metres in another; both appear to refer to the same facility.",
-      "commercialImportance": "The conflict is verified, but the correct figure is not. Spa operations must confirm measurement scope before correction; the audit must not infer which number wins."
+      "commercialImportance": "The conflict is verified, but the correct figure is not. Spa operations must confirm measurement scope before correction; the audit must not infer which number wins.",
+      "actionTitle": "Reconcile and Correct Spa Size Information",
+      "desiredOutcome": "One confirmed spa measurement published consistently on official brand and hotel pages.",
+      "classification": "VERIFIED_CORRECTION",
+      "workstreamTheme": "spa_size_reconciliation",
+      "primaryOwner": "Hotel GM / Spa Operations",
+      "businessRelevance": "The conflict is verified, but the correct figure is not. Spa operations must confirm measurement scope before correction; the audit must not infer which number wins.",
+      "recommendedAction": "Reconcile and Correct Spa Size Information"
     },
     {
       "actionId": "AVA-CSV-002",
       "headline": "Align Castle, Adults-Only, Golf, Wellness, and Events Facts",
-      "priority": "HIGH",
+      "priority": "MEDIUM",
       "priorityWhy": "These verified official attributes define the luxury proposition and should use precise relationship language.",
       "whatWeFound": "Official content presents an adults-only Luxury Collection castle, Arabella golf access, spa and wellness, and meetings and weddings content.",
       "whyItMatters": "A signed fact architecture helps guests and planners understand what is on property, partner-provided, seasonal, or subject to policy without diluting the hotel’s distinctive luxury story.",
       "recommendedSteps": [
         "Approve terminology for castle heritage, adults-only policy, golf relationship, spa, meetings, and weddings.",
+        "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
         "Map each fact to official overview and events content.",
         "Clarify access versus ownership for golf.",
-        "Correct only confirmed inconsistencies."
+        "Correct only confirmed inconsistencies.",
+        "Create a relationship and attribute fact table."
       ],
       "accountableOwner": "Hotel Commercial Leadership",
       "supportingParties": "Operations; Arabella Golf; weddings/events; Marriott digital content",
@@ -388,19 +430,15 @@
       "supportingEvidence": [
         {
           "label": "Official Marriott property overview",
-          "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-          "kind": "VERIFIED_PUBLIC",
-          "note": "URL removed from customer evidence after verification failure."
+          "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/"
         },
         {
           "label": "Official Marriott events page",
-          "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/events/",
-          "kind": "VERIFIED_PUBLIC"
+          "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/events/"
         },
         {
           "label": "Arabella Golf official site",
-          "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/",
-          "kind": "VERIFIED_PUBLIC"
+          "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/"
         }
       ],
       "technicalDetails": {
@@ -422,26 +460,25 @@
           }
         ],
         "changesOrInvestigation": [
-          "Create a relationship and attribute fact table.",
-          "Separate on-property, affiliated, and nearby services.",
-          "Confirm adults-only and availability wording.",
-          "Align overview, events, and golf references after approval."
+          "Approve terminology for castle heritage, adults-only policy, golf relationship, spa, meetings, and weddings.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Map each fact to official overview and events content.",
+          "Clarify access versus ownership for golf.",
+          "Correct only confirmed inconsistencies.",
+          "Create a relationship and attribute fact table."
         ],
         "evidence": [
           {
             "label": "Official Marriott property overview",
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-            "kind": "VERIFIED_PUBLIC"
+            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/"
           },
           {
             "label": "Official Marriott events page",
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/events/",
-            "kind": "VERIFIED_PUBLIC"
+            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/events/"
           },
           {
             "label": "Arabella Golf official site",
-            "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/",
-            "kind": "VERIFIED_PUBLIC"
+            "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/"
           }
         ],
         "verificationMethod": "Signed fact architecture and live-page comparison across all named URLs.",
@@ -460,7 +497,14 @@
       "estimatedEffort": "MEDIUM",
       "affectedPlatform": "Official Marriott property overview",
       "specificIssue": "Official content presents an adults-only Luxury Collection castle, Arabella golf access, spa and wellness, and meetings and weddings content.",
-      "commercialImportance": "A signed fact architecture helps guests and planners understand what is on property, partner-provided, seasonal, or subject to policy without diluting the hotel’s distinctive luxury story."
+      "commercialImportance": "A signed fact architecture helps guests and planners understand what is on property, partner-provided, seasonal, or subject to policy without diluting the hotel’s distinctive luxury story.",
+      "actionTitle": "Align Castle, Adults-Only, Golf, Wellness, and Events Facts",
+      "desiredOutcome": "Approved “Align Castle, Adults-Only, Golf, Wellness, and Events Facts” facts published and spot-checked on Official Marriott property overview.",
+      "classification": "VERIFIED_CONTENT_IMPROVEMENT",
+      "workstreamTheme": "positioning_content",
+      "primaryOwner": "Hotel Commercial Leadership",
+      "businessRelevance": "A signed fact architecture helps guests and planners understand what is on property, partner-provided, seasonal, or subject to policy without diluting the hotel’s distinctive luxury story.",
+      "recommendedAction": "Align Castle, Adults-Only, Golf, Wellness, and Events Facts"
     },
     {
       "actionId": "AVA-CSV-003",
@@ -471,9 +515,11 @@
       "whyItMatters": "Marriott should verify intended behavior before any platform change. The probe does not establish a public outage or universal crawler block.",
       "recommendedSteps": [
         "Open a Marriott/Akamai ticket with the redirect chain.",
+        "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
         "Confirm intended crawler policy.",
         "Retest overview and events pages from agreed clients and regions.",
-        "Document expected behavior or approved remediation."
+        "Document expected behavior or approved remediation.",
+        "Reproduce the redirect and response."
       ],
       "accountableOwner": "Marriott Digital Content / Platform Support",
       "supportingParties": "Hotel digital lead; Akamai/security team",
@@ -490,20 +536,11 @@
       "supportingEvidence": [
         {
           "label": "Official property overview",
-          "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-          "kind": "VERIFIED_PUBLIC",
-          "note": "URL removed from customer evidence after verification failure."
+          "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/"
         },
         {
           "label": "Marriott robots.txt",
-          "url": "https://www.marriott.com/robots.txt",
-          "kind": "VERIFIED_PUBLIC"
-        },
-        {
-          "label": "Bounded automated probe",
-          "url": null,
-          "kind": "TECHNICAL_OBSERVATION",
-          "note": "GET redirected to default.mi and returned Akamai 403; HEAD returned 200."
+          "url": "https://www.marriott.com/robots.txt"
         }
       ],
       "technicalDetails": {
@@ -520,27 +557,21 @@
           }
         ],
         "changesOrInvestigation": [
-          "Reproduce the redirect and response.",
-          "Compare edge behavior with robots directives.",
-          "Test only agreed clients and regions.",
-          "Preserve security controls unless a mismatch is confirmed."
+          "Open a Marriott/Akamai ticket with the redirect chain.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Confirm intended crawler policy.",
+          "Retest overview and events pages from agreed clients and regions.",
+          "Document expected behavior or approved remediation.",
+          "Reproduce the redirect and response."
         ],
         "evidence": [
           {
             "label": "Official property overview",
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-            "kind": "VERIFIED_PUBLIC"
+            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/"
           },
           {
             "label": "Marriott robots.txt",
-            "url": "https://www.marriott.com/robots.txt",
-            "kind": "VERIFIED_PUBLIC"
-          },
-          {
-            "label": "Bounded automated probe",
-            "url": null,
-            "kind": "TECHNICAL_OBSERVATION",
-            "note": "GET redirected to default.mi and returned Akamai 403; HEAD returned 200."
+            "url": "https://www.marriott.com/robots.txt"
           }
         ],
         "verificationMethod": "Marriott support ticket and reproducible before-and-after status report.",
@@ -558,7 +589,14 @@
       "estimatedEffort": "MEDIUM",
       "affectedPlatform": "Official property overview",
       "specificIssue": "Marriott robots.txt returned 200 and did not disallow the property overview path; the automated GET redirected to default.mi and returned 403, while HEAD returned 200.",
-      "commercialImportance": "Marriott should verify intended behavior before any platform change. The probe does not establish a public outage or universal crawler block."
+      "commercialImportance": "Marriott should verify intended behavior before any platform change. The probe does not establish a public outage or universal crawler block.",
+      "actionTitle": "Investigate Marriott Property-Page Access for Intended Crawlers",
+      "desiredOutcome": "Documented crawler-access decision with verified live robots/CDN behavior.",
+      "classification": "RESEARCH_FOLLOW_UP",
+      "workstreamTheme": "technical_access_review",
+      "primaryOwner": "Marriott Digital Content / Platform Support",
+      "businessRelevance": "Marriott should verify intended behavior before any platform change. The probe does not establish a public outage or universal crawler block.",
+      "recommendedAction": "Investigate Marriott Property-Page Access for Intended Crawlers"
     },
     {
       "actionId": "AVA-CSV-004",
@@ -569,9 +607,11 @@
       "whyItMatters": "A light review can determine whether the scenarios fit Castillo’s adults-only luxury, golf, wellness, meetings, or wedding strategy without overreacting to a narrow signal.",
       "recommendedSteps": [
         "Review the three scenarios and intended traveler need.",
+        "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
         "Compare verified official propositions only.",
         "Decide whether each scenario is strategically relevant.",
-        "Approve a restrained content change only where supported."
+        "Approve a restrained content change only where supported.",
+        "Limit review to the three displaced scenarios."
       ],
       "accountableOwner": "Hotel Commercial Leadership",
       "supportingParties": "Revenue strategy; Marriott digital content team",
@@ -587,21 +627,12 @@
       "hotelApprovalNotes": "Commercial leadership approves scenario relevance and any competitive positioning.",
       "supportingEvidence": [
         {
-          "label": "Dealality's latest AI visibility measurements and action brief",
-          "url": null,
-          "kind": "INTERNAL_CERTIFIED",
-          "note": "Hotel Saratoga displacement in three scenarios; cause not established."
-        },
-        {
           "label": "Castillo Hotel Son Vida official overview",
-          "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-          "kind": "VERIFIED_PUBLIC",
-          "note": "URL removed from customer evidence after verification failure."
+          "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/"
         },
         {
           "label": "Hotel Saratoga official site",
-          "url": "https://www.hotelsaratoga.com/",
-          "kind": "VERIFIED_PUBLIC"
+          "url": "https://www.hotelsaratoga.com/"
         }
       ],
       "technicalDetails": {
@@ -618,27 +649,21 @@
           }
         ],
         "changesOrInvestigation": [
-          "Limit review to the three displaced scenarios.",
-          "Record strategic relevance before comparing content.",
-          "Separate facts from hypotheses.",
-          "Avoid broad competitor or preference conclusions."
+          "Review the three scenarios and intended traveler need.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Compare verified official propositions only.",
+          "Decide whether each scenario is strategically relevant.",
+          "Approve a restrained content change only where supported.",
+          "Limit review to the three displaced scenarios."
         ],
         "evidence": [
           {
-            "label": "Dealality's latest AI visibility measurements and action brief",
-            "url": null,
-            "kind": "INTERNAL_CERTIFIED",
-            "note": "Hotel Saratoga displacement in three scenarios; cause not established."
-          },
-          {
             "label": "Castillo Hotel Son Vida official overview",
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-            "kind": "VERIFIED_PUBLIC"
+            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/"
           },
           {
             "label": "Hotel Saratoga official site",
-            "url": "https://www.hotelsaratoga.com/",
-            "kind": "VERIFIED_PUBLIC"
+            "url": "https://www.hotelsaratoga.com/"
           }
         ],
         "verificationMethod": "Hotel-approved three-scenario worksheet and final-copy source review.",
@@ -656,20 +681,29 @@
       "estimatedEffort": "MEDIUM",
       "affectedPlatform": "Castillo Hotel Son Vida official overview",
       "specificIssue": "The ADP brief notes Hotel Saratoga displacement in three scenarios.",
-      "commercialImportance": "A light review can determine whether the scenarios fit Castillo’s adults-only luxury, golf, wellness, meetings, or wedding strategy without overreacting to a narrow signal."
+      "commercialImportance": "A light review can determine whether the scenarios fit Castillo’s adults-only luxury, golf, wellness, meetings, or wedding strategy without overreacting to a narrow signal.",
+      "actionTitle": "Review the Three Hotel Saratoga Displacement Scenarios",
+      "desiredOutcome": "Published changes match approved facts and contain no unsupported comparative claim.",
+      "classification": "MAINTENANCE",
+      "workstreamTheme": "competitive_review",
+      "primaryOwner": "Hotel Commercial Leadership",
+      "businessRelevance": "A light review can determine whether the scenarios fit Castillo’s adults-only luxury, golf, wellness, meetings, or wedding strategy without overreacting to a narrow signal.",
+      "recommendedAction": "Review the Three Hotel Saratoga Displacement Scenarios"
     },
     {
       "actionId": "AVA-CSV-DA-001",
       "headline": "Protect Visit Palma Backlink Asset with Accurate Luxury Facts",
-      "priority": "HIGH",
+      "priority": "MEDIUM",
       "priorityWhy": "Verified Visit Palma→Marriott backlink already exists; accuracy protects it.",
       "whatWeFound": "Visit Palma hotel page hyperlinks to the Marriott Luxury Collection property URL; Golfbreaks lists Castillo without a confirmed Marriott href.",
       "whyItMatters": "Destination backlinks are rare, high-credibility surfaces for Palma luxury demand.",
       "recommendedSteps": [
         "Reconcile spa-size source of truth.",
+        "Apply the change on the verified page (visit-palma.com) and retain before/after evidence.",
         "Submit Visit Palma fact updates.",
         "Align Golfbreaks listing facts.",
-        "Re-verify live Visit Palma href annuallyually."
+        "Re-verify live Visit Palma href annuallyually.",
+        "Destination profile update"
       ],
       "accountableOwner": "Hotel Commercial / Revenue",
       "supportingParties": "Marriott Luxury Collection content; Visit Palma",
@@ -695,10 +729,44 @@
         {
           "label": "Golfbreaks page",
           "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/"
+        },
+        {
+          "label": "Referring page",
+          "url": "https://www.elegantgolfresorts.com/hotels/castillo-hotel-son-vida/"
         }
       ],
       "technicalDetails": {
         "urls": [
+          {
+            "label": "Visit Palma hotel links",
+            "url": "http://www.visit-palma.com/listado-links-hoteles",
+            "kind": "VERIFIED_PUBLIC"
+          },
+          {
+            "label": "Urban Meetings PDF",
+            "url": "https://www.visit-palma.com/files/palma-urban-meetings.pdf",
+            "kind": "VERIFIED_PUBLIC"
+          },
+          {
+            "label": "Golfbreaks page",
+            "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/",
+            "kind": "VERIFIED_PUBLIC"
+          },
+          {
+            "label": "Referring page",
+            "url": "https://www.elegantgolfresorts.com/hotels/castillo-hotel-son-vida/",
+            "kind": "VERIFIED_PUBLIC"
+          }
+        ],
+        "changesOrInvestigation": [
+          "Reconcile spa-size source of truth.",
+          "Apply the change on the verified page (visit-palma.com) and retain before/after evidence.",
+          "Submit Visit Palma fact updates.",
+          "Align Golfbreaks listing facts.",
+          "Re-verify live Visit Palma href annuallyually.",
+          "Destination profile update"
+        ],
+        "evidence": [
           {
             "label": "Visit Palma hotel links",
             "url": "http://www.visit-palma.com/listado-links-hoteles"
@@ -706,16 +774,14 @@
           {
             "label": "Urban Meetings PDF",
             "url": "https://www.visit-palma.com/files/palma-urban-meetings.pdf"
-          }
-        ],
-        "changesOrInvestigation": [
-          "Destination profile update",
-          "Golf specialist fact sync"
-        ],
-        "evidence": [
+          },
           {
             "label": "Golfbreaks page",
             "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/"
+          },
+          {
+            "label": "Referring page",
+            "url": "https://www.elegantgolfresorts.com/hotels/castillo-hotel-son-vida/"
           }
         ],
         "verificationMethod": "Live page/PDF QA.",
@@ -738,168 +804,14 @@
       ],
       "affectedPlatform": "Visit Palma hotel links",
       "specificIssue": "Visit Palma hotel page hyperlinks to the Marriott Luxury Collection property URL; Golfbreaks lists Castillo without a confirmed Marriott href.",
-      "commercialImportance": "Destination backlinks are rare, high-credibility surfaces for Palma luxury demand."
-    },
-    {
-      "actionId": "AVA-CSV-DCR-001",
-      "headline": "Approve One Spa Specification Across Brand and Destination Pages",
-      "priority": "HIGH",
-      "priorityWhy": "Spa size conflict undermines an otherwise strong luxury discovery set.",
-      "whatWeFound": "Marriott overview contexts cite conflicting spa sizes; Visit Palma already links the property Marriott URL.",
-      "whyItMatters": "Wellness and luxury planners need one accurate spa fact.",
-      "recommendedSteps": [
-        "Operations signs spa m² definition.",
-        "Submit Marriott content correction.",
-        "Proof Visit Palma profile.",
-        "Archive evidence."
-      ],
-      "accountableOwner": "Hotel Operations",
-      "supportingParties": "Brand Content Team; Visit Palma account",
-      "suggestedTimeframe": "Sign-off in 2 weeks",
-      "claimType": "REQUIRES_HOTEL_CONFIRMATION",
-      "evidenceLinks": [
-        {
-          "label": "Marriott overview",
-          "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-          "note": "URL removed from customer evidence after verification failure."
-        },
-        {
-          "label": "Visit Palma",
-          "url": "http://www.visit-palma.com/hotel-castillo-son-vida"
-        }
-      ],
-      "estimatedEffort": "MEDIUM",
-      "completionCriteria": {
-        "investigationCompleted": "Opportunity owner and required facts confirmed with hotel leadership.",
-        "correctionSubmitted": "Outreach or listing update request filed with supporting evidence.",
-        "correctionVerifiedLive": "Live destination/partner page checked and archived after update (or documented refusal).",
-        "noChangeRequired": "Valid if leadership documents that the opportunity is out of scope with evidence retained."
-      },
-      "requiresHotelApproval": true,
-      "hotelApprovalNotes": "Approve outreach copy, official URL, and factual claims before partner contact.",
-      "supportingEvidence": [
-        {
-          "label": "Marriott overview",
-          "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-          "kind": "VERIFIED_PUBLIC",
-          "note": "URL removed from customer evidence after verification failure."
-        },
-        {
-          "label": "Visit Palma",
-          "url": "http://www.visit-palma.com/hotel-castillo-son-vida",
-          "kind": "VERIFIED_PUBLIC"
-        }
-      ],
-      "technicalDetails": {
-        "urls": [
-          {
-            "label": "Marriott overview",
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-            "kind": "VERIFIED_PUBLIC"
-          },
-          {
-            "label": "Visit Palma",
-            "url": "http://www.visit-palma.com/hotel-castillo-son-vida",
-            "kind": "VERIFIED_PUBLIC"
-          }
-        ],
-        "changesOrInvestigation": [
-          "Operations signs spa m² definition.",
-          "Submit Marriott content correction.",
-          "Proof Visit Palma profile.",
-          "Archive evidence."
-        ],
-        "evidence": [
-          {
-            "label": "Marriott overview",
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-            "kind": "VERIFIED_PUBLIC"
-          },
-          {
-            "label": "Visit Palma",
-            "url": "http://www.visit-palma.com/hotel-castillo-son-vida",
-            "kind": "VERIFIED_PUBLIC"
-          }
-        ],
-        "verificationMethod": "Live-page QA with archived screenshots and classification note.",
-        "dependencies": [
-          "Hotel leadership approves facts before outreach."
-        ],
-        "notes": "Public partial Digital Authority research only; no paid SEO metrics invented."
-      },
-      "implementationStatus": "Awaiting hotel decision",
-      "affectedPlatform": "Marriott overview",
-      "specificIssue": "Marriott overview contexts cite conflicting spa sizes; Visit Palma already links the property Marriott URL.",
-      "commercialImportance": "Wellness and luxury planners need one accurate spa fact."
-    },
-    {
-      "actionId": "AVA-CASTILLO-DA2-001",
-      "headline": "Request official property URL on Castillo Hotel Son Vida, Mallorca | Elegant Golf Resorts",
-      "priority": "HIGH",
-      "priorityWhy": "This source already references the hotel. Adding a correct property-specific hyperlink strengthens destination discovery without inventing new directories.",
-      "whatWeFound": "Public research verified 5 property-specific third-party hyperlink(s) and 8 external reference(s) without inventing paid-provider inventory.",
-      "whyItMatters": "This source already references the hotel. Adding a correct property-specific hyperlink strengthens destination discovery without inventing new directories.",
-      "recommendedSteps": [
-        "Submit the approved brand property URL and/or hotel-operated website for inclusion as the official link.",
-        "Confirm brand vs hotel-operated URL for the listing.",
-        "Archive before/after evidence of the live hyperlink."
-      ],
-      "accountableOwner": "Hotel Sales & Marketing",
-      "supportingParties": "Brand content / destination partnership owner",
-      "suggestedTimeframe": "Submit within 30 days of fact pack approval",
-      "claimType": "OPTIONAL_COMMERCIAL_OPPORTUNITY",
-      "evidenceLinks": [
-        {
-          "label": "Referring page",
-          "url": "https://www.elegantgolfresorts.com/hotels/castillo-hotel-son-vida/"
-        }
-      ],
-      "estimatedEffort": "MEDIUM",
-      "completionCriteria": {
-        "investigationCompleted": "Opportunity owner and required facts confirmed with hotel leadership.",
-        "correctionSubmitted": "Outreach or listing update request filed with supporting evidence.",
-        "correctionVerifiedLive": "Live destination/partner page checked and archived after update (or documented refusal).",
-        "noChangeRequired": "Valid if leadership documents that the opportunity is out of scope with evidence retained."
-      },
-      "requiresHotelApproval": true,
-      "hotelApprovalNotes": "Approve outreach copy, official URL, and factual claims before partner contact.",
-      "supportingEvidence": [
-        {
-          "label": "Referring page",
-          "url": "https://www.elegantgolfresorts.com/hotels/castillo-hotel-son-vida/",
-          "kind": "VERIFIED_PUBLIC"
-        }
-      ],
-      "technicalDetails": {
-        "urls": [
-          {
-            "label": "Referring page",
-            "url": "https://www.elegantgolfresorts.com/hotels/castillo-hotel-son-vida/",
-            "kind": "VERIFIED_PUBLIC"
-          }
-        ],
-        "changesOrInvestigation": [
-          "Submit the approved brand property URL and/or hotel-operated website for inclusion as the official link.",
-          "Confirm brand vs hotel-operated URL for the listing.",
-          "Archive before/after evidence of the live hyperlink."
-        ],
-        "evidence": [
-          {
-            "label": "Referring page",
-            "url": "https://www.elegantgolfresorts.com/hotels/castillo-hotel-son-vida/",
-            "kind": "VERIFIED_PUBLIC"
-          }
-        ],
-        "verificationMethod": "Live-page QA with archived screenshots and classification note.",
-        "dependencies": [
-          "Hotel leadership approves facts before outreach."
-        ],
-        "notes": "Public partial Digital Authority research only; no paid SEO metrics invented."
-      },
-      "implementationStatus": "Awaiting hotel decision",
-      "affectedPlatform": "Referring page",
-      "specificIssue": "Public research verified 5 property-specific third-party hyperlink(s) and 8 external reference(s) without inventing paid-provider inventory.",
-      "commercialImportance": "This source already references the hotel. Adding a correct property-specific hyperlink strengthens destination discovery without inventing new directories."
+      "commercialImportance": "Destination backlinks are rare, high-credibility surfaces for Palma luxury demand.",
+      "actionTitle": "Protect Visit Palma Backlink Asset with Accurate Luxury Facts",
+      "desiredOutcome": "Verified CVB or partner listing fields corrected with the approved property URL and a working official hyperlink, or documented decline retained.",
+      "classification": "MAINTENANCE",
+      "workstreamTheme": "digital_authority_outreach",
+      "primaryOwner": "Hotel Commercial / Revenue",
+      "businessRelevance": "Destination backlinks are rare, high-credibility surfaces for Palma luxury demand.",
+      "recommendedAction": "Protect Visit Palma Backlink Asset with Accurate Luxury Facts"
     }
   ],
   "methodology": {
@@ -5784,507 +5696,6 @@
       "No paid Exa/Context/DataForSEO spend in this V3 pass unless separately authorized."
     ]
   },
-  "customerActionRegister": {
-    "contract": "AVA_CANONICAL_ACTION_REGISTER_V1",
-    "propertyId": "adp_castillo_hotel_son_vida",
-    "generatedAt": "2026-11-05T21:49:59.622Z",
-    "sourceActionCount": 7,
-    "canonicalActionCount": 5,
-    "consolidated": [
-      {
-        "theme": "spa_size_reconciliation",
-        "keptActionId": "AVA-CSV-001",
-        "mergedActionIds": [
-          "AVA-CSV-001",
-          "AVA-CSV-DCR-001"
-        ],
-        "reason": "Same corrective objective (spa_size_reconciliation)"
-      },
-      {
-        "theme": "digital_authority_outreach",
-        "keptActionId": "AVA-CSV-DA-001",
-        "mergedActionIds": [
-          "AVA-CSV-DA-001",
-          "AVA-CASTILLO-DA2-001"
-        ],
-        "reason": "Same corrective objective (digital_authority_outreach)"
-      }
-    ],
-    "actions": [
-      {
-        "actionId": "AVA-CSV-001",
-        "propertyId": "adp_castillo_hotel_son_vida",
-        "findingIds": [
-          "AVA-CSV-001",
-          "AVA-CSV-DCR-001"
-        ],
-        "mergedFromActionIds": [
-          "AVA-CSV-001",
-          "AVA-CSV-DCR-001"
-        ],
-        "workstreamTheme": "spa_size_reconciliation",
-        "actionTitle": "Reconcile and Correct Spa Size Information",
-        "classification": "VERIFIED_CORRECTION",
-        "priority": "HIGH",
-        "prioritySource": "HIGH",
-        "platform": "Official Marriott overview — 900/990-square-metre conflict",
-        "affectedUrls": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-            "label": "Marriott overview"
-          },
-          {
-            "url": "http://www.visit-palma.com/hotel-castillo-son-vida",
-            "label": "Visit Palma"
-          }
-        ],
-        "verifiedObservation": "The same Marriott overview describes the spa as 900 square metres in one section and 990 square metres in another; both appear to refer to the same facility.",
-        "commercialRationale": "The conflict is verified, but the correct figure is not. Spa operations must confirm measurement scope before correction; the audit must not infer which number wins.",
-        "recommendedSteps": [
-          "Spa operations confirms the correct measurement and scope.",
-          "Hotel management approves the authoritative spa specification.",
-          "Brand digital updates confirmed incorrect brand-page content.",
-          "Marketing checks relevant destination and distribution pages for the same figure."
-        ],
-        "primaryOwner": "Hotel GM / Spa Operations",
-        "supportingOwners": [
-          "Brand Digital",
-          "Hotel Marketing"
-        ],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-            "label": "Official Marriott overview — 900/990-square-metre conflict"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": "Do not treat either published figure as confirmed correct until spa operations verifies the measurement.",
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Reconcile and Correct Spa Size Information",
-        "whatWeFound": "The same Marriott overview describes the spa as 900 square metres in one section and 990 square metres in another; both appear to refer to the same facility.",
-        "recommendedAction": "Reconcile and Correct Spa Size Information",
-        "accountableOwner": "Hotel GM / Spa Operations",
-        "businessRelevance": "The conflict is verified, but the correct figure is not. Spa operations must confirm measurement scope before correction; the audit must not infer which number wins.",
-        "whyItMatters": "The conflict is verified, but the correct figure is not. Spa operations must confirm measurement scope before correction; the audit must not infer which number wins.",
-        "affectedPlatform": "Official Marriott overview — 900/990-square-metre conflict",
-        "supportingEvidence": [
-          {
-            "label": "Marriott overview",
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/"
-          },
-          {
-            "label": "Visit Palma",
-            "url": "http://www.visit-palma.com/hotel-castillo-son-vida"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Marriott overview",
-              "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "Visit Palma",
-              "url": "http://www.visit-palma.com/hotel-castillo-son-vida",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "AVA-CSV-002",
-        "propertyId": "adp_castillo_hotel_son_vida",
-        "findingIds": [
-          "AVA-CSV-002"
-        ],
-        "mergedFromActionIds": [
-          "AVA-CSV-002"
-        ],
-        "workstreamTheme": "positioning_content",
-        "actionTitle": "Align Castle, Adults-Only, Golf, Wellness, and Events Facts",
-        "classification": "VERIFIED_CONTENT_IMPROVEMENT",
-        "priority": "MEDIUM",
-        "prioritySource": "HIGH",
-        "platform": "Official Marriott property overview",
-        "affectedUrls": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-            "label": "Official Marriott property overview"
-          },
-          {
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/events/",
-            "label": "Official Marriott events page"
-          },
-          {
-            "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/",
-            "label": "Arabella Golf official site"
-          }
-        ],
-        "verifiedObservation": "Official content presents an adults-only Luxury Collection castle, Arabella golf access, spa and wellness, and meetings and weddings content.",
-        "commercialRationale": "A signed fact architecture helps guests and planners understand what is on property, partner-provided, seasonal, or subject to policy without diluting the hotel’s distinctive luxury story.",
-        "recommendedSteps": [
-          "Approve terminology for castle heritage, adults-only policy, golf relationship, spa, meetings, and weddings.",
-          "Map each fact to official overview and events content.",
-          "Clarify access versus ownership for golf.",
-          "Correct only confirmed inconsistencies.",
-          "A signed fact architecture defines each attribute, relationship, availability condition, and content owner.",
-          "Approved Marriott and partner-content changes are filed with the signed definitions."
-        ],
-        "primaryOwner": "Hotel Commercial Leadership",
-        "supportingOwners": [],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-            "label": "Official Marriott property overview"
-          },
-          {
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/events/",
-            "label": "Official Marriott events page"
-          },
-          {
-            "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/",
-            "label": "Arabella Golf official site"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Align Castle, Adults-Only, Golf, Wellness, and Events Facts",
-        "whatWeFound": "Official content presents an adults-only Luxury Collection castle, Arabella golf access, spa and wellness, and meetings and weddings content.",
-        "recommendedAction": "Align Castle, Adults-Only, Golf, Wellness, and Events Facts",
-        "accountableOwner": "Hotel Commercial Leadership",
-        "businessRelevance": "A signed fact architecture helps guests and planners understand what is on property, partner-provided, seasonal, or subject to policy without diluting the hotel’s distinctive luxury story.",
-        "whyItMatters": "A signed fact architecture helps guests and planners understand what is on property, partner-provided, seasonal, or subject to policy without diluting the hotel’s distinctive luxury story.",
-        "affectedPlatform": "Official Marriott property overview",
-        "supportingEvidence": [
-          {
-            "label": "Official Marriott property overview",
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/"
-          },
-          {
-            "label": "Official Marriott events page",
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/events/"
-          },
-          {
-            "label": "Arabella Golf official site",
-            "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Official Marriott property overview",
-              "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "Official Marriott events page",
-              "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/events/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "Arabella Golf official site",
-              "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "AVA-CSV-003",
-        "propertyId": "adp_castillo_hotel_son_vida",
-        "findingIds": [
-          "AVA-CSV-003"
-        ],
-        "mergedFromActionIds": [
-          "AVA-CSV-003"
-        ],
-        "workstreamTheme": "technical_access_review",
-        "actionTitle": "Investigate Marriott Property-Page Access for Intended Crawlers",
-        "classification": "RESEARCH_FOLLOW_UP",
-        "priority": "MEDIUM",
-        "prioritySource": "MEDIUM",
-        "platform": "Official property overview",
-        "affectedUrls": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-            "label": "Official property overview"
-          },
-          {
-            "url": "https://www.marriott.com/robots.txt",
-            "label": "Marriott robots.txt"
-          }
-        ],
-        "verifiedObservation": "Marriott robots.txt returned 200 and did not disallow the property overview path; the automated GET redirected to default.mi and returned 403, while HEAD returned 200.",
-        "commercialRationale": "Marriott should verify intended behavior before any platform change. The probe does not establish a public outage or universal crawler block.",
-        "recommendedSteps": [
-          "Open a Marriott/Akamai ticket with the redirect chain.",
-          "Confirm intended crawler policy.",
-          "Retest overview and events pages from agreed clients and regions.",
-          "Document expected behavior or approved remediation.",
-          "The platform ticket documents robots policy, redirect chain, status behavior, client, and region.",
-          "If a mismatch is confirmed, Marriott submits a narrow approved platform change."
-        ],
-        "primaryOwner": "Marriott Digital Content / Platform Support",
-        "supportingOwners": [],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-            "label": "Official property overview"
-          },
-          {
-            "url": "https://www.marriott.com/robots.txt",
-            "label": "Marriott robots.txt"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Investigate Marriott Property-Page Access for Intended Crawlers",
-        "whatWeFound": "Marriott robots.txt returned 200 and did not disallow the property overview path; the automated GET redirected to default.mi and returned 403, while HEAD returned 200.",
-        "recommendedAction": "Investigate Marriott Property-Page Access for Intended Crawlers",
-        "accountableOwner": "Marriott Digital Content / Platform Support",
-        "businessRelevance": "Marriott should verify intended behavior before any platform change. The probe does not establish a public outage or universal crawler block.",
-        "whyItMatters": "Marriott should verify intended behavior before any platform change. The probe does not establish a public outage or universal crawler block.",
-        "affectedPlatform": "Official property overview",
-        "supportingEvidence": [
-          {
-            "label": "Official property overview",
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/"
-          },
-          {
-            "label": "Marriott robots.txt",
-            "url": "https://www.marriott.com/robots.txt"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Official property overview",
-              "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "Marriott robots.txt",
-              "url": "https://www.marriott.com/robots.txt",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "AVA-CSV-004",
-        "propertyId": "adp_castillo_hotel_son_vida",
-        "findingIds": [
-          "AVA-CSV-004"
-        ],
-        "mergedFromActionIds": [
-          "AVA-CSV-004"
-        ],
-        "workstreamTheme": "competitive_review",
-        "actionTitle": "Review the Three Hotel Saratoga Displacement Scenarios",
-        "classification": "MAINTENANCE",
-        "priority": "MEDIUM",
-        "prioritySource": "MEDIUM",
-        "platform": "Castillo Hotel Son Vida official overview",
-        "affectedUrls": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-            "label": "Castillo Hotel Son Vida official overview"
-          },
-          {
-            "url": "https://www.hotelsaratoga.com/",
-            "label": "Hotel Saratoga official site"
-          }
-        ],
-        "verifiedObservation": "The ADP brief notes Hotel Saratoga displacement in three scenarios. It does not establish a causal content gap or broader competitive weakness.",
-        "commercialRationale": "A light review can determine whether the scenarios fit Castillo’s adults-only luxury, golf, wellness, meetings, or wedding strategy without overreacting to a narrow signal.",
-        "recommendedSteps": [
-          "Review the three scenarios and intended traveler need.",
-          "Compare verified official propositions only.",
-          "Decide whether each scenario is strategically relevant.",
-          "Approve a restrained content change only where supported.",
-          "A three-row worksheet records relevance, verified differences, unknowns, and decision.",
-          "Any approved content edit is submitted with sources and hotel sign-off."
-        ],
-        "primaryOwner": "Hotel Commercial Leadership",
-        "supportingOwners": [],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-            "label": "Castillo Hotel Son Vida official overview"
-          },
-          {
-            "url": "https://www.hotelsaratoga.com/",
-            "label": "Hotel Saratoga official site"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Review the Three Hotel Saratoga Displacement Scenarios",
-        "whatWeFound": "The ADP brief notes Hotel Saratoga displacement in three scenarios. It does not establish a causal content gap or broader competitive weakness.",
-        "recommendedAction": "Review the Three Hotel Saratoga Displacement Scenarios",
-        "accountableOwner": "Hotel Commercial Leadership",
-        "businessRelevance": "A light review can determine whether the scenarios fit Castillo’s adults-only luxury, golf, wellness, meetings, or wedding strategy without overreacting to a narrow signal.",
-        "whyItMatters": "A light review can determine whether the scenarios fit Castillo’s adults-only luxury, golf, wellness, meetings, or wedding strategy without overreacting to a narrow signal.",
-        "affectedPlatform": "Castillo Hotel Son Vida official overview",
-        "supportingEvidence": [
-          {
-            "label": "Castillo Hotel Son Vida official overview",
-            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/"
-          },
-          {
-            "label": "Hotel Saratoga official site",
-            "url": "https://www.hotelsaratoga.com/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Castillo Hotel Son Vida official overview",
-              "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "Hotel Saratoga official site",
-              "url": "https://www.hotelsaratoga.com/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "AVA-CSV-DA-001",
-        "propertyId": "adp_castillo_hotel_son_vida",
-        "findingIds": [
-          "AVA-CSV-DA-001",
-          "AVA-CASTILLO-DA2-001"
-        ],
-        "mergedFromActionIds": [
-          "AVA-CSV-DA-001",
-          "AVA-CASTILLO-DA2-001"
-        ],
-        "workstreamTheme": "digital_authority_outreach",
-        "actionTitle": "Protect Visit Palma Backlink Asset with Accurate Luxury Facts",
-        "classification": "DISTRIBUTION_OPPORTUNITY",
-        "priority": "MEDIUM",
-        "prioritySource": "HIGH",
-        "platform": "Visit Palma hotel links",
-        "affectedUrls": [
-          {
-            "url": "http://www.visit-palma.com/listado-links-hoteles",
-            "label": "Visit Palma hotel links"
-          },
-          {
-            "url": "https://www.visit-palma.com/files/palma-urban-meetings.pdf",
-            "label": "Urban Meetings PDF"
-          },
-          {
-            "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/",
-            "label": "Golfbreaks page"
-          },
-          {
-            "url": "https://www.elegantgolfresorts.com/hotels/castillo-hotel-son-vida/",
-            "label": "Referring page"
-          }
-        ],
-        "verifiedObservation": "Visit Palma hotel page hyperlinks to the Marriott Luxury Collection property URL; Golfbreaks lists Castillo without a confirmed Marriott href.",
-        "commercialRationale": "Destination backlinks are rare, high-credibility surfaces for Palma luxury demand.",
-        "recommendedSteps": [
-          "Reconcile spa-size source of truth.",
-          "Submit Visit Palma fact updates.",
-          "Align Golfbreaks listing facts.",
-          "Re-verify live Visit Palma href annuallyually.",
-          "Approved fact sheet for destination partners filed.",
-          "Visit Palma and Golfbreaks update requests filed."
-        ],
-        "primaryOwner": "Hotel Commercial / Revenue",
-        "supportingOwners": [],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "http://www.visit-palma.com/listado-links-hoteles",
-            "label": "Visit Palma hotel links"
-          },
-          {
-            "url": "https://www.visit-palma.com/files/palma-urban-meetings.pdf",
-            "label": "Urban Meetings PDF"
-          },
-          {
-            "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/",
-            "label": "Golfbreaks page"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Protect Visit Palma Backlink Asset with Accurate Luxury Facts",
-        "whatWeFound": "Visit Palma hotel page hyperlinks to the Marriott Luxury Collection property URL; Golfbreaks lists Castillo without a confirmed Marriott href.",
-        "recommendedAction": "Protect Visit Palma Backlink Asset with Accurate Luxury Facts",
-        "accountableOwner": "Hotel Commercial / Revenue",
-        "businessRelevance": "Destination backlinks are rare, high-credibility surfaces for Palma luxury demand.",
-        "whyItMatters": "Destination backlinks are rare, high-credibility surfaces for Palma luxury demand.",
-        "affectedPlatform": "Visit Palma hotel links",
-        "supportingEvidence": [
-          {
-            "label": "Visit Palma hotel links",
-            "url": "http://www.visit-palma.com/listado-links-hoteles"
-          },
-          {
-            "label": "Urban Meetings PDF",
-            "url": "https://www.visit-palma.com/files/palma-urban-meetings.pdf"
-          },
-          {
-            "label": "Golfbreaks page",
-            "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/"
-          },
-          {
-            "label": "Referring page",
-            "url": "https://www.elegantgolfresorts.com/hotels/castillo-hotel-son-vida/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Visit Palma hotel links",
-              "url": "http://www.visit-palma.com/listado-links-hoteles",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "Urban Meetings PDF",
-              "url": "https://www.visit-palma.com/files/palma-urban-meetings.pdf",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "Golfbreaks page",
-              "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "Referring page",
-              "url": "https://www.elegantgolfresorts.com/hotels/castillo-hotel-son-vida/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      }
-    ],
-    "integrity": {
-      "titleOnlySteps": [],
-      "titleStepMisaligned": []
-    }
-  },
   "actionsResearchRecord": [
     {
       "actionId": "AVA-CSV-001",
@@ -6897,5 +6308,511 @@
       "specificIssue": "Public research verified 5 property-specific third-party hyperlink(s) and 8 external reference(s) without inventing paid-provider inventory.",
       "commercialImportance": "This source already references the hotel. Adding a correct property-specific hyperlink strengthens destination discovery without inventing new directories."
     }
-  ]
+  ],
+  "customerActionRegister": {
+    "contract": "AVA_CANONICAL_ACTION_REGISTER_V1",
+    "propertyId": "adp_castillo_hotel_son_vida",
+    "generatedAt": "2026-11-06T00:41:15.455Z",
+    "sourceActionCount": 7,
+    "canonicalActionCount": 5,
+    "consolidated": [
+      {
+        "theme": "spa_size_reconciliation",
+        "keptActionId": "AVA-CSV-001",
+        "mergedActionIds": [
+          "AVA-CSV-001",
+          "AVA-CSV-DCR-001"
+        ],
+        "reason": "Same corrective objective (spa_size_reconciliation)"
+      },
+      {
+        "theme": "digital_authority_outreach",
+        "keptActionId": "AVA-CSV-DA-001",
+        "mergedActionIds": [
+          "AVA-CSV-DA-001",
+          "AVA-CASTILLO-DA2-001"
+        ],
+        "reason": "Same corrective objective (digital_authority_outreach)"
+      }
+    ],
+    "actions": [
+      {
+        "actionId": "AVA-CSV-001",
+        "propertyId": "adp_castillo_hotel_son_vida",
+        "findingIds": [
+          "AVA-CSV-001",
+          "AVA-CSV-DCR-001"
+        ],
+        "mergedFromActionIds": [
+          "AVA-CSV-001",
+          "AVA-CSV-DCR-001"
+        ],
+        "workstreamTheme": "spa_size_reconciliation",
+        "actionTitle": "Reconcile and Correct Spa Size Information",
+        "classification": "VERIFIED_CORRECTION",
+        "priority": "HIGH",
+        "prioritySource": "HIGH",
+        "platform": "Official Marriott overview — 900/990-square-metre conflict",
+        "affectedUrls": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
+            "label": "Marriott overview"
+          },
+          {
+            "url": "http://www.visit-palma.com/hotel-castillo-son-vida",
+            "label": "Visit Palma"
+          }
+        ],
+        "verifiedObservation": "The same Marriott overview describes the spa as 900 square metres in one section and 990 square metres in another; both appear to refer to the same facility.",
+        "commercialRationale": "The conflict is verified, but the correct figure is not. Spa operations must confirm measurement scope before correction; the audit must not infer which number wins.",
+        "recommendedSteps": [
+          "Spa operations confirms the correct measurement and scope.",
+          "Hotel management approves the authoritative spa specification.",
+          "Brand digital updates confirmed incorrect brand-page content.",
+          "Marketing checks relevant destination and distribution pages for the same figure."
+        ],
+        "desiredOutcome": "One confirmed spa measurement published consistently on official brand and hotel pages.",
+        "primaryOwner": "Hotel GM / Spa Operations",
+        "supportingOwners": [
+          "Brand Digital",
+          "Hotel Marketing"
+        ],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
+            "label": "Official Marriott overview — 900/990-square-metre conflict"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": "Do not treat either published figure as confirmed correct until spa operations verifies the measurement.",
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Reconcile and Correct Spa Size Information",
+        "whatWeFound": "The same Marriott overview describes the spa as 900 square metres in one section and 990 square metres in another; both appear to refer to the same facility.",
+        "recommendedAction": "Reconcile and Correct Spa Size Information",
+        "accountableOwner": "Hotel GM / Spa Operations",
+        "businessRelevance": "The conflict is verified, but the correct figure is not. Spa operations must confirm measurement scope before correction; the audit must not infer which number wins.",
+        "whyItMatters": "The conflict is verified, but the correct figure is not. Spa operations must confirm measurement scope before correction; the audit must not infer which number wins.",
+        "affectedPlatform": "Official Marriott overview — 900/990-square-metre conflict",
+        "supportingEvidence": [
+          {
+            "label": "Marriott overview",
+            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/"
+          },
+          {
+            "label": "Visit Palma",
+            "url": "http://www.visit-palma.com/hotel-castillo-son-vida"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Marriott overview",
+              "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "Visit Palma",
+              "url": "http://www.visit-palma.com/hotel-castillo-son-vida",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "AVA-CSV-002",
+        "propertyId": "adp_castillo_hotel_son_vida",
+        "findingIds": [
+          "AVA-CSV-002"
+        ],
+        "mergedFromActionIds": [
+          "AVA-CSV-002"
+        ],
+        "workstreamTheme": "positioning_content",
+        "actionTitle": "Align Castle, Adults-Only, Golf, Wellness, and Events Facts",
+        "classification": "VERIFIED_CONTENT_IMPROVEMENT",
+        "priority": "MEDIUM",
+        "prioritySource": "HIGH",
+        "platform": "Official Marriott property overview",
+        "affectedUrls": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
+            "label": "Official Marriott property overview"
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/events/",
+            "label": "Official Marriott events page"
+          },
+          {
+            "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/",
+            "label": "Arabella Golf official site"
+          }
+        ],
+        "verifiedObservation": "Official content presents an adults-only Luxury Collection castle, Arabella golf access, spa and wellness, and meetings and weddings content.",
+        "commercialRationale": "A signed fact architecture helps guests and planners understand what is on property, partner-provided, seasonal, or subject to policy without diluting the hotel’s distinctive luxury story.",
+        "recommendedSteps": [
+          "Approve terminology for castle heritage, adults-only policy, golf relationship, spa, meetings, and weddings.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Map each fact to official overview and events content.",
+          "Clarify access versus ownership for golf.",
+          "Correct only confirmed inconsistencies.",
+          "Create a relationship and attribute fact table."
+        ],
+        "desiredOutcome": "Approved “Align Castle, Adults-Only, Golf, Wellness, and Events Facts” facts published and spot-checked on Official Marriott property overview.",
+        "primaryOwner": "Hotel Commercial Leadership",
+        "supportingOwners": [],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
+            "label": "Official Marriott property overview"
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/events/",
+            "label": "Official Marriott events page"
+          },
+          {
+            "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/",
+            "label": "Arabella Golf official site"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Align Castle, Adults-Only, Golf, Wellness, and Events Facts",
+        "whatWeFound": "Official content presents an adults-only Luxury Collection castle, Arabella golf access, spa and wellness, and meetings and weddings content.",
+        "recommendedAction": "Align Castle, Adults-Only, Golf, Wellness, and Events Facts",
+        "accountableOwner": "Hotel Commercial Leadership",
+        "businessRelevance": "A signed fact architecture helps guests and planners understand what is on property, partner-provided, seasonal, or subject to policy without diluting the hotel’s distinctive luxury story.",
+        "whyItMatters": "A signed fact architecture helps guests and planners understand what is on property, partner-provided, seasonal, or subject to policy without diluting the hotel’s distinctive luxury story.",
+        "affectedPlatform": "Official Marriott property overview",
+        "supportingEvidence": [
+          {
+            "label": "Official Marriott property overview",
+            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/"
+          },
+          {
+            "label": "Official Marriott events page",
+            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/events/"
+          },
+          {
+            "label": "Arabella Golf official site",
+            "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Official Marriott property overview",
+              "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "Official Marriott events page",
+              "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/events/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "Arabella Golf official site",
+              "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "AVA-CSV-003",
+        "propertyId": "adp_castillo_hotel_son_vida",
+        "findingIds": [
+          "AVA-CSV-003"
+        ],
+        "mergedFromActionIds": [
+          "AVA-CSV-003"
+        ],
+        "workstreamTheme": "technical_access_review",
+        "actionTitle": "Investigate Marriott Property-Page Access for Intended Crawlers",
+        "classification": "RESEARCH_FOLLOW_UP",
+        "priority": "MEDIUM",
+        "prioritySource": "MEDIUM",
+        "platform": "Official property overview",
+        "affectedUrls": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
+            "label": "Official property overview"
+          },
+          {
+            "url": "https://www.marriott.com/robots.txt",
+            "label": "Marriott robots.txt"
+          }
+        ],
+        "verifiedObservation": "Marriott robots.txt returned 200 and did not disallow the property overview path; the automated GET redirected to default.mi and returned 403, while HEAD returned 200.",
+        "commercialRationale": "Marriott should verify intended behavior before any platform change. The probe does not establish a public outage or universal crawler block.",
+        "recommendedSteps": [
+          "Open a Marriott/Akamai ticket with the redirect chain.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Confirm intended crawler policy.",
+          "Retest overview and events pages from agreed clients and regions.",
+          "Document expected behavior or approved remediation.",
+          "Reproduce the redirect and response."
+        ],
+        "desiredOutcome": "Documented crawler-access decision with verified live robots/CDN behavior.",
+        "primaryOwner": "Marriott Digital Content / Platform Support",
+        "supportingOwners": [],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
+            "label": "Official property overview"
+          },
+          {
+            "url": "https://www.marriott.com/robots.txt",
+            "label": "Marriott robots.txt"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Investigate Marriott Property-Page Access for Intended Crawlers",
+        "whatWeFound": "Marriott robots.txt returned 200 and did not disallow the property overview path; the automated GET redirected to default.mi and returned 403, while HEAD returned 200.",
+        "recommendedAction": "Investigate Marriott Property-Page Access for Intended Crawlers",
+        "accountableOwner": "Marriott Digital Content / Platform Support",
+        "businessRelevance": "Marriott should verify intended behavior before any platform change. The probe does not establish a public outage or universal crawler block.",
+        "whyItMatters": "Marriott should verify intended behavior before any platform change. The probe does not establish a public outage or universal crawler block.",
+        "affectedPlatform": "Official property overview",
+        "supportingEvidence": [
+          {
+            "label": "Official property overview",
+            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/"
+          },
+          {
+            "label": "Marriott robots.txt",
+            "url": "https://www.marriott.com/robots.txt"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Official property overview",
+              "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "Marriott robots.txt",
+              "url": "https://www.marriott.com/robots.txt",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "AVA-CSV-004",
+        "propertyId": "adp_castillo_hotel_son_vida",
+        "findingIds": [
+          "AVA-CSV-004"
+        ],
+        "mergedFromActionIds": [
+          "AVA-CSV-004"
+        ],
+        "workstreamTheme": "competitive_review",
+        "actionTitle": "Review the Three Hotel Saratoga Displacement Scenarios",
+        "classification": "MAINTENANCE",
+        "priority": "MEDIUM",
+        "prioritySource": "MEDIUM",
+        "platform": "Castillo Hotel Son Vida official overview",
+        "affectedUrls": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
+            "label": "Castillo Hotel Son Vida official overview"
+          },
+          {
+            "url": "https://www.hotelsaratoga.com/",
+            "label": "Hotel Saratoga official site"
+          }
+        ],
+        "verifiedObservation": "The ADP brief notes Hotel Saratoga displacement in three scenarios. It does not establish a causal content gap or broader competitive weakness.",
+        "commercialRationale": "A light review can determine whether the scenarios fit Castillo’s adults-only luxury, golf, wellness, meetings, or wedding strategy without overreacting to a narrow signal.",
+        "recommendedSteps": [
+          "Review the three scenarios and intended traveler need.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Compare verified official propositions only.",
+          "Decide whether each scenario is strategically relevant.",
+          "Approve a restrained content change only where supported.",
+          "Limit review to the three displaced scenarios."
+        ],
+        "desiredOutcome": "Published changes match approved facts and contain no unsupported comparative claim.",
+        "primaryOwner": "Hotel Commercial Leadership",
+        "supportingOwners": [],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
+            "label": "Castillo Hotel Son Vida official overview"
+          },
+          {
+            "url": "https://www.hotelsaratoga.com/",
+            "label": "Hotel Saratoga official site"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Review the Three Hotel Saratoga Displacement Scenarios",
+        "whatWeFound": "The ADP brief notes Hotel Saratoga displacement in three scenarios. It does not establish a causal content gap or broader competitive weakness.",
+        "recommendedAction": "Review the Three Hotel Saratoga Displacement Scenarios",
+        "accountableOwner": "Hotel Commercial Leadership",
+        "businessRelevance": "A light review can determine whether the scenarios fit Castillo’s adults-only luxury, golf, wellness, meetings, or wedding strategy without overreacting to a narrow signal.",
+        "whyItMatters": "A light review can determine whether the scenarios fit Castillo’s adults-only luxury, golf, wellness, meetings, or wedding strategy without overreacting to a narrow signal.",
+        "affectedPlatform": "Castillo Hotel Son Vida official overview",
+        "supportingEvidence": [
+          {
+            "label": "Castillo Hotel Son Vida official overview",
+            "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/"
+          },
+          {
+            "label": "Hotel Saratoga official site",
+            "url": "https://www.hotelsaratoga.com/"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Castillo Hotel Son Vida official overview",
+              "url": "https://www.marriott.com/en-us/hotels/pmilc-castillo-hotel-son-vida-a-luxury-collection-hotel-mallorca/overview/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "Hotel Saratoga official site",
+              "url": "https://www.hotelsaratoga.com/",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "AVA-CSV-DA-001",
+        "propertyId": "adp_castillo_hotel_son_vida",
+        "findingIds": [
+          "AVA-CSV-DA-001",
+          "AVA-CASTILLO-DA2-001"
+        ],
+        "mergedFromActionIds": [
+          "AVA-CSV-DA-001",
+          "AVA-CASTILLO-DA2-001"
+        ],
+        "workstreamTheme": "digital_authority_outreach",
+        "actionTitle": "Protect Visit Palma Backlink Asset with Accurate Luxury Facts",
+        "classification": "MAINTENANCE",
+        "priority": "MEDIUM",
+        "prioritySource": "HIGH",
+        "platform": "Visit Palma hotel links",
+        "affectedUrls": [
+          {
+            "url": "http://www.visit-palma.com/listado-links-hoteles",
+            "label": "Visit Palma hotel links"
+          },
+          {
+            "url": "https://www.visit-palma.com/files/palma-urban-meetings.pdf",
+            "label": "Urban Meetings PDF"
+          },
+          {
+            "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/",
+            "label": "Golfbreaks page"
+          },
+          {
+            "url": "https://www.elegantgolfresorts.com/hotels/castillo-hotel-son-vida/",
+            "label": "Referring page"
+          }
+        ],
+        "verifiedObservation": "Visit Palma hotel page hyperlinks to the Marriott Luxury Collection property URL; Golfbreaks lists Castillo without a confirmed Marriott href.",
+        "commercialRationale": "Destination backlinks are rare, high-credibility surfaces for Palma luxury demand.",
+        "recommendedSteps": [
+          "Reconcile spa-size source of truth.",
+          "Apply the change on the verified page (visit-palma.com) and retain before/after evidence.",
+          "Submit Visit Palma fact updates.",
+          "Align Golfbreaks listing facts.",
+          "Re-verify live Visit Palma href annuallyually.",
+          "Destination profile update"
+        ],
+        "desiredOutcome": "Verified CVB or partner listing fields corrected with the approved property URL and a working official hyperlink, or documented decline retained.",
+        "primaryOwner": "Hotel Commercial / Revenue",
+        "supportingOwners": [],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "http://www.visit-palma.com/listado-links-hoteles",
+            "label": "Visit Palma hotel links"
+          },
+          {
+            "url": "https://www.visit-palma.com/files/palma-urban-meetings.pdf",
+            "label": "Urban Meetings PDF"
+          },
+          {
+            "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/",
+            "label": "Golfbreaks page"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Protect Visit Palma Backlink Asset with Accurate Luxury Facts",
+        "whatWeFound": "Visit Palma hotel page hyperlinks to the Marriott Luxury Collection property URL; Golfbreaks lists Castillo without a confirmed Marriott href.",
+        "recommendedAction": "Protect Visit Palma Backlink Asset with Accurate Luxury Facts",
+        "accountableOwner": "Hotel Commercial / Revenue",
+        "businessRelevance": "Destination backlinks are rare, high-credibility surfaces for Palma luxury demand.",
+        "whyItMatters": "Destination backlinks are rare, high-credibility surfaces for Palma luxury demand.",
+        "affectedPlatform": "Visit Palma hotel links",
+        "supportingEvidence": [
+          {
+            "label": "Visit Palma hotel links",
+            "url": "http://www.visit-palma.com/listado-links-hoteles"
+          },
+          {
+            "label": "Urban Meetings PDF",
+            "url": "https://www.visit-palma.com/files/palma-urban-meetings.pdf"
+          },
+          {
+            "label": "Golfbreaks page",
+            "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/"
+          },
+          {
+            "label": "Referring page",
+            "url": "https://www.elegantgolfresorts.com/hotels/castillo-hotel-son-vida/"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Visit Palma hotel links",
+              "url": "http://www.visit-palma.com/listado-links-hoteles",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "Urban Meetings PDF",
+              "url": "https://www.visit-palma.com/files/palma-urban-meetings.pdf",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "Golfbreaks page",
+              "url": "https://www.golfbreaks.com/en-gb/holidays/palma/castillo-hotel-son-vida/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "Referring page",
+              "url": "https://www.elegantgolfresorts.com/hotels/castillo-hotel-son-vida/",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      }
+    ],
+    "integrity": {
+      "titleOnlySteps": [],
+      "titleStepMisaligned": []
+    }
+  }
 }

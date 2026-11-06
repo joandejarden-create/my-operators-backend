@@ -50,17 +50,50 @@
   page-break-inside: auto;
 }
 
+/*
+ * Executive Takeaway keep-together (Chromium PDF):
+ * - Do NOT use page-break-before:avoid on the takeaway — that creates empty
+ *   highlighted boxes on one page with narrative continuing on the next.
+ * - Wrap in a single-cell table (.ava-exec-takeaway-keep); Chromium honors
+ *   table page-break-inside:avoid far more reliably than styled divs.
+ * - generate-audit-pdf may add --next-page when remaining space < block height.
+ */
+.ava-report-v4 .ava-exec-takeaway-keep {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-top: 4pt;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  break-before: auto;
+  page-break-before: auto;
+}
+
+.ava-report-v4 .ava-exec-takeaway-keep--next-page {
+  break-before: page;
+  page-break-before: always;
+}
+
+.ava-report-v4 .ava-exec-takeaway-keep__cell {
+  padding: 0;
+  border: 0;
+  vertical-align: top;
+}
+
 .ava-report-v4 .ava-exec-takeaway {
-  break-inside: auto;
-  page-break-inside: auto;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  break-before: auto;
+  page-break-before: auto;
+  margin-top: 0;
 }
 
 .ava-exec-page .drs-section-h {
-  margin-bottom: 6pt;
+  margin-bottom: 4pt;
 }
 
 .ava-exec-assessment {
-  margin: 0 0 7pt;
+  margin: 0 0 5pt;
 }
 
 .ava-exec-assessment__headline {
@@ -81,7 +114,7 @@
 }
 
 .ava-exec-subhead {
-  margin: 8pt 0 4pt;
+  margin: 6pt 0 3pt;
 }
 
 .ava-exec-page .drs-kpi-band {
@@ -138,7 +171,7 @@
 }
 
 .ava-exec-priority-table {
-  margin: 0 0 7pt;
+  margin: 0 0 4pt;
 }
 
 .ava-exec-priority-table th,
@@ -150,11 +183,28 @@
 
 .ava-exec-takeaway {
   margin: 0;
-  padding: 6pt 9pt;
+  padding: 5pt 8pt;
   background: #f4f6fc;
   border-left: 3px solid #6c72ff;
   break-inside: avoid;
   page-break-inside: avoid;
+  break-before: auto;
+  page-break-before: auto;
+}
+
+.ava-exec-takeaway-keep {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-top: 4pt;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.ava-exec-takeaway-keep__cell {
+  padding: 0;
+  border: 0;
+  vertical-align: top;
 }
 
 .ava-exec-takeaway__label {

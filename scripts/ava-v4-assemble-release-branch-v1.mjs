@@ -11,7 +11,7 @@ import { fileURLToPath } from "node:url";
 
 const SRC = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const WT = path.resolve(SRC, "..", "my-operators-backend-ava-v4-release");
-const BRANCH = "release/ava-v4-portfolio-certified";
+const BRANCH = "release/ava-v4-final-customer-quality-v1";
 
 function sh(cmd, cwd = SRC) {
   console.log(`$ ${cmd}`);

@@ -62,13 +62,62 @@ function writeMd(name, body) {
   fs.writeFileSync(path.join(REPORT, name), body.endsWith("\n") ? body : `${body}\n`);
 }
 
-async function pdfInspect(buf) {
+function detectTakeawayPageDefects(pageTexts, closingText = "") {
+  const defects = [];
+  const pages = pageTexts.map((t) => String(t || ""));
+  let labelPage = -1;
+  for (let i = 0; i < pages.length; i++) {
+    if (/Executive\s+Takeaway/i.test(pages[i])) {
+      labelPage = i;
+      break;
+    }
+  }
+  if (labelPage < 0) {
+    defects.push("MISSING_TAKEAWAY_LABEL");
+    return defects;
+  }
+  const page = pages[labelPage];
+  const m = page.match(/Executive\s+Takeaway/i);
+  const after = page.slice((m?.index || 0) + (m?.[0]?.length || 0)).trim();
+  const afterLen = after.replace(/\s+/g, " ").length;
+  if (afterLen < 60) {
+    defects.push("EMPTY_TAKEAWAY_BOX");
+  }
+  const closing = String(closingText || "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (closing.length >= 40) {
+    const needle = closing.slice(0, Math.min(48, closing.length));
+    const onLabelPage = page.replace(/\s+/g, " ").includes(needle.slice(0, 32));
+    let otherPage = -1;
+    for (let i = 0; i < pages.length; i++) {
+      if (i === labelPage) continue;
+      if (pages[i].replace(/\s+/g, " ").includes(needle.slice(0, 32))) {
+        otherPage = i;
+        break;
+      }
+    }
+    if (!onLabelPage && otherPage >= 0) {
+      defects.push("TAKEAWAY_NARRATIVE_SPLIT");
+    } else if (onLabelPage && otherPage >= 0) {
+      // Same narrative fragment also on another page → split continuation
+      const tail = closing.slice(-36);
+      if (tail.length >= 20 && pages[otherPage].replace(/\s+/g, " ").includes(tail)) {
+        defects.push("TAKEAWAY_NARRATIVE_SPLIT");
+      }
+    }
+  }
+  return defects;
+}
+
+async function pdfInspect(buf, closingText = "") {
   const { getDocument } = await import("pdfjs-dist/legacy/build/pdf.mjs");
   const doc = await getDocument({
     data: new Uint8Array(buf),
     useSystemFonts: true,
   }).promise;
   const pageMeta = [];
+  const pageTexts = [];
   let text = "";
   let linkCount = 0;
   const linkUrls = [];
@@ -76,6 +125,7 @@ async function pdfInspect(buf) {
     const page = await doc.getPage(i);
     const content = await page.getTextContent();
     const t = content.items.map((it) => it.str).join(" ");
+    pageTexts.push(t);
     pageMeta.push({ page: i, chars: t.length });
     text += t + "\n";
     const annots = await page.getAnnotations();
@@ -86,12 +136,15 @@ async function pdfInspect(buf) {
       }
     }
   }
+  const takeawayDefects = detectTakeawayPageDefects(pageTexts, closingText);
   return {
     pages: doc.numPages,
     pageMeta,
+    pageTexts,
     text,
     linkCount,
     linkUrls,
+    takeawayDefects,
     nearEmptyFinal:
       pageMeta.length > 0 && pageMeta[pageMeta.length - 1].chars < 400,
     objectObject: /\[object Object\]/i.test(text),
@@ -102,22 +155,21 @@ async function pdfInspect(buf) {
 function assessHotel(file, rawIn) {
   const raw = { ...rawIn };
   delete raw.customerActionRegister;
-  const narrative = detectIncompleteCustomerNarratives(raw);
-  const { register } = applyCanonicalActionRegisterToPayload(raw);
-  const integrity = detectCanonicalActionIntegrityDefects({
+  const researchActions = raw.actionsResearchRecord || raw.actions || [];
+  const narrative = detectIncompleteCustomerNarratives({
     ...raw,
-    customerActionRegister: register,
+    actions: researchActions,
   });
-  const built = buildAiVisibilityAuditPdfHtmlV4({
+  const { register, payload: synced } = applyCanonicalActionRegisterToPayload({
     ...raw,
-    actionsResearchRecord: raw.actions,
+    actions: researchActions,
+    actionsResearchRecord: researchActions,
   });
+  const integrity = detectCanonicalActionIntegrityDefects(synced);
+  const built = buildAiVisibilityAuditPdfHtmlV4(synced);
   const html = built.ok ? built.html || "" : "";
   const ser = detectSerializationArtifacts(html);
-  const std = detectCustomerReportQualityStandardDefects(
-    { ...raw, customerActionRegister: register },
-    html
-  );
+  const std = detectCustomerReportQualityStandardDefects(synced, html);
   const da = buildDigitalAuthorityCustomerCards(raw);
   const daIssues = [];
   for (const c of da.cards) {
@@ -192,7 +244,15 @@ function assessHotel(file, rawIn) {
 
 async function regenerate(file, assessment) {
   const raw = load(file);
-  const { payload, register } = applyCanonicalActionRegisterToPayload(raw);
+  const researchActions =
+    Array.isArray(raw.actionsResearchRecord) && raw.actionsResearchRecord.length
+      ? raw.actionsResearchRecord
+      : raw.actions || [];
+  const { payload, register } = applyCanonicalActionRegisterToPayload({
+    ...raw,
+    actions: researchActions,
+    actionsResearchRecord: researchActions,
+  });
   fs.writeFileSync(path.join(PAYLOAD_DIR, file), `${JSON.stringify(payload, null, 2)}\n`);
 
   const propertyId = payload.property.propertyId;
@@ -218,7 +278,10 @@ async function regenerate(file, assessment) {
 
   const pdfBuf = fs.readFileSync(outPath);
   const hash = sha256(pdfBuf);
-  const inspect = await pdfInspect(pdfBuf);
+  const inspect = await pdfInspect(
+    pdfBuf,
+    payload.executiveSummary?.closing || ""
+  );
   const versionId = `ava_v4_portfolio_${slug.replace(/-/g, "_")}_${Date.now().toString(36)}`;
   const staged = stageAvaPdf({
     propertyId,
@@ -269,6 +332,16 @@ async function regenerate(file, assessment) {
   if (inspect.nearEmptyFinal) contentFlags.push("NEAR_EMPTY_FINAL_PAGE");
   if (!/Executive Audit Summary/i.test(inspect.text)) contentFlags.push("MISSING_EXEC");
   if (inspect.pages < 4) contentFlags.push("TOO_SHORT");
+  for (const d of inspect.takeawayDefects || []) contentFlags.push(d);
+  if (/Platform presence identified or still requiring exact-listing confirmation/i.test(inspect.text)) {
+    contentFlags.push("GENERIC_PLATFORM_ASSESSMENT");
+  }
+  const genericOutcomeHits = (
+    inspect.text.match(
+      /Approved positioning and product facts published consistently on the hotel/gi
+    ) || []
+  ).length;
+  if (genericOutcomeHits >= 2) contentFlags.push("REPEATED_GENERIC_OUTCOME");
   // Material high actions present
   for (const a of register.actions.filter((x) => /HIGH|CRITICAL/i.test(x.priority))) {
     const needle = String(a.actionTitle || "").slice(0, 22);
@@ -632,6 +705,42 @@ Generated: ${new Date().toISOString()}
 - ADP methodology changes
 `
   );
+
+  // Optional: promote certified staging PDFs into a separate Admin Draft storage root
+  // (e.g. main checkout data/ava-data while regenerating from a quality worktree).
+  const adminRoot = String(process.env.AVA_ADMIN_STORAGE_ROOT || "").trim();
+  if (adminRoot && portfolioComplete) {
+    const { spawnSync } = await import("node:child_process");
+    console.log(
+      `\n=== Promote certified V4 → Admin Draft @ ${adminRoot} ===`
+    );
+    const promote = spawnSync(
+      process.execPath,
+      [
+        path.join(ROOT, "scripts/ava-promote-certified-local-admin-drafts-v1.mjs"),
+        "--all-38",
+        "--manifest",
+        path.join(REPORT, "AVA_38_HOTEL_V4_LOCAL_REGENERATION_MANIFEST.json"),
+        "--stage-root",
+        STAGE_ROOT,
+      ],
+      {
+        cwd: ROOT,
+        env: {
+          ...process.env,
+          AVA_STORAGE_MODE: "local",
+          AVA_STORAGE_ROOT: adminRoot,
+        },
+        encoding: "utf8",
+      }
+    );
+    if (promote.stdout) process.stdout.write(promote.stdout);
+    if (promote.stderr) process.stderr.write(promote.stderr);
+    machine.verdicts.LOCAL_ADMIN_DRAFT_PROMOTE =
+      promote.status === 0
+        ? "AVA_V4_LOCAL_ADMIN_DRAFT_PROMOTE_COMPLETE"
+        : "AVA_V4_LOCAL_ADMIN_DRAFT_PROMOTE_FAILED";
+  }
 
   console.log("\n=== FOUNDER VERDICTS ===");
   console.log(JSON.stringify(machine.verdicts, null, 2));

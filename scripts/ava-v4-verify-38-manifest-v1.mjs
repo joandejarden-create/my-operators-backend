@@ -16,7 +16,10 @@ const REPORT = path.join(
   ROOT,
   "reports/dealality-ai-visibility-audit-action-plan-pilot-v1"
 );
-const MANIFEST = path.join(REPORT, "AVA_38_HOTEL_FINAL_MANIFEST.json");
+const MANIFEST = path.join(
+  REPORT,
+  process.env.AVA_MANIFEST_FILE || "AVA_38_HOTEL_FINAL_MANIFEST.json"
+);
 const PAYLOAD_DIR = path.join(
   ROOT,
   "lib/ai-visibility-audit-action-plan/payloads"

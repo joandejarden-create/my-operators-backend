@@ -1,0 +1,784 @@
+{
+  "contract": "AVA_V4_STAGE_CERTIFIED_DRAFTS_V1",
+  "generatedAt": "2026-11-06T07:31:37.152Z",
+  "dryRun": true,
+  "authorizeProductionDraftTransfer": false,
+  "storageRoot": "C:\\Dev\\dealality\\my-operators-backend\\data\\ava-data",
+  "manifestPath": "reports/dealality-ai-visibility-audit-action-plan-pilot-v1/AVA_38_HOTEL_FINAL_MANIFEST.json",
+  "certifiedRevision": "514ec0ce04a71434d1b217eb1507ce2346317e3e",
+  "backupRoot": null,
+  "total": 38,
+  "ok": 38,
+  "failed": 0,
+  "publishedUntouched": true,
+  "shareTokensUntouched": true,
+  "rollbackProcedure": [
+    "1. Stop before customer publish — drafts only.",
+    "2. For each hotel, restore backed-up draft-before-<sha>.pdf over pdfs/<propertyId>/draft.pdf.",
+    "3. Restore meta.previousDraftPdfSha256 / previousDraftVersionId into draftPdfSha256 / draftVersionId.",
+    "4. Confirm published.pdf SHA unchanged vs publishedShaBefore.",
+    "5. Do not rotate or rewrite share tokens."
+  ],
+  "rows": [
+    {
+      "propertyId": "adp_ac_hotel_a_coruna",
+      "hotelName": "AC Hotel A Coruña",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "0fb4017bf0fe754025ded7cd293c3fccf0843589e2e443b6bfd36f3f9772bfe4",
+      "previousDraftSha": "0fb4017bf0fe754025ded7cd293c3fccf0843589e2e443b6bfd36f3f9772bfe4",
+      "previousDraftVersionId": "ava_v4_portfolio_ac_hotel_a_coruna_mw490wwg",
+      "publishedShaBefore": "7ed9c2e0925a4dad6489d768921f0a0d5174f1fffc7bddb8c6cb35b6701e2621",
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "0fb4017bf0fe754025ded7cd293c3fccf0843589e2e443b6bfd36f3f9772bfe4",
+        "previousDraftVersionId": "ava_v4_portfolio_ac_hotel_a_coruna_mw490wwg",
+        "backupRel": "adp_ac_hotel_a_coruna\\draft-before-0fb4017bf0fe.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_ac_hotel_a_coruna\\draft-before-0fb4017bf0fe.pdf → draft.pdf; restore meta.draftPdfSha256=0fb4017bf0fe754025ded7cd293c3fccf0843589e2e443b6bfd36f3f9772bfe4"
+    },
+    {
+      "propertyId": "adp_bethesda_marriott",
+      "hotelName": "Bethesda Marriott",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "587b08d28f7c8a0d51d3fe2d34cc390385f2f53c4e0dcfe1e535a9e3e5d62ca3",
+      "previousDraftSha": "587b08d28f7c8a0d51d3fe2d34cc390385f2f53c4e0dcfe1e535a9e3e5d62ca3",
+      "previousDraftVersionId": "ava_v4_portfolio_bethesda_marriott_mw490ylz",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "587b08d28f7c8a0d51d3fe2d34cc390385f2f53c4e0dcfe1e535a9e3e5d62ca3",
+        "previousDraftVersionId": "ava_v4_portfolio_bethesda_marriott_mw490ylz",
+        "backupRel": "adp_bethesda_marriott\\draft-before-587b08d28f7c.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_bethesda_marriott\\draft-before-587b08d28f7c.pdf → draft.pdf; restore meta.draftPdfSha256=587b08d28f7c8a0d51d3fe2d34cc390385f2f53c4e0dcfe1e535a9e3e5d62ca3"
+    },
+    {
+      "propertyId": "adp_cambridge_beaches_bermuda",
+      "hotelName": "Cambridge Beaches Resort & Spa",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "2709d898b7390c910d04a8a41b3e4824ed361f989b612af55f17485578e0097b",
+      "previousDraftSha": "2709d898b7390c910d04a8a41b3e4824ed361f989b612af55f17485578e0097b",
+      "previousDraftVersionId": "ava_v4_portfolio_cambridge_beaches_bermuda_mw4910cd",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "2709d898b7390c910d04a8a41b3e4824ed361f989b612af55f17485578e0097b",
+        "previousDraftVersionId": "ava_v4_portfolio_cambridge_beaches_bermuda_mw4910cd",
+        "backupRel": "adp_cambridge_beaches_bermuda\\draft-before-2709d898b739.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_cambridge_beaches_bermuda\\draft-before-2709d898b739.pdf → draft.pdf; restore meta.draftPdfSha256=2709d898b7390c910d04a8a41b3e4824ed361f989b612af55f17485578e0097b"
+    },
+    {
+      "propertyId": "adp_casas_del_xvi",
+      "hotelName": "Casas del XVI",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "b68b65a22be81631d97259cbb2889580ba21f43c26b70e2f5244e0dfb44b3f66",
+      "previousDraftSha": "b68b65a22be81631d97259cbb2889580ba21f43c26b70e2f5244e0dfb44b3f66",
+      "previousDraftVersionId": "ava_v4_portfolio_casas_del_xvi_mw49121q",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "b68b65a22be81631d97259cbb2889580ba21f43c26b70e2f5244e0dfb44b3f66",
+        "previousDraftVersionId": "ava_v4_portfolio_casas_del_xvi_mw49121q",
+        "backupRel": "adp_casas_del_xvi\\draft-before-b68b65a22be8.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_casas_del_xvi\\draft-before-b68b65a22be8.pdf → draft.pdf; restore meta.draftPdfSha256=b68b65a22be81631d97259cbb2889580ba21f43c26b70e2f5244e0dfb44b3f66"
+    },
+    {
+      "propertyId": "adp_castillo_hotel_son_vida",
+      "hotelName": "Castillo Hotel Son Vida, a Luxury Collection Hotel, Mallorca",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "7bbf03b58732d3c7f0ade73d20b1a1b4386126e1da27a6f9143492c5c174dac0",
+      "previousDraftSha": "7bbf03b58732d3c7f0ade73d20b1a1b4386126e1da27a6f9143492c5c174dac0",
+      "previousDraftVersionId": "ava_v4_portfolio_castillo_hotel_son_vida_mw4913ud",
+      "publishedShaBefore": "76944045b5e5c749137d112a23223ae61d24cfb9c9b8e5c8308c9b7ad02c5124",
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "7bbf03b58732d3c7f0ade73d20b1a1b4386126e1da27a6f9143492c5c174dac0",
+        "previousDraftVersionId": "ava_v4_portfolio_castillo_hotel_son_vida_mw4913ud",
+        "backupRel": "adp_castillo_hotel_son_vida\\draft-before-7bbf03b58732.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_castillo_hotel_son_vida\\draft-before-7bbf03b58732.pdf → draft.pdf; restore meta.draftPdfSha256=7bbf03b58732d3c7f0ade73d20b1a1b4386126e1da27a6f9143492c5c174dac0"
+    },
+    {
+      "propertyId": "adp_charlotte_marriott_city_center",
+      "hotelName": "Charlotte Marriott City Center",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "25c5adfbcac5c7b278af9731659baad7e3e46f80a3cc2df5a2286f27a754d4c9",
+      "previousDraftSha": "25c5adfbcac5c7b278af9731659baad7e3e46f80a3cc2df5a2286f27a754d4c9",
+      "previousDraftVersionId": "ava_v4_portfolio_charlotte_marriott_city_center_mw4915ig",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "25c5adfbcac5c7b278af9731659baad7e3e46f80a3cc2df5a2286f27a754d4c9",
+        "previousDraftVersionId": "ava_v4_portfolio_charlotte_marriott_city_center_mw4915ig",
+        "backupRel": "adp_charlotte_marriott_city_center\\draft-before-25c5adfbcac5.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_charlotte_marriott_city_center\\draft-before-25c5adfbcac5.pdf → draft.pdf; restore meta.draftPdfSha256=25c5adfbcac5c7b278af9731659baad7e3e46f80a3cc2df5a2286f27a754d4c9"
+    },
+    {
+      "propertyId": "adp_falls_church_marriott_fairview_park",
+      "hotelName": "Falls Church Marriott Fairview Park",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "951b597c5b46fb8d3b58678a8890f7b7fb36f0188664638705d666f57798c13b",
+      "previousDraftSha": "951b597c5b46fb8d3b58678a8890f7b7fb36f0188664638705d666f57798c13b",
+      "previousDraftVersionId": "ava_v4_portfolio_falls_church_marriott_fairview_park_mw491778",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "951b597c5b46fb8d3b58678a8890f7b7fb36f0188664638705d666f57798c13b",
+        "previousDraftVersionId": "ava_v4_portfolio_falls_church_marriott_fairview_park_mw491778",
+        "backupRel": "adp_falls_church_marriott_fairview_park\\draft-before-951b597c5b46.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_falls_church_marriott_fairview_park\\draft-before-951b597c5b46.pdf → draft.pdf; restore meta.draftPdfSha256=951b597c5b46fb8d3b58678a8890f7b7fb36f0188664638705d666f57798c13b"
+    },
+    {
+      "propertyId": "adp_faranda_collection_bogota",
+      "hotelName": "Faranda Collection Bogotá",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "2bac8c46c4244fdb8daa3d742efbeeedda932fe40484549d5b5c89f652e36f69",
+      "previousDraftSha": "2bac8c46c4244fdb8daa3d742efbeeedda932fe40484549d5b5c89f652e36f69",
+      "previousDraftVersionId": "ava_v4_portfolio_faranda_collection_bogota_mw4918tu",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "2bac8c46c4244fdb8daa3d742efbeeedda932fe40484549d5b5c89f652e36f69",
+        "previousDraftVersionId": "ava_v4_portfolio_faranda_collection_bogota_mw4918tu",
+        "backupRel": "adp_faranda_collection_bogota\\draft-before-2bac8c46c424.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_faranda_collection_bogota\\draft-before-2bac8c46c424.pdf → draft.pdf; restore meta.draftPdfSha256=2bac8c46c4244fdb8daa3d742efbeeedda932fe40484549d5b5c89f652e36f69"
+    },
+    {
+      "propertyId": "adp_fiesta_americana_condesa_cancun_ai",
+      "hotelName": "Fiesta Americana Condesa Cancún All Inclusive",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "48d26f134a3841ae5f8e016e08630aa9ba1df35fcb5a617223f6098320dd4c9e",
+      "previousDraftSha": "48d26f134a3841ae5f8e016e08630aa9ba1df35fcb5a617223f6098320dd4c9e",
+      "previousDraftVersionId": "ava_v4_portfolio_fiesta_americana_condesa_cancun_ai_mw491air",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "48d26f134a3841ae5f8e016e08630aa9ba1df35fcb5a617223f6098320dd4c9e",
+        "previousDraftVersionId": "ava_v4_portfolio_fiesta_americana_condesa_cancun_ai_mw491air",
+        "backupRel": "adp_fiesta_americana_condesa_cancun_ai\\draft-before-48d26f134a38.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_fiesta_americana_condesa_cancun_ai\\draft-before-48d26f134a38.pdf → draft.pdf; restore meta.draftPdfSha256=48d26f134a3841ae5f8e016e08630aa9ba1df35fcb5a617223f6098320dd4c9e"
+    },
+    {
+      "propertyId": "adp_grand_fiesta_americana_chapultepec",
+      "hotelName": "Grand Fiesta Americana Chapultepec",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "dc3340c2bdeae81d0f92bdece4f6041181ca9b2620375f6a8cf41991abe6635a",
+      "previousDraftSha": "dc3340c2bdeae81d0f92bdece4f6041181ca9b2620375f6a8cf41991abe6635a",
+      "previousDraftVersionId": "ava_v4_portfolio_grand_fiesta_americana_chapultepec_mw491c7a",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "dc3340c2bdeae81d0f92bdece4f6041181ca9b2620375f6a8cf41991abe6635a",
+        "previousDraftVersionId": "ava_v4_portfolio_grand_fiesta_americana_chapultepec_mw491c7a",
+        "backupRel": "adp_grand_fiesta_americana_chapultepec\\draft-before-dc3340c2bdea.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_grand_fiesta_americana_chapultepec\\draft-before-dc3340c2bdea.pdf → draft.pdf; restore meta.draftPdfSha256=dc3340c2bdeae81d0f92bdece4f6041181ca9b2620375f6a8cf41991abe6635a"
+    },
+    {
+      "propertyId": "adp_hilton_times_square",
+      "hotelName": "Hilton New York Times Square",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "0dabdfa6a343714fea6a923d3f554852b7fc0e781159ddd2d6d22bead82d796f",
+      "previousDraftSha": "0dabdfa6a343714fea6a923d3f554852b7fc0e781159ddd2d6d22bead82d796f",
+      "previousDraftVersionId": "ava_v4_portfolio_hilton_times_square_mw491dvf",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "0dabdfa6a343714fea6a923d3f554852b7fc0e781159ddd2d6d22bead82d796f",
+        "previousDraftVersionId": "ava_v4_portfolio_hilton_times_square_mw491dvf",
+        "backupRel": "adp_hilton_times_square\\draft-before-0dabdfa6a343.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_hilton_times_square\\draft-before-0dabdfa6a343.pdf → draft.pdf; restore meta.draftPdfSha256=0dabdfa6a343714fea6a923d3f554852b7fc0e781159ddd2d6d22bead82d796f"
+    },
+    {
+      "propertyId": "adp_hotel_caribe_faranda_grand",
+      "hotelName": "Hotel Caribe by Faranda Grand, a member of Radisson Individuals",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "219a432b790453744ec3f2246cb3d755cf7dd71ca0b2623153578559e8b267e7",
+      "previousDraftSha": "219a432b790453744ec3f2246cb3d755cf7dd71ca0b2623153578559e8b267e7",
+      "previousDraftVersionId": "ava_v4_portfolio_hotel_caribe_faranda_grand_mw491fj4",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "219a432b790453744ec3f2246cb3d755cf7dd71ca0b2623153578559e8b267e7",
+        "previousDraftVersionId": "ava_v4_portfolio_hotel_caribe_faranda_grand_mw491fj4",
+        "backupRel": "adp_hotel_caribe_faranda_grand\\draft-before-219a432b7904.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_hotel_caribe_faranda_grand\\draft-before-219a432b7904.pdf → draft.pdf; restore meta.draftPdfSha256=219a432b790453744ec3f2246cb3d755cf7dd71ca0b2623153578559e8b267e7"
+    },
+    {
+      "propertyId": "adp_hotel_phillips_kansas_city",
+      "hotelName": "Hotel Phillips Kansas City, Curio Collection by Hilton",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "aceca7fcb23788b75c1477c13eeab4661e58dd73e5dc31a2e24998e762bc151d",
+      "previousDraftSha": "aceca7fcb23788b75c1477c13eeab4661e58dd73e5dc31a2e24998e762bc151d",
+      "previousDraftVersionId": "ava_v4_portfolio_hotel_phillips_kansas_city_mw491h7p",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "aceca7fcb23788b75c1477c13eeab4661e58dd73e5dc31a2e24998e762bc151d",
+        "previousDraftVersionId": "ava_v4_portfolio_hotel_phillips_kansas_city_mw491h7p",
+        "backupRel": "adp_hotel_phillips_kansas_city\\draft-before-aceca7fcb237.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_hotel_phillips_kansas_city\\draft-before-aceca7fcb237.pdf → draft.pdf; restore meta.draftPdfSha256=aceca7fcb23788b75c1477c13eeab4661e58dd73e5dc31a2e24998e762bc151d"
+    },
+    {
+      "propertyId": "adp_jw_marriott_monterrey_valle",
+      "hotelName": "JW Marriott Hotel Monterrey Valle",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "38cf2415bfb1448ae4980ffbdee4253593e5c8d447061ff62323e9550f19a33e",
+      "previousDraftSha": "38cf2415bfb1448ae4980ffbdee4253593e5c8d447061ff62323e9550f19a33e",
+      "previousDraftVersionId": "ava_v4_portfolio_jw_marriott_monterrey_valle_mw491iuh",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "38cf2415bfb1448ae4980ffbdee4253593e5c8d447061ff62323e9550f19a33e",
+        "previousDraftVersionId": "ava_v4_portfolio_jw_marriott_monterrey_valle_mw491iuh",
+        "backupRel": "adp_jw_marriott_monterrey_valle\\draft-before-38cf2415bfb1.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_jw_marriott_monterrey_valle\\draft-before-38cf2415bfb1.pdf → draft.pdf; restore meta.draftPdfSha256=38cf2415bfb1448ae4980ffbdee4253593e5c8d447061ff62323e9550f19a33e"
+    },
+    {
+      "propertyId": "adp_jw_marriott_santo_domingo",
+      "hotelName": "JW Marriott Hotel Santo Domingo",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "07c0470c07bb1fefc0dfc3c91b253a82cfb9dfb4a3377c6fe514346093daf34d",
+      "previousDraftSha": "07c0470c07bb1fefc0dfc3c91b253a82cfb9dfb4a3377c6fe514346093daf34d",
+      "previousDraftVersionId": "ava_v4_portfolio_jw_marriott_santo_domingo_mw491kib",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "07c0470c07bb1fefc0dfc3c91b253a82cfb9dfb4a3377c6fe514346093daf34d",
+        "previousDraftVersionId": "ava_v4_portfolio_jw_marriott_santo_domingo_mw491kib",
+        "backupRel": "adp_jw_marriott_santo_domingo\\draft-before-07c0470c07bb.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_jw_marriott_santo_domingo\\draft-before-07c0470c07bb.pdf → draft.pdf; restore meta.draftPdfSha256=07c0470c07bb1fefc0dfc3c91b253a82cfb9dfb4a3377c6fe514346093daf34d"
+    },
+    {
+      "propertyId": "adp_mayflower_hotel_washington_dc",
+      "hotelName": "The Mayflower Hotel, Autograph Collection",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "6fedf3e5ed606eb2ad927e33222da57d2679c5312ac7a128f4693907cf102606",
+      "previousDraftSha": "6fedf3e5ed606eb2ad927e33222da57d2679c5312ac7a128f4693907cf102606",
+      "previousDraftVersionId": "ava_v4_portfolio_mayflower_hotel_washington_dc_mw491m6n",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "6fedf3e5ed606eb2ad927e33222da57d2679c5312ac7a128f4693907cf102606",
+        "previousDraftVersionId": "ava_v4_portfolio_mayflower_hotel_washington_dc_mw491m6n",
+        "backupRel": "adp_mayflower_hotel_washington_dc\\draft-before-6fedf3e5ed60.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_mayflower_hotel_washington_dc\\draft-before-6fedf3e5ed60.pdf → draft.pdf; restore meta.draftPdfSha256=6fedf3e5ed606eb2ad927e33222da57d2679c5312ac7a128f4693907cf102606"
+    },
+    {
+      "propertyId": "adp_nobu_london_portman",
+      "hotelName": "Nobu Hotel London Portman Square",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "34bddec4ce96949f3d73dd39a53ece9733cddbef6bc188094962d8352c97bd94",
+      "previousDraftSha": "34bddec4ce96949f3d73dd39a53ece9733cddbef6bc188094962d8352c97bd94",
+      "previousDraftVersionId": "ava_v4_portfolio_nobu_london_portman_mw491nuk",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "34bddec4ce96949f3d73dd39a53ece9733cddbef6bc188094962d8352c97bd94",
+        "previousDraftVersionId": "ava_v4_portfolio_nobu_london_portman_mw491nuk",
+        "backupRel": "adp_nobu_london_portman\\draft-before-34bddec4ce96.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_nobu_london_portman\\draft-before-34bddec4ce96.pdf → draft.pdf; restore meta.draftPdfSha256=34bddec4ce96949f3d73dd39a53ece9733cddbef6bc188094962d8352c97bd94"
+    },
+    {
+      "propertyId": "adp_now_now_noho",
+      "hotelName": "NOW NOW NOHO",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "65a0bc8fd4bfb697863810c5609bbce12c757ac0a8796e497cba0b14043b11fe",
+      "previousDraftSha": "65a0bc8fd4bfb697863810c5609bbce12c757ac0a8796e497cba0b14043b11fe",
+      "previousDraftVersionId": "ava_v4_portfolio_now_now_noho_mw491pha",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "65a0bc8fd4bfb697863810c5609bbce12c757ac0a8796e497cba0b14043b11fe",
+        "previousDraftVersionId": "ava_v4_portfolio_now_now_noho_mw491pha",
+        "backupRel": "adp_now_now_noho\\draft-before-65a0bc8fd4bf.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_now_now_noho\\draft-before-65a0bc8fd4bf.pdf → draft.pdf; restore meta.draftPdfSha256=65a0bc8fd4bfb697863810c5609bbce12c757ac0a8796e497cba0b14043b11fe"
+    },
+    {
+      "propertyId": "adp_radisson_blu_toronto_downtown",
+      "hotelName": "Radisson Blu Toronto Downtown",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "8f0ba91785148afbd2aae2448444089f2b0852c996f921f5ee090f52083f095f",
+      "previousDraftSha": "8f0ba91785148afbd2aae2448444089f2b0852c996f921f5ee090f52083f095f",
+      "previousDraftVersionId": "ava_v4_portfolio_radisson_blu_toronto_downtown_mw491r5f",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "8f0ba91785148afbd2aae2448444089f2b0852c996f921f5ee090f52083f095f",
+        "previousDraftVersionId": "ava_v4_portfolio_radisson_blu_toronto_downtown_mw491r5f",
+        "backupRel": "adp_radisson_blu_toronto_downtown\\draft-before-8f0ba9178514.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_radisson_blu_toronto_downtown\\draft-before-8f0ba9178514.pdf → draft.pdf; restore meta.draftPdfSha256=8f0ba91785148afbd2aae2448444089f2b0852c996f921f5ee090f52083f095f"
+    },
+    {
+      "propertyId": "adp_radisson_santo_domingo",
+      "hotelName": "Radisson Hotel Santo Domingo",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "7d14456d59b0fd668e97bb420e33c90487348f3a0c3a43ebd5cebb03cc8bd4c5",
+      "previousDraftSha": "7d14456d59b0fd668e97bb420e33c90487348f3a0c3a43ebd5cebb03cc8bd4c5",
+      "previousDraftVersionId": "ava_v4_portfolio_radisson_santo_domingo_mw491sua",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "7d14456d59b0fd668e97bb420e33c90487348f3a0c3a43ebd5cebb03cc8bd4c5",
+        "previousDraftVersionId": "ava_v4_portfolio_radisson_santo_domingo_mw491sua",
+        "backupRel": "adp_radisson_santo_domingo\\draft-before-7d14456d59b0.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_radisson_santo_domingo\\draft-before-7d14456d59b0.pdf → draft.pdf; restore meta.draftPdfSha256=7d14456d59b0fd668e97bb420e33c90487348f3a0c3a43ebd5cebb03cc8bd4c5"
+    },
+    {
+      "propertyId": "adp_renaissance_arlington_capital_view",
+      "hotelName": "Renaissance Arlington Capital View Hotel",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "7fe35adb603d0b1ec2f22f072438c7fdaa87d38cd2e5c279f3388e794d39bb89",
+      "previousDraftSha": "7fe35adb603d0b1ec2f22f072438c7fdaa87d38cd2e5c279f3388e794d39bb89",
+      "previousDraftVersionId": "ava_v4_portfolio_renaissance_arlington_capital_view_mw491uik",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "7fe35adb603d0b1ec2f22f072438c7fdaa87d38cd2e5c279f3388e794d39bb89",
+        "previousDraftVersionId": "ava_v4_portfolio_renaissance_arlington_capital_view_mw491uik",
+        "backupRel": "adp_renaissance_arlington_capital_view\\draft-before-7fe35adb603d.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_renaissance_arlington_capital_view\\draft-before-7fe35adb603d.pdf → draft.pdf; restore meta.draftPdfSha256=7fe35adb603d0b1ec2f22f072438c7fdaa87d38cd2e5c279f3388e794d39bb89"
+    },
+    {
+      "propertyId": "adp_renaissance_times_square",
+      "hotelName": "Renaissance New York Times Square Hotel",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "5f48ffb1c39d7444a147e42ebbdad7b956e77ed0d785e411d192f0848b7f5133",
+      "previousDraftSha": "5f48ffb1c39d7444a147e42ebbdad7b956e77ed0d785e411d192f0848b7f5133",
+      "previousDraftVersionId": "ava_v4_portfolio_renaissance_times_square_mw491w6y",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "5f48ffb1c39d7444a147e42ebbdad7b956e77ed0d785e411d192f0848b7f5133",
+        "previousDraftVersionId": "ava_v4_portfolio_renaissance_times_square_mw491w6y",
+        "backupRel": "adp_renaissance_times_square\\draft-before-5f48ffb1c39d.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_renaissance_times_square\\draft-before-5f48ffb1c39d.pdf → draft.pdf; restore meta.draftPdfSha256=5f48ffb1c39d7444a147e42ebbdad7b956e77ed0d785e411d192f0848b7f5133"
+    },
+    {
+      "propertyId": "adp_sheraton_guadalajara_expo",
+      "hotelName": "Sheraton Guadalajara Expo",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "46f88a4ecb091efcff61f3af461c405a5ceb1979404efff3beb6a7cbf4bfd009",
+      "previousDraftSha": "46f88a4ecb091efcff61f3af461c405a5ceb1979404efff3beb6a7cbf4bfd009",
+      "previousDraftVersionId": "ava_v4_portfolio_sheraton_guadalajara_expo_mw491xvj",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "46f88a4ecb091efcff61f3af461c405a5ceb1979404efff3beb6a7cbf4bfd009",
+        "previousDraftVersionId": "ava_v4_portfolio_sheraton_guadalajara_expo_mw491xvj",
+        "backupRel": "adp_sheraton_guadalajara_expo\\draft-before-46f88a4ecb09.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_sheraton_guadalajara_expo\\draft-before-46f88a4ecb09.pdf → draft.pdf; restore meta.draftPdfSha256=46f88a4ecb091efcff61f3af461c405a5ceb1979404efff3beb6a7cbf4bfd009"
+    },
+    {
+      "propertyId": "adp_sheraton_mallorca_arabella_golf",
+      "hotelName": "Sheraton Mallorca Arabella Golf Hotel",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "f63869d0470186bcb2afbf6da23b4291064c22965767a1e265120380c9746096",
+      "previousDraftSha": "f63869d0470186bcb2afbf6da23b4291064c22965767a1e265120380c9746096",
+      "previousDraftVersionId": "ava_v4_portfolio_sheraton_mallorca_arabella_golf_mw491zke",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "f63869d0470186bcb2afbf6da23b4291064c22965767a1e265120380c9746096",
+        "previousDraftVersionId": "ava_v4_portfolio_sheraton_mallorca_arabella_golf_mw491zke",
+        "backupRel": "adp_sheraton_mallorca_arabella_golf\\draft-before-f63869d04701.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_sheraton_mallorca_arabella_golf\\draft-before-f63869d04701.pdf → draft.pdf; restore meta.draftPdfSha256=f63869d0470186bcb2afbf6da23b4291064c22965767a1e265120380c9746096"
+    },
+    {
+      "propertyId": "adp_spice_island_beach_resort",
+      "hotelName": "Spice Island Beach Resort",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "a784c489bf6e9f5bd6ed7e35e57ef5abb1ef28ce071e83372d86efdddb8b547f",
+      "previousDraftSha": "a784c489bf6e9f5bd6ed7e35e57ef5abb1ef28ce071e83372d86efdddb8b547f",
+      "previousDraftVersionId": "ava_v4_portfolio_spice_island_beach_resort_mw49218d",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "a784c489bf6e9f5bd6ed7e35e57ef5abb1ef28ce071e83372d86efdddb8b547f",
+        "previousDraftVersionId": "ava_v4_portfolio_spice_island_beach_resort_mw49218d",
+        "backupRel": "adp_spice_island_beach_resort\\draft-before-a784c489bf6e.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_spice_island_beach_resort\\draft-before-a784c489bf6e.pdf → draft.pdf; restore meta.draftPdfSha256=a784c489bf6e9f5bd6ed7e35e57ef5abb1ef28ce071e83372d86efdddb8b547f"
+    },
+    {
+      "propertyId": "adp_st_regis_cap_cana",
+      "hotelName": "The St. Regis Cap Cana Resort",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "5b3ec2f99416a0c8fabde52da02397c2b8e79c33b4da6138d27a3bf3d3a04d2d",
+      "previousDraftSha": "5b3ec2f99416a0c8fabde52da02397c2b8e79c33b4da6138d27a3bf3d3a04d2d",
+      "previousDraftVersionId": "ava_v4_portfolio_st_regis_cap_cana_mw4922wk",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "5b3ec2f99416a0c8fabde52da02397c2b8e79c33b4da6138d27a3bf3d3a04d2d",
+        "previousDraftVersionId": "ava_v4_portfolio_st_regis_cap_cana_mw4922wk",
+        "backupRel": "adp_st_regis_cap_cana\\draft-before-5b3ec2f99416.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_st_regis_cap_cana\\draft-before-5b3ec2f99416.pdf → draft.pdf; restore meta.draftPdfSha256=5b3ec2f99416a0c8fabde52da02397c2b8e79c33b4da6138d27a3bf3d3a04d2d"
+    },
+    {
+      "propertyId": "adp_st_regis_mexico_city",
+      "hotelName": "The St. Regis Mexico City",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "280f1262fb01601ea1022212a6c0d4eab5b783d7ac1cffdacbaa7a9b46fe6f74",
+      "previousDraftSha": "280f1262fb01601ea1022212a6c0d4eab5b783d7ac1cffdacbaa7a9b46fe6f74",
+      "previousDraftVersionId": "ava_v4_portfolio_st_regis_mexico_city_mw4924j6",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "280f1262fb01601ea1022212a6c0d4eab5b783d7ac1cffdacbaa7a9b46fe6f74",
+        "previousDraftVersionId": "ava_v4_portfolio_st_regis_mexico_city_mw4924j6",
+        "backupRel": "adp_st_regis_mexico_city\\draft-before-280f1262fb01.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_st_regis_mexico_city\\draft-before-280f1262fb01.pdf → draft.pdf; restore meta.draftPdfSha256=280f1262fb01601ea1022212a6c0d4eab5b783d7ac1cffdacbaa7a9b46fe6f74"
+    },
+    {
+      "propertyId": "adp_tampa_airport_marriott",
+      "hotelName": "Tampa Airport Marriott",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "5cd90521c08c0e0d0c3292f49f973dd3c0b704378be2a8ee76dcf34c5b8dea52",
+      "previousDraftSha": "5cd90521c08c0e0d0c3292f49f973dd3c0b704378be2a8ee76dcf34c5b8dea52",
+      "previousDraftVersionId": "ava_v4_portfolio_tampa_airport_marriott_mw49267d",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "5cd90521c08c0e0d0c3292f49f973dd3c0b704378be2a8ee76dcf34c5b8dea52",
+        "previousDraftVersionId": "ava_v4_portfolio_tampa_airport_marriott_mw49267d",
+        "backupRel": "adp_tampa_airport_marriott\\draft-before-5cd90521c08c.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_tampa_airport_marriott\\draft-before-5cd90521c08c.pdf → draft.pdf; restore meta.draftPdfSha256=5cd90521c08c0e0d0c3292f49f973dd3c0b704378be2a8ee76dcf34c5b8dea52"
+    },
+    {
+      "propertyId": "adp_umusic_hotel_madrid",
+      "hotelName": "UMusic Hotel Madrid",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "064cb5051d0477793a12886e77da8801fa73c6e71bff63b7a5468b06116d52df",
+      "previousDraftSha": "064cb5051d0477793a12886e77da8801fa73c6e71bff63b7a5468b06116d52df",
+      "previousDraftVersionId": "ava_v4_portfolio_umusic_hotel_madrid_mw4927vb",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "064cb5051d0477793a12886e77da8801fa73c6e71bff63b7a5468b06116d52df",
+        "previousDraftVersionId": "ava_v4_portfolio_umusic_hotel_madrid_mw4927vb",
+        "backupRel": "adp_umusic_hotel_madrid\\draft-before-064cb5051d04.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_umusic_hotel_madrid\\draft-before-064cb5051d04.pdf → draft.pdf; restore meta.draftPdfSha256=064cb5051d0477793a12886e77da8801fa73c6e71bff63b7a5468b06116d52df"
+    },
+    {
+      "propertyId": "adp_voco_cancun_zona_hotelera",
+      "hotelName": "voco Cancún Zona Hotelera",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "6a7d77b68b4b1017bdffb72c93c777eb6ec51aef5c19a085e2802695886b51e2",
+      "previousDraftSha": "6a7d77b68b4b1017bdffb72c93c777eb6ec51aef5c19a085e2802695886b51e2",
+      "previousDraftVersionId": "ava_v4_portfolio_voco_cancun_zona_hotelera_mw4929ll",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "6a7d77b68b4b1017bdffb72c93c777eb6ec51aef5c19a085e2802695886b51e2",
+        "previousDraftVersionId": "ava_v4_portfolio_voco_cancun_zona_hotelera_mw4929ll",
+        "backupRel": "adp_voco_cancun_zona_hotelera\\draft-before-6a7d77b68b4b.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_voco_cancun_zona_hotelera\\draft-before-6a7d77b68b4b.pdf → draft.pdf; restore meta.draftPdfSha256=6a7d77b68b4b1017bdffb72c93c777eb6ec51aef5c19a085e2802695886b51e2"
+    },
+    {
+      "propertyId": "adp_w_rome",
+      "hotelName": "W Rome",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "2eb9bb15147570de52aed9757f11e512aa1ac4773e47dad5a49ff7d7d517a984",
+      "previousDraftSha": "2eb9bb15147570de52aed9757f11e512aa1ac4773e47dad5a49ff7d7d517a984",
+      "previousDraftVersionId": "ava_v4_portfolio_w_rome_mw492bbo",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "2eb9bb15147570de52aed9757f11e512aa1ac4773e47dad5a49ff7d7d517a984",
+        "previousDraftVersionId": "ava_v4_portfolio_w_rome_mw492bbo",
+        "backupRel": "adp_w_rome\\draft-before-2eb9bb151475.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_w_rome\\draft-before-2eb9bb151475.pdf → draft.pdf; restore meta.draftPdfSha256=2eb9bb15147570de52aed9757f11e512aa1ac4773e47dad5a49ff7d7d517a984"
+    },
+    {
+      "propertyId": "adp_waterstone_boca_raton",
+      "hotelName": "Waterstone Resort & Marina",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "4d2c4e31e932020f4ef64c910ccff9f2af58521d111fa4d3c82943ef7445949d",
+      "previousDraftSha": "4d2c4e31e932020f4ef64c910ccff9f2af58521d111fa4d3c82943ef7445949d",
+      "previousDraftVersionId": "ava_v4_portfolio_waterstone_boca_raton_mw492czf",
+      "publishedShaBefore": "8173ca19ace9add954c442bcecb48cade0fb7394de77ea9b5c468b34391e38c8",
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "4d2c4e31e932020f4ef64c910ccff9f2af58521d111fa4d3c82943ef7445949d",
+        "previousDraftVersionId": "ava_v4_portfolio_waterstone_boca_raton_mw492czf",
+        "backupRel": "adp_waterstone_boca_raton\\draft-before-4d2c4e31e932.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_waterstone_boca_raton\\draft-before-4d2c4e31e932.pdf → draft.pdf; restore meta.draftPdfSha256=4d2c4e31e932020f4ef64c910ccff9f2af58521d111fa4d3c82943ef7445949d"
+    },
+    {
+      "propertyId": "adp_westin_grand_munchen",
+      "hotelName": "The Westin Grand München",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "6566322577aa41d3d647acb7498b59d2a14f861ec55a5fe145010ede88f96854",
+      "previousDraftSha": "6566322577aa41d3d647acb7498b59d2a14f861ec55a5fe145010ede88f96854",
+      "previousDraftVersionId": "ava_v4_portfolio_westin_grand_munchen_mw492emv",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "6566322577aa41d3d647acb7498b59d2a14f861ec55a5fe145010ede88f96854",
+        "previousDraftVersionId": "ava_v4_portfolio_westin_grand_munchen_mw492emv",
+        "backupRel": "adp_westin_grand_munchen\\draft-before-6566322577aa.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_westin_grand_munchen\\draft-before-6566322577aa.pdf → draft.pdf; restore meta.draftPdfSha256=6566322577aa41d3d647acb7498b59d2a14f861ec55a5fe145010ede88f96854"
+    },
+    {
+      "propertyId": "adp_westin_monterrey_valle",
+      "hotelName": "The Westin Monterrey Valle",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "caa5ca52dc74cd977d7e21bc20ee8c7f3f0f2867fea9dd9f95373ec8d146d704",
+      "previousDraftSha": "caa5ca52dc74cd977d7e21bc20ee8c7f3f0f2867fea9dd9f95373ec8d146d704",
+      "previousDraftVersionId": "ava_v4_portfolio_westin_monterrey_valle_mw492geo",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "caa5ca52dc74cd977d7e21bc20ee8c7f3f0f2867fea9dd9f95373ec8d146d704",
+        "previousDraftVersionId": "ava_v4_portfolio_westin_monterrey_valle_mw492geo",
+        "backupRel": "adp_westin_monterrey_valle\\draft-before-caa5ca52dc74.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_westin_monterrey_valle\\draft-before-caa5ca52dc74.pdf → draft.pdf; restore meta.draftPdfSha256=caa5ca52dc74cd977d7e21bc20ee8c7f3f0f2867fea9dd9f95373ec8d146d704"
+    },
+    {
+      "propertyId": "adp_westin_tampa_waterside",
+      "hotelName": "The Westin Tampa Waterside",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "7a6bb132b6bb2b5a92d59f8ba525b59b368e3c990df374d3aae6eb02a8668287",
+      "previousDraftSha": "7a6bb132b6bb2b5a92d59f8ba525b59b368e3c990df374d3aae6eb02a8668287",
+      "previousDraftVersionId": "ava_v4_portfolio_westin_tampa_waterside_mw492i17",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "7a6bb132b6bb2b5a92d59f8ba525b59b368e3c990df374d3aae6eb02a8668287",
+        "previousDraftVersionId": "ava_v4_portfolio_westin_tampa_waterside_mw492i17",
+        "backupRel": "adp_westin_tampa_waterside\\draft-before-7a6bb132b6bb.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_westin_tampa_waterside\\draft-before-7a6bb132b6bb.pdf → draft.pdf; restore meta.draftPdfSha256=7a6bb132b6bb2b5a92d59f8ba525b59b368e3c990df374d3aae6eb02a8668287"
+    },
+    {
+      "propertyId": "adp_wyndham_alltra_punta_cana",
+      "hotelName": "Wyndham Alltra Punta Cana",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "8b161e6e3c4007feedafa078576ea32577b56a764ab0179e6b8f21cf617a5d9c",
+      "previousDraftSha": "8b161e6e3c4007feedafa078576ea32577b56a764ab0179e6b8f21cf617a5d9c",
+      "previousDraftVersionId": "ava_v4_portfolio_wyndham_alltra_punta_cana_mw492joo",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "8b161e6e3c4007feedafa078576ea32577b56a764ab0179e6b8f21cf617a5d9c",
+        "previousDraftVersionId": "ava_v4_portfolio_wyndham_alltra_punta_cana_mw492joo",
+        "backupRel": "adp_wyndham_alltra_punta_cana\\draft-before-8b161e6e3c40.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_wyndham_alltra_punta_cana\\draft-before-8b161e6e3c40.pdf → draft.pdf; restore meta.draftPdfSha256=8b161e6e3c4007feedafa078576ea32577b56a764ab0179e6b8f21cf617a5d9c"
+    },
+    {
+      "propertyId": "adp_wyndham_san_diego_bayside",
+      "hotelName": "Wyndham San Diego Bayside",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "049ef5030b912895edc298a243d392fa2677f5d2cebcc5723362cfa1a4fa5819",
+      "previousDraftSha": "049ef5030b912895edc298a243d392fa2677f5d2cebcc5723362cfa1a4fa5819",
+      "previousDraftVersionId": "ava_v4_portfolio_wyndham_san_diego_bayside_mw492lcb",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "049ef5030b912895edc298a243d392fa2677f5d2cebcc5723362cfa1a4fa5819",
+        "previousDraftVersionId": "ava_v4_portfolio_wyndham_san_diego_bayside_mw492lcb",
+        "backupRel": "adp_wyndham_san_diego_bayside\\draft-before-049ef5030b91.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_wyndham_san_diego_bayside\\draft-before-049ef5030b91.pdf → draft.pdf; restore meta.draftPdfSha256=049ef5030b912895edc298a243d392fa2677f5d2cebcc5723362cfa1a4fa5819"
+    },
+    {
+      "propertyId": "adp_yotel_geneva_lake",
+      "hotelName": "YOTEL Geneva Lake",
+      "ok": true,
+      "dryRun": true,
+      "sha256": "894cca1ee3e6ba191fa3e858a378a584ec695e24db27455712cb1a88ac753e51",
+      "previousDraftSha": "894cca1ee3e6ba191fa3e858a378a584ec695e24db27455712cb1a88ac753e51",
+      "previousDraftVersionId": "ava_v4_portfolio_yotel_geneva_lake_mw492mz4",
+      "publishedShaBefore": null,
+      "wouldTouchPublished": false,
+      "publishedProtected": true,
+      "backupPlan": {
+        "previousDraftSha": "894cca1ee3e6ba191fa3e858a378a584ec695e24db27455712cb1a88ac753e51",
+        "previousDraftVersionId": "ava_v4_portfolio_yotel_geneva_lake_mw492mz4",
+        "backupRel": "adp_yotel_geneva_lake\\draft-before-894cca1ee3e6.pdf",
+        "publishedProtected": true,
+        "shareTokensUntouched": true
+      },
+      "rollback": "Restore adp_yotel_geneva_lake\\draft-before-894cca1ee3e6.pdf → draft.pdf; restore meta.draftPdfSha256=894cca1ee3e6ba191fa3e858a378a584ec695e24db27455712cb1a88ac753e51"
+    }
+  ]
+}
