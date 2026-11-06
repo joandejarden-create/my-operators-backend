@@ -3,12 +3,16 @@
  * Local route / registration smoke for production-critical surfaces.
  * Does not require network to Railway. Starts a short-lived server only when
  * --listen is passed; default mode validates server.js registration + file paths.
+ *
+ * Static URL mapping mirrors server.js (/app → public/app, else public/).
  */
 import fs from "node:fs";
 import path from "node:path";
-import http from "node:http";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import { spawn } from "node:child_process";
+import {
+  routeHasPublicFile,
+} from "../lib/production-deploy/route-public-path-v1.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const manifest = JSON.parse(
@@ -25,9 +29,21 @@ function assertServerMarkers() {
     for (const marker of surface.required_server_route_markers || []) {
       if (!serverJs.includes(marker)) missing.push(`${id}: ${marker}`);
     }
+    for (const fileRel of surface.required_files || []) {
+      if (!fs.existsSync(path.join(root, fileRel))) {
+        missing.push(`${id}: required_file ${fileRel}`);
+      }
+    }
+    for (const asset of surface.required_static_assets || []) {
+      if (!routeHasPublicFile(asset, root) && !serverJs.includes(asset)) {
+        missing.push(`${id}: static_asset ${asset}`);
+      }
+    }
     for (const route of surface.required_routes || []) {
-      const leaf = route.split("/").pop();
-      if (leaf && !serverJs.includes(leaf) && !fs.existsSync(path.join(root, "public", leaf))) {
+      const leaf = route.split("/").filter(Boolean).pop();
+      const inServer = leaf && serverJs.includes(leaf);
+      const onDisk = routeHasPublicFile(route, root);
+      if (!inServer && !onDisk) {
         missing.push(`${id}: route/file ${route}`);
       }
     }
@@ -47,7 +63,6 @@ async function runListenSmoke() {
       ...process.env,
       PORT: String(port),
       NODE_ENV: "test",
-      // Avoid external side effects during boot where possible
       RAILWAY_ENVIRONMENT: "",
     },
     stdio: ["ignore", "pipe", "pipe"],
@@ -89,6 +104,7 @@ async function runListenSmoke() {
     "/hotel-intelligence-golden-demo.html",
     "/css/hotel-intelligence-research-center.css",
     "/owner-ai-demand-share.html",
+    "/app/admin/ai-demand-admin.html",
   ];
   const unique = [...new Set(paths)];
   const results = [];
