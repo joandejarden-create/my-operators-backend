@@ -1,0 +1,56 @@
+{
+  "assessedAt": "2026-11-06T16:45:00.000Z",
+  "recommendation": "NO_GO",
+  "releaseCandidateSha": "e2ae6c7d3b8a98dfd006d8660aba7e4764efe672",
+  "originMainSha": "8eabf043cbc350322a5aca5f985bcc8a8ff75715",
+  "mergeBase": "b9a84611f1d71f9c3354d3136074b82d53e2c3b1",
+  "aheadBehind": { "rcAhead": 6, "rcBehindMain": 54 },
+  "ancestry": "divergent",
+  "railway": {
+    "serviceOnline": true,
+    "latestDeploymentId": "c271f567-678a-485e-9813-9c0702c164e1",
+    "latestStatus": "SUCCESS",
+    "activeConflictingDeploy": false,
+    "localDeployRecordSha": "e2ae6c7d3b8a98dfd006d8660aba7e4764efe672",
+    "localDeployRecordDirtyHotfix": true
+  },
+  "includesLatestApproved": {
+    "adpPermanentCertificationInSha": false,
+    "adpPermanentCertificationInWorkingTree": true,
+    "gdiLatestMain": false,
+    "avaV4Main": false
+  },
+  "gdiRegression": {
+    "npmScriptMissing": true,
+    "equivalentScript": "scripts/test-adp-gdi-universe-reconciliation-v1.mjs",
+    "result": "PASS",
+    "webhoundIndependence": "PASS",
+    "hpcIdentityNpmScript": "STALE_MISSING_FILE"
+  },
+  "productionAssets": "FAIL",
+  "pdfRegistration": {
+    "correctedPdfs": 21,
+    "validPdfMagic": true,
+    "registerApiAvailable": true,
+    "batchRegisterScriptMissing": true,
+    "registeredToProduction": false
+  },
+  "backupFeasible": {
+    "durableRegistry": true,
+    "shareTokens": true
+  },
+  "mutationsExecuted": {
+    "deploy": false,
+    "publish": false,
+    "airtable": false,
+    "shareRotation": false
+  },
+  "blockers": [
+    "RC_54_COMMITS_BEHIND_ORIGIN_MAIN",
+    "PERMANENT_CERT_CODE_NOT_IN_RC_SHA",
+    "ASSERT_PRODUCTION_ASSETS_FAIL",
+    "DIRTY_UNCOMMITTED_WORKTREE",
+    "BATCH_PDF_REGISTER_SCRIPT_MISSING"
+  ],
+  "reportMd": "reports/dealality-adp-final-full-e2e-completion-v1/11-PRODUCTION_DEPLOYMENT_COMPATIBILITY_CHECK.md"
+}

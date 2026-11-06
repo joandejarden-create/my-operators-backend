@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ADP_MEASUREMENT_RECONCILIATION_SCHEMA_V1",
+  "title": "ADP Measurement Reconciliation Certification Output",
+  "type": "object",
+  "required": [
+    "ok",
+    "verdict",
+    "contract",
+    "gate",
+    "propertyId",
+    "measurementPeriodId",
+    "checks",
+    "failures",
+    "canonicalMetrics",
+    "populationDenominatorManifest",
+    "certificationTimestamp",
+    "certificationHash"
+  ],
+  "properties": {
+    "ok": { "type": "boolean" },
+    "verdict": { "enum": ["CERTIFIED", "FAILED"] },
+    "contract": {
+      "const": "ADP_PERMANENT_FULL_E2E_CERTIFICATION_CONTRACT_V1"
+    },
+    "gate": {
+      "const": "ADP_MEASUREMENT_RECONCILIATION_CERTIFICATION_V1"
+    },
+    "propertyId": { "type": ["string", "null"] },
+    "measurementPeriodId": { "type": ["string", "null"] },
+    "methodologyId": { "type": ["string", "null"] },
+    "methodologyFingerprintSha256": { "type": ["string", "null"] },
+    "lifecycleState": { "type": "string" },
+    "checks": {
+      "type": "object",
+      "description": "Mandatory checks A–L"
+    },
+    "failures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code"],
+        "properties": {
+          "code": { "type": "string" },
+          "check": { "type": ["string", "null"] },
+          "detail": { "type": "string" }
+        }
+      }
+    },
+    "canonicalMetrics": {
+      "type": "object",
+      "required": ["consideration", "scenarioPresence", "providerPresence", "population"],
+      "properties": {
+        "consideration": {
+          "type": "object",
+          "required": ["presentObservations", "comparableObservations", "rate", "numerator", "denominator"]
+        },
+        "scenarioPresence": {
+          "type": "object",
+          "required": ["eligibleScenarios", "capturedScenarios", "rate"]
+        },
+        "providerPresence": {
+          "type": "object",
+          "required": ["providers", "aggregationContract"]
+        },
+        "population": {
+          "type": "object",
+          "required": [
+            "measurementFamily",
+            "eligibleScenarioIds",
+            "exclusionRules",
+            "calculationVersion"
+          ]
+        }
+      }
+    },
+    "populationDenominatorManifest": { "type": "object" },
+    "evidenceReferences": { "type": "object" },
+    "certificationTimestamp": { "type": "string", "format": "date-time" },
+    "certificationHash": { "type": "string", "minLength": 64, "maxLength": 64 }
+  },
+  "observationLedgerItem": {
+    "type": "object",
+    "required": [
+      "propertyId",
+      "measurementPeriodId",
+      "observationId",
+      "provider",
+      "scenarioId",
+      "responseContentHash",
+      "measurementEligibility",
+      "eligibilityReason",
+      "certifiedPropertyMention",
+      "runtimeMentionAuthoritative",
+      "certificationMethodologyVersion"
+    ],
+    "properties": {
+      "runtimeMentionAuthoritative": { "const": false },
+      "originalResponseReference": { "type": ["string", "null"] },
+      "mentionEvidence": { "type": ["object", "null"] },
+      "detectedRanking": { "type": ["number", "null"] },
+      "model": { "type": ["string", "null"] },
+      "promptId": { "type": ["string", "null"] },
+      "originalPrompt": { "type": ["string", "null"] }
+    }
+  }
+}

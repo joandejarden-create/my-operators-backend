@@ -1,0 +1,38 @@
+{
+  "gate": "READY_FOR_FOUNDER_PRODUCTION_AUTHORIZATION",
+  "gitSha": "8eabf043cbc350322a5aca5f985bcc8a8ff75715",
+  "branch": "release/adp-permanent-full-e2e-cert-main-v1",
+  "changedFilesSample": [
+    " M package.json",
+    "?? lib/ai-demand-positioning/certification/permanent-full-e2e/",
+    "?? lib/ai-demand-positioning/orchestration/adp-autonomous-hotel-full-e2e-v1.js",
+    "?? reports/dealality-adp-permanent-full-e2e-certification-v1/",
+    "?? scripts/run-adp-final-full-e2e-completion-v1.mjs",
+    "?? scripts/run-adp-permanent-38-reconciliation-and-prepare-b-packages-v1.mjs",
+    "?? scripts/test-adp-permanent-full-e2e-certification-v1.mjs"
+  ],
+  "deploymentPrerequisites": [
+    "Founder authorization for production code deploy",
+    "Confirm no concurrent Railway deployment",
+    "Durable volume integrity check on production",
+    "ADP_DURABLE_PUBLISHED_MODE=prefer on production"
+  ],
+  "publicationPlan21": [
+    "Promote prepared-group-b-packages to production durable as NEW current",
+    "Preserve prior snapshots + registry/history",
+    "Do NOT rotate share tokens",
+    "Regenerate/register corrected PDFs if not yet attached",
+    "Verify Admin + external share parity post-publish"
+  ],
+  "airtablePlan": [
+    "Read-only discrepancies already audited",
+    "Backfill only after separate founder auth",
+    "Idempotent insert-only historical writers"
+  ],
+  "rollbackPlan": [
+    "App: redeploy prior Railway SHA",
+    "Data: re-activate prior registry history entry; do not delete snapshots"
+  ],
+  "gdiAvaChanges": false,
+  "productionMutationExecuted": false
+}

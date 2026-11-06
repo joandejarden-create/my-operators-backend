@@ -20,8 +20,11 @@ console.log("Using server file:", serverPath);
 console.log("Working directory:", cwd);
 if (process.env.NODE_ENV !== "production") {
   const expectedRepo = "my-operators-backend";
+  const allowWorktree =
+    process.env.ADP_ALLOW_WORKTREE_SERVER === "1" ||
+    /my-operators-backend-adp-cert-main-rc$/i.test(cwd);
 
-  if (!cwd.endsWith(expectedRepo)) {
+  if (!cwd.endsWith(expectedRepo) && !allowWorktree) {
     console.error("ERROR: Server started from wrong directory:", cwd);
     console.error(`Please run from the ${expectedRepo} repository root.`);
     console.error("Stopping.");
