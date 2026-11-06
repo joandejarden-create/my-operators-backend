@@ -2133,7 +2133,19 @@
 
   function matchesHotelSourcingNotConfirmedFilter(o, subgroup) {
     var sourcing = normalizeHotelSourcingForFilter(o);
-    if (!sourcing) return false;
+    // Locked published inventory may carry the Sales Opportunity key without
+    // a separate sourcing label — honor the approved quick-filter membership.
+    if (!sourcing) {
+      var keys = salesOpportunityKeysOf(o);
+      if (
+        keys.indexOf(SALES_OPPORTUNITY_FILTER.HOTEL_SOURCING_NOT_CONFIRMED) >= 0
+      ) {
+        // Treat key-only membership as Unconfirmed for BOTH/UNCONFIRMED chips.
+        if (subgroup === HOTEL_SOURCING_SUBGROUP.OPEN) return false;
+        return true;
+      }
+      return false;
+    }
     var isOpen = sourcing === "Hotel Sourcing Open";
     var isUnconfirmed = sourcing === "Hotel Sourcing Unconfirmed";
     if (!isOpen && !isUnconfirmed) return false;
