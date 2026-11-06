@@ -1,0 +1,91 @@
+{
+  "contract": "AVA_ADP_AIRTABLE_LIVE_PERSISTENCE_CERT_V1",
+  "generatedAt": "2026-11-06T10:39:43.349Z",
+  "base": {
+    "ok": true,
+    "baseId": "appa2cE7FTRmIbB32",
+    "source": "AIRTABLE_INTELLIGENCE_BASE_ID",
+    "status": "SET_CANONICAL"
+  },
+  "mapping": {
+    "auditRuns": "ADP Report Snapshots",
+    "monitoring": "ADP Monitoring Periods",
+    "metrics": "ADP Period Metrics",
+    "evidence": "Hotel Intelligence Evidence",
+    "findings": "Hotel Intelligence Evidence",
+    "actions": "Hotel Intelligence Evidence",
+    "reportVersions": "ADP Report Snapshots"
+  },
+  "overall": "AIRTABLE_PERSISTENCE_PASS",
+  "gates": {
+    "AIRTABLE_READ_ACCESS_PASS": true,
+    "AIRTABLE_SCHEMA_COMPATIBLE": true,
+    "AIRTABLE_SCHEMA_AUTHORIZATION_REQUIRED": false,
+    "AIRTABLE_PERSISTENCE_PASS": true,
+    "note": "Mapped onto existing ADP history + Hotel Intelligence Evidence tables; no new tables created."
+  },
+  "idempotency": {
+    "ok": true,
+    "secondWasPatch": true,
+    "snapshotRecordCount": 1
+  },
+  "hotels": {
+    "adp_spice_island_beach_resort": {
+      "auditRunId": "AVA-RUN-SPICE_ISLAND_BEACH_RESOR-20261106T103929Z-71b1a87a",
+      "ok": true,
+      "status": "AIRTABLE_INDEXED",
+      "airtableIndexed": true,
+      "counts": {
+        "snapshots": 1,
+        "monitoring": 1,
+        "metrics": 3,
+        "evidence": 6,
+        "findings": 0,
+        "actions": 6
+      },
+      "readAfterWrite": {
+        "ok": true,
+        "recordId": "recYhOLkBd2Z2Z9G0",
+        "certificationStatus": "AUDIT_CERTIFIED"
+      }
+    },
+    "adp_cambridge_beaches_bermuda": {
+      "auditRunId": "AVA-RUN-CAMBRIDGE_BEACHES_BERMUD-20261106T103932Z-620e0e14",
+      "ok": true,
+      "status": "AIRTABLE_INDEXED",
+      "airtableIndexed": true,
+      "counts": {
+        "snapshots": 1,
+        "monitoring": 1,
+        "metrics": 3,
+        "evidence": 5,
+        "findings": 0,
+        "actions": 5
+      },
+      "readAfterWrite": {
+        "ok": true,
+        "recordId": "recX3ZHVF0qjZMw4S",
+        "certificationStatus": "HISTORICAL_REFERENCE"
+      }
+    },
+    "adp_ac_hotel_a_coruna": {
+      "auditRunId": "AVA-RUN-AC_HOTEL_A_CORUNA-20261106T103937Z-a5802f20",
+      "ok": true,
+      "status": "AIRTABLE_INDEXED",
+      "airtableIndexed": true,
+      "counts": {
+        "snapshots": 1,
+        "monitoring": 1,
+        "metrics": 3,
+        "evidence": 5,
+        "findings": 0,
+        "actions": 5
+      },
+      "readAfterWrite": {
+        "ok": true,
+        "recordId": "recClQENBASKy6eQO",
+        "certificationStatus": "HISTORICAL_REFERENCE"
+      }
+    }
+  }
+}

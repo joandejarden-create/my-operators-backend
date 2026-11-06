@@ -555,7 +555,7 @@ function buildPayload(hotel) {
     },
     reporting: {
       reportMonthLabel: REPORT_MONTH,
-      coverSubtitle: "INITIAL DIGITAL PRESENCE ASSESSMENT",
+      coverSubtitle: "AUDIT & ACTION PLAN",
       coverDescriptorLine: "",
       coverDisclaimer: "",
       generatedAt: GENERATED_AT,

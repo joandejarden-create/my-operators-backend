@@ -254,7 +254,7 @@ function buildPayloadFromBaseline(baseline, fetchResult) {
     },
     reporting: {
       reportMonthLabel: "NOVEMBER2026",
-      coverSubtitle: "INITIAL DIGITAL PRESENCE ASSESSMENT",
+      coverSubtitle: "AUDIT & ACTION PLAN",
       coverDescriptorLine: "",
       coverDisclaimer: "",
       generatedAt: new Date().toISOString().slice(0, 10),
