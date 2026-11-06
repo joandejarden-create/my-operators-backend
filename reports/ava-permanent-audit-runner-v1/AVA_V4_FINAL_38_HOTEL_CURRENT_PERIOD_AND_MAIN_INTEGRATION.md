@@ -125,16 +125,19 @@ All 17 had suitable current-period approved + published packages with complete c
 
 ## K. Exact release SHA
 
-**Proposed merge-ready SHA:** see git HEAD after the release commit for this wave is created and pushed to `origin/release/ava-v4-canonical-integration-v1`.
+**Merge-ready SHA (authorize this exact commit):** `be70e7644acc5764e9900afac42f527cf3c16226`
 
-Pre-commit tip was `c3068f3f8a91c62b541e73903297d8a458c3f666`. The authorization SHA is the **post-commit** tip that includes:
+Branch: `release/ava-v4-canonical-integration-v1`  
+PR: https://github.com/joandejarden-create/my-operators-backend/pull/147
+
+Includes:
 
 - 17 lean current-period pins + index retarget
-- 17 (+ attribute remediation) payload refreshes
+- 17 (+ attribute remediation) payload refreshes for full 38 MATCH
 - scripts for refresh / attribute projection / final reporting
 - updated ADP↔AVA regression fixtures
 
-**Merge executed:** NO — awaiting explicit authorization of the exact SHA.
+**Merge executed:** NO — awaiting explicit authorization of SHA `be70e7644acc5764e9900afac42f527cf3c16226`.
 
 ## L. Remaining blockers
 
