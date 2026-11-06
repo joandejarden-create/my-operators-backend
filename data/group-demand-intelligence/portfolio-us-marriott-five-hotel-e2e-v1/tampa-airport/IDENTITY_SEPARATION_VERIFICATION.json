@@ -1,0 +1,90 @@
+{
+  "verified": true,
+  "verifiedAt": "2026-10-19T06:50:00.000Z",
+  "waveId": "portfolio_us_marriott_five_hotel_e2e_v1",
+  "purpose": "Gate Tampa Airport Marriott reinstatement under independent Full E2E auth — must remain distinct from Westin Tampa Waterside",
+  "airport": {
+    "displayName": "Tampa Airport Marriott",
+    "hotelId": "recSM9ARs8U9UZ3AZ",
+    "censusRecordId": "recSM9ARs8U9UZ3AZ",
+    "marriottCode": "TPAAP",
+    "identityKey": "ind_marriott_us_tpaap",
+    "adpPropertyId": "adp_tampa_airport_marriott",
+    "address": "Tampa International Airport, 4200 George J. Bean Parkway, Tampa, Florida 33607",
+    "officialUrl": "https://www.marriott.com/en-us/hotels/tpaap-tampa-airport-marriott/overview/",
+    "gdiConfig": "config/group-demand-intelligence/hotels/recSM9ARs8U9UZ3AZ.json",
+    "locationClass": "airport_terminal_connected"
+  },
+  "westin": {
+    "displayName": "The Westin Tampa Waterside",
+    "hotelId": "recdmo0CnhIZAwHGC",
+    "censusRecordId": "recdmo0CnhIZAwHGC",
+    "marriottCode": "TPAWH",
+    "identityKey": "ind_marriott_us_tpawh",
+    "adpPropertyId": "adp_westin_tampa_waterside",
+    "address": "725 South Harbour Island Boulevard, Tampa, Florida",
+    "gdiConfig": "config/group-demand-intelligence/hotels/recdmo0CnhIZAwHGC.json",
+    "locationClass": "harbour_island_downtown_waterfront",
+    "authorization": "auth_gdi_westin_tampa_waterside_6usd_v1"
+  },
+  "westinHotelId": "recdmo0CnhIZAwHGC",
+  "checks": [
+    {
+      "id": "distinct_census_record_ids",
+      "ok": true,
+      "detail": "recSM9ARs8U9UZ3AZ !== recdmo0CnhIZAwHGC"
+    },
+    {
+      "id": "distinct_marriott_codes",
+      "ok": true,
+      "detail": "TPAAP !== TPAWH"
+    },
+    {
+      "id": "distinct_identity_keys",
+      "ok": true,
+      "detail": "ind_marriott_us_tpaap !== ind_marriott_us_tpawh"
+    },
+    {
+      "id": "distinct_adp_property_ids",
+      "ok": true,
+      "detail": "adp_tampa_airport_marriott !== adp_westin_tampa_waterside"
+    },
+    {
+      "id": "distinct_addresses",
+      "ok": true,
+      "detail": "Airport Bean Parkway terminal vs Harbour Island Boulevard waterside"
+    },
+    {
+      "id": "westin_ledger_forbids_airport",
+      "ok": true,
+      "detail": "data/group-demand-intelligence/westin-tampa-waterside-gdi-budget/authorization-ledger-v1.json forbiddenHotelIds includes recSM9ARs8U9UZ3AZ"
+    },
+    {
+      "id": "airport_new_auth_forbids_westin",
+      "ok": true,
+      "detail": "Airport GDI/ADP ledgers list Westin as forbiddenHotelIds"
+    },
+    {
+      "id": "supersession_audit_preserved",
+      "ok": true,
+      "detail": "STOP_SUPERSEDED.json and AIRPORT_STOP_AND_AUTH_RECONCILE.json retained; reinstate appends audit without deleting history"
+    }
+  ],
+  "censusAuthority": {
+    "base": "AIRTABLE_BASE_ID_ALT",
+    "baseId": "appCCUsuGsE1ifoLk",
+    "table": "Hotel Property Census",
+    "tableId": "tbl9aY5ijiuIzzWam",
+    "note": "Authoritative production census per docs/data-intelligence/production-census-source-of-truth.md. Owner-facing publication still requires Production Use Status promotion beyond Census Only."
+  },
+  "reinstatementAuthorizationIds": [
+    "auth_gdi_tampa_airport_marriott_12usd_v1",
+    "auth_adp_tampa_airport_marriott_15usd_v1"
+  ],
+  "doNot": [
+    "transfer Westin funds to Airport",
+    "merge Airport research onto Westin",
+    "treat city name Tampa as property selector",
+    "delete supersession history"
+  ]
+}
