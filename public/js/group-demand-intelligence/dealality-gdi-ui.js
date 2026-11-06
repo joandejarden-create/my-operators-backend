@@ -4121,23 +4121,22 @@
       eventFnb = "active";
     }
 
-    var guestWord = guestrooms === "active" ? "applicable" : "not indicated";
-    var eventWord = eventFnb === "active" ? "applicable" : "not indicated";
+    // Muted streams: label only — never customer-visible "not indicated" copy.
+    var guestAria =
+      guestrooms === "active"
+        ? REVENUE_STREAM_ICON_LABEL.guestrooms + " — applicable"
+        : REVENUE_STREAM_ICON_LABEL.guestrooms;
+    var eventAria =
+      eventFnb === "active"
+        ? REVENUE_STREAM_ICON_LABEL.eventFnb + " — applicable"
+        : REVENUE_STREAM_ICON_LABEL.eventFnb;
     return {
       revenueStreamClass: cls,
       guestrooms: guestrooms,
       eventFnb: eventFnb,
-      ariaGuestrooms: REVENUE_STREAM_ICON_LABEL.guestrooms + " — " + guestWord,
-      ariaEventFnb: REVENUE_STREAM_ICON_LABEL.eventFnb + " — " + eventWord,
-      ariaGroup:
-        "Revenue streams: " +
-        REVENUE_STREAM_ICON_LABEL.guestrooms +
-        " " +
-        guestWord +
-        "; " +
-        REVENUE_STREAM_ICON_LABEL.eventFnb +
-        " " +
-        eventWord,
+      ariaGuestrooms: guestAria,
+      ariaEventFnb: eventAria,
+      ariaGroup: "Revenue streams: " + guestAria + "; " + eventAria,
     };
   }
 
