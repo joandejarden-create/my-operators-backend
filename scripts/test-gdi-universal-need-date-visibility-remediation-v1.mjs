@@ -105,7 +105,11 @@ check(
 );
 
 const hotels = listGdiSelectableHotels();
-check("hotel_universe_18", hotels.length === 18, { count: hotels.length });
+// Selectable research set grows with onboarding — never freeze at 18/27.
+check("hotel_universe_selectable_nonempty", hotels.length >= 18, {
+  count: hotels.length,
+  note: "Dynamic selectable research set; not Need-Date inventory denominator",
+});
 
 const audit = auditUniversalNeedDateHotelCoverage();
 const rows = [];

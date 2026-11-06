@@ -1,6 +1,6 @@
 # Need-Date Visibility Remediation — Hotel-by-Hotel Results
 
-Generated: 2026-11-06T13:43:48.587Z
+Generated: 2026-11-06T14:06:55.057Z
 
 | Hotel | ID | Status | Icon | SVG | Legend | Inventory OK | No false verified |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -8,6 +8,9 @@ Generated: 2026-11-06T13:43:48.587Z
 | Bethesda Marriott | `recLuxvwwxID7U2B8` | HOTEL_CONFIRMED | calendar-check | yes | yes | yes | yes |
 | Cambridge Beaches Resort & Spa | `recIwaP1etgx2g9nA` | NOT_ESTABLISHED | calendar-minus | yes | yes | yes | yes |
 | Castillo Hotel Son Vida, a Luxury Collection Hotel, Mallorca | `rec82D9zpB8fede1I` | NOT_ESTABLISHED | calendar-minus | yes | yes | yes | yes |
+| Falls Church Marriott Fairview Park | `recRkGGNKslJptFIL` | NOT_ESTABLISHED | calendar-minus | yes | yes | yes | yes |
+| Fiesta Americana Condesa Cancún All Inclusive | `recIEcSWuhSCoNLFN` | NOT_ESTABLISHED | calendar-minus | yes | yes | yes | yes |
+| Grand Fiesta Americana Chapultepec | `recterKmNPdntCm0v` | NOT_ESTABLISHED | calendar-minus | yes | yes | yes | yes |
 | Hilton New York Times Square | `rec35fExUxCClpOP6` | NOT_ESTABLISHED | calendar-minus | yes | yes | yes | yes |
 | Nobu Hotel London Portman Square | `recC2kbCaS48jFjFF` | NOT_ESTABLISHED | calendar-minus | yes | yes | yes | yes |
 | NOW NOW NOHO | `recGkME49yYuxQl0u` | NOT_ESTABLISHED | calendar-minus | yes | yes | yes | yes |
