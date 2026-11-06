@@ -4,7 +4,9 @@
 
 **Generated:** 2026-11-06  
 **Worktree:** `C:\Dev\dealality\my-operators-backend-gdi-universal-need-date`  
-**Base branch tip before integration commit:** `cbd1c4263` (PR #152)  
+**Focused merge candidate HEAD:** `e926269cd` (PR #152)  
+**Prior tip:** `cbd1c4263`  
+**PR:** https://github.com/joandejarden-create/my-operators-backend/pull/152  
 **Production:** unchanged (no Railway deploy, no publish, no Airtable writes, no paid research, no merge)
 
 ---
@@ -100,15 +102,16 @@ Additional recovered hotels verified via live API DTOs (Chapultepec 55 / Condesa
 
 ## 8. Focused merge candidate
 
-See companion section after git push — branch `feat/gdi-need-dates-canonical-integration-v1` (or updated #152 tip) with:
+| Field | Value |
+|-------|-------|
+| Branch | `feat/gdi-universal-need-date-intelligence-v1` |
+| HEAD SHA | `e926269cd31f61c7962f69c76a714822fe0b246f` |
+| PR | [#152](https://github.com/joandejarden-create/my-operators-backend/pull/152) |
+| Files in certification tip (vs prior tip) | recovered hotel configs + mirrors/profiles, source contract V2, cross-hotel regression, visibility remediation dynamic universe, certification report + live screenshots |
 
-- Recovered hotel configs + Airtable mirrors
-- Source contract V2
-- Cross-hotel canonical inventory regression
-- Certification reports / screenshots
-- Visibility remediation dynamic universe fix
+Large Chapultepec/Condesa `opportunities.json` dumps were intentionally kept **local-only** (not in PR) to keep the Need-Date review focused; inventory remains on disk and research continuity is preserved via PR #151 / local research artifacts.
 
-**Do not merge without founder approval.**
+**Do not merge without founder approval.** PR #151 also remains unmerged.
 
 ## 9. Outstanding blockers
 
