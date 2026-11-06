@@ -11,7 +11,7 @@
   },
   "reporting": {
     "reportMonthLabel": "NOVEMBER 2026",
-    "coverSubtitle": "INITIAL DIGITAL PRESENCE ASSESSMENT",
+    "coverSubtitle": "AUDIT & ACTION PLAN",
     "coverDescriptorLine": "",
     "coverDisclaimer": "",
     "generatedAt": "2026-11-05",
@@ -21,13 +21,17 @@
     "digitalAuthorityContract": "AVA_DIGITAL_AUTHORITY_V2",
     "digitalAuthorityGeneratedAt": "2026-11-05T16:37:36.862Z",
     "digitalContentReadinessContract": "AVA_DIGITAL_CONTENT_READINESS_V1",
-    "digitalContentReadinessGeneratedAt": "2026-11-05T16:37:36.863Z"
+    "digitalContentReadinessGeneratedAt": "2026-11-05T16:37:36.863Z",
+    "adpPackageDisclosure": "Customer-facing ADP package metrics (approved/published same period) are authoritative for AVA KPI tiles.",
+    "adpMethodologyFingerprintSha256": "c097b23588c365dc468957846005c5e104bc705cd813d5e62e49bbaf742960e1",
+    "adpContentFingerprintSha256": "2d21639b23f8ec41427f400381de843babf8a29261c01daac90efc016141d1b8",
+    "adpApprovedPackageSha256": "a8bc5c72c8324b27e018a58e70c010bdac840057d93f34cc2a3359552d31321f"
   },
   "kpis": [
     {
       "label": "AI Consideration",
-      "value": "11.9%",
-      "meta": "Mentioned in 30 of 252 comparable monitored AI answers"
+      "value": "12.7%",
+      "meta": "Mentioned in 28 of 220 comparable monitored AI answers"
     },
     {
       "label": "Scenario Presence",
@@ -36,13 +40,13 @@
     },
     {
       "label": "Reality Gap",
-      "value": "58.0%",
+      "value": "32%",
       "meta": "Weighted attribute gap under RG_WEIGHTED_PARTIAL_V2 — not a booking metric"
     }
   ],
   "executiveSummary": {
     "headline": "Resolve Meetings Facts and Clarify a Strong Expo-Area Proposition",
-    "lead": "Sheraton Guadalajara Expo appears in 47.6% of eligible traveler-need scenarios, while AI Consideration is 11.9% and the weighted attribute Reality Gap is 58.0%. These measures do not diagnose a website cause. The immediate verified issue is a public meetings inconsistency: the overview says more than 400 square metres, while the events page reports 12 rooms, 1,654 square metres, and a largest capacity of 500. After sales establishes one approved capacity record, the hotel can present its Expo Guadalajara location, meetings offer, dining, spa, lounge, pool, and pet policy more consistently.",
+    "lead": "Sheraton Guadalajara Expo appears in 47.6% of eligible traveler-need scenarios, while AI Consideration is 12.7% and the weighted attribute Reality Gap is 32%. These measures do not diagnose a website cause. The immediate verified issue is a public meetings inconsistency: the overview says more than 400 square metres, while the events page reports 12 rooms, 1,654 square metres, and a largest capacity of 500. After sales establishes one approved capacity record, the hotel can present its Expo Guadalajara location, meetings offer, dining, spa, lounge, pool, and pet policy more consistently.",
     "leadSupport": "",
     "metricsNote": "AI Consideration is the share of 252 comparable monitored answers mentioning the hotel; Scenario Presence is the share of 63 eligible scenarios where it appeared. Reality Gap is a weighted attribute-recognition diagnostic covering 25 tested attributes. None represents bookings, revenue, rank, or traveler exposure.",
     "themes": [
@@ -64,24 +68,39 @@
     ],
     "priorities": [
       {
-        "priority": "High",
-        "action": "Sales and operations: reconcile meeting area, rooms, and capacities",
-        "desiredOutcome": "One signed setup-qualified meetings schedule"
+        "actionId": "AVA-SGX-001",
+        "priority": "HIGH",
+        "action": "Reconcile Public Meetings Facts",
+        "desiredOutcome": "An approved room-by-room capacity schedule matching live hotel and brand pages.",
+        "owner": "Director of Sales / Hotel Operations"
       },
       {
-        "priority": "High",
-        "action": "Commercial team: align Expo, convention, and meetings positioning",
-        "desiredOutcome": "Consistent buyer-ready location and event context"
+        "actionId": "AVA-SGX-002",
+        "priority": "HIGH",
+        "action": "Align Expo and Convention Positioning",
+        "desiredOutcome": "Approved “Align Expo and Convention Positioning” facts published on the hotel’s named priority digital channels.",
+        "owner": "Hotel Commercial Leadership"
       },
       {
-        "priority": "Medium",
-        "action": "Marketing: audit dining, spa, lounge, pool, and pet signals",
-        "desiredOutcome": "Accurate asset descriptions across priority pages"
+        "actionId": "AVA-SGX-003",
+        "priority": "MEDIUM",
+        "action": "Clarify Dining, Spa, Lounge, Pool, and Pet Signals",
+        "desiredOutcome": "Verified outlet descriptions aligned across priority hotel and brand channels.",
+        "owner": "Hotel Marketing / Operations"
       },
       {
-        "priority": "Medium",
-        "action": "Marriott digital: review bounded crawler access behavior",
-        "desiredOutcome": "Documented security-aligned access posture"
+        "actionId": "AVA-SGX-004",
+        "priority": "MEDIUM",
+        "action": "Review Automated Access With Marriott",
+        "desiredOutcome": "Agreed clients receive the intended response and redirect behavior.",
+        "owner": "Marriott Digital / CDN Security Owner"
+      },
+      {
+        "actionId": "AVA-SGX-DA-001",
+        "priority": "MEDIUM",
+        "action": "Pursue Expo/Destination Profile With Official Marriott Hyperlink",
+        "desiredOutcome": "Verified CVB or partner listing fields corrected with the approved property URL and a working official hyperlink, or documented decline retained.",
+        "owner": "Director of Sales / Hotel Commercial"
       }
     ],
     "successLooksLike": "The overview and events pages use an approved setup-qualified meetings record; Expo Guadalajara, convention, and World Cup context is factual and consistent; MATRIA, QUIDEA Spa, lounge eligibility, pool, and pet facts remain accurate; and Marriott documents whether the observed automated-access behavior is intentional.",
@@ -95,30 +114,34 @@
       "headline": "Reconcile Public Meetings Facts",
       "businessRelevance": "Conflicting official figures create avoidable planner uncertainty and can be repeated by search and AI systems.",
       "accountableOwner": "Director of Sales / Hotel Operations",
+      "desiredOutcome": "An approved room-by-room capacity schedule matching live hotel and brand pages.",
       "suggestedTimeframe": "Within 30 days"
     },
     {
       "actionId": "AVA-SGX-002",
-      "priority": "MEDIUM",
+      "priority": "HIGH",
       "headline": "Align Expo and Convention Positioning",
       "businessRelevance": "Consistent official context can help planners assess fit, but it cannot guarantee future AI presence, rankings, or bookings.",
       "accountableOwner": "Hotel Commercial Leadership",
+      "desiredOutcome": "Approved “Align Expo and Convention Positioning” facts published on the hotel’s named priority digital channels.",
       "suggestedTimeframe": "Within 30 days"
     },
     {
       "actionId": "AVA-SGX-003",
       "priority": "MEDIUM",
       "headline": "Clarify Dining, Spa, Lounge, Pool, and Pet Signals",
-      "businessRelevance": "Clear asset descriptions support informed decisions; the 58.0% Reality Gap is a prioritization diagnostic, not proof of a website defect.",
+      "businessRelevance": "Clear asset descriptions support informed decisions; the 32% Reality Gap is a prioritization diagnostic, not proof of a website defect.",
       "accountableOwner": "Hotel Marketing / Operations",
+      "desiredOutcome": "Verified outlet descriptions aligned across priority hotel and brand channels.",
       "suggestedTimeframe": "Within 30 days"
     },
     {
       "actionId": "AVA-SGX-004",
       "priority": "MEDIUM",
       "headline": "Review Automated Access With Marriott",
-      "businessRelevance": "An unintended access mismatch could affect intended crawlers, while broad security changes could create risk.",
+      "businessRelevance": "Consistent, approved public facts reduce guest and partner confusion and limit incorrect AI repetition of property details.",
       "accountableOwner": "Marriott Digital / CDN Security Owner",
+      "desiredOutcome": "Agreed clients receive the intended response and redirect behavior.",
       "suggestedTimeframe": "Within 30 days"
     },
     {
@@ -127,6 +150,7 @@
       "headline": "Pursue Expo/Destination Profile With Official Marriott Hyperlink",
       "businessRelevance": "Planners researching Expo-area lodging need a correct official path once capacities are clean.",
       "accountableOwner": "Director of Sales / Hotel Commercial",
+      "desiredOutcome": "Verified CVB or partner listing fields corrected with the approved property URL and a working official hyperlink, or documented decline retained.",
       "suggestedTimeframe": "Within 30 days"
     }
   ],
@@ -246,9 +270,11 @@
       "whyItMatters": "Conflicting official figures create avoidable planner uncertainty and can be repeated by search and AI systems.",
       "recommendedSteps": [
         "Sales signs a room-by-room schedule with setup capacities and total usable area.",
+        "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
         "Define whether the overview figure refers to a subset of space.",
         "Submit field-level corrections to Marriott content owners.",
-        "Verify both pages against the signed schedule."
+        "Verify both pages against the signed schedule.",
+        "Create a field-level comparison and submit only hotel-approved corrections."
       ],
       "accountableOwner": "Director of Sales / Hotel Operations",
       "supportingParties": [
@@ -266,31 +292,44 @@
       "hotelApprovalNotes": "Sales and operations must approve inventory and setup capacities before public edits.",
       "supportingEvidence": [
         {
-          "label": "Official overview",
-          "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-          "note": "More-than-400-square-metre statement."
+          "label": "Official website",
+          "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
         },
         {
           "label": "Official events page",
-          "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/",
-          "note": "12 rooms, 1,654 sq m, and largest capacity 500."
+          "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/"
         }
       ],
       "technicalDetails": {
-        "targetUrls": [
-          "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-          "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/"
-        ],
         "urls": [
-          "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-          "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/"
+          {
+            "label": "Official website",
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
+            "kind": "VERIFIED_PUBLIC"
+          },
+          {
+            "label": "Official events page",
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/",
+            "kind": "VERIFIED_PUBLIC"
+          }
         ],
         "changesOrInvestigation": [
+          "Sales signs a room-by-room schedule with setup capacities and total usable area.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Define whether the overview figure refers to a subset of space.",
+          "Submit field-level corrections to Marriott content owners.",
+          "Verify both pages against the signed schedule.",
           "Create a field-level comparison and submit only hotel-approved corrections."
         ],
         "evidence": [
-          "Signed meeting inventory",
-          "Before/after page captures"
+          {
+            "label": "Official website",
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
+          },
+          {
+            "label": "Official events page",
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/"
+          }
         ],
         "verificationMethod": "Compare live area, room count, room names, and capacities with the signed source of truth.",
         "dependencies": [
@@ -300,7 +339,15 @@
       },
       "implementationStatus": "NOT_STARTED",
       "claimType": "VERIFIED_ISSUE",
-      "estimatedEffort": "MEDIUM"
+      "estimatedEffort": "MEDIUM",
+      "actionTitle": "Reconcile Public Meetings Facts",
+      "desiredOutcome": "An approved room-by-room capacity schedule matching live hotel and brand pages.",
+      "classification": "VERIFIED_CONTENT_IMPROVEMENT",
+      "workstreamTheme": "meeting_space_reconciliation",
+      "primaryOwner": "Director of Sales / Hotel Operations",
+      "affectedPlatform": "Official overview",
+      "businessRelevance": "Conflicting official figures create avoidable planner uncertainty and can be repeated by search and AI systems.",
+      "recommendedAction": "Reconcile Public Meetings Facts"
     },
     {
       "actionId": "AVA-SGX-002",
@@ -311,9 +358,11 @@
       "whyItMatters": "Consistent official context can help planners assess fit, but it cannot guarantee future AI presence, rankings, or bookings.",
       "recommendedSteps": [
         "Complete the related action first.",
+        "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
         "Approve durable Expo Guadalajara and convention-location facts.",
         "Separate evergreen location copy from time-bounded World Cup messaging.",
-        "Align overview, events, sales collateral, and priority partner listings."
+        "Align overview, events, sales collateral, and priority partner listings.",
+        "Map approved evergreen and time-bounded facts to supported content fields."
       ],
       "accountableOwner": "Hotel Commercial Leadership",
       "supportingParties": [
@@ -333,30 +382,43 @@
       "supportingEvidence": [
         {
           "label": "Official overview",
-          "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-          "note": "Hotel location and positioning."
+          "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
         },
         {
           "label": "Official events page",
-          "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/",
-          "note": "Meeting inventory and planner context."
+          "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/"
         }
       ],
       "technicalDetails": {
-        "targetUrls": [
-          "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-          "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/"
-        ],
         "urls": [
-          "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-          "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/"
+          {
+            "label": "Official overview",
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
+            "kind": "VERIFIED_PUBLIC"
+          },
+          {
+            "label": "Official events page",
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/",
+            "kind": "VERIFIED_PUBLIC"
+          }
         ],
         "changesOrInvestigation": [
+          "Complete the related action first.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Approve durable Expo Guadalajara and convention-location facts.",
+          "Separate evergreen location copy from time-bounded World Cup messaging.",
+          "Align overview, events, sales collateral, and priority partner listings.",
           "Map approved evergreen and time-bounded facts to supported content fields."
         ],
         "evidence": [
-          "Approved commercial brief",
-          "Live-page QA"
+          {
+            "label": "Official overview",
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
+          },
+          {
+            "label": "Official events page",
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/"
+          }
         ],
         "verificationMethod": "Confirm Expo, convention, and meeting statements match the approved brief.",
         "dependencies": [
@@ -367,7 +429,15 @@
       },
       "implementationStatus": "NOT_STARTED",
       "claimType": "REQUIRES_HOTEL_CONFIRMATION",
-      "estimatedEffort": "MEDIUM"
+      "estimatedEffort": "MEDIUM",
+      "actionTitle": "Align Expo and Convention Positioning",
+      "desiredOutcome": "Approved “Align Expo and Convention Positioning” facts published on the hotel’s named priority digital channels.",
+      "classification": "VERIFIED_CONTENT_IMPROVEMENT",
+      "workstreamTheme": "unique:AVA-SGX-002",
+      "primaryOwner": "Hotel Commercial Leadership",
+      "affectedPlatform": "Official overview",
+      "businessRelevance": "Consistent official context can help planners assess fit, but it cannot guarantee future AI presence, rankings, or bookings.",
+      "recommendedAction": "Align Expo and Convention Positioning"
     },
     {
       "actionId": "AVA-SGX-003",
@@ -375,12 +445,14 @@
       "priority": "MEDIUM",
       "priorityWhy": "These verified assets affect traveler fit and require accurate operating and eligibility details.",
       "whatWeFound": "Official content identifies MATRIA restaurant, QUIDEA Spa, a Sheraton Lounge benefit for Platinum members and above, an outdoor pool, and pet access.",
-      "whyItMatters": "Clear asset descriptions support informed decisions; the 58.0% Reality Gap is a prioritization diagnostic, not proof of a website defect.",
+      "whyItMatters": "Clear asset descriptions support informed decisions; the 32% Reality Gap is a prioritization diagnostic, not proof of a website defect.",
       "recommendedSteps": [
         "Operations confirms names, hours, access rules, fees, and seasonal limitations.",
+        "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
         "Marketing audits official and priority partner descriptions.",
         "Submit only approved factual corrections.",
-        "Verify live copy and booking-path disclosures."
+        "Verify live copy and booking-path disclosures.",
+        "Audit rendered content and supported structured fields against the signed fact sheet."
       ],
       "accountableOwner": "Hotel Marketing / Operations",
       "supportingParties": [
@@ -401,23 +473,30 @@
       "supportingEvidence": [
         {
           "label": "Official overview",
-          "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-          "note": "Official hotel amenities and services."
+          "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
         }
       ],
       "technicalDetails": {
-        "targetUrls": [
-          "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
-        ],
         "urls": [
-          "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
+          {
+            "label": "Official overview",
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
+            "kind": "VERIFIED_PUBLIC"
+          }
         ],
         "changesOrInvestigation": [
+          "Operations confirms names, hours, access rules, fees, and seasonal limitations.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Marketing audits official and priority partner descriptions.",
+          "Submit only approved factual corrections.",
+          "Verify live copy and booking-path disclosures.",
           "Audit rendered content and supported structured fields against the signed fact sheet."
         ],
         "evidence": [
-          "Hotel-approved asset fact sheet",
-          "Live-page captures"
+          {
+            "label": "Official overview",
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
+          }
         ],
         "verificationMethod": "Review each named asset and policy on live official and priority partner pages.",
         "dependencies": [
@@ -427,19 +506,29 @@
       },
       "implementationStatus": "NOT_STARTED",
       "claimType": "REQUIRES_HOTEL_CONFIRMATION",
-      "estimatedEffort": "MEDIUM"
+      "estimatedEffort": "MEDIUM",
+      "actionTitle": "Clarify Dining, Spa, Lounge, Pool, and Pet Signals",
+      "desiredOutcome": "Verified outlet descriptions aligned across priority hotel and brand channels.",
+      "classification": "MAINTENANCE",
+      "workstreamTheme": "positioning_content",
+      "primaryOwner": "Hotel Marketing / Operations",
+      "affectedPlatform": "Official overview",
+      "businessRelevance": "Clear asset descriptions support informed decisions; the 32% Reality Gap is a prioritization diagnostic, not proof of a website defect.",
+      "recommendedAction": "Clarify Dining, Spa, Lounge, Pool, and Pet Signals"
     },
     {
       "actionId": "AVA-SGX-004",
       "headline": "Review Automated Access With Marriott",
       "priority": "MEDIUM",
       "priorityWhy": "A bounded 403/default.mi response warrants technical review, but does not establish a general indexing failure.",
-      "whyItMatters": "An unintended access mismatch could affect intended crawlers, while broad security changes could create risk.",
+      "whyItMatters": "Consistent, approved public facts reduce guest and partner confusion and limit incorrect AI repetition of property details.",
       "recommendedSteps": [
         "Open a Marriott CDN/WAF ticket with request details.",
+        "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
         "Define which automated clients are intended to access the page.",
         "Approve only narrow security-safe changes if a conflict is confirmed.",
-        "Retest the property URL from agreed clients."
+        "Retest the property URL from agreed clients.",
+        "Record status, redirect chain, request headers, and CDN rule decision."
       ],
       "accountableOwner": "Marriott Digital / CDN Security Owner",
       "supportingParties": [
@@ -458,23 +547,30 @@
       "supportingEvidence": [
         {
           "label": "Official overview",
-          "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-          "note": "Bounded 403/default.mi observation."
+          "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
         }
       ],
       "technicalDetails": {
-        "targetUrls": [
-          "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
-        ],
         "urls": [
-          "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
+          {
+            "label": "Official overview",
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
+            "kind": "VERIFIED_PUBLIC"
+          }
         ],
         "changesOrInvestigation": [
+          "Open a Marriott CDN/WAF ticket with request details.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Define which automated clients are intended to access the page.",
+          "Approve only narrow security-safe changes if a conflict is confirmed.",
+          "Retest the property URL from agreed clients.",
           "Record status, redirect chain, request headers, and CDN rule decision."
         ],
         "evidence": [
-          "CDN/WAF ticket",
-          "Controlled retest log"
+          {
+            "label": "Official overview",
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
+          }
         ],
         "verificationMethod": "Repeat controlled requests from agreed clients and document responses.",
         "dependencies": [
@@ -486,7 +582,15 @@
       "implementationStatus": "NOT_STARTED",
       "claimType": "RECOMMENDED_INVESTIGATION",
       "estimatedEffort": "MEDIUM",
-      "whatWeFound": "An unintended access mismatch could affect intended crawlers, while broad security changes could create risk."
+      "whatWeFound": "An unintended access mismatch could affect intended crawlers, while broad security changes could create risk.",
+      "actionTitle": "Review Automated Access With Marriott",
+      "desiredOutcome": "Agreed clients receive the intended response and redirect behavior.",
+      "classification": "MAINTENANCE",
+      "workstreamTheme": "technical_access_review",
+      "primaryOwner": "Marriott Digital / CDN Security Owner",
+      "affectedPlatform": "Official overview",
+      "businessRelevance": "Consistent, approved public facts reduce guest and partner confusion and limit incorrect AI repetition of property details.",
+      "recommendedAction": "Review Automated Access With Marriott"
     },
     {
       "actionId": "AVA-SGX-DA-001",
@@ -497,6 +601,7 @@
       "whyItMatters": "Planners researching Expo-area lodging need a correct official path once capacities are clean.",
       "recommendedSteps": [
         "Finish the related action meetings source-of-truth.",
+        "Apply the change on the verified page (expoguadalajara.mx) and retain before/after evidence.",
         "Identify Expo/destination lodging inventory owner.",
         "Submit approved profile + Marriott URL.",
         "Archive live listing evidence."
@@ -530,13 +635,11 @@
       "supportingEvidence": [
         {
           "label": "Expo Guadalajara",
-          "url": "https://www.expoguadalajara.mx/",
-          "kind": "VERIFIED_PUBLIC"
+          "url": "https://www.expoguadalajara.mx/"
         },
         {
           "label": "Sheraton overview",
-          "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-          "kind": "VERIFIED_PUBLIC"
+          "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
         }
       ],
       "technicalDetails": {
@@ -554,6 +657,7 @@
         ],
         "changesOrInvestigation": [
           "Finish the related action meetings source-of-truth.",
+          "Apply the change on the verified page (expoguadalajara.mx) and retain before/after evidence.",
           "Identify Expo/destination lodging inventory owner.",
           "Submit approved profile + Marriott URL.",
           "Archive live listing evidence."
@@ -561,73 +665,11 @@
         "evidence": [
           {
             "label": "Expo Guadalajara",
-            "url": "https://www.expoguadalajara.mx/",
-            "kind": "VERIFIED_PUBLIC"
+            "url": "https://www.expoguadalajara.mx/"
           },
           {
             "label": "Sheraton overview",
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-            "kind": "VERIFIED_PUBLIC"
-          }
-        ],
-        "verificationMethod": "Live-page QA with archived screenshots and classification note.",
-        "dependencies": [
-          "Hotel leadership approves facts before outreach."
-        ],
-        "notes": "Public partial Digital Authority research only; no paid SEO metrics invented."
-      }
-    },
-    {
-      "actionId": "SGE-DCR-ACT-001",
-      "priority": "HIGH",
-      "headline": "Confirm and align official facts for Sheraton Guadalajara Expo",
-      "priorityWhy": "Inconsistent official facts confuse planners and AI answers.",
-      "whatWeFound": "Confirm that meetings, dining, and amenities facts on the official page match the hotel’s approved source of truth; align third-party listings after confirmation.",
-      "whyItMatters": "Digital content readiness depends on one approved source of truth before third-party outreach.",
-      "recommendedSteps": [
-        "Establish one approved fact sheet; update the official page first; then cascade to GBP/OTAs when values are confirmed.",
-        "Do not change unconfirmed values on OTAs until the hotel approves the fact sheet."
-      ],
-      "accountableOwner": "Hotel Sales & Marketing",
-      "supportingParties": [
-        "Brand Content Team",
-        "Digital Marketing Agency"
-      ],
-      "suggestedTimeframe": "2–4 weeks",
-      "claimType": "REQUIRES_HOTEL_CONFIRMATION",
-      "supportingEvidence": [
-        {
-          "label": "Official website",
-          "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-          "kind": "VERIFIED_PUBLIC"
-        }
-      ],
-      "estimatedEffort": "MEDIUM",
-      "completionCriteria": {
-        "investigationCompleted": "Opportunity owner and required facts confirmed with hotel leadership.",
-        "correctionSubmitted": "Outreach or listing update request filed with supporting evidence.",
-        "correctionVerifiedLive": "Live destination/partner page checked and archived after update (or documented refusal).",
-        "noChangeRequired": "Valid if leadership documents that the opportunity is out of scope with evidence retained."
-      },
-      "requiresHotelApproval": true,
-      "hotelApprovalNotes": "Approve outreach copy, official URL, and factual claims before partner contact.",
-      "technicalDetails": {
-        "urls": [
-          {
-            "label": "Official website",
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-            "kind": "VERIFIED_PUBLIC"
-          }
-        ],
-        "changesOrInvestigation": [
-          "Establish one approved fact sheet; update the official page first; then cascade to GBP/OTAs when values are confirmed.",
-          "Do not change unconfirmed values on OTAs until the hotel approves the fact sheet."
-        ],
-        "evidence": [
-          {
-            "label": "Official website",
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-            "kind": "VERIFIED_PUBLIC"
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
           }
         ],
         "verificationMethod": "Live-page QA with archived screenshots and classification note.",
@@ -636,7 +678,14 @@
         ],
         "notes": "Public partial Digital Authority research only; no paid SEO metrics invented."
       },
-      "implementationStatus": "Awaiting hotel decision"
+      "actionTitle": "Pursue Expo/Destination Profile With Official Marriott Hyperlink",
+      "desiredOutcome": "Verified CVB or partner listing fields corrected with the approved property URL and a working official hyperlink, or documented decline retained.",
+      "classification": "MAINTENANCE",
+      "workstreamTheme": "digital_authority_outreach",
+      "primaryOwner": "Director of Sales / Hotel Commercial",
+      "affectedPlatform": "Expo Guadalajara",
+      "businessRelevance": "Planners researching Expo-area lodging need a correct official path once capacities are clean.",
+      "recommendedAction": "Pursue Expo/Destination Profile With Official Marriott Hyperlink"
     }
   ],
   "methodology": {
@@ -1047,435 +1096,6 @@
     },
     "consistencyFindings": []
   },
-  "customerActionRegister": {
-    "contract": "AVA_CANONICAL_ACTION_REGISTER_V1",
-    "propertyId": "adp_sheraton_guadalajara_expo",
-    "generatedAt": "2026-11-05T21:50:39.442Z",
-    "sourceActionCount": 6,
-    "canonicalActionCount": 5,
-    "consolidated": [
-      {
-        "theme": "meeting_space_reconciliation",
-        "keptActionId": "AVA-SGX-001",
-        "mergedActionIds": [
-          "AVA-SGX-001",
-          "SGE-DCR-ACT-001"
-        ],
-        "reason": "Same corrective objective (meeting_space_reconciliation)"
-      }
-    ],
-    "actions": [
-      {
-        "actionId": "AVA-SGX-001",
-        "propertyId": "adp_sheraton_guadalajara_expo",
-        "findingIds": [
-          "AVA-SGX-001",
-          "SGE-DCR-ACT-001"
-        ],
-        "mergedFromActionIds": [
-          "AVA-SGX-001",
-          "SGE-DCR-ACT-001"
-        ],
-        "workstreamTheme": "meeting_space_reconciliation",
-        "actionTitle": "Reconcile Public Meetings Facts",
-        "classification": "VERIFIED_CONTENT_IMPROVEMENT",
-        "priority": "HIGH",
-        "prioritySource": "HIGH",
-        "platform": "Official overview",
-        "affectedUrls": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-            "label": "Official website"
-          },
-          {
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/",
-            "label": "Official events page"
-          }
-        ],
-        "verifiedObservation": "The overview says more than 400 square metres; the events page reports 12 rooms, 1,654 square metres, and Diamante capacity of 500.",
-        "commercialRationale": "Conflicting official figures create avoidable planner uncertainty and can be repeated by search and AI systems.",
-        "recommendedSteps": [
-          "Sales signs a room-by-room schedule with setup capacities and total usable area.",
-          "Define whether the overview figure refers to a subset of space.",
-          "Submit field-level corrections to Marriott content owners.",
-          "Verify both pages against the signed schedule.",
-          "A signed schedule explains the 400-plus and 1,654-square-metre figures.",
-          "Approved field-level correction requests are filed with Marriott."
-        ],
-        "primaryOwner": "Director of Sales / Hotel Operations",
-        "supportingOwners": [
-          "Events leadership",
-          "Marriott digital content"
-        ],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-            "label": "Official overview"
-          },
-          {
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/",
-            "label": "Official events page"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Reconcile Public Meetings Facts",
-        "whatWeFound": "The overview says more than 400 square metres; the events page reports 12 rooms, 1,654 square metres, and Diamante capacity of 500.",
-        "recommendedAction": "Reconcile Public Meetings Facts",
-        "accountableOwner": "Director of Sales / Hotel Operations",
-        "businessRelevance": "Conflicting official figures create avoidable planner uncertainty and can be repeated by search and AI systems.",
-        "whyItMatters": "Conflicting official figures create avoidable planner uncertainty and can be repeated by search and AI systems.",
-        "affectedPlatform": "Official overview",
-        "supportingEvidence": [
-          {
-            "label": "Official website",
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
-          },
-          {
-            "label": "Official events page",
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Official website",
-              "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "Official events page",
-              "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "AVA-SGX-002",
-        "propertyId": "adp_sheraton_guadalajara_expo",
-        "findingIds": [
-          "AVA-SGX-002"
-        ],
-        "mergedFromActionIds": [
-          "AVA-SGX-002"
-        ],
-        "workstreamTheme": "unique:AVA-SGX-002",
-        "actionTitle": "Align Expo and Convention Positioning",
-        "classification": "DISTRIBUTION_OPPORTUNITY",
-        "priority": "MEDIUM",
-        "prioritySource": "HIGH",
-        "platform": "Official overview",
-        "affectedUrls": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-            "label": "Official overview"
-          },
-          {
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/",
-            "label": "Official events page"
-          }
-        ],
-        "verifiedObservation": "Official content places the hotel near Expo Guadalajara and includes FIFA World Cup 2026 messaging alongside a substantial meetings offer.",
-        "commercialRationale": "Consistent official context can help planners assess fit, but it cannot guarantee future AI presence, rankings, or bookings.",
-        "recommendedSteps": [
-          "Complete the related action first.",
-          "Approve durable Expo Guadalajara and convention-location facts.",
-          "Separate evergreen location copy from time-bounded World Cup messaging.",
-          "Align overview, events, sales collateral, and priority partner listings.",
-          "Leadership signs an Expo and convention positioning brief.",
-          "Approved updates are filed for priority official and partner pages."
-        ],
-        "primaryOwner": "Hotel Commercial Leadership",
-        "supportingOwners": [
-          "Director of Sales",
-          "Marriott digital content",
-          "Revenue strategy"
-        ],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-            "label": "Official overview"
-          },
-          {
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/",
-            "label": "Official events page"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Align Expo and Convention Positioning",
-        "whatWeFound": "Official content places the hotel near Expo Guadalajara and includes FIFA World Cup 2026 messaging alongside a substantial meetings offer.",
-        "recommendedAction": "Align Expo and Convention Positioning",
-        "accountableOwner": "Hotel Commercial Leadership",
-        "businessRelevance": "Consistent official context can help planners assess fit, but it cannot guarantee future AI presence, rankings, or bookings.",
-        "whyItMatters": "Consistent official context can help planners assess fit, but it cannot guarantee future AI presence, rankings, or bookings.",
-        "affectedPlatform": "Official overview",
-        "supportingEvidence": [
-          {
-            "label": "Official overview",
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
-          },
-          {
-            "label": "Official events page",
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Official overview",
-              "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "Official events page",
-              "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "AVA-SGX-003",
-        "propertyId": "adp_sheraton_guadalajara_expo",
-        "findingIds": [
-          "AVA-SGX-003"
-        ],
-        "mergedFromActionIds": [
-          "AVA-SGX-003"
-        ],
-        "workstreamTheme": "positioning_content",
-        "actionTitle": "Clarify Dining, Spa, Lounge, Pool, and Pet Signals",
-        "classification": "MAINTENANCE",
-        "priority": "MEDIUM",
-        "prioritySource": "MEDIUM",
-        "platform": "Official overview",
-        "affectedUrls": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-            "label": "Official overview"
-          }
-        ],
-        "verifiedObservation": "Official content identifies MATRIA restaurant, QUIDEA Spa, a Sheraton Lounge benefit for Platinum members and above, an outdoor pool, and pet access.",
-        "commercialRationale": "Clear asset descriptions support informed decisions; the 58.0% Reality Gap is a prioritization diagnostic, not proof of a website defect.",
-        "recommendedSteps": [
-          "Operations confirms names, hours, access rules, fees, and seasonal limitations.",
-          "Marketing audits official and priority partner descriptions.",
-          "Submit only approved factual corrections.",
-          "Verify live copy and booking-path disclosures.",
-          "Operations signs a current asset and policy fact sheet.",
-          "Approved changes are filed for inaccurate or unclear fields."
-        ],
-        "primaryOwner": "Hotel Marketing / Operations",
-        "supportingOwners": [
-          "Food and beverage",
-          "Spa leadership",
-          "Front office",
-          "Marriott digital content"
-        ],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-            "label": "Official overview"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Clarify Dining, Spa, Lounge, Pool, and Pet Signals",
-        "whatWeFound": "Official content identifies MATRIA restaurant, QUIDEA Spa, a Sheraton Lounge benefit for Platinum members and above, an outdoor pool, and pet access.",
-        "recommendedAction": "Clarify Dining, Spa, Lounge, Pool, and Pet Signals",
-        "accountableOwner": "Hotel Marketing / Operations",
-        "businessRelevance": "Clear asset descriptions support informed decisions; the 58.0% Reality Gap is a prioritization diagnostic, not proof of a website defect.",
-        "whyItMatters": "Clear asset descriptions support informed decisions; the 58.0% Reality Gap is a prioritization diagnostic, not proof of a website defect.",
-        "affectedPlatform": "Official overview",
-        "supportingEvidence": [
-          {
-            "label": "Official overview",
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Official overview",
-              "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "AVA-SGX-004",
-        "propertyId": "adp_sheraton_guadalajara_expo",
-        "findingIds": [
-          "AVA-SGX-004"
-        ],
-        "mergedFromActionIds": [
-          "AVA-SGX-004"
-        ],
-        "workstreamTheme": "technical_access_review",
-        "actionTitle": "Review Automated Access With Marriott",
-        "classification": "MAINTENANCE",
-        "priority": "MEDIUM",
-        "prioritySource": "MEDIUM",
-        "platform": "Official overview",
-        "affectedUrls": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-            "label": "Official overview"
-          }
-        ],
-        "verifiedObservation": "An unintended access mismatch could affect intended crawlers, while broad security changes could create risk.",
-        "commercialRationale": "An unintended access mismatch could affect intended crawlers, while broad security changes could create risk.",
-        "recommendedSteps": [
-          "Open a Marriott CDN/WAF ticket with request details.",
-          "Define which automated clients are intended to access the page.",
-          "Approve only narrow security-safe changes if a conflict is confirmed.",
-          "Retest the property URL from agreed clients.",
-          "A technical note explains the response and intended crawler policy.",
-          "Any required change is approved through Marriott security controls."
-        ],
-        "primaryOwner": "Marriott Digital / CDN Security Owner",
-        "supportingOwners": [
-          "Hotel digital marketing",
-          "Hotel commercial leadership"
-        ],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-            "label": "Official overview"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Review Automated Access With Marriott",
-        "whatWeFound": "An unintended access mismatch could affect intended crawlers, while broad security changes could create risk.",
-        "recommendedAction": "Review Automated Access With Marriott",
-        "accountableOwner": "Marriott Digital / CDN Security Owner",
-        "businessRelevance": "An unintended access mismatch could affect intended crawlers, while broad security changes could create risk.",
-        "whyItMatters": "An unintended access mismatch could affect intended crawlers, while broad security changes could create risk.",
-        "affectedPlatform": "Official overview",
-        "supportingEvidence": [
-          {
-            "label": "Official overview",
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Official overview",
-              "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "AVA-SGX-DA-001",
-        "propertyId": "adp_sheraton_guadalajara_expo",
-        "findingIds": [
-          "AVA-SGX-DA-001"
-        ],
-        "mergedFromActionIds": [
-          "AVA-SGX-DA-001"
-        ],
-        "workstreamTheme": "digital_authority_outreach",
-        "actionTitle": "Pursue Expo/Destination Profile With Official Marriott Hyperlink",
-        "classification": "DISTRIBUTION_OPPORTUNITY",
-        "priority": "MEDIUM",
-        "prioritySource": "MEDIUM",
-        "platform": "Expo Guadalajara",
-        "affectedUrls": [
-          {
-            "url": "https://www.expoguadalajara.mx/",
-            "label": "Expo Guadalajara"
-          },
-          {
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-            "label": "Sheraton overview"
-          }
-        ],
-        "verifiedObservation": "Expo Guadalajara is a verified demand-adjacent authority; hotel-specific outbound Marriott backlink was not confirmed in this public pass.",
-        "commercialRationale": "Planners researching Expo-area lodging need a correct official path once capacities are clean.",
-        "recommendedSteps": [
-          "Finish the related action meetings source-of-truth.",
-          "Identify Expo/destination lodging inventory owner.",
-          "Submit approved profile + Marriott URL.",
-          "Archive live listing evidence.",
-          "Opportunity owner and required facts confirmed with hotel leadership.",
-          "Outreach or listing update request filed with supporting evidence."
-        ],
-        "primaryOwner": "Director of Sales / Hotel Commercial",
-        "supportingOwners": [
-          "Brand Content Team"
-        ],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://www.expoguadalajara.mx/",
-            "label": "Expo Guadalajara"
-          },
-          {
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-            "label": "Sheraton overview"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Pursue Expo/Destination Profile With Official Marriott Hyperlink",
-        "whatWeFound": "Expo Guadalajara is a verified demand-adjacent authority; hotel-specific outbound Marriott backlink was not confirmed in this public pass.",
-        "recommendedAction": "Pursue Expo/Destination Profile With Official Marriott Hyperlink",
-        "accountableOwner": "Director of Sales / Hotel Commercial",
-        "businessRelevance": "Planners researching Expo-area lodging need a correct official path once capacities are clean.",
-        "whyItMatters": "Planners researching Expo-area lodging need a correct official path once capacities are clean.",
-        "affectedPlatform": "Expo Guadalajara",
-        "supportingEvidence": [
-          {
-            "label": "Expo Guadalajara",
-            "url": "https://www.expoguadalajara.mx/"
-          },
-          {
-            "label": "Sheraton overview",
-            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Expo Guadalajara",
-              "url": "https://www.expoguadalajara.mx/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "Sheraton overview",
-              "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      }
-    ],
-    "integrity": {
-      "titleOnlySteps": [],
-      "titleStepMisaligned": []
-    }
-  },
   "actionsResearchRecord": [
     {
       "actionId": "AVA-SGX-001",
@@ -1615,7 +1235,7 @@
       "priority": "MEDIUM",
       "priorityWhy": "These verified assets affect traveler fit and require accurate operating and eligibility details.",
       "whatWeFound": "Official content identifies MATRIA restaurant, QUIDEA Spa, a Sheraton Lounge benefit for Platinum members and above, an outdoor pool, and pet access.",
-      "whyItMatters": "Clear asset descriptions support informed decisions; the 58.0% Reality Gap is a prioritization diagnostic, not proof of a website defect.",
+      "whyItMatters": "Clear asset descriptions support informed decisions; the 32% Reality Gap is a prioritization diagnostic, not proof of a website defect.",
       "recommendedSteps": [
         "Operations confirms names, hours, access rules, fees, and seasonal limitations.",
         "Marketing audits official and priority partner descriptions.",
@@ -1878,5 +1498,438 @@
       },
       "implementationStatus": "Awaiting hotel decision"
     }
-  ]
+  ],
+  "customerActionRegister": {
+    "contract": "AVA_CANONICAL_ACTION_REGISTER_V1",
+    "propertyId": "adp_sheraton_guadalajara_expo",
+    "generatedAt": "2026-11-06T00:41:54.516Z",
+    "sourceActionCount": 6,
+    "canonicalActionCount": 5,
+    "consolidated": [
+      {
+        "theme": "meeting_space_reconciliation",
+        "keptActionId": "AVA-SGX-001",
+        "mergedActionIds": [
+          "AVA-SGX-001",
+          "SGE-DCR-ACT-001"
+        ],
+        "reason": "Same corrective objective (meeting_space_reconciliation)"
+      }
+    ],
+    "actions": [
+      {
+        "actionId": "AVA-SGX-001",
+        "propertyId": "adp_sheraton_guadalajara_expo",
+        "findingIds": [
+          "AVA-SGX-001",
+          "SGE-DCR-ACT-001"
+        ],
+        "mergedFromActionIds": [
+          "AVA-SGX-001",
+          "SGE-DCR-ACT-001"
+        ],
+        "workstreamTheme": "meeting_space_reconciliation",
+        "actionTitle": "Reconcile Public Meetings Facts",
+        "classification": "VERIFIED_CONTENT_IMPROVEMENT",
+        "priority": "HIGH",
+        "prioritySource": "HIGH",
+        "platform": "Official overview",
+        "affectedUrls": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
+            "label": "Official website"
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/",
+            "label": "Official events page"
+          }
+        ],
+        "verifiedObservation": "The overview says more than 400 square metres; the events page reports 12 rooms, 1,654 square metres, and Diamante capacity of 500.",
+        "commercialRationale": "Conflicting official figures create avoidable planner uncertainty and can be repeated by search and AI systems.",
+        "recommendedSteps": [
+          "Sales signs a room-by-room schedule with setup capacities and total usable area.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Define whether the overview figure refers to a subset of space.",
+          "Submit field-level corrections to Marriott content owners.",
+          "Verify both pages against the signed schedule.",
+          "Create a field-level comparison and submit only hotel-approved corrections."
+        ],
+        "desiredOutcome": "An approved room-by-room capacity schedule matching live hotel and brand pages.",
+        "primaryOwner": "Director of Sales / Hotel Operations",
+        "supportingOwners": [
+          "Events leadership",
+          "Marriott digital content"
+        ],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
+            "label": "Official overview"
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/",
+            "label": "Official events page"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Reconcile Public Meetings Facts",
+        "whatWeFound": "The overview says more than 400 square metres; the events page reports 12 rooms, 1,654 square metres, and Diamante capacity of 500.",
+        "recommendedAction": "Reconcile Public Meetings Facts",
+        "accountableOwner": "Director of Sales / Hotel Operations",
+        "businessRelevance": "Conflicting official figures create avoidable planner uncertainty and can be repeated by search and AI systems.",
+        "whyItMatters": "Conflicting official figures create avoidable planner uncertainty and can be repeated by search and AI systems.",
+        "affectedPlatform": "Official overview",
+        "supportingEvidence": [
+          {
+            "label": "Official website",
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
+          },
+          {
+            "label": "Official events page",
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Official website",
+              "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "Official events page",
+              "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "AVA-SGX-002",
+        "propertyId": "adp_sheraton_guadalajara_expo",
+        "findingIds": [
+          "AVA-SGX-002"
+        ],
+        "mergedFromActionIds": [
+          "AVA-SGX-002"
+        ],
+        "workstreamTheme": "unique:AVA-SGX-002",
+        "actionTitle": "Align Expo and Convention Positioning",
+        "classification": "VERIFIED_CONTENT_IMPROVEMENT",
+        "priority": "HIGH",
+        "prioritySource": "HIGH",
+        "platform": "Official overview",
+        "affectedUrls": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
+            "label": "Official overview"
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/",
+            "label": "Official events page"
+          }
+        ],
+        "verifiedObservation": "Official content places the hotel near Expo Guadalajara and includes FIFA World Cup 2026 messaging alongside a substantial meetings offer.",
+        "commercialRationale": "Consistent official context can help planners assess fit, but it cannot guarantee future AI presence, rankings, or bookings.",
+        "recommendedSteps": [
+          "Complete the related action first.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Approve durable Expo Guadalajara and convention-location facts.",
+          "Separate evergreen location copy from time-bounded World Cup messaging.",
+          "Align overview, events, sales collateral, and priority partner listings.",
+          "Map approved evergreen and time-bounded facts to supported content fields."
+        ],
+        "desiredOutcome": "Approved “Align Expo and Convention Positioning” facts published on the hotel’s named priority digital channels.",
+        "primaryOwner": "Hotel Commercial Leadership",
+        "supportingOwners": [
+          "Director of Sales",
+          "Marriott digital content",
+          "Revenue strategy"
+        ],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
+            "label": "Official overview"
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/",
+            "label": "Official events page"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Align Expo and Convention Positioning",
+        "whatWeFound": "Official content places the hotel near Expo Guadalajara and includes FIFA World Cup 2026 messaging alongside a substantial meetings offer.",
+        "recommendedAction": "Align Expo and Convention Positioning",
+        "accountableOwner": "Hotel Commercial Leadership",
+        "businessRelevance": "Consistent official context can help planners assess fit, but it cannot guarantee future AI presence, rankings, or bookings.",
+        "whyItMatters": "Consistent official context can help planners assess fit, but it cannot guarantee future AI presence, rankings, or bookings.",
+        "affectedPlatform": "Official overview",
+        "supportingEvidence": [
+          {
+            "label": "Official overview",
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
+          },
+          {
+            "label": "Official events page",
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Official overview",
+              "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "Official events page",
+              "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/events/",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "AVA-SGX-003",
+        "propertyId": "adp_sheraton_guadalajara_expo",
+        "findingIds": [
+          "AVA-SGX-003"
+        ],
+        "mergedFromActionIds": [
+          "AVA-SGX-003"
+        ],
+        "workstreamTheme": "positioning_content",
+        "actionTitle": "Clarify Dining, Spa, Lounge, Pool, and Pet Signals",
+        "classification": "MAINTENANCE",
+        "priority": "MEDIUM",
+        "prioritySource": "MEDIUM",
+        "platform": "Official overview",
+        "affectedUrls": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
+            "label": "Official overview"
+          }
+        ],
+        "verifiedObservation": "Official content identifies MATRIA restaurant, QUIDEA Spa, a Sheraton Lounge benefit for Platinum members and above, an outdoor pool, and pet access.",
+        "commercialRationale": "Clear asset descriptions support informed decisions; the 32% Reality Gap is a prioritization diagnostic, not proof of a website defect.",
+        "recommendedSteps": [
+          "Operations confirms names, hours, access rules, fees, and seasonal limitations.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Marketing audits official and priority partner descriptions.",
+          "Submit only approved factual corrections.",
+          "Verify live copy and booking-path disclosures.",
+          "Audit rendered content and supported structured fields against the signed fact sheet."
+        ],
+        "desiredOutcome": "Verified outlet descriptions aligned across priority hotel and brand channels.",
+        "primaryOwner": "Hotel Marketing / Operations",
+        "supportingOwners": [
+          "Food and beverage",
+          "Spa leadership",
+          "Front office",
+          "Marriott digital content"
+        ],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
+            "label": "Official overview"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Clarify Dining, Spa, Lounge, Pool, and Pet Signals",
+        "whatWeFound": "Official content identifies MATRIA restaurant, QUIDEA Spa, a Sheraton Lounge benefit for Platinum members and above, an outdoor pool, and pet access.",
+        "recommendedAction": "Clarify Dining, Spa, Lounge, Pool, and Pet Signals",
+        "accountableOwner": "Hotel Marketing / Operations",
+        "businessRelevance": "Clear asset descriptions support informed decisions; the 32% Reality Gap is a prioritization diagnostic, not proof of a website defect.",
+        "whyItMatters": "Clear asset descriptions support informed decisions; the 32% Reality Gap is a prioritization diagnostic, not proof of a website defect.",
+        "affectedPlatform": "Official overview",
+        "supportingEvidence": [
+          {
+            "label": "Official overview",
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Official overview",
+              "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "AVA-SGX-004",
+        "propertyId": "adp_sheraton_guadalajara_expo",
+        "findingIds": [
+          "AVA-SGX-004"
+        ],
+        "mergedFromActionIds": [
+          "AVA-SGX-004"
+        ],
+        "workstreamTheme": "technical_access_review",
+        "actionTitle": "Review Automated Access With Marriott",
+        "classification": "MAINTENANCE",
+        "priority": "MEDIUM",
+        "prioritySource": "MEDIUM",
+        "platform": "Official overview",
+        "affectedUrls": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
+            "label": "Official overview"
+          }
+        ],
+        "verifiedObservation": "An unintended access mismatch could affect intended crawlers, while broad security changes could create risk.",
+        "commercialRationale": "Consistent, approved public facts reduce guest and partner confusion and limit incorrect AI repetition of property details.",
+        "recommendedSteps": [
+          "Open a Marriott CDN/WAF ticket with request details.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Define which automated clients are intended to access the page.",
+          "Approve only narrow security-safe changes if a conflict is confirmed.",
+          "Retest the property URL from agreed clients.",
+          "Record status, redirect chain, request headers, and CDN rule decision."
+        ],
+        "desiredOutcome": "Agreed clients receive the intended response and redirect behavior.",
+        "primaryOwner": "Marriott Digital / CDN Security Owner",
+        "supportingOwners": [
+          "Hotel digital marketing",
+          "Hotel commercial leadership"
+        ],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
+            "label": "Official overview"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Review Automated Access With Marriott",
+        "whatWeFound": "An unintended access mismatch could affect intended crawlers, while broad security changes could create risk.",
+        "recommendedAction": "Review Automated Access With Marriott",
+        "accountableOwner": "Marriott Digital / CDN Security Owner",
+        "businessRelevance": "Consistent, approved public facts reduce guest and partner confusion and limit incorrect AI repetition of property details.",
+        "whyItMatters": "Consistent, approved public facts reduce guest and partner confusion and limit incorrect AI repetition of property details.",
+        "affectedPlatform": "Official overview",
+        "supportingEvidence": [
+          {
+            "label": "Official overview",
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Official overview",
+              "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "AVA-SGX-DA-001",
+        "propertyId": "adp_sheraton_guadalajara_expo",
+        "findingIds": [
+          "AVA-SGX-DA-001"
+        ],
+        "mergedFromActionIds": [
+          "AVA-SGX-DA-001"
+        ],
+        "workstreamTheme": "digital_authority_outreach",
+        "actionTitle": "Pursue Expo/Destination Profile With Official Marriott Hyperlink",
+        "classification": "MAINTENANCE",
+        "priority": "MEDIUM",
+        "prioritySource": "MEDIUM",
+        "platform": "Expo Guadalajara",
+        "affectedUrls": [
+          {
+            "url": "https://www.expoguadalajara.mx/",
+            "label": "Expo Guadalajara"
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
+            "label": "Sheraton overview"
+          }
+        ],
+        "verifiedObservation": "Expo Guadalajara is a verified demand-adjacent authority; hotel-specific outbound Marriott backlink was not confirmed in this public pass.",
+        "commercialRationale": "Planners researching Expo-area lodging need a correct official path once capacities are clean.",
+        "recommendedSteps": [
+          "Finish the related action meetings source-of-truth.",
+          "Apply the change on the verified page (expoguadalajara.mx) and retain before/after evidence.",
+          "Identify Expo/destination lodging inventory owner.",
+          "Submit approved profile + Marriott URL.",
+          "Archive live listing evidence."
+        ],
+        "desiredOutcome": "Verified CVB or partner listing fields corrected with the approved property URL and a working official hyperlink, or documented decline retained.",
+        "primaryOwner": "Director of Sales / Hotel Commercial",
+        "supportingOwners": [
+          "Brand Content Team"
+        ],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://www.expoguadalajara.mx/",
+            "label": "Expo Guadalajara"
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
+            "label": "Sheraton overview"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Pursue Expo/Destination Profile With Official Marriott Hyperlink",
+        "whatWeFound": "Expo Guadalajara is a verified demand-adjacent authority; hotel-specific outbound Marriott backlink was not confirmed in this public pass.",
+        "recommendedAction": "Pursue Expo/Destination Profile With Official Marriott Hyperlink",
+        "accountableOwner": "Director of Sales / Hotel Commercial",
+        "businessRelevance": "Planners researching Expo-area lodging need a correct official path once capacities are clean.",
+        "whyItMatters": "Planners researching Expo-area lodging need a correct official path once capacities are clean.",
+        "affectedPlatform": "Expo Guadalajara",
+        "supportingEvidence": [
+          {
+            "label": "Expo Guadalajara",
+            "url": "https://www.expoguadalajara.mx/"
+          },
+          {
+            "label": "Sheraton overview",
+            "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Expo Guadalajara",
+              "url": "https://www.expoguadalajara.mx/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "Sheraton overview",
+              "url": "https://www.marriott.com/en-us/hotels/gdlse-sheraton-guadalajara-expo/overview/",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      }
+    ],
+    "integrity": {
+      "titleOnlySteps": [],
+      "titleStepMisaligned": []
+    }
+  }
 }

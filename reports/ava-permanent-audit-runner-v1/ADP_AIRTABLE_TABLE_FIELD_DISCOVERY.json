@@ -1,0 +1,1023 @@
+{
+  "AI Demand Positioning - Published Reports": {
+    "id": "tblGSsAV8ctCuS5A0",
+    "primaryFieldId": "fldjEGViyIUDDbiMd",
+    "fields": [
+      {
+        "name": "Report Name",
+        "type": "singleLineText"
+      },
+      {
+        "name": "ADP Property ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Period ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Property Name",
+        "type": "singleLineText"
+      },
+      {
+        "name": "City",
+        "type": "singleLineText"
+      },
+      {
+        "name": "State",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Market",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Execution Date",
+        "type": "dateTime"
+      },
+      {
+        "name": "Published At",
+        "type": "dateTime"
+      },
+      {
+        "name": "Publish Status",
+        "type": "singleSelect",
+        "options": [
+          "Draft",
+          "Validated",
+          "Live",
+          "Archived"
+        ]
+      },
+      {
+        "name": "Product Version",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Demand Capture Rate",
+        "type": "number"
+      },
+      {
+        "name": "Provider Count",
+        "type": "number"
+      },
+      {
+        "name": "Payload JSON",
+        "type": "multilineText"
+      },
+      {
+        "name": "Evidence Index JSON",
+        "type": "multilineText"
+      },
+      {
+        "name": "Payload Store Ref",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Census Record ID",
+        "type": "singleLineText"
+      }
+    ]
+  },
+  "ADP Monitoring Periods": {
+    "id": "tbl1reDyXrwR4GPfH",
+    "primaryFieldId": "fldyHbIxPoUypHV1N",
+    "fields": [
+      {
+        "name": "Period Key",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Property ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Period ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Snapshot ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Monitoring Date",
+        "type": "date"
+      },
+      {
+        "name": "Certification Timestamp",
+        "type": "dateTime"
+      },
+      {
+        "name": "Publication Timestamp",
+        "type": "dateTime"
+      },
+      {
+        "name": "Certification Status",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Report Schema Version",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Persistence State",
+        "type": "singleSelect",
+        "options": [
+          "PENDING",
+          "WRITING",
+          "VERIFYING",
+          "COMPLETE",
+          "FAILED"
+        ]
+      },
+      {
+        "name": "Content Hash",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Envelope Hash",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Historical Version",
+        "type": "number"
+      },
+      {
+        "name": "Is Current Historical Version",
+        "type": "checkbox"
+      },
+      {
+        "name": "Corrects Period Key",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Synthetic",
+        "type": "checkbox"
+      },
+      {
+        "name": "Calendar Week ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Measurement Period IDs JSON",
+        "type": "multilineText"
+      },
+      {
+        "name": "Families Present JSON",
+        "type": "multilineText"
+      }
+    ]
+  },
+  "ADP Report Snapshots": {
+    "id": "tblsN08J5MAMVgoj1",
+    "primaryFieldId": "fldk6q6BmK04Wc9oR",
+    "fields": [
+      {
+        "name": "Snapshot ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Property ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Period ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Monitoring Date",
+        "type": "date"
+      },
+      {
+        "name": "Schema Version",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Content Hash",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Envelope Hash",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Publication Commit",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Renderer Version",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Measurement Contract Version",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Parser Version",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Entity Resolver Version",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Ranking Version",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Evidence Version",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Assurance Version",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Certification Status",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Correction Version",
+        "type": "number"
+      },
+      {
+        "name": "Is Current Historical Version",
+        "type": "checkbox"
+      },
+      {
+        "name": "Snapshot Store Ref",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Synthetic",
+        "type": "checkbox"
+      },
+      {
+        "name": "Measurement Family",
+        "type": "singleSelect",
+        "options": [
+          "CORE",
+          "BRAND_PORTFOLIO"
+        ]
+      },
+      {
+        "name": "Publication Version",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Report Edition",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Portfolio Lens ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Peer Set ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Peer Set Version",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Peer Set Hash",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Prompt Manifest Hash",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Customer Visible Content Hash",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Metrics Version",
+        "type": "singleLineText"
+      }
+    ]
+  },
+  "ADP Period Metrics": {
+    "id": "tblePJz68KdmtrdT3",
+    "primaryFieldId": "flddeWnX2u9bkBFfg",
+    "fields": [
+      {
+        "name": "Metrics Key",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Property ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Period ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Historical Version",
+        "type": "number"
+      },
+      {
+        "name": "Reality Coverage",
+        "type": "number"
+      },
+      {
+        "name": "Scenario Presence",
+        "type": "number"
+      },
+      {
+        "name": "Scenario Presence Numerator",
+        "type": "number"
+      },
+      {
+        "name": "Scenario Presence Denominator",
+        "type": "number"
+      },
+      {
+        "name": "Demand Capture",
+        "type": "number"
+      },
+      {
+        "name": "Consideration Rate",
+        "type": "number"
+      },
+      {
+        "name": "Consideration Numerator",
+        "type": "number"
+      },
+      {
+        "name": "Consideration Denominator",
+        "type": "number"
+      },
+      {
+        "name": "Number One Appearance Rate",
+        "type": "number"
+      },
+      {
+        "name": "Top Three Appearance Rate",
+        "type": "number"
+      },
+      {
+        "name": "Presence Index",
+        "type": "number"
+      },
+      {
+        "name": "CORE Benchmark",
+        "type": "number"
+      },
+      {
+        "name": "CORE Count",
+        "type": "number"
+      },
+      {
+        "name": "Certification Status",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Disclosures JSON",
+        "type": "multilineText"
+      },
+      {
+        "name": "Measurement Family",
+        "type": "singleSelect",
+        "options": [
+          "CORE",
+          "BRAND_PORTFOLIO"
+        ]
+      },
+      {
+        "name": "Portfolio Lens ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Portfolio Lens Label",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Peer Set ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Peer Set Version",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Peer Set Hash",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Portfolio AI Presence",
+        "type": "number"
+      },
+      {
+        "name": "Portfolio AI Presence Numerator",
+        "type": "number"
+      },
+      {
+        "name": "Portfolio AI Presence Denominator",
+        "type": "number"
+      },
+      {
+        "name": "Portfolio Rank",
+        "type": "number"
+      },
+      {
+        "name": "Portfolio Rank Of",
+        "type": "number"
+      },
+      {
+        "name": "Portfolio Benchmark",
+        "type": "number"
+      },
+      {
+        "name": "Portfolio Presence Index",
+        "type": "number"
+      },
+      {
+        "name": "Portfolio Scenario Presence",
+        "type": "number"
+      },
+      {
+        "name": "Portfolio Scenario Presence Role",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Rank Movement State",
+        "type": "singleSelect",
+        "options": [
+          "INITIAL",
+          "COMPARABLE",
+          "NOT_COMPARABLE"
+        ]
+      },
+      {
+        "name": "Metrics Version",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Customer Publication Version",
+        "type": "singleLineText"
+      }
+    ]
+  },
+  "ADP Evidence Index": {
+    "id": "tblKEMRPyr0wnOqZ1",
+    "primaryFieldId": "fldDqrGh7XGGDJFCX",
+    "fields": [
+      {
+        "name": "Evidence Key",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Property ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Period ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Observation ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Evidence Lane",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Provider",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Territory",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Subject Present",
+        "type": "checkbox"
+      },
+      {
+        "name": "Subject Rank",
+        "type": "number"
+      },
+      {
+        "name": "Response Store Ref",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Response Length",
+        "type": "number"
+      },
+      {
+        "name": "Response Content Hash",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Mention Spans JSON",
+        "type": "multilineText"
+      },
+      {
+        "name": "Competitors JSON",
+        "type": "multilineText"
+      },
+      {
+        "name": "Citations JSON",
+        "type": "multilineText"
+      },
+      {
+        "name": "Measurement Family",
+        "type": "singleSelect",
+        "options": [
+          "CORE",
+          "BRAND_PORTFOLIO"
+        ]
+      }
+    ]
+  },
+  "ADP Report Corrections": {
+    "id": "tbl5nzZAj3eaBSbBF",
+    "primaryFieldId": "fldlV7j30HT259vKH",
+    "fields": [
+      {
+        "name": "Correction ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Property ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Period ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Original Snapshot ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Corrected Snapshot ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Reason",
+        "type": "multilineText"
+      },
+      {
+        "name": "Changed Fields JSON",
+        "type": "multilineText"
+      },
+      {
+        "name": "Authorized By",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Corrected At",
+        "type": "dateTime"
+      },
+      {
+        "name": "Version Number",
+        "type": "number"
+      },
+      {
+        "name": "Measurement Family",
+        "type": "singleSelect",
+        "options": [
+          "CORE",
+          "BRAND_PORTFOLIO"
+        ]
+      },
+      {
+        "name": "Lineage Stage",
+        "type": "singleLineText"
+      }
+    ]
+  },
+  "Hotel ADP Attributes": {
+    "id": "tblMA6v0HAmsY9ImW",
+    "primaryFieldId": "fldlyCx4khUkSHsjh",
+    "fields": [
+      {
+        "name": "Attribute Key",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Dedupe Key",
+        "type": "singleLineText"
+      },
+      {
+        "name": "HPC Hotel ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Dealality Hotel ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "ADP Property ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Hotel Name",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Attribute Category",
+        "type": "singleSelect",
+        "options": [
+          "Identity",
+          "Location",
+          "Commercial",
+          "Demand Node",
+          "Meeting / Group",
+          "Positioning",
+          "Amenity",
+          "Seasonality",
+          "Need Period",
+          "Segment Relevance",
+          "Competitive Context",
+          "Other"
+        ]
+      },
+      {
+        "name": "Attribute Name",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Attribute Value",
+        "type": "multilineText"
+      },
+      {
+        "name": "Normalized Value",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Used in ADP?",
+        "type": "checkbox"
+      },
+      {
+        "name": "ADP Use Type",
+        "type": "multipleSelects",
+        "options": [
+          "Query Generation",
+          "Prompt Context",
+          "Demand Family Selection",
+          "Scoring",
+          "Exclusion Logic",
+          "Recommendation Context",
+          "Reporting Only"
+        ]
+      },
+      {
+        "name": "Source Type",
+        "type": "singleSelect",
+        "options": [
+          "HPC",
+          "Hotel Commercial Profile",
+          "Hotel Demand Node",
+          "Hotel Event Space",
+          "Hotel Seasonality",
+          "Hotel Supplied",
+          "Public Research",
+          "Model Derived"
+        ]
+      },
+      {
+        "name": "Source Record ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Source Name",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Source URL",
+        "type": "url"
+      },
+      {
+        "name": "Confidence",
+        "type": "singleSelect",
+        "options": [
+          "HIGH",
+          "MEDIUM",
+          "LOW",
+          "UNVERIFIED"
+        ]
+      },
+      {
+        "name": "Effective From",
+        "type": "date"
+      },
+      {
+        "name": "Effective To",
+        "type": "date"
+      },
+      {
+        "name": "Attribute Version",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Last Verified At",
+        "type": "dateTime"
+      },
+      {
+        "name": "Active?",
+        "type": "checkbox"
+      },
+      {
+        "name": "Notes",
+        "type": "multilineText"
+      },
+      {
+        "name": "Schema Version",
+        "type": "singleLineText"
+      }
+    ]
+  },
+  "Hotel Commercial Profiles": {
+    "id": "tblBYJtKj6oi4J0Ow",
+    "primaryFieldId": "fldPFMG8u8F7GqppY",
+    "fields": [
+      {
+        "name": "Profile Key",
+        "type": "singleLineText"
+      },
+      {
+        "name": "HPC Hotel ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Dealality Hotel ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "ADP Property ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Hotel Name",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Brand",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Rooms / Keys",
+        "type": "number"
+      },
+      {
+        "name": "Suites",
+        "type": "number"
+      },
+      {
+        "name": "Single-Bed Rooms",
+        "type": "number"
+      },
+      {
+        "name": "Double-Bed Rooms",
+        "type": "number"
+      },
+      {
+        "name": "Floors / Stories",
+        "type": "number"
+      },
+      {
+        "name": "Year Built",
+        "type": "number"
+      },
+      {
+        "name": "Year Renovated",
+        "type": "number"
+      },
+      {
+        "name": "Site Acres",
+        "type": "number"
+      },
+      {
+        "name": "Parking Type",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Parking Daily Rate",
+        "type": "number"
+      },
+      {
+        "name": "Bus Parking",
+        "type": "checkbox"
+      },
+      {
+        "name": "Airport Distance Miles",
+        "type": "number"
+      },
+      {
+        "name": "Resort Fee",
+        "type": "number"
+      },
+      {
+        "name": "Destination Fee",
+        "type": "number"
+      },
+      {
+        "name": "Meeting Space Flag",
+        "type": "checkbox"
+      },
+      {
+        "name": "Total Meeting Space Sq Ft",
+        "type": "number"
+      },
+      {
+        "name": "Meeting Room Count",
+        "type": "number"
+      },
+      {
+        "name": "Largest Meeting Space Sq Ft",
+        "type": "number"
+      },
+      {
+        "name": "Largest Event Capacity",
+        "type": "number"
+      },
+      {
+        "name": "Outdoor Event Space Sq Ft",
+        "type": "number"
+      },
+      {
+        "name": "Semi-Private Space Sq Ft",
+        "type": "number"
+      },
+      {
+        "name": "Check-In Time",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Check-Out Time",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Official Property URL",
+        "type": "url"
+      },
+      {
+        "name": "Official Events URL",
+        "type": "url"
+      },
+      {
+        "name": "Profile Completeness %",
+        "type": "percent"
+      },
+      {
+        "name": "Last Researched At",
+        "type": "dateTime"
+      },
+      {
+        "name": "Research Version",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Research Status",
+        "type": "singleSelect",
+        "options": [
+          "Not Started",
+          "In Progress",
+          "Complete",
+          "Partial",
+          "Blocked",
+          "Needs Review"
+        ]
+      },
+      {
+        "name": "Confidence",
+        "type": "singleSelect",
+        "options": [
+          "HIGH",
+          "MEDIUM",
+          "LOW",
+          "UNVERIFIED"
+        ]
+      },
+      {
+        "name": "Conflict Status",
+        "type": "checkbox"
+      },
+      {
+        "name": "Notes",
+        "type": "multilineText"
+      },
+      {
+        "name": "Schema Version",
+        "type": "singleLineText"
+      },
+      {
+        "name": "GDI Hotel Need Periods",
+        "type": "multipleRecordLinks"
+      },
+      {
+        "name": "GDI Hotel Commercial Profiles",
+        "type": "multipleRecordLinks"
+      }
+    ]
+  },
+  "Hotel Intelligence Evidence": {
+    "id": "tblHxS8x0niDEGVsh",
+    "primaryFieldId": "fldn5izbtOuWO99iW",
+    "fields": [
+      {
+        "name": "Evidence ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "HPC Hotel ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Entity Type",
+        "type": "singleSelect",
+        "options": [
+          "Commercial Profile",
+          "Event Space",
+          "Demand Node",
+          "Seasonality",
+          "Need Period",
+          "Other"
+        ]
+      },
+      {
+        "name": "Entity Record ID",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Field Name",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Value Observed",
+        "type": "multilineText"
+      },
+      {
+        "name": "Source Name",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Source Type",
+        "type": "singleSelect",
+        "options": [
+          "HPC",
+          "Hotel Commercial Profile",
+          "Hotel Demand Node",
+          "Hotel Event Space",
+          "Hotel Seasonality",
+          "Hotel Supplied",
+          "Public Research",
+          "Model Derived"
+        ]
+      },
+      {
+        "name": "Source URL",
+        "type": "url"
+      },
+      {
+        "name": "Source Published Date",
+        "type": "date"
+      },
+      {
+        "name": "Retrieved At",
+        "type": "dateTime"
+      },
+      {
+        "name": "Evidence Snippet",
+        "type": "multilineText"
+      },
+      {
+        "name": "Confidence",
+        "type": "singleSelect",
+        "options": [
+          "HIGH",
+          "MEDIUM",
+          "LOW",
+          "UNVERIFIED"
+        ]
+      },
+      {
+        "name": "Evidence Strength",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Current?",
+        "type": "checkbox"
+      },
+      {
+        "name": "Superseded By",
+        "type": "singleLineText"
+      },
+      {
+        "name": "Notes",
+        "type": "multilineText"
+      },
+      {
+        "name": "Schema Version",
+        "type": "singleLineText"
+      }
+    ]
+  }
+}

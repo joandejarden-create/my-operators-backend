@@ -60,6 +60,12 @@ import {
 import {
   summarizeResolutionForAdmin,
 } from "../lib/ai-visibility-audit-action-plan/autonomous-evidence-resolution-v1.js";
+import {
+  listAuditRunsForProperty,
+  loadAuditRun,
+} from "../lib/ai-visibility-audit-action-plan/ava-audit-run-archive-v1.js";
+import { compareAvaAuditRuns } from "../lib/ai-visibility-audit-action-plan/ava-audit-history-compare-v1.js";
+import { sha256File, getAvaAirtableMirrorRoot } from "../lib/ai-visibility-audit-action-plan/ava-audit-execution-contract-v1.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -362,6 +368,44 @@ export function getAdminAvaHotel(req, res) {
       note: "Customer-quality certification is independent of AUDIT_VALIDATED and founder approval.",
     },
     pdfChannels: describeAvaPdfChannels(propertyId),
+    permanentAuditRuns: listAuditRunsForProperty(propertyId).map((r) => {
+      let airtableSync = null;
+      try {
+        const statusPath = path.join(
+          getAvaAirtableMirrorRoot(),
+          propertyId,
+          r.auditRunId,
+          "sync-status.json"
+        );
+        if (fs.existsSync(statusPath)) {
+          airtableSync = JSON.parse(fs.readFileSync(statusPath, "utf8"));
+        }
+      } catch {
+        airtableSync = { status: "UNKNOWN", airtableIndexed: false };
+      }
+      return {
+        auditRunId: r.auditRunId,
+        createdAt: r.createdAt,
+        adpPeriodId: r.adpPeriodId,
+        adpPackageId: r.adpPackageId,
+        certificationStatus: r.certificationStatus,
+        executionStatus: r.executionStatus,
+        crossReportStatus: r.crossReportStatus,
+        contentSha256: r.contentSha256,
+        pdfSha256: r.pdfSha256,
+        isLatest: r.isLatest === true,
+        previousVersionRef: r.previousVersionRef || null,
+        classification: r.isLatest ? "current" : "historical",
+        airtableSync: airtableSync
+          ? {
+              status: airtableSync.status || null,
+              airtableIndexed: airtableSync.airtableIndexed === true,
+              archiveComplete: airtableSync.archiveComplete === true,
+              mappingMode: airtableSync.mappingMode || null,
+            }
+          : { status: "NOT_SYNCED", airtableIndexed: false },
+      };
+    }),
   });
 }
 
@@ -1220,4 +1264,104 @@ export function getAdminAvaStorageStatus(_req, res) {
     storage: getAvaStorageStatus(),
     eventsContract: "RECOMMENDATION_DECISION | FOUNDER_APPROVAL | AUDIT_VALIDATION",
   });
+}
+
+/**
+ * GET /api/admin/ai-visibility-audit/:propertyId/permanent-runs
+ * Immutable permanent-runner archive index (local durable store).
+ */
+export function getAdminAvaPermanentRuns(req, res) {
+  try {
+    const propertyId = assertSafeAvaPropertyId(req.params.propertyId);
+    const runs = listAuditRunsForProperty(propertyId);
+    sendJson(res, 200, {
+      ok: true,
+      propertyId,
+      runs,
+      note: "Permanent archive is independent of customer publication. Downloads serve archived bytes only.",
+    });
+  } catch (err) {
+    if (err && err.code === "INVALID_PROPERTY_ID") {
+      return sendJson(res, 400, { ok: false, error: err.code });
+    }
+    sendJson(res, 500, { ok: false, error: String(err && err.message ? err.message : err) });
+  }
+}
+
+/**
+ * GET /api/admin/ai-visibility-audit/:propertyId/permanent-runs/compare?earlier=&later=
+ */
+export function getAdminAvaPermanentRunCompare(req, res) {
+  try {
+    assertSafeAvaPropertyId(req.params.propertyId);
+    const earlier = String(req.query?.earlier || "").trim();
+    const later = String(req.query?.later || "").trim();
+    if (!earlier || !later) {
+      return sendJson(res, 400, { ok: false, error: "EARLIER_AND_LATER_REQUIRED" });
+    }
+    const cmp = compareAvaAuditRuns(earlier, later);
+    if (!cmp.ok) return sendJson(res, 400, cmp);
+    if (cmp.propertyId !== req.params.propertyId) {
+      return sendJson(res, 400, { ok: false, error: "PROPERTY_MISMATCH" });
+    }
+    sendJson(res, 200, cmp);
+  } catch (err) {
+    sendJson(res, 500, { ok: false, error: String(err && err.message ? err.message : err) });
+  }
+}
+
+/**
+ * GET /api/admin/ai-visibility-audit/:propertyId/permanent-runs/:auditRunId/pdf
+ * Exact archived PDF — never regenerates; verifies SHA-256.
+ */
+export function getAdminAvaPermanentRunPdf(req, res) {
+  try {
+    const propertyId = assertSafeAvaPropertyId(req.params.propertyId);
+    const auditRunId = String(req.params.auditRunId || "").trim();
+    const download = String(req.query?.download || "") === "1";
+    const loaded = loadAuditRun(auditRunId);
+    if (!loaded.ok) {
+      return sendJson(res, 404, { ok: false, error: loaded.error });
+    }
+    if (loaded.propertyId !== propertyId) {
+      return sendJson(res, 400, { ok: false, error: "PROPERTY_MISMATCH" });
+    }
+    if (!loaded.pdfPath || !fs.existsSync(loaded.pdfPath)) {
+      return sendJson(res, 404, {
+        ok: false,
+        error: "ARCHIVED_PDF_MISSING",
+        message: "Historical PDF bytes are not present in the immutable archive.",
+      });
+    }
+    const expected = loaded.identity?.pdfSha256 || loaded.outputManifest?.pdfSha256;
+    const actual = sha256File(loaded.pdfPath);
+    if (expected && expected !== actual) {
+      return sendJson(res, 500, {
+        ok: false,
+        error: "PDF_HASH_MISMATCH",
+        expected,
+        actual,
+      });
+    }
+    const filename = path.basename(loaded.pdfPath);
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      contentDispositionForAvaPdf(filename, {
+        disposition: download ? "attachment" : "inline",
+      })
+    );
+    res.setHeader("X-AVA-PDF-Filename", filename);
+    res.setHeader("X-AVA-PDF-Sha256", actual);
+    res.setHeader("X-AVA-PDF-Channel", "permanent-archive");
+    res.setHeader("X-AVA-PDF-Version-Id", auditRunId);
+    res.setHeader("X-AVA-Audit-Run-Id", auditRunId);
+    fs.createReadStream(loaded.pdfPath).pipe(res);
+  } catch (err) {
+    if (err && err.code === "INVALID_PROPERTY_ID") {
+      return sendJson(res, 400, { ok: false, error: err.code });
+    }
+    sendJson(res, 500, { ok: false, error: String(err && err.message ? err.message : err) });
+  }
 }

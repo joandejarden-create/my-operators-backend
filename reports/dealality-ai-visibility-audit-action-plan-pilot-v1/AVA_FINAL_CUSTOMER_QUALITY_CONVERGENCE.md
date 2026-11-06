@@ -1,6 +1,6 @@
 # AVA Final Customer Quality Convergence
 
-Generated: 2026-11-05T21:36:57.148Z
+Generated: 2026-11-06T00:42:29.225Z
 
 ## Changes in this convergence
 
@@ -9,6 +9,3 @@ Generated: 2026-11-05T21:36:57.148Z
 3. **Priority** — Partner/marina packs no longer inflated to HIGH via “canonical domain” wording; domain-control theme remains HIGH; meeting HIGH requires numeric/capacity conflict.
 4. **Integrity** — Spa alignment no longer false-triggers on “Space”; Cambridge & Falls Church integrity defects cleared.
 5. **Stale register** — V4 renderer always rebuilds the Action Register from research actions.
-6. **V4 CQA label alignment** — Module completeness no longer CRITICAL-fails V4 PDFs for missing V3-only headings (“Digital Content Readiness”, “Verified website links” table, “Correction Map”) when the equivalent V4 sections are present.
-7. **Portfolio local regen** — 38/38 staged under `portfolio-v4-local-staging/` with manifest + SHA-256; published channel unchanged.
-8. **Open visual advisory** — Hilton Times Square final page near-empty; review before production publish.

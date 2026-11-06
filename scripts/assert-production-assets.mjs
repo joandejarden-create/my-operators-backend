@@ -63,17 +63,38 @@ function readRailwayIgnorePatterns() {
     .filter((l) => l && !l.startsWith("#"));
 }
 
-/** Conservative: fail if a required path is explicitly ignored (no negation support beyond common !patterns). */
+/**
+ * Railway/gitignore-style match with ordered negation.
+ * `data/*` / `reports/*` ignore children, but later `!data/ai-visibility-…`
+ * patterns re-include required AVA deploy assets.
+ */
+function patternMatches(patRaw, norm) {
+  const pat = patRaw.replace(/\\/g, "/");
+  if (pat === norm || pat === `${norm}/`) return true;
+  if (pat.endsWith("/**")) {
+    const base = pat.slice(0, -3);
+    return norm === base.replace(/\/$/, "") || norm.startsWith(base.endsWith("/") ? base : `${base}/`);
+  }
+  if (pat.endsWith("/*")) {
+    const base = pat.slice(0, -1); // keep trailing slash intent: "reports/"
+    return norm.startsWith(base) && norm !== base.replace(/\/$/, "");
+  }
+  if (pat.endsWith("/")) return norm.startsWith(pat) || norm === pat.slice(0, -1);
+  if (pat === "public" || pat === "public/") return norm === "public" || norm.startsWith("public/");
+  return false;
+}
+
 function isExplicitlyIgnored(rel, patterns) {
   const norm = rel.replace(/\\/g, "/");
+  let ignored = false;
   for (const pat of patterns) {
-    if (pat.startsWith("!")) continue;
-    if (pat === norm || pat === `${norm}/`) return true;
-    if (pat.endsWith("/*") && norm.startsWith(pat.slice(0, -1))) return true;
-    if (pat.endsWith("/") && norm.startsWith(pat)) return true;
-    if (pat === "public" || pat === "public/") return true;
+    if (pat.startsWith("!")) {
+      if (patternMatches(pat.slice(1), norm)) ignored = false;
+      continue;
+    }
+    if (patternMatches(pat, norm)) ignored = true;
   }
-  return false;
+  return ignored;
 }
 
 function parseLocalAssetRefs(htmlRel) {

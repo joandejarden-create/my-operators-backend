@@ -28,6 +28,10 @@ const PAYLOAD = path.join(
 function loadWaterstone() {
   const p = JSON.parse(fs.readFileSync(PAYLOAD, "utf8"));
   delete p.customerActionRegister; // always test against live register rebuild
+  // Prefer immutable research record when prior apply projected customer actions.
+  if (Array.isArray(p.actionsResearchRecord) && p.actionsResearchRecord.length) {
+    p.actions = p.actionsResearchRecord;
+  }
   return p;
 }
 
@@ -290,6 +294,125 @@ check("CAMBRIDGE_FALLS_CHURCH_INTEGRITY", () => {
       0,
       `${rel} misaligned: ${reg.integrity.titleStepMisaligned}`
     );
+  }
+});
+
+check("NO_EMPTY_PLATFORM_PLACEHOLDER_SIX", () => {
+  for (const rel of [
+    "spice-island-beach-resort-v1.json",
+    "cambridge-beaches-bermuda-v1.json",
+    "hilton-times-square-v1.json",
+    "castillo-hotel-son-vida-v1.json",
+    "ac-hotel-a-coruna-v1.json",
+    "waterstone-boca-raton-v1.json",
+  ]) {
+    const p = JSON.parse(
+      fs.readFileSync(
+        path.join(ROOT, "lib/ai-visibility-audit-action-plan/payloads", rel),
+        "utf8"
+      )
+    );
+    delete p.customerActionRegister;
+    const research = p.actionsResearchRecord || p.actions;
+    const built = buildAiVisibilityAuditPdfHtmlV4({
+      ...p,
+      actions: research,
+      actionsResearchRecord: research,
+    });
+    assert.equal(built.ok, true, rel);
+    assert.doesNotMatch(built.html || "", /No platform rows packaged/i);
+    assert.doesNotMatch(
+      built.html || "",
+      /Hotel leadership records the approved source of truth/i
+    );
+    assert.doesNotMatch(
+      built.html || "",
+      /Identify inventory\.|Submit profile\.|Classify honestly\./i
+    );
+    const defects = detectCustomerReportQualityStandardDefects(
+      {
+        ...p,
+        actions: research,
+        actionsResearchRecord: research,
+        customerActionRegister: buildCanonicalActionRegister({
+          ...p,
+          actions: research,
+        }),
+      },
+      built.html
+    ).filter((d) => d.severity === "CRITICAL" || d.severity === "HIGH");
+    assert.equal(
+      defects.length,
+      0,
+      `${rel}: ${defects.map((d) => d.type).join(",")}`
+    );
+  }
+});
+
+check("MICHELIN_STAR_KEY_VERIFICATION_NOT_CONFLATION", () => {
+  const p = JSON.parse(
+    fs.readFileSync(
+      path.join(
+        ROOT,
+        "lib/ai-visibility-audit-action-plan/payloads/spice-island-beach-resort-v1.json"
+      ),
+      "utf8"
+    )
+  );
+  delete p.customerActionRegister;
+  const research = p.actionsResearchRecord || p.actions;
+  const reg = buildCanonicalActionRegister({ ...p, actions: research });
+  const michelin = reg.actions.find((a) => /michelin/i.test(a.actionTitle || ""));
+  assert.ok(michelin, "Michelin action missing");
+  assert.match(michelin.actionTitle, /Verify Michelin Star Status/i);
+  assert.equal(michelin.priority, "MEDIUM");
+  assert.match(
+    michelin.verifiedObservation || "",
+    /does not by itself prove the Star claim is false/i
+  );
+  const built = buildAiVisibilityAuditPdfHtmlV4({
+    ...p,
+    actions: research,
+    actionsResearchRecord: research,
+  });
+  assert.match(built.html || "", /Verify Michelin Star Status/i);
+  assert.doesNotMatch(
+    built.html || "",
+    /does not match Michelin’s published One MICHELIN Key recognition/i
+  );
+});
+
+check("CROSS_SECTION_PRIORITY_SYNC", async () => {
+  const { applyCanonicalActionRegisterToPayload } = await import(
+    "../lib/ai-visibility-audit-action-plan/canonical-action-register-v1.js"
+  );
+  for (const rel of [
+    "spice-island-beach-resort-v1.json",
+    "hilton-times-square-v1.json",
+    "cambridge-beaches-bermuda-v1.json",
+  ]) {
+    const p = JSON.parse(
+      fs.readFileSync(
+        path.join(ROOT, "lib/ai-visibility-audit-action-plan/payloads", rel),
+        "utf8"
+      )
+    );
+    delete p.customerActionRegister;
+    const research = p.actionsResearchRecord || p.actions;
+    const { payload, register } = applyCanonicalActionRegisterToPayload({
+      ...p,
+      actions: research,
+      actionsResearchRecord: research,
+    });
+    for (const row of payload.executiveSummary?.priorities || []) {
+      const canon = register.actions.find((a) => a.actionId === row.actionId);
+      assert.ok(canon, `${rel} missing register row for ${row.actionId}`);
+      assert.equal(
+        String(row.priority).toUpperCase(),
+        String(canon.priority).toUpperCase(),
+        `${rel} priority drift for ${row.actionId}`
+      );
+    }
   }
 });
 

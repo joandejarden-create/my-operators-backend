@@ -1,0 +1,421 @@
+{
+  "contract": "AVA_OPERATIONAL_ACCEPTANCE_MANIFEST_V1",
+  "generatedAt": "2026-11-06T10:40:17.561Z",
+  "overall": "OPERATIONAL_ACCEPTANCE_PASS",
+  "statusToken": "AVA_PERMANENT_AUDIT_RUNNER_OPERATIONAL_ACCEPTANCE_PASS",
+  "gates": {
+    "AUDIT_EXECUTION_PASS": {
+      "result": "PASS",
+      "evidence": {
+        "spiceCertifiedMatch": true,
+        "cambridgeHistorical": true,
+        "acVersioning": true,
+        "reproductionClass": "BYTE_IDENTICAL_REPRODUCTION",
+        "adminPdfIntegrity": true
+      }
+    },
+    "ADP_AVA_CERTIFICATION_PASS": {
+      "result": "PASS",
+      "evidence": {
+        "spice": "CERTIFIED_MATCH",
+        "cambridge": "CERTIFIED_HISTORICAL_REFERENCE",
+        "ac": "CERTIFIED_HISTORICAL_REFERENCE"
+      }
+    },
+    "PDF_QUALITY_PASS": {
+      "result": "PASS",
+      "evidence": {
+        "spiceCqa": {
+          "certified": true,
+          "defectCount": 0,
+          "criticalCount": 0
+        },
+        "pdfSha256": "e9dc220970dbaa0f647694f0d12f89d92c81cd95cde93cdcaf6f7d638a233a22"
+      }
+    },
+    "ARCHIVE_INTEGRITY_PASS": {
+      "result": "PASS",
+      "evidence": {
+        "spice": {
+          "ok": true,
+          "propertyId": "adp_spice_island_beach_resort",
+          "auditRunId": "AVA-RUN-SPICE_ISLAND_BEACH_RESOR-20261106T103929Z-71b1a87a",
+          "listedRuns": 7,
+          "latestRunId": "AVA-RUN-SPICE_ISLAND_BEACH_RESOR-20261106T103929Z-71b1a87a",
+          "pdfSha256Expected": "e9dc220970dbaa0f647694f0d12f89d92c81cd95cde93cdcaf6f7d638a233a22",
+          "pdfSha256Actual": "e9dc220970dbaa0f647694f0d12f89d92c81cd95cde93cdcaf6f7d638a233a22",
+          "channelContract": "permanent-archive exact bytes; no regenerate"
+        },
+        "cambridge": {
+          "ok": true,
+          "propertyId": "adp_cambridge_beaches_bermuda",
+          "auditRunId": "AVA-RUN-CAMBRIDGE_BEACHES_BERMUD-20261106T103932Z-620e0e14",
+          "listedRuns": 7,
+          "latestRunId": "AVA-RUN-CAMBRIDGE_BEACHES_BERMUD-20261106T103932Z-620e0e14",
+          "pdfSha256Expected": "fd4d6d24a819f505b37a73ce05c7f8840f102e3587e456cc1c1c319cb414b867",
+          "pdfSha256Actual": "fd4d6d24a819f505b37a73ce05c7f8840f102e3587e456cc1c1c319cb414b867",
+          "channelContract": "permanent-archive exact bytes; no regenerate"
+        },
+        "acV1": {
+          "ok": true,
+          "propertyId": "adp_ac_hotel_a_coruna",
+          "auditRunId": "AVA-RUN-AC_HOTEL_A_CORUNA-20261106T103934Z-bd9a3d57",
+          "listedRuns": 12,
+          "latestRunId": "AVA-RUN-AC_HOTEL_A_CORUNA-20261106T103937Z-a5802f20",
+          "pdfSha256Expected": "fb70e70edfd339bbcf4b14e7de69ddec50fb6c98f1b551be6b22367355fadda9",
+          "pdfSha256Actual": "fb70e70edfd339bbcf4b14e7de69ddec50fb6c98f1b551be6b22367355fadda9",
+          "channelContract": "permanent-archive exact bytes; no regenerate"
+        },
+        "acV2": {
+          "ok": true,
+          "propertyId": "adp_ac_hotel_a_coruna",
+          "auditRunId": "AVA-RUN-AC_HOTEL_A_CORUNA-20261106T103937Z-a5802f20",
+          "listedRuns": 12,
+          "latestRunId": "AVA-RUN-AC_HOTEL_A_CORUNA-20261106T103937Z-a5802f20",
+          "pdfSha256Expected": "fb70e70edfd339bbcf4b14e7de69ddec50fb6c98f1b551be6b22367355fadda9",
+          "pdfSha256Actual": "fb70e70edfd339bbcf4b14e7de69ddec50fb6c98f1b551be6b22367355fadda9",
+          "channelContract": "permanent-archive exact bytes; no regenerate"
+        }
+      }
+    },
+    "AIRTABLE_PERSISTENCE_PASS": {
+      "result": "PASS",
+      "evidence": {
+        "overall": "AIRTABLE_PERSISTENCE_PASS",
+        "gates": {
+          "AIRTABLE_READ_ACCESS_PASS": true,
+          "AIRTABLE_SCHEMA_COMPATIBLE": true,
+          "AIRTABLE_SCHEMA_AUTHORIZATION_REQUIRED": false,
+          "AIRTABLE_PERSISTENCE_PASS": true,
+          "note": "Mapped onto existing ADP history + Hotel Intelligence Evidence tables; no new tables created."
+        },
+        "mapping": {
+          "auditRuns": "ADP Report Snapshots",
+          "monitoring": "ADP Monitoring Periods",
+          "metrics": "ADP Period Metrics",
+          "evidence": "Hotel Intelligence Evidence",
+          "findings": "Hotel Intelligence Evidence",
+          "actions": "Hotel Intelligence Evidence",
+          "reportVersions": "ADP Report Snapshots"
+        },
+        "base": {
+          "ok": true,
+          "baseId": "appa2cE7FTRmIbB32",
+          "source": "AIRTABLE_INTELLIGENCE_BASE_ID",
+          "status": "SET_CANONICAL"
+        },
+        "idempotency": {
+          "ok": true,
+          "snapshotRecordCount": 1,
+          "secondWasPatch": true
+        },
+        "schemaLegacyNote": "AIRTABLE_SCHEMA_AUTHORIZATION_REQUIRED",
+        "note": "Live PASS requires write + read-back + idempotency on existing ADP tables (not local mirror)."
+      }
+    },
+    "ADMIN_HISTORY_PASS": {
+      "result": "PASS",
+      "evidence": {
+        "ok": true,
+        "hotels": {
+          "adp_spice_island_beach_resort": {
+            "propertyId": "adp_spice_island_beach_resort",
+            "permanentRunsListed": 7,
+            "latestAuditRunId": "AVA-RUN-SPICE_ISLAND_BEACH_RESOR-20261106T103929Z-71b1a87a",
+            "hotelPayloadHasPermanentRuns": true,
+            "permanentRunsApiOk": true,
+            "compareOk": true,
+            "pdfHeaderSha256": "e9dc220970dbaa0f647694f0d12f89d92c81cd95cde93cdcaf6f7d638a233a22",
+            "pdfDownloadedSha256": "e9dc220970dbaa0f647694f0d12f89d92c81cd95cde93cdcaf6f7d638a233a22",
+            "pdfExpectedSha256": "e9dc220970dbaa0f647694f0d12f89d92c81cd95cde93cdcaf6f7d638a233a22",
+            "pdfShaMatch": true,
+            "certificationLatest": "AUDIT_CERTIFIED",
+            "crossReportLatest": "CERTIFIED_MATCH",
+            "historicalCurrentLabels": [
+              {
+                "id": "AVA-RUN-SPICE_ISLAND_BEACH_RESOR-20261106T103929Z-71b1a87a",
+                "classification": "current",
+                "certificationStatus": "AUDIT_CERTIFIED",
+                "crossReportStatus": "CERTIFIED_MATCH"
+              },
+              {
+                "id": "AVA-RUN-SPICE_ISLAND_BEACH_RESOR-20261106T103518Z-a76c952a",
+                "classification": "historical",
+                "certificationStatus": "AUDIT_CERTIFIED",
+                "crossReportStatus": "CERTIFIED_MATCH"
+              },
+              {
+                "id": "AVA-RUN-SPICE_ISLAND_BEACH_RESOR-20261106T101517Z-ed1b30dc",
+                "classification": "historical",
+                "certificationStatus": "AUDIT_CERTIFIED",
+                "crossReportStatus": "CERTIFIED_MATCH"
+              },
+              {
+                "id": "AVA-RUN-SPICE_ISLAND_BEACH_RESOR-20261106T101301Z-decc6d5d",
+                "classification": "historical",
+                "certificationStatus": "AUDIT_CERTIFIED",
+                "crossReportStatus": "CERTIFIED_MATCH"
+              },
+              {
+                "id": "AVA-RUN-SPICE_ISLAND_BEACH_RESOR-20261106T100349Z-d5263772",
+                "classification": "historical",
+                "certificationStatus": "AUDIT_CERTIFIED",
+                "crossReportStatus": "CERTIFIED_MATCH"
+              },
+              {
+                "id": "AVA-RUN-SPICE_ISLAND_BEACH_RESOR-20261106T100155Z-f076b44f",
+                "classification": "historical",
+                "certificationStatus": "AUDIT_CERTIFIED",
+                "crossReportStatus": "CERTIFIED_MATCH"
+              },
+              {
+                "id": "AVA-RUN-SPICE_ISLAND_BEACH_RESOR-20261106T100105Z-32b59208",
+                "classification": "historical",
+                "certificationStatus": "AUDIT_CERTIFIED",
+                "crossReportStatus": "CERTIFIED_MATCH"
+              }
+            ]
+          },
+          "adp_cambridge_beaches_bermuda": {
+            "propertyId": "adp_cambridge_beaches_bermuda",
+            "permanentRunsListed": 7,
+            "latestAuditRunId": "AVA-RUN-CAMBRIDGE_BEACHES_BERMUD-20261106T103932Z-620e0e14",
+            "hotelPayloadHasPermanentRuns": true,
+            "permanentRunsApiOk": true,
+            "compareOk": true,
+            "pdfHeaderSha256": "fd4d6d24a819f505b37a73ce05c7f8840f102e3587e456cc1c1c319cb414b867",
+            "pdfDownloadedSha256": "fd4d6d24a819f505b37a73ce05c7f8840f102e3587e456cc1c1c319cb414b867",
+            "pdfExpectedSha256": "fd4d6d24a819f505b37a73ce05c7f8840f102e3587e456cc1c1c319cb414b867",
+            "pdfShaMatch": true,
+            "certificationLatest": "HISTORICAL_REFERENCE",
+            "crossReportLatest": "CERTIFIED_HISTORICAL_REFERENCE",
+            "historicalCurrentLabels": [
+              {
+                "id": "AVA-RUN-CAMBRIDGE_BEACHES_BERMUD-20261106T103932Z-620e0e14",
+                "classification": "current",
+                "certificationStatus": "HISTORICAL_REFERENCE",
+                "crossReportStatus": "CERTIFIED_HISTORICAL_REFERENCE"
+              },
+              {
+                "id": "AVA-RUN-CAMBRIDGE_BEACHES_BERMUD-20261106T103520Z-5ec220e2",
+                "classification": "historical",
+                "certificationStatus": "HISTORICAL_REFERENCE",
+                "crossReportStatus": "CERTIFIED_HISTORICAL_REFERENCE"
+              },
+              {
+                "id": "AVA-RUN-CAMBRIDGE_BEACHES_BERMUD-20261106T101519Z-54514709",
+                "classification": "historical",
+                "certificationStatus": "HISTORICAL_REFERENCE",
+                "crossReportStatus": "CERTIFIED_HISTORICAL_REFERENCE"
+              },
+              {
+                "id": "AVA-RUN-CAMBRIDGE_BEACHES_BERMUD-20261106T101303Z-54e4a048",
+                "classification": "historical",
+                "certificationStatus": "HISTORICAL_REFERENCE",
+                "crossReportStatus": "CERTIFIED_HISTORICAL_REFERENCE"
+              },
+              {
+                "id": "AVA-RUN-CAMBRIDGE_BEACHES_BERMUD-20261106T100352Z-1d001192",
+                "classification": "historical",
+                "certificationStatus": "HISTORICAL_REFERENCE",
+                "crossReportStatus": "CERTIFIED_HISTORICAL_REFERENCE"
+              },
+              {
+                "id": "AVA-RUN-CAMBRIDGE_BEACHES_BERMUD-20261106T100107Z-72ba5b74",
+                "classification": "historical",
+                "certificationStatus": "HISTORICAL_REFERENCE",
+                "crossReportStatus": "CERTIFIED_HISTORICAL_REFERENCE"
+              },
+              {
+                "id": "AVA-RUN-CAMBRIDGE_BEACHES_BERMUD-20261106T095128Z-8eea3972",
+                "classification": "historical",
+                "certificationStatus": "HISTORICAL_REFERENCE",
+                "crossReportStatus": "CERTIFIED_HISTORICAL_REFERENCE"
+              }
+            ]
+          },
+          "adp_ac_hotel_a_coruna": {
+            "propertyId": "adp_ac_hotel_a_coruna",
+            "permanentRunsListed": 12,
+            "latestAuditRunId": "AVA-RUN-AC_HOTEL_A_CORUNA-20261106T103937Z-a5802f20",
+            "hotelPayloadHasPermanentRuns": true,
+            "permanentRunsApiOk": true,
+            "compareOk": true,
+            "pdfHeaderSha256": "fb70e70edfd339bbcf4b14e7de69ddec50fb6c98f1b551be6b22367355fadda9",
+            "pdfDownloadedSha256": "fb70e70edfd339bbcf4b14e7de69ddec50fb6c98f1b551be6b22367355fadda9",
+            "pdfExpectedSha256": "fb70e70edfd339bbcf4b14e7de69ddec50fb6c98f1b551be6b22367355fadda9",
+            "pdfShaMatch": true,
+            "certificationLatest": "HISTORICAL_REFERENCE",
+            "crossReportLatest": "CERTIFIED_HISTORICAL_REFERENCE",
+            "historicalCurrentLabels": [
+              {
+                "id": "AVA-RUN-AC_HOTEL_A_CORUNA-20261106T103937Z-a5802f20",
+                "classification": "current",
+                "certificationStatus": "HISTORICAL_REFERENCE",
+                "crossReportStatus": "CERTIFIED_HISTORICAL_REFERENCE"
+              },
+              {
+                "id": "AVA-RUN-AC_HOTEL_A_CORUNA-20261106T103934Z-bd9a3d57",
+                "classification": "historical",
+                "certificationStatus": "HISTORICAL_REFERENCE",
+                "crossReportStatus": "CERTIFIED_HISTORICAL_REFERENCE"
+              },
+              {
+                "id": "AVA-RUN-AC_HOTEL_A_CORUNA-20261106T103525Z-cdda4681",
+                "classification": "historical",
+                "certificationStatus": "HISTORICAL_REFERENCE",
+                "crossReportStatus": "CERTIFIED_HISTORICAL_REFERENCE"
+              },
+              {
+                "id": "AVA-RUN-AC_HOTEL_A_CORUNA-20261106T103523Z-5ddca1c2",
+                "classification": "historical",
+                "certificationStatus": "HISTORICAL_REFERENCE",
+                "crossReportStatus": "CERTIFIED_HISTORICAL_REFERENCE"
+              },
+              {
+                "id": "AVA-RUN-AC_HOTEL_A_CORUNA-20261106T101524Z-af28a036",
+                "classification": "historical",
+                "certificationStatus": "HISTORICAL_REFERENCE",
+                "crossReportStatus": "CERTIFIED_HISTORICAL_REFERENCE"
+              },
+              {
+                "id": "AVA-RUN-AC_HOTEL_A_CORUNA-20261106T101522Z-79c3aac5",
+                "classification": "historical",
+                "certificationStatus": "HISTORICAL_REFERENCE",
+                "crossReportStatus": "CERTIFIED_HISTORICAL_REFERENCE"
+              },
+              {
+                "id": "AVA-RUN-AC_HOTEL_A_CORUNA-20261106T101308Z-fad4ca05",
+                "classification": "historical",
+                "certificationStatus": "HISTORICAL_REFERENCE",
+                "crossReportStatus": "CERTIFIED_HISTORICAL_REFERENCE"
+              },
+              {
+                "id": "AVA-RUN-AC_HOTEL_A_CORUNA-20261106T101306Z-b35f1933",
+                "classification": "historical",
+                "certificationStatus": "HISTORICAL_REFERENCE",
+                "crossReportStatus": "CERTIFIED_HISTORICAL_REFERENCE"
+              },
+              {
+                "id": "AVA-RUN-AC_HOTEL_A_CORUNA-20261106T100356Z-a96fdb58",
+                "classification": "historical",
+                "certificationStatus": "HISTORICAL_REFERENCE",
+                "crossReportStatus": "CERTIFIED_HISTORICAL_REFERENCE"
+              },
+              {
+                "id": "AVA-RUN-AC_HOTEL_A_CORUNA-20261106T100354Z-d1799118",
+                "classification": "historical",
+                "certificationStatus": "HISTORICAL_REFERENCE",
+                "crossReportStatus": "CERTIFIED_HISTORICAL_REFERENCE"
+              },
+              {
+                "id": "AVA-RUN-AC_HOTEL_A_CORUNA-20261106T100112Z-b2f43686",
+                "classification": "historical",
+                "certificationStatus": "HISTORICAL_REFERENCE",
+                "crossReportStatus": "CERTIFIED_HISTORICAL_REFERENCE"
+              },
+              {
+                "id": "AVA-RUN-AC_HOTEL_A_CORUNA-20261106T100110Z-cee18ea6",
+                "classification": "historical",
+                "certificationStatus": "HISTORICAL_REFERENCE",
+                "crossReportStatus": "CERTIFIED_HISTORICAL_REFERENCE"
+              }
+            ]
+          }
+        },
+        "generatedAt": "2026-11-06T10:39:40.777Z"
+      }
+    },
+    "HISTORICAL_COMPARISON_PASS": {
+      "result": "PASS",
+      "evidence": {
+        "natural": {
+          "ok": true,
+          "propertyId": "adp_ac_hotel_a_coruna",
+          "earlierAuditRunId": "AVA-RUN-AC_HOTEL_A_CORUNA-20261106T103934Z-bd9a3d57",
+          "laterAuditRunId": "AVA-RUN-AC_HOTEL_A_CORUNA-20261106T103937Z-a5802f20",
+          "metricsChanged": [],
+          "newFindings": [],
+          "resolvedFindings": [],
+          "persistentFindings": [
+            {
+              "id": "theme_0_Meetings Facts Need One ",
+              "title": "Meetings Facts Need One Approved Record",
+              "priority": "THEME"
+            },
+            {
+              "id": "theme_1_Recognized Strengths Do ",
+              "title": "Recognized Strengths Do Not Yet Match the Full Offer",
+              "priority": "THEME"
+            },
+            {
+              "id": "theme_2_Recent Investment Should",
+              "title": "Recent Investment Should Be Reflected Accurately",
+              "priority": "THEME"
+            }
+          ],
+          "notResearchedOrDropped": [],
+          "priorityChanges": [],
+          "newActions": [],
+          "removedActions": [],
+          "evidenceConfidenceChanges": []
+        },
+        "fixtureNewFindings": [
+          {
+            "id": "SYNTHETIC_NEW_FINDING_OA_V1",
+            "title": "Controlled fixture finding for compare engine",
+            "priority": "LOW"
+          }
+        ]
+      }
+    },
+    "REPRODUCTION_PASS": {
+      "result": "PASS",
+      "evidence": {
+        "sourceAuditRunId": "AVA-RUN-SPICE_ISLAND_BEACH_RESOR-20261106T103929Z-71b1a87a",
+        "classification": "BYTE_IDENTICAL_REPRODUCTION",
+        "contentMatch": true,
+        "pdfMatch": true,
+        "note": "Byte-identical PDF reproduced.",
+        "pdfMeta": {
+          "original": {
+            "creation": "D:20260101000000+00'00'",
+            "mod": "D:20260101000000+00'00'",
+            "producer": "Skia/PDF m158",
+            "bytes": 144349
+          },
+          "reproduced": {
+            "creation": "D:20260101000000+00'00'",
+            "mod": "D:20260101000000+00'00'",
+            "producer": "Skia/PDF m158",
+            "bytes": 144349
+          },
+          "firstDiffOffset": null
+        },
+        "inputFingerprints": {
+          "originalContentSha256": "a61cd1b5aa84ef127312d75dcb94c2d342b4de539f4bad53a60df250ad999d94",
+          "reproducedContentSha256": "a61cd1b5aa84ef127312d75dcb94c2d342b4de539f4bad53a60df250ad999d94",
+          "originalAdpPackage": "adp_spice_island_beach_resort:adp_period_adp_spice_island_beach_resort_20261020082916_2209c8",
+          "originalAdpPeriod": "adp_period_adp_spice_island_beach_resort_20261020082916_2209c8"
+        }
+      },
+      "note": "Pre-stamp archives may be SEMANTICALLY_IDENTICAL; new stamps enable BYTE_IDENTICAL"
+    },
+    "REGRESSION_PASS": {
+      "result": "PASS",
+      "evidence": "test-ava-permanent-audit-runner-v1.mjs PASS"
+    }
+  },
+  "blockers": [],
+  "failures": [],
+  "artifacts": {
+    "threeHotel": "C:\\Dev\\dealality\\my-operators-backend-ava-v4-canonical\\reports\\ava-permanent-audit-runner-v1\\THREE_HOTEL_OPERATIONAL_ACCEPTANCE.json",
+    "adminApi": "C:\\Dev\\dealality\\my-operators-backend-ava-v4-canonical\\reports\\ava-permanent-audit-runner-v1\\ADMIN_HISTORY_API_VERIFICATION.json",
+    "schema": "C:\\Dev\\dealality\\my-operators-backend-ava-v4-canonical\\reports\\ava-permanent-audit-runner-v1\\AIRTABLE_SCHEMA_RECONCILIATION_READONLY.json",
+    "liveAirtable": "C:\\Dev\\dealality\\my-operators-backend-ava-v4-canonical\\reports\\ava-permanent-audit-runner-v1\\ADP_AIRTABLE_LIVE_PERSISTENCE_CERT.json"
+  },
+  "git": {
+    "branch": "fix/ava-v4-customer-quality-remediation-v1",
+    "note": "Uncommitted permanent-runner work in ava-v4-quality worktree; intended for canonical my-operators-backend"
+  }
+}

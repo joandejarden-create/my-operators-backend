@@ -392,6 +392,101 @@
     else openPdfBlobPreview(pack.blob, pack.filename);
   }
 
+  async function deliverPermanentArchivePdf(propertyId, auditRunId, download) {
+    if (!auditRunId) {
+      window.alert("Missing permanent audit run id.");
+      return;
+    }
+    var url =
+      API +
+      "/" +
+      encodeURIComponent(propertyId) +
+      "/permanent-runs/" +
+      encodeURIComponent(auditRunId) +
+      "/pdf" +
+      (download ? "?download=1" : "");
+    try {
+      var res = await authFetch(url);
+      if (!res.ok) {
+        var errJson = await res.json().catch(function () {
+          return {};
+        });
+        window.alert(
+          "Archived PDF not available (" +
+            (errJson.error || res.status) +
+            "). Refusing to regenerate or substitute."
+        );
+        return;
+      }
+      var blob = await res.blob();
+      var filename =
+        res.headers.get("X-AVA-PDF-Filename") ||
+        "Dealality-AVA-" + auditRunId + ".pdf";
+      var sha = res.headers.get("X-AVA-PDF-Sha256") || "";
+      if (download) triggerPdfDownload(blob, filename);
+      else openPdfBlobPreview(blob, filename);
+      if (sha) {
+        console.info("[AVA] permanent archive PDF sha256=", sha, "run=", auditRunId);
+      }
+    } catch (_err) {
+      window.alert("Failed to fetch archived PDF.");
+    }
+  }
+
+  async function comparePermanentRuns(propertyId) {
+    var checks = Array.prototype.slice.call(
+      document.querySelectorAll(".ava-perm-compare:checked")
+    );
+    var ids = checks.map(function (c) {
+      return c.getAttribute("data-run");
+    });
+    var out = document.getElementById("avaCompareResult");
+    if (ids.length !== 2) {
+      if (out) out.textContent = "Select exactly two permanent audit versions to compare.";
+      return;
+    }
+    // earlier = older createdAt if known; otherwise first checkbox then second
+    var earlier = ids[1];
+    var later = ids[0];
+    try {
+      var res = await authFetch(
+        API +
+          "/" +
+          encodeURIComponent(propertyId) +
+          "/permanent-runs/compare?earlier=" +
+          encodeURIComponent(earlier) +
+          "&later=" +
+          encodeURIComponent(later)
+      );
+      var json = await res.json();
+      if (!res.ok || !json.ok) {
+        if (out) out.textContent = "Compare failed: " + (json.error || res.status);
+        return;
+      }
+      if (!out) return;
+      out.innerHTML =
+        "<div><strong>Metrics changed:</strong> " +
+        esc(String((json.metricsChanged || []).length)) +
+        "</div><div><strong>New findings:</strong> " +
+        esc(String((json.newFindings || []).length)) +
+        "</div><div><strong>Resolved (explicit):</strong> " +
+        esc(String((json.resolvedFindings || []).length)) +
+        "</div><div><strong>Persistent:</strong> " +
+        esc(String((json.persistentFindings || []).length)) +
+        "</div><div><strong>Not researched / dropped (not resolved):</strong> " +
+        esc(String((json.notResearchedOrDropped || []).length)) +
+        "</div><div><strong>Priority changes:</strong> " +
+        esc(String((json.priorityChanges || []).length)) +
+        "</div><div><strong>New actions:</strong> " +
+        esc(String((json.newActions || []).length)) +
+        "</div><div><strong>Removed actions:</strong> " +
+        esc(String((json.removedActions || []).length)) +
+        "</div>";
+    } catch (_err) {
+      if (out) out.textContent = "Compare request failed.";
+    }
+  }
+
   function shortSha(sha) {
     return sha ? String(sha).slice(0, 12) + "…" : "—";
   }
@@ -1014,6 +1109,55 @@
         "</div></details>" +
         '<p class="ava-gate-note">Customer-quality certification never grants founder approval or customer publication. Founder review should focus on commercial judgment.</p>';
 
+      var permanentRuns = Array.isArray(json.permanentAuditRuns)
+        ? json.permanentAuditRuns
+        : [];
+      var currentPermanent = permanentRuns.find(function (r) {
+        return r.isLatest;
+      }) || permanentRuns[0] || null;
+
+      var currentAuditHtml =
+        '<dl class="ava-drawer-grid">' +
+        dlRow(
+          "Latest permanent run",
+          esc((currentPermanent && currentPermanent.auditRunId) || "None yet")
+        ) +
+        dlRow(
+          "Audit / ADP period",
+          esc((currentPermanent && currentPermanent.adpPeriodId) || baseline.periodId || "—")
+        ) +
+        dlRow(
+          "ADP package",
+          esc((currentPermanent && currentPermanent.adpPackageId) || "—")
+        ) +
+        dlRow(
+          "Certification",
+          esc(
+            (currentPermanent && currentPermanent.certificationStatus) ||
+              status ||
+              "—"
+          )
+        ) +
+        dlRow(
+          "Generated",
+          esc((currentPermanent && currentPermanent.createdAt) || (latest && latest.savedAt) || "—")
+        ) +
+        dlRow(
+          "Cross-report",
+          esc((currentPermanent && currentPermanent.crossReportStatus) || "—")
+        ) +
+        "</dl>" +
+        (currentPermanent
+          ? '<div class="ava-drawer-actions">' +
+            '<button type="button" class="adr-btn adr-btn--secondary ava-perm-preview" data-run="' +
+            esc(currentPermanent.auditRunId) +
+            '">Preview</button>' +
+            '<button type="button" class="adr-btn adr-btn--secondary ava-perm-download" data-run="' +
+            esc(currentPermanent.auditRunId) +
+            '">Download</button>' +
+            "</div>"
+          : "");
+
       var historyHtml = versions.length
         ? '<ul class="ava-version-list">' +
           versions
@@ -1045,7 +1189,46 @@
             })
             .join("") +
           "</ul>"
-        : "<p>No versions yet.</p>";
+        : "<p>No Admin staged versions yet.</p>";
+
+      var permanentHistoryHtml = permanentRuns.length
+        ? '<ul class="ava-version-list">' +
+          permanentRuns
+            .map(function (r) {
+              return (
+                "<li><strong>" +
+                esc(r.auditRunId) +
+                "</strong>" +
+                '<div class="ava-muted">' +
+                esc(r.createdAt || "—") +
+                " · " +
+                esc(r.adpPeriodId || "—") +
+                " · " +
+                esc(r.certificationStatus || "—") +
+                " · " +
+                esc(r.classification || "historical") +
+                (r.pdfSha256 ? " · sha " + esc(String(r.pdfSha256).slice(0, 12)) : "") +
+                "</div>" +
+                '<div class="ava-drawer-actions" style="margin-top:6px">' +
+                '<button type="button" class="adr-btn adr-btn--secondary ava-perm-preview" data-run="' +
+                esc(r.auditRunId) +
+                '">Preview</button>' +
+                '<button type="button" class="adr-btn adr-btn--secondary ava-perm-download" data-run="' +
+                esc(r.auditRunId) +
+                '">Download</button>' +
+                '<label class="ava-muted" style="margin-left:8px"><input type="checkbox" class="ava-perm-compare" data-run="' +
+                esc(r.auditRunId) +
+                '"/> Compare</label>' +
+                "</div></li>"
+              );
+            })
+            .join("") +
+          "</ul>" +
+          '<div class="ava-drawer-actions">' +
+          '<button type="button" class="adr-btn adr-btn--secondary" id="avaComparePermanentRuns">Compare selected versions</button>' +
+          "</div>" +
+          '<div id="avaCompareResult" class="ava-muted" style="margin-top:8px"></div>'
+        : "<p>No permanent audit-runner archives yet. Use scripts/Run-AVA-Audit.ps1.</p>";
 
       var canValidate =
         status === "PDF_STAGED" ||
@@ -1099,7 +1282,13 @@
           "Customer Quality Assurance",
           cqaHtml
         ) +
-        drawerSection("avaSecHistory", "Version History", historyHtml) +
+        drawerSection("avaSecCurrentAudit", "Current Audit", currentAuditHtml) +
+        drawerSection("avaSecHistory", "Audit History (Admin staged)", historyHtml) +
+        drawerSection(
+          "avaSecPermanentHistory",
+          "Audit History (Permanent runner)",
+          permanentHistoryHtml
+        ) +
         drawerSection("avaSecFounder", "Founder Approval", founderHtml);
 
       body.querySelectorAll(".ava-pdf-channel-btn").forEach(function (btn) {
@@ -1138,6 +1327,30 @@
           );
         });
       });
+      body.querySelectorAll(".ava-perm-preview").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          deliverPermanentArchivePdf(
+            propertyId,
+            btn.getAttribute("data-run"),
+            false
+          );
+        });
+      });
+      body.querySelectorAll(".ava-perm-download").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          deliverPermanentArchivePdf(
+            propertyId,
+            btn.getAttribute("data-run"),
+            true
+          );
+        });
+      });
+      var cmpBtn = document.getElementById("avaComparePermanentRuns");
+      if (cmpBtn) {
+        cmpBtn.addEventListener("click", function () {
+          comparePermanentRuns(propertyId);
+        });
+      }
       var valBtn = document.getElementById("avaMarkValidated");
       if (valBtn) {
         valBtn.addEventListener("click", function () {

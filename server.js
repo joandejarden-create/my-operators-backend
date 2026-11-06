@@ -178,6 +178,9 @@ import {
   getAdminAvaRecommendations,
   postAdminAvaGeneratePdf,
   getAdminAvaStorageStatus,
+  getAdminAvaPermanentRuns,
+  getAdminAvaPermanentRunCompare,
+  getAdminAvaPermanentRunPdf,
 } from "./api/admin-ai-visibility-audit.js";
 
 import { logAdpPublishedReadSourceAtStartup } from "./lib/ai-demand-positioning/published-read-service.js";
@@ -1618,6 +1621,9 @@ app.get("/api/admin/ai-visibility-audit/:propertyId", ...adpMonthlyReviewAdminAu
 app.get("/api/admin/ai-visibility-audit/:propertyId/pdf", ...adpMonthlyReviewAdminAuth, getAdminAvaPdf);
 app.get("/api/admin/ai-visibility-audit/:propertyId/recommendations", ...adpMonthlyReviewAdminAuth, getAdminAvaRecommendations);
 app.get("/api/admin/ai-visibility-audit/:propertyId/versions/:versionId", ...adpMonthlyReviewAdminAuth, getAdminAvaVersion);
+app.get("/api/admin/ai-visibility-audit/:propertyId/permanent-runs", ...adpMonthlyReviewAdminAuth, getAdminAvaPermanentRuns);
+app.get("/api/admin/ai-visibility-audit/:propertyId/permanent-runs/compare", ...adpMonthlyReviewAdminAuth, getAdminAvaPermanentRunCompare);
+app.get("/api/admin/ai-visibility-audit/:propertyId/permanent-runs/:auditRunId/pdf", ...adpMonthlyReviewAdminAuth, getAdminAvaPermanentRunPdf);
 app.post("/api/admin/ai-visibility-audit/:propertyId/validate-payload", ...adpMonthlyReviewAdminAuth, postAdminAvaValidatePayload);
 app.post("/api/admin/ai-visibility-audit/:propertyId/evidence-validation", ...adpMonthlyReviewAdminAuth, postAdminAvaEvidenceValidation);
 app.post("/api/admin/ai-visibility-audit/:propertyId/evidence-manual-verification", ...adpMonthlyReviewAdminAuth, postAdminAvaEvidenceManualVerification);
