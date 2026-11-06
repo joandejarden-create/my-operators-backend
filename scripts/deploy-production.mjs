@@ -17,6 +17,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { execSync, spawnSync } from "node:child_process";
+import { assertDeployAllowedByLock } from "../lib/dealality-production-release/release-lock-v1.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const manifest = JSON.parse(
@@ -27,6 +28,28 @@ const allowHotfix = process.env.DEALALITY_ALLOW_HOTFIX_DEPLOY === "1";
 const allowDirty = process.env.DEALALITY_ALLOW_DIRTY_DEPLOY === "1";
 const skipPost = process.env.DEALALITY_SKIP_POSTDEPLOY_SMOKE === "1";
 const dryRun = process.argv.includes("--dry-run");
+
+const lockGate = assertDeployAllowedByLock(process.env, {
+  liveDeploy: !dryRun,
+  cwd: root,
+});
+if (!lockGate.ok) {
+  console.error(
+    `FAIL RELEASE_LOCK_GATE: ${lockGate.code || "LOCK"} — ${lockGate.message}`
+  );
+  if (lockGate.lock) {
+    console.error(
+      `  heldBy=${lockGate.lock.owner} product=${lockGate.lock.product} phase=${lockGate.lock.phase}`
+    );
+  }
+  console.error(
+    "Use scripts/Run-Dealality-Production-Release.ps1 with DEALALITY_RELEASE_LOCK_ROOT on a durable shared path."
+  );
+  process.exit(1);
+}
+if (lockGate.warn) {
+  console.warn(`WARN RELEASE_LOCK: ${lockGate.warn}`);
+}
 
 function sh(cmd, opts = {}) {
   return execSync(cmd, {
