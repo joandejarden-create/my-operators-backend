@@ -60,6 +60,10 @@ jobs:
           assert.match(html, /data-tab="visibility-audit"/);
           assert.match(html, /id="adaTabVisibilityAudit"/);
           assert.match(html, /id="adaPanelVisibilityAudit"/);
+          assert.match(shell, /"gdi-research-audit"\s*:\s*true/);
+          assert.match(html, /id="adaTabGdiResearchAudit"/);
+          assert.match(html, /id="adaPanelGdiResearchAudit"/);
+          assert.match(html, /admin-gdi-research-audit\.js/);
           console.log(JSON.stringify({ ok: true, staticPreflight: "pass" }));
           EOF
 

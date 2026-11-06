@@ -462,7 +462,7 @@
   function loadAll() {
     var id = encodeURIComponent(state.hotelId);
     // Critical path: hotel catalog + flag + summary + opportunities + profile.
-    // Research-runs are audit-tab only — load after first paint.
+    // Research-run history/costs load only in AI Demand Admin (admin ledger tab).
     return loadHotelCatalog().then(function () {
       id = encodeURIComponent(state.hotelId);
       return Promise.all([
@@ -496,15 +496,9 @@
         // Campaigns/generators stay on internal APIs only — not customer load path.
         state.demandCampaigns = [];
         state.demandCampaignMeta = { visibleCount: 0, storedCount: 0 };
+        // Research-run history/costs are admin-only (AI Demand Admin ledger).
+        state.runs = [];
         render();
-        return api("/api/group-demand-intelligence/hotels/" + id + "/research-runs")
-          .then(function (runsPayload) {
-            state.runs = runsPayload.runs || [];
-            if (state.tab === "audit") render();
-          })
-          .catch(function () {
-            state.runs = [];
-          });
       });
     });
   }
@@ -1308,35 +1302,11 @@
     );
   }
 
-  function renderAudit() {
-    var latest = state.runs[0];
-    if (!latest) {
-      return '<div class="gdi-empty">No research runs yet.</div>';
-    }
-    var cost = latest.cost || {};
-    return (
-      '<div class="gdi-audit">' +
-      "<p>Run <strong>" +
-      esc(latest.id) +
-      "</strong> · " +
-      esc(latest.status) +
-      "</p>" +
-      "<p>Total cost $" +
-      esc(cost.totalUsd || 0) +
-      " · Webhound $" +
-      esc(cost.webhoundUsd || 0) +
-      " / hard cap $" +
-      esc(cost.webhoundHardCapUsd || 5) +
-      "</p>" +
-      "<p>Research traces, campaign ids, and internal statuses stay off this page.</p></div>"
-    );
-  }
-
   function render() {
     setLoading(false);
     var s = state.summary || {};
 
-    var body = state.tab === "audit" ? renderAudit() : renderBrowseBody({ noun: "Opportunities" });
+    var body = renderBrowseBody({ noun: "Opportunities" });
 
     var identity = (state.hotelProfile && state.hotelProfile.identity) || {};
     var hotelName = identity.hotelName || "Hotel";
@@ -1351,7 +1321,7 @@
         mode: "auth",
         badges: {},
       }) +
-      UI.contentTabsHtml(state.tab, [UI.GDI_MAIN_TAB, { id: "audit", label: "Research Audit" }]) +
+      UI.contentTabsHtml(state.tab, [UI.GDI_MAIN_TAB]) +
       UI.propertyBarHtml({
         mode: "auth",
         hotel: hotel,
@@ -1365,14 +1335,9 @@
           UI.opportunityTypeCountsForFilters(state.opportunities, state.filters)
         ),
         lastResearch: formatHistoryDate(s.lastResearchAt),
-        runStatusLabel:
-          s.runStatusLabel ||
-          (s.runStatus === "NEVER_RUN" || s.runStatus === "STATUS_UNAVAILABLE"
-            ? s.runStatus === "STATUS_UNAVAILABLE"
-              ? "Status unavailable"
-              : "History unavailable"
-            : s.runStatus) ||
-          "History unavailable",
+        runStatusLabel: UI.customerSafeRunStatusLabel
+          ? UI.customerSafeRunStatusLabel(s)
+          : "Research Completed",
         lastSourceVerification: formatHistoryDate(s.lastSourceVerificationAt),
         lastPublishedUpdate: formatHistoryDate(
           s.lastPublishedUpdateAt || s.lastReviewedPackageImportAt

@@ -39,6 +39,11 @@ const EXPECTED_TABS = Object.freeze([
     btn: "adaTabVisibilityAudit",
     panel: "adaPanelVisibilityAudit",
   },
+  {
+    tab: "gdi-research-audit",
+    btn: "adaTabGdiResearchAudit",
+    panel: "adaPanelGdiResearchAudit",
+  },
 ]);
 
 function staticContracts() {
@@ -62,6 +67,11 @@ function staticContracts() {
   );
   assert.match(
     shellJs,
+    /"gdi-research-audit"\s*:\s*true/,
+    "ALLOWED must include gdi-research-audit"
+  );
+  assert.match(
+    shellJs,
     /adaTabVisibilityAudit/,
     "setActiveTab must wire adaTabVisibilityAudit"
   );
@@ -69,6 +79,16 @@ function staticContracts() {
     shellJs,
     /adaPanelVisibilityAudit/,
     "setActiveTab must show/hide adaPanelVisibilityAudit"
+  );
+  assert.match(
+    shellJs,
+    /adaTabGdiResearchAudit/,
+    "setActiveTab must wire adaTabGdiResearchAudit"
+  );
+  assert.match(
+    shellJs,
+    /adaPanelGdiResearchAudit/,
+    "setActiveTab must show/hide adaPanelGdiResearchAudit"
   );
 
   for (const t of EXPECTED_TABS) {
@@ -100,6 +120,16 @@ function staticContracts() {
     /admin-ai-visibility-audit\.js/,
     "AI Visibility Audit script must be loaded"
   );
+  assert.match(
+    html,
+    /admin-gdi-research-audit\.js/,
+    "GDI Research Audit script must be loaded"
+  );
+  assert.match(
+    html,
+    /id="graTableBody"/,
+    "GDI Research Audit table body must exist"
+  );
   // Panel must remain inside the gated workspace shell.
   const shellOpen = html.indexOf('id="supportGateContent"');
   const avaPanel = html.indexOf('id="adaPanelVisibilityAudit"');
@@ -117,11 +147,12 @@ function staticContracts() {
 
 async function browserContracts() {
   const shellRes = await fetch(
-    `${BASE}/js/admin-ai-demand-admin.js?v=ada-visibility-audit-nav-v1`
+    `${BASE}/js/admin-ai-demand-admin.js?v=ada-gdi-research-audit-nav-v1`
   );
   assert.equal(shellRes.status, 200, "admin shell JS must be served");
   const shellText = await shellRes.text();
   assert.match(shellText, /"visibility-audit"\s*:\s*true/);
+  assert.match(shellText, /"gdi-research-audit"\s*:\s*true/);
 
   const htmlRes = await fetch(`${BASE}/app/admin/ai-demand-admin.html`);
   assert.equal(htmlRes.status, 200, "AI Demand Admin page must be served");
@@ -251,6 +282,26 @@ async function browserContracts() {
     results.push({ tab: t.tab, ok: true, ...state });
   }
 
+  // Deep-check GDI Research Audit destination mounts.
+  await page.click("#adaTabGdiResearchAudit");
+  await page.waitForSelector("#graTableBody", { state: "attached", timeout: 10000 });
+  await page.waitForTimeout(400);
+  const graUi = await page.evaluate(() => {
+    const panel = document.getElementById("adaPanelGdiResearchAudit");
+    const body = document.getElementById("graTableBody");
+    const text = panel ? String(panel.textContent || "") : "";
+    return {
+      panelVisible: panel ? panel.hidden === false : false,
+      hasCopy: /GDI Research Audit|research run/i.test(text),
+      hasTableBody: Boolean(body),
+      urlTab: new URLSearchParams(window.location.search).get("tab"),
+    };
+  });
+  assert.equal(graUi.panelVisible, true, "GDI Research Audit panel must be visible");
+  assert.equal(graUi.hasTableBody, true, "GDI Research Audit #graTableBody must mount");
+  assert.ok(graUi.hasCopy, "GDI Research Audit panel must render audit copy");
+  assert.equal(graUi.urlTab, "gdi-research-audit");
+
   // Deep-check AI Visibility Audit destination content mounts + loads.
   await page.click("#adaTabVisibilityAudit");
   await page.waitForSelector("#avaTableBody", { state: "attached", timeout: 10000 });
@@ -312,7 +363,7 @@ async function browserContracts() {
   );
 
   await browser.close();
-  return { results, avaUi, apiStatus: apiRes.status };
+  return { results, avaUi, graUi, apiStatus: apiRes.status };
 }
 
 staticContracts();
@@ -324,8 +375,10 @@ console.log(
       contract: "adp-admin-workspace-navigation-v1",
       tabs: EXPECTED_TABS.map((t) => t.tab),
       visibilityAuditRestored: true,
+      gdiResearchAuditPresent: true,
       apiStatus: browser.apiStatus,
       avaUi: browser.avaUi,
+      graUi: browser.graUi,
     },
     null,
     2

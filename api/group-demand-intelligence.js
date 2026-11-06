@@ -118,6 +118,7 @@ import {
   buildShareOpportunityDetailDto,
   buildShareOpportunityListDto,
 } from "../lib/group-demand-intelligence/share/share-customer-presentation-parity-v1.js";
+import { redactCustomerFacingGdiSummary } from "../lib/group-demand-intelligence/customer-safe-run-status-label-v1.js";
 
 function enrichSummaryWithHotelActivity(hotelId, summary, opportunityDoc) {
   const opportunities = opportunityDoc?.opportunities || [];
@@ -574,12 +575,14 @@ export async function getGdiSummary(req, res) {
       automatedResearchRunStatus: null, // prefer runStatusLabel for customers
     };
     enrichedSummary.automatedResearchRunStatus = enrichedSummary.runStatus;
+    // Run IDs / costs / provenance are admin-only (AI Demand Admin → GDI Research Audit).
+    const customerSummary = redactCustomerFacingGdiSummary(enrichedSummary);
     return res.json({
       ok: true,
       experimentalLabel: "EXPERIMENTAL / PILOT",
       hotelId,
       profileReady: Boolean(profile),
-      summary: enrichedSummary,
+      summary: customerSummary,
       competitiveContext: profile
         ? {
             strCompSet: profile.strCompSet || [],
@@ -2019,11 +2022,10 @@ export async function getGdiShareResolve(req, res) {
     city: profile?.identity?.city || hotelConfig?.city || null,
     state: profile?.identity?.state || null,
     surfaces: verified.claims.surfaces,
-    summary: {
+    summary: redactCustomerFacingGdiSummary({
       lastResearchAt: summary.lastResearchAt,
       runStatus: summary.runStatus,
       runStatusLabel: summary.runStatusLabel,
-      latestRunId: summary.latestRunId,
       lastReviewedPackageImportAt: summary.lastReviewedPackageImportAt,
       lastPublishedUpdateAt: summary.lastPublishedUpdateAt,
       qualifiedCount: inventoryFacingCount,
@@ -2039,8 +2041,8 @@ export async function getGdiShareResolve(req, res) {
       alreadyKnown: validationSummary.alreadyKnown,
       worthPursuingNow: validationSummary.worthPursuingNow,
       notRelevant: validationSummary.notRelevant,
-      // intentionally omit researchCostUsd / admin cost internals
-    },
+      // intentionally omit latestRunId / researchCostUsd / admin cost internals
+    }),
     validationSummary,
     expiresAt: verified.meta?.expiresAt || null,
   });
