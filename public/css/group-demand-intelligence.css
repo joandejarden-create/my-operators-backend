@@ -715,12 +715,260 @@ body.gdi-page.embed-mode .gdi-shell {
   font-weight: 600;
 }
 
+/* Universal Commercial Stage Pill V1 — four tinted dark-theme badges. */
+.gdi-pill-stage-pursue,
+.gdi-tile-pill--stage.gdi-pill-stage-pursue {
+  background: rgba(20, 202, 116, 0.14);
+  color: #7dffb2;
+  border: 1px solid rgba(20, 202, 116, 0.4);
+}
+
+.gdi-pill-stage-future,
+.gdi-tile-pill--stage.gdi-pill-stage-future {
+  background: rgba(6, 182, 212, 0.14);
+  color: #7ee7fa;
+  border: 1px solid rgba(6, 182, 212, 0.4);
+}
+
+.gdi-pill-stage-relationship,
+.gdi-tile-pill--stage.gdi-pill-stage-relationship {
+  background: rgba(168, 85, 247, 0.16);
+  color: #ddb3ff;
+  border: 1px solid rgba(168, 85, 247, 0.42);
+}
+
+.gdi-pill-stage-qualify,
+.gdi-tile-pill--stage.gdi-pill-stage-qualify {
+  background: rgba(253, 181, 42, 0.14);
+  color: #ffd27a;
+  border: 1px solid rgba(253, 181, 42, 0.4);
+}
+
+.gdi-tile-pill--stage {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  white-space: nowrap;
+  line-height: 1.25;
+  box-sizing: border-box;
+}
+
+/* Universal Sales Action Pill V1 — eight tinted dark-theme badges (middle pill). */
+.gdi-pill-sales-build-account,
+.gdi-tile-pill--sales-action.gdi-pill-sales-build-account {
+  background: rgba(139, 92, 246, 0.28);
+  color: #ddd6fe;
+  border: 1px solid rgba(167, 139, 250, 0.65);
+}
+
+.gdi-pill-sales-contact-buyer,
+.gdi-tile-pill--sales-action.gdi-pill-sales-contact-buyer {
+  background: rgba(20, 202, 116, 0.26);
+  color: #a7f3d0;
+  border: 1px solid rgba(52, 211, 153, 0.6);
+}
+
+.gdi-pill-sales-win-room-block,
+.gdi-tile-pill--sales-action.gdi-pill-sales-win-room-block {
+  background: rgba(59, 130, 246, 0.28);
+  color: #bfdbfe;
+  border: 1px solid rgba(96, 165, 250, 0.65);
+}
+
+.gdi-pill-sales-build-venue,
+.gdi-tile-pill--sales-action.gdi-pill-sales-build-venue {
+  background: rgba(20, 184, 166, 0.26);
+  color: #99f6e4;
+  border: 1px solid rgba(45, 212, 191, 0.6);
+}
+
+.gdi-pill-sales-engage-planner,
+.gdi-tile-pill--sales-action.gdi-pill-sales-engage-planner {
+  background: rgba(168, 85, 247, 0.28);
+  color: #e9d5ff;
+  border: 1px solid rgba(192, 132, 252, 0.65);
+}
+
+.gdi-pill-sales-pursue-catering,
+.gdi-tile-pill--sales-action.gdi-pill-sales-pursue-catering {
+  background: rgba(253, 181, 42, 0.26);
+  color: #fde68a;
+  border: 1px solid rgba(251, 191, 36, 0.6);
+}
+
+.gdi-pill-sales-qualify,
+.gdi-tile-pill--sales-action.gdi-pill-sales-qualify {
+  background: rgba(100, 116, 139, 0.3);
+  color: #e2e8f0;
+  border: 1px solid rgba(148, 163, 184, 0.55);
+}
+
+.gdi-pill-sales-monitor,
+.gdi-tile-pill--sales-action.gdi-pill-sales-monitor {
+  background: rgba(126, 137, 172, 0.26);
+  color: #cbd5e1;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+}
+
+.gdi-tile-pill--sales-action {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  white-space: nowrap;
+  line-height: 1.25;
+  box-sizing: border-box;
+}
+
 .gdi-tile-pills {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 4px;
+  /* Spacing from title owned by .brand-card__name margin-bottom */
+  margin-top: 0;
   margin-bottom: 10px;
+}
+
+/* Revenue-stream icons (Guestrooms · Meetings/Events) — top-right of tile title */
+.gdi-page .brand-card__name-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 0 10px;
+  min-width: 0;
+}
+
+.gdi-page .brand-card__name-row .brand-card__name {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+}
+
+.gdi-revenue-stream-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  margin-top: 1px;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Need-Date Intelligence calendar icon — sits beside revenue-stream icons.
+   No pill/background. Hidden entirely when no meaningful hotel need match. */
+.gdi-need-date-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  line-height: 0;
+  flex: 0 0 auto;
+  margin-top: 1px;
+  margin-left: 2px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.gdi-need-date-svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+  stroke-width: 2.25;
+}
+
+.gdi-need-date-icon--verified {
+  color: var(--system--green-300);
+}
+
+.gdi-need-date-icon--flexible {
+  color: var(--secondary--color-5);
+}
+
+.gdi-need-date-icon--research {
+  color: var(--accent--primary-1);
+}
+
+.gdi-section--need-date-match {
+  border-left: 2px solid var(--accent--primary-1);
+  padding-left: 12px;
+}
+
+.gdi-revenue-stream-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  line-height: 0;
+}
+
+.gdi-revenue-stream-svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.gdi-revenue-stream-icon--active {
+  /* Match Reset View (.btn-clear) gold — exact token, not a near shade */
+  color: var(--secondary--color-5);
+  opacity: 1;
+}
+
+.gdi-revenue-stream-icon--muted {
+  color: var(--neutral--500);
+  opacity: 0.5;
+}
+
+/* Accessible differentiation beyond color (stroke weight + slight scale) */
+.gdi-revenue-stream-icon--active .gdi-revenue-stream-svg {
+  stroke-width: 2.25;
+}
+
+.gdi-revenue-stream-icon--muted .gdi-revenue-stream-svg {
+  stroke-width: 1.75;
+}
+
+.gdi-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 500px) {
+  .gdi-page .brand-card__name-row {
+    gap: 6px;
+  }
+
+  .gdi-revenue-stream-icon,
+  .gdi-revenue-stream-svg,
+  .gdi-need-date-icon,
+  .gdi-need-date-svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .gdi-revenue-stream-icons {
+    gap: 5px;
+  }
+
+  .gdi-need-date-icon {
+    margin-left: 1px;
+  }
+}
+
+/* Three-pill tiles: Proper Case (labels already Title Case in JS) — not ALL CAPS */
+.gdi-tile-pills .gdi-pill,
+.gdi-tile-pills .gdi-tile-pill {
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-weight: 600;
 }
 
 button.gdi-tile-pill {
@@ -1098,17 +1346,193 @@ button.gdi-tile-pill.is-filter-active {
   margin-bottom: 12px;
 }
 
-/* ââ Brand Explorer list chrome (copied class language) ââ */
-.gdi-browse-presets {
+/* —— Customer Opportunities vs Research Inventory (auth only) —— */
+.gdi-inventory-view {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  align-items: stretch;
-  margin-bottom: 16px;
+  gap: 8px;
+  margin: 0 0 12px;
+  align-items: center;
+}
+.gdi-inventory-view__btn {
+  appearance: none;
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  background: #fff;
+  color: #0f172a;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.gdi-inventory-view__btn.is-active {
+  border-color: #0f172a;
+  background: #0f172a;
+  color: #fff;
+}
+.gdi-inventory-view__count {
+  display: inline-block;
+  margin-left: 6px;
+  opacity: 0.75;
+  font-weight: 500;
 }
 
-.gdi-browse-presets .chain-scale-legend {
+/* —— GDI Final Preset Filter Bar ——
+ * ONE horizontal row · Priority (auto) + Sales (1fr) · equal-height panels.
+ * Titles left of chips on the same line · chips never wrap at desktop.
+ * No Unclassified Priority chip (UI only). No horizontal scrollbar.
+ */
+.gdi-browse-presets {
+  display: grid;
+  /* Priority · Sales Opportunities — one horizontal band when space allows */
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 8px;
+  align-items: stretch;
+  /* Same content width as Property / Weekly Change / Opportunity Type — no side bleed */
+  margin: 0 0 12px;
+  overflow: visible;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.gdi-browse-presets > .gdi-browse-preset,
+.gdi-browse-presets > .gdi-sales-opportunity-filters,
+.gdi-browse-presets > .chain-scale-legend {
   margin-bottom: 0;
+  min-width: 0;
+  max-width: 100%;
+  height: 100%;
+  align-self: stretch;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.gdi-browse-preset {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: max-content;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.gdi-browse-preset .chain-scale-legend,
+.gdi-sales-opportunity-filters .chain-scale-legend {
+  flex: 1 1 auto;
+  height: 100%;
+  margin-bottom: 0;
+}
+
+.gdi-sales-opportunity-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  max-width: 100%;
+  height: 100%;
+}
+
+.gdi-browse-presets .gdi-preset-panel {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  max-width: 100%;
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+.gdi-browse-presets .gdi-preset-panel__title {
+  flex: 0 0 auto;
+  align-self: center;
+  margin-right: 0;
+  padding-top: 0;
+  line-height: 1.25;
+  color: var(--neutral--400);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  width: auto;
+}
+
+.gdi-browse-presets .gdi-preset-panel__chips {
+  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0;
+  min-width: 0;
+  max-width: none;
+  overflow: visible;
+}
+
+.gdi-browse-presets .gdi-preset-panel__chips .chain-scale-legend-item {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  line-height: 1.25;
+  padding: 3px 6px;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.gdi-browse-presets .gdi-preset-panel__chips .chain-scale-legend-label {
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.gdi-browse-presets .gdi-preset-panel__chips .chain-scale-legend-swatch {
+  width: 10px;
+  height: 10px;
+}
+
+/*
+ * One-row floor: content shell must be ≥ ~1400px (viewport typically ≥ 1440).
+ * Below that, stack panels so labels never clip or force page H-scroll.
+ */
+@media (max-width: 1439px) {
+  .gdi-browse-presets {
+    grid-template-columns: 1fr;
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
+
+  .gdi-browse-preset {
+    width: 100%;
+  }
+
+  .gdi-browse-presets .gdi-preset-panel__chips {
+    flex-wrap: wrap;
+  }
+}
+
+.gdi-sourcing-subgroup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--neutral--850, var(--neutral--800));
+  border: 0.6px solid var(--neutral--600);
+}
+
+.gdi-sourcing-subgroup__label {
+  color: var(--neutral--400);
+  font-size: 11px;
+  font-weight: 600;
+  margin-right: 4px;
+  white-space: nowrap;
+}
+
+.gdi-sourcing-subgroup__btn {
+  font-size: 11px;
 }
 
 .gdi-page .chain-scale-legend {
@@ -1118,12 +1542,98 @@ button.gdi-tile-pill.is-filter-active {
   padding: 8px 10px;
   margin-bottom: 16px;
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 6px;
   align-items: center;
-  flex: 1 1 auto;
+  align-content: flex-start;
+  flex: 0 1 auto;
   min-width: 0;
-  overflow-x: auto;
+  max-width: 100%;
+  overflow-x: visible;
+}
+
+/* Equal chrome for the two preset containers inside the grid */
+.gdi-browse-presets > .gdi-browse-preset .chain-scale-legend,
+.gdi-browse-presets > .gdi-sales-opportunity-filters .chain-scale-legend {
+  margin-bottom: 0;
+  padding: 6px 10px;
+  border-radius: 8px;
+  min-height: 36px;
+  box-sizing: border-box;
+}
+
+/*
+ * Win over .gdi-page .chain-scale-legend { flex-wrap: wrap }.
+ * Desktop: title + chips on ONE line; chips never wrap.
+ */
+.gdi-page .gdi-browse-presets .chain-scale-legend.gdi-preset-panel {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  max-width: 100%;
+  overflow: visible;
+  box-sizing: border-box;
+  padding: 6px 10px;
+  min-height: 36px;
+}
+
+.gdi-page .gdi-browse-presets .gdi-preset-panel__title {
+  flex: 0 0 auto;
+  align-self: center;
+  margin-right: 0;
+  padding-top: 0;
+  line-height: 1.25;
+  color: var(--neutral--400);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  width: auto;
+}
+
+.gdi-page .gdi-browse-presets .gdi-preset-panel__chips {
+  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0;
+  min-width: 0;
+  max-width: none;
+  overflow: visible;
+}
+
+.gdi-page .gdi-browse-presets .gdi-preset-panel__chips .chain-scale-legend-item {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  line-height: 1.25;
+  padding: 3px 5px;
+  gap: 3px;
+  font-size: 12px;
+}
+
+.gdi-page .gdi-browse-presets .gdi-browse-legend--sales .gdi-preset-panel__chips .chain-scale-legend-item {
+  padding: 3px 4px;
+  gap: 3px;
+}
+
+.gdi-page .gdi-browse-presets .gdi-preset-panel__chips .chain-scale-legend-label {
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.gdi-page .gdi-browse-presets .gdi-preset-panel__chips .chain-scale-legend-swatch {
+  width: 10px;
+  height: 10px;
+}
+
+@media (max-width: 1439px) {
+  .gdi-page .gdi-browse-presets .gdi-preset-panel__chips {
+    flex-wrap: wrap;
+  }
 }
 
 .gdi-page .chain-scale-legend > span:first-child {
@@ -1181,13 +1691,6 @@ button.gdi-tile-pill.is-filter-active {
   color: inherit;
   font-size: 12px;
   white-space: nowrap;
-}
-
-/* Wide: keep the three filter groups on one row when space allows */
-@media (min-width: 1200px) {
-  .gdi-browse-presets {
-    flex-wrap: nowrap;
-  }
 }
 
 .gdi-page .results-toolbar {
@@ -1437,7 +1940,8 @@ button.gdi-tile-pill.is-filter-active {
   font-size: 16px;
   font-weight: 700;
   color: var(--neutral--100);
-  margin: 0 0 6px;
+  /* ~8–10px beneath title before status pills (one- or two-line titles) */
+  margin: 0 0 10px;
   line-height: 1.25;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -1500,15 +2004,30 @@ button.gdi-tile-pill.is-filter-active {
   color: var(--neutral--400);
   flex: 1;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  margin: 2px 0 0;
+  /* Keep last line clear of the contact divider */
+  padding-bottom: 2px;
+  margin-bottom: 14px;
 }
 
 .gdi-page .brand-card__footer {
-  margin-top: auto;
-  padding-top: 14px;
+  margin-top: 0;
+  padding-top: 16px;
   border-top: 1px solid var(--neutral--600);
+}
+
+.gdi-page .brand-card--gdi-opp {
+  display: flex;
+  flex-direction: column;
+}
+
+.gdi-page .brand-card--gdi-opp .brand-card__footer {
+  /* auto pushes footer down; description margin-bottom keeps space above the rule */
+  margin-top: auto;
+  padding-top: 16px;
 }
 
 .gdi-page .brand-card__footer--split {
@@ -1530,16 +2049,23 @@ button.gdi-tile-pill.is-filter-active {
   font-weight: 700;
   color: var(--neutral--100);
   margin-bottom: 2px;
-  overflow-wrap: anywhere;
-  word-break: break-word;
+  /* Prefer whole-word wrap — overflow-wrap:anywhere caused letter-by-letter
+     wrapping in narrow card contact columns (V33 visual parity). */
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.gdi-page .brand-card__contact-name--unidentified {
+  font-weight: 600;
+  color: var(--neutral--400);
 }
 
 .gdi-page .brand-card__contact-line {
   font-size: 12px;
   color: var(--neutral--500);
   line-height: 1.35;
-  overflow-wrap: anywhere;
-  word-break: break-word;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 .gdi-page .brand-card__contact-line--role {
@@ -1749,29 +2275,71 @@ button.gdi-tile-pill.is-filter-active {
 }
 
 .gdi-section {
-  margin-bottom: 18px;
+  margin-bottom: 20px;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--gdi-border);
 }
 
 .gdi-section:last-child {
   border-bottom: none;
+  margin-bottom: 8px;
 }
 
-.gdi-section h3 {
-  margin: 0 0 8px;
+/* Shared drawer hierarchy — all ten sections */
+.gdi-section h3,
+.gdi-detail-framework .gdi-section h3 {
+  margin: 0 0 10px;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--gdi-muted);
+  color: var(--neutral--100, #f3f5fb);
+  line-height: 1.35;
 }
 
 .gdi-section p {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   color: var(--gdi-text);
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.55;
+}
+
+.gdi-section p:last-child {
+  margin-bottom: 0;
+}
+
+.gdi-section ul,
+.gdi-section ol {
+  margin: 0 0 10px;
+  padding-left: 1.2em;
+  color: var(--gdi-text);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.gdi-section li {
+  margin-bottom: 0.35em;
+}
+
+.gdi-section li:last-child {
+  margin-bottom: 0;
+}
+
+.gdi-section strong {
+  font-weight: 650;
+  color: var(--neutral--100, #f3f5fb);
+}
+
+.gdi-section a,
+.gdi-drawer-body a {
+  color: #b8bcff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.gdi-section a:hover,
+.gdi-drawer-body a:hover {
+  color: #d4d6ff;
 }
 
 .gdi-score-grid {
@@ -1878,9 +2446,7 @@ button.gdi-tile-pill.is-filter-active {
   display: block;
   margin-top: 4px;
   font-size: 11px;
-
-  /* Lighter than --gdi-accent so WCAG AA holds on dark score cells */
-  color: #c8ccff;
+  color: var(--neutral--100, #f3f5fb);
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -1968,6 +2534,124 @@ button.gdi-tile-pill.is-filter-active {
   word-break: break-word;
 }
 
+/* Association / Conference / Events — structured Opportunity overview
+   Presentation only: hierarchy under shared .gdi-section h3; lighter than drawer h2. */
+.gdi-section[data-section-id="opportunity_overview"] > h3 {
+  /* Match shared drawer section headings exactly (explicit for this section). */
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--neutral--100, #f3f5fb);
+  line-height: 1.35;
+}
+
+.gdi-events-opportunity-overview {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.gdi-events-overview-identity {
+  display: block;
+  margin: 0 0 10px;
+  padding: 0;
+  /* Between body (13px) and drawer title (16px) — prominent, not oversized */
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--neutral--100, #f3f5fb);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Legacy markup safety if identity still wraps <strong> */
+.gdi-events-overview-identity strong {
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+
+.gdi-events-overview-grid {
+  display: grid;
+  /* Drawer is ~560px — keep two columns for scan rhythm; do not follow page viewport. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+}
+
+/* Narrow phones only */
+@media (max-width: 380px) {
+  .gdi-events-overview-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.gdi-events-overview-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 3px;
+  min-width: 0;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 7px 9px;
+  border: 1px solid var(--gdi-border);
+  border-radius: 8px;
+  background: rgba(20, 29, 58, 0.65);
+}
+
+/* Odd trailing card (Peak rooms) stays left — avoids a stretched full-width empty look */
+
+.gdi-events-overview-label {
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.25;
+  color: var(--gdi-muted);
+  opacity: 1;
+}
+
+.gdi-events-overview-value {
+  display: block;
+  margin: 0;
+  padding: 0;
+  /* Match drawer body size — readable, not visually dominant */
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--gdi-text);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Keep overview section rhythm with following “What is happening” divider */
+.gdi-section[data-section-id="opportunity_overview"] {
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+}
+
+.gdi-section[data-section-id="opportunity_overview"] .gdi-events-opportunity-overview {
+  margin-bottom: 0;
+}
+
+.gdi-events-overview-venue-note {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--gdi-muted);
+}
+
 .gdi-detail-framework {
   min-width: 0;
   max-width: 100%;
@@ -2004,7 +2688,115 @@ button.gdi-tile-pill.is-filter-active {
 }
 
 .gdi-evidence-table a {
-  color: #c5c8ff;
+  color: #b8bcff;
+}
+
+.gdi-evidence-table a:hover {
+  color: #d4d6ff;
+}
+
+.gdi-evidence-default,
+.gdi-evidence-full {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.gdi-evidence-item {
+  margin-bottom: 0.7rem;
+}
+
+.gdi-evidence-item:last-child {
+  margin-bottom: 0;
+}
+
+.gdi-evidence-expand {
+  margin-top: 0.75rem;
+  border-top: 1px solid var(--gdi-border);
+  padding-top: 0.5rem;
+}
+
+.gdi-evidence-expand > summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--gdi-text, inherit);
+  list-style: none;
+}
+
+.gdi-evidence-expand > summary::-webkit-details-marker {
+  display: none;
+}
+
+.gdi-evidence-expand > summary::before {
+  content: "▸ ";
+  display: inline-block;
+}
+
+.gdi-evidence-expand[open] > summary::before {
+  content: "▾ ";
+}
+
+.gdi-contact-cta-note {
+  font-size: 12px;
+  margin-top: 0.25rem;
+}
+
+.gdi-contact-slot {
+  margin-bottom: 1.1rem;
+}
+
+.gdi-contact-slot h4 {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--neutral--100, #f3f5fb);
+  line-height: 1.35;
+}
+
+.gdi-contact-slot p {
+  margin: 0 0 8px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--gdi-text);
+}
+
+.gdi-contact-slot p:last-child {
+  margin-bottom: 0;
+}
+
+.gdi-contact-slot .gdi-btn {
+  font-size: 12px;
+  padding: 6px 12px;
+  line-height: 1.3;
+}
+
+.gdi-contact-reveal-status {
+  margin-top: 0.4rem;
+  font-size: 13px;
+  line-height: 1.35;
+  padding: 0.45rem 0.6rem;
+  border-radius: var(--gdi-radius-sm, 6px);
+  border: 1px solid var(--gdi-border);
+}
+
+.gdi-contact-reveal-status--loading {
+  color: var(--gdi-muted);
+}
+
+.gdi-contact-reveal-status--found {
+  border-color: #2f6f4e;
+  background: rgba(47, 111, 78, 0.15);
+}
+
+.gdi-contact-reveal-status--miss,
+.gdi-contact-reveal-status--auth,
+.gdi-contact-reveal-status--credits,
+.gdi-contact-reveal-status--error {
+  border-color: #8a6d3b;
+  background: rgba(138, 109, 59, 0.12);
 }
 
 .gdi-feedback {
@@ -2257,21 +3049,33 @@ button.gdi-tile-pill.is-filter-active {
   color: var(--neutral--500);
 }
 
-/* Intelligence-to-action detail */
-.gdi-detail-framework .gdi-section h3 {
+.gdi-secondary-contact {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 0.6px solid var(--neutral--600);
+}
+
+.gdi-secondary-contact h4 {
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--neutral--100);
+  margin: 0 0 8px;
+}
+
+.gdi-secondary-contact p {
+  margin: 0 0 6px;
+  font-size: 13px;
 }
 
 .gdi-detail-meta-row {
   display: flex;
   flex-wrap: wrap;
   gap: 8px 16px;
-  margin: 8px 0 10px;
+  margin: 8px 0 4px;
   font-size: 12px;
+  line-height: 1.45;
   color: var(--neutral--400);
 }
 
