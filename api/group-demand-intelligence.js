@@ -181,12 +181,19 @@ async function loadOppDoc(hotelId) {
       "gdi_load_opportunities"
     );
     let opportunities = doc?.opportunities || [];
-    // Durable published inventory registry (Spice allowlist) — no local-shadow merges.
+    let publishedInventoryDiagnostic = null;
+    // Durable published inventory registry (allowlist) — no local-shadow merges.
+    // Allowlisted hotels use published inventory only (e.g. Spice approved seven).
     try {
-      const { isGdiPublishedInventoryRegistryEnabledForHotel } = await import(
+      const {
+        isGdiPublishedInventoryRegistryEnabledForHotel,
+        diagnoseGdiPublishedInventoryRead,
+      } = await import(
         "../lib/group-demand-intelligence/durable-publication/resolve-gdi-published-registry-root-v1.js"
       );
       if (isGdiPublishedInventoryRegistryEnabledForHotel(hotelId)) {
+        publishedInventoryDiagnostic =
+          diagnoseGdiPublishedInventoryRead(hotelId);
         const { mergePublishedInventoryIntoOpportunities } = await import(
           "../lib/group-demand-intelligence/durable-publication/gdi-published-inventory-registry-v1.js"
         );
@@ -195,12 +202,44 @@ async function loadOppDoc(hotelId) {
           opportunities,
           { strictPublishedOnly: true }
         );
+        if (!Array.isArray(opportunities) || opportunities.length === 0) {
+          const { resolveApprovedPackCustomerInventoryFallback } = await import(
+            "../lib/group-demand-intelligence/durable-publication/gdi-approved-pack-customer-inventory-fallback-v1.js"
+          );
+          const fallback = resolveApprovedPackCustomerInventoryFallback(
+            hotelId,
+            opportunities
+          );
+          if (fallback.used) {
+            opportunities = fallback.opportunities;
+            publishedInventoryDiagnostic = {
+              ...(publishedInventoryDiagnostic || {}),
+              ok: true,
+              fallbackUsed: true,
+              fallbackSource: "approved_pack_customer_fallback",
+              code: "APPROVED_PACK_FALLBACK",
+            };
+            console.info(
+              JSON.stringify({
+                gdi_inventory_source: true,
+                hotelId,
+                source: "approved_pack_customer_fallback",
+                count: opportunities.length,
+              })
+            );
+          }
+        }
       }
     } catch (pubErr) {
       console.error(
         "[gdi] published inventory registry merge failed",
         pubErr?.message || pubErr
       );
+      publishedInventoryDiagnostic = {
+        ok: false,
+        code: "REGISTRY_MERGE_ERROR",
+        message: String(pubErr?.message || pubErr),
+      };
     }
     // Waterstone clean-28 share merge — peer regression lock for existing client share.
     // Idempotent; does not touch Spice registry hotels or rotate share tokens.
@@ -218,6 +257,9 @@ async function loadOppDoc(hotelId) {
     const merged = {
       ...doc,
       opportunities,
+      ...(publishedInventoryDiagnostic
+        ? { publishedInventoryDiagnostic }
+        : {}),
     };
     const ms = Date.now() - t0;
     if (ms >= 1000 || process.env.GDI_PERF_LOG === "1") {
@@ -764,6 +806,36 @@ export async function getGdiOpportunities(req, res) {
             : "Reviewed prospects exist in storage but none passed customer-facing visibility filters.",
       };
     }
+    // Prefer explicit publication-data diagnostics over a false "no opportunities" empty state.
+    const pubDiag = doc.publishedInventoryDiagnostic || null;
+    if (
+      opportunities.length === 0 &&
+      pubDiag &&
+      pubDiag.ok === false &&
+      !["OK", "APPROVED_PACK_FALLBACK", "MISSING_PUBLICATION_POINTER"].includes(
+        String(pubDiag.code || "")
+      )
+    ) {
+      visibilityWarning = {
+        code: String(pubDiag.code || "REGISTRY_UNAVAILABLE"),
+        publicationDataConnection: false,
+        message:
+          "Unable to load approved opportunities. Check publication data connection.",
+        diagnostic: pubDiag,
+      };
+    } else if (
+      opportunities.length === 0 &&
+      pubDiag &&
+      String(pubDiag.code || "") === "MISSING_PUBLICATION_POINTER"
+    ) {
+      visibilityWarning = {
+        code: "MISSING_PUBLICATION_POINTER",
+        publicationDataConnection: true,
+        message:
+          "Publication registry is configured, but this hotel has no current approved publication pointer.",
+        diagnostic: pubDiag,
+      };
+    }
     let hotelNeedDateConfigV1;
     try {
       const {
@@ -807,6 +879,9 @@ export async function getGdiOpportunities(req, res) {
       opportunities,
       hotelNeedDateConfigV1,
       ...(visibilityWarning ? { visibilityWarning } : {}),
+      ...(doc.publishedInventoryDiagnostic
+        ? { publishedInventoryDiagnostic: doc.publishedInventoryDiagnostic }
+        : {}),
       reviewedProspectImport: doc.reviewedProspectImport || null,
     });
   } catch (err) {

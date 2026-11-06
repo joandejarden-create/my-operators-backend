@@ -1,0 +1,46 @@
+# Mandatory GDI published-inventory permanence regression (CI fixture; no Windows paths).
+name: GDI published inventory mirror
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "load-env.js"
+      - "api/group-demand-intelligence.js"
+      - "lib/group-demand-intelligence/durable-publication/**"
+      - "public/js/group-demand-intelligence/app.js"
+      - "public/js/group-demand-intelligence/share-app.js"
+      - "scripts/test-gdi-local-published-inventory-mirror-v1.mjs"
+      - ".github/workflows/gdi-local-published-inventory-mirror.yml"
+      - "package.json"
+  push:
+    branches: [main]
+    paths:
+      - "load-env.js"
+      - "api/group-demand-intelligence.js"
+      - "lib/group-demand-intelligence/durable-publication/**"
+      - "public/js/group-demand-intelligence/app.js"
+      - "public/js/group-demand-intelligence/share-app.js"
+      - "scripts/test-gdi-local-published-inventory-mirror-v1.mjs"
+      - ".github/workflows/gdi-local-published-inventory-mirror.yml"
+
+jobs:
+  mirror-regression:
+    name: Spice fixture + prod isolation
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NODE_ENV: development
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: GDI local published inventory mirror contract
+        run: npm run test:gdi-local-published-inventory-mirror-v1
