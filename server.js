@@ -39,6 +39,7 @@ import multer from "multer";
 import { fileURLToPath } from "url";
 import dealIntake from "./api/intake-deal.js";
 import userIntake from "./api/intake-user.js";
+import createDealalityRuntimeIdentityHandler from "./api/dealality-runtime-identity.js";
 import {
   listMarketAlerts,
   getMarketAlertsRail,
@@ -905,6 +906,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Memberstack + Airtable user context (Phase A)
+
+// Dealality release runtime identity (clean-checkout / manifest verification)
+app.get(
+  "/api/dealality/runtime-identity",
+  createDealalityRuntimeIdentityHandler()
+);
 
 // ============================================================
 // HOTEL / OWNER EXPLORER — RECOVERED GOLDEN DEMO ROUTES

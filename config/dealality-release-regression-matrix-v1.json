@@ -1,0 +1,159 @@
+{
+  "contract": "DEALALITY_RELEASE_REGRESSION_MATRIX_V1",
+  "version": "1.0.0",
+  "sharedMandatory": [
+    {
+      "id": "assert:production-assets",
+      "npm": "assert:production-assets",
+      "script": "scripts/assert-production-assets.mjs",
+      "expedited": true
+    },
+    {
+      "id": "smoke:esm-imports",
+      "npm": "smoke:esm-imports",
+      "script": "scripts/smoke-esm-imports.mjs",
+      "expedited": true
+    },
+    {
+      "id": "test:production-routes-local",
+      "npm": "test:production-routes-local",
+      "script": "scripts/test-production-routes-local.mjs",
+      "expedited": true
+    },
+    {
+      "id": "verify:production-share-contract",
+      "npm": "verify:production-share-contract",
+      "script": "scripts/verify-production-share-contract.mjs",
+      "expedited": true
+    },
+    {
+      "id": "test:dealality-production-release-coordinator",
+      "npm": "test:dealality-production-release-coordinator",
+      "script": "scripts/test-dealality-production-release-coordinator-v1.mjs",
+      "expedited": false
+    },
+    {
+      "id": "test:dealality-clean-checkout-release-gate",
+      "npm": "test:dealality-clean-checkout-release-gate",
+      "script": "scripts/test-dealality-clean-checkout-release-gate-v1.mjs",
+      "expedited": true
+    }
+  ],
+  "productMandatory": {
+    "ADP": [
+      {
+        "id": "test:adp-permanent-full-e2e-certification-v1",
+        "npm": "test:adp-permanent-full-e2e-certification-v1",
+        "script": "scripts/test-adp-permanent-full-e2e-certification-v1.mjs",
+        "expedited": true
+      },
+      {
+        "id": "test:adp-gdi-universe-reconciliation-v1",
+        "npm": "test:adp-gdi-universe-reconciliation-v1",
+        "script": "scripts/test-adp-gdi-universe-reconciliation-v1.mjs",
+        "expedited": false
+      },
+      {
+        "id": "test:adp-gdi-webhound-independence-v1",
+        "npm": "test:adp-gdi-webhound-independence-v1",
+        "script": "scripts/test-adp-gdi-webhound-independence-v1.mjs",
+        "expedited": true
+      }
+    ],
+    "GDI": [
+      {
+        "id": "test:gdi-hangers-universal-presentation-parity-v1",
+        "npm": "test:gdi-hangers-universal-presentation-parity-v1",
+        "script": "scripts/test-gdi-hangers-universal-presentation-parity-v1.mjs",
+        "expedited": true
+      },
+      {
+        "id": "test:gdi-foundation",
+        "npm": "test:gdi-foundation",
+        "script": "scripts/test-gdi-foundation.mjs",
+        "expedited": true
+      },
+      {
+        "id": "test:gdi-need-date-customer-presentation-v3",
+        "npm": "test:gdi-need-date-customer-presentation-v3",
+        "script": "scripts/test-gdi-need-date-customer-presentation-v3.mjs",
+        "expedited": true
+      },
+      {
+        "id": "test:adp-gdi-webhound-independence-v1",
+        "npm": "test:adp-gdi-webhound-independence-v1",
+        "script": "scripts/test-adp-gdi-webhound-independence-v1.mjs",
+        "expedited": true
+      }
+    ],
+    "AVA": [
+      {
+        "id": "ava:production-release-preflight",
+        "npm": "ava:production-release-preflight",
+        "script": "scripts/ava-v4-production-release-preflight-v1.mjs",
+        "expedited": true,
+        "optionalIfMissingScript": false
+      },
+      {
+        "id": "ava:verify-38-manifest",
+        "npm": "ava:verify-38-manifest",
+        "script": "scripts/ava-v4-verify-38-manifest-v1.mjs",
+        "expedited": true
+      },
+      {
+        "id": "test:ava-pdf-channel-parity",
+        "npm": "test:ava-pdf-channel-parity",
+        "script": "scripts/test-ava-pdf-channel-parity-v1.mjs",
+        "expedited": false
+      }
+    ]
+  },
+  "pathProductHints": {
+    "lib/ai-demand-positioning/": "ADP",
+    "public/owner-ai-demand": "ADP",
+    "public/js/ai-demand-positioning/": "ADP",
+    "api/ai-demand-positioning": "ADP",
+    "api/admin-adp": "ADP",
+    "lib/group-demand-intelligence/": "GDI",
+    "public/group-demand": "GDI",
+    "api/group-demand": "GDI",
+    "lib/ai-visibility/": "AVA",
+    "public/ai-visibility": "AVA",
+    "api/ai-visibility": "AVA",
+    "scripts/ava-": "AVA",
+    "lib/dealality-production-release/": "SHARED",
+    "scripts/deploy-production.mjs": "SHARED",
+    "scripts/dealality-production-release-coordinator-v1.mjs": "SHARED",
+    "config/production-required-assets.json": "SHARED"
+  },
+  "crossProductAlways": ["SHARED"],
+  "forbiddenDeploySources": [
+    "_railway-lean-stage",
+    "untracked-local-module",
+    "dirty-worktree-direct",
+    "foreign-worktree-copy"
+  ],
+  "declaredExternalDependencies": [
+    {
+      "id": "runtime_secrets",
+      "kind": "env",
+      "gitTracked": false
+    },
+    {
+      "id": "adp_durable_published",
+      "kind": "durable_volume",
+      "env": "ADP_DURABLE_PUBLISHED_ROOT",
+      "gitTracked": false
+    },
+    {
+      "id": "gdi_published_opportunities",
+      "kind": "durable_data",
+      "gitTracked": false
+    },
+    {
+      "id": "ava_report_artifacts",
+      "kind": "durable_data",
+      "gitTracked": false
+    }
+  ]
+}

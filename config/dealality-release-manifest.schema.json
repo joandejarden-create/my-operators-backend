@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dealality-release-manifest-v1",
+  "title": "DEALALITY_RELEASE_MANIFEST_V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "version",
+    "gitSha",
+    "sourceBranch",
+    "buildTimestamp",
+    "dependencyLockfileHash",
+    "productionAssetInventoryHash",
+    "buildArtifactHash",
+    "productModulesIncluded",
+    "requiredTests",
+    "testResults",
+    "deploymentAuthorizationReference",
+    "previousProductionDeployment",
+    "rollbackTarget",
+    "cleanCheckout",
+    "publicationMutationsAuthorized",
+    "readyForProduction"
+  ],
+  "properties": {
+    "contract": { "const": "DEALALITY_RELEASE_MANIFEST_V1" },
+    "version": { "type": "string" },
+    "gitSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "sourceBranch": { "type": ["string", "null"] },
+    "buildTimestamp": { "type": "string", "format": "date-time" },
+    "dependencyLockfileHash": { "type": ["string", "null"] },
+    "productionAssetInventoryHash": { "type": ["string", "null"] },
+    "buildArtifactHash": { "type": ["string", "null"] },
+    "productModulesIncluded": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["ADP", "GDI", "AVA", "SHARED", "PLATFORM"] }
+    },
+    "requiredTests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "npm"],
+        "properties": {
+          "id": { "type": "string" },
+          "npm": { "type": "string" },
+          "script": { "type": "string" },
+          "expedited": { "type": "boolean" }
+        }
+      }
+    },
+    "testResults": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "status": { "type": "string", "enum": ["PASS", "FAIL", "MISSING", "SKIPPED_ILLEGAL"] },
+          "detail": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "deploymentAuthorizationReference": { "type": ["string", "null"] },
+    "previousProductionDeployment": { "type": ["object", "null"] },
+    "rollbackTarget": { "type": ["object", "null"] },
+    "cleanCheckout": {
+      "type": "object",
+      "required": ["ok", "checkoutPath", "attestationId"],
+      "properties": {
+        "ok": { "type": "boolean" },
+        "checkoutPath": { "type": ["string", "null"] },
+        "attestationId": { "type": ["string", "null"] },
+        "dirtyWorktreeRejected": { "type": "boolean" },
+        "leanStageRejectedAsSource": { "type": "boolean" }
+      }
+    },
+    "publicationMutationsAuthorized": { "type": "boolean" },
+    "readyForProduction": { "type": "boolean" },
+    "releaseId": { "type": ["string", "null"] },
+    "product": { "type": ["string", "null"] },
+    "failures": {
+      "type": "array",
+      "items": { "type": "object" }
+    }
+  }
+}

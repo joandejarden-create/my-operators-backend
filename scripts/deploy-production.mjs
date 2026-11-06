@@ -1,17 +1,20 @@
 #!/usr/bin/env node
 /**
- * Canonical production deploy wrapper (invoked by GitHub Actions coordinator).
+ * Canonical production deploy wrapper.
  *
- * Sole live entry point:
- *   GitHub Actions → workflow dealality-production-release
+ *   npm run deploy:production
  *
- * Local dry-run still allowed:
- *   npm run deploy:production:dry-run
+ * Must be invoked under the shared Dealality production release coordinator
+ * after a mandatory clean-checkout attestation for the approved SHA.
  *
- * Live local/Cursor uploads are blocked unless DEALALITY_RELEASE_CHANNEL=github-actions
- * (set by Actions) or founder DEALALITY_RELEASE_LOCK_BYPASS=1.
+ * Refuses incomplete trees, wrong branches (unless hotfix override), and
+ * dirty trees. Dirty-tree override alone is NOT sufficient — clean-checkout
+ * attestation is mandatory for all production uploads including emergency
+ * hotfix (expedited tests allowed only via the coordinator --expedited flag).
  *
  * Do NOT use raw `railway up` for production.
+ * Do NOT treat _railway-lean-stage as the release source of truth (packaging
+ * only, built from the attested clean checkout).
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -19,6 +22,7 @@ import { fileURLToPath } from "node:url";
 import { execSync, spawnSync } from "node:child_process";
 import { assertDeployAllowedByLock } from "../lib/dealality-production-release/release-lock-v1.js";
 import { assertReleaseChannelAllowed } from "../lib/dealality-production-release/release-channel-v1.js";
+import { assertCleanCheckoutAttestationForDeploy } from "../lib/dealality-production-release/clean-checkout-release-gate-v1.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const manifest = JSON.parse(
@@ -104,12 +108,57 @@ console.log(`branch: ${branch}`);
 console.log(`sha:    ${sha}`);
 console.log(`dirty:  ${dirty ? "YES" : "no"}`);
 
-if (branch !== normalBranch && !allowHotfix) {
+// Mandatory clean-checkout attestation (company-wide). Dry-run still requires
+// attestation unless explicitly simulating via coordinator.
+const cleanGate = assertCleanCheckoutAttestationForDeploy({
+  env: process.env,
+  sha,
+});
+if (!cleanGate.ok) {
+  // Live deploy never bypasses. Dry-run may proceed with WARN when attestation
+  // is absent (asset gates still run; no Railway upload). Prefer coordinator
+  // dry-run which produces a real attestation via --simulate-clean-checkout.
+  const allowDryWithout = dryRun === true;
+  if (!allowDryWithout) {
+    console.error(
+      `FAIL CLEAN_CHECKOUT_GATE: ${cleanGate.code || "ATTESTATION"} — ${cleanGate.detail || cleanGate.message || ""}`
+    );
+    console.error(
+      "Run: npm run dealality:production-release -- --product <ADP|GDI|AVA> --sha <40hex> --authorize-production-release"
+    );
+    process.exit(1);
+  }
+  console.warn(
+    "WARN CLEAN_CHECKOUT: dry-run without attestation (DEALALITY_DEPLOY_DRY_RUN_WITHOUT_ATTESTATION=1)"
+  );
+} else {
+  console.log(
+    `PASS CLEAN_CHECKOUT_ATTESTATION ${cleanGate.attestation.attestationId} sha=${cleanGate.attestation.gitSha.slice(0, 12)}`
+  );
+}
+
+const approvedEnvSha = String(process.env.DEALALITY_APPROVED_RELEASE_SHA || "")
+  .trim()
+  .toLowerCase();
+if (approvedEnvSha && approvedEnvSha !== sha) {
   console.error(
-    `FAIL WRONG_BRANCH_GUARD: expected '${normalBranch}', got '${branch}'.\n` +
-      `For emergency hotfix set DEALALITY_ALLOW_HOTFIX_DEPLOY=1 (still runs asset gates).`
+    `FAIL APPROVED_SHA_MISMATCH: DEALALITY_APPROVED_RELEASE_SHA=${approvedEnvSha} HEAD=${sha}`
   );
   process.exit(1);
+}
+
+if (branch !== normalBranch && !allowHotfix) {
+  if (dryRun) {
+    console.warn(
+      `WARN WRONG_BRANCH: dry-run on '${branch}' (normal='${normalBranch}'); live deploy requires main or DEALALITY_ALLOW_HOTFIX_DEPLOY=1`
+    );
+  } else {
+    console.error(
+      `FAIL WRONG_BRANCH_GUARD: expected '${normalBranch}', got '${branch}'.\n` +
+        `For emergency hotfix set DEALALITY_ALLOW_HOTFIX_DEPLOY=1 (still requires clean-checkout attestation + asset gates).`
+    );
+    process.exit(1);
+  }
 }
 if (branch !== normalBranch && allowHotfix) {
   console.warn(
@@ -117,16 +166,28 @@ if (branch !== normalBranch && allowHotfix) {
   );
 }
 
-if (dirty && !allowDirty) {
-  console.error(
-    "FAIL DIRTY_TREE_GUARD: uncommitted changes present.\n" +
-      "Commit/stash first, or set DEALALITY_ALLOW_DIRTY_DEPLOY=1 for emergency."
-  );
-  console.error(dirty.split("\n").slice(0, 30).join("\n"));
-  process.exit(1);
-}
-if (dirty && allowDirty) {
-  console.warn("WARN DIRTY TREE OVERRIDE enabled");
+// Dirty developer trees must not be production upload sources. Clean-checkout
+// attestation implies live deploy cwd is the isolated checkout (clean).
+if (dirty) {
+  if (dryRun) {
+    console.warn(
+      "WARN DIRTY_TREE: dry-run allows dirty cwd for local asset gates; live deploy will refuse."
+    );
+    console.warn(dirty.split("\n").slice(0, 20).join("\n"));
+  } else {
+    console.error(
+      "FAIL DIRTY_TREE_GUARD: uncommitted changes present in deploy cwd.\n" +
+        "Production uploads must run from the coordinator clean checkout (clean tree).\n" +
+        "DEALALITY_ALLOW_DIRTY_DEPLOY no longer authorizes dirty-worktree production deploys."
+    );
+    console.error(dirty.split("\n").slice(0, 30).join("\n"));
+    if (allowDirty) {
+      console.error(
+        "NOTE: DEALALITY_ALLOW_DIRTY_DEPLOY=1 was set but is ignored for production integrity."
+      );
+    }
+    process.exit(1);
+  }
 }
 
 // Diff summary vs origin/main when available
