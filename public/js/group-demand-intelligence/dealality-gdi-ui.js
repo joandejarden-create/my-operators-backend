@@ -1395,12 +1395,24 @@
           esc(opts.lastSourceVerification) +
           "</span></span>"
         : "";
-    var needDateConfig = opts.hotelNeedDateConfigV1 || null;
-    var needDateContextHtml = needDateConfig
-      ? '<div class="gdi-property-bar__need-dates" aria-label="Need Dates configuration">' +
+    // Always render hotel-level need-date status when a property context exists.
+    // Missing DTO must not hide the control — default to NOT_ESTABLISHED.
+    var needDateConfig = normalizeHotelNeedDateConfigV1(
+      opts.hotelNeedDateConfigV1,
+      opts.hotelId || (opts.hotel && opts.hotel.hotelId) || null
+    );
+    var showNeedDateConfig =
+      opts.mode === "auth" ||
+      opts.mode === "share" ||
+      Boolean(opts.hotelId) ||
+      Boolean(opts.hotel && (opts.hotel.hotelName || opts.hotel.name));
+    var needDateContextHtml = showNeedDateConfig
+      ? '<div class="gdi-property-bar__need-dates" data-gdi-need-date-config-visible="1" aria-label="Need Dates configuration">' +
         '<span class="gdi-property-bar__need-dates-label">Need Dates</span>' +
         hotelNeedDateConfigStatusHtml(needDateConfig) +
-        needDateInformationLegendHtml({ popoverId: "gdiNeedDateLegendPopoverBar" }) +
+        needDateInformationLegendHtml({
+          popoverId: opts.needDateLegendPopoverId || "gdiNeedDateLegendPopoverBar",
+        }) +
         "</div>"
       : "";
 
@@ -3905,23 +3917,68 @@
   }
 
   /**
+   * Normalize hotel need-date config DTO for presentation.
+   * Never returns null — missing/invalid input becomes NOT_ESTABLISHED.
+   */
+  function normalizeHotelNeedDateConfigV1(statusDoc, hotelId) {
+    statusDoc = statusDoc && typeof statusDoc === "object" ? statusDoc : {};
+    var status = String(statusDoc.status || "NOT_ESTABLISHED").toUpperCase();
+    if (
+      status !== "HOTEL_CONFIRMED" &&
+      status !== "MARKET_ESTIMATED" &&
+      status !== "NOT_ESTABLISHED"
+    ) {
+      status = "NOT_ESTABLISHED";
+    }
+    var accessibleLabel =
+      statusDoc.accessibleLabel ||
+      statusDoc.statusLabel ||
+      (status === "HOTEL_CONFIRMED"
+        ? "Hotel-confirmed need periods exist"
+        : status === "MARKET_ESTIMATED"
+          ? "Estimated need periods — not hotel confirmed"
+          : "Need dates not established");
+    return {
+      version: statusDoc.version || "GDI_UNIVERSAL_NEED_DATE_INTELLIGENCE_V1",
+      hotelId: statusDoc.hotelId || hotelId || null,
+      status: status,
+      statusLabel:
+        statusDoc.statusLabel ||
+        (status === "HOTEL_CONFIRMED"
+          ? "Hotel-confirmed need periods"
+          : status === "MARKET_ESTIMATED"
+            ? "Estimated — not hotel confirmed"
+            : "Need dates not established"),
+      accessibleLabel: accessibleLabel,
+      icon:
+        statusDoc.icon ||
+        (status === "HOTEL_CONFIRMED"
+          ? "calendar-check"
+          : status === "MARKET_ESTIMATED"
+            ? "calendar-dashed"
+            : "calendar-minus"),
+      colorClass:
+        statusDoc.colorClass ||
+        (status === "HOTEL_CONFIRMED"
+          ? "gdi-hotel-need-date-status--confirmed"
+          : status === "MARKET_ESTIMATED"
+            ? "gdi-hotel-need-date-status--estimated"
+            : "gdi-hotel-need-date-status--not-established"),
+      confirmedPeriodCount: Number(statusDoc.confirmedPeriodCount) || 0,
+      estimatedPeriodCount: Number(statusDoc.estimatedPeriodCount) || 0,
+      internalOnly: false,
+    };
+  }
+
+  /**
    * Hotel-level need-date configuration status — beside Need Dates heading / hotel context.
    * Not an opportunity tile icon.
    */
   function hotelNeedDateConfigStatusHtml(statusDoc) {
-    statusDoc = statusDoc || {};
-    var status = String(statusDoc.status || "NOT_ESTABLISHED");
-    var label =
-      statusDoc.accessibleLabel ||
-      statusDoc.statusLabel ||
-      "Need dates not established";
-    var colorClass =
-      statusDoc.colorClass ||
-      (status === "HOTEL_CONFIRMED"
-        ? "gdi-hotel-need-date-status--confirmed"
-        : status === "MARKET_ESTIMATED"
-          ? "gdi-hotel-need-date-status--estimated"
-          : "gdi-hotel-need-date-status--not-established");
+    statusDoc = normalizeHotelNeedDateConfigV1(statusDoc);
+    var status = statusDoc.status;
+    var label = statusDoc.accessibleLabel;
+    var colorClass = statusDoc.colorClass;
     var svg =
       status === "HOTEL_CONFIRMED"
         ? gdiSvgCalendarCheck()
@@ -3933,6 +3990,8 @@
       colorClass +
       '" data-hotel-need-date-status="' +
       esc(status) +
+      '" data-hotel-need-date-icon="' +
+      esc(statusDoc.icon) +
       '" role="img" aria-label="' +
       esc(label) +
       '" title="' +
@@ -8225,6 +8284,7 @@
     resolveRevenueStreamIconState: resolveRevenueStreamIconState,
     needDateIntelligenceIconHtml: needDateIntelligenceIconHtml,
     needDateMatchDrawerSectionHtml: needDateMatchDrawerSectionHtml,
+    normalizeHotelNeedDateConfigV1: normalizeHotelNeedDateConfigV1,
     hotelNeedDateConfigStatusHtml: hotelNeedDateConfigStatusHtml,
     needDateInformationLegendHtml: needDateInformationLegendHtml,
     needDatesHeadingWithLegendHtml: needDatesHeadingWithLegendHtml,

@@ -936,17 +936,35 @@ body.gdi-page.embed-mode .gdi-shell {
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 10px;
-  padding: 8px 0 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  margin-top: 8px;
+  padding: 10px 0 2px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 10px;
+  min-height: 28px;
 }
 
 .gdi-property-bar__need-dates-label {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: var(--neutral--400, #a8b0c0);
+  color: var(--neutral--300, #c5cad6);
   text-transform: uppercase;
+}
+
+.gdi-hotel-need-date-status__text {
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .gdi-property-bar__need-dates {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .gdi-need-date-legend-popover {
+    left: auto;
+    right: 0;
+    width: min(320px, calc(100vw - 24px));
+  }
 }
 
 .gdi-need-date-legend-wrap {

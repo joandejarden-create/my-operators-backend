@@ -823,9 +823,13 @@
       var data = pair[1];
       state.resolve = resolve;
       state.hotelId = resolve.hotelId;
-      if (data && data.opportunities) {
+      if (data && Array.isArray(data.opportunities)) {
         state.opportunities = data.opportunities || [];
-        state.hotelNeedDateConfigV1 = data.hotelNeedDateConfigV1 || null;
+        state.hotelNeedDateConfigV1 =
+          data.hotelNeedDateConfigV1 ||
+          (UI.normalizeHotelNeedDateConfigV1
+            ? UI.normalizeHotelNeedDateConfigV1(null, state.hotelId)
+            : { status: "NOT_ESTABLISHED", accessibleLabel: "Need dates not established" });
         state.validationEnums = data.validationEnums || null;
         render();
         return null;
@@ -839,7 +843,11 @@
     .then(function (data) {
       if (!data) return;
       state.opportunities = data.opportunities || [];
-      state.hotelNeedDateConfigV1 = data.hotelNeedDateConfigV1 || null;
+      state.hotelNeedDateConfigV1 =
+        data.hotelNeedDateConfigV1 ||
+        (UI.normalizeHotelNeedDateConfigV1
+          ? UI.normalizeHotelNeedDateConfigV1(null, state.hotelId)
+          : { status: "NOT_ESTABLISHED", accessibleLabel: "Need dates not established" });
       state.validationEnums = data.validationEnums || null;
       render();
     })

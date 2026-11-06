@@ -477,7 +477,16 @@
         state.summary = parts[1].summary;
         state.opportunities = parts[2].opportunities || [];
         state.visibilityWarning = parts[2].visibilityWarning || null;
-        state.hotelNeedDateConfigV1 = parts[2].hotelNeedDateConfigV1 || null;
+        state.hotelNeedDateConfigV1 =
+          parts[2].hotelNeedDateConfigV1 ||
+          (UI.normalizeHotelNeedDateConfigV1
+            ? UI.normalizeHotelNeedDateConfigV1(null, state.hotelId)
+            : {
+                status: "NOT_ESTABLISHED",
+                accessibleLabel: "Need dates not established",
+                icon: "calendar-minus",
+                colorClass: "gdi-hotel-need-date-status--not-established",
+              });
         state.hotelProfile = (parts[3] && parts[3].profile) || null;
         // Campaigns/generators stay on internal APIs only — not customer load path.
         state.demandCampaigns = [];
