@@ -13,19 +13,41 @@ if (missing.length > 0) {
   process.exit(1);
 }
 
-// DEV: self-identify server file and working dir; guard against wrong folder
+// DEV: self-identify server file and working dir; guard against wrong folder.
+// Canonical localhost:8080 is reserved for checkout basename `my-operators-backend`.
+// Feature worktrees (my-operators-backend-*) may run on isolated ports only.
 const serverPath = new URL(import.meta.url).pathname;
 const cwd = process.cwd();
+const cwdBase = cwd.replace(/[\\/]+$/, "").split(/[\\/]/).pop() || "";
+const listenPort = Number(process.env.PORT || 8080);
+const isCanonicalCheckout = cwdBase === "my-operators-backend";
+const isDealalityWorktree = /^my-operators-backend($|-)/.test(cwdBase);
 console.log("Using server file:", serverPath);
 console.log("Working directory:", cwd);
+console.log("Checkout basename:", cwdBase);
+console.log("Listen port:", listenPort);
 if (process.env.NODE_ENV !== "production") {
-  const expectedRepo = "my-operators-backend";
-
-  if (!cwd.endsWith(expectedRepo)) {
-    console.error("ERROR: Server started from wrong directory:", cwd);
-    console.error(`Please run from the ${expectedRepo} repository root.`);
+  if (listenPort === 8080 && !isCanonicalCheckout) {
+    console.error(
+      "ERROR: Port 8080 is reserved for the canonical my-operators-backend checkout."
+    );
+    console.error("Current directory:", cwd);
+    console.error(
+      "Start feature worktrees on an isolated PORT (e.g. 8091), or run from C:\\Dev\\dealality\\my-operators-backend."
+    );
     console.error("Stopping.");
     process.exit(1);
+  }
+  if (!isDealalityWorktree && process.env.DEALALITY_ALLOW_WORKTREE_SERVER !== "1") {
+    console.error("ERROR: Server started from unexpected directory:", cwd);
+    console.error("Expected a my-operators-backend* checkout.");
+    console.error("Stopping.");
+    process.exit(1);
+  }
+  if (!isCanonicalCheckout) {
+    console.warn(
+      `[dealality-dev] Non-canonical worktree serving on port ${listenPort} (8080 reserved for main checkout).`
+    );
   }
 }
 
@@ -3613,6 +3635,40 @@ app.post("/api/dealality-airtable/createRecordsByTableId", dealalityChatgptAuth,
 app.post("/api/dealality-airtable/updateRecordByTableId", dealalityChatgptAuth, postUpdateRecordByTableId);
 app.post("/api/dealality-airtable/updateRecordsByTableId", dealalityChatgptAuth, postUpdateRecordsByTableId);
 app.post("/api/dealality-airtable/summarizeRecordsByTableId", dealalityChatgptAuth, postSummarizeRecordsByTableId);
+
+// Dev-only runtime identity (never registered in production).
+if (process.env.NODE_ENV !== "production") {
+  app.get("/api/dev/runtime-identity", async (req, res) => {
+    let branch = null;
+    let sha = null;
+    try {
+      const cp = await import("node:child_process");
+      const b = cp.spawnSync("git", ["rev-parse", "--abbrev-ref", "HEAD"], {
+        cwd: __dirname,
+        encoding: "utf8",
+      });
+      const s = cp.spawnSync("git", ["rev-parse", "HEAD"], {
+        cwd: __dirname,
+        encoding: "utf8",
+      });
+      if (b.status === 0) branch = String(b.stdout || "").trim() || null;
+      if (s.status === 0) sha = String(s.stdout || "").trim() || null;
+    } catch (_e) {
+      /* keep nulls */
+    }
+    res.json({
+      ok: true,
+      contract: "DEALALITY_DEV_RUNTIME_IDENTITY_V1",
+      environment: process.env.NODE_ENV || "development",
+      port: Number(process.env.PORT || 8080),
+      servingDirectoryBasename: cwdBase,
+      isCanonicalCheckout,
+      branch,
+      sha,
+      // Basename only — do not expose full local filesystem paths.
+    });
+  });
+}
 
 // API 404 fallback – must be after ALL API routes so /api/outreach-hub/*, /api/my-deals, etc. are matched first
 app.use("/api", (req, res) => {
