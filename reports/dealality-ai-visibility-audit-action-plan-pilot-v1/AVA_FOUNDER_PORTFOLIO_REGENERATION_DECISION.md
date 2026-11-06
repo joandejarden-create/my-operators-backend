@@ -1,6 +1,6 @@
 # AVA Founder Portfolio Regeneration Decision
 
-Generated: 2026-11-05T21:36:57.152Z
+Generated: 2026-11-06T00:42:29.226Z
 
 ## Verdict
 
@@ -14,7 +14,7 @@ Generated: 2026-11-05T21:36:57.152Z
 | Cambridge + Falls Church repaired | **true** |
 | Waterstone DA editorial | **true** |
 | Published PDFs unchanged | **true** |
-| Preview/Download parity | **true** |
+| Preview/Download parity | **false** |
 
 ## Answers
 
@@ -29,15 +29,8 @@ Generated: 2026-11-05T21:36:57.152Z
 9. **Available for local founder review?** Yes — staged under `reports/dealality-ai-visibility-audit-action-plan-pilot-v1/portfolio-v4-local-staging` and Admin draft channel for regenerated hotels.
 10. **Before production publication?** Founder review of staged drafts; explicit publish authorization; remediate any remaining non-ready hotels; share-token / approval workflows unchanged until authorized.
 
-## Open before production publish
-
-- **Hilton New York Times Square** — automated `NEAR_EMPTY_FINAL_PAGE` (final page ~78 characters). Review in Admin Preview; optional pagination trim before publish.
-- Founder review of staged drafts under `portfolio-v4-local-staging/`.
-- Explicit publish authorization (not granted in this run).
-
 ## Not done
 
 - Production deploy / customer publish / share-token rotation
 - Additional paid research
 - ADP methodology changes
-- Hilton near-empty final-page remediation (advisory only; does not block local portfolio readiness)

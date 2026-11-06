@@ -66,24 +66,39 @@
     ],
     "priorities": [
       {
-        "priority": "High",
-        "action": "Sales and operations: reconcile meetings, capacities, and address facts",
-        "desiredOutcome": "One signed source-of-truth schedule"
+        "actionId": "AVA-ACOR-001",
+        "priority": "HIGH",
+        "action": "Reconcile Event-Room, Capacity, and Address Facts",
+        "desiredOutcome": "An approved room-by-room capacity schedule matching live hotel and brand pages.",
+        "owner": "Director of Sales / Hotel Operations"
       },
       {
-        "priority": "High",
-        "action": "Commercial team: strengthen dining and business-location signals",
-        "desiredOutcome": "Clearer AC Lounge and Expocoruña decision context"
+        "actionId": "AVA-ACOR-DA-001",
+        "priority": "HIGH",
+        "action": "Secure Accurate CVB Profile + Official Website Hyperlink",
+        "desiredOutcome": "Verified CVB or partner listing fields corrected with the approved property URL and a working official hyperlink, or documented decline retained.",
+        "owner": "Hotel Commercial / Sales"
       },
       {
-        "priority": "Medium",
-        "action": "Digital team: investigate Spanish-page automated access",
-        "desiredOutcome": "Security-aligned crawler access decision"
+        "actionId": "AVA-ACOR-002",
+        "priority": "MEDIUM",
+        "action": "Strengthen AC Lounge and Business-District Signals",
+        "desiredOutcome": "Confirmed room-view categories and accurate location descriptions published on the named hotel and brand channels.",
+        "owner": "Hotel Commercial Leadership"
       },
       {
-        "priority": "Medium",
-        "action": "Marketing: align post-renovation public copy",
-        "desiredOutcome": "Accurate description of completed improvements"
+        "actionId": "AVA-ACOR-003",
+        "priority": "MEDIUM",
+        "action": "Review Spanish-Page Access for Intended Crawlers",
+        "desiredOutcome": "Documented crawler-access decision with verified live robots/CDN behavior.",
+        "owner": "Marriott Digital / CDN Security Owner"
+      },
+      {
+        "actionId": "AVA-ACOR-005",
+        "priority": "MEDIUM",
+        "action": "Decide Whether to Reinforce Weddings and Social Events",
+        "desiredOutcome": "Verified event inventory, supported occasions, and a working inquiry path on the official pages.",
+        "owner": "Hotel Commercial Leadership"
       }
     ],
     "successLooksLike": "Marriott and priority partner pages use approved meeting-room, capacity, and address facts; official copy clearly explains AC Lounge dining and the Matogrande/Expocoruña business proposition; intended crawlers have a documented access posture; and renovation language matches ACHM's verified scope.",
@@ -97,6 +112,7 @@
       "headline": "Reconcile Event-Room, Capacity, and Address Facts",
       "businessRelevance": "Concrete conflicts create avoidable planner uncertainty and can be repeated by search and AI systems.",
       "accountableOwner": "Director of Sales / Hotel Operations",
+      "desiredOutcome": "An approved room-by-room capacity schedule matching live hotel and brand pages.",
       "suggestedTimeframe": "Within 30 days"
     },
     {
@@ -105,6 +121,7 @@
       "headline": "Secure Accurate CVB Profile + Official Website Hyperlink",
       "businessRelevance": "Meetings planners and destination AI contexts rely on CVB inventory accuracy.",
       "accountableOwner": "Hotel Commercial / Sales",
+      "desiredOutcome": "Verified CVB or partner listing fields corrected with the approved property URL and a working official hyperlink, or documented decline retained.",
       "suggestedTimeframe": "Within 30 days"
     },
     {
@@ -113,6 +130,7 @@
       "headline": "Strengthen AC Lounge and Business-District Signals",
       "businessRelevance": "Clearer official descriptions can improve buyer context, although they cannot guarantee future AI presence or bookings.",
       "accountableOwner": "Hotel Commercial Leadership",
+      "desiredOutcome": "Confirmed room-view categories and accurate location descriptions published on the named hotel and brand channels.",
       "suggestedTimeframe": "Within 30 days"
     },
     {
@@ -121,6 +139,7 @@
       "headline": "Review Spanish-Page Access for Intended Crawlers",
       "businessRelevance": "An unintended access mismatch could steer automated systems toward secondary sources, but one research client does not establish a general outage.",
       "accountableOwner": "Marriott Digital / CDN Security Owner",
+      "desiredOutcome": "Documented crawler-access decision with verified live robots/CDN behavior.",
       "suggestedTimeframe": "Within 30 days"
     },
     {
@@ -129,6 +148,7 @@
       "headline": "Decide Whether to Reinforce Weddings and Social Events",
       "businessRelevance": "A focused module could help qualified prospects understand fit, but added content creates maintenance work and cannot guarantee inquiries.",
       "accountableOwner": "Hotel Commercial Leadership",
+      "desiredOutcome": "Verified event inventory, supported occasions, and a working inquiry path on the official pages.",
       "suggestedTimeframe": "Within 30 days"
     }
   ],
@@ -329,9 +349,11 @@
       "whyItMatters": "Concrete conflicts create avoidable planner uncertainty and can be repeated by search and AI systems.",
       "recommendedSteps": [
         "Sales signs a room-by-room schedule with setup capacities and total area.",
+        "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
         "Operations confirms the correct street address.",
         "Submit field-level corrections to Marriott and the convention bureau.",
-        "Verify every named page against the signed schedule."
+        "Verify every named page against the signed schedule.",
+        "Create a field-level comparison and submit only hotel-approved corrections."
       ],
       "accountableOwner": "Director of Sales / Hotel Operations",
       "supportingParties": [
@@ -350,86 +372,68 @@
       "supportingEvidence": [
         {
           "label": "Marriott overview",
-          "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
-          "note": "URL removed from customer evidence after verification failure."
+          "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/"
         },
         {
           "label": "Marriott events",
-          "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
-          "note": "Six rooms, 674 sq m, and largest capacity 290."
+          "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/"
         },
         {
-          "label": "Convention bureau",
-          "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
-          "note": "Capacity and address comparison."
+          "label": "CVB MICE fiche",
+          "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/"
+        },
+        {
+          "label": "CVB hotel fiche",
+          "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/"
         }
       ],
       "technicalDetails": {
-        "targetUrls": [
-          "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
-          "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
-          "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/"
+        "urls": [
+          {
+            "label": "Marriott overview",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
+            "kind": "VERIFIED_PUBLIC"
+          },
+          {
+            "label": "Marriott events",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
+            "kind": "VERIFIED_PUBLIC"
+          },
+          {
+            "label": "CVB MICE fiche",
+            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
+            "kind": "VERIFIED_PUBLIC"
+          },
+          {
+            "label": "CVB hotel fiche",
+            "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/",
+            "kind": "VERIFIED_PUBLIC"
+          }
         ],
-        "urls": [],
         "changesOrInvestigation": [
+          "Sales signs a room-by-room schedule with setup capacities and total area.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Operations confirms the correct street address.",
+          "Submit field-level corrections to Marriott and the convention bureau.",
+          "Verify every named page against the signed schedule.",
           "Create a field-level comparison and submit only hotel-approved corrections."
         ],
         "evidence": [
           {
-            "0": "S",
-            "1": "i",
-            "2": "g",
-            "3": "n",
-            "4": "e",
-            "5": "d",
-            "6": " ",
-            "7": "c",
-            "8": "a",
-            "9": "p",
-            "10": "a",
-            "11": "c",
-            "12": "i",
-            "13": "t",
-            "14": "y",
-            "15": " ",
-            "16": "s",
-            "17": "c",
-            "18": "h",
-            "19": "e",
-            "20": "d",
-            "21": "u",
-            "22": "l",
-            "23": "e",
-            "label": "View source"
+            "label": "Marriott overview",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/"
           },
           {
-            "0": "B",
-            "1": "e",
-            "2": "f",
-            "3": "o",
-            "4": "r",
-            "5": "e",
-            "6": "/",
-            "7": "a",
-            "8": "f",
-            "9": "t",
-            "10": "e",
-            "11": "r",
-            "12": " ",
-            "13": "p",
-            "14": "a",
-            "15": "g",
-            "16": "e",
-            "17": " ",
-            "18": "c",
-            "19": "a",
-            "20": "p",
-            "21": "t",
-            "22": "u",
-            "23": "r",
-            "24": "e",
-            "25": "s",
-            "label": "View source"
+            "label": "Marriott events",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/"
+          },
+          {
+            "label": "CVB MICE fiche",
+            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/"
+          },
+          {
+            "label": "CVB hotel fiche",
+            "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/"
           }
         ],
         "verificationMethod": "Compare live room count, area, setup capacities, and address against the signed source of truth.",
@@ -443,466 +447,14 @@
       "estimatedEffort": "MEDIUM",
       "affectedPlatform": "Hotel digital presence",
       "specificIssue": "Marriott uses five versus six event rooms, and the convention bureau differs on Banquetes capacity and street number.",
-      "commercialImportance": "Concrete conflicts create avoidable planner uncertainty and can be repeated by search and AI systems."
-    },
-    {
-      "actionId": "AVA-ACOR-002",
-      "headline": "Strengthen AC Lounge and Business-District Signals",
-      "priority": "HIGH",
-      "priorityWhy": "ADP under-recognized verified dining and meeting attributes that matter to business demand.",
-      "whatWeFound": "Restaurant recognition was 0% and meeting-space recognition about 49%, despite official AC Lounge and event content plus the Matogrande/Expocoruña location.",
-      "whyItMatters": "Clearer official descriptions can improve buyer context, although they cannot guarantee future AI presence or bookings.",
-      "recommendedSteps": [
-        "Approve concise AC Lounge meal-service language.",
-        "Add sourced Matogrande, Expocoruña, and business-access context where Marriott permits.",
-        "Keep meeting facts aligned with the related action.",
-        "QA live copy and inquiry paths."
-      ],
-      "accountableOwner": "Hotel Commercial Leadership",
-      "supportingParties": [
-        "Food and beverage leadership",
-        "Director of Sales",
-        "Marriott digital content"
-      ],
-      "suggestedTimeframe": "Content brief in 2 weeks; updates within 30–45 days",
-      "completionCriteria": {
-        "investigationCompleted": "Commercial leadership approves dining and business-location facts.",
-        "correctionSubmitted": "Approved content requests are filed for priority pages.",
-        "correctionVerifiedLive": "Live pages clearly state the approved offer and retain working inquiry paths.",
-        "noChangeRequired": "Valid if leadership documents that current presentation is sufficient or Marriott fields cannot support the change."
-      },
-      "requiresHotelApproval": true,
-      "hotelApprovalNotes": "Approve operating details and location claims before publication.",
-      "supportingEvidence": [
-        {
-          "label": "Marriott overview",
-          "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
-          "note": "URL removed from customer evidence after verification failure."
-        },
-        {
-          "label": "Marriott events",
-          "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
-          "note": "Official meetings content."
-        },
-        {
-          "label": "Convention bureau",
-          "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
-          "note": "Matogrande and nearby demand anchors."
-        }
-      ],
-      "technicalDetails": {
-        "targetUrls": [
-          "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
-          "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/"
-        ],
-        "urls": [],
-        "changesOrInvestigation": [
-          "Map approved restaurant, meetings, and location facts to available Marriott content fields."
-        ],
-        "evidence": [
-          {
-            "0": "H",
-            "1": "o",
-            "2": "t",
-            "3": "e",
-            "4": "l",
-            "5": "-",
-            "6": "a",
-            "7": "p",
-            "8": "p",
-            "9": "r",
-            "10": "o",
-            "11": "v",
-            "12": "e",
-            "13": "d",
-            "14": " ",
-            "15": "c",
-            "16": "o",
-            "17": "n",
-            "18": "t",
-            "19": "e",
-            "20": "n",
-            "21": "t",
-            "22": " ",
-            "23": "b",
-            "24": "r",
-            "25": "i",
-            "26": "e",
-            "27": "f",
-            "label": "View source"
-          },
-          {
-            "0": "L",
-            "1": "i",
-            "2": "v",
-            "3": "e",
-            "4": "-",
-            "5": "p",
-            "6": "a",
-            "7": "g",
-            "8": "e",
-            "9": " ",
-            "10": "Q",
-            "11": "A",
-            "label": "View source"
-          }
-        ],
-        "verificationMethod": "Confirm approved facts are visible in rendered copy and machine-readable page content where supported.",
-        "dependencies": [
-          "the related action source of truth",
-          "Current AC Lounge operating details"
-        ],
-        "notes": "ADP recognition rates are prioritization signals, not proof that content caused measured performance."
-      },
-      "implementationStatus": "NOT_STARTED",
-      "claimType": "RECOMMENDED_INVESTIGATION",
-      "estimatedEffort": "MEDIUM",
-      "affectedPlatform": "Hotel digital presence",
-      "specificIssue": "Restaurant recognition was 0% and meeting-space recognition about 49%, despite official AC Lounge and event content plus the Matogrande/Expocoruña location.",
-      "commercialImportance": "Clearer official descriptions can improve buyer context, although they cannot guarantee future AI presence or bookings."
-    },
-    {
-      "actionId": "AVA-ACOR-003",
-      "headline": "Review Spanish-Page Access for Intended Crawlers",
-      "priority": "MEDIUM",
-      "priorityWhy": "A bounded 403/redirect pattern warrants review because the English page and robots.txt remained available.",
-      "whatWeFound": "The Spanish Marriott URL returned HTTP 403 and redirected toward default.mi for the research bot; the English overview fetched and robots.txt returned 200.",
-      "whyItMatters": "An unintended access mismatch could steer automated systems toward secondary sources, but one research client does not establish a general outage.",
-      "recommendedSteps": [
-        "Open a Marriott CDN/WAF review ticket with the exact test context.",
-        "Compare intended crawler policy with current bot-management rules.",
-        "Approve only narrow security-safe changes if a conflict is confirmed.",
-        "Retest Spanish and English pages from agreed clients."
-      ],
-      "accountableOwner": "Marriott Digital / CDN Security Owner",
-      "supportingParties": [
-        "Hotel digital marketing",
-        "Hotel commercial leadership"
-      ],
-      "suggestedTimeframe": "Technical review within 30 days",
-      "completionCriteria": {
-        "investigationCompleted": "A technical note explains the 403/redirect behavior and intended crawler policy.",
-        "correctionSubmitted": "Any required change is approved and filed through Marriott security controls.",
-        "correctionVerifiedLive": "Agreed clients receive the intended response on both language variants.",
-        "noChangeRequired": "Valid if Marriott documents that intended crawlers are unaffected and the research-client block is intentional."
-      },
-      "requiresHotelApproval": true,
-      "hotelApprovalNotes": "Do not weaken security; hotel approval is required for any production access-policy change.",
-      "supportingEvidence": [
-        {
-          "label": "Spanish overview",
-          "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
-          "note": "URL removed from customer evidence after verification failure."
-        },
-        {
-          "label": "English overview",
-          "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
-          "note": "URL removed from customer evidence after verification failure."
-        },
-        {
-          "label": "Marriott robots.txt",
-          "url": "https://www.marriott.com/robots.txt",
-          "note": "Returned HTTP 200."
-        }
-      ],
-      "technicalDetails": {
-        "targetUrls": [
-          "https://www.marriott.com/es/hotels/lcgco-ac-hotel-a-coruna/overview/",
-          "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
-          "https://www.marriott.com/robots.txt"
-        ],
-        "urls": [],
-        "changesOrInvestigation": [
-          "Record status, redirect chain, user agent, and CDN rule decision for agreed clients."
-        ],
-        "evidence": [
-          {
-            "0": "C",
-            "1": "D",
-            "2": "N",
-            "3": "/",
-            "4": "W",
-            "5": "A",
-            "6": "F",
-            "7": " ",
-            "8": "t",
-            "9": "i",
-            "10": "c",
-            "11": "k",
-            "12": "e",
-            "13": "t",
-            "label": "View source"
-          },
-          {
-            "0": "B",
-            "1": "e",
-            "2": "f",
-            "3": "o",
-            "4": "r",
-            "5": "e",
-            "6": "/",
-            "7": "a",
-            "8": "f",
-            "9": "t",
-            "10": "e",
-            "11": "r",
-            "12": " ",
-            "13": "s",
-            "14": "t",
-            "15": "a",
-            "16": "t",
-            "17": "u",
-            "18": "s",
-            "19": "-",
-            "20": "c",
-            "21": "o",
-            "22": "d",
-            "23": "e",
-            "24": " ",
-            "25": "l",
-            "26": "o",
-            "27": "g",
-            "label": "View source"
-          }
-        ],
-        "verificationMethod": "Repeat controlled requests to both language variants and document status codes and redirect destinations.",
-        "dependencies": [
-          "Marriott CDN/WAF access",
-          "Approved crawler policy"
-        ],
-        "notes": "The observation is bounded and does not prove a global indexing failure."
-      },
-      "implementationStatus": "NOT_STARTED",
-      "claimType": "RECOMMENDED_INVESTIGATION",
-      "estimatedEffort": "MEDIUM",
-      "affectedPlatform": "Hotel digital presence",
-      "specificIssue": "The Spanish Marriott URL returned HTTP 403 and redirected toward default.mi for the research bot; the English overview fetched and robots.txt returned 200.",
-      "commercialImportance": "An unintended access mismatch could steer automated systems toward secondary sources, but one research client does not establish a general outage."
-    },
-    {
-      "actionId": "AVA-ACOR-004",
-      "headline": "Align Public Copy With the Completed Renovation",
-      "priority": "MEDIUM",
-      "priorityWhy": "The completed investment is commercially relevant but must be described within its verified scope.",
-      "whatWeFound": "ACHM reported in June 2026 that all 116 rooms, one meeting room, and the gym were renovated.",
-      "whyItMatters": "Accurate post-renovation language supports current buyer expectations and prevents stale or overbroad claims.",
-      "recommendedSteps": [
-        "Hotel confirms the final completed scope and approved wording.",
-        "Audit Marriott and sales materials for stale room, meeting-room, and gym descriptions.",
-        "Submit approved factual updates.",
-        "Archive live verification."
-      ],
-      "accountableOwner": "Hotel GM / Marketing Leadership",
-      "supportingParties": [
-        "Operations",
-        "Director of Sales",
-        "Marriott digital content"
-      ],
-      "suggestedTimeframe": "Audit in 2 weeks; approved alignment within 45 days",
-      "completionCriteria": {
-        "investigationCompleted": "Hotel signs the renovation scope and approved public wording.",
-        "correctionSubmitted": "Stale or inaccurate descriptions receive tracked update requests.",
-        "correctionVerifiedLive": "Priority pages match the approved bounded scope.",
-        "noChangeRequired": "Valid if all reviewed pages already match the signed renovation statement."
-      },
-      "requiresHotelApproval": true,
-      "hotelApprovalNotes": "Do not describe the work as a full-building renovation unless the hotel separately verifies that claim.",
-      "supportingEvidence": [
-        {
-          "label": "ACHM renovation announcement",
-          "url": "https://achmhotels.com/en/ac-hotel-a-coruna-begins-a-new-chapter-following-its-refurbishment/",
-          "note": "June 20, 2026 announcement; 116 rooms, one meeting room, and gym."
-        },
-        {
-          "label": "Marriott rooms",
-          "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/rooms/",
-          "note": "Official inventory page."
-        }
-      ],
-      "technicalDetails": {
-        "targetUrls": [
-          "https://achmhotels.com/en/ac-hotel-a-coruna-begins-a-new-chapter-following-its-refurbishment/",
-          "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/rooms/",
-          "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/"
-        ],
-        "urls": [],
-        "changesOrInvestigation": [
-          "Diff current public descriptions against the signed renovation scope."
-        ],
-        "evidence": [
-          {
-            "0": "A",
-            "1": "C",
-            "2": "H",
-            "3": "M",
-            "4": " ",
-            "5": "a",
-            "6": "n",
-            "7": "n",
-            "8": "o",
-            "9": "u",
-            "10": "n",
-            "11": "c",
-            "12": "e",
-            "13": "m",
-            "14": "e",
-            "15": "n",
-            "16": "t",
-            "label": "View source"
-          },
-          {
-            "0": "H",
-            "1": "o",
-            "2": "t",
-            "3": "e",
-            "4": "l",
-            "5": "-",
-            "6": "a",
-            "7": "p",
-            "8": "p",
-            "9": "r",
-            "10": "o",
-            "11": "v",
-            "12": "e",
-            "13": "d",
-            "14": " ",
-            "15": "s",
-            "16": "c",
-            "17": "o",
-            "18": "p",
-            "19": "e",
-            "20": " ",
-            "21": "n",
-            "22": "o",
-            "23": "t",
-            "24": "e",
-            "label": "View source"
-          }
-        ],
-        "verificationMethod": "Review live pages and sales collateral against the signed statement.",
-        "dependencies": [
-          "Hotel confirmation of final scope and terminology"
-        ],
-        "notes": "Use June 2026, the date shown on the cited ACHM announcement."
-      },
-      "implementationStatus": "NOT_STARTED",
-      "claimType": "REQUIRES_HOTEL_CONFIRMATION",
-      "estimatedEffort": "MEDIUM",
-      "affectedPlatform": "Hotel digital presence",
-      "specificIssue": "ACHM reported in June 2026 that all 116 rooms, one meeting room, and the gym were renovated.",
-      "commercialImportance": "Accurate post-renovation language supports current buyer expectations and prevents stale or overbroad claims."
-    },
-    {
-      "actionId": "AVA-ACOR-005",
-      "headline": "Decide Whether to Reinforce Weddings and Social Events",
-      "priority": "OPTIONAL",
-      "priorityWhy": "Wedding recognition was low, but more content is warranted only if the hotel wants this demand.",
-      "whatWeFound": "Marriott markets weddings on the events page while ADP wedding-venue recognition was 2.4%.",
-      "whyItMatters": "A focused module could help qualified prospects understand fit, but added content creates maintenance work and cannot guarantee inquiries.",
-      "recommendedSteps": [
-        "Sales records a wedding/social-event go or no-go.",
-        "If go, approve target occasions, capacities, inclusions, and inquiry ownership.",
-        "Draft concise content using the the related action capacity record.",
-        "If no-go, document and close the action."
-      ],
-      "accountableOwner": "Hotel Commercial Leadership",
-      "supportingParties": [
-        "Wedding and events sales",
-        "Marriott digital content"
-      ],
-      "suggestedTimeframe": "Decision within 30 days",
-      "completionCriteria": {
-        "investigationCompleted": "A written commercial go/no-go is on file.",
-        "correctionSubmitted": "If approved, a content request using signed facts is submitted.",
-        "correctionVerifiedLive": "If approved, live content matches capacities and has a working inquiry path.",
-        "noChangeRequired": "Valid when leadership documents a no-go or confirms current wedding content is sufficient."
-      },
-      "requiresHotelApproval": true,
-      "hotelApprovalNotes": "Optional commercial decision; do not publish additional content without demand and capacity approval.",
-      "supportingEvidence": [
-        {
-          "label": "Marriott events page",
-          "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
-          "note": "Official wedding marketing and event context."
-        }
-      ],
-      "technicalDetails": {
-        "targetUrls": [
-          "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/"
-        ],
-        "urls": [],
-        "changesOrInvestigation": [
-          "Document go/no-go and, if approved, map wedding facts to supported Marriott fields."
-        ],
-        "evidence": [
-          {
-            "0": "C",
-            "1": "o",
-            "2": "m",
-            "3": "m",
-            "4": "e",
-            "5": "r",
-            "6": "c",
-            "7": "i",
-            "8": "a",
-            "9": "l",
-            "10": " ",
-            "11": "d",
-            "12": "e",
-            "13": "c",
-            "14": "i",
-            "15": "s",
-            "16": "i",
-            "17": "o",
-            "18": "n",
-            "19": " ",
-            "20": "m",
-            "21": "e",
-            "22": "m",
-            "23": "o",
-            "label": "View source"
-          },
-          {
-            "0": "S",
-            "1": "i",
-            "2": "g",
-            "3": "n",
-            "4": "e",
-            "5": "d",
-            "6": " ",
-            "7": "c",
-            "8": "a",
-            "9": "p",
-            "10": "a",
-            "11": "c",
-            "12": "i",
-            "13": "t",
-            "14": "y",
-            "15": " ",
-            "16": "s",
-            "17": "c",
-            "18": "h",
-            "19": "e",
-            "20": "d",
-            "21": "u",
-            "22": "l",
-            "23": "e",
-            "label": "View source"
-          }
-        ],
-        "verificationMethod": "If approved, compare live wedding content and inquiry path against the signed brief.",
-        "dependencies": [
-          "Commercial go/no-go",
-          "the related action capacity record"
-        ],
-        "notes": "Optional opportunity, not a verified website defect."
-      },
-      "implementationStatus": "NOT_STARTED",
-      "claimType": "OPTIONAL_COMMERCIAL_OPPORTUNITY",
-      "estimatedEffort": "MEDIUM",
-      "affectedPlatform": "Hotel digital presence",
-      "specificIssue": "Marriott markets weddings on the events page while ADP wedding-venue recognition was 2.4%.",
-      "commercialImportance": "A focused module could help qualified prospects understand fit, but added content creates maintenance work and cannot guarantee inquiries."
+      "commercialImportance": "Concrete conflicts create avoidable planner uncertainty and can be repeated by search and AI systems.",
+      "actionTitle": "Reconcile Event-Room, Capacity, and Address Facts",
+      "desiredOutcome": "An approved room-by-room capacity schedule matching live hotel and brand pages.",
+      "classification": "VERIFIED_CORRECTION",
+      "workstreamTheme": "meeting_space_reconciliation",
+      "primaryOwner": "Director of Sales / Hotel Operations",
+      "businessRelevance": "Concrete conflicts create avoidable planner uncertainty and can be repeated by search and AI systems.",
+      "recommendedAction": "Reconcile Event-Room, Capacity, and Address Facts"
     },
     {
       "actionId": "AVA-ACOR-DA-001",
@@ -913,8 +465,11 @@
       "whyItMatters": "Meetings planners and destination AI contexts rely on CVB inventory accuracy.",
       "recommendedSteps": [
         "Approve Marriott canonical URL and meeting capacities.",
+        "Apply the change on the verified page (acorunacb.com) and retain before/after evidence.",
         "Request CVB update including official-site hyperlink.",
-        "Re-check live fiche and archive screenshots."
+        "Re-check live fiche and archive screenshots.",
+        "Field-level CVB vs Marriott reconciliation",
+        "Canonical URL decision"
       ],
       "accountableOwner": "Hotel Commercial / Sales",
       "supportingParties": "Marriott brand content; CVB account manager",
@@ -946,18 +501,37 @@
         "urls": [
           {
             "label": "CVB hotel fiche",
+            "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/",
+            "kind": "VERIFIED_PUBLIC"
+          },
+          {
+            "label": "CVB MICE fiche",
+            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
+            "kind": "VERIFIED_PUBLIC"
+          },
+          {
+            "label": "Guía MICE PDF",
+            "url": "https://acorunacb.com/wp-content/uploads/2025/07/revista_agosto_2025.pdf",
+            "kind": "VERIFIED_PUBLIC"
+          }
+        ],
+        "changesOrInvestigation": [
+          "Approve Marriott canonical URL and meeting capacities.",
+          "Apply the change on the verified page (acorunacb.com) and retain before/after evidence.",
+          "Request CVB update including official-site hyperlink.",
+          "Re-check live fiche and archive screenshots.",
+          "Field-level CVB vs Marriott reconciliation",
+          "Canonical URL decision"
+        ],
+        "evidence": [
+          {
+            "label": "CVB hotel fiche",
             "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/"
           },
           {
             "label": "CVB MICE fiche",
             "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/"
-          }
-        ],
-        "changesOrInvestigation": [
-          "Field-level CVB vs Marriott reconciliation",
-          "Canonical URL decision"
-        ],
-        "evidence": [
+          },
           {
             "label": "Guía MICE PDF",
             "url": "https://acorunacb.com/wp-content/uploads/2025/07/revista_agosto_2025.pdf"
@@ -983,95 +557,314 @@
       ],
       "affectedPlatform": "CVB hotel fiche",
       "specificIssue": "CVB hotel/MICE pages mention AC without a confirmed href to Marriott/hotelacacoruna.com; peer CVB pages also lack hotel-website backlinks in this public pass.",
-      "commercialImportance": "Meetings planners and destination AI contexts rely on CVB inventory accuracy."
+      "commercialImportance": "Meetings planners and destination AI contexts rely on CVB inventory accuracy.",
+      "actionTitle": "Secure Accurate CVB Profile + Official Website Hyperlink",
+      "desiredOutcome": "Verified CVB or partner listing fields corrected with the approved property URL and a working official hyperlink, or documented decline retained.",
+      "classification": "MAINTENANCE",
+      "workstreamTheme": "digital_authority_outreach",
+      "primaryOwner": "Hotel Commercial / Sales",
+      "businessRelevance": "Meetings planners and destination AI contexts rely on CVB inventory accuracy.",
+      "recommendedAction": "Secure Accurate CVB Profile + Official Website Hyperlink"
     },
     {
-      "actionId": "AVA-ACOR-DCR-001",
-      "headline": "Reconcile Marriott and CVB Meetings Facts; Add Official URL",
-      "priority": "HIGH",
-      "priorityWhy": "MICE discovery already exists; accuracy and official hyperlink are the gaps.",
-      "whatWeFound": "CVB lists AC without confirmed Marriott href; capacities/address conflict with Marriott sources.",
-      "whyItMatters": "Planners and AI systems may reuse the wrong MICE figures.",
+      "actionId": "AVA-ACOR-002",
+      "headline": "Strengthen AC Lounge and Business-District Signals",
+      "priority": "MEDIUM",
+      "priorityWhy": "ADP under-recognized verified dining and meeting attributes that matter to business demand.",
+      "whatWeFound": "Restaurant recognition was 0% and meeting-space recognition about 49%, despite official AC Lounge and event content plus the Matogrande/Expocoruña location.",
+      "whyItMatters": "Clearer official descriptions can improve buyer context, although they cannot guarantee future AI presence or bookings.",
       "recommendedSteps": [
-        "Approve Marriott LCGCO meetings record.",
-        "Submit CVB corrections including official hyperlink.",
-        "Re-check live fiches."
+        "Approve concise AC Lounge meal-service language.",
+        "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+        "Add sourced Matogrande, Expocoruña, and business-access context where Marriott permits.",
+        "Keep meeting facts aligned with the related action.",
+        "QA live copy and inquiry paths.",
+        "Map approved restaurant, meetings, and location facts to available Marriott content fields."
       ],
-      "accountableOwner": "Hotel Sales & Marketing",
-      "supportingParties": "Marriott content; CVB",
-      "suggestedTimeframe": "Submit within 30 days of capacity sign-off",
-      "claimType": "REQUIRES_HOTEL_CONFIRMATION",
-      "evidenceLinks": [
-        {
-          "label": "CVB hotel fiche",
-          "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/"
-        },
-        {
-          "label": "CVB MICE fiche",
-          "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/"
-        }
+      "accountableOwner": "Hotel Commercial Leadership",
+      "supportingParties": [
+        "Food and beverage leadership",
+        "Director of Sales",
+        "Marriott digital content"
       ],
-      "estimatedEffort": "MEDIUM",
+      "suggestedTimeframe": "Content brief in 2 weeks; updates within 30–45 days",
       "completionCriteria": {
-        "investigationCompleted": "Opportunity owner and required facts confirmed with hotel leadership.",
-        "correctionSubmitted": "Outreach or listing update request filed with supporting evidence.",
-        "correctionVerifiedLive": "Live destination/partner page checked and archived after update (or documented refusal).",
-        "noChangeRequired": "Valid if leadership documents that the opportunity is out of scope with evidence retained."
+        "investigationCompleted": "Commercial leadership approves dining and business-location facts.",
+        "correctionSubmitted": "Approved content requests are filed for priority pages.",
+        "correctionVerifiedLive": "Live pages clearly state the approved offer and retain working inquiry paths.",
+        "noChangeRequired": "Valid if leadership documents that current presentation is sufficient or Marriott fields cannot support the change."
       },
       "requiresHotelApproval": true,
-      "hotelApprovalNotes": "Approve outreach copy, official URL, and factual claims before partner contact.",
+      "hotelApprovalNotes": "Approve operating details and location claims before publication.",
       "supportingEvidence": [
         {
-          "label": "CVB hotel fiche",
-          "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/",
-          "kind": "VERIFIED_PUBLIC"
+          "label": "Marriott overview",
+          "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/"
         },
         {
-          "label": "CVB MICE fiche",
-          "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
-          "kind": "VERIFIED_PUBLIC"
+          "label": "Marriott events",
+          "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/"
+        },
+        {
+          "label": "Convention bureau",
+          "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/"
+        },
+        {
+          "label": "ACHM renovation announcement",
+          "url": "https://achmhotels.com/en/ac-hotel-a-coruna-begins-a-new-chapter-following-its-refurbishment/"
+        },
+        {
+          "label": "Marriott rooms",
+          "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/rooms/"
         }
       ],
       "technicalDetails": {
         "urls": [
           {
-            "label": "CVB hotel fiche",
-            "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/",
+            "label": "Marriott overview",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
             "kind": "VERIFIED_PUBLIC"
           },
           {
-            "label": "CVB MICE fiche",
+            "label": "Marriott events",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
+            "kind": "VERIFIED_PUBLIC"
+          },
+          {
+            "label": "Convention bureau",
             "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
+            "kind": "VERIFIED_PUBLIC"
+          },
+          {
+            "label": "ACHM renovation announcement",
+            "url": "https://achmhotels.com/en/ac-hotel-a-coruna-begins-a-new-chapter-following-its-refurbishment/",
+            "kind": "VERIFIED_PUBLIC"
+          },
+          {
+            "label": "Marriott rooms",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/rooms/",
             "kind": "VERIFIED_PUBLIC"
           }
         ],
         "changesOrInvestigation": [
-          "Approve Marriott LCGCO meetings record.",
-          "Submit CVB corrections including official hyperlink.",
-          "Re-check live fiches."
+          "Approve concise AC Lounge meal-service language.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Add sourced Matogrande, Expocoruña, and business-access context where Marriott permits.",
+          "Keep meeting facts aligned with the related action.",
+          "QA live copy and inquiry paths.",
+          "Map approved restaurant, meetings, and location facts to available Marriott content fields."
         ],
         "evidence": [
           {
-            "label": "CVB hotel fiche",
-            "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/",
+            "label": "Marriott overview",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/"
+          },
+          {
+            "label": "Marriott events",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/"
+          },
+          {
+            "label": "Convention bureau",
+            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/"
+          },
+          {
+            "label": "ACHM renovation announcement",
+            "url": "https://achmhotels.com/en/ac-hotel-a-coruna-begins-a-new-chapter-following-its-refurbishment/"
+          },
+          {
+            "label": "Marriott rooms",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/rooms/"
+          }
+        ],
+        "verificationMethod": "Confirm approved facts are visible in rendered copy and machine-readable page content where supported.",
+        "dependencies": [
+          "the related action source of truth",
+          "Current AC Lounge operating details"
+        ],
+        "notes": "ADP recognition rates are prioritization signals, not proof that content caused measured performance."
+      },
+      "implementationStatus": "NOT_STARTED",
+      "claimType": "RECOMMENDED_INVESTIGATION",
+      "estimatedEffort": "MEDIUM",
+      "affectedPlatform": "Hotel digital presence",
+      "specificIssue": "Restaurant recognition was 0% and meeting-space recognition about 49%, despite official AC Lounge and event content plus the Matogrande/Expocoruña location.",
+      "commercialImportance": "Clearer official descriptions can improve buyer context, although they cannot guarantee future AI presence or bookings.",
+      "actionTitle": "Strengthen AC Lounge and Business-District Signals",
+      "desiredOutcome": "Confirmed room-view categories and accurate location descriptions published on the named hotel and brand channels.",
+      "classification": "VERIFIED_CONTENT_IMPROVEMENT",
+      "workstreamTheme": "positioning_content",
+      "primaryOwner": "Hotel Commercial Leadership",
+      "businessRelevance": "Clearer official descriptions can improve buyer context, although they cannot guarantee future AI presence or bookings.",
+      "recommendedAction": "Strengthen AC Lounge and Business-District Signals"
+    },
+    {
+      "actionId": "AVA-ACOR-003",
+      "headline": "Review Spanish-Page Access for Intended Crawlers",
+      "priority": "MEDIUM",
+      "priorityWhy": "A bounded 403/redirect pattern warrants review because the English page and robots.txt remained available.",
+      "whatWeFound": "The Spanish Marriott URL returned HTTP 403 and redirected toward default.mi for the research bot; the English overview fetched and robots.txt returned 200.",
+      "whyItMatters": "An unintended access mismatch could steer automated systems toward secondary sources, but one research client does not establish a general outage.",
+      "recommendedSteps": [
+        "Open a Marriott CDN/WAF review ticket with the exact test context.",
+        "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+        "Compare intended crawler policy with current bot-management rules.",
+        "Approve only narrow security-safe changes if a conflict is confirmed.",
+        "Retest Spanish and English pages from agreed clients.",
+        "Record status, redirect chain, user agent, and CDN rule decision for agreed clients."
+      ],
+      "accountableOwner": "Marriott Digital / CDN Security Owner",
+      "supportingParties": [
+        "Hotel digital marketing",
+        "Hotel commercial leadership"
+      ],
+      "suggestedTimeframe": "Technical review within 30 days",
+      "completionCriteria": {
+        "investigationCompleted": "A technical note explains the 403/redirect behavior and intended crawler policy.",
+        "correctionSubmitted": "Any required change is approved and filed through Marriott security controls.",
+        "correctionVerifiedLive": "Agreed clients receive the intended response on both language variants.",
+        "noChangeRequired": "Valid if Marriott documents that intended crawlers are unaffected and the research-client block is intentional."
+      },
+      "requiresHotelApproval": true,
+      "hotelApprovalNotes": "Do not weaken security; hotel approval is required for any production access-policy change.",
+      "supportingEvidence": [
+        {
+          "label": "Spanish overview",
+          "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/"
+        },
+        {
+          "label": "Marriott robots.txt",
+          "url": "https://www.marriott.com/robots.txt"
+        }
+      ],
+      "technicalDetails": {
+        "urls": [
+          {
+            "label": "Spanish overview",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
             "kind": "VERIFIED_PUBLIC"
           },
           {
-            "label": "CVB MICE fiche",
-            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
+            "label": "Marriott robots.txt",
+            "url": "https://www.marriott.com/robots.txt",
             "kind": "VERIFIED_PUBLIC"
           }
         ],
-        "verificationMethod": "Live-page QA with archived screenshots and classification note.",
-        "dependencies": [
-          "Hotel leadership approves facts before outreach."
+        "changesOrInvestigation": [
+          "Open a Marriott CDN/WAF review ticket with the exact test context.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Compare intended crawler policy with current bot-management rules.",
+          "Approve only narrow security-safe changes if a conflict is confirmed.",
+          "Retest Spanish and English pages from agreed clients.",
+          "Record status, redirect chain, user agent, and CDN rule decision for agreed clients."
         ],
-        "notes": "Public partial Digital Authority research only; no paid SEO metrics invented."
+        "evidence": [
+          {
+            "label": "Spanish overview",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/"
+          },
+          {
+            "label": "Marriott robots.txt",
+            "url": "https://www.marriott.com/robots.txt"
+          }
+        ],
+        "verificationMethod": "Repeat controlled requests to both language variants and document status codes and redirect destinations.",
+        "dependencies": [
+          "Marriott CDN/WAF access",
+          "Approved crawler policy"
+        ],
+        "notes": "The observation is bounded and does not prove a global indexing failure."
       },
-      "implementationStatus": "Awaiting hotel decision",
-      "affectedPlatform": "CVB hotel fiche",
-      "specificIssue": "CVB lists AC without confirmed Marriott href; capacities/address conflict with Marriott sources.",
-      "commercialImportance": "Planners and AI systems may reuse the wrong MICE figures."
+      "implementationStatus": "NOT_STARTED",
+      "claimType": "RECOMMENDED_INVESTIGATION",
+      "estimatedEffort": "MEDIUM",
+      "affectedPlatform": "Hotel digital presence",
+      "specificIssue": "The Spanish Marriott URL returned HTTP 403 and redirected toward default.mi for the research bot; the English overview fetched and robots.txt returned 200.",
+      "commercialImportance": "An unintended access mismatch could steer automated systems toward secondary sources, but one research client does not establish a general outage.",
+      "actionTitle": "Review Spanish-Page Access for Intended Crawlers",
+      "desiredOutcome": "Documented crawler-access decision with verified live robots/CDN behavior.",
+      "classification": "RESEARCH_FOLLOW_UP",
+      "workstreamTheme": "technical_access_review",
+      "primaryOwner": "Marriott Digital / CDN Security Owner",
+      "businessRelevance": "An unintended access mismatch could steer automated systems toward secondary sources, but one research client does not establish a general outage.",
+      "recommendedAction": "Review Spanish-Page Access for Intended Crawlers"
+    },
+    {
+      "actionId": "AVA-ACOR-005",
+      "headline": "Decide Whether to Reinforce Weddings and Social Events",
+      "priority": "MEDIUM",
+      "priorityWhy": "Wedding recognition was low, but more content is warranted only if the hotel wants this demand.",
+      "whatWeFound": "Marriott markets weddings on the events page while ADP wedding-venue recognition was 2.4%.",
+      "whyItMatters": "A focused module could help qualified prospects understand fit, but added content creates maintenance work and cannot guarantee inquiries.",
+      "recommendedSteps": [
+        "Sales records a wedding/social-event go or no-go.",
+        "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+        "If go, approve target occasions, capacities, inclusions, and inquiry ownership.",
+        "Draft concise content using the the related action capacity record.",
+        "If no-go, document and close the action.",
+        "Document go/no-go and, if approved, map wedding facts to supported Marriott fields."
+      ],
+      "accountableOwner": "Hotel Commercial Leadership",
+      "supportingParties": [
+        "Wedding and events sales",
+        "Marriott digital content"
+      ],
+      "suggestedTimeframe": "Decision within 30 days",
+      "completionCriteria": {
+        "investigationCompleted": "A written commercial go/no-go is on file.",
+        "correctionSubmitted": "If approved, a content request using signed facts is submitted.",
+        "correctionVerifiedLive": "If approved, live content matches capacities and has a working inquiry path.",
+        "noChangeRequired": "Valid when leadership documents a no-go or confirms current wedding content is sufficient."
+      },
+      "requiresHotelApproval": true,
+      "hotelApprovalNotes": "Optional commercial decision; do not publish additional content without demand and capacity approval.",
+      "supportingEvidence": [
+        {
+          "label": "Marriott events page",
+          "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/"
+        }
+      ],
+      "technicalDetails": {
+        "urls": [
+          {
+            "label": "Marriott events page",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
+            "kind": "VERIFIED_PUBLIC"
+          }
+        ],
+        "changesOrInvestigation": [
+          "Sales records a wedding/social-event go or no-go.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "If go, approve target occasions, capacities, inclusions, and inquiry ownership.",
+          "Draft concise content using the the related action capacity record.",
+          "If no-go, document and close the action.",
+          "Document go/no-go and, if approved, map wedding facts to supported Marriott fields."
+        ],
+        "evidence": [
+          {
+            "label": "Marriott events page",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/"
+          }
+        ],
+        "verificationMethod": "If approved, compare live wedding content and inquiry path against the signed brief.",
+        "dependencies": [
+          "Commercial go/no-go",
+          "the related action capacity record"
+        ],
+        "notes": "Optional opportunity, not a verified website defect."
+      },
+      "implementationStatus": "NOT_STARTED",
+      "claimType": "OPTIONAL_COMMERCIAL_OPPORTUNITY",
+      "estimatedEffort": "MEDIUM",
+      "affectedPlatform": "Hotel digital presence",
+      "specificIssue": "Marriott markets weddings on the events page while ADP wedding-venue recognition was 2.4%.",
+      "commercialImportance": "A focused module could help qualified prospects understand fit, but added content creates maintenance work and cannot guarantee inquiries.",
+      "actionTitle": "Decide Whether to Reinforce Weddings and Social Events",
+      "desiredOutcome": "Verified event inventory, supported occasions, and a working inquiry path on the official pages.",
+      "classification": "MAINTENANCE",
+      "workstreamTheme": "unique:AVA-ACOR-005",
+      "primaryOwner": "Hotel Commercial Leadership",
+      "businessRelevance": "A focused module could help qualified prospects understand fit, but added content creates maintenance work and cannot guarantee inquiries.",
+      "recommendedAction": "Decide Whether to Reinforce Weddings and Social Events"
     }
   ],
   "methodology": {
@@ -5513,549 +5306,6 @@
       "No paid Exa/Context/DataForSEO spend in this V3 pass unless separately authorized."
     ]
   },
-  "customerActionRegister": {
-    "contract": "AVA_CANONICAL_ACTION_REGISTER_V1",
-    "propertyId": "adp_ac_hotel_a_coruna",
-    "generatedAt": "2026-11-05T21:49:50.213Z",
-    "sourceActionCount": 7,
-    "canonicalActionCount": 5,
-    "consolidated": [
-      {
-        "theme": "meeting_space_reconciliation",
-        "keptActionId": "AVA-ACOR-001",
-        "mergedActionIds": [
-          "AVA-ACOR-001",
-          "AVA-ACOR-DCR-001"
-        ],
-        "reason": "Same corrective objective (meeting_space_reconciliation)"
-      },
-      {
-        "theme": "positioning_content",
-        "keptActionId": "AVA-ACOR-002",
-        "mergedActionIds": [
-          "AVA-ACOR-002",
-          "AVA-ACOR-004"
-        ],
-        "reason": "Same corrective objective (positioning_content)"
-      }
-    ],
-    "actions": [
-      {
-        "actionId": "AVA-ACOR-001",
-        "propertyId": "adp_ac_hotel_a_coruna",
-        "findingIds": [
-          "AVA-ACOR-001",
-          "AVA-ACOR-DCR-001"
-        ],
-        "mergedFromActionIds": [
-          "AVA-ACOR-001",
-          "AVA-ACOR-DCR-001"
-        ],
-        "workstreamTheme": "meeting_space_reconciliation",
-        "actionTitle": "Reconcile Event-Room, Capacity, and Address Facts",
-        "classification": "VERIFIED_CORRECTION",
-        "priority": "HIGH",
-        "prioritySource": "HIGH",
-        "platform": "Hotel digital presence",
-        "affectedUrls": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
-            "label": "Marriott overview"
-          },
-          {
-            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
-            "label": "Marriott events"
-          },
-          {
-            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
-            "label": "CVB MICE fiche"
-          },
-          {
-            "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/",
-            "label": "CVB hotel fiche"
-          }
-        ],
-        "verifiedObservation": "Marriott uses five versus six event rooms, and the convention bureau differs on Banquetes capacity and street number.",
-        "commercialRationale": "Concrete conflicts create avoidable planner uncertainty and can be repeated by search and AI systems.",
-        "recommendedSteps": [
-          "Sales signs a room-by-room schedule with setup capacities and total area.",
-          "Operations confirms the correct street address.",
-          "Submit field-level corrections to Marriott and the convention bureau.",
-          "Verify every named page against the signed schedule.",
-          "A signed meetings and address schedule explains all named figures.",
-          "Approved correction requests are filed with exact fields and sources."
-        ],
-        "primaryOwner": "Director of Sales / Hotel Operations",
-        "supportingOwners": [
-          "Marriott digital content",
-          "A Coruña Convention Bureau liaison"
-        ],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
-            "label": "Marriott overview"
-          },
-          {
-            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
-            "label": "Marriott events"
-          },
-          {
-            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
-            "label": "Convention bureau"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Reconcile Event-Room, Capacity, and Address Facts",
-        "whatWeFound": "Marriott uses five versus six event rooms, and the convention bureau differs on Banquetes capacity and street number.",
-        "recommendedAction": "Reconcile Event-Room, Capacity, and Address Facts",
-        "accountableOwner": "Director of Sales / Hotel Operations",
-        "businessRelevance": "Concrete conflicts create avoidable planner uncertainty and can be repeated by search and AI systems.",
-        "whyItMatters": "Concrete conflicts create avoidable planner uncertainty and can be repeated by search and AI systems.",
-        "affectedPlatform": "Hotel digital presence",
-        "supportingEvidence": [
-          {
-            "label": "Marriott overview",
-            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/"
-          },
-          {
-            "label": "Marriott events",
-            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/"
-          },
-          {
-            "label": "CVB MICE fiche",
-            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/"
-          },
-          {
-            "label": "CVB hotel fiche",
-            "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Marriott overview",
-              "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "Marriott events",
-              "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "CVB MICE fiche",
-              "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "CVB hotel fiche",
-              "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "AVA-ACOR-DA-001",
-        "propertyId": "adp_ac_hotel_a_coruna",
-        "findingIds": [
-          "AVA-ACOR-DA-001"
-        ],
-        "mergedFromActionIds": [
-          "AVA-ACOR-DA-001"
-        ],
-        "workstreamTheme": "digital_authority_outreach",
-        "actionTitle": "Secure Accurate CVB Profile + Official Website Hyperlink",
-        "classification": "DISTRIBUTION_OPPORTUNITY",
-        "priority": "HIGH",
-        "prioritySource": "HIGH",
-        "platform": "CVB hotel fiche",
-        "affectedUrls": [
-          {
-            "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/",
-            "label": "CVB hotel fiche"
-          },
-          {
-            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
-            "label": "CVB MICE fiche"
-          },
-          {
-            "url": "https://acorunacb.com/wp-content/uploads/2025/07/revista_agosto_2025.pdf",
-            "label": "Guía MICE PDF"
-          }
-        ],
-        "verifiedObservation": "CVB hotel/MICE pages mention AC without a confirmed href to Marriott/hotelacacoruna.com; peer CVB pages also lack hotel-website backlinks in this public pass.",
-        "commercialRationale": "Meetings planners and destination AI contexts rely on CVB inventory accuracy.",
-        "recommendedSteps": [
-          "Approve Marriott canonical URL and meeting capacities.",
-          "Request CVB update including official-site hyperlink.",
-          "Re-check live fiche and archive screenshots.",
-          "Signed comparison of CVB vs Marriott fields is filed.",
-          "CVB update request submitted with approved facts.",
-          "Named CVB pages match the signed schedule."
-        ],
-        "primaryOwner": "Hotel Commercial / Sales",
-        "supportingOwners": [],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/",
-            "label": "CVB hotel fiche"
-          },
-          {
-            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
-            "label": "CVB MICE fiche"
-          },
-          {
-            "url": "https://acorunacb.com/wp-content/uploads/2025/07/revista_agosto_2025.pdf",
-            "label": "Guía MICE PDF"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Secure Accurate CVB Profile + Official Website Hyperlink",
-        "whatWeFound": "CVB hotel/MICE pages mention AC without a confirmed href to Marriott/hotelacacoruna.com; peer CVB pages also lack hotel-website backlinks in this public pass.",
-        "recommendedAction": "Secure Accurate CVB Profile + Official Website Hyperlink",
-        "accountableOwner": "Hotel Commercial / Sales",
-        "businessRelevance": "Meetings planners and destination AI contexts rely on CVB inventory accuracy.",
-        "whyItMatters": "Meetings planners and destination AI contexts rely on CVB inventory accuracy.",
-        "affectedPlatform": "CVB hotel fiche",
-        "supportingEvidence": [
-          {
-            "label": "CVB hotel fiche",
-            "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/"
-          },
-          {
-            "label": "CVB MICE fiche",
-            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/"
-          },
-          {
-            "label": "Guía MICE PDF",
-            "url": "https://acorunacb.com/wp-content/uploads/2025/07/revista_agosto_2025.pdf"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "CVB hotel fiche",
-              "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "CVB MICE fiche",
-              "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "Guía MICE PDF",
-              "url": "https://acorunacb.com/wp-content/uploads/2025/07/revista_agosto_2025.pdf",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "AVA-ACOR-002",
-        "propertyId": "adp_ac_hotel_a_coruna",
-        "findingIds": [
-          "AVA-ACOR-002",
-          "AVA-ACOR-004"
-        ],
-        "mergedFromActionIds": [
-          "AVA-ACOR-002",
-          "AVA-ACOR-004"
-        ],
-        "workstreamTheme": "positioning_content",
-        "actionTitle": "Strengthen AC Lounge and Business-District Signals",
-        "classification": "VERIFIED_CONTENT_IMPROVEMENT",
-        "priority": "MEDIUM",
-        "prioritySource": "HIGH",
-        "platform": "Hotel digital presence",
-        "affectedUrls": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
-            "label": "Marriott overview"
-          },
-          {
-            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
-            "label": "Marriott events"
-          },
-          {
-            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
-            "label": "Convention bureau"
-          },
-          {
-            "url": "https://achmhotels.com/en/ac-hotel-a-coruna-begins-a-new-chapter-following-its-refurbishment/",
-            "label": "ACHM renovation announcement"
-          },
-          {
-            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/rooms/",
-            "label": "Marriott rooms"
-          }
-        ],
-        "verifiedObservation": "Restaurant recognition was 0% and meeting-space recognition about 49%, despite official AC Lounge and event content plus the Matogrande/Expocoruña location.",
-        "commercialRationale": "Clearer official descriptions can improve buyer context, although they cannot guarantee future AI presence or bookings.",
-        "recommendedSteps": [
-          "Approve concise AC Lounge meal-service language.",
-          "Add sourced Matogrande, Expocoruña, and business-access context where Marriott permits.",
-          "Keep meeting facts aligned with the related action.",
-          "QA live copy and inquiry paths.",
-          "Commercial leadership approves dining and business-location facts.",
-          "Approved content requests are filed for priority pages."
-        ],
-        "primaryOwner": "Hotel Commercial Leadership",
-        "supportingOwners": [
-          "Food and beverage leadership",
-          "Director of Sales",
-          "Marriott digital content"
-        ],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
-            "label": "Marriott overview"
-          },
-          {
-            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
-            "label": "Marriott events"
-          },
-          {
-            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
-            "label": "Convention bureau"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Strengthen AC Lounge and Business-District Signals",
-        "whatWeFound": "Restaurant recognition was 0% and meeting-space recognition about 49%, despite official AC Lounge and event content plus the Matogrande/Expocoruña location.",
-        "recommendedAction": "Strengthen AC Lounge and Business-District Signals",
-        "accountableOwner": "Hotel Commercial Leadership",
-        "businessRelevance": "Clearer official descriptions can improve buyer context, although they cannot guarantee future AI presence or bookings.",
-        "whyItMatters": "Clearer official descriptions can improve buyer context, although they cannot guarantee future AI presence or bookings.",
-        "affectedPlatform": "Hotel digital presence",
-        "supportingEvidence": [
-          {
-            "label": "Marriott overview",
-            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/"
-          },
-          {
-            "label": "Marriott events",
-            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/"
-          },
-          {
-            "label": "Convention bureau",
-            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/"
-          },
-          {
-            "label": "ACHM renovation announcement",
-            "url": "https://achmhotels.com/en/ac-hotel-a-coruna-begins-a-new-chapter-following-its-refurbishment/"
-          },
-          {
-            "label": "Marriott rooms",
-            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/rooms/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Marriott overview",
-              "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "Marriott events",
-              "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "Convention bureau",
-              "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "ACHM renovation announcement",
-              "url": "https://achmhotels.com/en/ac-hotel-a-coruna-begins-a-new-chapter-following-its-refurbishment/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "Marriott rooms",
-              "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/rooms/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "AVA-ACOR-003",
-        "propertyId": "adp_ac_hotel_a_coruna",
-        "findingIds": [
-          "AVA-ACOR-003"
-        ],
-        "mergedFromActionIds": [
-          "AVA-ACOR-003"
-        ],
-        "workstreamTheme": "technical_access_review",
-        "actionTitle": "Review Spanish-Page Access for Intended Crawlers",
-        "classification": "RESEARCH_FOLLOW_UP",
-        "priority": "MEDIUM",
-        "prioritySource": "MEDIUM",
-        "platform": "Hotel digital presence",
-        "affectedUrls": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
-            "label": "Spanish overview"
-          },
-          {
-            "url": "https://www.marriott.com/robots.txt",
-            "label": "Marriott robots.txt"
-          }
-        ],
-        "verifiedObservation": "The Spanish Marriott URL returned HTTP 403 and redirected toward default.mi for the research bot; the English overview fetched and robots.txt returned 200.",
-        "commercialRationale": "An unintended access mismatch could steer automated systems toward secondary sources, but one research client does not establish a general outage.",
-        "recommendedSteps": [
-          "Open a Marriott CDN/WAF review ticket with the exact test context.",
-          "Compare intended crawler policy with current bot-management rules.",
-          "Approve only narrow security-safe changes if a conflict is confirmed.",
-          "Retest Spanish and English pages from agreed clients.",
-          "A technical note explains the 403/redirect behavior and intended crawler policy.",
-          "Any required change is approved and filed through Marriott security controls."
-        ],
-        "primaryOwner": "Marriott Digital / CDN Security Owner",
-        "supportingOwners": [
-          "Hotel digital marketing",
-          "Hotel commercial leadership"
-        ],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
-            "label": "Spanish overview"
-          },
-          {
-            "url": "https://www.marriott.com/robots.txt",
-            "label": "Marriott robots.txt"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Review Spanish-Page Access for Intended Crawlers",
-        "whatWeFound": "The Spanish Marriott URL returned HTTP 403 and redirected toward default.mi for the research bot; the English overview fetched and robots.txt returned 200.",
-        "recommendedAction": "Review Spanish-Page Access for Intended Crawlers",
-        "accountableOwner": "Marriott Digital / CDN Security Owner",
-        "businessRelevance": "An unintended access mismatch could steer automated systems toward secondary sources, but one research client does not establish a general outage.",
-        "whyItMatters": "An unintended access mismatch could steer automated systems toward secondary sources, but one research client does not establish a general outage.",
-        "affectedPlatform": "Hotel digital presence",
-        "supportingEvidence": [
-          {
-            "label": "Spanish overview",
-            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/"
-          },
-          {
-            "label": "Marriott robots.txt",
-            "url": "https://www.marriott.com/robots.txt"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Spanish overview",
-              "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
-              "kind": "VERIFIED_PUBLIC"
-            },
-            {
-              "label": "Marriott robots.txt",
-              "url": "https://www.marriott.com/robots.txt",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      },
-      {
-        "actionId": "AVA-ACOR-005",
-        "propertyId": "adp_ac_hotel_a_coruna",
-        "findingIds": [
-          "AVA-ACOR-005"
-        ],
-        "mergedFromActionIds": [
-          "AVA-ACOR-005"
-        ],
-        "workstreamTheme": "unique:AVA-ACOR-005",
-        "actionTitle": "Decide Whether to Reinforce Weddings and Social Events",
-        "classification": "MAINTENANCE",
-        "priority": "MEDIUM",
-        "prioritySource": "OPTIONAL",
-        "platform": "Hotel digital presence",
-        "affectedUrls": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
-            "label": "Marriott events page"
-          }
-        ],
-        "verifiedObservation": "Marriott markets weddings on the events page while ADP wedding-venue recognition was 2.4%.",
-        "commercialRationale": "A focused module could help qualified prospects understand fit, but added content creates maintenance work and cannot guarantee inquiries.",
-        "recommendedSteps": [
-          "Sales records a wedding/social-event go or no-go.",
-          "If go, approve target occasions, capacities, inclusions, and inquiry ownership.",
-          "Draft concise content using the the related action capacity record.",
-          "If no-go, document and close the action.",
-          "A written commercial go/no-go is on file.",
-          "If approved, a content request using signed facts is submitted."
-        ],
-        "primaryOwner": "Hotel Commercial Leadership",
-        "supportingOwners": [
-          "Wedding and events sales",
-          "Marriott digital content"
-        ],
-        "estimatedEffort": "MEDIUM",
-        "evidenceRefs": [
-          {
-            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
-            "label": "Marriott events page"
-          }
-        ],
-        "confidence": "EVIDENCE_BACKED",
-        "researchLimitations": null,
-        "status": "ACTIVE",
-        "titleStepAligned": true,
-        "headline": "Decide Whether to Reinforce Weddings and Social Events",
-        "whatWeFound": "Marriott markets weddings on the events page while ADP wedding-venue recognition was 2.4%.",
-        "recommendedAction": "Decide Whether to Reinforce Weddings and Social Events",
-        "accountableOwner": "Hotel Commercial Leadership",
-        "businessRelevance": "A focused module could help qualified prospects understand fit, but added content creates maintenance work and cannot guarantee inquiries.",
-        "whyItMatters": "A focused module could help qualified prospects understand fit, but added content creates maintenance work and cannot guarantee inquiries.",
-        "affectedPlatform": "Hotel digital presence",
-        "supportingEvidence": [
-          {
-            "label": "Marriott events page",
-            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/"
-          }
-        ],
-        "technicalDetails": {
-          "urls": [
-            {
-              "label": "Marriott events page",
-              "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
-              "kind": "VERIFIED_PUBLIC"
-            }
-          ]
-        }
-      }
-    ],
-    "integrity": {
-      "titleOnlySteps": [],
-      "titleStepMisaligned": []
-    }
-  },
   "actionsResearchRecord": [
     {
       "actionId": "AVA-ACOR-001",
@@ -6810,5 +6060,553 @@
       "specificIssue": "CVB lists AC without confirmed Marriott href; capacities/address conflict with Marriott sources.",
       "commercialImportance": "Planners and AI systems may reuse the wrong MICE figures."
     }
-  ]
+  ],
+  "customerActionRegister": {
+    "contract": "AVA_CANONICAL_ACTION_REGISTER_V1",
+    "propertyId": "adp_ac_hotel_a_coruna",
+    "generatedAt": "2026-11-06T00:41:06.118Z",
+    "sourceActionCount": 7,
+    "canonicalActionCount": 5,
+    "consolidated": [
+      {
+        "theme": "meeting_space_reconciliation",
+        "keptActionId": "AVA-ACOR-001",
+        "mergedActionIds": [
+          "AVA-ACOR-001",
+          "AVA-ACOR-DCR-001"
+        ],
+        "reason": "Same corrective objective (meeting_space_reconciliation)"
+      },
+      {
+        "theme": "positioning_content",
+        "keptActionId": "AVA-ACOR-002",
+        "mergedActionIds": [
+          "AVA-ACOR-002",
+          "AVA-ACOR-004"
+        ],
+        "reason": "Same corrective objective (positioning_content)"
+      }
+    ],
+    "actions": [
+      {
+        "actionId": "AVA-ACOR-001",
+        "propertyId": "adp_ac_hotel_a_coruna",
+        "findingIds": [
+          "AVA-ACOR-001",
+          "AVA-ACOR-DCR-001"
+        ],
+        "mergedFromActionIds": [
+          "AVA-ACOR-001",
+          "AVA-ACOR-DCR-001"
+        ],
+        "workstreamTheme": "meeting_space_reconciliation",
+        "actionTitle": "Reconcile Event-Room, Capacity, and Address Facts",
+        "classification": "VERIFIED_CORRECTION",
+        "priority": "HIGH",
+        "prioritySource": "HIGH",
+        "platform": "Hotel digital presence",
+        "affectedUrls": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
+            "label": "Marriott overview"
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
+            "label": "Marriott events"
+          },
+          {
+            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
+            "label": "CVB MICE fiche"
+          },
+          {
+            "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/",
+            "label": "CVB hotel fiche"
+          }
+        ],
+        "verifiedObservation": "Marriott uses five versus six event rooms, and the convention bureau differs on Banquetes capacity and street number.",
+        "commercialRationale": "Concrete conflicts create avoidable planner uncertainty and can be repeated by search and AI systems.",
+        "recommendedSteps": [
+          "Sales signs a room-by-room schedule with setup capacities and total area.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Operations confirms the correct street address.",
+          "Submit field-level corrections to Marriott and the convention bureau.",
+          "Verify every named page against the signed schedule.",
+          "Create a field-level comparison and submit only hotel-approved corrections."
+        ],
+        "desiredOutcome": "An approved room-by-room capacity schedule matching live hotel and brand pages.",
+        "primaryOwner": "Director of Sales / Hotel Operations",
+        "supportingOwners": [
+          "Marriott digital content",
+          "A Coruña Convention Bureau liaison"
+        ],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
+            "label": "Marriott overview"
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
+            "label": "Marriott events"
+          },
+          {
+            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
+            "label": "Convention bureau"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Reconcile Event-Room, Capacity, and Address Facts",
+        "whatWeFound": "Marriott uses five versus six event rooms, and the convention bureau differs on Banquetes capacity and street number.",
+        "recommendedAction": "Reconcile Event-Room, Capacity, and Address Facts",
+        "accountableOwner": "Director of Sales / Hotel Operations",
+        "businessRelevance": "Concrete conflicts create avoidable planner uncertainty and can be repeated by search and AI systems.",
+        "whyItMatters": "Concrete conflicts create avoidable planner uncertainty and can be repeated by search and AI systems.",
+        "affectedPlatform": "Hotel digital presence",
+        "supportingEvidence": [
+          {
+            "label": "Marriott overview",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/"
+          },
+          {
+            "label": "Marriott events",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/"
+          },
+          {
+            "label": "CVB MICE fiche",
+            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/"
+          },
+          {
+            "label": "CVB hotel fiche",
+            "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Marriott overview",
+              "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "Marriott events",
+              "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "CVB MICE fiche",
+              "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "CVB hotel fiche",
+              "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "AVA-ACOR-DA-001",
+        "propertyId": "adp_ac_hotel_a_coruna",
+        "findingIds": [
+          "AVA-ACOR-DA-001"
+        ],
+        "mergedFromActionIds": [
+          "AVA-ACOR-DA-001"
+        ],
+        "workstreamTheme": "digital_authority_outreach",
+        "actionTitle": "Secure Accurate CVB Profile + Official Website Hyperlink",
+        "classification": "MAINTENANCE",
+        "priority": "HIGH",
+        "prioritySource": "HIGH",
+        "platform": "CVB hotel fiche",
+        "affectedUrls": [
+          {
+            "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/",
+            "label": "CVB hotel fiche"
+          },
+          {
+            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
+            "label": "CVB MICE fiche"
+          },
+          {
+            "url": "https://acorunacb.com/wp-content/uploads/2025/07/revista_agosto_2025.pdf",
+            "label": "Guía MICE PDF"
+          }
+        ],
+        "verifiedObservation": "CVB hotel/MICE pages mention AC without a confirmed href to Marriott/hotelacacoruna.com; peer CVB pages also lack hotel-website backlinks in this public pass.",
+        "commercialRationale": "Meetings planners and destination AI contexts rely on CVB inventory accuracy.",
+        "recommendedSteps": [
+          "Approve Marriott canonical URL and meeting capacities.",
+          "Apply the change on the verified page (acorunacb.com) and retain before/after evidence.",
+          "Request CVB update including official-site hyperlink.",
+          "Re-check live fiche and archive screenshots.",
+          "Field-level CVB vs Marriott reconciliation",
+          "Canonical URL decision"
+        ],
+        "desiredOutcome": "Verified CVB or partner listing fields corrected with the approved property URL and a working official hyperlink, or documented decline retained.",
+        "primaryOwner": "Hotel Commercial / Sales",
+        "supportingOwners": [],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/",
+            "label": "CVB hotel fiche"
+          },
+          {
+            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
+            "label": "CVB MICE fiche"
+          },
+          {
+            "url": "https://acorunacb.com/wp-content/uploads/2025/07/revista_agosto_2025.pdf",
+            "label": "Guía MICE PDF"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Secure Accurate CVB Profile + Official Website Hyperlink",
+        "whatWeFound": "CVB hotel/MICE pages mention AC without a confirmed href to Marriott/hotelacacoruna.com; peer CVB pages also lack hotel-website backlinks in this public pass.",
+        "recommendedAction": "Secure Accurate CVB Profile + Official Website Hyperlink",
+        "accountableOwner": "Hotel Commercial / Sales",
+        "businessRelevance": "Meetings planners and destination AI contexts rely on CVB inventory accuracy.",
+        "whyItMatters": "Meetings planners and destination AI contexts rely on CVB inventory accuracy.",
+        "affectedPlatform": "CVB hotel fiche",
+        "supportingEvidence": [
+          {
+            "label": "CVB hotel fiche",
+            "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/"
+          },
+          {
+            "label": "CVB MICE fiche",
+            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/"
+          },
+          {
+            "label": "Guía MICE PDF",
+            "url": "https://acorunacb.com/wp-content/uploads/2025/07/revista_agosto_2025.pdf"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "CVB hotel fiche",
+              "url": "https://acorunacb.com/ficha/ac-by-marriot-a-coruna/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "CVB MICE fiche",
+              "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "Guía MICE PDF",
+              "url": "https://acorunacb.com/wp-content/uploads/2025/07/revista_agosto_2025.pdf",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "AVA-ACOR-002",
+        "propertyId": "adp_ac_hotel_a_coruna",
+        "findingIds": [
+          "AVA-ACOR-002",
+          "AVA-ACOR-004"
+        ],
+        "mergedFromActionIds": [
+          "AVA-ACOR-002",
+          "AVA-ACOR-004"
+        ],
+        "workstreamTheme": "positioning_content",
+        "actionTitle": "Strengthen AC Lounge and Business-District Signals",
+        "classification": "VERIFIED_CONTENT_IMPROVEMENT",
+        "priority": "MEDIUM",
+        "prioritySource": "HIGH",
+        "platform": "Hotel digital presence",
+        "affectedUrls": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
+            "label": "Marriott overview"
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
+            "label": "Marriott events"
+          },
+          {
+            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
+            "label": "Convention bureau"
+          },
+          {
+            "url": "https://achmhotels.com/en/ac-hotel-a-coruna-begins-a-new-chapter-following-its-refurbishment/",
+            "label": "ACHM renovation announcement"
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/rooms/",
+            "label": "Marriott rooms"
+          }
+        ],
+        "verifiedObservation": "Restaurant recognition was 0% and meeting-space recognition about 49%, despite official AC Lounge and event content plus the Matogrande/Expocoruña location.",
+        "commercialRationale": "Clearer official descriptions can improve buyer context, although they cannot guarantee future AI presence or bookings.",
+        "recommendedSteps": [
+          "Approve concise AC Lounge meal-service language.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Add sourced Matogrande, Expocoruña, and business-access context where Marriott permits.",
+          "Keep meeting facts aligned with the related action.",
+          "QA live copy and inquiry paths.",
+          "Map approved restaurant, meetings, and location facts to available Marriott content fields."
+        ],
+        "desiredOutcome": "Confirmed room-view categories and accurate location descriptions published on the named hotel and brand channels.",
+        "primaryOwner": "Hotel Commercial Leadership",
+        "supportingOwners": [
+          "Food and beverage leadership",
+          "Director of Sales",
+          "Marriott digital content"
+        ],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
+            "label": "Marriott overview"
+          },
+          {
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
+            "label": "Marriott events"
+          },
+          {
+            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
+            "label": "Convention bureau"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Strengthen AC Lounge and Business-District Signals",
+        "whatWeFound": "Restaurant recognition was 0% and meeting-space recognition about 49%, despite official AC Lounge and event content plus the Matogrande/Expocoruña location.",
+        "recommendedAction": "Strengthen AC Lounge and Business-District Signals",
+        "accountableOwner": "Hotel Commercial Leadership",
+        "businessRelevance": "Clearer official descriptions can improve buyer context, although they cannot guarantee future AI presence or bookings.",
+        "whyItMatters": "Clearer official descriptions can improve buyer context, although they cannot guarantee future AI presence or bookings.",
+        "affectedPlatform": "Hotel digital presence",
+        "supportingEvidence": [
+          {
+            "label": "Marriott overview",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/"
+          },
+          {
+            "label": "Marriott events",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/"
+          },
+          {
+            "label": "Convention bureau",
+            "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/"
+          },
+          {
+            "label": "ACHM renovation announcement",
+            "url": "https://achmhotels.com/en/ac-hotel-a-coruna-begins-a-new-chapter-following-its-refurbishment/"
+          },
+          {
+            "label": "Marriott rooms",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/rooms/"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Marriott overview",
+              "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "Marriott events",
+              "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "Convention bureau",
+              "url": "https://acorunacb.com/ficha/espacios-mice-ac-by-marriot-a-coruna/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "ACHM renovation announcement",
+              "url": "https://achmhotels.com/en/ac-hotel-a-coruna-begins-a-new-chapter-following-its-refurbishment/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "Marriott rooms",
+              "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/rooms/",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "AVA-ACOR-003",
+        "propertyId": "adp_ac_hotel_a_coruna",
+        "findingIds": [
+          "AVA-ACOR-003"
+        ],
+        "mergedFromActionIds": [
+          "AVA-ACOR-003"
+        ],
+        "workstreamTheme": "technical_access_review",
+        "actionTitle": "Review Spanish-Page Access for Intended Crawlers",
+        "classification": "RESEARCH_FOLLOW_UP",
+        "priority": "MEDIUM",
+        "prioritySource": "MEDIUM",
+        "platform": "Hotel digital presence",
+        "affectedUrls": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
+            "label": "Spanish overview"
+          },
+          {
+            "url": "https://www.marriott.com/robots.txt",
+            "label": "Marriott robots.txt"
+          }
+        ],
+        "verifiedObservation": "The Spanish Marriott URL returned HTTP 403 and redirected toward default.mi for the research bot; the English overview fetched and robots.txt returned 200.",
+        "commercialRationale": "An unintended access mismatch could steer automated systems toward secondary sources, but one research client does not establish a general outage.",
+        "recommendedSteps": [
+          "Open a Marriott CDN/WAF review ticket with the exact test context.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "Compare intended crawler policy with current bot-management rules.",
+          "Approve only narrow security-safe changes if a conflict is confirmed.",
+          "Retest Spanish and English pages from agreed clients.",
+          "Record status, redirect chain, user agent, and CDN rule decision for agreed clients."
+        ],
+        "desiredOutcome": "Documented crawler-access decision with verified live robots/CDN behavior.",
+        "primaryOwner": "Marriott Digital / CDN Security Owner",
+        "supportingOwners": [
+          "Hotel digital marketing",
+          "Hotel commercial leadership"
+        ],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
+            "label": "Spanish overview"
+          },
+          {
+            "url": "https://www.marriott.com/robots.txt",
+            "label": "Marriott robots.txt"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Review Spanish-Page Access for Intended Crawlers",
+        "whatWeFound": "The Spanish Marriott URL returned HTTP 403 and redirected toward default.mi for the research bot; the English overview fetched and robots.txt returned 200.",
+        "recommendedAction": "Review Spanish-Page Access for Intended Crawlers",
+        "accountableOwner": "Marriott Digital / CDN Security Owner",
+        "businessRelevance": "An unintended access mismatch could steer automated systems toward secondary sources, but one research client does not establish a general outage.",
+        "whyItMatters": "An unintended access mismatch could steer automated systems toward secondary sources, but one research client does not establish a general outage.",
+        "affectedPlatform": "Hotel digital presence",
+        "supportingEvidence": [
+          {
+            "label": "Spanish overview",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/"
+          },
+          {
+            "label": "Marriott robots.txt",
+            "url": "https://www.marriott.com/robots.txt"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Spanish overview",
+              "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/overview/",
+              "kind": "VERIFIED_PUBLIC"
+            },
+            {
+              "label": "Marriott robots.txt",
+              "url": "https://www.marriott.com/robots.txt",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      },
+      {
+        "actionId": "AVA-ACOR-005",
+        "propertyId": "adp_ac_hotel_a_coruna",
+        "findingIds": [
+          "AVA-ACOR-005"
+        ],
+        "mergedFromActionIds": [
+          "AVA-ACOR-005"
+        ],
+        "workstreamTheme": "unique:AVA-ACOR-005",
+        "actionTitle": "Decide Whether to Reinforce Weddings and Social Events",
+        "classification": "MAINTENANCE",
+        "priority": "MEDIUM",
+        "prioritySource": "OPTIONAL",
+        "platform": "Hotel digital presence",
+        "affectedUrls": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
+            "label": "Marriott events page"
+          }
+        ],
+        "verifiedObservation": "Marriott markets weddings on the events page while ADP wedding-venue recognition was 2.4%.",
+        "commercialRationale": "A focused module could help qualified prospects understand fit, but added content creates maintenance work and cannot guarantee inquiries.",
+        "recommendedSteps": [
+          "Sales records a wedding/social-event go or no-go.",
+          "Apply the change on the verified page (marriott.com) and retain before/after evidence.",
+          "If go, approve target occasions, capacities, inclusions, and inquiry ownership.",
+          "Draft concise content using the the related action capacity record.",
+          "If no-go, document and close the action.",
+          "Document go/no-go and, if approved, map wedding facts to supported Marriott fields."
+        ],
+        "desiredOutcome": "Verified event inventory, supported occasions, and a working inquiry path on the official pages.",
+        "primaryOwner": "Hotel Commercial Leadership",
+        "supportingOwners": [
+          "Wedding and events sales",
+          "Marriott digital content"
+        ],
+        "estimatedEffort": "MEDIUM",
+        "evidenceRefs": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
+            "label": "Marriott events page"
+          }
+        ],
+        "confidence": "EVIDENCE_BACKED",
+        "researchLimitations": null,
+        "status": "ACTIVE",
+        "titleStepAligned": true,
+        "headline": "Decide Whether to Reinforce Weddings and Social Events",
+        "whatWeFound": "Marriott markets weddings on the events page while ADP wedding-venue recognition was 2.4%.",
+        "recommendedAction": "Decide Whether to Reinforce Weddings and Social Events",
+        "accountableOwner": "Hotel Commercial Leadership",
+        "businessRelevance": "A focused module could help qualified prospects understand fit, but added content creates maintenance work and cannot guarantee inquiries.",
+        "whyItMatters": "A focused module could help qualified prospects understand fit, but added content creates maintenance work and cannot guarantee inquiries.",
+        "affectedPlatform": "Hotel digital presence",
+        "supportingEvidence": [
+          {
+            "label": "Marriott events page",
+            "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/"
+          }
+        ],
+        "technicalDetails": {
+          "urls": [
+            {
+              "label": "Marriott events page",
+              "url": "https://www.marriott.com/en-us/hotels/lcgco-ac-hotel-a-coruna/events/",
+              "kind": "VERIFIED_PUBLIC"
+            }
+          ]
+        }
+      }
+    ],
+    "integrity": {
+      "titleOnlySteps": [],
+      "titleStepMisaligned": []
+    }
+  }
 }
