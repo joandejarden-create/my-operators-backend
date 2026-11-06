@@ -1,8 +1,8 @@
 {
-  "ok": true,
-  "total": 15,
-  "passed": 15,
-  "failed": 0,
+  "ok": false,
+  "total": 12,
+  "passed": 11,
+  "failed": 1,
   "results": [
     {
       "name": "workflow_concurrency_no_auto_cancel",
@@ -60,25 +60,10 @@
       "detail": ""
     },
     {
-      "name": "dry_run_no_customer_publication_or_token_rotation",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "name": "unauthorized_local_live_coordinator_blocked",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "name": "legacy_raw_railway_up_blocked",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "name": "existing_railway_builds_not_auto_cancelled",
-      "pass": true,
-      "detail": ""
+      "name": "uncaught",
+      "pass": false,
+      "detail": "AssertionError [ERR_ASSERTION]: {\n  \"ok\": false,\n  \"code\": \"RAILWAY_BUSY\",\n  \"message\": \"non-terminal Railway deployment in progress\",\n  \"railway\": {\n    \"ok\": true,\n    \"nonTerminal\": 1,\n    \"non\": [\n      {\n        \"id\": \"87a869db-d638-4dda-9c90-f4dc4daf2585\",\n        \"status\": \"INITIALIZING\",\n        \"createdAt\": \"2026-11-06T18:21:01.256Z\",\n        \"meta\": {\n          \"buildOnly\": false,\n          \"cliAgentSessionId\": \"9d64f994-3200-4621-a09e-c40095803a33\",\n          \"cliCaller\": \"cursor\",\n          \"logsV2\": true,\n          \"reason\": \"deploy\",\n          \"runtime\": \"V2\",\n          \"serviceManifest\": {\n            \"build\": {\n              \"buildCommand\": null,\n              \"buildEnvironment\": null,\n              \"builder\": \"RAILPACK\",\n              \"dockerfilePath\": null,\n              \"nixpacksConfigPath\": null,\n              \"nixpacksPlan\": null,\n              \"watchPatterns\": []\n            },\n            \"deploy\": {\n              \"cronSchedule\": null,\n              \"drainingSeconds\": null,\n              \"healthcheckPath\": null,\n              \"healthcheckTimeout\": null,\n              \"ipv6EgressEnabled\": false,\n              \"limitOverride\": null,\n              \"multiRegionConfig\": {\n                \"us-east4-eqdc4a\": {\n                  \"numReplicas\": 1\n                }\n              },\n              \"numReplicas\": 1,\n              \"overlapSeconds\": null,\n              \"preDeployCommand\": null,\n              \"preDeployTimeoutSeconds\": null,\n              \"region\": null,\n              \"registryCredentials\": null,\n              \"requiredMountPath\": null,\n              \"restartPolicyMaxRetries\": 10,\n              \"restartPolicyType\": \"ON_FAILURE\",\n              \"runtime\": \"V2\",\n              \"sleepApplication\": false,\n              \"startCommand\": null,\n              \"useLegacyStacker\": false\n            }\n          },\n          \"volumeMounts\": [\n            \"/app/data/adp-durable-published\"\n          ]\n        }\n      }\n    ],\n    \"active\": {\n      \"id\": \"87a869db-d638-4dda-9c90-f4dc4daf2585\",\n      \"status\": \"INITIALIZING\",\n      \"createdAt\": \"2026-11-06T18:21:01.256Z\",\n      \"meta\": {\n        \"buildOnly\": false,\n        \"cliAgentSessionId\": \"9d64f994-3200-4621-a09e-c40095803a33\",\n        \"cliCaller\": \"cursor\",\n        \"logsV2\": true,\n        \"reason\": \"deploy\",\n        \"runtime\": \"V2\",\n        \"serviceManifest\": {\n          \"build\": {\n            \"buildCommand\": null,\n            \"buildEnvironment\": null,\n            \"builder\": \"RAILPACK\",\n            \"dockerfilePath\": null,\n            \"nixpacksConfigPath\": null,\n            \"nixpacksPlan\": null,\n            \"watchPatterns\": []\n          },\n          \"deploy\": {\n            \"cronSchedule\": null,\n            \"drainingSeconds\": null,\n            \"healthcheckPath\": null,\n            \"healthcheckTimeout\": null,\n            \"ipv6EgressEnabled\": false,\n            \"limitOverride\": null,\n            \"multiRegionConfig\": {\n              \"us-east4-eqdc4a\": {\n                \"numReplicas\": 1\n              }\n            },\n            \"numReplicas\": 1,\n            \"overlapSeconds\": null,\n            \"preDeployCommand\": null,\n            \"preDeployTimeoutSeconds\": null,\n            \"region\": null,\n            \"registryCredentials\": null,\n            \"requiredMountPath\": null,\n            \"restartPolicyMaxRetries\": 10,\n            \"restartPolicyType\": \"ON_FAILURE\",\n            \"runtime\": \"V2\",\n            \"sleepApplication\": false,\n            \"startCommand\": null,\n            \"useLegacyStacker\": false\n          }\n        },\n        \"volumeMounts\": [\n          \"/app/data/adp-durable-published\"\n        ]\n      }\n    }\n  }\n}\n\n\n2 !== 0\n\n    at file:///C:/Dev/dealality/_ava-v4-smoke-fix-pr/scripts/test-dealality-production-release-github-actions-contract-v1.mjs:216:10\n    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)"
     }
   ],
-  "tmp": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gha-contract-BTy2aK"
+  "tmp": "C:\\Users\\joand\\AppData\\Local\\Temp\\dealality-gha-contract-JeAgRb"
 }

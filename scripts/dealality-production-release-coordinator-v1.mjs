@@ -26,8 +26,6 @@ import {
   GITHUB_ACTIONS_CHANNEL,
 } from "../lib/dealality-production-release/release-channel-v1.js";
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-
 function arg(flag) {
   const i = process.argv.indexOf(flag);
   return i >= 0 ? process.argv[i + 1] : null;
@@ -36,6 +34,10 @@ function arg(flag) {
 function has(flag) {
   return process.argv.includes(flag);
 }
+
+const ROOT = path.resolve(
+  arg("--repo-root") || path.join(path.dirname(fileURLToPath(import.meta.url)), "..")
+);
 
 function fail(code, message, extra = {}) {
   console.error(JSON.stringify({ ok: false, code, message, ...extra }, null, 2));
