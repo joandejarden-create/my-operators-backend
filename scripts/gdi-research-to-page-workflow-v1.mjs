@@ -168,6 +168,14 @@ import {
   verificationNeedsRerun,
   loadPublicationManifestFromRun,
 } from "../lib/group-demand-intelligence/workflow/full-e2e-verification-adapters-v1.js";
+import {
+  assertHotelExecutionScope,
+  enforceHotelExecutionScopeOrThrow,
+} from "../lib/group-demand-intelligence/workflow/hotel-execution-scope-preflight-v1.js";
+import {
+  forbiddenHotelIdsForRun,
+  isTampaAirportReinstatementAuthorized,
+} from "../lib/group-demand-intelligence/workflow/portfolio-us-marriott-five-hotel-auth-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -222,6 +230,15 @@ const fullE2eMode =
   workflowModeRaw === "full_e2e" ||
   workflowModeRaw === "e2e";
 const authorizationRef = String(arg("--authorization-ref", "") || "").trim();
+const approvedHotelName = String(
+  arg("--approved-hotel-name", "") || ""
+).trim();
+const approvedHotelId = String(
+  arg("--approved-hotel-id", hotelId) || hotelId
+).trim();
+const approvedProduct = String(arg("--approved-product", "GDI") || "GDI")
+  .trim()
+  .toUpperCase();
 const completionEvidencePath = arg("--completion-evidence");
 const authorizePublish = has("--authorize-publish");
 const authorizePePersist =
@@ -520,11 +537,52 @@ for (const stage of stagesToRun) {
         throw new Error(`Hotel config missing: ${cfgPath}`);
       }
       const cfg = JSON.parse(fs.readFileSync(cfgPath, "utf8"));
+      const airportReinstate = isTampaAirportReinstatementAuthorized({
+        hotelId,
+        product: approvedProduct,
+        authorizationRef,
+      });
+      const scopeGate = assertHotelExecutionScope({
+        hotelId,
+        approvedHotelId,
+        approvedHotelName:
+          approvedHotelName || cfg.displayName || cfg.identity?.hotelName || "",
+        product: approvedProduct,
+        approvedProduct,
+        authorizationRef,
+        approvedAuthorizationId: authorizationRef || null,
+        hotelConfig: cfg,
+        requirePaidGate:
+          authorizePaidDiscovery === true ||
+          authorizePublish === true ||
+          has("--authorize-surfe"),
+        forbiddenHotelIds: forbiddenHotelIdsForRun({
+          hotelId,
+          product: approvedProduct,
+          authorizationRef,
+        }),
+        tampaAirportReinstatementAuthorized: airportReinstate.ok === true,
+        blockAirportMarriott: airportReinstate.ok !== true,
+      });
+      if (!scopeGate.ok) {
+        mark(ledger, stage, "failed", {
+          error: "hotel_execution_scope_blocked",
+          blockers: scopeGate.blockers,
+          checks: scopeGate.checks,
+        });
+        throw Object.assign(
+          new Error(
+            `hotel_execution_scope_blocked:${scopeGate.blockers.join(",")}`
+          ),
+          { code: "HOTEL_EXECUTION_SCOPE_BLOCKED", blockers: scopeGate.blockers }
+        );
+      }
       mark(ledger, stage, "completed", {
         configPath: cfgPath,
         displayName: cfg.displayName || null,
         onboarding: cfg.gdiOnboarding?.status || null,
         rooms: cfg.capabilityProfile?.totalGuestrooms || null,
+        executionScope: scopeGate.checks,
       });
       continue;
     }
@@ -1111,6 +1169,39 @@ for (const stage of stagesToRun) {
           note: "Pass --authorize-paid-discovery --budget-usd <N> with GDI_PARALLEL_ENABLED=1 and hotel allowlist to execute within authorized envelope",
         });
         continue;
+      }
+      {
+        const cfgPathPaid = resolveConfigPath(hotelId);
+        const cfgPaid = fs.existsSync(cfgPathPaid)
+          ? JSON.parse(fs.readFileSync(cfgPathPaid, "utf8"))
+          : {};
+        const airportReinstatePaid = isTampaAirportReinstatementAuthorized({
+          hotelId,
+          product: approvedProduct,
+          authorizationRef,
+        });
+        enforceHotelExecutionScopeOrThrow({
+          hotelId,
+          approvedHotelId,
+          approvedHotelName:
+            approvedHotelName ||
+            cfgPaid.displayName ||
+            cfgPaid.identity?.hotelName ||
+            "",
+          product: approvedProduct,
+          approvedProduct,
+          authorizationRef,
+          approvedAuthorizationId: authorizationRef || null,
+          hotelConfig: cfgPaid,
+          requirePaidGate: true,
+          forbiddenHotelIds: forbiddenHotelIdsForRun({
+            hotelId,
+            product: approvedProduct,
+            authorizationRef,
+          }),
+          tampaAirportReinstatementAuthorized: airportReinstatePaid.ok === true,
+          blockAirportMarriott: airportReinstatePaid.ok !== true,
+        });
       }
       if (ledger.fullE2e) ledger.fullE2e.paidCallsAttempted = true;
       const oppDoc = await loadOpportunitiesCanonical(hotelId);

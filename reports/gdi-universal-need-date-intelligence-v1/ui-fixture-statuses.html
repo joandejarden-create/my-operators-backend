@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>GDI Need-Date Intelligence — UI fixture</title>
+  <link rel="stylesheet" href="/public/css/group-demand-intelligence.css" />
+  <style>
+    body { margin: 0; font-family: Georgia, "Times New Roman", serif; background: #0b1020; color: #e8ebf2; }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 32px 20px 64px; }
+    .panel { border: 1px solid rgba(255,255,255,.12); border-radius: 12px; padding: 18px 20px; margin: 0 0 20px; background: #121826; }
+    .panel h2 { margin: 0 0 12px; font-size: 18px; }
+    .muted { color: #a8b0c0; font-size: 13px; }
+    .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Need-Date Intelligence — hotel configuration statuses</h1>
+    <p class="muted">Fixture for before/after visual verification. Uses production CSS + DealalityGdiUi helpers.</p>
+
+    <section class="panel" id="confirmedPanel" data-status="HOTEL_CONFIRMED">
+      <h2>Confirmed hotel</h2>
+      <div id="confirmedMount"></div>
+    </section>
+
+    <section class="panel" id="estimatedPanel" data-status="MARKET_ESTIMATED">
+      <h2>Market estimated hotel</h2>
+      <div id="estimatedMount"></div>
+    </section>
+
+    <section class="panel" id="nonePanel" data-status="NOT_ESTABLISHED">
+      <h2>Not established hotel</h2>
+      <div id="noneMount"></div>
+    </section>
+  </div>
+  <script src="/public/js/group-demand-intelligence/dealality-gdi-ui.js"></script>
+  <script>
+    (function () {
+      var UI = window.DealalityGdiUi;
+      if (!UI) {
+        document.body.insertAdjacentHTML("afterbegin", "<p role='alert'>DealalityGdiUi missing</p>");
+        return;
+      }
+      function mount(id, status) {
+        var el = document.getElementById(id);
+        el.innerHTML =
+          UI.needDatesHeadingWithLegendHtml({
+            title: "Need Dates",
+            hotelNeedDateConfigV1: status,
+            popoverId: "legend-" + status.status,
+          }) +
+          '<p class="muted">' +
+          (status.accessibleLabel || "") +
+          "</p>";
+        UI.bindNeedDateLegendInteractions(el);
+      }
+      mount("confirmedMount", {
+        status: "HOTEL_CONFIRMED",
+        statusLabel: "Hotel-confirmed need periods",
+        accessibleLabel: "Hotel-confirmed need periods exist",
+        colorClass: "gdi-hotel-need-date-status--confirmed",
+      });
+      mount("estimatedMount", {
+        status: "MARKET_ESTIMATED",
+        statusLabel: "Estimated — not hotel confirmed",
+        accessibleLabel: "Estimated need periods — not hotel confirmed",
+        colorClass: "gdi-hotel-need-date-status--estimated",
+      });
+      mount("noneMount", {
+        status: "NOT_ESTABLISHED",
+        statusLabel: "Need dates not established",
+        accessibleLabel: "Need dates not established",
+        colorClass: "gdi-hotel-need-date-status--not-established",
+      });
+    })();
+  </script>
+</body>
+</html>

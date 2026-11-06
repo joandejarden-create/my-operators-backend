@@ -764,6 +764,38 @@ export async function getGdiOpportunities(req, res) {
             : "Reviewed prospects exist in storage but none passed customer-facing visibility filters.",
       };
     }
+    let hotelNeedDateConfigV1;
+    try {
+      const {
+        resolveHotelNeedDateConfiguration,
+        toCustomerSafeHotelNeedDateStatus,
+      } = await import(
+        "../lib/group-demand-intelligence/need-date-demand/gdi-universal-need-date-intelligence-v1.js"
+      );
+      hotelNeedDateConfigV1 = toCustomerSafeHotelNeedDateStatus(
+        resolveHotelNeedDateConfiguration(hotelId),
+        { includeUnpublishedEstimates: true }
+      );
+    } catch (needDateCfgErr) {
+      console.error(
+        "[gdi] hotel need-date config resolve failed",
+        needDateCfgErr?.message || needDateCfgErr
+      );
+      // Never omit the DTO — UI defaults require an explicit status object.
+      hotelNeedDateConfigV1 = {
+        version: "GDI_UNIVERSAL_NEED_DATE_INTELLIGENCE_V1",
+        hotelId,
+        status: "NOT_ESTABLISHED",
+        statusLabel: "Need dates not established",
+        accessibleLabel: "Need dates not established",
+        icon: "calendar-minus",
+        colorClass: "gdi-hotel-need-date-status--not-established",
+        confirmedPeriodCount: 0,
+        estimatedPeriodCount: 0,
+        internalOnly: false,
+      };
+    }
+
     return res.json({
       ok: true,
       hotelId,
@@ -773,6 +805,7 @@ export async function getGdiOpportunities(req, res) {
       view: wantFull ? "full" : "list",
       schemaVersion: wantFull ? null : GDI_OPPORTUNITY_LIST_SCHEMA,
       opportunities,
+      hotelNeedDateConfigV1,
       ...(visibilityWarning ? { visibilityWarning } : {}),
       reviewedProspectImport: doc.reviewedProspectImport || null,
     });
@@ -2077,8 +2110,42 @@ export async function getGdiShareOpportunities(req, res) {
     hotelId,
     opportunities
   );
+  let hotelNeedDateConfigV1;
+  try {
+    const {
+      resolveHotelNeedDateConfiguration,
+      toCustomerSafeHotelNeedDateStatus,
+    } = await import(
+      "../lib/group-demand-intelligence/need-date-demand/gdi-universal-need-date-intelligence-v1.js"
+    );
+    // Share: hide unpublished market estimates (NOT_ESTABLISHED unless confirmed).
+    // Live compute — no snapshot republish required for hotel-config status icons.
+    hotelNeedDateConfigV1 = toCustomerSafeHotelNeedDateStatus(
+      resolveHotelNeedDateConfiguration(hotelId),
+      { includeUnpublishedEstimates: false }
+    );
+  } catch (needDateCfgErr) {
+    console.error(
+      "[gdi] share hotel need-date config resolve failed",
+      needDateCfgErr?.message || needDateCfgErr
+    );
+    hotelNeedDateConfigV1 = {
+      version: "GDI_UNIVERSAL_NEED_DATE_INTELLIGENCE_V1",
+      hotelId,
+      status: "NOT_ESTABLISHED",
+      statusLabel: "Need dates not established",
+      accessibleLabel: "Need dates not established",
+      icon: "calendar-minus",
+      colorClass: "gdi-hotel-need-date-status--not-established",
+      confirmedPeriodCount: 0,
+      estimatedPeriodCount: 0,
+      internalOnly: false,
+    };
+  }
+
   res.setHeader("X-GDI-Opportunity-View", wantFull ? "full" : "list");
   res.setHeader("X-GDI-Share-Presentation-Parity", "v1");
+  res.setHeader("X-GDI-Hotel-Need-Date-Config", "v1");
   return res.json({
     ok: true,
     mode: "read_only",
@@ -2087,6 +2154,7 @@ export async function getGdiShareOpportunities(req, res) {
     view: wantFull ? "full" : "list",
     schemaVersion: wantFull ? null : GDI_OPPORTUNITY_LIST_SCHEMA,
     opportunities: withProgression,
+    hotelNeedDateConfigV1,
     validationEnums: {
       familiarityStatus: SHARE_FAMILIARITY_STATUS,
       familiarityLabels: SHARE_FAMILIARITY_LABEL,

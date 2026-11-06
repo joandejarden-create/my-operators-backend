@@ -1,0 +1,1834 @@
+{
+  "ok": true,
+  "version": "GDI_NEED_DATES_CROSS_HOTEL_CANONICAL_INVENTORY_V1",
+  "generatedAt": "2026-11-06T14:06:24.441Z",
+  "inventoryCount": 30,
+  "denominator": "listCanonicalGdiEligibleHotels",
+  "notDenominator": "listGdiSelectableHotels",
+  "layerCounts": {
+    "inventoryHotels": 30,
+    "gdiSelectableResearchHotels": 21,
+    "researchCompleted": 17,
+    "researchNotStarted": 13,
+    "HOTEL_CONFIRMED": 1,
+    "MARKET_ESTIMATED": 1,
+    "NOT_ESTABLISHED": 28,
+    "needDatesWithoutResearchCompleted": 0,
+    "researchCompletedWithoutNeedDates": 15
+  },
+  "checks": [
+    {
+      "id": "inventory_non_empty",
+      "ok": true,
+      "detail": {
+        "count": 30
+      }
+    },
+    {
+      "id": "inventory_ids_are_rec",
+      "ok": true,
+      "detail": {
+        "sample": [
+          "rec2PVBDavppGpenm",
+          "recLuxvwwxID7U2B8",
+          "recIwaP1etgx2g9nA"
+        ]
+      }
+    },
+    {
+      "id": "no_hardcoded_27_denominator",
+      "ok": true,
+      "detail": {
+        "note": "Count may change after onboarding; do not freeze at 27",
+        "count": 30
+      }
+    },
+    {
+      "id": "need_date_status_present:rec2PVBDavppGpenm",
+      "ok": true,
+      "detail": {
+        "hotelName": "AC Hotel A Coruña",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:rec2PVBDavppGpenm",
+      "ok": true,
+      "detail": {
+        "status": "RESEARCH_COMPLETED"
+      }
+    },
+    {
+      "id": "stable_identity:rec2PVBDavppGpenm",
+      "ok": true,
+      "detail": {
+        "hotelName": "AC Hotel A Coruña"
+      }
+    },
+    {
+      "id": "source_contract_ok:rec2PVBDavppGpenm",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:rec2PVBDavppGpenm",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:rec2PVBDavppGpenm",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recLuxvwwxID7U2B8",
+      "ok": true,
+      "detail": {
+        "hotelName": "Bethesda Marriott",
+        "status": "HOTEL_CONFIRMED"
+      }
+    },
+    {
+      "id": "research_status_present:recLuxvwwxID7U2B8",
+      "ok": true,
+      "detail": {
+        "status": "RESEARCH_COMPLETED"
+      }
+    },
+    {
+      "id": "stable_identity:recLuxvwwxID7U2B8",
+      "ok": true,
+      "detail": {
+        "hotelName": "Bethesda Marriott"
+      }
+    },
+    {
+      "id": "source_contract_ok:recLuxvwwxID7U2B8",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recLuxvwwxID7U2B8",
+      "ok": true,
+      "detail": {
+        "confirmed": [
+          "ndp_bethesda_marriott_2027_01",
+          "ndp_bethesda_marriott_2026_11",
+          "ndp_bethesda_marriott_2027_08",
+          "ndp_bethesda_marriott_2027_07",
+          "ndp_bethesda_marriott_2026_12",
+          "ndp_bethesda_marriott_2027_02",
+          "ndp_bethesda_marriott_2027_12",
+          "ndp_bethesda_marriott_2027_11"
+        ]
+      }
+    },
+    {
+      "id": "svg_status_icon:recLuxvwwxID7U2B8",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-check",
+        "colorClass": "gdi-hotel-need-date-status--confirmed"
+      }
+    },
+    {
+      "id": "need_date_status_present:recIwaP1etgx2g9nA",
+      "ok": true,
+      "detail": {
+        "hotelName": "Cambridge Beaches Resort & Spa",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recIwaP1etgx2g9nA",
+      "ok": true,
+      "detail": {
+        "status": "RESEARCH_COMPLETED"
+      }
+    },
+    {
+      "id": "stable_identity:recIwaP1etgx2g9nA",
+      "ok": true,
+      "detail": {
+        "hotelName": "Cambridge Beaches Resort & Spa"
+      }
+    },
+    {
+      "id": "source_contract_ok:recIwaP1etgx2g9nA",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recIwaP1etgx2g9nA",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recIwaP1etgx2g9nA",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recjDsNzu93CFfe87",
+      "ok": true,
+      "detail": {
+        "hotelName": "Casas del XVI",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recjDsNzu93CFfe87",
+      "ok": true,
+      "detail": {
+        "status": "NOT_STARTED"
+      }
+    },
+    {
+      "id": "stable_identity:recjDsNzu93CFfe87",
+      "ok": true,
+      "detail": {
+        "hotelName": "Casas del XVI"
+      }
+    },
+    {
+      "id": "source_contract_ok:recjDsNzu93CFfe87",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recjDsNzu93CFfe87",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recjDsNzu93CFfe87",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:rec82D9zpB8fede1I",
+      "ok": true,
+      "detail": {
+        "hotelName": "Castillo Hotel Son Vida, a Luxury Collection Hotel, Mallorca",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:rec82D9zpB8fede1I",
+      "ok": true,
+      "detail": {
+        "status": "RESEARCH_COMPLETED"
+      }
+    },
+    {
+      "id": "stable_identity:rec82D9zpB8fede1I",
+      "ok": true,
+      "detail": {
+        "hotelName": "Castillo Hotel Son Vida, a Luxury Collection Hotel, Mallorca"
+      }
+    },
+    {
+      "id": "source_contract_ok:rec82D9zpB8fede1I",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:rec82D9zpB8fede1I",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:rec82D9zpB8fede1I",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recRkGGNKslJptFIL",
+      "ok": true,
+      "detail": {
+        "hotelName": "Falls Church Marriott Fairview Park",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recRkGGNKslJptFIL",
+      "ok": true,
+      "detail": {
+        "status": "NOT_STARTED"
+      }
+    },
+    {
+      "id": "stable_identity:recRkGGNKslJptFIL",
+      "ok": true,
+      "detail": {
+        "hotelName": "Falls Church Marriott Fairview Park"
+      }
+    },
+    {
+      "id": "source_contract_ok:recRkGGNKslJptFIL",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recRkGGNKslJptFIL",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recRkGGNKslJptFIL",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:rec9Tp0WBb2uk6w3u",
+      "ok": true,
+      "detail": {
+        "hotelName": "Faranda Collection Bogotá",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:rec9Tp0WBb2uk6w3u",
+      "ok": true,
+      "detail": {
+        "status": "NOT_STARTED"
+      }
+    },
+    {
+      "id": "stable_identity:rec9Tp0WBb2uk6w3u",
+      "ok": true,
+      "detail": {
+        "hotelName": "Faranda Collection Bogotá"
+      }
+    },
+    {
+      "id": "source_contract_ok:rec9Tp0WBb2uk6w3u",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:rec9Tp0WBb2uk6w3u",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:rec9Tp0WBb2uk6w3u",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recIEcSWuhSCoNLFN",
+      "ok": true,
+      "detail": {
+        "hotelName": "Fiesta Americana Condesa Cancún All Inclusive",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recIEcSWuhSCoNLFN",
+      "ok": true,
+      "detail": {
+        "status": "RESEARCH_COMPLETED"
+      }
+    },
+    {
+      "id": "stable_identity:recIEcSWuhSCoNLFN",
+      "ok": true,
+      "detail": {
+        "hotelName": "Fiesta Americana Condesa Cancún All Inclusive"
+      }
+    },
+    {
+      "id": "source_contract_ok:recIEcSWuhSCoNLFN",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recIEcSWuhSCoNLFN",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recIEcSWuhSCoNLFN",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recterKmNPdntCm0v",
+      "ok": true,
+      "detail": {
+        "hotelName": "Grand Fiesta Americana Chapultepec",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recterKmNPdntCm0v",
+      "ok": true,
+      "detail": {
+        "status": "RESEARCH_COMPLETED"
+      }
+    },
+    {
+      "id": "stable_identity:recterKmNPdntCm0v",
+      "ok": true,
+      "detail": {
+        "hotelName": "Grand Fiesta Americana Chapultepec"
+      }
+    },
+    {
+      "id": "source_contract_ok:recterKmNPdntCm0v",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recterKmNPdntCm0v",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recterKmNPdntCm0v",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:rec35fExUxCClpOP6",
+      "ok": true,
+      "detail": {
+        "hotelName": "Hilton New York Times Square",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:rec35fExUxCClpOP6",
+      "ok": true,
+      "detail": {
+        "status": "RESEARCH_COMPLETED"
+      }
+    },
+    {
+      "id": "stable_identity:rec35fExUxCClpOP6",
+      "ok": true,
+      "detail": {
+        "hotelName": "Hilton New York Times Square"
+      }
+    },
+    {
+      "id": "source_contract_ok:rec35fExUxCClpOP6",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:rec35fExUxCClpOP6",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:rec35fExUxCClpOP6",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recCEpdskZeUBvQwG",
+      "ok": true,
+      "detail": {
+        "hotelName": "Hotel Caribe by Faranda Grand, a member of Radisson Individuals",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recCEpdskZeUBvQwG",
+      "ok": true,
+      "detail": {
+        "status": "NOT_STARTED"
+      }
+    },
+    {
+      "id": "stable_identity:recCEpdskZeUBvQwG",
+      "ok": true,
+      "detail": {
+        "hotelName": "Hotel Caribe by Faranda Grand, a member of Radisson Individuals"
+      }
+    },
+    {
+      "id": "source_contract_ok:recCEpdskZeUBvQwG",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recCEpdskZeUBvQwG",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recCEpdskZeUBvQwG",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:rec8hHupaSwiWI3r7",
+      "ok": true,
+      "detail": {
+        "hotelName": "Hotel Phillips Kansas City, Curio Collection by Hilton",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:rec8hHupaSwiWI3r7",
+      "ok": true,
+      "detail": {
+        "status": "NOT_STARTED"
+      }
+    },
+    {
+      "id": "stable_identity:rec8hHupaSwiWI3r7",
+      "ok": true,
+      "detail": {
+        "hotelName": "Hotel Phillips Kansas City, Curio Collection by Hilton"
+      }
+    },
+    {
+      "id": "source_contract_ok:rec8hHupaSwiWI3r7",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:rec8hHupaSwiWI3r7",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:rec8hHupaSwiWI3r7",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recsn3BUKJ9PNfeZW",
+      "ok": true,
+      "detail": {
+        "hotelName": "JW Marriott Hotel Monterrey Valle",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recsn3BUKJ9PNfeZW",
+      "ok": true,
+      "detail": {
+        "status": "NOT_STARTED"
+      }
+    },
+    {
+      "id": "stable_identity:recsn3BUKJ9PNfeZW",
+      "ok": true,
+      "detail": {
+        "hotelName": "JW Marriott Hotel Monterrey Valle"
+      }
+    },
+    {
+      "id": "source_contract_ok:recsn3BUKJ9PNfeZW",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recsn3BUKJ9PNfeZW",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recsn3BUKJ9PNfeZW",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recESHsNsWUFYZrxR",
+      "ok": true,
+      "detail": {
+        "hotelName": "JW Marriott Hotel Santo Domingo",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recESHsNsWUFYZrxR",
+      "ok": true,
+      "detail": {
+        "status": "NOT_STARTED"
+      }
+    },
+    {
+      "id": "stable_identity:recESHsNsWUFYZrxR",
+      "ok": true,
+      "detail": {
+        "hotelName": "JW Marriott Hotel Santo Domingo"
+      }
+    },
+    {
+      "id": "source_contract_ok:recESHsNsWUFYZrxR",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recESHsNsWUFYZrxR",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recESHsNsWUFYZrxR",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recC2kbCaS48jFjFF",
+      "ok": true,
+      "detail": {
+        "hotelName": "Nobu Hotel London Portman Square",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recC2kbCaS48jFjFF",
+      "ok": true,
+      "detail": {
+        "status": "NOT_STARTED"
+      }
+    },
+    {
+      "id": "stable_identity:recC2kbCaS48jFjFF",
+      "ok": true,
+      "detail": {
+        "hotelName": "Nobu Hotel London Portman Square"
+      }
+    },
+    {
+      "id": "source_contract_ok:recC2kbCaS48jFjFF",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recC2kbCaS48jFjFF",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recC2kbCaS48jFjFF",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recGkME49yYuxQl0u",
+      "ok": true,
+      "detail": {
+        "hotelName": "NOW NOW NOHO",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recGkME49yYuxQl0u",
+      "ok": true,
+      "detail": {
+        "status": "RESEARCH_COMPLETED"
+      }
+    },
+    {
+      "id": "stable_identity:recGkME49yYuxQl0u",
+      "ok": true,
+      "detail": {
+        "hotelName": "NOW NOW NOHO"
+      }
+    },
+    {
+      "id": "source_contract_ok:recGkME49yYuxQl0u",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recGkME49yYuxQl0u",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recGkME49yYuxQl0u",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recUOyzOXn2Zdp98I",
+      "ok": true,
+      "detail": {
+        "hotelName": "Radisson Hotel Santo Domingo",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recUOyzOXn2Zdp98I",
+      "ok": true,
+      "detail": {
+        "status": "RESEARCH_COMPLETED"
+      }
+    },
+    {
+      "id": "stable_identity:recUOyzOXn2Zdp98I",
+      "ok": true,
+      "detail": {
+        "hotelName": "Radisson Hotel Santo Domingo"
+      }
+    },
+    {
+      "id": "source_contract_ok:recUOyzOXn2Zdp98I",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recUOyzOXn2Zdp98I",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recUOyzOXn2Zdp98I",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recG66DQJKP2c0UNh",
+      "ok": true,
+      "detail": {
+        "hotelName": "Renaissance New York Times Square Hotel",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recG66DQJKP2c0UNh",
+      "ok": true,
+      "detail": {
+        "status": "RESEARCH_COMPLETED"
+      }
+    },
+    {
+      "id": "stable_identity:recG66DQJKP2c0UNh",
+      "ok": true,
+      "detail": {
+        "hotelName": "Renaissance New York Times Square Hotel"
+      }
+    },
+    {
+      "id": "source_contract_ok:recG66DQJKP2c0UNh",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recG66DQJKP2c0UNh",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recG66DQJKP2c0UNh",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recjhQdAUiSyxfCqE",
+      "ok": true,
+      "detail": {
+        "hotelName": "Sheraton Mallorca Arabella Golf Hotel",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recjhQdAUiSyxfCqE",
+      "ok": true,
+      "detail": {
+        "status": "RESEARCH_COMPLETED"
+      }
+    },
+    {
+      "id": "stable_identity:recjhQdAUiSyxfCqE",
+      "ok": true,
+      "detail": {
+        "hotelName": "Sheraton Mallorca Arabella Golf Hotel"
+      }
+    },
+    {
+      "id": "source_contract_ok:recjhQdAUiSyxfCqE",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recjhQdAUiSyxfCqE",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recjhQdAUiSyxfCqE",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recKRJjcPnb4tVDDS",
+      "ok": true,
+      "detail": {
+        "hotelName": "Spice Island Beach Resort",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recKRJjcPnb4tVDDS",
+      "ok": true,
+      "detail": {
+        "status": "RESEARCH_COMPLETED"
+      }
+    },
+    {
+      "id": "stable_identity:recKRJjcPnb4tVDDS",
+      "ok": true,
+      "detail": {
+        "hotelName": "Spice Island Beach Resort"
+      }
+    },
+    {
+      "id": "source_contract_ok:recKRJjcPnb4tVDDS",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recKRJjcPnb4tVDDS",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recKRJjcPnb4tVDDS",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:rec0eTEnCqlsGJJt9",
+      "ok": true,
+      "detail": {
+        "hotelName": "The Mayflower Hotel, Autograph Collection",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:rec0eTEnCqlsGJJt9",
+      "ok": true,
+      "detail": {
+        "status": "NOT_STARTED"
+      }
+    },
+    {
+      "id": "stable_identity:rec0eTEnCqlsGJJt9",
+      "ok": true,
+      "detail": {
+        "hotelName": "The Mayflower Hotel, Autograph Collection"
+      }
+    },
+    {
+      "id": "source_contract_ok:rec0eTEnCqlsGJJt9",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:rec0eTEnCqlsGJJt9",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:rec0eTEnCqlsGJJt9",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recN76iEE6yAaPh8H",
+      "ok": true,
+      "detail": {
+        "hotelName": "The St. Regis Cap Cana Resort",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recN76iEE6yAaPh8H",
+      "ok": true,
+      "detail": {
+        "status": "NOT_STARTED"
+      }
+    },
+    {
+      "id": "stable_identity:recN76iEE6yAaPh8H",
+      "ok": true,
+      "detail": {
+        "hotelName": "The St. Regis Cap Cana Resort"
+      }
+    },
+    {
+      "id": "source_contract_ok:recN76iEE6yAaPh8H",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recN76iEE6yAaPh8H",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recN76iEE6yAaPh8H",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recRXmrakhSAuctwz",
+      "ok": true,
+      "detail": {
+        "hotelName": "The St. Regis Mexico City",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recRXmrakhSAuctwz",
+      "ok": true,
+      "detail": {
+        "status": "NOT_STARTED"
+      }
+    },
+    {
+      "id": "stable_identity:recRXmrakhSAuctwz",
+      "ok": true,
+      "detail": {
+        "hotelName": "The St. Regis Mexico City"
+      }
+    },
+    {
+      "id": "source_contract_ok:recRXmrakhSAuctwz",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recRXmrakhSAuctwz",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recRXmrakhSAuctwz",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recFaxTEFF9ILHWC9",
+      "ok": true,
+      "detail": {
+        "hotelName": "The Westin Grand München",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recFaxTEFF9ILHWC9",
+      "ok": true,
+      "detail": {
+        "status": "RESEARCH_COMPLETED"
+      }
+    },
+    {
+      "id": "stable_identity:recFaxTEFF9ILHWC9",
+      "ok": true,
+      "detail": {
+        "hotelName": "The Westin Grand München"
+      }
+    },
+    {
+      "id": "source_contract_ok:recFaxTEFF9ILHWC9",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recFaxTEFF9ILHWC9",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recFaxTEFF9ILHWC9",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recD17Kxn6BcJjGFh",
+      "ok": true,
+      "detail": {
+        "hotelName": "The Westin Monterrey Valle",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recD17Kxn6BcJjGFh",
+      "ok": true,
+      "detail": {
+        "status": "NOT_STARTED"
+      }
+    },
+    {
+      "id": "stable_identity:recD17Kxn6BcJjGFh",
+      "ok": true,
+      "detail": {
+        "hotelName": "The Westin Monterrey Valle"
+      }
+    },
+    {
+      "id": "source_contract_ok:recD17Kxn6BcJjGFh",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recD17Kxn6BcJjGFh",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recD17Kxn6BcJjGFh",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recdmo0CnhIZAwHGC",
+      "ok": true,
+      "detail": {
+        "hotelName": "The Westin Tampa Waterside",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recdmo0CnhIZAwHGC",
+      "ok": true,
+      "detail": {
+        "status": "NOT_STARTED"
+      }
+    },
+    {
+      "id": "stable_identity:recdmo0CnhIZAwHGC",
+      "ok": true,
+      "detail": {
+        "hotelName": "The Westin Tampa Waterside"
+      }
+    },
+    {
+      "id": "source_contract_ok:recdmo0CnhIZAwHGC",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recdmo0CnhIZAwHGC",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recdmo0CnhIZAwHGC",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:rece0or38cxo3Fymb",
+      "ok": true,
+      "detail": {
+        "hotelName": "W Rome",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:rece0or38cxo3Fymb",
+      "ok": true,
+      "detail": {
+        "status": "RESEARCH_COMPLETED"
+      }
+    },
+    {
+      "id": "stable_identity:rece0or38cxo3Fymb",
+      "ok": true,
+      "detail": {
+        "hotelName": "W Rome"
+      }
+    },
+    {
+      "id": "source_contract_ok:rece0or38cxo3Fymb",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:rece0or38cxo3Fymb",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:rece0or38cxo3Fymb",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recgMYovrrZDJMqzX",
+      "ok": true,
+      "detail": {
+        "hotelName": "Waterstone Resort & Marina Boca Raton",
+        "status": "MARKET_ESTIMATED"
+      }
+    },
+    {
+      "id": "research_status_present:recgMYovrrZDJMqzX",
+      "ok": true,
+      "detail": {
+        "status": "RESEARCH_COMPLETED"
+      }
+    },
+    {
+      "id": "stable_identity:recgMYovrrZDJMqzX",
+      "ok": true,
+      "detail": {
+        "hotelName": "Waterstone Resort & Marina Boca Raton"
+      }
+    },
+    {
+      "id": "source_contract_ok:recgMYovrrZDJMqzX",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recgMYovrrZDJMqzX",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recgMYovrrZDJMqzX",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-dashed",
+        "colorClass": "gdi-hotel-need-date-status--estimated"
+      }
+    },
+    {
+      "id": "need_date_status_present:recnPB3Q02NO8Ma1o",
+      "ok": true,
+      "detail": {
+        "hotelName": "Wyndham San Diego Bayside",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recnPB3Q02NO8Ma1o",
+      "ok": true,
+      "detail": {
+        "status": "RESEARCH_COMPLETED"
+      }
+    },
+    {
+      "id": "stable_identity:recnPB3Q02NO8Ma1o",
+      "ok": true,
+      "detail": {
+        "hotelName": "Wyndham San Diego Bayside"
+      }
+    },
+    {
+      "id": "source_contract_ok:recnPB3Q02NO8Ma1o",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recnPB3Q02NO8Ma1o",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recnPB3Q02NO8Ma1o",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "need_date_status_present:recrPQcZg7SFARRb2",
+      "ok": true,
+      "detail": {
+        "hotelName": "YOTEL Geneva Lake",
+        "status": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "id": "research_status_present:recrPQcZg7SFARRb2",
+      "ok": true,
+      "detail": {
+        "status": "RESEARCH_COMPLETED"
+      }
+    },
+    {
+      "id": "stable_identity:recrPQcZg7SFARRb2",
+      "ok": true,
+      "detail": {
+        "hotelName": "YOTEL Geneva Lake"
+      }
+    },
+    {
+      "id": "source_contract_ok:recrPQcZg7SFARRb2",
+      "ok": true,
+      "detail": {
+        "failures": []
+      }
+    },
+    {
+      "id": "no_test_scenario_confirmed:recrPQcZg7SFARRb2",
+      "ok": true,
+      "detail": {
+        "confirmed": []
+      }
+    },
+    {
+      "id": "svg_status_icon:recrPQcZg7SFARRb2",
+      "ok": true,
+      "detail": {
+        "icon": "calendar-minus",
+        "colorClass": "gdi-hotel-need-date-status--not-established"
+      }
+    },
+    {
+      "id": "bethesda_eight_airtable_periods",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "id": "bethesda_unique_months",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "id": "waterstone_test_not_confirmed",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "id": "waterstone_not_hotel_confirmed_status",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "id": "spice_not_established",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "id": "recovered_in_inventory:recRkGGNKslJptFIL",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "id": "recovered_has_need_date_status:recRkGGNKslJptFIL",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "id": "recovered_in_inventory:recterKmNPdntCm0v",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "id": "recovered_has_need_date_status:recterKmNPdntCm0v",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "id": "recovered_in_inventory:recIEcSWuhSCoNLFN",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "id": "recovered_has_need_date_status:recIEcSWuhSCoNLFN",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "id": "legend_present",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "id": "hotel_status_svgs",
+      "ok": true,
+      "detail": null
+    }
+  ],
+  "failures": [],
+  "hotels": [
+    {
+      "hotelId": "rec2PVBDavppGpenm",
+      "hotelName": "AC Hotel A Coruña",
+      "city": "A Coruña",
+      "country": "Spain",
+      "gdiOnboardingStatus": null,
+      "gdiResearchStatus": "RESEARCH_COMPLETED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 39
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelName": "Bethesda Marriott",
+      "city": null,
+      "country": null,
+      "gdiOnboardingStatus": null,
+      "gdiResearchStatus": "RESEARCH_COMPLETED",
+      "needDateStatus": "HOTEL_CONFIRMED",
+      "hotelConfirmedPeriods": 8,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "AIRTABLE_MIRROR",
+      "opportunityCount": 54
+    },
+    {
+      "hotelId": "recIwaP1etgx2g9nA",
+      "hotelName": "Cambridge Beaches Resort & Spa",
+      "city": null,
+      "country": null,
+      "gdiOnboardingStatus": "V8_3HOTEL_BLIND_VALIDATION",
+      "gdiResearchStatus": "RESEARCH_COMPLETED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 8
+    },
+    {
+      "hotelId": "recjDsNzu93CFfe87",
+      "hotelName": "Casas del XVI",
+      "city": null,
+      "country": null,
+      "gdiOnboardingStatus": "CONTROLLED_EXPANSION_WAVE3",
+      "gdiResearchStatus": "NOT_STARTED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 0
+    },
+    {
+      "hotelId": "rec82D9zpB8fede1I",
+      "hotelName": "Castillo Hotel Son Vida, a Luxury Collection Hotel, Mallorca",
+      "city": "Palma de Mallorca",
+      "country": "Spain",
+      "gdiOnboardingStatus": null,
+      "gdiResearchStatus": "RESEARCH_COMPLETED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 20
+    },
+    {
+      "hotelId": "recRkGGNKslJptFIL",
+      "hotelName": "Falls Church Marriott Fairview Park",
+      "city": "Falls Church",
+      "country": "United States",
+      "gdiOnboardingStatus": "CANONICAL_CREATED",
+      "gdiResearchStatus": "NOT_STARTED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 0
+    },
+    {
+      "hotelId": "rec9Tp0WBb2uk6w3u",
+      "hotelName": "Faranda Collection Bogotá",
+      "city": null,
+      "country": null,
+      "gdiOnboardingStatus": "CONTROLLED_EXPANSION_WAVE3",
+      "gdiResearchStatus": "NOT_STARTED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 0
+    },
+    {
+      "hotelId": "recIEcSWuhSCoNLFN",
+      "hotelName": "Fiesta Americana Condesa Cancún All Inclusive",
+      "city": "Cancún",
+      "country": "Mexico",
+      "gdiOnboardingStatus": "IDENTITY_AND_INVENTORY_VERIFIED",
+      "gdiResearchStatus": "RESEARCH_COMPLETED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 32
+    },
+    {
+      "hotelId": "recterKmNPdntCm0v",
+      "hotelName": "Grand Fiesta Americana Chapultepec",
+      "city": "Mexico City",
+      "country": "Mexico",
+      "gdiOnboardingStatus": "IDENTITY_AND_INVENTORY_VERIFIED",
+      "gdiResearchStatus": "RESEARCH_COMPLETED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 56
+    },
+    {
+      "hotelId": "rec35fExUxCClpOP6",
+      "hotelName": "Hilton New York Times Square",
+      "city": null,
+      "country": null,
+      "gdiOnboardingStatus": null,
+      "gdiResearchStatus": "RESEARCH_COMPLETED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 45
+    },
+    {
+      "hotelId": "recCEpdskZeUBvQwG",
+      "hotelName": "Hotel Caribe by Faranda Grand, a member of Radisson Individuals",
+      "city": null,
+      "country": null,
+      "gdiOnboardingStatus": "CONTROLLED_EXPANSION_WAVE2",
+      "gdiResearchStatus": "NOT_STARTED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 0
+    },
+    {
+      "hotelId": "rec8hHupaSwiWI3r7",
+      "hotelName": "Hotel Phillips Kansas City, Curio Collection by Hilton",
+      "city": null,
+      "country": null,
+      "gdiOnboardingStatus": "CONTROLLED_EXPANSION_WAVE1",
+      "gdiResearchStatus": "NOT_STARTED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 0
+    },
+    {
+      "hotelId": "recsn3BUKJ9PNfeZW",
+      "hotelName": "JW Marriott Hotel Monterrey Valle",
+      "city": null,
+      "country": null,
+      "gdiOnboardingStatus": "V8_3HOTEL_BLIND_VALIDATION",
+      "gdiResearchStatus": "NOT_STARTED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 0
+    },
+    {
+      "hotelId": "recESHsNsWUFYZrxR",
+      "hotelName": "JW Marriott Hotel Santo Domingo",
+      "city": null,
+      "country": null,
+      "gdiOnboardingStatus": "CONTROLLED_EXPANSION_WAVE2",
+      "gdiResearchStatus": "NOT_STARTED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 0
+    },
+    {
+      "hotelId": "recC2kbCaS48jFjFF",
+      "hotelName": "Nobu Hotel London Portman Square",
+      "city": "London",
+      "country": "United Kingdom",
+      "gdiOnboardingStatus": "CANONICAL",
+      "gdiResearchStatus": "NOT_STARTED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 0
+    },
+    {
+      "hotelId": "recGkME49yYuxQl0u",
+      "hotelName": "NOW NOW NOHO",
+      "city": null,
+      "country": null,
+      "gdiOnboardingStatus": "V8_3HOTEL_BLIND_VALIDATION",
+      "gdiResearchStatus": "RESEARCH_COMPLETED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 8
+    },
+    {
+      "hotelId": "recUOyzOXn2Zdp98I",
+      "hotelName": "Radisson Hotel Santo Domingo",
+      "city": "Santo Domingo",
+      "country": "Dominican Republic",
+      "gdiOnboardingStatus": "CONTROLLED_EXPANSION_WAVE3",
+      "gdiResearchStatus": "RESEARCH_COMPLETED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 16
+    },
+    {
+      "hotelId": "recG66DQJKP2c0UNh",
+      "hotelName": "Renaissance New York Times Square Hotel",
+      "city": null,
+      "country": null,
+      "gdiOnboardingStatus": "ONBOARDED",
+      "gdiResearchStatus": "RESEARCH_COMPLETED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 29
+    },
+    {
+      "hotelId": "recjhQdAUiSyxfCqE",
+      "hotelName": "Sheraton Mallorca Arabella Golf Hotel",
+      "city": "Palma de Mallorca",
+      "country": "Spain",
+      "gdiOnboardingStatus": null,
+      "gdiResearchStatus": "RESEARCH_COMPLETED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 30
+    },
+    {
+      "hotelId": "recKRJjcPnb4tVDDS",
+      "hotelName": "Spice Island Beach Resort",
+      "city": "St George's",
+      "country": "Grenada",
+      "gdiOnboardingStatus": "CANONICAL",
+      "gdiResearchStatus": "RESEARCH_COMPLETED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 77
+    },
+    {
+      "hotelId": "rec0eTEnCqlsGJJt9",
+      "hotelName": "The Mayflower Hotel, Autograph Collection",
+      "city": "Washington",
+      "country": "United States",
+      "gdiOnboardingStatus": "CANONICAL",
+      "gdiResearchStatus": "NOT_STARTED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 0
+    },
+    {
+      "hotelId": "recN76iEE6yAaPh8H",
+      "hotelName": "The St. Regis Cap Cana Resort",
+      "city": null,
+      "country": null,
+      "gdiOnboardingStatus": "CONTROLLED_EXPANSION_WAVE1",
+      "gdiResearchStatus": "NOT_STARTED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 0
+    },
+    {
+      "hotelId": "recRXmrakhSAuctwz",
+      "hotelName": "The St. Regis Mexico City",
+      "city": null,
+      "country": null,
+      "gdiOnboardingStatus": "CONTROLLED_EXPANSION_WAVE1",
+      "gdiResearchStatus": "NOT_STARTED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 0
+    },
+    {
+      "hotelId": "recFaxTEFF9ILHWC9",
+      "hotelName": "The Westin Grand München",
+      "city": "Munich",
+      "country": "Germany",
+      "gdiOnboardingStatus": null,
+      "gdiResearchStatus": "RESEARCH_COMPLETED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 26
+    },
+    {
+      "hotelId": "recD17Kxn6BcJjGFh",
+      "hotelName": "The Westin Monterrey Valle",
+      "city": null,
+      "country": null,
+      "gdiOnboardingStatus": "CONTROLLED_EXPANSION_WAVE2",
+      "gdiResearchStatus": "NOT_STARTED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 0
+    },
+    {
+      "hotelId": "recdmo0CnhIZAwHGC",
+      "hotelName": "The Westin Tampa Waterside",
+      "city": "Tampa",
+      "country": "United States",
+      "gdiOnboardingStatus": "CANONICAL",
+      "gdiResearchStatus": "NOT_STARTED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 0
+    },
+    {
+      "hotelId": "rece0or38cxo3Fymb",
+      "hotelName": "W Rome",
+      "city": "Rome",
+      "country": "Italy",
+      "gdiOnboardingStatus": "CANONICAL",
+      "gdiResearchStatus": "RESEARCH_COMPLETED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 13
+    },
+    {
+      "hotelId": "recgMYovrrZDJMqzX",
+      "hotelName": "Waterstone Resort & Marina Boca Raton",
+      "city": null,
+      "country": null,
+      "gdiOnboardingStatus": "FIRST_RUN_PORTABILITY",
+      "gdiResearchStatus": "RESEARCH_COMPLETED",
+      "needDateStatus": "MARKET_ESTIMATED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 1,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 29
+    },
+    {
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "hotelName": "Wyndham San Diego Bayside",
+      "city": "San Diego",
+      "country": "United States",
+      "gdiOnboardingStatus": "CANONICAL",
+      "gdiResearchStatus": "RESEARCH_COMPLETED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 82
+    },
+    {
+      "hotelId": "recrPQcZg7SFARRb2",
+      "hotelName": "YOTEL Geneva Lake",
+      "city": "Founex",
+      "country": "Switzerland",
+      "gdiOnboardingStatus": null,
+      "gdiResearchStatus": "RESEARCH_COMPLETED",
+      "needDateStatus": "NOT_ESTABLISHED",
+      "hotelConfirmedPeriods": 0,
+      "marketEstimatedPeriods": 0,
+      "precedenceSource": "NOT_ESTABLISHED",
+      "opportunityCount": 99
+    }
+  ]
+}

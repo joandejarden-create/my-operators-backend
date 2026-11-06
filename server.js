@@ -20,8 +20,12 @@ console.log("Using server file:", serverPath);
 console.log("Working directory:", cwd);
 if (process.env.NODE_ENV !== "production") {
   const expectedRepo = "my-operators-backend";
+  const leaf = cwd.replace(/\\/g, "/").split("/").filter(Boolean).pop() || "";
+  // Allow authorized git worktrees named my-operators-backend-* (same repo root).
+  const allowedWorktree =
+    leaf === expectedRepo || leaf.startsWith(`${expectedRepo}-`);
 
-  if (!cwd.endsWith(expectedRepo)) {
+  if (!allowedWorktree) {
     console.error("ERROR: Server started from wrong directory:", cwd);
     console.error(`Please run from the ${expectedRepo} repository root.`);
     console.error("Stopping.");
