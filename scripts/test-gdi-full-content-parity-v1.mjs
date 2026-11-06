@@ -14,6 +14,9 @@ import {
 import { discoverCustomerFacingSchema } from "../lib/group-demand-intelligence/presentation/gdi-customer-facing-schema-discovery-v1.js";
 import { freezePublishedPresentationFields } from "../lib/group-demand-intelligence/durable-publication/gdi-one-click-hotel-publish-v1.js";
 import { hydrateOpportunityFromPublishedCommercialFields } from "../lib/group-demand-intelligence/durable-publication/gdi-customer-facing-published-snapshot-v1.js";
+import { projectOpportunityForPresentation } from "../lib/group-demand-intelligence/presentation/gdi-universal-presentation-pipeline-v1.js";
+import { GDI_PRESENTATION_SURFACES } from "../lib/group-demand-intelligence/contracts/gdi-presentation-contract-v1.js";
+import { getAtPath } from "../lib/group-demand-intelligence/presentation/gdi-customer-facing-schema-discovery-v1.js";
 
 const AYESHA = {
   id: "gdi_s4912_cb2d71ab1b15",
@@ -167,6 +170,82 @@ function testPayloadSelfCompare() {
   assert.equal(cmp.hashMatch, true);
 }
 
+/**
+ * Universal regression: freeze → hydrate → EXTERNAL_SHARE detail DTO must
+ * retain every nested approved customer-facing field. Applies to all hotels.
+ */
+function testApprovedDetailSurvivesExternalShareDetailDto() {
+  const frozen = freezePublishedPresentationFields(AYESHA, {
+    opportunityId: AYESHA.id,
+    hotelId: AYESHA.hotelId,
+  });
+  assert.ok(frozen.approvedCustomerFacingDetail);
+
+  const hydrated = hydrateOpportunityFromPublishedCommercialFields({
+    ...frozen,
+    publishedPresentationLocked: true,
+    gdiPublishedInventoryRegistry: true,
+  });
+  assert.ok(hydrated.approvedCustomerFacingDetail);
+
+  const projected = projectOpportunityForPresentation(hydrated, {
+    hotelId: AYESHA.hotelId,
+    surface: GDI_PRESENTATION_SURFACES.EXTERNAL_SHARE,
+    view: "detail",
+  });
+  const dto = projected.dto;
+  assert.ok(
+    dto?.approvedCustomerFacingDetail,
+    "EXTERNAL_SHARE detail DTO dropped approvedCustomerFacingDetail",
+  );
+
+  const approved = frozen.approvedCustomerFacingDetail;
+  const left = buildApprovedFullContentPresentation(AYESHA, {
+    hotelId: AYESHA.hotelId,
+  });
+  const cmp = compareApprovedFullContent(AYESHA, dto, {
+    hotelId: AYESHA.hotelId,
+  });
+  assert.equal(cmp.usedFrozenApprovedDetail, true);
+  assert.equal(
+    cmp.ok,
+    true,
+    JSON.stringify(
+      {
+        diffCount: cmp.diffCount,
+        diffs: (cmp.diffs || []).slice(0, 25),
+        classification: cmp.classification,
+      },
+      null,
+      2,
+    ),
+  );
+
+  // Nested leaf survival — any approved path must remain addressable on DTO.
+  const schema = left.schema;
+  const missing = [];
+  for (const path of schema.paths || []) {
+    const expected = getAtPath(approved, path);
+    if (expected === undefined || expected === null || expected === "") continue;
+    if (Array.isArray(expected) && !expected.length) continue;
+    if (typeof expected === "object" && !Array.isArray(expected)) continue;
+    const onApproved = getAtPath(dto.approvedCustomerFacingDetail, path);
+    const onFlat = getAtPath(dto, path);
+    if (onApproved === undefined && onFlat === undefined) {
+      missing.push(path);
+    }
+  }
+  assert.equal(
+    missing.length,
+    0,
+    `approved nested fields missing from EXTERNAL_SHARE DTO: ${missing.slice(0, 20).join(", ")}`,
+  );
+
+  assert.equal(dto.salesActionPillLabel, "Engage Planner");
+  assert.equal(dto.primaryContact?.name, "A'yesha Gaetán");
+  assert.equal(dto.secondaryContact?.name, "Adrienne Brown");
+}
+
 const tests = [
   ["schema_discovers_new_fields_automatically", testSchemaDiscoversNewFieldsAutomatically],
   ["freeze_round_trip_full_content_parity", testFreezeRoundTripFullContentParity],
@@ -174,6 +253,10 @@ const tests = [
   ["drift_fails", testDriftFails],
   ["subset_label_does_not_upgrade", testSubsetLabelDoesNotUpgrade],
   ["payload_self_compare", testPayloadSelfCompare],
+  [
+    "approved_detail_survives_external_share_detail_dto",
+    testApprovedDetailSurvivesExternalShareDetailDto,
+  ],
 ];
 
 const results = [];

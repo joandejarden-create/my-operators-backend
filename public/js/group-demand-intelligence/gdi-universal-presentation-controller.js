@@ -229,6 +229,19 @@
         if (typeof opts.normalizeOpportunity === "function") {
           o = opts.normalizeOpportunity(o, listRow, data) || o;
         }
+        // Locked published: approvedCustomerFacingDetail is authoritative for
+        // drawer body. Flatten onto the row without dropping the nested object.
+        if (
+          o &&
+          o.approvedCustomerFacingDetail &&
+          typeof o.approvedCustomerFacingDetail === "object"
+        ) {
+          o = Object.assign({}, o.approvedCustomerFacingDetail, o, {
+            approvedCustomerFacingDetail: o.approvedCustomerFacingDetail,
+            id: o.id || o.approvedCustomerFacingDetail.id,
+            publishedPresentationLocked: true,
+          });
+        }
         drawerTitle.textContent =
           resolveOpportunityTitle(o) || resolveOpportunityTitle(listRow);
         var validationHtml =
