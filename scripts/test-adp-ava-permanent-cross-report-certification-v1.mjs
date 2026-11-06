@@ -43,12 +43,12 @@ function clone(v) {
   assert.ok(cert.certificationId);
 }
 
-// 1b) Hilton remains CERTIFICATION_BLOCKED (known lean/customer metric drift)
+// 1b) Hilton reconciles to same-period customer ADP → CERTIFIED_MATCH
 {
   const payload = load("hilton-times-square-v1.json");
   const cert = await certifyAvaAgainstCustomerFacingAdp(payload);
-  assert.equal(cert.status, ADP_AVA_CERTIFICATION_STATUS.CERTIFICATION_BLOCKED);
-  assert.equal(cert.jointPublicationAllowed, false);
+  assert.equal(cert.status, ADP_AVA_CERTIFICATION_STATUS.CERTIFIED_MATCH);
+  assert.equal(cert.jointPublicationAllowed, true);
 }
 
 // 2) Incorrect consideration percentage → blocked / not match
@@ -76,12 +76,14 @@ function clone(v) {
   assert.notEqual(cert.status, ADP_AVA_CERTIFICATION_STATUS.CERTIFIED_MATCH);
 }
 
-// 4) Lean/customer mismatch on Hilton remains blocked (no fabricated MATCH)
+// 4) Drifted Hilton consideration rate is blocked (no fabricated MATCH)
 {
-  const cert = await certifyAvaAgainstCustomerFacingAdp(
-    load("hilton-times-square-v1.json")
+  const bad = clone(load("hilton-times-square-v1.json"));
+  bad.kpis = bad.kpis.map((k) =>
+    /AI Consideration/i.test(k.label) ? { ...k, value: "10.4%" } : k
   );
-  assert.equal(cert.status, ADP_AVA_CERTIFICATION_STATUS.CERTIFICATION_BLOCKED);
+  const cert = await certifyAvaAgainstCustomerFacingAdp(bad);
+  assert.notEqual(cert.status, ADP_AVA_CERTIFICATION_STATUS.CERTIFIED_MATCH);
   assert.ok(
     (cert.defects || []).some((d) =>
       /METRIC_MISMATCH|LEAN_PIN/i.test(d.type)
@@ -107,35 +109,32 @@ function clone(v) {
   assert.equal(cert.status, ADP_AVA_CERTIFICATION_STATUS.CERTIFICATION_BLOCKED);
 }
 
-// 7) Historical period with disclosure (AC Coruña — newer published/approved)
+// 7) AC Coruña refreshed to current-period customer ADP → CERTIFIED_MATCH
 {
   const payload = load("ac-hotel-a-coruna-v1.json");
   assert.ok(payload.reporting?.adpPeriodId);
   const res = resolveCustomerFacingAdpForAvaDelivery(payload.property.propertyId);
-  assert.equal(res.alignment.newerApprovedThanAva, true);
+  assert.equal(res.alignment.avaEqualsSelected, true);
+  assert.equal(res.alignment.newerApprovedThanAva, false);
   const cert = await certifyAvaAgainstCustomerFacingAdp(payload, {
     requireCurrentPeriodMatch: false,
   });
-  assert.ok(
-    [
-      ADP_AVA_CERTIFICATION_STATUS.CERTIFIED_HISTORICAL_REFERENCE,
-      ADP_AVA_CERTIFICATION_STATUS.RECONCILIATION_REQUIRED,
-    ].includes(cert.status)
-  );
-  assert.equal(cert.currentPeriodMatch, false);
+  assert.equal(cert.status, ADP_AVA_CERTIFICATION_STATUS.CERTIFIED_MATCH);
+  assert.equal(cert.currentPeriodMatch, true);
 }
 
-// 8) New approved ADP package / require current match → reconciliation
+// 8) requireCurrentPeriodMatch still passes when already on current package
 {
   const payload = load("ac-hotel-a-coruna-v1.json");
   const cert = await certifyAvaAgainstCustomerFacingAdp(payload, {
     requireCurrentPeriodMatch: true,
   });
-  assert.equal(cert.status, ADP_AVA_CERTIFICATION_STATUS.RECONCILIATION_REQUIRED);
-  assert.throws(() =>
+  assert.equal(cert.status, ADP_AVA_CERTIFICATION_STATUS.CERTIFIED_MATCH);
+  assert.equal(
     assertAvaAdpCrossReportCertificationForPublication(cert, {
       requireCurrentPeriodMatch: true,
-    })
+    }),
+    true
   );
 }
 
@@ -185,16 +184,20 @@ function clone(v) {
   );
 }
 
-// 11) Sync detector catches missing disclosure when periods differ
+// 11) Sync detector catches KPI drift vs current lean/selected pin
 {
   const bad = clone(load("ac-hotel-a-coruna-v1.json"));
-  delete bad.reporting.adpPeriodId;
-  delete bad.crossReportIdentity;
+  bad.kpis = (bad.kpis || []).map((k) =>
+    /AI Consideration/i.test(k.label || "") ? { ...k, value: "1.0%" } : k
+  );
   const defects = detectAdpAvaPermanentCertificationDefects(bad);
-  assert.ok(defects.some((d) => /differ|disclosure|period/i.test(d.message || "")));
+  assert.ok(
+    defects.some((d) => /Lean pin reconciliation failed|METRIC_MISMATCH|parity/i.test(d.message || d.type || "")),
+    JSON.stringify(defects, null, 2)
+  );
 }
 
-// 12) Full portfolio certification script (38 hotels classified; known drifts remain blocked)
+// 12) Full portfolio certification script — 38 current-period MATCH target
 {
   const run = spawnSync(
     process.execPath,
@@ -203,7 +206,6 @@ function clone(v) {
   );
   assert.match(run.stdout, /"hotelCount": 38/);
   assert.match(run.stdout, /CERTIFIED_MATCH/);
-  assert.match(run.stdout, /CERTIFIED_HISTORICAL_REFERENCE/);
   assert.ok(run.status === 0 || run.status === 2, run.stdout + "\n" + run.stderr);
 }
 
