@@ -1,0 +1,17 @@
+<!-- Many Futures — CDN loader backup (use only if inline Embed is rejected) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/joandejarden-create/my-operators-backend@ddf8f57d8b1d927c815fbffc4dba88f8f884b118/webflow-embeds/many-futures/dist/many-futures.fa4dd13887f5.css" />
+<div id="mf-embed-host"></div>
+<script>
+(function(){
+  var host=document.getElementById("mf-embed-host");
+  if(!host) return;
+  var base="https://cdn.jsdelivr.net/gh/joandejarden-create/my-operators-backend@ddf8f57d8b1d927c815fbffc4dba88f8f884b118/webflow-embeds/many-futures";
+  fetch("https://cdn.jsdelivr.net/gh/joandejarden-create/my-operators-backend@ddf8f57d8b1d927c815fbffc4dba88f8f884b118/webflow-embeds/many-futures/dist/many-futures.c85c44b315d3.body.html").then(function(r){return r.text();}).then(function(html){
+    host.outerHTML=html.split("__MF_CDN_BASE__").join(base);
+    var s=document.createElement("script");
+    s.src="https://cdn.jsdelivr.net/gh/joandejarden-create/my-operators-backend@ddf8f57d8b1d927c815fbffc4dba88f8f884b118/webflow-embeds/many-futures/dist/many-futures.3132cba16315.js";
+    s.defer=true;
+    document.body.appendChild(s);
+  });
+})();
+</script>
