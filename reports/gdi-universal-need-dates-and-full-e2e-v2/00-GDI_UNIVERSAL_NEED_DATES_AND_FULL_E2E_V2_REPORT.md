@@ -2,7 +2,8 @@
 
 **Status:** `GDI_UNIVERSAL_NEED_DATES_AND_FULL_E2E_V2_BLOCKED` (partial delivery — see blockers)  
 **Branch:** `feat/gdi-universal-need-date-intelligence-v1`  
-**PR:** #152 (open; not merged)  
+**Commit:** `809fda9d597c772e76f19feb2967c608e4884527`  
+**PR:** #152 (open; not merged; push of this commit may need founder approval)  
 **Related research PR:** #151 (open; dirty worktree preserved; not merged)
 
 ## Founder correction applied
