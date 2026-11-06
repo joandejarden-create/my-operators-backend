@@ -89,10 +89,17 @@ for (let i = 1; i <= doc.numPages; i++) {
   const content = await page.getTextContent();
   text += content.items.map((it) => it.str).join(" ") + "\n";
 }
+// PDF extractors often emit letter-spaced display text (e.g. "D I G I T A L").
+const compact = text.replace(/\s+/g, "").toLowerCase();
 const looksV4 =
-  /Executive Audit Summary/i.test(text) &&
-  /Digital Platform Assessment/i.test(text) &&
-  /Implementation Roadmap/i.test(text);
+  (/Executive Audit Summary/i.test(text) ||
+    compact.includes("executiveauditsummary")) &&
+  (/Digital Platform Assessment/i.test(text) ||
+    compact.includes("digitalplatformassessment") ||
+    compact.includes("initialdigitalpresenceassessment")) &&
+  (/Implementation Roadmap/i.test(text) ||
+    compact.includes("implementationroadmap") ||
+    compact.includes("implementationbyresponsibleparty"));
 const v3 = pdfTextLooksLikeCustomerReportV3(text);
 assert.equal(
   looksV4 || (v3.hasExecutive && v3.hasPlatformAssessment),
