@@ -108,11 +108,12 @@
 | `package.json` | **Medium** | Run tests for any workspace area that imports new deps |
 | `.env.example` | **Low** | Confirm no secrets; comments match actual env usage |
 
-### AI Demand Admin / AI Visibility Audit
+### AI Demand Admin / AI Visibility Audit / GDI Research Audit
 
 | Changed paths | Risk | Run before merge |
 |---------------|------|------------------|
-| `public/app/admin/ai-demand-admin.html`, `public/js/admin-ai-demand-admin.js`, `public/js/admin-ai-visibility-audit.js` | **Medium** | `npm run test:adp-admin-workspace-navigation-v1` (every visible tab must open its panel; AVA table + `/api/admin/ai-visibility-audit/hotels` must not 404) |
+| `public/app/admin/ai-demand-admin.html`, `public/js/admin-ai-demand-admin.js`, `public/js/admin-ai-visibility-audit.js`, `public/js/admin-gdi-research-audit.js` | **Medium** | `npm run test:adp-admin-workspace-navigation-v1` (every visible tab must open its panel; AVA table + `/api/admin/ai-visibility-audit/hotels` must not 404) · `npm run test:gdi-research-audit-admin-relocation-v1` |
+| `public/js/group-demand-intelligence/app.js`, `share-app.js`, `dealality-gdi-ui.js`, `api/group-demand-intelligence.js`, research-runs admin auth | **High** | `npm run test:gdi-research-audit-admin-relocation-v1` · `npm run test:adp-admin-workspace-navigation-v1` |
 
 ---
 

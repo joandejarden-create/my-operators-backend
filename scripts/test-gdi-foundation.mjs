@@ -271,6 +271,21 @@ check("gdi_share_ui_has_no_admin_surfaces", () => {
   assert.ok(!/gdiFbSave|Save Feedback/.test(shareJs), "feedback form must not appear on share");
 });
 
+check("gdi_auth_ui_has_no_research_audit_tab", () => {
+  const appJs = fs.readFileSync(
+    path.join(root, "public/js/group-demand-intelligence/app.js"),
+    "utf8"
+  );
+  assert.ok(
+    !/label:\s*"Research Audit"/.test(appJs),
+    "Research Audit belongs in AI Demand Admin, not customer GDI"
+  );
+  assert.ok(
+    !/\/research-runs/.test(appJs),
+    "customer GDI must not load research-runs ledger"
+  );
+});
+
 check("gdi_registered_in_dealality_app_shell", () => {
   const appJs = fs.readFileSync(path.join(root, "public/app.js"), "utf8");
   assert.ok(

@@ -1866,6 +1866,45 @@
     label: "Group &\nDemand Intelligence",
   };
 
+  /**
+   * Customer/share property-bar status only.
+   * Internal run IDs, costs, and campaign codes belong in AI Demand Admin.
+   */
+  function customerSafeRunStatusLabel(summary) {
+    var s = summary || {};
+    var code = String(s.runStatus || "").trim().toUpperCase();
+    var label = String(s.runStatusLabel || "").trim();
+    if (!code && !label) return "History unavailable";
+    if (code === "NEVER_RUN" || code === "NOT_YET_RUN") return "Not run yet";
+    if (code === "STATUS_UNAVAILABLE" || code === "HISTORY_UNAVAILABLE") {
+      return "History unavailable";
+    }
+    if (
+      code === "COMPLETED" ||
+      code === "COMPLETE" ||
+      code === "SUCCESS" ||
+      /complet/i.test(label)
+    ) {
+      return "Research Completed";
+    }
+    if (/fail|error/i.test(code) || /fail|error/i.test(label)) {
+      return "Research unsuccessful";
+    }
+    if (
+      /run|progress|active|pending|started/i.test(code) ||
+      /progress|running/i.test(label)
+    ) {
+      return "Research in progress";
+    }
+    if (/^gdi_run_/i.test(label) || /\$|webhound|campaign/i.test(label)) {
+      return "Research Completed";
+    }
+    if (label && label.length <= 40 && !/[0-9a-f]{8,}/i.test(label)) {
+      return label;
+    }
+    return "Research Completed";
+  }
+
   function formatTabLabel(label) {
     var raw = String(label == null ? "" : label);
     if (raw.indexOf("\n") >= 0) {
@@ -8520,6 +8559,7 @@
     contentTabsHtml: contentTabsHtml,
     formatTabLabel: formatTabLabel,
     GDI_MAIN_TAB: GDI_MAIN_TAB,
+    customerSafeRunStatusLabel: customerSafeRunStatusLabel,
     countByPriority: countByPriority,
     countByActionStatus: countByActionStatus,
     facetCountByPriority: facetCountByPriority,

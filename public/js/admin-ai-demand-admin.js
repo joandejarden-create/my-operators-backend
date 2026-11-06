@@ -12,6 +12,7 @@
     "gdi-reports": true,
     "report-archive": true,
     "visibility-audit": true,
+    "gdi-research-audit": true,
   };
 
   function readTabFromUrl() {
@@ -80,11 +81,13 @@
     var gdiBtn = document.getElementById("adaTabGdiReports");
     var archiveBtn = document.getElementById("adaTabReportArchive");
     var avaBtn = document.getElementById("adaTabVisibilityAudit");
+    var graBtn = document.getElementById("adaTabGdiResearchAudit");
     var reviewsPanel = document.getElementById("adaPanelReviews");
     var planPanel = document.getElementById("adaPanelActionPlan");
     var gdiPanel = document.getElementById("adaPanelGdiReports");
     var archivePanel = document.getElementById("adaPanelReportArchive");
     var avaPanel = document.getElementById("adaPanelVisibilityAudit");
+    var graPanel = document.getElementById("adaPanelGdiResearchAudit");
 
     if (reviewsBtn) {
       reviewsBtn.classList.toggle("active", tab === "reviews");
@@ -106,16 +109,29 @@
       avaBtn.classList.toggle("active", tab === "visibility-audit");
       avaBtn.setAttribute("aria-selected", tab === "visibility-audit" ? "true" : "false");
     }
+    if (graBtn) {
+      graBtn.classList.toggle("active", tab === "gdi-research-audit");
+      graBtn.setAttribute(
+        "aria-selected",
+        tab === "gdi-research-audit" ? "true" : "false"
+      );
+    }
     if (reviewsPanel) reviewsPanel.hidden = tab !== "reviews";
     if (planPanel) planPanel.hidden = tab !== "action-plan";
     if (gdiPanel) gdiPanel.hidden = tab !== "gdi-reports";
     if (archivePanel) archivePanel.hidden = tab !== "report-archive";
     if (avaPanel) avaPanel.hidden = tab !== "visibility-audit";
+    if (graPanel) graPanel.hidden = tab !== "gdi-research-audit";
 
     // Actionable failure if the nav control exists but the destination panel does not.
     if (tab === "visibility-audit" && avaBtn && !avaPanel) {
       console.error(
         "[ada] AI Visibility Audit tab selected but #adaPanelVisibilityAudit is missing"
+      );
+    }
+    if (tab === "gdi-research-audit" && graBtn && !graPanel) {
+      console.error(
+        "[ada] GDI Research Audit tab selected but #adaPanelGdiResearchAudit is missing"
       );
     }
 

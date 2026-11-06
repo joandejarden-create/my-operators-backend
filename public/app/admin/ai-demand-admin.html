@@ -76,6 +76,12 @@
         </span>
         <span class="section-nav-label">AI Visibility<br>Audit</span>
       </button>
+      <button type="button" class="section-nav-item" role="tab" aria-selected="false" data-tab="gdi-research-audit" id="adaTabGdiResearchAudit">
+        <span class="section-nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M8 4h8a2 2 0 0 1 2 2v14l-6-3-6 3V6a2 2 0 0 1 2-2z"/><path d="M10 9h4"/><path d="M10 13h4"/></svg>
+        </span>
+        <span class="section-nav-label">GDI Research<br>Audit</span>
+      </button>
 
     </nav>
 
@@ -483,6 +489,72 @@
       </aside>
     </section>
 
+    <section id="adaPanelGdiResearchAudit" class="ada-panel" data-panel="gdi-research-audit" role="tabpanel" hidden>
+      <div class="adr-counts" id="graCounts" aria-live="polite">
+        <div class="adr-count">
+          <span class="adr-count__n" id="graCardHotels">—</span>
+          <span class="adr-count__l">Hotels with runs</span>
+        </div>
+        <div class="adr-count">
+          <span class="adr-count__n" id="graCardRuns">—</span>
+          <span class="adr-count__l">Runs loaded</span>
+        </div>
+        <div class="adr-count">
+          <span class="adr-count__n" id="graCardCost">—</span>
+          <span class="adr-count__l">Latest total cost</span>
+        </div>
+      </div>
+
+      <details class="ada-metric-disclosure">
+        <summary>About GDI Research Audit</summary>
+        <p>
+          Internal Dealality operations view for GDI research run history, costs, and
+          execution status. Not customer-facing. Reuses the existing research-runs APIs
+          and ledger — does not regenerate historical audit data.
+        </p>
+      </details>
+
+      <div class="ada-toolbar">
+        <section class="adr-filters" aria-label="GDI research audit filters">
+          <label>
+            Hotel
+            <select id="graHotelSelect">
+              <option value="">Select hotel…</option>
+            </select>
+          </label>
+          <button type="button" class="adr-btn" id="graRefresh">Refresh runs</button>
+          <span class="ada-status-line" id="graStatusLine" aria-live="polite"></span>
+        </section>
+      </div>
+
+      <div class="adr-table-wrap ada-table-shell">
+        <table class="adr-table ada-table" id="graTable">
+          <thead>
+            <tr>
+              <th><span class="ada-th-label">Run ID</span></th>
+              <th><span class="ada-th-label">Status</span></th>
+              <th><span class="ada-th-label">Started</span></th>
+              <th><span class="ada-th-label">Completed</span></th>
+              <th><span class="ada-th-label">Qualified</span></th>
+              <th><span class="ada-th-label">Cost USD</span></th>
+              <th class="ada-col-actions no-sort">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="graTableBody">
+            <tr><td colspan="7">Select a hotel to load research runs.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <aside class="adr-drawer" id="graDrawer" hidden>
+        <div class="adr-drawer__head">
+          <h2 id="graDrawerTitle">Research run</h2>
+          <button type="button" class="adr-btn adr-btn--secondary" id="graDrawerClose">Close</button>
+        </div>
+        <div class="adr-drawer__body" id="graDrawerBody"></div>
+      </aside>
+    </section>
+
   </div>
 
   <script src="/js/dealality-wave-loader.js"></script>
@@ -496,12 +568,13 @@
     })();
   </script>
   <script src="/js/admin-ai-demand-table.js?v=ada-table-parity-v1"></script>
-  <script src="/js/admin-ai-demand-admin.js?v=ada-visibility-audit-nav-v1"></script>
+  <script src="/js/admin-ai-demand-admin.js?v=ada-gdi-research-audit-nav-v1"></script>
   <script src="/js/admin-ai-demand-reviews.js?v=ada-published-current-38-v1"></script>
   <script src="/js/admin-adp-action-plan.js?v=ada-table-parity-v1"></script>
   <script src="/js/admin-gdi-reports.js?v=ada-client-inventory-v2"></script>
   <script src="/js/admin-report-archive.js?v=ada-table-parity-v1"></script>
   <script src="/js/admin-ai-visibility-audit.js?v=ava-pdf-channels-v2"></script>
+  <script src="/js/admin-gdi-research-audit.js?v=ada-gdi-research-audit-v1"></script>
   <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

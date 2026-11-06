@@ -1102,14 +1102,20 @@ app.get(
   gdiPilotReadAuth,
   getGdiWeeklyBrief
 );
+// Research Audit ledger — Dealality admin only (AI Demand Admin → GDI Research Audit).
+// Do not expose run IDs / costs / traces on customer GDI or share surfaces.
 app.get(
   "/api/group-demand-intelligence/hotels/:hotelId/research-runs",
-  gdiPilotReadAuth,
+  memberstackAuth,
+  requireDealalityUser,
+  requireAdminAccess,
   getGdiResearchRuns
 );
 app.get(
   "/api/group-demand-intelligence/hotels/:hotelId/research-runs/:runId",
-  gdiPilotReadAuth,
+  memberstackAuth,
+  requireDealalityUser,
+  requireAdminAccess,
   getGdiResearchRun
 );
 app.get(
