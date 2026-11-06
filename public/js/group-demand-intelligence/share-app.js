@@ -671,6 +671,7 @@
       UI.propertyBarHtml({
         mode: "share",
         hotel: hotel,
+        hotelNeedDateConfigV1: state.hotelNeedDateConfigV1 || null,
         activeWeekly: state.filters.weekly,
         weeklyCounts: UI.countByWeeklyDelta(state.opportunities),
         activeOpportunityType: state.filters.opportunityType || "",
@@ -700,6 +701,9 @@
       '<div class="gdi-disclaimer">Share brief for review only. Findings are research-assisted and should be validated by the hotel sales team before outreach.</div>';
 
     wireBrowseControls();
+    if (UI.bindNeedDateLegendInteractions) {
+      UI.bindNeedDateLegendInteractions(root);
+    }
 
     var weeklySelect = document.getElementById("gdiWeeklyFilter");
     if (weeklySelect) {
@@ -819,8 +823,18 @@
       var data = pair[1];
       state.resolve = resolve;
       state.hotelId = resolve.hotelId;
-      if (data && data.opportunities) {
+      if (data && Array.isArray(data.opportunities)) {
         state.opportunities = data.opportunities || [];
+        state.hotelNeedDateConfigV1 =
+          data.hotelNeedDateConfigV1 ||
+          (UI.normalizeHotelNeedDateConfigV1
+            ? UI.normalizeHotelNeedDateConfigV1(null, state.hotelId)
+            : { status: "NOT_ESTABLISHED", accessibleLabel: "Need dates not established" });
+        try {
+          window.__GDI_HOTEL_NEED_DATE_CONFIG__ = state.hotelNeedDateConfigV1;
+        } catch (_) {
+          /* ignore */
+        }
         state.validationEnums = data.validationEnums || null;
         render();
         return null;
@@ -834,6 +848,16 @@
     .then(function (data) {
       if (!data) return;
       state.opportunities = data.opportunities || [];
+      state.hotelNeedDateConfigV1 =
+        data.hotelNeedDateConfigV1 ||
+        (UI.normalizeHotelNeedDateConfigV1
+          ? UI.normalizeHotelNeedDateConfigV1(null, state.hotelId)
+          : { status: "NOT_ESTABLISHED", accessibleLabel: "Need dates not established" });
+      try {
+        window.__GDI_HOTEL_NEED_DATE_CONFIG__ = state.hotelNeedDateConfigV1;
+      } catch (_) {
+        /* ignore */
+      }
       state.validationEnums = data.validationEnums || null;
       render();
     })
