@@ -66,21 +66,24 @@ if (dirty.stdout) {
   });
 }
 
-// Ensure approved SHA is on main ancestry (fetch origin/main if present).
+// Ensure approved SHA is on the main line of development (fetch origin/main).
+// Allowed:
+//   1) SHA is already on origin/main (ancestor of tip or equal), OR
+//   2) SHA is a fast-forward candidate ahead of origin/main (main is ancestor of SHA).
 sh("git fetch origin main --depth=200");
-const mergeBase = sh(`git merge-base --is-ancestor ${shaGate.sha} origin/main`);
 const tip = sh("git rev-parse origin/main");
 const tipSha = tip.ok ? tip.stdout.toLowerCase() : "";
-const onMainAncestry =
-  mergeBase.ok || (tipSha && tipSha === shaGate.sha);
-if (!onMainAncestry) {
-  // Also allow when origin/main IS the approved sha after shallow fetch quirks
+const shaOnMain = sh(`git merge-base --is-ancestor ${shaGate.sha} origin/main`);
+const mainOnSha = sh(`git merge-base --is-ancestor origin/main ${shaGate.sha}`);
+const onMainLine =
+  (tipSha && tipSha === shaGate.sha) || shaOnMain.ok || mainOnSha.ok;
+if (!onMainLine) {
   const contains = sh(`git branch -r --contains ${shaGate.sha}`);
   const listed = String(contains.stdout || "");
   if (!listed.includes("origin/main")) {
     fail(
       "SHA_NOT_ON_MAIN",
-      `approved SHA ${shaGate.sha} is not an ancestor of origin/main`,
+      `approved SHA ${shaGate.sha} is neither on origin/main nor a fast-forward candidate from it`,
       { originMain: tipSha || null }
     );
   }
