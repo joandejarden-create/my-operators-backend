@@ -121,23 +121,15 @@
                 <input type="checkbox" class="ada-select-page" id="adrSelectPage" title="Select all on this page" aria-label="Select all on this page" />
               </th>
               <th data-sort="propertyName"><span class="ada-th-label">Hotel</span></th>
-              <th data-sort="market"><span class="ada-th-label">Location</span></th>
-              <th data-sort="reportingMonth"><span class="ada-th-label">Baseline / Monitoring</span></th>
-              <th data-sort="currentMonitoringDate"><span class="ada-th-label">Last Measurement</span></th>
-              <th data-sort="priorRunDate"><span class="ada-th-label">Prior Run</span></th>
-              <th data-sort="versionLabel"><span class="ada-th-label">Review Version</span></th>
-              <th data-sort="reviewStatus"><span class="ada-th-label">Report Status</span></th>
-              <th data-sort="generationStatus"><span class="ada-th-label">Generation Status</span></th>
-              <th data-sort="coverageStatus"><span class="ada-th-label">Coverage</span></th>
-              <th data-sort="clientIssued"><span class="ada-th-label">Client Issued</span></th>
-              <th data-sort="pdfStatus"><span class="ada-th-label">PDF</span></th>
-              <th data-sort="actionCount"><span class="ada-th-label">Action Plan</span></th>
-              <th data-sort="generatedAt"><span class="ada-th-label">Last Generated</span></th>
+              <th data-sort="publishedMonthYear"><span class="ada-th-label">Published</span></th>
+              <th data-sort="newDraftLabel"><span class="ada-th-label">New Draft</span></th>
+              <th data-sort="customerAccessLabel"><span class="ada-th-label">Customer Access</span></th>
+              <th data-sort="pdfLabel"><span class="ada-th-label">PDF</span></th>
               <th class="ada-col-actions no-sort">Actions</th>
             </tr>
           </thead>
           <tbody id="adrTableBody">
-            <tr><td colspan="15">Loading…</td></tr>
+            <tr><td colspan="7">Loading…</td></tr>
           </tbody>
         </table>
       </div>
@@ -393,9 +385,8 @@
         <div class="adr-drawer__body" id="rarDrawerBody"></div>
       </aside>
     </section>
-  </div>
 
-  <section id="adaPanelVisibilityAudit" class="ada-panel" data-panel="visibility-audit" role="tabpanel" hidden>
+    <section id="adaPanelVisibilityAudit" class="ada-panel" data-panel="visibility-audit" role="tabpanel" hidden>
       <div class="adr-counts ava-summary-counts" id="avaSummaryCards" aria-live="polite">
         <div class="adr-count">
           <span class="adr-count__n" id="avaCardEligible">—</span>
@@ -457,6 +448,42 @@
           <button type="button" class="ada-btn-reset" id="avaResetView">Reset View</button>
           <button type="button" class="adr-btn adr-btn--secondary" id="avaRefresh">Refresh</button>
         </section>
+      </div>
+      <div class="ada-results-row" id="avaResultsRow"></div>
+
+      <div class="adr-table-wrap ada-table-shell ava-table-shell">
+        <table class="adr-table ada-table ava-table" id="avaTable">
+          <thead>
+            <tr>
+              <th class="ada-cell-check ada-th--check" scope="col">
+                <input type="checkbox" class="ada-select-page" id="avaSelectPage" title="Select all on this page" aria-label="Select all on this page" />
+              </th>
+              <th><span class="ada-th-label">Hotel</span></th>
+              <th><span class="ada-th-label">Location</span></th>
+              <th><span class="ada-th-label">ADP Baseline</span></th>
+              <th><span class="ada-th-label">Audit Status</span></th>
+              <th><span class="ada-th-label">Recommendations</span></th>
+              <th><span class="ada-th-label">PDF</span></th>
+              <th><span class="ada-th-label">Customer Approval</span></th>
+              <th class="ada-col-actions no-sort">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="avaTableBody">
+            <tr><td colspan="9">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <aside class="adr-drawer" id="avaDrawer" hidden>
+        <div class="adr-drawer__head">
+          <h2 id="avaDrawerTitle">Audit details</h2>
+          <button type="button" class="adr-btn adr-btn--secondary" id="avaDrawerClose">Close</button>
+        </div>
+        <div class="adr-drawer__body" id="avaDrawerBody"></div>
+      </aside>
+    </section>
+
+  </div>
 
   <script src="/js/dealality-wave-loader.js"></script>
   <script src="/js/dealality-memberstack-auth.js"></script>
@@ -469,8 +496,8 @@
     })();
   </script>
   <script src="/js/admin-ai-demand-table.js?v=ada-table-parity-v1"></script>
-  <script src="/js/admin-ai-demand-admin.js?v=ada-table-parity-v1"></script>
-  <script src="/js/admin-ai-demand-reviews.js?v=ada-table-parity-v1"></script>
+  <script src="/js/admin-ai-demand-admin.js?v=ada-visibility-audit-nav-v1"></script>
+  <script src="/js/admin-ai-demand-reviews.js?v=ada-published-current-38-v1"></script>
   <script src="/js/admin-adp-action-plan.js?v=ada-table-parity-v1"></script>
   <script src="/js/admin-gdi-reports.js?v=ada-client-inventory-v2"></script>
   <script src="/js/admin-report-archive.js?v=ada-table-parity-v1"></script>

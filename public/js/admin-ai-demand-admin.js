@@ -1,12 +1,18 @@
 /**
- * AI Demand Admin workspace — tab shell (Reviews | Action Plan).
+ * AI Demand Admin workspace — tab shell (Reviews | Action Plan | … | AI Visibility Audit).
  * Doctrine: ADP_ADMIN_WORKSPACE_AUTH_PARITY
  */
 (function () {
   "use strict";
 
   var STORAGE_KEY = "dealality_adp_admin_tab";
-  var ALLOWED = { reviews: true, "action-plan": true, "gdi-reports": true, "report-archive": true };
+  var ALLOWED = {
+    reviews: true,
+    "action-plan": true,
+    "gdi-reports": true,
+    "report-archive": true,
+    "visibility-audit": true,
+  };
 
   function readTabFromUrl() {
     try {
@@ -54,6 +60,15 @@
     } catch (_e) {}
   }
 
+  function syncOwnSearchTab(tab) {
+    try {
+      var u = new URL(window.location.href);
+      if (u.searchParams.get("tab") === tab) return;
+      u.searchParams.set("tab", tab);
+      window.history.replaceState(null, "", u.pathname + u.search + u.hash);
+    } catch (_e) {}
+  }
+
   function setActiveTab(tab) {
     if (!ALLOWED[tab]) tab = "reviews";
     try {
@@ -64,10 +79,12 @@
     var planBtn = document.getElementById("adaTabActionPlan");
     var gdiBtn = document.getElementById("adaTabGdiReports");
     var archiveBtn = document.getElementById("adaTabReportArchive");
+    var avaBtn = document.getElementById("adaTabVisibilityAudit");
     var reviewsPanel = document.getElementById("adaPanelReviews");
     var planPanel = document.getElementById("adaPanelActionPlan");
     var gdiPanel = document.getElementById("adaPanelGdiReports");
     var archivePanel = document.getElementById("adaPanelReportArchive");
+    var avaPanel = document.getElementById("adaPanelVisibilityAudit");
 
     if (reviewsBtn) {
       reviewsBtn.classList.toggle("active", tab === "reviews");
@@ -85,11 +102,24 @@
       archiveBtn.classList.toggle("active", tab === "report-archive");
       archiveBtn.setAttribute("aria-selected", tab === "report-archive" ? "true" : "false");
     }
+    if (avaBtn) {
+      avaBtn.classList.toggle("active", tab === "visibility-audit");
+      avaBtn.setAttribute("aria-selected", tab === "visibility-audit" ? "true" : "false");
+    }
     if (reviewsPanel) reviewsPanel.hidden = tab !== "reviews";
     if (planPanel) planPanel.hidden = tab !== "action-plan";
     if (gdiPanel) gdiPanel.hidden = tab !== "gdi-reports";
     if (archivePanel) archivePanel.hidden = tab !== "report-archive";
+    if (avaPanel) avaPanel.hidden = tab !== "visibility-audit";
 
+    // Actionable failure if the nav control exists but the destination panel does not.
+    if (tab === "visibility-audit" && avaBtn && !avaPanel) {
+      console.error(
+        "[ada] AI Visibility Audit tab selected but #adaPanelVisibilityAudit is missing"
+      );
+    }
+
+    syncOwnSearchTab(tab);
     syncParentHash(tab);
     window.dispatchEvent(
       new CustomEvent("dealality-adp-admin-tab", { detail: { tab: tab } })

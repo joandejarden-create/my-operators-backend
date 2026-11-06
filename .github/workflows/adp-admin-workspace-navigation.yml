@@ -1,0 +1,93 @@
+# Mandatory AI Demand Admin navigation regression (incl. AI Visibility Audit).
+# Fails if visibility-audit is dropped from ALLOWED, panel markup is truncated,
+# or any visible Admin tab does not open its destination.
+name: ADP Admin workspace navigation
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "public/app/admin/ai-demand-admin.html"
+      - "public/js/admin-ai-demand-admin.js"
+      - "public/js/admin-ai-visibility-audit.js"
+      - "scripts/test-adp-admin-workspace-navigation-v1.mjs"
+      - ".github/workflows/adp-admin-workspace-navigation.yml"
+      - "package.json"
+      - "package-lock.json"
+  push:
+    branches: [main]
+    paths:
+      - "public/app/admin/ai-demand-admin.html"
+      - "public/js/admin-ai-demand-admin.js"
+      - "public/js/admin-ai-visibility-audit.js"
+      - "scripts/test-adp-admin-workspace-navigation-v1.mjs"
+      - ".github/workflows/adp-admin-workspace-navigation.yml"
+
+jobs:
+  admin-nav:
+    name: Admin tabs + AVA panel
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PORT: "8080"
+      DEALALITY_LOCAL_ADMIN_BASE: "http://127.0.0.1:8080"
+      DEV_AUTH_BYPASS_EMAIL: "dealalitydemo@dealality.com"
+      NODE_ENV: "development"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Static preflight (never skip)
+        run: |
+          node --input-type=module <<'EOF'
+          import assert from "node:assert/strict";
+          import fs from "node:fs";
+          const shell = fs.readFileSync("public/js/admin-ai-demand-admin.js", "utf8");
+          const html = fs.readFileSync("public/app/admin/ai-demand-admin.html", "utf8");
+          assert.match(shell, /"visibility-audit"\s*:\s*true/);
+          assert.match(html, /id="avaTableBody"/);
+          assert.match(html, /id="avaDrawer"/);
+          assert.match(html, /data-tab="visibility-audit"/);
+          assert.match(html, /id="adaTabVisibilityAudit"/);
+          assert.match(html, /id="adaPanelVisibilityAudit"/);
+          console.log(JSON.stringify({ ok: true, staticPreflight: "pass" }));
+          EOF
+
+      - name: Start local server
+        env:
+          # Minimal placeholders so boot gate passes; nav test tolerates API 401/403.
+          AIRTABLE_API_KEY: "ci_placeholder_not_used_for_html"
+          AIRTABLE_BASE_ID: "appCIPlaceholder000000"
+        run: |
+          nohup node server.js > /tmp/dealality-admin-nav-server.log 2>&1 &
+          echo $! > /tmp/dealality-admin-nav-server.pid
+          for i in $(seq 1 60); do
+            if curl -sf "http://127.0.0.1:8080/app/admin/ai-demand-admin.html" >/dev/null; then
+              echo "server_ready attempt=$i"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "server_failed"
+          tail -n 120 /tmp/dealality-admin-nav-server.log || true
+          exit 1
+
+      - name: Run Admin workspace navigation regression
+        run: npm run test:adp-admin-workspace-navigation-v1
+
+      - name: Stop local server
+        if: always()
+        run: |
+          if [ -f /tmp/dealality-admin-nav-server.pid ]; then
+            kill "$(cat /tmp/dealality-admin-nav-server.pid)" || true
+          fi
