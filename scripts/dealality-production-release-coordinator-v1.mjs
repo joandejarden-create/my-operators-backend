@@ -26,8 +26,6 @@ import {
   GITHUB_ACTIONS_CHANNEL,
 } from "../lib/dealality-production-release/release-channel-v1.js";
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-
 function arg(flag) {
   const i = process.argv.indexOf(flag);
   return i >= 0 ? process.argv[i + 1] : null;
@@ -36,6 +34,10 @@ function arg(flag) {
 function has(flag) {
   return process.argv.includes(flag);
 }
+
+const ROOT = path.resolve(
+  arg("--repo-root") || path.join(path.dirname(fileURLToPath(import.meta.url)), "..")
+);
 
 function fail(code, message, extra = {}) {
   console.error(JSON.stringify({ ok: false, code, message, ...extra }, null, 2));
@@ -190,13 +192,21 @@ function railwayNonTerminalCount() {
   }
 }
 
-const rail = railwayNonTerminalCount();
+const skipRailwayProbe =
+  has("--skip-railway-probe") ||
+  String(process.env.DEALALITY_SKIP_RAILWAY_PROBE || "").trim() === "1";
+const rail = skipRailwayProbe
+  ? { ok: true, skipped: true, nonTerminal: 0, non: [] }
+  : railwayNonTerminalCount();
 if (rail.ok && rail.nonTerminal > 0) {
   writeManifest("WAITING_FOR_RAILWAY", {
     checkpoint: "railway_busy",
     railway: rail,
   });
-  fail("RAILWAY_BUSY", "non-terminal Railway deployment in progress", { railway: rail });
+  // Never cancel. Fail closed and wait for terminal state.
+  fail("RAILWAY_BUSY", "non-terminal Railway deployment in progress — do not cancel; wait then retry", {
+    railway: rail,
+  });
 }
 
 if (dryRun) {

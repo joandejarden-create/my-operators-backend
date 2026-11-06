@@ -49,6 +49,9 @@ try {
   assert.match(wf, /group:\s*dealality-production-release/);
   assert.match(wf, /cancel-in-progress:\s*false/);
   assert.match(wf, /I_AUTHORIZE_PRODUCTION_RELEASE/);
+  assert.match(wf, /path:\s*control/);
+  assert.match(wf, /path:\s*artifact/);
+  assert.match(wf, /--repo-root/);
   assert.doesNotMatch(wf, /railway\s+deployment\s+cancel/i);
   assert.doesNotMatch(wf, /railway\s+down/i);
   pass("workflow_concurrency_no_auto_cancel");
@@ -207,6 +210,7 @@ try {
         DEALALITY_RELEASE_LOCK_ROOT: path.join(tmp, "coord"),
         DEALALITY_RELEASE_LOCK_SHARED: "1",
         DEALALITY_RELEASE_CHANNEL: GITHUB_ACTIONS_CHANNEL,
+        DEALALITY_SKIP_RAILWAY_PROBE: "1",
       },
     }
   );

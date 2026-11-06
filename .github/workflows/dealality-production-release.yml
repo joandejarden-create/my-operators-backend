@@ -3,8 +3,9 @@
 # Sole live production deploy entry point. Does not auto-cancel Railway builds.
 # Concurrency queues overlapping dispatches; never cancel-in-progress.
 #
-# Artifact SHA is the dispatch input (may differ from the workflow revision on main).
-# AVA V4 certified artifact example: 8eabf043cbc350322a5aca5f985bcc8a8ff75715
+# Dual checkout:
+#   - control/  = workflow revision (release scripts + channel gates)
+#   - artifact/ = exact approved_sha deploy tree
 #
 # Live path requires repo secret RAILWAY_TOKEN.
 name: Dealality production release
@@ -53,6 +54,8 @@ jobs:
       DEALALITY_REQUIRE_RELEASE_LOCK: "1"
       DEALALITY_RELEASE_OWNER: gha-${{ github.run_id }}-${{ github.run_attempt }}
       RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      CONTROL_ROOT: ${{ github.workspace }}/control
+      ARTIFACT_ROOT: ${{ github.workspace }}/artifact
 
     steps:
       - name: Validate authorization phrase
@@ -72,10 +75,18 @@ jobs:
           echo "$SHA" | grep -Eq '^[0-9a-fA-F]{40}$'
           echo "approved_sha=$(echo "$SHA" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
 
+      - name: Checkout release control plane (workflow revision)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          fetch-depth: 0
+
       - name: Checkout exact artifact SHA
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.approved_sha }}
+          path: artifact
           fetch-depth: 0
 
       - name: Setup Node.js
@@ -83,8 +94,10 @@ jobs:
         with:
           node-version: "22"
           cache: npm
+          cache-dependency-path: artifact/package-lock.json
 
-      - name: Install dependencies
+      - name: Install artifact dependencies
+        working-directory: artifact
         run: npm ci --ignore-scripts
 
       - name: Configure release lock root
@@ -94,9 +107,10 @@ jobs:
           printf "DEALALITY_SHARED_LOCK_ROOT_V1\n" > "$ROOT/SHARED_LOCK_ROOT.ok"
           echo "DEALALITY_RELEASE_LOCK_ROOT=$ROOT" >> "$GITHUB_ENV"
 
-      - name: Production release preflight
+      - name: Production release preflight (against artifact tree)
         run: |
-          node scripts/dealality-production-release-preflight-v1.mjs \
+          node "$CONTROL_ROOT/scripts/dealality-production-release-preflight-v1.mjs" \
+            --repo-root "$ARTIFACT_ROOT" \
             --product "${{ inputs.product }}" \
             --sha "$(echo '${{ inputs.approved_sha }}' | tr '[:upper:]' '[:lower:]')" \
             --authorization-phrase "I_AUTHORIZE_PRODUCTION_RELEASE"
@@ -112,7 +126,8 @@ jobs:
       - name: Run release coordinator (dry-run)
         if: ${{ inputs.dry_run == true }}
         run: |
-          node scripts/dealality-production-release-coordinator-v1.mjs \
+          node "$CONTROL_ROOT/scripts/dealality-production-release-coordinator-v1.mjs" \
+            --repo-root "$ARTIFACT_ROOT" \
             --product "${{ inputs.product }}" \
             --sha "$(echo '${{ inputs.approved_sha }}' | tr '[:upper:]' '[:lower:]')" \
             --authorize-production-release \
@@ -121,10 +136,24 @@ jobs:
             --release-after-dry-run \
             --owner "${DEALALITY_RELEASE_OWNER}"
 
-      - name: Run release coordinator (live)
+      - name: Overlay control-plane deploy gates onto artifact (live only)
         if: ${{ inputs.dry_run == false }}
         run: |
+          # Live deploy uses artifact product tree + current release gates/scripts.
+          cp -f "$CONTROL_ROOT/scripts/deploy-production.mjs" "$ARTIFACT_ROOT/scripts/deploy-production.mjs"
+          cp -f "$CONTROL_ROOT/scripts/block-raw-railway-up.mjs" "$ARTIFACT_ROOT/scripts/block-raw-railway-up.mjs"
+          mkdir -p "$ARTIFACT_ROOT/lib/dealality-production-release"
+          cp -f "$CONTROL_ROOT"/lib/dealality-production-release/*.js \
+            "$ARTIFACT_ROOT/lib/dealality-production-release/"
+          cp -f "$CONTROL_ROOT/scripts/dealality-production-release-coordinator-v1.mjs" \
+            "$ARTIFACT_ROOT/scripts/dealality-production-release-coordinator-v1.mjs"
+
+      - name: Run release coordinator (live)
+        if: ${{ inputs.dry_run == false }}
+        working-directory: artifact
+        run: |
           node scripts/dealality-production-release-coordinator-v1.mjs \
+            --repo-root "$ARTIFACT_ROOT" \
             --product "${{ inputs.product }}" \
             --sha "$(echo '${{ inputs.approved_sha }}' | tr '[:upper:]' '[:lower:]')" \
             --authorize-production-release \
