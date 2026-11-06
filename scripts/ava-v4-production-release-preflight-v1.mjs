@@ -35,7 +35,15 @@ function gate(name, ok, detail) {
 const commit = sh("git rev-parse HEAD");
 const branch = sh("git rev-parse --abbrev-ref HEAD");
 const dirty = sh("git status --porcelain");
-gate("CLEAN_OR_RELEASE_BRANCH", branch.startsWith("release/ava-v4") || !dirty, `branch=${branch}`);
+const releaseBranchOk =
+  branch.startsWith("release/ava-v4") ||
+  branch.startsWith("release/dealality-") ||
+  branch === "HEAD"; // detached clean-checkout of exact SHA
+gate(
+  "CLEAN_OR_RELEASE_BRANCH",
+  (releaseBranchOk || !dirty) && !dirty,
+  `branch=${branch}`
+);
 gate(
   "SERVER_WIRES_AVA",
   fs.readFileSync(path.join(ROOT, "server.js"), "utf8").includes("/api/admin/ai-visibility-audit/"),

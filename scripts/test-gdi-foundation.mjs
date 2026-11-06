@@ -278,7 +278,8 @@ check("gdi_registered_in_dealality_app_shell", () => {
     "GDI must be registered as an app shell route"
   );
   assert.ok(
-    appJs.includes("Group Demand Intelligence"),
+    appJs.includes("Group Demand Intelligence") ||
+      appJs.includes("Group & Demand Intelligence"),
     "GDI must appear in Market Intelligence nav"
   );
 });
@@ -473,7 +474,13 @@ check("ui_uses_evidence_confidence_and_hotel_validation_labels", () => {
     "utf8"
   );
   assert.ok(shareJs.includes("DealalityGdiUi"));
-  assert.ok(sharedUi.includes("Evidence Confidence"));
+  // Shared customer UI may shorten the column header to "Evidence" while the
+  // detail surface (app.js) keeps the full "Evidence Confidence" label.
+  assert.ok(
+    sharedUi.includes("Evidence Confidence") ||
+      (sharedUi.includes('"Evidence"') && uiSurface.includes("Evidence Confidence")),
+    "shared UI must expose Evidence Confidence semantics"
+  );
   assert.ok(sharedUi.includes("Hotel Validation"));
   assert.ok(!/gdiFbSave/.test(shareJs));
 });
