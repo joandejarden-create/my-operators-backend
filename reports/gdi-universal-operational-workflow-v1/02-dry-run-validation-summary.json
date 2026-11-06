@@ -1,0 +1,43 @@
+{
+  "status": "GDI_UNIVERSAL_WORKFLOW_READY",
+  "generatedAt": "2026-11-06T11:00:00.000Z",
+  "scope": "local_dry_run_only",
+  "productionWrites": false,
+  "paidResearch": false,
+  "tests": {
+    "test:gdi-universal-operational-workflow-v1": "PASS_12_12"
+  },
+  "powershellDryRuns": {
+    "spiceFullRun": {
+      "hotelId": "recKRJjcPnb4tVDDS",
+      "action": "FullRun",
+      "ok": true,
+      "pausedForApproval": true,
+      "opportunitiesDiscovered": 77
+    },
+    "bethesdaValidate": {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "action": "Validate",
+      "ok": true,
+      "opportunitiesDiscovered": 54
+    },
+    "waterstoneSyncAirtableDryRun": {
+      "hotelId": "recgMYovrrZDJMqzX",
+      "action": "SyncAirtable",
+      "ok": true,
+      "note": "Airtable credentials not configured in this environment — sync planned/blocked safely without writes"
+    },
+    "portfolioInventory": {
+      "action": "Inventory",
+      "ok": true
+    }
+  },
+  "guarantees": [
+    "No competing publication architecture",
+    "No Airtable reconstruction of approvedCustomerFacingDetail",
+    "Sales-owned fields preserved on research sync",
+    "Publish apply requires ApprovalReference + Production",
+    "Post-publish Airtable failure does not roll back publication",
+    "Share tokens never rotated by this workflow"
+  ]
+}

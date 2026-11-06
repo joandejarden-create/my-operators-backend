@@ -1,0 +1,74 @@
+{
+  "contractVersion": "gdi-universal-operational-workflow-v1",
+  "ownershipContract": "gdi-airtable-field-ownership-v1",
+  "syncContract": "gdi-airtable-sync-v1",
+  "status": "PAUSED_AWAITING_APPROVAL",
+  "hotelId": "recKRJjcPnb4tVDDS",
+  "hotelName": "Spice Island Beach Resort",
+  "workflowRunId": "gdi_wf_recKRJjcPnb4_mw4v4fjh_2cce4b",
+  "action": "FullRun",
+  "environment": "Local",
+  "dryRun": true,
+  "startedAt": "2026-11-06T10:59:44.429Z",
+  "finishedAt": "2026-11-06T10:59:44.669Z",
+  "researchStatus": "PLANNED_DRY_RUN",
+  "opportunitiesDiscovered": 77,
+  "opportunitiesQualified": 0,
+  "opportunitiesExcluded": 77,
+  "airtableCreated": null,
+  "airtableUpdated": null,
+  "airtableUnchanged": null,
+  "airtableFailed": null,
+  "approvalStatus": "AWAITING_FOUNDER_APPROVAL",
+  "publicationVersion": null,
+  "publishedOpportunityCount": null,
+  "fullContentParityResult": null,
+  "liveShareVerification": null,
+  "errors": [],
+  "nextActions": [
+    "FullRun stops at Review. Re-run Publish then Verify after founder approval.",
+    "To execute research preflight: re-run Research with executeResearch (Node --execute-research) or call gdi-research-to-page-workflow-v1.mjs directly.",
+    "Configure AIRTABLE_API_KEY and AIRTABLE_GDI_BASE_ID before live SyncAirtable.",
+    "Review C:\\Dev\\dealality\\my-operators-backend-gdi-clean-release\\reports\\gdi-universal-operational-workflow-v1\\gdi_wf_recKRJjcPnb4_mw4v4fjh_2cce4b-review-package.json, then re-run Publish with -ApprovalReference and -Environment Production (not DryRun) when authorized."
+  ],
+  "stages": {
+    "research": {
+      "dryRun": true,
+      "script": "scripts/gdi-research-to-page-workflow-v1.mjs",
+      "args": [
+        "--hotel",
+        "recKRJjcPnb4tVDDS",
+        "--mode",
+        "full-e2e",
+        "--dry-run"
+      ],
+      "note": "Research delegated to existing Full E2E coordinator. Paid spend requires explicit authorize flags on that script (not auto-authorized here).",
+      "invoked": false,
+      "plannedOnly": true
+    },
+    "validate": {
+      "ok": true,
+      "opportunityCount": 77,
+      "qualified": 0,
+      "excluded": 77,
+      "persistence": "filesystem",
+      "fullE2eStatus": {
+        "ok": false,
+        "stdoutTail": ""
+      }
+    },
+    "syncAirtable": {
+      "ok": false,
+      "code": "AIRTABLE_NOT_CONFIGURED",
+      "dryRun": true,
+      "hotelId": "recKRJjcPnb4tVDDS",
+      "message": "Set AIRTABLE_API_KEY/PAT and AIRTABLE_GDI_BASE_ID / AIRTABLE_INTELLIGENCE_BASE_ID."
+    },
+    "review": {
+      "ok": true,
+      "reviewFile": "C:\\Dev\\dealality\\my-operators-backend-gdi-clean-release\\reports\\gdi-universal-operational-workflow-v1\\gdi_wf_recKRJjcPnb4_mw4v4fjh_2cce4b-review-package.json",
+      "opportunityCount": 0,
+      "pausedForApproval": true
+    }
+  }
+}
