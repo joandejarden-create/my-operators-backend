@@ -166,9 +166,29 @@ try {
   assert.equal(blocked.ok, false);
   pass("deploy_assert_blocks_other_owner", blocked.code);
 
-  // 7b) Live deploy without shared root fails closed
+  // 7b) Live deploy without github-actions channel fails closed first
+  const liveNoChannel = assertDeployAllowedByLock(
+    {
+      ...process.env,
+      DEALALITY_RELEASE_LOCK_ROOT: path.join(tmp, "noch"),
+      DEALALITY_RELEASE_LOCK_SHARED: "1",
+      DEALALITY_RELEASE_CHANNEL: "",
+      DEALALITY_RELEASE_LOCK_BYPASS: "",
+    },
+    { liveDeploy: true, cwd: ROOT }
+  );
+  assert.equal(liveNoChannel.ok, false);
+  assert.equal(liveNoChannel.code, "RELEASE_CHANNEL_REQUIRED");
+  pass("live_deploy_fails_closed_without_github_actions_channel", liveNoChannel.code);
+
+  // 7c) Live deploy with channel but without shared root fails closed
   const liveNoShared = assertDeployAllowedByLock(
-    { ...process.env, DEALALITY_RELEASE_LOCK_ROOT: "", DEALALITY_RELEASE_LOCK_BYPASS: "" },
+    {
+      ...process.env,
+      DEALALITY_RELEASE_LOCK_ROOT: "",
+      DEALALITY_RELEASE_CHANNEL: "github-actions",
+      DEALALITY_RELEASE_LOCK_BYPASS: "",
+    },
     { liveDeploy: true, cwd: ROOT }
   );
   assert.equal(liveNoShared.ok, false);

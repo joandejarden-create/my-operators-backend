@@ -4,6 +4,7 @@ Founder-facing docs for Dealality production durability on Railway (`my-operator
 
 | Doc | Purpose |
 |-----|---------|
+| [DEALALITY_GITHUB_ACTIONS_PRODUCTION_RELEASE.md](./DEALALITY_GITHUB_ACTIONS_PRODUCTION_RELEASE.md) | **Canonical live entry** — Actions workflow for ADP/AVA/GDI |
 | [CURRENT_PRODUCTION_DEPLOY_ARCHITECTURE.md](./CURRENT_PRODUCTION_DEPLOY_ARCHITECTURE.md) | Live Railway target, CLI upload model, builder/start |
 | [PRODUCTION_REQUIRED_ASSETS.md](./PRODUCTION_REQUIRED_ASSETS.md) | Manifest surfaces + gate commands |
 | [PR40_VS_PRODUCTION_DIFF_AUDIT.md](./PR40_VS_PRODUCTION_DIFF_AUDIT.md) | PR #40 vs main tip vs live hotfix |
@@ -14,6 +15,7 @@ Founder-facing docs for Dealality production durability on Railway (`my-operator
 | [PRODUCTION_SMOKE_MATRIX.md](./PRODUCTION_SMOKE_MATRIX.md) | Post-deploy smoke checklist |
 | [PACKET_PRODUCTION_DURABILITY_COMPLETION_REPORT.md](./PACKET_PRODUCTION_DURABILITY_COMPLETION_REPORT.md) | Gate status + recommendation |
 
-**Canonical commands:** `npm run assert:production-assets`, `test:production-routes-local`, `test:production-critical-surfaces`, `deploy:production`, `deploy:production:dry-run`, `assert:hotel-explorer-share-assets`, `test:hotel-explorer-share-drawer-visible`, `preflight:railway-raw`.
+**Canonical live release:** GitHub Actions workflow `dealality-production-release` (see Actions doc above).  
+**Local gates / dry-run:** `npm run assert:production-assets`, `test:production-routes-local`, `test:production-critical-surfaces`, `deploy:production:dry-run`, `assert:hotel-explorer-share-assets`, `test:hotel-explorer-share-drawer-visible`, `preflight:railway-raw`, `test:dealality-production-release-github-actions-contract`.
 
 **Manifest:** `config/production-required-assets.json`

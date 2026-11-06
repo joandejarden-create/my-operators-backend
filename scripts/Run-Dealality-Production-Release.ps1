@@ -1,18 +1,20 @@
 ﻿<#
 .SYNOPSIS
-  Shared Dealality production release orchestrator (ADP / AVA / GDI).
+  Operator helper — points to the sole GitHub Actions production release entry.
 
 .DESCRIPTION
-  PowerShell entrypoint that calls the Node coordinator. Railway runtime does
-  not depend on PowerShell — this script is operator-side only.
+  Live ADP/AVA/GDI production deploys must run via GitHub Actions workflow
+  dealality-production-release (cross-machine concurrency + exact-SHA checkout).
 
-  Does NOT publish customer reports, rotate share tokens, or run paid research.
+  This script does NOT call railway up. It either:
+    - prints the exact gh workflow dispatch command, or
+    - runs a local coordinator dry-run when -DryRun is set.
 
 .EXAMPLE
   .\scripts\Run-Dealality-Production-Release.ps1 -Product AVA -CommitSha "<40hex>" -Authorize -DryRun
 
 .EXAMPLE
-  .\scripts\Run-Dealality-Production-Release.ps1 -Product AVA -CommitSha "<40hex>" -Authorize
+  .\scripts\Run-Dealality-Production-Release.ps1 -Product AVA -CommitSha "<40hex>" -Authorize -PrintDispatch
 #>
 [CmdletBinding()]
 param(
@@ -26,6 +28,7 @@ param(
 
   [switch]$Authorize,
   [switch]$DryRun,
+  [switch]$PrintDispatch,
   [switch]$Status,
   [switch]$ReleaseLock,
   [string]$Owner = $env:DEALALITY_RELEASE_OWNER,
@@ -37,19 +40,35 @@ $ErrorActionPreference = "Stop"
 $Root = Resolve-Path (Join-Path $PSScriptRoot "..")
 Set-Location $Root
 
+$Sha = $CommitSha.ToLowerInvariant()
+
+if ($PrintDispatch -or (-not $DryRun -and -not $Status -and -not $ReleaseLock)) {
+  if (-not $Authorize) {
+    Write-Error "Live production release requires -Authorize after founder authorization."
+  }
+  $dry = if ($DryRun) { "true" } else { "false" }
+  Write-Host "Sole live production entry is GitHub Actions (not local railway up)."
+  Write-Host ""
+  Write-Host "gh workflow run dealality-production-release.yml ``"
+  Write-Host "  -f product=$Product ``"
+  Write-Host "  -f approved_sha=$Sha ``"
+  Write-Host "  -f authorization_phrase=I_AUTHORIZE_PRODUCTION_RELEASE ``"
+  Write-Host "  -f dry_run=$dry"
+  Write-Host ""
+  if (-not $DryRun) {
+    Write-Host "Refusing local live deploy. Dispatch the workflow above after founder authorization."
+    exit 2
+  }
+}
+
 if ($LockRoot) {
   $env:DEALALITY_RELEASE_LOCK_ROOT = $LockRoot
-  # Explicit -LockRoot is the operator assertion that the path is durable+shared
-  # (e.g. Railway volume /app/data/adp-durable-published/dealality-release-locks).
   if (-not $env:DEALALITY_RELEASE_LOCK_SHARED) {
     $env:DEALALITY_RELEASE_LOCK_SHARED = "1"
   }
 }
 if ($Owner) {
   $env:DEALALITY_RELEASE_OWNER = $Owner
-}
-if (-not $env:DEALALITY_RELEASE_LOCK_ROOT -and -not $DryRun -and -not $Status -and -not $ReleaseLock) {
-  Write-Error "DEALALITY_RELEASE_LOCK_ROOT / -LockRoot is required for live production releases (fail closed; local default is not cross-machine safe)."
 }
 
 $nodeArgs = @(
@@ -69,16 +88,19 @@ if ($ReleaseLock) {
   exit $LASTEXITCODE
 }
 
-$nodeArgs += @("--product", $Product, "--sha", $CommitSha.ToLowerInvariant())
-if ($Authorize) { $nodeArgs += "--authorize-production-release" }
-if ($DryRun) { $nodeArgs += "--dry-run"; $nodeArgs += "--release-after-dry-run" }
+if (-not $Authorize) {
+  Write-Error "Pass -Authorize after founder authorization"
+}
+
+# Local path is dry-run only.
+$nodeArgs += @("--product", $Product, "--sha", $Sha, "--authorize-production-release", "--dry-run", "--release-after-dry-run", "--channel", "github-actions")
 if ($Owner) { $nodeArgs += @("--owner", $Owner) }
 if ($Note) { $nodeArgs += @("--note", $Note) }
 
-Write-Host "Dealality production release coordinator"
+Write-Host "Dealality production release coordinator (LOCAL DRY-RUN ONLY)"
 Write-Host "  Product : $Product"
-Write-Host "  SHA     : $($CommitSha.ToLowerInvariant())"
-Write-Host "  DryRun  : $DryRun"
+Write-Host "  SHA     : $Sha"
+Write-Host "  Channel : github-actions (simulated for dry-run gates)"
 Write-Host "  LockRoot: $($env:DEALALITY_RELEASE_LOCK_ROOT)"
 
 & node @nodeArgs

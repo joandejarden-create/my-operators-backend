@@ -1,0 +1,138 @@
+# Dealality centralized production release (ADP / AVA / GDI).
+#
+# Sole live production deploy entry point. Does not auto-cancel Railway builds.
+# Concurrency queues overlapping dispatches; never cancel-in-progress.
+#
+# Artifact SHA is the dispatch input (may differ from the workflow revision on main).
+# AVA V4 certified artifact example: 8eabf043cbc350322a5aca5f985bcc8a8ff75715
+#
+# Live path requires repo secret RAILWAY_TOKEN.
+name: Dealality production release
+
+on:
+  workflow_dispatch:
+    inputs:
+      product:
+        description: "Product surface to release"
+        required: true
+        type: choice
+        options:
+          - ADP
+          - AVA
+          - GDI
+      approved_sha:
+        description: "Exact 40-char hex artifact SHA to deploy"
+        required: true
+        type: string
+      authorization_phrase:
+        description: "Must be exactly I_AUTHORIZE_PRODUCTION_RELEASE"
+        required: true
+        type: string
+      dry_run:
+        description: "If true, run gates + lock only (no railway up)"
+        required: true
+        type: boolean
+        default: true
+
+concurrency:
+  group: dealality-production-release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  production-release:
+    name: Production release (${{ inputs.product }})
+    runs-on: ubuntu-latest
+    environment: dealality-production
+    timeout-minutes: 90
+    env:
+      DEALALITY_RELEASE_CHANNEL: github-actions
+      DEALALITY_RELEASE_LOCK_SHARED: "1"
+      DEALALITY_REQUIRE_RELEASE_LOCK: "1"
+      DEALALITY_RELEASE_OWNER: gha-${{ github.run_id }}-${{ github.run_attempt }}
+      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+    steps:
+      - name: Validate authorization phrase
+        env:
+          PHRASE: ${{ inputs.authorization_phrase }}
+        run: |
+          if [ "$PHRASE" != "I_AUTHORIZE_PRODUCTION_RELEASE" ]; then
+            echo "FAIL AUTHORIZATION_PHRASE_INVALID"
+            exit 2
+          fi
+          echo "authorization phrase accepted"
+
+      - name: Validate approved SHA format
+        env:
+          SHA: ${{ inputs.approved_sha }}
+        run: |
+          echo "$SHA" | grep -Eq '^[0-9a-fA-F]{40}$'
+          echo "approved_sha=$(echo "$SHA" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
+
+      - name: Checkout exact artifact SHA
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.approved_sha }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Configure release lock root
+        run: |
+          ROOT="${RUNNER_TEMP}/dealality-release-locks"
+          mkdir -p "$ROOT/history"
+          printf "DEALALITY_SHARED_LOCK_ROOT_V1\n" > "$ROOT/SHARED_LOCK_ROOT.ok"
+          echo "DEALALITY_RELEASE_LOCK_ROOT=$ROOT" >> "$GITHUB_ENV"
+
+      - name: Production release preflight
+        run: |
+          node scripts/dealality-production-release-preflight-v1.mjs \
+            --product "${{ inputs.product }}" \
+            --sha "$(echo '${{ inputs.approved_sha }}' | tr '[:upper:]' '[:lower:]')" \
+            --authorization-phrase "I_AUTHORIZE_PRODUCTION_RELEASE"
+
+      - name: Require RAILWAY_TOKEN for live deploy
+        if: ${{ inputs.dry_run == false }}
+        run: |
+          if [ -z "${RAILWAY_TOKEN}" ]; then
+            echo "FAIL RAILWAY_TOKEN_MISSING — configure repo secret RAILWAY_TOKEN before live deploy"
+            exit 2
+          fi
+
+      - name: Run release coordinator (dry-run)
+        if: ${{ inputs.dry_run == true }}
+        run: |
+          node scripts/dealality-production-release-coordinator-v1.mjs \
+            --product "${{ inputs.product }}" \
+            --sha "$(echo '${{ inputs.approved_sha }}' | tr '[:upper:]' '[:lower:]')" \
+            --authorize-production-release \
+            --channel github-actions \
+            --dry-run \
+            --release-after-dry-run \
+            --owner "${DEALALITY_RELEASE_OWNER}"
+
+      - name: Run release coordinator (live)
+        if: ${{ inputs.dry_run == false }}
+        run: |
+          node scripts/dealality-production-release-coordinator-v1.mjs \
+            --product "${{ inputs.product }}" \
+            --sha "$(echo '${{ inputs.approved_sha }}' | tr '[:upper:]' '[:lower:]')" \
+            --authorize-production-release \
+            --channel github-actions \
+            --owner "${DEALALITY_RELEASE_OWNER}"
+
+      - name: Never cancel Railway deployments
+        if: always()
+        run: |
+          echo "Policy: this workflow does not cancel Railway deployments."
+          echo "On RAILWAY_BUSY or failure, wait for terminal state then retry."

@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 /**
- * Canonical production deploy wrapper.
+ * Canonical production deploy wrapper (invoked by GitHub Actions coordinator).
  *
- *   npm run deploy:production
+ * Sole live entry point:
+ *   GitHub Actions → workflow dealality-production-release
  *
- * Refuses incomplete trees, wrong branches (unless override), and dirty trees
- * (unless override). Runs asset assert → local route smoke → railway up →
- * postdeploy smoke. Records reports/deployments/<timestamp>-production.json.
+ * Local dry-run still allowed:
+ *   npm run deploy:production:dry-run
  *
- * Emergency hotfix:
- *   DEALALITY_ALLOW_HOTFIX_DEPLOY=1 DEALALITY_ALLOW_DIRTY_DEPLOY=1 npm run deploy:production
+ * Live local/Cursor uploads are blocked unless DEALALITY_RELEASE_CHANNEL=github-actions
+ * (set by Actions) or founder DEALALITY_RELEASE_LOCK_BYPASS=1.
  *
  * Do NOT use raw `railway up` for production.
  */
@@ -18,6 +18,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { execSync, spawnSync } from "node:child_process";
 import { assertDeployAllowedByLock } from "../lib/dealality-production-release/release-lock-v1.js";
+import { assertReleaseChannelAllowed } from "../lib/dealality-production-release/release-channel-v1.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const manifest = JSON.parse(
@@ -28,6 +29,19 @@ const allowHotfix = process.env.DEALALITY_ALLOW_HOTFIX_DEPLOY === "1";
 const allowDirty = process.env.DEALALITY_ALLOW_DIRTY_DEPLOY === "1";
 const skipPost = process.env.DEALALITY_SKIP_POSTDEPLOY_SMOKE === "1";
 const dryRun = process.argv.includes("--dry-run");
+
+const channelGate = assertReleaseChannelAllowed(process.env, {
+  liveDeploy: !dryRun,
+});
+if (!channelGate.ok) {
+  console.error(
+    `FAIL RELEASE_CHANNEL_GATE: ${channelGate.code} — ${channelGate.message}`
+  );
+  console.error(
+    "Dispatch GitHub Actions workflow: dealality-production-release (Actions → Run workflow)."
+  );
+  process.exit(1);
+}
 
 const lockGate = assertDeployAllowedByLock(process.env, {
   liveDeploy: !dryRun,
@@ -43,7 +57,7 @@ if (!lockGate.ok) {
     );
   }
   console.error(
-    "Use scripts/Run-Dealality-Production-Release.ps1 with DEALALITY_RELEASE_LOCK_ROOT on a durable shared path."
+    "Use GitHub Actions workflow dealality-production-release (sole live production entry)."
   );
   process.exit(1);
 }
