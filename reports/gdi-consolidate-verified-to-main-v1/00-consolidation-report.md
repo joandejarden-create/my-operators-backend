@@ -2,7 +2,7 @@
 
 **Status:** `READY_TO_MERGE_MAIN` (awaiting founder merge approval)  
 **Integration branch:** `release/gdi-consolidate-verified-to-main-v1`  
-**Proposed integration SHA:** `b84c68e0b0b72c5868515fdfc27cce724f659992` (6 commits ahead of main)
+**Proposed integration SHA:** branch tip of `release/gdi-consolidate-verified-to-main-v1` (6 commits ahead of main; resolve via `git rev-parse origin/release/gdi-consolidate-verified-to-main-v1`)
 
 ## SHAs
 
@@ -15,7 +15,7 @@
 | Portfolio parity | `7de492352` | Universal hotel/portfolio gate + admin |
 | Operational workflow | `e4e173bfd` | PowerShell + Airtable sync (dry-run certified) |
 | Gate polish on integration | `aca75ce286b63aeb01a5f935aa42701a27ee7063` | Exclude `publicationState` / UNCLASSIFIED sentinels from parity |
-| Consolidation report | `b84c68e0b0b72c5868515fdfc27cce724f659992` | Inventory + READY_TO_MERGE_MAIN record |
+| Consolidation report | branch tip | Inventory + READY_TO_MERGE_MAIN record |
 
 ## Classification (A–E)
 
