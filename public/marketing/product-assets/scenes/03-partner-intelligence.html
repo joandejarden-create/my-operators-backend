@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Harbour House — Partner Intelligence</title>
+  <link rel="stylesheet" href="/marketing/product-assets/scenes/product-assets-scenes.css" />
+</head>
+<body class="pa-capture" data-scene="03-partner-intelligence" data-stage="0">
+  <div class="pa-frame" id="capture-root">
+    <div class="pa-topline">
+      <div class="pa-brand-mark"><span class="pa-brand-mark__dot" aria-hidden="true"></span>Partner Intelligence</div>
+      <span class="pa-illus">Illustrative Opportunity</span>
+    </div>
+
+    <header class="pa-header">
+      <h1>Participants most relevant to Harbour House</h1>
+      <p class="pa-sub">Cartagena · 118-key upscale · soft-brand / operator / capital shortlist</p>
+      <div class="pa-meta">
+        <span class="pa-chip pa-chip--accent">Filter · Upscale leisure · CALA experience</span>
+        <span class="pa-chip">Evidence · public footprint + sample fit notes</span>
+      </div>
+    </header>
+
+    <div class="pa-panel" style="margin-top:18px">
+      <div style="display:flex;justify-content:space-between;gap:12px;margin-bottom:12px;align-items:center">
+        <h2 style="margin:0">Potential participants</h2>
+        <span class="pa-status pa-status--wait" id="filter-label">Scanning pool · 7 profiles</span>
+      </div>
+
+      <div id="partners">
+        <div class="pa-partner" data-partner="0" data-tier="pool">
+          <div>
+            <div class="pa-partner__name">Aurelia Collection</div>
+            <div class="pa-partner__type">Soft brand · lifestyle distribution (fictional)</div>
+          </div>
+          <div class="pa-score">Fit <strong>92</strong></div>
+          <div><span class="pa-status pa-status--ok">Shortlist</span></div>
+          <div style="font-size:12px;color:#aeb9e1">Light standards · leisure ADR lift</div>
+        </div>
+
+        <div class="pa-partner" data-partner="1" data-tier="pool">
+          <div>
+            <div class="pa-partner__name">CostaVista Hospitality</div>
+            <div class="pa-partner__type">Third-party operator · CALA focus (fictional)</div>
+          </div>
+          <div class="pa-score">Fit <strong>88</strong></div>
+          <div><span class="pa-status pa-status--ok">Shortlist</span></div>
+          <div style="font-size:12px;color:#aeb9e1">Ops depth · F&amp;B redesign support</div>
+        </div>
+
+        <div class="pa-partner" data-partner="2" data-tier="pool">
+          <div>
+            <div class="pa-partner__name">Andes Capital Partners</div>
+            <div class="pa-partner__type">Strategic capital · hospitality (fictional)</div>
+          </div>
+          <div class="pa-score">Fit <strong>84</strong></div>
+          <div><span class="pa-status pa-status--ok">Shortlist</span></div>
+          <div style="font-size:12px;color:#aeb9e1">PIP co-funding · flexible governance</div>
+        </div>
+
+        <div class="pa-partner" data-partner="3" data-tier="pool">
+          <div>
+            <div class="pa-partner__name">Maris Lifestyle Hotels</div>
+            <div class="pa-partner__type">Independent collection affiliate (fictional)</div>
+          </div>
+          <div class="pa-score">Fit <strong>71</strong></div>
+          <div><span class="pa-status">Watch</span></div>
+          <div style="font-size:12px;color:#aeb9e1">Brand presence lighter than needed</div>
+        </div>
+
+        <div class="pa-partner" data-partner="4" data-tier="drop">
+          <div>
+            <div class="pa-partner__name">Hard Flag Global Upscale</div>
+            <div class="pa-partner__type">Full franchise path (anonymized sample)</div>
+          </div>
+          <div class="pa-score">Fit <strong>54</strong></div>
+          <div><span class="pa-status pa-status--miss">Low fit</span></div>
+          <div style="font-size:12px;color:#aeb9e1">Conflicts with character constraint</div>
+        </div>
+
+        <div class="pa-partner" data-partner="5" data-tier="drop">
+          <div>
+            <div class="pa-partner__name">Plaza Economy Select</div>
+            <div class="pa-partner__type">Select-service brand (anonymized sample)</div>
+          </div>
+          <div class="pa-score">Fit <strong>41</strong></div>
+          <div><span class="pa-status pa-status--miss">Out of scope</span></div>
+          <div style="font-size:12px;color:#aeb9e1">Scale mismatch · 118-key upscale</div>
+        </div>
+
+        <div class="pa-partner" data-partner="6" data-tier="drop">
+          <div>
+            <div class="pa-partner__name">Residences-first Developer Co</div>
+            <div class="pa-partner__type">Branded residences specialist (fictional)</div>
+          </div>
+          <div class="pa-score">Fit <strong>63</strong></div>
+          <div><span class="pa-status pa-status--wait">Deferred</span></div>
+          <div style="font-size:12px;color:#aeb9e1">Entitlement unknowns remain</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="pa-disclaimer">Fictional participant names for demonstration. Not real brands, operators, or capital partners — no partnership or endorsement implied.</p>
+    <div class="pa-stage-label" id="stage-label">Stage 0</div>
+  </div>
+  <script src="/marketing/product-assets/scenes/scene-controller.js"></script>
+  <script>
+    window.__paSceneHooks = {
+      applyStage: function (stage) {
+        var rows = document.querySelectorAll('.pa-partner');
+        var label = document.getElementById('filter-label');
+        rows.forEach(function (el, i) {
+          el.classList.remove('is-visible', 'is-focus', 'is-hidden-row');
+          if (stage >= 1 && stage < 3) {
+            el.classList.add('is-visible');
+            if (label) label.textContent = 'Reviewing pool · 7 profiles';
+          }
+          if (stage >= 3 && stage < 5) {
+            if (el.getAttribute('data-tier') === 'drop') el.classList.add('is-hidden-row');
+            else el.classList.add('is-visible');
+            if (label) label.textContent = 'Filtered · upscale leisure shortlist';
+          }
+          if (stage >= 5) {
+            if (el.getAttribute('data-tier') === 'drop') el.classList.add('is-hidden-row');
+            else {
+              el.classList.add('is-visible');
+              if (i <= 2) el.classList.add('is-focus');
+            }
+            if (label) label.textContent = 'Strongest-fit shortlist · 3 participants';
+          }
+        });
+      }
+    };
+  </script>
+</body>
+</html>
