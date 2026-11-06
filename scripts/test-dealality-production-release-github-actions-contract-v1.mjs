@@ -210,6 +210,7 @@ try {
         DEALALITY_RELEASE_LOCK_ROOT: path.join(tmp, "coord"),
         DEALALITY_RELEASE_LOCK_SHARED: "1",
         DEALALITY_RELEASE_CHANNEL: GITHUB_ACTIONS_CHANNEL,
+        DEALALITY_SKIP_RAILWAY_PROBE: "1",
       },
     }
   );

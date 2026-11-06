@@ -217,6 +217,7 @@ try {
         ...process.env,
         DEALALITY_RELEASE_LOCK_ROOT: path.join(tmp, "pub"),
         DEALALITY_RELEASE_LOCK_SHARED: "1",
+        DEALALITY_SKIP_RAILWAY_PROBE: "1",
       },
     }
   );

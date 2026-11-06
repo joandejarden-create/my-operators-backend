@@ -192,13 +192,21 @@ function railwayNonTerminalCount() {
   }
 }
 
-const rail = railwayNonTerminalCount();
+const skipRailwayProbe =
+  has("--skip-railway-probe") ||
+  String(process.env.DEALALITY_SKIP_RAILWAY_PROBE || "").trim() === "1";
+const rail = skipRailwayProbe
+  ? { ok: true, skipped: true, nonTerminal: 0, non: [] }
+  : railwayNonTerminalCount();
 if (rail.ok && rail.nonTerminal > 0) {
   writeManifest("WAITING_FOR_RAILWAY", {
     checkpoint: "railway_busy",
     railway: rail,
   });
-  fail("RAILWAY_BUSY", "non-terminal Railway deployment in progress", { railway: rail });
+  // Never cancel. Fail closed and wait for terminal state.
+  fail("RAILWAY_BUSY", "non-terminal Railway deployment in progress — do not cancel; wait then retry", {
+    railway: rail,
+  });
 }
 
 if (dryRun) {
