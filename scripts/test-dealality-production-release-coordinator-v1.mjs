@@ -195,6 +195,8 @@ try {
   pass("live_deploy_fails_closed_without_shared_root", liveNoShared.code);
 
   // 8) Publication separation invariant on dry-run manifest
+  // Use --simulate-clean-checkout so fixture SHA need not contain this branch's
+  // clean-checkout modules (unit test focuses on publication/lock invariants).
   const dry = spawnSync(
     process.execPath,
     [
@@ -207,6 +209,7 @@ try {
       "--dry-run",
       "--release-after-dry-run",
       "--allow-sha-mismatch-for-test",
+      "--simulate-clean-checkout",
       "--owner",
       "test-owner-gdi",
     ],
@@ -225,7 +228,13 @@ try {
   const out = JSON.parse(dry.stdout);
   assert.equal(out.ok, true);
   assert.equal(out.lock.publication.customerPublication, false);
+  assert.ok(out.cleanCheckoutAttestation, "clean checkout attestation required");
+  assert.equal(out.readyForProduction, true);
   pass("release_cannot_silently_publish_customer_data", "publication=false");
+  pass(
+    "coordinator_dry_run_emits_clean_checkout_attestation",
+    path.basename(out.cleanCheckoutAttestation)
+  );
 
   // Authorization required
   const noAuth = acquireReleaseLock({

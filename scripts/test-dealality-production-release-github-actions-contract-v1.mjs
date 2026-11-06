@@ -185,6 +185,7 @@ try {
   pass("preflight_rejects_incorrect_sha");
 
   // Coordinator dry-run does not publish
+  // Fixture SHA may predate clean-checkout modules; simulate attestation here.
   const dry = spawnSync(
     process.execPath,
     [
@@ -197,6 +198,7 @@ try {
       "--dry-run",
       "--release-after-dry-run",
       "--allow-sha-mismatch-for-test",
+      "--simulate-clean-checkout",
       "--channel",
       GITHUB_ACTIONS_CHANNEL,
       "--owner",
@@ -219,7 +221,9 @@ try {
   assert.equal(body.lock.publication.customerPublication, false);
   assert.equal(body.lock.publication.shareTokenRotation, false);
   assert.equal(body.lock.channel, GITHUB_ACTIONS_CHANNEL);
+  assert.ok(body.cleanCheckoutAttestation, "clean checkout attestation required");
   pass("dry_run_no_customer_publication_or_token_rotation");
+  pass("dry_run_emits_clean_checkout_attestation");
 
   // Live coordinator without channel fails closed
   const liveLocal = spawnSync(
