@@ -5073,7 +5073,27 @@
     ) {
       return false;
     }
-    return /^[A-Z][a-zA-Z'.-]+(?:\s+[A-Z][a-zA-Z'.-]+){1,3}$/.test(n);
+    // Prefer Unicode letters (A'yesha Gaetán). ASCII-only regex falsely
+    // rejected accented surnames and blanked verified named contacts.
+    try {
+      var particle =
+        "(?:de|van|von|der|den|la|le|du|da|di|del|della|st\\.?)";
+      var titleCase = new RegExp(
+        "^[\\p{Lu}][\\p{L}'.-]+(?:\\s+(?:" +
+          particle +
+          "|[\\p{Lu}][\\p{L}'.-]+)){1,4}$",
+        "u"
+      );
+      var allCaps =
+        /^[\p{Lu}][\p{Lu}'.-]+(?:\s+[\p{Lu}][\p{Lu}'.-]+){1,3}$/u;
+      if (titleCase.test(n) || allCaps.test(n)) return true;
+    } catch (_e) {
+      /* older engines without \p{} */
+    }
+    var ascii = n.normalize
+      ? n.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      : n;
+    return /^[A-Z][a-zA-Z'.-]+(?:\s+[A-Z][a-zA-Z'.-]+){1,3}$/.test(ascii);
   }
 
   function isPollutedPhoneDisplay(raw) {
@@ -5312,7 +5332,13 @@
     // every segment (Events + Scaling). Segment-only whoFn is fallback only.
     var twoContactHtml = scalingTwoContactPresentationHtml(o);
     if (twoContactHtml) return twoContactHtml;
-    if (typeof whoFn === "function") {
+    // Never re-enter this function via whoFn — share-app historically passed
+    // whoShouldSalesContactHtml as whoContactHtml, which double-appended the
+    // secondary contact (Adrienne ×2) and skipped the named-primary path.
+    if (
+      typeof whoFn === "function" &&
+      whoFn !== whoShouldSalesContactHtml
+    ) {
       return whoFn(o) + secondaryNamedContactHtml(o);
     }
 

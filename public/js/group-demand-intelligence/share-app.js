@@ -520,7 +520,10 @@
       drawerClose: drawerClose,
       opportunityId: id,
       mode: "share",
-      whoContactHtml: whoShouldSalesContactHtml,
+      // Do not pass whoShouldSalesContactHtml as whoContactHtml — that nested
+      // the same renderer and duplicated secondary contacts. Default path
+      // already renders primary + secondary from the locked presentation.
+      whoContactHtml: null,
       api: api,
       detailUrl: function (oppId) {
         return (
