@@ -1,0 +1,63 @@
+﻿{
+  "status": "READY_FOR_PRODUCTION_AUTHORIZATION",
+  "hotelId": "recKRJjcPnb4tVDDS",
+  "hotelName": "Spice Island Beach Resort",
+  "preserveShareTokenId": "gdisht_spice_island_mw3olaq5",
+  "rootCauses": [
+    {
+      "id": "lean_snapshot_missing_locked_presentation",
+      "evidence": "production share list/detail: publishedPresentationLocked=false, hasVerifiedNamedRelevantContact=false on all sampled rows",
+      "effect": "CARPHA re-derives Qualify Opportunity; Savor and others lose MEDIUM_PRIORITY / Hotel Unconfirmed quick filters"
+    },
+    {
+      "id": "list_dto_dropped_locked_fields",
+      "path": "lib/group-demand-intelligence/opportunity-list-dto.js",
+      "effect": "even after freeze, priorityFilterKey/salesActionKey/quickFilters were stripped before attachCustomerClassificationPresentation"
+    },
+    {
+      "id": "attach_rederived_quick_filters",
+      "path": "lib/group-demand-intelligence/customer-classification-presentation-v1.js",
+      "effect": "attachSalesOpportunityFilterFields overwrote approved salesOpportunityQuickFilterKeys on lean snaps"
+    },
+    {
+      "id": "sales_action_ignored_locked_key",
+      "path": "lib/group-demand-intelligence/customer-sales-action-resolver-v1.js",
+      "effect": "Contact Buyer replaced when verified contact gate failed on lean hydration"
+    }
+  ],
+  "permanentFixesReady": [
+    "freezePublishedPresentationFields expands locked salesAction/priority/quick/tileContact/verified",
+    "toOpportunityListDto preserves locked presentation fields",
+    "attachCustomerClassificationPresentation honors locked priorityFilterKey + quickFilters and syncs priority",
+    "resolveCustomerSalesAction honors locked salesActionKey",
+    "muted revenue streams no longer emit customer-facing 'not indicated' copy"
+  ],
+  "localDryRun": {
+    "ok": true,
+    "failureCount": 0,
+    "report": "reports/gdi-spice-presentation-parity-fix-v1/01-dry-run-frozen-candidates.json",
+    "parity": "7/7 sales+priority+contact+quick vs local approved list"
+  },
+  "productionLiveBefore": {
+    "report": "reports/gdi-spice-presentation-parity-fix-v1/02-production-share-list.json",
+    "carphaAction": "Qualify Opportunity",
+    "savorPriority": "UNCLASSIFIED",
+    "ayeshaTileContact": "A'yesha Gaetán",
+    "priorityCounts": {"MEDIUM_PRIORITY":1,"WATCHLIST":1,"UNCLASSIFIED":5},
+    "lockedFlags": false
+  },
+  "requiredAuthorizationExact": "FOUNDER_GO_GDI_SPICE_PRESENTATION_PARITY_REPUBLISH_<sha8>",
+  "authorizationScope": [
+    "Deploy exact tested SHA of presentation/list-dto/freeze/UI fixes to Railway",
+    "Backup production GDI registry + Spice snapshots/history",
+    "One-click republish Spice Island seven from approved local canonical object (existing share token unchanged)",
+    "Verify existing external share URL 7/7 tile+drawer; Bethesda/Waterstone inventory unchanged",
+    "No external hotel send"
+  ],
+  "blockedActionsWithoutAuth": [
+    "production deploy",
+    "production snapshot write",
+    "registry pointer update"
+  ],
+  "notComplete": "PRODUCTION_GDI_TILE_AND_DRAWER_PARITY_PASS requires live post-deploy verification on the existing share link"
+}

@@ -2133,7 +2133,19 @@
 
   function matchesHotelSourcingNotConfirmedFilter(o, subgroup) {
     var sourcing = normalizeHotelSourcingForFilter(o);
-    if (!sourcing) return false;
+    // Locked published inventory may carry the Sales Opportunity key without
+    // a separate sourcing label — honor the approved quick-filter membership.
+    if (!sourcing) {
+      var keys = salesOpportunityKeysOf(o);
+      if (
+        keys.indexOf(SALES_OPPORTUNITY_FILTER.HOTEL_SOURCING_NOT_CONFIRMED) >= 0
+      ) {
+        // Treat key-only membership as Unconfirmed for BOTH/UNCONFIRMED chips.
+        if (subgroup === HOTEL_SOURCING_SUBGROUP.OPEN) return false;
+        return true;
+      }
+      return false;
+    }
     var isOpen = sourcing === "Hotel Sourcing Open";
     var isUnconfirmed = sourcing === "Hotel Sourcing Unconfirmed";
     if (!isOpen && !isUnconfirmed) return false;
@@ -4121,23 +4133,22 @@
       eventFnb = "active";
     }
 
-    var guestWord = guestrooms === "active" ? "applicable" : "not indicated";
-    var eventWord = eventFnb === "active" ? "applicable" : "not indicated";
+    // Muted streams: label only — never customer-visible "not indicated" copy.
+    var guestAria =
+      guestrooms === "active"
+        ? REVENUE_STREAM_ICON_LABEL.guestrooms + " — applicable"
+        : REVENUE_STREAM_ICON_LABEL.guestrooms;
+    var eventAria =
+      eventFnb === "active"
+        ? REVENUE_STREAM_ICON_LABEL.eventFnb + " — applicable"
+        : REVENUE_STREAM_ICON_LABEL.eventFnb;
     return {
       revenueStreamClass: cls,
       guestrooms: guestrooms,
       eventFnb: eventFnb,
-      ariaGuestrooms: REVENUE_STREAM_ICON_LABEL.guestrooms + " — " + guestWord,
-      ariaEventFnb: REVENUE_STREAM_ICON_LABEL.eventFnb + " — " + eventWord,
-      ariaGroup:
-        "Revenue streams: " +
-        REVENUE_STREAM_ICON_LABEL.guestrooms +
-        " " +
-        guestWord +
-        "; " +
-        REVENUE_STREAM_ICON_LABEL.eventFnb +
-        " " +
-        eventWord,
+      ariaGuestrooms: guestAria,
+      ariaEventFnb: eventAria,
+      ariaGroup: "Revenue streams: " + guestAria + "; " + eventAria,
     };
   }
 
@@ -5062,7 +5073,27 @@
     ) {
       return false;
     }
-    return /^[A-Z][a-zA-Z'.-]+(?:\s+[A-Z][a-zA-Z'.-]+){1,3}$/.test(n);
+    // Prefer Unicode letters (A'yesha Gaetán). ASCII-only regex falsely
+    // rejected accented surnames and blanked verified named contacts.
+    try {
+      var particle =
+        "(?:de|van|von|der|den|la|le|du|da|di|del|della|st\\.?)";
+      var titleCase = new RegExp(
+        "^[\\p{Lu}][\\p{L}'.-]+(?:\\s+(?:" +
+          particle +
+          "|[\\p{Lu}][\\p{L}'.-]+)){1,4}$",
+        "u"
+      );
+      var allCaps =
+        /^[\p{Lu}][\p{Lu}'.-]+(?:\s+[\p{Lu}][\p{Lu}'.-]+){1,3}$/u;
+      if (titleCase.test(n) || allCaps.test(n)) return true;
+    } catch (_e) {
+      /* older engines without \p{} */
+    }
+    var ascii = n.normalize
+      ? n.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      : n;
+    return /^[A-Z][a-zA-Z'.-]+(?:\s+[A-Z][a-zA-Z'.-]+){1,3}$/.test(ascii);
   }
 
   function isPollutedPhoneDisplay(raw) {
@@ -5301,7 +5332,13 @@
     // every segment (Events + Scaling). Segment-only whoFn is fallback only.
     var twoContactHtml = scalingTwoContactPresentationHtml(o);
     if (twoContactHtml) return twoContactHtml;
-    if (typeof whoFn === "function") {
+    // Never re-enter this function via whoFn — share-app historically passed
+    // whoShouldSalesContactHtml as whoContactHtml, which double-appended the
+    // secondary contact (Adrienne ×2) and skipped the named-primary path.
+    if (
+      typeof whoFn === "function" &&
+      whoFn !== whoShouldSalesContactHtml
+    ) {
       return whoFn(o) + secondaryNamedContactHtml(o);
     }
 
