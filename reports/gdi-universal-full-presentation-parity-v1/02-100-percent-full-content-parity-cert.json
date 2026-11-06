@@ -1,0 +1,1178 @@
+{
+  "contract": "GDI_FULL_CONTENT_PARITY_V1",
+  "status": "READY_FOR_SINGLE_PRODUCTION_AUTHORIZATION",
+  "generatedAt": "2026-11-06T09:09:49.897Z",
+  "releaseCandidate": {
+    "pr": 146,
+    "sha": "a9dffc47bd2033f6f9df404f3fe343f40e37c250",
+    "branch": "fix/gdi-approved-presentation-css",
+    "productionWriteAuthorized": false,
+    "shareTokenPreserved": true
+  },
+  "schema": {
+    "version": "gdi-customer-facing-schema-discovery-v1",
+    "pathCount": 2430,
+    "topLevelKeyCount": 406,
+    "discoveryNote": "Schema discovered from approved local detail objects — new customer-facing fields are included automatically."
+  },
+  "spiceInventory": {
+    "expected": {
+      "count": 7,
+      "salesReady": 1,
+      "accountDevelopment": 6,
+      "medium": 2,
+      "watch": 5,
+      "carpha": {
+        "id": "gdi_s4912_ba7b1cb8a3ab",
+        "action": "Contact Buyer",
+        "priority": "MEDIUM_PRIORITY"
+      },
+      "savor": {
+        "id": "gdi_s4912_03deda917778",
+        "action": "Build Account",
+        "priority": "MEDIUM_PRIORITY"
+      },
+      "ayesha": {
+        "id": "gdi_s4912_cb2d71ab1b15",
+        "action": "Engage Planner",
+        "priority": "WATCHLIST",
+        "classification": "ACCOUNT_DEVELOPMENT",
+        "demandStage": "RELATIONSHIP_DEVELOPMENT",
+        "primary": "A'yesha Gaetán",
+        "secondary": "Adrienne Brown"
+      }
+    },
+    "actual": {
+      "salesReady": 1,
+      "accountDevelopment": 6,
+      "medium": 2,
+      "watch": 5,
+      "count": 7
+    },
+    "ok": true
+  },
+  "focusOk": true,
+  "freezePrepareOk": true,
+  "freezeFailures": [],
+  "freezeAllOk": true,
+  "liveAllOk": false,
+  "peers": {
+    "bethesda": {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "localCount": 31,
+      "prodCount": 31,
+      "unchangedShape": true,
+      "ok": true
+    },
+    "waterstone": {
+      "ok": false,
+      "reason": "hotel_id_unresolved"
+    }
+  },
+  "opportunities": [
+    {
+      "opportunityId": "gdi_s4912_ba7b1cb8a3ab",
+      "title": "71st CARPHA Annual Health Research Conference — One Health",
+      "classification": "SALES_READY",
+      "priority": "MEDIUM_PRIORITY",
+      "salesAction": "Contact Buyer",
+      "demandStage": "QUALIFICATION_NEEDED",
+      "localHash": "678feae06dc2f99ac067e6d21e1d7df6bc1f9b2a41881a7b2b40712b8afe47a3",
+      "freezeHash": "678feae06dc2f99ac067e6d21e1d7df6bc1f9b2a41881a7b2b40712b8afe47a3",
+      "schemaPathCount": 1829,
+      "freezeRoundTripOk": true,
+      "hydrateRoundTripOk": true,
+      "freezeResult": "FULL_CONTENT_PARITY_PASS",
+      "freezeDiffCount": 0,
+      "freezeDiffs": [],
+      "liveProdOk": false,
+      "liveProdResult": "FULL_CONTENT_PARITY_FAIL",
+      "liveDiffCount": 907,
+      "liveDiffs": [
+        {
+          "path": "acceptanceDisposition",
+          "kind": "missing_on_right",
+          "left": "SALES_READY",
+          "right": null
+        },
+        {
+          "path": "actionReconciledV1",
+          "kind": "missing_on_right",
+          "left": true,
+          "right": null
+        },
+        {
+          "path": "alreadySourcedToHotelDisplay",
+          "kind": "extra_on_right",
+          "left": null,
+          "right": "Unknown — requires hotel validation"
+        },
+        {
+          "path": "attendanceStatus",
+          "kind": "changed",
+          "left": "UNKNOWN",
+          "right": null
+        },
+        {
+          "path": "buyerContactPathClass",
+          "kind": "missing_on_right",
+          "left": "NAMED_BUYER_PERSON",
+          "right": null
+        },
+        {
+          "path": "campaignCustomerFacingDisabled",
+          "kind": "missing_on_right",
+          "left": false,
+          "right": null
+        },
+        {
+          "path": "canonicalEventName",
+          "kind": "missing_on_right",
+          "left": "71st_carpha_annual_health_research_conference",
+          "right": null
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[0].raw",
+          "kind": "changed",
+          "left": "21–23 April 2027",
+          "right": "2027-04-21"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[0].source",
+          "kind": "changed",
+          "left": "whatIsHappening",
+          "right": "eventsOpportunityOverview.timingStart"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[1].raw",
+          "kind": "changed",
+          "left": "21–23 April 2027",
+          "right": "2027-04-21"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[1].source",
+          "kind": "changed",
+          "left": "summaryWhat",
+          "right": "eventStartDate"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[2].source",
+          "kind": "changed",
+          "left": "establishedFacts",
+          "right": "whatIsHappening"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[3].source",
+          "kind": "changed",
+          "left": "tileCustomerSummary",
+          "right": "summaryWhat"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[4].precision",
+          "kind": "changed",
+          "left": "DAY",
+          "right": "RANGE"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[4].raw",
+          "kind": "changed",
+          "left": "23 April 2027",
+          "right": "21–23 April 2027"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[4].source",
+          "kind": "changed",
+          "left": "whatIsHappening",
+          "right": "establishedFacts"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[4].startDate",
+          "kind": "changed",
+          "left": "2027-04-23",
+          "right": "2027-04-21"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[5].raw",
+          "kind": "changed",
+          "left": "23 April 2027",
+          "right": "2027-04-21"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[5].source",
+          "kind": "changed",
+          "left": "summaryWhat",
+          "right": "eventsOverview.timing"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[5].startDate",
+          "kind": "changed",
+          "left": "2027-04-23",
+          "right": "2027-04-21"
+        }
+      ],
+      "contactIntegrity": {
+        "ok": true,
+        "fails": [],
+        "primary": "Roxanne Colthrust",
+        "secondary": "Veron Guy-Parks",
+        "counts": {
+          "roxanne colthrust": 1,
+          "veron guy-parks": 1
+        }
+      },
+      "ayeshaChecks": null
+    },
+    {
+      "opportunityId": "gdi_s4912_03deda917778",
+      "title": "Savor 10 Grenada — Full Circle 10th Anniversary Gala Dinner & Dance",
+      "classification": "ACCOUNT_DEVELOPMENT",
+      "priority": "MEDIUM_PRIORITY",
+      "salesAction": "Build Account",
+      "demandStage": "QUALIFICATION_NEEDED",
+      "localHash": "55750c413daf82b422f17f94eaee627d371166d56192469ce09ff1249bd1b1eb",
+      "freezeHash": "55750c413daf82b422f17f94eaee627d371166d56192469ce09ff1249bd1b1eb",
+      "schemaPathCount": 1824,
+      "freezeRoundTripOk": true,
+      "hydrateRoundTripOk": true,
+      "freezeResult": "FULL_CONTENT_PARITY_PASS",
+      "freezeDiffCount": 0,
+      "freezeDiffs": [],
+      "liveProdOk": false,
+      "liveProdResult": "FULL_CONTENT_PARITY_FAIL",
+      "liveDiffCount": 999,
+      "liveDiffs": [
+        {
+          "path": "acceptanceDisposition",
+          "kind": "missing_on_right",
+          "left": "SALES_READY",
+          "right": null
+        },
+        {
+          "path": "actionReconciledV1",
+          "kind": "missing_on_right",
+          "left": true,
+          "right": null
+        },
+        {
+          "path": "alreadySourcedToHotelDisplay",
+          "kind": "extra_on_right",
+          "left": null,
+          "right": "Unknown — requires hotel validation"
+        },
+        {
+          "path": "attendanceStatus",
+          "kind": "changed",
+          "left": "UNKNOWN",
+          "right": null
+        },
+        {
+          "path": "buyerContactPathClass",
+          "kind": "missing_on_right",
+          "left": "NAMED_BUYER_PERSON",
+          "right": null
+        },
+        {
+          "path": "campaignCustomerFacingDisabled",
+          "kind": "missing_on_right",
+          "left": false,
+          "right": null
+        },
+        {
+          "path": "canonicalEventName",
+          "kind": "missing_on_right",
+          "left": "savor_10_grenada",
+          "right": null
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[0].raw",
+          "kind": "changed",
+          "left": "1 February 2027",
+          "right": "2027-02-01"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[0].source",
+          "kind": "changed",
+          "left": "whatIsHappening",
+          "right": "eventStartDate"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[1].source",
+          "kind": "changed",
+          "left": "summaryWhat",
+          "right": "whatIsHappening"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[2].source",
+          "kind": "changed",
+          "left": "establishedFacts",
+          "right": "summaryWhat"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[3].source",
+          "kind": "changed",
+          "left": "tileCustomerSummary",
+          "right": "establishedFacts"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[4]",
+          "kind": "extra_on_right",
+          "left": null,
+          "right": "{\"precision\":\"DAY\",\"raw\":\"Feb 1, 2027\",\"source\":\"eventDateDisplay\",\"startDate\":\"2027-02-01\"}"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[4].precision",
+          "kind": "extra_on_right",
+          "left": null,
+          "right": "DAY"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[4].raw",
+          "kind": "extra_on_right",
+          "left": null,
+          "right": "Feb 1, 2027"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[4].source",
+          "kind": "extra_on_right",
+          "left": null,
+          "right": "eventDateDisplay"
+        },
+        {
+          "path": "canonicalTiming.dateEvidence[4].startDate",
+          "kind": "extra_on_right",
+          "left": null,
+          "right": "2027-02-01"
+        },
+        {
+          "path": "canonicalTiming.dateSourceRefs[0]",
+          "kind": "changed",
+          "left": "whatIsHappening",
+          "right": "eventStartDate"
+        },
+        {
+          "path": "canonicalTiming.dateSourceRefs[1]",
+          "kind": "changed",
+          "left": "summaryWhat",
+          "right": "whatIsHappening"
+        },
+        {
+          "path": "canonicalTiming.dateSourceRefs[2]",
+          "kind": "changed",
+          "left": "establishedFacts",
+          "right": "summaryWhat"
+        }
+      ],
+      "contactIntegrity": {
+        "ok": true,
+        "fails": [],
+        "primary": "Tasha La Touche",
+        "secondary": "Lashawnda Becoats",
+        "counts": {
+          "tasha la touche": 1,
+          "lashawnda becoats": 1
+        }
+      },
+      "ayeshaChecks": null
+    },
+    {
+      "opportunityId": "gdi_s4912_cc2a8da6ca6e",
+      "title": "St. James Travel & Tours Ltd.",
+      "classification": "ACCOUNT_DEVELOPMENT",
+      "priority": "WATCHLIST",
+      "salesAction": "Build Account",
+      "demandStage": "QUALIFICATION_NEEDED",
+      "localHash": "dddb291d0775950ec7dace7c91e1d9be86c073fdeb33cb2031a29d558da4961e",
+      "freezeHash": "dddb291d0775950ec7dace7c91e1d9be86c073fdeb33cb2031a29d558da4961e",
+      "schemaPathCount": 1825,
+      "freezeRoundTripOk": true,
+      "hydrateRoundTripOk": true,
+      "freezeResult": "FULL_CONTENT_PARITY_PASS",
+      "freezeDiffCount": 0,
+      "freezeDiffs": [],
+      "liveProdOk": false,
+      "liveProdResult": "FULL_CONTENT_PARITY_FAIL",
+      "liveDiffCount": 991,
+      "liveDiffs": [
+        {
+          "path": "acceptanceDisposition",
+          "kind": "missing_on_right",
+          "left": "SALES_READY",
+          "right": null
+        },
+        {
+          "path": "actionReconciledV1",
+          "kind": "missing_on_right",
+          "left": true,
+          "right": null
+        },
+        {
+          "path": "alreadySourcedToHotelDisplay",
+          "kind": "extra_on_right",
+          "left": null,
+          "right": "Unknown — requires hotel validation"
+        },
+        {
+          "path": "attendanceStatus",
+          "kind": "changed",
+          "left": "UNKNOWN",
+          "right": null
+        },
+        {
+          "path": "buyerContactPathClass",
+          "kind": "missing_on_right",
+          "left": "NAMED_BUYER_PERSON",
+          "right": null
+        },
+        {
+          "path": "campaignCustomerFacingDisabled",
+          "kind": "missing_on_right",
+          "left": false,
+          "right": null
+        },
+        {
+          "path": "canonicalEventName",
+          "kind": "missing_on_right",
+          "left": "st_james_travel_tours_ltd",
+          "right": null
+        },
+        {
+          "path": "commercialAcceptanceDisposition",
+          "kind": "missing_on_right",
+          "left": "SALES_READY",
+          "right": null
+        },
+        {
+          "path": "commercialDisposition",
+          "kind": "missing_on_right",
+          "left": "Ready — Pursue Now",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization",
+          "kind": "missing_on_right",
+          "left": "{\"applied\":true,\"notes\":[\"contact_route_from_sources:source_establishes_contact_route\"],\"patches\":{\"fitExplanation\":\"Strong qualitative account fit, but unqualified booking demand. The DMC explicitly recommends Grenada’s five-star boutique properties for small, high-end corporate retreats and maintains a Corporate Group & Incentive Team with hotel/supplier relationships. Spice Island Beach Resort’",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.applied",
+          "kind": "missing_on_right",
+          "left": true,
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.notes",
+          "kind": "missing_on_right",
+          "left": "[\"contact_route_from_sources:source_establishes_contact_route\"]",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.notes[0]",
+          "kind": "missing_on_right",
+          "left": "contact_route_from_sources:source_establishes_contact_route",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches",
+          "kind": "missing_on_right",
+          "left": "{\"fitExplanation\":\"Strong qualitative account fit, but unqualified booking demand. The DMC explicitly recommends Grenada’s five-star boutique properties for small, high-end corporate retreats and maintains a Corporate Group & Incentive Team with hotel/supplier relationships. Spice Island Beach Resort’s 64 luxury villa-style suites, Grand Anse beachfront setting and all-inclusive positioning suppor",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.fitExplanation",
+          "kind": "missing_on_right",
+          "left": "Strong qualitative account fit, but unqualified booking demand. The DMC explicitly recommends Grenada’s five-star boutique properties for small, high-end corporate retreats and maintains a Corporate Group & Incentive Team with hotel/supplier relationships. Spice Island Beach Resort’s 64 luxury villa-style suites, Grand Anse beachfront setting and all-inclusive positioning support a plausible resid",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.hotelDemandThesis",
+          "kind": "missing_on_right",
+          "left": "Strong qualitative account fit, but unqualified booking demand. The DMC explicitly recommends Grenada’s five-star boutique properties for small, high-end corporate retreats and maintains a Corporate Group & Incentive Team with hotel/supplier relationships. Spice Island Beach Resort’s 64 luxury villa-style suites, Grand Anse beachfront setting and all-inclusive positioning support a plausible resid",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.hotelFitRationale",
+          "kind": "missing_on_right",
+          "left": "Strong qualitative account fit, but unqualified booking demand. The DMC explicitly recommends Grenada’s five-star boutique properties for small, high-end corporate retreats and maintains a Corporate Group & Incentive Team with hotel/supplier relationships. Spice Island Beach Resort’s 64 luxury villa-style suites, Grand Anse beachfront setting and all-inclusive positioning support a plausible resid",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.organizationContactUrl",
+          "kind": "missing_on_right",
+          "left": "https://www.stjamesgroup.com/DMC/dmc_contact.html",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.publicContactPath",
+          "kind": "missing_on_right",
+          "left": "https://www.stjamesgroup.com/DMC/dmc_contact.html",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.summaryWhyHotel",
+          "kind": "missing_on_right",
+          "left": "Strong qualitative account fit, but unqualified booking demand. The DMC explicitly recommends Grenada’s five-star boutique properties for small, high-end corporate retreats and maintains a Corporate Group & Incentive Team with hotel/supplier relationships. Spice Island Beach Resort’s 64 luxury villa-style suites, Grand Anse beachfront setting and all-inclusive positioning support a plausible resid",
+          "right": null
+        }
+      ],
+      "contactIntegrity": {
+        "ok": true,
+        "fails": [],
+        "primary": "Marielle Alexander",
+        "secondary": "Chanelle Phillip",
+        "counts": {
+          "marielle alexander": 1,
+          "chanelle phillip": 1
+        }
+      },
+      "ayeshaChecks": null
+    },
+    {
+      "opportunityId": "gdi_s4912_cb2d71ab1b15",
+      "title": "A'yesha Gaetán Collectives LLC",
+      "classification": "ACCOUNT_DEVELOPMENT",
+      "priority": "WATCHLIST",
+      "salesAction": "Engage Planner",
+      "demandStage": "RELATIONSHIP_DEVELOPMENT",
+      "localHash": "202cbcff9b4014e41905db66ea1d2f64b1b6ca26e9bd26860b72d36c5b8ff221",
+      "freezeHash": "202cbcff9b4014e41905db66ea1d2f64b1b6ca26e9bd26860b72d36c5b8ff221",
+      "schemaPathCount": 1969,
+      "freezeRoundTripOk": true,
+      "hydrateRoundTripOk": true,
+      "freezeResult": "FULL_CONTENT_PARITY_PASS",
+      "freezeDiffCount": 0,
+      "freezeDiffs": [],
+      "liveProdOk": false,
+      "liveProdResult": "FULL_CONTENT_PARITY_FAIL",
+      "liveDiffCount": 958,
+      "liveDiffs": [
+        {
+          "path": "acceptanceDisposition",
+          "kind": "missing_on_right",
+          "left": "SALES_READY",
+          "right": null
+        },
+        {
+          "path": "actionReconciledV1",
+          "kind": "missing_on_right",
+          "left": true,
+          "right": null
+        },
+        {
+          "path": "alreadySourcedToHotelDisplay",
+          "kind": "extra_on_right",
+          "left": null,
+          "right": "Unknown — requires hotel validation"
+        },
+        {
+          "path": "attendanceStatus",
+          "kind": "changed",
+          "left": "UNKNOWN",
+          "right": null
+        },
+        {
+          "path": "buyerContactPathClass",
+          "kind": "missing_on_right",
+          "left": "RELEVANT_FUNCTION_CONTACT",
+          "right": null
+        },
+        {
+          "path": "campaignCustomerFacingDisabled",
+          "kind": "missing_on_right",
+          "left": false,
+          "right": null
+        },
+        {
+          "path": "canonicalEventName",
+          "kind": "missing_on_right",
+          "left": "a_yesha_gaetán_collectives_llc",
+          "right": null
+        },
+        {
+          "path": "commercialAcceptanceDisposition",
+          "kind": "missing_on_right",
+          "left": "SALES_READY",
+          "right": null
+        },
+        {
+          "path": "commercialDisposition",
+          "kind": "missing_on_right",
+          "left": "Watch",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization",
+          "kind": "missing_on_right",
+          "left": "{\"applied\":true,\"notes\":[\"contact_route_from_sources:source_establishes_contact_route\"],\"patches\":{\"fitExplanation\":\"Strong qualitative fit for intimate luxury, all-inclusive destination weddings on Grand Anse, with associated guest accommodation and honeymoon stays. A'yesha explicitly positions herself to manage guest room blocks, travel, design, timelines, welcome parties and wedding-weekend det",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.applied",
+          "kind": "missing_on_right",
+          "left": true,
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.notes",
+          "kind": "missing_on_right",
+          "left": "[\"contact_route_from_sources:source_establishes_contact_route\"]",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.notes[0]",
+          "kind": "missing_on_right",
+          "left": "contact_route_from_sources:source_establishes_contact_route",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches",
+          "kind": "missing_on_right",
+          "left": "{\"fitExplanation\":\"Strong qualitative fit for intimate luxury, all-inclusive destination weddings on Grand Anse, with associated guest accommodation and honeymoon stays. A'yesha explicitly positions herself to manage guest room blocks, travel, design, timelines, welcome parties and wedding-weekend details, while the resort delivers its venues, setup and catering. The resort independently advertise",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.fitExplanation",
+          "kind": "missing_on_right",
+          "left": "Strong qualitative fit for intimate luxury, all-inclusive destination weddings on Grand Anse, with associated guest accommodation and honeymoon stays. A'yesha explicitly positions herself to manage guest room blocks, travel, design, timelines, welcome parties and wedding-weekend details, while the resort delivers its venues, setup and catering. The resort independently advertises weddings accommod",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.hotelDemandThesis",
+          "kind": "missing_on_right",
+          "left": "Strong qualitative fit for intimate luxury, all-inclusive destination weddings on Grand Anse, with associated guest accommodation and honeymoon stays. A'yesha explicitly positions herself to manage guest room blocks, travel, design, timelines, welcome parties and wedding-weekend details, while the resort delivers its venues, setup and catering. The resort independently advertises weddings accommod",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.hotelFitRationale",
+          "kind": "missing_on_right",
+          "left": "Strong qualitative fit for intimate luxury, all-inclusive destination weddings on Grand Anse, with associated guest accommodation and honeymoon stays. A'yesha explicitly positions herself to manage guest room blocks, travel, design, timelines, welcome parties and wedding-weekend details, while the resort delivers its venues, setup and catering. The resort independently advertises weddings accommod",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.organizationContactUrl",
+          "kind": "missing_on_right",
+          "left": "https://ayeshagaetan.com/contact/",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.publicContactPath",
+          "kind": "missing_on_right",
+          "left": "https://ayeshagaetan.com/contact/",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.summaryWhyHotel",
+          "kind": "missing_on_right",
+          "left": "Strong qualitative fit for intimate luxury, all-inclusive destination weddings on Grand Anse, with associated guest accommodation and honeymoon stays. A'yesha explicitly positions herself to manage guest room blocks, travel, design, timelines, welcome parties and wedding-weekend details, while the resort delivers its venues, setup and catering. The resort independently advertises weddings accommod",
+          "right": null
+        }
+      ],
+      "contactIntegrity": {
+        "ok": true,
+        "fails": [],
+        "primary": "A'yesha Gaetán",
+        "secondary": "Adrienne Brown",
+        "counts": {
+          "a'yesha gaetán": 1,
+          "adrienne brown": 1
+        }
+      },
+      "ayeshaChecks": {
+        "classification": true,
+        "demandStage": true,
+        "priority": true,
+        "action": true,
+        "primaryOnce": true,
+        "secondaryOnce": true
+      }
+    },
+    {
+      "opportunityId": "gdi_s4912_b6d9b1929c05",
+      "title": "Hangers Weddings & Events",
+      "classification": "ACCOUNT_DEVELOPMENT",
+      "priority": "WATCHLIST",
+      "salesAction": "Build Account",
+      "demandStage": "QUALIFICATION_NEEDED",
+      "localHash": "61404f64b0400f163e9031ad543700612cf5d9e1898e25a07ab38752935c3366",
+      "freezeHash": "61404f64b0400f163e9031ad543700612cf5d9e1898e25a07ab38752935c3366",
+      "schemaPathCount": 1673,
+      "freezeRoundTripOk": true,
+      "hydrateRoundTripOk": true,
+      "freezeResult": "FULL_CONTENT_PARITY_PASS",
+      "freezeDiffCount": 0,
+      "freezeDiffs": [],
+      "liveProdOk": false,
+      "liveProdResult": "FULL_CONTENT_PARITY_FAIL",
+      "liveDiffCount": 833,
+      "liveDiffs": [
+        {
+          "path": "acceptanceDisposition",
+          "kind": "missing_on_right",
+          "left": "SALES_READY",
+          "right": null
+        },
+        {
+          "path": "actionReconciledV1",
+          "kind": "missing_on_right",
+          "left": true,
+          "right": null
+        },
+        {
+          "path": "alreadySourcedToHotelDisplay",
+          "kind": "extra_on_right",
+          "left": null,
+          "right": "Unknown — requires hotel validation"
+        },
+        {
+          "path": "attendanceStatus",
+          "kind": "changed",
+          "left": "UNKNOWN",
+          "right": null
+        },
+        {
+          "path": "buyerContactPathClass",
+          "kind": "missing_on_right",
+          "left": "NAMED_BUYER_PERSON",
+          "right": null
+        },
+        {
+          "path": "campaignCustomerFacingDisabled",
+          "kind": "missing_on_right",
+          "left": false,
+          "right": null
+        },
+        {
+          "path": "canonicalEventName",
+          "kind": "missing_on_right",
+          "left": "hangers_weddings_events",
+          "right": null
+        },
+        {
+          "path": "commercialAcceptanceDisposition",
+          "kind": "missing_on_right",
+          "left": "SALES_READY",
+          "right": null
+        },
+        {
+          "path": "commercialDisposition",
+          "kind": "missing_on_right",
+          "left": "Watch",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization",
+          "kind": "missing_on_right",
+          "left": "{\"applied\":true,\"notes\":[\"contact_route_from_sources:source_establishes_contact_route\",\"narrative_emails_ignored_unverified:info@hangersgrenada.com,reservations@spicebeachresort.com,info@hangersgrenada.com\"],\"patches\":{\"fitExplanation\":\"Qualified planner-channel prospect, not confirmed group business. Hangers explicitly assists with guest accommodation and group rates and recommends venues, creati",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.applied",
+          "kind": "missing_on_right",
+          "left": true,
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.notes",
+          "kind": "missing_on_right",
+          "left": "[\"contact_route_from_sources:source_establishes_contact_route\",\"narrative_emails_ignored_unverified:info@hangersgrenada.com,reservations@spicebeachresort.com,info@hangersgrenada.com\"]",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.notes[0]",
+          "kind": "missing_on_right",
+          "left": "contact_route_from_sources:source_establishes_contact_route",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.notes[1]",
+          "kind": "missing_on_right",
+          "left": "narrative_emails_ignored_unverified:info@hangersgrenada.com,reservations@spicebeachresort.com,info@hangersgrenada.com",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches",
+          "kind": "missing_on_right",
+          "left": "{\"fitExplanation\":\"Qualified planner-channel prospect, not confirmed group business. Hangers explicitly assists with guest accommodation and group rates and recommends venues, creating a credible route to luxury destination-wedding stays at Spice Island Beach Resort. The resort advertises weddings accommodating up to 35 guests, beach/garden settings, catering and on-resort planners: the strongest ",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.fitExplanation",
+          "kind": "missing_on_right",
+          "left": "Qualified planner-channel prospect, not confirmed group business. Hangers explicitly assists with guest accommodation and group rates and recommends venues, creating a credible route to luxury destination-wedding stays at Spice Island Beach Resort. The resort advertises weddings accommodating up to 35 guests, beach/garden settings, catering and on-resort planners: the strongest fit is intimate wed",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.hotelDemandThesis",
+          "kind": "missing_on_right",
+          "left": "Qualified planner-channel prospect, not confirmed group business. Hangers explicitly assists with guest accommodation and group rates and recommends venues, creating a credible route to luxury destination-wedding stays at Spice Island Beach Resort. The resort advertises weddings accommodating up to 35 guests, beach/garden settings, catering and on-resort planners: the strongest fit is intimate wed",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.hotelFitRationale",
+          "kind": "missing_on_right",
+          "left": "Qualified planner-channel prospect, not confirmed group business. Hangers explicitly assists with guest accommodation and group rates and recommends venues, creating a credible route to luxury destination-wedding stays at Spice Island Beach Resort. The resort advertises weddings accommodating up to 35 guests, beach/garden settings, catering and on-resort planners: the strongest fit is intimate wed",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.organizationContactUrl",
+          "kind": "missing_on_right",
+          "left": "https://www.puregrenada.com/hangers-weddings-and-events/",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.publicContactPath",
+          "kind": "missing_on_right",
+          "left": "https://www.puregrenada.com/hangers-weddings-and-events/",
+          "right": null
+        }
+      ],
+      "contactIntegrity": {
+        "ok": true,
+        "fails": [],
+        "primary": "Khaleen Johnson",
+        "secondary": "Aviann Murray",
+        "counts": {
+          "khaleen johnson": 1,
+          "aviann murray": 1
+        }
+      },
+      "ayeshaChecks": null
+    },
+    {
+      "opportunityId": "gdi_s4912_b956aa67a4a2",
+      "title": "Beautiful Weddings Grenada",
+      "classification": "ACCOUNT_DEVELOPMENT",
+      "priority": "WATCHLIST",
+      "salesAction": "Build Account",
+      "demandStage": "QUALIFICATION_NEEDED",
+      "localHash": "c0dc98f222b931775248b9c098023c26d6193fdd68e81c389f86e4bed919b7c8",
+      "freezeHash": "c0dc98f222b931775248b9c098023c26d6193fdd68e81c389f86e4bed919b7c8",
+      "schemaPathCount": 1719,
+      "freezeRoundTripOk": true,
+      "hydrateRoundTripOk": true,
+      "freezeResult": "FULL_CONTENT_PARITY_PASS",
+      "freezeDiffCount": 0,
+      "freezeDiffs": [],
+      "liveProdOk": false,
+      "liveProdResult": "FULL_CONTENT_PARITY_FAIL",
+      "liveDiffCount": 931,
+      "liveDiffs": [
+        {
+          "path": "acceptanceDisposition",
+          "kind": "missing_on_right",
+          "left": "SALES_READY",
+          "right": null
+        },
+        {
+          "path": "actionReconciledV1",
+          "kind": "missing_on_right",
+          "left": true,
+          "right": null
+        },
+        {
+          "path": "alreadySourcedToHotelDisplay",
+          "kind": "extra_on_right",
+          "left": null,
+          "right": "Unknown — requires hotel validation"
+        },
+        {
+          "path": "attendanceStatus",
+          "kind": "changed",
+          "left": "UNKNOWN",
+          "right": null
+        },
+        {
+          "path": "buyerContactPathClass",
+          "kind": "missing_on_right",
+          "left": "NAMED_BUYER_PERSON",
+          "right": null
+        },
+        {
+          "path": "campaignCustomerFacingDisabled",
+          "kind": "missing_on_right",
+          "left": false,
+          "right": null
+        },
+        {
+          "path": "canonicalEventName",
+          "kind": "missing_on_right",
+          "left": "beautiful_weddings_grenada",
+          "right": null
+        },
+        {
+          "path": "commercialAcceptanceDisposition",
+          "kind": "missing_on_right",
+          "left": "SALES_READY",
+          "right": null
+        },
+        {
+          "path": "commercialDisposition",
+          "kind": "missing_on_right",
+          "left": "Watch",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization",
+          "kind": "missing_on_right",
+          "left": "{\"applied\":true,\"notes\":[\"contact_route_from_sources:source_establishes_contact_route\",\"narrative_emails_ignored_unverified:plan@beautifulweddingsgrenada.com,plan@beautifulweddingsgrenada.com\"],\"patches\":{\"fitExplanation\":\"Qualified relationship-development opportunity, not confirmed business on the books. BWG selects venues and coordinates catering and wedding suppliers, creating a plausible rout",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.applied",
+          "kind": "missing_on_right",
+          "left": true,
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.notes",
+          "kind": "missing_on_right",
+          "left": "[\"contact_route_from_sources:source_establishes_contact_route\",\"narrative_emails_ignored_unverified:plan@beautifulweddingsgrenada.com,plan@beautifulweddingsgrenada.com\"]",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.notes[0]",
+          "kind": "missing_on_right",
+          "left": "contact_route_from_sources:source_establishes_contact_route",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.notes[1]",
+          "kind": "missing_on_right",
+          "left": "narrative_emails_ignored_unverified:plan@beautifulweddingsgrenada.com,plan@beautifulweddingsgrenada.com",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches",
+          "kind": "missing_on_right",
+          "left": "{\"fitExplanation\":\"Qualified relationship-development opportunity, not confirmed business on the books. BWG selects venues and coordinates catering and wedding suppliers, creating a plausible route to intimate luxury destination weddings at Spice Island Beach Resort. The resort explicitly advertises weddings for up to 35 guests, beach/garden settings, event staff and catering. Prioritize small cer",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.fitExplanation",
+          "kind": "missing_on_right",
+          "left": "Qualified relationship-development opportunity, not confirmed business on the books. BWG selects venues and coordinates catering and wedding suppliers, creating a plausible route to intimate luxury destination weddings at Spice Island Beach Resort. The resort explicitly advertises weddings for up to 35 guests, beach/garden settings, event staff and catering. Prioritize small ceremonies, private re",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.hotelDemandThesis",
+          "kind": "missing_on_right",
+          "left": "Qualified relationship-development opportunity, not confirmed business on the books. BWG selects venues and coordinates catering and wedding suppliers, creating a plausible route to intimate luxury destination weddings at Spice Island Beach Resort. The resort explicitly advertises weddings for up to 35 guests, beach/garden settings, event staff and catering. Prioritize small ceremonies, private re",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.hotelFitRationale",
+          "kind": "missing_on_right",
+          "left": "Qualified relationship-development opportunity, not confirmed business on the books. BWG selects venues and coordinates catering and wedding suppliers, creating a plausible route to intimate luxury destination weddings at Spice Island Beach Resort. The resort explicitly advertises weddings for up to 35 guests, beach/garden settings, event staff and catering. Prioritize small ceremonies, private re",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.organizationContactUrl",
+          "kind": "missing_on_right",
+          "left": "https://www.beautifulweddingsgrenada.com/",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.publicContactPath",
+          "kind": "missing_on_right",
+          "left": "https://www.beautifulweddingsgrenada.com/",
+          "right": null
+        }
+      ],
+      "contactIntegrity": {
+        "ok": true,
+        "fails": [],
+        "primary": "Khadine Francis",
+        "secondary": "Elisabeth Housend",
+        "counts": {
+          "khadine francis": 1,
+          "elisabeth housend": 1
+        }
+      },
+      "ayeshaChecks": null
+    },
+    {
+      "opportunityId": "gdi_s4912_3cafec77a21f",
+      "title": "Kenwood Travel — Spice Island Beach Resort Weddings and Vow Renewals",
+      "classification": "ACCOUNT_DEVELOPMENT",
+      "priority": "WATCHLIST",
+      "salesAction": "Engage Planner",
+      "demandStage": "RELATIONSHIP_DEVELOPMENT",
+      "localHash": "5312279105c3dc3bc6c8c2e4fbf72b9d2e0435d6e2c2dc88c51e6cf8819fca4e",
+      "freezeHash": "5312279105c3dc3bc6c8c2e4fbf72b9d2e0435d6e2c2dc88c51e6cf8819fca4e",
+      "schemaPathCount": 1973,
+      "freezeRoundTripOk": true,
+      "hydrateRoundTripOk": true,
+      "freezeResult": "FULL_CONTENT_PARITY_PASS",
+      "freezeDiffCount": 0,
+      "freezeDiffs": [],
+      "liveProdOk": false,
+      "liveProdResult": "FULL_CONTENT_PARITY_FAIL",
+      "liveDiffCount": 967,
+      "liveDiffs": [
+        {
+          "path": "acceptanceDisposition",
+          "kind": "missing_on_right",
+          "left": "SALES_READY",
+          "right": null
+        },
+        {
+          "path": "actionReconciledV1",
+          "kind": "missing_on_right",
+          "left": true,
+          "right": null
+        },
+        {
+          "path": "alreadySourcedToHotelDisplay",
+          "kind": "extra_on_right",
+          "left": null,
+          "right": "Unknown — requires hotel validation"
+        },
+        {
+          "path": "attendanceStatus",
+          "kind": "changed",
+          "left": "UNKNOWN",
+          "right": null
+        },
+        {
+          "path": "buyerContactPathClass",
+          "kind": "missing_on_right",
+          "left": "NAMED_BUYER_PERSON",
+          "right": null
+        },
+        {
+          "path": "campaignCustomerFacingDisabled",
+          "kind": "missing_on_right",
+          "left": false,
+          "right": null
+        },
+        {
+          "path": "canonicalEventName",
+          "kind": "missing_on_right",
+          "left": "kenwood_travel",
+          "right": null
+        },
+        {
+          "path": "commercialAcceptanceDisposition",
+          "kind": "missing_on_right",
+          "left": "SALES_READY",
+          "right": null
+        },
+        {
+          "path": "commercialClass",
+          "kind": "missing_on_right",
+          "left": "PARTNERSHIP_RELATIONSHIP_DEVELOPMENT",
+          "right": null
+        },
+        {
+          "path": "commercialDisposition",
+          "kind": "missing_on_right",
+          "left": "Watch",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization",
+          "kind": "missing_on_right",
+          "left": "{\"applied\":true,\"notes\":[\"contact_route_from_sources:source_establishes_contact_route\"],\"patches\":{\"fitExplanation\":\"Strong product and destination fit for intimate luxury leisure celebrations on Grand Anse Beach, rather than assumed corporate or city-centre demand. Kenwood explicitly sells this resort for weddings and vow renewals and says it books the whole wedding party, including guests. The r",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.applied",
+          "kind": "missing_on_right",
+          "left": true,
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.notes",
+          "kind": "missing_on_right",
+          "left": "[\"contact_route_from_sources:source_establishes_contact_route\"]",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.notes[0]",
+          "kind": "missing_on_right",
+          "left": "contact_route_from_sources:source_establishes_contact_route",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches",
+          "kind": "missing_on_right",
+          "left": "{\"fitExplanation\":\"Strong product and destination fit for intimate luxury leisure celebrations on Grand Anse Beach, rather than assumed corporate or city-centre demand. Kenwood explicitly sells this resort for weddings and vow renewals and says it books the whole wedding party, including guests. The resort publishes wedding capacity of up to 35 guests, beach/garden settings, on-resort planners and",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.fitExplanation",
+          "kind": "missing_on_right",
+          "left": "Strong product and destination fit for intimate luxury leisure celebrations on Grand Anse Beach, rather than assumed corporate or city-centre demand. Kenwood explicitly sells this resort for weddings and vow renewals and says it books the whole wedding party, including guests. The resort publishes wedding capacity of up to 35 guests, beach/garden settings, on-resort planners and an all-inclusive h",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.hotelDemandThesis",
+          "kind": "missing_on_right",
+          "left": "Strong product and destination fit for intimate luxury leisure celebrations on Grand Anse Beach, rather than assumed corporate or city-centre demand. Kenwood explicitly sells this resort for weddings and vow renewals and says it books the whole wedding party, including guests. The resort publishes wedding capacity of up to 35 guests, beach/garden settings, on-resort planners and an all-inclusive h",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.hotelFitRationale",
+          "kind": "missing_on_right",
+          "left": "Strong product and destination fit for intimate luxury leisure celebrations on Grand Anse Beach, rather than assumed corporate or city-centre demand. Kenwood explicitly sells this resort for weddings and vow renewals and says it books the whole wedding party, including guests. The resort publishes wedding capacity of up to 35 guests, beach/garden settings, on-resort planners and an all-inclusive h",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.organizationContactUrl",
+          "kind": "missing_on_right",
+          "left": "https://www.kenwoodtravel.co.uk/wedding-request-form",
+          "right": null
+        },
+        {
+          "path": "commercialEligibilityFieldNormalization.patches.publicContactPath",
+          "kind": "missing_on_right",
+          "left": "https://www.kenwoodtravel.co.uk/wedding-request-form",
+          "right": null
+        }
+      ],
+      "contactIntegrity": {
+        "ok": true,
+        "fails": [],
+        "primary": "Janet Percy",
+        "secondary": "Manuela Fernández de Pinedo",
+        "counts": {
+          "janet percy": 1,
+          "manuela fernández de pinedo": 1
+        }
+      },
+      "ayeshaChecks": null
+    }
+  ],
+  "productionReleaseScope": {
+    "deploySha": "a9dffc47bd2033f6f9df404f3fe343f40e37c250",
+    "hotel": "Spice Island Beach Resort",
+    "hotelId": "recKRJjcPnb4tVDDS",
+    "opportunityIds": [
+      "gdi_s4912_ba7b1cb8a3ab",
+      "gdi_s4912_03deda917778",
+      "gdi_s4912_cc2a8da6ca6e",
+      "gdi_s4912_cb2d71ab1b15",
+      "gdi_s4912_b6d9b1929c05",
+      "gdi_s4912_b956aa67a4a2",
+      "gdi_s4912_3cafec77a21f"
+    ],
+    "preserveShareToken": true,
+    "preserveBethesda": true,
+    "preserveWaterstone": true,
+    "noPaidResearch": true,
+    "noExternalSend": true,
+    "steps": [
+      "Backup production GDI registry/snapshots",
+      "Deploy exact SHA a9dffc47bd2033f6f9df404f3fe343f40e37c250",
+      "Verify Railway revision + GDI assets",
+      "Publish seven complete locked Spice opportunities from approved local",
+      "Preserve share token gdisht_spice_island_mw3olaq5",
+      "Re-run this cert until status GDI_UNIVERSAL_100_PERCENT_FULL_CONTENT_PARITY_PASS",
+      "Browser-verify all seven tiles + drawers + CSV",
+      "Confirm Bethesda/Waterstone counts unchanged",
+      "Rollback volume backup + prior revision on critical failure"
+    ]
+  },
+  "blockers": [
+    "Live production share still lacks frozen approvedCustomerFacingDetail / full two-contact content for all seven — requires authorized deploy + republish of SHA a9dffc47."
+  ]
+}
