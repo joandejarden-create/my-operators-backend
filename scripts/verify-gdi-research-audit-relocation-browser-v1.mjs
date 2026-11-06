@@ -144,43 +144,59 @@ assert.equal(adminUi.hasVisibilityAuditTab, true);
 assert.equal(adminUi.panelVisible, true);
 assert.ok(adminUi.hotelOptions > 1, "hotel catalog must populate");
 
-// Customer GDI — no Research Audit tab
-await desktop.goto(`${BASE}/group-demand-intelligence.html`, {
-  waitUntil: "domcontentloaded",
-  timeout: 60000,
-});
+// Customer GDI — no Research Audit tab (Spice Island inventory)
+await desktop.goto(
+  `${BASE}/group-demand-intelligence.html?hotelId=recKRJjcPnb4tVDDS`,
+  {
+    waitUntil: "domcontentloaded",
+    timeout: 60000,
+  }
+);
 await desktop.waitForFunction(
   () => {
-    const text = document.body ? String(document.body.innerText || "") : "";
-    return (
-      document.querySelector(".gdi-shell, .gdi-section-nav, [data-tab]") ||
-      /Group|Opportunity|Demand|History unavailable|Research Completed|Unable|error/i.test(
-        text
-      )
-    );
+    const loading = document.getElementById("gdiLoading");
+    const loadingHidden =
+      !loading ||
+      loading.classList.contains("hide") ||
+      loading.getAttribute("aria-busy") === "false" ||
+      String(loading.style.display || "").toLowerCase() === "none";
+    const hasNav = Boolean(document.querySelector(".gdi-section-nav [data-tab], [data-tab='opportunities']"));
+    const hasCards = document.querySelectorAll("[data-open], .gdi-opp-card, article[data-open]").length > 0;
+    const rootText = String(document.getElementById("gdiRoot")?.innerText || "");
+    const rendered =
+      hasNav ||
+      hasCards ||
+      /Need-Date|Opportunity|Sales Ready|Account Development|Research Completed/i.test(rootText);
+    return rendered && loadingHidden;
   },
   null,
-  { timeout: 45000 }
-).catch(() => {});
-await desktop.waitForTimeout(1200);
+  { timeout: 60000 }
+);
+await desktop.waitForTimeout(800);
 const gdiDesktop = await shot(desktop, "gdi-customer-no-research-audit-desktop.png");
 const gdiUi = await desktop.evaluate(() => {
   const tabs = [...document.querySelectorAll("[data-tab]")].map((el) =>
     el.getAttribute("data-tab")
   );
   const text = document.body ? document.body.innerText || "" : "";
+  const rootText = String(document.getElementById("gdiRoot")?.innerText || "");
+  const cardCount = document.querySelectorAll("[data-open], .gdi-opp-card, article[data-open]").length;
   return {
     tabs,
     hasAuditTab: tabs.includes("audit"),
     hasResearchAuditLabel: /Research Audit/i.test(text),
     hasRunIdLeak: /gdi_run_/i.test(text),
     hasCostLeak: /Webhound\s*\$/i.test(text),
+    cardCount,
+    hasNeedDate: /Need-Date|need date/i.test(rootText),
+    loadingBusy: document.getElementById("gdiLoading")?.getAttribute("aria-busy"),
   };
 });
 assert.equal(gdiUi.hasAuditTab, false, "customer GDI must not expose audit tab");
 assert.equal(gdiUi.hasResearchAuditLabel, false);
 assert.equal(gdiUi.hasRunIdLeak, false);
 assert.equal(gdiUi.hasCostLeak, false);
+assert.ok(gdiUi.cardCount >= 1, "GDI must render opportunity cards after load");
 
 // Mobile Admin
 const mobile = await browser.newPage({
@@ -212,11 +228,29 @@ await mobile.evaluate(async () => {
 await mobile.waitForTimeout(800);
 const adminMobile = await shot(mobile, "admin-gdi-research-audit-mobile.png");
 
-await mobile.goto(`${BASE}/group-demand-intelligence.html`, {
-  waitUntil: "domcontentloaded",
-  timeout: 60000,
-});
-await mobile.waitForTimeout(1200);
+await mobile.goto(
+  `${BASE}/group-demand-intelligence.html?hotelId=recKRJjcPnb4tVDDS`,
+  {
+    waitUntil: "domcontentloaded",
+    timeout: 60000,
+  }
+);
+await mobile.waitForFunction(
+  () => {
+    const loading = document.getElementById("gdiLoading");
+    const loadingHidden =
+      !loading ||
+      loading.classList.contains("hide") ||
+      loading.getAttribute("aria-busy") === "false" ||
+      String(loading.style.display || "").toLowerCase() === "none";
+    const hasNav = Boolean(document.querySelector("[data-tab]"));
+    const hasCards = document.querySelectorAll("[data-open], .gdi-opp-card, article[data-open]").length > 0;
+    return (hasNav || hasCards) && loadingHidden;
+  },
+  null,
+  { timeout: 60000 }
+).catch(() => {});
+await mobile.waitForTimeout(800);
 const gdiMobile = await shot(mobile, "gdi-customer-no-research-audit-mobile.png");
 
 await browser.close();
