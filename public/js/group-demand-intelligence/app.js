@@ -477,6 +477,7 @@
         state.summary = parts[1].summary;
         state.opportunities = parts[2].opportunities || [];
         state.visibilityWarning = parts[2].visibilityWarning || null;
+        state.hotelNeedDateConfigV1 = parts[2].hotelNeedDateConfigV1 || null;
         state.hotelProfile = (parts[3] && parts[3].profile) || null;
         // Campaigns/generators stay on internal APIs only — not customer load path.
         state.demandCampaigns = [];
@@ -1335,6 +1336,7 @@
         hotel: hotel,
         hotelId: state.hotelId,
         hotels: state.hotels,
+        hotelNeedDateConfigV1: state.hotelNeedDateConfigV1 || null,
         activeWeekly: state.filters.weekly,
         weeklyCounts: UI.countByWeeklyDelta(state.opportunities),
         activeOpportunityType: state.filters.opportunityType || "",
@@ -1360,6 +1362,10 @@
       '<div id="gdiTabBody">' +
       body +
       "</div>";
+
+    if (UI.bindNeedDateLegendInteractions) {
+      UI.bindNeedDateLegendInteractions(root);
+    }
 
     var hotelSelect = document.getElementById("gdiHotel");
     if (hotelSelect) {

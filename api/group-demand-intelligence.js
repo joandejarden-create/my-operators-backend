@@ -764,6 +764,25 @@ export async function getGdiOpportunities(req, res) {
             : "Reviewed prospects exist in storage but none passed customer-facing visibility filters.",
       };
     }
+    let hotelNeedDateConfigV1 = null;
+    try {
+      const {
+        resolveHotelNeedDateConfiguration,
+        toCustomerSafeHotelNeedDateStatus,
+      } = await import(
+        "../lib/group-demand-intelligence/need-date-demand/gdi-universal-need-date-intelligence-v1.js"
+      );
+      hotelNeedDateConfigV1 = toCustomerSafeHotelNeedDateStatus(
+        resolveHotelNeedDateConfiguration(hotelId),
+        { includeUnpublishedEstimates: true }
+      );
+    } catch (needDateCfgErr) {
+      console.error(
+        "[gdi] hotel need-date config resolve failed",
+        needDateCfgErr?.message || needDateCfgErr
+      );
+    }
+
     return res.json({
       ok: true,
       hotelId,
@@ -773,6 +792,7 @@ export async function getGdiOpportunities(req, res) {
       view: wantFull ? "full" : "list",
       schemaVersion: wantFull ? null : GDI_OPPORTUNITY_LIST_SCHEMA,
       opportunities,
+      hotelNeedDateConfigV1,
       ...(visibilityWarning ? { visibilityWarning } : {}),
       reviewedProspectImport: doc.reviewedProspectImport || null,
     });
@@ -2077,6 +2097,26 @@ export async function getGdiShareOpportunities(req, res) {
     hotelId,
     opportunities
   );
+  let hotelNeedDateConfigV1 = null;
+  try {
+    const {
+      resolveHotelNeedDateConfiguration,
+      toCustomerSafeHotelNeedDateStatus,
+    } = await import(
+      "../lib/group-demand-intelligence/need-date-demand/gdi-universal-need-date-intelligence-v1.js"
+    );
+    // Share: hide unpublished market estimates (NOT_ESTABLISHED unless confirmed).
+    hotelNeedDateConfigV1 = toCustomerSafeHotelNeedDateStatus(
+      resolveHotelNeedDateConfiguration(hotelId),
+      { includeUnpublishedEstimates: false }
+    );
+  } catch (needDateCfgErr) {
+    console.error(
+      "[gdi] share hotel need-date config resolve failed",
+      needDateCfgErr?.message || needDateCfgErr
+    );
+  }
+
   res.setHeader("X-GDI-Opportunity-View", wantFull ? "full" : "list");
   res.setHeader("X-GDI-Share-Presentation-Parity", "v1");
   return res.json({
@@ -2087,6 +2127,7 @@ export async function getGdiShareOpportunities(req, res) {
     view: wantFull ? "full" : "list",
     schemaVersion: wantFull ? null : GDI_OPPORTUNITY_LIST_SCHEMA,
     opportunities: withProgression,
+    hotelNeedDateConfigV1,
     validationEnums: {
       familiarityStatus: SHARE_FAMILIARITY_STATUS,
       familiarityLabels: SHARE_FAMILIARITY_LABEL,

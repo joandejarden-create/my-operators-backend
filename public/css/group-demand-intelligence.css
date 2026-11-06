@@ -889,6 +889,142 @@ body.gdi-page.embed-mode .gdi-shell {
   color: var(--accent--primary-1);
 }
 
+/* Hotel-level need-date configuration status (not opportunity tile icons). */
+.gdi-hotel-need-date-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 1.2;
+  font-weight: 500;
+}
+
+.gdi-hotel-need-date-status .gdi-hotel-need-date-svg,
+.gdi-hotel-need-date-status .gdi-need-date-svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+}
+
+.gdi-hotel-need-date-status--confirmed {
+  color: var(--system--green-300);
+}
+
+.gdi-hotel-need-date-status--estimated {
+  color: var(--secondary--color-5);
+}
+
+.gdi-hotel-need-date-status--not-established {
+  color: var(--neutral--500, #8b93a7);
+}
+
+.gdi-need-dates-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 12px;
+  margin: 0 0 8px;
+}
+
+.gdi-need-dates-heading h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.gdi-property-bar__need-dates {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  padding: 8px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: 8px;
+}
+
+.gdi-property-bar__need-dates-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--neutral--400, #a8b0c0);
+  text-transform: uppercase;
+}
+
+.gdi-need-date-legend-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.gdi-need-date-info-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--neutral--300, #c5cad6);
+  cursor: pointer;
+}
+
+.gdi-need-date-info-btn:hover,
+.gdi-need-date-info-btn:focus-visible {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.35);
+  outline: 2px solid var(--accent--primary-1, #7c5cff);
+  outline-offset: 2px;
+}
+
+.gdi-need-date-legend-popover {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 8px);
+  left: 0;
+  width: min(360px, calc(100vw - 32px));
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #121826;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  color: #e8ebf2;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.gdi-need-date-legend-popover__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.gdi-need-date-legend-popover__header h3 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.gdi-need-date-legend-close {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 6px;
+}
+
+.gdi-need-date-legend-popover ul {
+  margin: 0 0 10px;
+  padding-left: 18px;
+}
+
+.gdi-need-date-legend-popover p {
+  margin: 0 0 4px;
+}
+
 .gdi-section--need-date-match {
   border-left: 2px solid var(--accent--primary-1);
   padding-left: 12px;

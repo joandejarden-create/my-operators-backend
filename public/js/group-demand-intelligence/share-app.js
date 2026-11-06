@@ -671,6 +671,7 @@
       UI.propertyBarHtml({
         mode: "share",
         hotel: hotel,
+        hotelNeedDateConfigV1: state.hotelNeedDateConfigV1 || null,
         activeWeekly: state.filters.weekly,
         weeklyCounts: UI.countByWeeklyDelta(state.opportunities),
         activeOpportunityType: state.filters.opportunityType || "",
@@ -700,6 +701,9 @@
       '<div class="gdi-disclaimer">Share brief for review only. Findings are research-assisted and should be validated by the hotel sales team before outreach.</div>';
 
     wireBrowseControls();
+    if (UI.bindNeedDateLegendInteractions) {
+      UI.bindNeedDateLegendInteractions(root);
+    }
 
     var weeklySelect = document.getElementById("gdiWeeklyFilter");
     if (weeklySelect) {
@@ -821,6 +825,7 @@
       state.hotelId = resolve.hotelId;
       if (data && data.opportunities) {
         state.opportunities = data.opportunities || [];
+        state.hotelNeedDateConfigV1 = data.hotelNeedDateConfigV1 || null;
         state.validationEnums = data.validationEnums || null;
         render();
         return null;
@@ -834,6 +839,7 @@
     .then(function (data) {
       if (!data) return;
       state.opportunities = data.opportunities || [];
+      state.hotelNeedDateConfigV1 = data.hotelNeedDateConfigV1 || null;
       state.validationEnums = data.validationEnums || null;
       render();
     })

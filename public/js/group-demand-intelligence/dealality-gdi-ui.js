@@ -1395,6 +1395,15 @@
           esc(opts.lastSourceVerification) +
           "</span></span>"
         : "";
+    var needDateConfig = opts.hotelNeedDateConfigV1 || null;
+    var needDateContextHtml = needDateConfig
+      ? '<div class="gdi-property-bar__need-dates" aria-label="Need Dates configuration">' +
+        '<span class="gdi-property-bar__need-dates-label">Need Dates</span>' +
+        hotelNeedDateConfigStatusHtml(needDateConfig) +
+        needDateInformationLegendHtml({ popoverId: "gdiNeedDateLegendPopoverBar" }) +
+        "</div>"
+      : "";
+
     return (
       '<section class="filters-section aiv-filters-section gdi-property-bar" aria-label="Property selection">' +
       '<div class="gdi-property-bar__primary">' +
@@ -1407,6 +1416,7 @@
           "</div>"
         : "") +
       "</div>" +
+      needDateContextHtml +
       '<footer class="gdi-property-bar__history" aria-label="Research activity">' +
       '<span class="gdi-property-bar__history-item">' +
       '<span class="gdi-property-bar__history-label">Last research:</span> ' +
@@ -3856,6 +3866,195 @@
       '<path d="m22 22-1.5-1.5"/>' +
       "</svg>"
     );
+  }
+
+  /** Hotel-level: dashed/estimated calendar (MARKET_ESTIMATED). Same 24×24 stroke style. */
+  function gdiSvgCalendarDashed() {
+    return (
+      '<svg class="gdi-need-date-svg gdi-hotel-need-date-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 2" aria-hidden="true" focusable="false">' +
+      '<path d="M8 2v4"/>' +
+      '<path d="M16 2v4"/>' +
+      '<rect width="18" height="18" x="3" y="4" rx="2"/>' +
+      '<path d="M3 10h18"/>' +
+      "</svg>"
+    );
+  }
+
+  /** Hotel-level: calendar-minus (NOT_ESTABLISHED). */
+  function gdiSvgCalendarMinus() {
+    return (
+      '<svg class="gdi-need-date-svg gdi-hotel-need-date-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' +
+      '<path d="M8 2v4"/>' +
+      '<path d="M16 2v4"/>' +
+      '<rect width="18" height="18" x="3" y="4" rx="2"/>' +
+      '<path d="M3 10h18"/>' +
+      '<path d="M10 16h4"/>' +
+      "</svg>"
+    );
+  }
+
+  /** Small information (i) icon — clickable legend control (Radar-style). */
+  function gdiSvgInfoCircle() {
+    return (
+      '<svg class="gdi-need-date-info-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' +
+      '<circle cx="12" cy="12" r="10"/>' +
+      '<path d="M12 16v-4"/>' +
+      '<path d="M12 8h.01"/>' +
+      "</svg>"
+    );
+  }
+
+  /**
+   * Hotel-level need-date configuration status — beside Need Dates heading / hotel context.
+   * Not an opportunity tile icon.
+   */
+  function hotelNeedDateConfigStatusHtml(statusDoc) {
+    statusDoc = statusDoc || {};
+    var status = String(statusDoc.status || "NOT_ESTABLISHED");
+    var label =
+      statusDoc.accessibleLabel ||
+      statusDoc.statusLabel ||
+      "Need dates not established";
+    var colorClass =
+      statusDoc.colorClass ||
+      (status === "HOTEL_CONFIRMED"
+        ? "gdi-hotel-need-date-status--confirmed"
+        : status === "MARKET_ESTIMATED"
+          ? "gdi-hotel-need-date-status--estimated"
+          : "gdi-hotel-need-date-status--not-established");
+    var svg =
+      status === "HOTEL_CONFIRMED"
+        ? gdiSvgCalendarCheck()
+        : status === "MARKET_ESTIMATED"
+          ? gdiSvgCalendarDashed()
+          : gdiSvgCalendarMinus();
+    return (
+      '<span class="gdi-hotel-need-date-status ' +
+      colorClass +
+      '" data-hotel-need-date-status="' +
+      esc(status) +
+      '" role="img" aria-label="' +
+      esc(label) +
+      '" title="' +
+      esc(label) +
+      '">' +
+      svg +
+      '<span class="gdi-hotel-need-date-status__text">' +
+      esc(
+        status === "HOTEL_CONFIRMED"
+          ? "Hotel confirmed"
+          : status === "MARKET_ESTIMATED"
+            ? "Estimated — not hotel confirmed"
+            : "Not established"
+      ) +
+      "</span>" +
+      '<span class="gdi-sr-only">' +
+      esc(label) +
+      "</span></span>"
+    );
+  }
+
+  function needDateInformationLegendHtml(opts) {
+    opts = opts || {};
+    var popoverId = opts.popoverId || "gdiNeedDateLegendPopover";
+    var btnId = opts.buttonId || popoverId + "Btn";
+    var titleId = popoverId + "Title";
+    return (
+      '<div class="gdi-need-date-legend-wrap">' +
+      '<button type="button" class="gdi-need-date-info-btn" id="' +
+      esc(btnId) +
+      '" aria-expanded="false" aria-controls="' +
+      esc(popoverId) +
+      '" aria-haspopup="dialog" title="Need-Date Intelligence legend">' +
+      gdiSvgInfoCircle() +
+      '<span class="gdi-sr-only">Open Need-Date Intelligence legend</span>' +
+      "</button>" +
+      '<div class="gdi-need-date-legend-popover" id="' +
+      esc(popoverId) +
+      '" role="dialog" aria-modal="false" aria-labelledby="' +
+      esc(titleId) +
+      '" hidden>' +
+      '<div class="gdi-need-date-legend-popover__header">' +
+      '<h3 id="' +
+      esc(titleId) +
+      '">Need-Date Intelligence</h3>' +
+      '<button type="button" class="gdi-need-date-legend-close" aria-label="Close legend">×</button>' +
+      "</div>" +
+      '<div class="gdi-need-date-legend-popover__body">' +
+      "<p><strong>Revenue streams</strong></p>" +
+      "<ul><li>Bed = potential guestroom revenue. Gold = applicable; muted = not currently established.</li>" +
+      "<li>Utensils = potential meetings, events, or catering revenue. Gold = applicable; muted = not currently established.</li></ul>" +
+      "<p><strong>Opportunity timing</strong></p>" +
+      "<ul><li>Green calendar-check = verified match to a confirmed hotel need period.</li>" +
+      "<li>Gold calendar-clock = potentially flexible timing.</li>" +
+      "<li>Purple calendar-search = timing requires further research.</li>" +
+      "<li>No opportunity calendar = no meaningful need-date match shown; it does not mean the hotel calendar is unconfigured.</li></ul>" +
+      "<p><strong>Hotel configuration</strong></p>" +
+      "<ul><li>Green calendar = hotel-confirmed need periods exist.</li>" +
+      "<li>Gold estimated calendar = market-based tentative periods; hotel confirmation pending.</li>" +
+      "<li>Gray calendar-minus = need dates not established.</li></ul>" +
+      "</div></div></div>"
+    );
+  }
+
+  function needDatesHeadingWithLegendHtml(opts) {
+    opts = opts || {};
+    var title = opts.title || "Need Dates";
+    var statusHtml = hotelNeedDateConfigStatusHtml(opts.hotelNeedDateConfigV1 || {});
+    return (
+      '<div class="gdi-need-dates-heading" data-section="need-dates-heading">' +
+      "<h2>" +
+      esc(title) +
+      "</h2>" +
+      statusHtml +
+      needDateInformationLegendHtml(opts) +
+      "</div>"
+    );
+  }
+
+  function bindNeedDateLegendInteractions(root) {
+    root = root || document;
+    var wraps = root.querySelectorAll(".gdi-need-date-legend-wrap");
+    wraps.forEach(function (wrap) {
+      var btn = wrap.querySelector(".gdi-need-date-info-btn");
+      var pop = wrap.querySelector(".gdi-need-date-legend-popover");
+      if (!btn || !pop || btn.__gdiLegendBound) return;
+      btn.__gdiLegendBound = true;
+      function close() {
+        pop.hidden = true;
+        btn.setAttribute("aria-expanded", "false");
+      }
+      function open() {
+        pop.hidden = false;
+        btn.setAttribute("aria-expanded", "true");
+        var closer = pop.querySelector(".gdi-need-date-legend-close");
+        if (closer) closer.focus();
+      }
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        if (pop.hidden) open();
+        else close();
+      });
+      btn.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          btn.click();
+        }
+      });
+      pop.addEventListener("click", function (e) {
+        if (e.target && e.target.classList.contains("gdi-need-date-legend-close")) {
+          e.preventDefault();
+          close();
+          btn.focus();
+        }
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && !pop.hidden) {
+          close();
+          btn.focus();
+        }
+      });
+    });
   }
 
   /**
@@ -8026,9 +8225,16 @@
     resolveRevenueStreamIconState: resolveRevenueStreamIconState,
     needDateIntelligenceIconHtml: needDateIntelligenceIconHtml,
     needDateMatchDrawerSectionHtml: needDateMatchDrawerSectionHtml,
+    hotelNeedDateConfigStatusHtml: hotelNeedDateConfigStatusHtml,
+    needDateInformationLegendHtml: needDateInformationLegendHtml,
+    needDatesHeadingWithLegendHtml: needDatesHeadingWithLegendHtml,
+    bindNeedDateLegendInteractions: bindNeedDateLegendInteractions,
     gdiSvgCalendarCheck: gdiSvgCalendarCheck,
     gdiSvgCalendarClock: gdiSvgCalendarClock,
     gdiSvgCalendarSearch: gdiSvgCalendarSearch,
+    gdiSvgCalendarDashed: gdiSvgCalendarDashed,
+    gdiSvgCalendarMinus: gdiSvgCalendarMinus,
+    gdiSvgInfoCircle: gdiSvgInfoCircle,
     tilePriorityPill: tilePriorityPill,
     tileSalesActionPill: tileSalesActionPill,
     tileEventDatePill: tileEventDatePill,
