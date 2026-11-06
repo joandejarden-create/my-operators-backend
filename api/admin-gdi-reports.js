@@ -20,12 +20,22 @@ import {
   resolveGdiAdminShareFlags,
   GDI_ADMIN_REPORT_ROW_SCHEMA,
 } from "../lib/admin/gdi-admin-report-row-v1.js";
+import { buildGdiParityHotelInventory } from "../lib/group-demand-intelligence/presentation/gdi-portfolio-full-content-parity-v1.js";
+import { getHotelParityStatus } from "../lib/group-demand-intelligence/presentation/gdi-full-content-parity-status-store-v1.js";
+import { GDI_FULL_CONTENT_PARITY_STATUS } from "../lib/group-demand-intelligence/contracts/gdi-canonical-customer-presentation-contract-v1.js";
 
 export { deriveGdiReportStatus, GDI_ADMIN_REPORT_ROW_SCHEMA };
 
 export async function getAdminGdiReportCatalog(req, res) {
   try {
     const hotels = listGdiSelectableHotels?.() || [];
+    let parityByHotel = new Map();
+    try {
+      const inventory = buildGdiParityHotelInventory({ hotels });
+      parityByHotel = new Map(inventory.map((r) => [r.hotelId, r]));
+    } catch (err) {
+      console.warn("[admin-gdi-reports] parity inventory unavailable", err?.message || err);
+    }
     const rows = [];
     for (const h of hotels) {
       const hotelId = h.hotelId || h.id;
@@ -135,6 +145,13 @@ export async function getAdminGdiReportCatalog(req, res) {
         confirmUrls: true,
       });
 
+      const parityInv = parityByHotel.get(hotelId) || null;
+      const parityStored = getHotelParityStatus(hotelId) || null;
+      const fullContentParityStatus =
+        parityStored?.status ||
+        parityInv?.fullContentParityStatus ||
+        GDI_FULL_CONTENT_PARITY_STATUS.NOT_PUBLISHED;
+
       rows.push(
         normalizeGdiAdminReportRow({
           hotelId,
@@ -163,6 +180,20 @@ export async function getAdminGdiReportCatalog(req, res) {
           adpShareAvailable: shareFlags.adpShareAvailable,
           gdiClient: shareFlags.gdiClient,
           adpClient: shareFlags.adpClient,
+          fullContentParityStatus,
+          publishedOpportunityCount:
+            parityStored?.publishedOpportunityCount ??
+            parityInv?.publishedOpportunityCount ??
+            null,
+          publicationVersion:
+            parityStored?.publicationVersion ||
+            parityInv?.publicationVersion ||
+            null,
+          lastParityVerifiedAt: parityStored?.verifiedAt || null,
+          parityCriticalDifferenceCount:
+            parityStored?.criticalDifferenceCount || 0,
+          parityDifferences: parityStored?.differences || [],
+          parityMigrationCandidate: parityInv?.migrationCandidate || null,
         })
       );
     }

@@ -1,0 +1,33 @@
+{
+  "scope": "read_only_peer_inventory_safety",
+  "note": "Full-content VERIFIED requires canonical approvedCustomerFacingDetail snapshots. Peers below remain on legacy share inventory until authorized per-hotel migration. Counts must stay unchanged by this release.",
+  "peers": [
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelName": "Bethesda Marriott",
+      "expectedPublishedOpportunityCount": 31,
+      "fullContentParityStatus": "NOT_VERIFIABLE",
+      "migrationCandidate": "LEGACY_SHARE_WITHOUT_CANONICAL_REGISTRY",
+      "evidence": "reports/gdi-spice-presentation-parity-fix-v1/11-peer-regression.json (count=31, ok=true)",
+      "actionThisRelease": "NONE — do not republish"
+    },
+    {
+      "hotelId": "recgMYovrrZDJMqzX",
+      "hotelName": "Waterstone Resort & Marina",
+      "expectedPublishedOpportunityCount": 28,
+      "fullContentParityStatus": "NOT_VERIFIABLE",
+      "migrationCandidate": "LEGACY_SHARE_WITHOUT_CANONICAL_REGISTRY",
+      "evidence": "reports/gdi-universal-full-presentation-parity-v1/16-final-pass-report.json gates.waterstone28=PASS",
+      "actionThisRelease": "NONE — do not republish"
+    },
+    {
+      "hotelId": "recKRJjcPnb4tVDDS",
+      "hotelName": "Spice Island Beach Resort",
+      "expectedPublishedOpportunityCount": 7,
+      "fullContentParityStatus": "VERIFIED",
+      "evidence": "offline work inventory + PR #146 EXTERNAL_SHARE DTO fix",
+      "actionThisRelease": "NONE — already schema-ready; no silent republish"
+    }
+  ],
+  "portfolioRule": "GDI_UNIVERSAL_PORTFOLIO_FULL_CONTENT_PARITY_PASS requires every published+verifiable hotel VERIFIED. NOT_VERIFIABLE peers are reported separately and must not be labeled production full-content PASS."
+}
