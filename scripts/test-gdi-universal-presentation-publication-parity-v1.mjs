@@ -78,7 +78,7 @@ check("contracts_export_versions", () => {
   assert.equal(GDI_PUBLICATION_CONTRACT_V1, "gdi-publication-contract-v1");
   assert.equal(
     GDI_SHARED_UI_ASSETS.cacheBust,
-    "gdi-universal-share-pc-v2",
+    "gdi-universal-share-pc-v3",
   );
 });
 
