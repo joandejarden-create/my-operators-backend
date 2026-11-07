@@ -29,6 +29,10 @@ const allowHotfix = process.env.DEALALITY_ALLOW_HOTFIX_DEPLOY === "1";
 const allowDirty = process.env.DEALALITY_ALLOW_DIRTY_DEPLOY === "1";
 const skipPost = process.env.DEALALITY_SKIP_POSTDEPLOY_SMOKE === "1";
 const dryRun = process.argv.includes("--dry-run");
+/** GitHub Actions dual-checkout: artifact is detached HEAD; overlay dirties the tree. */
+const ghaChannel =
+  String(process.env.DEALALITY_RELEASE_CHANNEL || "").trim() ===
+  "github-actions";
 
 const channelGate = assertReleaseChannelAllowed(process.env, {
   liveDeploy: !dryRun,
@@ -104,10 +108,13 @@ console.log(`branch: ${branch}`);
 console.log(`sha:    ${sha}`);
 console.log(`dirty:  ${dirty ? "YES" : "no"}`);
 
-if (branch !== normalBranch && !allowHotfix) {
+const ghaDetachedArtifactOk =
+  ghaChannel && branch === "HEAD" && /^[0-9a-f]{40}$/i.test(sha);
+if (branch !== normalBranch && !allowHotfix && !ghaDetachedArtifactOk) {
   console.error(
     `FAIL WRONG_BRANCH_GUARD: expected '${normalBranch}', got '${branch}'.\n` +
-      `For emergency hotfix set DEALALITY_ALLOW_HOTFIX_DEPLOY=1 (still runs asset gates).`
+      `For emergency hotfix set DEALALITY_ALLOW_HOTFIX_DEPLOY=1 (still runs asset gates).\n` +
+      `GitHub Actions dual-checkout may deploy detached HEAD when DEALALITY_RELEASE_CHANNEL=github-actions.`
   );
   process.exit(1);
 }
@@ -116,8 +123,14 @@ if (branch !== normalBranch && allowHotfix) {
     `WARN HOTFIX OVERRIDE: deploying from '${branch}' (not ${normalBranch})`
   );
 }
+if (ghaDetachedArtifactOk) {
+  console.warn(
+    `WARN GHA_ARTIFACT_DETACHED_HEAD: deploying approved artifact sha ${sha} (channel=github-actions)`
+  );
+}
 
-if (dirty && !allowDirty) {
+const ghaOverlayDirtyOk = ghaChannel && Boolean(dirty);
+if (dirty && !allowDirty && !ghaOverlayDirtyOk) {
   console.error(
     "FAIL DIRTY_TREE_GUARD: uncommitted changes present.\n" +
       "Commit/stash first, or set DEALALITY_ALLOW_DIRTY_DEPLOY=1 for emergency."
@@ -127,6 +140,11 @@ if (dirty && !allowDirty) {
 }
 if (dirty && allowDirty) {
   console.warn("WARN DIRTY TREE OVERRIDE enabled");
+}
+if (ghaOverlayDirtyOk && !allowDirty) {
+  console.warn(
+    "WARN GHA_ARTIFACT_OVERLAY_DIRTY: control-plane release scripts overlaid onto approved artifact tree"
+  );
 }
 
 // Diff summary vs origin/main when available
