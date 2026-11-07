@@ -275,6 +275,17 @@ const up = spawnSync(railwayBin, upArgs, {
   env: process.env,
   shell: process.platform === "win32",
 });
+if (up.error) {
+  console.error(
+    `FAIL RAILWAY_CLI_SPAWN: ${up.error.message}\n` +
+      `Install @railway/cli on the runner (workflow live step) or ensure '${railwayBin}' is on PATH.`
+  );
+  record.status = "RAILWAY_CLI_SPAWN_FAILED";
+  record.spawnError = String(up.error.message || up.error);
+  record.finishedAt = new Date().toISOString();
+  fs.writeFileSync(recordPath, JSON.stringify(record, null, 2));
+  process.exit(1);
+}
 if (up.status !== 0) {
   record.status = "RAILWAY_UP_FAILED";
   record.finishedAt = new Date().toISOString();
