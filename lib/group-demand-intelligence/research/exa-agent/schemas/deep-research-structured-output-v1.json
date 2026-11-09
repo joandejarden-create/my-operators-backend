@@ -1,0 +1,297 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gdi-scaling-exa-agent-deep-research-structured-output-v1",
+  "title": "ScalingCompaniesDeepResearchDossierV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "companyIdentity",
+    "activityAndChronology",
+    "hotelDemandEvidence",
+    "hotelDemandHypotheses",
+    "hotelSpecificFit",
+    "commercialTiming",
+    "verifiedFacts",
+    "materialUncertainties",
+    "buyerCandidates",
+    "organizationalContactRoutes",
+    "sourcingAccessibility",
+    "recommendedCommercialAction",
+    "supportingSources",
+    "claimToSourceMap",
+    "unresolvedResearchTasks",
+    "researchDisposition"
+  ],
+  "properties": {
+    "companyIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["legalOrTradingName"],
+      "properties": {
+        "legalOrTradingName": { "type": "string" },
+        "officialWebsite": { "type": ["string", "null"] },
+        "parentOrSubsidiaryNote": { "type": ["string", "null"] },
+        "identityVerified": { "type": ["boolean", "null"] },
+        "notes": { "type": ["string", "null"] }
+      }
+    },
+    "activityAndChronology": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary"],
+      "properties": {
+        "summary": { "type": "string" },
+        "activityDate": { "type": ["string", "null"] },
+        "sourcePublicationDate": { "type": ["string", "null"] },
+        "geography": { "type": ["string", "null"] },
+        "currentRelevance": {
+          "type": ["string", "null"],
+          "enum": ["current", "continuing_operations", "historical_unclear", "unknown", null]
+        },
+        "verifiedFindings": { "type": "array", "maxItems": 12, "items": { "type": "string" } },
+        "inferences": { "type": "array", "maxItems": 12, "items": { "type": "string" } },
+        "unknowns": { "type": "array", "maxItems": 12, "items": { "type": "string" } }
+      }
+    },
+    "hotelDemandEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["documentedSignals"],
+      "properties": {
+        "documentedSignals": { "type": "array", "maxItems": 12, "items": { "type": "string" } },
+        "travelerTypes": { "type": "array", "maxItems": 10, "items": { "type": "string" } },
+        "meetingOrTrainingSignals": { "type": "array", "maxItems": 8, "items": { "type": "string" } },
+        "unknowns": { "type": "array", "maxItems": 10, "items": { "type": "string" } }
+      }
+    },
+    "hotelDemandHypotheses": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primaryMechanism", "evidenceStatus"],
+      "properties": {
+        "primaryMechanism": { "type": ["string", "null"] },
+        "evidenceStatus": {
+          "type": "string",
+          "enum": ["documented", "plausible_inferred", "unsupported", "unknown"]
+        },
+        "guestroomHypothesis": { "type": ["string", "null"] },
+        "meetingsHypothesis": { "type": ["string", "null"] },
+        "cateringHypothesis": { "type": ["string", "null"] },
+        "doNotInventRoomNights": { "type": "boolean", "const": true }
+      }
+    },
+    "hotelSpecificFit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["whyThisHotel", "specificity"],
+      "properties": {
+        "whyThisHotel": { "type": ["string", "null"] },
+        "advantages": { "type": "array", "maxItems": 8, "items": { "type": "string" } },
+        "disadvantages": { "type": "array", "maxItems": 8, "items": { "type": "string" } },
+        "competitorNotes": { "type": "array", "maxItems": 6, "items": { "type": "string" } },
+        "specificity": {
+          "type": "string",
+          "enum": ["property_specific", "city_only", "generic", "unknown"]
+        }
+      }
+    },
+    "commercialTiming": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["recommendation"],
+      "properties": {
+        "recommendation": {
+          "type": "string",
+          "enum": ["act_now", "monitor", "wait", "research_first", "unknown"]
+        },
+        "rationale": { "type": ["string", "null"] },
+        "milestones": { "type": "array", "maxItems": 8, "items": { "type": "string" } }
+      }
+    },
+    "verifiedFacts": {
+      "type": "array",
+      "maxItems": 20,
+      "items": { "type": "string" }
+    },
+    "materialUncertainties": {
+      "type": "array",
+      "maxItems": 20,
+      "items": { "type": "string" }
+    },
+    "buyerCandidates": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["fullName", "role", "relevanceClass", "employerVerified"],
+        "properties": {
+          "fullName": { "type": ["string", "null"] },
+          "role": { "type": ["string", "null"] },
+          "employer": { "type": ["string", "null"] },
+          "employerVerified": { "type": ["boolean", "null"] },
+          "relevanceClass": {
+            "type": "string",
+            "enum": [
+              "direct_buyer",
+              "relevant_influencer",
+              "organizational_referral",
+              "press_or_unrelated",
+              "unknown"
+            ]
+          },
+          "whyRelevantToHotelDemand": { "type": ["string", "null"] },
+          "sourceUrl": { "type": ["string", "null"] },
+          "email": { "type": "null", "description": "Never invent; always null from Exa Agent deep research" },
+          "phone": { "type": "null", "description": "Never invent; always null from Exa Agent deep research" }
+        }
+      }
+    },
+    "organizationalContactRoutes": {
+      "type": "array",
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["url", "isTargetCompanyRoute"],
+        "properties": {
+          "url": { "type": "string" },
+          "label": { "type": ["string", "null"] },
+          "isTargetCompanyRoute": { "type": "boolean" },
+          "isPressPublisher": { "type": ["boolean", "null"] }
+        }
+      }
+    },
+    "sourcingAccessibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary"],
+      "properties": {
+        "summary": { "type": "string" },
+        "preferredHotelPatternKnown": { "type": ["boolean", "null"] },
+        "corporateTravelOwnerKnown": { "type": ["boolean", "null"] },
+        "travelLikelyCentrallyManaged": { "type": ["boolean", "null"] },
+        "localOfficeDiscretionLikely": { "type": ["boolean", "null"] },
+        "meetingsSourcingSeparateFromTransient": { "type": ["boolean", "null"] },
+        "externalTmcMentioned": { "type": ["boolean", "null"] },
+        "notes": { "type": ["string", "null"] }
+      }
+    },
+    "decisionProcess": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "summary": { "type": ["string", "null"] },
+        "demandMechanism": { "type": ["string", "null"] },
+        "knownSteps": {
+          "type": "array",
+          "maxItems": 8,
+          "items": { "type": "string" }
+        },
+        "unknowns": {
+          "type": "array",
+          "maxItems": 8,
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "contactIntelligence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "primaryContactName": { "type": ["string", "null"] },
+        "secondaryContactName": { "type": ["string", "null"] },
+        "minimumOneRelevantNamedMet": { "type": ["boolean", "null"] },
+        "preferredTwoDistinctMet": { "type": ["boolean", "null"] },
+        "additionalInvestigationJustified": { "type": ["boolean", "null"] },
+        "additionalInvestigationRationale": { "type": ["string", "null"] }
+      }
+    },
+    "recommendedCommercialAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nextAction"],
+      "properties": {
+        "whoToApproach": { "type": ["string", "null"] },
+        "why": { "type": ["string", "null"] },
+        "businessToDiscuss": { "type": ["string", "null"] },
+        "qualificationQuestions": {
+          "type": "array",
+          "maxItems": 8,
+          "items": { "type": "string" }
+        },
+        "propertyPositioning": { "type": ["string", "null"] },
+        "timing": { "type": ["string", "null"] },
+        "limitations": { "type": ["string", "null"] },
+        "nextAction": { "type": "string" }
+      }
+    },
+    "supportingSources": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["url"],
+        "properties": {
+          "url": { "type": "string" },
+          "title": { "type": ["string", "null"] },
+          "publishedDate": { "type": ["string", "null"] },
+          "entityAttributed": { "type": ["string", "null"] },
+          "relevance": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "claimToSourceMap": {
+      "type": "array",
+      "maxItems": 30,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claim", "sourceUrls"],
+        "properties": {
+          "claim": { "type": "string" },
+          "sourceUrls": {
+            "type": "array",
+            "maxItems": 5,
+            "items": { "type": "string" }
+          },
+          "drawerSections": {
+            "type": "array",
+            "maxItems": 5,
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "unresolvedResearchTasks": {
+      "type": "array",
+      "maxItems": 15,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["question", "priority"],
+        "properties": {
+          "question": { "type": "string" },
+          "drawerSections": {
+            "type": "array",
+            "maxItems": 5,
+            "items": { "type": "string" }
+          },
+          "priority": { "type": "string", "enum": ["P0", "P1", "P2"] },
+          "suggestedStrategyFamily": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "researchDisposition": {
+      "type": "string",
+      "enum": [
+        "SUFFICIENT_FOR_CIB_DRAFT",
+        "RESEARCH_CONTINUATION_REQUIRED",
+        "WATCHLIST_OR_MONITOR",
+        "NOT_COMMERCIALLY_ATTRACTIVE",
+        "BLOCKED_IDENTITY_OR_EVIDENCE"
+      ]
+    }
+  }
+}

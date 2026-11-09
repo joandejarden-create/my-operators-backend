@@ -1156,6 +1156,58 @@ for (const stage of stagesToRun) {
       continue;
     }
 
+    if (stage === "opportunity_research_maturation") {
+      // Restore original Full E2E maturation: ORS deep research via existing integration.
+      // Default is zero-cost fixture/offline unless authorizePaidResearch is set.
+      const { processOpportunityThroughOriginalChain, mapCandidateToOpportunity } =
+        await import(
+          "../lib/group-demand-intelligence/workflow/original-full-e2e-research-chain-v1.js"
+        );
+      const doc = await loadOpportunitiesCanonical(hotelId);
+      const ops = Array.isArray(doc?.opportunities) ? doc.opportunities : [];
+      const authorizePaidResearch =
+        authorizePaidDiscovery === true &&
+        String(process.env.GDI_AUTHORIZE_PAID_DEEP_RESEARCH || "") === "1";
+      const maturationDir = path.join(runDir, "opportunity_research_maturation");
+      fs.mkdirSync(maturationDir, { recursive: true });
+      const results = [];
+      for (const raw of ops) {
+        const mapped = mapCandidateToOpportunity(raw, {
+          hotelId,
+          hotelName: raw.hotelName || hotelId,
+          segmentId: raw.researchSegment || raw.segmentId || null,
+        });
+        // eslint-disable-next-line no-await-in-loop
+        const step = await processOpportunityThroughOriginalChain(mapped, {
+          authorizePaidResearch,
+          remainingBudgetUsd: authorizePaidResearch
+            ? Number(process.env.GDI_FULL_E2E_BUDGET_USD || 0)
+            : 0,
+          skipDeepResearch: dryRun && !authorizePaidResearch ? false : false,
+        });
+        results.push({
+          opportunityId: step.opportunity.id,
+          disposition: step.opportunity.internalDisposition,
+          commercialResearchComplete: step.commercialResearchComplete,
+          paidSpendUsd: step.paidSpendUsd,
+          presentationSections: (step.presentation?.sectionIds || []).length,
+        });
+      }
+      fs.writeFileSync(
+        path.join(maturationDir, "maturation-results.json"),
+        `${JSON.stringify({ at: new Date().toISOString(), results }, null, 2)}\n`
+      );
+      mark(ledger, stage, "completed", {
+        module: "original-full-e2e-research-chain-v1",
+        processed: results.length,
+        paidSpendUsd: results.reduce((n, r) => n + Number(r.paidSpendUsd || 0), 0),
+        note: authorizePaidResearch
+          ? "Authorized paid deep-research path via existing ORS integration"
+          : "Zero-cost/fixture maturation via existing runDeepResearchOnExistingGdiOpportunity — not FullE2E live COMPLETE",
+      });
+      continue;
+    }
+
     if (stage === "assess_fit") {
       const fitDir = path.join(runDir, "independent_hotel_fit");
       fs.mkdirSync(fitDir, { recursive: true });
