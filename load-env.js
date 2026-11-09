@@ -16,6 +16,14 @@ dotenv.config({ path: ".env.local", override: true });
 
 const isProd = String(process.env.NODE_ENV || "").trim() === "production";
 if (!isProd) {
+  // Shared Exa credential across GDI research worktrees (gitignored local store).
+  // Does not override an already-set process EXA_API_KEY / EXA_KEY.
+  const sharedExaEnv = path.resolve(
+    "C:/Dev/dealality/_dealality-local-env/exa-dev.env"
+  );
+  if (fs.existsSync(sharedExaEnv)) {
+    dotenv.config({ path: sharedExaEnv, override: false });
+  }
   const sharedGdiEnv = path.resolve(
     "C:/Dev/dealality/_dealality-local-env/gdi-published-inventory-dev.env"
   );

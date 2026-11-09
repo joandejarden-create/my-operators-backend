@@ -1,0 +1,354 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gdi-exa-events-discovery-structured-output-v1",
+  "title": "EventsDiscoveryCandidatesV1",
+  "description": "Event-driven hotel opportunity discovery. Use null/UNKNOWN for unsupported. Do not invent dates, attendance, or room blocks.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contractId", "researchDate", "hotelId", "candidates", "materialUncertainties"],
+  "properties": {
+    "contractId": { "type": "string", "const": "gdi-exa-events-discovery-v1" },
+    "researchDate": { "type": "string" },
+    "hotelId": { "type": ["string", "null"] },
+    "hotelName": { "type": ["string", "null"] },
+    "discoveryHorizonMonths": { "type": ["integer", "null"] },
+    "candidates": {
+      "type": "array",
+      "maxItems": 15,
+      "items": { "$ref": "#/$defs/eventDiscoveryCandidate" }
+    },
+    "materialUncertainties": {
+      "type": "array",
+      "maxItems": 20,
+      "items": { "type": "string" }
+    },
+    "rejectedOrFlagged": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label", "reason"],
+        "properties": {
+          "label": { "type": "string" },
+          "reason": { "type": "string" },
+          "url": { "type": ["string", "null"] },
+          "discoveryDisposition": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "notesForDeepResearch": {
+      "type": "array",
+      "maxItems": 20,
+      "items": { "type": "string" }
+    },
+    "rankingRationale": { "type": ["string", "null"] }
+  },
+  "$defs": {
+    "evidenceClaim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim", "url"],
+      "properties": {
+        "claim": { "type": "string" },
+        "url": { "type": "string" },
+        "publishedDate": { "type": ["string", "null"] },
+        "excerpt": { "type": ["string", "null"] },
+        "factVsInference": {
+          "type": ["string", "null"],
+          "enum": ["source_established_fact", "inferred_demand", "assumption", "unknown", null]
+        }
+      }
+    },
+    "historicalEdition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "year": { "type": ["integer", "string", "null"] },
+        "date": { "type": ["string", "null"] },
+        "destination": { "type": ["string", "null"] },
+        "venue": { "type": ["string", "null"] },
+        "organizer": { "type": ["string", "null"] },
+        "sourceUrl": { "type": ["string", "null"] },
+        "verified": { "type": ["boolean", "null"] }
+      }
+    },
+    "eventDiscoveryCandidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eventIdentity",
+        "organizingEntity",
+        "eventSubtype",
+        "commercialOpportunityTrack",
+        "discoveryDisposition",
+        "supportingSources"
+      ],
+      "properties": {
+        "eventIdentity": { "type": "string" },
+        "eventSeriesIdentity": { "type": ["string", "null"] },
+        "eventSeriesId": { "type": ["string", "null"] },
+        "eventEdition": { "type": ["string", "null"] },
+        "eventSubtype": {
+          "type": "string",
+          "enum": [
+            "association_conference",
+            "medical_scientific",
+            "trade_show",
+            "corporate_meeting",
+            "corporate_retreat",
+            "incentive_recognition",
+            "training_programme",
+            "other_event_led",
+            "unknown"
+          ]
+        },
+        "demandFamily": {
+          "type": ["string", "null"],
+          "enum": ["association_conference", "corporate_meetings_events", "incentive_recognition", null]
+        },
+        "organizingEntity": { "type": "string" },
+        "corporateOrAssociationOwner": { "type": ["string", "null"] },
+        "eventStatus": {
+          "type": ["string", "null"],
+          "enum": [
+            "upcoming_confirmed",
+            "announced_incomplete",
+            "historical_completed",
+            "canceled_or_postponed",
+            "recurrence_anticipated_unverified",
+            "unknown",
+            null
+          ]
+        },
+        "verifiedDates": { "type": ["string", "null"] },
+        "historicalDates": { "type": ["array", "null"], "items": { "type": "string" } },
+        "historicalEditions": {
+          "type": ["array", "null"],
+          "items": { "$ref": "#/$defs/historicalEdition" }
+        },
+        "futureEditionStatus": {
+          "type": ["string", "null"],
+          "enum": [
+            "confirmed",
+            "announced_incomplete",
+            "reasonably_anticipated_from_pattern",
+            "unverified",
+            "canceled_discontinued",
+            "unknown",
+            null
+          ]
+        },
+        "futureEditionDate": { "type": ["string", "null"] },
+        "futureEditionDateConfidence": {
+          "type": ["string", "null"],
+          "enum": ["verified", "inferred", "unknown", null]
+        },
+        "recurrenceStatus": {
+          "type": ["string", "null"],
+          "enum": [
+            "verified_annual",
+            "verified_biennial",
+            "multiple_editions_pattern_unclear",
+            "unsupported",
+            "discontinued",
+            "unknown",
+            null
+          ]
+        },
+        "recurrenceEvidence": { "type": ["string", "null"] },
+        "recurrenceConfidence": {
+          "type": ["string", "null"],
+          "enum": ["high", "medium", "low", "unknown", null]
+        },
+        "destination": { "type": ["string", "null"] },
+        "verifiedVenue": { "type": ["string", "null"] },
+        "venueCommitmentStatus": {
+          "type": ["string", "null"],
+          "enum": [
+            "unannounced",
+            "sourcing_potentially_open",
+            "confirmed_competing_hotel",
+            "confirmed_this_hotel",
+            "confirmed_non_hotel_venue",
+            "future_edition_unknown",
+            "unknown",
+            null
+          ]
+        },
+        "historicalHostHotels": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        },
+        "incumbentVenue": { "type": ["string", "null"] },
+        "venueRotationEvidence": { "type": ["string", "null"] },
+        "currentEditionVenueCommitment": { "type": ["string", "null"] },
+        "futureEditionVenueCommitment": { "type": ["string", "null"] },
+        "sourcingStatus": {
+          "type": ["string", "null"],
+          "enum": [
+            "open_or_unannounced",
+            "likely_closed_incumbent",
+            "unknown",
+            "agency_led",
+            null
+          ]
+        },
+        "sourcingCycleEvidence": { "type": ["string", "null"] },
+        "currentEditionAccessibility": {
+          "type": ["string", "null"],
+          "enum": ["high", "medium", "low", "none", "unknown", null]
+        },
+        "futureCompetitiveCapturePotential": {
+          "type": ["string", "null"],
+          "enum": ["high", "medium", "low", "none", "unknown", null]
+        },
+        "evidenceOfHospitalityDemand": { "type": ["string", "null"] },
+        "likelyTravelerProfiles": { "type": ["string", "null"] },
+        "potentialGuestroomDemand": {
+          "type": ["string", "null"],
+          "description": "Qualitative only — no invented room-night counts"
+        },
+        "potentialMeetingDemand": { "type": ["string", "null"] },
+        "potentialCateringDemand": { "type": ["string", "null"] },
+        "verifiedStartDate": {
+          "type": ["string", "null"],
+          "description": "ISO date; null if unknown — never invent from annual patterns"
+        },
+        "verifiedEndDate": { "type": ["string", "null"] },
+        "attendancePublished": {
+          "type": ["number", "string", "null"],
+          "description": "Published attendance only; null if not published"
+        },
+        "attendanceStatus": {
+          "type": ["string", "null"],
+          "enum": ["confirmed", "expected", "historical", "not_published", "unknown", null]
+        },
+        "peakRoomsPublished": {
+          "type": ["number", "string", "null"],
+          "description": "Published peak rooms / room block only; never estimate from attendance without methodology"
+        },
+        "peakRoomsStatus": {
+          "type": ["string", "null"],
+          "enum": ["verified", "historical", "not_published", "inferred_with_methodology", "unknown", null]
+        },
+        "hotelSourcingStatus": {
+          "type": ["string", "null"],
+          "description": "Normalize to customer-facing four: hotel_sourcing_open | hotel_sourcing_unconfirmed | venue_confirmed | historical_venue_only. Never set open from silence/unannounced alone. Preserve detailed venue/sourcing evidence in supportingSources.",
+          "enum": [
+            "hotel_sourcing_open",
+            "hotel_sourcing_unconfirmed",
+            "venue_confirmed",
+            "historical_venue_only",
+            "sourcing_confirmed_open",
+            "sourcing_unconfirmed",
+            "committed_elsewhere",
+            "unknown",
+            null
+          ]
+        },
+        "verifiedEventName": {
+          "type": ["string", "null"],
+          "description": "Customer tile/drawer Event Name when verified; null if only organizer is known — never invent"
+        },
+        "eventTypeCustomerLabel": {
+          "type": ["string", "null"],
+          "description": "Association Meeting|Association Conference|Corporate Meeting|Corporate Incentive|Leadership Retreat|Training Event|Industry Conference|Trade Show|Corporate Event"
+        },
+        "demandCycleStatus": {
+          "type": ["string", "null"],
+          "enum": [
+            "confirmed_upcoming_edition",
+            "future_cycle_expected",
+            "recurring_competitive_capture",
+            "historical_relationship_development",
+            "one_time_event",
+            "discontinued_or_canceled",
+            "unknown",
+            null
+          ]
+        },
+        "eventLocationCity": { "type": ["string", "null"] },
+        "eventLocationRegion": { "type": ["string", "null"] },
+        "eventLocationCountry": { "type": ["string", "null"] },
+        "sourcingAccessibility": { "type": ["string", "null"] },
+        "organizerContactCandidates": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": ["string", "null"] },
+              "role": { "type": ["string", "null"] },
+              "entityClass": {
+                "type": ["string", "null"],
+                "enum": [
+                  "event_owner",
+                  "organizer",
+                  "buyer",
+                  "influencer",
+                  "pco",
+                  "dmc",
+                  "venue",
+                  "sponsor",
+                  "referral",
+                  "unknown",
+                  null
+                ]
+              },
+              "whyRelevant": { "type": ["string", "null"] },
+              "publicUrl": { "type": ["string", "null"] },
+              "contractingAuthorityVerified": { "type": ["boolean", "null"] }
+            }
+          }
+        },
+        "hotelMarketRelevance": { "type": ["string", "null"] },
+        "preliminaryHotelFit": { "type": ["string", "null"] },
+        "knownCompetitiveConstraints": { "type": ["string", "null"] },
+        "uncertaintyRegister": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        },
+        "supportingSources": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/evidenceClaim" }
+        },
+        "claimToSourceMapping": {
+          "type": ["array", "null"],
+          "items": { "$ref": "#/$defs/evidenceClaim" }
+        },
+        "suggestedDeepResearchQuestions": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        },
+        "suggestedRelationshipDevelopmentAction": { "type": ["string", "null"] },
+        "nextMonitoringTrigger": { "type": ["string", "null"] },
+        "commercialOpportunityTrack": {
+          "type": "string",
+          "enum": [
+            "TRACK_A_UPCOMING_VENUE",
+            "TRACK_B_RECURRING_COMPETITIVE_CAPTURE",
+            "TRACK_C_FUTURE_EDITION_VENUE_CONSTRAINT",
+            "TRACK_D_HISTORICAL_RELATIONSHIP"
+          ]
+        },
+        "segmentRoutingRecommendation": {
+          "type": ["string", "null"],
+          "enum": ["associations_government", "scaling_companies", "manual_review", null]
+        },
+        "discoveryDisposition": {
+          "type": "string",
+          "enum": [
+            "ACCEPT_FOR_DEEP_RESEARCH",
+            "TARGETED_VERIFICATION_REQUIRED",
+            "MONITOR_FUTURE_EDITION",
+            "REJECT",
+            "ROUTE_TO_SCALING"
+          ]
+        },
+        "rankScoreExplain": { "type": ["string", "null"] },
+        "underlyingEvidence": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

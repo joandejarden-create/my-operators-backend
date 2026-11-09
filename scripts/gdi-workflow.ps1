@@ -14,7 +14,12 @@
   Canonical hotel record id (e.g. recKRJjcPnb4tVDDS).
 
 .PARAMETER Action
-  Research | Validate | SyncAirtable | Review | Publish | Verify | FullRun | Inventory
+  Research | Validate | SyncAirtable | Review | Publish | Verify | FullRun | FullE2E | Inventory
+
+  FullE2E evaluates all 14 canonical PowerShell demand-segment workflows per hotel
+  and by default invokes registered discovery executors (--execute-discovery).
+  Use -SkipDiscoveryExecution for accounting-only bookkeeping.
+  Does not invent leads or claim COMPLETE while NOT_RUN remains. Never publishes.
 
 .PARAMETER DryRun
   Safe default. Prevents production Airtable writes and publication apply.
@@ -58,9 +63,13 @@ param(
     "Publish",
     "Verify",
     "FullRun",
+    "FullE2E",
     "Inventory"
   )]
   [string]$Action,
+
+  # Optional comma-separated hotel ids for FullE2E multi-hotel traversal
+  [string]$HotelIds,
 
   [switch]$DryRun,
 
@@ -79,7 +88,10 @@ param(
 
   [string]$ProdBase,
 
-  [switch]$ExecuteResearch
+  [switch]$ExecuteResearch,
+
+  # FullE2E only: skip discovery executor invocation (accounting / traversal bookkeeping).
+  [switch]$SkipDiscoveryExecution
 )
 
 $ErrorActionPreference = "Stop"
@@ -91,6 +103,50 @@ Set-Location $repoRoot
 $isDry = $true
 if ($Apply.IsPresent) { $isDry = $false }
 if ($DryRun.IsPresent) { $isDry = $true }
+
+if ($Action -eq "FullE2E") {
+  # Fourteen-segment FullE2E: accounting + optional discovery executor invocation.
+  # Default invokes registered discovery executors in zero-cost / historical-replay mode.
+  # Pass -SkipDiscoveryExecution for accounting-only (legacy bookkeeping).
+  $e2eHotels = if (-not [string]::IsNullOrWhiteSpace($HotelIds)) {
+    $HotelIds
+  } elseif (-not [string]::IsNullOrWhiteSpace($HotelId)) {
+    $HotelId
+  } else {
+    "recCAGqkERSXgiku4,recTk5I8VOzsPhxDz,recXh4NgF8sDbi9cQ"
+  }
+  $e2eArgs = @(
+    "scripts/gdi-full-e2e-fourteen-segment-orchestrator-v1.mjs",
+    "--hotels", $e2eHotels
+  )
+  if ($isDry) { $e2eArgs += "--dry-run" }
+  $skipDiscovery = $false
+  if ($PSBoundParameters.ContainsKey("SkipDiscoveryExecution") -and $SkipDiscoveryExecution) {
+    $skipDiscovery = $true
+  }
+  # Also honor env for CI
+  if ($env:GDI_FULL_E2E_ACCOUNTING_ONLY -eq "1") { $skipDiscovery = $true }
+  if (-not $skipDiscovery) {
+    $e2eArgs += "--execute-discovery"
+    $e2eArgs += "--require-discovery-execution"
+  }
+  Write-Host "GDI FullE2E: fourteen-segment hotels=$e2eHotels DryRun=$isDry ExecuteDiscovery=$(-not $skipDiscovery)" -ForegroundColor Cyan
+  if ($skipDiscovery) {
+    Write-Host "GDI FullE2E ACCOUNTING ONLY — discovery executors will NOT run." -ForegroundColor Yellow
+  }
+  & node @e2eArgs
+  $e2eExit = $LASTEXITCODE
+  if ($e2eExit -ne 0) {
+    Write-Host "GDI FullE2E exited with code $e2eExit" -ForegroundColor Red
+    exit $e2eExit
+  }
+  if ($skipDiscovery) {
+    Write-Host "GDI FullE2E accounting finished (0 executors invoked)." -ForegroundColor Yellow
+  } else {
+    Write-Host "GDI FullE2E discovery execution finished — inspect reports/gdi-full-e2e-fourteen-segment-orchestrator-v1/discovery-execution-traces.json" -ForegroundColor Green
+  }
+  exit 0
+}
 
 if ($Action -ne "Inventory" -and [string]::IsNullOrWhiteSpace($HotelId)) {
   throw "HotelId is required for Action=$Action"
