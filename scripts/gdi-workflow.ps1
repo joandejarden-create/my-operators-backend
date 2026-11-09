@@ -129,10 +129,26 @@ if ($Action -eq "FullE2E") {
   if (-not $skipDiscovery) {
     $e2eArgs += "--execute-discovery"
     $e2eArgs += "--require-discovery-execution"
+    # Restore original Full E2E chain after discovery (deep research → contacts →
+    # qualification → presentation) using existing ORS/Exa modules. Paid Exa still
+    # requires explicit --authorize-paid-discovery / --authorize-paid-research.
+    $e2eArgs += "--run-original-full-e2e-chain"
   }
-  Write-Host "GDI FullE2E: fourteen-segment hotels=$e2eHotels DryRun=$isDry ExecuteDiscovery=$(-not $skipDiscovery)" -ForegroundColor Cyan
+  if ($env:GDI_AUTHORIZE_PAID_DISCOVERY -eq "1") {
+    $e2eArgs += "--authorize-paid-discovery"
+  }
+  if ($env:GDI_AUTHORIZE_PAID_DEEP_RESEARCH -eq "1") {
+    $e2eArgs += "--authorize-paid-research"
+  }
+  if (-not [string]::IsNullOrWhiteSpace($env:GDI_FULL_E2E_BUDGET_USD)) {
+    $e2eArgs += "--budget-ceiling-usd"
+    $e2eArgs += $env:GDI_FULL_E2E_BUDGET_USD
+  }
+  Write-Host "GDI FullE2E: fourteen-segment hotels=$e2eHotels DryRun=$isDry ExecuteDiscovery=$(-not $skipDiscovery) OriginalChain=$(-not $skipDiscovery)" -ForegroundColor Cyan
   if ($skipDiscovery) {
     Write-Host "GDI FullE2E ACCOUNTING ONLY — discovery executors will NOT run." -ForegroundColor Yellow
+  } else {
+    Write-Host "GDI FullE2E will run Discovery → Deep Research → Contacts → Qualification → Presentation (paid Exa gated by env authorization)." -ForegroundColor Cyan
   }
   & node @e2eArgs
   $e2eExit = $LASTEXITCODE
@@ -143,7 +159,7 @@ if ($Action -eq "FullE2E") {
   if ($skipDiscovery) {
     Write-Host "GDI FullE2E accounting finished (0 executors invoked)." -ForegroundColor Yellow
   } else {
-    Write-Host "GDI FullE2E discovery execution finished — inspect reports/gdi-full-e2e-fourteen-segment-orchestrator-v1/discovery-execution-traces.json" -ForegroundColor Green
+    Write-Host "GDI FullE2E chain finished — inspect reports/gdi-full-e2e-fourteen-segment-orchestrator-v1/ (discovery-execution-traces.json + original-full-e2e-chain/)." -ForegroundColor Green
   }
   exit 0
 }

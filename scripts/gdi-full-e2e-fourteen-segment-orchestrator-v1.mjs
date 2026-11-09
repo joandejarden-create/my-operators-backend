@@ -36,6 +36,10 @@ import {
 import {
   buildDiscoveryResumePlan,
 } from "../lib/group-demand-intelligence/research/full-e2e-fourteen-segment-discovery-state-v1.js";
+import {
+  executeOriginalFullE2eResearchChain,
+  buildThreeHotelFullE2eBudgetManifest,
+} from "../lib/group-demand-intelligence/workflow/original-full-e2e-research-chain-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -59,7 +63,10 @@ const hotelIds = hotelsRaw
 const dryRun = has("--dry-run") || !has("--apply");
 const executeDiscovery = has("--execute-discovery");
 const authorizePaidDiscovery = has("--authorize-paid-discovery");
+const runOriginalChain = has("--run-original-full-e2e-chain");
+const authorizePaidResearch = has("--authorize-paid-research");
 const leadCap = arg("--discovery-lead-cap");
+const chainCandidateLimit = arg("--chain-candidate-limit");
 const outDir =
   arg("--out") ||
   path.join(
@@ -186,7 +193,46 @@ const resumePlan = buildDiscoveryResumePlan({
 });
 
 let discoveryExecution = null;
-if (executeDiscovery) {
+let originalChain = null;
+const budgetManifest = buildThreeHotelFullE2eBudgetManifest({
+  hotelIds,
+  priorLiveSpendUsd: 0.4,
+});
+
+// Original Full E2E chain owns Discovery → Deep Research → Contacts → Qualification → Presentation.
+// Standalone discovery matrix runs only when chain is not requested.
+if (runOriginalChain) {
+  originalChain = await executeOriginalFullE2eResearchChain({
+    hotelIds,
+    authorizePaidDiscovery,
+    authorizePaidResearch,
+    budgetCeilingUsd: authorizePaidResearch
+      ? Number(arg("--budget-ceiling-usd") || budgetManifest.hardCeilingUsd || 0)
+      : 0,
+    useFixtureProvider: !authorizePaidDiscovery,
+    allowHistoricalReplay: true,
+    persistState: true,
+    // Explicit null = no lead cap. Only apply when flag provided.
+    maxCandidates:
+      chainCandidateLimit != null ? Number(chainCandidateLimit) : null,
+    priorLiveSpendUsd: 0.4,
+    outDir: path.join(outDir, "original-full-e2e-chain"),
+  });
+  discoveryExecution = {
+    summary: {
+      cellCount: originalChain.discovery?.cellCount || 0,
+      totalExtractedCandidates: originalChain.discovery?.extracted || 0,
+      totalResearchCostUsd: originalChain.discovery?.costUsd || 0,
+      freshRetrievalCells: originalChain.discovery?.freshRetrievalCells || 0,
+    },
+    cells: [],
+  };
+  fs.mkdirSync(outDir, { recursive: true });
+  fs.writeFileSync(
+    path.join(outDir, "discovery-execution-traces.json"),
+    `${JSON.stringify({ from: "original_full_e2e_chain", discovery: originalChain.discovery }, null, 2)}\n`
+  );
+} else if (executeDiscovery) {
   discoveryExecution = await executeFourteenSegmentDiscoveryMatrix({
     hotelIds,
     authorizePaidDiscovery,
@@ -258,7 +304,23 @@ const report = {
   dryRun,
   executeDiscovery,
   authorizePaidDiscovery,
-  mode: executeDiscovery ? "DISCOVERY_EXECUTION" : "ACCOUNTING_ONLY",
+  runOriginalChain,
+  authorizePaidResearch,
+  mode: runOriginalChain
+    ? "ORIGINAL_FULL_E2E_CHAIN"
+    : executeDiscovery
+      ? "DISCOVERY_EXECUTION"
+      : "ACCOUNTING_ONLY",
+  budgetManifest,
+  originalChainSummary: originalChain
+    ? {
+        retainedCandidates: originalChain.retainedCandidates,
+        processedCount: originalChain.processedCount,
+        withPresentation: originalChain.withPresentation,
+        paidSpendUsd: originalChain.paidSpendUsd,
+        fullE2eCompleteClaimAllowed: originalChain.fullE2eCompleteClaimAllowed,
+      }
+    : null,
   completionContract: {
     EXECUTOR_NOT_IMPLEMENTED: "registered adapter/query path missing",
     EXECUTOR_READY: "queries built; awaiting provider or historical/fixture",
@@ -290,9 +352,11 @@ const report = {
   discoveryStatusRollup: statusRollup,
   completeClaimsBlocked: perHotel.filter((h) => h.incompleteBecauseNotRun),
   discoveryCompleteClaimAllowed: false,
-  note: executeDiscovery
-    ? "Discovery executors were invoked. See discovery-execution-traces.json. Historical replay is Stage A recovery — not a FullE2E discovery COMPLETE claim. Paid providers require --authorize-paid-discovery."
-    : "ACCOUNTING ONLY — no discovery executors invoked. Pass --execute-discovery to run registered executors / historical Stage A replay. Do not treat this exit as discovery completion.",
+  note: runOriginalChain
+    ? "Original Full E2E chain invoked (discovery → deep research → contacts → qualification → presentation). Live paid Exa requires --authorize-paid-discovery and --authorize-paid-research with budget ceiling. See original-full-e2e-chain/."
+    : executeDiscovery
+      ? "Discovery executors were invoked. See discovery-execution-traces.json. Historical replay is Stage A recovery — not a FullE2E discovery COMPLETE claim. Pass --run-original-full-e2e-chain to continue into deep research/contacts/qualification/presentation."
+      : "ACCOUNTING ONLY — no discovery executors invoked. Pass --execute-discovery to run registered executors / historical Stage A replay. Do not treat this exit as discovery completion.",
 };
 
 fs.mkdirSync(outDir, { recursive: true });
