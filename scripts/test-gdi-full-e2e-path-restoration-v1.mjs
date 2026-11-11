@@ -30,11 +30,9 @@ const confirmed = classifyCommercialDemandThesis({
 assert.equal(confirmed.thesisStandard, DEMAND_THESIS_STANDARD.CONFIRMED_DEMAND);
 
 const inferred = classifyCommercialDemandThesis({
-  sources: [{ title: "Regional oncology conference", url: "https://example.org/conference" }],
   evidence: [
-    { supportsFact: "event_dates", sourceTitle: "2026 conference dates" },
-    { supportsFact: "venue", sourceTitle: "Downtown convention venue" },
-    { supportsFact: "2026_attendance", sourceTitle: "1200 delegates expected" },
+    { value: "The 2026 oncology conference is held at the downtown convention center." },
+    { value: "1200 delegates are expected." },
   ],
 });
 assert.equal(inferred.thesisStandard, DEMAND_THESIS_STANDARD.RELIABLE_INFERRED_DEMAND);
