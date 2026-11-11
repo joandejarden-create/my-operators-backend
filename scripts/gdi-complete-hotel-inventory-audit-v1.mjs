@@ -44,12 +44,38 @@ function opportunitiesOf(file) {
 }
 
 function personFrom(opportunity) {
-  return (
+  const primary =
     opportunity.primaryContact ||
     opportunity.contact ||
     opportunity.buyer ||
-    {}
-  );
+    {};
+  const roleCandidates = [
+    primary.role,
+    primary.title,
+    opportunity.contactRole,
+    opportunity.buyerRole,
+  ]
+    .map((value) => String(value || "").replace(/\s+/g, " ").trim())
+    .filter(Boolean);
+  const scored = roleCandidates
+    .map((role) => {
+      let score = role.length >= 24 ? 1 : 0;
+      if (/\b(director|manager|coordinator|planner|officer|head|lead|vp|vice president|gerente|chief)\b/i.test(role)) {
+        score += 3;
+      }
+      if (/\b(meeting|meetings|event|events|housing|hotel|lodging|conference|procurement|travel)\b/i.test(role)) {
+        score += 2;
+      }
+      return { role, score };
+    })
+    .sort((a, b) => b.score - a.score || b.role.length - a.role.length);
+  const bestRole = scored[0]?.role || "";
+  return {
+    ...primary,
+    name: primary.name || opportunity.contactName || primary.fullName || null,
+    role: bestRole || primary.role || primary.title || null,
+    title: bestRole || primary.title || primary.role || null,
+  };
 }
 
 function hasEvidenceArtifact(opportunity) {

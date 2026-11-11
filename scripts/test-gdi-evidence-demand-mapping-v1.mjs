@@ -33,6 +33,32 @@ const inferred = classifyCommercialDemandThesis({
 });
 assert.equal(inferred.thesisStandard, "RELIABLE_INFERRED_DEMAND");
 
+const inferredCityDateScale = classifyCommercialDemandThesis({
+  evidence: [
+    { supportsFact: "dates_city", value: "April 20–23, 2027 — Washington, DC", sourceTitle: "ACTS Translational Science" },
+    { supportsFact: "peak_rooms_estimate", value: "150–250 peak rooms (from historical ~500–800 attendance)" },
+  ],
+  estimatedAttendance: "500-800",
+  estimatedPeakRooms: "150-250",
+});
+assert.equal(inferredCityDateScale.thesisStandard, "RELIABLE_INFERRED_DEMAND");
+
+const namedHostHotel = classifyCommercialDemandThesis({
+  evidence: [
+    { supportsFact: "host_hotel", value: "Crystal Gateway Marriott named for March 7–10, 2027" },
+    { supportsFact: "sold_out_precedent", value: "2026 Crystal Gateway block sold out with no official overflow hotel" },
+  ],
+});
+assert.equal(namedHostHotel.thesisStandard, "CONFIRMED_DEMAND");
+
+const historicalHostInferred = classifyCommercialDemandThesis({
+  evidence: [
+    { supportsFact: "2027_city_dates", value: "Washington, DC — March 15–16, 2027", sourceTitle: "AHIMA Advocacy Summit" },
+    { supportsFact: "2026_hotel", value: "Hilton Washington DC National Mall (2026)" },
+  ],
+});
+assert.equal(historicalHostInferred.thesisStandard, "RELIABLE_INFERRED_DEMAND");
+
 const announcedLater = classifyCommercialDemandThesis({
   evidence: [
     { value: "June 7–9, 2027 conference." },
@@ -62,10 +88,25 @@ const unrelated = classifyContactEligibility(
 assert.notEqual(unrelated.class, "DIRECT_BUYER");
 assert.notEqual(unrelated.class, "RELEVANT_COMMERCIAL_ENTRY_POINT");
 
+const meetingsHousingRemit = classifyContactEligibility(
+  { name: "Jamie McCormick", role: "Meetings / housing", organization: "NADO" },
+  {
+    organizationName: "NADO",
+    title: "NADO Arlington Washington Conference 2027",
+    relationshipToOpportunity: "Influences hotel selection, housing, or room-block inclusion",
+  }
+);
+assert.equal(meetingsHousingRemit.class, "DIRECT_BUYER");
+
 const rehydrated = rehydratePersistedExaEvidence({
   evidence: [{ value: "Teams must book through the housing system.", sourceTitle: "Conference housing block", supportsFact: "hotel_block" }],
 });
 assert.equal(rehydrated.opportunity.evidence[0].quote, "Teams must book through the housing system.");
+
+const placeholderRehydrated = rehydratePersistedExaEvidence({
+  evidence: [{ value: "Official source", sourceTitle: "SSSP 2026 Annual Meeting", supportsFact: "source" }],
+});
+assert.equal(placeholderRehydrated.opportunity.evidence[0].quote, "SSSP 2026 Annual Meeting");
 
 const selectable = new Set(listGdiSelectableHotels().map((hotel) => hotel.hotelId));
 for (const hotel of RESEARCH_ONLY_HOTELS_V1) {
