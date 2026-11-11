@@ -1,0 +1,400 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gdi-scaling-exa-agent-discovery-structured-output-v2",
+  "title": "ScalingCompaniesDiscoveryCandidatesV2",
+  "description": "Hospitality-demand-first discovery. Preserves V1 field names; adds Gate1/Gate2 and demand-mechanism fields. Use null for unsupported.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["researchDate", "hotelId", "candidates", "materialUncertainties", "contractId"],
+  "properties": {
+    "contractId": {
+      "type": "string",
+      "const": "gdi-scaling-exa-agent-discovery-v2"
+    },
+    "researchDate": { "type": "string", "description": "ISO date of research run" },
+    "hotelId": { "type": ["string", "null"] },
+    "hotelName": { "type": ["string", "null"] },
+    "hotelOfficialStreetAddress": { "type": ["string", "null"] },
+    "candidates": {
+      "type": "array",
+      "maxItems": 12,
+      "items": { "$ref": "#/$defs/discoveryCandidate" }
+    },
+    "materialUncertainties": {
+      "type": "array",
+      "maxItems": 20,
+      "items": { "type": "string" }
+    },
+    "rejectedOrFlagged": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label", "reason"],
+        "properties": {
+          "label": { "type": "string" },
+          "reason": { "type": "string" },
+          "url": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "notesForDeepResearch": {
+      "type": "array",
+      "maxItems": 20,
+      "items": { "type": "string" }
+    }
+  },
+  "$defs": {
+    "evidenceClaim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim", "url"],
+      "properties": {
+        "claim": { "type": "string" },
+        "url": { "type": "string" },
+        "sourceUrl": { "type": ["string", "null"] },
+        "sourceTitle": { "type": ["string", "null"] },
+        "publishedDate": { "type": ["string", "null"] },
+        "publishedOrAccessedDate": { "type": ["string", "null"] },
+        "excerpt": { "type": ["string", "null"] },
+        "establishes": { "type": ["string", "null"] },
+        "entityAttributed": {
+          "type": ["string", "null"],
+          "description": "Target company vs publisher vs other"
+        },
+        "confidence": {
+          "type": ["string", "null"],
+          "enum": ["high", "medium", "low", null]
+        },
+        "factVsInference": {
+          "type": ["string", "null"],
+          "enum": ["source_established_fact", "inferred_demand", "assumption", "unknown", null]
+        }
+      }
+    },
+    "discoveryCandidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "companyIdentity",
+        "businessTrigger",
+        "activityChronology",
+        "activityGeography",
+        "verifiedBusinessActivity",
+        "activityDate",
+        "growthSignalType",
+        "physicalActivityIndicator",
+        "potentialTravelerTypes",
+        "travelGeneratingMechanism",
+        "potentialGuestroomDemand",
+        "potentialMeetingDemand",
+        "potentialCateringDemand",
+        "hospitalityDemandEvidenceLevel",
+        "hotelMarketRelevance",
+        "preliminaryPropertyFit",
+        "likelyDemandTiming",
+        "knownCommercialLimitations",
+        "gate1OperationalActivity",
+        "gate2HospitalityDemand",
+        "supportingEvidence",
+        "claimToSourceMapping",
+        "hotelDemandHypothesis",
+        "hotelRelevanceHypothesis",
+        "evidenceClaims",
+        "researchGaps",
+        "discoveryDisposition",
+        "discoveryPriority",
+        "deepResearchQuestions",
+        "researchPriority"
+      ],
+      "properties": {
+        "companyIdentity": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["legalOrTradingName", "officialWebsite"],
+          "properties": {
+            "legalOrTradingName": { "type": "string" },
+            "canonicalName": { "type": ["string", "null"] },
+            "officialWebsite": { "type": ["string", "null"] },
+            "website": { "type": ["string", "null"] },
+            "linkedinUrl": { "type": ["string", "null"] },
+            "hqCity": { "type": ["string", "null"] },
+            "hqCountry": { "type": ["string", "null"] },
+            "aka": { "type": "array", "items": { "type": "string" }, "maxItems": 8 },
+            "parentOrSubsidiaryNote": { "type": ["string", "null"] },
+            "identityConfidence": {
+              "type": ["string", "null"],
+              "enum": ["verified", "probable", "unverified", "high", "medium", "low", "ambiguous", "possible", "unknown", null]
+            },
+            "entityType": {
+              "type": ["string", "null"],
+              "enum": [
+                "operating_company",
+                "subsidiary",
+                "publisher_or_wire",
+                "event_organizer",
+                "unknown",
+                null
+              ]
+            },
+            "notTheSameAs": {
+              "type": "array",
+              "items": { "type": "string" },
+              "maxItems": 8
+            }
+          }
+        },
+        "businessTrigger": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["summary", "triggerType"],
+          "properties": {
+            "summary": { "type": "string" },
+            "triggerType": {
+              "type": "string",
+              "enum": [
+                "new_office_or_facility",
+                "regional_expansion",
+                "market_entry",
+                "hiring_or_workforce_growth",
+                "operational_project",
+                "investment",
+                "relocation",
+                "training_or_implementation",
+                "corporate_meeting_or_offsite",
+                "acquisition_integration",
+                "other_growth_activity",
+                "unknown"
+              ]
+            },
+            "fundingAmountUsd": { "type": ["number", "null"] },
+            "isSupportingSignalOnly": { "type": ["boolean", "null"] }
+          }
+        },
+        "activityChronology": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["activityDate", "isHistorical"],
+          "properties": {
+            "activityDate": { "type": ["string", "null"] },
+            "sourcePublicationDate": { "type": ["string", "null"] },
+            "isHistorical": { "type": ["boolean", "null"] },
+            "currentOperationalRelevance": {
+              "type": ["string", "null"],
+              "enum": ["current", "continuing_operations", "historical_unclear", "unknown", null]
+            }
+          }
+        },
+        "activityGeography": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["primaryLocation"],
+          "properties": {
+            "primaryLocation": { "type": ["string", "null"] },
+            "country": { "type": ["string", "null"] },
+            "distanceOrAccessNote": { "type": ["string", "null"] }
+          }
+        },
+        "verifiedBusinessActivity": { "type": ["string", "null"] },
+        "activityDate": { "type": ["string", "null"] },
+        "growthSignalType": {
+          "type": "string",
+          "enum": [
+            "operational_expansion",
+            "project_implementation",
+            "workforce_movement",
+            "corporate_meetings_events",
+            "acquisition_transformation",
+            "funding_only",
+            "hiring_only",
+            "generic_growth",
+            "other"
+          ]
+        },
+        "physicalActivityIndicator": {
+          "type": "string",
+          "enum": [
+            "verified_physical",
+            "strong_inferred_physical",
+            "unclear",
+            "remote_or_virtual_only",
+            "none"
+          ]
+        },
+        "potentialTravelerTypes": {
+          "type": "array",
+          "maxItems": 10,
+          "items": { "type": "string" }
+        },
+        "travelGeneratingMechanism": { "type": ["string", "null"] },
+        "potentialGuestroomDemand": {
+          "type": "string",
+          "enum": ["credible", "possible", "unlikely", "unknown", "none"]
+        },
+        "potentialMeetingDemand": {
+          "type": "string",
+          "enum": ["credible", "possible", "unlikely", "unknown", "none"]
+        },
+        "potentialCateringDemand": {
+          "type": "string",
+          "enum": ["credible", "possible", "unlikely", "unknown", "none"]
+        },
+        "hospitalityDemandEvidenceLevel": {
+          "type": "string",
+          "enum": [
+            "verified_physical_travel_or_gathering",
+            "strong_evidence_supported_mechanism",
+            "plausible_unverified",
+            "speculative",
+            "no_meaningful_hospitality_connection"
+          ]
+        },
+        "hotelMarketRelevance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["assessment", "rationale"],
+          "properties": {
+            "assessment": {
+              "type": "string",
+              "enum": [
+                "property_catchment_fit",
+                "city_relevant_needs_specificity",
+                "weak_or_distant",
+                "irrelevant",
+                "unknown"
+              ]
+            },
+            "rationale": { "type": ["string", "null"] }
+          }
+        },
+        "preliminaryPropertyFit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["fit", "limitations"],
+          "properties": {
+            "fit": {
+              "type": "string",
+              "enum": ["promising", "neutral", "poor", "unknown"]
+            },
+            "limitations": { "type": ["string", "null"] }
+          }
+        },
+        "likelyDemandTiming": {
+          "type": "string",
+          "enum": [
+            "current",
+            "near_term",
+            "forward_looking",
+            "one_time_past",
+            "unknown"
+          ]
+        },
+        "knownCommercialLimitations": { "type": ["string", "null"] },
+        "gate1OperationalActivity": {
+          "type": "string",
+          "enum": ["PASS", "INVESTIGATE", "REJECT"]
+        },
+        "gate2HospitalityDemand": {
+          "type": "string",
+          "enum": [
+            "ACCEPT_FOR_DEEP_RESEARCH",
+            "TARGETED_VERIFICATION_REQUIRED",
+            "MONITOR",
+            "REJECT"
+          ]
+        },
+        "supportingEvidence": {
+          "type": "array",
+          "maxItems": 12,
+          "items": { "$ref": "#/$defs/evidenceClaim" }
+        },
+        "claimToSourceMapping": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["claimSummary", "sourceUrl"],
+            "properties": {
+              "claimSummary": { "type": "string" },
+              "sourceUrl": { "type": "string" },
+              "factVsInference": {
+                "type": ["string", "null"],
+                "enum": ["source_established_fact", "inferred_demand", "assumption", "unknown", null]
+              }
+            }
+          }
+        },
+        "hotelDemandHypothesis": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mechanism", "evidenceStatus"],
+          "properties": {
+            "mechanism": { "type": ["string", "null"] },
+            "travelerTypes": {
+              "type": "array",
+              "maxItems": 8,
+              "items": { "type": "string" }
+            },
+            "evidenceStatus": {
+              "type": "string",
+              "enum": ["documented", "plausible_inferred", "unsupported", "unknown"]
+            }
+          }
+        },
+        "hotelRelevanceHypothesis": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["whyThisHotel", "specificity"],
+          "properties": {
+            "whyThisHotel": { "type": ["string", "null"] },
+            "specificity": {
+              "type": "string",
+              "enum": ["property_specific", "city_only", "generic", "unknown"]
+            }
+          }
+        },
+        "evidenceClaims": {
+          "type": "array",
+          "maxItems": 12,
+          "items": { "$ref": "#/$defs/evidenceClaim" }
+        },
+        "researchGaps": {
+          "type": "array",
+          "maxItems": 12,
+          "items": { "type": "string" }
+        },
+        "discoveryDisposition": {
+          "type": "string",
+          "enum": [
+            "ACCEPT_FOR_DEEP_RESEARCH",
+            "TARGETED_VERIFICATION_REQUIRED",
+            "MONITOR",
+            "HOLD_DUPLICATE_CHECK",
+            "HOLD_IDENTITY_UNCLEAR",
+            "REJECT_NO_HOTEL_DEMAND",
+            "REJECT_PUBLISHER_MISCLASSIFIED",
+            "REJECT_STALE_OR_IRRELEVANT",
+            "FLAG_FOR_HUMAN_REVIEW"
+          ]
+        },
+        "discoveryPriority": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "description": "1 = highest hospitality-demand research value"
+        },
+        "deepResearchQuestions": {
+          "type": "array",
+          "maxItems": 12,
+          "items": { "type": "string" }
+        },
+        "researchPriority": {
+          "type": "string",
+          "enum": ["P0", "P1", "P2", "SKIP"]
+        }
+      }
+    }
+  }
+}
