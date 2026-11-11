@@ -332,8 +332,12 @@ function decide(input) {
     path.join(ROOT, "lib/group-demand-intelligence/research/exa-agent/fixtures/gdi-events-mock-provider-responses-v1.js")
   );
   const workflow = input.workflow;
-  const deliveryFailed = Boolean(
-    workflow?.hotels?.some((row) => row.localDelivery === "failed" || row.productionDelivery === "failed" || row.computedOverallStatus === "FAILED")
+  const localDeliveryFailed = Boolean(
+    workflow?.hotels?.some((row) => row.localDelivery === "failed")
+  );
+  const engineRan = Boolean(
+    workflow?.hotels?.length &&
+      workflow.hotels.every((row) => Number(row.exitCode) === 0 && Number(row.paidCalls || 0) === 0 && row.localDelivery === "passed")
   );
   const spice = input.registry.byHotel[SPICE_ISLAND_HOTEL_ID];
   const spiceIds = (spice?.published || []).map((row) => row.id).sort();
@@ -348,8 +352,8 @@ function decide(input) {
   const commercialQualification = input.hotels.some((hotel) => hotel.salesReadySpeculative > 0)
     ? "FAIL"
     : "NOT VERIFIED";
-  const engineExecution = !input.workflow ? "NOT VERIFIED" : deliveryFailed ? "FAIL" : "PASS";
-  const customerDelivery = !input.workflow ? "NOT VERIFIED" : deliveryFailed ? "FAIL" : "NOT VERIFIED";
+  const engineExecution = !input.workflow ? "NOT VERIFIED" : localDeliveryFailed ? "FAIL" : engineRan ? "PASS" : "NOT VERIFIED";
+  const customerDelivery = !input.workflow ? "NOT VERIFIED" : localDeliveryFailed ? "FAIL" : "NOT VERIFIED";
 
   const measured = [engineExecution, customerDelivery, commercialQualification, publicationSafety];
   const fullE2e = measured.includes("FAIL") ? "FAIL" : "NOT VERIFIED";
