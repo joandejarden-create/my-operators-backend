@@ -10,6 +10,12 @@ import {
 import { whyIsntThisShowing } from "../lib/group-demand-intelligence/research/discovery-to-decision/why-isnt-this-showing-v1.js";
 import { applyApprovedBethesdaCustomerProjection } from "../lib/group-demand-intelligence/workflow/gdi-bethesda-publication-v1.js";
 import {
+  isBethesdaInternalUnionHotel,
+  mergeBethesdaInternalResearchOpportunities,
+  findBethesdaInternalResearchOpportunity,
+  BETHESDA_INTERNAL_LIST_SCOPE,
+} from "../lib/group-demand-intelligence/research/bethesda-internal-research-union-v1.js";
+import {
   RESEARCH_PREVIEW_DISCLAIMER,
   RESEARCH_PREVIEW_SCOPE,
   RESEARCH_PREVIEW_TITLE,
@@ -299,10 +305,19 @@ async function loadOpportunityForDetail(hotelId, opportunityId) {
   // Always use loadOppDoc so local shadow merge + founder reviews apply.
   // (Cached canonical docs alone omit shadow association rows / tier overlays.)
   const doc = await loadOppDoc(hotelId);
-  const opportunity = (doc.opportunities || []).find((o) => o.id === opportunityId);
+  let opportunity = (doc.opportunities || []).find((o) => o.id === opportunityId);
+  let source = doc?.cacheHit ? "cache_with_shadow" : "full_doc";
+  // Bethesda internal research-stage reconstruction (29) — auth detail only.
+  if (!opportunity && isBethesdaInternalUnionHotel(hotelId)) {
+    const hist = findBethesdaInternalResearchOpportunity(hotelId, opportunityId);
+    if (hist) {
+      opportunity = hist;
+      source = "bethesda_internal_research_union";
+    }
+  }
   return {
     opportunity: opportunity || null,
-    source: doc?.cacheHit ? "cache_with_shadow" : "full_doc",
+    source,
     durationMs: Date.now() - t0,
   };
 }
@@ -327,6 +342,21 @@ function projectOpportunitiesCommercialQuality(opportunities, { nowDate } = {}) 
         relatedOpportunityIds: relatedIds,
         relatedOpportunityCount: relatedIds.length,
       });
+    }
+    // Bethesda internal research-stage reconstructions already carry honest
+    // list/detail fields — do not run customer sanitize that would strip them.
+    if (
+      o?.bethesdaInternalResearchInventory === true ||
+      o?.gdiInternalUnionOnly === true
+    ) {
+      return {
+        ...o,
+        relatedOpportunityIds: relatedIds,
+        relatedOpportunityCount: relatedIds.length,
+        salesReady: false,
+        customerFacing: false,
+        customerVisible: false,
+      };
     }
     const cq = applyLiveCommercialQuality(o, { nowDate: nowDate || asOfToday() });
     // Never leak discovery vertical slugs into customer segment
@@ -547,12 +577,31 @@ export async function getGdiSummary(req, res) {
     const hotelId = String(req.params.hotelId || "").trim();
     const profile = loadHotelProfile(hotelId);
     const doc = await loadOppDoc(hotelId);
+    let summaryOpps = doc.opportunities || [];
+    let bethesdaUnionSummary = null;
+    if (isBethesdaInternalUnionHotel(hotelId)) {
+      const union = mergeBethesdaInternalResearchOpportunities(
+        hotelId,
+        summaryOpps
+      );
+      summaryOpps = union.opportunities;
+      bethesdaUnionSummary = {
+        applied: true,
+        counts: union.counts,
+        listScope: union.scope,
+      };
+    }
     const summary = loadLatestSummary(hotelId, {
-      opportunities: doc.opportunities || [],
+      opportunities: summaryOpps,
       opportunityDoc: doc,
     });
+    if (bethesdaUnionSummary?.counts?.union) {
+      summary.qualifiedCount = bethesdaUnionSummary.counts.union;
+      summary.opportunityCount = bethesdaUnionSummary.counts.union;
+      summary.bethesdaInternalUnion = bethesdaUnionSummary;
+    }
     const feedback = loadFeedback(hotelId);
-    const pilotMetrics = buildPilotMetrics(doc.opportunities || [], feedback);
+    const pilotMetrics = buildPilotMetrics(summaryOpps, feedback);
     const campaignsVisible = listVisibleDemandCampaigns(hotelId, {
       nowDate: asOfToday(),
     });
@@ -701,18 +750,38 @@ export async function getGdiOpportunities(req, res) {
     // Sanitizer may fill summaryWhat from summaryWhyMatters/thesis, which
     // incorrectly satisfies travel_or_recurring_evidence and widens the list.
     let opportunities = doc.opportunities || [];
+    let listScope = "CUSTOMER_FACING";
+    let bethesdaUnionMeta = null;
     const { isInventoryVisibilityHotelEnabled } = await import(
       "../lib/group-demand-intelligence/inventory-visibility-v1.js"
     );
-    // Inventory visibility (Waterstone): keep DISQUALIFIED for Excluded/history lanes.
-    if (!includeDisqualified && !isInventoryVisibilityHotelEnabled(hotelId)) {
-      opportunities = filterSalespersonView(opportunities);
+    if (isBethesdaInternalUnionHotel(hotelId)) {
+      // INTERNAL unified inventory: retain all canonical Bethesda IDs + 29
+      // research-stage reconstructions (88). Do not apply customer-facing
+      // publication filters here — share APIs remain separately gated.
+      const union = mergeBethesdaInternalResearchOpportunities(
+        hotelId,
+        opportunities
+      );
+      opportunities = union.opportunities;
+      listScope = union.scope || BETHESDA_INTERNAL_LIST_SCOPE;
+      bethesdaUnionMeta = {
+        applied: true,
+        counts: union.counts,
+        storeWrites: false,
+        customerShare: false,
+      };
+    } else {
+      // Inventory visibility (Waterstone): keep DISQUALIFIED for Excluded/history lanes.
+      if (!includeDisqualified && !isInventoryVisibilityHotelEnabled(hotelId)) {
+        opportunities = filterSalespersonView(opportunities);
+      }
+      const visibilityOpts = { hotelId };
+      opportunities = filterCustomerFacingOpportunities(
+        opportunities,
+        visibilityOpts
+      );
     }
-    const visibilityOpts = { hotelId };
-    opportunities = filterCustomerFacingOpportunities(
-      opportunities,
-      visibilityOpts
-    );
     opportunities = applyApprovedBethesdaCustomerProjection(opportunities);
     opportunities = projectOpportunitiesCommercialQuality(opportunities);
     // Hotel-scoped Need-Date tile icons — one period load per request (no N+1).
@@ -773,8 +842,11 @@ export async function getGdiOpportunities(req, res) {
       /* pursuit overlay optional */
     }
     res.setHeader("X-GDI-Opportunity-View", wantFull ? "full" : "list");
-    res.setHeader("X-GDI-List-Scope", "CUSTOMER_FACING");
+    res.setHeader("X-GDI-List-Scope", listScope);
     res.setHeader("X-GDI-Already-Filtered", "1");
+    if (bethesdaUnionMeta?.applied) {
+      res.setHeader("X-GDI-Bethesda-Internal-Union", "88");
+    }
     const reviewedInStore = (doc.opportunities || []).filter(
       (o) =>
         String(o?.prospectPublicationBasis || "") ===
@@ -867,8 +939,10 @@ export async function getGdiOpportunities(req, res) {
       count: opportunities.length,
       view: wantFull ? "full" : "list",
       schemaVersion: wantFull ? null : GDI_OPPORTUNITY_LIST_SCHEMA,
+      listScope,
       opportunities,
       hotelNeedDateConfigV1,
+      ...(bethesdaUnionMeta ? { bethesdaInternalUnion: bethesdaUnionMeta } : {}),
       ...(visibilityWarning ? { visibilityWarning } : {}),
       ...(doc.publishedInventoryDiagnostic
         ? { publishedInventoryDiagnostic: doc.publishedInventoryDiagnostic }
