@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dealality://schemas/adp-full-e2e-v1",
+  "title": "ADP_FULL_E2E_V1",
+  "type": "object",
+  "required": ["workflowId", "workflowVersion", "mode"],
+  "properties": {
+    "workflowId": { "const": "ADP_FULL_E2E_V1" },
+    "workflowVersion": { "type": "string" },
+    "hotelId": { "type": "string" },
+    "adpPropertyId": { "type": "string", "pattern": "^adp_" },
+    "mode": {
+      "enum": ["new", "refresh", "validate", "repair", "status", "dry_run"]
+    },
+    "authorizeMeasurement": { "type": "boolean" },
+    "authorizePublish": { "type": "boolean" },
+    "budgetUsd": { "type": "number", "minimum": 0 },
+    "authorizationRef": { "type": "string" },
+    "certificationAxes": {
+      "type": "object",
+      "properties": {
+        "measurement_completeness": { "type": "boolean" },
+        "observation_integrity": { "type": "boolean" },
+        "market_identity_integrity": { "type": "boolean" },
+        "competitive_analysis_integrity": { "type": "boolean" },
+        "metric_integrity": { "type": "boolean" },
+        "executive_narrative_integrity": { "type": "boolean" },
+        "customer_report_readiness": { "type": "boolean" }
+      }
+    }
+  }
+}
