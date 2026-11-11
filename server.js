@@ -177,6 +177,7 @@ import {
   postAdminGdiReportGenerate,
   getAdminGdiReportPdf,
 } from "./api/admin-gdi-reports.js";
+import { getAdminGdiHistoricalResearchRecovery } from "./api/admin-gdi-historical-research-recovery.js";
 import {
   getAdminGdiFullContentParityInventory,
   postAdminGdiFullContentParityVerify,
@@ -1612,6 +1613,11 @@ app.get(
   "/api/admin/group-demand-intelligence/reports",
   ...adpMonthlyReviewAdminAuth,
   getAdminGdiReportCatalog
+);
+app.get(
+  "/api/admin/group-demand-intelligence/hotels/:hotelId/historical-research-recovery",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminGdiHistoricalResearchRecovery
 );
 app.get(
   "/api/admin/group-demand-intelligence/hotels/:hotelId/report-data",
