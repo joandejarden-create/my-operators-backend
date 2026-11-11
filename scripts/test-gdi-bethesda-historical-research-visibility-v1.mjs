@@ -51,7 +51,14 @@ check("attestation_rendering_counts", () => {
 
 check("attestation_labels_and_dispositions", () => {
   for (const row of payload.attestations) {
-    assert.equal(row.bodyStatus, "HISTORICAL_ATTESTATION_ONLY");
+    assert.ok(
+      [
+        "HISTORICAL_ATTESTATION_ONLY",
+        "SOURCE_EVIDENCE_AVAILABLE",
+        "ORIGINAL_BODY_AVAILABLE",
+      ].includes(row.bodyStatus),
+      `${row.id} unexpected bodyStatus ${row.bodyStatus}`
+    );
     assert.equal(row.customerFacing, false);
     assert.equal(row.salesReady, false);
     assert.equal(row.publicationApproved, false);

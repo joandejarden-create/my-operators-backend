@@ -376,10 +376,23 @@
               esc(row.historicalDisposition || "—") +
               "</td>" +
               "<td>" +
-              esc(row.bodyStatus || "HISTORICAL_ATTESTATION_ONLY") +
+              esc(
+                [
+                  row.bodyStatus || "HISTORICAL_ATTESTATION_ONLY",
+                  row.reconstructionStatus || null,
+                  row.commercialMaturity || null,
+                ]
+                  .filter(Boolean)
+                  .join(" · ")
+              ) +
               "</td>" +
               "<td>" +
-              esc(provenanceText(row)) +
+              esc(
+                provenanceText(row) +
+                  (row.whatIsHappeningPreview
+                    ? " · " + String(row.whatIsHappeningPreview).slice(0, 120)
+                    : "")
+              ) +
               "</td>" +
               "</tr>"
             );
