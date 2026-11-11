@@ -134,6 +134,7 @@ import {
   getAiDemandPositioningPublicationMeta,
   getAdpMonthlyExecutiveReview,
 } from "./api/ai-demand-positioning.js";
+import { getAdpAdminPublicationControl } from "./api/adp-local-review-publication-v1.js";
 import {
   getAdminLeakAuditMeta,
   getAdminLeakAudits,
@@ -153,6 +154,9 @@ import {
   getAdminMonthlyReviews,
   getAdminMonthlyReviewById,
   getAdminMonthlyReviewPdf,
+  getAdminFullAdpReportPdf,
+  getAdminPublishedPdfHistory,
+  getAdminHistoricalPublishedPdf,
   getAdminCurrentReportPdf,
   postAdminCurrentReportPdfGenerate,
   postAdminMonthlyReviewRegenerate,
@@ -1496,6 +1500,11 @@ const adpMonthlyReviewAdminAuth = [
   requireAdpMonthlyReviewAdminAccess,
 ];
 app.get(
+  "/api/ai-demand-positioning/review/admin-publication-control",
+  ...adpMonthlyReviewAdminAuth,
+  getAdpAdminPublicationControl
+);
+app.get(
   "/api/admin/ai-demand-positioning/monthly-reviews",
   ...adpMonthlyReviewAdminAuth,
   getAdminMonthlyReviews
@@ -1544,6 +1553,21 @@ app.get(
   "/api/admin/ai-demand-positioning/monthly-reviews/:reviewId/pdf",
   ...adpMonthlyReviewAdminAuth,
   getAdminMonthlyReviewPdf
+);
+app.get(
+  "/api/admin/ai-demand-positioning/full-adp-report-pdf/:propertyId",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminFullAdpReportPdf
+);
+app.get(
+  "/api/admin/ai-demand-positioning/published-pdf-history/:propertyId",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminPublishedPdfHistory
+);
+app.get(
+  "/api/admin/ai-demand-positioning/published-pdf-history/:propertyId/pdf",
+  ...adpMonthlyReviewAdminAuth,
+  getAdminHistoricalPublishedPdf
 );
 app.get(
   "/api/admin/ai-demand-positioning/monthly-reviews/:reviewId/compare",

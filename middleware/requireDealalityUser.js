@@ -132,6 +132,17 @@ export async function requireDealalityUser(req, res, next) {
     req.dealalityUser = dealalityUser;
     return next();
   } catch (err) {
+    // Local/dev only: an unreachable Airtable base must not block the approved
+    // QA identity, and must not fall open for any other account.
+    const localDemo = resolveLocalDemoDealalityUser({
+      memberstackId: req.memberstackMemberId,
+      email: req.memberstackEmail,
+      req,
+    });
+    if (localDemo) {
+      req.dealalityUser = attachLocalDemoRequestContext({ ...localDemo }, req);
+      return next();
+    }
     console.error("[requireDealalityUser] lookup error:", (err && err.message) || err);
     return res.status(500).json({
       ok: false,
