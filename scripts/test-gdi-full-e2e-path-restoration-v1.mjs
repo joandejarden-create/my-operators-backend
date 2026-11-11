@@ -30,7 +30,12 @@ const confirmed = classifyCommercialDemandThesis({
 assert.equal(confirmed.thesisStandard, DEMAND_THESIS_STANDARD.CONFIRMED_DEMAND);
 
 const inferred = classifyCommercialDemandThesis({
-  evidenceQuote: "Delegates need overnight lodging for the offsite meeting.",
+  sources: [{ title: "Regional oncology conference", url: "https://example.org/conference" }],
+  evidence: [
+    { supportsFact: "event_dates", sourceTitle: "2026 conference dates" },
+    { supportsFact: "venue", sourceTitle: "Downtown convention venue" },
+    { supportsFact: "2026_attendance", sourceTitle: "1200 delegates expected" },
+  ],
 });
 assert.equal(inferred.thesisStandard, DEMAND_THESIS_STANDARD.RELIABLE_INFERRED_DEMAND);
 assert.equal(inferred.mayQualifySalesReadyDemandGate, true);
