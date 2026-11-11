@@ -5,20 +5,42 @@ import { rehydratePersistedExaEvidence } from "../lib/group-demand-intelligence/
 import { listGdiSelectableHotels } from "../lib/group-demand-intelligence/repository.js";
 import { RESEARCH_ONLY_HOTELS_V1 } from "../lib/group-demand-intelligence/research/gdi-research-only-hotel-inventory-v1.js";
 
-const direct = classifyCommercialDemandThesis({
+const factCodeOnly = classifyCommercialDemandThesis({
   evidence: [{ supportsFact: "hotel_block", sourceTitle: "Official housing page", sourceUrl: "https://example.org/housing" }],
+});
+assert.equal(factCodeOnly.thesisStandard, "SPECULATIVE_DEMAND");
+
+const direct = classifyCommercialDemandThesis({
+  evidence: [{ supportsFact: "stay_to_play", value: "Teams outside 100 miles must book through the housing system." }],
 });
 assert.equal(direct.thesisStandard, "CONFIRMED_DEMAND");
 
+const contradictory = classifyCommercialDemandThesis({
+  evidence: [{ supportsFact: "hotel_block", value: "No dedicated hotel housing block found on official pages." }],
+});
+assert.equal(contradictory.thesisStandard, "CONTRADICTORY_OR_NEGATIVE");
+
+const absentLanguage = classifyCommercialDemandThesis({
+  evidence: [{ supportsFact: "no_housing_partner", value: "No housing partner or stay-to-play language found in the published rules." }],
+});
+assert.equal(absentLanguage.thesisStandard, "CONTRADICTORY_OR_NEGATIVE");
+
 const inferred = classifyCommercialDemandThesis({
-  sources: [{ title: "Regional oncology conference", url: "https://example.org/conference" }],
   evidence: [
-    { supportsFact: "event_dates", sourceTitle: "2026 conference dates" },
-    { supportsFact: "venue", sourceTitle: "Downtown convention venue" },
-    { supportsFact: "2026_attendance", sourceTitle: "1200 delegates expected" },
+    { value: "The 2026 oncology conference is held at the downtown convention center." },
+    { value: "1200 delegates are expected." },
   ],
 });
 assert.equal(inferred.thesisStandard, "RELIABLE_INFERRED_DEMAND");
+
+const announcedLater = classifyCommercialDemandThesis({
+  evidence: [
+    { value: "June 7–9, 2027 conference." },
+    { value: "Location to be announced." },
+    { value: "Over 400 participants." },
+  ],
+});
+assert.equal(announcedLater.thesisStandard, "SPECULATIVE_DEMAND");
 
 const unsupported = classifyCommercialDemandThesis({
   sources: [{ title: "Example Association", url: "https://example.org/about", supportsFact: "source" }],
@@ -41,9 +63,9 @@ assert.notEqual(unrelated.class, "DIRECT_BUYER");
 assert.notEqual(unrelated.class, "RELEVANT_COMMERCIAL_ENTRY_POINT");
 
 const rehydrated = rehydratePersistedExaEvidence({
-  evidence: [{ sourceTitle: "Conference housing block", sourceUrl: "https://example.org/block", supportsFact: "hotel_block" }],
+  evidence: [{ value: "Teams must book through the housing system.", sourceTitle: "Conference housing block", supportsFact: "hotel_block" }],
 });
-assert.equal(rehydrated.opportunity.evidence[0].quote, "Conference housing block");
+assert.equal(rehydrated.opportunity.evidence[0].quote, "Teams must book through the housing system.");
 
 const selectable = new Set(listGdiSelectableHotels().map((hotel) => hotel.hotelId));
 for (const hotel of RESEARCH_ONLY_HOTELS_V1) {

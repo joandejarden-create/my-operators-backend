@@ -93,7 +93,12 @@ export function shadowQualification(opportunity = {}) {
   let layer = "RESEARCH_CONTINUATION";
   if (eligibility.salesReady) layer = "SALES_READY";
   else if (eligibility.status === "COMMERCIALLY_INELIGIBLE") layer = "COMMERCIALLY_INELIGIBLE";
-  else if (supported && relevantContact) layer = "ACCOUNT_DEVELOPMENT";
+  else if (
+    supported &&
+    relevantContact &&
+    eligibility.gates?.buyerResponsibilitySupported === true &&
+    eligibility.gates?.usableContactRoute === true
+  ) layer = "ACCOUNT_DEVELOPMENT";
   return {
     layer,
     thesis: thesis.thesisStandard,
