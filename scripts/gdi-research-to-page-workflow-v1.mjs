@@ -188,6 +188,7 @@ import {
   SUPERVISOR_EXPECTED_SEGMENTS,
   canonicalizeSegmentId,
 } from "../lib/group-demand-intelligence/research/research-constants-v1.js";
+import { paidMultisegmentAuthorizationLedgerPath } from "../lib/group-demand-intelligence/parallel/budget-ledger-v1.js";
 import {
   runLocalDeliveryVerification,
   runProductionDeliveryVerification,
@@ -663,7 +664,7 @@ if (
 const budgetLedgerPath =
   process.env.GDI_PARALLEL_BUDGET_LEDGER_PATH ||
   process.env.GDI_PAID_MS_BUDGET_LEDGER_PATH ||
-  null;
+  paidMultisegmentAuthorizationLedgerPath();
 
 console.log(
   JSON.stringify(
@@ -1047,7 +1048,6 @@ for (const stage of stagesToRun) {
           err?.message || err
         );
       }
-      process.env.GDI_WEEKLY_REFRESH_PERSIST_STATE_ON_DRY_RUN = "1";
       const wr = await runWeeklyRefreshCycle({
         hotelId,
         opportunities: opps,
@@ -1977,7 +1977,7 @@ for (const stage of stagesToRun) {
       const contactResults = fs.existsSync(contactSummaryPath)
         ? JSON.parse(fs.readFileSync(contactSummaryPath, "utf8")).results || []
         : [];
-      const batch = synthesizeHotelRelevanceResearchBatch(ops.slice(0, 60), hotelId, {
+      const batch = synthesizeHotelRelevanceResearchBatch(ops, hotelId, {
         fitAssessments: (fitDoc?.store?.results || []).map((r) => ({
           opportunityId: r.id || r.candidateId || r.opportunityId,
           outcome: r.fit?.outcome || r.outcome || null,
