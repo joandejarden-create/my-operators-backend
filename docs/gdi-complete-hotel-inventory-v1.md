@@ -25,9 +25,9 @@ The audit follows `GDI_DATA_ROOT` for the live selector. The canonical repositor
 | Sheraton Mallorca Arabella | Spain | 30 | Yes | Canonical store. |
 | AC Hotel A Coruña | Spain | 39 | Yes | Canonical store. |
 | Castillo Hotel Son Vida | Spain | 20 | Yes | Canonical store. |
-| Hilton New York Times Square | United States | 45 | Yes | Canonical store. |
-| NOW NOW NOHO | United States | 8 | Yes | Canonical store. |
-| Cambridge Beaches | Bermuda | 8 | Yes | Canonical store. |
+| Hilton New York Times Square | Market not recorded on the GDI config | 45 | Yes | Canonical store. |
+| NOW NOW NOHO | Market not recorded on the GDI config | 8 | Yes | Canonical store. |
+| Cambridge Beaches | Market not recorded on the GDI config | 8 | Yes | Canonical store. |
 | Radisson Hotel Santo Domingo | Dominican Republic | 16 | Yes | Canonical store. |
 | Spice Island Beach Resort | Grenada | 77 research / 7 published | Yes | Published registry remains the certified seven. Research rows are not the published inventory. |
 | Sheraton Guadalajara Expo | Mexico | 0 opportunities | No | Aimbridge worktree: 14 segment files, 680 candidate ids, 434 research-state files. |
@@ -77,7 +77,7 @@ The four certification hotels remain entirely research continuation under the in
 
 ## Customer presentation
 
-With the canonical data root, the hotel API returns 18 hotels across the United States, the United Kingdom, Switzerland, Germany, Spain, Italy, the Dominican Republic, Bermuda, and Grenada. Opportunity counts for the stored hotels match the files above. The 60-row relevance cap remains removed. Research-only rows are not written into the published registry. Bethesda's published count is 0. Spice Island's published count is 7.
+With the canonical data root, the hotel API returns 18 hotels across the United States, the United Kingdom, Switzerland, Germany, Spain, Italy, the Dominican Republic, and Grenada. Three of those hotels have no country recorded on their GDI config. Opportunity counts for the stored hotels match the files above. The 60-row relevance cap remains removed. Research-only rows are not written into the published registry. Bethesda's published count is 0. Spice Island's published count is 7.
 
 Signed-in customer sessions, production Railway, and Airtable readback were not retested.
 
