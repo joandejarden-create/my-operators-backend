@@ -23,6 +23,10 @@ Each row is scored PASS, FAIL, or NOT VERIFIED. NOT VERIFIED is required when th
 | Customer delivery | List and detail match the approved source. Unpublished opportunities stay off the strict customer registry. Share links use the existing tokens and are not rotated by certification. |
 | Artifacts | Record the commit, inputs, hotel and category matrix, regression command, budget ledger, and exceptions. The signed report uses only PASS, FAIL, and NOT VERIFIED. |
 
+## Execution record
+
+The 2026-11-11 measurement is `docs/gdi-full-e2e-certification-report-20261111.md`. Full E2E certification was not awarded.
+
 ## Current readiness
 
 `npm run test:gdi-full-e2e-certification-readiness-v1` checks the catalog and entry points. Paid research is not part of that command. The events zero-paid orchestrator remains blocked because `gdi-events-mock-provider-responses-v1.js` is not in the repository and cannot be reconstructed from a saved fixture.
