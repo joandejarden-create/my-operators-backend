@@ -64,6 +64,17 @@ import {
   resolveAdpReportPdf,
   SINGLE_CANONICAL_AI_DEMAND_PERFORMANCE_REVIEW_PDF_RESOLVER_V1,
 } from "../lib/ai-demand-positioning/monthly-review/resolve-adp-report-pdf-v1.js";
+import { isAdpSyntheticOrTestPropertyId } from "../lib/ai-demand-positioning/governance/adp-operational-registry-hygiene-v1.js";
+import {
+  ADP_ARTIFACT_TYPE_FULL_ADP_REPORT_PDF,
+  ADP_FULL_E2E_PDF_ARTIFACT_STORE_V1,
+  resolveFullAdpE2ePdfArtifact,
+} from "../lib/ai-demand-positioning/full-adp-e2e-pdf/adp-full-e2e-pdf-artifact-store-v1.js";
+import {
+  ADP_PUBLISHED_PDF_HISTORY_V1,
+  listPublishedPdfHistoryForAdmin,
+  resolveHistoricalPublishedPdfBytes,
+} from "../lib/ai-demand-positioning/full-adp-e2e-pdf/adp-published-pdf-history-v1.js";
 
 const ACTION_PLAN_EXPORT_GATE =
   "AI_DEMAND_REVIEW_ACTION_AGENDA_ADMIN_ACTION_PLAN_PARITY";
@@ -493,6 +504,235 @@ export function getAdminMonthlyReviewPdf(req, res) {
   } catch (err) {
     console.error("[ADP Monthly Review Admin] pdf error:", err);
     return res.status(500).json({ ok: false, error: "internal_error", message: err.message });
+  }
+}
+
+/**
+ * Full ADP E2E report PDF (admin). Published scope reads the current published
+ * history entry and never substitutes a staged draft.
+ */
+export function getAdminFullAdpReportPdf(req, res) {
+  try {
+    const propertyId = String(req.params.propertyId || "").trim();
+    if (!propertyId) {
+      return res.status(400).json({
+        ok: false,
+        error: "propertyId_required",
+        classification: "ARTIFACT_NOT_FOUND",
+      });
+    }
+    if (isAdpSyntheticOrTestPropertyId(propertyId)) {
+      return res.status(404).json({
+        ok: false,
+        error: "synthetic_excluded",
+        classification: "ARTIFACT_NOT_FOUND",
+      });
+    }
+    const wantPublished =
+      String(req.query.published || "") === "1" ||
+      String(req.query.scope || "").toLowerCase() === "published";
+    const stagedVersionId = String(req.query.stagedVersionId || "").trim() || null;
+
+    if (wantPublished && !stagedVersionId) {
+      const history = listPublishedPdfHistoryForAdmin(propertyId);
+      const current = (history.entries || []).find(
+        (e) => e.status === "CURRENT" && !e.unavailable
+      );
+      if (!current?.periodId) {
+        return res.status(404).json({
+          ok: false,
+          error: "published_full_adp_pdf_unavailable",
+          classification: "ARTIFACT_NOT_FOUND",
+          artifactType: ADP_ARTIFACT_TYPE_FULL_ADP_REPORT_PDF,
+          gate: ADP_PUBLISHED_PDF_HISTORY_V1,
+          propertyId,
+        });
+      }
+      const hist = resolveHistoricalPublishedPdfBytes(propertyId, {
+        periodId: current.periodId,
+        pdfSha256: current.pdfSha256 || undefined,
+      });
+      if (!hist.ok || !hist.absolutePath) {
+        return res.status(404).json({
+          ok: false,
+          error: hist.error || "published_full_adp_pdf_unavailable",
+          classification: "ARTIFACT_NOT_FOUND",
+          artifactType: ADP_ARTIFACT_TYPE_FULL_ADP_REPORT_PDF,
+          gate: ADP_PUBLISHED_PDF_HISTORY_V1,
+          propertyId,
+          periodId: current.periodId,
+        });
+      }
+      const download = String(req.query.download || "") === "1";
+      const filename = `${propertyId}_${current.periodId}_full-adp-published.pdf`;
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader(
+        "Content-Disposition",
+        `${download ? "attachment" : "inline"}; filename="${filename}"`
+      );
+      res.setHeader("X-ADP-PDF-Artifact-Type", ADP_ARTIFACT_TYPE_FULL_ADP_REPORT_PDF);
+      res.setHeader("X-ADP-PDF-Gate", ADP_PUBLISHED_PDF_HISTORY_V1);
+      res.setHeader("X-ADP-PDF-Scope", "CURRENT_PUBLISHED");
+      res.setHeader("X-ADP-Period-Id", String(current.periodId || ""));
+      res.setHeader("X-ADP-PDF-Filename", filename);
+      res.setHeader("Cache-Control", "private, no-store, max-age=0");
+      if (hist.pdfSha256) {
+        res.setHeader("X-ADP-PDF-Fingerprint", hist.pdfSha256);
+      }
+      return fs.createReadStream(hist.absolutePath).pipe(res);
+    }
+
+    const resolved = resolveFullAdpE2ePdfArtifact(propertyId, {
+      expectedStagedVersionId: stagedVersionId,
+    });
+    if (!resolved.available || !resolved.pdfAbsolutePath) {
+      const versionMismatch =
+        stagedVersionId &&
+        resolved.stagedVersionId &&
+        resolved.stagedVersionId !== stagedVersionId;
+      return res.status(404).json({
+        ok: false,
+        error: resolved.reason || "full_adp_pdf_missing",
+        classification: versionMismatch
+          ? "ARTIFACT_VERSION_MISMATCH"
+          : "ARTIFACT_NOT_FOUND",
+        artifactType: ADP_ARTIFACT_TYPE_FULL_ADP_REPORT_PDF,
+        gate: ADP_FULL_E2E_PDF_ARTIFACT_STORE_V1,
+        propertyId,
+        stagedVersionId: resolved.stagedVersionId || stagedVersionId,
+      });
+    }
+    const download = String(req.query.download || "") === "1";
+    const filename = `${propertyId}_${resolved.stagedVersionId}_full-adp-report.pdf`;
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      `${download ? "attachment" : "inline"}; filename="${filename}"`
+    );
+    res.setHeader("X-ADP-PDF-Artifact-Type", ADP_ARTIFACT_TYPE_FULL_ADP_REPORT_PDF);
+    res.setHeader("X-ADP-PDF-Gate", ADP_FULL_E2E_PDF_ARTIFACT_STORE_V1);
+    res.setHeader("X-ADP-Staged-Version-Id", String(resolved.stagedVersionId || ""));
+    res.setHeader("X-ADP-PDF-Filename", filename);
+    res.setHeader("Cache-Control", "private, no-store, max-age=0");
+    if (resolved.pdfSha256) {
+      res.setHeader("X-ADP-PDF-Fingerprint", resolved.pdfSha256);
+    }
+    if (resolved.periodId) {
+      res.setHeader("X-ADP-Period-Id", String(resolved.periodId));
+    }
+    if (resolved.meta?.templateId) {
+      res.setHeader("X-ADP-PDF-Template-Id", String(resolved.meta.templateId));
+    }
+    return fs.createReadStream(resolved.pdfAbsolutePath).pipe(res);
+  } catch (err) {
+    console.error("[ADP Admin] full ADP report pdf error:", err);
+    return res.status(500).json({
+      ok: false,
+      error: "internal_error",
+      classification: "PDF_RENDER_FAILURE",
+      message: err.message,
+    });
+  }
+}
+
+/** Published Full ADP PDF history. Staged drafts are excluded. */
+export function getAdminPublishedPdfHistory(req, res) {
+  try {
+    const propertyId = String(req.params.propertyId || "").trim();
+    if (!propertyId) {
+      return res.status(400).json({ ok: false, error: "propertyId_required" });
+    }
+    if (isAdpSyntheticOrTestPropertyId(propertyId)) {
+      return res.status(404).json({ ok: false, error: "synthetic_excluded" });
+    }
+    const history = listPublishedPdfHistoryForAdmin(propertyId);
+    return res.json({
+      ok: true,
+      gate: ADP_PUBLISHED_PDF_HISTORY_V1,
+      ...history,
+    });
+  } catch (err) {
+    console.error("[ADP Admin] published pdf history error:", err);
+    return res.status(500).json({
+      ok: false,
+      error: "internal_error",
+      message: err.message,
+    });
+  }
+}
+
+/**
+ * Immutable published Full ADP PDF bytes for one period.
+ * Query: periodId (required), pdfSha256 (recommended), download=1.
+ */
+export function getAdminHistoricalPublishedPdf(req, res) {
+  try {
+    const propertyId = String(req.params.propertyId || "").trim();
+    const periodId = String(req.query.periodId || "").trim();
+    const pdfSha256 = String(req.query.pdfSha256 || "").trim() || null;
+    if (!propertyId) {
+      return res.status(400).json({ ok: false, error: "propertyId_required" });
+    }
+    if (!periodId) {
+      return res.status(400).json({
+        ok: false,
+        error: "periodId_required",
+        label: "Historical PDF unavailable",
+      });
+    }
+    if (isAdpSyntheticOrTestPropertyId(propertyId)) {
+      return res.status(404).json({ ok: false, error: "synthetic_excluded" });
+    }
+    const resolved = resolveHistoricalPublishedPdfBytes(propertyId, {
+      periodId,
+      pdfSha256: pdfSha256 || undefined,
+    });
+    if (!resolved.ok || !resolved.absolutePath) {
+      const status =
+        resolved.error === "not_found" ||
+        resolved.error === "historical_pdf_unavailable" ||
+        resolved.error === "sha256_mismatch" ||
+        resolved.error === "pdfSha256_mismatch_for_period" ||
+        resolved.error ===
+          "historical_bytes_not_distinct_from_current_refusing_substitution"
+          ? 404
+          : 400;
+      return res.status(status).json({
+        ok: false,
+        error: resolved.error || "historical_pdf_unavailable",
+        label: resolved.label || "Historical PDF unavailable",
+        reason: resolved.reason || null,
+        gate: ADP_PUBLISHED_PDF_HISTORY_V1,
+        propertyId,
+        periodId,
+        pdfSha256: pdfSha256 || null,
+      });
+    }
+    const download = String(req.query.download || "") === "1";
+    const statusLabel = resolved.status === "CURRENT" ? "current" : "historical";
+    const filename = `${propertyId}_${periodId}_${statusLabel}-full-adp.pdf`;
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      `${download ? "attachment" : "inline"}; filename="${filename}"`
+    );
+    res.setHeader("X-ADP-PDF-Artifact-Type", ADP_ARTIFACT_TYPE_FULL_ADP_REPORT_PDF);
+    res.setHeader("X-ADP-PDF-Gate", ADP_PUBLISHED_PDF_HISTORY_V1);
+    res.setHeader("X-ADP-PDF-Scope", String(resolved.status || "HISTORICAL"));
+    res.setHeader("X-ADP-Period-Id", String(periodId));
+    res.setHeader("X-ADP-PDF-Filename", filename);
+    res.setHeader("Cache-Control", "private, no-store, max-age=0");
+    if (resolved.pdfSha256) {
+      res.setHeader("X-ADP-PDF-Fingerprint", resolved.pdfSha256);
+    }
+    return fs.createReadStream(resolved.absolutePath).pipe(res);
+  } catch (err) {
+    console.error("[ADP Admin] historical published pdf error:", err);
+    return res.status(500).json({
+      ok: false,
+      error: "internal_error",
+      message: err.message,
+    });
   }
 }
 

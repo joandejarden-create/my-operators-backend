@@ -258,6 +258,21 @@ async function getMe(req, res) {
       if (userRows.length) matchedBy = "email";
     }
   } catch (err) {
+    // Same local-demo rule as an empty Users result. Airtable errors stay
+    // fail-closed for every identity that is not the approved local QA email.
+    if (isEligibleForLocalDemoUserResolution(emailFromToken, req)) {
+      const localPayload = buildLocalDemoMeResponse({
+        memberstackId,
+        email: emailFromToken,
+        req,
+        tokenPayload,
+        matchedBy:
+          verifiedVia === "dev_bypass" ? "local_demo_dev_bypass" : "local_demo_airtable_unreachable",
+      });
+      if (localPayload) {
+        return res.json(localPayload);
+      }
+    }
     console.error("[api/me] Airtable user lookup error:", err.message);
     return res.status(500).json({
       success: false,
