@@ -18,7 +18,7 @@ if (process.argv.includes("--apply")) {
   process.exit(2);
 }
 
-const files = execFileSync("git", ["ls-files"], { encoding: "utf8" })
+const files = execFileSync("git", ["ls-files"], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 })
   .split(/\r?\n/)
   .filter(Boolean);
 const counts = {};

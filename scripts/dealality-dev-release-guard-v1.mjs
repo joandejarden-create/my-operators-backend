@@ -44,7 +44,7 @@ assert(server.includes("requireAdminAccess"), "admin gate mounted");
 assert(server.includes("admin-publication-control"), "publication control route");
 assert(server.includes("published-pdf-history"), "pdf history route");
 
-const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { encoding: "utf8" })
+const untracked = execFileSync("git", ["ls-files", "--others", "--exclude-standard"], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 })
   .split(/\r?\n/)
   .filter(Boolean)
   .map((file) => file.replace(/\\/g, "/"))
