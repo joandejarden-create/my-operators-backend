@@ -9,6 +9,8 @@
   var runs = [];
   var selectedHotelId = "";
   var loaded = false;
+  var historicalPayload = null;
+  var BETHESDA_HOTEL_ID = "recLuxvwwxID7U2B8";
 
   function authFetch(url, opts) {
     opts = opts || {};
@@ -292,8 +294,203 @@
       });
   }
 
+  function setHistoricalStatus(msg) {
+    var el = $("graHistoricalStatus");
+    if (el) el.textContent = msg || "";
+  }
+
+  function provenanceText(row) {
+    var p = (row && row.provenance) || {};
+    var bits = [];
+    if (p.discoveryRun) bits.push(p.discoveryRun);
+    if (p.discoveryDate) bits.push(p.discoveryDate);
+    if (p.artifactLabel) bits.push(p.artifactLabel);
+    if (p.evidenceLabels && p.evidenceLabels.length) {
+      bits.push(p.evidenceLabels.slice(0, 2).join("; "));
+    }
+    return bits.length ? bits.join(" · ") : "Attested recovery record";
+  }
+
+  function renderHistoricalPanel(payload) {
+    var panel = $("graHistoricalRecovery");
+    if (!panel) return;
+    var isBethesda = selectedHotelId === BETHESDA_HOTEL_ID;
+    panel.hidden = !isBethesda;
+    if (!isBethesda) {
+      historicalPayload = null;
+      return;
+    }
+    if (!payload) {
+      if ($("graHistoricalTableBody")) {
+        $("graHistoricalTableBody").innerHTML =
+          '<tr><td colspan="6">Loading historical research recovery…</td></tr>';
+      }
+      return;
+    }
+    historicalPayload = payload;
+    var counts = payload.counts || {};
+    if ($("graHistCanonical")) {
+      $("graHistCanonical").textContent = String(counts.canonicalOpportunities || 0);
+    }
+    if ($("graHistAttested")) {
+      $("graHistAttested").textContent = String(counts.historicalAttestations || 0);
+    }
+    if ($("graHistContinuation")) {
+      $("graHistContinuation").textContent = String(
+        counts.researchContinuationAvailable || 0
+      );
+    }
+    if ($("graHistCatering")) {
+      $("graHistCatering").textContent = String(counts.localCateringEvents || 0);
+    }
+    if ($("graHistPartnerships")) {
+      $("graHistPartnerships").textContent = String(counts.potentialPartnerships || 0);
+    }
+    if ($("graHistOther")) {
+      $("graHistOther").textContent = String(
+        counts.otherGroupCorporateAssociation || 0
+      );
+    }
+
+    var rows = payload.attestations || [];
+    var body = $("graHistoricalTableBody");
+    if (body) {
+      if (!rows.length) {
+        body.innerHTML =
+          '<tr><td colspan="6">No historical attestations available.</td></tr>';
+      } else {
+        body.innerHTML = rows
+          .map(function (row) {
+            return (
+              "<tr>" +
+              "<td>" +
+              esc(row.organizationName || row.title || "—") +
+              "</td>" +
+              "<td>" +
+              esc(row.visibilityGroupLabel || row.researchCategory || "—") +
+              "</td>" +
+              "<td><code>" +
+              esc(row.id || "") +
+              "</code></td>" +
+              "<td>" +
+              esc(row.historicalDisposition || "—") +
+              "</td>" +
+              "<td>" +
+              esc(row.bodyStatus || "HISTORICAL_ATTESTATION_ONLY") +
+              "</td>" +
+              "<td>" +
+              esc(provenanceText(row)) +
+              "</td>" +
+              "</tr>"
+            );
+          })
+          .join("");
+      }
+    }
+
+    var cont = (payload.researchContinuation && payload.researchContinuation.rows) || [];
+    var contSummary = $("graContinuationSummary");
+    if (contSummary) {
+      contSummary.textContent =
+        String(cont.length) +
+        " available" +
+        (payload.researchContinuation &&
+        payload.researchContinuation.declaredCount != null
+          ? " of " + payload.researchContinuation.declaredCount + " declared"
+          : "");
+    }
+    var contBody = $("graContinuationTableBody");
+    if (contBody) {
+      if (!cont.length) {
+        contBody.innerHTML =
+          '<tr><td colspan="4">No recoverable research-continuation rows available.</td></tr>';
+      } else {
+        contBody.innerHTML = cont
+          .map(function (row) {
+            return (
+              "<tr>" +
+              "<td>" +
+              esc(row.organizationName || row.title || "—") +
+              "</td>" +
+              "<td><code>" +
+              esc(row.id || "") +
+              "</code></td>" +
+              "<td>" +
+              esc(row.historicalDisposition || "RESEARCH_CONTINUATION") +
+              "</td>" +
+              "<td>" +
+              esc(row.bodyStatus || "—") +
+              "</td>" +
+              "</tr>"
+            );
+          })
+          .join("");
+      }
+    }
+  }
+
+  function loadHistoricalRecovery(hotelId) {
+    var id = String(hotelId || "").trim();
+    var panel = $("graHistoricalRecovery");
+    if (!panel) return Promise.resolve();
+    if (id !== BETHESDA_HOTEL_ID) {
+      panel.hidden = true;
+      historicalPayload = null;
+      return Promise.resolve();
+    }
+    panel.hidden = false;
+    setHistoricalStatus("Loading historical research recovery…");
+    renderHistoricalPanel(null);
+    return authFetch(
+      "/api/admin/group-demand-intelligence/hotels/" +
+        encodeURIComponent(id) +
+        "/historical-research-recovery"
+    )
+      .then(function (res) {
+        return res.json().then(function (payload) {
+          return { res: res, payload: payload };
+        });
+      })
+      .then(function (out) {
+        if (out.res.status === 401 || out.res.status === 403) {
+          setHistoricalStatus(
+            "Admin authorization required to view historical research recovery."
+          );
+          if ($("graHistoricalTableBody")) {
+            $("graHistoricalTableBody").innerHTML =
+              '<tr><td colspan="6">Admin authorization required.</td></tr>';
+          }
+          return;
+        }
+        if (!out.res.ok) {
+          setHistoricalStatus(
+            "Failed to load historical recovery (" +
+              out.res.status +
+              "): " +
+              ((out.payload && out.payload.error) || "error")
+          );
+          return;
+        }
+        renderHistoricalPanel(out.payload);
+        var c = (out.payload && out.payload.counts) || {};
+        setHistoricalStatus(
+          "Historical recovery loaded — canonical " +
+            (c.canonicalOpportunities || 0) +
+            " · attested " +
+            (c.historicalAttestations || 0) +
+            " · continuation " +
+            (c.researchContinuationAvailable || 0) +
+            " (internal only)."
+        );
+      })
+      .catch(function (err) {
+        setHistoricalStatus(String((err && err.message) || err || "load_failed"));
+      });
+  }
+
   function loadRunsForHotel(hotelId) {
     selectedHotelId = String(hotelId || "").trim();
+    loadHistoricalRecovery(selectedHotelId);
     if (!selectedHotelId) {
       runs = [];
       updateCounts();
@@ -412,6 +609,14 @@
       refresh.addEventListener("click", function () {
         if (selectedHotelId) loadRunsForHotel(selectedHotelId);
         else loadHotelCatalog();
+      });
+    }
+    var histRefresh = $("graHistoricalRefresh");
+    if (histRefresh) {
+      histRefresh.addEventListener("click", function () {
+        if (selectedHotelId === BETHESDA_HOTEL_ID) {
+          loadHistoricalRecovery(selectedHotelId);
+        }
       });
     }
     var close = $("graDrawerClose");

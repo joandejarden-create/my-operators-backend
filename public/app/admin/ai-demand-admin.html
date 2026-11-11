@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="/css/dealality-wave-loader.css" />
   <link rel="stylesheet" href="/css/deal-workspace-shell.css" />
   <link rel="stylesheet" href="/css/admin-ai-demand-reviews.css?v=adp-admin-workspace-v1" />
-  <link rel="stylesheet" href="/css/admin-ai-demand-admin.css?v=ada-shell-layout-v2" />
+  <link rel="stylesheet" href="/css/admin-ai-demand-admin.css?v=ada-gdi-hist-recovery-v1" />
   <link rel="stylesheet" href="/css/admin-ai-demand-table.css?v=ada-client-inventory-v2" />
   <link rel="stylesheet" href="/css/admin-ai-visibility-audit.css?v=ava-ui-v1" />
   <script>
@@ -514,6 +514,92 @@
         </p>
       </details>
 
+      <div
+        class="gra-historical-recovery"
+        id="graHistoricalRecovery"
+        hidden
+        data-hotel-id="recLuxvwwxID7U2B8"
+        aria-label="Bethesda historical research recovery"
+      >
+        <div class="gra-historical-recovery__head">
+          <h2 class="gra-historical-recovery__title">Historical Research Recovery</h2>
+          <p class="gra-historical-recovery__note">
+            Internal attestation view only — not Sales Ready, not customer-facing, and
+            not part of the published opportunity inventory. Canonical store stays at 59.
+          </p>
+          <button type="button" class="adr-btn adr-btn--secondary" id="graHistoricalRefresh">
+            Refresh historical recovery
+          </button>
+          <span class="ada-status-line" id="graHistoricalStatus" aria-live="polite"></span>
+        </div>
+        <div class="adr-counts" id="graHistoricalCounts" aria-live="polite">
+          <div class="adr-count">
+            <span class="adr-count__n" id="graHistCanonical">—</span>
+            <span class="adr-count__l">Canonical opportunities</span>
+          </div>
+          <div class="adr-count">
+            <span class="adr-count__n" id="graHistAttested">—</span>
+            <span class="adr-count__l">Historical attestations</span>
+          </div>
+          <div class="adr-count">
+            <span class="adr-count__n" id="graHistContinuation">—</span>
+            <span class="adr-count__l">Research continuation</span>
+          </div>
+        </div>
+        <div class="adr-counts gra-historical-recovery__subcounts" aria-live="polite">
+          <div class="adr-count">
+            <span class="adr-count__n" id="graHistCatering">—</span>
+            <span class="adr-count__l">Local Catering / Events</span>
+          </div>
+          <div class="adr-count">
+            <span class="adr-count__n" id="graHistPartnerships">—</span>
+            <span class="adr-count__l">Potential Partnerships</span>
+          </div>
+          <div class="adr-count">
+            <span class="adr-count__n" id="graHistOther">—</span>
+            <span class="adr-count__l">Other Group / Corporate / Association</span>
+          </div>
+        </div>
+        <div class="adr-table-wrap ada-table-shell">
+          <table class="adr-table ada-table" id="graHistoricalTable">
+            <thead>
+              <tr>
+                <th><span class="ada-th-label">Organization / Event</span></th>
+                <th><span class="ada-th-label">Group</span></th>
+                <th><span class="ada-th-label">Original ID</span></th>
+                <th><span class="ada-th-label">Historical disposition</span></th>
+                <th><span class="ada-th-label">Body status</span></th>
+                <th><span class="ada-th-label">Provenance</span></th>
+              </tr>
+            </thead>
+            <tbody id="graHistoricalTableBody">
+              <tr><td colspan="6">Select Bethesda Marriott to load historical recovery.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <details class="ada-metric-disclosure" id="graContinuationDetails">
+          <summary>
+            Research-only / venue-intelligence continuation
+            (<span id="graContinuationSummary">0 available</span>)
+          </summary>
+          <div class="adr-table-wrap ada-table-shell">
+            <table class="adr-table ada-table" id="graContinuationTable">
+              <thead>
+                <tr>
+                  <th><span class="ada-th-label">Organization / Event</span></th>
+                  <th><span class="ada-th-label">Original ID</span></th>
+                  <th><span class="ada-th-label">Disposition</span></th>
+                  <th><span class="ada-th-label">Body status</span></th>
+                </tr>
+              </thead>
+              <tbody id="graContinuationTableBody">
+                <tr><td colspan="4">No continuation rows loaded.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </div>
+
       <div class="ada-toolbar">
         <section class="adr-filters" aria-label="GDI research audit filters">
           <label>
@@ -574,7 +660,7 @@
   <script src="/js/admin-gdi-reports.js?v=ada-client-inventory-v2"></script>
   <script src="/js/admin-report-archive.js?v=ada-table-parity-v1"></script>
   <script src="/js/admin-ai-visibility-audit.js?v=ava-pdf-channels-v2"></script>
-  <script src="/js/admin-gdi-research-audit.js?v=ada-gdi-research-audit-v1"></script>
+  <script src="/js/admin-gdi-research-audit.js?v=ada-gdi-hist-recovery-v1"></script>
   <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

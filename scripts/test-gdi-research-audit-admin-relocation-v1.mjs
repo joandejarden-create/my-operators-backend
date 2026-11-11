@@ -68,9 +68,26 @@ check("ai_demand_admin_hosts_gdi_research_audit", () => {
   assert.match(html, /id="adaPanelGdiResearchAudit"/);
   assert.match(html, /GDI Research/);
   assert.match(html, /admin-gdi-research-audit\.js/);
+  assert.match(html, /graHistoricalRecovery/);
+  assert.match(html, /Historical Research Recovery/);
   assert.match(mod, /\/research-runs/);
   assert.match(mod, /dealality-adp-admin-tab/);
   assert.match(mod, /graTableBody/);
+  assert.match(mod, /historical-research-recovery/);
+  assert.match(mod, /HISTORICAL_ATTESTATION_ONLY/);
+});
+
+check("historical_research_recovery_route_is_admin_only", () => {
+  const server = read("server.js");
+  const routeRe =
+    /app\.get\(\s*"\/api\/admin\/group-demand-intelligence\/hotels\/:hotelId\/historical-research-recovery"\s*,([\s\S]*?)getAdminGdiHistoricalResearchRecovery\s*\)/;
+  const match = server.match(routeRe);
+  assert.ok(match, "historical-research-recovery admin route must exist");
+  assert.match(match[1], /adpMonthlyReviewAdminAuth/);
+  assert.ok(
+    !/gdiPilotReadAuth/.test(match[1]),
+    "historical recovery must not use pilot-read auth"
+  );
 });
 
 check("visibility_audit_nav_not_regressed", () => {
