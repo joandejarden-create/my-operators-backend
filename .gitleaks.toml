@@ -5,18 +5,16 @@ title = "Dealality secret scan"
 useDefault = true
 
 # Gitleaks 8.24.x uses the singular global allowlist.
-# OR means either an approved path OR an approved metadata-line pattern may match.
+# Path entries exempt an entire file. Active share-token registries are not path-exempt,
+# so a real key in those files is still reported.
 [allowlist]
 description = "Known-safe Dealality metadata and generated identifiers"
 condition = "OR"
 regexTarget = "line"
 
 paths = [
-  '''config/client-share/.+-share-registry/active-tokens\.json$''',
-  '''data/.+/share-registry/active-tokens\.json$''',
   '''scripts/playwright-adp-owner-app-shell-property-access-v1\.mjs$''',
   '''lib/ai-demand-positioning/brand-portfolio/bpp-publication-meta-v1\.js$''',
-  '''data/ai-demand-positioning/published/_cache_token\.json$''',
   '''public/adp-core-trends-p2-deploy-marker\.json$''',
   '''data/ai-visibility/exports/_chrome-print-profile/Default/Extensions/lmjegmlicamnimmfhcmpkclmigmmcbeh/3\.10_0/manifest\.json$''',
   '''data/ai-visibility/exports/_chrome-print-profile-howto/Default/Extensions/lmjegmlicamnimmfhcmpkclmigmmcbeh/3\.10_0/manifest\.json$''',
@@ -112,9 +110,6 @@ regexes = [
   '''(?i)(?:--token-id=|Token id:\s*`?|Token:\s*)(?:sht_|gdisht_)[A-Za-z0-9_-]+''',
   '''(?i)"auth_sha"\s*:\s*"[A-Fa-f0-9]{64}"''',
   '''(?i)"cohort_keys_hash"\s*:\s*"[A-Fa-f0-9]{40,64}"''',
-  '''adp_period_[a-z0-9_]+''',
-  '''gdi-drc-principal-retrieval-[0-9]''',
-  '''APIFY_STAGE1_CEILING''',
 
   # Known public/generated metadata.
   '''(?i)LAST_APIFY_RUN:\s*[A-Za-z0-9_-]+''',
@@ -222,6 +217,19 @@ regexes = [
   '''^\ \ \ \ key:\ "rb-choice-fdd-2026",
 ?$''',
 ]
+# Real Airtable PATs (pat...) remain detectable.
+[[rules]]
+id = "generic-api-key"
+
+[rules.allowlist]
+description = "PR #163 false positives: period ids, job ids, and a ceiling constant"
+regexTarget = "secret"
+regexes = [
+  '''^adp_period_[a-z0-9_]+$''',
+  '''^gdi-drc-principal-retrieval-[12]$''',
+  '''^APIFY_STAGE1_CEILING$''',
+]
+
 # Airtable object identifiers are metadata, not API credentials.
 # Real Airtable PATs (pat...) remain detectable.
 [[rules]]
