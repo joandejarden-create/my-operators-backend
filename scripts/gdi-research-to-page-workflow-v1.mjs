@@ -94,6 +94,7 @@ import { runWeeklyRefreshCycle } from "../lib/group-demand-intelligence/workflow
 import { RUN_TRIGGER } from "../lib/group-demand-intelligence/workflow/weekly-refresh-contract-v1.js";
 import {
   buildPaidMultisegmentAllocation,
+  resolvePaidMultisegmentAllocationForHotel,
   runPaidMultisegmentResearchPass,
   writePaidMultisegmentArtifacts,
   AUTHORIZED_NEW_SPEND_USD,
@@ -113,6 +114,20 @@ import {
   persistCorporatePackageDocument,
   persistBuyerContactPatchedOpportunity,
 } from "../lib/group-demand-intelligence/workflow/corporate-package-persist-v1.js";
+import {
+  readCandidateDispositionFile,
+  mapDispositionRowsToOpportunityCandidates,
+  isEmptyPipelineAfterPaidDispositions,
+} from "../lib/group-demand-intelligence/workflow/candidate-dispositions-load-v1.js";
+import { evaluateProspectPublicationEligibility } from "../lib/group-demand-intelligence/prospect-publication-eligibility-v1.js";
+import { isGdiCustomerOpportunityReady } from "../lib/group-demand-intelligence/customer-readiness-gate-v1.js";
+import { applySalesIntelligencePacketIfNeeded } from "../lib/group-demand-intelligence/sales-intelligence-packet-v1.js";
+import {
+  WORKFLOW_EXIT_KIND,
+  buildWorkflowExitResult,
+  deriveWorkflowExitKind,
+  exitCodeForKind,
+} from "../lib/group-demand-intelligence/workflow/workflow-exit-result-v1.js";
 import { buildOccasionDraftsFromPrograms } from "../lib/group-demand-intelligence/workflow/programs-occasion-draft-v1.js";
 import { proposeHotelVenueFits } from "../lib/group-demand-intelligence/workflow/proposed-hotel-venue-fit-v1.js";
 import { buildTargetedContactPlan } from "../lib/group-demand-intelligence/workflow/targeted-contact-plan-v1.js";
@@ -161,6 +176,19 @@ import {
   evaluateLessonsCaptureCompleteness,
 } from "../lib/group-demand-intelligence/workflow/full-e2e-lessons-capture-v1.js";
 import {
+  assertHotelExecutionScope,
+  enforceHotelExecutionScopeOrThrow,
+} from "../lib/group-demand-intelligence/workflow/hotel-execution-scope-preflight-v1.js";
+import {
+  forbiddenHotelIdsForRun,
+  isTampaAirportReinstatementAuthorized,
+} from "../lib/group-demand-intelligence/workflow/portfolio-us-marriott-five-hotel-auth-v1.js";
+import { runOpportunityMaturationStage } from "../lib/group-demand-intelligence/research/opportunity-maturation-stage-v1.js";
+import {
+  SUPERVISOR_EXPECTED_SEGMENTS,
+  canonicalizeSegmentId,
+} from "../lib/group-demand-intelligence/research/research-constants-v1.js";
+import {
   runLocalDeliveryVerification,
   runProductionDeliveryVerification,
   reconcileAuthoritativeBudget,
@@ -187,6 +215,7 @@ const STAGES = [
   "weekly_refresh",
   "discover_gaps",
   "paid_multisegment",
+  "opportunity_research_maturation",
   "assess_fit",
   "identify_people",
   "enrich_contacts",
@@ -200,6 +229,34 @@ const STAGES = [
   "apply_pe_canonical",
   "apply_publish",
 ];
+
+/** Stages that must re-run when paid dispositions were never ingested. */
+const POST_PAID_PIPELINE_STAGES = [
+  "opportunity_research_maturation",
+  "assess_fit",
+  "identify_people",
+  "enrich_contacts",
+  "buyer_contact_enrichment",
+  "synthesize_hotel_relevance",
+  "evaluate_eligibility",
+  "generate_cards",
+  "prepare_manifest",
+  "preview_verify",
+  "apply_corporate_packages",
+];
+
+function paidDispositionPathForRun(dir) {
+  return path.join(dir, "paid_multisegment", "candidate-dispositions.json");
+}
+
+function loadPaidDispositionCandidates(dir, hid) {
+  const loaded = readCandidateDispositionFile(paidDispositionPathForRun(dir));
+  const candidates = mapDispositionRowsToOpportunityCandidates(loaded.rows, {
+    hotelId: hid,
+    onlyPublishable: true,
+  });
+  return { loaded, candidates };
+}
 
 const hotelId = String(arg("--hotel", "") || "").trim();
 const horizon = String(arg("--horizon", "18m") || "18m").trim();
@@ -222,6 +279,13 @@ const fullE2eMode =
   workflowModeRaw === "full_e2e" ||
   workflowModeRaw === "e2e";
 const authorizationRef = String(arg("--authorization-ref", "") || "").trim();
+const approvedHotelName = String(
+  arg("--approved-hotel-name", "") || ""
+).trim();
+const approvedHotelId = String(arg("--approved-hotel-id", hotelId) || hotelId).trim();
+const approvedProduct = String(arg("--product", "GDI") || "GDI")
+  .trim()
+  .toUpperCase();
 const completionEvidencePath = arg("--completion-evidence");
 const authorizePublish = has("--authorize-publish");
 const authorizePePersist =
@@ -422,6 +486,104 @@ const currentFingerprints = {
     ledger.fullE2e?.buildSha ||
     null,
 };
+// Charlotte/portfolio regression: paid MS wrote `{ rows }` but maturation only
+// read `dispositions`, marked completed with maturedCount=0, then resume skipped
+// the entire post-paid pipeline. Force re-entry when that empty handoff is detected.
+const paidDispProbe = readCandidateDispositionFile(
+  paidDispositionPathForRun(runDir)
+);
+const paidDispRowCount = paidDispProbe.rows.length;
+const maturedMetaCount = Number(
+  ledger.opportunityResearchMaturation?.maturedCount ??
+    ledger.stages?.opportunity_research_maturation?.maturedCount ??
+    NaN
+);
+const eligMetaCount = Number(
+  ledger.evaluateEligibility?.evaluatedCount ??
+    ledger.stages?.evaluate_eligibility?.evaluatedCount ??
+    NaN
+);
+const emptyPaidHandoff = isEmptyPipelineAfterPaidDispositions({
+  dispositionRowCount: paidDispRowCount,
+  maturedCount: Number.isFinite(maturedMetaCount) ? maturedMetaCount : null,
+  eligibilityEvaluatedCount: Number.isFinite(eligMetaCount)
+    ? eligMetaCount
+    : null,
+});
+if (emptyPaidHandoff && resumeRun) {
+  for (const s of POST_PAID_PIPELINE_STAGES) {
+    if (ledger.stages?.[s]?.status === "completed") {
+      ledger.stages[s] = {
+        ...ledger.stages[s],
+        status: "needs_rerun",
+        invalidatedAt: new Date().toISOString(),
+        invalidateReason:
+          "paid_dispositions_present_but_downstream_pipeline_empty",
+        priorStatus: "completed",
+        paidDispositionRows: paidDispRowCount,
+      };
+    }
+  }
+  ledger.paidDispositionHandoffRepair = {
+    at: new Date().toISOString(),
+    paidDispositionRows: paidDispRowCount,
+    maturedCount: Number.isFinite(maturedMetaCount) ? maturedMetaCount : null,
+    eligibilityEvaluatedCount: Number.isFinite(eligMetaCount)
+      ? eligMetaCount
+      : null,
+    note: "Forced re-run of post-paid stages after empty disposition handoff",
+  };
+}
+
+// Ready gate returns { ok } — v1 evaluate checked `.ready` and recorded readyCount=0
+// even when prospects passed. Force evaluate_eligibility re-run until v2 artifact exists.
+const eligResultsPath = path.join(
+  runDir,
+  "evaluate_eligibility",
+  "eligibility-ready-results.json"
+);
+let eligNeedsReadyPropertyRepair = false;
+if (resumeRun && fs.existsSync(eligResultsPath)) {
+  try {
+    const eligDoc = JSON.parse(fs.readFileSync(eligResultsPath, "utf8"));
+    const ver = String(eligDoc.version || "");
+    const hf = Number(eligDoc.hotelFacingCount || 0);
+    const readyN = Number(eligDoc.readyCount || 0);
+    const emptyFailedButNotReady = (eligDoc.rows || []).some(
+      (r) =>
+        r.hotelFacing === true &&
+        r.ready === false &&
+        Array.isArray(r.readyFailed) &&
+        r.readyFailed.length === 0
+    );
+    if (
+      ver !== "gdi-evaluate-eligibility-runtime-v2" ||
+      (hf > 0 && readyN === 0 && emptyFailedButNotReady)
+    ) {
+      eligNeedsReadyPropertyRepair = true;
+    }
+  } catch {
+    /* ignore — evaluate will rebuild */
+  }
+}
+if (
+  eligNeedsReadyPropertyRepair &&
+  ledger.stages?.evaluate_eligibility?.status === "completed"
+) {
+  ledger.stages.evaluate_eligibility = {
+    ...ledger.stages.evaluate_eligibility,
+    status: "needs_rerun",
+    invalidatedAt: new Date().toISOString(),
+    invalidateReason:
+      "evaluate_eligibility_ready_ok_property_repair_v2",
+    priorStatus: "completed",
+  };
+  ledger.evaluateEligibilityReadyOkRepair = {
+    at: new Date().toISOString(),
+    note: "Re-run evaluate_eligibility with ready.ok + disposition-mapped packet synthesis",
+  };
+}
+
 const stagesToRun = stageOnly
   ? [stageOnly]
   : stageCatalog.filter((s) => {
@@ -441,11 +603,62 @@ const stagesToRun = stageOnly
         // Paid research / publish: preserve completed work (no duplicate spend)
         return false;
       }
+      if (resumeRun && prev?.status === "needs_rerun") return true;
       if (s === "apply_publish" && dryRun) return false;
       // Full E2E: weekly_refresh is a distinct mode — not part of initial full coverage
       if (fullE2eMode && s === "weekly_refresh") return false;
       return true;
     });
+
+if (resumeRun && emptyPaidHandoff && stagesToRun.length === 0) {
+  console.error(
+    JSON.stringify({
+      ok: false,
+      noProgress: true,
+      reason: "resume_no_stages_despite_empty_paid_handoff",
+      paidDispositionRows: paidDispRowCount,
+      runId,
+      hotelId,
+    })
+  );
+  process.exit(2);
+}
+
+// Structured no-progress when resume only re-runs terminal verify stages while
+// post-paid pipeline still has unpaid maturation work outstanding.
+if (
+  resumeRun &&
+  emptyPaidHandoff === false &&
+  paidDispRowCount > 0 &&
+  stagesToRun.length > 0 &&
+  stagesToRun.every((s) =>
+    [
+      "discover_gaps",
+      "apply_pe_canonical",
+      "local_delivery_verify",
+      "production_delivery_verify",
+      "reconcile_run",
+      "capture_lessons",
+      "evaluate_completion",
+    ].includes(s)
+  ) &&
+  (Number.isFinite(maturedMetaCount) ? maturedMetaCount === 0 : false)
+) {
+  console.error(
+    JSON.stringify({
+      ok: false,
+      noProgress: true,
+      reason: "resume_skipped_maturation_pipeline",
+      stagesToRun,
+      paidDispositionRows: paidDispRowCount,
+      maturedCount: maturedMetaCount,
+      runId,
+      hotelId,
+      hint: "Invalidate opportunity_research_maturation / evaluate_eligibility when dispositions exist but maturedCount=0",
+    })
+  );
+  process.exit(2);
+}
 
 const budgetLedgerPath =
   process.env.GDI_PARALLEL_BUDGET_LEDGER_PATH ||
@@ -520,11 +733,50 @@ for (const stage of stagesToRun) {
         throw new Error(`Hotel config missing: ${cfgPath}`);
       }
       const cfg = JSON.parse(fs.readFileSync(cfgPath, "utf8"));
+      const airportReinstate = isTampaAirportReinstatementAuthorized({
+        hotelId,
+        product: approvedProduct,
+        authorizationRef,
+      });
+      const scopeGate = assertHotelExecutionScope({
+        hotelId,
+        approvedHotelId,
+        approvedHotelName:
+          approvedHotelName || cfg.displayName || cfg.identity?.hotelName || "",
+        product: approvedProduct,
+        approvedProduct,
+        authorizationRef,
+        approvedAuthorizationId: authorizationRef || null,
+        hotelConfig: cfg,
+        requirePaidGate:
+          authorizePaidDiscovery === true ||
+          authorizePublish === true ||
+          has("--authorize-surfe"),
+        forbiddenHotelIds: forbiddenHotelIdsForRun({
+          hotelId,
+          product: approvedProduct,
+          authorizationRef,
+        }),
+        tampaAirportReinstatementAuthorized: airportReinstate.ok === true,
+        blockAirportMarriott: airportReinstate.ok !== true,
+      });
+      if (!scopeGate.ok) {
+        mark(ledger, stage, "failed", {
+          error: "hotel_execution_scope_blocked",
+          blockers: scopeGate.blockers,
+          checks: scopeGate.checks,
+        });
+        throw Object.assign(
+          new Error(`hotel_execution_scope_blocked:${scopeGate.blockers.join(",")}`),
+          { code: "HOTEL_EXECUTION_SCOPE_BLOCKED", blockers: scopeGate.blockers }
+        );
+      }
       mark(ledger, stage, "completed", {
         configPath: cfgPath,
         displayName: cfg.displayName || null,
         onboarding: cfg.gdiOnboarding?.status || null,
         rooms: cfg.capabilityProfile?.totalGuestrooms || null,
+        executionScope: scopeGate.checks,
       });
       continue;
     }
@@ -1073,7 +1325,7 @@ for (const stage of stagesToRun) {
       const paidDir = path.join(runDir, "paid_multisegment");
       fs.mkdirSync(paidDir, { recursive: true });
       if (explicitDryRun) {
-        const allocation = buildPaidMultisegmentAllocation({
+        const allocation = resolvePaidMultisegmentAllocationForHotel(hotelId, {
           authorizedUsd: Math.min(budgetUsd, AUTHORIZED_NEW_SPEND_USD),
         });
         fs.writeFileSync(
@@ -1097,7 +1349,7 @@ for (const stage of stagesToRun) {
         continue;
       }
       if (!authorizePaidDiscovery) {
-        const allocation = buildPaidMultisegmentAllocation({
+        const allocation = resolvePaidMultisegmentAllocationForHotel(hotelId, {
           authorizedUsd: Math.min(budgetUsd, AUTHORIZED_NEW_SPEND_USD),
         });
         fs.writeFileSync(
@@ -1112,6 +1364,39 @@ for (const stage of stagesToRun) {
         });
         continue;
       }
+      {
+        const cfgPathPaid = resolveConfigPath(hotelId);
+        const cfgPaid = fs.existsSync(cfgPathPaid)
+          ? JSON.parse(fs.readFileSync(cfgPathPaid, "utf8"))
+          : {};
+        const airportReinstatePaid = isTampaAirportReinstatementAuthorized({
+          hotelId,
+          product: approvedProduct,
+          authorizationRef,
+        });
+        enforceHotelExecutionScopeOrThrow({
+          hotelId,
+          approvedHotelId,
+          approvedHotelName:
+            approvedHotelName ||
+            cfgPaid.displayName ||
+            cfgPaid.identity?.hotelName ||
+            "",
+          product: approvedProduct,
+          approvedProduct,
+          authorizationRef,
+          approvedAuthorizationId: authorizationRef || null,
+          hotelConfig: cfgPaid,
+          requirePaidGate: true,
+          forbiddenHotelIds: forbiddenHotelIdsForRun({
+            hotelId,
+            product: approvedProduct,
+            authorizationRef,
+          }),
+          tampaAirportReinstatementAuthorized: airportReinstatePaid.ok === true,
+          blockAirportMarriott: airportReinstatePaid.ok !== true,
+        });
+      }
       if (ledger.fullE2e) ledger.fullE2e.paidCallsAttempted = true;
       const oppDoc = await loadOpportunitiesCanonical(hotelId);
       const existingNames = (oppDoc?.opportunities || [])
@@ -1122,11 +1407,13 @@ for (const stage of stagesToRun) {
         dryRun: false,
         timeoutMs: Number(process.env.GDI_PARALLEL_TIMEOUT_MS || 300000),
         existingOrganizationNamesByHotel: { [hotelId]: existingNames },
-        allocation: buildPaidMultisegmentAllocation({
-          authorizedUsd: Math.min(
-            Number(process.env.GDI_PARALLEL_AUTHORIZED_USD || budgetUsd),
-            AUTHORIZED_NEW_SPEND_USD
+        allocation: resolvePaidMultisegmentAllocationForHotel(hotelId, {
+          // Portfolio wave uses independent $12 ledgers — do not clamp to legacy $11 envelope.
+          authorizedUsd: Number(
+            process.env.GDI_PARALLEL_AUTHORIZED_USD || budgetUsd || AUTHORIZED_NEW_SPEND_USD
           ),
+          authorizationRef,
+          existingOrganizationNames: existingNames,
         }),
       });
       writePaidMultisegmentArtifacts(pass, paidDir);
@@ -1156,11 +1443,192 @@ for (const stage of stagesToRun) {
       continue;
     }
 
+    if (stage === "opportunity_research_maturation") {
+      const matDir = path.join(runDir, "opportunity_research_maturation");
+      fs.mkdirSync(matDir, { recursive: true });
+      const paidDir = path.join(runDir, "paid_multisegment");
+      const { loaded: dispLoaded, candidates: mappedFromDisp } =
+        loadPaidDispositionCandidates(runDir, hotelId);
+      let dispositions = dispLoaded.rows;
+      let segmentRuns = [];
+      const covPath = path.join(paidDir, "segment-coverage.json");
+      if (fs.existsSync(covPath)) {
+        try {
+          const cov = JSON.parse(fs.readFileSync(covPath, "utf8"));
+          const rows = Array.isArray(cov) ? cov : cov?.rows || cov?.segments || [];
+          segmentRuns = rows.map((r) => ({
+            segment: canonicalizeSegmentId(r.segment || r.segmentId || r.id),
+            applicable: r.applicable !== false,
+            independentTasks: Number(
+              r.independentTasks || r.taskCount || (r.tasks?.length ?? 1) || 0
+            ),
+            sourceFamilies: r.sourceFamilies || ["parallel"],
+            candidatesDiscovered: Number(
+              r.candidatesDiscovered ?? r.candidateCount ?? 0
+            ),
+            candidatesTerminated: Number(r.candidatesTerminated ?? 0),
+            followUpPasses: Number(r.followUpPasses || 0),
+          }));
+        } catch (err) {
+          console.warn(
+            "[opportunity_research_maturation] failed to read segment coverage:",
+            err?.message || err
+          );
+        }
+      }
+      // Prefer mapped package→opportunity candidates (eligibility-shaped fields).
+      const memoryPath = path.join(matDir, "matured-opportunities.json");
+      let candidates = mappedFromDisp.map((d, idx) => ({
+        ...d,
+        id: d.id || d.opportunityId || `disp_${idx}`,
+        segment: canonicalizeSegmentId(
+          d.segment || d.researchSegment || d.demandSegment
+        ),
+      }));
+      if (!candidates.length && dispositions.length) {
+        // Fallback: shallow map when package mapper yields nothing
+        candidates = dispositions.map((d, idx) => ({
+          id: d.id || d.opportunityId || `disp_${idx}`,
+          organizationName: d.organizationName || d.company || d.name,
+          segment: canonicalizeSegmentId(
+            d.segment || d.segmentId || d.demandSegment
+          ),
+          contact: d.contact || {},
+          futureDemand: d.futureDemand,
+          demandScale: d.demandScale,
+          hotelFit: d.hotelFit,
+          evidence: d.evidence || [],
+          researchAttempts: d.researchAttempts || [],
+          researchStatus: d.researchStatus,
+          drawer: d.drawer,
+          ...d,
+          ...(d.package || {}),
+        }));
+      }
+      if (!candidates.length && fs.existsSync(memoryPath)) {
+        try {
+          candidates = JSON.parse(fs.readFileSync(memoryPath, "utf8"));
+        } catch (err) {
+          console.warn(
+            "[opportunity_research_maturation] failed to read memory:",
+            err?.message || err
+          );
+        }
+      }
+      if (
+        !candidates.length &&
+        dispLoaded.ok &&
+        Number(dispLoaded.count || 0) > 0
+      ) {
+        mark(ledger, stage, "failed", {
+          module: "opportunity_research_maturation_v1",
+          maturedCount: 0,
+          dispositionRows: dispLoaded.count,
+          note: "Paid dispositions present but no candidates mapped — refusing empty completion",
+        });
+        throw new Error(
+          "opportunity_research_maturation_empty_despite_paid_dispositions"
+        );
+      }
+      const cfgPathMat = resolveConfigPath(hotelId);
+      const hotelCfg = fs.existsSync(cfgPathMat)
+        ? JSON.parse(fs.readFileSync(cfgPathMat, "utf8"))
+        : { hotelId };
+      const maturation = await runOpportunityMaturationStage({
+        hotel: {
+          ...hotelCfg,
+          canonicalHotelId: hotelId,
+          hotelId,
+          market: hotelCfg.market || hotelCfg.city || hotelCfg.identity?.city,
+        },
+        expectedSegments: SUPERVISOR_EXPECTED_SEGMENTS,
+        candidates,
+        segmentRuns,
+        // Default noop. Live: --maturation-live / GDI_MATURATION_LIVE=1
+        // Jev route: --maturation-jev-router / GDI_MATURATION_JEV_ROUTER=1
+        researcher: undefined,
+        persistOpportunity: async (state) => {
+          const mem = path.join(matDir, "research-memory");
+          fs.mkdirSync(mem, { recursive: true });
+          const id = String(state.id || state.opportunityId || "unknown").replace(
+            /[^\w.-]+/g,
+            "_"
+          );
+          fs.writeFileSync(
+            path.join(mem, `${id}.json`),
+            JSON.stringify(state, null, 2) + "\n"
+          );
+        },
+        options: {
+          useJevRouter:
+            has("--maturation-jev-router") ||
+            String(process.env.GDI_MATURATION_JEV_ROUTER || "").trim() === "1",
+          useLiveResearchers:
+            has("--maturation-live") ||
+            String(process.env.GDI_MATURATION_LIVE || "").trim() === "1",
+          paidBlocked: !authorizePaidDiscovery || explicitDryRun,
+          hotelId,
+          hotelConfig: hotelCfg,
+          authorizationRef: authorizationRef || null,
+          supervisor: {
+            maxIterations: Number(process.env.GDI_MATURATION_MAX_ITERATIONS || 4),
+            maxCostUsd: Number(
+              process.env.GDI_MATURATION_MAX_COST_USD || budgetUsd || 0
+            ),
+            paidBlocked: !authorizePaidDiscovery || explicitDryRun,
+            forceRemature: has("--force-remature"),
+            remainingBudgetUsd: Number(
+              process.env.GDI_MATURATION_MAX_COST_USD || budgetUsd || 0
+            ),
+            hotelId,
+            hotelConfig: hotelCfg,
+            authorizationRef: authorizationRef || null,
+          },
+          minHotelFacingProspects: Number(
+            process.env.GDI_MIN_HOTEL_FACING_PROSPECTS || 10
+          ),
+          requireProductionDelivery: fullE2eMode,
+        },
+        delivery: ledger.fullE2e?.deliveryProof || {},
+        artifactDir: matDir,
+      });
+      ledger.opportunityResearchMaturation = {
+        path: path.join(matDir, "opportunity-maturation.json"),
+        maturedCount: maturation.matured.length,
+        dispositionRows: dispLoaded.count || dispositions.length,
+        candidateInputCount: candidates.length,
+        coveragePass: maturation.coverage.pass,
+        completionStatus: maturation.completion.status,
+        completionReasons: maturation.completion.reasons,
+        note: "One paid task ≠ segment COMPLETE; maturation is advisory and does not publish",
+      };
+      const matStatus =
+        (dispLoaded.count || 0) > 0 && maturation.matured.length === 0
+          ? "incomplete"
+          : "completed";
+      mark(ledger, stage, matStatus, {
+        module: "opportunity_research_maturation_v1",
+        maturedCount: maturation.matured.length,
+        dispositionRows: dispLoaded.count || dispositions.length,
+        candidateInputCount: candidates.length,
+        coveragePass: maturation.coverage.pass,
+        hotelPreGate: maturation.completion.status,
+        note:
+          matStatus === "incomplete"
+            ? "Dispositions ingested but zero matured — stage incomplete (not a false success)"
+            : "Blocker-driven maturation stage — does not bypass eligibility/Ready/publication",
+      });
+      continue;
+    }
+
     if (stage === "assess_fit") {
       const fitDir = path.join(runDir, "independent_hotel_fit");
       fs.mkdirSync(fitDir, { recursive: true });
       const doc = await loadOpportunitiesCanonical(hotelId);
-      const ops = Array.isArray(doc?.opportunities) ? doc.opportunities : [];
+      let ops = Array.isArray(doc?.opportunities) ? doc.opportunities : [];
+      if (!ops.length) {
+        ops = loadPaidDispositionCandidates(runDir, hotelId).candidates;
+      }
       // Cross-hotel reuse sample: Bethesda sports candidates when assessing Mayflower
       let crossHotel = [];
       if (hotelId === "rec0eTEnCqlsGJJt9") {
@@ -1434,9 +1902,8 @@ for (const stage of stagesToRun) {
       let dispositions = [];
       for (const p of dispPathCandidates) {
         if (fs.existsSync(p)) {
-          const doc = JSON.parse(fs.readFileSync(p, "utf8"));
-          dispositions = doc.rows || doc.dispositions || doc || [];
-          break;
+          dispositions = readCandidateDispositionFile(p).rows;
+          if (dispositions.length) break;
         }
       }
       const hotelDispositions = (dispositions || []).filter(
@@ -1488,7 +1955,11 @@ for (const stage of stagesToRun) {
       const relDir = path.join(runDir, "hotel_relevance_research");
       fs.mkdirSync(relDir, { recursive: true });
       const doc = await loadOpportunitiesCanonical(hotelId);
-      const ops = Array.isArray(doc?.opportunities) ? doc.opportunities : [];
+      let ops = Array.isArray(doc?.opportunities) ? doc.opportunities : [];
+      if (!ops.length) {
+        const { candidates } = loadPaidDispositionCandidates(runDir, hotelId);
+        ops = candidates;
+      }
       const fitPath = path.join(
         runDir,
         "independent_hotel_fit",
@@ -1567,16 +2038,217 @@ for (const stage of stagesToRun) {
     }
 
     if (stage === "evaluate_eligibility") {
+      const eligDir = path.join(runDir, "evaluate_eligibility");
+      fs.mkdirSync(eligDir, { recursive: true });
       const test = spawnSync(
         process.execPath,
         [path.join(ROOT, "scripts/test-gdi-prospect-publication-eligibility-v1.mjs")],
         { cwd: ROOT, encoding: "utf8" }
       );
-      mark(ledger, stage, test.status === 0 ? "completed" : "failed", {
+      if (test.status !== 0) {
+        mark(ledger, stage, "failed", {
+          exitCode: test.status,
+          note: "Eligibility SoT unit gate failed",
+        });
+        throw new Error("eligibility_gate_failed");
+      }
+
+      // Real prospect evaluation against paid dispositions / matured / relevance ops.
+      // San Diego used a manually built reviewed package; Charlotte default path
+      // must evaluate disposition packages without requiring hotel-specific scripts.
+      //
+      // Disposition-mapped packages are the commercial field source of truth
+      // (opportunityType, timing, contacts). Matured / relevance overlays carry
+      // ORS research memory but must not erase those fields (Ready surface_eligibility).
+      const { candidates: fromDisp } = loadPaidDispositionCandidates(
+        runDir,
+        hotelId
+      );
+      const maturedPath = path.join(
+        runDir,
+        "opportunity_research_maturation",
+        "matured-opportunities.json"
+      );
+      const relevancePath = path.join(
+        runDir,
+        "hotel_relevance_research",
+        "opportunities-with-relevance.json"
+      );
+      let matured = [];
+      if (fs.existsSync(relevancePath)) {
+        try {
+          const rel = JSON.parse(fs.readFileSync(relevancePath, "utf8"));
+          matured = Array.isArray(rel.opportunities) ? rel.opportunities : [];
+        } catch (err) {
+          console.warn(
+            "[evaluate_eligibility] relevance read failed:",
+            err?.message || err
+          );
+        }
+      }
+      if (!matured.length && fs.existsSync(maturedPath)) {
+        try {
+          const maturedDoc = JSON.parse(fs.readFileSync(maturedPath, "utf8"));
+          matured = Array.isArray(maturedDoc)
+            ? maturedDoc
+            : maturedDoc?.opportunities || maturedDoc?.rows || [];
+        } catch (err) {
+          console.warn(
+            "[evaluate_eligibility] matured read failed:",
+            err?.message || err
+          );
+        }
+      }
+      const maturedByKey = new Map();
+      for (const m of matured) {
+        const key = `${String(m.organizationName || m.company || "")
+          .toLowerCase()
+          .trim()}::${String(m.segment || m.researchSegment || "")
+          .toLowerCase()
+          .trim()}`;
+        if (key !== "::") maturedByKey.set(key, m);
+      }
+      const RESEARCH_OVERLAY_KEYS = [
+        "researchAttempts",
+        "researchStatus",
+        "researchTerminal",
+        "lastStrategy",
+        "buyerResolution",
+        "contactResearch",
+        "whoHowResearchState",
+        "contactResearchState",
+        "contactResearchAttempted",
+        "materialLimitations",
+        "establishedFacts",
+        "notes",
+      ];
+      let candidates =
+        fromDisp.length > 0
+          ? fromDisp.map((d) => {
+              const key = `${String(d.organizationName || d.company || "")
+                .toLowerCase()
+                .trim()}::${String(d.segment || d.researchSegment || "")
+                .toLowerCase()
+                .trim()}`;
+              const m = maturedByKey.get(key);
+              if (!m) return d;
+              const overlay = {};
+              for (const k of RESEARCH_OVERLAY_KEYS) {
+                if (m[k] != null) overlay[k] = m[k];
+              }
+              // Prefer disposition commercial fields; keep matured contact if richer.
+              return {
+                ...m,
+                ...d,
+                ...overlay,
+                contactEmail: d.contactEmail || m.contactEmail || null,
+                contactUrl: d.contactUrl || m.contactUrl || null,
+                contactPhone: d.contactPhone || m.contactPhone || null,
+                contactRole: d.contactRole || m.contactRole || null,
+                buyerRole: d.buyerRole || m.buyerRole || m.contactRole || null,
+              };
+            })
+          : matured;
+      if (!candidates.length) {
+        candidates = fromDisp;
+      }
+
+      const rows = [];
+      let hotelFacing = 0;
+      let readyCount = 0;
+      let enrichmentQueue = 0;
+      let packetsComplete = 0;
+      for (const raw of candidates) {
+        let cand = { ...raw, hotelId: raw.hotelId || hotelId };
+        const packetApply = applySalesIntelligencePacketIfNeeded(cand, {
+          allowSynthesis: true,
+          force: true,
+          forceLodging: true,
+          reason: "evaluate_eligibility_packet_v1",
+        });
+        if (packetApply?.opportunity) cand = packetApply.opportunity;
+        if (packetApply?.complete === true) packetsComplete += 1;
+        const elig = evaluateProspectPublicationEligibility(cand);
+        let ready = null;
+        try {
+          ready = isGdiCustomerOpportunityReady(cand);
+        } catch (err) {
+          ready = { ok: false, failed: ["ready_threw"], error: err?.message || String(err) };
+        }
+        // Gate returns { ok, failed } — never treat missing `.ready` as failure.
+        const readyOk = ready?.ok === true || ready?.ready === true || ready === true;
+        if (elig.hotelFacing === true) hotelFacing += 1;
+        else if (elig.enrichmentQueue === true) enrichmentQueue += 1;
+        if (readyOk && elig.hotelFacing === true) readyCount += 1;
+        rows.push({
+          organizationName: cand.organizationName || cand.company || null,
+          segment: cand.segment || cand.researchSegment || null,
+          researchLayerDisposition: cand.researchLayerDisposition || cand.disposition || null,
+          opportunityId: cand.id || cand.opportunityId || null,
+          eligibility: elig.eligibility,
+          hotelFacing: elig.hotelFacing === true,
+          reasons: elig.reasons || [],
+          ready: readyOk,
+          readyFailed: ready?.failed || ready?.reasons || [],
+          readyState: ready?.state || null,
+          packetComplete: packetApply?.complete === true,
+          packetGaps: packetApply?.gaps || packetApply?.built?.gaps || [],
+          buyerRole: cand.buyerRole || cand.buyerFunction || null,
+          contactEmail: cand.contactEmail || cand.primaryContactEmail || null,
+          contactUrl: cand.contactUrl || cand.publicContactPath || null,
+          opportunityType: cand.opportunityType || null,
+          eventStartDate: cand.eventStartDate || null,
+        });
+      }
+
+      const resultDoc = {
+        version: "gdi-evaluate-eligibility-runtime-v2",
+        generatedAt: new Date().toISOString(),
+        hotelId,
+        sotGateExitCode: test.status,
+        evaluatedCount: rows.length,
+        hotelFacingCount: hotelFacing,
+        enrichmentQueueCount: enrichmentQueue,
+        readyCount,
+        packetsComplete,
+        dispositionMappedCount: fromDisp.length,
+        maturedOverlayCount: matured.length,
+        rows,
+        note:
+          "Prospect-level Eligibility + Ready against disposition-mapped packages with matured ORS overlay. Checks ready.ok (not ready.ready). Does not publish.",
+      };
+      fs.writeFileSync(
+        path.join(eligDir, "eligibility-ready-results.json"),
+        JSON.stringify(resultDoc, null, 2) + "\n"
+      );
+      ledger.evaluateEligibility = {
+        path: path.join(eligDir, "eligibility-ready-results.json"),
+        version: "gdi-evaluate-eligibility-runtime-v2",
+        evaluatedCount: rows.length,
+        hotelFacingCount: hotelFacing,
+        readyCount,
+        enrichmentQueueCount: enrichmentQueue,
+        packetsComplete,
+        dispositionMappedCount: fromDisp.length,
+      };
+
+      const { loaded: dispCheck } = loadPaidDispositionCandidates(runDir, hotelId);
+      const emptyDespitePaid =
+        (dispCheck.count || 0) > 0 && rows.length === 0;
+      mark(ledger, stage, emptyDespitePaid ? "failed" : "completed", {
         exitCode: test.status,
-        note: "Eligibility SoT gate (prospect-publication-eligibility-v1)",
+        evaluatedCount: rows.length,
+        hotelFacingCount: hotelFacing,
+        readyCount,
+        packetsComplete,
+        dispositionRows: dispCheck.count || 0,
+        note: emptyDespitePaid
+          ? "Paid dispositions present but zero eligibility evaluations — refusing false success"
+          : "Eligibility SoT + disposition-mapped packet + ready.ok evaluate_eligibility v2",
       });
-      if (test.status !== 0) throw new Error("eligibility_gate_failed");
+      if (emptyDespitePaid) {
+        throw new Error("evaluate_eligibility_empty_despite_paid_dispositions");
+      }
       continue;
     }
 
@@ -1665,11 +2337,14 @@ for (const stage of stagesToRun) {
           ? JSON.parse(fs.readFileSync(relevancePath, "utf8"))
           : null;
         // Prefer opportunities already stamped by synthesize_hotel_relevance
-        const ops = Array.isArray(relevanceDoc?.opportunities)
+        let ops = Array.isArray(relevanceDoc?.opportunities)
           ? relevanceDoc.opportunities
           : Array.isArray(doc?.opportunities)
             ? doc.opportunities
             : [];
+        if (!ops.length) {
+          ops = loadPaidDispositionCandidates(runDir, hotelId).candidates;
+        }
         const contactSummaryPath = path.join(
           runDir,
           "targeted_contact",
@@ -2754,16 +3429,77 @@ if (fullE2eMode && ledger.computedOverallStatus) {
 } else {
   ledger.status = "ok";
 }
+
+const stagesCompletedThisPass = Object.entries(ledger.stages || {})
+  .filter(
+    ([, v]) =>
+      v?.status === "completed" &&
+      v?.at &&
+      ledger.finishedAt &&
+      String(v.at) >= String(ledger.startedAt || "")
+  )
+  .map(([k]) => k);
+
+const exitKind = deriveWorkflowExitKind({
+  stagesToRun,
+  stagesCompletedThisPass,
+  ledger,
+  paidDispositionRows: paidDispRowCount,
+  maturedCount:
+    ledger.opportunityResearchMaturation?.maturedCount ?? maturedMetaCount,
+  hotelFacingCount: ledger.evaluateEligibility?.hotelFacingCount ?? null,
+  readyCount: ledger.evaluateEligibility?.readyCount ?? null,
+  waitingProvider: false,
+  authorizePublish,
+  overallStatus: ledger.computedOverallStatus,
+});
+const exitResult = buildWorkflowExitResult({
+  kind: exitKind,
+  hotelId,
+  runId,
+  stagesAttempted: stagesToRun,
+  stagesCompleted: stagesCompletedThisPass,
+  meaningfulProgress:
+    exitKind === WORKFLOW_EXIT_KIND.STAGE_COMPLETED ||
+    exitKind === WORKFLOW_EXIT_KIND.FULL_E2E_COMPLETE ||
+    exitKind === WORKFLOW_EXIT_KIND.RESEARCH_COMPLETE_DELIVERY_BLOCKED,
+  pendingWork:
+    exitKind === WORKFLOW_EXIT_KIND.RESEARCH_COMPLETE_DELIVERY_BLOCKED
+      ? "Publication / production delivery separately gated"
+      : exitKind === WORKFLOW_EXIT_KIND.RESUMABLE_WORK_REMAINS
+        ? "Resume remaining coordinator stages"
+        : null,
+  blocker:
+    exitKind === WORKFLOW_EXIT_KIND.NO_PROGRESS
+      ? "resume_no_meaningful_stage_progress"
+      : ledger.failures?.[0]?.error || null,
+  workItemChanged:
+    stagesCompletedThisPass[0] ||
+    (ledger.evaluateEligibility
+      ? `eligibility_hf_${ledger.evaluateEligibility.hotelFacingCount}`
+      : null),
+  extras: {
+    computedOverallStatus: ledger.computedOverallStatus || null,
+    evaluateEligibility: ledger.evaluateEligibility || null,
+    opportunityResearchMaturation: ledger.opportunityResearchMaturation || null,
+  },
+});
+ledger.workflowExitResult = exitResult;
 saveLedger(ledger);
 // Convenience copy for deliverable path
 fs.copyFileSync(
   ledgerPath,
   path.join(outDir, "stage-completion-ledger.json")
 );
+fs.writeFileSync(
+  path.join(runDir, "workflow-exit-result.json"),
+  JSON.stringify(exitResult, null, 2) + "\n"
+);
 console.log(
   JSON.stringify(
     {
-      ok: true,
+      ok: exitResult.ok,
+      exitResult,
       runId,
       ledgerPath,
       copiedLedger: path.join(outDir, "stage-completion-ledger.json"),
@@ -2779,6 +3515,7 @@ console.log(
     2
   )
 );
+process.exitCode = exitCodeForKind(exitKind);
 }
 
 runStages().catch((err) => {

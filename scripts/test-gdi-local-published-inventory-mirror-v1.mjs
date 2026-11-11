@@ -172,6 +172,15 @@ withEnv(
     const diag = diagnoseGdiPublishedInventoryRead(SPICE_ISLAND_HOTEL_ID);
     assert.equal(diag.ok, false);
     assert.equal(diag.code, "REGISTRY_UNAVAILABLE");
+    const leaked = mergePublishedInventoryIntoOpportunities(
+      SPICE_ISLAND_HOTEL_ID,
+      [{ id: "gdi_research_only_must_not_leak", title: "research row" }],
+      {
+        strictPublishedOnly: true,
+        registry: { listPublished: () => [] },
+      }
+    );
+    assert.deepEqual(leaked, []);
   }
 );
 

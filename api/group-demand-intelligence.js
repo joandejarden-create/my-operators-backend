@@ -195,39 +195,26 @@ async function loadOppDoc(hotelId) {
       if (isGdiPublishedInventoryRegistryEnabledForHotel(hotelId)) {
         publishedInventoryDiagnostic =
           diagnoseGdiPublishedInventoryRead(hotelId);
-        const { mergePublishedInventoryIntoOpportunities } = await import(
-          "../lib/group-demand-intelligence/durable-publication/gdi-published-inventory-registry-v1.js"
-        );
-        opportunities = mergePublishedInventoryIntoOpportunities(
-          hotelId,
-          opportunities,
-          { strictPublishedOnly: true }
-        );
-        if (!Array.isArray(opportunities) || opportunities.length === 0) {
-          const { resolveApprovedPackCustomerInventoryFallback } = await import(
-            "../lib/group-demand-intelligence/durable-publication/gdi-approved-pack-customer-inventory-fallback-v1.js"
+        // Allowlisted hotels fail closed. A missing or invalid registry must
+        // not fall through to research-stage rows or the older approved pack.
+        if (!publishedInventoryDiagnostic.ok) {
+          opportunities = [];
+        } else {
+          const { mergePublishedInventoryIntoOpportunities } = await import(
+            "../lib/group-demand-intelligence/durable-publication/gdi-published-inventory-registry-v1.js"
           );
-          const fallback = resolveApprovedPackCustomerInventoryFallback(
+          opportunities = mergePublishedInventoryIntoOpportunities(
             hotelId,
-            opportunities
+            opportunities,
+            { strictPublishedOnly: true }
           );
-          if (fallback.used) {
-            opportunities = fallback.opportunities;
+          if (!Array.isArray(opportunities) || opportunities.length === 0) {
+            opportunities = [];
             publishedInventoryDiagnostic = {
               ...(publishedInventoryDiagnostic || {}),
-              ok: true,
-              fallbackUsed: true,
-              fallbackSource: "approved_pack_customer_fallback",
-              code: "APPROVED_PACK_FALLBACK",
+              ok: false,
+              code: "PUBLISHED_SNAPSHOTS_UNAVAILABLE",
             };
-            console.info(
-              JSON.stringify({
-                gdi_inventory_source: true,
-                hotelId,
-                source: "approved_pack_customer_fallback",
-                count: opportunities.length,
-              })
-            );
           }
         }
       }
@@ -236,6 +223,7 @@ async function loadOppDoc(hotelId) {
         "[gdi] published inventory registry merge failed",
         pubErr?.message || pubErr
       );
+      opportunities = [];
       publishedInventoryDiagnostic = {
         ok: false,
         code: "REGISTRY_MERGE_ERROR",
