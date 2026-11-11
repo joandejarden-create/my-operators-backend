@@ -1,6 +1,6 @@
 # Dealality development and release runbook
 
-`main` is the integration branch. The validated baseline for this stabilization is `be179b4412d5f9c8412f8030a78a1db78dde7722`.
+`main` is the integration branch. The active application source is only `C:\Dev\dealality\my-operators-backend`. The consolidated checkout `C:\Dev\dealality\my-operators-backend-consolidated-20261111` is an archived recovery snapshot and is not the working application. Future GDI and ADP changes start in the original directory, are tested, and are merged into `main` before development continues. Full GDI E2E remains not verified until a later certification says otherwise. Code on `main` is not that certification.
 
 ## Branch workflow
 
