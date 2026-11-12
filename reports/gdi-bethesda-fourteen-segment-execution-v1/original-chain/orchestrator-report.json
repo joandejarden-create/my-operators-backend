@@ -1,0 +1,638 @@
+{
+  "version": "gdi-full-e2e-fourteen-segment-traversal-v1",
+  "at": "2026-11-12T05:32:45.310Z",
+  "dryRun": true,
+  "executeDiscovery": false,
+  "authorizePaidDiscovery": false,
+  "runOriginalChain": true,
+  "authorizePaidResearch": false,
+  "mode": "ORIGINAL_FULL_E2E_CHAIN",
+  "budgetManifest": {
+    "version": "gdi-original-full-e2e-research-chain-v1",
+    "at": "2026-11-12T05:32:44.110Z",
+    "authorizationStatus": "NOT_AUTHORIZED",
+    "hotelIds": [
+      "recLuxvwwxID7U2B8"
+    ],
+    "segmentIds": [
+      "associations_conferences_events",
+      "corporate_accounts_scaling",
+      "corporate_meetings_incentives",
+      "government_public_sector",
+      "sports_entertainment",
+      "education_scientific",
+      "projects_infrastructure",
+      "social_special_events",
+      "local_catering_day_meetings",
+      "corporate_celebrations_private_events",
+      "travel_trade_group_intermediaries",
+      "relocation_extended_stay",
+      "preferred_lodging_partnerships",
+      "professional_event_planners"
+    ],
+    "priorLiveSpendUsd": 0.4,
+    "pricingAssumptions": {
+      "discoveryEffort": "medium",
+      "deepResearchEffort": "medium",
+      "discoveryUnitUsd": 0.1,
+      "deepResearchUnitUsd": 0.1,
+      "note": "Exa Agent fixed-effort list prices; auto/max require separate ceilings. $0.10/run is not guaranteed for all operations.",
+      "quoteAsOf": "2026-10-24"
+    },
+    "discovery": {
+      "cells": 14,
+      "runsPerSegment": 2,
+      "plannedRuns": 28,
+      "maxUsd": 2.8,
+      "resumeSkipsCompletedLiveCells": true
+    },
+    "deepResearch": {
+      "estimatedEligibleCandidates": 25,
+      "runsPerCandidate": 1,
+      "plannedRuns": 25,
+      "maxUsd": 2.5,
+      "usesExistingOrsIntegration": true,
+      "module": "deep-research-gdi-integration-v1.runDeepResearchOnExistingGdiOpportunity"
+    },
+    "contactResearch": {
+      "paidSurfe": false,
+      "paidPdl": false,
+      "mode": "public_evidence_and_ors_extraction",
+      "estimatedUsd": 0
+    },
+    "contingencyUsd": 0.79,
+    "hardCeilingUsd": 6.09,
+    "requestedAuthorizationUsd": 6.09,
+    "stopConditions": [
+      "hard_ceiling_reached",
+      "quote_unbounded",
+      "provider_error_budget",
+      "resume_duplicate_live_call_blocked",
+      "founder_revoke"
+    ],
+    "excludes": [
+      "production_airtable_writes",
+      "customer_publication",
+      "share_token_changes",
+      "railway_deploy",
+      "surfe_enrichment"
+    ],
+    "note": "One bounded Full E2E authorization requested — not per-segment micro-approvals. Paid execution must not start until founder authorizes this ceiling."
+  },
+  "originalChainSummary": {
+    "retainedCandidates": 0,
+    "processedCount": 0,
+    "withPresentation": 0,
+    "paidSpendUsd": 0,
+    "fullE2eCompleteClaimAllowed": false
+  },
+  "completionContract": {
+    "EXECUTOR_NOT_IMPLEMENTED": "registered adapter/query path missing",
+    "EXECUTOR_READY": "queries built; awaiting provider or historical/fixture",
+    "EXECUTION_BLOCKED": "paid provider gated or hotel unresolved",
+    "EXECUTION_PARTIAL": "fixture or historical Stage A replay only",
+    "DISCOVERY_EXECUTED": "live provider retrieval produced candidates",
+    "DISCOVERY_COMPLETED": "segment research stop conditions met with live evidence",
+    "QUALIFICATION_PARTIAL": "commercial qualification started (separate stage)",
+    "QUALIFICATION_COMPLETED": "buyer/contact commercial eligibility met",
+    "rule": "Traversal or historical replay alone cannot claim DISCOVERY_COMPLETED. Qualification is a separate stage from discovery."
+  },
+  "segmentIds": [
+    "associations_conferences_events",
+    "corporate_accounts_scaling",
+    "corporate_meetings_incentives",
+    "government_public_sector",
+    "sports_entertainment",
+    "education_scientific",
+    "projects_infrastructure",
+    "social_special_events",
+    "local_catering_day_meetings",
+    "corporate_celebrations_private_events",
+    "travel_trade_group_intermediaries",
+    "relocation_extended_stay",
+    "preferred_lodging_partnerships",
+    "professional_event_planners"
+  ],
+  "hotelIds": [
+    "recLuxvwwxID7U2B8"
+  ],
+  "cellCount": 14,
+  "queueRemaining": [
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "segmentId": "associations_conferences_events",
+      "status": "PARTIAL"
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "segmentId": "corporate_accounts_scaling",
+      "status": "PARTIAL"
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "segmentId": "corporate_meetings_incentives",
+      "status": "PARTIAL"
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "segmentId": "government_public_sector",
+      "status": "PARTIAL"
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "segmentId": "sports_entertainment",
+      "status": "PARTIAL"
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "segmentId": "education_scientific",
+      "status": "PARTIAL"
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "segmentId": "projects_infrastructure",
+      "status": "PARTIAL"
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "segmentId": "social_special_events",
+      "status": "PARTIAL"
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "segmentId": "local_catering_day_meetings",
+      "status": "PARTIAL"
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "segmentId": "corporate_celebrations_private_events",
+      "status": "PARTIAL"
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "segmentId": "travel_trade_group_intermediaries",
+      "status": "PARTIAL"
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "segmentId": "relocation_extended_stay",
+      "status": "PARTIAL"
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "segmentId": "preferred_lodging_partnerships",
+      "status": "PARTIAL"
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "segmentId": "professional_event_planners",
+      "status": "PARTIAL"
+    }
+  ],
+  "perHotel": [
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "segmentCount": 14,
+      "expected": 14,
+      "notRun": [],
+      "blocked": [],
+      "partial": [
+        "associations_conferences_events",
+        "corporate_accounts_scaling",
+        "corporate_meetings_incentives",
+        "government_public_sector",
+        "sports_entertainment",
+        "education_scientific",
+        "projects_infrastructure",
+        "social_special_events",
+        "local_catering_day_meetings",
+        "corporate_celebrations_private_events",
+        "travel_trade_group_intermediaries",
+        "relocation_extended_stay",
+        "preferred_lodging_partnerships",
+        "professional_event_planners"
+      ],
+      "completedOrNa": [],
+      "canClaimFullE2eDiscoveryComplete": false,
+      "incompleteBecauseNotRun": false
+    }
+  ],
+  "opportunityAccounting": {
+    "rawRows": 0,
+    "uniqueAfterCrossSegmentDedupe": 0
+  },
+  "executorRegistry": [
+    {
+      "segmentId": "associations_conferences_events",
+      "classification": "PARTIAL_EXECUTOR",
+      "hotelRunnerExists": true,
+      "strategy": "assoc_strategies_plus_segment_executor",
+      "paidProvider": "exa_agent"
+    },
+    {
+      "segmentId": "corporate_accounts_scaling",
+      "classification": "PARTIAL_EXECUTOR",
+      "hotelRunnerExists": true,
+      "strategy": "scaling_strategies_plus_segment_executor",
+      "paidProvider": "exa_agent"
+    },
+    {
+      "segmentId": "corporate_meetings_incentives",
+      "classification": "PARTIAL_EXECUTOR",
+      "hotelRunnerExists": true,
+      "strategy": "destination_corporate_demand_strategies",
+      "paidProvider": "exa_agent"
+    },
+    {
+      "segmentId": "government_public_sector",
+      "classification": "PARTIAL_EXECUTOR",
+      "hotelRunnerExists": true,
+      "strategy": "government_manual_plus_gdi_queries",
+      "paidProvider": "exa_agent"
+    },
+    {
+      "segmentId": "sports_entertainment",
+      "classification": "PARTIAL_EXECUTOR",
+      "hotelRunnerExists": true,
+      "strategy": "base_of_demand_sports_entertainment",
+      "paidProvider": "exa_agent"
+    },
+    {
+      "segmentId": "education_scientific",
+      "classification": "PARTIAL_EXECUTOR",
+      "hotelRunnerExists": true,
+      "strategy": "medical_assoc_plus_pharma_base",
+      "paidProvider": "exa_agent"
+    },
+    {
+      "segmentId": "projects_infrastructure",
+      "classification": "PARTIAL_EXECUTOR",
+      "hotelRunnerExists": true,
+      "strategy": "base_of_demand_project_workforce",
+      "paidProvider": "exa_agent"
+    },
+    {
+      "segmentId": "social_special_events",
+      "classification": "PARTIAL_EXECUTOR",
+      "hotelRunnerExists": true,
+      "strategy": "venue_discovery_queries",
+      "paidProvider": "exa_agent"
+    },
+    {
+      "segmentId": "local_catering_day_meetings",
+      "classification": "PARTIAL_EXECUTOR",
+      "hotelRunnerExists": true,
+      "strategy": "local_meetings_catering_queries",
+      "paidProvider": "exa_agent"
+    },
+    {
+      "segmentId": "corporate_celebrations_private_events",
+      "classification": "PARTIAL_EXECUTOR",
+      "hotelRunnerExists": true,
+      "strategy": "destination_recognition_celebration_filter",
+      "paidProvider": "exa_agent"
+    },
+    {
+      "segmentId": "travel_trade_group_intermediaries",
+      "classification": "PARTIAL_EXECUTOR",
+      "hotelRunnerExists": true,
+      "strategy": "professional_planner_queries",
+      "paidProvider": "exa_agent"
+    },
+    {
+      "segmentId": "relocation_extended_stay",
+      "classification": "PARTIAL_EXECUTOR",
+      "hotelRunnerExists": true,
+      "strategy": "relocation_manual_templates",
+      "paidProvider": "exa_agent"
+    },
+    {
+      "segmentId": "preferred_lodging_partnerships",
+      "classification": "PARTIAL_EXECUTOR",
+      "hotelRunnerExists": true,
+      "strategy": "preferred_lodging_prompt_builder",
+      "paidProvider": "exa_agent"
+    },
+    {
+      "segmentId": "professional_event_planners",
+      "classification": "PARTIAL_EXECUTOR",
+      "hotelRunnerExists": true,
+      "strategy": "professional_event_planner_prompt_builder",
+      "paidProvider": "exa_agent"
+    }
+  ],
+  "resumePlanBeforeExecution": {
+    "version": "gdi-full-e2e-fourteen-segment-discovery-state-v1",
+    "at": "2026-11-12T05:32:44.108Z",
+    "cellCount": 14,
+    "skipLiveCount": 0,
+    "needsLiveCount": 14,
+    "cumulativeCostUsd": 0,
+    "cells": [
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "segmentId": "associations_conferences_events",
+        "hasState": true,
+        "executionStatus": "EXECUTION_BLOCKED",
+        "liveCalls": 0,
+        "costUsd": 0,
+        "candidateCount": 0,
+        "skipLiveProvider": false,
+        "skipReason": "NEEDS_EXECUTION",
+        "lastCheckpoint": {
+          "kind": "EXECUTION_CHECKPOINT",
+          "at": "2026-11-12T05:30:27.469Z",
+          "fingerprint": "8cee048d13dc",
+          "researchRunId": "gdi_disc_run_mwd402dm_25c150",
+          "executionStatus": "EXECUTION_BLOCKED",
+          "providerRunIds": [],
+          "extractedCount": 0,
+          "costUsdCumulative": 0
+        }
+      },
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "segmentId": "corporate_accounts_scaling",
+        "hasState": true,
+        "executionStatus": "EXECUTION_BLOCKED",
+        "liveCalls": 0,
+        "costUsd": 0,
+        "candidateCount": 0,
+        "skipLiveProvider": false,
+        "skipReason": "NEEDS_EXECUTION",
+        "lastCheckpoint": {
+          "kind": "EXECUTION_CHECKPOINT",
+          "at": "2026-11-12T05:30:27.805Z",
+          "fingerprint": "857afdd9228e",
+          "researchRunId": "gdi_disc_run_mwd402dm_25c150",
+          "executionStatus": "EXECUTION_BLOCKED",
+          "providerRunIds": [],
+          "extractedCount": 0,
+          "costUsdCumulative": 0
+        }
+      },
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "segmentId": "corporate_meetings_incentives",
+        "hasState": true,
+        "executionStatus": "EXECUTION_BLOCKED",
+        "liveCalls": 0,
+        "costUsd": 0,
+        "candidateCount": 0,
+        "skipLiveProvider": false,
+        "skipReason": "NEEDS_EXECUTION",
+        "lastCheckpoint": {
+          "kind": "EXECUTION_CHECKPOINT",
+          "at": "2026-11-12T05:30:27.811Z",
+          "fingerprint": "91180a25760c",
+          "researchRunId": "gdi_disc_run_mwd402dm_25c150",
+          "executionStatus": "EXECUTION_BLOCKED",
+          "providerRunIds": [],
+          "extractedCount": 0,
+          "costUsdCumulative": 0
+        }
+      },
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "segmentId": "government_public_sector",
+        "hasState": true,
+        "executionStatus": "EXECUTION_BLOCKED",
+        "liveCalls": 0,
+        "costUsd": 0,
+        "candidateCount": 0,
+        "skipLiveProvider": false,
+        "skipReason": "NEEDS_EXECUTION",
+        "lastCheckpoint": {
+          "kind": "EXECUTION_CHECKPOINT",
+          "at": "2026-11-12T05:30:27.817Z",
+          "fingerprint": "1182f93d161a",
+          "researchRunId": "gdi_disc_run_mwd402dm_25c150",
+          "executionStatus": "EXECUTION_BLOCKED",
+          "providerRunIds": [],
+          "extractedCount": 0,
+          "costUsdCumulative": 0
+        }
+      },
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "segmentId": "sports_entertainment",
+        "hasState": true,
+        "executionStatus": "EXECUTION_BLOCKED",
+        "liveCalls": 0,
+        "costUsd": 0,
+        "candidateCount": 0,
+        "skipLiveProvider": false,
+        "skipReason": "NEEDS_EXECUTION",
+        "lastCheckpoint": {
+          "kind": "EXECUTION_CHECKPOINT",
+          "at": "2026-11-12T05:30:27.821Z",
+          "fingerprint": "2bdaf820ab72",
+          "researchRunId": "gdi_disc_run_mwd402dm_25c150",
+          "executionStatus": "EXECUTION_BLOCKED",
+          "providerRunIds": [],
+          "extractedCount": 0,
+          "costUsdCumulative": 0
+        }
+      },
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "segmentId": "education_scientific",
+        "hasState": true,
+        "executionStatus": "EXECUTION_BLOCKED",
+        "liveCalls": 0,
+        "costUsd": 0,
+        "candidateCount": 0,
+        "skipLiveProvider": false,
+        "skipReason": "NEEDS_EXECUTION",
+        "lastCheckpoint": {
+          "kind": "EXECUTION_CHECKPOINT",
+          "at": "2026-11-12T05:30:27.826Z",
+          "fingerprint": "7b7373b8e04a",
+          "researchRunId": "gdi_disc_run_mwd402dm_25c150",
+          "executionStatus": "EXECUTION_BLOCKED",
+          "providerRunIds": [],
+          "extractedCount": 0,
+          "costUsdCumulative": 0
+        }
+      },
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "segmentId": "projects_infrastructure",
+        "hasState": true,
+        "executionStatus": "EXECUTION_BLOCKED",
+        "liveCalls": 0,
+        "costUsd": 0,
+        "candidateCount": 0,
+        "skipLiveProvider": false,
+        "skipReason": "NEEDS_EXECUTION",
+        "lastCheckpoint": {
+          "kind": "EXECUTION_CHECKPOINT",
+          "at": "2026-11-12T05:30:27.832Z",
+          "fingerprint": "d5a679275a3e",
+          "researchRunId": "gdi_disc_run_mwd402dm_25c150",
+          "executionStatus": "EXECUTION_BLOCKED",
+          "providerRunIds": [],
+          "extractedCount": 0,
+          "costUsdCumulative": 0
+        }
+      },
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "segmentId": "social_special_events",
+        "hasState": true,
+        "executionStatus": "EXECUTION_BLOCKED",
+        "liveCalls": 0,
+        "costUsd": 0,
+        "candidateCount": 0,
+        "skipLiveProvider": false,
+        "skipReason": "NEEDS_EXECUTION",
+        "lastCheckpoint": {
+          "kind": "EXECUTION_CHECKPOINT",
+          "at": "2026-11-12T05:30:27.838Z",
+          "fingerprint": "70247b0f46fc",
+          "researchRunId": "gdi_disc_run_mwd402dm_25c150",
+          "executionStatus": "EXECUTION_BLOCKED",
+          "providerRunIds": [],
+          "extractedCount": 0,
+          "costUsdCumulative": 0
+        }
+      },
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "segmentId": "local_catering_day_meetings",
+        "hasState": true,
+        "executionStatus": "EXECUTION_BLOCKED",
+        "liveCalls": 0,
+        "costUsd": 0,
+        "candidateCount": 0,
+        "skipLiveProvider": false,
+        "skipReason": "NEEDS_EXECUTION",
+        "lastCheckpoint": {
+          "kind": "EXECUTION_CHECKPOINT",
+          "at": "2026-11-12T05:30:27.843Z",
+          "fingerprint": "02f901f02e4d",
+          "researchRunId": "gdi_disc_run_mwd402dm_25c150",
+          "executionStatus": "EXECUTION_BLOCKED",
+          "providerRunIds": [],
+          "extractedCount": 0,
+          "costUsdCumulative": 0
+        }
+      },
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "segmentId": "corporate_celebrations_private_events",
+        "hasState": true,
+        "executionStatus": "EXECUTION_BLOCKED",
+        "liveCalls": 0,
+        "costUsd": 0,
+        "candidateCount": 0,
+        "skipLiveProvider": false,
+        "skipReason": "NEEDS_EXECUTION",
+        "lastCheckpoint": {
+          "kind": "EXECUTION_CHECKPOINT",
+          "at": "2026-11-12T05:30:27.849Z",
+          "fingerprint": "49df14dad018",
+          "researchRunId": "gdi_disc_run_mwd402dm_25c150",
+          "executionStatus": "EXECUTION_BLOCKED",
+          "providerRunIds": [],
+          "extractedCount": 0,
+          "costUsdCumulative": 0
+        }
+      },
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "segmentId": "travel_trade_group_intermediaries",
+        "hasState": true,
+        "executionStatus": "EXECUTION_BLOCKED",
+        "liveCalls": 0,
+        "costUsd": 0,
+        "candidateCount": 0,
+        "skipLiveProvider": false,
+        "skipReason": "NEEDS_EXECUTION",
+        "lastCheckpoint": {
+          "kind": "EXECUTION_CHECKPOINT",
+          "at": "2026-11-12T05:30:27.854Z",
+          "fingerprint": "507df06f3581",
+          "researchRunId": "gdi_disc_run_mwd402dm_25c150",
+          "executionStatus": "EXECUTION_BLOCKED",
+          "providerRunIds": [],
+          "extractedCount": 0,
+          "costUsdCumulative": 0
+        }
+      },
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "segmentId": "relocation_extended_stay",
+        "hasState": true,
+        "executionStatus": "EXECUTION_BLOCKED",
+        "liveCalls": 0,
+        "costUsd": 0,
+        "candidateCount": 0,
+        "skipLiveProvider": false,
+        "skipReason": "NEEDS_EXECUTION",
+        "lastCheckpoint": {
+          "kind": "EXECUTION_CHECKPOINT",
+          "at": "2026-11-12T05:30:27.859Z",
+          "fingerprint": "c504400449f7",
+          "researchRunId": "gdi_disc_run_mwd402dm_25c150",
+          "executionStatus": "EXECUTION_BLOCKED",
+          "providerRunIds": [],
+          "extractedCount": 0,
+          "costUsdCumulative": 0
+        }
+      },
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "segmentId": "preferred_lodging_partnerships",
+        "hasState": true,
+        "executionStatus": "EXECUTION_BLOCKED",
+        "liveCalls": 0,
+        "costUsd": 0,
+        "candidateCount": 0,
+        "skipLiveProvider": false,
+        "skipReason": "NEEDS_EXECUTION",
+        "lastCheckpoint": {
+          "kind": "EXECUTION_CHECKPOINT",
+          "at": "2026-11-12T05:30:27.866Z",
+          "fingerprint": "8728b1c665d7",
+          "researchRunId": "gdi_disc_run_mwd402dm_25c150",
+          "executionStatus": "EXECUTION_BLOCKED",
+          "providerRunIds": [],
+          "extractedCount": 0,
+          "costUsdCumulative": 0
+        }
+      },
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "segmentId": "professional_event_planners",
+        "hasState": true,
+        "executionStatus": "EXECUTION_BLOCKED",
+        "liveCalls": 0,
+        "costUsd": 0,
+        "candidateCount": 0,
+        "skipLiveProvider": false,
+        "skipReason": "NEEDS_EXECUTION",
+        "lastCheckpoint": {
+          "kind": "EXECUTION_CHECKPOINT",
+          "at": "2026-11-12T05:30:27.871Z",
+          "fingerprint": "39a0dadb5a53",
+          "researchRunId": "gdi_disc_run_mwd402dm_25c150",
+          "executionStatus": "EXECUTION_BLOCKED",
+          "providerRunIds": [],
+          "extractedCount": 0,
+          "costUsdCumulative": 0
+        }
+      }
+    ]
+  },
+  "discoveryExecutionSummary": {
+    "cellCount": 14,
+    "totalExtractedCandidates": 40,
+    "totalResearchCostUsd": 0,
+    "freshRetrievalCells": 0
+  },
+  "discoveryStatusRollup": null,
+  "completeClaimsBlocked": [],
+  "discoveryCompleteClaimAllowed": false,
+  "note": "Original Full E2E chain invoked (discovery → deep research → contacts → qualification → presentation). Live paid Exa requires --authorize-paid-discovery and --authorize-paid-research with budget ceiling. See original-full-e2e-chain/."
+}
