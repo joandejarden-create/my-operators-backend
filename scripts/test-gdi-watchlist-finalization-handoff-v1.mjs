@@ -141,7 +141,7 @@ await checkAsync(
 );
 
 await checkAsync(
-  "knowbe4_verified_office_trigger_may_qualify_without_confirmed_booking",
+  "knowbe4_arlington_trigger_does_not_auto_qualify_bethesda_on_metro_label",
   async () => {
     const orsPath = path.join(
       ROOT,
@@ -151,21 +151,30 @@ await checkAsync(
     const opp = doc.opportunity || doc;
     const demand = applyOfflineDemandThesisRecoveryInChain(opp);
     const cleared = reconcileUnresolvedQuestionsAfterContact(demand.opportunity);
-    const elig = evaluateSharedCommercialEligibility(cleared.opportunity, {
+    const { applyProactiveCommercialIntelligenceInChain } = await import(
+      "../lib/group-demand-intelligence/workflow/gdi-watchlist-finalization-handoff-v1.js"
+    );
+    const applied = applyProactiveCommercialIntelligenceInChain(cleared.opportunity);
+    const elig = evaluateSharedCommercialEligibility(applied.opportunity, {
       hotel: { hotelId: "recLuxvwwxID7U2B8", displayName: "Bethesda Marriott" },
     });
-    // Proactive CI: verified Arlington office trigger + relevant named entry point
-    // may qualify without a confirmed hotel booking / RFP / room block.
-    assert.equal(elig.salesReady, true);
-    assert.ok(!elig.gaps.includes("MISSING_HOTEL_DEMAND_THESIS"));
+    // Verified Arlington trigger can support a guestroom hypothesis without a
+    // confirmed booking — but broad DC-metro / same-market copy is not enough
+    // for Bethesda Marriott publication-review readiness.
     assert.ok(!cleared.remaining.includes("named_buyer_not_verified"));
-    const readiness = evaluatePublicationReviewReadiness(cleared.opportunity, {
+    assert.equal(applied.opportunity.proposedRevenueType || applied.hypothesis?.proposedRevenueType, "GUEST_ROOMS");
+    assert.equal(elig.salesReady, false);
+    const readiness = evaluatePublicationReviewReadiness(applied.opportunity, {
       eligibilityResult: elig,
       hotel: { hotelId: "recLuxvwwxID7U2B8", displayName: "Bethesda Marriott" },
     });
-    assert.equal(readiness.publicationReviewReady, true);
+    assert.equal(readiness.publicationReviewReady, false);
     assert.equal(readiness.customerPublicationReady, false);
-    assert.equal(readiness.founderAuthorizationRequired, true);
+    assert.ok(
+      (readiness.blockers || []).some((b) =>
+        /GEOGRAPHY|HOTEL_FIT|GENERIC_OR_TRUNCATED/i.test(String(b)),
+      ),
+    );
   }
 );
 
