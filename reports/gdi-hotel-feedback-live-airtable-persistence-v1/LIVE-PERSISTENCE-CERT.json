@@ -1,0 +1,175 @@
+{
+  "contract": "GDI_HOTEL_FEEDBACK_LIVE_AIRTABLE_PERSISTENCE_V1",
+  "marker": "GDI_FEEDBACK_LIVE_PERSISTENCE_VERIFICATION",
+  "runId": "gdi_fb_live_mwdnzdow",
+  "ok": true,
+  "acceptanceStatus": "PRODUCTION_PERSISTENCE_VERIFIED",
+  "baseId": "appa2cE7FTRmIbB32",
+  "persistenceMode": "airtable",
+  "tables": {
+    "decisions": "Decisions",
+    "decisionEvents": "Decision Events"
+  },
+  "hotelId": "dec_at_verify_gdi_feedback_hotel",
+  "opportunityId": "gdi_opp_gdi_feedback_live_persistence_verification_gdi_fb_live_mwdnzdow",
+  "decisionId": "dec_mwdnze9u_8a262f24",
+  "checks": [
+    {
+      "name": "canonical_base",
+      "pass": true,
+      "detail": "appa2cE7FTRmIbB32"
+    },
+    {
+      "name": "persistence_airtable",
+      "pass": true,
+      "detail": "airtable"
+    },
+    {
+      "name": "decision_ensured",
+      "pass": true,
+      "detail": "dec_mwdnze9u_8a262f24"
+    },
+    {
+      "name": "decision_airtable_readback",
+      "pass": true,
+      "detail": "{\"airtableRec\":\"recj627WLqEjCOuWZ\",\"hotelId\":\"dec_at_verify_gdi_feedback_hotel\",\"subjectId\":\"gdi_opp_gdi_feedback_live_persistence_verification_gdi_fb_live_mwdnzdow\",\"productModule\":\"GDI\"}"
+    },
+    {
+      "name": "validation_ingest_events",
+      "pass": true,
+      "detail": "eventWrites=5"
+    },
+    {
+      "name": "validation_airtable_events",
+      "pass": true,
+      "detail": "val_mwdnzez1_741341,val_mwdnzfts_ca8595,val_mwdnzgpk_8796fc,val_mwdnzhix_ce0f67,val_mwdnzidt_448552"
+    },
+    {
+      "name": "local_projection_matches",
+      "pass": true,
+      "detail": "{\"familiarityStatus\":\"ALREADY_KNOWN\",\"commercialValue\":\"WORTH_WATCHING\",\"hotelValidationUpdatedAt\":\"2026-11-12T14:49:48.357Z\"}"
+    },
+    {
+      "name": "hotelValidationUpdatedAt_present",
+      "pass": true,
+      "detail": "2026-11-12T14:49:48.357Z"
+    },
+    {
+      "name": "identical_local_stamp_stable",
+      "pass": true,
+      "detail": "2026-11-12T14:49:48.357Z"
+    },
+    {
+      "name": "action_airtable",
+      "pass": true,
+      "detail": "{\"eventId\":\"act_mwdnzl6y_50283f\",\"eventType\":\"ACTION\",\"eventSubtype\":\"PLANNED_TO_CONTACT\",\"eventValue\":\"PLANNED_TO_CONTACT\",\"hotelId\":\"dec_at_verify_gdi_feedback_hotel\"}"
+    },
+    {
+      "name": "salesActionUpdatedAt_present",
+      "pass": true,
+      "detail": "2026-11-12T14:49:56.746Z"
+    },
+    {
+      "name": "action_does_not_change_validation_stamp",
+      "pass": true,
+      "detail": "2026-11-12T14:49:48.357Z"
+    },
+    {
+      "name": "identical_action_no_new_stamp",
+      "pass": true,
+      "detail": "{\"created\":false,\"salesActionUpdatedAt\":\"2026-11-12T14:49:56.746Z\"}"
+    },
+    {
+      "name": "outcome_airtable",
+      "pass": true,
+      "detail": "{\"eventId\":\"out_mwdnznbi_d2b367\",\"eventType\":\"OUTCOME\",\"eventSubtype\":\"DEFERRED\",\"eventValue\":\"DEFERRED\",\"hotelId\":\"dec_at_verify_gdi_feedback_hotel\"}"
+    },
+    {
+      "name": "salesOutcomeUpdatedAt_present",
+      "pass": true,
+      "detail": "2026-11-12T14:49:59.502Z"
+    },
+    {
+      "name": "readback_action_type",
+      "pass": true,
+      "detail": "PLANNED_TO_CONTACT"
+    },
+    {
+      "name": "readback_outcome_type",
+      "pass": true,
+      "detail": "DEFERRED"
+    },
+    {
+      "name": "section_isolation_timestamps",
+      "pass": true,
+      "detail": "{\"hotelValidationUpdatedAt\":\"2026-11-12T14:49:48.357Z\",\"salesActionUpdatedAt\":\"2026-11-12T14:49:56.746Z\",\"salesOutcomeUpdatedAt\":\"2026-11-12T14:49:59.502Z\"}"
+    },
+    {
+      "name": "validation_stamp_unchanged_after_outcome",
+      "pass": true,
+      "detail": "2026-11-12T14:49:48.357Z"
+    },
+    {
+      "name": "action_stamp_unchanged_after_outcome",
+      "pass": true,
+      "detail": "2026-11-12T14:49:56.746Z"
+    },
+    {
+      "name": "local_timezone_labels",
+      "pass": true,
+      "detail": "{\"default\":\"Last saved: Nov 12, 2026, 03:49 PM\",\"madrid\":\"Last saved: 12 Nov 2026, 15:49\",\"ny\":\"Last saved: Nov 12, 2026, 09:49 AM\"}"
+    },
+    {
+      "name": "learning_pipeline_readable",
+      "pass": true,
+      "detail": "{\"queueKind\":\"refresh\",\"priority\":\"MEDIUM\",\"rationale\":\"Already known — enrich intelligence; do not present as newly discovered\",\"suppressNewDiscoveryLabel\":true,\"hotelSpecific\":true}"
+    },
+    {
+      "name": "learning_mappings",
+      "pass": true,
+      "detail": "{\"alreadyKnown\":{\"queueKind\":\"refresh\",\"priority\":\"MEDIUM\",\"rationale\":\"Already known — enrich intelligence; do not present as newly discovered\",\"suppressNewDiscoveryLabel\":true,\"hotelSpecific\":true},\"worthNow\":{\"queueKind\":\"feedback_followup\",\"priority\":\"HIGH\",\"rationale\":\"Hotel marked worth pursuing — prioritize evidence gaps\",\"suppressNewDiscoveryLabel\":false,\"hotelSpecific\":true},\"wrongContact\":{\"queueKind\":\"contact_enrichment\",\"priority\":\"HIGH\",\"rationale\":\"Hotel reported wrong/invalid contact — queue contact resolution\",\"suppressNewDiscoveryLabel\":false,\"hotelSpecific\":true},\"wrongEmail\":{\"queueKind\":\"contact_enrichment\",\"priority\":\"HIGH\",\"rationale\":\"Hotel reported wrong/invalid contact — queue contact resolution\",\"suppressNewDiscoveryLabel\":false,\"hotelSpecific\":true},\"rfp\":{\"queueKind\":\"refresh\",\"priority\":\"LOW\",\"rationale\":\"Hotel actively pursuing/booked — preserve pursuit state; avoid conflicting automation\",\"preservePursuitState\":true,\"suppressAutomatedRecommendations\":true,\"hotelSpecific\":true},\"notRelevant\":{\"queueKind\":\"feedback_followup\",\"priority\":\"LOW\",\"rationale\":\"Hotel rejected — suppress repetitive recommendations unless material new evidence\",\"suppressRecommendations\":true,\"requireMaterialChangeToResurface\":true,\"hotelSpecific\":true}}"
+    }
+  ],
+  "timestamps": {
+    "hotelValidationUpdatedAt": "2026-11-12T14:49:48.357Z",
+    "salesActionUpdatedAt": "2026-11-12T14:49:56.746Z",
+    "salesOutcomeUpdatedAt": "2026-11-12T14:49:59.502Z",
+    "labelMadridAction": "Last saved: 12 Nov 2026, 15:49",
+    "labelNewYorkOutcome": "Last saved: Nov 12, 2026, 09:49 AM",
+    "labelDefaultValidation": "Last saved: Nov 12, 2026, 03:49 PM"
+  },
+  "learning": {
+    "item": {
+      "hotelId": "dec_at_verify_gdi_feedback_hotel",
+      "opportunityId": "gdi_opp_gdi_feedback_live_persistence_verification_gdi_fb_live_mwdnzdow",
+      "provenance": "HOTEL_SUBMITTED",
+      "status": "ALREADY_KNOWN",
+      "feedbackType": "WORTH_WATCHING",
+      "action": "PLANNED_TO_CONTACT",
+      "outcome": "DEFERRED",
+      "reason": null,
+      "note": "GDI_FEEDBACK_LIVE_PERSISTENCE_VERIFICATION validation note run=gdi_fb_live_mwdnzdow",
+      "familiarityStatus": "ALREADY_KNOWN",
+      "commercialValue": "WORTH_WATCHING",
+      "contactPersonAssessment": "RIGHT_PERSON",
+      "emailAssessment": "USEFUL",
+      "phoneAssessment": "NOT_TESTED"
+    },
+    "task": {
+      "queueKind": "refresh",
+      "priority": "MEDIUM",
+      "rationale": "Already known — enrich intelligence; do not present as newly discovered",
+      "suppressNewDiscoveryLabel": true,
+      "hotelSpecific": true
+    }
+  },
+  "airtableEventIds": [
+    "val_mwdnzez1_741341",
+    "val_mwdnzfts_ca8595",
+    "val_mwdnzgpk_8796fc",
+    "val_mwdnzhix_ce0f67",
+    "val_mwdnzidt_448552",
+    "act_mwdnzl6y_50283f",
+    "out_mwdnznbi_d2b367"
+  ]
+}
