@@ -2946,24 +2946,43 @@
   function filterOpportunities(rows, filters) {
     filters = filters || {};
     rows = (rows || []).slice();
-    // Defense-in-depth: when API stamps primaryCommercialEligible, never show
-    // market-intelligence themes / archive DQ / research-pipeline-only on the
-    // default commercial browse (unless admin surface=full|research|archive).
+    // Defense-in-depth: default commercial browse must never render research
+    // themes / archive DQ / research-pipeline-only. Prefer API stamps; also
+    // check raw priority (not remapped priorityFilterKey) and known IDs.
     var surface = String(filters.surface || filters.listSurface || "").toLowerCase();
     if (!surface || surface === "commercial") {
+      var forbiddenCommercialIds = {
+        gdi_opp_marriott_hq_adjacent_corporate_watch: 1,
+        gdi_opp_aao_2027_annual_session_9: 1,
+        gdi_opp_aao_2028_annual_meeting_10: 1,
+        gdi_opp_48th_iscb_annual_conference_2027_12: 1,
+        gdi_opp_aan_2027_disqualified: 1,
+        gdi_opp_ada_2027_disqualified: 1,
+        gdi_opp_agb_2027_disqualified: 1,
+        gdi_opp_fba_qui_tam_2027_disqualified: 1,
+        gdi_opp_ntca_2027_disqualified: 1,
+        gdi_opp_ptab_2027_disqualified: 1,
+        gdi_opp_asa_advance_2027_disqualified: 1,
+        gdi_opp_2027_nci_rna_biology_symposium_7: 1,
+      };
       rows = rows.filter(function (o) {
-        if (o && o.primaryCommercialEligible === false) return false;
+        if (!o) return false;
+        var id = String(o.id || o.opportunityId || "");
+        if (forbiddenCommercialIds[id]) return false;
+        if (o.primaryCommercialEligible === false) return false;
         if (
-          o &&
           o.commercialSurfaceDisposition &&
           o.commercialSurfaceDisposition !== "COMMERCIAL_OPPORTUNITY"
         ) {
           return false;
         }
-        var pri = String(
-          (o && (o.priorityFilterKey || o.priority)) || ""
-        ).toUpperCase();
-        if (pri === "DISQUALIFIED") return false;
+        // Raw priority wins over remapped priorityFilterKey (AAO etc. were
+        // leaking when filter key was MEDIUM_PRIORITY while priority=DISQUALIFIED).
+        var rawPri = String(o.priority || "").toUpperCase();
+        if (rawPri === "DISQUALIFIED") return false;
+        var title = String(o.title || o.opportunityName || "");
+        if (/corporate meetings near marriott hq/i.test(title)) return false;
+        if (/market intelligence\s*[—-].*marriott hq/i.test(title)) return false;
         return true;
       });
     }
