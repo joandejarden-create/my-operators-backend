@@ -15,6 +15,7 @@ import {
 } from "../lib/group-demand-intelligence/research/bethesda-internal-research-union-v1.js";
 import { filterCustomerFacingOpportunities } from "../lib/group-demand-intelligence/customer-visibility.js";
 import { loadOpportunitiesCanonical } from "../lib/group-demand-intelligence/opportunity-persistence.js";
+import { ACCEPTABLE_59_ROW_SHA256S } from "../lib/group-demand-intelligence/research/gdi-hotel-store-integrity-guard-v1.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const HOTEL = "recLuxvwwxID7U2B8";
@@ -105,12 +106,10 @@ check("non_bethesda_unchanged", () => {
 check("store_hash_unchanged_and_no_write_flag", () => {
   const after = crypto.createHash("sha256").update(fs.readFileSync(oppPath)).digest("hex");
   assert.equal(after, before);
-  // Accept verified backup SHA or post-PR#182 restored live 59-row SHA.
+  // Accept allowlisted operational SHAs (verified backup, restored live,
+  // Woman's Club contact patch, title-repaired 59-row).
   assert.ok(
-    [
-      "fd438549ff030ffc6f219469a526ec9b88ad8a704871fa01784d5650468226ad",
-      "fd4539d9dd850c12a3093dd7b4e75039e5db67fadcd5e2c5ae5de09c68d00e44",
-    ].includes(before),
+    ACCEPTABLE_59_ROW_SHA256S.includes(before),
     `unexpected store sha ${before}`
   );
   assert.equal(manifest.opportunityStore.writesAuthorized, false);
