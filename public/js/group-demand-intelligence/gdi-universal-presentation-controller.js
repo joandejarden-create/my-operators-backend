@@ -22,7 +22,7 @@
       sourcingSubgroup: "BOTH",
       territory: "",
       weekly: "",
-      opportunityType: "",
+      opportunityType: "SALES_OPPORTUNITIES",
       workflow: "",
     };
   }

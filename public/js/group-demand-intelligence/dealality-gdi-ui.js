@@ -1504,15 +1504,24 @@
   function opportunityTypeFilterHtml(opts) {
     opts = opts || {};
     if (opts.showOpportunityTypeFilter === false) return "";
-    var active = opts.activeOpportunityType != null ? opts.activeOpportunityType : "";
+    var active =
+      opts.activeOpportunityType != null
+        ? opts.activeOpportunityType
+        : "SALES_OPPORTUNITIES";
     var options = Array.isArray(opts.opportunityTypeOptions)
       ? opts.opportunityTypeOptions
-      : [{ value: "", label: "All types", count: null }];
-    // If active type vanished after hotel switch, fall back to All types
+      : [
+          {
+            value: "SALES_OPPORTUNITIES",
+            label: "Sales Opportunities",
+            count: null,
+          },
+        ];
+    // If active type vanished after hotel switch, fall back to Sales Opportunities
     var activeStillValid = options.some(function (o) {
       return o.value === active;
     });
-    if (!activeStillValid) active = "";
+    if (!activeStillValid) active = "SALES_OPPORTUNITIES";
     return (
       '<div class="filter-group gdi-opportunity-type-filter">' +
       '<label class="filter-label" for="gdiOpportunityTypeFilter">Opportunity Type</label>' +
@@ -1665,7 +1674,16 @@
     return "OTHER_UNCLASSIFIED";
   }
 
+  var INVENTORY_POPULATION_VALUES = {
+    SALES_OPPORTUNITIES: "SALES_OPPORTUNITIES",
+    COMPETITIVE_MARKET_INTELLIGENCE: "COMPETITIVE_MARKET_INTELLIGENCE",
+    ALL_COMMERCIAL_INTELLIGENCE: "ALL_COMMERCIAL_INTELLIGENCE",
+  };
+
   var OPPORTUNITY_TYPE_FILTER_LABELS = {
+    SALES_OPPORTUNITIES: "Sales Opportunities",
+    COMPETITIVE_MARKET_INTELLIGENCE: "Competitive Market Intelligence",
+    ALL_COMMERCIAL_INTELLIGENCE: "All Commercial Intelligence",
     SCALING_COMPANY: "Scaling Company",
     ASSOCIATION_CONFERENCE_GROUP: "Association / Conference / Events",
     GOVERNMENT_PUBLIC_SECTOR: "Government & Public Sector",
@@ -1689,10 +1707,59 @@
     OTHER_UNCLASSIFIED: "Other / Unclassified",
   };
 
+  function isInventoryPopulationFilter(value) {
+    var v = String(value || "");
+    return (
+      v === INVENTORY_POPULATION_VALUES.SALES_OPPORTUNITIES ||
+      v === INVENTORY_POPULATION_VALUES.COMPETITIVE_MARKET_INTELLIGENCE ||
+      v === INVENTORY_POPULATION_VALUES.ALL_COMMERCIAL_INTELLIGENCE
+    );
+  }
+
+  function opportunityInventoryPopulations(o) {
+    o = o || {};
+    if (Array.isArray(o.inventoryPopulations) && o.inventoryPopulations.length) {
+      return o.inventoryPopulations;
+    }
+    if (o.cmiVerified === true) {
+      return [
+        INVENTORY_POPULATION_VALUES.SALES_OPPORTUNITIES,
+        INVENTORY_POPULATION_VALUES.COMPETITIVE_MARKET_INTELLIGENCE,
+      ];
+    }
+    return [INVENTORY_POPULATION_VALUES.SALES_OPPORTUNITIES];
+  }
+
+  function matchesInventoryPopulationFilter(o, filterValue) {
+    if (!filterValue) return true;
+    if (filterValue === INVENTORY_POPULATION_VALUES.ALL_COMMERCIAL_INTELLIGENCE) {
+      return true;
+    }
+    return opportunityInventoryPopulations(o).indexOf(filterValue) >= 0;
+  }
+
   function countByOpportunityTypeFilter(opportunities) {
-    var counts = { all: 0 };
+    var counts = {
+      all: 0,
+      SALES_OPPORTUNITIES: 0,
+      COMPETITIVE_MARKET_INTELLIGENCE: 0,
+      ALL_COMMERCIAL_INTELLIGENCE: 0,
+    };
     (opportunities || []).forEach(function (o) {
       counts.all += 1;
+      counts.ALL_COMMERCIAL_INTELLIGENCE += 1;
+      var pops = opportunityInventoryPopulations(o);
+      if (pops.indexOf(INVENTORY_POPULATION_VALUES.SALES_OPPORTUNITIES) >= 0) {
+        counts.SALES_OPPORTUNITIES += 1;
+      }
+      if (
+        pops.indexOf(
+          INVENTORY_POPULATION_VALUES.COMPETITIVE_MARKET_INTELLIGENCE
+        ) >= 0 ||
+        o.cmiVerified === true
+      ) {
+        counts.COMPETITIVE_MARKET_INTELLIGENCE += 1;
+      }
       var c = classifyOpportunityTypeFilter(o);
       counts[c] = (counts[c] || 0) + 1;
     });
@@ -1701,8 +1768,28 @@
 
   function opportunityTypeFilterOptionsFromCounts(counts) {
     counts = counts || {};
-    var options = [{ value: "", label: "All types", count: counts.all || 0 }];
+    var options = [
+      {
+        value: "SALES_OPPORTUNITIES",
+        label: "Sales Opportunities",
+        count: counts.SALES_OPPORTUNITIES != null ? counts.SALES_OPPORTUNITIES : counts.all || 0,
+      },
+      {
+        value: "COMPETITIVE_MARKET_INTELLIGENCE",
+        label: "Competitive Market Intelligence",
+        count: counts.COMPETITIVE_MARKET_INTELLIGENCE || 0,
+      },
+      {
+        value: "ALL_COMMERCIAL_INTELLIGENCE",
+        label: "All Commercial Intelligence",
+        count:
+          counts.ALL_COMMERCIAL_INTELLIGENCE != null
+            ? counts.ALL_COMMERCIAL_INTELLIGENCE
+            : counts.all || 0,
+      },
+    ];
     Object.keys(OPPORTUNITY_TYPE_FILTER_LABELS).forEach(function (value) {
+      if (isInventoryPopulationFilter(value)) return;
       var n = counts[value] || 0;
       if (n > 0) {
         options.push({
@@ -2577,7 +2664,7 @@
         segment: "",
         territory: "",
         weekly: "",
-        opportunityType: "",
+        opportunityType: "SALES_OPPORTUNITIES",
       },
       filters || {}
     );
@@ -2615,7 +2702,7 @@
       segment: "",
       territory: "",
       weekly: "",
-      opportunityType: "",
+      opportunityType: "SALES_OPPORTUNITIES",
     };
   }
 
@@ -3050,6 +3137,9 @@
     }
     if (filters.opportunityType) {
       rows = rows.filter(function (o) {
+        if (isInventoryPopulationFilter(filters.opportunityType)) {
+          return matchesInventoryPopulationFilter(o, filters.opportunityType);
+        }
         return classifyOpportunityTypeFilter(o) === filters.opportunityType;
       });
     }
