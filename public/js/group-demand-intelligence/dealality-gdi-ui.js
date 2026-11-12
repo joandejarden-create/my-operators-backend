@@ -5629,8 +5629,9 @@
   function looksLikePersonNameLocal(name) {
     var n = String(name || "").replace(/\s+/g, " ").trim();
     if (!n || n === "UNKNOWN" || n === "—") return false;
+    if (/buyer not yet identified/i.test(n)) return false;
     if (
-      /\b(association|conference|university|inc\.?|llc|corp\.?|group|desk|services|housing|registration|committee|department|team|staff|office)\b/i.test(
+      /\b(association|conference|university|inc\.?|llc|corp\.?|group|desk|services|housing|registration|committee|department|team|staff|office|hotel|information|accommodations?|webmaster|helpdesk|bureau)\b/i.test(
         n
       )
     ) {
