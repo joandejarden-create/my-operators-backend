@@ -1,0 +1,101 @@
+{
+  "schema": "gdi-organization-demand-ecosystem-v1",
+  "architecture": "gdi-nextgen-discovery-architecture-v1",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "generatedAt": "2026-11-12T21:45:53.555Z",
+  "nodes": {
+    "org_ac52d79265e2": {
+      "id": "org_ac52d79265e2",
+      "kind": "ORGANIZATION",
+      "name": "Maryland SoccerPlex / Maryland Sports",
+      "canonicalName": "Maryland SoccerPlex / Maryland Sports",
+      "evidenceUrls": [
+        "https://www.mdsoccerplex.com/"
+      ],
+      "confidence": 0.58,
+      "hotelDemandRelevance": 0.72,
+      "sourceHunter": "sports_housing",
+      "geographicScope": "Germantown / Montgomery County MD / Bethesda lodging catchment",
+      "verifiedAt": "2026-11-12",
+      "updatedAt": "2026-11-12T21:45:53.555Z"
+    },
+    "act_org_ac52d79265e2_Maryland SoccerPlex tour": {
+      "id": "act_org_ac52d79265e2_Maryland SoccerPlex tour",
+      "kind": "EVENT_ACTIVITY",
+      "name": "Maryland SoccerPlex tournament calendar — visiting-team lodging demand (historical public program page)",
+      "canonicalName": "Maryland SoccerPlex tournament calendar — visiting-team lodging demand (historical public program page)",
+      "activityDate": null,
+      "evidenceUrls": [
+        "https://www.mdsoccerplex.com/"
+      ],
+      "sourceHunter": "sports_housing",
+      "confidence": 0.58,
+      "verifiedAt": null,
+      "hotelDemandRelevance": null,
+      "updatedAt": "2026-11-12T21:45:53.555Z"
+    },
+    "hyp_6a37b25989a1": {
+      "id": "hyp_6a37b25989a1",
+      "kind": "HOTEL_DEMAND_HYPOTHESIS",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "organizationId": "org_ac52d79265e2",
+      "organizationName": "Maryland SoccerPlex / Maryland Sports",
+      "activityTitle": "Maryland SoccerPlex tournament calendar — visiting-team lodging demand (historical public program page)",
+      "activityDate": null,
+      "demandTrigger": "youth tournament stay-to-play housing adjacency",
+      "territory": null,
+      "contactName": null,
+      "contactRole": "Tournament / housing coordinator (unverified)",
+      "pursuitThesis": "Bethesda Marriott can pursue stay-to-play overflow and visiting-team packages for SoccerPlex events when primary Germantown inventory is constrained; program existence is public, edition-specific room blocks remain unverified.",
+      "evidenceUrls": [
+        "https://www.mdsoccerplex.com/"
+      ],
+      "confidence": 0.58,
+      "hotelDemandRelevance": 0.72,
+      "hypothesisStatus": "HOTEL_THESIS_FORMED",
+      "sourceHunter": "sports_housing",
+      "commercialDispositionHint": "RESEARCH_CONTINUATION",
+      "notSalesReadyReason": "Hunter output is evidence for ORS/qualification — never auto Sales Ready",
+      "verifiedAt": "2026-11-12",
+      "discoveryEvidenceClass": "HISTORICAL_RESEARCH_REPLAY",
+      "activityDateVerified": false,
+      "customerInventoryEligible": true,
+      "publicationEligible": false,
+      "canonicalName": "",
+      "updatedAt": "2026-11-12T21:45:53.556Z"
+    }
+  },
+  "edges": [
+    {
+      "id": "edge_92235357fbc6",
+      "kind": "ACTIVITY_OF",
+      "fromId": "org_ac52d79265e2",
+      "toId": "act_org_ac52d79265e2_Maryland SoccerPlex tour",
+      "label": null,
+      "evidenceUrls": [
+        "https://www.mdsoccerplex.com/"
+      ],
+      "verifiedAt": null,
+      "confidence": null,
+      "sourceHunter": "sports_housing"
+    },
+    {
+      "id": "edge_43dbde3703c1",
+      "kind": "DEMAND_FOR_HOTEL",
+      "fromId": "org_ac52d79265e2",
+      "toId": "hyp_6a37b25989a1",
+      "label": null,
+      "evidenceUrls": [],
+      "verifiedAt": null,
+      "confidence": 0.58,
+      "sourceHunter": "sports_housing"
+    }
+  ],
+  "stats": {
+    "organizations": 1,
+    "activities": 1,
+    "contacts": 0,
+    "hypotheses": 1,
+    "edges": 2
+  }
+}

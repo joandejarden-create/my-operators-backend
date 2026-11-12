@@ -1,0 +1,281 @@
+{
+  "schema": "gdi-specialist-hunter-run-report-v1",
+  "hunterId": "sports_housing",
+  "label": "Sports Housing",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "hotelName": "Bethesda Marriott",
+  "territory": null,
+  "startedAt": "2026-11-12T21:45:53.555Z",
+  "finishedAt": "2026-11-12T21:45:53.556Z",
+  "dryRun": true,
+  "cacheFirst": true,
+  "budgetUsdSpent": 0,
+  "budgetUsdCeiling": 0,
+  "paidAuthorized": false,
+  "horizonMonths": 18,
+  "safety": {
+    "ok": true,
+    "errors": []
+  },
+  "hunterConfig": {
+    "hunterId": "sports_housing",
+    "enabled": true,
+    "supportedTerritories": [
+      "US"
+    ],
+    "languages": [
+      "en"
+    ],
+    "defaultResearchHorizonMonths": 18,
+    "searchRetrievalLimits": {
+      "maxQueries": 8,
+      "maxResultsPerQuery": 10,
+      "maxDiscoveries": 25
+    },
+    "providerPreference": [
+      "apify",
+      "exa"
+    ],
+    "sourcePriority": [
+      "apify",
+      "exa"
+    ],
+    "cacheBehavior": {
+      "cacheFirst": true,
+      "allowSyntheticFixtures": true,
+      "promoteFixturesToInventory": false
+    },
+    "researchDepth": "STANDARD",
+    "evidenceRequirements": {
+      "minEvidenceUrls": 1,
+      "requireNamedBuyer": false,
+      "requireActivityDate": false
+    },
+    "retryPolicy": {
+      "maxAttempts": 2,
+      "backoffMs": 750
+    },
+    "costCeilingUsd": 0,
+    "qualificationHandoff": {
+      "autoSalesReady": false,
+      "autoPublish": false,
+      "routeToOrs": true,
+      "allowCustomerInventory": false
+    },
+    "apifyRole": "PRIMARY",
+    "wave": "FIRST",
+    "label": "Sports Housing",
+    "hotelId": "recLuxvwwxID7U2B8"
+  },
+  "providerPlan": {
+    "ok": true,
+    "hunterId": "sports_housing",
+    "label": "Sports Housing",
+    "workflowStrategy": "sports_entertainment",
+    "workflowIds": [
+      "sports_entertainment"
+    ],
+    "researchSegments": [
+      "sports"
+    ],
+    "tenBases": [
+      "SPORTS_ENTERTAINMENT_PRODUCTION"
+    ],
+    "dryRun": true,
+    "cacheFirst": true,
+    "allowPaidApify": false,
+    "allowPaidExa": false,
+    "paidAuthorized": false,
+    "providers": [
+      {
+        "category": "apify",
+        "mode": "CACHE_REGISTRY_ONLY",
+        "paid": false,
+        "role": "PRIMARY",
+        "classification": "PRIMARY_APIFY_DISCOVERY",
+        "actors": [
+          {
+            "id": "apify/facebook-events-scraper",
+            "actorId": "apify/facebook-events-scraper",
+            "title": "Facebook Events Scraper",
+            "version": null,
+            "sourceType": "PUBLISHED_EVENTS",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": 4.97,
+            "perRunCostHint": "~$0.01 per event + $0.001 actor start (Bronze)",
+            "enabled": true,
+            "replaceable": true
+          },
+          {
+            "id": "hgservices/apify-actor-espn",
+            "actorId": "hgservices/apify-actor-espn",
+            "title": "ESPN Sports Scores & Schedules",
+            "version": null,
+            "sourceType": "SPORTS_ENTERTAINMENT",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": 5,
+            "perRunCostHint": "Actor start ~$0.00005 + result ~$0.001 (Bronze)",
+            "enabled": true,
+            "replaceable": true
+          }
+        ],
+        "liveGate": "GDI_APIFY_LIVE",
+        "rationale": "Reuse existing Apify actor registry — replace actor without schema change"
+      },
+      {
+        "category": "exa",
+        "mode": "CACHE_FIRST",
+        "paid": false,
+        "liveGate": "GDI_EXA_AGENT_LIVE",
+        "rationale": "Exa for verification / buyer research when authorized"
+      }
+    ],
+    "coverageRow": {
+      "classification": "PRIMARY_APIFY_DISCOVERY",
+      "dupRisk": "HIGH national schedule noise; geo filter mandatory"
+    },
+    "v7Lessons": [
+      "Party Bus / social leisure organizers fail commercial-relevance gates — keep organizer + lodging thesis gates",
+      "Apify discoveries are research evidence, not Sales Ready opportunities",
+      "Sports/entertainment schedules are PRIMARY_APIFY; government/scaling stay EXA_PRIMARY",
+      "Dedup against Exa event discovery is HIGH for association/meetup surfaces",
+      "Actor registry must allow replacement without changing opportunity schema",
+      "Full E2E production rail remains Exa-primary until hotel-adaptive yield proven"
+    ]
+  },
+  "providerLiveCertified": false,
+  "discoveryEvidenceClass": "HISTORICAL_RESEARCH_REPLAY",
+  "commercialPrioritiesApplied": false,
+  "discoverMeta": {
+    "mode": "ZERO_PAID_HISTORICAL_PUBLIC_PROGRAM",
+    "discoveryEvidenceClass": "HISTORICAL_RESEARCH_REPLAY",
+    "paidAuthorized": false,
+    "budgetUsdSpent": 0,
+    "adapter": "gdi-nextgen-public-source-adapters-v1",
+    "incomplete": [
+      "Edition-specific tournament housing not verified.",
+      "Named buyer not verified — research-stage only."
+    ],
+    "leisureGateFixturesAttached": 1
+  },
+  "qualificationHandoff": {
+    "schema": "gdi-nextgen-qualification-handoff-v1",
+    "hunterId": "sports_housing",
+    "hotelId": "recLuxvwwxID7U2B8",
+    "dryRun": true,
+    "createdAt": "2026-11-12T21:45:53.556Z",
+    "packets": [
+      {
+        "schema": "gdi-nextgen-qualification-handoff-v1",
+        "hunterId": "sports_housing",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "hypothesisId": "hyp_6a37b25989a1",
+        "organizationName": "Maryland SoccerPlex / Maryland Sports",
+        "activityTitle": "Maryland SoccerPlex tournament calendar — visiting-team lodging demand (historical public program page)",
+        "discoveryEvidenceClass": "HISTORICAL_RESEARCH_REPLAY",
+        "customerInventoryEligible": true,
+        "publicationEligible": false,
+        "autoSalesReady": false,
+        "salesReady": false,
+        "routeToOrs": true,
+        "orsStatus": "QUEUED_FOR_QUALIFICATION",
+        "dryRun": true,
+        "uncertaintyPreserved": true,
+        "graphNodeCount": 5,
+        "notSalesReadyReason": "Hunter output is evidence for ORS/qualification — never auto Sales Ready"
+      }
+    ],
+    "summary": {
+      "total": 1,
+      "routedToOrs": 1,
+      "fixturesExcluded": 0,
+      "researchStage": 0,
+      "salesReady": 0,
+      "autoPublished": 0
+    }
+  },
+  "metrics": {
+    "rawDiscoveries": 2,
+    "hypotheses": 1,
+    "incrementalHypotheses": 1,
+    "duplicates": 0,
+    "rejected": 1,
+    "excluded": 0,
+    "organizations": 1,
+    "activities": 1,
+    "contacts": 0,
+    "readyForOrs": 0,
+    "hotelThesisFormed": 1,
+    "orsRouted": 1,
+    "fixturesExcludedFromOrs": 0,
+    "salesReadyEmitted": 0,
+    "autoPublished": false
+  },
+  "incremental": [
+    {
+      "id": "hyp_6a37b25989a1",
+      "kind": "HOTEL_DEMAND_HYPOTHESIS",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "organizationId": "org_ac52d79265e2",
+      "organizationName": "Maryland SoccerPlex / Maryland Sports",
+      "activityTitle": "Maryland SoccerPlex tournament calendar — visiting-team lodging demand (historical public program page)",
+      "activityDate": null,
+      "demandTrigger": "youth tournament stay-to-play housing adjacency",
+      "territory": null,
+      "contactName": null,
+      "contactRole": "Tournament / housing coordinator (unverified)",
+      "pursuitThesis": "Bethesda Marriott can pursue stay-to-play overflow and visiting-team packages for SoccerPlex events when primary Germantown inventory is constrained; program existence is public, edition-specific room blocks remain unverified.",
+      "evidenceUrls": [
+        "https://www.mdsoccerplex.com/"
+      ],
+      "confidence": 0.58,
+      "hotelDemandRelevance": 0.72,
+      "hypothesisStatus": "HOTEL_THESIS_FORMED",
+      "sourceHunter": "sports_housing",
+      "commercialDispositionHint": "RESEARCH_CONTINUATION",
+      "notSalesReadyReason": "Hunter output is evidence for ORS/qualification — never auto Sales Ready",
+      "verifiedAt": "2026-11-12",
+      "discoveryEvidenceClass": "HISTORICAL_RESEARCH_REPLAY",
+      "activityDateVerified": false,
+      "customerInventoryEligible": true,
+      "publicationEligible": false,
+      "dedupKey": "opp_f14d17072fa4"
+    }
+  ],
+  "duplicates": [],
+  "rejected": [
+    {
+      "organizationName": "Party Bus NYC Nightlife Tours",
+      "activityTitle": "Saturday party bus club crawl",
+      "demandTrigger": "nightlife leisure",
+      "evidenceUrls": [
+        "https://example.com/party-bus"
+      ],
+      "pursuitThesis": "none",
+      "notes": "Must remain rejected by V7 leisure gate",
+      "discoveryEvidenceClass": "SYNTHETIC_TEST_FIXTURE",
+      "activityDateVerified": false,
+      "customerInventoryEligible": false,
+      "publicationEligible": false,
+      "rejectReason": "V7 leisure/nightlife organizer gate (Party Bus class)"
+    }
+  ],
+  "ecosystemStats": {
+    "organizations": 1,
+    "activities": 1,
+    "contacts": 0,
+    "hypotheses": 1,
+    "edges": 2
+  },
+  "publicationSafeguard": {
+    "autoPublish": false,
+    "salesReadyFromHunter": false,
+    "entersExistingQualification": true,
+    "speculativeStaysResearchContinuation": true,
+    "syntheticFixturesNotCustomerInventory": true
+  }
+}
