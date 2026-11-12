@@ -1367,35 +1367,75 @@
         mode: "auth",
         badges: {},
       }) +
-      UI.contentTabsHtml(state.tab, [UI.GDI_MAIN_TAB]) +
-      UI.propertyBarHtml({
-        mode: "auth",
-        hotel: hotel,
-        hotelId: state.hotelId,
-        hotels: state.hotels,
-        hotelNeedDateConfigV1: state.hotelNeedDateConfigV1 || null,
-        activeWeekly: state.filters.weekly,
-        weeklyCounts: UI.countByWeeklyDelta(state.opportunities),
-        activeOpportunityType: state.filters.opportunityType || "",
-        opportunityTypeOptions: UI.opportunityTypeFilterOptionsFromCounts(
-          UI.opportunityTypeCountsForFilters(state.opportunities, state.filters)
-        ),
-        lastResearch: formatHistoryDate(s.lastResearchAt),
-        runStatusLabel: UI.customerSafeRunStatusLabel
-          ? UI.customerSafeRunStatusLabel(s)
-          : "Research Completed",
-        lastSourceVerification: formatHistoryDate(s.lastSourceVerificationAt),
-        lastPublishedUpdate: formatHistoryDate(
-          s.lastPublishedUpdateAt || s.lastReviewedPackageImportAt
-        ),
-        publishedUpdateLabel: "Last Published Update",
-        actionHtml: propertyBarActionsHtml(),
-      }) +
+      UI.contentTabsHtml(state.tab, UI.GDI_CUSTOMER_TABS || [UI.GDI_MAIN_TAB]) +
+      (state.tab === "priorities"
+        ? ""
+        : UI.propertyBarHtml({
+            mode: "auth",
+            hotel: hotel,
+            hotelId: state.hotelId,
+            hotels: state.hotels,
+            hotelNeedDateConfigV1: state.hotelNeedDateConfigV1 || null,
+            activeWeekly: state.filters.weekly,
+            weeklyCounts: UI.countByWeeklyDelta(state.opportunities),
+            activeOpportunityType: state.filters.opportunityType || "",
+            opportunityTypeOptions: UI.opportunityTypeFilterOptionsFromCounts(
+              UI.opportunityTypeCountsForFilters(state.opportunities, state.filters)
+            ),
+            lastResearch: formatHistoryDate(s.lastResearchAt),
+            runStatusLabel: UI.customerSafeRunStatusLabel
+              ? UI.customerSafeRunStatusLabel(s)
+              : "Research Completed",
+            lastSourceVerification: formatHistoryDate(s.lastSourceVerificationAt),
+            lastPublishedUpdate: formatHistoryDate(
+              s.lastPublishedUpdateAt || s.lastReviewedPackageImportAt
+            ),
+            publishedUpdateLabel: "Last Published Update",
+            actionHtml: propertyBarActionsHtml(),
+          })) +
       '<div id="gdiTabBody">' +
-      body +
+      (state.tab === "priorities"
+        ? '<div class="hnd-page" id="gdiNeedTimesPrioritiesRoot"></div>'
+        : body) +
       "</div>";
 
-    if (UI.bindNeedDateLegendInteractions) {
+    if (state.tab === "priorities") {
+      if (
+        window.DealalityGdiNeedTimesPrioritiesTab &&
+        typeof window.DealalityGdiNeedTimesPrioritiesTab.mount === "function"
+      ) {
+        window.DealalityGdiNeedTimesPrioritiesTab.mount(
+          document.getElementById("gdiNeedTimesPrioritiesRoot"),
+          {
+            hotelId: state.hotelId,
+            loading: document.getElementById("gdiLoading"),
+            isolation: (function () {
+              try {
+                var params = new URLSearchParams(window.location.search || "");
+                var airtable = String(params.get("airtable") || "").trim();
+                if (airtable === "0" || airtable === "false") return "portal_v1_test";
+                var i = String(params.get("isolation") || "").trim();
+                if (i === "portal_v1_test" || i === "1") return "portal_v1_test";
+              } catch (e) {}
+              return null;
+            })(),
+          }
+        );
+      } else {
+        var missing = document.getElementById("gdiNeedTimesPrioritiesRoot");
+        if (missing) {
+          missing.innerHTML =
+            '<div class="hnd-banner error" role="alert">Hotel Need Times & Priorities module failed to load.</div>';
+        }
+      }
+    } else if (
+      window.DealalityGdiNeedTimesPrioritiesTab &&
+      typeof window.DealalityGdiNeedTimesPrioritiesTab.unmount === "function"
+    ) {
+      window.DealalityGdiNeedTimesPrioritiesTab.unmount();
+    }
+
+    if (state.tab !== "priorities" && UI.bindNeedDateLegendInteractions) {
       UI.bindNeedDateLegendInteractions(root);
     }
 
