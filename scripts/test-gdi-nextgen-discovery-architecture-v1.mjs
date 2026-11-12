@@ -26,10 +26,23 @@ import {
   NEXTGEN_PILOT_HOTELS,
   buildWeeklySpecialistHunterPlan,
 } from "../lib/group-demand-intelligence/nextgen-discovery/hunter-orchestrator-v1.js";
-import { listImplementedHunterIds } from "../lib/group-demand-intelligence/nextgen-discovery/hunters/index.js";
+import {
+  listImplementedHunterIds,
+  listFirstWaveHunterIds,
+  getHunterRunner,
+} from "../lib/group-demand-intelligence/nextgen-discovery/hunters/index.js";
 import { NEED_DATE_RESEARCH_STRATEGY } from "../lib/group-demand-intelligence/need-date-demand/need-date-demand-contract-v1.js";
 import { APIFY_ACTOR_REGISTRY } from "../lib/group-demand-intelligence/research/apify/apify-actor-registry-v1.js";
 import { buildWeeklyWorkQueues } from "../lib/group-demand-intelligence/workflow/weekly-refresh-orchestrator-v1.js";
+import {
+  DISCOVERY_EVIDENCE_CLASS,
+  isSyntheticOrFixtureEvidenceClass,
+} from "../lib/group-demand-intelligence/nextgen-discovery/shared/discovery-evidence-class-v1.js";
+import {
+  resolveHunterConfig,
+  HUNTER_CONFIG_DEFAULTS,
+} from "../lib/group-demand-intelligence/nextgen-discovery/shared/hunter-config-registry-v1.js";
+import { NIH_SBPO_VOS_HISTORICAL_NOTICE } from "../lib/group-demand-intelligence/nextgen-discovery/hunters/government-procurement-hunter-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -128,11 +141,28 @@ async function main() {
   assert.ok(queues.specialistHunterPlan);
   assert.equal(queues.specialistHunterPlan.executePaid, false);
 
-  // 7) First-wave pilot zero-paid
+  // 7) Ten independent runners; first-wave subset for pilot selection
+  assert.equal(listImplementedHunterIds().length, 10);
   assert.deepEqual(
-    listImplementedHunterIds().sort(),
+    listFirstWaveHunterIds().sort(),
     FIRST_WAVE_HUNTERS.slice().sort()
   );
+  for (const id of SPECIALIST_HUNTER_LIST) {
+    assert.ok(getHunterRunner(id), `runner missing for ${id}`);
+    assert.ok(HUNTER_CONFIG_DEFAULTS[id], `config missing for ${id}`);
+  }
+  // Config isolation: disabling sports does not disable government
+  const sportsOff = resolveHunterConfig("sports_housing", {
+    hotelId: "recLuxvwwxID7U2B8",
+    hotelOverrides: { sports_housing: { enabled: false } },
+  });
+  const govOn = resolveHunterConfig("government_procurement", {
+    hotelId: "recLuxvwwxID7U2B8",
+    hotelOverrides: { sports_housing: { enabled: false } },
+  });
+  assert.equal(sportsOff.enabled, false);
+  assert.equal(govOn.enabled, true);
+
   const pilot = await runFirstWavePilot({
     hotels: NEXTGEN_PILOT_HOTELS,
     rootDir: ROOT,
@@ -153,6 +183,45 @@ async function main() {
     h.moduleRuns.filter((m) => m.hunterId === "sports_housing")
   );
   assert.ok(sportsRuns.every((m) => (m.metrics?.rejected || 0) >= 1));
+  assert.ok(
+    sportsRuns.every((m) =>
+      isSyntheticOrFixtureEvidenceClass(
+        m.discoveryEvidenceClass || m.discoverMeta?.discoveryEvidenceClass
+      )
+    ),
+    "cache pilot sports output must remain labeled synthetic fixture"
+  );
+
+  // 8) Zero-paid Government Procurement historical path
+  const gov = await getHunterRunner("government_procurement").run({
+    hotelId: "recLuxvwwxID7U2B8",
+    hotelName: "Bethesda Marriott",
+    dryRun: true,
+    budgetUsd: 0,
+    rootDir: ROOT,
+    reportDir: path.join(
+      ROOT,
+      "reports/gdi-nextgen-discovery-architecture-v1/gov-zero-paid-demo"
+    ),
+  });
+  assert.equal(gov.paidAuthorized, false);
+  assert.equal(gov.budgetUsdSpent, 0);
+  assert.equal(
+    gov.discoveryEvidenceClass,
+    DISCOVERY_EVIDENCE_CLASS.HISTORICAL_RESEARCH_REPLAY
+  );
+  assert.equal(gov.metrics.salesReadyEmitted, 0);
+  assert.equal(gov.publicationSafeguard.autoPublish, false);
+  assert.ok(gov.metrics.organizations >= 1);
+  assert.ok(gov.qualificationHandoff.summary.salesReady === 0);
+  assert.ok(
+    String(NIH_SBPO_VOS_HISTORICAL_NOTICE.sourceUrl).includes("sam.gov"),
+    "historical notice must cite SAM.gov"
+  );
+  assert.ok(
+    gov.incremental.every((h) => h.publicationEligible === false),
+    "no automatic publication"
+  );
 
   console.log(
     JSON.stringify(
@@ -160,11 +229,14 @@ async function main() {
         ok: true,
         fourteenSegments: fourteen.length,
         hunters: SPECIALIST_HUNTER_LIST.length,
-        firstWaveImplemented: listImplementedHunterIds().length,
+        implementedRunners: listImplementedHunterIds().length,
+        firstWave: listFirstWaveHunterIds().length,
         apifyActors: APIFY_ACTOR_REGISTRY.length,
         pilotIncremental: pilot.portfolioTotals.incrementalHypotheses,
         pilotRejected: pilot.portfolioTotals.rejected,
         budgetUsdSpent: pilot.budgetUsdSpent,
+        govEvidenceClass: gov.discoveryEvidenceClass,
+        govOrsRouted: gov.qualificationHandoff.summary.routedToOrs,
       },
       null,
       2

@@ -1,0 +1,101 @@
+{
+  "schema": "gdi-organization-demand-ecosystem-v1",
+  "architecture": "gdi-nextgen-discovery-architecture-v1",
+  "hotelId": "recnPB3Q02NO8Ma1o",
+  "generatedAt": "2026-11-12T20:46:29.276Z",
+  "nodes": {
+    "org_f4e40710ad6e": {
+      "id": "org_f4e40710ad6e",
+      "kind": "ORGANIZATION",
+      "name": "Rock 'n' Roll Running Series — San Diego housing",
+      "canonicalName": "Rock 'n' Roll Running Series — San Diego housing",
+      "evidenceUrls": [
+        "https://www.runrocknroll.com/"
+      ],
+      "confidence": 0.58,
+      "hotelDemandRelevance": 0.75,
+      "sourceHunter": "sports_housing",
+      "geographicScope": "",
+      "verifiedAt": "2026-11-12",
+      "updatedAt": "2026-11-12T20:46:29.277Z"
+    },
+    "act_org_f4e40710ad6e_San Diego race weekend p": {
+      "id": "act_org_f4e40710ad6e_San Diego race weekend p",
+      "kind": "EVENT_ACTIVITY",
+      "name": "San Diego race weekend participant lodging",
+      "canonicalName": "San Diego race weekend participant lodging",
+      "activityDate": "2027-06-06",
+      "evidenceUrls": [
+        "https://www.runrocknroll.com/"
+      ],
+      "sourceHunter": "sports_housing",
+      "confidence": 0.58,
+      "verifiedAt": null,
+      "hotelDemandRelevance": null,
+      "updatedAt": "2026-11-12T20:46:29.277Z"
+    },
+    "hyp_d41ea87d76f5": {
+      "id": "hyp_d41ea87d76f5",
+      "kind": "HOTEL_DEMAND_HYPOTHESIS",
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "organizationId": "org_f4e40710ad6e",
+      "organizationName": "Rock 'n' Roll Running Series — San Diego housing",
+      "activityTitle": "San Diego race weekend participant lodging",
+      "activityDate": "2027-06-06",
+      "demandTrigger": "race weekend housing",
+      "territory": null,
+      "contactName": null,
+      "contactRole": null,
+      "pursuitThesis": "Race weekends compress downtown inventory; Bayside can pursue official or overflow housing for out-of-town runners.",
+      "evidenceUrls": [
+        "https://www.runrocknroll.com/"
+      ],
+      "confidence": 0.58,
+      "hotelDemandRelevance": 0.75,
+      "hypothesisStatus": "HOTEL_THESIS_FORMED",
+      "sourceHunter": "sports_housing",
+      "commercialDispositionHint": "RESEARCH_CONTINUATION",
+      "notSalesReadyReason": "Hunter output is evidence for ORS/qualification — never auto Sales Ready",
+      "verifiedAt": "2026-11-12",
+      "discoveryEvidenceClass": "SYNTHETIC_TEST_FIXTURE",
+      "activityDateVerified": false,
+      "customerInventoryEligible": false,
+      "publicationEligible": false,
+      "canonicalName": "",
+      "updatedAt": "2026-11-12T20:46:29.278Z"
+    }
+  },
+  "edges": [
+    {
+      "id": "edge_115bc23600ee",
+      "kind": "ACTIVITY_OF",
+      "fromId": "org_f4e40710ad6e",
+      "toId": "act_org_f4e40710ad6e_San Diego race weekend p",
+      "label": null,
+      "evidenceUrls": [
+        "https://www.runrocknroll.com/"
+      ],
+      "verifiedAt": null,
+      "confidence": null,
+      "sourceHunter": "sports_housing"
+    },
+    {
+      "id": "edge_64111649c44f",
+      "kind": "DEMAND_FOR_HOTEL",
+      "fromId": "org_f4e40710ad6e",
+      "toId": "hyp_d41ea87d76f5",
+      "label": null,
+      "evidenceUrls": [],
+      "verifiedAt": null,
+      "confidence": 0.58,
+      "sourceHunter": "sports_housing"
+    }
+  ],
+  "stats": {
+    "organizations": 1,
+    "activities": 1,
+    "contacts": 0,
+    "hypotheses": 1,
+    "edges": 2
+  }
+}

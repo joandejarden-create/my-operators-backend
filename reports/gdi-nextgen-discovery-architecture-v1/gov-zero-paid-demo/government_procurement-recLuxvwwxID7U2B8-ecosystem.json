@@ -1,0 +1,101 @@
+{
+  "schema": "gdi-organization-demand-ecosystem-v1",
+  "architecture": "gdi-nextgen-discovery-architecture-v1",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "generatedAt": "2026-11-12T20:46:28.624Z",
+  "nodes": {
+    "org_f188d561c3c6": {
+      "id": "org_f188d561c3c6",
+      "kind": "ORGANIZATION",
+      "name": "NIH Small Business Program Office (SBPO)",
+      "canonicalName": "NIH Small Business Program Office (SBPO)",
+      "evidenceUrls": [
+        "https://sam.gov/workspace/contract/opp/f4e0c6bfa2a14c2195c8476fb81d5f9c/view"
+      ],
+      "confidence": 0.62,
+      "hotelDemandRelevance": 0.78,
+      "sourceHunter": "government_procurement",
+      "geographicScope": "Bethesda MD / Rockledge Drive / NIH leased corridor",
+      "verifiedAt": "2026-11-12",
+      "updatedAt": "2026-11-12T20:46:28.625Z"
+    },
+    "act_org_f188d561c3c6_NIH SBPO Vendor Outreach": {
+      "id": "act_org_f188d561c3c6_NIH SBPO Vendor Outreach",
+      "kind": "EVENT_ACTIVITY",
+      "name": "NIH SBPO Vendor Outreach Session — documented prior session at 6700 Rockledge Drive, Bethesda (2026-04-29)",
+      "canonicalName": "NIH SBPO Vendor Outreach Session — documented prior session at 6700 Rockledge Drive, Bethesda (2026-04-29)",
+      "activityDate": "2026-04-29",
+      "evidenceUrls": [
+        "https://sam.gov/workspace/contract/opp/f4e0c6bfa2a14c2195c8476fb81d5f9c/view"
+      ],
+      "sourceHunter": "government_procurement",
+      "confidence": 0.62,
+      "verifiedAt": null,
+      "hotelDemandRelevance": null,
+      "updatedAt": "2026-11-12T20:46:28.625Z"
+    },
+    "hyp_acdc6767104d": {
+      "id": "hyp_acdc6767104d",
+      "kind": "HOTEL_DEMAND_HYPOTHESIS",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "organizationId": "org_f188d561c3c6",
+      "organizationName": "NIH Small Business Program Office (SBPO)",
+      "activityTitle": "NIH SBPO Vendor Outreach Session — documented prior session at 6700 Rockledge Drive, Bethesda (2026-04-29)",
+      "activityDate": "2026-04-29",
+      "demandTrigger": "government vendor outreach session / contractor lodging adjacency",
+      "territory": null,
+      "contactName": null,
+      "contactRole": "NIH Small Business Program Office",
+      "pursuitThesis": "Bethesda Marriott can watch SAM.gov / NIH SBPO for the next Vendor Outreach Session and offer preferred vendor lodging packages near Rockledge Drive; prior session location is evidenced, next edition remains uncertain.",
+      "evidenceUrls": [
+        "https://sam.gov/workspace/contract/opp/f4e0c6bfa2a14c2195c8476fb81d5f9c/view"
+      ],
+      "confidence": 0.62,
+      "hotelDemandRelevance": 0.78,
+      "hypothesisStatus": "HOTEL_THESIS_FORMED",
+      "sourceHunter": "government_procurement",
+      "commercialDispositionHint": "RESEARCH_CONTINUATION",
+      "notSalesReadyReason": "Hunter output is evidence for ORS/qualification — never auto Sales Ready",
+      "verifiedAt": "2026-11-12",
+      "discoveryEvidenceClass": "HISTORICAL_RESEARCH_REPLAY",
+      "activityDateVerified": true,
+      "customerInventoryEligible": true,
+      "publicationEligible": false,
+      "canonicalName": "",
+      "updatedAt": "2026-11-12T20:46:28.626Z"
+    }
+  },
+  "edges": [
+    {
+      "id": "edge_8a031757b4af",
+      "kind": "ACTIVITY_OF",
+      "fromId": "org_f188d561c3c6",
+      "toId": "act_org_f188d561c3c6_NIH SBPO Vendor Outreach",
+      "label": null,
+      "evidenceUrls": [
+        "https://sam.gov/workspace/contract/opp/f4e0c6bfa2a14c2195c8476fb81d5f9c/view"
+      ],
+      "verifiedAt": null,
+      "confidence": null,
+      "sourceHunter": "government_procurement"
+    },
+    {
+      "id": "edge_c13c062a781b",
+      "kind": "DEMAND_FOR_HOTEL",
+      "fromId": "org_f188d561c3c6",
+      "toId": "hyp_acdc6767104d",
+      "label": null,
+      "evidenceUrls": [],
+      "verifiedAt": null,
+      "confidence": 0.62,
+      "sourceHunter": "government_procurement"
+    }
+  ],
+  "stats": {
+    "organizations": 1,
+    "activities": 1,
+    "contacts": 0,
+    "hypotheses": 1,
+    "edges": 2
+  }
+}
