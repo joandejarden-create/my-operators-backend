@@ -931,10 +931,22 @@ export async function getGdiOpportunities(req, res) {
             };
             listScope = BETHESDA_SALES_TEAM_LIST_SCOPE;
           } else {
-            opportunities = filterCustomerFacingOpportunities(opportunities, {
-              hotelId,
+            // Exact frozen published 19 — do not widen via live customerFacing
+            // heuristics (Airtable thin projections can inflate beyond the
+            // protected publication boundary).
+            const sel = selectBethesdaSalesOpportunityInventory(opportunities, {
+              salesTeamInventory: false,
+              founderReview: false,
             });
+            opportunities = sel.selected;
             afterSurfaceCount = opportunities.length;
+            salesSelectionMeta = {
+              expectedCount: sel.expectedCount,
+              selectedCount: sel.selected.length,
+              missingIds: sel.missingIds,
+              publishedCount: sel.publishedCount,
+              stagedPresentCount: sel.stagedPresentCount,
+            };
             listScope = BETHESDA_PUBLISHED_CUSTOMER_LIST_SCOPE;
           }
           bethesdaUnionMeta = {
@@ -1644,12 +1656,10 @@ export async function getGdiOpportunitiesExport(req, res) {
         founderReview: true,
       }).selected;
     } else {
-      if (!includeDisqualified) {
-        opportunities = filterSalespersonView(opportunities);
-      }
-      opportunities = filterCustomerFacingOpportunities(opportunities, {
-        hotelId,
-      });
+      opportunities = selectBethesdaSalesOpportunityInventory(opportunities, {
+        salesTeamInventory: false,
+        founderReview: false,
+      }).selected;
     }
   } else {
     if (!includeDisqualified) {
