@@ -1863,8 +1863,15 @@
 
   var GDI_MAIN_TAB = {
     id: "opportunities",
-    label: "Group &\nDemand Intelligence",
+    label: "Opportunities",
   };
+
+  var GDI_PRIORITIES_TAB = {
+    id: "priorities",
+    label: "Hotel Need Times\n& Priorities",
+  };
+
+  var GDI_CUSTOMER_TABS = [GDI_MAIN_TAB, GDI_PRIORITIES_TAB];
 
   /**
    * Customer/share property-bar status only.
@@ -4587,6 +4594,11 @@
       (preview && preview.indicatorState) ||
       "";
     if (!why && !months) return "";
+    var preferenceLine =
+      o.hotelPreferenceMatchLine ||
+      (Array.isArray(o.hotelPreferenceMatchExplanations) &&
+        o.hotelPreferenceMatchExplanations[0]) ||
+      "";
     var oppTiming =
       (o.eventDateDisplay ||
         o.datePillDisplayLabel ||
@@ -4597,6 +4609,12 @@
         ? " – " + o.eventEndDate
         : "");
     var bits = "";
+    if (preferenceLine) {
+      bits +=
+        '<p class="gdi-muted"><strong>Hotel preference:</strong> ' +
+        esc(preferenceLine) +
+        "</p>";
+    }
     if (months) {
       bits +=
         '<p><strong>Hotel need period(s):</strong> ' + esc(months) + "</p>";
@@ -8744,6 +8762,8 @@
     contentTabsHtml: contentTabsHtml,
     formatTabLabel: formatTabLabel,
     GDI_MAIN_TAB: GDI_MAIN_TAB,
+    GDI_PRIORITIES_TAB: GDI_PRIORITIES_TAB,
+    GDI_CUSTOMER_TABS: GDI_CUSTOMER_TABS,
     customerSafeRunStatusLabel: customerSafeRunStatusLabel,
     countByPriority: countByPriority,
     countByActionStatus: countByActionStatus,

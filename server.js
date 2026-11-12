@@ -373,6 +373,14 @@ import {
   postGdiPursuitOutcome,
   postGdiPursuitFollowUp,
 } from "./api/gdi-pursuit.js";
+import {
+  getGdiNeedDatesDashboard,
+  postGdiNeedPeriods,
+  getGdiNeedPeriodDetail,
+  patchGdiNeedPeriod,
+  getGdiCommercialProfile,
+  putGdiCommercialProfile,
+} from "./api/gdi-need-dates-portal.js";
 import { assertGdiShareProductionConfig } from "./lib/group-demand-intelligence/share/gdi-signed-share-capability-v1.js";
 import {
   postDecision,
@@ -485,6 +493,7 @@ import {
 import { memberstackAuth } from "./middleware/memberstackAuth.js";
 import { requireDealalityUser } from "./middleware/requireDealalityUser.js";
 import { gdiPilotReadAuth } from "./middleware/gdiPilotReadAuth.js";
+import { gdiNeedDatesWriteAuth } from "./middleware/gdiNeedDatesWriteAuth.js";
 import { requireMyDealsAccess } from "./middleware/requireMyDealsAccess.js";
 import { requireOperatorDealsAccess } from "./middleware/requireOperatorDealsAccess.js";
 import { requireBrandAiVisibilityAccess } from "./middleware/requireBrandAiVisibilityAccess.js";
@@ -1076,6 +1085,36 @@ app.get(
   "/api/group-demand-intelligence/hotels/:hotelId/profile",
   gdiPilotReadAuth,
   getGdiProfile
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/need-dates",
+  gdiPilotReadAuth,
+  getGdiNeedDatesDashboard
+);
+app.post(
+  "/api/group-demand-intelligence/hotels/:hotelId/need-periods",
+  gdiNeedDatesWriteAuth,
+  postGdiNeedPeriods
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/need-periods/:needPeriodId",
+  gdiPilotReadAuth,
+  getGdiNeedPeriodDetail
+);
+app.patch(
+  "/api/group-demand-intelligence/hotels/:hotelId/need-periods/:needPeriodId",
+  gdiNeedDatesWriteAuth,
+  patchGdiNeedPeriod
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/commercial-profile",
+  gdiPilotReadAuth,
+  getGdiCommercialProfile
+);
+app.put(
+  "/api/group-demand-intelligence/hotels/:hotelId/commercial-profile",
+  gdiNeedDatesWriteAuth,
+  putGdiCommercialProfile
 );
 app.get(
   "/api/group-demand-intelligence/hotels/:hotelId/opportunities",
