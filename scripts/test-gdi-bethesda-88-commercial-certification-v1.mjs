@@ -11,6 +11,7 @@ import {
   TITLE_REPAIRED_59_ROW_SHA256,
   CANONICAL_12_CONTACT_PATCHED_59_ROW_SHA256,
   WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256,
+  FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256,
   ACCEPTABLE_59_ROW_SHA256S,
 } from "../lib/group-demand-intelligence/research/gdi-hotel-store-integrity-guard-v1.js";
 import { PROPOSED_PAID_CONTACT_BATCH_V1 } from "../lib/group-demand-intelligence/research/bethesda-88-contact-quality-completion-v1.js";
@@ -26,6 +27,7 @@ assert.ok(
     TITLE_REPAIRED_59_ROW_SHA256,
     CANONICAL_12_CONTACT_PATCHED_59_ROW_SHA256,
     WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256,
+  FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256,
   ].includes(storeBefore.sha256)
 );
 
