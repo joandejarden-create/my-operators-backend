@@ -1,0 +1,253 @@
+/**
+ * Hotel Commercial Priorities V2 — domain controls on the shared intake shell.
+ * Tokens come from dealality-intake-form-shell.css (My Deals / Deal Setup).
+ */
+
+.hcp-intake .hcp-month-tiles {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  margin: 12px 0 20px;
+}
+
+@media (max-width: 900px) {
+  .hcp-intake .hcp-month-tiles {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .hcp-intake .hcp-month-tiles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.hcp-intake .hcp-month-tile {
+  border: 1px solid var(--neutral--600);
+  background: var(--secondary--color-1);
+  color: var(--neutral--100);
+  border-radius: 10px;
+  min-height: 92px;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 4px;
+  text-align: left;
+  font-family: inherit;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.hcp-intake .hcp-month-tile:hover {
+  border-color: var(--secondary--color-2);
+}
+
+.hcp-intake .hcp-month-tile.has-active-need {
+  border-color: rgba(108, 114, 255, 0.55);
+  background: rgba(108, 114, 255, 0.1);
+}
+
+.hcp-intake .hcp-month-tile.has-historical {
+  border-style: dashed;
+  opacity: 0.82;
+}
+
+.hcp-intake .hcp-month-tile.status-critical-need {
+  border-color: rgba(255, 90, 101, 0.55);
+}
+
+.hcp-intake .hcp-month-tile.status-partially-filled {
+  border-color: rgba(253, 181, 42, 0.55);
+}
+
+.hcp-intake .hcp-month-tile.status-filled {
+  border-color: rgba(20, 202, 116, 0.5);
+}
+
+.hcp-intake .hcp-month-tile.status-reopened {
+  border-color: rgba(154, 145, 251, 0.55);
+}
+
+.hcp-intake .hcp-month-tile.status-replaced,
+.hcp-intake .hcp-month-tile.status-withdrawn {
+  border-color: rgba(126, 137, 172, 0.55);
+}
+
+.hcp-intake .hcp-month-tile.is-selected,
+.hcp-intake .hcp-month-tile.is-drawer-open {
+  outline: 2px solid var(--accent--primary-1);
+  outline-offset: 1px;
+  background: rgba(108, 114, 255, 0.16);
+}
+
+.hcp-intake .hcp-month-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--neutral--100);
+}
+
+.hcp-intake .hcp-month-status {
+  font-size: 0.68rem;
+  color: var(--neutral--300);
+  line-height: 1.25;
+}
+
+.hcp-intake .hcp-month-status.muted {
+  color: var(--neutral--500);
+}
+
+.hcp-intake .hcp-status-icon {
+  font-weight: 700;
+}
+
+.hcp-intake .hcp-month-priority {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--neutral--500);
+}
+
+.hcp-intake .hcp-month-priority.pri-critical {
+  color: #ff8a92;
+}
+
+.hcp-intake .hcp-month-priority.pri-high {
+  color: #aeb9e1;
+}
+
+.hcp-intake .hcp-month-priority.pri-medium {
+  color: #fdb52a;
+}
+
+.hcp-intake .hcp-change-chip,
+.hcp-intake .hcp-multi-chip {
+  font-size: 0.62rem;
+  border-radius: 999px;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--neutral--600);
+  color: var(--neutral--400);
+}
+
+.hcp-intake .hcp-change-chip {
+  border-color: rgba(108, 114, 255, 0.45);
+  color: #cfe0ff;
+}
+
+.hcp-intake .hcp-drawer {
+  margin: 12px 0 20px;
+  padding: 16px;
+  border: 1px solid var(--neutral--600);
+  border-radius: 12px;
+  background: rgba(16, 25, 53, 0.85);
+}
+
+.hcp-intake .hcp-drawer-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.hcp-intake .hcp-drawer-period {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--neutral--600);
+}
+
+.hcp-intake .hcp-drawer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.hcp-intake .hcp-timeline {
+  margin: 8px 0 0;
+  padding-left: 1.1rem;
+  color: var(--neutral--400);
+  font-size: 0.85rem;
+}
+
+.hcp-intake .hcp-timeline strong {
+  color: var(--neutral--100);
+}
+
+.hcp-intake button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.hcp-intake .section-nav-item:focus-visible,
+.hcp-intake .hcp-chip:focus-visible,
+.hcp-intake .hcp-month-tile:focus-visible,
+.hcp-intake .btn-primary:focus-visible,
+.hcp-intake .btn-secondary:focus-visible {
+  outline: 2px solid var(--secondary--color-5);
+  outline-offset: 2px;
+}
+
+/* V3 single-page layout — all former wizard sections visible */
+.hcp-intake--single-page .form-sections-wrap {
+  max-width: 960px;
+  padding-bottom: 96px;
+}
+
+.hcp-intake--single-page .form-section.hcp-page-section {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.hcp-intake--single-page .hcp-section-divider {
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 28px 0 24px;
+}
+
+.hcp-intake--single-page .hcp-month-tiles {
+  margin-top: 4px;
+}
+
+.hcp-intake--single-page .hcp-sticky-save {
+  position: sticky;
+  bottom: 0;
+  z-index: 40;
+  margin-top: 32px;
+  padding: 14px 0 8px;
+  background: linear-gradient(
+    to top,
+    var(--neutral--800) 70%,
+    rgba(8, 15, 37, 0)
+  );
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  /* Gradient overlay must not intercept calendar / chip clicks. */
+  pointer-events: none;
+}
+
+.hcp-intake--single-page .hcp-sticky-save .btn-primary,
+.hcp-intake--single-page .hcp-sticky-save .hcp-save-hint {
+  pointer-events: auto;
+}
+
+.hcp-intake--single-page .hcp-save-hint {
+  color: var(--neutral--500);
+  font-size: 0.8125rem;
+  margin-right: auto;
+}
+
+@media (max-width: 640px) {
+  .hcp-intake--single-page .hcp-sticky-save {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hcp-intake--single-page .hcp-save-hint {
+    margin-right: 0;
+  }
+}

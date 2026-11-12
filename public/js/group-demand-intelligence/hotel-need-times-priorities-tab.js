@@ -1,110 +1,127 @@
+/**
+ * GDI Tab 2 — Hotel Need Times & Commercial Priorities
+ *
+ * ORIGINAL UI recovered (not reconstructed): Hotel Commercial Priorities V3
+ * from worktree feat/gdi-universal-need-date-intelligence-v1
+ * (staged in index, never committed) + CSS from Railway lean stage twin.
+ * Evidence: reports/gdi-commercial-priorities-original-uncommitted-recovery-v1/
+ *
+ * Mount/keep-alive API from PR #215. Optional specific-days from PR #216.
+ * Supervisor soft-boosts remain server-side.
+ */
 (function (global) {
   "use strict";
-
-  /**
-   * Recovered from feat/gdi-universal-need-date-intelligence-v1
-   * (commit 7fa87ebfd hotel-need-dates-app.js) and adapted as GDI Tab 2.
-   * hotel-commercial-priorities-app.js was never committed; commercial
-   * priorities form fields come from hotel-commercial-priorities-contract-v1.
-   */
-
-  function ensureDialogs(doc) {
-    if (!doc.getElementById("hndDrawer")) {
-      var drawer = doc.createElement("dialog");
-      drawer.id = "hndDrawer";
-      drawer.className = "gdi-drawer hnd-drawer";
-      drawer.setAttribute("aria-label", "Need period detail");
-      drawer.innerHTML =
-        '<div class="gdi-drawer-inner"><header class="gdi-drawer-head"><h2 id="hndDrawerTitle">Need period</h2>' +
-        '<button type="button" class="gdi-btn gdi-btn-ghost" id="hndDrawerClose" aria-label="Close">Close</button></header>' +
-        '<div class="gdi-drawer-body" id="hndDrawerBody"></div></div>';
-      doc.body.appendChild(drawer);
-    }
-    if (!doc.getElementById("hndAddDialog")) {
-      var add = doc.createElement("dialog");
-      add.id = "hndAddDialog";
-      add.className = "gdi-drawer hnd-drawer";
-      add.setAttribute("aria-label", "Add need period");
-      add.innerHTML =
-        '<div class="gdi-drawer-inner"><header class="gdi-drawer-head"><h2>Add Need Period</h2>' +
-        '<button type="button" class="gdi-btn gdi-btn-ghost" id="hndAddClose" aria-label="Close">Close</button></header>' +
-        '<div class="gdi-drawer-body" id="hndAddBody"></div></div>';
-      doc.body.appendChild(add);
-    }
-  }
 
   function createTabController(opts) {
     opts = opts || {};
     var root = opts.root;
     if (!root) throw new Error("need_times_tab_root_required");
     var loading = opts.loading || null;
-    var host = opts.hostDocument || document;
-    ensureDialogs(host);
-    var drawer = host.getElementById("hndDrawer");
-    var drawerTitle = host.getElementById("hndDrawerTitle");
-    var drawerBody = host.getElementById("hndDrawerBody");
-    var drawerClose = host.getElementById("hndDrawerClose");
-    var addDialog = host.getElementById("hndAddDialog");
-    var addBody = host.getElementById("hndAddBody");
-    var addClose = host.getElementById("hndAddClose");
-    var readOnly = opts.readOnly === true;
+    var optsHotelId = String(opts.hotelId || "").trim() || null;
+    var optsIsolation = opts.isolation || null;
+    var DEFAULT_HOTEL_ID = "recgMYovrrZDJMqzX";
+    var STORAGE_KEY = "gdi-need-dates-hotelId";
 
-    var memberFetch =
-      window.DealalityMemberstackAuth &&
-      typeof window.DealalityMemberstackAuth.fetchMyDealsApi === "function"
-        ? window.DealalityMemberstackAuth.fetchMyDealsApi.bind(
-            window.DealalityMemberstackAuth,
-          )
-        : null;
+  /** Page sections — continuous scroll; no wizard navigation. */
+  var SECTIONS = [
+    {
+      id: "revenue",
+      title: "Revenue Priorities",
+      subtitle: "Select the revenue streams that matter most for your hotel.",
+    },
+    {
+      id: "need-dates",
+      title: "Need Dates",
+      subtitle:
+        "Select months and periods where additional demand would be most valuable.",
+    },
+    {
+      id: "preferred",
+      title: "Preferred Business",
+      subtitle: "Group size, meeting needs, booking windows, and stay preferences.",
+    },
+    {
+      id: "customers",
+      title: "Target Demand Segments",
+      subtitle: "Choose preferred demand segments — no typing required.",
+    },
+    {
+      id: "local-market",
+      title: "Local Market Intelligence",
+      subtitle:
+        "Demand generators, local organizations, and existing account relationships.",
+    },
+    {
+      id: "fit",
+      title: "Hotel Fit & Constraints",
+      subtitle: "Property advantages, meeting-space considerations, and restrictions.",
+    },
+    {
+      id: "team",
+      title: "Hotel Team",
+      subtitle: "Sales, revenue, and executive contacts for this property.",
+    },
+  ];
 
-  function resolveIsolation() {
+  var memberFetch =
+    window.DealalityMemberstackAuth &&
+    typeof window.DealalityMemberstackAuth.fetchMyDealsApi === "function"
+      ? window.DealalityMemberstackAuth.fetchMyDealsApi.bind(
+          window.DealalityMemberstackAuth,
+        )
+      : null;
+
+  function qs() {
+    return new URLSearchParams(window.location.search || "");
+  }
+
+  function resolveHotelId() {
+    if (optsHotelId) return optsHotelId;
     try {
-      var params = new URLSearchParams(window.location.search || "");
-      var airtable = String(params.get("airtable") || "").trim();
-      if (airtable === "1" || airtable === "true") return null;
-      var i = String(params.get("isolation") || "").trim();
-      if (i === "portal_v1_test" || i === "1") return "portal_v1_test";
-      if (i === "0" || i === "none") return null;
-      // Explicit airtable=0 keeps local shadow only when requested.
-      if (airtable === "0" || airtable === "false") return "portal_v1_test";
+      var q = String(qs().get("hotelId") || "").trim();
+      if (q) return q;
+      var s = String(localStorage.getItem(STORAGE_KEY) || "").trim();
+      if (s) return s;
     } catch (e) {}
-    // V4 default: Airtable-backed production portal (AI Demand Positioning).
-    return null;
+    return DEFAULT_HOTEL_ID;
   }
 
   function useAirtableMode() {
+    if (optsIsolation === "portal_v1_test") return false;
     try {
-      var params = new URLSearchParams(window.location.search || "");
-      var airtable = String(params.get("airtable") || "").trim();
+      var airtable = String(qs().get("airtable") || "").trim();
       if (airtable === "0" || airtable === "false") return false;
-      if (airtable === "1" || airtable === "true") return true;
-      // Default: let the server choose Airtable when live-enabled; otherwise local shadow.
-      return null;
+      var iso = String(qs().get("isolation") || "").trim();
+      if (iso === "portal_v1_test" || iso === "1") return false;
+      return true;
     } catch (e) {
-      return null;
+      return true;
     }
   }
 
   function resolveYear() {
     try {
-      var params = new URLSearchParams(window.location.search || "");
-      var y = Number(params.get("year"));
+      var y = Number(qs().get("year"));
       if (y >= 2024 && y <= 2100) return y;
     } catch (e) {}
     return 2027;
   }
 
   var state = {
-      hotelId: String(opts.hotelId || "").trim(),
-      isolation: opts.isolation !== undefined ? opts.isolation : resolveIsolation(),
-      year: opts.year || resolveYear(),
-      dashboard: null,
-      hotels: [],
-      error: null,
-      busy: false,
-      selectedMonth: null,
-      saveMessage: null,
-    };
+    hotelId: resolveHotelId(),
+    year: resolveYear(),
+    airtable: useAirtableMode(),
+    dashboard: null,
+    profile: null,
+    draft: null,
+    dirty: false,
+    selectedMonths: {},
+    monthDraft: null,
+    drawerMonth: null,
+    saveMessage: null,
+    error: null,
+    suggestions: null,
+  };
 
   function esc(s) {
     return String(s == null ? "" : s)
@@ -120,40 +137,43 @@
     loading.setAttribute("aria-busy", on ? "true" : "false");
     if (on) loading.classList.add("show");
     else loading.classList.remove("show");
-    var m = document.getElementById("hndLoadingMessage");
+    var m =
+      document.getElementById("gdiLoadingMessage") ||
+      document.getElementById("hndLoadingMessage");
     if (m && msg) m.textContent = msg;
   }
 
   async function api(path, opts) {
     opts = opts || {};
-    var method = String(opts.method || "GET").toUpperCase();
-    var headers = Object.assign({ Accept: "application/json" }, opts.headers || {});
-    if (opts.body && !headers["Content-Type"]) {
-      headers["Content-Type"] = "application/json";
-    }
     var init = {
-      method: method,
-      headers: headers,
-      credentials: "same-origin",
-      body: opts.body ? JSON.stringify(opts.body) : undefined,
+      method: opts.method || "GET",
+      headers: Object.assign({ Accept: "application/json" }, opts.headers || {}),
     };
+    if (opts.body != null) {
+      init.headers["Content-Type"] = "application/json";
+      init.body = JSON.stringify(opts.body);
+    }
     var res;
+    var method = String(init.method || "GET").toUpperCase();
     if (method !== "GET" && method !== "HEAD" && memberFetch) {
       res = await memberFetch(path, init);
     } else {
       res = await fetch(path, init);
-      if (res.status === 401 && memberFetch) {
-        res = await memberFetch(path, init);
-      }
+      if (res.status === 401 && memberFetch) res = await memberFetch(path, init);
     }
-    var data = null;
-    try {
-      data = await res.json();
-    } catch (e) {
-      data = { ok: false, error: "invalid_json" };
-    }
+    var data = await res.json().catch(function () {
+      return { ok: false, error: "invalid_json" };
+    });
     if (!res.ok) {
-      var err = new Error(data.message || data.error || "request_failed");
+      var msg = data.message || data.error || "request_failed";
+      if (
+        res.status === 404 &&
+        (data.error === "API route not found" || msg === "API route not found")
+      ) {
+        msg =
+          "API route not found — restart the local Dealality server (npm start) so Hotel Commercial Priorities routes register.";
+      }
+      var err = new Error(msg);
       err.status = res.status;
       err.payload = data;
       throw err;
@@ -161,1021 +181,1258 @@
     return data;
   }
 
-  function isolationQuery() {
-    var parts = [];
-    if (state.isolation) {
-      parts.push("isolation=" + encodeURIComponent(state.isolation));
-    }
-    var airtableMode = useAirtableMode();
-    if (airtableMode === true) parts.push("airtable=1");
-    if (airtableMode === false) parts.push("airtable=0");
-    return parts.join("&");
+  function airtableQs() {
+    return state.airtable ? "airtable=1" : "isolation=portal_v1_test";
   }
 
-  async function loadDashboard() {
-    var qs = [isolationQuery(), "year=" + state.year].filter(Boolean).join("&");
-    state.dashboard = await api(
-      "/api/group-demand-intelligence/hotels/" +
-        encodeURIComponent(state.hotelId) +
-        "/need-dates" +
-        (qs ? "?" + qs : ""),
+  function emptyDraft() {
+    return {
+      revenuePriorities: [],
+      peakRoomsPreset: null,
+      bookingWindow: null,
+      meetingSpaceNeed: null,
+      stayDuration: null,
+      dayPreference: null,
+      specificDays: [],
+      segmentMode: "NO_PREFERENCE",
+      prioritySegments: [],
+      excludedSegments: [],
+      lowerPrioritySegments: [],
+      demandGeneratorCategories: [],
+      knownAccounts: [],
+      businessToAvoid: [],
+      hotelConsiderations: [],
+      restrictionNotes: "",
+      commercialTeam: {},
+      currentVersion: 1,
+      isSyntheticTest: false,
+      provenance: "Hotel Confirmed",
+    };
+  }
+
+  function profileToDraft(p) {
+    p = p || {};
+    return {
+      revenuePriorities: (p.revenuePriorities || []).map(function (x) {
+        return typeof x === "string" ? x : x.id;
+      }),
+      peakRoomsPreset: p.peakRoomsPreset || null,
+      bookingWindow: p.bookingWindow || null,
+      meetingSpaceNeed: p.meetingSpaceNeed || null,
+      stayDuration: p.stayDuration || null,
+      dayPreference: p.dayPreference || null,
+      specificDays: p.specificDays || [],
+      segmentMode: p.segmentMode || "NO_PREFERENCE",
+      prioritySegments: p.prioritySegments || [],
+      excludedSegments: p.excludedSegments || [],
+      lowerPrioritySegments: p.lowerPrioritySegments || [],
+      demandGeneratorCategories: p.demandGeneratorCategories || [],
+      knownAccounts: p.knownAccounts || [],
+      businessToAvoid: p.businessToAvoid || [],
+      hotelConsiderations: p.hotelConsiderations || [],
+      restrictionNotes: p.restrictionNotes || "",
+      commercialTeam: p.commercialTeam || {},
+      currentVersion: p.currentVersion || 1,
+      isSyntheticTest: Boolean(p.isSyntheticTest),
+      provenance: p.provenance || "Hotel Confirmed",
+    };
+  }
+
+  function markDirty() {
+    state.dirty = true;
+    var hint = root && root.querySelector(".hcp-save-hint");
+    if (hint) hint.textContent = "Unsaved changes";
+    state.saveMessage = null;
+  }
+
+  function toggleArr(obj, key, value, max) {
+    var arr = obj[key] || [];
+    var i = arr.indexOf(value);
+    if (i >= 0) arr.splice(i, 1);
+    else {
+      if (max && arr.length >= max) return;
+      arr.push(value);
+    }
+    obj[key] = arr;
+  }
+
+  function chip(opts) {
+    return (
+      '<button type="button" class="hcp-chip' +
+      (opts.selected ? " is-selected" : "") +
+      '" data-chip-group="' +
+      esc(opts.group) +
+      '" data-chip-value="' +
+      esc(opts.value) +
+      '"' +
+      (opts.multi ? ' data-multi="1"' : "") +
+      ">" +
+      esc(opts.label) +
+      "</button>"
     );
   }
 
-  function priorityClass(p) {
-    var x = String(p || "").toUpperCase();
-    if (x === "HIGH") return "priority-high";
-    if (x === "LOW") return "priority-low";
-    return "priority-medium";
+  function chipGroup(group, options, selected, multi) {
+    var html = '<div class="hcp-chip-row">';
+    (options || []).forEach(function (o) {
+      var id = o.id || o;
+      var label = o.label || o;
+      var isSel = multi
+        ? (selected || []).indexOf(id) >= 0
+        : selected === id;
+      html += chip({
+        group: group,
+        value: id,
+        label: label,
+        selected: isSel,
+        multi: multi,
+      });
+    });
+    return html + "</div>";
   }
 
-  function statusClass(s) {
-    var x = String(s || "");
-    if (x === "TEST_SCENARIO") return "status-test";
-    if (/partial/i.test(x)) return "status-partial";
-    if (/filled|closed|cancel|replaced/i.test(x)) return "status-filled";
-    return "status-active";
+  async function refresh() {
+    setLoading(true, "Loading Hotel Commercial Priorities…");
+    state.error = null;
+    var loadWatch = setTimeout(function () {
+      setLoading(false);
+    }, 25000);
+    try {
+      var dash = await api(
+        "/api/group-demand-intelligence/hotels/" +
+          encodeURIComponent(state.hotelId) +
+          "/need-dates?" +
+          airtableQs() +
+          "&year=" +
+          state.year,
+      );
+      state.dashboard = dash;
+      state.profile = dash.commercialProfile || null;
+      state.draft = profileToDraft(state.profile);
+      state.dirty = false;
+      // Restore hotel-keyed unsaved draft after profile load (never cross-hotel).
+      if (
+        opts.restoredDraft &&
+        opts.restoredDraft.dirty === true &&
+        opts.restoredDraft.draft &&
+        typeof opts.restoredDraft.draft === "object"
+      ) {
+        state.draft = Object.assign({}, state.draft, opts.restoredDraft.draft);
+        state.dirty = true;
+        // Consume once so a later refresh does not re-apply a stale stash.
+        opts.restoredDraft = null;
+      }
+      if (dash.commercialProfile && dash.commercialProfile.suggestions) {
+        state.suggestions = dash.commercialProfile.suggestions;
+      }
+      try {
+        sessionStorage.setItem("dealality.gdi.hotelId", state.hotelId);
+        localStorage.setItem(STORAGE_KEY, state.hotelId);
+      } catch (e) {}
+    } catch (err) {
+      state.error = err.message || String(err);
+    } finally {
+      clearTimeout(loadWatch);
+      setLoading(false);
+      render();
+    }
   }
 
-  function revenueLabels(arr) {
+  function monthOverviewMap() {
+    var overview = (state.dashboard && state.dashboard.monthlyOverview) || [];
     var map = {};
-    ((state.dashboard && state.dashboard.enums && state.dashboard.enums.revenueTypes) || []).forEach(
-      function (r) {
-        map[r.id] = r.label;
+    overview.forEach(function (m) {
+      var key = Number(m.month);
+      if (!Number.isFinite(key)) key = m.month;
+      map[key] = m;
+      map[String(key)] = m;
+    });
+    return map;
+  }
+
+  function monthTiles() {
+    var names = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    var byMonth = monthOverviewMap();
+    var activeMonths =
+      (state.dashboard &&
+        state.dashboard.summary &&
+        state.dashboard.summary.activeNeedMonths) ||
+      0;
+    var html =
+      '<p class="form-label" id="hcpActiveMonthCount">Active need months: <strong>' +
+      esc(String(activeMonths)) +
+      "</strong></p>" +
+      '<p class="form-label"><span class="help-text">Historical / replaced months stay visible but are not counted as active.</span></p>' +
+      '<div class="hcp-month-tiles" role="group" aria-label="Commercial need calendar">';
+    for (var i = 1; i <= 12; i++) {
+      var m = byMonth[i] || {};
+      var hasActive = m.hasActiveNeed === true;
+      var hasAny = (m.periods || []).length > 0;
+      var statusKey = String(m.visualStatus || "NO_CURRENT_NEED")
+        .toLowerCase()
+        .replace(/_/g, "-");
+      var classes =
+        "hcp-month-tile status-" +
+        statusKey +
+        (hasActive ? " has-active-need" : "") +
+        (hasAny && !hasActive ? " has-historical" : "") +
+        (state.selectedMonths[i] ? " is-selected" : "") +
+        (state.drawerMonth === i ? " is-drawer-open" : "");
+      html +=
+        '<button type="button" class="' +
+        classes +
+        '" data-month="' +
+        i +
+        '"><span class="hcp-month-name">' +
+        names[i - 1] +
+        "</span>";
+      if (hasAny) {
+        html +=
+          '<span class="hcp-month-status"><span class="hcp-status-icon">' +
+          esc(m.visualStatusIcon || "○") +
+          "</span> " +
+          esc(m.visualStatusLabel || "") +
+          "</span>";
+        if (hasActive && m.headlinePriority) {
+          html +=
+            '<span class="hcp-month-priority pri-' +
+            esc(String(m.headlinePriority).toLowerCase()) +
+            '">' +
+            esc(m.headlinePriority) +
+            "</span>";
+        }
+        if (m.changeIndicatorLabel) {
+          html +=
+            '<span class="hcp-change-chip">' +
+            esc(m.changeIndicatorLabel) +
+            "</span>";
+        }
+        if (m.multipleNeeds) {
+          html +=
+            '<span class="hcp-multi-chip">' +
+            esc(String((m.periods || []).length)) +
+            " needs</span>";
+        }
+      } else {
+        html += '<span class="hcp-month-status muted">No need</span>';
+      }
+      html += "</button>";
+    }
+    return html + "</div>";
+  }
+
+  function monthDrawer() {
+    if (!state.drawerMonth) return "";
+    var m = monthOverviewMap()[state.drawerMonth];
+    if (!m) return "";
+    var periodIds = (m.periods || []).map(function (p) {
+      return p.needPeriodId;
+    });
+    var fullPeriods = ((state.dashboard && state.dashboard.periods) || []).filter(
+      function (p) {
+        return periodIds.indexOf(p.needPeriodId) >= 0;
       },
     );
-    return (arr || [])
-      .map(function (id) {
-        return map[id] || id;
-      })
-      .join(", ");
+    var hist = (
+      (state.dashboard &&
+        state.dashboard.changeHistory &&
+        state.dashboard.changeHistory.changes) ||
+      []
+    ).filter(function (c) {
+      return periodIds.indexOf(c.needPeriodId) >= 0;
+    });
+    if (!state.monthDraft) {
+      state.monthDraft = {
+        revenueNeed: ["GROUP_GUESTROOMS", "MEETING_SPACE"],
+        priority: "HIGH",
+        days: "ANY",
+        peakRoomsOverride: null,
+      };
+    }
+    var html =
+      '<div class="hcp-drawer" id="hcpMonthDrawer" role="dialog" aria-label="Month need details">' +
+      '<div class="hcp-drawer-head"><h3 class="form-section-title" style="font-size:1.1rem;margin:0">' +
+      esc(m.label) +
+      " " +
+      esc(String(state.year)) +
+      '</h3><button type="button" class="btn-secondary" id="hcpDrawerClose">Close</button></div>' +
+      '<p class="form-section-subtitle" style="margin-bottom:12px">' +
+      esc(m.visualStatusLabel || "No current need") +
+      (m.headlinePriority ? " · Priority " + esc(m.headlinePriority) : "") +
+      "</p>";
+
+    html +=
+      '<div class="form-group full-width"><label class="form-label">What do you need?</label>' +
+      chipGroup(
+        "monthNeed",
+        [
+          { id: "GROUP_GUESTROOMS", label: "Guestrooms / Groups" },
+          { id: "MEETING_SPACE", label: "Meetings" },
+          { id: "LOCAL_CATERING", label: "Catering" },
+          { id: "BANQUETS", label: "Banquets" },
+          { id: "PRIVATE_DINING", label: "Private Dining" },
+          { id: "EXTENDED_STAY", label: "Extended Stay" },
+        ],
+        state.monthDraft.revenueNeed,
+        true,
+      ) +
+      '</div><div class="form-group full-width"><label class="form-label">How important?</label>' +
+      chipGroup(
+        "monthPriority",
+        [
+          { id: "CRITICAL", label: "Critical" },
+          { id: "HIGH", label: "High" },
+          { id: "MEDIUM", label: "Medium" },
+        ],
+        state.monthDraft.priority,
+        false,
+      ) +
+      '</div><div class="form-group full-width"><label class="form-label">Which days?</label>' +
+      chipGroup(
+        "monthDays",
+        [
+          { id: "ANY", label: "Any" },
+          { id: "WEEKDAYS", label: "Weekdays" },
+          { id: "WEEKENDS", label: "Weekends" },
+        ],
+        state.monthDraft.days,
+        false,
+      ) +
+      '</div><div class="form-group full-width"><label class="form-label">This month only — peak rooms override<span class="help-text">Does not change hotel-wide preference.</span></label>' +
+      chipGroup(
+        "monthPeakOverride",
+        [
+          { id: "UNDER_10", label: "Under 10" },
+          { id: "10_25", label: "10–25" },
+          { id: "26_50", label: "26–50" },
+          { id: "51_100", label: "51–100" },
+          { id: "FLEXIBLE", label: "Flexible" },
+        ],
+        state.monthDraft.peakRoomsOverride,
+        false,
+      ) +
+      '</div><div class="form-actions" style="margin-top:16px;padding-top:16px"><button type="button" class="btn-primary" id="hcpSaveMonths">Save selected months</button></div>';
+
+    fullPeriods.forEach(function (p) {
+      html +=
+        '<div class="hcp-drawer-period"><h4 class="form-label">' +
+        esc(p.periodLabel || p.needPeriodId) +
+        "</h4>" +
+        '<p class="form-label"><span class="help-text">Status: ' +
+        esc(p.status) +
+        " · Priority: " +
+        esc(p.priority || "—") +
+        " · Research: " +
+        esc(p.researchStateLabel || p.researchState || "—") +
+        " · Matches: " +
+        esc(
+          String(
+            (p.matches && p.matches.existingMatch && p.matches.existingMatch.length) ||
+              0,
+          ),
+        ) +
+        "</span></p>" +
+        '<div class="hcp-drawer-actions">' +
+        '<button type="button" class="btn-secondary" data-quick-action="PRIORITY_CHANGED" data-period="' +
+        esc(p.needPeriodId) +
+        '" data-priority="HIGH">Increase Priority</button>' +
+        '<button type="button" class="btn-secondary" data-quick-action="PARTIALLY_FILLED" data-period="' +
+        esc(p.needPeriodId) +
+        '">Partially Filled</button>' +
+        '<button type="button" class="btn-secondary" data-quick-action="FILLED" data-period="' +
+        esc(p.needPeriodId) +
+        '">Mark Filled</button>' +
+        '<button type="button" class="btn-secondary" data-quick-action="REOPEN" data-period="' +
+        esc(p.needPeriodId) +
+        '">Reopen</button>' +
+        '<button type="button" class="btn-secondary" data-quick-action="CANCEL" data-period="' +
+        esc(p.needPeriodId) +
+        '">Withdraw</button></div></div>';
+    });
+
+    html += '<h4 class="form-label" style="margin-top:16px">Change history</h4>';
+    if (!hist.length) {
+      html +=
+        '<p class="form-label"><span class="help-text">No saved Airtable change events for these periods yet.</span></p>';
+    } else {
+      html += '<ol class="hcp-timeline">';
+      hist.slice(0, 10).forEach(function (c) {
+        html +=
+          "<li><strong>" +
+          esc(String(c.timestamp || "").slice(0, 10)) +
+          "</strong> — " +
+          esc(c.changeTypeLabel || c.changeType) +
+          (c.reason ? " · " + esc(c.reason) : "") +
+          "</li>";
+      });
+      html += "</ol>";
+    }
+    return html + "</div>";
   }
 
-  function filteredPeriods() {
-    var periods = (state.dashboard && state.dashboard.periods) || [];
-    if (!state.selectedMonth) return periods;
-    var m = state.selectedMonth;
-    return periods.filter(function (p) {
-      return (
-        p.startDate &&
-        p.endDate &&
-        p.startDate <= m.endDate &&
-        p.endDate >= m.startDate
-      );
+  function renderKnownAccountSuggestions() {
+    var hints =
+      (state.profile &&
+        state.profile.suggestions &&
+        state.profile.suggestions.inventoryAccountHints) ||
+      (state.suggestions && state.suggestions.inventoryAccountHints) ||
+      [];
+    if (!hints.length) {
+      return '<p class="form-label"><span class="help-text">No suggested accounts yet — skip for now.</span></p>';
+    }
+    var selected = (state.draft.knownAccounts || []).map(function (a) {
+      return a.organizationName;
     });
+    var html = '<div class="hcp-chip-row">';
+    hints.slice(0, 8).forEach(function (h) {
+      html += chip({
+        group: "knownAccount",
+        value: h.organizationName,
+        label: h.organizationName,
+        selected: selected.indexOf(h.organizationName) >= 0,
+        multi: true,
+      });
+    });
+    return html + "</div>";
+  }
+
+  function sectionBody(step) {
+    var draft = state.draft || emptyDraft();
+    if (step.id === "need-dates") {
+      return (
+        monthTiles() +
+        monthDrawer() +
+        '<p class="form-label"><span class="help-text">Tap months to select and open details. Each month saves independently.</span></p>'
+      );
+    }
+    if (step.id === "local-market") {
+      return (
+        '<div class="form-group full-width"><label class="form-label">Local demand generator categories<span class="help-text">Suggestions are not hotel-confirmed until you select them.</span></label>' +
+        chipGroup(
+          "generators",
+          [
+            { id: "HOSPITALS_MEDICAL", label: "Hospitals / Medical" },
+            { id: "UNIVERSITIES", label: "Universities" },
+            { id: "CORPORATE_OFFICES", label: "Corporate Offices" },
+            { id: "GOVERNMENT_AGENCIES", label: "Government Agencies" },
+            { id: "CONVENTION_CENTERS", label: "Convention Centers" },
+            { id: "WEDDING_VENUES", label: "Wedding Venues" },
+            { id: "SPORTS_FACILITIES", label: "Sports Facilities" },
+            { id: "ENTERTAINMENT_VENUES", label: "Entertainment Venues" },
+            { id: "BUSINESS_PARKS", label: "Business Parks" },
+            { id: "AIRPORTS_TRANSPORT", label: "Airports / Transportation" },
+            { id: "OTHER", label: "Other" },
+          ],
+          draft.demandGeneratorCategories,
+          true,
+        ) +
+        '</div><div class="form-group full-width" style="margin-top:22px"><label class="form-label">Known accounts<span class="help-text">Select from suggested organizations already in your intelligence.</span></label>' +
+        renderKnownAccountSuggestions() +
+        "</div>"
+      );
+    }
+    if (step.id === "revenue") {
+      return (
+        '<div class="form-group full-width"><label class="form-label">Select up to five<span class="help-text">Structured choices only — no written Top Five required.</span></label>' +
+        chipGroup(
+          "revenue",
+          [
+            { id: "GROUP_ROOM_NIGHTS", label: "Group Room Nights" },
+            { id: "CORPORATE_TRANSIENT", label: "Corporate Transient" },
+            { id: "MEETINGS_CONFERENCES", label: "Meetings & Conferences" },
+            { id: "LOCAL_CATERING", label: "Local Catering" },
+            { id: "BANQUETS_CELEBRATIONS", label: "Banquets & Celebrations" },
+            { id: "WEDDINGS_SOCIAL", label: "Weddings & Social Groups" },
+            { id: "EXTENDED_STAY", label: "Extended Stay" },
+            { id: "SPORTS_GROUPS", label: "Sports Groups" },
+            { id: "ASSOCIATION_BUSINESS", label: "Association Business" },
+            { id: "GOVERNMENT_BUSINESS", label: "Government Business" },
+            { id: "LEISURE_GROUPS", label: "Leisure Groups" },
+          ],
+          draft.revenuePriorities,
+          true,
+        ) +
+        "</div>"
+      );
+    }
+    if (step.id === "preferred") {
+      return (
+        '<div class="form-grid">' +
+        '<div class="form-group"><label class="form-label">Preferred peak rooms</label>' +
+        chipGroup(
+          "peakRooms",
+          [
+            { id: "UNDER_10", label: "Under 10" },
+            { id: "10_25", label: "10–25" },
+            { id: "26_50", label: "26–50" },
+            { id: "51_100", label: "51–100" },
+            { id: "101_200", label: "101–200" },
+            { id: "200_PLUS", label: "200+" },
+            { id: "FLEXIBLE", label: "Flexible" },
+          ],
+          draft.peakRoomsPreset,
+          false,
+        ) +
+        "</div>" +
+        '<div class="form-group"><label class="form-label">Preferred booking window</label>' +
+        chipGroup(
+          "bookingWindow",
+          [
+            { id: "UNDER_30_DAYS", label: "Under 30 days" },
+            { id: "1_3_MONTHS", label: "1–3 months" },
+            { id: "3_6_MONTHS", label: "3–6 months" },
+            { id: "6_12_MONTHS", label: "6–12 months" },
+            { id: "12_PLUS_MONTHS", label: "12+ months" },
+            { id: "FLEXIBLE", label: "Flexible" },
+          ],
+          draft.bookingWindow,
+          false,
+        ) +
+        "</div>" +
+        '<div class="form-group"><label class="form-label">Meeting space requirement</label>' +
+        chipGroup(
+          "meetingSpace",
+          [
+            { id: "ROOMS_ONLY", label: "Rooms Only" },
+            { id: "ROOMS_AND_MEETINGS", label: "Rooms + Meetings" },
+            { id: "MEETINGS_CATERING_ONLY", label: "Meetings / Catering Only" },
+            { id: "ANY", label: "Any" },
+          ],
+          draft.meetingSpaceNeed,
+          false,
+        ) +
+        "</div>" +
+        '<div class="form-group"><label class="form-label">Preferred duration</label>' +
+        chipGroup(
+          "stayDuration",
+          [
+            { id: "1_NIGHT", label: "1 night" },
+            { id: "2_3_NIGHTS", label: "2–3 nights" },
+            { id: "4_7_NIGHTS", label: "4–7 nights" },
+            { id: "7_PLUS_NIGHTS", label: "7+ nights" },
+            { id: "FLEXIBLE", label: "Flexible" },
+          ],
+          draft.stayDuration,
+          false,
+        ) +
+        "</div>" +
+        '<div class="form-group full-width"><label class="form-label">Preferred days</label>' +
+        chipGroup(
+          "dayPreference",
+          [
+            { id: "WEEKDAYS", label: "Weekdays" },
+            { id: "WEEKENDS", label: "Weekends" },
+            { id: "BOTH", label: "Both" },
+          ],
+          draft.dayPreference,
+          false,
+        ) +
+        '</div><div class="form-group full-width"><label class="form-label">Specific days<span class="help-text">Optional Mon–Sun targeting (retained from PR #216).</span></label>' +
+        chipGroup(
+          "specificDays",
+          [
+            { id: "Mon", label: "Mon" },
+            { id: "Tue", label: "Tue" },
+            { id: "Wed", label: "Wed" },
+            { id: "Thu", label: "Thu" },
+            { id: "Fri", label: "Fri" },
+            { id: "Sat", label: "Sat" },
+            { id: "Sun", label: "Sun" },
+          ],
+          draft.specificDays || [],
+          true,
+        ) +
+        "</div></div>"
+      );
+    }
+    if (step.id === "customers") {
+      return (
+        '<div class="form-group full-width"><label class="form-label">Selection mode</label>' +
+        chipGroup(
+          "segmentMode",
+          [
+            { id: "ALL_RELEVANT", label: "All Relevant" },
+            { id: "SELECT_SPECIFIC", label: "Select Specific" },
+            { id: "NO_PREFERENCE", label: "No Preference" },
+          ],
+          draft.segmentMode,
+          false,
+        ) +
+        "</div>" +
+        (draft.segmentMode === "SELECT_SPECIFIC"
+          ? '<div class="form-group full-width"><label class="form-label">Customer types</label>' +
+            chipGroup(
+              "segments",
+              [
+                { id: "association_events", label: "Associations & Conferences" },
+                { id: "scaling_companies", label: "Corporate Accounts" },
+                { id: "meetings_incentives", label: "Corporate Meetings" },
+                { id: "government_public_sector", label: "Government" },
+                { id: "sports_entertainment", label: "Sports & Entertainment" },
+                { id: "education_scientific", label: "Education & Universities" },
+                { id: "projects_infrastructure", label: "Projects & Construction" },
+                { id: "social_special_events", label: "Weddings & Social Groups" },
+                { id: "local_catering_day_meetings", label: "Local Catering" },
+                { id: "corporate_celebrations", label: "Corporate Celebrations" },
+                {
+                  id: "travel_trade_group_intermediaries",
+                  label: "Travel Trade",
+                },
+                {
+                  id: "relocation_extended_stay",
+                  label: "Relocation & Extended Stay",
+                },
+                {
+                  id: "preferred_lodging_partnerships",
+                  label: "Venue Partnerships",
+                },
+                { id: "professional_event_planners", label: "Event Planners" },
+              ],
+              draft.prioritySegments,
+              true,
+            ) +
+            '</div><div class="form-group full-width"><label class="form-label">Lower priority<span class="help-text">Retained from PR #216.</span></label>' +
+            chipGroup(
+              "lowerPrioritySegments",
+              [
+                { id: "association_events", label: "Associations & Conferences" },
+                { id: "scaling_companies", label: "Corporate Accounts" },
+                { id: "meetings_incentives", label: "Corporate Meetings" },
+                { id: "government_public_sector", label: "Government" },
+                { id: "sports_entertainment", label: "Sports & Entertainment" },
+                { id: "education_scientific", label: "Education & Universities" },
+                { id: "projects_infrastructure", label: "Projects & Construction" },
+                { id: "social_special_events", label: "Weddings & Social Groups" },
+                { id: "local_catering_day_meetings", label: "Local Catering" },
+                { id: "corporate_celebrations", label: "Corporate Celebrations" },
+                { id: "travel_trade_group_intermediaries", label: "Travel Trade" },
+                { id: "relocation_extended_stay", label: "Relocation & Extended Stay" },
+                { id: "preferred_lodging_partnerships", label: "Venue Partnerships" },
+                { id: "professional_event_planners", label: "Event Planners" },
+              ],
+              draft.lowerPrioritySegments || [],
+              true,
+            ) +
+            '</div><div class="form-group full-width"><label class="form-label">Excluded segments<span class="help-text">Retained from PR #216.</span></label>' +
+            chipGroup(
+              "excludedSegments",
+              [
+                { id: "association_events", label: "Associations & Conferences" },
+                { id: "scaling_companies", label: "Corporate Accounts" },
+                { id: "meetings_incentives", label: "Corporate Meetings" },
+                { id: "government_public_sector", label: "Government" },
+                { id: "sports_entertainment", label: "Sports & Entertainment" },
+                { id: "education_scientific", label: "Education & Universities" },
+                { id: "projects_infrastructure", label: "Projects & Construction" },
+                { id: "social_special_events", label: "Weddings & Social Groups" },
+                { id: "local_catering_day_meetings", label: "Local Catering" },
+                { id: "corporate_celebrations", label: "Corporate Celebrations" },
+                { id: "travel_trade_group_intermediaries", label: "Travel Trade" },
+                { id: "relocation_extended_stay", label: "Relocation & Extended Stay" },
+                { id: "preferred_lodging_partnerships", label: "Venue Partnerships" },
+                { id: "professional_event_planners", label: "Event Planners" },
+              ],
+              draft.excludedSegments || [],
+              true,
+            ) +
+            "</div>"
+          : "") +
+        '<div class="form-group full-width" style="margin-top:16px"><label class="form-label">Restriction notes<span class="help-text">Optional free text (PR #216).</span></label>' +
+        '<textarea class="form-input" id="hcpRestrictionNotes" rows="2" placeholder="e.g. Prefer midweek groups">' +
+        esc(draft.restrictionNotes || "") +
+        "</textarea></div>"
+      );
+    }
+    if (step.id === "fit") {
+      return (
+        '<div class="form-grid"><div class="form-group"><label class="form-label">Business to avoid</label>' +
+        chipGroup(
+          "avoid",
+          [
+            { id: "LARGE_ROOM_BLOCKS", label: "Large room blocks" },
+            { id: "SMALL_GROUPS", label: "Small groups" },
+            { id: "LATE_NIGHT_EVENTS", label: "Late-night events" },
+            { id: "WEEKEND_HEAVY", label: "Weekend-heavy groups" },
+            { id: "LONG_STAY", label: "Long-stay groups" },
+            { id: "MEETING_INTENSIVE", label: "Meeting-space intensive" },
+            { id: "NO_RESTRICTIONS", label: "No restrictions" },
+          ],
+          draft.businessToAvoid,
+          true,
+        ) +
+        '</div><div class="form-group"><label class="form-label">Hotel considerations</label>' +
+        chipGroup(
+          "considerations",
+          [
+            { id: "LIMITED_MEETING_SPACE", label: "Limited meeting space" },
+            { id: "LIMITED_COACH_PARKING", label: "Limited coach/bus parking" },
+            { id: "LIMITED_GROUP_INVENTORY", label: "Limited group inventory" },
+            { id: "SEASONAL_RESTRICTIONS", label: "Seasonal restrictions" },
+            { id: "NOISE_RESTRICTIONS", label: "Venue/event noise restrictions" },
+            { id: "ACCESSIBILITY", label: "Accessibility considerations" },
+            { id: "RENOVATION_PERIODS", label: "Renovation periods" },
+            { id: "NO_SPECIAL", label: "No special restrictions" },
+          ],
+          draft.hotelConsiderations,
+          true,
+        ) +
+        "</div></div>"
+      );
+    }
+    if (step.id === "team") {
+      return (
+        '<div class="form-group full-width"><label class="form-label">Role selectors<span class="help-text">Optional. Use only if contacts are not already on your Dealality account.</span></label>' +
+        chipGroup(
+          "teamRoles",
+          [
+            { id: "SALES_LEAD", label: "Sales Lead" },
+            { id: "REVENUE_CONTACT", label: "Revenue Contact" },
+            { id: "GM_SPONSOR", label: "GM / Executive Sponsor" },
+            { id: "MARKETING_DIGITAL", label: "Marketing / Digital" },
+            { id: "HOTEL_COORDINATOR", label: "Hotel Coordinator" },
+          ],
+          Object.keys(draft.commercialTeam || {}),
+          true,
+        ) +
+        "</div>"
+      );
+    }
+    return "";
   }
 
   function render() {
     if (!root) return;
-    captureCommercialDraft();
-    var d = state.dashboard;
-    if (state.error) {
+    try {
+      renderInner();
+    } catch (err) {
+      state.error =
+        "Render error: " + (err && err.message ? err.message : String(err));
       root.innerHTML =
-        '<div class="hnd-banner error" role="alert">' +
+        '<div class="intake-shell"><div class="intake-container"><div class="intake-banner warn">' +
         esc(state.error) +
-        '</div><button type="button" class="gdi-btn gdi-btn-primary" id="hndRetry">Retry</button>';
-      return;
-    }
-    if (!d) {
-      root.innerHTML = '<div class="hnd-empty">No data loaded.</div>';
-      return;
-    }
-
-    var months = (d.monthlyOverview || [])
-      .map(function (m) {
-        var active = m.hasActiveNeed ? " is-active" : "";
-        var meta = m.hasActiveNeed
-          ? (m.periods || [])
-              .map(function (p) {
-                return (p.priority || "") + " · " + (p.status || "");
-              })
-              .slice(0, 2)
-              .join("; ")
-          : "No need set";
-        return (
-          '<button type="button" class="hnd-month' +
-          active +
-          '" data-hnd-month="' +
-          m.month +
-          '"><div class="m-name">' +
-          esc(m.label) +
-          '</div><div class="m-meta">' +
-          esc(meta) +
-          "</div></button>"
-        );
-      })
-      .join("");
-
-    var cards = filteredPeriods()
-      .map(function (p) {
-        return (
-          '<article class="hnd-card" data-period-id="' +
-          esc(p.needPeriodId) +
-          '"><div class="hnd-card-head"><h3>' +
-          esc(p.periodLabel || p.needPeriodId) +
-          '</h3><div class="hnd-pills">' +
-          '<span class="hnd-pill ' +
-          priorityClass(p.priority) +
-          '">' +
-          esc(p.priority || "MEDIUM") +
-          "</span>" +
-          '<span class="hnd-pill ' +
-          statusClass(p.status) +
-          '">' +
-          esc(p.status) +
-          "</span>" +
-          '<span class="hnd-pill">' +
-          esc(p.researchStateLabel || p.researchState || "") +
-          "</span></div></div>" +
-          '<div class="hnd-card-meta">' +
-          "<div><strong>Dates</strong><br/>" +
-          esc(p.startDate) +
-          " → " +
-          esc(p.endDate) +
-          "</div>" +
-          "<div><strong>Revenue focus</strong><br/>" +
-          esc(revenueLabels(p.revenueNeed) || "—") +
-          "</div>" +
-          "<div><strong>Matched opportunities</strong><br/>" +
-          esc(String(p.matchedOpportunityCount || 0)) +
-          "</div>" +
-          "<div><strong>Last updated</strong><br/>" +
-          esc((p.updatedAt || "").slice(0, 19).replace("T", " ") || "—") +
-          "</div></div>" +
-          renderMatches(p) +
-          '<div class="hnd-card-actions">' +
-          (readOnly
-            ? ""
-            : '<button type="button" class="gdi-btn gdi-btn-primary" data-hnd-edit="' +
-              esc(p.needPeriodId) +
-              '">Edit</button>') +
-          '<button type="button" class="gdi-btn gdi-btn-ghost" data-hnd-history="' +
-          esc(p.needPeriodId) +
-          '">History</button>' +
-          "</div></article>"
-        );
-      })
-      .join("");
-
-    if (!cards) {
-      cards =
-        '<div class="hnd-empty">No need periods yet. Add a month to start matching existing GDI opportunities.</div>';
-    }
-
-    var isolationBanner = d.isolation
-      ? '<div class="hnd-banner warn" role="status">Isolated portal test data — not written to customer-visible Airtable inventory. Mode: ' +
-        esc(d.dataMode) +
-        ".</div>"
-      : d.dataMode === "AIRTABLE_AI_DEMAND_POSITIONING"
-        ? '<div class="hnd-banner" role="status">Persisted in Airtable <strong>AI Demand Positioning</strong> · GDI Hotel Need Periods. Paid Exa remains blocked. Mode: ' +
-          esc(d.dataMode) +
-          ".</div>"
-        : "";
-
-    var needDateHeading =
-      window.DealalityGdiUi &&
-      typeof window.DealalityGdiUi.needDatesHeadingWithLegendHtml === "function"
-        ? window.DealalityGdiUi.needDatesHeadingWithLegendHtml({
-            title: "Hotel Need Times & Priorities",
-            hotelNeedDateConfigV1: d.hotelNeedDateConfigV1 || null,
-            popoverId: "gdiNeedDateLegendPopoverHnd",
-          })
-        : "<h1>Hotel Need Times & Priorities</h1>";
-
-    root.innerHTML =
-      isolationBanner +
-      '<header class="hnd-header"><div>' +
-      needDateHeading +
-      '<p class="hnd-sub">' +
-      esc((d.hotel && d.hotel.name) || state.hotelId) +
-      " · Calendar " +
-      esc(String(d.year)) +
-      " · Updated " +
-      esc((d.lastUpdated || "—").slice(0, 19).replace("T", " ")) +
-      "</p></div>" +
-      '<div class="hnd-header-actions">' +
-      (readOnly
-        ? ""
-        : '<button type="button" class="gdi-btn gdi-btn-primary" id="hndAddBtn">Add Need Period</button>') +
-      "</div></header>" +
-      '<section class="hnd-summary" aria-label="Summary">' +
-      stat("Active need periods", d.summary.activeNeedPeriods) +
-      stat("Matched GDI opportunities", d.summary.matchedGdiOpportunities) +
-      stat(
-        "New need-date research opps",
-        d.summary.newNeedDateResearchOpportunities,
-      ) +
-      stat("Research status", d.summary.researchStatus) +
-      "</section>" +
-      '<section class="hnd-section"><h2>Monthly overview</h2><div class="hnd-month-grid">' +
-      months +
-      "</div></section>" +
-      '<section class="hnd-section"><h2>Need periods' +
-      (state.selectedMonth
-        ? " · " + esc(state.selectedMonth.label)
-        : "") +
-      '</h2><div class="hnd-cards">' +
-      cards +
-      "</div></section>" +
-      renderCommercialPriorities(d);
-
-    if (
-      window.DealalityGdiUi &&
-      typeof window.DealalityGdiUi.bindNeedDateLegendInteractions === "function"
-    ) {
-      window.DealalityGdiUi.bindNeedDateLegendInteractions(root);
-    }
-  }
-
-  function stat(label, value) {
-    return (
-      '<div class="hnd-stat"><span class="label">' +
-      esc(label) +
-      '</span><span class="value">' +
-      esc(String(value)) +
-      "</span></div>"
-    );
-  }
-
-  
-  function captureCommercialDraft() {
-    var form = document.getElementById("hcpForm");
-    if (!form || readOnly) return;
-    try {
-      state.commercialDraft = readCommercialForm(form);
-      state.commercialDraftDirty = true;
-    } catch (e) {
-      /* ignore draft capture failures */
-    }
-  }
-
-  function checkedIds(form, name) {
-    return Array.prototype.map.call(
-      form.querySelectorAll('input[name="' + name + '"]:checked'),
-      function (el) {
-        return el.value;
-      },
-    );
-  }
-
-  function readCommercialForm(form) {
-    var segmentModeEl = form.querySelector('input[name="segmentMode"]:checked');
-    var knownRaw = String(form.knownAccountsText ? form.knownAccountsText.value || "" : "");
-    var knownAccounts = knownRaw
-      .split(/\r?\n/)
-      .map(function (line) {
-        return String(line || "").trim();
-      })
-      .filter(Boolean)
-      .map(function (name) {
-        return { organizationName: name, status: "Actively Pursuing" };
-      });
-    return {
-      revenuePriorities: checkedIds(form, "hcpRevenue"),
-      dayPreference: form.dayPreference ? form.dayPreference.value || null : null,
-      specificDays: checkedIds(form, "hcpDay"),
-      peakRoomsPreset: form.peakRoomsPreset
-        ? form.peakRoomsPreset.value || null
-        : null,
-      bookingWindow: form.bookingWindow ? form.bookingWindow.value || null : null,
-      meetingSpaceNeed: form.meetingSpaceNeed
-        ? form.meetingSpaceNeed.value || null
-        : null,
-      stayDuration: form.stayDuration ? form.stayDuration.value || null : null,
-      segmentMode: segmentModeEl ? segmentModeEl.value : "NO_PREFERENCE",
-      prioritySegments: checkedIds(form, "hcpSegment"),
-      excludedSegments: checkedIds(form, "hcpExcludeSegment"),
-      demandGeneratorCategories: checkedIds(form, "hcpDemandGen"),
-      businessToAvoid: checkedIds(form, "hcpAvoid"),
-      hotelConsiderations: checkedIds(form, "hcpConsider"),
-      knownAccounts: knownAccounts,
-      restrictionNotes: form.restrictionNotes ? form.restrictionNotes.value || "" : "",
-    };
-  }
-
-  function optionSelect(name, options, selectedId, emptyLabel) {
-    return (
-      "<label>" +
-      esc(emptyLabel || name) +
-      '<select name="' +
-      esc(name) +
-      '"' +
-      (readOnly ? " disabled" : "") +
-      '><option value="">No preference</option>' +
-      (options || [])
-        .map(function (r) {
-          return (
-            '<option value="' +
-            esc(r.id) +
-            '"' +
-            (selectedId === r.id ? " selected" : "") +
-            ">" +
-            esc(r.label) +
-            "</option>"
-          );
-        })
-        .join("") +
-      "</select></label>"
-    );
-  }
-
-  function checkGrid(name, options, selectedIds) {
-    var selected = {};
-    (selectedIds || []).forEach(function (id) {
-      selected[id] = true;
-    });
-    return (
-      '<div class="hnd-check-grid">' +
-      (options || [])
-        .map(function (r) {
-          return (
-            '<label><input type="checkbox" name="' +
-            esc(name) +
-            '" value="' +
-            esc(r.id) +
-            '"' +
-            (selected[r.id] ? " checked" : "") +
-            (readOnly ? " disabled" : "") +
-            "/> " +
-            esc(r.label) +
-            "</label>"
-          );
-        })
-        .join("") +
-      "</div>"
-    );
-  }
-
-  function renderCommercialPriorities(d) {
-    var profile = (d && d.commercialProfile) || {};
-    var enums = (d && d.enums && d.enums.commercialPriorities) || null;
-    if (!enums) {
-      return '<section class="hnd-section"><h2>Commercial priorities</h2><p class="gdi-muted">Commercial priority profile unavailable for this hotel yet.</p></section>';
-    }
-    // Prefer unsaved draft when navigating tabs / re-rendering within the session.
-    if (state.commercialDraftDirty && state.commercialDraft) {
-      profile = Object.assign({}, profile, state.commercialDraft);
-    }
-    var suggestions = profile.suggestions || {};
-    var suggestionBits = [];
-    if (suggestions.peakRoomsPreset) {
-      suggestionBits.push("peak rooms " + suggestions.peakRoomsPreset);
-    }
-    if (suggestions.meetingSpaceNeed) {
-      suggestionBits.push("meeting need " + suggestions.meetingSpaceNeed);
-    }
-    if ((suggestions.prioritySegments || []).length) {
-      suggestionBits.push(
-        "segments " + (suggestions.prioritySegments || []).slice(0, 4).join(", "),
-      );
-    }
-    if (suggestions.dayPreference) {
-      suggestionBits.push("day preference " + suggestions.dayPreference);
-    }
-    var lastSaved = profile.updatedAt || profile.lastConfirmedAt || d.lastUpdated || null;
-    var segmentModes = enums.segmentMode || [
-      "ALL_RELEVANT",
-      "SELECT_SPECIFIC",
-      "NO_PREFERENCE",
-    ];
-    var segmentMode = profile.segmentMode || "NO_PREFERENCE";
-    var modeRadios = segmentModes
-      .map(function (mode) {
-        var label =
-          mode === "ALL_RELEVANT"
-            ? "All relevant segments"
-            : mode === "SELECT_SPECIFIC"
-              ? "Select specific segments"
-              : "No preference";
-        return (
-          '<label class="hnd-radio"><input type="radio" name="segmentMode" value="' +
-          esc(mode) +
-          '"' +
-          (segmentMode === mode ? " checked" : "") +
-          (readOnly ? " disabled" : "") +
-          "/> " +
-          esc(label) +
-          "</label>"
-        );
-      })
-      .join("");
-    var knownText = (profile.knownAccounts || [])
-      .map(function (a) {
-        return a && (a.organizationName || a.name || a);
-      })
-      .filter(Boolean)
-      .join("\n");
-
-    return (
-      '<section class="hnd-section" id="hcpSection"><h2>Commercial priorities</h2>' +
-      '<p class="hnd-sub">Complete hotel-wide commercial preferences from the Hotel Commercial Priorities contract. Soft ranking signals only — they do not invent demand or hide credible opportunities.</p>' +
-      (lastSaved
-        ? '<p class="hnd-sub">Last saved ' +
-          esc(String(lastSaved).slice(0, 19).replace("T", " ")) +
-          (profile.dataMode ? " · " + esc(profile.dataMode) : "") +
-          "</p>"
-        : "") +
-      (suggestionBits.length
-        ? '<p class="hnd-sub hnd-suggest">Suggested from verified property / hotel config (not auto-saved): ' +
-          esc(suggestionBits.join("; ")) +
-          "</p>"
-        : "") +
-      '<form class="hnd-form" id="hcpForm">' +
-      '<fieldset class="hcp-block"><legend>Revenue priorities</legend>' +
-      checkGrid(
-        "hcpRevenue",
-        enums.revenuePriorities,
-        (profile.revenuePriorities || []).map(function (x) {
-          return x && x.id ? x.id : x;
-        }),
-      ) +
-      "</fieldset>" +
-      '<fieldset class="hcp-block"><legend>Weekday / weekend targeting</legend>' +
-      optionSelect(
-        "dayPreference",
-        enums.dayPreference,
-        profile.dayPreference,
-        "Day preference",
-      ) +
-      '<p class="hnd-sub">Use Specific days when Mon–Sun targeting differs from a simple weekday/weekend preference.</p>' +
-      '<fieldset><legend class="gdi-muted">Specific days</legend>' +
-      checkGrid(
-        "hcpDay",
-        (enums.weekdays || ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]).map(
-          function (d) {
-            return { id: d, label: d };
-          },
-        ),
-        profile.specificDays || [],
-      ) +
-      "</fieldset></fieldset>" +
-      '<fieldset class="hcp-block"><legend>Group size, timing &amp; stay</legend>' +
-      '<div class="hnd-form-grid">' +
-      optionSelect(
-        "peakRoomsPreset",
-        enums.peakRooms,
-        profile.peakRoomsPreset,
-        "Preferred peak rooms",
-      ) +
-      optionSelect(
-        "bookingWindow",
-        enums.bookingWindow,
-        profile.bookingWindow,
-        "Typical booking window",
-      ) +
-      optionSelect(
-        "meetingSpaceNeed",
-        enums.meetingSpaceNeed,
-        profile.meetingSpaceNeed,
-        "Meeting / catering need",
-      ) +
-      optionSelect(
-        "stayDuration",
-        enums.stayDuration,
-        profile.stayDuration,
-        "Preferred stay duration",
-      ) +
-      "</div></fieldset>" +
-      '<fieldset class="hcp-block"><legend>Demand segments (14 GDI strategies)</legend>' +
-      '<div class="hnd-radio-row">' +
-      modeRadios +
-      "</div>" +
-      '<p class="hnd-sub">Priority segments soft-boost research. Exclusions reduce rank only — they do not hard-block strong opportunities.</p>' +
-      '<fieldset><legend class="gdi-muted">Priority segments</legend>' +
-      checkGrid("hcpSegment", enums.prioritySegments, profile.prioritySegments || []) +
-      "</fieldset>" +
-      '<fieldset><legend class="gdi-muted">Lower-priority / excluded segments</legend>' +
-      checkGrid(
-        "hcpExcludeSegment",
-        enums.prioritySegments,
-        profile.excludedSegments || [],
-      ) +
-      "</fieldset></fieldset>" +
-      '<fieldset class="hcp-block"><legend>Local demand audiences / participant sources</legend>' +
-      '<p class="hnd-sub">Historical demand-generator categories: the types of organizations and participant pools the hotel wants to pursue locally.</p>' +
-      checkGrid(
-        "hcpDemandGen",
-        enums.demandGenerators,
-        profile.demandGeneratorCategories || [],
-      ) +
-      "</fieldset>" +
-      '<fieldset class="hcp-block"><legend>Business to avoid &amp; hotel considerations</legend>' +
-      checkGrid("hcpAvoid", enums.businessToAvoid, profile.businessToAvoid || []) +
-      checkGrid(
-        "hcpConsider",
-        enums.hotelConsiderations,
-        profile.hotelConsiderations || [],
-      ) +
-      "</fieldset>" +
-      '<fieldset class="hcp-block"><legend>Known accounts &amp; notes</legend>' +
-      '<label>Known organizations (one per line)<textarea name="knownAccountsText"' +
-      (readOnly ? " disabled" : "") +
-      ">" +
-      esc(knownText) +
-      "</textarea></label>" +
-      '<label>Restriction / sales notes<textarea name="restrictionNotes"' +
-      (readOnly ? " disabled" : "") +
-      ">" +
-      esc(profile.restrictionNotes || "") +
-      "</textarea></label>" +
-      "</fieldset>" +
-      (readOnly
-        ? ""
-        : '<div class="hnd-card-actions"><button type="submit" class="gdi-btn gdi-btn-primary">Save commercial priorities</button></div>') +
-      '<p class="gdi-muted" id="hcpError" role="alert"></p>' +
-      (state.saveMessage
-        ? '<p class="hnd-banner" role="status">' + esc(state.saveMessage) + "</p>"
-        : "") +
-      "</form></section>"
-    );
-  }
-
-  async function submitCommercialPriorities(ev) {
-    ev.preventDefault();
-    if (readOnly) return;
-    var form = ev.target;
-    var errEl = document.getElementById("hcpError");
-    var body = readCommercialForm(form);
-    body.expectedVersion =
-      state.dashboard &&
-      state.dashboard.commercialProfile &&
-      state.dashboard.commercialProfile.currentVersion;
-    body.isolation = state.isolation;
-    body.airtable = useAirtableMode();
-    body.provenance = "Hotel Confirmed";
-    try {
-      state.busy = true;
-      state.saveMessage = null;
-      if (errEl) errEl.textContent = "";
-      await api(
-        "/api/group-demand-intelligence/hotels/" +
-          encodeURIComponent(state.hotelId) +
-          "/commercial-profile",
-        { method: "PUT", body: body },
-      );
-      state.saveMessage = "Commercial priorities saved.";
-      state.commercialDraftDirty = false;
-      state.commercialDraft = null;
-      await refresh();
-    } catch (e) {
-      if (errEl) errEl.textContent = e.message || "Save failed";
-      state.saveMessage = null;
-    } finally {
-      state.busy = false;
-    }
-  }
-
-
-  function renderMatches(p) {
-    var m = p.matches || {};
-    var rows = []
-      .concat(m.existingMatch || [])
-      .concat(m.existingEnriched || [])
-      .concat(m.newOpportunity || [])
-      .concat(m.researchContinuation || []);
-    if (!rows.length) {
-      return '<p class="gdi-muted" style="margin:0 0 0.75rem;font-size:0.85rem">No verified month-specific opportunity matches yet. Existing inventory was inspected; research gaps remain.</p>';
-    }
-    return (
-      '<ul class="hnd-match-list">' +
-      rows
-        .slice(0, 8)
-        .map(function (r) {
-          return (
-            "<li><strong>" +
-            esc(r.bucket.replace(/_/g, " ")) +
-            "</strong> — " +
-            esc(r.title || r.opportunityId) +
-            " · " +
-            esc(r.timingOverlapStatus || "timing n/a") +
-            (r.confirmedRevenueTiming ? " · verified demand timing" : "") +
-            "</li>"
-          );
-        })
-        .join("") +
-      "</ul>"
-    );
-  }
-
-  function openAddForm() {
-    if (readOnly) return;
-    var revenue = ((state.dashboard && state.dashboard.enums && state.dashboard.enums.revenueTypes) || []);
-    var year = state.year;
-    addBody.innerHTML =
-      '<form class="hnd-form" id="hndAddForm">' +
-      "<p class=\"gdi-muted\">Select one or more months. Nonconsecutive months become independent need periods unless you choose a continuous range.</p>" +
-      '<div class="hnd-month-checks" id="hndMonthChecks">' +
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-        .map(function (m) {
-          var label = new Date(Date.UTC(year, m - 1, 1)).toLocaleString("en-US", {
-            month: "short",
-            timeZone: "UTC",
-          });
-          return (
-            '<label><input type="checkbox" name="month" value="' +
-            m +
-            '"/> ' +
-            label +
-            "</label>"
-          );
-        })
-        .join("") +
-      "</div>" +
-      '<label>Priority<select name="priority"><option value="HIGH">High</option><option value="MEDIUM" selected>Medium</option><option value="LOW">Low</option></select></label>' +
-      '<fieldset><legend class="gdi-muted">Revenue focus</legend><div class="hnd-check-grid">' +
-      revenue
-        .map(function (r) {
-          var checked =
-            r.id === "GROUP_GUESTROOMS" ||
-            r.id === "MEETING_SPACE" ||
-            r.id === "BANQUETS" ||
-            r.id === "LOCAL_CATERING"
-              ? " checked"
-              : "";
-          return (
-            '<label><input type="checkbox" name="revenue" value="' +
-            esc(r.id) +
-            '"' +
-            checked +
-            "/> " +
-            esc(r.label) +
-            "</label>"
-          );
-        })
-        .join("") +
-      "</div></fieldset>" +
-      '<label><input type="checkbox" name="continuousRange" value="1"/> Treat selected months as one continuous date range</label>' +
-      '<label>Target room nights (optional)<input type="number" name="targetRoomNights" min="0" placeholder="Leave blank — do not invent"/></label>' +
-      '<label>Target revenue (optional)<input type="number" name="targetRevenue" min="0" step="0.01" placeholder="Leave blank"/></label>' +
-      '<label>Restrictions<textarea name="restrictions" placeholder="Blackout dates, space limits, etc."></textarea></label>' +
-      '<label>Sales notes<textarea name="salesNotes"></textarea></label>' +
-      '<div class="hnd-card-actions"><button type="submit" class="gdi-btn gdi-btn-primary">Save need periods</button>' +
-      '<button type="button" class="gdi-btn gdi-btn-ghost" id="hndAddCancel">Cancel</button></div>' +
-      '<p class="gdi-muted" id="hndAddError" role="alert"></p></form>';
-    if (typeof addDialog.showModal === "function") addDialog.showModal();
-    else addDialog.setAttribute("open", "open");
-  }
-
-  async function submitAdd(ev) {
-    ev.preventDefault();
-    var form = ev.target;
-    var errEl = document.getElementById("hndAddError");
-    var months = Array.prototype.map
-      .call(form.querySelectorAll('input[name="month"]:checked'), function (el) {
-        return { year: state.year, month: Number(el.value) };
-      });
-    var revenueNeed = Array.prototype.map.call(
-      form.querySelectorAll('input[name="revenue"]:checked'),
-      function (el) {
-        return el.value;
-      },
-    );
-    if (!months.length) {
-      errEl.textContent = "Select at least one month.";
-      return;
-    }
-    if (!revenueNeed.length) {
-      errEl.textContent = "Select at least one revenue type.";
-      return;
-    }
-    var continuous = form.continuousRange && form.continuousRange.checked;
-    var body = {
-      months: months,
-      revenueNeed: revenueNeed,
-      priority: form.priority.value,
-      continuousRange: continuous,
-      restrictions: form.restrictions.value || null,
-      salesNotes: form.salesNotes.value || null,
-      isTestScenario: state.isolation === "portal_v1_test",
-      isolation: state.isolation,
-      airtable: useAirtableMode(),
-    };
-    if (form.targetRoomNights.value) {
-      body.targetRoomNights = Number(form.targetRoomNights.value);
-    }
-    if (form.targetRevenue.value) {
-      body.targetRevenue = Number(form.targetRevenue.value);
-    }
-    if (continuous && months.length) {
-      months.sort(function (a, b) {
-        return a.month - b.month;
-      });
-      var first = months[0];
-      var last = months[months.length - 1];
-      body.startDate =
-        state.year +
-        "-" +
-        String(first.month).padStart(2, "0") +
-        "-01";
-      var endDay = new Date(Date.UTC(state.year, last.month, 0)).getUTCDate();
-      body.endDate =
-        state.year +
-        "-" +
-        String(last.month).padStart(2, "0") +
-        "-" +
-        String(endDay).padStart(2, "0");
-    }
-    try {
-      state.busy = true;
-      await api(
-        "/api/group-demand-intelligence/hotels/" +
-          encodeURIComponent(state.hotelId) +
-          "/need-periods",
-        { method: "POST", body: body },
-      );
-      addDialog.close();
-      await refresh();
-    } catch (e) {
-      errEl.textContent = e.message || "Save failed";
-    } finally {
-      state.busy = false;
-    }
-  }
-
-  async function openEdit(needPeriodId) {
-    if (readOnly) return;
-    var p = ((state.dashboard && state.dashboard.periods) || []).find(
-      function (x) {
-        return x.needPeriodId === needPeriodId;
-      },
-    );
-    if (!p) return;
-    drawerTitle.textContent = p.periodLabel || "Edit need period";
-    drawerBody.innerHTML =
-      '<form class="hnd-form" id="hndEditForm" data-id="' +
-      esc(p.needPeriodId) +
-      '" data-version="' +
-      esc(String(p.currentVersion || 1)) +
-      '">' +
-      "<p class=\"gdi-muted\">Version " +
-      esc(String(p.currentVersion || 1)) +
-      " · Changes are versioned. Closing a period does not delete GDI opportunities.</p>" +
-      '<label>Priority<select name="priority">' +
-      ["HIGH", "MEDIUM", "LOW"]
-        .map(function (x) {
-          return (
-            '<option value="' +
-            x +
-            '"' +
-            (p.priority === x ? " selected" : "") +
-            ">" +
-            x +
-            "</option>"
-          );
-        })
-        .join("") +
-      "</select></label>" +
-      '<label>Status change<select name="changeType">' +
-      '<option value="MODIFY">Update fields</option>' +
-      '<option value="PARTIALLY_FILLED">Mark partially filled</option>' +
-      '<option value="FILLED">Mark filled</option>' +
-      '<option value="CANCEL">Withdraw (not filled)</option>' +
-      '<option value="REOPEN">Reopen</option>' +
-      '<option value="REPLACE">Replace with another period</option>' +
-      '<option value="PAUSED">Pause</option>' +
-      "</select></label>" +
-      '<label>Reason (required for reopen / replace)<textarea name="reason" placeholder="e.g. Group cancellation"></textarea></label>' +
-      '<div id="hndReplaceFields" hidden>' +
-      '<label>Replacement month (1–12)<input type="number" name="replaceMonth" min="1" max="12" value="11"/></label>' +
-      '<label>Replacement year<input type="number" name="replaceYear" value="' +
-      esc(String(state.year)) +
-      '"/></label></div>' +
-      '<label>Sales notes<textarea name="salesNotes">' +
-      esc(p.hotelSalesNotes || "") +
-      "</textarea></label>" +
-      '<label>Restrictions<textarea name="restrictions">' +
-      esc(p.commercialRestrictions || "") +
-      "</textarea></label>" +
-      '<div class="hnd-card-actions"><button type="submit" class="gdi-btn gdi-btn-primary">Save changes</button>' +
-      '<button type="button" class="gdi-btn gdi-btn-ghost" id="hndEditCancel">Cancel</button></div>' +
-      '<p class="gdi-muted" id="hndEditError" role="alert"></p></form>';
-    if (typeof drawer.showModal === "function") drawer.showModal();
-    else drawer.setAttribute("open", "open");
-  }
-
-  async function submitEdit(ev) {
-    ev.preventDefault();
-    var form = ev.target;
-    var errEl = document.getElementById("hndEditError");
-    var changeType = form.changeType.value;
-    if (
-      (changeType === "REOPEN" || changeType === "REPLACE") &&
-      !String(form.reason.value || "").trim()
-    ) {
-      errEl.textContent = "Reason is required for reopen or replace.";
-      return;
-    }
-    var body = {
-      changeType: changeType,
-      priority: form.priority.value,
-      reason: form.reason.value || null,
-      salesNotes: form.salesNotes.value,
-      restrictions: form.restrictions.value,
-      expectedVersion: Number(form.getAttribute("data-version")),
-      isolation: state.isolation,
-      airtable: useAirtableMode(),
-    };
-    if (changeType === "REPLACE") {
-      var y = Number(form.replaceYear.value);
-      var m = Number(form.replaceMonth.value);
-      var start =
-        y + "-" + String(m).padStart(2, "0") + "-01";
-      var endDay = new Date(Date.UTC(y, m, 0)).getUTCDate();
-      var end =
-        y +
-        "-" +
-        String(m).padStart(2, "0") +
-        "-" +
-        String(endDay).padStart(2, "0");
-      body.successorPeriod = {
-        hotelId: state.hotelId,
-        periodLabel:
-          new Date(Date.UTC(y, m - 1, 1)).toLocaleString("en-US", {
-            month: "long",
-            timeZone: "UTC",
-          }) +
-          " " +
-          y,
-        startDate: start,
-        endDate: end,
-        revenueNeed: ["GROUP_GUESTROOMS", "MEETING_SPACE"],
-        status: state.isolation ? "TEST_SCENARIO" : "Active",
-        isTestScenario: Boolean(state.isolation),
-        source: "hotel_portal",
-      };
-    }
-    try {
-      await api(
-        "/api/group-demand-intelligence/hotels/" +
-          encodeURIComponent(state.hotelId) +
-          "/need-periods/" +
-          encodeURIComponent(form.getAttribute("data-id")),
-        { method: "PATCH", body: body },
-      );
-      drawer.close();
-      await refresh();
-    } catch (e) {
-      if (e.status === 409) {
-        errEl.textContent =
-          "Someone else updated this period. Reload and try again. (version conflict)";
-      } else {
-        errEl.textContent = e.message || "Save failed";
-      }
-    }
-  }
-
-  async function openHistory(needPeriodId) {
-    try {
-      var qs = isolationQuery();
-      var data = await api(
-        "/api/group-demand-intelligence/hotels/" +
-          encodeURIComponent(state.hotelId) +
-          "/need-periods/" +
-          encodeURIComponent(needPeriodId) +
-          (qs ? "?" + qs : ""),
-      );
-      drawerTitle.textContent = "Change history";
-      var changes = data.changes || [];
-      drawerBody.innerHTML =
-        '<div class="hnd-history"><ol>' +
-        (changes.length
-          ? changes
-              .slice()
-              .reverse()
-              .map(function (c) {
-                return (
-                  "<li><strong>" +
-                  esc(c.changeType) +
-                  "</strong> · " +
-                  esc((c.timestamp || "").slice(0, 19).replace("T", " ")) +
-                  " · " +
-                  esc(c.actorSource || "") +
-                  (c.actorUser && c.actorUser.email
-                    ? " (" + esc(c.actorUser.email) + ")"
-                    : "") +
-                  "<br/>" +
-                  esc(c.reason || "") +
-                  "</li>"
-                );
-              })
-              .join("")
-          : "<li>No history yet.</li>") +
-        "</ol></div>";
-      if (typeof drawer.showModal === "function") drawer.showModal();
-    } catch (e) {
-      state.error = e.message;
-      render();
-    }
-  }
-
-  async function refresh() {
-    setLoading(true, "Loading Hotel Need Dates…");
-    state.error = null;
-    try {
-      await loadDashboard();
-      render();
-    } catch (e) {
-      state.error = e.message || "Failed to load need dates";
-      render();
-    } finally {
+        '</div><button type="button" class="btn-secondary" id="hcpRetry">Retry</button></div></div>';
+      var retryBtn = document.getElementById("hcpRetry");
+      if (retryBtn) retryBtn.addEventListener("click", refresh);
       setLoading(false);
     }
   }
 
-  if (root) root.addEventListener("submit", function (ev) {
-      if (ev.target && ev.target.id === "hcpForm") submitCommercialPriorities(ev);
-    });
-  if (root) {
-    root.addEventListener("input", function (ev) {
-      if (ev.target && ev.target.closest && ev.target.closest("#hcpForm")) {
-        captureCommercialDraft();
-      }
-    });
-    root.addEventListener("change", function (ev) {
-      if (ev.target && ev.target.closest && ev.target.closest("#hcpForm")) {
-        captureCommercialDraft();
-      }
-    });
-  }
-  root.addEventListener("click", function (ev) {
-    var t = ev.target;
-    if (!t) return;
-    if (t.id === "hndRetry") return refresh();
-    if (t.id === "hndAddBtn") return openAddForm();
-    if (t.id === "hndAddCancel") return addDialog.close();
-    if (t.id === "hndEditCancel") return drawer.close();
-    if (t.getAttribute && t.getAttribute("data-hnd-month")) {
-      var monthNum = Number(t.getAttribute("data-hnd-month"));
-      var hit = ((state.dashboard && state.dashboard.monthlyOverview) || []).find(
-        function (m) {
-          return m.month === monthNum;
-        },
+  function renderInner() {
+    if (state.error && !state.dashboard) {
+      root.innerHTML =
+        '<div class="intake-shell"><div class="intake-container"><div class="intake-banner warn">' +
+        esc(state.error) +
+        '</div><button type="button" class="btn-secondary" id="hcpRetry">Retry</button></div></div>';
+      bind();
+      return;
+    }
+
+    var d = state.dashboard || {};
+    var hotelName = (d.hotel && d.hotel.name) || state.hotelId;
+    var banner =
+      d.dataMode === "AIRTABLE_AI_DEMAND_POSITIONING"
+        ? '<div class="intake-banner">Saved to Airtable · AI Demand Positioning. Research does not start automatically.</div>'
+        : '<div class="intake-banner warn">Local draft mode</div>';
+    if (state.dirty) {
+      banner +=
+        '<div class="intake-banner warn">Unsaved commercial profile changes</div>';
+    } else if (state.saveMessage) {
+      banner +=
+        '<div class="intake-banner ok">' + esc(state.saveMessage) + "</div>";
+    }
+    if (state.error) {
+      banner +=
+        '<div class="intake-banner warn">' + esc(state.error) + "</div>";
+    }
+
+    var sectionsHtml = SECTIONS.map(function (step, idx) {
+      return (
+        '<section class="form-section hcp-page-section active" id="hcp-section-' +
+        esc(step.id) +
+        '" data-section="' +
+        esc(step.id) +
+        '">' +
+        (idx > 0 ? '<hr class="hcp-section-divider" />' : "") +
+        '<h2 class="form-section-title">' +
+        esc(step.title) +
+        "</h2>" +
+        '<p class="form-section-subtitle">' +
+        esc(step.subtitle) +
+        "</p>" +
+        sectionBody(step) +
+        "</section>"
       );
-      state.selectedMonth =
-        state.selectedMonth && state.selectedMonth.month === monthNum
-          ? null
-          : hit || null;
+    }).join("");
+
+    var html =
+      '<div class="intake-shell hcp-intake hcp-intake--single-page">' +
+      '<div class="intake-container">' +
+      banner +
+      '<header class="intake-header"><div class="intake-title-container"><h1>Hotel Need Times &amp; Commercial Priorities</h1></div>' +
+      "<p>Help us find the right business for your hotel. Select your priorities and the dates where additional demand would be most valuable.</p>" +
+      "<p>" +
+      esc(hotelName) +
+      " · " +
+      esc(String(state.year)) +
+      "</p></header>" +
+      '<div class="form-sections-wrap hcp-single-page-sections">' +
+      sectionsHtml +
+      '<div class="form-actions hcp-sticky-save">' +
+      '<span class="hcp-save-hint">' +
+      (state.dirty ? "Unsaved changes" : "All changes saved") +
+      "</span>" +
+      '<button type="button" class="btn-primary" id="hcpSaveProfile">Save Changes</button>' +
+      "</div></div></div></div>";
+
+    root.innerHTML = html;
+    bind();
+  }
+
+  function handleUiClick(e) {
+    var t =
+      e.target && e.target.closest
+        ? e.target.closest(
+            "[data-month], [data-quick-action], .hcp-chip, #hcpDrawerClose, #hcpSaveMonths, #hcpSaveProfile, #hcpRetry",
+          )
+        : null;
+    if (!t || !root || !root.contains(t)) return;
+
+    if (t.id === "hcpRetry") {
+      refresh();
+      return;
+    }
+    if (t.id === "hcpDrawerClose") {
+      state.drawerMonth = null;
       render();
       return;
     }
-    if (t.getAttribute && t.getAttribute("data-hnd-edit")) {
-      return openEdit(t.getAttribute("data-hnd-edit"));
+    if (t.id === "hcpSaveMonths") {
+      saveSelectedMonths();
+      return;
     }
-    if (t.getAttribute && t.getAttribute("data-hnd-history")) {
-      return openHistory(t.getAttribute("data-hnd-history"));
+    if (t.id === "hcpSaveProfile") {
+      saveProfileFn();
+      return;
     }
-  });
+    if (t.hasAttribute("data-month")) {
+      var m = Number(t.getAttribute("data-month"));
+      if (!Number.isFinite(m) || m < 1 || m > 12) return;
+      state.selectedMonths[m] = true;
+      state.drawerMonth = m;
+      render();
+      return;
+    }
+    if (t.hasAttribute("data-quick-action")) {
+      quickLifecycle(
+        t.getAttribute("data-period"),
+        t.getAttribute("data-quick-action"),
+        t.getAttribute("data-priority"),
+      );
+      return;
+    }
+    if (t.classList.contains("hcp-chip")) {
+      var group = t.getAttribute("data-chip-group");
+      var value = t.getAttribute("data-chip-value");
+      if (!state.draft) state.draft = emptyDraft();
+      if (!state.monthDraft) {
+        state.monthDraft = {
+          revenueNeed: [],
+          priority: "HIGH",
+          days: "ANY",
+          peakRoomsOverride: null,
+        };
+      }
+      if (group === "monthNeed") toggleArr(state.monthDraft, "revenueNeed", value);
+      else if (group === "monthPriority") state.monthDraft.priority = value;
+      else if (group === "monthDays") state.monthDraft.days = value;
+      else if (group === "monthPeakOverride") {
+        state.monthDraft.peakRoomsOverride =
+          state.monthDraft.peakRoomsOverride === value ? null : value;
+      } else if (group === "revenue") {
+        toggleArr(state.draft, "revenuePriorities", value, 5);
+        markDirty();
+      } else if (group === "peakRooms") {
+        state.draft.peakRoomsPreset = value;
+        markDirty();
+      } else if (group === "bookingWindow") {
+        state.draft.bookingWindow = value;
+        markDirty();
+      } else if (group === "meetingSpace") {
+        state.draft.meetingSpaceNeed = value;
+        markDirty();
+      } else if (group === "stayDuration") {
+        state.draft.stayDuration = value;
+        markDirty();
+      } else if (group === "dayPreference") {
+        state.draft.dayPreference = value;
+        markDirty();
+      } else if (group === "specificDays") {
+        toggleArr(state.draft, "specificDays", value);
+        markDirty();
+      } else if (group === "segmentMode") {
+        state.draft.segmentMode = value;
+        markDirty();
+      } else if (group === "segments") {
+        toggleArr(state.draft, "prioritySegments", value);
+        markDirty();
+      } else if (group === "lowerPrioritySegments") {
+        toggleArr(state.draft, "lowerPrioritySegments", value);
+        markDirty();
+      } else if (group === "excludedSegments") {
+        toggleArr(state.draft, "excludedSegments", value);
+        markDirty();
+      } else if (group === "generators") {
+        toggleArr(state.draft, "demandGeneratorCategories", value);
+        markDirty();
+      } else if (group === "avoid") {
+        toggleArr(state.draft, "businessToAvoid", value);
+        markDirty();
+      } else if (group === "considerations") {
+        toggleArr(state.draft, "hotelConsiderations", value);
+        markDirty();
+      } else if (group === "teamRoles") {
+        if (!state.draft.commercialTeam) state.draft.commercialTeam = {};
+        if (state.draft.commercialTeam[value])
+          delete state.draft.commercialTeam[value];
+        else
+          state.draft.commercialTeam[value] = {
+            role: value,
+            source: "hotel_selected",
+          };
+        markDirty();
+      } else if (group === "knownAccount") {
+        var accounts = state.draft.knownAccounts || [];
+        var idx = accounts.findIndex(function (a) {
+          return a.organizationName === value;
+        });
+        if (idx >= 0) accounts.splice(idx, 1);
+        else
+          accounts.push({
+            organizationName: value,
+            status: "Actively Pursuing",
+            provenance: "Suggested From Research",
+          });
+        state.draft.knownAccounts = accounts;
+        markDirty();
+      }
+      render();
+    }
+  }
 
-  if (addBody) addBody.addEventListener("submit", function (ev) {
-    if (ev.target && ev.target.id === "hndAddForm") submitAdd(ev);
-  });
-  if (drawerBody) drawerBody.addEventListener("submit", function (ev) {
-    if (ev.target && ev.target.id === "hndEditForm") submitEdit(ev);
-  });
-  if (drawerBody) drawerBody.addEventListener("change", function (ev) {
-    if (ev.target && ev.target.name === "changeType") {
-      var box = document.getElementById("hndReplaceFields");
-      if (box) box.hidden = ev.target.value !== "REPLACE";
+  function bind() {
+    if (!root) return;
+    // Listener on #hndRoot survives innerHTML re-renders (element identity preserved).
+    if (!root.__hcpUiBound) {
+      root.__hcpUiBound = true;
+      root.addEventListener("click", handleUiClick);
+      root.addEventListener("input", function (ev) {
+        if (ev.target && ev.target.id === "hcpRestrictionNotes") {
+          if (!state.draft) state.draft = emptyDraft();
+          state.draft.restrictionNotes = String(ev.target.value || "");
+          markDirty();
+        }
+      });
     }
-  });
-  if (drawerClose) drawerClose.addEventListener("click", function () {
-    drawer.close();
-  });
-  if (addClose) addClose.addEventListener("click", function () {
-    addDialog.close();
-  });
+    window.__hcpOpenMonth = function (month) {
+      var m = Number(month);
+      if (!Number.isFinite(m) || m < 1 || m > 12) return false;
+      state.selectedMonths[m] = true;
+      state.drawerMonth = m;
+      render();
+      return !!document.getElementById("hcpMonthDrawer");
+    };
+  }
+
+  async function quickLifecycle(periodId, changeType, priority) {
+    if (!periodId || !changeType) return;
+    var period = ((state.dashboard && state.dashboard.periods) || []).find(
+      function (p) {
+        return p.needPeriodId === periodId;
+      },
+    );
+    if (!period) return;
+    setLoading(true, "Updating need period…");
+    try {
+      var patch = {};
+      if (changeType === "PRIORITY_CHANGED" && priority) patch.priority = priority;
+      await api(
+        "/api/group-demand-intelligence/hotels/" +
+          encodeURIComponent(state.hotelId) +
+          "/need-periods/" +
+          encodeURIComponent(periodId),
+        {
+          method: "PATCH",
+          body: {
+            airtable: state.airtable,
+            changeType: changeType,
+            expectedVersion: period.currentVersion,
+            patch: patch,
+            reason: "Commercial Priorities calendar quick action: " + changeType,
+          },
+        },
+      );
+      state.saveMessage = "Need period updated. History appended.";
+      await refresh();
+    } catch (err) {
+      state.error = err.message || String(err);
+      setLoading(false);
+      render();
+    }
+  }
+
+  async function saveSelectedMonths() {
+    var months = Object.keys(state.selectedMonths)
+      .filter(function (k) {
+        return state.selectedMonths[k];
+      })
+      .map(Number)
+      .sort(function (a, b) {
+        return a - b;
+      });
+    if (!months.length && state.drawerMonth) months = [state.drawerMonth];
+    if (!months.length) return;
+    if (!state.monthDraft) {
+      state.monthDraft = {
+        revenueNeed: ["GROUP_GUESTROOMS"],
+        priority: "HIGH",
+        days: "ANY",
+      };
+    }
+    setLoading(true, "Saving need months…");
+    try {
+      var existing = (state.dashboard.periods || []).map(function (p) {
+        return Number(String(p.startDate || "").slice(5, 7));
+      });
+      var toCreate = months.filter(function (m) {
+        return existing.indexOf(m) < 0;
+      });
+      if (toCreate.length) {
+        await api(
+          "/api/group-demand-intelligence/hotels/" +
+            encodeURIComponent(state.hotelId) +
+            "/need-periods",
+          {
+            method: "POST",
+            body: {
+              airtable: state.airtable,
+              months: toCreate.map(function (m) {
+                return { year: state.year, month: m };
+              }),
+              revenueNeed: state.monthDraft.revenueNeed,
+              priority: state.monthDraft.priority,
+              preferredDays: state.monthDraft.days,
+              preferredWeekpart: state.monthDraft.days,
+              preferenceOverrides: state.monthDraft.peakRoomsOverride
+                ? { peakRoomsPreset: state.monthDraft.peakRoomsOverride }
+                : null,
+              isTestScenario: true,
+              status: "TEST_SCENARIO",
+              source: "hotel_commercial_priorities_v2",
+              salesNotes: "Hotel Commercial Priorities My Deals UI save.",
+            },
+          },
+        );
+      }
+      for (var i = 0; i < months.length; i++) {
+        var m = months[i];
+        var period = (state.dashboard.periods || []).find(function (p) {
+          return Number(String(p.startDate || "").slice(5, 7)) === m;
+        });
+        if (!period) continue;
+        var patchBody = {
+          revenueNeed: state.monthDraft.revenueNeed,
+          priority: state.monthDraft.priority,
+          preferredWeekpart: state.monthDraft.days,
+        };
+        if (state.monthDraft.peakRoomsOverride) {
+          patchBody.preferenceOverrides = Object.assign(
+            {},
+            period.preferenceOverrides || {},
+            { peakRoomsPreset: state.monthDraft.peakRoomsOverride },
+          );
+        }
+        await api(
+          "/api/group-demand-intelligence/hotels/" +
+            encodeURIComponent(state.hotelId) +
+            "/need-periods/" +
+            encodeURIComponent(period.needPeriodId),
+          {
+            method: "PATCH",
+            body: {
+              airtable: state.airtable,
+              changeType: "MODIFY",
+              expectedVersion: period.currentVersion,
+              patch: patchBody,
+              reason: "Commercial Priorities month quick-edit",
+            },
+          },
+        );
+      }
+      state.selectedMonths = {};
+      state.saveMessage = "Need months saved.";
+      await refresh();
+    } catch (err) {
+      state.error = err.message || String(err);
+      setLoading(false);
+      render();
+    }
+  }
+
+  async function saveProfileFn() {
+    setLoading(true, "Saving commercial priorities…");
+    try {
+      var body = {
+        airtable: state.airtable,
+        year: state.year,
+        expectedVersion: state.draft.currentVersion,
+        changeReason: "Hotel Commercial Priorities My Deals UI save",
+        profile: Object.assign({}, state.draft, {
+          revenuePriorities: (state.draft.revenuePriorities || []).map(
+            function (id) {
+              return { id: id };
+            },
+          ),
+        }),
+      };
+      var res = await api(
+        "/api/group-demand-intelligence/hotels/" +
+          encodeURIComponent(state.hotelId) +
+          "/commercial-profile?" +
+          airtableQs(),
+        { method: "PUT", body: body },
+      );
+      state.profile = res.profile;
+      state.draft = profileToDraft(res.profile);
+      state.dirty = false;
+      state.saveMessage =
+        "Commercial priorities saved. Research was not started.";
+      if (res.dashboard) state.dashboard = res.dashboard;
+      setLoading(false);
+      render();
+    } catch (err) {
+      state.error = err.message || String(err);
+      setLoading(false);
+      render();
+    }
+  }
+
+  if (!window.__hcpBeforeUnloadBound) {
+    window.__hcpBeforeUnloadBound = true;
+    window.addEventListener("beforeunload", function (e) {
+      if (!state.dirty) return;
+      e.preventDefault();
+      e.returnValue = "";
+    });
+  }
 
     function destroy() {
       try {
-        root.replaceChildren();
-      } catch (e) {
+        if (root && root.__hcpUiBound) {
+          root.removeEventListener("click", handleUiClick);
+          root.__hcpUiBound = false;
+        }
+      } catch (e) {}
+      try {
         root.innerHTML = "";
+      } catch (e2) {}
+    }
+
+    function getState() {
+      return {
+        hotelId: state.hotelId,
+        year: state.year,
+        dirty: state.dirty,
+        airtable: state.airtable,
+      };
+    }
+
+    function exportDraft() {
+      try {
+        return state.draft ? JSON.parse(JSON.stringify(state.draft)) : null;
+      } catch (e) {
+        return state.draft || null;
       }
     }
 
     function setHotelId(hotelId) {
-      state.hotelId = String(hotelId || "").trim();
+      var next = String(hotelId || "").trim();
+      if (!next || next === state.hotelId) return Promise.resolve();
+      // Caller (mount) is responsible for stashing; clear local UI only.
+      state.hotelId = next;
+      state.selectedMonths = {};
+      state.monthDraft = null;
+      state.drawerMonth = null;
+      state.saveMessage = null;
+      state.error = null;
+      state.dirty = false;
+      state.draft = null;
+      state.profile = null;
+      state.dashboard = null;
       return refresh();
     }
 
     return {
-      root: root,
       refresh: refresh,
-      setHotelId: setHotelId,
       destroy: destroy,
-      getState: function () {
-        return state;
-      },
+      getState: getState,
+      exportDraft: exportDraft,
+      setHotelId: setHotelId,
+      root: root,
     };
   }
 
   var api = {
     _active: null,
+    /** Hotel-keyed unsaved drafts — never merge across hotels. */
+    _draftsByHotelId: Object.create(null),
+    _stashActiveDraft: function () {
+      if (!api._active || !api._active.getState) return;
+      try {
+        var st = api._active.getState();
+        var hid = String(st.hotelId || "").trim();
+        if (!hid) return;
+        if (st.dirty === true && api._active.exportDraft) {
+          api._draftsByHotelId[hid] = {
+            dirty: true,
+            draft: api._active.exportDraft(),
+            stashedAt: Date.now(),
+          };
+        } else if (st.dirty !== true) {
+          delete api._draftsByHotelId[hid];
+        }
+      } catch (e) {}
+    },
+    _closeSharedDialogs: function () {
+      try {
+        var d = document.getElementById("hndDrawer");
+        if (d && d.open) d.close();
+      } catch (e) {}
+      try {
+        var a = document.getElementById("hndAddDialog");
+        if (a && a.open) a.close();
+      } catch (e2) {}
+      try {
+        var h = document.getElementById("hcpDrawer");
+        if (h && h.open) h.close();
+      } catch (e3) {}
+    },
     mount: function (container, options) {
       options = options || {};
       var hotelId = String(options.hotelId || "").trim();
-      // Reuse an already-mounted controller for the same hotel to avoid
-      // calendar rebuild + network refetch on every tab switch.
+      if (!hotelId) throw new Error("need_times_tab_hotelId_required");
       if (
         api._active &&
         api._active.getState &&
@@ -1191,20 +1448,24 @@
         container &&
         api._active.root !== container
       ) {
-        // Shell re-created the host node but hotel data is still valid —
-        // rebind root without destroying loaded dashboard state.
         try {
           var prev = api._active.root;
           if (prev && prev !== container && prev.childNodes.length) {
             while (prev.firstChild) container.appendChild(prev.firstChild);
           }
           api._active.root = container;
-        } catch (e) {
-          /* fall through to fresh mount */
-        }
+        } catch (e) {}
         if (api._active.root === container) return api._active;
       }
       if (api._active) {
+        var prevHotel =
+          api._active.getState && api._active.getState().hotelId
+            ? String(api._active.getState().hotelId)
+            : "";
+        if (prevHotel && prevHotel !== hotelId) {
+          api._stashActiveDraft();
+          api._closeSharedDialogs();
+        }
         try {
           api._active.destroy();
         } catch (e) {}
@@ -1213,13 +1474,11 @@
       var ctrl = createTabController({
         root: container,
         loading: options.loading || null,
-        hostDocument: options.hostDocument || document,
-        readOnly: options.readOnly === true,
         hotelId: hotelId,
         year: options.year,
         isolation: options.isolation,
+        restoredDraft: api._draftsByHotelId[hotelId] || null,
       });
-      // Expose root for keep-alive rebind checks.
       ctrl.root = container;
       api._active = ctrl;
       ctrl.refresh();
@@ -1227,9 +1486,19 @@
     },
     unmount: function () {
       if (api._active) {
-        api._active.destroy();
+        api._stashActiveDraft();
+        api._closeSharedDialogs();
+        try {
+          api._active.destroy();
+        } catch (e) {}
         api._active = null;
       }
+    },
+    getDraftForHotel: function (hotelId) {
+      return api._draftsByHotelId[String(hotelId || "").trim()] || null;
+    },
+    clearDraftForHotel: function (hotelId) {
+      delete api._draftsByHotelId[String(hotelId || "").trim()];
     },
   };
 

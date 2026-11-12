@@ -112,7 +112,12 @@ import {
   annotateInventoryPopulations,
   buildInventoryPopulationCounts,
   isBethesda67CustomerPublicationApproved,
+  selectBethesdaSalesOpportunityInventory,
+  resolveGdiInventoryAudience,
+  GDI_INVENTORY_AUDIENCE,
   BETHESDA_HOTEL_ID,
+  BETHESDA_SALES_TEAM_LIST_SCOPE,
+  BETHESDA_PUBLISHED_CUSTOMER_LIST_SCOPE,
 } from "../lib/group-demand-intelligence/bethesda-67-sales-baseline-cmi-v1.js";
 import {
   getCachedOpportunityDoc,
@@ -895,35 +900,75 @@ export async function getGdiOpportunities(req, res) {
             });
           }
         }
-        // Primary commercial (default): match published/share eligibility.
+        // Primary commercial (default): sales-team inventory ≠ published feed.
         // Research/FULL surfaces keep research inventory for admin tools only.
         let afterSurfaceCount = opportunities.length;
+        let inventoryAudience = GDI_INVENTORY_AUDIENCE.PUBLISHED_CUSTOMER_FEED;
+        let salesSelectionMeta = null;
         if (surfaceView === GDI_LIST_SURFACE_VIEW.COMMERCIAL) {
           const beforeFacing = opportunities.length;
-          opportunities = filterCustomerFacingOpportunities(opportunities, {
-            hotelId,
-          });
-          afterSurfaceCount = opportunities.length;
+          inventoryAudience = resolveGdiInventoryAudience(req, { hotelId });
+          if (
+            inventoryAudience === GDI_INVENTORY_AUDIENCE.SALES_TEAM_INVENTORY
+          ) {
+            // Do NOT apply public customer-publication eligibility to the
+            // authorized sales-team baseline. Select exact frozen 67 IDs.
+            const sel = selectBethesdaSalesOpportunityInventory(opportunities, {
+              salesTeamInventory: true,
+              founderReview: true,
+            });
+            opportunities = sel.selected;
+            afterSurfaceCount = opportunities.length;
+            salesSelectionMeta = {
+              expectedCount: sel.expectedCount,
+              selectedCount: sel.selected.length,
+              missingIds: sel.missingIds,
+              publishedCount: sel.publishedCount,
+              stagedPresentCount: sel.stagedPresentCount,
+            };
+            listScope = BETHESDA_SALES_TEAM_LIST_SCOPE;
+          } else {
+            opportunities = filterCustomerFacingOpportunities(opportunities, {
+              hotelId,
+            });
+            afterSurfaceCount = opportunities.length;
+            listScope = BETHESDA_PUBLISHED_CUSTOMER_LIST_SCOPE;
+          }
           bethesdaUnionMeta = {
             applied: true,
             counts: union.counts,
             commercialEventFamily: familyMeta,
+            inventoryAudience,
+            salesTeamInventory: salesSelectionMeta,
             commercialSurface: {
               requestedSurface: surfaceView,
               effectiveSurface: surfaceView,
               view: surfaceView,
               beforeCount: beforeSurface,
-              afterSurfaceCount,
-              afterCustomerFacingCount: afterSurfaceCount,
+              afterSurfaceCount: beforeFacing,
+              afterCustomerFacingCount:
+                inventoryAudience ===
+                GDI_INVENTORY_AUDIENCE.PUBLISHED_CUSTOMER_FEED
+                  ? afterSurfaceCount
+                  : null,
+              afterSalesTeamInventoryCount:
+                inventoryAudience ===
+                GDI_INVENTORY_AUDIENCE.SALES_TEAM_INVENTORY
+                  ? afterSurfaceCount
+                  : null,
               afterCount: afterSurfaceCount,
               eligibleCount: afterSurfaceCount,
               excludedCount: Math.max(0, beforeSurface - afterSurfaceCount),
-              customerFacingExcluded: Math.max(
-                0,
-                beforeFacing - afterSurfaceCount
-              ),
+              customerFacingExcluded:
+                inventoryAudience ===
+                GDI_INVENTORY_AUDIENCE.PUBLISHED_CUSTOMER_FEED
+                  ? Math.max(0, beforeFacing - afterSurfaceCount)
+                  : 0,
               summary: surfaceSummary,
-              localPublishedParity: true,
+              // Local auth sales-team page intentionally exceeds published 19.
+              localPublishedParity:
+                inventoryAudience ===
+                GDI_INVENTORY_AUDIENCE.PUBLISHED_CUSTOMER_FEED,
             },
             storeWrites: false,
             customerShare: false,
@@ -933,6 +978,7 @@ export async function getGdiOpportunities(req, res) {
             applied: true,
             counts: union.counts,
             commercialEventFamily: familyMeta,
+            inventoryAudience: null,
             commercialSurface: {
               requestedSurface: surfaceView,
               effectiveSurface: surfaceView,
@@ -947,13 +993,11 @@ export async function getGdiOpportunities(req, res) {
             storeWrites: false,
             customerShare: false,
           };
-        }
-        listScope =
-          surfaceView === GDI_LIST_SURFACE_VIEW.COMMERCIAL
-            ? "BETHESDA_PRIMARY_COMMERCIAL"
-            : surfaceView === GDI_LIST_SURFACE_VIEW.FULL
+          listScope =
+            surfaceView === GDI_LIST_SURFACE_VIEW.FULL
               ? listScope
               : `BETHESDA_SURFACE_${String(surfaceView).toUpperCase()}`;
+        }
       } catch (surfaceErr) {
         console.error(
           JSON.stringify({
@@ -1029,11 +1073,35 @@ export async function getGdiOpportunities(req, res) {
       return sendCustomerCsv(res, opportunities, hotel);
     }
 
+    // Annotate populations on canonical rows BEFORE presentation DTO trim so
+    // CMI / baseline membership survive field allowlisting.
+    opportunities = annotateInventoryPopulations(opportunities, { hotelId });
+    const populationAnnotationsById = new Map(
+      opportunities.map((o) => [
+        String(o.id || o.opportunityId || ""),
+        {
+          inventoryPopulations: o.inventoryPopulations,
+          inventoryPopulationPrimary: o.inventoryPopulationPrimary,
+          salesBaselineMembership: o.salesBaselineMembership,
+          salesBaselineMaturityKey: o.salesBaselineMaturityKey,
+          salesBaselineMaturityLabel: o.salesBaselineMaturityLabel,
+          stagedCustomerReadiness: o.stagedCustomerReadiness,
+          cmiClass: o.cmiClass,
+          cmiVerified: o.cmiVerified,
+          cmiCompetitorHotel: o.cmiCompetitorHotel,
+          cmiClassificationReason: o.cmiClassificationReason,
+        },
+      ])
+    );
     if (!wantFull) {
       // Single universal list projection (same prepare → DTO path as share).
       opportunities = mapOpportunitiesToPresentationDtos(opportunities, {
         hotelId,
         surface: GDI_PRESENTATION_SURFACES.LOCAL_AUTH,
+      });
+      opportunities = opportunities.map((dto) => {
+        const ann = populationAnnotationsById.get(String(dto.id || ""));
+        return ann ? { ...dto, ...ann } : dto;
       });
     }
     opportunities = await attachCommercialProgression(hotelId, opportunities);
@@ -1168,6 +1236,7 @@ export async function getGdiOpportunities(req, res) {
     if (serverBuildSha) {
       res.setHeader("X-GDI-Server-Build-Sha", String(serverBuildSha));
     }
+    // Re-assert annotation after progression overlays (idempotent).
     opportunities = annotateInventoryPopulations(opportunities, { hotelId });
     const inventoryPopulationCounts =
       buildInventoryPopulationCounts(opportunities);
@@ -1185,6 +1254,11 @@ export async function getGdiOpportunities(req, res) {
             headline: inventoryPopulationCounts.headline,
           }
         : null;
+    const inventoryAudience =
+      bethesdaUnionMeta?.inventoryAudience ||
+      (hotelId === BETHESDA_HOTEL_ID
+        ? resolveGdiInventoryAudience(req, { hotelId })
+        : null);
     return res.json({
       ok: true,
       hotelId,
@@ -1194,6 +1268,7 @@ export async function getGdiOpportunities(req, res) {
       view: wantFull ? "full" : "list",
       schemaVersion: wantFull ? null : GDI_OPPORTUNITY_LIST_SCHEMA,
       listScope,
+      inventoryAudience,
       requestedSurface,
       effectiveSurface,
       inventoryPopulationCounts,
@@ -1456,15 +1531,40 @@ export async function getGdiOpportunitiesExport(req, res) {
   const includeDisqualified = String(req.query.includeDisqualified || "") === "1";
 
   const doc = await loadOppDoc(hotelId);
-  // Same order as getGdiOpportunities: filter on canonical, then present.
+  // Align Bethesda export with Opportunities list audience (sales-team 67 vs
+  // published 19). Share/export routes that force published stay gated.
   let opportunities = doc.opportunities || [];
-  if (!includeDisqualified) {
-    opportunities = filterSalespersonView(opportunities);
+  const inventoryAudience = resolveGdiInventoryAudience(req, { hotelId });
+  if (isBethesdaInternalUnionHotel(hotelId)) {
+    const union = mergeBethesdaInternalResearchOpportunities(
+      hotelId,
+      opportunities
+    );
+    opportunities = union.opportunities;
+    if (inventoryAudience === GDI_INVENTORY_AUDIENCE.SALES_TEAM_INVENTORY) {
+      opportunities = selectBethesdaSalesOpportunityInventory(opportunities, {
+        salesTeamInventory: true,
+        founderReview: true,
+      }).selected;
+    } else {
+      if (!includeDisqualified) {
+        opportunities = filterSalespersonView(opportunities);
+      }
+      opportunities = filterCustomerFacingOpportunities(opportunities, {
+        hotelId,
+      });
+    }
+  } else {
+    if (!includeDisqualified) {
+      opportunities = filterSalespersonView(opportunities);
+    }
+    opportunities = filterCustomerFacingOpportunities(opportunities, {
+      hotelId,
+    });
   }
-  opportunities = applyApprovedBethesdaCustomerProjection(
-    filterCustomerFacingOpportunities(opportunities, { hotelId })
-  );
+  opportunities = applyApprovedBethesdaCustomerProjection(opportunities);
   opportunities = projectOpportunitiesCommercialQuality(opportunities);
+  opportunities = annotateInventoryPopulations(opportunities, { hotelId });
   opportunities = filterOpportunitiesForExport(opportunities, req.query);
   opportunities = await attachCommercialProgression(hotelId, opportunities);
 

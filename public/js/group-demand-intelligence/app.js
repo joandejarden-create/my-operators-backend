@@ -476,9 +476,13 @@
           oppPayload.bethesdaInternalUnion.commercialSurface.effectiveSurface) ||
         ""
     ).toLowerCase();
+    var isBethesdaSalesTeamScope =
+      listScope === "BETHESDA_SALES_TEAM_INVENTORY_67" ||
+      String(oppPayload.inventoryAudience || "") === "SALES_TEAM_INVENTORY";
     var isBethesdaUnsafeCommercial =
       listScope === "BETHESDA_INTERNAL_UNION_88" &&
       effectiveSurface !== "commercial" &&
+      !isBethesdaSalesTeamScope &&
       !String(state.filters && (state.filters.surface || state.filters.listSurface) || "")
         .trim();
     if (oppPayload.ok === false) {
@@ -503,8 +507,13 @@
       state.opportunities = oppPayload.opportunities || [];
       state.visibilityWarning = oppPayload.visibilityWarning || null;
     }
+    state.inventoryAudience = oppPayload.inventoryAudience || null;
+    state.inventoryPopulationCounts =
+      oppPayload.inventoryPopulationCounts || null;
+    state.bethesda67Baseline = oppPayload.bethesda67Baseline || null;
     state.listSurfaceMeta = {
       listScope: listScope || null,
+      inventoryAudience: oppPayload.inventoryAudience || null,
       requestedSurface: oppPayload.requestedSurface || null,
       effectiveSurface: effectiveSurface || null,
       eligibleCount: oppPayload.eligibleCount,
@@ -529,6 +538,25 @@
     }
   }
 
+  function opportunitiesApiPath(hotelIdEnc) {
+    var path =
+      "/api/group-demand-intelligence/hotels/" + hotelIdEnc + "/opportunities";
+    try {
+      var params = new URLSearchParams(window.location.search || "");
+      var audience = String(
+        params.get("inventoryAudience") || params.get("audience") || ""
+      ).trim();
+      // Explicit published audience only — default remains authorized sales-team.
+      if (/^published/i.test(audience)) {
+        path +=
+          "?inventoryAudience=" + encodeURIComponent("published");
+      }
+    } catch (e) {
+      /* ignore */
+    }
+    return path;
+  }
+
   function loadAll() {
     var knownHotelId = state.hotelId;
     var id = encodeURIComponent(knownHotelId);
@@ -539,7 +567,7 @@
       loadHotelCatalog(),
       api("/api/group-demand-intelligence/flag"),
       api("/api/group-demand-intelligence/hotels/" + id + "/summary"),
-      api("/api/group-demand-intelligence/hotels/" + id + "/opportunities"),
+      api(opportunitiesApiPath(id)),
       api("/api/group-demand-intelligence/hotels/" + id + "/profile").catch(function () {
         return { ok: false, profile: null };
       }),
@@ -550,7 +578,7 @@
         id = encodeURIComponent(state.hotelId);
         return Promise.all([
           api("/api/group-demand-intelligence/hotels/" + id + "/summary"),
-          api("/api/group-demand-intelligence/hotels/" + id + "/opportunities"),
+          api(opportunitiesApiPath(id)),
           api("/api/group-demand-intelligence/hotels/" + id + "/profile").catch(function () {
             return { ok: false, profile: null };
           }),
