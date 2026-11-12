@@ -228,6 +228,15 @@ export async function putGdiCommercialProfile(req, res) {
       demandGeneratorCategories: Array.isArray(body.demandGeneratorCategories)
         ? body.demandGeneratorCategories
         : undefined,
+      businessToAvoid: Array.isArray(body.businessToAvoid)
+        ? body.businessToAvoid
+        : undefined,
+      hotelConsiderations: Array.isArray(body.hotelConsiderations)
+        ? body.hotelConsiderations
+        : undefined,
+      knownAccounts: Array.isArray(body.knownAccounts)
+        ? body.knownAccounts
+        : undefined,
       provenance: body.provenance || "Hotel Confirmed",
     };
     for (const k of Object.keys(patch)) {

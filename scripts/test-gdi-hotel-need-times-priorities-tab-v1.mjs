@@ -44,6 +44,23 @@ const enums = getCommercialPrioritiesEnums();
 assert.ok(enums.revenuePriorities.length >= 8, "revenue priorities recovered");
 assert.ok(enums.prioritySegments.length >= 8, "priority segments recovered");
 assert.ok(enums.dayPreference.some((d) => d.id === "WEEKDAYS"));
+assert.ok(enums.dayPreference.some((d) => d.id === "WEEKENDS"));
+assert.ok(enums.demandGenerators?.length >= 8, "demand audiences recovered");
+assert.ok(enums.businessToAvoid?.length >= 5, "business-to-avoid recovered");
+assert.ok(enums.peakRooms?.length >= 5, "peak rooms recovered");
+assert.equal(enums.prioritySegments.length, 14, "fourteen GDI segments");
+
+const tabSrc = fs.readFileSync(
+  path.join(ROOT, "public/js/group-demand-intelligence/hotel-need-times-priorities-tab.js"),
+  "utf8",
+);
+assert.match(tabSrc, /Weekday \/ weekend targeting/);
+assert.match(tabSrc, /Local demand audiences \/ participant sources/);
+assert.match(tabSrc, /Demand segments \(14 GDI strategies\)/);
+assert.match(tabSrc, /hcpDemandGen/);
+assert.match(tabSrc, /hcpExcludeSegment/);
+assert.match(tabSrc, /peakRoomsPreset/);
+assert.match(tabSrc, /commercialDraftDirty/);
 
 const prefs = buildHotelPreferenceMatchExplanations({
   commercialProfile: {

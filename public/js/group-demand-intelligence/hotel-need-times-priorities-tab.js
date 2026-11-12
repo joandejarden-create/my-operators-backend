@@ -227,6 +227,7 @@
 
   function render() {
     if (!root) return;
+    captureCommercialDraft();
     var d = state.dashboard;
     if (state.error) {
       root.innerHTML =
@@ -397,91 +398,287 @@
   }
 
   
-  function renderCommercialPriorities(d) {
-    var profile = (d && d.commercialProfile) || null;
-    var enums = (d && d.enums && d.enums.commercialPriorities) || null;
-    if (!profile && !enums) {
-      return '<section class="hnd-section"><h2>Commercial priorities</h2><p class="gdi-muted">Commercial priority profile unavailable for this hotel yet.</p></section>';
+  function captureCommercialDraft() {
+    var form = document.getElementById("hcpForm");
+    if (!form || readOnly) return;
+    try {
+      state.commercialDraft = readCommercialForm(form);
+      state.commercialDraftDirty = true;
+    } catch (e) {
+      /* ignore draft capture failures */
     }
-    var rev = ((enums && enums.revenuePriorities) || []).map(function (r) {
-      var selected = (profile.revenuePriorities || []).some(function (x) {
-        return (x && x.id ? x.id : x) === r.id;
+  }
+
+  function checkedIds(form, name) {
+    return Array.prototype.map.call(
+      form.querySelectorAll('input[name="' + name + '"]:checked'),
+      function (el) {
+        return el.value;
+      },
+    );
+  }
+
+  function readCommercialForm(form) {
+    var segmentModeEl = form.querySelector('input[name="segmentMode"]:checked');
+    var knownRaw = String(form.knownAccountsText ? form.knownAccountsText.value || "" : "");
+    var knownAccounts = knownRaw
+      .split(/\r?\n/)
+      .map(function (line) {
+        return String(line || "").trim();
+      })
+      .filter(Boolean)
+      .map(function (name) {
+        return { organizationName: name, status: "Actively Pursuing" };
       });
-      return (
-        '<label><input type="checkbox" name="hcpRevenue" value="' +
-        esc(r.id) +
-        '"' +
-        (selected ? " checked" : "") +
-        (readOnly ? " disabled" : "") +
-        "/> " +
-        esc(r.label) +
-        "</label>"
-      );
-    }).join("");
-    var days = ((enums && enums.dayPreference) || []).map(function (r) {
-      return (
-        '<option value="' +
-        esc(r.id) +
-        '"' +
-        (profile.dayPreference === r.id ? " selected" : "") +
-        ">" +
-        esc(r.label) +
-        "</option>"
-      );
-    }).join("");
-    var segs = ((enums && enums.prioritySegments) || []).map(function (r) {
-      var selected = (profile.prioritySegments || []).indexOf(r.id) >= 0;
-      return (
-        '<label><input type="checkbox" name="hcpSegment" value="' +
-        esc(r.id) +
-        '"' +
-        (selected ? " checked" : "") +
-        (readOnly ? " disabled" : "") +
-        "/> " +
-        esc(r.label) +
-        "</label>"
-      );
-    }).join("");
-    var weekdays = ((enums && enums.weekdays) || ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]).map(function (d) {
-      var selected = (profile.specificDays || []).indexOf(d) >= 0;
-      return (
-        '<label><input type="checkbox" name="hcpDay" value="' +
-        esc(d) +
-        '"' +
-        (selected ? " checked" : "") +
-        (readOnly ? " disabled" : "") +
-        "/> " +
-        esc(d) +
-        "</label>"
-      );
-    }).join("");
-    var lastSaved = profile.updatedAt || profile.lastConfirmedAt || d.lastUpdated || null;
+    return {
+      revenuePriorities: checkedIds(form, "hcpRevenue"),
+      dayPreference: form.dayPreference ? form.dayPreference.value || null : null,
+      specificDays: checkedIds(form, "hcpDay"),
+      peakRoomsPreset: form.peakRoomsPreset
+        ? form.peakRoomsPreset.value || null
+        : null,
+      bookingWindow: form.bookingWindow ? form.bookingWindow.value || null : null,
+      meetingSpaceNeed: form.meetingSpaceNeed
+        ? form.meetingSpaceNeed.value || null
+        : null,
+      stayDuration: form.stayDuration ? form.stayDuration.value || null : null,
+      segmentMode: segmentModeEl ? segmentModeEl.value : "NO_PREFERENCE",
+      prioritySegments: checkedIds(form, "hcpSegment"),
+      excludedSegments: checkedIds(form, "hcpExcludeSegment"),
+      demandGeneratorCategories: checkedIds(form, "hcpDemandGen"),
+      businessToAvoid: checkedIds(form, "hcpAvoid"),
+      hotelConsiderations: checkedIds(form, "hcpConsider"),
+      knownAccounts: knownAccounts,
+      restrictionNotes: form.restrictionNotes ? form.restrictionNotes.value || "" : "",
+    };
+  }
+
+  function optionSelect(name, options, selectedId, emptyLabel) {
     return (
-      '<section class="hnd-section" id="hcpSection"><h2>Commercial priorities</h2>' +
-      '<p class="hnd-sub">Hotel-wide sales preferences influence opportunity ranking. They do not invent demand or hide credible opportunities outside these preferences.</p>' +
-      (lastSaved
-        ? '<p class="hnd-sub">Last saved ' + esc(String(lastSaved).slice(0, 19).replace("T", " ")) + "</p>"
-        : "") +
-      '<form class="hnd-form" id="hcpForm">' +
-      '<fieldset><legend class="gdi-muted">Revenue priorities</legend><div class="hnd-check-grid">' +
-      (rev || '<span class="gdi-muted">No revenue options loaded.</span>') +
-      "</div></fieldset>" +
-      '<label>Day preference<select name="dayPreference"' +
+      "<label>" +
+      esc(emptyLabel || name) +
+      '<select name="' +
+      esc(name) +
+      '"' +
       (readOnly ? " disabled" : "") +
       '><option value="">No preference</option>' +
-      days +
-      "</select></label>" +
-      '<fieldset><legend class="gdi-muted">Specific days</legend><div class="hnd-check-grid">' +
-      weekdays +
+      (options || [])
+        .map(function (r) {
+          return (
+            '<option value="' +
+            esc(r.id) +
+            '"' +
+            (selectedId === r.id ? " selected" : "") +
+            ">" +
+            esc(r.label) +
+            "</option>"
+          );
+        })
+        .join("") +
+      "</select></label>"
+    );
+  }
+
+  function checkGrid(name, options, selectedIds) {
+    var selected = {};
+    (selectedIds || []).forEach(function (id) {
+      selected[id] = true;
+    });
+    return (
+      '<div class="hnd-check-grid">' +
+      (options || [])
+        .map(function (r) {
+          return (
+            '<label><input type="checkbox" name="' +
+            esc(name) +
+            '" value="' +
+            esc(r.id) +
+            '"' +
+            (selected[r.id] ? " checked" : "") +
+            (readOnly ? " disabled" : "") +
+            "/> " +
+            esc(r.label) +
+            "</label>"
+          );
+        })
+        .join("") +
+      "</div>"
+    );
+  }
+
+  function renderCommercialPriorities(d) {
+    var profile = (d && d.commercialProfile) || {};
+    var enums = (d && d.enums && d.enums.commercialPriorities) || null;
+    if (!enums) {
+      return '<section class="hnd-section"><h2>Commercial priorities</h2><p class="gdi-muted">Commercial priority profile unavailable for this hotel yet.</p></section>';
+    }
+    // Prefer unsaved draft when navigating tabs / re-rendering within the session.
+    if (state.commercialDraftDirty && state.commercialDraft) {
+      profile = Object.assign({}, profile, state.commercialDraft);
+    }
+    var suggestions = profile.suggestions || {};
+    var suggestionBits = [];
+    if (suggestions.peakRoomsPreset) {
+      suggestionBits.push("peak rooms " + suggestions.peakRoomsPreset);
+    }
+    if (suggestions.meetingSpaceNeed) {
+      suggestionBits.push("meeting need " + suggestions.meetingSpaceNeed);
+    }
+    if ((suggestions.prioritySegments || []).length) {
+      suggestionBits.push(
+        "segments " + (suggestions.prioritySegments || []).slice(0, 4).join(", "),
+      );
+    }
+    if (suggestions.dayPreference) {
+      suggestionBits.push("day preference " + suggestions.dayPreference);
+    }
+    var lastSaved = profile.updatedAt || profile.lastConfirmedAt || d.lastUpdated || null;
+    var segmentModes = enums.segmentMode || [
+      "ALL_RELEVANT",
+      "SELECT_SPECIFIC",
+      "NO_PREFERENCE",
+    ];
+    var segmentMode = profile.segmentMode || "NO_PREFERENCE";
+    var modeRadios = segmentModes
+      .map(function (mode) {
+        var label =
+          mode === "ALL_RELEVANT"
+            ? "All relevant segments"
+            : mode === "SELECT_SPECIFIC"
+              ? "Select specific segments"
+              : "No preference";
+        return (
+          '<label class="hnd-radio"><input type="radio" name="segmentMode" value="' +
+          esc(mode) +
+          '"' +
+          (segmentMode === mode ? " checked" : "") +
+          (readOnly ? " disabled" : "") +
+          "/> " +
+          esc(label) +
+          "</label>"
+        );
+      })
+      .join("");
+    var knownText = (profile.knownAccounts || [])
+      .map(function (a) {
+        return a && (a.organizationName || a.name || a);
+      })
+      .filter(Boolean)
+      .join("\n");
+
+    return (
+      '<section class="hnd-section" id="hcpSection"><h2>Commercial priorities</h2>' +
+      '<p class="hnd-sub">Complete hotel-wide commercial preferences from the Hotel Commercial Priorities contract. Soft ranking signals only — they do not invent demand or hide credible opportunities.</p>' +
+      (lastSaved
+        ? '<p class="hnd-sub">Last saved ' +
+          esc(String(lastSaved).slice(0, 19).replace("T", " ")) +
+          (profile.dataMode ? " · " + esc(profile.dataMode) : "") +
+          "</p>"
+        : "") +
+      (suggestionBits.length
+        ? '<p class="hnd-sub hnd-suggest">Suggested from verified property / hotel config (not auto-saved): ' +
+          esc(suggestionBits.join("; ")) +
+          "</p>"
+        : "") +
+      '<form class="hnd-form" id="hcpForm">' +
+      '<fieldset class="hcp-block"><legend>Revenue priorities</legend>' +
+      checkGrid(
+        "hcpRevenue",
+        enums.revenuePriorities,
+        (profile.revenuePriorities || []).map(function (x) {
+          return x && x.id ? x.id : x;
+        }),
+      ) +
+      "</fieldset>" +
+      '<fieldset class="hcp-block"><legend>Weekday / weekend targeting</legend>' +
+      optionSelect(
+        "dayPreference",
+        enums.dayPreference,
+        profile.dayPreference,
+        "Day preference",
+      ) +
+      '<p class="hnd-sub">Use Specific days when Mon–Sun targeting differs from a simple weekday/weekend preference.</p>' +
+      '<fieldset><legend class="gdi-muted">Specific days</legend>' +
+      checkGrid(
+        "hcpDay",
+        (enums.weekdays || ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]).map(
+          function (d) {
+            return { id: d, label: d };
+          },
+        ),
+        profile.specificDays || [],
+      ) +
+      "</fieldset></fieldset>" +
+      '<fieldset class="hcp-block"><legend>Group size, timing &amp; stay</legend>' +
+      '<div class="hnd-form-grid">' +
+      optionSelect(
+        "peakRoomsPreset",
+        enums.peakRooms,
+        profile.peakRoomsPreset,
+        "Preferred peak rooms",
+      ) +
+      optionSelect(
+        "bookingWindow",
+        enums.bookingWindow,
+        profile.bookingWindow,
+        "Typical booking window",
+      ) +
+      optionSelect(
+        "meetingSpaceNeed",
+        enums.meetingSpaceNeed,
+        profile.meetingSpaceNeed,
+        "Meeting / catering need",
+      ) +
+      optionSelect(
+        "stayDuration",
+        enums.stayDuration,
+        profile.stayDuration,
+        "Preferred stay duration",
+      ) +
       "</div></fieldset>" +
-      '<fieldset><legend class="gdi-muted">Priority segments</legend><div class="hnd-check-grid">' +
-      (segs || '<span class="gdi-muted">No segments loaded.</span>') +
-      "</div></fieldset>" +
-      '<label>Restriction notes<textarea name="restrictionNotes"' +
+      '<fieldset class="hcp-block"><legend>Demand segments (14 GDI strategies)</legend>' +
+      '<div class="hnd-radio-row">' +
+      modeRadios +
+      "</div>" +
+      '<p class="hnd-sub">Priority segments soft-boost research. Exclusions reduce rank only — they do not hard-block strong opportunities.</p>' +
+      '<fieldset><legend class="gdi-muted">Priority segments</legend>' +
+      checkGrid("hcpSegment", enums.prioritySegments, profile.prioritySegments || []) +
+      "</fieldset>" +
+      '<fieldset><legend class="gdi-muted">Lower-priority / excluded segments</legend>' +
+      checkGrid(
+        "hcpExcludeSegment",
+        enums.prioritySegments,
+        profile.excludedSegments || [],
+      ) +
+      "</fieldset></fieldset>" +
+      '<fieldset class="hcp-block"><legend>Local demand audiences / participant sources</legend>' +
+      '<p class="hnd-sub">Historical demand-generator categories: the types of organizations and participant pools the hotel wants to pursue locally.</p>' +
+      checkGrid(
+        "hcpDemandGen",
+        enums.demandGenerators,
+        profile.demandGeneratorCategories || [],
+      ) +
+      "</fieldset>" +
+      '<fieldset class="hcp-block"><legend>Business to avoid &amp; hotel considerations</legend>' +
+      checkGrid("hcpAvoid", enums.businessToAvoid, profile.businessToAvoid || []) +
+      checkGrid(
+        "hcpConsider",
+        enums.hotelConsiderations,
+        profile.hotelConsiderations || [],
+      ) +
+      "</fieldset>" +
+      '<fieldset class="hcp-block"><legend>Known accounts &amp; notes</legend>' +
+      '<label>Known organizations (one per line)<textarea name="knownAccountsText"' +
+      (readOnly ? " disabled" : "") +
+      ">" +
+      esc(knownText) +
+      "</textarea></label>" +
+      '<label>Restriction / sales notes<textarea name="restrictionNotes"' +
       (readOnly ? " disabled" : "") +
       ">" +
       esc(profile.restrictionNotes || "") +
       "</textarea></label>" +
+      "</fieldset>" +
       (readOnly
         ? ""
         : '<div class="hnd-card-actions"><button type="submit" class="gdi-btn gdi-btn-primary">Save commercial priorities</button></div>') +
@@ -498,31 +695,18 @@
     if (readOnly) return;
     var form = ev.target;
     var errEl = document.getElementById("hcpError");
-    var body = {
-      revenuePriorities: Array.prototype.map.call(
-        form.querySelectorAll('input[name="hcpRevenue"]:checked'),
-        function (el) { return el.value; },
-      ),
-      dayPreference: form.dayPreference.value || null,
-      specificDays: Array.prototype.map.call(
-        form.querySelectorAll('input[name="hcpDay"]:checked'),
-        function (el) { return el.value; },
-      ),
-      prioritySegments: Array.prototype.map.call(
-        form.querySelectorAll('input[name="hcpSegment"]:checked'),
-        function (el) { return el.value; },
-      ),
-      restrictionNotes: form.restrictionNotes.value || "",
-      expectedVersion:
-        state.dashboard &&
-        state.dashboard.commercialProfile &&
-        state.dashboard.commercialProfile.currentVersion,
-      isolation: state.isolation,
-      airtable: useAirtableMode(),
-    };
+    var body = readCommercialForm(form);
+    body.expectedVersion =
+      state.dashboard &&
+      state.dashboard.commercialProfile &&
+      state.dashboard.commercialProfile.currentVersion;
+    body.isolation = state.isolation;
+    body.airtable = useAirtableMode();
+    body.provenance = "Hotel Confirmed";
     try {
       state.busy = true;
       state.saveMessage = null;
+      if (errEl) errEl.textContent = "";
       await api(
         "/api/group-demand-intelligence/hotels/" +
           encodeURIComponent(state.hotelId) +
@@ -530,9 +714,12 @@
         { method: "PUT", body: body },
       );
       state.saveMessage = "Commercial priorities saved.";
+      state.commercialDraftDirty = false;
+      state.commercialDraft = null;
       await refresh();
     } catch (e) {
       if (errEl) errEl.textContent = e.message || "Save failed";
+      state.saveMessage = null;
     } finally {
       state.busy = false;
     }
@@ -898,6 +1085,18 @@
   if (root) root.addEventListener("submit", function (ev) {
       if (ev.target && ev.target.id === "hcpForm") submitCommercialPriorities(ev);
     });
+  if (root) {
+    root.addEventListener("input", function (ev) {
+      if (ev.target && ev.target.closest && ev.target.closest("#hcpForm")) {
+        captureCommercialDraft();
+      }
+    });
+    root.addEventListener("change", function (ev) {
+      if (ev.target && ev.target.closest && ev.target.closest("#hcpForm")) {
+        captureCommercialDraft();
+      }
+    });
+  }
   root.addEventListener("click", function (ev) {
     var t = ev.target;
     if (!t) return;
