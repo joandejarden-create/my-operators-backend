@@ -8,6 +8,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   GDI_CUSTOMER_CSV_HEADERS,
+  GDI_CUSTOMER_CSV_CORE_HEADERS,
+  GDI_CUSTOMER_CSV_DETAIL_HEADERS,
   buildCustomerExportCsv,
   toCustomerExportRow,
   escapeCsvCell,
@@ -15,9 +17,12 @@ import {
   customerCsvContentDisposition,
   assertCustomerCsvClean,
   toCsvIsoDate,
+  compareDetailToExportRow,
+  enrichOpportunityForCustomerExport,
 } from "../lib/group-demand-intelligence/customer-csv-export.js";
 import { buildExportCsv } from "../lib/group-demand-intelligence/live-commercial-quality-v1.js";
 import { filterSalespersonView } from "../lib/group-demand-intelligence/opportunity-factory.js";
+import { filterCustomerFacingOpportunities } from "../lib/group-demand-intelligence/customer-visibility.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -71,35 +76,39 @@ const sample = {
   },
 };
 
-check("header_order_exact", () => {
-  assert.deepEqual(
-    GDI_CUSTOMER_CSV_HEADERS,
-    [
-      "Dealality Opportunity ID",
-      "Opportunity",
-      "Organization",
-      "Segment",
-      "Priority",
-      "Start Date",
-      "End Date",
-      "Qualification",
-      "Booking Window",
-      "Demand Territory",
-      "Opportunity Summary",
-      "Why Now",
-      "Recommended Action",
-      "Contact Name",
-      "Contact Role",
-      "Email",
-      "Phone",
-      "Phone Type",
-      "Current Status",
-      "Latest Action",
-      "Latest Action Date",
-      "Latest Outcome",
-      "Latest Outcome Date",
-    ]
-  );
+check("header_order_core_prefix_preserved", () => {
+  const core = [
+    "Dealality Opportunity ID",
+    "Opportunity",
+    "Organization",
+    "Segment",
+    "Priority",
+    "Start Date",
+    "End Date",
+    "Qualification",
+    "Booking Window",
+    "Demand Territory",
+    "Opportunity Summary",
+    "Why Now",
+    "Recommended Action",
+    "Contact Name",
+    "Contact Role",
+    "Email",
+    "Phone",
+    "Phone Type",
+    "Current Status",
+    "Latest Action",
+    "Latest Action Date",
+    "Latest Outcome",
+    "Latest Outcome Date",
+  ];
+  assert.deepEqual(GDI_CUSTOMER_CSV_HEADERS.slice(0, 23), core);
+  assert.ok(GDI_CUSTOMER_CSV_HEADERS.length > 23, "full-detail columns added");
+  assert.ok(GDI_CUSTOMER_CSV_HEADERS.includes("What Is Happening"));
+  assert.ok(GDI_CUSTOMER_CSV_HEADERS.includes("Why This Hotel Fits"));
+  assert.ok(GDI_CUSTOMER_CSV_HEADERS.includes("Full Recommended Outreach"));
+  assert.ok(GDI_CUSTOMER_CSV_HEADERS.includes("Source URLs"));
+  assert.ok(GDI_CUSTOMER_CSV_HEADERS.includes("Hotel Fit Explanation"));
 });
 
 check("real_csv_not_json", () => {
@@ -189,6 +198,20 @@ check("buildExportCsv_alias", () => {
   assert.match(csv, /Dealality Opportunity ID/);
 });
 
+check("multiline_cells_quoted", () => {
+  const csv = buildCustomerExportCsv(
+    [
+      {
+        ...sample,
+        whatIsHappening: "Line one.\nLine two with, comma.",
+        sources: [{ url: "https://example.com/a" }, { url: "https://example.com/b" }],
+      },
+    ],
+    { enrich: false }
+  );
+  assert.match(csv, /"Line one\.\nLine two with, comma\."/);
+});
+
 check("bethesda_canary_row_count", () => {
   const doc = JSON.parse(
     fs.readFileSync(
@@ -200,19 +223,68 @@ check("bethesda_canary_row_count", () => {
     )
   );
   const raw = doc.opportunities || [];
-  const view = filterSalespersonView(raw);
-  const csv = buildCustomerExportCsv(view);
-  const lines = csv
-    .replace(/^\uFEFF/, "")
-    .trimEnd()
-    .split(/\r?\n/)
-    .filter(Boolean);
-  const dataRows = lines.length - 1;
-  assert.ok(dataRows >= 20 && dataRows <= 50, `rows=${dataRows}`);
-  assert.equal(lines[0], GDI_CUSTOMER_CSV_HEADERS.join(","));
+  const view = filterCustomerFacingOpportunities(filterSalespersonView(raw), {
+    hotelId: "recLuxvwwxID7U2B8",
+  });
+  assert.equal(view.length, 19, `expected 19 customer-facing, got ${view.length}`);
+  const csv = buildCustomerExportCsv(view, {
+    hotelId: "recLuxvwwxID7U2B8",
+    enrich: true,
+  });
+  const body = csv.replace(/^\uFEFF/, "");
+  assert.ok(body.startsWith(GDI_CUSTOMER_CSV_HEADERS.join(",")));
+  const ids = view.map((o) => o.id);
+  for (const id of ids) {
+    assert.ok(csv.includes(id), `missing id ${id}`);
+  }
+  assert.equal(new Set(ids).size, 19);
   const clean = assertCustomerCsvClean(csv);
   assert.equal(clean.ok, true, JSON.stringify(clean.hits));
-  console.log("  bethesda_rows", dataRows);
+  assert.match(csv, /What Is Happening/);
+  assert.match(csv, /Why This Hotel Fits/);
+  assert.equal(GDI_CUSTOMER_CSV_CORE_HEADERS.length, 23);
+  assert.equal(
+    GDI_CUSTOMER_CSV_HEADERS.length,
+    GDI_CUSTOMER_CSV_CORE_HEADERS.length + GDI_CUSTOMER_CSV_DETAIL_HEADERS.length
+  );
+
+  let truncated = 0;
+  let omitted = 0;
+  let complete = 0;
+  let unavailable = 0;
+  for (const opp of view) {
+    const withHotel = { ...opp, hotelId: "recLuxvwwxID7U2B8" };
+    const exportRow = toCustomerExportRow(
+      enrichOpportunityForCustomerExport(withHotel, {
+        hotelId: "recLuxvwwxID7U2B8",
+      })
+    );
+    const parity = compareDetailToExportRow(withHotel, exportRow);
+    for (const p of parity) {
+      if (p.classification === "present_and_complete") complete += 1;
+      else if (p.classification === "source_unavailable") unavailable += 1;
+      else if (p.classification === "present_in_source_omitted_by_export")
+        omitted += 1;
+      else if (p.classification === "present_in_export_but_truncated")
+        truncated += 1;
+    }
+  }
+  assert.equal(omitted, 0, `export omitted customer-visible fields: ${omitted}`);
+  assert.equal(
+    truncated,
+    0,
+    `export truncated customer-visible fields: ${truncated}`
+  );
+  console.log(
+    "  bethesda_rows",
+    19,
+    "cols",
+    GDI_CUSTOMER_CSV_HEADERS.length,
+    "detail_cols",
+    GDI_CUSTOMER_CSV_DETAIL_HEADERS.length,
+    "parity",
+    { complete, unavailable, omitted, truncated }
+  );
 });
 
 check("regression_cohort_exports", () => {

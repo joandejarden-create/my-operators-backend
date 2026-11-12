@@ -463,6 +463,7 @@ function filterOpportunitiesForExport(opportunities, query = {}) {
 }
 
 function sendCustomerCsv(res, opportunities, hotel) {
+  const t0 = Date.now();
   const csv = buildExportCsv(opportunities, hotel, {});
   const name =
     hotel?.name ||
@@ -470,9 +471,25 @@ function sendCustomerCsv(res, opportunities, hotel) {
     hotel?.identity?.hotelName ||
     hotel?.hotelName ||
     "Hotel";
+  const durationMs = Date.now() - t0;
+  if (durationMs >= 500 || process.env.GDI_PERF_LOG === "1") {
+    console.info(
+      JSON.stringify({
+        gdi_perf: true,
+        route: "sendCustomerCsv",
+        hotelId: hotel?.hotelId || null,
+        opportunityCount: Array.isArray(opportunities)
+          ? opportunities.length
+          : 0,
+        durationMs,
+        bytes: Buffer.byteLength(csv, "utf8"),
+      })
+    );
+  }
   res.setHeader("Content-Type", "text/csv; charset=utf-8");
   res.setHeader("Content-Disposition", customerCsvContentDisposition(name));
   res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-GDI-Csv-Contract", "gdi_customer_csv_full_detail_v1");
   return res.status(200).send(csv);
 }
 
