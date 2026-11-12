@@ -9,6 +9,8 @@ import {
   loadHotelOpportunityDoc,
   BETHESDA_PROTECTED_SCALING_IDS,
   TITLE_REPAIRED_59_ROW_SHA256,
+  CANONICAL_12_CONTACT_PATCHED_59_ROW_SHA256,
+  ACCEPTABLE_59_ROW_SHA256S,
 } from "../lib/group-demand-intelligence/research/gdi-hotel-store-integrity-guard-v1.js";
 import { PROPOSED_PAID_CONTACT_BATCH_V1 } from "../lib/group-demand-intelligence/research/bethesda-88-contact-quality-completion-v1.js";
 
@@ -17,7 +19,13 @@ assert.equal(PROPOSED_PAID_CONTACT_BATCH_V1.authorized, false);
 
 const storeBefore = loadHotelOpportunityDoc("recLuxvwwxID7U2B8");
 assert.equal(storeBefore.count, 59);
-assert.equal(storeBefore.sha256, TITLE_REPAIRED_59_ROW_SHA256);
+assert.ok(ACCEPTABLE_59_ROW_SHA256S.includes(storeBefore.sha256));
+assert.ok(
+  [
+    TITLE_REPAIRED_59_ROW_SHA256,
+    CANONICAL_12_CONTACT_PATCHED_59_ROW_SHA256,
+  ].includes(storeBefore.sha256)
+);
 
 const report = runBethesda88CommercialCertification({
   applyHistoricalContacts: true,

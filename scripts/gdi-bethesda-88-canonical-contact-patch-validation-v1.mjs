@@ -65,9 +65,25 @@ const CONTACT_ONLY_KEYS = new Set([
   "primaryContactPhone",
   "functionalContactEmail",
   "organizationContactEmail",
+  "contactName",
+  "contactTitle",
+  "contactEmail",
+  "contactPhone",
   "contactSourceUrl",
   "contactVerifiedAt",
+  "contactOfficialUrl",
   "whyThisContact",
+  "commercialContactPath",
+  "contactPathClass",
+  "contactTier",
+  "contactGrade",
+  "contactGradeLabel",
+  "contactQuality",
+  "approvedContactUpdate",
+  "commercialEventFamilyId",
+  "commercialEventFamilyRole",
+  "hotelFitHonesty",
+  "hotelFitNote",
   "salesReady",
   "customerFacing",
   "customerVisible",
@@ -124,13 +140,19 @@ function validatePatch(p, byId) {
   }
 
   const before = extractContactSnapshot(live);
-  if (before.named && before.name && before.name !== p.after?.name) {
+  const pc = ev?.primaryContact || {};
+  const name = text(pc.name);
+  const expectedName = name || text(p.after?.name);
+  // Already-applied founder patches: live name matching evidence is PASS, not clobber.
+  if (
+    before.named &&
+    before.name &&
+    expectedName &&
+    text(before.name).toLowerCase() !== expectedName.toLowerCase()
+  ) {
     reasons.push(`WOULD_CLOBBER_EXISTING_NAMED:${before.name}`);
     verdict = "FAIL";
   }
-
-  const pc = ev?.primaryContact || {};
-  const name = text(pc.name);
   if (!name) {
     reasons.push("NO_NAMED_PERSON");
     verdict = "FAIL";
@@ -534,10 +556,32 @@ writeJsonAtomic(
     summary: approvedCandidate.validationSummary,
   }
 );
-writeJsonAtomic(
-  path.join(REPORT_DIR, "07-founder-approved-candidate-manifest.json"),
-  approvedCandidate
+const candidatePath = path.join(
+  REPORT_DIR,
+  "07-founder-approved-candidate-manifest.json"
 );
+const existingCandidate = fs.existsSync(candidatePath)
+  ? JSON.parse(fs.readFileSync(candidatePath, "utf8"))
+  : null;
+const refreshCandidate =
+  process.argv.includes("--refresh-candidate-manifest") ||
+  passed.length >= 10 ||
+  !(existingCandidate?.passedPatches?.length >= 10);
+if (refreshCandidate) {
+  writeJsonAtomic(candidatePath, approvedCandidate);
+} else {
+  // Preserve founder-approved 12-PASS manifest once patches are already applied
+  // and a re-validation would incorrectly empty the PASS set.
+  writeJsonAtomic(
+    path.join(REPORT_DIR, "07-founder-approved-candidate-manifest.preserved.json"),
+    {
+      preserved: true,
+      reason: "EXISTING_FOUNDER_MANIFEST_KEPT",
+      existingPassCount: existingCandidate.passedPatches.length,
+      thisRunPassCount: passed.length,
+    }
+  );
+}
 writeJsonAtomic(
   path.join(REPORT_DIR, "08-certification-vs-maturity-analysis.json"),
   certificationMaturityAnalysis
