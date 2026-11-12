@@ -1424,6 +1424,7 @@
       propertyField +
       weeklyThisWeekFilterHtml(opts) +
       opportunityTypeFilterHtml(opts) +
+      marketScopeFilterHtml(opts) +
       (opts.actionHtml
         ? '<div class="filter-group aiv-filter-actions gdi-property-bar__actions">' +
           opts.actionHtml +
@@ -1498,30 +1499,23 @@
   }
 
   /**
-   * Opportunity Type filter — next to This Week.
+   * Opportunity Type filter — demand-category only.
+   * Commercial population (All / Hotel / Competitive) lives on Market Scope.
    * Counts come from other active filters (before applying the selected type).
    */
   function opportunityTypeFilterHtml(opts) {
     opts = opts || {};
     if (opts.showOpportunityTypeFilter === false) return "";
     var active =
-      opts.activeOpportunityType != null
-        ? opts.activeOpportunityType
-        : "SALES_OPPORTUNITIES";
+      opts.activeOpportunityType != null ? opts.activeOpportunityType : "";
     var options = Array.isArray(opts.opportunityTypeOptions)
       ? opts.opportunityTypeOptions
-      : [
-          {
-            value: "SALES_OPPORTUNITIES",
-            label: "Sales Opportunities",
-            count: null,
-          },
-        ];
-    // If active type vanished after hotel switch, fall back to Sales Opportunities
+      : [{ value: "", label: "All types", count: null }];
+    // If active type vanished after hotel switch / scope change, fall back to All types
     var activeStillValid = options.some(function (o) {
       return o.value === active;
     });
-    if (!activeStillValid) active = "SALES_OPPORTUNITIES";
+    if (!activeStillValid) active = "";
     return (
       '<div class="filter-group gdi-opportunity-type-filter">' +
       '<label class="filter-label" for="gdiOpportunityTypeFilter">Opportunity Type</label>' +
@@ -1544,6 +1538,73 @@
         })
         .join("") +
       "</select></div>"
+    );
+  }
+
+  /**
+   * Market Scope — All / Hotel / Competitive population toggle.
+   * Orthogonal to the fourteen demand segments; not a fifteenth segment.
+   */
+  function marketScopeFilterHtml(opts) {
+    opts = opts || {};
+    if (opts.showMarketScopeFilter === false) return "";
+    var active = normalizeMarketScopeValue(
+      opts.activeMarketScope != null
+        ? opts.activeMarketScope
+        : MARKET_SCOPE.ALL
+    );
+    var counts = opts.marketScopeCounts || {};
+    var options = [
+      {
+        value: MARKET_SCOPE.ALL,
+        shortLabel: "All",
+        fullLabel: "All Opportunities",
+        count: counts.ALL != null ? counts.ALL : counts.all,
+      },
+      {
+        value: MARKET_SCOPE.HOTEL,
+        shortLabel: "Hotel",
+        fullLabel: "Hotel Opportunities",
+        count: counts.HOTEL != null ? counts.HOTEL : counts.hotel,
+      },
+      {
+        value: MARKET_SCOPE.COMPETITIVE,
+        shortLabel: "Competitive",
+        fullLabel: "Competitive Market Intelligence",
+        count:
+          counts.COMPETITIVE != null
+            ? counts.COMPETITIVE
+            : counts.competitive,
+      },
+    ];
+    return (
+      '<div class="filter-group gdi-market-scope-filter">' +
+      '<span class="filter-label" id="gdiMarketScopeLabel">Market Scope</span>' +
+      '<div class="gdi-market-scope" role="radiogroup" aria-labelledby="gdiMarketScopeLabel">' +
+      options
+        .map(function (o) {
+          var selected = active === o.value;
+          var countText =
+            o.count == null || o.count === "" ? "" : " (" + o.count + ")";
+          var label = o.shortLabel + countText;
+          return (
+            '<button type="button" class="gdi-market-scope__btn' +
+            (selected ? " is-active" : "") +
+            '" role="radio" aria-checked="' +
+            (selected ? "true" : "false") +
+            '" data-gdi-market-scope="' +
+            esc(o.value) +
+            '" title="' +
+            esc(o.fullLabel) +
+            '" aria-label="' +
+            esc(o.fullLabel + (countText || "")) +
+            '">' +
+            esc(label) +
+            "</button>"
+          );
+        })
+        .join("") +
+      "</div></div>"
     );
   }
 
@@ -1680,6 +1741,19 @@
     ALL_COMMERCIAL_INTELLIGENCE: "ALL_COMMERCIAL_INTELLIGENCE",
   };
 
+  /** Market Scope UI values — map onto inventory populations (not demand segments). */
+  var MARKET_SCOPE = {
+    ALL: "ALL",
+    HOTEL: "HOTEL",
+    COMPETITIVE: "COMPETITIVE",
+  };
+
+  var MARKET_SCOPE_TO_POPULATION = {
+    ALL: INVENTORY_POPULATION_VALUES.ALL_COMMERCIAL_INTELLIGENCE,
+    HOTEL: INVENTORY_POPULATION_VALUES.SALES_OPPORTUNITIES,
+    COMPETITIVE: INVENTORY_POPULATION_VALUES.COMPETITIVE_MARKET_INTELLIGENCE,
+  };
+
   var OPPORTUNITY_TYPE_FILTER_LABELS = {
     SALES_OPPORTUNITIES: "Sales Opportunities",
     COMPETITIVE_MARKET_INTELLIGENCE: "Competitive Market Intelligence",
@@ -1716,6 +1790,72 @@
     );
   }
 
+  function normalizeMarketScopeValue(value) {
+    var v = String(value || "")
+      .trim()
+      .toUpperCase();
+    if (v === MARKET_SCOPE.ALL || v === "ALL_OPPORTUNITIES") {
+      return MARKET_SCOPE.ALL;
+    }
+    if (
+      v === MARKET_SCOPE.HOTEL ||
+      v === "HOTEL_OPPORTUNITIES" ||
+      v === "SALES"
+    ) {
+      return MARKET_SCOPE.HOTEL;
+    }
+    if (
+      v === MARKET_SCOPE.COMPETITIVE ||
+      v === "CMI" ||
+      v === "COMPETITIVE_MARKET_INTELLIGENCE"
+    ) {
+      return MARKET_SCOPE.COMPETITIVE;
+    }
+    if (v === INVENTORY_POPULATION_VALUES.ALL_COMMERCIAL_INTELLIGENCE) {
+      return MARKET_SCOPE.ALL;
+    }
+    if (v === INVENTORY_POPULATION_VALUES.SALES_OPPORTUNITIES) {
+      return MARKET_SCOPE.HOTEL;
+    }
+    if (v === INVENTORY_POPULATION_VALUES.COMPETITIVE_MARKET_INTELLIGENCE) {
+      return MARKET_SCOPE.COMPETITIVE;
+    }
+    return MARKET_SCOPE.ALL;
+  }
+
+  function marketScopeToInventoryPopulation(scope) {
+    var key = normalizeMarketScopeValue(scope);
+    return (
+      MARKET_SCOPE_TO_POPULATION[key] ||
+      INVENTORY_POPULATION_VALUES.ALL_COMMERCIAL_INTELLIGENCE
+    );
+  }
+
+  /**
+   * Migrate legacy Opportunity Type population values onto Market Scope so the
+   * two controls never select the same commercial population independently.
+   */
+  function normalizeBrowsePopulationFilters(filters) {
+    filters = filters || {};
+    var scopeRaw = filters.marketScope;
+    var typeRaw = filters.opportunityType;
+    if (
+      (scopeRaw == null || scopeRaw === "") &&
+      isInventoryPopulationFilter(typeRaw)
+    ) {
+      filters.marketScope = normalizeMarketScopeValue(typeRaw);
+      filters.opportunityType = "";
+    } else {
+      filters.marketScope = normalizeMarketScopeValue(
+        scopeRaw != null && scopeRaw !== "" ? scopeRaw : MARKET_SCOPE.ALL
+      );
+      if (isInventoryPopulationFilter(typeRaw)) {
+        filters.opportunityType = "";
+      }
+    }
+    return filters;
+  }
+
   function opportunityInventoryPopulations(o) {
     o = o || {};
     if (Array.isArray(o.inventoryPopulations) && o.inventoryPopulations.length) {
@@ -1736,6 +1876,45 @@
       return true;
     }
     return opportunityInventoryPopulations(o).indexOf(filterValue) >= 0;
+  }
+
+  function matchesMarketScopeFilter(o, scope) {
+    return matchesInventoryPopulationFilter(
+      o,
+      marketScopeToInventoryPopulation(scope)
+    );
+  }
+
+  function countByMarketScope(opportunities) {
+    var counts = {
+      all: 0,
+      ALL: 0,
+      HOTEL: 0,
+      COMPETITIVE: 0,
+    };
+    var seenAll = {};
+    (opportunities || []).forEach(function (o) {
+      var id = String((o && (o.id || o.opportunityId)) || "");
+      var dedupeKey = id || JSON.stringify(o && o.title);
+      if (!seenAll[dedupeKey]) {
+        seenAll[dedupeKey] = true;
+        counts.all += 1;
+        counts.ALL += 1;
+      }
+      var pops = opportunityInventoryPopulations(o);
+      if (pops.indexOf(INVENTORY_POPULATION_VALUES.SALES_OPPORTUNITIES) >= 0) {
+        counts.HOTEL += 1;
+      }
+      if (
+        pops.indexOf(
+          INVENTORY_POPULATION_VALUES.COMPETITIVE_MARKET_INTELLIGENCE
+        ) >= 0 ||
+        o.cmiVerified === true
+      ) {
+        counts.COMPETITIVE += 1;
+      }
+    });
+    return counts;
   }
 
   function countByOpportunityTypeFilter(opportunities) {
@@ -1770,22 +1949,9 @@
     counts = counts || {};
     var options = [
       {
-        value: "SALES_OPPORTUNITIES",
-        label: "Sales Opportunities",
-        count: counts.SALES_OPPORTUNITIES != null ? counts.SALES_OPPORTUNITIES : counts.all || 0,
-      },
-      {
-        value: "COMPETITIVE_MARKET_INTELLIGENCE",
-        label: "Competitive Market Intelligence",
-        count: counts.COMPETITIVE_MARKET_INTELLIGENCE || 0,
-      },
-      {
-        value: "ALL_COMMERCIAL_INTELLIGENCE",
-        label: "All Commercial Intelligence",
-        count:
-          counts.ALL_COMMERCIAL_INTELLIGENCE != null
-            ? counts.ALL_COMMERCIAL_INTELLIGENCE
-            : counts.all || 0,
+        value: "",
+        label: "All types",
+        count: counts.all != null ? counts.all : 0,
       },
     ];
     Object.keys(OPPORTUNITY_TYPE_FILTER_LABELS).forEach(function (value) {
@@ -2455,6 +2621,7 @@
       territory: filters.territory || "",
       weekly: filters.weekly || "",
       opportunityType: filters.opportunityType || "",
+      marketScope: filters.marketScope || MARKET_SCOPE.ALL,
     });
     return countByPriority(subset);
   }
@@ -2486,6 +2653,7 @@
       territory: filters.territory || "",
       weekly: filters.weekly || "",
       opportunityType: filters.opportunityType || "",
+      marketScope: filters.marketScope || MARKET_SCOPE.ALL,
       // omit salesFocus so facet counts reflect other active filters
     });
     return countBySalesFocus(subset);
@@ -2507,6 +2675,7 @@
       territory: filters.territory || "",
       weekly: filters.weekly || "",
       opportunityType: filters.opportunityType || "",
+      marketScope: filters.marketScope || MARKET_SCOPE.ALL,
     });
     return countByActionStatus(subset);
   }
@@ -2542,6 +2711,7 @@
       territory: filters.territory || "",
       weekly: filters.weekly || "",
       opportunityType: filters.opportunityType || "",
+      marketScope: filters.marketScope || MARKET_SCOPE.ALL,
     });
     return countByCommercialStage(subset);
   }
@@ -2619,6 +2789,7 @@
       territory: filters.territory || "",
       weekly: filters.weekly || "",
       opportunityType: filters.opportunityType || "",
+      marketScope: filters.marketScope || MARKET_SCOPE.ALL,
       // omit salesOpportunity + sourcingSubgroup for facet base
     });
     return countBySalesOpportunity(
@@ -2643,9 +2814,33 @@
       segment: filters.segment || "",
       territory: filters.territory || "",
       weekly: filters.weekly || "",
+      marketScope: filters.marketScope || MARKET_SCOPE.ALL,
       // intentionally omit opportunityType so counts reflect other active filters
     });
     return countByOpportunityTypeFilter(subset);
+  }
+
+  /**
+   * Market Scope facet counts from other active browse filters.
+   * Classification: REUSABLE_PRODUCT_UI
+   */
+  function marketScopeCountsForFilters(opportunities, filters) {
+    filters = filters || {};
+    var subset = filterOpportunities(opportunities, {
+      priority: filters.priority || "",
+      booking: filters.booking || "",
+      commercialStage: filters.commercialStage || "",
+      salesOpportunity: filters.salesOpportunity || "",
+      salesFocus: filters.salesFocus || "",
+      sourcingSubgroup: filters.sourcingSubgroup || HOTEL_SOURCING_SUBGROUP.BOTH,
+      segment: filters.segment || "",
+      territory: filters.territory || "",
+      weekly: filters.weekly || "",
+      opportunityType: filters.opportunityType || "",
+      // marketScope ALL = no population narrowing for facet base counts
+      marketScope: MARKET_SCOPE.ALL,
+    });
+    return countByMarketScope(subset);
   }
 
   /**
@@ -2664,10 +2859,12 @@
         segment: "",
         territory: "",
         weekly: "",
-        opportunityType: "SALES_OPPORTUNITIES",
+        opportunityType: "",
+        marketScope: MARKET_SCOPE.ALL,
       },
       filters || {}
     );
+    normalizeBrowsePopulationFilters(filters);
     if (!filters.sourcingSubgroup) {
       filters.sourcingSubgroup = HOTEL_SOURCING_SUBGROUP.BOTH;
     }
@@ -2687,6 +2884,11 @@
         filters.priority = "";
         filters.booking = "";
         filters.weekly = "";
+      } else if (changedKey === "marketScope") {
+        filters.priority = "";
+        filters.booking = "";
+        filters.weekly = "";
+        filters.opportunityType = "";
       }
     }
     return filters;
@@ -2702,7 +2904,8 @@
       segment: "",
       territory: "",
       weekly: "",
-      opportunityType: "SALES_OPPORTUNITIES",
+      opportunityType: "",
+      marketScope: MARKET_SCOPE.ALL,
     };
   }
 
@@ -3135,8 +3338,15 @@
         });
       }
     }
+    normalizeBrowsePopulationFilters(filters);
+    if (filters.marketScope) {
+      rows = rows.filter(function (o) {
+        return matchesMarketScopeFilter(o, filters.marketScope);
+      });
+    }
     if (filters.opportunityType) {
       rows = rows.filter(function (o) {
+        // Legacy safety: population values belong to Market Scope, not type.
         if (isInventoryPopulationFilter(filters.opportunityType)) {
           return matchesInventoryPopulationFilter(o, filters.opportunityType);
         }
@@ -8841,10 +9051,19 @@
     propertyBarHtml: propertyBarHtml,
     weeklyThisWeekFilterHtml: weeklyThisWeekFilterHtml,
     opportunityTypeFilterHtml: opportunityTypeFilterHtml,
+    marketScopeFilterHtml: marketScopeFilterHtml,
+    MARKET_SCOPE: MARKET_SCOPE,
+    INVENTORY_POPULATION_VALUES: INVENTORY_POPULATION_VALUES,
+    normalizeMarketScopeValue: normalizeMarketScopeValue,
+    marketScopeToInventoryPopulation: marketScopeToInventoryPopulation,
+    normalizeBrowsePopulationFilters: normalizeBrowsePopulationFilters,
     classifyOpportunityTypeFilter: classifyOpportunityTypeFilter,
     countByOpportunityTypeFilter: countByOpportunityTypeFilter,
+    countByMarketScope: countByMarketScope,
+    matchesMarketScopeFilter: matchesMarketScopeFilter,
     opportunityTypeFilterOptionsFromCounts: opportunityTypeFilterOptionsFromCounts,
     opportunityTypeCountsForFilters: opportunityTypeCountsForFilters,
+    marketScopeCountsForFilters: marketScopeCountsForFilters,
     isAssessmentStatusProse: isAssessmentStatusProse,
     primaryKpiHtml: primaryKpiHtml,
     secondarySummaryHtml: secondarySummaryHtml,
