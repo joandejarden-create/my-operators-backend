@@ -145,8 +145,20 @@ export async function postDecisionAction(req, res) {
       ...actorFromReq(req),
       sourceSurface: req.body?.sourceSurface || "api",
     });
-    return res.status(201).json({ ok: true, ...result });
+    return res.status(result.created === false ? 200 : 201).json({
+      ok: true,
+      ...result,
+      salesActionUpdatedAt: result.salesActionUpdatedAt || null,
+    });
   } catch (err) {
+    if (err.code === "sales_action_conflict") {
+      return res.status(409).json({
+        ok: false,
+        error: err.code,
+        message: err.message,
+        salesActionUpdatedAt: err.salesActionUpdatedAt || null,
+      });
+    }
     const status = err.code === "decision_not_found" ? 404 : 400;
     return res.status(status).json({
       ok: false,
@@ -170,8 +182,20 @@ export async function postDecisionOutcome(req, res) {
       ...actorFromReq(req),
       sourceSurface: req.body?.sourceSurface || "api",
     });
-    return res.status(201).json({ ok: true, ...result });
+    return res.status(result.created === false ? 200 : 201).json({
+      ok: true,
+      ...result,
+      salesOutcomeUpdatedAt: result.salesOutcomeUpdatedAt || null,
+    });
   } catch (err) {
+    if (err.code === "sales_outcome_conflict") {
+      return res.status(409).json({
+        ok: false,
+        error: err.code,
+        message: err.message,
+        salesOutcomeUpdatedAt: err.salesOutcomeUpdatedAt || null,
+      });
+    }
     const status = err.code === "decision_not_found" ? 404 : 400;
     return res.status(status).json({
       ok: false,

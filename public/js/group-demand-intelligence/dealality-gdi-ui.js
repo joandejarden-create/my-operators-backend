@@ -8352,6 +8352,38 @@
     return opts;
   }
 
+  function formatHotelFeedbackLastSavedLabel(iso) {
+    if (!iso) return "Not yet submitted";
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return "Not yet submitted";
+    try {
+      return (
+        "Last saved: " +
+        d.toLocaleString(undefined, {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      );
+    } catch (e) {
+      return "Last saved: " + String(iso);
+    }
+  }
+
+  function lastSavedHtml(id, iso) {
+    return (
+      '<p class="gdi-last-saved" id="' +
+      esc(id) +
+      '"' +
+      (iso ? ' data-iso="' + esc(iso) + '"' : "") +
+      ">" +
+      esc(formatHotelFeedbackLastSavedLabel(iso || null)) +
+      "</p>"
+    );
+  }
+
   function shareCustomerValidationFormHtml(o, enums, permissionContext) {
     if (!permissionContext || !permissionContext.canValidate) {
       return (
@@ -8361,9 +8393,41 @@
     }
     var v = (o && o.shareValidation) || {};
     var e = enums || {};
+    var validationTs =
+      v.hotelValidationUpdatedAt ||
+      v.validatedAt ||
+      (o &&
+        o.commercialProgression &&
+        o.commercialProgression.hotelValidationUpdatedAt) ||
+      null;
+    var founderBlock = "";
+    if (permissionContext.canFounderReview) {
+      founderBlock =
+        "<label>Founder review (local)<select id=\"gdiSvFounderReview\">" +
+        '<option value="">—</option>' +
+        '<option value="ASSIGN_NOW"' +
+        ((o && o.founderReviewDecision) === "ASSIGN_NOW" ? " selected" : "") +
+        ">ASSIGN_NOW</option>" +
+        '<option value="ASSIGN_FOR_DISCOVERY"' +
+        ((o && o.founderReviewDecision) === "ASSIGN_FOR_DISCOVERY"
+          ? " selected"
+          : "") +
+        ">ASSIGN_FOR_DISCOVERY</option>" +
+        '<option value="RESEARCH_FIRST"' +
+        ((o && o.founderReviewDecision) === "RESEARCH_FIRST" ? " selected" : "") +
+        ">RESEARCH_FIRST</option>" +
+        '<option value="DO_NOT_PURSUE"' +
+        ((o && o.founderReviewDecision) === "DO_NOT_PURSUE" ? " selected" : "") +
+        ">DO_NOT_PURSUE</option>" +
+        "</select></label>";
+    }
     return (
       '<p class="gdi-lede">Fast review for sales. Stored for learning — does not overwrite research evidence.</p>' +
-      '<div class="gdi-feedback gdi-hotel-validation-form" id="gdiShareValidation" data-gdi-validation-mode="SHARE_CUSTOMER">' +
+      '<div class="gdi-feedback gdi-hotel-validation-form" id="gdiShareValidation" data-gdi-validation-mode="SHARE_CUSTOMER"' +
+      (validationTs
+        ? ' data-hotel-validation-updated-at="' + esc(validationTs) + '"'
+        : "") +
+      ">" +
       "<label>Familiarity / Status<select id=\"gdiSvFamiliarity\">" +
       enumSelectOptions(e.familiarityStatus, e.familiarityLabels, v.familiarityStatus) +
       "</select></label>" +
@@ -8379,23 +8443,9 @@
       "<label>Phone Quality<select id=\"gdiSvPhone\">" +
       enumSelectOptions(e.phoneAssessment, e.phoneAssessmentLabels, v.phoneAssessment) +
       "</select></label>" +
-      "<label>Founder review (local)<select id=\"gdiSvFounderReview\">" +
-      '<option value="">—</option>' +
-      '<option value="ASSIGN_NOW"' +
-      ((o && o.founderReviewDecision) === "ASSIGN_NOW" ? " selected" : "") +
-      ">ASSIGN_NOW</option>" +
-      '<option value="ASSIGN_FOR_DISCOVERY"' +
-      ((o && o.founderReviewDecision) === "ASSIGN_FOR_DISCOVERY" ? " selected" : "") +
-      ">ASSIGN_FOR_DISCOVERY</option>" +
-      '<option value="RESEARCH_FIRST"' +
-      ((o && o.founderReviewDecision) === "RESEARCH_FIRST" ? " selected" : "") +
-      ">RESEARCH_FIRST</option>" +
-      '<option value="DO_NOT_PURSUE"' +
-      ((o && o.founderReviewDecision) === "DO_NOT_PURSUE" ? " selected" : "") +
-      ">DO_NOT_PURSUE</option>" +
-      "</select></label>" +
+      founderBlock +
       '<textarea id="gdiSvNote" placeholder="Optional note" rows="2">' +
-      esc(v.note || (o && o.founderReviewComment) || "") +
+      esc(v.note || (permissionContext.canFounderReview && o && o.founderReviewComment) || "") +
       "</textarea>" +
       '<div class="gdi-validation-actions">' +
       '<button type="button" class="gdi-btn gdi-btn-primary" id="gdiSvSave" data-id="' +
@@ -8404,16 +8454,73 @@
       '<button type="button" class="gdi-btn gdi-btn-primary" id="gdiSvSaveNext" data-id="' +
       esc((o && o.id) || "") +
       '">Save + Next</button>' +
-      '<span class="gdi-validation-status" id="gdiSvStatus"></span></div></div>'
+      '<span class="gdi-validation-status" id="gdiSvStatus"></span></div>' +
+      lastSavedHtml("gdiSvLastSaved", validationTs) +
+      "</div>"
     );
+  }
+
+  function actionSelectOptions(selected) {
+    var actions = [
+      ["NOT_CONTACTED", "Not Contacted"],
+      ["PLANNED_TO_CONTACT", "Planned To Contact"],
+      ["CONTACTED", "Contacted"],
+      ["FOLLOW_UP_REQUIRED", "Follow Up Required"],
+      ["RFP_REQUESTED", "RFP Requested"],
+      ["RFP_RECEIVED", "RFP Received"],
+      ["SITE_VISIT_REQUESTED", "Site Visit Requested"],
+      ["SITE_VISIT_COMPLETED", "Site Visit Completed"],
+      ["PROPOSAL_SUBMITTED", "Proposal Submitted"],
+      ["NEGOTIATING", "Negotiating"],
+      ["NO_ACTION", "No Action"],
+    ];
+    var html = '<option value="">Select action...</option>';
+    actions.forEach(function (row) {
+      html +=
+        '<option value="' +
+        esc(row[0]) +
+        '"' +
+        (selected === row[0] ? " selected" : "") +
+        ">" +
+        esc(row[1]) +
+        "</option>";
+    });
+    return html;
+  }
+
+  function outcomeSelectOptions(selected) {
+    var outcomes = [
+      ["WON", "Won"],
+      ["LOST", "Lost"],
+      ["BOOKED", "Booked"],
+      ["NO_RESPONSE", "No Response"],
+      ["NOT_QUALIFIED", "Not Qualified"],
+      ["OPPORTUNITY_CLOSED", "Opportunity Closed"],
+      ["DEFERRED", "Deferred"],
+      ["ADDED_TO_SOURCED_PROPERTIES", "Added to sourced properties"],
+      ["UNKNOWN", "Unknown"],
+    ];
+    var html = '<option value="">Select outcome...</option>';
+    outcomes.forEach(function (row) {
+      html +=
+        '<option value="' +
+        esc(row[0]) +
+        '"' +
+        (selected === row[0] ? " selected" : "") +
+        ">" +
+        esc(row[1]) +
+        "</option>";
+    });
+    return html;
   }
 
   /**
    * Shared customer feedback lifecycle — auth + authorized share parity.
-   * permissionContext: { canValidate, canRecordAction, canRecordOutcome }
+   * permissionContext: { canValidate, canRecordAction, canRecordOutcome, canFounderReview }
    */
   function customerFeedbackLifecycleHtml(o, enums, permissionContext, progression) {
     permissionContext = permissionContext || {};
+    progression = progression || (o && o.commercialProgression) || null;
     var bits = [];
     if (progression) {
       bits.push(commercialProgressionHtml(progression));
@@ -8425,48 +8532,51 @@
     bits.push(shareCustomerValidationFormHtml(o, enums, permissionContext));
 
     if (permissionContext.canRecordAction) {
+      var actionTs =
+        (progression &&
+          (progression.salesActionUpdatedAt || progression.latestActionDate)) ||
+        null;
       bits.push(
-        '<div class="gdi-lifecycle-step" data-gdi-lifecycle-action="1">' +
+        '<div class="gdi-lifecycle-step" data-gdi-lifecycle-action="1"' +
+          (actionTs
+            ? ' data-sales-action-updated-at="' + esc(actionTs) + '"'
+            : "") +
+          ">" +
           "<h4>Action</h4>" +
           '<p class="gdi-lifecycle-q">What did the team do?</p>' +
           '<div class="gdi-feedback">' +
-          '<label>Action<select id="gdiDoAction"><option value="">Select action...</option>' +
-          '<option value="NOT_CONTACTED">Not Contacted</option>' +
-          '<option value="PLANNED_TO_CONTACT">Planned To Contact</option>' +
-          '<option value="CONTACTED">Contacted</option>' +
-          '<option value="FOLLOW_UP_REQUIRED">Follow Up Required</option>' +
-          '<option value="RFP_REQUESTED">RFP Requested</option>' +
-          '<option value="RFP_RECEIVED">RFP Received</option>' +
-          '<option value="SITE_VISIT_REQUESTED">Site Visit Requested</option>' +
-          '<option value="SITE_VISIT_COMPLETED">Site Visit Completed</option>' +
-          '<option value="PROPOSAL_SUBMITTED">Proposal Submitted</option>' +
-          '<option value="NEGOTIATING">Negotiating</option>' +
-          '<option value="NO_ACTION">No Action</option></select></label>' +
+          '<label>Action<select id="gdiDoAction">' +
+          actionSelectOptions(progression && progression.latestActionType) +
+          "</select></label>" +
           '<div class="gdi-validation-actions">' +
           '<button type="button" class="gdi-btn gdi-btn-primary" id="gdiDoActionSave" data-id="' +
           esc((o && o.id) || "") +
           '">Save Action</button>' +
           '<span class="gdi-validation-status" id="gdiDoActionSaveStatus" hidden></span>' +
-          "</div></div></div>"
+          "</div>" +
+          lastSavedHtml("gdiDoActionLastSaved", actionTs) +
+          "</div></div>"
       );
     }
 
     if (permissionContext.canRecordOutcome) {
+      var outcomeTs =
+        (progression &&
+          (progression.salesOutcomeUpdatedAt ||
+            progression.latestOutcomeDate)) ||
+        null;
       bits.push(
-        '<div class="gdi-lifecycle-step" data-gdi-lifecycle-outcome="1">' +
+        '<div class="gdi-lifecycle-step" data-gdi-lifecycle-outcome="1"' +
+          (outcomeTs
+            ? ' data-sales-outcome-updated-at="' + esc(outcomeTs) + '"'
+            : "") +
+          ">" +
           "<h4>Outcome</h4>" +
           '<p class="gdi-lifecycle-q">What happened?</p>' +
           '<div class="gdi-feedback">' +
-          '<label>Outcome<select id="gdiDoOutcome"><option value="">Select outcome...</option>' +
-          '<option value="WON">Won</option>' +
-          '<option value="LOST">Lost</option>' +
-          '<option value="BOOKED">Booked</option>' +
-          '<option value="NO_RESPONSE">No Response</option>' +
-          '<option value="NOT_QUALIFIED">Not Qualified</option>' +
-          '<option value="OPPORTUNITY_CLOSED">Opportunity Closed</option>' +
-          '<option value="DEFERRED">Deferred</option>' +
-          '<option value="ADDED_TO_SOURCED_PROPERTIES">Added to sourced properties</option>' +
-          '<option value="UNKNOWN">Unknown</option></select></label>' +
+          '<label>Outcome<select id="gdiDoOutcome">' +
+          outcomeSelectOptions(progression && progression.latestOutcomeType) +
+          "</select></label>" +
           '<label id="gdiDoLossWrap" hidden>Loss reason<select id="gdiDoLoss"><option value="">Select loss reason...</option>' +
           '<option value="RATE">Rate</option>' +
           '<option value="AVAILABILITY">Availability</option>' +
@@ -8483,7 +8593,9 @@
           esc((o && o.id) || "") +
           '">Save Outcome</button>' +
           '<span class="gdi-validation-status" id="gdiDoOutcomeSaveStatus" hidden></span>' +
-          "</div></div></div>"
+          "</div>" +
+          lastSavedHtml("gdiDoOutcomeLastSaved", outcomeTs) +
+          "</div></div>"
       );
     }
 
@@ -8715,6 +8827,7 @@
     setLoadingToast: setLoadingToast,
     shareCustomerValidationFormHtml: shareCustomerValidationFormHtml,
     customerFeedbackLifecycleHtml: customerFeedbackLifecycleHtml,
+    formatHotelFeedbackLastSavedLabel: formatHotelFeedbackLastSavedLabel,
     CUSTOMER_VALIDATION_ENUMS: CUSTOMER_VALIDATION_ENUMS,
     commercialProgressionHtml: commercialProgressionHtml,
     commercialProgressionCompactPill: commercialProgressionCompactPill,

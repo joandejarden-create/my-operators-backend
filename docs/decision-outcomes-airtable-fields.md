@@ -69,6 +69,18 @@ Module-neutral. Used by GDI and ADP. Do not use `AI Demand Positioning - Publish
 | causalConfidence | single line text | Default UNKNOWN for ADP |
 | measurementChange / temporalAssociation / rawEventJson | long text | JSON |
 
+## GDI subsection last-saved timestamps (API projection — not Airtable Last Modified)
+
+Independent stamps returned on customer validation / action / outcome APIs and commercial progression DTOs. Authoritative values come from section-scoped writes:
+
+| API field | Source |
+|-----------|--------|
+| `hotelValidationUpdatedAt` | Latest share-validation `validatedAt` (local latest) + Decision Events `VALIDATION` `eventDate`/`validatedAt` |
+| `salesActionUpdatedAt` | Latest Decision Event `ACTION` `actionDate`/`createdAt` |
+| `salesOutcomeUpdatedAt` | Latest Decision Event `OUTCOME` `outcomeDate`/`reportedAt`/`createdAt` |
+
+Do **not** use Airtable’s generic Last Modified Time — research field updates must not move these stamps. Saving one subsection must not rewrite the others.
+
 ## Cutover
 
 ```bash

@@ -75,6 +75,7 @@ import {
   loadShareValidation,
   saveShareValidationItem,
   getShareValidationForOpportunity,
+  restoreShareValidationItemAfterFailedPersist,
   buildShareValidationSummary,
   SHARE_FAMILIARITY_STATUS,
   SHARE_FAMILIARITY_LABEL,
@@ -161,6 +162,10 @@ import {
   loadGdiCommercialProgressionBySubject,
   toCustomerCommercialProgressionDto,
 } from "../lib/decision-outcomes/gdi-commercial-progression.js";
+import {
+  saveFounderReview,
+  loadFounderReviews,
+} from "../lib/group-demand-intelligence/local-shadow-commercial-portfolio-v1.js";
 import { withTimeout, gdiReadTimeoutMs } from "../lib/http/with-timeout.js";
 import {
   listVisibleDemandCampaigns,
@@ -1297,14 +1302,32 @@ export async function getGdiOpportunityDetail(req, res) {
       hotelId,
       opportunityId
     );
+    const founderReviews = loadFounderReviews(hotelId);
+    const founderReview =
+      (founderReviews.items || []).find(
+        (r) => r.opportunityId === opportunityId
+      ) || null;
     const authProjected = projectOpportunityForPresentation(opportunity, {
       hotelId,
       surface: GDI_PRESENTATION_SURFACES.LOCAL_AUTH,
       view: "detail",
     });
+    const progressionWithValidationTs =
+      commercialProgression || shareValidation?.validatedAt
+        ? {
+            ...(commercialProgression || {}),
+            hotelValidationUpdatedAt:
+              shareValidation?.validatedAt ||
+              shareValidation?.hotelValidationUpdatedAt ||
+              commercialProgression?.hotelValidationUpdatedAt ||
+              null,
+          }
+        : null;
     const opportunityPayload = {
       ...authProjected.dto,
-      ...(commercialProgression ? { commercialProgression } : {}),
+      ...(progressionWithValidationTs
+        ? { commercialProgression: progressionWithValidationTs }
+        : {}),
       ...(shareValidation
         ? {
             shareValidation: {
@@ -1315,7 +1338,19 @@ export async function getGdiOpportunityDetail(req, res) {
               phoneAssessment: shareValidation.phoneAssessment,
               note: shareValidation.note || "",
               validatedAt: shareValidation.validatedAt,
+              hotelValidationUpdatedAt:
+                shareValidation.hotelValidationUpdatedAt ||
+                shareValidation.validatedAt ||
+                null,
             },
+          }
+        : {}),
+      ...(founderReview
+        ? {
+            founderReviewDecision: founderReview.decision,
+            founderReviewComment: founderReview.comment || "",
+            founderReviewUpdatedAt: founderReview.updatedAt || null,
+            founderReviewLocalOnly: true,
           }
         : {}),
     };
@@ -1739,42 +1774,92 @@ export async function postGdiCustomerValidation(req, res) {
         body.commercialValue ||
         body.contactPersonAssessment ||
         body.emailAssessment ||
-        body.phoneAssessment
+        body.phoneAssessment ||
+        (body.note != null && String(body.note).trim() !== "")
     );
 
-    // Local shadow founder DOS review is not included in the production release package.
+    // Local-only founder DOS review — never dual-written to customer share surfaces.
     let founderReview = null;
     if (founderDecision) {
-      /* intentionally no-op in production packaging */
+      founderReview = saveFounderReview(hotelId, {
+        opportunityId,
+        decision: founderDecision,
+        comment: body.note || body.founderReviewComment || "",
+        actor:
+          req.dealalityUser?.email ||
+          req.dealalityUser?.id ||
+          body.validator ||
+          "founder_local",
+      });
     }
 
     let item = null;
+    let validationUnchanged = false;
     if (hasHotelValidation) {
-      const saved = saveShareValidationItem(hotelId, {
-        opportunityId,
-        validator:
-          body.validator ||
-          req.dealalityUser?.email ||
-          req.dealalityUser?.id ||
-          "AUTH_REVIEWER",
-        familiarityStatus: body.familiarityStatus || null,
-        commercialValue: body.commercialValue || null,
-        contactPersonAssessment: body.contactPersonAssessment || null,
-        emailAssessment: body.emailAssessment || null,
-        phoneAssessment: body.phoneAssessment || null,
-        note: body.note || "",
-      });
-      item = saved.item;
-      await ingestGdiShareValidation({
+      const previousValidation = getShareValidationForOpportunity(
         hotelId,
-        opportunityId,
-        opportunity,
-        validation: item,
-        actor: {
-          userId: req.dealalityUser?.email || req.dealalityUser?.id || "AUTH_REVIEWER",
-          role: req.dealalityUser?.role || "OTHER",
+        opportunityId
+      );
+      const saved = saveShareValidationItem(
+        hotelId,
+        {
+          opportunityId,
+          validator:
+            body.validator ||
+            req.dealalityUser?.email ||
+            req.dealalityUser?.id ||
+            "AUTH_REVIEWER",
+          familiarityStatus: body.familiarityStatus || null,
+          commercialValue: body.commercialValue || null,
+          contactPersonAssessment: body.contactPersonAssessment || null,
+          emailAssessment: body.emailAssessment || null,
+          phoneAssessment: body.phoneAssessment || null,
+          note: body.note || "",
         },
-      });
+        {
+          expectedHotelValidationUpdatedAt:
+            body.expectedHotelValidationUpdatedAt || null,
+        }
+      );
+      item = saved.item;
+      validationUnchanged = saved.unchanged === true;
+      if (!validationUnchanged) {
+        try {
+          await ingestGdiShareValidation({
+            hotelId,
+            opportunityId,
+            opportunity,
+            validation: item,
+            actor: {
+              userId:
+                req.dealalityUser?.email ||
+                req.dealalityUser?.id ||
+                "AUTH_REVIEWER",
+              role: req.dealalityUser?.role || "OTHER",
+            },
+          });
+        } catch (dualErr) {
+          restoreShareValidationItemAfterFailedPersist(
+            hotelId,
+            opportunityId,
+            previousValidation
+          );
+          console.error(
+            "[gdi] auth decision-outcome dual-write failed",
+            dualErr?.message || dualErr
+          );
+          return res.status(502).json({
+            ok: false,
+            error: "decision_outcome_persist_failed",
+            message:
+              dualErr?.message ||
+              "Canonical Decision & Outcome write failed",
+            hotelValidationUpdatedAt:
+              previousValidation?.validatedAt || null,
+          });
+        }
+      }
+      invalidateGdiHotelReadCache(hotelId);
     } else if (!founderReview) {
       return res.status(400).json({
         ok: false,
@@ -1782,8 +1867,13 @@ export async function postGdiCustomerValidation(req, res) {
       });
     }
 
+    const hotelValidationUpdatedAt =
+      item?.hotelValidationUpdatedAt || item?.validatedAt || null;
+
     return res.json({
       ok: true,
+      created: hasHotelValidation ? !validationUnchanged : Boolean(founderReview),
+      unchanged: validationUnchanged,
       validation: item
         ? {
             familiarityStatus: item.familiarityStatus,
@@ -1793,11 +1883,47 @@ export async function postGdiCustomerValidation(req, res) {
             phoneAssessment: item.phoneAssessment,
             note: item.note || "",
             validatedAt: item.validatedAt,
+            hotelValidationUpdatedAt,
+            validator: item.validator || null,
           }
         : null,
-      ...(founderReview ? { founderReview } : {}),
+      hotelValidationUpdatedAt,
+      ...(founderReview
+        ? {
+            founderReview: {
+              decision: founderReview.decision,
+              comment: founderReview.comment || "",
+              updatedAt: founderReview.updatedAt || null,
+              localOnly: true,
+            },
+          }
+        : {}),
     });
   } catch (err) {
+    if (err.code === "hotel_validation_conflict") {
+      return res.status(409).json({
+        ok: false,
+        error: err.code,
+        message:
+          "Hotel Validation was updated by another session. Reload and try again.",
+        hotelValidationUpdatedAt: err.hotelValidationUpdatedAt || null,
+        current: err.current
+          ? {
+              familiarityStatus: err.current.familiarityStatus,
+              commercialValue: err.current.commercialValue,
+              contactPersonAssessment: err.current.contactPersonAssessment,
+              emailAssessment: err.current.emailAssessment,
+              phoneAssessment: err.current.phoneAssessment,
+              note: err.current.note || "",
+              validatedAt: err.current.validatedAt,
+              hotelValidationUpdatedAt:
+                err.current.hotelValidationUpdatedAt ||
+                err.current.validatedAt ||
+                null,
+            }
+          : null,
+      });
+    }
     if (err.code === "invalid_share_validation") {
       return res.status(400).json({ ok: false, error: err.code, errors: err.errors });
     }
@@ -2477,14 +2603,28 @@ export async function getGdiShareOpportunities(req, res) {
             phoneAssessment: v.phoneAssessment,
             note: v.note || "",
             validatedAt: v.validatedAt,
+            hotelValidationUpdatedAt:
+              v.hotelValidationUpdatedAt || v.validatedAt || null,
           }
         : null,
     };
   });
-  const withProgression = await attachCommercialProgression(
-    hotelId,
-    opportunities
-  );
+  const withProgression = (
+    await attachCommercialProgression(hotelId, opportunities)
+  ).map((row) => {
+    const ts =
+      row.shareValidation?.hotelValidationUpdatedAt ||
+      row.shareValidation?.validatedAt ||
+      null;
+    if (!ts) return row;
+    return {
+      ...row,
+      commercialProgression: {
+        ...(row.commercialProgression || {}),
+        hotelValidationUpdatedAt: ts,
+      },
+    };
+  });
   let hotelNeedDateConfigV1;
   try {
     const {
@@ -2654,12 +2794,24 @@ export async function getGdiShareOpportunityDetail(req, res) {
   res.setHeader("X-GDI-Detail-Source", loaded.source);
   res.setHeader("X-GDI-Share-Presentation-Parity", "v1");
   res.setHeader("X-GDI-Universal-Presentation", "v1");
+  const hotelValidationUpdatedAt =
+    validation?.hotelValidationUpdatedAt || validation?.validatedAt || null;
+  const progressionMerged =
+    commercialProgression || hotelValidationUpdatedAt
+      ? {
+          ...(commercialProgression || {}),
+          hotelValidationUpdatedAt:
+            hotelValidationUpdatedAt ||
+            commercialProgression?.hotelValidationUpdatedAt ||
+            null,
+        }
+      : null;
   return res.json({
     ok: true,
     mode: "read_only",
     opportunity: {
       ...shareDetail,
-      ...(commercialProgression ? { commercialProgression } : {}),
+      ...(progressionMerged ? { commercialProgression: progressionMerged } : {}),
       shareValidation: validation
         ? {
             familiarityStatus: validation.familiarityStatus,
@@ -2669,6 +2821,7 @@ export async function getGdiShareOpportunityDetail(req, res) {
             phoneAssessment: validation.phoneAssessment,
             note: validation.note || "",
             validatedAt: validation.validatedAt,
+            hotelValidationUpdatedAt,
           }
         : null,
     },
@@ -2712,33 +2865,63 @@ export async function postGdiShareValidation(req, res) {
   }
   try {
     const body = req.body || {};
-    const { item } = saveShareValidationItem(hotelId, {
-      opportunityId,
-      validator: body.validator || "SHARE_REVIEWER",
-      familiarityStatus: body.familiarityStatus || null,
-      commercialValue: body.commercialValue || null,
-      contactPersonAssessment: body.contactPersonAssessment || null,
-      emailAssessment: body.emailAssessment || null,
-      phoneAssessment: body.phoneAssessment || null,
-      note: body.note || "",
-    });
-
-    try {
-      await ingestGdiShareValidation({
-        hotelId,
+    const previousValidation = getShareValidationForOpportunity(
+      hotelId,
+      opportunityId
+    );
+    const saved = saveShareValidationItem(
+      hotelId,
+      {
         opportunityId,
-        opportunity,
-        validation: item,
-        actor: {
-          userId: body.validator || "SHARE_REVIEWER",
-          role: "OTHER",
-        },
-      });
-    } catch (dualErr) {
-      console.error(
-        "[gdi] share decision-outcome dual-write failed",
-        dualErr?.message || dualErr
-      );
+        validator: body.validator || "SHARE_REVIEWER",
+        familiarityStatus: body.familiarityStatus || null,
+        commercialValue: body.commercialValue || null,
+        contactPersonAssessment: body.contactPersonAssessment || null,
+        emailAssessment: body.emailAssessment || null,
+        phoneAssessment: body.phoneAssessment || null,
+        note: body.note || "",
+      },
+      {
+        expectedHotelValidationUpdatedAt:
+          body.expectedHotelValidationUpdatedAt || null,
+      }
+    );
+    const item = saved.item;
+    const unchanged = saved.unchanged === true;
+
+    if (!unchanged) {
+      try {
+        await ingestGdiShareValidation({
+          hotelId,
+          opportunityId,
+          opportunity,
+          validation: item,
+          actor: {
+            userId: body.validator || "SHARE_REVIEWER",
+            role: "OTHER",
+          },
+        });
+      } catch (dualErr) {
+        restoreShareValidationItemAfterFailedPersist(
+          hotelId,
+          opportunityId,
+          previousValidation
+        );
+        console.error(
+          "[gdi] share decision-outcome dual-write failed",
+          dualErr?.message || dualErr
+        );
+        return res.status(502).json({
+          ok: false,
+          error: "decision_outcome_persist_failed",
+          message:
+            dualErr?.message ||
+            "Canonical Decision & Outcome write failed",
+          hotelValidationUpdatedAt: previousValidation?.validatedAt || null,
+          note: "Saved is not confirmed until Airtable persistence succeeds.",
+        });
+      }
+      invalidateGdiHotelReadCache(hotelId);
     }
 
     const validationDoc = loadShareValidation(hotelId);
@@ -2746,8 +2929,12 @@ export async function postGdiShareValidation(req, res) {
       opportunities: filterSalespersonView(doc.opportunities || []),
       validationItems: validationDoc.items || [],
     });
+    const hotelValidationUpdatedAt =
+      item.hotelValidationUpdatedAt || item.validatedAt || null;
     return res.json({
       ok: true,
+      created: !unchanged,
+      unchanged,
       validation: {
         familiarityStatus: item.familiarityStatus,
         commercialValue: item.commercialValue,
@@ -2756,11 +2943,23 @@ export async function postGdiShareValidation(req, res) {
         phoneAssessment: item.phoneAssessment,
         note: item.note || "",
         validatedAt: item.validatedAt,
+        hotelValidationUpdatedAt,
+        validator: item.validator || null,
       },
+      hotelValidationUpdatedAt,
       summary,
       note: "Validation stored separately. Does not overwrite research facts or mutate canonical contacts. Dual-written to canonical Decision layer.",
     });
   } catch (err) {
+    if (err.code === "hotel_validation_conflict") {
+      return res.status(409).json({
+        ok: false,
+        error: err.code,
+        message:
+          "Hotel Validation was updated by another session. Reload and try again.",
+        hotelValidationUpdatedAt: err.hotelValidationUpdatedAt || null,
+      });
+    }
     if (err.code === "invalid_share_validation") {
       return res.status(400).json({ ok: false, error: err.code, errors: err.errors });
     }
@@ -2795,6 +2994,9 @@ export async function getGdiShareValidation(req, res) {
       phoneAssessment: v.phoneAssessment,
       note: v.note || "",
       validatedAt: v.validatedAt,
+      hotelValidationUpdatedAt:
+        v.hotelValidationUpdatedAt || v.validatedAt || null,
+      validator: v.validator || null,
     })),
     summary,
   });
@@ -2857,22 +3059,43 @@ export async function postGdiShareAction(req, res) {
       sourceSurface: "gdi_share",
       displayName: req.body?.displayName || "Share reviewer",
       userId: req.body?.validator || "SHARE_REVIEWER",
+      expectedSalesActionUpdatedAt:
+        req.body?.expectedSalesActionUpdatedAt || null,
       provenance: {
         tokenId: verified.claims.tid,
         opportunityId,
         source: "CUSTOMER_SHARE",
       },
     });
-    invalidateGdiHotelReadCache(hotelId);
-    return res.status(201).json({
+    if (result.created !== false) {
+      invalidateGdiHotelReadCache(hotelId);
+    }
+    const progression = toCustomerCommercialProgressionDto(
+      result.current?.commercialProgression || null
+    );
+    return res.status(result.created === false ? 200 : 201).json({
       ok: true,
       decisionId: decision.decisionId,
       event: result.event,
       created: result.created !== false,
+      unchanged: result.unchanged === true,
       current: result.current,
-      commercialProgression: result.current?.commercialProgression || null,
+      commercialProgression: progression,
+      salesActionUpdatedAt:
+        result.salesActionUpdatedAt ||
+        progression?.salesActionUpdatedAt ||
+        null,
     });
   } catch (err) {
+    if (err.code === "sales_action_conflict") {
+      return res.status(409).json({
+        ok: false,
+        error: err.code,
+        message:
+          "Action was updated by another session. Reload and try again.",
+        salesActionUpdatedAt: err.salesActionUpdatedAt || null,
+      });
+    }
     console.error("[gdi] share action failed", err);
     return res.status(500).json({
       ok: false,
@@ -2927,22 +3150,43 @@ export async function postGdiShareOutcome(req, res) {
       sourceSurface: "gdi_share",
       displayName: req.body?.displayName || "Share reviewer",
       userId: req.body?.validator || "SHARE_REVIEWER",
+      expectedSalesOutcomeUpdatedAt:
+        req.body?.expectedSalesOutcomeUpdatedAt || null,
       provenance: {
         tokenId: verified.claims.tid,
         opportunityId,
         source: "CUSTOMER_SHARE",
       },
     });
-    invalidateGdiHotelReadCache(hotelId);
-    return res.status(201).json({
+    if (result.created !== false) {
+      invalidateGdiHotelReadCache(hotelId);
+    }
+    const progression = toCustomerCommercialProgressionDto(
+      result.current?.commercialProgression || null
+    );
+    return res.status(result.created === false ? 200 : 201).json({
       ok: true,
       decisionId: decision.decisionId,
       event: result.event,
       created: result.created !== false,
+      unchanged: result.unchanged === true,
       current: result.current,
-      commercialProgression: result.current?.commercialProgression || null,
+      commercialProgression: progression,
+      salesOutcomeUpdatedAt:
+        result.salesOutcomeUpdatedAt ||
+        progression?.salesOutcomeUpdatedAt ||
+        null,
     });
   } catch (err) {
+    if (err.code === "sales_outcome_conflict") {
+      return res.status(409).json({
+        ok: false,
+        error: err.code,
+        message:
+          "Outcome was updated by another session. Reload and try again.",
+        salesOutcomeUpdatedAt: err.salesOutcomeUpdatedAt || null,
+      });
+    }
     console.error("[gdi] share outcome failed", err);
     return res.status(500).json({
       ok: false,

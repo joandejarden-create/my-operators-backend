@@ -1017,6 +1017,7 @@
             canValidate: true,
             canRecordAction: true,
             canRecordOutcome: true,
+            canFounderReview: true,
           },
           dataCurrent
         );
@@ -1102,6 +1103,7 @@
               canValidate: true,
               canRecordAction: true,
               canRecordOutcome: true,
+              canFounderReview: true,
             },
             (decisionCurrent && decisionCurrent.commercialProgression) ||
               o.commercialProgression ||
@@ -1344,6 +1346,7 @@
               canValidate: true,
               canRecordAction: true,
               canRecordOutcome: true,
+              canFounderReview: true,
             },
             (decisionCurrent && decisionCurrent.commercialProgression) ||
               o.commercialProgression ||
@@ -1508,8 +1511,41 @@
         el.textContent = message;
       }
 
+      function setLastSaved(elId, iso) {
+        var el = document.getElementById(elId);
+        if (!el) return;
+        var label =
+          UI && UI.formatHotelFeedbackLastSavedLabel
+            ? UI.formatHotelFeedbackLastSavedLabel(iso || null)
+            : iso
+              ? "Last saved: " + iso
+              : "Not yet submitted";
+        el.textContent = label;
+        if (iso) el.setAttribute("data-iso", iso);
+        else el.removeAttribute("data-iso");
+      }
+
+      function nextUnvalidatedAuthId(currentId) {
+        var rows = state.opportunities || [];
+        var start = -1;
+        for (var i = 0; i < rows.length; i++) {
+          if (rows[i].id === currentId) {
+            start = i;
+            break;
+          }
+        }
+        for (var j = start + 1; j < rows.length; j++) {
+          if (!rows[j].shareValidation) return rows[j].id;
+        }
+        for (var k = 0; k < start; k++) {
+          if (!rows[k].shareValidation) return rows[k].id;
+        }
+        return null;
+      }
+
       if (t && (t.id === "gdiFbSave" || t.id === "gdiSvSave" || t.id === "gdiSvSaveNext")) {
         var id = t.getAttribute("data-id");
+        var thenNext = t.id === "gdiSvSaveNext";
         var statusId = t.id === "gdiFbSave" ? "gdiFbSaveStatus" : "gdiSvStatus";
         var familiarityEl =
           document.getElementById("gdiSvFamiliarity") ||
@@ -1519,16 +1555,25 @@
         var personEl = document.getElementById("gdiSvPerson");
         var emailEl = document.getElementById("gdiSvEmail");
         var phoneEl = document.getElementById("gdiSvPhone");
+        var founderEl = document.getElementById("gdiSvFounderReview");
         var noteEl =
           document.getElementById("gdiSvNote") || document.getElementById("gdiFbComment");
+        var formRoot = document.getElementById("gdiShareValidation");
         var familiarity = familiarityEl ? familiarityEl.value : "";
         var commercialStatus = commercialEl ? commercialEl.value : "";
         var comment = noteEl ? noteEl.value : "";
-        if (!familiarity && !commercialStatus) {
+        var founderDecision = founderEl ? founderEl.value || "" : "";
+        if (!familiarity && !commercialStatus && !founderDecision) {
           showSaveOk(statusId, "Pick familiarity or commercial value.");
           return;
         }
+        if (t.disabled) return;
         t.disabled = true;
+        var saveBtn = document.getElementById("gdiSvSave");
+        var nextBtn = document.getElementById("gdiSvSaveNext");
+        if (saveBtn) saveBtn.disabled = true;
+        if (nextBtn) nextBtn.disabled = true;
+        showSaveOk(statusId, "Saving…");
         api(
           "/api/group-demand-intelligence/hotels/" +
             encodeURIComponent(state.hotelId) +
@@ -1545,12 +1590,30 @@
               emailAssessment: emailEl ? emailEl.value || null : null,
               phoneAssessment: phoneEl ? phoneEl.value || null : null,
               note: comment || "",
+              founderReviewDecision: founderDecision || null,
+              expectedHotelValidationUpdatedAt: formRoot
+                ? formRoot.getAttribute("data-hotel-validation-updated-at") || null
+                : null,
               validator: "AUTH_REVIEWER",
             }),
           }
         )
-          .then(function () {
-            t.disabled = false;
+          .then(function (data) {
+            var ts =
+              (data && data.hotelValidationUpdatedAt) ||
+              (data && data.validation && data.validation.hotelValidationUpdatedAt) ||
+              (data && data.validation && data.validation.validatedAt) ||
+              null;
+            if (formRoot && ts) {
+              formRoot.setAttribute("data-hotel-validation-updated-at", ts);
+            }
+            setLastSaved("gdiSvLastSaved", ts);
+            for (var i = 0; i < (state.opportunities || []).length; i++) {
+              if (state.opportunities[i].id === id && data && data.validation) {
+                state.opportunities[i].shareValidation = data.validation;
+                break;
+              }
+            }
             showSaveOk(statusId, "✓ Validation saved");
             return api(
               "/api/hotels/" +
@@ -1563,9 +1626,19 @@
             });
           })
           .then(function (bundle) {
+            if (saveBtn) saveBtn.disabled = false;
+            if (nextBtn) nextBtn.disabled = false;
+            t.disabled = false;
             if (bundle && bundle.current) updateLifecycleSummary(bundle.current);
+            if (thenNext) {
+              var nid = nextUnvalidatedAuthId(id);
+              if (nid) openDetail(nid);
+              else showSaveOk(statusId, "✓ Saved — all reviewed");
+            }
           })
           .catch(function (err) {
+            if (saveBtn) saveBtn.disabled = false;
+            if (nextBtn) nextBtn.disabled = false;
             t.disabled = false;
             showSaveOk(statusId, err.message || "Failed");
           });
@@ -1581,7 +1654,9 @@
           priority: "MEDIUM_PRIORITY",
           recommendedAction: "Recorded from GDI detail",
         };
+        if (btn.disabled) return;
         btn.disabled = true;
+        showSaveOk(statusId, "Saving…");
         api("/api/hotels/" + encodeURIComponent(state.hotelId) + "/decisions/ensure-gdi", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -1607,6 +1682,33 @@
           .then(function (result) {
             btn.disabled = false;
             showSaveOk(statusId, okMessage);
+            if (kind === "action") {
+              var actionTs =
+                (result && result.salesActionUpdatedAt) ||
+                (result &&
+                  result.current &&
+                  result.current.commercialProgression &&
+                  result.current.commercialProgression.salesActionUpdatedAt) ||
+                null;
+              setLastSaved("gdiDoActionLastSaved", actionTs);
+              var actionStep = document.querySelector("[data-gdi-lifecycle-action]");
+              if (actionStep && actionTs) {
+                actionStep.setAttribute("data-sales-action-updated-at", actionTs);
+              }
+            } else {
+              var outcomeTs =
+                (result && result.salesOutcomeUpdatedAt) ||
+                (result &&
+                  result.current &&
+                  result.current.commercialProgression &&
+                  result.current.commercialProgression.salesOutcomeUpdatedAt) ||
+                null;
+              setLastSaved("gdiDoOutcomeLastSaved", outcomeTs);
+              var outcomeStep = document.querySelector("[data-gdi-lifecycle-outcome]");
+              if (outcomeStep && outcomeTs) {
+                outcomeStep.setAttribute("data-sales-outcome-updated-at", outcomeTs);
+              }
+            }
             if (result && result.current) updateLifecycleSummary(result.current);
           })
           .catch(function (err) {
@@ -1622,10 +1724,16 @@
           showSaveOk("gdiDoActionSaveStatus", "Select action...");
           return;
         }
+        var actionStepEl = document.querySelector("[data-gdi-lifecycle-action]");
         ensureThenRecord(
           t.getAttribute("data-id"),
           "action",
-          { actionType: actionType },
+          {
+            actionType: actionType,
+            expectedSalesActionUpdatedAt: actionStepEl
+              ? actionStepEl.getAttribute("data-sales-action-updated-at") || null
+              : null,
+          },
           t,
           "gdiDoActionSaveStatus",
           "✓ Action saved"
@@ -1639,12 +1747,16 @@
           showSaveOk("gdiDoOutcomeSaveStatus", "Select outcome...");
           return;
         }
+        var outcomeStepEl = document.querySelector("[data-gdi-lifecycle-outcome]");
         ensureThenRecord(
           t.getAttribute("data-id"),
           "outcome",
           {
             outcomeType: outcomeType,
             outcomeReason: outcomeType === "LOST" && lossEl && lossEl.value ? lossEl.value : null,
+            expectedSalesOutcomeUpdatedAt: outcomeStepEl
+              ? outcomeStepEl.getAttribute("data-sales-outcome-updated-at") || null
+              : null,
           },
           t,
           "gdiDoOutcomeSaveStatus",

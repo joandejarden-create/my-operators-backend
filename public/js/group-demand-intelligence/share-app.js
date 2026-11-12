@@ -214,6 +214,7 @@
           canValidate: !!canValidate,
           canRecordAction: !!canRecordAction,
           canRecordOutcome: !!canRecordOutcome,
+          canFounderReview: false,
         },
         o.commercialProgression || null
       );
@@ -252,6 +253,20 @@
       el.textContent = text;
     }
 
+    function setLastSaved(elId, iso) {
+      var el = document.getElementById(elId);
+      if (!el) return;
+      var label =
+        UI && UI.formatHotelFeedbackLastSavedLabel
+          ? UI.formatHotelFeedbackLastSavedLabel(iso || null)
+          : iso
+            ? "Last saved: " + iso
+            : "Not yet submitted";
+      el.textContent = label;
+      if (iso) el.setAttribute("data-iso", iso);
+      else el.removeAttribute("data-iso");
+    }
+
     var actionBtn = document.getElementById("gdiDoActionSave");
     if (actionBtn) {
       actionBtn.addEventListener("click", function () {
@@ -260,14 +275,23 @@
           showStatus("gdiDoActionSaveStatus", "Select action...");
           return;
         }
+        if (actionBtn.disabled) return;
+        actionBtn.disabled = true;
         showStatus("gdiDoActionSaveStatus", "Saving…");
+        var actionStep = document.querySelector("[data-gdi-lifecycle-action]");
         apiPost(
           "/api/group-demand-intelligence/share/hotels/" +
             encodeURIComponent(state.hotelId) +
             "/opportunities/" +
             encodeURIComponent(opportunityId) +
             "/actions",
-          { actionType: actionType, validator: "SHARE_REVIEWER" }
+          {
+            actionType: actionType,
+            validator: "SHARE_REVIEWER",
+            expectedSalesActionUpdatedAt: actionStep
+              ? actionStep.getAttribute("data-sales-action-updated-at") || null
+              : null,
+          }
         )
           .then(function (data) {
             if (data.commercialProgression) {
@@ -278,9 +302,20 @@
                 }
               }
             }
+            var ts =
+              data.salesActionUpdatedAt ||
+              (data.commercialProgression &&
+                data.commercialProgression.salesActionUpdatedAt) ||
+              null;
+            if (actionStep && ts) {
+              actionStep.setAttribute("data-sales-action-updated-at", ts);
+            }
+            setLastSaved("gdiDoActionLastSaved", ts);
+            actionBtn.disabled = false;
             showStatus("gdiDoActionSaveStatus", "Saved");
           })
           .catch(function (err) {
+            actionBtn.disabled = false;
             showStatus("gdiDoActionSaveStatus", err.message || "Save failed");
           });
       });
@@ -294,8 +329,11 @@
           showStatus("gdiDoOutcomeSaveStatus", "Select outcome...");
           return;
         }
+        if (outcomeBtn.disabled) return;
         var lossReason = (document.getElementById("gdiDoLoss") || {}).value || null;
+        outcomeBtn.disabled = true;
         showStatus("gdiDoOutcomeSaveStatus", "Saving…");
+        var outcomeStep = document.querySelector("[data-gdi-lifecycle-outcome]");
         apiPost(
           "/api/group-demand-intelligence/share/hotels/" +
             encodeURIComponent(state.hotelId) +
@@ -306,6 +344,9 @@
             outcomeType: outcomeType,
             lossReason: lossReason,
             validator: "SHARE_REVIEWER",
+            expectedSalesOutcomeUpdatedAt: outcomeStep
+              ? outcomeStep.getAttribute("data-sales-outcome-updated-at") || null
+              : null,
           }
         )
           .then(function (data) {
@@ -317,9 +358,20 @@
                 }
               }
             }
+            var ts =
+              data.salesOutcomeUpdatedAt ||
+              (data.commercialProgression &&
+                data.commercialProgression.salesOutcomeUpdatedAt) ||
+              null;
+            if (outcomeStep && ts) {
+              outcomeStep.setAttribute("data-sales-outcome-updated-at", ts);
+            }
+            setLastSaved("gdiDoOutcomeLastSaved", ts);
+            outcomeBtn.disabled = false;
             showStatus("gdiDoOutcomeSaveStatus", "Saved");
           })
           .catch(function (err) {
+            outcomeBtn.disabled = false;
             showStatus("gdiDoOutcomeSaveStatus", err.message || "Save failed");
           });
       });
@@ -328,6 +380,7 @@
 
   function wireValidationForm(opportunityId) {
     function collect() {
+      var formRoot = document.getElementById("gdiShareValidation");
       return {
         familiarityStatus: (document.getElementById("gdiSvFamiliarity") || {}).value || null,
         commercialValue: (document.getElementById("gdiSvCommercial") || {}).value || null,
@@ -335,17 +388,38 @@
         emailAssessment: (document.getElementById("gdiSvEmail") || {}).value || null,
         phoneAssessment: (document.getElementById("gdiSvPhone") || {}).value || null,
         note: (document.getElementById("gdiSvNote") || {}).value || "",
+        expectedHotelValidationUpdatedAt: formRoot
+          ? formRoot.getAttribute("data-hotel-validation-updated-at") || null
+          : null,
         validator: "SHARE_REVIEWER",
       };
     }
+    function setLastSaved(elId, iso) {
+      var el = document.getElementById(elId);
+      if (!el) return;
+      var label =
+        UI && UI.formatHotelFeedbackLastSavedLabel
+          ? UI.formatHotelFeedbackLastSavedLabel(iso || null)
+          : iso
+            ? "Last saved: " + iso
+            : "Not yet submitted";
+      el.textContent = label;
+      if (iso) el.setAttribute("data-iso", iso);
+      else el.removeAttribute("data-iso");
+    }
     function save(thenNext) {
       var statusEl = document.getElementById("gdiSvStatus");
-      if (statusEl) statusEl.textContent = "Saving…";
+      var saveBtn = document.getElementById("gdiSvSave");
+      var nextBtn = document.getElementById("gdiSvSaveNext");
       var payload = collect();
       if (!payload.familiarityStatus && !payload.commercialValue) {
         if (statusEl) statusEl.textContent = "Pick familiarity or commercial value.";
         return;
       }
+      if ((saveBtn && saveBtn.disabled) || (nextBtn && nextBtn.disabled)) return;
+      if (saveBtn) saveBtn.disabled = true;
+      if (nextBtn) nextBtn.disabled = true;
+      if (statusEl) statusEl.textContent = "Saving…";
       apiPost(
         "/api/group-demand-intelligence/share/hotels/" +
           encodeURIComponent(state.hotelId) +
@@ -372,7 +446,19 @@
             });
             state.resolve.validationSummary = data.summary;
           }
+          var ts =
+            data.hotelValidationUpdatedAt ||
+            (data.validation && data.validation.hotelValidationUpdatedAt) ||
+            (data.validation && data.validation.validatedAt) ||
+            null;
+          var formRoot = document.getElementById("gdiShareValidation");
+          if (formRoot && ts) {
+            formRoot.setAttribute("data-hotel-validation-updated-at", ts);
+          }
+          setLastSaved("gdiSvLastSaved", ts);
           if (statusEl) statusEl.textContent = "Saved";
+          if (saveBtn) saveBtn.disabled = false;
+          if (nextBtn) nextBtn.disabled = false;
           if (thenNext) {
             var nid = nextUnvalidatedId(opportunityId);
             if (nid) openDetail(nid);
@@ -380,6 +466,8 @@
           }
         })
         .catch(function (err) {
+          if (saveBtn) saveBtn.disabled = false;
+          if (nextBtn) nextBtn.disabled = false;
           if (statusEl) statusEl.textContent = err.message || "Save failed";
         });
     }

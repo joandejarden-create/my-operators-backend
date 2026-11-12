@@ -62,17 +62,37 @@ const required = [
   "Phone Quality",
   "gdiSvSave",
   "gdiSvSaveNext",
+  "gdiSvLastSaved",
+  "Not yet submitted",
   "What did the team do?",
   "gdiDoAction",
   "Save Action",
+  "gdiDoActionLastSaved",
   "What happened?",
   "gdiDoOutcome",
   "Save Outcome",
+  "gdiDoOutcomeLastSaved",
   "gdiDoLossWrap",
   'data-gdi-customer-lifecycle="1"',
   'data-gdi-lifecycle-action="1"',
   'data-gdi-lifecycle-outcome="1"',
 ];
+
+// Founder review is auth-only — must not appear on share (canFounderReview false)
+assert.ok(
+  !shareHtml.includes("gdiSvFounderReview"),
+  "share lifecycle must not expose founder review control"
+);
+const authWithFounder = UI.customerFeedbackLifecycleHtml(
+  { id: "gdi_opp_parity", shareValidation: null, founderReviewDecision: null },
+  enums,
+  { ...fullPerms, canFounderReview: true },
+  null
+);
+assert.ok(
+  authWithFounder.includes("gdiSvFounderReview"),
+  "auth lifecycle may expose founder review when permitted"
+);
 
 for (const needle of required) {
   assert.ok(authHtml.includes(needle), `missing customer control: ${needle}`);
