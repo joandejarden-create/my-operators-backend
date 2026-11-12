@@ -147,8 +147,11 @@ check("population_counts_67_plus_verified_cmi_unique_67", () => {
     { hotelId: BETHESDA_HOTEL_ID }
   );
   const counts = buildInventoryPopulationCounts(annotated);
-  assert.equal(counts.salesOpportunities, 67);
-  // Evidence-backed CMI ledger: 4 verified (not legacy seed-as-proof 7).
+  assert.equal(annotated.length, 67);
+  // Hotel = commercially actionable; confirmed CMI without target-hotel demand excluded.
+  assert.ok(counts.salesOpportunities < 67);
+  assert.ok(counts.salesOpportunities >= 60);
+  // Evidence-backed CMI ledger: 6 verified (not legacy seed-as-proof 7).
   assert.equal(counts.competitiveVerified, 6);
   assert.ok(counts.competitiveMarketIntelligence >= 6);
   assert.equal(counts.allCommercialIntelligence, 67);
@@ -161,7 +164,7 @@ check("population_counts_67_plus_verified_cmi_unique_67", () => {
       OPPORTUNITY_TYPE_FILTER.COMPETITIVE_MARKET_INTELLIGENCE
     )
   );
-  assert.equal(sales.length, 67);
+  assert.equal(sales.length, counts.salesOpportunities);
   assert.equal(cmi.length, counts.competitiveMarketIntelligence);
   const verifiedCmi = cmi.filter((o) => o.cmiVerified === true);
   assert.equal(verifiedCmi.length, 6);

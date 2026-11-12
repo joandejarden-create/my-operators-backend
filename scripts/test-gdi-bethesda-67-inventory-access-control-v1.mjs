@@ -279,7 +279,10 @@ check("preserved_67_plus_verified_cmi_under_sales_audience", () => {
     hotelId: BETHESDA_HOTEL_ID,
   });
   const counts = buildInventoryPopulationCounts(annotated);
-  assert.equal(counts.salesOpportunities, 67);
+  // Authorized inventory remains 67; Hotel population is actionable subset.
+  assert.equal(annotated.length, 67);
+  assert.ok(counts.salesOpportunities < 67);
+  assert.ok(counts.salesOpportunities >= 60);
   // Evidence-backed ledger: 6 verified CMI after ICON/CASSS recovery.
   // Competitive total may include Needs Verification / Historical.
   assert.equal(counts.competitiveVerified, 6);

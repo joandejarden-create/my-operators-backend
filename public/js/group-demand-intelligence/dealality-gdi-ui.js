@@ -627,6 +627,17 @@
       it.competitorHotel ||
       "";
     var title = m.label + (hotel ? " · " + hotel : "");
+    var actionLabel =
+      linked.competitiveCommercialActionLabel ||
+      it.competitiveCommercialActionLabel ||
+      "";
+    var actionHtml = actionLabel
+      ? '<span class="gdi-pill gdi-pill-cmi gdi-pill-cmi-action" title="' +
+        esc(actionLabel) +
+        '">' +
+        esc(actionLabel) +
+        "</span>"
+      : "";
     return (
       '<span class="' +
       m.cls +
@@ -634,8 +645,137 @@
       esc(title) +
       '">' +
       esc(m.label) +
-      "</span>"
+      "</span>" +
+      actionHtml
     );
+  }
+
+  /**
+   * Drawer sections: Confirmed Competitor Business vs Potential Future Opportunity.
+   * Evidence-backed only — never invents next-edition dates or open RFPs.
+   */
+  function competitiveFutureCycleSectionsHtml(o) {
+    o = o || {};
+    var pres = o.competitiveFutureCyclePresentation || null;
+    if (!pres || !pres.showSplitPresentation) return "";
+
+    function metaRow(label, value) {
+      if (value == null || value === "") return "";
+      return (
+        '<div class="gdi-cmi-split__row"><span class="gdi-cmi-split__label">' +
+        esc(label) +
+        '</span><span class="gdi-cmi-split__value">' +
+        esc(value) +
+        "</span></div>"
+      );
+    }
+
+    function evidenceList(urls) {
+      var list = Array.isArray(urls) ? urls.filter(Boolean) : [];
+      if (!list.length) return "";
+      return (
+        '<ul class="gdi-cmi-split__evidence">' +
+        list
+          .slice(0, 5)
+          .map(function (u) {
+            if (!isSafeHttpUrl(u)) return "";
+            return (
+              '<li><a href="' +
+              esc(u) +
+              '" target="_blank" rel="noopener noreferrer">' +
+              esc(u) +
+              "</a></li>"
+            );
+          })
+          .join("") +
+        "</ul>"
+      );
+    }
+
+    var confirmed = pres.confirmedCompetitorBusiness || {};
+    var future = pres.potentialFutureOpportunity || {};
+    var parts = [];
+
+    if (confirmed.applicable) {
+      parts.push(
+        '<section class="gdi-section gdi-section--cmi-confirmed" data-section-id="confirmed_competitor_business">' +
+          "<h3>Confirmed Competitor Business</h3>" +
+          "<p>" +
+          esc(confirmed.headline || "—") +
+          "</p>" +
+          '<div class="gdi-cmi-split__meta">' +
+          metaRow("Event / edition", confirmed.eventNameEdition) +
+          metaRow("Competitor hotel", confirmed.competitorHotel) +
+          metaRow("Booking / event dates", confirmed.bookingDates) +
+          metaRow(
+            "Competitor venue status",
+            confirmed.competitorVenueStatusLabel || confirmed.competitorVenueStatus
+          ) +
+          metaRow(
+            "Target-hotel sourcing",
+            confirmed.currentSourcingStatusLabel || confirmed.currentSourcingStatus
+          ) +
+          "</div>" +
+          (confirmed.evidenceUrls && confirmed.evidenceUrls.length
+            ? "<p><strong>Evidence</strong></p>" +
+              evidenceList(confirmed.evidenceUrls)
+            : "") +
+          "</section>"
+      );
+    }
+
+    if (future.applicable) {
+      parts.push(
+        '<section class="gdi-section gdi-section--cmi-future" data-section-id="potential_future_opportunity">' +
+          "<h3>Potential Future Opportunity</h3>" +
+          "<p>" +
+          esc(future.headline || "—") +
+          "</p>" +
+          '<div class="gdi-cmi-split__meta">' +
+          metaRow("Potential next edition", future.nextEditionHint) +
+          metaRow("Expected timing", future.expectedTiming) +
+          metaRow(
+            "Future hotel selection known?",
+            future.futureHotelSelectionKnown === true
+              ? "Yes"
+              : future.applicable
+                ? "No — not confirmed"
+                : null
+          ) +
+          metaRow("Why this hotel may be a candidate", future.whyTargetHotelCandidate) +
+          metaRow(
+            "Recommended sales action",
+            o.competitiveCommercialActionLabel
+              ? o.competitiveCommercialActionLabel +
+                  (future.recommendedSalesAction
+                    ? " — " + future.recommendedSalesAction
+                    : "")
+              : future.recommendedSalesAction
+          ) +
+          "</div></section>"
+      );
+    }
+
+    if (
+      o.competitiveCommercialActionLabel &&
+      (confirmed.applicable || future.applicable)
+    ) {
+      parts.unshift(
+        '<div class="gdi-cmi-action-banner" data-competitive-action="' +
+          esc(o.competitiveCommercialActionKey || "") +
+          '"><strong>' +
+          esc(o.competitiveCommercialActionLabel) +
+          "</strong>" +
+          (o.competitiveStatusLabel
+            ? '<span class="gdi-muted"> · ' +
+              esc(o.competitiveStatusLabel) +
+              "</span>"
+            : "") +
+          "</div>"
+      );
+    }
+
+    return parts.join("");
   }
 
   function tileSalesActionPill(it, linked) {
@@ -1419,28 +1559,12 @@
         "</option></select></div>";
     }
 
-    var publishedValue =
-      opts.lastPublishedUpdate != null && opts.lastPublishedUpdate !== ""
-        ? opts.lastPublishedUpdate
-        : opts.lastReviewedImport != null && opts.lastReviewedImport !== ""
-          ? opts.lastReviewedImport
-          : "";
-    var lastResearchVal =
-      opts.lastResearch != null && opts.lastResearch !== ""
-        ? opts.lastResearch
-        : "History unavailable";
-    var runStatusVal =
-      opts.runStatusLabel || opts.runStatus || "History unavailable";
-    var publishedVal = publishedValue || "History unavailable";
-    var sourceVerificationHtml =
-      opts.lastSourceVerification != null && opts.lastSourceVerification !== ""
-        ? '<span class="gdi-property-bar__history-sep" aria-hidden="true">·</span>' +
-          '<span class="gdi-property-bar__history-item">' +
-          '<span class="gdi-property-bar__history-label">Last source verification:</span> ' +
-          '<span class="gdi-property-bar__history-value">' +
-          esc(opts.lastSourceVerification) +
-          "</span></span>"
-        : "";
+    var compactStatus = compactResearchStatusLabel({
+      runStatus: opts.runStatus,
+      runStatusLabel: opts.runStatusLabel,
+    });
+    var lastUpdatedDate = resolveLastUpdatedCompactDate(opts);
+    var lastUpdatedDisplay = lastUpdatedDate || "—";
     // Always render hotel-level need-date status when a property context exists.
     // Missing DTO must not hide the control — default to NOT_ESTABLISHED.
     var needDateConfig = normalizeHotelNeedDateConfigV1(
@@ -1463,9 +1587,36 @@
         "</span>" +
         '<span class="gdi-property-bar__history-sep" aria-hidden="true">·</span>'
       : "";
+    var researchCompactHtml =
+      '<span class="gdi-property-bar__history-item gdi-property-bar__history-item--research-compact" data-gdi-research-compact="1">' +
+      '<span class="gdi-property-bar__history-label">Last Updated:</span> ' +
+      '<span class="gdi-property-bar__history-value" data-gdi-last-updated="' +
+      esc(lastUpdatedDisplay) +
+      '">' +
+      esc(lastUpdatedDisplay) +
+      "</span>" +
+      '<span class="gdi-property-bar__history-sep" aria-hidden="true">·</span>' +
+      '<span class="gdi-property-bar__history-value gdi-property-bar__research-status" data-gdi-research-status="' +
+      esc(compactStatus) +
+      '">' +
+      esc(compactStatus) +
+      "</span> " +
+      researchActivityDetailsHtml({
+        popoverId: opts.researchActivityPopoverId || "gdiResearchActivityDetailsPopover",
+        lastResearchAt: opts.lastResearchAt,
+        lastResearch: opts.lastResearch,
+        lastSourceVerificationAt: opts.lastSourceVerificationAt,
+        lastSourceVerification: opts.lastSourceVerification,
+        lastPublishedUpdateAt: opts.lastPublishedUpdateAt,
+        lastPublishedUpdate: opts.lastPublishedUpdate,
+        lastReviewedImport: opts.lastReviewedImport,
+        runStatus: opts.runStatus,
+        runStatusLabel: opts.runStatusLabel,
+      }) +
+      "</span>";
 
     return (
-      '<section class="filters-section aiv-filters-section gdi-property-bar" aria-label="Property selection">' +
+      '<section class="filters-section aiv-filters-section gdi-property-bar" aria-label="Property selection" data-gdi-tour-target="filters">' +
       '<div class="gdi-property-bar__primary">' +
       propertyField +
       weeklyThisWeekFilterHtml(opts) +
@@ -1480,24 +1631,7 @@
       "</div>" +
       '<footer class="gdi-property-bar__history" aria-label="Need Dates and research activity">' +
       needDateHistoryHtml +
-      '<span class="gdi-property-bar__history-item">' +
-      '<span class="gdi-property-bar__history-label">Last research:</span> ' +
-      '<span class="gdi-property-bar__history-value">' +
-      esc(lastResearchVal) +
-      "</span></span>" +
-      '<span class="gdi-property-bar__history-sep" aria-hidden="true">·</span>' +
-      '<span class="gdi-property-bar__history-item">' +
-      '<span class="gdi-property-bar__history-label">Run:</span> ' +
-      '<span class="gdi-property-bar__history-value">' +
-      esc(runStatusVal) +
-      "</span></span>" +
-      sourceVerificationHtml +
-      '<span class="gdi-property-bar__history-sep" aria-hidden="true">·</span>' +
-      '<span class="gdi-property-bar__history-item">' +
-      '<span class="gdi-property-bar__history-label">Last published:</span> ' +
-      '<span class="gdi-property-bar__history-value">' +
-      esc(publishedVal) +
-      "</span></span>" +
+      researchCompactHtml +
       "</footer>" +
       "</section>"
     );
@@ -1625,7 +1759,7 @@
       },
     ];
     return (
-      '<div class="filter-group gdi-market-scope-filter">' +
+      '<div class="filter-group gdi-market-scope-filter" data-gdi-tour-target="market-scope">' +
       '<span class="filter-label" id="gdiMarketScopeLabel">Market Scope</span>' +
       '<div class="gdi-market-scope" role="radiogroup" aria-labelledby="gdiMarketScopeLabel">' +
       options
@@ -2068,13 +2202,25 @@
     if (Array.isArray(o.inventoryPopulations) && o.inventoryPopulations.length) {
       return o.inventoryPopulations;
     }
-    if (o.cmiVerified === true) {
-      return [
-        INVENTORY_POPULATION_VALUES.SALES_OPPORTUNITIES,
-        INVENTORY_POPULATION_VALUES.COMPETITIVE_MARKET_INTELLIGENCE,
-      ];
+    // Fallback only when server annotation is missing. Do not force Hotel onto
+    // verified CMI — confirmed competitor bookings may be Competitive-only.
+    var pops = [];
+    if (o.hotelMarketScopeEligible === true) {
+      pops.push(INVENTORY_POPULATION_VALUES.SALES_OPPORTUNITIES);
     }
-    return [INVENTORY_POPULATION_VALUES.SALES_OPPORTUNITIES];
+    if (
+      o.competitiveMarketScopeEligible === true ||
+      o.cmiVerified === true ||
+      o.competitiveStatus === "VERIFIED" ||
+      o.competitiveStatus === "NEEDS_VERIFICATION" ||
+      o.competitiveStatus === "HISTORICAL"
+    ) {
+      pops.push(INVENTORY_POPULATION_VALUES.COMPETITIVE_MARKET_INTELLIGENCE);
+    }
+    if (!pops.length) {
+      pops.push(INVENTORY_POPULATION_VALUES.SALES_OPPORTUNITIES);
+    }
+    return pops;
   }
 
   function matchesInventoryPopulationFilter(o, filterValue) {
@@ -2328,7 +2474,7 @@
 
   var GDI_PRIORITIES_TAB = {
     id: "priorities",
-    label: "Hotel Need Times\n& Priorities",
+    label: "Commercial Priorities",
   };
 
   var GDI_CUSTOMER_TABS = [GDI_MAIN_TAB, GDI_PRIORITIES_TAB];
@@ -2372,6 +2518,163 @@
     return "Research Completed";
   }
 
+  /**
+   * Executive compact status for the property-bar main line.
+   * Maps completed → "Research Complete"; preserves incomplete / failed / never-run.
+   */
+  function compactResearchStatusLabel(summaryOrLabel) {
+    var base =
+      summaryOrLabel && typeof summaryOrLabel === "object"
+        ? customerSafeRunStatusLabel(summaryOrLabel)
+        : customerSafeRunStatusLabel({
+            runStatusLabel: summaryOrLabel,
+            runStatus: summaryOrLabel,
+          });
+    if (/^Research Completed$/i.test(base)) return "Research Complete";
+    return base;
+  }
+
+  /** Concise calendar date only — no time, seconds, or timezone. */
+  function formatCompactResearchDate(isoOrValue) {
+    if (isoOrValue == null || isoOrValue === "") return null;
+    var raw = String(isoOrValue).trim();
+    if (!raw || /^history unavailable$/i.test(raw) || raw === "—" || raw === "-") {
+      return null;
+    }
+    var isoDay = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (isoDay) {
+      try {
+        var utc = new Date(
+          Date.UTC(
+            Number(isoDay[1]),
+            Number(isoDay[2]) - 1,
+            Number(isoDay[3])
+          )
+        );
+        return (
+          utc.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            timeZone: "UTC",
+          }) || null
+        );
+      } catch (e) {
+        return isoDay[1] + "-" + isoDay[2] + "-" + isoDay[3];
+      }
+    }
+    // Already-formatted history strings: strip time / timezone tails.
+    var stripped = raw
+      .replace(
+        /,?\s+\d{1,2}:\d{2}(?::\d{2})?\s*(?:AM|PM)?(?:\s*[A-Z]{2,5})?$/i,
+        ""
+      )
+      .replace(/\s+at\s+\d{1,2}:\d{2}.*$/i, "")
+      .trim();
+    return stripped || null;
+  }
+
+  /**
+   * Last Updated uses authoritative research timestamp only.
+   * Never substitutes publication or source-verification activity.
+   */
+  function resolveLastUpdatedCompactDate(opts) {
+    opts = opts || {};
+    var fromIso = formatCompactResearchDate(opts.lastResearchAt);
+    if (fromIso) return fromIso;
+    var fromDisplay = formatCompactResearchDate(opts.lastResearch);
+    if (fromDisplay) return fromDisplay;
+    return null;
+  }
+
+  function formatResearchActivityDetailTimestamp(isoOrValue) {
+    if (isoOrValue == null || isoOrValue === "") return "History unavailable";
+    var raw = String(isoOrValue).trim();
+    if (!raw) return "History unavailable";
+    if (/history unavailable/i.test(raw)) return "History unavailable";
+    var d = new Date(raw);
+    if (!isNaN(d.getTime()) && /^\d{4}-\d{2}-\d{2}/.test(raw)) {
+      try {
+        return (
+          d.toLocaleString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            timeZoneName: "short",
+          }) || raw
+        );
+      } catch (e) {
+        return d.toISOString();
+      }
+    }
+    return raw;
+  }
+
+  function researchActivityDetailsHtml(opts) {
+    opts = opts || {};
+    var popoverId = opts.popoverId || "gdiResearchActivityDetailsPopover";
+    var btnId = opts.buttonId || popoverId + "Btn";
+    var titleId = popoverId + "Title";
+    var statusLabel = compactResearchStatusLabel(
+      opts.runStatus || opts.runStatusLabel
+        ? { runStatus: opts.runStatus, runStatusLabel: opts.runStatusLabel }
+        : opts.runStatusLabel || "History unavailable"
+    );
+    var researchDetail = formatResearchActivityDetailTimestamp(
+      opts.lastResearchAt || opts.lastResearch
+    );
+    var verificationDetail = formatResearchActivityDetailTimestamp(
+      opts.lastSourceVerificationAt || opts.lastSourceVerification
+    );
+    var publishedDetail = formatResearchActivityDetailTimestamp(
+      opts.lastPublishedUpdateAt ||
+        opts.lastPublishedUpdate ||
+        opts.lastReviewedImport
+    );
+    function detailRow(label, value) {
+      return (
+        '<div class="gdi-research-activity-details__row">' +
+        '<span class="gdi-research-activity-details__label">' +
+        esc(label) +
+        "</span>" +
+        '<span class="gdi-research-activity-details__value">' +
+        esc(value) +
+        "</span></div>"
+      );
+    }
+    return (
+      '<div class="gdi-need-date-legend-wrap gdi-research-activity-details-wrap">' +
+      '<button type="button" class="gdi-need-date-info-btn gdi-research-activity-info-btn" id="' +
+      esc(btnId) +
+      '" aria-expanded="false" aria-controls="' +
+      esc(popoverId) +
+      '" aria-haspopup="dialog" title="Research activity details">' +
+      gdiSvgInfoCircle() +
+      '<span class="gdi-sr-only">Research, verification, and publication timestamps</span>' +
+      "</button>" +
+      '<div class="gdi-need-date-legend-popover gdi-research-activity-details-popover" id="' +
+      esc(popoverId) +
+      '" role="dialog" aria-modal="false" aria-labelledby="' +
+      esc(titleId) +
+      '" hidden>' +
+      '<div class="gdi-need-date-legend-popover__header">' +
+      '<h3 id="' +
+      esc(titleId) +
+      '">Research activity</h3>' +
+      '<button type="button" class="gdi-need-date-legend-close" aria-label="Close research activity details">×</button>' +
+      "</div>" +
+      '<div class="gdi-need-date-legend-popover__body gdi-research-activity-details__body">' +
+      detailRow("Last research", researchDetail) +
+      detailRow("Research status", statusLabel) +
+      detailRow("Last source verification", verificationDetail) +
+      detailRow("Last published", publishedDetail) +
+      '<p class="gdi-research-activity-details__note">Last Updated reflects completed research only — not verification or publication activity.</p>' +
+      "</div></div></div>"
+    );
+  }
+
   function formatTabLabel(label) {
     var raw = String(label == null ? "" : label);
     if (raw.indexOf("\n") >= 0) {
@@ -2383,6 +2686,21 @@
         .join("<br>");
     }
     return esc(raw).replace(/\s+/g, "<br>");
+  }
+
+  function howToReadReportButtonHtml() {
+    return (
+      '<button type="button" class="adp-howto-read-btn" id="gdiHowToReadReport"' +
+      ' data-gdi-guided-tour-entry="1" data-dealality-guided-tour-entry="1"' +
+      ' aria-label="How to Read This Report">' +
+      '<svg class="adp-howto-read-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">' +
+      '<circle cx="12" cy="12" r="9"></circle>' +
+      '<path d="M12 11v5"></path>' +
+      '<circle cx="12" cy="8" r="0.75" fill="currentColor" stroke="none"></circle>' +
+      "</svg>" +
+      '<span class="adp-howto-read-btn__label">How to Read This Report</span>' +
+      "</button>"
+    );
   }
 
   function contentTabsHtml(activeTab, tabs) {
@@ -2397,7 +2715,7 @@
     };
     if (!tabs.length) return "";
     return (
-      '<nav class="bdd-section-nav aiv-section-nav gdi-section-nav" aria-label="Group & Demand views" role="tablist">' +
+      '<nav class="bdd-section-nav aiv-section-nav gdi-section-nav gdi-section-nav-with-tour adp-section-nav-with-tour" aria-label="Group & Demand views" role="tablist" data-gdi-guided-tour-tab-row="1">' +
       tabs
         .map(function (t) {
           var isActive = activeTab === t.id;
@@ -2443,6 +2761,9 @@
           );
         })
         .join("") +
+      '<div class="adp-section-nav__actions gdi-section-nav__actions">' +
+      howToReadReportButtonHtml() +
+      "</div>" +
       "</nav>"
     );
   }
@@ -3428,10 +3749,10 @@
       "</div>" +
       '<div class="results-toolbar-sort">' +
       (exportHref
-        ? '<a class="gdi-export-btn" id="gdiExportCsvBtn" href="' +
+        ? '<a class="gdi-export-btn" id="gdiExportCsvBtn" data-gdi-tour-target="export" href="' +
           esc(exportHref) +
           '" download>Export CSV</a>'
-        : '<button type="button" class="gdi-export-btn" id="gdiExportCsvBtn">Export CSV</button>') +
+        : '<button type="button" class="gdi-export-btn" id="gdiExportCsvBtn" data-gdi-tour-target="export">Export CSV</button>') +
       '<button type="button" class="sort-icon" id="gdiSortDirBtn" title="Toggle sort direction" aria-label="Toggle sort direction">⇅</button>' +
       '<div class="filter-group filter-group-sort">' +
       '<select class="filter-select sort-select" id="gdiSortSelect" aria-label="Sort opportunities">' +
@@ -4287,12 +4608,13 @@
 
   /**
    * Universal tile contact footer V2 — ONE name + verified professional title
-   * (else opportunity role, else Role Not Yet Verified). Or Buyer Not Yet Identified.
+   * (else opportunity role, else Role Not Yet Verified). Or Contact Research Required.
    * Never shows Contact Under Review / eligibility enums on the tile.
    */
   function resolveTileContactPreviewBlock(it, linked) {
     linked = linked || {};
     it = it || {};
+    var CONTACT_RESEARCH_REQUIRED = "Contact Research Required";
     var preview =
       linked.tileContactPreview ||
       it.tileContactPreview ||
@@ -4345,9 +4667,10 @@
     if (
       preview &&
       (preview.kind === "none" ||
+        preview.displayName === CONTACT_RESEARCH_REQUIRED ||
         preview.displayName === "Buyer Not Yet Identified")
     ) {
-      return { kind: "none", name: "Buyer Not Yet Identified", role: "" };
+      return { kind: "none", name: CONTACT_RESEARCH_REQUIRED, role: "" };
     }
     // Client fallback when DTO missing — title first, then opportunity role.
     function fallbackRoleFromPerson(person) {
@@ -4420,7 +4743,7 @@
         role: toProperCaseContactRoleLabel(fallbackRoleFromPerson(sc)),
       };
     }
-    return { kind: "none", name: "Buyer Not Yet Identified", role: "" };
+    return { kind: "none", name: CONTACT_RESEARCH_REQUIRED, role: "" };
   }
 
   function compactTileContactHtml(block) {
@@ -4428,7 +4751,7 @@
     if (block.kind === "none" || block.kind === "empty" || !block.name) {
       return (
         '<div class="brand-card__contact-name brand-card__contact-name--unidentified">' +
-        esc(block.name || "Buyer Not Yet Identified") +
+        esc(block.name || "Contact Research Required") +
         "</div>"
       );
     }
@@ -4785,7 +5108,9 @@
 
   function bindNeedDateLegendInteractions(root) {
     root = root || document;
-    var wraps = root.querySelectorAll(".gdi-need-date-legend-wrap");
+    var wraps = root.querySelectorAll(
+      ".gdi-need-date-legend-wrap, .gdi-research-activity-details-wrap"
+    );
     wraps.forEach(function (wrap) {
       var btn = wrap.querySelector(".gdi-need-date-info-btn");
       var pop = wrap.querySelector(".gdi-need-date-legend-popover");
@@ -5530,7 +5855,7 @@
       tone +
       '" data-open="' +
       esc(id) +
-      '" role="button" tabindex="0">' +
+      '" data-gdi-tour-target="opportunity-card" role="button" tabindex="0">' +
       '<div class="brand-card__header brand-card__header--no-logo">' +
       '<div class="brand-card__info">' +
       '<div class="brand-card__name-row">' +
@@ -5540,7 +5865,7 @@
       revenueStreamIconsHtml(it, linked) +
       needDateIntelligenceIconHtml(it, linked) +
       "</div>" +
-      '<div class="brand-card__pills gdi-tile-pills">' +
+      '<div class="brand-card__pills gdi-tile-pills" data-gdi-tour-target="card-signals">' +
       tilePriorityPill(priorityKey, activeFilters) +
       competitiveStatusPillHtml(it, linked) +
       tileSalesActionPill(it, linked) +
@@ -5587,7 +5912,7 @@
       "</div>" +
       '<button type="button" class="brand-card__more-btn" data-open="' +
       esc(id) +
-      '">View Details</button></div></article>'
+      '" data-gdi-tour-target="view-details">View Details</button></div></article>'
     );
   }
 
@@ -5611,7 +5936,7 @@
       (mode === "list" ? " gdi-results-grid--list" : "") +
       '" data-gdi-view-mode="' +
       mode +
-      '">' +
+      '" data-gdi-tour-target="opportunity-list">' +
       cards +
       "</div>"
     );
@@ -6336,7 +6661,7 @@
       ) {
         return (
           '<p class="gdi-contact-quality-quiet">' +
-          esc(slot.researchGapCopy || "Buyer Not Yet Identified.") +
+          esc(slot.researchGapCopy || "Contact Research Required.") +
           "</p>"
         );
       }
@@ -6346,7 +6671,7 @@
         esc(slot.displayLabel || "Contact") +
         "</h4>" +
         '<p class="gdi-contact-quality-quiet">' +
-        esc(slot.researchGapCopy || "Buyer Not Yet Identified.") +
+        esc(slot.researchGapCopy || "Contact Research Required.") +
         "</p>" +
         (slot.organizationEmail
           ? "<p><strong>" +
@@ -7694,6 +8019,7 @@
           "</p>"
         : "") +
       "</section>" +
+      competitiveFutureCycleSectionsHtml(o) +
       '<section class="gdi-section" data-section-id="potential_business"><h3>Potential business for this hotel</h3><p>' +
       esc(prose(potS.body) || "—") +
       "</p>" +
@@ -7760,7 +8086,15 @@
         listHtml: listHtml,
       }) +
       "</section>" +
-      '<section class="gdi-section gdi-section--action" data-section-id="recommended_next_step"><h3>Recommended next step</h3><p>' +
+      '<section class="gdi-section gdi-section--action" data-section-id="recommended_next_step"><h3>Recommended next step</h3>' +
+      (o.competitiveCommercialActionLabel
+        ? '<p class="gdi-cmi-action-banner" data-competitive-action="' +
+          esc(o.competitiveCommercialActionKey || "") +
+          '"><strong>' +
+          esc(o.competitiveCommercialActionLabel) +
+          "</strong></p>"
+        : "") +
+      "<p>" +
       esc(prose(nextS.body) || "—") +
       "</p>" +
       qHtml +
@@ -7816,6 +8150,19 @@
    */
   function resolveAuthoritativeSalesActionText(o) {
     o = o || {};
+    // Competitive / future-cycle: evidence-safe action wins over stale gold-brief copy
+    // that may still ask whether a contracted competitor host is "open."
+    var cmiPres = o.competitiveFutureCyclePresentation || null;
+    if (cmiPres && cmiPres.showSplitPresentation) {
+      var safeCmi =
+        (cmiPres.potentialFutureOpportunity &&
+          cmiPres.potentialFutureOpportunity.recommendedSalesAction) ||
+        o.recommendedAction ||
+        "";
+      if (String(safeCmi).replace(/\s+/g, " ").trim()) {
+        return String(safeCmi).replace(/\s+/g, " ").trim();
+      }
+    }
     function approachText(brief) {
       if (!brief || !brief.recommendedSalesApproach) return "";
       var a = brief.recommendedSalesApproach;
@@ -8635,6 +8982,7 @@
           "</p>"
         : "") +
       "</section>" +
+      competitiveFutureCycleSectionsHtml(o) +
       '<section class="gdi-section" data-section-id="potential_business"><h3>Potential business for this hotel</h3><p>' +
       esc(prose(potS.body) || "—") +
       "</p>" +
@@ -8681,7 +9029,15 @@
         listHtml: listHtml,
       }) +
       "</section>" +
-      '<section class="gdi-section gdi-section--action" data-section-id="recommended_next_step"><h3>Recommended next step</h3><p>' +
+      '<section class="gdi-section gdi-section--action" data-section-id="recommended_next_step"><h3>Recommended next step</h3>' +
+      (o.competitiveCommercialActionLabel
+        ? '<p class="gdi-cmi-action-banner" data-competitive-action="' +
+          esc(o.competitiveCommercialActionKey || "") +
+          '"><strong>' +
+          esc(o.competitiveCommercialActionLabel) +
+          "</strong></p>"
+        : "") +
+      "<p>" +
       esc(prose(nextS.body) || "—") +
       "</p>" +
       qHtml +
@@ -9315,6 +9671,10 @@
     GDI_PRIORITIES_TAB: GDI_PRIORITIES_TAB,
     GDI_CUSTOMER_TABS: GDI_CUSTOMER_TABS,
     customerSafeRunStatusLabel: customerSafeRunStatusLabel,
+    compactResearchStatusLabel: compactResearchStatusLabel,
+    formatCompactResearchDate: formatCompactResearchDate,
+    resolveLastUpdatedCompactDate: resolveLastUpdatedCompactDate,
+    researchActivityDetailsHtml: researchActivityDetailsHtml,
     countByPriority: countByPriority,
     countByActionStatus: countByActionStatus,
     facetCountByPriority: facetCountByPriority,
