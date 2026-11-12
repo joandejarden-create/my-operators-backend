@@ -2024,7 +2024,9 @@
     FUTURE_GROUP_BUSINESS: "FUTURE_GROUP_BUSINESS",
     COMPETITOR_CAPTURE: "COMPETITOR_CAPTURE",
     PARTNERSHIP_OPPORTUNITIES: "PARTNERSHIP_OPPORTUNITIES",
+    GUEST_ROOMS: "GUEST_ROOMS",
     LOCAL_CATERING: "LOCAL_CATERING",
+    BOTH: "BOTH",
   };
 
   /** Compact chip labels — filter IDs/predicates unchanged. */
@@ -2035,7 +2037,9 @@
     FUTURE_GROUP_BUSINESS: "Future Groups",
     COMPETITOR_CAPTURE: "Competitor",
     PARTNERSHIP_OPPORTUNITIES: "Partnerships",
+    GUEST_ROOMS: "Guest Rooms",
     LOCAL_CATERING: "Catering",
+    BOTH: "Both",
   };
 
   /** Full names for title / aria-label tooltips. */
@@ -2046,7 +2050,9 @@
     FUTURE_GROUP_BUSINESS: "Future Group Business",
     COMPETITOR_CAPTURE: "Competitor Capture",
     PARTNERSHIP_OPPORTUNITIES: "Partnership Opportunities",
+    GUEST_ROOMS: "Guest Rooms",
     LOCAL_CATERING: "Local Catering",
+    BOTH: "Both Guest Rooms and Local Catering",
   };
 
   var HOTEL_SOURCING_SUBGROUP = {
@@ -2083,7 +2089,9 @@
     FUTURE_GROUP_BUSINESS: "#34d399",
     COMPETITOR_CAPTURE: "#fb7185",
     PARTNERSHIP_OPPORTUNITIES: "#c084fc",
+    GUEST_ROOMS: "#60a5fa",
     LOCAL_CATERING: "#fbbf24",
+    BOTH: "#34d399",
   };
 
   /** Sales Focus — canonical salesActivationCategory lanes (not Priority / Commercial Stage). */
@@ -2452,14 +2460,28 @@
       FUTURE_GROUP_BUSINESS: 0,
       COMPETITOR_CAPTURE: 0,
       PARTNERSHIP_OPPORTUNITIES: 0,
+      GUEST_ROOMS: 0,
       LOCAL_CATERING: 0,
+      BOTH: 0,
       sourcingOpen: 0,
       sourcingUnconfirmed: 0,
     };
     (opportunities || []).forEach(function (o) {
-      if (isExcludedFromSalesFilterInventory(o)) return;
-      counts[""] += 1;
       var keys = salesOpportunityKeysOf(o);
+      // Commercial demand-type chips (Guest Rooms / Catering / Both) remain
+      // countable even when a row is excluded from other sales browse chips.
+      var demandTypeOnly = {
+        GUEST_ROOMS: true,
+        LOCAL_CATERING: true,
+        BOTH: true,
+      };
+      if (isExcludedFromSalesFilterInventory(o)) {
+        keys.forEach(function (k) {
+          if (demandTypeOnly[k] && counts[k] != null) counts[k] += 1;
+        });
+        return;
+      }
+      counts[""] += 1;
       keys.forEach(function (k) {
         if (counts[k] != null) counts[k] += 1;
       });
@@ -3853,8 +3875,8 @@
   };
 
   var REVENUE_STREAM_ICON_LABEL = {
-    guestrooms: "Guestrooms",
-    eventFnb: "Meetings, Events & Catering",
+    guestrooms: "Guest Rooms",
+    eventFnb: "Local Catering",
   };
 
   /** Lucide-compatible bed-double path set (24×24, stroke currentColor). */
@@ -5100,9 +5122,19 @@
         swatch: SALES_OPPORTUNITY_SWATCH.PARTNERSHIP_OPPORTUNITIES,
       },
       {
+        value: "GUEST_ROOMS",
+        label: SALES_OPPORTUNITY_FILTER_LABEL.GUEST_ROOMS,
+        swatch: SALES_OPPORTUNITY_SWATCH.GUEST_ROOMS,
+      },
+      {
         value: "LOCAL_CATERING",
         label: SALES_OPPORTUNITY_FILTER_LABEL.LOCAL_CATERING,
         swatch: SALES_OPPORTUNITY_SWATCH.LOCAL_CATERING,
+      },
+      {
+        value: "BOTH",
+        label: SALES_OPPORTUNITY_FILTER_LABEL.BOTH,
+        swatch: SALES_OPPORTUNITY_SWATCH.BOTH,
       },
     ];
     var chips = presets

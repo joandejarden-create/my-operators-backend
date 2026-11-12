@@ -10,6 +10,7 @@ import {
 import {
   loadHotelOpportunityDoc,
   FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256,
+  COMMERCIAL_DEMAND_TYPE_CLASSIFIED_59_ROW_SHA256,
   ACCEPTABLE_59_ROW_SHA256S,
   BETHESDA_PROTECTED_SCALING_IDS,
 } from "../lib/group-demand-intelligence/research/gdi-hotel-store-integrity-guard-v1.js";
@@ -24,7 +25,13 @@ assert.ok(FINAL_FACTUAL_FIELD_PATCHES.length >= 4);
 
 const store = loadHotelOpportunityDoc("recLuxvwwxID7U2B8");
 assert.ok(ACCEPTABLE_59_ROW_SHA256S.includes(store.sha256));
-assert.equal(store.sha256, FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256);
+assert.ok(
+  [
+    FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256,
+    COMMERCIAL_DEMAND_TYPE_CLASSIFIED_59_ROW_SHA256,
+  ].includes(store.sha256),
+  `unexpected store sha ${store.sha256}`,
+);
 assert.equal(store.count, 59);
 for (const id of BETHESDA_PROTECTED_SCALING_IDS) {
   assert.ok(store.ids.includes(id));
