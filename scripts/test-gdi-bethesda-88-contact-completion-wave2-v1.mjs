@@ -19,6 +19,7 @@ import {
   loadHotelOpportunityDoc,
   CANONICAL_12_CONTACT_PATCHED_59_ROW_SHA256,
   WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256,
+  FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256,
   ACCEPTABLE_59_ROW_SHA256S,
   BETHESDA_PROTECTED_SCALING_IDS,
 } from "../lib/group-demand-intelligence/research/gdi-hotel-store-integrity-guard-v1.js";
@@ -29,6 +30,7 @@ assert.ok(
   [
     CANONICAL_12_CONTACT_PATCHED_59_ROW_SHA256,
     WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256,
+  FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256,
   ].includes(storeBefore.sha256)
 );
 
@@ -57,8 +59,11 @@ assert.equal(acvnuSnap.hasDirectEmail, false);
 assert.equal(acvnuSnap.coverage, "B_NAMED_PLUS_ORG_ROUTE");
 assert.match(String(acvnuSnap.orgEmail || acvnuSnap.orgRoute), /info@acvnu\.org/i);
 
-// Live four-ID apply already on WAVE2_FOUR store
-if (storeBefore.sha256 === WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256) {
+// Live four-ID apply already on WAVE2_FOUR or later FINAL remediated store
+if (
+  storeBefore.sha256 === WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256 ||
+  storeBefore.sha256 === FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256
+) {
   for (const id of WAVE2_FOUNDER_APPROVED_CANONICAL_IDS) {
     const row = storeBefore.opportunities.find((o) => o.id === id);
     assert.ok(extractContactSnapshot(row).named, `expected live named ${id}`);
@@ -67,11 +72,21 @@ if (storeBefore.sha256 === WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256) {
     assert.equal(row.publicationApproved, false);
     assert.equal(row.approvedContactUpdate?.wave, "wave2_20261112");
   }
-  assert.equal(
-    storeBefore.opportunities.find((o) => o.id === WAVE2_ACVNU_DEFERRED_ID)
-      ?.approvedContactUpdate?.wave,
-    undefined
-  );
+  if (storeBefore.sha256 === WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256) {
+    assert.equal(
+      storeBefore.opportunities.find((o) => o.id === WAVE2_ACVNU_DEFERRED_ID)
+        ?.approvedContactUpdate?.wave,
+      undefined
+    );
+  } else {
+    // Final remediation applied ACVNU corrected contact.
+    assert.equal(
+      extractContactSnapshot(
+        storeBefore.opportunities.find((o) => o.id === WAVE2_ACVNU_DEFERRED_ID)
+      ).name,
+      "JD Foster"
+    );
+  }
 }
 
 // Subset apply without auth must fail
@@ -131,6 +146,7 @@ console.log(
       test: "test-gdi-bethesda-88-contact-completion-wave2-v1",
       storeSha: storeAfter.sha256,
       liveFourApplied: storeAfter.sha256 === WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256,
+  FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256,
       beforeNamed: report.before.raw.named,
       afterProjectedNamed: report.afterProjectedIncludingCanonicalDryRun.raw.named,
       uniqueMissingBefore: report.before.uniqueMissingNamed,
