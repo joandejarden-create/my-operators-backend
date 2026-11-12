@@ -105,9 +105,13 @@ check("non_bethesda_unchanged", () => {
 check("store_hash_unchanged_and_no_write_flag", () => {
   const after = crypto.createHash("sha256").update(fs.readFileSync(oppPath)).digest("hex");
   assert.equal(after, before);
-  assert.equal(
-    before,
-    "fd438549ff030ffc6f219469a526ec9b88ad8a704871fa01784d5650468226ad"
+  // Accept verified backup SHA or post-PR#182 restored live 59-row SHA.
+  assert.ok(
+    [
+      "fd438549ff030ffc6f219469a526ec9b88ad8a704871fa01784d5650468226ad",
+      "fd4539d9dd850c12a3093dd7b4e75039e5db67fadcd5e2c5ae5de09c68d00e44",
+    ].includes(before),
+    `unexpected store sha ${before}`
   );
   assert.equal(manifest.opportunityStore.writesAuthorized, false);
   assert.equal(manifest.opportunityStore.writeApplied, false);
