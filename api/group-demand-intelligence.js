@@ -783,13 +783,86 @@ export async function getGdiOpportunities(req, res) {
           familyErr?.message || familyErr
         );
       }
-      bethesdaUnionMeta = {
-        applied: true,
-        counts: union.counts,
-        commercialEventFamily: familyMeta,
-        storeWrites: false,
-        customerShare: false,
-      };
+      // PRIMARY commercial list (default): exclude DQ, out-of-market archive,
+      // market-intelligence themes, research-pipeline-only, linked/quarantined.
+      // Research/admin ledger: ?view=full|complete|research|archive.
+      try {
+        const {
+          filterOpportunitiesByCommercialSurface,
+          attachCommercialSurfaceDisposition,
+          GDI_LIST_SURFACE_VIEW,
+          summarizeCommercialSurfaceBatch,
+        } = await import(
+          "../lib/group-demand-intelligence/gdi-commercial-surface-disposition-v1.js"
+        );
+        const surfaceViewRaw = String(
+          req.query.surface || req.query.listSurface || "",
+        )
+          .trim()
+          .toLowerCase();
+        let surfaceView = GDI_LIST_SURFACE_VIEW.COMMERCIAL;
+        if (wantFull || surfaceViewRaw === "full" || surfaceViewRaw === "complete") {
+          surfaceView = GDI_LIST_SURFACE_VIEW.FULL;
+        } else if (
+          surfaceViewRaw === "research" ||
+          surfaceViewRaw === GDI_LIST_SURFACE_VIEW.RESEARCH
+        ) {
+          surfaceView = GDI_LIST_SURFACE_VIEW.RESEARCH;
+        } else if (
+          surfaceViewRaw === "archive" ||
+          includeDisqualified ||
+          surfaceViewRaw === GDI_LIST_SURFACE_VIEW.ARCHIVE
+        ) {
+          surfaceView = includeDisqualified && !surfaceViewRaw
+            ? GDI_LIST_SURFACE_VIEW.FULL
+            : surfaceViewRaw === "archive"
+              ? GDI_LIST_SURFACE_VIEW.ARCHIVE
+              : GDI_LIST_SURFACE_VIEW.FULL;
+        }
+        // Default Bethesda auth browse = commercial surface only
+        if (!surfaceViewRaw && !wantFull && !includeDisqualified) {
+          surfaceView = GDI_LIST_SURFACE_VIEW.COMMERCIAL;
+        }
+        const beforeSurfaceRows = opportunities;
+        const beforeSurface = beforeSurfaceRows.length;
+        const surfaceSummary = summarizeCommercialSurfaceBatch(beforeSurfaceRows);
+        opportunities = filterOpportunitiesByCommercialSurface(
+          beforeSurfaceRows,
+          surfaceView,
+        ).map((o) => attachCommercialSurfaceDisposition(o));
+        listScope =
+          surfaceView === GDI_LIST_SURFACE_VIEW.COMMERCIAL
+            ? "BETHESDA_PRIMARY_COMMERCIAL"
+            : surfaceView === GDI_LIST_SURFACE_VIEW.FULL
+              ? listScope
+              : `BETHESDA_SURFACE_${String(surfaceView).toUpperCase()}`;
+        bethesdaUnionMeta = {
+          applied: true,
+          counts: union.counts,
+          commercialEventFamily: familyMeta,
+          commercialSurface: {
+            view: surfaceView,
+            beforeCount: beforeSurface,
+            afterCount: opportunities.length,
+            summary: surfaceSummary,
+          },
+          storeWrites: false,
+          customerShare: false,
+        };
+      } catch (surfaceErr) {
+        console.error(
+          "[gdi] Bethesda commercial surface filter failed",
+          surfaceErr?.message || surfaceErr,
+        );
+        bethesdaUnionMeta = {
+          applied: true,
+          counts: union.counts,
+          commercialEventFamily: familyMeta,
+          storeWrites: false,
+          customerShare: false,
+          surfaceFilterError: String(surfaceErr?.message || surfaceErr),
+        };
+      }
     } else {
       // Inventory visibility (Waterstone): keep DISQUALIFIED for Excluded/history lanes.
       if (!includeDisqualified && !isInventoryVisibilityHotelEnabled(hotelId)) {
