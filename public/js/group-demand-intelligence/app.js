@@ -475,10 +475,55 @@
       ]).then(function (parts) {
         state.flag = parts[0].flag;
         state.summary = parts[1].summary;
-        state.opportunities = parts[2].opportunities || [];
-        state.visibilityWarning = parts[2].visibilityWarning || null;
+        var oppPayload = parts[2] || {};
+        // Fail closed: never treat an unfiltered Bethesda union payload as the
+        // primary commercial list (stale server / filter bypass).
+        var listScope = String(oppPayload.listScope || "");
+        var effectiveSurface = String(
+          oppPayload.effectiveSurface ||
+            (oppPayload.bethesdaInternalUnion &&
+              oppPayload.bethesdaInternalUnion.commercialSurface &&
+              oppPayload.bethesdaInternalUnion.commercialSurface.effectiveSurface) ||
+            ""
+        ).toLowerCase();
+        var isBethesdaUnsafeCommercial =
+          listScope === "BETHESDA_INTERNAL_UNION_88" &&
+          effectiveSurface !== "commercial" &&
+          !String(state.filters && (state.filters.surface || state.filters.listSurface) || "")
+            .trim();
+        if (oppPayload.ok === false) {
+          state.opportunities = [];
+          state.visibilityWarning = {
+            code: oppPayload.error || "COMMERCIAL_SURFACE_FILTER_FAILED",
+            message:
+              oppPayload.message ||
+              "Commercial opportunity list unavailable (filter failed closed).",
+          };
+        } else if (isBethesdaUnsafeCommercial) {
+          state.opportunities = [];
+          state.visibilityWarning = {
+            code: "UNSAFE_BETHESDA_LIST_SCOPE",
+            message:
+              "Commercial list blocked: server returned unfiltered research inventory. Restart the GDI server onto current main.",
+            listScope: listScope,
+            effectiveSurface: effectiveSurface || null,
+            serverBuildSha: oppPayload.serverBuildSha || null,
+          };
+        } else {
+          state.opportunities = oppPayload.opportunities || [];
+          state.visibilityWarning = oppPayload.visibilityWarning || null;
+        }
+        state.listSurfaceMeta = {
+          listScope: listScope || null,
+          requestedSurface: oppPayload.requestedSurface || null,
+          effectiveSurface: effectiveSurface || null,
+          eligibleCount: oppPayload.eligibleCount,
+          excludedCount: oppPayload.excludedCount,
+          serverBuildSha: oppPayload.serverBuildSha || null,
+          sourceOfTruth: oppPayload.sourceOfTruth || null,
+        };
         state.hotelNeedDateConfigV1 =
-          parts[2].hotelNeedDateConfigV1 ||
+          oppPayload.hotelNeedDateConfigV1 ||
           (UI.normalizeHotelNeedDateConfigV1
             ? UI.normalizeHotelNeedDateConfigV1(null, state.hotelId)
             : {

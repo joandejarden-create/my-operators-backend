@@ -765,6 +765,20 @@ export async function getGdiOpportunities(req, res) {
       );
       opportunities = union.opportunities;
       listScope = union.scope || BETHESDA_INTERNAL_LIST_SCOPE;
+      const {
+        filterOpportunitiesByCommercialSurface,
+        attachCommercialSurfaceDisposition,
+        GDI_LIST_SURFACE_VIEW,
+        summarizeCommercialSurfaceBatch,
+        resolveRequestedCommercialSurfaceView,
+        assertPrimaryCommercialHasNoForbiddenIds,
+      } = await import(
+        "../lib/group-demand-intelligence/gdi-commercial-surface-disposition-v1.js"
+      );
+      const requestedSurface = resolveRequestedCommercialSurfaceView(req.query || {});
+      const surfaceView = requestedSurface;
+      const requireFailClosed =
+        surfaceView === GDI_LIST_SURFACE_VIEW.COMMERCIAL;
       // Presentation-only commercial-family collapse: one primary card per
       // underlying event; linked/quarantined research IDs retained for detail.
       let familyMeta = null;
@@ -773,55 +787,47 @@ export async function getGdiOpportunities(req, res) {
           "../lib/group-demand-intelligence/research/bethesda-88-commercial-event-family-v1.js"
         );
         const family = applyBethesdaCommercialEventFamilyPresentation(opportunities, {
-          hideLinkedFromList: view !== "full" && view !== "complete",
+          hideLinkedFromList: surfaceView !== GDI_LIST_SURFACE_VIEW.FULL,
         });
         opportunities = family.opportunities;
         familyMeta = family.counts;
       } catch (familyErr) {
         console.error(
-          "[gdi] Bethesda commercial event-family presentation failed",
-          familyErr?.message || familyErr
+          JSON.stringify({
+            gdi_error: true,
+            route: "getGdiOpportunities",
+            code: "BETHESDA_FAMILY_COLLAPSE_FAILED",
+            hotelId,
+            requestedSurface: surfaceView,
+            message: familyErr?.message || String(familyErr),
+          }),
         );
+        if (requireFailClosed) {
+          return res.status(503).json({
+            ok: false,
+            error: "BETHESDA_FAMILY_COLLAPSE_FAILED",
+            hotelId,
+            requestedSurface: surfaceView,
+            effectiveSurface: null,
+            listScope: null,
+            message:
+              "Commercial opportunity list unavailable: event-family presentation failed closed.",
+            opportunities: [],
+            count: 0,
+          });
+        }
       }
       // PRIMARY commercial list (default): exclude DQ, out-of-market archive,
       // market-intelligence themes, research-pipeline-only, linked/quarantined.
-      // Research/admin ledger: ?view=full|complete|research|archive.
+      // Research/admin ledger requires explicit ?view=full|complete or ?surface=.
+      // NEVER fail open to the unfiltered union on default commercial browse.
       try {
-        const {
-          filterOpportunitiesByCommercialSurface,
-          attachCommercialSurfaceDisposition,
-          GDI_LIST_SURFACE_VIEW,
-          summarizeCommercialSurfaceBatch,
-        } = await import(
-          "../lib/group-demand-intelligence/gdi-commercial-surface-disposition-v1.js"
-        );
-        const surfaceViewRaw = String(
-          req.query.surface || req.query.listSurface || "",
-        )
-          .trim()
-          .toLowerCase();
-        let surfaceView = GDI_LIST_SURFACE_VIEW.COMMERCIAL;
-        if (wantFull || surfaceViewRaw === "full" || surfaceViewRaw === "complete") {
-          surfaceView = GDI_LIST_SURFACE_VIEW.FULL;
-        } else if (
-          surfaceViewRaw === "research" ||
-          surfaceViewRaw === GDI_LIST_SURFACE_VIEW.RESEARCH
+        if (
+          requireFailClosed &&
+          String(process.env.GDI_FORCE_COMMERCIAL_SURFACE_FILTER_FAILURE || "") ===
+            "1"
         ) {
-          surfaceView = GDI_LIST_SURFACE_VIEW.RESEARCH;
-        } else if (
-          surfaceViewRaw === "archive" ||
-          includeDisqualified ||
-          surfaceViewRaw === GDI_LIST_SURFACE_VIEW.ARCHIVE
-        ) {
-          surfaceView = includeDisqualified && !surfaceViewRaw
-            ? GDI_LIST_SURFACE_VIEW.FULL
-            : surfaceViewRaw === "archive"
-              ? GDI_LIST_SURFACE_VIEW.ARCHIVE
-              : GDI_LIST_SURFACE_VIEW.FULL;
-        }
-        // Default Bethesda auth browse = commercial surface only
-        if (!surfaceViewRaw && !wantFull && !includeDisqualified) {
-          surfaceView = GDI_LIST_SURFACE_VIEW.COMMERCIAL;
+          throw new Error("FORCED_COMMERCIAL_SURFACE_FILTER_FAILURE");
         }
         const beforeSurfaceRows = opportunities;
         const beforeSurface = beforeSurfaceRows.length;
@@ -830,6 +836,34 @@ export async function getGdiOpportunities(req, res) {
           beforeSurfaceRows,
           surfaceView,
         ).map((o) => attachCommercialSurfaceDisposition(o));
+        if (requireFailClosed) {
+          const leakCheck = assertPrimaryCommercialHasNoForbiddenIds(opportunities);
+          if (!leakCheck.ok) {
+            console.error(
+              JSON.stringify({
+                gdi_error: true,
+                route: "getGdiOpportunities",
+                code: "COMMERCIAL_SURFACE_FORBIDDEN_LEAK",
+                hotelId,
+                requestedSurface: surfaceView,
+                leakedIds: leakCheck.leakedIds,
+              }),
+            );
+            return res.status(503).json({
+              ok: false,
+              error: "COMMERCIAL_SURFACE_FORBIDDEN_LEAK",
+              hotelId,
+              requestedSurface: surfaceView,
+              effectiveSurface: null,
+              listScope: null,
+              leakedIds: leakCheck.leakedIds,
+              message:
+                "Commercial opportunity list unavailable: forbidden research/archive IDs leaked after filter.",
+              opportunities: [],
+              count: 0,
+            });
+          }
+        }
         listScope =
           surfaceView === GDI_LIST_SURFACE_VIEW.COMMERCIAL
             ? "BETHESDA_PRIMARY_COMMERCIAL"
@@ -841,9 +875,13 @@ export async function getGdiOpportunities(req, res) {
           counts: union.counts,
           commercialEventFamily: familyMeta,
           commercialSurface: {
+            requestedSurface: surfaceView,
+            effectiveSurface: surfaceView,
             view: surfaceView,
             beforeCount: beforeSurface,
             afterCount: opportunities.length,
+            eligibleCount: opportunities.length,
+            excludedCount: Math.max(0, beforeSurface - opportunities.length),
             summary: surfaceSummary,
           },
           storeWrites: false,
@@ -851,9 +889,30 @@ export async function getGdiOpportunities(req, res) {
         };
       } catch (surfaceErr) {
         console.error(
-          "[gdi] Bethesda commercial surface filter failed",
-          surfaceErr?.message || surfaceErr,
+          JSON.stringify({
+            gdi_error: true,
+            route: "getGdiOpportunities",
+            code: "COMMERCIAL_SURFACE_FILTER_FAILED",
+            hotelId,
+            requestedSurface: surfaceView,
+            message: surfaceErr?.message || String(surfaceErr),
+          }),
         );
+        if (requireFailClosed) {
+          return res.status(503).json({
+            ok: false,
+            error: "COMMERCIAL_SURFACE_FILTER_FAILED",
+            hotelId,
+            requestedSurface: surfaceView,
+            effectiveSurface: null,
+            listScope: null,
+            message:
+              "Commercial opportunity list unavailable: surface filter failed closed.",
+            detail: String(surfaceErr?.message || surfaceErr),
+            opportunities: [],
+            count: 0,
+          });
+        }
         bethesdaUnionMeta = {
           applied: true,
           counts: union.counts,
@@ -1023,6 +1082,25 @@ export async function getGdiOpportunities(req, res) {
       };
     }
 
+    const serverBuildSha =
+      process.env.RAILWAY_GIT_COMMIT_SHA ||
+      process.env.GITHUB_SHA ||
+      process.env.COMMIT_SHA ||
+      process.env.GDI_SERVER_BUILD_SHA ||
+      null;
+    const surfaceMeta = bethesdaUnionMeta?.commercialSurface || null;
+    const requestedSurface =
+      surfaceMeta?.requestedSurface ||
+      surfaceMeta?.view ||
+      (wantFull ? "full" : "commercial");
+    const effectiveSurface =
+      surfaceMeta?.effectiveSurface || surfaceMeta?.view || requestedSurface;
+    if (surfaceMeta?.view) {
+      res.setHeader("X-GDI-Effective-Surface", String(effectiveSurface));
+    }
+    if (serverBuildSha) {
+      res.setHeader("X-GDI-Server-Build-Sha", String(serverBuildSha));
+    }
     return res.json({
       ok: true,
       hotelId,
@@ -1032,6 +1110,25 @@ export async function getGdiOpportunities(req, res) {
       view: wantFull ? "full" : "list",
       schemaVersion: wantFull ? null : GDI_OPPORTUNITY_LIST_SCHEMA,
       listScope,
+      requestedSurface,
+      effectiveSurface,
+      eligibleCount:
+        surfaceMeta?.eligibleCount != null
+          ? surfaceMeta.eligibleCount
+          : opportunities.length,
+      excludedCount:
+        surfaceMeta?.excludedCount != null ? surfaceMeta.excludedCount : null,
+      serverBuildSha,
+      sourceOfTruth: isBethesdaInternalUnionHotel(hotelId)
+        ? "BETHESDA_INTERNAL_UNION_88_FS"
+        : "HOTEL_OPPORTUNITY_STORE",
+      storeIdentity: {
+        hotelId,
+        updatedAt: doc.updatedAt || null,
+        opportunityCountInStore: Array.isArray(doc.opportunities)
+          ? doc.opportunities.length
+          : null,
+      },
       opportunities,
       hotelNeedDateConfigV1,
       ...(bethesdaUnionMeta ? { bethesdaInternalUnion: bethesdaUnionMeta } : {}),
