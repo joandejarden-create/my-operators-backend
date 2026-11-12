@@ -48,6 +48,7 @@ import {
   buildWeeklyBrief,
   filterSalespersonView,
   filterCustomerFacingOpportunities,
+  isCustomerFacingOpportunity,
   isGdiTestOrFixtureOpportunity,
   saveFeedbackItem,
   loadFeedback,
@@ -114,6 +115,8 @@ import {
   isBethesda67CustomerPublicationApproved,
   selectBethesdaSalesOpportunityInventory,
   resolveGdiInventoryAudience,
+  assertOpportunityReadableForInventoryAudience,
+  assertHotelScopedSalesTeamInventoryAccess,
   GDI_INVENTORY_AUDIENCE,
   BETHESDA_HOTEL_ID,
   BETHESDA_SALES_TEAM_LIST_SCOPE,
@@ -1382,6 +1385,48 @@ export async function getGdiOpportunityDetail(req, res) {
             hotelId,
             opportunityId,
             customerVisible: opportunity?.customerVisible,
+          }),
+        );
+        return res.status(404).json({
+          ok: false,
+          error: "opportunity_not_found",
+          message:
+            "This opportunity could not be opened. It is not available as a detail record in the current view.",
+          hotelId,
+          opportunityId,
+        });
+      }
+    }
+    // Inventory audience parity with list/CSV: unpublished Bethesda rows require
+    // hotel-scoped sales-team inventory authorization (not pilot-unauth alone
+    // for non-allowlisted hotels / cross-hotel-scoped users / share surfaces).
+    {
+      const inventoryAudience = resolveGdiInventoryAudience(req, { hotelId });
+      const readable = assertOpportunityReadableForInventoryAudience(
+        req,
+        opportunity,
+        {
+          hotelId,
+          opportunityId,
+          inventoryAudience,
+          isCustomerFacing: isCustomerFacingOpportunity(opportunity, {
+            hotelId,
+          }),
+        }
+      );
+      if (!readable.ok) {
+        console.error(
+          JSON.stringify({
+            gdi_error: true,
+            route: "getGdiOpportunityDetail",
+            code: "opportunity_not_found",
+            reason: readable.reason || "INVENTORY_AUDIENCE_DENIED",
+            hotelId,
+            opportunityId,
+            inventoryAudience: readable.audience,
+            salesTeamAccess: assertHotelScopedSalesTeamInventoryAccess(req, {
+              hotelId,
+            }),
           }),
         );
         return res.status(404).json({
