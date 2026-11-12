@@ -16,6 +16,7 @@ import {
   BETHESDA_PROTECTED_SCALING_IDS,
   TITLE_REPAIRED_59_ROW_SHA256,
   CANONICAL_12_CONTACT_PATCHED_59_ROW_SHA256,
+  WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256,
   ACCEPTABLE_59_ROW_SHA256S,
 } from "../lib/group-demand-intelligence/research/gdi-hotel-store-integrity-guard-v1.js";
 import { mergeBethesdaInternalResearchOpportunities } from "../lib/group-demand-intelligence/research/bethesda-internal-research-union-v1.js";
@@ -34,6 +35,7 @@ assert.ok(
   [
     TITLE_REPAIRED_59_ROW_SHA256,
     CANONICAL_12_CONTACT_PATCHED_59_ROW_SHA256,
+    WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256,
   ].includes(storeBefore.sha256)
 );
 

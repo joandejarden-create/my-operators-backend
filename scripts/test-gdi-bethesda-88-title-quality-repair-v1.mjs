@@ -25,6 +25,7 @@ import {
   TITLE_REPAIRED_59_ROW_SHA256,
   WOMANS_CLUB_CONTACT_PATCHED_59_ROW_SHA256,
   CANONICAL_12_CONTACT_PATCHED_59_ROW_SHA256,
+  WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256,
 } from "../lib/group-demand-intelligence/research/gdi-hotel-store-integrity-guard-v1.js";
 import { mergeBethesdaInternalResearchOpportunities } from "../lib/group-demand-intelligence/research/bethesda-internal-research-union-v1.js";
 import { BETHESDA_29_ATTESTED_IDS } from "../lib/group-demand-intelligence/research/bethesda-historical-attestation-bag-v1.js";
@@ -128,9 +129,11 @@ const storeAfter = loadHotelOpportunityDoc("recLuxvwwxID7U2B8");
 assert.equal(storeAfter.sha256, storeBefore.sha256);
 assert.equal(storeAfter.count, 59);
 assert.ok(
-  [TITLE_REPAIRED_59_ROW_SHA256, CANONICAL_12_CONTACT_PATCHED_59_ROW_SHA256].includes(
-    storeAfter.sha256
-  ),
+  [
+    TITLE_REPAIRED_59_ROW_SHA256,
+    CANONICAL_12_CONTACT_PATCHED_59_ROW_SHA256,
+    WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256,
+  ].includes(storeAfter.sha256),
   "store must remain title-repaired baseline or later founder-approved contact-patched SHA"
 );
 assert.ok(
