@@ -15,6 +15,8 @@ import {
   loadHotelOpportunityDoc,
   BETHESDA_PROTECTED_SCALING_IDS,
   TITLE_REPAIRED_59_ROW_SHA256,
+  CANONICAL_12_CONTACT_PATCHED_59_ROW_SHA256,
+  ACCEPTABLE_59_ROW_SHA256S,
 } from "../lib/group-demand-intelligence/research/gdi-hotel-store-integrity-guard-v1.js";
 import { mergeBethesdaInternalResearchOpportunities } from "../lib/group-demand-intelligence/research/bethesda-internal-research-union-v1.js";
 import { evaluateSharedCommercialEligibility } from "../lib/group-demand-intelligence/commercial-eligibility-contract-v1.js";
@@ -27,7 +29,13 @@ import {
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 const storeBefore = loadHotelOpportunityDoc("recLuxvwwxID7U2B8");
-assert.equal(storeBefore.sha256, TITLE_REPAIRED_59_ROW_SHA256);
+assert.ok(ACCEPTABLE_59_ROW_SHA256S.includes(storeBefore.sha256));
+assert.ok(
+  [
+    TITLE_REPAIRED_59_ROW_SHA256,
+    CANONICAL_12_CONTACT_PATCHED_59_ROW_SHA256,
+  ].includes(storeBefore.sha256)
+);
 
 // Rejected Carrie family must not enter dry-run patches.
 for (const id of [
@@ -51,7 +59,8 @@ assert.equal(
   ),
   true
 );
-assert.ok(patches.patches.length >= 10);
+// After founder apply of the 12 PASS patches, remaining dry-run may be empty.
+assert.ok(Array.isArray(patches.patches));
 assert.equal(
   patches.patches.every((p) => p.opportunitiesJsonWriteAuthorized === false),
   true
