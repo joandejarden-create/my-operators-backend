@@ -1,0 +1,144 @@
+{
+  "version": "gdi-original-full-e2e-research-chain-v1",
+  "at": "2026-11-12T05:32:44.110Z",
+  "stages": [
+    "HOTEL_PROFILE",
+    "DISCOVERY",
+    "DEEP_RESEARCH",
+    "CONTACT_RESEARCH",
+    "COMMERCIAL_QUALIFICATION",
+    "SALES_INTELLIGENCE_OUTPUT",
+    "PERSISTENCE_AND_CONTINUATION"
+  ],
+  "hotelIds": [
+    "recLuxvwwxID7U2B8"
+  ],
+  "authorizePaidDiscovery": false,
+  "authorizePaidResearch": false,
+  "budgetCeilingUsd": 0,
+  "authorizationId": null,
+  "paidSpendUsd": 0,
+  "publicationOccurred": false,
+  "airtableWrites": 0,
+  "hotelProfiles": [
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "ok": true,
+      "displayName": "Bethesda Marriott",
+      "city": null
+    }
+  ],
+  "discovery": {
+    "cellCount": 14,
+    "extracted": 40,
+    "costUsd": 0,
+    "freshRetrievalCells": 0,
+    "resumedCells": 0,
+    "paidBudgetRemainingUsd": null
+  },
+  "fairScheduler": {
+    "version": "gdi-segment-hotel-fair-research-scheduler-v1",
+    "totalQueued": 0,
+    "bySegment": {},
+    "firstOccurrenceBySegment": {
+      "associations_conferences_events": -1,
+      "corporate_accounts_scaling": -1,
+      "corporate_meetings_incentives": -1,
+      "government_public_sector": -1,
+      "sports_entertainment": -1,
+      "education_scientific": -1,
+      "projects_infrastructure": -1,
+      "social_special_events": -1,
+      "local_catering_day_meetings": -1,
+      "corporate_celebrations_private_events": -1,
+      "travel_trade_group_intermediaries": -1,
+      "relocation_extended_stay": -1,
+      "preferred_lodging_partnerships": -1,
+      "professional_event_planners": -1
+    },
+    "lateSegmentsCoveredInFirstPass": []
+  },
+  "candidateCapApplied": null,
+  "retainedCandidates": 0,
+  "skippedAlreadyDeepResearched": 0,
+  "processedCount": 0,
+  "blockedCount": 0,
+  "withPresentation": 0,
+  "withContactInvestigation": 0,
+  "commercialResearchCompleteClaimAllowed": false,
+  "fullE2eCompleteClaimAllowed": false,
+  "fullE2eCompleteClaimBlockedReason": "Fixture/zero-cost chain proves module connectivity — live Exa Full E2E requires authorized budget",
+  "processed": [],
+  "budgetManifest": {
+    "version": "gdi-original-full-e2e-research-chain-v1",
+    "at": "2026-11-12T05:32:45.308Z",
+    "authorizationStatus": "NOT_AUTHORIZED",
+    "hotelIds": [
+      "recLuxvwwxID7U2B8"
+    ],
+    "segmentIds": [
+      "associations_conferences_events",
+      "corporate_accounts_scaling",
+      "corporate_meetings_incentives",
+      "government_public_sector",
+      "sports_entertainment",
+      "education_scientific",
+      "projects_infrastructure",
+      "social_special_events",
+      "local_catering_day_meetings",
+      "corporate_celebrations_private_events",
+      "travel_trade_group_intermediaries",
+      "relocation_extended_stay",
+      "preferred_lodging_partnerships",
+      "professional_event_planners"
+    ],
+    "priorLiveSpendUsd": 0.4,
+    "pricingAssumptions": {
+      "discoveryEffort": "medium",
+      "deepResearchEffort": "medium",
+      "discoveryUnitUsd": 0.1,
+      "deepResearchUnitUsd": 0.1,
+      "note": "Exa Agent fixed-effort list prices; auto/max require separate ceilings. $0.10/run is not guaranteed for all operations.",
+      "quoteAsOf": "2026-10-24"
+    },
+    "discovery": {
+      "cells": 14,
+      "runsPerSegment": 2,
+      "plannedRuns": 28,
+      "maxUsd": 2.8,
+      "resumeSkipsCompletedLiveCells": true
+    },
+    "deepResearch": {
+      "estimatedEligibleCandidates": 25,
+      "runsPerCandidate": 1,
+      "plannedRuns": 25,
+      "maxUsd": 2.5,
+      "usesExistingOrsIntegration": true,
+      "module": "deep-research-gdi-integration-v1.runDeepResearchOnExistingGdiOpportunity"
+    },
+    "contactResearch": {
+      "paidSurfe": false,
+      "paidPdl": false,
+      "mode": "public_evidence_and_ors_extraction",
+      "estimatedUsd": 0
+    },
+    "contingencyUsd": 0.79,
+    "hardCeilingUsd": 6.09,
+    "requestedAuthorizationUsd": 6.09,
+    "stopConditions": [
+      "hard_ceiling_reached",
+      "quote_unbounded",
+      "provider_error_budget",
+      "resume_duplicate_live_call_blocked",
+      "founder_revoke"
+    ],
+    "excludes": [
+      "production_airtable_writes",
+      "customer_publication",
+      "share_token_changes",
+      "railway_deploy",
+      "surfe_enrichment"
+    ],
+    "note": "One bounded Full E2E authorization requested — not per-segment micro-approvals. Paid execution must not start until founder authorizes this ceiling."
+  }
+}
