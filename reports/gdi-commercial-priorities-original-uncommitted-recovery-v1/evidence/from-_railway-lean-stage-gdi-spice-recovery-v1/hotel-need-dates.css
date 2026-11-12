@@ -1,0 +1,305 @@
+/**
+ * Hotel Need Dates Management Portal — extends GDI dark navy tokens.
+ */
+
+.hnd-page .hnd-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem 3rem;
+}
+
+.hnd-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.hnd-header h1 {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--gdi-text);
+}
+
+.hnd-header .hnd-sub {
+  margin: 0.35rem 0 0;
+  color: var(--gdi-muted);
+  font-size: 0.9rem;
+}
+
+.hnd-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.hnd-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.hnd-stat {
+  background: var(--gdi-panel);
+  border: 1px solid var(--gdi-border);
+  border-radius: var(--gdi-radius-sm);
+  padding: 0.9rem 1rem;
+}
+
+.hnd-stat .label {
+  display: block;
+  color: var(--gdi-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.35rem;
+}
+
+.hnd-stat .value {
+  font-size: 1.25rem;
+  font-weight: 650;
+  color: var(--gdi-text);
+}
+
+.hnd-section {
+  margin-bottom: 1.5rem;
+}
+
+.hnd-section h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+  color: var(--gdi-text);
+}
+
+.hnd-month-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.hnd-month {
+  background: var(--gdi-panel);
+  border: 1px solid var(--gdi-border);
+  border-radius: var(--gdi-radius-sm);
+  padding: 0.65rem 0.7rem;
+  text-align: left;
+  color: var(--gdi-text);
+  cursor: pointer;
+  min-height: 4.25rem;
+}
+
+.hnd-month:hover,
+.hnd-month:focus-visible {
+  border-color: var(--gdi-accent);
+  outline: none;
+}
+
+.hnd-month.is-active {
+  box-shadow: inset 0 0 0 1px var(--gdi-accent);
+  background: var(--gdi-accent-soft);
+}
+
+.hnd-month .m-name {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.hnd-month .m-meta {
+  margin-top: 0.25rem;
+  font-size: 0.72rem;
+  color: var(--gdi-muted);
+}
+
+.hnd-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.hnd-card {
+  background: var(--gdi-panel);
+  border: 1px solid var(--gdi-border);
+  border-radius: var(--gdi-radius);
+  padding: 1rem 1.1rem;
+}
+
+.hnd-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.65rem;
+}
+
+.hnd-card-head h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.hnd-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.hnd-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border: 1px solid var(--gdi-border);
+  color: var(--gdi-text);
+  background: transparent;
+}
+
+.hnd-pill.priority-high { border-color: var(--gdi-high); color: var(--gdi-high); }
+.hnd-pill.priority-medium { border-color: var(--gdi-med); color: var(--gdi-med); }
+.hnd-pill.status-filled { border-color: var(--gdi-muted); }
+.hnd-pill.status-active { border-color: var(--gdi-accent); color: var(--gdi-accent); }
+.hnd-pill.status-partial { border-color: var(--gdi-med); color: var(--gdi-med); }
+.hnd-pill.status-test { border-color: var(--secondary--color-2); color: var(--secondary--color-2); }
+
+.hnd-card-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.45rem 0.75rem;
+  font-size: 0.85rem;
+  color: var(--gdi-muted);
+  margin-bottom: 0.75rem;
+}
+
+.hnd-card-meta strong {
+  color: var(--gdi-text);
+  font-weight: 560;
+}
+
+.hnd-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.hnd-empty {
+  border: 1px dashed var(--gdi-border);
+  border-radius: var(--gdi-radius);
+  padding: 1.5rem;
+  color: var(--gdi-muted);
+  text-align: center;
+}
+
+.hnd-banner {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--gdi-radius-sm);
+  border: 1px solid var(--gdi-border);
+  background: var(--gdi-panel-2);
+  color: var(--gdi-muted);
+  font-size: 0.85rem;
+}
+
+.hnd-banner.warn {
+  border-color: var(--gdi-med);
+  color: var(--gdi-text);
+}
+
+.hnd-banner.error {
+  border-color: var(--gdi-danger);
+  color: var(--gdi-text);
+}
+
+.hnd-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.hnd-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+  color: var(--gdi-muted);
+}
+
+.hnd-form input,
+.hnd-form select,
+.hnd-form textarea {
+  background: var(--neutral--800);
+  border: 1px solid var(--gdi-border);
+  border-radius: 8px;
+  color: var(--gdi-text);
+  padding: 0.55rem 0.65rem;
+  font: inherit;
+}
+
+.hnd-form textarea { min-height: 72px; resize: vertical; }
+
+.hnd-check-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.35rem 0.75rem;
+}
+
+.hnd-check-grid label {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--gdi-text);
+}
+
+.hnd-month-checks {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.hnd-match-list {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+}
+
+.hnd-match-list li {
+  border-top: 1px solid var(--gdi-border);
+  padding: 0.55rem 0;
+  font-size: 0.85rem;
+}
+
+.hnd-history {
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--gdi-muted);
+}
+
+.hnd-history details summary {
+  cursor: pointer;
+  color: var(--gdi-text);
+}
+
+.hnd-nav-link {
+  color: var(--gdi-accent);
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.hnd-nav-link:hover { text-decoration: underline; }
+
+@media (max-width: 900px) {
+  .hnd-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hnd-month-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .hnd-month-checks { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px) {
+  .hnd-summary { grid-template-columns: 1fr; }
+  .hnd-month-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hnd-check-grid,
+  .hnd-month-checks { grid-template-columns: 1fr 1fr; }
+}
