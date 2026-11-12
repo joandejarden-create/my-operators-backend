@@ -960,6 +960,7 @@
     }
 
     return {
+      root: root,
       refresh: refresh,
       setHotelId: setHotelId,
       destroy: destroy,
@@ -973,6 +974,37 @@
     _active: null,
     mount: function (container, options) {
       options = options || {};
+      var hotelId = String(options.hotelId || "").trim();
+      // Reuse an already-mounted controller for the same hotel to avoid
+      // calendar rebuild + network refetch on every tab switch.
+      if (
+        api._active &&
+        api._active.getState &&
+        api._active.getState().hotelId === hotelId &&
+        api._active.root === container
+      ) {
+        return api._active;
+      }
+      if (
+        api._active &&
+        api._active.getState &&
+        api._active.getState().hotelId === hotelId &&
+        container &&
+        api._active.root !== container
+      ) {
+        // Shell re-created the host node but hotel data is still valid —
+        // rebind root without destroying loaded dashboard state.
+        try {
+          var prev = api._active.root;
+          if (prev && prev !== container && prev.childNodes.length) {
+            while (prev.firstChild) container.appendChild(prev.firstChild);
+          }
+          api._active.root = container;
+        } catch (e) {
+          /* fall through to fresh mount */
+        }
+        if (api._active.root === container) return api._active;
+      }
       if (api._active) {
         try {
           api._active.destroy();
@@ -984,10 +1016,12 @@
         loading: options.loading || null,
         hostDocument: options.hostDocument || document,
         readOnly: options.readOnly === true,
-        hotelId: options.hotelId,
+        hotelId: hotelId,
         year: options.year,
         isolation: options.isolation,
       });
+      // Expose root for keep-alive rebind checks.
+      ctrl.root = container;
       api._active = ctrl;
       ctrl.refresh();
       return ctrl;
