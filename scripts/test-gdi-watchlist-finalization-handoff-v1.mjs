@@ -141,7 +141,7 @@ await checkAsync(
 );
 
 await checkAsync(
-  "knowbe4_watchlist_does_not_artificially_become_publication_ready",
+  "knowbe4_verified_office_trigger_may_qualify_without_confirmed_booking",
   async () => {
     const orsPath = path.join(
       ROOT,
@@ -154,10 +154,18 @@ await checkAsync(
     const elig = evaluateSharedCommercialEligibility(cleared.opportunity, {
       hotel: { hotelId: "recLuxvwwxID7U2B8", displayName: "Bethesda Marriott" },
     });
-    // Historical pool: strong contacts, speculative demand — must NOT force publication-ready.
-    assert.equal(elig.salesReady, false);
-    assert.ok(elig.gaps.includes("MISSING_HOTEL_DEMAND_THESIS"));
+    // Proactive CI: verified Arlington office trigger + relevant named entry point
+    // may qualify without a confirmed hotel booking / RFP / room block.
+    assert.equal(elig.salesReady, true);
+    assert.ok(!elig.gaps.includes("MISSING_HOTEL_DEMAND_THESIS"));
     assert.ok(!cleared.remaining.includes("named_buyer_not_verified"));
+    const readiness = evaluatePublicationReviewReadiness(cleared.opportunity, {
+      eligibilityResult: elig,
+      hotel: { hotelId: "recLuxvwwxID7U2B8", displayName: "Bethesda Marriott" },
+    });
+    assert.equal(readiness.publicationReviewReady, true);
+    assert.equal(readiness.customerPublicationReady, false);
+    assert.equal(readiness.founderAuthorizationRequired, true);
   }
 );
 
