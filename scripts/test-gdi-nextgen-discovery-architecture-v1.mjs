@@ -184,12 +184,15 @@ async function main() {
   );
   assert.ok(sportsRuns.every((m) => (m.metrics?.rejected || 0) >= 1));
   assert.ok(
-    sportsRuns.every((m) =>
-      isSyntheticOrFixtureEvidenceClass(
-        m.discoveryEvidenceClass || m.discoverMeta?.discoveryEvidenceClass
-      )
-    ),
-    "cache pilot sports output must remain labeled synthetic fixture"
+    sportsRuns.every((m) => {
+      const cls =
+        m.discoveryEvidenceClass || m.discoverMeta?.discoveryEvidenceClass;
+      return (
+        cls === DISCOVERY_EVIDENCE_CLASS.HISTORICAL_RESEARCH_REPLAY ||
+        isSyntheticOrFixtureEvidenceClass(cls)
+      );
+    }),
+    "sports output must be historical public replay or synthetic fixture — never unlabeled live-paid"
   );
 
   // 8) Zero-paid Government Procurement historical path

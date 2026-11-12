@@ -68,6 +68,9 @@ regexes = [
   # GDI Parallel fixture/report identity keys (org_slug__YYYY-MM-DD), not API secrets.
   '''(?i)"dedupeKey"\s*:''',
   '''(?i)"accountTripOccurrenceKey"\s*:''',
+  # Hunter→Exa orchestration report IDs (`disc_<hex>`), not provider API secrets.
+  # False positive: generic-api-key on "discoveryKey" in zero-paid orch JSON (PR #225).
+  '''(?i)"discoveryKey"\s*:''',
 
   # Proven placeholders / metadata false positives.
   '''(?i)Authorization:\s*Bearer\s+YOUR_TOKEN''',

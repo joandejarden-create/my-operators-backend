@@ -1,0 +1,924 @@
+{
+  "schema": "gdi-nextgen-bounded-paid-research-pilots-v1",
+  "createdAt": "2026-11-12T21:45:53.564Z",
+  "execute": false,
+  "paidAuthorized": false,
+  "hotelId": "recLuxvwwxID7U2B8",
+  "pilots": [
+    {
+      "hunterId": "government_procurement",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "budgetUsdCeiling": 3,
+      "execute": false,
+      "awaitingFounderAuthorization": true,
+      "depthSummary": {
+        "L1": 0,
+        "L2": 0,
+        "L3": 1,
+        "skipPaid": 0,
+        "deferredPaidPilot": 0,
+        "plannedSpendUsd": 4
+      },
+      "exaQuote": {
+        "bounded": true,
+        "maxUsd": 0.1,
+        "assumption": "exa agent fixed effort=medium (contact enrichment not included)",
+        "sources": [
+          "https://exa.ai/docs/reference/agent-api-guide",
+          "https://exa.ai/docs/admin/pricing"
+        ],
+        "asOf": "2026-10-24"
+      },
+      "exaQuestions": [],
+      "apifyPlan": {
+        "role": "SUPPLEMENTAL",
+        "actors": [
+          {
+            "id": "apify/website-content-crawler",
+            "actorId": "apify/website-content-crawler",
+            "title": "Website Content Crawler",
+            "version": null,
+            "sourceType": "WEB_EXTRACTION",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": 4.61,
+            "perRunCostHint": "Free Actor fee; charged for Apify platform compute/usage only",
+            "enabled": true,
+            "replaceable": true
+          },
+          {
+            "id": "apify/google-search-scraper",
+            "actorId": "apify/google-search-scraper",
+            "title": "Google Search Results Scraper",
+            "version": null,
+            "sourceType": "SEARCH_SUPPLEMENT",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": 4.65,
+            "perRunCostHint": "SERP page ~$0.0025 + optional AI/ads/leads add-ons (Bronze; verify pricing page)",
+            "enabled": true,
+            "replaceable": true
+          }
+        ],
+        "validations": [
+          {
+            "actorId": "apify/website-content-crawler",
+            "validation": {
+              "ok": true,
+              "actor": {
+                "actorId": "apify/website-content-crawler",
+                "title": "Website Content Crawler",
+                "publisher": "apify",
+                "publisherType": "Apify",
+                "storeUrl": "https://apify.com/apify/website-content-crawler",
+                "enabled": true,
+                "discoveryFamilies": [
+                  "WEB_EXTRACTION"
+                ],
+                "demandSegments": [
+                  "associations_conferences_events",
+                  "education_scientific",
+                  "government_public_sector",
+                  "preferred_lodging_partnerships",
+                  "corporate_accounts_scaling"
+                ],
+                "geoFilter": false,
+                "dateFilter": false,
+                "pricingModel": "platform_usage",
+                "pricingSummary": "Free Actor fee; charged for Apify platform compute/usage only",
+                "monthlyUsers": 14050,
+                "rating": 4.61,
+                "inputFields": [
+                  "startUrls",
+                  "maxCrawlPages",
+                  "maxCrawlDepth",
+                  "crawlerType"
+                ],
+                "expectedOutput": "Clean markdown/text from target association/venue/corporate pages",
+                "reliabilityNote": "Apify official; best as targeted extraction after discovery, not broad discovery.",
+                "tosNotes": [
+                  "Respect robots.txt; crawl only authorized public pages."
+                ],
+                "verificationStatus": "VERIFIED_STORE"
+              },
+              "estimatedMaxUsd": 0.3
+            },
+            "inRunnableRegistry": true
+          },
+          {
+            "actorId": "apify/google-search-scraper",
+            "validation": {
+              "ok": true,
+              "actor": {
+                "actorId": "apify/google-search-scraper",
+                "title": "Google Search Results Scraper",
+                "publisher": "apify",
+                "publisherType": "Apify",
+                "storeUrl": "https://apify.com/apify/google-search-scraper",
+                "enabled": true,
+                "discoveryFamilies": [
+                  "SEARCH_SUPPLEMENT"
+                ],
+                "demandSegments": [
+                  "associations_conferences_events",
+                  "corporate_meetings_incentives",
+                  "corporate_accounts_scaling",
+                  "education_scientific",
+                  "government_public_sector"
+                ],
+                "geoFilter": true,
+                "dateFilter": false,
+                "pricingModel": "pay_per_event",
+                "pricingSummary": "SERP page ~$0.0025 + optional AI/ads/leads add-ons (Bronze; verify pricing page)",
+                "monthlyUsers": 26079,
+                "rating": 4.65,
+                "inputFields": [
+                  "queries",
+                  "maxPagesPerQuery",
+                  "countryCode",
+                  "searchLanguage"
+                ],
+                "expectedOutput": "SERP organic results for association calendars / programme discovery queries",
+                "reliabilityNote": "Supplemental to Exa; do not replace Exa Agent discovery.",
+                "tosNotes": [
+                  "Google ToS; use bounded pages; prefer Exa for reasoning-heavy discovery."
+                ],
+                "verificationStatus": "VERIFIED_STORE"
+              },
+              "estimatedMaxUsd": 0.135
+            },
+            "inRunnableRegistry": true
+          }
+        ]
+      },
+      "gatesRequired": [
+        "founder_budget_authorization",
+        "GDI_EXA_AGENT_LIVE=1 for Exa",
+        "GDI_APIFY_LIVE=1 + APIFY_TOKEN for Apify",
+        "assertHunterRunSafe must be extended to allow paid (currently fail-closed)",
+        "per-hunter cost ceiling",
+        "dedupe against inventory before spend"
+      ]
+    },
+    {
+      "hunterId": "corporate_meeting_triggers",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "budgetUsdCeiling": 3,
+      "execute": false,
+      "awaitingFounderAuthorization": true,
+      "depthSummary": {
+        "L1": 0,
+        "L2": 0,
+        "L3": 0,
+        "skipPaid": 0,
+        "deferredPaidPilot": 0,
+        "plannedSpendUsd": 0
+      },
+      "exaQuote": {
+        "bounded": true,
+        "maxUsd": 0.1,
+        "assumption": "exa agent fixed effort=medium (contact enrichment not included)",
+        "sources": [
+          "https://exa.ai/docs/reference/agent-api-guide",
+          "https://exa.ai/docs/admin/pricing"
+        ],
+        "asOf": "2026-10-24"
+      },
+      "exaQuestions": [],
+      "apifyPlan": {
+        "role": "SUPPLEMENTAL",
+        "actors": [
+          {
+            "id": "parseforge/eventbrite-scraper",
+            "actorId": "parseforge/eventbrite-scraper",
+            "title": "Eventbrite Event Scraper",
+            "version": null,
+            "sourceType": "PUBLISHED_EVENTS",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": 5,
+            "perRunCostHint": "Bronze tier ~$0.00433/result + optional organizer ~$0.0029 + actor start ~$0.00583 (tier-dependent; verify at pricing URL)",
+            "enabled": true,
+            "replaceable": true
+          },
+          {
+            "id": "aitorsm/eventbrite",
+            "actorId": "aitorsm/eventbrite",
+            "title": "Eventbrite Scraper — Event & Organizer Data",
+            "version": null,
+            "sourceType": "PUBLISHED_EVENTS",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": "PREFERRED for Waterstone Aug–Oct 2027 dated discovery — supports absolute date range. Higher per-result cost than parseforge/solidcode.",
+            "perRunCostHint": "result ~$0.015 + optional organizer enrichment ~$0.015 + start ~$0.00005 (Bronze; higher than parseforge)",
+            "enabled": true,
+            "replaceable": true
+          },
+          {
+            "id": "solidcode/eventbrite-scraper",
+            "actorId": "solidcode/eventbrite-scraper",
+            "title": "Eventbrite Scraper",
+            "version": null,
+            "sourceType": "PUBLISHED_EVENTS",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": 5,
+            "perRunCostHint": "result ~$0.00113 + start ~$0.00005 (Bronze) — lowest Eventbrite unit cost among verified options",
+            "enabled": true,
+            "replaceable": true
+          },
+          {
+            "id": "memo23/eventbrite-scraper",
+            "actorId": "memo23/eventbrite-scraper",
+            "title": "Eventbrite, Lu.ma & Meetup Events + Organizer Leads",
+            "version": null,
+            "sourceType": "PUBLISHED_EVENTS",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": 5,
+            "perRunCostHint": "Actor start ~$0.025 + result ~$0.00099 + optional additional data ~$0.001 (Bronze; tier-dependent)",
+            "enabled": true,
+            "replaceable": true
+          },
+          {
+            "id": "filip_cicvarek/meetup-scraper",
+            "actorId": "filip_cicvarek/meetup-scraper",
+            "title": "Meetup Scraper",
+            "version": null,
+            "sourceType": "PUBLISHED_EVENTS",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": 4.93,
+            "perRunCostHint": "~$0.0008 per scraped event (Bronze; tier-dependent)",
+            "enabled": true,
+            "replaceable": true
+          },
+          {
+            "id": "apify/google-search-scraper",
+            "actorId": "apify/google-search-scraper",
+            "title": "Google Search Results Scraper",
+            "version": null,
+            "sourceType": "SEARCH_SUPPLEMENT",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": 4.65,
+            "perRunCostHint": "SERP page ~$0.0025 + optional AI/ads/leads add-ons (Bronze; verify pricing page)",
+            "enabled": true,
+            "replaceable": true
+          }
+        ],
+        "validations": [
+          {
+            "actorId": "parseforge/eventbrite-scraper",
+            "validation": {
+              "ok": true,
+              "actor": {
+                "actorId": "parseforge/eventbrite-scraper",
+                "title": "Eventbrite Event Scraper",
+                "publisher": "parseforge",
+                "publisherType": "community",
+                "storeUrl": "https://apify.com/parseforge/eventbrite-scraper",
+                "enabled": true,
+                "discoveryFamilies": [
+                  "PUBLISHED_EVENTS"
+                ],
+                "demandSegments": [
+                  "associations_conferences_events",
+                  "corporate_meetings_incentives",
+                  "education_scientific",
+                  "social_special_events",
+                  "local_catering_day_meetings"
+                ],
+                "geoFilter": true,
+                "dateFilter": true,
+                "pricingModel": "pay_per_event",
+                "pricingSummary": "Bronze tier ~$0.00433/result + optional organizer ~$0.0029 + actor start ~$0.00583 (tier-dependent; verify at pricing URL)",
+                "monthlyUsers": 81,
+                "rating": 5,
+                "inputFields": [
+                  "maxItems",
+                  "startUrl",
+                  "city",
+                  "category",
+                  "date",
+                  "format",
+                  "price",
+                  "online",
+                  "retrieveOrganizerData"
+                ],
+                "expectedOutput": "Event title, date, venue, price; optional organizer",
+                "reliabilityNote": "High recent usage vs peers. DATE LIMITATION: input.date only supports relative windows (today…next-month) — NOT suitable alone for Aug–Oct 2027 Waterstone need dates; use aitorsm/eventbrite or solidcode/eventbrite-scraper for absolute YYYY-MM-DD ranges.",
+                "tosNotes": [
+                  "Scraping Eventbrite may be subject to Eventbrite ToS and robots restrictions — legal review before production scale."
+                ],
+                "verificationStatus": "VERIFIED_STORE"
+              },
+              "estimatedMaxUsd": 0.1185
+            },
+            "inRunnableRegistry": true
+          },
+          {
+            "actorId": "aitorsm/eventbrite",
+            "validation": {
+              "ok": true,
+              "actor": {
+                "actorId": "aitorsm/eventbrite",
+                "title": "Eventbrite Scraper — Event & Organizer Data",
+                "publisher": "aitorsm",
+                "publisherType": "community",
+                "storeUrl": "https://apify.com/aitorsm/eventbrite",
+                "enabled": true,
+                "discoveryFamilies": [
+                  "PUBLISHED_EVENTS"
+                ],
+                "demandSegments": [
+                  "associations_conferences_events",
+                  "corporate_meetings_incentives",
+                  "education_scientific",
+                  "social_special_events",
+                  "local_catering_day_meetings",
+                  "corporate_celebrations_private_events"
+                ],
+                "geoFilter": true,
+                "dateFilter": true,
+                "pricingModel": "pay_per_event",
+                "pricingSummary": "result ~$0.015 + optional organizer enrichment ~$0.015 + start ~$0.00005 (Bronze; higher than parseforge)",
+                "monthlyUsers": 86,
+                "rating": null,
+                "inputFields": [
+                  "country",
+                  "city",
+                  "category",
+                  "keyword",
+                  "price",
+                  "startDate",
+                  "endDate",
+                  "maxResults",
+                  "enrichOrganizers"
+                ],
+                "expectedOutput": "Eventbrite events with absolute startDate/endDate filter support (YYYY-MM-DD)",
+                "reliabilityNote": "PREFERRED for Waterstone Aug–Oct 2027 dated discovery — supports absolute date range. Higher per-result cost than parseforge/solidcode.",
+                "tosNotes": [
+                  "Eventbrite ToS — constrain volume; public listings only."
+                ],
+                "verificationStatus": "VERIFIED_STORE"
+              },
+              "estimatedMaxUsd": 0.135
+            },
+            "inRunnableRegistry": true
+          },
+          {
+            "actorId": "solidcode/eventbrite-scraper",
+            "validation": {
+              "ok": true,
+              "actor": {
+                "actorId": "solidcode/eventbrite-scraper",
+                "title": "Eventbrite Scraper",
+                "publisher": "solidcode",
+                "publisherType": "community",
+                "storeUrl": "https://apify.com/solidcode/eventbrite-scraper",
+                "enabled": true,
+                "discoveryFamilies": [
+                  "PUBLISHED_EVENTS"
+                ],
+                "demandSegments": [
+                  "associations_conferences_events",
+                  "corporate_meetings_incentives",
+                  "social_special_events",
+                  "education_scientific"
+                ],
+                "geoFilter": true,
+                "dateFilter": true,
+                "pricingModel": "pay_per_event",
+                "pricingSummary": "result ~$0.00113 + start ~$0.00005 (Bronze) — lowest Eventbrite unit cost among verified options",
+                "monthlyUsers": 23,
+                "rating": 5,
+                "inputFields": [
+                  "eventUrls",
+                  "country",
+                  "city",
+                  "category",
+                  "keyword",
+                  "startDate",
+                  "endDate",
+                  "includeSeriesDates",
+                  "eventFormat",
+                  "priceFilter",
+                  "maxResults"
+                ],
+                "expectedOutput": "Events with GPS venue, organizer, absolute date range; optional series dates",
+                "reliabilityNote": "Good absolute date support for 2027 pilot; lower monthly users — validate output quality in first live run.",
+                "tosNotes": [
+                  "Eventbrite ToS; autoUpgradeNetwork may increase proxy cost if blocked."
+                ],
+                "verificationStatus": "VERIFIED_STORE"
+              },
+              "estimatedMaxUsd": 0.135
+            },
+            "inRunnableRegistry": true
+          }
+        ]
+      },
+      "gatesRequired": [
+        "founder_budget_authorization",
+        "GDI_EXA_AGENT_LIVE=1 for Exa",
+        "GDI_APIFY_LIVE=1 + APIFY_TOKEN for Apify",
+        "assertHunterRunSafe must be extended to allow paid (currently fail-closed)",
+        "per-hunter cost ceiling",
+        "dedupe against inventory before spend"
+      ]
+    },
+    {
+      "hunterId": "project_workforce",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "budgetUsdCeiling": 3,
+      "execute": false,
+      "awaitingFounderAuthorization": true,
+      "depthSummary": {
+        "L1": 0,
+        "L2": 0,
+        "L3": 0,
+        "skipPaid": 0,
+        "deferredPaidPilot": 0,
+        "plannedSpendUsd": 0
+      },
+      "exaQuote": {
+        "bounded": true,
+        "maxUsd": 0.1,
+        "assumption": "exa agent fixed effort=medium (contact enrichment not included)",
+        "sources": [
+          "https://exa.ai/docs/reference/agent-api-guide",
+          "https://exa.ai/docs/admin/pricing"
+        ],
+        "asOf": "2026-10-24"
+      },
+      "exaQuestions": [],
+      "apifyPlan": {
+        "role": "NONE",
+        "actors": [],
+        "validations": []
+      },
+      "gatesRequired": [
+        "founder_budget_authorization",
+        "GDI_EXA_AGENT_LIVE=1 for Exa",
+        "GDI_APIFY_LIVE=1 + APIFY_TOKEN for Apify",
+        "assertHunterRunSafe must be extended to allow paid (currently fail-closed)",
+        "per-hunter cost ceiling",
+        "dedupe against inventory before spend"
+      ]
+    },
+    {
+      "hunterId": "sports_housing",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "budgetUsdCeiling": 3,
+      "execute": false,
+      "awaitingFounderAuthorization": true,
+      "depthSummary": {
+        "L1": 0,
+        "L2": 0,
+        "L3": 0,
+        "skipPaid": 0,
+        "deferredPaidPilot": 0,
+        "plannedSpendUsd": 0
+      },
+      "exaQuote": {
+        "bounded": true,
+        "maxUsd": 0.1,
+        "assumption": "exa agent fixed effort=medium (contact enrichment not included)",
+        "sources": [
+          "https://exa.ai/docs/reference/agent-api-guide",
+          "https://exa.ai/docs/admin/pricing"
+        ],
+        "asOf": "2026-10-24"
+      },
+      "exaQuestions": [],
+      "apifyPlan": {
+        "role": "PRIMARY",
+        "actors": [
+          {
+            "id": "apify/facebook-events-scraper",
+            "actorId": "apify/facebook-events-scraper",
+            "title": "Facebook Events Scraper",
+            "version": null,
+            "sourceType": "PUBLISHED_EVENTS",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": 4.97,
+            "perRunCostHint": "~$0.01 per event + $0.001 actor start (Bronze)",
+            "enabled": true,
+            "replaceable": true
+          },
+          {
+            "id": "hgservices/apify-actor-espn",
+            "actorId": "hgservices/apify-actor-espn",
+            "title": "ESPN Sports Scores & Schedules",
+            "version": null,
+            "sourceType": "SPORTS_ENTERTAINMENT",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": 5,
+            "perRunCostHint": "Actor start ~$0.00005 + result ~$0.001 (Bronze)",
+            "enabled": true,
+            "replaceable": true
+          }
+        ],
+        "validations": [
+          {
+            "actorId": "apify/facebook-events-scraper",
+            "validation": {
+              "ok": true,
+              "actor": {
+                "actorId": "apify/facebook-events-scraper",
+                "title": "Facebook Events Scraper",
+                "publisher": "apify",
+                "publisherType": "Apify",
+                "storeUrl": "https://apify.com/apify/facebook-events-scraper",
+                "enabled": true,
+                "discoveryFamilies": [
+                  "PUBLISHED_EVENTS",
+                  "SPORTS_ENTERTAINMENT",
+                  "WEDDINGS_SOCIAL"
+                ],
+                "demandSegments": [
+                  "associations_conferences_events",
+                  "sports_entertainment",
+                  "social_special_events",
+                  "corporate_celebrations_private_events"
+                ],
+                "geoFilter": true,
+                "dateFilter": false,
+                "pricingModel": "pay_per_event",
+                "pricingSummary": "~$0.01 per event + $0.001 actor start (Bronze)",
+                "monthlyUsers": 669,
+                "rating": 4.97,
+                "inputFields": [
+                  "searchQueries",
+                  "startUrls",
+                  "maxEvents"
+                ],
+                "expectedOutput": "Facebook event name, location, description, interest counts",
+                "reliabilityNote": "Apify-maintained; useful for public community/sports/social events.",
+                "tosNotes": [
+                  "Facebook ToS / Meta restrictions — public events only; constrain volume."
+                ],
+                "verificationStatus": "VERIFIED_STORE"
+              },
+              "estimatedMaxUsd": 0.251
+            },
+            "inRunnableRegistry": true
+          },
+          {
+            "actorId": "hgservices/apify-actor-espn",
+            "validation": {
+              "ok": true,
+              "actor": {
+                "actorId": "hgservices/apify-actor-espn",
+                "title": "ESPN Sports Scores & Schedules",
+                "publisher": "hgservices",
+                "publisherType": "community",
+                "storeUrl": "https://apify.com/hgservices/apify-actor-espn",
+                "enabled": true,
+                "discoveryFamilies": [
+                  "SPORTS_ENTERTAINMENT"
+                ],
+                "demandSegments": [
+                  "sports_entertainment"
+                ],
+                "geoFilter": false,
+                "dateFilter": true,
+                "pricingModel": "pay_per_event",
+                "pricingSummary": "Actor start ~$0.00005 + result ~$0.001 (Bronze)",
+                "monthlyUsers": 144,
+                "rating": 5,
+                "inputFields": [
+                  "leagues",
+                  "dateMode",
+                  "date",
+                  "startDate",
+                  "endDate",
+                  "teams"
+                ],
+                "expectedOutput": "Sports schedules/scores — filter heavily for South Florida relevance",
+                "reliabilityNote": "Schedule utility; lodging demand not automatic — ORS must prove group travel thesis.",
+                "tosNotes": [
+                  "ESPN content terms — verify redistribution limits."
+                ],
+                "verificationStatus": "VERIFIED_STORE"
+              },
+              "estimatedMaxUsd": 0.135
+            },
+            "inRunnableRegistry": true
+          }
+        ]
+      },
+      "gatesRequired": [
+        "founder_budget_authorization",
+        "GDI_EXA_AGENT_LIVE=1 for Exa",
+        "GDI_APIFY_LIVE=1 + APIFY_TOKEN for Apify",
+        "assertHunterRunSafe must be extended to allow paid (currently fail-closed)",
+        "per-hunter cost ceiling",
+        "dedupe against inventory before spend"
+      ]
+    },
+    {
+      "hunterId": "university_demand",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "budgetUsdCeiling": 3,
+      "execute": false,
+      "awaitingFounderAuthorization": true,
+      "depthSummary": {
+        "L1": 0,
+        "L2": 0,
+        "L3": 0,
+        "skipPaid": 0,
+        "deferredPaidPilot": 0,
+        "plannedSpendUsd": 0
+      },
+      "exaQuote": {
+        "bounded": true,
+        "maxUsd": 0.1,
+        "assumption": "exa agent fixed effort=medium (contact enrichment not included)",
+        "sources": [
+          "https://exa.ai/docs/reference/agent-api-guide",
+          "https://exa.ai/docs/admin/pricing"
+        ],
+        "asOf": "2026-10-24"
+      },
+      "exaQuestions": [],
+      "apifyPlan": {
+        "role": "SUPPLEMENTAL",
+        "actors": [
+          {
+            "id": "parseforge/eventbrite-scraper",
+            "actorId": "parseforge/eventbrite-scraper",
+            "title": "Eventbrite Event Scraper",
+            "version": null,
+            "sourceType": "PUBLISHED_EVENTS",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": 5,
+            "perRunCostHint": "Bronze tier ~$0.00433/result + optional organizer ~$0.0029 + actor start ~$0.00583 (tier-dependent; verify at pricing URL)",
+            "enabled": true,
+            "replaceable": true
+          },
+          {
+            "id": "aitorsm/eventbrite",
+            "actorId": "aitorsm/eventbrite",
+            "title": "Eventbrite Scraper — Event & Organizer Data",
+            "version": null,
+            "sourceType": "PUBLISHED_EVENTS",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": "PREFERRED for Waterstone Aug–Oct 2027 dated discovery — supports absolute date range. Higher per-result cost than parseforge/solidcode.",
+            "perRunCostHint": "result ~$0.015 + optional organizer enrichment ~$0.015 + start ~$0.00005 (Bronze; higher than parseforge)",
+            "enabled": true,
+            "replaceable": true
+          },
+          {
+            "id": "solidcode/eventbrite-scraper",
+            "actorId": "solidcode/eventbrite-scraper",
+            "title": "Eventbrite Scraper",
+            "version": null,
+            "sourceType": "PUBLISHED_EVENTS",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": 5,
+            "perRunCostHint": "result ~$0.00113 + start ~$0.00005 (Bronze) — lowest Eventbrite unit cost among verified options",
+            "enabled": true,
+            "replaceable": true
+          },
+          {
+            "id": "memo23/eventbrite-scraper",
+            "actorId": "memo23/eventbrite-scraper",
+            "title": "Eventbrite, Lu.ma & Meetup Events + Organizer Leads",
+            "version": null,
+            "sourceType": "PUBLISHED_EVENTS",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": 5,
+            "perRunCostHint": "Actor start ~$0.025 + result ~$0.00099 + optional additional data ~$0.001 (Bronze; tier-dependent)",
+            "enabled": true,
+            "replaceable": true
+          },
+          {
+            "id": "filip_cicvarek/meetup-scraper",
+            "actorId": "filip_cicvarek/meetup-scraper",
+            "title": "Meetup Scraper",
+            "version": null,
+            "sourceType": "PUBLISHED_EVENTS",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": 4.93,
+            "perRunCostHint": "~$0.0008 per scraped event (Bronze; tier-dependent)",
+            "enabled": true,
+            "replaceable": true
+          },
+          {
+            "id": "apify/website-content-crawler",
+            "actorId": "apify/website-content-crawler",
+            "title": "Website Content Crawler",
+            "version": null,
+            "sourceType": "WEB_EXTRACTION",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": 4.61,
+            "perRunCostHint": "Free Actor fee; charged for Apify platform compute/usage only",
+            "enabled": true,
+            "replaceable": true
+          },
+          {
+            "id": "apify/google-search-scraper",
+            "actorId": "apify/google-search-scraper",
+            "title": "Google Search Results Scraper",
+            "version": null,
+            "sourceType": "SEARCH_SUPPLEMENT",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": 4.65,
+            "perRunCostHint": "SERP page ~$0.0025 + optional AI/ads/leads add-ons (Bronze; verify pricing page)",
+            "enabled": true,
+            "replaceable": true
+          }
+        ],
+        "validations": [
+          {
+            "actorId": "parseforge/eventbrite-scraper",
+            "validation": {
+              "ok": true,
+              "actor": {
+                "actorId": "parseforge/eventbrite-scraper",
+                "title": "Eventbrite Event Scraper",
+                "publisher": "parseforge",
+                "publisherType": "community",
+                "storeUrl": "https://apify.com/parseforge/eventbrite-scraper",
+                "enabled": true,
+                "discoveryFamilies": [
+                  "PUBLISHED_EVENTS"
+                ],
+                "demandSegments": [
+                  "associations_conferences_events",
+                  "corporate_meetings_incentives",
+                  "education_scientific",
+                  "social_special_events",
+                  "local_catering_day_meetings"
+                ],
+                "geoFilter": true,
+                "dateFilter": true,
+                "pricingModel": "pay_per_event",
+                "pricingSummary": "Bronze tier ~$0.00433/result + optional organizer ~$0.0029 + actor start ~$0.00583 (tier-dependent; verify at pricing URL)",
+                "monthlyUsers": 81,
+                "rating": 5,
+                "inputFields": [
+                  "maxItems",
+                  "startUrl",
+                  "city",
+                  "category",
+                  "date",
+                  "format",
+                  "price",
+                  "online",
+                  "retrieveOrganizerData"
+                ],
+                "expectedOutput": "Event title, date, venue, price; optional organizer",
+                "reliabilityNote": "High recent usage vs peers. DATE LIMITATION: input.date only supports relative windows (today…next-month) — NOT suitable alone for Aug–Oct 2027 Waterstone need dates; use aitorsm/eventbrite or solidcode/eventbrite-scraper for absolute YYYY-MM-DD ranges.",
+                "tosNotes": [
+                  "Scraping Eventbrite may be subject to Eventbrite ToS and robots restrictions — legal review before production scale."
+                ],
+                "verificationStatus": "VERIFIED_STORE"
+              },
+              "estimatedMaxUsd": 0.1185
+            },
+            "inRunnableRegistry": true
+          },
+          {
+            "actorId": "aitorsm/eventbrite",
+            "validation": {
+              "ok": true,
+              "actor": {
+                "actorId": "aitorsm/eventbrite",
+                "title": "Eventbrite Scraper — Event & Organizer Data",
+                "publisher": "aitorsm",
+                "publisherType": "community",
+                "storeUrl": "https://apify.com/aitorsm/eventbrite",
+                "enabled": true,
+                "discoveryFamilies": [
+                  "PUBLISHED_EVENTS"
+                ],
+                "demandSegments": [
+                  "associations_conferences_events",
+                  "corporate_meetings_incentives",
+                  "education_scientific",
+                  "social_special_events",
+                  "local_catering_day_meetings",
+                  "corporate_celebrations_private_events"
+                ],
+                "geoFilter": true,
+                "dateFilter": true,
+                "pricingModel": "pay_per_event",
+                "pricingSummary": "result ~$0.015 + optional organizer enrichment ~$0.015 + start ~$0.00005 (Bronze; higher than parseforge)",
+                "monthlyUsers": 86,
+                "rating": null,
+                "inputFields": [
+                  "country",
+                  "city",
+                  "category",
+                  "keyword",
+                  "price",
+                  "startDate",
+                  "endDate",
+                  "maxResults",
+                  "enrichOrganizers"
+                ],
+                "expectedOutput": "Eventbrite events with absolute startDate/endDate filter support (YYYY-MM-DD)",
+                "reliabilityNote": "PREFERRED for Waterstone Aug–Oct 2027 dated discovery — supports absolute date range. Higher per-result cost than parseforge/solidcode.",
+                "tosNotes": [
+                  "Eventbrite ToS — constrain volume; public listings only."
+                ],
+                "verificationStatus": "VERIFIED_STORE"
+              },
+              "estimatedMaxUsd": 0.135
+            },
+            "inRunnableRegistry": true
+          },
+          {
+            "actorId": "solidcode/eventbrite-scraper",
+            "validation": {
+              "ok": true,
+              "actor": {
+                "actorId": "solidcode/eventbrite-scraper",
+                "title": "Eventbrite Scraper",
+                "publisher": "solidcode",
+                "publisherType": "community",
+                "storeUrl": "https://apify.com/solidcode/eventbrite-scraper",
+                "enabled": true,
+                "discoveryFamilies": [
+                  "PUBLISHED_EVENTS"
+                ],
+                "demandSegments": [
+                  "associations_conferences_events",
+                  "corporate_meetings_incentives",
+                  "social_special_events",
+                  "education_scientific"
+                ],
+                "geoFilter": true,
+                "dateFilter": true,
+                "pricingModel": "pay_per_event",
+                "pricingSummary": "result ~$0.00113 + start ~$0.00005 (Bronze) — lowest Eventbrite unit cost among verified options",
+                "monthlyUsers": 23,
+                "rating": 5,
+                "inputFields": [
+                  "eventUrls",
+                  "country",
+                  "city",
+                  "category",
+                  "keyword",
+                  "startDate",
+                  "endDate",
+                  "includeSeriesDates",
+                  "eventFormat",
+                  "priceFilter",
+                  "maxResults"
+                ],
+                "expectedOutput": "Events with GPS venue, organizer, absolute date range; optional series dates",
+                "reliabilityNote": "Good absolute date support for 2027 pilot; lower monthly users — validate output quality in first live run.",
+                "tosNotes": [
+                  "Eventbrite ToS; autoUpgradeNetwork may increase proxy cost if blocked."
+                ],
+                "verificationStatus": "VERIFIED_STORE"
+              },
+              "estimatedMaxUsd": 0.135
+            },
+            "inRunnableRegistry": true
+          }
+        ]
+      },
+      "gatesRequired": [
+        "founder_budget_authorization",
+        "GDI_EXA_AGENT_LIVE=1 for Exa",
+        "GDI_APIFY_LIVE=1 + APIFY_TOKEN for Apify",
+        "assertHunterRunSafe must be extended to allow paid (currently fail-closed)",
+        "per-hunter cost ceiling",
+        "dedupe against inventory before spend"
+      ]
+    }
+  ],
+  "totalPlannedCeilingUsd": 15,
+  "note": "Pilots are prepared for founder authorization only — no paid calls executed."
+}

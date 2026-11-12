@@ -1,0 +1,536 @@
+{
+  "schema": "gdi-nextgen-hunter-to-exa-orchestration-v1",
+  "hunterId": "government_procurement",
+  "label": "Government Procurement",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "hotelName": "Bethesda Marriott",
+  "startedAt": "2026-11-12T21:45:53.375Z",
+  "finishedAt": "2026-11-12T21:45:53.554Z",
+  "dryRun": true,
+  "paidAuthorized": false,
+  "safety": {
+    "ok": true,
+    "errors": []
+  },
+  "hunterConfig": {
+    "hunterId": "government_procurement",
+    "enabled": true,
+    "supportedTerritories": [
+      "US"
+    ],
+    "languages": [
+      "en"
+    ],
+    "defaultResearchHorizonMonths": 18,
+    "searchRetrievalLimits": {
+      "maxQueries": 8,
+      "maxResultsPerQuery": 10,
+      "maxDiscoveries": 25
+    },
+    "providerPreference": [
+      "public_api",
+      "exa"
+    ],
+    "sourcePriority": [
+      "public_api",
+      "exa"
+    ],
+    "cacheBehavior": {
+      "cacheFirst": true,
+      "allowSyntheticFixtures": true,
+      "promoteFixturesToInventory": false
+    },
+    "researchDepth": "STANDARD",
+    "evidenceRequirements": {
+      "minEvidenceUrls": 1,
+      "requireNamedBuyer": false,
+      "requireActivityDate": false
+    },
+    "retryPolicy": {
+      "maxAttempts": 2,
+      "backoffMs": 750
+    },
+    "costCeilingUsd": 0,
+    "qualificationHandoff": {
+      "autoSalesReady": false,
+      "autoPublish": false,
+      "routeToOrs": true,
+      "allowCustomerInventory": false
+    },
+    "apifyRole": "SUPPLEMENTAL",
+    "wave": "FIRST",
+    "label": "Government Procurement",
+    "hotelId": "recLuxvwwxID7U2B8"
+  },
+  "adapterMeta": {
+    "mode": "ZERO_PAID_HISTORICAL_OFFICIAL_NOTICE",
+    "discoveryEvidenceClass": "HISTORICAL_RESEARCH_REPLAY",
+    "paidAuthorized": false,
+    "budgetUsdSpent": 0,
+    "providerPlan": null,
+    "livePublicAttempted": true,
+    "livePublicOk": true,
+    "livePublicStatus": 200,
+    "livePublicNote": "Live public GET succeeded; content still treated as historical notice identity.",
+    "incomplete": [
+      "Named lodging buyer not verified — remains research-stage.",
+      "Next session date unknown — do not treat prior date as future event.",
+      "No automatic Sales Ready / publication."
+    ],
+    "demonstrated": [
+      "Retrieved independently verifiable SAM.gov notice identity.",
+      "Extracted organization (NIH SBPO) and demand-generating activity (Vendor Outreach Session).",
+      "Confirmed prior session date/location and public contact channel.",
+      "Constructed hotel-specific demand thesis for Bethesda corridor."
+    ],
+    "config": {
+      "enabled": true,
+      "costCeilingUsd": 0,
+      "cacheFirst": true
+    },
+    "adapter": "gdi-nextgen-public-source-adapters-v1"
+  },
+  "screening": {
+    "accepted": 1,
+    "rejected": 0,
+    "rejectedRows": []
+  },
+  "dedupe": {
+    "input": 1,
+    "incremental": 1,
+    "duplicates": 0,
+    "previouslyRejected": 0
+  },
+  "researchDepth": {
+    "schema": "gdi-nextgen-research-depth-selector-v1",
+    "paidAuthorized": false,
+    "budgetUsd": 0,
+    "decisions": [
+      {
+        "discoveryKey": "disc_cc8d1140e1905f58",
+        "organizationName": "NIH Small Business Program Office (SBPO)",
+        "activityTitle": "NIH SBPO Vendor Outreach Session — documented prior session at 6700 Rockledge Drive, Bethesda (2026-04-29)",
+        "level": "L1_DISCOVERY_SCREEN",
+        "reason": "l2_evidence_gaps_present_but_paid_not_authorized",
+        "skipPaidRetrieval": true,
+        "plannedPaidProviders": [
+          "exa"
+        ],
+        "unresolvedGaps": [
+          "named_buyer_or_activity_connected_intermediary_unverified",
+          "Next Vendor Outreach Session date is not confirmed in this zero-paid pass.",
+          "Named lodging buyer / contracting officer for hotel blocks is not verified.",
+          "Hotel demand is inferred from traveling-vendor adjacency, not an explicit hotel RFP."
+        ],
+        "estimatedCostUsd": 0,
+        "eligibility": {
+          "version": "gdi-deep-research-eligibility-v1",
+          "decision": "ELIGIBLE_TIER_2",
+          "tier": "TIER_2_AUTONOMOUS_DEEP_RESEARCH",
+          "eligible": true,
+          "hotelRelevance": "MEDIUM",
+          "demandActivityVerified": true,
+          "revenuePotential": [
+            "GUESTROOMS"
+          ],
+          "commercialStage": "UNKNOWN",
+          "unresolvedQuestions": [
+            "named_buyer_or_activity_connected_intermediary_unverified",
+            "Next Vendor Outreach Session date is not confirmed in this zero-paid pass.",
+            "Named lodging buyer / contracting officer for hotel blocks is not verified.",
+            "Hotel demand is inferred from traveling-vendor adjacency, not an explicit hotel RFP.",
+            "Who influences hotel sourcing / contracting / program accommodation?",
+            "Can independent sources substantiate commercial activity?"
+          ],
+          "researchDepthAchieved": "SHALLOW",
+          "contactIntelligenceComplete": false,
+          "contactUsableOrgRoute": true,
+          "namedBuyerEstablished": false,
+          "expectedValueOfInvestigation": "MATERIAL",
+          "previouslyAttemptedResearch": false,
+          "remainingBudgetUsd": 0.5,
+          "providersAvailable": true,
+          "requiresActiveRfp": false,
+          "commercialPursuitStrategy": "FUTURE_CYCLE_DEVELOPMENT",
+          "pursuitSourcingStatus": "FUTURE_CYCLE_POTENTIALLY_CONTESTABLE",
+          "futureCycleOpportunity": true,
+          "currentOrHistoricalHostHotel": null,
+          "pursuitScreenDecision": "ADVANCE_TO_DEEP_RESEARCH",
+          "deepResearchInvestmentScore": 84,
+          "unknownHotelSelectionIsNegative": false,
+          "competitorHostIsPermanentDisqualification": false,
+          "reasons": [
+            "recurring_or_future_edition_without_announced_sourcing",
+            "pursuit_screen_advance_contestable_demand",
+            "buyer_intelligence_gap_warrants_deep_research"
+          ],
+          "opportunityId": null,
+          "hotelId": null
+        },
+        "deferredPaidPilot": true,
+        "commercialValueHint": "HIGH"
+      }
+    ],
+    "summary": {
+      "L1": 1,
+      "L2": 0,
+      "L3": 0,
+      "skipPaid": 1,
+      "deferredPaidPilot": 1,
+      "plannedSpendUsd": 0
+    }
+  },
+  "paidResearchPlans": {
+    "executed": false,
+    "exa": {
+      "schema": "gdi-nextgen-exa-hunter-bridge-v1",
+      "provider": "exa",
+      "execute": false,
+      "paidAuthorized": false,
+      "authorizePaidRequested": false,
+      "liveEnvAuthorized": false,
+      "readiness": {
+        "version": "gdi-exa-live-discovery-provider-bridge-v1",
+        "adapterVersion": "gdi-scaling-exa-agent-provider-adapter-v1",
+        "segmentId": "associations_conferences_events",
+        "contractId": "gdi-exa-events-discovery-v1",
+        "agentRouting": {
+          "version": "gdi-segment-aware-exa-agent-routing-v1",
+          "hotelId": null,
+          "hotelName": null,
+          "demandSegment": "associations_conferences_events",
+          "segmentLabel": "Associations, Conferences & Events",
+          "agentFamily": "ASSOCIATION_EVENTS",
+          "agentName": "Association / Events Exa Agent",
+          "support": "FULL",
+          "promptContractId": "gdi-exa-events-discovery-v1",
+          "promptVersion": "v1",
+          "promptPath": "lib/group-demand-intelligence/research/exa-agent/contracts/event-discovery-agent-prompt-v1.md",
+          "strategyId": "EXA_AGENT_EVENTS_DISCOVERY",
+          "researchPurpose": "DISCOVERY",
+          "paidExaAllowed": true,
+          "blockReason": null
+        },
+        "agentFamily": "ASSOCIATION_EVENTS",
+        "agentName": "Association / Events Exa Agent",
+        "routingSupport": "FULL",
+        "liveAuthorized": false,
+        "credentialPresent": true,
+        "authenticatedDoesNotProveLiveRetrieval": true,
+        "quote": {
+          "bounded": true,
+          "maxUsd": 0.1,
+          "assumption": "exa agent fixed effort=medium (contact enrichment not included)",
+          "sources": [
+            "https://exa.ai/docs/reference/agent-api-guide",
+            "https://exa.ai/docs/admin/pricing"
+          ],
+          "asOf": "2026-10-24"
+        },
+        "effort": "medium",
+        "maxCostDollars": null,
+        "payload": {
+          "effort": "medium",
+          "hasOutputSchema": true,
+          "queryChars": 9661,
+          "hotelContextPresent": true,
+          "spanishEnglishScopePresent": true,
+          "contractIdInQuery": true,
+          "agentFamilyInQuery": true
+        },
+        "readyForPaidPilot": true,
+        "blockers": [],
+        "note": "Do not treat credential presence or readiness=true as authorization to spend. Founder must authorize paid research separately."
+      },
+      "quote": {
+        "bounded": true,
+        "maxUsd": 0.1,
+        "assumption": "exa agent fixed effort=medium (contact enrichment not included)",
+        "sources": [
+          "https://exa.ai/docs/reference/agent-api-guide",
+          "https://exa.ai/docs/admin/pricing"
+        ],
+        "asOf": "2026-10-24"
+      },
+      "plannedQuestions": [
+        {
+          "hunterId": "government_procurement",
+          "organizationName": "NIH Small Business Program Office (SBPO)",
+          "activityTitle": "NIH SBPO Vendor Outreach Session — documented prior session at 6700 Rockledge Drive, Bethesda (2026-04-29)",
+          "priorityGaps": [
+            "named_buyer_or_activity_connected_intermediary_unverified"
+          ],
+          "skipIfEvidenceSufficient": true
+        }
+      ],
+      "note": "Exa bridge plans targeted gap questions only. Paid execution remains fail-closed until founder authorization."
+    },
+    "apify": {
+      "schema": "gdi-nextgen-apify-hunter-bridge-v1",
+      "provider": "apify",
+      "execute": false,
+      "forceMockOnly": true,
+      "paidAuthorized": false,
+      "authorizePaidRequested": false,
+      "budgetUsd": 0,
+      "providerPlanRole": "SUPPLEMENTAL",
+      "actorsPlanned": [
+        {
+          "id": "apify/website-content-crawler",
+          "actorId": "apify/website-content-crawler",
+          "title": "Website Content Crawler",
+          "version": null,
+          "sourceType": "WEB_EXTRACTION",
+          "countries": [
+            "US"
+          ],
+          "historicalQuality": 4.61,
+          "perRunCostHint": "Free Actor fee; charged for Apify platform compute/usage only",
+          "enabled": true,
+          "replaceable": true
+        },
+        {
+          "id": "apify/google-search-scraper",
+          "actorId": "apify/google-search-scraper",
+          "title": "Google Search Results Scraper",
+          "version": null,
+          "sourceType": "SEARCH_SUPPLEMENT",
+          "countries": [
+            "US"
+          ],
+          "historicalQuality": 4.65,
+          "perRunCostHint": "SERP page ~$0.0025 + optional AI/ads/leads add-ons (Bronze; verify pricing page)",
+          "enabled": true,
+          "replaceable": true
+        }
+      ],
+      "validations": [
+        {
+          "actorId": "apify/website-content-crawler",
+          "validation": {
+            "ok": true,
+            "actor": {
+              "actorId": "apify/website-content-crawler",
+              "title": "Website Content Crawler",
+              "publisher": "apify",
+              "publisherType": "Apify",
+              "storeUrl": "https://apify.com/apify/website-content-crawler",
+              "enabled": true,
+              "discoveryFamilies": [
+                "WEB_EXTRACTION"
+              ],
+              "demandSegments": [
+                "associations_conferences_events",
+                "education_scientific",
+                "government_public_sector",
+                "preferred_lodging_partnerships",
+                "corporate_accounts_scaling"
+              ],
+              "geoFilter": false,
+              "dateFilter": false,
+              "pricingModel": "platform_usage",
+              "pricingSummary": "Free Actor fee; charged for Apify platform compute/usage only",
+              "monthlyUsers": 14050,
+              "rating": 4.61,
+              "inputFields": [
+                "startUrls",
+                "maxCrawlPages",
+                "maxCrawlDepth",
+                "crawlerType"
+              ],
+              "expectedOutput": "Clean markdown/text from target association/venue/corporate pages",
+              "reliabilityNote": "Apify official; best as targeted extraction after discovery, not broad discovery.",
+              "tosNotes": [
+                "Respect robots.txt; crawl only authorized public pages."
+              ],
+              "verificationStatus": "VERIFIED_STORE"
+            },
+            "estimatedMaxUsd": 0.3
+          },
+          "inRunnableRegistry": true
+        },
+        {
+          "actorId": "apify/google-search-scraper",
+          "validation": {
+            "ok": true,
+            "actor": {
+              "actorId": "apify/google-search-scraper",
+              "title": "Google Search Results Scraper",
+              "publisher": "apify",
+              "publisherType": "Apify",
+              "storeUrl": "https://apify.com/apify/google-search-scraper",
+              "enabled": true,
+              "discoveryFamilies": [
+                "SEARCH_SUPPLEMENT"
+              ],
+              "demandSegments": [
+                "associations_conferences_events",
+                "corporate_meetings_incentives",
+                "corporate_accounts_scaling",
+                "education_scientific",
+                "government_public_sector"
+              ],
+              "geoFilter": true,
+              "dateFilter": false,
+              "pricingModel": "pay_per_event",
+              "pricingSummary": "SERP page ~$0.0025 + optional AI/ads/leads add-ons (Bronze; verify pricing page)",
+              "monthlyUsers": 26079,
+              "rating": 4.65,
+              "inputFields": [
+                "queries",
+                "maxPagesPerQuery",
+                "countryCode",
+                "searchLanguage"
+              ],
+              "expectedOutput": "SERP organic results for association calendars / programme discovery queries",
+              "reliabilityNote": "Supplemental to Exa; do not replace Exa Agent discovery.",
+              "tosNotes": [
+                "Google ToS; use bounded pages; prefer Exa for reasoning-heavy discovery."
+              ],
+              "verificationStatus": "VERIFIED_STORE"
+            },
+            "estimatedMaxUsd": 0.135
+          },
+          "inRunnableRegistry": true
+        }
+      ],
+      "note": "Apify bridge validates actor wiring only. Live actor runs remain fail-closed."
+    },
+    "note": "Bounded paid pilots prepared as plans/quotes only — not executed."
+  },
+  "qualificationHandoff": {
+    "schema": "gdi-nextgen-qualification-handoff-v1",
+    "hunterId": "government_procurement",
+    "hotelId": "recLuxvwwxID7U2B8",
+    "dryRun": true,
+    "createdAt": "2026-11-12T21:45:53.553Z",
+    "packets": [
+      {
+        "schema": "gdi-nextgen-qualification-handoff-v1",
+        "hunterId": "government_procurement",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "hypothesisId": "hyp_302758c3394b",
+        "organizationName": "NIH Small Business Program Office (SBPO)",
+        "activityTitle": "NIH SBPO Vendor Outreach Session — documented prior session at 6700 Rockledge Drive, Bethesda (2026-04-29)",
+        "discoveryEvidenceClass": "HISTORICAL_RESEARCH_REPLAY",
+        "customerInventoryEligible": true,
+        "publicationEligible": false,
+        "autoSalesReady": false,
+        "salesReady": false,
+        "routeToOrs": true,
+        "orsStatus": "QUEUED_FOR_QUALIFICATION",
+        "dryRun": true,
+        "uncertaintyPreserved": true,
+        "graphNodeCount": 5,
+        "notSalesReadyReason": "Hunter output is evidence for ORS/qualification — never auto Sales Ready"
+      }
+    ],
+    "summary": {
+      "total": 1,
+      "routedToOrs": 1,
+      "fixturesExcluded": 0,
+      "researchStage": 0,
+      "salesReady": 0,
+      "autoPublished": 0
+    }
+  },
+  "orsQualification": {
+    "version": "gdi-discovery-to-qualification-handoff-v1",
+    "waterfall": {
+      "providerFindings": 1,
+      "evidenceSupported": 1,
+      "uniqueDemandActivities": 1,
+      "newOpportunities": 1,
+      "rejectedSignals": 0,
+      "duplicateLiveCollapsed": 0
+    },
+    "dispositions": [
+      {
+        "organizationName": "NIH Small Business Program Office (SBPO)",
+        "activityTitle": "NIH SBPO Vendor Outreach Session — documented prior session at 6700 Rockledge Drive, Bethesda (2026-04-29)",
+        "disposition": "ACCOUNT_DEVELOPMENT",
+        "nextAction": "identify_direct_buyer_or_relevant_commercial_entry_point",
+        "customerPublicationReady": false
+      }
+    ],
+    "autoPublished": false,
+    "salesReady": 0
+  },
+  "measurement": {
+    "schema": "gdi-nextgen-hunter-measurement-v1",
+    "hunterId": "government_procurement",
+    "hotelId": "recLuxvwwxID7U2B8",
+    "discoveryEvidenceClass": "HISTORICAL_RESEARCH_REPLAY",
+    "paidAuthorized": false,
+    "counts": {
+      "sourceDiscoveries": 1,
+      "incrementalUniqueCandidates": 1,
+      "evidenceGroundedHotelTheses": 1,
+      "qualifiedOpportunities": 1,
+      "usefulContacts": 0,
+      "rejectedLeads": 0,
+      "duplicates": 0,
+      "previouslyRejected": 0
+    },
+    "researchLevels": {
+      "L1": 1,
+      "L2": 0,
+      "L3": 0,
+      "skipPaid": 1,
+      "deferredPaidPilot": 1,
+      "plannedSpendUsd": 0
+    },
+    "cost": {
+      "researchCostUsd": 0,
+      "costPerQualifiedOpportunityUsd": 0,
+      "note": "Zero-paid path — cost per qualified opportunity is null or $0."
+    },
+    "successMetric": "Incremental commercially credible opportunities hotels can act on — not discovery volume or API calls."
+  },
+  "ecosystemStats": {
+    "organizations": 1,
+    "activities": 1,
+    "contacts": 0,
+    "hypotheses": 1,
+    "edges": 2
+  },
+  "incremental": [
+    {
+      "id": "hyp_302758c3394b",
+      "kind": "HOTEL_DEMAND_HYPOTHESIS",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "organizationId": "org_ab314a36dfa1",
+      "organizationName": "NIH Small Business Program Office (SBPO)",
+      "activityTitle": "NIH SBPO Vendor Outreach Session — documented prior session at 6700 Rockledge Drive, Bethesda (2026-04-29)",
+      "activityDate": "2026-04-29",
+      "demandTrigger": "government vendor outreach session / contractor lodging adjacency",
+      "territory": "Bethesda MD / DMV",
+      "contactName": null,
+      "contactRole": "NIH Small Business Program Office",
+      "pursuitThesis": "Bethesda Marriott can watch SAM.gov / NIH SBPO for the next Vendor Outreach Session and offer preferred vendor lodging packages near Rockledge Drive; prior session location is evidenced, next edition remains uncertain.",
+      "evidenceUrls": [
+        "https://sam.gov/workspace/contract/opp/f4e0c6bfa2a14c2195c8476fb81d5f9c/view"
+      ],
+      "confidence": 0.62,
+      "hotelDemandRelevance": 0.78,
+      "hypothesisStatus": "HOTEL_THESIS_FORMED",
+      "sourceHunter": "government_procurement",
+      "commercialDispositionHint": "RESEARCH_CONTINUATION",
+      "notSalesReadyReason": "Hunter output is evidence for ORS/qualification — never auto Sales Ready",
+      "verifiedAt": "2026-11-12",
+      "discoveryEvidenceClass": "HISTORICAL_RESEARCH_REPLAY",
+      "activityDateVerified": true,
+      "customerInventoryEligible": true,
+      "publicationEligible": false,
+      "dedupKey": "opp_8679e7f6b89c"
+    }
+  ],
+  "publicationSafeguard": {
+    "autoPublish": false,
+    "salesReadyFromHunter": false,
+    "cmiIsNotDemandSegment": true,
+    "fourteenDemandSegmentsPreserved": true,
+    "syntheticFixturesNotCustomerInventory": true
+  },
+  "fourteenSegmentNote": "Hunters map into existing workflows/segments — CMI remains orthogonal intelligence, not a fifteenth segment."
+}
