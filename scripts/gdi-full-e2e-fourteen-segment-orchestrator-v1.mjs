@@ -217,6 +217,10 @@ if (runOriginalChain) {
     hotelIds,
     authorizePaidDiscovery,
     authorizePaidResearch,
+    // Live Exa deep-research seed requires the same dual-auth as discovery.
+    // Without these, --authorize-paid-research only runs offline ORS continuation.
+    authorizeExaAgentLive: authorizePaidResearch === true,
+    allowLiveExaDeepSeed: authorizePaidResearch === true,
     authorizationId:
       process.env.GDI_RESEARCH_AUTHORIZATION_ID ||
       "GDI_AIMBRIDGE_FULL_E2E_LIVE_V1",
