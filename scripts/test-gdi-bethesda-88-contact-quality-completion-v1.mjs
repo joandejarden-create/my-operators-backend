@@ -16,6 +16,7 @@ import {
   BETHESDA_PROTECTED_SCALING_IDS,
   ACCEPTABLE_59_ROW_SHA256S,
   WOMANS_CLUB_CONTACT_PATCHED_59_ROW_SHA256,
+  TITLE_REPAIRED_59_ROW_SHA256,
 } from "../lib/group-demand-intelligence/research/gdi-hotel-store-integrity-guard-v1.js";
 import { mergeBethesdaInternalResearchOpportunities } from "../lib/group-demand-intelligence/research/bethesda-internal-research-union-v1.js";
 import { BETHESDA_29_ATTESTED_IDS } from "../lib/group-demand-intelligence/research/bethesda-historical-attestation-bag-v1.js";
@@ -55,10 +56,12 @@ assert.ok(
   ACCEPTABLE_59_ROW_SHA256S.includes(storeBefore.sha256),
   `store sha must be allowlisted (got ${storeBefore.sha256})`
 );
-assert.equal(
-  storeBefore.sha256,
-  WOMANS_CLUB_CONTACT_PATCHED_59_ROW_SHA256,
-  "expected Woman's Club contact-patched 59-row store"
+assert.ok(
+  [
+    WOMANS_CLUB_CONTACT_PATCHED_59_ROW_SHA256,
+    TITLE_REPAIRED_59_ROW_SHA256,
+  ].includes(storeBefore.sha256),
+  "expected Woman's Club contact-patched or title-repaired 59-row store"
 );
 const wc = storeBefore.opportunities.find(
   (o) => o.id === "gdi_pe_781f12393f8117e7"
