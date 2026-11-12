@@ -733,14 +733,17 @@
     chromeOpts.exportHref = buildExportHref();
     var chrome = UI.opportunityBrowseChromeHtml(chromeOpts);
     if (!rows.length) {
-      return (
-        chrome +
-        '<div class="gdi-empty">' +
-          (state.visibilityWarning && state.visibilityWarning.publicationDataConnection === false
-            ? "Unable to load approved opportunities. Check publication data connection."
-            : "No customer-ready opportunities are available for this property yet.") +
-          "</div>"
-      );
+      var scope = String(
+        (state.filters && state.filters.marketScope) || "ALL"
+      ).toUpperCase();
+      var emptyMsg =
+        state.visibilityWarning &&
+        state.visibilityWarning.publicationDataConnection === false
+          ? "Unable to load approved opportunities. Check publication data connection."
+          : scope === "COMPETITIVE"
+            ? "No Competitive Market Intelligence records match the current filters for this hotel."
+            : "No customer-ready opportunities match the current filters.";
+      return chrome + '<div class="gdi-empty">' + emptyMsg + "</div>";
     }
     return chrome + PC.renderOpportunityCardsHtml(state, UI, rows);
   }
@@ -770,6 +773,25 @@
         opportunityTypeOptions: UI.opportunityTypeFilterOptionsFromCounts(
           UI.opportunityTypeCountsForFilters(state.opportunities, state.filters)
         ),
+        activeMarketScope: state.filters.marketScope || "ALL",
+        marketScopeCounts: UI.marketScopeCountsForFilters
+          ? UI.marketScopeCountsForFilters(state.opportunities, state.filters)
+          : UI.countByMarketScope
+            ? UI.countByMarketScope(state.opportunities)
+            : null,
+        activeCompetitiveStatus:
+          state.filters.competitiveStatus || "ALL_COMPETITIVE",
+        competitiveStatusCounts: UI.countByCompetitiveStatus
+          ? UI.countByCompetitiveStatus(
+              UI.filterOpportunities(
+                state.opportunities,
+                Object.assign({}, state.filters || {}, {
+                  marketScope: "COMPETITIVE",
+                  competitiveStatus: "ALL_COMPETITIVE",
+                })
+              )
+            )
+          : null,
         lastResearch: formatHistoryDate(s.lastResearchAt),
         runStatusLabel: UI.customerSafeRunStatusLabel
           ? UI.customerSafeRunStatusLabel(s)
@@ -813,6 +835,40 @@
         render();
       });
     }
+
+    root.querySelectorAll("[data-gdi-market-scope]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var next = btn.getAttribute("data-gdi-market-scope") || "ALL";
+        if (String(state.filters.marketScope || "ALL") === String(next)) return;
+        state.filters.marketScope = next;
+        state.filters = UI.reconcileBrowseFilters(
+          state.opportunities,
+          state.filters,
+          "marketScope"
+        );
+        render();
+      });
+    });
+
+    root.querySelectorAll("[data-gdi-competitive-status]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var next =
+          btn.getAttribute("data-gdi-competitive-status") || "ALL_COMPETITIVE";
+        if (
+          String(state.filters.competitiveStatus || "ALL_COMPETITIVE") ===
+          String(next)
+        ) {
+          return;
+        }
+        state.filters.competitiveStatus = next;
+        state.filters = UI.reconcileBrowseFilters(
+          state.opportunities,
+          state.filters,
+          "competitiveStatus"
+        );
+        render();
+      });
+    });
 
     var resetBtn = document.getElementById("gdiResetViewBtn");
     if (resetBtn) resetBtn.addEventListener("click", resetBrowseView);

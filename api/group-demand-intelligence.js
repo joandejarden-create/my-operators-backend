@@ -1586,6 +1586,58 @@ export async function getGdiOpportunitiesExport(req, res) {
       opportunities
     );
     opportunities = union.opportunities;
+    // Same commercial-surface gate as the Opportunities list — never export
+    // research/archive fixture IDs (Airtable thin projections included).
+    try {
+      const {
+        filterOpportunitiesByCommercialSurface,
+        attachCommercialSurfaceDisposition,
+        GDI_LIST_SURFACE_VIEW,
+        assertPrimaryCommercialHasNoForbiddenIds,
+      } = await import(
+        "../lib/group-demand-intelligence/gdi-commercial-surface-disposition-v1.js"
+      );
+      opportunities = filterOpportunitiesByCommercialSurface(
+        opportunities,
+        includeDisqualified
+          ? GDI_LIST_SURFACE_VIEW.FULL
+          : GDI_LIST_SURFACE_VIEW.COMMERCIAL,
+      ).map((o) => attachCommercialSurfaceDisposition(o));
+      if (!includeDisqualified) {
+        const leakCheck = assertPrimaryCommercialHasNoForbiddenIds(opportunities);
+        if (!leakCheck.ok) {
+          console.error(
+            JSON.stringify({
+              gdi_error: true,
+              route: "getGdiOpportunitiesExport",
+              code: "COMMERCIAL_SURFACE_FORBIDDEN_LEAK",
+              hotelId,
+              leakedIds: leakCheck.leakedIds,
+            }),
+          );
+          return res.status(503).json({
+            ok: false,
+            error: "COMMERCIAL_SURFACE_FORBIDDEN_LEAK",
+            hotelId,
+            leakedIds: leakCheck.leakedIds,
+            message:
+              "Commercial CSV unavailable: forbidden research/archive IDs leaked after filter.",
+          });
+        }
+      }
+    } catch (surfaceErr) {
+      console.error(
+        "[gdi] export commercial surface filter failed",
+        surfaceErr?.message || surfaceErr,
+      );
+      return res.status(503).json({
+        ok: false,
+        error: "COMMERCIAL_SURFACE_FILTER_FAILED",
+        hotelId,
+        message:
+          "Commercial CSV unavailable: commercial surface filter failed closed.",
+      });
+    }
     if (inventoryAudience === GDI_INVENTORY_AUDIENCE.SALES_TEAM_INVENTORY) {
       opportunities = selectBethesdaSalesOpportunityInventory(opportunities, {
         salesTeamInventory: true,

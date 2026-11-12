@@ -409,7 +409,9 @@
       booking: "",
       territory: "",
       weekly: "",
-      opportunityType: "SALES_OPPORTUNITIES",
+      opportunityType: "",
+      marketScope: "ALL",
+      competitiveStatus: "ALL_COMPETITIVE",
       workflow: "",
     };
     state.sortKey = "priority";
@@ -672,6 +674,16 @@
     if (!rows.length) {
       var total = (state.opportunities || []).length;
       if (total > 0) {
+        var scope = String(
+          (state.filters && state.filters.marketScope) || "ALL"
+        ).toUpperCase();
+        if (scope === "COMPETITIVE") {
+          return (
+            '<div class="gdi-empty">' +
+            "No Competitive Market Intelligence records match the current filters for this hotel." +
+            "</div>"
+          );
+        }
         return '<div class="gdi-empty">No customer-ready opportunities match the current filters.</div>';
       }
       var warn = state.visibilityWarning;
@@ -717,7 +729,25 @@
       if (state.filters && state.filters.weekly) {
         q.push("weekly=" + encodeURIComponent(state.filters.weekly));
       }
-      if (state.filters && state.filters.opportunityType) {
+      // Server export accepts a single opportunityType (population or demand
+      // category). Prefer Market Scope population when narrowed; otherwise pass
+      // the demand-category type. Visible-row `ids=` above is the primary path.
+      var scopePop =
+        state.filters && UI && UI.marketScopeToInventoryPopulation
+          ? UI.marketScopeToInventoryPopulation(state.filters.marketScope)
+          : "";
+      if (
+        scopePop &&
+        String(scopePop).toUpperCase() !== "ALL_COMMERCIAL_INTELLIGENCE"
+      ) {
+        q.push("opportunityType=" + encodeURIComponent(scopePop));
+      } else if (
+        state.filters &&
+        state.filters.opportunityType &&
+        !/^(SALES_OPPORTUNITIES|COMPETITIVE_MARKET_INTELLIGENCE|ALL_COMMERCIAL_INTELLIGENCE)$/i.test(
+          String(state.filters.opportunityType)
+        )
+      ) {
         q.push(
           "opportunityType=" + encodeURIComponent(state.filters.opportunityType)
         );
@@ -1455,6 +1485,28 @@
             opportunityTypeOptions: UI.opportunityTypeFilterOptionsFromCounts(
               UI.opportunityTypeCountsForFilters(state.opportunities, state.filters)
             ),
+            activeMarketScope: state.filters.marketScope || "ALL",
+            marketScopeCounts: UI.marketScopeCountsForFilters
+              ? UI.marketScopeCountsForFilters(
+                  state.opportunities,
+                  state.filters
+                )
+              : UI.countByMarketScope
+                ? UI.countByMarketScope(state.opportunities)
+                : null,
+            activeCompetitiveStatus:
+              state.filters.competitiveStatus || "ALL_COMPETITIVE",
+            competitiveStatusCounts: UI.countByCompetitiveStatus
+              ? UI.countByCompetitiveStatus(
+                  UI.filterOpportunities(
+                    state.opportunities,
+                    Object.assign({}, state.filters || {}, {
+                      marketScope: "COMPETITIVE",
+                      competitiveStatus: "ALL_COMPETITIVE",
+                    })
+                  )
+                )
+              : null,
             lastResearch: formatHistoryDate(s.lastResearchAt),
             runStatusLabel: UI.customerSafeRunStatusLabel
               ? UI.customerSafeRunStatusLabel(s)
@@ -1554,6 +1606,40 @@
         render();
       });
     }
+
+    root.querySelectorAll("[data-gdi-market-scope]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var next = btn.getAttribute("data-gdi-market-scope") || "ALL";
+        if (String(state.filters.marketScope || "ALL") === String(next)) return;
+        state.filters.marketScope = next;
+        state.filters = UI.reconcileBrowseFilters(
+          state.opportunities,
+          state.filters,
+          "marketScope"
+        );
+        render();
+      });
+    });
+
+    root.querySelectorAll("[data-gdi-competitive-status]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var next =
+          btn.getAttribute("data-gdi-competitive-status") || "ALL_COMPETITIVE";
+        if (
+          String(state.filters.competitiveStatus || "ALL_COMPETITIVE") ===
+          String(next)
+        ) {
+          return;
+        }
+        state.filters.competitiveStatus = next;
+        state.filters = UI.reconcileBrowseFilters(
+          state.opportunities,
+          state.filters,
+          "competitiveStatus"
+        );
+        render();
+      });
+    });
 
     var resetBtn = document.getElementById("gdiResetViewBtn");
     if (resetBtn) resetBtn.addEventListener("click", resetBrowseView);

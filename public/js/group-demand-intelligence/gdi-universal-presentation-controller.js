@@ -22,7 +22,9 @@
       sourcingSubgroup: "BOTH",
       territory: "",
       weekly: "",
-      opportunityType: "SALES_OPPORTUNITIES",
+      opportunityType: "",
+      marketScope: "ALL",
+      competitiveStatus: "ALL_COMPETITIVE",
       workflow: "",
     };
   }

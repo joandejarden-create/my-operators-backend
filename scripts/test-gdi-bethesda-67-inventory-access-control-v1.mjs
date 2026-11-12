@@ -280,8 +280,10 @@ check("preserved_67_plus_verified_cmi_under_sales_audience", () => {
   });
   const counts = buildInventoryPopulationCounts(annotated);
   assert.equal(counts.salesOpportunities, 67);
-  // Evidence-backed ledger: 4 verified CMI (3 demoted from legacy seed-as-proof 7).
-  assert.equal(counts.competitiveMarketIntelligence, 4);
+  // Evidence-backed ledger: 6 verified CMI after ICON/CASSS recovery.
+  // Competitive total may include Needs Verification / Historical.
+  assert.equal(counts.competitiveVerified, 6);
+  assert.ok(counts.competitiveMarketIntelligence >= 6);
   assert.equal(counts.allCommercialIntelligence, 67);
 });
 
