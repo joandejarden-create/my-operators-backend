@@ -1,0 +1,367 @@
+{
+  "schema": "gdi-specialist-hunter-run-report-v1",
+  "hunterId": "government_procurement",
+  "label": "Government Procurement",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "hotelName": null,
+  "territory": null,
+  "startedAt": "2026-11-12T20:46:28.453Z",
+  "finishedAt": "2026-11-12T20:46:28.626Z",
+  "dryRun": true,
+  "cacheFirst": true,
+  "budgetUsdSpent": 0,
+  "budgetUsdCeiling": 0,
+  "paidAuthorized": false,
+  "horizonMonths": 18,
+  "safety": {
+    "ok": true,
+    "errors": []
+  },
+  "hunterConfig": {
+    "hunterId": "government_procurement",
+    "enabled": true,
+    "supportedTerritories": [
+      "US"
+    ],
+    "languages": [
+      "en"
+    ],
+    "defaultResearchHorizonMonths": 18,
+    "searchRetrievalLimits": {
+      "maxQueries": 8,
+      "maxResultsPerQuery": 10,
+      "maxDiscoveries": 25
+    },
+    "providerPreference": [
+      "public_api",
+      "exa"
+    ],
+    "sourcePriority": [
+      "public_api",
+      "exa"
+    ],
+    "cacheBehavior": {
+      "cacheFirst": true,
+      "allowSyntheticFixtures": true,
+      "promoteFixturesToInventory": false
+    },
+    "researchDepth": "STANDARD",
+    "evidenceRequirements": {
+      "minEvidenceUrls": 1,
+      "requireNamedBuyer": false,
+      "requireActivityDate": false
+    },
+    "retryPolicy": {
+      "maxAttempts": 2,
+      "backoffMs": 750
+    },
+    "costCeilingUsd": 0,
+    "qualificationHandoff": {
+      "autoSalesReady": false,
+      "autoPublish": false,
+      "routeToOrs": true,
+      "allowCustomerInventory": false
+    },
+    "apifyRole": "SUPPLEMENTAL",
+    "wave": "FIRST",
+    "label": "Government Procurement",
+    "hotelId": "recLuxvwwxID7U2B8"
+  },
+  "providerPlan": {
+    "ok": true,
+    "hunterId": "government_procurement",
+    "label": "Government Procurement",
+    "workflowStrategy": "government_public_sector",
+    "workflowIds": [
+      "government_public_sector"
+    ],
+    "researchSegments": [
+      "associations_government"
+    ],
+    "tenBases": [],
+    "dryRun": true,
+    "cacheFirst": true,
+    "allowPaidApify": false,
+    "allowPaidExa": false,
+    "paidAuthorized": false,
+    "providers": [
+      {
+        "category": "public_api",
+        "mode": "CACHE_OR_FIXTURE",
+        "paid": false,
+        "rationale": "Official/public structured sources preferred when available"
+      },
+      {
+        "category": "apify",
+        "mode": "CACHE_REGISTRY_ONLY",
+        "paid": false,
+        "role": "SUPPLEMENTAL",
+        "classification": "EXA_PRIMARY",
+        "actors": [
+          {
+            "id": "apify/website-content-crawler",
+            "actorId": "apify/website-content-crawler",
+            "title": "Website Content Crawler",
+            "version": null,
+            "sourceType": "WEB_EXTRACTION",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": 4.61,
+            "perRunCostHint": "Free Actor fee; charged for Apify platform compute/usage only",
+            "enabled": true,
+            "replaceable": true
+          },
+          {
+            "id": "apify/google-search-scraper",
+            "actorId": "apify/google-search-scraper",
+            "title": "Google Search Results Scraper",
+            "version": null,
+            "sourceType": "SEARCH_SUPPLEMENT",
+            "countries": [
+              "US"
+            ],
+            "historicalQuality": 4.65,
+            "perRunCostHint": "SERP page ~$0.0025 + optional AI/ads/leads add-ons (Bronze; verify pricing page)",
+            "enabled": true,
+            "replaceable": true
+          }
+        ],
+        "liveGate": "GDI_APIFY_LIVE",
+        "rationale": "Reuse existing Apify actor registry — replace actor without schema change"
+      },
+      {
+        "category": "exa",
+        "mode": "CACHE_FIRST",
+        "paid": false,
+        "liveGate": "GDI_EXA_AGENT_LIVE",
+        "rationale": "Exa for verification / buyer research when authorized"
+      }
+    ],
+    "coverageRow": {
+      "classification": "EXA_PRIMARY",
+      "dupRisk": "LOW volume; HIGH irrelevance if unconstrained crawl"
+    },
+    "v7Lessons": [
+      "Party Bus / social leisure organizers fail commercial-relevance gates — keep organizer + lodging thesis gates",
+      "Apify discoveries are research evidence, not Sales Ready opportunities",
+      "Sports/entertainment schedules are PRIMARY_APIFY; government/scaling stay EXA_PRIMARY",
+      "Dedup against Exa event discovery is HIGH for association/meetup surfaces",
+      "Actor registry must allow replacement without changing opportunity schema",
+      "Full E2E production rail remains Exa-primary until hotel-adaptive yield proven"
+    ]
+  },
+  "providerLiveCertified": false,
+  "discoveryEvidenceClass": "HISTORICAL_RESEARCH_REPLAY",
+  "commercialPrioritiesApplied": false,
+  "discoverMeta": {
+    "mode": "ZERO_PAID_HISTORICAL_OFFICIAL_NOTICE",
+    "discoveryEvidenceClass": "HISTORICAL_RESEARCH_REPLAY",
+    "paidAuthorized": false,
+    "budgetUsdSpent": 0,
+    "providerPlan": {
+      "ok": true,
+      "hunterId": "government_procurement",
+      "label": "Government Procurement",
+      "workflowStrategy": "government_public_sector",
+      "workflowIds": [
+        "government_public_sector"
+      ],
+      "researchSegments": [
+        "associations_government"
+      ],
+      "tenBases": [],
+      "dryRun": true,
+      "cacheFirst": true,
+      "allowPaidApify": false,
+      "allowPaidExa": false,
+      "paidAuthorized": false,
+      "providers": [
+        {
+          "category": "public_api",
+          "mode": "CACHE_OR_FIXTURE",
+          "paid": false,
+          "rationale": "Official/public structured sources preferred when available"
+        },
+        {
+          "category": "apify",
+          "mode": "CACHE_REGISTRY_ONLY",
+          "paid": false,
+          "role": "SUPPLEMENTAL",
+          "classification": "EXA_PRIMARY",
+          "actors": [
+            {
+              "id": "apify/website-content-crawler",
+              "actorId": "apify/website-content-crawler",
+              "title": "Website Content Crawler",
+              "version": null,
+              "sourceType": "WEB_EXTRACTION",
+              "countries": [
+                "US"
+              ],
+              "historicalQuality": 4.61,
+              "perRunCostHint": "Free Actor fee; charged for Apify platform compute/usage only",
+              "enabled": true,
+              "replaceable": true
+            },
+            {
+              "id": "apify/google-search-scraper",
+              "actorId": "apify/google-search-scraper",
+              "title": "Google Search Results Scraper",
+              "version": null,
+              "sourceType": "SEARCH_SUPPLEMENT",
+              "countries": [
+                "US"
+              ],
+              "historicalQuality": 4.65,
+              "perRunCostHint": "SERP page ~$0.0025 + optional AI/ads/leads add-ons (Bronze; verify pricing page)",
+              "enabled": true,
+              "replaceable": true
+            }
+          ],
+          "liveGate": "GDI_APIFY_LIVE",
+          "rationale": "Reuse existing Apify actor registry — replace actor without schema change"
+        },
+        {
+          "category": "exa",
+          "mode": "CACHE_FIRST",
+          "paid": false,
+          "liveGate": "GDI_EXA_AGENT_LIVE",
+          "rationale": "Exa for verification / buyer research when authorized"
+        }
+      ],
+      "coverageRow": {
+        "classification": "EXA_PRIMARY",
+        "dupRisk": "LOW volume; HIGH irrelevance if unconstrained crawl"
+      },
+      "v7Lessons": [
+        "Party Bus / social leisure organizers fail commercial-relevance gates — keep organizer + lodging thesis gates",
+        "Apify discoveries are research evidence, not Sales Ready opportunities",
+        "Sports/entertainment schedules are PRIMARY_APIFY; government/scaling stay EXA_PRIMARY",
+        "Dedup against Exa event discovery is HIGH for association/meetup surfaces",
+        "Actor registry must allow replacement without changing opportunity schema",
+        "Full E2E production rail remains Exa-primary until hotel-adaptive yield proven"
+      ]
+    },
+    "livePublicAttempted": true,
+    "livePublicOk": true,
+    "livePublicStatus": 200,
+    "livePublicNote": "Live public GET succeeded; content still treated as historical notice identity.",
+    "incomplete": [
+      "Named lodging buyer not verified — remains research-stage.",
+      "Next session date unknown — do not treat prior date as future event.",
+      "No automatic Sales Ready / publication."
+    ],
+    "demonstrated": [
+      "Retrieved independently verifiable SAM.gov notice identity.",
+      "Extracted organization (NIH SBPO) and demand-generating activity (Vendor Outreach Session).",
+      "Confirmed prior session date/location and public contact channel.",
+      "Constructed hotel-specific demand thesis for Bethesda corridor."
+    ],
+    "config": {
+      "enabled": true,
+      "costCeilingUsd": 0,
+      "cacheFirst": true
+    }
+  },
+  "qualificationHandoff": {
+    "schema": "gdi-nextgen-qualification-handoff-v1",
+    "hunterId": "government_procurement",
+    "hotelId": "recLuxvwwxID7U2B8",
+    "dryRun": true,
+    "createdAt": "2026-11-12T20:46:28.626Z",
+    "packets": [
+      {
+        "schema": "gdi-nextgen-qualification-handoff-v1",
+        "hunterId": "government_procurement",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "hypothesisId": "hyp_acdc6767104d",
+        "organizationName": "NIH Small Business Program Office (SBPO)",
+        "activityTitle": "NIH SBPO Vendor Outreach Session — documented prior session at 6700 Rockledge Drive, Bethesda (2026-04-29)",
+        "discoveryEvidenceClass": "HISTORICAL_RESEARCH_REPLAY",
+        "customerInventoryEligible": true,
+        "publicationEligible": false,
+        "autoSalesReady": false,
+        "salesReady": false,
+        "routeToOrs": true,
+        "orsStatus": "QUEUED_FOR_QUALIFICATION",
+        "dryRun": true,
+        "uncertaintyPreserved": true,
+        "graphNodeCount": 5,
+        "notSalesReadyReason": "Hunter output is evidence for ORS/qualification — never auto Sales Ready"
+      }
+    ],
+    "summary": {
+      "total": 1,
+      "routedToOrs": 1,
+      "fixturesExcluded": 0,
+      "researchStage": 0,
+      "salesReady": 0,
+      "autoPublished": 0
+    }
+  },
+  "metrics": {
+    "rawDiscoveries": 1,
+    "hypotheses": 1,
+    "incrementalHypotheses": 1,
+    "duplicates": 0,
+    "rejected": 0,
+    "excluded": 0,
+    "organizations": 1,
+    "activities": 1,
+    "contacts": 0,
+    "readyForOrs": 0,
+    "hotelThesisFormed": 1,
+    "orsRouted": 1,
+    "fixturesExcludedFromOrs": 0,
+    "salesReadyEmitted": 0,
+    "autoPublished": false
+  },
+  "incremental": [
+    {
+      "id": "hyp_acdc6767104d",
+      "kind": "HOTEL_DEMAND_HYPOTHESIS",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "organizationId": "org_f188d561c3c6",
+      "organizationName": "NIH Small Business Program Office (SBPO)",
+      "activityTitle": "NIH SBPO Vendor Outreach Session — documented prior session at 6700 Rockledge Drive, Bethesda (2026-04-29)",
+      "activityDate": "2026-04-29",
+      "demandTrigger": "government vendor outreach session / contractor lodging adjacency",
+      "territory": null,
+      "contactName": null,
+      "contactRole": "NIH Small Business Program Office",
+      "pursuitThesis": "Bethesda Marriott can watch SAM.gov / NIH SBPO for the next Vendor Outreach Session and offer preferred vendor lodging packages near Rockledge Drive; prior session location is evidenced, next edition remains uncertain.",
+      "evidenceUrls": [
+        "https://sam.gov/workspace/contract/opp/f4e0c6bfa2a14c2195c8476fb81d5f9c/view"
+      ],
+      "confidence": 0.62,
+      "hotelDemandRelevance": 0.78,
+      "hypothesisStatus": "HOTEL_THESIS_FORMED",
+      "sourceHunter": "government_procurement",
+      "commercialDispositionHint": "RESEARCH_CONTINUATION",
+      "notSalesReadyReason": "Hunter output is evidence for ORS/qualification — never auto Sales Ready",
+      "verifiedAt": "2026-11-12",
+      "discoveryEvidenceClass": "HISTORICAL_RESEARCH_REPLAY",
+      "activityDateVerified": true,
+      "customerInventoryEligible": true,
+      "publicationEligible": false,
+      "dedupKey": "opp_8679e7f6b89c"
+    }
+  ],
+  "duplicates": [],
+  "rejected": [],
+  "ecosystemStats": {
+    "organizations": 1,
+    "activities": 1,
+    "contacts": 0,
+    "hypotheses": 1,
+    "edges": 2
+  },
+  "publicationSafeguard": {
+    "autoPublish": false,
+    "salesReadyFromHunter": false,
+    "entersExistingQualification": true,
+    "speculativeStaysResearchContinuation": true,
+    "syntheticFixturesNotCustomerInventory": true
+  }
+}
