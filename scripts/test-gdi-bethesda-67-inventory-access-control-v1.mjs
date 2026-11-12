@@ -92,18 +92,63 @@ check("pilot_unauth_without_hotel_allowlist_denied", () => {
   assert.match(access.reason, /allowlist/i);
 });
 
-check("pilot_unauth_bethesda_allowlisted_grants_sales_team", () => {
+check("pilot_unauth_alone_denied_when_local_capability_off", () => {
+  const access = assertHotelScopedSalesTeamInventoryAccess(
+    { gdiPilotUnauthRead: true },
+    {
+      hotelId: BETHESDA_HOTEL_ID,
+      env: { GDI_LOCAL_SALES_TEAM_INVENTORY_CAPABILITY: "0" },
+    }
+  );
+  assert.equal(access.ok, false);
+  assert.match(access.reason, /pilot_unauth_insufficient/i);
+});
+
+check("local_capability_plus_pilot_grants_sales_team", () => {
   const a = resolveGdiInventoryAudience(
     { gdiPilotUnauthRead: true, query: {} },
-    { hotelId: BETHESDA_HOTEL_ID }
+    {
+      hotelId: BETHESDA_HOTEL_ID,
+      env: { GDI_LOCAL_SALES_TEAM_INVENTORY_CAPABILITY: "1", NODE_ENV: "test" },
+    }
   );
   assert.equal(a, GDI_INVENTORY_AUDIENCE.SALES_TEAM_INVENTORY);
   const access = assertHotelScopedSalesTeamInventoryAccess(
     { gdiPilotUnauthRead: true },
-    { hotelId: BETHESDA_HOTEL_ID }
+    {
+      hotelId: BETHESDA_HOTEL_ID,
+      env: { GDI_LOCAL_SALES_TEAM_INVENTORY_CAPABILITY: "1", NODE_ENV: "test" },
+    }
   );
   assert.equal(access.ok, true);
-  assert.equal(access.via, "gdiPilotUnauthRead");
+  assert.equal(access.via, "salesInventoryCapability");
+});
+
+check("unscoped_dealality_user_fail_closed", () => {
+  const a = resolveGdiInventoryAudience(
+    { dealalityUser: { email: "generic@dealality.test" }, query: {} },
+    { hotelId: BETHESDA_HOTEL_ID }
+  );
+  assert.equal(a, GDI_INVENTORY_AUDIENCE.PUBLISHED_CUSTOMER_FEED);
+});
+
+check("admin_dealality_user_grants_sales_team", () => {
+  const a = resolveGdiInventoryAudience(
+    {
+      dealalityUser: { email: "admin@dealality.test", isAdmin: true },
+      query: {},
+    },
+    { hotelId: BETHESDA_HOTEL_ID }
+  );
+  assert.equal(a, GDI_INVENTORY_AUDIENCE.SALES_TEAM_INVENTORY);
+});
+
+check("forged_query_audience_does_not_grant", () => {
+  const a = resolveGdiInventoryAudience(
+    { query: { inventoryAudience: "SALES_TEAM_INVENTORY" } },
+    { hotelId: BETHESDA_HOTEL_ID }
+  );
+  assert.equal(a, GDI_INVENTORY_AUDIENCE.PUBLISHED_CUSTOMER_FEED);
 });
 
 check("anonymous_no_pilot_stays_published", () => {
@@ -139,11 +184,23 @@ check("cross_hotel_scoped_user_cannot_expand_bethesda", () => {
   assert.equal(a, GDI_INVENTORY_AUDIENCE.PUBLISHED_CUSTOMER_FEED);
 });
 
-check("bethesda_scoped_user_can_expand_bethesda", () => {
+check("generic_hotel_scope_alone_does_not_grant", () => {
   const req = {
     dealalityUser: {
       email: "bethesda@dealality.test",
       gdiHotelIds: [BETHESDA_HOTEL_ID],
+    },
+    query: {},
+  };
+  const a = resolveGdiInventoryAudience(req, { hotelId: BETHESDA_HOTEL_ID });
+  assert.equal(a, GDI_INVENTORY_AUDIENCE.PUBLISHED_CUSTOMER_FEED);
+});
+
+check("explicit_sales_inventory_hotel_grant_expands", () => {
+  const req = {
+    dealalityUser: {
+      email: "bethesda-sales@dealality.test",
+      gdiSalesInventoryHotelIds: [BETHESDA_HOTEL_ID],
     },
     query: {},
   };
@@ -185,7 +242,7 @@ check("detail_published_allowed_under_published_audience", () => {
   assert.equal(gate.ok, true);
 });
 
-check("detail_unpublished_allowed_for_pilot_bethesda", () => {
+check("detail_unpublished_allowed_for_local_capability_bethesda", () => {
   const req = { gdiPilotUnauthRead: true, query: {} };
   const gate = assertOpportunityReadableForInventoryAudience(
     req,

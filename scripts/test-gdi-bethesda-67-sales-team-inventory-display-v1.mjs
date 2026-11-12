@@ -90,20 +90,34 @@ check("sales_team_select_returns_exact_67", () => {
   );
 });
 
-check("audience_resolver_pilot_auth_page_is_sales_team", () => {
+check("audience_resolver_local_capability_pilot_is_sales_team", () => {
   const a = resolveGdiInventoryAudience(
     { gdiPilotUnauthRead: true, query: {} },
+    {
+      hotelId: BETHESDA_HOTEL_ID,
+      env: { GDI_LOCAL_SALES_TEAM_INVENTORY_CAPABILITY: "1", NODE_ENV: "test" },
+    }
+  );
+  assert.equal(a, GDI_INVENTORY_AUDIENCE.SALES_TEAM_INVENTORY);
+});
+
+check("audience_resolver_admin_dealality_user_is_sales_team", () => {
+  const a = resolveGdiInventoryAudience(
+    {
+      dealalityUser: { email: "sales@dealality.test", isAdmin: true },
+      query: {},
+    },
     { hotelId: BETHESDA_HOTEL_ID }
   );
   assert.equal(a, GDI_INVENTORY_AUDIENCE.SALES_TEAM_INVENTORY);
 });
 
-check("audience_resolver_dealality_user_is_sales_team", () => {
+check("audience_resolver_generic_user_fail_closed_published", () => {
   const a = resolveGdiInventoryAudience(
     { dealalityUser: { email: "sales@dealality.test" }, query: {} },
     { hotelId: BETHESDA_HOTEL_ID }
   );
-  assert.equal(a, GDI_INVENTORY_AUDIENCE.SALES_TEAM_INVENTORY);
+  assert.equal(a, GDI_INVENTORY_AUDIENCE.PUBLISHED_CUSTOMER_FEED);
 });
 
 check("audience_resolver_explicit_published_stays_19", () => {
