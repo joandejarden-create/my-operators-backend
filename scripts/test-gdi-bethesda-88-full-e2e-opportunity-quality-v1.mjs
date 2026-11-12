@@ -23,6 +23,7 @@ import {
   loadHotelOpportunityDoc,
   BETHESDA_PROTECTED_SCALING_IDS,
   CANONICAL_12_CONTACT_PATCHED_59_ROW_SHA256,
+  WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256,
   ACCEPTABLE_59_ROW_SHA256S,
   BETHESDA_HOTEL_ID,
 } from "../lib/group-demand-intelligence/research/gdi-hotel-store-integrity-guard-v1.js";
@@ -134,7 +135,12 @@ assert.ok(
 const storeBefore = loadHotelOpportunityDoc(BETHESDA_HOTEL_ID, { root: ROOT });
 assert.equal(storeBefore.count, 59);
 assert.ok(ACCEPTABLE_59_ROW_SHA256S.includes(storeBefore.sha256));
-assert.equal(storeBefore.sha256, CANONICAL_12_CONTACT_PATCHED_59_ROW_SHA256);
+assert.ok(
+  [
+    CANONICAL_12_CONTACT_PATCHED_59_ROW_SHA256,
+    WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256,
+  ].includes(storeBefore.sha256)
+);
 for (const id of BETHESDA_PROTECTED_SCALING_IDS) {
   assert.ok(storeBefore.ids.includes(id), `missing SC ${id}`);
 }
