@@ -122,8 +122,15 @@ for (const rec of prior.recoveries || []) {
       `${opp.opportunityType || ""} ${opp.hotelOpportunityThesis || ""}`
     );
 
+  const invalidBuyer =
+    elig.gaps?.includes("INVALID_BUYER_CONTACT_ATTRIBUTION") === true ||
+    elig.gaps?.includes("BUYER_RESPONSIBILITY_UNKNOWN") === true ||
+    /Administrative Law Journal|organization contact|contact desk/i.test(
+      String((opp.namedStakeholders || []).map((p) => p?.name).join(" "))
+    );
   const accountDevelopmentSupported =
     unresolved.hasVerifiedBuyer &&
+    !invalidBuyer &&
     text(opp.hotelOpportunityThesis).length > 80 &&
     !/EXCLUDE/i.test(String(opp.internalDisposition || "")) &&
     elig.status !== "COMMERCIALLY_INELIGIBLE";

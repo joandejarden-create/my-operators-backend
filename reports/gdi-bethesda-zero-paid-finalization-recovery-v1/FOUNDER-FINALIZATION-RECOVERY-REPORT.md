@@ -1,7 +1,7 @@
 # Bethesda Zero-Paid Finalization Recovery — Founder Report
 
-Generated: 2026-11-12T13:25:59.364Z
-Git SHA: `df62ec26f89d2c1a69f93679db5fd43993a2c111`
+Generated: 2026-11-12T13:28:36.293Z
+Git SHA: `fff9ea5a5be0a9cd9adade1ad6dcbfb780fcb383`
 Hotel: Bethesda Marriott (recLuxvwwxID7U2B8)
 
 ## Classification of 12 WATCHLIST rows
@@ -9,18 +9,18 @@ Hotel: Bethesda Marriott (recLuxvwwxID7U2B8)
 - Unique ORS rows: **12**
 - Unique organizations: **11**
 - Unique commercial activities (after cross-segment collapse): **11**
-- Account Development continuation: **10**
+- Account Development continuation: **8**
 - Publication-review-ready from historical evidence: **0**
 - Finalized customer bodies from historical pool: **0** (insufficient independent demand evidence)
 
 | Org | Segment | Classification | Demand gap | Contacts |
 |---|---|---|---|---|
-| Energy Bar Association | associations_conferences_events | **ACCOUNT_DEVELOPMENT_CONTINUATION** | INDEPENDENT_HOTEL_DEMAND_EVIDENCE_INSUFFICIENT_SPECULATIVE_THESIS | Administrative Law Journal |
+| Energy Bar Association | associations_conferences_events | **RESEARCH_CONTINUATION** | INDEPENDENT_HOTEL_DEMAND_EVIDENCE_INSUFFICIENT_SPECULATIVE_THESIS | Administrative Law Journal |
 | KnowBe4 | corporate_accounts_scaling | **ACCOUNT_DEVELOPMENT_CONTINUATION** | INDEPENDENT_HOTEL_DEMAND_EVIDENCE_INSUFFICIENT_SPECULATIVE_THESIS | Neil Brownsword; Erin Manning Hayes; Lyss Madden |
 | AstraZeneca | projects_infrastructure | **ACCOUNT_DEVELOPMENT_CONTINUATION** | INDEPENDENT_HOTEL_DEMAND_EVIDENCE_INSUFFICIENT_SPECULATIVE_THESIS | Gavin Houston; Ed McAndrews; Danielle Adams; Chad Kellner |
 | Ameresco, Inc. | relocation_extended_stay | **ACCOUNT_DEVELOPMENT_CONTINUATION** | INDEPENDENT_HOTEL_DEMAND_EVIDENCE_INSUFFICIENT_SPECULATIVE_THESIS | Lydia Nickerson; Jon Spangler |
 | Rock Creek Mansion | preferred_lodging_partnerships | **EXISTING_INVENTORY_ENRICHMENT** | INDEPENDENT_HOTEL_DEMAND_EVIDENCE_INSUFFICIENT_SPECULATIVE_THESIS | — |
-| Hidden Level | corporate_accounts_scaling | **ACCOUNT_DEVELOPMENT_CONTINUATION** | INDEPENDENT_HOTEL_DEMAND_EVIDENCE_INSUFFICIENT_SPECULATIVE_THESIS | Antoinett Dufort; Brian Reynolds; Melanie Sheppard; Michele Cadin |
+| Hidden Level | corporate_accounts_scaling | **RESEARCH_CONTINUATION** | INDEPENDENT_HOTEL_DEMAND_EVIDENCE_INSUFFICIENT_SPECULATIVE_THESIS | Antoinett Dufort; Brian Reynolds; Melanie Sheppard; Michele Cadin |
 | X-energy Reactor Company, LLC | projects_infrastructure | **ACCOUNT_DEVELOPMENT_CONTINUATION** | INDEPENDENT_HOTEL_DEMAND_EVIDENCE_INSUFFICIENT_SPECULATIVE_THESIS | Nichole Lavalle; Anas Marzook; Jana Cornell |
 | Workday, Inc. | relocation_extended_stay | **ACCOUNT_DEVELOPMENT_CONTINUATION** | INDEPENDENT_HOTEL_DEMAND_EVIDENCE_INSUFFICIENT_SPECULATIVE_THESIS | Jessica Sorenson; Dan Yoo; Susan Higbee Chong; Matthew T. Cornelius |
 | True Anomaly | corporate_accounts_scaling | **ACCOUNT_DEVELOPMENT_CONTINUATION** | INDEPENDENT_HOTEL_DEMAND_EVIDENCE_INSUFFICIENT_SPECULATIVE_THESIS | Amanda George, RA; Donnie Loa; Cara Neil |
