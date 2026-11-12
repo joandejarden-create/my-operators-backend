@@ -36,10 +36,13 @@ assert.equal(BETHESDA_EXPECTED_UNION_COUNT, 88);
 const current = loadHotelOpportunityDoc(BETHESDA_HOTEL_ID, { root: ROOT });
 assert.equal(current.exists, true);
 
-// Guard refuses protected-ID loss.
+// Guard refuses protected-ID loss when stripping the five SC IDs.
+const stripped = current.opportunities.filter(
+  (r) => !BETHESDA_PROTECTED_SCALING_IDS.includes(r.id || r.opportunityId)
+);
 const loss = assertNoProtectedIdLoss({
   hotelId: BETHESDA_HOTEL_ID,
-  nextOpportunities: current.opportunities,
+  nextOpportunities: stripped,
   protectedIds: [...BETHESDA_PROTECTED_SCALING_IDS],
 });
 assert.equal(loss.ok, false);
@@ -54,15 +57,22 @@ const drop = assertCountNotDropped({
 });
 assert.equal(drop.ok, false);
 
-// Candidate lean store (git) would be refused against richer local if local had the five.
+// After restore: local must hold all five protected IDs and refuse lean git replacement.
+const presentGate = assertNoProtectedIdLoss({
+  hotelId: BETHESDA_HOTEL_ID,
+  nextOpportunities: current.opportunities,
+  protectedIds: [...BETHESDA_PROTECTED_SCALING_IDS],
+});
+assert.equal(presentGate.ok, true);
+
 const richerCompare = compareLocalVsCandidateStore({
   hotelId: BETHESDA_HOTEL_ID,
-  candidateOpportunities: current.opportunities,
+  candidateOpportunities: stripped,
   protectedIds: [...BETHESDA_PROTECTED_SCALING_IDS],
   root: ROOT,
 });
-// Local currently already missing protected IDs — richerLocal false for protectedLost-from-local.
-assert.ok(richerCompare);
+assert.equal(richerCompare.refuseReplace, true);
+assert.equal(richerCompare.protectedLost.length, 5);
 
 // Recovered bodies must exist (from dry-run or authorized backup).
 assert.equal(fs.existsSync(SOURCE), true, "verified 59-row backup must be present");
@@ -82,14 +92,16 @@ const dry = dryRunMergeProtectedBodies({
   root: ROOT,
 });
 assert.equal(dry.ok, true);
-assert.equal(dry.proposedCount, 59);
-assert.equal(dry.added.length, 5);
+assert.equal(dry.proposedCount, BETHESDA_EXPECTED_CANONICAL_COUNT);
+// After live restore, dry-run adds 0 (already present) but still ends at 59.
+assert.ok(dry.added.length === 0 || dry.added.length === 5);
 assert.equal(dry.writeAuthorized, false);
 
-// Simulate approved merge in-memory only — do not write.
+// Live store + research-stage union must be 88 after approved restore.
+assert.equal(current.count, BETHESDA_EXPECTED_CANONICAL_COUNT);
 const union = mergeBethesdaInternalResearchOpportunities(
   BETHESDA_HOTEL_ID,
-  dry.opportunities,
+  current.opportunities,
   { root: ROOT }
 );
 assert.equal(union.counts.canonical, 59);
