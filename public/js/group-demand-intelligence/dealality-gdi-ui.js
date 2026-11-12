@@ -592,6 +592,52 @@
    * Pill 2 — Recommended Sales Action (eight approved labels). Always a colored badge.
    * Never Commercial Stage terminology.
    */
+  function competitiveStatusPillHtml(it, linked) {
+    it = it || {};
+    linked = linked || {};
+    var pops = opportunityInventoryPopulations(linked.id ? linked : it);
+    var eligible =
+      pops.indexOf(
+        INVENTORY_POPULATION_VALUES.COMPETITIVE_MARKET_INTELLIGENCE
+      ) >= 0 ||
+      linked.cmiVerified === true ||
+      it.cmiVerified === true;
+    if (!eligible) return "";
+    var status = opportunityCompetitiveStatus(linked.id ? linked : it);
+    var map = {
+      VERIFIED: {
+        label: "Verified Competitive",
+        cls: "gdi-pill gdi-pill-cmi gdi-pill-cmi-verified",
+      },
+      NEEDS_VERIFICATION: {
+        label: "Needs Verification",
+        cls: "gdi-pill gdi-pill-cmi gdi-pill-cmi-needs",
+      },
+      HISTORICAL: {
+        label: "Historical Competitive",
+        cls: "gdi-pill gdi-pill-cmi gdi-pill-cmi-historical",
+      },
+    };
+    var m = map[status];
+    if (!m) return "";
+    var hotel =
+      linked.cmiCompetitorHotel ||
+      it.cmiCompetitorHotel ||
+      linked.competitorHotel ||
+      it.competitorHotel ||
+      "";
+    var title = m.label + (hotel ? " · " + hotel : "");
+    return (
+      '<span class="' +
+      m.cls +
+      '" title="' +
+      esc(title) +
+      '">' +
+      esc(m.label) +
+      "</span>"
+    );
+  }
+
   function tileSalesActionPill(it, linked) {
     linked = linked || {};
     it = it || {};
@@ -1425,6 +1471,7 @@
       weeklyThisWeekFilterHtml(opts) +
       opportunityTypeFilterHtml(opts) +
       marketScopeFilterHtml(opts) +
+      competitiveStatusFilterHtml(opts) +
       (opts.actionHtml
         ? '<div class="filter-group aiv-filter-actions gdi-property-bar__actions">' +
           opts.actionHtml +
@@ -1600,6 +1647,166 @@
             esc(o.fullLabel + (countText || "")) +
             '">' +
             esc(label) +
+            "</button>"
+          );
+        })
+        .join("") +
+      "</div></div>"
+    );
+  }
+
+  /**
+   * Secondary Competitive status filter — visible only when Market Scope = Competitive.
+   * Counts are dynamic; Competitive total ≠ verified-booking total.
+   */
+  var COMPETITIVE_STATUS = {
+    VERIFIED: "VERIFIED",
+    NEEDS_VERIFICATION: "NEEDS_VERIFICATION",
+    HISTORICAL: "HISTORICAL",
+    NOT_COMPETITIVE: "NOT_COMPETITIVE",
+  };
+
+  var COMPETITIVE_STATUS_FILTER = {
+    ALL: "ALL_COMPETITIVE",
+    VERIFIED: "VERIFIED",
+    NEEDS_VERIFICATION: "NEEDS_VERIFICATION",
+    HISTORICAL: "HISTORICAL",
+  };
+
+  function normalizeCompetitiveStatusFilter(value) {
+    var v = String(value || "")
+      .trim()
+      .toUpperCase();
+    if (!v || v === "ALL" || v === "ALL_COMPETITIVE") {
+      return COMPETITIVE_STATUS_FILTER.ALL;
+    }
+    if (v === "VERIFIED" || v === "VERIFIED_COMPETITIVE") {
+      return COMPETITIVE_STATUS_FILTER.VERIFIED;
+    }
+    if (
+      v === "NEEDS_VERIFICATION" ||
+      v === "NEEDS_FURTHER_VERIFICATION" ||
+      v === "UNVERIFIED"
+    ) {
+      return COMPETITIVE_STATUS_FILTER.NEEDS_VERIFICATION;
+    }
+    if (v === "HISTORICAL" || v === "HISTORICAL_COMPETITIVE") {
+      return COMPETITIVE_STATUS_FILTER.HISTORICAL;
+    }
+    return COMPETITIVE_STATUS_FILTER.ALL;
+  }
+
+  function opportunityCompetitiveStatus(o) {
+    o = o || {};
+    if (o.competitiveStatus) return String(o.competitiveStatus).toUpperCase();
+    if (o.cmiVerified === true) return COMPETITIVE_STATUS.VERIFIED;
+    if (String(o.cmiClass || "").toUpperCase() === "HISTORICAL_COMPETITIVE") {
+      return COMPETITIVE_STATUS.HISTORICAL;
+    }
+    if (
+      String(o.cmiClass || "").toUpperCase() === "NEEDS_FURTHER_VERIFICATION"
+    ) {
+      return COMPETITIVE_STATUS.NEEDS_VERIFICATION;
+    }
+    return COMPETITIVE_STATUS.NOT_COMPETITIVE;
+  }
+
+  function matchesCompetitiveStatusFilter(o, statusFilter) {
+    var active = normalizeCompetitiveStatusFilter(statusFilter);
+    if (active === COMPETITIVE_STATUS_FILTER.ALL) return true;
+    return opportunityCompetitiveStatus(o) === active;
+  }
+
+  function countByCompetitiveStatus(opportunities) {
+    var counts = {
+      ALL_COMPETITIVE: 0,
+      VERIFIED: 0,
+      NEEDS_VERIFICATION: 0,
+      HISTORICAL: 0,
+    };
+    (opportunities || []).forEach(function (o) {
+      var pops = opportunityInventoryPopulations(o);
+      if (
+        pops.indexOf(
+          INVENTORY_POPULATION_VALUES.COMPETITIVE_MARKET_INTELLIGENCE
+        ) < 0 &&
+        o.cmiVerified !== true
+      ) {
+        return;
+      }
+      counts.ALL_COMPETITIVE += 1;
+      var s = opportunityCompetitiveStatus(o);
+      if (s === COMPETITIVE_STATUS.VERIFIED) counts.VERIFIED += 1;
+      else if (s === COMPETITIVE_STATUS.NEEDS_VERIFICATION) {
+        counts.NEEDS_VERIFICATION += 1;
+      } else if (s === COMPETITIVE_STATUS.HISTORICAL) counts.HISTORICAL += 1;
+    });
+    return counts;
+  }
+
+  function competitiveStatusFilterHtml(opts) {
+    opts = opts || {};
+    var scope = normalizeMarketScopeValue(
+      opts.activeMarketScope != null
+        ? opts.activeMarketScope
+        : MARKET_SCOPE.ALL
+    );
+    if (scope !== MARKET_SCOPE.COMPETITIVE) return "";
+    if (opts.showCompetitiveStatusFilter === false) return "";
+    var active = normalizeCompetitiveStatusFilter(
+      opts.activeCompetitiveStatus != null
+        ? opts.activeCompetitiveStatus
+        : COMPETITIVE_STATUS_FILTER.ALL
+    );
+    var counts = opts.competitiveStatusCounts || {};
+    var options = [
+      {
+        value: COMPETITIVE_STATUS_FILTER.ALL,
+        shortLabel: "All Competitive",
+        fullLabel: "All Competitive (verified + needs verification + historical)",
+        count: counts.ALL_COMPETITIVE,
+      },
+      {
+        value: COMPETITIVE_STATUS_FILTER.VERIFIED,
+        shortLabel: "Verified",
+        fullLabel: "Verified Competitive bookings",
+        count: counts.VERIFIED,
+      },
+      {
+        value: COMPETITIVE_STATUS_FILTER.NEEDS_VERIFICATION,
+        shortLabel: "Needs Verification",
+        fullLabel: "Competitive — Needs Verification",
+        count: counts.NEEDS_VERIFICATION,
+      },
+      {
+        value: COMPETITIVE_STATUS_FILTER.HISTORICAL,
+        shortLabel: "Historical",
+        fullLabel: "Historical Competitive bookings",
+        count: counts.HISTORICAL,
+      },
+    ];
+    return (
+      '<div class="filter-group gdi-competitive-status-filter">' +
+      '<span class="filter-label" id="gdiCompetitiveStatusLabel">Competitive Status</span>' +
+      '<div class="gdi-competitive-status" role="radiogroup" aria-labelledby="gdiCompetitiveStatusLabel">' +
+      options
+        .map(function (o) {
+          var selected = active === o.value;
+          var countText =
+            o.count == null || o.count === "" ? "" : " (" + o.count + ")";
+          return (
+            '<button type="button" class="gdi-competitive-status__btn' +
+            (selected ? " is-active" : "") +
+            '" role="radio" aria-checked="' +
+            (selected ? "true" : "false") +
+            '" data-gdi-competitive-status="' +
+            esc(o.value) +
+            '" title="' +
+            esc(o.fullLabel) +
+            '" aria-label="' +
+            esc(o.fullLabel + (countText || "")) +
+            '">' +
+            esc(o.shortLabel + countText) +
             "</button>"
           );
         })
@@ -2889,7 +3096,21 @@
         filters.booking = "";
         filters.weekly = "";
         filters.opportunityType = "";
+        if (normalizeMarketScopeValue(filters.marketScope) !== MARKET_SCOPE.COMPETITIVE) {
+          filters.competitiveStatus = COMPETITIVE_STATUS_FILTER.ALL;
+        }
+      } else if (changedKey === "competitiveStatus") {
+        filters.priority = "";
+        filters.booking = "";
+        filters.weekly = "";
       }
+    }
+    if (normalizeMarketScopeValue(filters.marketScope) !== MARKET_SCOPE.COMPETITIVE) {
+      filters.competitiveStatus = COMPETITIVE_STATUS_FILTER.ALL;
+    } else {
+      filters.competitiveStatus = normalizeCompetitiveStatusFilter(
+        filters.competitiveStatus
+      );
     }
     return filters;
   }
@@ -2906,6 +3127,7 @@
       weekly: "",
       opportunityType: "",
       marketScope: MARKET_SCOPE.ALL,
+      competitiveStatus: COMPETITIVE_STATUS_FILTER.ALL,
     };
   }
 
@@ -3342,6 +3564,17 @@
     if (filters.marketScope) {
       rows = rows.filter(function (o) {
         return matchesMarketScopeFilter(o, filters.marketScope);
+      });
+    }
+    if (
+      normalizeMarketScopeValue(filters.marketScope) ===
+        MARKET_SCOPE.COMPETITIVE &&
+      filters.competitiveStatus &&
+      normalizeCompetitiveStatusFilter(filters.competitiveStatus) !==
+        COMPETITIVE_STATUS_FILTER.ALL
+    ) {
+      rows = rows.filter(function (o) {
+        return matchesCompetitiveStatusFilter(o, filters.competitiveStatus);
       });
     }
     if (filters.opportunityType) {
@@ -5309,6 +5542,7 @@
       "</div>" +
       '<div class="brand-card__pills gdi-tile-pills">' +
       tilePriorityPill(priorityKey, activeFilters) +
+      competitiveStatusPillHtml(it, linked) +
       tileSalesActionPill(it, linked) +
       tileEventDatePill(it, linked) +
       "</div>" +
@@ -9052,11 +9286,18 @@
     weeklyThisWeekFilterHtml: weeklyThisWeekFilterHtml,
     opportunityTypeFilterHtml: opportunityTypeFilterHtml,
     marketScopeFilterHtml: marketScopeFilterHtml,
+    competitiveStatusFilterHtml: competitiveStatusFilterHtml,
     MARKET_SCOPE: MARKET_SCOPE,
+    COMPETITIVE_STATUS: COMPETITIVE_STATUS,
+    COMPETITIVE_STATUS_FILTER: COMPETITIVE_STATUS_FILTER,
     INVENTORY_POPULATION_VALUES: INVENTORY_POPULATION_VALUES,
     normalizeMarketScopeValue: normalizeMarketScopeValue,
+    normalizeCompetitiveStatusFilter: normalizeCompetitiveStatusFilter,
     marketScopeToInventoryPopulation: marketScopeToInventoryPopulation,
     normalizeBrowsePopulationFilters: normalizeBrowsePopulationFilters,
+    matchesCompetitiveStatusFilter: matchesCompetitiveStatusFilter,
+    countByCompetitiveStatus: countByCompetitiveStatus,
+    opportunityCompetitiveStatus: opportunityCompetitiveStatus,
     classifyOpportunityTypeFilter: classifyOpportunityTypeFilter,
     countByOpportunityTypeFilter: countByOpportunityTypeFilter,
     countByMarketScope: countByMarketScope,
