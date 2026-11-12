@@ -2946,6 +2946,27 @@
   function filterOpportunities(rows, filters) {
     filters = filters || {};
     rows = (rows || []).slice();
+    // Defense-in-depth: when API stamps primaryCommercialEligible, never show
+    // market-intelligence themes / archive DQ / research-pipeline-only on the
+    // default commercial browse (unless admin surface=full|research|archive).
+    var surface = String(filters.surface || filters.listSurface || "").toLowerCase();
+    if (!surface || surface === "commercial") {
+      rows = rows.filter(function (o) {
+        if (o && o.primaryCommercialEligible === false) return false;
+        if (
+          o &&
+          o.commercialSurfaceDisposition &&
+          o.commercialSurfaceDisposition !== "COMMERCIAL_OPPORTUNITY"
+        ) {
+          return false;
+        }
+        var pri = String(
+          (o && (o.priorityFilterKey || o.priority)) || ""
+        ).toUpperCase();
+        if (pri === "DISQUALIFIED") return false;
+        return true;
+      });
+    }
     if (filters.priority) {
       rows = rows.filter(function (o) {
         var key =

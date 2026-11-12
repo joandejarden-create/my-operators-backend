@@ -21,6 +21,7 @@ import {
   WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256,
   FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256,
   COMMERCIAL_DEMAND_TYPE_CLASSIFIED_59_ROW_SHA256,
+  COMMERCIAL_SURFACE_RECONCILED_59_ROW_SHA256,
   ACCEPTABLE_59_ROW_SHA256S,
   BETHESDA_PROTECTED_SCALING_IDS,
 } from "../lib/group-demand-intelligence/research/gdi-hotel-store-integrity-guard-v1.js";
@@ -33,6 +34,7 @@ assert.ok(
     WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256,
     FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256,
     COMMERCIAL_DEMAND_TYPE_CLASSIFIED_59_ROW_SHA256,
+  COMMERCIAL_SURFACE_RECONCILED_59_ROW_SHA256,
   ].includes(storeBefore.sha256)
 );
 
@@ -65,7 +67,8 @@ assert.match(String(acvnuSnap.orgEmail || acvnuSnap.orgRoute), /info@acvnu\.org/
 if (
   storeBefore.sha256 === WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256 ||
   storeBefore.sha256 === FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256 ||
-  storeBefore.sha256 === COMMERCIAL_DEMAND_TYPE_CLASSIFIED_59_ROW_SHA256
+  storeBefore.sha256 === COMMERCIAL_DEMAND_TYPE_CLASSIFIED_59_ROW_SHA256 ||
+  storeBefore.sha256 === COMMERCIAL_SURFACE_RECONCILED_59_ROW_SHA256
 ) {
   for (const id of WAVE2_FOUNDER_APPROVED_CANONICAL_IDS) {
     const row = storeBefore.opportunities.find((o) => o.id === id);
@@ -152,6 +155,7 @@ console.log(
         WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256,
         FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256,
         COMMERCIAL_DEMAND_TYPE_CLASSIFIED_59_ROW_SHA256,
+  COMMERCIAL_SURFACE_RECONCILED_59_ROW_SHA256,
       ].includes(storeAfter.sha256),
       beforeNamed: report.before.raw.named,
       afterProjectedNamed: report.afterProjectedIncludingCanonicalDryRun.raw.named,

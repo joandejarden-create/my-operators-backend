@@ -11,6 +11,7 @@ import {
   loadHotelOpportunityDoc,
   FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256,
   COMMERCIAL_DEMAND_TYPE_CLASSIFIED_59_ROW_SHA256,
+  COMMERCIAL_SURFACE_RECONCILED_59_ROW_SHA256,
   ACCEPTABLE_59_ROW_SHA256S,
   BETHESDA_PROTECTED_SCALING_IDS,
 } from "../lib/group-demand-intelligence/research/gdi-hotel-store-integrity-guard-v1.js";
@@ -29,6 +30,7 @@ assert.ok(
   [
     FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256,
     COMMERCIAL_DEMAND_TYPE_CLASSIFIED_59_ROW_SHA256,
+  COMMERCIAL_SURFACE_RECONCILED_59_ROW_SHA256,
   ].includes(store.sha256),
   `unexpected store sha ${store.sha256}`,
 );
