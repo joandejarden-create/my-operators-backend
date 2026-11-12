@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>GDI toolbar — Reset View only</title>
+  <style>
+    body { font-family: "Segoe UI", sans-serif; margin: 24px; color: #1a1a1a; }
+    .before, .after { border: 1px solid #ddd; padding: 16px; margin-bottom: 16px; }
+    .btn-clear {
+      background: #f5a623;
+      color: #1a1a1a;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 14px;
+      font: inherit;
+      cursor: pointer;
+    }
+    .aiv-btn-apply {
+      background: #1a1a1a;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 14px;
+      font: inherit;
+      margin-right: 8px;
+    }
+    h2 { margin-top: 0; font-size: 16px; }
+    code { background: #f4f4f4; padding: 2px 4px; }
+  </style>
+</head>
+<body>
+  <h1>GDI hotel toolbar verification</h1>
+  <div class="before">
+    <h2>Before (removed)</h2>
+    <button type="button" class="aiv-btn-apply">Run Research</button>
+    <button type="button" class="aiv-btn-apply">Publish</button>
+    <button type="button" class="btn-clear">Reset View</button>
+  </div>
+  <div class="after">
+    <h2>After (shipped)</h2>
+    <button type="button" class="btn-clear" id="gdiResetViewBtn">Reset View</button>
+  </div>
+  <p>
+    Auth + share toolbars render only
+    <code>&lt;button type="button" class="btn-clear" id="gdiResetViewBtn"&gt;Reset View&lt;/button&gt;</code>.
+    Research/publish remain via Full E2E CLI, weekly orchestrator, and
+    <code>gdi-one-click-hotel-publish-v1</code> / API — not hotel toolbar buttons.
+  </p>
+</body>
+</html>

@@ -286,6 +286,55 @@ check("gdi_auth_ui_has_no_research_audit_tab", () => {
   );
 });
 
+check("gdi_hotel_toolbar_reset_view_only", () => {
+  const appJs = fs.readFileSync(
+    path.join(root, "public/js/group-demand-intelligence/app.js"),
+    "utf8"
+  );
+  const shareJs = fs.readFileSync(
+    path.join(root, "public/js/group-demand-intelligence/share-app.js"),
+    "utf8"
+  );
+  assert.ok(
+    /id="gdiResetViewBtn">Reset View<\/button>/.test(appJs),
+    "Reset View must remain on auth hotel toolbar"
+  );
+  assert.ok(
+    /id="gdiResetViewBtn">Reset View<\/button>/.test(shareJs),
+    "Reset View must remain on share hotel toolbar"
+  );
+  assert.ok(
+    !/id="gdiRunBtn"/.test(appJs),
+    "Run Research must not appear on hotel toolbar"
+  );
+  assert.ok(
+    !/id="gdiPublishBtn"/.test(appJs),
+    "Publish must not appear on hotel toolbar"
+  );
+  assert.ok(!/Run Research/i.test(shareJs));
+  assert.ok(!/id="gdiPublishBtn"/.test(shareJs));
+  // Backend entry points preserved (not only hotel toolbar)
+  assert.ok(
+    /function runResearch\(/.test(appJs) ||
+      fs.existsSync(
+        path.join(
+          root,
+          "lib/group-demand-intelligence/durable-publication/gdi-one-click-hotel-publish-v1.js"
+        )
+      ),
+    "research/publish capabilities remain in codebase"
+  );
+  assert.ok(
+    fs.existsSync(
+      path.join(
+        root,
+        "lib/group-demand-intelligence/durable-publication/gdi-one-click-hotel-publish-v1.js"
+      )
+    ),
+    "one-click publish module must remain"
+  );
+});
+
 check("gdi_registered_in_dealality_app_shell", () => {
   const appJs = fs.readFileSync(path.join(root, "public/app.js"), "utf8");
   assert.ok(

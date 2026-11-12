@@ -69,7 +69,8 @@ check("property_bar_keeps_research_status", () => {
     hotelId: "recSyntheticAlpha",
     lastResearch: "Sep 13, 2026",
     runStatus: "COMPLETED",
-    actionHtml: '<button type="button" id="gdiRunBtn">Run Research</button>',
+    actionHtml:
+      '<button type="button" class="btn-clear" id="gdiResetViewBtn">Reset View</button>',
   });
   assert.match(html, /Harborview Conference Hotel — Charleston, South Carolina/);
   assert.match(html, /Last research:/);
@@ -79,7 +80,9 @@ check("property_bar_keeps_research_status", () => {
   assert.match(html, /gdi-property-bar__primary/);
   assert.match(html, /gdi-property-bar__history/);
   assert.match(html, /Last published:/);
-  assert.match(html, /gdiRunBtn/);
+  assert.match(html, /gdiResetViewBtn/);
+  assert.match(html, />Reset View</);
+  assert.doesNotMatch(html, /gdiRunBtn|Run Research|gdiPublishBtn|>Publish</);
   assert.match(html, /filters-section/);
   assert.match(html, /aiv-filters-section/);
   assert.doesNotMatch(html, /filter-select gdi-filter-static/);
