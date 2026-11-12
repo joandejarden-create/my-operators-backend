@@ -139,7 +139,7 @@ check("audience_resolver_share_surface_forced_published", () => {
   assert.equal(a, GDI_INVENTORY_AUDIENCE.PUBLISHED_CUSTOMER_FEED);
 });
 
-check("population_counts_67_plus_7_unique_67", () => {
+check("population_counts_67_plus_verified_cmi_unique_67", () => {
   const annotated = annotateInventoryPopulations(
     selectBethesdaSalesOpportunityInventory(surface, {
       salesTeamInventory: true,
@@ -148,7 +148,8 @@ check("population_counts_67_plus_7_unique_67", () => {
   );
   const counts = buildInventoryPopulationCounts(annotated);
   assert.equal(counts.salesOpportunities, 67);
-  assert.equal(counts.competitiveMarketIntelligence, 7);
+  // Evidence-backed CMI ledger: 4 verified (not legacy seed-as-proof 7).
+  assert.equal(counts.competitiveMarketIntelligence, 4);
   assert.equal(counts.allCommercialIntelligence, 67);
   const sales = annotated.filter((o) =>
     opportunityMatchesTypeFilter(o, OPPORTUNITY_TYPE_FILTER.SALES_OPPORTUNITIES)
@@ -160,7 +161,8 @@ check("population_counts_67_plus_7_unique_67", () => {
     )
   );
   assert.equal(sales.length, 67);
-  assert.equal(cmi.length, 7);
+  assert.equal(cmi.length, 4);
+  assert.ok(cmi.every((o) => o.cmiVerified === true));
 });
 
 check("api_source_wires_sales_team_scope", () => {

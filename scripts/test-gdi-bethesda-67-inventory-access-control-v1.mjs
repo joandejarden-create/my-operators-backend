@@ -267,9 +267,9 @@ check("list_select_published_is_19_sales_is_67", () => {
   assert.equal(sales.selected.length, 67);
 });
 
-check("preserved_67_plus_7_cmi_under_sales_audience", () => {
+check("preserved_67_plus_verified_cmi_under_sales_audience", () => {
   if (!surface.length) {
-    console.log("SKIP preserved_67_plus_7 (no local opportunities store)");
+    console.log("SKIP preserved_67_plus_verified_cmi (no local opportunities store)");
     return;
   }
   const selected = selectBethesdaSalesOpportunityInventory(surface, {
@@ -280,7 +280,9 @@ check("preserved_67_plus_7_cmi_under_sales_audience", () => {
   });
   const counts = buildInventoryPopulationCounts(annotated);
   assert.equal(counts.salesOpportunities, 67);
-  assert.equal(counts.competitiveMarketIntelligence, 7);
+  // Evidence-backed ledger: 4 verified CMI (3 demoted from legacy seed-as-proof 7).
+  assert.equal(counts.competitiveMarketIntelligence, 4);
+  assert.equal(counts.allCommercialIntelligence, 67);
 });
 
 check("api_detail_wires_inventory_audience_guard", () => {
