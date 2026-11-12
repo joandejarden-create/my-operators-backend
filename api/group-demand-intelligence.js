@@ -872,29 +872,65 @@ export async function getGdiOpportunities(req, res) {
             });
           }
         }
+        // Primary commercial (default): match published/share eligibility.
+        // Research/FULL surfaces keep research inventory for admin tools only.
+        let afterSurfaceCount = opportunities.length;
+        if (surfaceView === GDI_LIST_SURFACE_VIEW.COMMERCIAL) {
+          const beforeFacing = opportunities.length;
+          opportunities = filterCustomerFacingOpportunities(opportunities, {
+            hotelId,
+          });
+          afterSurfaceCount = opportunities.length;
+          bethesdaUnionMeta = {
+            applied: true,
+            counts: union.counts,
+            commercialEventFamily: familyMeta,
+            commercialSurface: {
+              requestedSurface: surfaceView,
+              effectiveSurface: surfaceView,
+              view: surfaceView,
+              beforeCount: beforeSurface,
+              afterSurfaceCount,
+              afterCustomerFacingCount: afterSurfaceCount,
+              afterCount: afterSurfaceCount,
+              eligibleCount: afterSurfaceCount,
+              excludedCount: Math.max(0, beforeSurface - afterSurfaceCount),
+              customerFacingExcluded: Math.max(
+                0,
+                beforeFacing - afterSurfaceCount
+              ),
+              summary: surfaceSummary,
+              localPublishedParity: true,
+            },
+            storeWrites: false,
+            customerShare: false,
+          };
+        } else {
+          bethesdaUnionMeta = {
+            applied: true,
+            counts: union.counts,
+            commercialEventFamily: familyMeta,
+            commercialSurface: {
+              requestedSurface: surfaceView,
+              effectiveSurface: surfaceView,
+              view: surfaceView,
+              beforeCount: beforeSurface,
+              afterCount: opportunities.length,
+              eligibleCount: opportunities.length,
+              excludedCount: Math.max(0, beforeSurface - opportunities.length),
+              summary: surfaceSummary,
+              localPublishedParity: false,
+            },
+            storeWrites: false,
+            customerShare: false,
+          };
+        }
         listScope =
           surfaceView === GDI_LIST_SURFACE_VIEW.COMMERCIAL
             ? "BETHESDA_PRIMARY_COMMERCIAL"
             : surfaceView === GDI_LIST_SURFACE_VIEW.FULL
               ? listScope
               : `BETHESDA_SURFACE_${String(surfaceView).toUpperCase()}`;
-        bethesdaUnionMeta = {
-          applied: true,
-          counts: union.counts,
-          commercialEventFamily: familyMeta,
-          commercialSurface: {
-            requestedSurface: surfaceView,
-            effectiveSurface: surfaceView,
-            view: surfaceView,
-            beforeCount: beforeSurface,
-            afterCount: opportunities.length,
-            eligibleCount: opportunities.length,
-            excludedCount: Math.max(0, beforeSurface - opportunities.length),
-            summary: surfaceSummary,
-          },
-          storeWrites: false,
-          customerShare: false,
-        };
       } catch (surfaceErr) {
         console.error(
           JSON.stringify({
