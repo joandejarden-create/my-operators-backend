@@ -1,0 +1,275 @@
+{
+  "schema": "gdi-nextgen-capability-gap-matrix-v1",
+  "generatedAt": "2026-11-12T19:37:55.901Z",
+  "fourteenDemandSegments": [
+    "association_events",
+    "scaling_companies",
+    "meetings_incentives",
+    "local_catering_day_meetings",
+    "education_scientific",
+    "government_public_sector",
+    "sports_entertainment",
+    "social_special_events",
+    "travel_trade",
+    "projects_infrastructure",
+    "relocation_extended_stay",
+    "corporate_celebrations",
+    "preferred_lodging_partnerships",
+    "professional_event_planners"
+  ],
+  "fourteenCount": 14,
+  "apify": {
+    "registryVersion": "gdi-apify-actor-registry-v1",
+    "actorCount": 13,
+    "enabledCount": 12,
+    "fourteenWorkflowCoverage": {
+      "PRIMARY_APIFY_DISCOVERY": 4,
+      "SUPPLEMENTAL_APIFY_DISCOVERY": 6,
+      "EXA_PRIMARY": 4
+    },
+    "unfinishedProductionWiring": "Apify Full E2E orchestration exists but production rail remains Exa-primary until hotel-adaptive yield proven",
+    "lessonsRetained": [
+      "Party Bus / social leisure organizers fail commercial-relevance gates — keep organizer + lodging thesis gates",
+      "Apify discoveries are research evidence, not Sales Ready opportunities",
+      "Sports/entertainment schedules are PRIMARY_APIFY; government/scaling stay EXA_PRIMARY",
+      "Dedup against Exa event discovery is HIGH for association/meetup surfaces",
+      "Actor registry must allow replacement without changing opportunity schema",
+      "Full E2E production rail remains Exa-primary until hotel-adaptive yield proven"
+    ]
+  },
+  "existingCoverageMap": {
+    "corporate": [
+      "scaling_companies",
+      "corporate_meetings_incentives",
+      "CORPORATE_TRIGGER_DEMAND"
+    ],
+    "association": [
+      "association_events",
+      "HISTORIC_ROTATION_PREDICTION"
+    ],
+    "procurement": [
+      "government_public_sector"
+    ],
+    "project": [
+      "projects_infrastructure",
+      "PROJECT_WORKFORCE_DEMAND",
+      "relocation_extended_stay"
+    ],
+    "sports": [
+      "sports_entertainment",
+      "SPORTS_ENTERTAINMENT_PRODUCTION"
+    ],
+    "university": [
+      "education_scientific",
+      "tours_educational_specialist"
+    ],
+    "medical": [
+      "education_scientific",
+      "medical_academic",
+      "PHARMA_MEDICAL_ECOSYSTEM"
+    ]
+  },
+  "hunterRows": [
+    {
+      "hunterId": "government_procurement",
+      "label": "Government Procurement",
+      "wave": "FIRST",
+      "capability": "PARTIAL",
+      "action": "EXTEND_EXISTING_WORKFLOW",
+      "mapsToWorkflows": [
+        "government_public_sector"
+      ],
+      "mapsToResearchSegments": [
+        "associations_government"
+      ],
+      "tenBases": [],
+      "apifyRole": "SUPPLEMENTAL",
+      "notes": "Extend existing government_public_sector with procurement solicitations / awards watch — not a new segment.",
+      "createsFifteenthSegment": false
+    },
+    {
+      "hunterId": "association_rotation",
+      "label": "Association Rotation",
+      "wave": "SECOND",
+      "capability": "EXISTS",
+      "action": "REUSE_AND_WRAP",
+      "mapsToWorkflows": [
+        "association_events"
+      ],
+      "mapsToResearchSegments": [
+        "associations_government"
+      ],
+      "tenBases": [
+        "HISTORIC_ROTATION_PREDICTION"
+      ],
+      "apifyRole": "SUPPLEMENTAL",
+      "notes": "Reuse ten-bases rotation + association-events runners.",
+      "createsFifteenthSegment": false
+    },
+    {
+      "hunterId": "corporate_meeting_triggers",
+      "label": "Corporate Meeting Triggers",
+      "wave": "FIRST",
+      "capability": "EXISTS",
+      "action": "REUSE_AND_WRAP",
+      "mapsToWorkflows": [
+        "meetings_incentives",
+        "scaling_companies"
+      ],
+      "mapsToResearchSegments": [
+        "corporate_meetings_incentives",
+        "scaling_companies"
+      ],
+      "tenBases": [
+        "CORPORATE_TRIGGER_DEMAND",
+        "RECURRING_CORPORATE_MEETINGS"
+      ],
+      "apifyRole": "SUPPLEMENTAL",
+      "notes": "Reuse CORPORATE_TRIGGER_DEMAND + meetings adapters.",
+      "createsFifteenthSegment": false
+    },
+    {
+      "hunterId": "clinical_trials_medical",
+      "label": "Clinical Trials / Medical Meetings",
+      "wave": "SECOND",
+      "capability": "EXISTS",
+      "action": "REUSE_AND_WRAP",
+      "mapsToWorkflows": [
+        "education_scientific"
+      ],
+      "mapsToResearchSegments": [
+        "medical_academic"
+      ],
+      "tenBases": [
+        "PHARMA_MEDICAL_ECOSYSTEM"
+      ],
+      "apifyRole": "SUPPLEMENTAL",
+      "notes": "Pharma/medical ecosystem exists; CT.gov feed is an incremental extension.",
+      "createsFifteenthSegment": false
+    },
+    {
+      "hunterId": "project_workforce",
+      "label": "Construction / Project Workforce",
+      "wave": "FIRST",
+      "capability": "EXISTS",
+      "action": "REUSE_AND_WRAP",
+      "mapsToWorkflows": [
+        "projects_infrastructure",
+        "relocation_extended_stay"
+      ],
+      "mapsToResearchSegments": [
+        "corporate_meetings_training"
+      ],
+      "tenBases": [
+        "PROJECT_WORKFORCE_DEMAND"
+      ],
+      "apifyRole": "NONE",
+      "notes": "Reuse PROJECT_WORKFORCE_DEMAND + projects_infrastructure workflow.",
+      "createsFifteenthSegment": false
+    },
+    {
+      "hunterId": "sports_housing",
+      "label": "Sports Housing",
+      "wave": "FIRST",
+      "capability": "PARTIAL",
+      "action": "EXTEND_EXISTING_WORKFLOW",
+      "mapsToWorkflows": [
+        "sports_entertainment"
+      ],
+      "mapsToResearchSegments": [
+        "sports"
+      ],
+      "tenBases": [
+        "SPORTS_ENTERTAINMENT_PRODUCTION"
+      ],
+      "apifyRole": "PRIMARY",
+      "notes": "Apify PRIMARY for schedules; deepen stay-to-play / housing agency thesis.",
+      "createsFifteenthSegment": false
+    },
+    {
+      "hunterId": "university_demand",
+      "label": "University Demand",
+      "wave": "FIRST",
+      "capability": "PARTIAL",
+      "action": "EXTEND_EXISTING_WORKFLOW",
+      "mapsToWorkflows": [
+        "education_scientific"
+      ],
+      "mapsToResearchSegments": [
+        "tours_educational_specialist",
+        "medical_academic"
+      ],
+      "tenBases": [],
+      "apifyRole": "SUPPLEMENTAL",
+      "notes": "Split university weekend/homecoming demand from medical/scientific path.",
+      "createsFifteenthSegment": false
+    },
+    {
+      "hunterId": "legal_regulatory",
+      "label": "Legal / Regulatory Events",
+      "wave": "THIRD",
+      "capability": "PARTIAL",
+      "action": "EXTEND_EXISTING_WORKFLOW",
+      "mapsToWorkflows": [
+        "association_events",
+        "government_public_sector"
+      ],
+      "mapsToResearchSegments": [
+        "associations_government"
+      ],
+      "tenBases": [],
+      "apifyRole": "NONE",
+      "notes": "Today association/gov overflow — specialist filter, not new segment.",
+      "createsFifteenthSegment": false
+    },
+    {
+      "hunterId": "emergency_displacement",
+      "label": "Emergency / Displacement",
+      "wave": "THIRD",
+      "capability": "NEW",
+      "action": "NEW_SPECIALIST_PATH",
+      "mapsToWorkflows": [
+        "relocation_extended_stay"
+      ],
+      "mapsToResearchSegments": [
+        "relocation_extended_stay"
+      ],
+      "tenBases": [],
+      "apifyRole": "NONE",
+      "notes": "Distinct from competitor-displacement pursuit tactics; catastrophe/FEMA housing demand.",
+      "createsFifteenthSegment": false
+    },
+    {
+      "hunterId": "crew_production",
+      "label": "Crew / Production",
+      "wave": "SECOND",
+      "capability": "EXISTS",
+      "action": "REUSE_AND_WRAP",
+      "mapsToWorkflows": [
+        "sports_entertainment"
+      ],
+      "mapsToResearchSegments": [
+        "entertainment_production"
+      ],
+      "tenBases": [
+        "SPORTS_ENTERTAINMENT_PRODUCTION"
+      ],
+      "apifyRole": "SUPPLEMENTAL",
+      "notes": "Exists under entertainment_production; keep out of Sales Ready without lodging thesis.",
+      "createsFifteenthSegment": false
+    }
+  ],
+  "summary": {
+    "exists": 5,
+    "partial": 4,
+    "new": 1
+  },
+  "nonGoals": [
+    "No fifteenth demand segment",
+    "No parallel GDI supervisor",
+    "No Sales Ready from organization announcements alone",
+    "No auto-publish",
+    "No unauthorized paid Apify/Exa",
+    "No duplicate Apify adapters"
+  ]
+}

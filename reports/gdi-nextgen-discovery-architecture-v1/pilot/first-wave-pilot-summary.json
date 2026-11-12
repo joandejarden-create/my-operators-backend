@@ -1,0 +1,1234 @@
+{
+  "schema": "gdi-nextgen-first-wave-pilot-report-v1",
+  "architecture": "gdi-nextgen-discovery-architecture-v1",
+  "startedAt": "2026-11-12T19:36:57.401Z",
+  "finishedAt": "2026-11-12T19:36:57.456Z",
+  "paidAuthorized": false,
+  "budgetUsdSpent": 0,
+  "hotels": [
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelName": "Bethesda Marriott",
+      "selection": {
+        "schema": "gdi-hotel-adaptive-hunter-selection-v1",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "wavePolicy": "FIRST",
+        "maxHunters": 5,
+        "commercialPrioritiesSource": "PILOT_DEFAULT_FIRST_WAVE",
+        "copiedFromOtherHotel": false,
+        "selectedHunterIds": [
+          "corporate_meeting_triggers",
+          "government_procurement",
+          "project_workforce",
+          "sports_housing",
+          "university_demand"
+        ],
+        "selected": [
+          {
+            "hunterId": "corporate_meeting_triggers",
+            "label": "Corporate Meeting Triggers",
+            "wave": "FIRST",
+            "capability": "EXISTS",
+            "score": 10,
+            "reasons": [
+              "first_wave_default",
+              "cp_hint:corporate",
+              "cp_hint:meeting",
+              "cp_hint:training"
+            ],
+            "implemented": true
+          },
+          {
+            "hunterId": "government_procurement",
+            "label": "Government Procurement",
+            "wave": "FIRST",
+            "capability": "PARTIAL",
+            "score": 4,
+            "reasons": [
+              "first_wave_default",
+              "cp_hint:government"
+            ],
+            "implemented": true
+          },
+          {
+            "hunterId": "project_workforce",
+            "label": "Construction / Project Workforce",
+            "wave": "FIRST",
+            "capability": "EXISTS",
+            "score": 4,
+            "reasons": [
+              "first_wave_default",
+              "cp_hint:project"
+            ],
+            "implemented": true
+          },
+          {
+            "hunterId": "sports_housing",
+            "label": "Sports Housing",
+            "wave": "FIRST",
+            "capability": "PARTIAL",
+            "score": 4,
+            "reasons": [
+              "first_wave_default",
+              "cp_hint:sports"
+            ],
+            "implemented": true
+          },
+          {
+            "hunterId": "university_demand",
+            "label": "University Demand",
+            "wave": "FIRST",
+            "capability": "PARTIAL",
+            "score": 4,
+            "reasons": [
+              "first_wave_default",
+              "cp_hint:university"
+            ],
+            "implemented": true
+          }
+        ],
+        "deferred": [],
+        "secondWaveAvailable": [
+          "association_rotation",
+          "clinical_trials_medical",
+          "crew_production"
+        ],
+        "thirdWaveAvailable": [
+          "legal_regulatory",
+          "emergency_displacement"
+        ],
+        "safeguard": {
+          "runAllTen": false,
+          "requiresHotelOwnProfile": true
+        }
+      },
+      "moduleRuns": [
+        {
+          "hunterId": "corporate_meeting_triggers",
+          "ok": true,
+          "metrics": {
+            "rawDiscoveries": 1,
+            "hypotheses": 1,
+            "incrementalHypotheses": 1,
+            "duplicates": 0,
+            "rejected": 0,
+            "excluded": 0,
+            "organizations": 1,
+            "activities": 1,
+            "contacts": 0,
+            "readyForOrs": 0,
+            "hotelThesisFormed": 1,
+            "salesReadyEmitted": 0,
+            "autoPublished": false
+          },
+          "rejectedSample": [],
+          "incrementalSample": [
+            {
+              "organizationName": "Lockheed Martin — Bethesda HQ corridor meetings",
+              "activityTitle": "Recurring Bethesda-area corporate meeting & training cohorts",
+              "hypothesisStatus": "HOTEL_THESIS_FORMED",
+              "contactName": null
+            }
+          ]
+        },
+        {
+          "hunterId": "government_procurement",
+          "ok": true,
+          "metrics": {
+            "rawDiscoveries": 1,
+            "hypotheses": 1,
+            "incrementalHypotheses": 1,
+            "duplicates": 0,
+            "rejected": 0,
+            "excluded": 0,
+            "organizations": 1,
+            "activities": 1,
+            "contacts": 0,
+            "readyForOrs": 0,
+            "hotelThesisFormed": 1,
+            "salesReadyEmitted": 0,
+            "autoPublished": false
+          },
+          "rejectedSample": [],
+          "incrementalSample": [
+            {
+              "organizationName": "National Institutes of Health — Office of Acquisition",
+              "activityTitle": "NIH campus visitor and contractor travel lodging patterns",
+              "hypothesisStatus": "HOTEL_THESIS_FORMED",
+              "contactName": null
+            }
+          ]
+        },
+        {
+          "hunterId": "project_workforce",
+          "ok": true,
+          "metrics": {
+            "rawDiscoveries": 1,
+            "hypotheses": 1,
+            "incrementalHypotheses": 1,
+            "duplicates": 0,
+            "rejected": 0,
+            "excluded": 0,
+            "organizations": 1,
+            "activities": 1,
+            "contacts": 0,
+            "readyForOrs": 0,
+            "hotelThesisFormed": 1,
+            "salesReadyEmitted": 0,
+            "autoPublished": false
+          },
+          "rejectedSample": [],
+          "incrementalSample": [
+            {
+              "organizationName": "AstraZeneca Gaithersburg Campus Expansion Support",
+              "activityTitle": "Gaithersburg facility project team lodging window",
+              "hypothesisStatus": "HOTEL_THESIS_FORMED",
+              "contactName": null
+            }
+          ]
+        },
+        {
+          "hunterId": "sports_housing",
+          "ok": true,
+          "metrics": {
+            "rawDiscoveries": 2,
+            "hypotheses": 1,
+            "incrementalHypotheses": 1,
+            "duplicates": 0,
+            "rejected": 1,
+            "excluded": 0,
+            "organizations": 1,
+            "activities": 1,
+            "contacts": 0,
+            "readyForOrs": 0,
+            "hotelThesisFormed": 1,
+            "salesReadyEmitted": 0,
+            "autoPublished": false
+          },
+          "rejectedSample": [
+            {
+              "organizationName": "Party Bus NYC Nightlife Tours",
+              "activityTitle": "Saturday party bus club crawl",
+              "demandTrigger": "nightlife leisure",
+              "evidenceUrls": [
+                "https://example.com/party-bus"
+              ],
+              "pursuitThesis": "none",
+              "notes": "Must remain rejected by V7 leisure gate",
+              "rejectReason": "V7 leisure/nightlife organizer gate (Party Bus class)"
+            }
+          ],
+          "incrementalSample": [
+            {
+              "organizationName": "Bethesda Soccer Club",
+              "activityTitle": "Regional youth tournament housing cycle",
+              "hypothesisStatus": "HOTEL_THESIS_FORMED",
+              "contactName": null
+            }
+          ]
+        },
+        {
+          "hunterId": "university_demand",
+          "ok": true,
+          "metrics": {
+            "rawDiscoveries": 1,
+            "hypotheses": 1,
+            "incrementalHypotheses": 1,
+            "duplicates": 0,
+            "rejected": 0,
+            "excluded": 0,
+            "organizations": 1,
+            "activities": 1,
+            "contacts": 0,
+            "readyForOrs": 0,
+            "hotelThesisFormed": 1,
+            "salesReadyEmitted": 0,
+            "autoPublished": false
+          },
+          "rejectedSample": [],
+          "incrementalSample": [
+            {
+              "organizationName": "University of Maryland — visitor & alumni programs",
+              "activityTitle": "College Park visiting scholar and alumni weekend lodging spillover",
+              "hypothesisStatus": "HOTEL_THESIS_FORMED",
+              "contactName": null
+            }
+          ]
+        }
+      ],
+      "totals": {
+        "rawDiscoveries": 6,
+        "incrementalHypotheses": 5,
+        "rejected": 1,
+        "duplicates": 0,
+        "readyForOrs": 0,
+        "contacts": 0
+      }
+    },
+    {
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "hotelName": "Wyndham San Diego Bayside",
+      "selection": {
+        "schema": "gdi-hotel-adaptive-hunter-selection-v1",
+        "hotelId": "recnPB3Q02NO8Ma1o",
+        "wavePolicy": "FIRST",
+        "maxHunters": 5,
+        "commercialPrioritiesSource": "PILOT_DEFAULT_FIRST_WAVE",
+        "copiedFromOtherHotel": false,
+        "selectedHunterIds": [
+          "corporate_meeting_triggers",
+          "government_procurement",
+          "project_workforce",
+          "sports_housing",
+          "university_demand"
+        ],
+        "selected": [
+          {
+            "hunterId": "corporate_meeting_triggers",
+            "label": "Corporate Meeting Triggers",
+            "wave": "FIRST",
+            "capability": "EXISTS",
+            "score": 10,
+            "reasons": [
+              "first_wave_default",
+              "cp_hint:corporate",
+              "cp_hint:meeting",
+              "cp_hint:training"
+            ],
+            "implemented": true
+          },
+          {
+            "hunterId": "government_procurement",
+            "label": "Government Procurement",
+            "wave": "FIRST",
+            "capability": "PARTIAL",
+            "score": 4,
+            "reasons": [
+              "first_wave_default",
+              "cp_hint:government"
+            ],
+            "implemented": true
+          },
+          {
+            "hunterId": "project_workforce",
+            "label": "Construction / Project Workforce",
+            "wave": "FIRST",
+            "capability": "EXISTS",
+            "score": 4,
+            "reasons": [
+              "first_wave_default",
+              "cp_hint:project"
+            ],
+            "implemented": true
+          },
+          {
+            "hunterId": "sports_housing",
+            "label": "Sports Housing",
+            "wave": "FIRST",
+            "capability": "PARTIAL",
+            "score": 4,
+            "reasons": [
+              "first_wave_default",
+              "cp_hint:sports"
+            ],
+            "implemented": true
+          },
+          {
+            "hunterId": "university_demand",
+            "label": "University Demand",
+            "wave": "FIRST",
+            "capability": "PARTIAL",
+            "score": 4,
+            "reasons": [
+              "first_wave_default",
+              "cp_hint:university"
+            ],
+            "implemented": true
+          }
+        ],
+        "deferred": [],
+        "secondWaveAvailable": [
+          "association_rotation",
+          "clinical_trials_medical",
+          "crew_production"
+        ],
+        "thirdWaveAvailable": [
+          "legal_regulatory",
+          "emergency_displacement"
+        ],
+        "safeguard": {
+          "runAllTen": false,
+          "requiresHotelOwnProfile": true
+        }
+      },
+      "moduleRuns": [
+        {
+          "hunterId": "corporate_meeting_triggers",
+          "ok": true,
+          "metrics": {
+            "rawDiscoveries": 1,
+            "hypotheses": 1,
+            "incrementalHypotheses": 1,
+            "duplicates": 0,
+            "rejected": 0,
+            "excluded": 0,
+            "organizations": 1,
+            "activities": 1,
+            "contacts": 0,
+            "readyForOrs": 0,
+            "hotelThesisFormed": 1,
+            "salesReadyEmitted": 0,
+            "autoPublished": false
+          },
+          "rejectedSample": [],
+          "incrementalSample": [
+            {
+              "organizationName": "Illumina — corporate visitor & training programs",
+              "activityTitle": "San Diego campus visitor lodging and day-meeting overflow",
+              "hypothesisStatus": "HOTEL_THESIS_FORMED",
+              "contactName": null
+            }
+          ]
+        },
+        {
+          "hunterId": "government_procurement",
+          "ok": true,
+          "metrics": {
+            "rawDiscoveries": 1,
+            "hypotheses": 1,
+            "incrementalHypotheses": 1,
+            "duplicates": 0,
+            "rejected": 0,
+            "excluded": 0,
+            "organizations": 1,
+            "activities": 1,
+            "contacts": 0,
+            "readyForOrs": 0,
+            "hotelThesisFormed": 1,
+            "salesReadyEmitted": 0,
+            "autoPublished": false
+          },
+          "rejectedSample": [],
+          "incrementalSample": [
+            {
+              "organizationName": "City of San Diego — Special Events & Filming",
+              "activityTitle": "Waterfront special-event contractor travel window",
+              "hypothesisStatus": "HOTEL_THESIS_FORMED",
+              "contactName": null
+            }
+          ]
+        },
+        {
+          "hunterId": "project_workforce",
+          "ok": true,
+          "metrics": {
+            "rawDiscoveries": 1,
+            "hypotheses": 1,
+            "incrementalHypotheses": 1,
+            "duplicates": 0,
+            "rejected": 0,
+            "excluded": 0,
+            "organizations": 1,
+            "activities": 1,
+            "contacts": 0,
+            "readyForOrs": 0,
+            "hotelThesisFormed": 1,
+            "salesReadyEmitted": 0,
+            "autoPublished": false
+          },
+          "rejectedSample": [],
+          "incrementalSample": [
+            {
+              "organizationName": "San Diego Unified Port District — waterfront project crews",
+              "activityTitle": "Embarcadero project crew midweek lodging",
+              "hypothesisStatus": "HOTEL_THESIS_FORMED",
+              "contactName": null
+            }
+          ]
+        },
+        {
+          "hunterId": "sports_housing",
+          "ok": true,
+          "metrics": {
+            "rawDiscoveries": 2,
+            "hypotheses": 1,
+            "incrementalHypotheses": 1,
+            "duplicates": 0,
+            "rejected": 1,
+            "excluded": 0,
+            "organizations": 1,
+            "activities": 1,
+            "contacts": 0,
+            "readyForOrs": 0,
+            "hotelThesisFormed": 1,
+            "salesReadyEmitted": 0,
+            "autoPublished": false
+          },
+          "rejectedSample": [
+            {
+              "organizationName": "Party Bus NYC Nightlife Tours",
+              "activityTitle": "Saturday party bus club crawl",
+              "demandTrigger": "nightlife leisure",
+              "evidenceUrls": [
+                "https://example.com/party-bus"
+              ],
+              "pursuitThesis": "none",
+              "notes": "Must remain rejected by V7 leisure gate",
+              "rejectReason": "V7 leisure/nightlife organizer gate (Party Bus class)"
+            }
+          ],
+          "incrementalSample": [
+            {
+              "organizationName": "Rock 'n' Roll Running Series — San Diego housing",
+              "activityTitle": "San Diego race weekend participant lodging",
+              "hypothesisStatus": "HOTEL_THESIS_FORMED",
+              "contactName": null
+            }
+          ]
+        },
+        {
+          "hunterId": "university_demand",
+          "ok": true,
+          "metrics": {
+            "rawDiscoveries": 1,
+            "hypotheses": 1,
+            "incrementalHypotheses": 1,
+            "duplicates": 0,
+            "rejected": 0,
+            "excluded": 0,
+            "organizations": 1,
+            "activities": 1,
+            "contacts": 0,
+            "readyForOrs": 0,
+            "hotelThesisFormed": 1,
+            "salesReadyEmitted": 0,
+            "autoPublished": false
+          },
+          "rejectedSample": [],
+          "incrementalSample": [
+            {
+              "organizationName": "University of San Diego — commencement & conference services",
+              "activityTitle": "USD commencement family lodging spillover",
+              "hypothesisStatus": "HOTEL_THESIS_FORMED",
+              "contactName": null
+            }
+          ]
+        }
+      ],
+      "totals": {
+        "rawDiscoveries": 6,
+        "incrementalHypotheses": 5,
+        "rejected": 1,
+        "duplicates": 0,
+        "readyForOrs": 0,
+        "contacts": 0
+      }
+    },
+    {
+      "hotelId": "recdmo0CnhIZAwHGC",
+      "hotelName": "Westin Tampa Waterside",
+      "selection": {
+        "schema": "gdi-hotel-adaptive-hunter-selection-v1",
+        "hotelId": "recdmo0CnhIZAwHGC",
+        "wavePolicy": "FIRST",
+        "maxHunters": 5,
+        "commercialPrioritiesSource": "PILOT_DEFAULT_FIRST_WAVE",
+        "copiedFromOtherHotel": false,
+        "selectedHunterIds": [
+          "corporate_meeting_triggers",
+          "government_procurement",
+          "project_workforce",
+          "sports_housing",
+          "university_demand"
+        ],
+        "selected": [
+          {
+            "hunterId": "corporate_meeting_triggers",
+            "label": "Corporate Meeting Triggers",
+            "wave": "FIRST",
+            "capability": "EXISTS",
+            "score": 10,
+            "reasons": [
+              "first_wave_default",
+              "cp_hint:corporate",
+              "cp_hint:meeting",
+              "cp_hint:training"
+            ],
+            "implemented": true
+          },
+          {
+            "hunterId": "government_procurement",
+            "label": "Government Procurement",
+            "wave": "FIRST",
+            "capability": "PARTIAL",
+            "score": 4,
+            "reasons": [
+              "first_wave_default",
+              "cp_hint:government"
+            ],
+            "implemented": true
+          },
+          {
+            "hunterId": "project_workforce",
+            "label": "Construction / Project Workforce",
+            "wave": "FIRST",
+            "capability": "EXISTS",
+            "score": 4,
+            "reasons": [
+              "first_wave_default",
+              "cp_hint:project"
+            ],
+            "implemented": true
+          },
+          {
+            "hunterId": "sports_housing",
+            "label": "Sports Housing",
+            "wave": "FIRST",
+            "capability": "PARTIAL",
+            "score": 4,
+            "reasons": [
+              "first_wave_default",
+              "cp_hint:sports"
+            ],
+            "implemented": true
+          },
+          {
+            "hunterId": "university_demand",
+            "label": "University Demand",
+            "wave": "FIRST",
+            "capability": "PARTIAL",
+            "score": 4,
+            "reasons": [
+              "first_wave_default",
+              "cp_hint:university"
+            ],
+            "implemented": true
+          }
+        ],
+        "deferred": [],
+        "secondWaveAvailable": [
+          "association_rotation",
+          "clinical_trials_medical",
+          "crew_production"
+        ],
+        "thirdWaveAvailable": [
+          "legal_regulatory",
+          "emergency_displacement"
+        ],
+        "safeguard": {
+          "runAllTen": false,
+          "requiresHotelOwnProfile": true
+        }
+      },
+      "moduleRuns": [
+        {
+          "hunterId": "corporate_meeting_triggers",
+          "ok": true,
+          "metrics": {
+            "rawDiscoveries": 1,
+            "hypotheses": 1,
+            "incrementalHypotheses": 1,
+            "duplicates": 0,
+            "rejected": 0,
+            "excluded": 0,
+            "organizations": 1,
+            "activities": 1,
+            "contacts": 0,
+            "readyForOrs": 0,
+            "hotelThesisFormed": 1,
+            "salesReadyEmitted": 0,
+            "autoPublished": false
+          },
+          "rejectedSample": [],
+          "incrementalSample": [
+            {
+              "organizationName": "Tampa Bay Lightning — corporate hospitality partners",
+              "activityTitle": "Season hospitality partner midweek meeting + lodging",
+              "hypothesisStatus": "HOTEL_THESIS_FORMED",
+              "contactName": null
+            }
+          ]
+        },
+        {
+          "hunterId": "government_procurement",
+          "ok": true,
+          "metrics": {
+            "rawDiscoveries": 1,
+            "hypotheses": 1,
+            "incrementalHypotheses": 1,
+            "duplicates": 0,
+            "rejected": 0,
+            "excluded": 0,
+            "organizations": 1,
+            "activities": 1,
+            "contacts": 0,
+            "readyForOrs": 0,
+            "hotelThesisFormed": 1,
+            "salesReadyEmitted": 0,
+            "autoPublished": false
+          },
+          "rejectedSample": [],
+          "incrementalSample": [
+            {
+              "organizationName": "Hillsborough County — Emergency & Special Event Support",
+              "activityTitle": "County special-event staffing lodging near downtown",
+              "hypothesisStatus": "HOTEL_THESIS_FORMED",
+              "contactName": null
+            }
+          ]
+        },
+        {
+          "hunterId": "project_workforce",
+          "ok": true,
+          "metrics": {
+            "rawDiscoveries": 1,
+            "hypotheses": 1,
+            "incrementalHypotheses": 1,
+            "duplicates": 0,
+            "rejected": 0,
+            "excluded": 0,
+            "organizations": 1,
+            "activities": 1,
+            "contacts": 0,
+            "readyForOrs": 0,
+            "hotelThesisFormed": 1,
+            "salesReadyEmitted": 0,
+            "autoPublished": false
+          },
+          "rejectedSample": [],
+          "incrementalSample": [
+            {
+              "organizationName": "Tampa Waterfront Redevelopment Project Contractors",
+              "activityTitle": "Downtown waterfront construction crew lodging window",
+              "hypothesisStatus": "HOTEL_THESIS_FORMED",
+              "contactName": null
+            }
+          ]
+        },
+        {
+          "hunterId": "sports_housing",
+          "ok": true,
+          "metrics": {
+            "rawDiscoveries": 2,
+            "hypotheses": 1,
+            "incrementalHypotheses": 1,
+            "duplicates": 0,
+            "rejected": 1,
+            "excluded": 0,
+            "organizations": 1,
+            "activities": 1,
+            "contacts": 0,
+            "readyForOrs": 0,
+            "hotelThesisFormed": 1,
+            "salesReadyEmitted": 0,
+            "autoPublished": false
+          },
+          "rejectedSample": [
+            {
+              "organizationName": "Party Bus NYC Nightlife Tours",
+              "activityTitle": "Saturday party bus club crawl",
+              "demandTrigger": "nightlife leisure",
+              "evidenceUrls": [
+                "https://example.com/party-bus"
+              ],
+              "pursuitThesis": "none",
+              "notes": "Must remain rejected by V7 leisure gate",
+              "rejectReason": "V7 leisure/nightlife organizer gate (Party Bus class)"
+            }
+          ],
+          "incrementalSample": [
+            {
+              "organizationName": "Gasparilla Distance Classic housing partners",
+              "activityTitle": "Gasparilla race weekend out-of-town athlete lodging",
+              "hypothesisStatus": "HOTEL_THESIS_FORMED",
+              "contactName": null
+            }
+          ]
+        },
+        {
+          "hunterId": "university_demand",
+          "ok": true,
+          "metrics": {
+            "rawDiscoveries": 1,
+            "hypotheses": 1,
+            "incrementalHypotheses": 1,
+            "duplicates": 0,
+            "rejected": 0,
+            "excluded": 0,
+            "organizations": 1,
+            "activities": 1,
+            "contacts": 0,
+            "readyForOrs": 0,
+            "hotelThesisFormed": 1,
+            "salesReadyEmitted": 0,
+            "autoPublished": false
+          },
+          "rejectedSample": [],
+          "incrementalSample": [
+            {
+              "organizationName": "University of South Florida — conference & guest services",
+              "activityTitle": "USF conference guest downtown lodging spillover",
+              "hypothesisStatus": "HOTEL_THESIS_FORMED",
+              "contactName": null
+            }
+          ]
+        }
+      ],
+      "totals": {
+        "rawDiscoveries": 6,
+        "incrementalHypotheses": 5,
+        "rejected": 1,
+        "duplicates": 0,
+        "readyForOrs": 0,
+        "contacts": 0
+      }
+    },
+    {
+      "hotelId": "recG66DQJKP2c0UNh",
+      "hotelName": "Renaissance New York Times Square Hotel",
+      "selection": {
+        "schema": "gdi-hotel-adaptive-hunter-selection-v1",
+        "hotelId": "recG66DQJKP2c0UNh",
+        "wavePolicy": "FIRST",
+        "maxHunters": 5,
+        "commercialPrioritiesSource": "PILOT_DEFAULT_FIRST_WAVE",
+        "copiedFromOtherHotel": false,
+        "selectedHunterIds": [
+          "corporate_meeting_triggers",
+          "government_procurement",
+          "project_workforce",
+          "sports_housing",
+          "university_demand"
+        ],
+        "selected": [
+          {
+            "hunterId": "corporate_meeting_triggers",
+            "label": "Corporate Meeting Triggers",
+            "wave": "FIRST",
+            "capability": "EXISTS",
+            "score": 10,
+            "reasons": [
+              "first_wave_default",
+              "cp_hint:corporate",
+              "cp_hint:meeting",
+              "cp_hint:training"
+            ],
+            "implemented": true
+          },
+          {
+            "hunterId": "government_procurement",
+            "label": "Government Procurement",
+            "wave": "FIRST",
+            "capability": "PARTIAL",
+            "score": 4,
+            "reasons": [
+              "first_wave_default",
+              "cp_hint:government"
+            ],
+            "implemented": true
+          },
+          {
+            "hunterId": "project_workforce",
+            "label": "Construction / Project Workforce",
+            "wave": "FIRST",
+            "capability": "EXISTS",
+            "score": 4,
+            "reasons": [
+              "first_wave_default",
+              "cp_hint:project"
+            ],
+            "implemented": true
+          },
+          {
+            "hunterId": "sports_housing",
+            "label": "Sports Housing",
+            "wave": "FIRST",
+            "capability": "PARTIAL",
+            "score": 4,
+            "reasons": [
+              "first_wave_default",
+              "cp_hint:sports"
+            ],
+            "implemented": true
+          },
+          {
+            "hunterId": "university_demand",
+            "label": "University Demand",
+            "wave": "FIRST",
+            "capability": "PARTIAL",
+            "score": 4,
+            "reasons": [
+              "first_wave_default",
+              "cp_hint:university"
+            ],
+            "implemented": true
+          }
+        ],
+        "deferred": [],
+        "secondWaveAvailable": [
+          "association_rotation",
+          "clinical_trials_medical",
+          "crew_production"
+        ],
+        "thirdWaveAvailable": [
+          "legal_regulatory",
+          "emergency_displacement"
+        ],
+        "safeguard": {
+          "runAllTen": false,
+          "requiresHotelOwnProfile": true
+        }
+      },
+      "moduleRuns": [
+        {
+          "hunterId": "corporate_meeting_triggers",
+          "ok": true,
+          "metrics": {
+            "rawDiscoveries": 1,
+            "hypotheses": 1,
+            "incrementalHypotheses": 1,
+            "duplicates": 0,
+            "rejected": 0,
+            "excluded": 0,
+            "organizations": 1,
+            "activities": 1,
+            "contacts": 0,
+            "readyForOrs": 0,
+            "hotelThesisFormed": 1,
+            "salesReadyEmitted": 0,
+            "autoPublished": false
+          },
+          "rejectedSample": [],
+          "incrementalSample": [
+            {
+              "organizationName": "Midtown media & entertainment corporate training desks",
+              "activityTitle": "Recurring Midtown corporate training cohorts",
+              "hypothesisStatus": "HOTEL_THESIS_FORMED",
+              "contactName": null
+            }
+          ]
+        },
+        {
+          "hunterId": "government_procurement",
+          "ok": true,
+          "metrics": {
+            "rawDiscoveries": 1,
+            "hypotheses": 1,
+            "incrementalHypotheses": 1,
+            "duplicates": 0,
+            "rejected": 0,
+            "excluded": 0,
+            "organizations": 1,
+            "activities": 1,
+            "contacts": 0,
+            "readyForOrs": 0,
+            "hotelThesisFormed": 1,
+            "salesReadyEmitted": 0,
+            "autoPublished": false
+          },
+          "rejectedSample": [],
+          "incrementalSample": [
+            {
+              "organizationName": "NYC Mayor's Office of Media and Entertainment — production support",
+              "activityTitle": "Midtown permitted production crew lodging adjacency",
+              "hypothesisStatus": "HOTEL_THESIS_FORMED",
+              "contactName": null
+            }
+          ]
+        },
+        {
+          "hunterId": "project_workforce",
+          "ok": true,
+          "metrics": {
+            "rawDiscoveries": 1,
+            "hypotheses": 1,
+            "incrementalHypotheses": 1,
+            "duplicates": 0,
+            "rejected": 0,
+            "excluded": 0,
+            "organizations": 1,
+            "activities": 1,
+            "contacts": 0,
+            "readyForOrs": 0,
+            "hotelThesisFormed": 1,
+            "salesReadyEmitted": 0,
+            "autoPublished": false
+          },
+          "rejectedSample": [],
+          "incrementalSample": [
+            {
+              "organizationName": "Midtown commercial renovation GCs",
+              "activityTitle": "Theater District renovation crew lodging window",
+              "hypothesisStatus": "HOTEL_THESIS_FORMED",
+              "contactName": null
+            }
+          ]
+        },
+        {
+          "hunterId": "sports_housing",
+          "ok": true,
+          "metrics": {
+            "rawDiscoveries": 2,
+            "hypotheses": 1,
+            "incrementalHypotheses": 1,
+            "duplicates": 0,
+            "rejected": 1,
+            "excluded": 0,
+            "organizations": 1,
+            "activities": 1,
+            "contacts": 0,
+            "readyForOrs": 0,
+            "hotelThesisFormed": 1,
+            "salesReadyEmitted": 0,
+            "autoPublished": false
+          },
+          "rejectedSample": [
+            {
+              "organizationName": "Party Bus NYC Nightlife Tours",
+              "activityTitle": "Saturday party bus club crawl",
+              "demandTrigger": "nightlife leisure",
+              "evidenceUrls": [
+                "https://example.com/party-bus"
+              ],
+              "pursuitThesis": "none",
+              "notes": "Must remain rejected by V7 leisure gate",
+              "rejectReason": "V7 leisure/nightlife organizer gate (Party Bus class)"
+            }
+          ],
+          "incrementalSample": [
+            {
+              "organizationName": "New York Road Runners — race weekend housing",
+              "activityTitle": "NYC race weekend out-of-town participant lodging",
+              "hypothesisStatus": "HOTEL_THESIS_FORMED",
+              "contactName": null
+            }
+          ]
+        },
+        {
+          "hunterId": "university_demand",
+          "ok": true,
+          "metrics": {
+            "rawDiscoveries": 1,
+            "hypotheses": 1,
+            "incrementalHypotheses": 1,
+            "duplicates": 0,
+            "rejected": 0,
+            "excluded": 0,
+            "organizations": 1,
+            "activities": 1,
+            "contacts": 0,
+            "readyForOrs": 0,
+            "hotelThesisFormed": 1,
+            "salesReadyEmitted": 0,
+            "autoPublished": false
+          },
+          "rejectedSample": [],
+          "incrementalSample": [
+            {
+              "organizationName": "NYU — visiting family & conference lodging",
+              "activityTitle": "NYU commencement family Midtown lodging spillover",
+              "hypothesisStatus": "HOTEL_THESIS_FORMED",
+              "contactName": null
+            }
+          ]
+        }
+      ],
+      "totals": {
+        "rawDiscoveries": 6,
+        "incrementalHypotheses": 5,
+        "rejected": 1,
+        "duplicates": 0,
+        "readyForOrs": 0,
+        "contacts": 0
+      }
+    }
+  ],
+  "providerRouting": {
+    "schema": "gdi-hunter-provider-routing-matrix-v1",
+    "generatedAt": "2026-11-12T19:36:57.456Z",
+    "paidDefault": false,
+    "rows": [
+      {
+        "hunterId": "government_procurement",
+        "label": "Government Procurement",
+        "wave": "FIRST",
+        "capability": "PARTIAL",
+        "apifyRole": "SUPPLEMENTAL",
+        "providerCategories": [
+          "public_api",
+          "apify",
+          "exa"
+        ],
+        "actorCount": 2,
+        "workflowIds": [
+          "government_public_sector"
+        ]
+      },
+      {
+        "hunterId": "association_rotation",
+        "label": "Association Rotation",
+        "wave": "SECOND",
+        "capability": "EXISTS",
+        "apifyRole": "SUPPLEMENTAL",
+        "providerCategories": [
+          "apify",
+          "exa"
+        ],
+        "actorCount": 8,
+        "workflowIds": [
+          "association_events"
+        ]
+      },
+      {
+        "hunterId": "corporate_meeting_triggers",
+        "label": "Corporate Meeting Triggers",
+        "wave": "FIRST",
+        "capability": "EXISTS",
+        "apifyRole": "SUPPLEMENTAL",
+        "providerCategories": [
+          "apify",
+          "exa"
+        ],
+        "actorCount": 6,
+        "workflowIds": [
+          "meetings_incentives",
+          "scaling_companies"
+        ]
+      },
+      {
+        "hunterId": "clinical_trials_medical",
+        "label": "Clinical Trials / Medical Meetings",
+        "wave": "SECOND",
+        "capability": "EXISTS",
+        "apifyRole": "SUPPLEMENTAL",
+        "providerCategories": [
+          "public_api",
+          "apify",
+          "exa"
+        ],
+        "actorCount": 7,
+        "workflowIds": [
+          "education_scientific"
+        ]
+      },
+      {
+        "hunterId": "project_workforce",
+        "label": "Construction / Project Workforce",
+        "wave": "FIRST",
+        "capability": "EXISTS",
+        "apifyRole": "NONE",
+        "providerCategories": [
+          "public_api",
+          "exa"
+        ],
+        "actorCount": 0,
+        "workflowIds": [
+          "projects_infrastructure",
+          "relocation_extended_stay"
+        ]
+      },
+      {
+        "hunterId": "sports_housing",
+        "label": "Sports Housing",
+        "wave": "FIRST",
+        "capability": "PARTIAL",
+        "apifyRole": "PRIMARY",
+        "providerCategories": [
+          "apify",
+          "exa"
+        ],
+        "actorCount": 2,
+        "workflowIds": [
+          "sports_entertainment"
+        ]
+      },
+      {
+        "hunterId": "university_demand",
+        "label": "University Demand",
+        "wave": "FIRST",
+        "capability": "PARTIAL",
+        "apifyRole": "SUPPLEMENTAL",
+        "providerCategories": [
+          "apify",
+          "exa"
+        ],
+        "actorCount": 7,
+        "workflowIds": [
+          "education_scientific"
+        ]
+      },
+      {
+        "hunterId": "legal_regulatory",
+        "label": "Legal / Regulatory Events",
+        "wave": "THIRD",
+        "capability": "PARTIAL",
+        "apifyRole": "NONE",
+        "providerCategories": [
+          "exa"
+        ],
+        "actorCount": 0,
+        "workflowIds": [
+          "association_events",
+          "government_public_sector"
+        ]
+      },
+      {
+        "hunterId": "emergency_displacement",
+        "label": "Emergency / Displacement",
+        "wave": "THIRD",
+        "capability": "NEW",
+        "apifyRole": "NONE",
+        "providerCategories": [
+          "public_api",
+          "exa"
+        ],
+        "actorCount": 0,
+        "workflowIds": [
+          "relocation_extended_stay"
+        ]
+      },
+      {
+        "hunterId": "crew_production",
+        "label": "Crew / Production",
+        "wave": "SECOND",
+        "capability": "EXISTS",
+        "apifyRole": "SUPPLEMENTAL",
+        "providerCategories": [
+          "apify",
+          "exa"
+        ],
+        "actorCount": 2,
+        "workflowIds": [
+          "sports_entertainment"
+        ]
+      }
+    ],
+    "apifyRegistrySize": 13,
+    "lessonsRetained": [
+      "Party Bus / social leisure organizers fail commercial-relevance gates — keep organizer + lodging thesis gates",
+      "Apify discoveries are research evidence, not Sales Ready opportunities",
+      "Sports/entertainment schedules are PRIMARY_APIFY; government/scaling stay EXA_PRIMARY",
+      "Dedup against Exa event discovery is HIGH for association/meetup surfaces",
+      "Actor registry must allow replacement without changing opportunity schema",
+      "Full E2E production rail remains Exa-primary until hotel-adaptive yield proven"
+    ]
+  },
+  "portfolioTotals": {
+    "rawDiscoveries": 24,
+    "incrementalHypotheses": 20,
+    "rejected": 4,
+    "duplicates": 0,
+    "readyForOrs": 0,
+    "contacts": 0,
+    "salesReady": 0,
+    "autoPublished": 0
+  },
+  "comparisonNote": "Compare incremental qualified yield to existing GDI baseline — not raw discovery counts.",
+  "safeguards": {
+    "noFifteenthSegment": true,
+    "noParallelSupervisor": true,
+    "noAutoPublish": true,
+    "noPaidResearch": true,
+    "qualificationUnchanged": true
+  }
+}
