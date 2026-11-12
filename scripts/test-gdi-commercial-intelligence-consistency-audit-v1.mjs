@@ -125,6 +125,59 @@ check("seed_alone_is_not_proof_for_unknown_id", () => {
   assert.equal(cmi.verified, false);
 });
 
+check("legacy_booking_flag_plus_generic_sources_not_verified", () => {
+  const cmi = classifyCompetitiveMarketIntelligence({
+    id: "gdi_opp_generic_competitor_2028",
+    competitorHotel: "Hyatt Regency Bethesda",
+    competitorVenueConfirmed: true,
+    sources: ["https://www.example.org/"],
+    title: "Some 2028 event",
+  });
+  assert.equal(cmi.verified, false);
+  assert.match(cmi.reason || "", /edition-specific|generic sources/i);
+});
+
+check("nado_2028_uses_edition_specific_washcon_evidence", () => {
+  const rem = applyCmiLedgerRemediation({
+    id: "gdi_opp_nado_ddaa_washcon_2028",
+  });
+  const cmi = classifyCompetitiveMarketIntelligence(rem);
+  assert.equal(cmi.verified, true);
+  assert.equal(
+    cmi.competitorVenueStatus,
+    COMPETITOR_VENUE_STATUS.CONFIRMED_CONTRACTED_BLOCK
+  );
+  assert.ok((cmi.evidenceUrls || []).some((u) => /2028washcon/i.test(u)));
+  assert.match(rem.recommendedAction || "", /do not request an rfp as host/i);
+  assert.doesNotMatch(
+    rem.recommendedAction || "",
+    /(?<!do not )request an? rfp(?:\s|\/|$)/i
+  );
+});
+
+check("open_rfp_action_sanitized_when_sourcing_unknown", () => {
+  const annotated = annotateInventoryPopulations(
+    [
+      {
+        id: "gdi_opp_amwa_2027_annual",
+        hotelId: BETHESDA_HOTEL_ID,
+        recommendedAction:
+          "Contact associatedirector@amwa-doc.org to confirm venue/sourcing status is still open, introduce the hotel, and request RFP / site-visit inclusion.",
+        venueSourcingStatus: "UNKNOWN",
+        primaryContact: { email: "associatedirector@amwa-doc.org" },
+      },
+    ],
+    { hotelId: BETHESDA_HOTEL_ID }
+  );
+  assert.doesNotMatch(annotated[0].recommendedAction || "", /request rfp/i);
+  const d = detectOpportunityContradictions(annotated[0]);
+  assert.ok(
+    !d.findings.some(
+      (f) => f.code === CONTRADICTION_CODE.OPEN_RFP_WITHOUT_SOURCING_EVIDENCE
+    )
+  );
+});
+
 check("detector_flags_open_rfp_without_sourcing", () => {
   const d = detectOpportunityContradictions({
     id: "gdi_opp_acvnu_renal_week_20270412",
