@@ -20,6 +20,7 @@ import {
   CANONICAL_12_CONTACT_PATCHED_59_ROW_SHA256,
   WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256,
   FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256,
+  COMMERCIAL_DEMAND_TYPE_CLASSIFIED_59_ROW_SHA256,
   ACCEPTABLE_59_ROW_SHA256S,
   BETHESDA_PROTECTED_SCALING_IDS,
 } from "../lib/group-demand-intelligence/research/gdi-hotel-store-integrity-guard-v1.js";
@@ -30,7 +31,8 @@ assert.ok(
   [
     CANONICAL_12_CONTACT_PATCHED_59_ROW_SHA256,
     WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256,
-  FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256,
+    FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256,
+    COMMERCIAL_DEMAND_TYPE_CLASSIFIED_59_ROW_SHA256,
   ].includes(storeBefore.sha256)
 );
 
@@ -62,7 +64,8 @@ assert.match(String(acvnuSnap.orgEmail || acvnuSnap.orgRoute), /info@acvnu\.org/
 // Live four-ID apply already on WAVE2_FOUR or later FINAL remediated store
 if (
   storeBefore.sha256 === WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256 ||
-  storeBefore.sha256 === FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256
+  storeBefore.sha256 === FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256 ||
+  storeBefore.sha256 === COMMERCIAL_DEMAND_TYPE_CLASSIFIED_59_ROW_SHA256
 ) {
   for (const id of WAVE2_FOUNDER_APPROVED_CANONICAL_IDS) {
     const row = storeBefore.opportunities.find((o) => o.id === id);
@@ -145,8 +148,11 @@ console.log(
       ok: true,
       test: "test-gdi-bethesda-88-contact-completion-wave2-v1",
       storeSha: storeAfter.sha256,
-      liveFourApplied: storeAfter.sha256 === WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256,
-  FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256,
+      liveFourApplied: [
+        WAVE2_FOUR_CONTACT_PATCHED_59_ROW_SHA256,
+        FINAL_FULL_E2E_REMEDIATED_59_ROW_SHA256,
+        COMMERCIAL_DEMAND_TYPE_CLASSIFIED_59_ROW_SHA256,
+      ].includes(storeAfter.sha256),
       beforeNamed: report.before.raw.named,
       afterProjectedNamed: report.afterProjectedIncludingCanonicalDryRun.raw.named,
       uniqueMissingBefore: report.before.uniqueMissingNamed,
