@@ -1,108 +1,63 @@
-# Bethesda 88 — Canonical Contact Patch Validation + Founder Gate
+# Bethesda 88 — Corrected Contact Patches + Event-Family Gate
 
 **Authorized store write:** `false`  
 **Store SHA (unchanged):** `1279f40c2d1cdd2cb6efdc55bfa8397b44f65c58da3ca4365f2814c69e71c9c3`  
-**Git baseline:** `47b44182de6714cc87b52cf4089da159e4b68845`
+**PR:** [#187](https://github.com/joandejarden-create/my-operators-backend/pull/187)
 
-## Step 1 — 15 proposed contacts validated
+## Contact field consistency (fixed)
 
-| Verdict | Count |
-|---|---:|
-| PASS (approved candidates) | **12** |
-| FAIL (excluded) | **3** |
-| UNCERTAIN | **0** |
+Direct person emails and organization routes are now **separate fields**.
 
-### PASS — ready for exact founder authorization (not yet written)
+| ID | Person | Direct email | Organization route | Coverage |
+|---|---|---|---|---|
+| Arlington | Lizzy Stell | `lizzy@arlingtonsoccer.com` | `tournaments@arlingtonsoccer.com` | A |
+| NIH SBPO | Annette Owens-Scarboro | `scarbora@od.nih.gov` | `NIHSmallBusiness@…` | A |
+| CTN primary + linked | Quandra Blackeney | `scudderq@nida.nih.gov` (former Scudder) | — | A |
+| AMWA ×3 | Kelly McMahon | — | `associatedirector@amwa-doc.org` | B |
+| Georgetown | Vanessa Otarola Kehoe | — | `advancementevents@georgetown.edu` | B |
+| UMD | Natalie Ross | `nross1@umd.edu` | `umdevents@umd.edu` | A |
+| ACCP | Lisa C. Miller | `lmiller@accp.com` | — | A (hotel-fit **out of market**) |
+| ECS | John Lewis | — | `meetings@electrochem.org` | B (**overflow only**) |
 
-| ID | Named person | Route class | Source |
+**FAIL (unchanged):** 3× Carrie Wagerman / NCI RNA named promotion.
+
+Exact patches: `07-founder-approved-candidate-manifest.json`
+
+## Duplicate commercial families (presentation only)
+
+Raw research IDs remain **88**. Actionable list collapses source-siblings:
+
+| Family | Primary | Linked / quarantined | Unique demand? |
 |---|---|---|---|
-| `gdi_opp_amwa_2028_annual` | Kelly McMahon | ORGANIZATION_ROUTE (`associatedirector@amwa-doc.org`) | amwa-doc.org/about-amwa/our-people |
-| `gdi_opp_amwa_2027_annual` | Kelly McMahon | ORGANIZATION_ROUTE | same (per-event relevance checked) |
-| `gdi_opp_amwa_2027_interim` | Kelly McMahon | ORGANIZATION_ROUTE | same |
-| `gdi_opp_arlington_spring_tournament_2027` | Lizzy Stell | DIRECT (`lizzy@arlingtonsoccer.com`) | arlingtonsoccer.com/staff |
-| `gdi_opp_georgetown_homecoming_2027` | Vanessa Otarola Kehoe | ORGANIZATION_ROUTE (`advancementevents@georgetown.edu`) | Georgetown directory + Homecoming |
-| `gdi_opp_series_new_in_the_library_august_2026` | Quandra Blackeney | DIRECT (`scudderq@nida.nih.gov`) | NIDA CCTN staff |
-| `gdi_opp_series_ctn_annual_conference_2027` | Quandra Blackeney | DIRECT | same CTN family (Bethesda Natcher) |
-| `gdi_opp_series_march_15_17_bethesda_md_ctn_dissemination_2027` | Quandra Blackeney | DIRECT | same |
-| `gdi_opp_nih_sbpo_vos_pattern` | Annette Owens-Scarboro | DIRECT (`scarbora@od.nih.gov`) | NIH SBPO staff directory |
-| `gdi_opp_umd_alumni_weekend_watch` | Natalie Ross | DIRECT (`nross1@umd.edu`) | alumni.umd.edu/about/team |
-| `gdi_opp_accp_annual_meeting_20261001` | Lisa C. Miller | DIRECT (`lmiller@accp.com`) | ACCP AM26 meeting-space form — **hotel-fit still research-gated (2026 Salt Lake)** |
-| `gdi_opp_ecs_251_2027_overflow` | John Lewis | ORGANIZATION_ROUTE (`meetings@electrochem.org`) | electrochem.org/contact-ecs — **Overflow Watch only** |
+| CTN Annual / Dissemination Mar 15–17 2027 Bethesda | `gdi_opp_series_ctn_annual_conference_2027` | 2 linked + 1 TITLE_SOURCE_INVALID quarantined | **One** campus meeting cycle |
+| NCI RNA Biology Symposium 2027 | `gdi_opp_2027_nci_rna_biology_symposium_7` | 2 linked | **One** symposium |
+| AMWA 2027 annual / 2028 annual / interim | each standalone | — | **Distinct** meetings |
 
-Exact field-level before/after: `07-founder-approved-candidate-manifest.json`.
+Counts: raw **88** · unique commercial list **83** · linked hidden **4** · quarantined **1**
 
-### FAIL — excluded from write candidates
+Crosswalk: `09-commercial-event-family-crosswalk.json`
 
-| ID | Proposed | Why rejected |
-|---|---|---|
-| `gdi_opp_series_request_a_conference_registration_website_2026` | Carrie Wagerman | Official 2027 RNA symposium pages list **CCR Conferences only**; Carrie not confirmed as lodging coordinator for this demand |
-| `gdi_opp_2027_nci_rna_biology_symposium_7` | Carrie Wagerman | Same family rejection |
-| `gdi_opp_series_nci_rna_biology_symposium_ncif_conference_2027` | Carrie Wagerman | Same family rejection |
+## Hotel-fit honesty
 
-## Step 2 — Expected coverage if PASS patches applied
+- **CTN Bethesda campus** — lodging corridor credible; not a confirmed Marriott block
+- **NCI RNA** — Bethesda Marriott on accommodations list; named lodging owner unconfirmed
+- **ECS 251** — Marquis/WEWCC official housing → Overflow Watch only
+- **AMWA** — destination unconfirmed → speculative fit
+- **ACCP** — 2026 Salt Lake → out-of-market; contact OK, no SR/AD promotion
 
-| Metric | Now (persisted) | After 12 PASS only |
-|---|---:|---:|
-| Named relevant primary | **46** | **58** |
-| Δ named | — | **+12** |
-| Approx still missing named | 42 of 88 | **~30** |
+## Coverage if 12 PASS applied (still not written)
 
-**No `opportunities.json` write until you explicitly approve the 12 PASS IDs (or a subset).**
+Named relevant primary: **46 → 58** (+12 on raw IDs).  
+Do **not** count linked CTN/NCI siblings as extra qualified opportunities.
 
-## Step 3 — Certification vs commercial maturity
+## Safety
 
-### Prior weaker audit label (fixed in code)
+- No canonical store write  
+- No paid research  
+- No customer publication  
+- Product Sales Ready / Account Development remain **0** until separate promotion approval  
 
-Previously, `COMMERCIALLY_CERTIFIED` could fire on named+route+thesis without passing Sales Ready or Account Development engines.
+## Awaiting founder
 
-### Corrected report behavior
-
-`COMMERCIALLY_CERTIFIED` now requires **Sales Ready OR Account Development engine pass**. Product maturity fields are **not** mutated.
-
-| Label / field | Count |
-|---|---:|
-| COMMERCIALLY_CERTIFIED (engine-aligned report) | **30** |
-| CONDITIONALLY_READY | **14** |
-| RESEARCH_INCOMPLETE | **33** |
-| DISQUALIFIED_WITH_EVIDENCE | **11** |
-| Product Sales Ready | **0** |
-| Product Account Development | **0** |
-
-### Why product Sales Ready = 0 and Account Development = 0
-
-1. Certification is a **report label**, not a store write.
-2. Sales Ready engine still fails most rows on `SPECULATIVE_DEMAND` / `MISSING_HOTEL_DEMAND_THESIS` / buyer-responsibility gaps — even when AD passes.
-3. Account Development engine can pass (~30 on current projection) while **product** `commercialMaturity` remains `RESEARCH_CONTINUATION` until a separate governed promotion applies.
-4. Policy preserved: no auto-promotion from contact enrichment or certification alone.
-
-### Twelve originally highlighted “commercially certified” rows (pre-tightening)
-
-Inspected individually in `08-certification-vs-maturity-analysis.json`:
-
-- **5 Scaling Companies** — AD-eligible; SR blocked by speculative thesis / buyer-responsibility unknown.
-- **MCSHRM / PMI / PDA** — AD-eligible after contact recovery; SR blocked similarly.
-- **Greater Bethesda Chamber ×2, City of Rockville, Nature Forward** — previously over-certified; engines reject or soft-fail (role/sources). Under corrected rules they are not SR/AD-certified unless engines pass.
-
-### Genuine defect found + correction
-
-- **Defect:** certification label weaker than SR/AD engines.
-- **Correction applied in source:** engine gate for `COMMERCIALLY_CERTIFIED`.
-- **Not applied:** product maturity promotion (requires separate founder authorization).
-
-## Integrity
-
-- 59 / 29 / 88 preserved
-- 5 Scaling Companies intact
-- Woman’s Club Diane preserved
-- Skip-worktree store SHA unchanged
-- No paid spend
-- No customer publication
-- AUTHENTICATED BROWSER NOT VERIFIED for Memberstack UI
-
-## Awaiting founder decision
-
-Reply with exact authorization, for example:
-
-> APPROVE canonical contact write for the 12 PASS IDs in `07-founder-approved-candidate-manifest.json`
-
-or list a subset. Until then, canonical store remains unchanged.
+1. Approve merge of PR #187 (code + presentation grouping).  
+2. Separately approve exact contact write for the 12 PASS IDs (or subset).  

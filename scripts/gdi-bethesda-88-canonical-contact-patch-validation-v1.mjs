@@ -13,11 +13,17 @@ import {
   extractContactSnapshot,
   mergeContactAntiClobber,
   COVERAGE_BUCKET,
+  buildCanonicalContactDryRunPatches,
 } from "../lib/group-demand-intelligence/research/bethesda-88-contact-quality-completion-v1.js";
 import { evaluateSharedCommercialEligibility } from "../lib/group-demand-intelligence/commercial-eligibility-contract-v1.js";
 import { evaluateAccountDevelopmentEligibility } from "../lib/group-demand-intelligence/account-development-eligibility-v1.js";
 import { CONTACT_ELIGIBILITY_CLASS } from "../lib/group-demand-intelligence/contact-eligibility-standard-v1.js";
 import { writeJsonAtomic } from "../lib/group-demand-intelligence/research/gdi-research-stage-persistence-v1.js";
+import {
+  applyBethesdaCommercialEventFamilyPresentation,
+  buildBethesdaCommercialEventFamilyCrosswalk,
+} from "../lib/group-demand-intelligence/research/bethesda-88-commercial-event-family-v1.js";
+import { isGenericOrganizationEmail } from "../lib/group-demand-intelligence/contact-display-surface-v1.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const REPORT_DIR = path.join(
@@ -198,6 +204,40 @@ function validatePatch(p, byId) {
 
   const merged = mergeContactAntiClobber(live, ev);
   const afterSnap = extractContactSnapshot(merged);
+
+  // Field consistency: declared DIRECT must persist as person email, not org inbox.
+  if (hasDirect && text(pc.email)) {
+    if (text(afterSnap.email).toLowerCase() !== text(pc.email).toLowerCase()) {
+      reasons.push(
+        `DIRECT_EMAIL_NOT_PERSISTED:expected=${pc.email};got=${afterSnap.email || "null"}`
+      );
+      verdict = "FAIL";
+    }
+    if (isGenericOrganizationEmail(afterSnap.email)) {
+      reasons.push(`ORG_INBOX_MISLABELED_AS_DIRECT:${afterSnap.email}`);
+      verdict = "FAIL";
+    }
+  }
+  if (hasOrg && text(pc.organizationContactRoute)) {
+    const orgPersisted = text(afterSnap.orgEmail || afterSnap.orgRoute).toLowerCase();
+    if (
+      orgPersisted &&
+      orgPersisted !== text(pc.organizationContactRoute).toLowerCase() &&
+      !orgPersisted.includes("@")
+    ) {
+      // URL org routes OK
+    }
+  }
+  if (
+    hasDirect &&
+    text(afterSnap.email) &&
+    text(afterSnap.orgEmail || afterSnap.orgRoute) &&
+    text(afterSnap.email).toLowerCase() ===
+      text(afterSnap.orgEmail || afterSnap.orgRoute).toLowerCase()
+  ) {
+    reasons.push("PERSON_EMAIL_EQUALS_ORG_ROUTE");
+    verdict = "FAIL";
+  }
   const changedKeys = Object.keys(merged).filter((k) => {
     try {
       return JSON.stringify(merged[k]) !== JSON.stringify(live[k]);
@@ -255,7 +295,31 @@ function validatePatch(p, byId) {
       hasDirectEmail: afterSnap.hasDirectEmail,
       hasOrgRoute: afterSnap.hasOrgRoute,
     },
-    fieldDiff: p.fieldDiff || null,
+    fieldDiff: {
+      primaryContactName: {
+        from: before.name,
+        to: afterSnap.name,
+      },
+      primaryContactEmail: {
+        from: before.email || null,
+        to: afterSnap.hasDirectEmail ? afterSnap.email : null,
+      },
+      organizationContactRoute: {
+        from: before.orgEmail || before.orgRoute || null,
+        to: afterSnap.orgEmail || afterSnap.orgRoute || null,
+      },
+      primaryContactRole: { from: before.title, to: afterSnap.title },
+      coverage: { from: before.coverage, to: afterSnap.coverage },
+      emailClassification: {
+        to: afterSnap.hasDirectEmail
+          ? "DIRECT_PERSON_EMAIL"
+          : afterSnap.hasOrgRoute
+            ? "ORGANIZATION_ROUTE"
+            : "NONE",
+      },
+    },
+    hotelFitHonesty: ev?.hotelFitHonesty || null,
+    hotelFitNote: ev?.hotelFitNote || null,
     family: familyNote,
     reasons,
     requiresFounderApproval: true,
@@ -377,6 +441,15 @@ const certified = (scorecard.rows || []).filter(
 );
 const certifiedReview = certified.map((r) => reviewCertified(r, byId));
 
+const dryRun = buildCanonicalContactDryRunPatches({ root: ROOT });
+const familyPresentation = applyBethesdaCommercialEventFamilyPresentation(
+  union.opportunities,
+  { hideLinkedFromList: true }
+);
+const familyCrosswalk = buildBethesdaCommercialEventFamilyCrosswalk(
+  union.opportunities
+);
+
 const approvedCandidate = {
   version: "gdi-bethesda-88-canonical-contact-approved-candidate-v1",
   generatedAt: new Date().toISOString(),
@@ -384,7 +457,7 @@ const approvedCandidate = {
   authorized: false,
   opportunitiesJsonWriteAuthorized: false,
   note:
-    "FOUNDER APPROVAL GATE — exact PASS patches only. Do not write opportunities.json until explicit approval of this manifest (or a subset).",
+    "FOUNDER APPROVAL GATE — exact PASS patches only. Do not write opportunities.json until explicit approval of this manifest (or a subset). Direct person emails and organization routes are stored in separate fields.",
   store: {
     sha256: store.sha256,
     count: store.count,
@@ -401,7 +474,14 @@ const approvedCandidate = {
     namedRelevantPrimaryAfterPassPatches: projectedNamed,
     deltaNamed: projectedNamed - persistedNamed,
     stillMissingNamedApprox: 88 - projectedNamed,
+    rawResearchIds: 88,
+    uniqueCommercialOpportunitiesListVisible:
+      familyPresentation.counts.uniqueCommercialOpportunities,
+    linkedResearchHidden: familyPresentation.counts.linkedResearchHidden,
+    quarantinedHidden: familyPresentation.counts.quarantinedHidden,
   },
+  commercialEventFamilies: familyCrosswalk,
+  dryRunPatchCount: dryRun.patches.length,
   passedPatches: passed,
   uncertainPatches: uncertain,
   failedPatches: failed,
@@ -461,6 +541,26 @@ writeJsonAtomic(
 writeJsonAtomic(
   path.join(REPORT_DIR, "08-certification-vs-maturity-analysis.json"),
   certificationMaturityAnalysis
+);
+writeJsonAtomic(
+  path.join(REPORT_DIR, "09-commercial-event-family-crosswalk.json"),
+  {
+    version: "gdi-bethesda-88-commercial-event-family-crosswalk-v1",
+    generatedAt: new Date().toISOString(),
+    counts: familyPresentation.counts,
+    families: familyCrosswalk,
+    note:
+      "Raw 88 research IDs preserved. Linked/quarantined rows hidden from actionable list only.",
+  }
+);
+writeJsonAtomic(
+  path.join(REPORT_DIR, "03-canonical-59-contact-dry-run-manifest.json"),
+  {
+    authorized: false,
+    patchCount: dryRun.patches.length,
+    patches: dryRun.patches,
+    note: "Corrected field-level dry-run: primaryContactEmail = direct person only; organizationContactRoute separate.",
+  }
 );
 
 const md = [

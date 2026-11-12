@@ -765,9 +765,28 @@ export async function getGdiOpportunities(req, res) {
       );
       opportunities = union.opportunities;
       listScope = union.scope || BETHESDA_INTERNAL_LIST_SCOPE;
+      // Presentation-only commercial-family collapse: one primary card per
+      // underlying event; linked/quarantined research IDs retained for detail.
+      let familyMeta = null;
+      try {
+        const { applyBethesdaCommercialEventFamilyPresentation } = await import(
+          "../lib/group-demand-intelligence/research/bethesda-88-commercial-event-family-v1.js"
+        );
+        const family = applyBethesdaCommercialEventFamilyPresentation(opportunities, {
+          hideLinkedFromList: view !== "full" && view !== "complete",
+        });
+        opportunities = family.opportunities;
+        familyMeta = family.counts;
+      } catch (familyErr) {
+        console.error(
+          "[gdi] Bethesda commercial event-family presentation failed",
+          familyErr?.message || familyErr
+        );
+      }
       bethesdaUnionMeta = {
         applied: true,
         counts: union.counts,
+        commercialEventFamily: familyMeta,
         storeWrites: false,
         customerShare: false,
       };
