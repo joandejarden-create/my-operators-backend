@@ -58,6 +58,24 @@ check("aao_outside_is_archive", () => {
   );
 });
 
+check("accp_salt_lake_out_of_market_is_archive", () => {
+  const o = {
+    id: "gdi_opp_accp_annual_meeting_20261001",
+    priority: "HIGH_PRIORITY",
+    hotelFitHonesty: "OUT_OF_MARKET_HOST_RESEARCH_GATED",
+    hotelFitNote:
+      "2026 ACCP Annual Meeting is Salt Lake City — Bethesda Marriott demand remains speculative",
+  };
+  assert.equal(
+    classifyCommercialSurfaceDisposition(o).surface,
+    COMMERCIAL_SURFACE.ARCHIVE_DISQUALIFIED,
+  );
+  assert.equal(
+    classifyCommercialSurfaceDisposition(o).primaryCommercialEligible,
+    false,
+  );
+});
+
 check("iscb_rotterdam_is_archive", () => {
   const o = {
     id: "gdi_opp_48th_iscb_annual_conference_2027_12",
