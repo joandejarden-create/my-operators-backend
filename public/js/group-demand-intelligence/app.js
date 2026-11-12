@@ -85,18 +85,9 @@
   }
 
   function propertyBarActionsHtml() {
-    var resetBtn =
-      '<button type="button" class="btn-clear" id="gdiResetViewBtn">Reset View</button>';
-    if (memberFetch) {
-      return (
-        '<button type="button" class="aiv-btn-apply" id="gdiRunBtn">Run Research</button>' +
-        '<button type="button" class="aiv-btn-apply" id="gdiPublishBtn" title="Publish the local opportunity list to the customer share link">Publish</button>' +
-        resetBtn
-      );
-    }
-    return (
-      '<span class="gdi-muted gdi-property-bar__hint">Sign in for research writes</span>' + resetBtn
-    );
+    // Hotel toolbar: Reset View only. Research + Publish remain available via
+    // founder/admin APIs, Full E2E CLI, and one-click publish scripts — not here.
+    return '<button type="button" class="btn-clear" id="gdiResetViewBtn">Reset View</button>';
   }
 
   function publishHotelInventory() {
@@ -1439,10 +1430,6 @@
       });
     }
 
-    var runBtn = document.getElementById("gdiRunBtn");
-    if (runBtn) runBtn.addEventListener("click", runResearch);
-    var publishBtn = document.getElementById("gdiPublishBtn");
-    if (publishBtn) publishBtn.addEventListener("click", publishHotelInventory);
     var resetBtn = document.getElementById("gdiResetViewBtn");
     if (resetBtn) resetBtn.addEventListener("click", resetBrowseView);
 

@@ -182,12 +182,12 @@ function block(it, linked) {
     runStatusLabel: "Completed",
     lastPublishedUpdate: "Oct 15, 2026, 9:24 AM EDT",
     actionHtml:
-      '<button type="button" class="aiv-btn-apply" id="gdiRunBtn">Run Research</button>' +
       '<button type="button" class="btn-clear" id="gdiResetViewBtn">Reset View</button>',
   });
   assert.match(bar, /gdi-property-bar__primary/);
-  assert.match(bar, /gdiRunBtn/);
   assert.match(bar, /gdiResetViewBtn/);
+  assert.match(bar, />Reset View</);
+  assert.doesNotMatch(bar, /gdiRunBtn|Run Research|gdiPublishBtn|>Publish</);
   assert.match(bar, /Last research:/);
   assert.match(bar, /Run:/);
   assert.match(bar, /Last published:/);
