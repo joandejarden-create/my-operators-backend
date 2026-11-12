@@ -62,7 +62,12 @@ async function main() {
     recommendationVersion: 1,
     createdBy: { userId: "verify_script", role: "SYSTEM" },
   });
-  check("gdi_decision_created", gdi.created && gdi.decision?.decisionId, gdi.decision?.decisionId);
+  // Idempotent re-runs reuse the existing Decision (created=false) — still a pass.
+  check(
+    "gdi_decision_created",
+    !!gdi.decision?.decisionId,
+    `${gdi.decision?.decisionId}${gdi.created ? " (new)" : " (reused)"}`
+  );
 
   const gdiAt = await findDecisionRecordByDecisionId(gdi.decision.decisionId);
   check("gdi_decision_airtable_readback", !!gdiAt, gdiAt?.id);
