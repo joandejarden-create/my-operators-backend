@@ -741,7 +741,7 @@
         state.visibilityWarning.publicationDataConnection === false
           ? "Unable to load approved opportunities. Check publication data connection."
           : scope === "COMPETITIVE"
-            ? "No verified Competitive Market Intelligence records match the current filters for this hotel."
+            ? "No Competitive Market Intelligence records match the current filters for this hotel."
             : "No customer-ready opportunities match the current filters.";
       return chrome + '<div class="gdi-empty">' + emptyMsg + "</div>";
     }
@@ -779,6 +779,19 @@
           : UI.countByMarketScope
             ? UI.countByMarketScope(state.opportunities)
             : null,
+        activeCompetitiveStatus:
+          state.filters.competitiveStatus || "ALL_COMPETITIVE",
+        competitiveStatusCounts: UI.countByCompetitiveStatus
+          ? UI.countByCompetitiveStatus(
+              UI.filterOpportunities(
+                state.opportunities,
+                Object.assign({}, state.filters || {}, {
+                  marketScope: "COMPETITIVE",
+                  competitiveStatus: "ALL_COMPETITIVE",
+                })
+              )
+            )
+          : null,
         lastResearch: formatHistoryDate(s.lastResearchAt),
         runStatusLabel: UI.customerSafeRunStatusLabel
           ? UI.customerSafeRunStatusLabel(s)
@@ -832,6 +845,26 @@
           state.opportunities,
           state.filters,
           "marketScope"
+        );
+        render();
+      });
+    });
+
+    root.querySelectorAll("[data-gdi-competitive-status]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var next =
+          btn.getAttribute("data-gdi-competitive-status") || "ALL_COMPETITIVE";
+        if (
+          String(state.filters.competitiveStatus || "ALL_COMPETITIVE") ===
+          String(next)
+        ) {
+          return;
+        }
+        state.filters.competitiveStatus = next;
+        state.filters = UI.reconcileBrowseFilters(
+          state.opportunities,
+          state.filters,
+          "competitiveStatus"
         );
         render();
       });

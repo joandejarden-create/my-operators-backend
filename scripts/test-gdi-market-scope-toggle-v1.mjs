@@ -198,13 +198,22 @@ check("bethesda_verified_cmi_ledger_counts_via_market_scope", () => {
   });
   const libCounts = buildInventoryPopulationCounts(annotated);
   assert.equal(libCounts.salesOpportunities, 67);
-  assert.equal(libCounts.competitiveMarketIntelligence, 4);
+  // Competitive total includes verified + needs verification + historical.
+  // 4 prior ledger verified + ICON + CASSS recovered from historical research.
+  assert.equal(libCounts.competitiveVerified, 6);
+  assert.ok(libCounts.competitiveMarketIntelligence >= 6);
+  assert.ok(
+    libCounts.competitiveMarketIntelligence > libCounts.competitiveVerified
+  );
   assert.equal(libCounts.allCommercialIntelligence, 67);
 
   const uiCounts = UI.countByMarketScope(annotated);
   assert.equal(uiCounts.ALL, 67);
   assert.equal(uiCounts.HOTEL, 67);
-  assert.equal(uiCounts.COMPETITIVE, 4);
+  assert.equal(
+    uiCounts.COMPETITIVE,
+    libCounts.competitiveMarketIntelligence
+  );
 
   const all = UI.filterOpportunities(annotated, { marketScope: "ALL" });
   const hotel = UI.filterOpportunities(annotated, { marketScope: "HOTEL" });
@@ -213,9 +222,43 @@ check("bethesda_verified_cmi_ledger_counts_via_market_scope", () => {
   });
   assert.equal(all.length, 67);
   assert.equal(hotel.length, 67);
-  assert.equal(cmi.length, 4);
+  assert.equal(cmi.length, libCounts.competitiveMarketIntelligence);
   assert.equal(new Set(all.map((o) => o.id)).size, 67);
-  assert.ok(cmi.every((o) => o.cmiVerified === true));
+  assert.ok(
+    cmi.every((o) =>
+      (o.inventoryPopulations || []).includes(
+        "COMPETITIVE_MARKET_INTELLIGENCE"
+      )
+    )
+  );
+
+  const verifiedOnly = UI.filterOpportunities(annotated, {
+    marketScope: "COMPETITIVE",
+    competitiveStatus: "VERIFIED",
+  });
+  assert.equal(verifiedOnly.length, 6);
+  assert.ok(verifiedOnly.every((o) => o.cmiVerified === true));
+  assert.ok(
+    verifiedOnly.some((o) => o.id === "gdi_s4912_6c8a62552bfa"),
+    "ICON Awards recovered as verified competitive"
+  );
+  assert.ok(
+    verifiedOnly.some((o) => o.id === "gdi_s4912_732496c2f8aa"),
+    "CASSS recovered as verified competitive"
+  );
+
+  const statusHtml = UI.competitiveStatusFilterHtml({
+    activeMarketScope: "COMPETITIVE",
+    activeCompetitiveStatus: "ALL_COMPETITIVE",
+    competitiveStatusCounts: UI.countByCompetitiveStatus(cmi),
+  });
+  assert.match(statusHtml, /Competitive Status/);
+  assert.match(statusHtml, /data-gdi-competitive-status="VERIFIED"/);
+  assert.match(statusHtml, /Needs Verification/);
+  assert.equal(
+    UI.competitiveStatusFilterHtml({ activeMarketScope: "ALL" }),
+    ""
+  );
 });
 
 check("css_and_apps_wire_market_scope", () => {
@@ -224,6 +267,7 @@ check("css_and_apps_wire_market_scope", () => {
     "utf8"
   );
   assert.match(css, /\.gdi-market-scope/);
+  assert.match(css, /\.gdi-competitive-status/);
   const app = fs.readFileSync(
     path.join(ROOT, "public/js/group-demand-intelligence/app.js"),
     "utf8"
@@ -234,6 +278,8 @@ check("css_and_apps_wire_market_scope", () => {
   );
   assert.match(app, /data-gdi-market-scope/);
   assert.match(share, /data-gdi-market-scope/);
+  assert.match(app, /data-gdi-competitive-status/);
+  assert.match(share, /data-gdi-competitive-status/);
   assert.match(app, /activeMarketScope/);
   assert.match(share, /activeMarketScope/);
 });

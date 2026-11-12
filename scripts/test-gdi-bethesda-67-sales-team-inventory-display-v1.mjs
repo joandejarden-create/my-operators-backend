@@ -149,7 +149,8 @@ check("population_counts_67_plus_verified_cmi_unique_67", () => {
   const counts = buildInventoryPopulationCounts(annotated);
   assert.equal(counts.salesOpportunities, 67);
   // Evidence-backed CMI ledger: 4 verified (not legacy seed-as-proof 7).
-  assert.equal(counts.competitiveMarketIntelligence, 4);
+  assert.equal(counts.competitiveVerified, 6);
+  assert.ok(counts.competitiveMarketIntelligence >= 6);
   assert.equal(counts.allCommercialIntelligence, 67);
   const sales = annotated.filter((o) =>
     opportunityMatchesTypeFilter(o, OPPORTUNITY_TYPE_FILTER.SALES_OPPORTUNITIES)
@@ -161,8 +162,16 @@ check("population_counts_67_plus_verified_cmi_unique_67", () => {
     )
   );
   assert.equal(sales.length, 67);
-  assert.equal(cmi.length, 4);
-  assert.ok(cmi.every((o) => o.cmiVerified === true));
+  assert.equal(cmi.length, counts.competitiveMarketIntelligence);
+  const verifiedCmi = cmi.filter((o) => o.cmiVerified === true);
+  assert.equal(verifiedCmi.length, 6);
+  assert.ok(
+    cmi.every((o) =>
+      (o.inventoryPopulations || []).includes(
+        "COMPETITIVE_MARKET_INTELLIGENCE"
+      )
+    )
+  );
 });
 
 check("api_source_wires_sales_team_scope", () => {

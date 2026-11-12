@@ -122,9 +122,17 @@ check("population_filter_sales_vs_cmi", () => {
   );
   assert.ok(sales.length >= 19);
   assert.ok(cmi.length >= 3);
+  const verified = cmi.filter((o) => o.cmiVerified === true);
+  assert.ok(verified.length >= 3, "at least 3 verified CMI");
   assert.ok(
-    cmi.every((o) => o.cmiVerified === true),
-    "CMI filter only verified"
+    cmi.every(
+      (o) =>
+        o.competitiveStatus === "VERIFIED" ||
+        o.competitiveStatus === "NEEDS_VERIFICATION" ||
+        o.competitiveStatus === "HISTORICAL" ||
+        o.cmiVerified === true
+    ),
+    "Competitive population is status-labeled"
   );
   // CMI does not invent Sales Ready
   for (const o of cmi) {

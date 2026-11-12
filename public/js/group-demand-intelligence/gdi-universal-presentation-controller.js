@@ -24,6 +24,7 @@
       weekly: "",
       opportunityType: "",
       marketScope: "ALL",
+      competitiveStatus: "ALL_COMPETITIVE",
       workflow: "",
     };
   }
