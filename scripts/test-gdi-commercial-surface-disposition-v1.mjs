@@ -76,6 +76,39 @@ check("accp_salt_lake_out_of_market_is_archive", () => {
   );
 });
 
+check("airtable_thin_forbidden_ids_never_commercial", () => {
+  // Live Airtable projections omit disposition stamps / hotelFitHonesty and can
+  // even show ACCP as HIGH_PRIORITY — ID hard-gate must still demote them.
+  const nci = {
+    id: "gdi_opp_2027_nci_rna_biology_symposium_7",
+    priority: "WATCHLIST",
+    title: "2027 NCI RNA Biology Symposium",
+  };
+  const accp = {
+    id: "gdi_opp_accp_annual_meeting_20261001",
+    priority: "HIGH_PRIORITY",
+    primaryContactName: "ACCP Annual Meeting Travel & Venue",
+    title: "ACCP Annual Meeting",
+  };
+  assert.equal(
+    classifyCommercialSurfaceDisposition(nci).surface,
+    COMMERCIAL_SURFACE.RESEARCH_PIPELINE,
+  );
+  assert.equal(
+    classifyCommercialSurfaceDisposition(accp).surface,
+    COMMERCIAL_SURFACE.ARCHIVE_DISQUALIFIED,
+  );
+  const commercial = filterOpportunitiesByCommercialSurface(
+    [nci, accp],
+    GDI_LIST_SURFACE_VIEW.COMMERCIAL,
+  );
+  assert.equal(commercial.length, 0);
+  assert.equal(
+    commercial.some((o) => o.id === nci.id || o.id === accp.id),
+    false,
+  );
+});
+
 check("iscb_rotterdam_is_archive", () => {
   const o = {
     id: "gdi_opp_48th_iscb_annual_conference_2027_12",
