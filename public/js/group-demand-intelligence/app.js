@@ -389,7 +389,14 @@
     return fetchFn(path, opts).then(function (r) {
       return r.json().then(function (data) {
         if (!r.ok || data.ok === false) {
-          var err = new Error(data.message || data.error || "Request failed");
+          var msg = data.message || data.error || "Request failed";
+          if (/opportunity_not_found/i.test(String(msg))) {
+            msg =
+              data.message && !/opportunity_not_found/i.test(String(data.message))
+                ? data.message
+                : "This opportunity could not be opened. Please try again. If the problem continues, refresh the list and reopen the card.";
+          }
+          var err = new Error(msg);
           err.status = r.status;
           err.data = data;
           throw err;

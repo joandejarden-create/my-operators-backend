@@ -260,10 +260,22 @@
         return o;
       })
       .catch(function (err) {
-        drawerBody.innerHTML = UI.detailErrorHtml(
-          (err && err.message) || "Unable to load opportunity detail.",
-          { retryOpportunityId: id }
-        );
+        var raw =
+          (err && err.data && (err.data.message || err.data.error)) ||
+          (err && err.message) ||
+          "";
+        var friendly = raw;
+        if (
+          !friendly ||
+          /opportunity_not_found/i.test(String(friendly)) ||
+          String(friendly).toLowerCase() === "request failed"
+        ) {
+          friendly =
+            "This opportunity could not be opened. Please try again. If the problem continues, refresh the list and reopen the card.";
+        }
+        drawerBody.innerHTML = UI.detailErrorHtml(friendly, {
+          retryOpportunityId: id,
+        });
         throw err;
       });
   }

@@ -12,7 +12,6 @@ import { applyApprovedBethesdaCustomerProjection } from "../lib/group-demand-int
 import {
   isBethesdaInternalUnionHotel,
   mergeBethesdaInternalResearchOpportunities,
-  findBethesdaInternalResearchOpportunity,
   BETHESDA_INTERNAL_LIST_SCOPE,
 } from "../lib/group-demand-intelligence/research/bethesda-internal-research-union-v1.js";
 import {
@@ -299,25 +298,29 @@ async function loadOppDoc(hotelId) {
  * Prefer cached hotel doc; on miss load single Airtable row when possible
  * instead of re-listing the full hotel set for View Details.
  * Filesystem persistence mode never falls through to Airtable (local/import roots).
+ * Bethesda: same store + internal-union identity system as the list endpoint.
  */
 async function loadOpportunityForDetail(hotelId, opportunityId) {
   const t0 = Date.now();
   // Always use loadOppDoc so local shadow merge + founder reviews apply.
   // (Cached canonical docs alone omit shadow association rows / tier overlays.)
   const doc = await loadOppDoc(hotelId);
-  let opportunity = (doc.opportunities || []).find((o) => o.id === opportunityId);
-  let source = doc?.cacheHit ? "cache_with_shadow" : "full_doc";
-  // Bethesda internal research-stage reconstruction (29) — auth detail only.
-  if (!opportunity && isBethesdaInternalUnionHotel(hotelId)) {
-    const hist = findBethesdaInternalResearchOpportunity(hotelId, opportunityId);
-    if (hist) {
-      opportunity = hist;
-      source = "bethesda_internal_research_union";
-    }
+  const { resolveHotelOpportunityById } = await import(
+    "../lib/group-demand-intelligence/gdi-opportunity-id-resolution-v1.js"
+  );
+  const resolved = resolveHotelOpportunityById(
+    hotelId,
+    opportunityId,
+    doc.opportunities || [],
+  );
+  let source = resolved.source;
+  if (resolved.opportunity && source === "hotel_store") {
+    source = doc?.cacheHit ? "cache_with_shadow" : "full_doc";
   }
   return {
-    opportunity: opportunity || null,
+    opportunity: resolved.opportunity || null,
     source,
+    resolvedId: resolved.resolvedId || null,
     durationMs: Date.now() - t0,
   };
 }
@@ -1155,7 +1158,24 @@ export async function getGdiOpportunityDetail(req, res) {
       "gdi_opportunity_detail"
     );
     if (!loaded.opportunity) {
-      return res.status(404).json({ ok: false, error: "opportunity_not_found" });
+      console.error(
+        JSON.stringify({
+          gdi_error: true,
+          route: "getGdiOpportunityDetail",
+          code: "opportunity_not_found",
+          hotelId,
+          opportunityId,
+          loadSource: loaded.source,
+        }),
+      );
+      return res.status(404).json({
+        ok: false,
+        error: "opportunity_not_found",
+        message:
+          "This opportunity could not be opened. The detail record was not found for this property.",
+        hotelId,
+        opportunityId,
+      });
     }
     const projected = projectOpportunitiesCommercialQuality([loaded.opportunity]);
     let opportunity = projected[0];
@@ -1186,8 +1206,35 @@ export async function getGdiOpportunityDetail(req, res) {
         opportunity?.localShadowPortfolio === true) &&
       process.env.NODE_ENV !== "production" &&
       String(process.env.GDI_BLOCK_LOCAL_CERT_FIXTURE_DETAIL || "").trim() !== "1";
-    if (isGdiTestOrFixtureOpportunity(opportunity) && !allowLocalCertFixture) {
-      return res.status(404).json({ ok: false, error: "opportunity_not_found" });
+    // Auth detail: block TRUE synthetics only. customerVisible=false means
+    // unpublished-to-customer, not "fixture" — those rows are list-eligible on
+    // Bethesda internal commercial browse and must open in the drawer.
+    if (!allowLocalCertFixture) {
+      const { mayOpenAuthOpportunityDetail } = await import(
+        "../lib/group-demand-intelligence/gdi-opportunity-id-resolution-v1.js"
+      );
+      const authGate = mayOpenAuthOpportunityDetail(opportunity, { hotelId });
+      if (!authGate.ok) {
+        console.error(
+          JSON.stringify({
+            gdi_error: true,
+            route: "getGdiOpportunityDetail",
+            code: "opportunity_not_found",
+            reason: authGate.reason || "BLOCKED",
+            hotelId,
+            opportunityId,
+            customerVisible: opportunity?.customerVisible,
+          }),
+        );
+        return res.status(404).json({
+          ok: false,
+          error: "opportunity_not_found",
+          message:
+            "This opportunity could not be opened. It is not available as a detail record in the current view.",
+          hotelId,
+          opportunityId,
+        });
+      }
     }
     try {
       const pe = await withTimeout(
