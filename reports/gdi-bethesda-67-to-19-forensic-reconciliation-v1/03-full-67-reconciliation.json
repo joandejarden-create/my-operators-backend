@@ -1,0 +1,4217 @@
+{
+  "summary": {
+    "hotelId": "recLuxvwwxID7U2B8",
+    "generatedAt": "2026-11-12T15:00:35.066Z",
+    "provenance": {
+      "frozenCohort": "reports/gdi-bethesda-68-hotel-sales-commercial-acceptance-v1/01-commercial-sales-scorecard.json",
+      "frozenIdList": "reports/gdi-bethesda-68-hotel-sales-commercial-acceptance-v1/05-commercial-id-list.json",
+      "frozenCount": 67,
+      "note": "Verified frozen primary commercial-list cohort after ACCP Salt Lake City removal (68→67). Distinct from 88 research union and 59 canonical store-only count.",
+      "reductionMechanism": "PR #209 local/published parity: filterCustomerFacingOpportunities + gdi-qualified-customer-opportunity-feed-v1 on default commercial list. Research inventory preserved.",
+      "reconciliationConfidence": "VERIFIED"
+    },
+    "counts": {
+      "frozen67": 67,
+      "customerFacing19": 19,
+      "missing48": 48,
+      "currentCommercialSurface": 71,
+      "currentUnion": 88,
+      "storeCanonical": 59,
+      "facingExtraNotInFrozen67": []
+    },
+    "categoryBreakdownMissing48": {
+      "A_correctly_excluded": {
+        "count": 2,
+        "pct": "4.2%"
+      },
+      "B_research_continuation": {
+        "count": 45,
+        "pct": "93.8%"
+      },
+      "C_potential_false_negative": {
+        "count": 0,
+        "pct": "0.0%"
+      },
+      "D_publication_or_technical": {
+        "count": 0,
+        "pct": "0.0%"
+      },
+      "E_pending_founder_approval": {
+        "count": 1,
+        "pct": "2.1%"
+      }
+    },
+    "subcategoryBreakdown": {
+      "QUALIFY_FIRST_HOST_OR_FIT_OPEN": 2,
+      "MONITOR_ENGINE_AD_ELIGIBLE": 13,
+      "PAST_EVENT_SURFACE_INACTIVE": 2,
+      "MONITOR_WATCHLIST": 30,
+      "AD_ELIGIBLE_NEVER_FOUNDER_APPROVED": 1
+    },
+    "uniqueCommercialVsDuplicates": {
+      "frozenUniqueIds": 67,
+      "note": "Frozen cohort is already unique opportunity IDs (no alternate-card duplicates inside the 67)."
+    },
+    "previouslyApprovedHidden": {
+      "count": 0,
+      "note": "All previously customer-facing approved rows from the frozen cohort that remain approved are still in the 19. No approved ID from the 19 set was lost."
+    },
+    "recoveryCandidates": [
+      {
+        "id": "gdi_opp_nado_ddaa_washcon_2028",
+        "organization": "National Association of Development Organizations (NADO) / DDAA",
+        "classification": "B",
+        "subcategory": "QUALIFY_FIRST_HOST_OR_FIT_OPEN",
+        "recovery": "TARGETED_RESEARCH_THEN_AD",
+        "salesUsability": "QUALIFY_FIRST",
+        "engineCommercialCertification": "SALES_READY_ELIGIBLE",
+        "namedContact": "Brittany Salazar",
+        "note": "Credible demand/contact but host/lodging/fit still open — research continuation, not customer feed"
+      },
+      {
+        "id": "gdi_opp_nado_ddaa_washcon_2027_overflow",
+        "organization": "National Association of Development Organizations (NADO) / DDAA",
+        "classification": "B",
+        "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+        "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+        "salesUsability": "MONITOR",
+        "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+        "namedContact": "Brittany Salazar",
+        "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+      },
+      {
+        "id": "gdi_opp_series_high_risk_high_reward_research_symposium_2027",
+        "organization": "NIH Common Fund",
+        "classification": "B",
+        "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+        "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+        "salesUsability": "MONITOR",
+        "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+        "namedContact": "Jennifer Adona",
+        "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+      },
+      {
+        "id": "gdi_opp_world_biomaterials_2028_overflow",
+        "organization": "World Biomaterials Congress / biomaterials community",
+        "classification": "B",
+        "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+        "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+        "salesUsability": "MONITOR",
+        "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+        "namedContact": "Jessica Goodone",
+        "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+      },
+      {
+        "id": "gdi_opp_arlington_spring_tournament_2027",
+        "organization": "Arlington Soccer Association",
+        "classification": "E",
+        "subcategory": "AD_ELIGIBLE_NEVER_FOUNDER_APPROVED",
+        "recovery": "STAGE_FOR_FOUNDER_PUBLICATION_REVIEW",
+        "salesUsability": "ACCOUNT_DEVELOPMENT",
+        "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+        "namedContact": "Lizzy Stell",
+        "note": "Hotel-sales AD + engine AD-eligible; correctly withheld from customer feed until founder publication approval. Not a filter false negative."
+      },
+      {
+        "id": "gdi_opp_2027_ddaa_annual_conference_8",
+        "organization": "Development District Association of Appalachia (DDAA)",
+        "classification": "B",
+        "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+        "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+        "salesUsability": "MONITOR",
+        "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+        "namedContact": "Tony White",
+        "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+      },
+      {
+        "id": "gdi_opp_umd_alumni_weekend_watch",
+        "organization": "University of Maryland Alumni Association (watch)",
+        "classification": "B",
+        "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+        "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+        "salesUsability": "MONITOR",
+        "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+        "namedContact": "Natalie Ross",
+        "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+      },
+      {
+        "id": "gdi_opp_amwa_2027_annual",
+        "organization": "American Medical Women's Association (AMWA)",
+        "classification": "B",
+        "subcategory": "QUALIFY_FIRST_HOST_OR_FIT_OPEN",
+        "recovery": "TARGETED_RESEARCH_THEN_AD",
+        "salesUsability": "QUALIFY_FIRST",
+        "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+        "namedContact": "Kelly McMahon",
+        "note": "Credible demand/contact but host/lodging/fit still open — research continuation, not customer feed"
+      },
+      {
+        "id": "gdi_opp_nih_sbpo_vos_pattern",
+        "organization": "NIH Small Business Program Office",
+        "classification": "B",
+        "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+        "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+        "salesUsability": "MONITOR",
+        "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+        "namedContact": "Annette Owens-Scarboro",
+        "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+      },
+      {
+        "id": "gdi_opp_series_ctn_annual_conference_2027",
+        "organization": "NIDA Clinical Trials Network",
+        "classification": "B",
+        "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+        "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+        "salesUsability": "MONITOR",
+        "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+        "namedContact": "Quandra Blackeney",
+        "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+      },
+      {
+        "id": "gdi_opp_acvnu_renal_week_20270412",
+        "organization": "ACVNU",
+        "classification": "B",
+        "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+        "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+        "salesUsability": "MONITOR",
+        "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+        "namedContact": "JD Foster",
+        "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+      },
+      {
+        "id": "disp_recLuxvwwxID7U2B8_montgomery_county_shrm",
+        "organization": "Montgomery County SHRM",
+        "classification": "B",
+        "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+        "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+        "salesUsability": "MONITOR",
+        "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+        "namedContact": "Neha Agarwal",
+        "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+      },
+      {
+        "id": "disp_recLuxvwwxID7U2B8_pmi_montgomery_county_maryland_chapter",
+        "organization": "PMI Montgomery County Maryland Chapter",
+        "classification": "B",
+        "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+        "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+        "salesUsability": "MONITOR",
+        "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+        "namedContact": "Matt Lowy",
+        "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+      },
+      {
+        "id": "disp_recLuxvwwxID7U2B8_cohera_formerly_csi_dmc_and_360dg_",
+        "organization": "Cohera (formerly CSI DMC and 360DG)",
+        "classification": "B",
+        "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+        "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+        "salesUsability": "MONITOR",
+        "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+        "namedContact": "Annette Hawks",
+        "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+      },
+      {
+        "id": "disp_recLuxvwwxID7U2B8_iwlca_elite_tournaments_iwlca_champions_cup",
+        "organization": "IWLCA / Elite Tournaments - IWLCA Champions Cup",
+        "classification": "B",
+        "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+        "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+        "salesUsability": "MONITOR",
+        "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+        "namedContact": "Dan Harris",
+        "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+      },
+      {
+        "id": "disp_recLuxvwwxID7U2B8_parenteral_drug_association_pda_",
+        "organization": "Parenteral Drug Association (PDA)",
+        "classification": "B",
+        "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+        "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+        "salesUsability": "MONITOR",
+        "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+        "namedContact": "Laura Keeley",
+        "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+      }
+    ],
+    "verdict": {
+      "reductionPrimarilyFilterParity": true,
+      "inventoryDestroyed": false,
+      "customerFeedFalseNegatives": 0,
+      "pendingFounderApprovalValuable": 1,
+      "researchContinuationValuable": 45,
+      "qualificationTooStrictForCustomerFeed": false,
+      "underlyingResearchInsufficientForNewPubReady": true
+    }
+  },
+  "rows": [
+    {
+      "id": "gdi_opp_nado_ddaa_washcon_2028",
+      "organization": "National Association of Development Organizations (NADO) / DDAA",
+      "title": "NADO & DDAA Washington Conference 2028 — Arlington, VA (hotel not yet named)",
+      "demandSegment": "NADO & DDAA Washington Conference 2028 — Arlington, VA (hotel not yet named)",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Brittany Salazar",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "QUALIFY_FIRST",
+      "salesUsabilityReason": "Named contact exists but host hotel / lodging destination is not yet confirmed for Bethesda pursuit",
+      "engineCommercialCertification": "SALES_READY_ELIGIBLE",
+      "originalPriority": "MEDIUM",
+      "originalMaturity": null,
+      "currentPriority": "MEDIUM_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "QUALIFY_FIRST_HOST_OR_FIT_OPEN",
+      "ruleAssessment": "correct_necessary_for_customer_feed",
+      "dosVerdict": "QUALIFY_FIRST",
+      "recovery": "TARGETED_RESEARCH_THEN_AD",
+      "classificationNote": "Credible demand/contact but host/lodging/fit still open — research continuation, not customer feed",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "hasApprovedCustomerCommercialClass",
+        "isBlockedFromQualifiedCustomerOpportunityFeed"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_ahima_advocacy_2027",
+      "organization": "AHIMA",
+      "title": "AHIMA Advocacy Summit 2027 — Washington, DC (hotel not specified)",
+      "demandSegment": "AHIMA Advocacy Summit 2027 — Washington, DC (hotel not specified)",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "ADEQUATE",
+      "namedContact": "Sabrina Bracken",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "QUALIFY_FIRST",
+      "salesUsabilityReason": "Credible account path but lodging/fit still needs salesperson qualification",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "MEDIUM",
+      "originalMaturity": null,
+      "currentPriority": "MEDIUM_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": true,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "KEPT",
+      "subcategory": "ON_CUSTOMER_FEED",
+      "ruleAssessment": "n/a",
+      "dosVerdict": "VISIBLE",
+      "recovery": "NONE",
+      "classificationNote": "Preserved on qualified customer feed",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_nado_ddaa_washcon_2027_overflow",
+      "organization": "National Association of Development Organizations (NADO) / DDAA",
+      "title": "NADO & DDAA Washington Conference 2027 — Crystal Gateway host (overflow play)",
+      "demandSegment": "NADO & DDAA Washington Conference 2027 — Crystal Gateway host (overflow play)",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "OVERFLOW_OR_WATCH",
+      "namedContact": "Brittany Salazar",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "WATCH",
+      "originalMaturity": null,
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "ruleAssessment": "correct_necessary_for_customer_feed_but_under_completed",
+      "dosVerdict": "MONITOR_OR_AD_PIPELINE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "classificationNote": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection.",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_msysa_state_cup_2027",
+      "organization": "Maryland State Youth Soccer Association (MSYSA)",
+      "title": "2027 MSYSA Spring State Cup Championships — multi-weekend SoccerPlex demand",
+      "demandSegment": "2027 MSYSA Spring State Cup Championships — multi-weekend SoccerPlex demand",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "SPECULATIVE",
+      "hotelFit": "THIN",
+      "namedContact": "Brad Roos",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "MEDIUM",
+      "originalMaturity": null,
+      "currentPriority": "MEDIUM_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": true,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "KEPT",
+      "subcategory": "ON_CUSTOMER_FEED",
+      "ruleAssessment": "n/a",
+      "dosVerdict": "VISIBLE",
+      "recovery": "NONE",
+      "classificationNote": "Preserved on qualified customer feed",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_acc_legislative_2027",
+      "organization": "American College of Cardiology (ACC)",
+      "title": "ACC Legislative Conference 2027 — Washington, DC (hotel not named)",
+      "demandSegment": "ACC Legislative Conference 2027 — Washington, DC (hotel not named)",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "ADEQUATE",
+      "namedContact": "Meg Novak",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "QUALIFY_FIRST",
+      "salesUsabilityReason": "Named contact exists but host hotel / lodging destination is not yet confirmed for Bethesda pursuit",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "MEDIUM",
+      "originalMaturity": null,
+      "currentPriority": "MEDIUM_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": true,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "KEPT",
+      "subcategory": "ON_CUSTOMER_FEED",
+      "ruleAssessment": "n/a",
+      "dosVerdict": "VISIBLE",
+      "recovery": "NONE",
+      "classificationNote": "Preserved on qualified customer feed",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_series_high_risk_high_reward_research_symposium_2027",
+      "organization": "NIH Common Fund",
+      "title": "High-Risk, High-Reward Research Symposium 2027",
+      "demandSegment": "High-Risk, High-Reward Research Symposium 2027",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "SPECULATIVE",
+      "hotelFit": "STRONG",
+      "namedContact": "Jennifer Adona",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "WATCH",
+      "originalMaturity": null,
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "ruleAssessment": "correct_necessary_for_customer_feed_but_under_completed",
+      "dosVerdict": "MONITOR_OR_AD_PIPELINE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "classificationNote": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection.",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_potomac_memorial_2027",
+      "organization": "Potomac Soccer Association",
+      "title": "47th Annual Potomac Memorial Tournament 2027 — stay-to-play weekend demand",
+      "demandSegment": "47th Annual Potomac Memorial Tournament 2027 — stay-to-play weekend demand",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Kathy Hauschild",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "ACTIONABLE_NOW",
+      "salesUsabilityReason": "High-priority commercial path with named contact + outreach route — salesperson can begin appropriate outreach",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "HIGH",
+      "originalMaturity": null,
+      "currentPriority": "HIGH_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": true,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "KEPT",
+      "subcategory": "ON_CUSTOMER_FEED",
+      "ruleAssessment": "n/a",
+      "dosVerdict": "VISIBLE",
+      "recovery": "NONE",
+      "classificationNote": "Preserved on qualified customer feed",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_nice_2027",
+      "organization": "NIST / National Initiative for Cybersecurity Education (NICE)",
+      "title": "18th Annual NICE Conference and Expo 2027 — Jun 7–9",
+      "demandSegment": "18th Annual NICE Conference and Expo 2027 — Jun 7–9",
+      "revenueType": "BOTH",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "ADEQUATE",
+      "namedContact": "Karen Wetzel",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "ACCOUNT_DEVELOPMENT",
+      "salesUsabilityReason": "Credible organization + named contact for proactive account development",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "MEDIUM",
+      "originalMaturity": null,
+      "currentPriority": "MEDIUM_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": true,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "KEPT",
+      "subcategory": "ON_CUSTOMER_FEED",
+      "ruleAssessment": "n/a",
+      "dosVerdict": "VISIBLE",
+      "recovery": "NONE",
+      "classificationNote": "Preserved on qualified customer feed",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_show_2026_nih",
+      "organization": "NIH / NHLBI",
+      "title": "SHOW 2026 — NIH Research Conference on Sleep and the Health of Women (Oct 14–16)",
+      "demandSegment": "SHOW 2026 — NIH Research Conference on Sleep and the Health of Women (Oct 14–16)",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "CONFIRMED",
+      "hotelFit": "STRONG",
+      "namedContact": "Jessica Mitchell",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "QUALIFY_FIRST",
+      "salesUsabilityReason": "Promising but maturity/fit still require qualification before outreach",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "MEDIUM",
+      "originalMaturity": null,
+      "currentPriority": "MEDIUM_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": true,
+      "classification": "A",
+      "subcategory": "PAST_EVENT_SURFACE_INACTIVE",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "ARCHIVE_OR_HISTORY",
+      "recovery": "NONE",
+      "classificationNote": "Event end date is in the past — correctly excluded from active customer surface",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "surface_eligibility_inactive_or_past",
+          "fn": "isCustomerSurfaceActiveEligible",
+          "stage": "customer_surface",
+          "assessment": "correct_necessary"
+        }
+      ],
+      "responsibleFunctions": [
+        "hasApprovedCustomerCommercialClass",
+        "isCustomerSurfaceActiveEligible"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_loudoun_college_showcase_2027",
+      "organization": "Loudoun Soccer",
+      "title": "Loudoun Soccer College Showcase 2027 — stay-to-play (HBC housing)",
+      "demandSegment": "Loudoun Soccer College Showcase 2027 — stay-to-play (HBC housing)",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "OVERFLOW_OR_WATCH",
+      "namedContact": "Dave Bucciero",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "SALES_READY_ELIGIBLE",
+      "originalPriority": "MEDIUM",
+      "originalMaturity": null,
+      "currentPriority": "MEDIUM_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": true,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "KEPT",
+      "subcategory": "ON_CUSTOMER_FEED",
+      "ruleAssessment": "n/a",
+      "dosVerdict": "VISIBLE",
+      "recovery": "NONE",
+      "classificationNote": "Preserved on qualified customer feed",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_amwa_2028_annual",
+      "organization": "American Medical Women's Association (AMWA)",
+      "title": "AMWA 113th Annual Meeting 2028",
+      "demandSegment": "AMWA 113th Annual Meeting 2028",
+      "revenueType": "BOTH",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Kelly McMahon",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "WATCH",
+      "originalMaturity": null,
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_world_biomaterials_2028_overflow",
+      "organization": "World Biomaterials Congress / biomaterials community",
+      "title": "World Biomaterials Congress 2028 — Walter E. Washington Convention Center",
+      "demandSegment": "World Biomaterials Congress 2028 — Walter E. Washington Convention Center",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "THIN",
+      "namedContact": "Jessica Goodone",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "WATCH",
+      "originalMaturity": null,
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "ruleAssessment": "correct_necessary_for_customer_feed_but_under_completed",
+      "dosVerdict": "MONITOR_OR_AD_PIPELINE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "classificationNote": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection.",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_asae_annual_2029",
+      "organization": "American Society of Association Executives (ASAE)",
+      "title": "ASAE Annual Meeting & Exposition 2029 — Washington, DC (early watch)",
+      "demandSegment": "ASAE Annual Meeting & Exposition 2029 — Washington, DC (early watch)",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "THIN",
+      "namedContact": "Danielle Davis",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "WATCH",
+      "originalMaturity": null,
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_regulatory_information_conference_20260930",
+      "organization": "Nuclear Regulatory Commission",
+      "title": "Regulatory Information Conference",
+      "demandSegment": "Regulatory Information Conference",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "OVERFLOW_OR_WATCH",
+      "namedContact": "Lorna Kipfer",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "OVERFLOW_WATCH",
+      "originalPriority": "HIGH",
+      "originalMaturity": null,
+      "currentPriority": "HIGH_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": true,
+      "classification": "A",
+      "subcategory": "PAST_EVENT_SURFACE_INACTIVE",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "ARCHIVE_OR_HISTORY",
+      "recovery": "NONE",
+      "classificationNote": "Event end date is in the past — correctly excluded from active customer surface",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "surface_eligibility_inactive_or_past",
+          "fn": "isCustomerSurfaceActiveEligible",
+          "stage": "customer_surface",
+          "assessment": "correct_necessary"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "hasApprovedCustomerCommercialClass",
+        "isCustomerSurfaceActiveEligible",
+        "isBlockedFromQualifiedCustomerOpportunityFeed"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_pe_781f12393f8117e7",
+      "organization": "Woman's Club of Bethesda",
+      "title": "Woman's Club of Bethesda — Preferred Lodging Partnership",
+      "demandSegment": "Woman's Club of Bethesda — Preferred Lodging Partnership",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Diane Robertson",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "ACTIONABLE_NOW",
+      "salesUsabilityReason": "High-priority commercial path with named contact + outreach route — salesperson can begin appropriate outreach",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "HIGH",
+      "originalMaturity": null,
+      "currentPriority": "HIGH_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": true,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "KEPT",
+      "subcategory": "ON_CUSTOMER_FEED",
+      "ruleAssessment": "n/a",
+      "dosVerdict": "VISIBLE",
+      "recovery": "NONE",
+      "classificationNote": "Preserved on qualified customer feed",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_arlington_spring_tournament_2027",
+      "organization": "Arlington Soccer Association",
+      "title": "Arlington Spring Tournament 2027 — hotel information forthcoming",
+      "demandSegment": "Arlington Spring Tournament 2027 — hotel information forthcoming",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "ADEQUATE",
+      "namedContact": "Lizzy Stell",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "ACCOUNT_DEVELOPMENT",
+      "salesUsabilityReason": "Credible organization + named contact for proactive account development",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "MEDIUM",
+      "originalMaturity": null,
+      "currentPriority": "MEDIUM_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "E",
+      "subcategory": "AD_ELIGIBLE_NEVER_FOUNDER_APPROVED",
+      "ruleAssessment": "correct_necessary_for_customer_feed",
+      "dosVerdict": "ACCOUNT_DEVELOPMENT",
+      "recovery": "STAGE_FOR_FOUNDER_PUBLICATION_REVIEW",
+      "classificationNote": "Hotel-sales AD + engine AD-eligible; correctly withheld from customer feed until founder publication approval. Not a filter false negative.",
+      "readinessOk": true,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "hasApprovedCustomerCommercialClass",
+        "isBlockedFromQualifiedCustomerOpportunityFeed"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_georgetown_homecoming_2027",
+      "organization": "Georgetown University",
+      "title": "Georgetown Homecoming Weekend 2027",
+      "demandSegment": "Georgetown Homecoming Weekend 2027",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "ADEQUATE",
+      "namedContact": "Vanessa Otarola Kehoe",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "WATCH",
+      "originalMaturity": null,
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_2027_ddaa_annual_conference_8",
+      "organization": "Development District Association of Appalachia (DDAA)",
+      "title": "2027 DDAA Annual Conference",
+      "demandSegment": "2027 DDAA Annual Conference",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Tony White",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "WATCH",
+      "originalMaturity": null,
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "ruleAssessment": "correct_necessary_for_customer_feed_but_under_completed",
+      "dosVerdict": "MONITOR_OR_AD_PIPELINE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "classificationNote": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection.",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_umd_alumni_weekend_watch",
+      "organization": "University of Maryland Alumni Association (watch)",
+      "title": "University of Maryland alumni & family weekend — 2027 dates not yet announced",
+      "demandSegment": "University of Maryland alumni & family weekend — 2027 dates not yet announced",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "SPECULATIVE",
+      "hotelFit": "THIN",
+      "namedContact": "Natalie Ross",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "WATCH",
+      "originalMaturity": null,
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "ruleAssessment": "correct_necessary_for_customer_feed_but_under_completed",
+      "dosVerdict": "MONITOR_OR_AD_PIPELINE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "classificationNote": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection.",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_amwa_2027_annual",
+      "organization": "American Medical Women's Association (AMWA)",
+      "title": "AMWA 112th Annual Meeting 2027",
+      "demandSegment": "AMWA 112th Annual Meeting 2027",
+      "revenueType": "BOTH",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Kelly McMahon",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "QUALIFY_FIRST",
+      "salesUsabilityReason": "Named contact exists but host hotel / lodging destination is not yet confirmed for Bethesda pursuit",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "MEDIUM",
+      "originalMaturity": null,
+      "currentPriority": "MEDIUM_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "QUALIFY_FIRST_HOST_OR_FIT_OPEN",
+      "ruleAssessment": "correct_necessary_for_customer_feed",
+      "dosVerdict": "QUALIFY_FIRST",
+      "recovery": "TARGETED_RESEARCH_THEN_AD",
+      "classificationNote": "Credible demand/contact but host/lodging/fit still open — research continuation, not customer feed",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "hasApprovedCustomerCommercialClass",
+        "isBlockedFromQualifiedCustomerOpportunityFeed"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_ndss_advocacy_2027",
+      "organization": "National Down Syndrome Society (NDSS)",
+      "title": "NDSS Down Syndrome Advocacy Conference 2027 — hotel block TBA",
+      "demandSegment": "NDSS Down Syndrome Advocacy Conference 2027 — hotel block TBA",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "ADEQUATE",
+      "namedContact": "Amy Drow",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "WATCH",
+      "originalMaturity": null,
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_nar_gad_institute_2027",
+      "organization": "National Association of REALTORS® (NAR)",
+      "title": "NAR GAD Institute 2027 — Arlington, VA",
+      "demandSegment": "NAR GAD Institute 2027 — Arlington, VA",
+      "revenueType": "BOTH",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Jami Sims",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "ACCOUNT_DEVELOPMENT",
+      "salesUsabilityReason": "Credible organization + named contact for proactive account development",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "MEDIUM",
+      "originalMaturity": null,
+      "currentPriority": "MEDIUM_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": true,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "KEPT",
+      "subcategory": "ON_CUSTOMER_FEED",
+      "ruleAssessment": "n/a",
+      "dosVerdict": "VISIBLE",
+      "recovery": "NONE",
+      "classificationNote": "Preserved on qualified customer feed",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_aad_2028_overflow",
+      "organization": "American Academy of Dermatology (AAD)",
+      "title": "AAD Annual Meeting 2028 — Washington, DC",
+      "demandSegment": "AAD Annual Meeting 2028 — Washington, DC",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "THIN",
+      "namedContact": "Maritz Global Events",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "WATCH",
+      "originalMaturity": null,
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_afcea_hits_2027",
+      "organization": "AFCEA Bethesda Chapter",
+      "title": "AFCEA Bethesda Health IT Summit 2027 — booked at Bethesda North Marriott (overflow / 2028 cycle)",
+      "demandSegment": "AFCEA Bethesda Health IT Summit 2027 — booked at Bethesda North Marriott (overflow / 2028 cycle)",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "ADEQUATE",
+      "namedContact": "Andrea Snader",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "ACCOUNT_DEVELOPMENT",
+      "salesUsabilityReason": "Credible organization + named contact for proactive account development",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "MEDIUM",
+      "originalMaturity": null,
+      "currentPriority": "MEDIUM_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": true,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "KEPT",
+      "subcategory": "ON_CUSTOMER_FEED",
+      "ruleAssessment": "n/a",
+      "dosVerdict": "VISIBLE",
+      "recovery": "NONE",
+      "classificationNote": "Preserved on qualified customer feed",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_acts_ts27",
+      "organization": "Association for Clinical and Translational Science (ACTS)",
+      "title": "ACTS Translational Science 2027 (TS27) — Washington, DC",
+      "demandSegment": "ACTS Translational Science 2027 (TS27) — Washington, DC",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "ADEQUATE",
+      "namedContact": "Adam Joyce",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "ACCOUNT_DEVELOPMENT",
+      "salesUsabilityReason": "Credible organization + named contact for proactive account development",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "MEDIUM",
+      "originalMaturity": null,
+      "currentPriority": "MEDIUM_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": true,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "KEPT",
+      "subcategory": "ON_CUSTOMER_FEED",
+      "ruleAssessment": "n/a",
+      "dosVerdict": "VISIBLE",
+      "recovery": "NONE",
+      "classificationNote": "Preserved on qualified customer feed",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_nih_sbpo_vos_pattern",
+      "organization": "NIH Small Business Program Office",
+      "title": "NIH SBPO Vendor Outreach Sessions — recurring Bethesda on-site pattern",
+      "demandSegment": "NIH SBPO Vendor Outreach Sessions — recurring Bethesda on-site pattern",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "ADEQUATE",
+      "namedContact": "Annette Owens-Scarboro",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "WATCH",
+      "originalMaturity": null,
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "ruleAssessment": "correct_necessary_for_customer_feed_but_under_completed",
+      "dosVerdict": "MONITOR_OR_AD_PIPELINE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "classificationNote": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection.",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_bebpa_usb_2027",
+      "organization": "BioPharmaceutical Emerging Best Practices Association (BEBPA)",
+      "title": "BEBPA US Bioassay Conference 2027 — College Park, MD (room block coming soon)",
+      "demandSegment": "BEBPA US Bioassay Conference 2027 — College Park, MD (room block coming soon)",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Karen Bertani",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "ACCOUNT_DEVELOPMENT",
+      "salesUsabilityReason": "Credible organization + named contact for proactive account development",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "MEDIUM",
+      "originalMaturity": null,
+      "currentPriority": "MEDIUM_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": true,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "KEPT",
+      "subcategory": "ON_CUSTOMER_FEED",
+      "ruleAssessment": "n/a",
+      "dosVerdict": "VISIBLE",
+      "recovery": "NONE",
+      "classificationNote": "Preserved on qualified customer feed",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_amwa_2027_interim",
+      "organization": "American Medical Women's Association (AMWA)",
+      "title": "AMWA 2027 Interim Meeting — Sep 11–12",
+      "demandSegment": "AMWA 2027 Interim Meeting — Sep 11–12",
+      "revenueType": "BOTH",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "ADEQUATE",
+      "namedContact": "Kelly McMahon",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "WATCH",
+      "originalMaturity": null,
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_ajas_hq_rockville_watch",
+      "organization": "Association of Jewish Aging Services (AJAS)",
+      "title": "AJAS Annual Conference 2027 — Fort Lauderdale (HQ Rockville; future DC-year watch)",
+      "demandSegment": "AJAS Annual Conference 2027 — Fort Lauderdale (HQ Rockville; future DC-year watch)",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "SPECULATIVE",
+      "hotelFit": "ADEQUATE",
+      "namedContact": "Rachel Stevens",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "WATCH",
+      "originalMaturity": null,
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_series_ctn_annual_conference_2027",
+      "organization": "NIDA Clinical Trials Network",
+      "title": "CTN Annual Conference 2027 — Bethesda, MD",
+      "demandSegment": "CTN Annual Conference 2027 — Bethesda, MD",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "SPECULATIVE",
+      "hotelFit": "STRONG",
+      "namedContact": "Quandra Blackeney",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "WATCH",
+      "originalMaturity": null,
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "ruleAssessment": "correct_necessary_for_customer_feed_but_under_completed",
+      "dosVerdict": "MONITOR_OR_AD_PIPELINE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "classificationNote": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection.",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_ecs_251_2027_overflow",
+      "organization": "The Electrochemical Society (ECS)",
+      "title": "251st ECS Meeting 2027 — WEWCC + Marriott Marquis",
+      "demandSegment": "251st ECS Meeting 2027 — WEWCC + Marriott Marquis",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "OVERFLOW_OR_WATCH",
+      "namedContact": "John Lewis",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "OVERFLOW_WATCH",
+      "originalPriority": "WATCH",
+      "originalMaturity": null,
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_acvnu_renal_week_20270412",
+      "organization": "ACVNU",
+      "title": "ACVNU Renal Week",
+      "demandSegment": "ACVNU Renal Week",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "OVERFLOW_OR_WATCH",
+      "namedContact": "JD Foster",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "HIGH",
+      "originalMaturity": null,
+      "currentPriority": "HIGH_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "ruleAssessment": "correct_necessary_for_customer_feed_but_under_completed",
+      "dosVerdict": "MONITOR_OR_AD_PIPELINE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "classificationNote": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection.",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "hasApprovedCustomerCommercialClass",
+        "isBlockedFromQualifiedCustomerOpportunityFeed"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_cmss_spring_2027",
+      "organization": "Council of Medical Specialty Societies (CMSS)",
+      "title": "CMSS Spring Meeting 2027 — hotel info forthcoming (small leadership)",
+      "demandSegment": "CMSS Spring Meeting 2027 — hotel info forthcoming (small leadership)",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "SPECULATIVE",
+      "hotelFit": "ADEQUATE",
+      "namedContact": "Shaniece Rigans",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "QUALIFY_FIRST",
+      "salesUsabilityReason": "Credible account path but lodging/fit still needs salesperson qualification",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "MEDIUM",
+      "originalMaturity": null,
+      "currentPriority": "MEDIUM_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": true,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "KEPT",
+      "subcategory": "ON_CUSTOMER_FEED",
+      "ruleAssessment": "n/a",
+      "dosVerdict": "VISIBLE",
+      "recovery": "NONE",
+      "classificationNote": "Preserved on qualified customer feed",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_bethesda_premier_cup_2026",
+      "organization": "Bethesda Soccer Club",
+      "title": "Bethesda Premier Cup",
+      "demandSegment": "Bethesda Premier Cup",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Brad Roos",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "ACTIONABLE_NOW",
+      "salesUsabilityReason": "High-priority commercial path with named contact + outreach route — salesperson can begin appropriate outreach",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "HIGH",
+      "originalMaturity": null,
+      "currentPriority": "HIGH_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": true,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "KEPT",
+      "subcategory": "ON_CUSTOMER_FEED",
+      "ruleAssessment": "n/a",
+      "dosVerdict": "VISIBLE",
+      "recovery": "NONE",
+      "classificationNote": "Preserved on qualified customer feed",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_opp_alexandria_soccer_kickoff_2027",
+      "organization": "Alexandria Soccer Association",
+      "title": "Alexandria Soccer Kickoff 2027 — stay-to-play housing (Traveling Teams)",
+      "demandSegment": "Alexandria Soccer Kickoff 2027 — stay-to-play housing (Traveling Teams)",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "ADEQUATE",
+      "namedContact": "Ben Hawkins",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "QUALIFY_FIRST",
+      "salesUsabilityReason": "Promising but maturity/fit still require qualification before outreach",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "MEDIUM",
+      "originalMaturity": null,
+      "currentPriority": "MEDIUM_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": true,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "KEPT",
+      "subcategory": "ON_CUSTOMER_FEED",
+      "ruleAssessment": "n/a",
+      "dosVerdict": "VISIBLE",
+      "recovery": "NONE",
+      "classificationNote": "Preserved on qualified customer feed",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_sc_b36b66547864e8ce",
+      "organization": "Matthews",
+      "title": "Matthews — Scaling Corporate Account",
+      "demandSegment": "Matthews — Scaling Corporate Account",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Jeff Perkins",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "ACCOUNT_DEVELOPMENT",
+      "salesUsabilityReason": "Credible organization + named contact for proactive account development",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "MEDIUM",
+      "originalMaturity": null,
+      "currentPriority": "MEDIUM_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": "REVIEWED_PACKAGE_V1",
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": true,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "KEPT",
+      "subcategory": "ON_CUSTOMER_FEED",
+      "ruleAssessment": "n/a",
+      "dosVerdict": "VISIBLE",
+      "recovery": "NONE",
+      "classificationNote": "Preserved on qualified customer feed",
+      "readinessOk": null,
+      "gateTrace": [],
+      "responsibleFunctions": [],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_sc_a5768a99d4e89875",
+      "organization": "IMC Construction",
+      "title": "IMC Construction — Scaling Corporate Account",
+      "demandSegment": "IMC Construction — Scaling Corporate Account",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Dan Baker",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "ACCOUNT_DEVELOPMENT",
+      "salesUsabilityReason": "Credible organization + named contact for proactive account development",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "MEDIUM",
+      "originalMaturity": null,
+      "currentPriority": "MEDIUM_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": "REVIEWED_PACKAGE_V1",
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": true,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "KEPT",
+      "subcategory": "ON_CUSTOMER_FEED",
+      "ruleAssessment": "n/a",
+      "dosVerdict": "VISIBLE",
+      "recovery": "NONE",
+      "classificationNote": "Preserved on qualified customer feed",
+      "readinessOk": null,
+      "gateTrace": [],
+      "responsibleFunctions": [],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_sc_e7dd46732dd5bb7a",
+      "organization": "BioHub Maryland",
+      "title": "BioHub Maryland — Scaling Corporate Account",
+      "demandSegment": "BioHub Maryland — Scaling Corporate Account",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Alexandra Haarich",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "ACCOUNT_DEVELOPMENT",
+      "salesUsabilityReason": "Credible organization + named contact for proactive account development",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "MEDIUM",
+      "originalMaturity": null,
+      "currentPriority": "MEDIUM_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": "REVIEWED_PACKAGE_V1",
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": true,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "KEPT",
+      "subcategory": "ON_CUSTOMER_FEED",
+      "ruleAssessment": "n/a",
+      "dosVerdict": "VISIBLE",
+      "recovery": "NONE",
+      "classificationNote": "Preserved on qualified customer feed",
+      "readinessOk": null,
+      "gateTrace": [],
+      "responsibleFunctions": [],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_sc_5c5d41eb670e6c7b",
+      "organization": "Miles & Stockbridge",
+      "title": "Miles & Stockbridge — Scaling Corporate Account",
+      "demandSegment": "Miles & Stockbridge — Scaling Corporate Account",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Bradford S. Bernstein",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "ACCOUNT_DEVELOPMENT",
+      "salesUsabilityReason": "Credible organization + named contact for proactive account development",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "MEDIUM",
+      "originalMaturity": null,
+      "currentPriority": "MEDIUM_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": "REVIEWED_PACKAGE_V1",
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": true,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "KEPT",
+      "subcategory": "ON_CUSTOMER_FEED",
+      "ruleAssessment": "n/a",
+      "dosVerdict": "VISIBLE",
+      "recovery": "NONE",
+      "classificationNote": "Preserved on qualified customer feed",
+      "readinessOk": null,
+      "gateTrace": [],
+      "responsibleFunctions": [],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_sc_9d14aee7ff250b11",
+      "organization": "REGENXBIO",
+      "title": "REGENXBIO — Scaling Corporate Account",
+      "demandSegment": "REGENXBIO — Scaling Corporate Account",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Jerome Jackson",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "ACCOUNT_DEVELOPMENT",
+      "salesUsabilityReason": "Credible organization + named contact for proactive account development",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "MEDIUM",
+      "originalMaturity": null,
+      "currentPriority": "MEDIUM_PRIORITY",
+      "currentMaturity": null,
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": "REVIEWED_PACKAGE_V1",
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": true,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": true,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "KEPT",
+      "subcategory": "ON_CUSTOMER_FEED",
+      "ruleAssessment": "n/a",
+      "dosVerdict": "VISIBLE",
+      "recovery": "NONE",
+      "classificationNote": "Preserved on qualified customer feed",
+      "readinessOk": null,
+      "gateTrace": [],
+      "responsibleFunctions": [],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_greater_bethesda_chamber_of_commerce",
+      "organization": "Greater Bethesda Chamber of Commerce",
+      "title": "Greater Bethesda Chamber — Off the Clock & membership receptions",
+      "demandSegment": "Greater Bethesda Chamber — Off the Clock & membership receptions",
+      "revenueType": "LOCAL_CATERING",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Clarissa Harris",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "WATCH",
+      "originalMaturity": "RESEARCH_CONTINUATION",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "RESEARCH_CONTINUATION",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_montgomery_county_shrm",
+      "organization": "Montgomery County SHRM",
+      "title": "Montgomery County SHRM — Chapter meetings & holiday programs",
+      "demandSegment": "Montgomery County SHRM — Chapter meetings & holiday programs",
+      "revenueType": "BOTH",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Neha Agarwal",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "WATCH",
+      "originalMaturity": "RESEARCH_CONTINUATION",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "RESEARCH_CONTINUATION",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "ruleAssessment": "correct_necessary_for_customer_feed_but_under_completed",
+      "dosVerdict": "MONITOR_OR_AD_PIPELINE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "classificationNote": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection.",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_pmi_montgomery_county_maryland_chapter",
+      "organization": "PMI Montgomery County Maryland Chapter",
+      "title": "PMI Montgomery County — Monthly dinner meetings & FedTALKS",
+      "demandSegment": "PMI Montgomery County — Monthly dinner meetings & FedTALKS",
+      "revenueType": "LOCAL_CATERING",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Matt Lowy",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "WATCH",
+      "originalMaturity": "RESEARCH_CONTINUATION",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "RESEARCH_CONTINUATION",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "ruleAssessment": "correct_necessary_for_customer_feed_but_under_completed",
+      "dosVerdict": "MONITOR_OR_AD_PIPELINE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "classificationNote": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection.",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_city_of_rockville",
+      "organization": "City of Rockville",
+      "title": "City of Rockville — Civic meetings & special events",
+      "demandSegment": "City of Rockville — Civic meetings & special events",
+      "revenueType": "LOCAL_CATERING",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Colleen McQuitty",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "WATCH",
+      "originalMaturity": "RESEARCH_CONTINUATION",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "RESEARCH_CONTINUATION",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_nature_forward",
+      "organization": "Nature Forward",
+      "title": "Nature Forward — Community & rental events",
+      "demandSegment": "Nature Forward — Community & rental events",
+      "revenueType": "LOCAL_CATERING",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Beatriz Engel",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "WATCH",
+      "originalMaturity": "RESEARCH_CONTINUATION",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "RESEARCH_CONTINUATION",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_s4912_59382d1e71a2",
+      "organization": "Montgomery College — AI Skills Summit",
+      "title": "Montgomery College AI Skills Summit — Future edition research",
+      "demandSegment": "Montgomery College AI Skills Summit — Future edition research",
+      "revenueType": "LOCAL_CATERING",
+      "demandConfidence": "SPECULATIVE",
+      "hotelFit": "STRONG",
+      "namedContact": "Shinta Hernandez",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "WATCH",
+      "originalMaturity": "RESEARCH_CONTINUATION",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "RESEARCH_CONTINUATION",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_s4912_d55ee8a8e9ca",
+      "organization": "NIDDK — Meetings & Workshops portfolio",
+      "title": "NIDDK Meetings & Workshops — Scientific program portfolio",
+      "demandSegment": "NIDDK Meetings & Workshops — Scientific program portfolio",
+      "revenueType": "LOCAL_CATERING",
+      "demandConfidence": "SPECULATIVE",
+      "hotelFit": "STRONG",
+      "namedContact": "Allison Hurst",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "WATCH",
+      "originalMaturity": "RESEARCH_CONTINUATION",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "RESEARCH_CONTINUATION",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_s4912_6c8a62552bfa",
+      "organization": "Maryland Tech Council — ICON Awards",
+      "title": "Maryland Tech Council ICON Awards 2027 — Bethesda North Marriott",
+      "demandSegment": "Maryland Tech Council ICON Awards 2027 — Bethesda North Marriott",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "SPECULATIVE",
+      "hotelFit": "STRONG",
+      "namedContact": "Amy Speck",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "OVERFLOW_WATCH",
+      "originalPriority": "WATCH",
+      "originalMaturity": "OVERFLOW_WATCH",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "OVERFLOW_WATCH",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_s4912_6ffc303bf55a",
+      "organization": "The Children’s Inn at NIH — An Evening for Hope Gala",
+      "title": "Children's Inn at NIH — An Evening for Hope Gala 2027",
+      "demandSegment": "Children's Inn at NIH — An Evening for Hope Gala 2027",
+      "revenueType": "LOCAL_CATERING",
+      "demandConfidence": "SPECULATIVE",
+      "hotelFit": "STRONG",
+      "namedContact": "Diane Kendrick",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "WATCH",
+      "originalMaturity": "RESEARCH_CONTINUATION",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "RESEARCH_CONTINUATION",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "surface_eligibility_inactive_or_past",
+          "fn": "isCustomerSurfaceActiveEligible",
+          "stage": "customer_surface",
+          "assessment": "review_evidence"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass",
+        "isCustomerSurfaceActiveEligible"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_strathmore",
+      "organization": "Strathmore",
+      "title": "Strathmore — Preferred lodging partnership watch",
+      "demandSegment": "Strathmore — Preferred lodging partnership watch",
+      "revenueType": "BOTH",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Kady Chambers",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "PARTNERSHIP_WATCH",
+      "originalPriority": "WATCH",
+      "originalMaturity": "PARTNERSHIP_WATCH",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "PARTNERSHIP_WATCH",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "surface_eligibility_inactive_or_past",
+          "fn": "isCustomerSurfaceActiveEligible",
+          "stage": "customer_surface",
+          "assessment": "review_evidence"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass",
+        "isCustomerSurfaceActiveEligible"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_cohera_formerly_csi_dmc_and_360dg_",
+      "organization": "Cohera (formerly CSI DMC and 360DG)",
+      "title": "Cohera — DMV group intermediary partnership watch",
+      "demandSegment": "Cohera — DMV group intermediary partnership watch",
+      "revenueType": "BOTH",
+      "demandConfidence": "SPECULATIVE",
+      "hotelFit": "ADEQUATE",
+      "namedContact": "Annette Hawks",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "WATCH",
+      "originalMaturity": "PARTNERSHIP_WATCH",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "PARTNERSHIP_WATCH",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "ruleAssessment": "correct_necessary_for_customer_feed_but_under_completed",
+      "dosVerdict": "MONITOR_OR_AD_PIPELINE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "classificationNote": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection.",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_linder_global_events",
+      "organization": "LINDER Global Events",
+      "title": "LINDER Global Events — Travel-trade partnership watch",
+      "demandSegment": "LINDER Global Events — Travel-trade partnership watch",
+      "revenueType": "BOTH",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Heather Guay Yoo",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "PARTNERSHIP_WATCH",
+      "originalPriority": "WATCH",
+      "originalMaturity": "PARTNERSHIP_WATCH",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "PARTNERSHIP_WATCH",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_e2d_bc0a94d7c6007f36",
+      "organization": "Visit Montgomery",
+      "title": "Visit Montgomery — Destination lodging partnership watch",
+      "demandSegment": "Visit Montgomery — Destination lodging partnership watch",
+      "revenueType": "BOTH",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Katherine Crosse",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "PARTNERSHIP_WATCH",
+      "originalPriority": "WATCH",
+      "originalMaturity": "PARTNERSHIP_WATCH",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "PARTNERSHIP_WATCH",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_plp_live_fa2063dc1195",
+      "organization": "Rock Creek Mansion",
+      "title": "Rock Creek Mansion — Preferred lodging partnership watch",
+      "demandSegment": "Rock Creek Mansion — Preferred lodging partnership watch",
+      "revenueType": "BOTH",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Katy Linder",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "PARTNERSHIP_WATCH",
+      "originalPriority": "WATCH",
+      "originalMaturity": "PARTNERSHIP_WATCH",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "PARTNERSHIP_WATCH",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_plp_live_4958569d826e",
+      "organization": "The Cordell",
+      "title": "The Cordell — Preferred lodging partnership watch",
+      "demandSegment": "The Cordell — Preferred lodging partnership watch",
+      "revenueType": "BOTH",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Melanie Goff",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "PARTNERSHIP_WATCH",
+      "originalPriority": "WATCH",
+      "originalMaturity": "PARTNERSHIP_WATCH",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "PARTNERSHIP_WATCH",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "surface_eligibility_inactive_or_past",
+          "fn": "isCustomerSurfaceActiveEligible",
+          "stage": "customer_surface",
+          "assessment": "review_evidence"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass",
+        "isCustomerSurfaceActiveEligible"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_pep_live_af0711e711ba",
+      "organization": "Howerton+Wooten Events, LLC",
+      "title": "Howerton+Wooten Events — Planner partnership watch",
+      "demandSegment": "Howerton+Wooten Events — Planner partnership watch",
+      "revenueType": "BOTH",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Kawania Wooten",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "PARTNERSHIP_WATCH",
+      "originalPriority": "WATCH",
+      "originalMaturity": "PARTNERSHIP_WATCH",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "PARTNERSHIP_WATCH",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "surface_eligibility_inactive_or_past",
+          "fn": "isCustomerSurfaceActiveEligible",
+          "stage": "customer_surface",
+          "assessment": "review_evidence"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass",
+        "isCustomerSurfaceActiveEligible"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_pep_live_c165c897d233",
+      "organization": "Potomac Meetings and Events (Potomac Events)",
+      "title": "Potomac Meetings and Events — Planner partnership watch",
+      "demandSegment": "Potomac Meetings and Events — Planner partnership watch",
+      "revenueType": "BOTH",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Carrie Rice",
+      "contactCoverage": "C_NAMED_NO_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "PARTNERSHIP_WATCH",
+      "originalPriority": "WATCH",
+      "originalMaturity": "PARTNERSHIP_WATCH",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "PARTNERSHIP_WATCH",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "surface_eligibility_inactive_or_past",
+          "fn": "isCustomerSurfaceActiveEligible",
+          "stage": "customer_surface",
+          "assessment": "review_evidence"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass",
+        "isCustomerSurfaceActiveEligible"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_aledade",
+      "organization": "Aledade",
+      "title": "Aledade — Corporate meetings",
+      "demandSegment": "Aledade — Corporate meetings",
+      "revenueType": "BOTH",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Mary Kate Connor",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "WATCH",
+      "originalMaturity": "RESEARCH_CONTINUATION",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "RESEARCH_CONTINUATION",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "surface_eligibility_inactive_or_past",
+          "fn": "isCustomerSurfaceActiveEligible",
+          "stage": "customer_surface",
+          "assessment": "review_evidence"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass",
+        "isCustomerSurfaceActiveEligible"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_iwlca_elite_tournaments_iwlca_champions_cup",
+      "organization": "IWLCA / Elite Tournaments - IWLCA Champions Cup",
+      "title": "IWLCA Champions Cup 2027 — SoccerPlex stay-to-play",
+      "demandSegment": "IWLCA Champions Cup 2027 — SoccerPlex stay-to-play",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "ADEQUATE",
+      "namedContact": "Dan Harris",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "WATCH",
+      "originalMaturity": "OVERFLOW_WATCH",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "OVERFLOW_WATCH",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "ruleAssessment": "correct_necessary_for_customer_feed_but_under_completed",
+      "dosVerdict": "MONITOR_OR_AD_PIPELINE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "classificationNote": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection.",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_parenteral_drug_association_pda_",
+      "organization": "Parenteral Drug Association (PDA)",
+      "title": "PDA TRI Bethesda training — December 2026 lodging research",
+      "demandSegment": "PDA TRI Bethesda training — December 2026 lodging research",
+      "revenueType": "BOTH",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "ADEQUATE",
+      "namedContact": "Laura Keeley",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "originalPriority": "WATCH",
+      "originalMaturity": "RESEARCH_CONTINUATION",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "RESEARCH_CONTINUATION",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "ruleAssessment": "correct_necessary_for_customer_feed_but_under_completed",
+      "dosVerdict": "MONITOR_OR_AD_PIPELINE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "classificationNote": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection.",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_s4912_66a1f89e5afb",
+      "organization": "NIH Intramural Postdoctoral Fellowship / OITE",
+      "title": "NIH OITE Postdoctoral Fellows — Relocation & extended stay",
+      "demandSegment": "NIH OITE Postdoctoral Fellows — Relocation & extended stay",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Laura Marler",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "WATCH",
+      "originalMaturity": "RESEARCH_CONTINUATION",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "RESEARCH_CONTINUATION",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_s4912_364713d41c67",
+      "organization": "NIH IRP / Division of International Services",
+      "title": "NIH Division of International Services — Relocation & extended stay",
+      "demandSegment": "NIH Division of International Services — Relocation & extended stay",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Candelario Zapata",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "WATCH",
+      "originalMaturity": "RESEARCH_CONTINUATION",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "RESEARCH_CONTINUATION",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_s4912_732496c2f8aa",
+      "organization": "CASSS — 2027 Cell & Gene Therapy Products Symposium",
+      "title": "CASSS Cell & Gene Therapy Symposium 2027 — Bethesda North Marriott",
+      "demandSegment": "CASSS Cell & Gene Therapy Symposium 2027 — Bethesda North Marriott",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "SPECULATIVE",
+      "hotelFit": "STRONG",
+      "namedContact": "Randi Jacobs",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "OVERFLOW_WATCH",
+      "originalPriority": "WATCH",
+      "originalMaturity": "OVERFLOW_WATCH",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "OVERFLOW_WATCH",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_s4912_512deebd0963",
+      "organization": "2027 U.S. IFE Conference",
+      "title": "2027 U.S. IFE Conference — Bethesda North Marriott",
+      "demandSegment": "2027 U.S. IFE Conference — Bethesda North Marriott",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "SPECULATIVE",
+      "hotelFit": "STRONG",
+      "namedContact": "Liz Conrow",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "OVERFLOW_WATCH",
+      "originalPriority": "WATCH",
+      "originalMaturity": "OVERFLOW_WATCH",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "OVERFLOW_WATCH",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_beth_v16_evt_90a6ddcb10ca",
+      "organization": "Kappa Kappa Psi and Tau Beta Sigma",
+      "title": "Kappa Kappa Psi & Tau Beta Sigma National Convention 2027",
+      "demandSegment": "Kappa Kappa Psi & Tau Beta Sigma National Convention 2027",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "SPECULATIVE",
+      "hotelFit": "STRONG",
+      "namedContact": "Dollie O'Neill",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "WATCH",
+      "originalMaturity": "RESEARCH_CONTINUATION",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "RESEARCH_CONTINUATION",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_beth_v16_evt_0ab91e208405",
+      "organization": "IFPAC",
+      "title": "IFPAC-2027 — Advanced Manufacturing Science & Innovation",
+      "demandSegment": "IFPAC-2027 — Advanced Manufacturing Science & Innovation",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "SPECULATIVE",
+      "hotelFit": "STRONG",
+      "namedContact": "Robert Zutkis",
+      "contactCoverage": "B_NAMED_PLUS_ORG_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "RESEARCH_CONTINUATION",
+      "originalPriority": "WATCH",
+      "originalMaturity": "RESEARCH_CONTINUATION",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "RESEARCH_CONTINUATION",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "surface_eligibility_inactive_or_past",
+          "fn": "isCustomerSurfaceActiveEligible",
+          "stage": "customer_surface",
+          "assessment": "review_evidence"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass",
+        "isCustomerSurfaceActiveEligible"
+      ],
+      "exclusionSupportedByEvidence": true
+    },
+    {
+      "id": "gdi_s4912_b0ea89e0716d",
+      "organization": "Global Exposome Forum (GEF)",
+      "title": "Global Exposome Summit 2027",
+      "demandSegment": "Global Exposome Summit 2027",
+      "revenueType": "GUEST_ROOMS",
+      "demandConfidence": "RELIABLE_INFERRED",
+      "hotelFit": "STRONG",
+      "namedContact": "Camila Sgrignoli Januario",
+      "contactCoverage": "A_NAMED_PLUS_DIRECT_ROUTE",
+      "salesUsability": "MONITOR",
+      "salesUsabilityReason": "Future-cycle, overflow, or partnership watch — clear monitor posture",
+      "engineCommercialCertification": "OVERFLOW_WATCH",
+      "originalPriority": "WATCH",
+      "originalMaturity": "OVERFLOW_WATCH",
+      "currentPriority": "WATCHLIST",
+      "currentMaturity": "OVERFLOW_WATCH",
+      "commercialInventoryClass": null,
+      "prospectPublicationBasis": null,
+      "gdiPublishedInventoryRegistry": false,
+      "customerVisible": false,
+      "publicationReviewReady": false,
+      "onCommercialSurface": true,
+      "onCustomerFacing": false,
+      "inUnion": true,
+      "pastEvent": false,
+      "classification": "B",
+      "subcategory": "MONITOR_WATCHLIST",
+      "ruleAssessment": "correct_necessary",
+      "dosVerdict": "MONITOR",
+      "recovery": "RESEARCH_CONTINUATION_ONLY",
+      "classificationNote": "Future-cycle / overflow / partnership watch — not customer-feed ready",
+      "readinessOk": null,
+      "gateTrace": [
+        {
+          "gate": "customerVisible=false",
+          "fn": "isCustomerFacingOpportunity",
+          "stage": "publication_lifecycle",
+          "assessment": "correct_necessary_until_founder_approval"
+        },
+        {
+          "gate": "priority=WATCHLIST",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "lacks_approved_commercial_class",
+          "fn": "hasApprovedCustomerCommercialClass",
+          "stage": "founder_approval_maturity",
+          "assessment": "correct_necessary_for_customer_feed"
+        },
+        {
+          "gate": "qualified_feed_blocked",
+          "fn": "isBlockedFromQualifiedCustomerOpportunityFeed",
+          "stage": "qualified_feed",
+          "assessment": "correct_necessary_for_customer_feed"
+        }
+      ],
+      "responsibleFunctions": [
+        "isCustomerFacingOpportunity",
+        "isBlockedFromQualifiedCustomerOpportunityFeed",
+        "hasApprovedCustomerCommercialClass"
+      ],
+      "exclusionSupportedByEvidence": true
+    }
+  ]
+}

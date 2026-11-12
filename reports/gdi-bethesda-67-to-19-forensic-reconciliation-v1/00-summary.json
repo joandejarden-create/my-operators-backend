@@ -1,0 +1,245 @@
+{
+  "hotelId": "recLuxvwwxID7U2B8",
+  "generatedAt": "2026-11-12T15:00:35.066Z",
+  "provenance": {
+    "frozenCohort": "reports/gdi-bethesda-68-hotel-sales-commercial-acceptance-v1/01-commercial-sales-scorecard.json",
+    "frozenIdList": "reports/gdi-bethesda-68-hotel-sales-commercial-acceptance-v1/05-commercial-id-list.json",
+    "frozenCount": 67,
+    "note": "Verified frozen primary commercial-list cohort after ACCP Salt Lake City removal (68→67). Distinct from 88 research union and 59 canonical store-only count.",
+    "reductionMechanism": "PR #209 local/published parity: filterCustomerFacingOpportunities + gdi-qualified-customer-opportunity-feed-v1 on default commercial list. Research inventory preserved.",
+    "reconciliationConfidence": "VERIFIED"
+  },
+  "counts": {
+    "frozen67": 67,
+    "customerFacing19": 19,
+    "missing48": 48,
+    "currentCommercialSurface": 71,
+    "currentUnion": 88,
+    "storeCanonical": 59,
+    "facingExtraNotInFrozen67": []
+  },
+  "categoryBreakdownMissing48": {
+    "A_correctly_excluded": {
+      "count": 2,
+      "pct": "4.2%"
+    },
+    "B_research_continuation": {
+      "count": 45,
+      "pct": "93.8%"
+    },
+    "C_potential_false_negative": {
+      "count": 0,
+      "pct": "0.0%"
+    },
+    "D_publication_or_technical": {
+      "count": 0,
+      "pct": "0.0%"
+    },
+    "E_pending_founder_approval": {
+      "count": 1,
+      "pct": "2.1%"
+    }
+  },
+  "subcategoryBreakdown": {
+    "QUALIFY_FIRST_HOST_OR_FIT_OPEN": 2,
+    "MONITOR_ENGINE_AD_ELIGIBLE": 13,
+    "PAST_EVENT_SURFACE_INACTIVE": 2,
+    "MONITOR_WATCHLIST": 30,
+    "AD_ELIGIBLE_NEVER_FOUNDER_APPROVED": 1
+  },
+  "uniqueCommercialVsDuplicates": {
+    "frozenUniqueIds": 67,
+    "note": "Frozen cohort is already unique opportunity IDs (no alternate-card duplicates inside the 67)."
+  },
+  "previouslyApprovedHidden": {
+    "count": 0,
+    "note": "All previously customer-facing approved rows from the frozen cohort that remain approved are still in the 19. No approved ID from the 19 set was lost."
+  },
+  "recoveryCandidates": [
+    {
+      "id": "gdi_opp_nado_ddaa_washcon_2028",
+      "organization": "National Association of Development Organizations (NADO) / DDAA",
+      "classification": "B",
+      "subcategory": "QUALIFY_FIRST_HOST_OR_FIT_OPEN",
+      "recovery": "TARGETED_RESEARCH_THEN_AD",
+      "salesUsability": "QUALIFY_FIRST",
+      "engineCommercialCertification": "SALES_READY_ELIGIBLE",
+      "namedContact": "Brittany Salazar",
+      "note": "Credible demand/contact but host/lodging/fit still open — research continuation, not customer feed"
+    },
+    {
+      "id": "gdi_opp_nado_ddaa_washcon_2027_overflow",
+      "organization": "National Association of Development Organizations (NADO) / DDAA",
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "salesUsability": "MONITOR",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "namedContact": "Brittany Salazar",
+      "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+    },
+    {
+      "id": "gdi_opp_series_high_risk_high_reward_research_symposium_2027",
+      "organization": "NIH Common Fund",
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "salesUsability": "MONITOR",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "namedContact": "Jennifer Adona",
+      "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+    },
+    {
+      "id": "gdi_opp_world_biomaterials_2028_overflow",
+      "organization": "World Biomaterials Congress / biomaterials community",
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "salesUsability": "MONITOR",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "namedContact": "Jessica Goodone",
+      "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+    },
+    {
+      "id": "gdi_opp_arlington_spring_tournament_2027",
+      "organization": "Arlington Soccer Association",
+      "classification": "E",
+      "subcategory": "AD_ELIGIBLE_NEVER_FOUNDER_APPROVED",
+      "recovery": "STAGE_FOR_FOUNDER_PUBLICATION_REVIEW",
+      "salesUsability": "ACCOUNT_DEVELOPMENT",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "namedContact": "Lizzy Stell",
+      "note": "Hotel-sales AD + engine AD-eligible; correctly withheld from customer feed until founder publication approval. Not a filter false negative."
+    },
+    {
+      "id": "gdi_opp_2027_ddaa_annual_conference_8",
+      "organization": "Development District Association of Appalachia (DDAA)",
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "salesUsability": "MONITOR",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "namedContact": "Tony White",
+      "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+    },
+    {
+      "id": "gdi_opp_umd_alumni_weekend_watch",
+      "organization": "University of Maryland Alumni Association (watch)",
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "salesUsability": "MONITOR",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "namedContact": "Natalie Ross",
+      "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+    },
+    {
+      "id": "gdi_opp_amwa_2027_annual",
+      "organization": "American Medical Women's Association (AMWA)",
+      "classification": "B",
+      "subcategory": "QUALIFY_FIRST_HOST_OR_FIT_OPEN",
+      "recovery": "TARGETED_RESEARCH_THEN_AD",
+      "salesUsability": "QUALIFY_FIRST",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "namedContact": "Kelly McMahon",
+      "note": "Credible demand/contact but host/lodging/fit still open — research continuation, not customer feed"
+    },
+    {
+      "id": "gdi_opp_nih_sbpo_vos_pattern",
+      "organization": "NIH Small Business Program Office",
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "salesUsability": "MONITOR",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "namedContact": "Annette Owens-Scarboro",
+      "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+    },
+    {
+      "id": "gdi_opp_series_ctn_annual_conference_2027",
+      "organization": "NIDA Clinical Trials Network",
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "salesUsability": "MONITOR",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "namedContact": "Quandra Blackeney",
+      "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+    },
+    {
+      "id": "gdi_opp_acvnu_renal_week_20270412",
+      "organization": "ACVNU",
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "salesUsability": "MONITOR",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "namedContact": "JD Foster",
+      "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_montgomery_county_shrm",
+      "organization": "Montgomery County SHRM",
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "salesUsability": "MONITOR",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "namedContact": "Neha Agarwal",
+      "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_pmi_montgomery_county_maryland_chapter",
+      "organization": "PMI Montgomery County Maryland Chapter",
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "salesUsability": "MONITOR",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "namedContact": "Matt Lowy",
+      "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_cohera_formerly_csi_dmc_and_360dg_",
+      "organization": "Cohera (formerly CSI DMC and 360DG)",
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "salesUsability": "MONITOR",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "namedContact": "Annette Hawks",
+      "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_iwlca_elite_tournaments_iwlca_champions_cup",
+      "organization": "IWLCA / Elite Tournaments - IWLCA Champions Cup",
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "salesUsability": "MONITOR",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "namedContact": "Dan Harris",
+      "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_parenteral_drug_association_pda_",
+      "organization": "Parenteral Drug Association (PDA)",
+      "classification": "B",
+      "subcategory": "MONITOR_ENGINE_AD_ELIGIBLE",
+      "recovery": "ZERO_PAID_FINALIZATION_CANDIDATE",
+      "salesUsability": "MONITOR",
+      "engineCommercialCertification": "ACCOUNT_DEVELOPMENT_ELIGIBLE",
+      "namedContact": "Laura Keeley",
+      "note": "Engine stamped AD/SR-eligible while hotel-sales scored MONITOR. Correctly off customer feed; may deserve AD completion + founder staging, not feed re-injection."
+    }
+  ],
+  "verdict": {
+    "reductionPrimarilyFilterParity": true,
+    "inventoryDestroyed": false,
+    "customerFeedFalseNegatives": 0,
+    "pendingFounderApprovalValuable": 1,
+    "researchContinuationValuable": 45,
+    "qualificationTooStrictForCustomerFeed": false,
+    "underlyingResearchInsufficientForNewPubReady": true
+  }
+}
