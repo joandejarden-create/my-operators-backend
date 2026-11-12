@@ -45,9 +45,11 @@
 
 ## 9–10. Persistence / protection
 
-- Research-stage merge persisted (29 bag intact).
-- Internal union: **59 + 29 = 88**.
-- `opportunities.json` SHA unchanged: `fd438549ff030ffc6f219469a526ec9b88ad8a704871fa01784d5650468226ad`.
+- Research-stage merge persisted (29 bag intact; three Exa-updated IDs).
+- GitHub/main `opportunities.json` was **not written by Exa** (writes blocked).
+- Current committed store: **54** rows · SHA `54378697b69755a1010f36d19277f4d4cefc85eae3533f5cdc089f9c64f5c6be` (matches `origin/main`).
+- Prior local-only dirty observation of 59 rows / SHA `fd438549…` is **not** in git; five `gdi_sc_*` bodies are absent from the committed store. Exa batch did not delete them.
+- Read-time union now: **54 + 29 = 83** against committed store.
 - No Sales Ready promotions; no customer publication changes.
 
 ## 12. Remaining research
