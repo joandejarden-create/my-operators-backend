@@ -416,6 +416,13 @@
     state.sortDir = 1;
     state.viewMode = "tiles";
     state.tab = "opportunities";
+    state._prioritiesMountedHotelId = null;
+    if (
+      window.DealalityGdiNeedTimesPrioritiesTab &&
+      typeof window.DealalityGdiNeedTimesPrioritiesTab.unmount === "function"
+    ) {
+      window.DealalityGdiNeedTimesPrioritiesTab.unmount();
+    }
     if (typeof drawer !== "undefined" && drawer) {
       if (typeof drawer.close === "function") drawer.close();
       else drawer.removeAttribute("open");
@@ -457,92 +464,113 @@
       });
   }
 
+  function applyOpportunitiesPayload(oppPayload) {
+    oppPayload = oppPayload || {};
+    // Fail closed: never treat an unfiltered Bethesda union payload as the
+    // primary commercial list (stale server / filter bypass).
+    var listScope = String(oppPayload.listScope || "");
+    var effectiveSurface = String(
+      oppPayload.effectiveSurface ||
+        (oppPayload.bethesdaInternalUnion &&
+          oppPayload.bethesdaInternalUnion.commercialSurface &&
+          oppPayload.bethesdaInternalUnion.commercialSurface.effectiveSurface) ||
+        ""
+    ).toLowerCase();
+    var isBethesdaUnsafeCommercial =
+      listScope === "BETHESDA_INTERNAL_UNION_88" &&
+      effectiveSurface !== "commercial" &&
+      !String(state.filters && (state.filters.surface || state.filters.listSurface) || "")
+        .trim();
+    if (oppPayload.ok === false) {
+      state.opportunities = [];
+      state.visibilityWarning = {
+        code: oppPayload.error || "COMMERCIAL_SURFACE_FILTER_FAILED",
+        message:
+          oppPayload.message ||
+          "Commercial opportunity list unavailable (filter failed closed).",
+      };
+    } else if (isBethesdaUnsafeCommercial) {
+      state.opportunities = [];
+      state.visibilityWarning = {
+        code: "UNSAFE_BETHESDA_LIST_SCOPE",
+        message:
+          "Commercial list blocked: server returned unfiltered research inventory. Restart the GDI server onto current main.",
+        listScope: listScope,
+        effectiveSurface: effectiveSurface || null,
+        serverBuildSha: oppPayload.serverBuildSha || null,
+      };
+    } else {
+      state.opportunities = oppPayload.opportunities || [];
+      state.visibilityWarning = oppPayload.visibilityWarning || null;
+    }
+    state.listSurfaceMeta = {
+      listScope: listScope || null,
+      requestedSurface: oppPayload.requestedSurface || null,
+      effectiveSurface: effectiveSurface || null,
+      eligibleCount: oppPayload.eligibleCount,
+      excludedCount: oppPayload.excludedCount,
+      serverBuildSha: oppPayload.serverBuildSha || null,
+      sourceOfTruth: oppPayload.sourceOfTruth || null,
+    };
+    state.hotelNeedDateConfigV1 =
+      oppPayload.hotelNeedDateConfigV1 ||
+      (UI.normalizeHotelNeedDateConfigV1
+        ? UI.normalizeHotelNeedDateConfigV1(null, state.hotelId)
+        : {
+            status: "NOT_ESTABLISHED",
+            accessibleLabel: "Need dates not established",
+            icon: "calendar-minus",
+            colorClass: "gdi-hotel-need-date-status--not-established",
+          });
+    try {
+      window.__GDI_HOTEL_NEED_DATE_CONFIG__ = state.hotelNeedDateConfigV1;
+    } catch (_) {
+      /* ignore */
+    }
+  }
+
   function loadAll() {
-    var id = encodeURIComponent(state.hotelId);
-    // Critical path: hotel catalog + flag + summary + opportunities + profile.
+    var knownHotelId = state.hotelId;
+    var id = encodeURIComponent(knownHotelId);
+    // Critical path: catalog + flag + summary + opportunities + profile in parallel.
+    // Hotel-scoped fetches use the known hotelId immediately; catalog may refine it.
     // Research-run history/costs load only in AI Demand Admin (admin ledger tab).
-    return loadHotelCatalog().then(function () {
-      id = encodeURIComponent(state.hotelId);
-      return Promise.all([
-        api("/api/group-demand-intelligence/flag"),
-        api("/api/group-demand-intelligence/hotels/" + id + "/summary"),
-        api("/api/group-demand-intelligence/hotels/" + id + "/opportunities"),
-        api("/api/group-demand-intelligence/hotels/" + id + "/profile").catch(function () {
-          return { ok: false, profile: null };
-        }),
-      ]).then(function (parts) {
-        state.flag = parts[0].flag;
-        state.summary = parts[1].summary;
-        var oppPayload = parts[2] || {};
-        // Fail closed: never treat an unfiltered Bethesda union payload as the
-        // primary commercial list (stale server / filter bypass).
-        var listScope = String(oppPayload.listScope || "");
-        var effectiveSurface = String(
-          oppPayload.effectiveSurface ||
-            (oppPayload.bethesdaInternalUnion &&
-              oppPayload.bethesdaInternalUnion.commercialSurface &&
-              oppPayload.bethesdaInternalUnion.commercialSurface.effectiveSurface) ||
-            ""
-        ).toLowerCase();
-        var isBethesdaUnsafeCommercial =
-          listScope === "BETHESDA_INTERNAL_UNION_88" &&
-          effectiveSurface !== "commercial" &&
-          !String(state.filters && (state.filters.surface || state.filters.listSurface) || "")
-            .trim();
-        if (oppPayload.ok === false) {
-          state.opportunities = [];
-          state.visibilityWarning = {
-            code: oppPayload.error || "COMMERCIAL_SURFACE_FILTER_FAILED",
-            message:
-              oppPayload.message ||
-              "Commercial opportunity list unavailable (filter failed closed).",
-          };
-        } else if (isBethesdaUnsafeCommercial) {
-          state.opportunities = [];
-          state.visibilityWarning = {
-            code: "UNSAFE_BETHESDA_LIST_SCOPE",
-            message:
-              "Commercial list blocked: server returned unfiltered research inventory. Restart the GDI server onto current main.",
-            listScope: listScope,
-            effectiveSurface: effectiveSurface || null,
-            serverBuildSha: oppPayload.serverBuildSha || null,
-          };
-        } else {
-          state.opportunities = oppPayload.opportunities || [];
-          state.visibilityWarning = oppPayload.visibilityWarning || null;
-        }
-        state.listSurfaceMeta = {
-          listScope: listScope || null,
-          requestedSurface: oppPayload.requestedSurface || null,
-          effectiveSurface: effectiveSurface || null,
-          eligibleCount: oppPayload.eligibleCount,
-          excludedCount: oppPayload.excludedCount,
-          serverBuildSha: oppPayload.serverBuildSha || null,
-          sourceOfTruth: oppPayload.sourceOfTruth || null,
-        };
-        state.hotelNeedDateConfigV1 =
-          oppPayload.hotelNeedDateConfigV1 ||
-          (UI.normalizeHotelNeedDateConfigV1
-            ? UI.normalizeHotelNeedDateConfigV1(null, state.hotelId)
-            : {
-                status: "NOT_ESTABLISHED",
-                accessibleLabel: "Need dates not established",
-                icon: "calendar-minus",
-                colorClass: "gdi-hotel-need-date-status--not-established",
-              });
-        try {
-          window.__GDI_HOTEL_NEED_DATE_CONFIG__ = state.hotelNeedDateConfigV1;
-        } catch (_) {
-          /* ignore */
-        }
-        state.hotelProfile = (parts[3] && parts[3].profile) || null;
-        // Campaigns/generators stay on internal APIs only — not customer load path.
-        state.demandCampaigns = [];
-        state.demandCampaignMeta = { visibleCount: 0, storedCount: 0 };
-        // Research-run history/costs are admin-only (AI Demand Admin ledger).
-        state.runs = [];
-        render();
-      });
+    return Promise.all([
+      loadHotelCatalog(),
+      api("/api/group-demand-intelligence/flag"),
+      api("/api/group-demand-intelligence/hotels/" + id + "/summary"),
+      api("/api/group-demand-intelligence/hotels/" + id + "/opportunities"),
+      api("/api/group-demand-intelligence/hotels/" + id + "/profile").catch(function () {
+        return { ok: false, profile: null };
+      }),
+    ]).then(function (parts) {
+      state.flag = parts[1].flag;
+      // If catalog remapped hotelId, refetch hotel-scoped payloads once.
+      if (state.hotelId !== knownHotelId) {
+        id = encodeURIComponent(state.hotelId);
+        return Promise.all([
+          api("/api/group-demand-intelligence/hotels/" + id + "/summary"),
+          api("/api/group-demand-intelligence/hotels/" + id + "/opportunities"),
+          api("/api/group-demand-intelligence/hotels/" + id + "/profile").catch(function () {
+            return { ok: false, profile: null };
+          }),
+        ]).then(function (scoped) {
+          state.summary = scoped[0].summary;
+          applyOpportunitiesPayload(scoped[1] || {});
+          state.hotelProfile = (scoped[2] && scoped[2].profile) || null;
+          state.demandCampaigns = [];
+          state.demandCampaignMeta = { visibleCount: 0, storedCount: 0 };
+          state.runs = [];
+          render();
+        });
+      }
+      state.summary = parts[2].summary;
+      applyOpportunitiesPayload(parts[3] || {});
+      state.hotelProfile = (parts[4] && parts[4].profile) || null;
+      state.demandCampaigns = [];
+      state.demandCampaignMeta = { visibleCount: 0, storedCount: 0 };
+      state.runs = [];
+      render();
     });
   }
 
@@ -1361,6 +1389,23 @@
       city: identity.city || null,
       state: identity.state || null,
     };
+    // Preserve Tab 2 DOM across full shell re-renders so calendar/form state
+    // and loaded data survive Opportunities ↔ Need Times tab switches.
+    var preservedPrioritiesRoot = null;
+    var existingPriorities = document.getElementById("gdiNeedTimesPrioritiesRoot");
+    if (
+      existingPriorities &&
+      state._prioritiesMountedHotelId === state.hotelId &&
+      window.DealalityGdiNeedTimesPrioritiesTab &&
+      window.DealalityGdiNeedTimesPrioritiesTab._active
+    ) {
+      preservedPrioritiesRoot = existingPriorities;
+      if (existingPriorities.parentNode) {
+        existingPriorities.parentNode.removeChild(existingPriorities);
+      }
+    }
+
+    var showPriorities = state.tab === "priorities";
     root.className = "gdi-shell dashboard-container aiv-dashboard";
     root.innerHTML =
       UI.hotelShellHtml({
@@ -1368,7 +1413,7 @@
         badges: {},
       }) +
       UI.contentTabsHtml(state.tab, UI.GDI_CUSTOMER_TABS || [UI.GDI_MAIN_TAB]) +
-      (state.tab === "priorities"
+      (showPriorities
         ? ""
         : UI.propertyBarHtml({
             mode: "auth",
@@ -1394,45 +1439,57 @@
             actionHtml: propertyBarActionsHtml(),
           })) +
       '<div id="gdiTabBody">' +
-      (state.tab === "priorities"
-        ? '<div class="hnd-page" id="gdiNeedTimesPrioritiesRoot"></div>'
-        : body) +
+      '<div id="gdiTabOpportunities" class="gdi-tab-panel"' +
+      (showPriorities ? ' hidden aria-hidden="true"' : "") +
+      ">" +
+      body +
+      "</div>" +
+      '<div class="hnd-page gdi-tab-panel" id="gdiNeedTimesPrioritiesRoot"' +
+      (showPriorities ? "" : ' hidden aria-hidden="true"') +
+      "></div>" +
       "</div>";
 
-    if (state.tab === "priorities") {
+    var prioritiesRoot = document.getElementById("gdiNeedTimesPrioritiesRoot");
+    if (preservedPrioritiesRoot && prioritiesRoot) {
+      preservedPrioritiesRoot.hidden = !showPriorities;
+      preservedPrioritiesRoot.setAttribute("aria-hidden", showPriorities ? "false" : "true");
+      prioritiesRoot.parentNode.replaceChild(preservedPrioritiesRoot, prioritiesRoot);
+      prioritiesRoot = preservedPrioritiesRoot;
+    }
+
+    if (showPriorities) {
       if (
         window.DealalityGdiNeedTimesPrioritiesTab &&
         typeof window.DealalityGdiNeedTimesPrioritiesTab.mount === "function"
       ) {
-        window.DealalityGdiNeedTimesPrioritiesTab.mount(
-          document.getElementById("gdiNeedTimesPrioritiesRoot"),
-          {
+        var isolation = (function () {
+          try {
+            var params = new URLSearchParams(window.location.search || "");
+            var airtable = String(params.get("airtable") || "").trim();
+            if (airtable === "0" || airtable === "false") return "portal_v1_test";
+            var i = String(params.get("isolation") || "").trim();
+            if (i === "portal_v1_test" || i === "1") return "portal_v1_test";
+          } catch (e) {}
+          return null;
+        })();
+        var alreadyMounted =
+          state._prioritiesMountedHotelId === state.hotelId &&
+          window.DealalityGdiNeedTimesPrioritiesTab._active;
+        if (!alreadyMounted) {
+          window.DealalityGdiNeedTimesPrioritiesTab.mount(prioritiesRoot, {
             hotelId: state.hotelId,
             loading: document.getElementById("gdiLoading"),
-            isolation: (function () {
-              try {
-                var params = new URLSearchParams(window.location.search || "");
-                var airtable = String(params.get("airtable") || "").trim();
-                if (airtable === "0" || airtable === "false") return "portal_v1_test";
-                var i = String(params.get("isolation") || "").trim();
-                if (i === "portal_v1_test" || i === "1") return "portal_v1_test";
-              } catch (e) {}
-              return null;
-            })(),
-          }
-        );
-      } else {
-        var missing = document.getElementById("gdiNeedTimesPrioritiesRoot");
-        if (missing) {
-          missing.innerHTML =
-            '<div class="hnd-banner error" role="alert">Hotel Need Times & Priorities module failed to load.</div>';
+            isolation: isolation,
+          });
+          state._prioritiesMountedHotelId = state.hotelId;
+        } else if (prioritiesRoot) {
+          prioritiesRoot.hidden = false;
+          prioritiesRoot.removeAttribute("aria-hidden");
         }
+      } else if (prioritiesRoot) {
+        prioritiesRoot.innerHTML =
+          '<div class="hnd-banner error" role="alert">Hotel Need Times & Priorities module failed to load.</div>';
       }
-    } else if (
-      window.DealalityGdiNeedTimesPrioritiesTab &&
-      typeof window.DealalityGdiNeedTimesPrioritiesTab.unmount === "function"
-    ) {
-      window.DealalityGdiNeedTimesPrioritiesTab.unmount();
     }
 
     if (state.tab !== "priorities" && UI.bindNeedDateLegendInteractions) {
