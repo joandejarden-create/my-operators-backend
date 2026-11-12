@@ -17,7 +17,7 @@
 | Metric | Value |
 |--------|-------|
 | Paid Exa calls issued | **3** |
-| Actual billed (sum of `costDollars.total`) | **$0.30** |
+| Actual billed (`costDollars.total`) | **$0.30** |
 | Remaining under $12 | **$11.70** |
 | Other paid providers | **None** |
 
@@ -34,13 +34,13 @@
 | Org | Maturity | Contact | Demand confidence | Sales Ready |
 |-----|----------|---------|-------------------|-------------|
 | PDA | RESEARCH_CONTINUATION → RESEARCH_CONTINUATION | training@pda.org → **Laura Keeley** (TRI Head of Education) | RELIABLE_INFERRED_DEMAND | No |
-| Chamber | RESEARCH_CONTINUATION → PARTNERSHIP_WATCH | Clarissa Harris → Clarissa Harris (VP Mktg/Events, email verified) | PARTNERSHIP_POTENTIAL_ONLY | No |
+| Chamber | RESEARCH_CONTINUATION → PARTNERSHIP_WATCH | Clarissa Harris → Clarissa Harris (VP Mktg/Events) | PARTNERSHIP_POTENTIAL_ONLY | No |
 | Potomac | PARTNERSHIP_WATCH → PARTNERSHIP_WATCH | Carrie Rice → Carrie Rice (Founder/CMP) | PARTNERSHIP_POTENTIAL_ONLY | No |
 
 ### Evidence highlights
 
-- **PDA:** TRI Bethesda Dec 2026 courses confirmed; PDA controls lodging (not third-party contractors); listed hotels Hilton Garden Inn / Hyatt Regency Bethesda / Residence Inn Bethesda Downtown — **not** Bethesda Marriott; logistics route `vanzant@pda.org` + training@pda.org.
-- **Chamber:** 75+ events/year; Off the Clock monthly 65+; Clarissa Harris verified; Hyatt Regency referenced historically for installation; Marriott fit as uncommitted venue option only.
+- **PDA:** TRI Bethesda Dec 2026 courses confirmed; PDA controls lodging; listed hotels Hilton Garden Inn / Hyatt Regency Bethesda / Residence Inn Bethesda Downtown — **not** Bethesda Marriott; logistics route `vanzant@pda.org` + `training@pda.org`.
+- **Chamber:** 75+ events/year; Off the Clock monthly 65+; Clarissa Harris verified; Marriott is an uncommitted venue option only.
 - **Potomac:** Carrie Rice founder/CMP; hotel coordination capabilities evidenced; **no** Marriott partnership or bookable demand found.
 
 ## 9–10. Persistence / protection
@@ -50,8 +50,8 @@
 - `opportunities.json` SHA unchanged: `fd438549ff030ffc6f219469a526ec9b88ad8a704871fa01784d5650468226ad`.
 - No Sales Ready promotions; no customer publication changes.
 
-## 12. Remaining research (zero/paid optional)
+## 12. Remaining research
 
-1. PDA: confirm Dec 2026 block owner + overflow need via logistics/TRI (no further Exa required for first outreach).
+1. PDA: confirm Dec 2026 block owner + overflow via logistics/TRI (first outreach; no further Exa required).
 2. Chamber: Clarissa outreach for 2027 Off the Clock / installation venue flexibility.
-3. Potomac: obtain verified business email / intro via association network; partnership development only.
+3. Potomac: obtain verified business email; partnership development only.
