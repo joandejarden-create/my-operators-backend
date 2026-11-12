@@ -12,6 +12,7 @@ import {
   evaluatePrePaidDeepDedupe,
   reconcilePostDeepIdentity,
   orgDeepKey,
+  isLiveDiscoveryOrsStem,
   buildInventoryDedupeContextForHotels,
 } from "../lib/group-demand-intelligence/research/gdi-paid-deep-two-stage-dedupe-v1.js";
 import { collectRetainedCandidatesFromDiscovery } from "../lib/group-demand-intelligence/workflow/original-full-e2e-research-chain-v1.js";
@@ -151,11 +152,20 @@ check("post_deep_preserves_distinct_annual_editions", () => {
 check("bethesda_inventory_loader_sees_org_keys", () => {
   const ctx = buildInventoryDedupeContextForHotels(["recLuxvwwxID7U2B8"]);
   assert.ok(ctx.totalOrgKeys >= 50, `expected Bethesda inventory orgs, got ${ctx.totalOrgKeys}`);
-  // opportunities.json surface may be 59 commercial; ORS union should reach ~88+
+  // opportunities.json (59) + historical research-stage (29) — never live disc_* ORS
   assert.ok(
     ctx.totalOpportunityIds >= 59,
     `expected Bethesda inventory ids, got ${ctx.totalOpportunityIds}`
   );
+  assert.ok(
+    ![...ctx.inventoryOpportunityIds].some((id) => /^disc_/i.test(String(id))),
+    "live disc_* discovery dossiers must not enter baseline inventory"
+  );
+});
+
+check("live_disc_ors_stem_classifier", () => {
+  assert.equal(isLiveDiscoveryOrsStem("disc_abc123"), true);
+  assert.equal(isLiveDiscoveryOrsStem("gdi_opp_nado_ddaa_washcon_2028"), false);
 });
 
 console.log(`\nOK  ${passed} PLP/PEP/LCM targeting + dedupe checks passed (offline, $0)`);
