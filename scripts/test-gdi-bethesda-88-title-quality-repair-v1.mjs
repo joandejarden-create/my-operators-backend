@@ -1,0 +1,150 @@
+#!/usr/bin/env node
+import assert from "node:assert/strict";
+import {
+  hasMeetingCredentialContamination,
+  redactSensitiveTitle,
+  sanitizeOpportunityTitle,
+  titleBlocksCustomerPublication,
+  classifyOpportunityTitleDefects,
+  TITLE_DEFECT,
+  customerSafeOpportunityTitle,
+} from "../lib/group-demand-intelligence/opportunity-title-quality-v1.js";
+import {
+  auditBethesda88Titles,
+  applyHistoricalTitleRepairs,
+  buildCanonicalTitleDryRunPatches,
+  resolveRepairedTitle,
+  BETHESDA_88_TITLE_QUALITY_REPAIR_V1,
+} from "../lib/group-demand-intelligence/research/bethesda-88-title-quality-repair-v1.js";
+import {
+  loadHotelOpportunityDoc,
+  BETHESDA_PROTECTED_SCALING_IDS,
+  ACCEPTABLE_59_ROW_SHA256S,
+} from "../lib/group-demand-intelligence/research/gdi-hotel-store-integrity-guard-v1.js";
+import { mergeBethesdaInternalResearchOpportunities } from "../lib/group-demand-intelligence/research/bethesda-internal-research-union-v1.js";
+import { BETHESDA_29_ATTESTED_IDS } from "../lib/group-demand-intelligence/research/bethesda-historical-attestation-bag-v1.js";
+import { classifyCustomerSurfaceOpportunity } from "../lib/group-demand-intelligence/customer-surface-revalidation-v1.js";
+
+assert.equal(typeof BETHESDA_88_TITLE_QUALITY_REPAIR_V1, "string");
+
+// Credential detection + redaction (do not assert on secret contents).
+const dirty =
+  "If prompted, enter Meeting ID REDACTED_TEST and Passcode REDACTED 2027";
+assert.equal(hasMeetingCredentialContamination(dirty), true);
+assert.equal(redactSensitiveTitle(dirty), "[REDACTED_JOINING_INSTRUCTION_TITLE]");
+assert.equal(titleBlocksCustomerPublication(dirty), true);
+assert.equal(sanitizeOpportunityTitle(dirty), null);
+
+const nav =
+  "NCI RNA Biology Symposium | NCIF Conferences Skip to main content NCI at Frederick St 2027";
+assert.ok(
+  classifyOpportunityTitleDefects(nav).includes(TITLE_DEFECT.SOURCE_NAV_CONTAMINATION)
+);
+assert.match(sanitizeOpportunityTitle(nav), /NCI RNA Biology Symposium/i);
+
+assert.equal(
+  resolveRepairedTitle({
+    id: "gdi_opp_amwa_2028_annual",
+    title: "AMWA 113th Annual Meeting 2028 — destination TBD",
+  }),
+  "AMWA 113th Annual Meeting 2028"
+);
+assert.equal(
+  resolveRepairedTitle({
+    id: "gdi_opp_nih_research_festival_2026",
+    title:
+      "2026 NIH Research Festival — campus event with vendor/attendee overflow lodging potential",
+  }),
+  "NIH Research Festival 2026"
+);
+
+const blocked = classifyCustomerSurfaceOpportunity({
+  title: dirty,
+  organizationName: "NIDA Clinical Trials Network",
+  eventEndDate: "2027-12-01",
+});
+assert.equal(blocked.keepActive, false);
+assert.ok(blocked.reasons.includes("opportunity_title_quality_block"));
+
+const storeBefore = loadHotelOpportunityDoc("recLuxvwwxID7U2B8");
+assert.equal(storeBefore.count, 59);
+assert.ok(ACCEPTABLE_59_ROW_SHA256S.includes(storeBefore.sha256));
+
+const dry = applyHistoricalTitleRepairs({ dryRun: true });
+assert.equal(dry.ok, true);
+assert.equal(dry.writeApplied, false);
+
+const applied = applyHistoricalTitleRepairs({ dryRun: false });
+assert.equal(applied.ok, true);
+
+const audit = auditBethesda88Titles();
+assert.equal(audit.union.union, 88);
+assert.equal(audit.rows.length, 88);
+// Credential contamination remains on the canonical store until founder-approved write.
+assert.equal(audit.credentialContaminationCount, 1);
+const cred = audit.rows.find((r) =>
+  r.defects.includes(TITLE_DEFECT.MEETING_CREDENTIALS)
+);
+assert.equal(cred.inventory, "canonical");
+assert.equal(cred.blocksCustomerPublication, true);
+assert.equal(cred.customerFacing, false);
+// Historical rows must not retain credential titles after apply.
+assert.equal(
+  audit.rows.filter(
+    (r) =>
+      r.inventory === "historical" &&
+      r.defects.includes(TITLE_DEFECT.MEETING_CREDENTIALS)
+  ).length,
+  0
+);
+
+const patches = buildCanonicalTitleDryRunPatches();
+assert.ok(patches.patches.length >= 1);
+assert.equal(
+  patches.patches.every((p) => p.opportunitiesJsonWriteAuthorized === false),
+  true
+);
+assert.ok(
+  patches.patches.some(
+    (p) => p.id === "gdi_opp_series_if_prompted_enter_meeting_id_250_658_877__2027"
+  )
+);
+
+const storeAfter = loadHotelOpportunityDoc("recLuxvwwxID7U2B8");
+assert.equal(storeAfter.sha256, storeBefore.sha256);
+assert.equal(storeAfter.count, 59);
+assert.ok(
+  BETHESDA_PROTECTED_SCALING_IDS.every((id) => storeAfter.ids.includes(id))
+);
+const wc = storeAfter.opportunities.find((o) => o.id === "gdi_pe_781f12393f8117e7");
+assert.equal(wc?.primaryContact?.name, "Diane Robertson");
+
+const union = mergeBethesdaInternalResearchOpportunities(
+  "recLuxvwwxID7U2B8",
+  storeAfter.opportunities
+);
+assert.equal(union.counts.union, 88);
+assert.equal(BETHESDA_29_ATTESTED_IDS.length, 29);
+
+const safe = customerSafeOpportunityTitle({
+  title: dirty,
+  organizationName: "NIDA Clinical Trials Network",
+});
+assert.ok(!/Meeting ID|Passcode/i.test(safe));
+
+console.log(
+  JSON.stringify(
+    {
+      ok: true,
+      test: "test-gdi-bethesda-88-title-quality-repair-v1",
+      union: 88,
+      defectiveRemaining: audit.defectiveCount,
+      changeCount: audit.changeCount,
+      canonicalPatches: patches.patches.length,
+      storeShaUnchanged: true,
+      womansClubContactPreserved: true,
+    },
+    null,
+    2
+  )
+);
