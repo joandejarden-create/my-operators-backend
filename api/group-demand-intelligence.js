@@ -109,6 +109,12 @@ import {
 } from "../lib/group-demand-intelligence/presentation/gdi-universal-presentation-pipeline-v1.js";
 import { GDI_PRESENTATION_SURFACES } from "../lib/group-demand-intelligence/contracts/gdi-presentation-contract-v1.js";
 import {
+  annotateInventoryPopulations,
+  buildInventoryPopulationCounts,
+  isBethesda67CustomerPublicationApproved,
+  BETHESDA_HOTEL_ID,
+} from "../lib/group-demand-intelligence/bethesda-67-sales-baseline-cmi-v1.js";
+import {
   getCachedOpportunityDoc,
   invalidateGdiHotelReadCache,
 } from "../lib/group-demand-intelligence/read-cache.js";
@@ -1162,6 +1168,23 @@ export async function getGdiOpportunities(req, res) {
     if (serverBuildSha) {
       res.setHeader("X-GDI-Server-Build-Sha", String(serverBuildSha));
     }
+    opportunities = annotateInventoryPopulations(opportunities, { hotelId });
+    const inventoryPopulationCounts =
+      buildInventoryPopulationCounts(opportunities);
+    const bethesda67PublicationApproved =
+      hotelId === BETHESDA_HOTEL_ID
+        ? isBethesda67CustomerPublicationApproved()
+        : null;
+    const bethesda67Baseline =
+      hotelId === BETHESDA_HOTEL_ID
+        ? {
+            baselineCount: 67,
+            publishedCount: 19,
+            stagedCount: 48,
+            customerPublicationApproved: bethesda67PublicationApproved,
+            headline: inventoryPopulationCounts.headline,
+          }
+        : null;
     return res.json({
       ok: true,
       hotelId,
@@ -1173,6 +1196,8 @@ export async function getGdiOpportunities(req, res) {
       listScope,
       requestedSurface,
       effectiveSurface,
+      inventoryPopulationCounts,
+      bethesda67Baseline,
       eligibleCount:
         surfaceMeta?.eligibleCount != null
           ? surfaceMeta.eligibleCount
