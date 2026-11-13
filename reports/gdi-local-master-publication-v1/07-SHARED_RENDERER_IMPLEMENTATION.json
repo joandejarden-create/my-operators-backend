@@ -1,0 +1,18 @@
+{
+  "strategy": "One canonical customer renderer; publication package freezes local master DTOs",
+  "modules": {
+    "cardDrawerTourFiltersCsv": "public/js/group-demand-intelligence/app.js",
+    "css": "public/css/group-demand-intelligence.css",
+    "canonicalDto": "lib/group-demand-intelligence/presentation/gdi-canonical-customer-presentation-contract-v1.js",
+    "packageBuilder": "lib/group-demand-intelligence/publication-package/gdi-customer-publication-package-v1.js",
+    "packageStore": "lib/group-demand-intelligence/publication-package/gdi-publication-package-store-v1.js"
+  },
+  "capabilityWrappers": [
+    "authentication",
+    "share-token validation",
+    "feedback write surfaces",
+    "internal research supervisor tools (excluded from customer)"
+  ],
+  "packageSource": "LOCAL_LIVE_API_DTO_FREEZE",
+  "remediationsApplied": "NONE — local master copy retained verbatim"
+}
