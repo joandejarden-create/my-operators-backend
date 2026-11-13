@@ -1,0 +1,149 @@
+{
+  "schema": "gdi-publication-source-of-truth-analysis-v1",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "analyzedAt": "2026-11-13T08:43:24.489Z",
+  "divergenceRootCauses": [
+    {
+      "id": "INDEPENDENT_PRESENTATION_RECOMPUTE",
+      "detail": "Local preview and production share each re-run projectOpportunityForPresentation / sales-action resolver over live inventory instead of serving one frozen approved package. Example: Potomac Memorial raw BUILD_ACCOUNT, local projected WIN_ROOM_BLOCK, production QUALIFY_OPPORTUNITY."
+    },
+    {
+      "id": "SUMMARY_ORG_EQUALS_TITLE",
+      "detail": "opportunity-summary-v1 emitted Org is associated with Org when organizationName equals event/title (Woman's Club of Bethesda)."
+    },
+    {
+      "id": "TILE_LINE_REPEATS_SOURCING_BADGE",
+      "detail": "tileClassificationLine included hotelSourcingStatusLabel while the UI also renders the sourcing badge, so customers saw the same status twice."
+    },
+    {
+      "id": "NO_IMMUTABLE_PUBLICATION_FINGERPRINT",
+      "detail": "Prior Bethesda 67 recovery locked inventory selection but did not freeze customer-facing DTO content under a content SHA-256 publication package."
+    },
+    {
+      "id": "AIRTABLE_LIVE_REREAD",
+      "detail": "Share API loadOppDoc + presentation pipeline can drift from founder-reviewed local projection after research refreshes or resolver changes."
+    }
+  ],
+  "dataFlow": [
+    "Research discovery",
+    "Research qualification",
+    "Canonical opportunity store / Airtable",
+    "Commercial presentation transformations",
+    "Semantic remediation",
+    "Customer DTO",
+    "Local preview",
+    "Publication approval",
+    "Production storage",
+    "Customer-share API",
+    "External HTML rendering"
+  ],
+  "divergencePoints": [
+    "Different inventory selection (customerFacing vs approved 67 selector)",
+    "Legacy Airtable records without package freeze",
+    "Backend version drift of sales-action resolver",
+    "Presentation sanitizer version drift",
+    "Missing commercial remediation modules on one deploy",
+    "Re-sort / re-filter after approval",
+    "Share-token resolving against live inventory rather than package version"
+  ],
+  "candidatePackage": {
+    "publicationId": "gdi_pubpkg_recLuxvwwxID7U2B8_d652d18f59c612b6",
+    "publicationVersion": "gdi_pub_recLuxvwwxID7U2B8_20261113_remediated_v1",
+    "contentFingerprintSha256": "9816d7d9f26cdf70c37d7ef2dab038e1f6207c816cd1b0a1636649e266262f24",
+    "inventoryCounts": {
+      "all": 67,
+      "hotel": 61,
+      "competitive": 10
+    },
+    "lifecycleState": "PRODUCTION_STAGED",
+    "approvalStatus": "CANDIDATE",
+    "staged": true,
+    "customerPublished": false
+  },
+  "namedDefectExamples": [
+    {
+      "id": "gdi_pe_781f12393f8117e7",
+      "approved": {
+        "displayTitle": "Woman's Club of Bethesda",
+        "salesActionPillLabel": "Build Venue Partnership",
+        "salesActionKey": "BUILD_VENUE_PARTNERSHIP",
+        "whatIsHappening": "Woman's Club of Bethesda — Preferred Lodging Partnership",
+        "hotelSourcingStatusLabel": "Hotel Sourcing Unconfirmed",
+        "tileClassificationLine": "",
+        "recommendedNextStep": "Contact the venue's events team to explore a preferred lodging / guest room-block relationship for weddings and private events"
+      },
+      "candidate": {
+        "displayTitle": "Woman's Club of Bethesda",
+        "salesActionPillLabel": "Build Venue Partnership",
+        "salesActionKey": "BUILD_VENUE_PARTNERSHIP",
+        "whatIsHappening": "Woman's Club of Bethesda is associated with Woman's Club of Bethesda — Preferred Lodging Partnership",
+        "hotelSourcingStatusLabel": "Hotel Sourcing Unconfirmed",
+        "tileClassificationLine": null,
+        "recommendedNextStep": "Contact the venue's events team to explore a preferred lodging / guest room-block relationship for weddings and private events"
+      }
+    },
+    {
+      "id": "gdi_opp_bethesda_premier_cup_2026",
+      "approved": {
+        "displayTitle": "Bethesda Premier Cup",
+        "salesActionPillLabel": "Monitor",
+        "salesActionKey": "MONITOR",
+        "whatIsHappening": "Bethesda Soccer Club hosts Bethesda Premier Cup (2026-11-13 – 2026-11-22) across multi-site DMV fields. HBC Event Services runs the official stay-to-play housing program",
+        "hotelSourcingStatusLabel": "Target-hotel sourcing not established",
+        "tileClassificationLine": "Bethesda Soccer Club · Corporate Event",
+        "recommendedNextStep": "Monitor for sourcing signals. Do not claim open RFP or overflow without evidence"
+      },
+      "candidate": {
+        "displayTitle": "Bethesda Premier Cup",
+        "salesActionPillLabel": "Win Room Block",
+        "salesActionKey": "WIN_ROOM_BLOCK",
+        "whatIsHappening": "Bethesda Soccer Club hosts Bethesda Premier Cup (2026-11-13 – 2026-11-22) across multi-site DMV fields. HBC Event Services runs the official stay-to-play housing program",
+        "hotelSourcingStatusLabel": "Target-hotel sourcing not established",
+        "tileClassificationLine": "Bethesda Soccer Club · Corporate Event · Target-hotel sourcing not established",
+        "recommendedNextStep": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+      }
+    },
+    {
+      "id": "gdi_opp_potomac_memorial_2027",
+      "approved": {
+        "displayTitle": "47th Annual Potomac Memorial Tournament 2027",
+        "salesActionPillLabel": "Monitor",
+        "salesActionKey": "MONITOR",
+        "whatIsHappening": "Potomac Soccer Association is tied to 47th Annual Potomac Memorial Tournament 2027 — stay-to-play weekend demand (2027) in Maryland SoccerPlex, Boyds MD (primary) — games also in Montgomery & Frederick Counties, creating a potential overflo",
+        "hotelSourcingStatusLabel": "Target-hotel sourcing not established",
+        "tileClassificationLine": "Potomac Soccer Association · Corporate Event",
+        "recommendedNextStep": "Monitor for sourcing signals. Do not claim open RFP or overflow without evidence"
+      },
+      "candidate": {
+        "displayTitle": "47th Annual Potomac Memorial Tournament 2027",
+        "salesActionPillLabel": "Qualify Opportunity",
+        "salesActionKey": "QUALIFY_OPPORTUNITY",
+        "whatIsHappening": "Potomac Soccer Association is tied to 47th Annual Potomac Memorial Tournament 2027 — stay-to-play weekend demand (2027) in Maryland SoccerPlex, Boyds MD (primary) — games also in Montgomery & Frederick Counties, creating a potential overflo",
+        "hotelSourcingStatusLabel": "Target-hotel sourcing not established",
+        "tileClassificationLine": "Potomac Soccer Association · Corporate Event · Target-hotel sourcing not established",
+        "recommendedNextStep": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+      }
+    },
+    {
+      "id": "gdi_opp_acvnu_renal_week_20270412",
+      "approved": {
+        "displayTitle": "ACVNU Renal Week 2027",
+        "salesActionPillLabel": "Monitor",
+        "salesActionKey": "MONITOR",
+        "whatIsHappening": "ACVNU Renal Week (Apr 12–17, 2027) is hosted with an official room block at The Bethesdan Hotel. Advertised attendance 250+. No verified open Marriott RFP/overflow",
+        "hotelSourcingStatusLabel": "Competitor venue confirmed (The Bethesdan Hotel (Tapestry Collection by Hilton)); target-hotel overflow sourcing unconfirmed",
+        "tileClassificationLine": "Corporate Event",
+        "recommendedNextStep": "Official hotel sourcing for this edition appears closed / fully placed. Do not pursue as an open room-block RFP for Bethesda Marriott. If a distinct secondary mechanism exists (sponsor dinner, offsite"
+      },
+      "candidate": {
+        "displayTitle": "ACVNU Renal Week 2027",
+        "salesActionPillLabel": "Win Room Block",
+        "salesActionKey": "WIN_ROOM_BLOCK",
+        "whatIsHappening": "ACVNU Renal Week (Apr 12–17, 2027) is hosted with an official room block at The Bethesdan Hotel. Advertised attendance 250+. No verified open Marriott RFP/overflow",
+        "hotelSourcingStatusLabel": "Competitor venue confirmed (The Bethesdan Hotel (Tapestry Collection by Hilton)); target-hotel overflow sourcing unconfirmed",
+        "tileClassificationLine": "Corporate Event · Competitor venue confirmed (The Bethesdan Hotel (Tapestry Collection by Hilton)); target-hotel overflow sourcing unconfirmed",
+        "recommendedNextStep": "Official hotel sourcing for this edition appears closed / fully placed. Do not pursue as an open room-block RFP for Bethesda Marriott. If a distinct secondary mechanism exists (sponsor dinner, offsite"
+      }
+    }
+  ]
+}

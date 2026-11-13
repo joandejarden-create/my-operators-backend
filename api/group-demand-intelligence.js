@@ -2899,7 +2899,6 @@ export async function getGdiShareOpportunities(req, res) {
       opportunities: preview.opportunities,
     });
   }
-  const doc = await loadOppDoc(hotelId);
   const validationDoc = loadShareValidation(hotelId);
   const byVal = new Map((validationDoc.items || []).map((v) => [v.opportunityId, v]));
   const view = String(req.query.view || "list").trim().toLowerCase();
@@ -2910,6 +2909,43 @@ export async function getGdiShareOpportunities(req, res) {
     return getGdiShareOpportunitiesExport(req, res);
   }
 
+  // Canonical publication package (immutable) — preferred when CUSTOMER_PUBLISHED.
+  // Fail closed when pointer is broken or GDI_REQUIRE_APPROVED_PUBLICATION_PACKAGE=1.
+  {
+    const {
+      resolveShareOpportunitiesFromApprovedPackage,
+      mergeShareFeedbackOntoPackageOpportunities,
+    } = await import(
+      "../lib/group-demand-intelligence/publication-package/gdi-share-approved-package-resolver-v1.js"
+    );
+    const pkgResolved = resolveShareOpportunitiesFromApprovedPackage({ hotelId });
+    if (!pkgResolved.ok && pkgResolved.mode === "FAIL_CLOSED") {
+      return res.status(503).json({
+        ok: false,
+        error: "APPROVED_PUBLICATION_PACKAGE_UNAVAILABLE",
+        detail: pkgResolved.error || null,
+        publication: pkgResolved.detail || null,
+      });
+    }
+    if (pkgResolved.ok && pkgResolved.mode === "PACKAGE") {
+      const withFeedback = mergeShareFeedbackOntoPackageOpportunities(
+        pkgResolved.opportunities,
+        validationDoc,
+      );
+      return res.json({
+        ok: true,
+        mode: "read_only",
+        count: withFeedback.length,
+        opportunities: withFeedback,
+        publication: pkgResolved.meta || null,
+        inventoryPopulationCounts:
+          pkgResolved.meta?.inventoryPopulationCounts || null,
+        listScope: "PUBLICATION_PACKAGE",
+      });
+    }
+  }
+
+  const doc = await loadOppDoc(hotelId);
   const { isInventoryVisibilityHotelEnabled } = await import(
     "../lib/group-demand-intelligence/inventory-visibility-v1.js"
   );
