@@ -103,6 +103,7 @@ import {
   getGdiOpportunityPersistenceMode,
 } from "../lib/group-demand-intelligence/opportunity-persistence.js";
 import { sanitizeOpportunityForCustomerPresentation } from "../lib/group-demand-intelligence/customer-presentation-sanitize-v1.js";
+import { applyCanonicalCustomerFacingTitle } from "../lib/group-demand-intelligence/demand-segments/universal-opportunity-identity-v1.js";
 import { prepareCustomerFacingOpportunity } from "../lib/group-demand-intelligence/share/gdi-customer-facing-opportunity-contract-v1.js";
 import {
   mapOpportunitiesToPresentationDtos,
@@ -366,19 +367,21 @@ function projectOpportunitiesCommercialQuality(opportunities, { nowDate } = {}) 
       });
     }
     // Bethesda internal research-stage reconstructions already carry honest
-    // list/detail fields — do not run customer sanitize that would strip them.
+    // list/detail fields — do not run full customer sanitize that would strip
+    // research diagnostics. Still apply the permanent title contract so
+    // customer-visible list/tile/drawer titles stay short and professional.
     if (
       o?.bethesdaInternalResearchInventory === true ||
       o?.gdiInternalUnionOnly === true
     ) {
-      return {
+      return applyCanonicalCustomerFacingTitle({
         ...o,
         relatedOpportunityIds: relatedIds,
         relatedOpportunityCount: relatedIds.length,
         salesReady: false,
         customerFacing: false,
         customerVisible: false,
-      };
+      });
     }
     const cq = applyLiveCommercialQuality(o, { nowDate: nowDate || asOfToday() });
     // Never leak discovery vertical slugs into customer segment
