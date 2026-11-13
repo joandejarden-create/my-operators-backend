@@ -16,6 +16,8 @@ on:
       - "scripts/test-gdi-regression-recovery-v1.mjs"
       - "scripts/test-gdi-opportunity-type-classification-v1.mjs"
       - "scripts/test-gdi-title-sourcing-commercial-consistency-v1.mjs"
+      - "scripts/test-gdi-full-customer-consistency-audit-v1.mjs"
+      - "lib/group-demand-intelligence/customer-consistency/**"
       - "scripts/test-gdi-customer-facing-opportunity-title-contract-v1.mjs"
       - "scripts/test-gdi-surfe-on-demand-contact-reveal-v1.mjs"
       - "scripts/test-gdi-guided-report-tour-v1.mjs"
@@ -72,3 +74,6 @@ jobs:
 
       - name: Reset View active-filter badge
         run: npm run test:gdi-hotel-toolbar-reset-view-only-v1
+
+      - name: Full customer consistency audit smoke (3 hotels)
+        run: npm run test:gdi-full-customer-consistency-audit-v1
