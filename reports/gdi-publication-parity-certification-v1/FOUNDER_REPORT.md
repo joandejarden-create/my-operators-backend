@@ -1,108 +1,75 @@
-# GDI Zero-Variation Publication System — Founder Report
+# GDI Zero-Variation Publication — Founder Report (post-remediation)
 
 **Date:** 2026-11-13  
-**Hotel (first application):** Bethesda Marriott `recLuxvwwxID7U2B8`  
-**Contract:** `gdi-customer-publication-package-v1`  
-**Status:** Infrastructure shipped + Bethesda candidate staged — **not** customer-published
+**Hotel:** Bethesda Marriott `recLuxvwwxID7U2B8`  
+**PR:** https://github.com/joandejarden-create/my-operators-backend/pull/240  
 
 ---
 
 ## Verdict
 
-Local and production Bethesda inventory counts now match (**67 / 61 / 10**), but **customer-facing content still diverges** (59 field diffs, 34 rendered-text diffs) because production continues to recompute presentation from live inventory. The immutable **GDI Customer Publication Package** is the permanent fix. A Bethesda candidate package is staged with fingerprint below; quality gate still blocks certification, and founder fingerprint approval is required before CUSTOMER_PUBLISHED.
+**Content-quality certification: PASS** for the remediated 67-opportunity package (0 blocking quality findings; 0 unresolved material drawer defects).
+
+**Exact production publication parity: NOT YET CERTIFIED.** Live Railway share still serves the legacy recompute path (inventory 67/61/10 matches; content still differs). Activating `CUSTOMER_PUBLISHED` for fingerprint below requires explicit founder approval after this code is deployed.
+
+Two equally defective reports are **not** treated as success. Quality gate and parity gate remain separate; quality now passes on the candidate package.
 
 ---
 
-## 1. Exact reasons local and production differed
+## Remediation completed (all 67)
 
-| Root cause | Effect |
+Reviewed every opportunity’s customer-facing card + drawer fields via the universal presentation pipeline.
+
+| Defect class | Fix |
 |---|---|
-| Independent presentation recompute | Sales-action resolver / sanitizers run separately on local vs prod → Potomac Memorial: raw **Build Account**, local **Win Room Block**, production **Qualify Opportunity** |
-| Summary when org = title | “Woman's Club of Bethesda is associated with Woman's Club of Bethesda — Preferred Lodging Partnership” |
-| Tile line embeds sourcing badge text | “Target-hotel sourcing not established” shown twice |
-| No immutable content fingerprint | 67 inventory recovery locked IDs, not final DTO wording |
-| Live Airtable re-read on share | Post-approval refreshes / deploy drift alter served copy |
+| Org self-association (“Org is associated with Org”) | Shared summary + content remediation → e.g. Woman’s Club → “Woman's Club of Bethesda — Preferred Lodging Partnership” |
+| Empty parentheses | Strip `()` wrappers in generation + remediation |
+| Repeated sourcing status | Remove tile-line duplication; strip “with hotel sourcing unconfirmed — a plausible…” boilerplate from narratives |
+| TBD/TBA placeholders | Rewrite to “not yet announced” (uncertainty preserved; no invented dates/venues) |
+| Conflicting commercial actions | Sales-action resolver + remediation align **Monitor** when next step is monitor/closed (Potomac, Premier Cup, ACVNU, etc.) |
+| False-positive “confirmed room demand” | Quality gate ignores accurate negations (“not confirmed room demand”) |
 
-Empty parentheses (“Bethesda Premier Cup ()”) come from date wrappers with empty values in summary/title composition — generation now strips them.
-
----
-
-## 2. Systems changed
-
-- `lib/group-demand-intelligence/publication-package/*` — package, fingerprint, lifecycle, parity, quality, store, share resolver
-- `api/group-demand-intelligence.js` — share serves CUSTOMER_PUBLISHED package first; fail-closed on broken pointer
-- Presentation generation fixes: `opportunity-summary-v1.js`, `opportunity-list-dto.js`, `customer-presentation-sanitize-v1.js`, `commercial-presentation-sanitizer-v1.js`
-- Scripts: build + certify + automated tests; npm `test:gdi-customer-publication-package-parity-v1`
+**Post-remediation audit:** `11-FULL-SEMANTIC-COMMERCIAL-REVIEW.json` — 67/61/10, quality ok, **0 material defects**.
 
 ---
 
-## 3. Canonical implementation
+## Approved candidate package (ready for founder fingerprint approval)
 
-**One path:** founder-approved `GDI Customer Publication Package` (frozen customer DTOs + SHA-256).  
-Local preview and production share must resolve the same `publicationVersion` + fingerprint.  
-Legacy share path remains only for hotels without a CUSTOMER_PUBLISHED pointer (migration-safe).
-
----
-
-## 4–6. Parity status (Bethesda candidate vs live production share)
-
-| Gate | Result |
+| Field | Value |
 |---|---|
-| Inventory parity | **PASS** — All 67 · Hotel 61 · Competitive 10 (identical ID sets / scopes) |
-| Content parity | **FAIL** — 59 field-level differences |
-| Rendered-text parity | **FAIL** — 34 opportunities |
-| Quality gate (candidate) | **FAIL** — 25 blocking findings (conflicts, placeholders, repeated sourcing in narrative blob, etc.) |
-| Production package serve | **Not active** — legacy path still serving |
+| Publication ID | `gdi_pubpkg_recLuxvwwxID7U2B8_d652d18f59c612b6` |
+| Version | `gdi_pub_recLuxvwwxID7U2B8_20261113_remediated_v1` |
+| Content SHA-256 | `9816d7d9f26cdf70c37d7ef2dab038e1f6207c816cd1b0a1636649e266262f24` |
+| Inventory | All **67** · Hotel **61** · Competitive **10** |
+| Quality gate | **PASS** (0 findings) |
+| Package self-parity | **PASS** |
+| Lifecycle | PRODUCTION_STAGED (local) · approvalStatus `CANDIDATE` |
+| CUSTOMER_PUBLISHED | **No** — awaiting founder fingerprint approval |
+| Share token | Existing token preserved (not rotated) |
+
+Supersedes prior candidate fingerprint `807b74be…` (pre-remediation; quality failed).
 
 ---
 
-## 7. Publication fingerprint (candidate)
+## Production verification status
 
-- **Publication ID:** `gdi_pubpkg_recLuxvwwxID7U2B8_def63132b667b2f3`
-- **Version:** `gdi_pub_recLuxvwwxID7U2B8_20261113_candidate`
-- **Content SHA-256:** `807b74be1e87411cf8ccf71e875b309a4fe21f1b62ef263c0ebcafc7783e7fdf`
-- **Lifecycle:** PRODUCTION_STAGED (local store) · approvalStatus `CANDIDATE`
-- **Share token:** existing `gdishare…` preserved (not rotated)
-
----
-
-## 8. Browser / production verification
-
-- API fetch of current public share: HTTP OK, count 67, Market Scope 61/10.
-- Production does **not** yet advertise `publication` meta (package not CUSTOMER_PUBLISHED).
-- Full card/drawer browser pass against the **approved package** is deferred until quality remediation + founder fingerprint approval + production activation.
-- Independent production verification gate remains mandatory before client-ready.
+| Check | Result |
+|---|---|
+| Live share inventory vs package | PASS 67/61/10 |
+| Live share content vs package | FAIL (159 field diffs) — expected until package serve |
+| Package served on production | No (`publication` meta absent) |
+| Browser card/drawer vs package | Blocked until CUSTOMER_PUBLISHED on Railway |
 
 ---
 
-## 9. Remaining mismatches
+## Founder approval to finish exact parity
 
-- Sales-action / recommendation conflicts (e.g. Potomac, Premier Cup, ACVNU: pill vs next-step).
-- Narrative quality: placeholder/TBD fragments; unsupported confirmed-demand language; residual repeated sourcing phrases inside body copy.
-- Content diffs vs current production until production serves this package version.
+Reply approving **exactly**:
 
----
+- publicationVersion `gdi_pub_recLuxvwwxID7U2B8_20261113_remediated_v1`
+- contentFingerprintSha256 `9816d7d9f26cdf70c37d7ef2dab038e1f6207c816cd1b0a1636649e266262f24`
 
-## 10. PR / commit
-
-- **Commits:** `f7c6bd5e1` (system) · `f73ced6be` (report SHA note)
-- **Branch:** `feat/gdi-customer-publication-parity-v1`
-- **PR:** https://github.com/joandejarden-create/my-operators-backend/pull/240  
-  No production CUSTOMER_PUBLISHED activation in this PR.
-
----
-
-## 11. Founder approval requirements
-
-To make Bethesda customer-visible on the package path:
-
-1. Quality gate must pass on the package (or an explicit founder waiver per finding — not recommended).
-2. Approve **exact** fingerprint `807b74be1e87411cf8ccf71e875b309a4fe21f1b62ef263c0ebcafc7783e7fdf` (or a successor version’s fingerprint after content fixes).
-3. Deploy code + package artifacts; set CUSTOMER_PUBLISHED pointer on production.
-4. Re-run production share + browser verification; parity must pass.
-5. Do **not** silently replace with Airtable if package load fails.
-
-Until then: inventory-count recovery remains on the legacy approved-67 path; zero-variation content lock is **not** certified.
+Then we will: merge/deploy PR → set CUSTOMER_PUBLISHED pointer on production → independently re-fetch public share + browser-verify every card/drawer → certify parity or fail closed / withhold.
 
 ---
 
@@ -110,11 +77,10 @@ Until then: inventory-count recovery remains on the legacy approved-67 path; zer
 
 `reports/gdi-publication-parity-certification-v1/`
 
-- `01-SOURCE-OF-TRUTH-ANALYSIS.json`
-- `02-OPPORTUNITY-PARITY.json`
-- `03-CONTENT-DIFFERENCES.json`
-- `04-PRESENTATION-DIFFERENCES.json`
-- `05-PUBLICATION-PACKAGE-MANIFEST.json`
-- `06-QUALITY-GATE-RESULTS.json`
-- `07-PRODUCTION-VERIFICATION.json`
-- `08-RELEASE-AND-ROLLBACK-PLAN.md`
+- `01`–`08` prior architecture/parity artifacts (updated where regenerated)
+- `09-REMEDIATION-AUDIT.json` — pre-fix findings
+- `10-POST-REMEDIATION-QUALITY.json` — quality PASS
+- `11-FULL-SEMANTIC-COMMERCIAL-REVIEW.json` — zero material defects
+- `05-PUBLICATION-PACKAGE-MANIFEST.json` — remediated package meta
+- `06-QUALITY-GATE-RESULTS.json` — PASS
+- `07-PRODUCTION-VERIFICATION.json` — inventory pass / content fail until publish

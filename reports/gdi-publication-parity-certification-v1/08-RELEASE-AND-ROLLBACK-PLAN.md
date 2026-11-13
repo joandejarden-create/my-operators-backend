@@ -26,7 +26,9 @@
 
 ## Bethesda first application (this wave)
 
-- Candidate staged locally: `gdi_pub_recLuxvwwxID7U2B8_20261113_candidate`
-- Fingerprint: `807b74be1e87411cf8ccf71e875b309a4fe21f1b62ef263c0ebcafc7783e7fdf`
+- **Remediated candidate (current):** `gdi_pub_recLuxvwwxID7U2B8_20261113_remediated_v1`
+- Fingerprint: `9816d7d9f26cdf70c37d7ef2dab038e1f6207c816cd1b0a1636649e266262f24`
 - Inventory: All 67 / Hotel 61 / Competitive 10
-- **Not** CUSTOMER_PUBLISHED — quality gate still blocking; founder fingerprint approval required after quality remediation + production verify.
+- Quality gate: **PASS** (0 findings) after customer-facing remediation of all 67
+- Prior pre-remediation candidate `…_20261113_candidate` / `807b74be…` superseded (quality failed)
+- **Not** CUSTOMER_PUBLISHED until founder approves the remediated fingerprint and production verify passes

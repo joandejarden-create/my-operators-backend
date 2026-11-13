@@ -22,6 +22,8 @@ import {
   remediateDuplicateOrgAssociationSentence,
   stripEmptyParentheses,
   dedupeTileClassificationSourcing,
+  applyCustomerFacingContentRemediation,
+  rewritePlaceholderUncertainty,
 } from "../lib/group-demand-intelligence/publication-package/index.js";
 
 function sampleOpp(id, overrides = {}) {
@@ -438,6 +440,38 @@ function buildPkg(opps, extra = {}) {
     "Org · Event",
   );
   console.log("ok empty-parens / tile dedupe helpers");
+}
+
+// Content remediation: org self-assoc, TBD, monitor alignment, sourcing boilerplate
+{
+  const remediated = applyCustomerFacingContentRemediation({
+    id: "r1",
+    organizationName: "Woman's Club of Bethesda",
+    displayTitle: "Woman's Club of Bethesda",
+    whatIsHappening:
+      "Woman's Club of Bethesda is associated with Woman's Club of Bethesda — Preferred Lodging Partnership",
+    whyActNow: "Destination TBD; hotel TBA",
+    hotelSourcingStatusLabel: "Hotel Sourcing Unconfirmed",
+    tileClassificationLine: "Org · Hotel Sourcing Unconfirmed",
+    salesActionKey: "WIN_ROOM_BLOCK",
+    salesActionPillLabel: "Win Room Block",
+    recommendedNextStep:
+      "Monitor for sourcing signals. do not claim open RFP or overflow without evidence",
+  });
+  assert.equal(
+    remediated.whatIsHappening.includes("is associated with Woman's Club"),
+    false,
+  );
+  assert.equal(/\bTBD\b|\bTBA\b/.test(remediated.whyActNow), false);
+  assert.equal(remediated.salesActionPillLabel, "Monitor");
+  assert.equal(
+    /hotel sourcing unconfirmed/i.test(remediated.whatIsHappening || ""),
+    false,
+  );
+  assert.equal(rewritePlaceholderUncertainty("dates TBD"), "dates not yet announced");
+  const q = runPublicationQualityGate({ opportunities: [remediated] });
+  assert.equal(q.ok, true);
+  console.log("ok customer-facing content remediation");
 }
 
 console.log("\nALL test-gdi-customer-publication-package-parity-v1 checks passed");
