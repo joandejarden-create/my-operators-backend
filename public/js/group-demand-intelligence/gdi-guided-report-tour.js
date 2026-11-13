@@ -7,7 +7,7 @@
 (function (global) {
   "use strict";
 
-  var TOUR_VERSION = "GDI_GUIDED_REPORT_TOUR_V1_1";
+  var TOUR_VERSION = "GDI_GUIDED_REPORT_TOUR_V1_1e";
   var BUTTON_ID = "gdiHowToReadReport";
 
   var drawerSession = {
@@ -16,6 +16,9 @@
     priorOpportunityId: null,
     demoOpportunityId: null,
     cancelGuard: null,
+    demotedFromModal: false,
+    showModalPatch: null,
+    demotePoll: null,
   };
 
   function waitMs(ms) {
@@ -47,6 +50,97 @@
       if (typeof d.close === "function") d.close();
       else d.removeAttribute("open");
     } catch (_) {}
+    drawerSession.demotedFromModal = false;
+  }
+
+  /**
+   * Modal <dialog showModal()> wins the browser top layer for hit-testing over
+   * popover="manual" coachmarks — Next/Back appear clickable but clicks land on
+   * the drawer. Demote the tour-owned drawer to non-modal show() so the popover
+   * receives pointer events while remaining visually open.
+   */
+  function demoteModalDrawerForTour() {
+    var d = drawerEl();
+    if (!d || !drawerIsOpen()) return false;
+    var isModal = false;
+    try {
+      isModal = !!(d.matches && d.matches(":modal"));
+    } catch (_) {
+      isModal = false;
+    }
+    if (!isModal) return false;
+    // Suppress close-handler focus thrash while flipping modal → non-modal.
+    var suppressClose = function (e) {
+      try {
+        e.stopImmediatePropagation();
+      } catch (_) {}
+    };
+    d.addEventListener("close", suppressClose, true);
+    try {
+      d.close();
+      if (typeof d.show === "function") d.show();
+      else d.setAttribute("open", "");
+      drawerSession.demotedFromModal = true;
+      return true;
+    } catch (_) {
+      return false;
+    } finally {
+      d.removeEventListener("close", suppressClose, true);
+    }
+  }
+
+  function patchDrawerShowModalForTour() {
+    var d = drawerEl();
+    if (!d || typeof d.showModal !== "function") return;
+    if (drawerSession.showModalPatch) return;
+    var original = d.showModal.bind(d);
+    drawerSession.showModalPatch = original;
+    d.showModal = function () {
+      // While the tour owns the drawer, prefer non-modal show() so popover
+      // coachmarks remain hittable in the browser top layer.
+      if (tour && tour.isActive()) {
+        try {
+          if (typeof d.show === "function") d.show();
+          else d.setAttribute("open", "");
+          drawerSession.demotedFromModal = true;
+          return;
+        } catch (_) {}
+      }
+      return original();
+    };
+  }
+
+  function restoreDrawerShowModal() {
+    var d = drawerEl();
+    if (d && drawerSession.showModalPatch) {
+      d.showModal = drawerSession.showModalPatch;
+    }
+    drawerSession.showModalPatch = null;
+    if (drawerSession.demotePoll) {
+      try {
+        clearInterval(drawerSession.demotePoll);
+      } catch (_) {}
+    }
+    drawerSession.demotePoll = null;
+  }
+
+  function ensureTourDrawerPointerCapture(api) {
+    patchDrawerShowModalForTour();
+    demoteModalDrawerForTour();
+    if (!drawerSession.demotePoll) {
+      var tries = 0;
+      drawerSession.demotePoll = setInterval(function () {
+        tries += 1;
+        demoteModalDrawerForTour();
+        if (tries >= 12 || !(tour && tour.isActive())) {
+          clearInterval(drawerSession.demotePoll);
+          drawerSession.demotePoll = null;
+        }
+      }, 60);
+    }
+    if (api && typeof api.raiseTopLayer === "function") {
+      api.raiseTopLayer();
+    }
   }
 
   function ensureOpportunitiesTab() {
@@ -163,6 +257,7 @@
     if (d) d.setAttribute("data-gdi-open-opportunity-id", pick.id);
     return waitForDrawerContent(14000).then(function (ok) {
       if (!ok) drawerSession.openedByTour = false;
+      else demoteModalDrawerForTour();
       return ok;
     });
   }
@@ -426,12 +521,21 @@
       steps: STEP_DEFS,
       finishStep: FINISH_STEP,
       isTargetVisible: isGdiTargetVisible,
+      /**
+       * Engine calls this when Next/Back coordinates hit a foreign top-layer
+       * (modal dialog) instead of the coachmark — demote drawer and re-raise.
+       */
+      repairPointerCapture: function () {
+        demoteModalDrawerForTour();
+      },
       beforeStart: function () {
         return ensureOpportunitiesTab().then(function () {
           drawerSession.wasOpenBeforeTour = drawerIsOpen();
           drawerSession.priorOpportunityId = currentOpenOpportunityId();
           drawerSession.openedByTour = false;
           drawerSession.demoOpportunityId = null;
+          drawerSession.demotedFromModal = false;
+          patchDrawerShowModalForTour();
           installDrawerCancelGuard();
           // Start from a closed drawer so the walkthrough opens one deliberately.
           if (drawerSession.wasOpenBeforeTour) {
@@ -469,15 +573,11 @@
         if (step._openDrawer) {
           return ensureOpportunitiesTab().then(function () {
             if (drawerIsOpen() && drawerSession.demoOpportunityId) {
-              if (api && typeof api.raiseTopLayer === "function") {
-                api.raiseTopLayer();
-              }
+              ensureTourDrawerPointerCapture(api);
               return waitMs(80);
             }
             return openDemoDrawer().then(function (ok) {
-              if (api && typeof api.raiseTopLayer === "function") {
-                api.raiseTopLayer();
-              }
+              ensureTourDrawerPointerCapture(api);
               if (!ok) {
                 console.warn(
                   "[GDI Guided Tour] No suitable opportunity drawer available — skipping drawer steps."
@@ -491,15 +591,11 @@
         if (step._requireDrawer) {
           if (!drawerIsOpen()) {
             return openDemoDrawer().then(function () {
-              if (api && typeof api.raiseTopLayer === "function") {
-                api.raiseTopLayer();
-              }
+              ensureTourDrawerPointerCapture(api);
               return waitMs(100);
             });
           }
-          if (api && typeof api.raiseTopLayer === "function") {
-            api.raiseTopLayer();
-          }
+          ensureTourDrawerPointerCapture(api);
           return waitMs(60);
         }
 
@@ -510,6 +606,7 @@
       },
       afterExit: function () {
         removeDrawerCancelGuard();
+        restoreDrawerShowModal();
         var reopen = drawerSession.wasOpenBeforeTour
           ? drawerSession.priorOpportunityId
           : null;
@@ -518,6 +615,7 @@
         }
         drawerSession.openedByTour = false;
         drawerSession.demoOpportunityId = null;
+        drawerSession.demotedFromModal = false;
         ensureOpportunitiesTab().then(function () {
           if (reopen) {
             drawerSession.wasOpenBeforeTour = false;

@@ -173,6 +173,12 @@
   pointer-events: none;
 }
 
+/* Keep nav controls hittable while the callout is muted during step transitions. */
+.adp-gt__callout--muted:not([hidden]) .adp-gt__actions,
+.adp-gt__callout--muted:not([hidden]) .adp-gt__close {
+  pointer-events: auto;
+}
+
 .adp-gt__close {
   position: absolute;
   top: 8px;

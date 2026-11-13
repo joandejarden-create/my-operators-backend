@@ -39,9 +39,13 @@ assert.match(engine, /deferTargetCheck/);
 assert.match(engine, /dead-end before render/);
 
 assert.match(tour, /GdiGuidedReportTour/);
-assert.match(tour, /GDI_GUIDED_REPORT_TOUR_V1_1/);
+assert.match(tour, /GDI_GUIDED_REPORT_TOUR_V1_1e/);
 assert.match(tour, /DealalityGuidedTourEngine/);
 assert.match(tour, /useTopLayerPopover:\s*true/);
+assert.match(tour, /demoteModalDrawerForTour/);
+assert.match(tour, /repairPointerCapture/);
+assert.match(engine, /ensureTourPointerCapture|repairPointerCapture/);
+assert.match(engine, /pendingDelta/);
 assert.match(tour, /Start with the Opportunities overview/);
 assert.match(tour, /Select your hotel and filters/);
 assert.match(tour, /Understand Market Scope/);
@@ -97,7 +101,7 @@ console.log(
   JSON.stringify(
     {
       suite: "gdi-guided-report-tour-v1",
-      version: "GDI_GUIDED_REPORT_TOUR_V1_1",
+      version: "GDI_GUIDED_REPORT_TOUR_V1_1e",
       passed: true,
       reused: ["adp-guided-report-tour.css", "DealalityGuidedTourEngine"],
       gdiSteps: [

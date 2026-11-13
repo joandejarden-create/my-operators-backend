@@ -31,6 +31,12 @@
     afterExit: null,
     /** When true, tour root uses Popover API to share the dialog top layer. */
     useTopLayerPopover: false,
+    /**
+     * Optional repair when a modal dialog still wins hit-testing over the
+     * popover coachmark (e.g. demote showModal → show). Called from
+     * ensureTourPointerCapture.
+     */
+    repairPointerCapture: null,
   };
 
   function createGuidedTour(userConfig) {
@@ -61,6 +67,8 @@
       onTouch: null,
       transitionToken: 0,
       boundEntry: false,
+      pendingDelta: 0,
+      _transitionStartedAt: 0,
     };
 
     function $(sel, root) {
@@ -362,6 +370,42 @@
       } catch (_) {}
     }
 
+    /**
+     * Verify the Next control is actually hittable. Modal dialogs can paint
+     * beneath a visible popover yet still win elementFromPoint — repair + re-raise.
+     */
+    function ensureTourPointerCapture() {
+      if (!state.root || !config.useTopLayerPopover) return;
+      raiseTourTopLayer();
+      var nextBtn = state.root.querySelector('[data-dgt="next"]');
+      if (!nextBtn || typeof document.elementFromPoint !== "function") return;
+      var r = nextBtn.getBoundingClientRect();
+      if (r.width < 2 || r.height < 2) return;
+      var hit = document.elementFromPoint(
+        r.left + r.width / 2,
+        r.top + r.height / 2
+      );
+      if (hit && state.root.contains(hit)) return;
+      if (typeof config.repairPointerCapture === "function") {
+        try {
+          config.repairPointerCapture({ hit: hit, button: nextBtn });
+        } catch (_) {}
+      }
+      raiseTourTopLayer();
+    }
+
+    function releaseTransitionAndFlush() {
+      state.transitioning = false;
+      var pending = state.pendingDelta || 0;
+      state.pendingDelta = 0;
+      if (pending && state.active) {
+        window.setTimeout(function () {
+          if (!state.active || state.transitioning) return;
+          go(pending > 0 ? 1 : -1);
+        }, 0);
+      }
+    }
+
     function showTourLayer() {
       var root = state.root;
       if (!root) return;
@@ -462,8 +506,10 @@
       var callout = state.root.querySelector(".adp-gt__callout");
       var highlight = state.root.querySelector('[data-dgt="highlight"]');
       if (callout) {
-        callout.setAttribute("hidden", "");
+        // Keep the callout in-layout (do not set [hidden]) so Next/Back retain
+        // hit targets during async drawer open / scroll transitions.
         callout.classList.add("adp-gt__callout--muted");
+        callout.removeAttribute("hidden");
       }
       if (highlight) highlight.classList.add("adp-gt__highlight--muted");
     }
@@ -516,20 +562,38 @@
       callout.style.maxHeight = Math.floor(vh * 0.55) + "px";
       callout.removeAttribute("hidden");
       var h = Math.min(callout.scrollHeight || 280, Math.floor(vh * 0.55));
-      var candidates = [
-        { name: "right", top: hl.top, left: hl.left + hl.width + gap },
-        { name: "left", top: hl.top, left: hl.left - w - gap },
-        {
-          name: "bottom",
-          top: hl.top + hl.height + gap,
-          left: hl.left + hl.width / 2 - w / 2,
-        },
-        {
-          name: "top",
-          top: hl.top - h - gap,
-          left: hl.left + hl.width / 2 - w / 2,
-        },
-      ];
+      // Prefer the open side opposite a right-hand drawer highlight so the
+      // coachmark stays fully inside the viewport and remains hittable.
+      var preferLeft = hl.left + hl.width / 2 > vw * 0.55;
+      var candidates = preferLeft
+        ? [
+            { name: "left", top: hl.top, left: hl.left - w - gap },
+            { name: "right", top: hl.top, left: hl.left + hl.width + gap },
+            {
+              name: "bottom",
+              top: hl.top + hl.height + gap,
+              left: Math.max(12, Math.min(hl.left, vw - w - 12)),
+            },
+            {
+              name: "top",
+              top: hl.top - h - gap,
+              left: Math.max(12, Math.min(hl.left, vw - w - 12)),
+            },
+          ]
+        : [
+            { name: "right", top: hl.top, left: hl.left + hl.width + gap },
+            { name: "left", top: hl.top, left: hl.left - w - gap },
+            {
+              name: "bottom",
+              top: hl.top + hl.height + gap,
+              left: hl.left + hl.width / 2 - w / 2,
+            },
+            {
+              name: "top",
+              top: hl.top - h - gap,
+              left: hl.left + hl.width / 2 - w / 2,
+            },
+          ];
       function fits(c) {
         return (
           c.left >= 12 &&
@@ -556,6 +620,24 @@
       chosen.top = Math.max(12, Math.min(chosen.top, vh - h - 12));
       callout.style.top = Math.round(chosen.top) + "px";
       callout.style.left = Math.round(chosen.left) + "px";
+      // Mobile / short viewports: keep Next/Back inside the visual viewport.
+      try {
+        var nextBtn = callout.querySelector('[data-dgt="next"]');
+        if (nextBtn) {
+          var nbr = nextBtn.getBoundingClientRect();
+          if (nbr.bottom > vh - 4 || nbr.top < 4 || nbr.width < 2) {
+            var compactH = Math.min(
+              callout.scrollHeight || h,
+              Math.floor(vh * 0.72)
+            );
+            callout.style.maxHeight = compactH + "px";
+            callout.style.top =
+              Math.max(8, Math.min(Math.round((vh - compactH) / 2), vh - compactH - 8)) +
+              "px";
+            callout.style.left = Math.max(8, Math.round((vw - w) / 2)) + "px";
+          }
+        }
+      } catch (_) {}
       return true;
     }
 
@@ -713,18 +795,19 @@
             });
             var finishNext = state.root.querySelector('[data-dgt="next"]');
             if (finishNext) finishNext.focus();
-            state.transitioning = false;
+            ensureTourPointerCapture();
+            releaseTransitionAndFlush();
             return;
           }
 
           var el = $(step.target);
           if (!el || !isVisible(el)) {
-            state.transitioning = false;
             warnSkip(step.id, "target missing at paint");
             if (state.stepIndex < steps.length - 1) {
               state.stepIndex += 1;
               renderStep();
             } else {
+              releaseTransitionAndFlush();
               exitTour("complete");
             }
             return;
@@ -732,18 +815,18 @@
           scrollTargetIntoSafeZone(el)
             .then(function (ok) {
               if (token !== state.transitionToken || !state.active) {
-                state.transitioning = false;
+                releaseTransitionAndFlush();
                 return;
               }
               // Re-query — DOM may refresh during async scroll/open.
               el = $(step.target) || el;
               if (!ok || !isVisible(el)) {
-                state.transitioning = false;
                 warnSkip(step.id, "could not bring target into safe viewport");
                 if (state.stepIndex < steps.length - 1) {
                   state.stepIndex += 1;
                   renderStep();
                 } else {
+                  releaseTransitionAndFlush();
                   exitTour("complete");
                 }
                 return;
@@ -752,6 +835,7 @@
               var hl = placeHighlight(el);
               placeCallout(hl);
               showCallout();
+              ensureTourPointerCapture();
               track("stepViewed", {
                 lastStepReached: step.id,
                 index: state.stepIndex,
@@ -759,44 +843,46 @@
               });
               var nextBtn = state.root.querySelector('[data-dgt="next"]');
               if (nextBtn) nextBtn.focus();
-              state.transitioning = false;
+              releaseTransitionAndFlush();
             })
             .catch(function () {
-              state.transitioning = false;
+              releaseTransitionAndFlush();
             });
         } catch (_) {
-          state.transitioning = false;
+          releaseTransitionAndFlush();
         }
       }
 
       if (typeof config.beforeStep === "function") {
         state.transitioning = true;
+        state._transitionStartedAt = Date.now();
         Promise.resolve(config.beforeStep(step, api))
           .then(function () {
             if (token !== state.transitionToken || !state.active) {
-              state.transitioning = false;
+              releaseTransitionAndFlush();
               return;
             }
             raiseTourTopLayer();
+            ensureTourPointerCapture();
             // Re-resolve target after beforeStep side effects (drawer open, etc.)
             if (step.target && !isTargetResolvable(step.target) && !step.optional) {
-              state.transitioning = false;
               warnSkip(step.id, "target unavailable after beforeStep");
               if (state.stepIndex < steps.length - 1) {
                 state.stepIndex += 1;
                 renderStep();
               } else {
+                releaseTransitionAndFlush();
                 exitTour("complete");
               }
               return;
             }
             if (step.target && !isTargetResolvable(step.target) && step.optional) {
-              state.transitioning = false;
               warnSkip(step.id, "optional target unavailable after beforeStep");
               if (state.stepIndex < steps.length - 1) {
                 state.stepIndex += 1;
                 renderStep();
               } else {
+                releaseTransitionAndFlush();
                 exitTour("complete");
               }
               return;
@@ -805,22 +891,30 @@
           })
           .catch(function () {
             raiseTourTopLayer();
+            ensureTourPointerCapture();
             paint();
           });
       } else {
         state.transitioning = true;
+        state._transitionStartedAt = Date.now();
         paint();
       }
     }
 
     function go(delta) {
+      if (!state.active) return;
       if (state.transitioning) {
-        // Fail-safe: never leave the tour permanently stuck.
+        // Queue one step instead of dropping the click while drawer/scroll settles.
         if (!state._transitionStartedAt) state._transitionStartedAt = Date.now();
-        if (Date.now() - state._transitionStartedAt < 12000) return;
+        if (Date.now() - state._transitionStartedAt < 12000) {
+          state.pendingDelta = delta > 0 ? 1 : -1;
+          return;
+        }
         state.transitioning = false;
+        state.pendingDelta = 0;
       }
       state._transitionStartedAt = Date.now();
+      state.pendingDelta = 0;
       var next = state.stepIndex + delta;
       if (delta > 0 && next >= state.resolvedSteps.length) {
         exitTour("complete");
