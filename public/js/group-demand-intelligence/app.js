@@ -572,6 +572,16 @@
     }
   }
 
+  /** Explicit developer diagnostic only — never shown in normal auth/share UI. */
+  function wantsPresentationModeDiagnostics() {
+    try {
+      var params = new URLSearchParams(window.location.search || "");
+      return String(params.get("gdiDiag") || "") === "1";
+    } catch (e) {
+      return false;
+    }
+  }
+
   function opportunitiesApiPath(hotelIdEnc) {
     var path =
       "/api/group-demand-intelligence/hotels/" + hotelIdEnc + "/opportunities";
@@ -1513,14 +1523,30 @@
     var presentationMode = wantsLiveResearchBrowse()
       ? "LIVE_RESEARCH"
       : "FOUNDER_PUBLICATION_PREVIEW";
-    var presentationModeBanner =
-      '<div id="gdiPresentationModeBanner" class="gdi-presentation-mode-banner" data-gdi-presentation-mode="' +
-      presentationMode +
-      '" role="status">' +
-      (presentationMode === "LIVE_RESEARCH"
-        ? "<strong>Mode A — Live Research</strong> · Evolving store. Not the customer publication. Open without <code>?live=1</code> for founder publication preview (Mode B ≡ share)."
-        : "<strong>Mode B — Founder Publication Preview</strong> · Approved package via canonical customer renderer (same as external share). Research browse: <code>?live=1</code>.") +
-      "</div>";
+    // Mode A/B banners are developer diagnostics only (?gdiDiag=1). Normal auth UI
+    // and customer share must not show internal publication-path labels.
+    try {
+      if (typeof console !== "undefined" && console.debug) {
+        console.debug("[gdi] presentationMode=", presentationMode, {
+          liveResearch: wantsLiveResearchBrowse(),
+          packagePreview: wantsPublicationPackagePreview(),
+          diag: wantsPresentationModeDiagnostics(),
+        });
+      }
+    } catch (eDiag) {
+      /* ignore */
+    }
+    var presentationModeBanner = "";
+    if (wantsPresentationModeDiagnostics()) {
+      presentationModeBanner =
+        '<div id="gdiPresentationModeBanner" class="gdi-presentation-mode-banner" data-gdi-presentation-mode="' +
+        presentationMode +
+        '" role="status">' +
+        (presentationMode === "LIVE_RESEARCH"
+          ? "<strong>Mode A — Live Research</strong> · Evolving store. Not the customer publication. Open without <code>?live=1</code> for founder publication preview (Mode B ≡ share)."
+          : "<strong>Mode B — Founder Publication Preview</strong> · Approved package via canonical customer renderer (same as external share). Research browse: <code>?live=1</code>.") +
+        "</div>";
+    }
     root.innerHTML =
       UI.hotelShellHtml({
         mode: "auth",
