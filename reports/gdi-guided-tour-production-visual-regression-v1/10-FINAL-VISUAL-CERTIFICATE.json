@@ -1,0 +1,33 @@
+{
+  "contract": "GDI_GUIDED_TOUR_PRODUCTION_VISUAL_REGRESSION_V1",
+  "verdict": "CLIENT READY",
+  "certifiedAt": "2026-11-13T13:50:00Z",
+  "tourVersion": "GDI_GUIDED_REPORT_TOUR_V1_1g",
+  "publicationVersion": "gdi_pub_recLuxvwwxID7U2B8_20261113_reconciliation_v1",
+  "contentFingerprintSha256": "441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f",
+  "mergeSha": "ea6d9440e7ad1b3b26484b5f719cd888e6c3c579",
+  "railwayDeploymentId": "16dc6716-3f73-4b1f-b0f5-d9588620224d",
+  "productionBase": "https://my-operators-backend-production.up.railway.app",
+  "gates": {
+    "rootCauseConfirmed": true,
+    "sharedUiFixMerged": true,
+    "eolNormalizedAssetParity": true,
+    "desktopVisualAcceptanceProd": true,
+    "mobileVisualAcceptanceProd": true,
+    "inventoryChrome_67_61_10": true,
+    "resetViewPresent": true,
+    "packageFingerprintUnchanged": true,
+    "noConsoleErrorsOnTour": true
+  },
+  "step6ProductionGeometry": {
+    "drawer": { "x": 880, "y": 0, "w": 560, "h": 900 },
+    "highlight": { "x": 880, "y": 0, "w": 560, "h": 900 },
+    "calloutLeftOfDrawer": true,
+    "centerElement": "results-grid gdi-results-grid",
+    "blankOverlay": false
+  },
+  "limitations": [
+    "health.buildSha still reports legacy RAILWAY_GIT_COMMIT_SHA under lean path-as-root uploads — frontend identity must use HTML marker + EOL-normalized asset hashes.",
+    "GHA production-release on main still lacks detached-HEAD guard; live releases must use control plane ref release/gha-deploy-detached-head-guard-v1 until that fix is merged to main."
+  ]
+}

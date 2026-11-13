@@ -1,60 +1,40 @@
 {
-  "capturedAt": "2026-11-13T12:10:00Z",
+  "capturedAt": "2026-11-13T13:45:00Z",
   "productionBase": "https://my-operators-backend-production.up.railway.app",
-  "localWorkspace": "C:/Dev/dealality/my-operators-backend",
-  "note": "Production still served pre-fix v1-1e at capture time. Local is V1_1g awaiting merge/deploy.",
-  "production": {
-    "cacheMarker": "gdi-howto-read-v1-1e",
-    "assets": [
-      {
-        "path": "/group-demand-intelligence-share.html",
-        "sha256": "f874abfe13dfcc81353487329d0b0214b964860ed8e87eb9ea69ad56d4c47505",
-        "bytes": 2884
-      },
-      {
-        "path": "/js/dealality-guided-tour/dealality-guided-tour-engine.js",
-        "sha256": "686f0938fea8eb1ebff56526f56ebbf4be9bb9712c0955a6b4b0ed4cdff0c8e1",
-        "bytes": 36247
-      },
-      {
-        "path": "/js/group-demand-intelligence/gdi-guided-report-tour.js",
-        "sha256": "1106bab8c6c9515459e8814b757ad8e5f1e72f4921eff5f8a18e8f70eeae814f",
-        "bytes": 23521
-      },
-      {
-        "path": "/css/group-demand-intelligence.css",
-        "sha256": "276b4ea3b10728a12064de2c9bfd607d8f7930326eb87ae15fc4b54458f2d2af",
-        "bytes": 77572
-      }
-    ]
-  },
-  "localV1_1g": {
+  "artifactSha": "ea6d9440e7ad1b3b26484b5f719cd888e6c3c579",
+  "railwayDeploymentId": "16dc6716-3f73-4b1f-b0f5-d9588620224d",
+  "ghaReleaseRun": "43425889151",
+  "note": "Raw byte hashes differ across Windows CRLF vs Linux LF. EOL-normalized SHA-256 must match. Production HTML Last-Modified flipped to 2026-11-13 12:33:17 GMT when V1_1g became live (~12 min after railway up --detach).",
+  "productionLive": {
     "cacheMarker": "gdi-howto-read-v1-1g",
-    "tourVersion": "GDI_GUIDED_REPORT_TOUR_V1_1g",
+    "htmlLastModified": "Fri, 13 Nov 2026 12:33:17 GMT",
+    "healthBuildShaNote": "RAILWAY_GIT_COMMIT_SHA remained ffc15db0… (path-as-root lean upload does not rewrite that env). Do not use health.buildSha alone for frontend identity.",
+    "eolNormalizedMatchLocal": true,
     "assets": [
       {
         "path": "/group-demand-intelligence-share.html",
-        "sha256": "d0d265c19be56306f0cf3207ebed4e4b22799a4397f12701ec350c9040905de4"
+        "eolNormalizedSha256Prefix": "24a921f29c13376a",
+        "matchLocal": true
       },
       {
         "path": "/js/dealality-guided-tour/dealality-guided-tour-engine.js",
-        "sha256": "6a4942790ce9b969611189018ccbdbdefb1fb44b69da5f2d440c3ee168d20e06"
+        "eolNormalizedSha256Prefix": "cc1a98122d990fcd",
+        "matchLocal": true
       },
       {
         "path": "/js/group-demand-intelligence/gdi-guided-report-tour.js",
-        "sha256": "de100011e4b5f296e56efce268ae9a9027ca039a7e17873aed2be02c877da9de"
+        "eolNormalizedSha256Prefix": "935141058b33041e",
+        "matchLocal": true
       },
       {
         "path": "/css/group-demand-intelligence.css",
-        "sha256": "06f7b24924bf77e0bbab2852c6d549a59c207e4d6f2cbad9dc956de9d7d36230"
+        "eolNormalizedSha256Prefix": "ec3d913aace59d60",
+        "matchLocal": true
       }
     ]
   },
-  "parity": {
-    "htmlMatch": false,
-    "engineMatch": false,
-    "tourJsMatch": false,
-    "cssMatch": false,
-    "conclusion": "Production assets differ from local V1_1g. Backend deploy SHA alone does not prove frontend asset identity — compare these hashes after Railway SUCCESS."
+  "preDeployStale": {
+    "cacheMarker": "gdi-howto-read-v1-1e",
+    "htmlLastModified": "Fri, 13 Nov 2026 11:43:07 GMT"
   }
 }
