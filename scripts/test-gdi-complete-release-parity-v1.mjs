@@ -546,13 +546,58 @@ async function extractUi(page, label, base) {
         cls: s.getAttribute("class") || "",
         paths: s.querySelectorAll("path").length,
       }));
+      const revenueIcons = [
+        ...card.querySelectorAll(".gdi-revenue-stream-icon"),
+      ].map((node) => {
+        const ncs = getComputedStyle(node);
+        return {
+          className: String(node.className || ""),
+          state: /--active/.test(node.className)
+            ? "active"
+            : /--muted/.test(node.className)
+              ? "muted"
+              : "unknown",
+          color: ncs.color,
+          opacity: ncs.opacity,
+          title: node.getAttribute("title") || node.getAttribute("aria-label"),
+        };
+      });
+      const contactEl =
+        card.querySelector(
+          ".gdi-tile-contact, .gdi-card-contact, [data-gdi-tile-contact]",
+        ) || null;
+      const actionEl =
+        card.querySelector(
+          ".gdi-pill-sales, [class*='gdi-pill-sales'], [data-commercial-action]",
+        ) ||
+        [...card.querySelectorAll(".gdi-pill, .badge, span")].find((n) =>
+          /Pursue|Qualify|Build Venue|Watch|Partner/i.test(
+            (n.textContent || "").trim(),
+          ),
+        );
+      const contactBlock = card.querySelector(".brand-card__contact");
+      const actionPill = card.querySelector(
+        ".gdi-tile-pill--sales-action, [class*='gdi-pill-sales']",
+      );
       return {
         id: el.getAttribute("data-open"),
         title: norm(
-          card.querySelector("h3, h2, .gdi-card-title, .brand-card-title")
-            ?.textContent,
+          card.querySelector(
+            ".brand-card__name, h3, h2, .gdi-card-title, .brand-card-title",
+          )?.textContent,
         ),
         body: norm(card.innerText).slice(0, 400),
+        contactText: contactBlock
+          ? norm(contactBlock.innerText || contactBlock.textContent)
+          : contactEl
+            ? norm(contactEl.innerText || contactEl.textContent)
+            : null,
+        actionText: actionPill
+          ? norm(actionPill.textContent)
+          : actionEl
+            ? norm(actionEl.textContent)
+            : null,
+        revenueIcons,
         classes: card.className,
         rect: (() => {
           const b = card.getBoundingClientRect();
@@ -630,6 +675,9 @@ function uniqueCardFingerprint(cards) {
       id: c.id,
       title: c.title,
       body: c.body,
+      contactText: c.contactText,
+      actionText: c.actionText,
+      revenueIcons: c.revenueIcons,
       classes: c.classes,
       svg: c.svg,
     })),
@@ -689,6 +737,75 @@ if (
   stable(prodUi.cards.map((c) => c.id).sort())
 ) {
   fail("API_DATA_DIFFERENCE", "rendered card id set");
+}
+
+// Component-level card parity (contacts / SVG states / commercial actions)
+const componentMismatches = [];
+const localCardById = new Map(localUi.cards.map((c) => [c.id, c]));
+const prodCardById = new Map(prodUi.cards.map((c) => [c.id, c]));
+for (const id of localIds) {
+  const l = localCardById.get(id);
+  const p = prodCardById.get(id);
+  if (!l || !p) {
+    componentMismatches.push({
+      id,
+      classification: "DOM_STRUCTURE_DIFFERENCE",
+      detail: "card_missing_in_one_environment",
+    });
+    continue;
+  }
+  if (l.contactText !== p.contactText) {
+    componentMismatches.push({
+      id,
+      title: l.title,
+      classification: "CONTACT_MAPPING_DIFFERENCE",
+      local: l.contactText,
+      production: p.contactText,
+    });
+  }
+  if (l.actionText !== p.actionText) {
+    componentMismatches.push({
+      id,
+      title: l.title,
+      classification: "COMMERCIAL_ACTION_DIFFERENCE",
+      local: l.actionText,
+      production: p.actionText,
+    });
+  }
+  if (stable(l.revenueIcons) !== stable(p.revenueIcons)) {
+    componentMismatches.push({
+      id,
+      title: l.title,
+      classification: "SVG_STATE_DIFFERENCE",
+      local: l.revenueIcons,
+      production: p.revenueIcons,
+    });
+  }
+}
+const FOCUS_TITLE_RE =
+  /Regulatory Information Conference|Bethesda Premier Cup|Potomac Memorial Tournament|Woman'?s Club of Bethesda|ACVNU|Renal Week/i;
+report.componentLevelParity = {
+  compared: localIds.length,
+  mismatchCount: componentMismatches.length,
+  mismatches: componentMismatches,
+  fixtures: {
+    local: localUi.cards.filter((c) => FOCUS_TITLE_RE.test(c.title || "")),
+    production: prodUi.cards.filter((c) => FOCUS_TITLE_RE.test(c.title || "")),
+  },
+};
+if (componentMismatches.length) {
+  fail(
+    "COMPONENT_LEVEL_PARITY",
+    `${componentMismatches.length} card component mismatches`,
+  );
+  for (const m of componentMismatches.slice(0, 12)) {
+    cause(
+      m.classification,
+      m.id,
+      { local: m.local, production: m.production, title: m.title },
+      "Align shared customer renderer / package presentation attach; do not recolor icons without evidence.",
+    );
+  }
 }
 
 // Open first drawer on both and compare DOM text sections

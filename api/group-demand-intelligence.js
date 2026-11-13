@@ -808,10 +808,23 @@ export async function getGdiOpportunities(req, res) {
       });
       if (pkgResolved.ok && pkgResolved.mode === "PACKAGE") {
         const validationDoc = loadShareValidation(hotelId);
-        const withFeedback = mergeShareFeedbackOntoPackageOpportunities(
+        let withFeedback = mergeShareFeedbackOntoPackageOpportunities(
           pkgResolved.opportunities,
           validationDoc,
         );
+        // Read-time presentation attach (tile contact + revenue icons). Does
+        // not alter package fingerprint — same resolvers as live sanitize.
+        try {
+          const { attachPackageCustomerPresentation } = await import(
+            "../lib/group-demand-intelligence/publication-package/gdi-package-customer-presentation-attach-v1.js"
+          );
+          withFeedback = attachPackageCustomerPresentation(withFeedback);
+        } catch (tilePreviewErr) {
+          console.error(
+            "[gdi] auth publication-package customer presentation attach failed",
+            tilePreviewErr?.message || tilePreviewErr,
+          );
+        }
         // Match share PACKAGE: hotel Need Dates status is live hotel-config
         // metadata (not package fingerprint). Without it, auth
         // ?publicationPackage=1 falls back to NOT_ESTABLISHED while share
@@ -1436,10 +1449,21 @@ export async function getGdiOpportunityDetail(req, res) {
         pkgResolved.opportunity
       ) {
         const validationDoc = loadShareValidation(hotelId);
-        const [withFeedback] = mergeShareFeedbackOntoPackageOpportunities(
+        let [withFeedback] = mergeShareFeedbackOntoPackageOpportunities(
           [pkgResolved.opportunity],
           validationDoc,
         );
+        try {
+          const { attachPackageCustomerPresentation } = await import(
+            "../lib/group-demand-intelligence/publication-package/gdi-package-customer-presentation-attach-v1.js"
+          );
+          withFeedback = attachPackageCustomerPresentation(withFeedback);
+        } catch (tilePreviewErr) {
+          console.error(
+            "[gdi] auth publication-package detail customer presentation attach failed",
+            tilePreviewErr?.message || tilePreviewErr,
+          );
+        }
         res.setHeader("X-GDI-Detail-Source", "PUBLICATION_PACKAGE");
         return res.json({
           ok: true,
@@ -3035,10 +3059,21 @@ export async function getGdiShareOpportunities(req, res) {
       });
     }
     if (pkgResolved.ok && pkgResolved.mode === "PACKAGE") {
-      const withFeedback = mergeShareFeedbackOntoPackageOpportunities(
+      let withFeedback = mergeShareFeedbackOntoPackageOpportunities(
         pkgResolved.opportunities,
         validationDoc,
       );
+      try {
+        const { attachPackageCustomerPresentation } = await import(
+          "../lib/group-demand-intelligence/publication-package/gdi-package-customer-presentation-attach-v1.js"
+        );
+        withFeedback = attachPackageCustomerPresentation(withFeedback);
+      } catch (tilePreviewErr) {
+        console.error(
+          "[gdi] share publication-package customer presentation attach failed",
+          tilePreviewErr?.message || tilePreviewErr,
+        );
+      }
       // Hotel-level Need Dates status is live hotel-config metadata (not package
       // fingerprint content). Must be present on PACKAGE responses so share UI
       // does not fall back to NOT_ESTABLISHED while auth shows HOTEL_CONFIRMED.
@@ -3330,10 +3365,21 @@ export async function getGdiShareOpportunityDetail(req, res) {
       pkgResolved.opportunity
     ) {
       const validationDoc = loadShareValidation(hotelId);
-      const [withFeedback] = mergeShareFeedbackOntoPackageOpportunities(
+      let [withFeedback] = mergeShareFeedbackOntoPackageOpportunities(
         [pkgResolved.opportunity],
         validationDoc,
       );
+      try {
+        const { attachPackageCustomerPresentation } = await import(
+          "../lib/group-demand-intelligence/publication-package/gdi-package-customer-presentation-attach-v1.js"
+        );
+        withFeedback = attachPackageCustomerPresentation(withFeedback);
+      } catch (tilePreviewErr) {
+        console.error(
+          "[gdi] share publication-package detail customer presentation attach failed",
+          tilePreviewErr?.message || tilePreviewErr,
+        );
+      }
       const validation = getShareValidationForOpportunity(
         hotelId,
         opportunityId,
