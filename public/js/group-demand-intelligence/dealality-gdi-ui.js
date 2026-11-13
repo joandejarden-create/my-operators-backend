@@ -4656,11 +4656,33 @@
     it = it || {};
     var CONTACT_RESEARCH_REQUIRED = "Contact Research Required";
     var canon = readCanonicalCustomerPresentation(it, linked);
+    /**
+     * Frozen card subtitle contract:
+     * Prefer server/package displayRole (activity-specific description) verbatim.
+     * Never substitute opportunityRole (e.g. Group Travel Coordinator) when a
+     * frozen displayRole / cardContactSubtitle is present.
+     */
+    function frozenCardContactSubtitle(previewObj, canonContact) {
+      previewObj = previewObj || {};
+      canonContact = canonContact || {};
+      var raw =
+        canonContact.cardContactSubtitle ||
+        canonContact.role ||
+        previewObj.displayRole ||
+        previewObj.roleLabel ||
+        it.tileContactRoleLabel ||
+        it.cardContactSubtitle ||
+        "";
+      return String(raw || "").replace(/\s+/g, " ").trim();
+    }
     if (canon && canon.contact && canon.contact.name) {
       return {
         kind: "named",
         name: String(canon.contact.name).replace(/\s+/g, " ").trim(),
-        role: String(canon.contact.role || "").replace(/\s+/g, " ").trim(),
+        role: frozenCardContactSubtitle(
+          linked.tileContactPreview || it.tileContactPreview,
+          canon.contact
+        ),
       };
     }
     if (
@@ -4696,24 +4718,37 @@
       "Corporate Travel Contact": true,
       "Referral Contact": true,
     };
-    function sanitizeDisplayRole(raw) {
+    function sanitizeDisplayRole(raw, opts) {
+      opts = opts || {};
       var r = shortContactRoleLabel(raw);
       if (!r || FORBIDDEN[r]) return "Role Not Yet Verified";
+      // Frozen professional_title / package subtitle: do not remap to opportunity roles.
+      if (opts.preserveFrozen) {
+        if (/decision[-\s]?maker|potential buyer|contact under review|role unverified|^relevant contact$/i.test(r)) {
+          return "Role Not Yet Verified";
+        }
+        return toProperCaseContactRoleLabel(r);
+      }
       if (/^relevant contact$/i.test(r)) return "Role Not Yet Verified";
       if (/referral/i.test(r)) return "Referral Contact";
       if (/event organizer/i.test(r)) return "Event Organizer";
       if (/meeting planner/i.test(r)) return "Meeting Planner";
       if (/corporate travel/i.test(r)) return "Corporate Travel Contact";
-      if (/group travel|hotel sourc/i.test(r)) return "Group Travel Coordinator";
+      // Exact opportunity-role labels only — never substring-match "travel" inside
+      // activity descriptions like "RIC Conference Contact".
+      if (/^group travel\b/i.test(r) || /^hotel sourc/i.test(r)) {
+        return "Group Travel Coordinator";
+      }
       if (/decision[-\s]?maker|potential buyer|contact under review|role unverified/i.test(r)) {
         return "Role Not Yet Verified";
       }
       return toProperCaseContactRoleLabel(r);
     }
     if (preview && preview.kind === "named" && preview.name) {
-      var role = sanitizeDisplayRole(
-        preview.displayRole || preview.roleLabel || ""
-      );
+      var frozenRole = frozenCardContactSubtitle(preview, canon && canon.contact);
+      var role = frozenRole
+        ? sanitizeDisplayRole(frozenRole, { preserveFrozen: true })
+        : sanitizeDisplayRole("");
       return {
         kind: "named",
         name: String(preview.name).replace(/\s+/g, " ").trim(),
@@ -4750,7 +4785,7 @@
       if (/meeting planner/i.test(classLabel)) return "Meeting Planner";
       if (/referral/i.test(classLabel)) return "Referral Contact";
       if (/corporate travel/i.test(classLabel)) return "Corporate Travel Contact";
-      if (/group travel|hotel sourc/i.test(classLabel)) {
+      if (/^group travel\b/i.test(classLabel) || /^hotel sourc/i.test(classLabel)) {
         return "Group Travel Coordinator";
       }
       return "Role Not Yet Verified";
@@ -4816,9 +4851,13 @@
       '<div class="brand-card__contact-name">' + esc(block.name) + "</div>"
     );
     if (block.role) {
+      // Single display choke-point: same truncation + casing on auth and share.
+      var subtitle = toProperCaseContactRoleLabel(
+        shortContactRoleLabel(block.role)
+      );
       bits.push(
         '<div class="brand-card__contact-line brand-card__contact-line--role">' +
-          esc(toProperCaseContactRoleLabel(block.role)) +
+          esc(subtitle) +
           "</div>"
       );
     }

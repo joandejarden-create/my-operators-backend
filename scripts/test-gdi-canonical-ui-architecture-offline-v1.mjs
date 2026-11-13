@@ -51,7 +51,7 @@ check("html_cache_marker_architecture_v1", () => {
     const html = fs.readFileSync(path.join(ROOT, rel), "utf8");
     assert.match(
       html,
-      /dealality-gdi-ui\.js\?v=gdi-auth-share-canonical-v1/,
+      /dealality-gdi-ui\.js\?v=gdi-contact-subtitle-freeze-v1/,
       rel,
     );
   }
