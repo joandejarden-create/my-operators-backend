@@ -31,3 +31,25 @@ See `FIELD_AUTHORITY_MATRIX.json` (13 fields).
 ## Publication content
 
 No fingerprint change in this audit. Mapper enforces authority at read/attach time only.
+
+## GitHub
+- PR #270 MERGED · SHA `130df5f89cd626d44fbd1c45a588c5cf7341b5d4` 
+- Production release dispatched (mapper enforcement; fingerprint unchanged).
+
+
+## Live production verification (final)
+
+**Verdict: `FIELD_AUTHORITY_LIVE_PRODUCTION_VERIFIED`**
+
+| Item | Value |
+|------|-------|
+| Artifact SHA | `130df5f89cd626d44fbd1c45a588c5cf7341b5d4` |
+| Railway deploy | `ed9b3069-9abc-4a1f-b531-9731712c26a8` SUCCESS |
+| Fingerprint | `df8da65a…` unchanged |
+| DOM cards | 67/67 PASS |
+| Wrong-field substitutions | 0 |
+| Lorna Kipfer | RIC Conference Contact (local = production) |
+| Negative mutation test | PASS |
+| Title?class contacts checked | 21 |
+
+Selectors: `.brand-card__contact-name`, `.brand-card__contact-line--role`, `data-open` identity.
