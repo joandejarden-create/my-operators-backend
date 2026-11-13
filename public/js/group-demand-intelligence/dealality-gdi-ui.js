@@ -6582,6 +6582,14 @@
     var n = String(name || "").replace(/\s+/g, " ").trim();
     if (!n || n === "UNKNOWN" || n === "—") return false;
     if (/buyer not yet identified/i.test(n)) return false;
+    // Exhibitor / vendor research placeholders must never present as named contacts.
+    if (
+      /^(?:Booth(?:\s+Booth)?|Exhibitor\s+booth\s+contact|Other\s+contact|N\/?A|TBD|Placeholder|Contact\s+TBD)$/i.test(
+        n
+      )
+    ) {
+      return false;
+    }
     if (
       /\b(association|conference|university|inc\.?|llc|corp\.?|group|desk|services|housing|registration|committee|department|team|staff|office|hotel|information|accommodations?|webmaster|helpdesk|bureau)\b/i.test(
         n
@@ -6817,13 +6825,28 @@
       esc(slot.name) +
       "</p>" +
       (slot.title
-        ? "<p><strong>Role:</strong> " + esc(slot.title) + "</p>"
+        ? "<p><strong>Role:</strong> " +
+          esc(
+            (function (role) {
+              var r = String(role || "").replace(/\s+/g, " ").trim();
+              if (/^OTHER_RELEVANT$/i.test(r)) return "Other contact";
+              return r.replace(/\bOTHER_RELEVANT\b/g, "Other contact");
+            })(slot.title)
+          ) +
+          "</p>"
         : "") +
       (slot.organization
         ? "<p><strong>Organization:</strong> " + esc(slot.organization) + "</p>"
         : "") +
       (whyClean
-        ? "<p><strong>Why relevant:</strong> " + esc(whyClean) + "</p>"
+        ? "<p><strong>Why relevant:</strong> " +
+          esc(
+            String(whyClean || "")
+              .replace(/\s+/g, " ")
+              .trim()
+              .replace(/\bOTHER_RELEVANT\b/g, "Other contact")
+          ) +
+          "</p>"
         : "") +
       (slot.email
         ? "<p><strong>" +
@@ -7038,13 +7061,21 @@
           esc(pathLabel || "Organization / official program contact path") +
           "</p>" +
           (drawer && drawer.role
-            ? "<p><strong>Role:</strong> " + esc(drawer.role) + "</p>"
+            ? "<p><strong>Role:</strong> " +
+              esc(
+                /^OTHER_RELEVANT$/i.test(prose(drawer.role))
+                  ? "Other contact"
+                  : prose(drawer.role).replace(/\bOTHER_RELEVANT\b/g, "Other contact")
+              ) +
+              "</p>"
             : "") +
           (o.organizationName
             ? "<p><strong>Organization:</strong> " + esc(o.organizationName) + "</p>"
             : "") +
           (whyRelevant
-            ? "<p><strong>Why Relevant:</strong> " + esc(whyRelevant) + "</p>"
+            ? "<p><strong>Why Relevant:</strong> " +
+              esc(prose(whyRelevant).replace(/\bOTHER_RELEVANT\b/g, "Other contact")) +
+              "</p>"
             : "") +
           officialLink +
           '<p class="gdi-contact-quality-quiet">No named individual published — use the organization path.</p>' +
@@ -7252,7 +7283,23 @@
           ? "<p><strong>" + esc(suggestedLabel) + "</strong></p>"
           : "<p><strong>Primary Contact:</strong> " + esc(c.name || "—") + "</p>") +
         "<p><strong>Role:</strong> " +
-        esc((drawer && drawer.role) || c.role || c.title || "—") +
+        esc(
+          (function (role) {
+            var r = prose(role);
+            if (!r || r === "—") return "—";
+            if (/^OTHER_RELEVANT$/i.test(r)) return "Other contact";
+            if (/^[A-Z][A-Z0-9_]+$/.test(r)) {
+              return r
+                .toLowerCase()
+                .split("_")
+                .map(function (w) {
+                  return w ? w.charAt(0).toUpperCase() + w.slice(1) : "";
+                })
+                .join(" ");
+            }
+            return r;
+          })((drawer && drawer.role) || c.role || c.title || "—")
+        ) +
         "</p>" +
         "<p><strong>Organization:</strong> " +
         esc(c.organization || o.organizationName || "—") +
@@ -7268,7 +7315,13 @@
         getDetailsCta +
         officialLink +
         "<p><strong>Why Relevant:</strong> " +
-        esc(whyRelevant || "—") +
+        esc(
+          (function (w) {
+            var t = prose(w);
+            if (!t) return "—";
+            return t.replace(/\bOTHER_RELEVANT\b/g, "Other contact");
+          })(whyRelevant || "—")
+        ) +
         "</p>" +
         (actionHint
           ? '<p class="gdi-contact-action">' + esc(actionHint) + "</p>"
@@ -7645,15 +7698,19 @@
       function renderOne(s) {
         var url = prose(s && s.url);
         if (!url) return "";
-        var title = prose(s && s.title) || url;
+        var title = prose(s && s.title) || "";
+        // Avoid listing the raw URL twice (title + href) — audit/readers see duplicates.
+        if (!title || title === url) title = "";
         var publisher = prose(s && s.publisher);
         var date = prose(s && (s.publicationDate || s.publishedDate));
         var establishes = prose(s && s.establishes);
-        var bits =
-          "<li class=\"gdi-evidence-item\">" +
-          "<div class=\"gdi-evidence-title\"><strong>" +
-          esc(title) +
-          "</strong></div>";
+        var bits = "<li class=\"gdi-evidence-item\">";
+        if (title) {
+          bits +=
+            "<div class=\"gdi-evidence-title\"><strong>" +
+            esc(title) +
+            "</strong></div>";
+        }
         if (publisher) {
           bits +=
             "<div class=\"gdi-muted\">Publisher: " + esc(publisher) + "</div>";
@@ -7672,6 +7729,29 @@
           esc(url) +
           "</a></div></li>";
         return bits;
+      }
+      function dedupeSourceList(list) {
+        if (!Array.isArray(list) || !list.length) return [];
+        var seen = {};
+        var out = [];
+        for (var i = 0; i < list.length; i++) {
+          var item = list[i];
+          var key = prose(item && (item.url || item.href || item.link || item))
+            .toLowerCase();
+          if (!key || seen[key]) continue;
+          seen[key] = true;
+          out.push(item);
+        }
+        return out;
+      }
+      sources = dedupeSourceList(sources);
+      sourcesFull = dedupeSourceList(sourcesFull);
+      if (evidenceGroups && evidenceGroups.length) {
+        evidenceGroups = evidenceGroups.map(function (g) {
+          return Object.assign({}, g, {
+            sources: dedupeSourceList(g && g.sources),
+          });
+        });
       }
       var defaultHtml = "";
       if (evidenceGroups && evidenceGroups.length) {
@@ -7697,15 +7777,23 @@
           "</ul>";
       }
       var full = Array.isArray(sourcesFull) ? sourcesFull : [];
-      var defaultCount = (sources && sources.length) || 0;
-      if (full.length > defaultCount && full.length > 0) {
+      var shown = {};
+      (sources || []).forEach(function (s) {
+        var k = prose(s && (s.url || s.href || "")).toLowerCase();
+        if (k) shown[k] = true;
+      });
+      var extra = full.filter(function (s) {
+        var k = prose(s && (s.url || s.href || "")).toLowerCase();
+        return k && !shown[k];
+      });
+      if (extra.length > 0) {
         defaultHtml +=
           '<details class="gdi-evidence-expand">' +
           "<summary>View all supporting evidence (" +
-          full.length +
+          (Object.keys(shown).length + extra.length) +
           ")</summary>" +
           '<ul class="gdi-evidence-full">' +
-          full.map(renderOne).filter(Boolean).join("") +
+          extra.map(renderOne).filter(Boolean).join("") +
           "</ul></details>";
       }
       return defaultHtml || '<p class="gdi-muted">No source URLs attached yet.</p>';
@@ -8873,15 +8961,18 @@
       function renderOne(s) {
         var url = prose(s && s.url);
         if (!url) return "";
-        var title = prose(s && s.title) || url;
+        var title = prose(s && s.title) || "";
+        if (!title || title === url) title = "";
         var publisher = prose(s && s.publisher);
         var date = prose(s && (s.publicationDate || s.publishedDate));
         var establishes = prose(s && s.establishes);
-        var bits =
-          '<li class="gdi-evidence-item">' +
-          '<div class="gdi-evidence-title"><strong>' +
-          esc(title) +
-          "</strong></div>";
+        var bits = '<li class="gdi-evidence-item">';
+        if (title) {
+          bits +=
+            '<div class="gdi-evidence-title"><strong>' +
+            esc(title) +
+            "</strong></div>";
+        }
         if (publisher) {
           bits +=
             '<div class="gdi-muted">Publisher: ' + esc(publisher) + "</div>";
@@ -8900,6 +8991,22 @@
           "</a></div></li>";
         return bits;
       }
+      function dedupeSourceList(list) {
+        if (!Array.isArray(list) || !list.length) return [];
+        var seen = {};
+        var out = [];
+        for (var i = 0; i < list.length; i++) {
+          var item = list[i];
+          var key = prose(item && (item.url || item.href || item.link || item))
+            .toLowerCase();
+          if (!key || seen[key]) continue;
+          seen[key] = true;
+          out.push(item);
+        }
+        return out;
+      }
+      sources = dedupeSourceList(sources);
+      sourcesFull = dedupeSourceList(sourcesFull);
       var defaultHtml = "";
       if (sources && sources.length) {
         defaultHtml =
@@ -8908,15 +9015,23 @@
           "</ul>";
       }
       var full = Array.isArray(sourcesFull) ? sourcesFull : [];
-      var defaultCount = (sources && sources.length) || 0;
-      if (full.length > defaultCount && full.length > 0) {
+      var shown = {};
+      (sources || []).forEach(function (s) {
+        var k = prose(s && (s.url || s.href || "")).toLowerCase();
+        if (k) shown[k] = true;
+      });
+      var extra = full.filter(function (s) {
+        var k = prose(s && (s.url || s.href || "")).toLowerCase();
+        return k && !shown[k];
+      });
+      if (extra.length > 0) {
         defaultHtml +=
           '<details class="gdi-evidence-expand">' +
           "<summary>View all supporting evidence (" +
-          full.length +
+          (Object.keys(shown).length + extra.length) +
           ")</summary>" +
           '<ul class="gdi-evidence-full">' +
-          full.map(renderOne).filter(Boolean).join("") +
+          extra.map(renderOne).filter(Boolean).join("") +
           "</ul></details>";
       }
       return defaultHtml || '<p class="gdi-muted">No source URLs attached yet.</p>';

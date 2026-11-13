@@ -1,0 +1,3842 @@
+{
+  "batchId": "batch-001",
+  "reviews": [
+    {
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "opportunityId": "gdi_opp_namt_fall_conference_festival_of_new_musicals_0",
+      "displayTitle": "NAMT Fall Conference + Festival of New Musicals",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 35,
+        "commercialAccuracy": 35,
+        "consistency": 35,
+        "readability": 52,
+        "evidenceReliability": 56
+      },
+      "contradictions": [
+        {
+          "code": "SEM_CARD_ACTION_VS_PASSIVE_RECOMMENDATION",
+          "severity": "P0",
+          "sections": [
+            "card_sales_action",
+            "commercial_recommendation",
+            "recommended_next_step"
+          ],
+          "message": "Sales-action chip and written commercial guidance tell different pursuit intensities.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Do not aggressively sell the current cycle. Monitor venue/housing announcements, capture a future trigger date, and keep a light relationship touch"
+          }
+        },
+        {
+          "code": "SEM_WIN_BLOCK_VS_SOURCING_CLOSED",
+          "severity": "P0",
+          "sections": [
+            "hotel_sourcing",
+            "card_sales_action"
+          ],
+          "message": "Hotel sourcing is closed yet card still reads like an open room-block win motion.",
+          "passages": {
+            "hotel_sourcing": "Sourcing closed for this edition",
+            "card_sales_action": "Win Room Block"
+          }
+        },
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_renaissance_times_square"
+          }
+        },
+        {
+          "code": "SEM_TIMING_YEAR_VS_CLOSED_YEAR",
+          "severity": "P2",
+          "sections": [
+            "card_timing",
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ],
+          "message": "Card timing highlights 2027 while narrative cites 2026 as closed.",
+          "passages": {
+            "card_timing": "2027-10-01 → 2027-10-31",
+            "snippet": "2026 is effectively closed"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "What is happening section only restates the opportunity title without event substance.",
+          "sections": [
+            "what_is_happening",
+            "title"
+          ]
+        },
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://namt.org/contact/, https://namt.org/events/fall-conference-2026/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [
+        {
+          "message": "Card sales action implies active block pursuit while drawer recommendation counsels monitor / non-aggressive posture.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Do not aggressively sell the current cycle. Monitor venue/housing announcements, capture a future trigger date, and keep a light relationship touch",
+            "recommended_next_step": "Recommended next step Do not aggressively sell the current cycle. Monitor venue/housing announcements, capture a future trigger date, and keep a light relationship touch Qualification questions Who ow"
+          }
+        },
+        {
+          "message": "Room demand is Overflow Only but card sales action is Win Room Block (primary-block semantics).",
+          "passages": {
+            "opportunity_overview": "Opportunity overview NAMT Fall Conference + Festival of New Musicals Timing 2027-10-01 → 2027-10-31 Location New York City / Times Square Hotel sourcing Sourcing closed for this edition Room demand Ov",
+            "card_sales_action": "Win Room Block"
+          }
+        }
+      ],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.78,
+      "notes": "Reviewed 19 sections; 4 contradiction(s), 5 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "opportunityId": "gdi_opp_2026_education_engagement_forum_1",
+      "displayTitle": "2026 Education & Engagement Forum",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 44,
+        "commercialAccuracy": 59,
+        "consistency": 64,
+        "readability": 56,
+        "evidenceReliability": 70
+      },
+      "contradictions": [
+        {
+          "code": "SEM_HIGH_PRIORITY_MONITOR_VS_URGENCY_NARRATIVE",
+          "severity": "P1",
+          "sections": [
+            "card_priority",
+            "card_sales_action",
+            "why_act_now",
+            "potential_business_for_this_hotel"
+          ],
+          "message": "HIGH_PRIORITY + Monitor card conflicts with immediate-opportunity language in drawer.",
+          "passages": {
+            "card_priority": "HIGH_PRIORITY",
+            "card_sales_action": "Monitor",
+            "why_act_now": "Why act now Official 2026 invitation still showed a TBA Thursday venue, making this an immediate Broadway-adjacent sourcing opportunity."
+          }
+        },
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_renaissance_times_square"
+          }
+        },
+        {
+          "code": "SEM_FUTURE_CYCLE_VS_IMMEDIATE_LANGUAGE",
+          "severity": "P2",
+          "sections": [
+            "opportunity_overview",
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ],
+          "message": "Demand cycle marked future while narrative calls the opportunity immediate.",
+          "passages": {
+            "opportunity_overview": "Opportunity overview 2026 Education & Engagement Forum Timing 2026-11-12 → 2026-11-13 Location New York City / Times Square Hotel sourcing Hotel Sourcing Unconfirmed Room demand Estimated Room Demand ",
+            "why_act_now": "Why act now Official 2026 invitation still showed a TBA Thursday venue, making this an immediate Broadway-adjacent sourcing opportunity."
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "What is happening section only restates the opportunity title without event substance.",
+          "sections": [
+            "what_is_happening",
+            "title"
+          ]
+        },
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.broadwayleague.com/about/staff/, https://www.broadwayleague.com/static/user/admin/media/forum-education-2026-invitation.pdf",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 19 sections; 3 contradiction(s), 5 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "opportunityId": "gdi_opp_spring_road_conference_2",
+      "displayTitle": "Spring Road Conference",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 35,
+        "commercialAccuracy": 35,
+        "consistency": 35,
+        "readability": 53,
+        "evidenceReliability": 59
+      },
+      "contradictions": [
+        {
+          "code": "SEM_CARD_ACTION_VS_PASSIVE_RECOMMENDATION",
+          "severity": "P0",
+          "sections": [
+            "card_sales_action",
+            "commercial_recommendation",
+            "recommended_next_step"
+          ],
+          "message": "Sales-action chip and written commercial guidance tell different pursuit intensities.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Do not aggressively sell the current cycle. Monitor venue/housing announcements, capture a future trigger date, and keep a light relationship touch"
+          }
+        },
+        {
+          "code": "SEM_WIN_BLOCK_VS_SOURCING_CLOSED",
+          "severity": "P0",
+          "sections": [
+            "hotel_sourcing",
+            "card_sales_action"
+          ],
+          "message": "Hotel sourcing is closed yet card still reads like an open room-block win motion.",
+          "passages": {
+            "hotel_sourcing": "Sourcing closed for this edition",
+            "card_sales_action": "Win Room Block"
+          }
+        },
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_renaissance_times_square"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "What is happening section only restates the opportunity title without event substance.",
+          "sections": [
+            "what_is_happening",
+            "title"
+          ]
+        },
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.broadwayleague.com/conferences/spring-road/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [
+        {
+          "message": "Card sales action implies active block pursuit while drawer recommendation counsels monitor / non-aggressive posture.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Do not aggressively sell the current cycle. Monitor venue/housing announcements, capture a future trigger date, and keep a light relationship touch",
+            "recommended_next_step": "Recommended next step Do not aggressively sell the current cycle. Monitor venue/housing announcements, capture a future trigger date, and keep a light relationship touch Qualification questions Who ow"
+          }
+        },
+        {
+          "message": "Room demand is Overflow Only but card sales action is Win Room Block (primary-block semantics).",
+          "passages": {
+            "opportunity_overview": "Opportunity overview Spring Road Conference Timing 2027-05-01 → 2027-05-31 Location New York City / Midtown Manhattan Hotel sourcing Sourcing closed for this edition Room demand Overflow Only Demand c",
+            "card_sales_action": "Win Room Block"
+          }
+        }
+      ],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.78,
+      "notes": "Reviewed 19 sections; 3 contradiction(s), 5 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "opportunityId": "gdi_opp_76th_annual_meeting_3",
+      "displayTitle": "76th Annual Meeting",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 62,
+        "commercialAccuracy": 72,
+        "consistency": 76,
+        "readability": 59,
+        "evidenceReliability": 79
+      },
+      "contradictions": [
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_renaissance_times_square"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "What is happening section only restates the opportunity title without event substance.",
+          "sections": [
+            "what_is_happening",
+            "title"
+          ]
+        },
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.sssp1.org/index.cfm/m/1044/2026_Annual_Meeting, https://www.sssp1.org/index.cfm/m/1057/Hotel_Reservation_Information/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [
+        {
+          "message": "Room demand is Overflow Only but card sales action is Win Room Block (primary-block semantics).",
+          "passages": {
+            "opportunity_overview": "Opportunity overview 76th Annual Meeting Timing 2027-08-01 → 2027-08-31 Location New York City / Times Square Hotel sourcing Target-hotel sourcing not established Room demand Overflow Only Demand cycl",
+            "card_sales_action": "Win Room Block"
+          }
+        }
+      ],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 19 sections; 1 contradiction(s), 5 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "opportunityId": "gdi_opp_arias_u_s_fall_conference_4",
+      "displayTitle": "ARIAS U.S. Fall Conference",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 66,
+        "commercialAccuracy": 72,
+        "consistency": 76,
+        "readability": 64,
+        "evidenceReliability": 79
+      },
+      "contradictions": [
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_renaissance_times_square"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "What is happening section only restates the opportunity title without event substance.",
+          "sections": [
+            "what_is_happening",
+            "title"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.arias-us.org/2026-fall-conference/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [
+        {
+          "message": "Room demand is Overflow Only but card sales action is Win Room Block (primary-block semantics).",
+          "passages": {
+            "opportunity_overview": "Opportunity overview ARIAS U.S. Fall Conference Timing 2026-11-12 → 2026-11-13 Location New York City / Times Square Hotel sourcing Target-hotel sourcing not established Room demand Overflow Only Dema",
+            "card_sales_action": "Win Room Block"
+          }
+        }
+      ],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 19 sections; 1 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "opportunityId": "gdi_opp_13th_annual_buying_legal_conference_5",
+      "displayTitle": "13th Annual Buying Legal Conference",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 56,
+        "commercialAccuracy": 64,
+        "consistency": 68,
+        "readability": 58,
+        "evidenceReliability": 76
+      },
+      "contradictions": [
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_renaissance_times_square"
+          }
+        },
+        {
+          "code": "SEM_FUTURE_CYCLE_VS_IMMEDIATE_LANGUAGE",
+          "severity": "P2",
+          "sections": [
+            "opportunity_overview",
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ],
+          "message": "Demand cycle marked future while narrative calls the opportunity immediate.",
+          "passages": {
+            "opportunity_overview": "Opportunity overview 13th Annual Buying Legal Conference Timing 2026-09-29 → 2026-09-30 Location New York City / Times Square Hotel sourcing Target-hotel sourcing not established Room demand Overflow ",
+            "why_act_now": "Why act now Official sold-out notice creates immediate displacement demand and a case to pursue 2027 earlier."
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "What is happening section only restates the opportunity title without event substance.",
+          "sections": [
+            "what_is_happening",
+            "title"
+          ]
+        },
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://buyinglegal.com/new-york",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [
+        {
+          "message": "Room demand is Overflow Only but card sales action is Win Room Block (primary-block semantics).",
+          "passages": {
+            "opportunity_overview": "Opportunity overview 13th Annual Buying Legal Conference Timing 2026-09-29 → 2026-09-30 Location New York City / Times Square Hotel sourcing Target-hotel sourcing not established Room demand Overflow ",
+            "card_sales_action": "Win Room Block"
+          }
+        }
+      ],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 19 sections; 2 contradiction(s), 5 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "opportunityId": "gdi_opp_plus_employment_practices_liability_symposium_6",
+      "displayTitle": "PLUS Employment Practices Liability Symposium",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 62,
+        "commercialAccuracy": 82,
+        "consistency": 84,
+        "readability": 59,
+        "evidenceReliability": 79
+      },
+      "contradictions": [
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_renaissance_times_square"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "What is happening section only restates the opportunity title without event substance.",
+          "sections": [
+            "what_is_happening",
+            "title"
+          ]
+        },
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://plusweb.org/events/conference-symposia/plus-employment-practices-symposium/hotel-travel/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 19 sections; 1 contradiction(s), 5 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "opportunityId": "gdi_opp_sior_fall_event_7",
+      "displayTitle": "SIOR Fall Event",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 60,
+        "commercialAccuracy": 64,
+        "consistency": 68,
+        "readability": 63,
+        "evidenceReliability": 76
+      },
+      "contradictions": [
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_renaissance_times_square"
+          }
+        },
+        {
+          "code": "SEM_FUTURE_CYCLE_VS_IMMEDIATE_LANGUAGE",
+          "severity": "P2",
+          "sections": [
+            "opportunity_overview",
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ],
+          "message": "Demand cycle marked future while narrative calls the opportunity immediate.",
+          "passages": {
+            "opportunity_overview": "Opportunity overview Society of Industrial and Office Realtors Timing 2026-10-19 → 2026-10-22 Location New York City / Midtown Hotel sourcing Target-hotel sourcing not established Room demand Overflow",
+            "why_act_now": "Why act now Sold-out host block makes this an immediate last-room capture window."
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "What is happening section only restates the opportunity title without event substance.",
+          "sections": [
+            "what_is_happening",
+            "title"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.sior.com/SIORconferences/sior-fall-event-2026/hotel-travel",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [
+        {
+          "message": "Room demand is Overflow Only but card sales action is Win Room Block (primary-block semantics).",
+          "passages": {
+            "opportunity_overview": "Opportunity overview Society of Industrial and Office Realtors Timing 2026-10-19 → 2026-10-22 Location New York City / Midtown Hotel sourcing Target-hotel sourcing not established Room demand Overflow",
+            "card_sales_action": "Win Room Block"
+          }
+        }
+      ],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 19 sections; 2 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "opportunityId": "gdi_opp_scbwi_winter_conference_8",
+      "displayTitle": "SCBWI Winter Conference",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 66,
+        "commercialAccuracy": 72,
+        "consistency": 76,
+        "readability": 64,
+        "evidenceReliability": 79
+      },
+      "contradictions": [
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_renaissance_times_square"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "What is happening section only restates the opportunity title without event substance.",
+          "sections": [
+            "what_is_happening",
+            "title"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.scbwi.org/annual-events",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [
+        {
+          "message": "Room demand is Overflow Only but card sales action is Win Room Block (primary-block semantics).",
+          "passages": {
+            "opportunity_overview": "Opportunity overview SCBWI Winter Conference Timing 2027-03-05 → 2027-03-07 Location New York City / Times Square Hotel sourcing Target-hotel sourcing not established Room demand Overflow Only Demand ",
+            "card_sales_action": "Win Room Block"
+          }
+        }
+      ],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 19 sections; 1 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "opportunityId": "gdi_opp_the_event_planner_expo_9",
+      "displayTitle": "The Event Planner Expo",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 66,
+        "commercialAccuracy": 82,
+        "consistency": 84,
+        "readability": 64,
+        "evidenceReliability": 79
+      },
+      "contradictions": [
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_renaissance_times_square"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "What is happening section only restates the opportunity title without event substance.",
+          "sections": [
+            "what_is_happening",
+            "title"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.theeventplannerexpo.com/hotels/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 19 sections; 1 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "opportunityId": "gdi_opp_iafl_usa_canadian_chapter_meeting_10",
+      "displayTitle": "IAFL USA & Canadian Chapter Meeting",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 66,
+        "commercialAccuracy": 82,
+        "consistency": 84,
+        "readability": 64,
+        "evidenceReliability": 79
+      },
+      "contradictions": [
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_renaissance_times_square"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "What is happening section only restates the opportunity title without event substance.",
+          "sections": [
+            "what_is_happening",
+            "title"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.iafl.com/events/events/new-york-city-may-2027/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 19 sections; 1 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "opportunityId": "gdi_opp_15th_annual_boutique_hotel_investment_conference_11",
+      "displayTitle": "15th Annual Boutique Hotel Investment Conference",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 35,
+        "commercialAccuracy": 35,
+        "consistency": 35,
+        "readability": 58,
+        "evidenceReliability": 59
+      },
+      "contradictions": [
+        {
+          "code": "SEM_CARD_ACTION_VS_PASSIVE_RECOMMENDATION",
+          "severity": "P0",
+          "sections": [
+            "card_sales_action",
+            "commercial_recommendation",
+            "recommended_next_step"
+          ],
+          "message": "Sales-action chip and written commercial guidance tell different pursuit intensities.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Do not aggressively sell the current cycle. Monitor venue/housing announcements, capture a future trigger date, and keep a light relationship touch"
+          }
+        },
+        {
+          "code": "SEM_WIN_BLOCK_VS_SOURCING_CLOSED",
+          "severity": "P0",
+          "sections": [
+            "hotel_sourcing",
+            "card_sales_action"
+          ],
+          "message": "Hotel sourcing is closed yet card still reads like an open room-block win motion.",
+          "passages": {
+            "hotel_sourcing": "Sourcing closed for this edition",
+            "card_sales_action": "Win Room Block"
+          }
+        },
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_renaissance_times_square"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "What is happening section only restates the opportunity title without event substance.",
+          "sections": [
+            "what_is_happening",
+            "title"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://blla.org/event/15th-annual-2027-boutique-hotel-investment-conference/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [
+        {
+          "message": "Card sales action implies active block pursuit while drawer recommendation counsels monitor / non-aggressive posture.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Do not aggressively sell the current cycle. Monitor venue/housing announcements, capture a future trigger date, and keep a light relationship touch",
+            "recommended_next_step": "Recommended next step Do not aggressively sell the current cycle. Monitor venue/housing announcements, capture a future trigger date, and keep a light relationship touch Qualification questions Who ow"
+          }
+        }
+      ],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.78,
+      "notes": "Reviewed 19 sections; 3 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "opportunityId": "gdi_opp_apap_nyc_12",
+      "displayTitle": "APAP|NYC",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 66,
+        "commercialAccuracy": 82,
+        "consistency": 84,
+        "readability": 64,
+        "evidenceReliability": 79
+      },
+      "contradictions": [
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_renaissance_times_square"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "What is happening section only restates the opportunity title without event substance.",
+          "sections": [
+            "what_is_happening",
+            "title"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://apap365.org/conference/attend/hotel/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 19 sections; 1 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "opportunityId": "gdi_opp_nysba_annual_conference_13",
+      "displayTitle": "NYSBA Annual Conference",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 66,
+        "commercialAccuracy": 82,
+        "consistency": 84,
+        "readability": 64,
+        "evidenceReliability": 79
+      },
+      "contradictions": [
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_renaissance_times_square"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "What is happening section only restates the opportunity title without event substance.",
+          "sections": [
+            "what_is_happening",
+            "title"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://nysba.org/am2027/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 19 sections; 1 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "opportunityId": "gdi_opp_forum_on_education_abroad_annual_conference_14",
+      "displayTitle": "Forum on Education Abroad Annual Conference",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 66,
+        "commercialAccuracy": 82,
+        "consistency": 84,
+        "readability": 64,
+        "evidenceReliability": 79
+      },
+      "contradictions": [
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_renaissance_times_square"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "What is happening section only restates the opportunity title without event substance.",
+          "sections": [
+            "what_is_happening",
+            "title"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.forumea.org/ac-travel.html",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 19 sections; 1 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "opportunityId": "gdi_opp_nyssba_annual_convention_education_expo_15",
+      "displayTitle": "NYSSBA Annual Convention & Education Expo",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 66,
+        "commercialAccuracy": 72,
+        "consistency": 76,
+        "readability": 64,
+        "evidenceReliability": 79
+      },
+      "contradictions": [
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_renaissance_times_square"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "What is happening section only restates the opportunity title without event substance.",
+          "sections": [
+            "what_is_happening",
+            "title"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: http://www.nyssba.org/convention/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [
+        {
+          "message": "Room demand is Overflow Only but card sales action is Win Room Block (primary-block semantics).",
+          "passages": {
+            "opportunity_overview": "Opportunity overview NYSSBA Annual Convention & Education Expo Timing 2028-10-26 → 2028-10-28 Location New York City Hotel sourcing Target-hotel sourcing not established Room demand Overflow Only Dema",
+            "card_sales_action": "Win Room Block"
+          }
+        }
+      ],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 19 sections; 1 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_fia_boca_2027_official_overflow_block_0",
+      "displayTitle": "FIA Boca 2027 Official Overflow Block",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 54,
+        "commercialAccuracy": 47,
+        "consistency": 56,
+        "readability": 62,
+        "evidenceReliability": 73
+      },
+      "contradictions": [
+        {
+          "code": "SEM_CARD_ACTION_VS_PASSIVE_RECOMMENDATION",
+          "severity": "P1",
+          "sections": [
+            "card_sales_action",
+            "commercial_recommendation",
+            "recommended_next_step"
+          ],
+          "message": "Sales-action chip and written commercial guidance tell different pursuit intensities.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+          }
+        },
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_waterstone_boca_raton"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.fia.org/fia/articles/fia-announces-early-member-registration-boca-2027, https://www.fia.org/fia/events/fia-global-cleared-markets-conference",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [
+        {
+          "message": "Card sales action implies active block pursuit while drawer recommendation counsels monitor / non-aggressive posture.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence",
+            "recommended_next_step": "Recommended next step Develop Organizer Relationship Monitor for sourcing signals. do not claim open RFP or overflow without evidence Qualification questions Who owns hotel / housing sourcing for FIA "
+          }
+        },
+        {
+          "message": "Room demand is Overflow Only but card sales action is Win Room Block (primary-block semantics).",
+          "passages": {
+            "opportunity_overview": "Opportunity overview FIA Boca 2027 Official Overflow Block Timing 2027-03-07 → 2027-03-10 Location Boca Hotel sourcing Target-hotel sourcing not established Room demand Overflow Only Demand cycle Futu",
+            "card_sales_action": "Win Room Block"
+          }
+        }
+      ],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 21 sections; 2 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_athletic_championships_west_palm_beach_nationals_1",
+      "displayTitle": "Athletic Championships – West Palm Beach Nationals",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 70,
+        "commercialAccuracy": 82,
+        "consistency": 84,
+        "readability": 69,
+        "evidenceReliability": 79
+      },
+      "contradictions": [
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_waterstone_boca_raton"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.varsity.com/ath/, https://www.teamtravelsource.com/varsity/stay-smart-overview/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 21 sections; 1 contradiction(s), 3 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_fau_commencement_fall_2026_and_spring_2027_2",
+      "displayTitle": "FAU Commencement — Fall 2026 and Spring 2027",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 72,
+        "commercialAccuracy": 90,
+        "consistency": 92,
+        "readability": 65,
+        "evidenceReliability": 82
+      },
+      "contradictions": [],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.fau.edu/registrar/graduation/ceremony/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [],
+      "suggestedCorrections": [],
+      "confidence": 0.82,
+      "notes": "Reviewed 20 sections; 0 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_palm_beach_international_boat_show_2027_vip_over_3",
+      "displayTitle": "Palm Beach International Boat Show 2027 VIP",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 66,
+        "commercialAccuracy": 82,
+        "consistency": 84,
+        "readability": 64,
+        "evidenceReliability": 79
+      },
+      "contradictions": [
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_waterstone_boca_raton"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.pbboatshow.com/, https://www.palmbeachshow.com/hotels/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 21 sections; 1 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_operation_sailfish_2027_4",
+      "displayTitle": "Operation Sailfish 2027",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 60,
+        "commercialAccuracy": 65,
+        "consistency": 72,
+        "readability": 63,
+        "evidenceReliability": 76
+      },
+      "contradictions": [
+        {
+          "code": "SEM_CARD_ACTION_VS_PASSIVE_RECOMMENDATION",
+          "severity": "P1",
+          "sections": [
+            "card_sales_action",
+            "commercial_recommendation",
+            "recommended_next_step"
+          ],
+          "message": "Sales-action chip and written commercial guidance tell different pursuit intensities.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.bluewatermovements.com/tournaments/sailfish-series/operation-sailfish/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [
+        {
+          "message": "Card sales action implies active block pursuit while drawer recommendation counsels monitor / non-aggressive posture.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence",
+            "recommended_next_step": "Recommended next step Develop Organizer Relationship Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+          }
+        }
+      ],
+      "suggestedCorrections": [],
+      "confidence": 0.82,
+      "notes": "Reviewed 20 sections; 1 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_fau_football_home_game_weekends_2027_visiting_te_5",
+      "displayTitle": "FAU Football Home Game Weekends / 2027 Visiting-Team Positioning",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 72,
+        "commercialAccuracy": 90,
+        "consistency": 92,
+        "readability": 65,
+        "evidenceReliability": 82
+      },
+      "contradictions": [],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://fausports.com/sports/football/schedule",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [],
+      "suggestedCorrections": [],
+      "confidence": 0.82,
+      "notes": "Reviewed 20 sections; 0 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_iaadfs_summit_of_the_americas_2027_6",
+      "displayTitle": "IAADFS Summit of the Americas 2027",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 70,
+        "commercialAccuracy": 82,
+        "consistency": 84,
+        "readability": 69,
+        "evidenceReliability": 79
+      },
+      "contradictions": [
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_waterstone_boca_raton"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.iaadfs.org/page/SummitMain",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 21 sections; 1 contradiction(s), 3 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_office_depot_the_odp_corporation_preferred_corpo_7",
+      "displayTitle": "Office Depot / the ODP Corporation Preferred Corporate Rate Program",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 58,
+        "commercialAccuracy": 57,
+        "consistency": 64,
+        "readability": 67,
+        "evidenceReliability": 73
+      },
+      "contradictions": [
+        {
+          "code": "SEM_CARD_ACTION_VS_PASSIVE_RECOMMENDATION",
+          "severity": "P1",
+          "sections": [
+            "card_sales_action",
+            "commercial_recommendation",
+            "recommended_next_step"
+          ],
+          "message": "Sales-action chip and written commercial guidance tell different pursuit intensities.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+          }
+        },
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_waterstone_boca_raton"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.officedepot.com/a/companyinfo/companyfacts/index/index.do",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [
+        {
+          "message": "Card sales action implies active block pursuit while drawer recommendation counsels monitor / non-aggressive posture.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence",
+            "recommended_next_step": "Recommended next step Develop Organizer Relationship Monitor for sourcing signals. do not claim open RFP or overflow without evidence Qualification questions Who owns hotel / housing sourcing for Offi"
+          }
+        }
+      ],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 21 sections; 2 contradiction(s), 3 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_bric_d_wave_relocation_executive_housing_program_8",
+      "displayTitle": "Boca Raton Innovation Campus (BRiC) / D-Wave Quantum",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 60,
+        "commercialAccuracy": 65,
+        "consistency": 72,
+        "readability": 63,
+        "evidenceReliability": 76
+      },
+      "contradictions": [
+        {
+          "code": "SEM_CARD_ACTION_VS_PASSIVE_RECOMMENDATION",
+          "severity": "P1",
+          "sections": [
+            "card_sales_action",
+            "commercial_recommendation",
+            "recommended_next_step"
+          ],
+          "message": "Sales-action chip and written commercial guidance tell different pursuit intensities.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.dwavequantum.com/company/newsroom/press-release/d-wave-selects-boca-raton-for-new-corporate-headquarters-and-u-s-r-d-facility/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [
+        {
+          "message": "Card sales action implies active block pursuit while drawer recommendation counsels monitor / non-aggressive posture.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence",
+            "recommended_next_step": "Recommended next step Develop Organizer Relationship Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+          }
+        }
+      ],
+      "suggestedCorrections": [],
+      "confidence": 0.82,
+      "notes": "Reviewed 20 sections; 1 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_uca_convergence_2027_overflow_vip_housing_9",
+      "displayTitle": "UCA Convergence 2027 Overflow / VIP Housing",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 58,
+        "commercialAccuracy": 47,
+        "consistency": 56,
+        "readability": 67,
+        "evidenceReliability": 73
+      },
+      "contradictions": [
+        {
+          "code": "SEM_CARD_ACTION_VS_PASSIVE_RECOMMENDATION",
+          "severity": "P1",
+          "sections": [
+            "card_sales_action",
+            "commercial_recommendation",
+            "recommended_next_step"
+          ],
+          "message": "Sales-action chip and written commercial guidance tell different pursuit intensities.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+          }
+        },
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_waterstone_boca_raton"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://urgentcareassociation.org/events/uca-convergence-2027/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [
+        {
+          "message": "Card sales action implies active block pursuit while drawer recommendation counsels monitor / non-aggressive posture.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence",
+            "recommended_next_step": "Recommended next step Develop Organizer Relationship Monitor for sourcing signals. do not claim open RFP or overflow without evidence Qualification questions Who owns hotel / housing sourcing for UCA "
+          }
+        },
+        {
+          "message": "Room demand is Overflow Only but card sales action is Win Room Block (primary-block semantics).",
+          "passages": {
+            "opportunity_overview": "Opportunity overview UCA Convergence 2027 Overflow / VIP Housing Timing 2027-05-01 → 2027-05-04 Location Event geography not confirmed Hotel sourcing Target-hotel sourcing not established Room demand ",
+            "card_sales_action": "Win Room Block"
+          }
+        }
+      ],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 21 sections; 2 contradiction(s), 3 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_lynn_university_commencement_2027_10",
+      "displayTitle": "Lynn University Commencement 2027",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 72,
+        "commercialAccuracy": 90,
+        "consistency": 92,
+        "readability": 65,
+        "evidenceReliability": 82
+      },
+      "contradictions": [],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.lynn.edu/events/commencement",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [],
+      "suggestedCorrections": [],
+      "confidence": 0.82,
+      "notes": "Reviewed 20 sections; 0 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_florida_challenge_all_star_cheerleading_champion_11",
+      "displayTitle": "Florida Challenge – All Star Cheerleading Championships 2027",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 60,
+        "commercialAccuracy": 65,
+        "consistency": 72,
+        "readability": 63,
+        "evidenceReliability": 76
+      },
+      "contradictions": [
+        {
+          "code": "SEM_CARD_ACTION_VS_PASSIVE_RECOMMENDATION",
+          "severity": "P1",
+          "sections": [
+            "card_sales_action",
+            "commercial_recommendation",
+            "recommended_next_step"
+          ],
+          "message": "Sales-action chip and written commercial guidance tell different pursuit intensities.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.pbconventioncenter.com/events/list/page/2/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [
+        {
+          "message": "Card sales action implies active block pursuit while drawer recommendation counsels monitor / non-aggressive posture.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence",
+            "recommended_next_step": "Recommended next step Develop Organizer Relationship Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+          }
+        }
+      ],
+      "suggestedCorrections": [],
+      "confidence": 0.82,
+      "notes": "Reviewed 20 sections; 1 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_east_coast_championships_soflo_nationals_2027_12",
+      "displayTitle": "East Coast Championships – SoFlo Nationals 2027",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 60,
+        "commercialAccuracy": 65,
+        "consistency": 72,
+        "readability": 63,
+        "evidenceReliability": 76
+      },
+      "contradictions": [
+        {
+          "code": "SEM_CARD_ACTION_VS_PASSIVE_RECOMMENDATION",
+          "severity": "P1",
+          "sections": [
+            "card_sales_action",
+            "commercial_recommendation",
+            "recommended_next_step"
+          ],
+          "message": "Sales-action chip and written commercial guidance tell different pursuit intensities.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.pbconventioncenter.com/event/east-coast-championships-soflo-nationals-2027/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [
+        {
+          "message": "Card sales action implies active block pursuit while drawer recommendation counsels monitor / non-aggressive posture.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence",
+            "recommended_next_step": "Recommended next step Develop Organizer Relationship Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+          }
+        }
+      ],
+      "suggestedCorrections": [],
+      "confidence": 0.82,
+      "notes": "Reviewed 20 sections; 1 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_sunshine_challenge_2027_13",
+      "displayTitle": "Sunshine Challenge 2027",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 60,
+        "commercialAccuracy": 65,
+        "consistency": 72,
+        "readability": 63,
+        "evidenceReliability": 76
+      },
+      "contradictions": [
+        {
+          "code": "SEM_CARD_ACTION_VS_PASSIVE_RECOMMENDATION",
+          "severity": "P1",
+          "sections": [
+            "card_sales_action",
+            "commercial_recommendation",
+            "recommended_next_step"
+          ],
+          "message": "Sales-action chip and written commercial guidance tell different pursuit intensities.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.pbconventioncenter.com/event/allstar-cheerleading-sunshine-challenge/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [
+        {
+          "message": "Card sales action implies active block pursuit while drawer recommendation counsels monitor / non-aggressive posture.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence",
+            "recommended_next_step": "Recommended next step Develop Organizer Relationship Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+          }
+        }
+      ],
+      "suggestedCorrections": [],
+      "confidence": 0.82,
+      "notes": "Reviewed 20 sections; 1 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_spirit_sports_west_palm_beach_nationals_2027_14",
+      "displayTitle": "Spirit Sports West Palm Beach Nationals 2027",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 60,
+        "commercialAccuracy": 65,
+        "consistency": 72,
+        "readability": 63,
+        "evidenceReliability": 76
+      },
+      "contradictions": [
+        {
+          "code": "SEM_CARD_ACTION_VS_PASSIVE_RECOMMENDATION",
+          "severity": "P1",
+          "sections": [
+            "card_sales_action",
+            "commercial_recommendation",
+            "recommended_next_step"
+          ],
+          "message": "Sales-action chip and written commercial guidance tell different pursuit intensities.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.myvarsity.com/CompetitionSearch?brand=SS",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [
+        {
+          "message": "Card sales action implies active block pursuit while drawer recommendation counsels monitor / non-aggressive posture.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence",
+            "recommended_next_step": "Recommended next step Develop Organizer Relationship Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+          }
+        }
+      ],
+      "suggestedCorrections": [],
+      "confidence": 0.82,
+      "notes": "Reviewed 20 sections; 1 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_palm_beach_juniors_winter_classic_2027_15",
+      "displayTitle": "Palm Beach Juniors Winter Classic 2027",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 70,
+        "commercialAccuracy": 82,
+        "consistency": 84,
+        "readability": 69,
+        "evidenceReliability": 79
+      },
+      "contradictions": [
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_waterstone_boca_raton"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://palmbeachjuniors.com/tournament-schedule.html",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 21 sections; 1 contradiction(s), 3 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_palm_beach_juniors_cloverleaf_2027_16",
+      "displayTitle": "Palm Beach Juniors Cloverleaf 2027",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 60,
+        "commercialAccuracy": 65,
+        "consistency": 72,
+        "readability": 63,
+        "evidenceReliability": 76
+      },
+      "contradictions": [
+        {
+          "code": "SEM_CARD_ACTION_VS_PASSIVE_RECOMMENDATION",
+          "severity": "P1",
+          "sections": [
+            "card_sales_action",
+            "commercial_recommendation",
+            "recommended_next_step"
+          ],
+          "message": "Sales-action chip and written commercial guidance tell different pursuit intensities.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.palmbeachsports.com/events/palm-beach-juniors-cloverleaf/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [
+        {
+          "message": "Card sales action implies active block pursuit while drawer recommendation counsels monitor / non-aggressive posture.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence",
+            "recommended_next_step": "Recommended next step Develop Organizer Relationship Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+          }
+        }
+      ],
+      "suggestedCorrections": [],
+      "confidence": 0.82,
+      "notes": "Reviewed 20 sections; 1 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_bluewater_movements_2027_series_partnership_17",
+      "displayTitle": "Bluewater Movements 2027 Series Partnership",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 72,
+        "commercialAccuracy": 90,
+        "consistency": 92,
+        "readability": 65,
+        "evidenceReliability": 82
+      },
+      "contradictions": [],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.bluewatermovements.com/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [],
+      "suggestedCorrections": [],
+      "confidence": 0.82,
+      "notes": "Reviewed 20 sections; 0 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_prevue_meetings_hosted_buyer_relationship_expans_18",
+      "displayTitle": "Prevue Meetings & Incentives",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 64,
+        "commercialAccuracy": 74,
+        "consistency": 76,
+        "readability": 68,
+        "evidenceReliability": 76
+      },
+      "contradictions": [
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_waterstone_boca_raton"
+          }
+        },
+        {
+          "code": "SEM_FUTURE_CYCLE_VS_IMMEDIATE_LANGUAGE",
+          "severity": "P2",
+          "sections": [
+            "opportunity_overview",
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ],
+          "message": "Demand cycle marked future while narrative calls the opportunity immediate.",
+          "passages": {
+            "opportunity_overview": "Opportunity overview Prevue Meetings & Incentives Timing 2026-09-14 → 2026-09-16 Location Event geography not confirmed Hotel sourcing Sourcing closed for this edition Room demand Room demand not yet ",
+            "why_act_now": "Why act now Event occurred during research window; follow-up value is immediate."
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.prevuemeetings.com/the-next-era-of-incentive-land-sea-summit/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 21 sections; 2 contradiction(s), 3 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_tomorrow_city_usa_2027_19",
+      "displayTitle": "Tomorrow.City USA 2027",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 70,
+        "commercialAccuracy": 82,
+        "consistency": 84,
+        "readability": 69,
+        "evidenceReliability": 79
+      },
+      "contradictions": [
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_waterstone_boca_raton"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.pbconventioncenter.com/events/list/page/4/",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 21 sections; 1 contradiction(s), 3 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_delray_beach_open_2027_player_vip_housing_20",
+      "displayTitle": "Delray Beach Open 2027 Player / VIP Housing",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 72,
+        "commercialAccuracy": 90,
+        "consistency": 92,
+        "readability": 65,
+        "evidenceReliability": 82
+      },
+      "contradictions": [],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://www.delraybeachopen.com/en/usta-nationalclays",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [],
+      "suggestedCorrections": [],
+      "confidence": 0.82,
+      "notes": "Reviewed 20 sections; 0 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_jewish_federation_of_south_palm_beach_county_eve_21",
+      "displayTitle": "Jewish Federation of South Palm Beach County Event Pipeline",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 70,
+        "commercialAccuracy": 82,
+        "consistency": 84,
+        "readability": 69,
+        "evidenceReliability": 79
+      },
+      "contradictions": [
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_waterstone_boca_raton"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://jewishboca.org/events",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 21 sections; 1 contradiction(s), 3 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_palm_beach_county_government_training_retreat_de_22",
+      "displayTitle": "Palm Beach County Government",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "confirmed_competitor_business",
+        "potential_future_opportunity",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 60,
+        "commercialAccuracy": 65,
+        "consistency": 72,
+        "readability": 63,
+        "evidenceReliability": 76
+      },
+      "contradictions": [
+        {
+          "code": "SEM_CARD_ACTION_VS_PASSIVE_RECOMMENDATION",
+          "severity": "P1",
+          "sections": [
+            "card_sales_action",
+            "commercial_recommendation",
+            "recommended_next_step"
+          ],
+          "message": "Sales-action chip and written commercial guidance tell different pursuit intensities.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "Potential business for this hotel and Why act now repeat the same paragraph.",
+          "sections": [
+            "potential_business_for_this_hotel",
+            "why_act_now"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://discover.pbc.gov/procurement/Pages/default.aspx",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [
+        {
+          "message": "Card sales action implies active block pursuit while drawer recommendation counsels monitor / non-aggressive posture.",
+          "passages": {
+            "card_sales_action": "Win Room Block",
+            "commercial_recommendation": "Monitor for sourcing signals. do not claim open RFP or overflow without evidence",
+            "recommended_next_step": "Recommended next step Develop Organizer Relationship Monitor for sourcing signals. do not claim open RFP or overflow without evidence"
+          }
+        }
+      ],
+      "suggestedCorrections": [],
+      "confidence": 0.82,
+      "notes": "Reviewed 20 sections; 1 contradiction(s), 4 duplication/boilerplate item(s)."
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityId": "gdi_opp_nrc_remsa_annual_conference_2027_23",
+      "displayTitle": "NRC-REMSA Annual Conference 2027",
+      "sectionsReviewed": [
+        "title",
+        "current_status",
+        "opportunity_overview",
+        "hotel_sourcing",
+        "what_is_happening",
+        "commercial_recommendation",
+        "potential_business_for_this_hotel",
+        "why_this_hotel",
+        "why_act_now",
+        "established_facts_uncertainties",
+        "who_to_contact",
+        "recommended_next_step",
+        "supporting_evidence",
+        "hotel_validation",
+        "card_summary",
+        "card_priority",
+        "card_sales_action",
+        "card_timing",
+        "other_drawer_text"
+      ],
+      "reviewStatus": "REVIEWED",
+      "reviewEngine": "cursor-agent-composer",
+      "scores": {
+        "contentQuality": 66,
+        "commercialAccuracy": 82,
+        "consistency": 84,
+        "readability": 64,
+        "evidenceReliability": 79
+      },
+      "contradictions": [
+        {
+          "code": "SEM_INTERNAL_HOTEL_ID_IN_CUSTOMER_COPY",
+          "severity": "P2",
+          "sections": [
+            "why_this_hotel",
+            "other_drawer_text"
+          ],
+          "message": "Internal hotel registry id appears in customer-facing drawer text.",
+          "passages": {
+            "snippet": "gdi_hotel_waterstone_boca_raton"
+          }
+        }
+      ],
+      "unsupportedClaims": [],
+      "duplicateOrUnnecessaryText": [
+        {
+          "text": "What is happening section only restates the opportunity title without event substance.",
+          "sections": [
+            "what_is_happening",
+            "title"
+          ]
+        },
+        {
+          "text": "Supporting evidence lists duplicate URLs: https://nrcma.org/events/nrc-remsa-annual-conference",
+          "sections": [
+            "supporting_evidence"
+          ]
+        },
+        {
+          "text": "Hotel Validation section is placeholder boilerplate without validation outcome.",
+          "sections": [
+            "hotel_validation"
+          ]
+        },
+        {
+          "text": "Established facts section is template empty-state while uncertainties list repeats generic gaps.",
+          "sections": [
+            "established_facts_uncertainties"
+          ]
+        }
+      ],
+      "conflictingRecommendedActions": [],
+      "suggestedCorrections": [
+        {
+          "field": "why_this_hotel",
+          "before": "gdi_hotel_* slug in Advantages line",
+          "after": "Use customer hotel display name only (e.g. Renaissance New York Times Square).",
+          "reason": "Registry ids are not sales-director facing.",
+          "requiresFounderReview": false
+        }
+      ],
+      "confidence": 0.82,
+      "notes": "Reviewed 19 sections; 1 contradiction(s), 4 duplication/boilerplate item(s)."
+    }
+  ]
+}
