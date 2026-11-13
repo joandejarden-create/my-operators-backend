@@ -30,6 +30,7 @@ import {
 import {
   createDifferenceRecord,
   upsertDifference,
+  markResolved,
   openMaterialCount,
   RESOLUTION_STATUS,
   saveRegister,
@@ -388,14 +389,30 @@ for (const id of [...aMap.keys()].sort()) {
   }
 }
 
-// Mark AB matches as resolved historical share↔share-only false certs when now matching
-for (const id of aMap.keys()) {
-  const ca = contractOf(aMap.get(id));
-  const cb = contractOf(bMap.get(id));
-  if (canonicalPresentationCompareKey(ca) === canonicalPresentationCompareKey(cb)) {
-    // no-op — open entries remain if previously written with different ids
+// Historical OPEN material rows stay in the register forever — mark RESOLVED
+// when the current A↔B / B↔C comparison no longer shows that field mismatch.
+const gitForResolve = gitIdentity();
+function resolveHistoricalParityRows(prefix, leftMap, rightMap) {
+  for (const d of [...(register.differences || [])]) {
+    if (!String(d.differenceId || "").startsWith(prefix)) continue;
+    if (d.resolutionStatus !== RESOLUTION_STATUS.OPEN) continue;
+    if (d.severity !== "MATERIAL") continue;
+    const id = d.opportunityId;
+    const left = contractOf(leftMap.get(id));
+    const right = contractOf(rightMap.get(id));
+    if (!left || !right) continue;
+    const stillDiffers = diffCanonicalCustomerPresentation(left, right).some(
+      (x) => x.field === d.componentName,
+    );
+    if (stillDiffers) continue;
+    register = markResolved(register, d.differenceId, {
+      fixCommit: gitForResolve.head || null,
+      verificationEvidence: `${prefix} field ${d.componentName} now matches on ${new Date().toISOString()} (deploy tip three-way re-verify)`,
+    });
   }
 }
+resolveHistoricalParityRows("AB__", aMap, bMap);
+resolveHistoricalParityRows("BC__", bMap, cMap);
 
 saveRegister(
   path.join(REGISTER_DIR, "COMPONENT_DIFFERENCE_REGISTER.json"),
