@@ -793,8 +793,11 @@
           s.lastPublishedUpdateAt || s.lastReviewedPackageImportAt
         ),
         publishedUpdateLabel: "Last Published Update",
+        // Same Reset View control as auth (purple active-filter badge).
         actionHtml:
-          '<button type="button" class="btn-clear" id="gdiResetViewBtn">Reset View</button>',
+          typeof UI.resetViewButtonHtml === "function"
+            ? UI.resetViewButtonHtml({ filters: state.filters })
+            : '<button type="button" class="btn-clear" id="gdiResetViewBtn">Reset View</button>',
       }) +
       '<div id="gdiTabBody">' +
       renderOpps() +

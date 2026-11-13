@@ -3004,6 +3004,39 @@ export async function getGdiShareOpportunities(req, res) {
         pkgResolved.opportunities,
         validationDoc,
       );
+      // Hotel-level Need Dates status is live hotel-config metadata (not package
+      // fingerprint content). Must be present on PACKAGE responses so share UI
+      // does not fall back to NOT_ESTABLISHED while auth shows HOTEL_CONFIRMED.
+      let hotelNeedDateConfigV1;
+      try {
+        const {
+          resolveHotelNeedDateConfiguration,
+          toCustomerSafeHotelNeedDateStatus,
+        } = await import(
+          "../lib/group-demand-intelligence/need-date-demand/gdi-universal-need-date-intelligence-v1.js"
+        );
+        hotelNeedDateConfigV1 = toCustomerSafeHotelNeedDateStatus(
+          resolveHotelNeedDateConfiguration(hotelId),
+          { includeUnpublishedEstimates: false },
+        );
+      } catch (needDateCfgErr) {
+        console.error(
+          "[gdi] package share hotel need-date config resolve failed",
+          needDateCfgErr?.message || needDateCfgErr,
+        );
+        hotelNeedDateConfigV1 = {
+          version: "GDI_UNIVERSAL_NEED_DATE_INTELLIGENCE_V1",
+          hotelId,
+          status: "NOT_ESTABLISHED",
+          statusLabel: "Need dates not established",
+          accessibleLabel: "Need dates not established",
+          icon: "calendar-minus",
+          colorClass: "gdi-hotel-need-date-status--not-established",
+          confirmedPeriodCount: 0,
+          estimatedPeriodCount: 0,
+          internalOnly: false,
+        };
+      }
       return res.json({
         ok: true,
         mode: "read_only",
@@ -3013,6 +3046,7 @@ export async function getGdiShareOpportunities(req, res) {
         inventoryPopulationCounts:
           pkgResolved.meta?.inventoryPopulationCounts || null,
         listScope: "PUBLICATION_PACKAGE",
+        hotelNeedDateConfigV1,
       });
     }
   }
