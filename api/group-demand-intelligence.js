@@ -1380,6 +1380,41 @@ export async function getGdiOpportunityDetail(req, res) {
     if (!flagGate(req, res)) return;
     const hotelId = String(req.params.hotelId || "").trim();
     const opportunityId = String(req.params.opportunityId || "").trim();
+    const wantPublicationPackage =
+      String(req.query.publicationPackage || "") === "1" ||
+      String(req.query.surface || "").toLowerCase() === "customer";
+    if (wantPublicationPackage && hotelId && opportunityId) {
+      const {
+        resolveOpportunityFromApprovedPackage,
+        mergeShareFeedbackOntoPackageOpportunities,
+      } = await import(
+        "../lib/group-demand-intelligence/publication-package/gdi-share-approved-package-resolver-v1.js"
+      );
+      const pkgResolved = resolveOpportunityFromApprovedPackage({
+        hotelId,
+        opportunityId,
+        preview: true,
+      });
+      if (
+        pkgResolved.ok &&
+        pkgResolved.mode === "PACKAGE" &&
+        pkgResolved.opportunity
+      ) {
+        const validationDoc = loadShareValidation(hotelId);
+        const [withFeedback] = mergeShareFeedbackOntoPackageOpportunities(
+          [pkgResolved.opportunity],
+          validationDoc,
+        );
+        res.setHeader("X-GDI-Detail-Source", "PUBLICATION_PACKAGE");
+        return res.json({
+          ok: true,
+          opportunity: withFeedback,
+          publication: pkgResolved.meta || null,
+          listScope: "PUBLICATION_PACKAGE",
+          scoreAudit: null,
+        });
+      }
+    }
     const t0 = Date.now();
     const loaded = await withTimeout(
       loadOpportunityForDetail(hotelId, opportunityId),
@@ -3197,6 +3232,96 @@ export async function getGdiShareOpportunityDetail(req, res) {
       opportunity: card,
     });
   }
+
+  // Immutable publication package must own DETAIL as well as LIST.
+  // Prior bug: list served PACKAGE (with needDateMatchV1) but detail fell
+  // through to live reconstruct/sanitize, so drawers omitted Hotel Need-Date
+  // Match and other frozen sections while cards still showed package badges.
+  {
+    const {
+      resolveOpportunityFromApprovedPackage,
+      mergeShareFeedbackOntoPackageOpportunities,
+    } = await import(
+      "../lib/group-demand-intelligence/publication-package/gdi-share-approved-package-resolver-v1.js"
+    );
+    const pkgResolved = resolveOpportunityFromApprovedPackage({
+      hotelId,
+      opportunityId,
+    });
+    if (!pkgResolved.ok && pkgResolved.mode === "FAIL_CLOSED") {
+      return res.status(503).json({
+        ok: false,
+        error: "APPROVED_PUBLICATION_PACKAGE_UNAVAILABLE",
+        detail: pkgResolved.error || null,
+      });
+    }
+    if (
+      pkgResolved.ok &&
+      pkgResolved.mode === "PACKAGE" &&
+      pkgResolved.opportunity
+    ) {
+      const validationDoc = loadShareValidation(hotelId);
+      const [withFeedback] = mergeShareFeedbackOntoPackageOpportunities(
+        [pkgResolved.opportunity],
+        validationDoc,
+      );
+      const validation = getShareValidationForOpportunity(
+        hotelId,
+        opportunityId,
+      );
+      const bySubject = await loadGdiCommercialProgressionBySubject(hotelId);
+      const commercialProgression = toCustomerCommercialProgressionDto(
+        bySubject.get(opportunityId),
+      );
+      const hotelValidationUpdatedAt =
+        validation?.hotelValidationUpdatedAt || validation?.validatedAt || null;
+      const progressionMerged =
+        commercialProgression || hotelValidationUpdatedAt
+          ? {
+              ...(commercialProgression || {}),
+              hotelValidationUpdatedAt:
+                hotelValidationUpdatedAt ||
+                commercialProgression?.hotelValidationUpdatedAt ||
+                null,
+            }
+          : null;
+      res.setHeader("X-GDI-Detail-Source", "PUBLICATION_PACKAGE");
+      res.setHeader("X-GDI-Share-Presentation-Parity", "v1");
+      res.setHeader("X-GDI-Universal-Presentation", "v1");
+      return res.json({
+        ok: true,
+        mode: "read_only",
+        listScope: "PUBLICATION_PACKAGE",
+        publication: pkgResolved.meta || null,
+        opportunity: {
+          ...withFeedback,
+          ...(progressionMerged
+            ? { commercialProgression: progressionMerged }
+            : {}),
+          shareValidation: validation
+            ? {
+                familiarityStatus: validation.familiarityStatus,
+                commercialValue: validation.commercialValue,
+                contactPersonAssessment: validation.contactPersonAssessment,
+                emailAssessment: validation.emailAssessment,
+                phoneAssessment: validation.phoneAssessment,
+                note: validation.note || "",
+                validatedAt: validation.validatedAt,
+                hotelValidationUpdatedAt,
+              }
+            : withFeedback?.shareValidation || null,
+        },
+        scoreAudit: null,
+      });
+    }
+    if (
+      pkgResolved.mode === "PACKAGE" &&
+      pkgResolved.error === "OPPORTUNITY_NOT_IN_PUBLICATION_PACKAGE"
+    ) {
+      return res.status(404).json({ ok: false, error: "opportunity_not_found" });
+    }
+  }
+
   const t0 = Date.now();
   const loaded = await loadOpportunityForDetail(hotelId, opportunityId);
   let opportunity = loaded.opportunity;

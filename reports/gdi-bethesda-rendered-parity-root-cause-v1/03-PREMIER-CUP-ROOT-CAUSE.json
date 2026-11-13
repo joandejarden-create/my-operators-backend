@@ -1,0 +1,24 @@
+{
+  "opportunityId": "gdi_opp_bethesda_premier_cup_2026",
+  "title": "Bethesda Premier Cup",
+  "approvedFingerprint": "441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f",
+  "packageContainsNeedDateMatchV1": true,
+  "shareListApiContainsNeedDateMatchV1": true,
+  "shareDetailApiContainsNeedDateMatchV1_preFix": false,
+  "rootCause": {
+    "file": "api/group-demand-intelligence.js",
+    "function": "getGdiShareOpportunityDetail",
+    "bug": "Detail route loaded live opportunities via loadOpportunityForDetail/loadOppDoc + projectOpportunitiesCommercialQuality and never consulted the CUSTOMER_PUBLISHED publication package. share-app openDetail() fetches that detail URL and replaces list-row DTO, dropping frozen needDateMatchV1.",
+    "renderer": "public/js/group-demand-intelligence/dealality-gdi-ui.js#needDateMatchDrawerSectionHtml — correctly returns empty string when needDateMatchV1/tileNeedDatePreview absent",
+    "localFounderDifference": "Auth getGdiOpportunityDetail attaches live need dates via attachHotelNeedDateTilePreviews, so founder research UI showed Hotel Need-Date Match even when share detail did not."
+  },
+  "fingerprintStillValid": true,
+  "fingerprintNote": "Package already freezes needDateMatchV1 in PUBLICATION_CONTENT_FIELDS; no content change required — technical serve-path fix preserves 44177321…",
+  "fix": [
+    "resolveOpportunityFromApprovedPackage in gdi-share-approved-package-resolver-v1.js",
+    "getGdiShareOpportunityDetail serves PACKAGE detail first",
+    "getGdiOpportunityDetail supports ?publicationPackage=1",
+    "Client defense merges list-row frozen fields if detail omits them",
+    "Founder app.js passes publicationPackage on list+detail when URL requests it"
+  ]
+}

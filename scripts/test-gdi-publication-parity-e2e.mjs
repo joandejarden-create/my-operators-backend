@@ -209,6 +209,49 @@ if (prodUrl && shareToken) {
     fieldDiffs: liveParity.content?.fieldDifferenceCount,
     renderedDiffs: liveParity.rendered?.renderedTextDifferenceCount,
   });
+
+  // DETAIL route must serve the same package (not live reconstruct).
+  // Prior false certification only compared LIST payloads.
+  const detailNeedDateGaps = [];
+  const withNeedDate = (pkg.opportunities || []).filter(
+    (o) => o.needDateMatchV1 || o.tileNeedDatePreview?.visible,
+  );
+  for (const o of withNeedDate) {
+    const dUrl = `${prodUrl.replace(/\/$/, "")}/api/group-demand-intelligence/share/hotels/${HOTEL}/opportunities/${encodeURIComponent(o.id)}`;
+    const dRes = await fetch(dUrl, {
+      headers: { "X-GDI-Share-Capability": shareToken },
+    });
+    const dBody = await dRes.json();
+    const detailOpp = dBody.opportunity || null;
+    if (!dRes.ok || !detailOpp) {
+      detailNeedDateGaps.push({ id: o.id, error: "DETAIL_HTTP_FAIL" });
+      continue;
+    }
+    if (dBody.listScope && dBody.listScope !== "PUBLICATION_PACKAGE") {
+      detailNeedDateGaps.push({
+        id: o.id,
+        error: "DETAIL_NOT_PACKAGE",
+        listScope: dBody.listScope,
+      });
+    }
+    const pkgNd = JSON.stringify(o.needDateMatchV1 || null);
+    const liveNd = JSON.stringify(detailOpp.needDateMatchV1 || null);
+    if (pkgNd !== liveNd) {
+      detailNeedDateGaps.push({
+        id: o.id,
+        error: "DETAIL_NEED_DATE_MISMATCH",
+        packageHas: Boolean(o.needDateMatchV1),
+        detailHas: Boolean(detailOpp.needDateMatchV1),
+      });
+    }
+  }
+  production.detailNeedDateChecked = withNeedDate.length;
+  production.detailNeedDateGaps = detailNeedDateGaps.length;
+  assert(
+    detailNeedDateGaps.length === 0,
+    "PRODUCTION_DETAIL_NEED_DATE_PARITY_FAIL",
+    detailNeedDateGaps.slice(0, 15),
+  );
 }
 
 const outDir = path.join(ROOT, "reports/gdi-local-production-full-reconciliation-v1");

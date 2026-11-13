@@ -231,6 +231,39 @@
         if (typeof opts.normalizeOpportunity === "function") {
           o = opts.normalizeOpportunity(o, listRow, data) || o;
         }
+        // Defense: when list was loaded from an immutable publication package
+        // but detail API lagged on live reconstruct, preserve frozen controlled
+        // fields (esp. Hotel Need-Date Match) from the list row.
+        if (o && listRow && typeof listRow === "object") {
+          var PACKAGE_PRESERVE = [
+            "needDateMatchV1",
+            "needDateIndicator",
+            "tileNeedDatePreview",
+            "needDateRelevanceClass",
+            "recommendedAction",
+            "eventsDrawerModel",
+            "whatIsHappening",
+            "whyThisHotel",
+            "whyActNow",
+            "potentialHotelBusiness",
+            "establishedFacts",
+            "uncertainties",
+            "recommendedNextStep",
+            "_publicationVersion",
+            "_contentFingerprintSha256",
+            "_publicationPackageId",
+          ];
+          for (var pi = 0; pi < PACKAGE_PRESERVE.length; pi++) {
+            var pk = PACKAGE_PRESERVE[pi];
+            if (
+              (o[pk] == null || o[pk] === "") &&
+              listRow[pk] != null &&
+              listRow[pk] !== ""
+            ) {
+              o[pk] = listRow[pk];
+            }
+          }
+        }
         // Locked published: approvedCustomerFacingDetail is authoritative for
         // drawer body. Flatten onto the row without dropping the nested object.
         if (
