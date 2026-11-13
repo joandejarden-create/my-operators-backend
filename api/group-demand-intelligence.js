@@ -812,6 +812,40 @@ export async function getGdiOpportunities(req, res) {
           pkgResolved.opportunities,
           validationDoc,
         );
+        // Match share PACKAGE: hotel Need Dates status is live hotel-config
+        // metadata (not package fingerprint). Without it, auth
+        // ?publicationPackage=1 falls back to NOT_ESTABLISHED while share
+        // correctly shows HOTEL_CONFIRMED for the same fingerprint.
+        let hotelNeedDateConfigV1;
+        try {
+          const {
+            resolveHotelNeedDateConfiguration,
+            toCustomerSafeHotelNeedDateStatus,
+          } = await import(
+            "../lib/group-demand-intelligence/need-date-demand/gdi-universal-need-date-intelligence-v1.js"
+          );
+          hotelNeedDateConfigV1 = toCustomerSafeHotelNeedDateStatus(
+            resolveHotelNeedDateConfiguration(hotelId),
+            { includeUnpublishedEstimates: false },
+          );
+        } catch (needDateCfgErr) {
+          console.error(
+            "[gdi] auth publication-package hotel need-date config resolve failed",
+            needDateCfgErr?.message || needDateCfgErr,
+          );
+          hotelNeedDateConfigV1 = {
+            version: "GDI_UNIVERSAL_NEED_DATE_INTELLIGENCE_V1",
+            hotelId,
+            status: "NOT_ESTABLISHED",
+            statusLabel: "Need dates not established",
+            accessibleLabel: "Need dates not established",
+            icon: "calendar-minus",
+            colorClass: "gdi-hotel-need-date-status--not-established",
+            confirmedPeriodCount: 0,
+            estimatedPeriodCount: 0,
+            internalOnly: false,
+          };
+        }
         return res.json({
           ok: true,
           count: withFeedback.length,
@@ -820,6 +854,7 @@ export async function getGdiOpportunities(req, res) {
           inventoryPopulationCounts:
             pkgResolved.meta?.inventoryPopulationCounts || null,
           listScope: "PUBLICATION_PACKAGE",
+          hotelNeedDateConfigV1,
         });
       }
     }
