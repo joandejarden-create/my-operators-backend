@@ -85,9 +85,10 @@ Legacy share path remains only for hotels without a CUSTOMER_PUBLISHED pointer (
 
 ## 10. PR / commit
 
-- **Commit:** `f7c6bd5e1`
+- **Commits:** `f7c6bd5e1` (system) · `f73ced6be` (report SHA note)
 - **Branch:** `feat/gdi-customer-publication-parity-v1`
-- PR URL recorded after open. No production CUSTOMER_PUBLISHED activation in this PR.
+- **PR:** https://github.com/joandejarden-create/my-operators-backend/pull/240  
+  No production CUSTOMER_PUBLISHED activation in this PR.
 
 ---
 
