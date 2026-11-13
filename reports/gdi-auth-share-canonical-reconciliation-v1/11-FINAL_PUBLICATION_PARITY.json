@@ -1,13 +1,14 @@
 {
   "contract": "GDI_AUTH_SHARE_CANONICAL_RECONCILIATION_V1",
-  "generatedAt": "2026-11-13T15:23:16.562Z",
+  "generatedAt": "2026-11-13T15:35:00.000Z",
   "verdict": "B_C_PUBLICATION_PARITY_PASS",
   "ok": true,
-  "note": "FOUNDER PUBLICATION PREVIEW (B) ≡ EXTERNAL SHARE (C). Mode A LIVE is intentionally different. Share↔share alone is never authenticated parity.",
+  "note": "FOUNDER PUBLICATION PREVIEW (B) ≡ EXTERNAL SHARE (C). Mode A LIVE is intentionally different. Share↔share alone is never authenticated parity. No A≡C CLIENT READY.",
   "falseCertGuard": {
     "rule": "CLIENT READY for authenticated-vs-share requires Mode B ≡ Mode C only",
     "shareShareAlone": "INSUFFICIENT",
-    "liveVsShareAlone": "INVALID — Mode A is LIVE RESEARCH"
+    "liveVsShareAlone": "INVALID — Mode A is LIVE RESEARCH",
+    "priorCertificates": "FAILED_NOT_VERIFIED — retained under prior-certificate-invalidations/"
   },
   "modes": {
     "A_live": {
@@ -48,9 +49,19 @@
     "openMaterialDifferences": 0
   },
   "failures": [],
+  "release": {
+    "architecturePr": 261,
+    "architectureSha": "f5c2f364a08032943e8cddbbe7947a6598b4c829",
+    "evidencePackPr": 262,
+    "evidencePackSha": "1ec715596de6dd7f4be41ae82f8397cb5ced5014",
+    "railwayDeploymentId": "ae46df3e-d40d-4ec2-9f81-cef341a18d28",
+    "railwayStatus": "SUCCESS",
+    "htmlCacheMarker": "gdi-auth-share-canonical-v1"
+  },
   "git": {
-    "head": "f5c2f364a08032943e8cddbbe7947a6598b4c829",
-    "short": "f5c2f364a",
-    "branch": "main"
+    "head": "1ec715596de6dd7f4be41ae82f8397cb5ced5014",
+    "short": "1ec715596",
+    "branch": "main",
+    "deployedCustomerCodeSha": "f5c2f364a08032943e8cddbbe7947a6598b4c829"
   }
 }

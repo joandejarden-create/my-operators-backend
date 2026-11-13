@@ -1,7 +1,13 @@
 {
+  "contract": "GDI_AUTH_SHARE_CANONICAL_RECONCILIATION_V1",
+  "recordedAt": "2026-11-13T15:35:00.000Z",
   "git": {
-    "mergeSha": "f5c2f364a08032943e8cddbbe7947a6598b4c829",
-    "pr": 261
+    "architectureMergeSha": "f5c2f364a08032943e8cddbbe7947a6598b4c829",
+    "architecturePr": 261,
+    "evidencePackMergeSha": "1ec715596de6dd7f4be41ae82f8397cb5ced5014",
+    "evidencePackPr": 262,
+    "mainTipAtRecord": "1ec715596de6dd7f4be41ae82f8397cb5ced5014",
+    "note": "Railway production runs architecture SHA f5c2f364a (canonical renderer). Evidence pack PR 262 is docs/identity only; redeploy not required for B≡C code identity."
   },
   "githubActionsDeploy": {
     "runId": "43449677216",
@@ -12,11 +18,18 @@
   "railway": {
     "deploymentId": "ae46df3e-d40d-4ec2-9f81-cef341a18d28",
     "status": "SUCCESS",
-    "htmlCacheMarker": "gdi-auth-share-canonical-v1"
+    "htmlCacheMarker": "gdi-auth-share-canonical-v1",
+    "deployedCodeSha": "f5c2f364a08032943e8cddbbe7947a6598b4c829",
+    "approvedPackageFingerprint": "441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f"
   },
   "postDeployParity": {
     "command": "npm run test:gdi-auth-share-canonical-parity",
     "verdict": "B_C_PUBLICATION_PARITY_PASS",
     "note": "Mode B ≡ Mode C. Mode A LIVE ≠ package is intentional (65 diffs). No CLIENT READY claim for A≡C."
+  },
+  "falseCertificatePolicy": {
+    "priorAuthenticatedToShareClientReady": "FAILED_NOT_VERIFIED",
+    "shareShareAlone": "INSUFFICIENT",
+    "requiredEquality": "FOUNDER_PUBLICATION_PREVIEW_EQUALS_EXTERNAL_CUSTOMER_SHARE"
   }
 }
