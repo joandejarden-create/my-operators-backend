@@ -296,11 +296,11 @@ check("gdi_hotel_toolbar_reset_view_only", () => {
     "utf8"
   );
   assert.ok(
-    /id="gdiResetViewBtn">Reset View<\/button>/.test(appJs),
+    /gdiResetViewBtn/.test(appJs) && /Reset View/.test(appJs),
     "Reset View must remain on auth hotel toolbar"
   );
   assert.ok(
-    /id="gdiResetViewBtn">Reset View<\/button>/.test(shareJs),
+    /gdiResetViewBtn/.test(shareJs) && /Reset View/.test(shareJs),
     "Reset View must remain on share hotel toolbar"
   );
   assert.ok(

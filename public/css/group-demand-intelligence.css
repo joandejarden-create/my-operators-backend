@@ -160,6 +160,49 @@ body.gdi-page.embed-mode .gdi-shell {
 .gdi-page .gdi-section-nav.aiv-section-nav {
   width: 100%;
   margin-bottom: 16px;
+  gap: 2px 4px;
+}
+
+/* Longer "Group & Demand Opportunities" label — avoid overlap with Priorities */
+.gdi-page .gdi-section-nav.bdd-section-nav .section-nav-item {
+  min-width: 112px;
+  max-width: 168px;
+  padding: 8px 6px;
+}
+
+.gdi-page .gdi-section-nav.bdd-section-nav .section-nav-item[data-tab="opportunities"] {
+  min-width: 128px;
+  max-width: 176px;
+}
+
+@media (max-width: 720px) {
+  .gdi-page .gdi-section-nav.bdd-section-nav .section-nav-item,
+  .gdi-page .gdi-section-nav.bdd-section-nav .section-nav-item[data-tab="opportunities"] {
+    min-width: 104px;
+    max-width: 148px;
+    padding: 8px 4px;
+  }
+
+  .gdi-page .gdi-section-nav .section-nav-label {
+    font-size: 8px;
+    letter-spacing: 0.03em;
+  }
+}
+
+/* How to Read This Report — ADP tab-row parity */
+.gdi-page .gdi-section-nav.gdi-section-nav-with-tour {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.gdi-page .gdi-section-nav__actions {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  padding: 0 4px 0 12px;
+  flex: 0 0 auto;
 }
 
 .gdi-page .gdi-property-bar.filters-section {
@@ -228,6 +271,34 @@ body.gdi-page.embed-mode .gdi-shell {
   max-width: 100%;
 }
 
+.gdi-page .gdi-property-bar {
+  --gdi-toolbar-control-height: 3rem;
+  --gdi-toolbar-control-radius: 6px;
+  --gdi-toolbar-label-size: 12px;
+  --gdi-toolbar-label-weight: 500;
+  --gdi-toolbar-label-color: var(--neutral--400);
+  --gdi-toolbar-label-gap: 6px;
+}
+
+.gdi-page .gdi-property-bar__primary > .filter-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--gdi-toolbar-label-gap);
+}
+
+.gdi-page .gdi-property-bar__primary > .filter-group > .filter-label {
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+  font-size: var(--gdi-toolbar-label-size);
+  font-weight: var(--gdi-toolbar-label-weight);
+  line-height: 1.2;
+  color: var(--gdi-toolbar-label-color);
+  min-height: 1.2em;
+}
+
 .gdi-page .gdi-market-scope-filter {
   flex: 0 0 auto;
   min-width: 0;
@@ -239,26 +310,31 @@ body.gdi-page.embed-mode .gdi-shell {
   flex-wrap: nowrap;
   align-items: stretch;
   gap: 0;
-  min-height: 38px;
-  border: 1px solid var(--neutral--600);
-  border-radius: 8px;
+  box-sizing: border-box;
+  height: var(--gdi-toolbar-control-height);
+  min-height: var(--gdi-toolbar-control-height);
+  max-height: var(--gdi-toolbar-control-height);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--gdi-toolbar-control-radius);
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--secondary--color-1);
 }
 
 .gdi-page .gdi-market-scope__btn {
   appearance: none;
   margin: 0;
   border: 0;
-  border-right: 1px solid var(--neutral--600);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
   background: transparent;
   color: var(--neutral--400);
   font: inherit;
-  font-size: 12px;
+  font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.01em;
-  padding: 0 10px;
-  min-height: 36px;
+  padding: 0 12px;
+  height: 100%;
+  min-height: 0;
+  line-height: 1.35;
   white-space: nowrap;
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
@@ -401,8 +477,46 @@ body.gdi-page.embed-mode .gdi-shell {
 
 .gdi-page .aiv-filter-actions .aiv-btn-apply,
 .gdi-page .aiv-filter-actions .btn-clear {
-  margin-top: 18px;
+  /* Align with control row under the shared toolbar label stack */
+  margin-top: calc(
+    (var(--gdi-toolbar-label-size, 12px) * 1.2) +
+      var(--gdi-toolbar-label-gap, 6px)
+  );
+  box-sizing: border-box;
+  height: var(--gdi-toolbar-control-height, 3rem);
+  min-height: var(--gdi-toolbar-control-height, 3rem);
   white-space: nowrap;
+}
+
+/* Reset View active-filter badge — Radar / Brand Explorer purple pill */
+.gdi-page .gdi-property-bar__actions,
+.gdi-page .aiv-filter-actions {
+  overflow: visible;
+}
+
+.gdi-page .aiv-filter-actions .btn-clear {
+  position: relative;
+}
+
+.gdi-page .filter-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background: var(--accent--primary-1, #6c72ff);
+  color: var(--neutral--100, #ffffff);
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  margin: 0;
+  z-index: 10;
+  box-sizing: border-box;
 }
 
 .gdi-page .gdi-property-bar__hint {
@@ -435,6 +549,46 @@ body.gdi-page.embed-mode .gdi-shell {
 
 .gdi-page .gdi-property-bar__history-item--need-dates {
   gap: 0.4em;
+}
+
+.gdi-page .gdi-property-bar__history-item--research-compact {
+  gap: 0.35em;
+}
+
+.gdi-page .gdi-property-bar__research-status {
+  font-weight: 600;
+  color: var(--neutral--300, #c8d0e0);
+}
+
+.gdi-research-activity-details__body {
+  display: grid;
+  gap: 8px;
+}
+
+.gdi-research-activity-details__row {
+  display: grid;
+  grid-template-columns: minmax(7.5rem, 38%) 1fr;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.gdi-research-activity-details__label {
+  color: var(--neutral--500, #8b95a8);
+  font-weight: 500;
+}
+
+.gdi-research-activity-details__value {
+  color: var(--neutral--300, #c8d0e0);
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.gdi-research-activity-details__note {
+  margin: 4px 0 0;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--neutral--500, #8b95a8);
 }
 
 .gdi-page .gdi-property-bar__history-label {
@@ -838,12 +992,6 @@ body.gdi-page.embed-mode .gdi-shell {
   background: rgba(253, 181, 42, 0.18);
   color: #ffd27a;
   border: 1px solid rgba(253, 181, 42, 0.45);
-}
-.gdi-weekly-summary {
-  margin: 0 0 10px;
-  font-size: 0.92rem;
-  color: var(--gdi-text);
-  font-weight: 600;
 }
 .gdi-tile-delta-meta {
   margin: 2px 0 6px;
@@ -2185,9 +2333,10 @@ button.gdi-tile-pill.is-filter-active {
 }
 
 .gdi-page .filter-label {
-  color: var(--neutral--400);
-  font-weight: 500;
-  font-size: 12px;
+  color: var(--gdi-toolbar-label-color, var(--neutral--400));
+  font-weight: var(--gdi-toolbar-label-weight, 500);
+  font-size: var(--gdi-toolbar-label-size, 12px);
+  line-height: 1.2;
 }
 
 .gdi-page .filter-select,
@@ -2196,7 +2345,7 @@ button.gdi-tile-pill.is-filter-active {
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #ffffff;
   padding: 8px 12px;
-  border-radius: 6px;
+  border-radius: var(--gdi-toolbar-control-radius, 6px);
   font-size: 13px;
   font-family: inherit;
   width: 100%;
@@ -2205,19 +2354,21 @@ button.gdi-tile-pill.is-filter-active {
   box-sizing: border-box;
 }
 
-/* Native Property <select> must match shell filter-select metrics � prior GDI
+/* Native Property <select> must match shell filter-select metrics — prior GDI
    padding override (8px/12px) + inherited line-height clipped closed-state glyphs
    (accented cities / short labels like W Rome). Shared component; not hotel-specific. */
 .gdi-page select.filter-select {
   box-sizing: border-box;
-  height: 3rem;
-  min-height: 3rem;
+  height: var(--gdi-toolbar-control-height, 3rem);
+  min-height: var(--gdi-toolbar-control-height, 3rem);
+  max-height: var(--gdi-toolbar-control-height, 3rem);
   padding: 0 2rem 0 14px;
   line-height: 1.35;
   font-size: 0.875rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  border-radius: var(--gdi-toolbar-control-radius, 6px);
 }
 
 .gdi-page .sort-select {
@@ -2658,7 +2809,64 @@ button.gdi-tile-pill.is-filter-active {
   font-weight: 400;
 }
 
-/* ââ Drawer ââ */
+/* Competitive: confirmed booking vs future-cycle opportunity */
+.gdi-cmi-action-banner {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(253, 181, 42, 0.35);
+  background: rgba(253, 181, 42, 0.08);
+  color: var(--gdi-text, #f8fafc);
+  font-size: 0.875rem;
+}
+
+.gdi-section--cmi-confirmed,
+.gdi-section--cmi-future {
+  border-left: 3px solid rgba(253, 181, 42, 0.55);
+  padding-left: 12px;
+}
+
+.gdi-section--cmi-future {
+  border-left-color: rgba(108, 114, 255, 0.65);
+}
+
+.gdi-cmi-split__meta {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0 0;
+}
+
+.gdi-cmi-split__row {
+  display: grid;
+  grid-template-columns: minmax(120px, 38%) 1fr;
+  gap: 8px;
+  font-size: 0.8125rem;
+}
+
+.gdi-cmi-split__label {
+  color: var(--gdi-muted, #aeb8d4);
+  font-weight: 600;
+}
+
+.gdi-cmi-split__value {
+  color: var(--gdi-text, #f8fafc);
+}
+
+.gdi-cmi-split__evidence {
+  margin: 6px 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.75rem;
+  word-break: break-all;
+}
+
+.gdi-pill-cmi-action {
+  margin-left: 6px;
+  background: rgba(108, 114, 255, 0.18);
+  border: 1px solid rgba(108, 114, 255, 0.4);
+  color: #d9e1fa;
+}
+
+/* —— Drawer —— */
 .gdi-drawer {
   border: none;
   padding: 0;

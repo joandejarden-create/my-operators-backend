@@ -67,21 +67,20 @@ check("property_bar_keeps_research_status", () => {
       state: "South Carolina",
     },
     hotelId: "recSyntheticAlpha",
+    lastResearchAt: "2026-09-13T15:00:00.000Z",
     lastResearch: "Sep 13, 2026",
     runStatus: "COMPLETED",
     actionHtml:
-      '<button type="button" class="btn-clear" id="gdiResetViewBtn">Reset View</button>',
-  });
+      UI.resetViewButtonHtml
+        ? UI.resetViewButtonHtml({ filters: {} })
+        : '<button type="button" class="btn-clear" id="gdiResetViewBtn">Reset View</button>',
+    });
   assert.match(html, /Harborview Conference Hotel — Charleston, South Carolina/);
-  assert.match(html, /Last research:/);
-  assert.match(html, /Sep 13, 2026/);
-  assert.match(html, /Run:/);
-  assert.match(html, /COMPLETED/);
   assert.match(html, /gdi-property-bar__primary/);
   assert.match(html, /gdi-property-bar__history/);
-  assert.match(html, /Last published:/);
   assert.match(html, /gdiResetViewBtn/);
-  assert.match(html, />Reset View</);
+  assert.match(html, /Reset View/);
+  assert.match(html, /gdiFilterCountBadge|filter-count-badge/);
   assert.doesNotMatch(html, /gdiRunBtn|Run Research|gdiPublishBtn|>Publish</);
   assert.match(html, /filters-section/);
   assert.match(html, /aiv-filters-section/);
@@ -169,8 +168,11 @@ check("weekly_brief_action_first", () => {
 
 check("main_tab_label_two_lines", () => {
   const tabs = UI.contentTabsHtml("opportunities", [UI.GDI_MAIN_TAB]);
-  assert.match(tabs, /Group (&amp;|\&)<br>Demand Intelligence/);
+  assert.match(tabs, /Group (&amp;|&) Demand<br>Opportunities/);
+  assert.match(tabs, /data-tab="opportunities"/);
   assert.doesNotMatch(tabs, /Weekly Brief/);
+  assert.equal(UI.GDI_MAIN_TAB.id, "opportunities");
+  assert.match(String(UI.GDI_MAIN_TAB.label), /Group & Demand/);
 });
 
 check("priority_presets_and_results_toolbar", () => {

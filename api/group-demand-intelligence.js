@@ -103,6 +103,7 @@ import {
   getGdiOpportunityPersistenceMode,
 } from "../lib/group-demand-intelligence/opportunity-persistence.js";
 import { sanitizeOpportunityForCustomerPresentation } from "../lib/group-demand-intelligence/customer-presentation-sanitize-v1.js";
+import { applyCanonicalCustomerFacingTitle } from "../lib/group-demand-intelligence/demand-segments/universal-opportunity-identity-v1.js";
 import { prepareCustomerFacingOpportunity } from "../lib/group-demand-intelligence/share/gdi-customer-facing-opportunity-contract-v1.js";
 import {
   mapOpportunitiesToPresentationDtos,
@@ -366,19 +367,21 @@ function projectOpportunitiesCommercialQuality(opportunities, { nowDate } = {}) 
       });
     }
     // Bethesda internal research-stage reconstructions already carry honest
-    // list/detail fields — do not run customer sanitize that would strip them.
+    // list/detail fields — do not run full customer sanitize that would strip
+    // research diagnostics. Still apply the permanent title contract so
+    // customer-visible list/tile/drawer titles stay short and professional.
     if (
       o?.bethesdaInternalResearchInventory === true ||
       o?.gdiInternalUnionOnly === true
     ) {
-      return {
+      return applyCanonicalCustomerFacingTitle({
         ...o,
         relatedOpportunityIds: relatedIds,
         relatedOpportunityCount: relatedIds.length,
         salesReady: false,
         customerFacing: false,
         customerVisible: false,
-      };
+      });
     }
     const cq = applyLiveCommercialQuality(o, { nowDate: nowDate || asOfToday() });
     // Never leak discovery vertical slugs into customer segment
@@ -1105,6 +1108,22 @@ export async function getGdiOpportunities(req, res) {
           cmiVerified: o.cmiVerified,
           cmiCompetitorHotel: o.cmiCompetitorHotel,
           cmiClassificationReason: o.cmiClassificationReason,
+          competitiveStatus: o.competitiveStatus,
+          competitiveStatusLabel: o.competitiveStatusLabel,
+          competitorVenueStatus: o.competitorVenueStatus,
+          competitorVenueStatusLabel: o.competitorVenueStatusLabel,
+          targetHotelSourcingStatus: o.targetHotelSourcingStatus,
+          targetHotelSourcingStatusLabel: o.targetHotelSourcingStatusLabel,
+          commercialActionability: o.commercialActionability,
+          hotelMarketScopeEligible: o.hotelMarketScopeEligible,
+          competitiveMarketScopeEligible: o.competitiveMarketScopeEligible,
+          competitiveFutureCyclePresentation: o.competitiveFutureCyclePresentation,
+          competitiveCommercialActionKey: o.competitiveCommercialActionKey,
+          competitiveCommercialActionLabel: o.competitiveCommercialActionLabel,
+          futureCycleOpportunityStatus: o.futureCycleOpportunityStatus,
+          recommendedAction: o.recommendedAction,
+          salesActionKey: o.salesActionKey,
+          salesActionPillLabel: o.salesActionPillLabel,
         },
       ])
     );
@@ -1517,6 +1536,9 @@ export async function getGdiOpportunityDetail(req, res) {
       (founderReviews.items || []).find(
         (r) => r.opportunityId === opportunityId
       ) || null;
+    // Annotate Market Scope + competitive/future-cycle presentation before DTO
+    // so Confirmed Competitor Business vs Potential Future Opportunity survive.
+    opportunity = annotateInventoryPopulations([opportunity], { hotelId })[0];
     const authProjected = projectOpportunityForPresentation(opportunity, {
       hotelId,
       surface: GDI_PRESENTATION_SURFACES.LOCAL_AUTH,
@@ -1535,6 +1557,34 @@ export async function getGdiOpportunityDetail(req, res) {
         : null;
     const opportunityPayload = {
       ...authProjected.dto,
+      // Re-attach annotation fields the detail DTO may trim (list parity).
+      inventoryPopulations: opportunity.inventoryPopulations,
+      inventoryPopulationPrimary: opportunity.inventoryPopulationPrimary,
+      cmiVerified: opportunity.cmiVerified,
+      cmiCompetitorHotel: opportunity.cmiCompetitorHotel,
+      cmiClass: opportunity.cmiClass,
+      competitiveStatus: opportunity.competitiveStatus,
+      competitiveStatusLabel: opportunity.competitiveStatusLabel,
+      competitorVenueStatus: opportunity.competitorVenueStatus,
+      competitorVenueStatusLabel: opportunity.competitorVenueStatusLabel,
+      targetHotelSourcingStatus: opportunity.targetHotelSourcingStatus,
+      targetHotelSourcingStatusLabel: opportunity.targetHotelSourcingStatusLabel,
+      commercialActionability: opportunity.commercialActionability,
+      hotelMarketScopeEligible: opportunity.hotelMarketScopeEligible,
+      competitiveMarketScopeEligible: opportunity.competitiveMarketScopeEligible,
+      competitiveFutureCyclePresentation:
+        opportunity.competitiveFutureCyclePresentation,
+      competitiveCommercialActionKey:
+        opportunity.competitiveCommercialActionKey,
+      competitiveCommercialActionLabel:
+        opportunity.competitiveCommercialActionLabel,
+      futureCycleOpportunityStatus: opportunity.futureCycleOpportunityStatus,
+      recommendedAction:
+        opportunity.recommendedAction || authProjected.dto?.recommendedAction,
+      salesActionKey: opportunity.salesActionKey || authProjected.dto?.salesActionKey,
+      salesActionPillLabel:
+        opportunity.salesActionPillLabel ||
+        authProjected.dto?.salesActionPillLabel,
       ...(progressionWithValidationTs
         ? { commercialProgression: progressionWithValidationTs }
         : {}),
@@ -2315,12 +2365,29 @@ export async function postGdiContactReveal(req, res) {
     secondary ||
     null;
 
-  const useMock = body.useMock === true || process.env.GDI_CONTACT_REVEAL_MOCK === "1";
-  // Authenticated click (memberstackAuth + requireDealalityUser already ran) +
-  // explicit authorizeLiveProvider from the user-initiated button.
+  const useMock =
+    (body.useMock === true || process.env.GDI_CONTACT_REVEAL_MOCK === "1") &&
+    process.env.GDI_CONTACT_REVEAL_MOCK === "1";
+  // Live Surfe requires an explicit button authorize flag AND a signed-in user.
+  // Mock mode is env-gated (GDI_CONTACT_REVEAL_MOCK=1) for local certification only.
   const authorizeLive =
     body.authorizeLiveProvider === true &&
     Boolean(req.dealalityUser || req.memberstackMemberId);
+
+  if (!useMock && !authorizeLive) {
+    return res.status(403).json({
+      ok: false,
+      ephemeral: true,
+      persisted: false,
+      surfePiiPersisted: false,
+      error: "LIVE_PROVIDER_NOT_AUTHORIZED",
+      message:
+        "Contact lookup requires a signed-in Dealality user. Live Surfe is never called for anonymous or share viewers.",
+      contactDetails: null,
+      hotelId,
+      opportunityId,
+    });
+  }
 
   const {
     contactRevealIdentityKey,

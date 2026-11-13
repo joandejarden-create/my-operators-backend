@@ -167,17 +167,18 @@ function block(it, linked) {
   assert.equal((html.match(/brand-card__contact-name/g) || []).length, 1);
 }
 
-// Property bar: primary row + history footer contract
+// Property bar: primary row + compact research footer contract
 {
   assert.match(src, /gdi-property-bar__primary/);
   assert.match(src, /gdi-property-bar__history/);
-  assert.match(src, /Last research:/);
-  assert.match(src, /Last published:/);
+  assert.match(src, /Last Updated:/);
+  assert.match(src, /Research Complete/);
   const bar = UI.propertyBarHtml({
     mode: "auth",
     hotel: { hotelName: "Test Hotel", city: "Washington", state: "DC" },
     hotelId: "recTEST",
     hotels: [{ hotelId: "recTEST", hotelName: "Test Hotel", locationLine: "Washington, DC" }],
+    lastResearchAt: "2026-10-15T16:00:00.000Z",
     lastResearch: "Oct 15, 2026, 12:00 PM EDT",
     runStatusLabel: "Completed",
     lastPublishedUpdate: "Oct 15, 2026, 9:24 AM EDT",
@@ -188,9 +189,12 @@ function block(it, linked) {
   assert.match(bar, /gdiResetViewBtn/);
   assert.match(bar, />Reset View</);
   assert.doesNotMatch(bar, /gdiRunBtn|Run Research|gdiPublishBtn|>Publish</);
-  assert.match(bar, /Last research:/);
-  assert.match(bar, /Run:/);
-  assert.match(bar, /Last published:/);
+  assert.match(bar, /Last Updated:/);
+  assert.match(bar, /Oct 15, 2026/);
+  assert.doesNotMatch(bar, /12:00 PM EDT/);
+  assert.match(bar, /Research Complete/);
+  assert.match(bar, /Last published/);
+  assert.doesNotMatch(bar, />Run:</);
 }
 
 // Hotel-fit tiles stay static (no Details expansion)

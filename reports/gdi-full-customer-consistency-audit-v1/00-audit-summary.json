@@ -1,0 +1,318 @@
+{
+  "schema": "gdi-full-customer-consistency-audit-v1",
+  "generatedAt": "2026-11-13T01:28:11.952Z",
+  "baseline": {
+    "branchHint": "fix/gdi-regression-recovery-v1",
+    "titleContract": "gdi-customer-facing-opportunity-title-contract-v1",
+    "titleContractRevision": "v1.1-competitor-venue",
+    "consolidatedPr": "https://github.com/joandejarden-create/my-operators-backend/pull/233",
+    "fieldSourceOfTruth": [
+      {
+        "field": "displayTitle",
+        "source": "customer-facing-opportunity-title-contract-v1 + CMI ledger rem.title",
+        "transform": "applyCustomerFacingOpportunityTitleContract / toOpportunityListDto",
+        "ui": "card name, drawer header, overview identity",
+        "export": "CSV Opportunity Name / displayTitle",
+        "tests": "test:gdi-customer-facing-opportunity-title-contract-v1; test:gdi-title-sourcing-commercial-consistency-v1"
+      },
+      {
+        "field": "hotelSourcingStatusLabel",
+        "source": "composeCustomerFacingHotelSourcingLabel (competitorVenueStatus × targetHotelSourcingStatus)",
+        "transform": "sanitizeCommercialPresentation → DTO → overview.hotelSourcing",
+        "ui": "card meta, overview Hotel Sourcing",
+        "export": "CSV Hotel Sourcing",
+        "tests": "test:gdi-title-sourcing-commercial-consistency-v1"
+      },
+      {
+        "field": "demandSegment / opportunityType",
+        "source": "demandSegmentId + opportunity-type-filter-v1 (14 segments)",
+        "transform": "normalizeOpportunityDemandClassification; never CMI as type",
+        "ui": "Opportunity Type filter + segment labels",
+        "export": "CSV Demand Segment",
+        "tests": "test:gdi-opportunity-type-classification-v1"
+      },
+      {
+        "field": "marketScope / inventoryPopulations",
+        "source": "annotateInventoryPopulations (HOTEL / COMPETITIVE / BOTH)",
+        "transform": "Market Scope radiogroup only — not Opportunity Type",
+        "ui": "Market Scope All/Hotel/Competitive",
+        "export": "population flags when present",
+        "tests": "test:gdi-market-scope-toggle-v1"
+      },
+      {
+        "field": "recommendedAction",
+        "source": "recommendCommercialAction + ledger remediation + drawer model",
+        "transform": "sanitizeRecommendedActionForSourcing; strip action-prefix dupes",
+        "ui": "sales-action pill + Recommended Next Step",
+        "export": "CSV Recommended Action",
+        "tests": "test:gdi-title-sourcing-commercial-consistency-v1; commercial-contradiction-detector"
+      },
+      {
+        "field": "primaryContact / tileContactPreview",
+        "source": "sanitizeOpportunityForCustomerPresentation → universal-tile-contact-preview",
+        "transform": "scalingTwoContactStandard + Surfe on-demand reveal",
+        "ui": "card contact footer + Who to Contact",
+        "export": "CSV contact columns",
+        "tests": "test:gdi-surfe-on-demand-contact-reveal-v1; test:gdi-compact-tile-contact-v1"
+      },
+      {
+        "field": "hotelFeedback (Validation/Action/Outcome)",
+        "source": "feedback.json / Airtable hotel feedback persistence",
+        "transform": "presentation-only; never rewritten by research sanitize",
+        "ui": "drawer Hotel Validation / Action / Outcome",
+        "export": "not commercial CSV overwrite",
+        "tests": "hotel-feedback persistence suites"
+      }
+    ]
+  },
+  "scope": {
+    "hotelsScanned": 17,
+    "hotelIds": [
+      "gdi_hotel_renaissance_times_square",
+      "gdi_hotel_waterstone_boca_raton",
+      "rec2PVBDavppGpenm",
+      "rec35fExUxCClpOP6",
+      "rec82D9zpB8fede1I",
+      "recFaxTEFF9ILHWC9",
+      "recG66DQJKP2c0UNh",
+      "recGkME49yYuxQl0u",
+      "recIwaP1etgx2g9nA",
+      "recKRJjcPnb4tVDDS",
+      "recLuxvwwxID7U2B8",
+      "recUOyzOXn2Zdp98I",
+      "rece0or38cxo3Fymb",
+      "recgMYovrrZDJMqzX",
+      "recjhQdAUiSyxfCqE",
+      "recnPB3Q02NO8Ma1o",
+      "recrPQcZg7SFARRb2"
+    ],
+    "totalOpportunities": 699
+  },
+  "score": {
+    "overall": 85.6,
+    "presentation": 100,
+    "researchQueue": 52,
+    "note": "No P0/P1 presentation defects; research-queue classification gaps remain and prevent a perfect overall score."
+  },
+  "totals": {
+    "issues": 64,
+    "bySeverity": {
+      "P0": 0,
+      "P1": 0,
+      "P2": 0,
+      "P3": 0,
+      "REVIEW_REQUIRED": 64
+    },
+    "byCategory": {
+      "CLASSIFICATION": 64
+    },
+    "confirmedDefects": 0,
+    "reviewRequired": 64
+  },
+  "hotelSummaries": [
+    {
+      "hotelId": "gdi_hotel_renaissance_times_square",
+      "opportunityCount": 16,
+      "issueCount": 0,
+      "bySeverity": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "REVIEW_REQUIRED": 0
+      }
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "opportunityCount": 29,
+      "issueCount": 0,
+      "bySeverity": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "REVIEW_REQUIRED": 0
+      }
+    },
+    {
+      "hotelId": "rec2PVBDavppGpenm",
+      "opportunityCount": 41,
+      "issueCount": 7,
+      "bySeverity": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "REVIEW_REQUIRED": 7
+      }
+    },
+    {
+      "hotelId": "rec35fExUxCClpOP6",
+      "opportunityCount": 45,
+      "issueCount": 1,
+      "bySeverity": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "REVIEW_REQUIRED": 1
+      }
+    },
+    {
+      "hotelId": "rec82D9zpB8fede1I",
+      "opportunityCount": 20,
+      "issueCount": 7,
+      "bySeverity": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "REVIEW_REQUIRED": 7
+      }
+    },
+    {
+      "hotelId": "recFaxTEFF9ILHWC9",
+      "opportunityCount": 26,
+      "issueCount": 6,
+      "bySeverity": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "REVIEW_REQUIRED": 6
+      }
+    },
+    {
+      "hotelId": "recG66DQJKP2c0UNh",
+      "opportunityCount": 72,
+      "issueCount": 12,
+      "bySeverity": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "REVIEW_REQUIRED": 12
+      }
+    },
+    {
+      "hotelId": "recGkME49yYuxQl0u",
+      "opportunityCount": 8,
+      "issueCount": 2,
+      "bySeverity": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "REVIEW_REQUIRED": 2
+      }
+    },
+    {
+      "hotelId": "recIwaP1etgx2g9nA",
+      "opportunityCount": 8,
+      "issueCount": 3,
+      "bySeverity": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "REVIEW_REQUIRED": 3
+      }
+    },
+    {
+      "hotelId": "recKRJjcPnb4tVDDS",
+      "opportunityCount": 77,
+      "issueCount": 5,
+      "bySeverity": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "REVIEW_REQUIRED": 5
+      }
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "opportunityCount": 59,
+      "issueCount": 0,
+      "bySeverity": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "REVIEW_REQUIRED": 0
+      }
+    },
+    {
+      "hotelId": "recUOyzOXn2Zdp98I",
+      "opportunityCount": 29,
+      "issueCount": 8,
+      "bySeverity": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "REVIEW_REQUIRED": 8
+      }
+    },
+    {
+      "hotelId": "rece0or38cxo3Fymb",
+      "opportunityCount": 13,
+      "issueCount": 0,
+      "bySeverity": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "REVIEW_REQUIRED": 0
+      }
+    },
+    {
+      "hotelId": "recgMYovrrZDJMqzX",
+      "opportunityCount": 36,
+      "issueCount": 0,
+      "bySeverity": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "REVIEW_REQUIRED": 0
+      }
+    },
+    {
+      "hotelId": "recjhQdAUiSyxfCqE",
+      "opportunityCount": 30,
+      "issueCount": 10,
+      "bySeverity": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "REVIEW_REQUIRED": 10
+      }
+    },
+    {
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "opportunityCount": 82,
+      "issueCount": 1,
+      "bySeverity": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "REVIEW_REQUIRED": 1
+      }
+    },
+    {
+      "hotelId": "recrPQcZg7SFARRb2",
+      "opportunityCount": 108,
+      "issueCount": 2,
+      "bySeverity": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "REVIEW_REQUIRED": 2
+      }
+    }
+  ]
+}

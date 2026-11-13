@@ -206,10 +206,17 @@ check("dual_class_unique_id_not_inflated", () => {
   assert.ok(verified.length <= 7);
   for (const o of verified) {
     assert.ok(manifest.baselineIds.includes(o.id));
-    assert.ok(o.inventoryPopulations.includes("SALES_OPPORTUNITIES"));
     assert.ok(
       o.inventoryPopulations.includes("COMPETITIVE_MARKET_INTELLIGENCE")
     );
+    // Confirmed competitor bookings without independent target-hotel demand
+    // stay Competitive-only (not Hotel / SALES_OPPORTUNITIES).
+    if (o.hotelMarketScopeEligible === false) {
+      assert.ok(
+        !o.inventoryPopulations.includes("SALES_OPPORTUNITIES"),
+        `${o.id} must not inflate Hotel scope`
+      );
+    }
   }
   assert.equal(
     new Set(verified.map((o) => o.id)).size,
@@ -218,8 +225,18 @@ check("dual_class_unique_id_not_inflated", () => {
   );
 });
 
-check("csv_still_has_64_columns", () => {
-  assert.equal(GDI_CUSTOMER_CSV_HEADERS.length, 64);
+check("csv_includes_competitive_future_cycle_columns", () => {
+  // Prior lock was 64; +3 columns for competitive/future-cycle presentation parity.
+  assert.equal(GDI_CUSTOMER_CSV_HEADERS.length, 67);
+  assert.ok(
+    GDI_CUSTOMER_CSV_HEADERS.includes("Competitive Commercial Action")
+  );
+  assert.ok(
+    GDI_CUSTOMER_CSV_HEADERS.includes("Confirmed Competitor Business")
+  );
+  assert.ok(
+    GDI_CUSTOMER_CSV_HEADERS.includes("Potential Future Opportunity")
+  );
 });
 
 check("fixture_cases_cover_required_scenarios", () => {

@@ -589,10 +589,18 @@
   }
 
   /**
-   * Pill 2 — Recommended Sales Action (eight approved labels). Always a colored badge.
-   * Never Commercial Stage terminology.
+   * Competitive verification status (Verified / Needs Verification / Historical)
+   * is drawer + data only — never rendered on opportunity cards.
+   * Kept as a no-op helper so callers/tests can assert card omission safely.
    */
-  function competitiveStatusPillHtml(it, linked) {
+  function competitiveStatusPillHtml(/* it, linked */) {
+    return "";
+  }
+
+  /**
+   * Drawer-facing verification status label HTML (not used on cards).
+   */
+  function competitiveVerificationStatusDrawerHtml(it, linked) {
     it = it || {};
     linked = linked || {};
     var pops = opportunityInventoryPopulations(linked.id ? linked : it);
@@ -606,7 +614,7 @@
     var status = opportunityCompetitiveStatus(linked.id ? linked : it);
     var map = {
       VERIFIED: {
-        label: "Verified Competitive",
+        label: "Verified",
         cls: "gdi-pill gdi-pill-cmi gdi-pill-cmi-verified",
       },
       NEEDS_VERIFICATION: {
@@ -614,7 +622,7 @@
         cls: "gdi-pill gdi-pill-cmi gdi-pill-cmi-needs",
       },
       HISTORICAL: {
-        label: "Historical Competitive",
+        label: "Historical",
         cls: "gdi-pill gdi-pill-cmi gdi-pill-cmi-historical",
       },
     };
@@ -636,6 +644,133 @@
       esc(m.label) +
       "</span>"
     );
+  }
+
+  /**
+   * Drawer sections: Confirmed Competitor Business vs Potential Future Opportunity.
+   * Evidence-backed only — never invents next-edition dates or open RFPs.
+   */
+  function competitiveFutureCycleSectionsHtml(o) {
+    o = o || {};
+    var pres = o.competitiveFutureCyclePresentation || null;
+    if (!pres || !pres.showSplitPresentation) return "";
+
+    function metaRow(label, value) {
+      if (value == null || value === "") return "";
+      return (
+        '<div class="gdi-cmi-split__row"><span class="gdi-cmi-split__label">' +
+        esc(label) +
+        '</span><span class="gdi-cmi-split__value">' +
+        esc(value) +
+        "</span></div>"
+      );
+    }
+
+    function evidenceList(urls) {
+      var list = Array.isArray(urls) ? urls.filter(Boolean) : [];
+      if (!list.length) return "";
+      return (
+        '<ul class="gdi-cmi-split__evidence">' +
+        list
+          .slice(0, 5)
+          .map(function (u) {
+            if (!isSafeHttpUrl(u)) return "";
+            return (
+              '<li><a href="' +
+              esc(u) +
+              '" target="_blank" rel="noopener noreferrer">' +
+              esc(u) +
+              "</a></li>"
+            );
+          })
+          .join("") +
+        "</ul>"
+      );
+    }
+
+    var confirmed = pres.confirmedCompetitorBusiness || {};
+    var future = pres.potentialFutureOpportunity || {};
+    var parts = [];
+
+    if (confirmed.applicable) {
+      parts.push(
+        '<section class="gdi-section gdi-section--cmi-confirmed" data-section-id="confirmed_competitor_business">' +
+          "<h3>Confirmed Competitor Business</h3>" +
+          "<p>" +
+          esc(confirmed.headline || "—") +
+          "</p>" +
+          '<div class="gdi-cmi-split__meta">' +
+          metaRow("Event / edition", confirmed.eventNameEdition) +
+          metaRow("Competitor hotel", confirmed.competitorHotel) +
+          metaRow("Booking / event dates", confirmed.bookingDates) +
+          metaRow(
+            "Competitor venue status",
+            confirmed.competitorVenueStatusLabel || confirmed.competitorVenueStatus
+          ) +
+          metaRow(
+            "Target-hotel sourcing",
+            confirmed.currentSourcingStatusLabel || confirmed.currentSourcingStatus
+          ) +
+          "</div>" +
+          (confirmed.evidenceUrls && confirmed.evidenceUrls.length
+            ? "<p><strong>Evidence</strong></p>" +
+              evidenceList(confirmed.evidenceUrls)
+            : "") +
+          "</section>"
+      );
+    }
+
+    if (future.applicable) {
+      parts.push(
+        '<section class="gdi-section gdi-section--cmi-future" data-section-id="potential_future_opportunity">' +
+          "<h3>Potential Future Opportunity</h3>" +
+          "<p>" +
+          esc(future.headline || "—") +
+          "</p>" +
+          '<div class="gdi-cmi-split__meta">' +
+          metaRow("Potential next edition", future.nextEditionHint) +
+          metaRow("Expected timing", future.expectedTiming) +
+          metaRow(
+            "Future hotel selection known?",
+            future.futureHotelSelectionKnown === true
+              ? "Yes"
+              : future.applicable
+                ? "No — not confirmed"
+                : null
+          ) +
+          metaRow("Why this hotel may be a candidate", future.whyTargetHotelCandidate) +
+          metaRow(
+            "Recommended sales action",
+            // Action body only — label lives on the competitive action banner /
+            // sales-action pill. Never concatenate "Qualify Overflow — …".
+            future.recommendedSalesAction ||
+              o.competitiveCommercialActionLabel ||
+              null
+          ) +
+          "</div></section>"
+      );
+    }
+
+    if (
+      o.competitiveCommercialActionLabel &&
+      (confirmed.applicable || future.applicable)
+    ) {
+      parts.unshift(
+        '<div class="gdi-cmi-action-banner" data-competitive-action="' +
+          esc(o.competitiveCommercialActionKey || "") +
+          '"><strong>' +
+          esc(o.competitiveCommercialActionLabel) +
+          "</strong>" +
+          (o.competitiveStatusLabel
+            ? '<span class="gdi-muted"> · ' +
+              esc(o.competitiveStatusLabel) +
+              "</span>"
+            : "") +
+          "</div>"
+      );
+    }
+
+    return parts.join("");
   }
 
   function tileSalesActionPill(it, linked) {
@@ -1227,7 +1362,23 @@
     // Events tile meta: Organizer · Event Type · Hotel Sourcing Status
     if (isEventsTile) {
       var ov = linked.eventsOpportunityOverview || it.eventsOpportunityOverview || {};
-      if (ov.tileClassificationLine) {
+      // Prefer live composed sourcing over a stale overview tileClassificationLine
+      // that may say "Venue Confirmed" and collapse competitor vs target dimensions.
+      var liveSourcingHint =
+        linked.hotelSourcingStatusLabel ||
+        it.hotelSourcingStatusLabel ||
+        linked.targetHotelSourcingStatusLabel ||
+        it.targetHotelSourcingStatusLabel ||
+        "";
+      if (
+        ov.tileClassificationLine &&
+        !/Competitor venue confirmed|overflow sourcing unconfirmed|Future cycle to monitor/i.test(
+          liveSourcingHint
+        ) &&
+        !/Competitor venue confirmed|overflow sourcing/i.test(
+          String(ov.tileClassificationLine)
+        )
+      ) {
         return esc(ov.tileClassificationLine);
       }
       var orgShortEvents = org.replace(/\s*\([^)]*\)\s*$/, "").trim();
@@ -1253,10 +1404,14 @@
         else if (/corporate_event|other/.test(sub)) eventType = "Corporate Event";
         else eventType = "Corporate Event";
       }
+      // Prefer composed competitor-vs-target sourcing from the DTO over generic
+      // overview labels like "Venue Confirmed" (those collapse independent dimensions).
       var sourcing =
-        ov.hotelSourcing ||
         linked.hotelSourcingStatusLabel ||
         it.hotelSourcingStatusLabel ||
+        linked.targetHotelSourcingStatusLabel ||
+        it.targetHotelSourcingStatusLabel ||
+        ov.hotelSourcing ||
         linked.venueSourcingStatusLabel ||
         it.venueSourcingStatusLabel ||
         "Hotel Sourcing Unconfirmed";
@@ -1419,28 +1574,12 @@
         "</option></select></div>";
     }
 
-    var publishedValue =
-      opts.lastPublishedUpdate != null && opts.lastPublishedUpdate !== ""
-        ? opts.lastPublishedUpdate
-        : opts.lastReviewedImport != null && opts.lastReviewedImport !== ""
-          ? opts.lastReviewedImport
-          : "";
-    var lastResearchVal =
-      opts.lastResearch != null && opts.lastResearch !== ""
-        ? opts.lastResearch
-        : "History unavailable";
-    var runStatusVal =
-      opts.runStatusLabel || opts.runStatus || "History unavailable";
-    var publishedVal = publishedValue || "History unavailable";
-    var sourceVerificationHtml =
-      opts.lastSourceVerification != null && opts.lastSourceVerification !== ""
-        ? '<span class="gdi-property-bar__history-sep" aria-hidden="true">·</span>' +
-          '<span class="gdi-property-bar__history-item">' +
-          '<span class="gdi-property-bar__history-label">Last source verification:</span> ' +
-          '<span class="gdi-property-bar__history-value">' +
-          esc(opts.lastSourceVerification) +
-          "</span></span>"
-        : "";
+    var compactStatus = compactResearchStatusLabel({
+      runStatus: opts.runStatus,
+      runStatusLabel: opts.runStatusLabel,
+    });
+    var lastUpdatedDate = resolveLastUpdatedCompactDate(opts);
+    var lastUpdatedDisplay = lastUpdatedDate || "—";
     // Always render hotel-level need-date status when a property context exists.
     // Missing DTO must not hide the control — default to NOT_ESTABLISHED.
     var needDateConfig = normalizeHotelNeedDateConfigV1(
@@ -1463,15 +1602,41 @@
         "</span>" +
         '<span class="gdi-property-bar__history-sep" aria-hidden="true">·</span>'
       : "";
+    var researchCompactHtml =
+      '<span class="gdi-property-bar__history-item gdi-property-bar__history-item--research-compact" data-gdi-research-compact="1">' +
+      '<span class="gdi-property-bar__history-label">Last Updated:</span> ' +
+      '<span class="gdi-property-bar__history-value" data-gdi-last-updated="' +
+      esc(lastUpdatedDisplay) +
+      '">' +
+      esc(lastUpdatedDisplay) +
+      "</span>" +
+      '<span class="gdi-property-bar__history-sep" aria-hidden="true">·</span>' +
+      '<span class="gdi-property-bar__history-value gdi-property-bar__research-status" data-gdi-research-status="' +
+      esc(compactStatus) +
+      '">' +
+      esc(compactStatus) +
+      "</span> " +
+      researchActivityDetailsHtml({
+        popoverId: opts.researchActivityPopoverId || "gdiResearchActivityDetailsPopover",
+        lastResearchAt: opts.lastResearchAt,
+        lastResearch: opts.lastResearch,
+        lastSourceVerificationAt: opts.lastSourceVerificationAt,
+        lastSourceVerification: opts.lastSourceVerification,
+        lastPublishedUpdateAt: opts.lastPublishedUpdateAt,
+        lastPublishedUpdate: opts.lastPublishedUpdate,
+        lastReviewedImport: opts.lastReviewedImport,
+        runStatus: opts.runStatus,
+        runStatusLabel: opts.runStatusLabel,
+      }) +
+      "</span>";
 
     return (
-      '<section class="filters-section aiv-filters-section gdi-property-bar" aria-label="Property selection">' +
+      '<section class="filters-section aiv-filters-section gdi-property-bar" aria-label="Property selection" data-gdi-tour-target="filters">' +
       '<div class="gdi-property-bar__primary">' +
       propertyField +
       weeklyThisWeekFilterHtml(opts) +
       opportunityTypeFilterHtml(opts) +
       marketScopeFilterHtml(opts) +
-      competitiveStatusFilterHtml(opts) +
       (opts.actionHtml
         ? '<div class="filter-group aiv-filter-actions gdi-property-bar__actions">' +
           opts.actionHtml +
@@ -1480,24 +1645,7 @@
       "</div>" +
       '<footer class="gdi-property-bar__history" aria-label="Need Dates and research activity">' +
       needDateHistoryHtml +
-      '<span class="gdi-property-bar__history-item">' +
-      '<span class="gdi-property-bar__history-label">Last research:</span> ' +
-      '<span class="gdi-property-bar__history-value">' +
-      esc(lastResearchVal) +
-      "</span></span>" +
-      '<span class="gdi-property-bar__history-sep" aria-hidden="true">·</span>' +
-      '<span class="gdi-property-bar__history-item">' +
-      '<span class="gdi-property-bar__history-label">Run:</span> ' +
-      '<span class="gdi-property-bar__history-value">' +
-      esc(runStatusVal) +
-      "</span></span>" +
-      sourceVerificationHtml +
-      '<span class="gdi-property-bar__history-sep" aria-hidden="true">·</span>' +
-      '<span class="gdi-property-bar__history-item">' +
-      '<span class="gdi-property-bar__history-label">Last published:</span> ' +
-      '<span class="gdi-property-bar__history-value">' +
-      esc(publishedVal) +
-      "</span></span>" +
+      researchCompactHtml +
       "</footer>" +
       "</section>"
     );
@@ -1625,7 +1773,7 @@
       },
     ];
     return (
-      '<div class="filter-group gdi-market-scope-filter">' +
+      '<div class="filter-group gdi-market-scope-filter" data-gdi-tour-target="market-scope">' +
       '<span class="filter-label" id="gdiMarketScopeLabel">Market Scope</span>' +
       '<div class="gdi-market-scope" role="radiogroup" aria-labelledby="gdiMarketScopeLabel">' +
       options
@@ -1656,8 +1804,9 @@
   }
 
   /**
-   * Secondary Competitive status filter — visible only when Market Scope = Competitive.
-   * Counts are dynamic; Competitive total ≠ verified-booking total.
+   * Competitive evidence classification — card badges + detail copy only.
+   * Market Scope = Competitive shows the full competitive population; there is
+   * no secondary Competitive Status / Verification Status filter in the UI.
    */
   var COMPETITIVE_STATUS = {
     VERIFIED: "VERIFIED",
@@ -1666,6 +1815,7 @@
     NOT_COMPETITIVE: "NOT_COMPETITIVE",
   };
 
+  /** @deprecated Retained for DTO/export compatibility; UI no longer filters by status. */
   var COMPETITIVE_STATUS_FILTER = {
     ALL: "ALL_COMPETITIVE",
     VERIFIED: "VERIFIED",
@@ -1673,26 +1823,7 @@
     HISTORICAL: "HISTORICAL",
   };
 
-  function normalizeCompetitiveStatusFilter(value) {
-    var v = String(value || "")
-      .trim()
-      .toUpperCase();
-    if (!v || v === "ALL" || v === "ALL_COMPETITIVE") {
-      return COMPETITIVE_STATUS_FILTER.ALL;
-    }
-    if (v === "VERIFIED" || v === "VERIFIED_COMPETITIVE") {
-      return COMPETITIVE_STATUS_FILTER.VERIFIED;
-    }
-    if (
-      v === "NEEDS_VERIFICATION" ||
-      v === "NEEDS_FURTHER_VERIFICATION" ||
-      v === "UNVERIFIED"
-    ) {
-      return COMPETITIVE_STATUS_FILTER.NEEDS_VERIFICATION;
-    }
-    if (v === "HISTORICAL" || v === "HISTORICAL_COMPETITIVE") {
-      return COMPETITIVE_STATUS_FILTER.HISTORICAL;
-    }
+  function normalizeCompetitiveStatusFilter() {
     return COMPETITIVE_STATUS_FILTER.ALL;
   }
 
@@ -1711,10 +1842,8 @@
     return COMPETITIVE_STATUS.NOT_COMPETITIVE;
   }
 
-  function matchesCompetitiveStatusFilter(o, statusFilter) {
-    var active = normalizeCompetitiveStatusFilter(statusFilter);
-    if (active === COMPETITIVE_STATUS_FILTER.ALL) return true;
-    return opportunityCompetitiveStatus(o) === active;
+  function matchesCompetitiveStatusFilter() {
+    return true;
   }
 
   function countByCompetitiveStatus(opportunities) {
@@ -1744,75 +1873,9 @@
     return counts;
   }
 
-  function competitiveStatusFilterHtml(opts) {
-    opts = opts || {};
-    var scope = normalizeMarketScopeValue(
-      opts.activeMarketScope != null
-        ? opts.activeMarketScope
-        : MARKET_SCOPE.ALL
-    );
-    if (scope !== MARKET_SCOPE.COMPETITIVE) return "";
-    if (opts.showCompetitiveStatusFilter === false) return "";
-    var active = normalizeCompetitiveStatusFilter(
-      opts.activeCompetitiveStatus != null
-        ? opts.activeCompetitiveStatus
-        : COMPETITIVE_STATUS_FILTER.ALL
-    );
-    var counts = opts.competitiveStatusCounts || {};
-    var options = [
-      {
-        value: COMPETITIVE_STATUS_FILTER.ALL,
-        shortLabel: "All Competitive",
-        fullLabel: "All Competitive (verified + needs verification + historical)",
-        count: counts.ALL_COMPETITIVE,
-      },
-      {
-        value: COMPETITIVE_STATUS_FILTER.VERIFIED,
-        shortLabel: "Verified",
-        fullLabel: "Verified Competitive bookings",
-        count: counts.VERIFIED,
-      },
-      {
-        value: COMPETITIVE_STATUS_FILTER.NEEDS_VERIFICATION,
-        shortLabel: "Needs Verification",
-        fullLabel: "Competitive — Needs Verification",
-        count: counts.NEEDS_VERIFICATION,
-      },
-      {
-        value: COMPETITIVE_STATUS_FILTER.HISTORICAL,
-        shortLabel: "Historical",
-        fullLabel: "Historical Competitive bookings",
-        count: counts.HISTORICAL,
-      },
-    ];
-    return (
-      '<div class="filter-group gdi-competitive-status-filter">' +
-      '<span class="filter-label" id="gdiCompetitiveStatusLabel">Competitive Status</span>' +
-      '<div class="gdi-competitive-status" role="radiogroup" aria-labelledby="gdiCompetitiveStatusLabel">' +
-      options
-        .map(function (o) {
-          var selected = active === o.value;
-          var countText =
-            o.count == null || o.count === "" ? "" : " (" + o.count + ")";
-          return (
-            '<button type="button" class="gdi-competitive-status__btn' +
-            (selected ? " is-active" : "") +
-            '" role="radio" aria-checked="' +
-            (selected ? "true" : "false") +
-            '" data-gdi-competitive-status="' +
-            esc(o.value) +
-            '" title="' +
-            esc(o.fullLabel) +
-            '" aria-label="' +
-            esc(o.fullLabel + (countText || "")) +
-            '">' +
-            esc(o.shortLabel + countText) +
-            "</button>"
-          );
-        })
-        .join("") +
-      "</div></div>"
-    );
+  /** Competitive Status segmented control removed — Market Scope is sufficient. */
+  function competitiveStatusFilterHtml() {
+    return "";
   }
 
   /** Structured opportunity-type category (mirrors opportunity-type-filter-v2). */
@@ -1865,7 +1928,18 @@
     if (segment && SEGMENT_TO_FILTER[segment]) {
       return SEGMENT_TO_FILTER[segment];
     }
-    var type = String(o.opportunityType || "").toUpperCase();
+    var NON_DEMAND_TYPES = {
+      COMPETITIVE_MARKET_INTELLIGENCE: 1,
+      SALES_OPPORTUNITIES: 1,
+      ALL_COMMERCIAL_INTELLIGENCE: 1,
+      FUTURE_CYCLE: 1,
+      RESEARCH_CONTINUATION: 1,
+      CLOSED_DISQUALIFIED: 1,
+      HISTORICAL_COMPETITIVE: 1,
+      NEEDS_FURTHER_VERIFICATION: 1,
+    };
+    var typeRaw = String(o.opportunityType || "").toUpperCase();
+    var type = NON_DEMAND_TYPES[typeRaw] ? "" : typeRaw;
     var signal = String(o.demandSignalType || o.demandFamily || "")
       .trim()
       .toLowerCase();
@@ -1922,13 +1996,34 @@
       return "SPORTS_ENTERTAINMENT";
     }
     if (
+      segment === "overflow housing" ||
+      segment.indexOf("overflow housing") >= 0 ||
+      type === "OVERFLOW_HOUSING" ||
+      type === "FIXED_VENUE_OPEN_HOUSING"
+    ) {
+      return "ASSOCIATION_CONFERENCE_GROUP";
+    }
+    if (
       segment === "association" ||
       segment.indexOf("assoc") >= 0 ||
-      type === "OVERFLOW_HOUSING" ||
       type === "PRIMARY_PURSUIT" ||
-      type === "FIXED_VENUE_OPEN_HOUSING" ||
       signal.indexOf("association") >= 0 ||
       signal.indexOf("conference") >= 0
+    ) {
+      return "ASSOCIATION_CONFERENCE_GROUP";
+    }
+    if (
+      segment.indexOf("medical / scientific") >= 0 ||
+      segment.indexOf("scientific") >= 0 ||
+      segment.indexOf("university") >= 0 ||
+      segment.indexOf("education") >= 0
+    ) {
+      return "EDUCATION_SCIENTIFIC";
+    }
+    if (
+      segment === "medical" ||
+      segment === "healthcare" ||
+      segment.indexOf("healthcare") >= 0
     ) {
       return "ASSOCIATION_CONFERENCE_GROUP";
     }
@@ -2068,13 +2163,25 @@
     if (Array.isArray(o.inventoryPopulations) && o.inventoryPopulations.length) {
       return o.inventoryPopulations;
     }
-    if (o.cmiVerified === true) {
-      return [
-        INVENTORY_POPULATION_VALUES.SALES_OPPORTUNITIES,
-        INVENTORY_POPULATION_VALUES.COMPETITIVE_MARKET_INTELLIGENCE,
-      ];
+    // Fallback only when server annotation is missing. Do not force Hotel onto
+    // verified CMI — confirmed competitor bookings may be Competitive-only.
+    var pops = [];
+    if (o.hotelMarketScopeEligible === true) {
+      pops.push(INVENTORY_POPULATION_VALUES.SALES_OPPORTUNITIES);
     }
-    return [INVENTORY_POPULATION_VALUES.SALES_OPPORTUNITIES];
+    if (
+      o.competitiveMarketScopeEligible === true ||
+      o.cmiVerified === true ||
+      o.competitiveStatus === "VERIFIED" ||
+      o.competitiveStatus === "NEEDS_VERIFICATION" ||
+      o.competitiveStatus === "HISTORICAL"
+    ) {
+      pops.push(INVENTORY_POPULATION_VALUES.COMPETITIVE_MARKET_INTELLIGENCE);
+    }
+    if (!pops.length) {
+      pops.push(INVENTORY_POPULATION_VALUES.SALES_OPPORTUNITIES);
+    }
+    return pops;
   }
 
   function matchesInventoryPopulationFilter(o, filterValue) {
@@ -2163,6 +2270,9 @@
     ];
     Object.keys(OPPORTUNITY_TYPE_FILTER_LABELS).forEach(function (value) {
       if (isInventoryPopulationFilter(value)) return;
+      // Never expose Other / Unclassified as a customer-facing filter option.
+      // Invalid classifications are flagged by internal validation instead.
+      if (value === "OTHER_UNCLASSIFIED") return;
       var n = counts[value] || 0;
       if (n > 0) {
         options.push({
@@ -2323,12 +2433,12 @@
 
   var GDI_MAIN_TAB = {
     id: "opportunities",
-    label: "Opportunities",
+    label: "Group & Demand\nOpportunities",
   };
 
   var GDI_PRIORITIES_TAB = {
     id: "priorities",
-    label: "Hotel Need Times\n& Priorities",
+    label: "Commercial Priorities",
   };
 
   var GDI_CUSTOMER_TABS = [GDI_MAIN_TAB, GDI_PRIORITIES_TAB];
@@ -2372,6 +2482,163 @@
     return "Research Completed";
   }
 
+  /**
+   * Executive compact status for the property-bar main line.
+   * Maps completed → "Research Complete"; preserves incomplete / failed / never-run.
+   */
+  function compactResearchStatusLabel(summaryOrLabel) {
+    var base =
+      summaryOrLabel && typeof summaryOrLabel === "object"
+        ? customerSafeRunStatusLabel(summaryOrLabel)
+        : customerSafeRunStatusLabel({
+            runStatusLabel: summaryOrLabel,
+            runStatus: summaryOrLabel,
+          });
+    if (/^Research Completed$/i.test(base)) return "Research Complete";
+    return base;
+  }
+
+  /** Concise calendar date only — no time, seconds, or timezone. */
+  function formatCompactResearchDate(isoOrValue) {
+    if (isoOrValue == null || isoOrValue === "") return null;
+    var raw = String(isoOrValue).trim();
+    if (!raw || /^history unavailable$/i.test(raw) || raw === "—" || raw === "-") {
+      return null;
+    }
+    var isoDay = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (isoDay) {
+      try {
+        var utc = new Date(
+          Date.UTC(
+            Number(isoDay[1]),
+            Number(isoDay[2]) - 1,
+            Number(isoDay[3])
+          )
+        );
+        return (
+          utc.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            timeZone: "UTC",
+          }) || null
+        );
+      } catch (e) {
+        return isoDay[1] + "-" + isoDay[2] + "-" + isoDay[3];
+      }
+    }
+    // Already-formatted history strings: strip time / timezone tails.
+    var stripped = raw
+      .replace(
+        /,?\s+\d{1,2}:\d{2}(?::\d{2})?\s*(?:AM|PM)?(?:\s*[A-Z]{2,5})?$/i,
+        ""
+      )
+      .replace(/\s+at\s+\d{1,2}:\d{2}.*$/i, "")
+      .trim();
+    return stripped || null;
+  }
+
+  /**
+   * Last Updated uses authoritative research timestamp only.
+   * Never substitutes publication or source-verification activity.
+   */
+  function resolveLastUpdatedCompactDate(opts) {
+    opts = opts || {};
+    var fromIso = formatCompactResearchDate(opts.lastResearchAt);
+    if (fromIso) return fromIso;
+    var fromDisplay = formatCompactResearchDate(opts.lastResearch);
+    if (fromDisplay) return fromDisplay;
+    return null;
+  }
+
+  function formatResearchActivityDetailTimestamp(isoOrValue) {
+    if (isoOrValue == null || isoOrValue === "") return "History unavailable";
+    var raw = String(isoOrValue).trim();
+    if (!raw) return "History unavailable";
+    if (/history unavailable/i.test(raw)) return "History unavailable";
+    var d = new Date(raw);
+    if (!isNaN(d.getTime()) && /^\d{4}-\d{2}-\d{2}/.test(raw)) {
+      try {
+        return (
+          d.toLocaleString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            timeZoneName: "short",
+          }) || raw
+        );
+      } catch (e) {
+        return d.toISOString();
+      }
+    }
+    return raw;
+  }
+
+  function researchActivityDetailsHtml(opts) {
+    opts = opts || {};
+    var popoverId = opts.popoverId || "gdiResearchActivityDetailsPopover";
+    var btnId = opts.buttonId || popoverId + "Btn";
+    var titleId = popoverId + "Title";
+    var statusLabel = compactResearchStatusLabel(
+      opts.runStatus || opts.runStatusLabel
+        ? { runStatus: opts.runStatus, runStatusLabel: opts.runStatusLabel }
+        : opts.runStatusLabel || "History unavailable"
+    );
+    var researchDetail = formatResearchActivityDetailTimestamp(
+      opts.lastResearchAt || opts.lastResearch
+    );
+    var verificationDetail = formatResearchActivityDetailTimestamp(
+      opts.lastSourceVerificationAt || opts.lastSourceVerification
+    );
+    var publishedDetail = formatResearchActivityDetailTimestamp(
+      opts.lastPublishedUpdateAt ||
+        opts.lastPublishedUpdate ||
+        opts.lastReviewedImport
+    );
+    function detailRow(label, value) {
+      return (
+        '<div class="gdi-research-activity-details__row">' +
+        '<span class="gdi-research-activity-details__label">' +
+        esc(label) +
+        "</span>" +
+        '<span class="gdi-research-activity-details__value">' +
+        esc(value) +
+        "</span></div>"
+      );
+    }
+    return (
+      '<div class="gdi-need-date-legend-wrap gdi-research-activity-details-wrap">' +
+      '<button type="button" class="gdi-need-date-info-btn gdi-research-activity-info-btn" id="' +
+      esc(btnId) +
+      '" aria-expanded="false" aria-controls="' +
+      esc(popoverId) +
+      '" aria-haspopup="dialog" title="Research activity details">' +
+      gdiSvgInfoCircle() +
+      '<span class="gdi-sr-only">Research, verification, and publication timestamps</span>' +
+      "</button>" +
+      '<div class="gdi-need-date-legend-popover gdi-research-activity-details-popover" id="' +
+      esc(popoverId) +
+      '" role="dialog" aria-modal="false" aria-labelledby="' +
+      esc(titleId) +
+      '" hidden>' +
+      '<div class="gdi-need-date-legend-popover__header">' +
+      '<h3 id="' +
+      esc(titleId) +
+      '">Research activity</h3>' +
+      '<button type="button" class="gdi-need-date-legend-close" aria-label="Close research activity details">×</button>' +
+      "</div>" +
+      '<div class="gdi-need-date-legend-popover__body gdi-research-activity-details__body">' +
+      detailRow("Last research", researchDetail) +
+      detailRow("Research status", statusLabel) +
+      detailRow("Last source verification", verificationDetail) +
+      detailRow("Last published", publishedDetail) +
+      '<p class="gdi-research-activity-details__note">Last Updated reflects completed research only — not verification or publication activity.</p>' +
+      "</div></div></div>"
+    );
+  }
+
   function formatTabLabel(label) {
     var raw = String(label == null ? "" : label);
     if (raw.indexOf("\n") >= 0) {
@@ -2383,6 +2650,21 @@
         .join("<br>");
     }
     return esc(raw).replace(/\s+/g, "<br>");
+  }
+
+  function howToReadReportButtonHtml() {
+    return (
+      '<button type="button" class="adp-howto-read-btn" id="gdiHowToReadReport"' +
+      ' data-gdi-guided-tour-entry="1" data-dealality-guided-tour-entry="1"' +
+      ' aria-label="How to Read This Report">' +
+      '<svg class="adp-howto-read-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">' +
+      '<circle cx="12" cy="12" r="9"></circle>' +
+      '<path d="M12 11v5"></path>' +
+      '<circle cx="12" cy="8" r="0.75" fill="currentColor" stroke="none"></circle>' +
+      "</svg>" +
+      '<span class="adp-howto-read-btn__label">How to Read This Report</span>' +
+      "</button>"
+    );
   }
 
   function contentTabsHtml(activeTab, tabs) {
@@ -2397,7 +2679,7 @@
     };
     if (!tabs.length) return "";
     return (
-      '<nav class="bdd-section-nav aiv-section-nav gdi-section-nav" aria-label="Group & Demand views" role="tablist">' +
+      '<nav class="bdd-section-nav aiv-section-nav gdi-section-nav gdi-section-nav-with-tour adp-section-nav-with-tour" aria-label="Group & Demand views" role="tablist" data-gdi-guided-tour-tab-row="1">' +
       tabs
         .map(function (t) {
           var isActive = activeTab === t.id;
@@ -2443,6 +2725,9 @@
           );
         })
         .join("") +
+      '<div class="adp-section-nav__actions gdi-section-nav__actions">' +
+      howToReadReportButtonHtml() +
+      "</div>" +
       "</nav>"
     );
   }
@@ -3096,21 +3381,13 @@
         filters.booking = "";
         filters.weekly = "";
         filters.opportunityType = "";
-        if (normalizeMarketScopeValue(filters.marketScope) !== MARKET_SCOPE.COMPETITIVE) {
-          filters.competitiveStatus = COMPETITIVE_STATUS_FILTER.ALL;
-        }
-      } else if (changedKey === "competitiveStatus") {
-        filters.priority = "";
-        filters.booking = "";
-        filters.weekly = "";
       }
     }
-    if (normalizeMarketScopeValue(filters.marketScope) !== MARKET_SCOPE.COMPETITIVE) {
-      filters.competitiveStatus = COMPETITIVE_STATUS_FILTER.ALL;
-    } else {
-      filters.competitiveStatus = normalizeCompetitiveStatusFilter(
-        filters.competitiveStatus
-      );
+    // Competitive Status UI removed — never leave a status filter affecting counts.
+    filters.competitiveStatus = COMPETITIVE_STATUS_FILTER.ALL;
+    // Competitor chip removed from Sales Opportunities — clear stale selection.
+    if (filters.salesOpportunity === SALES_OPPORTUNITY_FILTER.COMPETITOR_CAPTURE) {
+      filters.salesOpportunity = "";
     }
     return filters;
   }
@@ -3130,6 +3407,77 @@
       competitiveStatus: COMPETITIVE_STATUS_FILTER.ALL,
     };
   }
+
+  /**
+   * Active browse-filter count for Reset View badge (Radar / Brand Explorer pattern).
+   * Counts each non-default filter once. Does not count hotel/Property identity
+   * (Reset View does not change hotel). Defaults match resetBrowseFilters / All.
+   */
+  function countActiveBrowseFilters(filters) {
+    filters = filters || {};
+    var defaults = resetBrowseFilters();
+    var count = 0;
+    var stringKeys = [
+      "priority",
+      "booking",
+      "commercialStage",
+      "salesOpportunity",
+      "segment",
+      "territory",
+      "weekly",
+      "opportunityType",
+      "workflow",
+    ];
+    stringKeys.forEach(function (key) {
+      var value = String(filters[key] == null ? "" : filters[key]).trim();
+      var def = String(defaults[key] == null ? "" : defaults[key]).trim();
+      if (value && value !== def) count += 1;
+    });
+    if (
+      String(filters.sourcingSubgroup || HOTEL_SOURCING_SUBGROUP.BOTH) !==
+      HOTEL_SOURCING_SUBGROUP.BOTH
+    ) {
+      count += 1;
+    }
+    if (normalizeMarketScopeValue(filters.marketScope) !== MARKET_SCOPE.ALL) {
+      count += 1;
+    }
+    if (
+      typeof normalizeCompetitiveStatusFilter === "function" &&
+      normalizeCompetitiveStatusFilter(filters.competitiveStatus) !==
+        COMPETITIVE_STATUS_FILTER.ALL
+    ) {
+      count += 1;
+    }
+    return count;
+  }
+
+  /**
+   * Reset View control with purple active-filter badge (shared Dealality pattern).
+   */
+  function resetViewButtonHtml(opts) {
+    opts = opts || {};
+    var count =
+      opts.activeFilterCount != null
+        ? Number(opts.activeFilterCount) || 0
+        : countActiveBrowseFilters(opts.filters);
+    if (count < 0) count = 0;
+    var badge =
+      '<span class="filter-count-badge" id="gdiFilterCountBadge"' +
+      (count > 0
+        ? ' aria-label="' + esc(String(count)) + ' active filters">'
+        : ' style="display: none;" aria-hidden="true">') +
+      esc(String(count)) +
+      "</span>";
+    return (
+      '<button type="button" class="btn-clear" id="gdiResetViewBtn"' +
+      ' aria-label="Reset View">' +
+      "Reset View" +
+      badge +
+      "</button>"
+    );
+  }
+
 
   function weeklyDeltaStateOf(opp) {
     opp = opp || {};
@@ -3183,21 +3531,10 @@
     );
   }
 
-  function weeklyDeltaHeaderSummaryHtml(counts) {
-    counts = counts || {};
-    var parts = [];
-    if (counts.updated > 0) {
-      parts.push(counts.updated + " updated");
-    }
-    if (counts.reactivated > 0) {
-      parts.push(counts.reactivated + " reactivated");
-    }
-    if (!parts.length) return "";
-    return (
-      '<div class="gdi-weekly-summary" role="status">' +
-      esc(parts.join(" · ")) +
-      "</div>"
-    );
+  function weeklyDeltaHeaderSummaryHtml(/* counts */) {
+    // Former "N updated · N reactivated" browse header counter — removed (UI only).
+    // Weekly Change filters and per-tile delta pills remain; counts stay in DTOs.
+    return "";
   }
 
   function weeklyDeltaPresetHtml(opts) {
@@ -3428,10 +3765,10 @@
       "</div>" +
       '<div class="results-toolbar-sort">' +
       (exportHref
-        ? '<a class="gdi-export-btn" id="gdiExportCsvBtn" href="' +
+        ? '<a class="gdi-export-btn" id="gdiExportCsvBtn" data-gdi-tour-target="export" href="' +
           esc(exportHref) +
           '" download>Export CSV</a>'
-        : '<button type="button" class="gdi-export-btn" id="gdiExportCsvBtn">Export CSV</button>') +
+        : '<button type="button" class="gdi-export-btn" id="gdiExportCsvBtn" data-gdi-tour-target="export">Export CSV</button>') +
       '<button type="button" class="sort-icon" id="gdiSortDirBtn" title="Toggle sort direction" aria-label="Toggle sort direction">⇅</button>' +
       '<div class="filter-group filter-group-sort">' +
       '<select class="filter-select sort-select" id="gdiSortSelect" aria-label="Sort opportunities">' +
@@ -3566,17 +3903,7 @@
         return matchesMarketScopeFilter(o, filters.marketScope);
       });
     }
-    if (
-      normalizeMarketScopeValue(filters.marketScope) ===
-        MARKET_SCOPE.COMPETITIVE &&
-      filters.competitiveStatus &&
-      normalizeCompetitiveStatusFilter(filters.competitiveStatus) !==
-        COMPETITIVE_STATUS_FILTER.ALL
-    ) {
-      rows = rows.filter(function (o) {
-        return matchesCompetitiveStatusFilter(o, filters.competitiveStatus);
-      });
-    }
+    // Competitive Status filter retired — Competitive scope shows the full CMI set.
     if (filters.opportunityType) {
       rows = rows.filter(function (o) {
         // Legacy safety: population values belong to Market Scope, not type.
@@ -4287,12 +4614,13 @@
 
   /**
    * Universal tile contact footer V2 — ONE name + verified professional title
-   * (else opportunity role, else Role Not Yet Verified). Or Buyer Not Yet Identified.
+   * (else opportunity role, else Role Not Yet Verified). Or Contact Research Required.
    * Never shows Contact Under Review / eligibility enums on the tile.
    */
   function resolveTileContactPreviewBlock(it, linked) {
     linked = linked || {};
     it = it || {};
+    var CONTACT_RESEARCH_REQUIRED = "Contact Research Required";
     var preview =
       linked.tileContactPreview ||
       it.tileContactPreview ||
@@ -4345,9 +4673,10 @@
     if (
       preview &&
       (preview.kind === "none" ||
+        preview.displayName === CONTACT_RESEARCH_REQUIRED ||
         preview.displayName === "Buyer Not Yet Identified")
     ) {
-      return { kind: "none", name: "Buyer Not Yet Identified", role: "" };
+      return { kind: "none", name: CONTACT_RESEARCH_REQUIRED, role: "" };
     }
     // Client fallback when DTO missing — title first, then opportunity role.
     function fallbackRoleFromPerson(person) {
@@ -4420,7 +4749,7 @@
         role: toProperCaseContactRoleLabel(fallbackRoleFromPerson(sc)),
       };
     }
-    return { kind: "none", name: "Buyer Not Yet Identified", role: "" };
+    return { kind: "none", name: CONTACT_RESEARCH_REQUIRED, role: "" };
   }
 
   function compactTileContactHtml(block) {
@@ -4428,7 +4757,7 @@
     if (block.kind === "none" || block.kind === "empty" || !block.name) {
       return (
         '<div class="brand-card__contact-name brand-card__contact-name--unidentified">' +
-        esc(block.name || "Buyer Not Yet Identified") +
+        esc(block.name || "Contact Research Required") +
         "</div>"
       );
     }
@@ -4785,7 +5114,9 @@
 
   function bindNeedDateLegendInteractions(root) {
     root = root || document;
-    var wraps = root.querySelectorAll(".gdi-need-date-legend-wrap");
+    var wraps = root.querySelectorAll(
+      ".gdi-need-date-legend-wrap, .gdi-research-activity-details-wrap"
+    );
     wraps.forEach(function (wrap) {
       var btn = wrap.querySelector(".gdi-need-date-info-btn");
       var pop = wrap.querySelector(".gdi-need-date-legend-popover");
@@ -5530,7 +5861,7 @@
       tone +
       '" data-open="' +
       esc(id) +
-      '" role="button" tabindex="0">' +
+      '" data-gdi-tour-target="opportunity-card" role="button" tabindex="0">' +
       '<div class="brand-card__header brand-card__header--no-logo">' +
       '<div class="brand-card__info">' +
       '<div class="brand-card__name-row">' +
@@ -5540,9 +5871,10 @@
       revenueStreamIconsHtml(it, linked) +
       needDateIntelligenceIconHtml(it, linked) +
       "</div>" +
-      '<div class="brand-card__pills gdi-tile-pills">' +
+      '<div class="brand-card__pills gdi-tile-pills" data-gdi-tour-target="card-signals">' +
       tilePriorityPill(priorityKey, activeFilters) +
-      competitiveStatusPillHtml(it, linked) +
+      // Verification status (Verified / Needs Verification / Historical) is
+      // drawer-only — never on opportunity cards.
       tileSalesActionPill(it, linked) +
       tileEventDatePill(it, linked) +
       "</div>" +
@@ -5587,7 +5919,7 @@
       "</div>" +
       '<button type="button" class="brand-card__more-btn" data-open="' +
       esc(id) +
-      '">View Details</button></div></article>'
+      '" data-gdi-tour-target="view-details">View Details</button></div></article>'
     );
   }
 
@@ -5611,7 +5943,7 @@
       (mode === "list" ? " gdi-results-grid--list" : "") +
       '" data-gdi-view-mode="' +
       mode +
-      '">' +
+      '" data-gdi-tour-target="opportunity-list">' +
       cards +
       "</div>"
     );
@@ -5703,11 +6035,7 @@
         label: SALES_OPPORTUNITY_FILTER_LABEL.FUTURE_GROUP_BUSINESS,
         swatch: SALES_OPPORTUNITY_SWATCH.FUTURE_GROUP_BUSINESS,
       },
-      {
-        value: "COMPETITOR_CAPTURE",
-        label: SALES_OPPORTUNITY_FILTER_LABEL.COMPETITOR_CAPTURE,
-        swatch: SALES_OPPORTUNITY_SWATCH.COMPETITOR_CAPTURE,
-      },
+      // COMPETITOR_CAPTURE chip removed — Market Scope Competitive covers CMI.
       {
         value: "PARTNERSHIP_OPPORTUNITIES",
         label: SALES_OPPORTUNITY_FILTER_LABEL.PARTNERSHIP_OPPORTUNITIES,
@@ -6293,15 +6621,66 @@
   }
 
   function surfeCtaLabel(channel) {
-    if (channel === "email") return "Find email";
-    if (channel === "phone") return "Find phone";
-    return "Find email & phone";
+    if (channel === "email") return "Find Email";
+    if (channel === "phone") return "Find Phone";
+    return "Find Email & Phone";
+  }
+
+  /**
+   * Derive Surfe CTA channel from named-contact channel gaps when the DTO
+   * already carries eligibility — or recompute as a safe UI fallback.
+   */
+  function resolveSurfeEnrichmentChannel(slot) {
+    slot = slot || {};
+    var named =
+      slot.customerFacingNamed === true ||
+      looksLikePersonNameLocal(slot.name);
+    if (!named || !slot.name) return null;
+    var existing = String(slot.surfeEnrichmentChannel || "")
+      .trim()
+      .toLowerCase();
+    if (
+      (slot.surfeEnrichmentEligible === true || existing) &&
+      (existing === "email" || existing === "phone" || existing === "both")
+    ) {
+      return existing;
+    }
+    var missingEmail = !String(slot.email || "").trim();
+    var missingPhone = !String(slot.phone || "").trim();
+    if (missingEmail && missingPhone) return "both";
+    if (missingEmail) return "email";
+    if (missingPhone) return "phone";
+    return null;
   }
 
   /** Strip internal eligibility enums from customer-facing Why relevant copy. */
-  function scrubCustomerContactWhyProse(raw) {
+  function scrubCustomerContactWhyProse(raw, opts) {
+    opts = opts || {};
     var s = String(raw || "").replace(/\s+/g, " ").trim();
-    if (!s) return "";
+    if (!s || s === "—" || s === "-" || s === "–") return "";
+    var contactName = String(opts.contactName || "").trim();
+    if (contactName) {
+      // Drop redundant "Referral contact: {Name}" when the slot already names them.
+      var escaped = contactName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      s = s.replace(
+        new RegExp(
+          "^(?:Referral\\s+contact|Alternative\\s*/?\\s*referral\\s+contact|Suggested\\s+contact)\\s*:\\s*" +
+            escaped +
+            "\\.?$",
+          "i"
+        ),
+        ""
+      );
+      s = s.replace(
+        new RegExp(
+          "^(?:Referral\\s+contact|Alternative\\s*/?\\s*referral\\s+contact)\\s*:\\s*" +
+            escaped +
+            "\\s*[—–-]\\s*",
+          "i"
+        ),
+        ""
+      );
+    }
     s = s
       .replace(/\bCONTACT_RELEVANT\b\.?\s*/gi, "")
       .replace(/\bINELIGIBLE_UNSPECIFIED\b\.?\s*/gi, "")
@@ -6310,6 +6689,7 @@
       .replace(/\s{2,}/g, " ")
       .replace(/^[\s.;:—-]+/, "")
       .trim();
+    if (!s || s === "—" || s === "-" || s === "–") return "";
     return s;
   }
 
@@ -6336,7 +6716,7 @@
       ) {
         return (
           '<p class="gdi-contact-quality-quiet">' +
-          esc(slot.researchGapCopy || "Buyer Not Yet Identified.") +
+          esc(slot.researchGapCopy || "Contact Research Required.") +
           "</p>"
         );
       }
@@ -6346,7 +6726,7 @@
         esc(slot.displayLabel || "Contact") +
         "</h4>" +
         '<p class="gdi-contact-quality-quiet">' +
-        esc(slot.researchGapCopy || "Buyer Not Yet Identified.") +
+        esc(slot.researchGapCopy || "Contact Research Required.") +
         "</p>" +
         (slot.organizationEmail
           ? "<p><strong>" +
@@ -6392,23 +6772,39 @@
       : slot.customerFacingNamed && !slot.email && !slot.phone
         ? '<p class="gdi-contact-kind-label"><strong>Contact path:</strong> Named person — profile / referral route</p>'
         : "";
+    var surfeChannel = resolveSurfeEnrichmentChannel(slot);
     var surfeBtn = "";
-    if (slot.surfeEnrichmentEligible && slot.surfeEnrichmentChannel && slot.name) {
+    var shareSurface =
+      typeof document !== "undefined" &&
+      document.body &&
+      document.body.classList &&
+      document.body.classList.contains("gdi-share-mode");
+    if (
+      !shareSurface &&
+      surfeChannel &&
+      slot.name &&
+      looksLikePersonNameLocal(slot.name)
+    ) {
       surfeBtn =
         '<div class="gdi-contact-reveal" data-gdi-contact-reveal-root="1">' +
         '<p class="gdi-contact-cta"><button type="button" class="gdi-btn gdi-btn--secondary" data-gdi-contact-cta="1" data-gdi-contact-channel="' +
-        esc(slot.surfeEnrichmentChannel) +
+        esc(surfeChannel) +
         '" data-contact-name="' +
         esc(slot.name) +
+        '" data-contact-slot="' +
+        esc(slot.slot || "") +
         '" data-opportunity-id="' +
         esc(oppId) +
         '">' +
-        esc(surfeCtaLabel(slot.surfeEnrichmentChannel)) +
+        esc(surfeCtaLabel(surfeChannel)) +
         "</button></p>" +
         '<p class="gdi-muted gdi-contact-cta-note">Ready to retrieve. Results stay in this session only and are not saved to Dealality records.</p>' +
         '<p class="gdi-contact-reveal-status" data-gdi-contact-reveal-status hidden></p>' +
         "</div>";
     }
+    var whyClean = scrubCustomerContactWhyProse(slot.whyContact, {
+      contactName: slot.name,
+    });
     return (
       '<div class="gdi-contact-slot" data-contact-slot="' +
       esc(slot.slot || "") +
@@ -6417,7 +6813,7 @@
       esc(slot.displayLabel || "Contact") +
       "</h4>" +
       pathLabel +
-      "<p><strong>Suggested contact:</strong> " +
+      "<p><strong>Name:</strong> " +
       esc(slot.name) +
       "</p>" +
       (slot.title
@@ -6426,10 +6822,8 @@
       (slot.organization
         ? "<p><strong>Organization:</strong> " + esc(slot.organization) + "</p>"
         : "") +
-      (slot.whyContact
-        ? "<p><strong>Why relevant:</strong> " +
-          esc(scrubCustomerContactWhyProse(slot.whyContact)) +
-          "</p>"
+      (whyClean
+        ? "<p><strong>Why relevant:</strong> " + esc(whyClean) + "</p>"
         : "") +
       (slot.email
         ? "<p><strong>" +
@@ -6604,13 +6998,15 @@
       !c.email &&
       !c.phone &&
       (tier === "NAMED_PARTIAL" || tier === "NAMED_DIRECT" || !tier)
-        ? '<p class="gdi-contact-cta"><button type="button" class="gdi-btn gdi-btn--secondary" data-gdi-contact-cta="1" data-gdi-contact-channel="both" data-opportunity-id="' +
+        ? '<div class="gdi-contact-reveal" data-gdi-contact-reveal-root="1">' +
+          '<p class="gdi-contact-cta"><button type="button" class="gdi-btn gdi-btn--secondary" data-gdi-contact-cta="1" data-gdi-contact-channel="both" data-contact-name="' +
+          esc(c.name) +
+          '" data-opportunity-id="' +
           esc(o.opportunityId || o.id || "") +
-          '">Get Contact Details</button></p><p class="gdi-contact-cta gdi-contact-cta--channels"><button type="button" class="gdi-btn gdi-btn--secondary" data-gdi-contact-cta="1" data-gdi-contact-channel="email" data-opportunity-id="' +
-          esc(o.opportunityId || o.id || "") +
-          '">Retrieve Email</button> <button type="button" class="gdi-btn gdi-btn--secondary" data-gdi-contact-cta="1" data-gdi-contact-channel="phone" data-opportunity-id="' +
-          esc(o.opportunityId || o.id || "") +
-          '">Retrieve Phone</button></p>'
+          '">Find Email & Phone</button></p>' +
+          '<p class="gdi-muted gdi-contact-cta-note">Ready to retrieve. Results stay in this session only and are not saved to Dealality records.</p>' +
+          '<p class="gdi-contact-reveal-status" data-gdi-contact-reveal-status hidden></p>' +
+          "</div>"
         : "";
     var ceilingCopy =
       (drawer && drawer.publicCeilingCopy) ||
@@ -7128,7 +7524,7 @@
       esc(o.recommendedAction || "—") +
       "</p></section>" +
       (extras.validationHtml
-        ? '<section class="gdi-section gdi-section--validation gdi-validation-panel"><h3>Hotel Validation / Action / Outcome</h3>' +
+        ? '<section class="gdi-section gdi-section--validation gdi-validation-panel" data-gdi-tour-target="drawer-validation"><h3>Hotel Validation / Action / Outcome</h3>' +
           extras.validationHtml +
           "</section>"
         : "") +
@@ -7197,7 +7593,7 @@
       esc(o.recommendedAction || "—") +
       "</p></section>" +
       (extras.validationHtml
-        ? '<section class="gdi-section gdi-section--validation gdi-validation-panel"><h3>Hotel Validation / Action / Outcome</h3>' +
+        ? '<section class="gdi-section gdi-section--validation gdi-validation-panel" data-gdi-tour-target="drawer-validation"><h3>Hotel Validation / Action / Outcome</h3>' +
           extras.validationHtml +
           "</section>"
         : "") +
@@ -7694,6 +8090,7 @@
           "</p>"
         : "") +
       "</section>" +
+      competitiveFutureCycleSectionsHtml(o) +
       '<section class="gdi-section" data-section-id="potential_business"><h3>Potential business for this hotel</h3><p>' +
       esc(prose(potS.body) || "—") +
       "</p>" +
@@ -7760,12 +8157,20 @@
         listHtml: listHtml,
       }) +
       "</section>" +
-      '<section class="gdi-section gdi-section--action" data-section-id="recommended_next_step"><h3>Recommended next step</h3><p>' +
+      '<section class="gdi-section gdi-section--action" data-section-id="recommended_next_step" data-gdi-tour-target="drawer-evidence"><h3>Recommended next step</h3>' +
+      (o.competitiveCommercialActionLabel
+        ? '<p class="gdi-cmi-action-banner" data-competitive-action="' +
+          esc(o.competitiveCommercialActionKey || "") +
+          '"><strong>' +
+          esc(o.competitiveCommercialActionLabel) +
+          "</strong></p>"
+        : "") +
+      "<p>" +
       esc(prose(nextS.body) || "—") +
       "</p>" +
       qHtml +
       "</section>" +
-      '<section class="gdi-section gdi-section--evidence" data-section-id="supporting_evidence"><h3>Supporting evidence</h3>' +
+      '<section class="gdi-section gdi-section--evidence" data-section-id="supporting_evidence" data-gdi-tour-target="drawer-evidence"><h3>Supporting evidence</h3>' +
       sourceListFromModel(evS.sources, evS.evidenceGroups, evS.sourcesFull) +
       (evS.activityDate
         ? "<p><strong>Original activity date:</strong> " +
@@ -7778,7 +8183,7 @@
           " (not the activity date)</p>"
         : "") +
       "</section>" +
-      '<section class="gdi-section gdi-section--validation gdi-validation-panel" data-section-id="hotel_validation"><h3>Hotel Validation / Action / Outcome</h3>' +
+      '<section class="gdi-section gdi-section--validation gdi-validation-panel" data-section-id="hotel_validation" data-gdi-tour-target="drawer-validation"><h3>Hotel Validation / Action / Outcome</h3>' +
       (extras.validationHtml ||
         '<p class="gdi-muted">Validation controls load with the live drawer.</p>') +
       "</section>" +
@@ -7816,6 +8221,19 @@
    */
   function resolveAuthoritativeSalesActionText(o) {
     o = o || {};
+    // Competitive / future-cycle: evidence-safe action wins over stale gold-brief copy
+    // that may still ask whether a contracted competitor host is "open."
+    var cmiPres = o.competitiveFutureCyclePresentation || null;
+    if (cmiPres && cmiPres.showSplitPresentation) {
+      var safeCmi =
+        (cmiPres.potentialFutureOpportunity &&
+          cmiPres.potentialFutureOpportunity.recommendedSalesAction) ||
+        o.recommendedAction ||
+        "";
+      if (String(safeCmi).replace(/\s+/g, " ").trim()) {
+        return String(safeCmi).replace(/\s+/g, " ").trim();
+      }
+    }
     function approachText(brief) {
       if (!brief || !brief.recommendedSalesApproach) return "";
       var a = brief.recommendedSalesApproach;
@@ -8352,6 +8770,43 @@
         "</span></div>"
       );
     }
+    // Prefer live composed competitor-vs-target sourcing over stale overview
+    // "Venue Confirmed" that collapses independent commercial dimensions.
+    var hotelSourcingDisplay =
+      (o && o.hotelSourcingStatusLabel) ||
+      ov.hotelSourcing ||
+      "Sourcing unconfirmed";
+    var locationDisplay = ov.location || "Location TBD";
+    if (
+      /host\s+hotel\s+contracted|competitor\s+(?:venue|hotel|booking)/i.test(
+        String(locationDisplay),
+      )
+    ) {
+      locationDisplay =
+        (o &&
+          (o.eventLocationCity ||
+            o.eventCity ||
+            o.city ||
+            o.destination)) ||
+        "Location TBD";
+    }
+    var venueNote = ov.venueConfirmationNote || "";
+    if (
+      /Competitor venue confirmed/i.test(String(hotelSourcingDisplay)) &&
+      !venueNote
+    ) {
+      var comp =
+        (o &&
+          (o.cmiCompetitorHotel ||
+            o.competitorHotel ||
+            o.likelyCompetitor)) ||
+        "";
+      venueNote = comp
+        ? "Competitor venue confirmed (" +
+          comp +
+          "). Target-hotel overflow or secondary lodging is not confirmed — do not treat as an open host RFP."
+        : "A competitor venue is confirmed; target-hotel overflow sourcing remains unconfirmed.";
+    }
     return (
       '<div class="gdi-events-opportunity-overview" data-overview-version="gdi-events-opportunity-overview-v1">' +
       '<p class="gdi-events-overview-identity">' +
@@ -8360,16 +8815,16 @@
       '<div class="gdi-events-overview-grid">' +
 
       row("Timing", ov.timing) +
-      row("Location", ov.location) +
-      row("Hotel sourcing", ov.hotelSourcing) +
+      row("Location", locationDisplay) +
+      row("Hotel sourcing", hotelSourcingDisplay) +
       row("Room demand", ov.roomDemand) +
       row("Demand cycle", ov.demandCycle) +
       row("Attendance", ov.attendance) +
       row("Peak rooms", ov.peakRooms) +
       "</div>" +
-      (ov.venueConfirmationNote
+      (venueNote
         ? '<p class="gdi-events-overview-venue-note gdi-muted">' +
-          esc(ov.venueConfirmationNote) +
+          esc(venueNote) +
           "</p>"
         : "") +
       "</div>"
@@ -8635,6 +9090,7 @@
           "</p>"
         : "") +
       "</section>" +
+      competitiveFutureCycleSectionsHtml(o) +
       '<section class="gdi-section" data-section-id="potential_business"><h3>Potential business for this hotel</h3><p>' +
       esc(prose(potS.body) || "—") +
       "</p>" +
@@ -8681,12 +9137,20 @@
         listHtml: listHtml,
       }) +
       "</section>" +
-      '<section class="gdi-section gdi-section--action" data-section-id="recommended_next_step"><h3>Recommended next step</h3><p>' +
+      '<section class="gdi-section gdi-section--action" data-section-id="recommended_next_step" data-gdi-tour-target="drawer-evidence"><h3>Recommended next step</h3>' +
+      (o.competitiveCommercialActionLabel
+        ? '<p class="gdi-cmi-action-banner" data-competitive-action="' +
+          esc(o.competitiveCommercialActionKey || "") +
+          '"><strong>' +
+          esc(o.competitiveCommercialActionLabel) +
+          "</strong></p>"
+        : "") +
+      "<p>" +
       esc(prose(nextS.body) || "—") +
       "</p>" +
       qHtml +
       "</section>" +
-      '<section class="gdi-section gdi-section--evidence" data-section-id="supporting_evidence"><h3>Supporting evidence</h3>' +
+      '<section class="gdi-section gdi-section--evidence" data-section-id="supporting_evidence" data-gdi-tour-target="drawer-evidence"><h3>Supporting evidence</h3>' +
       sourceListFromModel(evS.sources, evS.evidenceGroups, evS.sourcesFull) +
       (evS.activityDate
         ? "<p><strong>Original activity date:</strong> " +
@@ -8699,7 +9163,7 @@
           " (not the activity date)</p>"
         : "") +
       "</section>" +
-      '<section class="gdi-section gdi-section--validation gdi-validation-panel" data-section-id="hotel_validation"><h3>Hotel Validation / Action / Outcome</h3>' +
+      '<section class="gdi-section gdi-section--validation gdi-validation-panel" data-section-id="hotel_validation" data-gdi-tour-target="drawer-validation"><h3>Hotel Validation / Action / Outcome</h3>' +
       (extras.validationHtml ||
         '<p class="gdi-muted">Validation controls load with the live drawer.</p>') +
       "</section>" +
@@ -9078,7 +9542,7 @@
       bits.push(commercialProgressionHtml(progression));
     }
     bits.push(
-      '<div class="gdi-section gdi-section--validation gdi-validation-panel gdi-hotel-feedback" data-gdi-customer-lifecycle="1">' +
+      '<div class="gdi-section gdi-section--validation gdi-validation-panel gdi-hotel-feedback" data-gdi-customer-lifecycle="1" data-gdi-tour-target="drawer-validation">' +
         "<h3>Hotel Validation</h3>"
     );
     bits.push(shareCustomerValidationFormHtml(o, enums, permissionContext));
@@ -9298,6 +9762,8 @@
     matchesCompetitiveStatusFilter: matchesCompetitiveStatusFilter,
     countByCompetitiveStatus: countByCompetitiveStatus,
     opportunityCompetitiveStatus: opportunityCompetitiveStatus,
+    competitiveStatusPillHtml: competitiveStatusPillHtml,
+    competitiveVerificationStatusDrawerHtml: competitiveVerificationStatusDrawerHtml,
     classifyOpportunityTypeFilter: classifyOpportunityTypeFilter,
     countByOpportunityTypeFilter: countByOpportunityTypeFilter,
     countByMarketScope: countByMarketScope,
@@ -9315,6 +9781,10 @@
     GDI_PRIORITIES_TAB: GDI_PRIORITIES_TAB,
     GDI_CUSTOMER_TABS: GDI_CUSTOMER_TABS,
     customerSafeRunStatusLabel: customerSafeRunStatusLabel,
+    compactResearchStatusLabel: compactResearchStatusLabel,
+    formatCompactResearchDate: formatCompactResearchDate,
+    resolveLastUpdatedCompactDate: resolveLastUpdatedCompactDate,
+    researchActivityDetailsHtml: researchActivityDetailsHtml,
     countByPriority: countByPriority,
     countByActionStatus: countByActionStatus,
     facetCountByPriority: facetCountByPriority,
@@ -9372,6 +9842,8 @@
     weeklyDeltaPillHtml: weeklyDeltaPillHtml,
     weeklyDeltaPresetHtml: weeklyDeltaPresetHtml,
     weeklyThisWeekFilterHtml: weeklyThisWeekFilterHtml,
+    countActiveBrowseFilters: countActiveBrowseFilters,
+    resetViewButtonHtml: resetViewButtonHtml,
     weeklyDeltaHeaderSummaryHtml: weeklyDeltaHeaderSummaryHtml,
     weeklyDeltaHeaderCounts: weeklyDeltaHeaderCounts,
     countByWeeklyDelta: countByWeeklyDelta,

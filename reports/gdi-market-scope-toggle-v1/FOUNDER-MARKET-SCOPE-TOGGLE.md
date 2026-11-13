@@ -19,10 +19,10 @@ CMI remains an orthogonal intelligence classification — **not** a fifteenth de
 | Scope | Unique IDs | Notes |
 |---|---:|---|
 | All | **67** | Unique baseline IDs; dual-classified rows counted once |
-| Hotel | **67** | Sales Opportunities population (includes dual CMI+hotel rows) |
-| Competitive | **4** | Verified CMI ledger after PR #222 (not hardcoded 7) |
+| Hotel | **61** (dynamic) | Commercially actionable for the property — excludes confirmed competitor bookings without independent target-hotel demand |
+| Competitive | **10** (dynamic) | Recovered CMI ledger: 6 verified / 3 needs verification / 1 historical (not hardcoded; Competitive total ≠ verified bookings) |
 
-Unique-ID reconciliation: `allCommercialIntelligence = 67` = sales inventory cardinality; verified CMI is a subset classification on the same IDs.
+Unique-ID reconciliation: `All = 67`; Hotel excludes 6 confirmed competitor bookings without independent target-hotel demand; dual membership counted once in All.
 
 ## Authorization (unchanged)
 
