@@ -70,6 +70,9 @@ jobs:
       - name: Opportunity card quality + canonical package attach
         run: npm run test:gdi-opportunity-card-quality-v1
 
+      - name: Field-authority contract (no wrong-field substitutions)
+        run: npm run test:gdi-field-authority-contract-v1
+
       - name: Canonical UI architecture offline gates + visual baselines
         run: npm run test:gdi-canonical-ui-architecture-offline
 
