@@ -223,6 +223,25 @@ check("package_presentation_attach_demotes_combined_without_event_thesis", () =>
   assert.equal(preserved.revenueStreamIcons.guestrooms, "active");
   assert.equal(preserved.revenueStreamIcons.eventFnb, "active");
   assert.equal(preserved.packageRevenueStreamSource, "FROZEN_PACKAGE_BYTES");
+
+  // Frozen package contact roles are authoritative (do not strip org clause).
+  const rolePreserved = attachPackageCustomerPresentation({
+    id: "pkg_role_frozen",
+    title: "City Event",
+    primaryContact: {
+      name: "Colleen McQuitty",
+      title: "Special Events Manager — City of Rockville",
+      role: "Special Events Manager — City of Rockville",
+    },
+  });
+  assert.equal(
+    rolePreserved.tileContactPreview.displayRole,
+    "Special Events Manager — City of Rockville",
+  );
+  assert.equal(
+    rolePreserved.packageTileContactSource,
+    "FROZEN_PACKAGE_CONTACT_FIELDS",
+  );
 });
 
 check("package_presentation_attach_persists_guestroom_only", () => {
