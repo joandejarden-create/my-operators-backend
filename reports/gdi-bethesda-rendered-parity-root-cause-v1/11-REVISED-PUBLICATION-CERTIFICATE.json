@@ -1,0 +1,35 @@
+{
+  "certificateId": "gdi_bethesda_rendered_parity_certificate_v1",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "hotelName": "Bethesda Marriott",
+  "publicationVersion": "gdi_pub_recLuxvwwxID7U2B8_20261113_reconciliation_v1",
+  "contentFingerprintSha256": "441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f",
+  "fingerprintPreserved": true,
+  "priorCertificate": "reports/gdi-bethesda-final-parity-release-v1/13-FINAL-PUBLICATION-CERTIFICATE.json",
+  "priorStatus": "INVALIDATED",
+  "invalidationRecord": "reports/gdi-bethesda-final-parity-release-v1/15-CERTIFICATE-INVALIDATION.json",
+  "verdict": "RENDERED_PARITY_CERTIFIED",
+  "clientReady": true,
+  "basis": [
+    "Approved publication package unchanged (same fingerprint)",
+    "Share DETAIL resolves from approved package (PR #246)",
+    "Drawer prose() crash fixed (PR #247)",
+    "Premier Cup browser DOM: Hotel Need-Date Match present in correct order with full body fields",
+    "All 67 opportunities: browser DOM section order + need-date presence match package contract (0 material failures)",
+    "LIST vs DETAIL frozen field identity: 0 diffs across 67",
+    "Production deploy artifact SHA 54fd044273a3c193ae3a73205efff16a52dd43ce / Railway e7bed4e9"
+  ],
+  "notAcceptedAsSoleProof": [
+    "Matching fingerprint alone",
+    "LIST API DTO comparison alone",
+    "Partial upper-viewport screenshots"
+  ],
+  "inventory": { "all": 67, "hotel": 61, "competitive": 10 },
+  "needDate": { "expected": 39, "presentInDom": 39 },
+  "externalShareStatus": "CUSTOMER_PUBLISHED — rendered sections match approved package",
+  "limitations": [
+    "Certified surface is the external customer share against the approved package rendering contract.",
+    "Founder auth preview without ?publicationPackage=1 may still attach live need-date overlays; certified founder preview mode is publicationPackage=1.",
+    "Fingerprint covers frozen content fields including needDateMatchV1; CLIENT READY additionally required full browser DOM section parity (now gated)."
+  ]
+}
