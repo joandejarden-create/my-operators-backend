@@ -1,14 +1,29 @@
 {
-  "gap": "Prior test:gdi-publication-parity-e2e and final cert scripts compared package vs share LIST opportunities only.",
-  "missed": [
-    "Share DETAIL route getGdiShareOpportunityDetail",
-    "Actual browser DOM section headings in drawer order",
-    "Conditional sections gated by needDateMatchV1 on the detail payload",
-    "Auth founder preview live need-date attach vs share detail reconstruct"
+  "previousFalsePassReasons": [
+    "Compared share LIST / package DTO fields, not browser DOM section order",
+    "Did not call getGdiShareOpportunityDetail for every opportunity",
+    "Fingerprint match treated as rendered parity proof",
+    "Conditional sections gated by needDateMatchV1 on the DETAIL payload were ignored",
+    "Drawer screenshots / upper-viewport capture were not used as section-structure gates",
+    "Premier Cup selector matched need-date legend popover h3 instead of #gdiShareDrawer"
   ],
   "fixes": [
-    "scripts/test-gdi-share-detail-publication-package-v1.mjs — package list/detail + rendered HTML section",
-    "scripts/test-gdi-premier-cup-need-date-drawer-dom-v1.mjs — Playwright DOM regression for Premier Cup",
-    "scripts/test-gdi-publication-parity-e2e.mjs — when GDI_PARITY_PRODUCTION_URL set, assert DETAIL needDateMatchV1 for every package row that freezes it"
-  ]
+    {
+      "script": "scripts/test-gdi-share-detail-publication-package-v1.mjs",
+      "asserts": "list needDateMatchV1 === detail needDateMatchV1 for Premier Cup; HTML helper emits section"
+    },
+    {
+      "script": "scripts/test-gdi-publication-parity-e2e.mjs",
+      "asserts": "when GDI_PARITY_PRODUCTION_URL set, DETAIL needDateMatchV1 for every package row that freezes it"
+    },
+    {
+      "script": "scripts/test-gdi-premier-cup-need-date-drawer-dom-v1.mjs",
+      "asserts": "browser DOM #gdiShareDrawer: Hotel Need-Date Match after Overview, before What is happening; full need-date body fields"
+    },
+    {
+      "script": "scripts/test-gdi-bethesda-complete-drawer-dom-parity-v1.mjs",
+      "asserts": "all 67 opportunities: section presence/order + need-date DOM vs package contract"
+    }
+  ],
+  "architectureRule": "Fingerprint proves package identity. CLIENT READY requires independent browser DOM section+text parity against the external share."
 }

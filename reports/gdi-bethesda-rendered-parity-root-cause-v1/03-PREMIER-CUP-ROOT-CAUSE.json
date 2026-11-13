@@ -1,24 +1,52 @@
 {
   "opportunityId": "gdi_opp_bethesda_premier_cup_2026",
   "title": "Bethesda Premier Cup",
+  "diagnosedCause": "getGdiShareOpportunityDetail ignored publication package; drawer fetched live detail without needDateMatchV1",
+  "secondaryCrash": "whoShouldSalesContactHtml called undefined prose() after package detail began returning full DTOs",
+  "packageAlreadyContainedNeedDate": true,
+  "fingerprintChangeRequired": false,
   "approvedFingerprint": "441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f",
-  "packageContainsNeedDateMatchV1": true,
-  "shareListApiContainsNeedDateMatchV1": true,
-  "shareDetailApiContainsNeedDateMatchV1_preFix": false,
-  "rootCause": {
-    "file": "api/group-demand-intelligence.js",
-    "function": "getGdiShareOpportunityDetail",
-    "bug": "Detail route loaded live opportunities via loadOpportunityForDetail/loadOppDoc + projectOpportunitiesCommercialQuality and never consulted the CUSTOMER_PUBLISHED publication package. share-app openDetail() fetches that detail URL and replaces list-row DTO, dropping frozen needDateMatchV1.",
-    "renderer": "public/js/group-demand-intelligence/dealality-gdi-ui.js#needDateMatchDrawerSectionHtml — correctly returns empty string when needDateMatchV1/tileNeedDatePreview absent",
-    "localFounderDifference": "Auth getGdiOpportunityDetail attaches live need dates via attachHotelNeedDateTilePreviews, so founder research UI showed Hotel Need-Date Match even when share detail did not."
+  "preFix": {
+    "listHasNeedDate": true,
+    "detailHasNeedDate": false
   },
-  "fingerprintStillValid": true,
-  "fingerprintNote": "Package already freezes needDateMatchV1 in PUBLICATION_CONTENT_FIELDS; no content change required — technical serve-path fix preserves 44177321…",
-  "fix": [
-    "resolveOpportunityFromApprovedPackage in gdi-share-approved-package-resolver-v1.js",
-    "getGdiShareOpportunityDetail serves PACKAGE detail first",
-    "getGdiOpportunityDetail supports ?publicationPackage=1",
-    "Client defense merges list-row frozen fields if detail omits them",
-    "Founder app.js passes publicationPackage on list+detail when URL requests it"
-  ]
+  "postFixApi": {
+    "listHasNeedDate": true,
+    "detailHasNeedDate": true,
+    "detailNeedDateGapsAcross67": 0
+  },
+  "browserDomVerification": {
+    "ok": true,
+    "url": "https://my-operators-backend-production.up.railway.app/group-demand-intelligence-share.html?share=<token>",
+    "sections": [
+      "Opportunity overview",
+      "Hotel Need-Date Match",
+      "What is happening",
+      "Potential business for this hotel",
+      "Why this hotel",
+      "Why act now",
+      "Established facts and uncertainties",
+      "Who to contact",
+      "Recommended next step",
+      "Supporting evidence",
+      "Hotel Validation / Action / Outcome",
+      "Hotel Validation"
+    ],
+    "needDateSectionPresent": true,
+    "needDateText": "HOTEL NEED-DATE MATCH\n\nHotel need period(s): November 2026\n\nOpportunity timing: Nov 13–22, 2026\n\nDate-match classification: MATCHES_NEED_DATE · Confirmed period overlap\n\nFlexibility status: FIXED_VERIFIED — not buyer-confirmed unless evidenced\n\nVerified demand dates (2026-11-13–2026-11-22) overlap the hotel need period November 2026.\n\nWhat sales should verify next: Qualify capture for November 2026: confirm remaining inventory, buyer path, and a concrete next step tied to the verified demand dates.\n\nDate match does not prove hotel sourcing is open, rooms are available, a rate was offered, or business was secured.",
+    "errors": [],
+    "overviewIndex": 0,
+    "needDateIndex": 1,
+    "whatIndex": 2
+  },
+  "files": {
+    "detailPackageResolver": "lib/group-demand-intelligence/publication-package/gdi-share-approved-package-resolver-v1.js",
+    "shareDetailRoute": "api/group-demand-intelligence.js#getGdiShareOpportunityDetail",
+    "drawerRenderer": "public/js/group-demand-intelligence/dealality-gdi-ui.js#needDateMatchDrawerSectionHtml",
+    "proseFix": "public/js/group-demand-intelligence/dealality-gdi-ui.js#prose",
+    "detailMerge": "3db8b2b34 (PR #246)",
+    "proseMerge": "54fd044273a3c193ae3a73205efff16a52dd43ce (PR #247)"
+  },
+  "rootCausePendingDeploy": false,
+  "secondaryFixCommit": "54fd044273a3c193ae3a73205efff16a52dd43ce"
 }

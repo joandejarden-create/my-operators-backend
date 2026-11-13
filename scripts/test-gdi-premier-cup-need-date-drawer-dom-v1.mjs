@@ -44,33 +44,62 @@ const result = {
 };
 
 try {
+  page.on("pageerror", (err) => result.errors.push(`pageerror:${err.message}`));
+  page.on("console", (msg) => {
+    if (msg.type() === "error") result.errors.push(`console:${msg.text()}`);
+  });
+
   await page.goto(url, { waitUntil: "domcontentloaded", timeout: 120000 });
   await page.waitForSelector("text=Bethesda Premier Cup", { timeout: 120000 });
-  await page.locator("text=Bethesda Premier Cup").first().click();
-  await page.waitForTimeout(2000);
 
-  // Prefer detail API readiness then DOM.
-  await page.waitForSelector(
-    '[role="dialog"] h3, .gdi-drawer-body h3, dialog h3',
-    { timeout: 30000 },
-  );
+  // Open via data-open card control when present (more reliable than text click).
+  const card = page
+    .locator(
+      '[data-open]:has-text("Bethesda Premier Cup"), button:has-text("Bethesda Premier Cup"), a:has-text("Bethesda Premier Cup")',
+    )
+    .first();
+  await card.click({ timeout: 30000 });
+
+  // Target #gdiShareDrawer only — never need-date legend / other role=dialog nodes.
+  const drawer = page.locator("#gdiShareDrawer");
+  await page.waitForFunction(() => {
+    const d = document.querySelector("#gdiShareDrawer");
+    if (!d || !d.open) return false;
+    const body = d.querySelector("#gdiShareDrawerBody, .gdi-drawer-body");
+    const text = (body && body.innerText) || "";
+    return text.length > 80 && !/prose is not defined/i.test(text);
+  }, null, { timeout: 60000 });
+
+  // Scroll full drawer so below-fold sections enter layout/text extraction.
+  await drawer.evaluate((el) => {
+    const body = el.querySelector("#gdiShareDrawerBody, .gdi-drawer-body") || el;
+    body.scrollTop = body.scrollHeight;
+  });
+  await page.waitForTimeout(500);
+  await drawer.evaluate((el) => {
+    const body = el.querySelector("#gdiShareDrawerBody, .gdi-drawer-body") || el;
+    body.scrollTop = 0;
+  });
 
   const extracted = await page.evaluate(() => {
-    const root =
-      document.querySelector("[role='dialog']") ||
-      document.querySelector("dialog[open]") ||
-      document.querySelector(".gdi-drawer-body")?.closest("dialog") ||
-      document.querySelector(".gdi-drawer-body");
-    if (!root) return { sections: [], text: "", needDateEl: null };
-    const headings = [...root.querySelectorAll("h3")].map((h) =>
-      (h.textContent || "").trim(),
-    );
-    const needEl = root.querySelector(
+    const root = document.querySelector("#gdiShareDrawer");
+    if (!root || !root.open) {
+      return { sections: [], text: "", needDateEl: null, drawerOpen: false };
+    }
+    const body =
+      root.querySelector("#gdiShareDrawerBody, .gdi-drawer-body") || root;
+    const headings = [
+      ...body.querySelectorAll("h3, .gdi-section > h3, [data-section-id] > h3"),
+    ]
+      .map((h) => (h.textContent || "").replace(/\s+/g, " ").trim())
+      .filter(Boolean);
+    const needEl = body.querySelector(
       '[data-section-id="hotel_need_date_match"]',
     );
     return {
+      drawerOpen: true,
       sections: headings,
-      text: (root.innerText || "").slice(0, 4000),
+      text: (body.innerText || "").slice(0, 6000),
       needDateEl: needEl
         ? {
             present: true,
@@ -111,10 +140,26 @@ try {
     result.whatIndex < 0 || result.needDateIndex < result.whatIndex,
     "Need-Date Match must precede What is happening when both present",
   );
+  const nd = String(result.needDateText || "");
+  assert.match(nd, /November 2026/i, "Hotel need period November 2026");
   assert.match(
-    String(result.needDateText || ""),
-    /November 2026/i,
-    "Need-Date Match body must include November 2026",
+    nd,
+    /2026-11-13|Nov(?:ember)?\s*13/i,
+    "Opportunity timing / verified demand start",
+  );
+  assert.match(
+    nd,
+    /Confirmed period overlap|overlap/i,
+    "Date-match classification",
+  );
+  assert.match(
+    nd,
+    /Qualify capture for November 2026|confirm remaining inventory/i,
+    "Sales verification / next-step guidance",
+  );
+  assert.ok(
+    !/prose is not defined/i.test(String(extracted.text || "")),
+    "Drawer must not crash on prose()",
   );
 
   result.ok = true;
@@ -124,14 +169,24 @@ try {
   await browser.close();
 }
 
+const prior = fs.existsSync(path.join(outDir, "03-PREMIER-CUP-ROOT-CAUSE.json"))
+  ? JSON.parse(
+      fs.readFileSync(path.join(outDir, "03-PREMIER-CUP-ROOT-CAUSE.json"), "utf8"),
+    )
+  : {};
 fs.writeFileSync(
   path.join(outDir, "03-PREMIER-CUP-ROOT-CAUSE.json"),
   JSON.stringify(
     {
-      ...result,
+      ...prior,
+      browserDomVerification: result,
       rootCausePendingDeploy: !result.ok,
       diagnosedCause:
+        prior.diagnosedCause ||
         "getGdiShareOpportunityDetail ignored publication package; drawer fetched live detail without needDateMatchV1",
+      secondaryCrash:
+        "whoShouldSalesContactHtml called undefined prose() after package detail began returning full DTOs",
+      secondaryFixCommit: "54fd044273a3c193ae3a73205efff16a52dd43ce",
     },
     null,
     2,
