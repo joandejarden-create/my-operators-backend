@@ -1108,6 +1108,22 @@ export async function getGdiOpportunities(req, res) {
           cmiVerified: o.cmiVerified,
           cmiCompetitorHotel: o.cmiCompetitorHotel,
           cmiClassificationReason: o.cmiClassificationReason,
+          competitiveStatus: o.competitiveStatus,
+          competitiveStatusLabel: o.competitiveStatusLabel,
+          competitorVenueStatus: o.competitorVenueStatus,
+          competitorVenueStatusLabel: o.competitorVenueStatusLabel,
+          targetHotelSourcingStatus: o.targetHotelSourcingStatus,
+          targetHotelSourcingStatusLabel: o.targetHotelSourcingStatusLabel,
+          commercialActionability: o.commercialActionability,
+          hotelMarketScopeEligible: o.hotelMarketScopeEligible,
+          competitiveMarketScopeEligible: o.competitiveMarketScopeEligible,
+          competitiveFutureCyclePresentation: o.competitiveFutureCyclePresentation,
+          competitiveCommercialActionKey: o.competitiveCommercialActionKey,
+          competitiveCommercialActionLabel: o.competitiveCommercialActionLabel,
+          futureCycleOpportunityStatus: o.futureCycleOpportunityStatus,
+          recommendedAction: o.recommendedAction,
+          salesActionKey: o.salesActionKey,
+          salesActionPillLabel: o.salesActionPillLabel,
         },
       ])
     );
@@ -1520,6 +1536,9 @@ export async function getGdiOpportunityDetail(req, res) {
       (founderReviews.items || []).find(
         (r) => r.opportunityId === opportunityId
       ) || null;
+    // Annotate Market Scope + competitive/future-cycle presentation before DTO
+    // so Confirmed Competitor Business vs Potential Future Opportunity survive.
+    opportunity = annotateInventoryPopulations([opportunity], { hotelId })[0];
     const authProjected = projectOpportunityForPresentation(opportunity, {
       hotelId,
       surface: GDI_PRESENTATION_SURFACES.LOCAL_AUTH,
@@ -1538,6 +1557,34 @@ export async function getGdiOpportunityDetail(req, res) {
         : null;
     const opportunityPayload = {
       ...authProjected.dto,
+      // Re-attach annotation fields the detail DTO may trim (list parity).
+      inventoryPopulations: opportunity.inventoryPopulations,
+      inventoryPopulationPrimary: opportunity.inventoryPopulationPrimary,
+      cmiVerified: opportunity.cmiVerified,
+      cmiCompetitorHotel: opportunity.cmiCompetitorHotel,
+      cmiClass: opportunity.cmiClass,
+      competitiveStatus: opportunity.competitiveStatus,
+      competitiveStatusLabel: opportunity.competitiveStatusLabel,
+      competitorVenueStatus: opportunity.competitorVenueStatus,
+      competitorVenueStatusLabel: opportunity.competitorVenueStatusLabel,
+      targetHotelSourcingStatus: opportunity.targetHotelSourcingStatus,
+      targetHotelSourcingStatusLabel: opportunity.targetHotelSourcingStatusLabel,
+      commercialActionability: opportunity.commercialActionability,
+      hotelMarketScopeEligible: opportunity.hotelMarketScopeEligible,
+      competitiveMarketScopeEligible: opportunity.competitiveMarketScopeEligible,
+      competitiveFutureCyclePresentation:
+        opportunity.competitiveFutureCyclePresentation,
+      competitiveCommercialActionKey:
+        opportunity.competitiveCommercialActionKey,
+      competitiveCommercialActionLabel:
+        opportunity.competitiveCommercialActionLabel,
+      futureCycleOpportunityStatus: opportunity.futureCycleOpportunityStatus,
+      recommendedAction:
+        opportunity.recommendedAction || authProjected.dto?.recommendedAction,
+      salesActionKey: opportunity.salesActionKey || authProjected.dto?.salesActionKey,
+      salesActionPillLabel:
+        opportunity.salesActionPillLabel ||
+        authProjected.dto?.salesActionPillLabel,
       ...(progressionWithValidationTs
         ? { commercialProgression: progressionWithValidationTs }
         : {}),

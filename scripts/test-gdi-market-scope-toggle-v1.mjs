@@ -197,19 +197,73 @@ check("bethesda_verified_cmi_ledger_counts_via_market_scope", () => {
     hotelId: BETHESDA_HOTEL_ID,
   });
   const libCounts = buildInventoryPopulationCounts(annotated);
-  assert.equal(libCounts.salesOpportunities, 67);
-  // Competitive total includes verified + needs verification + historical.
-  // 4 prior ledger verified + ICON + CASSS recovered from historical research.
+  // Hotel = commercially actionable for the property (excludes confirmed
+  // competitor-booked CMI without independent target-hotel demand).
+  assert.ok(
+    libCounts.salesOpportunities < 67,
+    "Hotel must be narrower than full sales inventory when verified CMI lacks target-hotel demand"
+  );
+  assert.ok(libCounts.salesOpportunities > 0);
+  // Competitive = recovered ledger inventory (verified + needs + historical).
+  // 4 prior ledger verified + ICON + CASSS; Needs Verification and Historical retained.
   assert.equal(libCounts.competitiveVerified, 6);
-  assert.ok(libCounts.competitiveMarketIntelligence >= 6);
+  assert.ok(libCounts.competitiveNeedsVerification >= 3);
+  assert.equal(libCounts.competitiveHistorical, 1);
+  assert.equal(
+    libCounts.competitiveMarketIntelligence,
+    libCounts.competitiveVerified +
+      libCounts.competitiveNeedsVerification +
+      libCounts.competitiveHistorical
+  );
   assert.ok(
     libCounts.competitiveMarketIntelligence > libCounts.competitiveVerified
   );
+  // All = unique eligible inventory (67); dual membership never double-counts.
   assert.equal(libCounts.allCommercialIntelligence, 67);
+  assert.equal(annotated.length, 67);
+
+  const hotelOnly = annotated.filter(
+    (o) =>
+      (o.inventoryPopulations || []).includes("SALES_OPPORTUNITIES") &&
+      !(o.inventoryPopulations || []).includes(
+        "COMPETITIVE_MARKET_INTELLIGENCE"
+      )
+  );
+  const competitiveOnly = annotated.filter(
+    (o) =>
+      (o.inventoryPopulations || []).includes(
+        "COMPETITIVE_MARKET_INTELLIGENCE"
+      ) &&
+      !(o.inventoryPopulations || []).includes("SALES_OPPORTUNITIES")
+  );
+  const dual = annotated.filter(
+    (o) =>
+      (o.inventoryPopulations || []).includes("SALES_OPPORTUNITIES") &&
+      (o.inventoryPopulations || []).includes(
+        "COMPETITIVE_MARKET_INTELLIGENCE"
+      )
+  );
+  assert.equal(
+    hotelOnly.length + competitiveOnly.length + dual.length,
+    67
+  );
+  assert.ok(
+    competitiveOnly.every(
+      (o) =>
+        o.cmiVerified === true ||
+        o.competitiveStatus === "VERIFIED" ||
+        o.commercialActionability === "COMPETITIVE_MARKET_INTELLIGENCE"
+    ),
+    "Competitive-only rows must be confirmed CMI without hotel actionability"
+  );
+  assert.ok(
+    dual.every((o) => o.competitiveStatus === "HISTORICAL" || o.competitiveStatus === "NEEDS_VERIFICATION" || o.cmiVerified === true),
+    "Dual rows need two independently supported theses"
+  );
 
   const uiCounts = UI.countByMarketScope(annotated);
   assert.equal(uiCounts.ALL, 67);
-  assert.equal(uiCounts.HOTEL, 67);
+  assert.equal(uiCounts.HOTEL, libCounts.salesOpportunities);
   assert.equal(
     uiCounts.COMPETITIVE,
     libCounts.competitiveMarketIntelligence
@@ -221,7 +275,7 @@ check("bethesda_verified_cmi_ledger_counts_via_market_scope", () => {
     marketScope: "COMPETITIVE",
   });
   assert.equal(all.length, 67);
-  assert.equal(hotel.length, 67);
+  assert.equal(hotel.length, libCounts.salesOpportunities);
   assert.equal(cmi.length, libCounts.competitiveMarketIntelligence);
   assert.equal(new Set(all.map((o) => o.id)).size, 67);
   assert.ok(
@@ -230,6 +284,16 @@ check("bethesda_verified_cmi_ledger_counts_via_market_scope", () => {
         "COMPETITIVE_MARKET_INTELLIGENCE"
       )
     )
+  );
+  // Verified competitor bookings without independent hotel demand leave Hotel.
+  const verifiedExcludedFromHotel = annotated.filter(
+    (o) =>
+      o.cmiVerified === true &&
+      !(o.inventoryPopulations || []).includes("SALES_OPPORTUNITIES")
+  );
+  assert.ok(
+    verifiedExcludedFromHotel.length >= 6,
+    "Confirmed competitor bookings without target-hotel demand must leave Hotel"
   );
 
   const verifiedOnly = UI.filterOpportunities(annotated, {

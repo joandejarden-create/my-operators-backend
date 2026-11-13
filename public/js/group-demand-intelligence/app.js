@@ -1507,11 +1507,16 @@
                   )
                 )
               : null,
+            lastResearchAt: s.lastResearchAt || null,
             lastResearch: formatHistoryDate(s.lastResearchAt),
+            runStatus: s.runStatus || null,
             runStatusLabel: UI.customerSafeRunStatusLabel
               ? UI.customerSafeRunStatusLabel(s)
               : "Research Completed",
+            lastSourceVerificationAt: s.lastSourceVerificationAt || null,
             lastSourceVerification: formatHistoryDate(s.lastSourceVerificationAt),
+            lastPublishedUpdateAt:
+              s.lastPublishedUpdateAt || s.lastReviewedPackageImportAt || null,
             lastPublishedUpdate: formatHistoryDate(
               s.lastPublishedUpdateAt || s.lastReviewedPackageImportAt
             ),
@@ -1568,7 +1573,7 @@
         }
       } else if (prioritiesRoot) {
         prioritiesRoot.innerHTML =
-          '<div class="hnd-banner error" role="alert">Hotel Need Times & Priorities module failed to load.</div>';
+          '<div class="hnd-banner error" role="alert">Commercial Priorities module failed to load.</div>';
       }
     }
 
