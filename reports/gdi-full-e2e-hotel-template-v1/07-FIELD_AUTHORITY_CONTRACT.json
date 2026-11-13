@@ -1,0 +1,123 @@
+{
+  "schema": "gdi-field-authority-contract-v1",
+  "fieldCount": 13,
+  "fields": [
+    {
+      "field": "cardContactSubtitle",
+      "authoritativeSource": "tileContactPreview.displayRole (frozen from local master) or cardContactSubtitle on the publication row",
+      "approvedDisplayField": "canonicalCustomerPresentation.contact.cardContactSubtitle",
+      "neverSubstituteWith": [
+        "tileContactPreview.opportunityRole",
+        "opportunityRole",
+        "buyerRole",
+        "contactRelevance",
+        "buyerEligibility.status",
+        "TILE_OPPORTUNITY_ROLE_LABEL.GROUP_TRAVEL when displayRoleKind is professional_title"
+      ]
+    },
+    {
+      "field": "professionalTitle",
+      "authoritativeSource": "primaryContact.title / professionalTitle / tileContactPreview.professionalTitle",
+      "approvedDisplayField": "tileContactPreview.professionalTitle",
+      "neverSubstituteWith": [
+        "opportunityRole",
+        "buyerEligibility"
+      ]
+    },
+    {
+      "field": "opportunityRole",
+      "authoritativeSource": "tileContactPreview.opportunityRole / mapEvidenceToOpportunityRoleLabel",
+      "approvedDisplayField": "tileContactPreview.opportunityRole (internal; card only if no title)",
+      "neverSubstituteWith": []
+    },
+    {
+      "field": "contactRelevance",
+      "authoritativeSource": "tileContactPreview.buyerEligibility / primaryContact.contactRelevanceLabel",
+      "approvedDisplayField": "canonicalCustomerPresentation.contact.relevance (drawer/diagnostics)",
+      "neverSubstituteWith": [
+        "displayRole"
+      ]
+    },
+    {
+      "field": "buyerEligibleForGate",
+      "authoritativeSource": "tileContactPreview.buyerEligibleForGate",
+      "approvedDisplayField": "canonicalCustomerPresentation.contact.buyerEligibleForGate",
+      "neverSubstituteWith": [
+        "displayRole",
+        "opportunityRole"
+      ]
+    },
+    {
+      "field": "commercialAction",
+      "authoritativeSource": "salesActionPillLabel / tileBadgePlan.salesActionPillLabel (local master)",
+      "approvedDisplayField": "canonicalCustomerPresentation.commercialAction.pillLabel",
+      "neverSubstituteWith": [
+        "commercialStagePillLabel",
+        "raw salesActivation from research",
+        "inventory classification labels"
+      ]
+    },
+    {
+      "field": "priority",
+      "authoritativeSource": "priorityPillLabel / priorityFilterKey",
+      "approvedDisplayField": "canonicalCustomerPresentation.priority.pillLabel",
+      "neverSubstituteWith": [
+        "maturity badges",
+        "readiness state"
+      ]
+    },
+    {
+      "field": "revenueStreamIcons",
+      "authoritativeSource": "revenueStreamIcons + revenueStreamClass frozen on publication row",
+      "approvedDisplayField": "canonicalCustomerPresentation.icons",
+      "neverSubstituteWith": [
+        "live re-derivation that mutes ACTIVE when thesis scrubbed",
+        "inferred COMBINED without eventFnbThesis when icons frozen"
+      ]
+    },
+    {
+      "field": "displayTitle",
+      "authoritativeSource": "displayTitle / title from local master",
+      "approvedDisplayField": "canonicalCustomerPresentation.display.title",
+      "neverSubstituteWith": [
+        "internal research titles with audit notes"
+      ]
+    },
+    {
+      "field": "customerSummary",
+      "authoritativeSource": "summaryWhat / whatIsHappening / customerSummary",
+      "approvedDisplayField": "canonicalCustomerPresentation.display.summary",
+      "neverSubstituteWith": [
+        "researchToDrawer raw dumps",
+        "internal audit notes"
+      ]
+    },
+    {
+      "field": "hotelSourcingStatus",
+      "authoritativeSource": "hotelSourcingStatusLabel / hotelSourcingStatusNormalized",
+      "approvedDisplayField": "hotelSourcingStatusLabel",
+      "neverSubstituteWith": [
+        "generic Unknown from share projection"
+      ]
+    },
+    {
+      "field": "needDateMatch",
+      "authoritativeSource": "needDateMatchV1 / needDateTilePreview",
+      "approvedDisplayField": "canonicalCustomerPresentation.icons.needDateLabel",
+      "neverSubstituteWith": [
+        "live recomputed mismatch that differs from freeze"
+      ]
+    },
+    {
+      "field": "drawerSections",
+      "authoritativeSource": "Frozen package drawer models (sharedTenSectionDrawer / events / scaling)",
+      "approvedDisplayField": "approvedCustomerFacingDetail / drawer models on package row",
+      "neverSubstituteWith": [
+        "generic section templates",
+        "empty scalingDrawerModel shells"
+      ]
+    }
+  ],
+  "docs": "docs/data-intelligence/gdi-field-authority-contract-v1.md",
+  "pr": 270
+}

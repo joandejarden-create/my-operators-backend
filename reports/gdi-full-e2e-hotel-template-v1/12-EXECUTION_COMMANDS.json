@@ -1,0 +1,21 @@
+{
+  "schema": "gdi-template-execution-commands-v1",
+  "commands": {
+    "validateHotelConfig": "node -e \"JSON.parse(require('fs').readFileSync('config/group-demand-intelligence/hotels/<id>.json','utf8'))\"",
+    "inventoryAssessment": "npm run gdi:research-storage-reconciliation-v1 -- --dry-run --hotel <id>",
+    "researchPlanDryRun": "npm run gdi:full-e2e -- --hotel <id> --authorization-ref <ref> --dry-run",
+    "airtablePersistenceVerify": "npm run test:gdi-airtable-presentation-persistence-v1",
+    "commercialQuality": "npm run test:gdi-field-authority-contract-v1",
+    "founderPreview": "Open /group-demand-intelligence.html?hotelId=<id> (package-first; ?live=1 for research browse)",
+    "publicationStaging": "Use existing publication package staging scripts; approve exact fingerprint",
+    "productionParity": "Browser parity vs founder preview after Dealality production release (GDI)",
+    "weeklyRefresh": "Existing weekly-refresh orchestrator (authorization required)",
+    "certifyTemplate": "npm run gdi:full-e2e-hotel-template-v1"
+  },
+  "doNot": [
+    "Run paid research without founder authorization",
+    "Auto-publish from research refresh",
+    "Mutate Bethesda V2 fingerprint",
+    "Execute Sheraton research during template certification"
+  ]
+}
