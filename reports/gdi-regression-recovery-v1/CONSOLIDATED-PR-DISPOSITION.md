@@ -2,6 +2,8 @@
 
 **Branch:** `fix/gdi-regression-recovery-v1`  
 **Base:** `main`  
+**Consolidated PR:** https://github.com/joandejarden-create/my-operators-backend/pull/233  
+**Commit SHA:** `c44978d30ba57bb54e91bf6cec613677e8694294`  
 **Policy:** Do not merge/deploy without founder authorization.
 
 ## Older PRs — disposition
