@@ -1,0 +1,43 @@
+{
+  "viewport": { "width": 1440, "height": 900 },
+  "beforeProductionStep6": {
+    "source": "00-REPRO-prod.json",
+    "drawer": {
+      "id": "gdiShareDrawer",
+      "x": 863,
+      "y": 416,
+      "w": 560,
+      "h": 900,
+      "position": "absolute",
+      "topLayer": false,
+      "open": true,
+      "zIndex": "auto"
+    },
+    "blankRegionCause": "adp-gt highlight box-shadow scrim (9999px) over short cutout + mid-page drawer",
+    "centerElementFromPoint": "HTML.adp-gt-active",
+    "tourRoot": { "zIndex": "10050", "pointerEvents": "none", "topLayer": true }
+  },
+  "afterLocalV1_1gStep6": {
+    "source": "05-GUIDED-TOUR-STEP-RESULTS.json",
+    "drawer": {
+      "x": 880,
+      "y": 0,
+      "w": 560,
+      "h": 900,
+      "tourNonModalClass": true,
+      "drawerModal": false,
+      "open": true
+    },
+    "highlight": { "x": 880, "y": 0, "w": 560, "h": 900 },
+    "callout": { "note": "forced left of drawer with ≥28px gap; must not overlap drawer.x" },
+    "centerElementFromPoint": "results-grid (dimmed report remains in document)",
+    "nextHittable": true
+  },
+  "architectureRules": [
+    "Demote showModal→show for popover hit-testing",
+    "Always pin .gdi-drawer--tour-nonmodal fixed right rail while demoted",
+    "Drawer highlight uses near-full viewport height (no 40vh cap)",
+    "Coachmark stays in left column for tall right-rail highlights",
+    "Clear tour-nonmodal class on tour exit; restore showModal"
+  ]
+}

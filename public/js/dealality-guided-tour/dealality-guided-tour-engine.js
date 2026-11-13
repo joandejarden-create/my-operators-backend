@@ -530,7 +530,23 @@
       if (!highlight || !el) return null;
       var pad = 8;
       var r = el.getBoundingClientRect();
-      var maxH = Math.floor(window.innerHeight * 0.4);
+      // Opportunity Details drawers are viewport-tall. The default 40vh cap left
+      // a small empty cutout while the rest of the page (and most of the drawer)
+      // sat under the 9999px scrim — reading as a blank dark overlay.
+      var isDrawerTarget = false;
+      try {
+        isDrawerTarget = !!(
+          el.matches &&
+          (el.matches("dialog.gdi-drawer") ||
+            el.matches('[data-gdi-tour-target="drawer"]') ||
+            el.classList.contains("gdi-drawer"))
+        );
+      } catch (_) {
+        isDrawerTarget = false;
+      }
+      var maxH = Math.floor(
+        window.innerHeight * (isDrawerTarget ? 0.94 : 0.4)
+      );
       var hlH = Math.min(maxH, Math.max(44, r.height + pad * 2));
       var hlW = Math.min(
         window.innerWidth - 16,
@@ -544,6 +560,13 @@
         8,
         Math.min(r.left - pad, window.innerWidth - hlW - 8)
       );
+      if (isDrawerTarget) {
+        // Pin to the visible right-rail drawer, not a mid-page fragment.
+        hlTop = Math.max(0, Math.min(8, r.top));
+        hlLeft = Math.max(0, Math.round(r.left));
+        hlW = Math.min(window.innerWidth, Math.round(r.width));
+        hlH = Math.min(window.innerHeight, Math.round(r.height));
+      }
       highlight.style.top = hlTop + "px";
       highlight.style.left = hlLeft + "px";
       highlight.style.width = hlW + "px";
@@ -565,6 +588,26 @@
       // Prefer the open side opposite a right-hand drawer highlight so the
       // coachmark stays fully inside the viewport and remains hittable.
       var preferLeft = hl.left + hl.width / 2 > vw * 0.55;
+      var isDrawerHighlight =
+        preferLeft && hl.width >= Math.min(420, vw * 0.32) && hl.height >= vh * 0.55;
+      // Tall right-rail drawer: keep the coachmark entirely in the left column —
+      // never straddle the drawer content the walkthrough is explaining.
+      if (isDrawerHighlight) {
+        var drawerGap = Math.max(gap, 28);
+        var maxW = Math.max(240, hl.left - drawerGap - 12);
+        if (w > maxW) {
+          w = maxW;
+          callout.style.width = w + "px";
+          // Re-measure after width shrink (height may change).
+          var measured = callout.getBoundingClientRect();
+          h = measured.height || h;
+        }
+        var leftCol = Math.max(12, hl.left - w - drawerGap);
+        var topCol = Math.max(12, Math.min(hl.top + 24, vh - h - 12));
+        callout.style.top = Math.round(topCol) + "px";
+        callout.style.left = Math.round(leftCol) + "px";
+        return true;
+      }
       var candidates = preferLeft
         ? [
             { name: "left", top: hl.top, left: hl.left - w - gap },
