@@ -1,8 +1,22 @@
 {
   "git": {
-    "head": "47b2e292c4eac77a19f414c11f11cc3bc5b4a6e0",
-    "short": "47b2e292c",
-    "branch": "fix/gdi-canonical-customer-ui-architecture-v1"
+    "mergeSha": "f5c2f364a08032943e8cddbbe7947a6598b4c829",
+    "pr": 261
   },
-  "note": "Update after merge/deploy; refuse CLIENT READY if prod marker lags and B≠C"
+  "githubActionsDeploy": {
+    "runId": "43449677216",
+    "url": "https://github.com/joandejarden-create/my-operators-backend/actions/runs/43449677216",
+    "controlPlaneRef": "release/gha-deploy-detached-head-guard-v1",
+    "approvedSha": "f5c2f364a08032943e8cddbbe7947a6598b4c829"
+  },
+  "railway": {
+    "deploymentId": "ae46df3e-d40d-4ec2-9f81-cef341a18d28",
+    "status": "SUCCESS",
+    "htmlCacheMarker": "gdi-auth-share-canonical-v1"
+  },
+  "postDeployParity": {
+    "command": "npm run test:gdi-auth-share-canonical-parity",
+    "verdict": "B_C_PUBLICATION_PARITY_PASS",
+    "note": "Mode B ≡ Mode C. Mode A LIVE ≠ package is intentional (65 diffs). No CLIENT READY claim for A≡C."
+  }
 }
