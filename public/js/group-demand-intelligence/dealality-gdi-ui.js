@@ -1295,6 +1295,8 @@
     s = s.replace(/:\s*$/g, "");
     s = s.replace(/\.\s*$/g, ".");
     s = s.replace(/\s*[—\-–]\s*$/g, "");
+    // Date-range strip can leave empty wrappers: "Premier Cup ()" / "( – )"
+    s = s.replace(/\(\s*[–—\-→]*\s*\)/g, "");
     s = s.replace(/\s{2,}/g, " ").trim();
     return s;
   }
