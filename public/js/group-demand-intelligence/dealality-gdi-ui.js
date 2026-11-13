@@ -65,6 +65,11 @@
     MONITOR: 1,
   };
 
+  /** Shared whitespace normalizer — required by Who-to-Contact and drawer bodies. */
+  function prose(v) {
+    return v == null ? "" : String(v).replace(/\s+/g, " ").trim();
+  }
+
   /**
    * Research-to-Drawer V2 — expandable Layer 2 under Sales Brief sections.
    * Expects opportunity.researchToDrawerV2 from merge overlay / API DTO.
