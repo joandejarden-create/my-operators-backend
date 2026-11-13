@@ -254,10 +254,17 @@ check("drawer_renders_monitor_future_cycle_for_afcea", () => {
   assert.doesNotMatch(html, /Pursue Now/);
 });
 
-check("list_card_shows_competitive_action_pill", () => {
+check("list_card_omits_verification_status_badges", () => {
   assert.ok(UI?.opportunityTileHtml);
   const tile = UI.opportunityTileHtml(nado2028);
-  assert.match(tile, /Qualify Overflow|Verified(?: Competitive)?/);
+  // Verification status is drawer-only — never on opportunity tiles.
+  assert.doesNotMatch(
+    tile,
+    />Verified<|>Needs Verification<|>Historical<|>Unverified<|gdi-pill-cmi-verified|gdi-pill-cmi-needs|gdi-pill-cmi-historical/
+  );
+  // Drawer still exposes verification + competitive action.
+  const drawer = UI.intelligenceDetailHtml(nado2028, null, {});
+  assert.match(drawer, /Verified|Qualify Overflow/i);
 });
 
 check("csv_exports_competitive_action_columns", () => {

@@ -42,6 +42,24 @@ const FOUNDER_EXAMPLES = [
     before: "ASAE Annual Meeting & Exposition 2029 — Washington, DC (Early Watch)",
     after: "ASAE Annual Meeting & Exposition 2029",
   },
+  {
+    before:
+      "NADO & DDAA Washington Conference 2027 — Crystal Gateway Marriott Host",
+    after: "NADO & DDAA Washington Conference 2027",
+  },
+  {
+    before:
+      "ACVNU Renal Week 2027 — Competitor Room Block at The Bethesdan",
+    after: "ACVNU Renal Week 2027",
+  },
+  {
+    before: "251st ECS Meeting 2027 — WEWCC + Marriott Marquis",
+    after: "251st ECS Meeting 2027",
+  },
+  {
+    before: "World Biomaterials Congress 2028 — WEWCC",
+    after: "World Biomaterials Congress 2028",
+  },
 ];
 
 check("contract_version", () => {

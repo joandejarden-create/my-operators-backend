@@ -31,6 +31,12 @@ const HOTELS = [
     nameNeedle: "Wyndham San Diego Bayside",
     expectScope: null,
   },
+  {
+    id: "gdi_hotel_waterstone_boca_raton",
+    label: "waterstone-boca-raton",
+    nameNeedle: "Waterstone",
+    expectScope: null,
+  },
 ];
 
 const browser = await chromium.launch({ headless: true });
@@ -93,7 +99,10 @@ for (const hotel of HOTELS) {
     );
     return el?.href || "";
   });
-  assert.match(cssHref, /gdi-regression-recovery-v1/);
+  assert.match(
+    cssHref,
+    /gdi-regression-recovery-v1|gdi-title-sourcing-consistency-v1|gdi-opp-type-classification-v1|gdi-card-no-/
+  );
 
   const bodyText = await page.locator("body").innerText();
   assert.equal(bodyText.includes(" updated"), false, "X updated header must be gone");

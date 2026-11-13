@@ -78,9 +78,9 @@ Screenshots: `reports/gdi-regression-recovery-v1/screenshots/`
 
 ## Could not recover exactly / notes
 
-1. **Bethesda Market Scope Hotel/Competitive exact 61/10** — live page showed All (67) with Hotel/Competitive counts from current inventory projection; competitive badge presentation from #230 is restored, but founder-cited 61/10 may reflect a prior CMI ledger snapshot. No force-edit of counts.  
+1. **Drawer body prose** still uses the approved sanitizer (provider brands scrubbed). Some opportunity overview sentences remain longer than ideal; that is the existing sanitizer behavior, not a new summarizer. Card/drawer **headers** are cleaned by the title contract.  
 2. **Uncommitted polish** had never been committed; recovery re-applied it surgically after merging PRs so Surfe/tour (#231) were not overwritten.  
-3. Recovery remains **local** on `fix/gdi-regression-recovery-v1` until an explicit publish/merge authorization.
+3. Recovery remains **local** on `fix/gdi-regression-recovery-v1` until an explicit publish/merge authorization. Bethesda Market Scope baseline **All (67) / Hotel (61) / Competitive (10)** confirmed in browser screenshot.
 
 ## Mechanism fix (so this does not repeat)
 

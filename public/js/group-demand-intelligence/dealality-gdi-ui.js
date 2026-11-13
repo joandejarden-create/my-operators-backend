@@ -589,10 +589,18 @@
   }
 
   /**
-   * Pill 2 — Recommended Sales Action (eight approved labels). Always a colored badge.
-   * Never Commercial Stage terminology.
+   * Competitive verification status (Verified / Needs Verification / Historical)
+   * is drawer + data only — never rendered on opportunity cards.
+   * Kept as a no-op helper so callers/tests can assert card omission safely.
    */
-  function competitiveStatusPillHtml(it, linked) {
+  function competitiveStatusPillHtml(/* it, linked */) {
+    return "";
+  }
+
+  /**
+   * Drawer-facing verification status label HTML (not used on cards).
+   */
+  function competitiveVerificationStatusDrawerHtml(it, linked) {
     it = it || {};
     linked = linked || {};
     var pops = opportunityInventoryPopulations(linked.id ? linked : it);
@@ -627,17 +635,6 @@
       it.competitorHotel ||
       "";
     var title = m.label + (hotel ? " · " + hotel : "");
-    var actionLabel =
-      linked.competitiveCommercialActionLabel ||
-      it.competitiveCommercialActionLabel ||
-      "";
-    var actionHtml = actionLabel
-      ? '<span class="gdi-pill gdi-pill-cmi gdi-pill-cmi-action" title="' +
-        esc(actionLabel) +
-        '">' +
-        esc(actionLabel) +
-        "</span>"
-      : "";
     return (
       '<span class="' +
       m.cls +
@@ -645,8 +642,7 @@
       esc(title) +
       '">' +
       esc(m.label) +
-      "</span>" +
-      actionHtml
+      "</span>"
     );
   }
 
@@ -745,12 +741,11 @@
           metaRow("Why this hotel may be a candidate", future.whyTargetHotelCandidate) +
           metaRow(
             "Recommended sales action",
-            o.competitiveCommercialActionLabel
-              ? o.competitiveCommercialActionLabel +
-                  (future.recommendedSalesAction
-                    ? " — " + future.recommendedSalesAction
-                    : "")
-              : future.recommendedSalesAction
+            // Action body only — label lives on the competitive action banner /
+            // sales-action pill. Never concatenate "Qualify Overflow — …".
+            future.recommendedSalesAction ||
+              o.competitiveCommercialActionLabel ||
+              null
           ) +
           "</div></section>"
       );
@@ -1367,7 +1362,23 @@
     // Events tile meta: Organizer · Event Type · Hotel Sourcing Status
     if (isEventsTile) {
       var ov = linked.eventsOpportunityOverview || it.eventsOpportunityOverview || {};
-      if (ov.tileClassificationLine) {
+      // Prefer live composed sourcing over a stale overview tileClassificationLine
+      // that may say "Venue Confirmed" and collapse competitor vs target dimensions.
+      var liveSourcingHint =
+        linked.hotelSourcingStatusLabel ||
+        it.hotelSourcingStatusLabel ||
+        linked.targetHotelSourcingStatusLabel ||
+        it.targetHotelSourcingStatusLabel ||
+        "";
+      if (
+        ov.tileClassificationLine &&
+        !/Competitor venue confirmed|overflow sourcing unconfirmed|Future cycle to monitor/i.test(
+          liveSourcingHint
+        ) &&
+        !/Competitor venue confirmed|overflow sourcing/i.test(
+          String(ov.tileClassificationLine)
+        )
+      ) {
         return esc(ov.tileClassificationLine);
       }
       var orgShortEvents = org.replace(/\s*\([^)]*\)\s*$/, "").trim();
@@ -1393,10 +1404,14 @@
         else if (/corporate_event|other/.test(sub)) eventType = "Corporate Event";
         else eventType = "Corporate Event";
       }
+      // Prefer composed competitor-vs-target sourcing from the DTO over generic
+      // overview labels like "Venue Confirmed" (those collapse independent dimensions).
       var sourcing =
-        ov.hotelSourcing ||
         linked.hotelSourcingStatusLabel ||
         it.hotelSourcingStatusLabel ||
+        linked.targetHotelSourcingStatusLabel ||
+        it.targetHotelSourcingStatusLabel ||
+        ov.hotelSourcing ||
         linked.venueSourcingStatusLabel ||
         it.venueSourcingStatusLabel ||
         "Hotel Sourcing Unconfirmed";
@@ -1913,7 +1928,18 @@
     if (segment && SEGMENT_TO_FILTER[segment]) {
       return SEGMENT_TO_FILTER[segment];
     }
-    var type = String(o.opportunityType || "").toUpperCase();
+    var NON_DEMAND_TYPES = {
+      COMPETITIVE_MARKET_INTELLIGENCE: 1,
+      SALES_OPPORTUNITIES: 1,
+      ALL_COMMERCIAL_INTELLIGENCE: 1,
+      FUTURE_CYCLE: 1,
+      RESEARCH_CONTINUATION: 1,
+      CLOSED_DISQUALIFIED: 1,
+      HISTORICAL_COMPETITIVE: 1,
+      NEEDS_FURTHER_VERIFICATION: 1,
+    };
+    var typeRaw = String(o.opportunityType || "").toUpperCase();
+    var type = NON_DEMAND_TYPES[typeRaw] ? "" : typeRaw;
     var signal = String(o.demandSignalType || o.demandFamily || "")
       .trim()
       .toLowerCase();
@@ -1970,13 +1996,34 @@
       return "SPORTS_ENTERTAINMENT";
     }
     if (
+      segment === "overflow housing" ||
+      segment.indexOf("overflow housing") >= 0 ||
+      type === "OVERFLOW_HOUSING" ||
+      type === "FIXED_VENUE_OPEN_HOUSING"
+    ) {
+      return "ASSOCIATION_CONFERENCE_GROUP";
+    }
+    if (
       segment === "association" ||
       segment.indexOf("assoc") >= 0 ||
-      type === "OVERFLOW_HOUSING" ||
       type === "PRIMARY_PURSUIT" ||
-      type === "FIXED_VENUE_OPEN_HOUSING" ||
       signal.indexOf("association") >= 0 ||
       signal.indexOf("conference") >= 0
+    ) {
+      return "ASSOCIATION_CONFERENCE_GROUP";
+    }
+    if (
+      segment.indexOf("medical / scientific") >= 0 ||
+      segment.indexOf("scientific") >= 0 ||
+      segment.indexOf("university") >= 0 ||
+      segment.indexOf("education") >= 0
+    ) {
+      return "EDUCATION_SCIENTIFIC";
+    }
+    if (
+      segment === "medical" ||
+      segment === "healthcare" ||
+      segment.indexOf("healthcare") >= 0
     ) {
       return "ASSOCIATION_CONFERENCE_GROUP";
     }
@@ -2223,6 +2270,9 @@
     ];
     Object.keys(OPPORTUNITY_TYPE_FILTER_LABELS).forEach(function (value) {
       if (isInventoryPopulationFilter(value)) return;
+      // Never expose Other / Unclassified as a customer-facing filter option.
+      // Invalid classifications are flagged by internal validation instead.
+      if (value === "OTHER_UNCLASSIFIED") return;
       var n = counts[value] || 0;
       if (n > 0) {
         options.push({
@@ -5823,7 +5873,8 @@
       "</div>" +
       '<div class="brand-card__pills gdi-tile-pills" data-gdi-tour-target="card-signals">' +
       tilePriorityPill(priorityKey, activeFilters) +
-      competitiveStatusPillHtml(it, linked) +
+      // Verification status (Verified / Needs Verification / Historical) is
+      // drawer-only — never on opportunity cards.
       tileSalesActionPill(it, linked) +
       tileEventDatePill(it, linked) +
       "</div>" +
@@ -8719,6 +8770,43 @@
         "</span></div>"
       );
     }
+    // Prefer live composed competitor-vs-target sourcing over stale overview
+    // "Venue Confirmed" that collapses independent commercial dimensions.
+    var hotelSourcingDisplay =
+      (o && o.hotelSourcingStatusLabel) ||
+      ov.hotelSourcing ||
+      "Sourcing unconfirmed";
+    var locationDisplay = ov.location || "Location TBD";
+    if (
+      /host\s+hotel\s+contracted|competitor\s+(?:venue|hotel|booking)/i.test(
+        String(locationDisplay),
+      )
+    ) {
+      locationDisplay =
+        (o &&
+          (o.eventLocationCity ||
+            o.eventCity ||
+            o.city ||
+            o.destination)) ||
+        "Location TBD";
+    }
+    var venueNote = ov.venueConfirmationNote || "";
+    if (
+      /Competitor venue confirmed/i.test(String(hotelSourcingDisplay)) &&
+      !venueNote
+    ) {
+      var comp =
+        (o &&
+          (o.cmiCompetitorHotel ||
+            o.competitorHotel ||
+            o.likelyCompetitor)) ||
+        "";
+      venueNote = comp
+        ? "Competitor venue confirmed (" +
+          comp +
+          "). Target-hotel overflow or secondary lodging is not confirmed — do not treat as an open host RFP."
+        : "A competitor venue is confirmed; target-hotel overflow sourcing remains unconfirmed.";
+    }
     return (
       '<div class="gdi-events-opportunity-overview" data-overview-version="gdi-events-opportunity-overview-v1">' +
       '<p class="gdi-events-overview-identity">' +
@@ -8727,16 +8815,16 @@
       '<div class="gdi-events-overview-grid">' +
 
       row("Timing", ov.timing) +
-      row("Location", ov.location) +
-      row("Hotel sourcing", ov.hotelSourcing) +
+      row("Location", locationDisplay) +
+      row("Hotel sourcing", hotelSourcingDisplay) +
       row("Room demand", ov.roomDemand) +
       row("Demand cycle", ov.demandCycle) +
       row("Attendance", ov.attendance) +
       row("Peak rooms", ov.peakRooms) +
       "</div>" +
-      (ov.venueConfirmationNote
+      (venueNote
         ? '<p class="gdi-events-overview-venue-note gdi-muted">' +
-          esc(ov.venueConfirmationNote) +
+          esc(venueNote) +
           "</p>"
         : "") +
       "</div>"
@@ -9675,6 +9763,7 @@
     countByCompetitiveStatus: countByCompetitiveStatus,
     opportunityCompetitiveStatus: opportunityCompetitiveStatus,
     competitiveStatusPillHtml: competitiveStatusPillHtml,
+    competitiveVerificationStatusDrawerHtml: competitiveVerificationStatusDrawerHtml,
     classifyOpportunityTypeFilter: classifyOpportunityTypeFilter,
     countByOpportunityTypeFilter: countByOpportunityTypeFilter,
     countByMarketScope: countByMarketScope,

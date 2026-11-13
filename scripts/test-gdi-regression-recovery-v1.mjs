@@ -116,8 +116,16 @@ check("preserved_ui_polish", () => {
     ui,
     /function weeklyDeltaHeaderSummaryHtml\(\/\* counts \*\/\)[\s\S]*?return "";/
   );
-  assert.match(html, /gdi-regression-recovery-v1/);
+  assert.match(
+    html,
+    /gdi-title-sourcing-consistency-v1|gdi-card-no-verification-pill-v1|gdi-card-no-market-scope-pill-v1|gdi-opp-type-classification-v1|gdi-regression-recovery-v1/
+  );
   assert.match(html, /gdi-guided-report-tour\.js/);
+  // Card-level Market Scope action pills must stay off opportunity tiles.
+  assert.doesNotMatch(
+    ui,
+    /gdi-pill-cmi-action[\s\S]{0,80}competitiveCommercialActionLabel/
+  );
 });
 
 check("title_contract_module_present", () => {

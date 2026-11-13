@@ -340,12 +340,27 @@ check("bethesda_verified_cmi_ledger_counts_via_market_scope", () => {
   assert.equal(/Competitor/.test(salesChips), false);
   assert.equal(/COMPETITOR_CAPTURE/.test(salesChips), false);
 
-  const verifiedPill = UI.competitiveStatusPillHtml(
-    { cmiVerified: true, competitiveStatus: "VERIFIED" },
-    { cmiVerified: true, competitiveStatus: "VERIFIED" }
+  // Card helper must not emit verification badges (drawer-only).
+  const cardPill = UI.competitiveStatusPillHtml(
+    {
+      cmiVerified: true,
+      competitiveStatus: "VERIFIED",
+      competitiveCommercialActionLabel: "Qualify Overflow",
+    },
+    {
+      cmiVerified: true,
+      competitiveStatus: "VERIFIED",
+      competitiveCommercialActionLabel: "Qualify Overflow",
+    }
   );
-  assert.match(verifiedPill, />Verified</);
-  assert.equal(/Verified Competitive/.test(verifiedPill), false);
+  assert.equal(cardPill, "");
+  if (typeof UI.competitiveVerificationStatusDrawerHtml === "function") {
+    const drawerPill = UI.competitiveVerificationStatusDrawerHtml(
+      { cmiVerified: true, competitiveStatus: "VERIFIED" },
+      { cmiVerified: true, competitiveStatus: "VERIFIED" }
+    );
+    assert.match(drawerPill, />Verified</);
+  }
 });
 
 check("css_and_apps_wire_market_scope", () => {

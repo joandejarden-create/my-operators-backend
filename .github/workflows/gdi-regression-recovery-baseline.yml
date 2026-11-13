@@ -1,0 +1,74 @@
+# Permanent GDI regression-recovery baseline.
+# Locks PR #230/#231/#232 recoveries + title/sourcing/classification consistency
+# so approved customer-facing behavior cannot silently regress on GDI PRs.
+name: GDI regression recovery baseline
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "public/group-demand-intelligence.html"
+      - "public/css/group-demand-intelligence.css"
+      - "public/js/group-demand-intelligence/**"
+      - "public/js/ai-demand-positioning/adp-guided-report-tour.*"
+      - "api/group-demand-intelligence.js"
+      - "lib/group-demand-intelligence/**"
+      - "scripts/test-gdi-regression-recovery-v1.mjs"
+      - "scripts/test-gdi-opportunity-type-classification-v1.mjs"
+      - "scripts/test-gdi-title-sourcing-commercial-consistency-v1.mjs"
+      - "scripts/test-gdi-customer-facing-opportunity-title-contract-v1.mjs"
+      - "scripts/test-gdi-surfe-on-demand-contact-reveal-v1.mjs"
+      - "scripts/test-gdi-guided-report-tour-v1.mjs"
+      - "scripts/test-gdi-market-scope-toggle-v1.mjs"
+      - "scripts/test-gdi-opportunity-card-quality-v1.mjs"
+      - "scripts/test-gdi-hotel-toolbar-reset-view-only-v1.mjs"
+      - "scripts/verify-gdi-regression-recovery-browser-v1.mjs"
+      - ".github/workflows/gdi-regression-recovery-baseline.yml"
+      - "package.json"
+      - "package-lock.json"
+  push:
+    branches: [main]
+    paths:
+      - "public/js/group-demand-intelligence/**"
+      - "lib/group-demand-intelligence/**"
+      - "scripts/test-gdi-regression-recovery-v1.mjs"
+      - "scripts/test-gdi-opportunity-type-classification-v1.mjs"
+      - "scripts/test-gdi-title-sourcing-commercial-consistency-v1.mjs"
+      - ".github/workflows/gdi-regression-recovery-baseline.yml"
+
+jobs:
+  gdi-regression-baseline:
+    name: GDI recovery regression suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Title contract + research copy + Market Scope + Reset View polish
+        run: npm run test:gdi-regression-recovery-v1
+
+      - name: Permanent customer-facing opportunity title contract
+        run: npm run test:gdi-customer-facing-opportunity-title-contract-v1
+
+      - name: Opportunity card quality (PR #230)
+        run: npm run test:gdi-opportunity-card-quality-v1
+
+      - name: Market Scope toggle + competitive filtering
+        run: npm run test:gdi-market-scope-toggle-v1
+
+      - name: Surfe on-demand contact lookup (PR #231)
+        run: npm run test:gdi-surfe-on-demand-contact-reveal-v1
+
+      - name: Guided report tour
+        run: npm run test:gdi-guided-report-tour-v1
+
+      - name: Reset View active-filter badge
+        run: npm run test:gdi-hotel-toolbar-reset-view-only-v1

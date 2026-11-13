@@ -1797,8 +1797,11 @@
     "gdi-customer-facing-opportunity-title-audit": "node scripts/audit-gdi-customer-facing-opportunity-titles-v1.mjs",
     "verify:gdi-customer-facing-opportunity-title-contract-browser-v1": "node scripts/verify-gdi-customer-facing-opportunity-title-contract-browser-v1.mjs",
     "test:gdi-surfe-on-demand-contact-reveal-v1": "node scripts/test-gdi-surfe-on-demand-contact-reveal-v1.mjs",
-    "test:gdi-regression-recovery-v1": "node scripts/test-gdi-regression-recovery-v1.mjs",
-    "verify:gdi-regression-recovery-browser-v1": "node scripts/verify-gdi-regression-recovery-browser-v1.mjs"
+    "test:gdi-regression-recovery-v1": "node scripts/test-gdi-regression-recovery-v1.mjs && node scripts/test-gdi-opportunity-type-classification-v1.mjs && node scripts/test-gdi-title-sourcing-commercial-consistency-v1.mjs",
+    "verify:gdi-regression-recovery-browser-v1": "node scripts/verify-gdi-regression-recovery-browser-v1.mjs",
+    "test:gdi-opportunity-type-classification-v1": "node scripts/test-gdi-opportunity-type-classification-v1.mjs",
+    "gdi:opportunity-type-portfolio-audit": "node scripts/gdi-opportunity-type-portfolio-audit-v1.mjs",
+    "test:gdi-title-sourcing-commercial-consistency-v1": "node scripts/test-gdi-title-sourcing-commercial-consistency-v1.mjs"
   },
   "dependencies": {
     "@memberstack/admin": "^1.3.1",
