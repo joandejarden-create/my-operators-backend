@@ -1,0 +1,15 @@
+{
+  "dossiersAvailable": 434,
+  "assessed": 62,
+  "paidResearchUsd": 0,
+  "freeRemediation": true,
+  "rootCauses": {
+    "marketScopeHotelZero": "DTO used inventoryPopulations:['hotel'] instead of certified SALES_OPPORTUNITIES — UI Market Scope Hotel counts only SALES_OPPORTUNITIES membership (cause E/H).",
+    "salesOpportunitiesAllZero": "salesOpportunityQuickFilterKeys were never attached — Bethesda filter chips require attachSalesOpportunityFilterFields / classifySalesOpportunityKeys (cause E/G).",
+    "opportunityTypeAll62": "opportunityType left as raw researchSegment snake_case without opportunityTypeFilterCategory / demandSegmentId mapping (cause D/E).",
+    "buildAccountOnly": "salesActionKey hardcoded BUILD_ACCOUNT; certified resolveCustomerSalesAction never applied with partnership/catering/qualify signals (cause B/G).",
+    "unknownSourcing": "hotelSourcingStatusLabel set to UNKNOWN instead of Hotel Sourcing Unconfirmed / normalized sourcing enum (cause C/E).",
+    "genericNarratives": "Shortlist hotelThesis fallback + Aimbridge 'Documented local expansion/growth activity' strings promoted without demand-specific rewrite (cause A/G).",
+    "zeroSalesReady": "Commercially mostly justified (no verified lodging DM + open sourcing), but prior demotion also skipped Qualify Opportunity differentiation — eligibility audit applied below without inventing Sales Ready (cause B, partial F)."
+  }
+}
