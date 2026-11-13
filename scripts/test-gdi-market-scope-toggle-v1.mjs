@@ -75,6 +75,9 @@ check("toolbar_html_places_market_scope_after_opportunity_type", () => {
   assert.match(html, /data-gdi-market-scope="COMPETITIVE"/);
   assert.doesNotMatch(html, /Sales Opportunities \(/);
   assert.doesNotMatch(html, /All Commercial Intelligence/);
+  assert.doesNotMatch(html, /Competitive Status/);
+  assert.doesNotMatch(html, /data-gdi-competitive-status/);
+  assert.doesNotMatch(html, /gdi-competitive-status-filter/);
 });
 
 check("opportunity_type_options_exclude_population_controls", () => {
@@ -296,33 +299,53 @@ check("bethesda_verified_cmi_ledger_counts_via_market_scope", () => {
     "Confirmed competitor bookings without target-hotel demand must leave Hotel"
   );
 
-  const verifiedOnly = UI.filterOpportunities(annotated, {
-    marketScope: "COMPETITIVE",
-    competitiveStatus: "VERIFIED",
-  });
-  assert.equal(verifiedOnly.length, 6);
-  assert.ok(verifiedOnly.every((o) => o.cmiVerified === true));
+  // Competitive Status UI retired — classification remains on cards / counts helper.
+  const statusCounts = UI.countByCompetitiveStatus(cmi);
+  assert.equal(statusCounts.ALL_COMPETITIVE, 10);
+  assert.equal(statusCounts.VERIFIED, 6);
+  assert.equal(statusCounts.NEEDS_VERIFICATION, 3);
+  assert.equal(statusCounts.HISTORICAL, 1);
   assert.ok(
-    verifiedOnly.some((o) => o.id === "gdi_s4912_6c8a62552bfa"),
+    cmi.some((o) => o.id === "gdi_s4912_6c8a62552bfa"),
     "ICON Awards recovered as verified competitive"
   );
   assert.ok(
-    verifiedOnly.some((o) => o.id === "gdi_s4912_732496c2f8aa"),
+    cmi.some((o) => o.id === "gdi_s4912_732496c2f8aa"),
     "CASSS recovered as verified competitive"
   );
 
-  const statusHtml = UI.competitiveStatusFilterHtml({
-    activeMarketScope: "COMPETITIVE",
-    activeCompetitiveStatus: "ALL_COMPETITIVE",
-    competitiveStatusCounts: UI.countByCompetitiveStatus(cmi),
+  // Status filter no longer narrows Competitive scope results.
+  const competitiveUnfiltered = UI.filterOpportunities(annotated, {
+    marketScope: "COMPETITIVE",
+    competitiveStatus: "VERIFIED",
   });
-  assert.match(statusHtml, /Competitive Status/);
-  assert.match(statusHtml, /data-gdi-competitive-status="VERIFIED"/);
-  assert.match(statusHtml, /Needs Verification/);
+  assert.equal(competitiveUnfiltered.length, 10);
+
   assert.equal(
-    UI.competitiveStatusFilterHtml({ activeMarketScope: "ALL" }),
+    UI.competitiveStatusFilterHtml({
+      activeMarketScope: "COMPETITIVE",
+      activeCompetitiveStatus: "ALL_COMPETITIVE",
+      competitiveStatusCounts: statusCounts,
+    }),
     ""
   );
+  assert.equal(UI.competitiveStatusFilterHtml({ activeMarketScope: "ALL" }), "");
+
+  const salesChips = UI.salesOpportunityPresetHtml({
+    active: "",
+    counts: UI.countBySalesOpportunity
+      ? UI.countBySalesOpportunity(annotated)
+      : {},
+  });
+  assert.equal(/Competitor/.test(salesChips), false);
+  assert.equal(/COMPETITOR_CAPTURE/.test(salesChips), false);
+
+  const verifiedPill = UI.competitiveStatusPillHtml(
+    { cmiVerified: true, competitiveStatus: "VERIFIED" },
+    { cmiVerified: true, competitiveStatus: "VERIFIED" }
+  );
+  assert.match(verifiedPill, />Verified</);
+  assert.equal(/Verified Competitive/.test(verifiedPill), false);
 });
 
 check("css_and_apps_wire_market_scope", () => {
@@ -331,7 +354,6 @@ check("css_and_apps_wire_market_scope", () => {
     "utf8"
   );
   assert.match(css, /\.gdi-market-scope/);
-  assert.match(css, /\.gdi-competitive-status/);
   const app = fs.readFileSync(
     path.join(ROOT, "public/js/group-demand-intelligence/app.js"),
     "utf8"
@@ -340,12 +362,17 @@ check("css_and_apps_wire_market_scope", () => {
     path.join(ROOT, "public/js/group-demand-intelligence/share-app.js"),
     "utf8"
   );
+  const ui = fs.readFileSync(
+    path.join(ROOT, "public/js/group-demand-intelligence/dealality-gdi-ui.js"),
+    "utf8"
+  );
   assert.match(app, /data-gdi-market-scope/);
   assert.match(share, /data-gdi-market-scope/);
-  assert.match(app, /data-gdi-competitive-status/);
-  assert.match(share, /data-gdi-competitive-status/);
   assert.match(app, /activeMarketScope/);
   assert.match(share, /activeMarketScope/);
+  assert.equal(/data-gdi-competitive-status/.test(app), false);
+  assert.equal(/data-gdi-competitive-status/.test(share), false);
+  assert.equal(/competitiveStatusFilterHtml\(opts\)/.test(ui), false);
 });
 
 const failed = checks.filter((c) => !c.ok);
