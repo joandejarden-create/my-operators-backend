@@ -1,0 +1,78 @@
+{
+  "schema": "gdi-cross-hotel-storage-contract-v1",
+  "contract": "gdi-research-persistence-contract-v1",
+  "roles": {
+    "AIRTABLE_REGISTRY": {
+      "role": "CANONICAL_MUTABLE_RESEARCH_REGISTRY",
+      "baseId": "appa2cE7FTRmIbB32",
+      "tableName": "Group Demand Opportunities",
+      "tableId": "tblRuReslJMwsfRQj",
+      "owns": [
+        "stableOpportunityId",
+        "researchStatusAndCommercialClassification",
+        "linksToEvidenceAndHistory",
+        "hotelScopedInventory"
+      ]
+    },
+    "DURABLE_RESEARCH_FS": {
+      "role": "DURABLE_RESEARCH_ARTIFACTS",
+      "root": "data/group-demand-intelligence/hotels/{hotelId}/",
+      "owns": [
+        "completeSourceEvidence",
+        "researchExecutionHistory",
+        "detailedArtifacts",
+        "historicalSnapshots",
+        "recoveryInformation",
+        "opportunitiesJsonMirror"
+      ]
+    },
+    "CUSTOMER_PUBLICATION": {
+      "role": "IMMUTABLE_CUSTOMER_CONTENT",
+      "root": "lib/group-demand-intelligence/bundled-publication-packages/{hotelId}/",
+      "owns": [
+        "approvedPresentationFields",
+        "fullCardsAndDrawers",
+        "contentFingerprintSha256",
+        "publicationLifecycle"
+      ],
+      "neverOverwrittenByResearchSync": true
+    },
+    "FEEDBACK": {
+      "role": "MUTABLE_CUSTOMER_FEEDBACK",
+      "path": "data/group-demand-intelligence/hotels/{hotelId}/feedback.json",
+      "owns": [
+        "validation",
+        "action",
+        "outcome",
+        "stableOpportunityReferences"
+      ],
+      "outsidePublicationFingerprint": true
+    }
+  },
+  "templateGate": {
+    "schema": "GDI_FULL_E2E_HOTEL_TEMPLATE_V1",
+    "contract": "gdi-research-persistence-contract-v1",
+    "ok": true,
+    "fails": [],
+    "coverage": {
+      "ok": true,
+      "missingFromRegistry": [],
+      "publishedCount": 67,
+      "registryCount": 86,
+      "extraInRegistry": 19,
+      "contract": "gdi-research-persistence-contract-v1",
+      "gate": "PUBLISHED_IDS_SUBSET_OF_RESEARCH_REGISTRY"
+    },
+    "note": "Research-stage / archive registry rows need not be customer-published; published IDs must not silently disappear from the research registry."
+  },
+  "rules": [
+    "Airtable is canonical mutable research registry per hotel",
+    "FS retains full evidence, runs, historical recovery bags",
+    "Publication packages are immutable FOUNDER_APPROVED customer content",
+    "Feedback is separate and merge-at-read",
+    "Research refresh must not drop registry IDs that are customer-published",
+    "Research-stage / archive rows need not be published",
+    "Pre-publish gate: publishedIds ⊆ researchRegistryIds",
+    "Bundled CURRENT preferred over data/ CURRENT to avoid stale Railway lean fallback"
+  ]
+}
