@@ -2,7 +2,7 @@
 
 **PR:** [#235](https://github.com/joandejarden-create/my-operators-backend/pull/235)  
 **Branch:** `fix/gdi-guided-tour-drawer-next-v1` (reconciled onto `main` @ `ba5d3b780`)  
-**Tested tip:** `1dd78efaaf30b8fb1f780b774eaf4db9a8f07e28`
+**Tested tip:** `1d9b3babcb7fe76132acff90514c3eac323de1c9` (tour fix + browser re-verify on main@ba5d3b780)
 **Policy:** Do not merge or deploy until founder authorization. Does not overwrite PR #234 semantic remediation.
 
 ## Reconciliation vs merged #234
