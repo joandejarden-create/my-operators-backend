@@ -1,26 +1,48 @@
 {
   "contract": "GDI_THREE_WAY_CANONICAL_UI_PARITY_V1",
-  "generatedAt": "2026-11-13T14:40:30.000Z",
+  "generatedAt": "2026-11-13T14:49:30.000Z",
   "presentationMerge": {
     "pr": 258,
     "mergeSha": "372b4e1a67ae7cd6124df54579cb066f9540eda9",
-    "branch": "fix/gdi-three-way-canonical-ui-parity-v1",
-    "note": "Shared package-first attach + canonical presentation contract + three-way test"
+    "note": "Package-first shared attach + canonical presentation + three-way test"
+  },
+  "certificateMerge": {
+    "pr": 259,
+    "mergeSha": "3645dacea98ae954521df90b5fb2b54ae65dd416",
+    "note": "Post-tip CLIENT READY evidence; historical BC OPEN rows marked RESOLVED"
   },
   "railwayPresentationDeploy": {
     "githubActionsRunId": "43442332414",
-    "githubActionsUrl": "https://github.com/joandejarden-create/my-operators-backend/actions/runs/43442332414",
     "approvedSha": "372b4e1a67ae7cd6124df54579cb066f9540eda9",
     "deploymentId": "4f25490e-8b6b-445e-9b52-d56b854530d9",
+    "status": "SUCCESS",
+    "role": "first_live_tip_with_three_way_marker_and_attach"
+  },
+  "railwayCertificateTipDeploy": {
+    "githubActionsRunId": "43445731749",
+    "githubActionsUrl": "https://github.com/joandejarden-create/my-operators-backend/actions/runs/43445731749",
+    "controlPlaneRef": "release/gha-deploy-detached-head-guard-v1",
+    "approvedSha": "3645dacea98ae954521df90b5fb2b54ae65dd416",
+    "deploymentId": "83d649b1-3228-4d3d-b016-f822c04e6c51",
     "serviceId": "bff4ff32-9c78-406b-a212-6ddedee5be8e",
     "status": "SUCCESS",
-    "createdAt": "2026-11-13T14:25:31.576Z",
+    "createdAt": "2026-11-13T14:47:10Z",
     "liveIdentity": {
       "htmlCacheMarker": "gdi-three-way-canonical-v1",
       "packageAttachVersion": "gdi-package-customer-presentation-attach-v1",
       "canonicalContractPresent": true,
-      "healthBuildShaNote": "Lean path-as-root deploy does not refresh RAILWAY_GIT_COMMIT_SHA; /health may report a stale SHA. Frontend marker + API attach are authoritative for this release."
+      "ric": {
+        "role": "RIC Conference Contact",
+        "icons": { "guestrooms": "active", "eventFnb": "muted" },
+        "class": "GUESTROOMS_ONLY"
+      },
+      "healthBuildShaNote": "Lean path-as-root may leave /health buildSha stale; marker + attach are authoritative."
     }
+  },
+  "failedMainControlDispatch": {
+    "githubActionsRunId": "43445379193",
+    "reason": "WRONG_BRANCH_GUARD detached HEAD — main lacks ghaDetachedArtifactOk; use release/gha-deploy-detached-head-guard-v1 control plane until merged to main",
+    "recovery": "Re-dispatched with control plane release/gha-deploy-detached-head-guard-v1 + approved_sha 3645dace"
   },
   "postDeployThreeWay": {
     "command": "npm run test:gdi-three-way-canonical-ui-parity",
@@ -29,8 +51,5 @@
     "B_to_C": "PASS",
     "fingerprint": "441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f",
     "openMaterialDifferences": 0
-  },
-  "certificateFollowUp": {
-    "note": "Follow-up commit marks historical BC OPEN register rows RESOLVED after live tip parity; presentation already live on 372b4e1a6 / 4f25490e."
   }
 }
