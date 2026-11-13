@@ -1,0 +1,35 @@
+{
+  "note": "Offline contract attach is hotel-agnostic; live multi-hotel consistency uses existing audit suite.",
+  "hotelsExercisedOffline": [
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "name": "Bethesda Marriott",
+      "role": "approved_publication_primary",
+      "fingerprint": "441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f"
+    },
+    {
+      "hotelId": "gdi_hotel_waterstone_boca_raton",
+      "name": "Waterstone Boca Raton",
+      "role": "consistency_audit_peer"
+    },
+    {
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "name": "Peer from full customer consistency audit",
+      "role": "consistency_audit_peer"
+    }
+  ],
+  "emptyInventory": {
+    "behavior": "Shared shells must render empty/zero states without inventing contacts or gold icons",
+    "coverage": "test:gdi-opportunity-card-quality-v1 contact_research_required_label"
+  },
+  "competitiveMarket": {
+    "coverage": "test:gdi-market-scope-toggle-v1"
+  },
+  "fullCustomerConsistency": {
+    "script": "test:gdi-full-customer-consistency-audit-v1",
+    "status": 0,
+    "ok": true,
+    "stdoutTail": "\n> top100-projects-scraper@1.0.0 test:gdi-full-customer-consistency-audit-v1\n> node scripts/test-gdi-full-customer-consistency-audit-v1.mjs\n\nPASS schema_and_sot_inventory\nPASS founder_title_examples_clean\nPASS portfolio_audit_runs_without_throw (opps=170, issues=1, score=99.3)\nPASS module_wired_for_ci\n\nAll full customer consistency audit checks passed\n",
+    "stderrTail": ""
+  }
+}

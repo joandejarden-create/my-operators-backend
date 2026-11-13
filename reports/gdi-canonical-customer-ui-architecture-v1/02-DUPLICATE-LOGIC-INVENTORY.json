@@ -1,0 +1,44 @@
+{
+  "eliminatedByThisArchitecture": [
+    {
+      "risk": "Client icon fallback diverging from package attach",
+      "fix": "resolveRevenueStreamIconState prefers canonicalCustomerPresentation.icons"
+    },
+    {
+      "risk": "Client contact sanitize remapping RIC Conference Contact",
+      "fix": "resolveTileContactPreviewBlock prefers canonicalCustomerPresentation.contact"
+    },
+    {
+      "risk": "Sales pill reading different field chains per shell",
+      "fix": "tileSalesActionPill prefers canonicalCustomerPresentation.commercialAction"
+    },
+    {
+      "risk": "Auth defaulting to live recompute vs share package",
+      "fix": "Auth Opportunities default PUBLICATION_PACKAGE; research browse ?live=1"
+    }
+  ],
+  "remainingIntentionalWrappers": [
+    {
+      "area": "Memberstack auth / founder tools",
+      "authOnly": true,
+      "share": "not exposed"
+    },
+    {
+      "area": "Hotel Validation / Action / Outcome feedback",
+      "authOnly": "full write",
+      "share": "customer feedback permissions only"
+    },
+    {
+      "area": "Surfe on-click enrichment",
+      "note": "unchanged; not automatic"
+    },
+    {
+      "area": "?live=1 research browse",
+      "note": "INTENTIONAL live recompute; not customer certification baseline"
+    }
+  ],
+  "priorFalseCertificate": {
+    "report": "reports/gdi-component-level-client-parity-v1/",
+    "defect": "CLIENT READY based on share↔share only; superseded by three-way A↔B+B↔C"
+  }
+}

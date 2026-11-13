@@ -118,7 +118,7 @@ check("preserved_ui_polish", () => {
   );
   assert.match(
     html,
-    /gdi-title-sourcing-consistency-v1|gdi-card-no-verification-pill-v1|gdi-card-no-market-scope-pill-v1|gdi-opp-type-classification-v1|gdi-regression-recovery-v1|gdi-component-parity-v1|gdi-three-way-canonical-v1/
+    /gdi-title-sourcing-consistency-v1|gdi-card-no-verification-pill-v1|gdi-card-no-market-scope-pill-v1|gdi-opp-type-classification-v1|gdi-regression-recovery-v1|gdi-component-parity-v1|gdi-three-way-canonical-v1|gdi-canonical-ui-architecture-v1|gdi-auth-share-canonical-v1/
   );
   assert.match(html, /gdi-guided-report-tour\.js/);
   // Card-level Market Scope action pills must stay off opportunity tiles.

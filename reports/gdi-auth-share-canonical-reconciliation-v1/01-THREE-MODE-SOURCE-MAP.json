@@ -1,0 +1,34 @@
+{
+  "modes": {
+    "A_live": {
+      "url": "http://127.0.0.1:8080/api/group-demand-intelligence/hotels/recLuxvwwxID7U2B8/opportunities?live=1",
+      "listScope": "BETHESDA_SALES_TEAM_INVENTORY_67",
+      "count": 67
+    },
+    "B_founder_publication_preview": {
+      "url": "http://127.0.0.1:8080/api/group-demand-intelligence/hotels/recLuxvwwxID7U2B8/opportunities?publicationPackage=1&surface=customer",
+      "listScope": "PUBLICATION_PACKAGE",
+      "fingerprint": "441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f",
+      "count": 67
+    },
+    "C_external_share_local": {
+      "url": "http://127.0.0.1:8080/api/group-demand-intelligence/share/hotels/recLuxvwwxID7U2B8/opportunities",
+      "listScope": "PUBLICATION_PACKAGE",
+      "fingerprint": "441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f",
+      "count": 67
+    },
+    "C_external_share_prod": {
+      "url": "https://my-operators-backend-production.up.railway.app/api/group-demand-intelligence/share/hotels/recLuxvwwxID7U2B8/opportunities",
+      "listScope": "PUBLICATION_PACKAGE",
+      "fingerprint": "441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f",
+      "count": 67,
+      "marker": "gdi-three-way-canonical-v1"
+    }
+  },
+  "htmlMarkers": {
+    "authLocal": "gdi-auth-share-canonical-v1",
+    "shareLocal": "gdi-auth-share-canonical-v1",
+    "shareProd": "gdi-three-way-canonical-v1"
+  },
+  "rule": "B and C must use PUBLICATION_PACKAGE + same attach/contract/renderer"
+}

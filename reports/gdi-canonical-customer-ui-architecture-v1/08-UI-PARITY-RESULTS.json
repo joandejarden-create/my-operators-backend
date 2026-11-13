@@ -1,0 +1,38 @@
+{
+  "offlineArchitecture": {
+    "script": "test:gdi-canonical-ui-architecture-offline",
+    "status": 0,
+    "ok": true,
+    "stdoutTail": "\n> top100-projects-scraper@1.0.0 test:gdi-canonical-ui-architecture-offline\n> node scripts/test-gdi-canonical-ui-architecture-offline-v1.mjs\n\nPASS html_cache_marker_architecture_v1\nPASS shared_ui_prefers_canonical_contract\nPASS svg_icon_state_fixtures\nPASS lorna_kipfer_canonical_contract_parity\nPASS difference_register_categories_and_resolve\nPASS visual_baseline_manifest_and_pngs\nPASS attach_is_idempotent_for_contract\nPASS permanent_register_file_present\n\nOK test:gdi-canonical-ui-architecture-offline\n",
+    "stderrTail": ""
+  },
+  "opportunityCardQuality": {
+    "script": "test:gdi-opportunity-card-quality-v1",
+    "status": 0,
+    "ok": true,
+    "stdoutTail": "\n> top100-projects-scraper@1.0.0 test:gdi-opportunity-card-quality-v1\n> node scripts/test-gdi-opportunity-card-quality-v1.mjs\n\nPASS title_case_lifts_lowercase_words_in_mixed_titles\nPASS strip_research_commentary_from_titles\nPASS fs_mirror_recovers_named_contact_over_unknown\nPASS revenue_stream_icons_guestroom_only\nPASS contact_research_required_label\nPASS revenue_stream_attach_is_idempotent\nPASS ric_lorna_conference_contact_is_professional_title_not_group_travel\nPASS proper_case_preserves_dotted_us_acronym\nPASS package_presentation_attach_demotes_combined_without_event_thesis\nPASS package_presentation_attach_persists_guestroom_only\n\nAll card-quality checks passed.\n",
+    "stderrTail": ""
+  },
+  "regressionRecovery": {
+    "script": "test:gdi-regression-recovery-v1",
+    "status": 0,
+    "ok": true,
+    "stdoutTail": "\n> top100-projects-scraper@1.0.0 test:gdi-regression-recovery-v1\n> node scripts/test-gdi-regression-recovery-v1.mjs && node scripts/test-gdi-opportunity-type-classification-v1.mjs && node scripts/test-gdi-title-sourcing-commercial-consistency-v1.mjs && node scripts/test-gdi-full-customer-consistency-audit-v1.mjs\n\nPASS clean_opportunity_display_names\nPASS simplified_customer_facing_research_copy\nPASS market_scope_toolbar_height_tokens\nPASS competitive_chip_and_status_control_removed\nPASS preserved_ui_polish\nPASS title_contract_module_present\n\nAll GDI regression-recovery checks passed\nPASS cmi_remediation_preserves_demand_type\nPASS lifecycle_types_do_not_drive_opportunity_type\nPASS legacy_alias_map_documented\nPASS research_update_preserves_demand_segment\nPASS live_commercial_quality_preserves_demand_segment\nPASS bethesda_67_inventory_loaded\nPASS acvnu_bethesda_classified\nPASS bethesda_no_unclassified\nPASS bethesda_market_scope_counts\nPASS other_not_customer_facing_option\nPASS frontend_hides_other_option\nPASS portfolio_recovery_from_baseline_audit (recovered=247, remaining_research=5)\n\nAll opportunity-type classification checks passed\nPASS competitor_venue_excluded_from_canonical_title\nPASS nado_2027_ledger_remediation_clean_title_and_sourcing\nPASS malformed_host_contracted_narrative_rewritten\nPASS sourcing_composer_keeps_dimensions_independent\nPASS recommended_action_has_no_repeated_prefix\nPASS bethesda_67_titles_have_no_competitor_host_suffix\nPASS portfolio_title_suffix_audit_sample (scanned=144)\n\nAll title/sourcing commercial consistency checks passed\nPASS schema_and_sot_inventory\nPASS founder_title_examples_clean\nPASS portfolio_audit_runs_without_throw (opps=170, issues=1, score=99.3)\nPASS module_wired_for_ci\n\nAll full customer consistency audit checks passed\n",
+    "stderrTail": ""
+  },
+  "threeWayLive": {
+    "command": "npm run test:gdi-canonical-ui-parity",
+    "note": "Live A↔B↔C browser/API parity; requires local server + share token + production. Run after deploy."
+  },
+  "lornaKipfer": {
+    "role": "RIC Conference Contact",
+    "icons": {
+      "revenueStreamClass": "GUESTROOMS_ONLY",
+      "guestrooms": "active",
+      "eventFnb": "muted",
+      "needDateState": null,
+      "needDateLabel": null
+    },
+    "sales": "Qualify Opportunity"
+  }
+}
