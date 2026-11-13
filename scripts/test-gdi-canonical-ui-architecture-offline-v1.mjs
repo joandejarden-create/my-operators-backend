@@ -169,6 +169,21 @@ check("permanent_register_file_present", () => {
   assert.ok(Array.isArray(reg.differences));
 });
 
+check("presentation_mode_banner_not_default_ui", () => {
+  const app = fs.readFileSync(
+    path.join(ROOT, "public/js/group-demand-intelligence/app.js"),
+    "utf8",
+  );
+  const share = fs.readFileSync(
+    path.join(ROOT, "public/js/group-demand-intelligence/share-app.js"),
+    "utf8",
+  );
+  assert.match(app, /wantsPresentationModeDiagnostics/);
+  assert.match(app, /gdiDiag/);
+  assert.doesNotMatch(share, /gdiPresentationModeBanner/);
+  assert.doesNotMatch(share, /Mode B — Founder Publication Preview/);
+});
+
 if (failed) {
   console.error(`\n${failed} failing assertion(s)`);
   process.exit(1);
