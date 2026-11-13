@@ -2884,6 +2884,25 @@ button.gdi-tile-pill.is-filter-active {
   background: rgba(8, 15, 37, 0.72);
 }
 
+/**
+ * Tour demotes showModal() → show() so popover coachmarks receive clicks.
+ * Non-modal <dialog> leaves the top layer and loses right-rail placement unless
+ * we pin it fixed — otherwise the drawer drops mid-page (y≈400+) and the tour
+ * highlight cutout reads as a blank dark overlay.
+ */
+.gdi-drawer.gdi-drawer--tour-nonmodal[open] {
+  position: fixed !important;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: auto;
+  margin: 0;
+  width: min(560px, 100vw);
+  height: 100vh;
+  max-height: 100vh;
+  z-index: 10040;
+}
+
 .gdi-drawer-inner {
   display: flex;
   flex-direction: column;

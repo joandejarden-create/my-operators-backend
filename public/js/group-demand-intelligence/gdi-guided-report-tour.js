@@ -7,8 +7,9 @@
 (function (global) {
   "use strict";
 
-  var TOUR_VERSION = "GDI_GUIDED_REPORT_TOUR_V1_1e";
+  var TOUR_VERSION = "GDI_GUIDED_REPORT_TOUR_V1_1g";
   var BUTTON_ID = "gdiHowToReadReport";
+  var TOUR_NONMODAL_CLASS = "gdi-drawer--tour-nonmodal";
 
   var drawerSession = {
     openedByTour: false,
@@ -50,6 +51,7 @@
       if (typeof d.close === "function") d.close();
       else d.removeAttribute("open");
     } catch (_) {}
+    clearTourNonModalDrawer(d);
     drawerSession.demotedFromModal = false;
   }
 
@@ -59,6 +61,21 @@
    * the drawer. Demote the tour-owned drawer to non-modal show() so the popover
    * receives pointer events while remaining visually open.
    */
+  function pinTourNonModalDrawer(d) {
+    if (!d) return;
+    try {
+      d.classList.add(TOUR_NONMODAL_CLASS);
+    } catch (_) {}
+  }
+
+  function clearTourNonModalDrawer(d) {
+    d = d || drawerEl();
+    if (!d) return;
+    try {
+      d.classList.remove(TOUR_NONMODAL_CLASS);
+    } catch (_) {}
+  }
+
   function demoteModalDrawerForTour() {
     var d = drawerEl();
     if (!d || !drawerIsOpen()) return false;
@@ -68,7 +85,12 @@
     } catch (_) {
       isModal = false;
     }
-    if (!isModal) return false;
+    // Already non-modal (e.g. showModal patched) — still pin fixed right-rail.
+    if (!isModal) {
+      pinTourNonModalDrawer(d);
+      drawerSession.demotedFromModal = true;
+      return false;
+    }
     // Suppress close-handler focus thrash while flipping modal → non-modal.
     var suppressClose = function (e) {
       try {
@@ -78,6 +100,7 @@
     d.addEventListener("close", suppressClose, true);
     try {
       d.close();
+      pinTourNonModalDrawer(d);
       if (typeof d.show === "function") d.show();
       else d.setAttribute("open", "");
       drawerSession.demotedFromModal = true;
@@ -100,6 +123,7 @@
       // coachmarks remain hittable in the browser top layer.
       if (tour && tour.isActive()) {
         try {
+          pinTourNonModalDrawer(d);
           if (typeof d.show === "function") d.show();
           else d.setAttribute("open", "");
           drawerSession.demotedFromModal = true;
@@ -112,6 +136,7 @@
 
   function restoreDrawerShowModal() {
     var d = drawerEl();
+    clearTourNonModalDrawer(d);
     if (d && drawerSession.showModalPatch) {
       d.showModal = drawerSession.showModalPatch;
     }

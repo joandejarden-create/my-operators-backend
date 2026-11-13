@@ -261,12 +261,12 @@ async function runFullTour(page, hotel, { mobile = false } = {}) {
     return { scripts, links };
   });
   assert.ok(
-    assets.scripts.some((s) => /gdi-guided-report-tour\.js\?v=gdi-howto-read-v1-1e/.test(s)),
-    "page must load gdi-guided-report-tour.js?v=gdi-howto-read-v1-1e"
+    assets.scripts.some((s) => /gdi-guided-report-tour\.js\?v=gdi-howto-read-v1-1g/.test(s)),
+    "page must load gdi-guided-report-tour.js?v=gdi-howto-read-v1-1g"
   );
   assert.ok(
-    assets.scripts.some((s) => /dealality-guided-tour-engine\.js\?v=gdi-howto-read-v1-1e/.test(s)),
-    "page must load dealality-guided-tour-engine.js?v=gdi-howto-read-v1-1e"
+    assets.scripts.some((s) => /dealality-guided-tour-engine\.js\?v=gdi-howto-read-v1-1g/.test(s)),
+    "page must load dealality-guided-tour-engine.js?v=gdi-howto-read-v1-1g"
   );
 
   const cardCount = await page.locator("article.brand-card").count();
