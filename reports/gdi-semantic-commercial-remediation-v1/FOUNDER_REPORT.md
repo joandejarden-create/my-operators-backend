@@ -19,8 +19,8 @@
 | 3 | Remaining P0 / P1 / P2 / P3 | **0 / 0 / 0 / 0** |
 | 4 | Scores (baseline → V1 → V2) | **85.1 → 91.6 → 92.1** overall |
 | 5 | Unresolved classifications | **0** of 64 (all recovered/confirmed from existing research evidence) |
-| 6 | Commit SHA | `2325e20751c512427446b8ceb21b83b568f1aa0f` |
-| 7 | PR #234 CI | Pending after push — re-check Actions on PR #234 |
+| 6 | Commit SHA | `03f1347cbd650b8a05099748451ce8083ab2c9d8` |
+| 7 | PR #234 CI | See PR #234 Actions on tip |
 | 8 | Remaining risks | Commercial accuracy **88**, readability **86**, content **89** still below 90; Waterstone zero inventory separate; some classification recoveries are title-contract inferences that deserve founder skim |
 | 9 | Merge recommendation | **Conditionally ready** for founder approval — zero product P0–P3 on re-audit; do **not** claim 90+ on commercial/readability/content |
 
