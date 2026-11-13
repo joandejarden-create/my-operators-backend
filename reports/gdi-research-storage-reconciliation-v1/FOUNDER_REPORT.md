@@ -57,4 +57,6 @@ Research sync must **never** overwrite approved customer publication content.
 
 ## Artifacts
 
-See `01`–`11` JSON in this directory + `12-GITHUB_STATUS.json` after PR merge.
+See `01`–`12` JSON in this directory.
+
+**GitHub:** [PR #272](https://github.com/joandejarden-create/my-operators-backend/pull/272) **MERGED** (`3bf3e6b87…`) · customer V2 package not modified · no other-hotel publication deploy.

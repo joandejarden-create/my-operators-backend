@@ -1,0 +1,246 @@
+{
+  "schema": "gdi-missing-fields-and-links-v1",
+  "localOnlyOrMissingRequired": [
+    {
+      "uiSection": "Header",
+      "uiLabel": "Need-date status",
+      "finalDtoProperty": "hotelNeedDateConfigV1.status",
+      "sourceAirtableTable": "GDI Hotel Need Periods",
+      "sourceAirtableField": "Status",
+      "canonicalFieldType": "derived/json/meta",
+      "joinOrLinkedPath": "Resolved live at serve; not package fingerprint",
+      "researchSource": "GDI research registry / need-date / feedback",
+      "transformationOrDerivation": "AIRTABLE_DERIVED",
+      "validationRule": "required for customer content",
+      "requiredOrOptional": "required",
+      "currentPopulationCount": 0,
+      "missingValues": 67,
+      "fallbackBehavior": "none/package",
+      "localOrPackageOnlyRequired": "no",
+      "classification": "AIRTABLE_DERIVED",
+      "recommendedCorrection": ""
+    },
+    {
+      "uiSection": "Opportunity card",
+      "uiLabel": "Priority pill",
+      "finalDtoProperty": "priorityPillLabel",
+      "sourceAirtableTable": "Group Demand Opportunities",
+      "sourceAirtableField": "opportunityPayloadJson.priorityPillLabel",
+      "canonicalFieldType": "derived/json/meta",
+      "joinOrLinkedPath": "",
+      "researchSource": "GDI research registry / need-date / feedback",
+      "transformationOrDerivation": "AIRTABLE_PLUS_VERSIONED_RULE",
+      "validationRule": "required for customer content",
+      "requiredOrOptional": "required",
+      "currentPopulationCount": 27,
+      "missingValues": 40,
+      "fallbackBehavior": "none/package",
+      "localOrPackageOnlyRequired": "no",
+      "classification": "AIRTABLE_PLUS_VERSIONED_RULE",
+      "recommendedCorrection": "Ensure payload retains field at upsert; add typed column if filterable"
+    },
+    {
+      "uiSection": "Opportunity card",
+      "uiLabel": "Commercial-action badge",
+      "finalDtoProperty": "salesActionPillLabel",
+      "sourceAirtableTable": "Group Demand Opportunities",
+      "sourceAirtableField": "opportunityPayloadJson.salesActionKey/PillLabel",
+      "canonicalFieldType": "derived/json/meta",
+      "joinOrLinkedPath": "",
+      "researchSource": "GDI research registry / need-date / feedback",
+      "transformationOrDerivation": "AIRTABLE_PLUS_VERSIONED_RULE",
+      "validationRule": "required for customer content",
+      "requiredOrOptional": "required",
+      "currentPopulationCount": 0,
+      "missingValues": 67,
+      "fallbackBehavior": "none/package",
+      "localOrPackageOnlyRequired": "no",
+      "classification": "AIRTABLE_PLUS_VERSIONED_RULE",
+      "recommendedCorrection": "Ensure payload retains field at upsert; add typed column if filterable"
+    },
+    {
+      "uiSection": "Drawer",
+      "uiLabel": "Overview / demand thesis",
+      "finalDtoProperty": "summaryWhat / hotelOpportunityThesis",
+      "sourceAirtableTable": "Group Demand Opportunities",
+      "sourceAirtableField": "whyThisMatters / hotelWinThesis / payload",
+      "canonicalFieldType": "derived/json/meta",
+      "joinOrLinkedPath": "",
+      "researchSource": "GDI research registry / need-date / feedback",
+      "transformationOrDerivation": "AIRTABLE_PLUS_VERSIONED_RULE",
+      "validationRule": "required for customer content",
+      "requiredOrOptional": "required",
+      "currentPopulationCount": 0,
+      "missingValues": 67,
+      "fallbackBehavior": "none/package",
+      "localOrPackageOnlyRequired": "no",
+      "classification": "AIRTABLE_PLUS_VERSIONED_RULE",
+      "recommendedCorrection": "Ensure payload retains field at upsert; add typed column if filterable"
+    },
+    {
+      "uiSection": "Drawer",
+      "uiLabel": "Why now",
+      "finalDtoProperty": "whyNow",
+      "sourceAirtableTable": "Group Demand Opportunities",
+      "sourceAirtableField": "whyNow",
+      "canonicalFieldType": "typed-column-or-payload",
+      "joinOrLinkedPath": "",
+      "researchSource": "GDI research registry / need-date / feedback",
+      "transformationOrDerivation": "AIRTABLE_DIRECT",
+      "validationRule": "required for customer content",
+      "requiredOrOptional": "required",
+      "currentPopulationCount": 40,
+      "missingValues": 27,
+      "fallbackBehavior": "none/package",
+      "localOrPackageOnlyRequired": "no",
+      "classification": "AIRTABLE_DIRECT",
+      "recommendedCorrection": ""
+    },
+    {
+      "uiSection": "Drawer",
+      "uiLabel": "Ten-section drawer body",
+      "finalDtoProperty": "sharedTenSectionDrawer",
+      "sourceAirtableTable": "Group Demand Opportunities",
+      "sourceAirtableField": "often compacted out of payload; rebuilt at serve from CIB",
+      "canonicalFieldType": "derived/json/meta",
+      "joinOrLinkedPath": "P0 risk if CIB also compacted",
+      "researchSource": "GDI research registry / need-date / feedback",
+      "transformationOrDerivation": "LOCAL_ONLY_DEPENDENCY",
+      "validationRule": "required for customer content",
+      "requiredOrOptional": "required",
+      "currentPopulationCount": 5,
+      "missingValues": 62,
+      "fallbackBehavior": "serve-time rebuild / package freeze",
+      "localOrPackageOnlyRequired": "yes",
+      "classification": "LOCAL_ONLY_DEPENDENCY",
+      "recommendedCorrection": "Persist durable semantic inputs in Airtable typed columns or non-compacted payload; version derivation rules"
+    },
+    {
+      "uiSection": "Drawer",
+      "uiLabel": "Commercial intelligence brief",
+      "finalDtoProperty": "commercialIntelligenceBrief",
+      "sourceAirtableTable": "Group Demand Opportunities",
+      "sourceAirtableField": "opportunityPayloadJson (may be slimmed)",
+      "canonicalFieldType": "derived/json/meta",
+      "joinOrLinkedPath": "",
+      "researchSource": "GDI research registry / need-date / feedback",
+      "transformationOrDerivation": "AIRTABLE_PLUS_VERSIONED_RULE",
+      "validationRule": "required for customer content",
+      "requiredOrOptional": "required",
+      "currentPopulationCount": 5,
+      "missingValues": 62,
+      "fallbackBehavior": "none/package",
+      "localOrPackageOnlyRequired": "no",
+      "classification": "AIRTABLE_PLUS_VERSIONED_RULE",
+      "recommendedCorrection": "Ensure payload retains field at upsert; add typed column if filterable"
+    },
+    {
+      "uiSection": "Export",
+      "uiLabel": "CSV columns",
+      "finalDtoProperty": "customer-csv-export",
+      "sourceAirtableTable": "publication DTO",
+      "sourceAirtableField": "export mapper",
+      "canonicalFieldType": "derived/json/meta",
+      "joinOrLinkedPath": "",
+      "researchSource": "GDI research registry / need-date / feedback",
+      "transformationOrDerivation": "AIRTABLE_PLUS_VERSIONED_RULE",
+      "validationRule": "required for customer content",
+      "requiredOrOptional": "required",
+      "currentPopulationCount": 0,
+      "missingValues": 67,
+      "fallbackBehavior": "none/package",
+      "localOrPackageOnlyRequired": "no",
+      "classification": "AIRTABLE_PLUS_VERSIONED_RULE",
+      "recommendedCorrection": "Ensure payload retains field at upsert; add typed column if filterable"
+    }
+  ],
+  "reconstructionGaps": [
+    {
+      "field": "salesActionKey",
+      "match": 0,
+      "mismatch": 0,
+      "missingInAirtable": 67
+    },
+    {
+      "field": "salesActionPillLabel",
+      "match": 0,
+      "mismatch": 0,
+      "missingInAirtable": 67
+    },
+    {
+      "field": "datePillDisplayLabel",
+      "match": 0,
+      "mismatch": 0,
+      "missingInAirtable": 67
+    },
+    {
+      "field": "needDateMatchV1",
+      "match": 28,
+      "mismatch": 0,
+      "missingInAirtable": 39
+    },
+    {
+      "field": "whatIsHappening",
+      "match": 27,
+      "mismatch": 5,
+      "missingInAirtable": 35
+    },
+    {
+      "field": "displayTitle",
+      "match": 33,
+      "mismatch": 1,
+      "missingInAirtable": 33
+    },
+    {
+      "field": "sharedTenSectionDrawer",
+      "match": 60,
+      "mismatch": 0,
+      "missingInAirtable": 7
+    },
+    {
+      "field": "primaryContact.title",
+      "match": 45,
+      "mismatch": 18,
+      "missingInAirtable": 4
+    },
+    {
+      "field": "title",
+      "match": 64,
+      "mismatch": 3,
+      "missingInAirtable": 0
+    },
+    {
+      "field": "opportunityType",
+      "match": 47,
+      "mismatch": 20,
+      "missingInAirtable": 0
+    },
+    {
+      "field": "summaryWhat",
+      "match": 28,
+      "mismatch": 39,
+      "missingInAirtable": 0
+    }
+  ],
+  "unexplainedLocalDependencies": [
+    {
+      "uiSection": "Drawer",
+      "uiLabel": "Ten-section drawer body",
+      "finalDtoProperty": "sharedTenSectionDrawer",
+      "sourceAirtableTable": "Group Demand Opportunities",
+      "sourceAirtableField": "often compacted out of payload; rebuilt at serve from CIB",
+      "canonicalFieldType": "derived/json/meta",
+      "joinOrLinkedPath": "P0 risk if CIB also compacted",
+      "researchSource": "GDI research registry / need-date / feedback",
+      "transformationOrDerivation": "LOCAL_ONLY_DEPENDENCY",
+      "validationRule": "required for customer content",
+      "requiredOrOptional": "required",
+      "currentPopulationCount": 5,
+      "missingValues": 62,
+      "fallbackBehavior": "serve-time rebuild / package freeze",
+      "localOrPackageOnlyRequired": "yes",
+      "classification": "LOCAL_ONLY_DEPENDENCY",
+      "recommendedCorrection": "Persist durable semantic inputs in Airtable typed columns or non-compacted payload; version derivation rules"
+    }
+  ]
+}
