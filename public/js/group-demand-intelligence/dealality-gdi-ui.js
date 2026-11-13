@@ -1209,6 +1209,16 @@
             (/\.$/.test(tok) ? "." : "")
           );
         }
+        // Preserve dotted country/org acronyms (U.S., U.K., E.U.) — otherwise
+        // "U.S." becomes "U.s." via naive Proper Case.
+        if (/^[A-Za-z]([.][A-Za-z])+[.]?$/.test(tok)) {
+          return tok
+            .split(".")
+            .map(function (p) {
+              return p ? p.toUpperCase() : "";
+            })
+            .join(".");
+        }
         if (/^[A-Z]{2,8}$/.test(tok)) return tok;
         if (/^[A-Z0-9]{2,8}$/.test(tok) && /[0-9]/.test(tok)) return tok;
         return tok.charAt(0).toUpperCase() + tok.slice(1).toLowerCase();

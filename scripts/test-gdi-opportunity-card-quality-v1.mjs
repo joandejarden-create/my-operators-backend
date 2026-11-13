@@ -13,8 +13,41 @@ import {
   toProperCaseDisplayTitle,
 } from "../lib/group-demand-intelligence/opportunity-list-dto.js";
 import { attachOpportunityRevenueStreamIcons } from "../lib/group-demand-intelligence/opportunity-revenue-stream-icons-v1.js";
-import { TILE_NO_NAMED_CONTACT_LABEL } from "../lib/group-demand-intelligence/universal-tile-contact-preview-v1.js";
+import {
+  TILE_NO_NAMED_CONTACT_LABEL,
+  extractVerifiedProfessionalTitle,
+  TILE_DISPLAY_ROLE_KIND,
+} from "../lib/group-demand-intelligence/universal-tile-contact-preview-v1.js";
 import { attachUniversalTileContactPreview } from "../lib/group-demand-intelligence/universal-tile-contact-preview-v1.js";
+import { attachPackageCustomerPresentation } from "../lib/group-demand-intelligence/publication-package/gdi-package-customer-presentation-attach-v1.js";
+
+/** Mirrors dealality-gdi-ui.js toProperCaseContactRoleLabel dotted-acronym rule. */
+function toProperCaseContactRoleLabel(raw) {
+  const TILE_SECONDARY_HEADLINE_ACRONYMS = {
+    ric: "RIC",
+    nrc: "NRC",
+    nih: "NIH",
+  };
+  const s = String(raw == null ? "" : raw).replace(/\s+/g, " ").trim();
+  if (!s) return s;
+  return s
+    .split(/(\s+|[-–—|:/,()&]+)/)
+    .map((tok) => {
+      if (!/[A-Za-zÁÉÍÓÚÑáéíóúñ]/.test(tok)) return tok;
+      const lower = tok.toLowerCase();
+      if (TILE_SECONDARY_HEADLINE_ACRONYMS[lower]) {
+        return TILE_SECONDARY_HEADLINE_ACRONYMS[lower];
+      }
+      if (/^[A-Za-z]([.][A-Za-z])+[.]?$/.test(tok)) {
+        return tok
+          .split(".")
+          .map((p) => (p ? p.toUpperCase() : ""))
+          .join(".");
+      }
+      return tok.charAt(0).toUpperCase() + tok.slice(1).toLowerCase();
+    })
+    .join("");
+}
 
 let failed = 0;
 function check(name, fn) {
@@ -115,6 +148,86 @@ check("revenue_stream_attach_is_idempotent", () => {
   });
   assert.equal(second.revenueStreamClass, "GUESTROOMS_ONLY");
   assert.equal(second.revenueStreamIcons.guestrooms, "active");
+});
+
+check("ric_lorna_conference_contact_is_professional_title_not_group_travel", () => {
+  const title = extractVerifiedProfessionalTitle({
+    name: "Lorna Kipfer",
+    professionalTitle: "RIC Conference Contact",
+    title: "RIC Conference Contact",
+  });
+  assert.equal(title, "RIC Conference Contact");
+  const previewed = attachUniversalTileContactPreview({
+    id: "gdi_opp_regulatory_information_conference",
+    title: "Regulatory Information Conference",
+    primaryContact: {
+      name: "Lorna Kipfer",
+      professionalTitle: "RIC Conference Contact",
+      organizationName: "U.S. Nuclear Regulatory Commission",
+    },
+    guestroomThesis: "Attendee housing demand for RIC.",
+  });
+  assert.equal(previewed.tileContactName, "Lorna Kipfer");
+  assert.equal(previewed.tileContactRoleLabel, "RIC Conference Contact");
+  assert.doesNotMatch(
+    String(previewed.tileContactRoleLabel),
+    /Group Travel Coordinator/i,
+  );
+  assert.equal(
+    previewed.tileContactPreview.displayRoleKind,
+    TILE_DISPLAY_ROLE_KIND.PROFESSIONAL_TITLE,
+  );
+});
+
+check("proper_case_preserves_dotted_us_acronym", () => {
+  assert.equal(
+    toProperCaseContactRoleLabel(
+      "RIC Conference Contact — U.S. Nuclear Regulatory Commission",
+    ),
+    "RIC Conference Contact — U.S. Nuclear Regulatory Commission",
+  );
+  assert.notEqual(
+    toProperCaseContactRoleLabel("U.S. Nuclear Regulatory Commission"),
+    "U.s. Nuclear Regulatory Commission",
+  );
+});
+
+check("package_presentation_attach_adds_tile_and_icons_when_signaled", () => {
+  const thin = attachPackageCustomerPresentation({
+    id: "pkg_ric_thin",
+    title: "Regulatory Information Conference",
+    primaryContact: {
+      name: "Lorna Kipfer",
+      professionalTitle: "RIC Conference Contact",
+      organizationName: "U.S. Nuclear Regulatory Commission",
+    },
+  });
+  assert.ok(thin.tileContactPreview);
+  assert.equal(thin.tileContactRoleLabel, "RIC Conference Contact");
+  assert.equal(thin.revenueStreamIcons, undefined);
+
+  const attached = attachPackageCustomerPresentation({
+    id: "pkg_ric",
+    title: "Regulatory Information Conference",
+    primaryContact: {
+      name: "Lorna Kipfer",
+      professionalTitle: "RIC Conference Contact",
+      organizationName: "U.S. Nuclear Regulatory Commission",
+    },
+    revenueStreamClass: "GUESTROOMS_ONLY",
+    guestroomThesis: "Documented attendee lodging for RIC week.",
+  });
+  assert.ok(attached.tileContactPreview);
+  assert.match(
+    String(
+      attached.tileContactPreview.displayRole ||
+        attached.tileContactPreview.roleLabel ||
+        "",
+    ),
+    /RIC Conference Contact/i,
+  );
+  assert.equal(attached.revenueStreamIcons.guestrooms, "active");
+  assert.equal(attached.revenueStreamIcons.eventFnb, "muted");
 });
 
 if (failed) {
