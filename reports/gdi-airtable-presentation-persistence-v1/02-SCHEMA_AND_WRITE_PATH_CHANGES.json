@@ -1,0 +1,10 @@
+{
+  "schema": "gdi-presentation-write-path-changes-v1",
+  "airtableSchemaColumnsAdded": [],
+  "note": "No new Airtable columns required — persist nested presentation in opportunityPayloadJson with required-key reattach on compaction.",
+  "writePath": "upsertOpportunity → opportunityToAirtableFields → compactOpportunityPayloadForAirtable + reattachRequiredPresentationKeys",
+  "mergePath": "mergeResearchPayloadPreservingSales + presentation key blank-guard; backfill uses mergeCanonicalPresentationIntoOpportunity",
+  "presentationSchemaVersion": "gdi-presentation-schema-v1",
+  "derivationRuleVersion": "gdi-presentation-derivation-frozen-v2-bethesda-local-master",
+  "publicationIsolation": true
+}
