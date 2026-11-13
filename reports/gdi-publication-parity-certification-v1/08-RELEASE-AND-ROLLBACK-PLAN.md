@@ -26,9 +26,10 @@
 
 ## Bethesda first application (this wave)
 
-- **Remediated candidate (current):** `gdi_pub_recLuxvwwxID7U2B8_20261113_remediated_v1`
-- Fingerprint: `9816d7d9f26cdf70c37d7ef2dab038e1f6207c816cd1b0a1636649e266262f24`
+- **Founder-review candidate (current):** `gdi_pub_recLuxvwwxID7U2B8_20261113_founder_review_v1`
+- Fingerprint: `60e197ba99fea522e8e0a78eb66f144f80e19dafa59fadd6b2b9a5050fd4da57`
+- Lifecycle: `FOUNDER_REVIEWED` (awaiting fingerprint approval)
 - Inventory: All 67 / Hotel 61 / Competitive 10
-- Quality gate: **PASS** (0 findings) after customer-facing remediation of all 67
-- Prior pre-remediation candidate `…_20261113_candidate` / `807b74be…` superseded (quality failed)
-- **Not** CUSTOMER_PUBLISHED until founder approves the remediated fingerprint and production verify passes
+- Quality gate: **PASS** (0 findings); original 25 blocking findings disposed
+- Supersedes: `807b74be…` (quality fail) · `9816d7d9…` (Monitor over-correction)
+- **Not** FOUNDER_APPROVED / CUSTOMER_PUBLISHED until explicit founder authorization

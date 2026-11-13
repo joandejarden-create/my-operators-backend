@@ -463,7 +463,8 @@ function buildPkg(opps, extra = {}) {
     false,
   );
   assert.equal(/\bTBD\b|\bTBA\b/.test(remediated.whyActNow), false);
-  assert.equal(remediated.salesActionPillLabel, "Monitor");
+  // Defensive "monitor for sourcing / do not claim open RFP" → Qualify, not Win Room Block.
+  assert.equal(remediated.salesActionPillLabel, "Qualify Opportunity");
   assert.equal(
     /hotel sourcing unconfirmed/i.test(remediated.whatIsHappening || ""),
     false,
