@@ -192,20 +192,28 @@ check("proper_case_preserves_dotted_us_acronym", () => {
   );
 });
 
-check("package_presentation_attach_adds_tile_and_icons_when_signaled", () => {
-  const thin = attachPackageCustomerPresentation({
-    id: "pkg_ric_thin",
+check("package_presentation_attach_demotes_combined_without_event_thesis", () => {
+  const demoted = attachPackageCustomerPresentation({
+    id: "pkg_ric",
     title: "Regulatory Information Conference",
     primaryContact: {
       name: "Lorna Kipfer",
       professionalTitle: "RIC Conference Contact",
       organizationName: "U.S. Nuclear Regulatory Commission",
     },
+    revenueStreamClass: "COMBINED_GUESTROOMS_EVENT_FNB",
+    guestroomThesis: "Documented attendee lodging for RIC week.",
+    revenueStreamIcons: { guestrooms: "active", eventFnb: "active" },
   });
-  assert.ok(thin.tileContactPreview);
-  assert.equal(thin.tileContactRoleLabel, "RIC Conference Contact");
-  assert.equal(thin.revenueStreamIcons, undefined);
+  assert.ok(demoted.tileContactPreview);
+  assert.equal(demoted.tileContactRoleLabel, "RIC Conference Contact");
+  assert.equal(demoted.revenueStreamClass, "GUESTROOMS_ONLY");
+  assert.equal(demoted.revenueStreamIcons.guestrooms, "active");
+  assert.equal(demoted.revenueStreamIcons.eventFnb, "muted");
+  assert.ok(demoted.canonicalCustomerPresentation);
+});
 
+check("package_presentation_attach_persists_guestroom_only", () => {
   const attached = attachPackageCustomerPresentation({
     id: "pkg_ric",
     title: "Regulatory Information Conference",
@@ -217,17 +225,12 @@ check("package_presentation_attach_adds_tile_and_icons_when_signaled", () => {
     revenueStreamClass: "GUESTROOMS_ONLY",
     guestroomThesis: "Documented attendee lodging for RIC week.",
   });
-  assert.ok(attached.tileContactPreview);
-  assert.match(
-    String(
-      attached.tileContactPreview.displayRole ||
-        attached.tileContactPreview.roleLabel ||
-        "",
-    ),
-    /RIC Conference Contact/i,
-  );
   assert.equal(attached.revenueStreamIcons.guestrooms, "active");
   assert.equal(attached.revenueStreamIcons.eventFnb, "muted");
+  assert.equal(
+    attached.canonicalCustomerPresentation.contact.role,
+    "RIC Conference Contact",
+  );
 });
 
 if (failed) {

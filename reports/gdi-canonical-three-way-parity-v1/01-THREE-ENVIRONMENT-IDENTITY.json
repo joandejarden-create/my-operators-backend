@@ -1,0 +1,46 @@
+{
+  "contract": "GDI_THREE_WAY_CANONICAL_UI_PARITY_V1",
+  "generatedAt": "2026-11-13T14:17:33.906Z",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "expectedFingerprint": "441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f",
+  "expectedPackage": "gdi_pub_recLuxvwwxID7U2B8_20261113_reconciliation_v1",
+  "git": {
+    "head": "6a1b70013f4510c0a9b430e5d534d788d108b6e7",
+    "short": "6a1b70013",
+    "branch": "main"
+  },
+  "environments": {
+    "A_auth_package": {
+      "role": "local_authenticated_customer_surface",
+      "url": "http://127.0.0.1:8080/api/group-demand-intelligence/hotels/recLuxvwwxID7U2B8/opportunities",
+      "status": 200,
+      "listScope": "PUBLICATION_PACKAGE",
+      "fingerprint": "441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f",
+      "count": 67
+    },
+    "A_live_research": {
+      "role": "local_authenticated_live_research_browse",
+      "note": "NOT the customer certification baseline — documents live recompute drift",
+      "url": "http://127.0.0.1:8080/api/group-demand-intelligence/hotels/recLuxvwwxID7U2B8/opportunities?live=1",
+      "status": 200,
+      "listScope": "BETHESDA_SALES_TEAM_INVENTORY_67",
+      "count": 67
+    },
+    "B_share_local": {
+      "role": "local_external_share",
+      "url": "http://127.0.0.1:8080/api/group-demand-intelligence/share/hotels/recLuxvwwxID7U2B8/opportunities",
+      "status": 200,
+      "listScope": "PUBLICATION_PACKAGE",
+      "fingerprint": "441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f",
+      "count": 67
+    },
+    "C_share_production": {
+      "role": "railway_external_share",
+      "url": "https://my-operators-backend-production.up.railway.app/api/group-demand-intelligence/share/hotels/recLuxvwwxID7U2B8/opportunities",
+      "status": 200,
+      "listScope": "PUBLICATION_PACKAGE",
+      "fingerprint": "441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f",
+      "count": 67
+    }
+  }
+}

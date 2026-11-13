@@ -23,7 +23,10 @@ on:
       - "scripts/test-gdi-guided-report-tour-v1.mjs"
       - "scripts/test-gdi-market-scope-toggle-v1.mjs"
       - "scripts/test-gdi-opportunity-card-quality-v1.mjs"
+      - "scripts/test-gdi-three-way-canonical-ui-parity-v1.mjs"
       - "scripts/test-gdi-hotel-toolbar-reset-view-only-v1.mjs"
+      - "lib/group-demand-intelligence/presentation/**"
+      - "lib/group-demand-intelligence/publication-package/gdi-package-customer-presentation-attach-v1.js"
       - "scripts/verify-gdi-regression-recovery-browser-v1.mjs"
       - ".github/workflows/gdi-regression-recovery-baseline.yml"
       - "package.json"
@@ -60,7 +63,7 @@ jobs:
       - name: Permanent customer-facing opportunity title contract
         run: npm run test:gdi-customer-facing-opportunity-title-contract-v1
 
-      - name: Opportunity card quality (PR #230)
+      - name: Opportunity card quality + canonical package attach
         run: npm run test:gdi-opportunity-card-quality-v1
 
       - name: Market Scope toggle + competitive filtering
