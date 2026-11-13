@@ -193,6 +193,7 @@ check("proper_case_preserves_dotted_us_acronym", () => {
 });
 
 check("package_presentation_attach_demotes_combined_without_event_thesis", () => {
+  // Demotion only when icons were NOT frozen into the package.
   const demoted = attachPackageCustomerPresentation({
     id: "pkg_ric",
     title: "Regulatory Information Conference",
@@ -203,7 +204,6 @@ check("package_presentation_attach_demotes_combined_without_event_thesis", () =>
     },
     revenueStreamClass: "COMBINED_GUESTROOMS_EVENT_FNB",
     guestroomThesis: "Documented attendee lodging for RIC week.",
-    revenueStreamIcons: { guestrooms: "active", eventFnb: "active" },
   });
   assert.ok(demoted.tileContactPreview);
   assert.equal(demoted.tileContactRoleLabel, "RIC Conference Contact");
@@ -211,6 +211,18 @@ check("package_presentation_attach_demotes_combined_without_event_thesis", () =>
   assert.equal(demoted.revenueStreamIcons.guestrooms, "active");
   assert.equal(demoted.revenueStreamIcons.eventFnb, "muted");
   assert.ok(demoted.canonicalCustomerPresentation);
+
+  // Frozen package icon bytes are authoritative (local-master publication).
+  const preserved = attachPackageCustomerPresentation({
+    id: "pkg_combined_frozen",
+    title: "Frozen Combined",
+    revenueStreamClass: "COMBINED_GUESTROOMS_EVENT_FNB",
+    revenueStreamIcons: { guestrooms: "active", eventFnb: "active" },
+  });
+  assert.equal(preserved.revenueStreamClass, "COMBINED_GUESTROOMS_EVENT_FNB");
+  assert.equal(preserved.revenueStreamIcons.guestrooms, "active");
+  assert.equal(preserved.revenueStreamIcons.eventFnb, "active");
+  assert.equal(preserved.packageRevenueStreamSource, "FROZEN_PACKAGE_BYTES");
 });
 
 check("package_presentation_attach_persists_guestroom_only", () => {
