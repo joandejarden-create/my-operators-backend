@@ -544,9 +544,23 @@
     }
   }
 
+  function wantsPublicationPackagePreview() {
+    try {
+      var params = new URLSearchParams(window.location.search || "");
+      if (String(params.get("publicationPackage") || "") === "1") return true;
+      if (String(params.get("surface") || "").toLowerCase() === "customer") {
+        return true;
+      }
+    } catch (e) {
+      /* ignore */
+    }
+    return false;
+  }
+
   function opportunitiesApiPath(hotelIdEnc) {
     var path =
       "/api/group-demand-intelligence/hotels/" + hotelIdEnc + "/opportunities";
+    var q = [];
     try {
       var params = new URLSearchParams(window.location.search || "");
       var audience = String(
@@ -554,12 +568,17 @@
       ).trim();
       // Explicit published audience only — default remains authorized sales-team.
       if (/^published/i.test(audience)) {
-        path +=
-          "?inventoryAudience=" + encodeURIComponent("published");
+        q.push("inventoryAudience=" + encodeURIComponent("published"));
+      }
+      // Founder publication preview — same immutable package as external share.
+      if (wantsPublicationPackagePreview()) {
+        q.push("publicationPackage=1");
+        q.push("surface=customer");
       }
     } catch (e) {
       /* ignore */
     }
+    if (q.length) path += "?" + q.join("&");
     return path;
   }
 
@@ -1081,12 +1100,15 @@
         });
       },
       detailUrl: function (oppId) {
-        return (
+        var path =
           "/api/group-demand-intelligence/hotels/" +
           encodeURIComponent(state.hotelId) +
           "/opportunities/" +
-          encodeURIComponent(oppId)
-        );
+          encodeURIComponent(oppId);
+        if (wantsPublicationPackagePreview()) {
+          path += "?publicationPackage=1&surface=customer";
+        }
+        return path;
       },
       buildValidationHtml: function (o) {
         if (!UI.customerFeedbackLifecycleHtml) return "";
