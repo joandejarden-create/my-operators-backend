@@ -1,0 +1,73 @@
+{
+  "schema": "gdi-full-e2e-workflow-template-v1",
+  "contractVersion": "gdi-full-e2e-contract-v1.5",
+  "stages": [
+    {
+      "id": 1,
+      "name": "Hotel intelligence",
+      "commandHint": "validate hotel config + HPC/ADP identity"
+    },
+    {
+      "id": 2,
+      "name": "Existing research reconciliation",
+      "commandHint": "gdi:research-storage-reconciliation-v1 --dry-run"
+    },
+    {
+      "id": 3,
+      "name": "Discovery planning",
+      "commandHint": "gdi:full-e2e --dry-run (plan only)"
+    },
+    {
+      "id": 4,
+      "name": "Demand discovery",
+      "commandHint": "gdi:full-e2e with authorized budget"
+    },
+    {
+      "id": 5,
+      "name": "Commercial qualification",
+      "commandHint": "quality gates inside research-to-page workflow"
+    },
+    {
+      "id": 6,
+      "name": "Airtable persistence",
+      "commandHint": "canonical upsert + presentation persistence contract"
+    },
+    {
+      "id": 7,
+      "name": "Quality review",
+      "commandHint": "test:gdi-full-customer-consistency-audit-v1 / field authority"
+    },
+    {
+      "id": 8,
+      "name": "Founder preview",
+      "commandHint": "authenticated GDI publicationPackage=1 (Mode B ≡ share)"
+    },
+    {
+      "id": 9,
+      "name": "Package staging",
+      "commandHint": "immutable fingerprinted candidate"
+    },
+    {
+      "id": 10,
+      "name": "Founder approval",
+      "commandHint": "approve exact contentFingerprintSha256"
+    },
+    {
+      "id": 11,
+      "name": "Production publication",
+      "commandHint": "Dealality production release (GDI)"
+    },
+    {
+      "id": 12,
+      "name": "Production parity",
+      "commandHint": "browser parity vs founder preview"
+    },
+    {
+      "id": 13,
+      "name": "Weekly refresh and feedback",
+      "commandHint": "weekly-refresh + feedback store"
+    }
+  ],
+  "entrypoint": "npm run gdi:full-e2e -- --hotel <hotelId> --authorization-ref <ref> --dry-run",
+  "paidAndPublishRequireSeparateFounderAuth": true
+}

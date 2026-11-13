@@ -1,0 +1,192 @@
+{
+  "schema": "gdi-research-engine-capability-matrix-v1",
+  "statuses": [
+    "PRODUCTION_CERTIFIED",
+    "IMPLEMENTED_NOT_CERTIFIED",
+    "EXPERIMENTAL",
+    "PLANNED"
+  ],
+  "rows": [
+    {
+      "hunterId": "government_procurement",
+      "label": "Government Procurement",
+      "wave": "FIRST",
+      "hunterCapability": "PARTIAL",
+      "templateStatus": "IMPLEMENTED_NOT_CERTIFIED",
+      "workflowIds": [
+        "government_public_sector"
+      ],
+      "researchSegments": [
+        "associations_government"
+      ],
+      "notes": "Extend existing government_public_sector with procurement solicitations / awards watch — not a new segment."
+    },
+    {
+      "hunterId": "association_rotation",
+      "label": "Association Rotation",
+      "wave": "SECOND",
+      "hunterCapability": "EXISTS",
+      "templateStatus": "PRODUCTION_CERTIFIED",
+      "workflowIds": [
+        "association_events"
+      ],
+      "researchSegments": [
+        "associations_government"
+      ],
+      "notes": "Reuse ten-bases rotation + association-events runners."
+    },
+    {
+      "hunterId": "corporate_meeting_triggers",
+      "label": "Corporate Meeting Triggers",
+      "wave": "FIRST",
+      "hunterCapability": "EXISTS",
+      "templateStatus": "PRODUCTION_CERTIFIED",
+      "workflowIds": [
+        "meetings_incentives",
+        "scaling_companies"
+      ],
+      "researchSegments": [
+        "corporate_meetings_incentives",
+        "scaling_companies"
+      ],
+      "notes": "Reuse CORPORATE_TRIGGER_DEMAND + meetings adapters."
+    },
+    {
+      "hunterId": "clinical_trials_medical",
+      "label": "Clinical Trials / Medical Meetings",
+      "wave": "SECOND",
+      "hunterCapability": "EXISTS",
+      "templateStatus": "PRODUCTION_CERTIFIED",
+      "workflowIds": [
+        "education_scientific"
+      ],
+      "researchSegments": [
+        "medical_academic"
+      ],
+      "notes": "Pharma/medical ecosystem exists; CT.gov feed is an incremental extension."
+    },
+    {
+      "hunterId": "project_workforce",
+      "label": "Construction / Project Workforce",
+      "wave": "FIRST",
+      "hunterCapability": "EXISTS",
+      "templateStatus": "PRODUCTION_CERTIFIED",
+      "workflowIds": [
+        "projects_infrastructure",
+        "relocation_extended_stay"
+      ],
+      "researchSegments": [
+        "corporate_meetings_training"
+      ],
+      "notes": "Reuse PROJECT_WORKFORCE_DEMAND + projects_infrastructure workflow."
+    },
+    {
+      "hunterId": "sports_housing",
+      "label": "Sports Housing",
+      "wave": "FIRST",
+      "hunterCapability": "PARTIAL",
+      "templateStatus": "IMPLEMENTED_NOT_CERTIFIED",
+      "workflowIds": [
+        "sports_entertainment"
+      ],
+      "researchSegments": [
+        "sports"
+      ],
+      "notes": "Apify PRIMARY for schedules; deepen stay-to-play / housing agency thesis."
+    },
+    {
+      "hunterId": "university_demand",
+      "label": "University Demand",
+      "wave": "FIRST",
+      "hunterCapability": "PARTIAL",
+      "templateStatus": "IMPLEMENTED_NOT_CERTIFIED",
+      "workflowIds": [
+        "education_scientific"
+      ],
+      "researchSegments": [
+        "tours_educational_specialist",
+        "medical_academic"
+      ],
+      "notes": "Split university weekend/homecoming demand from medical/scientific path."
+    },
+    {
+      "hunterId": "legal_regulatory",
+      "label": "Legal / Regulatory Events",
+      "wave": "THIRD",
+      "hunterCapability": "PARTIAL",
+      "templateStatus": "IMPLEMENTED_NOT_CERTIFIED",
+      "workflowIds": [
+        "association_events",
+        "government_public_sector"
+      ],
+      "researchSegments": [
+        "associations_government"
+      ],
+      "notes": "Today association/gov overflow — specialist filter, not new segment."
+    },
+    {
+      "hunterId": "emergency_displacement",
+      "label": "Emergency / Displacement",
+      "wave": "THIRD",
+      "hunterCapability": "NEW",
+      "templateStatus": "EXPERIMENTAL",
+      "workflowIds": [
+        "relocation_extended_stay"
+      ],
+      "researchSegments": [
+        "relocation_extended_stay"
+      ],
+      "notes": "Distinct from competitor-displacement pursuit tactics; catastrophe/FEMA housing demand."
+    },
+    {
+      "hunterId": "crew_production",
+      "label": "Crew / Production",
+      "wave": "SECOND",
+      "hunterCapability": "EXISTS",
+      "templateStatus": "PRODUCTION_CERTIFIED",
+      "workflowIds": [
+        "sports_entertainment"
+      ],
+      "researchSegments": [
+        "entertainment_production"
+      ],
+      "notes": "Exists under entertainment_production; keep out of Sales Ready without lodging thesis."
+    },
+    {
+      "hunterId": "competitive_market_intelligence",
+      "label": "Competitive Market Intelligence",
+      "wave": null,
+      "hunterCapability": "EXISTS",
+      "templateStatus": "PRODUCTION_CERTIFIED",
+      "workflowIds": [],
+      "researchSegments": [],
+      "notes": "CMI inventory + competitive scope filters in customer UI"
+    },
+    {
+      "hunterId": "private_event_venues",
+      "label": "Private event venues and partnerships",
+      "wave": null,
+      "hunterCapability": "EXISTS",
+      "templateStatus": "IMPLEMENTED_NOT_CERTIFIED",
+      "workflowIds": [],
+      "researchSegments": [],
+      "notes": "Airtable venue tables exist; hotel-specific depth varies"
+    },
+    {
+      "hunterId": "need_date_match",
+      "label": "Need-Date Match",
+      "wave": null,
+      "hunterCapability": "EXISTS",
+      "templateStatus": "PRODUCTION_CERTIFIED",
+      "workflowIds": [],
+      "researchSegments": [],
+      "notes": "GDI Hotel Need Periods + opportunity matches; explicit absent allowed"
+    }
+  ],
+  "summary": {
+    "PRODUCTION_CERTIFIED": 7,
+    "IMPLEMENTED_NOT_CERTIFIED": 5,
+    "EXPERIMENTAL": 1
+  },
+  "note": "Status reflects implemented code capability vs planning docs. International/multilingual support preserved via hotel locale + research languages in config."
+}

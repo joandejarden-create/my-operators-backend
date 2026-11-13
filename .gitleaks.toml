@@ -227,12 +227,13 @@ regexes = [
 id = "generic-api-key"
 
 [rules.allowlist]
-description = "PR #163 false positives: period ids, job ids, and a ceiling constant"
+description = "PR #163 false positives: period ids, job ids, and a ceiling constant; Airtable record ids"
 regexTarget = "secret"
 regexes = [
   '''^adp_period_[a-z0-9_]+$''',
   '''^gdi-drc-principal-retrieval-[12]$''',
   '''^APIFY_STAGE1_CEILING$''',
+  '''^(?:app|rec|fld|tbl)[A-Za-z0-9]{14}$''',
 ]
 
 # Airtable object identifiers are metadata, not API credentials.

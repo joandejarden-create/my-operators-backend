@@ -1,0 +1,170 @@
+{
+  "schema": "gdi-airtable-storage-contract-v1",
+  "responsibilities": {
+    "AIRTABLE_REGISTRY": {
+      "role": "CANONICAL_MUTABLE_RESEARCH_REGISTRY",
+      "baseId": "appa2cE7FTRmIbB32",
+      "tableName": "Group Demand Opportunities",
+      "tableId": "tblRuReslJMwsfRQj",
+      "owns": [
+        "stableOpportunityId",
+        "researchStatusAndCommercialClassification",
+        "linksToEvidenceAndHistory",
+        "hotelScopedInventory"
+      ]
+    },
+    "DURABLE_RESEARCH_FS": {
+      "role": "DURABLE_RESEARCH_ARTIFACTS",
+      "root": "data/group-demand-intelligence/hotels/{hotelId}/",
+      "owns": [
+        "completeSourceEvidence",
+        "researchExecutionHistory",
+        "detailedArtifacts",
+        "historicalSnapshots",
+        "recoveryInformation",
+        "opportunitiesJsonMirror"
+      ]
+    },
+    "CUSTOMER_PUBLICATION": {
+      "role": "IMMUTABLE_CUSTOMER_CONTENT",
+      "root": "lib/group-demand-intelligence/bundled-publication-packages/{hotelId}/",
+      "owns": [
+        "approvedPresentationFields",
+        "fullCardsAndDrawers",
+        "contentFingerprintSha256",
+        "publicationLifecycle"
+      ],
+      "neverOverwrittenByResearchSync": true
+    },
+    "FEEDBACK": {
+      "role": "MUTABLE_CUSTOMER_FEEDBACK",
+      "path": "data/group-demand-intelligence/hotels/{hotelId}/feedback.json",
+      "owns": [
+        "validation",
+        "action",
+        "outcome",
+        "stableOpportunityReferences"
+      ],
+      "outsidePublicationFingerprint": true
+    }
+  },
+  "baseId": "appa2cE7FTRmIbB32",
+  "coreTable": {
+    "name": "Group Demand Opportunities",
+    "tableId": "tblRuReslJMwsfRQj",
+    "role": "CANONICAL"
+  },
+  "supportingTables": {
+    "CANONICAL": [
+      "Group Demand Opportunities",
+      "GDI Research Targets",
+      "GDI Research Runs",
+      "GDI Research Target Runs",
+      "GDI Hotel Need Periods",
+      "GDI Need Period Opportunity Matches"
+    ],
+    "OPTIONAL_PER_HOTEL": [
+      "Demand Generators",
+      "Demand Programs",
+      "Demand Generator Signals",
+      "Hotel Demand Generator Fit",
+      "Private Event Venues",
+      "Private Event Signals",
+      "Hotel Venue Fit",
+      "Hotel Commercial Profiles",
+      "GDI Hotel Commercial Profiles",
+      "Hotel Event Spaces",
+      "Hotel Demand Nodes",
+      "Hotel Intelligence Evidence"
+    ]
+  },
+  "requiredPresentationKeys": [
+    "displayTitle",
+    "title",
+    "drawerHeaderTitle",
+    "organizationName",
+    "displayCompanyName",
+    "salesActionKey",
+    "salesActionPillLabel",
+    "commercialStageKey",
+    "commercialStagePillLabel",
+    "datePillDisplayLabel",
+    "eventDateDisplay",
+    "tileEventStartDate",
+    "tileEventEndDate",
+    "whatIsHappening",
+    "summaryWhat",
+    "cardWhyNowLine",
+    "cardContactSubtitle",
+    "tileContactPreview",
+    "primaryContact",
+    "secondaryContact",
+    "needDateMatchV1",
+    "needDateIndicator",
+    "tileNeedDatePreview",
+    "needDateRelevanceClass",
+    "revenueStreamClass",
+    "revenueStreamIcons",
+    "priority",
+    "priorityPillLabel",
+    "priorityFilterKey",
+    "opportunityType",
+    "opportunityTypeLabel",
+    "opportunityTypeFilterLabel",
+    "opportunityTypeFilterCategory",
+    "demandFamily",
+    "demandFamilyLabel",
+    "recommendedAction",
+    "recommendedNextAction",
+    "recommendedNextStep",
+    "hotelSourcingStatusLabel",
+    "sharedTenSectionDrawer",
+    "scalingDrawerModel",
+    "researchToDrawerV2",
+    "segmentOverviewModel",
+    "eventsOpportunityOverview",
+    "canonicalCustomerPresentation",
+    "canonicalCustomerPresentationVersion",
+    "tileBadgePlan",
+    "tileClassificationLine",
+    "salesOpportunityQuickFilterKeys",
+    "inventoryPopulations",
+    "inventoryPopulationPrimary",
+    "hotelMarketScopeEligible",
+    "competitiveMarketScopeEligible",
+    "competitiveStatus",
+    "competitiveStatusLabel",
+    "watchCardCurrentStatus",
+    "cmiVerified",
+    "commercialCategory",
+    "segmentDisplayLabel"
+  ],
+  "presentationPersistence": "gdi-canonical-presentation-persistence-v1",
+  "prospectiveCycle": {
+    "ok": true,
+    "createGate": {
+      "ok": true,
+      "missing": [],
+      "contract": "gdi-canonical-presentation-persistence-v1"
+    },
+    "enrichKeepsAction": true,
+    "parity": {
+      "ok": true,
+      "diffCount": 0,
+      "diffs": []
+    },
+    "mutationDetected": true,
+    "hotelId": "recTEST_TEMPLATE_PORTABILITY"
+  },
+  "bethesdaReconstruction": {
+    "airtableReconstruction67Ok": true,
+    "persistenceRegression": {
+      "compactionKeepsRequiredPresentation": true,
+      "idempotentUpsertSafe": true,
+      "publicationShaUnchanged": true,
+      "feedbackShaUnchanged": true,
+      "fingerprint": "df8da65a172727e627a71c3a31bead5f3f70ee95b03b7245f7a0ea34bbb33c66"
+    }
+  },
+  "note": "Irrelevant tables need not be populated for every hotel."
+}

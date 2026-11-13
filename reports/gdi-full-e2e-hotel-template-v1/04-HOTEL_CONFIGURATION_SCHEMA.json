@@ -1,0 +1,73 @@
+{
+  "schema": "gdi-hotel-configuration-schema-v1",
+  "requiredKeys": [
+    "hotelId",
+    "displayName"
+  ],
+  "optionalKeys": [
+    "brand",
+    "operator",
+    "country",
+    "city",
+    "aliases",
+    "commercialPriorities",
+    "demandTerritory",
+    "competitiveContext",
+    "capabilityProfile",
+    "locale",
+    "geo",
+    "adpFixturePath"
+  ],
+  "configRoot": "config/group-demand-intelligence/hotels/{hotelId}.json",
+  "unknownValuesRemainUnknown": true,
+  "needPeriodsMustNotBeFabricated": true,
+  "noHardcodedFrontendRoutesRequired": true,
+  "authAppUsesQueryHotelOrPilotFallback": true,
+  "authAppFallbackNote": "Auth app falls back to the template reference hotel when hotelId query is absent; rendering remains hotel-independent via hotelId.",
+  "exampleHotels": [
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "role": "REFERENCE_PUBLISHED",
+      "expectPkg": true,
+      "configPresent": true,
+      "displayName": "Bethesda Marriott",
+      "publicationPackagePresent": true,
+      "expectPkgMatch": true,
+      "bethesdaDataLeak": false,
+      "sharedCurrentPointer": false
+    },
+    {
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "role": "EXISTING_UNPUBLISHED_US",
+      "expectPkg": false,
+      "configPresent": true,
+      "displayName": "Wyndham San Diego Bayside",
+      "publicationPackagePresent": false,
+      "expectPkgMatch": true,
+      "bethesdaDataLeak": false,
+      "sharedCurrentPointer": false
+    },
+    {
+      "hotelId": "recKRJjcPnb4tVDDS",
+      "role": "INTERNATIONAL",
+      "expectPkg": false,
+      "configPresent": true,
+      "displayName": "Spice Island Beach Resort",
+      "publicationPackagePresent": false,
+      "expectPkgMatch": true,
+      "bethesdaDataLeak": false,
+      "sharedCurrentPointer": false
+    },
+    {
+      "hotelId": "recG66DQJKP2c0UNh",
+      "role": "NO_PUBLISHED_PACKAGE",
+      "expectPkg": false,
+      "configPresent": true,
+      "displayName": "Renaissance New York Times Square Hotel",
+      "publicationPackagePresent": false,
+      "expectPkgMatch": true,
+      "bethesdaDataLeak": false,
+      "sharedCurrentPointer": false
+    }
+  ]
+}
