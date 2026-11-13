@@ -112,6 +112,24 @@ body.gdi-page.embed-mode .gdi-shell {
   padding: 24px 30px 48px;
 }
 
+.gdi-presentation-mode-banner {
+  margin: 0 0 12px;
+  padding: 10px 14px;
+  border-radius: var(--gdi-radius-sm, 8px);
+  border: 1px solid var(--gdi-border, #2a3560);
+  background: var(--gdi-accent-soft, rgba(108, 114, 255, 0.14));
+  color: var(--gdi-text, #d1dbf9);
+  font-size: 13px;
+  line-height: 1.45;
+}
+.gdi-presentation-mode-banner[data-gdi-presentation-mode="LIVE_RESEARCH"] {
+  border-color: rgba(253, 181, 42, 0.55);
+  background: rgba(253, 181, 42, 0.12);
+}
+.gdi-presentation-mode-banner code {
+  font-size: 12px;
+}
+
 .gdi-shell {
   max-width: 1280px;
   margin: 0 auto;

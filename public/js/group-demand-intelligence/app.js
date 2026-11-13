@@ -1510,11 +1510,23 @@
 
     var showPriorities = state.tab === "priorities";
     root.className = "gdi-shell dashboard-container aiv-dashboard";
+    var presentationMode = wantsLiveResearchBrowse()
+      ? "LIVE_RESEARCH"
+      : "FOUNDER_PUBLICATION_PREVIEW";
+    var presentationModeBanner =
+      '<div id="gdiPresentationModeBanner" class="gdi-presentation-mode-banner" data-gdi-presentation-mode="' +
+      presentationMode +
+      '" role="status">' +
+      (presentationMode === "LIVE_RESEARCH"
+        ? "<strong>Mode A — Live Research</strong> · Evolving store. Not the customer publication. Open without <code>?live=1</code> for founder publication preview (Mode B ≡ share)."
+        : "<strong>Mode B — Founder Publication Preview</strong> · Approved package via canonical customer renderer (same as external share). Research browse: <code>?live=1</code>.") +
+      "</div>";
     root.innerHTML =
       UI.hotelShellHtml({
         mode: "auth",
         badges: {},
       }) +
+      presentationModeBanner +
       UI.contentTabsHtml(state.tab, UI.GDI_CUSTOMER_TABS || [UI.GDI_MAIN_TAB]) +
       (showPriorities
         ? ""
