@@ -1,0 +1,82 @@
+{
+  "localBranch": "see git",
+  "mainSha": "2eb283eb6c0d1a8f9d323fdc56ed85a912caec06",
+  "pr240Ancestor": "014011c448cf01df3e194811c1b46a8d33698d44",
+  "productionPublication": {
+    "publicationPackageSchema": "gdi-customer-publication-package-v1",
+    "publicationId": "gdi_pubpkg_recLuxvwwxID7U2B8_d652d18f59c612b6",
+    "publicationVersion": "gdi_pub_recLuxvwwxID7U2B8_20261113_remediated_v1",
+    "contentFingerprintSha256": "9816d7d9f26cdf70c37d7ef2dab038e1f6207c816cd1b0a1636649e266262f24",
+    "presentationSchemaVersion": "gdi-publication-presentation-schema-v1",
+    "applicationCompatibilityVersion": "gdi-customer-app-compat-v1",
+    "opportunityCount": 67,
+    "lifecycleState": "CUSTOMER_PUBLISHED",
+    "inventoryCounts": {
+      "all": 67,
+      "hotel": 61,
+      "competitive": 10
+    },
+    "publicationPackageMode": "PACKAGE",
+    "inventoryPopulationCounts": {
+      "all": 67,
+      "hotel": 61,
+      "competitive": 10
+    }
+  },
+  "CURRENT": {
+    "schema": "gdi-publication-package-store-v1",
+    "hotelId": "recLuxvwwxID7U2B8",
+    "kind": "CURRENT",
+    "updatedAt": "2026-11-13T09:03:16.040Z",
+    "publicationId": "gdi_pubpkg_recLuxvwwxID7U2B8_d652d18f59c612b6",
+    "publicationVersion": "gdi_pub_recLuxvwwxID7U2B8_20261113_remediated_v1",
+    "contentFingerprintSha256": "9816d7d9f26cdf70c37d7ef2dab038e1f6207c816cd1b0a1636649e266262f24",
+    "lifecycleState": "CUSTOMER_PUBLISHED"
+  },
+  "STAGED": {
+    "schema": "gdi-publication-package-store-v1",
+    "hotelId": "recLuxvwwxID7U2B8",
+    "kind": "STAGED",
+    "updatedAt": "2026-11-13T09:48:00.704Z",
+    "publicationId": "gdi_pubpkg_recLuxvwwxID7U2B8_98219d46db8ca8ad",
+    "publicationVersion": "gdi_pub_recLuxvwwxID7U2B8_20261113_reconciliation_v1",
+    "contentFingerprintSha256": "441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f",
+    "lifecycleState": "PRODUCTION_STAGED"
+  },
+  "packages": {
+    "remediated_v1": {
+      "fp": "9816d7d9f26cdf70c37d7ef2dab038e1f6207c816cd1b0a1636649e266262f24",
+      "lifecycle": "CUSTOMER_PUBLISHED",
+      "approval": "FOUNDER_APPROVED"
+    },
+    "founder_review_v1": {
+      "fp": "60e197ba99fea522e8e0a78eb66f144f80e19dafa59fadd6b2b9a5050fd4da57",
+      "lifecycle": "FOUNDER_REVIEWED",
+      "approval": "AWAITING_FOUNDER_FINGERPRINT_APPROVAL"
+    },
+    "reconciliation_v1": {
+      "fp": "441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f",
+      "lifecycle": "PRODUCTION_STAGED",
+      "approval": "CANDIDATE"
+    }
+  },
+  "approvalReceipts": {
+    "remediated_9816d7d9": {
+      "approved": true,
+      "hotelId": "recLuxvwwxID7U2B8",
+      "publicationId": "gdi_pubpkg_recLuxvwwxID7U2B8_d652d18f59c612b6",
+      "publicationVersion": "gdi_pub_recLuxvwwxID7U2B8_20261113_remediated_v1",
+      "contentFingerprintSha256": "9816d7d9f26cdf70c37d7ef2dab038e1f6207c816cd1b0a1636649e266262f24",
+      "approvedBy": "founder",
+      "approvedAt": "2026-11-13T09:03:16.028Z",
+      "authorizationSource": "explicit_founder_approval_of_remediated_v1_fingerprint",
+      "note": "Activates CUSTOMER_PUBLISHED for exact approved fingerprint only. Does not approve later founder_review_v1 (60e197ba…)."
+    },
+    "founder_review_60e197ba": null,
+    "reconciliation_44177321": null
+  },
+  "publicationBlocker": {
+    "code": "FOUNDER_FINGERPRINT_APPROVAL_REQUIRED",
+    "detail": "Production serves superseded remediated_v1 (9816d7d9). Successor reconciliation_v1 (44177321) includes need-date freeze + Qualify policy but has no FOUNDER_APPROVED receipt. founder_review_v1 (60e197ba) also lacks FOUNDER_APPROVED. Do not CUSTOMER_PUBLISH until founder approves exact fingerprint."
+  }
+}

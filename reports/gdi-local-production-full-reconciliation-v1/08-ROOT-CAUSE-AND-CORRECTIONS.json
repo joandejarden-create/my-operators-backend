@@ -1,0 +1,37 @@
+{
+  "discrepancies": [
+    {
+      "id": "PUB_FINGERPRINT_SPLIT",
+      "cause": "Local/staged candidate advanced (60e197ba then 44177321) while production CURRENT remained 9816d7d9",
+      "fix": "Single CURRENT after founder approves reconciliation fingerprint"
+    },
+    {
+      "id": "NEED_DATE_MISSING_ON_PACKAGE",
+      "cause": "PUBLICATION_CONTENT_FIELDS omitted need-date; build skipped attachHotelNeedDateTilePreviews; share PACKAGE path correctly does not recompute",
+      "fix": "Expand content fields + attach at build"
+    },
+    {
+      "id": "COMMERCIAL_ACTION_DRIFT",
+      "cause": "Live resolver / founder_review Qualify vs remediated Monitor for 16 opportunities",
+      "fix": "Freeze evidence-supported actions into reconciliation package"
+    },
+    {
+      "id": "FOUNDER_PREVIEW_LIVE_RECOMPUTE",
+      "cause": "getGdiOpportunities always rebuilt from research store",
+      "fix": "?publicationPackage=1 / surface=customer serves CURRENT|STAGED package"
+    },
+    {
+      "id": "FINGERPRINT_UNDEFINED_DRIFT",
+      "cause": "In-memory undefined keys hashed before JSON write",
+      "fix": "JSON round-trip before fingerprint"
+    }
+  ],
+  "sourceFiles": [
+    "lib/group-demand-intelligence/publication-package/gdi-customer-publication-package-v1.js",
+    "lib/group-demand-intelligence/publication-package/gdi-share-approved-package-resolver-v1.js",
+    "scripts/gdi-build-customer-publication-package-v1.mjs",
+    "api/group-demand-intelligence.js",
+    "scripts/test-gdi-publication-parity-e2e.mjs",
+    "package.json"
+  ]
+}
