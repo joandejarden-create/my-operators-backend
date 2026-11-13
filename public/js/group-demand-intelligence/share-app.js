@@ -779,24 +779,16 @@
           : UI.countByMarketScope
             ? UI.countByMarketScope(state.opportunities)
             : null,
-        activeCompetitiveStatus:
-          state.filters.competitiveStatus || "ALL_COMPETITIVE",
-        competitiveStatusCounts: UI.countByCompetitiveStatus
-          ? UI.countByCompetitiveStatus(
-              UI.filterOpportunities(
-                state.opportunities,
-                Object.assign({}, state.filters || {}, {
-                  marketScope: "COMPETITIVE",
-                  competitiveStatus: "ALL_COMPETITIVE",
-                })
-              )
-            )
-          : null,
+        lastResearchAt: s.lastResearchAt || null,
         lastResearch: formatHistoryDate(s.lastResearchAt),
+        runStatus: s.runStatus || null,
         runStatusLabel: UI.customerSafeRunStatusLabel
           ? UI.customerSafeRunStatusLabel(s)
           : "Research Completed",
+        lastSourceVerificationAt: s.lastSourceVerificationAt || null,
         lastSourceVerification: formatHistoryDate(s.lastSourceVerificationAt),
+        lastPublishedUpdateAt:
+          s.lastPublishedUpdateAt || s.lastReviewedPackageImportAt || null,
         lastPublishedUpdate: formatHistoryDate(
           s.lastPublishedUpdateAt || s.lastReviewedPackageImportAt
         ),
@@ -841,30 +833,11 @@
         var next = btn.getAttribute("data-gdi-market-scope") || "ALL";
         if (String(state.filters.marketScope || "ALL") === String(next)) return;
         state.filters.marketScope = next;
+        state.filters.competitiveStatus = "ALL_COMPETITIVE";
         state.filters = UI.reconcileBrowseFilters(
           state.opportunities,
           state.filters,
           "marketScope"
-        );
-        render();
-      });
-    });
-
-    root.querySelectorAll("[data-gdi-competitive-status]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        var next =
-          btn.getAttribute("data-gdi-competitive-status") || "ALL_COMPETITIVE";
-        if (
-          String(state.filters.competitiveStatus || "ALL_COMPETITIVE") ===
-          String(next)
-        ) {
-          return;
-        }
-        state.filters.competitiveStatus = next;
-        state.filters = UI.reconcileBrowseFilters(
-          state.opportunities,
-          state.filters,
-          "competitiveStatus"
         );
         render();
       });

@@ -257,7 +257,7 @@ check("drawer_renders_monitor_future_cycle_for_afcea", () => {
 check("list_card_shows_competitive_action_pill", () => {
   assert.ok(UI?.opportunityTileHtml);
   const tile = UI.opportunityTileHtml(nado2028);
-  assert.match(tile, /Qualify Overflow|Verified Competitive/);
+  assert.match(tile, /Qualify Overflow|Verified(?: Competitive)?/);
 });
 
 check("csv_exports_competitive_action_columns", () => {

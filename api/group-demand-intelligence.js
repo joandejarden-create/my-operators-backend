@@ -2365,12 +2365,29 @@ export async function postGdiContactReveal(req, res) {
     secondary ||
     null;
 
-  const useMock = body.useMock === true || process.env.GDI_CONTACT_REVEAL_MOCK === "1";
-  // Authenticated click (memberstackAuth + requireDealalityUser already ran) +
-  // explicit authorizeLiveProvider from the user-initiated button.
+  const useMock =
+    (body.useMock === true || process.env.GDI_CONTACT_REVEAL_MOCK === "1") &&
+    process.env.GDI_CONTACT_REVEAL_MOCK === "1";
+  // Live Surfe requires an explicit button authorize flag AND a signed-in user.
+  // Mock mode is env-gated (GDI_CONTACT_REVEAL_MOCK=1) for local certification only.
   const authorizeLive =
     body.authorizeLiveProvider === true &&
     Boolean(req.dealalityUser || req.memberstackMemberId);
+
+  if (!useMock && !authorizeLive) {
+    return res.status(403).json({
+      ok: false,
+      ephemeral: true,
+      persisted: false,
+      surfePiiPersisted: false,
+      error: "LIVE_PROVIDER_NOT_AUTHORIZED",
+      message:
+        "Contact lookup requires a signed-in Dealality user. Live Surfe is never called for anonymous or share viewers.",
+      contactDetails: null,
+      hotelId,
+      opportunityId,
+    });
+  }
 
   const {
     contactRevealIdentityKey,

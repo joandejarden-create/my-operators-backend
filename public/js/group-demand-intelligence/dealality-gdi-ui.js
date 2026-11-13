@@ -606,7 +606,7 @@
     var status = opportunityCompetitiveStatus(linked.id ? linked : it);
     var map = {
       VERIFIED: {
-        label: "Verified Competitive",
+        label: "Verified",
         cls: "gdi-pill gdi-pill-cmi gdi-pill-cmi-verified",
       },
       NEEDS_VERIFICATION: {
@@ -614,7 +614,7 @@
         cls: "gdi-pill gdi-pill-cmi gdi-pill-cmi-needs",
       },
       HISTORICAL: {
-        label: "Historical Competitive",
+        label: "Historical",
         cls: "gdi-pill gdi-pill-cmi gdi-pill-cmi-historical",
       },
     };
@@ -1622,7 +1622,6 @@
       weeklyThisWeekFilterHtml(opts) +
       opportunityTypeFilterHtml(opts) +
       marketScopeFilterHtml(opts) +
-      competitiveStatusFilterHtml(opts) +
       (opts.actionHtml
         ? '<div class="filter-group aiv-filter-actions gdi-property-bar__actions">' +
           opts.actionHtml +
@@ -1790,8 +1789,9 @@
   }
 
   /**
-   * Secondary Competitive status filter — visible only when Market Scope = Competitive.
-   * Counts are dynamic; Competitive total ≠ verified-booking total.
+   * Competitive evidence classification — card badges + detail copy only.
+   * Market Scope = Competitive shows the full competitive population; there is
+   * no secondary Competitive Status / Verification Status filter in the UI.
    */
   var COMPETITIVE_STATUS = {
     VERIFIED: "VERIFIED",
@@ -1800,6 +1800,7 @@
     NOT_COMPETITIVE: "NOT_COMPETITIVE",
   };
 
+  /** @deprecated Retained for DTO/export compatibility; UI no longer filters by status. */
   var COMPETITIVE_STATUS_FILTER = {
     ALL: "ALL_COMPETITIVE",
     VERIFIED: "VERIFIED",
@@ -1807,26 +1808,7 @@
     HISTORICAL: "HISTORICAL",
   };
 
-  function normalizeCompetitiveStatusFilter(value) {
-    var v = String(value || "")
-      .trim()
-      .toUpperCase();
-    if (!v || v === "ALL" || v === "ALL_COMPETITIVE") {
-      return COMPETITIVE_STATUS_FILTER.ALL;
-    }
-    if (v === "VERIFIED" || v === "VERIFIED_COMPETITIVE") {
-      return COMPETITIVE_STATUS_FILTER.VERIFIED;
-    }
-    if (
-      v === "NEEDS_VERIFICATION" ||
-      v === "NEEDS_FURTHER_VERIFICATION" ||
-      v === "UNVERIFIED"
-    ) {
-      return COMPETITIVE_STATUS_FILTER.NEEDS_VERIFICATION;
-    }
-    if (v === "HISTORICAL" || v === "HISTORICAL_COMPETITIVE") {
-      return COMPETITIVE_STATUS_FILTER.HISTORICAL;
-    }
+  function normalizeCompetitiveStatusFilter() {
     return COMPETITIVE_STATUS_FILTER.ALL;
   }
 
@@ -1845,10 +1827,8 @@
     return COMPETITIVE_STATUS.NOT_COMPETITIVE;
   }
 
-  function matchesCompetitiveStatusFilter(o, statusFilter) {
-    var active = normalizeCompetitiveStatusFilter(statusFilter);
-    if (active === COMPETITIVE_STATUS_FILTER.ALL) return true;
-    return opportunityCompetitiveStatus(o) === active;
+  function matchesCompetitiveStatusFilter() {
+    return true;
   }
 
   function countByCompetitiveStatus(opportunities) {
@@ -1878,75 +1858,9 @@
     return counts;
   }
 
-  function competitiveStatusFilterHtml(opts) {
-    opts = opts || {};
-    var scope = normalizeMarketScopeValue(
-      opts.activeMarketScope != null
-        ? opts.activeMarketScope
-        : MARKET_SCOPE.ALL
-    );
-    if (scope !== MARKET_SCOPE.COMPETITIVE) return "";
-    if (opts.showCompetitiveStatusFilter === false) return "";
-    var active = normalizeCompetitiveStatusFilter(
-      opts.activeCompetitiveStatus != null
-        ? opts.activeCompetitiveStatus
-        : COMPETITIVE_STATUS_FILTER.ALL
-    );
-    var counts = opts.competitiveStatusCounts || {};
-    var options = [
-      {
-        value: COMPETITIVE_STATUS_FILTER.ALL,
-        shortLabel: "All Competitive",
-        fullLabel: "All Competitive (verified + needs verification + historical)",
-        count: counts.ALL_COMPETITIVE,
-      },
-      {
-        value: COMPETITIVE_STATUS_FILTER.VERIFIED,
-        shortLabel: "Verified",
-        fullLabel: "Verified Competitive bookings",
-        count: counts.VERIFIED,
-      },
-      {
-        value: COMPETITIVE_STATUS_FILTER.NEEDS_VERIFICATION,
-        shortLabel: "Needs Verification",
-        fullLabel: "Competitive — Needs Verification",
-        count: counts.NEEDS_VERIFICATION,
-      },
-      {
-        value: COMPETITIVE_STATUS_FILTER.HISTORICAL,
-        shortLabel: "Historical",
-        fullLabel: "Historical Competitive bookings",
-        count: counts.HISTORICAL,
-      },
-    ];
-    return (
-      '<div class="filter-group gdi-competitive-status-filter">' +
-      '<span class="filter-label" id="gdiCompetitiveStatusLabel">Competitive Status</span>' +
-      '<div class="gdi-competitive-status" role="radiogroup" aria-labelledby="gdiCompetitiveStatusLabel">' +
-      options
-        .map(function (o) {
-          var selected = active === o.value;
-          var countText =
-            o.count == null || o.count === "" ? "" : " (" + o.count + ")";
-          return (
-            '<button type="button" class="gdi-competitive-status__btn' +
-            (selected ? " is-active" : "") +
-            '" role="radio" aria-checked="' +
-            (selected ? "true" : "false") +
-            '" data-gdi-competitive-status="' +
-            esc(o.value) +
-            '" title="' +
-            esc(o.fullLabel) +
-            '" aria-label="' +
-            esc(o.fullLabel + (countText || "")) +
-            '">' +
-            esc(o.shortLabel + countText) +
-            "</button>"
-          );
-        })
-        .join("") +
-      "</div></div>"
-    );
+  /** Competitive Status segmented control removed — Market Scope is sufficient. */
+  function competitiveStatusFilterHtml() {
+    return "";
   }
 
   /** Structured opportunity-type category (mirrors opportunity-type-filter-v2). */
@@ -3417,21 +3331,13 @@
         filters.booking = "";
         filters.weekly = "";
         filters.opportunityType = "";
-        if (normalizeMarketScopeValue(filters.marketScope) !== MARKET_SCOPE.COMPETITIVE) {
-          filters.competitiveStatus = COMPETITIVE_STATUS_FILTER.ALL;
-        }
-      } else if (changedKey === "competitiveStatus") {
-        filters.priority = "";
-        filters.booking = "";
-        filters.weekly = "";
       }
     }
-    if (normalizeMarketScopeValue(filters.marketScope) !== MARKET_SCOPE.COMPETITIVE) {
-      filters.competitiveStatus = COMPETITIVE_STATUS_FILTER.ALL;
-    } else {
-      filters.competitiveStatus = normalizeCompetitiveStatusFilter(
-        filters.competitiveStatus
-      );
+    // Competitive Status UI removed — never leave a status filter affecting counts.
+    filters.competitiveStatus = COMPETITIVE_STATUS_FILTER.ALL;
+    // Competitor chip removed from Sales Opportunities — clear stale selection.
+    if (filters.salesOpportunity === SALES_OPPORTUNITY_FILTER.COMPETITOR_CAPTURE) {
+      filters.salesOpportunity = "";
     }
     return filters;
   }
@@ -3887,17 +3793,7 @@
         return matchesMarketScopeFilter(o, filters.marketScope);
       });
     }
-    if (
-      normalizeMarketScopeValue(filters.marketScope) ===
-        MARKET_SCOPE.COMPETITIVE &&
-      filters.competitiveStatus &&
-      normalizeCompetitiveStatusFilter(filters.competitiveStatus) !==
-        COMPETITIVE_STATUS_FILTER.ALL
-    ) {
-      rows = rows.filter(function (o) {
-        return matchesCompetitiveStatusFilter(o, filters.competitiveStatus);
-      });
-    }
+    // Competitive Status filter retired — Competitive scope shows the full CMI set.
     if (filters.opportunityType) {
       rows = rows.filter(function (o) {
         // Legacy safety: population values belong to Market Scope, not type.
@@ -6028,11 +5924,7 @@
         label: SALES_OPPORTUNITY_FILTER_LABEL.FUTURE_GROUP_BUSINESS,
         swatch: SALES_OPPORTUNITY_SWATCH.FUTURE_GROUP_BUSINESS,
       },
-      {
-        value: "COMPETITOR_CAPTURE",
-        label: SALES_OPPORTUNITY_FILTER_LABEL.COMPETITOR_CAPTURE,
-        swatch: SALES_OPPORTUNITY_SWATCH.COMPETITOR_CAPTURE,
-      },
+      // COMPETITOR_CAPTURE chip removed — Market Scope Competitive covers CMI.
       {
         value: "PARTNERSHIP_OPPORTUNITIES",
         label: SALES_OPPORTUNITY_FILTER_LABEL.PARTNERSHIP_OPPORTUNITIES,
@@ -6618,15 +6510,66 @@
   }
 
   function surfeCtaLabel(channel) {
-    if (channel === "email") return "Find email";
-    if (channel === "phone") return "Find phone";
-    return "Find email & phone";
+    if (channel === "email") return "Find Email";
+    if (channel === "phone") return "Find Phone";
+    return "Find Email & Phone";
+  }
+
+  /**
+   * Derive Surfe CTA channel from named-contact channel gaps when the DTO
+   * already carries eligibility — or recompute as a safe UI fallback.
+   */
+  function resolveSurfeEnrichmentChannel(slot) {
+    slot = slot || {};
+    var named =
+      slot.customerFacingNamed === true ||
+      looksLikePersonNameLocal(slot.name);
+    if (!named || !slot.name) return null;
+    var existing = String(slot.surfeEnrichmentChannel || "")
+      .trim()
+      .toLowerCase();
+    if (
+      (slot.surfeEnrichmentEligible === true || existing) &&
+      (existing === "email" || existing === "phone" || existing === "both")
+    ) {
+      return existing;
+    }
+    var missingEmail = !String(slot.email || "").trim();
+    var missingPhone = !String(slot.phone || "").trim();
+    if (missingEmail && missingPhone) return "both";
+    if (missingEmail) return "email";
+    if (missingPhone) return "phone";
+    return null;
   }
 
   /** Strip internal eligibility enums from customer-facing Why relevant copy. */
-  function scrubCustomerContactWhyProse(raw) {
+  function scrubCustomerContactWhyProse(raw, opts) {
+    opts = opts || {};
     var s = String(raw || "").replace(/\s+/g, " ").trim();
-    if (!s) return "";
+    if (!s || s === "—" || s === "-" || s === "–") return "";
+    var contactName = String(opts.contactName || "").trim();
+    if (contactName) {
+      // Drop redundant "Referral contact: {Name}" when the slot already names them.
+      var escaped = contactName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      s = s.replace(
+        new RegExp(
+          "^(?:Referral\\s+contact|Alternative\\s*/?\\s*referral\\s+contact|Suggested\\s+contact)\\s*:\\s*" +
+            escaped +
+            "\\.?$",
+          "i"
+        ),
+        ""
+      );
+      s = s.replace(
+        new RegExp(
+          "^(?:Referral\\s+contact|Alternative\\s*/?\\s*referral\\s+contact)\\s*:\\s*" +
+            escaped +
+            "\\s*[—–-]\\s*",
+          "i"
+        ),
+        ""
+      );
+    }
     s = s
       .replace(/\bCONTACT_RELEVANT\b\.?\s*/gi, "")
       .replace(/\bINELIGIBLE_UNSPECIFIED\b\.?\s*/gi, "")
@@ -6635,6 +6578,7 @@
       .replace(/\s{2,}/g, " ")
       .replace(/^[\s.;:—-]+/, "")
       .trim();
+    if (!s || s === "—" || s === "-" || s === "–") return "";
     return s;
   }
 
@@ -6717,23 +6661,39 @@
       : slot.customerFacingNamed && !slot.email && !slot.phone
         ? '<p class="gdi-contact-kind-label"><strong>Contact path:</strong> Named person — profile / referral route</p>'
         : "";
+    var surfeChannel = resolveSurfeEnrichmentChannel(slot);
     var surfeBtn = "";
-    if (slot.surfeEnrichmentEligible && slot.surfeEnrichmentChannel && slot.name) {
+    var shareSurface =
+      typeof document !== "undefined" &&
+      document.body &&
+      document.body.classList &&
+      document.body.classList.contains("gdi-share-mode");
+    if (
+      !shareSurface &&
+      surfeChannel &&
+      slot.name &&
+      looksLikePersonNameLocal(slot.name)
+    ) {
       surfeBtn =
         '<div class="gdi-contact-reveal" data-gdi-contact-reveal-root="1">' +
         '<p class="gdi-contact-cta"><button type="button" class="gdi-btn gdi-btn--secondary" data-gdi-contact-cta="1" data-gdi-contact-channel="' +
-        esc(slot.surfeEnrichmentChannel) +
+        esc(surfeChannel) +
         '" data-contact-name="' +
         esc(slot.name) +
+        '" data-contact-slot="' +
+        esc(slot.slot || "") +
         '" data-opportunity-id="' +
         esc(oppId) +
         '">' +
-        esc(surfeCtaLabel(slot.surfeEnrichmentChannel)) +
+        esc(surfeCtaLabel(surfeChannel)) +
         "</button></p>" +
         '<p class="gdi-muted gdi-contact-cta-note">Ready to retrieve. Results stay in this session only and are not saved to Dealality records.</p>' +
         '<p class="gdi-contact-reveal-status" data-gdi-contact-reveal-status hidden></p>' +
         "</div>";
     }
+    var whyClean = scrubCustomerContactWhyProse(slot.whyContact, {
+      contactName: slot.name,
+    });
     return (
       '<div class="gdi-contact-slot" data-contact-slot="' +
       esc(slot.slot || "") +
@@ -6742,7 +6702,7 @@
       esc(slot.displayLabel || "Contact") +
       "</h4>" +
       pathLabel +
-      "<p><strong>Suggested contact:</strong> " +
+      "<p><strong>Name:</strong> " +
       esc(slot.name) +
       "</p>" +
       (slot.title
@@ -6751,10 +6711,8 @@
       (slot.organization
         ? "<p><strong>Organization:</strong> " + esc(slot.organization) + "</p>"
         : "") +
-      (slot.whyContact
-        ? "<p><strong>Why relevant:</strong> " +
-          esc(scrubCustomerContactWhyProse(slot.whyContact)) +
-          "</p>"
+      (whyClean
+        ? "<p><strong>Why relevant:</strong> " + esc(whyClean) + "</p>"
         : "") +
       (slot.email
         ? "<p><strong>" +
@@ -6929,13 +6887,15 @@
       !c.email &&
       !c.phone &&
       (tier === "NAMED_PARTIAL" || tier === "NAMED_DIRECT" || !tier)
-        ? '<p class="gdi-contact-cta"><button type="button" class="gdi-btn gdi-btn--secondary" data-gdi-contact-cta="1" data-gdi-contact-channel="both" data-opportunity-id="' +
+        ? '<div class="gdi-contact-reveal" data-gdi-contact-reveal-root="1">' +
+          '<p class="gdi-contact-cta"><button type="button" class="gdi-btn gdi-btn--secondary" data-gdi-contact-cta="1" data-gdi-contact-channel="both" data-contact-name="' +
+          esc(c.name) +
+          '" data-opportunity-id="' +
           esc(o.opportunityId || o.id || "") +
-          '">Get Contact Details</button></p><p class="gdi-contact-cta gdi-contact-cta--channels"><button type="button" class="gdi-btn gdi-btn--secondary" data-gdi-contact-cta="1" data-gdi-contact-channel="email" data-opportunity-id="' +
-          esc(o.opportunityId || o.id || "") +
-          '">Retrieve Email</button> <button type="button" class="gdi-btn gdi-btn--secondary" data-gdi-contact-cta="1" data-gdi-contact-channel="phone" data-opportunity-id="' +
-          esc(o.opportunityId || o.id || "") +
-          '">Retrieve Phone</button></p>'
+          '">Find Email & Phone</button></p>' +
+          '<p class="gdi-muted gdi-contact-cta-note">Ready to retrieve. Results stay in this session only and are not saved to Dealality records.</p>' +
+          '<p class="gdi-contact-reveal-status" data-gdi-contact-reveal-status hidden></p>' +
+          "</div>"
         : "";
     var ceilingCopy =
       (drawer && drawer.publicCeilingCopy) ||
@@ -7453,7 +7413,7 @@
       esc(o.recommendedAction || "—") +
       "</p></section>" +
       (extras.validationHtml
-        ? '<section class="gdi-section gdi-section--validation gdi-validation-panel"><h3>Hotel Validation / Action / Outcome</h3>' +
+        ? '<section class="gdi-section gdi-section--validation gdi-validation-panel" data-gdi-tour-target="drawer-validation"><h3>Hotel Validation / Action / Outcome</h3>' +
           extras.validationHtml +
           "</section>"
         : "") +
@@ -7522,7 +7482,7 @@
       esc(o.recommendedAction || "—") +
       "</p></section>" +
       (extras.validationHtml
-        ? '<section class="gdi-section gdi-section--validation gdi-validation-panel"><h3>Hotel Validation / Action / Outcome</h3>' +
+        ? '<section class="gdi-section gdi-section--validation gdi-validation-panel" data-gdi-tour-target="drawer-validation"><h3>Hotel Validation / Action / Outcome</h3>' +
           extras.validationHtml +
           "</section>"
         : "") +
@@ -8086,7 +8046,7 @@
         listHtml: listHtml,
       }) +
       "</section>" +
-      '<section class="gdi-section gdi-section--action" data-section-id="recommended_next_step"><h3>Recommended next step</h3>' +
+      '<section class="gdi-section gdi-section--action" data-section-id="recommended_next_step" data-gdi-tour-target="drawer-evidence"><h3>Recommended next step</h3>' +
       (o.competitiveCommercialActionLabel
         ? '<p class="gdi-cmi-action-banner" data-competitive-action="' +
           esc(o.competitiveCommercialActionKey || "") +
@@ -8099,7 +8059,7 @@
       "</p>" +
       qHtml +
       "</section>" +
-      '<section class="gdi-section gdi-section--evidence" data-section-id="supporting_evidence"><h3>Supporting evidence</h3>' +
+      '<section class="gdi-section gdi-section--evidence" data-section-id="supporting_evidence" data-gdi-tour-target="drawer-evidence"><h3>Supporting evidence</h3>' +
       sourceListFromModel(evS.sources, evS.evidenceGroups, evS.sourcesFull) +
       (evS.activityDate
         ? "<p><strong>Original activity date:</strong> " +
@@ -8112,7 +8072,7 @@
           " (not the activity date)</p>"
         : "") +
       "</section>" +
-      '<section class="gdi-section gdi-section--validation gdi-validation-panel" data-section-id="hotel_validation"><h3>Hotel Validation / Action / Outcome</h3>' +
+      '<section class="gdi-section gdi-section--validation gdi-validation-panel" data-section-id="hotel_validation" data-gdi-tour-target="drawer-validation"><h3>Hotel Validation / Action / Outcome</h3>' +
       (extras.validationHtml ||
         '<p class="gdi-muted">Validation controls load with the live drawer.</p>') +
       "</section>" +
@@ -9029,7 +8989,7 @@
         listHtml: listHtml,
       }) +
       "</section>" +
-      '<section class="gdi-section gdi-section--action" data-section-id="recommended_next_step"><h3>Recommended next step</h3>' +
+      '<section class="gdi-section gdi-section--action" data-section-id="recommended_next_step" data-gdi-tour-target="drawer-evidence"><h3>Recommended next step</h3>' +
       (o.competitiveCommercialActionLabel
         ? '<p class="gdi-cmi-action-banner" data-competitive-action="' +
           esc(o.competitiveCommercialActionKey || "") +
@@ -9042,7 +9002,7 @@
       "</p>" +
       qHtml +
       "</section>" +
-      '<section class="gdi-section gdi-section--evidence" data-section-id="supporting_evidence"><h3>Supporting evidence</h3>' +
+      '<section class="gdi-section gdi-section--evidence" data-section-id="supporting_evidence" data-gdi-tour-target="drawer-evidence"><h3>Supporting evidence</h3>' +
       sourceListFromModel(evS.sources, evS.evidenceGroups, evS.sourcesFull) +
       (evS.activityDate
         ? "<p><strong>Original activity date:</strong> " +
@@ -9055,7 +9015,7 @@
           " (not the activity date)</p>"
         : "") +
       "</section>" +
-      '<section class="gdi-section gdi-section--validation gdi-validation-panel" data-section-id="hotel_validation"><h3>Hotel Validation / Action / Outcome</h3>' +
+      '<section class="gdi-section gdi-section--validation gdi-validation-panel" data-section-id="hotel_validation" data-gdi-tour-target="drawer-validation"><h3>Hotel Validation / Action / Outcome</h3>' +
       (extras.validationHtml ||
         '<p class="gdi-muted">Validation controls load with the live drawer.</p>') +
       "</section>" +
@@ -9434,7 +9394,7 @@
       bits.push(commercialProgressionHtml(progression));
     }
     bits.push(
-      '<div class="gdi-section gdi-section--validation gdi-validation-panel gdi-hotel-feedback" data-gdi-customer-lifecycle="1">' +
+      '<div class="gdi-section gdi-section--validation gdi-validation-panel gdi-hotel-feedback" data-gdi-customer-lifecycle="1" data-gdi-tour-target="drawer-validation">' +
         "<h3>Hotel Validation</h3>"
     );
     bits.push(shareCustomerValidationFormHtml(o, enums, permissionContext));
@@ -9654,6 +9614,7 @@
     matchesCompetitiveStatusFilter: matchesCompetitiveStatusFilter,
     countByCompetitiveStatus: countByCompetitiveStatus,
     opportunityCompetitiveStatus: opportunityCompetitiveStatus,
+    competitiveStatusPillHtml: competitiveStatusPillHtml,
     classifyOpportunityTypeFilter: classifyOpportunityTypeFilter,
     countByOpportunityTypeFilter: countByOpportunityTypeFilter,
     countByMarketScope: countByMarketScope,
