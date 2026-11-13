@@ -100,7 +100,30 @@ async function loadApprovedShareDtos(hotelId) {
     );
   }
 
-  return ops.map((o) => {
+  // Freeze Hotel Need-Date Match into the package (same attach path as live list).
+  // Timing overlap must never be reinterpreted as an open room-block after approval.
+  let withNeedDates = ops;
+  try {
+    const { attachHotelNeedDateTilePreviews } = await import(
+      "../lib/group-demand-intelligence/need-date-demand/opportunity-need-date-tile-preview-v1.js"
+    );
+    const { listRegisteredHotels } = await import(
+      "../lib/group-demand-intelligence/repository.js"
+    );
+    const hotels = listRegisteredHotels();
+    const hotelMeta =
+      hotels.find((h) => h.hotelId === hotelId) || { hotelId, name: hotelId };
+    withNeedDates = await attachHotelNeedDateTilePreviews(hotelId, ops, {
+      hotelName: hotelMeta.name || hotelMeta.hotelName || null,
+    });
+  } catch (err) {
+    console.warn(
+      "[gdi-build-publication-package] need-date attach failed:",
+      err?.message || err,
+    );
+  }
+
+  return withNeedDates.map((o) => {
     const projected = projectOpportunityForPresentation(o, {
       hotelId,
       surface: GDI_PRESENTATION_SURFACES.EXTERNAL_SHARE,

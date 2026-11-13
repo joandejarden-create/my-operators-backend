@@ -787,6 +787,43 @@ export async function getGdiOpportunities(req, res) {
     const view = String(req.query.view || "list").trim().toLowerCase();
     const format = String(req.query.format || "").trim().toLowerCase();
     const wantFull = view === "full" || view === "complete";
+
+    // Optional immutable publication preview (same contract as external share).
+    // Use ?publicationPackage=1 (or surface=customer) so founder UI can match
+    // production without live commercial/need-date recompute. Research browse
+    // remains the default unless a package pointer exists and is requested.
+    const wantPublicationPackage =
+      String(req.query.publicationPackage || "") === "1" ||
+      String(req.query.surface || "").toLowerCase() === "customer";
+    if (wantPublicationPackage && hotelId) {
+      const {
+        resolvePreviewOpportunitiesFromPublicationPackage,
+        mergeShareFeedbackOntoPackageOpportunities,
+      } = await import(
+        "../lib/group-demand-intelligence/publication-package/gdi-share-approved-package-resolver-v1.js"
+      );
+      const pkgResolved = resolvePreviewOpportunitiesFromPublicationPackage({
+        hotelId,
+        forceLive: String(req.query.live || "") === "1",
+      });
+      if (pkgResolved.ok && pkgResolved.mode === "PACKAGE") {
+        const validationDoc = loadShareValidation(hotelId);
+        const withFeedback = mergeShareFeedbackOntoPackageOpportunities(
+          pkgResolved.opportunities,
+          validationDoc,
+        );
+        return res.json({
+          ok: true,
+          count: withFeedback.length,
+          opportunities: withFeedback,
+          publication: pkgResolved.meta || null,
+          inventoryPopulationCounts:
+            pkgResolved.meta?.inventoryPopulationCounts || null,
+          listScope: "PUBLICATION_PACKAGE",
+        });
+      }
+    }
+
     const doc = await loadOppDoc(hotelId);
     // Visibility must run on canonical fields before presentation sanitize.
     // Sanitizer may fill summaryWhat from summaryWhyMatters/thesis, which
