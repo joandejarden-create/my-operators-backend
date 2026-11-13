@@ -1,0 +1,64 @@
+{
+  "contract": "GDI_LOCAL_MASTER_PUBLICATION_V1",
+  "source": "presentation-inventory-subagent",
+  "agentId": "12796967-06d3-4a06-9535-c1fad42731bf",
+  "generatedAt": "2026-11-13T15:45:00.000Z",
+  "authority": "LOCAL_AUTHENTICATED_GDI_APPLICATION",
+  "entryHtml": {
+    "auth": "public/group-demand-intelligence.html",
+    "share": "public/group-demand-intelligence-share.html"
+  },
+  "sharedClientGlobals": {
+    "DealalityGdiUi": "public/js/group-demand-intelligence/dealality-gdi-ui.js",
+    "DealalityGdiUniversalPresentationController": "public/js/group-demand-intelligence/gdi-universal-presentation-controller.js",
+    "GdiGuidedReportTour": "public/js/group-demand-intelligence/gdi-guided-report-tour.js"
+  },
+  "thinWrappers": {
+    "auth": "public/js/group-demand-intelligence/app.js",
+    "share": "public/js/group-demand-intelligence/share-app.js"
+  },
+  "serverPipelines": {
+    "PUBLICATION_PACKAGE": {
+      "module": "lib/group-demand-intelligence/publication-package/gdi-package-customer-presentation-attach-v1.js",
+      "fn": "attachPackageCustomerPresentation",
+      "steps": [
+        "attachUniversalTileContactPreview",
+        "attachOpportunityRevenueStreamIcons + demotePackageCombinedWithoutEventThesis",
+        "attachCanonicalCustomerPresentationContract"
+      ]
+    },
+    "LIVE_CUSTOMER_FACING": {
+      "module": "lib/group-demand-intelligence/customer-presentation-sanitize-v1.js",
+      "entry": "sanitizeOpportunityForCustomerPresentation",
+      "followUpFix": "v19 attaches demotePackageCombinedWithoutEventThesis + attachCanonicalCustomerPresentationContract so live and package share the same presentation contract surface"
+    }
+  },
+  "highRiskClientFallbacks": [
+    {
+      "location": "dealality-gdi-ui.js :: resolveTileContactPreviewBlock",
+      "risk": "HIGH",
+      "mitigation": "Package + live sanitize must ship tileContactPreview; client should prefer DTO"
+    },
+    {
+      "location": "dealality-gdi-ui.js :: resolveRevenueStreamIconState",
+      "risk": "HIGH",
+      "mitigation": "Ship revenueStreamIcons; align live demotion with package demotePackageCombinedWithoutEventThesis"
+    },
+    {
+      "location": "dealality-gdi-ui.js :: resolveOpportunityNeedDateIndicatorForUi",
+      "risk": "MEDIUM",
+      "mitigation": "Freeze needDateIndicator on package; ensure hotelNeedDateConfigV1 on list payloads"
+    }
+  ],
+  "intentionalThinWrapperDifferences": [
+    "sessionStorage prefix gdi-auth- vs gdi-share-",
+    "auth Memberstack transport vs share token",
+    "auth Need Times tab + hotel switch",
+    "auth Surfe reveal + founder review",
+    "CSV endpoint paths"
+  ],
+  "css": "public/css/group-demand-intelligence.css (single stylesheet)",
+  "candidateFingerprintUnchangedByThisDoc": "b45106b7cd82e92e41423a698ac739bb2d67db6ab2bcf12850ef6b7f5d2a0165",
+  "currentPointer": "441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f",
+  "note": "Inventory persisted for architecture map. Live sanitize v19 closes missing canonical-contract/demotion gap identified by inventory. CURRENT not switched."
+}
