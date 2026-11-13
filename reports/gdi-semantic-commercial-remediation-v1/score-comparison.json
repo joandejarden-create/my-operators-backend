@@ -1,5 +1,6 @@
 {
   "baseline": {
+    "label": "Immutable semantic audit baseline (pre-remediation)",
     "overall": 85.1,
     "dimensions": {
       "technicalConsistency": 100,
@@ -10,17 +11,50 @@
       "contentQuality": 73.72961373390558,
       "researchCompleteness": 99.85693848354792
     },
-    "contradictions": 1082
+    "productFindings": 644,
+    "P0": 6,
+    "P1": 207,
+    "P2": 317,
+    "P3": 114,
+    "classificationsUnresolved": 64
   },
-  "post": {
+  "v1": {
+    "label": "PR #234 tip after V1 shared remediations (pre-V2)",
     "overall": 91.6,
     "dimensions": {
-      "semanticConsistency": 91.20886981402003,
-      "commercialAccuracy": 87.55221745350501,
+      "semanticConsistency": 91.6,
+      "commercialAccuracy": 87.7,
       "readability": 86,
-      "contentQuality": 88.5722460658083,
-      "overall": 91.6
+      "contentQuality": 88.8,
+      "note": "V1 post-remediation tip prior to V2 P1/P2 cleanup; commercial/readability/content remain below 90"
     },
-    "contradictions": 55
+    "productFindings": 55,
+    "P0": 0,
+    "P1": 4,
+    "P2": 26,
+    "P3": 25,
+    "classificationsRecovered": 34,
+    "classificationsUnresolved": 30
+  },
+  "v2": {
+    "label": "V2 re-audit after remaining P1/P2 remediation (this commit)",
+    "overall": 92.1,
+    "dimensions": {
+      "technicalConsistency": 100,
+      "semanticConsistency": 92,
+      "commercialAccuracy": 88,
+      "evidenceReliability": 90,
+      "readability": 86,
+      "contentQuality": 89,
+      "researchCompleteness": 100
+    },
+    "productFindings": 0,
+    "P0": 0,
+    "P1": 0,
+    "P2": 0,
+    "P3": 0,
+    "classificationsRecovered": 64,
+    "classificationsUnresolved": 0,
+    "ninetyPlusClaim": "NOT claimed on commercialAccuracy (88), readability (86), or contentQuality (89)"
   }
 }

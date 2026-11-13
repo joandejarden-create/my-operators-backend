@@ -125,6 +125,31 @@ check("host_contracted_malformed_glue_scrubbed_in_whyHotelDemand", () => {
   assert.match(next.whyHotelDemand || "", /competitor host/i);
 });
 
+check("past_cycle_scrubs_hard_why_this_hotel_demand_claims", () => {
+  const next = applySemanticCommercialRemediation({
+    priority: "DISQUALIFIED",
+    recommendedAction:
+      "Past cycle — do not pursue this cycle. Monitor for confirmed next cycle / relationship only.",
+    whyThisHotel:
+      "The event attracts over 800 senior decision-makers, which could lead to significant room demand",
+    whyActNow: "Planning for hotel accommodations is essential as the event date approaches.",
+  });
+  assert.doesNotMatch(next.whyThisHotel || "", /attracts over 800|significant room demand/i);
+  assert.match(next.whyThisHotel || "", /relationship|next-cycle|Monitor|watch/i);
+  assert.match(next.whyActNow || "", /Monitor stance/i);
+});
+
+check("vendor_block_title_classifies_as_association", () => {
+  assert.equal(
+    classifyOpportunityTypeFilter({
+      title: "Interiors from Spain — VENDOR BLOCK",
+      opportunityType: "FUTURE_WATCH",
+      researchSegment: "Discovered",
+    }),
+    "ASSOCIATION_CONFERENCE_GROUP"
+  );
+});
+
 check("room_demand_enum_not_leaked_in_overview", () => {
   const next = sanitizeCommercialPresentation({
     roomDemandLive: "LODGING_DEMAND_LIKELY",
@@ -159,15 +184,25 @@ check("classification_recovery_from_research_title_contracts", () => {
     }),
     "EDUCATION_SCIENTIFIC"
   );
+  // Explicit education recovery for university webinar research titles
+  assert.equal(
+    classifyOpportunityTypeFilter({
+      title: "DIVCULT Spring Webinar",
+      opportunityType: "FUTURE_WATCH",
+      researchSegment: "Discovered",
+    }),
+    "EDUCATION_SCIENTIFIC"
+  );
+  // Truly thin / non-contract titles stay unresolved
   const unresolved = inferDemandSegmentIdFromResearchEvidence({
-    title: "DIVCULT Spring Webinar",
+    title: "Placeholder Activity Shell",
     opportunityType: "FUTURE_WATCH",
     researchSegment: "Discovered",
   });
   assert.equal(unresolved.demandSegmentId, null);
   assert.equal(
     classifyOpportunityTypeFilter({
-      title: "DIVCULT Spring Webinar",
+      title: "Placeholder Activity Shell",
       opportunityType: "FUTURE_WATCH",
       researchSegment: "Discovered",
     }),
@@ -180,6 +215,55 @@ check("pipeline_slug_helper_unit", () => {
     __test.scrubPipelineSlugTitle("PR Teams — Annual Board Retreat (EXHIBITOR)"),
     "Annual Board Retreat"
   );
+});
+
+check("booth_booth_placeholder_contact_demoted", () => {
+  const next = applySemanticCommercialRemediation({
+    title: "Interested in Exhibiting — EXHIBITOR BLOCK",
+    primaryContact: {
+      name: "Booth Booth",
+      role: "OTHER_RELEVANT",
+      contactRole: "OTHER_RELEVANT",
+    },
+    contactPathClass: "NAMED_CONTACT",
+  });
+  assert.equal(next.primaryContact.customerFacingNamed, false);
+  assert.equal(next.primaryContact.name, null);
+  assert.equal(next.contactPathClass, "RESEARCH_GAP");
+});
+
+check("unpublished_attendance_scrubs_hard_crowd_claims", () => {
+  const next = applySemanticCommercialRemediation({
+    eventsOpportunityOverview: { attendance: "Not yet published" },
+    whyThisHotel:
+      "This event typically draws large crowds, necessitating hotel accommodations for participants and spectators",
+  });
+  assert.doesNotMatch(next.whyThisHotel || "", /typically draws large crowds/i);
+  assert.match(next.whyThisHotel || "", /not yet published|hypothesis/i);
+});
+
+check("unsupported_trend_urgency_scrubbed", () => {
+  const next = applySemanticCommercialRemediation({
+    potentialBusiness:
+      "Incentive travel is an increasing trend that makes this an opportune time for hotels.",
+    whyActNow: "The event is planned for late May 2027, allowing for advance planning.",
+  });
+  assert.doesNotMatch(next.potentialBusiness || "", /increasing trend|opportune time/i);
+  assert.doesNotMatch(next.whyActNow || "", /allowing for advance planning/i);
+  assert.match(next.whyActNow || "", /watch-only|do not treat/i);
+});
+
+check("stale_historical_evidence_year_filtered", () => {
+  const next = applySemanticCommercialRemediation({
+    title: "Munich Security Conference 2026",
+    evidenceSources: [
+      { url: "https://securityconference.org/en/msc-2009/agenda/", label: "2009" },
+      { url: "https://securityconference.org/en/msc-2026/", label: "2026" },
+    ],
+  });
+  const urls = (next.evidenceSources || []).map((e) => e.url || e).join(" ");
+  assert.doesNotMatch(urls, /msc-2009/i);
+  assert.match(urls, /msc-2026/i);
 });
 
 if (failed) {

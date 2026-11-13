@@ -6582,6 +6582,14 @@
     var n = String(name || "").replace(/\s+/g, " ").trim();
     if (!n || n === "UNKNOWN" || n === "—") return false;
     if (/buyer not yet identified/i.test(n)) return false;
+    // Exhibitor / vendor research placeholders must never present as named contacts.
+    if (
+      /^(?:Booth(?:\s+Booth)?|Exhibitor\s+booth\s+contact|Other\s+contact|N\/?A|TBD|Placeholder|Contact\s+TBD)$/i.test(
+        n
+      )
+    ) {
+      return false;
+    }
     if (
       /\b(association|conference|university|inc\.?|llc|corp\.?|group|desk|services|housing|registration|committee|department|team|staff|office|hotel|information|accommodations?|webmaster|helpdesk|bureau)\b/i.test(
         n
@@ -6817,13 +6825,28 @@
       esc(slot.name) +
       "</p>" +
       (slot.title
-        ? "<p><strong>Role:</strong> " + esc(slot.title) + "</p>"
+        ? "<p><strong>Role:</strong> " +
+          esc(
+            (function (role) {
+              var r = String(role || "").replace(/\s+/g, " ").trim();
+              if (/^OTHER_RELEVANT$/i.test(r)) return "Other contact";
+              return r.replace(/\bOTHER_RELEVANT\b/g, "Other contact");
+            })(slot.title)
+          ) +
+          "</p>"
         : "") +
       (slot.organization
         ? "<p><strong>Organization:</strong> " + esc(slot.organization) + "</p>"
         : "") +
       (whyClean
-        ? "<p><strong>Why relevant:</strong> " + esc(whyClean) + "</p>"
+        ? "<p><strong>Why relevant:</strong> " +
+          esc(
+            String(whyClean || "")
+              .replace(/\s+/g, " ")
+              .trim()
+              .replace(/\bOTHER_RELEVANT\b/g, "Other contact")
+          ) +
+          "</p>"
         : "") +
       (slot.email
         ? "<p><strong>" +
@@ -7038,13 +7061,21 @@
           esc(pathLabel || "Organization / official program contact path") +
           "</p>" +
           (drawer && drawer.role
-            ? "<p><strong>Role:</strong> " + esc(drawer.role) + "</p>"
+            ? "<p><strong>Role:</strong> " +
+              esc(
+                /^OTHER_RELEVANT$/i.test(prose(drawer.role))
+                  ? "Other contact"
+                  : prose(drawer.role).replace(/\bOTHER_RELEVANT\b/g, "Other contact")
+              ) +
+              "</p>"
             : "") +
           (o.organizationName
             ? "<p><strong>Organization:</strong> " + esc(o.organizationName) + "</p>"
             : "") +
           (whyRelevant
-            ? "<p><strong>Why Relevant:</strong> " + esc(whyRelevant) + "</p>"
+            ? "<p><strong>Why Relevant:</strong> " +
+              esc(prose(whyRelevant).replace(/\bOTHER_RELEVANT\b/g, "Other contact")) +
+              "</p>"
             : "") +
           officialLink +
           '<p class="gdi-contact-quality-quiet">No named individual published — use the organization path.</p>' +

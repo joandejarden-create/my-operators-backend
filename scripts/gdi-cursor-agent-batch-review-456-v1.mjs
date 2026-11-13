@@ -187,25 +187,45 @@ export function detectExtendedSemanticIssues(opp, opts = {}) {
     }
   }
 
-  if (
-    (cardPriority === "DISQUALIFIED" || /Past cycle — do not pursue/i.test(next)) &&
-    (/essential as the event date approaches|Planning for housing blocks is essential/i.test(
-      whyAct
-    ) ||
-      /significant room demand|large number of attendees|over \d+/i.test(why))
-  ) {
-    findings.push({
-      code: "SEM_DISQUALIFIED_VS_URGENT_DEMAND_FRAMING",
-      severity: "P1",
-      sections: ["card_priority", "why_act_now", "why_this_hotel", "recommended_next_step"],
-      message:
-        "Opportunity is disqualified or past-cycle while Why Act Now / Why This Hotel still frame near-term demand urgency.",
-      passages: {
-        card_priority: cardPriority,
-        recommended_next_step: next.slice(0, 120),
-        why_act_now: whyAct.slice(0, 160),
-      },
-    });
+  // Only flag when urgency remains in Why Act Now body (not the section title),
+  // or Why This Hotel hard-claims demand without soft hypothesis language.
+  {
+    const whyActBody = whyAct.replace(/^why act now\s*/i, "");
+    const whyBody = why.replace(/^why this hotel\s*/i, "");
+    const whyActUrgent =
+      /essential as the event date approaches|Planning for housing blocks is essential|pursue now|securing hotel bookings|advance planning[^.]{0,40}crucial|opportune time for hotels/i.test(
+        whyActBody
+      ) &&
+      !/monitor stance|watch-only|not actionable|do not treat|wrong destination|relationship only/i.test(
+        whyActBody
+      );
+    const whyHard =
+      /significant room demand|large number of attendees|attracts over \d+|draw a large number|creating (?:significant )?demand for hotel/i.test(
+        whyBody
+      ) &&
+      !/could lead to|may compete|potentially|if lodging|hypothesis|when confirmed|relationship \/ next-cycle|do not treat current-cycle/i.test(
+        whyBody
+      );
+    if (
+      (cardPriority === "DISQUALIFIED" ||
+        /Past cycle — do not pursue/i.test(next) ||
+        /wrong-destination|Close as wrong-destination/i.test(next)) &&
+      (whyActUrgent || whyHard)
+    ) {
+      findings.push({
+        code: "SEM_DISQUALIFIED_VS_URGENT_DEMAND_FRAMING",
+        severity: "P1",
+        sections: ["card_priority", "why_act_now", "why_this_hotel", "recommended_next_step"],
+        message:
+          "Opportunity is disqualified or past-cycle while Why Act Now / Why This Hotel still frame near-term demand urgency.",
+        passages: {
+          card_priority: cardPriority,
+          recommended_next_step: next.slice(0, 120),
+          why_act_now: whyAct.slice(0, 160),
+          why_this_hotel: why.slice(0, 160),
+        },
+      });
+    }
   }
 
   if (/\bLODGING_DEMAND_[A-Z_]+\b/.test(full)) {
@@ -448,35 +468,54 @@ export function detectExtendedSemanticIssues(opp, opts = {}) {
     }
   }
 
-  if (
-    /increasing trend|makes this an opportune time/i.test(`${potBiz} ${whyAct}`) &&
-    /Material unknowns remain|not yet confirmed|remain to be confirmed/i.test(
-      `${text(s.established_facts_uncertainties)} ${what}`
-    )
-  ) {
-    findings.push({
-      code: "SEM_MARKET_TREND_WITHOUT_EVIDENCE",
-      severity: "P2",
-      sections: ["potential_business_for_this_hotel", "why_act_now", "established_facts_uncertainties"],
-      message:
-        "Narrative asserts market/timing urgency trends not substantiated in supporting evidence or established facts.",
-      passages: { why_act_now: whyAct.slice(0, 160) },
-    });
+  {
+    const trendBlob = `${potBiz} ${whyAct}`;
+    const alreadyMonitorSafe =
+      /monitor stance|watch-only|not actionable|do not treat potential demand/i.test(trendBlob);
+    if (
+      !alreadyMonitorSafe &&
+      /increasing trend|makes this an opportune time/i.test(trendBlob) &&
+      /Material unknowns remain|not yet confirmed|remain to be confirmed/i.test(
+        `${text(s.established_facts_uncertainties)} ${what}`
+      )
+    ) {
+      findings.push({
+        code: "SEM_MARKET_TREND_WITHOUT_EVIDENCE",
+        severity: "P2",
+        sections: [
+          "potential_business_for_this_hotel",
+          "why_act_now",
+          "established_facts_uncertainties",
+        ],
+        message:
+          "Narrative asserts market/timing urgency trends not substantiated in supporting evidence or established facts.",
+        passages: { why_act_now: whyAct.slice(0, 160) },
+      });
+    }
   }
 
-  if (
-    /Future [Cc]ycle/.test(overview) &&
-    !/Past cycle — do not pursue/i.test(next) &&
-    /allowing for advance planning|opportune time for hotels/i.test(`${potBiz} ${whyAct}`)
-  ) {
-    findings.push({
-      code: "SEM_ADVANCE_PLANNING_VS_UNCONFIRMED_CYCLE",
-      severity: "P3",
-      sections: ["opportunity_overview", "why_act_now", "potential_business_for_this_hotel"],
-      message:
-        "Future-cycle / unconfirmed timing paired with generic advance-planning urgency may overstate sell readiness.",
-      passages: { why_act_now: whyAct.slice(0, 140) },
-    });
+  {
+    const whyActBody = whyAct.replace(/^why act now\s*/i, "");
+    const potBody = potBiz.replace(/^potential business[^\n]*\n?/i, "");
+    const alreadyMonitorSafe =
+      /monitor stance|watch-only|not actionable|do not treat|relationship only/i.test(
+        `${whyActBody} ${potBody}`
+      );
+    if (
+      /Future [Cc]ycle/.test(overview) &&
+      !/Past cycle — do not pursue/i.test(next) &&
+      !alreadyMonitorSafe &&
+      /allowing for advance planning|opportune time for hotels/i.test(`${potBody} ${whyActBody}`)
+    ) {
+      findings.push({
+        code: "SEM_ADVANCE_PLANNING_VS_UNCONFIRMED_CYCLE",
+        severity: "P3",
+        sections: ["opportunity_overview", "why_act_now", "potential_business_for_this_hotel"],
+        message:
+          "Future-cycle / unconfirmed timing paired with generic advance-planning urgency may overstate sell readiness.",
+        passages: { why_act_now: whyAct.slice(0, 140) },
+      });
+    }
   }
 
   return findings;
