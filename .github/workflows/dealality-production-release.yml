@@ -123,6 +123,12 @@ jobs:
             exit 2
           fi
 
+      - name: Install Railway CLI (live only)
+        if: ${{ inputs.dry_run == false }}
+        run: |
+          npm install -g @railway/cli@latest
+          railway --version
+
       - name: Run release coordinator (dry-run)
         if: ${{ inputs.dry_run == true }}
         run: |
