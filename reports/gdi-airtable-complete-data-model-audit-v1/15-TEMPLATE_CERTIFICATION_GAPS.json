@@ -1,0 +1,44 @@
+{
+  "schema": "gdi-template-certification-gaps-v1",
+  "researchIdCoverage": {
+    "ok": true,
+    "missingFromRegistry": [],
+    "publishedCount": 67,
+    "registryCount": 86,
+    "extraInRegistry": 19,
+    "contract": "gdi-research-persistence-contract-v1",
+    "gate": "PUBLISHED_IDS_SUBSET_OF_RESEARCH_REGISTRY"
+  },
+  "fieldCoverageGate": {
+    "ok": false,
+    "requiredLocalOnlyRemaining": 1,
+    "opportunitiesNotFullyReconstructable": 67,
+    "publishedCount": 67
+  },
+  "publicationImmutability": {
+    "fingerprint": "df8da65a172727e627a71c3a31bead5f3f70ee95b03b7245f7a0ea34bbb33c66",
+    "intact": true
+  },
+  "feedbackPreserved": true,
+  "templateCertified": false,
+  "p0FieldGaps": [
+    "salesActionKey / salesActionPillLabel missing on all 67 Airtable reconstructions",
+    "datePillDisplayLabel missing on all 67",
+    "displayTitle / whatIsHappening incomplete on ~half",
+    "needDateMatchV1 absent on opportunity DTO for 39 despite 92 match rows for published IDs"
+  ],
+  "needDateMatchRowsForPublishedIds": 92,
+  "blockers": [
+    "Airtable ID coverage alone is insufficient",
+    "67/67 opportunities differ when reconstructed from Airtable vs approved V2 on compared fields",
+    "Required LOCAL_ONLY_DEPENDENCY / presentation fields remain (drawer rebuild / commercial pills)",
+    "Must not declare GDI_FULL_E2E_HOTEL_TEMPLATE_V1 certified until reconstruction parity gate passes"
+  ],
+  "recommendedGates": [
+    "publishedIds ⊆ researchRegistryIds",
+    "required customer fields airtable-backed (matrix classification ban LOCAL_ONLY/MISSING for required)",
+    "airtable reconstruction parity vs approved package (or explicit waiver)",
+    "publication fingerprint immutable",
+    "feedback merge intact"
+  ]
+}
