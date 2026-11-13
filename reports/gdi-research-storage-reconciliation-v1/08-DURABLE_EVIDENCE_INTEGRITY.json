@@ -1,0 +1,59 @@
+{
+  "schema": "gdi-durable-evidence-integrity-v1",
+  "contract": "gdi-research-persistence-contract-v1",
+  "roles": {
+    "AIRTABLE_REGISTRY": {
+      "role": "CANONICAL_MUTABLE_RESEARCH_REGISTRY",
+      "baseId": "appa2cE7FTRmIbB32",
+      "tableName": "Group Demand Opportunities",
+      "tableId": "tblRuReslJMwsfRQj",
+      "owns": [
+        "stableOpportunityId",
+        "researchStatusAndCommercialClassification",
+        "linksToEvidenceAndHistory",
+        "hotelScopedInventory"
+      ]
+    },
+    "DURABLE_RESEARCH_FS": {
+      "role": "DURABLE_RESEARCH_ARTIFACTS",
+      "root": "data/group-demand-intelligence/hotels/{hotelId}/",
+      "owns": [
+        "completeSourceEvidence",
+        "researchExecutionHistory",
+        "detailedArtifacts",
+        "historicalSnapshots",
+        "recoveryInformation",
+        "opportunitiesJsonMirror"
+      ]
+    },
+    "CUSTOMER_PUBLICATION": {
+      "role": "IMMUTABLE_CUSTOMER_CONTENT",
+      "root": "lib/group-demand-intelligence/bundled-publication-packages/{hotelId}/",
+      "owns": [
+        "approvedPresentationFields",
+        "fullCardsAndDrawers",
+        "contentFingerprintSha256",
+        "publicationLifecycle"
+      ],
+      "neverOverwrittenByResearchSync": true
+    },
+    "FEEDBACK": {
+      "role": "MUTABLE_CUSTOMER_FEEDBACK",
+      "path": "data/group-demand-intelligence/hotels/{hotelId}/feedback.json",
+      "owns": [
+        "validation",
+        "action",
+        "outcome",
+        "stableOpportunityReferences"
+      ],
+      "outsidePublicationFingerprint": true
+    }
+  },
+  "reconstructedSha256": "e5a8522686cf2780f367a6b152cea0c63d7c55c04bb49c97db4fe871efd84f30",
+  "reconstructedPreserved": true,
+  "opportunityResearchStateCount": 200,
+  "runCount": 19,
+  "historicalUpsertsWithSources": 0,
+  "historicalUpsertsMissingOriginalBody": 0,
+  "note": "Full evidence remains on FS (reconstructed + research-state). Airtable holds compacted registry payload + provenance stamp."
+}

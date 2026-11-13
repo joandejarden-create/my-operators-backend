@@ -1,0 +1,43 @@
+{
+  "schema": "gdi-pre-migration-snapshot-manifest-v1",
+  "generatedAt": "2026-11-13T18:21:03.894Z",
+  "note": "Full byte copies were taken before CREATE upserts. Large blobs are hash-manifested in git; small pointer/feedback copies remain. Reconstruct from Airtable/FS/bundled package using digests.",
+  "preMigrationTrueBaseline": {
+    "airtableCount": 59,
+    "fsOpportunities": {
+      "bytes": 1863054,
+      "sha256": "79be23c4ff344679381c6aa48cbe42fc189d69fce5eac4aa02f5e025bab26b26",
+      "count": 59
+    },
+    "reconstructedOpportunitiesV1": {
+      "bytes": 548917,
+      "sha256": "e5a8522686cf2780f367a6b152cea0c63d7c55c04bb49c97db4fe871efd84f30",
+      "count": 29
+    },
+    "feedback": {
+      "bytes": 13547,
+      "sha256": "add6b1e7e4ab34abe6ee67515aa9921ead61d3d9b4c26321e5edc655a0ebc37e"
+    },
+    "bundledV2Package": {
+      "bytes": 1313511,
+      "sha256": "8cd3d0a47e3e44b6c7093eaacd26f1026124215aed5fdc198db42111a77bcba8",
+      "fingerprint": "df8da65a172727e627a71c3a31bead5f3f70ee95b03b7245f7a0ea34bbb33c66"
+    },
+    "bundledCurrent": {
+      "bytes": 445,
+      "sha256": "db4eb0ca7d3e5b08ed160293f085b06260096347e7720f26c4dca6ca4606ce9c"
+    },
+    "dataCurrentStale": {
+      "bytes": 447,
+      "sha256": "728f8cccf0ba30f46bb8fde3ff9cfafa609fd23d3928527a9913bf0ed63ac2fe",
+      "fingerprint": "441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f"
+    }
+  },
+  "retainedInGitPack": [
+    "bundled-CURRENT.json",
+    "data-CURRENT.json",
+    "feedback.json",
+    "research-state-index.json",
+    "SNAPSHOT_MANIFEST.json"
+  ]
+}
