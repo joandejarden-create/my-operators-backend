@@ -61,10 +61,20 @@ check("baseline_67_exact", () => {
 });
 
 check("customer_stays_at_19_without_approval", () => {
-  assert.equal(isBethesda67CustomerPublicationApproved(), false);
+  // Explicitly deny approval for this gate — a real founder receipt may exist after Decision A.
+  assert.equal(
+    isBethesda67CustomerPublicationApproved({
+      forceApproved: false,
+      receiptPath: path.join(
+        ROOT,
+        "data/group-demand-intelligence/hotels/recLuxvwwxID7U2B8/__no_such_approval__.json"
+      ),
+    }),
+    false
+  );
   const facing = filterCustomerFacingOpportunities(
     filterSalespersonView(doc.opportunities || []),
-    { hotelId: BETHESDA_HOTEL_ID }
+    { hotelId: BETHESDA_HOTEL_ID, forceApproved: false }
   );
   assert.equal(facing.length, 19);
   for (const id of manifest.publishedIds) {
