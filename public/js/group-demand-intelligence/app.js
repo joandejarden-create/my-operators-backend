@@ -405,6 +405,7 @@
     state.hotelProfile = null;
     state.summary = null;
     state.opportunities = [];
+    state.publication = null;
     state.visibilityWarning = null;
     state.runs = [];
     state.filters = {
@@ -460,7 +461,27 @@
           return h.hotelId;
         });
         if (ids.length && ids.indexOf(state.hotelId) === -1) {
-          state.hotelId = ids[0];
+          var explicitHotelId = "";
+          try {
+            explicitHotelId = String(
+              new URLSearchParams(window.location.search || "").get("hotelId") ||
+                ""
+            ).trim();
+          } catch (e) {
+            explicitHotelId = "";
+          }
+          // Never silently remap an explicitly requested hotelId to another hotel
+          // (historically caused Bethesda fallback when Sheraton was missing).
+          if (explicitHotelId && explicitHotelId === state.hotelId) {
+            state.visibilityWarning = {
+              code: "HOTEL_NOT_IN_SELECTABLE_CATALOG",
+              message:
+                "Requested hotel is not in the selectable GDI catalog. Refusing to load a different hotel.",
+              requestedHotelId: explicitHotelId,
+            };
+          } else if (!explicitHotelId) {
+            state.hotelId = ids[0];
+          }
         }
         return state.hotels;
       })
@@ -517,6 +538,7 @@
     state.inventoryPopulationCounts =
       oppPayload.inventoryPopulationCounts || null;
     state.bethesda67Baseline = oppPayload.bethesda67Baseline || null;
+    state.publication = oppPayload.publication || null;
     state.listSurfaceMeta = {
       listScope: listScope || null,
       inventoryAudience: oppPayload.inventoryAudience || null,
@@ -526,6 +548,15 @@
       excludedCount: oppPayload.excludedCount,
       serverBuildSha: oppPayload.serverBuildSha || null,
       sourceOfTruth: oppPayload.sourceOfTruth || null,
+      previewSource:
+        (oppPayload.publication && oppPayload.publication.previewSource) || null,
+      contentFingerprintSha256:
+        (oppPayload.publication &&
+          oppPayload.publication.contentFingerprintSha256) ||
+        null,
+      publicationVersion:
+        (oppPayload.publication && oppPayload.publication.publicationVersion) ||
+        null,
     };
     state.hotelNeedDateConfigV1 =
       oppPayload.hotelNeedDateConfigV1 ||
@@ -601,6 +632,10 @@
         // Canonical customer surface — same immutable package as external share.
         q.push("publicationPackage=1");
         q.push("surface=customer");
+        // Explicit founder staged-preview (no CURRENT / no silent Bethesda fallback).
+        if (String(params.get("preview") || "").toLowerCase() === "staged") {
+          q.push("preview=staged");
+        }
       }
     } catch (e) {
       /* ignore */

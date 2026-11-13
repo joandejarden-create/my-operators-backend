@@ -806,6 +806,25 @@ export async function getGdiOpportunities(req, res) {
         hotelId,
         forceLive: false,
       });
+      const requireStagedPreview =
+        String(req.query.preview || "").trim().toLowerCase() === "staged";
+      if (
+        requireStagedPreview &&
+        !(
+          pkgResolved.ok &&
+          pkgResolved.mode === "PACKAGE" &&
+          String(pkgResolved.meta?.previewSource || "").toUpperCase() === "STAGED"
+        )
+      ) {
+        return res.status(409).json({
+          ok: false,
+          error: "STAGED_PUBLICATION_PREVIEW_UNAVAILABLE",
+          message:
+            "Authenticated founder preview requested STAGED publication package, but none is available for this hotel. Refusing to fall back to another hotel or live inventory.",
+          hotelId,
+          publication: pkgResolved.meta || null,
+        });
+      }
       if (pkgResolved.ok && pkgResolved.mode === "PACKAGE") {
         const validationDoc = loadShareValidation(hotelId);
         let withFeedback = mergeShareFeedbackOntoPackageOpportunities(
@@ -1447,6 +1466,27 @@ export async function getGdiOpportunityDetail(req, res) {
         opportunityId,
         preview: true,
       });
+      const requireStagedPreviewDetail =
+        String(req.query.preview || "").trim().toLowerCase() === "staged";
+      if (
+        requireStagedPreviewDetail &&
+        !(
+          pkgResolved.ok &&
+          pkgResolved.mode === "PACKAGE" &&
+          pkgResolved.opportunity &&
+          String(pkgResolved.meta?.previewSource || "").toUpperCase() === "STAGED"
+        )
+      ) {
+        return res.status(409).json({
+          ok: false,
+          error: "STAGED_PUBLICATION_PREVIEW_UNAVAILABLE",
+          message:
+            "Authenticated founder detail preview requested STAGED publication package, but none is available for this hotel/opportunity.",
+          hotelId,
+          opportunityId,
+          publication: pkgResolved.meta || null,
+        });
+      }
       if (
         pkgResolved.ok &&
         pkgResolved.mode === "PACKAGE" &&
