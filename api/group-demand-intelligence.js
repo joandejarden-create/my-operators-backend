@@ -788,13 +788,13 @@ export async function getGdiOpportunities(req, res) {
     const format = String(req.query.format || "").trim().toLowerCase();
     const wantFull = view === "full" || view === "complete";
 
-    // Optional immutable publication preview (same contract as external share).
-    // Use ?publicationPackage=1 (or surface=customer) so founder UI can match
-    // production without live commercial/need-date recompute. Research browse
-    // remains the default unless a package pointer exists and is requested.
-    const wantPublicationPackage =
-      String(req.query.publicationPackage || "") === "1" ||
-      String(req.query.surface || "").toLowerCase() === "customer";
+    // Canonical customer surface: prefer approved PUBLICATION_PACKAGE whenever
+    // a package resolves — same contract as external share. Research / live
+    // store browse: ?live=1 or ?publicationPackage=0.
+    const forceLive =
+      String(req.query.live || "") === "1" ||
+      String(req.query.publicationPackage || "") === "0";
+    const wantPublicationPackage = !forceLive;
     if (wantPublicationPackage && hotelId) {
       const {
         resolvePreviewOpportunitiesFromPublicationPackage,
@@ -804,7 +804,7 @@ export async function getGdiOpportunities(req, res) {
       );
       const pkgResolved = resolvePreviewOpportunitiesFromPublicationPackage({
         hotelId,
-        forceLive: String(req.query.live || "") === "1",
+        forceLive: false,
       });
       if (pkgResolved.ok && pkgResolved.mode === "PACKAGE") {
         const validationDoc = loadShareValidation(hotelId);
@@ -812,13 +812,16 @@ export async function getGdiOpportunities(req, res) {
           pkgResolved.opportunities,
           validationDoc,
         );
-        // Read-time presentation attach (tile contact + revenue icons). Does
-        // not alter package fingerprint — same resolvers as live sanitize.
+        // Read-time presentation attach (tile contact + revenue icons + contract).
+        // Does not alter package fingerprint — same resolvers as share.
         try {
           const { attachPackageCustomerPresentation } = await import(
             "../lib/group-demand-intelligence/publication-package/gdi-package-customer-presentation-attach-v1.js"
           );
-          withFeedback = attachPackageCustomerPresentation(withFeedback);
+          withFeedback = attachPackageCustomerPresentation(
+            withFeedback,
+            pkgResolved.meta || {},
+          );
         } catch (tilePreviewErr) {
           console.error(
             "[gdi] auth publication-package customer presentation attach failed",
@@ -1428,9 +1431,10 @@ export async function getGdiOpportunityDetail(req, res) {
     if (!flagGate(req, res)) return;
     const hotelId = String(req.params.hotelId || "").trim();
     const opportunityId = String(req.params.opportunityId || "").trim();
-    const wantPublicationPackage =
-      String(req.query.publicationPackage || "") === "1" ||
-      String(req.query.surface || "").toLowerCase() === "customer";
+    const forceLiveDetail =
+      String(req.query.live || "") === "1" ||
+      String(req.query.publicationPackage || "") === "0";
+    const wantPublicationPackage = !forceLiveDetail;
     if (wantPublicationPackage && hotelId && opportunityId) {
       const {
         resolveOpportunityFromApprovedPackage,
@@ -1457,7 +1461,10 @@ export async function getGdiOpportunityDetail(req, res) {
           const { attachPackageCustomerPresentation } = await import(
             "../lib/group-demand-intelligence/publication-package/gdi-package-customer-presentation-attach-v1.js"
           );
-          withFeedback = attachPackageCustomerPresentation(withFeedback);
+          withFeedback = attachPackageCustomerPresentation(
+            withFeedback,
+            pkgResolved.meta || {},
+          );
         } catch (tilePreviewErr) {
           console.error(
             "[gdi] auth publication-package detail customer presentation attach failed",
@@ -3067,7 +3074,10 @@ export async function getGdiShareOpportunities(req, res) {
         const { attachPackageCustomerPresentation } = await import(
           "../lib/group-demand-intelligence/publication-package/gdi-package-customer-presentation-attach-v1.js"
         );
-        withFeedback = attachPackageCustomerPresentation(withFeedback);
+        withFeedback = attachPackageCustomerPresentation(
+          withFeedback,
+          pkgResolved.meta || {},
+        );
       } catch (tilePreviewErr) {
         console.error(
           "[gdi] share publication-package customer presentation attach failed",
@@ -3373,7 +3383,10 @@ export async function getGdiShareOpportunityDetail(req, res) {
         const { attachPackageCustomerPresentation } = await import(
           "../lib/group-demand-intelligence/publication-package/gdi-package-customer-presentation-attach-v1.js"
         );
-        withFeedback = attachPackageCustomerPresentation(withFeedback);
+        withFeedback = attachPackageCustomerPresentation(
+          withFeedback,
+          pkgResolved.meta || {},
+        );
       } catch (tilePreviewErr) {
         console.error(
           "[gdi] share publication-package detail customer presentation attach failed",

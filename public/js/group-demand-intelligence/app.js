@@ -544,17 +544,32 @@
     }
   }
 
+  /**
+   * Canonical customer Opportunities use the approved publication package
+   * (same contract as external share). Research / live-store browse: ?live=1.
+   */
   function wantsPublicationPackagePreview() {
     try {
       var params = new URLSearchParams(window.location.search || "");
-      if (String(params.get("publicationPackage") || "") === "1") return true;
-      if (String(params.get("surface") || "").toLowerCase() === "customer") {
-        return true;
-      }
+      if (String(params.get("live") || "") === "1") return false;
+      if (String(params.get("publicationPackage") || "") === "0") return false;
+      // Default: package-first so authenticated GDI matches customer share.
+      return true;
     } catch (e) {
-      /* ignore */
+      return true;
     }
-    return false;
+  }
+
+  function wantsLiveResearchBrowse() {
+    try {
+      var params = new URLSearchParams(window.location.search || "");
+      return (
+        String(params.get("live") || "") === "1" ||
+        String(params.get("publicationPackage") || "") === "0"
+      );
+    } catch (e) {
+      return false;
+    }
   }
 
   function opportunitiesApiPath(hotelIdEnc) {
@@ -570,8 +585,10 @@
       if (/^published/i.test(audience)) {
         q.push("inventoryAudience=" + encodeURIComponent("published"));
       }
-      // Founder publication preview — same immutable package as external share.
-      if (wantsPublicationPackagePreview()) {
+      if (wantsLiveResearchBrowse()) {
+        q.push("live=1");
+      } else if (wantsPublicationPackagePreview()) {
+        // Canonical customer surface — same immutable package as external share.
         q.push("publicationPackage=1");
         q.push("surface=customer");
       }
@@ -1105,7 +1122,9 @@
           encodeURIComponent(state.hotelId) +
           "/opportunities/" +
           encodeURIComponent(oppId);
-        if (wantsPublicationPackagePreview()) {
+        if (wantsLiveResearchBrowse()) {
+          path += "?live=1";
+        } else if (wantsPublicationPackagePreview()) {
           path += "?publicationPackage=1&surface=customer";
         }
         return path;
