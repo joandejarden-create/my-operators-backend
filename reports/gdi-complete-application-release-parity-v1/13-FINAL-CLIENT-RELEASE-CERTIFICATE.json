@@ -1,0 +1,29 @@
+{
+  "certificateId": "gdi_complete_application_release_parity_v1",
+  "verdict": "CLIENT READY",
+  "clientReady": true,
+  "hotelId": "recLuxvwwxID7U2B8",
+  "hotelName": "Bethesda Marriott",
+  "publicationVersion": "gdi_pub_recLuxvwwxID7U2B8_20261113_reconciliation_v1",
+  "contentFingerprintSha256": "441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f",
+  "fingerprintPreserved": true,
+  "applicationReleaseSha": "a24f8df70cc50de1ca4aaef05b5d9c638e99e087",
+  "railwayDeploymentId": "dd89cf52-43a7-47e5-ab41-0c1dedb1971a",
+  "pr": 249,
+  "mandatoryGates": {
+    "backendParity": true,
+    "frontendParity": true,
+    "dataParity": true,
+    "functionalParity": true,
+    "contentParity": true,
+    "visualParityResetState": true,
+    "deploymentParity": true,
+    "githubPreservation": true
+  },
+  "certificationBaseline": "local share preview ↔ production share (same token, same package, reset filters)",
+  "limitations": [
+    "Auth GDI shell may include admin-only HCP / Need Times tabs — not part of external customer-share certificate",
+    "All types (N) depends on active facet filters; unequal filter states are not release defects",
+    "Postdeploy smoke must not certify until Railway deployment reaches SUCCESS and content probes pass"
+  ]
+}

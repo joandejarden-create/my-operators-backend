@@ -1,51 +1,53 @@
 # GDI Complete Application Release Parity — Founder Report
 
-## Status: NOT CERTIFIED (awaiting production deploy + independent verification)
+## Verdict: CLIENT READY
 
-Technical root causes identified and fixed in working branch. **Do not treat CLIENT READY until Railway serves the merge SHA and full client-app parity gates pass against production.**
+Local founder-approved **customer-share** preview and the Railway external share now match on controlled application assets, chrome, Need Dates hotel status, reset-state filters, and 67-opportunity drawer content — backed by the same immutable publication fingerprint.
 
-Approved publication fingerprint **preserved**:
-
-`441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f`
+Fingerprint preserved: `441773211494cebaf50c03ef8921ccac6c57f31ac5cb2398585352b425e36f7f`  
+Application SHA: `a24f8df70cc50de1ca4aaef05b5d9c638e99e087`  
+Railway: `dd89cf52-43a7-47e5-ab41-0c1dedb1971a` SUCCESS · PR #249 (merge commit)
 
 ---
 
 ## 1. Why past certifications missed application differences
 
-1. Fingerprint / LIST / drawer content gates ≠ frontend chrome parity  
-2. Auth GDI compared to external share (different shells)  
-3. Windows CRLF vs LF false asset “mismatches”  
-4. PACKAGE share path omitted `hotelNeedDateConfigV1`  
-5. Share Reset View hardcoded without purple active-filter badge  
-6. Screenshots compared unequal filter states (`All types (61)` vs `(4)`)
+- Fingerprint / LIST / drawer gates ≠ frontend chrome parity  
+- Auth GDI compared to external share  
+- Windows CRLF false asset mismatches  
+- PACKAGE share omitted `hotelNeedDateConfigV1` → **Not Established**  
+- Share Reset View hardcoded without purple badge  
+- Screenshots compared unequal filter states (`All types (61)` vs `(4)`)  
+- GHA postdeploy smoke could pass against the **previous** SUCCESS while a new deploy was still BUILDING
 
-## 2–4. Frontend / UI mismatches and sources
+## 2–4. Mismatches fixed
 
-| Difference | Cause | Fix |
+| Issue | Source | Fix |
 |---|---|---|
-| Need Dates: Hotel Confirmed vs Not Established | PACKAGE early-return omitted `hotelNeedDateConfigV1`; share UI defaulted to NOT_ESTABLISHED | Attach live hotel-config status on PACKAGE share list (`api/group-demand-intelligence.js`) |
-| Reset View purple badge missing on share | Share used hardcoded button; auth used `resetViewButtonHtml` | `share-app.js` now calls shared helper |
-| Asset hash noise | CRLF working tree vs LF production | EOL-normalized identity script |
-| All types 61 vs 4 | Facet subset size under other active filters (Hotel≈61; Priority/Sales can shrink to 4) | Documented contract — not a hardcode |
-| Auth vs share shell | Admin HCP / Need Times tabs only on auth HTML | Certify **share↔share**, not auth↔share |
+| Need Dates Hotel Confirmed vs Not Established | PACKAGE early-return omitted hotel config | Attach live `hotelNeedDateConfigV1` on PACKAGE share list |
+| Reset View badge / positioning | Share hardcoded button | Use shared `resetViewButtonHtml` |
+| Asset “drift” noise | CRLF vs LF | EOL-normalized identity gate |
+| All types 61 vs 4 | Unequal filters | Documented facet semantics |
 
-## 5. Files corrected
+## 5. Files
 
-- `api/group-demand-intelligence.js` — PACKAGE `hotelNeedDateConfigV1`  
-- `public/js/group-demand-intelligence/share-app.js` — Reset View badge parity  
-- `scripts/gdi-frontend-asset-identity-v1.mjs`  
-- `scripts/test-gdi-full-client-app-parity-v1.mjs`  
-- `scripts/test-gdi-share-package-hotel-need-date-config-v1.mjs`
+- `api/group-demand-intelligence.js`  
+- `public/js/group-demand-intelligence/share-app.js`  
+- Asset + full client-app parity scripts / npm gates  
 
-## 6. Outstanding before CLIENT READY
+## 6. Outstanding differences
 
-- Merge to main (merge commit)  
-- Deploy artifact to Railway  
-- Re-run asset identity (expect only intentional post-merge equality)  
-- `npm run test:gdi-full-client-app-parity` against local share + production  
-- Confirm production Need Dates = Hotel Confirmed  
-- Confirm 67 unique cards / drawers still pass
+None material on the certified **share↔share** baseline at reset. Auth-only admin tabs remain intentionally out of scope.
 
-## 7–13. Identity / evidence
+## 7–12. Evidence
 
-See `01`–`13` JSON artifacts in this folder as gates complete.
+See `01`–`13` in this folder. Production probes:
+
+- Asset identity: **12/12 identical** (EOL-normalized)  
+- PACKAGE need-date config: **HOTEL_CONFIRMED** (8 periods)  
+- Full client app parity: **67/67 cards**, Need Dates match, All types (67)/(67)  
+- Premier Cup + all-67 drawer DOM: **pass**
+
+## 13. Client-ready?
+
+**Yes** — for the external customer-share application vs local share preview on main, same package fingerprint, same intended chrome and content.
