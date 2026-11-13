@@ -1,0 +1,68 @@
+{
+  "contract": "GDI_CANONICAL_CUSTOMER_UI_ARCHITECTURE_V1",
+  "generatedAt": "2026-11-13T14:55:13.521Z",
+  "areas": {
+    "opportunityCards": {
+      "shared": [
+        "public/js/group-demand-intelligence/dealality-gdi-ui.js#tileCardHtml / revenueStreamIconsHtml / tileSalesActionPill / resolveTileContactPreviewBlock",
+        "public/js/group-demand-intelligence/gdi-universal-presentation-controller.js#renderOpportunityCardsHtml"
+      ],
+      "authShell": [
+        "public/js/group-demand-intelligence/app.js"
+      ],
+      "shareShell": [
+        "public/js/group-demand-intelligence/share-app.js"
+      ],
+      "css": [
+        "public/css/group-demand-intelligence.css"
+      ]
+    },
+    "svgIcons": {
+      "sharedServer": [
+        "lib/group-demand-intelligence/opportunity-revenue-stream-icons-v1.js",
+        "lib/group-demand-intelligence/presentation/gdi-svg-icon-state-contract-v1.js",
+        "lib/group-demand-intelligence/publication-package/gdi-package-customer-presentation-attach-v1.js"
+      ],
+      "sharedClient": "dealality-gdi-ui.js#resolveRevenueStreamIconState (prefers canonicalCustomerPresentation.icons)"
+    },
+    "contacts": {
+      "sharedServer": [
+        "lib/group-demand-intelligence/universal-tile-contact-preview-v1.js",
+        "gdi-package-customer-presentation-attach-v1.js"
+      ],
+      "sharedClient": "dealality-gdi-ui.js#resolveTileContactPreviewBlock (prefers canonicalCustomerPresentation.contact)"
+    },
+    "drawers": {
+      "shared": [
+        "dealality-gdi-ui.js drawer section builders"
+      ],
+      "authShell": "app.js drawer host",
+      "shareShell": "share-app.js drawer host"
+    },
+    "toolbarFiltersReset": {
+      "shared": [
+        "dealality-gdi-ui.js filter/state helpers",
+        "#gdiResetViewBtn"
+      ],
+      "shells": [
+        "app.js",
+        "share-app.js"
+      ]
+    },
+    "guidedTour": {
+      "shared": [
+        "public/js/dealality-guided-tour/dealality-guided-tour-engine.js",
+        "public/js/group-demand-intelligence/gdi-guided-report-tour.js"
+      ]
+    },
+    "csvExports": {
+      "auth": "app.js → /api/.../opportunities/export.csv",
+      "share": "share-app.js → /api/.../share/.../export.csv",
+      "note": "Server CSV mapping must stay aligned with package DTO; UI does not recompute commercial facts."
+    }
+  },
+  "packageAttachCallSites": [
+    "api/group-demand-intelligence.js (auth list/detail + share list/detail)"
+  ],
+  "authDefaultSurface": "PUBLICATION_PACKAGE unless ?live=1"
+}

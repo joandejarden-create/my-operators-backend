@@ -778,16 +778,33 @@
     return parts.join("");
   }
 
+  /**
+   * Prefer server-attached canonicalCustomerPresentation when present so
+   * auth PACKAGE preview and external share cannot diverge via client fallbacks.
+   */
+  function readCanonicalCustomerPresentation(it, linked) {
+    linked = linked || {};
+    it = it || {};
+    return (
+      (linked && linked.canonicalCustomerPresentation) ||
+      (it && it.canonicalCustomerPresentation) ||
+      null
+    );
+  }
+
   function tileSalesActionPill(it, linked) {
     linked = linked || {};
     it = it || {};
     var plan = linked.tileBadgePlan || it.tileBadgePlan || {};
+    var canon = readCanonicalCustomerPresentation(it, linked);
     var rawKey =
+      (canon && canon.commercialAction && canon.commercialAction.key) ||
       linked.salesActionKey ||
       it.salesActionKey ||
       plan.salesActionKey ||
       "";
     var rawLabel =
+      (canon && canon.commercialAction && canon.commercialAction.pillLabel) ||
       linked.salesActionPillLabel ||
       it.salesActionPillLabel ||
       plan.salesActionPillLabel ||
@@ -4638,6 +4655,22 @@
     linked = linked || {};
     it = it || {};
     var CONTACT_RESEARCH_REQUIRED = "Contact Research Required";
+    var canon = readCanonicalCustomerPresentation(it, linked);
+    if (canon && canon.contact && canon.contact.name) {
+      return {
+        kind: "named",
+        name: String(canon.contact.name).replace(/\s+/g, " ").trim(),
+        role: String(canon.contact.role || "").replace(/\s+/g, " ").trim(),
+      };
+    }
+    if (
+      canon &&
+      canon.contact &&
+      (canon.contact.kind === "none" ||
+        String(canon.contact.name || "") === CONTACT_RESEARCH_REQUIRED)
+    ) {
+      return { kind: "none", name: CONTACT_RESEARCH_REQUIRED, role: "" };
+    }
     var preview =
       linked.tileContactPreview ||
       it.tileContactPreview ||
@@ -5578,13 +5611,40 @@
   }
 
   /**
-   * Resolve icon states from DTO (prefer API-attached revenueStreamIcons /
-   * revenueStreamClass). Fallback derives only from thesis fields — never from
-   * demand segment alone.
+   * Resolve icon states from DTO. Prefer canonicalCustomerPresentation.icons,
+   * then API-attached revenueStreamIcons / revenueStreamClass. Fallback derives
+   * only from thesis fields — never from demand segment alone.
    */
   function resolveRevenueStreamIconState(it, linked) {
     linked = linked || {};
     it = it || {};
+    var canon = readCanonicalCustomerPresentation(it, linked);
+    if (canon && canon.icons) {
+      var cg = canon.icons.guestrooms === "active" ? "active" : "muted";
+      var ce = canon.icons.eventFnb === "active" ? "active" : "muted";
+      var cCls = normalizeRevenueStreamClassUi(
+        canon.icons.revenueStreamClass ||
+          linked.revenueStreamClass ||
+          it.revenueStreamClass
+      );
+      var guestAriaCanon =
+        cg === "active"
+          ? REVENUE_STREAM_ICON_LABEL.guestrooms + " — applicable"
+          : REVENUE_STREAM_ICON_LABEL.guestrooms;
+      var eventAriaCanon =
+        ce === "active"
+          ? REVENUE_STREAM_ICON_LABEL.eventFnb + " — applicable"
+          : REVENUE_STREAM_ICON_LABEL.eventFnb;
+      return {
+        revenueStreamClass: cCls,
+        guestrooms: cg,
+        eventFnb: ce,
+        ariaGuestrooms: guestAriaCanon,
+        ariaEventFnb: eventAriaCanon,
+        ariaGroup: "Revenue streams: " + guestAriaCanon + "; " + eventAriaCanon,
+        fromCanonicalContract: true,
+      };
+    }
     var iconsDto = linked.revenueStreamIcons || it.revenueStreamIcons;
     var cls = normalizeRevenueStreamClassUi(
       linked.revenueStreamClass ||

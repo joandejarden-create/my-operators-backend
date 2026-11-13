@@ -1,0 +1,57 @@
+{
+  "version": "gdi-svg-icon-state-contract-v1",
+  "contractId": "GDI_SVG_ICON_STATE_CONTRACT_V1",
+  "visualStates": {
+    "ACTIVE": "active",
+    "MUTED": "muted"
+  },
+  "semanticMeanings": {
+    "ENABLED": "ACTIVE — stream applicable per approved evidence",
+    "DISABLED": "MUTED — stream not applicable or not indicated",
+    "AVAILABLE": "ACTIVE — capacity/stream available in approved thesis",
+    "CONFIRMED": "ACTIVE — approved publication confirms the stream",
+    "POTENTIAL": "ACTIVE only when approved class/thesis supports it; never invent",
+    "UNKNOWN": "MUTED — revenue stream unconfirmed",
+    "NOT_APPLICABLE": "MUTED — stream not part of this opportunity"
+  },
+  "fixtures": [
+    {
+      "id": "GUESTROOMS_ONLY",
+      "class": "GUESTROOMS_ONLY",
+      "expected": {
+        "guestrooms": "active",
+        "eventFnb": "muted"
+      }
+    },
+    {
+      "id": "EVENT_FNB_ONLY",
+      "class": "EVENT_FNB_ONLY",
+      "expected": {
+        "guestrooms": "muted",
+        "eventFnb": "active"
+      }
+    },
+    {
+      "id": "COMBINED",
+      "class": "COMBINED_GUESTROOMS_EVENT_FNB",
+      "expected": {
+        "guestrooms": "active",
+        "eventFnb": "active"
+      }
+    },
+    {
+      "id": "UNCONFIRMED",
+      "class": "REVENUE_STREAM_UNCONFIRMED",
+      "expected": {
+        "guestrooms": "muted",
+        "eventFnb": "muted"
+      }
+    }
+  ],
+  "owningModules": [
+    "lib/group-demand-intelligence/opportunity-revenue-stream-icons-v1.js",
+    "lib/group-demand-intelligence/publication-package/gdi-package-customer-presentation-attach-v1.js",
+    "public/js/group-demand-intelligence/dealality-gdi-ui.js#resolveRevenueStreamIconState"
+  ],
+  "rule": "Prefer canonicalCustomerPresentation.icons when present; never invent catering gold without event thesis."
+}

@@ -24,9 +24,12 @@ on:
       - "scripts/test-gdi-market-scope-toggle-v1.mjs"
       - "scripts/test-gdi-opportunity-card-quality-v1.mjs"
       - "scripts/test-gdi-three-way-canonical-ui-parity-v1.mjs"
+      - "scripts/test-gdi-canonical-ui-architecture-offline-v1.mjs"
+      - "scripts/gdi-canonical-customer-ui-architecture-v1.mjs"
       - "scripts/test-gdi-hotel-toolbar-reset-view-only-v1.mjs"
       - "lib/group-demand-intelligence/presentation/**"
       - "lib/group-demand-intelligence/publication-package/gdi-package-customer-presentation-attach-v1.js"
+      - "fixtures/gdi-canonical-ui-visual-baselines/**"
       - "scripts/verify-gdi-regression-recovery-browser-v1.mjs"
       - ".github/workflows/gdi-regression-recovery-baseline.yml"
       - "package.json"
@@ -65,6 +68,9 @@ jobs:
 
       - name: Opportunity card quality + canonical package attach
         run: npm run test:gdi-opportunity-card-quality-v1
+
+      - name: Canonical UI architecture offline gates + visual baselines
+        run: npm run test:gdi-canonical-ui-architecture-offline
 
       - name: Market Scope toggle + competitive filtering
         run: npm run test:gdi-market-scope-toggle-v1
