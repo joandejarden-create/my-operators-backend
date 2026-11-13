@@ -2,10 +2,23 @@
   "strategy": "One canonical customer renderer; publication package freezes local master DTOs",
   "modules": {
     "cardDrawerTourFiltersCsv": "public/js/group-demand-intelligence/app.js",
+    "shareWrapper": "public/js/group-demand-intelligence/share-app.js",
+    "sharedUi": "public/js/group-demand-intelligence/dealality-gdi-ui.js",
+    "sharedController": "public/js/group-demand-intelligence/gdi-universal-presentation-controller.js",
     "css": "public/css/group-demand-intelligence.css",
     "canonicalDto": "lib/group-demand-intelligence/presentation/gdi-canonical-customer-presentation-contract-v1.js",
+    "liveSanitize": "lib/group-demand-intelligence/customer-presentation-sanitize-v1.js",
+    "packageAttach": "lib/group-demand-intelligence/publication-package/gdi-package-customer-presentation-attach-v1.js",
     "packageBuilder": "lib/group-demand-intelligence/publication-package/gdi-customer-publication-package-v1.js",
     "packageStore": "lib/group-demand-intelligence/publication-package/gdi-publication-package-store-v1.js"
+  },
+  "liveSanitizeVersion": "gdi-customer-presentation-sanitize-v19",
+  "liveSanitizeParityFix": {
+    "added": [
+      "demotePackageCombinedWithoutEventThesis",
+      "attachCanonicalCustomerPresentationContract"
+    ],
+    "reason": "Inventory showed live path lacked package demotion + canonical contract; client fallbacks then re-derived contact/SVG differently"
   },
   "capabilityWrappers": [
     "authentication",
@@ -14,5 +27,7 @@
     "internal research supervisor tools (excluded from customer)"
   ],
   "packageSource": "LOCAL_LIVE_API_DTO_FREEZE",
-  "remediationsApplied": "NONE — local master copy retained verbatim"
+  "remediationsApplied": "NONE on package freeze — local master copy retained verbatim",
+  "inventoryDoc": "13-PRESENTATION-SOURCE-INVENTORY.json",
+  "currentPointerUnchanged": true
 }
