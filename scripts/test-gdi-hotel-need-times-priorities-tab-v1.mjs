@@ -157,7 +157,7 @@ const uiPath = path.join(
 );
 const uiSrc = fs.readFileSync(uiPath, "utf8");
 assert.match(uiSrc, /DealalityGdiNeedTimesPrioritiesTab/);
-assert.match(uiSrc, /Hotel Need Times & Priorities/);
+assert.match(uiSrc, /<h1>Commercial Priorities<\/h1>/);
 
 const appSrc = fs.readFileSync(
   path.join(ROOT, "public/js/group-demand-intelligence/app.js"),
@@ -172,6 +172,7 @@ const uiLib = fs.readFileSync(
 );
 assert.match(uiLib, /GDI_PRIORITIES_TAB/);
 assert.match(uiLib, /id: "priorities"/);
+assert.match(uiLib, /label: "Commercial Priorities"/);
 assert.match(uiLib, /id: "opportunities"/);
 
 const html = fs.readFileSync(

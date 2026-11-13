@@ -309,9 +309,6 @@
         ? UI.facetCountBySalesOpportunity(state.opportunities, state.filters)
         : {},
       sourcingSubgroup: state.filters.sourcingSubgroup || "BOTH",
-      weeklyHeaderCounts: UI.weeklyDeltaHeaderCounts
-        ? UI.weeklyDeltaHeaderCounts(state.opportunities)
-        : {},
       shown: rows.length,
       total: (state.opportunities || []).length,
       sort: state.sortKey,

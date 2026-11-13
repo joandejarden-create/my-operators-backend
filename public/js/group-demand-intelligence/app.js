@@ -88,6 +88,9 @@
   function propertyBarActionsHtml() {
     // Hotel toolbar: Reset View only. Research + Publish remain available via
     // founder/admin APIs, Full E2E CLI, and one-click publish scripts — not here.
+    if (typeof UI.resetViewButtonHtml === "function") {
+      return UI.resetViewButtonHtml({ filters: state.filters });
+    }
     return '<button type="button" class="btn-clear" id="gdiResetViewBtn">Reset View</button>';
   }
 

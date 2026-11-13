@@ -981,7 +981,7 @@
       '<div class="intake-shell hcp-intake hcp-intake--single-page">' +
       '<div class="intake-container">' +
       banner +
-      '<header class="intake-header"><div class="intake-title-container"><h1>Hotel Need Times &amp; Commercial Priorities</h1></div>' +
+      '<header class="intake-header"><div class="intake-title-container"><h1>Commercial Priorities</h1></div>' +
       "<p>Help us find the right business for your hotel. Select your priorities and the dates where additional demand would be most valuable.</p>" +
       "<p>" +
       esc(hotelName) +

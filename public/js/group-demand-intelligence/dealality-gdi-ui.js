@@ -2383,7 +2383,7 @@
 
   var GDI_MAIN_TAB = {
     id: "opportunities",
-    label: "Opportunities",
+    label: "Group & Demand\nOpportunities",
   };
 
   var GDI_PRIORITIES_TAB = {
@@ -3358,6 +3358,77 @@
     };
   }
 
+  /**
+   * Active browse-filter count for Reset View badge (Radar / Brand Explorer pattern).
+   * Counts each non-default filter once. Does not count hotel/Property identity
+   * (Reset View does not change hotel). Defaults match resetBrowseFilters / All.
+   */
+  function countActiveBrowseFilters(filters) {
+    filters = filters || {};
+    var defaults = resetBrowseFilters();
+    var count = 0;
+    var stringKeys = [
+      "priority",
+      "booking",
+      "commercialStage",
+      "salesOpportunity",
+      "segment",
+      "territory",
+      "weekly",
+      "opportunityType",
+      "workflow",
+    ];
+    stringKeys.forEach(function (key) {
+      var value = String(filters[key] == null ? "" : filters[key]).trim();
+      var def = String(defaults[key] == null ? "" : defaults[key]).trim();
+      if (value && value !== def) count += 1;
+    });
+    if (
+      String(filters.sourcingSubgroup || HOTEL_SOURCING_SUBGROUP.BOTH) !==
+      HOTEL_SOURCING_SUBGROUP.BOTH
+    ) {
+      count += 1;
+    }
+    if (normalizeMarketScopeValue(filters.marketScope) !== MARKET_SCOPE.ALL) {
+      count += 1;
+    }
+    if (
+      typeof normalizeCompetitiveStatusFilter === "function" &&
+      normalizeCompetitiveStatusFilter(filters.competitiveStatus) !==
+        COMPETITIVE_STATUS_FILTER.ALL
+    ) {
+      count += 1;
+    }
+    return count;
+  }
+
+  /**
+   * Reset View control with purple active-filter badge (shared Dealality pattern).
+   */
+  function resetViewButtonHtml(opts) {
+    opts = opts || {};
+    var count =
+      opts.activeFilterCount != null
+        ? Number(opts.activeFilterCount) || 0
+        : countActiveBrowseFilters(opts.filters);
+    if (count < 0) count = 0;
+    var badge =
+      '<span class="filter-count-badge" id="gdiFilterCountBadge"' +
+      (count > 0
+        ? ' aria-label="' + esc(String(count)) + ' active filters">'
+        : ' style="display: none;" aria-hidden="true">') +
+      esc(String(count)) +
+      "</span>";
+    return (
+      '<button type="button" class="btn-clear" id="gdiResetViewBtn"' +
+      ' aria-label="Reset View">' +
+      "Reset View" +
+      badge +
+      "</button>"
+    );
+  }
+
+
   function weeklyDeltaStateOf(opp) {
     opp = opp || {};
     if (opp.isNewThisWeek === true || opp.weeklyDeltaState === "NEW") return "NEW";
@@ -3410,21 +3481,10 @@
     );
   }
 
-  function weeklyDeltaHeaderSummaryHtml(counts) {
-    counts = counts || {};
-    var parts = [];
-    if (counts.updated > 0) {
-      parts.push(counts.updated + " updated");
-    }
-    if (counts.reactivated > 0) {
-      parts.push(counts.reactivated + " reactivated");
-    }
-    if (!parts.length) return "";
-    return (
-      '<div class="gdi-weekly-summary" role="status">' +
-      esc(parts.join(" · ")) +
-      "</div>"
-    );
+  function weeklyDeltaHeaderSummaryHtml(/* counts */) {
+    // Former "N updated · N reactivated" browse header counter — removed (UI only).
+    // Weekly Change filters and per-tile delta pills remain; counts stay in DTOs.
+    return "";
   }
 
   function weeklyDeltaPresetHtml(opts) {
@@ -9693,6 +9753,8 @@
     weeklyDeltaPillHtml: weeklyDeltaPillHtml,
     weeklyDeltaPresetHtml: weeklyDeltaPresetHtml,
     weeklyThisWeekFilterHtml: weeklyThisWeekFilterHtml,
+    countActiveBrowseFilters: countActiveBrowseFilters,
+    resetViewButtonHtml: resetViewButtonHtml,
     weeklyDeltaHeaderSummaryHtml: weeklyDeltaHeaderSummaryHtml,
     weeklyDeltaHeaderCounts: weeklyDeltaHeaderCounts,
     countByWeeklyDelta: countByWeeklyDelta,

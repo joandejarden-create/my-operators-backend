@@ -103,7 +103,6 @@ async function injectUiAndRender(page, mode) {
       noun: "Opportunities",
       priorityCounts: {},
       salesOpportunityCounts: {},
-      weeklyHeaderCounts: {},
     });
     const cards = UI.opportunityCardsGridHtml(rows, "tiles", {});
     root.innerHTML = chrome + cards;

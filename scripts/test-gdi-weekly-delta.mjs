@@ -232,6 +232,18 @@ check("ui_exports_weekly_helpers", () => {
   assert.match(ui, /weeklyThisWeekFilterHtml/);
   assert.match(ui, /New This Week/);
   assert.match(ui, /weeklyDeltaHeaderSummaryHtml/);
+  assert.doesNotMatch(ui, /gdi-weekly-summary/);
+  assert.doesNotMatch(ui, /counts\.updated \+ \" updated\"/);
+  assert.doesNotMatch(ui, /counts\.reactivated \+ \" reactivated\"/);
+  const chromeFn = ui.match(
+    /function opportunityBrowseChromeHtml\([\s\S]*?\n  function /
+  );
+  assert.ok(chromeFn, "opportunityBrowseChromeHtml present");
+  assert.doesNotMatch(
+    chromeFn[0],
+    /weeklyDeltaHeaderSummaryHtml|weeklySummaryHtml|weeklyHeaderCounts/
+  );
+  assert.doesNotMatch(css, /\.gdi-weekly-summary\s*\{/);
   assert.match(css, /gdi-pill-delta-new/);
   assert.match(css, /gdi-weekly-filter/);
   const app = fs.readFileSync(

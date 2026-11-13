@@ -160,6 +160,33 @@ body.gdi-page.embed-mode .gdi-shell {
 .gdi-page .gdi-section-nav.aiv-section-nav {
   width: 100%;
   margin-bottom: 16px;
+  gap: 2px 4px;
+}
+
+/* Longer "Group & Demand Opportunities" label — avoid overlap with Priorities */
+.gdi-page .gdi-section-nav.bdd-section-nav .section-nav-item {
+  min-width: 112px;
+  max-width: 168px;
+  padding: 8px 6px;
+}
+
+.gdi-page .gdi-section-nav.bdd-section-nav .section-nav-item[data-tab="opportunities"] {
+  min-width: 128px;
+  max-width: 176px;
+}
+
+@media (max-width: 720px) {
+  .gdi-page .gdi-section-nav.bdd-section-nav .section-nav-item,
+  .gdi-page .gdi-section-nav.bdd-section-nav .section-nav-item[data-tab="opportunities"] {
+    min-width: 104px;
+    max-width: 148px;
+    padding: 8px 4px;
+  }
+
+  .gdi-page .gdi-section-nav .section-nav-label {
+    font-size: 8px;
+    letter-spacing: 0.03em;
+  }
 }
 
 /* How to Read This Report — ADP tab-row parity */
@@ -459,6 +486,37 @@ body.gdi-page.embed-mode .gdi-shell {
   height: var(--gdi-toolbar-control-height, 3rem);
   min-height: var(--gdi-toolbar-control-height, 3rem);
   white-space: nowrap;
+}
+
+/* Reset View active-filter badge — Radar / Brand Explorer purple pill */
+.gdi-page .gdi-property-bar__actions,
+.gdi-page .aiv-filter-actions {
+  overflow: visible;
+}
+
+.gdi-page .aiv-filter-actions .btn-clear {
+  position: relative;
+}
+
+.gdi-page .filter-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background: var(--accent--primary-1, #6c72ff);
+  color: var(--neutral--100, #ffffff);
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  margin: 0;
+  z-index: 10;
+  box-sizing: border-box;
 }
 
 .gdi-page .gdi-property-bar__hint {
@@ -934,12 +992,6 @@ body.gdi-page.embed-mode .gdi-shell {
   background: rgba(253, 181, 42, 0.18);
   color: #ffd27a;
   border: 1px solid rgba(253, 181, 42, 0.45);
-}
-.gdi-weekly-summary {
-  margin: 0 0 10px;
-  font-size: 0.92rem;
-  color: var(--gdi-text);
-  font-weight: 600;
 }
 .gdi-tile-delta-meta {
   margin: 2px 0 6px;
