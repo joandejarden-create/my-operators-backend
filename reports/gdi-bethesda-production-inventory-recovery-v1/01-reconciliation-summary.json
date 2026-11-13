@@ -1,0 +1,161 @@
+{
+  "asOf": "2026-11-13T03:44:32.171Z",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "rootCauseHypothesis": [
+    "Production share uses published/customer-facing audience, not sales-team inventory.",
+    "Bethesda 67 customer publication approval receipt is ABSENT — share must not expand to 67 without founder approval.",
+    "Local authenticated GDI with sales-team capability shows 67/61/10; external share correctly stays on published/customer-facing set unless approved.",
+    "Production currently serves 27 share rows (broader than frozen published-19 allowlist) from Airtable/customerVisible path — not the Sep-13-only story alone, and not the sales-team 67."
+  ],
+  "approval": {
+    "receiptPath": "data/group-demand-intelligence/hotels/recLuxvwwxID7U2B8/bethesda-67-customer-publication-approval.json",
+    "receiptExists": false,
+    "envApproved": false,
+    "gate": "Customer/share expansion to 67 requires receipt approved:true OR GDI_BETHESDA_67_CUSTOMER_PUBLICATION_APPROVED=1"
+  },
+  "persistence": {
+    "mode": "airtable",
+    "source": "airtable",
+    "updatedAt": "2026-10-27T15:19:08.910Z",
+    "storeCount": 59,
+    "unionCount": 88
+  },
+  "baseline": {
+    "baseline67": 67,
+    "published19": 19,
+    "staged48": 48
+  },
+  "localSurfaces": {
+    "customerFacingWithoutApproval": 27,
+    "customerFacingWithApprovalSim": 27,
+    "salesTeamInventory": 0,
+    "salesTeamMarketScope": {
+      "all": 0,
+      "hotel": 0,
+      "competitive": 0,
+      "populationCounts": {
+        "salesOpportunities": 0,
+        "competitiveMarketIntelligence": 0,
+        "competitiveVerified": 0,
+        "competitiveNeedsVerification": 0,
+        "competitiveHistorical": 0,
+        "allCommercialIntelligence": 0,
+        "salesReadyAmongSales": 0,
+        "accountDevelopmentAmongSales": 0,
+        "maturityBreakdown": {},
+        "headline": "0 Sales Opportunities + 0 Competitive (0 verified / 0 needs verification / 0 historical)"
+      }
+    }
+  },
+  "prodShare": {
+    "count": 27,
+    "inPublished19": 19,
+    "inStaged48": 7,
+    "inBaseline67": 26,
+    "outsideBaseline67": [
+      "gdi_opp_2027_nci_rna_biology_symposium_7"
+    ],
+    "ids": [
+      "gdi_opp_2027_nci_rna_biology_symposium_7",
+      "gdi_opp_acc_legislative_2027",
+      "gdi_opp_acts_ts27",
+      "gdi_opp_acvnu_renal_week_20270412",
+      "gdi_opp_afcea_hits_2027",
+      "gdi_opp_ahima_advocacy_2027",
+      "gdi_opp_alexandria_soccer_kickoff_2027",
+      "gdi_opp_amwa_2027_annual",
+      "gdi_opp_arlington_spring_tournament_2027",
+      "gdi_opp_bebpa_usb_2027",
+      "gdi_opp_bethesda_premier_cup_2026",
+      "gdi_opp_cmss_spring_2027",
+      "gdi_opp_loudoun_college_showcase_2027",
+      "gdi_opp_msysa_state_cup_2027",
+      "gdi_opp_nado_ddaa_washcon_2027_overflow",
+      "gdi_opp_nado_ddaa_washcon_2028",
+      "gdi_opp_nar_gad_institute_2027",
+      "gdi_opp_ndss_advocacy_2027",
+      "gdi_opp_nice_2027",
+      "gdi_opp_potomac_memorial_2027",
+      "gdi_opp_series_high_risk_high_reward_research_symposium_2027",
+      "gdi_pe_781f12393f8117e7",
+      "gdi_sc_5c5d41eb670e6c7b",
+      "gdi_sc_9d14aee7ff250b11",
+      "gdi_sc_a5768a99d4e89875",
+      "gdi_sc_b36b66547864e8ce",
+      "gdi_sc_e7dd46732dd5bb7a"
+    ]
+  },
+  "displayedVsApi": "UI 'Showing 26 of 27' is an active browse/filter exclusion on one of the 27 API rows — not a second inventory source.",
+  "gapBuckets": {
+    "STAGED48_REQUIRES_PUBLICATION_APPROVAL_FOR_SHARE": 41,
+    "LOCAL_NOT_ON_67_BASELINE": 20,
+    "PRESENT_BOTH": 27
+  },
+  "outstandingPr235": "Guided-tour drawer Next/Back fix remains on unmerged PR #235 — not part of this inventory recovery.",
+  "nextActions": {
+    "safeNow": [
+      "Backup production feedback + share inventory snapshot (done in this report folder).",
+      "Do NOT write GDI_BETHESDA_67_CUSTOMER_PUBLICATION_APPROVED or invent approval receipt without founder decision.",
+      "Do NOT force-push local 59/67 file over Airtable."
+    ],
+    "requiresFounderDecision": [
+      "Authorize Bethesda 67 customer publication (approval receipt) if external share must show 67/61/10.",
+      "OR confirm external share should remain published/customer-facing (~19–27) while sales-team auth UI shows 67.",
+      "Decide whether production's extra share rows beyond published-19 should be trimmed to the frozen 19 or retained."
+    ]
+  },
+  "correctedRootCause": [
+    "Share API uses filterCustomerFacingOpportunities (27) instead of frozen published-19 / approved-67 selector.",
+    "Share API never annotates inventoryPopulations → Competitive Market Scope shows 0.",
+    "Airtable already contains 67 baseline bodies (0 missing on sales select). Not a Sep-13-only file snapshot problem.",
+    "67 customer share requires founder publication approval receipt (absent)."
+  ],
+  "sharePathFixPrepared": true,
+  "dryRunAfterFix": {
+    "unapproved": {
+      "count": 19,
+      "listScope": "BETHESDA_PUBLISHED_CUSTOMER_FEED_19",
+      "pops": {
+        "salesOpportunities": 19,
+        "competitiveMarketIntelligence": 1,
+        "competitiveVerified": 0,
+        "competitiveNeedsVerification": 0,
+        "competitiveHistorical": 1,
+        "allCommercialIntelligence": 19,
+        "salesReadyAmongSales": 13,
+        "accountDevelopmentAmongSales": 6,
+        "maturityBreakdown": {
+          "SALES_READY": 13,
+          "ACCOUNT_DEVELOPMENT": 6
+        },
+        "headline": "19 Sales Opportunities + 1 Competitive (0 verified / 0 needs verification / 1 historical)"
+      }
+    },
+    "approved": {
+      "count": 67,
+      "listScope": "BETHESDA_SALES_TEAM_INVENTORY_67",
+      "pops": {
+        "salesOpportunities": 61,
+        "competitiveMarketIntelligence": 10,
+        "competitiveVerified": 6,
+        "competitiveNeedsVerification": 3,
+        "competitiveHistorical": 1,
+        "allCommercialIntelligence": 67,
+        "salesReadyAmongSales": 13,
+        "accountDevelopmentAmongSales": 19,
+        "maturityBreakdown": {
+          "SALES_READY": 13,
+          "ACCOUNT_DEVELOPMENT": 19,
+          "QUALIFICATION_REQUIRED": 1,
+          "RESEARCH_CONTINUATION_MONITOR": 28
+        },
+        "headline": "61 Sales Opportunities + 10 Competitive (6 verified / 3 needs verification / 1 historical)"
+      }
+    }
+  },
+  "productionWritesPerformed": false,
+  "approvalReceiptWritten": false,
+  "deploymentPerformed": false,
+  "pr235Included": false,
+  "stopReason": "FOUNDER_PUBLICATION_APPROVAL_REQUIRED_FOR_SHARE_67"
+}

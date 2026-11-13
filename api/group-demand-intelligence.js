@@ -2916,9 +2916,28 @@ export async function getGdiShareOpportunities(req, res) {
   let salesView = isInventoryVisibilityHotelEnabled(hotelId)
     ? doc.opportunities || []
     : filterSalespersonView(doc.opportunities || []);
-  let facing = applyApprovedBethesdaCustomerProjection(
-    filterCustomerFacingOpportunities(salesView, { hotelId })
-  );
+  // Bethesda share: frozen published-19 (or 67 after founder approval receipt).
+  // Never widen via live customerFacing heuristics; always annotate Market Scope.
+  let shareListScope = "CUSTOMER_FACING";
+  let shareInventoryPopulationCounts = null;
+  let facing;
+  if (hotelId === BETHESDA_HOTEL_ID) {
+    const { selectBethesdaExternalShareOpportunities } = await import(
+      "../lib/group-demand-intelligence/bethesda-share-inventory-v1.js"
+    );
+    const selected = selectBethesdaExternalShareOpportunities(salesView, {
+      hotelId,
+    });
+    facing = applyApprovedBethesdaCustomerProjection(selected.opportunities);
+    shareListScope = selected.listScope;
+    shareInventoryPopulationCounts = selected.inventoryPopulationCounts;
+  } else {
+    facing = applyApprovedBethesdaCustomerProjection(
+      filterCustomerFacingOpportunities(salesView, { hotelId })
+    );
+    facing = annotateInventoryPopulations(facing, { hotelId });
+    shareInventoryPopulationCounts = buildInventoryPopulationCounts(facing);
+  }
   try {
     const { attachHotelNeedDateTilePreviews } = await import(
       "../lib/group-demand-intelligence/need-date-demand/opportunity-need-date-tile-preview-v1.js"
@@ -3011,6 +3030,9 @@ export async function getGdiShareOpportunities(req, res) {
   }
   res.setHeader("X-GDI-Opportunity-View", wantFull ? "full" : "list");
   res.setHeader("X-GDI-Share-Presentation-Parity", "v1");
+  if (shareListScope) {
+    res.setHeader("X-GDI-Share-List-Scope", String(shareListScope));
+  }
   return res.json({
     ok: true,
     mode: "read_only",
@@ -3018,6 +3040,8 @@ export async function getGdiShareOpportunities(req, res) {
     count: withProgression.length,
     view: wantFull ? "full" : "list",
     schemaVersion: wantFull ? null : GDI_OPPORTUNITY_LIST_SCHEMA,
+    listScope: shareListScope,
+    inventoryPopulationCounts: shareInventoryPopulationCounts,
     opportunities: withProgression,
     hotelNeedDateConfigV1,
     validationEnums: {
@@ -3054,10 +3078,22 @@ export async function getGdiShareOpportunitiesExport(req, res) {
   const shareExportBase = invHotelShareExport(hotelId)
     ? doc.opportunities || []
     : filterSalespersonView(doc.opportunities || []);
+  let shareExportFacing;
+  if (hotelId === BETHESDA_HOTEL_ID) {
+    const { selectBethesdaExternalShareOpportunities } = await import(
+      "../lib/group-demand-intelligence/bethesda-share-inventory-v1.js"
+    );
+    shareExportFacing = selectBethesdaExternalShareOpportunities(
+      shareExportBase,
+      { hotelId }
+    ).opportunities;
+  } else {
+    shareExportFacing = filterCustomerFacingOpportunities(shareExportBase, {
+      hotelId,
+    });
+  }
   let opportunities = projectOpportunitiesCommercialQuality(
-    applyApprovedBethesdaCustomerProjection(
-      filterCustomerFacingOpportunities(shareExportBase, { hotelId })
-    )
+    applyApprovedBethesdaCustomerProjection(shareExportFacing)
   );
   opportunities = filterOpportunitiesForExport(opportunities, req.query);
   opportunities = await attachCommercialProgression(hotelId, opportunities);
