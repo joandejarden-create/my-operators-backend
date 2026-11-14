@@ -40,6 +40,12 @@ Preflight (no paid):
 npm run gdi:full-e2e -- --hotelId recsn3BUKJ9PNfeZW --mode preflight
 ```
 
+## GitHub
+
+- Branch: `cert/gdi-sheraton-final-e2e-and-aimbridge-handoff-v1`
+- PR: https://github.com/joandejarden-create/my-operators-backend/pull/285
+- Related predecessor: PR #284
+
 ## Protections
 
 - Bethesda `df8da65a172727e627a71c3a31bead5f3f70ee95b03b7245f7a0ea34bbb33c66` unchanged
