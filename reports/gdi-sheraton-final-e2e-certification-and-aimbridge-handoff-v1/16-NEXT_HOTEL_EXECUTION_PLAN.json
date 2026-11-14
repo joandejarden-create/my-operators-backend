@@ -1,48 +1,64 @@
 {
-  "hotelId": "recsn3BUKJ9PNfeZW",
-  "displayName": "JW Marriott Hotel Monterrey Valle",
+  "hotelId": "recXh4NgF8sDbi9cQ",
+  "displayName": "Wyndham Alltra Punta Cana",
   "verifiedIdentity": {
-    "hotelId": "recsn3BUKJ9PNfeZW",
+    "hotelId": "recXh4NgF8sDbi9cQ",
     "hotelIdentityStatus": "CANONICAL_HPC",
     "aliases": {
-      "adpPropertyId": "adp_jw_marriott_monterrey_valle",
-      "marriottPropertyCode": "MTYJW",
-      "censusRecordId": "recsn3BUKJ9PNfeZW",
-      "note": "Canonical hotelId is HPC record. V8 3-hotel blind validation Hotel C."
+      "adpPropertyId": "adp_wyndham_alltra_punta_cana",
+      "censusRecordId": "recXh4NgF8sDbi9cQ",
+      "forbiddenDuplicateHpcId": "reccax9nT5J90Sc0Y",
+      "note": "Canonical hotelId is HPC recXh4NgF8sDbi9cQ. Never use reccax9nT5J90Sc0Y (OSM duplicate)."
     }
   },
   "existingResearchInventory": {
     "gdiHotelConfig": true,
-    "adpFixturePath": "fixtures/ai-demand-positioning/jw-marriott-monterrey-valle-property-profile.json",
+    "researchStateDossiers": 227,
+    "uniqueCandidateIds": 553,
+    "segmentFiles": 14,
     "bundledPublication": false,
-    "localResearchDir": true
+    "opportunitiesJson": false,
+    "sourceWorktree": "my-operators-backend-aimbridge-three-hotel-e2e",
+    "recoveredIntoPrimaryCheckout": true
   },
   "hotelProfileGaps": [
     "No certified GDI customer publication yet",
+    "All 14 segments PARTIAL / NOT_COMPLETE (0 completedCandidateIds)",
+    "Most ORS dossiers unclassified research-stage",
     "Need-period approach must start provisional / hotel-confirmed empty",
-    "CMI discovery required from zero with coverage proof"
+    "CMI discovery required under gdi-cmi-canonical-eligibility-contract-v1",
+    "All-inclusive demand adaptation required — do not copy Sheraton expo assumptions"
   ],
-  "discoveryHunters": "Use certified Full E2E fourteen-segment / specialist hunters from template",
-  "historicalExaRecovery": "Search existing Exa/research stores for Monterrey Valle before paid",
+  "discoveryHunters": "Use certified Full E2E fourteen-segment / specialist hunters from GDI_FULL_E2E_HOTEL_TEMPLATE_V1, adapted for AI resort / incentive / wedding / DMC / travel-trade demand",
+  "historicalExaRecovery": "227 ORS dossiers with Exa artifact signals recovered; rehydrate before any paid Exa",
   "mandatoryCmiStage4a": true,
   "commercialActionabilityGate4b": true,
   "needPeriodApproach": "PROVISIONAL only until hotel confirms — never invent hotel-confirmed need dates",
   "contactResearch": "Named contacts with Surfe on-click only; no automatic paid enrichment",
   "airtablePersistence": "Dry-run first; founder authorization before upsert",
   "expectedResearchCosts": {
-    "note": "Estimate only — not authorized",
+    "note": "Estimate only — not authorized; Sheraton budget not transferable",
     "freeHistoricalExaRecoveryUsd": 0,
-    "proposedPaidDiscoveryBudgetUsd": 20,
+    "proposedPaidDiscoveryBudgetUsd": 42,
+    "hardCeilingUsd": 48,
     "authorizationRequired": true
   },
-  "paidResearchBudgetProposalUsd": 20,
+  "paidResearchBudgetProposalUsd": 42,
+  "commercialQualityTarget": 15,
   "founderPreviewProcess": "Immutable staged package → browser verify → founder fingerprint approval → no auto CUSTOMER_PUBLISHED",
-  "executableCommand": "npm run gdi:full-e2e -- --hotelId recsn3BUKJ9PNfeZW --mode preflight",
-  "alternatePlanOnly": "node scripts/gdi-research-to-page-workflow-v1.mjs --mode full-e2e --hotelId recsn3BUKJ9PNfeZW --dry-run",
+  "executableCommand": "npm run gdi:full-e2e -- --hotelId recXh4NgF8sDbi9cQ --mode preflight",
+  "followingHotelQueued": {
+    "hotelId": "recTk5I8VOzsPhxDz",
+    "displayName": "voco Cancún Zona Hotelera",
+    "doNotInitiateYet": true
+  },
   "doNot": [
-    "initiate paid research without separate authorization",
+    "initiate paid research without Wyndham-specific authorization",
+    "substitute JW Marriott Monterrey Valle",
+    "use duplicate HPC reccax9nT5J90Sc0Y",
     "create assumed hotel-confirmed need dates",
     "publish customer content automatically",
-    "reuse Sheraton opportunity IDs, contacts, need periods, or competitors"
+    "reuse Sheraton opportunity IDs, contacts, need periods, or competitors",
+    "start full voco research run before Wyndham completes"
   ]
 }

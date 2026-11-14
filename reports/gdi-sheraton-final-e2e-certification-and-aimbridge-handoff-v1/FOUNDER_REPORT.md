@@ -30,14 +30,21 @@ Sheraton is **founder-review ready** on the certified actionability v2 package. 
 
 All **15** net-new paid opportunities remain in the customer-visible 38. **13** Hotel Market · **2** Competitive (CIICS → Barceló; Semana IMIN → Hard Rock). Prior $15.20 spend preserved; no additional paid calls.
 
-## Next Aimbridge hotel
+## Next Aimbridge hotel (corrected)
 
-**Recommend: JW Marriott Hotel Monterrey Valle** (`recsn3BUKJ9PNfeZW`) — verified Aimbridge LATAM managed in GDI config; geographic diversity vs Guadalajara; ADP fixture present.
+**Next: Wyndham Alltra Punta Cana** (`recXh4NgF8sDbi9cQ`) — Dominican Republic · 620-room all-inclusive · Aimbridge three-hotel cohort.
 
-Preflight (no paid):
+**Following: voco Cancún Zona Hotelera** (`recTk5I8VOzsPhxDz`) — queued only; do not start full run yet.
+
+**Do not use:** JW Marriott Monterrey Valle (`recsn3BUKJ9PNfeZW`) — not this cohort.  
+**Do not use:** duplicate HPC `reccax9nT5J90Sc0Y`.
+
+Recovered research (verified): Wyndham **227** ORS / **553** candidates / **14** segments · voco **381** / **646** / **14**.
+
+Preflight pack: `reports/gdi-wyndham-alltra-punta-cana-full-e2e-preflight-v1/`
 
 ```bash
-npm run gdi:full-e2e -- --hotelId recsn3BUKJ9PNfeZW --mode preflight
+npm run gdi:full-e2e -- --hotelId recXh4NgF8sDbi9cQ --mode preflight
 ```
 
 ## GitHub
