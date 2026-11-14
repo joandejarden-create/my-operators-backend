@@ -41,6 +41,8 @@ paths = [
   '''reports/bethesda-pilot/day1/2026-10-01/PILOT_MASTER_RECORD\.json$''',
   # Bethesda contact-apply coverage JSON may embed public portal URL query tokens (hkey=), not Dealality secrets.
   '''reports/gdi-bethesda-88-apply-approved-canonical-contact-patches-v1/.*\.json$''',
+  # Wyndham Exa raw-runs embed public ASP.NET/SharePoint sponsorship URLs with hkey= UUID query tokens (PR #287).
+  '''reports/gdi-wyndham-alltra-20usd-full-e2e-v1/raw-runs/.*\.json$''',
   '''reports/hotel-census/ac-spice-persistence-reconciliation-v1/PHASE0_1_INVENTORY\.json$''',
   '''reports/hotel-intelligence/ac-spice-reconciliation-v1/SUMMARY-dry\.json$''',
   '''reports/hotel-intelligence/ac-spice-reconciliation-v1/ac-hi-apply-dry\.json$''',
@@ -78,6 +80,9 @@ regexes = [
   '''(?i)"expectedFingerprint"\s*:''',
   '''(?i)"contentFingerprintSha256"\s*:''',
   '''(?i)"stagedFingerprint"\s*:''',
+
+  # Public ASP.NET/SharePoint portal URL query tokens (hkey=UUID), not Dealality API secrets (PR #287).
+  '''(?i)[?&]hkey=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}''',
 
   # Proven placeholders / metadata false positives.
   '''(?i)Authorization:\s*Bearer\s+YOUR_TOKEN''',
