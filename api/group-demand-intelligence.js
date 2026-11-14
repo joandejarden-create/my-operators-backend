@@ -847,10 +847,10 @@ export async function getGdiOpportunities(req, res) {
             tilePreviewErr?.message || tilePreviewErr,
           );
         }
-        // Match share PACKAGE: hotel Need Dates status is live hotel-config
-        // metadata (not package fingerprint). Without it, auth
-        // ?publicationPackage=1 falls back to NOT_ESTABLISHED while share
-        // correctly shows HOTEL_CONFIRMED for the same fingerprint.
+        // Hotel Need Dates status is live hotel-config metadata (not package
+        // fingerprint). Customer share / default package: never expose
+        // unpublished provisional estimates. Authenticated founder
+        // ?preview=staged may include provisional MARKET_ESTIMATED periods.
         let hotelNeedDateConfigV1;
         try {
           const {
@@ -861,7 +861,7 @@ export async function getGdiOpportunities(req, res) {
           );
           hotelNeedDateConfigV1 = toCustomerSafeHotelNeedDateStatus(
             resolveHotelNeedDateConfiguration(hotelId),
-            { includeUnpublishedEstimates: false },
+            { includeUnpublishedEstimates: requireStagedPreview === true },
           );
         } catch (needDateCfgErr) {
           console.error(
