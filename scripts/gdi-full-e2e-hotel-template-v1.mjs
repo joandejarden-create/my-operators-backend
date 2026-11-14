@@ -29,6 +29,10 @@ import {
   evaluateFullE2eHotelTemplateCertificate,
   REQUIRED_CUSTOMER_PRESENTATION_KEYS,
   GDI_FIELD_AUTHORITY_MATRIX_V1,
+  GDI_CMI_CANONICAL_ELIGIBILITY_CONTRACT_V1,
+  GDI_CMI_CONTRACT_VERSION,
+  CMI_DISCOVERY_COVERAGE_CHECKLIST,
+  evaluateCmiDiscoveryCoverage,
 } from "../lib/group-demand-intelligence/template/gdi-full-e2e-hotel-template-v1.js";
 import { GDI_FIELD_AUTHORITY_CONTRACT_V1 } from "../lib/group-demand-intelligence/presentation/gdi-field-authority-contract-v1.js";
 
@@ -132,6 +136,58 @@ const fieldAuthorityContractPresent =
 
 const capabilityMatrix = buildResearchCapabilityMatrix();
 
+const cmiStageMandatory = TEMPLATE_E2E_STAGES.some(
+  (s) => s.id === "4a" && s.mandatory === true,
+);
+const cmiCanonicalContractPresent =
+  TEMPLATE_VERSION_LOCK.cmiCanonicalEligibilityContract ===
+    GDI_CMI_CANONICAL_ELIGIBILITY_CONTRACT_V1 &&
+  COMMERCIAL_ELIGIBILITY_POLICY_V1.competitiveMarketIntelligence?.contractId ===
+    GDI_CMI_CANONICAL_ELIGIBILITY_CONTRACT_V1;
+let cmiPositiveNegativeTestsOk = false;
+try {
+  execSync("node scripts/test-gdi-cmi-canonical-eligibility-contract-v1.mjs", {
+    cwd: ROOT,
+    stdio: "pipe",
+  });
+  cmiPositiveNegativeTestsOk = true;
+} catch {
+  cmiPositiveNegativeTestsOk = false;
+}
+const cmiBethesdaFixturesReviewed =
+  (pkg.opportunities || []).filter(
+    (o) =>
+      o.competitiveMarketScopeEligible === true ||
+      (o.inventoryPopulations || []).includes("COMPETITIVE_MARKET_INTELLIGENCE"),
+  ).length === 10;
+const cmiCoverageGate = evaluateCmiDiscoveryCoverage({
+  researchAttempted: true,
+  evidenceFindingsDocumented: true,
+  confirmedCompetitorBookingCount: 0,
+  rejectedEvidenceCount: 0,
+  completedChecklistItems: [...CMI_DISCOVERY_COVERAGE_CHECKLIST],
+});
+
+const commercialActionabilityGatePresent =
+  TEMPLATE_VERSION_LOCK.commercialActionabilityGate ===
+    "gdi-commercial-actionability-gate-v1" &&
+  COMMERCIAL_ELIGIBILITY_POLICY_V1.commercialActionability?.contractId ===
+    "gdi-commercial-actionability-gate-v1" &&
+  TEMPLATE_E2E_STAGES.some((s) => s.id === "4b" && s.mandatory === true);
+let commercialActionabilityPositiveNegativeTestsOk = false;
+try {
+  execSync("node scripts/test-gdi-commercial-actionability-gate-v1.mjs", {
+    cwd: ROOT,
+    stdio: "pipe",
+  });
+  commercialActionabilityPositiveNegativeTestsOk = true;
+} catch {
+  commercialActionabilityPositiveNegativeTestsOk = false;
+}
+const commercialActionabilityStagesMandatory = TEMPLATE_E2E_STAGES.some(
+  (s) => s.id === "4b" && s.mandatory === true,
+);
+
 const certificate = evaluateFullE2eHotelTemplateCertificate({
   mainCommitSha: mainSha,
   publicationFingerprintOk,
@@ -144,6 +200,14 @@ const certificate = evaluateFullE2eHotelTemplateCertificate({
   researchStorageGateOk: researchStorageGateOk && airtableReconstruction67Ok,
   noPaidResearchExecuted: true,
   noPublicationMutated: publicationFingerprintOk,
+  cmiCanonicalContractPresent,
+  cmiDiscoveryStageMandatory: cmiStageMandatory,
+  cmiPositiveNegativeTestsOk,
+  cmiBethesdaFixturesReviewed,
+  cmiCoverageGateOk: cmiCoverageGate.coverageComplete === true,
+  commercialActionabilityGatePresent,
+  commercialActionabilityPositiveNegativeTestsOk,
+  commercialActionabilityStagesMandatory,
 });
 
 writeJson("01-CANONICAL_BASELINE.json", {
