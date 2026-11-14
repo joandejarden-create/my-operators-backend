@@ -72,6 +72,13 @@ regexes = [
   # False positive: generic-api-key on "discoveryKey" in zero-paid orch JSON (PR #225).
   '''(?i)"discoveryKey"\s*:''',
 
+  # GDI publication package content fingerprints (SHA-256), not API secrets.
+  # False positive: generic-api-key on "apiFingerprint" / "expectedFingerprint" in browser verification reports (PR #285).
+  '''(?i)"apiFingerprint"\s*:''',
+  '''(?i)"expectedFingerprint"\s*:''',
+  '''(?i)"contentFingerprintSha256"\s*:''',
+  '''(?i)"stagedFingerprint"\s*:''',
+
   # Proven placeholders / metadata false positives.
   '''(?i)Authorization:\s*Bearer\s+YOUR_TOKEN''',
   '''(?i)const bannedKeys = \["email", "phone", "mobile", "linkedinUrl", "linkedInUrl", "providerPersonId", "emails", "phones"\];''',
@@ -227,13 +234,15 @@ regexes = [
 id = "generic-api-key"
 
 [rules.allowlist]
-description = "PR #163 false positives: period ids, job ids, and a ceiling constant; Airtable record ids"
+description = "PR #163/#285 false positives: period ids, job ids, ceiling constant, Airtable record ids, GDI package SHA-256 fingerprints"
 regexTarget = "secret"
 regexes = [
   '''^adp_period_[a-z0-9_]+$''',
   '''^gdi-drc-principal-retrieval-[12]$''',
   '''^APIFY_STAGE1_CEILING$''',
   '''^(?:app|rec|fld|tbl)[A-Za-z0-9]{14}$''',
+  # Publication contentFingerprintSha256 / browser verification fingerprints (not credentials).
+  '''^[a-f0-9]{64}$''',
 ]
 
 # Airtable object identifiers are metadata, not API credentials.

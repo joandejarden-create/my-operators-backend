@@ -2,7 +2,7 @@
 
 **Template:** `GDI_FULL_E2E_HOTEL_TEMPLATE_V1`  
 **Status:** **CERTIFIED**  
-**Certified commit SHA:** `ade817ba377e72ae10bf0a73742d35256108b688`  
+**Certified commit SHA:** `723b87cc815311b6f8e2b5ce335ccfe53ac19df8`  
 **Reference hotel:** Bethesda Marriott (`recLuxvwwxID7U2B8`)  
 **Approved publication:** `gdi_pub_recLuxvwwxID7U2B8_20261113_local_master_v2`  
 **Fingerprint (unchanged):** `df8da65a172727e627a71c3a31bead5f3f70ee95b03b7245f7a0ea34bbb33c66`

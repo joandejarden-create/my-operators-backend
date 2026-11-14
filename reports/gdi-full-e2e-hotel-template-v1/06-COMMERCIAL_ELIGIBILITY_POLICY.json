@@ -28,6 +28,134 @@
   "reject": [
     "fabricatedResponsibilities",
     "genericUnsupportedContacts",
-    "unsupportedDemandClaims"
-  ]
+    "unsupportedDemandClaims",
+    "expiredOneTimeEventInActiveHotelMarket",
+    "researchOrArticleDateAsEventDate"
+  ],
+  "commercialActionability": {
+    "contractId": "gdi-commercial-actionability-gate-v1",
+    "contractVersion": "1.0.0",
+    "activeHotelMarketStates": [
+      "ACTIONABLE_CURRENT_OR_FUTURE",
+      "ONGOING_ACCOUNT_DEVELOPMENT",
+      "FUTURE_CYCLE_VERIFIED"
+    ],
+    "states": {
+      "ACTIONABLE_CURRENT_OR_FUTURE": "ACTIONABLE_CURRENT_OR_FUTURE",
+      "ONGOING_ACCOUNT_DEVELOPMENT": "ONGOING_ACCOUNT_DEVELOPMENT",
+      "FUTURE_CYCLE_VERIFIED": "FUTURE_CYCLE_VERIFIED",
+      "FUTURE_CYCLE_RESEARCH_REQUIRED": "FUTURE_CYCLE_RESEARCH_REQUIRED",
+      "SOURCING_CLOSED_OR_COMMITTED": "SOURCING_CLOSED_OR_COMMITTED",
+      "EXPIRED_ONE_TIME_EVENT": "EXPIRED_ONE_TIME_EVENT",
+      "DATE_UNVERIFIED": "DATE_UNVERIFIED",
+      "HISTORICAL_RESEARCH_ONLY": "HISTORICAL_RESEARCH_ONLY",
+      "NOT_CURRENTLY_ACTIONABLE": "NOT_CURRENTLY_ACTIONABLE"
+    },
+    "appliesAt": [
+      "discovery_qualification",
+      "commercial_research_review",
+      "customer_visible_eligibility",
+      "publication_staging",
+      "weekly_refresh",
+      "founder_publication_certification"
+    ],
+    "referenceDateRule": "effective_research_or_refresh_date",
+    "appliesToAllHotels": true,
+    "completedOneTimeWithoutFutureCycle": "NOT_ACTIVE_HOTEL_MARKET"
+  },
+  "competitiveMarketIntelligence": {
+    "contractId": "gdi-cmi-canonical-eligibility-contract-v1",
+    "contractVersion": "1.0.0",
+    "policyCorrectionId": "gdi-full-e2e-hotel-template-cmi-policy-correction-v1",
+    "definition": {
+      "meaning": "A future group, meeting, conference, or event booking has already been committed to another hotel. The target hotel cannot realistically pursue the principal booking for that cycle. GDI identifies the organization, competing hotel, booking evidence, and relevant contact so sales can develop the relationship for future business.",
+      "is": [
+        "FUTURE_ACCOUNT_DEVELOPMENT_INFORMED_BY_COMPETITOR_WON_BUSINESS"
+      ],
+      "isNot": [
+        "NEARBY_COMPETITOR_HOTEL_LIST",
+        "PREFERRED_HOTEL_RECOMMENDATION_LIST",
+        "HOTEL_PROGRAM_LISTING_ALONE",
+        "CONVENTION_CENTER_HOSTING_WITHOUT_HOTEL_BOOKING_EVIDENCE",
+        "HISTORICAL_EVENT_WITHOUT_CREDIBLE_FUTURE_RELATIONSHIP",
+        "UNCONFIRMED_ASSUMPTION_OF_COMPETITOR_GROUP_WIN"
+      ],
+      "committedBusinessMustBeIdentified": [
+        "EVENT_VENUE",
+        "GUESTROOMS",
+        "GROUP_BLOCK",
+        "OTHER_HOSPITALITY_BUSINESS"
+      ],
+      "roomBlockRequiresGuestroomEvidence": true
+    },
+    "evidenceStatuses": {
+      "CONFIRMED_COMPETITOR_COMMITMENT": "CONFIRMED_COMPETITOR_COMMITMENT",
+      "HOTEL_PROGRAM_LISTING_ONLY": "HOTEL_PROGRAM_LISTING_ONLY",
+      "HISTORICAL_COMPETITOR_RELATIONSHIP": "HISTORICAL_COMPETITOR_RELATIONSHIP",
+      "UNVERIFIED_COMPETITOR_ASSOCIATION": "UNVERIFIED_COMPETITOR_ASSOCIATION",
+      "FUTURE_CYCLE_ACCOUNT_DEVELOPMENT": "FUTURE_CYCLE_ACCOUNT_DEVELOPMENT"
+    },
+    "qualificationGates": [
+      {
+        "id": "IDENTIFIABLE_FUTURE_EVENT_OR_GROUP",
+        "required": true
+      },
+      {
+        "id": "NAMED_COMPETING_HOTEL",
+        "required": true
+      },
+      {
+        "id": "EVIDENCE_OF_COMMITTED_HOTEL_BUSINESS",
+        "required": true
+      },
+      {
+        "id": "COMMITTED_BUSINESS_TYPE_IDENTIFIED",
+        "required": true
+      },
+      {
+        "id": "TARGET_CANNOT_REALISTICALLY_WIN_PRINCIPAL_NOW",
+        "required": true
+      },
+      {
+        "id": "CREDIBLE_FUTURE_CYCLE_ACCOUNT_DEVELOPMENT",
+        "required": true
+      },
+      {
+        "id": "VERIFIED_NAMED_CONTACT_OR_DEFENSIBLE_INTERMEDIARY",
+        "required": true
+      },
+      {
+        "id": "EVIDENCE_GROUNDED_COMMERCIAL_NEXT_STEP",
+        "required": true
+      }
+    ],
+    "discoveryCoverageChecklist": [
+      "ESTABLISH_RELEVANT_COMPETITIVE_HOTEL_SET",
+      "SEARCH_FUTURE_EVENTS_BOOKED_AT_COMPETING_HOTELS",
+      "INVESTIGATE_COMPETITOR_PROPERTY_MEETING_CALENDARS",
+      "IDENTIFY_ORGANIZATIONS_HOLDING_EVENTS_THERE",
+      "VERIFY_ACTUAL_BOOKING_RELATIONSHIPS",
+      "IDENTIFY_RECURRING_EVENT_CYCLES",
+      "LOCATE_RELEVANT_DECISION_MAKERS_OR_ENTRY_POINTS",
+      "DETERMINE_REALISTIC_NEXT_CYCLE_PURSUIT",
+      "DEDUPLICATE_AGAINST_EXISTING_GDI_OPPORTUNITIES",
+      "PERSIST_CONFIRMED_AND_REJECTED_EVIDENCE"
+    ],
+    "discoveryStage": {
+      "id": "competitor_booked_business_discovery",
+      "name": "Competitor-booked business discovery",
+      "mandatoryInFullE2e": true,
+      "zeroCmiRequiresCoverageProof": true,
+      "reuse": [
+        "specialist hunters",
+        "Exa infrastructure",
+        "full-e2e supervisor / research-to-page workflow",
+        "classifyCompetitiveMarketIntelligence",
+        "competitive-future-cycle-presentation-v1"
+      ]
+    },
+    "hotelProgramListingIsNotConfirmedBooking": true,
+    "principalBookingMustNotAppearAsOpenHotelOpportunity": true,
+    "zeroCmiRequiresDocumentedCoverageProof": true
+  }
 }

@@ -53,7 +53,12 @@ check(
     /Meetings & Catering/.test(uiSrc) &&
     /Green: Confirmed/.test(uiSrc),
 );
-check("ui_market_estimated_label", /Market Estimated/.test(uiSrc));
+check(
+  "ui_market_estimated_label",
+  /Market Estimated|Provisional Need Dates — Awaiting Hotel Confirmation/.test(
+    uiSrc,
+  ),
+);
 check(
   "ui_no_hotel_legend_section",
   !/Hotel Need Dates<\/div>/.test(uiSrc) ||

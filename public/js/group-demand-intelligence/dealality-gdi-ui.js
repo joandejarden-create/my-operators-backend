@@ -5019,13 +5019,21 @@
     ) {
       status = "NOT_ESTABLISHED";
     }
-    // Prefer customer-facing hotel labels (Title Case); rewrite legacy API copy.
+    // Prefer API statusLabel when present; rewrite legacy "Market Estimated" copy.
     var accessibleLabel =
       status === "HOTEL_CONFIRMED"
         ? "Hotel Confirmed"
         : status === "MARKET_ESTIMATED"
-          ? "Market Estimated"
+          ? "Provisional Need Dates — Awaiting Hotel Confirmation"
           : "Not Established";
+    if (
+      statusDoc.statusLabel &&
+      /provisional need dates|awaiting hotel confirmation/i.test(
+        String(statusDoc.statusLabel),
+      )
+    ) {
+      accessibleLabel = String(statusDoc.statusLabel).trim();
+    }
     return {
       version: statusDoc.version || "GDI_UNIVERSAL_NEED_DATE_INTELLIGENCE_V1",
       hotelId: statusDoc.hotelId || hotelId || null,
@@ -5085,7 +5093,8 @@
         status === "HOTEL_CONFIRMED"
           ? "Hotel Confirmed"
           : status === "MARKET_ESTIMATED"
-            ? "Market Estimated"
+            ? label ||
+              "Provisional Need Dates — Awaiting Hotel Confirmation"
             : "Not Established"
       ) +
       "</span>" +

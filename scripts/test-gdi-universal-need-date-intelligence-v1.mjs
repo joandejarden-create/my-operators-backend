@@ -209,7 +209,9 @@ try {
     "no_false_verified_from_estimate",
     guarded.indicatorState === NEED_DATE_TILE_INDICATOR.POTENTIALLY_FLEXIBLE &&
       guarded.verifiedHotelNeedDateMatch === false &&
-      /estimated/i.test(guarded.estimatedLabel || "")
+      /estimated|provisional|awaiting hotel confirmation/i.test(
+        guarded.estimatedLabel || "",
+      )
   );
 
   // Sync attach with estimated period must not keep VERIFIED

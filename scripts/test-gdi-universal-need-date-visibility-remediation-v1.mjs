@@ -144,7 +144,7 @@ for (const h of hotels) {
     barHtml.includes('data-gdi-need-date-config-visible="1"') &&
     barHtml.includes(`data-hotel-need-date-status="${cfg.status}"`) &&
     barHtml.includes("gdi-need-date-info-btn") &&
-    /aria-label="Not Established"|aria-label="Hotel Confirmed"|aria-label="Market Estimated"/.test(
+    /aria-label="Not Established"|aria-label="Hotel Confirmed"|aria-label="Market Estimated"|aria-label="Provisional Need Dates/.test(
       barHtml
     );
   const svgPresent = barHtml.includes("<svg");
