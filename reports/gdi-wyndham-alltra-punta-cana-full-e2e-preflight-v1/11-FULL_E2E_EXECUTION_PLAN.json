@@ -3,10 +3,12 @@
   "hotelId": "recXh4NgF8sDbi9cQ",
   "mode": "preflight_then_authorized_stages",
   "executableCommands": {
-    "preflight": "npm run gdi:full-e2e -- --hotelId recXh4NgF8sDbi9cQ --mode preflight",
-    "status": "npm run gdi:full-e2e-status -- --hotelId recXh4NgF8sDbi9cQ",
-    "dryRunChain": "npm run gdi:full-e2e-fourteen-segment-chain -- --hotels recXh4NgF8sDbi9cQ"
+    "dryRunPreflight": "npm run gdi:full-e2e -- --hotel recXh4NgF8sDbi9cQ --dry-run",
+    "status": "npm run gdi:full-e2e-status -- --hotel recXh4NgF8sDbi9cQ",
+    "dryRunChain": "npm run gdi:full-e2e-fourteen-segment-chain -- --hotels recXh4NgF8sDbi9cQ",
+    "note": "Entrypoint flag is --hotel (not --hotelId). Paid live runs require separate founder authorization."
   },
+
   "mandatoryStages": [
     "Historical Exa research recovery",
     "Full 14-segment research coverage",

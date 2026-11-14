@@ -1,0 +1,79 @@
+{
+  "contract": "GDI_WYNDHAM_ALLTRA_PR285_CLOSEOUT_AND_READINESS_V1",
+  "generatedAt": "2026-11-14T17:20:00.000Z",
+  "pr285": {
+    "number": 285,
+    "url": "https://github.com/joandejarden-create/my-operators-backend/pull/285",
+    "state": "MERGED",
+    "mergeCommitSha": "1b34c5fe64cbc389a4493609d52dcf49b4152152",
+    "ci": {
+      "gitleaks": "pass",
+      "adminTabsAva": "pass",
+      "gdiRecoveryRegression": "pass",
+      "researchAuditRelocation": "pass",
+      "spiceFixtureProdIsolation": "pass"
+    },
+    "secretScanResolution": {
+      "kind": "FALSE_POSITIVE",
+      "ruleId": "generic-api-key",
+      "offendingField": "apiFingerprint",
+      "files": [
+        "reports/gdi-permanent-commercial-actionability-gate-v1/12-LOCAL_BROWSER_VERIFICATION.json",
+        "reports/gdi-sheraton-final-e2e-certification-and-aimbridge-handoff-v1/10-FOUNDER_PREVIEW_BROWSER_VERIFICATION.json",
+        "reports/gdi-sheraton-need-dates-svg-cmi-v1/13-LOCAL_BROWSER_VERIFICATION.json"
+      ],
+      "explanation": "Values are SHA-256 GDI publication content fingerprints, not API credentials. Allowlisted in .gitleaks.toml. No credential rotation required.",
+      "scanBypassed": false
+    },
+    "fileChurnExplanation": {
+      "approxFilesChanged": 767,
+      "mostly": "data/ group-demand-intelligence research recovery for Wyndham (241) + voco (395) ORS/segment files",
+      "legitimate": true,
+      "unrelatedDirtyLocalWorkPreserved": true,
+      "notIncludedInMerge": "local uncommitted parity/report dirt left on working tree"
+    }
+  },
+  "main": {
+    "sha": "1b34c5fe64cbc389a4493609d52dcf49b4152152",
+    "primaryCheckoutSynchronized": true,
+    "branch": "main",
+    "activeWorkingBranchForNextHotel": "exec/gdi-wyndham-alltra-punta-cana-full-e2e-v1"
+  },
+  "wyndhamInventoryVerifiedOnMain": {
+    "hotelId": "recXh4NgF8sDbi9cQ",
+    "displayName": "Wyndham Alltra Punta Cana",
+    "orsDossiers": 227,
+    "uniqueCandidateIds": 553,
+    "segmentFiles": 14,
+    "opportunitiesJson": false,
+    "forbiddenDuplicatePresent": false,
+    "forbiddenDuplicateId": "reccax9nT5J90Sc0Y",
+    "configPresent": true
+  },
+  "vocoQueued": {
+    "hotelId": "recTk5I8VOzsPhxDz",
+    "displayName": "voco Cancún Zona Hotelera",
+    "orsDossiers": 381,
+    "doNotInitiateFullRunYet": true
+  },
+  "dryRunProbe": {
+    "command": "npm run gdi:full-e2e -- --hotel recXh4NgF8sDbi9cQ --dry-run",
+    "ok": true,
+    "computedOverallStatus": "FAILED",
+    "note": "Expected pre-qualification failure: 0 hotel-facing opportunities; segments PARTIAL. Confirms template runs without paid spend.",
+    "paidSpendUsd": 0
+  },
+  "fullE2eReadinessVerdict": "READY_FOR_AUTHORIZED_ZERO_COST_CONTINUATION_THEN_PAID_IF_APPROVED",
+  "proposedPaidBudgetUsd": 42,
+  "hardCeilingUsd": 48,
+  "paidAuthorized": false,
+  "executableCommands": {
+    "dryRun": "npm run gdi:full-e2e -- --hotel recXh4NgF8sDbi9cQ --dry-run",
+    "liveRequiresAuth": "npm run gdi:full-e2e -- --hotel recXh4NgF8sDbi9cQ --authorize-measurement --allow-paid  (DO NOT RUN without founder Wyndham-specific authorization)"
+  },
+  "protections": {
+    "sheratonStagedUnchanged": "d4b2bfc7eb0419b863a561750a748227244bf759edf1307926f89749706e2a33",
+    "bethesdaNotModified": true,
+    "customerPublished": false
+  }
+}
