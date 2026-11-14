@@ -1,0 +1,65 @@
+{
+  "contractId": "gdi-commercial-actionability-gate-v1",
+  "contractVersion": "1.0.0",
+  "templateId": "GDI_FULL_E2E_HOTEL_TEMPLATE_V1",
+  "appliesToAllHotels": true,
+  "appliesAt": [
+    "discovery_qualification",
+    "commercial_research_review",
+    "customer_visible_eligibility",
+    "publication_staging",
+    "weekly_refresh",
+    "founder_publication_certification"
+  ],
+  "stages": [
+    {
+      "id": "4b",
+      "name": "Commercial-actionability gate (discovery qualification)",
+      "mandatory": true
+    },
+    {
+      "id": 5,
+      "name": "Commercial qualification / research review",
+      "mandatory": true
+    },
+    {
+      "id": 7,
+      "name": "Quality review / customer-visible eligibility",
+      "mandatory": true
+    },
+    {
+      "id": 9,
+      "name": "Package staging",
+      "mandatory": true
+    },
+    {
+      "id": 10,
+      "name": "Founder approval / publication certification",
+      "mandatory": true
+    },
+    {
+      "id": 13,
+      "name": "Weekly refresh and feedback",
+      "mandatory": true
+    }
+  ],
+  "states": {
+    "ACTIONABLE_CURRENT_OR_FUTURE": "ACTIONABLE_CURRENT_OR_FUTURE",
+    "ONGOING_ACCOUNT_DEVELOPMENT": "ONGOING_ACCOUNT_DEVELOPMENT",
+    "FUTURE_CYCLE_VERIFIED": "FUTURE_CYCLE_VERIFIED",
+    "FUTURE_CYCLE_RESEARCH_REQUIRED": "FUTURE_CYCLE_RESEARCH_REQUIRED",
+    "SOURCING_CLOSED_OR_COMMITTED": "SOURCING_CLOSED_OR_COMMITTED",
+    "EXPIRED_ONE_TIME_EVENT": "EXPIRED_ONE_TIME_EVENT",
+    "DATE_UNVERIFIED": "DATE_UNVERIFIED",
+    "HISTORICAL_RESEARCH_ONLY": "HISTORICAL_RESEARCH_ONLY",
+    "NOT_CURRENTLY_ACTIONABLE": "NOT_CURRENTLY_ACTIONABLE"
+  },
+  "activeHotelMarketStates": [
+    "ACTIONABLE_CURRENT_OR_FUTURE",
+    "ONGOING_ACCOUNT_DEVELOPMENT",
+    "FUTURE_CYCLE_VERIFIED"
+  ],
+  "weeklyRefreshDetectsTransition": true,
+  "preserveResearchHistory": true,
+  "requireFounderAuthorizationForCustomerOutputChange": true
+}

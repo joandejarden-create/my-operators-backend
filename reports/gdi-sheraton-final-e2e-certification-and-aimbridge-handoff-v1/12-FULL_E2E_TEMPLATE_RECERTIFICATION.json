@@ -1,0 +1,222 @@
+{
+  "templateId": "GDI_FULL_E2E_HOTEL_TEMPLATE_V1",
+  "versionLock": {
+    "templateId": "GDI_FULL_E2E_HOTEL_TEMPLATE_V1",
+    "lockId": "gdi-full-e2e-hotel-template-lock-v1",
+    "cmiPolicyCorrectionId": "gdi-full-e2e-hotel-template-cmi-policy-correction-v1",
+    "cmiCanonicalEligibilityContract": "gdi-cmi-canonical-eligibility-contract-v1",
+    "cmiContractVersion": "1.0.0",
+    "commercialActionabilityGate": "gdi-commercial-actionability-gate-v1",
+    "commercialActionabilityContractVersion": "1.0.0",
+    "fullE2eContractVersion": "gdi-full-e2e-contract-v1.5",
+    "researchPersistenceContract": "gdi-research-persistence-contract-v1",
+    "presentationPersistence": "gdi-canonical-presentation-persistence-v1",
+    "presentationSchemaVersion": "gdi-presentation-schema-v1",
+    "presentationDerivationRuleVersion": "gdi-presentation-derivation-frozen-v2-bethesda-local-master",
+    "fieldAuthorityContract": "gdi-field-authority-contract-v1",
+    "nextgenDiscoveryArchitecture": "gdi-nextgen-discovery-architecture-v1",
+    "frontendAuthCacheMarker": "gdi-ui-no-mode-banner-v1",
+    "frontendUiCacheMarker": "gdi-contact-subtitle-freeze-v1",
+    "airtableBaseId": "appa2cE7FTRmIbB32",
+    "airtableOpportunitiesTableId": "tblRuReslJMwsfRQj"
+  },
+  "stages": [
+    {
+      "id": 1,
+      "name": "Hotel intelligence",
+      "mandatory": false,
+      "actionabilityGate": null,
+      "contract": null
+    },
+    {
+      "id": 2,
+      "name": "Existing research reconciliation",
+      "mandatory": false,
+      "actionabilityGate": null,
+      "contract": null
+    },
+    {
+      "id": 3,
+      "name": "Discovery planning",
+      "mandatory": false,
+      "actionabilityGate": null,
+      "contract": null
+    },
+    {
+      "id": 4,
+      "name": "Demand discovery",
+      "mandatory": false,
+      "actionabilityGate": null,
+      "contract": null
+    },
+    {
+      "id": "4a",
+      "name": "Competitor-booked business discovery (CMI)",
+      "mandatory": true,
+      "actionabilityGate": null,
+      "contract": "gdi-cmi-canonical-eligibility-contract-v1"
+    },
+    {
+      "id": "4b",
+      "name": "Commercial-actionability gate (discovery qualification)",
+      "mandatory": true,
+      "actionabilityGate": null,
+      "contract": "gdi-commercial-actionability-gate-v1"
+    },
+    {
+      "id": 5,
+      "name": "Commercial qualification / research review",
+      "mandatory": false,
+      "actionabilityGate": "gdi-commercial-actionability-gate-v1",
+      "contract": null
+    },
+    {
+      "id": 6,
+      "name": "Airtable persistence",
+      "mandatory": false,
+      "actionabilityGate": null,
+      "contract": null
+    },
+    {
+      "id": 7,
+      "name": "Quality review / customer-visible eligibility",
+      "mandatory": false,
+      "actionabilityGate": "gdi-commercial-actionability-gate-v1",
+      "contract": null
+    },
+    {
+      "id": 8,
+      "name": "Founder preview",
+      "mandatory": false,
+      "actionabilityGate": null,
+      "contract": null
+    },
+    {
+      "id": 9,
+      "name": "Package staging",
+      "mandatory": false,
+      "actionabilityGate": "gdi-commercial-actionability-gate-v1",
+      "contract": null
+    },
+    {
+      "id": 10,
+      "name": "Founder approval / publication certification",
+      "mandatory": false,
+      "actionabilityGate": "gdi-commercial-actionability-gate-v1",
+      "contract": null
+    },
+    {
+      "id": 11,
+      "name": "Production publication",
+      "mandatory": false,
+      "actionabilityGate": null,
+      "contract": null
+    },
+    {
+      "id": 12,
+      "name": "Production parity",
+      "mandatory": false,
+      "actionabilityGate": null,
+      "contract": null
+    },
+    {
+      "id": 13,
+      "name": "Weekly refresh and feedback",
+      "mandatory": false,
+      "actionabilityGate": "gdi-commercial-actionability-gate-v1",
+      "contract": null
+    }
+  ],
+  "commercialEligibilityPolicy": {
+    "actionability": {
+      "contractId": "gdi-commercial-actionability-gate-v1",
+      "contractVersion": "1.0.0",
+      "activeHotelMarketStates": [
+        "ACTIONABLE_CURRENT_OR_FUTURE",
+        "ONGOING_ACCOUNT_DEVELOPMENT",
+        "FUTURE_CYCLE_VERIFIED"
+      ],
+      "states": {
+        "ACTIONABLE_CURRENT_OR_FUTURE": "ACTIONABLE_CURRENT_OR_FUTURE",
+        "ONGOING_ACCOUNT_DEVELOPMENT": "ONGOING_ACCOUNT_DEVELOPMENT",
+        "FUTURE_CYCLE_VERIFIED": "FUTURE_CYCLE_VERIFIED",
+        "FUTURE_CYCLE_RESEARCH_REQUIRED": "FUTURE_CYCLE_RESEARCH_REQUIRED",
+        "SOURCING_CLOSED_OR_COMMITTED": "SOURCING_CLOSED_OR_COMMITTED",
+        "EXPIRED_ONE_TIME_EVENT": "EXPIRED_ONE_TIME_EVENT",
+        "DATE_UNVERIFIED": "DATE_UNVERIFIED",
+        "HISTORICAL_RESEARCH_ONLY": "HISTORICAL_RESEARCH_ONLY",
+        "NOT_CURRENTLY_ACTIONABLE": "NOT_CURRENTLY_ACTIONABLE"
+      },
+      "appliesAt": [
+        "discovery_qualification",
+        "commercial_research_review",
+        "customer_visible_eligibility",
+        "publication_staging",
+        "weekly_refresh",
+        "founder_publication_certification"
+      ],
+      "referenceDateRule": "effective_research_or_refresh_date",
+      "appliesToAllHotels": true,
+      "completedOneTimeWithoutFutureCycle": "NOT_ACTIVE_HOTEL_MARKET"
+    },
+    "cmi": "gdi-cmi-canonical-eligibility-contract-v1"
+  },
+  "certificate": {
+    "schema": "GDI_FULL_E2E_HOTEL_TEMPLATE_V1",
+    "lockId": "gdi-full-e2e-hotel-template-lock-v1",
+    "cmiPolicyCorrectionId": "gdi-full-e2e-hotel-template-cmi-policy-correction-v1",
+    "cmiContractVersion": "1.0.0",
+    "commercialActionabilityGate": "gdi-commercial-actionability-gate-v1",
+    "commercialActionabilityContractVersion": "1.0.0",
+    "certified": true,
+    "status": "CERTIFIED",
+    "fails": [],
+    "versions": {
+      "templateId": "GDI_FULL_E2E_HOTEL_TEMPLATE_V1",
+      "lockId": "gdi-full-e2e-hotel-template-lock-v1",
+      "cmiPolicyCorrectionId": "gdi-full-e2e-hotel-template-cmi-policy-correction-v1",
+      "cmiCanonicalEligibilityContract": "gdi-cmi-canonical-eligibility-contract-v1",
+      "cmiContractVersion": "1.0.0",
+      "commercialActionabilityGate": "gdi-commercial-actionability-gate-v1",
+      "commercialActionabilityContractVersion": "1.0.0",
+      "fullE2eContractVersion": "gdi-full-e2e-contract-v1.5",
+      "researchPersistenceContract": "gdi-research-persistence-contract-v1",
+      "presentationPersistence": "gdi-canonical-presentation-persistence-v1",
+      "presentationSchemaVersion": "gdi-presentation-schema-v1",
+      "presentationDerivationRuleVersion": "gdi-presentation-derivation-frozen-v2-bethesda-local-master",
+      "fieldAuthorityContract": "gdi-field-authority-contract-v1",
+      "nextgenDiscoveryArchitecture": "gdi-nextgen-discovery-architecture-v1",
+      "frontendAuthCacheMarker": "gdi-ui-no-mode-banner-v1",
+      "frontendUiCacheMarker": "gdi-contact-subtitle-freeze-v1",
+      "airtableBaseId": "appa2cE7FTRmIbB32",
+      "airtableOpportunitiesTableId": "tblRuReslJMwsfRQj"
+    },
+    "reference": {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelName": "Bethesda Marriott",
+      "publicationVersion": "gdi_pub_recLuxvwwxID7U2B8_20261113_local_master_v2",
+      "contentFingerprintSha256": "df8da65a172727e627a71c3a31bead5f3f70ee95b03b7245f7a0ea34bbb33c66",
+      "opportunityCount": 67,
+      "baselinePrs": [
+        264,
+        266,
+        267,
+        268,
+        269,
+        270,
+        272,
+        273,
+        274,
+        275
+      ],
+      "compatibleFollowOnPrs": [
+        276
+      ]
+    },
+    "fieldAuthorityFieldCount": 13,
+    "requiredPresentationKeyCount": 59,
+    "evaluatedAt": "2026-11-14T11:09:00.867Z"
+  },
+  "npmTemplateTestOk": true,
+  "ok": true
+}
