@@ -1,0 +1,907 @@
+{
+  "contract": "GDI_RADISSON_272_FUNNEL_AUDIT_V1",
+  "referenceDate": "2026-11-15",
+  "discoveryLedgerSha256": "b8afd3d8cd4ad70b6430555dbd1309d60597af32b06c2f7f28e4d0a24291871e",
+  "waterfall": {
+    "total": 272,
+    "byStatus": {
+      "QUEUED_FOR_DEEP_RESEARCH": 209,
+      "RESEARCH_CONTINUATION": 6,
+      "DUPLICATE": 36,
+      "AWAITING_FOUNDER_PROMOTION": 15,
+      "WATCH": 5,
+      "REJECTED": 1
+    },
+    "bySegment": {
+      "association_events": 21,
+      "corporate_celebrations_private_events": 20,
+      "corporate_meetings_incentives": 20,
+      "education_scientific": 20,
+      "government_public_sector": 20,
+      "local_catering_day_meetings": 20,
+      "preferred_lodging": 20,
+      "professional_event_planners": 20,
+      "projects_infrastructure": 20,
+      "relocation_extended_stay": 18,
+      "scaling_companies": 16,
+      "social_special_events": 20,
+      "sports_entertainment": 20,
+      "travel_trade_group_intermediaries": 17
+    },
+    "byDisposition": {
+      "(null)": 272
+    },
+    "withEvidenceUrls": 235,
+    "megaConventionFlagged": 15,
+    "queuedDeepNeverRun": 209,
+    "duplicates": 36,
+    "radissonMentionedInEvidence": 272,
+    "lossHistogram": {
+      "DEEP_RESEARCH_NOT_STARTED": 209,
+      "NO_EXACT_DATE_IN_THIN_LEDGER": 272,
+      "MISSING_SOURCE_URL": 37,
+      "WEAK_OR_UNKNOWN_LODGING_EVIDENCE": 195,
+      "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE": 272,
+      "INCOMPLETE_RESEARCH": 6,
+      "DUPLICATE": 36,
+      "MEGA_CONVENTION_BIAS_CANDIDATE": 15,
+      "WATCH_INSUFFICIENT_EVIDENCE": 5,
+      "REJECTED_COMMERCIAL": 1
+    }
+  },
+  "diagnosis": {
+    "primaryBottleneck": "DEEP_RESEARCH_NOT_STARTED (209/272) — thin ledger lacks exact dates; prior $15 paid only covered 28 deep runs biased to large association/MTCC events.",
+    "megaConventionBias": "Association/events hunters and paid Batch A prioritized MTCC-scale shows; mid-size corporate/education/sports with lodging evidence remained queued.",
+    "legitimateExclusions": [
+      "DUPLICATE_SAME_ORG_CROSS_PASS",
+      "Edition-specific competitor host/block → CMI not Hotel Market",
+      "Imminent <21 days / expired one-time events",
+      "Airport-corridor exclusive hosts (stretch territory)",
+      "Evening client parties without overnight guestroom thesis (e.g. Arctiq at King Taps)"
+    ],
+    "fixableGaps": [
+      "QUEUED candidates with EVIDENCE_SUPPORTED lodging + public URLs — recoverable via free page verification or paid deep ($0.50/ea)",
+      "Radisson already listed as partner/block on some public pages (PDAC, Adaptation Canada) but not promoted as Hotel Market",
+      "Watch LOCATION_NOT_VERIFIED can unlock with free venue pages (e.g. Ci2i @ Delta)",
+      "Sales actions on existing 3 HM were generic Monitor — upgrade without new spend"
+    ]
+  },
+  "recoveryQueueTop40": [
+    {
+      "id": "gdi_s4912_6edf582b5bd1",
+      "discoveryId": "gdi_disc_f0591c8a7bdaa586",
+      "status": "AWAITING_FOUNDER_PROMOTION",
+      "disposition": null,
+      "segment": "government_public_sector",
+      "org": "Transport Canada and U.S. National Highway Traffic Safety Administration",
+      "programme": "28th International Technical Conference on the Enhanced Safety of Vehicles (ESV)",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 2,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": true,
+      "stagedFlag": true,
+      "recoveryPriority": -15
+    },
+    {
+      "id": "gdi_s4912_f6bbd530d198",
+      "discoveryId": "gdi_disc_2f7f1d5d74cc8d4a",
+      "status": "AWAITING_FOUNDER_PROMOTION",
+      "disposition": null,
+      "segment": "government_public_sector",
+      "org": "Global Affairs Canada, Ukraine and Norway",
+      "programme": "Pathways to Peace: Second International Conference on Returning Ukrainian Children, Detained Civilians, and Prisoners of War",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 2,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": true,
+      "stagedFlag": true,
+      "recoveryPriority": -15
+    },
+    {
+      "id": "gdi_s4912_e0994273aef6",
+      "discoveryId": "gdi_disc_80a796ab095b03a2",
+      "status": "AWAITING_FOUNDER_PROMOTION",
+      "disposition": null,
+      "segment": "relocation_extended_stay",
+      "org": "University of Toronto",
+      "programme": "New Faculty Housing and Visiting Faculty Housing",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 2,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": true,
+      "stagedFlag": true,
+      "recoveryPriority": -15
+    },
+    {
+      "id": "gdi_s4912_3c0fbbf6348d",
+      "discoveryId": "gdi_disc_593813bd4d4c2e2a",
+      "status": "AWAITING_FOUNDER_PROMOTION",
+      "disposition": null,
+      "segment": "travel_trade_group_intermediaries",
+      "org": "GROWTH MICE & DMC",
+      "programme": "Generali Hellas Annual Incentive Trip in Canada (September 2022)",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": true,
+      "stagedFlag": true,
+      "recoveryPriority": -15
+    },
+    {
+      "id": "gdi_disc_bda99bbb5916af89",
+      "discoveryId": "gdi_disc_bda99bbb5916af89",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "corporate_meetings_incentives",
+      "org": "ICLEI Canada",
+      "programme": "Adaptation Canada 2026",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_4070954ec62aea15",
+      "discoveryId": "gdi_disc_4070954ec62aea15",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "corporate_meetings_incentives",
+      "org": "Electrical Distributors Association of Ontario",
+      "programme": "People Connected 2026",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_8ea1cc22b214717f",
+      "discoveryId": "gdi_disc_8ea1cc22b214717f",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "corporate_meetings_incentives",
+      "org": "GBTA Canada",
+      "programme": "GBTA Canada Conference 2027",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_fb582881ef9c8b31",
+      "discoveryId": "gdi_disc_fb582881ef9c8b31",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "corporate_meetings_incentives",
+      "org": "International Downtown Association, Downtown Toronto BIA Alliance and City of Toronto",
+      "programme": "IDA 72nd Annual Conference & Marketplace 2026",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_c4c732a222951e19",
+      "discoveryId": "gdi_disc_c4c732a222951e19",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "corporate_meetings_incentives",
+      "org": "Canadian Gas Association",
+      "programme": "CGA Energy Week 2026",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_41812cdc153e94ce",
+      "discoveryId": "gdi_disc_41812cdc153e94ce",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "corporate_meetings_incentives",
+      "org": "Surety Association of Canada",
+      "programme": "35th Annual General Meeting & Conference Fall 2026",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_099387a8968897f0",
+      "discoveryId": "gdi_disc_099387a8968897f0",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "corporate_meetings_incentives",
+      "org": "International Society for Photogrammetry and Remote Sensing",
+      "programme": "XXV ISPRS Congress 2026 Toronto",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_41d128b7cadb1e2d",
+      "discoveryId": "gdi_disc_41d128b7cadb1e2d",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "corporate_meetings_incentives",
+      "org": "International Downtown Association",
+      "programme": "72nd Annual Conference & Marketplace 2026",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_f31f9d7b76ea835f",
+      "discoveryId": "gdi_disc_f31f9d7b76ea835f",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "corporate_meetings_incentives",
+      "org": "IEEE",
+      "programme": "IEEE Quantum Week 2026",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_a1f4f544c36749b3",
+      "discoveryId": "gdi_disc_a1f4f544c36749b3",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "corporate_meetings_incentives",
+      "org": "Corporate Event Marketing Association (CEMA)",
+      "programme": "CEMA Summit 2026",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_55ff01739d2c0937",
+      "discoveryId": "gdi_disc_55ff01739d2c0937",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "corporate_meetings_incentives",
+      "org": "Association of Registered Graphic Designers (RGD)",
+      "programme": "DesignThinkers Toronto 2026",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 2,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_de7ffa50d052edf7",
+      "discoveryId": "gdi_disc_de7ffa50d052edf7",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "education_scientific",
+      "org": "University of Toronto Rotman School of Management",
+      "programme": "36th Annual Conference on Financial Economics and Accounting (CFEA 2026)",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 3,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_456939c96f6095a4",
+      "discoveryId": "gdi_disc_456939c96f6095a4",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "education_scientific",
+      "org": "Toronto Institute of Psychoanalysis",
+      "programme": "26th Joseph Sandler Psychoanalytic Research Conference 2026",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_d5867a99dedaab74",
+      "discoveryId": "gdi_disc_d5867a99dedaab74",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "education_scientific",
+      "org": "Temerty Faculty of Medicine, University of Toronto",
+      "programme": "Second Annual University of Toronto Obstetric Anesthesia Conference",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_1d1d612a77f8f1c9",
+      "discoveryId": "gdi_disc_1d1d612a77f8f1c9",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "education_scientific",
+      "org": "International Association for Educational Assessment",
+      "programme": "51st Annual IAEA Conference",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_8684edf97eeb0786",
+      "discoveryId": "gdi_disc_8684edf97eeb0786",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "government_public_sector",
+      "org": "City of Toronto Strategic Protocol & External Relations",
+      "programme": "Study Tours & Delegation Requests",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_a1e092b46a373d7c",
+      "discoveryId": "gdi_disc_a1e092b46a373d7c",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "government_public_sector",
+      "org": "Metrolinx",
+      "programme": "Canadian Rail Operating Rules (MX CROR) Certification Training",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_5af5978243dd749d",
+      "discoveryId": "gdi_disc_5af5978243dd749d",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "government_public_sector",
+      "org": "City of Toronto Parks, Recreation and Forestry",
+      "programme": "2026 Aquatic Fitness Conference and Instructor Certification/Recertification",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_f828e4868c96433e",
+      "discoveryId": "gdi_disc_f828e4868c96433e",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "government_public_sector",
+      "org": "Environment and Climate Change Canada and ICLEI Canada",
+      "programme": "Adaptation Canada 2026 Conference",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_3a2fe0e8bab05615",
+      "discoveryId": "gdi_disc_3a2fe0e8bab05615",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "government_public_sector",
+      "org": "Government of Canada, CPP Investments and PSP Investments",
+      "programme": "Canada Investment Summit 2026",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_479be748206ae3ff",
+      "discoveryId": "gdi_disc_479be748206ae3ff",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "local_catering_day_meetings",
+      "org": "International Downtown Association (IDA)",
+      "programme": "72nd Annual Conference & Marketplace — Intersections",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_045d89e863d2b109",
+      "discoveryId": "gdi_disc_045d89e863d2b109",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "projects_infrastructure",
+      "org": "Metrolinx",
+      "programme": "Ontario Line",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_426cebd2887dc478",
+      "discoveryId": "gdi_disc_426cebd2887dc478",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "projects_infrastructure",
+      "org": "Waterfront Toronto / Eastern Construction",
+      "programme": "Quayside Infrastructure and Public Realm",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_8a7c6c59883b3056",
+      "discoveryId": "gdi_disc_8a7c6c59883b3056",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "projects_infrastructure",
+      "org": "Waterfront Toronto / EllisDon",
+      "programme": "Port Lands Flood Protection and Lake Shore Boulevard East Projects",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_41a1958cbc1e98fb",
+      "discoveryId": "gdi_disc_41a1958cbc1e98fb",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "projects_infrastructure",
+      "org": "Greater Toronto Airports Authority",
+      "programme": "Pearson LIFT (Long-term Investment in Facilities and Terminals)",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_5191fb3e7f7780a5",
+      "discoveryId": "gdi_disc_5191fb3e7f7780a5",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "projects_infrastructure",
+      "org": "City of Toronto / Alberici Constructors Ltd. / AECOM Canada ULC",
+      "programme": "Island Water Treatment Plant UV Disinfection and Residuals Management Facility",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_40c82796e2472174",
+      "discoveryId": "gdi_disc_40c82796e2472174",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "projects_infrastructure",
+      "org": "North York General Hospital",
+      "programme": "Long-Term Care Home development",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_f86d4769e1105051",
+      "discoveryId": "gdi_disc_f86d4769e1105051",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "projects_infrastructure",
+      "org": "Yondr Group",
+      "programme": "27MW Toronto Data Center",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_a5727a7738c33411",
+      "discoveryId": "gdi_disc_a5727a7738c33411",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "relocation_extended_stay",
+      "org": "TMX Group",
+      "programme": "Global Mobility Partner / international talent mobility framework",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_7ef7be5320dc738b",
+      "discoveryId": "gdi_disc_7ef7be5320dc738b",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "relocation_extended_stay",
+      "org": "University of Toronto School of Cities",
+      "programme": "Visiting Professors",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_e2d445e3431f7a21",
+      "discoveryId": "gdi_disc_e2d445e3431f7a21",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "relocation_extended_stay",
+      "org": "York University",
+      "programme": "York Suites temporary accommodation",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_9c2c2ffcb7dbf76e",
+      "discoveryId": "gdi_disc_9c2c2ffcb7dbf76e",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "relocation_extended_stay",
+      "org": "SickKids",
+      "programme": "Alan Brown Building rental housing for new and relocating staff",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_002c2ccb5ef8a709",
+      "discoveryId": "gdi_disc_002c2ccb5ef8a709",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "relocation_extended_stay",
+      "org": "University Health Network",
+      "programme": "Rest Safe hoteling programme",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_1e4d530acc1e8e0d",
+      "discoveryId": "gdi_disc_1e4d530acc1e8e0d",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "relocation_extended_stay",
+      "org": "TIFF",
+      "programme": "TIFF: The Market 2026 industry accreditation",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 2,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_8a7b6663208bf5c7",
+      "discoveryId": "gdi_disc_8a7b6663208bf5c7",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "relocation_extended_stay",
+      "org": "ICLEI Canada / Adaptation Canada 2026",
+      "programme": "Adaptation Canada 2026 conference",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    },
+    {
+      "id": "gdi_disc_1fccbaec05459a01",
+      "discoveryId": "gdi_disc_1fccbaec05459a01",
+      "status": "QUEUED_FOR_DEEP_RESEARCH",
+      "disposition": null,
+      "segment": "relocation_extended_stay",
+      "org": "The Hospital for Sick Children (SickKids)",
+      "programme": "Alan Brown Building staff rental housing",
+      "guestroom": "EVIDENCE_SUPPORTED",
+      "urlCount": 1,
+      "megaBias": false,
+      "midSizeSegment": true,
+      "lossReasons": [
+        "DEEP_RESEARCH_NOT_STARTED",
+        "NO_EXACT_DATE_IN_THIN_LEDGER",
+        "RADISSON_ALREADY_MENTIONED_IN_EVIDENCE"
+      ],
+      "awaitingFounder": false,
+      "stagedFlag": false,
+      "recoveryPriority": -12
+    }
+  ]
+}
