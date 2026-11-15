@@ -46,6 +46,9 @@ paths = [
   # Radisson Blu Toronto $15 paid Full E2E: research run keys + public CalendarEventKey URLs in reports/raw-runs (PR #290).
   '''reports/gdi-radisson-blu-toronto-paid-full-e2e-15usd-v1/.*\.json$''',
   '''reports/gdi-radisson-blu-toronto-paid-full-e2e-15usd-v1/raw-runs/.*\.json$''',
+  # Radisson Blu Toronto $20 14-segment Exa expansion: research run keys + public CalendarEventKey URLs in reports/raw-runs.
+  '''reports/gdi-radisson-toronto-14-segment-exa-expansion-20usd-v1/.*\.json$''',
+  '''reports/gdi-radisson-toronto-14-segment-exa-expansion-20usd-v1/raw-runs/.*\.json$''',
   '''reports/hotel-census/ac-spice-persistence-reconciliation-v1/PHASE0_1_INVENTORY\.json$''',
   '''reports/hotel-intelligence/ac-spice-reconciliation-v1/SUMMARY-dry\.json$''',
   '''reports/hotel-intelligence/ac-spice-reconciliation-v1/ac-hi-apply-dry\.json$''',
@@ -60,8 +63,8 @@ regexes = [
   # Proven false positives: generated census/research identifier values.
   '''"key"\s*:\s*"(?:ind|dfs|rb|osm)[-_:][A-Za-z0-9._:-]+"''',
   '''"key"\s*:\s*"[A-Fa-f0-9]{40}"''',
-  # Radisson/GDI paid-batch research run ids (`deepA_rb_…`, `deepB_rb_…`, `cmiC_rbc_…`), not API secrets (PR #290).
-  '''"key"\s*:\s*"(?:deep[ABC]|cmiC|discC)_[A-Za-z0-9._:-]+"''',
+  # Radisson/GDI paid-batch research run ids (`deepA_rb_…`, `deepB_rb_…`, `cmiC_rbc_…`, `pass1_…`), not API secrets.
+  '''"key"\s*:\s*"(?:deep[ABC]|cmiC|discC|pass[123]|p1|p2|p3|rx_)[A-Za-z0-9._:-]+"''',
 
   '''(?i)"property_token"\s*:''',
   '''(?i)"property_identity_key"\s*:''',
