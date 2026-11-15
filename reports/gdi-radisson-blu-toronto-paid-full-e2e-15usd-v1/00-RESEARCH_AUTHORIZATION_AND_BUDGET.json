@@ -1,0 +1,55 @@
+{
+  "authorizationId": "FOUNDER_APPROVE_RADISSON_BLU_TORONTO_PAID_FULL_E2E_15USD_20261115",
+  "hardCeilingUsd": 15,
+  "incrementalOnly": true,
+  "providers": {
+    "exa": true,
+    "parallel": false,
+    "surfe": false,
+    "surfeAutoInvoke": false
+  },
+  "quotes": {
+    "medium": {
+      "bounded": true,
+      "maxUsd": 0.1,
+      "assumption": "exa agent fixed effort=medium (contact enrichment not included)",
+      "sources": [
+        "https://exa.ai/docs/reference/agent-api-guide",
+        "https://exa.ai/docs/admin/pricing"
+      ],
+      "asOf": "2026-10-24"
+    },
+    "high": {
+      "bounded": true,
+      "maxUsd": 0.5,
+      "assumption": "exa agent fixed effort=high (contact enrichment not included)",
+      "sources": [
+        "https://exa.ai/docs/reference/agent-api-guide",
+        "https://exa.ai/docs/admin/pricing"
+      ],
+      "asOf": "2026-10-24"
+    }
+  },
+  "stageCapsUsd": {
+    "BATCH_A": 4,
+    "BATCH_B": 6,
+    "BATCH_C": 5
+  },
+  "maxDeepRuns": {
+    "BATCH_A": 8,
+    "BATCH_B": 12,
+    "BATCH_C": 10
+  },
+  "concurrency": 2,
+  "resumedSpendUsdAtStart": 0,
+  "mode": "PAID_AUTHORIZED",
+  "constraints": [
+    "No Surfe",
+    "No Parallel",
+    "No CUSTOMER_PUBLISHED",
+    "Airtable dry-run only (0 writes)",
+    "Bethesda / Sheraton / Wyndham publications unchanged"
+  ],
+  "referenceDate": "2026-11-15",
+  "horizon": "2026-12 through 2028-06"
+}

@@ -43,6 +43,9 @@ paths = [
   '''reports/gdi-bethesda-88-apply-approved-canonical-contact-patches-v1/.*\.json$''',
   # Wyndham Exa raw-runs embed public ASP.NET/SharePoint sponsorship URLs with hkey= UUID query tokens (PR #287).
   '''reports/gdi-wyndham-alltra-20usd-full-e2e-v1/raw-runs/.*\.json$''',
+  # Radisson Blu Toronto $15 paid Full E2E: research run keys + public CalendarEventKey URLs in reports/raw-runs (PR #290).
+  '''reports/gdi-radisson-blu-toronto-paid-full-e2e-15usd-v1/.*\.json$''',
+  '''reports/gdi-radisson-blu-toronto-paid-full-e2e-15usd-v1/raw-runs/.*\.json$''',
   '''reports/hotel-census/ac-spice-persistence-reconciliation-v1/PHASE0_1_INVENTORY\.json$''',
   '''reports/hotel-intelligence/ac-spice-reconciliation-v1/SUMMARY-dry\.json$''',
   '''reports/hotel-intelligence/ac-spice-reconciliation-v1/ac-hi-apply-dry\.json$''',
@@ -57,6 +60,8 @@ regexes = [
   # Proven false positives: generated census/research identifier values.
   '''"key"\s*:\s*"(?:ind|dfs|rb|osm)[-_:][A-Za-z0-9._:-]+"''',
   '''"key"\s*:\s*"[A-Fa-f0-9]{40}"''',
+  # Radisson/GDI paid-batch research run ids (`deepA_rb_…`, `deepB_rb_…`, `cmiC_rbc_…`), not API secrets (PR #290).
+  '''"key"\s*:\s*"(?:deep[ABC]|cmiC|discC)_[A-Za-z0-9._:-]+"''',
 
   '''(?i)"property_token"\s*:''',
   '''(?i)"property_identity_key"\s*:''',
@@ -73,6 +78,8 @@ regexes = [
   # Hunter→Exa orchestration report IDs (`disc_<hex>`), not provider API secrets.
   # False positive: generic-api-key on "discoveryKey" in zero-paid orch JSON (PR #225).
   '''(?i)"discoveryKey"\s*:''',
+  # Historical CMI candidate labels (`GBTA_CANADA_2027_WESTIN_CMI`), not API secrets (PR #290).
+  '''(?i)"namedKey"\s*:''',
 
   # GDI publication package content fingerprints (SHA-256), not API secrets.
   # False positive: generic-api-key on "apiFingerprint" / "expectedFingerprint" in browser verification reports (PR #285).
@@ -83,6 +90,8 @@ regexes = [
 
   # Public ASP.NET/SharePoint portal URL query tokens (hkey=UUID), not Dealality API secrets (PR #287).
   '''(?i)[?&]hkey=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}''',
+  # Public event CMS query tokens (CalendarEventKey=UUID) embedded in research URLs (PR #290).
+  '''(?i)[?&]CalendarEventKey=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}''',
 
   # Proven placeholders / metadata false positives.
   '''(?i)Authorization:\s*Bearer\s+YOUR_TOKEN''',
