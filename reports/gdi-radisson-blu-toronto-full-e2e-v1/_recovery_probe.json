@@ -1,0 +1,759 @@
+{
+  "contract": "GDI_RADISSON_BLU_TORONTO_FULL_E2E_RECOVERY_PROBE_V1",
+  "generatedAt": "2026-11-15T19:30:38.006Z",
+  "hotelId": "recH9h3McgMNFQEla",
+  "propertyCode": "CNC41",
+  "hotelName": "Radisson Blu Toronto Downtown",
+  "mode": "ZERO_PAID_ON_DISK_RECOVERY",
+  "paidApisCalled": false,
+  "verdict": {
+    "recoveryCompleteness": "PARTIAL",
+    "primaryRecoverableAsset": "discovery_ledger_four_hotel_14_workflow",
+    "missingCriticalAssets": [
+      "reports/gdi-four-hotel-14-workflow-full-e2e/live-execution/radisson-blu-toronto-downtown/** (Exa discovery pass JSONs)",
+      "artifacts/deep/** deep-research JSON bodies (24 path pointers in ledger; 0 files on disk)",
+      "data/group-demand-intelligence/hotels/recH9h3McgMNFQEla/opportunities.json",
+      "ORS dossiers",
+      "full-e2e-fourteen-segment-state",
+      "publication packages for this hotelId",
+      "independent CERTIFIED_SALES_READY / CERTIFIED_ACCOUNT_DEVELOPMENT result package (5 SR + 1 AD not found as persisted output)"
+    ],
+    "note": "Ledger embeds structured Exa candidate fields + dispositions. Twin recovery/spice ledgers are byte-identical (SHA256 C48A839B...). Independent certification module exists as algorithm only; no hotel-specific cert result JSON found."
+  },
+  "artifactInventory": {
+    "gdiPrimary": [
+      {
+        "path": "C:/Dev/dealality/_railway-lean-stage-gdi-spice-recovery-v1/data/group-demand-intelligence/discovery-ledgers/recH9h3McgMNFQEla/four-hotel-14-workflow-full-e2e-v1.json",
+        "bytes": 1640575,
+        "role": "discovery_ledger",
+        "present": true,
+        "sha256": "C48A839BC2202C0618E52B9E3D113038B7AF137C9B1E169C6D8E0604D430FF99"
+      },
+      {
+        "path": "C:/Dev/dealality/_railway-lean-stage-gdi-spice/data/group-demand-intelligence/discovery-ledgers/recH9h3McgMNFQEla/four-hotel-14-workflow-full-e2e-v1.json",
+        "bytes": 1640575,
+        "role": "discovery_ledger_twin_identical",
+        "present": true,
+        "sha256": "C48A839BC2202C0618E52B9E3D113038B7AF137C9B1E169C6D8E0604D430FF99"
+      },
+      {
+        "path": "C:\\\\Dev\\\\dealality\\\\_railway-lean-stage-gdi-spice-recovery-v1\\\\config\\\\group-demand-intelligence\\\\hotels\\\\recH9h3McgMNFQEla.json",
+        "bytes": 2367,
+        "role": "hotel_config",
+        "present": true
+      },
+      {
+        "path": "C:\\\\Dev\\\\dealality\\\\_railway-lean-stage-gdi-spice\\\\config\\\\group-demand-intelligence\\\\hotels\\\\recH9h3McgMNFQEla.json",
+        "bytes": 2367,
+        "role": "hotel_config_twin",
+        "present": true
+      },
+      {
+        "path": "C:\\\\Dev\\\\dealality\\\\_railway-lean-stage-gdi-spice-recovery-v1\\\\lib\\\\group-demand-intelligence\\\\research\\\\independent-sales-ready-certification-v1.js",
+        "bytes": 15462,
+        "role": "certification_algorithm_module",
+        "present": true
+      },
+      {
+        "path": "C:\\\\Dev\\\\dealality\\\\_railway-lean-stage-gdi-spice\\\\lib\\\\group-demand-intelligence\\\\research\\\\independent-sales-ready-certification-v1.js",
+        "bytes": 15462,
+        "role": "certification_algorithm_module_twin",
+        "present": true
+      },
+      {
+        "path": "C:\\\\Dev\\\\dealality\\\\_railway-lean-stage-gdi-spice-recovery-v1\\\\lib\\\\group-demand-intelligence\\\\research\\\\discovery-to-decision\\\\four-hotel-artifact-backfill-v1.js",
+        "role": "backfill_code_expects_live_execution_tree",
+        "present": true
+      }
+    ],
+    "missingExpectedGdi": [
+      {
+        "path": "reports/gdi-four-hotel-14-workflow-full-e2e/live-execution/radisson-blu-toronto-downtown",
+        "present": false,
+        "expectedFrom": "ledger.provenance.artifactPath"
+      },
+      {
+        "path": "artifacts/deep (hotel-local under live-execution)",
+        "present": false,
+        "pointerCountInLedger": 23
+      },
+      {
+        "path": "data/group-demand-intelligence/hotels/recH9h3McgMNFQEla",
+        "present": false
+      },
+      {
+        "path": "opportunities.json for recH9h3McgMNFQEla",
+        "present": false,
+        "searchedAcross": "C:\\\\Dev\\\\dealality (no hotelId match)"
+      },
+      {
+        "path": "ORS / fourteen-segment-state / publication-packages for recH9h3McgMNFQEla",
+        "present": false
+      }
+    ],
+    "relatedNonGdiAdpArtifacts": {
+      "note": "ADP/AVA artifacts exist for same hotel identity but are NOT GDI research recovery sources",
+      "fixtureProfile": "C:\\\\Dev\\\\dealality\\\\my-operators-backend\\\\fixtures\\\\ai-demand-positioning\\\\radisson-blu-toronto-downtown-property-profile.json",
+      "adpReportsDir": "C:\\\\Dev\\\\dealality\\\\my-operators-backend\\\\reports\\\\adp\\\\radisson-blu-toronto-downtown-full-e2e",
+      "hotelDirsNamedRecH9": "only discovery-ledgers under spice + spice-recovery-v1 (2 files total)"
+    },
+    "counts": {
+      "discoveryLedgerCandidates": 272,
+      "uniqueExaRunIds": 28,
+      "deepArtifactPathPointers": 23,
+      "deepArtifactFilesOnDisk": 0,
+      "hotelConfigFiles": 2,
+      "opportunitiesJsonForHotel": 0,
+      "orsDossiers": 0,
+      "publicationPackagesForHotel": 0,
+      "fourteenSegmentStateFiles": 0
+    }
+  },
+  "discoveryLedgerStats": {
+    "version": "gdi-discovery-candidate-ledger-document-v1",
+    "schema": "gdi-discovery-candidate-ledger-v1",
+    "researchCampaignId": "four-hotel-14-workflow-full-e2e-v1",
+    "hotelKey": "radisson-blu-toronto-downtown",
+    "generatedAt": "2026-11-04T19:09:12.571Z",
+    "totalDiscoveries": 272,
+    "uniqueOrganizations": 226,
+    "uniqueEventsOrProgrammes": 207,
+    "discoveryPasses": {
+      "pass1": 137,
+      "pass2": 135
+    },
+    "segmentBreakdown": {
+      "association_events": 21,
+      "corporate_celebrations_private_events": 20,
+      "corporate_meetings_incentives": 20,
+      "education_scientific": 20,
+      "government_public_sector": 20,
+      "local_catering_day_meetings": 20,
+      "preferred_lodging": 20,
+      "professional_event_planners": 20,
+      "projects_infrastructure": 20,
+      "relocation_extended_stay": 18,
+      "scaling_companies": 16,
+      "social_special_events": 20,
+      "sports_entertainment": 20,
+      "travel_trade_group_intermediaries": 17
+    },
+    "researchStatusBreakdown": {
+      "QUEUED_FOR_DEEP_RESEARCH": 209,
+      "DUPLICATE": 36,
+      "AWAITING_FOUNDER_PROMOTION": 15,
+      "RESEARCH_CONTINUATION": 6,
+      "WATCH": 5,
+      "REJECTED": 1
+    },
+    "dispositionCodeBreakdown": {
+      "DEEP_RESEARCH_NOT_STARTED": 209,
+      "DUPLICATE_SAME_ORG_CROSS_PASS": 36,
+      "AWAITING_FOUNDER_PROMOTION": 15,
+      "RESEARCH_CONTINUATION_GAPS": 6,
+      "WATCH_INSUFFICIENT_EVIDENCE": 5,
+      "REJECTED_COMMERCIAL": 1
+    },
+    "stagedFlagTrue": 27,
+    "deepResearch": {
+      "candidatesWithDeepArtifactPath": 24,
+      "uniqueDeepPaths": 23,
+      "deepArtifactFilesRecoveredOnDisk": 0,
+      "deepResearchCostUsdSumInLedger": 0,
+      "note": "Deep research appears to have run historically (paths + staged Sales Ready labels), but JSON bodies are absent from this recovery tree"
+    },
+    "exa": {
+      "uniqueExaRunIds": 28,
+      "sampleExaRunIds": [
+        "agent_run_68d7d28886df41bf8306972eb478f257",
+        "agent_run_7b88acdf523647fbaf8f96a396dcd022",
+        "agent_run_c0ac8e0f21b7474cb7bd8dcea07cb83e",
+        "agent_run_f89abc0c9bc74c0f850c1c3e392c816a",
+        "agent_run_ad4db3b3a62240ec8cab07b1583e270c",
+        "agent_run_a1f3a879fcae43858bde67e89d7d89a1",
+        "agent_run_fac93e474f4a4548bc42db538156d848",
+        "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21"
+      ],
+      "rawExaAgentBodiesOnDisk": false,
+      "note": "Ledger note: Structured candidate fields persisted; raw Agent text/grounding not stored in four-hotel discovery writes. Referenced pass-1/pass-2 discovery JSONs missing."
+    }
+  },
+  "independentSalesReadyCertification": {
+    "modulePresent": true,
+    "moduleVersion": "gdi-independent-sales-ready-certification-v1",
+    "hotelRegisteredInModule": true,
+    "hotelMeta": {
+      "slug": "radisson-blu-toronto-downtown",
+      "name": "Radisson Blu Toronto Downtown",
+      "marketTokens": [
+        "toronto",
+        "ontario",
+        "canada",
+        "queens quay"
+      ]
+    },
+    "persistedCertificationResultPackage": null,
+    "expectedFromUserMemory": {
+      "certifiedSalesReady": 5,
+      "certifiedAccountDevelopment": 1,
+      "priorStaged": 15,
+      "statusOnDisk": "NOT_FOUND — cannot reconstruct 5+1 split without deep artifacts / opportunities.json / cert output report"
+    },
+    "ledgerPriorStagedSalesReady": {
+      "awaitingFounderPromotionRows": 15,
+      "uniqueOpportunityIds": 12,
+      "allLabeledAcceptance": "SALES_READY",
+      "accountDevelopmentLabeledInLedger": 0,
+      "customerFacing": false,
+      "opportunities": [
+        {
+          "opportunityId": "gdi_s4912_e0994273aef6",
+          "acceptance": "SALES_READY",
+          "rows": [
+            {
+              "discoveryId": "gdi_disc_1f2350b20d7dfa28",
+              "organizationName": "University of Toronto Temerty Faculty of Medicine",
+              "title": "Walter Wright Symposium 2026",
+              "segmentId": "corporate_meetings_incentives",
+              "deepArtifactPath": null,
+              "deepArtifactOnDisk": false
+            },
+            {
+              "discoveryId": "gdi_disc_06c62467ae3040d5",
+              "organizationName": "University of Toronto Temerty Faculty of Medicine Continuing Professional Development",
+              "title": "Walter Wright Symposium 2026",
+              "segmentId": "education_scientific",
+              "deepArtifactPath": "artifacts/deep/education_scientific/university-of-toronto-temerty-faculty-of-medicine-continuing-professional-develo.json",
+              "deepArtifactOnDisk": false
+            },
+            {
+              "discoveryId": "gdi_disc_0358d3ed35945b82",
+              "organizationName": "University of Toronto / Temerty Faculty of Medicine",
+              "title": "Temerty Building biomedical research hub",
+              "segmentId": "projects_infrastructure",
+              "deepArtifactPath": null,
+              "deepArtifactOnDisk": false
+            },
+            {
+              "discoveryId": "gdi_disc_80a796ab095b03a2",
+              "organizationName": "University of Toronto",
+              "title": "New Faculty Housing and Visiting Faculty Housing",
+              "segmentId": "relocation_extended_stay",
+              "deepArtifactPath": null,
+              "deepArtifactOnDisk": false
+            }
+          ]
+        },
+        {
+          "opportunityId": "gdi_s4912_7603e4096c33",
+          "acceptance": "SALES_READY",
+          "rows": [
+            {
+              "discoveryId": "gdi_disc_95834dec5b946775",
+              "organizationName": "UHN Collaborative Centre for Immunology to Immunotherapy / EPIC",
+              "title": "2026 Ci2i Symposium",
+              "segmentId": "education_scientific",
+              "deepArtifactPath": "artifacts/deep/education_scientific/uhn-collaborative-centre-for-immunology-to-immunotherapy-epic.json",
+              "deepArtifactOnDisk": false
+            }
+          ]
+        },
+        {
+          "opportunityId": "gdi_s4912_81a9c4232dbc",
+          "acceptance": "SALES_READY",
+          "rows": [
+            {
+              "discoveryId": "gdi_disc_51630b9334485277",
+              "organizationName": "Canadian Institute for Theoretical Astrophysics, University of Toronto",
+              "title": "CITA@40 Conference",
+              "segmentId": "education_scientific",
+              "deepArtifactPath": "artifacts/deep/education_scientific/canadian-institute-for-theoretical-astrophysics-university-of-toronto.json",
+              "deepArtifactOnDisk": false
+            }
+          ]
+        },
+        {
+          "opportunityId": "gdi_s4912_bd898f791fea",
+          "acceptance": "SALES_READY",
+          "rows": [
+            {
+              "discoveryId": "gdi_disc_215f7ed5f2e5f064",
+              "organizationName": "Society for Social Studies of Science (4S)",
+              "title": "4S 2026 Toronto Annual Meeting",
+              "segmentId": "education_scientific",
+              "deepArtifactPath": "artifacts/deep/education_scientific/society-for-social-studies-of-science-4s-.json",
+              "deepArtifactOnDisk": false
+            }
+          ]
+        },
+        {
+          "opportunityId": "gdi_s4912_6edf582b5bd1",
+          "acceptance": "SALES_READY",
+          "rows": [
+            {
+              "discoveryId": "gdi_disc_f0591c8a7bdaa586",
+              "organizationName": "Transport Canada and U.S. National Highway Traffic Safety Administration",
+              "title": "28th International Technical Conference on the Enhanced Safety of Vehicles (ESV)",
+              "segmentId": "government_public_sector",
+              "deepArtifactPath": "artifacts/deep/government_public_sector/transport-canada-and-u-s-national-highway-traffic-safety-administration.json",
+              "deepArtifactOnDisk": false
+            }
+          ]
+        },
+        {
+          "opportunityId": "gdi_s4912_f6bbd530d198",
+          "acceptance": "SALES_READY",
+          "rows": [
+            {
+              "discoveryId": "gdi_disc_2f7f1d5d74cc8d4a",
+              "organizationName": "Global Affairs Canada, Ukraine and Norway",
+              "title": "Pathways to Peace: Second International Conference on Returning Ukrainian Children, Detained Civilians, and Prisoners of War",
+              "segmentId": "government_public_sector",
+              "deepArtifactPath": "artifacts/deep/government_public_sector/global-affairs-canada-ukraine-and-norway.json",
+              "deepArtifactOnDisk": false
+            }
+          ]
+        },
+        {
+          "opportunityId": "gdi_s4912_414566e66656",
+          "acceptance": "SALES_READY",
+          "rows": [
+            {
+              "discoveryId": "gdi_disc_0e08963b52c2a66a",
+              "organizationName": "Toronto International Boat Show",
+              "title": "2027 Toronto International Boat Show",
+              "segmentId": "sports_entertainment",
+              "deepArtifactPath": "artifacts/deep/sports_entertainment/toronto-international-boat-show.json",
+              "deepArtifactOnDisk": false
+            }
+          ]
+        },
+        {
+          "opportunityId": "gdi_s4912_1f1bc65c7103",
+          "acceptance": "SALES_READY",
+          "rows": [
+            {
+              "discoveryId": "gdi_disc_86fe9823cccec6d0",
+              "organizationName": "Tennis Canada",
+              "title": "2027 National Bank Open presented by Rogers — Toronto",
+              "segmentId": "sports_entertainment",
+              "deepArtifactPath": "artifacts/deep/sports_entertainment/tennis-canada.json",
+              "deepArtifactOnDisk": false
+            }
+          ]
+        },
+        {
+          "opportunityId": "gdi_s4912_d46e3e911701",
+          "acceptance": "SALES_READY",
+          "rows": [
+            {
+              "discoveryId": "gdi_disc_044b5ff78f9be776",
+              "organizationName": "Toronto Tempo / WNBA",
+              "title": "Inaugural 2026 WNBA season",
+              "segmentId": "sports_entertainment",
+              "deepArtifactPath": "artifacts/deep/sports_entertainment/toronto-tempo-wnba.json",
+              "deepArtifactOnDisk": false
+            }
+          ]
+        },
+        {
+          "opportunityId": "gdi_s4912_3c0fbbf6348d",
+          "acceptance": "SALES_READY",
+          "rows": [
+            {
+              "discoveryId": "gdi_disc_593813bd4d4c2e2a",
+              "organizationName": "GROWTH MICE & DMC",
+              "title": "Generali Hellas Annual Incentive Trip in Canada (September 2022)",
+              "segmentId": "travel_trade_group_intermediaries",
+              "deepArtifactPath": "artifacts/deep/travel_trade_group_intermediaries/growth-mice-dmc.json",
+              "deepArtifactOnDisk": false
+            }
+          ]
+        },
+        {
+          "opportunityId": "gdi_s4912_4074294dab18",
+          "acceptance": "SALES_READY",
+          "rows": [
+            {
+              "discoveryId": "gdi_disc_02cab5cc9e3c9eae",
+              "organizationName": "Canadian Tours International (CTI Destination Management)",
+              "title": "Toronto–Montreal group and team-building incentive programmes",
+              "segmentId": "travel_trade_group_intermediaries",
+              "deepArtifactPath": "artifacts/deep/travel_trade_group_intermediaries/canadian-tours-international-cti-destination-management-.json",
+              "deepArtifactOnDisk": false
+            }
+          ]
+        },
+        {
+          "opportunityId": "gdi_s4912_52b96ea3d6e6",
+          "acceptance": "SALES_READY",
+          "rows": [
+            {
+              "discoveryId": "gdi_disc_ad21910e7e20100c",
+              "organizationName": "Canadian Tours International",
+              "title": "Toronto Incentive Programme and Corporate Group Operations",
+              "segmentId": "travel_trade_group_intermediaries",
+              "deepArtifactPath": "artifacts/deep/travel_trade_group_intermediaries/canadian-tours-international.json",
+              "deepArtifactOnDisk": false
+            }
+          ]
+        }
+      ]
+    },
+    "otherStagedNonPromotion": [
+      {
+        "organizationName": "Society of Interventional Oncology",
+        "title": null,
+        "researchStatus": "RESEARCH_CONTINUATION",
+        "dispositionCode": "RESEARCH_CONTINUATION_GAPS",
+        "segmentId": "association_events",
+        "deepArtifactPath": "artifacts/deep/association_events/society-of-interventional-oncology.json"
+      },
+      {
+        "organizationName": "Endocrine Society",
+        "title": null,
+        "researchStatus": "RESEARCH_CONTINUATION",
+        "dispositionCode": "RESEARCH_CONTINUATION_GAPS",
+        "segmentId": "association_events",
+        "deepArtifactPath": "artifacts/deep/association_events/endocrine-society.json"
+      },
+      {
+        "organizationName": "Ontario Retirement Communities Association and Ontario Long Term Care Association",
+        "title": null,
+        "researchStatus": "RESEARCH_CONTINUATION",
+        "dispositionCode": "RESEARCH_CONTINUATION_GAPS",
+        "segmentId": "association_events",
+        "deepArtifactPath": "artifacts/deep/association_events/ontario-retirement-communities-association-and-ontario-long-term-care-associatio.json"
+      },
+      {
+        "organizationName": "Employee Experience Summit / event organizer not further verified",
+        "title": null,
+        "researchStatus": "RESEARCH_CONTINUATION",
+        "dispositionCode": "RESEARCH_CONTINUATION_GAPS",
+        "segmentId": "association_events",
+        "deepArtifactPath": "artifacts/deep/association_events/employee-experience-summit-event-organizer-not-further-verified.json"
+      },
+      {
+        "organizationName": "Institute for Performance and Learning",
+        "title": "I4PL Conference 2026",
+        "researchStatus": "RESEARCH_CONTINUATION",
+        "dispositionCode": "RESEARCH_CONTINUATION_GAPS",
+        "segmentId": "corporate_meetings_incentives",
+        "deepArtifactPath": "artifacts/deep/corporate_meetings_incentives/institute-for-performance-and-learning-i4pl-.json"
+      },
+      {
+        "organizationName": "First Nations Major Projects Coalition",
+        "title": "FNMPC 9th Annual Conference 2026",
+        "researchStatus": "WATCH",
+        "dispositionCode": "WATCH_INSUFFICIENT_EVIDENCE",
+        "segmentId": "corporate_meetings_incentives",
+        "deepArtifactPath": "artifacts/deep/corporate_meetings_incentives/first-nations-major-projects-coalition.json"
+      },
+      {
+        "organizationName": "World’s Poultry Congress",
+        "title": "World’s Poultry Congress 2026 Toronto",
+        "researchStatus": "WATCH",
+        "dispositionCode": "WATCH_INSUFFICIENT_EVIDENCE",
+        "segmentId": "corporate_meetings_incentives",
+        "deepArtifactPath": "artifacts/deep/corporate_meetings_incentives/world-s-poultry-congress.json"
+      },
+      {
+        "organizationName": "Institute for Performance and Learning (I4PL)",
+        "title": "I4PL 2026 Annual National Conference",
+        "researchStatus": "RESEARCH_CONTINUATION",
+        "dispositionCode": "RESEARCH_CONTINUATION_GAPS",
+        "segmentId": "corporate_meetings_incentives",
+        "deepArtifactPath": "artifacts/deep/corporate_meetings_incentives/institute-for-performance-and-learning-i4pl-.json"
+      },
+      {
+        "organizationName": "Ontario Non-Profit Housing Association (ONPHA)",
+        "title": "ONPHA 2026 Conference: Forward by Design",
+        "researchStatus": "REJECTED",
+        "dispositionCode": "REJECTED_COMMERCIAL",
+        "segmentId": "corporate_meetings_incentives",
+        "deepArtifactPath": "artifacts/deep/corporate_meetings_incentives/ontario-non-profit-housing-association-onpha-.json"
+      },
+      {
+        "organizationName": "Ontario Ministry of Labour, Immigration, Training and Skills Development and Ontario Professional Fire Fighters Association",
+        "title": "Fire Ground Survival Train-the-Trainer Programme",
+        "researchStatus": "WATCH",
+        "dispositionCode": "WATCH_INSUFFICIENT_EVIDENCE",
+        "segmentId": "government_public_sector",
+        "deepArtifactPath": "artifacts/deep/government_public_sector/ontario-ministry-of-labour-immigration-training-and-skills-development-and-ontar.json"
+      },
+      {
+        "organizationName": "SummerWorks",
+        "title": "2026 SummerWorks Festival — August 6–16, 2026",
+        "researchStatus": "WATCH",
+        "dispositionCode": "WATCH_INSUFFICIENT_EVIDENCE",
+        "segmentId": "sports_entertainment",
+        "deepArtifactPath": "artifacts/deep/sports_entertainment/summerworks.json"
+      },
+      {
+        "organizationName": "MCC Destination Management / Moore Carlyle Consulting",
+        "title": "Toronto and Niagara Falls corporate and incentive programmes",
+        "researchStatus": "WATCH",
+        "dispositionCode": "WATCH_INSUFFICIENT_EVIDENCE",
+        "segmentId": "travel_trade_group_intermediaries",
+        "deepArtifactPath": "artifacts/deep/travel_trade_group_intermediaries/mcc-destination-management-moore-carlyle-consulting.json"
+      }
+    ]
+  },
+  "namedHistoricalOpportunities": {
+    "ODA_ASM27": {
+      "primaryDiscoveryId": "gdi_disc_6d34a4b2e45feaf3",
+      "organizationName": "Ontario Dental Association",
+      "title": "ASM27 — Ontario Dental Association Annual Spring Meeting",
+      "dates": "2027-05-06 to 2027-05-08",
+      "startDate": "2027-05-06",
+      "endDate": "2027-05-08",
+      "venue": "Metro Toronto Convention Centre, South Building",
+      "city": "Toronto",
+      "attendance": null,
+      "contacts": null,
+      "competitorCommitment": null,
+      "hotelSourcingStatus": "venue_confirmed",
+      "sourcingStatus": "likely_closed_incumbent",
+      "discoveryDisposition": "ACCEPT_FOR_DEEP_RESEARCH",
+      "researchStatus": "QUEUED_FOR_DEEP_RESEARCH",
+      "dispositionCode": "DEEP_RESEARCH_NOT_STARTED",
+      "dispositionLabel": "Deep research not started",
+      "qualificationLabels": {
+        "discoveryDisposition": "ACCEPT_FOR_DEEP_RESEARCH",
+        "hotelSourcingStatus": "venue_confirmed",
+        "sourcingStatus": "likely_closed_incumbent",
+        "researchStatus": "QUEUED_FOR_DEEP_RESEARCH",
+        "dispositionCode": "DEEP_RESEARCH_NOT_STARTED",
+        "independentCertification": null,
+        "note": "No Sales Ready / Account Development certification applied — deep research never started for these association events"
+      },
+      "preliminaryHotelFit": "157-room waterfront downtown hotel; plausible lodging/overflow and small ancillary meeting or F&B fit; no availability claim.",
+      "sources": [
+        "https://asm.oda.ca/"
+      ],
+      "exaRunId": "agent_run_68d7d28886df41bf8306972eb478f257",
+      "provenanceArtifactReferencedButMissing": "reports/gdi-four-hotel-14-workflow-full-e2e/live-execution/radisson-blu-toronto-downtown/artifacts/discovery/association_events/pass-1.json",
+      "ledgerRows": 2,
+      "duplicatePassDisposition": "DUPLICATE_SAME_ORG_CROSS_PASS"
+    },
+    "OWWA_WEAO_2027": {
+      "primaryDiscoveryId": "gdi_disc_2d592c1aec6a782f",
+      "organizationName": "Ontario Water Works Association and Water Environment Association of Ontario",
+      "title": "2027 Ontario Water & Wastewater Conference & Trade Show",
+      "dates": "2027-05-10 to 2027-05-13",
+      "startDate": "2027-05-10",
+      "endDate": "2027-05-13",
+      "venue": "Exhibition Place",
+      "city": "Toronto",
+      "attendance": "2000+",
+      "contacts": null,
+      "competitorCommitment": null,
+      "hotelSourcingStatus": "venue_confirmed",
+      "sourcingStatus": "likely_closed_incumbent",
+      "discoveryDisposition": "ACCEPT_FOR_DEEP_RESEARCH",
+      "researchStatus": "QUEUED_FOR_DEEP_RESEARCH",
+      "dispositionCode": "DEEP_RESEARCH_NOT_STARTED",
+      "dispositionLabel": "Deep research not started",
+      "qualificationLabels": {
+        "discoveryDisposition": "ACCEPT_FOR_DEEP_RESEARCH",
+        "hotelSourcingStatus": "venue_confirmed",
+        "sourcingStatus": "likely_closed_incumbent",
+        "researchStatus": "QUEUED_FOR_DEEP_RESEARCH",
+        "dispositionCode": "DEEP_RESEARCH_NOT_STARTED",
+        "independentCertification": null,
+        "note": "No Sales Ready / Account Development certification applied — deep research never started for these association events"
+      },
+      "preliminaryHotelFit": "157-room waterfront downtown hotel; plausible lodging/overflow and small ancillary meeting or F&B fit; no availability claim.",
+      "sources": [
+        "https://www.weao.org/2027-joint-conference-present-partner-and-connect/"
+      ],
+      "exaRunId": "agent_run_68d7d28886df41bf8306972eb478f257",
+      "provenanceArtifactReferencedButMissing": "reports/gdi-four-hotel-14-workflow-full-e2e/live-execution/radisson-blu-toronto-downtown/artifacts/discovery/association_events/pass-1.json",
+      "ledgerRows": 2,
+      "duplicatePassDisposition": "DEEP_RESEARCH_NOT_STARTED"
+    },
+    "ISCT_2027": {
+      "primaryDiscoveryId": "gdi_disc_dc428c1bd4c4e412",
+      "organizationName": "International Society for Cell & Gene Therapy",
+      "title": "ISCT 2027 Annual Meeting",
+      "dates": "2027-05-12 to 2027-05-15",
+      "startDate": "2027-05-12",
+      "endDate": "2027-05-15",
+      "venue": "Metro Toronto Convention Centre",
+      "city": "Toronto",
+      "attendance": "3000+",
+      "contacts": null,
+      "competitorCommitment": null,
+      "hotelSourcingStatus": "venue_confirmed",
+      "sourcingStatus": "likely_closed_incumbent",
+      "discoveryDisposition": "ACCEPT_FOR_DEEP_RESEARCH",
+      "researchStatus": "QUEUED_FOR_DEEP_RESEARCH",
+      "dispositionCode": "DEEP_RESEARCH_NOT_STARTED",
+      "dispositionLabel": "Deep research not started",
+      "qualificationLabels": {
+        "discoveryDisposition": "ACCEPT_FOR_DEEP_RESEARCH",
+        "hotelSourcingStatus": "venue_confirmed",
+        "sourcingStatus": "likely_closed_incumbent",
+        "researchStatus": "QUEUED_FOR_DEEP_RESEARCH",
+        "dispositionCode": "DEEP_RESEARCH_NOT_STARTED",
+        "independentCertification": null,
+        "note": "No Sales Ready / Account Development certification applied — deep research never started for these association events"
+      },
+      "preliminaryHotelFit": "157-room waterfront downtown hotel; plausible lodging/overflow and small ancillary meeting or F&B fit; no availability claim.",
+      "sources": [
+        "https://www.isctglobal.org/isct2027toronto/home"
+      ],
+      "exaRunId": "agent_run_68d7d28886df41bf8306972eb478f257",
+      "provenanceArtifactReferencedButMissing": "reports/gdi-four-hotel-14-workflow-full-e2e/live-execution/radisson-blu-toronto-downtown/artifacts/discovery/association_events/pass-1.json",
+      "ledgerRows": 2,
+      "duplicatePassDisposition": "DUPLICATE_SAME_ORG_CROSS_PASS"
+    },
+    "ESA_2027": {
+      "primaryDiscoveryId": "gdi_disc_f825d09516dd0b2a",
+      "organizationName": "Ecological Society of America",
+      "title": "ESA 2027 Annual Meeting",
+      "dates": "2027-07-25 to 2027-07-30",
+      "startDate": "2027-07-25",
+      "endDate": "2027-07-30",
+      "venue": "Metro Toronto Convention Centre",
+      "city": "Toronto",
+      "attendance": null,
+      "contacts": null,
+      "competitorCommitment": null,
+      "hotelSourcingStatus": "venue_confirmed",
+      "sourcingStatus": "likely_closed_incumbent",
+      "discoveryDisposition": "ACCEPT_FOR_DEEP_RESEARCH",
+      "researchStatus": "QUEUED_FOR_DEEP_RESEARCH",
+      "dispositionCode": "DEEP_RESEARCH_NOT_STARTED",
+      "dispositionLabel": "Deep research not started",
+      "qualificationLabels": {
+        "discoveryDisposition": "ACCEPT_FOR_DEEP_RESEARCH",
+        "hotelSourcingStatus": "venue_confirmed",
+        "sourcingStatus": "likely_closed_incumbent",
+        "researchStatus": "QUEUED_FOR_DEEP_RESEARCH",
+        "dispositionCode": "DEEP_RESEARCH_NOT_STARTED",
+        "independentCertification": null,
+        "note": "No Sales Ready / Account Development certification applied — deep research never started for these association events"
+      },
+      "preliminaryHotelFit": "157-room waterfront downtown hotel; plausible lodging/overflow and small ancillary meeting or F&B fit; no availability claim.",
+      "sources": [
+        "https://esa.org/toronto2027/"
+      ],
+      "exaRunId": "agent_run_68d7d28886df41bf8306972eb478f257",
+      "provenanceArtifactReferencedButMissing": "reports/gdi-four-hotel-14-workflow-full-e2e/live-execution/radisson-blu-toronto-downtown/artifacts/discovery/association_events/pass-1.json",
+      "ledgerRows": 2,
+      "duplicatePassDisposition": "DUPLICATE_SAME_ORG_CROSS_PASS"
+    },
+    "GBTA_Canada_2027": {
+      "primaryDiscoveryId": "gdi_disc_df980db35851e4fb",
+      "organizationName": "GBTA Canada",
+      "title": "GBTA Canada Conference 2027 | Toronto",
+      "dates": "April 19–21, 2027",
+      "startDate": "2027-04-19",
+      "endDate": "2027-04-21",
+      "venue": null,
+      "city": "Toronto",
+      "attendance": 700,
+      "contacts": null,
+      "competitorCommitment": null,
+      "hotelSourcingStatus": "venue_confirmed",
+      "sourcingStatus": "unknown",
+      "discoveryDisposition": "TARGETED_VERIFICATION_REQUIRED",
+      "researchStatus": "QUEUED_FOR_DEEP_RESEARCH",
+      "dispositionCode": "DEEP_RESEARCH_NOT_STARTED",
+      "dispositionLabel": "Deep research not started",
+      "qualificationLabels": {
+        "discoveryDisposition": "TARGETED_VERIFICATION_REQUIRED",
+        "hotelSourcingStatus": "venue_confirmed",
+        "sourcingStatus": "unknown",
+        "researchStatus": "QUEUED_FOR_DEEP_RESEARCH",
+        "dispositionCode": "DEEP_RESEARCH_NOT_STARTED",
+        "independentCertification": null,
+        "note": "No Sales Ready / Account Development certification applied — deep research never started for these association events"
+      },
+      "preliminaryHotelFit": "157-room waterfront downtown hotel; potentially suitable for delegate/speaker overflow, small meetings, receptions or F&B, but not assumed suitable for the committed main venue requirement.",
+      "sources": [
+        "https://canadaconference.gbta.org/"
+      ],
+      "exaRunId": "agent_run_7b88acdf523647fbaf8f96a396dcd022",
+      "provenanceArtifactReferencedButMissing": "reports/gdi-four-hotel-14-workflow-full-e2e/live-execution/radisson-blu-toronto-downtown/artifacts/discovery/association_events/pass-2.json",
+      "ledgerRows": 2,
+      "duplicatePassDisposition": "DEEP_RESEARCH_NOT_STARTED"
+    },
+    "summary": {
+      "allFivePresentInDiscoveryLedger": true,
+      "anyDeepResearched": false,
+      "anySalesReadyCertified": false,
+      "anyNamedBuyerContact": false,
+      "anyCompetitorHostHotelCommitment": false,
+      "commonPosture": "ACCEPT_FOR_DEEP_RESEARCH / QUEUED_FOR_DEEP_RESEARCH / DEEP_RESEARCH_NOT_STARTED (adaptive allocation deferred)"
+    }
+  },
+  "opportunitiesOrsPublicationStatus": {
+    "opportunitiesJson": {
+      "exists": false,
+      "pathsChecked": [
+        "data/group-demand-intelligence/hotels/recH9h3McgMNFQEla/opportunities.json across dealality trees"
+      ]
+    },
+    "orsDossiers": {
+      "exists": false
+    },
+    "fourteenSegmentState": {
+      "exists": false,
+      "note": "Other hotels (e.g. recXh4NgF8sDbi9cQ) have fourteen-segment-state; Radisson does not"
+    },
+    "publicationPackages": {
+      "exists": false,
+      "note": "publication-packages present only for other hotelIds (e.g. recLuxvwwxID7U2B8)"
+    },
+    "liveExecutionTree": {
+      "exists": false,
+      "expectedRoot": "reports/gdi-four-hotel-14-workflow-full-e2e/live-execution/radisson-blu-toronto-downtown"
+    }
+  },
+  "hotelProfileFacts": {
+    "fromGdiConfig": {
+      "displayName": "Radisson Blu Toronto Downtown",
+      "address": "249 Queens Quay West, Toronto, ON M5J 2N5",
+      "city": "Toronto",
+      "country": "Canada",
+      "officialUrl": "https://www.choicehotels.com/ontario/toronto/radisson-blu-hotels/cnc41",
+      "totalGuestrooms": 157,
+      "meetingSpaceFlag": true,
+      "meetingRoomCount": null,
+      "totalMeetingSpaceSqM": null,
+      "largestTheaterCapacity": null,
+      "softBrand": "Radisson Blu",
+      "classification": "Harbourfront / Queens Quay",
+      "coreTargetPeakRoomsMin": 15,
+      "coreTargetPeakRoomsMax": 109,
+      "researchIsolationNamespace": "gdi-four-hotel-full-e2e/radisson-blu-toronto-downtown",
+      "verifiedAt": "2026-11-04T10:56:27.687Z",
+      "preflightScaffoldedAt": "2026-11-04T10:48:32.946Z"
+    },
+    "fromAdpFixture": {
+      "rooms": 157,
+      "address": "249 Queens Quay West, Toronto, Ontario M5J 2N5, Canada",
+      "website": "https://www.choicehotels.com/ontario/toronto/radisson-blu-hotels/cnc41",
+      "brand": "Radisson Blu",
+      "parentCompany": "Choice Hotels",
+      "attributesIncludeMeetingSpace": true,
+      "attributesIncludeBallroom": true,
+      "hpcRecordId": "recH9h3McgMNFQEla"
+    }
+  },
+  "spendAndAuthorization": {
+    "ledgerResearchCostUsdSum": 2.8,
+    "ledgerDeepResearchCostUsdSum": 0,
+    "authorizationLedgerForThisHotel": null,
+    "fourHotelCampaignAuthRecordFound": false,
+    "note": "No GDI authorization-ledger entry for recH9h3McgMNFQEla under data/group-demand-intelligence. Existing auth ledgers cover other hotels (Westin, Nobu, five-hotel Marriott portfolio, etc.). Discovery costs (~.80) are attributed across candidates in the ledger; deep research cost fields are null/0 despite staged deep paths."
+  },
+  "recoveryRecommendations": [
+    "Locate missing live-execution tree reports/gdi-four-hotel-14-workflow-full-e2e/live-execution/radisson-blu-toronto-downtown (discovery passes + artifacts/deep) from Railway volume, another worktree, or backup",
+    "Do not treat the five named association events as Sales Ready — they remain discovery-only / queued",
+    "Treat 15 AWAITING_FOUNDER_PROMOTION rows as prior staged Sales Ready labels pending independent re-cert against recovered deep artifacts",
+    "No paid re-run required for inventory; paid only if founder authorizes new deep research for DEEP_RESEARCH_NOT_STARTED queue (209)"
+  ]
+}
