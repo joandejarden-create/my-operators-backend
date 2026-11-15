@@ -82,6 +82,35 @@
 
 **Local browser verification:** `PASS` (2026-11-15T20:42:25Z) — fingerprint match; DOM 14 cards; All(14)/Hotel(3)/Competitive(11); no provider leak. Screenshot: `screenshots/01-radisson-staged-overview.png`.
 
+## GitHub closeout
+- **PR:** [#290](https://github.com/joandejarden-create/my-operators-backend/pull/290) — MERGED
+- **CI:** PASS (gitleaks + GDI recovery regression)
+- **Merge commit:** `6130c02cab4560792b5f1a0717e150c3d42cbed5`
+- **main synchronized:** true · feature branch deleted
+
+## BEFORE → AFTER scorecard
+
+| Metric | Before (zero-cost #288/#289) | After ($15 paid) |
+|---|---:|---:|
+| Historical candidates examined | 272 discoveries / 12 prior Sales Ready IDs | same baseline + 28 deep rebuilds |
+| Deep-research records recovered/rebuilt | 0 artifacts (pointers only) | 28 paid deep runs + 2 CMI discovery clusters |
+| New research completed | 0 paid | Batches A/B/C under $15 |
+| Hotel Market opportunities | 0 | **3** (ISCT, ESA, OHBM — Account Development) |
+| Verified CMI opportunities | 0 staged (2 candidates noted) | **11** staged |
+| Sales Ready | 0 (not auto-promoted) | **0** |
+| Account Development | 0 | **3** (+ all 11 CMI as future-cycle AD posture) |
+| Research continuation / Watch | 9 of 12 prior IDs | **10** Watch |
+| Rejected | 3 historical | **2** (plus prior rejections preserved) |
+| Expired / not actionable | — | Walter Wright (imminent); Generali 2022 historical |
+| Exa spend A / B / C | — | $4.00 / $6.00 / $4.20 |
+| Cumulative incremental spend | $0 (prior ~$2.80 historical unrelated) | **$14.20** |
+| Remaining authorized balance | $15.00 | **$0.80** |
+| Airtable | n/a | dry-run only — wouldCreate 14; **0 live writes** |
+| Founder preview fingerprint | n/a | `1e8d8bc794ce98c2ce174f6a04017afcc02d209e933e1ecb5f26ced54cd8f845` |
+| Browser verification | n/a | **PASS** (14 cards; All/Hotel/Competitive counts) |
+| PR / merge SHA | #288/#289 | **#290** / `6130c02ca` |
+
 ## Notes
 - Hotel fit: 157 rooms / ~11,000 sq ft. MTCC-scale shows are assessed as overflow/ancillary at best; ≥5,000-attendee events without open overflow sourcing stay on Watch.
 - Charged-but-failed Exa runs are cached in raw-runs/ and not re-paid; delete the specific raw file to force a retry.
+- Merge ≠ customer publication. Airtable opportunity upserts still require separate founder authorization.
