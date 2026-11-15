@@ -1,0 +1,489 @@
+{
+  "contract": "GDI_RADISSON_14SEG_EXA_20USD_BASELINE_V1",
+  "generatedAt": "2026-11-15T22:51:42.042Z",
+  "hotelId": "recH9h3McgMNFQEla",
+  "hotelName": "Radisson Blu Toronto Downtown",
+  "referenceDate": "2026-11-15",
+  "imminentCutoff": "2026-12-06",
+  "authorizationId": "FOUNDER_APPROVE_RADISSON_TORONTO_14_SEGMENT_EXA_EXPANSION_20USD_20261115",
+  "hardCeilingUsd": 20,
+  "stageCapsUsd": {
+    "PASS1_DISCOVERY": 3,
+    "PASS2_DEEP": 15,
+    "PASS3_VERIFY": 2
+  },
+  "maxRuns": {
+    "PASS1_DISCOVERY": 30,
+    "PASS2_DEEP": 30,
+    "PASS3_VERIFY": 4
+  },
+  "concurrency": 2,
+  "quotes": {
+    "medium": {
+      "bounded": true,
+      "maxUsd": 0.1,
+      "assumption": "exa agent fixed effort=medium (contact enrichment not included)",
+      "sources": [
+        "https://exa.ai/docs/reference/agent-api-guide",
+        "https://exa.ai/docs/admin/pricing"
+      ],
+      "asOf": "2026-10-24"
+    },
+    "high": {
+      "bounded": true,
+      "maxUsd": 0.5,
+      "assumption": "exa agent fixed effort=high (contact enrichment not included)",
+      "sources": [
+        "https://exa.ai/docs/reference/agent-api-guide",
+        "https://exa.ai/docs/admin/pricing"
+      ],
+      "asOf": "2026-10-24"
+    }
+  },
+  "providers": {
+    "exa": true,
+    "surfe": false,
+    "parallel": false
+  },
+  "airtable": "DRY_RUN_ONLY",
+  "customerPublished": false,
+  "separateLedgerFromPrior15Usd": true,
+  "priorStagedFingerprintPreserved": "64d2ff534f433f84bacc26ee802ef01cd6751fc5c1787e6e609d94d6892d8143",
+  "newPublicationVersion": "gdi_pub_recH9h3McgMNFQEla_20261115_radisson_toronto_14seg_exa_20usd_v1",
+  "targetHotelMarket": 20,
+  "baselineInventory": {
+    "priorPublicationVersion": "gdi_pub_recH9h3McgMNFQEla_20261115_radisson_toronto_hotel_market_expansion_20plus_v1",
+    "hotelMarket": 9,
+    "cmi": 12,
+    "hotelMarketIds": [
+      "rb_gdi_disc_dc428c1bd4c4e412",
+      "rb_gdi_disc_f825d09516dd0b2a",
+      "rb_gdi_disc_4a97f6ec2a8a5282",
+      "rbc_gdi_disc_45447a18d2d0e412",
+      "rb_gdi_free_standout_dance_apr2027",
+      "rb_gdi_free_cfea_2026",
+      "rb_gdi_free_clime_2027",
+      "rb_gdi_free_anesthesia_symposium_2027",
+      "rb_gdi_free_leadership_change_mar2027"
+    ],
+    "cmiIds": [
+      "rbc_gdi_disc_df980db35851e4fb",
+      "rbc_gdi_disc_2d592c1aec6a782f",
+      "rbc_gdi_disc_174dd35cf19a1fba",
+      "rbc_gdi_4h_b14dd1f861df",
+      "rbc_gdi_disc_c3b8876b1c58a33a",
+      "rbc_gdi_disc_3f3ba9a08a09c0d3",
+      "rbc_gdi_disc_54caa7a004b0bfdc",
+      "rb_gdi_disc_6d34a4b2e45feaf3",
+      "rb_gdi_s4912_414566e66656",
+      "rb_gdi_s4912_1f1bc65c7103",
+      "rbc_gdi_free_edco_2027",
+      "rbc_gdi_free_i4pl_2026"
+    ]
+  },
+  "hotelProfile": {
+    "rooms": 157,
+    "suites": 19,
+    "meetingSqFt": 11000,
+    "meetingRooms": 20,
+    "largestRoom": "Admiral Ballroom",
+    "demandTerritory": {
+      "label": "Toronto",
+      "country": "Canada",
+      "includes": [
+        "Harbourfront / Queens Quay",
+        "Toronto",
+        "Toronto"
+      ],
+      "evaluationQuestion": "Could Radisson Blu Toronto Downtown realistically capture this demand given verified inventory, facilities, and catchment — without assuming market-wide capabilities?"
+    }
+  },
+  "discoveryLedger": {
+    "path": "data\\group-demand-intelligence\\discovery-ledgers\\recH9h3McgMNFQEla\\four-hotel-14-workflow-full-e2e-v1.json",
+    "sha256": "b8afd3d8cd4ad70b6430555dbd1309d60597af32b06c2f7f28e4d0a24291871e",
+    "candidates": 272,
+    "statusCounts": {
+      "QUEUED_FOR_DEEP_RESEARCH": 209,
+      "RESEARCH_CONTINUATION": 6,
+      "DUPLICATE": 36,
+      "AWAITING_FOUNDER_PROMOTION": 15,
+      "WATCH": 5,
+      "REJECTED": 1
+    }
+  },
+  "priorPaidRawRunsReusable": 20,
+  "pass1Plan": {
+    "jobs": [
+      {
+        "id": "seg_associations_conferences_events",
+        "segment": "associations_conferences_events",
+        "ledgerSegment": "association_events"
+      },
+      {
+        "id": "seg_corporate_accounts_scaling",
+        "segment": "corporate_accounts_scaling",
+        "ledgerSegment": "scaling_companies"
+      },
+      {
+        "id": "seg_corporate_meetings_incentives",
+        "segment": "corporate_meetings_incentives",
+        "ledgerSegment": "corporate_meetings_incentives"
+      },
+      {
+        "id": "seg_government_public_sector",
+        "segment": "government_public_sector",
+        "ledgerSegment": "government_public_sector"
+      },
+      {
+        "id": "seg_sports_entertainment",
+        "segment": "sports_entertainment",
+        "ledgerSegment": "sports_entertainment"
+      },
+      {
+        "id": "seg_education_scientific",
+        "segment": "education_scientific",
+        "ledgerSegment": "education_scientific"
+      },
+      {
+        "id": "seg_projects_infrastructure",
+        "segment": "projects_infrastructure",
+        "ledgerSegment": "projects_infrastructure"
+      },
+      {
+        "id": "seg_social_special_events",
+        "segment": "social_special_events",
+        "ledgerSegment": "social_special_events"
+      },
+      {
+        "id": "seg_local_catering_day_meetings",
+        "segment": "local_catering_day_meetings",
+        "ledgerSegment": "local_catering_day_meetings"
+      },
+      {
+        "id": "seg_corporate_celebrations_private_events",
+        "segment": "corporate_celebrations_private_events",
+        "ledgerSegment": "corporate_celebrations_private_events"
+      },
+      {
+        "id": "seg_travel_trade_group_intermediaries",
+        "segment": "travel_trade_group_intermediaries",
+        "ledgerSegment": "travel_trade_group_intermediaries"
+      },
+      {
+        "id": "seg_relocation_extended_stay",
+        "segment": "relocation_extended_stay",
+        "ledgerSegment": "relocation_extended_stay"
+      },
+      {
+        "id": "seg_preferred_lodging_partnerships",
+        "segment": "preferred_lodging_partnerships",
+        "ledgerSegment": "preferred_lodging"
+      },
+      {
+        "id": "seg_professional_event_planners",
+        "segment": "professional_event_planners",
+        "ledgerSegment": "professional_event_planners"
+      },
+      {
+        "id": "x_assoc_regulators_colleges",
+        "segment": "associations_conferences_events",
+        "ledgerSegment": "association_events"
+      },
+      {
+        "id": "x_corp_sales_kickoff_offsites",
+        "segment": "corporate_meetings_incentives",
+        "ledgerSegment": "corporate_meetings_incentives"
+      },
+      {
+        "id": "x_edu_hospital_cpd",
+        "segment": "education_scientific",
+        "ledgerSegment": "education_scientific"
+      },
+      {
+        "id": "x_edu_university_conferences",
+        "segment": "education_scientific",
+        "ledgerSegment": "education_scientific"
+      },
+      {
+        "id": "x_sports_tournaments_dance",
+        "segment": "sports_entertainment",
+        "ledgerSegment": "sports_entertainment"
+      },
+      {
+        "id": "x_gov_summits_delegations",
+        "segment": "government_public_sector",
+        "ledgerSegment": "government_public_sector"
+      },
+      {
+        "id": "x_social_cultural_festivals",
+        "segment": "social_special_events",
+        "ledgerSegment": "social_special_events"
+      },
+      {
+        "id": "x_planner_pco_toronto",
+        "segment": "professional_event_planners",
+        "ledgerSegment": "professional_event_planners"
+      },
+      {
+        "id": "x_local_recurring_day_meetings",
+        "segment": "local_catering_day_meetings",
+        "ledgerSegment": "local_catering_day_meetings"
+      },
+      {
+        "id": "x_travel_trade_student_groups",
+        "segment": "travel_trade_group_intermediaries",
+        "ledgerSegment": "travel_trade_group_intermediaries"
+      },
+      {
+        "id": "x_celebrations_awards_galas",
+        "segment": "corporate_celebrations_private_events",
+        "ledgerSegment": "corporate_celebrations_private_events"
+      },
+      {
+        "id": "x_projects_waterfront_film",
+        "segment": "projects_infrastructure",
+        "ledgerSegment": "projects_infrastructure"
+      }
+    ],
+    "segmentsCovered": 14,
+    "maxSpendUsd": 2.6
+  },
+  "pass2Plan": {
+    "recoveryCandidates": [
+      {
+        "id": "rx_gdi_s4912_6edf582b5bd1",
+        "recoveryKey": "ESV",
+        "title": "28th International Technical Conference on the Enhanced Safety of Vehicles (ESV)",
+        "org": "Transport Canada and U.S. National Highway Traffic Safety Administration",
+        "segment": "government_public_sector",
+        "ledgerStatus": "AWAITING_FOUNDER_PROMOTION",
+        "priorPaidCacheAvailable": true
+      },
+      {
+        "id": "rx_gdi_s4912_f6bbd530d198",
+        "recoveryKey": "PATHWAYS_TO_PEACE",
+        "title": "Pathways to Peace: Second International Conference on Returning Ukrainian Children, Detained Civilians, and Prisoners of War",
+        "org": "Global Affairs Canada, Ukraine and Norway",
+        "segment": "government_public_sector",
+        "ledgerStatus": "AWAITING_FOUNDER_PROMOTION",
+        "priorPaidCacheAvailable": true
+      },
+      {
+        "id": "rx_gdi_s4912_e0994273aef6",
+        "recoveryKey": "UOFT_FACULTY_HOUSING",
+        "title": "New Faculty Housing and Visiting Faculty Housing",
+        "org": "University of Toronto",
+        "segment": "relocation_extended_stay",
+        "ledgerStatus": "AWAITING_FOUNDER_PROMOTION",
+        "priorPaidCacheAvailable": true
+      },
+      {
+        "id": "rx_gdi_disc_f828e4868c96433e",
+        "recoveryKey": "ADAPTATION_CANADA",
+        "title": "Adaptation Canada 2026 Conference",
+        "org": "Environment and Climate Change Canada and ICLEI Canada",
+        "segment": "government_public_sector",
+        "ledgerStatus": "QUEUED_FOR_DEEP_RESEARCH",
+        "priorPaidCacheAvailable": false
+      },
+      {
+        "id": "rx_gdi_disc_55ff01739d2c0937",
+        "recoveryKey": "DESIGNTHINKERS",
+        "title": "DesignThinkers Toronto 2026",
+        "org": "Association of Registered Graphic Designers (RGD)",
+        "segment": "corporate_meetings_incentives",
+        "ledgerStatus": "QUEUED_FOR_DEEP_RESEARCH",
+        "priorPaidCacheAvailable": false
+      },
+      {
+        "id": "rx_gdi_disc_a1f4f544c36749b3",
+        "recoveryKey": "CEMA",
+        "title": "CEMA Summit 2026",
+        "org": "Corporate Event Marketing Association (CEMA)",
+        "segment": "corporate_meetings_incentives",
+        "ledgerStatus": "QUEUED_FOR_DEEP_RESEARCH",
+        "priorPaidCacheAvailable": false
+      },
+      {
+        "id": "rx_gdi_disc_f31f9d7b76ea835f",
+        "recoveryKey": "IEEE_QUANTUM_WEEK",
+        "title": "IEEE Quantum Week 2026",
+        "org": "IEEE",
+        "segment": "corporate_meetings_incentives",
+        "ledgerStatus": "QUEUED_FOR_DEEP_RESEARCH",
+        "priorPaidCacheAvailable": false
+      },
+      {
+        "id": "rx_gdi_disc_479be748206ae3ff",
+        "recoveryKey": "IDA_DOWNTOWN",
+        "title": "72nd Annual Conference & Marketplace — Intersections",
+        "org": "International Downtown Association (IDA)",
+        "segment": "local_catering_day_meetings",
+        "ledgerStatus": "QUEUED_FOR_DEEP_RESEARCH",
+        "priorPaidCacheAvailable": false
+      },
+      {
+        "id": "rx_gdi_disc_c4c732a222951e19",
+        "recoveryKey": "CGA_ENERGY_WEEK",
+        "title": "CGA Energy Week 2026",
+        "org": "Canadian Gas Association",
+        "segment": "corporate_meetings_incentives",
+        "ledgerStatus": "QUEUED_FOR_DEEP_RESEARCH",
+        "priorPaidCacheAvailable": false
+      },
+      {
+        "id": "rx_gdi_disc_099387a8968897f0",
+        "recoveryKey": "ISPRS",
+        "title": "XXV ISPRS Congress 2026 Toronto",
+        "org": "International Society for Photogrammetry and Remote Sensing",
+        "segment": "corporate_meetings_incentives",
+        "ledgerStatus": "QUEUED_FOR_DEEP_RESEARCH",
+        "priorPaidCacheAvailable": false
+      },
+      {
+        "id": "rx_gdi_s4912_d46e3e911701",
+        "recoveryKey": "WNBA_TEMPO",
+        "title": "Inaugural 2026 WNBA season",
+        "org": "Toronto Tempo / WNBA",
+        "segment": "sports_entertainment",
+        "ledgerStatus": "AWAITING_FOUNDER_PROMOTION",
+        "priorPaidCacheAvailable": true
+      },
+      {
+        "id": "rx_gdi_disc_d5867a99dedaab74",
+        "recoveryKey": "OBSTETRIC_ANESTHESIA",
+        "title": "Second Annual University of Toronto Obstetric Anesthesia Conference",
+        "org": "Temerty Faculty of Medicine, University of Toronto",
+        "segment": "education_scientific",
+        "ledgerStatus": "QUEUED_FOR_DEEP_RESEARCH",
+        "priorPaidCacheAvailable": true
+      },
+      {
+        "id": "rx_gdi_s4912_81a9c4232dbc",
+        "recoveryKey": "CITA_40",
+        "title": "CITA@40 Conference",
+        "org": "Canadian Institute for Theoretical Astrophysics, University of Toronto",
+        "segment": "education_scientific",
+        "ledgerStatus": "AWAITING_FOUNDER_PROMOTION",
+        "priorPaidCacheAvailable": true
+      },
+      {
+        "id": "rx_gdi_s4912_7603e4096c33",
+        "recoveryKey": "CI2I",
+        "title": "2026 Ci2i Symposium",
+        "org": "UHN Collaborative Centre for Immunology to Immunotherapy / EPIC",
+        "segment": "education_scientific",
+        "ledgerStatus": "AWAITING_FOUNDER_PROMOTION",
+        "priorPaidCacheAvailable": true
+      },
+      {
+        "id": "rx_gdi_s4912_e0994273aef6",
+        "recoveryKey": "university of toronto temerty ",
+        "title": "Walter Wright Symposium 2026",
+        "org": "University of Toronto Temerty Faculty of Medicine",
+        "segment": "corporate_meetings_incentives",
+        "ledgerStatus": "AWAITING_FOUNDER_PROMOTION",
+        "priorPaidCacheAvailable": true
+      },
+      {
+        "id": "rx_gdi_disc_456939c96f6095a4",
+        "recoveryKey": "toronto institute of psychoana",
+        "title": "26th Joseph Sandler Psychoanalytic Research Conference 2026",
+        "org": "Toronto Institute of Psychoanalysis",
+        "segment": "education_scientific",
+        "ledgerStatus": "QUEUED_FOR_DEEP_RESEARCH",
+        "priorPaidCacheAvailable": false
+      },
+      {
+        "id": "rx_gdi_disc_1d1d612a77f8f1c9",
+        "recoveryKey": "international association for ",
+        "title": "51st Annual IAEA Conference",
+        "org": "International Association for Educational Assessment",
+        "segment": "education_scientific",
+        "ledgerStatus": "QUEUED_FOR_DEEP_RESEARCH",
+        "priorPaidCacheAvailable": false
+      }
+    ],
+    "recoverySkipped": [
+      {
+        "discoveryId": "gdi_disc_593813bd4d4c2e2a",
+        "title": "Generali Hellas Annual Incentive Trip in Canada (September 2022)",
+        "reason": "September 2022 historical incentive trip — past, non-recurring."
+      },
+      {
+        "discoveryId": "gdi_disc_4070954ec62aea15",
+        "title": "People Connected 2026",
+        "reason": "Airport-corridor (Toronto Airport Marriott) sold-out block — stretch territory, rejected."
+      },
+      {
+        "discoveryId": "gdi_disc_8ea1cc22b214717f",
+        "title": "GBTA Canada Conference 2027",
+        "reason": "Already staged as CMI (GBTA @ Westin Harbour Castle) — CMI separate; not re-researched."
+      },
+      {
+        "discoveryId": "gdi_disc_41812cdc153e94ce",
+        "title": "35th Annual General Meeting & Conference Fall 2026",
+        "reason": "Fall 2026 AGM block expired vs REF."
+      },
+      {
+        "discoveryId": "gdi_disc_de7ffa50d052edf7",
+        "title": "36th Annual Conference on Financial Economics and Accounting (CFEA 2026)",
+        "reason": "Already staged Hotel Market (CFEA 2026)."
+      },
+      {
+        "discoveryId": "gdi_disc_8684edf97eeb0786",
+        "title": "Study Tours & Delegation Requests",
+        "reason": "Generic protocol programme with no dated event or lodging buyer."
+      }
+    ],
+    "recoveryAlreadyInBaseline": [],
+    "freeCacheReuse": 8,
+    "paidRecoveryRuns": 9,
+    "remainingPaidSlotsForDiscoveryHits": 21
+  },
+  "protectedPublicationsBefore": {
+    "bethesda": {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "currentFingerprint": "df8da65a172727e627a71c3a31bead5f3f70ee95b03b7245f7a0ea34bbb33c66",
+      "stagedFingerprint": "df8da65a172727e627a71c3a31bead5f3f70ee95b03b7245f7a0ea34bbb33c66",
+      "opportunitiesJsonSha256": "c5cbe80cfca235cc7f4a782efe2f374c867ee1a492f9e9d55c3f14f335a40e19"
+    },
+    "sheraton": {
+      "hotelId": "recCAGqkERSXgiku4",
+      "currentFingerprint": null,
+      "stagedFingerprint": "d4b2bfc7eb0419b863a561750a748227244bf759edf1307926f89749706e2a33",
+      "opportunitiesJsonSha256": "e7d3d32a4d8a117867b83e2fa232bf0fa3474b3c7529b957eac44a5e83414371"
+    },
+    "wyndham_alltra": {
+      "hotelId": "recXh4NgF8sDbi9cQ",
+      "currentFingerprint": null,
+      "stagedFingerprint": "5c680140c2cbe69ce657c1264fec01e98be72a87ea1fb551d64d308a28625789",
+      "opportunitiesJsonSha256": "646862e46537fc02cfdb8b38e0c8f06d2c1019b6d132214c8e111e726e58d839"
+    }
+  },
+  "priorPackageSha256": "48d4061865d0b0b9e3803f22cbc0125706e131a713dd6210a6b8b91abefc84e7",
+  "prior15UsdPackageSha256": "3cfdf74de5cce2dc201646ab6927218d4db7b9bf9568167a5cffbed98652c2fa",
+  "stagedPointerBefore": {
+    "schema": "gdi-publication-package-store-v1",
+    "hotelId": "recH9h3McgMNFQEla",
+    "kind": "STAGED",
+    "updatedAt": "2026-11-15T21:30:55.192Z",
+    "publicationId": "gdi_pubpkg_recH9h3McgMNFQEla_b1aa4bbac760ccc3",
+    "publicationVersion": "gdi_pub_recH9h3McgMNFQEla_20261115_radisson_toronto_hotel_market_expansion_20plus_v1",
+    "contentFingerprintSha256": "64d2ff534f433f84bacc26ee802ef01cd6751fc5c1787e6e609d94d6892d8143",
+    "lifecycleState": "FOUNDER_REVIEWED",
+    "founderReviewLabel": "STAGED_FOR_FOUNDER_REVIEW"
+  },
+  "git": {
+    "branch": "exec/gdi-radisson-toronto-14-segment-exa-expansion-20usd-v1",
+    "headSha": "1ffb4899bbfebd1a25757b17c1f0964707d010e1"
+  },
+  "policy": [
+    "Exa ONLY — no Surfe, no Parallel, no CUSTOMER_PUBLISHED, Airtable dry-run only.",
+    "Hotel Market and CMI are never dual-classified; competitor commitment → CMI.",
+    "Events before REF are expired/research-watch, never customer Hotel Market, unless a next edition is evidenced.",
+    "Prior staged package is preserved on disk; a NEW fingerprint is staged."
+  ],
+  "mode": "PAID_AUTHORIZED",
+  "resumedSpendUsdAtStart": 0
+}
