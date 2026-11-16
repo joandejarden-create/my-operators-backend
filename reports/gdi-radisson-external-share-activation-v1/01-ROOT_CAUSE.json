@@ -1,0 +1,30 @@
+{
+  "customerSymptom": "Access link unavailable",
+  "productionHost": "https://my-operators-backend-production.up.railway.app",
+  "hotelId": "recH9h3McgMNFQEla",
+  "expectedFingerprint": "533f2642f8c74af881ff525c2335f9a5471f5ef1d04ac16f7646131176f8706d",
+  "findings": {
+    "productionGdiFlag": "ok/enabled",
+    "productionStagedPointer": "present",
+    "productionCurrentPointer": "absent_404",
+    "localCurrentPointer": null,
+    "shareResolverMode": "LEGACY",
+    "shareResolverReason": "NO_CURRENT_PUBLICATION",
+    "radissonShareTokensInRegistry": 0,
+    "invalidShareResolve": {
+      "status": 403,
+      "error": "SHARE_MALFORMED",
+      "customerMessage": "This Dealality access link is no longer active. Please request an updated link from your Dealality contact."
+    }
+  },
+  "rootCause": [
+    "No CUSTOMER_PUBLISHED CURRENT package for Radisson on production or local main.",
+    "No hotel-scoped ACTIVE share token for recH9h3McgMNFQEla.",
+    "Share UI fail-closed maps missing/malformed/revoked tokens to Access link unavailable."
+  ],
+  "ruledOut": [
+    "Not diagnosed as token expiry alone — no Radisson token exists to expire.",
+    "Not a missing staged package — STAGED fingerprint 533f2642 is present on production.",
+    "Not inferred from signing-secret mismatch alone — resolve returns SHARE_MALFORMED for invalid token input before package serve."
+  ]
+}
