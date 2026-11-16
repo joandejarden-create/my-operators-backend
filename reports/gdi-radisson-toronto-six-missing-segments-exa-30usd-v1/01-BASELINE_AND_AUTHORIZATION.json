@@ -1,0 +1,750 @@
+{
+  "contract": "GDI_RADISSON_14SEG_EXA_20USD_BASELINE_V1",
+  "generatedAt": "2026-11-16T16:13:41.985Z",
+  "hotelId": "recH9h3McgMNFQEla",
+  "hotelName": "Radisson Blu Toronto Downtown",
+  "referenceDate": "2026-11-16",
+  "imminentCutoff": "2026-12-07",
+  "authorizationId": "RADISSON_TORONTO_SIX_MISSING_SEGMENTS_EXA_30USD_V1",
+  "hardCeilingUsd": 30,
+  "stageCapsUsd": {
+    "PASS1_DISCOVERY": 5,
+    "PASS2_DEEP": 20,
+    "PASS3_VERIFY": 5
+  },
+  "maxRuns": {
+    "PASS1_DISCOVERY": 18,
+    "PASS2_DEEP": 40,
+    "PASS3_VERIFY": 10
+  },
+  "concurrency": 2,
+  "quotes": {
+    "medium": {
+      "bounded": true,
+      "maxUsd": 0.1,
+      "assumption": "exa agent fixed effort=medium (contact enrichment not included)",
+      "sources": [
+        "https://exa.ai/docs/reference/agent-api-guide",
+        "https://exa.ai/docs/admin/pricing"
+      ],
+      "asOf": "2026-10-24"
+    },
+    "high": {
+      "bounded": true,
+      "maxUsd": 0.5,
+      "assumption": "exa agent fixed effort=high (contact enrichment not included)",
+      "sources": [
+        "https://exa.ai/docs/reference/agent-api-guide",
+        "https://exa.ai/docs/admin/pricing"
+      ],
+      "asOf": "2026-10-24"
+    }
+  },
+  "providers": {
+    "exa": true,
+    "surfe": false,
+    "parallel": false
+  },
+  "airtable": "DRY_RUN_ONLY",
+  "customerPublished": false,
+  "separateLedgerFromPrior15Usd": true,
+  "priorStagedFingerprintPreserved": "087afd1b1c6e91a62504b458f6d249cfa06bf1d400bc4540f79578ee37cf8fcb",
+  "newPublicationVersion": "gdi_pub_recH9h3McgMNFQEla_20261116_radisson_toronto_six_missing_segments_exa_30usd_v1",
+  "targetHotelMarket": 25,
+  "baselineInventory": {
+    "priorPublicationVersion": "gdi_pub_recH9h3McgMNFQEla_20261116_radisson_toronto_14seg_diversification_v1",
+    "hotelMarket": 21,
+    "cmi": 13,
+    "hotelMarketIds": [
+      "rb_gdi_disc_dc428c1bd4c4e412",
+      "rb_gdi_disc_f825d09516dd0b2a",
+      "rb_gdi_disc_4a97f6ec2a8a5282",
+      "rbc_gdi_disc_45447a18d2d0e412",
+      "rb_gdi_free_standout_dance_apr2027",
+      "rb_gdi_free_clime_2027",
+      "rb_gdi_free_anesthesia_symposium_2027",
+      "rx_gdi_disc_55ff01739d2c0937",
+      "rx_d_6330bf84841a",
+      "rx_d_e29bfb70ec54",
+      "rx_d_cfe29832941e",
+      "rx_d_5976330f194d",
+      "rx_d_d09eb950e7dd",
+      "rx_d_3bcde99983c3",
+      "rx_d_df006c3aba8a",
+      "rx_d_eeab9f302f04",
+      "rx_d_ee0d8b24b9ef",
+      "rx_d_2f57ed564c71",
+      "rx_d_918bc65e2d44",
+      "rx_d_f5c3bd3d073a",
+      "rx_gdi_s4912_d46e3e911701"
+    ],
+    "cmiIds": [
+      "rbc_gdi_disc_df980db35851e4fb",
+      "rbc_gdi_disc_2d592c1aec6a782f",
+      "rbc_gdi_disc_174dd35cf19a1fba",
+      "rbc_gdi_4h_b14dd1f861df",
+      "rbc_gdi_disc_c3b8876b1c58a33a",
+      "rbc_gdi_disc_3f3ba9a08a09c0d3",
+      "rbc_gdi_disc_54caa7a004b0bfdc",
+      "rb_gdi_disc_6d34a4b2e45feaf3",
+      "rb_gdi_s4912_414566e66656",
+      "rb_gdi_s4912_1f1bc65c7103",
+      "rx_d_ab1746f4d928",
+      "rx_d_89484dfafed5",
+      "rx_d_9ec29f1c9fb9"
+    ]
+  },
+  "hotelProfile": {
+    "rooms": 157,
+    "suites": 19,
+    "meetingSqFt": 11000,
+    "meetingRooms": 20,
+    "largestRoom": "Admiral Ballroom",
+    "demandTerritory": {
+      "label": "Toronto",
+      "country": "Canada",
+      "includes": [
+        "Harbourfront / Queens Quay",
+        "Toronto",
+        "Toronto"
+      ],
+      "evaluationQuestion": "Could Radisson Blu Toronto Downtown realistically capture this demand given verified inventory, facilities, and catchment — without assuming market-wide capabilities?"
+    }
+  },
+  "discoveryLedger": {
+    "path": "data\\group-demand-intelligence\\discovery-ledgers\\recH9h3McgMNFQEla\\four-hotel-14-workflow-full-e2e-v1.json",
+    "sha256": "b8afd3d8cd4ad70b6430555dbd1309d60597af32b06c2f7f28e4d0a24291871e",
+    "candidates": 272,
+    "statusCounts": {
+      "QUEUED_FOR_DEEP_RESEARCH": 209,
+      "RESEARCH_CONTINUATION": 6,
+      "DUPLICATE": 36,
+      "AWAITING_FOUNDER_PROMOTION": 15,
+      "WATCH": 5,
+      "REJECTED": 1
+    }
+  },
+  "priorPaidRawRunsReusable": 59,
+  "pass1Plan": {
+    "jobs": [
+      {
+        "id": "seg_social_special_events",
+        "segment": "social_special_events",
+        "ledgerSegment": "social_special_events"
+      },
+      {
+        "id": "seg_local_catering_day_meetings",
+        "segment": "local_catering_day_meetings",
+        "ledgerSegment": "local_catering_day_meetings"
+      },
+      {
+        "id": "seg_travel_trade_group_intermediaries",
+        "segment": "travel_trade_group_intermediaries",
+        "ledgerSegment": "travel_trade_group_intermediaries"
+      },
+      {
+        "id": "seg_relocation_extended_stay",
+        "segment": "relocation_extended_stay",
+        "ledgerSegment": "relocation_extended_stay"
+      },
+      {
+        "id": "seg_preferred_lodging_partnerships",
+        "segment": "preferred_lodging_partnerships",
+        "ledgerSegment": "preferred_lodging_partnerships"
+      },
+      {
+        "id": "seg_professional_event_planners",
+        "segment": "professional_event_planners",
+        "ledgerSegment": "professional_event_planners"
+      },
+      {
+        "id": "x_local_corp_trainings_boards",
+        "segment": "local_catering_day_meetings",
+        "ledgerSegment": "local_catering_day_meetings"
+      },
+      {
+        "id": "x_local_waterfront_institutional",
+        "segment": "local_catering_day_meetings",
+        "ledgerSegment": "local_catering_day_meetings"
+      },
+      {
+        "id": "x_preferred_corp_visitor",
+        "segment": "preferred_lodging_partnerships",
+        "ledgerSegment": "preferred_lodging_partnerships"
+      },
+      {
+        "id": "x_preferred_university_hospital",
+        "segment": "preferred_lodging_partnerships",
+        "ledgerSegment": "preferred_lodging_partnerships"
+      },
+      {
+        "id": "x_reloc_faculty_medical",
+        "segment": "relocation_extended_stay",
+        "ledgerSegment": "relocation_extended_stay"
+      },
+      {
+        "id": "x_reloc_project_film",
+        "segment": "relocation_extended_stay",
+        "ledgerSegment": "relocation_extended_stay"
+      },
+      {
+        "id": "x_travel_dmc_incentive",
+        "segment": "travel_trade_group_intermediaries",
+        "ledgerSegment": "travel_trade_group_intermediaries"
+      },
+      {
+        "id": "x_travel_edu_student_groups",
+        "segment": "travel_trade_group_intermediaries",
+        "ledgerSegment": "travel_trade_group_intermediaries"
+      },
+      {
+        "id": "x_social_cultural_festivals",
+        "segment": "social_special_events",
+        "ledgerSegment": "social_special_events"
+      },
+      {
+        "id": "x_social_wedding_room_blocks",
+        "segment": "social_special_events",
+        "ledgerSegment": "social_special_events"
+      },
+      {
+        "id": "x_planner_pco_toronto",
+        "segment": "professional_event_planners",
+        "ledgerSegment": "professional_event_planners"
+      },
+      {
+        "id": "x_planner_assoc_mgmt",
+        "segment": "professional_event_planners",
+        "ledgerSegment": "professional_event_planners"
+      }
+    ],
+    "segmentsCovered": 6,
+    "maxSpendUsd": 1.8
+  },
+  "pass2Plan": {
+    "recoveryCandidates": [
+      {
+        "id": "rx_gdi_disc_c1af24411cd55ecb",
+        "recoveryKey": "CIRI_ROTMAN",
+        "title": "University of Toronto Asset Pricing and Investments Workshop 2027",
+        "org": "University of Toronto Rotman School of Management",
+        "segment": "local_catering_day_meetings",
+        "ledgerStatus": "QUEUED_FOR_DEEP_RESEARCH",
+        "priorPaidCacheAvailable": true,
+        "source": "LEDGER_RECOVERY"
+      },
+      {
+        "id": "rx_gdi_s4912_e0994273aef6",
+        "recoveryKey": "UOFT_FACULTY",
+        "title": "New Faculty Housing and Visiting Faculty Housing",
+        "org": "University of Toronto",
+        "segment": "relocation_extended_stay",
+        "ledgerStatus": "AWAITING_FOUNDER_PROMOTION",
+        "priorPaidCacheAvailable": true,
+        "source": "LEDGER_RECOVERY"
+      },
+      {
+        "id": "rx_gdi_disc_a1f4f544c36749b3",
+        "recoveryKey": "CEMA_PLANNER",
+        "title": "CEMA Summit 2026",
+        "org": "Corporate Event Marketing Association (CEMA)",
+        "segment": "professional_event_planners",
+        "ledgerStatus": "QUEUED_FOR_DEEP_RESEARCH",
+        "priorPaidCacheAvailable": true,
+        "source": "LEDGER_RECOVERY"
+      },
+      {
+        "id": "rx_d_292fe9515065",
+        "recoveryKey": null,
+        "title": "Advanced Imaging Education Centre Virtual Colonography Course",
+        "org": "University of Toronto / Canadian Association of Radiologists event listing",
+        "segment": "local_catering_day_meetings",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_096138499154",
+        "recoveryKey": null,
+        "title": "IBC InSight Summit 2027",
+        "org": "Insurance Bureau of Canada",
+        "segment": "local_catering_day_meetings",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_0a7c2816a3af",
+        "recoveryKey": null,
+        "title": "Toronto Tea Festival 2027",
+        "org": "Toronto Tea Festival",
+        "segment": "social_special_events",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_9d25fbd98669",
+        "recoveryKey": null,
+        "title": "Assembly Conference 2027 (RUN)",
+        "org": "C3 Assembly / Assembly Conference",
+        "segment": "social_special_events",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_396f25673337",
+        "recoveryKey": null,
+        "title": "ICSC@CANADA 2027",
+        "org": "ICSC",
+        "segment": "social_special_events",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_5473d96cb919",
+        "recoveryKey": null,
+        "title": "CIRI–Rotman Investor Relations Certification Program",
+        "org": "Canadian Investor Relations Institute (CIRI) and Rotman School of Management",
+        "segment": "local_catering_day_meetings",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_276386bad4da",
+        "recoveryKey": null,
+        "title": "Toronto Spring Festival Fireworks Celebration",
+        "org": "Toronto Spring Festival Committee",
+        "segment": "social_special_events",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_50645459cc18",
+        "recoveryKey": null,
+        "title": "Toronto Kiwanis Music Festival 2027",
+        "org": "Toronto Kiwanis Music Festival",
+        "segment": "social_special_events",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_db2b144cc369",
+        "recoveryKey": null,
+        "title": "STOMP Urban Dance Competition & Showcase",
+        "org": "City of Toronto / STOMP organizers",
+        "segment": "social_special_events",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_7af42dee1456",
+        "recoveryKey": null,
+        "title": "Lavazza IncluCity Festival 2027",
+        "org": "Italian Contemporary Film Festival (ICFF)",
+        "segment": "social_special_events",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_27c1613275af",
+        "recoveryKey": null,
+        "title": "Toronto International BrazilFest 2027",
+        "org": "Toronto International BrazilFest",
+        "segment": "social_special_events",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_7b4f77542575",
+        "recoveryKey": null,
+        "title": "La Promesa Tango Festival 2027",
+        "org": "Calle del Tango",
+        "segment": "social_special_events",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_872bc2fabc1c",
+        "recoveryKey": null,
+        "title": "Toronto Tango 8 Festival & Tango Marathon 2027",
+        "org": "Bulent & Lina / Argentine Tango Toronto",
+        "segment": "social_special_events",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_a7ee5f8a0aad",
+        "recoveryKey": null,
+        "title": "Toronto Breast Imaging Conference 2027",
+        "org": "University of Toronto Temerty Faculty of Medicine Continuing Professional Development",
+        "segment": "local_catering_day_meetings",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_f4405e2cdb61",
+        "recoveryKey": null,
+        "title": "Toronto Comic Arts Festival 2027",
+        "org": "Toronto Comic Arts Festival",
+        "segment": "social_special_events",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_e8ea462ce6a5",
+        "recoveryKey": null,
+        "title": "Diagnosis and Management of Temporomandibular Disorders",
+        "org": "University of Toronto Continuing Dental Education",
+        "segment": "local_catering_day_meetings",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_da9c42a4622c",
+        "recoveryKey": null,
+        "title": "Donald Wasylenki Education Day 2027",
+        "org": "University of Toronto Department of Psychiatry",
+        "segment": "local_catering_day_meetings",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_349a16026460",
+        "recoveryKey": null,
+        "title": "CBA In-House Leadership Retreat — Toronto",
+        "org": "Canadian Bar Association / CBA In-House",
+        "segment": "local_catering_day_meetings",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_be7e7c9f90e6",
+        "recoveryKey": null,
+        "title": "The MoneyShow Toronto 2027",
+        "org": "MoneyShow.com, LLC (Investment Seminars, Inc.)",
+        "segment": "local_catering_day_meetings",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_55a0951c096f",
+        "recoveryKey": null,
+        "title": "ATRIP 45th Annual Congress",
+        "org": "International Association for the Advancement of Teaching and Research in Intellectual Property (ATRIP)",
+        "segment": "local_catering_day_meetings",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_de1aede53446",
+        "recoveryKey": null,
+        "title": "AI and Society Conference 2027",
+        "org": "AI and Society Conference",
+        "segment": "travel_trade_group_intermediaries",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_a88a1840122e",
+        "recoveryKey": null,
+        "title": "OLA Super Conference 2027",
+        "org": "Ontario Library Association",
+        "segment": "relocation_extended_stay",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_9c597f53d34e",
+        "recoveryKey": null,
+        "title": "Toronto Aesthetics Sciences & Creativity Conference 2027",
+        "org": "University of Toronto / McMaster University",
+        "segment": "preferred_lodging_partnerships",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": true,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_27f48232fab5",
+        "recoveryKey": null,
+        "title": "EV & Charging Expo 2027",
+        "org": "Electric Autonomy Canada",
+        "segment": "preferred_lodging_partnerships",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_25a638e03f68",
+        "recoveryKey": null,
+        "title": "FMF200: The Future of Mathematical Finance",
+        "org": "University of Toronto Department of Statistical Sciences",
+        "segment": "professional_event_planners",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_ce09340a3830",
+        "recoveryKey": null,
+        "title": "2027 CFCA Engage – Toronto",
+        "org": "CFCA",
+        "segment": "professional_event_planners",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_11375b8eada4",
+        "recoveryKey": null,
+        "title": "University of Toronto Model United Nations 2027",
+        "org": "University of Toronto Model United Nations",
+        "segment": "travel_trade_group_intermediaries",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_1b37ece1a7fe",
+        "recoveryKey": null,
+        "title": "North American Model United Nations 2027",
+        "org": "North American Model United Nations / University of Toronto",
+        "segment": "travel_trade_group_intermediaries",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_91c0bd726f2a",
+        "recoveryKey": null,
+        "title": "Small Business Show 2027",
+        "org": "CanadianSME Magazine",
+        "segment": "relocation_extended_stay",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_4cffaa374ec2",
+        "recoveryKey": null,
+        "title": "Future Travel World Toronto 2027",
+        "org": "Future Travel World / Viva Vita Expos",
+        "segment": "travel_trade_group_intermediaries",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_485b3aca27b4",
+        "recoveryKey": null,
+        "title": "Canadian Tick-Borne Disease Conference 2027",
+        "org": "Canadian Lyme Disease Foundation / U of T DFCM",
+        "segment": "travel_trade_group_intermediaries",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_aed7fd5d195a",
+        "recoveryKey": null,
+        "title": "Brain Injury Conference 2027",
+        "org": "D.E. Systems",
+        "segment": "relocation_extended_stay",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_2400ebe4c2bb",
+        "recoveryKey": null,
+        "title": "FHLIP 2027: From Algorithms to Advocacy",
+        "org": "University of Toronto IHPME",
+        "segment": "relocation_extended_stay",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_45057ebe3414",
+        "recoveryKey": null,
+        "title": "PRiME 8th Annual Symposium",
+        "org": "PRiME / University of Toronto",
+        "segment": "relocation_extended_stay",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_6a2156b34020",
+        "recoveryKey": null,
+        "title": "In-House Leadership Retreat — Toronto Island 2027",
+        "org": "Canadian Bar Association — CBA In-House",
+        "segment": "relocation_extended_stay",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_5a2d313b92de",
+        "recoveryKey": null,
+        "title": "Advertising and Marketing Law",
+        "org": "Canadian Institute",
+        "segment": "relocation_extended_stay",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_2f7c4d368884",
+        "recoveryKey": null,
+        "title": "City Nation Place Americas 2027",
+        "org": "City Nation Place",
+        "segment": "relocation_extended_stay",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_2af6c6350a94",
+        "recoveryKey": null,
+        "title": "2027 Atwood Colloquium",
+        "org": "University of Toronto Department of Ecology and Evolutionary Biology",
+        "segment": "relocation_extended_stay",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_8d3cbdc11760",
+        "recoveryKey": null,
+        "title": "Credit Union Leaders Association 2-day event 2027",
+        "org": "Credit Union Leaders Association",
+        "segment": "preferred_lodging_partnerships",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_caeabd6f3dc2",
+        "recoveryKey": null,
+        "title": "MaRS Impact Health 2027",
+        "org": "MaRS Discovery District",
+        "segment": "preferred_lodging_partnerships",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_d9b595cbcac9",
+        "recoveryKey": null,
+        "title": "BIOCOMM 2027",
+        "org": "BioCommunications Association",
+        "segment": "preferred_lodging_partnerships",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_0e256b5b18ff",
+        "recoveryKey": null,
+        "title": "Trinity College Undergraduate Research Conference 2027",
+        "org": "Trinity College, University of Toronto",
+        "segment": "travel_trade_group_intermediaries",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      },
+      {
+        "id": "rx_d_a50ea166bc96",
+        "recoveryKey": null,
+        "title": "Global Youth Leadership & Diplomacy Summit – Canada 2027",
+        "org": "IMPACT GLOBAL EVENTS",
+        "segment": "travel_trade_group_intermediaries",
+        "ledgerStatus": "RESEARCH_CONTINUATION_NEEDS_DEEP_OR_FREE_VERIFY",
+        "priorPaidCacheAvailable": false,
+        "source": "DIVERSIFICATION_GAP_QUEUE"
+      }
+    ],
+    "recoverySkipped": [
+      {
+        "discoveryId": "gdi_disc_de7ffa50d052edf7",
+        "title": "36th Annual Conference on Financial Economics and Accounting (CFEA 2026)",
+        "reason": "Already staged Hotel Market."
+      }
+    ],
+    "recoveryAlreadyInBaseline": [
+      {
+        "id": "rx_d_9ec29f1c9fb9",
+        "title": "CGNA2027 — 24th Biennial Conference",
+        "dupOf": "rx_d_9ec29f1c9fb9"
+      }
+    ],
+    "freeCacheReuse": 4,
+    "paidRecoveryRuns": 42,
+    "remainingPaidSlotsForDiscoveryHits": 0
+  },
+  "protectedPublicationsBefore": {
+    "bethesda": {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "currentFingerprint": "df8da65a172727e627a71c3a31bead5f3f70ee95b03b7245f7a0ea34bbb33c66",
+      "stagedFingerprint": "df8da65a172727e627a71c3a31bead5f3f70ee95b03b7245f7a0ea34bbb33c66",
+      "opportunitiesJsonSha256": "79be23c4ff344679381c6aa48cbe42fc189d69fce5eac4aa02f5e025bab26b26"
+    },
+    "sheraton": {
+      "hotelId": "recCAGqkERSXgiku4",
+      "currentFingerprint": null,
+      "stagedFingerprint": "d4b2bfc7eb0419b863a561750a748227244bf759edf1307926f89749706e2a33",
+      "opportunitiesJsonSha256": "2eaf40c0477bd93e89b87baa5d4ce134b44890d11d505de0b2e2ba74a61e6458"
+    },
+    "wyndham_alltra": {
+      "hotelId": "recXh4NgF8sDbi9cQ",
+      "currentFingerprint": null,
+      "stagedFingerprint": "5c680140c2cbe69ce657c1264fec01e98be72a87ea1fb551d64d308a28625789",
+      "opportunitiesJsonSha256": "646862e46537fc02cfdb8b38e0c8f06d2c1019b6d132214c8e111e726e58d839"
+    }
+  },
+  "priorPackageSha256": "204eb146d4115125d98bebd5aa9fdbfc5f3bd12f30bec4630afbd6e94f27b1f9",
+  "prior15UsdPackageSha256": "3cfdf74de5cce2dc201646ab6927218d4db7b9bf9568167a5cffbed98652c2fa",
+  "stagedPointerBefore": {
+    "schema": "gdi-publication-package-store-v1",
+    "hotelId": "recH9h3McgMNFQEla",
+    "kind": "STAGED",
+    "updatedAt": "2026-11-16T16:12:53.610Z",
+    "publicationId": "gdi_pubpkg_recH9h3McgMNFQEla_b11801ea4ee2ed5a",
+    "publicationVersion": "gdi_pub_recH9h3McgMNFQEla_20261116_radisson_toronto_six_missing_segments_exa_30usd_v1",
+    "contentFingerprintSha256": "ac55190dd783fe6eb5f3ec60d65fd2ffdd9c7f3e3aba7eb35645197e96979c86",
+    "lifecycleState": "FOUNDER_REVIEWED",
+    "founderReviewLabel": "STAGED_FOR_FOUNDER_REVIEW"
+  },
+  "git": {
+    "branch": "exec/gdi-radisson-toronto-14-segment-diversification-v1",
+    "headSha": "6c5037ffa664a419ec74c27d7e4b388c4471b230"
+  },
+  "policy": [
+    "Exa ONLY — no Surfe, no Parallel, no CUSTOMER_PUBLISHED, Airtable dry-run only.",
+    "Hotel Market and CMI are never dual-classified; competitor commitment → CMI.",
+    "Events before REF are expired/research-watch, never customer Hotel Market, unless a next edition is evidenced.",
+    "Prior staged package is preserved on disk; a NEW fingerprint is staged."
+  ],
+  "mode": "ASSEMBLE_CACHED_NO_SPEND",
+  "resumedSpendUsdAtStart": 23.8
+}
