@@ -420,24 +420,35 @@
   }
 
   function api(path, opts) {
-    return fetchFn(path, opts).then(function (r) {
-      return r.json().then(function (data) {
-        if (!r.ok || data.ok === false) {
-          var msg = data.message || data.error || "Request failed";
-          if (/opportunity_not_found/i.test(String(msg))) {
-            msg =
-              data.message && !/opportunity_not_found/i.test(String(data.message))
-                ? data.message
-                : "This opportunity could not be opened. Please try again. If the problem continues, refresh the list and reopen the card.";
+    return fetchFn(path, opts)
+      .catch(function (networkErr) {
+        var err = new Error(
+          "This opportunity could not be opened. Please try again. If the problem continues, refresh the list and reopen the card."
+        );
+        err.code = "GDI_NETWORK_FETCH_FAILED";
+        err.cause = networkErr;
+        err.status = 0;
+        console.error("[gdi] network fetch failed", path, networkErr);
+        throw err;
+      })
+      .then(function (r) {
+        return r.json().then(function (data) {
+          if (!r.ok || data.ok === false) {
+            var msg = data.message || data.error || "Request failed";
+            if (/opportunity_not_found/i.test(String(msg))) {
+              msg =
+                data.message && !/opportunity_not_found/i.test(String(data.message))
+                  ? data.message
+                  : "This opportunity could not be opened. Please try again. If the problem continues, refresh the list and reopen the card.";
+            }
+            var err = new Error(msg);
+            err.status = r.status;
+            err.data = data;
+            throw err;
           }
-          var err = new Error(msg);
-          err.status = r.status;
-          err.data = data;
-          throw err;
-        }
-        return data;
+          return data;
+        });
       });
-    });
   }
 
   function clearHotelScopedState() {
@@ -1137,6 +1148,18 @@
     var listRow = (state.opportunities || []).find(function (o) {
       return o && o.id === id;
     });
+    // Monotonic seq so a slower prior drawer response cannot replace a newer open.
+    var detailOpenSeq = (state._detailOpenSeq = (state._detailOpenSeq || 0) + 1);
+    function raceTimeout(promise, ms, fallback) {
+      return Promise.race([
+        promise,
+        new Promise(function (resolve) {
+          setTimeout(function () {
+            resolve(fallback);
+          }, ms);
+        }),
+      ]);
+    }
     return PC.openOpportunityDetail({
       UI: UI,
       state: state,
@@ -1147,54 +1170,79 @@
       opportunityId: id,
       mode: "auth",
       api: function (url) {
-        var decisionUrl =
-          "/api/hotels/" +
-          encodeURIComponent(state.hotelId) +
-          "/subjects/" +
-          encodeURIComponent(id) +
-          "/decision?module=GDI";
-        var pursuitUrl =
-          "/api/group-demand-intelligence/hotels/" +
-          encodeURIComponent(state.hotelId) +
-          "/opportunities/" +
-          encodeURIComponent(id) +
-          "/pursuit";
-        return Promise.all([
-          api(url),
-          api(decisionUrl).catch(function () {
-            return null;
-          }),
-          api(pursuitUrl).catch(function () {
-            return { pursuit: null };
-          }),
-        ]).then(function (results) {
-          var data = results[0] || {};
-          var decisionBundle = results[1];
-          var pursuitBundle = results[2];
+        // Detail is authoritative for drawer open. Decision/pursuit are optional
+        // enrichments and must never hang the drawer into "Failed to fetch".
+        return api(url).then(function (data) {
+          if (detailOpenSeq !== state._detailOpenSeq) {
+            var stale = new Error("STALE_DETAIL_RESPONSE");
+            stale.code = "STALE_DETAIL_RESPONSE";
+            throw stale;
+          }
           var o = data.opportunity || data;
-          if (o && pursuitBundle && pursuitBundle.pursuit) {
-            o._pursuitDto = pursuitBundle.pursuit;
-            o.pursuitId = pursuitBundle.pursuit.pursuitId;
-            o.pursuitStatus = pursuitBundle.pursuit.pursuitStatus;
-            o.canStartPursuit = false;
-          } else if (o && listRow) {
+          if (o && listRow) {
             o.canStartPursuit = listRow.canStartPursuit === true;
             o.pursuitId = listRow.pursuitId || null;
           }
-          var current =
-            (decisionBundle && decisionBundle.current) ||
-            (decisionBundle && decisionBundle.decision && decisionBundle.current) ||
-            null;
-          if (o && o.commercialProgression) {
-            current = current
-              ? Object.assign({}, current, {
-                  commercialProgression: o.commercialProgression,
-                })
-              : { commercialProgression: o.commercialProgression };
-          }
           data.opportunity = o;
-          data._decisionCurrent = current;
-          return data;
+          var decisionUrl =
+            "/api/hotels/" +
+            encodeURIComponent(state.hotelId) +
+            "/subjects/" +
+            encodeURIComponent(id) +
+            "/decision?module=GDI";
+          var pursuitUrl =
+            "/api/group-demand-intelligence/hotels/" +
+            encodeURIComponent(state.hotelId) +
+            "/opportunities/" +
+            encodeURIComponent(id) +
+            "/pursuit";
+          return Promise.all([
+            raceTimeout(
+              api(decisionUrl).catch(function () {
+                return null;
+              }),
+              2500,
+              null
+            ),
+            raceTimeout(
+              api(pursuitUrl).catch(function () {
+                return { pursuit: null };
+              }),
+              2500,
+              { pursuit: null }
+            ),
+          ]).then(function (extra) {
+            if (detailOpenSeq !== state._detailOpenSeq) {
+              var stale2 = new Error("STALE_DETAIL_RESPONSE");
+              stale2.code = "STALE_DETAIL_RESPONSE";
+              throw stale2;
+            }
+            var decisionBundle = extra[0];
+            var pursuitBundle = extra[1];
+            var opp = data.opportunity || data;
+            if (opp && pursuitBundle && pursuitBundle.pursuit) {
+              opp._pursuitDto = pursuitBundle.pursuit;
+              opp.pursuitId = pursuitBundle.pursuit.pursuitId;
+              opp.pursuitStatus = pursuitBundle.pursuit.pursuitStatus;
+              opp.canStartPursuit = false;
+            }
+            var current =
+              (decisionBundle && decisionBundle.current) ||
+              (decisionBundle &&
+                decisionBundle.decision &&
+                decisionBundle.current) ||
+              null;
+            if (opp && opp.commercialProgression) {
+              current = current
+                ? Object.assign({}, current, {
+                    commercialProgression: opp.commercialProgression,
+                  })
+                : { commercialProgression: opp.commercialProgression };
+            }
+            data.opportunity = opp;
+            data._decisionCurrent = current;
+            return data;
+          });
         });
       },
       detailUrl: function (oppId) {
@@ -1207,6 +1255,10 @@
           path += "?live=1";
         } else if (wantsPublicationPackagePreview()) {
           path += "?publicationPackage=1&surface=customer";
+          // Must match list opportunitiesApiPath — same STAGED package.
+          if (wantsExplicitStagedPreview()) {
+            path += "&preview=staged";
+          }
         }
         return path;
       },

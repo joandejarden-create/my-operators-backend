@@ -295,6 +295,8 @@
         return o;
       })
       .catch(function (err) {
+        // A newer openDetail superseded this request — keep the newer drawer.
+        if (err && err.code === "STALE_DETAIL_RESPONSE") return null;
         var raw =
           (err && err.data && (err.data.message || err.data.error)) ||
           (err && err.message) ||
@@ -303,6 +305,9 @@
         if (
           !friendly ||
           /opportunity_not_found/i.test(String(friendly)) ||
+          /failed to fetch|networkerror|load failed|abort/i.test(
+            String(friendly)
+          ) ||
           String(friendly).toLowerCase() === "request failed"
         ) {
           friendly =
