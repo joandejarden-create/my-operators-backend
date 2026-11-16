@@ -1,0 +1,70 @@
+{
+  "contract": "GDI_YOTEL_GENEVA_LAKE_FULL_E2E_V1_PAID_RESEARCH_PROPOSAL",
+  "referenceDate": "2026-11-16",
+  "status": "PROPOSAL_ONLY_NOT_AUTHORIZED",
+  "founderApprovalRequired": true,
+  "paidSpendThisTaskUsd": 0,
+  "basis": {
+    "unitCostUsdPerDeepRun": 0.5,
+    "unitCostSource": "Every stored YOTEL deep-run artifact records quote.maxUsd = 0.50 and costDollars.total = 0.50 (agent compute 0.20 + search 0.30; contact enrichment not included).",
+    "discoveryCellUnitUsd": 0.5,
+    "discoveryCellAssumption": "Assumed equal to one bounded agent run; the stored discovery cell costs are not itemised separately in this checkout.",
+    "deepRunsExamined": 12,
+    "hotelMarketVisible": 1,
+    "observedHotelMarketYieldPerDeepRun": 0.083,
+    "yieldFloorUsedForSizing": 0.08333333333333333,
+    "shortfallVs20": 19
+  },
+  "tiers": [
+    {
+      "tier": "A_RECOVERY_REVERIFY_LOG_ONLY_LEADS",
+      "purpose": "Re-verify the log-only leads whose run records are missing from this checkout (organization, named buyer, dates, lodging mechanism).",
+      "leads": [
+        "Superlab Suisse",
+        "Gruner AG",
+        "Nyon Business Forum"
+      ],
+      "deepRuns": 3,
+      "estimatedUsd": 1.5,
+      "expectedYield": "Unknown — these were accepted by an earlier gate but are unverifiable here; treat as 0–4 Hotel Market cards."
+    },
+    {
+      "tier": "B_SEGMENT_DISCOVERY_UNCOVERED_SEGMENTS",
+      "purpose": "Run discovery cells for segments with no stored deep-run evidence.",
+      "segments": [
+        "corporate_accounts_scaling",
+        "corporate_meetings_incentives",
+        "government_public_sector",
+        "projects_infrastructure",
+        "social_special_events",
+        "local_catering_day_meetings",
+        "travel_trade_group_intermediaries",
+        "professional_event_planners"
+      ],
+      "discoveryCells": 8,
+      "estimatedUsd": 4
+    },
+    {
+      "tier": "C_PILOT_DEEP_RESEARCH_ON_NEW_CANDIDATES",
+      "phase": "PHASE_1_RECOMMENDED",
+      "purpose": "Pilot batch of 20 deep runs on dated, territory-fit candidates surfaced by tier B. Measure the real Hotel Market yield before committing to the full gap.",
+      "estimatedDeepRuns": 20,
+      "estimatedUsd": 10
+    }
+  ],
+  "phase2ConditionalScale": {
+    "phase": "PHASE_2_ONLY_IF_PILOT_YIELD_IS_ADEQUATE",
+    "condition": "Proceed only if the Phase 1 pilot converts at least ~15% of deep runs into Hotel Market cards; otherwise report the territory's honest ceiling.",
+    "estimatedDeepRunsToCloseShortfall": 228,
+    "estimatedUsd": 114,
+    "note": "Upper-bound sizing at the observed yield floor (8%); not recommended up front."
+  },
+  "caveats": [
+    "20 Hotel Market cards may not be reachable in this territory without relaxing the La Côte / Geneva-airport focus; the observed yield from 14 stored deep runs is low because most candidates are central-Geneva venue-committed events, past events, or speculative demand.",
+    "Surfe contact enrichment is on-click only and is not budgeted here.",
+    "No spend is authorized by this document."
+  ],
+  "recommendedUsd": 15.5,
+  "recommendedCeilingUsd": 19.5,
+  "fullToTargetUpperBoundUsd": 129.5
+}

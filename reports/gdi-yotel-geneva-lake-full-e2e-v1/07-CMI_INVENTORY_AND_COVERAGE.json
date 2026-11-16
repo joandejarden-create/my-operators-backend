@@ -1,0 +1,272 @@
+{
+  "contract": "GDI_YOTEL_GENEVA_LAKE_FULL_E2E_V1",
+  "cmiContract": "cmi-canonical-eligibility-contract-v1 (eight gates)",
+  "referenceDate": "2026-11-16",
+  "separateFromHotelMarket": true,
+  "retained": 3,
+  "demoted": 0,
+  "competitiveSetNote": "YOTEL Geneva Lake has no declared competitive set in its hotel config; Crowne Plaza Geneva is treated as a corridor competitor (Geneva airport / Palexpo conference business) by inference and the card says so.",
+  "discoveryCoverage": {
+    "contractVersion": "1.0.0",
+    "stage": {
+      "id": "competitor_booked_business_discovery",
+      "name": "Competitor-booked business discovery",
+      "mandatoryInFullE2e": true,
+      "zeroCmiRequiresCoverageProof": true,
+      "reuse": [
+        "specialist hunters",
+        "Exa infrastructure",
+        "full-e2e supervisor / research-to-page workflow",
+        "classifyCompetitiveMarketIntelligence",
+        "competitive-future-cycle-presentation-v1"
+      ]
+    },
+    "checklist": [
+      "ESTABLISH_RELEVANT_COMPETITIVE_HOTEL_SET",
+      "SEARCH_FUTURE_EVENTS_BOOKED_AT_COMPETING_HOTELS",
+      "INVESTIGATE_COMPETITOR_PROPERTY_MEETING_CALENDARS",
+      "IDENTIFY_ORGANIZATIONS_HOLDING_EVENTS_THERE",
+      "VERIFY_ACTUAL_BOOKING_RELATIONSHIPS",
+      "IDENTIFY_RECURRING_EVENT_CYCLES",
+      "LOCATE_RELEVANT_DECISION_MAKERS_OR_ENTRY_POINTS",
+      "DETERMINE_REALISTIC_NEXT_CYCLE_PURSUIT",
+      "DEDUPLICATE_AGAINST_EXISTING_GDI_OPPORTUNITIES",
+      "PERSIST_CONFIRMED_AND_REJECTED_EVIDENCE"
+    ],
+    "missingChecklistItems": [
+      "ESTABLISH_RELEVANT_COMPETITIVE_HOTEL_SET",
+      "SEARCH_FUTURE_EVENTS_BOOKED_AT_COMPETING_HOTELS",
+      "INVESTIGATE_COMPETITOR_PROPERTY_MEETING_CALENDARS",
+      "IDENTIFY_ORGANIZATIONS_HOLDING_EVENTS_THERE",
+      "VERIFY_ACTUAL_BOOKING_RELATIONSHIPS",
+      "IDENTIFY_RECURRING_EVENT_CYCLES",
+      "LOCATE_RELEVANT_DECISION_MAKERS_OR_ENTRY_POINTS",
+      "DETERMINE_REALISTIC_NEXT_CYCLE_PURSUIT",
+      "DEDUPLICATE_AGAINST_EXISTING_GDI_OPPORTUNITIES",
+      "PERSIST_CONFIRMED_AND_REJECTED_EVIDENCE"
+    ],
+    "confirmedCompetitorBookingCount": 3,
+    "rejectedEvidenceCount": 0,
+    "researchAttempted": true,
+    "evidenceFindingsDocumented": true,
+    "coverageComplete": false,
+    "zeroConfirmedCmiAcceptable": false,
+    "fullE2eCmiCoverageClaimAllowed": false,
+    "failReason": "CMI_DISCOVERY_CHECKLIST_INCOMPLETE",
+    "coverageNote": "Checklist items are deliberately NOT self-certified: CMI discovery in this task is limited to stored association/event research. Competitor host-hotel booking searches across the other segments were not re-run (zero paid), so a full CMI coverage claim is not allowed and zero-CMI would not be acceptable — retained CMI cards stand on their own edition-specific evidence."
+  },
+  "zeroCmiCoverageProofNote": null,
+  "rows": [
+    {
+      "leadKey": "sfpe",
+      "id": "gdi_opp_yotel_fe2e_sfpe_20270414",
+      "title": "SFPE 2027 European Conference & Expo on Fire Safety Engineering",
+      "organization": "SFPE / SFPE Europe",
+      "segmentId": "associations_conferences_events",
+      "route": "CMI",
+      "storedArtifact": "reports/gdi-yotel-geneva-lake-v21-fourteen-workflow-live-execution/artifacts/deep/association_events/sfpe / sfpe europe.json",
+      "siblingArtifacts": [
+        "reports/gdi-yotel-geneva-lake-v21-fourteen-workflow-live-execution/artifacts/deep/association_events/sfpe / sfpe europe.json"
+      ],
+      "recordedCostUsd": 0.5,
+      "eventStartDate": "2027-04-14",
+      "eventEndDate": "2027-04-15",
+      "daysToStartFromRef": 149,
+      "dateLabel": "Apr 14–15, 2027",
+      "dateEvidence": {
+        "source": "deepResearch.eventsOpportunityOverviewFields.verified*Date",
+        "status": "2027 dates confirmed by organizer; no later edition date verified."
+      },
+      "publicRecheck": [
+        {
+          "leadKey": "sfpe",
+          "url": "https://www.sfpe.org/europe27/home",
+          "status": "CONFIRMED_BY_STATIC_FETCH",
+          "httpStatus": 200,
+          "matched": true,
+          "note": null
+        },
+        {
+          "leadKey": "sfpe",
+          "url": "https://www.sfpe.org/europe27/hotel",
+          "status": "CONFIRMED_BY_STATIC_FETCH",
+          "httpStatus": 200,
+          "matched": true,
+          "note": null
+        }
+      ],
+      "territory": "TERRITORY_COMPETITIVE",
+      "venue": "Crowne Plaza Geneva",
+      "salesReady": false,
+      "contactSummary": "Hana Herron — Education & Events Director",
+      "disposition": "CMI_RETAINED",
+      "kind": "CMI",
+      "competitorHotel": "Crowne Plaza Geneva",
+      "cmiGates": {
+        "qualifiesAsCustomerCmi": true,
+        "failedGates": [],
+        "evidenceStatus": "CONFIRMED_COMPETITOR_COMMITMENT"
+      },
+      "routeKind": "NAMED_DIRECT",
+      "basis": "Competitor commitment verified from stored research; all CMI gates pass; dates exact; start date outside the imminent window. Not a Hotel Market sales opportunity — Sales Ready is never assigned (no dual classification).",
+      "returnCriteria": null,
+      "nextStep": "Contact the relevant housing representative to establish whether overflow accommodation or a secondary room block is needed for YOTEL Geneva Lake. Competitor booking is confirmed at Crowne Plaza Geneva — do not request an RFP as host.",
+      "contactChoices": [
+        {
+          "name": "Hana Herron",
+          "title": "Education & Events Director",
+          "responsibilityOk": true,
+          "routeOk": true
+        },
+        {
+          "name": "Rose Portera",
+          "title": "Industry Partnerships & Sales Manager",
+          "responsibilityOk": false,
+          "routeOk": true
+        }
+      ],
+      "customerVisibleFinal": true,
+      "finalDateLabel": "Apr 14–15, 2027"
+    },
+    {
+      "leadKey": "daus",
+      "id": "gdi_opp_yotel_fe2e_daus_20270210",
+      "title": "3rd International Conference on Drones and Unmanned Systems (DAUS 2027)",
+      "organization": "International Frequency Sensor Association (IFSA)",
+      "segmentId": "associations_conferences_events",
+      "route": "CMI",
+      "storedArtifact": "reports/gdi-yotel-geneva-lake-v21-fourteen-workflow-live-execution/artifacts/deep/association_events/daus conference / ifsa.json",
+      "siblingArtifacts": [
+        "reports/gdi-yotel-geneva-lake-v21-fourteen-workflow-live-execution/artifacts/deep/association_events/daus conference / ifsa.json"
+      ],
+      "recordedCostUsd": 0.5,
+      "eventStartDate": "2027-02-10",
+      "eventEndDate": "2027-02-12",
+      "daysToStartFromRef": 86,
+      "dateLabel": "Feb 10–12, 2027",
+      "dateEvidence": {
+        "source": "deepResearch.eventsOpportunityOverviewFields.verified*Date",
+        "status": "DAUS 2027 conference dates verified on organizer homepage and CFP. No later edition date verified."
+      },
+      "publicRecheck": [
+        {
+          "leadKey": "daus",
+          "url": "https://www.daus-conference.com/",
+          "status": "CONFIRMED_BY_STATIC_FETCH",
+          "httpStatus": 200,
+          "matched": true,
+          "note": null
+        }
+      ],
+      "territory": "TERRITORY_COMPETITIVE",
+      "venue": "Crowne Plaza Geneva by IHG",
+      "salesReady": false,
+      "contactSummary": "Tetyana Zakharchenko — Conference and Publication Manager",
+      "disposition": "CMI_RETAINED",
+      "kind": "CMI",
+      "competitorHotel": "Crowne Plaza Geneva",
+      "cmiGates": {
+        "qualifiesAsCustomerCmi": true,
+        "failedGates": [],
+        "evidenceStatus": "CONFIRMED_COMPETITOR_COMMITMENT"
+      },
+      "routeKind": "ORGANIZER_MAILBOX",
+      "basis": "Competitor commitment verified from stored research; all CMI gates pass; dates exact; start date outside the imminent window. Not a Hotel Market sales opportunity — Sales Ready is never assigned (no dual classification).",
+      "returnCriteria": null,
+      "nextStep": "Contact the relevant housing representative to establish whether overflow accommodation or a secondary room block is needed for YOTEL Geneva Lake. Competitor booking is confirmed at Crowne Plaza Geneva — do not request an RFP as host.",
+      "contactChoices": [
+        {
+          "name": "Tetyana Zakharchenko",
+          "title": "Conference and Publication Manager",
+          "responsibilityOk": true,
+          "routeOk": true
+        },
+        {
+          "name": "Sergey Y. Yurish",
+          "title": "DAUS 2027 Chairman; IFSA President",
+          "responsibilityOk": false,
+          "routeOk": true
+        }
+      ],
+      "customerVisibleFinal": true,
+      "finalDateLabel": "Feb 10–12, 2027"
+    },
+    {
+      "leadKey": "opal",
+      "id": "gdi_opp_yotel_fe2e_opal_20270503",
+      "title": "10th International Conference on Optics, Photonics and Lasers (OPAL 2027)",
+      "organization": "International Frequency Sensor Association (IFSA)",
+      "segmentId": "associations_conferences_events",
+      "route": "CMI",
+      "storedArtifact": "reports/gdi-yotel-geneva-lake-v21-fourteen-workflow-live-execution/artifacts/deep/association_events/opal conference / ifsa.json",
+      "siblingArtifacts": [
+        "reports/gdi-yotel-geneva-lake-v21-fourteen-workflow-live-execution/artifacts/deep/association_events/opal conference / ifsa.json"
+      ],
+      "recordedCostUsd": 0.5,
+      "eventStartDate": "2027-05-03",
+      "eventEndDate": "2027-05-05",
+      "daysToStartFromRef": 168,
+      "dateLabel": "May 3–5, 2027",
+      "dateEvidence": {
+        "source": "deepResearch.eventsOpportunityOverviewFields.verified*Date",
+        "status": "2027 conference dates verified; 2 May welcome cocktail is separate. No post-2027 dates verified."
+      },
+      "publicRecheck": [],
+      "territory": "TERRITORY_COMPETITIVE",
+      "venue": "Crowne Plaza Geneva",
+      "salesReady": false,
+      "contactSummary": "Tetyana Zakharchenko — Conference and Publication Manager",
+      "disposition": "CMI_RETAINED",
+      "kind": "CMI",
+      "competitorHotel": "Crowne Plaza Geneva",
+      "cmiGates": {
+        "qualifiesAsCustomerCmi": true,
+        "failedGates": [],
+        "evidenceStatus": "CONFIRMED_COMPETITOR_COMMITMENT"
+      },
+      "routeKind": "ORGANIZER_MAILBOX",
+      "basis": "Competitor commitment verified from stored research; all CMI gates pass; dates exact; start date outside the imminent window. Not a Hotel Market sales opportunity — Sales Ready is never assigned (no dual classification).",
+      "returnCriteria": null,
+      "nextStep": "Contact the relevant housing representative to establish whether overflow accommodation or a secondary room block is needed for YOTEL Geneva Lake. Competitor booking is confirmed at Crowne Plaza Geneva — do not request an RFP as host.",
+      "contactChoices": [
+        {
+          "name": "Tetyana Zakharchenko",
+          "title": "Conference and Publication Manager",
+          "responsibilityOk": true,
+          "routeOk": true
+        },
+        {
+          "name": "Sergey Y. Yurish",
+          "title": "OPAL 2027 Chairman; IFSA President",
+          "responsibilityOk": false,
+          "routeOk": true
+        }
+      ],
+      "customerVisibleFinal": true,
+      "finalDateLabel": "May 3–5, 2027"
+    }
+  ],
+  "cards": [
+    {
+      "id": "gdi_opp_yotel_fe2e_sfpe_20270414",
+      "title": "SFPE 2027 European Conference & Expo on Fire Safety Engineering",
+      "competitorHotel": "Crowne Plaza Geneva",
+      "dates": "Apr 14–15, 2027",
+      "nextStep": "Contact the relevant housing representative to establish whether overflow accommodation or a secondary room block is needed for YOTEL Geneva Lake. Competitor booking is confirmed at Crowne Plaza Geneva — do not request an RFP as host."
+    },
+    {
+      "id": "gdi_opp_yotel_fe2e_daus_20270210",
+      "title": "3rd International Conference on Drones and Unmanned Systems (DAUS 2027)",
+      "competitorHotel": "Crowne Plaza Geneva",
+      "dates": "Feb 10–12, 2027",
+      "nextStep": "Contact the relevant housing representative to establish whether overflow accommodation or a secondary room block is needed for YOTEL Geneva Lake. Competitor booking is confirmed at Crowne Plaza Geneva — do not request an RFP as host."
+    },
+    {
+      "id": "gdi_opp_yotel_fe2e_opal_20270503",
+      "title": "10th International Conference on Optics, Photonics and Lasers (OPAL 2027)",
+      "competitorHotel": "Crowne Plaza Geneva",
+      "dates": "May 3–5, 2027",
+      "nextStep": "Contact the relevant housing representative to establish whether overflow accommodation or a secondary room block is needed for YOTEL Geneva Lake. Competitor booking is confirmed at Crowne Plaza Geneva — do not request an RFP as host."
+    }
+  ]
+}
