@@ -3,10 +3,14 @@
   "generatedAt": "2026-11-16T09:37:00.000Z",
   "hotelId": "recrPQcZg7SFARRb2",
   "hotelName": "YOTEL Geneva Lake",
-  "paidCallsAuthorized": false,
-  "paidSpendThisTaskUsd": 0,
-  "blockingGate": "EXPLICIT_USD_CEILING_REQUIRED",
-  "hardStopRule": "No Exa / Surfe / Parallel paid calls until founder replies with a numerical USD ceiling. Enforce pre-call reservations, cumulative ledger, sequential bounded calls, and automatic hard stop at ceiling.",
+  "paidCallsAuthorized": true,
+  "authorizedCeilingUsd": 35,
+  "authorizationId": "FOUNDER_APPROVE_YOTEL_GENEVA_LAKE_40PLUS_EXA_35USD_20261116",
+  "authorizationText": "Authorize YOTEL Exa ceiling $35 (Option A pilot)",
+  "authorizedAt": "2026-11-16T09:47:00.000Z",
+  "paidSpendThisTaskUsd": 30.6,
+  "blockingGate": null,
+  "hardStopRule": "Never exceed $35.00 actual incremental Exa spend. Pre-call reserve max quoted charge; settle actual; sequential calls (concurrency=1); automatic hard stop at ceiling. Surfe/Parallel prohibited. No auto-increase to $75.",
   "githubCloseout": {
     "pr298": {
       "state": "MERGED",
@@ -75,13 +79,13 @@
     },
     {
       "tier": "B_FOURTEEN_SEGMENT_DISCOVERY",
-      "estimatedUsd": 7.0,
+      "estimatedUsd": 7,
       "discoveryCells": 14,
       "purpose": "Pass-1 discovery across all 14 certified segments with YOTEL-specific geography (Founex/Nyon/La Côte/airport/cross-border). Prioritize the 8 uncovered segments first, then refresh the 6 covered segments for incremental leads."
     },
     {
       "tier": "C_PHASE1_PILOT_DEEP_RESEARCH",
-      "estimatedUsd": 25.0,
+      "estimatedUsd": 25,
       "deepRuns": 50,
       "purpose": "Deep-research highest-scoring Pass-1 candidates (corporate/meetings/local catering/planners first). Measure real HM conversion before Phase 2."
     },
@@ -112,12 +116,11 @@
     }
   ],
   "spendLedger": {
-    "status": "EMPTY_AWAITING_CEILING",
-    "entries": [],
-    "reservedUsd": 0,
-    "spentUsd": 0,
-    "remainingUsd": null,
-    "hardStopAtUsd": null
+    "status": "PILOT_COMPLETE",
+    "spentUsd": 30.6,
+    "remainingUsd": 4.4,
+    "hardStopAtUsd": 35,
+    "reservedUsd": 0
   },
   "nonGoalsUntilCeiling": [
     "No paid Exa discovery or deep research",
@@ -125,5 +128,14 @@
     "No live Airtable writes",
     "No CUSTOMER_PUBLISHED",
     "No fingerprint replacement"
-  ]
+  ],
+  "remainingUsd": 4.4,
+  "pilotResult": {
+    "hotelMarketFinal": 21,
+    "hotelMarketIncremental": 20,
+    "cmiFinal": 5,
+    "gapTo40": 19,
+    "newFingerprint": "b4d92494c2240a0296025f0f290280196de34b4a4b95dd0b3dc91732b9cd8763",
+    "costPerIncrementalHmUsd": 1.53
+  }
 }
