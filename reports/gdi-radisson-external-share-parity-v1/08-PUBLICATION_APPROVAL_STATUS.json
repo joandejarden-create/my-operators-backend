@@ -1,0 +1,22 @@
+{
+  "status": "AWAITING_FOUNDER_APPROVAL",
+  "fingerprintToApprove": "533f2642f8c74af881ff525c2335f9a5471f5ef1d04ac16f7646131176f8706d",
+  "publicationVersion": "gdi_pub_recH9h3McgMNFQEla_20261116_segment_classification_remediation_v1",
+  "currentLifecycle": null,
+  "customerPublished": false,
+  "simulatedParityOk": true,
+  "activationStepsAfterApproval": [
+    "Record FOUNDER_APPROVED for exact fingerprint 533f2642…",
+    "Advance CURRENT pointer via store.publishCustomerVisible (or certified one-click publish) for this package only",
+    "Commit CURRENT.json + any registry updates; merge to main; deploy Railway",
+    "Issue production share token: railway run node scripts/gdi-issue-share.mjs --hotelId=recH9h3McgMNFQEla --label='Radisson Blu Toronto Downtown GDI'",
+    "Validate production HTTPS share URL (do not paste raw token into GitHub)"
+  ],
+  "blockedActionsNotTaken": [
+    "CUSTOMER_PUBLISHED",
+    "CURRENT pointer write",
+    "production share token issuance",
+    "Airtable live writes",
+    "paid Exa/Surfe/Parallel"
+  ]
+}
