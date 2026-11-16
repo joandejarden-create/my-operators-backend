@@ -51,6 +51,8 @@ paths = [
   '''reports/gdi-radisson-toronto-14-segment-exa-expansion-20usd-v1/raw-runs/.*\.json$''',
   # Radisson operational Airtable certification: publication package IDs can trip generic-api-key (PR #299).
   '''reports/gdi-radisson-toronto-final-operational-certification-v1/.*\.json$''',
+  # Toronto ADP customer share activation reports: prose references to public sht_ token ids (PR #325).
+  '''reports/adp/radisson-blu-toronto-customer-share-activation-v1/.*$''',
   # YOTEL Geneva Lake $35 Exa pilot: research run keys + URLs in reports/raw-runs.
   '''reports/gdi-yotel-geneva-lake-40plus-exa-expansion-v1/.*\.json$''',
   '''reports/gdi-yotel-geneva-lake-40plus-exa-expansion-v1/raw-runs/.*\.json$''',
@@ -142,6 +144,8 @@ regexes = [
   '''(?i)(?:propertyKey|identityKey|identity_key|property_identity_key|proposedIdentityKey|slotKey)\s*:\s*["''][A-Za-z0-9._:-]+["'']''',
   '''(?i)(?:TOKEN_ID|BETHESDA_TOKEN|BETHESDA_GDI_CONTRACT_TOKEN_ID)\s*=\s*["''](?:sht_|gdisht_)[A-Za-z0-9_-]+["'']''',
   '''(?i)(?:--token-id=|Token id:\s*`?|Token:\s*)(?:sht_|gdisht_)[A-Za-z0-9_-]+''',
+  # Markdown/prose probe lines: tokenId=sht_… (public share capability id, not a bearer/signing secret).
+  '''(?i)tokenId=(?:sht_|gdisht_)[A-Za-z0-9_-]+''',
   '''(?i)"auth_sha"\s*:\s*"[A-Fa-f0-9]{64}"''',
   '''(?i)"cohort_keys_hash"\s*:\s*"[A-Fa-f0-9]{40,64}"''',
 
