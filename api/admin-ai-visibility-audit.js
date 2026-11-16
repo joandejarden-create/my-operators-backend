@@ -34,6 +34,7 @@ import {
   assertSafeAvaPropertyId,
   assertSafeAvaVersionId,
 } from "../lib/ai-visibility-audit-action-plan/ava-pdf-archive-v1.js";
+import { resolveAvaAdminHotelRow } from "../lib/ai-visibility-audit-action-plan/ava-admin-hotel-row-v1.js";
 import {
   AVA_PDF_CHANNEL,
   describeAvaPdfChannels,
@@ -221,14 +222,13 @@ export function getAdminAvaHotels(req, res) {
     // Universe = every ADP property with a staged certified/staged report.
     // Do NOT restrict to hotels already present in the AVA file store.
     const stagedIds = listAdpPropertyIdsWithStagedReports();
-    let stored = [];
+    // Warm list (with production/store seed merge) — rows still resolve via
+    // resolveAvaAdminHotelRow → getAuditMeta so durable/seed authority stays consistent.
     try {
-      stored = listStoredAudits();
+      listStoredAudits();
     } catch (storeErr) {
       console.error("[ava-admin] listStoredAudits failed:", storeErr?.message || storeErr);
-      stored = [];
     }
-    const byId = new Map(stored.map((s) => [s.propertyId, s]));
     const hotels = [];
     for (const propertyId of stagedIds) {
       let baseline = { ok: false, error: "LOAD_FAILED" };
@@ -241,45 +241,12 @@ export function getAdminAvaHotels(req, res) {
           loadErr?.message || loadErr
         );
       }
-      const meta = byId.get(propertyId) || {
-        propertyId,
-        status: baseline.ok ? "BASELINE_READY" : "NOT_STARTED",
-      };
-      const latestEntry =
-        Array.isArray(meta.versions) && meta.latestVersionId
-          ? meta.versions.find((v) => v && v.versionId === meta.latestVersionId) ||
-            meta.versions[meta.versions.length - 1]
-          : Array.isArray(meta.versions) && meta.versions.length
-            ? meta.versions[meta.versions.length - 1]
-            : null;
-      const recommendationCount =
-        Number(
-          latestEntry?.actionCount ??
-            meta.acceptedRecommendationCount ??
-            0
-        ) || 0;
-      hotels.push({
-        propertyId,
-        name: baseline.baseline?.name || meta.name || propertyId,
-        market: baseline.baseline?.market || meta.market || "",
-        website: baseline.baseline?.website || "",
-        adpBaselinePeriodId:
-          baseline.baseline?.periodId || meta.adpBaselinePeriodId || null,
-        adpBaselineOk: baseline.ok === true,
-        auditStatus: meta.status || (baseline.ok ? "BASELINE_READY" : "NOT_STARTED"),
-        acceptedRecommendationCount: meta.acceptedRecommendationCount || 0,
-        recommendationCount,
-        researchCostUsd: meta.researchCostUsd || 0,
-        evidenceReviewStatus: meta.evidenceReviewStatus || "NOT_STARTED",
-        pdfStatus: meta.pdfStatus || "MISSING",
-        customerReadinessStatus:
-          meta.customerReadinessStatus || "NOT_CUSTOMER_READY",
-        publicationAuthorizationStatus:
-          meta.publicationAuthorizationStatus || "NOT_AUTHORIZED",
-        latestVersionId: meta.latestVersionId || null,
-        founderApprovedForCustomer: meta.founderApprovedForCustomer === true,
-        versionCount: Array.isArray(meta.versions) ? meta.versions.length : 0,
-      });
+      hotels.push(
+        resolveAvaAdminHotelRow(propertyId, {
+          baseline,
+          getMeta: getAuditMeta,
+        })
+      );
     }
     hotels.sort((a, b) => String(a.name || "").localeCompare(String(b.name || "")));
     sendJson(res, 200, {

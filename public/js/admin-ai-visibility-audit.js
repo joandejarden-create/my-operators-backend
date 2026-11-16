@@ -18,7 +18,8 @@
 
   var STATUS_LABELS = {
     NOT_STARTED: "Not Started",
-    BASELINE_READY: "Not Started",
+    // Baseline exists ≠ audit work started — keep distinct from NOT_STARTED.
+    BASELINE_READY: "Baseline Ready",
     PDF_STAGED: "Draft Available",
     ACTION_PLAN_STAGED: "Draft Available",
     VALIDATION_REQUIRED: "Needs Review",
@@ -105,7 +106,10 @@
 
   function isCustomerApproved(h) {
     if (!h) return false;
+    // Customer Authorization column = founder approval for customer publication.
+    // Do not treat FOUNDER_REVIEWED_STAGED / measurement-complete as authorization.
     if (h.founderApprovedForCustomer === true) return true;
+    if (h.customerPublicationAuthorized === true) return true;
     return !!CUSTOMER_APPROVED[h.auditStatus];
   }
 
@@ -707,8 +711,13 @@
               '</strong><div class="ada-subtitle ada-hotel-id">' +
               esc(h.propertyId) +
               "</div></td>";
+        // PDF availability ≠ customer publication. Staged/validated PDFs are
+        // "Available"; reserve "Published" language for customer-authorized rows.
         var pdfCell = hasPdf(h)
-          ? statusBadge("ok", "Draft + Published")
+          ? statusBadge(
+              "ok",
+              isCustomerApproved(h) ? "Published" : "Available"
+            )
           : statusBadge("warn", "Missing");
         var approvalCell = isCustomerApproved(h)
           ? statusBadge("ok", "Approved")
