@@ -824,6 +824,32 @@
         );
       }
 
+      function bppLooksMeasurementAvailable(bpp) {
+        if (!bpp || bpp.status !== "READY") return false;
+        var customer = bpp.bppCustomerState || bpp.customerReadyClass || "";
+        var measurement = bpp.bppMeasurementState || "";
+        var stagedCertified =
+          customer === "BPP_COMPARISON_CERTIFIED" ||
+          measurement === "BPP_COMPARISON_CERTIFIED" ||
+          customer === "BPP_READY_POPULATED_FULL" ||
+          customer === "BPP_READY_POPULATED_RANK_ONLY";
+        var assuranceOk =
+          bpp.assuranceStatus === "CUSTOMER_READY" ||
+          bpp.assuranceStatus === "PERIOD_2_CERTIFIED_LOCAL" ||
+          bpp.assuranceStatus === "STAGED_COMPARISON_CERTIFIED" ||
+          bpp.controlledPeriod2LocalPreview === true ||
+          bpp._bppMeasurementAvailable === true ||
+          stagedCertified;
+        return !!(
+          assuranceOk &&
+          Array.isArray(bpp.kpis) &&
+          bpp.kpis.length > 0 &&
+          bpp.ranking &&
+          Array.isArray(bpp.ranking.rows) &&
+          bpp.ranking.rows.length > 0
+        );
+      }
+
       // Publication-meta for this load is already fetched with cache:no-store above.
       // A second meta+report round-trip cannot make BPP READY if the first report
       // already reflected that meta (P4B measured duplicate ~73–197 KB report downloads).
@@ -838,6 +864,16 @@
         bpp.assuranceStatus = "CUSTOMER_READY";
         bpp.showAnalyticalScaffolding = true;
         bpp.customerPublished = true;
+        data.brandPortfolioPosition = bpp;
+      } else if (bppLooksMeasurementAvailable(bpp)) {
+        // Founder-staged / measurement-available Loyalty BPP — paint without
+        // requiring customer publication approval.
+        bpp.status = "READY";
+        if (!bpp.assuranceStatus || bpp.assuranceStatus === "NOT_READY") {
+          bpp.assuranceStatus = "STAGED_COMPARISON_CERTIFIED";
+        }
+        bpp.showAnalyticalScaffolding = true;
+        bpp.customerPublished = false;
         data.brandPortfolioPosition = bpp;
       } else if (
         bpp &&
@@ -1566,10 +1602,22 @@
   function isBrandPortfolioReady(bpp) {
     if (!bpp) return false;
     var status = bpp.status || bpp.renderState || "";
+    var customer = bpp.bppCustomerState || bpp.customerReadyClass || "";
+    var measurement = bpp.bppMeasurementState || "";
+    var stagedCertified =
+      customer === "BPP_COMPARISON_CERTIFIED" ||
+      measurement === "BPP_COMPARISON_CERTIFIED" ||
+      customer === "BPP_READY_POPULATED_FULL" ||
+      customer === "BPP_READY_POPULATED_RANK_ONLY";
+    // Align with bppComparisonCertifiedIsRenderable — measurement availability
+    // is independent of customer publication / CUSTOMER_READY.
     var assuranceOk =
       bpp.assuranceStatus === "CUSTOMER_READY" ||
       bpp.assuranceStatus === "PERIOD_2_CERTIFIED_LOCAL" ||
-      bpp.controlledPeriod2LocalPreview === true;
+      bpp.assuranceStatus === "STAGED_COMPARISON_CERTIFIED" ||
+      bpp.controlledPeriod2LocalPreview === true ||
+      bpp._bppMeasurementAvailable === true ||
+      stagedCertified;
     return (
       status === "READY" &&
       assuranceOk &&
