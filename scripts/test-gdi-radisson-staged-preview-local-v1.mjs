@@ -13,8 +13,10 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const HOTEL = "recH9h3McgMNFQEla";
 const PRIOR_FP =
   "ac55190dd783fe6eb5f3ec60d65fd2ffdd9c7f3e3aba7eb35645197e96979c86";
-const FP =
+const CURRENT_FP =
   "533f2642f8c74af881ff525c2335f9a5471f5ef1d04ac16f7646131176f8706d";
+const STAGED_FP =
+  "f2bfebc96d75b87b9df5ae239b9e48502e117a4a6c51b344e65375a8a5a87e9d";
 
 const appJs = fs.readFileSync(
   path.join(ROOT, "public/js/group-demand-intelligence/app.js"),
@@ -33,6 +35,7 @@ assert.doesNotMatch(
   "must not render Preview chip or technical package/fingerprint banner",
 );
 assert.match(appJs, /wantsExplicitStagedPreview/);
+assert.match(appJs, /isLocalFounderHost/, "localhost must default to STAGED");
 assert.match(
   appJs,
   /path \+= "&preview=staged"/,
@@ -65,7 +68,7 @@ const staged = resolvePreviewOpportunitiesFromPublicationPackage({
 assert.equal(staged.ok, true);
 assert.equal(staged.mode, "PACKAGE");
 assert.equal(staged.meta?.previewSource, "STAGED");
-assert.equal(staged.meta?.contentFingerprintSha256, FP);
+assert.equal(staged.meta?.contentFingerprintSha256, STAGED_FP);
 assert.equal(staged.opportunities?.length, 66);
 const hm = staged.opportunities.filter((o) => o.hotelMarketScopeEligible === true);
 const cmi = staged.opportunities.filter(
@@ -91,23 +94,21 @@ assert.equal(
   "ASSOCIATION_CONFERENCE_GROUP",
 );
 
-const fallback = resolvePreviewOpportunitiesFromPublicationPackage({
+// Without preferStaged, resolver serves CURRENT published package.
+const currentDefault = resolvePreviewOpportunitiesFromPublicationPackage({
   hotelId: HOTEL,
 });
-assert.equal(fallback.meta?.previewSource, "STAGED");
-assert.equal(fallback.meta?.contentFingerprintSha256, FP);
+assert.equal(currentDefault.meta?.previewSource, "CURRENT");
+assert.equal(currentDefault.meta?.contentFingerprintSha256, CURRENT_FP);
 
 console.log(
   JSON.stringify(
     {
       ok: true,
-      priorFingerprintPreserved: PRIOR_FP,
-      fingerprint: FP,
-      all: staged.opportunities.length,
-      hotelMarket: hm.length,
-      cmi: cmi.length,
-      localCatering: localCatering.length,
-      scalingCompany: scaling.length,
+      stagedFingerprint: STAGED_FP,
+      currentFingerprint: CURRENT_FP,
+      inventory: { all: 66, hotel: hm.length, cmi: cmi.length },
+      localhostDefaultsToStaged: true,
     },
     null,
     2,

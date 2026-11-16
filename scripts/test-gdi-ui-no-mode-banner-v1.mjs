@@ -63,7 +63,7 @@ check("share_app_has_no_mode_banner", () => {
 });
 
 check("auth_html_cache_bust_updated", () => {
-  assert.match(authHtml, /app\.js\?v=gdi-drawer-fetch-remediation-v1/);
+  assert.match(authHtml, /app\.js\?v=gdi-local-staged-founder-preview-v1/);
 });
 
 if (failed) {

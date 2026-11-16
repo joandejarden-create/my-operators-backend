@@ -645,7 +645,32 @@
 
   function wantsExplicitStagedPreview() {
     try {
-      return String(readGdiQueryParams().get("preview") || "").toLowerCase() === "staged";
+      var params = readGdiQueryParams();
+      var preview = String(params.get("preview") || "").toLowerCase();
+      // Explicit opt-out keeps Mode B ≡ live CURRENT / external share.
+      if (preview === "current" || preview === "published") return false;
+      if (preview === "staged") return true;
+      // Local founder review: when STAGED ≠ CURRENT, localhost must load the
+      // corrected staged package without requiring a manual query flag.
+      // Production authenticated hosts stay on CURRENT unless preview=staged.
+      if (isLocalFounderHost()) return true;
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function isLocalFounderHost() {
+    try {
+      var host = String(
+        (window.location && window.location.hostname) || ""
+      ).toLowerCase();
+      return (
+        host === "localhost" ||
+        host === "127.0.0.1" ||
+        host === "0.0.0.0" ||
+        host === "[::1]"
+      );
     } catch (e) {
       return false;
     }
@@ -1668,8 +1693,10 @@
         presentationMode +
         '" role="status">' +
         (presentationMode === "LIVE_RESEARCH"
-          ? "<strong>Mode A — Live Research</strong> · Evolving store. Not the customer publication. Open without <code>?live=1</code> for founder publication preview (Mode B ≡ share)."
-          : "<strong>Mode B — Founder Publication Preview</strong> · Approved package via canonical customer renderer (same as external share). Research browse: <code>?live=1</code>. Explicit staged: <code>?preview=staged</code>.") +
+          ? "<strong>Mode A — Live Research</strong> · Evolving store. Not the customer publication. Open without <code>?live=1</code> for founder publication preview."
+          : wantsExplicitStagedPreview()
+            ? "<strong>Mode B — Founder STAGED Preview</strong> · Corrected candidate package (localhost defaults to STAGED; <code>?preview=current</code> mirrors live share). External stays on CURRENT until fingerprint approval."
+            : "<strong>Mode B — Founder Publication Preview</strong> · Approved package via canonical customer renderer (same as external share). Research browse: <code>?live=1</code>. Explicit staged: <code>?preview=staged</code>.") +
         "</div>";
     }
     root.innerHTML =
