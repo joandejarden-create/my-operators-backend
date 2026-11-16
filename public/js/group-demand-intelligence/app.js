@@ -16,9 +16,39 @@
   var drawerClose = document.getElementById("gdiDrawerClose");
 
   var STORAGE_PREFIX = "gdi-auth-";
+
+  /** Merge iframe search + parent /app hash|search so founder preview query works in the shell. */
+  function readGdiQueryParams() {
+    var params = new URLSearchParams();
+    function merge(src) {
+      if (!src) return;
+      src.forEach(function (value, key) {
+        if (!params.has(key) && value != null && String(value).trim()) {
+          params.set(key, String(value));
+        }
+      });
+    }
+    try {
+      merge(new URLSearchParams(window.location.search || ""));
+    } catch (eSearch) {
+      /* ignore */
+    }
+    try {
+      if (window.parent && window.parent !== window) {
+        merge(new URLSearchParams(window.parent.location.search || ""));
+        var hash = String(window.parent.location.hash || "").slice(1);
+        var qIdx = hash.indexOf("?");
+        if (qIdx >= 0) merge(new URLSearchParams(hash.slice(qIdx + 1)));
+      }
+    } catch (eParent) {
+      /* cross-origin or unavailable */
+    }
+    return params;
+  }
+
   function resolveInitialHotelId() {
     try {
-      var params = new URLSearchParams(window.location.search || "");
+      var params = readGdiQueryParams();
       var fromQuery = String(params.get("hotelId") || "").trim();
       if (fromQuery) return fromQuery;
       var fromStore = String(localStorage.getItem(STORAGE_PREFIX + "hotelId") || "").trim();
@@ -72,7 +102,16 @@
   }
 
   function resetBrowseView() {
-    state.filters = PC.createDefaultFilters();
+    // Prefer shared UI reset so opportunityType / sales facets clear consistently.
+    state.filters =
+      typeof UI.resetBrowseFilters === "function"
+        ? UI.resetBrowseFilters()
+        : PC.createDefaultFilters();
+    state.filters.opportunityType = "";
+    state.filters.weekly = "";
+    state.filters.priority = "";
+    state.filters.salesOpportunity = "";
+    state.filters.marketScope = "ALL";
     state.sortKey = "priority";
     state.sortDir = 1;
     state.viewMode = "tiles";
@@ -381,24 +420,35 @@
   }
 
   function api(path, opts) {
-    return fetchFn(path, opts).then(function (r) {
-      return r.json().then(function (data) {
-        if (!r.ok || data.ok === false) {
-          var msg = data.message || data.error || "Request failed";
-          if (/opportunity_not_found/i.test(String(msg))) {
-            msg =
-              data.message && !/opportunity_not_found/i.test(String(data.message))
-                ? data.message
-                : "This opportunity could not be opened. Please try again. If the problem continues, refresh the list and reopen the card.";
+    return fetchFn(path, opts)
+      .catch(function (networkErr) {
+        var err = new Error(
+          "This opportunity could not be opened. Please try again. If the problem continues, refresh the list and reopen the card."
+        );
+        err.code = "GDI_NETWORK_FETCH_FAILED";
+        err.cause = networkErr;
+        err.status = 0;
+        console.error("[gdi] network fetch failed", path, networkErr);
+        throw err;
+      })
+      .then(function (r) {
+        return r.json().then(function (data) {
+          if (!r.ok || data.ok === false) {
+            var msg = data.message || data.error || "Request failed";
+            if (/opportunity_not_found/i.test(String(msg))) {
+              msg =
+                data.message && !/opportunity_not_found/i.test(String(data.message))
+                  ? data.message
+                  : "This opportunity could not be opened. Please try again. If the problem continues, refresh the list and reopen the card.";
+            }
+            var err = new Error(msg);
+            err.status = r.status;
+            err.data = data;
+            throw err;
           }
-          var err = new Error(msg);
-          err.status = r.status;
-          err.data = data;
-          throw err;
-        }
-        return data;
+          return data;
+        });
       });
-    });
   }
 
   function clearHotelScopedState() {
@@ -408,17 +458,7 @@
     state.publication = null;
     state.visibilityWarning = null;
     state.runs = [];
-    state.filters = {
-      priority: "",
-      segment: "",
-      booking: "",
-      territory: "",
-      weekly: "",
-      opportunityType: "",
-      marketScope: "ALL",
-      competitiveStatus: "ALL_COMPETITIVE",
-      workflow: "",
-    };
+    state.filters = PC.createDefaultFilters();
     state.sortKey = "priority";
     state.sortDir = 1;
     state.viewMode = "tiles";
@@ -581,7 +621,7 @@
    */
   function wantsPublicationPackagePreview() {
     try {
-      var params = new URLSearchParams(window.location.search || "");
+      var params = readGdiQueryParams();
       if (String(params.get("live") || "") === "1") return false;
       if (String(params.get("publicationPackage") || "") === "0") return false;
       // Default: package-first so authenticated GDI matches customer share.
@@ -593,7 +633,7 @@
 
   function wantsLiveResearchBrowse() {
     try {
-      var params = new URLSearchParams(window.location.search || "");
+      var params = readGdiQueryParams();
       return (
         String(params.get("live") || "") === "1" ||
         String(params.get("publicationPackage") || "") === "0"
@@ -603,11 +643,18 @@
     }
   }
 
+  function wantsExplicitStagedPreview() {
+    try {
+      return String(readGdiQueryParams().get("preview") || "").toLowerCase() === "staged";
+    } catch (e) {
+      return false;
+    }
+  }
+
   /** Explicit developer diagnostic only — never shown in normal auth/share UI. */
   function wantsPresentationModeDiagnostics() {
     try {
-      var params = new URLSearchParams(window.location.search || "");
-      return String(params.get("gdiDiag") || "") === "1";
+      return String(readGdiQueryParams().get("gdiDiag") || "") === "1";
     } catch (e) {
       return false;
     }
@@ -618,7 +665,7 @@
       "/api/group-demand-intelligence/hotels/" + hotelIdEnc + "/opportunities";
     var q = [];
     try {
-      var params = new URLSearchParams(window.location.search || "");
+      var params = readGdiQueryParams();
       var audience = String(
         params.get("inventoryAudience") || params.get("audience") || ""
       ).trim();
@@ -633,7 +680,7 @@
         q.push("publicationPackage=1");
         q.push("surface=customer");
         // Explicit founder staged-preview (no CURRENT / no silent Bethesda fallback).
-        if (String(params.get("preview") || "").toLowerCase() === "staged") {
+        if (wantsExplicitStagedPreview()) {
           q.push("preview=staged");
         }
       }
@@ -1101,6 +1148,18 @@
     var listRow = (state.opportunities || []).find(function (o) {
       return o && o.id === id;
     });
+    // Monotonic seq so a slower prior drawer response cannot replace a newer open.
+    var detailOpenSeq = (state._detailOpenSeq = (state._detailOpenSeq || 0) + 1);
+    function raceTimeout(promise, ms, fallback) {
+      return Promise.race([
+        promise,
+        new Promise(function (resolve) {
+          setTimeout(function () {
+            resolve(fallback);
+          }, ms);
+        }),
+      ]);
+    }
     return PC.openOpportunityDetail({
       UI: UI,
       state: state,
@@ -1111,54 +1170,79 @@
       opportunityId: id,
       mode: "auth",
       api: function (url) {
-        var decisionUrl =
-          "/api/hotels/" +
-          encodeURIComponent(state.hotelId) +
-          "/subjects/" +
-          encodeURIComponent(id) +
-          "/decision?module=GDI";
-        var pursuitUrl =
-          "/api/group-demand-intelligence/hotels/" +
-          encodeURIComponent(state.hotelId) +
-          "/opportunities/" +
-          encodeURIComponent(id) +
-          "/pursuit";
-        return Promise.all([
-          api(url),
-          api(decisionUrl).catch(function () {
-            return null;
-          }),
-          api(pursuitUrl).catch(function () {
-            return { pursuit: null };
-          }),
-        ]).then(function (results) {
-          var data = results[0] || {};
-          var decisionBundle = results[1];
-          var pursuitBundle = results[2];
+        // Detail is authoritative for drawer open. Decision/pursuit are optional
+        // enrichments and must never hang the drawer into "Failed to fetch".
+        return api(url).then(function (data) {
+          if (detailOpenSeq !== state._detailOpenSeq) {
+            var stale = new Error("STALE_DETAIL_RESPONSE");
+            stale.code = "STALE_DETAIL_RESPONSE";
+            throw stale;
+          }
           var o = data.opportunity || data;
-          if (o && pursuitBundle && pursuitBundle.pursuit) {
-            o._pursuitDto = pursuitBundle.pursuit;
-            o.pursuitId = pursuitBundle.pursuit.pursuitId;
-            o.pursuitStatus = pursuitBundle.pursuit.pursuitStatus;
-            o.canStartPursuit = false;
-          } else if (o && listRow) {
+          if (o && listRow) {
             o.canStartPursuit = listRow.canStartPursuit === true;
             o.pursuitId = listRow.pursuitId || null;
           }
-          var current =
-            (decisionBundle && decisionBundle.current) ||
-            (decisionBundle && decisionBundle.decision && decisionBundle.current) ||
-            null;
-          if (o && o.commercialProgression) {
-            current = current
-              ? Object.assign({}, current, {
-                  commercialProgression: o.commercialProgression,
-                })
-              : { commercialProgression: o.commercialProgression };
-          }
           data.opportunity = o;
-          data._decisionCurrent = current;
-          return data;
+          var decisionUrl =
+            "/api/hotels/" +
+            encodeURIComponent(state.hotelId) +
+            "/subjects/" +
+            encodeURIComponent(id) +
+            "/decision?module=GDI";
+          var pursuitUrl =
+            "/api/group-demand-intelligence/hotels/" +
+            encodeURIComponent(state.hotelId) +
+            "/opportunities/" +
+            encodeURIComponent(id) +
+            "/pursuit";
+          return Promise.all([
+            raceTimeout(
+              api(decisionUrl).catch(function () {
+                return null;
+              }),
+              2500,
+              null
+            ),
+            raceTimeout(
+              api(pursuitUrl).catch(function () {
+                return { pursuit: null };
+              }),
+              2500,
+              { pursuit: null }
+            ),
+          ]).then(function (extra) {
+            if (detailOpenSeq !== state._detailOpenSeq) {
+              var stale2 = new Error("STALE_DETAIL_RESPONSE");
+              stale2.code = "STALE_DETAIL_RESPONSE";
+              throw stale2;
+            }
+            var decisionBundle = extra[0];
+            var pursuitBundle = extra[1];
+            var opp = data.opportunity || data;
+            if (opp && pursuitBundle && pursuitBundle.pursuit) {
+              opp._pursuitDto = pursuitBundle.pursuit;
+              opp.pursuitId = pursuitBundle.pursuit.pursuitId;
+              opp.pursuitStatus = pursuitBundle.pursuit.pursuitStatus;
+              opp.canStartPursuit = false;
+            }
+            var current =
+              (decisionBundle && decisionBundle.current) ||
+              (decisionBundle &&
+                decisionBundle.decision &&
+                decisionBundle.current) ||
+              null;
+            if (opp && opp.commercialProgression) {
+              current = current
+                ? Object.assign({}, current, {
+                    commercialProgression: opp.commercialProgression,
+                  })
+                : { commercialProgression: opp.commercialProgression };
+            }
+            data.opportunity = opp;
+            data._decisionCurrent = current;
+            return data;
+          });
         });
       },
       detailUrl: function (oppId) {
@@ -1171,6 +1255,10 @@
           path += "?live=1";
         } else if (wantsPublicationPackagePreview()) {
           path += "?publicationPackage=1&surface=customer";
+          // Must match list opportunitiesApiPath — same STAGED package.
+          if (wantsExplicitStagedPreview()) {
+            path += "&preview=staged";
+          }
         }
         return path;
       },
@@ -1572,6 +1660,8 @@
       /* ignore */
     }
     var presentationModeBanner = "";
+    // No customer-visible Preview chip / package / fingerprint chrome.
+    // Staged-vs-published authorization stays internal (?preview=staged / preferStaged).
     if (wantsPresentationModeDiagnostics()) {
       presentationModeBanner =
         '<div id="gdiPresentationModeBanner" class="gdi-presentation-mode-banner" data-gdi-presentation-mode="' +
@@ -1579,7 +1669,7 @@
         '" role="status">' +
         (presentationMode === "LIVE_RESEARCH"
           ? "<strong>Mode A — Live Research</strong> · Evolving store. Not the customer publication. Open without <code>?live=1</code> for founder publication preview (Mode B ≡ share)."
-          : "<strong>Mode B — Founder Publication Preview</strong> · Approved package via canonical customer renderer (same as external share). Research browse: <code>?live=1</code>.") +
+          : "<strong>Mode B — Founder Publication Preview</strong> · Approved package via canonical customer renderer (same as external share). Research browse: <code>?live=1</code>. Explicit staged: <code>?preview=staged</code>.") +
         "</div>";
     }
     root.innerHTML =
@@ -1732,8 +1822,16 @@
       });
     });
 
-    var resetBtn = document.getElementById("gdiResetViewBtn");
-    if (resetBtn) resetBtn.addEventListener("click", resetBrowseView);
+    // Event delegation — Reset View must survive full root.innerHTML re-renders.
+    if (!root._gdiResetViewDelegated) {
+      root._gdiResetViewDelegated = true;
+      root.addEventListener("click", function (e) {
+        var t = e.target && e.target.closest ? e.target.closest("#gdiResetViewBtn") : null;
+        if (!t) return;
+        e.preventDefault();
+        resetBrowseView();
+      });
+    }
 
     root.querySelectorAll(".section-nav-item[data-tab]").forEach(function (btn) {
       btn.addEventListener("click", function () {
