@@ -1,20 +1,40 @@
 {
   "contract": "GDI_GITHUB_BRANCH_MERGE_DISCIPLINE",
   "branch": "exec/gdi-radisson-toronto-final-commercial-certification-v1",
-  "baseHead": "a1e93e592",
-  "committedByThisTask": false,
-  "pullRequest": null,
-  "ci": "NOT_RUN",
-  "mergeStatus": "PENDING_PARENT_TASK",
-  "mergeCommitSha": null,
-  "mainSynchronized": false,
-  "note": "This task intentionally did not commit, open a PR, run CI or merge — the parent task owns that. A GDI task is not technically complete until its PR is merged into main.",
-  "filesChangedByThisTask": [
-    "scripts/gdi-radisson-toronto-final-commercial-certification-v1.mjs (new)",
-    "reports/gdi-radisson-toronto-final-commercial-certification-v1/** (new)",
-    "lib/group-demand-intelligence/bundled-publication-packages/recH9h3McgMNFQEla/gdi_pub_recH9h3McgMNFQEla_20261116_radisson_toronto_final_commercial_cert_v1/ (new package)",
-    "lib/group-demand-intelligence/bundled-publication-packages/recH9h3McgMNFQEla/STAGED.json (pointer -> new package)",
-    "data/group-demand-intelligence/hotels/recH9h3McgMNFQEla/opportunities.json (this hotel only)"
-  ],
-  "unrelatedDirtyWorktreeFilesNotTouched": []
+  "baseHead": "a1e93e592e4b80b583b63e969c27fed0b576f1d6",
+  "headCommitSha": "c43700ab306e31e6c31092b641839f4bc9983173",
+  "committedByThisTask": true,
+  "pullRequest": {
+    "number": 296,
+    "url": "https://github.com/joandejarden-create/my-operators-backend/pull/296",
+    "title": "Radisson Toronto final commercial sales-readiness certification",
+    "state": "MERGED",
+    "mergedAt": "2026-11-16T07:35:31Z"
+  },
+  "ci": {
+    "status": "SUCCESS",
+    "checks": [
+      {
+        "name": "gitleaks",
+        "conclusion": "SUCCESS",
+        "workflow": "Secret scan (PR)"
+      },
+      {
+        "name": "GDI recovery regression suite",
+        "conclusion": "SUCCESS",
+        "workflow": "GDI regression recovery baseline"
+      }
+    ]
+  },
+  "mergeStatus": "MERGED",
+  "mergeCommitSha": "1a498fd7bb59d661f84a01806e21fbaaa67cb9c8",
+  "mainSynchronized": true,
+  "primaryCheckoutCommit": "1a498fd7bb59d661f84a01806e21fbaaa67cb9c8",
+  "featureBranchDeleted": {
+    "local": true,
+    "remote": true,
+    "remoteTrackingPruned": true
+  },
+  "unrelatedLocalModificationsPreserved": true,
+  "note": "PR #296 merged into main. GitHub closeout for the certification package is complete. A follow-on closeout commit may record this status file and FOUNDER_HANDOFF.md only."
 }
