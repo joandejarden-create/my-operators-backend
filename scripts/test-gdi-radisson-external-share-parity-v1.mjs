@@ -22,7 +22,7 @@ const HOTEL = "recH9h3McgMNFQEla";
 const BETHESDA = "recLuxvwwxID7U2B8";
 const FHLIP = "rx_d_2400ebe4c2bb";
 const EXPECTED_FP =
-  "533f2642f8c74af881ff525c2335f9a5471f5ef1d04ac16f7646131176f8706d";
+  "f2bfebc96d75b87b9df5ae239b9e48502e117a4a6c51b344e65375a8a5a87e9d";
 
 const appJs = fs.readFileSync(
   path.join(ROOT, "public/js/group-demand-intelligence/app.js"),
@@ -144,7 +144,8 @@ console.log(
       ok: true,
       radissonFingerprint: EXPECTED_FP,
       simulatedParityOk: true,
-      founderApprovalRequired: true,
+      founderApprovalRequired: radisson.founderApprovalRequired,
+      productionExternalReady: radisson.productionExternalReady,
       bethesdaShareCount: bethesda.liveShare.inventory?.all ?? null,
     },
     null,

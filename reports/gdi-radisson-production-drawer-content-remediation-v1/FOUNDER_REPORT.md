@@ -29,12 +29,12 @@ New staged fingerprint:
 
 Live external share still serves CURRENT `533f2642…`, so Tempo `whyThisHotel` remains truncated on production until this fingerprint is published.
 
-## Publication governance
+## Publication governance — ACTIVATED
 
-- CURRENT preserved: `533f2642f8c74af881ff525c2335f9a5471f5ef1d04ac16f7646131176f8706d`
-- Prior Tempo staged preserved immutable: `3f342937994ebaa36769e8c90af56e9cb26effeb940fa8a4de2be6cce4f995a8`
-- **No automatic CUSTOMER_PUBLISHED replace**
-- Exact approval required:
+- **CURRENT now:** `f2bfebc96d75b87b9df5ae239b9e48502e117a4a6c51b344e65375a8a5a87e9d` (`CUSTOMER_PUBLISHED`)
+- Prior CURRENT package bytes preserved: `533f2642…`
+- Prior Tempo staged preserved immutable: `3f342937…`
+- Founder phrase applied:
 
 ```
 FOUNDER_APPROVED_FOR_PUBLICATION f2bfebc96d75b87b9df5ae239b9e48502e117a4a6c51b344e65375a8a5a87e9d
