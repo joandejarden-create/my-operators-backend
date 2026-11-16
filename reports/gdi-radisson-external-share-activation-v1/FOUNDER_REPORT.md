@@ -1,39 +1,29 @@
-# Radisson external GDI — production activation
+# Radisson external GDI — production activation complete
 
 ## Verdict
 
-Founder approved fingerprint `533f2642…`. Local CURRENT is **CUSTOMER_PUBLISHED**. External share token issuance and production browser proof follow merge + Railway deploy.
+Founder-approved fingerprint `533f2642…` is **CUSTOMER_PUBLISHED** on production. Hotel-scoped share token issued. Real-browser external parity **PASS** (66 = 50 HM + 16 CMI).
 
 | Check | Result |
 | --- | --- |
-| Founder approval phrase | **RECEIVED** |
-| Durable ledger | Present |
-| Local CURRENT fingerprint | `533f2642f8c74af881ff525c2335f9a5471f5ef1d04ac16f7646131176f8706d` |
-| Inventory | 66 = 50 HM + 16 CMI (66 unique IDs) |
-| Share resolver (local) | PACKAGE mode / 66 opportunities |
-| Production CURRENT | Pending Railway deploy of this PR |
-| Share token | Pending `railway run` after deploy |
-| Browser parity | Pending valid HTTPS share URL |
+| Founder approval | **APPROVED** (exact phrase) |
+| Production CURRENT | `533f2642f8c74af881ff525c2335f9a5471f5ef1d04ac16f7646131176f8706d` |
+| Inventory | 66 = 50 HM + 16 CMI |
+| Railway deploy | SUCCESS (`d88ea59f…`) via GDI production release |
+| Share tokenId | `gdisht_61dea330f3610bad6724f362` |
+| Browser parity | PASS |
+| Invalid token | Fail-closed → Access link unavailable |
+| Token secret in GitHub | **No** |
 
-## Root cause of original “Access link unavailable”
+## Root cause (original error)
 
-No CUSTOMER_PUBLISHED CURRENT and no Radisson share token. Fail-closed share UI — not token expiry alone.
+No CUSTOMER_PUBLISHED CURRENT and no Radisson share token → fail-closed “Access link unavailable”.
 
-## Exact approval
+## GitHub / Railway
 
-```text
-FOUNDER_APPROVED_FOR_PUBLICATION 533f2642f8c74af881ff525c2335f9a5471f5ef1d04ac16f7646131176f8706d
-```
+- Publication PR: https://github.com/joandejarden-create/my-operators-backend/pull/315 (`28b34c53b`)
+- Release run: https://github.com/joandejarden-create/my-operators-backend/actions/runs/43963057395
 
-## Activation steps completed locally
+## External link
 
-1. Wrote `FOUNDER_APPROVED_FOR_PUBLICATION.json` + durable ledger entry
-2. Ran gated activate script with `--apply` + fingerprint confirm
-3. Wrote bundled `CURRENT.json` + package lifecycle `CUSTOMER_PUBLISHED`
-
-## Remaining (post-merge)
-
-1. Railway deploy of merged main
-2. Confirm production CURRENT fingerprint match
-3. `railway run node scripts/gdi-issue-share.mjs --hotelId=recH9h3McgMNFQEla --label="Radisson Blu Toronto Downtown GDI"`
-4. Real-browser 66/66 external parity (token kept out of GitHub)
+Issued via `railway run` with production signing secret. Delivered to founder out-of-band / chat; raw `gdishare.v1` token is **not** committed.
