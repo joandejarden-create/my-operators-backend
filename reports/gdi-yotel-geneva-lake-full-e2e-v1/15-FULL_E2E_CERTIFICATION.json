@@ -1,0 +1,175 @@
+{
+  "contract": "GDI_YOTEL_GENEVA_LAKE_FULL_E2E_V1",
+  "template": "GDI_FULL_E2E_HOTEL_TEMPLATE_V1",
+  "templateLock": "gdi-full-e2e-hotel-template-lock-v1",
+  "actionabilityGate": "gdi-commercial-actionability-gate-v1",
+  "hotelId": "recrPQcZg7SFARRb2",
+  "hotelName": "YOTEL Geneva Lake",
+  "referenceDate": "2026-11-16",
+  "fullE2eStatus": "CERTIFIED_WITH_PENDING_GATES",
+  "fullE2eComplete": false,
+  "fullE2eCompleteReason": "FULL E2E COMPLETE is NOT declared: Airtable live persistence, founder approval, publication, production parity and weekly refresh are outstanding.",
+  "hardFailures": [],
+  "pendingGates": [
+    {
+      "gate": "AIRTABLE_LIVE_PERSISTENCE",
+      "status": "PENDING_FOUNDER_AUTH",
+      "detail": "Dry-run only; no live Airtable write was authorized."
+    },
+    {
+      "gate": "FOUNDER_APPROVAL_OF_FINGERPRINT",
+      "status": "PENDING",
+      "detail": "Founder must approve the exact staged fingerprint."
+    },
+    {
+      "gate": "HOTEL_MARKET_TARGET_20",
+      "status": "SHORTFALL_PAID_PROPOSAL_PENDING_FOUNDER",
+      "detail": "1 of 20 Hotel Market cards evidenced; see 17-PAID_RESEARCH_PROPOSAL_IF_NEEDED.json."
+    },
+    {
+      "gate": "PRODUCTION_PUBLICATION",
+      "status": "NOT_STARTED",
+      "detail": "No CUSTOMER_PUBLISHED lifecycle; no deployment."
+    },
+    {
+      "gate": "PRODUCTION_PARITY",
+      "status": "NOT_STARTED",
+      "detail": "Requires publication."
+    },
+    {
+      "gate": "WEEKLY_REFRESH_AND_FEEDBACK",
+      "status": "NOT_STARTED",
+      "detail": "Starts after publication."
+    },
+    {
+      "gate": "GITHUB_PR_CI_MERGE",
+      "status": "NOT_PERFORMED_BY_THIS_TASK",
+      "detail": "Parent task commits, opens the PR, runs CI and merges to main."
+    }
+  ],
+  "stages": [
+    {
+      "id": 1,
+      "name": "Hotel intelligence",
+      "status": "PASS",
+      "evidence": "Hotel config loaded; single canonical identity recrPQcZg7SFARRb2; required keys missing: none."
+    },
+    {
+      "id": 2,
+      "name": "Existing research reconciliation",
+      "status": "PASS",
+      "evidence": "99 legacy records + 11 stored deep-run leads + 3 log-only leads reconciled (zero-cost reuse)."
+    },
+    {
+      "id": 3,
+      "name": "Discovery planning",
+      "status": "PASS_ZERO_COST",
+      "evidence": "Fourteen-segment coverage documented from stored research (6/14 with stored evidence); no new discovery was run."
+    },
+    {
+      "id": 4,
+      "name": "Demand discovery",
+      "status": "PASS_PRIOR_CAMPAIGNS",
+      "evidence": "Demand discovery was completed in prior authorized campaigns; $0 spent in this task."
+    },
+    {
+      "id": "4a",
+      "name": "Competitor-booked business discovery (CMI)",
+      "status": "PASS",
+      "evidence": "CMI retained=3; demoted=0; full CMI coverage claim=NOT claimed (stored research only; see 07)."
+    },
+    {
+      "id": "4b",
+      "name": "Commercial-actionability gate (discovery qualification)",
+      "status": "PASS",
+      "evidence": "assertCustomerInventoryPassesActionabilityGate ok=true; referenceDate=2026-11-16."
+    },
+    {
+      "id": 5,
+      "name": "Commercial qualification / research review",
+      "status": "PASS",
+      "evidence": "Shared commercial eligibility + proactive account-development + CMI gates run against every recovered record."
+    },
+    {
+      "id": 6,
+      "name": "Airtable persistence",
+      "status": "PENDING",
+      "evidence": "Airtable persistence was exercised as a DRY RUN only; live write requires explicit founder authorization."
+    },
+    {
+      "id": 7,
+      "name": "Quality review / customer-visible eligibility",
+      "status": "PASS",
+      "evidence": "publication quality gate ok=true"
+    },
+    {
+      "id": 8,
+      "name": "Founder preview",
+      "status": "PASS",
+      "evidence": "Local browser verification status=PASS."
+    },
+    {
+      "id": 9,
+      "name": "Package staging",
+      "status": "PASS",
+      "evidence": "Staged gdi_pub_recrPQcZg7SFARRb2_20261116_yotel_geneva_lake_full_e2e_v1 (d5d85cc176bbb8e28c3085e7bd74abe7b33ba04e572c3a3f4cc672e7cc21ce03)."
+    },
+    {
+      "id": 10,
+      "name": "Founder approval / publication certification",
+      "status": "PENDING",
+      "evidence": "Founder approval of the exact fingerprint is outstanding."
+    },
+    {
+      "id": 11,
+      "name": "Production publication",
+      "status": "NOT_STARTED",
+      "evidence": "Production publication is blocked on founder approval; nothing was published."
+    },
+    {
+      "id": 12,
+      "name": "Production parity",
+      "status": "NOT_STARTED",
+      "evidence": "Production parity requires publication."
+    },
+    {
+      "id": 13,
+      "name": "Weekly refresh and feedback",
+      "status": "NOT_STARTED",
+      "evidence": "Weekly refresh begins after publication."
+    }
+  ],
+  "hardGates": {
+    "hotelConfigOk": true,
+    "identityConfirmed": true,
+    "protectedPublicationsUnchanged": true,
+    "qualityGateOk": true,
+    "actionabilityAssertOk": true,
+    "integrityOk": true,
+    "noMultipleDates": true,
+    "noProviderLeak": true,
+    "noDualClassification": true,
+    "noImminentVisible": true,
+    "salesReadyAllPassContract": true,
+    "noCustomerPublished": true,
+    "cmiRetainedAllPassGates": true,
+    "noPaidProviderImports": true,
+    "paidProviderImportHits": [],
+    "stagedOrNoInventory": true
+  },
+  "customerPublished": false,
+  "staged": true,
+  "stagedFingerprint": "d5d85cc176bbb8e28c3085e7bd74abe7b33ba04e572c3a3f4cc672e7cc21ce03",
+  "paidSpendThisTaskUsd": 0,
+  "providersCalledThisTask": [],
+  "airtable": {
+    "mode": "DRY_RUN_ONLY",
+    "liveWritesAuthorized": false,
+    "status": "DRY_RUN_COMPLETE"
+  },
+  "browser": {
+    "status": "PASS",
+    "fingerprintMatch": true,
+    "errors": []
+  }
+}
