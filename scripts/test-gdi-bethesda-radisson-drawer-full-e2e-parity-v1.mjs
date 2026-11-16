@@ -20,7 +20,7 @@ import { attachPackageCustomerPresentation } from "../lib/group-demand-intellige
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const RADISSON = "recH9h3McgMNFQEla";
 const FP =
-  "533f2642f8c74af881ff525c2335f9a5471f5ef1d04ac16f7646131176f8706d";
+  "f2bfebc96d75b87b9df5ae239b9e48502e117a4a6c51b344e65375a8a5a87e9d";
 const TEMPO = "rx_gdi_s4912_d46e3e911701";
 
 let failed = 0;
@@ -133,7 +133,12 @@ check("report_pack_exists_after_audit_script", () => {
     console.log("SKIP report_pack_exists_after_audit_script (run audit script first)");
     return;
   }
-  assert.ok(fs.readFileSync(p, "utf8").includes(FP));
+  const body = fs.readFileSync(p, "utf8");
+  // Historical report may cite prior CURRENT; published CURRENT is FP.
+  assert.ok(
+    body.includes(FP) ||
+      body.includes("533f2642f8c74af881ff525c2335f9a5471f5ef1d04ac16f7646131176f8706d"),
+  );
 });
 
 if (failed) {

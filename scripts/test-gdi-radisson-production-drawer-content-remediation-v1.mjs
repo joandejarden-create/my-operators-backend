@@ -21,8 +21,10 @@ import {
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const HOTEL = "recH9h3McgMNFQEla";
-const CURRENT_FP =
+const PRIOR_CURRENT_FP =
   "533f2642f8c74af881ff525c2335f9a5471f5ef1d04ac16f7646131176f8706d";
+const CURRENT_FP =
+  "f2bfebc96d75b87b9df5ae239b9e48502e117a4a6c51b344e65375a8a5a87e9d";
 const TEMPO_STAGED_FP =
   "3f342937994ebaa36769e8c90af56e9cb26effeb940fa8a4de2be6cce4f995a8";
 const NEW_STAGED_VERSION =
@@ -56,11 +58,22 @@ check("hard_slice_detector_flags_260_cut", () => {
   assert.equal(appearsTruncatedCustomerProse(cut), true);
 });
 
-check("current_fingerprint_preserved", () => {
+check("current_fingerprint_is_approved_f2bfebc9", () => {
   const store = createGdiPublicationPackageStore();
   const cur = store.loadCustomerVisiblePackage(HOTEL);
   assert.equal(cur.ok, true);
   assert.equal(cur.package.contentFingerprintSha256, CURRENT_FP);
+  assert.equal(cur.package.lifecycleState, "CUSTOMER_PUBLISHED");
+});
+
+check("prior_533f2642_package_bytes_preserved", () => {
+  const store = createGdiPublicationPackageStore();
+  const prior = store.loadPackage(
+    HOTEL,
+    "gdi_pub_recH9h3McgMNFQEla_20261116_segment_classification_remediation_v1",
+  );
+  assert.equal(prior.ok, true);
+  assert.equal(prior.package.contentFingerprintSha256, PRIOR_CURRENT_FP);
 });
 
 check("tempo_staged_package_still_present_immutable", () => {
@@ -98,13 +111,13 @@ check("new_staged_package_zero_truncations_66_certified", () => {
   assert.equal(truncBlocks.length, 0);
 });
 
-check("staged_pointer_targets_new_fingerprint", () => {
+check("staged_pointer_targets_published_fingerprint", () => {
   const store = createGdiPublicationPackageStore();
   const ptr = store.readPointer(HOTEL, "STAGED");
   assert.equal(ptr.publicationVersion, NEW_STAGED_VERSION);
-  assert.ok(ptr.contentFingerprintSha256);
-  assert.notEqual(ptr.contentFingerprintSha256, CURRENT_FP);
+  assert.equal(ptr.contentFingerprintSha256, CURRENT_FP);
   assert.notEqual(ptr.contentFingerprintSha256, TEMPO_STAGED_FP);
+  assert.notEqual(ptr.contentFingerprintSha256, PRIOR_CURRENT_FP);
 });
 
 check("ui_cache_bust_parity_marker", () => {

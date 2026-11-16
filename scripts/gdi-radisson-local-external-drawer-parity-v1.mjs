@@ -26,8 +26,10 @@ import {
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const HOTEL = "recH9h3McgMNFQEla";
-const CURRENT_FP =
+const PRIOR_CURRENT_FP =
   "533f2642f8c74af881ff525c2335f9a5471f5ef1d04ac16f7646131176f8706d";
+const CURRENT_FP =
+  "f2bfebc96d75b87b9df5ae239b9e48502e117a4a6c51b344e65375a8a5a87e9d";
 const STAGED_FP =
   "f2bfebc96d75b87b9df5ae239b9e48502e117a4a6c51b344e65375a8a5a87e9d";
 const OUT = path.join(
@@ -191,7 +193,8 @@ const report = {
   hotelId: HOTEL,
   generatedAt: new Date().toISOString(),
   fingerprints: {
-    currentPreserved: CURRENT_FP,
+    priorCurrentPreservedImmutable: PRIOR_CURRENT_FP,
+    currentPublished: CURRENT_FP,
     stagedCorrected: STAGED_FP,
     currentActual: current.package?.contentFingerprintSha256 || null,
     stagedActual: staged.package?.contentFingerprintSha256 || null,
@@ -228,13 +231,15 @@ const report = {
     sample: fieldByField.slice(0, 15),
   },
   productionExternal: prodMeta,
-  founderApprovalRequired:
+  founderApprovalApplied:
     "FOUNDER_APPROVED_FOR_PUBLICATION f2bfebc96d75b87b9df5ae239b9e48502e117a4a6c51b344e65375a8a5a87e9d",
   verdict: {
     localStagedClean: stagedTrunc.length === 0 && stagedAudit.fullyPassing === 66,
     simulatedShareParityClean: parity.simulatedShareFromStaged?.parityOk === true,
-    liveExternalCurrentStillTruncated: currentTrunc.length > 0,
-    blockedOnFounderPublicationApproval: true,
+    currentPublishedClean: currentTrunc.length === 0 && currentAudit.fullyPassing === 66,
+    currentMatchesStaged: CURRENT_FP === STAGED_FP,
+    liveShareMatchesStaged: parity.liveShare?.matchesStagedFingerprint === true,
+    productionDeployRequiredForExternalHost: true,
   },
 };
 
@@ -246,7 +251,14 @@ fs.writeFileSync(
 console.log(JSON.stringify(report.verdict, null, 2));
 console.log(`Wrote ${path.join(OUT, "09-LOCAL_EXTERNAL_FIELD_PARITY.json")}`);
 
-if (!(report.verdict.localStagedClean && report.verdict.simulatedShareParityClean)) {
+if (
+  !(
+    report.verdict.localStagedClean &&
+    report.verdict.simulatedShareParityClean &&
+    report.verdict.currentPublishedClean &&
+    report.verdict.liveShareMatchesStaged
+  )
+) {
   process.exit(1);
 }
 if (report.fingerprints.stagedActual !== STAGED_FP) {
@@ -254,6 +266,6 @@ if (report.fingerprints.stagedActual !== STAGED_FP) {
   process.exit(1);
 }
 if (report.fingerprints.currentActual !== CURRENT_FP) {
-  console.error("CURRENT fingerprint must remain preserved");
+  console.error("CURRENT fingerprint must be approved f2bfebc9");
   process.exit(1);
 }

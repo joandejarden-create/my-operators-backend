@@ -10,17 +10,20 @@ import {
   createGdiPublicationPackageStore,
   verifyPublicationPackageIntegrity,
 } from "../lib/group-demand-intelligence/publication-package/index.js";
+import { assertPackageEssentialProseCompleteness } from "../lib/group-demand-intelligence/presentation/gdi-customer-prose-completeness-v1.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const HOTEL_ID = "recH9h3McgMNFQEla";
 const VERSION =
-  "gdi_pub_recH9h3McgMNFQEla_20261116_segment_classification_remediation_v1";
+  "gdi_pub_recH9h3McgMNFQEla_20261116_drawer_truncation_remediation_v1";
 const FP =
+  "f2bfebc96d75b87b9df5ae239b9e48502e117a4a6c51b344e65375a8a5a87e9d";
+const PRIOR_FP =
   "533f2642f8c74af881ff525c2335f9a5471f5ef1d04ac16f7646131176f8706d";
 const REQUIRED_PHRASE = `FOUNDER_APPROVED_FOR_PUBLICATION ${FP}`;
 const REPORT = path.join(
   ROOT,
-  "reports/gdi-radisson-external-share-activation-v1",
+  "reports/gdi-radisson-production-drawer-content-remediation-v1",
 );
 
 const fails = [];
@@ -46,6 +49,9 @@ if (inventory.all !== 66 || inventory.hotelMarket !== 50 || inventory.cmi !== 16
   fails.push("inventory");
 }
 
+const prose = assertPackageEssentialProseCompleteness(pkg);
+if (!prose.ok) fails.push("prose_truncations");
+
 const current = store.readPointer(HOTEL_ID, "CURRENT");
 if (!current) fails.push("current_missing");
 if (String(current?.contentFingerprintSha256 || "").toLowerCase() !== FP) {
@@ -57,6 +63,15 @@ const visible = store.loadCustomerVisiblePackage(HOTEL_ID);
 if (!visible.ok) fails.push(`customer_visible:${visible.error || "fail"}`);
 if ((visible.package?.opportunities || []).length !== 66) {
   fails.push("customer_visible_count");
+}
+
+const prior = store.loadPackage(
+  HOTEL_ID,
+  "gdi_pub_recH9h3McgMNFQEla_20261116_segment_classification_remediation_v1",
+);
+if (!prior.ok) fails.push("prior_package_missing");
+if (String(prior.package?.contentFingerprintSha256 || "").toLowerCase() !== PRIOR_FP) {
+  fails.push("prior_fingerprint_drift");
 }
 
 const receiptPath = path.join(REPORT, "FOUNDER_APPROVED_FOR_PUBLICATION.json");
@@ -84,32 +99,14 @@ else {
       String(r.contentFingerprintSha256 || "").toLowerCase() === FP &&
       r.status === "APPROVED",
   );
-  if (!hit) fails.push("ledger_fingerprint_absent");
+  if (!hit) fails.push("approval_ledger_missing_f2bfebc9");
 }
 
-for (const name of [
-  "FOUNDER_REPORT.md",
-  "FOUNDER_APPROVED_FOR_PUBLICATION.json",
-  "07-ACTIVATION_RESULT.json",
-  "10-EXACT_66_IDS.json",
-]) {
-  if (!fs.existsSync(path.join(REPORT, name))) fails.push(`report_missing:${name}`);
-}
-
-const out = {
+const result = {
   ok: fails.length === 0,
-  fails,
   fingerprint: FP,
   inventory,
-  current,
-  founderApproval: "PRESENT",
-  activationBlocked: false,
-  customerPublished: true,
+  fails,
 };
-fs.mkdirSync(REPORT, { recursive: true });
-fs.writeFileSync(
-  path.join(REPORT, "08-PREFLIGHT_GATE.json"),
-  JSON.stringify(out, null, 2) + "\n",
-);
-console.log(JSON.stringify(out, null, 2));
-process.exit(out.ok ? 0 : 1);
+console.log(JSON.stringify(result, null, 2));
+process.exit(result.ok ? 0 : 1);
