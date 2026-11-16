@@ -37,6 +37,7 @@ import {
 } from "../lib/group-demand-intelligence/publication-package/index.js";
 import { GDI_PUBLICATION_LIFECYCLE_STATE } from "../lib/group-demand-intelligence/publication-package/gdi-publication-lifecycle-v1.js";
 import { runPublicationQualityGate } from "../lib/group-demand-intelligence/publication-package/gdi-publication-quality-gate-v1.js";
+import { softClampCustomerProse } from "../lib/group-demand-intelligence/presentation/gdi-customer-prose-completeness-v1.js";
 import { attachSalesOpportunityFilterFields } from "../lib/group-demand-intelligence/sales-opportunity-quick-filters-v1.js";
 import { planCustomerTileBadges } from "../lib/group-demand-intelligence/customer-classification-presentation-v1.js";
 import { resolveCustomerSalesAction } from "../lib/group-demand-intelligence/customer-sales-action-resolver-v1.js";
@@ -1675,10 +1676,15 @@ function qualifyRow(row) {
     contactClass: pc.contactClass,
     what: text(what).slice(0, 700),
     potential: text(potential).slice(0, 600),
-    whyHotel: `${HOTEL_FIT_COPY} ${fit.rationale} ${text(d.cib.whyThisHotel).slice(0, 300)}`.trim().slice(0, 1000),
-    whyNow: futureEditionText.slice(0, 260) || "Edition dates are published; qualify who selects lodging before sourcing closes.",
+    whyHotel: softClampCustomerProse(
+      `${HOTEL_FIT_COPY} ${fit.rationale} ${text(d.cib.whyThisHotel || d.findings?.hotelProductFit)}`.trim(),
+      1200,
+    ),
+    whyNow:
+      softClampCustomerProse(futureEditionText, 900) ||
+      "Edition dates are published; qualify who selects lodging before sourcing closes.",
     nextStep:
-      text(d.cib.recommendedNextStep).slice(0, 600) ||
+      softClampCustomerProse(text(d.cib.recommendedNextStep), 1200) ||
       `Contact ${pc.contact.name} at ${org} to confirm who selects lodging, whether additional hotels can participate, and expected room nights; position ${HOTEL_NAME} as a Harbourfront ${overflow ? "overflow / ancillary meeting" : "group"} option.`,
     sources: mkSources(cand, d, pc.contact),
     demandClass,
