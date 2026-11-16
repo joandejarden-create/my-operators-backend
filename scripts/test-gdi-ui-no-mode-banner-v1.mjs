@@ -63,7 +63,7 @@ check("share_app_has_no_mode_banner", () => {
 });
 
 check("auth_html_cache_bust_updated", () => {
-  assert.match(authHtml, /app\.js\?v=gdi-ui-no-mode-banner-v1/);
+  assert.match(authHtml, /app\.js\?v=gdi-no-preview-chip-v1/);
 });
 
 if (failed) {

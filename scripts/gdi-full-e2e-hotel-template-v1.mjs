@@ -128,7 +128,7 @@ const authApp = fs.readFileSync(
 const modeBannerAbsentByDefault =
   /wantsPresentationModeDiagnostics/.test(authApp) &&
   /gdiDiag/.test(authApp) &&
-  /gdi-ui-no-mode-banner-v1/.test(authHtml);
+  /gdi-no-preview-chip-v1|gdi-ui-no-mode-banner-v1/.test(authHtml);
 
 const fieldAuthorityContractPresent =
   GDI_FIELD_AUTHORITY_CONTRACT_V1 === "gdi-field-authority-contract-v1" &&
@@ -367,7 +367,7 @@ writeJson("08-CANONICAL_CUSTOMER_UI.json", {
   modeBanner: {
     defaultVisible: false,
     diagnosticQuery: "gdiDiag=1",
-    cacheMarker: "gdi-ui-no-mode-banner-v1",
+    cacheMarker: "gdi-no-preview-chip-v1",
   },
   hotelIndependentRenderer: !crossHotel.uiHasBethesdaLiteral,
 });
