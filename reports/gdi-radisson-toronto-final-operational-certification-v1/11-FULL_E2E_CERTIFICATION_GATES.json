@@ -1,0 +1,131 @@
+{
+  "contract": "GDI_RADISSON_TORONTO_FINAL_OPERATIONAL_CERTIFICATION_V1",
+  "hotelId": "recH9h3McgMNFQEla",
+  "generatedAt": "2026-11-16T09:18:45.838Z",
+  "finalDecision": "FULL_E2E_TECHNICALLY_CERTIFIED_AWAITING_FOUNDER_PUBLICATION_APPROVAL",
+  "fullE2eComplete": false,
+  "fullE2eCompleteReason": "Founder publication approval, production publication, production parity and weekly refresh remain outstanding by design.",
+  "mandatoryTechnicalGatesPass": true,
+  "gates": [
+    {
+      "id": "G01",
+      "name": "Certified baseline matches exactly (fingerprint, counts, IDs)",
+      "status": "PASS",
+      "mandatory": true,
+      "evidence": "fingerprint, 15 HM + 13 CMI = 28, SR 3, Qualify 12, 8 hidden IDs verified"
+    },
+    {
+      "id": "G02",
+      "name": "Package integrity (recomputed fingerprint)",
+      "status": "PASS",
+      "mandatory": true,
+      "evidence": "integrity ok=true"
+    },
+    {
+      "id": "G03",
+      "name": "Lifecycle STAGED_FOR_FOUNDER_REVIEW; never CUSTOMER_PUBLISHED",
+      "status": "PASS",
+      "mandatory": true,
+      "evidence": "before=STAGED_FOR_FOUNDER_REVIEW; unchangedAfter=true"
+    },
+    {
+      "id": "G04",
+      "name": "Preflight dry-run",
+      "status": "PASS",
+      "mandatory": true,
+      "evidence": "would create 36/update 0/failed 0"
+    },
+    {
+      "id": "G05",
+      "name": "Live idempotent upsert (founder authorized)",
+      "status": "PASS",
+      "mandatory": true,
+      "evidence": "created=36 updated=0 failed=0"
+    },
+    {
+      "id": "G06",
+      "name": "Independent Airtable readback (exact 36 IDs; 28 visible / 8 hidden)",
+      "status": "PASS",
+      "mandatory": true,
+      "evidence": "exact membership, HM15/CMI13, SR3, Qualify12, hidden non-visible, no duplicates"
+    },
+    {
+      "id": "G07",
+      "name": "Idempotency (second dry-run, no unintended creates/changes)",
+      "status": "PASS",
+      "mandatory": true,
+      "evidence": "wouldCreate=0 wouldChangeRows=0"
+    },
+    {
+      "id": "G08",
+      "name": "Other hotels untouched",
+      "status": "PASS",
+      "mandatory": true,
+      "evidence": "otherHotelsHashUnchanged=true; protectedUnchanged=true"
+    },
+    {
+      "id": "G09",
+      "name": "Fingerprint / package / pointers unchanged by Airtable write",
+      "status": "PASS",
+      "mandatory": true,
+      "evidence": "fingerprintUnchanged=true"
+    },
+    {
+      "id": "G10",
+      "name": "Local browser staged preview",
+      "status": "PASS",
+      "mandatory": true,
+      "evidence": "status=PASS"
+    },
+    {
+      "id": "G11",
+      "name": "No paid research / Surfe on-click only",
+      "status": "PASS",
+      "mandatory": true,
+      "evidence": "paid spend $0; no Exa/Parallel/Surfe calls; Airtable (authorized) only"
+    },
+    {
+      "id": "G12",
+      "name": "Production parity (post-publication)",
+      "status": "NOT_VERIFIED",
+      "mandatory": false,
+      "evidence": "Production cannot be safely verified without a deploy/publication: the Radisson package is STAGED_FOR_FOUNDER_REVIEW only, no CURRENT pointer exists, and the package is not CUSTOMER_PUBLISHED. No production request was made and nothing was deployed."
+    },
+    {
+      "id": "G13",
+      "name": "Weekly refresh / feedback (post-publication)",
+      "status": "NOT_VERIFIED",
+      "mandatory": false,
+      "evidence": "Weekly refresh/feedback requires a published CURRENT package baseline and live discovery providers (paid Exa/Parallel). It was not executed: no paid research is authorized, and a config-file/orchestrator-exists check is not a PASS."
+    },
+    {
+      "id": "G14",
+      "name": "Founder approval of exact fingerprint / publication",
+      "status": "PENDING",
+      "mandatory": false,
+      "evidence": "Founder approval outstanding; nothing published"
+    }
+  ],
+  "pendingGates": [
+    {
+      "gate": "G12",
+      "name": "Production parity (post-publication)",
+      "status": "NOT_VERIFIED",
+      "detail": "Production cannot be safely verified without a deploy/publication: the Radisson package is STAGED_FOR_FOUNDER_REVIEW only, no CURRENT pointer exists, and the package is not CUSTOMER_PUBLISHED. No production request was made and nothing was deployed."
+    },
+    {
+      "gate": "G13",
+      "name": "Weekly refresh / feedback (post-publication)",
+      "status": "NOT_VERIFIED",
+      "detail": "Weekly refresh/feedback requires a published CURRENT package baseline and live discovery providers (paid Exa/Parallel). It was not executed: no paid research is authorized, and a config-file/orchestrator-exists check is not a PASS."
+    },
+    {
+      "gate": "G14",
+      "name": "Founder approval of exact fingerprint / publication",
+      "status": "PENDING",
+      "detail": "Founder approval outstanding; nothing published"
+    }
+  ],
+  "paidSpendUsd": 0,
+  "customerPublished": false
+}
