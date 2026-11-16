@@ -1608,20 +1608,9 @@
       /* ignore */
     }
     var presentationModeBanner = "";
-    var previewSource = String(
-      (state.listSurfaceMeta && state.listSurfaceMeta.previewSource) ||
-        (state.publication && state.publication.previewSource) ||
-        ""
-    ).toUpperCase();
-    var isStagedPreview =
-      previewSource === "STAGED" || wantsExplicitStagedPreview();
-    // Founder/admin only: subtle Preview chip — never package IDs / fingerprints.
-    if (isStagedPreview && presentationMode !== "LIVE_RESEARCH") {
-      presentationModeBanner =
-        '<div id="gdiFounderStagedPreviewChip" class="gdi-founder-preview-chip" data-gdi-presentation-mode="FOUNDER_STAGED_PREVIEW" data-gdi-preview-source="STAGED" role="status" aria-label="Preview — not customer published">' +
-        "<span class=\"gdi-founder-preview-chip__label\">Preview</span>" +
-        "</div>";
-    } else if (wantsPresentationModeDiagnostics()) {
+    // No customer-visible Preview chip / package / fingerprint chrome.
+    // Staged-vs-published authorization stays internal (?preview=staged / preferStaged).
+    if (wantsPresentationModeDiagnostics()) {
       presentationModeBanner =
         '<div id="gdiPresentationModeBanner" class="gdi-presentation-mode-banner" data-gdi-presentation-mode="' +
         presentationMode +

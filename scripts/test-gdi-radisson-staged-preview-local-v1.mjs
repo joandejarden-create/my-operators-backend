@@ -27,11 +27,10 @@ const apiJs = fs.readFileSync(
 );
 
 assert.match(appJs, /readGdiQueryParams/, "must merge parent hash/search query");
-assert.match(appJs, /gdiFounderStagedPreviewChip/, "subtle Preview chip only");
 assert.doesNotMatch(
   appJs,
-  /Fingerprint:|gdiFounderStagedPreviewBanner/,
-  "must not expose technical package/fingerprint banner",
+  /gdiFounderStagedPreviewChip|gdi-founder-preview-chip|Fingerprint:|gdiFounderStagedPreviewBanner/,
+  "must not render Preview chip or technical package/fingerprint banner",
 );
 assert.match(appJs, /wantsExplicitStagedPreview/);
 assert.match(shellJs, /preview/);
