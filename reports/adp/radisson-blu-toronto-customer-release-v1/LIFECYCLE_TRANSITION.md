@@ -1,0 +1,9 @@
+# LIFECYCLE_TRANSITION
+
+FOUNDER_REVIEWED: YES
+FOUNDER_APPROVED: YES
+CUSTOMER_READY: YES
+CUSTOMER_PUBLISHED: YES
+
+AVA store advanced NOT_STARTED → … → PUBLISHED (see AVA_LIFECYCLE.json).
+Profile: customerDropdownVisible=true, officialBaselinePublished=true.

@@ -1,0 +1,52 @@
+{
+  "authorization": "NOT_AUTHORIZED — proposal only",
+  "thisPhaseSpendUsd": 0,
+  "remainingMissingSegments": [
+    "social_special_events",
+    "local_catering_day_meetings",
+    "travel_trade_group_intermediaries",
+    "relocation_extended_stay",
+    "preferred_lodging_partnerships",
+    "professional_event_planners"
+  ],
+  "measuredDeepCostUsd": 0.5,
+  "options": [
+    {
+      "option": "MINIMUM_PILOT",
+      "usd": 15,
+      "focus": [
+        "social_special_events",
+        "local_catering_day_meetings",
+        "travel_trade_group_intermediaries",
+        "relocation_extended_stay"
+      ],
+      "expected": "Deep-research 20–25 pass1 candidates in missing segments; expect 3–8 incremental HM after strict audit"
+    },
+    {
+      "option": "RECOMMENDED",
+      "usd": 30,
+      "focus": [
+        "travel_trade_group_intermediaries",
+        "relocation_extended_stay",
+        "preferred_lodging_partnerships",
+        "professional_event_planners",
+        "local_catering_day_meetings",
+        "social_special_events",
+        "corporate_accounts_scaling"
+      ],
+      "expected": "8–16 incremental HM aspirational; stop if yield <10% for two batches"
+    },
+    {
+      "option": "CEILING",
+      "usd": 45,
+      "expected": "Only if recommended pilot clears yield gates"
+    }
+  ],
+  "stopRules": [
+    "Do not spend to fill segment checkboxes with speculative cards",
+    "No Surfe auto-enrichment",
+    "No CUSTOMER_PUBLISHED / no live Airtable without separate auth",
+    "Preserve certified fingerprint package forever"
+  ],
+  "pass1QueueCount": 82
+}

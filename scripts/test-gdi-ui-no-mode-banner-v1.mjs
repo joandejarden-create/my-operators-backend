@@ -36,7 +36,10 @@ const authHtml = fs.readFileSync(
 
 check("auth_banner_gated_by_gdiDiag", () => {
   assert.match(appJs, /function wantsPresentationModeDiagnostics\s*\(/);
-  assert.match(appJs, /params\.get\("gdiDiag"\)/);
+  assert.match(
+    appJs,
+    /(?:params\.get\("gdiDiag"\)|readGdiQueryParams\(\)\.get\("gdiDiag"\))/,
+  );
   assert.match(appJs, /if\s*\(\s*wantsPresentationModeDiagnostics\s*\(\s*\)\s*\)/);
   // Must not unconditionally inject Mode A/B banner into root HTML.
   assert.doesNotMatch(
@@ -60,7 +63,7 @@ check("share_app_has_no_mode_banner", () => {
 });
 
 check("auth_html_cache_bust_updated", () => {
-  assert.match(authHtml, /app\.js\?v=gdi-ui-no-mode-banner-v1/);
+  assert.match(authHtml, /app\.js\?v=gdi-local-staged-founder-preview-v1/);
 });
 
 if (failed) {

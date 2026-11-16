@@ -1,0 +1,60 @@
+{
+  "gates": [
+    {
+      "id": 1,
+      "name": "source_text_completeness",
+      "implementation": "lib/.../gdi-customer-prose-completeness-v1.js + softClampCustomerProse in research scripts"
+    },
+    {
+      "id": 2,
+      "name": "dto_publication_serialization_completeness",
+      "implementation": "assertPackageEssentialProseCompleteness + verifyPublicationPackageIntegrity"
+    },
+    {
+      "id": 3,
+      "name": "commercial_action_integrity",
+      "implementation": "publication quality gate CONFLICTING_COMMERCIAL_ACTIONS + certified drawer contract"
+    },
+    {
+      "id": 4,
+      "name": "contact_relevance",
+      "implementation": "resolveContactRelevance + certified contract missingContactRelevance"
+    },
+    {
+      "id": 5,
+      "name": "no_empty_essential_drawer_fields",
+      "implementation": "EMPTY_ESSENTIAL_COMMERCIAL_FIELD finding + certified emptyCoreCount"
+    },
+    {
+      "id": 6,
+      "name": "no_duplicated_titles_labels",
+      "implementation": "composeOverviewIdentityLine + prior UI overview fixes"
+    },
+    {
+      "id": 7,
+      "name": "auth_share_customer_safe_field_parity",
+      "implementation": "same package snapshot contract; intentional capability diffs documented"
+    },
+    {
+      "id": 8,
+      "name": "surfe_capability_authorization",
+      "implementation": "gdi-share-mode guidance; CAN_REVEAL_CONTACT not activated on read-only token"
+    },
+    {
+      "id": 9,
+      "name": "feedback_capability_authorization",
+      "implementation": "shareCustomerValidationFormHtml canValidate gate"
+    },
+    {
+      "id": 10,
+      "name": "production_asset_version_verification",
+      "implementation": "reports/.../01-PRODUCTION_ASSET_PROBE.json + /health buildSha compare"
+    },
+    {
+      "id": 11,
+      "name": "all_published_drawers_open",
+      "implementation": "test package 66 drawers + browser verification after deploy"
+    }
+  ],
+  "npmTest": "test:gdi-radisson-production-drawer-content-remediation-v1"
+}

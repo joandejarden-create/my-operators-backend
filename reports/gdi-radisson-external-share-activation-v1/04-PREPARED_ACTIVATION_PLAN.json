@@ -1,0 +1,20 @@
+{
+  "status": "PREPARED_NOT_EXECUTED",
+  "hotelId": "recH9h3McgMNFQEla",
+  "fingerprint": "533f2642f8c74af881ff525c2335f9a5471f5ef1d04ac16f7646131176f8706d",
+  "publicationVersion": "gdi_pub_recH9h3McgMNFQEla_20261116_segment_classification_remediation_v1",
+  "script": "scripts/gdi-activate-radisson-toronto-533f2642-approved.mjs",
+  "dryRunDefault": true,
+  "applyRequires": [
+    "--apply",
+    "--confirm-fingerprint=533f2642f8c74af881ff525c2335f9a5471f5ef1d04ac16f7646131176f8706d",
+    "reports/gdi-radisson-external-share-activation-v1/FOUNDER_APPROVED_FOR_PUBLICATION.json with matching phrase"
+  ],
+  "afterApply": [
+    "Commit CURRENT.json + approval receipt",
+    "PR/CI/merge",
+    "Railway deploy",
+    "railway run node scripts/gdi-issue-share.mjs --hotelId=recH9h3McgMNFQEla --label='Radisson Blu Toronto Downtown GDI'",
+    "Browser-verify production HTTPS share (66/66) without logging raw token"
+  ]
+}

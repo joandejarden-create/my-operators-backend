@@ -18,6 +18,10 @@ import {
 } from "../lib/ai-demand-positioning/published-read-service.js";
 import { buildBrandPortfolioPositionPayload } from "../lib/ai-demand-positioning/brand-portfolio/build-brand-portfolio-position-payload-v1.js";
 import {
+  loadMeasurementAvailableBrandPortfolio,
+  resolveReportPeriodIds,
+} from "../lib/ai-demand-positioning/brand-portfolio/resolve-measurement-available-bpp-v1.js";
+import {
   BPP_CUSTOMER_PUBLICATION_VERSION,
   BPP_ASSET_CACHE_TOKEN,
   BPP_KPI_CONTRACT_VERSION,
@@ -208,6 +212,16 @@ export function resolveBrandPortfolioPosition(propertyId, profile, req) {
   if (published) {
     return published;
   }
+  // Founder-reviewed / staged Loyalty BPP measurement — available without
+  // customer publication. Must not fall through to "measurement is being
+  // established" when a governed LOYALTY_BPP pack or durable embedded BPP exists.
+  const measurementAvailable = loadMeasurementAvailableBrandPortfolio(
+    propertyId,
+    profile
+  );
+  if (measurementAvailable) {
+    return measurementAvailable;
+  }
   if (allowInternal && req?.query?.bppLocalReady === "1") {
     const local = loadLocalBrandPortfolioReady(propertyId);
     if (local) return local;
@@ -301,6 +315,7 @@ export async function getAiDemandPositioningReport(req, res) {
 
       const brandPortfolioPosition = resolveBrandPortfolioPosition(propertyId, profile, req);
       const { brandPortfolioPosition: _staleBpp, ...corePayload } = result.payload || {};
+      const periodIds = resolveReportPeriodIds(propertyId, brandPortfolioPosition);
 
       const publicationVersion =
         brandPortfolioPosition?.publicationVersion ||
@@ -340,6 +355,13 @@ export async function getAiDemandPositioningReport(req, res) {
           }),
         },
         brandPortfolioPosition,
+        corePeriodId:
+          periodIds.corePeriodId ||
+          corePayload.period?.periodId ||
+          corePayload._adpDurablePeriodId ||
+          null,
+        portfolioPeriodId: periodIds.portfolioPeriodId || null,
+        portfolioMeasurementFamily: periodIds.portfolioMeasurementFamily || null,
         _adpReadSource: result.readSource || {
           requested: result.source === "airtable" ? "airtable" : "filesystem",
           active: result.source === "airtable" ? "airtable" : "filesystem",

@@ -824,6 +824,32 @@
         );
       }
 
+      function bppLooksMeasurementAvailable(bpp) {
+        if (!bpp || bpp.status !== "READY") return false;
+        var customer = bpp.bppCustomerState || bpp.customerReadyClass || "";
+        var measurement = bpp.bppMeasurementState || "";
+        var stagedCertified =
+          customer === "BPP_COMPARISON_CERTIFIED" ||
+          measurement === "BPP_COMPARISON_CERTIFIED" ||
+          customer === "BPP_READY_POPULATED_FULL" ||
+          customer === "BPP_READY_POPULATED_RANK_ONLY";
+        var assuranceOk =
+          bpp.assuranceStatus === "CUSTOMER_READY" ||
+          bpp.assuranceStatus === "PERIOD_2_CERTIFIED_LOCAL" ||
+          bpp.assuranceStatus === "STAGED_COMPARISON_CERTIFIED" ||
+          bpp.controlledPeriod2LocalPreview === true ||
+          bpp._bppMeasurementAvailable === true ||
+          stagedCertified;
+        return !!(
+          assuranceOk &&
+          Array.isArray(bpp.kpis) &&
+          bpp.kpis.length > 0 &&
+          bpp.ranking &&
+          Array.isArray(bpp.ranking.rows) &&
+          bpp.ranking.rows.length > 0
+        );
+      }
+
       // Publication-meta for this load is already fetched with cache:no-store above.
       // A second meta+report round-trip cannot make BPP READY if the first report
       // already reflected that meta (P4B measured duplicate ~73–197 KB report downloads).
@@ -838,6 +864,16 @@
         bpp.assuranceStatus = "CUSTOMER_READY";
         bpp.showAnalyticalScaffolding = true;
         bpp.customerPublished = true;
+        data.brandPortfolioPosition = bpp;
+      } else if (bppLooksMeasurementAvailable(bpp)) {
+        // Founder-staged / measurement-available Loyalty BPP — paint without
+        // requiring customer publication approval.
+        bpp.status = "READY";
+        if (!bpp.assuranceStatus || bpp.assuranceStatus === "NOT_READY") {
+          bpp.assuranceStatus = "STAGED_COMPARISON_CERTIFIED";
+        }
+        bpp.showAnalyticalScaffolding = true;
+        bpp.customerPublished = false;
         data.brandPortfolioPosition = bpp;
       } else if (
         bpp &&
@@ -1566,10 +1602,22 @@
   function isBrandPortfolioReady(bpp) {
     if (!bpp) return false;
     var status = bpp.status || bpp.renderState || "";
+    var customer = bpp.bppCustomerState || bpp.customerReadyClass || "";
+    var measurement = bpp.bppMeasurementState || "";
+    var stagedCertified =
+      customer === "BPP_COMPARISON_CERTIFIED" ||
+      measurement === "BPP_COMPARISON_CERTIFIED" ||
+      customer === "BPP_READY_POPULATED_FULL" ||
+      customer === "BPP_READY_POPULATED_RANK_ONLY";
+    // Align with bppComparisonCertifiedIsRenderable — measurement availability
+    // is independent of customer publication / CUSTOMER_READY.
     var assuranceOk =
       bpp.assuranceStatus === "CUSTOMER_READY" ||
       bpp.assuranceStatus === "PERIOD_2_CERTIFIED_LOCAL" ||
-      bpp.controlledPeriod2LocalPreview === true;
+      bpp.assuranceStatus === "STAGED_COMPARISON_CERTIFIED" ||
+      bpp.controlledPeriod2LocalPreview === true ||
+      bpp._bppMeasurementAvailable === true ||
+      stagedCertified;
     return (
       status === "READY" &&
       assuranceOk &&
@@ -3146,18 +3194,33 @@
   function renderRealityKpis(rg) {
     var el = document.getElementById("adpRealityKpis");
     if (!el) return;
-    var recognized = rg.recognized ? rg.recognized.length : 0;
-    var gaps = rg.gaps ? rg.gaps.length : 0;
-    var total = rg.totalAttributes || (recognized + gaps);
-    var gapPct = total > 0 ? (gaps / total) * 100 : 0;
-    var recognitionPct = total > 0 ? (recognized / total) * 100 : 0;
+    var recognized = Number.isFinite(Number(rg.recognizedCount))
+      ? Number(rg.recognizedCount)
+      : (rg.recognized ? rg.recognized.length : 0);
+    var missed = Number.isFinite(Number(rg.missedCount)) ? Number(rg.missedCount) : null;
+    var partial = Number.isFinite(Number(rg.partialCount)) ? Number(rg.partialCount) : null;
+    var total = Number(rg.totalAttributes || rg.testedEligibleCount || 0) ||
+      (recognized + (rg.gaps ? rg.gaps.length : 0));
+    // Prefer canonical weighted gapScore (RG_WEIGHTED_PARTIAL_V2). Never recompute
+    // binary gap as gaps.length/total — that collapses partials into misses (e.g. 81%).
+    var gapPct = rg.gapScore != null && Number.isFinite(Number(rg.gapScore))
+      ? Number(rg.gapScore)
+      : (rg.display != null ? rg.display : (total > 0 && missed != null && partial != null
+        ? ((missed + 0.5 * partial) / total) * 100
+        : (total > 0 ? ((rg.gaps ? rg.gaps.length : 0) / total) * 100 : 0)));
+    var recognitionPct = rg.coveragePercent != null && Number.isFinite(Number(rg.coveragePercent))
+      ? Number(rg.coveragePercent)
+      : (total > 0 ? (recognized / total) * 100 : 0);
     var avgRecognition = rg.recognized && rg.recognized.length
       ? rg.recognized.reduce(function(sum, r) { return sum + r.recognitionRate; }, 0) / rg.recognized.length
       : 0;
+    var gapMeta = (missed != null && partial != null)
+      ? (missed + " missed and " + partial + " partially represented of " + total + " tested attributes")
+      : ("AI does not fully recognize " + (rg.gapCount != null ? rg.gapCount : (rg.gaps ? rg.gaps.length : 0)) + " of " + total + " tracked attributes");
 
     el.innerHTML =
       '<div class="aiv-kpi-row aiv-citation-kpis">' +
-      '<article class="aiv-kpi"><h3>Reality Gap</h3><div class="aiv-value">' + fmtPct(gapPct) + '</div><div class="aiv-meta">AI misses ' + gaps + ' of ' + total + ' tracked attributes</div></article>' +
+      '<article class="aiv-kpi"><h3>Reality Gap</h3><div class="aiv-value">' + fmtPct(gapPct) + '</div><div class="aiv-meta">' + esc(gapMeta) + '</div></article>' +
       '<article class="aiv-kpi"><h3>Property Reality Coverage</h3><div class="aiv-value">' + fmtPct(recognitionPct) + '</div><div class="aiv-meta">' + recognized + ' of ' + total + ' monitored property attributes represented by AI</div></article>' +
       '<article class="aiv-kpi"><h3>Avg Strength</h3><div class="aiv-value">' + fmtPct(avgRecognition) + '</div><div class="aiv-meta">Average recognition rate across recognized attributes</div></article>' +
       '<article class="aiv-kpi"><h3>Tracked Attributes</h3><div class="aiv-value">' + total + '</div><div class="aiv-meta">Total property attributes being monitored</div></article>' +
@@ -4113,19 +4176,34 @@
   function renderRealityGap(rg) {
     var el = document.getElementById("adpRealitySection");
     if (!el) return;
+    var missed = Number.isFinite(Number(rg.missedCount)) ? Number(rg.missedCount) : null;
+    var partial = Number.isFinite(Number(rg.partialCount)) ? Number(rg.partialCount) : null;
+    var recognizedN = Number.isFinite(Number(rg.recognizedCount))
+      ? Number(rg.recognizedCount)
+      : (rg.recognized ? rg.recognized.length : 0);
+    var total = Number(rg.totalAttributes || rg.testedEligibleCount || 0) || 0;
+    var gapHero = rg.gapScore != null ? rg.gapScore : rg.display;
+    var heroContext = (missed != null && partial != null && total)
+      ? ('<strong>' + missed + '</strong> missed and <strong>' + partial + '</strong> partially represented of <strong>' + total + '</strong> tested attributes' +
+        (recognizedN != null ? ' · <strong>' + recognizedN + '</strong> recognized' : ''))
+      : ('AI does not fully recognize <strong>' + (rg.gapCount != null ? rg.gapCount : (rg.gaps ? rg.gaps.length : 0)) + '</strong> of <strong>' + total + '</strong> tracked attributes.');
     var html = '<div class="adp-card"><div class="adp-card-header"><h3>AI Reality Gap' + info(adpTipPlain('Does AI accurately recognize your property\u2019s key attributes?', 'If AI misses facts like location, amenities, or positioning, it will favor hotels that are better described.')) + '</h3></div>';
     html += '<div class="adp-hero-kpi" style="margin-bottom:1.25rem">';
-    html += '<div><div class="adp-hero-value">' + esc(fmtPct(rg.display)) + '</div><div class="adp-hero-label">Reality Gap</div></div>';
-    html += '<div class="adp-hero-context">AI misses <strong>' + rg.gapCount + '</strong> of <strong>' + rg.totalAttributes + '</strong> tracked attributes.</div>';
+    html += '<div><div class="adp-hero-value">' + esc(fmtPct(gapHero)) + '</div><div class="adp-hero-label">Reality Gap</div></div>';
+    html += '<div class="adp-hero-context">' + heroContext + '</div>';
     html += '</div>';
     html += '<div class="adp-gap-grid">';
     html += '<div class="adp-gap-col col-recognized"><h4>AI Recognizes</h4>';
     (rg.recognized || []).forEach(function (r) {
       html += '<div class="adp-gap-item"><span class="adp-gap-icon icon-ok">✓</span><span>' + esc(r.label) + '</span><span class="adp-gap-pct">' + fmtPct(r.recognitionRate) + '</span></div>';
     });
-    html += '</div><div class="adp-gap-col col-missed"><h4>AI Misses</h4>';
+    html += '</div><div class="adp-gap-col col-missed"><h4>AI Misses / Partial</h4>';
     (rg.gaps || []).forEach(function (g) {
-      html += '<div class="adp-gap-item"><span class="adp-gap-icon icon-miss">✗</span><span>' + esc(g.label) + '</span><span class="adp-gap-pct">' + fmtPct(g.recognitionRate) + '</span></div>';
+      var state = g.measurementState || '';
+      var isPartial = state === 'TESTED_PARTIALLY_RECOGNIZED' || (Number(g.recognitionRate) >= 15 && Number(g.recognitionRate) < 40);
+      var icon = isPartial ? '~' : '✗';
+      var iconClass = isPartial ? 'icon-partial' : 'icon-miss';
+      html += '<div class="adp-gap-item"><span class="adp-gap-icon ' + iconClass + '">' + icon + '</span><span>' + esc(g.label) + (isPartial ? ' <em>(partial)</em>' : '') + '</span><span class="adp-gap-pct">' + fmtPct(g.recognitionRate) + '</span></div>';
     });
     html += '</div></div></div>';
     el.innerHTML = html;

@@ -1,22 +1,35 @@
 {
   "contract": "GDI_YOTEL_GENEVA_LAKE_40PLUS_EXA_EXPANSION_V1_BUDGET_PREFLIGHT",
-  "generatedAt": "2026-11-16T09:22:00.000Z",
+  "generatedAt": "2026-11-16T09:37:00.000Z",
   "hotelId": "recrPQcZg7SFARRb2",
   "hotelName": "YOTEL Geneva Lake",
-  "paidCallsAuthorized": false,
-  "paidSpendThisTaskUsd": 0,
-  "blockingGate": "EXPLICIT_USD_CEILING_REQUIRED",
-  "hardStopRule": "No Exa / Surfe / Parallel paid calls until founder replies with a numerical USD ceiling. Enforce pre-call reservations, cumulative ledger, sequential bounded calls, and automatic hard stop at ceiling.",
+  "paidCallsAuthorized": true,
+  "authorizedCeilingUsd": 35,
+  "authorizationId": "FOUNDER_APPROVE_YOTEL_GENEVA_LAKE_40PLUS_EXA_35USD_20261116",
+  "authorizationText": "Authorize YOTEL Exa ceiling $35 (Option A pilot)",
+  "authorizedAt": "2026-11-16T09:47:00.000Z",
+  "paidSpendThisTaskUsd": 30.6,
+  "blockingGate": null,
+  "hardStopRule": "Never exceed $35.00 actual incremental Exa spend. Pre-call reserve max quoted charge; settle actual; sequential calls (concurrency=1); automatic hard stop at ceiling. Surfe/Parallel prohibited. No auto-increase to $75.",
   "githubCloseout": {
     "pr298": {
       "state": "MERGED",
       "url": "https://github.com/joandejarden-create/my-operators-backend/pull/298",
       "mergeCommitSha": "9c5d1869146d986e0cd44efebaa8a3b791bda047",
-      "mergedAt": "2026-11-16T09:20:37Z"
+      "mergedAt": "2026-11-16T09:20:37Z",
+      "note": "YOTEL Full E2E recovery"
     },
-    "primaryCheckout": "9c5d1869146d986e0cd44efebaa8a3b791bda047",
-    "branch": "exec/gdi-yotel-geneva-lake-40plus-exa-expansion-v1",
-    "featureBranchDeletedRemote": true
+    "pr299": {
+      "state": "MERGED",
+      "url": "https://github.com/joandejarden-create/my-operators-backend/pull/299",
+      "mergeCommitSha": "c2cc065d2a830cfcdd18b88360bff800ace0adb9",
+      "mergedAt": "2026-11-16T09:35:09Z",
+      "note": "Radisson Airtable operational certification; gitleaks false-positive fix on publication package version"
+    },
+    "mainTip": "c2cc065d2a830cfcdd18b88360bff800ace0adb9",
+    "mainVerifiedWorktree": "C:\\Dev\\dealality\\wt-main-sync-verify",
+    "branch": "exec/gdi-yotel-geneva-lake-40plus-exa-expansion-v1-main",
+    "primaryCheckoutNote": "Primary checkout retains unrelated local WIP on retired Radisson ops tip; main tip verified via clean worktree. Unrelated WIP preserved in stash@{0}."
   },
   "baseline": {
     "priorPackage": "gdi_pub_recrPQcZg7SFARRb2_20261116_yotel_geneva_lake_full_e2e_v1",
@@ -66,13 +79,13 @@
     },
     {
       "tier": "B_FOURTEEN_SEGMENT_DISCOVERY",
-      "estimatedUsd": 7.0,
+      "estimatedUsd": 7,
       "discoveryCells": 14,
       "purpose": "Pass-1 discovery across all 14 certified segments with YOTEL-specific geography (Founex/Nyon/La Côte/airport/cross-border). Prioritize the 8 uncovered segments first, then refresh the 6 covered segments for incremental leads."
     },
     {
       "tier": "C_PHASE1_PILOT_DEEP_RESEARCH",
-      "estimatedUsd": 25.0,
+      "estimatedUsd": 25,
       "deepRuns": 50,
       "purpose": "Deep-research highest-scoring Pass-1 candidates (corporate/meetings/local catering/planners first). Measure real HM conversion before Phase 2."
     },
@@ -103,12 +116,11 @@
     }
   ],
   "spendLedger": {
-    "status": "EMPTY_AWAITING_CEILING",
-    "entries": [],
-    "reservedUsd": 0,
-    "spentUsd": 0,
-    "remainingUsd": null,
-    "hardStopAtUsd": null
+    "status": "PILOT_COMPLETE",
+    "spentUsd": 30.6,
+    "remainingUsd": 4.4,
+    "hardStopAtUsd": 35,
+    "reservedUsd": 0
   },
   "nonGoalsUntilCeiling": [
     "No paid Exa discovery or deep research",
@@ -116,5 +128,14 @@
     "No live Airtable writes",
     "No CUSTOMER_PUBLISHED",
     "No fingerprint replacement"
-  ]
+  ],
+  "remainingUsd": 4.4,
+  "pilotResult": {
+    "hotelMarketFinal": 21,
+    "hotelMarketIncremental": 20,
+    "cmiFinal": 5,
+    "gapTo40": 19,
+    "newFingerprint": "b4d92494c2240a0296025f0f290280196de34b4a4b95dd0b3dc91732b9cd8763",
+    "costPerIncrementalHmUsd": 1.53
+  }
 }

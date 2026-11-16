@@ -802,12 +802,14 @@ export async function getGdiOpportunities(req, res) {
       } = await import(
         "../lib/group-demand-intelligence/publication-package/gdi-share-approved-package-resolver-v1.js"
       );
+      const requireStagedPreview =
+        String(req.query.preview || "").trim().toLowerCase() === "staged";
       const pkgResolved = resolvePreviewOpportunitiesFromPublicationPackage({
         hotelId,
         forceLive: false,
+        preferStaged: requireStagedPreview,
+        preview: requireStagedPreview ? "staged" : null,
       });
-      const requireStagedPreview =
-        String(req.query.preview || "").trim().toLowerCase() === "staged";
       if (
         requireStagedPreview &&
         !(
@@ -820,9 +822,10 @@ export async function getGdiOpportunities(req, res) {
           ok: false,
           error: "STAGED_PUBLICATION_PREVIEW_UNAVAILABLE",
           message:
-            "Authenticated founder preview requested STAGED publication package, but none is available for this hotel. Refusing to fall back to another hotel or live inventory.",
+            "Authenticated founder preview requested STAGED publication package, but none is available for this hotel. Refusing to fall back to another hotel, CURRENT published inventory, or live research.",
           hotelId,
           publication: pkgResolved.meta || null,
+          detail: pkgResolved.detail || null,
         });
       }
       if (pkgResolved.ok && pkgResolved.mode === "PACKAGE") {
@@ -1461,13 +1464,16 @@ export async function getGdiOpportunityDetail(req, res) {
       } = await import(
         "../lib/group-demand-intelligence/publication-package/gdi-share-approved-package-resolver-v1.js"
       );
+      const requireStagedPreviewDetail =
+        String(req.query.preview || "").trim().toLowerCase() === "staged";
+      // Same resolver contract as list: preferStaged when ?preview=staged.
+      // Boolean preview:true alone does NOT select STAGED (String(true) !== "staged").
       const pkgResolved = resolveOpportunityFromApprovedPackage({
         hotelId,
         opportunityId,
-        preview: true,
+        preview: requireStagedPreviewDetail ? "staged" : true,
+        preferStaged: requireStagedPreviewDetail,
       });
-      const requireStagedPreviewDetail =
-        String(req.query.preview || "").trim().toLowerCase() === "staged";
       if (
         requireStagedPreviewDetail &&
         !(
@@ -1482,6 +1488,23 @@ export async function getGdiOpportunityDetail(req, res) {
           error: "STAGED_PUBLICATION_PREVIEW_UNAVAILABLE",
           message:
             "Authenticated founder detail preview requested STAGED publication package, but none is available for this hotel/opportunity.",
+          hotelId,
+          opportunityId,
+          publication: pkgResolved.meta || null,
+        });
+      }
+      // Package was the list source of truth but this ID is absent — do not hang
+      // on live reconstruct for staged-only cards missing from the live store.
+      if (
+        pkgResolved.mode === "PACKAGE" &&
+        !pkgResolved.opportunity &&
+        pkgResolved.error === "OPPORTUNITY_NOT_IN_PUBLICATION_PACKAGE"
+      ) {
+        return res.status(404).json({
+          ok: false,
+          error: "opportunity_not_found",
+          message:
+            "This opportunity could not be opened. It is not in the authorized publication package for this property.",
           hotelId,
           opportunityId,
           publication: pkgResolved.meta || null,

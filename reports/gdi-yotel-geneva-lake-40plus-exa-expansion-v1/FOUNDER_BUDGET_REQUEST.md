@@ -1,16 +1,18 @@
 # YOTEL Geneva Lake — 40+ Hotel Market Exa Expansion | Budget Preflight
 
 Hotel: **YOTEL Geneva Lake** (`recrPQcZg7SFARRb2`)  
-Branch: `exec/gdi-yotel-geneva-lake-40plus-exa-expansion-v1`  
+Branch: `exec/gdi-yotel-geneva-lake-40plus-exa-expansion-v1-main`  
 Paid spend so far this task: **$0**
 
 ## GitHub closeout (complete)
 
 | Item | Value |
 | --- | --- |
-| PR #298 | [MERGED](https://github.com/joandejarden-create/my-operators-backend/pull/298) |
-| Merge SHA | `9c5d1869146d986e0cd44efebaa8a3b791bda047` |
-| Primary checkout | `main` @ `9c5d18691…` synchronized |
+| PR #298 (YOTEL Full E2E recovery) | [MERGED](https://github.com/joandejarden-create/my-operators-backend/pull/298) |
+| PR #298 merge SHA | `9c5d1869146d986e0cd44efebaa8a3b791bda047` |
+| PR #299 (Radisson Airtable ops cert + gitleaks fix) | [MERGED](https://github.com/joandejarden-create/my-operators-backend/pull/299) |
+| PR #299 merge SHA / current `main` tip | `c2cc065d2a830cfcdd18b88360bff800ace0adb9` |
+| Main verified via clean worktree | `C:\Dev\dealality\wt-main-sync-verify` @ `c2cc065d2…` |
 | Prior staged fingerprint preserved | `d5d85cc176bbb8e28c3085e7bd74abe7b33ba04e572c3a3f4cc672e7cc21ce03` |
 
 ## Current commercial baseline

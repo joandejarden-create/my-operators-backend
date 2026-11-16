@@ -1,0 +1,38 @@
+{
+  "hotelId": "recH9h3McgMNFQEla",
+  "hotelName": "Radisson Blu Toronto Downtown",
+  "opportunityId": "rx_d_2400ebe4c2bb",
+  "opportunityTitle": "FHLIP 2027: From Algorithms to Advocacy: AI for A Human-Centred World",
+  "publicationMode": "STAGED_FOUNDER_PREVIEW",
+  "resolvedPackageVersion": "gdi_pub_recH9h3McgMNFQEla_20261116_segment_classification_remediation_v1",
+  "contentFingerprintSha256": "533f2642f8c74af881ff525c2335f9a5471f5ef1d04ac16f7646131176f8706d",
+  "priorFingerprintPreserved": "ac55190dd783fe6eb5f3ec60d65fd2ffdd9c7f3e3aba7eb35645197e96979c86",
+  "listRequest": {
+    "method": "GET",
+    "url": "/api/group-demand-intelligence/hotels/recH9h3McgMNFQEla/opportunities?publicationPackage=1&surface=customer&preview=staged",
+    "status": 200,
+    "count": 66
+  },
+  "detailRequestBeforeFix": {
+    "method": "GET",
+    "url": "/api/group-demand-intelligence/hotels/recH9h3McgMNFQEla/opportunities/rx_d_2400ebe4c2bb?publicationPackage=1&surface=customer",
+    "missingQuery": "preview=staged",
+    "statusWhenPackageFallbackWorks": 200,
+    "concurrentEnrichment": {
+      "decision": "/api/hotels/.../subjects/.../decision?module=GDI",
+      "decisionStatusLocalUnauth": 403,
+      "hangRisk": "Promise.all waited on decision; hang → browser TypeError Failed to fetch"
+    }
+  },
+  "detailRequestAfterFix": {
+    "method": "GET",
+    "url": "/api/group-demand-intelligence/hotels/recH9h3McgMNFQEla/opportunities/rx_d_2400ebe4c2bb?publicationPackage=1&surface=customer&preview=staged",
+    "status": 200,
+    "headerXGdiDetailSource": "PUBLICATION_PACKAGE"
+  },
+  "liveControl": {
+    "url": ".../opportunities/rx_d_2400ebe4c2bb?live=1",
+    "status": 404,
+    "note": "FHLIP is staged-only; must not require live store"
+  }
+}
