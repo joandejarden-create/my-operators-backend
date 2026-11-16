@@ -69,12 +69,15 @@ check("radisson_simulated_share_parity", () => {
   assertAuthShareSimulatedParity(radisson);
 });
 
-check("radisson_live_share_not_silently_staged", () => {
-  // Ordinary share must not invent CURRENT from STAGED.
-  assert.equal(radisson.liveShare.mode, "LEGACY");
-  assert.equal(radisson.liveShare.matchesStagedFingerprint, false);
-  assert.equal(radisson.founderApprovalRequired, true);
-  assert.equal(radisson.productionExternalReady, false);
+check("radisson_live_share_uses_approved_current", () => {
+  // Ordinary share resolves CUSTOMER_PUBLISHED CURRENT only (never silent staged).
+  assert.equal(radisson.liveShare.ok, true);
+  assert.equal(radisson.liveShare.mode, "PACKAGE");
+  assert.equal(radisson.liveShare.fingerprint, EXPECTED_FP);
+  assert.equal(radisson.liveShare.matchesStagedFingerprint, true);
+  assert.equal(radisson.liveShare.inventory.all, 66);
+  assert.equal(radisson.founderApprovalRequired, false);
+  assert.equal(radisson.productionExternalReady, true);
 });
 
 check("radisson_all_66_staged_details", () => {
