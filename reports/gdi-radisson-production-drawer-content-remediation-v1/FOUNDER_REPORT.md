@@ -63,8 +63,19 @@ FOUNDER_APPROVED_FOR_PUBLICATION f2bfebc96d75b87b9df5ae239b9e48502e117a4a6c51b34
 | `main` synchronized | yes (`75c76969e`) |
 | Worktree | `wt-radisson-6seg` on `main` |
 
-## Browser QA (production external)
+## Local ↔ external parity (mandatory)
 
-- Inventory 66 = 50 Hotel + 16 CMI visible
-- Toronto Tempo drawer: no duplicate title; no echo timing/location labels; Potential Business + next step complete; Surfe guidance (no dead button); validation read-only message present
-- Content truncations on live CURRENT package: still present until founder publishes `f2bfebc9…`
+| Surface | Result |
+| --- | --- |
+| Local authenticated STAGED (`f2bfebc9…`) | **66/66 drawers PASS**, 0 truncations |
+| Auth ↔ simulated share field parity | **PASS** |
+| Live external CURRENT (`533f2642…`) | 66 drawers open; **46 truncated API fields remain** |
+
+Localhost now defaults to STAGED for founder review. Live external stays on CURRENT until exact fingerprint approval.
+
+## Browser QA
+
+- Local Playwright: all 66 drawers opened; staged fingerprint match; 0 truncations
+- Production external: all 66 drawers opened on CURRENT; content truncations remain until publish
+- Inventory 66 = 50 Hotel + 16 CMI
+- Surfe/validation authorization differences preserved (read-only external token unchanged)
