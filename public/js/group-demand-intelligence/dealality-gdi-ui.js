@@ -7004,27 +7004,33 @@
       document.body.classList &&
       document.body.classList.contains("gdi-share-mode");
     if (
-      !shareSurface &&
       surfeChannel &&
       slot.name &&
       looksLikePersonNameLocal(slot.name)
     ) {
-      surfeBtn =
-        '<div class="gdi-contact-reveal" data-gdi-contact-reveal-root="1">' +
-        '<p class="gdi-contact-cta"><button type="button" class="gdi-btn gdi-btn--secondary" data-gdi-contact-cta="1" data-gdi-contact-channel="' +
-        esc(surfeChannel) +
-        '" data-contact-name="' +
-        esc(slot.name) +
-        '" data-contact-slot="' +
-        esc(slot.slot || "") +
-        '" data-opportunity-id="' +
-        esc(oppId) +
-        '">' +
-        esc(surfeCtaLabel(surfeChannel)) +
-        "</button></p>" +
-        '<p class="gdi-muted gdi-contact-cta-note">Ready to retrieve. Results stay in this session only and are not saved to Dealality records.</p>' +
-        '<p class="gdi-contact-reveal-status" data-gdi-contact-reveal-status hidden></p>' +
-        "</div>";
+      if (shareSurface) {
+        surfeBtn =
+          '<p class="gdi-muted gdi-contact-cta-note">Contact enrichment (' +
+          esc(surfeCtaLabel(surfeChannel)) +
+          ") is available on authorized Dealality sessions. This read-only access link does not include paid contact lookup.</p>";
+      } else {
+        surfeBtn =
+          '<div class="gdi-contact-reveal" data-gdi-contact-reveal-root="1">' +
+          '<p class="gdi-contact-cta"><button type="button" class="gdi-btn gdi-btn--secondary" data-gdi-contact-cta="1" data-gdi-contact-channel="' +
+          esc(surfeChannel) +
+          '" data-contact-name="' +
+          esc(slot.name) +
+          '" data-contact-slot="' +
+          esc(slot.slot || "") +
+          '" data-opportunity-id="' +
+          esc(oppId) +
+          '">' +
+          esc(surfeCtaLabel(surfeChannel)) +
+          "</button></p>" +
+          '<p class="gdi-muted gdi-contact-cta-note">Ready to retrieve. Results stay in this session only and are not saved to Dealality records.</p>' +
+          '<p class="gdi-contact-reveal-status" data-gdi-contact-reveal-status hidden></p>' +
+          "</div>";
+      }
     }
     var whyClean = scrubCustomerContactWhyProse(slot.whyContact, {
       contactName: slot.name,
@@ -7231,13 +7237,25 @@
           esc(officialUrl) +
           '" target="_blank" rel="noopener noreferrer">Official contact / program page</a></p>'
         : "";
-    var getDetailsCta =
+    var shareSurfaceLegacy =
+      typeof document !== "undefined" &&
+      document.body &&
+      document.body.classList &&
+      document.body.classList.contains("gdi-share-mode");
+    var getDetailsCta = "";
+    if (
       c &&
       c.name &&
       !c.email &&
       !c.phone &&
       (tier === "NAMED_PARTIAL" || tier === "NAMED_DIRECT" || !tier)
-        ? '<div class="gdi-contact-reveal" data-gdi-contact-reveal-root="1">' +
+    ) {
+      if (shareSurfaceLegacy) {
+        getDetailsCta =
+          '<p class="gdi-muted gdi-contact-cta-note">Contact enrichment (Find Email &amp; Phone) is available on authorized Dealality sessions. This read-only access link does not include paid contact lookup.</p>';
+      } else {
+        getDetailsCta =
+          '<div class="gdi-contact-reveal" data-gdi-contact-reveal-root="1">' +
           '<p class="gdi-contact-cta"><button type="button" class="gdi-btn gdi-btn--secondary" data-gdi-contact-cta="1" data-gdi-contact-channel="both" data-contact-name="' +
           esc(c.name) +
           '" data-opportunity-id="' +
@@ -7245,8 +7263,9 @@
           '">Find Email & Phone</button></p>' +
           '<p class="gdi-muted gdi-contact-cta-note">Ready to retrieve. Results stay in this session only and are not saved to Dealality records.</p>' +
           '<p class="gdi-contact-reveal-status" data-gdi-contact-reveal-status hidden></p>' +
-          "</div>"
-        : "";
+          "</div>";
+      }
+    }
     var ceilingCopy =
       (drawer && drawer.publicCeilingCopy) ||
       (tier === "NO_CONTACT" || tier === "GENERIC_ONLY" || (!c && !pathLabel)
@@ -7255,9 +7274,13 @@
     var whyRelevant =
       (drawer && drawer.whyRelevant) ||
       o.whoPrimaryReason ||
-      (c && c.whyThisContact) ||
+      (c && (c.whyThisContact || c.relevance || c.whyRelevant)) ||
       o.whyThisContact ||
       null;
+    if (!whyRelevant && c && c.contactClass === "RELEVANT_COMMERCIAL_ENTRY_POINT") {
+      whyRelevant =
+        "Named commercial entry point for lodging / partnership qualification — not verified as the person who controls team accommodation.";
+    }
     var actionHint =
       (drawer && drawer.recommendedAction) || o.recommendedContactAction || null;
 
@@ -8036,9 +8059,15 @@
         prose(brief.whyThisHotel) ||
         "Property-specific fit is not yet established beyond geography.";
       var whyNow =
-        prose(o.whyEstablishContactNow || o.whyNow || brief.whyActNow) ||
+        prose(
+          o.whyActNow ||
+            o.whyEstablishContactNow ||
+            o.whyNow ||
+            brief.whyActNow
+        ) ||
         "No time-critical trigger is established. Monitor until a travel/meetings owner is confirmed.";
       var next =
+        prose(o.recommendedNextStep) ||
         prose(o.recommendedAction) ||
         "Identify who owns corporate travel and visiting-staff lodging for this account; introduce the hotel and confirm whether a preferred-hotel pattern exists.";
       if (
@@ -8554,6 +8583,14 @@
         String(s || "")
       );
     }
+    function looksTruncatedProse(s) {
+      var t = String(s || "").replace(/\s+/g, " ").trim();
+      if (!t || t.length < 180) return false;
+      if (/[.!?)"'\u201d\u2019]\s*$/.test(t)) return false;
+      if (/[—–-]\s*$/.test(t)) return true;
+      if (/\b(and|or|with|for|the|a|an|to|of|in)\s*$/i.test(t)) return true;
+      return /[a-z0-9,;:]\s*$/i.test(t) && t.length >= 220;
+    }
     function preferCertified(candidate) {
       var certified = String(o.recommendedNextStep || "")
         .replace(/\s+/g, " ")
@@ -8561,8 +8598,11 @@
       var c = String(candidate || "")
         .replace(/\s+/g, " ")
         .trim();
-      if (certified && (!c || isAssocProcurement(c))) return certified;
-      if (c && !isAssocProcurement(c)) return c;
+      if (certified && (!c || isAssocProcurement(c) || looksTruncatedProse(c))) {
+        return certified;
+      }
+      if (c && !isAssocProcurement(c) && !looksTruncatedProse(c)) return c;
+      if (certified && certified.length >= c.length) return certified;
       return certified || c || "";
     }
     var isScaling =
@@ -9028,36 +9068,49 @@
       }
       var org =
         String(o.displayCompanyName || o.organizationName || o.companyName || "").trim() ||
-        "Organizer TBD";
+        "";
       var rawCandidates = [
+        o.displayTitle,
+        o.drawerHeaderTitle,
         o.eventDisplayName,
         o.eventName,
         o.title,
-        o.displayTitle,
         o.canonicalEventName,
       ];
       var ev = "";
       for (var ci = 0; ci < rawCandidates.length; ci++) {
         var cand = String(rawCandidates[ci] || "").trim();
         if (!cand || isSlugToken(cand)) continue;
-        if (cand.toLowerCase() === org.toLowerCase()) continue;
+        if (org && cand.toLowerCase() === org.toLowerCase()) continue;
         ev = cand;
         break;
       }
-      if (!ev) ev = "Programme TBD";
-      var identity =
-        org.toLowerCase() === ev.toLowerCase() ? org : org + " — " + ev;
+      var identity = "";
+      if (org && ev) {
+        var orgLower = org.toLowerCase();
+        var evLower = ev.toLowerCase();
+        if (evLower === orgLower) identity = org;
+        else if (evLower.indexOf(orgLower + " — ") === 0 || evLower.indexOf(orgLower + " - ") === 0) {
+          identity = ev;
+        } else if (evLower.indexOf(orgLower) === 0) {
+          identity = ev;
+        } else {
+          identity = org + " — " + ev;
+        }
+      } else {
+        identity = org || ev || "Programme TBD";
+      }
       ov = {
         identityLine: identity,
         timing:
-          eventDateRangeLabel(o.eventStartDate, o.eventEndDate, "Dates TBD") ||
-          "Dates TBD",
+          eventDateRangeLabel(o.eventStartDate, o.eventEndDate, "Not yet verified") ||
+          "Not yet verified",
         location:
           o.eventLocationSummary ||
           [o.eventLocationCity || o.eventCity, o.venueCity, o.city]
             .filter(Boolean)
             .join(", ") ||
-          "Location TBD",
+          "Not yet verified",
         hotelSourcing: "Sourcing unconfirmed",
         roomDemand: "Room demand not yet published",
         demandCycle: "Future cycle expected",
@@ -9080,7 +9133,7 @@
       (o && o.hotelSourcingStatusLabel) ||
       ov.hotelSourcing ||
       "Sourcing unconfirmed";
-    var locationDisplay = ov.location || "Location TBD";
+    var locationDisplay = ov.location || "Not yet verified";
     if (
       /host\s+hotel\s+contracted|competitor\s+(?:venue|hotel|booking)/i.test(
         String(locationDisplay),
@@ -9092,7 +9145,7 @@
             o.eventCity ||
             o.city ||
             o.destination)) ||
-        "Location TBD";
+        "Not yet verified";
     }
     var venueNote = ov.venueConfirmationNote || "";
     if (
@@ -9253,24 +9306,24 @@
       return defaultHtml || '<p class="gdi-muted">No source URLs attached yet.</p>';
     }
 
+    var cib = o.commercialIntelligenceBrief || o.salesBrief || {};
+    var aegb = o.associationEventsGoldBrief || {};
+    function pickCommercial() {
+      for (var i = 0; i < arguments.length; i++) {
+        var v = arguments[i];
+        if (v == null) continue;
+        var s = String(v).replace(/\s+/g, " ").trim();
+        if (s) return s;
+      }
+      return "";
+    }
     var model = o.eventsDrawerModel || null;
     if (!model || !model.sections) {
-      var cib = o.commercialIntelligenceBrief || o.salesBrief || {};
-      var aegb = o.associationEventsGoldBrief || {};
-      function pick() {
-        for (var i = 0; i < arguments.length; i++) {
-          var v = arguments[i];
-          if (v == null) continue;
-          var s = String(v).replace(/\s+/g, " ").trim();
-          if (s) return s;
-        }
-        return "";
-      }
       model = {
         overviewMode: "events_structured_grid_v1",
         sections: {
           what_is_happening: {
-            body: pick(
+            body: pickCommercial(
               cib.whatIsHappening,
               aegb.eventHistoryAndActivity,
               o.summaryWhat,
@@ -9279,22 +9332,36 @@
             activityDate: null,
           },
           potential_business: {
-            body: pick(
+            body: pickCommercial(
               cib.potentialBusinessForThisHotel,
               cib.potentialHotelBusiness,
               aegb.potentialBusinessForHotel,
+              o.potentialHotelBusiness,
+              o.potentialBusiness,
+              o.summaryWhyMatters,
               o.whyHotelDemand,
               o.proposedHotelUse
             ),
             inferred: [],
           },
           why_this_hotel: {
-            body: pick(cib.whyThisHotel, aegb.whyThisHotel, o.whyThisHotel),
+            body: pickCommercial(
+              cib.whyThisHotel,
+              aegb.whyThisHotel,
+              o.whyThisHotel,
+              o.summaryWhyHotel
+            ),
             advantages: cleanList(cib.whyThisHotelAdvantages),
             limitations: cleanList(cib.whyThisHotelLimitations),
           },
           why_act_now: {
-            body: pick(cib.whyActNow, o.whyNow, o.summaryWhyNow),
+            body: pickCommercial(
+              cib.whyActNow,
+              o.whyActNow,
+              o.whyEstablishContactNow,
+              o.whyNow,
+              o.summaryWhyNow
+            ),
           },
           facts_and_uncertainties: {
             facts: cleanList(
@@ -9319,7 +9386,8 @@
             contactPathLabel: prose(o.commercialContactPathLabel) || null,
           },
           recommended_next_step: {
-            body: pick(
+            body: pickCommercial(
+              o.recommendedNextStep,
               resolveAuthoritativeSalesActionText(o),
               cib.recommendedNextStep,
               o.recommendedAction
@@ -9358,6 +9426,72 @@
     var whoS = sec.who_to_contact || {};
     var nextS = sec.recommended_next_step || {};
     var evS = sec.supporting_evidence || {};
+
+    // When a prebuilt eventsDrawerModel exists with empty core bodies, backfill
+    // from opportunity / brief fields so published package content is not lost.
+    if (!prose(whatS.body)) {
+      whatS = Object.assign({}, whatS, {
+        body: pickCommercial(
+          cib.whatIsHappening,
+          aegb.eventHistoryAndActivity,
+          o.summaryWhat,
+          o.whatIsHappening
+        ),
+      });
+    }
+    if (!prose(potS.body)) {
+      potS = Object.assign({}, potS, {
+        body: pickCommercial(
+          cib.potentialBusinessForThisHotel,
+          cib.potentialHotelBusiness,
+          aegb.potentialBusinessForHotel,
+          o.potentialHotelBusiness,
+          o.potentialBusiness,
+          o.summaryWhyMatters,
+          o.whyHotelDemand,
+          o.proposedHotelUse
+        ),
+      });
+    }
+    if (!prose(whyS.body)) {
+      whyS = Object.assign({}, whyS, {
+        body: pickCommercial(
+          cib.whyThisHotel,
+          aegb.whyThisHotel,
+          o.whyThisHotel,
+          o.summaryWhyHotel
+        ),
+      });
+    }
+    if (!prose(nowS.body)) {
+      nowS = Object.assign({}, nowS, {
+        body: pickCommercial(
+          cib.whyActNow,
+          o.whyActNow,
+          o.whyEstablishContactNow,
+          o.whyNow,
+          o.summaryWhyNow
+        ),
+      });
+    }
+    if (!prose(nextS.body)) {
+      nextS = Object.assign({}, nextS, {
+        body: pickCommercial(
+          o.recommendedNextStep,
+          resolveAuthoritativeSalesActionText(o),
+          cib.recommendedNextStep,
+          o.recommendedAction
+        ),
+      });
+    } else {
+      var fullerNext = pickCommercial(
+        o.recommendedNextStep,
+        resolveAuthoritativeSalesActionText(o)
+      );
+      if (fullerNext && fullerNext.length > prose(nextS.body).length + 40) {
+        nextS = Object.assign({}, nextS, { body: fullerNext });
+      }
+    }
 
     var factsHtml = "";
     var factsList = cleanList(factS.facts);
