@@ -1,0 +1,93 @@
+{
+  "schema": "gdi-primary-demand-segment-classification-fixtures-v1",
+  "cases": [
+    {
+      "id": "fx_assoc_mislabeled_scaling",
+      "title": "OVMA True North Veterinary Conference 2027",
+      "organizationName": "Ontario Veterinary Medical Association",
+      "opportunityType": "corporate_accounts_scaling",
+      "opportunityTypeFilterCategory": "SCALING_COMPANY",
+      "whatIsHappening": "OVMA True North Veterinary Conference, January 21–23, 2027, MTCC South Building, downtown Toronto.",
+      "potentialHotelBusiness": "Overflow lodging for association conference attendees near MTCC.",
+      "expectSegmentId": "associations_conferences_events",
+      "expectFilter": "ASSOCIATION_CONFERENCE_GROUP",
+      "expectScalingEligible": false
+    },
+    {
+      "id": "fx_legit_scaling_expansion",
+      "title": "Northwind Robotics — Toronto HQ commissioning travel",
+      "organizationName": "Northwind Robotics Inc.",
+      "opportunityType": "corporate_accounts_scaling",
+      "whatIsHappening": "Northwind Robotics is expanding into a new Toronto regional headquarters and commissioning its downtown facility in 2027, creating visiting project teams and integration program travel.",
+      "potentialHotelBusiness": "Recurring lodging for visiting commissioning engineers and leadership onboarding teams during the HQ launch window.",
+      "whyThisHotel": "Harbourfront hotel inventory suitable for multi-night project-team room nights.",
+      "expectSegmentId": "corporate_accounts_scaling",
+      "expectFilter": "SCALING_COMPANY",
+      "expectScalingEligible": true
+    },
+    {
+      "id": "fx_hiring_only_not_scaling",
+      "title": "BrightPath Analytics hiring announcement",
+      "organizationName": "BrightPath Analytics",
+      "opportunityType": "corporate_accounts_scaling",
+      "whatIsHappening": "BrightPath Analytics posted a hiring announcement and said the company is growing headcount in Toronto.",
+      "potentialHotelBusiness": "No evidenced visiting-team lodging or expansion facility travel.",
+      "expectSegmentId": null,
+      "expectFilter": null,
+      "expectScalingEligible": false,
+      "expectRejectCode": "MISSING_EXPANSION_HOTEL_DEMAND_TRIGGER"
+    },
+    {
+      "id": "fx_planner_managed_group",
+      "title": "SummitPath DMC — Managed corporate offsite program",
+      "organizationName": "SummitPath Destination Management",
+      "opportunityType": "professional_event_planners",
+      "demandOpportunitySubtype": "PROFESSIONAL_EVENT_PLANNER_PARTNERSHIP",
+      "professionalEventPlannerPartnershipV1": true,
+      "whatIsHappening": "SummitPath DMC runs a planner-managed group program and official housing desk for recurring corporate offsites in Toronto.",
+      "potentialHotelBusiness": "Preferred hotel participation in the managed rooming list.",
+      "expectSegmentId": "professional_event_planners",
+      "expectFilter": "PROFESSIONAL_EVENT_PLANNER_PARTNERSHIP",
+      "expectScalingEligible": false
+    },
+    {
+      "id": "fx_catering_only_day_meeting",
+      "title": "Board breakfast — day-use meeting with catering",
+      "organizationName": "Harbour Board Association",
+      "opportunityType": "local_catering_day_meetings",
+      "whatIsHappening": "Local attendees only day-use board meeting with coffee break and lunch catering; no overnight room block.",
+      "potentialHotelBusiness": "Meeting room plus catering; guestroomRequired false.",
+      "guestroomRequired": false,
+      "localAttendeesOnly": true,
+      "expectSegmentId": "local_catering_day_meetings",
+      "expectFilter": "LOCAL_CATERING_DAY_MEETINGS",
+      "expectScalingEligible": false
+    },
+    {
+      "id": "fx_preferred_lodging_recurring",
+      "title": "Maple Fleet Services preferred lodging account",
+      "organizationName": "Maple Fleet Services",
+      "opportunityType": "preferred_lodging_partnership",
+      "demandOpportunitySubtype": "PREFERRED_LODGING_PARTNERSHIP",
+      "preferredLodgingPartnershipV1": true,
+      "whatIsHappening": "Verified recurring corporate travel lodging program with an annual rooming list and preferred rate agreement for visiting technicians.",
+      "potentialHotelBusiness": "Recurring preferred lodging nights under the rate agreement.",
+      "expectSegmentId": "preferred_lodging_partnership",
+      "expectFilter": "PREFERRED_LODGING_PARTNERSHIP",
+      "expectScalingEligible": false
+    },
+    {
+      "id": "fx_generic_planner_listing",
+      "title": "International Conference on Artificial Intelligence and Human Society (AIHSCONF 2027)",
+      "organizationName": "Acavent",
+      "opportunityType": "professional_event_planners",
+      "demandOpportunitySubtype": "PROFESSIONAL_EVENT_PLANNER_PARTNERSHIP",
+      "professionalEventPlannerPartnershipV1": true,
+      "whatIsHappening": "Officially announced conference dates are 9–11 July 2027 in Toronto. Acavent is listed as the conference organizer website operator.",
+      "potentialHotelBusiness": "Overflow lodging near the university venue; no evidenced planner-managed housing program.",
+      "expectSegmentId": "associations_conferences_events",
+      "expectFilter": "ASSOCIATION_CONFERENCE_GROUP",
+      "expectScalingEligible": false
+    }
+  ]
+}

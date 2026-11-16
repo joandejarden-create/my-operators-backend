@@ -16,9 +16,39 @@
   var drawerClose = document.getElementById("gdiDrawerClose");
 
   var STORAGE_PREFIX = "gdi-auth-";
+
+  /** Merge iframe search + parent /app hash|search so founder preview query works in the shell. */
+  function readGdiQueryParams() {
+    var params = new URLSearchParams();
+    function merge(src) {
+      if (!src) return;
+      src.forEach(function (value, key) {
+        if (!params.has(key) && value != null && String(value).trim()) {
+          params.set(key, String(value));
+        }
+      });
+    }
+    try {
+      merge(new URLSearchParams(window.location.search || ""));
+    } catch (eSearch) {
+      /* ignore */
+    }
+    try {
+      if (window.parent && window.parent !== window) {
+        merge(new URLSearchParams(window.parent.location.search || ""));
+        var hash = String(window.parent.location.hash || "").slice(1);
+        var qIdx = hash.indexOf("?");
+        if (qIdx >= 0) merge(new URLSearchParams(hash.slice(qIdx + 1)));
+      }
+    } catch (eParent) {
+      /* cross-origin or unavailable */
+    }
+    return params;
+  }
+
   function resolveInitialHotelId() {
     try {
-      var params = new URLSearchParams(window.location.search || "");
+      var params = readGdiQueryParams();
       var fromQuery = String(params.get("hotelId") || "").trim();
       if (fromQuery) return fromQuery;
       var fromStore = String(localStorage.getItem(STORAGE_PREFIX + "hotelId") || "").trim();
@@ -72,7 +102,16 @@
   }
 
   function resetBrowseView() {
-    state.filters = PC.createDefaultFilters();
+    // Prefer shared UI reset so opportunityType / sales facets clear consistently.
+    state.filters =
+      typeof UI.resetBrowseFilters === "function"
+        ? UI.resetBrowseFilters()
+        : PC.createDefaultFilters();
+    state.filters.opportunityType = "";
+    state.filters.weekly = "";
+    state.filters.priority = "";
+    state.filters.salesOpportunity = "";
+    state.filters.marketScope = "ALL";
     state.sortKey = "priority";
     state.sortDir = 1;
     state.viewMode = "tiles";
@@ -408,17 +447,7 @@
     state.publication = null;
     state.visibilityWarning = null;
     state.runs = [];
-    state.filters = {
-      priority: "",
-      segment: "",
-      booking: "",
-      territory: "",
-      weekly: "",
-      opportunityType: "",
-      marketScope: "ALL",
-      competitiveStatus: "ALL_COMPETITIVE",
-      workflow: "",
-    };
+    state.filters = PC.createDefaultFilters();
     state.sortKey = "priority";
     state.sortDir = 1;
     state.viewMode = "tiles";
@@ -581,7 +610,7 @@
    */
   function wantsPublicationPackagePreview() {
     try {
-      var params = new URLSearchParams(window.location.search || "");
+      var params = readGdiQueryParams();
       if (String(params.get("live") || "") === "1") return false;
       if (String(params.get("publicationPackage") || "") === "0") return false;
       // Default: package-first so authenticated GDI matches customer share.
@@ -593,7 +622,7 @@
 
   function wantsLiveResearchBrowse() {
     try {
-      var params = new URLSearchParams(window.location.search || "");
+      var params = readGdiQueryParams();
       return (
         String(params.get("live") || "") === "1" ||
         String(params.get("publicationPackage") || "") === "0"
@@ -603,11 +632,18 @@
     }
   }
 
+  function wantsExplicitStagedPreview() {
+    try {
+      return String(readGdiQueryParams().get("preview") || "").toLowerCase() === "staged";
+    } catch (e) {
+      return false;
+    }
+  }
+
   /** Explicit developer diagnostic only — never shown in normal auth/share UI. */
   function wantsPresentationModeDiagnostics() {
     try {
-      var params = new URLSearchParams(window.location.search || "");
-      return String(params.get("gdiDiag") || "") === "1";
+      return String(readGdiQueryParams().get("gdiDiag") || "") === "1";
     } catch (e) {
       return false;
     }
@@ -618,7 +654,7 @@
       "/api/group-demand-intelligence/hotels/" + hotelIdEnc + "/opportunities";
     var q = [];
     try {
-      var params = new URLSearchParams(window.location.search || "");
+      var params = readGdiQueryParams();
       var audience = String(
         params.get("inventoryAudience") || params.get("audience") || ""
       ).trim();
@@ -633,7 +669,7 @@
         q.push("publicationPackage=1");
         q.push("surface=customer");
         // Explicit founder staged-preview (no CURRENT / no silent Bethesda fallback).
-        if (String(params.get("preview") || "").toLowerCase() === "staged") {
+        if (wantsExplicitStagedPreview()) {
           q.push("preview=staged");
         }
       }
@@ -1572,6 +1608,8 @@
       /* ignore */
     }
     var presentationModeBanner = "";
+    // No customer-visible Preview chip / package / fingerprint chrome.
+    // Staged-vs-published authorization stays internal (?preview=staged / preferStaged).
     if (wantsPresentationModeDiagnostics()) {
       presentationModeBanner =
         '<div id="gdiPresentationModeBanner" class="gdi-presentation-mode-banner" data-gdi-presentation-mode="' +
@@ -1579,7 +1617,7 @@
         '" role="status">' +
         (presentationMode === "LIVE_RESEARCH"
           ? "<strong>Mode A — Live Research</strong> · Evolving store. Not the customer publication. Open without <code>?live=1</code> for founder publication preview (Mode B ≡ share)."
-          : "<strong>Mode B — Founder Publication Preview</strong> · Approved package via canonical customer renderer (same as external share). Research browse: <code>?live=1</code>.") +
+          : "<strong>Mode B — Founder Publication Preview</strong> · Approved package via canonical customer renderer (same as external share). Research browse: <code>?live=1</code>. Explicit staged: <code>?preview=staged</code>.") +
         "</div>";
     }
     root.innerHTML =
@@ -1732,8 +1770,16 @@
       });
     });
 
-    var resetBtn = document.getElementById("gdiResetViewBtn");
-    if (resetBtn) resetBtn.addEventListener("click", resetBrowseView);
+    // Event delegation — Reset View must survive full root.innerHTML re-renders.
+    if (!root._gdiResetViewDelegated) {
+      root._gdiResetViewDelegated = true;
+      root.addEventListener("click", function (e) {
+        var t = e.target && e.target.closest ? e.target.closest("#gdiResetViewBtn") : null;
+        if (!t) return;
+        e.preventDefault();
+        resetBrowseView();
+      });
+    }
 
     root.querySelectorAll(".section-nav-item[data-tab]").forEach(function (btn) {
       btn.addEventListener("click", function () {

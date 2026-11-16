@@ -1912,11 +1912,97 @@
     return "";
   }
 
-  /** Structured opportunity-type category (mirrors opportunity-type-filter-v2). */
+  /**
+   * Organized conference / expo / association meeting — never Scaling Companies.
+   * Mirrors lib/.../primary-demand-segment-classification-v1.js.
+   */
+  function looksLikeOrganizedConferenceOrShow(o) {
+    o = o || {};
+    var title = String(o.displayTitle || o.title || o.eventName || "");
+    var blob = [
+      title,
+      o.organizationName,
+      o.displayCompanyName,
+      o.whatIsHappening,
+      o.summaryWhat,
+      o.potentialHotelBusiness,
+      o.opportunityType,
+    ]
+      .join("\n")
+      .toLowerCase();
+    if (
+      /\b(?:congress|conference|symposium|summit|forum|expo|exhibition|trade\s*show|annual\s+meeting|biennial\s+meeting|convention|colloquium|model\s+united\s+nations|\bmun\b)\b/i.test(
+        title
+      )
+    ) {
+      return true;
+    }
+    if (
+      /\b(?:association|society|chamber of|federation|institute)\b/i.test(blob) &&
+      /\b(?:conference|congress|symposium|annual meeting|convention|expo)\b/i.test(
+        blob
+      )
+    ) {
+      return true;
+    }
+    if (/\b(?:trade\s*show|design show|boat show|consumer show)\b/i.test(blob)) {
+      return true;
+    }
+    return false;
+  }
+
+  function hasCredibleScalingExpansionTrigger(o) {
+    o = o || {};
+    var blob = [
+      o.displayTitle,
+      o.title,
+      o.whatIsHappening,
+      o.potentialHotelBusiness,
+      o.whyThisHotel,
+      o.whyActNow,
+      o.hotelDemandThesis,
+    ]
+      .join("\n")
+      .toLowerCase();
+    var expansion =
+      /\b(?:expand(?:s|ing|ed)? into|new (?:regional |national )?headquarters|facility (?:open|opening|commission)|commissioning|market entry|visiting (?:project|commissioning|construction) team|employee mobilization|operational launch|corporate (?:expansion|scale[- ]?up)|emerging corporate account)\b/i.test(
+        blob
+      );
+    var hotelThesis =
+      /\b(?:room(?:s| block| nights)?|lodging|hotel|accommodation|extended[- ]stay|visiting (?:staff|teams?|crew)|overnight)\b/i.test(
+        blob
+      );
+    var hiringOnly =
+      /\b(?:hiring|recruiting|headcount|job opening|we're growing|we are growing|company growth)\b/i.test(
+        blob
+      ) && !expansion;
+    if (hiringOnly) return false;
+    return expansion && hotelThesis;
+  }
+
+  /** Structured opportunity-type category (mirrors opportunity-type-filter-v5). */
   function classifyOpportunityTypeFilter(o) {
     o = o || {};
-    if (o.opportunityTypeFilterCategory) {
-      return String(o.opportunityTypeFilterCategory);
+    var baked = o.opportunityTypeFilterCategory
+      ? String(o.opportunityTypeFilterCategory)
+      : "";
+    var claimedScaling =
+      baked === "SCALING_COMPANY" ||
+      /scaling/i.test(String(o.opportunityType || "")) ||
+      /scaling/i.test(String(o.demandSegmentId || o.researchSegment || ""));
+    // Only override when the row claims Scaling (or planner) incorrectly.
+    // Do not reclassify already-correct Local Catering / Education rows merely
+    // because the title contains "Summit" / "Conference".
+    if (claimedScaling) {
+      if (looksLikeOrganizedConferenceOrShow(o)) {
+        return "ASSOCIATION_CONFERENCE_GROUP";
+      }
+      if (hasCredibleScalingExpansionTrigger(o)) {
+        return "SCALING_COMPANY";
+      }
+    }
+    if (baked && baked !== "SCALING_COMPANY") {
+      return baked;
     }
     var subtypeEarly = String(
       o.demandOpportunitySubtype || o.opportunityType || ""
@@ -1931,6 +2017,9 @@
       subtypeEarly === "PROFESSIONAL_EVENT_PLANNER_PARTNERSHIP" ||
       o.professionalEventPlannerPartnershipV1 === true
     ) {
+      if (looksLikeOrganizedConferenceOrShow(o)) {
+        return "ASSOCIATION_CONFERENCE_GROUP";
+      }
       return "PROFESSIONAL_EVENT_PLANNER_PARTNERSHIP";
     }
     var demandId = String(
@@ -1981,9 +2070,11 @@
       .trim()
       .toLowerCase();
     if (
-      segment === "scaling_companies" ||
-      segment.indexOf("scaling") >= 0 ||
-      signal.indexOf("scaling") >= 0
+      (segment === "scaling_companies" ||
+        segment.indexOf("scaling") >= 0 ||
+        signal.indexOf("scaling") >= 0) &&
+      hasCredibleScalingExpansionTrigger(o) &&
+      !looksLikeOrganizedConferenceOrShow(o)
     ) {
       return "SCALING_COMPANY";
     }
