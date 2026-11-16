@@ -33,6 +33,12 @@ assert.doesNotMatch(
   "must not render Preview chip or technical package/fingerprint banner",
 );
 assert.match(appJs, /wantsExplicitStagedPreview/);
+assert.match(
+  appJs,
+  /path \+= "&preview=staged"/,
+  "detail URL must propagate founder staged preview with list",
+);
+assert.match(appJs, /raceTimeout/, "drawer must not hang on decision/pursuit");
 assert.match(shellJs, /preview/);
 assert.match(shellJs, /hotelId/);
 assert.match(apiJs, /preferStaged:\s*requireStagedPreview/);
