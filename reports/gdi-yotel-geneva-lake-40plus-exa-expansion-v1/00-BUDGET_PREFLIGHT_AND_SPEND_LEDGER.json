@@ -1,0 +1,129 @@
+{
+  "contract": "GDI_YOTEL_GENEVA_LAKE_40PLUS_EXA_EXPANSION_V1_BUDGET_PREFLIGHT",
+  "generatedAt": "2026-11-16T09:37:00.000Z",
+  "hotelId": "recrPQcZg7SFARRb2",
+  "hotelName": "YOTEL Geneva Lake",
+  "paidCallsAuthorized": false,
+  "paidSpendThisTaskUsd": 0,
+  "blockingGate": "EXPLICIT_USD_CEILING_REQUIRED",
+  "hardStopRule": "No Exa / Surfe / Parallel paid calls until founder replies with a numerical USD ceiling. Enforce pre-call reservations, cumulative ledger, sequential bounded calls, and automatic hard stop at ceiling.",
+  "githubCloseout": {
+    "pr298": {
+      "state": "MERGED",
+      "url": "https://github.com/joandejarden-create/my-operators-backend/pull/298",
+      "mergeCommitSha": "9c5d1869146d986e0cd44efebaa8a3b791bda047",
+      "mergedAt": "2026-11-16T09:20:37Z",
+      "note": "YOTEL Full E2E recovery"
+    },
+    "pr299": {
+      "state": "MERGED",
+      "url": "https://github.com/joandejarden-create/my-operators-backend/pull/299",
+      "mergeCommitSha": "c2cc065d2a830cfcdd18b88360bff800ace0adb9",
+      "mergedAt": "2026-11-16T09:35:09Z",
+      "note": "Radisson Airtable operational certification; gitleaks false-positive fix on publication package version"
+    },
+    "mainTip": "c2cc065d2a830cfcdd18b88360bff800ace0adb9",
+    "mainVerifiedWorktree": "C:\\Dev\\dealality\\wt-main-sync-verify",
+    "branch": "exec/gdi-yotel-geneva-lake-40plus-exa-expansion-v1-main",
+    "primaryCheckoutNote": "Primary checkout retains unrelated local WIP on retired Radisson ops tip; main tip verified via clean worktree. Unrelated WIP preserved in stash@{0}."
+  },
+  "baseline": {
+    "priorPackage": "gdi_pub_recrPQcZg7SFARRb2_20261116_yotel_geneva_lake_full_e2e_v1",
+    "priorFingerprint": "d5d85cc176bbb8e28c3085e7bd74abe7b33ba04e572c3a3f4cc672e7cc21ce03",
+    "hotelMarketVisible": 1,
+    "cmiVisible": 3,
+    "visibleTotal": 4,
+    "targetHotelMarket": 40,
+    "gapTo40": 39,
+    "researchContinuation": 15,
+    "rejectedLegacyShells": 76,
+    "demoted": 15,
+    "logOnlyLeadsToReverify": [
+      "Superlab Suisse",
+      "Gruner AG",
+      "Nyon Business Forum"
+    ],
+    "priorCampaignPaidSpendUsd": 0,
+    "segmentsCoveredWithStoredEvidence": 6,
+    "segmentsUncovered": 8,
+    "uncoveredSegments": [
+      "corporate_accounts_scaling",
+      "corporate_meetings_incentives",
+      "government_public_sector",
+      "projects_infrastructure",
+      "social_special_events",
+      "local_catering_day_meetings",
+      "travel_trade_group_intermediaries",
+      "professional_event_planners"
+    ]
+  },
+  "unitCosts": {
+    "deepRunUsd": 0.5,
+    "discoveryCellUsd": 0.5,
+    "source": "Stored YOTEL deep-run artifacts quote.maxUsd=0.50 / costDollars.total=0.50 (agent 0.20 + search 0.30). Surfe not budgeted (on-click only)."
+  },
+  "observedYield": {
+    "hotelMarketPerDeepRunFloor": 0.083,
+    "note": "Observed from prior YOTEL stored deep runs (~1 HM from ~12 deep runs). Central-Geneva venue-committed events dominate low yield. Phase 1 must remeasure yield by segment before any scale-up."
+  },
+  "proposedCampaignTiers": [
+    {
+      "tier": "A_RECOVERY_REVERIFY",
+      "estimatedUsd": 1.5,
+      "deepRuns": 3,
+      "purpose": "Re-verify Superlab Suisse, Gruner AG, Nyon Business Forum with organization/date/lodging/contact evidence."
+    },
+    {
+      "tier": "B_FOURTEEN_SEGMENT_DISCOVERY",
+      "estimatedUsd": 7.0,
+      "discoveryCells": 14,
+      "purpose": "Pass-1 discovery across all 14 certified segments with YOTEL-specific geography (Founex/Nyon/La Côte/airport/cross-border). Prioritize the 8 uncovered segments first, then refresh the 6 covered segments for incremental leads."
+    },
+    {
+      "tier": "C_PHASE1_PILOT_DEEP_RESEARCH",
+      "estimatedUsd": 25.0,
+      "deepRuns": 50,
+      "purpose": "Deep-research highest-scoring Pass-1 candidates (corporate/meetings/local catering/planners first). Measure real HM conversion before Phase 2."
+    },
+    {
+      "tier": "D_PHASE2_CONDITIONAL_SCALE",
+      "estimatedUsd": "YIELD_DEPENDENT",
+      "purpose": "Only if Phase 1 converts ≥15% of deep runs into Hotel Market cards. Size remaining budget to close toward 40 without relaxing eligibility. Upper-bound at observed 8% floor for 39 gap ≈ 468 deep runs ≈ $234 — NOT recommended as initial authorization."
+    }
+  ],
+  "recommendedAuthorizationOptions": [
+    {
+      "option": "PILOT_ONLY",
+      "usdCeiling": 35,
+      "includes": "A ($1.50) + B ($7) + C first 50 deep runs ($25) ≈ $33.50 with ~$1.50 contingency",
+      "expectedOutcome": "Recover/reverify 3 leads + full 14-segment discovery + measured yield; likely well below 40 HM unless yield exceeds historical floor"
+    },
+    {
+      "option": "PILOT_PLUS_SCALE_BAND",
+      "usdCeiling": 75,
+      "includes": "Pilot ($35) + Phase 2 buffer (~$40) for additional deep runs on high-yield segments only",
+      "expectedOutcome": "Best chance to approach commercially meaningful inventory without authorizing the $234 upper bound"
+    },
+    {
+      "option": "PRIOR_SMALL_PILOT",
+      "usdCeiling": 19.5,
+      "includes": "Legacy proposal for 20-HM gap (A $1.50 + B $4 for 8 cells only + C $10 for 20 deep runs)",
+      "expectedOutcome": "Insufficient for a credible path to 40; useful only as a micro-pilot"
+    }
+  ],
+  "spendLedger": {
+    "status": "EMPTY_AWAITING_CEILING",
+    "entries": [],
+    "reservedUsd": 0,
+    "spentUsd": 0,
+    "remainingUsd": null,
+    "hardStopAtUsd": null
+  },
+  "nonGoalsUntilCeiling": [
+    "No paid Exa discovery or deep research",
+    "No Surfe enrichment",
+    "No live Airtable writes",
+    "No CUSTOMER_PUBLISHED",
+    "No fingerprint replacement"
+  ]
+}
