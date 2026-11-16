@@ -124,6 +124,19 @@ reports/ai-demand-positioning/**
 # PDFs remain in dealality-report-archive / prior Railway volumes; assert gate does not require these report trees.
 # Fixtures are not production runtime assets (assert gate does not require this tree).
 fixtures/
+!fixtures/ai-demand-positioning/
+fixtures/ai-demand-positioning/**
+!fixtures/ai-demand-positioning/radisson-blu-toronto-downtown-property-profile.json
+# Toronto monthly-review current READY package (customer release).
+!reports/ai-demand-positioning/monthly-review/archive/adp_radisson_blu_toronto_downtown/
+!reports/ai-demand-positioning/monthly-review/archive/adp_radisson_blu_toronto_downtown/2026-11/
+!reports/ai-demand-positioning/monthly-review/archive/adp_radisson_blu_toronto_downtown/2026-11/adp_mr_radisson_blu_toronto_dow_2026-11_v1/
+!reports/ai-demand-positioning/monthly-review/archive/adp_radisson_blu_toronto_downtown/2026-11/adp_mr_radisson_blu_toronto_dow_2026-11_v1/**
+# Toronto Standard ADP current PDF (customer release).
+!reports/ai-demand-positioning/current-report-pdf/
+reports/ai-demand-positioning/current-report-pdf/**
+!reports/ai-demand-positioning/current-report-pdf/adp_radisson_blu_toronto_downtown/
+!reports/ai-demand-positioning/current-report-pdf/adp_radisson_blu_toronto_downtown/**
 uploads/
 engagements/
 rail-explore/
@@ -225,6 +238,8 @@ data/ai-demand-positioning/runtime/*
 !data/ai-demand-positioning/runtime/adp_period_adp_now_now_noho_20260903014340_520794.json
 !data/ai-demand-positioning/runtime/adp_period_adp_bethesda_marriott_20260909091016_9f3a60.json
 !data/ai-demand-positioning/runtime/adp_period_adp_bethesda_marriott_20261002142154_62428a.json
+!data/ai-demand-positioning/runtime/adp_period_adp_radisson_blu_toronto_downtown_20261104094215_c8bd8b.json
+!data/ai-demand-positioning/runtime/adp_period_adp_radisson_blu_toronto_downtown_20261104114752_308ba1.json
 !data/ai-demand-positioning/contracts/bethesda-adp-october-control-query-set-v1.json
 # Brand AI: parent-chain un-ignore so nested allowlists work under data/*
 !data/ai-visibility/

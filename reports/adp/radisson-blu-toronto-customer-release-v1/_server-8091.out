@@ -1,0 +1,60 @@
+Using server file: /C:/Dev/dealality/my-operators-backend-toronto-customer-release/server.js
+Working directory: C:\Dev\dealality\my-operators-backend-toronto-customer-release
+Checkout basename: my-operators-backend-toronto-customer-release
+Listen port: 8091
+✅ Brand AI Visibility API routes registered:
+   GET /api/ai-visibility/brand/portfolio
+   GET /api/ai-visibility/brand/executive-summary
+   GET /api/ai-visibility/brand/:brandId/{overview,trend,questions,competitors,sources,evidence}
+   (hotel-decision-visibility public route retired — HDV consumed via executive/overview)
+✅ Operator AI Intelligence API routes registered:
+   GET /api/ai-visibility/operator/foundation
+✅ AI Intelligence Validation Scorecard routes registered:
+   GET /api/ai-intelligence/validation/{summary,gates,classification,batches,issues,variability,operations}
+   GET /api/ai-intelligence/validation/batches/:batchId
+   GET/POST /api/ai-intelligence/golden-set-review/*
+   GET/POST /api/ai-intelligence/recommendation-taxonomy-review/*
+   GET/POST /api/ai-intelligence/presence-validation-review/*
+✅ Brand AI Visibility route registration check: 11/11 expected routes present (16 ai-visibility signatures on stack)
+✅ Server running at http://localhost:8091
+[ADP read] production published source requested=filesystem (ADP_PUBLISHED_READ_SOURCE=unset ADP_AIRTABLE_READ_LIVE=unset). Default SoT=filesystem. Airtable is not re-enabled.
+[share-hydration] ADP_SHARE_CAPABILITY_SECRET: configured
+[share-hydration] GDI_SHARE_CAPABILITY_SECRET: configured
+[share-hydration] SHARE_REGISTRY: configured (adp=yes gdi=yes)
+[share-hydration] BETHESDA_GDI_CONTRACT: present
+[share-hydration] BETHESDA_ADP_CONTRACT: present
+[share-hydration] ADMIN_LINK_MODE: production_share_catalog
+DEALALITY_REPO_ROOT: C:\Dev\dealality\my-operators-backend-toronto-customer-release
+DEALALITY_GIT_HEAD: unavailable
+Airtable key present: true
+SMTP (signup emails): configured — smtp-mail.outlook.com
+✅ Partner Directory routes registered:
+   GET /partner-directory
+   GET /api/partner-directory
+   POST /api/partner-directory/users
+   PUT /api/partner-directory/users/:userId
+✅ Financial Term Library routes registered:
+   GET /api/financial-term-library/terms
+   GET /api/financial-term-library/term
+   POST /api/financial-term-library/terms
+✅ Company Profile routes registered:
+   POST /api/company-profile  (multipart: fields + optional logo)
+   PATCH /api/company-profile/:recordId
+   GET /api/company-profile/prefill?recordId=rec...|companyName=...
+   GET /api/company-profile/mine  (Memberstack JWT → linked Company Profile)
+✅ Third-party operator list (My 3rd Party Ops.):
+   GET /api/intake/third-party-operators
+   GET /api/third-party-operators/list
+   GET /api/third-party-operators
+   GET /api/third-party-operators-new/list
+   GET /api/third-party-operators-new
+   GET /api/intake/third-party-operator/prefill-qa
+✅ Operator Alignment Snapshot API (OAS):
+   GET /api/operator-alignment-snapshot/:dealId/profile
+   GET /api/operator-alignment-snapshot/:dealId/companies
+[census-map-snapshot] boot preload ok from=CURRENT records=15692 bytes=7132080 bootMs=38 ageMs=1676805
+[census-map-snapshot] periodic rebuild every 1800000ms
+🔄 Background cache refresh started...
+✅ Background cache refresh completed - cache cleared
+🔄 Background cache refresh started...
+✅ Background cache refresh completed - cache cleared
