@@ -11,7 +11,7 @@ import { resolvePreviewOpportunitiesFromPublicationPackage } from "../lib/group-
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const HOTEL = "recCAGqkERSXgiku4";
 const FP =
-  "60f2d7ef732ac9578e33e159988092b90f49ec8372b8b174c7630296240e6211";
+  "d4b2bfc7eb0419b863a561750a748227244bf759edf1307926f89749706e2a33";
 
 const appJs = fs.readFileSync(
   path.join(ROOT, "public/js/group-demand-intelligence/app.js"),
@@ -35,6 +35,7 @@ const apiJs = fs.readFileSync(
 );
 assert.match(apiJs, /STAGED_PUBLICATION_PREVIEW_UNAVAILABLE/);
 assert.match(apiJs, /requireStagedPreview/);
+assert.match(apiJs, /preferStaged:\s*requireStagedPreview/);
 
 const resolved = resolvePreviewOpportunitiesFromPublicationPackage({
   hotelId: HOTEL,
@@ -43,7 +44,14 @@ assert.equal(resolved.ok, true);
 assert.equal(resolved.mode, "PACKAGE");
 assert.equal(resolved.meta?.previewSource, "STAGED");
 assert.equal(resolved.meta?.contentFingerprintSha256, FP);
-assert.equal(resolved.opportunities?.length, 62);
+assert.equal(resolved.opportunities?.length, 38);
+
+const forcedStaged = resolvePreviewOpportunitiesFromPublicationPackage({
+  hotelId: HOTEL,
+  preferStaged: true,
+});
+assert.equal(forcedStaged.meta?.previewSource, "STAGED");
+assert.equal(forcedStaged.meta?.contentFingerprintSha256, FP);
 
 // Bethesda CURRENT must remain loadable and distinct.
 const bethesda = resolvePreviewOpportunitiesFromPublicationPackage({
