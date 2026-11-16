@@ -1,0 +1,29 @@
+{
+  "propertyId": "adp_radisson_blu_toronto_downtown",
+  "contract": "ADP_FACT_CONFLICT_REGISTER_V1",
+  "unresolvedCount": 1,
+  "conflicts": [
+    {
+      "conflictId": "FC_MEETING_INVENTORY_001",
+      "topic": "Meeting / event inventory",
+      "sourceA": {
+        "id": "SRC_CHOICE_CNC41",
+        "label": "Choice Hotels official (CNC41 meetings page)",
+        "url": "https://www.choicehotels.com/en-ca/ontario/toronto/radisson-blu-hotels/cnc41/meetings-events",
+        "claim": "17 spaces; more than 10,000 sq ft; up to 400 guests"
+      },
+      "sourceB": {
+        "id": "SRC_DTHA_PORTFOLIO_LEAD",
+        "label": "Downtown Toronto Hotels Association / portfolio lead",
+        "url": "UNVERIFIED_IN_THIS_RUN",
+        "claim": "14 venues; 11,000 sq ft; up to 380 guests"
+      },
+      "classification": "SOURCE_CONFLICT",
+      "operationalStatus": "NEEDS_HOTEL_CONFIRMATION",
+      "torontoSpecific": true,
+      "silentlyNormalized": false,
+      "realityGapTreatment": "Conflict values are not treated as certainty. Reality Gap scores governed meeting_space attribute presence only; inventory sqft/venue counts are not certainty inputs.",
+      "retrievedAt": "2026-11-04"
+    }
+  ]
+}
