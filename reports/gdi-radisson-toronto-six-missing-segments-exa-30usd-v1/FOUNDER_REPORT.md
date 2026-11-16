@@ -165,3 +165,10 @@
 
 ## Preview
 `http://127.0.0.1:8080/group-demand-intelligence.html?hotelId=recH9h3McgMNFQEla&preview=staged`
+
+## GitHub closeout
+- PR: [#306](https://github.com/joandejarden-create/my-operators-backend/pull/306)
+- CI: pass (GDI recovery regression suite + gitleaks)
+- Merge SHA: `07f069dd7c321d71b7b2ae9a83379bfd3ff274a0`
+- main synchronized: yes
+
