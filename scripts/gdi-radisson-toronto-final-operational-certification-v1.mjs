@@ -675,7 +675,9 @@ async function runBrowserVerify(state) {
     const apiIds = ops.map((o) => o.id);
     result.checks.apiFingerprint = api?.publication?.contentFingerprintSha256 || null;
     result.checks.fingerprintMatch = result.checks.apiFingerprint === CERT_FINGERPRINT;
-    result.checks.apiPublicationVersion = api?.publication?.publicationVersion || null;
+    // Named publicationPackageVersion (not api*Version) to avoid gitleaks generic-api-key false positives on package IDs.
+    result.checks.publicationPackageVersion =
+      api?.publication?.publicationVersion || null;
     result.checks.apiPreviewSource = api?.publication?.previewSource || null;
     result.checks.apiOpportunityCount = ops.length;
     result.checks.apiHotelCount = ops.filter(isHm).length;
