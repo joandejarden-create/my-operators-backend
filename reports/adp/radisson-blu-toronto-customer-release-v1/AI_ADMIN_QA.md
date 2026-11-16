@@ -1,8 +1,16 @@
 # AI_ADMIN_QA
 
-Toronto visible: YES (customerDropdownVisible)
-Standard PDF: AVAILABLE
-Audit PDF: AVAILABLE
-Portfolio: AVAILABLE (#1 of 6 Choice Privileges)
-Customer Share: ACTIVE (sht_a07147cf287fc81fa9afca26)
-Customer Published: YES
+| Field | Value |
+|-------|-------|
+| TORONTO VISIBLE | YES |
+| FOUNDER REVIEWED | YES |
+| FOUNDER APPROVED | YES |
+| CUSTOMER READY | YES |
+| CUSTOMER PUBLISHED | YES |
+| STANDARD PDF | AVAILABLE (artifact registered) |
+| AUDIT PDF | AVAILABLE (artifact registered) |
+| PORTFOLIO | AVAILABLE (Choice Privileges #1 of 6) |
+| FACT CONFLICTS | 1 (meeting inventory NEEDS_HOTEL_CONFIRMATION) |
+| CURRENT CORE | c8bd8b |
+| CURRENT LOYALTY | 308ba1 |
+| CUSTOMER SHARE | ACTIVE |
