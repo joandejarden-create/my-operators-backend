@@ -1,0 +1,36 @@
+{
+  "authorization": "NOT_AUTHORIZED — proposal only",
+  "thisPhaseSpendUsd": 0,
+  "priorRemainingUsd": 4.4,
+  "doNotSpendPriorRemainderOnAudit": true,
+  "gapTo40": 23,
+  "measuredCostPerIncrementalHmUsd": 1.53,
+  "referenceScaleUsd": 30,
+  "options": [
+    {
+      "option": "MINIMUM_PILOT",
+      "usd": 15,
+      "includes": "Re-deep ~20 highest CORE/corporate/scientific candidates from the 50-queue",
+      "expectedIncrementalHmRange": "4–10 (not guaranteed)"
+    },
+    {
+      "option": "RECOMMENDED_SCALE",
+      "usd": 30,
+      "includes": "$4.40 prior remainder + ~$25.60 new authorization OR standalone $30; focus CORE La Côte + scientific workshops + sports crews; Palexpo only if open-housing evidenced",
+      "expectedIncrementalHmRange": "8–16 (not guaranteed; prior $1.53 CPI was pre-dedupe/audit)"
+    },
+    {
+      "option": "MAXIMUM_PROPOSED_CEILING",
+      "usd": 45,
+      "includes": "Recommended $30 + contingency if CORE yield ≥25% after first 15 deep runs",
+      "expectedIncrementalHmRange": "10–20"
+    }
+  ],
+  "stopRules": [
+    "Hard stop at authorized ceiling with pre-call reservations.",
+    "After each 10 deep runs, recompute incremental HM yield; if <10% for two consecutive batches on a segment, redirect spend.",
+    "Do not spend to 'fill to 40' by lowering eligibility.",
+    "No Surfe auto-enrichment; no Airtable writes; no CUSTOMER_PUBLISHED.",
+    "$30 does NOT guarantee 19 more qualified records."
+  ]
+}
