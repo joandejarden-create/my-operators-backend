@@ -802,12 +802,14 @@ export async function getGdiOpportunities(req, res) {
       } = await import(
         "../lib/group-demand-intelligence/publication-package/gdi-share-approved-package-resolver-v1.js"
       );
+      const requireStagedPreview =
+        String(req.query.preview || "").trim().toLowerCase() === "staged";
       const pkgResolved = resolvePreviewOpportunitiesFromPublicationPackage({
         hotelId,
         forceLive: false,
+        preferStaged: requireStagedPreview,
+        preview: requireStagedPreview ? "staged" : null,
       });
-      const requireStagedPreview =
-        String(req.query.preview || "").trim().toLowerCase() === "staged";
       if (
         requireStagedPreview &&
         !(
@@ -820,9 +822,10 @@ export async function getGdiOpportunities(req, res) {
           ok: false,
           error: "STAGED_PUBLICATION_PREVIEW_UNAVAILABLE",
           message:
-            "Authenticated founder preview requested STAGED publication package, but none is available for this hotel. Refusing to fall back to another hotel or live inventory.",
+            "Authenticated founder preview requested STAGED publication package, but none is available for this hotel. Refusing to fall back to another hotel, CURRENT published inventory, or live research.",
           hotelId,
           publication: pkgResolved.meta || null,
+          detail: pkgResolved.detail || null,
         });
       }
       if (pkgResolved.ok && pkgResolved.mode === "PACKAGE") {

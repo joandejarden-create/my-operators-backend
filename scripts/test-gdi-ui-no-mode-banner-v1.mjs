@@ -36,7 +36,10 @@ const authHtml = fs.readFileSync(
 
 check("auth_banner_gated_by_gdiDiag", () => {
   assert.match(appJs, /function wantsPresentationModeDiagnostics\s*\(/);
-  assert.match(appJs, /params\.get\("gdiDiag"\)/);
+  assert.match(
+    appJs,
+    /(?:params\.get\("gdiDiag"\)|readGdiQueryParams\(\)\.get\("gdiDiag"\))/,
+  );
   assert.match(appJs, /if\s*\(\s*wantsPresentationModeDiagnostics\s*\(\s*\)\s*\)/);
   // Must not unconditionally inject Mode A/B banner into root HTML.
   assert.doesNotMatch(
