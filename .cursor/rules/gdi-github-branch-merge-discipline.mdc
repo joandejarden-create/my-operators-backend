@@ -13,12 +13,16 @@ Applies to all Dealality GDI Full E2E development, research integration, remedia
 2. Use one focused feature branch per task.
 3. Complete implementation and required tests.
 4. Commit all relevant code, research manifests, and reports.
-5. Open a GitHub pull request.
-6. Run CI and resolve all failures.
-7. **Merge the PR into `main` before starting the next task.**
-8. Confirm the merge commit exists on `main`.
-9. Synchronize the primary checkout and any active worktrees with the merged commit.
-10. Remove completed local feature branches and obsolete worktrees when safe.
+5. **Before opening or updating the PR**, run repository CI prechecks:
+   - `npm run dealality:pr-check-suggest -- --base origin/main`
+   - `npm run dealality:ci-precheck`
+   - Resolve gitleaks / avoidable failures first (see `.cursor/rules/dealality-ci-precheck-discipline.mdc`).
+6. Open a GitHub pull request only after local prechecks pass (or document why a check cannot run locally).
+7. Run CI and resolve all failures on the latest commit (superseded runs may cancel).
+8. **Merge the PR into `main` before starting the next task.**
+9. Confirm the merge commit exists on `main`.
+10. Synchronize the primary checkout and any active worktrees with the merged commit.
+11. Remove completed local feature branches and obsolete worktrees when safe.
 
 ## Safety
 

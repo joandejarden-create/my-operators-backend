@@ -1,6 +1,10 @@
 # Mandatory GDI published-inventory permanence regression (CI fixture; no Windows paths).
 name: GDI published inventory mirror
 
+concurrency:
+  group: gdi-published-mirror-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     branches: [main]

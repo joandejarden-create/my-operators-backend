@@ -1,0 +1,38 @@
+---
+description: Repository-wide CI prechecks before opening or updating GitHub PRs — reduce avoidable Actions failure emails without weakening security
+alwaysApply: true
+---
+
+# Dealality CI precheck discipline
+
+Applies to **all** Dealality work in this repository (GDI, ADP, Census, Brand Explorer, docs, and infra), not only hotel Full E2E tasks.
+
+## Before opening or updating a PR
+
+1. Start from latest validated `main` on a focused branch.
+2. Run path-appropriate local tests (`npm run dealality:pr-check-suggest -- --base origin/main`).
+3. Run **`npm run dealality:ci-precheck`** (gitleaks over `origin/main..HEAD` + workflow concurrency sanity).
+4. Resolve gitleaks findings or narrowly allowlist reviewed false positives in `.gitleaks.toml` (never broad folder disables).
+5. Validate generated research artifacts for secret-scanner traps (prefer human labels over `KEY=value` / token-shaped strings).
+6. Confirm relevant prechecks pass locally.
+7. **Do not open a PR known to fail avoidable checks.**
+
+If gitleaks cannot run locally, pass `--allow-skip-gitleaks` only when documented in the PR, and rely on GitHub CI — still do not push known-bad patterns.
+
+## After push
+
+- Prefer one coherent push over many fix-up commits when practical (fewer intermediate CI emails).
+- Superseded PR workflow runs are cancelled via `concurrency.cancel-in-progress` — still treat the latest run as the source of truth.
+- Required merge checks remain blocking; never force-merge failed security or quality gates.
+
+## Notifications (founder)
+
+Repository code **cannot** suppress GitHub’s built-in Actions failure emails.
+
+Recommend: GitHub Settings → Notifications → System → Actions → **Don't notify**.
+
+Do not weaken gitleaks or required checks to hide failures.
+
+## Completion
+
+Still follow GDI merge discipline when the task is GDI: PR merged into `main` before the next hotel/phase.
