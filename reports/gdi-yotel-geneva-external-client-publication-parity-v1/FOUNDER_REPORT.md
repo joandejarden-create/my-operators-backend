@@ -1,37 +1,41 @@
 # YOTEL Geneva Lake — External client publication + local parity V1
 
-**Status:** CUSTOMER_PUBLISHED activated — deploy + share handoff in progress  
+**Status:** PRODUCTION LIVE — read-only client share issued  
 **Hotel:** YOTEL Geneva Lake (`recrPQcZg7SFARRb2`)  
 **Fingerprint:** `353430092ceea5626c85e04bffbeeb84d0738bf7a5382c5177d5fdf37413eba3`  
-**Inventory:** 42 total · 34 Hotel Market · 8 CMI  
+**Inventory:** **42** = **34** Hotel Market + **8** CMI  
 
-## Founder approval
+## Verdict
 
-Exact phrase received in chat. Receipt `approved=true`. Activation `--apply` succeeded.
-
-| Gate | Result |
+| Check | Result |
 |---|---|
-| CURRENT fingerprint | `35343009…` CUSTOMER_PUBLISHED |
-| Share resolver PACKAGE | 42 opportunities |
-| Prior package `41a1b1ca…` | Preserved immutable |
-| First share mode | Read-only (feedback grant separate) |
-| Auth↔simulated commercial parity | PASS (42/42) |
-| Local staged UI | PASS 42/34/8 |
+| Founder approval phrase | RECEIVED |
+| CUSTOMER_PUBLISHED CURRENT | PASS |
+| Prior package `41a1b1ca…` | Preserved |
+| Auth↔simulated commercial parity | PASS 42/42 |
+| Railway GDI release | PASS (`676614ce…`) |
+| Share tokenId | `gdisht_8fbc532516670d48aa23d58c` (read-only) |
+| Production list API | 42 / 34 / 8 / fingerprint match |
+| Production detail drawers | 42/42 PASS |
+| Production browser UI | PASS (YOTEL Geneva Lake, filters, Reset View, CSV) |
+| Raw share secret in GitHub | **No** |
 
-## Capability differences (approved, not failures)
+## External URL
 
-- External uses share token + CURRENT only  
-- Surfe remains on-click / not silently paid for clients  
-- Bethesda-style feedback requires separate `CAN_VALIDATE` / action / outcome grant  
+Delivered in chat / private agent store. Path shape:
 
-## Remaining closeout
+`https://my-operators-backend-production.up.railway.app/group-demand-intelligence-share.html?share=gdishare.v1.<redacted>`
 
-1. Merge CURRENT pointer PR  
-2. Railway GDI production release for merge SHA  
-3. `railway run node scripts/gdi-issue-share.mjs --hotelId=recrPQcZg7SFARRb2 --label="YOTEL Geneva Lake GDI"`  
-4. Production browser QA of all 42 drawers  
-5. Private URL handoff (never commit raw token)
+## Capability differences (approved)
+
+- Read-only share (no `CAN_VALIDATE` / action / outcome yet)  
+- Surfe not silently enabled for client  
+- Feedback-enabled Bethesda-style grant available on separate founder approval  
 
 ## GitHub / Railway
 
-Filled at closeout.
+| Item | Value |
+|---|---|
+| Prep PR | [#340](https://github.com/joandejarden-create/my-operators-backend/pull/340) |
+| Publication PR | [#341](https://github.com/joandejarden-create/my-operators-backend/pull/341) → `676614ce795306951c9c8a78b68b0de85cf3220b` |
+| Release run | https://github.com/joandejarden-create/my-operators-backend/actions/runs/44109615929 |
