@@ -40,6 +40,7 @@ import {
   executeOriginalFullE2eResearchChain,
   buildThreeHotelFullE2eBudgetManifest,
 } from "../lib/group-demand-intelligence/workflow/original-full-e2e-research-chain-v1.js";
+import { runCanonicalFullE2eResearch } from "../lib/group-demand-intelligence/workflow/gdi-canonical-full-e2e-entry-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -213,27 +214,68 @@ if (runOriginalChain) {
             0
         )
       : 0;
-  originalChain = await executeOriginalFullE2eResearchChain({
-    hotelIds,
-    authorizePaidDiscovery,
-    authorizePaidResearch,
-    // Live Exa deep-research seed requires the same dual-auth as discovery.
-    // Without these, --authorize-paid-research only runs offline ORS continuation.
-    authorizeExaAgentLive: authorizePaidResearch === true,
-    allowLiveExaDeepSeed: authorizePaidResearch === true,
-    authorizationId:
-      process.env.GDI_RESEARCH_AUTHORIZATION_ID ||
-      "GDI_AIMBRIDGE_FULL_E2E_LIVE_V1",
-    budgetCeilingUsd,
-    useFixtureProvider: !authorizePaidDiscovery,
-    allowHistoricalReplay: true,
-    persistState: true,
-    // Explicit null = no lead cap. Only apply when flag provided.
-    maxCandidates:
-      chainCandidateLimit != null ? Number(chainCandidateLimit) : null,
-    priorLiveSpendUsd: Number(process.env.GDI_PRIOR_LIVE_SPEND_USD || 0.4),
-    outDir: path.join(outDir, "original-full-e2e-chain"),
-  });
+  // P1-C: single-hotel dry/fixture chain delegates to canonical entry.
+  const useCanonicalEntry =
+    hotelIds.length === 1 &&
+    dryRun &&
+    !authorizePaidDiscovery &&
+    !authorizePaidResearch &&
+    !has("--force-legacy-chain");
+  let canonicalResult = null;
+  if (useCanonicalEntry) {
+    canonicalResult = await runCanonicalFullE2eResearch({
+      hotelId: hotelIds[0],
+      mode: "fixture",
+      dryRun: true,
+      maxCandidates:
+        chainCandidateLimit != null ? Number(chainCandidateLimit) : 8,
+      outDir: path.join(outDir, "canonical-full-e2e"),
+      skipHpc: true,
+    });
+    originalChain = canonicalResult.chain || {
+      discovery: null,
+      processed: [],
+      canonical: true,
+    };
+    originalChain.canonicalEntry = {
+      used: true,
+      runId: canonicalResult.runId || null,
+      verdict: canonicalResult.verdict || null,
+      researchCompleteness: canonicalResult.researchCompleteness || null,
+    };
+  } else {
+    originalChain = await executeOriginalFullE2eResearchChain({
+      hotelIds,
+      authorizePaidDiscovery,
+      authorizePaidResearch,
+      // Live Exa deep-research seed requires the same dual-auth as discovery.
+      // Without these, --authorize-paid-research only runs offline ORS continuation.
+      authorizeExaAgentLive: authorizePaidResearch === true,
+      allowLiveExaDeepSeed: authorizePaidResearch === true,
+      authorizationId:
+        process.env.GDI_RESEARCH_AUTHORIZATION_ID ||
+        "GDI_AIMBRIDGE_FULL_E2E_LIVE_V1",
+      budgetCeilingUsd,
+      useFixtureProvider: !authorizePaidDiscovery,
+      allowHistoricalReplay: true,
+      persistState: true,
+      // Explicit null = no lead cap. Only apply when flag provided.
+      maxCandidates:
+        chainCandidateLimit != null ? Number(chainCandidateLimit) : null,
+      priorLiveSpendUsd: Number(process.env.GDI_PRIOR_LIVE_SPEND_USD || 0.4),
+      outDir: path.join(outDir, "original-full-e2e-chain"),
+      recordDeepResearchObservability: true,
+    });
+    originalChain.canonicalEntry = {
+      used: false,
+      reason:
+        hotelIds.length > 1
+          ? "MULTI_HOTEL_USE_PER_HOTEL_CANONICAL_OR_LEGACY_CHAIN"
+          : authorizePaidDiscovery || authorizePaidResearch
+            ? "PAID_PATH_USES_ORIGINAL_CHAIN_WITH_OBSERVABILITY_HOOKS"
+            : "FORCE_LEGACY_OR_NON_DRY",
+    };
+  }
   discoveryExecution = {
     summary: {
       cellCount: originalChain.discovery?.cellCount || 0,
@@ -246,7 +288,7 @@ if (runOriginalChain) {
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(
     path.join(outDir, "discovery-execution-traces.json"),
-    `${JSON.stringify({ from: "original_full_e2e_chain", discovery: originalChain.discovery }, null, 2)}\n`
+    `${JSON.stringify({ from: useCanonicalEntry ? "canonical_full_e2e_entry" : "original_full_e2e_chain", discovery: originalChain.discovery, canonicalEntry: originalChain.canonicalEntry || null }, null, 2)}\n`
   );
 } else if (executeDiscovery) {
   discoveryExecution = await executeFourteenSegmentDiscoveryMatrix({
