@@ -48,4 +48,12 @@ Real secrets, real test regressions, authorized deploy/overnight misconfig — t
 
 ## GitHub
 
-Filled at closeout.
+| Item | Value |
+|---|---|
+| PR | [#338](https://github.com/joandejarden-create/my-operators-backend/pull/338) |
+| CI | PASS (Admin, GDI recovery, Research Audit, Spice, gitleaks) |
+| Merge status | MERGED |
+| Merge commit | `47b3f959640736bf411184b9d45afae69f41ffc5` |
+| `main` synchronized | Confirmed |
+
+**Manual action still required:** GitHub Settings → Notifications → System → Actions → **Don't notify**.
