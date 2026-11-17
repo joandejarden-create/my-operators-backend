@@ -1,5 +1,9 @@
 name: GDI Research Audit admin relocation
 
+concurrency:
+  group: gdi-research-audit-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     branches: [main]

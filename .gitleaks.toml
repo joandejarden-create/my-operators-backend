@@ -266,7 +266,7 @@ regexes = [
 id = "generic-api-key"
 
 [rules.allowlist]
-description = "PR #163/#285/#336 false positives: period ids, job ids, ceiling constant, Airtable record ids, GDI package SHA-256 fingerprints, Apify live flag label"
+description = "PR #163/#285/#336/#338 false positives: period ids, job ids, ceiling constant, Airtable record ids, GDI package SHA-256 fingerprints, feature-flag labels, env var name docs"
 regexTarget = "secret"
 regexes = [
   '''^adp_period_[a-z0-9_]+$''',
@@ -275,8 +275,10 @@ regexes = [
   '''^(?:app|rec|fld|tbl)[A-Za-z0-9]{14}$''',
   # Publication contentFingerprintSha256 / browser verification fingerprints (not credentials).
   '''^[a-f0-9]{64}$''',
-  # Provider inventory documents the live-flag label `GDI_APIFY_LIVE=1` (not a credential) — PR #336.
-  '''^GDI_APIFY_LIVE=1$''',
+  # Feature-flag documentation labels only (FOO=0 / FOO=1). Real tokens are not this shape.
+  '''^[A-Z][A-Z0-9_]{2,64}=[01]$''',
+  # Bare env var *names* as documentation (exact match only). Real secrets remain detectable.
+  '''^(?:APIFY_TOKEN|EXA_API_KEY|FIRECRAWL_API_KEY|SERPAPI_KEY|PARALLEL_API_KEY|MAPBOX_ACCESS_TOKEN|AIRTABLE_API_KEY|GITHUB_TOKEN)$''',
 ]
 
 # Airtable object identifiers are metadata, not API credentials.

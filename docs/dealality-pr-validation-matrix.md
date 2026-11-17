@@ -3,7 +3,8 @@
 > **Purpose:** Map changed paths → validation commands + risk tier so reviewers trust evidence bundles instead of line-by-line diffs.  
 > **Usage:** Before opening or merging a PR, run commands for every row that matches your diff. Attach output paths or screenshots to the PR description.  
 > **Automation:** `npm run dealality:pr-check-suggest` (reads `lib/dealality-pr-check-matrix.js`)  
-> **Process rules:** `.cursor/rules/deal-capture-implementation-partner.mdc`  
+> **CI precheck (required before PR):** `npm run dealality:ci-precheck` — local gitleaks over `origin/main..HEAD` + workflow concurrency sanity (see `docs/ci/github-actions-notification-noise-reduction.md`)  
+> **Process rules:** `.cursor/rules/deal-capture-implementation-partner.mdc`, `.cursor/rules/dealality-ci-precheck-discipline.mdc`  
 > **Project memory:** `AGENTS.md`
 
 ---

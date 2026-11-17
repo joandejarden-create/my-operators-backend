@@ -3,6 +3,10 @@
 # or any visible Admin tab does not open its destination.
 name: ADP Admin workspace navigation
 
+concurrency:
+  group: adp-admin-nav-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     branches: [main]
@@ -10,7 +14,10 @@ on:
       - "public/app/admin/ai-demand-admin.html"
       - "public/js/admin-ai-demand-admin.js"
       - "public/js/admin-ai-visibility-audit.js"
+      - "public/js/admin-gdi-execution-monitor.js"
+      - "public/css/admin-gdi-execution-monitor.css"
       - "scripts/test-adp-admin-workspace-navigation-v1.mjs"
+      - "scripts/test-dealality-ci-precheck-notification-noise-v1.mjs"
       - ".github/workflows/adp-admin-workspace-navigation.yml"
       - "package.json"
       - "package-lock.json"
@@ -20,6 +27,8 @@ on:
       - "public/app/admin/ai-demand-admin.html"
       - "public/js/admin-ai-demand-admin.js"
       - "public/js/admin-ai-visibility-audit.js"
+      - "public/js/admin-gdi-execution-monitor.js"
+      - "public/css/admin-gdi-execution-monitor.css"
       - "scripts/test-adp-admin-workspace-navigation-v1.mjs"
       - ".github/workflows/adp-admin-workspace-navigation.yml"
 
@@ -64,6 +73,10 @@ jobs:
           assert.match(html, /id="adaTabGdiResearchAudit"/);
           assert.match(html, /id="adaPanelGdiResearchAudit"/);
           assert.match(html, /admin-gdi-research-audit\.js/);
+          assert.match(shell, /"gdi-execution-monitor"\s*:\s*true/);
+          assert.match(html, /id="adaTabGdiExecutionMonitor"/);
+          assert.match(html, /id="adaPanelGdiExecutionMonitor"/);
+          assert.match(html, /admin-gdi-execution-monitor\.js/);
           console.log(JSON.stringify({ ok: true, staticPreflight: "pass" }));
           EOF
 
