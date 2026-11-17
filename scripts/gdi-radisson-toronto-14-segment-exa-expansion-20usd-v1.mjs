@@ -1138,7 +1138,7 @@ async function runPass1() {
     else if (!LIVE_PAID) paid = { ok: false, blocked: "NO_CACHE_AND_PAID_NOT_AUTHORIZED" };
     else {
       const ctx = discoveryContext(job);
-      const pack = buildExaEventsAgentCreatePayload({ mode: "discovery", contextBlock: ctx, effort: EXA_AGENT_EFFORT.MEDIUM });
+      const pack = buildExaEventsAgentCreatePayload({ mode: "discovery", contextBlock: ctx, effort: EXA_AGENT_EFFORT.MEDIUM, segmentId: job.segmentKey || job.segmentId });
       paid = await chargeable(
         { stage: "PASS1_DISCOVERY", kind: "discovery", hunter: job.segmentKey, segmentId: job.segmentId, effort: EXA_AGENT_EFFORT.MEDIUM, label: job.id },
         async () => {
@@ -1430,7 +1430,7 @@ async function runDeepOne(cand, stage, keyPrefix, ctxFn) {
   }
   if (!LIVE_PAID) return { stage, cand, key, skipped: true, paid: { ok: false, blocked: "NO_CACHE_AND_PAID_NOT_AUTHORIZED" } };
   const ctx = ctxFn(cand);
-  const pack = buildExaEventsAgentCreatePayload({ mode: "deep_research", contextBlock: ctx, effort: EXA_AGENT_EFFORT.HIGH });
+  const pack = buildExaEventsAgentCreatePayload({ mode: "deep_research", contextBlock: ctx, effort: EXA_AGENT_EFFORT.HIGH, segmentId: cand.segmentId || cand.segmentKey || "associations_conferences_events" });
   const paid = await chargeable(
     {
       stage,

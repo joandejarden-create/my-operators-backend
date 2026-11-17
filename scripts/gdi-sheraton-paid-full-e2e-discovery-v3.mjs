@@ -479,6 +479,7 @@ for (const cand of deepTargets) {
     mode: "deep_research",
     contextBlock,
     effort: EXA_AGENT_EFFORT.HIGH,
+    segmentId: candidate.segmentId || candidate.demandSegmentId || "associations_conferences_events",
   });
 
   const paid = await chargeable(
