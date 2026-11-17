@@ -11,7 +11,12 @@
  *   node scripts/gdi-research-to-page-workflow-v1.mjs --hotel recnPB3Q02NO8Ma1o --run-discovery --stage discover_gaps
  *   node scripts/gdi-research-to-page-workflow-v1.mjs --hotel recG66DQJKP2c0UNh --stage preview
  *
- * Full GDI E2E (enforced contract — see full-e2e-contract-v1.js):
+ * Canonical research Full E2E (discovery → deep research ledger; P1-C):
+ *   npm run gdi:canonical-full-e2e -- --hotel <id> --mode fixture|dry-run|preflight
+ *   Research certification ≠ publication. This script remains the delivery/publication
+ *   Full E2E coordinator; use gdi:canonical-full-e2e for instrumented research runs.
+ *
+ * Full GDI E2E delivery (enforced contract — see full-e2e-contract-v1.js):
  *   # Preflight / dry-run (blocks all paid + production writes)
  *   node scripts/gdi-research-to-page-workflow-v1.mjs --hotel <id> --mode full-e2e --dry-run
  *   # Authorized research without publication
