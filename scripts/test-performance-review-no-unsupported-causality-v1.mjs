@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const PR_ID = "adp_mr_radisson_blu_toronto_dow_2026-11_v3";
+const PR_ID = "adp_mr_radisson_blu_toronto_dow_2026-11_v4";
 const pr = JSON.parse(
   fs.readFileSync(
     path.join(

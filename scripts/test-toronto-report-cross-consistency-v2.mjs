@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PROPERTY_ID = "adp_radisson_blu_toronto_downtown";
 const CORE = "adp_period_adp_radisson_blu_toronto_downtown_20261104094215_c8bd8b";
-const PR_ID = "adp_mr_radisson_blu_toronto_dow_2026-11_v3";
+const PR_ID = "adp_mr_radisson_blu_toronto_dow_2026-11_v4";
 
 function fail(msg) {
   console.error(`FAIL: ${msg}`);
