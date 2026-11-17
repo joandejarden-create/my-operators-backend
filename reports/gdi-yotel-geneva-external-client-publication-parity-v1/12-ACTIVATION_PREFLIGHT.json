@@ -1,0 +1,118 @@
+{
+  "ok": true,
+  "apply": false,
+  "confirmFingerprintMatches": false,
+  "fingerprint": "353430092ceea5626c85e04bffbeeb84d0738bf7a5382c5177d5fdf37413eba3",
+  "integrityOk": true,
+  "inventory": {
+    "all": 42,
+    "hotelMarket": 34,
+    "cmi": 8,
+    "uniqueIds": 42
+  },
+  "proseOk": true,
+  "certified": {
+    "audited": 42,
+    "withMissingCommercialContent": 0,
+    "withTruncatedText": 0,
+    "withInvalidOrMissingContactRelevance": 0,
+    "requiringAdditionalResearch": 0,
+    "requiringReadinessDemotion": 0,
+    "fullyPassing": 42
+  },
+  "priorPackageFingerprintPreservedImmutable": "41a1b1ca0c34eb5da4b2569db499743ef1721f52376d141c379677e4cd6c054f",
+  "currentBefore": null,
+  "stagedBefore": {
+    "schema": "gdi-publication-package-store-v1",
+    "hotelId": "recrPQcZg7SFARRb2",
+    "kind": "STAGED",
+    "updatedAt": "2026-11-17T13:32:19.007Z",
+    "publicationId": "gdi_pubpkg_recrPQcZg7SFARRb2_77e6101ae59df565",
+    "publicationVersion": "gdi_pub_recrPQcZg7SFARRb2_20261117_yotel_geneva_lake_exa_30usd_scale_v1",
+    "contentFingerprintSha256": "353430092ceea5626c85e04bffbeeb84d0738bf7a5382c5177d5fdf37413eba3",
+    "lifecycleState": "FOUNDER_REVIEWED",
+    "founderReviewLabel": "STAGED_FOR_FOUNDER_REVIEW"
+  },
+  "parityGate": {
+    "contract": "gdi-local-external-customer-link-activation-gate-v1",
+    "hotelId": "recrPQcZg7SFARRb2",
+    "ok": true,
+    "fingerprint": "353430092ceea5626c85e04bffbeeb84d0738bf7a5382c5177d5fdf37413eba3",
+    "inventory": {
+      "all": 42,
+      "hotelMarket": 34,
+      "cmi": 8,
+      "scaling": 0,
+      "localCatering": 3,
+      "contactBuyer": 0,
+      "typeCounts": {
+        "ASSOCIATION_CONFERENCE_GROUP": 11,
+        "OTHER_UNCLASSIFIED": 4,
+        "GOVERNMENT_PUBLIC_SECTOR": 3,
+        "CORPORATE_MEETINGS_INCENTIVES": 4,
+        "SPORTS_ENTERTAINMENT": 4,
+        "EDUCATION_SCIENTIFIC": 6,
+        "SOCIAL_SPECIAL_EVENTS": 1,
+        "LOCAL_CATERING_DAY_MEETINGS": 3,
+        "TRAVEL_TRADE_GROUP_INTERMEDIARIES": 2,
+        "PROJECTS_INFRASTRUCTURE": 4
+      },
+      "commercialPills": {
+        "Monitor": 1,
+        "Build Venue Partnership": 1,
+        "Qualify Opportunity": 19,
+        "Build Account": 13,
+        "Pursue Catering": 3,
+        "Engage Planner": 5
+      }
+    },
+    "commercialFieldsCompared": [
+      "title",
+      "organization",
+      "whatIsHappening",
+      "potentialHotelBusiness",
+      "whyThisHotel",
+      "whyActNow",
+      "recommendedNextStep",
+      "contactNames",
+      "contactRelevance",
+      "evidenceUrls",
+      "opportunityType",
+      "commercialPill",
+      "startDate",
+      "endDate"
+    ],
+    "assessmentSummary": {
+      "authOk": true,
+      "authCount": 42,
+      "simulatedShareParityOk": true,
+      "simulatedShareCount": 42,
+      "liveShareCurrentAvailable": true,
+      "productionExternalReady": false,
+      "founderApprovalRequired": true
+    },
+    "fails": [],
+    "approvedCapabilityDifferences": [
+      {
+        "id": "auth_vs_share_access",
+        "note": "Local preview may use founder auth + preview=staged; external uses share token + CURRENT only"
+      },
+      {
+        "id": "surfe_on_click",
+        "note": "Authenticated Surfe remains founder-gated on-click; external must not silently enable paid Surfe"
+      },
+      {
+        "id": "feedback_capabilities",
+        "note": "CAN_VALIDATE / action / outcome require explicit capability grant — not default on issue"
+      }
+    ]
+  },
+  "receiptPath": "C:\\Dev\\dealality\\wt-yotel-40plus-exa\\reports\\gdi-yotel-geneva-external-client-publication-parity-v1\\FOUNDER_APPROVED_FOR_PUBLICATION.json",
+  "receiptOk": false,
+  "receiptFails": [
+    "explicit_phrase_or_approved_flag",
+    "approved:not_true"
+  ],
+  "requiredPhrase": "FOUNDER_APPROVED_FOR_PUBLICATION 353430092ceea5626c85e04bffbeeb84d0738bf7a5382c5177d5fdf37413eba3",
+  "blocker": "WAITING_FOUNDER_APPROVED_FOR_PUBLICATION — supply exact phrase then set receipt approved=true"
+}
