@@ -18,7 +18,7 @@
 4. **Central field maps** — use existing mapping objects (`map_*`, `api_*`); do not scatter raw Airtable field names in UI code.
 5. **UI states** — loading, empty, error, success for all data-driven UI; no blank components.
 6. **No silent catches** — log or rethrow; never empty `catch () {}`.
-7. **GDI GitHub merge discipline** — one focused PR per GDI task; merge into `main` before the next hotel/phase; see `.cursor/rules/gdi-github-branch-merge-discipline.mdc`. Never declare GDI work complete while its PR remains unmerged unless an explicit blocker is reported.
+7. **Dealality GitHub merge discipline** — primary workspace `C:\Dev\dealality\my-operators-backend` on synchronized `main`; short-lived feature branches for PRs; no automatic per-task worktrees; merge into `main` then fast-forward the primary checkout; see `.cursor/rules/gdi-github-branch-merge-discipline.mdc`. Never declare work complete while its required PR remains unmerged unless an explicit blocker is reported.
 
 ## Dealality AI Build Operating System
 
