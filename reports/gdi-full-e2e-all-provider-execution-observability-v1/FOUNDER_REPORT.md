@@ -93,4 +93,12 @@ No Exa / Apify / Parallel / Surfe / Airtable writes / CUSTOMER_PUBLISHED / Railw
 
 ## GitHub
 
-Filled at closeout.
+| Item | Value |
+|---|---|
+| PR | [#336](https://github.com/joandejarden-create/my-operators-backend/pull/336) |
+| CI | PASS (Admin tabs, GDI recovery, Research Audit, Spice isolation, gitleaks) |
+| Merge status | MERGED |
+| Merge commit | `a8783af527d436ffe39f48a298aa31aa953e0ce3` |
+| `main` synchronized | Confirmed (`origin/main` = merge SHA) |
+
+**Task complete** per GDI merge discipline.
