@@ -9,6 +9,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   preflightCanonicalFullE2e,
+  assessCanonicalLiveReadiness,
   runCanonicalFullE2eResearch,
   normalizeMode,
   CANONICAL_EXECUTION_MODE,
@@ -106,6 +107,66 @@ check("live_without_auth_fails_closed", () => {
   assert.ok(
     p.errors.some((e) => e.code === "LIVE_MODE_REQUIRES_PAID_AUTHORIZATION"),
   );
+});
+
+check("live_requires_budget_ceiling_and_exa_auth", () => {
+  const p = preflightCanonicalFullE2e({
+    hotelId: HOTELS.yotel,
+    mode: "live",
+    authorizePaidDiscovery: true,
+    authorizePaidResearch: true,
+  });
+  assert.equal(p.ok, false);
+  assert.ok(
+    p.errors.some((e) => e.code === "LIVE_MODE_REQUIRES_BUDGET_CEILING_USD"),
+  );
+  assert.ok(
+    p.errors.some((e) => e.code === "LIVE_MODE_REQUIRES_AUTHORIZE_EXA_AGENT_LIVE"),
+  );
+});
+
+check("live_readiness_blocked_without_env_gate", () => {
+  const prev = process.env.GDI_EXA_AGENT_LIVE;
+  delete process.env.GDI_EXA_AGENT_LIVE;
+  try {
+    const r = assessCanonicalLiveReadiness({
+      hotelId: HOTELS.yotel,
+      mode: "live",
+      authorizePaidDiscovery: true,
+      authorizePaidResearch: true,
+      authorizeExaAgentLive: true,
+      budgetCeilingUsd: 15,
+    });
+    assert.equal(r.status, "BLOCKED");
+    assert.equal(r.liveReady, false);
+    assert.ok(
+      r.blockers.some((b) => b.code === "GDI_EXA_AGENT_LIVE_ENV_REQUIRED"),
+    );
+  } finally {
+    if (prev == null) delete process.env.GDI_EXA_AGENT_LIVE;
+    else process.env.GDI_EXA_AGENT_LIVE = prev;
+  }
+});
+
+check("cli_loads_dotenv_and_exa_live_flag", () => {
+  const cli = fs.readFileSync(
+    path.join(ROOT, "scripts/gdi-canonical-full-e2e-entry-v1.mjs"),
+    "utf8",
+  );
+  assert.ok(cli.includes('import "dotenv/config"'));
+  assert.ok(cli.includes("--authorize-exa-agent-live"));
+  assert.ok(cli.includes("--budget-ceiling-usd"));
+  const entry = fs.readFileSync(
+    path.join(
+      ROOT,
+      "lib/group-demand-intelligence/workflow/gdi-canonical-full-e2e-entry-v1.js",
+    ),
+    "utf8",
+  );
+  assert.ok(entry.includes("authorizeExaAgentLive"));
+  assert.ok(entry.includes("allowLiveExaDeepSeed"));
+  assert.ok(entry.includes("budgetsRespected"));
+  assert.ok(!/budgetsRespected:\s*true,\s*\n\s*outputsIngested:\s*true/.test(entry));
 });
 
 check("discovery_only_cert_is_partial", () => {

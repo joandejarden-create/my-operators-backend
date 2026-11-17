@@ -1,19 +1,25 @@
 #!/usr/bin/env node
 /**
- * Canonical GDI Full E2E research entry CLI (P1-C).
+ * Canonical GDI Full E2E research entry CLI (P1-C + live safety gates).
  *
  *   npm run gdi:canonical-full-e2e -- --hotel <id> --mode fixture
  *   npm run gdi:canonical-full-e2e -- --hotel <id> --mode dry-run
  *   npm run gdi:canonical-full-e2e -- --hotel <id> --mode preflight
  *
- * Live paid research requires explicit founder flags (not default).
+ * Live paid Exa research (founder-authorized only):
+ *   set GDI_EXA_AGENT_LIVE=1
+ *   npm run gdi:canonical-full-e2e -- --hotel <id> --mode live \
+ *     --authorize-paid-discovery --authorize-paid-research \
+ *     --authorize-exa-agent-live --budget-ceiling-usd 15
+ *
  * Never publishes. Never writes Airtable from this entry.
  */
+import "dotenv/config";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   runCanonicalFullE2eResearch,
-  preflightCanonicalFullE2e,
+  assessCanonicalLiveReadiness,
   CANONICAL_EXECUTION_MODE,
   GDI_CANONICAL_FULL_E2E_ENTRY_V1,
 } from "../lib/group-demand-intelligence/workflow/gdi-canonical-full-e2e-entry-v1.js";
@@ -34,6 +40,8 @@ const mode = arg("--mode") || CANONICAL_EXECUTION_MODE.FIXTURE;
 const outDir = arg("--out") || null;
 const maxCandidates = arg("--max-candidates");
 const obsRoot = arg("--observability-root") || null;
+const budgetCeilingUsd = Number(arg("--budget-ceiling-usd") || 0) || 0;
+const exaEffort = arg("--exa-effort") || "medium";
 
 const opts = {
   hotelId,
@@ -41,9 +49,11 @@ const opts = {
   dryRun: has("--dry-run") || mode === "dry-run",
   authorizePaidDiscovery: has("--authorize-paid-discovery"),
   authorizePaidResearch: has("--authorize-paid-research"),
+  authorizeExaAgentLive: has("--authorize-exa-agent-live"),
   authorizePublish: has("--authorize-publish"),
-  budgetCeilingUsd: Number(arg("--budget-ceiling-usd") || 0) || 0,
+  budgetCeilingUsd,
   maxCandidates: maxCandidates != null ? Number(maxCandidates) : 8,
+  exaEffort,
   outDir,
   executionObservabilityRoot: obsRoot,
   skipHpc: !has("--prefer-live-hpc"),
@@ -58,13 +68,22 @@ if (!hotelId) {
         contract: GDI_CANONICAL_FULL_E2E_ENTRY_V1,
         error: "MISSING_HOTEL_ID",
         usage:
-          "npm run gdi:canonical-full-e2e -- --hotel <recId> --mode fixture|dry-run|preflight",
+          "npm run gdi:canonical-full-e2e -- --hotel <recId> --mode fixture|dry-run|preflight|live",
       },
       null,
       2,
     ),
   );
   process.exit(2);
+}
+
+if (has("--assess-live-readiness")) {
+  const readiness = assessCanonicalLiveReadiness({
+    ...opts,
+    mode: CANONICAL_EXECUTION_MODE.LIVE,
+  });
+  console.log(JSON.stringify(readiness, null, 2));
+  process.exit(readiness.liveReady ? 0 : 2);
 }
 
 const result = await runCanonicalFullE2eResearch(opts);
