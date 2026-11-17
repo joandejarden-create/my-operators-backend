@@ -13,6 +13,7 @@
     "report-archive": true,
     "visibility-audit": true,
     "gdi-research-audit": true,
+    "gdi-execution-monitor": true,
   };
 
   function readTabFromUrl() {
@@ -82,12 +83,14 @@
     var archiveBtn = document.getElementById("adaTabReportArchive");
     var avaBtn = document.getElementById("adaTabVisibilityAudit");
     var graBtn = document.getElementById("adaTabGdiResearchAudit");
+    var gemBtn = document.getElementById("adaTabGdiExecutionMonitor");
     var reviewsPanel = document.getElementById("adaPanelReviews");
     var planPanel = document.getElementById("adaPanelActionPlan");
     var gdiPanel = document.getElementById("adaPanelGdiReports");
     var archivePanel = document.getElementById("adaPanelReportArchive");
     var avaPanel = document.getElementById("adaPanelVisibilityAudit");
     var graPanel = document.getElementById("adaPanelGdiResearchAudit");
+    var gemPanel = document.getElementById("adaPanelGdiExecutionMonitor");
 
     if (reviewsBtn) {
       reviewsBtn.classList.toggle("active", tab === "reviews");
@@ -116,12 +119,20 @@
         tab === "gdi-research-audit" ? "true" : "false"
       );
     }
+    if (gemBtn) {
+      gemBtn.classList.toggle("active", tab === "gdi-execution-monitor");
+      gemBtn.setAttribute(
+        "aria-selected",
+        tab === "gdi-execution-monitor" ? "true" : "false"
+      );
+    }
     if (reviewsPanel) reviewsPanel.hidden = tab !== "reviews";
     if (planPanel) planPanel.hidden = tab !== "action-plan";
     if (gdiPanel) gdiPanel.hidden = tab !== "gdi-reports";
     if (archivePanel) archivePanel.hidden = tab !== "report-archive";
     if (avaPanel) avaPanel.hidden = tab !== "visibility-audit";
     if (graPanel) graPanel.hidden = tab !== "gdi-research-audit";
+    if (gemPanel) gemPanel.hidden = tab !== "gdi-execution-monitor";
 
     // Actionable failure if the nav control exists but the destination panel does not.
     if (tab === "visibility-audit" && avaBtn && !avaPanel) {
@@ -132,6 +143,11 @@
     if (tab === "gdi-research-audit" && graBtn && !graPanel) {
       console.error(
         "[ada] GDI Research Audit tab selected but #adaPanelGdiResearchAudit is missing"
+      );
+    }
+    if (tab === "gdi-execution-monitor" && gemBtn && !gemPanel) {
+      console.error(
+        "[ada] GDI Full E2E Execution tab selected but #adaPanelGdiExecutionMonitor is missing"
       );
     }
 

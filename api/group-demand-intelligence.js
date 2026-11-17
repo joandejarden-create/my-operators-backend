@@ -27,6 +27,15 @@ import {
   loadTrustedConsumedFounderIdentity,
   requestFounderApproval,
 } from "../lib/group-demand-intelligence/workflow/gdi-founder-approval-v1.js";
+import {
+  listExecutionRuns,
+  loadExecutionRun,
+  buildMonitorDashboardPayload,
+  listProviderInventory,
+  reconcileHistoricalHotel,
+  reconcileAllHistoricalHotels,
+  HOTEL_SPECS,
+} from "../lib/group-demand-intelligence/observability/index.js";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
@@ -1981,6 +1990,111 @@ export function getGdiResearchRun(req, res) {
     return res.status(404).json({ ok: false, error: "run_not_found" });
   }
   return res.json({ ok: true, run });
+}
+
+/**
+ * Admin-only — GDI Full E2E Execution Monitor (observability).
+ * Never expose on customer GDI / share surfaces.
+ */
+export function getGdiExecutionMonitorHotels(req, res) {
+  if (!flagGate(req, res)) return;
+  try {
+    const hotels = (listGdiSelectableHotels() || []).map((h) => {
+      const hotelId = h.hotelId || h.id;
+      const runs = listExecutionRuns(hotelId);
+      return {
+        hotelId,
+        displayName: h.displayName || h.hotelName || hotelId,
+        runCount: runs.length,
+        latestRunId: runs[0]?.runId || null,
+        latestVerdict: runs[0]?.verdict || null,
+      };
+    });
+    return res.json({ ok: true, hotels });
+  } catch (err) {
+    console.error("[gdi-execution-monitor] hotels", err);
+    return res.status(500).json({
+      ok: false,
+      error: "execution_monitor_hotels_failed",
+      message: String(err?.message || err),
+    });
+  }
+}
+
+export function getGdiExecutionMonitorRuns(req, res) {
+  if (!flagGate(req, res)) return;
+  const hotelId = String(req.params.hotelId || "").trim();
+  try {
+    return res.json({
+      ok: true,
+      hotelId,
+      runs: listExecutionRuns(hotelId),
+      providerInventory: listProviderInventory(),
+    });
+  } catch (err) {
+    console.error("[gdi-execution-monitor] runs", err);
+    return res.status(500).json({
+      ok: false,
+      error: "execution_monitor_runs_failed",
+      message: String(err?.message || err),
+    });
+  }
+}
+
+export function getGdiExecutionMonitorRun(req, res) {
+  if (!flagGate(req, res)) return;
+  const hotelId = String(req.params.hotelId || "").trim();
+  const runId = String(req.params.runId || "").trim();
+  try {
+    let run = loadExecutionRun(hotelId, runId);
+    if (!run && String(runId).startsWith("hist_")) {
+      const spec = (HOTEL_SPECS || []).find(
+        (s) => s.hotelId === hotelId && s.runId === runId,
+      );
+      if (spec) {
+        run = reconcileHistoricalHotel(spec, { persist: true });
+      }
+    }
+    if (!run) {
+      return res.status(404).json({ ok: false, error: "execution_run_not_found" });
+    }
+    return res.json({
+      ok: true,
+      dashboard: buildMonitorDashboardPayload(run),
+    });
+  } catch (err) {
+    console.error("[gdi-execution-monitor] run", err);
+    return res.status(500).json({
+      ok: false,
+      error: "execution_monitor_run_failed",
+      message: String(err?.message || err),
+    });
+  }
+}
+
+export function postGdiExecutionMonitorReconcileHistorical(req, res) {
+  if (!flagGate(req, res)) return;
+  try {
+    const results = reconcileAllHistoricalHotels({ persist: true });
+    return res.json({
+      ok: true,
+      count: results.length,
+      runs: results.map((r) => ({
+        hotelId: r.hotelId,
+        name: r.name,
+        runId: r.run.runId,
+        verdict: r.run.verdict,
+        historicalConfidence: r.run.historicalConfidence,
+      })),
+    });
+  } catch (err) {
+    console.error("[gdi-execution-monitor] reconcile", err);
+    return res.status(500).json({
+      ok: false,
+      error: "execution_monitor_reconcile_failed",
+      message: String(err?.message || err),
+    });
+  }
 }
 
 /**
