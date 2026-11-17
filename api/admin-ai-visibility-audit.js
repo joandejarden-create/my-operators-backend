@@ -848,10 +848,11 @@ export async function postAdminAvaActionDecision(req, res) {
  * GET /api/admin/ai-visibility-audit/:propertyId/pdf
  * Query:
  *   download=1 — Content-Disposition: attachment (real browser download)
- *   channel=published|draft|history — required channel (default: draft)
+ *   channel=current|published|draft|history — channel (default: current)
  *   versionId= — required when channel=history; optional pin for draft
  *
- * Published and draft never silently substitute. Missing → explicit 404.
+ * current = lifecycle-aware Admin default (published for PUBLISHED rows, draft for staged).
+ * Explicit draft/published never silently substitute. Missing → explicit 404.
  * Internal admin download ≠ customer publication.
  */
 export function getAdminAvaPdf(req, res) {
@@ -865,8 +866,8 @@ export function getAdminAvaPdf(req, res) {
       .trim()
       .toLowerCase();
     if (!channel) {
-      // Legacy callers: versionId alone ⇒ history; otherwise draft (latest staged).
-      channel = versionIdRaw ? AVA_PDF_CHANNEL.HISTORY : AVA_PDF_CHANNEL.DRAFT;
+      // Legacy callers: versionId alone ⇒ history; otherwise lifecycle current.
+      channel = versionIdRaw ? AVA_PDF_CHANNEL.HISTORY : AVA_PDF_CHANNEL.CURRENT;
     }
     if (!Object.values(AVA_PDF_CHANNEL).includes(channel)) {
       return sendJson(res, 400, {
@@ -912,6 +913,9 @@ export function getAdminAvaPdf(req, res) {
     res.setHeader("X-AVA-PDF-Filename", filename);
     res.setHeader("X-AVA-PDF-Sha256", resolved.sha256);
     res.setHeader("X-AVA-PDF-Channel", resolved.channel);
+    if (resolved.resolvedAs) {
+      res.setHeader("X-AVA-PDF-Resolved-As", String(resolved.resolvedAs));
+    }
     if (resolved.versionId) {
       res.setHeader("X-AVA-PDF-Version-Id", String(resolved.versionId));
     }

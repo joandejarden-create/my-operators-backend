@@ -115,7 +115,7 @@ const api = fs.readFileSync(
   path.join(ROOT, "api/admin-ai-visibility-audit.js"),
   "utf8"
 );
-assert.match(api, /channel=published\|draft\|history/);
+assert.match(api, /channel=current\|published\|draft\|history/);
 assert.match(api, /resolveAvaPdfByChannel/);
 assert.match(api, /X-AVA-PDF-Channel/);
 
