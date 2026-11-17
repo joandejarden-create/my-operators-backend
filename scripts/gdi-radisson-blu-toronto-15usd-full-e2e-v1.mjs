@@ -1043,7 +1043,7 @@ async function runDeep(cand, batch, mode) {
     return { batch, mode, cand, key, skipped: true, paid: { ok: false, blocked: "NO_CACHE_AND_PAID_NOT_AUTHORIZED" } };
   }
   const ctx = deepContext(cand, mode);
-  const pack = buildExaEventsAgentCreatePayload({ mode: "deep_research", contextBlock: ctx, effort: EXA_AGENT_EFFORT.HIGH });
+  const pack = buildExaEventsAgentCreatePayload({ mode: "deep_research", contextBlock: ctx, effort: EXA_AGENT_EFFORT.HIGH, segmentId: cand.segmentId || cand.segmentKey || "associations_conferences_events" });
   const paid = await chargeable(
     {
       stage: batch,
@@ -1154,7 +1154,7 @@ await pool(discoveryJobsPlanned, CONCURRENCY, async (job) => {
     paid = { ok: false, blocked: "NO_CACHE_AND_PAID_NOT_AUTHORIZED" };
   } else {
     const ctx = cmiDiscoveryContext(job);
-    const pack = buildExaEventsAgentCreatePayload({ mode: "discovery", contextBlock: ctx, effort: EXA_AGENT_EFFORT.MEDIUM });
+    const pack = buildExaEventsAgentCreatePayload({ mode: "discovery", contextBlock: ctx, effort: EXA_AGENT_EFFORT.MEDIUM, segmentId: job.segmentKey || job.segmentId || "associations_conferences_events" });
     paid = await chargeable(
       { stage: "BATCH_C", kind: "discovery", hunter: "cmi_competitor_booked_business", segmentId: "association_events", effort: EXA_AGENT_EFFORT.MEDIUM, label: job.id },
       async () => {

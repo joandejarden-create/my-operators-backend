@@ -1238,6 +1238,7 @@ await pool(cmiJobs, 3, async ({ cluster, lang }) => {
       mode: "discovery",
       contextBlock: ctx,
       effort: EXA_AGENT_EFFORT.MEDIUM,
+      segmentId: cluster.segmentId || "associations_conferences_events",
     });
     paid = await chargeable(
       {
@@ -1485,6 +1486,7 @@ async function runDeep(cand, stage, mode) {
     mode: "deep_research",
     contextBlock: ctx,
     effort: EXA_AGENT_EFFORT.HIGH,
+    segmentId: cand.segmentId || cand.segmentKey || "associations_conferences_events",
   });
   const paid = await chargeable(
     {
