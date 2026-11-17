@@ -1,55 +1,71 @@
 ---
-description: Permanent GitHub branch and merge discipline for GDI Full E2E work
+description: Permanent Dealality canonical-main Git workflow — primary checkout, short-lived feature branches, merge, then local sync
 alwaysApply: true
 ---
 
-# GDI GitHub branch and merge discipline
+# Dealality GitHub branch and merge discipline
 
-Applies to all Dealality GDI Full E2E development, research integration, remediation, and hotel onboarding.
+Applies to **all** Dealality development in this repository (GDI, ADP, Census, Brand Explorer, docs, infra, and related work)—not only GDI Full E2E.
+
+## Canonical workspace
+
+1. The permanent daily development workspace is:
+   `C:\Dev\dealality\my-operators-backend`
+2. `main` is the authoritative integration branch.
+3. Start every new task by verifying the current checkout and synchronizing with the latest `origin/main` when safe.
+4. Do **not** treat temporary `wt-*` folders, Cursor-created worktrees, or merged feature branches as the everyday development home.
 
 ## Required workflow
 
-1. Start from the latest validated `main`.
-2. Use one focused feature branch per task.
+1. Open / use the primary folder on synchronized `main`.
+2. For changes that need a PR, create a **short-lived feature branch from the latest `main`**, preferably **inside the primary checkout** when safe.
 3. Complete implementation and required tests.
-4. Commit all relevant code, research manifests, and reports.
+4. Commit all relevant code, research manifests, and reports for that task.
 5. **Before opening or updating the PR**, run repository CI prechecks:
    - `npm run dealality:pr-check-suggest -- --base origin/main`
    - `npm run dealality:ci-precheck`
    - Resolve gitleaks / avoidable failures first (see `.cursor/rules/dealality-ci-precheck-discipline.mdc`).
 6. Open a GitHub pull request only after local prechecks pass (or document why a check cannot run locally).
 7. Run CI and resolve all failures on the latest commit (superseded runs may cancel).
-8. **Merge the PR into `main` before starting the next task.**
-9. Confirm the merge commit exists on `main`.
-10. Synchronize the primary checkout and any active worktrees with the merged commit.
-11. **Return Cursor to a clean, synchronized `main` development starting point** whenever safe:
-    - Prefer an existing clean `main` worktree, or create one with `git worktree add` when `main` is free.
-    - Do not force `main` onto a worktree that already has `main` checked out elsewhere.
-    - Preserve all unrelated / uncommitted work (no `reset --hard`, no `clean -fd`, no blind stash).
-    - Do not open a cleanup-only PR just to switch branches or tidy the workspace.
-    - Do not leave the active Cursor workspace indefinitely on a merged feature or documentation branch.
-12. Remove completed local feature branches and obsolete worktrees when safe.
+8. **Merge the PR into `main` before starting the next task** (especially GDI hotel/phase sequencing).
+9. Confirm the merge commit exists on `origin/main`.
+10. **Return the primary checkout to `main` when safe** and synchronize with a safe fast-forward (`git switch main` then `git merge --ff-only origin/main`, or equivalent).
+11. Verify expected code, publication packages / CURRENT pointers, and Git working-tree state locally.
+12. Ensure Cursor is not left unnecessarily attached to the merged feature branch (`SetActiveBranch` to `main` when supported). Repository Git rules alone may not update the Cursor UI branch chip—if the chip is wrong, say so and give manual UI reattachment steps.
+13. Remove completed local feature branches and obsolete **clean** temporary worktrees only when safe and confirmed unused.
+
+## Worktrees (exceptional only)
+
+- Do **not** automatically create a separate worktree for every task.
+- Use an additional worktree only when genuinely necessary for parallel development, isolating active work, or protecting existing uncommitted changes.
+- If local changes prevent safe synchronization of the primary checkout, **preserve them and report the blocker**—do not create more unmanaged worktrees as a workaround.
+- Never force `main` onto a worktree that already has `main` checked out elsewhere.
 
 ## Safety
 
+- A successful GitHub merge is **not** the same as successful local synchronization—always sync and verify the primary checkout.
+- Never use `git reset --hard`, `git clean -fd`, or blind stashing to force a clean state.
 - Never discard uncommitted or unrelated work.
+- Never delete an existing worktree, stash, research artifact, or local configuration without checking whether it contains unique work.
 - Never force-merge failed tests.
 - Never overwrite another branch's publication pointer.
 - Preserve all research evidence and immutable publication packages.
-- Never deploy or publish customer content simply because code was merged.
-- Report any blocked merge explicitly rather than declaring the task complete.
+- Do not modify production publications, execute paid research, or deploy simply to synchronize development code.
+- Do not open a cleanup-only PR just to switch branches or tidy the workspace.
+- Report any blocked merge or sync explicitly rather than declaring the task complete.
 
 ## Completion report (mandatory)
 
-Every GDI task must finish with:
+Every task that ships via PR must finish with:
 
 - PR number and URL
 - CI result
 - Merge status
 - Merge commit SHA
-- Confirmation that `main` is synchronized
-- Any remaining open branches or worktrees that need attention
+- Confirmation that the **primary** checkout is on synchronized `main`
+- Working-tree status
+- Any remaining open branches, dirty preserve worktrees, or UI reattachment steps that need attention
 
-**A task is not technically complete until its PR is merged into `main`, unless an explicit blocker is reported.**
+**A task is not technically complete until its PR is merged into `main` and the primary checkout is safely synchronized, unless an explicit blocker is reported.**
 
-Do not begin the next hotel or development phase while the preceding PR remains unmerged.
+Do not begin the next hotel, phase, or major development task while the preceding required PR remains unmerged.
