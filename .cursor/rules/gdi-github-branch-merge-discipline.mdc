@@ -22,7 +22,13 @@ Applies to all Dealality GDI Full E2E development, research integration, remedia
 8. **Merge the PR into `main` before starting the next task.**
 9. Confirm the merge commit exists on `main`.
 10. Synchronize the primary checkout and any active worktrees with the merged commit.
-11. Remove completed local feature branches and obsolete worktrees when safe.
+11. **Return Cursor to a clean, synchronized `main` development starting point** whenever safe:
+    - Prefer an existing clean `main` worktree, or create one with `git worktree add` when `main` is free.
+    - Do not force `main` onto a worktree that already has `main` checked out elsewhere.
+    - Preserve all unrelated / uncommitted work (no `reset --hard`, no `clean -fd`, no blind stash).
+    - Do not open a cleanup-only PR just to switch branches or tidy the workspace.
+    - Do not leave the active Cursor workspace indefinitely on a merged feature or documentation branch.
+12. Remove completed local feature branches and obsolete worktrees when safe.
 
 ## Safety
 
