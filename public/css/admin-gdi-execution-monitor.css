@@ -1,0 +1,95 @@
+.gem-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  align-items: end;
+  margin: 12px 0 8px;
+}
+.gem-toolbar label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: #9aa4b2;
+}
+.gem-toolbar select {
+  min-width: 240px;
+  padding: 6px 8px;
+  background: #0f1724;
+  color: #e8eef7;
+  border: 1px solid #2a3648;
+  border-radius: 4px;
+}
+.gem-status {
+  min-height: 1.25em;
+  font-size: 13px;
+  color: #9aa4b2;
+  margin: 0 0 12px;
+}
+.gem-section-title {
+  margin: 20px 0 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #d7e0ec;
+}
+.gem-table-wrap {
+  overflow: auto;
+  border: 1px solid #243044;
+  border-radius: 6px;
+  background: #0c1320;
+}
+.gem-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.gem-table th,
+.gem-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #1c2738;
+  text-align: left;
+  vertical-align: top;
+  color: #c9d4e3;
+}
+.gem-table th {
+  position: sticky;
+  top: 0;
+  background: #121a28;
+  color: #9eb0c7;
+  font-weight: 600;
+}
+.gem-table tr[data-expand] {
+  cursor: pointer;
+}
+.gem-table tr.gem-expanded > td {
+  background: #121a28;
+}
+.gem-detail {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  white-space: pre-wrap;
+  color: #9eb0c7;
+}
+.gem-certificate {
+  margin: 0;
+  padding: 12px;
+  background: #0c1320;
+  border: 1px solid #243044;
+  border-radius: 6px;
+  color: #c9d4e3;
+  font-size: 12px;
+  overflow: auto;
+  max-height: 360px;
+}
+.gem-pill {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 999px;
+  font-size: 11px;
+  background: #1a2435;
+  color: #d7e0ec;
+}
+.gem-pill--ok { background: #14301f; color: #9fd4b0; }
+.gem-pill--warn { background: #3a2a12; color: #f0c674; }
+.gem-pill--bad { background: #3a1518; color: #f0a0a8; }
+.gem-pill--muted { background: #1a2435; color: #8a97ab; }

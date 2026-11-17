@@ -82,6 +82,12 @@
         </span>
         <span class="section-nav-label">GDI Research<br>Audit</span>
       </button>
+      <button type="button" class="section-nav-item" role="tab" aria-selected="false" data-tab="gdi-execution-monitor" id="adaTabGdiExecutionMonitor">
+        <span class="section-nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 15v4"/><path d="M12 11v8"/><path d="M16 7v12"/></svg>
+        </span>
+        <span class="section-nav-label">GDI Full E2E<br>Execution</span>
+      </button>
 
     </nav>
 
@@ -490,6 +496,79 @@
       </aside>
     </section>
 
+    <section id="adaPanelGdiExecutionMonitor" class="ada-panel" data-panel="gdi-execution-monitor" role="tabpanel" hidden>
+      <div class="adr-counts" id="gemCounts" aria-live="polite">
+        <div class="adr-count">
+          <span class="adr-count__n" id="gemCardSegments">—</span>
+          <span class="adr-count__l">Segments executed / 14</span>
+        </div>
+        <div class="adr-count">
+          <span class="adr-count__n" id="gemCardProviders">—</span>
+          <span class="adr-count__l">Providers invoked</span>
+        </div>
+        <div class="adr-count">
+          <span class="adr-count__n" id="gemCardCalls">—</span>
+          <span class="adr-count__l">Provider calls</span>
+        </div>
+        <div class="adr-count">
+          <span class="adr-count__n" id="gemCardSpend">—</span>
+          <span class="adr-count__l">Actual spend</span>
+        </div>
+        <div class="adr-count">
+          <span class="adr-count__n" id="gemCardVerdict">—</span>
+          <span class="adr-count__l">Run verdict</span>
+        </div>
+      </div>
+
+      <details class="ada-metric-disclosure">
+        <summary>About GDI Full E2E Execution Monitor</summary>
+        <p>
+          Founder-only operational transparency for Full E2E runs: which of the 14 demand
+          segments actually executed, which providers were invoked (including Apify lifecycle),
+          costs, ingestion, stage timeline, and certificate. Configuration is not execution.
+          Does not trigger paid research.
+        </p>
+      </details>
+
+      <div class="gem-toolbar" aria-label="Execution monitor filters">
+        <label>
+          Hotel
+          <select id="gemHotelSelect">
+            <option value="">Select hotel…</option>
+          </select>
+        </label>
+        <label>
+          Full E2E run
+          <select id="gemRunSelect">
+            <option value="">Select run…</option>
+          </select>
+        </label>
+        <button type="button" class="adr-btn" id="gemRefreshBtn">Refresh</button>
+        <button type="button" class="adr-btn adr-btn--secondary" id="gemReconcileBtn">
+          Reconcile historical (YOTEL / Radisson / Bethesda)
+        </button>
+      </div>
+      <p class="gem-status" id="gemStatusLine" aria-live="polite"></p>
+
+      <h2 class="gem-section-title">14-segment execution matrix</h2>
+      <div class="gem-table-wrap" id="gemSegmentMatrix"></div>
+
+      <h2 class="gem-section-title">Provider execution matrix</h2>
+      <div class="gem-table-wrap" id="gemProviderMatrix"></div>
+
+      <h2 class="gem-section-title">Apify lifecycle</h2>
+      <div class="gem-table-wrap" id="gemApifyLifecycle"></div>
+
+      <h2 class="gem-section-title">Full E2E stage timeline</h2>
+      <div class="gem-table-wrap" id="gemStageTimeline"></div>
+
+      <h2 class="gem-section-title">Silent skip / coverage findings</h2>
+      <div class="gem-table-wrap" id="gemSilentSkips"></div>
+
+      <h2 class="gem-section-title">Execution certificate</h2>
+      <pre class="gem-certificate" id="gemCertificate"></pre>
+    </section>
+
     <section id="adaPanelGdiResearchAudit" class="ada-panel" data-panel="gdi-research-audit" role="tabpanel" hidden>
       <div class="adr-counts" id="graCounts" aria-live="polite">
         <div class="adr-count">
@@ -662,6 +741,8 @@
   <script src="/js/admin-report-archive.js?v=ada-table-parity-v1"></script>
   <script src="/js/admin-ai-visibility-audit.js?v=ava-pdf-download-current-v1"></script>
   <script src="/js/admin-gdi-research-audit.js?v=ada-gdi-hist-recovery-v1"></script>
+  <link rel="stylesheet" href="/css/admin-gdi-execution-monitor.css?v=gem-v1" />
+  <script src="/js/admin-gdi-execution-monitor.js?v=gem-v1"></script>
   <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

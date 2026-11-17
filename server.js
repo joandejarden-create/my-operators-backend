@@ -345,6 +345,10 @@ import {
   getGdiWeeklyBrief,
   getGdiResearchRuns,
   getGdiResearchRun,
+  getGdiExecutionMonitorHotels,
+  getGdiExecutionMonitorRuns,
+  getGdiExecutionMonitorRun,
+  postGdiExecutionMonitorReconcileHistorical,
   postGdiRunResearch,
   postGdiFeedback,
   postGdiCustomerValidation,
@@ -1162,6 +1166,35 @@ app.get(
   requireDealalityUser,
   requireAdminAccess,
   getGdiResearchRun
+);
+// GDI Full E2E Execution Monitor — admin only (observability; no paid side effects).
+app.get(
+  "/api/group-demand-intelligence/execution-monitor/hotels",
+  memberstackAuth,
+  requireDealalityUser,
+  requireAdminAccess,
+  getGdiExecutionMonitorHotels
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/execution-monitor/runs",
+  memberstackAuth,
+  requireDealalityUser,
+  requireAdminAccess,
+  getGdiExecutionMonitorRuns
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/execution-monitor/runs/:runId",
+  memberstackAuth,
+  requireDealalityUser,
+  requireAdminAccess,
+  getGdiExecutionMonitorRun
+);
+app.post(
+  "/api/group-demand-intelligence/execution-monitor/reconcile-historical",
+  memberstackAuth,
+  requireDealalityUser,
+  requireAdminAccess,
+  postGdiExecutionMonitorReconcileHistorical
 );
 app.get(
   "/api/group-demand-intelligence/hotels/:hotelId/feedback",
