@@ -7,7 +7,7 @@ import { loadReviewPayload } from "../lib/ai-demand-positioning/monthly-review/a
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PROPERTY_ID = "adp_radisson_blu_toronto_downtown";
-const PR_ID = "adp_mr_radisson_blu_toronto_dow_2026-11_v3";
+const PR_ID = "adp_mr_radisson_blu_toronto_dow_2026-11_v4";
 
 function sha(p) {
   return crypto.createHash("sha256").update(fs.readFileSync(p)).digest("hex");
@@ -25,12 +25,17 @@ if (meta.customerPublished !== true || meta.customerReady !== true) {
   });
   process.exit(1);
 }
-if (!/toronto_corr_v2|AUDIT_VALIDATED|PUBLISHED/i.test(String(meta.latestVersionId || meta.status))) {
-  // latestVersionId should be corr v2
-  if (!String(meta.latestVersionId || "").includes("toronto_corr_v2")) {
-    console.error("FAIL latestVersionId", meta.latestVersionId);
-    process.exit(1);
-  }
+const latest = String(meta.latestVersionId || "");
+if (
+  !/toronto_corr_v2|toronto_closeout_v3/i.test(latest) &&
+  !/PUBLISHED|AUDIT_VALIDATED/i.test(String(meta.status || ""))
+) {
+  console.error("FAIL latestVersionId", meta.latestVersionId, meta.status);
+  process.exit(1);
+}
+if (!/toronto_corr_v2|toronto_closeout_v3/i.test(latest)) {
+  console.error("FAIL latestVersionId not closeout/corr", meta.latestVersionId);
+  process.exit(1);
 }
 
 const archiveCurrent = path.join(
