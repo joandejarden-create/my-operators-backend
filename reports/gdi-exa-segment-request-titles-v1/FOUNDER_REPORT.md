@@ -112,4 +112,7 @@ All 12 checks PASS (mocked; no paid Exa calls), including:
 ## GitHub
 
 - Branch: `fix/gdi-exa-segment-request-titles-v1`
-- PR / merge SHA: filled at closeout
+- PR: [#333](https://github.com/joandejarden-create/my-operators-backend/pull/333) — MERGED
+- CI: Admin tabs + AVA panel, GDI recovery regression suite, Spice fixture + prod isolation, gitleaks — all PASS
+- Merge commit SHA: `9d14f892651687387e8a43d01a115ac49bb50b72`
+- `main` synchronized to merge commit after closeout
