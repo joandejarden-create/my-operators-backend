@@ -25,11 +25,13 @@ Primary source: `lib/group-demand-intelligence/observability/gdi-provider-invent
 - Demand segments listed for sports, social, preferred lodging, planners, local catering, associations, CMI, education.
 - Orchestration bridge `orchestrateApifyDiscoveryForWorkflow` with lifecycle hooks: ENABLED → JOB_SUBMITTED → COMPLETED → RESULTS_RETRIEVED → RESULTS_INGESTED / SKIPPED / FAILED.
 
-### Live execution during Full E2E (CONFIRMED gap)
+### Live execution during Full E2E (CONFIRMED gap — strengthened)
 
-- Default: **mock / fail-closed** unless `authorizeApifyLive` + `GDI_APIFY_LIVE=1` (module header).  
+- Default: **mock / fail-closed** unless `authorizeApifyLive` + `GDI_APIFY_LIVE=1` + `APIFY_TOKEN`.  
 - Provider inventory notes: “configured ≠ executed.”  
-- YOTEL historical observability run lists **only** `exa_agent` under `providersExecuted` — **no Apify**.  
+- YOTEL / Radisson / Bethesda historical observability runs: Apify lifecycle **CONFIGURED → SKIPPED** (`no_apify_execution_evidence_in_historical_reports`); YOTEL/Radisson list **`exa_agent` only**; Bethesda lists **no** provider calls.  
+- **Wiring gap (CONFIRMED):** `orchestrateApifyDiscoveryForWorkflow` is imported by tests / its own module — **not** by `full-e2e-fourteen-segment-discovery-execution-v1.js` or `gdi-full-e2e-hotel-template-v1.js`. Inventory label `WIRED_DEFAULT_MOCK_FAIL_CLOSED` overstates Full E2E coupling → treat as **CONFIGURED_NOT_ORCHESTRATED_IN_FULL_E2E**.  
+- Separate rail: older need-date / Waterstone runners *can* call `runApifyDiscovery` — not the canonical fourteen-segment path.  
 - This audit did **not** start Actors (forbidden).
 
 ### Lifecycle status for audited cohort
@@ -37,11 +39,11 @@ Primary source: `lib/group-demand-intelligence/observability/gdi-provider-invent
 | Stage | Status |
 |-------|--------|
 | CONFIGURED | CONFIRMED |
-| ENABLED (code path) | CONFIRMED when prefer/select Apify |
-| JOB_SUBMITTED (live) | NOT INSPECTED / no live auth in audit |
-| RESULTS_INGESTED → qualified opps | UNVERIFIED commercially |
+| ENABLED (Full E2E fourteen-segment) | **NOT wired** (CONFIRMED) |
+| JOB_SUBMITTED / RESULTS_INGESTED (cohort ledgers) | **Absent** (CONFIRMED) |
+| SKIPPED (hist ledgers) | CONFIRMED |
 
-**Integration gap:** Apify is an optional, founder-gated side path — not proven as a default fourteen-segment Full E2E executor producing customer-visible opportunities.
+**Integration gap:** Apify Actors + 14-segment preference matrix exist, but canonical Full E2E does not call the orchestration bridge. First remediation is wire-or-honest-SKIP on the shared path — not more Actor registrations.
 
 ## Exa review
 

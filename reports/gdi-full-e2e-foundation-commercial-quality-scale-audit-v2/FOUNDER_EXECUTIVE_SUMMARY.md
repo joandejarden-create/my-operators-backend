@@ -9,7 +9,7 @@ GDI already has a usable customer publication and parity path (YOTEL 42 / Bethes
 
 1. **Multiple orchestrators / campaign scripts coexist** with a shared fourteen-segment discovery executor registry classifying every segment as `PARTIAL_EXECUTOR` — not a single production-proven “one command → all segments → all providers → certified ledger” path.  
 2. **Historical execution ledgers (PR #336)** for YOTEL/Bethesda/Radisson correctly keep segment status **UNKNOWN** where live per-segment calls were not ledgered; YOTEL historical cert is `FULL_E2E_PARTIAL` with `providersExecuted: ["exa_agent"]` only.  
-3. **Apify is CONFIGURED and wired, not proven as live Full E2E execution** — inventory marks `WIRED_DEFAULT_MOCK_FAIL_CLOSED`; live requires explicit `authorizeApifyLive` + live flag.  
+3. **Apify is CONFIGURED but not orchestrated by canonical Full E2E** — the fulle2e bridge is not imported by the fourteen-segment/hotel-template path; hist ledgers show CONFIGURED→SKIPPED only (inventory “WIRED” overclaims).  
 4. **YOTEL published inventory is commercially Account Development–heavy:** 42 opportunities, all `commercialStageKey=QUALIFICATION_NEEDED`, `commercialActionability` 34 ACCOUNT_DEVELOPMENT + 8 CMI, **zero Sales Ready** — valuable early-stage inventory, not “ready to book tonight.”  
 5. **Weekly Change UI taxonomy ≠ weekly-refresh backend contract** (UI: NEW/UPDATED/REACTIVATED/HIGH_PRIORITY; backend: NEW_PROSPECT/MATERIAL_UPDATE/…). YOTEL package has empty `weeklyDeltaState`.  
 6. **Customer-visible SoT for published hotels is bundled CURRENT packages**, not “whatever Airtable view shows.” Empty Airtable views can be architectural, not data loss — but write/read-back gaps remain a material investigation theme.

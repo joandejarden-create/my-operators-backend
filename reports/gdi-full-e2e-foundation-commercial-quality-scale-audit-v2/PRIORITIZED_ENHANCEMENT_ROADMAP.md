@@ -10,7 +10,7 @@
 | Task | Modules | Benefit | Complexity | Cost |
 |------|---------|---------|------------|------|
 | P1-A Ledger-complete discovery | `full-e2e-fourteen-segment-discovery-execution-v1.js`, observability store | Prove segment/provider execution | M | $0 code |
-| P1-B Apify state honesty | `apify-fulle2e-orchestration-v1.js` | Config≠exec visibility | S | $0 until live auth |
+| P1-B Apify Full E2E wiring or honest SKIP | Import bridge into fourteen-segment path **or** ledger SKIP when unwired; fix inventory “WIRED” overclaim | Config≠exec truth | M | $0 until live auth |
 | P1-C Single entry wrapper | `gdi-research-to-page-workflow-v1.mjs` / hotel template | Repeatability | M | $0 |
 | P1-D Weekly Change unify | UI + `weekly-refresh-contract-v1.js` | Filter truth | M | $0 |
 | P1-E Parity gate generalize | activation gate + hotel scripts | Prevent drift | M | $0 |

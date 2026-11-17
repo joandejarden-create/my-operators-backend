@@ -10,12 +10,15 @@
 
 | Component | Path | Role |
 |-----------|------|------|
-| Full E2E contract | `lib/group-demand-intelligence/workflow/full-e2e-contract-v1.js` | Completion rules; wired via `scripts/gdi-research-to-page-workflow-v1.mjs --mode full-e2e` |
+| **Canonical operating entry** | `npm run gdi:full-e2e` → `scripts/gdi-research-to-page-workflow-v1.mjs --mode full-e2e` | Documented primary Full E2E command |
+| Full E2E contract | `lib/group-demand-intelligence/workflow/full-e2e-contract-v1.js` (`gdi-full-e2e-contract-v1.5`) | Completion rules |
+| Fourteen-segment orchestrator (parallel path) | `npm run gdi:full-e2e-fourteen-segment` (+ discovery/chain) | 14×hotel discovery/accounting |
 | Fourteen-segment discovery execution | `.../workflow/full-e2e-fourteen-segment-discovery-execution-v1.js` | Segment traversal + executor |
 | Executor registry | `.../workflow/full-e2e-fourteen-segment-discovery-executor-registry-v1.js` | All 14 segments → shared `segment-discovery-executor-v1.js` as `PARTIAL_EXECUTOR` |
+| 14 segment ID SoT | `.../research/universal-contact-research-contract-v1.js` → `listFourteenWorkflowSegmentIds()` | Do not use 12-product registry or legacy 11-axis taxonomy as “the 14” |
 | Original research chain | `.../workflow/original-full-e2e-research-chain-v1.js` | Chains fourteen-segment discovery |
-| Autonomous hotel E2E v2 | `.../workflow/gdi-autonomous-hotel-full-e2e-v2.js` | Alternate hotel Full E2E |
-| Hotel template | `.../template/gdi-full-e2e-hotel-template-v1.js` + `npm run gdi:full-e2e-hotel-template-v1` | Repeatable hotel template artifacts |
+| Autonomous hotel E2E v2 | `.../workflow/gdi-autonomous-hotel-full-e2e-v2.js` | Alternate/legacy supervisor |
+| Hotel template | `.../template/gdi-full-e2e-hotel-template-v1.js` + `npm run gdi:full-e2e-hotel-template-v1` | Lock/playbook — not the paid campaign executor |
 | Execution observability | `.../observability/*` + `data/group-demand-intelligence/execution-observability/` | PR #336 ledgers |
 | Provider inventory | `.../observability/gdi-provider-inventory-v1.js` | Config ≠ execution map |
 | Publication packages | `.../bundled-publication-packages/<hotelId>/CURRENT.json` | Customer-visible SoT when CUSTOMER_PUBLISHED |

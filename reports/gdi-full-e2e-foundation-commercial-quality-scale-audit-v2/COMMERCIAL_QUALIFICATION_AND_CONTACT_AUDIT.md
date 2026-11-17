@@ -19,11 +19,18 @@ Package `gdi_pub_recrPQcZg7SFARRb2_20261117_yotel_geneva_lake_exa_30usd_scale_v1
 
 Sales action mix: QUALIFY_OPPORTUNITY 19, BUILD_ACCOUNT 13, ENGAGE_PLANNER 5, PURSUE_CATERING 3, MONITOR 1, BUILD_VENUE_PARTNERSHIP 1.
 
-## Why few/no Sales Ready (LIKELY, evidence-supported)
+## Why few/no Sales Ready (CONFIRMED for YOTEL; LIKELY systemic)
 
-Not “campaign failure.” Gates require stronger demand confirmation, buyer authority, timing/RFP openness, and hotel-fit certainty. YOTEL next-step text explicitly flags unverified lodging channels and contact-title staleness (ICPIC 2025 vs 2027) — **CONFIRMED** on sample `gdi_opp_yotel_fe2e_icpic_20270914`.
+Not “campaign failure.” YOTEL package + founder reports show:
 
-Zero Sales Ready ≠ zero customer value: Account Development inventory is intentional commercial stage.
+- **0** `DIRECT_BUYER` / **0** `buyerEligibleForGate` in freeze; contacts are entry points / research candidates.  
+- Hotel sourcing unconfirmed or competitor-committed (CMI).  
+- Fit friction (e.g. Founex transfer vs central Geneva) and lodging-list unknowns.  
+- Sample ICPIC: contact title still references ICPIC 2025 → Monitor posture.
+
+Radisson/Bethesda CURRENT packs can show **Pursue Now** without a frozen `SALES_READY` stage key — UI maturity ≠ full SR contract.
+
+Zero Sales Ready ≠ zero customer value: Account Development / Qualification Needed inventory is intentional.
 
 ## Contact standards
 

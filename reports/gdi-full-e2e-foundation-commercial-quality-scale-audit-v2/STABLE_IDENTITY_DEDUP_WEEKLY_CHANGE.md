@@ -13,17 +13,22 @@
 - Campaign re-runs without identity join.  
 - Over-aggressive dedup suppressing distinct demand occurrences.
 
-## Weekly Change — taxonomy mismatch (CONFIRMED)
+## Weekly Change — dual contracts + empty package deltas (CONFIRMED)
 
 **UI** (`dealality-gdi-ui.js` weekly filter):
 
-- NEW, UPDATED, REACTIVATED, HIGH_PRIORITY (+ All)
+- NEW, UPDATED, REACTIVATED (+ All)
+- **HIGH_PRIORITY** is hitchhiked into the same control (priority filter, not a weekly freshness state)
 
-**Backend weekly refresh contract** (`weekly-refresh-contract-v1.js` CHANGE_CLASS):
+**Backend weekly delta states** (`weekly-delta.js` → `WEEKLY_DELTA_STATE`):
+
+- NEW, UPDATED, REACTIVATED, UNCHANGED, CLOSED_DOWNGRADED, NOT_IN_CURRENT
+
+**Backend weekly refresh CHANGE_CLASS** (`weekly-refresh-contract-v1.js`) — research orchestration taxonomy:
 
 - NEW_PROSPECT, MATERIAL_UPDATE, CONTACT_ENRICHED, OCCASION_CONCLUDED_OR_STATUS_CHANGED, NO_MATERIAL_CHANGE, NEEDS_REVIEW, RESEARCH_BLOCKED
 
-YOTEL published opportunities: **empty `weeklyDeltaState`** (all 42) — filter cannot classify freshness from package alone.
+**Package observation:** YOTEL / Radisson / Bethesda CURRENT packages omit `weeklyDeltaState` on essentially all rows → New/Updated/Reactivated filters empty on package-served UI.
 
 Automated publication remains OFF until explicitly enabled (contract header).
 

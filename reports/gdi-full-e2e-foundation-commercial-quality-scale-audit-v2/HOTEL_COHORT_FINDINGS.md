@@ -11,10 +11,12 @@
 
 ## Bethesda Marriott (`recLuxvwwxID7U2B8`)
 
-- CURRENT CUSTOMER_PUBLISHED; **67** opportunities.  
+- CURRENT CUSTOMER_PUBLISHED; **67** opportunities (fp `df8da65a…`).  
+- Local research store **86** opportunities — exceeds published 67 by design (research/internal union vs customer package).  
 - Long remediation history (88/68 waves, contacts, titles, CMI) — many hotel-specific scripts.  
 - Hist ledger: FULL_E2E_PARTIAL, no providers listed, segments UNKNOWN.  
-- Pattern: deep commercial cleanup after discovery — systemic lesson for drawer/contact gates.
+- Pattern: deep commercial cleanup after discovery — systemic lesson for drawer/contact gates.  
+- Presentation drift: many rows prefer `canonicalCustomerPresentation` over YOTEL/Radisson-style certified `sharedTenSectionDrawer` bodies.
 
 ## Radisson Blu Toronto Downtown (`recH9h3McgMNFQEla`)
 
