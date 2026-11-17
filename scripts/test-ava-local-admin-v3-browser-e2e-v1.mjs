@@ -113,20 +113,22 @@ async function main() {
     r.text()
   );
   assert(
-    /admin-ai-visibility-audit\.js\?v=ava-pdf-channels-v2/.test(html),
-    "Admin HTML must reference ava-pdf-channels-v2 cache bust"
+    /admin-ai-visibility-audit\.js\?v=ava-pdf-download-current-v1/.test(html),
+    "Admin HTML must reference ava-pdf-download-current-v1 cache bust"
   );
-  checks.push({ name: "html_cache_bust_v2", ok: true });
+  checks.push({ name: "html_cache_bust_current_v1", ok: true });
 
-  const jsUrl = `${BASE}/js/admin-ai-visibility-audit.js?v=ava-pdf-channels-v2`;
+  const jsUrl = `${BASE}/js/admin-ai-visibility-audit.js?v=ava-pdf-download-current-v1`;
   const js = await fetch(jsUrl).then((r) => r.text());
   assert(js.includes("channel="), "served JS must append channel=");
-  assert(js.includes("New Draft PDF"), "served JS must label New Draft PDF");
-  assert(js.includes("Published PDF"), "served JS must label Published PDF");
+  assert(js.includes("Download PDF"), "served JS must label Download PDF");
+  assert(js.includes("Download Draft"), "served JS must label Download Draft");
+  assert(js.includes("Published PDF") || js.includes("Download Published"), "served JS must label Published");
   assert(
     js.includes("refusing to fall back"),
     "served JS must refuse silent fallback"
   );
+  assert(js.includes('"current"'), "served JS must request channel=current");
   checks.push({ name: "served_js_channel_wiring", ok: true });
 
   const browser = await chromium.launch({ headless: true });

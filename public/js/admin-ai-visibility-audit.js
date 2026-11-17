@@ -104,6 +104,40 @@
     return pdf === "STAGED" || pdf === "AVAILABLE" || pdf === "READY";
   }
 
+  /** Distinct New Draft artifact (not merely a published/current alias). */
+  function hasDistinctDraftPdf(h) {
+    if (!h) return false;
+    if (h.draftPdfAvailable === true) return true;
+    if (h.pdfChannels && h.pdfChannels.draft) {
+      return (
+        h.pdfChannels.draft.available === true &&
+        h.pdfChannels.draft.differsFromPublished !== false
+      );
+    }
+    // Hotel list rows may lack channel detail — treat STAGED as possible draft,
+    // but generic Download PDF still uses channel=current (not draft).
+    return hasPdf(h) && !isCustomerPublishedRow(h);
+  }
+
+  function isCustomerPublishedRow(h) {
+    if (!h) return false;
+    var status = String(h.auditStatus || "").toUpperCase();
+    if (status === "PUBLISHED" || status === "CUSTOMER_READY") return true;
+    if (h.customerPublished === true || h.customerReady === true) return true;
+    if (
+      h.customerReadinessStatus &&
+      String(h.customerReadinessStatus).toUpperCase() === "CUSTOMER_READY"
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  /** Generic Download/Preview PDF → lifecycle current (not draft-only). */
+  function defaultPdfChannelForRow(h) {
+    return "current";
+  }
+
   function isCustomerApproved(h) {
     if (!h) return false;
     // Customer Authorization column = founder approval for customer publication.
@@ -364,15 +398,16 @@
 
   async function deliverAvaPdf(propertyId, act, versionId, channel) {
     var h = hotelById(propertyId);
-    var ch = channel || (versionId ? "history" : "draft");
-    if (ch === "draft" && !versionId && !hasPdf(h)) {
+    var ch = channel || (versionId ? "history" : defaultPdfChannelForRow(h));
+    if (ch === "draft" && !versionId && !hasDistinctDraftPdf(h) && !hasPdf(h)) {
       window.alert("No New Draft PDF is staged for this hotel yet.");
       return;
     }
     var wantDownload =
       act === "download-pdf" ||
       act === "download-draft-pdf" ||
-      act === "download-published-pdf";
+      act === "download-published-pdf" ||
+      act === "download-current-pdf";
     var pack = await fetchAvaPdf(propertyId, {
       download: wantDownload,
       channel: ch,
@@ -384,7 +419,9 @@
           ? "PUBLISHED PDF NOT AVAILABLE — refusing to fall back to draft."
           : ch === "history"
             ? "HISTORICAL PDF NOT AVAILABLE — refusing to fall back to another version."
-            : "NEW DRAFT PDF NOT AVAILABLE — refusing to fall back to published.";
+            : ch === "current"
+              ? "CURRENT PDF NOT AVAILABLE — refusing to substitute another channel."
+              : "NEW DRAFT PDF NOT AVAILABLE — refusing to fall back to published.";
       window.alert(
         pack.status === 404
           ? missingMsg + (pack.error ? " (" + pack.error + ")" : "")
@@ -579,17 +616,17 @@
       );
     }
     var primary = [];
-    if (hasPdf(h)) {
+    if (hasPdf(h) || isCustomerPublishedRow(h)) {
       primary.push({
-        label: "Preview New Draft",
-        act: "view-draft-pdf",
-        title: "Preview New Draft (staged) PDF",
+        label: "Preview PDF",
+        act: "view-pdf",
+        title: "Preview current lifecycle PDF",
         icon: "file",
       });
       primary.push({
-        label: "Download New Draft",
-        act: "download-draft-pdf",
-        title: "Download New Draft (staged) PDF",
+        label: "Download PDF",
+        act: "download-pdf",
+        title: "Download current lifecycle PDF",
         icon: "download",
       });
     }
@@ -602,16 +639,30 @@
     var more = [
       { label: "View audit details", act: "open", title: "Open overview" },
       {
-        label: "Preview New Draft",
-        act: "view-draft-pdf",
-        title: hasPdf(h) ? "Preview New Draft PDF" : "No draft PDF staged yet",
-        disabled: !hasPdf(h),
+        label: "Preview PDF",
+        act: "view-pdf",
+        title: "Preview current lifecycle PDF",
       },
       {
-        label: "Download New Draft",
+        label: "Download PDF",
+        act: "download-pdf",
+        title: "Download current lifecycle PDF",
+      },
+      {
+        label: "Preview Draft",
+        act: "view-draft-pdf",
+        title: hasDistinctDraftPdf(h)
+          ? "Preview New Draft PDF"
+          : "No distinct draft PDF staged",
+        disabled: !hasDistinctDraftPdf(h),
+      },
+      {
+        label: "Download Draft",
         act: "download-draft-pdf",
-        title: hasPdf(h) ? "Download New Draft PDF" : "No draft PDF staged yet",
-        disabled: !hasPdf(h),
+        title: hasDistinctDraftPdf(h)
+          ? "Download New Draft PDF"
+          : "No distinct draft PDF staged",
+        disabled: !hasDistinctDraftPdf(h),
       },
       {
         label: "Preview Published",
@@ -1753,16 +1804,19 @@
       openDrawer(propertyId);
       return;
     }
-    if (
-      act === "view-pdf" ||
-      act === "pdf" ||
-      act === "download-pdf" ||
-      act === "view-draft-pdf" ||
-      act === "download-draft-pdf"
-    ) {
+    if (act === "view-pdf" || act === "pdf" || act === "download-pdf" || act === "download-current-pdf" || act === "view-current-pdf") {
       deliverAvaPdf(
         propertyId,
         act.indexOf("download") >= 0 ? "download-pdf" : "view-pdf",
+        null,
+        "current"
+      );
+      return;
+    }
+    if (act === "view-draft-pdf" || act === "download-draft-pdf") {
+      deliverAvaPdf(
+        propertyId,
+        act.indexOf("download") >= 0 ? "download-draft-pdf" : "view-draft-pdf",
         null,
         "draft"
       );
