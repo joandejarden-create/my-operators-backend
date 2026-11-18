@@ -12,6 +12,7 @@ import assert from "assert";
 import { mkdirSync, writeFileSync, readFileSync, existsSync, renameSync, unlinkSync } from "fs";
 import { join } from "path";
 import { listPublishedPropertyIds } from "../lib/ai-demand-positioning/published-snapshot.js";
+import { isAdpSyntheticOrTestPropertyId } from "../lib/ai-demand-positioning/governance/adp-operational-registry-hygiene-v1.js";
 import { getPublishedOwnerReport } from "../lib/ai-demand-positioning/published-read-service.js";
 import { loadPropertyProfile } from "../lib/ai-demand-positioning/data-model.js";
 import { resolveBrandPortfolioPosition } from "../api/ai-demand-positioning.js";
@@ -291,6 +292,9 @@ async function main() {
     BPP_CORE_LENS_ISOLATION: true,
   };
   for (const propertyId of listPublishedPropertyIds()) {
+    // Synthetic fixtures are excluded from commercial BPP claims. Real hotels
+    // stay fail-closed when measurement or peer freeze is missing.
+    if (isAdpSyntheticOrTestPropertyId(propertyId)) continue;
     const profile = loadPropertyProfile(propertyId);
     const bpp = resolveBrandPortfolioPosition(propertyId, profile, {});
     const attempt = resolveBppPopulationAttempt({ propertyId, profile, bppPayload: bpp });

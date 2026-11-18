@@ -112,10 +112,15 @@ No unregistered worktrees. No force-push. Preserve dirty work. STOP on blockers.
 
 ```
 You are the ADP stream chat.
-Registered workspace: C:\Dev\dealality\ws-adp (once provisioned).
+Registered workspace: C:\Dev\dealality\ws-adp
+Home branch: ws/adp (must track latest origin/main after each completed merge).
 Before any Git mutation: npm run dealality:git-preflight -- --op <op> --stream adp
-One task → one branch → tests → commit → push → PR. Do not merge; Integration Controller merges.
-No unregistered worktrees. No force-push. Preserve dirty work. STOP on blockers.
+Permanent cycle: Implement → Test → PR → Founder Approval → Integration Controller merge
+→ post-merge sync → return to ws/adp → verify clean → next task.
+One task → one short-lived branch → tests → commit → push → PR. Do not merge from ADP; Integration Controller merges.
+Do not leave ADP on a completed feature/fix branch. After merge confirmation, restore ws/adp and verify behind 0 / ahead 0 / dirty 0 before the next task.
+If approved but unmerged: BLOCKED — AWAITING INTEGRATION CONTROLLER MERGE.
+No unregistered worktrees. No force-push. Preserve dirty/untracked work. STOP on blockers.
 ```
 
 ### GDI
