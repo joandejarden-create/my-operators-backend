@@ -21,6 +21,8 @@ import {
 } from "../lib/dealality/local-demo-dealality-user.js";
 import { resolveLocalDevBypassAdminUser } from "../lib/dealality/local-dev-bypass-admin-user.js";
 import {
+  classifyMemberstackId,
+  classifyVerifiedEmail,
   elevateGovernedPlatformAdminOnRequest,
   finalizeDealalityUserAuthorization,
   traceDealalityAdminAuthDecision,
@@ -42,6 +44,15 @@ function attachAndFinalize(req, dealalityUser, resolution) {
   req.dealalityAuthResolution = resolution;
   req.dealalityAuthFinalizePath = fin.path;
   traceDealalityAdminAuthDecision({
+    correlationId: req.dealalityAuthCorr || null,
+    phase: "requireDealalityUser",
+    route: req.originalUrl || req.url || null,
+    bearerPresent: Boolean(req.headers?.authorization || req.headers?.Authorization),
+    jwtOutcome:
+      req.memberstackVerifiedVia === "dev_bypass" ? "dev_bypass_no_bearer" : "verified",
+    memberstackIdClass: classifyMemberstackId(req.memberstackMemberId),
+    memberstackId: req.memberstackMemberId || null,
+    verifiedEmailClass: classifyVerifiedEmail(req.memberstackEmail),
     resolution,
     finalizePath: fin.path,
     elevated: fin.elevated,
@@ -50,6 +61,7 @@ function attachAndFinalize(req, dealalityUser, resolution) {
     hasMemberstackId: Boolean(req.memberstackMemberId),
     hasVerifiedEmailClaim: Boolean(req.memberstackEmail),
     verifiedViaClass: verifiedViaClass(req),
+    middleware: "requireDealalityUser",
   });
   return dealalityUser;
 }

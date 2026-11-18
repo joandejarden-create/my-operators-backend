@@ -15,7 +15,11 @@
 
 import Airtable from "airtable";
 import { verifyMemberstackToken } from "../lib/memberstack/verify-token.js";
-import { shouldSyncMemberstackIdToUsersRow } from "../lib/memberstack/environment.js";
+import {
+  isSandboxMemberstackId,
+  shouldSyncMemberstackIdToUsersRow,
+} from "../lib/memberstack/environment.js";
+import { resolveLocalDemoEmailForVerifiedMemberstackId } from "../lib/dealality/local-demo-memberstack-id-binding.js";
 
 import {
   INTAKE_USERS_TABLE,
@@ -242,6 +246,13 @@ async function getMe(req, res) {
       (verified.email && String(verified.email).trim().toLowerCase()) ||
       pickEmailFromPayload(verified.raw);
 
+    if (!emailFromToken) {
+      emailFromToken = resolveLocalDemoEmailForVerifiedMemberstackId(
+        memberstackId,
+        req
+      );
+    }
+
     tokenPayload =
       verified.raw && typeof verified.raw === "object" ? verified.raw : {};
   }
@@ -255,11 +266,23 @@ async function getMe(req, res) {
   const base = new Airtable({ apiKey }).base(baseId);
   const formula = buildUserLookupFormula(memberstackId);
 
-  let userRows;
+  let userRows = [];
   let matchedBy = "memberstack_id";
+  // Localhost Test Mode (mem_sb_…) must resolve canonical Live Users by email when present.
+  const preferEmailForSandbox =
+    Boolean(emailFromToken) && isSandboxMemberstackId(memberstackId);
   try {
-    userRows = await base(USERS_TABLE).select({ filterByFormula: formula, maxRecords: 1 }).firstPage();
-    if (!userRows.length && emailFromToken) {
+    if (preferEmailForSandbox) {
+      userRows = await findUserByEmail(base, emailFromToken);
+      if (userRows.length) matchedBy = "email";
+    }
+    if (!userRows.length) {
+      userRows = await base(USERS_TABLE)
+        .select({ filterByFormula: formula, maxRecords: 1 })
+        .firstPage();
+      if (userRows.length) matchedBy = "memberstack_id";
+    }
+    if (!userRows.length && emailFromToken && !preferEmailForSandbox) {
       userRows = await findUserByEmail(base, emailFromToken);
       if (userRows.length) matchedBy = "email";
     }

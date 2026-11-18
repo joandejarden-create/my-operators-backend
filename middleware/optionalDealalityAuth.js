@@ -10,6 +10,8 @@ import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { verifyMemberstackToken } from "../lib/memberstack/verify-token.js";
 import { resolveDealalityUser } from "../lib/dealality/resolve-user.js";
+import { resolveLocalDemoEmailForVerifiedMemberstackId } from "../lib/dealality/local-demo-memberstack-id-binding.js";
+import { finalizeDealalityUserAuthorization } from "../lib/dealality/governed-platform-admin-emails.js";
 
 function readBearerToken(req) {
   const raw = req.headers.authorization || req.headers.Authorization;
@@ -163,6 +165,12 @@ export async function optionalDealalityAuth(req, res, next) {
       (verified.email && String(verified.email).trim().toLowerCase()) ||
       pickEmailFromPayload(verified.raw) ||
       null;
+    if (!req.memberstackEmail) {
+      req.memberstackEmail = resolveLocalDemoEmailForVerifiedMemberstackId(
+        verified.id,
+        req
+      );
+    }
     req.memberstackVerifiedVia = verified.verifiedVia;
 
     const result = await resolveDealalityUser({
@@ -181,7 +189,9 @@ export async function optionalDealalityAuth(req, res, next) {
         isBrand: result.isBrand,
         isOperator: result.isOperator,
         userRecordId: result.userRecordId,
+        userSource: "AIRTABLE",
       };
+      finalizeDealalityUserAuthorization(req, req.dealalityUser);
     }
     elevateAdpOwnerAppAdminFlags(req);
   } catch (err) {
