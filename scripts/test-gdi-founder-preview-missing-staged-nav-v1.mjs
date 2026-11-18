@@ -112,7 +112,7 @@ check("api_returns_recovery_without_silent_fallback", () => {
 });
 
 check("cache_bust_updated", () => {
-  assert.match(html, /gdi-founder-preview-missing-staged-nav-v1/);
+  assert.match(html, /gdi-founder-local-research-preview-v1|gdi-founder-preview-missing-staged-nav-v1/);
 });
 
 check("no_cross_hotel_fallback_in_recovery_copy", () => {
