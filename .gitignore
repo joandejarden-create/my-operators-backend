@@ -155,6 +155,22 @@ reports/dealality-ai-visibility-audit-action-plan-pilot-v1/_durable-runtime-cert
 # GDI research-stage runtime bags / checkpoints (fixture under fixtures/gdi is the committed SoT)
 data/group-demand-intelligence/research-stage/
 
+# GDI Full E2E per-run report dumps (local runtime evidence; promote curated packs via explicit PR)
+reports/gdi-canonical-full-e2e-entry-v1/
+reports/gdi-association-events-runs/
+reports/gdi-scaling-companies-hotel-runner-v1/
+
+# GDI hotel runtime state for hotels not yet force-added as curated fixtures (tracked hotel files stay tracked)
+data/group-demand-intelligence/hotels/*/full-e2e-fourteen-segment-state/
+data/group-demand-intelligence/hotels/*/opportunity-research-state/
+
+# GDI execution observability ephemeral run certificates (committed hist_*/index + selected run fixtures stay tracked)
+data/group-demand-intelligence/execution-observability/**/gdi_e2e_*.json
+
+# Local gitleaks CLI cache / scan dumps (never commit)
+tmp/gitleaks-bin/
+tmp/gitleaks-*.json
+
 # GDI hotel-store mutation backups (local operational safety copies — never commit)
 data/group-demand-intelligence/hotel-store-backups/
 
