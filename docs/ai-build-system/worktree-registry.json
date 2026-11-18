@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-11-18",
+  "updatedBy": "Integration Controller",
+  "notes": [
+    "Static intent only. Live HEAD/dirty/PR state must be computed by dealality:worktree-audit / registry-status.",
+    "Only the Integration Controller may edit this file (dedicated tiny PR).",
+    "Product chats must not rewrite this registry."
+  ],
+  "workspaces": [
+    {
+      "id": "integration",
+      "stream": "integration",
+      "role": "Integration Controller — main sync, PR merges, governance",
+      "path": "C:/Dev/dealality/my-operators-backend",
+      "expectedBranchPattern": "^(main|chore/dealality-dev-os-|integrate/)$",
+      "defaultBranch": "main",
+      "lifecycle": "permanent",
+      "owner": "founder-integration",
+      "allowsProductFeatureBranches": false,
+      "status": "blocked_dirty_wip",
+      "statusNotes": "Primary holds valuable GDI/HE dirty WIP; cannot become clean main home until preservation plan executes."
+    },
+    {
+      "id": "hotel-explorer",
+      "stream": "he",
+      "role": "Hotel Explorer / Radar / Hotel Intelligence",
+      "path": "C:/Dev/dealality/ws-hotel-explorer",
+      "expectedBranchPattern": "^(feat|fix|docs)/(hotel-explorer|radar|he|hpc|hotel-intelligence)",
+      "defaultBranch": "main",
+      "lifecycle": "permanent",
+      "owner": "he-product-chat",
+      "allowsProductFeatureBranches": true,
+      "status": "planned",
+      "statusNotes": "Create from origin/main after primary WIP preservation and founder approval."
+    },
+    {
+      "id": "adp",
+      "stream": "adp",
+      "role": "AI Demand Positioning — visibility, audits, evidence, recommendations",
+      "path": "C:/Dev/dealality/ws-adp",
+      "expectedBranchPattern": "^(feat|fix|docs|research)/(adp|ai-demand|ai-visibility)",
+      "defaultBranch": "main",
+      "lifecycle": "permanent",
+      "owner": "adp-product-chat",
+      "allowsProductFeatureBranches": true,
+      "status": "planned",
+      "statusNotes": "Create from origin/main after founder approval."
+    },
+    {
+      "id": "gdi",
+      "stream": "gdi",
+      "role": "Group Demand Intelligence — discovery, research, opportunities, persistence",
+      "path": "C:/Dev/dealality/ws-gdi",
+      "expectedBranchPattern": "^(feat|fix|docs|research|exec)/(gdi|group-demand)",
+      "defaultBranch": "main",
+      "lifecycle": "permanent",
+      "owner": "gdi-product-chat",
+      "allowsProductFeatureBranches": true,
+      "status": "planned",
+      "statusNotes": "Create from origin/main after primary GDI WIP is committed onto a GDI task branch."
+    }
+  ],
+  "temporaryWorkspaces": [
+    {
+      "id": "dev-os-governance-v1",
+      "stream": "integration",
+      "role": "Temporary governance implementation worktree (Phase 1)",
+      "path": "C:/Dev/dealality/wt-dev-os-governance-v1",
+      "expectedBranchPattern": "^chore/dealality-dev-os-governance-v1$",
+      "lifecycle": "temporary",
+      "owner": "integration",
+      "status": "active",
+      "safeRemovalEligibility": "after_governance_pr_merged_and_primary_synced"
+    },
+    {
+      "id": "pr380-sync-v1",
+      "stream": "integration",
+      "role": "PR #380 sync worktree (merged 2026-11-18)",
+      "path": "C:/Dev/dealality/wt-pr380-sync-v1",
+      "expectedBranchPattern": "^integrate/gdi-adp-he-radar-baseline-v1$",
+      "lifecycle": "temporary",
+      "owner": "integration",
+      "status": "post_merge_retain",
+      "safeRemovalEligibility": "founder_approved_after_clean_verify"
+    }
+  ],
+  "protectedRefs": [
+    "main",
+    "origin/main",
+    "feat/hotel-explorer-overview-adp-enrichment-v1",
+    "feat/radar-hpc-status-cluster-inclusion-v1",
+    "refs/backup/hotel-explorer-accidental-merge-20261118",
+    "refs/backup/hotel-explorer-accidental-merge-20261118-b"
+  ],
+  "sharedFileGlobs": [
+    "package.json",
+    "lib/dealality-pr-check-matrix.js",
+    "public/deal-capture-radar-with-ranked-list.html",
+    "public/brand-presence-mapping.js",
+    "lib/hotel-intelligence/radar-internal-preview-hotels-v1.js",
+    "api/brand-presence.js",
+    ".cursor/rules/**",
+    "docs/ai-build-system/worktree-registry.json"
+  ]
+}

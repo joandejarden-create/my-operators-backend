@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dealality-worktree-registry-v1",
+  "title": "Dealality worktree registry (static intent)",
+  "type": "object",
+  "required": ["schemaVersion", "workspaces"],
+  "additionalProperties": true,
+  "properties": {
+    "schemaVersion": { "type": "integer", "minimum": 1 },
+    "updatedAt": { "type": "string" },
+    "updatedBy": { "type": "string" },
+    "notes": { "type": "array", "items": { "type": "string" } },
+    "workspaces": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/workspace" }
+    },
+    "temporaryWorkspaces": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/workspace" }
+    },
+    "protectedRefs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "sharedFileGlobs": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "$defs": {
+    "workspace": {
+      "type": "object",
+      "required": ["id", "stream", "path", "lifecycle"],
+      "additionalProperties": true,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "stream": {
+          "type": "string",
+          "enum": ["integration", "he", "adp", "gdi"]
+        },
+        "role": { "type": "string" },
+        "path": { "type": "string", "minLength": 3 },
+        "expectedBranchPattern": { "type": "string" },
+        "defaultBranch": { "type": "string" },
+        "lifecycle": { "type": "string", "enum": ["permanent", "temporary"] },
+        "owner": { "type": "string" },
+        "allowsProductFeatureBranches": { "type": "boolean" },
+        "status": { "type": "string" },
+        "statusNotes": { "type": "string" },
+        "safeRemovalEligibility": { "type": "string" }
+      }
+    }
+  }
+}
