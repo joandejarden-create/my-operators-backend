@@ -1,0 +1,121 @@
+{
+  "version": "gdi-full-e2e-research-persistence-bridge-v1",
+  "at": "2026-11-18T12:52:52.387Z",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "runId": "bethesda_two_write_production_pilot_v1",
+  "destinationTable": "GDI Hotel Research Opportunities",
+  "destinationTableId": "tblbkDj0vhQLfrssV",
+  "dryRun": false,
+  "simulationStore": false,
+  "authorization": {
+    "applyRequested": true,
+    "authorizeResearchPersistence": true,
+    "exactWriteSetAuthorization": "gdi-bethesda-live-14-segment-persistence-pilot-write-v1",
+    "envUnlocked": true,
+    "authorizePaidResearch": false,
+    "productionUnlocked": true,
+    "blockers": [],
+    "note": "Paid research authorization does not unlock Airtable research persistence.",
+    "activation": {
+      "disabledByDefault": true,
+      "envGate": "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES",
+      "requiresExactWriteSetAuthorization": true,
+      "separateFromGdoWrites": true,
+      "separateFromPublication": true,
+      "separateFromPaidResearchAuth": true
+    }
+  },
+  "researchCompletedIndependently": true,
+  "gdoWrites": 0,
+  "publicationWrites": 0,
+  "airtableProductionGuard": {
+    "blocked": true,
+    "code": "AIRTABLE_PRODUCTION_WRITES_NOT_AUTHORIZED",
+    "note": "Canonical Full E2E may dry-run map and plan writes; live Airtable mutations require separate founder approval."
+  },
+  "counts": {
+    "candidatesBeforeDedupe": 2,
+    "candidates": 2,
+    "DUPLICATES_RESOLVED": 0,
+    "WOULD_CREATE": 0,
+    "WOULD_UPDATE": 0,
+    "UNCHANGED": 0,
+    "CREATED": 1,
+    "UPDATED": 1,
+    "FAILED": 0,
+    "SKIPPED_FORBIDDEN": 0,
+    "SKIPPED_BUDGET": 0
+  },
+  "duplicatesResolved": [],
+  "rows": [
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "opportunityId": "gdi_live_pinnacle_lacrosse_championships_2027",
+      "compositeKey": "recLuxvwwxID7U2B8::gdi_live_pinnacle_lacrosse_championships_2027",
+      "action": "CREATED",
+      "airtableRecordId": "rec4aFaYuC0gfR1wh",
+      "materialChanged": false,
+      "changedFields": [],
+      "researchLifecycleStatus": "WATCHLIST",
+      "exploratory": false,
+      "outcome": "CREATED",
+      "gdoWrite": false,
+      "publicationWrite": false
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "opportunityId": "disp_recLuxvwwxID7U2B8_parenteral_drug_association_pda_",
+      "compositeKey": "recLuxvwwxID7U2B8::disp_recLuxvwwxID7U2B8_parenteral_drug_association_pda_",
+      "action": "UPDATED",
+      "airtableRecordId": "recTSOXMxDT7JpxGq",
+      "materialChanged": true,
+      "changedFields": [
+        "sourceSummary",
+        "lastMaterialChangeAt",
+        "researchPayloadJson"
+      ],
+      "researchLifecycleStatus": "ACTIVE_RESEARCH",
+      "exploratory": false,
+      "outcome": "UPDATED",
+      "gdoWrite": false,
+      "publicationWrite": false
+    }
+  ],
+  "readBack": [
+    {
+      "airtableRecordId": "rec4aFaYuC0gfR1wh",
+      "compositeKey": "recLuxvwwxID7U2B8::gdi_live_pinnacle_lacrosse_championships_2027",
+      "matched": true
+    },
+    {
+      "airtableRecordId": "recTSOXMxDT7JpxGq",
+      "compositeKey": "recLuxvwwxID7U2B8::disp_recLuxvwwxID7U2B8_parenteral_drug_association_pda_",
+      "matched": true
+    }
+  ],
+  "ok": true,
+  "writesUsed": 2,
+  "writeBudget": 2,
+  "executionSummary": {
+    "opportunitiesResearched": 2,
+    "uniqueCandidates": 2,
+    "newResearchOpportunities": 1,
+    "materiallyUpdatedOpportunities": 1,
+    "unchangedOpportunities": 0,
+    "duplicatesResolved": 0,
+    "exploratoryResearchOnly": 0,
+    "airtable": {
+      "CREATE": 1,
+      "UPDATE": 1,
+      "UNCHANGED": 0,
+      "WOULD_CREATE": 0,
+      "WOULD_UPDATE": 0,
+      "FAILED": 0
+    },
+    "failedWrites": 0,
+    "verifiedReadBacks": 2,
+    "dryRun": false,
+    "gdoWrites": 0,
+    "publicationWrites": 0
+  }
+}
