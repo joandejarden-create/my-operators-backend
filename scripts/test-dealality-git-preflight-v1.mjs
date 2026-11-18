@@ -8,6 +8,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   collectArgValues,
+  collectDirtyPaths,
   pathsAllowed,
   preflightFromArgv,
   runGitPreflight,
@@ -203,13 +204,18 @@ expectFail(
   "requires --preservation-ref or --backup-manifest",
 );
 
-// Positive: commit allowed in current registered integration/temp workspace
-expectOk("commit in registered integration wt with allow-dirty *", {
-  op: "commit",
-  stream: "integration",
-  expectBranch: currentBranch,
-  allowDirty: "*",
-});
+// Positive: commit allowed in the current registered workspace stream
+{
+  const here = registry.workspaces.find(
+    (w) => normalizePath(w.path) === normalizePath(ROOT),
+  );
+  expectOk("commit in current registered workspace with allow-dirty *", {
+    op: "commit",
+    stream: here?.stream || "gdi",
+    expectBranch: currentBranch,
+    allowDirty: "*",
+  });
+}
 
 // Directory-prefix allow-dirty + repeated --allow-dirty flags (#394)
 assert.equal(
@@ -256,6 +262,24 @@ assert.deepEqual(
   assert.ok(argvResult);
 }
 console.log("PASS allow-dirty directory prefix + repeated flags");
+
+// Porcelain leading-space preservation: ` M path` must not become `ata/...`
+{
+  const dirty = collectDirtyPaths(ROOT);
+  assert.equal(
+    dirty.some((d) => String(d.path || "").startsWith("ata/")),
+    false,
+    "collectDirtyPaths must not strip leading porcelain status space",
+  );
+  const spaceModified = dirty.filter((d) => String(d.status) === " M");
+  for (const row of spaceModified.slice(0, 20)) {
+    assert.ok(
+      String(row.path || "").length > 0 && !String(row.path).startsWith("ata/"),
+      `corrupt porcelain path: status=${JSON.stringify(row.status)} path=${row.path}`,
+    );
+  }
+  console.log("PASS porcelain leading-space preservation for dirty paths");
+}
 
 console.log("\nAll git-preflight scenario tests PASSED");
 console.log(`registryRoot=${ROOT}`);
