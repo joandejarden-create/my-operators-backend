@@ -19,6 +19,7 @@ import {
   attachLocalDemoRequestContext,
   resolveLocalDemoDealalityUser,
 } from "../lib/dealality/local-demo-dealality-user.js";
+import { resolveLocalDevBypassAdminUser } from "../lib/dealality/local-dev-bypass-admin-user.js";
 
 export async function requireDealalityUser(req, res, next) {
   if (!req.memberstackMemberId) {
@@ -57,6 +58,19 @@ export async function requireDealalityUser(req, res, next) {
       if (localDemo) {
         const dealalityUser = attachLocalDemoRequestContext({ ...localDemo }, req);
         req.dealalityUser = dealalityUser;
+        return next();
+      }
+
+      // LOCAL DEV ONLY — DEV_AUTH_BYPASS_EMAIL founder path (memberstackId=dev_bypass).
+      // Parity with SPA local owner-app admin tools; never production.
+      const localBypassAdmin = resolveLocalDevBypassAdminUser({
+        memberstackId: req.memberstackMemberId,
+        email: req.memberstackEmail,
+        verifiedVia: req.memberstackVerifiedVia,
+        req,
+      });
+      if (localBypassAdmin) {
+        req.dealalityUser = localBypassAdmin;
         return next();
       }
 

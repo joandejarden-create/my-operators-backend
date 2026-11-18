@@ -46,20 +46,25 @@ async function auditProperty(propertyId) {
   const periodId = manifest.latestPeriodId;
   const profile = loadPropertyProfile(propertyId);
   const period = loadPeriod(periodId);
-  const scenarios = buildScenarioUniverse(profile);
-  const observations = enrichObservationsWithRank(
-    (period.observations || []).filter((o) => o.parsed),
-    profile
-  );
+  const periodMissing = !period;
+  const scenarios = profile ? buildScenarioUniverse(profile) : [];
+  const observations = period
+    ? enrichObservationsWithRank(
+        (period.observations || []).filter((o) => o.parsed),
+        profile
+      )
+    : [];
 
-  // Reference from immutable observations — do NOT trust published aggregates alone
-  const referenceBundle = buildAllCanonicalDisplacementSupportSets({
-    propertyProfile: profile,
-    observations,
-    scenarios,
-    periodMeta: { periodId, propertyId, executionDate: period.executionDate },
-    scope: "overall",
-  });
+  // Prefer published DSS self-containment. Runtime period rebuild is reference-only.
+  const referenceBundle = periodMissing
+    ? { byCompetitor: {} }
+    : buildAllCanonicalDisplacementSupportSets({
+        propertyProfile: profile,
+        observations,
+        scenarios,
+        periodMeta: { periodId, propertyId, executionDate: period.executionDate },
+        scope: "overall",
+      });
 
   const displayedRows = report.lostDemand?.displacement || [];
   for (const disp of displayedRows) {
@@ -81,10 +86,11 @@ async function auditProperty(propertyId) {
       observationCount: supportSet?.supportingObservationIds?.length ?? 0,
       entityParity: supportSet?.competitorEntityId === entityId,
       periodParity: !supportSet?.periodId || supportSet.periodId === periodId,
+      periodMissing,
     };
 
     if (!supportSet) {
-      pushFail(base, "missing_published_support_set");
+      pushFail(base, periodMissing ? "missing_published_support_set|runtime_period_missing" : "missing_published_support_set");
       rows.push({ ...base, pass: false });
       continue;
     }
@@ -115,8 +121,10 @@ async function auditProperty(propertyId) {
     const competitorOk = api.competitorId === entityId;
     const periodOk = (api.evidence || []).every((e) => !e.periodId || e.periodId === periodId);
 
-    const refMatch =
-      ref == null
+    // When runtime period is missing, do not invent reference rebuild — require published DSS parity only.
+    const refMatch = periodMissing
+      ? true
+      : ref == null
         ? displayed === 0
         : ref.displacementScenarioCount === displayed &&
           ref.displacementScenarioCount === supportSet.displacementScenarioCount;

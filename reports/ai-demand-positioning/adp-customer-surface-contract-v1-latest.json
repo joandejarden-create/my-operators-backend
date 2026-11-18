@@ -1,6 +1,6 @@
 {
   "title": "ADP_CUSTOMER_SURFACE_CONTRACT_V1",
-  "ok": true,
+  "ok": false,
   "rendererAssetVersion": "adp-v91-bpp-rank-only-parity-20260910",
   "lockedSurfaces": [
     "EXECUTIVE_READ_V3",
@@ -20,23 +20,23 @@
     "PRINT_PDF_PARITY"
   ],
   "baselineObject": "ADP_PRODUCTION_OUTPUT_BASELINE_V1",
-  "baselineHash": "39752ff030ce77672970ebad39c1e01053d544bf5d7947aafdf8fc6734a1ec2c",
-  "baselinePath": "C:\\Dev\\deal-capture-proxy\\data\\ai-demand-positioning\\baselines\\adp-production-output-baseline-v1.json",
+  "baselineHash": "2a5b31e2dae59a16ce638c4c57e49fc4c56ad5dc2015c0718ff29c0711aa4093",
+  "baselinePath": "/agent/repos/my-operators-backend-adp-audit/data/ai-demand-positioning/baselines/adp-production-output-baseline-v1.json",
   "gates": {
     "EXECUTIVE_READ_V3": true,
     "EXECUTIVE_SCAN_LAYER_PRESENT": true,
     "EXECUTIVE_V3_SYNTHESIS_PRESENT": true,
     "OLD_WHAT_DATA_SAYS_ABSENT": true,
     "HYBRID_LAYOUT": true,
-    "TERRITORY_SUBJECT_RATES": true,
-    "BPP": true,
-    "EVIDENCE": true,
+    "TERRITORY_SUBJECT_RATES": false,
+    "BPP": false,
+    "EVIDENCE": false,
     "EVIDENCE_SUBGATES": {
-      "ALL_EVIDENCE_LINKS_NONEMPTY": true,
+      "ALL_EVIDENCE_LINKS_NONEMPTY": false,
       "ALL_EVIDENCE_SEMANTIC_PARITY": true,
       "ALL_EVIDENCE_MODAL_LABELS": true,
       "ALL_EVIDENCE_RAW_RESPONSE_PRESENT": true,
-      "ALL_EVIDENCE_READABLE": true,
+      "ALL_EVIDENCE_READABLE": false,
       "NO_INTERNAL_DIAGNOSTICS": true
     },
     "PROVIDER_PRESENCE": true,
@@ -48,7 +48,7 @@
       "BPP_READY_FULL_RENDERED": true,
       "BPP_READY_RANK_ONLY_RENDERED": true,
       "BPP_SUPPRESSION_REASON_PARITY": true,
-      "BPP_NO_GENERIC_FALSE_SUPPRESSION": true,
+      "BPP_NO_GENERIC_FALSE_SUPPRESSION": false,
       "BPP_OWNER_SHARE_PARITY": true,
       "BPP_EVIDENCE_CONTROLS_PRESENT": true,
       "BPP_POSITIVE_EVIDENCE_NONEMPTY_WHERE_COUNT_GT_0": true,
@@ -58,7 +58,7 @@
       "BPP_COUNT_SUPPORT_PARITY": true,
       "BPP_CORE_LENS_ISOLATION": true
     },
-    "DISPLACEMENT_COUNT_EVIDENCE_EXACT_PARITY": true
+    "DISPLACEMENT_COUNT_EVIDENCE_EXACT_PARITY": false
   },
   "founderSeven": [
     {
@@ -118,7 +118,225 @@
       "scanConstraint": "Inconsistent answer-level inclusion"
     }
   ],
-  "failures": [],
+  "failures": [
+    {
+      "propertyId": "adp_bethesda_marriott",
+      "gate": "TERRITORY_SUBJECT_RATES",
+      "intent": "business",
+      "expected": 46.4,
+      "actual": 50
+    },
+    {
+      "propertyId": "adp_bethesda_marriott",
+      "gate": "TERRITORY_SUBJECT_RATES",
+      "intent": "leisure",
+      "expected": 43.2,
+      "actual": 45.5
+    },
+    {
+      "propertyId": "adp_bethesda_marriott",
+      "gate": "TERRITORY_SUBJECT_RATES",
+      "intent": "couples",
+      "expected": 36.1,
+      "actual": 33.3
+    },
+    {
+      "propertyId": "adp_bethesda_marriott",
+      "gate": "TERRITORY_SUBJECT_RATES",
+      "intent": "family",
+      "expected": 15,
+      "actual": 25
+    },
+    {
+      "propertyId": "adp_bethesda_marriott",
+      "gate": "TERRITORY_SUBJECT_RATES",
+      "intent": "celebration",
+      "expected": 46.4,
+      "actual": 50
+    },
+    {
+      "propertyId": "adp_ac_hotel_a_coruna",
+      "gate": "BPP",
+      "detail": "clientReady gate fail"
+    },
+    {
+      "propertyId": "adp_ac_hotel_a_coruna",
+      "gate": "BPP",
+      "detail": "MEASUREMENT_NOT_ATTEMPTED"
+    },
+    {
+      "propertyId": "adp_castillo_hotel_son_vida",
+      "gate": "BPP",
+      "detail": "clientReady gate fail"
+    },
+    {
+      "propertyId": "adp_castillo_hotel_son_vida",
+      "gate": "BPP",
+      "detail": "PEER_SET_NOT_FROZEN"
+    },
+    {
+      "propertyId": "adp_hilton_times_square",
+      "gate": "BPP",
+      "detail": "clientReady gate fail"
+    },
+    {
+      "propertyId": "adp_hilton_times_square",
+      "gate": "BPP",
+      "detail": "MEASUREMENT_NOT_ATTEMPTED"
+    },
+    {
+      "propertyId": "adp_mayflower_hotel_washington_dc",
+      "gate": "BPP",
+      "detail": "clientReady gate fail"
+    },
+    {
+      "propertyId": "adp_mayflower_hotel_washington_dc",
+      "gate": "BPP",
+      "detail": "PEER_SET_NOT_FROZEN"
+    },
+    {
+      "propertyId": "adp_sheraton_mallorca_arabella_golf",
+      "gate": "BPP",
+      "detail": "clientReady gate fail"
+    },
+    {
+      "propertyId": "adp_sheraton_mallorca_arabella_golf",
+      "gate": "BPP",
+      "detail": "PEER_SET_NOT_FROZEN"
+    },
+    {
+      "propertyId": "adp_spice_island_beach_resort",
+      "gate": "BPP",
+      "detail": "clientReady gate fail"
+    },
+    {
+      "propertyId": "adp_spice_island_beach_resort",
+      "gate": "BPP",
+      "detail": "MEASUREMENT_NOT_ATTEMPTED"
+    },
+    {
+      "propertyId": "adp_w_rome",
+      "gate": "BPP",
+      "detail": "clientReady gate fail"
+    },
+    {
+      "propertyId": "adp_w_rome",
+      "gate": "BPP",
+      "detail": "MEASUREMENT_NOT_ATTEMPTED"
+    },
+    {
+      "propertyId": "adp_westin_grand_munchen",
+      "gate": "BPP",
+      "detail": "clientReady gate fail"
+    },
+    {
+      "propertyId": "adp_westin_grand_munchen",
+      "gate": "BPP",
+      "detail": "PEER_SET_NOT_FROZEN"
+    },
+    {
+      "propertyId": "adp_westin_tampa_waterside",
+      "gate": "BPP",
+      "detail": "clientReady gate fail"
+    },
+    {
+      "propertyId": "adp_westin_tampa_waterside",
+      "gate": "BPP",
+      "detail": "PEER_SET_NOT_FROZEN"
+    },
+    {
+      "propertyId": "adp_wyndham_san_diego_bayside",
+      "gate": "BPP",
+      "detail": "clientReady gate fail"
+    },
+    {
+      "propertyId": "adp_wyndham_san_diego_bayside",
+      "gate": "BPP",
+      "detail": "PEER_SET_NOT_FROZEN"
+    },
+    {
+      "propertyId": "adp_yotel_geneva_lake",
+      "gate": "BPP",
+      "detail": "clientReady gate fail"
+    },
+    {
+      "propertyId": "adp_yotel_geneva_lake",
+      "gate": "BPP",
+      "detail": "PEER_SET_NOT_FROZEN"
+    },
+    {
+      "propertyId": "adp_smoke_test_synthetic",
+      "gate": "BPP",
+      "detail": "clientReady gate fail"
+    },
+    {
+      "propertyId": "adp_smoke_test_synthetic",
+      "gate": "BPP",
+      "detail": "UNKNOWN"
+    },
+    {
+      "gate": "ALL_EVIDENCE_LINKS_NONEMPTY",
+      "detail": "evidenceAudit.totalFail=427",
+      "empty": [
+        {
+          "propertyId": "adp_ac_hotel_a_coruna",
+          "claimId": "territory:business:missing"
+        },
+        {
+          "propertyId": "adp_ac_hotel_a_coruna",
+          "claimId": "territory:business:present"
+        },
+        {
+          "propertyId": "adp_ac_hotel_a_coruna",
+          "claimId": "territory:leisure:missing"
+        },
+        {
+          "propertyId": "adp_ac_hotel_a_coruna",
+          "claimId": "territory:leisure:present"
+        },
+        {
+          "propertyId": "adp_ac_hotel_a_coruna",
+          "claimId": "territory:couples:missing"
+        }
+      ],
+      "wrong": []
+    },
+    {
+      "gate": "ALL_EVIDENCE_READABLE",
+      "detail": "evidenceAudit.totalFail=427",
+      "empty": [
+        {
+          "propertyId": "adp_ac_hotel_a_coruna",
+          "claimId": "territory:business:missing"
+        },
+        {
+          "propertyId": "adp_ac_hotel_a_coruna",
+          "claimId": "territory:business:present"
+        },
+        {
+          "propertyId": "adp_ac_hotel_a_coruna",
+          "claimId": "territory:leisure:missing"
+        },
+        {
+          "propertyId": "adp_ac_hotel_a_coruna",
+          "claimId": "territory:leisure:present"
+        },
+        {
+          "propertyId": "adp_ac_hotel_a_coruna",
+          "claimId": "territory:couples:missing"
+        }
+      ],
+      "wrong": []
+    },
+    {
+      "gate": "ALL_EVIDENCE_LINKS_CLIENT_READY",
+      "detail": "fail=427 links=1541"
+    },
+    {
+      "gate": "DISPLACEMENT_COUNT_EVIDENCE_EXACT_PARITY",
+      "detail": "AssertionError [ERR_ASSERTION]: adp_smoke_test_synthetic report\n    at auditProperty (file:///agent/repos/my-operators-backend-adp-audit/scripts/test-adp-displacement-evidence-count-parity.mjs:43:10)\n    at main (file:///agent/repos/my-operators-backend-adp-audit/scripts/test-adp-displacement-evidence-count-parity.mjs:176:11) {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: null,\n  expected: true,\n  operator: '==',\n  diff: 'simple'\n}\n"
+    }
+  ],
   "methodologyChanged": false,
   "doctrine": [
     "APPROVED_CUSTOMER_OUTPUT_IS_A_VERSIONED_PRODUCTION CONTRACT",

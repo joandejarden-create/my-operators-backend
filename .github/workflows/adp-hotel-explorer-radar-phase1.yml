@@ -1,0 +1,55 @@
+# ADP / Hotel Explorer Radar Phase 1 — free local gates (no paid APIs).
+name: ADP Hotel Explorer Radar Phase 1
+
+concurrency:
+  group: adp-he-radar-phase1-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "public/deal-capture-radar-with-ranked-list.html"
+      - "public/js/hotel-explorer.js"
+      - "public/js/hotel-detail-panel.js"
+      - "public/css/hotel-explorer.css"
+      - "lib/hotel-intelligence/radar-hotel-explorer-progressive-enrichment-v1.js"
+      - "lib/ai-demand-positioning/brand-portfolio/bpp-client-readiness-doctrine-v1.js"
+      - "lib/ai-demand-positioning/metrics/intent-territory-labels.js"
+      - "lib/ai-demand-positioning/longitudinal/persist-adp-historical-period-v1.js"
+      - "scripts/test-radar-host-hotel-explorer-wiring-v1.mjs"
+      - "scripts/test-radar-hotel-explorer-progressive-enrichment-v1.mjs"
+      - "scripts/test-adp-e2e-persistence-contract-v1.mjs"
+      - "scripts/test-adp-published-store-durability-v1.mjs"
+      - "scripts/run-adp-permanent-full-e2e-certification-v1.mjs"
+      - "scripts/test-ai-demand-positioning-published-foundation.mjs"
+      - "reports/ai-demand-positioning/certification-baseline/**"
+      - "package.json"
+      - ".github/workflows/adp-hotel-explorer-radar-phase1.yml"
+  push:
+    branches: [main]
+    paths:
+      - "public/deal-capture-radar-with-ranked-list.html"
+      - "lib/hotel-intelligence/radar-hotel-explorer-progressive-enrichment-v1.js"
+      - "scripts/test-radar-host-hotel-explorer-wiring-v1.mjs"
+      - "scripts/test-radar-hotel-explorer-progressive-enrichment-v1.mjs"
+      - ".github/workflows/adp-hotel-explorer-radar-phase1.yml"
+
+jobs:
+  phase1-gates:
+    name: Radar HE + ADP free gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Phase 1 free gates
+        run: npm run test:adp-phase1-radar-he-gates

@@ -28,8 +28,16 @@ async function main() {
 
   const bundle = buildPublishedSnapshotBundle({ period, profile });
   assert.equal(bundle.ok, true);
-  assert.ok(bundle.summary.payloadBytes < 95000, "payload fits Airtable field limit");
-  assert.ok(bundle.summary.evidenceBytes < 95000, "evidence index fits Airtable field limit");
+  // Filesystem PRIMARY_SOT may exceed Airtable long-text limits; that is expected.
+  // Airtable Live overlay must fit via compaction / storageOnly stubs (not raw FS size).
+  assert.ok(
+    Number.isFinite(bundle.summary.payloadBytes) && bundle.summary.payloadBytes > 0,
+    "payload bytes recorded"
+  );
+  assert.ok(
+    Number.isFinite(bundle.summary.evidenceBytes) && bundle.summary.evidenceBytes > 0,
+    "evidence bytes recorded"
+  );
 
   const validation = validatePublishedReportUpsert({
     manifest: bundle.manifest,
@@ -37,8 +45,25 @@ async function main() {
     evidenceIndex: bundle.evidenceIndex,
   });
   assert.equal(validation.ok, true, validation.errors?.join("; "));
+  const fieldValues = Object.values(validation.sanitizedFields || {}).filter((v) => typeof v === "string");
+  const oversized = fieldValues.filter((v) => v.length > 95000);
+  assert.equal(
+    oversized.length,
+    0,
+    `Airtable overlay fields must be ≤95000 chars after compaction; oversized=${oversized.map((v) => v.length).join(",")}`
+  );
+  assert.ok(
+    validation.sanitizedFields?.["Payload JSON"],
+    "Airtable overlay includes compacted Payload JSON"
+  );
+  assert.ok(
+    validation.sanitizedFields?.["Evidence Index JSON"],
+    "Airtable overlay includes Evidence Index JSON (full or storageOnly stub)"
+  );
 
-  savePublishedSnapshotBundle(bundle, { seed: false });
+  // Do NOT rewrite PRIMARY_SOT published hotels in this foundation gate.
+  // Persistence write/read is covered by test:adp-published-store-durability-v1 (probe id).
+  void savePublishedSnapshotBundle;
 
   const published = loadPublishedReport(PROPERTY_ID);
   assert.ok(published?.demandCapture, "published report loads from disk");

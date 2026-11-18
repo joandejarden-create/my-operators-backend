@@ -1,0 +1,129 @@
+{
+  "preparedAt": "2026-11-18T00:00:00.000Z",
+  "publicationAuthorized": false,
+  "published": false,
+  "propertyId": "adp_synth_permanence_hotel",
+  "periodId": "adp_period_synth_permanence_20261118_offline",
+  "methodologyFingerprintSha256": "74c1a5bf2ceea69123a8b4f1bfb864e9c18e1d8fd5a343ab39a2b89f1ec11bac",
+  "measurementCertification": {
+    "ok": true,
+    "certificationHash": "b1bd76581147119011283a2b7e4a6482ac0ed3b4a3d311ecc2b439177739a2d8"
+  },
+  "payload": {
+    "propertyId": "adp_synth_permanence_hotel",
+    "periodId": "adp_period_synth_permanence_20261118_offline",
+    "methodologyFingerprintSha256": "74c1a5bf2ceea69123a8b4f1bfb864e9c18e1d8fd5a343ab39a2b89f1ec11bac",
+    "executiveMetrics": {
+      "considerationRate": {
+        "presentObservations": 6,
+        "comparableObservations": 32,
+        "rate": 18.8,
+        "methodologyId": "ADP_AI_CONSIDERATION_INDEPENDENT_UNPROMPTED_V1",
+        "eligibleScenarioIds": [
+          "synth_scenario_1",
+          "synth_scenario_2",
+          "synth_scenario_3",
+          "synth_scenario_4",
+          "synth_scenario_5",
+          "synth_scenario_6",
+          "synth_scenario_7",
+          "synth_scenario_8"
+        ],
+        "mentionPath": "response_text_detectPropertyMention",
+        "runtimeMentionFlagsAuthoritative": false
+      },
+      "scenarioPresence": {
+        "rate": 25,
+        "capturedScenarios": 2,
+        "eligibleScenarios": 8,
+        "methodologyId": "ADP_AI_CONSIDERATION_INDEPENDENT_UNPROMPTED_V1"
+      }
+    },
+    "evidence": {
+      "providers": [
+        {
+          "provider": "openai",
+          "scenariosScheduled": 8,
+          "scheduled": 8,
+          "observationsCaptured": 8,
+          "comparable": 8,
+          "captured": 8,
+          "mentioned": 2,
+          "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
+          "denominatorGrain": "comparable_observations",
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 8,
+          "presence": 25,
+          "presenceUnavailable": false
+        },
+        {
+          "provider": "gemini",
+          "scenariosScheduled": 8,
+          "scheduled": 8,
+          "observationsCaptured": 8,
+          "comparable": 8,
+          "captured": 8,
+          "mentioned": 2,
+          "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
+          "denominatorGrain": "comparable_observations",
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 8,
+          "presence": 25,
+          "presenceUnavailable": false
+        },
+        {
+          "provider": "perplexity",
+          "scenariosScheduled": 8,
+          "scheduled": 8,
+          "observationsCaptured": 8,
+          "comparable": 8,
+          "captured": 8,
+          "mentioned": 1,
+          "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
+          "denominatorGrain": "comparable_observations",
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 8,
+          "presence": 12.5,
+          "presenceUnavailable": false
+        },
+        {
+          "provider": "claude",
+          "scenariosScheduled": 8,
+          "scheduled": 8,
+          "observationsCaptured": 8,
+          "comparable": 8,
+          "captured": 8,
+          "mentioned": 1,
+          "excludedFromMetric": 0,
+          "incompleteCoverage": false,
+          "coverageNote": null,
+          "denominatorGrain": "comparable_observations",
+          "formula": "subject_present_comparable / comparable_observations_for_provider",
+          "total": 8,
+          "presence": 12.5,
+          "presenceUnavailable": false
+        }
+      ],
+      "denominatorNote": "Provider Presence uses frozen independent-discovery eligible scenarios only (same grain as Consideration).",
+      "providerGrainLock": {
+        "version": "ADP_MEASUREMENT_RECONCILIATION_CERTIFICATION_V1",
+        "repairedAt": "2026-11-18T08:37:40.394Z",
+        "populationSource": "frozen_eligible_scenario_ids",
+        "certificationHash": "dfe4a71c6183efa74bcb18ed05a76971d57bd5a27b78eb9faaf85a494272348a"
+      }
+    },
+    "_notProductionPublished": true,
+    "_fixtureKind": "SYNTHETIC_OFFLINE_CI",
+    "_adpPermanentCertification": {
+      "certificationId": "synth_cert_offline_v1",
+      "certificationHash": "b1bd76581147119011283a2b7e4a6482ac0ed3b4a3d311ecc2b439177739a2d8",
+      "methodologyFingerprintSha256": "74c1a5bf2ceea69123a8b4f1bfb864e9c18e1d8fd5a343ab39a2b89f1ec11bac"
+    }
+  }
+}

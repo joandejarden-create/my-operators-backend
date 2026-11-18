@@ -77,6 +77,7 @@ import {
 import { postSurfeEnrichmentWebhook } from "./api/webhooks-surfe-enrichment.js";
 import { analyzeDeal } from "./api/deal-intelligence.js";
 import { getBrandPresence, getBrandPresenceHotelById, getBrandStatistics, getWhiteSpaceOpportunities, exportBrandPresenceData, getLocationTypes, getParentCompanies, getBrands, getChainScales } from "./api/brand-presence.js";
+import { getBrandPresenceInternalPreviewHotels } from "./api/brand-presence-internal-preview.js";
 import {
   getGoldenDemoOwnershipIndex,
   getGoldenDemoHotelOwnership,
@@ -3188,6 +3189,13 @@ app.post("/api/deal-intelligence/analyze", analyzeDeal);
 
 // Brand Presence API endpoints
 app.get("/api/brand-presence/hotel/:recordId", getBrandPresenceHotelById);
+app.get(
+  "/api/brand-presence/internal-preview-hotels",
+  memberstackAuth,
+  requireDealalityUser,
+  requireAdminAccess,
+  getBrandPresenceInternalPreviewHotels
+);
 app.get("/api/brand-presence", getBrandPresence);
 app.get("/api/brand-presence/statistics", getBrandStatistics);
 app.get("/api/brand-presence/white-space", getWhiteSpaceOpportunities);

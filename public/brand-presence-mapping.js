@@ -104,7 +104,9 @@ function opportunityRadarShareCountry() {
 }
 
 function brandPresenceMapUrl(extraQuery) {
-    var base = "/api/brand-presence?view=map";
+    // Cache-bust map DTO after internal-preview wiring so authorized clients
+    // do not keep a stale hotel list without allowlisted HPC pins.
+    var base = "/api/brand-presence?view=map&v=radar-he-internal-preview-1";
     var q = extraQuery ? "&" + extraQuery : "";
     var url = base + q;
     var country = opportunityRadarShareCountry();
@@ -860,6 +862,54 @@ function bindMapSizeSync() {
 
 window.refreshRadarMapSize = refreshMapSize;
 
+/**
+ * Authorized internal-preview merge (admin / local Dealality admin only).
+ * Fail-closed: share mode never calls; 401/403 leaves public Hotel Census pool unchanged.
+ * Query flags alone do not authorize — server requires Memberstack + admin.
+ */
+async function mergeAuthorizedInternalPreviewHotels(hotels) {
+    if (isOpportunityRadarShareMode()) {
+        return { hotels: hotels || [], addedIds: [], skipped: 'share_mode' };
+    }
+    const list = Array.isArray(hotels) ? hotels.slice() : [];
+    try {
+        const headers = { 'ngrok-skip-browser-warning': 'true', Accept: 'application/json' };
+        try {
+            if (window.DcAuthHelper && typeof window.DcAuthHelper.authHeaders === 'function') {
+                Object.assign(headers, window.DcAuthHelper.authHeaders());
+            }
+        } catch (_authErr) { /* ignore */ }
+        // Local owner-app / optional auth paths may require this; never sufficient alone.
+        headers['X-Dealality-Owner-App'] = '1';
+        const res = await fetch('/api/brand-presence/internal-preview-hotels', {
+            headers,
+            credentials: 'same-origin',
+        });
+        if (!res.ok) {
+            return { hotels: list, addedIds: [], skipped: 'http_' + res.status };
+        }
+        const data = await res.json();
+        if (!data || !data.success || !Array.isArray(data.hotels) || data.customerVisible === true) {
+            return { hotels: list, addedIds: [], skipped: 'payload_rejected' };
+        }
+        const seen = new Set(list.map((h) => String(h && h.id || '').trim()).filter(Boolean));
+        const addedIds = [];
+        for (let i = 0; i < data.hotels.length; i++) {
+            const hotel = data.hotels[i];
+            const id = String(hotel && hotel.id || '').trim();
+            if (!id || seen.has(id)) continue;
+            if (!hotel.internalPreviewOnly) continue;
+            list.push(hotel);
+            seen.add(id);
+            addedIds.push(id);
+        }
+        return { hotels: list, addedIds, skipped: null };
+    } catch (err) {
+        console.warn('[radar-map] internal-preview merge skipped:', err);
+        return { hotels: list, addedIds: [], skipped: 'error' };
+    }
+}
+
 // Load hotel data
 async function loadHotelData() {
     try {
@@ -900,8 +950,13 @@ async function loadHotelData() {
         
         if (result.success) {
             updateSystemStatus('Processing Market Signals…');
-            allHotels = result.hotels;
+            const merged = await mergeAuthorizedInternalPreviewHotels(result.hotels || []);
+            allHotels = merged.hotels;
             window.allHotels = allHotels;
+            window.__radarInternalPreviewAddedIds = merged.addedIds || [];
+            if (merged.addedIds && merged.addedIds.length) {
+                console.info('[radar-map] internal-preview hotels merged:', merged.addedIds.join(', '));
+            }
             // Avoid cloning ~15k entries on initial load; filters create new arrays when needed.
             hotelData = allHotels;
             currentFilteredHotels = allHotels;
