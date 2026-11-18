@@ -469,21 +469,64 @@
     return parts.join(", ") + ".";
   }
 
+  function isLowQualityGeneratedDescription(text, hotel) {
+    var s = String(text || "").trim();
+    if (!s) return true;
+    if (/hotel\s+hotel/i.test(s)) return true;
+    if (/^hotel property,/i.test(s) && !(hotel && hotel.brand && hotel.brand !== "Unknown Brand")) {
+      return true;
+    }
+    var censusType = hotel && hotel.censusPropertyType ? String(hotel.censusPropertyType).trim() : "";
+    if (censusType && new RegExp("^" + censusType.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\s+hotel,", "i").test(s)) {
+      var hasBrand = hotel.brand && hotel.brand !== "Unknown Brand";
+      var hasParent = hotel.parentCompany && hotel.parentCompany !== "Unknown";
+      var hasRooms = Number(hotel.rooms) > 0;
+      if (!hasBrand && !hasParent && !hasRooms) return true;
+      // "Hotel hotel, serving City, Country." style — thin template with only geo.
+      if (!hasBrand && !hasParent && /serving\s+/i.test(s) && s.split(",").length <= 3) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  var DESCRIPTION_UNAVAILABLE = "Property description is not yet available.";
+
   function resolveDescriptionText(hotel) {
     var fromAirtable = hotel && (hotel.hotelDescription || hotel.description);
     if (fromAirtable && String(fromAirtable).trim()) {
       return String(fromAirtable).trim();
     }
-    return buildDescription(hotel);
+    var positioning =
+      hotel &&
+      hotel.overviewEnrichment &&
+      hotel.overviewEnrichment.positioning &&
+      hotel.overviewEnrichment.positioning.text;
+    if (positioning && String(positioning).trim()) {
+      return String(positioning).trim();
+    }
+    var synthesized = buildDescription(hotel);
+    if (isLowQualityGeneratedDescription(synthesized, hotel)) {
+      return DESCRIPTION_UNAVAILABLE;
+    }
+    return synthesized;
   }
 
   function buildOverviewRows(hotel) {
+    var meetingValue = "—";
+    if (hotel.meetingSpaceDisplay) {
+      meetingValue = String(hotel.meetingSpaceDisplay);
+    } else if (hotel.totalMeetingSpace != null && Number(hotel.totalMeetingSpace) > 0) {
+      meetingValue = formatNumber(hotel.totalMeetingSpace) + " sq ft";
+    }
+
     var rows = [
       { label: "Brand", value: displayValue(hotel.brand) },
       { label: "Parent company", value: formatParentCompanyDisplay(hotel.parentCompany) },
       { label: "Chain scale", value: displayValue(hotel.chainScale || hotel.propertyType) },
       { label: "Property type", value: displayValue(hotel.censusPropertyType) },
       { label: "Rooms", value: hotel.rooms ? formatNumber(hotel.rooms) : "—" },
+      { label: "Meeting space", value: meetingValue },
       { label: "Operation type", value: displayValue(hotel.operationType) },
       { label: "Management company", value: displayValue(hotel.managementCompany) },
       { label: "Market", value: displayValue(hotel.market) },
@@ -596,6 +639,20 @@
       });
     }
 
+    var fromVerified = [];
+    if (hotel && Array.isArray(hotel.verifiedAmenitiesDisplay)) {
+      fromVerified = hotel.verifiedAmenitiesDisplay.filter(function (item) {
+        return item && item.label && item.factKind !== "UNSUPPORTED_CLAIM" &&
+          item.factKind !== "INFERRED_SUITABILITY" &&
+          item.factKind !== "REALITY_GAP_RECOGNITION";
+      }).map(function (item) {
+        return {
+          id: item.id || null,
+          label: toAmenityProperCase(item.label),
+        };
+      });
+    }
+
     var idByLabelKey = {};
     fromDisplay.forEach(function (item) {
       if (!item.id || !item.label) return;
@@ -603,24 +660,39 @@
     });
 
     var sourceLabels = fromField.length >= fromDisplay.length ? fromField : [];
+    var base;
     if (sourceLabels.length) {
-      return sourceLabels.map(function (label) {
+      base = sourceLabels.map(function (label) {
         var proper = toAmenityProperCase(label);
         return {
           id: resolveAmenityIdForLabel(label, idByLabelKey) || resolveAmenityIdForLabel(proper, idByLabelKey),
           label: proper,
         };
       });
+    } else if (fromDisplay.length) {
+      base = fromDisplay;
+    } else {
+      base = fromField.map(function (label) {
+        return {
+          id: resolveAmenityIdForLabel(label, idByLabelKey),
+          label: toAmenityProperCase(label),
+        };
+      });
     }
 
-    if (fromDisplay.length) return fromDisplay;
+    if (!fromVerified.length) return base;
 
-    return fromField.map(function (label) {
-      return {
-        id: resolveAmenityIdForLabel(label, idByLabelKey),
-        label: toAmenityProperCase(label),
-      };
+    var seen = {};
+    base.forEach(function (item) {
+      seen[amenityLabelKey(item.label)] = true;
     });
+    fromVerified.forEach(function (item) {
+      var key = amenityLabelKey(item.label);
+      if (!key || seen[key]) return;
+      seen[key] = true;
+      base.push(item);
+    });
+    return base;
   }
 
   function amenityIconSvg(item) {

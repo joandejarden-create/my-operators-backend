@@ -11,6 +11,10 @@ import {
   formatHotelPropertyCensusAsBrandPresenceHotel,
   HOTEL_PROPERTY_CENSUS_TABLE,
 } from "../lib/hotel-intelligence/radar-internal-preview-hotels-v1.js";
+import {
+  applyOverviewEnrichmentToHotel,
+  buildHotelExplorerOverviewEnrichment,
+} from "../lib/hotel-intelligence/hotel-explorer-overview-enrichment-v1.js";
 
 const AIRTABLE_KEY = process.env.AIRTABLE_API_KEY;
 const AIRTABLE_BASE = process.env.AIRTABLE_BASE_ID_ALT;
@@ -353,6 +357,63 @@ export async function getBrandPresenceHotelById(req, res) {
         formatted.amenitiesDisplay = buildHiltonAmenitiesDisplay(formatted);
       }
     }
+
+    // Hotel-agnostic Overview enrichment (display-only overlays; no Airtable writes).
+    // Fail-open: enrichment errors must not break legacy census hotel detail.
+    try {
+      const enrichment = await buildHotelExplorerOverviewEnrichment(recordId, {
+        hotelDto: formatted,
+        audience: "internal",
+        skipLiveHpc: true,
+        skipHiAirtable: true,
+      });
+      formatted = applyOverviewEnrichmentToHotel(formatted, enrichment);
+      if (
+        Array.isArray(formatted.verifiedAmenitiesDisplay) &&
+        formatted.verifiedAmenitiesDisplay.length &&
+        (!Array.isArray(formatted.amenitiesDisplay) ||
+          formatted.amenitiesDisplay.length === 0)
+      ) {
+        formatted.amenitiesDisplay = formatted.verifiedAmenitiesDisplay.map((item) => ({
+          id: item.id || null,
+          label: item.label,
+        }));
+      } else if (
+        Array.isArray(formatted.verifiedAmenitiesDisplay) &&
+        formatted.verifiedAmenitiesDisplay.length &&
+        Array.isArray(formatted.amenitiesDisplay)
+      ) {
+        const seen = new Set(
+          formatted.amenitiesDisplay.map((a) =>
+            String(a?.label || "")
+              .toLowerCase()
+              .trim()
+          )
+        );
+        for (const item of formatted.verifiedAmenitiesDisplay) {
+          const label = String(item?.label || "").trim();
+          if (!label) continue;
+          const key = label.toLowerCase();
+          if (seen.has(key)) continue;
+          seen.add(key);
+          formatted.amenitiesDisplay.push({ id: item.id || null, label });
+        }
+      }
+      if (!formatted.amenities && Array.isArray(formatted.amenitiesDisplay)) {
+        // Keep amenities text parse path available for HDP resolveAmenitiesDisplay.
+        const labels = formatted.amenitiesDisplay
+          .map((a) => a?.label)
+          .filter(Boolean);
+        if (labels.length) formatted.amenities = labels.join("; ");
+      }
+    } catch (enrichErr) {
+      console.warn(
+        "[brand-presence] overview enrichment skipped",
+        recordId,
+        enrichErr?.message || enrichErr
+      );
+    }
+
     res.json({ success: true, hotel: formatted });
   } catch (error) {
     const fixture = fixtureHotelResponse(recordId);

@@ -106,6 +106,11 @@ const hpcRecord = {
     "Rooms / Keys": 407,
     "Production Use Status": "Census Only / Not Owner-Facing",
     "Radar Status": "Open",
+    "Short Property Summary": "Full-service Marriott near NIH and downtown Bethesda.",
+    "Total Meeting Space": 22000,
+    Amenities: "Pool; Fitness Center",
+    Address: "5151 Pooks Hill Rd",
+    "Parent Company": "Marriott International",
   },
 };
 
@@ -115,11 +120,19 @@ assert.equal(dto.name, "Bethesda Marriott");
 assert.equal(dto.city, "Bethesda");
 assert.equal(dto.country, "United States");
 assert.equal(dto.brand, "Marriott Hotels");
+assert.equal(dto.parentCompany, "Marriott International");
 assert.equal(dto.internalPreviewOnly, true);
 assert.equal(dto.radarInclusion, "AUTHORIZED_INTERNAL_PREVIEW");
 assert.equal(dto.status, "Open");
 assert.equal(dto.radarStatus, "Open");
 assert.equal(dto.productionUseStatus, "Census Only / Not Owner-Facing");
+assert.equal(
+  dto.hotelDescription,
+  "Full-service Marriott near NIH and downtown Bethesda."
+);
+assert.equal(dto.totalMeetingSpace, 22000);
+assert.equal(dto.amenities, "Pool; Fitness Center");
+assert.equal(dto.address1, "5151 Pooks Hill Rd");
 assert.ok(dto.lat && dto.lng);
 
 const pipelineDto = formatHotelPropertyCensusAsBrandPresenceHotel({
