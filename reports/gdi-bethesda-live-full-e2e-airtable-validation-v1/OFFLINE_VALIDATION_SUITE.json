@@ -1,6 +1,6 @@
 {
   "version": "gdi-bethesda-live-full-e2e-airtable-validation-v1",
-  "at": "2026-11-18T18:34:02.976Z",
+  "at": "2026-11-18T18:38:25.436Z",
   "hotelId": "recLuxvwwxID7U2B8",
   "hotelName": "Bethesda Marriott",
   "paidResearchExecuted": false,
@@ -410,6 +410,185 @@
     },
     "status": "PENDING_FOUNDER_APPROVAL"
   },
+  "sharedIntelligenceReuse": {
+    "version": "gdi-bethesda-live-full-e2e-airtable-validation-v1",
+    "section": "SHARED_INTELLIGENCE_REUSE_VERIFICATION",
+    "at": "2026-11-18T18:38:25.436Z",
+    "reusedModules": [
+      "reuse-prior-intelligence-v1",
+      "shared-demand-model-v1",
+      "demand-generators/entities + airtable-stores",
+      "gdi-full-e2e-airtable-persistence-contract/adapter/eligibility",
+      "gdi-full-e2e-research-persistence-bridge-v1",
+      "gdi-paid-deep-two-stage-dedupe-v1",
+      "hotel-research-opportunity-field-map"
+    ],
+    "identity": {
+      "organizationName": "GuidePoint Security",
+      "demandGeneratorId": "dg_ed65f0a5fba6ec9c",
+      "organizationIdentityKey": "guidepoint security",
+      "hotelACompositeKey": "recLuxvwwxID7U2B8::disc_guidepoint_shared",
+      "hotelBCompositeKey": "recPeerHotelSharedDg01::disc_guidepoint_shared_peer",
+      "salesOpportunityIdentityA": "recLuxvwwxID7U2B8|acct:guidepoint security|grain:STANDING_ACCOUNT",
+      "salesOpportunityIdentityB": "recPeerHotelSharedDg01|acct:guidepoint security|grain:STANDING_ACCOUNT"
+    },
+    "routing": {
+      "organization": {
+        "ok": true,
+        "airtable": [
+          {
+            "table": {
+              "name": "Demand Generators",
+              "tableId": "tblykUVOjGVkawvdD",
+              "adapter": "demand-generators/airtable-stores.upsertDemandGenerator",
+              "identityField": "Demand Generator ID"
+            },
+            "role": "ORGANIZATION_IDENTITY",
+            "required": true
+          },
+          {
+            "table": {
+              "name": "Hotel Demand Generator Fit",
+              "tableId": "tblqamXbIk9n6gXfV",
+              "adapter": "demand-generators/airtable-stores.upsertHotelFit",
+              "identityField": "Hotel Generator Fit ID"
+            },
+            "role": "HOTEL_SPECIFIC_FIT",
+            "required": true
+          }
+        ],
+        "nonAirtable": [
+          "data/group-demand-intelligence/global-intelligence/"
+        ],
+        "reason": "ORG_TO_DEMAND_GENERATORS",
+        "checkpoint": "AFTER_GLOBAL_IDENTITY"
+      },
+      "hotelOpportunity": {
+        "ok": true,
+        "airtable": [
+          {
+            "table": {
+              "name": "Demand Generators",
+              "tableId": "tblykUVOjGVkawvdD",
+              "adapter": "demand-generators/airtable-stores.upsertDemandGenerator",
+              "identityField": "Demand Generator ID"
+            },
+            "role": "ORGANIZATION_IDENTITY",
+            "required": true
+          },
+          {
+            "table": {
+              "name": "Group Demand Opportunities",
+              "tableId": "tblRuReslJMwsfRQj",
+              "adapter": "airtable-opportunity-store / gdi-airtable-sync-v1",
+              "identityField": "opportunityId"
+            },
+            "role": "HOTEL_QUALIFIED_OPPORTUNITY"
+          }
+        ],
+        "nonAirtable": [
+          "data/group-demand-intelligence/hotels/{hotelId}/opportunities.json"
+        ],
+        "reason": "QUALIFIED_TO_GENERATOR_AND_GROUP_DEMAND_OPPORTUNITIES",
+        "checkpoint": "AFTER_HOTEL_QUALIFICATION"
+      },
+      "excluded": {
+        "ok": true,
+        "airtable": [],
+        "nonAirtable": [
+          "reports/ + execution ledger provider rows (bounded)"
+        ],
+        "reason": "UNSUPPORTED_OR_SPECULATIVE_AUDIT_ONLY",
+        "checkpoint": "AFTER_SCREENING"
+      }
+    },
+    "eligibility": {
+      "sharedOrg": {
+        "allowedTables": [
+          "Demand Generators",
+          "Group Demand Opportunities"
+        ],
+        "reasons": [
+          "CREDIBLE_ORG_INTELLIGENCE_ELIGIBLE",
+          "GDO_COMMERCIAL_ELIGIBILITY_MET",
+          "RESEARCH_TARGET_NOT_AUTO_CREATED"
+        ]
+      },
+      "hotelOpportunity": {
+        "allowedTables": [
+          "Demand Generators",
+          "Group Demand Opportunities",
+          "Hotel Demand Generator Fit"
+        ],
+        "reasons": [
+          "CREDIBLE_ORG_INTELLIGENCE_ELIGIBLE",
+          "GDO_COMMERCIAL_ELIGIBILITY_MET",
+          "RESEARCH_TARGET_NOT_AUTO_CREATED"
+        ]
+      },
+      "excluded": {
+        "allowedTables": [],
+        "reasons": [
+          "EXCLUDED_OR_REJECTED"
+        ]
+      }
+    },
+    "crossHotelPersistence": {
+      "hotelACreated": 1,
+      "hotelBCreated": 1,
+      "sharedDgGeneratorId": "dg_ed65f0a5fba6ec9c",
+      "privateSalesNotCrossShared": true
+    },
+    "paidDeepDedupe": {
+      "version": "gdi-paid-deep-two-stage-dedupe-v1",
+      "stage": "PRE_PAID_DEEP",
+      "skipPaidDeep": true,
+      "reasonCode": "EXISTING_HOTEL_INVENTORY_ORG",
+      "orgKey": "guidepoint security",
+      "opportunityId": "disc_new_hit",
+      "reasons": [
+        "organization_already_in_hotel_opportunity_inventory"
+      ],
+      "allowLiveExaDeepSeed": false
+    },
+    "safeguards": {
+      "productionWriteGuard": {
+        "blocked": true,
+        "code": "AIRTABLE_PRODUCTION_WRITES_NOT_AUTHORIZED",
+        "note": "Canonical Full E2E may dry-run map and plan writes; live Airtable mutations require separate founder approval."
+      },
+      "gdoWrites": 0,
+      "publicationWrites": 0
+    },
+    "missingIntegrations": [],
+    "integrationNotes": [
+      "Canonical Full E2E now invokes buildReusePriorIntelligenceLedger before the research chain and merges org keys into paid-deep inventory dedupe.",
+      "Airtable DG/program/signal reads still require loadSharedIntelligenceFromAirtable=true (read-only); writes remain separately authorized.",
+      "No Demand Generators / Programs / Signals / Contacts tables were created or replaced."
+    ],
+    "checks": {
+      "stableDemandGeneratorIdAcrossHotels": true,
+      "orgIdentityKeyNormalized": true,
+      "sharedOrgRoutesToDemandGenerators": true,
+      "hotelFitRoutedSeparately": true,
+      "hotelOpportunityUsesResearchOrGdoPath": true,
+      "excludedDoesNotWriteCustomerTables": true,
+      "excludedEligibilityBlocksWrites": true,
+      "canonicalIdentitiesResolve": true,
+      "sharedEligibilityAllowsGenerators": true,
+      "hotelResearchRowsCreatedSeparately": true,
+      "compositeKeysDifferByHotel": true,
+      "salesOpportunityIdentityHotelScoped": true,
+      "inventoryDedupeSkipsKnownSharedOrg": true,
+      "productionWriteGuardIntact": true,
+      "gdoNotAutoWrittenByResearchBridge": true,
+      "publicationNotAutoWritten": true,
+      "noNewTablesInvented": true,
+      "reuseModulesRetained": true
+    },
+    "failed": [],
+    "ok": true
+  },
   "persistenceAuth": {
     "activation": {
       "disabledByDefault": true,
@@ -556,8 +735,8 @@
         "firstSeenAt": "2026-09-01T00:00:00.000Z",
         "firstDiscoveredAt": "2026-09-01T00:00:00.000Z",
         "firstDiscoveredRunId": "historical_seed",
-        "lastMaterialChangeAt": "2026-11-18T18:34:02.976Z",
-        "lastMaterialChangeRunId": "gdi_bethesda_live_validation_plan_mwmgmwd6_material",
+        "lastMaterialChangeAt": "2026-11-18T18:38:25.433Z",
+        "lastMaterialChangeRunId": "gdi_bethesda_live_validation_plan_mwmgsivn_material",
         "changedFields": [
           {
             "field": "eventStartDate",
@@ -750,7 +929,7 @@
       "mutationsAllowed": false,
       "note": "Qualified candidates are classified GDO_QUALIFIED_PENDING_AUTHORIZATION only."
     },
-    "generatedAt": "2026-11-18T18:34:02.976Z"
+    "generatedAt": "2026-11-18T18:38:25.433Z"
   },
   "weeklyAutomation": {
     "version": "gdi-bethesda-live-full-e2e-airtable-validation-v1",

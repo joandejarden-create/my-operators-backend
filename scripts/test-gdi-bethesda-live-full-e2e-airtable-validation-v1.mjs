@@ -45,6 +45,19 @@ assert.equal(suite.productionAirtableWrites, false);
 assert.equal(suite.persistenceAuth.paidDoesNotUnlockWrites, true);
 assert.equal(suite.idempotency.repeatCreatesZero, true);
 assert.equal(suite.weeklyChange.descriptionRewriteNonMaterial, true);
+assert.equal(suite.sharedIntelligenceReuse.ok, true);
+assert.equal(
+  suite.sharedIntelligenceReuse.checks.stableDemandGeneratorIdAcrossHotels,
+  true,
+);
+assert.equal(
+  suite.sharedIntelligenceReuse.checks.compositeKeysDifferByHotel,
+  true,
+);
+assert.equal(
+  suite.sharedIntelligenceReuse.checks.noNewTablesInvented,
+  true,
+);
 assert.ok(suite.dedupe.after < suite.dedupe.before);
 
 writeValidationReportPack(OUT, suite);
@@ -64,6 +77,7 @@ const required = [
   "IDEMPOTENCY_TEST_RESULTS.md",
   "WEEKLY_AUTOMATION_DESIGN.md",
   "FOUNDER_NEXT_DECISIONS.md",
+  "SHARED_INTELLIGENCE_REUSE_VERIFICATION.md",
 ];
 for (const name of required) {
   assert.ok(fs.existsSync(path.join(OUT, name)), `missing ${name}`);

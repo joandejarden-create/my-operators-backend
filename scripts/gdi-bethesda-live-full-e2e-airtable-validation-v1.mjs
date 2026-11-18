@@ -24,6 +24,7 @@ const ok =
   suite.persistenceAuth.paidDoesNotUnlockWrites === true &&
   suite.idempotency.repeatCreatesZero === true &&
   suite.weeklyChange.descriptionRewriteNonMaterial === true &&
+  suite.sharedIntelligenceReuse?.ok === true &&
   suite.paidResearchExecuted === false &&
   suite.productionAirtableWrites === false;
 

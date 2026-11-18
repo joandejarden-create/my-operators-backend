@@ -1,6 +1,6 @@
 # Founder executive summary — Bethesda live Full E2E + Airtable validation
 
-Generated: 2026-11-18T18:34:02.976Z
+Generated: 2026-11-18T18:38:25.436Z
 Hotel: Bethesda Marriott (`recLuxvwwxID7U2B8`)
 Pack: `gdi-bethesda-live-full-e2e-airtable-validation-v1`
 
@@ -41,6 +41,10 @@ Discover → Research → Verify Contacts → Qualify → Deduplicate → Write/
 | Description-only rewrite non-material | true |
 | Production writes executed | false |
 | Paid research executed | false |
+
+## Shared intelligence
+
+See `SHARED_INTELLIGENCE_REUSE_VERIFICATION.md`. Existing Demand Generators / Programs / Signals / reuse ledger are retained — not redesigned.
 
 ## STOP
 
