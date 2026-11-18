@@ -19,6 +19,7 @@
 5. **UI states** — loading, empty, error, success for all data-driven UI; no blank components.
 6. **No silent catches** — log or rethrow; never empty `catch () {}`.
 7. **Dealality GitHub merge discipline** — product work in registered `ws-*` homes; short-lived feature branches; no automatic per-task worktrees; merge into `main` then run `npm run dealality:post-merge-sync` so HE/ADP/GDI return to home + FF `origin/main` when safe (preserve dirty/active tasks); see `.cursor/rules/gdi-github-branch-merge-discipline.mdc` and `docs/ai-build-system/POST_MERGE_WORKSPACE_SYNC.md`. Never declare work complete while its required PR remains unmerged unless an explicit blocker is reported.
+8. **Radar authenticated-app acceptance** — Radar/HE visibility, filter, search, map, auth, HE navigation, or dynamic HPC Open/Pipeline changes require PASS on `http://localhost:8080/app#/opportunity-radar` (not API 200 / unit / demo page / CI alone). States: PASS / FAIL / BLOCKED; tests cannot upgrade BLOCKED→PASS. See `docs/ai-build-system/RADAR_AUTHENTICATED_APP_ACCEPTANCE_GATE.md` and `.cursor/rules/dealality-radar-authenticated-acceptance-gate.mdc`.
 
 ## Dealality AI Build Operating System
 
@@ -35,6 +36,7 @@ For meaningful product, platform, data, or AI-output work, read the relevant doc
 - `docs/ai-build-system/BUILD_DECISIONS.md`
 - `docs/ai-build-system/NAMING_AND_COPY_GUIDE.md`
 - `docs/ai-build-system/DEALALITY_QA_CHECKLIST.md`
+- `docs/ai-build-system/RADAR_AUTHENTICATED_APP_ACCEPTANCE_GATE.md` — HE/Radar authenticated `/app#/opportunity-radar` gate
 
 **Also read when the task touches** brand/operator profiles, market intelligence, PDFs, source extraction, platform content, AI-generated content, validation status, confidence, or source-backed intelligence:
 

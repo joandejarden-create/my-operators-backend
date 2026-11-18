@@ -52,6 +52,10 @@ Applies to **all** Dealality development in this repository (GDI, ADP, Census, B
 - If local changes prevent safe synchronization of the primary checkout, **preserve them and report the blocker**—do not create more unmanaged worktrees as a workaround.
 - Never force `main` onto a worktree that already has `main` checked out elsewhere.
 
+## Radar / Hotel Explorer acceptance (in addition to CI)
+
+For Radar changes that affect hotel visibility, filtering, search, mapping, authentication, or Radar → Hotel Explorer navigation, green CI and automated gates are **not sufficient**. Declare **PASS** / **FAIL** / **BLOCKED** from authenticated verification at `http://localhost:8080/app#/opportunity-radar`. Automated tests alone cannot upgrade **BLOCKED** → **PASS**. Contract: `docs/ai-build-system/RADAR_AUTHENTICATED_APP_ACCEPTANCE_GATE.md`.
+
 ## Safety
 
 - A successful GitHub merge is **not** the same as successful local synchronization—always sync and verify the primary checkout.

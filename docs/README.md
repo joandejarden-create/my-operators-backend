@@ -25,6 +25,8 @@ docs/
 | [ai-build-system/OLD_HOME_ANTI_GLITCH_RULES.md](./ai-build-system/OLD_HOME_ANTI_GLITCH_RULES.md) | Old Home FOUC: bake final chrome before reveal |
 | [ai-build-system/CURSOR_PROMPTS.md](./ai-build-system/CURSOR_PROMPTS.md) | Copy-paste prompts for builds and QA |
 | [ai-build-system/BUILD_DECISIONS.md](./ai-build-system/BUILD_DECISIONS.md) | Living decision log |
+| [ai-build-system/RADAR_AUTHENTICATED_APP_ACCEPTANCE_GATE.md](./ai-build-system/RADAR_AUTHENTICATED_APP_ACCEPTANCE_GATE.md) | Mandatory authenticated `/app#/opportunity-radar` acceptance (PASS/FAIL/BLOCKED) |
+| [ai-build-system/DEALALITY_DEV_OS.md](./ai-build-system/DEALALITY_DEV_OS.md) | Development OS overview (workspaces, merge, Radar gate) |
 
 ## Data & Intelligence
 

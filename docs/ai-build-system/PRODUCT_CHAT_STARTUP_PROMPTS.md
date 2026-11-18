@@ -16,9 +16,10 @@ On start:
 2. Run: git branch --show-current && git rev-parse --short HEAD && git status -sb
 3. Run: npm run dealality:git-preflight -- --op status-check --stream he
 4. If idle on home and behind origin/main: npm run dealality:post-merge-sync -- --mode status (Integration applies sync after merges)
-5. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline
+5. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline + dealality-radar-authenticated-acceptance-gate
 
-Workflow: one task → branch from latest origin/main inside this workspace → implement → targeted tests → commit → push → PR → STOP for Integration Controller merge + post-merge sync.
+Workflow: one task → branch from latest origin/main inside this workspace → implement → targeted tests → authenticated /app#/opportunity-radar acceptance (PASS/FAIL/BLOCKED) → commit → push → PR → STOP for Integration Controller merge + post-merge sync.
+For Radar visibility/filter/search/map/auth/HE-navigation/HPC changes: authenticated acceptance at http://localhost:8080/app#/opportunity-radar is mandatory. CI/unit/API/demo alone cannot PASS. See docs/ai-build-system/RADAR_AUTHENTICATED_APP_ACCEPTANCE_GATE.md.
 Do not create unregistered worktrees. Do not force-push. Do not merge to main. Do not touch the dirty primary checkout.
 No Airtable writes, paid research, or deploy without founder authorization.
 Shared files (package.json, radar HE surfaces, registry): coordinate with Integration Controller.

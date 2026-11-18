@@ -50,6 +50,20 @@ Use before finalizing any feature, content import, or significant change.
 - [ ] Does it avoid exposing internal-only data externally?
 - [ ] Does it avoid showing unreviewed intelligence to the wrong user?
 
+## Radar / Hotel Explorer authenticated-app QA
+
+For Radar changes affecting visibility, filtering, search, mapping, authentication, or Hotel Explorer navigation:
+
+- [ ] Verified in authenticated app at `http://localhost:8080/app#/opportunity-radar` (not only a standalone demo/share page).
+- [ ] Auth + required APIs succeed without authorization errors.
+- [ ] Expected hotels appear in the live app dataset, map/list/search, selection, and Hotel Explorer open path.
+- [ ] Customer/share isolation still enforced.
+- [ ] Dynamic HPC (if in scope): Open/Pipeline hotels appear without hotel-specific allowlists.
+- [ ] Evidence recorded (SHA, URL, session type, API status, expected vs observed hotels, screenshots) **without** tokens/cookies/secrets.
+- [ ] Completion state declared: **PASS** / **FAIL** / **BLOCKED** (automated tests alone cannot upgrade BLOCKED → PASS).
+
+Contract: [RADAR_AUTHENTICATED_APP_ACCEPTANCE_GATE.md](./RADAR_AUTHENTICATED_APP_ACCEPTANCE_GATE.md)
+
 ## Definition of Done
 
 A feature is done only when:
@@ -61,6 +75,7 @@ A feature is done only when:
 - It respects data governance.
 - It has tests or a test plan.
 - It updates relevant docs if durable decisions were made.
+- Radar/HE visibility or navigation changes also satisfy the authenticated `/app#/opportunity-radar` acceptance gate (**PASS**), not merely CI/unit signals.
 
 ## Related Documentation
 
@@ -68,3 +83,4 @@ A feature is done only when:
 - Naming: [NAMING_AND_COPY_GUIDE.md](./NAMING_AND_COPY_GUIDE.md)
 - Content QA: [../data-intelligence/CONTENT_QA_CHECKLIST.md](../data-intelligence/CONTENT_QA_CHECKLIST.md)
 - PR matrix: [../dealality-pr-validation-matrix.md](../dealality-pr-validation-matrix.md)
+- Radar authenticated-app gate: [RADAR_AUTHENTICATED_APP_ACCEPTANCE_GATE.md](./RADAR_AUTHENTICATED_APP_ACCEPTANCE_GATE.md)
