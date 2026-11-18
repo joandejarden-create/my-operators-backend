@@ -1,0 +1,75 @@
+{
+  "schema": "ADP_PHASE1_1_CUSTOMER_SURFACE_ROOT_CAUSE_MATRIX_V1",
+  "generatedAt": "2026-11-18T08:53:55.061Z",
+  "beforeFailureCount": 36,
+  "afterFailureCount": 33,
+  "gatesNowPassing": [
+    "EXECUTIVE_READ_V3",
+    "EXECUTIVE_SCAN_LAYER_PRESENT",
+    "EXECUTIVE_V3_SYNTHESIS_PRESENT",
+    "OLD_WHAT_DATA_SAYS_ABSENT",
+    "HYBRID_LAYOUT",
+    "SHARE",
+    "PRINT",
+    "PROVIDER_PRESENCE",
+    "TRENDS",
+    "HISTORICAL_IMMUTABILITY"
+  ],
+  "remainingByGate": {
+    "TERRITORY_SUBJECT_RATES": 5,
+    "BPP": 24,
+    "ALL_EVIDENCE_LINKS_NONEMPTY": 1,
+    "ALL_EVIDENCE_READABLE": 1,
+    "ALL_EVIDENCE_LINKS_CLIENT_READY": 1,
+    "DISPLACEMENT_COUNT_EVIDENCE_EXACT_PARITY": 1
+  },
+  "rows": [
+    {
+      "gate": "TERRITORY_SUBJECT_RATES",
+      "count": 5,
+      "rootCause": "HISTORICAL_COMPATIBILITY_VS_CURRENT_CERTIFICATION",
+      "detail": "Bethesda latest published period rates differ from locked BETHESDA_EXPECTED_SUBJECT_RATES (prior period).",
+      "phase11Action": "DEFERRED — do not retune constants or grandfather new period without governed re-cert",
+      "fixableNow": false
+    },
+    {
+      "gate": "BPP",
+      "count": 24,
+      "rootCause": "BPP_ELIGIBILITY_BRAND_PORTFOLIO",
+      "classes": {
+        "clientReady gate fail": 12,
+        "MEASUREMENT_NOT_ATTEMPTED": 4,
+        "PEER_SET_NOT_FROZEN": 7,
+        "UNKNOWN": 1
+      },
+      "detail": "AFFILIATION_MISSING cleared for 8 hotels via static mappings; remaining are MEASUREMENT_NOT_ATTEMPTED / PEER_SET_NOT_FROZEN / smoke UNKNOWN — fail-closed correct.",
+      "phase11Action": "MAPPINGS_ADDED; measurement/peer freeze deferred to Phase 2",
+      "fixableNow": "partial"
+    },
+    {
+      "gate": "ALL_EVIDENCE_*",
+      "count": 3,
+      "rootCause": "EVIDENCE_CARD_CORRECTNESS_AND_FIXTURE_DRIFT",
+      "detail": "427 empty evidence links — published snapshots lack runtime periods / self-contained present-missing packs.",
+      "phase11Action": "DEFERRED — do not invent evidence; restore runtime or bake self-contained packs in Phase 2",
+      "fixableNow": false
+    },
+    {
+      "gate": "DISPLACEMENT_COUNT_EVIDENCE_EXACT_PARITY",
+      "count": 1,
+      "rootCause": "HARNESS_PLUS_FIXTURE_DRIFT",
+      "detail": "Harness hardened for null period; smoke_test_synthetic still fails assert on report. Remaining commercial period rebuilds need runtime periods.",
+      "phase11Action": "HARNESS_HARDENED; synthetic smoke noise remains",
+      "fixableNow": "partial"
+    },
+    {
+      "gate": "EXECUTIVE_SCAN_LAYER / LEFT_CONSTRAINT / HYBRID / SHARE / PRINT",
+      "count": 0,
+      "rootCause": "BROKEN_IMPLEMENTATION_FIXED",
+      "detail": "Missing runtime period skipped scan attach; JW left-constraint contradicted primary issue family.",
+      "phase11Action": "FIXED in published-read-service + executive-scan-layer-v1",
+      "fixableNow": true,
+      "status": "PASS"
+    }
+  ]
+}

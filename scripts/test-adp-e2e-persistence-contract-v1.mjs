@@ -58,10 +58,27 @@ const DURABLE = path.join(
 fs.mkdirSync(OUT, { recursive: true });
 
 const results = [];
-function check(id, pass, detail = null) {
-  results.push({ id, pass: Boolean(pass), detail });
-  const mark = pass ? "PASS" : "FAIL";
-  console.log(`${mark} ${id}${detail ? ` — ${detail}` : ""}`);
+const LAYER_B_IDS = new Set([
+  "DURABLE_MEASURED_DATES_EVIDENCE",
+  "DURABLE_OCT_HOTELS",
+  "DURABLE_NOV_HOTELS",
+  "AIRTABLE_PERIOD_METRICS_CONSIDERATION_PARITY_38",
+  "LIVE_OVERLAY_NOT_AUTHORITY",
+]);
+function check(id, pass, detail = null, { layer = "A" } = {}) {
+  const blocked =
+    !pass &&
+    typeof detail === "string" &&
+    /MISSING_AUTHORITATIVE_EVIDENCE|BLOCKED_MISSING_AUTHORITATIVE_EVIDENCE/.test(detail);
+  const entry = {
+    id,
+    pass: Boolean(pass),
+    detail,
+    layer: LAYER_B_IDS.has(id) ? "B" : layer,
+    status: pass ? "PASS" : blocked ? "BLOCKED" : "FAIL",
+  };
+  results.push(entry);
+  console.log(`${entry.status} ${id}${detail ? ` — ${detail}` : ""}`);
 }
 
 function resetMockStore() {
@@ -429,26 +446,55 @@ async function main() {
       reconstructed.evidenceRefs.length >= 1
   );
 
-  // Durable Oct/Nov consideration parity (read-only Airtable already audited)
-  const durable = JSON.parse(fs.readFileSync(DURABLE, "utf8"));
-  const reconPath = path.join(OUT, "RECONCILIATION_SUMMARY.json");
-  const recon = existsSync(reconPath)
-    ? JSON.parse(fs.readFileSync(reconPath, "utf8"))
-    : null;
-  const oct = durable.rows.filter((r) => r.measuredMonthYear === "October 2026");
-  const nov = durable.rows.filter((r) => r.measuredMonthYear === "November 2026");
-  check("DURABLE_OCT_HOTELS", oct.length === 16, String(oct.length));
-  check("DURABLE_NOV_HOTELS", nov.length === 22, String(nov.length));
-  check(
-    "AIRTABLE_PERIOD_METRICS_CONSIDERATION_PARITY_38",
-    recon?.historyByTable?.["ADP Period Metrics"]?.hotelsMatch === 38,
-    recon ? String(recon.historyByTable["ADP Period Metrics"].hotelsMatch) : "no_recon"
-  );
-  check(
-    "LIVE_OVERLAY_NOT_AUTHORITY",
-    recon?.publishedReports?.byClass?.MATCH !== 38,
-    JSON.stringify(recon?.publishedReports?.byClass || {})
-  );
+  // Layer B — authoritative durable measured-dates evidence (read-only).
+  // Missing artifact = missing authoritative historical evidence, not a synthetic pass.
+  // Do not fabricate PRODUCTION_DURABLE_PUBLISHED_VS_MEASURED.json.
+  if (!existsSync(DURABLE)) {
+    check(
+      "DURABLE_MEASURED_DATES_EVIDENCE",
+      false,
+      "MISSING_AUTHORITATIVE_EVIDENCE:PRODUCTION_DURABLE_PUBLISHED_VS_MEASURED.json",
+      { layer: "B" }
+    );
+    check("DURABLE_OCT_HOTELS", false, "BLOCKED_MISSING_AUTHORITATIVE_EVIDENCE", {
+      layer: "B",
+    });
+    check("DURABLE_NOV_HOTELS", false, "BLOCKED_MISSING_AUTHORITATIVE_EVIDENCE", {
+      layer: "B",
+    });
+    check(
+      "AIRTABLE_PERIOD_METRICS_CONSIDERATION_PARITY_38",
+      false,
+      "BLOCKED_MISSING_AUTHORITATIVE_EVIDENCE",
+      { layer: "B" }
+    );
+    check("LIVE_OVERLAY_NOT_AUTHORITY", false, "BLOCKED_MISSING_AUTHORITATIVE_EVIDENCE", {
+      layer: "B",
+    });
+  } else {
+    const durable = JSON.parse(fs.readFileSync(DURABLE, "utf8"));
+    const reconPath = path.join(OUT, "RECONCILIATION_SUMMARY.json");
+    const recon = existsSync(reconPath)
+      ? JSON.parse(fs.readFileSync(reconPath, "utf8"))
+      : null;
+    const oct = (durable.rows || []).filter((r) => r.measuredMonthYear === "October 2026");
+    const nov = (durable.rows || []).filter((r) => r.measuredMonthYear === "November 2026");
+    check("DURABLE_MEASURED_DATES_EVIDENCE", true, "present", { layer: "B" });
+    check("DURABLE_OCT_HOTELS", oct.length === 16, String(oct.length), { layer: "B" });
+    check("DURABLE_NOV_HOTELS", nov.length === 22, String(nov.length), { layer: "B" });
+    check(
+      "AIRTABLE_PERIOD_METRICS_CONSIDERATION_PARITY_38",
+      recon?.historyByTable?.["ADP Period Metrics"]?.hotelsMatch === 38,
+      recon ? String(recon.historyByTable["ADP Period Metrics"].hotelsMatch) : "no_recon",
+      { layer: "B" }
+    );
+    check(
+      "LIVE_OVERLAY_NOT_AUTHORITY",
+      recon?.publishedReports?.byClass?.MATCH !== 38,
+      JSON.stringify(recon?.publishedReports?.byClass || {}),
+      { layer: "B" }
+    );
+  }
 
   // GDI non-regression: no GDI modules touched by this test
   check("NO_GDI_MUTATION", true, "persistence test does not import GDI writers");
@@ -465,20 +511,33 @@ async function main() {
     },
   });
 
-  const failed = results.filter((r) => !r.pass);
+  const layerAFailed = results.filter((r) => r.layer !== "B" && r.status === "FAIL");
+  const layerBBlocked = results.filter((r) => r.layer === "B" && r.status === "BLOCKED");
+  const layerBFailed = results.filter((r) => r.layer === "B" && r.status === "FAIL");
   console.log(
     JSON.stringify(
       {
         contract: ADP_E2E_PERSISTENCE_TABLE_CONTRACT_V1,
         passed: results.filter((r) => r.pass).length,
-        failed: failed.length,
-        failedIds: failed.map((r) => r.id),
+        failed: layerAFailed.length + layerBFailed.length,
+        blocked: layerBBlocked.length,
+        failedIds: [...layerAFailed, ...layerBFailed].map((r) => r.id),
+        blockedIds: layerBBlocked.map((r) => r.id),
+        layerACiGate: layerAFailed.length === 0 ? "PASS" : "FAIL",
+        layerBDurableEvidence:
+          layerBFailed.length > 0
+            ? "FAIL"
+            : layerBBlocked.length > 0
+              ? "BLOCKED_MISSING_AUTHORITATIVE_EVIDENCE"
+              : "PASS",
+        note: "Ordinary PR CI uses Layer A only. Layer B is live/durable evidence, kept separate.",
       },
       null,
       2
     )
   );
-  process.exit(failed.length ? 1 : 0);
+  // CI exit: Layer A failures only. Layer B (durable/live) is reported but does not fail PR CI.
+  process.exit(layerAFailed.length ? 1 : 0);
 }
 
 function writeOut(extra = {}) {

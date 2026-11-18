@@ -1,11 +1,17 @@
 #!/usr/bin/env node
 /**
- * Permanent Full E2E certification regression fixtures.
+ * Permanent Full E2E certification — Layer A offline CI fixtures.
+ *
+ * Uses sanitized synthetic fixtures under
+ * fixtures/ai-demand-positioning/permanent-full-e2e-offline/.
+ * Does NOT require data/adp-durable-published (Layer B).
+ * Synthetic fixtures are NOT production proof.
  */
 import assert from "node:assert/strict";
 import { readFileSync, existsSync } from "fs";
-import { join } from "path";
-import { loadPeriod, loadPropertyProfile } from "../lib/ai-demand-positioning/data-model.js";
+import { createHash } from "crypto";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
 import {
   certifyAdpMeasurementReconciliation,
   buildCorrectedPackageFromCertification,
@@ -17,20 +23,36 @@ import {
   attachPermanentCertificationToManifest,
   ENFORCEMENT_POINTS,
 } from "../lib/ai-demand-positioning/certification/permanent-full-e2e/adp-permanent-full-e2e-certification-gate-v1.js";
-import { canAdvanceTo, CERTIFICATION_LIFECYCLE_STATES } from "../lib/ai-demand-positioning/certification/permanent-full-e2e/adp-permanent-full-e2e-lifecycle-states-v1.js";
+import {
+  canAdvanceTo,
+  CERTIFICATION_LIFECYCLE_STATES,
+} from "../lib/ai-demand-positioning/certification/permanent-full-e2e/adp-permanent-full-e2e-lifecycle-states-v1.js";
 
-const CURRENT = "data/adp-durable-published/current";
-const SNAP = "data/adp-durable-published/snapshots";
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const FIXTURE_ROOT = join(
+  ROOT,
+  "fixtures/ai-demand-positioning/permanent-full-e2e-offline"
+);
 
-function loadPkg(propertyId) {
-  const man = JSON.parse(
-    readFileSync(join(CURRENT, propertyId, "manifest.json"), "utf8")
-  );
-  const wrap = JSON.parse(
-    readFileSync(join(SNAP, propertyId, man.reportFile), "utf8")
-  );
-  return { man, wrap, payload: wrap.payload || wrap };
+function loadJson(name) {
+  const path = join(FIXTURE_ROOT, name);
+  assert.ok(existsSync(path), `missing fixture ${name}`);
+  return JSON.parse(readFileSync(path, "utf8"));
 }
+
+function assertChecksum(name, expected) {
+  const text = readFileSync(join(FIXTURE_ROOT, name), "utf8");
+  const actual = createHash("sha256").update(text).digest("hex");
+  assert.equal(actual, expected, `checksum drift for ${name}`);
+}
+
+const manifest = loadJson("MANIFEST.json");
+assert.equal(manifest.kind, "SYNTHETIC_OFFLINE_CI");
+assert.equal(manifest.notProductionProof, true);
+for (const [name, sha] of Object.entries(manifest.checksums || {})) {
+  assertChecksum(name, sha);
+}
+console.log("PASS offline fixture provenance + checksums");
 
 // --- Lifecycle order ---
 {
@@ -42,98 +64,64 @@ function loadPkg(propertyId) {
   console.log("PASS lifecycle no-skip");
 }
 
-// --- Hilton Provider Presence mismatch fixture ---
+// --- Provider Presence / scenario mismatch → correct via evidence ---
 {
-  const { man, wrap, payload } = loadPkg("adp_hilton_times_square");
-  const period = loadPeriod(man.latestPeriodId);
-  const profile = loadPropertyProfile("adp_hilton_times_square");
+  const profile = loadJson("property-profile.json");
+  const { observations, periodId, propertyId } = loadJson("observations.json");
+  const baked = loadJson("baked-package.json");
+  const frozen = baked.executiveMetrics.considerationRate.eligibleScenarioIds;
+
   assert.equal(
-    payload.executiveMetrics.scenarioPresence.eligibleScenarios,
+    baked.executiveMetrics.scenarioPresence.eligibleScenarios,
     53
   );
-  assert.equal(
-    payload.executiveMetrics.considerationRate.eligibleScenarioIds.length,
-    47
-  );
+  assert.equal(frozen.length, 8);
 
-  // Baked package fails customer parity
   const bakedParity = certifyAdpCustomerVisibleParity({
-    propertyId: "adp_hilton_times_square",
-    approvedPackage: payload,
+    propertyId,
+    approvedPackage: baked,
   });
-  assert.equal(bakedParity.ok, false, "Hilton baked package must fail parity");
+  assert.equal(bakedParity.ok, false, "baked package must fail parity");
 
-  const frozen = payload.executiveMetrics.considerationRate.eligibleScenarioIds;
   const evidenceCert = certifyAdpMeasurementReconciliation({
-    propertyId: "adp_hilton_times_square",
-    periodId: man.latestPeriodId,
-    observations: period.observations,
+    propertyId,
+    periodId,
+    observations,
     propertyProfile: profile,
     packagePayload: {
       executiveMetrics: {
-        considerationRate: payload.executiveMetrics.considerationRate,
+        considerationRate: baked.executiveMetrics.considerationRate,
         scenarioPresence: {
-          ...payload.executiveMetrics.scenarioPresence,
+          ...baked.executiveMetrics.scenarioPresence,
           eligibleScenarios: frozen.length,
         },
       },
     },
     frozenEligibleScenarioIds: frozen,
-    methodologyFingerprintSha256: wrap.methodologyFingerprintSha256,
+    methodologyFingerprintSha256: baked.methodologyFingerprintSha256,
   });
-  assert.equal(evidenceCert.ok, true, "Hilton evidence must certify");
+  assert.equal(evidenceCert.ok, true, "evidence must certify");
   assert.equal(
     evidenceCert.canonicalMetrics.consideration.presentObservations,
-    18
+    manifest.expected.certifiedPresentObservations
   );
 
-  const corrected = buildCorrectedPackageFromCertification(payload, evidenceCert);
+  const corrected = buildCorrectedPackageFromCertification(baked, evidenceCert);
   assert.equal(corrected.ok, true);
   const correctedParity = certifyAdpCustomerVisibleParity({
-    propertyId: "adp_hilton_times_square",
+    propertyId,
     approvedPackage: corrected.payload,
   });
-  assert.equal(correctedParity.ok, true, "corrected Hilton must pass parity");
-  console.log("PASS Hilton Provider Presence mismatch fixture");
-}
+  assert.equal(correctedParity.ok, true, "corrected package must pass parity");
 
-// --- Casas inflated runtime mentioned flags ---
-{
-  const { man, wrap, payload } = loadPkg("adp_casas_del_xvi");
-  const period = loadPeriod(man.latestPeriodId);
-  const profile = loadPropertyProfile("adp_casas_del_xvi");
-  const frozen = payload.executiveMetrics.considerationRate.eligibleScenarioIds;
-  const cert = certifyAdpMeasurementReconciliation({
-    propertyId: "adp_casas_del_xvi",
-    periodId: man.latestPeriodId,
-    observations: period.observations,
-    propertyProfile: profile,
-    packagePayload: {
-      executiveMetrics: {
-        considerationRate: payload.executiveMetrics.considerationRate,
-        scenarioPresence: {
-          ...payload.executiveMetrics.scenarioPresence,
-          eligibleScenarios: frozen.length,
-        },
-      },
-    },
-    frozenEligibleScenarioIds: frozen,
-    methodologyFingerprintSha256: wrap.methodologyFingerprintSha256,
-  });
-  assert.equal(cert.ok, true);
-  assert.equal(cert.canonicalMetrics.consideration.rate, 10.1);
-  assert.equal(cert.canonicalMetrics.consideration.presentObservations, 17);
-  // Stored flags would inflate — certify path must ignore them
-  const storedPresent = period.observations.filter(
-    (o) =>
-      frozen.includes(o.scenarioId) &&
-      o.mentioned === true
+  const staleMentioned = observations.filter(
+    (o) => frozen.includes(o.scenarioId) && o.mentioned === true
   ).length;
   assert.ok(
-    storedPresent > 17,
+    staleMentioned > evidenceCert.canonicalMetrics.consideration.presentObservations,
     "fixture expects stale stored mentioned flags > certified"
   );
-  console.log("PASS Casas del XVI inflated runtime flags fixture");
+  console.log("PASS offline provider mismatch + runtime-flag ignore");
 }
 
 // --- Legacy 78 contamination ---
@@ -231,16 +219,16 @@ function loadPkg(propertyId) {
   console.log("PASS manifest certification artifact gate");
 }
 
-// --- Prepared Group B packages exist and certify ---
+// --- Prepared offline package exists and certifies ---
 {
-  const hiltonPath =
-    "reports/dealality-adp-permanent-full-e2e-certification-v1/prepared-group-b-packages/adp_hilton_times_square.corrected-package.json";
-  assert.ok(existsSync(hiltonPath), "Hilton corrected package must be prepared");
-  const prep = JSON.parse(readFileSync(hiltonPath, "utf8"));
+  const prep = loadJson("prepared-package.json");
   assert.equal(prep.published, false);
   assert.equal(prep.publicationAuthorized, false);
   assert.equal(prep.measurementCertification.ok, true);
-  assert.equal(prep.payload.executiveMetrics.scenarioPresence.eligibleScenarios, 47);
+  assert.equal(
+    prep.payload.executiveMetrics.scenarioPresence.eligibleScenarios,
+    prep.payload.executiveMetrics.considerationRate.eligibleScenarioIds.length
+  );
   const pkgCert = certifyAdpImmutablePackage({
     packagePayload: prep.payload,
     measurementCertification: {
@@ -253,22 +241,35 @@ function loadPkg(propertyId) {
     },
   });
   assert.equal(pkgCert.ok, true);
-  console.log("PASS prepared Group B package certification");
+  console.log("PASS prepared offline package certification");
 }
 
 // --- HTTP 200 insufficient (browser blocked) ---
 {
-  const { payload } = loadPkg("adp_hilton_times_square");
+  const prep = loadJson("prepared-package.json");
   const parity = certifyAdpCustomerVisibleParity({
-    propertyId: "adp_hilton_times_square",
-    approvedPackage: payload,
+    propertyId: prep.propertyId,
+    approvedPackage: prep.payload,
     surfaces: {
-      shareApi: { httpStatus: 200, payload },
-      browser: { httpStatus: 200, payload, blockedReport: true },
+      shareApi: { httpStatus: 200, payload: prep.payload },
+      browser: { httpStatus: 200, payload: prep.payload, blockedReport: true },
     },
   });
   assert.equal(parity.ok, false);
   console.log("PASS HTTP 200 but browser blocked");
 }
 
-console.log("OK test-adp-permanent-full-e2e-certification-v1");
+console.log(
+  JSON.stringify(
+    {
+      ok: true,
+      layer: "A",
+      gate: "test:adp-permanent-full-e2e-certification-v1",
+      fixtureRoot: "fixtures/ai-demand-positioning/permanent-full-e2e-offline",
+      notProductionProof: true,
+    },
+    null,
+    2
+  )
+);
+console.log("OK test-adp-permanent-full-e2e-certification-v1 (Layer A offline)");

@@ -1,4 +1,7 @@
-# Local handoff — after Phase 1 (Radar HE + ADP gates)
+# Local handoff — after Phase 1 / Phase 1.1 (Radar HE + ADP gates)
+
+> **Phase 1.1 package:** `phase-1.1/FOUNDER_STOP_PHASE1_1.md` and sibling reports in `phase-1.1/`.  
+> **Do not merge PR #364** until founder review of Phase 1.1.
 
 ## Git identity
 
