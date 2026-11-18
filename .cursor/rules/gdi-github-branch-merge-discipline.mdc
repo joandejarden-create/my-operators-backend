@@ -9,16 +9,21 @@ Applies to **all** Dealality development in this repository (GDI, ADP, Census, B
 
 ## Canonical workspace
 
-1. The permanent daily development workspace is:
-   `C:\Dev\dealality\my-operators-backend`
-2. `main` is the authoritative integration branch.
-3. Start every new task by verifying the current checkout and synchronizing with the latest `origin/main` when safe.
-4. Do **not** treat temporary `wt-*` folders, Cursor-created worktrees, or merged feature branches as the everyday development home.
+1. **Integration Controller** (merges + governance) lives at:
+   `C:\Dev\dealality\my-operators-backend` on synchronized `main`.
+2. Product streams use registered permanent workspaces (not the primary) when provisioned:
+   - Hotel Explorer — `C:\Dev\dealality\ws-hotel-explorer`
+   - ADP — `C:\Dev\dealality\ws-adp`
+   - GDI — `C:\Dev\dealality\ws-gdi`
+   Registry: `docs/ai-build-system/worktree-registry.json`. Rules: `.cursor/rules/dealality-worktree-governance.mdc`.
+3. `main` is the authoritative integration branch.
+4. Start every new task with `npm run dealality:git-preflight` and synchronize with latest `origin/main` when safe.
+5. Do **not** treat temporary `wt-*` folders, Cursor-created worktrees, or merged feature branches as everyday product homes. Do **not** create a worktree per task.
 
 ## Required workflow
 
-1. Open / use the primary folder on synchronized `main`.
-2. For changes that need a PR, create a **short-lived feature branch from the latest `main`**, preferably **inside the primary checkout** when safe.
+1. Open / use the **registered workspace for the stream** (Integration on primary `main`; product work on `ws-*`).
+2. For changes that need a PR, create a **short-lived feature branch from the latest `main`** inside that registered workspace.
 3. Complete implementation and required tests.
 4. Commit all relevant code, research manifests, and reports for that task.
 5. **Before opening or updating the PR**, run repository CI prechecks:
