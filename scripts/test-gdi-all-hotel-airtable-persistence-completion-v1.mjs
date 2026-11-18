@@ -20,9 +20,12 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 // schema proposal present but not applied
 assert.equal(
   PROPOSED_GDI_HOTEL_RESEARCH_OPPORTUNITIES.status,
-  "REQUIRES_FOUNDER_SCHEMA_APPROVAL",
+  "CREATED_IN_AIRTABLE",
 );
-assert.equal(PROPOSED_GDI_HOTEL_RESEARCH_OPPORTUNITIES.proposedTableId, null);
+assert.equal(
+  PROPOSED_GDI_HOTEL_RESEARCH_OPPORTUNITIES.proposedTableId,
+  "tblbkDj0vhQLfrssV",
+);
 assert.equal(COMPLETE_PERSISTENCE_CONTRACT.schemaChangeGuard.blocked, true);
 
 // research-only classification (no GDO)
@@ -37,7 +40,7 @@ assert.equal(COMPLETE_PERSISTENCE_CONTRACT.schemaChangeGuard.blocked, true);
     { hotelId: "recTEST" },
   );
   assert.equal(cls.layer, RESEARCH_LIFECYCLE_LAYER.RESEARCH_INVENTORY);
-  assert.equal(cls.schemaReady, false);
+  assert.equal(cls.schemaReady, true);
   assert.equal(cls.commerciallyQualified, false);
   assert.ok(!cls.eligibility.allowedTables.includes("Group Demand Opportunities"));
 }
@@ -57,7 +60,7 @@ assert.equal(COMPLETE_PERSISTENCE_CONTRACT.schemaChangeGuard.blocked, true);
   assert.equal(cls.layer, RESEARCH_LIFECYCLE_LAYER.RESEARCH_INVENTORY);
   assert.equal(cls.commerciallyQualified, true);
   assert.equal(cls.gdoLayer, RESEARCH_LIFECYCLE_LAYER.QUALIFIED_GDO);
-  assert.equal(cls.schemaReady, false);
+  assert.equal(cls.schemaReady, true);
 }
 
 // YOTEL forbidden recreate
