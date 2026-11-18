@@ -1,0 +1,100 @@
+{
+  "version": "gdi-full-e2e-fourteen-segment-discovery-state-v1",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "segmentId": "professional_event_planners",
+  "applicable": true,
+  "status": "BLOCKED",
+  "coverageStatus": "PARTIAL",
+  "completionDecision": "NOT_COMPLETE",
+  "completionRationale": "PAID_PROVIDER_REQUIRES_FOUNDER_AUTHORIZATION",
+  "executionStatus": "EXECUTION_BLOCKED",
+  "executorVersion": "gdi-segment-discovery-executor-v1",
+  "executionModuleVersion": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+  "researchRunId": "gdi_disc_run_mwm3nhpi_4b44d7",
+  "researchHorizon": null,
+  "querySpecs": [
+    {
+      "id": "pep_prompt",
+      "segmentId": "professional_event_planners",
+      "intent": "professional_event_planner_prompt",
+      "query": "Task: PROFESSIONAL_EVENT_PLANNER_PARTNERSHIP_DISCOVERY | Discover actual planning companies, DMCs, meeting planners, and event-management businesses serving the hotel (verified hotel address, the hotel market) that can influence hotel bookings — guestroom blocks, wedding accommodation, banquets/catering, meeting space, private dining, or resort celebrations. | The commercial target is the planner / intermediary firm — not the conference, association, or host organization alone. | Conferences, galas, and published events are evidence of planner activity; use them to identify the credited planner, PCO, DMC, or event-management company. Do not substitute the conference brand for the planner identity. | Prioritize firms with evidence of recurring or multi-client event production and genuine hotel-sourcing influence — not directory popularity rankings. | Include planners physically based in the market AND planners demonstrably producing events in the destination even if their office is elsewhere. | Do NOT classify generic decorators, florists, photographers, equipment suppliers, or entertainment vendors as demand producers unless hotel-sourcing influence is independently evidenced. | Separate office location, verified service area, and actual event destination history. | Do not invent client counts, annual weddings, contracts, or production volume. | Local terminology: wedding planner; destination wedding planner; corporate event management company; event planning agency; meeting planner; boutique event producer | Channels: official_planner_websites, verified_planner_portfolios,"
+    },
+    {
+      "id": "pep_q1",
+      "segmentId": "professional_event_planners",
+      "intent": "planner_dmc_firm",
+      "query": "DMV (\"event planner\" OR \"meeting planner\" OR \"wedding planner\" OR DMC OR \"destination management\" OR \"event management company\" OR PCO) (hotel OR \"room block\" OR banquet OR catering) (portfolio OR clients OR \"preferred hotels\") -\"annual conference agenda\""
+    },
+    {
+      "id": "pep_q2",
+      "segmentId": "professional_event_planners",
+      "intent": "planner_not_conference_brand",
+      "query": "DMV (\"planned by\" OR \"produced by\" OR \"event management by\") (planner OR DMC OR \"event company\") (wedding OR corporate OR gala) hotel"
+    }
+  ],
+  "providerInvocations": [
+    {
+      "at": "2026-11-18T12:30:48.213Z",
+      "fingerprint": "544f8be6c359",
+      "researchRunId": "gdi_disc_run_mwm3nhpi_4b44d7",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 0,
+      "costUsd": 0,
+      "retrievalMode": "BLOCKED_PAID",
+      "counted": true,
+      "stopReason": "PAID_PROVIDER_REQUIRES_FOUNDER_AUTHORIZATION"
+    }
+  ],
+  "cacheReferences": [],
+  "rawCandidateReferences": [],
+  "candidateIds": [],
+  "extractedCandidateIds": [],
+  "deduplicatedCandidateIds": [],
+  "unresolvedCandidateIds": [],
+  "completedCandidateIds": [],
+  "evidenceProvenance": [],
+  "rejectionReasons": [],
+  "remainingResearchGaps": [
+    "live_provider_not_executed",
+    "no_http_source_evidence_in_this_pass",
+    "discovery_not_completed"
+  ],
+  "providerUsage": {
+    "attempts": 1,
+    "liveCalls": 0,
+    "cacheHits": 0,
+    "costUsd": 0,
+    "byProvider": {
+      "BLOCKED_PAID": {
+        "calls": 0,
+        "costUsd": 0
+      }
+    }
+  },
+  "stopReason": "PAID_PROVIDER_REQUIRES_FOUNDER_AUTHORIZATION",
+  "lastSuccessfulCheckpoint": {
+    "kind": "EXECUTION_CHECKPOINT",
+    "at": "2026-11-18T12:30:48.213Z",
+    "fingerprint": "544f8be6c359",
+    "researchRunId": "gdi_disc_run_mwm3nhpi_4b44d7",
+    "executionStatus": "EXECUTION_BLOCKED",
+    "providerRunIds": [],
+    "extractedCount": 0,
+    "costUsdCumulative": 0
+  },
+  "lastCheckpointAt": "2026-11-18T12:30:48.213Z",
+  "researchActions": [
+    {
+      "at": "2026-11-18T12:30:48.213Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_BLOCKED",
+      "fingerprint": "544f8be6c359",
+      "countedNewCost": 0
+    }
+  ],
+  "publicationOccurred": false,
+  "airtableWrites": 0,
+  "createdAt": "2026-11-18T12:30:48.213Z",
+  "updatedAt": "2026-11-18T12:30:48.213Z"
+}

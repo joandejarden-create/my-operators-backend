@@ -1,0 +1,92 @@
+{
+  "authorizationId": "gdi-bethesda-live-14-segment-persistence-pilot-write-v1",
+  "productionWritesAuthorized": false,
+  "requiresEnvGate": "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES",
+  "baseId": "appa2cE7FTRmIbB32",
+  "tableId": "tblbkDj0vhQLfrssV",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "maxCreates": 1,
+  "maxUpdates": 1,
+  "plannedCreateCount": 1,
+  "plannedUpdateCount": 1,
+  "gdoWrites": 0,
+  "publicationWrites": 0,
+  "entries": [
+    {
+      "action": "CREATE",
+      "compositeKey": "recLuxvwwxID7U2B8::gdi_live_pinnacle_lacrosse_championships_2027",
+      "opportunityId": "gdi_live_pinnacle_lacrosse_championships_2027",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "reason": "New SoccerPlex stay-to-play tournament not present in Bethesda 86 inventory",
+      "previousValues": null,
+      "proposedValues": {
+        "title": "Summer Pinnacle Lacrosse Championships 2027 — SoccerPlex stay-to-play",
+        "organizationName": "Pinnacle Lacrosse Championships",
+        "eventStartDate": "2027-07-17",
+        "eventEndDate": "2027-07-18",
+        "priority": "WATCHLIST"
+      },
+      "sourceEvidence": [
+        {
+          "url": "https://athleteshospitality.com/pinnacle-lacrosse-championships/",
+          "label": "Athletes Hospitality Pinnacle page"
+        },
+        {
+          "url": "https://pinnaclelacrossechampionships.leagueapps.com/tournaments/5121597-summer-pinnacle-lacrosse-championships-2027",
+          "label": "LeagueApps 2027 registration"
+        }
+      ],
+      "materialChangeReason": "net-new opportunity identity",
+      "authorizationToken": "gdi-bethesda-live-14-segment-persistence-pilot-write-v1",
+      "readBackPlan": [
+        "After CREATE, readBack by airtableRecordId",
+        "Verify compositeKey/hotelId/opportunityId/payload present",
+        "Confirm no [object Object] in sourceSummary"
+      ],
+      "idempotentRetry": "Second apply must return ALREADY_PRESENT/UNCHANGED"
+    },
+    {
+      "action": "UPDATE",
+      "compositeKey": "recLuxvwwxID7U2B8::disp_recLuxvwwxID7U2B8_parenteral_drug_association_pda_",
+      "opportunityId": "disp_recLuxvwwxID7U2B8_parenteral_drug_association_pda_",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "airtableRecordId": "recTSOXMxDT7JpxGq",
+      "reason": "Material evidence refresh: specific Dec 2026 PDA TRI Bethesda course schedule URLs",
+      "previousValues": {
+        "sourceSummary": "historical_attestation_source (agent-transcript commerciallyApprovedStaged (PDA)) | https://www.pda.org/global-event-calendar/event-detail/design-validation-and-operation-of-isolator-systems-training-course-pda-557-2 | https://www.pda.org/global-event-calendar/training/pda-tri-aseptic-processing-events | https://www.pda.org/contact | https://www.pda.org/global-event-calendar/event-detail/design-validation-and-operation-of-isolator-systems-training-course-pda-557-2",
+        "whatSnippet": "Bethesda aseptic / training course activity (packet cites Dec 2026 training window) — same-city training lodging plausible."
+      },
+      "proposedValues": {
+        "changedFields": [
+          "lastMaterialChangeAt",
+          "researchPayloadJson"
+        ],
+        "sourceUrlsAdded": [
+          "https://www.pda.org/global-event-calendar/training/pda-tri-quality-risk-management-events",
+          "https://www.pda.org/global-event-calendar/event-detail/aseptic-processing-training-certificate-program-pda-100-8"
+        ]
+      },
+      "sourceEvidence": [
+        {
+          "url": "https://www.pda.org/global-event-calendar/training/pda-tri-quality-risk-management-events",
+          "label": "PDA TRI QRM calendar"
+        },
+        {
+          "url": "https://www.pda.org/global-event-calendar/event-detail/aseptic-processing-training-certificate-program-pda-100-8",
+          "label": "PDA 100 Dec 7-11 2026 Bethesda"
+        }
+      ],
+      "materialChangeReason": "new dated training evidence + source URLs",
+      "preserveFirstDiscovered": true,
+      "authorizationToken": "gdi-bethesda-live-14-segment-persistence-pilot-write-v1",
+      "readBackPlan": [
+        "Read back same airtableRecordId",
+        "Confirm firstDiscovered* unchanged",
+        "Confirm researchPayloadJson contains new PDA course URLs"
+      ],
+      "idempotentRetry": "Second apply must return UNCHANGED"
+    }
+  ],
+  "stopForFounderApproval": true,
+  "note": "Do not set GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES=1 or --apply-research-persistence until founder approves this exact manifest."
+}
