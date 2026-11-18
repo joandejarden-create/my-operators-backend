@@ -13,7 +13,7 @@
 | Remote | `https://github.com/joandejarden-create/my-operators-backend` |
 | Branch | `cursor/adp-hotel-explorer-audit-1ed2` |
 | PR | `#364` |
-| **Head SHA (handoff tip)** | `9c60680ccbc15edea6645f7c024b661b3e4c44a0` (includes this Windows transition doc) |
+| **Head SHA (handoff tip)** | `082d16a7ef08c8394a077eac6e5798bfe10e3406` — or current tip of `origin/cursor/adp-hotel-explorer-audit-1ed2` after `git fetch` |
 | Phase 1.1 implementation SHA | `d4b2ae102df9551bc8e340da4f5b5a9472b94c9e` |
 | Merge-base with `main` (at handoff) | `1e85541e79c11125df42bc01ba3600f20f95c35b` |
 | `origin/main` at handoff | `123453323a2ca795589a4b1a2910383a7ddc02e9` (**2 commits ahead of merge-base**; branch is **behind** main) |
@@ -26,7 +26,7 @@
 2. `4fec5fb1` — merge origin/main before Phase 1  
 3. `fd1c35da` — Phase 1 Radar HE progressive enrichment  
 4. `d4b2ae10` — Phase 1.1 certification authority, offline permanence, persistence fixes  
-5. `9c60680c` — Windows local transition handoff docs  
+5. `9c60680c` / `082d16a7` — Windows local transition handoff docs  
 
 ### Working-tree check (cloud, at handoff)
 
@@ -82,19 +82,19 @@ git --version
 $Gdi = "C:\Dev\dealality\my-operators-backend"
 $Adp = "C:\Dev\dealality\my-operators-backend-adp-audit"
 $Branch = "cursor/adp-hotel-explorer-audit-1ed2"
-$Sha = "9c60680ccbc15edea6645f7c024b661b3e4c44a0"
-
 Set-Location $Gdi
 git fetch origin $Branch
 git fetch origin main
 
 # Do NOT checkout the ADP branch in the GDI folder.
-# Create an isolated worktree:
-git worktree add $Adp $Branch
+# Create an isolated worktree at the remote tip:
+git worktree add $Adp "origin/$Branch"
 
 Set-Location $Adp
+git checkout -B $Branch "origin/$Branch"
 git rev-parse HEAD
-# Confirm: 9c60680ccbc15edea6645f7c024b661b3e4c44a0
+git log -1 --oneline
+# Expect tip on or after 082d16a7 (Windows handoff) / d4b2ae10 (Phase 1.1 impl)
 ```
 
 If the worktree already exists:
@@ -105,7 +105,7 @@ git fetch origin $Branch
 git checkout $Branch
 git pull --ff-only origin $Branch
 git rev-parse HEAD
-# Confirm tip SHA matches $Sha
+git log -1 --oneline
 ```
 
 ### 2.3 Dependencies
@@ -368,7 +368,7 @@ Paste into Cursor against the **ADP worktree** (`my-operators-backend-adp-audit`
 
 ```text
 You are working ONLY in the ADP worktree on branch cursor/adp-hotel-explorer-audit-1ed2
-(commit 9c60680ccbc15edea6645f7c024b661b3e4c44a0). Do not modify the primary GDI checkout.
+(tip at/after 082d16a7ef08c8394a077eac6e5798bfe10e3406). Do not modify the primary GDI checkout.
 
 Read reports/adp-hotel-explorer-baseline-audit/phase-1.1/LOCAL_WINDOWS_TRANSITION_V1.md
 and FOUNDER_STOP_PHASE1_1.md.

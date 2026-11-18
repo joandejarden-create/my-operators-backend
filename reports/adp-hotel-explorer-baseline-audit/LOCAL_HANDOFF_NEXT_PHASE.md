@@ -1,7 +1,7 @@
 # Local handoff — after Phase 1 / Phase 1.1 (Radar HE + ADP gates)
 
 > **Phase 1.1 package:** `phase-1.1/FOUNDER_STOP_PHASE1_1.md` and sibling reports in `phase-1.1/`.  
-> **Windows local transition:** `phase-1.1/LOCAL_WINDOWS_TRANSITION_V1.md` (head `9c60680c`).  
+> **Windows local transition:** `phase-1.1/LOCAL_WINDOWS_TRANSITION_V1.md` (tip `082d16a7`+).  
 > **Do not merge PR #364** — local validation next; no Phase 2 until authorized.
 
 ## Git identity
