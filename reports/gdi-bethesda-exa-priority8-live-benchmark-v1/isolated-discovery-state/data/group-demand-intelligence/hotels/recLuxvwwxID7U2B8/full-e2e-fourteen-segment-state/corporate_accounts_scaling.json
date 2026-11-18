@@ -1,0 +1,290 @@
+{
+  "version": "gdi-full-e2e-fourteen-segment-discovery-state-v1",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "segmentId": "corporate_accounts_scaling",
+  "applicable": true,
+  "status": "EXECUTED_PARTIAL_QUALIFICATION_PENDING",
+  "coverageStatus": "PARTIAL",
+  "completionDecision": "NOT_COMPLETE",
+  "completionRationale": "LIVE_PROVIDER_EXECUTED",
+  "executionStatus": "DISCOVERY_EXECUTED",
+  "executorVersion": "gdi-segment-discovery-executor-v1",
+  "executionModuleVersion": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+  "researchRunId": "gdi_disc_run_mwm5iq7e_77c578",
+  "researchHorizon": null,
+  "querySpecs": [
+    {
+      "id": "corporate_accounts_scaling_q1",
+      "segmentId": "corporate_accounts_scaling",
+      "intent": "local_office_expansion_en",
+      "query": "\"DMV\" (\"opens office\" OR \"opened an office\" OR \"new office\" OR \"regional hub\" OR headquarters) (company OR corporate OR firm) (training OR meetings OR lodging OR \"project team\") -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+      "language": null,
+      "sourceTypes": [
+        "corp_announcements"
+      ],
+      "weight": 4
+    },
+    {
+      "id": "corporate_accounts_scaling_q2",
+      "segmentId": "corporate_accounts_scaling",
+      "intent": "local_training_meetings_en",
+      "query": "\"DMV\" (company OR corporate) (\"sales kickoff\" OR offsite OR \"leadership meeting\" OR \"customer training\" OR \"project team\") (hotel OR lodging OR meetings) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+      "language": null,
+      "sourceTypes": [
+        "training_calendars",
+        "corp_news"
+      ],
+      "weight": 4
+    },
+    {
+      "id": "corporate_accounts_scaling_q3",
+      "segmentId": "corporate_accounts_scaling",
+      "intent": "destination_incentive_program_en",
+      "query": "(\"DMV\" OR \"District of Columbia\" OR \"Montgomery County\" OR \"Northern Virginia\") (\"incentive travel\" OR \"incentive trip\" OR \"incentive program\" OR \"sales incentive\" OR \"employee incentive\") (company OR corporate OR \"sales team\" OR distributor) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+      "language": null,
+      "sourceTypes": [
+        "corp_news",
+        "incentive_case_studies",
+        "hr_program_pages"
+      ],
+      "weight": 6
+    },
+    {
+      "id": "corporate_accounts_scaling_q4",
+      "segmentId": "corporate_accounts_scaling",
+      "intent": "destination_sales_kickoff_retreat_en",
+      "query": "(\"DMV\" OR \"District of Columbia\" OR \"Montgomery County\" OR \"Northern Virginia\") (\"sales kickoff\" OR \"annual sales meeting\" OR \"leadership retreat\" OR \"corporate retreat\" OR \"partner summit\" OR \"distributor meeting\") (company OR corporate OR brand) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+      "language": null,
+      "sourceTypes": [
+        "corp_news",
+        "sales_ops_announcements"
+      ],
+      "weight": 6
+    }
+  ],
+  "providerInvocations": [
+    {
+      "at": "2026-11-18T13:26:16.575Z",
+      "fingerprint": "097dd8dc25fe",
+      "researchRunId": "gdi_disc_run_mwm5iq7e_77c578",
+      "providerCallCount": 1,
+      "freshRetrievals": 1,
+      "cacheHits": 0,
+      "costUsd": 0.1,
+      "retrievalMode": "FRESH_RETRIEVAL",
+      "counted": true,
+      "stopReason": "LIVE_PROVIDER_EXECUTED"
+    }
+  ],
+  "cacheReferences": [],
+  "rawCandidateReferences": [
+    "corporate_accounts_scaling_q1",
+    "corporate_accounts_scaling_q2",
+    "corporate_accounts_scaling_q3",
+    "corporate_accounts_scaling_q4"
+  ],
+  "candidateIds": [
+    "disc_d2d4314bff85",
+    "disc_5976f7572131",
+    "disc_43c7afa8397a",
+    "disc_b97b3b5ed6c3",
+    "disc_c25360628a3b",
+    "disc_9c256ab35bd8",
+    "disc_6c1dabe05ef5",
+    "disc_3f2bd4f25023"
+  ],
+  "extractedCandidateIds": [
+    "disc_d2d4314bff85",
+    "disc_5976f7572131",
+    "disc_43c7afa8397a",
+    "disc_b97b3b5ed6c3",
+    "disc_c25360628a3b",
+    "disc_9c256ab35bd8",
+    "disc_6c1dabe05ef5",
+    "disc_3f2bd4f25023"
+  ],
+  "deduplicatedCandidateIds": [
+    "disc_d2d4314bff85",
+    "disc_5976f7572131",
+    "disc_43c7afa8397a",
+    "disc_b97b3b5ed6c3",
+    "disc_c25360628a3b",
+    "disc_9c256ab35bd8",
+    "disc_6c1dabe05ef5",
+    "disc_3f2bd4f25023"
+  ],
+  "unresolvedCandidateIds": [
+    "disc_d2d4314bff85",
+    "disc_5976f7572131",
+    "disc_43c7afa8397a",
+    "disc_b97b3b5ed6c3",
+    "disc_c25360628a3b",
+    "disc_9c256ab35bd8",
+    "disc_6c1dabe05ef5",
+    "disc_3f2bd4f25023"
+  ],
+  "completedCandidateIds": [],
+  "evidenceProvenance": [
+    {
+      "candidateId": "disc_d2d4314bff85",
+      "evidenceUrls": [
+        "https://www.trueanomaly.space/newsroom/true-anomaly-expands-footprint-in-washington-d-c-establishes-new-office-in-crystal-city",
+        "https://www.trueanomaly.space/newsroom/true-anomaly-expands-footprint-in-washington-d-c-establishes-new-office-in-crystal-city",
+        "https://www.trueanomaly.space"
+      ],
+      "provenance": {
+        "queryId": "corporate_accounts_scaling_q1",
+        "intent": "local_office_expansion_en",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "[object Object]"
+      },
+      "at": "2026-11-18T13:26:16.575Z"
+    },
+    {
+      "candidateId": "disc_5976f7572131",
+      "evidenceUrls": [
+        "https://www.knowbe4.com/press/knowbe4-expands-public-sector-presence-with-new-arlington-virginia-office",
+        "https://www.knowbe4.com/press/knowbe4-expands-public-sector-presence-with-new-arlington-virginia-office",
+        "https://www.knowbe4.com"
+      ],
+      "provenance": {
+        "queryId": "corporate_accounts_scaling_q2",
+        "intent": "local_training_meetings_en",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "[object Object]"
+      },
+      "at": "2026-11-18T13:26:16.575Z"
+    },
+    {
+      "candidateId": "disc_43c7afa8397a",
+      "evidenceUrls": [
+        "https://www.guidepointsecurity.com/newsroom/guidepoint-security-opens-new-global-headquarters-amid-continued-growth/",
+        "https://www.guidepointsecurity.com/newsroom/guidepoint-security-opens-new-global-headquarters-amid-continued-growth/",
+        "https://www.guidepointsecurity.com"
+      ],
+      "provenance": {
+        "queryId": "corporate_accounts_scaling_q3",
+        "intent": "destination_incentive_program_en",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "[object Object]"
+      },
+      "at": "2026-11-18T13:26:16.575Z"
+    },
+    {
+      "candidateId": "disc_b97b3b5ed6c3",
+      "evidenceUrls": [
+        "https://www.opswat.com/blog/opswat-opens-new-cybersecurity-lab-office-in-arlington-va",
+        "https://www.opswat.com/blog/opswat-opens-new-cybersecurity-lab-office-in-arlington-va",
+        "https://www.opswat.com"
+      ],
+      "provenance": {
+        "queryId": "corporate_accounts_scaling_q4",
+        "intent": "destination_sales_kickoff_retreat_en",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "[object Object]"
+      },
+      "at": "2026-11-18T13:26:16.575Z"
+    },
+    {
+      "candidateId": "disc_c25360628a3b",
+      "evidenceUrls": [
+        "https://www.westat.com/news/westat-bethesda-headquarters/",
+        "https://www.westat.com/news/westat-bethesda-headquarters/",
+        "https://www.westat.com"
+      ],
+      "provenance": {
+        "queryId": "corporate_accounts_scaling_q1",
+        "intent": "local_office_expansion_en",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "[object Object]"
+      },
+      "at": "2026-11-18T13:26:16.575Z"
+    },
+    {
+      "candidateId": "disc_9c256ab35bd8",
+      "evidenceUrls": [
+        "https://www.imcconstruction.com/imc-construction-expands-into-the-washington-d-c-region/",
+        "https://www.imcconstruction.com/imc-construction-expands-into-the-washington-d-c-region/",
+        "https://imcconstruction.com"
+      ],
+      "provenance": {
+        "queryId": "corporate_accounts_scaling_q2",
+        "intent": "local_training_meetings_en",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "[object Object]"
+      },
+      "at": "2026-11-18T13:26:16.575Z"
+    },
+    {
+      "candidateId": "disc_6c1dabe05ef5",
+      "evidenceUrls": [
+        "https://www.prnewswire.com/news-releases/goldman-edwards-announces-relocation-of-corporate-headquarters-to-bethesda-maryland-adjacent-to-marriott-international-headquarters-302789515.html",
+        "https://www.prnewswire.com/news-releases/goldman-edwards-announces-relocation-of-corporate-headquarters-to-bethesda-maryland-adjacent-to-marriott-international-headquarters-302789515.html",
+        "https://goldmanedwards.com"
+      ],
+      "provenance": {
+        "queryId": "corporate_accounts_scaling_q3",
+        "intent": "destination_incentive_program_en",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "[object Object]"
+      },
+      "at": "2026-11-18T13:26:16.575Z"
+    },
+    {
+      "candidateId": "disc_3f2bd4f25023",
+      "evidenceUrls": [
+        "https://www.optiv.com/company/press-releases/optiv-clearshark-expands-footprint-better-serve-federal-clients",
+        "https://www.optiv.com/company/press-releases/optiv-clearshark-expands-footprint-better-serve-federal-clients",
+        "https://www.optiv.com"
+      ],
+      "provenance": {
+        "queryId": "corporate_accounts_scaling_q4",
+        "intent": "destination_sales_kickoff_retreat_en",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "[object Object]"
+      },
+      "at": "2026-11-18T13:26:16.575Z"
+    }
+  ],
+  "rejectionReasons": [],
+  "remainingResearchGaps": [
+    "discovery_not_completed"
+  ],
+  "providerUsage": {
+    "attempts": 1,
+    "liveCalls": 1,
+    "cacheHits": 0,
+    "costUsd": 0.1,
+    "byProvider": {
+      "FRESH_RETRIEVAL": {
+        "calls": 1,
+        "costUsd": 0.1
+      }
+    }
+  },
+  "stopReason": "LIVE_PROVIDER_EXECUTED",
+  "lastSuccessfulCheckpoint": {
+    "kind": "LIVE_PROVIDER_COMPLETE",
+    "at": "2026-11-18T13:26:16.575Z",
+    "fingerprint": "097dd8dc25fe",
+    "researchRunId": "gdi_disc_run_mwm5iq7e_77c578",
+    "executionStatus": "DISCOVERY_EXECUTED",
+    "providerRunIds": [],
+    "extractedCount": 8,
+    "costUsdCumulative": 0.1
+  },
+  "lastCheckpointAt": "2026-11-18T13:26:16.575Z",
+  "researchActions": [
+    {
+      "at": "2026-11-18T13:26:16.575Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "DISCOVERY_EXECUTED",
+      "fingerprint": "097dd8dc25fe",
+      "countedNewCost": 0.1
+    }
+  ],
+  "publicationOccurred": false,
+  "airtableWrites": 0,
+  "createdAt": "2026-11-18T13:26:16.575Z",
+  "updatedAt": "2026-11-18T13:26:16.575Z"
+}

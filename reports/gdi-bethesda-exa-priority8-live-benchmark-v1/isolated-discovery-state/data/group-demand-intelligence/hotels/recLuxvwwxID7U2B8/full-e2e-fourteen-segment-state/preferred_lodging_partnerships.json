@@ -1,0 +1,197 @@
+{
+  "version": "gdi-full-e2e-fourteen-segment-discovery-state-v1",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "segmentId": "preferred_lodging_partnerships",
+  "applicable": true,
+  "status": "EXECUTED_PARTIAL_QUALIFICATION_PENDING",
+  "coverageStatus": "PARTIAL",
+  "completionDecision": "NOT_COMPLETE",
+  "completionRationale": "LIVE_PROVIDER_EXECUTED",
+  "executionStatus": "DISCOVERY_EXECUTED",
+  "executorVersion": "gdi-segment-discovery-executor-v1",
+  "executionModuleVersion": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+  "researchRunId": "gdi_disc_run_mwm5iq7e_77c578",
+  "researchHorizon": null,
+  "querySpecs": [
+    {
+      "id": "pref_prompt",
+      "segmentId": "preferred_lodging_partnerships",
+      "intent": "preferred_lodging_prompt",
+      "query": "Task: PREFERRED_LODGING_PARTNERSHIP_VENUE_DISCOVERY | Find businesses and venues near the hotel (verified hotel address, the hotel market) that could refer hotel guestrooms or groups — weddings, private celebrations, banquets, cultural/private functions, clubs, museums, entertainment destinations, and complementary event facilities. | A competing event venue can be a valuable Preferred Lodging partner when it has no guestrooms or only complementary / overflow lodging need. | Do NOT reject a venue merely because it offers meeting space, banquet halls, or catering — those often create overnight guest referral demand for a nearby hotel. | Prefer venues without a full competing guestroom inventory; still assess limited on-site lodging for overflow partnership potential (use UNKNOWN when not evidenced). | Exclude generic restaurants unless a documented event format credibly creates overnight visitors. | Return venue name, address, website, event types, on-site lodging status if published, and any lodging-partner language. | Do not invent distances, drive times, annual wedding counts, or room-night forecasts. | Venue types: wedding_reception_venue, standalone_banquet_hall, private_event_facility, independent_conference_event_venue, museum_event_rental, garden_or_historic_property, country_club_or_private_club_outside_events, cultural_institution_event_space, entertainment_destination_event_venue, waterfront_or_rooftop_event_venue"
+    },
+    {
+      "id": "pref_q1",
+      "segmentId": "preferred_lodging_partnerships",
+      "intent": "preferred_lodging_referral_venues",
+      "query": "DMV (wedding venue OR banquet hall OR private event venue OR museum rental OR country club events) (\"preferred hotel\" OR lodging OR \"room block\" OR overflow OR \"guest accommodations\") -restaurant-only"
+    },
+    {
+      "id": "pref_q2",
+      "segmentId": "preferred_lodging_partnerships",
+      "intent": "complementary_venue_no_guestrooms",
+      "query": "DMV event venue (no hotel OR \"no on-site lodging\" OR \"partner hotels\" OR \"recommended hotels\") (wedding OR gala OR private event)"
+    }
+  ],
+  "providerInvocations": [
+    {
+      "at": "2026-11-18T13:34:01.740Z",
+      "fingerprint": "d698240bfc2e",
+      "researchRunId": "gdi_disc_run_mwm5iq7e_77c578",
+      "providerCallCount": 1,
+      "freshRetrievals": 1,
+      "cacheHits": 0,
+      "costUsd": 0.1,
+      "retrievalMode": "FRESH_RETRIEVAL",
+      "counted": true,
+      "stopReason": "LIVE_PROVIDER_EXECUTED"
+    }
+  ],
+  "cacheReferences": [],
+  "rawCandidateReferences": [
+    "pref_prompt",
+    "pref_q1",
+    "pref_q2"
+  ],
+  "candidateIds": [
+    "disc_7e74a15150b5",
+    "disc_2c329cc7526b",
+    "disc_9364ae2ca675",
+    "disc_7afcb1056639",
+    "disc_a5491d9cbf58"
+  ],
+  "extractedCandidateIds": [
+    "disc_7e74a15150b5",
+    "disc_2c329cc7526b",
+    "disc_9364ae2ca675",
+    "disc_7afcb1056639",
+    "disc_a5491d9cbf58"
+  ],
+  "deduplicatedCandidateIds": [
+    "disc_7e74a15150b5",
+    "disc_2c329cc7526b",
+    "disc_9364ae2ca675",
+    "disc_7afcb1056639",
+    "disc_a5491d9cbf58"
+  ],
+  "unresolvedCandidateIds": [
+    "disc_7e74a15150b5",
+    "disc_2c329cc7526b",
+    "disc_9364ae2ca675",
+    "disc_7afcb1056639",
+    "disc_a5491d9cbf58"
+  ],
+  "completedCandidateIds": [],
+  "evidenceProvenance": [
+    {
+      "candidateId": "disc_7e74a15150b5",
+      "evidenceUrls": [
+        "https://www.dar.org/events/plan-your-event-headquarters/weddings-faq",
+        "https://www.dar.org/events/plan-your-event-headquarters/weddings-faq"
+      ],
+      "provenance": {
+        "queryId": "pref_prompt",
+        "intent": "preferred_lodging_prompt",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "[object Object]"
+      },
+      "at": "2026-11-18T13:34:01.740Z"
+    },
+    {
+      "candidateId": "disc_2c329cc7526b",
+      "evidenceUrls": [
+        "https://kid-museum.org/rentals/",
+        "https://kid-museum.org/rentals/"
+      ],
+      "provenance": {
+        "queryId": "pref_q1",
+        "intent": "preferred_lodging_referral_venues",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "[object Object]"
+      },
+      "at": "2026-11-18T13:34:01.740Z"
+    },
+    {
+      "candidateId": "disc_9364ae2ca675",
+      "evidenceUrls": [
+        "https://www.omuseum.org/rent",
+        "https://www.omuseum.org/rent"
+      ],
+      "provenance": {
+        "queryId": "pref_q2",
+        "intent": "complementary_venue_no_guestrooms",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "[object Object]"
+      },
+      "at": "2026-11-18T13:34:01.740Z"
+    },
+    {
+      "candidateId": "disc_7afcb1056639",
+      "evidenceUrls": [
+        "https://convene.com/locations/washington-dc/",
+        "https://convene.com/locations/washington-dc/"
+      ],
+      "provenance": {
+        "queryId": "pref_prompt",
+        "intent": "preferred_lodging_prompt",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "[object Object]"
+      },
+      "at": "2026-11-18T13:34:01.740Z"
+    },
+    {
+      "candidateId": "disc_a5491d9cbf58",
+      "evidenceUrls": [
+        "https://www.wolftrap.org/visit/hotels/",
+        "https://www.wolftrap.org/visit/hotels/"
+      ],
+      "provenance": {
+        "queryId": "pref_q1",
+        "intent": "preferred_lodging_referral_venues",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "[object Object]"
+      },
+      "at": "2026-11-18T13:34:01.740Z"
+    }
+  ],
+  "rejectionReasons": [],
+  "remainingResearchGaps": [
+    "discovery_not_completed"
+  ],
+  "providerUsage": {
+    "attempts": 1,
+    "liveCalls": 1,
+    "cacheHits": 0,
+    "costUsd": 0.1,
+    "byProvider": {
+      "FRESH_RETRIEVAL": {
+        "calls": 1,
+        "costUsd": 0.1
+      }
+    }
+  },
+  "stopReason": "LIVE_PROVIDER_EXECUTED",
+  "lastSuccessfulCheckpoint": {
+    "kind": "LIVE_PROVIDER_COMPLETE",
+    "at": "2026-11-18T13:34:01.740Z",
+    "fingerprint": "d698240bfc2e",
+    "researchRunId": "gdi_disc_run_mwm5iq7e_77c578",
+    "executionStatus": "DISCOVERY_EXECUTED",
+    "providerRunIds": [],
+    "extractedCount": 5,
+    "costUsdCumulative": 0.1
+  },
+  "lastCheckpointAt": "2026-11-18T13:34:01.740Z",
+  "researchActions": [
+    {
+      "at": "2026-11-18T13:34:01.740Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "DISCOVERY_EXECUTED",
+      "fingerprint": "d698240bfc2e",
+      "countedNewCost": 0.1
+    }
+  ],
+  "publicationOccurred": false,
+  "airtableWrites": 0,
+  "createdAt": "2026-11-18T13:34:01.740Z",
+  "updatedAt": "2026-11-18T13:34:01.740Z"
+}
