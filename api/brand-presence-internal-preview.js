@@ -94,9 +94,10 @@ export async function getBrandPresenceInternalPreviewHotels(req, res) {
     shareVisible: false,
     sourceTable: loaded.sourceTable,
     hotels: loaded.hotels || [],
+    hotelsMapEligible: loaded.hotelsMapEligible || [],
     errors: [],
     diagnostics: loaded.diagnostics || null,
     cachePolicy: loaded.cachePolicy || RADAR_HPC_STATUS_CACHE_POLICY,
-    note: "Merge into Radar map for authorized internal preview only. Not a customer share pack. Eligibility = HPC Radar Status Open|Pipeline (dynamic query).",
+    note: "Merge into Radar for authorized internal preview only. hotels includes Open|Pipeline search/Explorer rows (coords optional); hotelsMapEligible is marker-ready. Not a customer share pack.",
   });
 }

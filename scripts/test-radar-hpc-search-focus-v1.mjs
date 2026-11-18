@@ -45,7 +45,7 @@ assert.match(
 );
 
 assert.match(host, /id="radarSearchResults"/);
-assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-missing-coords-reconcile-1/);
+assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-missing-coords-searchable-2/);
 assert.match(host, /radar-filter-drawer\.js\?v=13/);
 
 assert.match(

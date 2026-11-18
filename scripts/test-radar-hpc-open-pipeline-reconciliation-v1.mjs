@@ -25,9 +25,11 @@ const host = fs.readFileSync(
 
 assert.match(mapping, /function buildRadarCityAggregationRows/);
 assert.match(mapping, /missingCoordinates/);
+assert.match(mapping, /searchable \/ Hotel Explorer/);
 assert.match(mapping, /Fill Latitude\/Longitude on Hotel Property Census/);
-assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-missing-coords-reconcile-1/);
+assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-missing-coords-searchable-2/);
 assert.match(mapping, /lowZoomNeedsDensity/);
+assert.match(mapping, /mapAddedIds/);
 
 clearRadarHpcStatusCache();
 
@@ -99,11 +101,14 @@ const loaded = await loadAuthorizedInternalPreviewHotels({
 
 assert.equal(loaded.diagnostics.openCount, 4, "four Open status rows (Hidden excluded)");
 assert.equal(loaded.diagnostics.pipelineCount, 0);
-assert.equal(loaded.hotels.length, 3, "mapEligible excludes missing coords");
+assert.equal(loaded.hotels.length, 4, "searchEligible includes missing-coord Open rows");
+assert.equal(loaded.hotelsMapEligible.length, 3, "mapEligible excludes missing coords");
 assert.equal(loaded.diagnostics.missingCoordinates.length, 1);
 assert.equal(loaded.diagnostics.missingCoordinates[0].id, RADISSON);
-assert.ok(!loaded.hotels.some((h) => h.id === RADISSON));
-assert.ok(loaded.hotels.every((h) => hotelHasMapCoordinates(h)));
+assert.ok(loaded.hotels.some((h) => h.id === RADISSON), "Radisson remains searchable");
+assert.ok(loaded.hotels.find((h) => h.id === RADISSON)?.radarMapEligible === false);
+assert.ok(loaded.hotelsMapEligible.every((h) => hotelHasMapCoordinates(h)));
+assert.ok(!loaded.hotelsMapEligible.some((h) => h.id === RADISSON));
 
 // Identity collision: existing census row with same geo fingerprint keeps census id
 const existing = [
@@ -122,11 +127,36 @@ assert.ok(merge.duplicatesReconciled.some((d) => d.hpcId === BETHESDA));
 assert.ok(!merge.addedIds.includes(BETHESDA));
 assert.ok(merge.addedIds.includes(CASTILLO));
 assert.ok(merge.addedIds.includes(SHERATON));
+assert.ok(merge.addedIds.includes(RADISSON), "missing-coord hotel merges for search");
+assert.ok(merge.mapAddedIds.includes(CASTILLO));
+assert.ok(!merge.mapAddedIds.includes(RADISSON), "missing-coord hotel not map-added");
 assert.equal(
   merge.hotels.filter((h) => /bethesda/i.test(h.name)).length,
   1,
   "Bethesda counted once after collision"
 );
+
+// Search / focus contract: Radisson matchable and Explorer-openable without coords
+function hotelText(v) {
+  return v == null ? "" : String(v);
+}
+function hotelMatchesSearchTerm(hotel, rawTerm) {
+  const searchTerm = hotelText(rawTerm).trim().toLowerCase();
+  if (!searchTerm) return true;
+  return (
+    hotelText(hotel && hotel.name).toLowerCase().includes(searchTerm) ||
+    hotelText(hotel && hotel.city).toLowerCase().includes(searchTerm) ||
+    hotelText(hotel && hotel.country).toLowerCase().includes(searchTerm) ||
+    hotelText(hotel && hotel.brand).toLowerCase().includes(searchTerm) ||
+    hotelText(hotel && hotel.market).toLowerCase().includes(searchTerm) ||
+    hotelText(hotel && hotel.id).toLowerCase() === searchTerm
+  );
+}
+const radissonRow = merge.hotels.find((h) => h.id === RADISSON);
+assert.ok(radissonRow);
+assert.ok(hotelMatchesSearchTerm(radissonRow, "Radisson Blu Toronto"));
+assert.ok(hotelMatchesSearchTerm(radissonRow, RADISSON));
+assert.equal(radissonRow.radarMapEligible, false);
 
 // City aggregation: country-keyed; Palma total=2; Open tallies separate from Candidate
 function buildRadarCityAggregationRows(sourceHotels) {
@@ -230,8 +260,9 @@ console.log(
   JSON.stringify({
     ok: true,
     gate: "test:radar-hpc-open-pipeline-reconciliation-v1",
-    radissonStage: "MISSING_COORDINATES",
+    radissonStage: "MISSING_COORDINATES_SEARCHABLE",
     openStatus: 4,
+    searchEligible: 4,
     mapEligible: 3,
     missingCoordinates: 1,
     cityCountrySeparation: true,

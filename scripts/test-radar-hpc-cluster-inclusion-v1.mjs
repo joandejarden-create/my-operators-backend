@@ -60,7 +60,7 @@ assert.doesNotMatch(
 
 assert.match(
   host,
-  /brand-presence-mapping\.js\?v=radar-hpc-missing-coords-reconcile-1/,
+  /brand-presence-mapping\.js\?v=radar-hpc-missing-coords-searchable-2/,
   "Radar host must cache-bust mapping after auth-parity + density fixes"
 );
 assert.match(

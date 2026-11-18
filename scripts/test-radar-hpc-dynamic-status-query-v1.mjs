@@ -185,8 +185,16 @@ assert.ok(loaded.hotels.some((h) => h.id === BETHESDA && h.status === "Open"));
 assert.ok(loaded.hotels.some((h) => h.id === WATERSTONE && h.status === "Open"));
 assert.ok(loaded.hotels.some((h) => h.id === MAYFLOWER && h.status === "Pipeline"));
 assert.ok(
-  !loaded.hotels.some((h) => h.id === "recMISS1111111111"),
-  "missing coords excluded from map hotels"
+  loaded.hotels.some((h) => h.id === "recMISS1111111111"),
+  "missing coords remain search/Explorer eligible"
+);
+assert.ok(
+  !loaded.hotelsMapEligible.some((h) => h.id === "recMISS1111111111"),
+  "missing coords excluded from map-eligible hotels"
+);
+assert.equal(
+  loaded.hotels.find((h) => h.id === "recMISS1111111111")?.radarMapEligible,
+  false
 );
 
 const pipelineHotel = loaded.hotels.find((h) => h.id === MAYFLOWER);
@@ -403,7 +411,7 @@ const host = fs.readFileSync(
   path.join(ROOT, "public/deal-capture-radar-with-ranked-list.html"),
   "utf8"
 );
-assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-missing-coords-reconcile-1/);
+assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-missing-coords-searchable-2/);
 
 const api = fs.readFileSync(
   path.join(ROOT, "api/brand-presence-internal-preview.js"),

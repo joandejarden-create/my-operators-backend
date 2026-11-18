@@ -60,14 +60,25 @@ Authorize a Hotel Property Census Latitude/Longitude write for `recH9h3McgMNFQEl
 - Radar HE + ADP free gates (CI) — **pass**
 - gitleaks / Admin tabs / GDI recovery / Spice isolation — **pass**
 
+## Missing-coordinate discoverability (post main reconcile)
+
+Missing-coordinate Open/Pipeline HPC hotels are now:
+
+- included in authorized `hotels` (search / ranked list / Hotel Explorer)
+- flagged `radarMapEligible: false`
+- excluded from `hotelsMapEligible`, map markers, and city-marker badge inflation
+- called out in the merge notice as searchable until Census lat/lng is filled
+
+Staged coords evidence (no write): `reports/hotel-explorer/he002-radisson-toronto-coords-evidence-staged.json`
+
 ## Authenticated `/app#/opportunity-radar` acceptance
 
 | Check | Result |
 | --- | --- |
-| Standalone embed (`embed=1`, no `share`) + workspace JWT path | PASS — 7 `addedIds`; missing-coords notice for Radisson; cityLayer present |
+| Standalone embed (`embed=1`, no `share`) + workspace JWT path | PASS — map-added 7; Radisson searchable; missing-coords notice |
 | Share isolation (`share=1`) | PASS — HPC overlay / missing-coords notice **off** |
 | Cursor-browser authenticated `/app#/opportunity-radar` | **BLOCKED** — session shows Sign in; no Memberstack JWT in this automation context |
-| Founder live `/app` acceptance | **PENDING** founder sign-in on HE `:8080` |
+| Founder live `/app` acceptance | **PENDING** — use `reports/hotel-explorer/he002-founder-authenticated-app-acceptance-checklist.md` |
 
 ## Git / PR stop state (do not merge from HE chat)
 

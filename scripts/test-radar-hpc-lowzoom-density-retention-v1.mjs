@@ -54,7 +54,7 @@ assert.match(
   "turning city-agg toggle off at low zoom must retain density layer"
 );
 
-assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-missing-coords-reconcile-1/);
+assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-missing-coords-searchable-2/);
 
 console.log(
   JSON.stringify({

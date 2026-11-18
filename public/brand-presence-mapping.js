@@ -1158,6 +1158,7 @@ async function mergeAuthorizedInternalPreviewHotels(hotels) {
         }
         const addedIds = [];
         const duplicatesReconciled = [];
+        const mapAddedIds = [];
         for (let i = 0; i < data.hotels.length; i++) {
             const hotel = data.hotels[i];
             const id = String(hotel && hotel.id || '').trim();
@@ -1166,7 +1167,8 @@ async function mergeAuthorizedInternalPreviewHotels(hotels) {
             // HPC Radar Status must be Open|Pipeline (server already filters; keep client fail-closed).
             const st = String(hotel.status || hotel.radarStatus || '').trim();
             if (st !== 'Open' && st !== 'Pipeline') continue;
-            if (!hotelHasRadarMapCoordinates(hotel)) continue;
+            // Missing coordinates stay in the dataset for search / ranked list / Explorer.
+            // createHotelMarker / city pins still require hotelHasRadarMapCoordinates.
             const keys = buildRadarHotelIdentityKeys(hotel);
             let collision = null;
             for (let k = 0; k < keys.length; k++) {
@@ -1179,9 +1181,12 @@ async function mergeAuthorizedInternalPreviewHotels(hotels) {
                 duplicatesReconciled.push({ hpcId: id, matchedKey: collision });
                 continue;
             }
-            list.push(hotel);
+            const mapReady = hotel.radarMapEligible === true || hotelHasRadarMapCoordinates(hotel);
+            const row = Object.assign({}, hotel, { radarMapEligible: mapReady });
+            list.push(row);
             for (let k = 0; k < keys.length; k++) seen.add(keys[k]);
             addedIds.push(id);
+            if (mapReady) mapAddedIds.push(id);
         }
         // Internal diagnostics stay in-memory for authorized sessions only — never rendered for share.
         const missingCoordinates = Array.isArray(data.diagnostics && data.diagnostics.missingCoordinates)
@@ -1189,19 +1194,24 @@ async function mergeAuthorizedInternalPreviewHotels(hotels) {
             : [];
         const openCount = Number(data.diagnostics && data.diagnostics.openCount) || 0;
         const pipelineCount = Number(data.diagnostics && data.diagnostics.pipelineCount) || 0;
+        const mapEligibleCount = Number(data.diagnostics && data.diagnostics.mapEligibleCount);
         window.__radarHpcInternalDiagnostics = {
             openCount: openCount,
             pipelineCount: pipelineCount,
-            mapEligibleCount: Array.isArray(data.hotels) ? data.hotels.length : 0,
+            mapEligibleCount: Number.isFinite(mapEligibleCount)
+                ? mapEligibleCount
+                : (Array.isArray(data.hotelsMapEligible) ? data.hotelsMapEligible.length : mapAddedIds.length),
+            searchEligibleCount: addedIds.length,
             missingCoordinates: missingCoordinates,
             duplicatesReconciled: duplicatesReconciled.length,
             addedIds: addedIds.slice(),
+            mapAddedIds: mapAddedIds.slice(),
             lastSuccessfulFetchAt: data.diagnostics && data.diagnostics.lastSuccessfulFetchAt,
             paginationComplete: data.diagnostics && data.diagnostics.paginationComplete,
             apiErrors: (data.errors && data.errors.length) || (data.diagnostics && data.diagnostics.apiErrors && data.diagnostics.apiErrors.length) || 0,
             cacheHit: data.diagnostics && data.diagnostics.cacheHit,
         };
-        return { hotels: list, addedIds, skipped: null, duplicatesReconciled, missingCoordinates };
+        return { hotels: list, addedIds, mapAddedIds, skipped: null, duplicatesReconciled, missingCoordinates };
     } catch (err) {
         console.warn('[radar-map] internal-preview merge skipped:', err);
         return { hotels: list, addedIds: [], skipped: 'error', duplicatesReconciled: [] };
@@ -1275,12 +1285,12 @@ async function loadHotelData() {
                     'HPC Open/Pipeline: ' +
                         (Number(diag.openCount || 0) + Number(diag.pipelineCount || 0)) +
                         ' status-eligible; ' +
-                        (merged.addedIds || []).length +
+                        (merged.mapAddedIds || []).length +
                         ' on map; ' +
                         missingCoords.length +
-                        ' missing coordinates' +
+                        ' missing coordinates (searchable / Hotel Explorer)' +
                         (sample ? ' (' + sample + ')' : '') +
-                        '. Fill Latitude/Longitude on Hotel Property Census to show them on Radar.'
+                        '. Fill Latitude/Longitude on Hotel Property Census to place map pins.'
                 );
             } else {
                 setRadarHpcMergeNotice('');
@@ -1555,11 +1565,17 @@ function getHotelsForAggregation() {
 /**
  * Pure city-aggregate rows for map density markers.
  * Key = city|country so same city names in different countries never merge.
- * Counts every unique hotel once; Open/Pipeline/Candidate tallies are separate from totalHotels.
+ * Counts every unique map-eligible hotel once; Open/Pipeline/Candidate tallies are
+ * separate from totalHotels. Missing-coordinate hotels stay searchable but do not
+ * inflate city marker badges.
  */
 function buildRadarCityAggregationRows(sourceHotels) {
     const cityGroups = {};
     (sourceHotels || []).forEach(function (hotel) {
+        const lat = Number(hotel && hotel.lat);
+        const lng = Number(hotel && hotel.lng);
+        const hasCoords = Number.isFinite(lat) && Number.isFinite(lng) && (lat !== 0 || lng !== 0);
+        if (!hasCoords) return;
         const city = (hotel && hotel.city || '').trim();
         const country = (hotel && hotel.country || '').trim();
         if (!city) return;
@@ -1590,17 +1606,10 @@ function buildRadarCityAggregationRows(sourceHotels) {
         else if (status === 'pipeline') row.pipelineHotels += 1;
         else if (status === 'candidate') row.candidateHotels += 1;
 
-        const lat = Number(hotel.lat);
-        const lng = Number(hotel.lng);
-        const hasCoords = Number.isFinite(lat) && Number.isFinite(lng) && (lat !== 0 || lng !== 0);
-        if (hasCoords) {
-            row.withCoordinates += 1;
-            if (!Number.isFinite(row.lat) || !Number.isFinite(row.lng)) {
-                row.lat = lat;
-                row.lng = lng;
-            }
-        } else {
-            row.withoutCoordinates += 1;
+        row.withCoordinates += 1;
+        if (!Number.isFinite(row.lat) || !Number.isFinite(row.lng)) {
+            row.lat = lat;
+            row.lng = lng;
         }
     });
     return Object.values(cityGroups);
