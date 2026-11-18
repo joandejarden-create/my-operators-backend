@@ -53,3 +53,35 @@ Eight Open in Airtable vs seven on the map is expected: status eligibility ≠ m
 ## Required founder action for Radisson map pin
 
 Authorize a Hotel Property Census Latitude/Longitude write for `recH9h3McgMNFQEla` (geocode from Address + City, or verified coords). No HE-002 code path should special-case this hotel ID.
+
+## Automated tests (local + CI)
+
+- `test-radar-hpc-open-pipeline-reconciliation-v1` — Open/Pipeline vs map-eligible vs missing-coords contract
+- Radar HE + ADP free gates (CI) — **pass**
+- gitleaks / Admin tabs / GDI recovery / Spice isolation — **pass**
+
+## Authenticated `/app#/opportunity-radar` acceptance
+
+| Check | Result |
+| --- | --- |
+| Standalone embed (`embed=1`, no `share`) + workspace JWT path | PASS — 7 `addedIds`; missing-coords notice for Radisson; cityLayer present |
+| Share isolation (`share=1`) | PASS — HPC overlay / missing-coords notice **off** |
+| Cursor-browser authenticated `/app#/opportunity-radar` | **BLOCKED** — session shows Sign in; no Memberstack JWT in this automation context |
+| Founder live `/app` acceptance | **PENDING** founder sign-in on HE `:8080` |
+
+## Git / PR stop state (do not merge from HE chat)
+
+| Item | Value |
+| --- | --- |
+| PR | [#398](https://github.com/joandejarden-create/my-operators-backend/pull/398) **OPEN** / **MERGEABLE** |
+| Branch | `fix/radar-app-hpc-search-focus-v1` @ `de9399404` |
+| CI | all required checks **SUCCESS** |
+| Merge | **not merged** — Integration Controller after founder approval |
+| Post-merge sync | **not run** — unfinished task; stay on feature branch until IC merge |
+
+## STOP — founder review
+
+1. Review PR #398 findings + this report.  
+2. Approve or reject merge into `main` (IC merges).  
+3. Separately authorize Radisson HPC lat/lng write if the 8th Open pin is required on the map.  
+4. After merge, IC runs `dealality:post-merge-sync --stream he --pr 398` so HE returns to `ws/hotel-explorer` FF `origin/main`.
