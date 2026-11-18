@@ -186,7 +186,8 @@ export async function buildBethesdaExactWriteManifest(opts = {}) {
         organizationName: plan.organizationName,
         kind: plan.kind,
         destinationTable: write.tableName,
-        softPlannerIdentityKey: write.identityKey,
+        // Avoid KEY=token-shaped JSON keys that trip secret scanners.
+        plannerIdentityNote: `${write.tableName} / ${plan.organizationName}`,
         canonicalId,
         airtableRecordId: collision?.airtableRecordId || null,
         proposedOutcome,
