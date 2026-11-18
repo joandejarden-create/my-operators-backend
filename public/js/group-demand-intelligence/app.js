@@ -309,7 +309,228 @@
     root.innerHTML =
       '<div class="gdi-error" role="alert"><p>' +
       esc(msg) +
-      "</p><p>Local servers enable pilot read automatically. On production set GROUP_DEMAND_INTELLIGENCE_V1=1. Admin actions still require sign-in.</p></div>";
+      "</p><p>Local servers enable pilot read automatically. On production set GROUP_DEMAND_INTELLIGENCE_V1=1. Admin actions still require sign-in.</p>" +
+      '<p class="gdi-error__nav"><button type="button" class="gdi-btn" data-gdi-recovery="back-hotels">Back to Hotels</button> ' +
+      '<button type="button" class="gdi-btn" data-gdi-recovery="choose-hotel">Choose Another Hotel</button></p></div>';
+    wireRecoveryActions({ hasCurrentPublication: false });
+  }
+
+  function hotelLabelForId(hotelId) {
+    var id = String(hotelId || "").trim();
+    var hotels = state.hotels || [];
+    for (var i = 0; i < hotels.length; i++) {
+      if (String(hotels[i].hotelId) === id) {
+        return (
+          hotels[i].optionLabel ||
+          hotels[i].displayName ||
+          hotels[i].hotelName ||
+          id
+        );
+      }
+    }
+    return id || "this property";
+  }
+
+  function clearPreviewQueryParams() {
+    try {
+      var url = new URL(window.location.href);
+      url.searchParams.delete("preview");
+      url.searchParams.delete("live");
+      url.searchParams.delete("publicationPackage");
+      window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+      if (window.parent && window.parent !== window) {
+        try {
+          var parentUrl = new URL(window.parent.location.href);
+          var hash = String(parentUrl.hash || "");
+          var qIdx = hash.indexOf("?");
+          if (qIdx >= 0) {
+            var route = hash.slice(0, qIdx);
+            var hp = new URLSearchParams(hash.slice(qIdx + 1));
+            hp.delete("preview");
+            hp.delete("live");
+            hp.delete("publicationPackage");
+            var qs = hp.toString();
+            window.parent.history.replaceState(
+              {},
+              "",
+              parentUrl.pathname + parentUrl.search + route + (qs ? "?" + qs : "")
+            );
+          }
+        } catch (eParent) {
+          /* cross-origin */
+        }
+      }
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function setPreviewQueryParam(value) {
+    try {
+      var url = new URL(window.location.href);
+      if (value) url.searchParams.set("preview", value);
+      else url.searchParams.delete("preview");
+      url.searchParams.delete("live");
+      window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function hotelOptionsHtml(selectedId) {
+    var hotels = state.hotels || [];
+    if (!hotels.length) {
+      return (
+        '<option value="' +
+        esc(selectedId || "") +
+        '">' +
+        esc(hotelLabelForId(selectedId)) +
+        "</option>"
+      );
+    }
+    return hotels
+      .map(function (h) {
+        var id = String(h.hotelId || "");
+        var label =
+          h.optionLabel || h.displayName || h.hotelName || id;
+        return (
+          '<option value="' +
+          esc(id) +
+          '"' +
+          (id === selectedId ? " selected" : "") +
+          ">" +
+          esc(label) +
+          "</option>"
+        );
+      })
+      .join("");
+  }
+
+  function wireRecoveryActions(opts) {
+    opts = opts || {};
+    var choose = root.querySelector('[data-gdi-recovery="choose-hotel"]');
+    var back = root.querySelector('[data-gdi-recovery="back-hotels"]');
+    var published = root.querySelector(
+      '[data-gdi-recovery="view-published"]'
+    );
+    var select = root.querySelector("#gdiRecoveryHotel");
+    if (choose && select) {
+      choose.addEventListener("click", function () {
+        select.focus();
+        if (typeof select.showPicker === "function") {
+          try {
+            select.showPicker();
+          } catch (e) {
+            /* ignore */
+          }
+        }
+      });
+    }
+    if (select) {
+      select.addEventListener("change", function () {
+        var next = String(select.value || "").trim();
+        if (!next) return;
+        selectHotel(next, { clearPreview: true }).catch(function (err) {
+          handleLoadFailure(err);
+        });
+      });
+    }
+    if (back) {
+      back.addEventListener("click", function () {
+        clearPreviewQueryParams();
+        var fallback =
+          DEFAULT_HOTEL_ID && DEFAULT_HOTEL_ID !== state.hotelId
+            ? DEFAULT_HOTEL_ID
+            : (state.hotels[0] && state.hotels[0].hotelId) || DEFAULT_HOTEL_ID;
+        if (fallback && fallback !== state.hotelId) {
+          selectHotel(fallback, { clearPreview: true }).catch(function (err) {
+            handleLoadFailure(err);
+          });
+          return;
+        }
+        if (select) select.focus();
+      });
+    }
+    if (published && opts.hasCurrentPublication) {
+      published.addEventListener("click", function () {
+        applyFounderInventoryMode("published");
+        setLoading(true, UI.DEFAULT_PAGE_LOADING_MESSAGE);
+        loadAll().catch(function (err) {
+          handleLoadFailure(err);
+        });
+      });
+    }
+    var research = root.querySelector('[data-gdi-recovery="view-research"]');
+    if (research) {
+      research.addEventListener("click", function () {
+        applyFounderInventoryMode("research");
+        setLoading(true, UI.DEFAULT_PAGE_LOADING_MESSAGE);
+        loadAll().catch(function (err) {
+          handleLoadFailure(err);
+        });
+      });
+    }
+  }
+
+  function showStagedPreviewUnavailable(err) {
+    setLoading(false);
+    var data = (err && err.data) || {};
+    var recovery = data.recovery || {};
+    var hasCurrent = recovery.hasCurrentPublication === true;
+    var hotelId = data.hotelId || state.hotelId;
+    var label = hotelLabelForId(hotelId);
+    var founderMsg =
+      data.founderMessage ||
+      "A staged review package is not available for this property yet.";
+    var publishedBtn = hasCurrent
+      ? '<button type="button" class="gdi-btn" data-gdi-recovery="view-published">View Published Version</button> '
+      : "";
+    root.innerHTML =
+      '<div class="gdi-error gdi-error--recoverable" role="alert">' +
+      "<h2>Staged preview unavailable</h2>" +
+      "<p>" +
+      esc(founderMsg) +
+      "</p>" +
+      "<p><strong>" +
+      esc(label) +
+      "</strong> does not have a staged publication package" +
+      (hasCurrent
+        ? ". You can open Research Preview or the published version — nothing is opened automatically."
+        : ". You can open Research Preview to inspect existing hotel research when available.") +
+      "</p>" +
+      '<div class="filter-group filter-group--grow" style="max-width:28rem;margin:1rem 0">' +
+      '<label class="filter-label" for="gdiRecoveryHotel">Choose Another Hotel</label>' +
+      '<select class="filter-select" id="gdiRecoveryHotel" aria-label="Choose another GDI hotel">' +
+      hotelOptionsHtml(hotelId) +
+      "</select></div>" +
+      '<p class="gdi-error__nav">' +
+      '<button type="button" class="gdi-btn gdi-btn-primary" data-gdi-recovery="view-research">Open Research Preview</button> ' +
+      '<button type="button" class="gdi-btn" data-gdi-recovery="back-hotels">Back to Hotels</button> ' +
+      '<button type="button" class="gdi-btn" data-gdi-recovery="choose-hotel">Choose Another Hotel</button> ' +
+      publishedBtn +
+      "</p>" +
+      '<p class="gdi-muted">Dealality will not switch to another hotel, another publication version, or live research automatically.</p>' +
+      "</div>";
+    wireRecoveryActions({ hasCurrentPublication: hasCurrent });
+  }
+
+  function handleLoadFailure(err) {
+    var code =
+      (err && err.data && err.data.error) ||
+      (err && err.code) ||
+      "";
+    if (String(code) === "STAGED_PUBLICATION_PREVIEW_UNAVAILABLE") {
+      var ensureCatalog = state.hotels && state.hotels.length
+        ? Promise.resolve()
+        : loadHotelCatalog().catch(function () {
+            return null;
+          });
+      return ensureCatalog.then(function () {
+        showStagedPreviewUnavailable(err);
+      });
+    }
+    showError((err && err.message) || "Failed to load Group & Demand Intelligence");
+    return Promise.resolve();
   }
 
   function priorityPill(p) {
@@ -476,7 +697,8 @@
     }
   }
 
-  function selectHotel(hotelId) {
+  function selectHotel(hotelId, opts) {
+    opts = opts || {};
     var next = String(hotelId || "").trim();
     if (!next || next === state.hotelId) return Promise.resolve();
     state.hotelId = next;
@@ -484,6 +706,11 @@
       localStorage.setItem(STORAGE_PREFIX + "hotelId", next);
       var url = new URL(window.location.href);
       url.searchParams.set("hotelId", next);
+      // Switching properties clears incompatible hotel-specific preview flags.
+      if (opts.clearPreview !== false) {
+        url.searchParams.delete("preview");
+        url.searchParams.delete("live");
+      }
       window.history.replaceState({}, "", url.pathname + url.search + url.hash);
     } catch (e) {
       /* ignore */
@@ -616,48 +843,63 @@
   }
 
   /**
-   * Canonical customer Opportunities use the approved publication package
-   * (same contract as external share). Research / live-store browse: ?live=1.
+   * Founder inventory views are separate from customer publication.
+   * research = hotel research store (no STAGED/CURRENT required)
+   * staged = explicit STAGED package only (fail-closed)
+   * published = CURRENT customer package only
    */
-  function wantsPublicationPackagePreview() {
+  function resolveFounderInventoryMode() {
     try {
       var params = readGdiQueryParams();
-      if (String(params.get("live") || "") === "1") return false;
-      if (String(params.get("publicationPackage") || "") === "0") return false;
-      // Default: package-first so authenticated GDI matches customer share.
-      return true;
+      var inventory = String(
+        params.get("inventory") || params.get("gdiInventory") || ""
+      )
+        .trim()
+        .toLowerCase();
+      var preview = String(params.get("preview") || "")
+        .trim()
+        .toLowerCase();
+      if (
+        inventory === "research" ||
+        inventory === "development" ||
+        inventory === "dev" ||
+        inventory === "live"
+      ) {
+        return "research";
+      }
+      if (inventory === "staged") return "staged";
+      if (inventory === "published" || inventory === "current") {
+        return "published";
+      }
+      if (preview === "staged") return "staged";
+      if (preview === "current" || preview === "published") return "published";
+      if (
+        String(params.get("live") || "") === "1" ||
+        String(params.get("publicationPackage") || "") === "0"
+      ) {
+        return "research";
+      }
+      // Local founder development: inspect existing hotel research without
+      // requiring STAGED or CUSTOMER_PUBLISHED packages.
+      if (isLocalFounderHost()) return "research";
+      // Production authenticated: customer-visible CURRENT package by default.
+      return "published";
     } catch (e) {
-      return true;
+      return isLocalFounderHost() ? "research" : "published";
     }
+  }
+
+  function wantsPublicationPackagePreview() {
+    var mode = resolveFounderInventoryMode();
+    return mode === "published" || mode === "staged";
   }
 
   function wantsLiveResearchBrowse() {
-    try {
-      var params = readGdiQueryParams();
-      return (
-        String(params.get("live") || "") === "1" ||
-        String(params.get("publicationPackage") || "") === "0"
-      );
-    } catch (e) {
-      return false;
-    }
+    return resolveFounderInventoryMode() === "research";
   }
 
   function wantsExplicitStagedPreview() {
-    try {
-      var params = readGdiQueryParams();
-      var preview = String(params.get("preview") || "").toLowerCase();
-      // Explicit opt-out keeps Mode B ≡ live CURRENT / external share.
-      if (preview === "current" || preview === "published") return false;
-      if (preview === "staged") return true;
-      // Local founder review: when STAGED ≠ CURRENT, localhost must load the
-      // corrected staged package without requiring a manual query flag.
-      // Production authenticated hosts stay on CURRENT unless preview=staged.
-      if (isLocalFounderHost()) return true;
-      return false;
-    } catch (e) {
-      return false;
-    }
+    return resolveFounderInventoryMode() === "staged";
   }
 
   function isLocalFounderHost() {
@@ -673,6 +915,31 @@
       );
     } catch (e) {
       return false;
+    }
+  }
+
+  function applyFounderInventoryMode(mode) {
+    var next = String(mode || "").toLowerCase();
+    try {
+      var url = new URL(window.location.href);
+      url.searchParams.delete("live");
+      url.searchParams.delete("publicationPackage");
+      url.searchParams.delete("preview");
+      url.searchParams.delete("inventory");
+      url.searchParams.delete("gdiInventory");
+      if (next === "research") {
+        url.searchParams.set("inventory", "research");
+        url.searchParams.set("live", "1");
+      } else if (next === "staged") {
+        url.searchParams.set("inventory", "staged");
+        url.searchParams.set("preview", "staged");
+      } else if (next === "published") {
+        url.searchParams.set("inventory", "published");
+        url.searchParams.set("preview", "current");
+      }
+      window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+    } catch (e) {
+      /* ignore */
     }
   }
 
@@ -1668,14 +1935,17 @@
 
     var showPriorities = state.tab === "priorities";
     root.className = "gdi-shell dashboard-container aiv-dashboard";
-    var presentationMode = wantsLiveResearchBrowse()
-      ? "LIVE_RESEARCH"
-      : "FOUNDER_PUBLICATION_PREVIEW";
-    // Mode A/B banners are developer diagnostics only (?gdiDiag=1). Normal auth UI
-    // and customer share must not show internal publication-path labels.
+    var inventoryMode = resolveFounderInventoryMode();
+    var presentationMode =
+      inventoryMode === "research"
+        ? "LIVE_RESEARCH"
+        : inventoryMode === "staged"
+          ? "FOUNDER_STAGED_PREVIEW"
+          : "FOUNDER_PUBLICATION_PREVIEW";
     try {
       if (typeof console !== "undefined" && console.debug) {
         console.debug("[gdi] presentationMode=", presentationMode, {
+          inventoryMode: inventoryMode,
           liveResearch: wantsLiveResearchBrowse(),
           packagePreview: wantsPublicationPackagePreview(),
           diag: wantsPresentationModeDiagnostics(),
@@ -1684,19 +1954,79 @@
     } catch (eDiag) {
       /* ignore */
     }
+    var pubMeta = state.publication || {};
+    var oppCount = (state.opportunities || []).length;
+    var customerApproved =
+      inventoryMode === "published" &&
+      String(pubMeta.previewSource || "").toUpperCase() === "CURRENT";
+    var sourceLabel =
+      inventoryMode === "research"
+        ? "Research / Development Preview"
+        : inventoryMode === "staged"
+          ? "Staged Preview"
+          : "Published Inventory";
+    var sourceDetail =
+      inventoryMode === "research"
+        ? "Hotel research store · not customer-approved"
+        : inventoryMode === "staged"
+          ? "STAGED package · founder review only · not customer-approved"
+          : "CURRENT package · customer-approved publication";
+    var versionBits = [];
+    if (pubMeta.publicationVersion) {
+      versionBits.push("version " + String(pubMeta.publicationVersion));
+    }
+    if (pubMeta.contentFingerprintSha256) {
+      versionBits.push(
+        "fp " + String(pubMeta.contentFingerprintSha256).slice(0, 12)
+      );
+    }
+    if (state.summary && state.summary.updatedAt) {
+      versionBits.push("updated " + String(state.summary.updatedAt).slice(0, 10));
+    }
+    var showFounderInventoryStrip =
+      isLocalFounderHost() ||
+      wantsPresentationModeDiagnostics() ||
+      inventoryMode !== "published";
     var presentationModeBanner = "";
-    // No customer-visible Preview chip / package / fingerprint chrome.
-    // Staged-vs-published authorization stays internal (?preview=staged / preferStaged).
-    if (wantsPresentationModeDiagnostics()) {
+    if (showFounderInventoryStrip) {
       presentationModeBanner =
+        '<div id="gdiFounderInventoryStrip" class="gdi-presentation-mode-banner" data-gdi-inventory-mode="' +
+        esc(inventoryMode) +
+        '" role="status">' +
+        "<strong>" +
+        esc(sourceLabel) +
+        "</strong> · " +
+        esc(hotelName) +
+        " · " +
+        oppCount +
+        " opportunit" +
+        (oppCount === 1 ? "y" : "ies") +
+        " · " +
+        esc(sourceDetail) +
+        (versionBits.length ? " · " + esc(versionBits.join(" · ")) : "") +
+        (customerApproved ? " · customer-approved: yes" : " · customer-approved: no") +
+        '<span class="gdi-founder-inventory-actions" style="display:inline-flex;gap:0.35rem;margin-left:0.75rem;flex-wrap:wrap">' +
+        '<button type="button" class="gdi-btn" data-gdi-inventory-mode="research"' +
+        (inventoryMode === "research" ? " disabled" : "") +
+        ">Research</button>" +
+        '<button type="button" class="gdi-btn" data-gdi-inventory-mode="staged"' +
+        (inventoryMode === "staged" ? " disabled" : "") +
+        ">Staged</button>" +
+        '<button type="button" class="gdi-btn" data-gdi-inventory-mode="published"' +
+        (inventoryMode === "published" ? " disabled" : "") +
+        ">Published</button>" +
+        "</span></div>";
+    }
+    if (wantsPresentationModeDiagnostics()) {
+      presentationModeBanner +=
         '<div id="gdiPresentationModeBanner" class="gdi-presentation-mode-banner" data-gdi-presentation-mode="' +
         presentationMode +
         '" role="status">' +
         (presentationMode === "LIVE_RESEARCH"
-          ? "<strong>Mode A — Live Research</strong> · Evolving store. Not the customer publication. Open without <code>?live=1</code> for founder publication preview."
-          : wantsExplicitStagedPreview()
-            ? "<strong>Mode B — Founder STAGED Preview</strong> · Corrected candidate package (localhost defaults to STAGED; <code>?preview=current</code> mirrors live share). External stays on CURRENT until fingerprint approval."
-            : "<strong>Mode B — Founder Publication Preview</strong> · Approved package via canonical customer renderer (same as external share). Research browse: <code>?live=1</code>. Explicit staged: <code>?preview=staged</code>.") +
+          ? "<strong>Diag — Research store</strong> · Not the customer publication."
+          : presentationMode === "FOUNDER_STAGED_PREVIEW"
+            ? "<strong>Diag — Explicit STAGED</strong> · Fail-closed when missing. Localhost default is Research Preview."
+            : "<strong>Diag — Published CURRENT</strong> · Same contract as external share.") +
         "</div>";
     }
     root.innerHTML =
@@ -1806,11 +2136,23 @@
     var hotelSelect = document.getElementById("gdiHotel");
     if (hotelSelect) {
       hotelSelect.addEventListener("change", function () {
-        selectHotel(hotelSelect.value).catch(function (err) {
-          showError(err.message || "Failed to switch hotel");
+        selectHotel(hotelSelect.value, { clearPreview: true }).catch(function (err) {
+          handleLoadFailure(err);
         });
       });
     }
+
+    root.querySelectorAll("[data-gdi-inventory-mode]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var mode = String(btn.getAttribute("data-gdi-inventory-mode") || "").trim();
+        if (!mode || mode === resolveFounderInventoryMode()) return;
+        applyFounderInventoryMode(mode);
+        setLoading(true, UI.DEFAULT_PAGE_LOADING_MESSAGE);
+        loadAll().catch(function (err) {
+          handleLoadFailure(err);
+        });
+      });
+    });
 
     var weeklySelect = document.getElementById("gdiWeeklyFilter");
     if (weeklySelect) {
@@ -2316,6 +2658,6 @@
     });
 
   loadAll().catch(function (err) {
-    showError(err.message || "Failed to load Group & Demand Intelligence");
+    handleLoadFailure(err);
   });
 })();
