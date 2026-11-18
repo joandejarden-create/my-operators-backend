@@ -1,0 +1,139 @@
+{
+  "version": "gdi-full-e2e-airtable-persistence-contract-v1",
+  "base": {
+    "name": "AI Demand Positioning",
+    "baseId": "appa2cE7FTRmIbB32"
+  },
+  "tables": [
+    {
+      "name": "Group Demand Opportunities",
+      "tableId": "tblRuReslJMwsfRQj",
+      "adapter": "airtable-opportunity-store / gdi-airtable-sync-v1",
+      "identityField": "opportunityId"
+    },
+    {
+      "name": "Demand Generators",
+      "tableId": "tblykUVOjGVkawvdD",
+      "adapter": "demand-generators/airtable-stores.upsertDemandGenerator",
+      "identityField": "Demand Generator ID"
+    },
+    {
+      "name": "Demand Programs",
+      "tableId": "tblxm7wqfFNG37Z2m",
+      "adapter": "demand-generators/airtable-stores.upsertDemandProgram",
+      "identityField": "Program ID"
+    },
+    {
+      "name": "Demand Generator Signals",
+      "tableId": "tblZ0cOM78uYMCTXx",
+      "adapter": "demand-generators/airtable-stores.upsertSignal",
+      "identityField": "Demand Generator Signal ID"
+    },
+    {
+      "name": "Hotel Demand Generator Fit",
+      "tableId": "tblqamXbIk9n6gXfV",
+      "adapter": "demand-generators/airtable-stores.upsertHotelFit",
+      "identityField": "Hotel Generator Fit ID"
+    },
+    {
+      "name": "Private Event Venues",
+      "tableId": "tblE5p4HjVHfcMDna",
+      "adapter": "private-events/airtable-venue-store",
+      "identityField": "Venue ID"
+    },
+    {
+      "name": "Private Event Signals",
+      "tableId": "tbl5rSZxKv218GuOP",
+      "adapter": "private-events/airtable-signal-store",
+      "identityField": "Event Signal ID"
+    },
+    {
+      "name": "Hotel Venue Fit",
+      "tableId": "tbluXqX7ecocCrdE1",
+      "adapter": "private-events/airtable-fit-store",
+      "identityField": "Hotel Venue Fit ID"
+    },
+    {
+      "name": "GDI Research Targets",
+      "tableId": "tblVyuEf5vjooWDKX",
+      "adapter": "research-coverage/airtable-stores",
+      "identityField": "Target ID"
+    },
+    {
+      "name": "GDI Research Runs",
+      "tableId": "tblzNMUIo2T6onaKH",
+      "adapter": "research-coverage/airtable-stores",
+      "identityField": "Run ID"
+    },
+    {
+      "name": "GDI Research Target Runs",
+      "tableId": "tblSA0cFVplNfWMjp",
+      "adapter": "research-coverage/airtable-stores",
+      "identityField": "Target Run ID"
+    },
+    {
+      "name": "GDI Hotel Commercial Profiles",
+      "tableId": "tbl8KSNUCRbIzEv15",
+      "adapter": "need-date-airtable-store-v3",
+      "identityField": "Profile ID"
+    },
+    {
+      "name": "GDI Hotel Need Periods",
+      "tableId": "tbl50kj5XkGs22C6j",
+      "adapter": "need-date-airtable-store-v3",
+      "identityField": "Need Period ID"
+    },
+    {
+      "name": "GDI Need-Date Campaign Runs",
+      "tableId": "tblghbxp4reaQWx2b",
+      "adapter": "need-date campaign writers",
+      "identityField": "Campaign ID"
+    },
+    {
+      "name": "GDI Need Period Opportunity Matches",
+      "tableId": "tblOw5r7r95eQ1dPq",
+      "adapter": "need-date match writers",
+      "identityField": "Need Period ID"
+    }
+  ],
+  "nonAirtableDestinations": {
+    "GLOBAL_INTELLIGENCE_FS": "data/group-demand-intelligence/global-intelligence/",
+    "HOTEL_OPPORTUNITIES_FS": "data/group-demand-intelligence/hotels/{hotelId}/opportunities.json",
+    "EXECUTION_LEDGER_FS": "data/group-demand-intelligence/execution-observability/{hotelId}/{runId}.json",
+    "RESEARCH_STAGE_FS": "data/group-demand-intelligence/research-stage/",
+    "PUBLICATION_PACKAGE": "lib/group-demand-intelligence/bundled-publication-packages/{hotelId}/",
+    "HOTEL_SALES_FEEDBACK": "data/group-demand-intelligence/hotels/{hotelId}/feedback.json",
+    "RAW_AUDIT_BOUNDED": "reports/ + execution ledger provider rows (bounded)"
+  },
+  "writeOutcomes": {
+    "CREATED": "CREATED",
+    "UPDATED": "UPDATED",
+    "UNCHANGED": "UNCHANGED",
+    "DUPLICATE_LINKED": "DUPLICATE_LINKED",
+    "DEFERRED": "DEFERRED",
+    "FAILED": "FAILED"
+  },
+  "checkpoints": {
+    "AFTER_GLOBAL_IDENTITY": "AFTER_GLOBAL_IDENTITY",
+    "AFTER_SCREENING": "AFTER_SCREENING",
+    "AFTER_HOTEL_QUALIFICATION": "AFTER_HOTEL_QUALIFICATION",
+    "AFTER_DEEP_RESEARCH": "AFTER_DEEP_RESEARCH",
+    "AFTER_CONTACT_UPDATE": "AFTER_CONTACT_UPDATE",
+    "RUN_SUMMARY": "RUN_SUMMARY"
+  },
+  "publicationBoundary": {
+    "airtablePersistenceDoesNotPublish": true,
+    "customerPublishedSoT": "lib/group-demand-intelligence/bundled-publication-packages/{hotelId}/",
+    "hotelSalesNeverSyncedToGlobal": true
+  },
+  "doNotCreate": [
+    "GDI Global Demand Intelligence (prefer Demand Generators + Signals)",
+    "GDI Hotel Opportunity Matches (prefer Hotel Demand Generator Fit / Hotel Venue Fit / Opportunities)",
+    "Any second competing Airtable base"
+  ],
+  "mutationGuard": {
+    "blocked": true,
+    "code": "AIRTABLE_PRODUCTION_WRITES_NOT_AUTHORIZED",
+    "note": "Canonical Full E2E may dry-run map and plan writes; live Airtable mutations require separate founder approval."
+  }
+}

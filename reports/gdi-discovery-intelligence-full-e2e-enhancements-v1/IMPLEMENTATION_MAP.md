@@ -42,11 +42,13 @@
 | **PR4** | Three local tracks as mission packs + thin PS1 wrappers | mission configs + wrappers → canonical entry |
 | **PR5** | Fourteen-segment Exa mission / geo targeting | Exa contracts + hotel catchment context |
 | **PR6** | Full E2E fixture certification + program reports + privacy regression | reports + integration tests |
+| **PR7 (this)** | Mandatory Airtable persistence contract against **existing** ADP tables + Bethesda reconciliation + dry-run read-back gate | `gdi-full-e2e-airtable-persistence-*`, Bethesda recon, activation plan |
 
 ## Non-goals
 
 - New orchestrator / parallel GDI architecture
 - Paid Exa / Apify / enrichment
-- Production Airtable writes
+- Production Airtable writes (dry-run / recon only until authorized)
 - Customer publication / CURRENT pointer changes
 - Customer-facing drawer UX
+- Creating competing “global demand” Airtable tables when Demand Generators / Opportunities / PE / Research tables already exist
