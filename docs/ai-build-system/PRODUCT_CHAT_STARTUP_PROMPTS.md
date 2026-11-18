@@ -65,6 +65,14 @@ On start:
 Workflow: one task → branch from latest origin/main inside this workspace → implement → targeted tests → commit → push → PR → STOP for Integration Controller merge + post-merge sync.
 Do not create unregistered worktrees. Do not force-push. Do not merge to main. Do not copy dirty primary GDI WIP until founder-approved preservation execution.
 No Airtable writes, paid research, or deploy without founder authorization.
+
+Permanent cycle completion (GDI):
+- Opening a PR is NOT complete. Do not claim full integration until merge + ws/gdi sync are verified.
+- If PR is still open: report AWAITING_INTEGRATION_CONTROLLER and STOP.
+- After Integration Controller merges: restore C:\Dev\dealality\ws-gdi to ws/gdi, FF origin/main, verify HEAD == origin/main, retire the temporary feature branch when safe, SetActiveBranch to ws/gdi when supported.
+- Final report must include PR number/status, CI, merge SHA (if any), workspace path, actual Git branch, HEAD, origin/main, HEAD==origin/main, branch cleanup, preserved dirty/untracked, and Cursor chip note if UI disagrees with Git.
+- End with exactly one of: COMPLETE — MERGED_AND_HOME_SYNCED | AWAITING_INTEGRATION_CONTROLLER | BLOCKED — WORKSPACE_RESTORATION_REQUIRED
+- Trust git in ws-gdi over Cursor multi-branch UI lists; do not recreate chats or touch ADP/HE workspaces to fix a chip.
 ```
 
 ## Integration Controller
