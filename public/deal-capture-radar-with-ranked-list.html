@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="/css/travel-infrastructure-radar-filters.css">
     <link rel="stylesheet" href="/css/radar-filter-drawer.css?v=16">
     <link rel="stylesheet" href="/css/hotel-detail-panel.css?v=36">
+    <!-- Phase 1: Hotel Explorer becomes the unified hotel-detail shell (Wave 0 / progressive enrichment). -->
+    <link rel="stylesheet" href="/css/hotel-explorer.css?v=61">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -2675,18 +2677,22 @@
         </footer>
     </aside>
 
+    <script src="/js/auth-helper.js?v=1"></script>
     <script src="/js/opportunity-radar-share-mode.js?v=or-share-1"></script>
     <script src="/js/travel-infrastructure-radar-layer.js?v=2"></script>
     <script src="/js/demand-anchors-radar-layer.js"></script>
     <script src="/js/hilton-amenity-icons.js?v=10"></script>
     <script src="/js/radar-branded-penetration.js?v=2"></script>
     <script src="/js/hotel-detail-panel.js?v=54"></script>
+    <!-- Load after HotelDetailPanel so open() delegates to HotelExplorer when primary. -->
+    <script src="/js/dealality-chain-scale-theme.js?v=1"></script>
+    <script src="/js/hotel-explorer.js?v=61"></script>
     <script src="/js/radar-filter-drawer.js?v=12"></script>
     <script src="/js/radar-layer-drawer.js?v=24"></script>
     <script src="radar-page.js?v=3"></script>
     <script src="/js/radar-white-space.js?v=14"></script>
     <script src="/js/radar-territory.js?v=13"></script>
-    <script src="brand-presence-mapping.js?v=or-share-1"></script>
+    <script src="brand-presence-mapping.js?v=radar-he-internal-preview-1"></script>
     <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

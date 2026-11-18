@@ -1,0 +1,61 @@
+{
+  "schema": "ADP_PHASE1_1_GATE_MATRIX_V1",
+  "generatedAt": "2026-11-18T08:53:55.061Z",
+  "isolation": {
+    "worktree": "/agent/repos/my-operators-backend-adp-audit",
+    "branch": "cursor/adp-hotel-explorer-audit-1ed2",
+    "primaryGdiCheckout": "/agent/repos/my-operators-backend (untouched)",
+    "pr": 364
+  },
+  "gates": [
+    {
+      "id": "certification_baseline_authority_recon",
+      "status": "PASS_DOCUMENTED",
+      "note": "27=27; provisional inventory only; original freeze missing"
+    },
+    {
+      "id": "test:adp-permanent-full-e2e-certification-v1 Layer A",
+      "status": "PASS",
+      "note": "offline sanitized fixtures"
+    },
+    {
+      "id": "permanence Layer B durable",
+      "status": "BLOCKED_MISSING_AUTHORITATIVE_EVIDENCE",
+      "note": "data/adp-durable-published missing"
+    },
+    {
+      "id": "test:adp-e2e-persistence-contract-v1 Layer A",
+      "status": "PASS",
+      "note": "demotion + lifecycle aliases fixed"
+    },
+    {
+      "id": "persistence Layer B measured-dates",
+      "status": "BLOCKED_MISSING_AUTHORITATIVE_EVIDENCE",
+      "note": "PRODUCTION_DURABLE_PUBLISHED_VS_MEASURED.json missing"
+    },
+    {
+      "id": "test:adp-phase1-radar-he-gates",
+      "status": "PASS",
+      "note": "wiring + progressive enrichment + foundation"
+    },
+    {
+      "id": "test:adp-customer-surface-contract",
+      "status": "FAIL_PARTIAL",
+      "note": "33 remaining; scan/hybrid/share/print fixed"
+    },
+    {
+      "id": "radar_he_browser_smoke_internal_preview",
+      "status": "BLOCKED_ENV",
+      "note": "no Airtable/.env; brand-presence 500; HE panel did not open"
+    }
+  ],
+  "persistenceSummary": {
+    "resultsPath": "reports/dealality-adp-airtable-persistence-historical-traceability-v1/PERSISTENCE_TEST_RESULTS.json"
+  },
+  "authoritySummary": {
+    "LEGACY_PUBLISHED_NO_CERT_FIELD": 4,
+    "LEGACY_PUBLISHED_MANIFEST_CLAIMS_CERTIFIED": 20,
+    "CERTIFIED_FORMAL_COMPARABLE": 3
+  },
+  "mergeReadiness": "NOT_READY — STOP for founder review; do not merge or deploy PR #364"
+}
