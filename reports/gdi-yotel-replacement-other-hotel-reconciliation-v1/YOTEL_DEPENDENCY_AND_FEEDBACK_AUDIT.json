@@ -1,0 +1,37 @@
+{
+  "version": "gdi-yotel-replacement-migration-plan-v1",
+  "mutation": false,
+  "hotel": {
+    "key": "yotel",
+    "name": "YOTEL Geneva Lake",
+    "hotelId": "recrPQcZg7SFARRb2",
+    "strategy": "REPLACE_AIRTABLE_GDO_WITH_LOCAL_BASELINE"
+  },
+  "gdoRowsWithDecisionIdField": [],
+  "linkedDecisionsFound": [],
+  "decisionEventsSampleCount": 0,
+  "filesystemFeedbackPresent": false,
+  "publication": {
+    "stagedPresent": true,
+    "currentPresent": true,
+    "mustRemainUnchanged": true
+  },
+  "sharedIntelligence": {
+    "demandGeneratorLinks": 0,
+    "programLinks": 0,
+    "signalLinks": 0,
+    "peVenueLinks": 0,
+    "deletionPolicy": "UNLINK_ONLY_VIA_GDO_ROW_DELETE — never delete shared DG/Program/Signal/Venue records"
+  },
+  "blockers": [],
+  "recoveryRequirements": [
+    "Restore GDO rows from backup JSON if replacement fails",
+    "Preserve Decision/Decision Event rows independently of GDO deletion",
+    "Filesystem opportunities.json remains authoritative research baseline",
+    "STAGED/CURRENT packages untouched"
+  ],
+  "decisionLookup": {
+    "ok": true,
+    "matched": 0
+  }
+}
