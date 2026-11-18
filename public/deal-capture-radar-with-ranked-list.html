@@ -186,6 +186,55 @@
             color: rgba(255, 255, 255, 0.5);
         }
 
+        .radar-search-results {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: calc(100% + 4px);
+            z-index: 12000;
+            max-height: 280px;
+            overflow-y: auto;
+            background: #101935;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 8px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+        }
+        .radar-search-results[hidden] { display: none !important; }
+        .radar-search-result {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 10px 12px;
+            border: 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: transparent;
+            color: #fff;
+            cursor: pointer;
+            font-size: 12px;
+            line-height: 1.35;
+        }
+        .radar-search-result:hover,
+        .radar-search-result:focus {
+            background: rgba(108, 114, 255, 0.28);
+            outline: none;
+        }
+        .radar-search-result__name { font-weight: 600; color: #fff; }
+        .radar-search-result__meta { color: #aeb9e1; margin-top: 2px; }
+        .radar-search-result__empty {
+            padding: 12px;
+            color: #aeb9e1;
+            font-size: 12px;
+        }
+        .radar-hpc-merge-notice {
+            margin: 8px 20px 0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: rgba(197, 48, 48, 0.18);
+            border: 1px solid rgba(197, 48, 48, 0.45);
+            color: #fecaca;
+            font-size: 12px;
+        }
+
         .btn {
             padding: 8px 16px;
             border-radius: 6px;
@@ -2215,9 +2264,10 @@
                         </button>
                     </div>
                 </div>
-                <div class="control-group radar-search-wrap">
+                <div class="control-group radar-search-wrap" style="position:relative;">
                     <label class="control-label" for="locationSearch">Search Location</label>
-                    <input type="text" class="control-input" id="locationSearch" placeholder="Search city, country, or property...">
+                    <input type="text" class="control-input" id="locationSearch" placeholder="Search city, country, or property..." autocomplete="off">
+                    <div id="radarSearchResults" class="radar-search-results" hidden role="listbox" aria-label="Matching hotels"></div>
                 </div>
 
                 <div class="control-group">
@@ -2687,12 +2737,12 @@
     <!-- Load after HotelDetailPanel so open() delegates to HotelExplorer when primary. -->
     <script src="/js/dealality-chain-scale-theme.js?v=1"></script>
     <script src="/js/hotel-explorer.js?v=61"></script>
-    <script src="/js/radar-filter-drawer.js?v=12"></script>
+    <script src="/js/radar-filter-drawer.js?v=13"></script>
     <script src="/js/radar-layer-drawer.js?v=24"></script>
     <script src="radar-page.js?v=3"></script>
     <script src="/js/radar-white-space.js?v=14"></script>
     <script src="/js/radar-territory.js?v=13"></script>
-    <script src="brand-presence-mapping.js?v=radar-hpc-app-shell-auth-1"></script>
+    <script src="brand-presence-mapping.js?v=radar-hpc-missing-coords-searchable-2"></script>
     <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

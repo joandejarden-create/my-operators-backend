@@ -41,7 +41,15 @@ assert.equal(
 assert.equal(
   isAuthorizedForRadarInternalPreviewHotels({ isAdmin: false }, {}),
   false,
-  "non-admin never authorized by default"
+  "non-admin without Radar workspace Access never authorized"
+);
+assert.equal(
+  isAuthorizedForRadarInternalPreviewHotels(
+    { isAdmin: false, isDemo: false, workspaceAccess: ["Owner", "Operator"] },
+    {}
+  ),
+  true,
+  "Owner/Operator Radar app principal authorized without isAdmin"
 );
 assert.equal(
   isAuthorizedForRadarInternalPreviewHotels({ isAdmin: true }, {}),

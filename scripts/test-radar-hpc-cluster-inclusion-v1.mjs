@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+﻿#!/usr/bin/env node
 /**
  * Gate: authorized HPC hotels remain visible in Radar low-zoom city aggregates
  * and continue to participate in MarkerCluster rebuilds after merge.
@@ -60,8 +60,23 @@ assert.doesNotMatch(
 
 assert.match(
   host,
-  /brand-presence-mapping\.js\?v=radar-hpc-app-shell-auth-1/,
-  "Radar host must cache-bust mapping after HPC dynamic status query"
+  /brand-presence-mapping\.js\?v=radar-hpc-missing-coords-searchable-2/,
+  "Radar host must cache-bust mapping after auth-parity + density fixes"
+);
+assert.match(
+  mapping,
+  /lowZoomNeedsDensity/,
+  "renderCityAggregationMarkers must auto-force below HOTEL_MARKER_MIN_ZOOM"
+);
+assert.match(
+  mapping,
+  /earlyCitiesPainted\s*&&\s*[\s\S]*?ensureLowZoomCityAggregation\(\)/,
+  "post-load rAF must re-force low-zoom density after early city paint (not clear-then-bail)"
+);
+assert.doesNotMatch(
+  mapping,
+  /if\s*\(\s*isCityAggregationEnabled\s*\|\|\s*earlyCitiesPainted\s*\)\s*renderCityAggregationMarkers\(\)/,
+  "unforced earlyCitiesPainted renderCityAggregationMarkers call must not remain"
 );
 
 // Pure filter regression (mirrors client rule).

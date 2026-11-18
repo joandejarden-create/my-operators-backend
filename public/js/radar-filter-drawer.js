@@ -109,8 +109,8 @@
       if (node && String(node.value || "").trim()) count += 1;
     });
 
-    var search = el("locationSearch");
-    if (search && String(search.value || "").trim()) count += 1;
+    // Do not count the visible Search Location box in the More badge — founders
+    // read "More 1" as a hidden exclude filter while searching (HE-002 UX).
 
     var statuses = getActiveStatuses();
     if (statuses.length > 0 && statuses.length < STATUS_VALUES.length) {

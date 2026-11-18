@@ -22,10 +22,188 @@ let viewportMarkerGen = 0;
 let viewportMarkerListenerBound = false;
 let currentFilteredHotels = [];
 let isCityAggregationEnabled = false;
-
+let radarSearchHighlightId = null;
+let radarSearchResultsBound = false;
 
 // Global flag to prevent applyFilters during reset
 let isResetting = false;
+
+function hotelText(value) {
+    return String(value == null ? '' : value);
+}
+
+function hotelMatchesSearchTerm(hotel, rawTerm) {
+    const searchTerm = hotelText(rawTerm).trim().toLowerCase();
+    if (!searchTerm) return true;
+    return (
+        hotelText(hotel && hotel.name).toLowerCase().includes(searchTerm) ||
+        hotelText(hotel && hotel.city).toLowerCase().includes(searchTerm) ||
+        hotelText(hotel && hotel.country).toLowerCase().includes(searchTerm) ||
+        hotelText(hotel && hotel.brand).toLowerCase().includes(searchTerm) ||
+        hotelText(hotel && hotel.market).toLowerCase().includes(searchTerm) ||
+        hotelText(hotel && hotel.id).toLowerCase() === searchTerm
+    );
+}
+
+function findHotelsMatchingSearch(rawTerm, hotels, limit) {
+    const searchTerm = hotelText(rawTerm).trim().toLowerCase();
+    const max = Math.max(1, Number(limit) || 25);
+    if (!searchTerm) return [];
+    const pool = Array.isArray(hotels) ? hotels : [];
+    const scored = [];
+    for (let i = 0; i < pool.length; i++) {
+        const hotel = pool[i];
+        if (!hotel || !hotelMatchesSearchTerm(hotel, searchTerm)) continue;
+        const name = hotelText(hotel.name).toLowerCase();
+        const normName = name.replace(/^the\s+/, '');
+        let score = 3;
+        if (name === searchTerm || normName === searchTerm) score = 0;
+        else if (name.startsWith(searchTerm) || normName.startsWith(searchTerm)) score = 1;
+        else if (name.includes(searchTerm)) score = 2;
+        scored.push({
+            hotel: hotel,
+            score: score,
+            name: name,
+            preview: hotel.internalPreviewOnly ? 0 : 1,
+            nameLen: name.length,
+        });
+    }
+    scored.sort(function (a, b) {
+        if (a.score !== b.score) return a.score - b.score;
+        // Prefer longer official names (Mayflower Hotel vs Suites) then HPC overlays.
+        if (a.nameLen !== b.nameLen) return b.nameLen - a.nameLen;
+        if (a.preview !== b.preview) return a.preview - b.preview;
+        return a.name.localeCompare(b.name);
+    });
+    return scored.slice(0, max).map(function (row) { return row.hotel; });
+}
+
+function hideRadarSearchResults() {
+    const node = document.getElementById('radarSearchResults');
+    if (node) {
+        node.hidden = true;
+        node.innerHTML = '';
+    }
+}
+
+function renderRadarSearchResults(term) {
+    const node = document.getElementById('radarSearchResults');
+    if (!node) return;
+    const matches = findHotelsMatchingSearch(term, allHotels, 20);
+    if (!hotelText(term).trim()) {
+        hideRadarSearchResults();
+        return;
+    }
+    if (!matches.length) {
+        node.innerHTML =
+            '<div class="radar-search-result__empty">No matching hotels in the current Radar dataset. If this is an Open/Pipeline HPC property, confirm internal-preview auth merged.</div>';
+        node.hidden = false;
+        return;
+    }
+    node.innerHTML = matches
+        .map(function (hotel) {
+            const id = hotelText(hotel.id);
+            const name = hotelText(hotel.name) || 'Untitled hotel';
+            const meta = [
+                hotelText(hotel.city),
+                hotelText(hotel.country),
+                hotelText(hotel.status || hotel.radarStatus),
+                hotelText(hotel.brand),
+            ]
+                .filter(Boolean)
+                .join(' · ');
+            return (
+                '<button type="button" class="radar-search-result" role="option" data-hotel-id="' +
+                id.replace(/"/g, '') +
+                '">' +
+                '<div class="radar-search-result__name">' +
+                name.replace(/</g, '&lt;') +
+                '</div>' +
+                '<div class="radar-search-result__meta">' +
+                meta.replace(/</g, '&lt;') +
+                '</div>' +
+                '</button>'
+            );
+        })
+        .join('');
+    node.hidden = false;
+}
+
+function setRadarHpcMergeNotice(message) {
+    let node = document.getElementById('radarHpcMergeNotice');
+    if (!message) {
+        if (node && node.parentNode) node.parentNode.removeChild(node);
+        return;
+    }
+    if (!node) {
+        node = document.createElement('div');
+        node.id = 'radarHpcMergeNotice';
+        node.className = 'radar-hpc-merge-notice';
+        const host = document.querySelector('.mapping-header') || document.body;
+        host.appendChild(node);
+    }
+    node.textContent = message;
+}
+
+/**
+ * Center/zoom to a census hotel, refresh markers above cluster threshold, open Explorer.
+ * Prefer stable census record ids — never resolve by bare name when duplicates exist.
+ */
+async function focusHotelByCensusId(censusRecordId, options) {
+    const opts = options || {};
+    const id = hotelText(censusRecordId).trim();
+    if (!/^rec[A-Za-z0-9]{14}$/.test(id)) {
+        return { ok: false, reason: 'invalid_id' };
+    }
+    const pool = Array.isArray(allHotels) ? allHotels : [];
+    const hotel = pool.find(function (h) { return h && hotelText(h.id) === id; });
+    if (!hotel) {
+        return { ok: false, reason: 'not_in_dataset' };
+    }
+    radarSearchHighlightId = id;
+    currentFilters.search = hotelText(hotel.name);
+    const searchInput = document.getElementById('locationSearch');
+    if (searchInput) searchInput.value = currentFilters.search;
+    hideRadarSearchResults();
+    currentFilteredHotels = pool.filter(function (h) { return hotelMatchesSearchTerm(h, currentFilters.search); });
+    // Prefer exact id when name collisions exist (Mayflower Hotel vs Suites).
+    if (!currentFilteredHotels.some(function (h) { return hotelText(h.id) === id; })) {
+        currentFilteredHotels = [hotel];
+    } else if (currentFilteredHotels.length > 1) {
+        currentFilteredHotels = [hotel].concat(
+            currentFilteredHotels.filter(function (h) { return hotelText(h.id) !== id; })
+        );
+    }
+    updateAllDropdowns(currentFilteredHotels);
+    const lat = Number(hotel.lat);
+    const lng = Number(hotel.lng);
+    if (map && Number.isFinite(lat) && Number.isFinite(lng) && (lat !== 0 || lng !== 0)) {
+        const targetZoom = Math.max(HOTEL_MARKER_MIN_ZOOM + 2, 12);
+        map.setView([lat, lng], targetZoom);
+        refreshMapSize({ pan: false, delay: 50 });
+    }
+    await displayHotels(currentFilteredHotels);
+    updateStatistics(currentFilteredHotels);
+    updateBrandDistribution(currentFilteredHotels);
+    generateInsights(currentFilteredHotels);
+    notifyRadarFilterBadge();
+    if (opts.openExplorer !== false) {
+        try {
+            if (window.HotelExplorer && typeof window.HotelExplorer.open === 'function') {
+                window.HotelExplorer.open(hotel);
+            } else if (window.HotelDetailPanel && typeof window.HotelDetailPanel.open === 'function') {
+                window.HotelDetailPanel.open(hotel);
+            }
+        } catch (err) {
+            console.warn('[radar-map] Hotel Explorer open failed:', err);
+        }
+    }
+    return { ok: true, hotelId: id, name: hotel.name || null };
+}
+
+window.focusHotelByCensusId = focusHotelByCensusId;
+window.__radarFindHotelsMatchingSearch = findHotelsMatchingSearch;
+window.__radarHotelMatchesSearchTerm = hotelMatchesSearchTerm;
 
 // Cleanup function to prevent memory leaks
 function cleanup() {
@@ -259,14 +437,8 @@ function filterHotelsForTerritoryScope(hotels) {
     const roomBounds = getActiveRoomFilterBounds();
 
     if (currentFilters.search) {
-        const searchTerm = currentFilters.search.toLowerCase();
         filteredHotels = filteredHotels.filter(function (hotel) {
-            return (
-                String(hotel.name || '').toLowerCase().includes(searchTerm) ||
-                String(hotel.city || '').toLowerCase().includes(searchTerm) ||
-                String(hotel.country || '').toLowerCase().includes(searchTerm) ||
-                String(hotel.brand || '').toLowerCase().includes(searchTerm)
-            );
+            return hotelMatchesSearchTerm(hotel, currentFilters.search);
         });
     }
 
@@ -897,18 +1069,66 @@ function hotelHasRadarMapCoordinates(hotel) {
  * Query flags alone do not authorize — server requires Memberstack + admin.
  * Dynamic HPC Open|Pipeline query; no client-side hotel allowlist.
  */
+function isRadarAppShellEmbed() {
+    try {
+        const q = new URLSearchParams(window.location.search || '');
+        return q.get('embed') === '1' && q.get('appShell') === '1';
+    } catch (_err) {
+        return false;
+    }
+}
+
+function readRadarEmbedJwt() {
+    try {
+        if (window.DcAuthHelper && typeof window.DcAuthHelper.getJwt === 'function') {
+            return window.DcAuthHelper.getJwt();
+        }
+    } catch (_err) { /* ignore */ }
+    try {
+        const q = new URLSearchParams(window.location.search || '');
+        const fromQuery = q.get('msToken') || q.get('token');
+        if (fromQuery && String(fromQuery).indexOf('eyJ') === 0) return String(fromQuery).trim();
+    } catch (_err2) { /* ignore */ }
+    try {
+        if (window.__dealalityMemberstackJwt && String(window.__dealalityMemberstackJwt).indexOf('eyJ') === 0) {
+            return String(window.__dealalityMemberstackJwt).trim();
+        }
+    } catch (_err3) { /* ignore */ }
+    return null;
+}
+
+/** App-shell embeds may paint before parent JWT publish — wait briefly, never invent auth. */
+async function waitForRadarEmbedJwt(maxMs) {
+    const budget = Math.max(0, Number(maxMs) || 0);
+    if (!budget) return readRadarEmbedJwt();
+    const start = Date.now();
+    let jwt = readRadarEmbedJwt();
+    while (!jwt && Date.now() - start < budget) {
+        await new Promise(function (resolve) { setTimeout(resolve, 100); });
+        jwt = readRadarEmbedJwt();
+    }
+    return jwt;
+}
+
 async function mergeAuthorizedInternalPreviewHotels(hotels) {
     if (isOpportunityRadarShareMode()) {
         return { hotels: hotels || [], addedIds: [], skipped: 'share_mode', duplicatesReconciled: [] };
     }
     const list = Array.isArray(hotels) ? hotels.slice() : [];
     try {
+        if (isRadarAppShellEmbed()) {
+            await waitForRadarEmbedJwt(2500);
+        }
         const headers = { 'ngrok-skip-browser-warning': 'true', Accept: 'application/json' };
         try {
             if (window.DcAuthHelper && typeof window.DcAuthHelper.authHeaders === 'function') {
                 Object.assign(headers, window.DcAuthHelper.authHeaders());
             }
         } catch (_authErr) { /* ignore */ }
+        if (!headers.Authorization) {
+            const jwt = readRadarEmbedJwt();
+            if (jwt) headers.Authorization = 'Bearer ' + jwt;
+        }
         // Local owner-app / optional auth paths may require this; never sufficient alone.
         headers['X-Dealality-Owner-App'] = '1';
         const res = await fetch('/api/brand-presence/internal-preview-hotels', {
@@ -938,6 +1158,7 @@ async function mergeAuthorizedInternalPreviewHotels(hotels) {
         }
         const addedIds = [];
         const duplicatesReconciled = [];
+        const mapAddedIds = [];
         for (let i = 0; i < data.hotels.length; i++) {
             const hotel = data.hotels[i];
             const id = String(hotel && hotel.id || '').trim();
@@ -946,7 +1167,8 @@ async function mergeAuthorizedInternalPreviewHotels(hotels) {
             // HPC Radar Status must be Open|Pipeline (server already filters; keep client fail-closed).
             const st = String(hotel.status || hotel.radarStatus || '').trim();
             if (st !== 'Open' && st !== 'Pipeline') continue;
-            if (!hotelHasRadarMapCoordinates(hotel)) continue;
+            // Missing coordinates stay in the dataset for search / ranked list / Explorer.
+            // createHotelMarker / city pins still require hotelHasRadarMapCoordinates.
             const keys = buildRadarHotelIdentityKeys(hotel);
             let collision = null;
             for (let k = 0; k < keys.length; k++) {
@@ -959,21 +1181,37 @@ async function mergeAuthorizedInternalPreviewHotels(hotels) {
                 duplicatesReconciled.push({ hpcId: id, matchedKey: collision });
                 continue;
             }
-            list.push(hotel);
+            const mapReady = hotel.radarMapEligible === true || hotelHasRadarMapCoordinates(hotel);
+            const row = Object.assign({}, hotel, { radarMapEligible: mapReady });
+            list.push(row);
             for (let k = 0; k < keys.length; k++) seen.add(keys[k]);
             addedIds.push(id);
+            if (mapReady) mapAddedIds.push(id);
         }
         // Internal diagnostics stay in-memory for authorized sessions only — never rendered for share.
+        const missingCoordinates = Array.isArray(data.diagnostics && data.diagnostics.missingCoordinates)
+            ? data.diagnostics.missingCoordinates
+            : [];
+        const openCount = Number(data.diagnostics && data.diagnostics.openCount) || 0;
+        const pipelineCount = Number(data.diagnostics && data.diagnostics.pipelineCount) || 0;
+        const mapEligibleCount = Number(data.diagnostics && data.diagnostics.mapEligibleCount);
         window.__radarHpcInternalDiagnostics = {
-            openCount: data.diagnostics && data.diagnostics.openCount,
-            pipelineCount: data.diagnostics && data.diagnostics.pipelineCount,
+            openCount: openCount,
+            pipelineCount: pipelineCount,
+            mapEligibleCount: Number.isFinite(mapEligibleCount)
+                ? mapEligibleCount
+                : (Array.isArray(data.hotelsMapEligible) ? data.hotelsMapEligible.length : mapAddedIds.length),
+            searchEligibleCount: addedIds.length,
+            missingCoordinates: missingCoordinates,
             duplicatesReconciled: duplicatesReconciled.length,
+            addedIds: addedIds.slice(),
+            mapAddedIds: mapAddedIds.slice(),
             lastSuccessfulFetchAt: data.diagnostics && data.diagnostics.lastSuccessfulFetchAt,
             paginationComplete: data.diagnostics && data.diagnostics.paginationComplete,
             apiErrors: (data.errors && data.errors.length) || (data.diagnostics && data.diagnostics.apiErrors && data.diagnostics.apiErrors.length) || 0,
             cacheHit: data.diagnostics && data.diagnostics.cacheHit,
         };
-        return { hotels: list, addedIds, skipped: null, duplicatesReconciled };
+        return { hotels: list, addedIds, mapAddedIds, skipped: null, duplicatesReconciled, missingCoordinates };
     } catch (err) {
         console.warn('[radar-map] internal-preview merge skipped:', err);
         return { hotels: list, addedIds: [], skipped: 'error', duplicatesReconciled: [] };
@@ -1024,8 +1262,38 @@ async function loadHotelData() {
             allHotels = merged.hotels;
             window.allHotels = allHotels;
             window.__radarInternalPreviewAddedIds = merged.addedIds || [];
+            window.__radarInternalPreviewSkipped = merged.skipped || null;
             if (merged.addedIds && merged.addedIds.length) {
                 console.info('[radar-map] internal-preview hotels merged:', merged.addedIds.join(', '));
+            }
+            const missingCoords = (merged.missingCoordinates || (window.__radarHpcInternalDiagnostics && window.__radarHpcInternalDiagnostics.missingCoordinates) || []);
+            if (merged.skipped && merged.skipped !== 'share_mode') {
+                console.warn('[radar-map] internal-preview merge skipped:', merged.skipped);
+                setRadarHpcMergeNotice(
+                    'Open/Pipeline Hotel Property Census hotels were not merged (' +
+                        merged.skipped +
+                        '). Search will miss HPC-only properties until internal-preview auth succeeds.'
+                );
+            } else if (missingCoords.length) {
+                const diag = window.__radarHpcInternalDiagnostics || {};
+                const sample = missingCoords
+                    .slice(0, 3)
+                    .map(function (row) { return hotelText(row && row.name) || hotelText(row && row.id); })
+                    .filter(Boolean)
+                    .join(', ');
+                setRadarHpcMergeNotice(
+                    'HPC Open/Pipeline: ' +
+                        (Number(diag.openCount || 0) + Number(diag.pipelineCount || 0)) +
+                        ' status-eligible; ' +
+                        (merged.mapAddedIds || []).length +
+                        ' on map; ' +
+                        missingCoords.length +
+                        ' missing coordinates (searchable / Hotel Explorer)' +
+                        (sample ? ' (' + sample + ')' : '') +
+                        '. Fill Latitude/Longitude on Hotel Property Census to place map pins.'
+                );
+            } else {
+                setRadarHpcMergeNotice('');
             }
             // Avoid cloning ~15k entries on initial load; filters create new arrays when needed.
             hotelData = allHotels;
@@ -1033,9 +1301,13 @@ async function loadHotelData() {
             if (result.skippedNoCoordinates) console.warn(result.skippedNoCoordinates + " Airtable records have no coordinates and are not shown on the map.");
             
             updateSystemStatus('Displaying hotels on map…');
+            // Re-apply any typed search/filters after HPC merge so early keystrokes
+            // cannot leave a zeroed census-only result set on screen.
             if (isOpportunityRadarShareMode()) {
                 applyOpportunityRadarShareLocks();
-                applyFilters();
+                await applyFilters();
+            } else if (hasActiveFilters()) {
+                await applyFilters();
             } else {
                 await displayHotels(hotelData);
             }
@@ -1055,7 +1327,20 @@ async function loadHotelData() {
                 generateInsights(currentFilteredHotels.length ? currentFilteredHotels : hotelData);
                 updateAllDropdowns(hotelData);
                 applyOpportunityRadarShareLocks();
-                if (isCityAggregationEnabled || earlyCitiesPainted) renderCityAggregationMarkers();
+                // At regional zoom, displayHotels already force-painted city density
+                // (incl. HPC Open/Pipeline cities). An unforced renderCityAggregationMarkers
+                // call would clear that layer then bail while the city-agg toggle is off —
+                // wiping the only low-zoom markers after a successful earlyCities paint.
+                if (isCityAggregationEnabled) {
+                    renderCityAggregationMarkers();
+                } else if (
+                    earlyCitiesPainted &&
+                    map &&
+                    typeof map.getZoom === 'function' &&
+                    map.getZoom() < HOTEL_MARKER_MIN_ZOOM
+                ) {
+                    ensureLowZoomCityAggregation();
+                }
             });
         } else {
             throw new Error('API returned error: ' + result.error);
@@ -1277,6 +1562,60 @@ function getHotelsForAggregation() {
     return allHotels || [];
 }
 
+/**
+ * Pure city-aggregate rows for map density markers.
+ * Key = city|country so same city names in different countries never merge.
+ * Counts every unique map-eligible hotel once; Open/Pipeline/Candidate tallies are
+ * separate from totalHotels. Missing-coordinate hotels stay searchable but do not
+ * inflate city marker badges.
+ */
+function buildRadarCityAggregationRows(sourceHotels) {
+    const cityGroups = {};
+    (sourceHotels || []).forEach(function (hotel) {
+        const lat = Number(hotel && hotel.lat);
+        const lng = Number(hotel && hotel.lng);
+        const hasCoords = Number.isFinite(lat) && Number.isFinite(lng) && (lat !== 0 || lng !== 0);
+        if (!hasCoords) return;
+        const city = (hotel && hotel.city || '').trim();
+        const country = (hotel && hotel.country || '').trim();
+        if (!city) return;
+        const cityKey = city + '|' + (country || 'Unknown Country');
+        if (!cityGroups[cityKey]) {
+            cityGroups[cityKey] = {
+                city: city,
+                country: country || 'Unknown Country',
+                totalHotels: 0,
+                totalRooms: 0,
+                withCoordinates: 0,
+                withoutCoordinates: 0,
+                openHotels: 0,
+                pipelineHotels: 0,
+                candidateHotels: 0,
+                includesInternalPreview: false,
+                lat: null,
+                lng: null
+            };
+        }
+        const row = cityGroups[cityKey];
+        row.totalHotels += 1;
+        row.totalRooms += Number(hotel.rooms) || 0;
+        if (hotel.internalPreviewOnly) row.includesInternalPreview = true;
+
+        const status = String(hotel.status || '').toLowerCase();
+        if (status === 'open') row.openHotels += 1;
+        else if (status === 'pipeline') row.pipelineHotels += 1;
+        else if (status === 'candidate') row.candidateHotels += 1;
+
+        row.withCoordinates += 1;
+        if (!Number.isFinite(row.lat) || !Number.isFinite(row.lng)) {
+            row.lat = lat;
+            row.lng = lng;
+        }
+    });
+    return Object.values(cityGroups);
+}
+window.__radarBuildCityAggregationRows = buildRadarCityAggregationRows;
+
 function clearCityAggregationLayer() {
     if (cityAggregationLayer) {
         map.removeLayer(cityAggregationLayer);
@@ -1309,7 +1648,12 @@ function cityRowPassesAggFilter(row, token) {
 function renderCityAggregationMarkers(options) {
     if (!map) return;
     const opts = options || {};
-    const force = opts.force === true;
+    // Individual hotel pins are suppressed below HOTEL_MARKER_MIN_ZOOM. Treat that
+    // band as an implicit force so callers (post-load rAF, layer sync) cannot
+    // clear-then-bail and leave an empty map while HPC hotels remain in allHotels.
+    const lowZoomNeedsDensity =
+        typeof map.getZoom === 'function' && map.getZoom() < HOTEL_MARKER_MIN_ZOOM;
+    const force = opts.force === true || lowZoomNeedsDensity;
     clearCityAggregationLayer();
     if (!isCityAggregationEnabled && !force) return;
 
@@ -1321,54 +1665,8 @@ function renderCityAggregationMarkers(options) {
         return;
     }
 
-    const cityGroups = {};
-    sourceHotels.forEach(function (hotel) {
-        const city = (hotel.city || '').trim();
-        const country = (hotel.country || '').trim();
-        if (!city) return;
-        const cityKey = city + '|' + (country || 'Unknown Country');
-        if (!cityGroups[cityKey]) {
-            cityGroups[cityKey] = {
-                city: city,
-                country: country || 'Unknown Country',
-                totalHotels: 0,
-                totalRooms: 0,
-                withCoordinates: 0,
-                withoutCoordinates: 0,
-                openHotels: 0,
-                pipelineHotels: 0,
-                candidateHotels: 0,
-                includesInternalPreview: false,
-                lat: null,
-                lng: null
-            };
-        }
-        const row = cityGroups[cityKey];
-        row.totalHotels += 1;
-        row.totalRooms += Number(hotel.rooms) || 0;
-        if (hotel.internalPreviewOnly) row.includesInternalPreview = true;
-
-        const status = String(hotel.status || '').toLowerCase();
-        if (status === 'open') row.openHotels += 1;
-        else if (status === 'pipeline') row.pipelineHotels += 1;
-        else if (status === 'candidate') row.candidateHotels += 1;
-
-        const lat = Number(hotel.lat);
-        const lng = Number(hotel.lng);
-        const hasCoords = Number.isFinite(lat) && Number.isFinite(lng) && (lat !== 0 || lng !== 0);
-        if (hasCoords) {
-            row.withCoordinates += 1;
-            if (!Number.isFinite(row.lat) || !Number.isFinite(row.lng)) {
-                row.lat = lat;
-                row.lng = lng;
-            }
-        } else {
-            row.withoutCoordinates += 1;
-        }
-    });
-
     cityAggregationLayer = L.layerGroup();
-    Object.values(cityGroups).forEach(function (row) {
+    buildRadarCityAggregationRows(sourceHotels).forEach(function (row) {
         if (!Number.isFinite(row.lat) || !Number.isFinite(row.lng)) return;
         if (!cityRowPassesAggFilter(row, MAP_LAYER_FILTERS.cityAggFilter)) return;
         const marker = L.marker([row.lat, row.lng], {
@@ -1401,6 +1699,9 @@ function toggleCityAggregation() {
     isCityAggregationEnabled = !!(toggle && toggle.checked);
     if (isCityAggregationEnabled) {
         renderCityAggregationMarkers();
+    } else if (map && typeof map.getZoom === 'function' && map.getZoom() < HOTEL_MARKER_MIN_ZOOM) {
+        // Keep temporary regional density (HPC-inclusive) when pins are suppressed.
+        ensureLowZoomCityAggregation();
     } else {
         clearCityAggregationLayer();
     }
@@ -2246,15 +2547,11 @@ async function applyFilters() {
     // Apply filters immediately - no debouncing for Excel-like behavior
     let filteredHotels = [...allHotels];
     
-    // Apply search filter
+    // Apply search filter (null-safe — census rows may omit city/brand)
     if (currentFilters.search) {
-        const searchTerm = currentFilters.search.toLowerCase();
-        filteredHotels = filteredHotels.filter(hotel => 
-            hotel.name.toLowerCase().includes(searchTerm) ||
-            hotel.city.toLowerCase().includes(searchTerm) ||
-            hotel.country.toLowerCase().includes(searchTerm) ||
-            hotel.brand.toLowerCase().includes(searchTerm)
-        );
+        filteredHotels = filteredHotels.filter(function (hotel) {
+            return hotelMatchesSearchTerm(hotel, currentFilters.search);
+        });
     }
     
     // Apply parent company filter
@@ -4596,11 +4893,44 @@ function setupEventListeners() {
         // Create debounced version of applyFilters with 300ms delay
         const debouncedApplyFilters = debounce(() => {
             applyFilters();
+            renderRadarSearchResults(currentFilters.search);
         }, 300);
         
         searchInput.addEventListener('input', function(e) {
             currentFilters.search = e.target.value;
             debouncedApplyFilters();
+        });
+        searchInput.addEventListener('focus', function () {
+            if (hotelText(currentFilters.search).trim()) {
+                renderRadarSearchResults(currentFilters.search);
+            }
+        });
+        searchInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') hideRadarSearchResults();
+            if (e.key === 'Enter') {
+                const matches = findHotelsMatchingSearch(currentFilters.search, allHotels, 5);
+                if (matches.length === 1) {
+                    e.preventDefault();
+                    focusHotelByCensusId(matches[0].id, { openExplorer: true });
+                }
+            }
+        });
+    }
+    if (!radarSearchResultsBound) {
+        radarSearchResultsBound = true;
+        const results = document.getElementById('radarSearchResults');
+        if (results) {
+            results.addEventListener('click', function (e) {
+                const btn = e.target && e.target.closest ? e.target.closest('[data-hotel-id]') : null;
+                if (!btn) return;
+                const id = btn.getAttribute('data-hotel-id');
+                focusHotelByCensusId(id, { openExplorer: true });
+            });
+        }
+        document.addEventListener('click', function (e) {
+            const wrap = document.querySelector('.radar-search-wrap');
+            if (wrap && e.target && wrap.contains(e.target)) return;
+            hideRadarSearchResults();
         });
     }
     
