@@ -180,6 +180,7 @@ check("presentation_mode_banner_not_default_ui", () => {
   );
   assert.match(app, /wantsPresentationModeDiagnostics/);
   assert.match(app, /gdiDiag/);
+  assert.doesNotMatch(app, /gdiFounderInventoryStrip/);
   assert.doesNotMatch(share, /gdiPresentationModeBanner/);
   assert.doesNotMatch(share, /Mode B — Founder Publication Preview/);
 });

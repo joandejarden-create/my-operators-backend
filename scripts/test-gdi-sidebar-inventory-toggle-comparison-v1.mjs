@@ -64,7 +64,7 @@ check("report_header_no_longer_duplicates_toggle_buttons", () => {
     gdiApp,
     /data-gdi-inventory-mode="research"/,
   );
-  assert.match(gdiApp, /gdiFounderInventoryStrip/);
+  assert.doesNotMatch(gdiApp, /gdiFounderInventoryStrip/);
   assert.match(gdiApp, /notifyShellHotelContext/);
 });
 
