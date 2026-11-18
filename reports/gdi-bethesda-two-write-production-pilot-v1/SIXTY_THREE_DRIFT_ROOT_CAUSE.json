@@ -1,0 +1,63 @@
+{
+  "bridgeCounts": {
+    "candidatesBeforeDedupe": 86,
+    "candidates": 86,
+    "DUPLICATES_RESOLVED": 0,
+    "WOULD_CREATE": 0,
+    "WOULD_UPDATE": 3,
+    "UNCHANGED": 83,
+    "CREATED": 0,
+    "UPDATED": 0,
+    "FAILED": 0,
+    "SKIPPED_FORBIDDEN": 0,
+    "SKIPPED_BUDGET": 0
+  },
+  "wouldUpdateCount": 3,
+  "fieldHits": {
+    "sourceSummary": 3,
+    "lastMaterialChangeAt": 1,
+    "researchPayloadJson": 1
+  },
+  "classifications": {
+    "OPERATIONAL_PROVENANCE_STAMP_FALSE_POSITIVE": 0,
+    "SOURCE_SUMMARY_SERIALIZATION": 2,
+    "GENUINELY_MATERIAL_RESEARCH": 0,
+    "OTHER": 1
+  },
+  "samples": [
+    {
+      "opportunityId": "gdi_opp_umd_alumni_weekend_watch",
+      "changedFields": [
+        "sourceSummary"
+      ],
+      "classification": "SOURCE_SUMMARY_SERIALIZATION"
+    },
+    {
+      "opportunityId": "gdi_opp_marriott_hq_adjacent_corporate_watch",
+      "changedFields": [
+        "sourceSummary"
+      ],
+      "classification": "SOURCE_SUMMARY_SERIALIZATION"
+    },
+    {
+      "opportunityId": "disp_recLuxvwwxID7U2B8_parenteral_drug_association_pda_",
+      "changedFields": [
+        "sourceSummary",
+        "lastMaterialChangeAt",
+        "researchPayloadJson"
+      ],
+      "classification": "OTHER"
+    }
+  ],
+  "volatileKeysExcludedFromCompare": [
+    "lastResearchedAt",
+    "updatedAt",
+    "lastSeenAt",
+    "runId",
+    "researchedAt",
+    "firstDiscoveredRunId",
+    "firstDiscoveredAt",
+    "firstSeenRunId"
+  ],
+  "recommendation": "Most prior 63 false positives eliminated by excluding firstDiscoveredRunId/firstDiscoveredAt from payload compare. Remaining diffs (if any) should be reviewed individually; do not mass-apply FS bag over Airtable."
+}
