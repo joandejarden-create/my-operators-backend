@@ -655,6 +655,9 @@ async function getMe(req, res) {
     memberstackMemberId: memberstackId,
     memberstackEmail: emailFromToken || null,
     memberstackVerifiedVia: verifiedVia === "dev_bypass" ? "dev_bypass" : verifiedVia || "jwks",
+    // Host required for LOCAL admin override host gate (parity with requireDealalityUser).
+    hostname: req.hostname,
+    headers: req.headers,
   };
   // Bind Users.email for finalize airtable_email_bound when matched by memberstack id.
   dealality.email = email;
