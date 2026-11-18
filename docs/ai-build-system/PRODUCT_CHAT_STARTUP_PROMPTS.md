@@ -1,4 +1,4 @@
-﻿# Product chat startup prompts (Dev OS)
+# Product chat startup prompts (Dev OS)
 
 Paste the matching block into a new Cursor chat after opening the registered workspace folder.
 
