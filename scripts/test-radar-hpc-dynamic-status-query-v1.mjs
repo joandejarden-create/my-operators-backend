@@ -12,6 +12,7 @@ import {
   clearRadarHpcStatusCache,
   fetchHpcRadarStatusEligibleRecords,
   formatHotelPropertyCensusAsBrandPresenceHotel,
+  HPC_SELECT_FIELDS,
   isAuthorizedForRadarInternalPreviewHotels,
   loadAuthorizedInternalPreviewHotels,
   mergeInternalPreviewHotelsIntoBrandPresenceList,
@@ -22,6 +23,25 @@ import {
 } from "../lib/hotel-intelligence/radar-internal-preview-hotels-v1.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+
+const selectFixture = JSON.parse(
+  fs.readFileSync(
+    path.join(ROOT, "fixtures/hotel-census/hpc-radar-select-fields-v1.json"),
+    "utf8"
+  )
+);
+assert.deepEqual(
+  [...HPC_SELECT_FIELDS],
+  selectFixture.selectFields,
+  "HPC_SELECT_FIELDS must match verified live HPC schema field names"
+);
+for (const alias of selectFixture.rejectedAliasSelectFields) {
+  assert.equal(
+    HPC_SELECT_FIELDS.includes(alias),
+    false,
+    `alias must not be selected: ${alias}`
+  );
+}
 
 const BETHESDA = "recLuxvwwxID7U2B8";
 const WATERSTONE = "recgMYovrrZDJMqzX";
@@ -308,6 +328,52 @@ const hardFail = await fetchHpcRadarStatusEligibleRecords({
 assert.equal(hardFail.records.length, 0);
 assert.equal(hardFail.diagnostics.paginationComplete, false);
 assert.ok(hardFail.errors.some((e) => e.reason === "hpc_formula_fetch_failed"));
+
+function mockUnknownFieldBase() {
+  return () => ({
+    select() {
+      return {
+        async eachPage() {
+          const err = new Error(
+            "UNKNOWN_FIELD_NAME: Field \"Total Meeting Space\" does not exist"
+          );
+          err.statusCode = 422;
+          throw err;
+        },
+      };
+    },
+  });
+}
+const unknownField = await fetchHpcRadarStatusEligibleRecords({
+  airtableBase: mockUnknownFieldBase(),
+  maxRetries: 0,
+});
+assert.equal(unknownField.records.length, 0);
+assert.equal(unknownField.diagnostics.paginationComplete, false);
+assert.ok(
+  unknownField.errors.some((e) => e.reason === "hpc_select_unknown_field"),
+  "unknown select fields must surface clearly"
+);
+
+const failedLoad = await loadAuthorizedInternalPreviewHotels({
+  dealalityUser: { isAdmin: true },
+  airtableBase: mockUnknownFieldBase(),
+  bypassCache: true,
+});
+assert.equal(failedLoad.ok, false);
+assert.equal(failedLoad.hotels.length, 0);
+assert.ok((failedLoad.errors || []).length > 0);
+
+const apiSrc = fs.readFileSync(
+  path.join(ROOT, "api/brand-presence-internal-preview.js"),
+  "utf8"
+);
+assert.match(apiSrc, /hpc_retrieval_failed/);
+assert.match(apiSrc, /status\(502\)/);
+assert.match(
+  apiSrc,
+  /Do not treat empty hotels as an authoritative inventory/
+);
 
 // --- Share-mode exclusion (client source contract) ---
 const mapping = fs.readFileSync(
