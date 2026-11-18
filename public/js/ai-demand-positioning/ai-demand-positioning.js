@@ -46,7 +46,21 @@
     if (p.label || p.optionLabel) return p.label || p.optionLabel;
     var name = adpCleanLocPart(p.name) || adpCleanLocPart(p.displayName) || "";
     var loc = adpPropertyLocationLine(p);
-    return loc ? name + " — " + loc : name;
+    var base = loc ? name + " — " + loc : name;
+    var parts = base ? [base] : [];
+    // Execution scope ≠ readiness. Outside-canonical hotels stay visible but marked.
+    if (
+      p.canonicalAdp31Scope === false ||
+      p.executionScope === "INTERNAL_ADDITIONAL_OUTSIDE_CANONICAL_31"
+    ) {
+      parts.push("Outside canonical 31");
+    }
+    // Founder/admin readiness suffix when API provides it (never invent customer-ready).
+    var readiness = p.reportReadiness || "";
+    if (readiness && readiness !== "available") {
+      parts.push(p.reportReadinessLabel || readiness);
+    }
+    return parts.join(" · ");
   }
 
   function esc(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }

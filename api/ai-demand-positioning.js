@@ -31,7 +31,11 @@ import {
   resolveCanonicalBppPropertyId,
   buildBppReportCacheKey,
 } from "../lib/ai-demand-positioning/brand-portfolio/bpp-publication-meta-v1.js";
-import { filterPropertiesForOwnerApp } from "../lib/ai-demand-positioning/share/adp-owner-app-property-access-v1.js";
+import {
+  filterPropertiesForOwnerApp,
+  resolveOwnerAppPropertyAccess,
+  listInternalOwnerAppPropertyInventory,
+} from "../lib/ai-demand-positioning/share/adp-owner-app-property-access-v1.js";
 import { attachBppRowLevelPriorComparisons } from "../lib/ai-demand-positioning/longitudinal/attach-row-level-prior-comparisons-v1.js";
 import { buildMonthlyExecutiveReviewV1 } from "../lib/ai-demand-positioning/monthly-review/build-monthly-executive-review-v1.js";
 import { loadReviewPayload } from "../lib/ai-demand-positioning/monthly-review/admin/archive-store-v1.js";
@@ -264,11 +268,23 @@ export function getAiDemandPositioningPublicationMeta(req, res) {
 
 export function getAiDemandPositioningProperties(req, res) {
   setAdpNoStoreHeaders(res);
-  let properties = listPropertyProfiles();
+  let properties;
   if (req.adpShare?.propertyId) {
-    properties = properties.filter((p) => p.propertyId === req.adpShare.propertyId);
+    // Share capability: customer-visible catalog scoped to the bound property.
+    properties = listPropertyProfiles().filter(
+      (p) => p.propertyId === req.adpShare.propertyId
+    );
   } else if (req.adpShareAuth?.mode === "MEMBERSTACK") {
-    properties = filterPropertiesForOwnerApp(req, properties);
+    const access = resolveOwnerAppPropertyAccess(req);
+    if (access.isAdmin) {
+      // Founder/admin: full canonical ADP inventory with readiness (not customer flags).
+      properties = listInternalOwnerAppPropertyInventory();
+    } else {
+      properties = filterPropertiesForOwnerApp(req, listPropertyProfiles());
+    }
+  } else {
+    // ENFORCEMENT_DISABLED local workspace — same internal inventory as founder/admin.
+    properties = listInternalOwnerAppPropertyInventory();
   }
   res.json({ ok: true, properties });
 }
