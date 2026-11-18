@@ -1069,18 +1069,66 @@ function hotelHasRadarMapCoordinates(hotel) {
  * Query flags alone do not authorize — server requires Memberstack + admin.
  * Dynamic HPC Open|Pipeline query; no client-side hotel allowlist.
  */
+function isRadarAppShellEmbed() {
+    try {
+        const q = new URLSearchParams(window.location.search || '');
+        return q.get('embed') === '1' && q.get('appShell') === '1';
+    } catch (_err) {
+        return false;
+    }
+}
+
+function readRadarEmbedJwt() {
+    try {
+        if (window.DcAuthHelper && typeof window.DcAuthHelper.getJwt === 'function') {
+            return window.DcAuthHelper.getJwt();
+        }
+    } catch (_err) { /* ignore */ }
+    try {
+        const q = new URLSearchParams(window.location.search || '');
+        const fromQuery = q.get('msToken') || q.get('token');
+        if (fromQuery && String(fromQuery).indexOf('eyJ') === 0) return String(fromQuery).trim();
+    } catch (_err2) { /* ignore */ }
+    try {
+        if (window.__dealalityMemberstackJwt && String(window.__dealalityMemberstackJwt).indexOf('eyJ') === 0) {
+            return String(window.__dealalityMemberstackJwt).trim();
+        }
+    } catch (_err3) { /* ignore */ }
+    return null;
+}
+
+/** App-shell embeds may paint before parent JWT publish — wait briefly, never invent auth. */
+async function waitForRadarEmbedJwt(maxMs) {
+    const budget = Math.max(0, Number(maxMs) || 0);
+    if (!budget) return readRadarEmbedJwt();
+    const start = Date.now();
+    let jwt = readRadarEmbedJwt();
+    while (!jwt && Date.now() - start < budget) {
+        await new Promise(function (resolve) { setTimeout(resolve, 100); });
+        jwt = readRadarEmbedJwt();
+    }
+    return jwt;
+}
+
 async function mergeAuthorizedInternalPreviewHotels(hotels) {
     if (isOpportunityRadarShareMode()) {
         return { hotels: hotels || [], addedIds: [], skipped: 'share_mode', duplicatesReconciled: [] };
     }
     const list = Array.isArray(hotels) ? hotels.slice() : [];
     try {
+        if (isRadarAppShellEmbed()) {
+            await waitForRadarEmbedJwt(2500);
+        }
         const headers = { 'ngrok-skip-browser-warning': 'true', Accept: 'application/json' };
         try {
             if (window.DcAuthHelper && typeof window.DcAuthHelper.authHeaders === 'function') {
                 Object.assign(headers, window.DcAuthHelper.authHeaders());
             }
         } catch (_authErr) { /* ignore */ }
+        if (!headers.Authorization) {
+            const jwt = readRadarEmbedJwt();
+            if (jwt) headers.Authorization = 'Bearer ' + jwt;
+        }
         // Local owner-app / optional auth paths may require this; never sufficient alone.
         headers['X-Dealality-Owner-App'] = '1';
         const res = await fetch('/api/brand-presence/internal-preview-hotels', {

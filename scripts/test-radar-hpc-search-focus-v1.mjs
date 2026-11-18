@@ -45,7 +45,7 @@ assert.match(
 );
 
 assert.match(host, /id="radarSearchResults"/);
-assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-lowzoom-density-1/);
+assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-auth-parity-1/);
 assert.match(host, /radar-filter-drawer\.js\?v=13/);
 
 assert.match(
@@ -57,8 +57,8 @@ assert.doesNotMatch(
   /var search = el\("locationSearch"\);\s*if \(search && String\(search\.value/
 );
 
-assert.match(gate, /u\.isDemo\s*===\s*true/);
-assert.match(gate, /Localhost owner-app demo/);
+assert.doesNotMatch(gate, /u\.isDemo\s*===\s*true/);
+assert.match(gate, /isAuthorizedForRadarInternalPreviewHotels/);
 
 // Mirror client ranking rules for Mayflower disambiguation / null-safety.
 function hotelText(value) {

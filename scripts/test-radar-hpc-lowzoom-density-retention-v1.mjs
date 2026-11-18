@@ -54,7 +54,7 @@ assert.match(
   "turning city-agg toggle off at low zoom must retain density layer"
 );
 
-assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-lowzoom-density-1/);
+assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-auth-parity-1/);
 
 console.log(
   JSON.stringify({
