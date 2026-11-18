@@ -100,6 +100,9 @@ regexes = [
   # Historical CMI candidate labels (`GBTA_CANADA_2027_WESTIN_CMI`), not API secrets (PR #290).
   '''(?i)"namedKey"\s*:''',
 
+  # Founder authorization labels for GDI live Full E2E / research persistence (not API secrets).
+  '''(?i)(?:authorizationId|token)\s*[:=]\s*"gdi-bethesda-14segment-[a-z0-9-]+"''',
+
   # GDI publication package content fingerprints (SHA-256), not API secrets.
   # False positive: generic-api-key on "apiFingerprint" / "expectedFingerprint" in browser verification reports (PR #285).
   '''(?i)"apiFingerprint"\s*:''',
