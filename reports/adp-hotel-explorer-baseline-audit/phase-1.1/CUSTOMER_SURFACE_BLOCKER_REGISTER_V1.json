@@ -1,0 +1,72 @@
+{
+  "schema": "ADP_PHASE1_1_CUSTOMER_SURFACE_BLOCKER_REGISTER_V1",
+  "generatedAt": "2026-11-18T09:10:00.000Z",
+  "sourceReport": "reports/ai-demand-positioning/adp-customer-surface-contract-v1-latest.json",
+  "failureCount": 33,
+  "blocksSafeRadarHeCodeIntegration": false,
+  "blocksCustomerSurfaceProductionClaim": true,
+  "blocksMergeDeployRecommendation": true,
+  "groups": [
+    {
+      "gate": "TERRITORY_SUBJECT_RATES",
+      "count": 5,
+      "propertyId": "adp_bethesda_marriott",
+      "rootCause": "HISTORICAL_COMPATIBILITY_VS_LOCKED_EXPECTATIONS",
+      "existedBeforePhase1": true,
+      "newRegression": false,
+      "requiresHistoricalEvidence": true,
+      "requiresPaidMeasurement": "only_if_recertifying_new_period",
+      "blocksSafeCodeIntegration": false,
+      "recommendedNextAction": "Local compare certified vs latest period; founder pin or re-cert; do not flip constants"
+    },
+    {
+      "gate": "BPP",
+      "count": 24,
+      "rootCause": "BPP_ELIGIBILITY_MEASUREMENT_OR_PEER_FREEZE",
+      "existedBeforePhase1": true,
+      "newRegression": false,
+      "requiresHistoricalEvidence": false,
+      "requiresPaidMeasurement": true,
+      "blocksSafeCodeIntegration": false,
+      "note": "Phase 1.1 added affiliation mappings; READY still fail-closed",
+      "properties": [
+        { "propertyId": "adp_ac_hotel_a_coruna", "class": "MEASUREMENT_NOT_ATTEMPTED" },
+        { "propertyId": "adp_hilton_times_square", "class": "MEASUREMENT_NOT_ATTEMPTED" },
+        { "propertyId": "adp_spice_island_beach_resort", "class": "MEASUREMENT_NOT_ATTEMPTED" },
+        { "propertyId": "adp_w_rome", "class": "MEASUREMENT_NOT_ATTEMPTED" },
+        { "propertyId": "adp_castillo_hotel_son_vida", "class": "PEER_SET_NOT_FROZEN" },
+        { "propertyId": "adp_mayflower_hotel_washington_dc", "class": "PEER_SET_NOT_FROZEN" },
+        { "propertyId": "adp_sheraton_mallorca_arabella_golf", "class": "PEER_SET_NOT_FROZEN" },
+        { "propertyId": "adp_westin_grand_munchen", "class": "PEER_SET_NOT_FROZEN" },
+        { "propertyId": "adp_westin_tampa_waterside", "class": "PEER_SET_NOT_FROZEN" },
+        { "propertyId": "adp_wyndham_san_diego_bayside", "class": "PEER_SET_NOT_FROZEN" },
+        { "propertyId": "adp_yotel_geneva_lake", "class": "PEER_SET_NOT_FROZEN" },
+        { "propertyId": "adp_smoke_test_synthetic", "class": "UNKNOWN" }
+      ],
+      "recommendedNextAction": "Governed BPP measurement / peer freeze; exclude smoke synthetic from commercial universe"
+    },
+    {
+      "gate": "ALL_EVIDENCE_LINKS_*",
+      "count": 3,
+      "defectCount": 427,
+      "rootCause": "EMPTY_EVIDENCE_MISSING_RUNTIME_OR_SELF_CONTAINED_PACKS",
+      "existedBeforePhase1": true,
+      "newRegression": false,
+      "requiresHistoricalEvidence": true,
+      "requiresPaidMeasurement": false,
+      "blocksSafeCodeIntegration": false,
+      "recommendedNextAction": "Restore durable runtimes or bake self-contained packs; never invent evidence"
+    },
+    {
+      "gate": "DISPLACEMENT_COUNT_EVIDENCE_EXACT_PARITY",
+      "count": 1,
+      "rootCause": "HARNESS_AND_SYNTHETIC_FIXTURE_DRIFT",
+      "existedBeforePhase1": true,
+      "newRegression": false,
+      "requiresHistoricalEvidence": true,
+      "requiresPaidMeasurement": false,
+      "blocksSafeCodeIntegration": false,
+      "recommendedNextAction": "Ignore adp_smoke_test_synthetic noise; validate published DSS on real hotels locally"
+    }
+  ]
+}

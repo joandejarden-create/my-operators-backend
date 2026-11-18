@@ -22,6 +22,13 @@ Phase 1.1 closes the certification-authority documentation gap, ships Layer A pe
 8. Merge readiness — **NOT READY**
 9. Phase 2 — `PHASE2_FULL_E2E_PRIORITIES.md`
 
+## Local Windows transition
+
+Phase 1.1 accepted with conditions → next work is **local**:
+
+- `LOCAL_WINDOWS_TRANSITION_V1.md` — PowerShell setup, validation sequence, blocker register, merge checklist, first Cursor prompt
+- `CUSTOMER_SURFACE_BLOCKER_REGISTER_V1.json` — machine-readable 33-failure register
+
 ## Explicit non-actions
 
 - No merge / deploy
@@ -29,3 +36,4 @@ Phase 1.1 closes the certification-authority documentation gap, ships Layer A pe
 - No paid research / remeasurement
 - No new share packs / customer visibility
 - No fabricated production durable evidence
+- No Phase 2 implementation until founder authorizes
