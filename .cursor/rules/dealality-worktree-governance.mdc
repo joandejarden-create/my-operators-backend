@@ -35,7 +35,8 @@ This preflight does **not** intercept raw `git` by itself. Optional hooks: `.git
 
 - Preserve all dirty/untracked work — never reset/clean/stash-discard without founder auth + verified backup.
 - No force-push; no destructive cleanup without founder authorization.
-- One completed task → tested commit → push → PR → CI → Integration Controller merge → **post-merge workspace sync**.
+- One completed task → tested commit → push → PR → CI → Integration Controller merge → **post-merge workspace sync** → product home verified (`ws/gdi` for GDI) with HEAD == `origin/main` before the next product task.
+- Product chats must not claim completion on PR-open alone. Use final states: `COMPLETE — MERGED_AND_HOME_SYNCED`, `AWAITING_INTEGRATION_CONTROLLER`, or `BLOCKED — WORKSPACE_RESTORATION_REQUIRED` (see `gdi-github-branch-merge-discipline.mdc`).
 - Product chats **do not** merge concurrently and **do not** edit `worktree-registry.json`.
 - Shared files (`package.json`, radar/HE surfaces, registry, Cursor rules): coordinate via Integration Controller.
 - No production Airtable writes, paid research, or deployment without explicit founder authorization.

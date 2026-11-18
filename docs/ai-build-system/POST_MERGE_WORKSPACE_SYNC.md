@@ -32,6 +32,26 @@ Default is **dry-run**. `--apply` performs only safe fetch / verified backup (wh
 
 Return-home is authorized only with an **explicit** merged identity (`--pr` head and/or `--merged-branch`). A new branch whose tip equals `origin/main` with only dirty WIP is treated as an **active task** (fetch-only).
 
+## Product-chat responsibility (especially GDI)
+
+Separation of duties:
+
+| Role | Owns |
+|------|------|
+| Product chat (HE / ADP / GDI) | Implementation, tests, PR creation, then **STOP** |
+| Integration Controller | CI verification, merge into `main`, post-merge sync apply |
+| Product workspace restoration | Home branch + `origin/main` FF after confirmed merge |
+
+GDI permanent rule: a development cycle is **not** complete when a PR is merely opened. After Integration Controller merges, the GDI chat (or Integration post-merge apply) must leave `C:/Dev/dealality/ws-gdi` on synchronized `ws/gdi` before the next GDI task starts.
+
+Report final state with one of:
+
+- `COMPLETE — MERGED_AND_HOME_SYNCED`
+- `AWAITING_INTEGRATION_CONTROLLER`
+- `BLOCKED — WORKSPACE_RESTORATION_REQUIRED`
+
+Cursor may show historical/multi-root branch chips that are **not** the active Git branch of `ws-gdi`. Verify with `git branch --show-current` and `git rev-parse HEAD` in the registered path; use `SetActiveBranch` / workspace reattach when the UI chip is stale. Do not create worktrees or reset WIP to “fix” the chip.
+
 ## Safety rules (fail-closed)
 
 1. **Never** `reset --hard`, `clean -fd`, stash-discard, force-push, or overwrite dirty/untracked files.
