@@ -1242,7 +1242,20 @@ async function loadHotelData() {
                 generateInsights(currentFilteredHotels.length ? currentFilteredHotels : hotelData);
                 updateAllDropdowns(hotelData);
                 applyOpportunityRadarShareLocks();
-                if (isCityAggregationEnabled || earlyCitiesPainted) renderCityAggregationMarkers();
+                // At regional zoom, displayHotels already force-painted city density
+                // (incl. HPC Open/Pipeline cities). An unforced renderCityAggregationMarkers
+                // call would clear that layer then bail while the city-agg toggle is off —
+                // wiping the only low-zoom markers after a successful earlyCities paint.
+                if (isCityAggregationEnabled) {
+                    renderCityAggregationMarkers();
+                } else if (
+                    earlyCitiesPainted &&
+                    map &&
+                    typeof map.getZoom === 'function' &&
+                    map.getZoom() < HOTEL_MARKER_MIN_ZOOM
+                ) {
+                    ensureLowZoomCityAggregation();
+                }
             });
         } else {
             throw new Error('API returned error: ' + result.error);
@@ -1496,7 +1509,12 @@ function cityRowPassesAggFilter(row, token) {
 function renderCityAggregationMarkers(options) {
     if (!map) return;
     const opts = options || {};
-    const force = opts.force === true;
+    // Individual hotel pins are suppressed below HOTEL_MARKER_MIN_ZOOM. Treat that
+    // band as an implicit force so callers (post-load rAF, layer sync) cannot
+    // clear-then-bail and leave an empty map while HPC hotels remain in allHotels.
+    const lowZoomNeedsDensity =
+        typeof map.getZoom === 'function' && map.getZoom() < HOTEL_MARKER_MIN_ZOOM;
+    const force = opts.force === true || lowZoomNeedsDensity;
     clearCityAggregationLayer();
     if (!isCityAggregationEnabled && !force) return;
 
@@ -1588,6 +1606,9 @@ function toggleCityAggregation() {
     isCityAggregationEnabled = !!(toggle && toggle.checked);
     if (isCityAggregationEnabled) {
         renderCityAggregationMarkers();
+    } else if (map && typeof map.getZoom === 'function' && map.getZoom() < HOTEL_MARKER_MIN_ZOOM) {
+        // Keep temporary regional density (HPC-inclusive) when pins are suppressed.
+        ensureLowZoomCityAggregation();
     } else {
         clearCityAggregationLayer();
     }

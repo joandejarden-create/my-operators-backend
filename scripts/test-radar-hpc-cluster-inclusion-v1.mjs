@@ -60,8 +60,23 @@ assert.doesNotMatch(
 
 assert.match(
   host,
-  /brand-presence-mapping\.js\?v=radar-hpc-search-focus-1/,
-  "Radar host must cache-bust mapping after HPC search/focus UX"
+  /brand-presence-mapping\.js\?v=radar-hpc-lowzoom-density-1/,
+  "Radar host must cache-bust mapping after low-zoom density retention fix"
+);
+assert.match(
+  mapping,
+  /lowZoomNeedsDensity/,
+  "renderCityAggregationMarkers must auto-force below HOTEL_MARKER_MIN_ZOOM"
+);
+assert.match(
+  mapping,
+  /earlyCitiesPainted\s*&&\s*[\s\S]*?ensureLowZoomCityAggregation\(\)/,
+  "post-load rAF must re-force low-zoom density after early city paint (not clear-then-bail)"
+);
+assert.doesNotMatch(
+  mapping,
+  /if\s*\(\s*isCityAggregationEnabled\s*\|\|\s*earlyCitiesPainted\s*\)\s*renderCityAggregationMarkers\(\)/,
+  "unforced earlyCitiesPainted renderCityAggregationMarkers call must not remain"
 );
 
 // Pure filter regression (mirrors client rule).
