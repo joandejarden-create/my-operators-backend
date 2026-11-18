@@ -1,0 +1,59 @@
+{
+  "schema": "ADP_PHASE2A_CUSTOMER_SURFACE_FAILURE_REGISTER_V1",
+  "generatedAt": "2026-11-18T13:30:00.000Z",
+  "worktree": "C:\\Dev\\dealality\\my-operators-backend-adp-audit",
+  "branch": "cursor/adp-hotel-explorer-audit-1ed2",
+  "head": "782d8105f146d154c96617b2aeb370cbe137efa7",
+  "sourceReport": "reports/ai-demand-positioning/adp-customer-surface-contract-v1-latest.json",
+  "priorRegister": "reports/adp-hotel-explorer-baseline-audit/phase-1.1/CUSTOMER_SURFACE_BLOCKER_REGISTER_V1.json",
+  "failureCountBefore": 33,
+  "failureCountAfter": 33,
+  "delta": 0,
+  "customerSurfaceOk": false,
+  "byGate": {
+    "TERRITORY_SUBJECT_RATES": 5,
+    "BPP": 24,
+    "ALL_EVIDENCE_LINKS_NONEMPTY": 1,
+    "ALL_EVIDENCE_READABLE": 1,
+    "ALL_EVIDENCE_LINKS_CLIENT_READY": 1,
+    "DISPLACEMENT_COUNT_EVIDENCE_EXACT_PARITY": 1
+  },
+  "groups": [
+    {
+      "gate": "TERRITORY_SUBJECT_RATES",
+      "count": 5,
+      "propertyId": "adp_bethesda_marriott",
+      "bucket": "HISTORICAL_CERTIFICATION_GAP",
+      "codeFixableWithoutEvidence": false,
+      "requiresPaidMeasurement": "only_if_recertifying_new_period",
+      "recommendedNextAction": "Founder pin certified period or authorize re-cert; do not flip constants"
+    },
+    {
+      "gate": "BPP",
+      "count": 24,
+      "bucket": "MISSING_PRODUCTION_MEASUREMENT_OR_PEER_FREEZE",
+      "codeFixableWithoutEvidence": false,
+      "requiresPaidMeasurement": true,
+      "recommendedNextAction": "Governed BPP measurement + peer freeze; keep READY fail-closed; exclude adp_smoke_test_synthetic from commercial universe claims"
+    },
+    {
+      "gate": "ALL_EVIDENCE_LINKS_*",
+      "count": 3,
+      "bucket": "MISSING_AUTHORITATIVE_EVIDENCE_PACKS",
+      "codeFixableWithoutEvidence": false,
+      "requiresPaidMeasurement": false,
+      "recommendedNextAction": "Materialize durable runtimes or bake self-contained packs; never invent evidence"
+    },
+    {
+      "gate": "DISPLACEMENT_COUNT_EVIDENCE_EXACT_PARITY",
+      "count": 1,
+      "bucket": "REPORT_DATA_CONSISTENCY_SYNTHETIC_DRIFT",
+      "codeFixableWithoutEvidence": false,
+      "requiresPaidMeasurement": false,
+      "recommendedNextAction": "Validate published DSS on real hotels; treat smoke synthetic as non-commercial noise"
+    }
+  ],
+  "softwareDefectsNewlyFound": [],
+  "blocksCustomerSurfaceProductionClaim": true,
+  "blocksMergeDeployRecommendation": true
+}
