@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+﻿#!/usr/bin/env node
 /**
  * HE-002 discrepancy fix: low-zoom city density must survive post-load rAF
  * when the city-aggregation toggle is off. Otherwise HPC Open/Pipeline hotels
@@ -54,7 +54,7 @@ assert.match(
   "turning city-agg toggle off at low zoom must retain density layer"
 );
 
-assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-auth-parity-1/);
+assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-workspace-principal-1/);
 
 console.log(
   JSON.stringify({

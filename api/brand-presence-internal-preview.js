@@ -1,10 +1,11 @@
 /**
  * GET /api/brand-presence/internal-preview-hotels
  *
- * Authorized internal Radar only — admin / local Dealality admin.
+ * Authorized internal Radar only — authenticated Radar app principals
+ * (Owner / Operator / Brand / Admin workspace, plus admin allowlists).
  * Returns Hotel Property Census hotels with Radar Status Open|Pipeline for map merge
  * (dynamic formula query — not a hotel allowlist).
- * Fail-closed: unauthenticated / non-admin → 401/403. Query flags alone never authorize.
+ * Fail-closed: unauthenticated / no Radar WA → 401/403. Query flags alone never authorize.
  * Diagnostics are included only for authorized callers; never for customer/share surfaces.
  */
 
@@ -25,7 +26,7 @@ export async function getBrandPresenceInternalPreviewHotels(req, res) {
     return res.status(403).json({
       success: false,
       ok: false,
-      error: "forbidden_admin",
+      error: "forbidden_radar_workspace",
       message:
         "internalPreview query flags do not authorize restricted hotel inclusion.",
       authorizedByQueryAlone: false,
@@ -36,8 +37,9 @@ export async function getBrandPresenceInternalPreviewHotels(req, res) {
     return res.status(403).json({
       success: false,
       ok: false,
-      error: "forbidden_admin",
-      message: "Admin or local Dealality admin access required for internal-preview hotels.",
+      error: "forbidden_radar_workspace",
+      message:
+        "Authenticated Radar workspace access (Owner, Operator, Brand, or Admin) is required for HPC Open/Pipeline inventory.",
     });
   }
 
@@ -50,7 +52,7 @@ export async function getBrandPresenceInternalPreviewHotels(req, res) {
     return res.status(403).json({
       success: false,
       ok: false,
-      error: "forbidden_admin",
+      error: "forbidden_radar_workspace",
     });
   }
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+﻿#!/usr/bin/env node
 /**
  * Gate: authorized HPC hotels remain visible in Radar low-zoom city aggregates
  * and continue to participate in MarkerCluster rebuilds after merge.
@@ -60,7 +60,7 @@ assert.doesNotMatch(
 
 assert.match(
   host,
-  /brand-presence-mapping\.js\?v=radar-hpc-auth-parity-1/,
+  /brand-presence-mapping\.js\?v=radar-hpc-workspace-principal-1/,
   "Radar host must cache-bust mapping after auth-parity + density fixes"
 );
 assert.match(

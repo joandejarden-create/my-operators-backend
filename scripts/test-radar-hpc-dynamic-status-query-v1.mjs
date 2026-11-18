@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+﻿#!/usr/bin/env node
 /**
  * HE-001: dynamic HPC Radar Status query — fixtures only, no live Airtable writes.
  */
@@ -143,6 +143,14 @@ assert.match(buildHpcRadarStatusFilterFormula(), /OR\(\{Radar Status\}='Open'/);
 // --- Auth ---
 assert.equal(isAuthorizedForRadarInternalPreviewHotels({ isAdmin: false }, {}), false);
 assert.equal(isAuthorizedForRadarInternalPreviewHotels({ isAdmin: true }, {}), true);
+assert.equal(
+  isAuthorizedForRadarInternalPreviewHotels(
+    { isAdmin: false, workspaceAccess: ["Owner", "Operator"] },
+    {}
+  ),
+  true,
+  "Owner/Operator workspace principal may load HPC inventory"
+);
 const denied = await loadAuthorizedInternalPreviewHotels({
   dealalityUser: { isAdmin: false },
   records: [FIXTURES.bethesdaOpen],
@@ -395,7 +403,7 @@ const host = fs.readFileSync(
   path.join(ROOT, "public/deal-capture-radar-with-ranked-list.html"),
   "utf8"
 );
-assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-auth-parity-1/);
+assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-workspace-principal-1/);
 
 const api = fs.readFileSync(
   path.join(ROOT, "api/brand-presence-internal-preview.js"),

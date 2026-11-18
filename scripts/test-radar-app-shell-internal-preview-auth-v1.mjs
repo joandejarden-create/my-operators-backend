@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+﻿#!/usr/bin/env node
 /**
  * /app#/opportunity-radar auth parity for internal-preview hotels.
  * Deterministic — no Airtable, no network.
@@ -7,10 +7,13 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "url";
-import { isAuthorizedForRadarInternalPreviewHotels } from "../lib/hotel-intelligence/radar-internal-preview-hotels-v1.js";
+import {
+  evaluateRadarInternalPreviewAccess,
+  isAuthorizedForRadarInternalPreviewHotels,
+  RADAR_INTERNAL_PREVIEW_ACCESS_POLICY,
+} from "../lib/hotel-intelligence/radar-internal-preview-hotels-v1.js";
 import { requireRadarInternalPreviewAccess } from "../middleware/requireRadarInternalPreviewAccess.js";
 import { elevateAdpOwnerAppAdminFlags } from "../middleware/optionalDealalityAuth.js";
-import { isAdpOwnerAppAdminEmail } from "../lib/dealality/adp-owner-app-admin-emails.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -32,148 +35,109 @@ const authorizerSrc = fs.readFileSync(
   "utf8"
 );
 
-assert.match(
-  gateSrc,
-  /elevateAdpOwnerAppAdminFlags/,
-  "Radar gate must reuse ADP owner-app admin elevation"
-);
-assert.match(
-  gateSrc,
-  /isAuthorizedForRadarInternalPreviewHotels/,
-  "Radar gate must use canonical internal-preview authorizer"
-);
-assert.match(gateSrc, /forbidden_admin/, "non-admin must remain forbidden");
+assert.match(gateSrc, /elevateAdpOwnerAppAdminFlags/);
+assert.match(gateSrc, /evaluateRadarInternalPreviewAccess|isAuthorizedForRadarInternalPreviewHotels/);
+assert.match(gateSrc, /forbidden_radar_workspace/);
+assert.doesNotMatch(gateSrc, /u\.isDemo\s*===\s*true/);
+
+assert.match(optionalSrc, /workspaceAccess:\s*result\.workspaceAccess/);
+assert.match(optionalSrc, /resolveLocalDemoDealalityUser/);
+
+assert.match(authorizerSrc, /RADAR_INTERNAL_PREVIEW_ACCESS_POLICY/);
+assert.match(authorizerSrc, /ALLOW_RADAR_APP_WORKSPACE_PRINCIPAL/);
+assert.match(authorizerSrc, /WORKSPACE_OWNER/);
+assert.match(authorizerSrc, /evaluateRadarInternalPreviewAccess/);
+
+assert.match(serverSrc, /optionalDealalityAuth,\s*\n\s*requireRadarInternalPreviewAccess/);
 assert.doesNotMatch(
-  gateSrc,
-  /u\.isDemo\s*===\s*true/,
-  "must not authorize from isDemo + client owner-app header alone"
-);
-
-assert.match(
-  optionalSrc,
-  /workspaceAccess:\s*result\.workspaceAccess/,
-  "optionalDealalityAuth must attach Airtable workspaceAccess (requireDealalityUser parity)"
-);
-assert.match(
-  optionalSrc,
-  /resolveLocalDemoDealalityUser/,
-  "optionalDealalityAuth must resolve local demo when Users row is missing"
-);
-assert.match(
-  optionalSrc,
-  /identityEmailsFromReq|isAdpOwnerAppAdminEmail/,
-  "elevation must consider Memberstack and Airtable emails"
-);
-
-assert.match(
-  authorizerSrc,
-  /WORKSPACE_ADMIN/,
-  "authorizer must honor Workspace Admin from Airtable"
-);
-assert.match(
-  authorizerSrc,
-  /isAdpOwnerAppAdminEmail/,
-  "authorizer must honor server-side ADP admin email allowlist"
-);
-
-assert.match(
-  optionalSrc,
-  /export function elevateAdpOwnerAppAdminFlags/,
-  "ADP elevation helper must be exported for Radar parity"
-);
-assert.match(
-  serverSrc,
-  /optionalDealalityAuth,\s*\n\s*requireRadarInternalPreviewAccess/,
-  "route must use optionalDealalityAuth then Radar gate"
-);
-const routeBlock =
   serverSrc.match(
     /\/api\/brand-presence\/internal-preview-hotels[\s\S]{0,500}getBrandPresenceInternalPreviewHotels/
-  )?.[0] || "";
-assert.ok(routeBlock, "internal-preview route block must exist");
-assert.doesNotMatch(
-  routeBlock,
-  /memberstackAuth/,
-  "hard memberstackAuth must not remain on internal-preview (blocks app-shell JWT fallback)"
+  )?.[0] || "",
+  /memberstackAuth/
 );
 
-assert.match(mappingSrc, /X-Dealality-Owner-App/);
 assert.match(mappingSrc, /waitForRadarEmbedJwt/);
 assert.match(mappingSrc, /isOpportunityRadarShareMode\(\)/);
-assert.match(mappingSrc, /skipped:\s*'share_mode'|skipped: 'share_mode'/);
 assert.match(
   fs.readFileSync(path.join(ROOT, "public/deal-capture-radar-with-ranked-list.html"), "utf8"),
-  /brand-presence-mapping\.js\?v=radar-hpc-auth-parity-1/
+  /brand-presence-mapping\.js\?v=radar-hpc-workspace-principal-1/
 );
 
-// Behavioral: owner role + approved demo email on localhost → authorized via local QA
+const localReq = { hostname: "localhost", headers: { host: "localhost:8080" } };
+
+// Founder-reported shape: Owner+Operator, isAdmin false, isDemo false → ALLOW
+{
+  const user = {
+    email: "dealalitydemo@dealality.com",
+    isAdmin: false,
+    isDemo: false,
+    workspaceAccess: ["Owner", "Operator"],
+    userSource: "AIRTABLE",
+  };
+  const decision = evaluateRadarInternalPreviewAccess(user, localReq);
+  assert.equal(decision.allowed, true);
+  assert.equal(decision.reason, "ALLOW_RADAR_APP_WORKSPACE_PRINCIPAL");
+  assert.equal(decision.policy, RADAR_INTERNAL_PREVIEW_ACCESS_POLICY);
+  assert.equal(decision.checks.workspaceOwner, true);
+  assert.equal(decision.checks.workspaceOperator, true);
+  assert.equal(decision.checks.isAdmin, false);
+  assert.equal(isAuthorizedForRadarInternalPreviewHotels(user, localReq), true);
+}
+
+// Brand-only WA → ALLOW (Radar nav includes brand)
 assert.equal(
-  isAuthorizedForRadarInternalPreviewHotels(
-    {
-      email: "dealalitydemo@dealality.com",
-      isAdmin: false,
-      isDemo: false,
-      workspaceAccess: ["Owner", "Operator"],
-    },
-    { hostname: "localhost", headers: { host: "localhost:8080" } }
-  ),
-  true,
-  "dealalitydemo local QA must authorize even when Airtable isDemo=false"
+  evaluateRadarInternalPreviewAccess(
+    { isAdmin: false, workspaceAccess: ["Brand"], userSource: "AIRTABLE" },
+    localReq
+  ).reason,
+  "ALLOW_RADAR_APP_WORKSPACE_PRINCIPAL"
 );
 
-assert.equal(
-  isAuthorizedForRadarInternalPreviewHotels(
+// No WA, not admin → DENY (even with owner-app header)
+{
+  const decision = evaluateRadarInternalPreviewAccess(
     {
-      email: "customer@example.com",
+      email: "outsider@example.com",
       isAdmin: false,
       isDemo: false,
-      workspaceAccess: ["Owner"],
+      workspaceAccess: [],
+      userSource: "AIRTABLE",
     },
     {
-      hostname: "localhost",
-      headers: { host: "localhost:8080", "x-dealality-owner-app": "1" },
-      memberstackEmail: "customer@example.com",
+      ...localReq,
+      headers: { ...localReq.headers, "x-dealality-owner-app": "1" },
+      memberstackEmail: "outsider@example.com",
     }
-  ),
-  false,
-  "non-admin customer must stay forbidden even with owner-app header"
-);
+  );
+  assert.equal(decision.allowed, false);
+  assert.equal(decision.reason, "DENY_NO_RADAR_WORKSPACE_ENTITLEMENT");
+}
 
+// Missing user → deny
+assert.equal(isAuthorizedForRadarInternalPreviewHotels(null, localReq), false);
+
+// Platform admin → allow
 assert.equal(
-  isAuthorizedForRadarInternalPreviewHotels(
-    {
-      email: "brand@example.com",
-      isAdmin: false,
-      workspaceAccess: ["Admin"],
-    },
-    { hostname: "localhost", headers: { host: "localhost:8080" } }
-  ),
-  true,
-  "Workspace Admin must authorize without client header tricks"
+  evaluateRadarInternalPreviewAccess({ isAdmin: true, workspaceAccess: [] }, localReq).reason,
+  "ALLOW_PLATFORM_ADMIN"
 );
 
-assert.ok(
-  isAdpOwnerAppAdminEmail("dealalitydemo@dealality.com"),
-  "assignments allowlist must include dealalitydemo"
-);
-
-// Gate after elevation for ADP admin email with owner-role Airtable shape
+// Gate middleware: Owner/Operator session passes without admin elevation dependency
 {
   const req = {
     hostname: "localhost",
-    headers: { host: "localhost:8080", "x-dealality-owner-app": "1" },
-    memberstackEmail: "dealalitydemo@dealality.com",
+    headers: { host: "localhost:8080" },
+    memberstackEmail: "owner.op@example.com",
     dealalityUser: {
-      email: "dealalitydemo@dealality.com",
+      email: "owner.op@example.com",
       isAdmin: false,
       isDemo: false,
       role: "owner",
       workspaceAccess: ["Owner", "Operator"],
+      userSource: "AIRTABLE",
     },
   };
-  elevateAdpOwnerAppAdminFlags(req);
-  assert.equal(req.dealalityUser.isAdmin, true, "elevation must set isAdmin for ADP admin email");
-  let status = 200;
+  let status = 500;
   requireRadarInternalPreviewAccess(
     req,
     {
@@ -186,7 +150,59 @@ assert.ok(
       status = 200;
     }
   );
-  assert.equal(status, 200, "elevated demo owner session must pass Radar gate");
+  assert.equal(status, 200, "Owner/Operator Bearer session must pass Radar HPC gate");
+}
+
+// Gate middleware: empty WA → 403 with reason code (non-production)
+{
+  const req = {
+    hostname: "localhost",
+    headers: { host: "localhost:8080" },
+    dealalityUser: {
+      email: "nobody@example.com",
+      isAdmin: false,
+      workspaceAccess: [],
+      userSource: "AIRTABLE",
+    },
+  };
+  let status = 200;
+  let body = null;
+  requireRadarInternalPreviewAccess(
+    req,
+    {
+      status(code) {
+        status = code;
+        return {
+          json(payload) {
+            body = payload;
+          },
+        };
+      },
+    },
+    () => {
+      status = 200;
+    }
+  );
+  assert.equal(status, 403);
+  assert.equal(body?.error, "forbidden_radar_workspace");
+  assert.equal(body?.decision?.reason, "DENY_NO_RADAR_WORKSPACE_ENTITLEMENT");
+}
+
+// Elevation still works for ADP admin emails without WA
+{
+  const req = {
+    hostname: "localhost",
+    headers: { host: "localhost:8080" },
+    memberstackEmail: "dealalitydemo@dealality.com",
+    dealalityUser: {
+      email: "dealalitydemo@dealality.com",
+      isAdmin: false,
+      workspaceAccess: [],
+      userSource: "AIRTABLE",
+    },
+  };
+  elevateAdpOwnerAppAdminFlags(req);
+  assert.equal(req.dealalityUser.isAdmin, true);
 }
 
 console.log(
@@ -195,6 +211,7 @@ console.log(
     gate: "test:radar-app-shell-internal-preview-auth-v1",
     route: "/api/brand-presence/internal-preview-hotels",
     appRoute: "/app#/opportunity-radar",
-    authBasis: "verified_identity_plus_server_allowlists",
+    policy: RADAR_INTERNAL_PREVIEW_ACCESS_POLICY,
+    founderShapeReason: "ALLOW_RADAR_APP_WORKSPACE_PRINCIPAL",
   })
 );

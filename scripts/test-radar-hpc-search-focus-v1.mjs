@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+﻿#!/usr/bin/env node
 /**
  * HE-002 follow-up: HPC Open/Pipeline hotels must be searchable/selectable and
  * focusable on /app#/opportunity-radar (null-safe search + census-id focus).
@@ -45,7 +45,7 @@ assert.match(
 );
 
 assert.match(host, /id="radarSearchResults"/);
-assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-auth-parity-1/);
+assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-workspace-principal-1/);
 assert.match(host, /radar-filter-drawer\.js\?v=13/);
 
 assert.match(
