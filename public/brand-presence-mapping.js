@@ -916,6 +916,15 @@ async function mergeAuthorizedInternalPreviewHotels(hotels) {
             credentials: 'same-origin',
         });
         if (!res.ok) {
+            // /app#/opportunity-radar often sends Bearer via msToken; 401/403 means
+            // admin gate rejected the session (not an empty HPC inventory).
+            try {
+                console.warn(
+                    '[radar-map] internal-preview HTTP ' +
+                        res.status +
+                        (headers.Authorization ? ' (with Bearer)' : ' (no Bearer)')
+                );
+            } catch (_logErr) { /* ignore */ }
             return { hotels: list, addedIds: [], skipped: 'http_' + res.status, duplicatesReconciled: [] };
         }
         const data = await res.json();
