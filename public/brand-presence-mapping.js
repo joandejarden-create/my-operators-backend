@@ -1184,16 +1184,24 @@ async function mergeAuthorizedInternalPreviewHotels(hotels) {
             addedIds.push(id);
         }
         // Internal diagnostics stay in-memory for authorized sessions only — never rendered for share.
+        const missingCoordinates = Array.isArray(data.diagnostics && data.diagnostics.missingCoordinates)
+            ? data.diagnostics.missingCoordinates
+            : [];
+        const openCount = Number(data.diagnostics && data.diagnostics.openCount) || 0;
+        const pipelineCount = Number(data.diagnostics && data.diagnostics.pipelineCount) || 0;
         window.__radarHpcInternalDiagnostics = {
-            openCount: data.diagnostics && data.diagnostics.openCount,
-            pipelineCount: data.diagnostics && data.diagnostics.pipelineCount,
+            openCount: openCount,
+            pipelineCount: pipelineCount,
+            mapEligibleCount: Array.isArray(data.hotels) ? data.hotels.length : 0,
+            missingCoordinates: missingCoordinates,
             duplicatesReconciled: duplicatesReconciled.length,
+            addedIds: addedIds.slice(),
             lastSuccessfulFetchAt: data.diagnostics && data.diagnostics.lastSuccessfulFetchAt,
             paginationComplete: data.diagnostics && data.diagnostics.paginationComplete,
             apiErrors: (data.errors && data.errors.length) || (data.diagnostics && data.diagnostics.apiErrors && data.diagnostics.apiErrors.length) || 0,
             cacheHit: data.diagnostics && data.diagnostics.cacheHit,
         };
-        return { hotels: list, addedIds, skipped: null, duplicatesReconciled };
+        return { hotels: list, addedIds, skipped: null, duplicatesReconciled, missingCoordinates };
     } catch (err) {
         console.warn('[radar-map] internal-preview merge skipped:', err);
         return { hotels: list, addedIds: [], skipped: 'error', duplicatesReconciled: [] };
@@ -1247,13 +1255,32 @@ async function loadHotelData() {
             window.__radarInternalPreviewSkipped = merged.skipped || null;
             if (merged.addedIds && merged.addedIds.length) {
                 console.info('[radar-map] internal-preview hotels merged:', merged.addedIds.join(', '));
-                setRadarHpcMergeNotice('');
-            } else if (merged.skipped && merged.skipped !== 'share_mode') {
+            }
+            const missingCoords = (merged.missingCoordinates || (window.__radarHpcInternalDiagnostics && window.__radarHpcInternalDiagnostics.missingCoordinates) || []);
+            if (merged.skipped && merged.skipped !== 'share_mode') {
                 console.warn('[radar-map] internal-preview merge skipped:', merged.skipped);
                 setRadarHpcMergeNotice(
                     'Open/Pipeline Hotel Property Census hotels were not merged (' +
                         merged.skipped +
-                        '). Search will miss HPC-only properties like Bethesda Marriott until internal-preview auth succeeds.'
+                        '). Search will miss HPC-only properties until internal-preview auth succeeds.'
+                );
+            } else if (missingCoords.length) {
+                const diag = window.__radarHpcInternalDiagnostics || {};
+                const sample = missingCoords
+                    .slice(0, 3)
+                    .map(function (row) { return hotelText(row && row.name) || hotelText(row && row.id); })
+                    .filter(Boolean)
+                    .join(', ');
+                setRadarHpcMergeNotice(
+                    'HPC Open/Pipeline: ' +
+                        (Number(diag.openCount || 0) + Number(diag.pipelineCount || 0)) +
+                        ' status-eligible; ' +
+                        (merged.addedIds || []).length +
+                        ' on map; ' +
+                        missingCoords.length +
+                        ' missing coordinates' +
+                        (sample ? ' (' + sample + ')' : '') +
+                        '. Fill Latitude/Longitude on Hotel Property Census to show them on Radar.'
                 );
             } else {
                 setRadarHpcMergeNotice('');
@@ -1525,6 +1552,61 @@ function getHotelsForAggregation() {
     return allHotels || [];
 }
 
+/**
+ * Pure city-aggregate rows for map density markers.
+ * Key = city|country so same city names in different countries never merge.
+ * Counts every unique hotel once; Open/Pipeline/Candidate tallies are separate from totalHotels.
+ */
+function buildRadarCityAggregationRows(sourceHotels) {
+    const cityGroups = {};
+    (sourceHotels || []).forEach(function (hotel) {
+        const city = (hotel && hotel.city || '').trim();
+        const country = (hotel && hotel.country || '').trim();
+        if (!city) return;
+        const cityKey = city + '|' + (country || 'Unknown Country');
+        if (!cityGroups[cityKey]) {
+            cityGroups[cityKey] = {
+                city: city,
+                country: country || 'Unknown Country',
+                totalHotels: 0,
+                totalRooms: 0,
+                withCoordinates: 0,
+                withoutCoordinates: 0,
+                openHotels: 0,
+                pipelineHotels: 0,
+                candidateHotels: 0,
+                includesInternalPreview: false,
+                lat: null,
+                lng: null
+            };
+        }
+        const row = cityGroups[cityKey];
+        row.totalHotels += 1;
+        row.totalRooms += Number(hotel.rooms) || 0;
+        if (hotel.internalPreviewOnly) row.includesInternalPreview = true;
+
+        const status = String(hotel.status || '').toLowerCase();
+        if (status === 'open') row.openHotels += 1;
+        else if (status === 'pipeline') row.pipelineHotels += 1;
+        else if (status === 'candidate') row.candidateHotels += 1;
+
+        const lat = Number(hotel.lat);
+        const lng = Number(hotel.lng);
+        const hasCoords = Number.isFinite(lat) && Number.isFinite(lng) && (lat !== 0 || lng !== 0);
+        if (hasCoords) {
+            row.withCoordinates += 1;
+            if (!Number.isFinite(row.lat) || !Number.isFinite(row.lng)) {
+                row.lat = lat;
+                row.lng = lng;
+            }
+        } else {
+            row.withoutCoordinates += 1;
+        }
+    });
+    return Object.values(cityGroups);
+}
+window.__radarBuildCityAggregationRows = buildRadarCityAggregationRows;
+
 function clearCityAggregationLayer() {
     if (cityAggregationLayer) {
         map.removeLayer(cityAggregationLayer);
@@ -1574,54 +1656,8 @@ function renderCityAggregationMarkers(options) {
         return;
     }
 
-    const cityGroups = {};
-    sourceHotels.forEach(function (hotel) {
-        const city = (hotel.city || '').trim();
-        const country = (hotel.country || '').trim();
-        if (!city) return;
-        const cityKey = city + '|' + (country || 'Unknown Country');
-        if (!cityGroups[cityKey]) {
-            cityGroups[cityKey] = {
-                city: city,
-                country: country || 'Unknown Country',
-                totalHotels: 0,
-                totalRooms: 0,
-                withCoordinates: 0,
-                withoutCoordinates: 0,
-                openHotels: 0,
-                pipelineHotels: 0,
-                candidateHotels: 0,
-                includesInternalPreview: false,
-                lat: null,
-                lng: null
-            };
-        }
-        const row = cityGroups[cityKey];
-        row.totalHotels += 1;
-        row.totalRooms += Number(hotel.rooms) || 0;
-        if (hotel.internalPreviewOnly) row.includesInternalPreview = true;
-
-        const status = String(hotel.status || '').toLowerCase();
-        if (status === 'open') row.openHotels += 1;
-        else if (status === 'pipeline') row.pipelineHotels += 1;
-        else if (status === 'candidate') row.candidateHotels += 1;
-
-        const lat = Number(hotel.lat);
-        const lng = Number(hotel.lng);
-        const hasCoords = Number.isFinite(lat) && Number.isFinite(lng) && (lat !== 0 || lng !== 0);
-        if (hasCoords) {
-            row.withCoordinates += 1;
-            if (!Number.isFinite(row.lat) || !Number.isFinite(row.lng)) {
-                row.lat = lat;
-                row.lng = lng;
-            }
-        } else {
-            row.withoutCoordinates += 1;
-        }
-    });
-
     cityAggregationLayer = L.layerGroup();
-    Object.values(cityGroups).forEach(function (row) {
+    buildRadarCityAggregationRows(sourceHotels).forEach(function (row) {
         if (!Number.isFinite(row.lat) || !Number.isFinite(row.lng)) return;
         if (!cityRowPassesAggFilter(row, MAP_LAYER_FILTERS.cityAggFilter)) return;
         const marker = L.marker([row.lat, row.lng], {

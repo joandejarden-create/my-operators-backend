@@ -403,7 +403,7 @@ const host = fs.readFileSync(
   path.join(ROOT, "public/deal-capture-radar-with-ranked-list.html"),
   "utf8"
 );
-assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-workspace-principal-1/);
+assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-missing-coords-reconcile-1/);
 
 const api = fs.readFileSync(
   path.join(ROOT, "api/brand-presence-internal-preview.js"),

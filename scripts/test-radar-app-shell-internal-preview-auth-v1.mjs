@@ -60,7 +60,7 @@ assert.match(mappingSrc, /waitForRadarEmbedJwt/);
 assert.match(mappingSrc, /isOpportunityRadarShareMode\(\)/);
 assert.match(
   fs.readFileSync(path.join(ROOT, "public/deal-capture-radar-with-ranked-list.html"), "utf8"),
-  /brand-presence-mapping\.js\?v=radar-hpc-workspace-principal-1/
+  /brand-presence-mapping\.js\?v=radar-hpc-missing-coords-reconcile-1/
 );
 
 const localReq = { hostname: "localhost", headers: { host: "localhost:8080" } };
