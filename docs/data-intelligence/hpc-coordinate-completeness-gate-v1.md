@@ -37,6 +37,16 @@ Existing Open/Pipeline exceptions are **flagged** in diagnostics. Statuses are *
 - Admin diagnostics expose `diagnostics.coordinateCompleteness`  
 - Map eligibility still requires coordinates; search/Explorer behavior is owned by Radar product PRs separately  
 
+## Paid geocode budget
+
+Use `createGeocodeRequestBudget({ maxPaidRequests })`. Every paid provider call (initial, retry, fallback, recovery) must `tryConsume` first. Divergent-candidate recovery must reuse the **same** provider response (`recoverTopCandidateFromDivergentGeocode`) — **0** extra paid calls. Exceeding the budget requires new founder authorization.
+
+## Write-path enforcement
+
+- Census Autopilot: `Radar Status` is **forbidden**.
+- Future Node writers: call `guardHpcRadarStatusPatch` before applying Open/Pipeline.
+- Manual Airtable UI remains an enforcement gap (documented in the write-path enforcement report).
+
 ## Commands
 
 ```bash
@@ -44,7 +54,17 @@ npm run test:hpc-coordinate-completeness-gate-v1
 npm run audit:hpc-open-pipeline-coords
 npm run stage:hpc-coordinate-completeness-geocode-v1 -- \
   --ids recH9h3McgMNFQEla,recHXCkkKD5Xwue3p \
-  --founder-auth FOUNDER_AUTH_HPC_COORD_GEOCODE_LOOKUP_V1
+  --founder-auth FOUNDER_AUTH_HPC_COORD_GEOCODE_LOOKUP_V1 \
+  --max-paid-requests 2
+```
+
+Offline refresh of prior staging evidence (no paid calls):
+
+```bash
+npm run stage:hpc-coordinate-completeness-geocode-v1 -- \
+  --ids recH9h3McgMNFQEla,recHXCkkKD5Xwue3p \
+  --founder-auth FOUNDER_AUTH_HPC_COORD_GEOCODE_LOOKUP_V1 \
+  --offline-from-prior --max-paid-requests 2
 ```
 
 Geocode staging never writes Airtable. Apply requires a separate founder authorization.

@@ -13,7 +13,11 @@ import {
   buildCoordinateCompletenessDiagnostics,
   buildProposedCoordinatePatch,
   detectCityCenterProximity,
+  createGeocodeRequestBudget,
+  recoverTopCandidateFromDivergentGeocode,
+  guardHpcRadarStatusPatch,
 } from "../lib/hotel-census/hpc-coordinate-completeness-gate-v1.js";
+import { isForbiddenAutopilotField } from "../lib/research-engine-v2/census-autopilot-field-allowlist.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -241,6 +245,95 @@ assert.equal(
   });
   assert.equal(soft.soft, true);
   assert.equal(soft.confirmed, false);
+}
+
+// Paid geocode budget — initial + recovery must not exceed cap
+{
+  const budget = createGeocodeRequestBudget({
+    maxPaidRequests: 2,
+    authorizationLabel: "TEST_AUTH",
+  });
+  assert.equal(budget.tryConsume(1, "hotel_a").ok, true);
+  assert.equal(budget.tryConsume(1, "hotel_b").ok, true);
+  const blocked = budget.tryConsume(1, "retry_or_recovery");
+  assert.equal(blocked.ok, false);
+  assert.equal(blocked.reason, "GEOCODE_BUDGET_EXCEEDED");
+  assert.equal(budget.used, 2);
+  assert.equal(budget.remaining(), 0);
+}
+
+// Zero-cost divergent recovery from same response
+{
+  const recovered = recoverTopCandidateFromDivergentGeocode(
+    {
+      ok: false,
+      reason: "multiple_divergent_candidates",
+      topCandidateRecoverable: true,
+      lat: 43.638654,
+      lng: -79.385713,
+      relevance: 1,
+      place_types: ["address"],
+      formatted_address: "249 Queens Quay West, Toronto, Ontario M5J 2N5, Canada",
+      method: "mapbox_permanent_geocode",
+      provider: "mapbox",
+      permanent: true,
+      query: "Radisson Blu Toronto Downtown, 249 Queens Quay West, Toronto, Canada",
+    },
+    { city: "Toronto", country: "Canada" }
+  );
+  assert.equal(recovered.ok, true);
+  assert.equal(recovered.paidCallsAdded, 0);
+  assert.equal(recovered.lat, 43.638654);
+}
+
+// Activation write guard
+{
+  const blocked = guardHpcRadarStatusPatch(
+    {
+      Address: "249 Queens Quay West",
+      City: "Toronto",
+      Country: "Canada",
+      Latitude: null,
+      Longitude: null,
+    },
+    { "Radar Status": "Open" },
+    { isNewActivation: true }
+  );
+  assert.equal(blocked.allowed, false);
+  assert.ok(!("Radar Status" in blocked.sanitizedPatch));
+
+  const allowed = guardHpcRadarStatusPatch(
+    {
+      Address: "249 Queens Quay West",
+      City: "Toronto",
+      Country: "Canada",
+      Latitude: 43.638654,
+      Longitude: -79.385713,
+    },
+    { "Radar Status": "Open" },
+    { isNewActivation: true }
+  );
+  assert.equal(allowed.allowed, true);
+}
+
+// Autopilot must not write Radar Status
+assert.equal(isForbiddenAutopilotField("Radar Status"), true);
+
+// Provenance attribution
+{
+  const patch = buildProposedCoordinatePatch({
+    before: {},
+    geocode: {
+      lat: 40.41544,
+      lng: -3.704038,
+      provider: "mapbox",
+      method: "mapbox_permanent_geocode",
+      confidence: "Medium",
+      formatted_address: "Calle De La Paz 11, 28012 Madrid, Madrid, Spain",
+    },
+  });
+  assert.equal(patch.evidence.officialWebsiteSuppliedCoordinates, false);
+  assert.match(patch.evidence.coordinateSourceAttribution, /Mapbox/i);
 }
 
 // Contract files present

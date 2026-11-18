@@ -26,83 +26,15 @@ import {
   buildProposedCoordinatePatch,
   detectCityCenterProximity,
   readHpcCoordinates,
+  createGeocodeRequestBudget,
+  recoverTopCandidateFromDivergentGeocode,
 } from "../lib/hotel-census/hpc-coordinate-completeness-gate-v1.js";
 import {
   resolveGeocodingProvider,
   geocodeOfficialAddress,
   isStreetLevelAddress,
   buildOfficialGeocodeQuery,
-  placeMatchesCensus,
 } from "../lib/research-engine-v2/production-census-geocoding-providers.js";
-import { isValidCoordPair } from "../lib/research-engine-v2/production-census-coordinate-extractor.js";
-
-/**
- * Staging-only recovery when the shared provider returns multiple_divergent_candidates
- * but the top Mapbox feature is a high-relevance street address that matches Census.
- * Still reject city-center / non-address / place mismatch. Never writes Airtable.
- */
-async function recoverTopAddressCandidate(query, census, propertyName) {
-  const token = String(
-    process.env.MAPBOX_ACCESS_TOKEN || process.env.MAPBOX_TOKEN || ""
-  ).trim();
-  if (!token || !query) return { ok: false, reason: "recovery_unavailable" };
-  const permanent = String(process.env.MAPBOX_PERMANENT_GEOCODING || "").trim() === "1";
-  const url =
-    `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json` +
-    `?access_token=${encodeURIComponent(token)}` +
-    `&limit=5&types=address,poi&language=en` +
-    (permanent ? "&permanent=true" : "");
-  const res = await fetch(url);
-  const json = await res.json().catch(() => ({}));
-  if (!res.ok) return { ok: false, reason: `recovery_http_${res.status}` };
-  const best = (json.features || [])[0];
-  if (!best) return { ok: false, reason: "recovery_zero_results" };
-  const [lng, lat] = best.center || [];
-  if (!isValidCoordPair(Number(lat), Number(lng))) {
-    return { ok: false, reason: "recovery_invalid_coords" };
-  }
-  const placeTypes = best.place_type || [];
-  if (!placeTypes.includes("address") && !placeTypes.includes("poi")) {
-    return { ok: false, reason: "recovery_not_address_or_poi", placeTypes };
-  }
-  const placeName = best.place_name || "";
-  const match = placeMatchesCensus(placeName, census);
-  if (!match.ok) {
-    return { ok: false, reason: "recovery_place_mismatch", failures: match.failures, placeName };
-  }
-  const relevance = Number(best.relevance || 0);
-  if (relevance < 0.8) {
-    return { ok: false, reason: "recovery_low_relevance", relevance, placeName };
-  }
-  const cityHit = detectCityCenterProximity({
-    lat: Number(lat),
-    lng: Number(lng),
-    city: census.city,
-    country: census.country,
-    confirmedFallback: placeTypes.some((t) => /place|locality|region/.test(String(t))),
-  });
-  if (cityHit.confirmed) {
-    return { ok: false, reason: "recovery_confirmed_city_center", cityHit };
-  }
-  return {
-    ok: true,
-    lat: Number(lat),
-    lng: Number(lng),
-    provider: "mapbox",
-    method: permanent ? "mapbox_permanent_geocode" : "mapbox_temporary_geocode",
-    confidence: "Medium",
-    query,
-    formatted_address: placeName,
-    relevance,
-    permanent,
-    place_types: placeTypes,
-    recovery: "top_address_after_divergent_candidates",
-    propertyName,
-    softFlags: cityHit.soft
-      ? ["POTENTIAL_CITY_CENTER_UNCONFIRMED", "INCOMPLETE_ADDRESS_MATCH"]
-      : ["INCOMPLETE_ADDRESS_MATCH"],
-  };
-}
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_JSON = path.join(
@@ -201,7 +133,62 @@ const providerInfo = resolveGeocodingProvider(process.env.GEOCODING_PROVIDER);
 const base = new Airtable({ apiKey: key }).base(baseId);
 const verifiedAt = new Date().toISOString().slice(0, 10);
 const results = [];
-let geocodeCalls = 0;
+const maxPaid = Number(argValue(argv, "--max-paid-requests") || requestedIds.length);
+const budget = createGeocodeRequestBudget({
+  maxPaidRequests: maxPaid,
+  authorizationLabel: FOUNDATION_AUTH,
+});
+const offline = argv.includes("--offline-from-prior");
+
+if (offline) {
+  if (!fs.existsSync(OUT_JSON)) {
+    console.error(JSON.stringify({ ok: false, error: "missing_prior_staging_json" }));
+    process.exit(1);
+  }
+  const prior = JSON.parse(fs.readFileSync(OUT_JSON, "utf8"));
+  const revised = {
+    ...prior,
+    regeneratedAt: new Date().toISOString(),
+    offlineFromPrior: true,
+    additionalPaidGeocodeCallsThisRun: 0,
+    budgetEnforcement: {
+      maxPaidRequests: maxPaid,
+      historicalPaidCallsBeforeBudgetFix: prior.paidGeocodeCalls ?? prior.geocodeCalls ?? null,
+      note: "No new paid calls. Divergent-candidate recovery must reuse the same response (0 extra paid calls).",
+    },
+    provider: {
+      ...(prior.provider || {}),
+      permanent_storage_enabled:
+        prior.provider?.permanent_storage_enabled ??
+        providerInfo.permanent_storage_enabled ??
+        null,
+      permanentStoragePolicy:
+        "MAPBOX_PERMANENT_GEOCODING=1 required for permanent Census storage; temporary geocodes must not be written.",
+    },
+  };
+  for (const row of revised.results || []) {
+    if (row.resolution?.patch?.evidence) {
+      row.resolution.patch.evidence.officialWebsiteSuppliedCoordinates = false;
+      row.resolution.patch.evidence.coordinateSourceAttribution =
+        "Mapbox permanent geocode of official street address — not hotel website coordinates";
+    }
+  }
+  fs.writeFileSync(OUT_JSON, JSON.stringify(revised, null, 2));
+  console.log(
+    JSON.stringify(
+      {
+        ok: true,
+        mode: "offline_from_prior",
+        additionalPaidGeocodeCallsThisRun: 0,
+        outJson: OUT_JSON,
+        proposedCount: (revised.proposedAirtableChanges || []).length,
+      },
+      null,
+      2
+    )
+  );
+  process.exit(0);
+}
 
 for (const id of requestedIds) {
   const rec = await base(HOTEL_PROPERTY_CENSUS_TABLE).find(id);
@@ -264,25 +251,49 @@ for (const id of requestedIds) {
         state,
         country,
       });
-      geocodeCalls += 1;
+      const consume = budget.tryConsume(1, `geocode:${id}`);
+      if (!consume.ok) {
+        resolution.mode = "BLOCKED_GEOCODE_BUDGET_EXCEEDED";
+        resolution.rejected = consume;
+        results.push({
+          hpcRecordId: id,
+          propertyName: name,
+          radarStatus: status,
+          address,
+          city,
+          country,
+          postalCode: postal,
+          before: {
+            Latitude: existingLat,
+            Longitude: existingLng,
+            "Coordinate Source Type": f["Coordinate Source Type"] || null,
+            "Coordinate Confidence": f["Coordinate Confidence"] || null,
+            "Geocode Provider": f["Geocode Provider"] || null,
+            "Geocode Method": f["Geocode Method"] || null,
+            "Geocode Reviewed Date": f["Geocode Reviewed Date"] || null,
+          },
+          beforeValidation,
+          resolution,
+          airtableWrite: false,
+          statusPreserved: true,
+        });
+        continue;
+      }
       let geo = await geocodeOfficialAddress(
         { name, address, city, state, country },
         providerInfo
       );
-      if (
-        !geo.ok &&
-        geo.reason === "multiple_divergent_candidates" &&
-        providerInfo.provider === "mapbox"
-      ) {
-        geocodeCalls += 1;
-        const recovered = await recoverTopAddressCandidate(
-          query,
-          { city, state, country },
-          name
-        );
+      // Zero extra paid calls: recover top address from the same response payload.
+      if (!geo.ok && geo.reason === "multiple_divergent_candidates") {
+        const recovered = recoverTopCandidateFromDivergentGeocode(geo, {
+          city,
+          state,
+          country,
+        });
         if (recovered.ok) {
           geo = recovered;
           resolution.recoveryApplied = true;
+          resolution.recoveryPaidCallsAdded = 0;
         }
       }
       resolution.geocode = {
@@ -383,18 +394,23 @@ for (const id of requestedIds) {
   });
 }
 
+const budgetSnap = budget.snapshot();
 const report = {
   ok: true,
   contract: HPC_COORDINATE_COMPLETENESS_GATE_VERSION,
   founderAuth: FOUNDATION_AUTH,
   airtableWrite: false,
-  paidGeocodeCalls: geocodeCalls,
-  geocodeCallCap: AUTHORIZED_IDS.length,
+  paidGeocodeCalls: budgetSnap.used,
+  geocodeCallCap: budgetSnap.maxPaidRequests,
+  budget: budgetSnap,
+  budgetExceeded: results.some((r) => r.resolution?.mode === "BLOCKED_GEOCODE_BUDGET_EXCEEDED"),
   provider: {
     provider: providerInfo.provider,
     credentials_ok: providerInfo.credentials_ok,
     permanent_storage_enabled: providerInfo.permanent_storage_enabled ?? null,
     storage_terms_reviewed: providerInfo.storage_terms_reviewed ?? null,
+    permanentStoragePolicy:
+      "MAPBOX_PERMANENT_GEOCODING=1 required for permanent Census storage; temporary geocodes must not be written.",
   },
   generatedAt: new Date().toISOString(),
   verifiedAt,
@@ -418,8 +434,13 @@ md.push("");
 md.push(`**Contract:** \`${HPC_COORDINATE_COMPLETENESS_GATE_VERSION}\``);
 md.push(`**Generated:** ${report.generatedAt}`);
 md.push(`**Airtable writes:** none`);
-md.push(`**Geocode API calls:** ${geocodeCalls} (cap ${AUTHORIZED_IDS.length})`);
+md.push(
+  `**Geocode API calls:** ${budgetSnap.used} (cap ${budgetSnap.maxPaidRequests}; recovery adds 0 paid calls)`
+);
 md.push(`**Provider:** ${providerInfo.provider}`);
+md.push(
+  `**Permanent storage flag:** ${providerInfo.permanent_storage_enabled === true ? "MAPBOX_PERMANENT_GEOCODING=1" : "not enabled"}`
+);
 md.push("");
 for (const r of results) {
   md.push(`## ${r.propertyName} (\`${r.hpcRecordId}\`)`);
@@ -454,7 +475,9 @@ console.log(
       ok: true,
       outJson: OUT_JSON,
       outMd: OUT_MD,
-      geocodeCalls,
+      paidGeocodeCalls: budgetSnap.used,
+      geocodeCallCap: budgetSnap.maxPaidRequests,
+      budgetExceeded: report.budgetExceeded,
       modes: results.map((r) => ({ id: r.hpcRecordId, mode: r.resolution.mode })),
       proposedCount: report.proposedAirtableChanges.length,
     },

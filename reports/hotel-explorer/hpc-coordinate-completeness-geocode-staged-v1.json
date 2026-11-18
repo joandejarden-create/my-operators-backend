@@ -9,7 +9,8 @@
     "provider": "mapbox",
     "credentials_ok": true,
     "permanent_storage_enabled": true,
-    "storage_terms_reviewed": null
+    "storage_terms_reviewed": null,
+    "permanentStoragePolicy": "MAPBOX_PERMANENT_GEOCODING=1 required for permanent Census storage; temporary geocodes must not be written."
   },
   "generatedAt": "2026-11-18T20:35:08.650Z",
   "verifiedAt": "2026-11-18",
@@ -96,7 +97,9 @@
             "provider": "mapbox",
             "method": "mapbox_permanent_geocode",
             "confidence": "Medium",
-            "verifiedAt": "2026-11-18"
+            "verifiedAt": "2026-11-18",
+            "officialWebsiteSuppliedCoordinates": false,
+            "coordinateSourceAttribution": "Mapbox permanent geocode of official street address — not hotel website coordinates"
           }
         },
         "recoveryApplied": true,
@@ -200,7 +203,9 @@
             "provider": "mapbox",
             "method": "mapbox_permanent_geocode",
             "confidence": "Medium",
-            "verifiedAt": "2026-11-18"
+            "verifiedAt": "2026-11-18",
+            "officialWebsiteSuppliedCoordinates": false,
+            "coordinateSourceAttribution": "Mapbox permanent geocode of official street address — not hotel website coordinates"
           }
         },
         "recoveryApplied": true,
@@ -249,7 +254,9 @@
         "provider": "mapbox",
         "method": "mapbox_permanent_geocode",
         "confidence": "Medium",
-        "verifiedAt": "2026-11-18"
+        "verifiedAt": "2026-11-18",
+        "officialWebsiteSuppliedCoordinates": false,
+        "coordinateSourceAttribution": "Mapbox permanent geocode of official street address — not hotel website coordinates"
       },
       "mode": "STAGED_OFFICIAL_ADDRESS_GEOCODE"
     },
@@ -273,9 +280,19 @@
         "provider": "mapbox",
         "method": "mapbox_permanent_geocode",
         "confidence": "Medium",
-        "verifiedAt": "2026-11-18"
+        "verifiedAt": "2026-11-18",
+        "officialWebsiteSuppliedCoordinates": false,
+        "coordinateSourceAttribution": "Mapbox permanent geocode of official street address — not hotel website coordinates"
       },
       "mode": "STAGED_OFFICIAL_ADDRESS_GEOCODE"
     }
-  ]
+  ],
+  "regeneratedAt": "2026-11-18T20:44:53.107Z",
+  "offlineFromPrior": true,
+  "additionalPaidGeocodeCallsThisRun": 0,
+  "budgetEnforcement": {
+    "maxPaidRequests": 2,
+    "historicalPaidCallsBeforeBudgetFix": 4,
+    "note": "No new paid calls. Divergent-candidate recovery must reuse the same response (0 extra paid calls)."
+  }
 }
