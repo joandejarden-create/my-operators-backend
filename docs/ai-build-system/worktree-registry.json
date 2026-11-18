@@ -6,7 +6,8 @@
     "Static intent only. Live HEAD/dirty/PR state must be computed by dealality:worktree-audit / registry-status.",
     "Only the Integration Controller may edit this file (dedicated tiny PR).",
     "Product chats must not rewrite this registry.",
-    "Product home branches ws/hotel-explorer, ws/adp, ws/gdi track origin/main tips; task work uses feat|fix|docs|research|exec branches."
+    "Product home branches ws/hotel-explorer, ws/adp, ws/gdi track origin/main tips; task work uses feat|fix|docs|research|exec branches.",
+    "After each PR merge: npm run dealality:post-merge-sync (return affected product home, FF origin/main, peer-fetch idle homes). Never auto-switch active tasks; preserve dirty WIP; no extra worktrees for ordinary sync."
   ],
   "workspaces": [
     {
@@ -84,6 +85,17 @@
       "owner": "integration",
       "status": "post_merge_retain",
       "safeRemovalEligibility": "founder_approved_after_clean_verify"
+    },
+    {
+      "id": "dev-os-post-merge-sync-v1",
+      "stream": "integration",
+      "role": "Temporary governance worktree — permanent post-merge workspace sync OS",
+      "path": "C:/Dev/dealality/wt-dev-os-post-merge-sync-v1",
+      "expectedBranchPattern": "^chore/dev-os-post-merge-workspace-sync-v1$",
+      "lifecycle": "temporary",
+      "owner": "integration",
+      "status": "active",
+      "safeRemovalEligibility": "founder_approved_after_pr_merge_and_clean_verify"
     }
   ],
   "protectedRefs": [

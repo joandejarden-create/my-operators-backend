@@ -44,6 +44,28 @@ npm run dealality:ci-precheck
 
 **Merges are serialized** by the Integration Controller. Product chats stop at green PR.
 
+### Post-merge workspace sync (required — HE / ADP / GDI)
+
+After each successful PR merge into `main`, Integration Controller runs:
+
+```bash
+npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi> --pr <n>
+# or: --merged-branch <feature-branch>
+npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi> --pr <n> --apply
+```
+
+This plans (then optionally applies) safe sync for all three product homes:
+
+1. Affected workspace → return to registered home (`ws/hotel-explorer` / `ws/adp` / `ws/gdi`) when the merged head is explicit
+2. Fast-forward home to `origin/main`
+3. Verify `dealality:git-preflight --op status-check`
+4. Idle peer homes → fetch + FF when not on an active unmerged task
+5. Dirty primary/integration → skip auto mutation (`SKIP_INTEGRATION_DIRTY`)
+
+Safety: never reset/clean/stash-discard; verified external backup before dirty return-home; never auto-switch active unfinished tasks; no extra worktrees for ordinary sync.
+
+Contract: `docs/ai-build-system/POST_MERGE_WORKSPACE_SYNC.md`
+
 ## Git preflight (fail-closed)
 
 `npm run dealality:git-preflight` validates worktree root, branch, dirty state, ownership, protected refs, force-push, and upstream dirty overlap.
