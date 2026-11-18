@@ -21,7 +21,7 @@ PR #382's "zero verified named contacts" was primarily a **reporting / serializa
 
 - Processed-row name hydration for scorecards and operators
 - Optional Scaling Companies specialist buyer-intel stage on the fourteen-segment path (`PARTIALLY_MIGRATED`, not required to explain the zero-contact scorecard)
-- Universal PS1 `FullRun` still points at the legacy research-to-page coordinator (`HISTORICAL_ONLY` parallel entry)
+- Universal PS1 `FullRun`/`Research` now default to canonical Full E2E; historical research-to-page requires `-Legacy`
 
 ## Correction shipped in this package
 

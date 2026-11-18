@@ -10,6 +10,12 @@
   Node.js = business logic, Airtable, publication, parity.
   Does NOT implement a competing research engine or publication DTO path.
 
+  Research / FullRun default to the authoritative canonical Full E2E entry
+  (scripts/gdi-canonical-full-e2e-entry-v1.mjs). Pass -Legacy to use the
+  historical gdi-research-to-page coordinator via the universal workflow.
+  Validate / SyncAirtable / Review / Publish / Verify / Inventory remain on
+  the universal operational workflow.
+
 .PARAMETER HotelId
   Canonical hotel record id (e.g. recKRJjcPnb4tVDDS).
 
@@ -33,9 +39,13 @@
   Founder authorization phrase required for live Publish.
 
 .PARAMETER Canonical
-  For Research / FullRun only: invoke the authoritative canonical Full E2E
-  entry (scripts/gdi-canonical-full-e2e-entry-v1.mjs) instead of the historical
-  gdi-research-to-page coordinator. Dry-run by default. Never auto-authorizes paid spend.
+  Explicit alias: Research / FullRun use the authoritative canonical Full E2E
+  entry. This is now the default for Research / FullRun; the switch remains for
+  backward-compatible scripts.
+
+.PARAMETER Legacy
+  Opt into the historical Research / FullRun path (gdi-research-to-page via
+  universal workflow). Deprecated for Full E2E research certification.
 
 .EXAMPLE
   .\scripts\gdi-workflow.ps1 -HotelId "recKRJjcPnb4tVDDS" -Action Validate
@@ -44,10 +54,13 @@
   .\scripts\gdi-workflow.ps1 -HotelId "recKRJjcPnb4tVDDS" -Action SyncAirtable -DryRun
 
 .EXAMPLE
-  .\scripts\gdi-workflow.ps1 -HotelId "recKRJjcPnb4tVDDS" -Action FullRun -DryRun
+  .\scripts\gdi-workflow.ps1 -HotelId "recLuxvwwxID7U2B8" -Action FullRun -DryRun
 
 .EXAMPLE
   .\scripts\gdi-workflow.ps1 -HotelId "recLuxvwwxID7U2B8" -Action Research -Canonical -DryRun
+
+.EXAMPLE
+  .\scripts\gdi-workflow.ps1 -HotelId "recLuxvwwxID7U2B8" -Action FullRun -Legacy -DryRun
 
 .EXAMPLE
   .\scripts\gdi-workflow.ps1 -HotelId "recKRJjcPnb4tVDDS" -Action Publish -Environment Production -ApprovalReference "FOUNDER_GO_..." -Apply
@@ -89,7 +102,9 @@ param(
 
   [switch]$ExecuteResearch,
 
-  [switch]$Canonical
+  [switch]$Canonical,
+
+  [switch]$Legacy
 )
 
 $ErrorActionPreference = "Stop"
@@ -115,13 +130,21 @@ if ($Action -eq "Publish" -and -not $isDry) {
   }
 }
 
-# Optional thin wrapper: Research / FullRun → canonical Full E2E entry.
-# Does not restore a second research engine. Paid flags are never auto-passed.
-if ($Canonical.IsPresent -and ($Action -eq "Research" -or $Action -eq "FullRun")) {
+if ($Canonical.IsPresent -and $Legacy.IsPresent) {
+  throw "Pass only one of -Canonical or -Legacy."
+}
+
+# Research / FullRun → canonical Full E2E by default.
+# -Legacy restores the historical research-to-page coordinator.
+# Paid flags are never auto-passed from this wrapper.
+$useCanonicalResearch =
+  ($Action -eq "Research" -or $Action -eq "FullRun") -and (-not $Legacy.IsPresent)
+
+if ($useCanonicalResearch) {
   if ([string]::IsNullOrWhiteSpace($HotelId)) {
     throw "HotelId is required for Canonical Research/FullRun"
   }
-  $mode = if ($isDry) { "dry-run" } else { "dry-run" }
+  $mode = "dry-run"
   if (-not $isDry) {
     Write-Host "Canonical path refuses live paid/apply from gdi-workflow.ps1 — use npm run gdi:canonical-full-e2e with explicit founder flags." -ForegroundColor Yellow
   }
@@ -131,14 +154,16 @@ if ($Canonical.IsPresent -and ($Action -eq "Research" -or $Action -eq "FullRun")
     "--mode", $mode
   )
   if (-not [string]::IsNullOrWhiteSpace($Resume)) {
-    $canonicalArgs += @("--resume-run", $Resume)
+    $canonicalArgs += @("--execution-run-id", $Resume)
   }
   if (-not [string]::IsNullOrWhiteSpace($ReportPath)) {
-    $canonicalArgs += @("--report-dir", $ReportPath)
+    $canonicalArgs += @("--out", $ReportPath)
   }
-  Write-Host "GDI workflow (CANONICAL): Action=$Action HotelId=$HotelId mode=$mode" -ForegroundColor Cyan
+  Write-Host "GDI workflow (CANONICAL): Action=$Action HotelId=$HotelId mode=$mode runner=gdi-canonical-full-e2e-entry-v1" -ForegroundColor Cyan
   Write-Host "Repo: $repoRoot"
-  Write-Host "Note: historical FullRun path remains gdi-research-to-page via universal workflow without -Canonical." -ForegroundColor DarkGray
+  if ($Legacy.IsPresent -eq $false -and $Canonical.IsPresent -eq $false) {
+    Write-Host "Note: Research/FullRun default to canonical Full E2E. Pass -Legacy for historical gdi-research-to-page." -ForegroundColor DarkGray
+  }
   & node @canonicalArgs
   $exit = $LASTEXITCODE
   if ($exit -ne 0) {
@@ -180,10 +205,10 @@ if ($ExecuteResearch.IsPresent) {
   $nodeArgs += "--execute-research"
 }
 
-Write-Host "GDI workflow: Action=$Action HotelId=$HotelId Environment=$Environment DryRun=$isDry" -ForegroundColor Cyan
+Write-Host "GDI workflow: Action=$Action HotelId=$HotelId Environment=$Environment DryRun=$isDry runner=gdi-universal-operational-workflow-v1" -ForegroundColor Cyan
 Write-Host "Repo: $repoRoot"
-if ($Action -eq "Research" -or $Action -eq "FullRun") {
-  Write-Host "Historical research path (gdi-research-to-page). Prefer -Canonical for authoritative Full E2E." -ForegroundColor DarkGray
+if (($Action -eq "Research" -or $Action -eq "FullRun") -and $Legacy.IsPresent) {
+  Write-Host "Historical research path (gdi-research-to-page) via -Legacy. Prefer default/canonical Full E2E for research certification." -ForegroundColor DarkYellow
 }
 
 & node @nodeArgs

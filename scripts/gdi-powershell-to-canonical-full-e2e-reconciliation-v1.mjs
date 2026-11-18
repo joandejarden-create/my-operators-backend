@@ -120,6 +120,59 @@ function main() {
     });
   }
 
+  // Workspace may lack gitignored opportunity-research-state. Fall back to the
+  // committed $0 rescore / processed export so contact hydration remains testable.
+  if (!recovered.some((r) => text(r.primaryContactName))) {
+    const fallbackPaths = [
+      path.join(
+        ROOT,
+        "reports/gdi-post-exa-zero-cost-commercial-rescore-v1/PROCESSED_OPPORTUNITY_EXPORT.json",
+      ),
+      path.join(
+        ROOT,
+        "reports/gdi-post-exa-zero-cost-commercial-rescore-v1/SIX_OPPORTUNITY_RESCORE.json",
+      ),
+    ];
+    for (const fp of fallbackPaths) {
+      if (!fs.existsSync(fp)) continue;
+      const doc = loadJson(fp);
+      const rows = Array.isArray(doc)
+        ? doc
+        : Array.isArray(doc.opportunities)
+          ? doc.opportunities
+          : Array.isArray(doc.processed)
+            ? doc.processed
+            : [];
+      for (const row of rows) {
+        if (row?.missing) continue;
+        const primary = text(
+          row.primaryContactName ||
+            row.contact?.primaryContactName ||
+            row.contact?.primary?.name ||
+            row.primaryContact?.name,
+        );
+        if (!primary) continue;
+        recovered.push({
+          opportunityId: row.opportunityId || row.id || null,
+          organizationName: row.organizationName || null,
+          disposition: row.disposition || row.internalDisposition || null,
+          primaryContactName: primary,
+          salesReadyContacts: Number(
+            row.salesReadyContacts ||
+              row.contact?.salesReadyContactsCount ||
+              (primary ? 1 : 0),
+          ),
+          contactsInvestigated: Number(
+            row.contactsInvestigated || row.contact?.contactsInvestigated || 0,
+          ),
+          stagesIncludeContactResearch: true,
+          source: path.basename(fp),
+        });
+      }
+      if (recovered.some((r) => text(r.primaryContactName))) break;
+    }
+  }
+
   // Deterministic fixture: evidence harvest recovers named entry point.
   const positiveFixture = {
     id: "fixture_recon_positive_contact",
@@ -304,16 +357,17 @@ function main() {
       recommendedCorrection: "Keep founder-gated apply",
     },
     {
-      capability: "Universal PS1 FullRun → legacy research-to-page",
-      powershell: "gdi-workflow.ps1 FullRun",
+      capability: "Universal PS1 FullRun → canonical Full E2E",
+      powershell: "gdi-workflow.ps1 FullRun/Research (default)",
       canonical: "gdi-canonical-full-e2e-entry-v1 / original chain",
       implemented: true,
-      invoked: "parallel legacy path",
+      invoked: true,
       working: true,
-      classification: "HISTORICAL_ONLY",
-      evidence: "universal workflow still delegates to gdi-research-to-page-workflow-v1.mjs",
-      missingIntegration: "PS1 FullRun not wired to canonical entry",
-      recommendedCorrection: "Point gdi-workflow.ps1 Research/FullRun at canonical entry (follow-on)",
+      classification: "PRESERVED_AND_ACTIVE",
+      evidence:
+        "Research/FullRun default to canonical; -Legacy retains historical research-to-page",
+      missingIntegration: null,
+      recommendedCorrection: null,
     },
   ];
 
@@ -362,7 +416,7 @@ PR #382's "zero verified named contacts" was primarily a **reporting / serializa
 
 - Processed-row name hydration for scorecards and operators
 - Optional Scaling Companies specialist buyer-intel stage on the fourteen-segment path (\`PARTIALLY_MIGRATED\`, not required to explain the zero-contact scorecard)
-- Universal PS1 \`FullRun\` still points at the legacy research-to-page coordinator (\`HISTORICAL_ONLY\` parallel entry)
+- Universal PS1 \`FullRun\`/\`Research\` now default to canonical Full E2E; historical research-to-page requires \`-Legacy\`
 
 ## Correction shipped in this package
 
@@ -544,7 +598,7 @@ ${after.namedEntryPoints
 3. Authorize a **$0 rescore** of the PR #382 package (no new Exa) once hydration is on main.
 4. Keep Surfe UI-only; keep sales-ready gates intact.
 5. Defer another paid discovery wave until demand-thesis quality (not contact plumbing) is the clear bottleneck.
-6. Optional follow-on: point \`gdi-workflow.ps1\` FullRun at canonical entry.
+6. Done in certification PR: \`gdi-workflow.ps1\` FullRun/Research default to canonical (\`-Legacy\` opt-out).
 
 **STOP — no further paid research or production writes without new authorization.**
 `,
