@@ -29,10 +29,9 @@ function expectOk(label, input) {
   console.log(`PASS allow: ${label}`);
 }
 
-// Baseline identity
-expectOk("status-check in registered governance worktree", {
+// Baseline identity — accept current registered permanent/temporary workspace
+expectOk("status-check in registered workspace", {
   op: "status-check",
-  stream: "integration",
 });
 
 // Wrong branch
@@ -46,7 +45,7 @@ expectFail(
   "branch mismatch",
 );
 
-// Wrong worktree / stream path (HE planned path)
+// Wrong worktree / stream path (HE registered elsewhere)
 expectFail(
   "wrong worktree for HE stream",
   {
@@ -54,7 +53,7 @@ expectFail(
     stream: "he",
     allowDirty: "*",
   },
-  "not provisioned",
+  "expected path",
 );
 
 // Dirty checkout blocked for merge
@@ -95,6 +94,17 @@ expectFail(
   },
   "protected preservation branch",
 );
+
+// Normal merge of origin/main into feature branch must be allowed when clean
+expectOk("merge origin/main into feature branch", {
+  op: "merge",
+  targetRef: "origin/main",
+  allowDirty: "*",
+  _simulate: {
+    branch: "feat/hotel-explorer-example",
+    dirty: [],
+  },
+});
 
 // Force-push request
 expectFail(
