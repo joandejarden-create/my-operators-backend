@@ -84,4 +84,21 @@ Every task that ships via PR must finish with:
 
 **A task is not technically complete until its PR is merged into `main` and the affected product workspace is safely synchronized to its home/`origin/main` tip (primary sync when safe), unless an explicit blocker is reported.**
 
+### ADP permanent home reset (binding)
+
+For the ADP stream after every founder-approved merge:
+
+1. Integration Controller merges the PR into `main` (ADP does not merge from `ws-adp`).
+2. Confirm the GitHub merge commit SHA.
+3. Run `npm run dealality:post-merge-sync -- --mode post-merge --stream adp --pr <n>` then `--apply`.
+4. Verify ADP completion state before starting the next task:
+   - Workspace: `C:\Dev\dealality\ws-adp`
+   - Branch: `ws/adp`
+   - HEAD equals latest `origin/main`
+   - Behind: 0 / Ahead: 0 / Dirty: 0
+   - PR: MERGED
+   - Next task: READY
+5. If founder approval exists but GitHub is not yet merged, report `BLOCKED — AWAITING INTEGRATION CONTROLLER MERGE` and keep the cycle open.
+6. Never remain indefinitely on a temporary `feat|fix|docs/…` branch after the merge completes.
+
 Do not begin the next hotel, phase, or major development task while the preceding required PR remains unmerged.
