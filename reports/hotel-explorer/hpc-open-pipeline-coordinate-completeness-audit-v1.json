@@ -1,0 +1,213 @@
+{
+  "ok": true,
+  "contract": "HPC_OPEN_PIPELINE_COORDINATE_COMPLETENESS_GATE_V1",
+  "phase": "audit_and_proposed_corrections",
+  "airtableWrite": false,
+  "paidGeocoding": false,
+  "generatedAt": "2026-11-18T20:24:24.891Z",
+  "formula": "OR({Radar Status}='Open',{Radar Status}='Pipeline')",
+  "table": "Hotel Property Census",
+  "selectedFields": [
+    "Property Name",
+    "Canonical Property Name",
+    "Address",
+    "City",
+    "Country",
+    "Postal Code",
+    "State / Region",
+    "Market",
+    "Submarket",
+    "Latitude",
+    "Longitude",
+    "Official Property URL",
+    "Current Brand",
+    "Radar Status",
+    "Coordinate Source Type",
+    "Coordinate Confidence",
+    "Geocode Provider",
+    "Geocode Method",
+    "Geocode Reviewed Date"
+  ],
+  "provenanceFieldsAvailable": true,
+  "totals": {
+    "openPipeline": 21,
+    "open": 21,
+    "pipeline": 0,
+    "mapEligible": 19,
+    "hardExceptions": 2,
+    "softExceptions": 0,
+    "clean": 19
+  },
+  "hardExceptions": [
+    {
+      "id": "recH9h3McgMNFQEla",
+      "name": "Radisson Blu Toronto Downtown",
+      "radarStatus": "Open",
+      "address": "249 Queens Quay West",
+      "city": "Toronto",
+      "country": "Canada",
+      "postalCode": "M5J 2N5",
+      "market": "Toronto",
+      "submarket": "Harbourfront / Queens Quay",
+      "brand": "Radisson Blu",
+      "officialUrl": "https://www.choicehotels.com/ontario/toronto/radisson-blu-hotels/cnc41",
+      "latitude": null,
+      "longitude": null,
+      "coordinateSourceType": null,
+      "coordinateConfidence": null,
+      "geocodeProvider": null,
+      "geocodeMethod": null,
+      "geocodeReviewedDate": null,
+      "issues": [
+        "MISSING_LATITUDE_OR_LONGITUDE"
+      ],
+      "hardFail": true,
+      "softFlags": [],
+      "mapEligible": false
+    },
+    {
+      "id": "recHXCkkKD5Xwue3p",
+      "name": "UMusic Hotel Madrid",
+      "radarStatus": "Open",
+      "address": "Calle de la Paz 11, 28012 Madrid, Spain",
+      "city": "Madrid",
+      "country": "Spain",
+      "postalCode": "28012",
+      "market": "Madrid",
+      "submarket": null,
+      "brand": "UMusic Hotels",
+      "officialUrl": "https://www.umusic-hotels.com/umusic-hotel-madrid",
+      "latitude": null,
+      "longitude": null,
+      "coordinateSourceType": null,
+      "coordinateConfidence": null,
+      "geocodeProvider": null,
+      "geocodeMethod": null,
+      "geocodeReviewedDate": null,
+      "issues": [
+        "MISSING_LATITUDE_OR_LONGITUDE"
+      ],
+      "hardFail": true,
+      "softFlags": [],
+      "mapEligible": false
+    }
+  ],
+  "softExceptions": [],
+  "proposedCorrections": [
+    {
+      "hpcRecordId": "recH9h3McgMNFQEla",
+      "propertyName": "Radisson Blu Toronto Downtown",
+      "radarStatus": "Open",
+      "resolutionStatus": "STAGED_THIRD_PARTY_CONSENSUS_PENDING_OFFICIAL_GEOCODE",
+      "before": {
+        "Latitude": null,
+        "Longitude": null,
+        "Coordinate Source Type": null,
+        "Coordinate Confidence": null
+      },
+      "after": {
+        "Latitude": 43.6387,
+        "Longitude": -79.3855,
+        "Coordinate Source Type": "third_party_map_consensus_pending_official_geocode",
+        "Coordinate Confidence": "Medium",
+        "Geocode Provider": null,
+        "Geocode Method": null,
+        "Geocode Reviewed Date": null
+      },
+      "evidence": {
+        "address": "249 Queens Quay West",
+        "city": "Toronto",
+        "country": "Canada",
+        "postalCode": "M5J 2N5",
+        "submarket": "Harbourfront / Queens Quay",
+        "officialUrl": "https://www.choicehotels.com/ontario/toronto/radisson-blu-hotels/cnc41",
+        "adpPublishedHasCoords": false,
+        "adpCensusRecordId": "recH9h3McgMNFQEla",
+        "adpAddressMentioned": true,
+        "stagedSourceClass": "THIRD_PARTY_MAP_CONSENSUS",
+        "confidence": "UNVERIFIED_PENDING_FOUNDER_GEOCODE_AUTH",
+        "note": "Prefer official permanent geocode of 249 Queens Quay West, Toronto, ON M5J 2N5 before Airtable write. Do not use Toronto city-center (43.6532, -79.3832).",
+        "rejectedCityCenter": {
+          "lat": 43.6532,
+          "lng": -79.3832
+        },
+        "proposedVsCityCenterDistanceDegApprox": 0.014681280598091786
+      },
+      "airtableWrite": false
+    },
+    {
+      "hpcRecordId": "recHXCkkKD5Xwue3p",
+      "propertyName": "UMusic Hotel Madrid",
+      "radarStatus": "Open",
+      "resolutionStatus": "PENDING_AUTHORIZED_OFFICIAL_GEOCODE",
+      "before": {
+        "Latitude": null,
+        "Longitude": null,
+        "Coordinate Source Type": null,
+        "Coordinate Confidence": null
+      },
+      "after": {
+        "Latitude": null,
+        "Longitude": null,
+        "note": "No coordinates invented. Full street address present — ready for authorized permanent geocode only."
+      },
+      "evidence": {
+        "address": "Calle de la Paz 11, 28012 Madrid, Spain",
+        "city": "Madrid",
+        "country": "Spain",
+        "postalCode": "28012",
+        "officialUrl": "https://www.umusic-hotels.com/umusic-hotel-madrid",
+        "confidence": "NO_COORDINATE_PROPOSAL_WITHOUT_GEOCODE_AUTH",
+        "note": "Do not use Madrid city-center (40.4168, -3.7038). Authorize Mapbox permanent / Google storage-terms geocode of Calle de la Paz 11, 28012 Madrid, Spain.",
+        "rejectedCityCenter": {
+          "lat": 40.4168,
+          "lng": -3.7038
+        }
+      },
+      "airtableWrite": false
+    }
+  ],
+  "radissonLookup": {
+    "hpc": {
+      "id": "recH9h3McgMNFQEla",
+      "name": "Radisson Blu Toronto Downtown",
+      "radarStatus": "Open",
+      "address": "249 Queens Quay West",
+      "city": "Toronto",
+      "country": "Canada",
+      "postalCode": "M5J 2N5",
+      "market": "Toronto",
+      "submarket": "Harbourfront / Queens Quay",
+      "brand": "Radisson Blu",
+      "officialUrl": "https://www.choicehotels.com/ontario/toronto/radisson-blu-hotels/cnc41",
+      "latitude": null,
+      "longitude": null,
+      "coordinateSourceType": null,
+      "coordinateConfidence": null,
+      "geocodeProvider": null,
+      "geocodeMethod": null,
+      "geocodeReviewedDate": null,
+      "issues": [
+        "MISSING_LATITUDE_OR_LONGITUDE"
+      ],
+      "hardFail": true,
+      "softFlags": [],
+      "mapEligible": false
+    },
+    "adpPublishedCoords": {
+      "found": false,
+      "path": "C:\\Dev\\dealality\\ws-hotel-explorer\\data\\ai-demand-positioning\\published\\adp_radisson_blu_toronto_downtown\\report-adp_period_adp_radisson_blu_toronto_downtown_20261104094215_c8bd8b.json",
+      "lat": null,
+      "lng": null,
+      "censusRecordId": "recH9h3McgMNFQEla",
+      "addressMentioned": true
+    }
+  },
+  "governanceNotes": {
+    "openPipelineRequiresValidVerifiedCoords": true,
+    "hiddenBlankMayLackCoords": true,
+    "noSilentInvention": true,
+    "preferCanonicalIdMatch": true,
+    "noCityCenterAsHotelCoords": true
+  }
+}
