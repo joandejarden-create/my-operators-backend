@@ -42,6 +42,7 @@ const maxCandidates = arg("--max-candidates");
 const obsRoot = arg("--observability-root") || null;
 const budgetCeilingUsd = Number(arg("--budget-ceiling-usd") || 0) || 0;
 const exaEffort = arg("--exa-effort") || "medium";
+const researchTrack = arg("--research-track") || null;
 
 const opts = {
   hotelId,
@@ -54,6 +55,7 @@ const opts = {
   budgetCeilingUsd,
   maxCandidates: maxCandidates != null ? Number(maxCandidates) : 8,
   exaEffort,
+  researchTrack,
   outDir,
   executionObservabilityRoot: obsRoot,
   skipHpc: !has("--prefer-live-hpc"),
