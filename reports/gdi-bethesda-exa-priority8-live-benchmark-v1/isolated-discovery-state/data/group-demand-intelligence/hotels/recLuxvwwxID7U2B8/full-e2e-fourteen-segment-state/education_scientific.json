@@ -1,0 +1,392 @@
+{
+  "version": "gdi-full-e2e-fourteen-segment-discovery-state-v1",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "segmentId": "education_scientific",
+  "applicable": true,
+  "status": "EXECUTED_PARTIAL_QUALIFICATION_PENDING",
+  "coverageStatus": "PARTIAL",
+  "completionDecision": "NOT_COMPLETE",
+  "completionRationale": "LIVE_PROVIDER_EXECUTED",
+  "executionStatus": "DISCOVERY_EXECUTED",
+  "executorVersion": "gdi-segment-discovery-executor-v1",
+  "executionModuleVersion": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+  "researchRunId": "gdi_disc_run_mwm5iq7e_77c578",
+  "researchHorizon": null,
+  "querySpecs": [
+    {
+      "id": "education_scientific_q1",
+      "segmentId": "education_scientific",
+      "intent": "assoc_city_medical_en",
+      "query": "(\"DMV\") (medical OR scientific OR academic) (congress OR symposium OR conference) (association OR society OR colegio) (2025 OR 2026 OR 2027) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+      "language": null,
+      "sourceTypes": null,
+      "weight": 6
+    },
+    {
+      "id": "education_scientific_q2",
+      "segmentId": "education_scientific",
+      "intent": "assoc_city_medico_es",
+      "query": "(\"DMV\") (congreso médico OR simposio OR \"jornadas académicas\") (asociación OR colegio OR sociedad) (2025 OR 2026 OR 2027) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+      "language": "es",
+      "sourceTypes": null,
+      "weight": 5
+    },
+    {
+      "id": "education_scientific_base_q1",
+      "segmentId": "education_scientific",
+      "intent": "PHARMA_MEDICAL_ECOSYSTEM",
+      "query": "DMV investigator meeting OR advisory board OR medical affairs OR medical congress sponsor 2026 OR 2027",
+      "language": "en"
+    },
+    {
+      "id": "education_scientific_base_q2",
+      "segmentId": "education_scientific",
+      "intent": "PHARMA_MEDICAL_ECOSYSTEM",
+      "query": "DMV CRO \"investigator meeting\" OR \"advisory board\" hotel",
+      "language": "en"
+    }
+  ],
+  "providerInvocations": [
+    {
+      "at": "2026-11-18T13:29:20.216Z",
+      "fingerprint": "fb1341271139",
+      "researchRunId": "gdi_disc_run_mwm5iq7e_77c578",
+      "providerCallCount": 1,
+      "freshRetrievals": 1,
+      "cacheHits": 0,
+      "costUsd": 0.1,
+      "retrievalMode": "FRESH_RETRIEVAL",
+      "counted": true,
+      "stopReason": "LIVE_PROVIDER_EXECUTED"
+    }
+  ],
+  "cacheReferences": [],
+  "rawCandidateReferences": [
+    "education_scientific_q1",
+    "education_scientific_q2",
+    "education_scientific_base_q1",
+    "education_scientific_base_q2"
+  ],
+  "candidateIds": [
+    "disc_11a83e291ad4",
+    "disc_80ec42c7d5c1",
+    "disc_f1b4c6c0e3ef",
+    "disc_5af875c6a15b",
+    "disc_0d8cc8e68a95",
+    "disc_3a34474eed04",
+    "disc_073c25e6d808",
+    "disc_5210202bb7e2",
+    "disc_f43b90f689da",
+    "disc_d262d63e9295",
+    "disc_7f8700e4a47a",
+    "disc_4e992748cc74",
+    "disc_12dd3b30265f",
+    "disc_012405125a6b",
+    "disc_f7876330ade9"
+  ],
+  "extractedCandidateIds": [
+    "disc_11a83e291ad4",
+    "disc_80ec42c7d5c1",
+    "disc_f1b4c6c0e3ef",
+    "disc_5af875c6a15b",
+    "disc_0d8cc8e68a95",
+    "disc_3a34474eed04",
+    "disc_073c25e6d808",
+    "disc_5210202bb7e2",
+    "disc_f43b90f689da",
+    "disc_d262d63e9295",
+    "disc_7f8700e4a47a",
+    "disc_4e992748cc74",
+    "disc_12dd3b30265f",
+    "disc_012405125a6b",
+    "disc_f7876330ade9"
+  ],
+  "deduplicatedCandidateIds": [
+    "disc_11a83e291ad4",
+    "disc_80ec42c7d5c1",
+    "disc_f1b4c6c0e3ef",
+    "disc_5af875c6a15b",
+    "disc_0d8cc8e68a95",
+    "disc_3a34474eed04",
+    "disc_073c25e6d808",
+    "disc_5210202bb7e2",
+    "disc_f43b90f689da",
+    "disc_d262d63e9295",
+    "disc_7f8700e4a47a",
+    "disc_4e992748cc74",
+    "disc_12dd3b30265f",
+    "disc_012405125a6b",
+    "disc_f7876330ade9"
+  ],
+  "unresolvedCandidateIds": [
+    "disc_11a83e291ad4",
+    "disc_80ec42c7d5c1",
+    "disc_f1b4c6c0e3ef",
+    "disc_5af875c6a15b",
+    "disc_0d8cc8e68a95",
+    "disc_3a34474eed04",
+    "disc_073c25e6d808",
+    "disc_5210202bb7e2",
+    "disc_f43b90f689da",
+    "disc_d262d63e9295",
+    "disc_7f8700e4a47a",
+    "disc_4e992748cc74",
+    "disc_12dd3b30265f",
+    "disc_012405125a6b",
+    "disc_f7876330ade9"
+  ],
+  "completedCandidateIds": [],
+  "evidenceProvenance": [
+    {
+      "candidateId": "disc_11a83e291ad4",
+      "evidenceUrls": [
+        "https://ncifrederick.cancer.gov/events/conferences/2027NCI_RNA_Symposium/accommodations",
+        "https://ncifrederick.cancer.gov/events/conferences/2027NCI_RNA_Symposium/accommodations"
+      ],
+      "provenance": {
+        "queryId": "education_scientific_q1",
+        "intent": "assoc_city_medical_en",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "Ranked on verified event existence and geographic fit first, then on evidence of lodging/meeting mechanism and penalty for committed venues."
+      },
+      "at": "2026-11-18T13:29:20.216Z"
+    },
+    {
+      "candidateId": "disc_80ec42c7d5c1",
+      "evidenceUrls": [
+        "https://www.aaps.org/nbc",
+        "https://www.aaps.org/nbc"
+      ],
+      "provenance": {
+        "queryId": "education_scientific_q2",
+        "intent": "assoc_city_medico_es",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "Ranked on verified event existence and geographic fit first, then on evidence of lodging/meeting mechanism and penalty for committed venues."
+      },
+      "at": "2026-11-18T13:29:20.216Z"
+    },
+    {
+      "candidateId": "disc_f1b4c6c0e3ef",
+      "evidenceUrls": [
+        "https://membercompass.ilads.org/events/2027-ilads-annual-scientific-conference",
+        "https://membercompass.ilads.org/events/2027-ilads-annual-scientific-conference"
+      ],
+      "provenance": {
+        "queryId": "education_scientific_base_q1",
+        "intent": "PHARMA_MEDICAL_ECOSYSTEM",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "Ranked on verified event existence and geographic fit first, then on evidence of lodging/meeting mechanism and penalty for committed venues."
+      },
+      "at": "2026-11-18T13:29:20.216Z"
+    },
+    {
+      "candidateId": "disc_5af875c6a15b",
+      "evidenceUrls": [
+        "https://research.uky.edu/sure-resource-center/biennial-conference",
+        "https://research.uky.edu/sure-resource-center/biennial-conference"
+      ],
+      "provenance": {
+        "queryId": "education_scientific_base_q2",
+        "intent": "PHARMA_MEDICAL_ECOSYSTEM",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "Ranked on verified event existence and geographic fit first, then on evidence of lodging/meeting mechanism and penalty for committed venues."
+      },
+      "at": "2026-11-18T13:29:20.216Z"
+    },
+    {
+      "candidateId": "disc_0d8cc8e68a95",
+      "evidenceUrls": [
+        "https://globalexposomesummit.org/",
+        "https://globalexposomesummit.org/"
+      ],
+      "provenance": {
+        "queryId": "education_scientific_q1",
+        "intent": "assoc_city_medical_en",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "Ranked on verified event existence and geographic fit first, then on evidence of lodging/meeting mechanism and penalty for committed venues."
+      },
+      "at": "2026-11-18T13:29:20.216Z"
+    },
+    {
+      "candidateId": "disc_3a34474eed04",
+      "evidenceUrls": [
+        "https://commonfund.nih.gov/highrisk/symposium",
+        "https://commonfund.nih.gov/highrisk/symposium"
+      ],
+      "provenance": {
+        "queryId": "education_scientific_q2",
+        "intent": "assoc_city_medico_es",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "Ranked on verified event existence and geographic fit first, then on evidence of lodging/meeting mechanism and penalty for committed venues."
+      },
+      "at": "2026-11-18T13:29:20.216Z"
+    },
+    {
+      "candidateId": "disc_073c25e6d808",
+      "evidenceUrls": [
+        "https://snmmi.org/Web/Media.aspx",
+        "https://snmmi.org/Web/Media.aspx"
+      ],
+      "provenance": {
+        "queryId": "education_scientific_base_q1",
+        "intent": "PHARMA_MEDICAL_ECOSYSTEM",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "Ranked on verified event existence and geographic fit first, then on evidence of lodging/meeting mechanism and penalty for committed venues."
+      },
+      "at": "2026-11-18T13:29:20.216Z"
+    },
+    {
+      "candidateId": "disc_5210202bb7e2",
+      "evidenceUrls": [
+        "https://www.thermaltherapy.org/stm-2027-annual-meeting/",
+        "https://www.thermaltherapy.org/stm-2027-annual-meeting/"
+      ],
+      "provenance": {
+        "queryId": "education_scientific_base_q2",
+        "intent": "PHARMA_MEDICAL_ECOSYSTEM",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "Ranked on verified event existence and geographic fit first, then on evidence of lodging/meeting mechanism and penalty for committed venues."
+      },
+      "at": "2026-11-18T13:29:20.216Z"
+    },
+    {
+      "candidateId": "disc_f43b90f689da",
+      "evidenceUrls": [
+        "https://news.ddw.org/news/save-the-date-for-ddw-2027/",
+        "https://news.ddw.org/news/save-the-date-for-ddw-2027/"
+      ],
+      "provenance": {
+        "queryId": "education_scientific_q1",
+        "intent": "assoc_city_medical_en",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "Ranked on verified event existence and geographic fit first, then on evidence of lodging/meeting mechanism and penalty for committed venues."
+      },
+      "at": "2026-11-18T13:29:20.216Z"
+    },
+    {
+      "candidateId": "disc_d262d63e9295",
+      "evidenceUrls": [
+        "https://www.aan.com/events/annual-meeting",
+        "https://www.aan.com/events/annual-meeting"
+      ],
+      "provenance": {
+        "queryId": "education_scientific_q2",
+        "intent": "assoc_city_medico_es",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "Ranked on verified event existence and geographic fit first, then on evidence of lodging/meeting mechanism and penalty for committed venues."
+      },
+      "at": "2026-11-18T13:29:20.216Z"
+    },
+    {
+      "candidateId": "disc_7f8700e4a47a",
+      "evidenceUrls": [
+        "https://bethesdaevents.afceachapters.org/HITS27",
+        "https://bethesdaevents.afceachapters.org/HITS27"
+      ],
+      "provenance": {
+        "queryId": "education_scientific_base_q1",
+        "intent": "PHARMA_MEDICAL_ECOSYSTEM",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "Ranked on verified event existence and geographic fit first, then on evidence of lodging/meeting mechanism and penalty for committed venues."
+      },
+      "at": "2026-11-18T13:29:20.216Z"
+    },
+    {
+      "candidateId": "disc_4e992748cc74",
+      "evidenceUrls": [
+        "https://pharma-bio.org/conference/",
+        "https://pharma-bio.org/conference/"
+      ],
+      "provenance": {
+        "queryId": "education_scientific_base_q2",
+        "intent": "PHARMA_MEDICAL_ECOSYSTEM",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "Ranked on verified event existence and geographic fit first, then on evidence of lodging/meeting mechanism and penalty for committed venues."
+      },
+      "at": "2026-11-18T13:29:20.216Z"
+    },
+    {
+      "candidateId": "disc_12dd3b30265f",
+      "evidenceUrls": [
+        "https://aaadv.org/2026-aaadv-workshop/",
+        "https://aaadv.org/2026-aaadv-workshop/"
+      ],
+      "provenance": {
+        "queryId": "education_scientific_q1",
+        "intent": "assoc_city_medical_en",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "Ranked on verified event existence and geographic fit first, then on evidence of lodging/meeting mechanism and penalty for committed venues."
+      },
+      "at": "2026-11-18T13:29:20.216Z"
+    },
+    {
+      "candidateId": "disc_012405125a6b",
+      "evidenceUrls": [
+        "https://ctnlibrary.org/2026/09/18/ctn-annual-conference-march-15-17-2027-bethesda-md/",
+        "https://ctnlibrary.org/2026/09/18/ctn-annual-conference-march-15-17-2027-bethesda-md/"
+      ],
+      "provenance": {
+        "queryId": "education_scientific_q2",
+        "intent": "assoc_city_medico_es",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "Ranked on verified event existence and geographic fit first, then on evidence of lodging/meeting mechanism and penalty for committed venues."
+      },
+      "at": "2026-11-18T13:29:20.216Z"
+    },
+    {
+      "candidateId": "disc_f7876330ade9",
+      "evidenceUrls": [
+        "https://www.chazinandcompany.com/2025/10/history-heart-and-a-hint-of-glitter-chazins-2025-corporate-retreat-in-d-c.",
+        "https://www.chazinandcompany.com/2025/10/history-heart-and-a-hint-of-glitter-chazins-2025-corporate-retreat-in-d-c."
+      ],
+      "provenance": {
+        "queryId": "education_scientific_base_q1",
+        "intent": "PHARMA_MEDICAL_ECOSYSTEM",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "Ranked on verified event existence and geographic fit first, then on evidence of lodging/meeting mechanism and penalty for committed venues."
+      },
+      "at": "2026-11-18T13:29:20.216Z"
+    }
+  ],
+  "rejectionReasons": [],
+  "remainingResearchGaps": [
+    "discovery_not_completed"
+  ],
+  "providerUsage": {
+    "attempts": 1,
+    "liveCalls": 1,
+    "cacheHits": 0,
+    "costUsd": 0.1,
+    "byProvider": {
+      "FRESH_RETRIEVAL": {
+        "calls": 1,
+        "costUsd": 0.1
+      }
+    }
+  },
+  "stopReason": "LIVE_PROVIDER_EXECUTED",
+  "lastSuccessfulCheckpoint": {
+    "kind": "LIVE_PROVIDER_COMPLETE",
+    "at": "2026-11-18T13:29:20.216Z",
+    "fingerprint": "fb1341271139",
+    "researchRunId": "gdi_disc_run_mwm5iq7e_77c578",
+    "executionStatus": "DISCOVERY_EXECUTED",
+    "providerRunIds": [],
+    "extractedCount": 15,
+    "costUsdCumulative": 0.1
+  },
+  "lastCheckpointAt": "2026-11-18T13:29:20.216Z",
+  "researchActions": [
+    {
+      "at": "2026-11-18T13:29:20.216Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "DISCOVERY_EXECUTED",
+      "fingerprint": "fb1341271139",
+      "countedNewCost": 0.1
+    }
+  ],
+  "publicationOccurred": false,
+  "airtableWrites": 0,
+  "createdAt": "2026-11-18T13:29:20.216Z",
+  "updatedAt": "2026-11-18T13:29:20.216Z"
+}

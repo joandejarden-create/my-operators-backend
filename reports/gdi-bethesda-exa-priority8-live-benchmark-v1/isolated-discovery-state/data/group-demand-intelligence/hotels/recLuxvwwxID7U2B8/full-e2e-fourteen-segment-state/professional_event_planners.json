@@ -1,0 +1,323 @@
+{
+  "version": "gdi-full-e2e-fourteen-segment-discovery-state-v1",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "segmentId": "professional_event_planners",
+  "applicable": true,
+  "status": "EXECUTED_PARTIAL_QUALIFICATION_PENDING",
+  "coverageStatus": "PARTIAL",
+  "completionDecision": "NOT_COMPLETE",
+  "completionRationale": "LIVE_PROVIDER_EXECUTED",
+  "executionStatus": "DISCOVERY_EXECUTED",
+  "executorVersion": "gdi-segment-discovery-executor-v1",
+  "executionModuleVersion": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+  "researchRunId": "gdi_disc_run_mwm5iq7e_77c578",
+  "researchHorizon": null,
+  "querySpecs": [
+    {
+      "id": "pep_prompt",
+      "segmentId": "professional_event_planners",
+      "intent": "professional_event_planner_prompt",
+      "query": "Task: PROFESSIONAL_EVENT_PLANNER_PARTNERSHIP_DISCOVERY | Discover actual planning companies, DMCs, meeting planners, and event-management businesses serving the hotel (verified hotel address, the hotel market) that can influence hotel bookings — guestroom blocks, wedding accommodation, banquets/catering, meeting space, private dining, or resort celebrations. | The commercial target is the planner / intermediary firm — not the conference, association, or host organization alone. | Conferences, galas, and published events are evidence of planner activity; use them to identify the credited planner, PCO, DMC, or event-management company. Do not substitute the conference brand for the planner identity. | Prioritize firms with evidence of recurring or multi-client event production and genuine hotel-sourcing influence — not directory popularity rankings. | Include planners physically based in the market AND planners demonstrably producing events in the destination even if their office is elsewhere. | Do NOT classify generic decorators, florists, photographers, equipment suppliers, or entertainment vendors as demand producers unless hotel-sourcing influence is independently evidenced. | Separate office location, verified service area, and actual event destination history. | Do not invent client counts, annual weddings, contracts, or production volume. | Local terminology: wedding planner; destination wedding planner; corporate event management company; event planning agency; meeting planner; boutique event producer | Channels: official_planner_websites, verified_planner_portfolios,"
+    },
+    {
+      "id": "pep_q1",
+      "segmentId": "professional_event_planners",
+      "intent": "planner_dmc_firm",
+      "query": "DMV (\"event planner\" OR \"meeting planner\" OR \"wedding planner\" OR DMC OR \"destination management\" OR \"event management company\" OR PCO) (hotel OR \"room block\" OR banquet OR catering) (portfolio OR clients OR \"preferred hotels\") -\"annual conference agenda\""
+    },
+    {
+      "id": "pep_q2",
+      "segmentId": "professional_event_planners",
+      "intent": "planner_not_conference_brand",
+      "query": "DMV (\"planned by\" OR \"produced by\" OR \"event management by\") (planner OR DMC OR \"event company\") (wedding OR corporate OR gala) hotel"
+    }
+  ],
+  "providerInvocations": [
+    {
+      "at": "2026-11-18T13:35:48.457Z",
+      "fingerprint": "fc5281c18c7d",
+      "researchRunId": "gdi_disc_run_mwm5iq7e_77c578",
+      "providerCallCount": 1,
+      "freshRetrievals": 1,
+      "cacheHits": 0,
+      "costUsd": 0.1,
+      "retrievalMode": "FRESH_RETRIEVAL",
+      "counted": true,
+      "stopReason": "LIVE_PROVIDER_EXECUTED"
+    }
+  ],
+  "cacheReferences": [],
+  "rawCandidateReferences": [
+    "pep_prompt",
+    "pep_q1",
+    "pep_q2"
+  ],
+  "candidateIds": [
+    "disc_23b8d7434976",
+    "disc_95e3405854f3",
+    "disc_b161dc48c960",
+    "disc_90bd9b335288",
+    "disc_4cc652c4caed",
+    "disc_a8bc8a099bf6",
+    "disc_b9aac48c791e",
+    "disc_563e91b42ada",
+    "disc_fc37a100c895",
+    "disc_b658756e6d3b",
+    "disc_e50afdba05d0",
+    "disc_80a5ca39992b"
+  ],
+  "extractedCandidateIds": [
+    "disc_23b8d7434976",
+    "disc_95e3405854f3",
+    "disc_b161dc48c960",
+    "disc_90bd9b335288",
+    "disc_4cc652c4caed",
+    "disc_a8bc8a099bf6",
+    "disc_b9aac48c791e",
+    "disc_563e91b42ada",
+    "disc_fc37a100c895",
+    "disc_b658756e6d3b",
+    "disc_e50afdba05d0",
+    "disc_80a5ca39992b"
+  ],
+  "deduplicatedCandidateIds": [
+    "disc_23b8d7434976",
+    "disc_95e3405854f3",
+    "disc_b161dc48c960",
+    "disc_90bd9b335288",
+    "disc_4cc652c4caed",
+    "disc_a8bc8a099bf6",
+    "disc_b9aac48c791e",
+    "disc_563e91b42ada",
+    "disc_fc37a100c895",
+    "disc_b658756e6d3b",
+    "disc_e50afdba05d0",
+    "disc_80a5ca39992b"
+  ],
+  "unresolvedCandidateIds": [
+    "disc_23b8d7434976",
+    "disc_95e3405854f3",
+    "disc_b161dc48c960",
+    "disc_90bd9b335288",
+    "disc_4cc652c4caed",
+    "disc_a8bc8a099bf6",
+    "disc_b9aac48c791e",
+    "disc_563e91b42ada",
+    "disc_fc37a100c895",
+    "disc_b658756e6d3b",
+    "disc_e50afdba05d0",
+    "disc_80a5ca39992b"
+  ],
+  "completedCandidateIds": [],
+  "evidenceProvenance": [
+    {
+      "candidateId": "disc_23b8d7434976",
+      "evidenceUrls": [
+        "https://stratusfirm.com/event/cbcfs-annual-legislative-conference-2026/",
+        "https://stratusfirm.com/event/cbcfs-annual-legislative-conference-2026/"
+      ],
+      "provenance": {
+        "queryId": "pep_prompt",
+        "intent": "professional_event_planner_prompt",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "High mechanism relevance where the source explicitly identifies hotel/site selection, room-block, F&B, or recurring event-management work; otherwise requires targeted verification."
+      },
+      "at": "2026-11-18T13:35:48.457Z"
+    },
+    {
+      "candidateId": "disc_95e3405854f3",
+      "evidenceUrls": [
+        "https://linderglobal.com/events/ofn-41-2025/",
+        "https://linderglobal.com/events/ofn-41-2025/"
+      ],
+      "provenance": {
+        "queryId": "pep_q1",
+        "intent": "planner_dmc_firm",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "High mechanism relevance where the source explicitly identifies hotel/site selection, room-block, F&B, or recurring event-management work; otherwise requires targeted verification."
+      },
+      "at": "2026-11-18T13:35:48.457Z"
+    },
+    {
+      "candidateId": "disc_b161dc48c960",
+      "evidenceUrls": [
+        "https://www.dcglobalplanning.com/government-solutions",
+        "https://www.dcglobalplanning.com/government-solutions"
+      ],
+      "provenance": {
+        "queryId": "pep_q2",
+        "intent": "planner_not_conference_brand",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "High mechanism relevance where the source explicitly identifies hotel/site selection, room-block, F&B, or recurring event-management work; otherwise requires targeted verification."
+      },
+      "at": "2026-11-18T13:35:48.457Z"
+    },
+    {
+      "candidateId": "disc_90bd9b335288",
+      "evidenceUrls": [
+        "https://capitalassociationmanagement.com/testimonials",
+        "https://capitalassociationmanagement.com/testimonials"
+      ],
+      "provenance": {
+        "queryId": "pep_prompt",
+        "intent": "professional_event_planner_prompt",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "High mechanism relevance where the source explicitly identifies hotel/site selection, room-block, F&B, or recurring event-management work; otherwise requires targeted verification."
+      },
+      "at": "2026-11-18T13:35:48.457Z"
+    },
+    {
+      "candidateId": "disc_4cc652c4caed",
+      "evidenceUrls": [
+        "https://www.voilameetings.com/",
+        "https://www.voilameetings.com/"
+      ],
+      "provenance": {
+        "queryId": "pep_q1",
+        "intent": "planner_dmc_firm",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "High mechanism relevance where the source explicitly identifies hotel/site selection, room-block, F&B, or recurring event-management work; otherwise requires targeted verification."
+      },
+      "at": "2026-11-18T13:35:48.457Z"
+    },
+    {
+      "candidateId": "disc_a8bc8a099bf6",
+      "evidenceUrls": [
+        "https://www.eventconnectionsgroup.com/live-programs/",
+        "https://www.eventconnectionsgroup.com/live-programs/"
+      ],
+      "provenance": {
+        "queryId": "pep_q2",
+        "intent": "planner_not_conference_brand",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "High mechanism relevance where the source explicitly identifies hotel/site selection, room-block, F&B, or recurring event-management work; otherwise requires targeted verification."
+      },
+      "at": "2026-11-18T13:35:48.457Z"
+    },
+    {
+      "candidateId": "disc_b9aac48c791e",
+      "evidenceUrls": [
+        "https://www.meetingmastersinc.com/",
+        "https://www.meetingmastersinc.com/"
+      ],
+      "provenance": {
+        "queryId": "pep_prompt",
+        "intent": "professional_event_planner_prompt",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "High mechanism relevance where the source explicitly identifies hotel/site selection, room-block, F&B, or recurring event-management work; otherwise requires targeted verification."
+      },
+      "at": "2026-11-18T13:35:48.457Z"
+    },
+    {
+      "candidateId": "disc_563e91b42ada",
+      "evidenceUrls": [
+        "https://mmsmeetings.com/",
+        "https://mmsmeetings.com/"
+      ],
+      "provenance": {
+        "queryId": "pep_q1",
+        "intent": "planner_dmc_firm",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "High mechanism relevance where the source explicitly identifies hotel/site selection, room-block, F&B, or recurring event-management work; otherwise requires targeted verification."
+      },
+      "at": "2026-11-18T13:35:48.457Z"
+    },
+    {
+      "candidateId": "disc_fc37a100c895",
+      "evidenceUrls": [
+        "https://www.dcglobalplanning.com/government-solutions",
+        "https://www.dcglobalplanning.com/government-solutions"
+      ],
+      "provenance": {
+        "queryId": "pep_q2",
+        "intent": "planner_not_conference_brand",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "High mechanism relevance where the source explicitly identifies hotel/site selection, room-block, F&B, or recurring event-management work; otherwise requires targeted verification."
+      },
+      "at": "2026-11-18T13:35:48.457Z"
+    },
+    {
+      "candidateId": "disc_b658756e6d3b",
+      "evidenceUrls": [
+        "https://stratusfirm.com/event/cbcfs-annual-legislative-conference-2026/",
+        "https://stratusfirm.com/event/cbcfs-annual-legislative-conference-2026/"
+      ],
+      "provenance": {
+        "queryId": "pep_prompt",
+        "intent": "professional_event_planner_prompt",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "High mechanism relevance where the source explicitly identifies hotel/site selection, room-block, F&B, or recurring event-management work; otherwise requires targeted verification."
+      },
+      "at": "2026-11-18T13:35:48.457Z"
+    },
+    {
+      "candidateId": "disc_e50afdba05d0",
+      "evidenceUrls": [
+        "https://decibelevents.com/",
+        "https://decibelevents.com/"
+      ],
+      "provenance": {
+        "queryId": "pep_q1",
+        "intent": "planner_dmc_firm",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "High mechanism relevance where the source explicitly identifies hotel/site selection, room-block, F&B, or recurring event-management work; otherwise requires targeted verification."
+      },
+      "at": "2026-11-18T13:35:48.457Z"
+    },
+    {
+      "candidateId": "disc_80a5ca39992b",
+      "evidenceUrls": [
+        "https://erinleonardevents.com/ourservices/venuemanagement",
+        "https://erinleonardevents.com/ourservices/venuemanagement"
+      ],
+      "provenance": {
+        "queryId": "pep_q2",
+        "intent": "planner_not_conference_brand",
+        "retrievalMode": "FRESH_RETRIEVAL",
+        "excerpt": "High mechanism relevance where the source explicitly identifies hotel/site selection, room-block, F&B, or recurring event-management work; otherwise requires targeted verification."
+      },
+      "at": "2026-11-18T13:35:48.457Z"
+    }
+  ],
+  "rejectionReasons": [],
+  "remainingResearchGaps": [
+    "discovery_not_completed"
+  ],
+  "providerUsage": {
+    "attempts": 1,
+    "liveCalls": 1,
+    "cacheHits": 0,
+    "costUsd": 0.1,
+    "byProvider": {
+      "FRESH_RETRIEVAL": {
+        "calls": 1,
+        "costUsd": 0.1
+      }
+    }
+  },
+  "stopReason": "LIVE_PROVIDER_EXECUTED",
+  "lastSuccessfulCheckpoint": {
+    "kind": "LIVE_PROVIDER_COMPLETE",
+    "at": "2026-11-18T13:35:48.457Z",
+    "fingerprint": "fc5281c18c7d",
+    "researchRunId": "gdi_disc_run_mwm5iq7e_77c578",
+    "executionStatus": "DISCOVERY_EXECUTED",
+    "providerRunIds": [],
+    "extractedCount": 12,
+    "costUsdCumulative": 0.1
+  },
+  "lastCheckpointAt": "2026-11-18T13:35:48.457Z",
+  "researchActions": [
+    {
+      "at": "2026-11-18T13:35:48.457Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "DISCOVERY_EXECUTED",
+      "fingerprint": "fc5281c18c7d",
+      "countedNewCost": 0.1
+    }
+  ],
+  "publicationOccurred": false,
+  "airtableWrites": 0,
+  "createdAt": "2026-11-18T13:35:48.457Z",
+  "updatedAt": "2026-11-18T13:35:48.457Z"
+}
