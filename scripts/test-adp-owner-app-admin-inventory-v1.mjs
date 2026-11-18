@@ -14,6 +14,7 @@ import { CANONICAL_ADP_31_PROPERTY_IDS } from "../lib/ai-demand-positioning/gove
 import {
   listInternalOwnerAppPropertyInventory,
   resolveOwnerAppReportReadiness,
+  assessOwnerAppReportArtifacts,
 } from "../lib/ai-demand-positioning/share/adp-owner-app-admin-inventory-v1.js";
 import {
   resolveOwnerAppPropertyAccess,
@@ -100,6 +101,58 @@ function main() {
       adminInventory.find((p) => p.propertyId === "adp_radisson_blu_toronto_downtown")
         ?.label || ""
     ).includes("Outside canonical 31")
+  );
+
+  // Aimbridge CALA — outside canonical 31, founder/admin only
+  const aimbridgeIds = [
+    "adp_sheraton_guadalajara_expo",
+    "adp_wyndham_alltra_punta_cana",
+    "adp_voco_cancun_zona_hotelera",
+  ];
+  for (const id of aimbridgeIds) {
+    const row = adminInventory.find((p) => p.propertyId === id);
+    mark(`AIMBRIDGE_IN_ADMIN_${id}`, Boolean(row));
+    mark(
+      `AIMBRIDGE_OUTSIDE_CANONICAL_${id}`,
+      row?.canonicalAdp31Scope === false &&
+        row?.executionScope === "INTERNAL_ADDITIONAL_OUTSIDE_CANONICAL_31"
+    );
+    mark(
+      `AIMBRIDGE_NOT_CUSTOMER_SURFACE_${id}`,
+      !customerIds.has(id)
+    );
+    const art = assessOwnerAppReportArtifacts(id);
+    // CURRENT pointer alone must not force "available" without a snapshot report.
+    if (art.hasCurrentPointer && !art.hasDurableSnapshotReport && !art.stagedStoreVersionId) {
+      mark(
+        `AIMBRIDGE_POINTER_ONLY_NOT_AVAILABLE_${id}`,
+        resolveOwnerAppReportReadiness(id, row) === "incomplete"
+      );
+    } else if (art.hasDurableSnapshotReport) {
+      mark(
+        `AIMBRIDGE_SNAPSHOT_AVAILABLE_${id}`,
+        resolveOwnerAppReportReadiness(id, row) === "available" &&
+          row?.reportReadSource === "durable_snapshot" &&
+          row?.presentationReady === false
+      );
+    }
+    mark(
+      `AIMBRIDGE_OUTSTANDING_WORK_${id}`,
+      Array.isArray(row?.outstandingWork) && row.outstandingWork.length > 0
+    );
+  }
+  const alltra = adminInventory.find(
+    (p) => p.propertyId === "adp_wyndham_alltra_punta_cana"
+  );
+  mark(
+    "ALLTRA_DENOMINATOR_FLAGGED",
+    Array.isArray(alltra?.outstandingWork) &&
+      alltra.outstandingWork.includes("MEASUREMENT_DENOMINATOR_RECONCILIATION")
+  );
+  mark(
+    "ADMIN_INVENTORY_35_WITH_AIMBRIDGE",
+    adminInventory.length === 35,
+    String(adminInventory.length)
   );
   // Canonical execution cohort must not silently expand.
   mark(
