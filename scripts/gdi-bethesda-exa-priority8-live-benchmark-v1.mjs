@@ -250,6 +250,7 @@ function namedContact(opp = {}) {
     text(opp.decisionMakerName) ||
     text(opp.commercialEntryPoint?.name) ||
     text(opp.contacts?.[0]?.name) ||
+    text(opp.salesReadyContactNames?.[0]) ||
     ""
   );
 }
@@ -455,7 +456,9 @@ function buildScorecard({
     for (const p of processed) {
       const drawer = evaluateCertifiedDrawerCommercialContent(p);
       const contact = namedContact(p);
-      if (contact) verifiedContacts += 1;
+      // Count named entry points from hydrated fields OR prior chain contact tallies.
+      // PR #382 under-counted because processed rows omitted primaryContactName.
+      if (contact || Number(p.salesReadyContacts || 0) > 0) verifiedContacts += 1;
       if (isSalesReady(p, drawer)) salesReady += 1;
       else researchOnly += 1;
     }
