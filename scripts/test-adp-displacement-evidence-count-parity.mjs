@@ -8,7 +8,6 @@
  * missing raw response, or missing published support set.
  */
 
-import assert from "assert";
 import {
   listPublishedPropertyIds,
   loadPublishedManifest,
@@ -27,6 +26,7 @@ import {
 } from "../lib/ai-demand-positioning/customer/adp-canonical-displacement-support-set-v1.js";
 import { getPublishedEvidenceResponse } from "../lib/ai-demand-positioning/published-read-service.js";
 import { buildAggregateClaimSupportParity } from "../lib/ai-demand-positioning/customer/adp-aggregate-claim-support-parity-v1.js";
+import { isAdpSyntheticOrTestPropertyId } from "../lib/ai-demand-positioning/governance/adp-operational-registry-hygiene-v1.js";
 
 const rows = [];
 const fails = [];
@@ -39,9 +39,23 @@ async function auditProperty(propertyId) {
   const manifest = loadPublishedManifest(propertyId);
   const report = loadPublishedReport(propertyId);
   const evidenceIndex = loadPublishedEvidenceIndex(propertyId);
-  assert.ok(manifest?.latestPeriodId, `${propertyId} manifest`);
-  assert.ok(report, `${propertyId} report`);
-  assert.ok(evidenceIndex?.displacementSupportSets, `${propertyId} must bake displacementSupportSets`);
+  if (!manifest?.latestPeriodId || !report || !evidenceIndex?.displacementSupportSets) {
+    const base = {
+      propertyId,
+      periodId: manifest?.latestPeriodId || null,
+      displayedScenarioCount: (report?.lostDemand?.displacement || []).length,
+    };
+    const reason = !manifest?.latestPeriodId
+      ? "missing_manifest"
+      : !report
+        ? "missing_report"
+        : !evidenceIndex
+          ? "missing_published_evidence_index"
+          : "missing_displacement_support_sets";
+    pushFail(base, reason);
+    rows.push({ ...base, pass: false });
+    return;
+  }
 
   const periodId = manifest.latestPeriodId;
   const profile = loadPropertyProfile(propertyId);
@@ -172,7 +186,15 @@ async function auditProperty(propertyId) {
 
 async function main() {
   const ids = listPublishedPropertyIds().sort();
-  for (const id of ids) {
+  // Commercial exact-parity is a real-hotel gate. Synthetic fixtures are not
+  // production proof and must not abort the audit before real hotels run.
+  const commercialIds = ids.filter((id) => !isAdpSyntheticOrTestPropertyId(id));
+  const skippedSynthetic = ids.filter((id) => isAdpSyntheticOrTestPropertyId(id));
+  if (commercialIds.length === 0) {
+    console.error("DISPLACEMENT_PARITY_NO_COMMERCIAL_PROPERTIES");
+    process.exit(1);
+  }
+  for (const id of commercialIds) {
     await auditProperty(id);
   }
 
@@ -188,6 +210,8 @@ async function main() {
       {
         ok: fail === 0,
         gate: ADP_DISPLACEMENT_COUNT_EVIDENCE_EXACT_PARITY,
+        commercialPropertyCount: commercialIds.length,
+        skippedSynthetic,
         totalDisplacementRows: rows.length,
         pass,
         fail,
