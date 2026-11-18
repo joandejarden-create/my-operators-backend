@@ -12,7 +12,9 @@
  *     --authorize-paid-discovery --authorize-paid-research \
  *     --authorize-exa-agent-live --budget-ceiling-usd 15
  *
- * Never publishes. Never writes Airtable from this entry.
+ * Never publishes. Research-inventory Airtable persistence is opt-in and
+ * dry-run by default (--plan-research-persistence). Production apply requires
+ * separate founder gates (bridge + env) — never unlocked by paid-research flags.
  */
 import "dotenv/config";
 import path from "node:path";
@@ -60,6 +62,14 @@ const opts = {
   executionObservabilityRoot: obsRoot,
   skipHpc: !has("--prefer-live-hpc"),
   allowHistoricalReplay: !has("--no-historical-replay"),
+  planResearchPersistence: has("--plan-research-persistence"),
+  authorizeResearchPersistence: has("--authorize-research-persistence"),
+  applyResearchPersistence: has("--apply-research-persistence"),
+  exactWriteSetAuthorization: arg("--exact-write-set-authorization"),
+  researchPersistenceWriteBudget: Number(
+    arg("--research-persistence-write-budget") || 0,
+  ),
+  readBackResearchPersistence: has("--readback-research-persistence"),
 };
 
 if (!hotelId) {
