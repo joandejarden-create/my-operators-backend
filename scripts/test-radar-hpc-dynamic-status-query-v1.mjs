@@ -395,7 +395,7 @@ const host = fs.readFileSync(
   path.join(ROOT, "public/deal-capture-radar-with-ranked-list.html"),
   "utf8"
 );
-assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-app-shell-auth-1/);
+assert.match(host, /brand-presence-mapping\.js\?v=radar-hpc-search-focus-1/);
 
 const api = fs.readFileSync(
   path.join(ROOT, "api/brand-presence-internal-preview.js"),

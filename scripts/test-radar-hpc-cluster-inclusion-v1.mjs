@@ -60,8 +60,8 @@ assert.doesNotMatch(
 
 assert.match(
   host,
-  /brand-presence-mapping\.js\?v=radar-hpc-app-shell-auth-1/,
-  "Radar host must cache-bust mapping after HPC dynamic status query"
+  /brand-presence-mapping\.js\?v=radar-hpc-search-focus-1/,
+  "Radar host must cache-bust mapping after HPC search/focus UX"
 );
 
 // Pure filter regression (mirrors client rule).

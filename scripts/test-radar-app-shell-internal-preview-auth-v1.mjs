@@ -40,6 +40,11 @@ assert.match(
   "non-admin must remain forbidden"
 );
 assert.match(
+  gateSrc,
+  /u\.isDemo\s*===\s*true/,
+  "localhost owner-app demo sessions must unlock HPC merge"
+);
+assert.match(
   optionalSrc,
   /export function elevateAdpOwnerAppAdminFlags/,
   "ADP elevation helper must be exported for Radar parity"

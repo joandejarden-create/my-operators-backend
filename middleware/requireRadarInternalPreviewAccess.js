@@ -44,6 +44,19 @@ export function requireRadarInternalPreviewAccess(req, res, next) {
     return next();
   }
 
+  // Localhost owner-app demo QA (dealalitydemo@…) must reach HPC Open|Pipeline even
+  // when Airtable isAdmin=false and the first embed fetch races elevation.
+  const ownerApp =
+    String(req.headers?.["x-dealality-owner-app"] || req.headers?.["X-Dealality-Owner-App"] || "").trim() ===
+    "1";
+  const host = String(req.hostname || req.headers?.host || "").toLowerCase();
+  const localHost =
+    process.env.NODE_ENV !== "production" &&
+    (host.startsWith("localhost") || host.startsWith("127.0.0.1") || host.startsWith("[::1]"));
+  if (localHost && ownerApp && u.isDemo === true) {
+    return next();
+  }
+
   return res.status(403).json({
     ok: false,
     success: false,
