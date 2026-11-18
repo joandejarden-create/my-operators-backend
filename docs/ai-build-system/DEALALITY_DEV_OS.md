@@ -66,6 +66,22 @@ Safety: never reset/clean/stash-discard; verified external backup before dirty r
 
 Contract: `docs/ai-build-system/POST_MERGE_WORKSPACE_SYNC.md`
 
+### Radar authenticated application acceptance (required — HE / Radar)
+
+For changes that affect hotel visibility, filtering, search, mapping, authentication, or Radar → Hotel Explorer navigation, automated tests and CI are **not sufficient**.
+
+Validate in the actual authenticated application:
+
+`http://localhost:8080/app#/opportunity-radar`
+
+Completion states: **PASS** / **FAIL** / **BLOCKED**. Automated tests alone cannot upgrade **BLOCKED** → **PASS**.
+
+Dynamic HPC: eligible Open/Pipeline hotels must appear without hotel-specific allowlists.
+
+Contract + HE/Radar PR checklist: `docs/ai-build-system/RADAR_AUTHENTICATED_APP_ACCEPTANCE_GATE.md`  
+Cursor rule: `.cursor/rules/dealality-radar-authenticated-acceptance-gate.mdc`  
+Contract gate: `npm run test:radar-authenticated-app-acceptance-gate-v1`
+
 ## Git preflight (fail-closed)
 
 `npm run dealality:git-preflight` validates worktree root, branch, dirty state, ownership, protected refs, force-push, and upstream dirty overlap.
@@ -86,7 +102,9 @@ Destructive ops require `--founder-auth` plus `--preservation-ref` or `--backup-
 You are the Hotel Explorer / Radar stream chat.
 Registered workspace: C:\Dev\dealality\ws-hotel-explorer (once provisioned).
 Before any Git mutation: npm run dealality:git-preflight -- --op <op> --stream he
-One task → one branch → tests → commit → push → PR. Do not merge; Integration Controller merges.
+One task → one branch → tests → authenticated /app#/opportunity-radar acceptance → commit → push → PR.
+Do not merge; Integration Controller merges.
+Radar visibility tasks are not PASS on CI/unit/API alone — see RADAR_AUTHENTICATED_APP_ACCEPTANCE_GATE.md.
 No unregistered worktrees. No force-push. Preserve dirty work. STOP on blockers.
 ```
 
