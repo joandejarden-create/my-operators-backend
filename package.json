@@ -1950,11 +1950,13 @@
     "test:adp-admin-runtime-endpoints-v1": "node scripts/test-adp-admin-runtime-endpoints-v1.mjs",
     "test:radar-hotel-explorer-progressive-enrichment-v1": "node scripts/test-radar-hotel-explorer-progressive-enrichment-v1.mjs",
     "test:radar-host-hotel-explorer-wiring-v1": "node scripts/test-radar-host-hotel-explorer-wiring-v1.mjs",
+    "test:radar-app-opportunity-radar-he-wiring-v1": "node scripts/test-radar-app-opportunity-radar-he-wiring-v1.mjs",
+    "test:radar-internal-preview-hotels-v1": "node scripts/test-radar-internal-preview-hotels-v1.mjs",
     "test:adp-permanent-full-e2e-certification-v1": "node scripts/run-adp-permanent-full-e2e-certification-v1.mjs",
     "test:adp-e2e-persistence-contract-v1": "node scripts/test-adp-e2e-persistence-contract-v1.mjs",
     "test:adp-published-store-durability-v1": "node scripts/test-adp-published-store-durability-v1.mjs",
     "rebuild:adp-existing-hotel-certification-baseline-v1": "node scripts/rebuild-adp-existing-hotel-certification-baseline-v1.mjs",
-    "test:adp-phase1-radar-he-gates": "npm run test:radar-host-hotel-explorer-wiring-v1 && npm run test:radar-hotel-explorer-progressive-enrichment-v1 && npm run assert:hotel-explorer-share-assets && npm run test:adp-published-store-durability-v1 && npm run test:ai-demand-positioning-published-foundation",
+    "test:adp-phase1-radar-he-gates": "npm run test:radar-host-hotel-explorer-wiring-v1 && npm run test:radar-hotel-explorer-progressive-enrichment-v1 && npm run test:radar-app-opportunity-radar-he-wiring-v1 && npm run test:radar-internal-preview-hotels-v1 && npm run assert:hotel-explorer-share-assets && npm run test:adp-published-store-durability-v1 && npm run test:ai-demand-positioning-published-foundation",
     "test:adp-phase1-reliability-gates-documented": "npm run test:adp-e2e-persistence-contract-v1 ; npm run test:adp-permanent-full-e2e-certification-v1 ; npm run test:adp-customer-surface-contract"
   },
   "dependencies": {

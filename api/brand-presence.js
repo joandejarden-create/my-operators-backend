@@ -7,6 +7,10 @@ import {
   searchFixtureHotels,
   shouldUseMexicoRadarFixtureFallback,
 } from "../lib/hotel-intelligence/golden-demo/mexico-radar-fixture-fallback.js";
+import {
+  formatHotelPropertyCensusAsBrandPresenceHotel,
+  HOTEL_PROPERTY_CENSUS_TABLE,
+} from "../lib/hotel-intelligence/radar-internal-preview-hotels-v1.js";
 
 const AIRTABLE_KEY = process.env.AIRTABLE_API_KEY;
 const AIRTABLE_BASE = process.env.AIRTABLE_BASE_ID_ALT;
@@ -169,6 +173,15 @@ function readTextField(fields, key) {
   return String(raw).trim() || null;
 }
 
+/** Prefer legacy Radar fields, then production-census Title Case aliases. */
+function readTextFieldAliases(fields, keys) {
+  for (const key of keys) {
+    const value = readTextField(fields, key);
+    if (value) return value;
+  }
+  return null;
+}
+
 function readNumberField(fields, key) {
   const raw = fields[key];
   if (raw == null || raw === "") return null;
@@ -210,14 +223,27 @@ function formatHotelRecord(hotel) {
 
   return {
     id: hotel.id,
-    name: readTextField(fields, F.hotels.name) || "Unknown Hotel",
-    brand: readTextField(fields, F.hotels.brand) || "Unknown Brand",
+    name:
+      readTextFieldAliases(fields, [
+        F.hotels.name,
+        "Property Name",
+        "Canonical Property Name",
+      ]) || "Unknown Hotel",
+    brand:
+      readTextFieldAliases(fields, [
+        F.hotels.brand,
+        "Current Brand",
+        "Brand Family",
+      ]) || "Unknown Brand",
     parentCompany: readTextField(fields, F.hotels.parentCompany) || "Unknown",
     status: readTextField(fields, F.hotels.status) || "unknown",
     lat: hasCoords ? lat : 0,
     lng: hasCoords ? lng : 0,
-    city: readTextField(fields, F.hotels.city) || "Unknown City",
-    country: readTextField(fields, F.hotels.country) || "Unknown Country",
+    city:
+      readTextFieldAliases(fields, [F.hotels.city, "City"]) || "Unknown City",
+    country:
+      readTextFieldAliases(fields, [F.hotels.country, "Country"]) ||
+      "Unknown Country",
     region: readTextField(fields, F.hotels.region) || "Unknown Region",
     locationType: readTextField(fields, F.hotels.locationType) || null,
     rooms: parseInt(fields[F.hotels.rooms], 10) || 0,
@@ -267,9 +293,47 @@ export async function getBrandPresenceHotelById(req, res) {
   }
 
   try {
-    const hotel = await base(F.hotels.table).find(recordId);
-    const formatted = formatHotelRecord(hotel);
+    let hotel;
+    let formatted;
+    let sourceTable = F.hotels.table;
+    try {
+      hotel = await base(F.hotels.table).find(recordId);
+      formatted = formatHotelRecord(hotel);
+    } catch (censusErr) {
+      hotel = null;
+      formatted = null;
+      if (censusErr?.statusCode !== 404) {
+        // Fall through to HPC only for not-found; rethrow unexpected errors after HPC attempt.
+      }
+    }
+
+    // Hotel Property Census holds some internal-preview hotels (e.g. Bethesda) that
+    // are not listable on legacy Hotel Census. Prefer HPC when Hotel Census identity
+    // is missing/unknown so by-id detail stays accurate without changing map SoT.
+    const needsHpc =
+      !formatted ||
+      !formatted.name ||
+      formatted.name === "Unknown Hotel" ||
+      formatted.country === "Unknown Country";
+    if (needsHpc) {
+      try {
+        const hpc = await base(HOTEL_PROPERTY_CENSUS_TABLE).find(recordId);
+        formatted = formatHotelPropertyCensusAsBrandPresenceHotel(hpc);
+        sourceTable = HOTEL_PROPERTY_CENSUS_TABLE;
+        // by-id detail for HE is available to authenticated Radar hosts; public share
+        // packs still omit Bethesda via share HTML gates (not this endpoint alone).
+        delete formatted.internalPreviewOnly;
+      } catch (hpcErr) {
+        if (!formatted) throw hpcErr;
+      }
+    }
+
+    if (!formatted) {
+      throw Object.assign(new Error("Hotel record not found"), { statusCode: 404 });
+    }
+
     formatted.amenitiesDisplay = buildHiltonAmenitiesDisplay(formatted);
+    formatted.censusSourceTable = sourceTable;
     // Prefer golden-demo presentation for Mexico share hotels when census still shows former brand.
     if (isMexicoRadarFixtureHotelId(recordId)) {
       const presentation = getFixtureHotelById(recordId);
