@@ -648,9 +648,13 @@ async function getMe(req, res) {
     companyIds: companyProfileIds,
   });
 
-  // Founder/demo may be Airtable role=owner with isAdmin=false — elevate governed emails
-  // so left-nav hasAdminNavAccess and AI Demand Admin match API middleware.
-  elevateGovernedPlatformAdmin(dealality, emailFromToken);
+  // Founder/demo may be Airtable role=owner with isAdmin=false — elevate only from
+  // verified Memberstack email, or Users.email when the row was bound by verified memberstack id.
+  // Never elevate from unmatched/client-controlled email alone.
+  const elevateEmail =
+    emailFromToken ||
+    (matchedBy === "memberstack_id" ? email : null);
+  elevateGovernedPlatformAdmin(dealality, elevateEmail);
 
   // ADP admin tools — same decision as middleware (nav/page/API parity).
   // Local QA: approved demo email on localhost/dev. Production: RBAC only.

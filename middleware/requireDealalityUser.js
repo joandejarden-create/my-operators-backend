@@ -153,8 +153,22 @@ export async function requireDealalityUser(req, res, next) {
     // Portfolio must never shrink workspace options.
     dealalityUser.canonicalWorkspaceOptions = resolveWorkspaceOptions(dealalityUser);
 
-    // Founder/demo may be Airtable role=owner with isAdmin=false — elevate governed emails.
-    elevateGovernedPlatformAdmin(dealalityUser, req.memberstackEmail);
+    // Founder/demo may be Airtable role=owner with isAdmin=false — elevate only when
+    // the verified Memberstack email (or Users.email bound to verified memberstackId)
+    // is on the server allowlist. Never elevate from client-supplied fields.
+    // Elevate only for verified Memberstack sessions (never DEV bypass impersonation here).
+    if (
+      req.memberstackMemberId &&
+      req.memberstackMemberId !== "dev_bypass" &&
+      String(req.memberstackVerifiedVia || "") !== "dev_bypass"
+    ) {
+      const verifiedEmail =
+        req.memberstackEmail ||
+        (dealalityUser.memberstackId === req.memberstackMemberId
+          ? dealalityUser.email
+          : null);
+      elevateGovernedPlatformAdmin(dealalityUser, verifiedEmail);
+    }
 
     req.dealalityUser = dealalityUser;
     return next();

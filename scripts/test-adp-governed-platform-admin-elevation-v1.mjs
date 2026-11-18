@@ -63,15 +63,38 @@ assert.equal(
 const req = {
   memberstackEmail: "joandejarden@hotmail.com",
   memberstackMemberId: "mem_test_founder",
+  memberstackVerifiedVia: "jwks",
 };
 const stub = elevateGovernedPlatformAdminOnRequest(req);
 assert.ok(stub);
 assert.equal(req.dealalityUser.isAdmin, true);
 assert.equal(req.dealalityUser.governedPlatformAdminElevated, true);
 
+const forgedHeaderOnly = {
+  memberstackEmail: "joandejarden@hotmail.com",
+  // no verified memberstack id / via
+};
+assert.equal(elevateGovernedPlatformAdminOnRequest(forgedHeaderOnly), null);
+
+const bypassDisguised = {
+  memberstackEmail: "joandejarden@hotmail.com",
+  memberstackMemberId: "dev_bypass",
+  memberstackVerifiedVia: "dev_bypass",
+};
+assert.equal(elevateGovernedPlatformAdminOnRequest(bypassDisguised), null);
+
+const airtableOnly = {
+  email: "joandejarden@hotmail.com",
+  isAdmin: false,
+  flags: { isAdmin: false },
+};
+assert.equal(elevateGovernedPlatformAdmin(airtableOnly), false);
+assert.equal(airtableOnly.isAdmin, false);
+
 const meJs = fs.readFileSync(path.join(root, "api/me.js"), "utf8");
 assert.match(meJs, /elevateGovernedPlatformAdmin/);
-assert.match(meJs, /elevateGovernedPlatformAdmin\(dealality,\s*emailFromToken\)/);
+assert.match(meJs, /elevateGovernedPlatformAdmin\(dealality,\s*elevateEmail\)/);
+assert.match(meJs, /emailFromToken/);
 assert.match(meJs, /users_row_missing_governed_admin_elevated|isGovernedPlatformAdminEmail\(emailFromToken\)/);
 assert.match(meJs, /buildLocalDevBypassAdminMeResponse/);
 
