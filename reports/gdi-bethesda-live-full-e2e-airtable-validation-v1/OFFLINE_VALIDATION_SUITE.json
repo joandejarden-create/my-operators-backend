@@ -1,0 +1,794 @@
+{
+  "version": "gdi-bethesda-live-full-e2e-airtable-validation-v1",
+  "at": "2026-11-18T18:32:56.071Z",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "hotelName": "Bethesda Marriott",
+  "paidResearchExecuted": false,
+  "productionAirtableWrites": false,
+  "schema": {
+    "version": "gdi-bethesda-live-full-e2e-airtable-validation-v1",
+    "base": {
+      "name": "AI Demand Positioning",
+      "baseId": "appa2cE7FTRmIbB32"
+    },
+    "knownFounderTables": {
+      "hotelResearchOpportunities": {
+        "name": "GDI Hotel Research Opportunities",
+        "tableId": "tblbkDj0vhQLfrssV",
+        "adapter": "gdi-hotel-research-inventory-store-v1",
+        "identityField": "compositeKey",
+        "logicalUniqueKey": "(hotelId, opportunityId)"
+      },
+      "qualifiedGdo": {
+        "name": "Group Demand Opportunities",
+        "tableId": "tblRuReslJMwsfRQj",
+        "adapter": "airtable-opportunity-store / gdi-airtable-sync-v1",
+        "identityField": "opportunityId"
+      }
+    },
+    "tables": [
+      {
+        "name": "Group Demand Opportunities",
+        "tableId": "tblRuReslJMwsfRQj",
+        "identityField": "opportunityId",
+        "adapter": "airtable-opportunity-store / gdi-airtable-sync-v1",
+        "logicalUniqueKey": null
+      },
+      {
+        "name": "Demand Generators",
+        "tableId": "tblykUVOjGVkawvdD",
+        "identityField": "Demand Generator ID",
+        "adapter": "demand-generators/airtable-stores.upsertDemandGenerator",
+        "logicalUniqueKey": null
+      },
+      {
+        "name": "Demand Programs",
+        "tableId": "tblxm7wqfFNG37Z2m",
+        "identityField": "Program ID",
+        "adapter": "demand-generators/airtable-stores.upsertDemandProgram",
+        "logicalUniqueKey": null
+      },
+      {
+        "name": "Demand Generator Signals",
+        "tableId": "tblZ0cOM78uYMCTXx",
+        "identityField": "Demand Generator Signal ID",
+        "adapter": "demand-generators/airtable-stores.upsertSignal",
+        "logicalUniqueKey": null
+      },
+      {
+        "name": "Hotel Demand Generator Fit",
+        "tableId": "tblqamXbIk9n6gXfV",
+        "identityField": "Hotel Generator Fit ID",
+        "adapter": "demand-generators/airtable-stores.upsertHotelFit",
+        "logicalUniqueKey": null
+      },
+      {
+        "name": "Private Event Venues",
+        "tableId": "tblE5p4HjVHfcMDna",
+        "identityField": "Venue ID",
+        "adapter": "private-events/airtable-venue-store",
+        "logicalUniqueKey": null
+      },
+      {
+        "name": "Private Event Signals",
+        "tableId": "tbl5rSZxKv218GuOP",
+        "identityField": "Event Signal ID",
+        "adapter": "private-events/airtable-signal-store",
+        "logicalUniqueKey": null
+      },
+      {
+        "name": "Hotel Venue Fit",
+        "tableId": "tbluXqX7ecocCrdE1",
+        "identityField": "Hotel Venue Fit ID",
+        "adapter": "private-events/airtable-fit-store",
+        "logicalUniqueKey": null
+      },
+      {
+        "name": "GDI Research Targets",
+        "tableId": "tblVyuEf5vjooWDKX",
+        "identityField": "Target ID",
+        "adapter": "research-coverage/airtable-stores",
+        "logicalUniqueKey": null
+      },
+      {
+        "name": "GDI Research Runs",
+        "tableId": "tblzNMUIo2T6onaKH",
+        "identityField": "Run ID",
+        "adapter": "research-coverage/airtable-stores",
+        "logicalUniqueKey": null
+      },
+      {
+        "name": "GDI Research Target Runs",
+        "tableId": "tblSA0cFVplNfWMjp",
+        "identityField": "Target Run ID",
+        "adapter": "research-coverage/airtable-stores",
+        "logicalUniqueKey": null
+      },
+      {
+        "name": "GDI Hotel Commercial Profiles",
+        "tableId": "tbl8KSNUCRbIzEv15",
+        "identityField": "Profile ID",
+        "adapter": "need-date-airtable-store-v3",
+        "logicalUniqueKey": null
+      },
+      {
+        "name": "GDI Hotel Need Periods",
+        "tableId": "tbl50kj5XkGs22C6j",
+        "identityField": "Need Period ID",
+        "adapter": "need-date-airtable-store-v3",
+        "logicalUniqueKey": null
+      },
+      {
+        "name": "GDI Need-Date Campaign Runs",
+        "tableId": "tblghbxp4reaQWx2b",
+        "identityField": "Campaign ID",
+        "adapter": "need-date campaign writers",
+        "logicalUniqueKey": null
+      },
+      {
+        "name": "GDI Need Period Opportunity Matches",
+        "tableId": "tblOw5r7r95eQ1dPq",
+        "identityField": "Match Key",
+        "adapter": "need-date match writers",
+        "logicalUniqueKey": null
+      },
+      {
+        "name": "GDI Hotel Research Opportunities",
+        "tableId": "tblbkDj0vhQLfrssV",
+        "identityField": "compositeKey",
+        "adapter": "gdi-hotel-research-inventory-store-v1",
+        "logicalUniqueKey": "(hotelId, opportunityId)"
+      }
+    ],
+    "approvedWriteTables": [
+      "Demand Generators",
+      "Demand Programs",
+      "Demand Generator Signals",
+      "Group Demand Opportunities",
+      "Private Event Venues",
+      "Private Event Signals",
+      "Hotel Venue Fit",
+      "Hotel Demand Generator Fit",
+      "GDI Research Runs",
+      "GDI Research Targets",
+      "GDI Hotel Research Opportunities"
+    ],
+    "contactModel": "Embedded on research payload + GDO typed primaryContact* columns; no separate Contacts table.",
+    "weeklyChangeModel": {
+      "version": "gdi-weekly-change-durability-v1",
+      "weeklyDeltaEngine": "gdi_weekly_delta_v1",
+      "storage": [
+        "filesystem.hotel.opportunities",
+        "airtable.gdo.opportunityPayloadJson",
+        "airtable.gdo.firstDiscoveredAt",
+        "airtable.gdo.firstDiscoveredRunId",
+        "airtable.gdo.lastMaterialChangeAt",
+        "airtable.gdo.lastMaterialChangeRunId"
+      ],
+      "materialFields": [
+        "eventStartDate",
+        "eventEndDate",
+        "destinationStatus",
+        "venueStatus",
+        "venueSourcingStatus",
+        "opportunityType",
+        "priority",
+        "roomDemandStatus",
+        "hostHotel",
+        "venue",
+        "primaryContactName",
+        "primaryContactEmail",
+        "primaryContactPhone"
+      ],
+      "nonMaterialExplicitly": [
+        "description",
+        "summaryWhat",
+        "whatIsHappening",
+        "notes",
+        "titleRewriteOnly"
+      ],
+      "states": {
+        "NEW": "NEW",
+        "UPDATED": "UPDATED",
+        "REACTIVATED": "REACTIVATED",
+        "UNCHANGED": "UNCHANGED",
+        "CLOSED_DOWNGRADED": "CLOSED_DOWNGRADED",
+        "NOT_IN_CURRENT": "NOT_IN_CURRENT"
+      }
+    },
+    "hotelFeedbackModel": "Hotel-specific sales feedback remains filesystem feedback.json + Decision Outcomes; not shared across hotels.",
+    "productionWriteGuard": {
+      "blocked": true,
+      "code": "AIRTABLE_PRODUCTION_WRITES_NOT_AUTHORIZED",
+      "note": "Canonical Full E2E may dry-run map and plan writes; live Airtable mutations require separate founder approval."
+    },
+    "routingExamples": [
+      {
+        "ok": true,
+        "airtable": [
+          {
+            "table": {
+              "name": "Demand Generators",
+              "tableId": "tblykUVOjGVkawvdD",
+              "adapter": "demand-generators/airtable-stores.upsertDemandGenerator",
+              "identityField": "Demand Generator ID"
+            },
+            "role": "ORGANIZATION_IDENTITY",
+            "required": true
+          },
+          {
+            "table": {
+              "name": "Hotel Demand Generator Fit",
+              "tableId": "tblqamXbIk9n6gXfV",
+              "adapter": "demand-generators/airtable-stores.upsertHotelFit",
+              "identityField": "Hotel Generator Fit ID"
+            },
+            "role": "HOTEL_SPECIFIC_FIT",
+            "required": true
+          }
+        ],
+        "nonAirtable": [
+          "data/group-demand-intelligence/global-intelligence/"
+        ],
+        "reason": "ORG_TO_DEMAND_GENERATORS",
+        "checkpoint": "AFTER_GLOBAL_IDENTITY"
+      },
+      {
+        "ok": true,
+        "airtable": [
+          {
+            "table": {
+              "name": "Demand Generators",
+              "tableId": "tblykUVOjGVkawvdD",
+              "adapter": "demand-generators/airtable-stores.upsertDemandGenerator",
+              "identityField": "Demand Generator ID"
+            },
+            "role": "ORGANIZATION_IDENTITY",
+            "required": true
+          },
+          {
+            "table": {
+              "name": "Group Demand Opportunities",
+              "tableId": "tblRuReslJMwsfRQj",
+              "adapter": "airtable-opportunity-store / gdi-airtable-sync-v1",
+              "identityField": "opportunityId"
+            },
+            "role": "HOTEL_QUALIFIED_OPPORTUNITY"
+          }
+        ],
+        "nonAirtable": [
+          "data/group-demand-intelligence/hotels/{hotelId}/opportunities.json"
+        ],
+        "reason": "QUALIFIED_TO_GENERATOR_AND_GROUP_DEMAND_OPPORTUNITIES",
+        "checkpoint": "AFTER_HOTEL_QUALIFICATION"
+      },
+      {
+        "ok": true,
+        "airtable": [
+          {
+            "table": {
+              "name": "Demand Generator Signals",
+              "tableId": "tblZ0cOM78uYMCTXx",
+              "adapter": "demand-generators/airtable-stores.upsertSignal",
+              "identityField": "Demand Generator Signal ID"
+            },
+            "role": "DATED_SIGNAL"
+          }
+        ],
+        "nonAirtable": [],
+        "reason": "SIGNAL_TO_DEMAND_GENERATOR_SIGNALS",
+        "checkpoint": "AFTER_SCREENING"
+      },
+      {
+        "ok": true,
+        "airtable": [],
+        "nonAirtable": [
+          "reports/ + execution ledger provider rows (bounded)"
+        ],
+        "reason": "UNSUPPORTED_OR_SPECULATIVE_AUDIT_ONLY",
+        "checkpoint": "AFTER_SCREENING"
+      }
+    ]
+  },
+  "budgetPlan": {
+    "authorization": {
+      "token": "gdi-bethesda-14segment-live-validation-v1",
+      "maxUsd": 18,
+      "hotelId": "recLuxvwwxID7U2B8",
+      "segments": 14,
+      "status": "PENDING_FOUNDER_APPROVAL"
+    },
+    "entry": "npm run gdi:canonical-full-e2e -- --hotel recLuxvwwxID7U2B8 --mode live --authorize-paid-discovery --authorize-paid-research --authorize-exa-agent-live --budget-ceiling-usd 18",
+    "powershellNote": "gdi-workflow.ps1 FullRun defaults to canonical dry-run and refuses live paid apply; use npm runner with explicit flags.",
+    "stageBudget": {
+      "version": "gdi-segment-stage-call-budget-v1",
+      "globalMaxCalls": 42,
+      "globalMaxUsd": 18,
+      "perSegment": {
+        "associations_conferences_events": {
+          "maxDiscoveryCalls": 1,
+          "maxDeepCalls": 2,
+          "maxDiscoveryUsd": 0.25,
+          "maxDeepUsd": 0.5
+        },
+        "corporate_accounts_scaling": {
+          "maxDiscoveryCalls": 1,
+          "maxDeepCalls": 2,
+          "maxDiscoveryUsd": 0.25,
+          "maxDeepUsd": 0.5
+        },
+        "corporate_meetings_incentives": {
+          "maxDiscoveryCalls": 1,
+          "maxDeepCalls": 2,
+          "maxDiscoveryUsd": 0.25,
+          "maxDeepUsd": 0.5
+        },
+        "government_public_sector": {
+          "maxDiscoveryCalls": 1,
+          "maxDeepCalls": 2,
+          "maxDiscoveryUsd": 0.25,
+          "maxDeepUsd": 0.5
+        },
+        "sports_entertainment": {
+          "maxDiscoveryCalls": 1,
+          "maxDeepCalls": 2,
+          "maxDiscoveryUsd": 0.25,
+          "maxDeepUsd": 0.5
+        },
+        "education_scientific": {
+          "maxDiscoveryCalls": 1,
+          "maxDeepCalls": 2,
+          "maxDiscoveryUsd": 0.25,
+          "maxDeepUsd": 0.5
+        },
+        "projects_infrastructure": {
+          "maxDiscoveryCalls": 1,
+          "maxDeepCalls": 2,
+          "maxDiscoveryUsd": 0.25,
+          "maxDeepUsd": 0.5
+        },
+        "social_special_events": {
+          "maxDiscoveryCalls": 1,
+          "maxDeepCalls": 2,
+          "maxDiscoveryUsd": 0.25,
+          "maxDeepUsd": 0.5
+        },
+        "local_catering_day_meetings": {
+          "maxDiscoveryCalls": 1,
+          "maxDeepCalls": 2,
+          "maxDiscoveryUsd": 0.25,
+          "maxDeepUsd": 0.5
+        },
+        "corporate_celebrations_private_events": {
+          "maxDiscoveryCalls": 1,
+          "maxDeepCalls": 2,
+          "maxDiscoveryUsd": 0.25,
+          "maxDeepUsd": 0.5
+        },
+        "travel_trade_group_intermediaries": {
+          "maxDiscoveryCalls": 1,
+          "maxDeepCalls": 2,
+          "maxDiscoveryUsd": 0.25,
+          "maxDeepUsd": 0.5
+        },
+        "relocation_extended_stay": {
+          "maxDiscoveryCalls": 1,
+          "maxDeepCalls": 2,
+          "maxDiscoveryUsd": 0.25,
+          "maxDeepUsd": 0.5
+        },
+        "preferred_lodging_partnerships": {
+          "maxDiscoveryCalls": 1,
+          "maxDeepCalls": 2,
+          "maxDiscoveryUsd": 0.25,
+          "maxDeepUsd": 0.5
+        },
+        "professional_event_planners": {
+          "maxDiscoveryCalls": 1,
+          "maxDeepCalls": 2,
+          "maxDiscoveryUsd": 0.25,
+          "maxDeepUsd": 0.5
+        }
+      }
+    },
+    "discovery": {
+      "segments": 14,
+      "callsPerSegment": 1,
+      "expectedFloorUsd": 1.4,
+      "requireDistinctAgentRunIds": true
+    },
+    "triage": [
+      "Reject geography-incompatible demand for Bethesda-first pursuit",
+      "Reject unsupported / speculative noise",
+      "Exclude duplicate activities / cross-segment org duplicates from paid deep",
+      "Preserve WATCHLIST / research-continuation intelligence"
+    ],
+    "selectiveDeep": {
+      "onlyTriageSurvivors": true,
+      "orgLevelPaidDeepDedupe": true,
+      "noIndiscriminateDeepOnAllRawRows": true
+    },
+    "status": "PENDING_FOUNDER_APPROVAL"
+  },
+  "persistenceAuth": {
+    "activation": {
+      "disabledByDefault": true,
+      "envGate": "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES",
+      "requiresExactWriteSetAuthorization": true,
+      "separateFromGdoWrites": true,
+      "separateFromPublication": true,
+      "separateFromPaidResearchAuth": true
+    },
+    "paidDoesNotUnlockWrites": true,
+    "blockers": [
+      {
+        "code": "ENV_PRODUCTION_GATE_OFF",
+        "env": "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES"
+      }
+    ],
+    "authorizationB": {
+      "token": "gdi-bethesda-14segment-research-persistence-v1",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "destinationTableId": "tblbkDj0vhQLfrssV",
+      "destinationTable": "GDI Hotel Research Opportunities",
+      "envGate": "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES",
+      "status": "PENDING_FOUNDER_APPROVAL",
+      "gdoMutations": "SEPARATELY_GATED",
+      "publication": "FORBIDDEN_IN_THIS_BENCHMARK"
+    }
+  },
+  "dedupe": {
+    "before": 4,
+    "after": 3,
+    "duplicates": [
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "opportunityId": "disc_guidepoint_seed",
+        "compositeKey": "recLuxvwwxID7U2B8::disc_guidepoint_seed",
+        "segment": "projects_infrastructure",
+        "reason": "DUPLICATE_COMPOSITE_KEY_IN_RUN"
+      }
+    ]
+  },
+  "idempotency": {
+    "pass1Counts": {
+      "candidatesBeforeDedupe": 3,
+      "candidates": 3,
+      "DUPLICATES_RESOLVED": 0,
+      "WOULD_CREATE": 0,
+      "WOULD_UPDATE": 0,
+      "UNCHANGED": 1,
+      "CREATED": 2,
+      "UPDATED": 0,
+      "FAILED": 0,
+      "SKIPPED_FORBIDDEN": 0,
+      "SKIPPED_BUDGET": 0
+    },
+    "pass2Counts": {
+      "candidatesBeforeDedupe": 3,
+      "candidates": 3,
+      "DUPLICATES_RESOLVED": 0,
+      "WOULD_CREATE": 0,
+      "WOULD_UPDATE": 0,
+      "UNCHANGED": 3,
+      "CREATED": 0,
+      "UPDATED": 0,
+      "FAILED": 0,
+      "SKIPPED_FORBIDDEN": 0,
+      "SKIPPED_BUDGET": 0
+    },
+    "pass2Creates": 0,
+    "pass2WouldCreates": 0,
+    "repeatCreatesZero": true,
+    "readBackMatched": true
+  },
+  "weeklyChange": {
+    "contract": {
+      "version": "gdi-weekly-change-durability-v1",
+      "weeklyDeltaEngine": "gdi_weekly_delta_v1",
+      "storage": [
+        "filesystem.hotel.opportunities",
+        "airtable.gdo.opportunityPayloadJson",
+        "airtable.gdo.firstDiscoveredAt",
+        "airtable.gdo.firstDiscoveredRunId",
+        "airtable.gdo.lastMaterialChangeAt",
+        "airtable.gdo.lastMaterialChangeRunId"
+      ],
+      "materialFields": [
+        "eventStartDate",
+        "eventEndDate",
+        "destinationStatus",
+        "venueStatus",
+        "venueSourcingStatus",
+        "opportunityType",
+        "priority",
+        "roomDemandStatus",
+        "hostHotel",
+        "venue",
+        "primaryContactName",
+        "primaryContactEmail",
+        "primaryContactPhone"
+      ],
+      "nonMaterialExplicitly": [
+        "description",
+        "summaryWhat",
+        "whatIsHappening",
+        "notes",
+        "titleRewriteOnly"
+      ],
+      "states": {
+        "NEW": "NEW",
+        "UPDATED": "UPDATED",
+        "REACTIVATED": "REACTIVATED",
+        "UNCHANGED": "UNCHANGED",
+        "CLOSED_DOWNGRADED": "CLOSED_DOWNGRADED",
+        "NOT_IN_CURRENT": "NOT_IN_CURRENT"
+      }
+    },
+    "researchTouchUnchanged": true,
+    "materialContactOrDateDetected": true,
+    "descriptionRewriteNonMaterial": true,
+    "annotations": {
+      "weeklyUnchanged": {
+        "weeklyDeltaState": "UNCHANGED",
+        "isNewThisWeek": false,
+        "firstSeenRunId": "historical_seed",
+        "firstSeenAt": "2026-09-01T00:00:00.000Z",
+        "firstDiscoveredAt": "2026-09-01T00:00:00.000Z",
+        "firstDiscoveredRunId": "historical_seed",
+        "lastMaterialChangeAt": null,
+        "lastMaterialChangeRunId": null,
+        "changedFields": [],
+        "durabilityContract": "gdi-weekly-change-durability-v1",
+        "durabilityStorage": [
+          "filesystem.hotel.opportunities",
+          "airtable.gdo.opportunityPayloadJson",
+          "airtable.gdo.firstDiscoveredAt",
+          "airtable.gdo.firstDiscoveredRunId",
+          "airtable.gdo.lastMaterialChangeAt",
+          "airtable.gdo.lastMaterialChangeRunId"
+        ]
+      },
+      "weeklyMaterial": {
+        "weeklyDeltaState": "UPDATED",
+        "isNewThisWeek": false,
+        "firstSeenRunId": "historical_seed",
+        "firstSeenAt": "2026-09-01T00:00:00.000Z",
+        "firstDiscoveredAt": "2026-09-01T00:00:00.000Z",
+        "firstDiscoveredRunId": "historical_seed",
+        "lastMaterialChangeAt": "2026-11-18T18:32:56.071Z",
+        "lastMaterialChangeRunId": "gdi_bethesda_live_validation_plan_mwmglgqp_material",
+        "changedFields": [
+          {
+            "field": "eventStartDate",
+            "oldValue": null,
+            "newValue": "2026-12-01"
+          },
+          {
+            "field": "primaryContactEmail",
+            "oldValue": null,
+            "newValue": "jason.example@guidepoint.invalid"
+          }
+        ],
+        "durabilityContract": "gdi-weekly-change-durability-v1",
+        "durabilityStorage": [
+          "filesystem.hotel.opportunities",
+          "airtable.gdo.opportunityPayloadJson",
+          "airtable.gdo.firstDiscoveredAt",
+          "airtable.gdo.firstDiscoveredRunId",
+          "airtable.gdo.lastMaterialChangeAt",
+          "airtable.gdo.lastMaterialChangeRunId"
+        ]
+      },
+      "descriptionOnly": {
+        "ok": true,
+        "weeklyDeltaState": "UNCHANGED",
+        "changedFields": []
+      }
+    }
+  },
+  "classifiedOperations": [
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "opportunityId": "disc_guidepoint_seed",
+      "compositeKey": "recLuxvwwxID7U2B8::disc_guidepoint_seed",
+      "action": "UNCHANGED",
+      "airtableRecordId": "rec_mem_seed_1",
+      "materialChanged": false,
+      "changedFields": [],
+      "researchLifecycleStatus": "WATCHLIST",
+      "exploratory": false,
+      "commercialEligibilityStatus": "CUSTOMER_ELIGIBLE_CANDIDATE",
+      "disposition": "WATCHLIST_RESEARCH",
+      "outcome": "UNCHANGED",
+      "gdoWrite": false,
+      "publicationWrite": false,
+      "founderOperationClass": "GDO_QUALIFIED_PENDING_AUTHORIZATION",
+      "founderClass": "GDO_QUALIFIED_PENDING_AUTHORIZATION"
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "opportunityId": "disc_whiting_new",
+      "compositeKey": "recLuxvwwxID7U2B8::disc_whiting_new",
+      "action": "CREATED",
+      "airtableRecordId": "rec_mem_2",
+      "materialChanged": true,
+      "changedFields": [
+        "*"
+      ],
+      "researchLifecycleStatus": "ACTIVE_RESEARCH",
+      "exploratory": false,
+      "commercialEligibilityStatus": "GLOBAL_ORG_ONLY",
+      "disposition": null,
+      "outcome": "CREATED",
+      "gdoWrite": false,
+      "publicationWrite": false,
+      "founderOperationClass": "CREATE_NEW",
+      "founderClass": "CREATE_NEW"
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "opportunityId": "disc_geo_exclude",
+      "compositeKey": "recLuxvwwxID7U2B8::disc_geo_exclude",
+      "action": "CREATED",
+      "airtableRecordId": "rec_mem_3",
+      "materialChanged": true,
+      "changedFields": [
+        "*"
+      ],
+      "researchLifecycleStatus": "ARCHIVED_RESEARCH",
+      "exploratory": false,
+      "commercialEligibilityStatus": "RESEARCH_ONLY",
+      "disposition": "EXCLUDE",
+      "outcome": "CREATED",
+      "gdoWrite": false,
+      "publicationWrite": false,
+      "founderOperationClass": "EXCLUDED",
+      "founderClass": "EXCLUDED"
+    },
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "opportunityId": "disc_guidepoint_seed",
+      "compositeKey": "recLuxvwwxID7U2B8::disc_guidepoint_seed",
+      "segment": "projects_infrastructure",
+      "reason": "DUPLICATE_COMPOSITE_KEY_IN_RUN",
+      "action": "DUPLICATE",
+      "founderClass": "DUPLICATE"
+    },
+    {
+      "opportunityId": "disc_geo_exclude",
+      "action": "EXCLUDED",
+      "disposition": "EXCLUDE",
+      "founderClass": "EXCLUDED"
+    }
+  ],
+  "writeManifest": {
+    "version": "gdi-bethesda-live-full-e2e-airtable-validation-v1",
+    "status": "PENDING_LIVE_RESEARCH_THEN_WRITE_SET_APPROVAL",
+    "authorization": {
+      "token": "gdi-bethesda-14segment-research-persistence-v1",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "destinationTableId": "tblbkDj0vhQLfrssV",
+      "destinationTable": "GDI Hotel Research Opportunities",
+      "envGate": "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES",
+      "status": "PENDING_FOUNDER_APPROVAL",
+      "gdoMutations": "SEPARATELY_GATED",
+      "publication": "FORBIDDEN_IN_THIS_BENCHMARK"
+    },
+    "hotelId": "recLuxvwwxID7U2B8",
+    "hotelName": "Bethesda Marriott",
+    "baselineInventoryHint": {
+      "bethesdaResearchRecords": 87,
+      "portfolioResearchRecords": 687,
+      "note": "Do not blanket-rewrite the 87/687 inventory; only authorized CREATE/UPDATE ops from this run."
+    },
+    "destinationDefaults": {
+      "researchInventory": {
+        "name": "GDI Hotel Research Opportunities",
+        "tableId": "tblbkDj0vhQLfrssV",
+        "adapter": "gdi-hotel-research-inventory-store-v1",
+        "identityField": "compositeKey",
+        "logicalUniqueKey": "(hotelId, opportunityId)"
+      },
+      "sharedDemandGenerators": {
+        "name": "Demand Generators",
+        "tableId": "tblykUVOjGVkawvdD",
+        "adapter": "demand-generators/airtable-stores.upsertDemandGenerator",
+        "identityField": "Demand Generator ID"
+      },
+      "demandPrograms": {
+        "name": "Demand Programs",
+        "tableId": "tblxm7wqfFNG37Z2m",
+        "adapter": "demand-generators/airtable-stores.upsertDemandProgram",
+        "identityField": "Program ID"
+      },
+      "demandSignals": {
+        "name": "Demand Generator Signals",
+        "tableId": "tblZ0cOM78uYMCTXx",
+        "adapter": "demand-generators/airtable-stores.upsertSignal",
+        "identityField": "Demand Generator Signal ID"
+      },
+      "gdo": {
+        "table": {
+          "name": "Group Demand Opportunities",
+          "tableId": "tblRuReslJMwsfRQj",
+          "adapter": "airtable-opportunity-store / gdi-airtable-sync-v1",
+          "identityField": "opportunityId"
+        },
+        "mutations": "GDO_QUALIFIED_PENDING_AUTHORIZATION — separate gate"
+      }
+    },
+    "conflictControls": [
+      "compositeKey = hotelId::opportunityId",
+      "read-before-write via inventory store",
+      "material field diff only",
+      "preserve firstDiscoveredAt / firstDiscoveredRunId",
+      "refuse weaker overwrite of stronger evidence",
+      "no sourceSummary [object Object] corruption",
+      "bounded writeBudget",
+      "idempotent retry via same compositeKey"
+    ],
+    "readBackPlan": [
+      "After each CREATE/UPDATE, readBackResearchInventory(recordId)",
+      "Assert compositeKey, hotelId, opportunityId match",
+      "Assert named contact fields survive payload round-trip",
+      "Fail batch if unmatched read-back"
+    ],
+    "expectedCounts": {
+      "CREATE_NEW": null,
+      "UPDATE_MATERIAL": null,
+      "UNCHANGED": null,
+      "DUPLICATE": null,
+      "RESEARCH_ONLY": null,
+      "GDO_QUALIFIED_PENDING_AUTHORIZATION": 0,
+      "EXCLUDED": null,
+      "note": "Counts filled after live research dry-run against Airtable."
+    },
+    "operations": [],
+    "gdoWritePlan": {
+      "status": "PREPARED_NOT_AUTHORIZED",
+      "mutationsAllowed": false,
+      "note": "Qualified candidates are classified GDO_QUALIFIED_PENDING_AUTHORIZATION only."
+    },
+    "generatedAt": "2026-11-18T18:32:56.071Z"
+  },
+  "weeklyAutomation": {
+    "version": "gdi-bethesda-live-full-e2e-airtable-validation-v1",
+    "enabledNow": false,
+    "steps": [
+      "Load existing Airtable research inventory for hotel (+ shared generators by identity)",
+      "Identify relevant existing organizations / opportunities",
+      "Run 14-segment discovery under paid ceiling + stage budgets",
+      "Enrich existing opportunities before rediscovering",
+      "Discover new demand; triage geography / unsupported / duplicates",
+      "Selective deep + contact verification",
+      "Apply commercial qualification (CONFIRMED / RELIABLE_INFERRED only for GDO path)",
+      "Upsert research inventory under bounded production authorization",
+      "Update GDO only under distinct GDO policy",
+      "Calculate Weekly Change via gdi-weekly-change-durability-v1",
+      "Validate Airtable read-back",
+      "Emit operator execution report"
+    ],
+    "reuse": [
+      "gdi-canonical-full-e2e-entry-v1",
+      "gdi-full-e2e-research-persistence-bridge-v1",
+      "gdi-hotel-research-inventory-store-v1",
+      "gdi-weekly-change-durability-v1 / weekly-delta.js",
+      "gdi-segment-stage-call-budget-v1"
+    ],
+    "recurringExecution": "NOT_ENABLED"
+  },
+  "successTargets": {
+    "segmentsWithFreshDiscovery": 14,
+    "paidCeilingUsd": 18,
+    "segmentsWithCredibleHotelCandidate": 8,
+    "opportunitiesWithVerifiedContacts": 3,
+    "duplicatePaidDeepOnSameOrg": 0,
+    "unjustifiedRepeatCreates": 0,
+    "gdoAutoPublish": 0
+  },
+  "stop": {
+    "paidDiscovery": "STOP_FOR_FOUNDER_AUTHORIZATION_A",
+    "productionWrites": "STOP_FOR_FOUNDER_AUTHORIZATION_B_AND_EXACT_WRITE_SET"
+  }
+}

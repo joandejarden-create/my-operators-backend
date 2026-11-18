@@ -1,0 +1,90 @@
+{
+  "version": "gdi-bethesda-live-full-e2e-airtable-validation-v1",
+  "status": "PENDING_LIVE_RESEARCH_THEN_WRITE_SET_APPROVAL",
+  "authorization": {
+    "token": "gdi-bethesda-14segment-research-persistence-v1",
+    "hotelId": "recLuxvwwxID7U2B8",
+    "destinationTableId": "tblbkDj0vhQLfrssV",
+    "destinationTable": "GDI Hotel Research Opportunities",
+    "envGate": "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES",
+    "status": "PENDING_FOUNDER_APPROVAL",
+    "gdoMutations": "SEPARATELY_GATED",
+    "publication": "FORBIDDEN_IN_THIS_BENCHMARK"
+  },
+  "hotelId": "recLuxvwwxID7U2B8",
+  "hotelName": "Bethesda Marriott",
+  "baselineInventoryHint": {
+    "bethesdaResearchRecords": 87,
+    "portfolioResearchRecords": 687,
+    "note": "Do not blanket-rewrite the 87/687 inventory; only authorized CREATE/UPDATE ops from this run."
+  },
+  "destinationDefaults": {
+    "researchInventory": {
+      "name": "GDI Hotel Research Opportunities",
+      "tableId": "tblbkDj0vhQLfrssV",
+      "adapter": "gdi-hotel-research-inventory-store-v1",
+      "identityField": "compositeKey",
+      "logicalUniqueKey": "(hotelId, opportunityId)"
+    },
+    "sharedDemandGenerators": {
+      "name": "Demand Generators",
+      "tableId": "tblykUVOjGVkawvdD",
+      "adapter": "demand-generators/airtable-stores.upsertDemandGenerator",
+      "identityField": "Demand Generator ID"
+    },
+    "demandPrograms": {
+      "name": "Demand Programs",
+      "tableId": "tblxm7wqfFNG37Z2m",
+      "adapter": "demand-generators/airtable-stores.upsertDemandProgram",
+      "identityField": "Program ID"
+    },
+    "demandSignals": {
+      "name": "Demand Generator Signals",
+      "tableId": "tblZ0cOM78uYMCTXx",
+      "adapter": "demand-generators/airtable-stores.upsertSignal",
+      "identityField": "Demand Generator Signal ID"
+    },
+    "gdo": {
+      "table": {
+        "name": "Group Demand Opportunities",
+        "tableId": "tblRuReslJMwsfRQj",
+        "adapter": "airtable-opportunity-store / gdi-airtable-sync-v1",
+        "identityField": "opportunityId"
+      },
+      "mutations": "GDO_QUALIFIED_PENDING_AUTHORIZATION — separate gate"
+    }
+  },
+  "conflictControls": [
+    "compositeKey = hotelId::opportunityId",
+    "read-before-write via inventory store",
+    "material field diff only",
+    "preserve firstDiscoveredAt / firstDiscoveredRunId",
+    "refuse weaker overwrite of stronger evidence",
+    "no sourceSummary [object Object] corruption",
+    "bounded writeBudget",
+    "idempotent retry via same compositeKey"
+  ],
+  "readBackPlan": [
+    "After each CREATE/UPDATE, readBackResearchInventory(recordId)",
+    "Assert compositeKey, hotelId, opportunityId match",
+    "Assert named contact fields survive payload round-trip",
+    "Fail batch if unmatched read-back"
+  ],
+  "expectedCounts": {
+    "CREATE_NEW": null,
+    "UPDATE_MATERIAL": null,
+    "UNCHANGED": null,
+    "DUPLICATE": null,
+    "RESEARCH_ONLY": null,
+    "GDO_QUALIFIED_PENDING_AUTHORIZATION": 0,
+    "EXCLUDED": null,
+    "note": "Counts filled after live research dry-run against Airtable."
+  },
+  "operations": [],
+  "gdoWritePlan": {
+    "status": "PREPARED_NOT_AUTHORIZED",
+    "mutationsAllowed": false,
+    "note": "Qualified candidates are classified GDO_QUALIFIED_PENDING_AUTHORIZATION only."
+  },
+  "generatedAt": "2026-11-18T18:32:56.071Z"
+}
