@@ -51,6 +51,11 @@ import {
   buildLocalDemoMeResponse,
   isEligibleForLocalDemoUserResolution,
 } from "../lib/dealality/local-demo-dealality-user.js";
+import { buildLocalDevBypassAdminMeResponse } from "../lib/dealality/local-dev-bypass-admin-user.js";
+import {
+  elevateGovernedPlatformAdmin,
+  isGovernedPlatformAdminEmail,
+} from "../lib/dealality/governed-platform-admin-emails.js";
 
 const BRAND_BASICS_TABLE = process.env.AIRTABLE_BRAND_SETUP_BASICS_TABLE || "Brand Setup - Brand Basics";
 const BRAND_NAME_FIELD = process.env.AIRTABLE_BRAND_NAME_FIELD || "Brand Name";
@@ -296,6 +301,110 @@ async function getMe(req, res) {
         return res.json(localPayload);
       }
     }
+    // LOCAL DEV ONLY — DEV_AUTH_BYPASS_EMAIL founder path (parity with requireDealalityUser).
+    if (verifiedVia === "dev_bypass") {
+      const bypassPayload = buildLocalDevBypassAdminMeResponse({
+        memberstackId,
+        email: emailFromToken,
+        verifiedVia,
+        req,
+        tokenPayload,
+      });
+      if (bypassPayload) {
+        return res.json(bypassPayload);
+      }
+    }
+    // Governed founder/demo emails with no Users row — elevate for nav/API parity.
+    if (isGovernedPlatformAdminEmail(emailFromToken)) {
+      return res.json({
+        success: true,
+        ok: true,
+        memberstackId,
+        memberstack: {
+          id: memberstackId,
+          tokenIssuedAt: tokenPayload.iat != null ? tokenPayload.iat : null,
+          tokenExpiresAt: tokenPayload.exp != null ? tokenPayload.exp : null,
+        },
+        user: {
+          email: emailFromToken,
+          firstName: "Governed",
+          lastName: "Admin",
+          profilePhotoUrl: null,
+        },
+        airtable: {
+          userRecordId: null,
+          airtableUserId: null,
+          email: emailFromToken,
+          firstName: "Governed",
+          lastName: "Admin",
+          profilePhotoUrl: null,
+          companyProfileId: null,
+          companyName: null,
+          userSource: "GOVERNED_PLATFORM_ADMIN_ELEVATION",
+          airtableUserFound: false,
+        },
+        permissions: {
+          allowedBrandNames: [],
+          allowedBrandRecordIds: [],
+          allowedRegions: [],
+          allowedOperatingCompanyNames: [],
+          allowedOperatorSetupIds: [],
+          primaryOperatingCompanyName: null,
+        },
+        dealality: {
+          role: "admin",
+          primaryRole: "admin",
+          legacyRole: "admin",
+          roleRaw: "Admin",
+          roleSource: "GOVERNED_PLATFORM_ADMIN_ELEVATION",
+          companyType: null,
+          companyProfileId: null,
+          companyIds: [],
+          companyName: null,
+          profilePhotoUrl: null,
+          workspaceAccess: ["Admin"],
+          flags: {
+            isOwner: true,
+            isOperator: false,
+            isBrand: false,
+            isDemo: false,
+            isAdmin: true,
+            isOwnerOperator: false,
+          },
+          isOwner: true,
+          isBrand: false,
+          isOperator: false,
+          isDemo: false,
+          isAdmin: true,
+          isOwnerOperator: false,
+          isInternalRunbookAdmin: true,
+          canAccessOwnerWorkspace: true,
+          canAccessOperatorWorkspace: true,
+          canAccessBrandWorkspace: true,
+          canAccessDemoWorkspace: false,
+          localDealalityAdminAccess: false,
+          adpMonthlyReviewAdmin: true,
+          governedPlatformAdminElevated: true,
+          founderNavOverridesAvailable: true,
+          userSource: "GOVERNED_PLATFORM_ADMIN_ELEVATION",
+          airtableUserFound: false,
+        },
+        accountAccess: {
+          state: "active",
+          pendingApproval: false,
+          accountStatus: "active",
+          userTitle: null,
+          userMessage: null,
+          suppressBrandAssignmentToast: true,
+        },
+        meta: {
+          matchedBy: "users_row_missing_governed_admin_elevated",
+          userSource: "GOVERNED_PLATFORM_ADMIN_ELEVATION",
+          airtableUserFound: false,
+          warnings: ["users_row_missing_governed_admin_elevated"],
+        },
+      });
+    }
     return res.status(404).json({
       success: false,
       error: "user_not_found",
@@ -538,6 +647,10 @@ async function getMe(req, res) {
     ...dealality,
     companyIds: companyProfileIds,
   });
+
+  // Founder/demo may be Airtable role=owner with isAdmin=false — elevate governed emails
+  // so left-nav hasAdminNavAccess and AI Demand Admin match API middleware.
+  elevateGovernedPlatformAdmin(dealality, emailFromToken);
 
   // ADP admin tools — same decision as middleware (nav/page/API parity).
   // Local QA: approved demo email on localhost/dev. Production: RBAC only.

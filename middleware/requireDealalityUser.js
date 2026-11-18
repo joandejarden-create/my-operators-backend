@@ -20,6 +20,10 @@ import {
   resolveLocalDemoDealalityUser,
 } from "../lib/dealality/local-demo-dealality-user.js";
 import { resolveLocalDevBypassAdminUser } from "../lib/dealality/local-dev-bypass-admin-user.js";
+import {
+  elevateGovernedPlatformAdmin,
+  elevateGovernedPlatformAdminOnRequest,
+} from "../lib/dealality/governed-platform-admin-emails.js";
 
 export async function requireDealalityUser(req, res, next) {
   if (!req.memberstackMemberId) {
@@ -71,6 +75,12 @@ export async function requireDealalityUser(req, res, next) {
       });
       if (localBypassAdmin) {
         req.dealalityUser = localBypassAdmin;
+        return next();
+      }
+
+      // Governed founder/demo emails (assignments.v1.json) — stub admin when Users row missing.
+      const governedStub = elevateGovernedPlatformAdminOnRequest(req);
+      if (governedStub) {
         return next();
       }
 
@@ -142,6 +152,9 @@ export async function requireDealalityUser(req, res, next) {
 
     // Portfolio must never shrink workspace options.
     dealalityUser.canonicalWorkspaceOptions = resolveWorkspaceOptions(dealalityUser);
+
+    // Founder/demo may be Airtable role=owner with isAdmin=false — elevate governed emails.
+    elevateGovernedPlatformAdmin(dealalityUser, req.memberstackEmail);
 
     req.dealalityUser = dealalityUser;
     return next();
