@@ -863,13 +863,43 @@ function bindMapSizeSync() {
 window.refreshRadarMapSize = refreshMapSize;
 
 /**
+ * Canonical identity keys for Hotel Census ↔ HPC dedupe (mirrors server).
+ * Prefer record id; fall back to normalized name + rounded coords.
+ */
+function buildRadarHotelIdentityKeys(hotel) {
+    const keys = [];
+    const id = String(hotel && (hotel.id || hotel.recordId) || '').trim();
+    if (/^rec[A-Za-z0-9]{14}$/.test(id)) keys.push('id:' + id);
+    const name = String(hotel && hotel.name || '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, ' ')
+        .trim()
+        .replace(/\s+/g, ' ');
+    const lat = Number(hotel && hotel.lat);
+    const lng = Number(hotel && hotel.lng);
+    const latR = Number.isFinite(lat) ? Math.round(lat * 10000) / 10000 : null;
+    const lngR = Number.isFinite(lng) ? Math.round(lng * 10000) / 10000 : null;
+    if (name && latR != null && lngR != null && (latR !== 0 || lngR !== 0)) {
+        keys.push('geo:' + name + '|' + latR + '|' + lngR);
+    }
+    return keys;
+}
+
+function hotelHasRadarMapCoordinates(hotel) {
+    const lat = Number(hotel && hotel.lat);
+    const lng = Number(hotel && hotel.lng);
+    return Number.isFinite(lat) && Number.isFinite(lng) && (lat !== 0 || lng !== 0);
+}
+
+/**
  * Authorized internal-preview merge (admin / local Dealality admin only).
  * Fail-closed: share mode never calls; 401/403 leaves public Hotel Census pool unchanged.
  * Query flags alone do not authorize — server requires Memberstack + admin.
+ * Dynamic HPC Open|Pipeline query; no client-side hotel allowlist.
  */
 async function mergeAuthorizedInternalPreviewHotels(hotels) {
     if (isOpportunityRadarShareMode()) {
-        return { hotels: hotels || [], addedIds: [], skipped: 'share_mode' };
+        return { hotels: hotels || [], addedIds: [], skipped: 'share_mode', duplicatesReconciled: [] };
     }
     const list = Array.isArray(hotels) ? hotels.slice() : [];
     try {
@@ -886,30 +916,58 @@ async function mergeAuthorizedInternalPreviewHotels(hotels) {
             credentials: 'same-origin',
         });
         if (!res.ok) {
-            return { hotels: list, addedIds: [], skipped: 'http_' + res.status };
+            return { hotels: list, addedIds: [], skipped: 'http_' + res.status, duplicatesReconciled: [] };
         }
         const data = await res.json();
         if (!data || !data.success || !Array.isArray(data.hotels) || data.customerVisible === true) {
-            return { hotels: list, addedIds: [], skipped: 'payload_rejected' };
+            return { hotels: list, addedIds: [], skipped: 'payload_rejected', duplicatesReconciled: [] };
         }
-        const seen = new Set(list.map((h) => String(h && h.id || '').trim()).filter(Boolean));
+        const seen = new Set();
+        for (let i = 0; i < list.length; i++) {
+            const keys = buildRadarHotelIdentityKeys(list[i]);
+            for (let k = 0; k < keys.length; k++) seen.add(keys[k]);
+        }
         const addedIds = [];
+        const duplicatesReconciled = [];
         for (let i = 0; i < data.hotels.length; i++) {
             const hotel = data.hotels[i];
             const id = String(hotel && hotel.id || '').trim();
-            if (!id || seen.has(id)) continue;
+            if (!id || !/^rec[A-Za-z0-9]{14}$/.test(id)) continue;
             if (!hotel.internalPreviewOnly) continue;
             // HPC Radar Status must be Open|Pipeline (server already filters; keep client fail-closed).
             const st = String(hotel.status || hotel.radarStatus || '').trim();
             if (st !== 'Open' && st !== 'Pipeline') continue;
+            if (!hotelHasRadarMapCoordinates(hotel)) continue;
+            const keys = buildRadarHotelIdentityKeys(hotel);
+            let collision = null;
+            for (let k = 0; k < keys.length; k++) {
+                if (seen.has(keys[k])) {
+                    collision = keys[k];
+                    break;
+                }
+            }
+            if (collision) {
+                duplicatesReconciled.push({ hpcId: id, matchedKey: collision });
+                continue;
+            }
             list.push(hotel);
-            seen.add(id);
+            for (let k = 0; k < keys.length; k++) seen.add(keys[k]);
             addedIds.push(id);
         }
-        return { hotels: list, addedIds, skipped: null };
+        // Internal diagnostics stay in-memory for authorized sessions only — never rendered for share.
+        window.__radarHpcInternalDiagnostics = {
+            openCount: data.diagnostics && data.diagnostics.openCount,
+            pipelineCount: data.diagnostics && data.diagnostics.pipelineCount,
+            duplicatesReconciled: duplicatesReconciled.length,
+            lastSuccessfulFetchAt: data.diagnostics && data.diagnostics.lastSuccessfulFetchAt,
+            paginationComplete: data.diagnostics && data.diagnostics.paginationComplete,
+            apiErrors: (data.errors && data.errors.length) || (data.diagnostics && data.diagnostics.apiErrors && data.diagnostics.apiErrors.length) || 0,
+            cacheHit: data.diagnostics && data.diagnostics.cacheHit,
+        };
+        return { hotels: list, addedIds, skipped: null, duplicatesReconciled };
     } catch (err) {
         console.warn('[radar-map] internal-preview merge skipped:', err);
-        return { hotels: list, addedIds: [], skipped: 'error' };
+        return { hotels: list, addedIds: [], skipped: 'error', duplicatesReconciled: [] };
     }
 }
 

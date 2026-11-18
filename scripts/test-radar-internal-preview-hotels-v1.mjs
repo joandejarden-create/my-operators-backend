@@ -6,10 +6,12 @@
 import assert from "node:assert/strict";
 import {
   assertInternalPreviewQueryDoesNotAuthorize,
+  buildHpcRadarStatusFilterFormula,
   formatHotelPropertyCensusAsBrandPresenceHotel,
   isAuthorizedForRadarInternalPreviewHotels,
   isHpcRadarStatusVisible,
   listInternalPreviewCensusIds,
+  loadAuthorizedInternalPreviewHotels,
   mergeInternalPreviewHotelsIntoBrandPresenceList,
   RADAR_INTERNAL_PREVIEW_HOTELS_VERSION,
   resolveRadarStatusFromHpcFields,
@@ -17,7 +19,13 @@ import {
 
 const BETHESDA = "recLuxvwwxID7U2B8";
 
-assert.equal(listInternalPreviewCensusIds().includes(BETHESDA), true);
+assert.equal(
+  listInternalPreviewCensusIds().length,
+  0,
+  "eligibility must not use a hotel allowlist"
+);
+assert.match(buildHpcRadarStatusFilterFormula(), /Radar Status/);
+assert.match(RADAR_INTERNAL_PREVIEW_HOTELS_VERSION, /dynamic_status/);
 
 const queryGate = assertInternalPreviewQueryDoesNotAuthorize({
   internalPreview: "1",
@@ -165,6 +173,8 @@ const existing = [
     brand: "Independent",
     city: "Santo Domingo",
     country: "Dominican Republic",
+    lat: 18.47,
+    lng: -69.9,
   },
 ];
 const merged = mergeInternalPreviewHotelsIntoBrandPresenceList(existing, [
@@ -178,7 +188,7 @@ assert.equal(merged.hotels[0].name, "Casas Del XVI", "existing names preserved")
 
 // Same canonical id already on Hotel Census → no duplicate pin
 const alreadyOnMap = mergeInternalPreviewHotelsIntoBrandPresenceList(
-  [{ id: BETHESDA, name: "Bethesda from Hotel Census", status: "Open" }],
+  [{ id: BETHESDA, name: "Bethesda from Hotel Census", status: "Open", lat: 39.01, lng: -77.1 }],
   [dto]
 );
 assert.equal(alreadyOnMap.hotels.length, 1);
@@ -200,12 +210,23 @@ assert.equal(legacyStyle.name, "Agualina Kite Resort");
 assert.equal(legacyStyle.brand, "Independent");
 assert.equal(legacyStyle.status, "Open");
 
+const loaded = await loadAuthorizedInternalPreviewHotels({
+  dealalityUser: { isAdmin: true },
+  records: [hpcRecord],
+  bypassCache: true,
+});
+assert.equal(loaded.ok, true);
+assert.equal(loaded.hotels.length, 1);
+assert.equal(loaded.diagnostics.openCount, 1);
+assert.equal(loaded.diagnostics.pipelineCount, 0);
+
 console.log(
   JSON.stringify({
     ok: true,
     gate: "test:radar-internal-preview-hotels-v1",
     version: RADAR_INTERNAL_PREVIEW_HOTELS_VERSION,
-    bethesdaAllowlisted: true,
+    bethesdaAllowlisted: false,
+    dynamicStatusQuery: true,
     queryAloneUnauthorized: true,
     noDuplicateMerge: true,
     radarStatusModel: "Open|Pipeline|Hidden",
