@@ -1,6 +1,9 @@
 # Production pilot authorization request
 
-**Not approved yet.** This document is the exact ask for a future founder yes/no.
+**Status:** Authorized and executed as Bethesda four-record pilot V1  
+(`bethesda-marriott-four-record-pilot-v1`). See  
+`reports/gdi-airtable-bethesda-production-pilot-v1/`.  
+General / unrestricted Airtable production writes remain **NOT** authorized.
 
 ## Proposed first live write set (Bethesda)
 
