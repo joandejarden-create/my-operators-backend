@@ -62,8 +62,11 @@ function loadAdpOwnerAppAdminEmails() {
  * Airtable may mark founder/demo as role=owner with isAdmin=false.
  * ADP owner-app still grants platform admin via ADP_OWNER_APP_ADMIN_EMAILS /
  * assignments.v1.json adminEmails — elevate dealalityUser.isAdmin for consistency.
+ *
+ * Exported so Radar internal-preview (/app#/opportunity-radar) can share the same
+ * owner-app admin elevation without inventing a second allowlist.
  */
-function elevateAdpOwnerAppAdminFlags(req) {
+export function elevateAdpOwnerAppAdminFlags(req) {
   const email = String(req.memberstackEmail || req.dealalityUser?.email || "")
     .toLowerCase()
     .trim();
