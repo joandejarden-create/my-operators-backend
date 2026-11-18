@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Optional Dealality enforcement — enable with:
+#   git config core.hooksPath .githooks
+set -euo pipefail
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+while read -r local_ref local_sha remote_ref remote_sha; do
+  if [[ "$local_sha" =~ ^0+$ ]]; then
+    continue
+  fi
+  # Detect force-push (non-fast-forward) attempts when remote sha present
+  if [[ ! "$remote_sha" =~ ^0+$ ]]; then
+    if ! git merge-base --is-ancestor "$remote_sha" "$local_sha" 2>/dev/null; then
+      node scripts/dealality-git-preflight-v1.mjs --op force-push --force || exit 1
+    fi
+  fi
+done
+BRANCH="$(git branch --show-current || true)"
+node scripts/dealality-git-preflight-v1.mjs --op push --expect-branch "${BRANCH}" --allow-dirty "*" || {
+  echo "dealality:git-preflight blocked push" >&2
+  exit 1
+}

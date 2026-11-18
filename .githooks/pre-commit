@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Optional Dealality enforcement — enable with:
+#   git config core.hooksPath .githooks
+# Does not run unless core.hooksPath points here.
+set -euo pipefail
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+node scripts/dealality-git-preflight-v1.mjs --op commit --allow-dirty "*" || {
+  echo "dealality:git-preflight blocked commit" >&2
+  exit 1
+}
