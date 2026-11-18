@@ -9,3 +9,7 @@
 ## STOP
 
 No paid research. No production writes. Awaiting founder authorization.
+
+## Integration note
+
+PR branch revalidated against latest `main` before Integration Controller merge (no live research or production writes in this revalidation).
