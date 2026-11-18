@@ -1,6 +1,6 @@
 # Founder next approval
 
-Generated: 2026-11-18T17:48:27.816Z
+Generated: 2026-11-18T17:50:09.242Z
 
 ## Recommended next (founder-gated)
 

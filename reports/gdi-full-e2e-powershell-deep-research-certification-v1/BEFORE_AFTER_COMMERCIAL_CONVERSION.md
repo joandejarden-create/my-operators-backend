@@ -1,6 +1,6 @@
 # Before / after commercial conversion
 
-Generated: 2026-11-18T17:48:27.816Z
+Generated: 2026-11-18T17:50:09.242Z
 
 | Metric | PR #382 scorecard | After $0 rescore + drawer fix |
 | --- | ---: | ---: |

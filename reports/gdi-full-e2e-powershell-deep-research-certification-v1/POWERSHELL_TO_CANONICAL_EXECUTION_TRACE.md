@@ -1,7 +1,7 @@
 # PowerShell → canonical execution trace
 
-Generated: 2026-11-18T17:48:27.816Z
-Baseline: `f4846df2ad2cd23b369c398c7ff9bd97c811f9f2`
+Generated: 2026-11-18T17:50:09.242Z
+Baseline: `6a81a8cb2b3934a8ff771be174c4293aed9e6b9a`
 
 ## Verdict: **FIXED_AND_VERIFIED**
 
@@ -13,7 +13,7 @@ Baseline: `f4846df2ad2cd23b369c398c7ff9bd97c811f9f2`
 | Refuses implicit paid flags | true |
 | Logs canonical runner | true |
 | Fixture canonical invocation ok | true |
-| PowerShell smoke | {"attempted":true,"ok":true,"note":"PowerShell FullRun invoked canonical entry","exitCode":0,"stdoutTail":", \"remainingUsd\": null, \"budgetsRespected\": true, \"outputsIngested\": true, \"publicationAuthorized\": false, \"researchPersistence\": null, \"researchPersistenceLedgerPath\": null, \"outDir\": \"C:\\\\Dev\\\\dealality\\\\ws-gdi\\\\reports\\\\gdi-canonical-full-e2e-entry-v1\\\\recLuxvwwxID7U2B8\\\\2026-11-18T17-48-30-331Z\", \"summaryPath\": \"C:\\\\Dev\\\\dealality\\\\ws-gdi\\\\reports\\\\gdi-canonical-full-e2e-entry-v1\\\\recLuxvwwxID7U2B8\\\\2026-11-18T17-48-30-331Z\\\\canonical-full-e2e-summary.json\" } GDI canonical workflow finished.","stderrTail":""} |
+| PowerShell smoke | {"attempted":true,"ok":true,"note":"PowerShell FullRun invoked canonical entry","exitCode":0,"stdoutTail":", \"remainingUsd\": null, \"budgetsRespected\": true, \"outputsIngested\": true, \"publicationAuthorized\": false, \"researchPersistence\": null, \"researchPersistenceLedgerPath\": null, \"outDir\": \"C:\\\\Dev\\\\dealality\\\\ws-gdi\\\\reports\\\\gdi-canonical-full-e2e-entry-v1\\\\recLuxvwwxID7U2B8\\\\2026-11-18T17-50-12-181Z\", \"summaryPath\": \"C:\\\\Dev\\\\dealality\\\\ws-gdi\\\\reports\\\\gdi-canonical-full-e2e-entry-v1\\\\recLuxvwwxID7U2B8\\\\2026-11-18T17-50-12-181Z\\\\canonical-full-e2e-summary.json\" } GDI canonical workflow finished.","stderrTail":""} |
 
 ## Behavior
 

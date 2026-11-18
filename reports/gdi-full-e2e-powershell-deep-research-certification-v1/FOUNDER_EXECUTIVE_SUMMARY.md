@@ -1,7 +1,7 @@
 # Founder executive summary — Full E2E PowerShell / deep-research certification
 
-Generated: 2026-11-18T17:48:27.816Z
-Baseline HEAD: `f4846df2ad2cd23b369c398c7ff9bd97c811f9f2`
+Generated: 2026-11-18T17:50:09.242Z
+Baseline HEAD: `6a81a8cb2b3934a8ff771be174c4293aed9e6b9a`
 Hotel: Bethesda Marriott (`recLuxvwwxID7U2B8`)
 
 ## Verdict
