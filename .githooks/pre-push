@@ -1,22 +1,43 @@
 #!/usr/bin/env bash
-# Optional Dealality enforcement — enable with:
-#   git config core.hooksPath .githooks
+# Optional Dealality enforcement — enable with per-worktree config only:
+#   git config extensions.worktreeConfig true
+#   git config --worktree core.hooksPath .githooks
+# Do NOT set core.hooksPath globally (affects all worktrees).
 set -euo pipefail
 ROOT="$(git rev-parse --show-toplevel)"
 cd "$ROOT"
+
+PUSH_TO_MAIN=0
+FORCE_DETECTED=0
 while read -r local_ref local_sha remote_ref remote_sha; do
   if [[ "$local_sha" =~ ^0+$ ]]; then
     continue
   fi
+  if [[ "$remote_ref" == "refs/heads/main" || "$remote_ref" == "refs/heads/origin/main" ]]; then
+    PUSH_TO_MAIN=1
+  fi
   # Detect force-push (non-fast-forward) attempts when remote sha present
   if [[ ! "$remote_sha" =~ ^0+$ ]]; then
     if ! git merge-base --is-ancestor "$remote_sha" "$local_sha" 2>/dev/null; then
-      node scripts/dealality-git-preflight-v1.mjs --op force-push --force || exit 1
+      FORCE_DETECTED=1
     fi
   fi
 done
+
+if [[ "$FORCE_DETECTED" -eq 1 ]]; then
+  if [[ "$PUSH_TO_MAIN" -eq 1 ]]; then
+    node scripts/dealality-git-preflight-v1.mjs --op force-push --force --target-ref origin/main || exit 1
+  else
+    node scripts/dealality-git-preflight-v1.mjs --op force-push --force || exit 1
+  fi
+fi
+
 BRANCH="$(git branch --show-current || true)"
-node scripts/dealality-git-preflight-v1.mjs --op push --expect-branch "${BRANCH}" --allow-dirty "*" || {
+PREFLIGHT_ARGS=(--op push --expect-branch "${BRANCH}" --allow-dirty "*")
+if [[ "$PUSH_TO_MAIN" -eq 1 || "${BRANCH}" == "main" ]]; then
+  PREFLIGHT_ARGS+=(--target-ref origin/main)
+fi
+node scripts/dealality-git-preflight-v1.mjs "${PREFLIGHT_ARGS[@]}" || {
   echo "dealality:git-preflight blocked push" >&2
   exit 1
 }

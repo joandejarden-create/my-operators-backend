@@ -50,16 +50,53 @@ expectFail(
   "branch mismatch",
 );
 
-// Wrong worktree / stream path (HE registered elsewhere)
-expectFail(
-  "wrong worktree for HE stream",
-  {
-    op: "commit",
-    stream: "he",
-    allowDirty: "*",
-  },
-  "expected path",
-);
+// Stream / worktree path ownership (HE permanent path is C:/Dev/dealality/ws-hotel-explorer)
+{
+  const heWs = registry.workspaces.find((w) => w.stream === "he");
+  const adpWs = registry.workspaces.find((w) => w.stream === "adp");
+  const hereIsHe = heWs && normalizePath(ROOT) === heWs.pathNormalized;
+  if (hereIsHe) {
+    expectOk("HE stream matches HE workspace", {
+      op: "commit",
+      stream: "he",
+      allowDirty: "*",
+    });
+    expectFail(
+      "wrong worktree for ADP stream",
+      {
+        op: "commit",
+        stream: "adp",
+        allowDirty: "*",
+      },
+      "expected path",
+    );
+  } else if (adpWs && normalizePath(ROOT) === adpWs.pathNormalized) {
+    expectOk("ADP stream matches ADP workspace", {
+      op: "commit",
+      stream: "adp",
+      allowDirty: "*",
+    });
+    expectFail(
+      "wrong worktree for HE stream",
+      {
+        op: "commit",
+        stream: "he",
+        allowDirty: "*",
+      },
+      "expected path",
+    );
+  } else {
+    expectFail(
+      "wrong worktree for HE stream",
+      {
+        op: "commit",
+        stream: "he",
+        allowDirty: "*",
+      },
+      "expected path",
+    );
+  }
+}
 
 // Dirty checkout blocked for merge
 expectFail(
@@ -120,6 +157,44 @@ expectFail(
   },
   "force-push blocked",
 );
+
+// Direct push to main / origin/main blocked
+expectFail(
+  "push to origin/main blocked",
+  {
+    op: "push",
+    targetRef: "origin/main",
+    allowDirty: "*",
+    _simulate: {
+      branch: "feat/hotel-explorer-example",
+      dirty: [],
+    },
+  },
+  "refusing push to main/origin/main",
+);
+
+expectFail(
+  "push while on main blocked",
+  {
+    op: "push",
+    allowDirty: "*",
+    _simulate: {
+      branch: "main",
+      dirty: [],
+    },
+  },
+  "refusing push to main/origin/main",
+);
+
+// Safe feature-branch push allowed
+expectOk("push feature branch allowed", {
+  op: "push",
+  allowDirty: "*",
+  _simulate: {
+    branch: "feat/hotel-explorer-example",
+    dirty: [],
+  },
+});
 
 // Unregistered worktree mutation
 expectFail(
@@ -192,13 +267,19 @@ expectFail(
   "requires --preservation-ref or --backup-manifest",
 );
 
-// Positive: commit allowed in current registered integration/temp workspace
-expectOk("commit in registered integration wt with allow-dirty *", {
-  op: "commit",
-  stream: "integration",
-  expectBranch: currentBranch,
-  allowDirty: "*",
-});
+// Positive: commit allowed for the stream that owns this workspace
+{
+  const registeredHere = registry.workspaces.find(
+    (w) => w.pathNormalized === normalizePath(ROOT),
+  );
+  const streamHere = registeredHere?.stream || "integration";
+  expectOk(`commit in registered ${streamHere} workspace with allow-dirty *`, {
+    op: "commit",
+    stream: streamHere,
+    expectBranch: currentBranch,
+    allowDirty: "*",
+  });
+}
 
 console.log("\nAll git-preflight scenario tests PASSED");
 console.log(`registryRoot=${ROOT}`);
