@@ -63,7 +63,12 @@ check("share_app_has_no_mode_banner", () => {
 });
 
 check("auth_html_cache_bust_updated", () => {
-  assert.match(authHtml, /app\.js\?v=gdi-local-staged-founder-preview-v1/);
+  assert.match(authHtml, /app\.js\?v=gdi-no-inventory-status-banner-v1/);
+});
+
+check("auth_app_has_no_full_width_inventory_status_strip", () => {
+  assert.doesNotMatch(appJs, /gdiFounderInventoryStrip/);
+  assert.doesNotMatch(appJs, /customer-approved: no/);
 });
 
 if (failed) {

@@ -1962,6 +1962,7 @@
         : inventoryMode === "staged"
           ? "FOUNDER_STAGED_PREVIEW"
           : "FOUNDER_PUBLICATION_PREVIEW";
+    var pubMeta = state.publication || {};
     try {
       if (typeof console !== "undefined" && console.debug) {
         console.debug("[gdi] presentationMode=", presentationMode, {
@@ -1969,66 +1970,21 @@
           liveResearch: wantsLiveResearchBrowse(),
           packagePreview: wantsPublicationPackagePreview(),
           diag: wantsPresentationModeDiagnostics(),
+          opportunityCount: (state.opportunities || []).length,
+          publicationVersion: pubMeta.publicationVersion || null,
+          contentFingerprintSha256: pubMeta.contentFingerprintSha256 || null,
+          previewSource: pubMeta.previewSource || null,
         });
       }
     } catch (eDiag) {
       /* ignore */
     }
-    var pubMeta = state.publication || {};
-    var oppCount = (state.opportunities || []).length;
-    var customerApproved =
-      inventoryMode === "published" &&
-      String(pubMeta.previewSource || "").toUpperCase() === "CURRENT";
-    var sourceLabel =
-      inventoryMode === "research"
-        ? "Research / Development Preview"
-        : inventoryMode === "staged"
-          ? "Staged Preview"
-          : "Published Inventory";
-    var sourceDetail =
-      inventoryMode === "research"
-        ? "Hotel research store · not customer-approved"
-        : inventoryMode === "staged"
-          ? "STAGED package · founder review only · not customer-approved"
-          : "CURRENT package · customer-approved publication";
-    var versionBits = [];
-    if (pubMeta.publicationVersion) {
-      versionBits.push("version " + String(pubMeta.publicationVersion));
-    }
-    if (pubMeta.contentFingerprintSha256) {
-      versionBits.push(
-        "fp " + String(pubMeta.contentFingerprintSha256).slice(0, 12)
-      );
-    }
-    if (state.summary && state.summary.updatedAt) {
-      versionBits.push("updated " + String(state.summary.updatedAt).slice(0, 10));
-    }
-    var showFounderInventoryStrip =
-      isLocalFounderHost() ||
-      wantsPresentationModeDiagnostics() ||
-      inventoryMode !== "published";
+    // Inventory mode chrome lives in the app shell sidebar (Research/Staged/
+    // Published + compact STAGED↔CURRENT indicator). Do not render a full-width
+    // inventory-status banner in the GDI report for any hotel or mode.
     var presentationModeBanner = "";
-    if (showFounderInventoryStrip) {
-      presentationModeBanner =
-        '<div id="gdiFounderInventoryStrip" class="gdi-presentation-mode-banner" data-gdi-inventory-mode="' +
-        esc(inventoryMode) +
-        '" role="status">' +
-        "<strong>" +
-        esc(sourceLabel) +
-        "</strong> · " +
-        esc(hotelName) +
-        " · " +
-        oppCount +
-        " opportunit" +
-        (oppCount === 1 ? "y" : "ies") +
-        " · " +
-        esc(sourceDetail) +
-        (versionBits.length ? " · " + esc(versionBits.join(" · ")) : "") +
-        (customerApproved ? " · customer-approved: yes" : " · customer-approved: no") +
-        "</div>";
-    }
     if (wantsPresentationModeDiagnostics()) {
-      presentationModeBanner +=
+      presentationModeBanner =
         '<div id="gdiPresentationModeBanner" class="gdi-presentation-mode-banner" data-gdi-presentation-mode="' +
         presentationMode +
         '" role="status">' +
