@@ -192,7 +192,21 @@ async function main() {
     });
     // With DEV_AUTH_BYPASS set on server OR empty without header session → may be 401 or 200
     if (ownerBypass.status === 200) {
-      assert.ok((ownerBypass.json?.properties || []).length >= 5, "five properties for owner bypass/admin");
+      const props = ownerBypass.json?.properties || [];
+      const propIds = props.map((p) => p.propertyId);
+      assert.ok(props.length >= 5, "five properties for owner bypass/admin");
+      assert.ok(
+        propIds.includes("adp_sheraton_mallorca_arabella_golf"),
+        "admin inventory must include Sheraton"
+      );
+      assert.ok(
+        propIds.includes("adp_wyndham_san_diego_bayside"),
+        "admin inventory must include Wyndham"
+      );
+      assert.ok(
+        propIds.includes("adp_bethesda_marriott"),
+        "admin inventory must include Bethesda Marriott"
+      );
     }
 
     const issued = issueShareCapability({
