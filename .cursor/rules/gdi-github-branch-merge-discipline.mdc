@@ -34,10 +34,16 @@ Applies to **all** Dealality development in this repository (GDI, ADP, Census, B
 7. Run CI and resolve all failures on the latest commit (superseded runs may cancel).
 8. **Merge the PR into `main` before starting the next task** (especially GDI hotel/phase sequencing).
 9. Confirm the merge commit exists on `origin/main`.
-10. **Return the primary checkout to `main` when safe** and synchronize with a safe fast-forward (`git switch main` then `git merge --ff-only origin/main`, or equivalent).
-11. Verify expected code, publication packages / CURRENT pointers, and Git working-tree state locally.
-12. Ensure Cursor is not left unnecessarily attached to the merged feature branch (`SetActiveBranch` to `main` when supported). Repository Git rules alone may not update the Cursor UI branch chip—if the chip is wrong, say so and give manual UI reattachment steps.
-13. Remove completed local feature branches and obsolete **clean** temporary worktrees only when safe and confirmed unused.
+10. **Run post-merge product workspace sync** (mandatory for HE / ADP / GDI):
+    ```bash
+    npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi> --pr <n>
+    npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi> --pr <n> --apply
+    ```
+    Safely return the affected registered product workspace to its home branch (explicit `--pr` / `--merged-branch` identity required), fast-forward to `origin/main`, verify `dealality:git-preflight` status-check, and peer-fetch/FF the other two product homes **only when they are not on active unmerged tasks**. Preserve all dirty/untracked files (verified backup before dirty return-home); never reset/clean/stash-discard; do not create extra worktrees for ordinary sync. See `docs/ai-build-system/POST_MERGE_WORKSPACE_SYNC.md`.
+11. **Return the primary checkout to `main` when safe** and synchronize with a safe fast-forward (`git switch main` then `git merge --ff-only origin/main`, or equivalent). If the primary is dirty, preserve it and sync product workspaces instead (`SKIP_INTEGRATION_DIRTY`).
+12. Verify expected code, publication packages / CURRENT pointers, and Git working-tree state locally.
+13. Ensure Cursor is not left unnecessarily attached to the merged feature branch (`SetActiveBranch` to the stream home branch — or `main` for Integration — when supported). Repository Git rules alone may not update the Cursor UI branch chip—if the chip is wrong, say so and give manual UI reattachment steps.
+14. Remove completed local feature branches and obsolete **clean** temporary worktrees only when safe and confirmed unused.
 
 ## Worktrees (exceptional only)
 
@@ -67,10 +73,11 @@ Every task that ships via PR must finish with:
 - CI result
 - Merge status
 - Merge commit SHA
-- Confirmation that the **primary** checkout is on synchronized `main`
+- Post-merge sync result for the affected product workspace (home branch + `origin/main` FF + preflight) and peer fetch/FF status
+- Confirmation that the **primary** checkout is on synchronized `main` **or** an explicit `SKIP_INTEGRATION_DIRTY` / preserve blocker
 - Working-tree status
 - Any remaining open branches, dirty preserve worktrees, or UI reattachment steps that need attention
 
-**A task is not technically complete until its PR is merged into `main` and the primary checkout is safely synchronized, unless an explicit blocker is reported.**
+**A task is not technically complete until its PR is merged into `main` and the affected product workspace is safely synchronized to its home/`origin/main` tip (primary sync when safe), unless an explicit blocker is reported.**
 
 Do not begin the next hotel, phase, or major development task while the preceding required PR remains unmerged.

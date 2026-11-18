@@ -15,9 +15,10 @@ On start:
 1. Confirm cwd/worktree root is C:\Dev\dealality\ws-hotel-explorer
 2. Run: git branch --show-current && git rev-parse --short HEAD && git status -sb
 3. Run: npm run dealality:git-preflight -- --op status-check --stream he
-4. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline
+4. If idle on home and behind origin/main: npm run dealality:post-merge-sync -- --mode status (Integration applies sync after merges)
+5. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline
 
-Workflow: one task → branch from latest origin/main inside this workspace → implement → targeted tests → commit → push → PR → STOP for Integration Controller merge.
+Workflow: one task → branch from latest origin/main inside this workspace → implement → targeted tests → commit → push → PR → STOP for Integration Controller merge + post-merge sync.
 Do not create unregistered worktrees. Do not force-push. Do not merge to main. Do not touch the dirty primary checkout.
 No Airtable writes, paid research, or deploy without founder authorization.
 Shared files (package.json, radar HE surfaces, registry): coordinate with Integration Controller.
@@ -36,9 +37,10 @@ On start:
 1. Confirm cwd/worktree root is C:\Dev\dealality\ws-adp
 2. Run: git branch --show-current && git rev-parse --short HEAD && git status -sb
 3. Run: npm run dealality:git-preflight -- --op status-check --stream adp
-4. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline
+4. If idle on home and behind origin/main: npm run dealality:post-merge-sync -- --mode status (Integration applies sync after merges)
+5. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline
 
-Workflow: one task → branch from latest origin/main inside this workspace → implement → targeted tests → commit → push → PR → STOP for Integration Controller merge.
+Workflow: one task → branch from latest origin/main inside this workspace → implement → targeted tests → commit → push → PR → STOP for Integration Controller merge + post-merge sync.
 Do not create unregistered worktrees. Do not force-push. Do not merge to main. Do not import primary dirty ADP paths until founder-approved preservation transfer.
 No Airtable writes, paid research, or deploy without founder authorization.
 ```
@@ -56,13 +58,23 @@ On start:
 1. Confirm cwd/worktree root is C:\Dev\dealality\ws-gdi
 2. Run: git branch --show-current && git rev-parse --short HEAD && git status -sb
 3. Run: npm run dealality:git-preflight -- --op status-check --stream gdi
-4. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline
+4. If idle on home and behind origin/main: npm run dealality:post-merge-sync -- --mode status (Integration applies sync after merges)
+5. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline
 
-Workflow: one task → branch from latest origin/main inside this workspace → implement → targeted tests → commit → push → PR → STOP for Integration Controller merge.
+Workflow: one task → branch from latest origin/main inside this workspace → implement → targeted tests → commit → push → PR → STOP for Integration Controller merge + post-merge sync.
 Do not create unregistered worktrees. Do not force-push. Do not merge to main. Do not copy dirty primary GDI WIP until founder-approved preservation execution.
 No Airtable writes, paid research, or deploy without founder authorization.
 ```
 
 ## Integration Controller
 
-Owns: merges into main, shared-file coordination, registry edits, worktree provisioning/removal approvals, primary dirty preservation execution.
+Owns: merges into main, **post-merge product workspace sync** (`npm run dealality:post-merge-sync`), shared-file coordination, registry edits, worktree provisioning/removal approvals, primary dirty preservation execution.
+
+After every successful merge:
+
+```bash
+npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi> --pr <n>
+npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi> --pr <n> --apply
+```
+
+See `docs/ai-build-system/POST_MERGE_WORKSPACE_SYNC.md`.

@@ -19,5 +19,10 @@ for (const id of ["integration", "hotel-explorer", "adp", "gdi"]) {
 }
 assert.equal(findWorkspaceByStream(registry, "he").pathNormalized, normalizePath("C:/Dev/dealality/ws-hotel-explorer"));
 assert.ok(listRegisteredWorkspaces(registry).some((w) => w.id === "dev-os-governance-v1"));
+assert.ok(listRegisteredWorkspaces(registry).some((w) => w.id === "dev-os-post-merge-sync-v1"));
 assert.ok((registry.protectedRefs || []).includes("main"));
+assert.ok(
+  (registry.notes || []).some((n) => String(n).includes("dealality:post-merge-sync")),
+  "registry notes must mention post-merge sync",
+);
 console.log("PASS: worktree registry schema and permanent workspaces");
