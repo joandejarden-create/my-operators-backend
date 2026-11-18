@@ -716,6 +716,7 @@
       /* ignore */
     }
     clearHotelScopedState();
+    notifyShellHotelContext();
     setLoading(true, UI.DEFAULT_PAGE_LOADING_MESSAGE);
     return loadAll();
   }
@@ -940,6 +941,25 @@
       window.history.replaceState({}, "", url.pathname + url.search + url.hash);
     } catch (e) {
       /* ignore */
+    }
+    notifyShellHotelContext();
+  }
+
+  function notifyShellHotelContext() {
+    try {
+      if (!window.parent || window.parent === window) return;
+      window.parent.postMessage(
+        {
+          source: "dealality-gdi",
+          type: "gdi-hotel-context",
+          hotelId: state.hotelId || null,
+          hotelLabel: hotelLabelForId(state.hotelId),
+          inventoryMode: resolveFounderInventoryMode(),
+        },
+        window.location.origin
+      );
+    } catch (e) {
+      /* cross-origin / closed */
     }
   }
 
@@ -2005,17 +2025,7 @@
         esc(sourceDetail) +
         (versionBits.length ? " · " + esc(versionBits.join(" · ")) : "") +
         (customerApproved ? " · customer-approved: yes" : " · customer-approved: no") +
-        '<span class="gdi-founder-inventory-actions" style="display:inline-flex;gap:0.35rem;margin-left:0.75rem;flex-wrap:wrap">' +
-        '<button type="button" class="gdi-btn" data-gdi-inventory-mode="research"' +
-        (inventoryMode === "research" ? " disabled" : "") +
-        ">Research</button>" +
-        '<button type="button" class="gdi-btn" data-gdi-inventory-mode="staged"' +
-        (inventoryMode === "staged" ? " disabled" : "") +
-        ">Staged</button>" +
-        '<button type="button" class="gdi-btn" data-gdi-inventory-mode="published"' +
-        (inventoryMode === "published" ? " disabled" : "") +
-        ">Published</button>" +
-        "</span></div>";
+        "</div>";
     }
     if (wantsPresentationModeDiagnostics()) {
       presentationModeBanner +=
@@ -2142,17 +2152,7 @@
       });
     }
 
-    root.querySelectorAll("[data-gdi-inventory-mode]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        var mode = String(btn.getAttribute("data-gdi-inventory-mode") || "").trim();
-        if (!mode || mode === resolveFounderInventoryMode()) return;
-        applyFounderInventoryMode(mode);
-        setLoading(true, UI.DEFAULT_PAGE_LOADING_MESSAGE);
-        loadAll().catch(function (err) {
-          handleLoadFailure(err);
-        });
-      });
-    });
+    notifyShellHotelContext();
 
     var weeklySelect = document.getElementById("gdiWeeklyFilter");
     if (weeklySelect) {

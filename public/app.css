@@ -396,6 +396,125 @@ body {
     transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 }
 
+/* GDI Inventory View — sidebar segmented control (below Workspace) */
+.gdi-inventory-sidebar-wrap {
+    margin: 0 1rem 0.55rem;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid var(--sidebar-border);
+    border-radius: 8px;
+    background: rgba(16, 25, 53, 0.55);
+    flex-shrink: 0;
+    position: relative;
+}
+.gdi-inventory-sidebar-wrap .dev-workspace-label {
+    margin-bottom: 0.4rem;
+}
+.gdi-inventory-segmented {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.2rem;
+    padding: 0.18rem;
+    border-radius: 7px;
+    background: rgba(0, 0, 0, 0.28);
+    border: 1px solid var(--sidebar-border);
+}
+.gdi-inventory-seg-btn {
+    appearance: none;
+    border: 0;
+    border-radius: 5px;
+    background: transparent;
+    color: var(--sidebar-text-muted);
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    padding: 0.38rem 0.2rem;
+    cursor: pointer;
+    line-height: 1.15;
+}
+.gdi-inventory-seg-btn:hover {
+    color: #e8ecff;
+}
+.gdi-inventory-seg-btn[aria-pressed="true"] {
+    background: rgba(102, 126, 234, 0.35);
+    color: #fff;
+    box-shadow: inset 0 0 0 1px rgba(102, 126, 234, 0.65);
+}
+.gdi-inventory-compare-status {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    width: 100%;
+    margin-top: 0.45rem;
+    padding: 0.28rem 0.15rem 0;
+    border: 0;
+    background: transparent;
+    color: var(--sidebar-text-muted);
+    font: inherit;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-align: left;
+    cursor: help;
+}
+.gdi-inventory-compare-dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 999px;
+    background: #64748b;
+    flex-shrink: 0;
+}
+.gdi-inventory-compare-status[data-status="SYNCED"] .gdi-inventory-compare-dot {
+    background: #22c55e;
+}
+.gdi-inventory-compare-status[data-status="DIFFERENT"] .gdi-inventory-compare-dot {
+    background: #f59e0b;
+}
+.gdi-inventory-compare-status[data-status="UNAVAILABLE"] .gdi-inventory-compare-dot {
+    background: #94a3b8;
+}
+.gdi-inventory-compare-status[data-status="INTEGRITY_ERROR"] .gdi-inventory-compare-dot {
+    background: #ef4444;
+}
+.gdi-inventory-compare-status[data-status="SYNCED"] .gdi-inventory-compare-label {
+    color: #86efac;
+}
+.gdi-inventory-compare-status[data-status="DIFFERENT"] .gdi-inventory-compare-label {
+    color: #fcd34d;
+}
+.gdi-inventory-compare-status[data-status="INTEGRITY_ERROR"] .gdi-inventory-compare-label {
+    color: #fca5a5;
+}
+.gdi-inventory-compare-tooltip {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(100% + 0.35rem);
+    z-index: 40;
+    padding: 0.55rem 0.65rem;
+    border-radius: 8px;
+    border: 1px solid #37446b;
+    background: #101935;
+    color: #f0f4ff;
+    font-size: 0.7rem;
+    line-height: 1.35;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    white-space: pre-line;
+}
+.sidebar.collapsed .gdi-inventory-sidebar-wrap {
+    margin: 0.35rem 0.45rem;
+    padding: 0.4rem 0.25rem;
+}
+.sidebar.collapsed .gdi-inventory-sidebar-wrap .dev-workspace-label,
+.sidebar.collapsed .gdi-inventory-compare-status,
+.sidebar.collapsed .gdi-inventory-compare-tooltip {
+    display: none;
+}
+.sidebar.collapsed .gdi-inventory-seg-btn {
+    font-size: 0.58rem;
+    padding: 0.3rem 0.05rem;
+}
+
 .workspace-switcher-toggle {
     display: flex;
     align-items: center;

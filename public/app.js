@@ -16,6 +16,14 @@
     var workspaceDemoBrandPortfolio = document.getElementById('workspaceDemoBrandPortfolio');
     var devBrandPortfolioSelect = document.getElementById('devBrandPortfolioSelect');
     var devNavOverrideSelect = document.getElementById('devNavOverrideSelect');
+    var gdiInventorySidebarWrap = document.getElementById('gdiInventorySidebarWrap');
+    var gdiInventoryCompareStatus = document.getElementById('gdiInventoryCompareStatus');
+    var gdiInventoryCompareLabel = document.getElementById('gdiInventoryCompareLabel');
+    var gdiInventoryCompareTooltip = document.getElementById('gdiInventoryCompareTooltip');
+    var GDI_INVENTORY_STORAGE_KEY = 'dealality_gdi_inventory_mode';
+    var gdiInventoryMode = 'research';
+    var gdiCompareHotelId = '';
+    var gdiCompareHotelLabel = '';
     /**
      * dealality_active_workspace — real app-shell workspace context (nav + routing).
      * dealality_demo_brand_portfolio — founder/demo showcase Brand portfolio context.
@@ -1029,6 +1037,308 @@
         return new URLSearchParams(hash.slice(qIdx + 1));
     }
 
+    function isLocalFounderShellHost() {
+        try {
+            var host = String((window.location && window.location.hostname) || '').toLowerCase();
+            return (
+                host === 'localhost' ||
+                host === '127.0.0.1' ||
+                host === '0.0.0.0' ||
+                host === '[::1]'
+            );
+        } catch (_err) {
+            return false;
+        }
+    }
+
+    function readStoredGdiInventoryMode() {
+        try {
+            var stored = String(
+                (window.localStorage && window.localStorage.getItem(GDI_INVENTORY_STORAGE_KEY)) || ''
+            )
+                .trim()
+                .toLowerCase();
+            if (stored === 'research' || stored === 'staged' || stored === 'published') return stored;
+        } catch (_err) {}
+        return '';
+    }
+
+    function storeGdiInventoryMode(mode) {
+        try {
+            if (!window.localStorage) return;
+            var next = String(mode || '').trim().toLowerCase();
+            if (next !== 'research' && next !== 'staged' && next !== 'published') {
+                window.localStorage.removeItem(GDI_INVENTORY_STORAGE_KEY);
+            } else {
+                window.localStorage.setItem(GDI_INVENTORY_STORAGE_KEY, next);
+            }
+        } catch (_err) {}
+    }
+
+    function resolveGdiInventoryMode() {
+        try {
+            var hashQs = getHashQueryParams();
+            var parentQs = new URLSearchParams(window.location.search || '');
+            var inventory = String(
+                hashQs.get('inventory') ||
+                    parentQs.get('inventory') ||
+                    hashQs.get('gdiInventory') ||
+                    ''
+            )
+                .trim()
+                .toLowerCase();
+            if (
+                inventory === 'research' ||
+                inventory === 'development' ||
+                inventory === 'dev' ||
+                inventory === 'live'
+            ) {
+                return 'research';
+            }
+            if (inventory === 'staged') return 'staged';
+            if (inventory === 'published' || inventory === 'current') return 'published';
+            var preview = String(hashQs.get('preview') || parentQs.get('preview') || '')
+                .trim()
+                .toLowerCase();
+            if (preview === 'staged') return 'staged';
+            if (preview === 'current' || preview === 'published') return 'published';
+            if (
+                String(hashQs.get('live') || parentQs.get('live') || '') === '1' ||
+                String(hashQs.get('publicationPackage') || parentQs.get('publicationPackage') || '') ===
+                    '0'
+            ) {
+                return 'research';
+            }
+            var stored = readStoredGdiInventoryMode();
+            if (stored) return stored;
+            return isLocalFounderShellHost() ? 'research' : 'published';
+        } catch (_err) {
+            return isLocalFounderShellHost() ? 'research' : 'published';
+        }
+    }
+
+    function applyGdiInventoryParamsToSearch(params, mode) {
+        var next = String(mode || '').trim().toLowerCase();
+        params.delete('live');
+        params.delete('publicationPackage');
+        params.delete('preview');
+        params.delete('inventory');
+        params.delete('gdiInventory');
+        if (next === 'research') {
+            params.set('inventory', 'research');
+            params.set('live', '1');
+        } else if (next === 'staged') {
+            params.set('inventory', 'staged');
+            params.set('preview', 'staged');
+        } else if (next === 'published') {
+            params.set('inventory', 'published');
+            params.set('preview', 'current');
+        }
+    }
+
+    function syncGdiInventoryToggleUi() {
+        if (!gdiInventorySidebarWrap) return;
+        gdiInventoryMode = resolveGdiInventoryMode();
+        var buttons = gdiInventorySidebarWrap.querySelectorAll('[data-gdi-shell-inventory]');
+        buttons.forEach(function (btn) {
+            var mode = String(btn.getAttribute('data-gdi-shell-inventory') || '');
+            var active = mode === gdiInventoryMode;
+            btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+    }
+
+    function setGdiInventorySidebarVisible(visible) {
+        if (!gdiInventorySidebarWrap) return;
+        if (visible) {
+            gdiInventorySidebarWrap.hidden = false;
+            syncGdiInventoryToggleUi();
+        } else {
+            gdiInventorySidebarWrap.hidden = true;
+            if (gdiInventoryCompareTooltip) gdiInventoryCompareTooltip.hidden = true;
+        }
+    }
+
+    function formatGdiCompareTooltip(comparison, hotelLabel) {
+        if (!comparison) return 'Comparison unavailable.';
+        var staged = comparison.staged || {};
+        var current = comparison.current || {};
+        var lines = [
+            'Hotel: ' + (hotelLabel || comparison.hotelId || '—'),
+            'STAGED: ' + (staged.available ? 'available' : 'missing'),
+            'CURRENT: ' + (current.available ? 'available' : 'missing'),
+            'Staged version: ' + (staged.publicationVersion || '—'),
+            'Published version: ' + (current.publicationVersion || '—'),
+            'Staged opportunities: ' +
+                (staged.opportunityCount != null ? String(staged.opportunityCount) : '—'),
+            'Published opportunities: ' +
+                (current.opportunityCount != null ? String(current.opportunityCount) : '—'),
+            'Fingerprint status: ' +
+                (comparison.fingerprintsMatch === true
+                    ? 'match'
+                    : comparison.fingerprintsMatch === false
+                      ? 'differ'
+                      : 'n/a'),
+            'Unpublished staged changes: ' +
+                (comparison.unpublishedStagedChanges === true
+                    ? 'yes'
+                    : comparison.unpublishedStagedChanges === false
+                      ? 'no'
+                      : 'n/a'),
+            comparison.detail || '',
+        ];
+        return lines.filter(Boolean).join('\n');
+    }
+
+    function renderGdiCompareStatus(comparison) {
+        if (!gdiInventoryCompareStatus || !gdiInventoryCompareLabel) return;
+        var status = (comparison && comparison.status) || 'UNAVAILABLE';
+        var label = (comparison && comparison.label) || 'Unavailable';
+        gdiInventoryCompareStatus.setAttribute('data-status', status);
+        gdiInventoryCompareLabel.textContent = String(label).toUpperCase();
+        var tip = formatGdiCompareTooltip(comparison, gdiCompareHotelLabel);
+        gdiInventoryCompareStatus.setAttribute('title', tip.replace(/\n/g, ' · '));
+        if (gdiInventoryCompareTooltip) {
+            gdiInventoryCompareTooltip.textContent = tip;
+        }
+    }
+
+    function refreshGdiPublicationComparison(hotelId, hotelLabel) {
+        var id = String(hotelId || '').trim();
+        gdiCompareHotelId = id;
+        gdiCompareHotelLabel = String(hotelLabel || id || '');
+        if (!id) {
+            renderGdiCompareStatus({
+                status: 'UNAVAILABLE',
+                label: 'Unavailable',
+                detail: 'Select a hotel to compare STAGED and CURRENT.',
+                staged: { available: false },
+                current: { available: false },
+            });
+            return;
+        }
+        var url =
+            '/api/group-demand-intelligence/hotels/' +
+            encodeURIComponent(id) +
+            '/publication-comparison';
+        fetch(url, { credentials: 'include' })
+            .then(function (res) {
+                return res.json().then(function (body) {
+                    return { ok: res.ok, body: body };
+                });
+            })
+            .then(function (result) {
+                if (String(gdiCompareHotelId) !== id) return;
+                if (result.ok && result.body && result.body.comparison) {
+                    renderGdiCompareStatus(result.body.comparison);
+                } else {
+                    renderGdiCompareStatus({
+                        status: 'INTEGRITY_ERROR',
+                        label: 'Integrity error',
+                        detail: 'Unable to verify publication comparison for this hotel.',
+                        staged: { available: false },
+                        current: { available: false },
+                    });
+                }
+            })
+            .catch(function () {
+                if (String(gdiCompareHotelId) !== id) return;
+                renderGdiCompareStatus({
+                    status: 'INTEGRITY_ERROR',
+                    label: 'Integrity error',
+                    detail: 'Publication comparison request failed.',
+                    staged: { available: false },
+                    current: { available: false },
+                });
+            });
+    }
+
+    function applyGdiInventoryModeFromShell(mode, opts) {
+        opts = opts || {};
+        var next = String(mode || '').trim().toLowerCase();
+        if (next !== 'research' && next !== 'staged' && next !== 'published') return;
+        gdiInventoryMode = next;
+        storeGdiInventoryMode(next);
+        try {
+            var url = new URL(window.location.href);
+            applyGdiInventoryParamsToSearch(url.searchParams, next);
+            // Keep hash route, scrub conflicting inventory flags from hash query.
+            var hash = String(url.hash || '');
+            var qIdx = hash.indexOf('?');
+            var route = qIdx >= 0 ? hash.slice(0, qIdx) : hash;
+            var hp = new URLSearchParams(qIdx >= 0 ? hash.slice(qIdx + 1) : '');
+            applyGdiInventoryParamsToSearch(hp, next);
+            var qs = hp.toString();
+            window.history.replaceState(
+                {},
+                '',
+                url.pathname + url.search + route + (qs ? '?' + qs : '')
+            );
+        } catch (_err) {}
+        syncGdiInventoryToggleUi();
+        if (opts.reloadEmbed !== false && currentRoute === '/group-demand-intelligence') {
+            var frame = getFrameForPath('/group-demand-intelligence');
+            var embedUrl = routeToEmbedUrl('/group-demand-intelligence', currentRole);
+            if (frame) {
+                try {
+                    var u = new URL(embedUrl, window.location.origin);
+                    u.searchParams.set('_ts', String(Date.now()));
+                    embedUrl = u.pathname + u.search + u.hash;
+                } catch (_tsErr) {}
+                frame.removeAttribute('data-saved-src');
+                frame.src = embedUrl;
+                frame.addEventListener('load', function onGdiInventoryReload() {
+                    frame.removeEventListener('load', onGdiInventoryReload);
+                    broadcastJwtToActiveFrames();
+                    applyEmbeddedPageOverrides(frame, '/group-demand-intelligence', currentRole);
+                });
+            } else {
+                navigate('/group-demand-intelligence', currentRole, false);
+            }
+        }
+    }
+
+    function wireGdiInventorySidebarControls() {
+        if (!gdiInventorySidebarWrap || gdiInventorySidebarWrap.getAttribute('data-wired') === '1') {
+            return;
+        }
+        gdiInventorySidebarWrap.setAttribute('data-wired', '1');
+        gdiInventorySidebarWrap.querySelectorAll('[data-gdi-shell-inventory]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var mode = String(btn.getAttribute('data-gdi-shell-inventory') || '');
+                if (!mode || mode === gdiInventoryMode) return;
+                applyGdiInventoryModeFromShell(mode, { reloadEmbed: true });
+            });
+        });
+        if (gdiInventoryCompareStatus) {
+            gdiInventoryCompareStatus.addEventListener('mouseenter', function () {
+                if (gdiInventoryCompareTooltip) gdiInventoryCompareTooltip.hidden = false;
+            });
+            gdiInventoryCompareStatus.addEventListener('mouseleave', function () {
+                if (gdiInventoryCompareTooltip) gdiInventoryCompareTooltip.hidden = true;
+            });
+            gdiInventoryCompareStatus.addEventListener('focus', function () {
+                if (gdiInventoryCompareTooltip) gdiInventoryCompareTooltip.hidden = false;
+            });
+            gdiInventoryCompareStatus.addEventListener('blur', function () {
+                if (gdiInventoryCompareTooltip) gdiInventoryCompareTooltip.hidden = true;
+            });
+        }
+        window.addEventListener('message', function (event) {
+            try {
+                if (event.origin && event.origin !== window.location.origin) return;
+                var data = event.data || {};
+                if (!data || data.source !== 'dealality-gdi') return;
+                if (data.type === 'gdi-hotel-context') {
+                    refreshGdiPublicationComparison(data.hotelId, data.hotelLabel);
+                    if (data.inventoryMode) {
+                        gdiInventoryMode = String(data.inventoryMode);
+                        syncGdiInventoryToggleUi();
+                    }
+                }
+            } catch (_msgErr) {}
+        });
+    }
+
     function routeToEmbedUrl(route, role) {
         var embedQs = 'embed=1&appShell=1';
         if (route === '/market-alerts') {
@@ -1044,19 +1354,22 @@
         try {
             var hashQs = getHashQueryParams();
             var u = new URL(url, window.location.origin);
-            ['recordId', 'operatorId', 'id', 'tab', 'propertyId', 'hotelId', 'preview', 'live', 'publicationPackage', 'gdiDiag', 'inventoryAudience'].forEach(function (key) {
+            ['recordId', 'operatorId', 'id', 'tab', 'propertyId', 'hotelId', 'preview', 'live', 'publicationPackage', 'inventory', 'gdiDiag', 'inventoryAudience'].forEach(function (key) {
                 var v = hashQs.get(key);
                 if (v && !u.searchParams.get(key)) u.searchParams.set(key, v);
             });
             // Also forward parent /app?preview=staged#/route query params into the embed.
             try {
                 var parentQs = new URLSearchParams(window.location.search || '');
-                ['hotelId', 'preview', 'live', 'publicationPackage', 'gdiDiag', 'inventoryAudience'].forEach(function (key) {
+                ['hotelId', 'preview', 'live', 'publicationPackage', 'inventory', 'gdiDiag', 'inventoryAudience'].forEach(function (key) {
                     var v = parentQs.get(key);
                     if (v && !u.searchParams.get(key)) u.searchParams.set(key, v);
                 });
             } catch (_parentQsErr) {
                 /* ignore */
+            }
+            if (route === '/group-demand-intelligence') {
+                applyGdiInventoryParamsToSearch(u.searchParams, resolveGdiInventoryMode());
             }
             if (mapped.defaultTab && !u.searchParams.get('tab')) {
                 u.searchParams.set('tab', mapped.defaultTab);
@@ -1533,6 +1846,13 @@
         showFrame(target);
         updateShellHeader(target, role);
         renderNav(role, searchText);
+        setGdiInventorySidebarVisible(target === '/group-demand-intelligence');
+        if (target === '/group-demand-intelligence') {
+            syncGdiInventoryToggleUi();
+            if (gdiCompareHotelId) {
+                refreshGdiPublicationComparison(gdiCompareHotelId, gdiCompareHotelLabel);
+            }
+        }
 
         if (sidebar && sidebar.classList.contains('mobile-open')) {
             sidebar.classList.remove('mobile-open');
@@ -1821,6 +2141,10 @@
         }
         currentRole = resolveCurrentNavRole();
 
+        gdiInventoryMode = resolveGdiInventoryMode();
+        storeGdiInventoryMode(gdiInventoryMode);
+        wireGdiInventorySidebarControls();
+        syncGdiInventoryToggleUi();
         initNavEvents();
         initWorkspaceSwitcher();
         initSidebarControls();

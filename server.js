@@ -337,6 +337,7 @@ import {
   getGdiHotels,
   getGdiSummary,
   getGdiProfile,
+  getGdiPublicationComparison,
   getGdiOpportunities,
   getGdiDemandCampaigns,
   getGdiPublicationMonitors,
@@ -1090,6 +1091,11 @@ app.get(
   "/api/group-demand-intelligence/hotels/:hotelId/profile",
   gdiPilotReadAuth,
   getGdiProfile
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/publication-comparison",
+  gdiPilotReadAuth,
+  getGdiPublicationComparison
 );
 app.get(
   "/api/group-demand-intelligence/hotels/:hotelId/need-dates",
