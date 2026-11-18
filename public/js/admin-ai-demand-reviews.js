@@ -31,7 +31,11 @@
     if (auth && typeof auth.authFetch === "function") {
       return auth.authFetch(url, opts);
     }
-    return fetch(url, Object.assign({ credentials: "same-origin" }, opts));
+    // Fail closed: never hit localhost DEV_AUTH_BYPASS via bare fetch — that mixes
+    // bypass /api/me (admin) with later JWT admin 403s and triggers Access restricted.
+    return Promise.reject(
+      new Error("DealalityMemberstackAuth.authFetch unavailable — cannot call admin APIs")
+    );
   }
 
   function esc(s) {
@@ -1238,6 +1242,15 @@
           (err.accessDenial ||
             isAccessDenialError(err, err.status, err.payload))
         ) {
+          // Workspace gate already passed — do not replace the entire admin shell
+          // with Access restricted (stale/race 403 must not wipe other tabs).
+          if (window.__ADP_ADMIN_WORKSPACE_AUTH__) {
+            showRenderError(
+              err.message ||
+                "AI Demand Reviews request was denied (403). Other admin tabs may still work — retry after hard refresh."
+            );
+            return;
+          }
           showDenied(
             err.message || "AI Demand Reviews admin access required."
           );

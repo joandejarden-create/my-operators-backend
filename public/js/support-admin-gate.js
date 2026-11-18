@@ -15,7 +15,11 @@
       return { ok: false, reason: "auth_unavailable", data: null };
     }
     try {
-      var res = await auth.authFetch("/api/me", { maxWaitMs: 20000 });
+      var res = await auth.authFetch("/api/me", {
+        maxWaitMs: 20000,
+        cache: "no-store",
+        headers: { "Cache-Control": "no-store", Pragma: "no-cache" },
+      });
       var data = await res.json().catch(function () {
         return {};
       });

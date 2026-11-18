@@ -20,7 +20,9 @@
     if (auth && typeof auth.authFetch === "function") {
       return auth.authFetch(url, opts);
     }
-    return fetch(url, Object.assign({ credentials: "same-origin" }, opts));
+    return Promise.reject(
+      new Error("DealalityMemberstackAuth.authFetch unavailable — cannot call admin APIs")
+    );
   }
 
   function copyText(text) {
@@ -345,6 +347,21 @@
           }
         } catch (_e) {}
       } catch (err) {
+        if (window.__ADP_ADMIN_WORKSPACE_AUTH__) {
+          var content = document.getElementById("supportGateContent");
+          if (content) content.hidden = false;
+          if (window.SupportAdminGate) {
+            window.SupportAdminGate.hidePageLoading(
+              document.getElementById("supportGateLoading")
+            );
+          }
+          alert(
+            err && err.message
+              ? err.message
+              : "Unable to load ADP Action Plan."
+          );
+          return;
+        }
         showDenied(
           err && err.message ? err.message : "Unable to load ADP Action Plan."
         );
