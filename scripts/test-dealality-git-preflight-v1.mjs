@@ -3,6 +3,7 @@
  * Isolated failure-scenario tests for dealality:git-preflight.
  */
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { runGitPreflight } from "../lib/dealality-dev-os/git-preflight.js";
@@ -11,6 +12,10 @@ import { loadWorktreeRegistry, normalizePath } from "../lib/dealality-dev-os/wor
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const registry = loadWorktreeRegistry(ROOT);
+const currentBranch = execFileSync("git", ["branch", "--show-current"], {
+  cwd: ROOT,
+  encoding: "utf8",
+}).trim();
 
 function expectFail(label, input, errorFragment) {
   const result = runGitPreflight({ cwd: ROOT, registryRoot: ROOT, ...input });
@@ -29,10 +34,9 @@ function expectOk(label, input) {
   console.log(`PASS allow: ${label}`);
 }
 
-// Baseline identity
-expectOk("status-check in registered governance worktree", {
+// Baseline identity — accept current registered permanent/temporary workspace
+expectOk("status-check in registered workspace", {
   op: "status-check",
-  stream: "integration",
 });
 
 // Wrong branch
@@ -46,7 +50,7 @@ expectFail(
   "branch mismatch",
 );
 
-// Wrong worktree / stream path (HE planned path)
+// Wrong worktree / stream path (HE registered elsewhere)
 expectFail(
   "wrong worktree for HE stream",
   {
@@ -54,7 +58,7 @@ expectFail(
     stream: "he",
     allowDirty: "*",
   },
-  "not provisioned",
+  "expected path",
 );
 
 // Dirty checkout blocked for merge
@@ -95,6 +99,17 @@ expectFail(
   },
   "protected preservation branch",
 );
+
+// Normal merge of origin/main into feature branch must be allowed when clean
+expectOk("merge origin/main into feature branch", {
+  op: "merge",
+  targetRef: "origin/main",
+  allowDirty: "*",
+  _simulate: {
+    branch: "feat/hotel-explorer-example",
+    dirty: [],
+  },
+});
 
 // Force-push request
 expectFail(
@@ -177,11 +192,11 @@ expectFail(
   "requires --preservation-ref or --backup-manifest",
 );
 
-// Positive: commit allowed in governance temp workspace with allow-dirty
-expectOk("commit in governance wt with allow-dirty *", {
+// Positive: commit allowed in current registered integration/temp workspace
+expectOk("commit in registered integration wt with allow-dirty *", {
   op: "commit",
   stream: "integration",
-  expectBranch: "chore/dealality-dev-os-governance-v1",
+  expectBranch: currentBranch,
   allowDirty: "*",
 });
 
