@@ -54,6 +54,7 @@ import {
 import { buildLocalDevBypassAdminMeResponse } from "../lib/dealality/local-dev-bypass-admin-user.js";
 import {
   elevateGovernedPlatformAdmin,
+  finalizeDealalityUserAuthorization,
   isGovernedPlatformAdminEmail,
 } from "../lib/dealality/governed-platform-admin-emails.js";
 
@@ -648,13 +649,23 @@ async function getMe(req, res) {
     companyIds: companyProfileIds,
   });
 
-  // Founder/demo may be Airtable role=owner with isAdmin=false — elevate only from
-  // verified Memberstack email, or Users.email when the row was bound by verified memberstack id.
-  // Never elevate from unmatched/client-controlled email alone.
-  const elevateEmail =
-    emailFromToken ||
-    (matchedBy === "memberstack_id" ? email : null);
-  elevateGovernedPlatformAdmin(dealality, elevateEmail);
+  // Same finalize policy as requireDealalityUser (single authorization decision).
+  // Synthesize the req fields getMe already verified from the JWT.
+  const finalizeReq = {
+    memberstackMemberId: memberstackId,
+    memberstackEmail: emailFromToken || null,
+    memberstackVerifiedVia: verifiedVia === "dev_bypass" ? "dev_bypass" : verifiedVia || "jwks",
+  };
+  // Bind Users.email for finalize airtable_email_bound when matched by memberstack id.
+  dealality.email = email;
+  dealality.memberstackId = memberstackId;
+  dealality.userSource = dealality.userSource || "AIRTABLE";
+  finalizeDealalityUserAuthorization(finalizeReq, dealality);
+  // If JWT email was missing but matchedBy=memberstack_id, finalize already tried Users.email.
+  // If JWT email present but unmatched earlier, ensure governed elevation still runs once.
+  if (!dealality.governedPlatformAdminElevated && emailFromToken) {
+    elevateGovernedPlatformAdmin(dealality, emailFromToken);
+  }
 
   // ADP admin tools — same decision as middleware (nav/page/API parity).
   // Local QA: approved demo email on localhost/dev. Production: RBAC only.

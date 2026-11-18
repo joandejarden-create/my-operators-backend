@@ -93,7 +93,7 @@ assert.equal(airtableOnly.isAdmin, false);
 
 const meJs = fs.readFileSync(path.join(root, "api/me.js"), "utf8");
 assert.match(meJs, /elevateGovernedPlatformAdmin/);
-assert.match(meJs, /elevateGovernedPlatformAdmin\(dealality,\s*elevateEmail\)/);
+assert.match(meJs, /finalizeDealalityUserAuthorization/);
 assert.match(meJs, /emailFromToken/);
 assert.match(meJs, /users_row_missing_governed_admin_elevated|isGovernedPlatformAdminEmail\(emailFromToken\)/);
 assert.match(meJs, /buildLocalDevBypassAdminMeResponse/);
@@ -103,8 +103,8 @@ const requireUser = fs.readFileSync(
   "utf8"
 );
 assert.match(requireUser, /elevateGovernedPlatformAdminOnRequest/);
-assert.match(requireUser, /elevateGovernedPlatformAdmin\(dealalityUser/);
-assert.match(requireUser, /dealalityUser\.email/);
+assert.match(requireUser, /finalizeDealalityUserAuthorization|attachAndFinalize/);
+assert.match(requireUser, /local_demo_fallback/);
 
 const memberstackAuth = fs.readFileSync(
   path.join(root, "middleware/memberstackAuth.js"),

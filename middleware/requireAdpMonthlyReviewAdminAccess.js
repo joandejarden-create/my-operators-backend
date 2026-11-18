@@ -15,6 +15,7 @@ import {
   ADP_LOCAL_ADMIN_NAV_PAGE_API_AUTH_PARITY,
 } from "../lib/dealality/local-dealality-admin-access.js";
 import { WORKSPACE_ADMIN } from "../lib/company-workspace-access.js";
+import { traceDealalityAdminAuthDecision } from "../lib/dealality/governed-platform-admin-emails.js";
 
 export { ADP_LOCAL_ADMIN_AUTH_SINGLE_SOURCE, ADP_LOCAL_ADMIN_NAV_PAGE_API_AUTH_PARITY };
 
@@ -48,6 +49,21 @@ export function requireAdpMonthlyReviewAdminAccess(req, res, next) {
     });
   }
   if (!canAccessAdpMonthlyReviewAdmin(u, req)) {
+    traceDealalityAdminAuthDecision({
+      route: req.originalUrl || req.url || null,
+      resolution: req.dealalityAuthResolution || null,
+      finalizePath: req.dealalityAuthFinalizePath || null,
+      elevated: u.governedPlatformAdminElevated === true,
+      isAdmin: u.isAdmin === true,
+      userSource: u.userSource || null,
+      hasMemberstackId: Boolean(req.memberstackMemberId),
+      hasVerifiedEmailClaim: Boolean(req.memberstackEmail),
+      verifiedViaClass: String(req.memberstackVerifiedVia || "")
+        .toLowerCase()
+        .includes("jwks")
+        ? "jwks"
+        : String(req.memberstackVerifiedVia || "") || "missing",
+    });
     return res.status(403).json({
       ok: false,
       success: false,
