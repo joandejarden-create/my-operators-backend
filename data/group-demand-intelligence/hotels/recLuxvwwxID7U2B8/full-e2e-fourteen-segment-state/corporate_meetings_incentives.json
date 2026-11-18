@@ -1,0 +1,119 @@
+{
+  "version": "gdi-full-e2e-fourteen-segment-discovery-state-v1",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "segmentId": "corporate_meetings_incentives",
+  "applicable": true,
+  "status": "BLOCKED",
+  "coverageStatus": "PARTIAL",
+  "completionDecision": "NOT_COMPLETE",
+  "completionRationale": "PAID_PROVIDER_REQUIRES_FOUNDER_AUTHORIZATION",
+  "executionStatus": "EXECUTION_BLOCKED",
+  "executorVersion": "gdi-segment-discovery-executor-v1",
+  "executionModuleVersion": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+  "researchRunId": "gdi_disc_run_mwm3nhpi_4b44d7",
+  "researchHorizon": null,
+  "querySpecs": [
+    {
+      "id": "corporate_meetings_incentives_q1",
+      "segmentId": "corporate_meetings_incentives",
+      "intent": "destination_incentive_program_en",
+      "query": "(\"DMV\" OR \"District of Columbia\" OR \"Montgomery County\" OR \"Northern Virginia\") (\"incentive travel\" OR \"incentive trip\" OR \"incentive program\" OR \"sales incentive\" OR \"employee incentive\") (company OR corporate OR \"sales team\" OR distributor) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+      "language": null,
+      "sourceTypes": [
+        "corp_news",
+        "incentive_case_studies",
+        "hr_program_pages"
+      ],
+      "weight": 6
+    },
+    {
+      "id": "corporate_meetings_incentives_q2",
+      "segmentId": "corporate_meetings_incentives",
+      "intent": "destination_sales_kickoff_retreat_en",
+      "query": "(\"DMV\" OR \"District of Columbia\" OR \"Montgomery County\" OR \"Northern Virginia\") (\"sales kickoff\" OR \"annual sales meeting\" OR \"leadership retreat\" OR \"corporate retreat\" OR \"partner summit\" OR \"distributor meeting\") (company OR corporate OR brand) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+      "language": null,
+      "sourceTypes": [
+        "corp_news",
+        "sales_ops_announcements"
+      ],
+      "weight": 6
+    },
+    {
+      "id": "corporate_meetings_incentives_q3",
+      "segmentId": "corporate_meetings_incentives",
+      "intent": "destination_company_first_recognition_training_en",
+      "query": "\"DMV\" (company OR corporat*) (\"employee recognition\" OR \"presidents club\" OR \"winner's trip\" OR \"residential training\" OR \"customer advisory board\") (Cancun OR Cancún OR destination OR resort-style) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+      "language": null,
+      "sourceTypes": [
+        "hr_program_pages",
+        "corp_news"
+      ],
+      "weight": 5
+    }
+  ],
+  "providerInvocations": [
+    {
+      "at": "2026-11-18T12:30:48.006Z",
+      "fingerprint": "a45a4731357d",
+      "researchRunId": "gdi_disc_run_mwm3nhpi_4b44d7",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 0,
+      "costUsd": 0,
+      "retrievalMode": "BLOCKED_PAID",
+      "counted": true,
+      "stopReason": "PAID_PROVIDER_REQUIRES_FOUNDER_AUTHORIZATION"
+    }
+  ],
+  "cacheReferences": [],
+  "rawCandidateReferences": [],
+  "candidateIds": [],
+  "extractedCandidateIds": [],
+  "deduplicatedCandidateIds": [],
+  "unresolvedCandidateIds": [],
+  "completedCandidateIds": [],
+  "evidenceProvenance": [],
+  "rejectionReasons": [],
+  "remainingResearchGaps": [
+    "live_provider_not_executed",
+    "no_http_source_evidence_in_this_pass",
+    "discovery_not_completed"
+  ],
+  "providerUsage": {
+    "attempts": 1,
+    "liveCalls": 0,
+    "cacheHits": 0,
+    "costUsd": 0,
+    "byProvider": {
+      "BLOCKED_PAID": {
+        "calls": 0,
+        "costUsd": 0
+      }
+    }
+  },
+  "stopReason": "PAID_PROVIDER_REQUIRES_FOUNDER_AUTHORIZATION",
+  "lastSuccessfulCheckpoint": {
+    "kind": "EXECUTION_CHECKPOINT",
+    "at": "2026-11-18T12:30:48.006Z",
+    "fingerprint": "a45a4731357d",
+    "researchRunId": "gdi_disc_run_mwm3nhpi_4b44d7",
+    "executionStatus": "EXECUTION_BLOCKED",
+    "providerRunIds": [],
+    "extractedCount": 0,
+    "costUsdCumulative": 0
+  },
+  "lastCheckpointAt": "2026-11-18T12:30:48.006Z",
+  "researchActions": [
+    {
+      "at": "2026-11-18T12:30:48.006Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_BLOCKED",
+      "fingerprint": "a45a4731357d",
+      "countedNewCost": 0
+    }
+  ],
+  "publicationOccurred": false,
+  "airtableWrites": 0,
+  "createdAt": "2026-11-18T12:30:48.006Z",
+  "updatedAt": "2026-11-18T12:30:48.006Z"
+}

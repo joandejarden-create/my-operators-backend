@@ -1,0 +1,114 @@
+{
+  "version": "gdi-full-e2e-fourteen-segment-discovery-state-v1",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "segmentId": "education_scientific",
+  "applicable": true,
+  "status": "BLOCKED",
+  "coverageStatus": "PARTIAL",
+  "completionDecision": "NOT_COMPLETE",
+  "completionRationale": "PAID_PROVIDER_REQUIRES_FOUNDER_AUTHORIZATION",
+  "executionStatus": "EXECUTION_BLOCKED",
+  "executorVersion": "gdi-segment-discovery-executor-v1",
+  "executionModuleVersion": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+  "researchRunId": "gdi_disc_run_mwm3nhpi_4b44d7",
+  "researchHorizon": null,
+  "querySpecs": [
+    {
+      "id": "education_scientific_q1",
+      "segmentId": "education_scientific",
+      "intent": "assoc_city_medical_en",
+      "query": "(\"DMV\") (medical OR scientific OR academic) (congress OR symposium OR conference) (association OR society OR colegio) (2025 OR 2026 OR 2027) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+      "language": null,
+      "sourceTypes": null,
+      "weight": 6
+    },
+    {
+      "id": "education_scientific_q2",
+      "segmentId": "education_scientific",
+      "intent": "assoc_city_medico_es",
+      "query": "(\"DMV\") (congreso médico OR simposio OR \"jornadas académicas\") (asociación OR colegio OR sociedad) (2025 OR 2026 OR 2027) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+      "language": "es",
+      "sourceTypes": null,
+      "weight": 5
+    },
+    {
+      "id": "education_scientific_base_q1",
+      "segmentId": "education_scientific",
+      "intent": "PHARMA_MEDICAL_ECOSYSTEM",
+      "query": "DMV investigator meeting OR advisory board OR medical affairs OR medical congress sponsor 2026 OR 2027",
+      "language": "en"
+    },
+    {
+      "id": "education_scientific_base_q2",
+      "segmentId": "education_scientific",
+      "intent": "PHARMA_MEDICAL_ECOSYSTEM",
+      "query": "DMV CRO \"investigator meeting\" OR \"advisory board\" hotel",
+      "language": "en"
+    }
+  ],
+  "providerInvocations": [
+    {
+      "at": "2026-11-18T12:30:48.057Z",
+      "fingerprint": "4f22651c4582",
+      "researchRunId": "gdi_disc_run_mwm3nhpi_4b44d7",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 0,
+      "costUsd": 0,
+      "retrievalMode": "BLOCKED_PAID",
+      "counted": true,
+      "stopReason": "PAID_PROVIDER_REQUIRES_FOUNDER_AUTHORIZATION"
+    }
+  ],
+  "cacheReferences": [],
+  "rawCandidateReferences": [],
+  "candidateIds": [],
+  "extractedCandidateIds": [],
+  "deduplicatedCandidateIds": [],
+  "unresolvedCandidateIds": [],
+  "completedCandidateIds": [],
+  "evidenceProvenance": [],
+  "rejectionReasons": [],
+  "remainingResearchGaps": [
+    "live_provider_not_executed",
+    "no_http_source_evidence_in_this_pass",
+    "discovery_not_completed"
+  ],
+  "providerUsage": {
+    "attempts": 1,
+    "liveCalls": 0,
+    "cacheHits": 0,
+    "costUsd": 0,
+    "byProvider": {
+      "BLOCKED_PAID": {
+        "calls": 0,
+        "costUsd": 0
+      }
+    }
+  },
+  "stopReason": "PAID_PROVIDER_REQUIRES_FOUNDER_AUTHORIZATION",
+  "lastSuccessfulCheckpoint": {
+    "kind": "EXECUTION_CHECKPOINT",
+    "at": "2026-11-18T12:30:48.057Z",
+    "fingerprint": "4f22651c4582",
+    "researchRunId": "gdi_disc_run_mwm3nhpi_4b44d7",
+    "executionStatus": "EXECUTION_BLOCKED",
+    "providerRunIds": [],
+    "extractedCount": 0,
+    "costUsdCumulative": 0
+  },
+  "lastCheckpointAt": "2026-11-18T12:30:48.057Z",
+  "researchActions": [
+    {
+      "at": "2026-11-18T12:30:48.057Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_BLOCKED",
+      "fingerprint": "4f22651c4582",
+      "countedNewCost": 0
+    }
+  ],
+  "publicationOccurred": false,
+  "airtableWrites": 0,
+  "createdAt": "2026-11-18T12:30:48.057Z",
+  "updatedAt": "2026-11-18T12:30:48.057Z"
+}
