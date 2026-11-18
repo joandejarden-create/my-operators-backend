@@ -76,8 +76,13 @@ assert.match(
 );
 assert.match(
   server,
-  /memberstackAuth[\s\S]*requireDealalityUser[\s\S]*requireAdminAccess[\s\S]*getBrandPresenceInternalPreviewHotels/,
-  "internal-preview route must require auth + admin"
+  /optionalDealalityAuth[\s\S]*requireRadarInternalPreviewAccess[\s\S]*getBrandPresenceInternalPreviewHotels/,
+  "internal-preview route must use optional auth + Radar admin gate (app-shell JWT safe)"
+);
+assert.match(
+  server,
+  /requireRadarInternalPreviewAccess/,
+  "server imports Radar internal-preview access gate"
 );
 
 assert.match(

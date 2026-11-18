@@ -471,6 +471,7 @@ import {
   handleCapitalProviderExplorer,
 } from "./api/capital-provider-explorer.js";
 import { optionalDealalityAuth } from "./middleware/optionalDealalityAuth.js";
+import { requireRadarInternalPreviewAccess } from "./middleware/requireRadarInternalPreviewAccess.js";
 import {
   createMyDealsOperatorRequest,
   listMyDealsOperatorRequestsByDeals,
@@ -3189,11 +3190,14 @@ app.post("/api/deal-intelligence/analyze", analyzeDeal);
 
 // Brand Presence API endpoints
 app.get("/api/brand-presence/hotel/:recordId", getBrandPresenceHotelById);
+// /app#/opportunity-radar embeds Radar with msToken. Prefer JWT when valid;
+// on localhost owner-app, fall back to DEV_AUTH_BYPASS when JWT is absent/invalid
+// (parity with optionalDealalityAuth). ADP owner-app admin emails elevate isAdmin
+// so founder/demo Airtable owner rows still unlock Open|Pipeline HPC pins.
 app.get(
   "/api/brand-presence/internal-preview-hotels",
-  memberstackAuth,
-  requireDealalityUser,
-  requireAdminAccess,
+  optionalDealalityAuth,
+  requireRadarInternalPreviewAccess,
   getBrandPresenceInternalPreviewHotels
 );
 app.get("/api/brand-presence", getBrandPresence);

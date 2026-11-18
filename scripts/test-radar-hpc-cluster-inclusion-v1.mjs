@@ -60,7 +60,7 @@ assert.doesNotMatch(
 
 assert.match(
   host,
-  /brand-presence-mapping\.js\?v=radar-hpc-dynamic-status-1/,
+  /brand-presence-mapping\.js\?v=radar-hpc-app-shell-auth-1/,
   "Radar host must cache-bust mapping after HPC dynamic status query"
 );
 
