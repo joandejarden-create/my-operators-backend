@@ -14,6 +14,7 @@ import {
   runGitPreflight,
 } from "../lib/dealality-dev-os/git-preflight.js";
 import {
+  allowDirtyForPreflight,
   classifyProductWorkspaceSync,
   findOverwriteRisks,
   planPostMergeWorkspaceSync,
@@ -25,6 +26,41 @@ import { loadWorktreeRegistry } from "../lib/dealality-dev-os/worktree-registry.
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const registry = loadWorktreeRegistry(ROOT);
+
+{
+  const empty = allowDirtyForPreflight([]);
+  assert.equal(empty, "");
+  const runtimeOnly = allowDirtyForPreflight([
+    "data/group-demand-intelligence/hotels/recX/full-e2e-fourteen-segment-state/a.json",
+    "reports/gdi-canonical-full-e2e-entry-v1/run/summary.json",
+    "tmp/gitleaks-bin/gitleaks.exe",
+  ]);
+  const runtimeParts = new Set(runtimeOnly.split(","));
+  assert.ok(runtimeParts.has("data/group-demand-intelligence"));
+  assert.ok(runtimeParts.has("reports/gdi-canonical-full-e2e-entry-v1"));
+  assert.ok(runtimeParts.has("tmp"));
+  assert.equal(runtimeParts.has("data"), false);
+  assert.equal(runtimeParts.has("reports"), false);
+  assert.equal(runtimeParts.has("*"), false);
+  const discoveredPack = allowDirtyForPreflight([
+    "reports/gdi-bethesda-live-full-e2e-airtable-validation-v1/ACCEPTANCE.json",
+  ]);
+  assert.ok(
+    discoveredPack.split(",").includes("reports/gdi-bethesda-live-full-e2e-airtable-validation-v1"),
+  );
+  const withSource = allowDirtyForPreflight([
+    "data/unlisted-root-file.json",
+    "lib/dealality-dev-os/post-merge-workspace-sync.js",
+    ".gitignore",
+  ]);
+  const parts = new Set(withSource.split(","));
+  assert.ok(parts.has("data/group-demand-intelligence"));
+  assert.ok(parts.has("data/unlisted-root-file.json"));
+  assert.ok(parts.has("lib/dealality-dev-os/post-merge-workspace-sync.js"));
+  assert.ok(parts.has(".gitignore"));
+  assert.equal(parts.has("data"), false);
+  console.log("PASS allowDirtyForPreflight auditable runtime prefixes + explicit non-runtime paths");
+}
 
 function expectAction(label, input, action) {
   const got = classifyProductWorkspaceSync(input);
