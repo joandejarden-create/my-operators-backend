@@ -5814,46 +5814,101 @@
 
     var guestrooms = "muted";
     var eventFnb = "muted";
+    var trustedApiIcons = false;
 
-    if (iconsDto && (iconsDto.guestrooms || iconsDto.eventFnb)) {
+    // Prefer explicit API/package icon states — do not re-demote after thesis scrub.
+    if (
+      iconsDto &&
+      typeof iconsDto === "object" &&
+      (iconsDto.guestrooms === "active" ||
+        iconsDto.eventFnb === "active" ||
+        iconsDto.guestrooms === "muted" ||
+        iconsDto.eventFnb === "muted")
+    ) {
       guestrooms = iconsDto.guestrooms === "active" ? "active" : "muted";
       eventFnb = iconsDto.eventFnb === "active" ? "active" : "muted";
-    } else if (cls === HOTEL_REVENUE_STREAM_CLASS.GUESTROOMS_ONLY) {
-      guestrooms = "active";
-    } else if (cls === HOTEL_REVENUE_STREAM_CLASS.EVENT_FNB_ONLY) {
-      eventFnb = "active";
-    } else if (cls === HOTEL_REVENUE_STREAM_CLASS.COMBINED_GUESTROOMS_EVENT_FNB) {
-      guestrooms = "active";
-      eventFnb = "active";
-    } else {
-      // Unconfirmed / missing class: only light icons when theses are present
-      if (thesisPresentUi(guestThesis)) guestrooms = "active";
-      if (thesisPresentUi(eventThesis)) eventFnb = "active";
+      trustedApiIcons = true;
     }
 
-    // Drawer consistency — do not highlight without supporting thesis/evidence text
-    // when the opposite stream is the only one with prose (combined demotion).
-    if (guestrooms === "active" && !thesisPresentUi(guestThesis) && eventFnb === "active") {
-      guestrooms = "muted";
-    }
-    if (eventFnb === "active" && !thesisPresentUi(eventThesis) && guestrooms === "active") {
-      eventFnb = "muted";
-    }
-    // Single-stream classes from API may omit thesis prose on older rows — keep
-    // class-driven highlight when only one side is active.
+    // When API icons are both muted but class + Sales Opportunities keys remain,
+    // restore the original GDI color coding (same policy as server restore helper).
     if (
-      cls === HOTEL_REVENUE_STREAM_CLASS.GUESTROOMS_ONLY &&
-      guestrooms === "muted" &&
-      thesisPresentUi(guestThesis)
+      !trustedApiIcons ||
+      (guestrooms === "muted" && eventFnb === "muted")
     ) {
-      guestrooms = "active";
+      var salesKeys = linked.salesOpportunityQuickFilterKeys || it.salesOpportunityQuickFilterKeys || [];
+      var keySet = {};
+      if (Array.isArray(salesKeys)) {
+        for (var ki = 0; ki < salesKeys.length; ki++) {
+          keySet[String(salesKeys[ki] || "").toUpperCase()] = true;
+        }
+      }
+      var guestKey = !!(keySet.GUEST_ROOMS || keySet.BOTH);
+      var cateringKey = !!(keySet.LOCAL_CATERING || keySet.MEETINGS_EVENTS || keySet.BOTH);
+      if (
+        cls === HOTEL_REVENUE_STREAM_CLASS.GUESTROOMS_ONLY &&
+        guestKey
+      ) {
+        guestrooms = "active";
+        eventFnb = "muted";
+        trustedApiIcons = true;
+      } else if (
+        cls === HOTEL_REVENUE_STREAM_CLASS.EVENT_FNB_ONLY &&
+        cateringKey
+      ) {
+        guestrooms = "muted";
+        eventFnb = "active";
+        trustedApiIcons = true;
+      } else if (
+        cls === HOTEL_REVENUE_STREAM_CLASS.COMBINED_GUESTROOMS_EVENT_FNB &&
+        guestKey &&
+        cateringKey
+      ) {
+        guestrooms = "active";
+        eventFnb = "active";
+        trustedApiIcons = true;
+      }
     }
-    if (
-      cls === HOTEL_REVENUE_STREAM_CLASS.EVENT_FNB_ONLY &&
-      eventFnb === "muted" &&
-      thesisPresentUi(eventThesis)
-    ) {
-      eventFnb = "active";
+
+    if (!trustedApiIcons) {
+      if (cls === HOTEL_REVENUE_STREAM_CLASS.GUESTROOMS_ONLY) {
+        guestrooms = "active";
+      } else if (cls === HOTEL_REVENUE_STREAM_CLASS.EVENT_FNB_ONLY) {
+        eventFnb = "active";
+      } else if (cls === HOTEL_REVENUE_STREAM_CLASS.COMBINED_GUESTROOMS_EVENT_FNB) {
+        guestrooms = "active";
+        eventFnb = "active";
+      } else {
+        // Unconfirmed / missing class: only light icons when theses are present
+        if (thesisPresentUi(guestThesis)) guestrooms = "active";
+        if (thesisPresentUi(eventThesis)) eventFnb = "active";
+      }
+
+      // Drawer consistency — only for client-derived states (not API/package).
+      // Do not highlight without supporting thesis when the opposite stream is
+      // the only one with prose (combined demotion).
+      if (guestrooms === "active" && !thesisPresentUi(guestThesis) && eventFnb === "active") {
+        guestrooms = "muted";
+      }
+      if (eventFnb === "active" && !thesisPresentUi(eventThesis) && guestrooms === "active") {
+        eventFnb = "muted";
+      }
+      // Single-stream classes from API may omit thesis prose on older rows — keep
+      // class-driven highlight when only one side is active.
+      if (
+        cls === HOTEL_REVENUE_STREAM_CLASS.GUESTROOMS_ONLY &&
+        guestrooms === "muted" &&
+        thesisPresentUi(guestThesis)
+      ) {
+        guestrooms = "active";
+      }
+      if (
+        cls === HOTEL_REVENUE_STREAM_CLASS.EVENT_FNB_ONLY &&
+        eventFnb === "muted" &&
+        thesisPresentUi(eventThesis)
+      ) {
+        eventFnb = "active";
+      }
     }
 
     // Muted streams: label only — never customer-visible "not indicated" copy.
