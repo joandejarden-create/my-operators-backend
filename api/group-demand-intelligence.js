@@ -788,6 +788,31 @@ export function getGdiProfile(req, res) {
   return res.json({ ok: true, profile });
 }
 
+/**
+ * STAGED vs CURRENT customer-visible content comparison (founder sidebar indicator).
+ * Read-only — no tokens, no writes, no registry invention.
+ */
+export async function getGdiPublicationComparison(req, res) {
+  try {
+    if (!flagGate(req, res)) return;
+    const hotelId = String(req.params.hotelId || "").trim();
+    if (!hotelId) {
+      return res.status(400).json({ ok: false, error: "hotelId_required" });
+    }
+    const { compareStagedAndCurrentPublications } = await import(
+      "../lib/group-demand-intelligence/publication-package/gdi-staged-current-comparison-v1.js"
+    );
+    const comparison = compareStagedAndCurrentPublications({ hotelId });
+    return res.json({
+      ok: true,
+      hotelId,
+      comparison,
+    });
+  } catch (err) {
+    return sendGdiUpstreamError(res, err, "getGdiPublicationComparison");
+  }
+}
+
 export async function getGdiOpportunities(req, res) {
   try {
     if (!flagGate(req, res)) return;

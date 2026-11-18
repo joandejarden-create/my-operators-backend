@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dealality – App</title>
-    <link rel="stylesheet" href="/app.css?v=workspace-collapse-20261013">
+    <link rel="stylesheet" href="/app.css?v=gdi-sidebar-inventory-toggle-v1">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -57,6 +57,19 @@
                         </a>
                     </div>
                 </div>
+            </div>
+            <div class="gdi-inventory-sidebar-wrap" id="gdiInventorySidebarWrap" hidden data-gdi-shell-control="1">
+                <span class="dev-workspace-label" id="gdiInventoryViewLabel">GDI Inventory View</span>
+                <div class="gdi-inventory-segmented" role="group" aria-labelledby="gdiInventoryViewLabel">
+                    <button type="button" class="gdi-inventory-seg-btn" data-gdi-shell-inventory="research" aria-pressed="false">Research</button>
+                    <button type="button" class="gdi-inventory-seg-btn" data-gdi-shell-inventory="staged" aria-pressed="false">Staged</button>
+                    <button type="button" class="gdi-inventory-seg-btn" data-gdi-shell-inventory="published" aria-pressed="false">Published</button>
+                </div>
+                <button type="button" class="gdi-inventory-compare-status" id="gdiInventoryCompareStatus" aria-describedby="gdiInventoryCompareTooltip" title="">
+                    <span class="gdi-inventory-compare-dot" aria-hidden="true"></span>
+                    <span class="gdi-inventory-compare-label" id="gdiInventoryCompareLabel">—</span>
+                </button>
+                <div class="gdi-inventory-compare-tooltip" id="gdiInventoryCompareTooltip" role="tooltip" hidden></div>
             </div>
             <div class="sidebar-footer" id="accountDropdownWrap">
                 <button type="button" class="user-block account-dropdown-trigger" id="accountDropdownTrigger" aria-haspopup="true" aria-expanded="false" aria-label="Account settings">
@@ -120,6 +133,6 @@
     <script src="/js/dealality-app-shell-auth.js"></script>
     <script src="/js/dealality-ui-labels.js"></script>
     <script src="/js/dealality-stakeholder-nav.js?v=brand-ai-owner-nav-v1"></script>
-    <script src="/app.js?v=brand-ai-owner-nav-v1-workspace-collapse-20261013" defer></script>
+    <script src="/app.js?v=gdi-sidebar-inventory-toggle-v1" defer></script>
 </body>
 </html>

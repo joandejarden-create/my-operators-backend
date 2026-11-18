@@ -77,11 +77,11 @@ check("explicit_staged_still_supported", () => {
 });
 
 check("inventory_mode_controls_present", () => {
-  assert.match(appJs, /data-gdi-inventory-mode="research"/);
-  assert.match(appJs, /data-gdi-inventory-mode="staged"/);
-  assert.match(appJs, /data-gdi-inventory-mode="published"/);
+  // Mode switching lives in the app shell sidebar; report keeps recovery + apply helpers.
   assert.match(appJs, /Open Research Preview/);
   assert.match(appJs, /applyFounderInventoryMode/);
+  assert.match(appJs, /notifyShellHotelContext/);
+  assert.match(appJs, /resolveFounderInventoryMode/);
 });
 
 check("castillo_and_san_diego_have_research_without_staged", () => {
@@ -127,7 +127,10 @@ check("hotel_switch_clears_preview_params", () => {
 });
 
 check("cache_bust", () => {
-  assert.match(html, /gdi-founder-local-research-preview-v1/);
+  assert.match(
+    html,
+    /gdi-sidebar-inventory-toggle-v1|gdi-founder-local-research-preview-v1/,
+  );
 });
 
 check("no_hardcoded_castillo_or_sandiego_exception", () => {

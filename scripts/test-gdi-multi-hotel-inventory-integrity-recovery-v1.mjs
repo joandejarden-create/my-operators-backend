@@ -117,10 +117,11 @@ check("share_path_still_package_gated_for_castillo", () => {
 });
 
 check("staged_and_published_remain_distinct_modes", () => {
-  assert.match(appJs, /data-gdi-inventory-mode="research"/);
-  assert.match(appJs, /data-gdi-inventory-mode="staged"/);
-  assert.match(appJs, /data-gdi-inventory-mode="published"/);
+  assert.match(appJs, /resolveFounderInventoryMode/);
   assert.match(appJs, /preview=staged/);
+  assert.match(appJs, /inventory", "research"/);
+  assert.match(appJs, /inventory", "staged"/);
+  assert.match(appJs, /inventory", "published"/);
 });
 
 check("current_pointers_untouched_on_disk", () => {
