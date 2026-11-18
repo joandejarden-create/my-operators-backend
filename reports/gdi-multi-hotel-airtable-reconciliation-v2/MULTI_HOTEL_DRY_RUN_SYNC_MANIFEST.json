@@ -1,0 +1,374 @@
+{
+  "version": "gdi-multi-hotel-airtable-reconciliation-v2",
+  "generatedAt": "2026-11-18T08:51:02.969Z",
+  "mutation": false,
+  "productionWritesAuthorized": false,
+  "writeGuard": {
+    "blocked": true,
+    "code": "AIRTABLE_PRODUCTION_WRITES_NOT_AUTHORIZED",
+    "note": "Canonical Full E2E may dry-run map and plan writes; live Airtable mutations require separate founder approval."
+  },
+  "storageAuthority": {
+    "researchExecution": "filesystem.execution_ledger_and_hotel_research_stores",
+    "globalIntelligence": "airtable.DemandGenerators|DemandPrograms|Signals|PrivateEventVenues",
+    "hotelSpecificOpportunities": "airtable.GroupDemandOpportunities after reconciliation; filesystem remains research SoT until authorized sync",
+    "customerPublication": "founder_approved.publication_packages.CURRENT",
+    "hotelFeedback": "airtable.Decisions|DecisionEvents + authorized feedback stores",
+    "neverAutoPromoteToCurrent": true,
+    "neverCopyHotelPrivateFeedbackToGlobal": true
+  },
+  "weeklyChangeContract": "gdi-weekly-change-durability-v1",
+  "rockCreekVenueIdentity": {
+    "airtableRecordId": "recf35Q9B6jpX3Ivm",
+    "structuredIdAfterPilot": "pev_42542bf58aac936b",
+    "historicalDomainId": "pev_53b689545914754d",
+    "authoritativeCanonicalId": "pev_53b689545914754d",
+    "aliasErroneousPilotId": "pev_42542bf58aac936b",
+    "venueName": "Rock Creek Mansion",
+    "officialDomain": "rockcreekmansion.com",
+    "samePhysicalVenue": true,
+    "divergenceCause": "Dry-run/pilot computed venueId from name+city without official domain; structured Venue ID was updated while Venue Payload JSON retained the domain-based historical ID.",
+    "live": {
+      "structuredVenueId": "pev_42542bf58aac936b",
+      "payloadVenueId": "pev_53b689545914754d",
+      "website": "https://rockcreekmansion.com/",
+      "officialDomain": "rockcreekmansion.com",
+      "city": "Bethesda",
+      "onSiteLodgingStatus": "NO_LODGING"
+    },
+    "recomputation": {
+      "domainBased": "pev_53b689545914754d",
+      "cityOnly": "pev_42542bf58aac936b",
+      "domainMatchesHistorical": true,
+      "cityOnlyMatchesPilot": true
+    },
+    "conflict": {
+      "conflict": true,
+      "code": "EMBEDDED_JSON_STRUCTURED_ID_MISMATCH",
+      "structuredVenueId": "pev_42542bf58aac936b",
+      "payloadVenueId": "pev_53b689545914754d"
+    },
+    "remediation": {
+      "mutationInThisPhase": false,
+      "restoreStructuredVenueIdTo": "pev_53b689545914754d",
+      "keepPayloadAlignedTo": "pev_53b689545914754d",
+      "treatPilotIdAs": "HISTORICAL_ALIAS_ERRONEOUS_REWRITE",
+      "requireFounderAuthorizationForWrite": true,
+      "guards": [
+        "NEVER_REWRITE_VENUE_ID_FROM_GEO_ONLY_WHEN_DOMAIN_KNOWN",
+        "MATCH_EXISTING_BY_DOMAIN_OR_NAME_BEFORE_CREATE",
+        "PATCH_STRUCTURED_AND_PAYLOAD_TOGETHER_WHEN_AUTHORIZED"
+      ]
+    }
+  },
+  "totals": {
+    "hotels": 8,
+    "filesystemOpportunities": 341,
+    "airtableGdos": 433,
+    "createCandidates": 0,
+    "updateCandidates": 1,
+    "unchanged": 217,
+    "deferred": 334,
+    "conflicts": 2,
+    "rejected": 0
+  },
+  "hotels": [
+    {
+      "key": "yotel",
+      "name": "YOTEL Geneva Lake",
+      "hotelId": "recrPQcZg7SFARRb2",
+      "cohort": "PRIMARY",
+      "filesystemCount": 42,
+      "airtableCount": 108,
+      "idOverlapCount": 0,
+      "filesystemOnlyCount": 42,
+      "airtableOnlyCount": 108,
+      "counts": {
+        "SHARED": 0,
+        "SHARED_IDENTITY_CONFLICT": 0,
+        "AIRTABLE_ONLY_ACTIVE": 0,
+        "AIRTABLE_ONLY_HISTORICAL_OR_UNSPECIFIED": 108,
+        "FILESYSTEM_ONLY": 42,
+        "INCORRECT_HOTEL_RELATIONSHIP": 0,
+        "IDENTITY_COLLISION": 0,
+        "UNKNOWN": 0
+      },
+      "decisionCounts": {
+        "CREATE": 0,
+        "UPDATE": 0,
+        "UNCHANGED": 0,
+        "DUPLICATE_LINKED": 0,
+        "DEFERRED": 150,
+        "CONFLICT": 0,
+        "REJECTED": 0
+      },
+      "estimatedAirtableOperations": 0,
+      "createCandidateIds": [],
+      "updateCandidateIds": [],
+      "conflictIds": []
+    },
+    {
+      "key": "radisson",
+      "name": "Radisson Blu Toronto Downtown",
+      "hotelId": "recH9h3McgMNFQEla",
+      "cohort": "PRIMARY",
+      "filesystemCount": 66,
+      "airtableCount": 36,
+      "idOverlapCount": 30,
+      "filesystemOnlyCount": 36,
+      "airtableOnlyCount": 6,
+      "counts": {
+        "SHARED": 29,
+        "SHARED_IDENTITY_CONFLICT": 1,
+        "AIRTABLE_ONLY_ACTIVE": 0,
+        "AIRTABLE_ONLY_HISTORICAL_OR_UNSPECIFIED": 6,
+        "FILESYSTEM_ONLY": 36,
+        "INCORRECT_HOTEL_RELATIONSHIP": 0,
+        "IDENTITY_COLLISION": 0,
+        "UNKNOWN": 0
+      },
+      "decisionCounts": {
+        "CREATE": 0,
+        "UPDATE": 0,
+        "UNCHANGED": 29,
+        "DUPLICATE_LINKED": 0,
+        "DEFERRED": 42,
+        "CONFLICT": 1,
+        "REJECTED": 0
+      },
+      "estimatedAirtableOperations": 0,
+      "createCandidateIds": [],
+      "updateCandidateIds": [],
+      "conflictIds": [
+        "rx_d_f5c3bd3d073a"
+      ]
+    },
+    {
+      "key": "guadalajara",
+      "name": "Sheraton Guadalajara Expo",
+      "hotelId": "recCAGqkERSXgiku4",
+      "cohort": "PRIMARY",
+      "filesystemCount": 43,
+      "airtableCount": 0,
+      "idOverlapCount": 0,
+      "filesystemOnlyCount": 43,
+      "airtableOnlyCount": 0,
+      "counts": {
+        "SHARED": 0,
+        "SHARED_IDENTITY_CONFLICT": 0,
+        "AIRTABLE_ONLY_ACTIVE": 0,
+        "AIRTABLE_ONLY_HISTORICAL_OR_UNSPECIFIED": 0,
+        "FILESYSTEM_ONLY": 43,
+        "INCORRECT_HOTEL_RELATIONSHIP": 0,
+        "IDENTITY_COLLISION": 0,
+        "UNKNOWN": 0
+      },
+      "decisionCounts": {
+        "CREATE": 0,
+        "UPDATE": 0,
+        "UNCHANGED": 0,
+        "DUPLICATE_LINKED": 0,
+        "DEFERRED": 43,
+        "CONFLICT": 0,
+        "REJECTED": 0
+      },
+      "estimatedAirtableOperations": 0,
+      "createCandidateIds": [],
+      "updateCandidateIds": [],
+      "conflictIds": []
+    },
+    {
+      "key": "bethesda",
+      "name": "Bethesda Marriott",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "cohort": "REFERENCE",
+      "filesystemCount": 59,
+      "airtableCount": 86,
+      "idOverlapCount": 59,
+      "filesystemOnlyCount": 0,
+      "airtableOnlyCount": 27,
+      "counts": {
+        "SHARED": 58,
+        "SHARED_IDENTITY_CONFLICT": 1,
+        "AIRTABLE_ONLY_ACTIVE": 0,
+        "AIRTABLE_ONLY_HISTORICAL_OR_UNSPECIFIED": 27,
+        "FILESYSTEM_ONLY": 0,
+        "INCORRECT_HOTEL_RELATIONSHIP": 0,
+        "IDENTITY_COLLISION": 0,
+        "UNKNOWN": 0
+      },
+      "decisionCounts": {
+        "CREATE": 0,
+        "UPDATE": 1,
+        "UNCHANGED": 57,
+        "DUPLICATE_LINKED": 0,
+        "DEFERRED": 27,
+        "CONFLICT": 1,
+        "REJECTED": 0
+      },
+      "estimatedAirtableOperations": 1,
+      "createCandidateIds": [],
+      "updateCandidateIds": [
+        "gdi_opp_accp_annual_meeting_20261001"
+      ],
+      "conflictIds": [
+        "gdi_opp_series_ctn_annual_conference_2027"
+      ]
+    },
+    {
+      "key": "wyndham",
+      "name": "Wyndham San Diego Bayside",
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "cohort": "REFERENCE",
+      "filesystemCount": 82,
+      "airtableCount": 82,
+      "idOverlapCount": 82,
+      "filesystemOnlyCount": 0,
+      "airtableOnlyCount": 0,
+      "counts": {
+        "SHARED": 82,
+        "SHARED_IDENTITY_CONFLICT": 0,
+        "AIRTABLE_ONLY_ACTIVE": 0,
+        "AIRTABLE_ONLY_HISTORICAL_OR_UNSPECIFIED": 0,
+        "FILESYSTEM_ONLY": 0,
+        "INCORRECT_HOTEL_RELATIONSHIP": 0,
+        "IDENTITY_COLLISION": 0,
+        "UNKNOWN": 0
+      },
+      "decisionCounts": {
+        "CREATE": 0,
+        "UPDATE": 0,
+        "UNCHANGED": 82,
+        "DUPLICATE_LINKED": 0,
+        "DEFERRED": 0,
+        "CONFLICT": 0,
+        "REJECTED": 0
+      },
+      "estimatedAirtableOperations": 0,
+      "createCandidateIds": [],
+      "updateCandidateIds": [],
+      "conflictIds": []
+    },
+    {
+      "key": "castillo",
+      "name": "Castillo Hotel Son Vida",
+      "hotelId": "rec82D9zpB8fede1I",
+      "cohort": "REFERENCE",
+      "filesystemCount": 20,
+      "airtableCount": 20,
+      "idOverlapCount": 20,
+      "filesystemOnlyCount": 0,
+      "airtableOnlyCount": 0,
+      "counts": {
+        "SHARED": 20,
+        "SHARED_IDENTITY_CONFLICT": 0,
+        "AIRTABLE_ONLY_ACTIVE": 0,
+        "AIRTABLE_ONLY_HISTORICAL_OR_UNSPECIFIED": 0,
+        "FILESYSTEM_ONLY": 0,
+        "INCORRECT_HOTEL_RELATIONSHIP": 0,
+        "IDENTITY_COLLISION": 0,
+        "UNKNOWN": 0
+      },
+      "decisionCounts": {
+        "CREATE": 0,
+        "UPDATE": 0,
+        "UNCHANGED": 20,
+        "DUPLICATE_LINKED": 0,
+        "DEFERRED": 0,
+        "CONFLICT": 0,
+        "REJECTED": 0
+      },
+      "estimatedAirtableOperations": 0,
+      "createCandidateIds": [],
+      "updateCandidateIds": [],
+      "conflictIds": []
+    },
+    {
+      "key": "nobu",
+      "name": "Nobu Hotel London Portman Square",
+      "hotelId": "recC2kbCaS48jFjFF",
+      "cohort": "REFERENCE",
+      "filesystemCount": 0,
+      "airtableCount": 65,
+      "idOverlapCount": 0,
+      "filesystemOnlyCount": 0,
+      "airtableOnlyCount": 65,
+      "counts": {
+        "SHARED": 0,
+        "SHARED_IDENTITY_CONFLICT": 0,
+        "AIRTABLE_ONLY_ACTIVE": 0,
+        "AIRTABLE_ONLY_HISTORICAL_OR_UNSPECIFIED": 65,
+        "FILESYSTEM_ONLY": 0,
+        "INCORRECT_HOTEL_RELATIONSHIP": 0,
+        "IDENTITY_COLLISION": 0,
+        "UNKNOWN": 0
+      },
+      "decisionCounts": {
+        "CREATE": 0,
+        "UPDATE": 0,
+        "UNCHANGED": 0,
+        "DUPLICATE_LINKED": 0,
+        "DEFERRED": 65,
+        "CONFLICT": 0,
+        "REJECTED": 0
+      },
+      "estimatedAirtableOperations": 0,
+      "createCandidateIds": [],
+      "updateCandidateIds": [],
+      "conflictIds": []
+    },
+    {
+      "key": "waterstone",
+      "name": "Waterstone Resort & Marina",
+      "hotelId": "recgMYovrrZDJMqzX",
+      "cohort": "REFERENCE",
+      "filesystemCount": 29,
+      "airtableCount": 36,
+      "idOverlapCount": 29,
+      "filesystemOnlyCount": 0,
+      "airtableOnlyCount": 7,
+      "counts": {
+        "SHARED": 29,
+        "SHARED_IDENTITY_CONFLICT": 0,
+        "AIRTABLE_ONLY_ACTIVE": 0,
+        "AIRTABLE_ONLY_HISTORICAL_OR_UNSPECIFIED": 7,
+        "FILESYSTEM_ONLY": 0,
+        "INCORRECT_HOTEL_RELATIONSHIP": 0,
+        "IDENTITY_COLLISION": 0,
+        "UNKNOWN": 0
+      },
+      "decisionCounts": {
+        "CREATE": 0,
+        "UPDATE": 0,
+        "UNCHANGED": 29,
+        "DUPLICATE_LINKED": 0,
+        "DEFERRED": 7,
+        "CONFLICT": 0,
+        "REJECTED": 0
+      },
+      "estimatedAirtableOperations": 0,
+      "createCandidateIds": [],
+      "updateCandidateIds": [],
+      "conflictIds": []
+    }
+  ],
+  "nextProductionPilotRequires": [
+    "FOUNDER_EXPLICIT_ALLOWLIST",
+    "ROCK_CREEK_STRUCTURED_ID_REMEDIATION_DECISION",
+    "PER_HOTEL_QUALIFIED_CREATE_UPDATE_SET",
+    "authorizeProductionWrites=true",
+    "exactWriteSetAuthorization=<validated manifest>",
+    "apply=true"
+  ],
+  "airtableErrors": [],
+  "idempotencyRecheck": {
+    "ok": true,
+    "identical": true
+  },
+  "sharedIdentitySample": {
+    "ok": true,
+    "checked": 0,
+    "note": "NO_SHARED_DG_IN_SAMPLE",
+    "isolationContractPresent": true
+  }
+}
