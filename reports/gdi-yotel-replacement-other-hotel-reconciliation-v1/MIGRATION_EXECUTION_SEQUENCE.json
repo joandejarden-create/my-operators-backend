@@ -1,0 +1,82 @@
+{
+  "version": "gdi-yotel-replacement-migration-plan-v1",
+  "mutation": false,
+  "productionAuthorized": false,
+  "atomicMultiRecordTransactions": false,
+  "note": "Airtable does not offer atomic multi-record transactions; use staged recoverable sequence.",
+  "hotelAllowlist": [
+    "recrPQcZg7SFARRb2"
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "FREEZE_AND_BACKUP",
+      "actions": [
+        "Re-query YOTEL GDOs by exact hotelId",
+        "Write full recoverable backup + fingerprints",
+        "Snapshot local opportunities.json",
+        "Audit Decisions/feedback/publication pointers"
+      ],
+      "writes": false
+    },
+    {
+      "phase": 2,
+      "name": "FOUNDER_AUTHORIZATION",
+      "actions": [
+        "Review exact delete ID list",
+        "Review qualified GDO replacement set",
+        "Authorize with exactWriteSetAuthorization token bound to manifests"
+      ],
+      "writes": false
+    },
+    {
+      "phase": 3,
+      "name": "CREATE_QUALIFIED_REPLACEMENTS_FIRST",
+      "actions": [
+        "Create only 0 qualified GDO rows from local baseline",
+        "Read-back verify each create",
+        "Do not create research-only rows into GDO"
+      ],
+      "writes": "AUTHORIZED_CREATES_ONLY",
+      "risk": "Temporary coexistence of old+new inventories until phase 4"
+    },
+    {
+      "phase": 4,
+      "name": "DELETE_OBSOLETE_108",
+      "actions": [
+        "Delete only airtableRecordIdsExact from delete manifest",
+        "Re-verify hotelId on each record immediately before delete",
+        "Never delete shared DG/Program/Signal/Venue",
+        "Skip any ID not in allowlist"
+      ],
+      "writes": "AUTHORIZED_DELETES_ONLY"
+    },
+    {
+      "phase": 5,
+      "name": "POST_MIGRATION_RECONCILE",
+      "actions": [
+        "Re-list YOTEL GDOs",
+        "Expect GDO count == qualified creates (not necessarily 42)",
+        "Confirm local 42 still present on filesystem",
+        "Confirm publication packages unchanged",
+        "Idempotent replan: no further deletes/creates"
+      ],
+      "writes": false
+    }
+  ],
+  "counts": {
+    "proposedDeletes": 108,
+    "qualifiedCreates": 0,
+    "researchOnlyRemainOnFilesystem": 42
+  },
+  "writeGuard": {
+    "blocked": true,
+    "code": "AIRTABLE_PRODUCTION_WRITES_NOT_AUTHORIZED",
+    "note": "Canonical Full E2E may dry-run map and plan writes; live Airtable mutations require separate founder approval."
+  },
+  "rockCreekExcluded": {
+    "note": "Rock Creek structured Venue ID correction is separate authorization",
+    "canonicalId": "pev_53b689545914754d",
+    "applyWithYotelMigration": false
+  }
+}
