@@ -20,6 +20,10 @@ import {
   resolveLocalDemoDealalityUser,
 } from "../lib/dealality/local-demo-dealality-user.js";
 import { resolveLocalDevBypassAdminUser } from "../lib/dealality/local-dev-bypass-admin-user.js";
+import {
+  elevateGovernedPlatformAdmin,
+  elevateGovernedPlatformAdminOnRequest,
+} from "../lib/dealality/governed-platform-admin-emails.js";
 
 export async function requireDealalityUser(req, res, next) {
   if (!req.memberstackMemberId) {
@@ -71,6 +75,12 @@ export async function requireDealalityUser(req, res, next) {
       });
       if (localBypassAdmin) {
         req.dealalityUser = localBypassAdmin;
+        return next();
+      }
+
+      // Governed founder/demo emails (assignments.v1.json) — stub admin when Users row missing.
+      const governedStub = elevateGovernedPlatformAdminOnRequest(req);
+      if (governedStub) {
         return next();
       }
 
@@ -142,6 +152,26 @@ export async function requireDealalityUser(req, res, next) {
 
     // Portfolio must never shrink workspace options.
     dealalityUser.canonicalWorkspaceOptions = resolveWorkspaceOptions(dealalityUser);
+
+    // Founder/demo may be Airtable role=owner with isAdmin=false — elevate only when
+    // the verified Memberstack email (or Users.email bound to verified memberstackId)
+    // is on the server allowlist. Never elevate from client-supplied fields.
+    // Elevate only for verified Memberstack sessions (never DEV bypass impersonation here).
+    // Try JWT email first, then Users.email when the row is bound to the verified memberstack id
+    // (parity with /api/me elevateEmail / matchedBy=memberstack_id).
+    if (
+      req.memberstackMemberId &&
+      req.memberstackMemberId !== "dev_bypass" &&
+      String(req.memberstackVerifiedVia || "") !== "dev_bypass"
+    ) {
+      elevateGovernedPlatformAdmin(dealalityUser, req.memberstackEmail);
+      if (
+        !dealalityUser.governedPlatformAdminElevated &&
+        dealalityUser.memberstackId === req.memberstackMemberId
+      ) {
+        elevateGovernedPlatformAdmin(dealalityUser, dealalityUser.email);
+      }
+    }
 
     req.dealalityUser = dealalityUser;
     return next();

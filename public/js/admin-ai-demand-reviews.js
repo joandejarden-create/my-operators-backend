@@ -602,12 +602,31 @@
       .join("");
   }
 
+  function isAccessDenialError(err, status, json) {
+    var msg = String(
+      (err && err.message) ||
+        (json && (json.message || json.error)) ||
+        ""
+    ).toLowerCase();
+    if (status === 401 || status === 403) return true;
+    if (msg.indexOf("admin access required") !== -1) return true;
+    if (msg.indexOf("authentication required") !== -1) return true;
+    if (msg.indexOf("forbidden") !== -1) return true;
+    return false;
+  }
+
   async function loadList() {
     var qs = queryFromFilters();
     var res = await authFetch(API + (qs ? "?" + qs : ""));
-    var json = await res.json();
+    var json = await res.json().catch(function () {
+      return {};
+    });
     if (!res.ok || !json.ok) {
-      throw new Error(json.message || json.error || "list_failed");
+      var err = new Error(json.message || json.error || "list_failed");
+      err.status = res.status;
+      err.payload = json;
+      err.accessDenial = isAccessDenialError(null, res.status, json);
+      throw err;
     }
     state.reviews = json.reviews || [];
     state.properties = json.properties || [];
@@ -1214,6 +1233,16 @@
         var content = document.getElementById("supportGateContent");
         if (content) content.hidden = false;
       } catch (err) {
+        if (
+          err &&
+          (err.accessDenial ||
+            isAccessDenialError(err, err.status, err.payload))
+        ) {
+          showDenied(
+            err.message || "AI Demand Reviews admin access required."
+          );
+          return;
+        }
         showRenderError(
           err && err.message
             ? err.message
