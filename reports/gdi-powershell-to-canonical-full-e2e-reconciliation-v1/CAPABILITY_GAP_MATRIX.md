@@ -11,6 +11,6 @@
 | Commercial qualification / sales-ready | PRESERVED_AND_ACTIVE | true | true | true | — | Do not weaken gates; improve demand thesis quality separately |
 | Drawer generation | PRESERVED_AND_ACTIVE | true | true | true | — | — |
 | Airtable research persistence | PRESERVED_AND_ACTIVE | true | true | true | — | Keep founder-gated apply |
-| Universal PS1 FullRun → legacy research-to-page | HISTORICAL_ONLY | true | parallel legacy path | true | PS1 FullRun not wired to canonical entry | Point gdi-workflow.ps1 Research/FullRun at canonical entry (follow-on) |
+| Universal PS1 FullRun → canonical Full E2E | PRESERVED_AND_ACTIVE | true | true | true | — | — |
 
 Full JSON: `CAPABILITY_GAP_MATRIX.json`.
