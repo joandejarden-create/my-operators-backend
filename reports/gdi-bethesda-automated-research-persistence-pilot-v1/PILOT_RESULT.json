@@ -1,0 +1,406 @@
+{
+  "version": "gdi-bethesda-automated-research-persistence-pilot-v1",
+  "bridgeVersion": "gdi-full-e2e-research-persistence-bridge-v1",
+  "at": "2026-11-18T12:18:56.099Z",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "baselineResearchInventory": 86,
+  "baselineMemorySeedSize": 86,
+  "productionAirtableWrites": 0,
+  "gdoWrites": 0,
+  "publicationWrites": 0,
+  "workflowSequence": [
+    "Load existing hotel intelligence (canonical FS + research inventory)",
+    "Discover potential demand (Full E2E chain)",
+    "Research and qualify supporting evidence",
+    "Resolve canonical identities (opportunityId + hotelId)",
+    "Deduplicate against existing research + in-run composite keys",
+    "Identify new vs materially changed vs unchanged",
+    "Persist eligible research inventory changes (gated)",
+    "Read back and verify persistence",
+    "Maintain Weekly Change history (FS + payload + provenance fields)",
+    "Keep GDO qualification and publication independently gated"
+  ],
+  "workflowVerification": {
+    "usesCanonicalFullE2eBridge": true,
+    "parallelOrchestratorCreated": false,
+    "failClosedByDefault": true,
+    "productionAuthLocked": true
+  },
+  "passA": {
+    "counts": {
+      "candidatesBeforeDedupe": 5,
+      "candidates": 4,
+      "DUPLICATES_RESOLVED": 1,
+      "WOULD_CREATE": 0,
+      "WOULD_UPDATE": 0,
+      "UNCHANGED": 1,
+      "CREATED": 2,
+      "UPDATED": 1,
+      "FAILED": 0,
+      "SKIPPED_FORBIDDEN": 0,
+      "SKIPPED_BUDGET": 0
+    },
+    "executionSummary": {
+      "opportunitiesResearched": 5,
+      "uniqueCandidates": 4,
+      "newResearchOpportunities": 2,
+      "materiallyUpdatedOpportunities": 1,
+      "unchangedOpportunities": 1,
+      "duplicatesResolved": 1,
+      "exploratoryResearchOnly": 1,
+      "airtable": {
+        "CREATE": 2,
+        "UPDATE": 1,
+        "UNCHANGED": 1,
+        "WOULD_CREATE": 0,
+        "WOULD_UPDATE": 0,
+        "FAILED": 0
+      },
+      "failedWrites": 0,
+      "verifiedReadBacks": 3,
+      "dryRun": true,
+      "gdoWrites": 0,
+      "publicationWrites": 0
+    },
+    "byAction": {
+      "CREATED": 2,
+      "UPDATED": 1,
+      "UNCHANGED": 1,
+      "FAILED": 0
+    },
+    "duplicatesResolved": [
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "opportunityId": "gdi_pilot_new_bethesda_research_001",
+        "compositeKey": "recLuxvwwxID7U2B8::gdi_pilot_new_bethesda_research_001",
+        "segment": "corporate_meetings_training",
+        "reason": "DUPLICATE_COMPOSITE_KEY_IN_RUN"
+      }
+    ],
+    "rows": [
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "opportunityId": "gdi_opp_nado_ddaa_washcon_2028",
+        "compositeKey": "recLuxvwwxID7U2B8::gdi_opp_nado_ddaa_washcon_2028",
+        "action": "UNCHANGED",
+        "airtableRecordId": "memrec_1",
+        "materialChanged": false,
+        "changedFields": [],
+        "researchLifecycleStatus": "ACTIVE_RESEARCH",
+        "exploratory": false,
+        "outcome": "UNCHANGED",
+        "gdoWrite": false,
+        "publicationWrite": false
+      },
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "opportunityId": "gdi_opp_ahima_advocacy_2027",
+        "compositeKey": "recLuxvwwxID7U2B8::gdi_opp_ahima_advocacy_2027",
+        "action": "UPDATED",
+        "airtableRecordId": "memrec_3",
+        "materialChanged": true,
+        "changedFields": [
+          "sourceSummary",
+          "lastMaterialChangeAt",
+          "researchPayloadJson"
+        ],
+        "researchLifecycleStatus": "ACTIVE_RESEARCH",
+        "exploratory": false,
+        "outcome": "UPDATED",
+        "gdoWrite": false,
+        "publicationWrite": false
+      },
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "opportunityId": "gdi_pilot_new_bethesda_research_001",
+        "compositeKey": "recLuxvwwxID7U2B8::gdi_pilot_new_bethesda_research_001",
+        "action": "CREATED",
+        "airtableRecordId": "memrec_87",
+        "materialChanged": false,
+        "changedFields": [],
+        "researchLifecycleStatus": "EXPLORATORY",
+        "exploratory": true,
+        "outcome": "CREATED",
+        "gdoWrite": false,
+        "publicationWrite": false
+      },
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "opportunityId": "gdi_pilot_exploratory_bethesda_001",
+        "compositeKey": "recLuxvwwxID7U2B8::gdi_pilot_exploratory_bethesda_001",
+        "action": "CREATED",
+        "airtableRecordId": "memrec_88",
+        "materialChanged": false,
+        "changedFields": [],
+        "researchLifecycleStatus": "WATCHLIST",
+        "exploratory": false,
+        "outcome": "CREATED",
+        "gdoWrite": false,
+        "publicationWrite": false
+      }
+    ],
+    "readBack": [
+      {
+        "airtableRecordId": "memrec_3",
+        "compositeKey": "recLuxvwwxID7U2B8::gdi_opp_ahima_advocacy_2027",
+        "matched": true
+      },
+      {
+        "airtableRecordId": "memrec_87",
+        "compositeKey": "recLuxvwwxID7U2B8::gdi_pilot_new_bethesda_research_001",
+        "matched": true
+      },
+      {
+        "airtableRecordId": "memrec_88",
+        "compositeKey": "recLuxvwwxID7U2B8::gdi_pilot_exploratory_bethesda_001",
+        "matched": true
+      }
+    ],
+    "storeSizeAfter": 88
+  },
+  "contactEnrichment": {
+    "counts": {
+      "candidatesBeforeDedupe": 1,
+      "candidates": 1,
+      "DUPLICATES_RESOLVED": 0,
+      "WOULD_CREATE": 0,
+      "WOULD_UPDATE": 0,
+      "UNCHANGED": 0,
+      "CREATED": 0,
+      "UPDATED": 1,
+      "FAILED": 0,
+      "SKIPPED_FORBIDDEN": 0,
+      "SKIPPED_BUDGET": 0
+    },
+    "rows": [
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "opportunityId": "gdi_opp_ahima_advocacy_2027",
+        "compositeKey": "recLuxvwwxID7U2B8::gdi_opp_ahima_advocacy_2027",
+        "action": "UPDATED",
+        "airtableRecordId": "memrec_1",
+        "materialChanged": true,
+        "changedFields": [
+          "lastMaterialChangeAt",
+          "researchPayloadJson"
+        ],
+        "researchLifecycleStatus": "ACTIVE_RESEARCH",
+        "exploratory": false,
+        "outcome": "UPDATED",
+        "gdoWrite": false,
+        "publicationWrite": false
+      }
+    ],
+    "materialChanged": true
+  },
+  "failureRecovery": {
+    "failPass": {
+      "failed": 1,
+      "ok": false,
+      "rows": [
+        {
+          "hotelId": "recLuxvwwxID7U2B8",
+          "opportunityId": "gdi_pilot_new_bethesda_research_001",
+          "action": "FAILED",
+          "code": "UPSERT_THREW",
+          "error": "simulated_airtable_write_failure",
+          "outcome": "FAILED",
+          "recoverable": true
+        }
+      ]
+    },
+    "retryPass": {
+      "counts": {
+        "candidatesBeforeDedupe": 1,
+        "candidates": 1,
+        "DUPLICATES_RESOLVED": 0,
+        "WOULD_CREATE": 0,
+        "WOULD_UPDATE": 0,
+        "UNCHANGED": 0,
+        "CREATED": 1,
+        "UPDATED": 0,
+        "FAILED": 0,
+        "SKIPPED_FORBIDDEN": 0,
+        "SKIPPED_BUDGET": 0
+      },
+      "readBack": [
+        {
+          "airtableRecordId": "memrec_1",
+          "compositeKey": "recLuxvwwxID7U2B8::gdi_pilot_new_bethesda_research_001",
+          "matched": true
+        }
+      ]
+    },
+    "retryIdempotent": {
+      "counts": {
+        "candidatesBeforeDedupe": 1,
+        "candidates": 1,
+        "DUPLICATES_RESOLVED": 0,
+        "WOULD_CREATE": 0,
+        "WOULD_UPDATE": 0,
+        "UNCHANGED": 1,
+        "CREATED": 0,
+        "UPDATED": 0,
+        "FAILED": 0,
+        "SKIPPED_FORBIDDEN": 0,
+        "SKIPPED_BUDGET": 0
+      },
+      "action": "UNCHANGED"
+    }
+  },
+  "weeklyChange": {
+    "contract": "gdi-weekly-change-durability-v1",
+    "timingUpdate": {
+      "weeklyDeltaState": "UPDATED",
+      "isNewThisWeek": true,
+      "firstSeenRunId": "prior_run",
+      "firstSeenAt": "2026-09-24T18:43:08.201Z",
+      "firstDiscoveredAt": "2026-09-24T18:43:08.201Z",
+      "firstDiscoveredRunId": "prior_run",
+      "lastMaterialChangeAt": "2026-11-18T12:00:00.000Z",
+      "lastMaterialChangeRunId": "pilot_bethesda_persistence_sim_v1",
+      "changedFields": [
+        {
+          "field": "eventStartDate",
+          "oldValue": "2027-02-01",
+          "newValue": "2027-03-15"
+        },
+        {
+          "field": "eventEndDate",
+          "oldValue": "2027-02-03",
+          "newValue": "2027-03-17"
+        }
+      ],
+      "durabilityContract": "gdi-weekly-change-durability-v1",
+      "durabilityStorage": [
+        "filesystem.hotel.opportunities",
+        "airtable.gdo.opportunityPayloadJson",
+        "airtable.gdo.firstDiscoveredAt",
+        "airtable.gdo.firstDiscoveredRunId",
+        "airtable.gdo.lastMaterialChangeAt",
+        "airtable.gdo.lastMaterialChangeRunId"
+      ]
+    },
+    "contactUpdate": {
+      "weeklyDeltaState": "UPDATED",
+      "isNewThisWeek": true,
+      "firstSeenRunId": "prior_run",
+      "firstSeenAt": "2026-09-24T18:43:08.201Z",
+      "firstDiscoveredAt": "2026-09-24T18:43:08.201Z",
+      "firstDiscoveredRunId": "prior_run",
+      "lastMaterialChangeAt": "2026-11-18T12:00:00.000Z",
+      "lastMaterialChangeRunId": "pilot_bethesda_persistence_sim_v1",
+      "changedFields": [
+        {
+          "field": "primaryContactName",
+          "oldValue": null,
+          "newValue": "Jordan Lee"
+        },
+        {
+          "field": "primaryContactEmail",
+          "oldValue": null,
+          "newValue": "jordan.lee@example.invalid"
+        }
+      ],
+      "durabilityContract": "gdi-weekly-change-durability-v1",
+      "durabilityStorage": [
+        "filesystem.hotel.opportunities",
+        "airtable.gdo.opportunityPayloadJson",
+        "airtable.gdo.firstDiscoveredAt",
+        "airtable.gdo.firstDiscoveredRunId",
+        "airtable.gdo.lastMaterialChangeAt",
+        "airtable.gdo.lastMaterialChangeRunId"
+      ]
+    },
+    "newOpportunity": {
+      "weeklyDeltaState": "UNCHANGED",
+      "isNewThisWeek": false,
+      "firstSeenRunId": null,
+      "firstSeenAt": "2026-11-18T12:00:00.000Z",
+      "firstDiscoveredAt": "2026-11-18T12:00:00.000Z",
+      "firstDiscoveredRunId": null,
+      "lastMaterialChangeAt": null,
+      "lastMaterialChangeRunId": null,
+      "changedFields": [],
+      "durabilityContract": "gdi-weekly-change-durability-v1",
+      "durabilityStorage": [
+        "filesystem.hotel.opportunities",
+        "airtable.gdo.opportunityPayloadJson",
+        "airtable.gdo.firstDiscoveredAt",
+        "airtable.gdo.firstDiscoveredRunId",
+        "airtable.gdo.lastMaterialChangeAt",
+        "airtable.gdo.lastMaterialChangeRunId"
+      ]
+    },
+    "descriptionOnlyNonMaterial": {
+      "ok": false,
+      "weeklyDeltaState": "UNCHANGED",
+      "changedFields": []
+    },
+    "timingIsUpdated": true,
+    "contactIsUpdated": true,
+    "newIsNew": false,
+    "firstDiscoveredPreservedOnUpdate": true
+  },
+  "sharedIntelligence": {
+    "sameDemandGeneratorId": "dg_pilot_shared_synthetic_001",
+    "bethesdaCompositeKey": "recLuxvwwxID7U2B8::gdi_pilot_new_bethesda_research_001",
+    "peerCompositeKey": "recPeerHotelSharedDg001::gdi_pilot_new_peer_hotel_research_001",
+    "bethesdaCreated": 1,
+    "peerCreated": 1,
+    "separateHotelIdentities": true,
+    "privateSalesNotCrossShared": true,
+    "rules": [
+      "Reuse dgGeneratorId for the same underlying demand activity across hotels",
+      "Persist separate hotelId::opportunityId research inventory rows",
+      "Keep hotel-specific fit, contacts, pursuit, sales feedback, and publication authority separate",
+      "Never expose one hotel private sales notes to another hotel payload"
+    ]
+  },
+  "productionPilotPlan": {
+    "authorizationId": "gdi-bethesda-automated-research-persistence-pilot-v1",
+    "hotelId": "recLuxvwwxID7U2B8",
+    "hotelName": "Bethesda Marriott",
+    "baseId": "appa2cE7FTRmIbB32",
+    "tableId": "tblbkDj0vhQLfrssV",
+    "tableName": "GDI Hotel Research Opportunities",
+    "productionWritesAuthorized": false,
+    "requiresEnvGate": "GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES",
+    "expectedCreatesMax": 2,
+    "expectedUpdatesMax": 2,
+    "expectedUnchangedMin": 1,
+    "writeBudget": 10,
+    "exactAllowedCompositeIdentities": [
+      "recLuxvwwxID7U2B8::gdi_pilot_new_bethesda_research_001",
+      "recLuxvwwxID7U2B8::gdi_pilot_exploratory_bethesda_001",
+      "recLuxvwwxID7U2B8::gdi_opp_ahima_advocacy_2027",
+      "recLuxvwwxID7U2B8::gdi_opp_nado_ddaa_washcon_2028"
+    ],
+    "retryAndReadBackRequired": true,
+    "gdoWrites": 0,
+    "publicationWrites": 0,
+    "rockCreekExcluded": true,
+    "paidResearchExcluded": true,
+    "rollbackProcedure": [
+      "Halt env gate GDI_RESEARCH_INVENTORY_PRODUCTION_WRITES",
+      "Do not re-apply without new founder authorization",
+      "Use compositeKey dedupe — retry must be UNCHANGED/ALREADY_PRESENT",
+      "Preserve firstDiscovered* on all updates",
+      "Do not delete research rows as rollback; quarantine via lifecycle status if needed"
+    ],
+    "note": "Real production pilot requires a separate explicit founder authorization."
+  },
+  "acceptance": {
+    "bethesda86Intact": true,
+    "noProductionWrites": true,
+    "duplicateResolvedInRun": true,
+    "unchangedObserved": true,
+    "createObserved": true,
+    "updateObserved": true,
+    "exploratoryResearchOnly": true,
+    "failureRecoverable": true,
+    "retryNoDuplicate": true,
+    "weeklyTimingValidated": true,
+    "sharedDgSeparateHotels": true
+  }
+}
