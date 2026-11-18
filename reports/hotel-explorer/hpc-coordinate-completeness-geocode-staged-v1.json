@@ -1,0 +1,298 @@
+{
+  "ok": true,
+  "contract": "HPC_OPEN_PIPELINE_COORDINATE_COMPLETENESS_GATE_V1",
+  "founderAuth": "FOUNDER_AUTH_HPC_COORD_GEOCODE_LOOKUP_V1",
+  "airtableWrite": false,
+  "paidGeocodeCalls": 4,
+  "geocodeCallCap": 2,
+  "provider": {
+    "provider": "mapbox",
+    "credentials_ok": true,
+    "permanent_storage_enabled": true,
+    "storage_terms_reviewed": null,
+    "permanentStoragePolicy": "MAPBOX_PERMANENT_GEOCODING=1 required for permanent Census storage; temporary geocodes must not be written."
+  },
+  "generatedAt": "2026-11-18T20:35:08.650Z",
+  "verifiedAt": "2026-11-18",
+  "results": [
+    {
+      "hpcRecordId": "recH9h3McgMNFQEla",
+      "propertyName": "Radisson Blu Toronto Downtown",
+      "radarStatus": "Open",
+      "address": "249 Queens Quay West",
+      "city": "Toronto",
+      "country": "Canada",
+      "postalCode": "M5J 2N5",
+      "before": {
+        "Latitude": null,
+        "Longitude": null,
+        "Coordinate Source Type": null,
+        "Coordinate Confidence": null,
+        "Geocode Provider": null,
+        "Geocode Method": null,
+        "Geocode Reviewed Date": null
+      },
+      "beforeValidation": {
+        "ok": false,
+        "hardFail": true,
+        "issues": [
+          "MISSING_LATITUDE_OR_LONGITUDE"
+        ],
+        "hardIssues": [
+          "MISSING_LATITUDE_OR_LONGITUDE"
+        ],
+        "softIssues": [],
+        "mapEligible": false,
+        "lat": null,
+        "lng": null
+      },
+      "resolution": {
+        "mode": "STAGED_OFFICIAL_ADDRESS_GEOCODE",
+        "geocode": {
+          "ok": true,
+          "reason": null,
+          "lat": 43.638654,
+          "lng": -79.385713,
+          "provider": "mapbox",
+          "method": "mapbox_permanent_geocode",
+          "confidence": "Medium",
+          "formatted_address": "249 Queens Quay West, Toronto, Ontario M5J 2N5, Canada",
+          "query": "Radisson Blu Toronto Downtown, 249 Queens Quay West, Toronto, Ontario, Canada",
+          "relevance": 1,
+          "location_type": null,
+          "permanent": true,
+          "failures": null,
+          "recovery": "top_address_after_divergent_candidates",
+          "softFlags": [
+            "INCOMPLETE_ADDRESS_MATCH"
+          ]
+        },
+        "rejected": null,
+        "patch": {
+          "airtableWrite": false,
+          "before": {
+            "Latitude": null,
+            "Longitude": null,
+            "Coordinate Source Type": null,
+            "Coordinate Confidence": null,
+            "Geocode Provider": null,
+            "Geocode Method": null,
+            "Geocode Reviewed Date": null
+          },
+          "after": {
+            "Latitude": 43.638654,
+            "Longitude": -79.385713,
+            "Coordinate Source Type": "official_address_geocode",
+            "Coordinate Confidence": "Medium",
+            "Geocode Provider": "Mapbox",
+            "Geocode Method": "mapbox_permanent_geocode",
+            "Geocode Reviewed Date": "2026-11-18"
+          },
+          "evidence": {
+            "formattedAddress": "249 Queens Quay West, Toronto, Ontario M5J 2N5, Canada",
+            "query": "Radisson Blu Toronto Downtown, 249 Queens Quay West, Toronto, Ontario, Canada",
+            "relevance": 1,
+            "locationType": null,
+            "permanent": true,
+            "provider": "mapbox",
+            "method": "mapbox_permanent_geocode",
+            "confidence": "Medium",
+            "verifiedAt": "2026-11-18",
+            "officialWebsiteSuppliedCoordinates": false,
+            "coordinateSourceAttribution": "Mapbox permanent geocode of official street address — not hotel website coordinates"
+          }
+        },
+        "recoveryApplied": true,
+        "postValidation": {
+          "ok": true,
+          "hardFail": false,
+          "issues": [],
+          "hardIssues": [],
+          "softIssues": [],
+          "mapEligible": true,
+          "lat": 43.638654,
+          "lng": -79.385713
+        },
+        "softFlags": [
+          "INCOMPLETE_ADDRESS_MATCH"
+        ]
+      },
+      "airtableWrite": false,
+      "statusPreserved": true
+    },
+    {
+      "hpcRecordId": "recHXCkkKD5Xwue3p",
+      "propertyName": "UMusic Hotel Madrid",
+      "radarStatus": "Open",
+      "address": "Calle de la Paz 11, 28012 Madrid, Spain",
+      "city": "Madrid",
+      "country": "Spain",
+      "postalCode": "28012",
+      "before": {
+        "Latitude": null,
+        "Longitude": null,
+        "Coordinate Source Type": null,
+        "Coordinate Confidence": null,
+        "Geocode Provider": null,
+        "Geocode Method": null,
+        "Geocode Reviewed Date": null
+      },
+      "beforeValidation": {
+        "ok": false,
+        "hardFail": true,
+        "issues": [
+          "MISSING_LATITUDE_OR_LONGITUDE"
+        ],
+        "hardIssues": [
+          "MISSING_LATITUDE_OR_LONGITUDE"
+        ],
+        "softIssues": [],
+        "mapEligible": false,
+        "lat": null,
+        "lng": null
+      },
+      "resolution": {
+        "mode": "STAGED_OFFICIAL_ADDRESS_GEOCODE",
+        "geocode": {
+          "ok": true,
+          "reason": null,
+          "lat": 40.41544,
+          "lng": -3.704038,
+          "provider": "mapbox",
+          "method": "mapbox_permanent_geocode",
+          "confidence": "Medium",
+          "formatted_address": "Calle De La Paz 11, 28012 Madrid, Madrid, Spain",
+          "query": "UMusic Hotel Madrid, Calle de la Paz 11, 28012 Madrid, Spain, Community of Madrid",
+          "relevance": 0.882655,
+          "location_type": null,
+          "permanent": true,
+          "failures": null,
+          "recovery": "top_address_after_divergent_candidates",
+          "softFlags": [
+            "POTENTIAL_CITY_CENTER_UNCONFIRMED",
+            "INCOMPLETE_ADDRESS_MATCH"
+          ]
+        },
+        "rejected": null,
+        "patch": {
+          "airtableWrite": false,
+          "before": {
+            "Latitude": null,
+            "Longitude": null,
+            "Coordinate Source Type": null,
+            "Coordinate Confidence": null,
+            "Geocode Provider": null,
+            "Geocode Method": null,
+            "Geocode Reviewed Date": null
+          },
+          "after": {
+            "Latitude": 40.41544,
+            "Longitude": -3.704038,
+            "Coordinate Source Type": "official_address_geocode",
+            "Coordinate Confidence": "Medium",
+            "Geocode Provider": "Mapbox",
+            "Geocode Method": "mapbox_permanent_geocode",
+            "Geocode Reviewed Date": "2026-11-18"
+          },
+          "evidence": {
+            "formattedAddress": "Calle De La Paz 11, 28012 Madrid, Madrid, Spain",
+            "query": "UMusic Hotel Madrid, Calle de la Paz 11, 28012 Madrid, Spain, Community of Madrid",
+            "relevance": 0.882655,
+            "locationType": null,
+            "permanent": true,
+            "provider": "mapbox",
+            "method": "mapbox_permanent_geocode",
+            "confidence": "Medium",
+            "verifiedAt": "2026-11-18",
+            "officialWebsiteSuppliedCoordinates": false,
+            "coordinateSourceAttribution": "Mapbox permanent geocode of official street address — not hotel website coordinates"
+          }
+        },
+        "recoveryApplied": true,
+        "postValidation": {
+          "ok": true,
+          "hardFail": false,
+          "issues": [
+            "POTENTIAL_CITY_CENTER_UNCONFIRMED"
+          ],
+          "hardIssues": [],
+          "softIssues": [
+            "POTENTIAL_CITY_CENTER_UNCONFIRMED"
+          ],
+          "mapEligible": true,
+          "lat": 40.41544,
+          "lng": -3.704038
+        },
+        "softFlags": [
+          "POTENTIAL_CITY_CENTER_UNCONFIRMED",
+          "INCOMPLETE_ADDRESS_MATCH"
+        ],
+        "cityCenterLabel": "Madrid city center"
+      },
+      "airtableWrite": false,
+      "statusPreserved": true
+    }
+  ],
+  "proposedAirtableChanges": [
+    {
+      "id": "recH9h3McgMNFQEla",
+      "fields": {
+        "Latitude": 43.638654,
+        "Longitude": -79.385713,
+        "Coordinate Source Type": "official_address_geocode",
+        "Coordinate Confidence": "Medium",
+        "Geocode Provider": "Mapbox",
+        "Geocode Method": "mapbox_permanent_geocode",
+        "Geocode Reviewed Date": "2026-11-18"
+      },
+      "evidence": {
+        "formattedAddress": "249 Queens Quay West, Toronto, Ontario M5J 2N5, Canada",
+        "query": "Radisson Blu Toronto Downtown, 249 Queens Quay West, Toronto, Ontario, Canada",
+        "relevance": 1,
+        "locationType": null,
+        "permanent": true,
+        "provider": "mapbox",
+        "method": "mapbox_permanent_geocode",
+        "confidence": "Medium",
+        "verifiedAt": "2026-11-18",
+        "officialWebsiteSuppliedCoordinates": false,
+        "coordinateSourceAttribution": "Mapbox permanent geocode of official street address — not hotel website coordinates"
+      },
+      "mode": "STAGED_OFFICIAL_ADDRESS_GEOCODE"
+    },
+    {
+      "id": "recHXCkkKD5Xwue3p",
+      "fields": {
+        "Latitude": 40.41544,
+        "Longitude": -3.704038,
+        "Coordinate Source Type": "official_address_geocode",
+        "Coordinate Confidence": "Medium",
+        "Geocode Provider": "Mapbox",
+        "Geocode Method": "mapbox_permanent_geocode",
+        "Geocode Reviewed Date": "2026-11-18"
+      },
+      "evidence": {
+        "formattedAddress": "Calle De La Paz 11, 28012 Madrid, Madrid, Spain",
+        "query": "UMusic Hotel Madrid, Calle de la Paz 11, 28012 Madrid, Spain, Community of Madrid",
+        "relevance": 0.882655,
+        "locationType": null,
+        "permanent": true,
+        "provider": "mapbox",
+        "method": "mapbox_permanent_geocode",
+        "confidence": "Medium",
+        "verifiedAt": "2026-11-18",
+        "officialWebsiteSuppliedCoordinates": false,
+        "coordinateSourceAttribution": "Mapbox permanent geocode of official street address — not hotel website coordinates"
+      },
+      "mode": "STAGED_OFFICIAL_ADDRESS_GEOCODE"
+    }
+  ],
+  "regeneratedAt": "2026-11-18T20:44:53.107Z",
+  "offlineFromPrior": true,
+  "additionalPaidGeocodeCallsThisRun": 0,
+  "budgetEnforcement": {
+    "maxPaidRequests": 2,
+    "historicalPaidCallsBeforeBudgetFix": 4,
+    "note": "No new paid calls. Divergent-candidate recovery must reuse the same response (0 extra paid calls)."
+  }
+}
