@@ -899,6 +899,9 @@ async function mergeAuthorizedInternalPreviewHotels(hotels) {
             const id = String(hotel && hotel.id || '').trim();
             if (!id || seen.has(id)) continue;
             if (!hotel.internalPreviewOnly) continue;
+            // HPC Radar Status must be Open|Pipeline (server already filters; keep client fail-closed).
+            const st = String(hotel.status || hotel.radarStatus || '').trim();
+            if (st !== 'Open' && st !== 'Pipeline') continue;
             list.push(hotel);
             seen.add(id);
             addedIds.push(id);
@@ -1223,6 +1226,12 @@ function parseCityAggFilter(token) {
 }
 
 function cityRowPassesAggFilter(row, token) {
+    // Authorized HPC internal-preview hotels must stay visible in low-zoom city
+    // aggregates even when the city fails the min-size filter (default hotels:3).
+    // Example: Bethesda Marriott is the only city="Bethesda" row in the merged
+    // pool, so without this bypass its numbered city circle never renders while
+    // search/list still find the hotel.
+    if (row && row.includesInternalPreview) return true;
     const filter = parseCityAggFilter(token);
     if (filter.mode === 'rooms') return row.totalRooms >= filter.min;
     if (filter.mode === 'open') return row.openHotels >= filter.min;
@@ -1262,6 +1271,7 @@ function renderCityAggregationMarkers(options) {
                 openHotels: 0,
                 pipelineHotels: 0,
                 candidateHotels: 0,
+                includesInternalPreview: false,
                 lat: null,
                 lng: null
             };
@@ -1269,6 +1279,7 @@ function renderCityAggregationMarkers(options) {
         const row = cityGroups[cityKey];
         row.totalHotels += 1;
         row.totalRooms += Number(hotel.rooms) || 0;
+        if (hotel.internalPreviewOnly) row.includesInternalPreview = true;
 
         const status = String(hotel.status || '').toLowerCase();
         if (status === 'open') row.openHotels += 1;
