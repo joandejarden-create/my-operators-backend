@@ -12,6 +12,23 @@ function readBearerToken(req) {
   return m ? m[1] : null;
 }
 
+/** Parity with api/me pickEmailFromPayload — nested JWT email claims. */
+function pickEmailFromPayload(payload) {
+  if (!payload || typeof payload !== "object") return null;
+  const candidates = [
+    payload.email,
+    payload.auth?.email,
+    payload.member?.email,
+    payload.data?.email,
+    payload.data?.auth?.email,
+  ];
+  for (const c of candidates) {
+    const s = c != null ? String(c).trim().toLowerCase() : "";
+    if (s && s.includes("@")) return s;
+  }
+  return null;
+}
+
 export async function memberstackAuth(req, res, next) {
   const token = readBearerToken(req);
 
@@ -52,7 +69,10 @@ export async function memberstackAuth(req, res, next) {
     const verified = await verifyMemberstackToken(token);
     req.memberstack = verified.raw;
     req.memberstackMemberId = verified.id;
-    req.memberstackEmail = verified.email || null;
+    req.memberstackEmail =
+      (verified.email && String(verified.email).trim().toLowerCase()) ||
+      pickEmailFromPayload(verified.raw) ||
+      null;
     req.memberstackVerifiedVia = verified.verifiedVia;
     return next();
   } catch (err) {

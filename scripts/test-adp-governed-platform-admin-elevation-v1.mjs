@@ -104,6 +104,14 @@ const requireUser = fs.readFileSync(
 );
 assert.match(requireUser, /elevateGovernedPlatformAdminOnRequest/);
 assert.match(requireUser, /elevateGovernedPlatformAdmin\(dealalityUser/);
+assert.match(requireUser, /dealalityUser\.email/);
+
+const memberstackAuth = fs.readFileSync(
+  path.join(root, "middleware/memberstackAuth.js"),
+  "utf8"
+);
+assert.match(memberstackAuth, /pickEmailFromPayload/);
+assert.match(memberstackAuth, /verified\.email/);
 
 const reviewsJs = fs.readFileSync(
   path.join(root, "public/js/admin-ai-demand-reviews.js"),

@@ -157,17 +157,20 @@ export async function requireDealalityUser(req, res, next) {
     // the verified Memberstack email (or Users.email bound to verified memberstackId)
     // is on the server allowlist. Never elevate from client-supplied fields.
     // Elevate only for verified Memberstack sessions (never DEV bypass impersonation here).
+    // Try JWT email first, then Users.email when the row is bound to the verified memberstack id
+    // (parity with /api/me elevateEmail / matchedBy=memberstack_id).
     if (
       req.memberstackMemberId &&
       req.memberstackMemberId !== "dev_bypass" &&
       String(req.memberstackVerifiedVia || "") !== "dev_bypass"
     ) {
-      const verifiedEmail =
-        req.memberstackEmail ||
-        (dealalityUser.memberstackId === req.memberstackMemberId
-          ? dealalityUser.email
-          : null);
-      elevateGovernedPlatformAdmin(dealalityUser, verifiedEmail);
+      elevateGovernedPlatformAdmin(dealalityUser, req.memberstackEmail);
+      if (
+        !dealalityUser.governedPlatformAdminElevated &&
+        dealalityUser.memberstackId === req.memberstackMemberId
+      ) {
+        elevateGovernedPlatformAdmin(dealalityUser, dealalityUser.email);
+      }
     }
 
     req.dealalityUser = dealalityUser;
