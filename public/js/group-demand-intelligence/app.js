@@ -309,7 +309,217 @@
     root.innerHTML =
       '<div class="gdi-error" role="alert"><p>' +
       esc(msg) +
-      "</p><p>Local servers enable pilot read automatically. On production set GROUP_DEMAND_INTELLIGENCE_V1=1. Admin actions still require sign-in.</p></div>";
+      "</p><p>Local servers enable pilot read automatically. On production set GROUP_DEMAND_INTELLIGENCE_V1=1. Admin actions still require sign-in.</p>" +
+      '<p class="gdi-error__nav"><button type="button" class="gdi-btn" data-gdi-recovery="back-hotels">Back to Hotels</button> ' +
+      '<button type="button" class="gdi-btn" data-gdi-recovery="choose-hotel">Choose Another Hotel</button></p></div>';
+    wireRecoveryActions({ hasCurrentPublication: false });
+  }
+
+  function hotelLabelForId(hotelId) {
+    var id = String(hotelId || "").trim();
+    var hotels = state.hotels || [];
+    for (var i = 0; i < hotels.length; i++) {
+      if (String(hotels[i].hotelId) === id) {
+        return (
+          hotels[i].optionLabel ||
+          hotels[i].displayName ||
+          hotels[i].hotelName ||
+          id
+        );
+      }
+    }
+    return id || "this property";
+  }
+
+  function clearPreviewQueryParams() {
+    try {
+      var url = new URL(window.location.href);
+      url.searchParams.delete("preview");
+      url.searchParams.delete("live");
+      url.searchParams.delete("publicationPackage");
+      window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+      if (window.parent && window.parent !== window) {
+        try {
+          var parentUrl = new URL(window.parent.location.href);
+          var hash = String(parentUrl.hash || "");
+          var qIdx = hash.indexOf("?");
+          if (qIdx >= 0) {
+            var route = hash.slice(0, qIdx);
+            var hp = new URLSearchParams(hash.slice(qIdx + 1));
+            hp.delete("preview");
+            hp.delete("live");
+            hp.delete("publicationPackage");
+            var qs = hp.toString();
+            window.parent.history.replaceState(
+              {},
+              "",
+              parentUrl.pathname + parentUrl.search + route + (qs ? "?" + qs : "")
+            );
+          }
+        } catch (eParent) {
+          /* cross-origin */
+        }
+      }
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function setPreviewQueryParam(value) {
+    try {
+      var url = new URL(window.location.href);
+      if (value) url.searchParams.set("preview", value);
+      else url.searchParams.delete("preview");
+      url.searchParams.delete("live");
+      window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function hotelOptionsHtml(selectedId) {
+    var hotels = state.hotels || [];
+    if (!hotels.length) {
+      return (
+        '<option value="' +
+        esc(selectedId || "") +
+        '">' +
+        esc(hotelLabelForId(selectedId)) +
+        "</option>"
+      );
+    }
+    return hotels
+      .map(function (h) {
+        var id = String(h.hotelId || "");
+        var label =
+          h.optionLabel || h.displayName || h.hotelName || id;
+        return (
+          '<option value="' +
+          esc(id) +
+          '"' +
+          (id === selectedId ? " selected" : "") +
+          ">" +
+          esc(label) +
+          "</option>"
+        );
+      })
+      .join("");
+  }
+
+  function wireRecoveryActions(opts) {
+    opts = opts || {};
+    var choose = root.querySelector('[data-gdi-recovery="choose-hotel"]');
+    var back = root.querySelector('[data-gdi-recovery="back-hotels"]');
+    var published = root.querySelector(
+      '[data-gdi-recovery="view-published"]'
+    );
+    var select = root.querySelector("#gdiRecoveryHotel");
+    if (choose && select) {
+      choose.addEventListener("click", function () {
+        select.focus();
+        if (typeof select.showPicker === "function") {
+          try {
+            select.showPicker();
+          } catch (e) {
+            /* ignore */
+          }
+        }
+      });
+    }
+    if (select) {
+      select.addEventListener("change", function () {
+        var next = String(select.value || "").trim();
+        if (!next) return;
+        selectHotel(next, { clearPreview: true }).catch(function (err) {
+          handleLoadFailure(err);
+        });
+      });
+    }
+    if (back) {
+      back.addEventListener("click", function () {
+        clearPreviewQueryParams();
+        var fallback =
+          DEFAULT_HOTEL_ID && DEFAULT_HOTEL_ID !== state.hotelId
+            ? DEFAULT_HOTEL_ID
+            : (state.hotels[0] && state.hotels[0].hotelId) || DEFAULT_HOTEL_ID;
+        if (fallback && fallback !== state.hotelId) {
+          selectHotel(fallback, { clearPreview: true }).catch(function (err) {
+            handleLoadFailure(err);
+          });
+          return;
+        }
+        if (select) select.focus();
+      });
+    }
+    if (published && opts.hasCurrentPublication) {
+      published.addEventListener("click", function () {
+        setPreviewQueryParam("current");
+        setLoading(true, UI.DEFAULT_PAGE_LOADING_MESSAGE);
+        loadAll().catch(function (err) {
+          handleLoadFailure(err);
+        });
+      });
+    }
+  }
+
+  function showStagedPreviewUnavailable(err) {
+    setLoading(false);
+    var data = (err && err.data) || {};
+    var recovery = data.recovery || {};
+    var hasCurrent = recovery.hasCurrentPublication === true;
+    var hotelId = data.hotelId || state.hotelId;
+    var label = hotelLabelForId(hotelId);
+    var founderMsg =
+      data.founderMessage ||
+      "A staged review package is not available for this property yet.";
+    var publishedBtn = hasCurrent
+      ? '<button type="button" class="gdi-btn gdi-btn-primary" data-gdi-recovery="view-published">View Published Version</button> '
+      : "";
+    root.innerHTML =
+      '<div class="gdi-error gdi-error--recoverable" role="alert">' +
+      "<h2>Staged preview unavailable</h2>" +
+      "<p>" +
+      esc(founderMsg) +
+      "</p>" +
+      "<p><strong>" +
+      esc(label) +
+      "</strong> does not have a staged publication package" +
+      (hasCurrent
+        ? ", but a published version is available if you choose to open it."
+        : ", and no published package is available yet.") +
+      "</p>" +
+      '<div class="filter-group filter-group--grow" style="max-width:28rem;margin:1rem 0">' +
+      '<label class="filter-label" for="gdiRecoveryHotel">Choose Another Hotel</label>' +
+      '<select class="filter-select" id="gdiRecoveryHotel" aria-label="Choose another GDI hotel">' +
+      hotelOptionsHtml(hotelId) +
+      "</select></div>" +
+      '<p class="gdi-error__nav">' +
+      '<button type="button" class="gdi-btn" data-gdi-recovery="back-hotels">Back to Hotels</button> ' +
+      '<button type="button" class="gdi-btn" data-gdi-recovery="choose-hotel">Choose Another Hotel</button> ' +
+      publishedBtn +
+      "</p>" +
+      '<p class="gdi-muted">Dealality will not switch to another hotel, another publication version, or live research automatically.</p>' +
+      "</div>";
+    wireRecoveryActions({ hasCurrentPublication: hasCurrent });
+  }
+
+  function handleLoadFailure(err) {
+    var code =
+      (err && err.data && err.data.error) ||
+      (err && err.code) ||
+      "";
+    if (String(code) === "STAGED_PUBLICATION_PREVIEW_UNAVAILABLE") {
+      var ensureCatalog = state.hotels && state.hotels.length
+        ? Promise.resolve()
+        : loadHotelCatalog().catch(function () {
+            return null;
+          });
+      return ensureCatalog.then(function () {
+        showStagedPreviewUnavailable(err);
+      });
+    }
+    showError((err && err.message) || "Failed to load Group & Demand Intelligence");
+    return Promise.resolve();
   }
 
   function priorityPill(p) {
@@ -476,7 +686,8 @@
     }
   }
 
-  function selectHotel(hotelId) {
+  function selectHotel(hotelId, opts) {
+    opts = opts || {};
     var next = String(hotelId || "").trim();
     if (!next || next === state.hotelId) return Promise.resolve();
     state.hotelId = next;
@@ -484,6 +695,11 @@
       localStorage.setItem(STORAGE_PREFIX + "hotelId", next);
       var url = new URL(window.location.href);
       url.searchParams.set("hotelId", next);
+      // Switching properties clears incompatible hotel-specific preview flags.
+      if (opts.clearPreview !== false) {
+        url.searchParams.delete("preview");
+        url.searchParams.delete("live");
+      }
       window.history.replaceState({}, "", url.pathname + url.search + url.hash);
     } catch (e) {
       /* ignore */
@@ -1806,8 +2022,8 @@
     var hotelSelect = document.getElementById("gdiHotel");
     if (hotelSelect) {
       hotelSelect.addEventListener("change", function () {
-        selectHotel(hotelSelect.value).catch(function (err) {
-          showError(err.message || "Failed to switch hotel");
+        selectHotel(hotelSelect.value, { clearPreview: true }).catch(function (err) {
+          handleLoadFailure(err);
         });
       });
     }
@@ -2316,6 +2532,6 @@
     });
 
   loadAll().catch(function (err) {
-    showError(err.message || "Failed to load Group & Demand Intelligence");
+    handleLoadFailure(err);
   });
 })();

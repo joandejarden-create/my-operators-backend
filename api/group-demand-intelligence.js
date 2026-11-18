@@ -827,14 +827,23 @@ export async function getGdiOpportunities(req, res) {
           String(pkgResolved.meta?.previewSource || "").toUpperCase() === "STAGED"
         )
       ) {
+        const { inspectFounderPreviewPublicationAvailability } = await import(
+          "../lib/group-demand-intelligence/publication-package/gdi-founder-preview-availability-v1.js"
+        );
+        const availability = inspectFounderPreviewPublicationAvailability({
+          hotelId,
+        });
         return res.status(409).json({
           ok: false,
           error: "STAGED_PUBLICATION_PREVIEW_UNAVAILABLE",
           message:
             "Authenticated founder preview requested STAGED publication package, but none is available for this hotel. Refusing to fall back to another hotel, CURRENT published inventory, or live research.",
+          founderMessage:
+            "A staged review package is not available for this property yet. You can go back to Hotels, choose another property, or open the published version when one exists — without switching hotels automatically.",
           hotelId,
           publication: pkgResolved.meta || null,
           detail: pkgResolved.detail || null,
+          recovery: availability,
         });
       }
       if (pkgResolved.ok && pkgResolved.mode === "PACKAGE") {
@@ -1492,14 +1501,23 @@ export async function getGdiOpportunityDetail(req, res) {
           String(pkgResolved.meta?.previewSource || "").toUpperCase() === "STAGED"
         )
       ) {
+        const { inspectFounderPreviewPublicationAvailability } = await import(
+          "../lib/group-demand-intelligence/publication-package/gdi-founder-preview-availability-v1.js"
+        );
+        const availability = inspectFounderPreviewPublicationAvailability({
+          hotelId,
+        });
         return res.status(409).json({
           ok: false,
           error: "STAGED_PUBLICATION_PREVIEW_UNAVAILABLE",
           message:
             "Authenticated founder detail preview requested STAGED publication package, but none is available for this hotel/opportunity.",
+          founderMessage:
+            "A staged review package is not available for this property (or opportunity) yet. Use Back to Hotels or Choose Another Hotel — published inventory is never opened automatically.",
           hotelId,
           opportunityId,
           publication: pkgResolved.meta || null,
+          recovery: availability,
         });
       }
       // Package was the list source of truth but this ID is absent — do not hang
