@@ -32,6 +32,11 @@
 .PARAMETER ApprovalReference
   Founder authorization phrase required for live Publish.
 
+.PARAMETER Canonical
+  For Research / FullRun only: invoke the authoritative canonical Full E2E
+  entry (scripts/gdi-canonical-full-e2e-entry-v1.mjs) instead of the historical
+  gdi-research-to-page coordinator. Dry-run by default. Never auto-authorizes paid spend.
+
 .EXAMPLE
   .\scripts\gdi-workflow.ps1 -HotelId "recKRJjcPnb4tVDDS" -Action Validate
 
@@ -40,6 +45,9 @@
 
 .EXAMPLE
   .\scripts\gdi-workflow.ps1 -HotelId "recKRJjcPnb4tVDDS" -Action FullRun -DryRun
+
+.EXAMPLE
+  .\scripts\gdi-workflow.ps1 -HotelId "recLuxvwwxID7U2B8" -Action Research -Canonical -DryRun
 
 .EXAMPLE
   .\scripts\gdi-workflow.ps1 -HotelId "recKRJjcPnb4tVDDS" -Action Publish -Environment Production -ApprovalReference "FOUNDER_GO_..." -Apply
@@ -79,7 +87,9 @@ param(
 
   [string]$ProdBase,
 
-  [switch]$ExecuteResearch
+  [switch]$ExecuteResearch,
+
+  [switch]$Canonical
 )
 
 $ErrorActionPreference = "Stop"
@@ -103,6 +113,40 @@ if ($Action -eq "Publish" -and -not $isDry) {
   if ([string]::IsNullOrWhiteSpace($ApprovalReference)) {
     throw "Live Publish requires -ApprovalReference (founder authorization)."
   }
+}
+
+# Optional thin wrapper: Research / FullRun → canonical Full E2E entry.
+# Does not restore a second research engine. Paid flags are never auto-passed.
+if ($Canonical.IsPresent -and ($Action -eq "Research" -or $Action -eq "FullRun")) {
+  if ([string]::IsNullOrWhiteSpace($HotelId)) {
+    throw "HotelId is required for Canonical Research/FullRun"
+  }
+  $mode = if ($isDry) { "dry-run" } else { "dry-run" }
+  if (-not $isDry) {
+    Write-Host "Canonical path refuses live paid/apply from gdi-workflow.ps1 — use npm run gdi:canonical-full-e2e with explicit founder flags." -ForegroundColor Yellow
+  }
+  $canonicalArgs = @(
+    "scripts/gdi-canonical-full-e2e-entry-v1.mjs",
+    "--hotel", $HotelId,
+    "--mode", $mode
+  )
+  if (-not [string]::IsNullOrWhiteSpace($Resume)) {
+    $canonicalArgs += @("--resume-run", $Resume)
+  }
+  if (-not [string]::IsNullOrWhiteSpace($ReportPath)) {
+    $canonicalArgs += @("--report-dir", $ReportPath)
+  }
+  Write-Host "GDI workflow (CANONICAL): Action=$Action HotelId=$HotelId mode=$mode" -ForegroundColor Cyan
+  Write-Host "Repo: $repoRoot"
+  Write-Host "Note: historical FullRun path remains gdi-research-to-page via universal workflow without -Canonical." -ForegroundColor DarkGray
+  & node @canonicalArgs
+  $exit = $LASTEXITCODE
+  if ($exit -ne 0) {
+    Write-Host "GDI canonical workflow exited with code $exit" -ForegroundColor Red
+    exit $exit
+  }
+  Write-Host "GDI canonical workflow finished." -ForegroundColor Green
+  exit 0
 }
 
 $nodeArgs = @(
@@ -138,6 +182,9 @@ if ($ExecuteResearch.IsPresent) {
 
 Write-Host "GDI workflow: Action=$Action HotelId=$HotelId Environment=$Environment DryRun=$isDry" -ForegroundColor Cyan
 Write-Host "Repo: $repoRoot"
+if ($Action -eq "Research" -or $Action -eq "FullRun") {
+  Write-Host "Historical research path (gdi-research-to-page). Prefer -Canonical for authoritative Full E2E." -ForegroundColor DarkGray
+}
 
 & node @nodeArgs
 $exit = $LASTEXITCODE
