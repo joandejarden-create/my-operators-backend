@@ -46,7 +46,7 @@ npm run dealality:ci-precheck
 
 ### Post-merge workspace sync (required — HE / ADP / GDI)
 
-After each successful PR merge into `main`, Integration Controller runs:
+After each successful PR merge into `main`, Integration Controller runs the **single** supported command:
 
 ```bash
 npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi> --pr <n>

@@ -1,8 +1,11 @@
 # Post-merge product workspace sync (Dev OS)
 
 **Contract:** `DEALALITY_POST_MERGE_WORKSPACE_SYNC_V1`  
-**Command:** `npm run dealality:post-merge-sync`  
-**Module:** `lib/dealality-dev-os/post-merge-workspace-sync.js`
+**Command (single supported):** `npm run dealality:post-merge-sync`  
+**CLI:** `scripts/dealality-post-merge-sync-v1.mjs`  
+**Module:** `lib/dealality-dev-os/post-merge-workspace-sync.js`  
+
+There is exactly one supported npm command. Do not add a second competing post-merge sync entrypoint.
 
 ## Purpose
 
