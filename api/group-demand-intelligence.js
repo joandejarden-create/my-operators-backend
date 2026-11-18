@@ -920,8 +920,12 @@ export async function getGdiOpportunities(req, res) {
     // Sanitizer may fill summaryWhat from summaryWhyMatters/thesis, which
     // incorrectly satisfies travel_or_recurring_evidence and widens the list.
     let opportunities = doc.opportunities || [];
+    const researchStoreCount = Array.isArray(doc.opportunities)
+      ? doc.opportunities.length
+      : 0;
     let listScope = "CUSTOMER_FACING";
     let bethesdaUnionMeta = null;
+    let researchInventoryIntegrity = null;
     const { isInventoryVisibilityHotelEnabled } = await import(
       "../lib/group-demand-intelligence/inventory-visibility-v1.js"
     );
@@ -945,8 +949,15 @@ export async function getGdiOpportunities(req, res) {
       } = await import(
         "../lib/group-demand-intelligence/gdi-commercial-surface-disposition-v1.js"
       );
-      const requestedSurface = resolveRequestedCommercialSurfaceView(req.query || {});
+      // Founder Research Preview (?live=1): full research union — do not
+      // silently narrow to commercial / published sales selection.
+      const requestedSurface = forceLive
+        ? GDI_LIST_SURFACE_VIEW.FULL
+        : resolveRequestedCommercialSurfaceView(req.query || {});
       const surfaceView = requestedSurface;
+      if (forceLive) {
+        listScope = "FOUNDER_RESEARCH_INVENTORY";
+      }
       const requireFailClosed =
         surfaceView === GDI_LIST_SURFACE_VIEW.COMMERCIAL;
       // Presentation-only commercial-family collapse: one primary card per
@@ -1184,11 +1195,19 @@ export async function getGdiOpportunities(req, res) {
       if (!includeDisqualified && !isInventoryVisibilityHotelEnabled(hotelId)) {
         opportunities = filterSalespersonView(opportunities);
       }
-      const visibilityOpts = { hotelId };
-      opportunities = filterCustomerFacingOpportunities(
-        opportunities,
-        visibilityOpts
-      );
+      if (forceLive) {
+        // Founder Research Preview must show the hotel research store, not the
+        // customer-publication eligibility subset. Records remain preserved;
+        // this only corrects inappropriate suppression on ?live=1.
+        listScope = "FOUNDER_RESEARCH_INVENTORY";
+        // Do NOT apply filterCustomerFacingOpportunities on Research Preview.
+      } else {
+        const visibilityOpts = { hotelId };
+        opportunities = filterCustomerFacingOpportunities(
+          opportunities,
+          visibilityOpts,
+        );
+      }
     }
     opportunities = applyApprovedBethesdaCustomerProjection(opportunities);
     opportunities = projectOpportunitiesCommercialQuality(opportunities);
@@ -1400,6 +1419,43 @@ export async function getGdiOpportunities(req, res) {
     }
     // Re-assert annotation after progression overlays (idempotent).
     opportunities = annotateInventoryPopulations(opportunities, { hotelId });
+    if (forceLive) {
+      try {
+        const { buildResearchPreviewIntegrityMeta } = await import(
+          "../lib/group-demand-intelligence/inventory/gdi-research-inventory-integrity-v1.js"
+        );
+        const facingWouldHave = filterCustomerFacingOpportunities(
+          Array.isArray(doc.opportunities) ? doc.opportunities : [],
+          { hotelId },
+        );
+        researchInventoryIntegrity = buildResearchPreviewIntegrityMeta({
+          hotelId,
+          storeCount: researchStoreCount,
+          returnedCount: opportunities.length,
+          customerFacingWouldHaveReturned: facingWouldHave.length,
+          suppressedIds: (Array.isArray(doc.opportunities)
+            ? doc.opportunities
+            : []
+          )
+            .map((o) => String(o.id || o.opportunityId || ""))
+            .filter(
+              (id) =>
+                id &&
+                !facingWouldHave.some(
+                  (f) => String(f.id || f.opportunityId || "") === id,
+                ),
+            ),
+        });
+        if (listScope === "CUSTOMER_FACING") {
+          listScope = "FOUNDER_RESEARCH_INVENTORY";
+        }
+      } catch (integrityErr) {
+        console.warn(
+          "[gdi] research inventory integrity meta failed:",
+          integrityErr?.message || integrityErr,
+        );
+      }
+    }
     const inventoryPopulationCounts =
       buildInventoryPopulationCounts(opportunities);
     const bethesda67PublicationApproved =
@@ -1454,6 +1510,9 @@ export async function getGdiOpportunities(req, res) {
       },
       opportunities,
       hotelNeedDateConfigV1,
+      ...(researchInventoryIntegrity
+        ? { researchInventoryIntegrity }
+        : {}),
       ...(bethesdaUnionMeta ? { bethesdaInternalUnion: bethesdaUnionMeta } : {}),
       ...(visibilityWarning ? { visibilityWarning } : {}),
       ...(doc.publishedInventoryDiagnostic
