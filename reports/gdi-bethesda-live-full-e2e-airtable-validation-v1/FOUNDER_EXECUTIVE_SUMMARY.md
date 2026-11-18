@@ -1,6 +1,6 @@
 # Founder executive summary — Bethesda live Full E2E + Airtable validation
 
-Generated: 2026-11-18T18:32:56.071Z
+Generated: 2026-11-18T18:34:02.976Z
 Hotel: Bethesda Marriott (`recLuxvwwxID7U2B8`)
 Pack: `gdi-bethesda-live-full-e2e-airtable-validation-v1`
 

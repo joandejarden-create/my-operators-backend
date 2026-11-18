@@ -83,7 +83,7 @@ console.log(
       outDir: OUT,
       hotelId: BETHESDA_HOTEL_ID,
       paidMaxUsd: AUTH_PAID_DISCOVERY.maxUsd,
-      persistenceToken: AUTH_RESEARCH_PERSISTENCE.token,
+      persistenceAuthorizationId: AUTH_RESEARCH_PERSISTENCE.authorizationId,
     },
     null,
     2,
