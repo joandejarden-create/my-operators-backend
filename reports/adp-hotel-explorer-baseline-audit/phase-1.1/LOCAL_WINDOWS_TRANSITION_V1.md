@@ -4,6 +4,8 @@
 **Do not** merge/deploy PR `#364`, alter production Airtable, change customer visibility, or run paid research.  
 **Do not** begin Phase 2 implementation from this handoff.
 
+Phase 1.1 findings are **accepted with conditions**. Next ADP work continues in the **local Windows** Dealality environment (cost control + validation against the existing local setup).
+
 ---
 
 ## 0. Git identity (frozen for this handoff)
@@ -12,56 +14,89 @@
 |------|--------|
 | Remote | `https://github.com/joandejarden-create/my-operators-backend` |
 | Branch | `cursor/adp-hotel-explorer-audit-1ed2` |
-| PR | `#364` |
-| **Head SHA (handoff tip)** | `082d16a7ef08c8394a077eac6e5798bfe10e3406` — or current tip of `origin/cursor/adp-hotel-explorer-audit-1ed2` after `git fetch` |
-| Phase 1.1 implementation SHA | `d4b2ae102df9551bc8e340da4f5b5a9472b94c9e` |
-| Merge-base with `main` (at handoff) | `1e85541e79c11125df42bc01ba3600f20f95c35b` |
-| `origin/main` at handoff | `123453323a2ca795589a4b1a2910383a7ddc02e9` (**2 commits ahead of merge-base**; branch is **behind** main) |
-| Cloud ADP worktree | `/agent/repos/my-operators-backend-adp-audit` |
-| Primary GDI checkout (do not modify for ADP) | `/agent/repos/my-operators-backend` |
+| PR | [#364](https://github.com/joandejarden-create/my-operators-backend/pull/364) |
+| **Head SHA (handoff tip)** | `6b03f62906586bd2195de20d26d16951c2532cc7` |
+| Phase 1 HE + Bethesda tip | `83b1ceb2af1a5e7d9a91bf2695197cfbf6a30eb8` |
+| Main reconciliation merge | `a373fa579c8c83c911d1f1473108721df345a6c1` |
+| **Base / merge-base with `main`** | `9632c51544fd5aa6f164acbfe1af6e1a3048c5b2` (branch is **synchronized** with `origin/main` via merge) |
+| `origin/main` at handoff | `9632c51544fd5aa6f164acbfe1af6e1a3048c5b2` |
+| ADP worktree (this machine) | `C:\Dev\dealality\my-operators-backend-adp-audit` |
+| Primary GDI checkout (**do not modify for ADP**) | `C:\Dev\dealality\my-operators-backend` |
+| Ports | GDI / primary → **8080** · ADP worktree → **8091** |
 
-### Commits on this PR branch (vs merge-base)
+### Approved Phase 1 / 1.1 commits on this PR (high level)
 
-1. `6e241028` — docs: ADP/Hotel Explorer baseline audit  
-2. `4fec5fb1` — merge origin/main before Phase 1  
-3. `fd1c35da` — Phase 1 Radar HE progressive enrichment  
-4. `d4b2ae10` — Phase 1.1 certification authority, offline permanence, persistence fixes  
-5. `9c60680c` / `082d16a7` — Windows local transition handoff docs  
+1. Baseline audit docs → Phase 1 progressive enrichment (`fd1c35da9`)  
+2. Phase 1.1 certification / offline permanence / persistence (`d4b2ae102`)  
+3. Windows handoff docs (earlier revisions)  
+4. Phase 1.2/1.3 HE closeout + Bethesda authorized internal-preview (`83b1ceb2a`)  
+5. Merge `origin/main` GDI #366–#371 (`a373fa579`)  
+6. Final reconciliation report (`6b03f6290`)  
 
-### Working-tree check (cloud, at handoff)
+### Working-tree check (Windows ADP worktree, at handoff)
 
-- All Phase 1 / 1.1 source + reports committed and pushed.
-- Clean `git status` (no untracked Phase 1.1 deliverables left uncommitted).
-- **Gitignored / local-only (expected missing until you materialize locally):**
-  - `.env` / `.env.local` (never commit)
-  - `data/adp-durable-published/**` (Layer B durable volume)
-  - `data/census-map/**` (census map snapshot cache)
-  - `fixtures/.../longitudinal-synthetic/history-store/` (runtime mock residue)
-  - `reports/.../PRODUCTION_DURABLE_PUBLISHED_VS_MEASURED.json` (Layer B measured-dates)
+**Committed + pushed on tip `6b03f6290`:** Phase 1 / 1.1 Radar HE, Bethesda bridge, closeout reports, permanence Layer A fixtures/gates.
+
+**Untracked / local-only (do not put into PR #364):**
+
+| Path | Notes |
+|------|--------|
+| `data/hotel-identity/` | Phase 1.3B identity ledger prototype |
+| `lib/hotel-identity/` | Ledger / eligibility / shadow modules |
+| `reports/.../phase-1.3a/`, `phase-1.3b/` | Census migration analysis (follow-on PR) |
+| `scripts/*identity*`, `*shadow*`, `*eligibility*` | 1.3B scripts |
+| `package.json` local delta | Optional 1.3B npm script overlay (not required for Phase 1 HE) |
+| `.env` / `.env.local` | Never commit |
+| `data/adp-durable-published/**` | Layer B durable volume (gitignored) |
+| `data/census-map/**` | Census map snapshot cache (gitignored) |
 
 ### Implementation dependencies
 
-No missing npm packages for Phase 1/1.1 gates beyond `npm ci`. Runtime browser HE needs **read-only Airtable + Mapbox** (see §2). Offline CI gates do **not** need durable volume.
+No missing npm packages for Phase 1/1.1 gates beyond `npm ci` / `npm install`. Browser Radar+HE needs **read-only Airtable** (+ Mapbox for map). Offline CI / Layer A gates do **not** need durable volume.
 
 ---
 
-## 1. Preserve branch — do not create extra clones
+## 1. Preserve branch — no extra clones / cloud worktrees
 
-Prefer a **git worktree** next to your existing Dealality checkout so you do not duplicate history.
-
-Suggested Windows layout:
+Prefer the **existing** ADP worktree. Do **not** modify the primary GDI checkout for ADP tasks. Do **not** create additional cloud worktrees.
 
 ```text
 C:\Dev\dealality\
-  my-operators-backend\              ← existing GDI / main Dealality (leave alone for ADP)
-  my-operators-backend-adp-audit\    ← NEW worktree on cursor/adp-hotel-explorer-audit-1ed2
+  my-operators-backend\              ← GDI / primary (leave alone)
+  my-operators-backend-adp-audit\    ← ADP branch worktree (this handoff)
+```
+
+```powershell
+$Adp = "C:\Dev\dealality\my-operators-backend-adp-audit"
+Set-Location $Adp
+git fetch origin
+git checkout cursor/adp-hotel-explorer-audit-1ed2
+git pull --ff-only origin cursor/adp-hotel-explorer-audit-1ed2
+git rev-parse HEAD
+# Expect: 6b03f62906586bd2195de20d26d16951c2532cc7 (or newer ff-only tip if founder pushes docs)
+```
+
+If creating the worktree for the first time from the GDI folder:
+
+```powershell
+$Gdi = "C:\Dev\dealality\my-operators-backend"
+$Adp = "C:\Dev\dealality\my-operators-backend-adp-audit"
+$Branch = "cursor/adp-hotel-explorer-audit-1ed2"
+Set-Location $Gdi
+git fetch origin $Branch
+git fetch origin main
+# Do NOT checkout the ADP branch inside $Gdi
+git worktree add $Adp "origin/$Branch"
+Set-Location $Adp
+git checkout -B $Branch "origin/$Branch"
+git rev-parse HEAD
 ```
 
 ---
 
 ## 2. Windows PowerShell setup guide
 
-> No credentials in this document. Copy values from your existing local Dealality `.env` (read-only keys where possible).
+> No credentials in this document. Copy values from your existing local Dealality `.env` (prefer read-only Airtable scope).
 
 ### 2.1 Prerequisites
 
@@ -75,329 +110,232 @@ npm -v
 git --version
 ```
 
-### 2.2 Fetch + create worktree (safe beside GDI)
+### 2.2 Dependencies
 
 ```powershell
-# Adjust if your existing checkout lives elsewhere
-$Gdi = "C:\Dev\dealality\my-operators-backend"
-$Adp = "C:\Dev\dealality\my-operators-backend-adp-audit"
-$Branch = "cursor/adp-hotel-explorer-audit-1ed2"
-Set-Location $Gdi
-git fetch origin $Branch
-git fetch origin main
-
-# Do NOT checkout the ADP branch in the GDI folder.
-# Create an isolated worktree at the remote tip:
-git worktree add $Adp "origin/$Branch"
-
-Set-Location $Adp
-git checkout -B $Branch "origin/$Branch"
-git rev-parse HEAD
-git log -1 --oneline
-# Expect tip on or after 082d16a7 (Windows handoff) / d4b2ae10 (Phase 1.1 impl)
-```
-
-If the worktree already exists:
-
-```powershell
-Set-Location $Adp
-git fetch origin $Branch
-git checkout $Branch
-git pull --ff-only origin $Branch
-git rev-parse HEAD
-git log -1 --oneline
-```
-
-### 2.3 Dependencies
-
-```powershell
-Set-Location $Adp
+Set-Location C:\Dev\dealality\my-operators-backend-adp-audit
 npm ci
 # If npm ci fails on Windows lockfile quirks:
 # npm install
 ```
 
-### 2.4 Environment variable **names** (no values)
+### 2.3 Environment variable **names** (no values)
 
-Copy from existing Dealality `.env` into `$Adp\.env` (file is gitignored).
+Copy into `$Adp\.env` (gitignored).
 
 **Minimum for Radar + Hotel Explorer browser validation (read-heavy):**
 
 | Name | Purpose |
 |------|---------|
-| `AIRTABLE_API_KEY` or `AIRTABLE_API_KEY_READONLY` | Read census / brand-presence / map points |
-| `AIRTABLE_BASE_ID_ALT` | Platform base (Hotel Census, Radar map points) |
-| `MAPBOX_ACCESS_TOKEN` | Map tiles / geocoding display |
-| `PORT` | Use **8091** for ADP worktree (8080 often reserved for main checkout) |
-| `MEMBERSTACK_APP_ID` | Auth surfaces if testing signed-in paths |
-| `MEMBERSTACK_SECRET_KEY` or test secret | Server-side Memberstack (only if you exercise auth) |
+| `AIRTABLE_API_KEY` | Read census / brand-presence |
+| `AIRTABLE_BASE_ID_ALT` | Platform base (Hotel Census) |
+| `MAPBOX_ACCESS_TOKEN` | Map tiles |
+| `PORT` | **8091** for ADP worktree |
+| `MEMBERSTACK_APP_ID` | Signed-in `/app` paths |
+| `DEV_AUTH_BYPASS_EMAIL` | Local-only founder bypass (never production) |
 
-**ADP-related (usually leave writes off):**
+**Keep writes off:**
 
 | Name | Safe local default |
 |------|--------------------|
-| `ADP_AIRTABLE_READ_LIVE` | unset / `0` unless intentionally reading ADP Airtable overlay |
+| `ADP_AIRTABLE_READ_LIVE` | `0` / unset |
 | `ADP_AIRTABLE_PUBLISH_APPLY` | unset / not `true` |
-| `ADP_HISTORY_WRITES_ENABLED` | `0` / unset |
+| `ADP_HISTORY_WRITES_ENABLED` | `0` |
 | `ADP_HISTORY_AIRTABLE_WRITE_APPLY` | unset |
-| `ADP_DURABLE_PUBLISHED_ROOT` | path to local durable volume if present |
+| `OPERATOR_SETUP_USE_NEW_BASE_WRITER` | `0` |
+| `ENABLE_HBX_CENSUS_WRITES` | `0` |
+| `ENABLE_DATAFORSEO_VALIDATED_WRITES` | `0` |
+
+**Optional Layer B:**
+
+| Name | Purpose |
+|------|---------|
+| `ADP_DURABLE_PUBLISHED_ROOT` | Path to durable published volume |
 | `ADP_DURABLE_PUBLISHED_MODE` | `off` unless validating Layer B |
-| `OPERATOR_SETUP_USE_NEW_BASE_WRITER` | leave `0` unless you own that work |
-| `CENSUS_MAP_SNAPSHOT_BOOT_BUILD` | `1` (default) builds snapshot on boot when Airtable readable |
+| `ADP_PERMANENCE_REQUIRE_LAYER_B` | `1` only when durable volume present |
 
-**Read-only Airtable rule:** prefer a token scoped to `data.records:read` on `AIRTABLE_BASE_ID_ALT`. Do not enable publish/history apply flags for this validation.
+Read-only Airtable rule: prefer a token with `data.records:read` on `AIRTABLE_BASE_ID_ALT`.
 
-### 2.5 Start local server (ADP worktree only)
+### 2.4 Start ADP server (do not stop GDI on 8080)
 
 ```powershell
-Set-Location $Adp
+Set-Location C:\Dev\dealality\my-operators-backend-adp-audit
 $env:PORT = "8091"
+$env:ADP_AIRTABLE_PUBLISH_APPLY = "0"
+$env:ADP_HISTORY_WRITES_ENABLED = "0"
+$env:ADP_AIRTABLE_READ_LIVE = "0"
 node server.js
-# Expect: Server running at http://localhost:8091
-# Expect: non-canonical worktree note if 8080 is reserved for main
+# Expect: http://localhost:8091
+# Expect: non-canonical worktree note (8080 reserved for main)
 ```
 
-Keep the existing GDI server on its usual port if already running — do not stop it unless you intend to.
-
-### 2.6 Phase 1 / 1.1 test groups
+### 2.5 Phase 1 / 1.1 test groups
 
 ```powershell
-Set-Location $Adp
+Set-Location C:\Dev\dealality\my-operators-backend-adp-audit
 
-# A — Radar HE progressive enrichment + wiring + foundation (CI composite)
+# A — Radar HE composite (CI-aligned)
 npm run test:adp-phase1-radar-he-gates
 
-# B — Permanence Layer A (offline fixtures; not production proof)
+# B — Permanence Layer A (offline; not production proof)
 npm run test:adp-permanent-full-e2e-certification-v1
 
-# C — Persistence Layer A (synthetic mock). Layer B measured-dates may BLOCK.
+# C — Persistence contract (Layer B may BLOCK without durable volume)
 npm run test:adp-e2e-persistence-contract-v1
 
-# D — Customer-surface (expect FAIL partial until evidence/BPP gaps addressed)
+# D — Customer-surface (expect FAIL ~33 until evidence/BPP gaps addressed)
 npm run test:adp-customer-surface-contract
 
-# Optional Layer B hard fail if durable volume must be present:
-# $env:ADP_PERMANENCE_REQUIRE_LAYER_B = "1"
-# npm run test:adp-permanent-full-e2e-certification-v1
+# E — GDI isolation smoke (post-main merge)
+npm run test:gdi-airtable-purpose-integrity-audit-v1
 ```
 
-### 2.7 Browser URLs (Hotel Explorer / Radar)
+### 2.6 Browser URLs
 
 Base: `http://localhost:8091`
 
 | Purpose | URL |
 |---------|-----|
-| Radar ranked-list host (HE wired) | `/deal-capture-radar-with-ranked-list.html` |
-| Bethesda **internal preview only** | `/deal-capture-radar-with-ranked-list.html?hotelExplorer=recLuxvwwxID7U2B8&internalPreview=1` |
-| Enriched example (Casas — has census id) | `/deal-capture-radar-with-ranked-list.html?hotelExplorer=recjDsNzu93CFfe87&internalPreview=1` |
-| Hilton census pin (if in map) | `/deal-capture-radar-with-ranked-list.html?hotelExplorer=rec35fExUxCClpOP6&internalPreview=1` |
+| Canonical app Opportunity Radar | `/app?inventory=staged&preview=staged#/opportunity-radar` |
+| Ranked-list host (HE wired; embed equivalent) | `/deal-capture-radar-with-ranked-list.html` |
+| App-shell embed pattern | `/deal-capture-radar-with-ranked-list.html?embed=1&appShell=1&inventory=staged&preview=staged` |
+| Bethesda deep link | `...&hotelExplorer=recLuxvwwxID7U2B8&hexTab=hotel` |
+| Casas (enriched candidate) | `...&hotelExplorer=recjDsNzu93CFfe87&hexTab=hotel` |
 
-**Do not** open or create customer share packs for Bethesda. Share routes remain fail-closed under existing authorization.
+**Auth notes**
 
-### 2.8 Troubleshooting
+- Signed-in `/app` may show **Sign in to continue** until Memberstack Test Mode / token works → report **BLOCKED_AUTH**, do not claim full app PASS from embed alone.  
+- Bethesda map inclusion uses authorized `/api/brand-presence/internal-preview-hotels` (admin / local owner-app). Query `internalPreview=1` alone does **not** authorize. Local `DEV_AUTH_BYPASS` requires `X-Dealality-Owner-App: 1`. Production (`NODE_ENV=production`) disables bypass.  
+- **No** Bethesda customer share pack.
+
+### 2.7 Troubleshooting
 
 | Symptom | Likely cause | Action |
 |---------|--------------|--------|
-| Map shows 0 hotels / brand-presence 500 | Missing Airtable env or census snapshot | Confirm `AIRTABLE_API_KEY` + `AIRTABLE_BASE_ID_ALT`; restart server; wait for `data/census-map` build |
-| HE panel never opens | Census pin pool empty | Fix census first; deep-link `hotelExplorer=rec…` still needs hotel in `allHotels` or HE seed path |
-| Permanence EXIT 2 with `ADP_PERMANENCE_REQUIRE_LAYER_B=1` | Durable volume missing | Expected; run without that env for Layer A |
-| Persistence Layer B BLOCKED | Missing measured-dates JSON | See §5; do not fabricate |
-| Port in use / “8080 reserved” | Main checkout owns 8080 | Use `PORT=8091` on ADP worktree |
-| Accidentally on GDI folder | Wrong cwd | `git branch` should show ADP branch only in `$Adp` |
+| Map 0 hotels / brand-presence fail | Missing Airtable env / snapshot | Confirm `AIRTABLE_API_KEY` + `AIRTABLE_BASE_ID_ALT`; wait for census-map boot |
+| HE never opens | Empty pin pool or wrong host | Use ranked-list host; deep-link `hotelExplorer=rec…` |
+| Bethesda missing from public list | Expected | Public = Hotel Census only; use authorized internal merge |
+| Internal-preview 403 | Missing auth / owner-app header | Signed-in admin or local bypass **with** `X-Dealality-Owner-App: 1` |
+| Permanence EXIT 2 with Layer B required | Durable volume missing | Expected; Layer A only without volume |
+| Port conflict | 8080 owned by GDI | Keep ADP on **8091** |
+| Wrong folder | GDI checkout | `git branch` must be ADP branch only under `$Adp` |
 
 ---
 
-## 3. First local validation sequence (Radar ↔ Hotel Explorer)
+## 3. First local validation sequence
 
 Confirm in order:
 
-1. **Census pins load** on Radar map/list (`window.allHotels` / brand-presence).  
-2. **Click a pin** → unified Hotel Explorer opens (not legacy-only popup).  
-3. **Baseline-only hotel** → HE shows existing Radar sections only (no invented HI).  
-4. **Enriched hotel** → progressive strip / extra HE content where verified.  
-5. **Five Radar sections work:** Hotel Overview · Submarket Snapshot · Area Hotels · Demand Drivers · Access & Connectivity.  
-6. **Filter + map/list selection** still sync.  
-7. **Bethesda** (`recLuxvwwxID7U2B8`) opens with `internalPreview=1` — **no** customer publication / share pack.  
-8. **Share/customer** paths still require existing auth (fail-closed).
+1. Census pins load (~15,692) from Hotel Census via brand-presence.  
+2. Click a pin → **unified Hotel Explorer** opens.  
+3. **Baseline-only** hotel → existing Radar data; no invented HI.  
+4. **Enriched** hotel → verified progressive attributes when present.  
+5. Five Radar sections: Hotel Overview · Submarket Snapshot · Area Hotels · Demand Drivers · Access & Connectivity.  
+6. Filters + map/list selection stay synchronized.  
+7. **Bethesda** (`recLuxvwwxID7U2B8`) selectable in **authorized internal** preview; excluded from public list / share packs.  
+8. Customer/share authorization remains fail-closed.
 
-### Suggested test hotels
+### Suggested hotels
 
-| Class | Example | Census `rec…` | Notes |
-|-------|---------|---------------|-------|
-| Internal-preview enriched | Bethesda Marriott | `recLuxvwwxID7U2B8` | Internal only; not customer-visible |
-| Enriched / ADP-linked | Casas del XVI | `recjDsNzu93CFfe87` | Progressive enrichment candidate |
-| Brand-linked | Hilton Times Square | `rec35fExUxCClpOP6` | Map pin if in census snapshot |
-| Baseline-only | Any census pin **without** HI/ADP enrichment | (pick from live map) | Must still show five Radar tabs |
+| Class | Example | Census `rec…` |
+|-------|---------|---------------|
+| Internal-only | Bethesda Marriott | `recLuxvwwxID7U2B8` |
+| Enriched / ADP-linked | Casas del XVI | `recjDsNzu93CFfe87` |
+| Brand census pin | Hilton Times Square | `rec35fExUxCClpOP6` |
+| Baseline-only | Any map pin without HI | live pick |
 
-Identity rule: **census `rec…` only** — never name-only matching.
+Identity: **census `rec…` only** — never name-only matching.
 
 ---
 
 ## 4. Blocker register — 33 customer-surface failures
 
-Machine JSON: `CUSTOMER_SURFACE_ROOT_CAUSE_MATRIX.json`  
-Source run: `reports/ai-demand-positioning/adp-customer-surface-contract-v1-latest.json`
+Machine JSON: `CUSTOMER_SURFACE_BLOCKER_REGISTER_V1.json`  
+Detail matrix: `CUSTOMER_SURFACE_ROOT_CAUSE_MATRIX.md` / `.json`  
+Revalidated failure count at tip `6b03f6290`: **33** (unchanged).
 
-**Summary:** fail-closed behavior retained. None of these 33 should block **code integration of Phase 1 Radar HE** if treated as **legacy evidence / measurement gaps**. They **do** block claiming “customer-surface production ready.”
+| Gate group | Count | Root cause | Pre–P1? | New regression? | Historical evidence? | Paid measure? | Blocks HE code integrate? | Next action |
+|------------|------:|------------|---------|-----------------|----------------------|---------------|---------------------------|-------------|
+| `TERRITORY_SUBJECT_RATES` | 5 | Locked Bethesda rates vs published period drift | Yes | No | Yes | Only if re-cert | **No** | Compare certified vs latest; founder pin — do not flip constants |
+| `BPP` | 24 | Measurement not attempted / peer set not frozen (+ synthetic noise) | Yes | No | No* | Yes (BPP cycle) | **No** | Governed BPP / peer freeze; exclude `adp_smoke_test_synthetic` |
+| `ALL_EVIDENCE_LINKS_*` | 3 | Empty evidence / missing durable runtimes (~427 defects) | Yes | No | Yes | No | **No** | Restore durable packs; never invent evidence |
+| `DISPLACEMENT_COUNT_EVIDENCE_EXACT_PARITY` | 1 | Harness / synthetic fixture drift | Yes | No | Yes | No | **No** | Ignore smoke synthetic; validate real DSS locally |
 
-### 4.1 `TERRITORY_SUBJECT_RATES` (5) — Bethesda
+\*BPP itself is a measurement/eligibility gap, not a missing historical period artifact.
 
-| Field | Value |
-|-------|--------|
-| Root cause | Historical compatibility vs locked `BETHESDA_EXPECTED_SUBJECT_RATES` |
-| Affected | `adp_bethesda_marriott` (business/leisure/couples/family/celebration) |
-| Pre–Phase 1? | **Yes** (period drift vs golden expectations) |
-| New regression? | **No** |
-| Needs historical evidence? | Yes (which period is certified / comparable) |
-| Needs paid measurement? | Only if re-certifying a new period |
-| Blocks safe code integration? | **No** for Radar HE Phase 1 |
-| Next action | Local: compare manifest latest vs locked constants; founder decides pin vs re-cert — **do not flip constants** |
-
-### 4.2 `BPP` (24) — eligibility / measurement
-
-Paired assertions (`clientReady gate fail` + class) for 12 properties:
-
-| Property | Class | Pre–P1? | Paid measure? | Blocks HE merge? | Next action |
-|----------|-------|---------|---------------|------------------|-------------|
-| `adp_ac_hotel_a_coruna` | `MEASUREMENT_NOT_ATTEMPTED` | Yes | Yes (BPP cycle) | No | Governed BPP measurement later |
-| `adp_hilton_times_square` | `MEASUREMENT_NOT_ATTEMPTED` | Yes | Yes | No | Same |
-| `adp_spice_island_beach_resort` | `MEASUREMENT_NOT_ATTEMPTED` | Yes | Yes | No | Same |
-| `adp_w_rome` | `MEASUREMENT_NOT_ATTEMPTED` | Yes | Yes | No | Same |
-| `adp_castillo_hotel_son_vida` | `PEER_SET_NOT_FROZEN` | Yes | Peer freeze + measure | No | Freeze peer set before READY |
-| `adp_mayflower_hotel_washington_dc` | `PEER_SET_NOT_FROZEN` | Yes | Same | No | Same |
-| `adp_sheraton_mallorca_arabella_golf` | `PEER_SET_NOT_FROZEN` | Yes | Same | No | Same |
-| `adp_westin_grand_munchen` | `PEER_SET_NOT_FROZEN` | Yes | Same | No | Same |
-| `adp_westin_tampa_waterside` | `PEER_SET_NOT_FROZEN` | Yes | Same | No | Same |
-| `adp_wyndham_san_diego_bayside` | `PEER_SET_NOT_FROZEN` | Yes | Same | No | Same |
-| `adp_yotel_geneva_lake` | `PEER_SET_NOT_FROZEN` | Yes* | Same | No | Same (*affiliation mapping added in 1.1; measurement still open) |
-| `adp_smoke_test_synthetic` | `UNKNOWN` | Fixture noise | No | No | Exclude from commercial published universe |
-
-Phase 1.1 cleared `AFFILIATION_MISSING` for eight hotels via static mappings — **not** a claim of BPP READY.
-
-### 4.3 Evidence link gates (3) — shared 427 defects
-
-| Gate | Root cause |
-|------|------------|
-| `ALL_EVIDENCE_LINKS_NONEMPTY` | Empty evidence cards / missing self-contained packs |
-| `ALL_EVIDENCE_READABLE` | Same defect set |
-| `ALL_EVIDENCE_LINKS_CLIENT_READY` | 427 / 1541 links |
-
-| Field | Value |
-|-------|--------|
-| Affected | Cross-property published evidence audit |
-| Pre–Phase 1? | **Yes** (fixture/runtime drift) |
-| New regression? | **No** |
-| Needs historical evidence? | **Yes** (runtime periods or baked present/missing packs) |
-| Needs paid measurement? | **No** for restore-from-durable; **Yes** only if responses never captured |
-| Blocks safe code integration? | **No** for Radar HE; **Yes** for ADP customer evidence claims |
-| Next action | Local Layer B: restore runtimes from durable; never invent EMPTY clears |
-
-### 4.4 `DISPLACEMENT_COUNT_EVIDENCE_EXACT_PARITY` (1)
-
-| Field | Value |
-|-------|--------|
-| Root cause | Harness + fixture drift (`adp_smoke_test_synthetic` assertion); commercial rows need published DSS / runtime |
-| Pre–Phase 1? | Mostly yes; harness null-period crash fixed in 1.1 |
-| New regression? | **No** (residual synthetic noise) |
-| Needs historical evidence? | For commercial hotels, yes |
-| Needs paid measurement? | No |
-| Blocks safe code integration? | **No** |
-| Next action | Drop/ignore smoke synthetic in commercial gate; validate DSS on real hotels locally |
+**Interpretation:** these failures **do not** block safe Radar HE code integration; they **do** block claiming customer-surface / production ADP readiness. Do not run paid research or speculative fixes from this handoff.
 
 ---
 
-## 5. Durable production evidence (read-only, local)
+## 5. Durable production evidence (read-only)
 
-Keep **synthetic CI** and **production validation** separate.
+Full process: `PHASE1_1_LAYER_B_DURABLE_EVIDENCE_PROCESS.md`.
 
-### 5.1 Where authoritative records live
-
-| Artifact | Typical location | Git? |
-|----------|------------------|------|
-| Durable published current | `data/adp-durable-published/current/<propertyId>/manifest.json` | **Gitignored** |
-| Durable snapshots | `data/adp-durable-published/snapshots/<propertyId>/` | **Gitignored** |
-| Measured-dates export | `reports/dealality-adp-single-version-publication-contract-v1/admin-published-vs-measured-dates/PRODUCTION_DURABLE_PUBLISHED_VS_MEASURED.json` | Not in tree here — materialize from governed export |
-| Filesystem published SoT | `data/ai-demand-positioning/published/` | In repo (publication ≠ certification) |
-
-Set `ADP_DURABLE_PUBLISHED_ROOT` if your durable copy is outside the default path.
-
-### 5.2 Local process (read-only)
-
-1. Obtain durable volume / snapshot copy from the governed Railway mount or founder-held archive (**do not commit**).  
-2. Place under `data/adp-durable-published/` (or point `ADP_DURABLE_PUBLISHED_ROOT`).  
-3. Confirm Hilton (or target) `current/.../manifest.json` exists.  
-4. Place measured-dates JSON only if it is the real export — **never fabricate**.  
-5. Run:
+| Artifact | Location | Git |
+|----------|----------|-----|
+| Durable published `current/` | `data/adp-durable-published/current/<propertyId>/manifest.json` | **gitignored** |
+| Durable snapshots | `data/adp-durable-published/snapshots/` | **gitignored** |
+| Measured-dates audit | `reports/.../PRODUCTION_DURABLE_PUBLISHED_VS_MEASURED.json` | local/export only |
+| Filesystem published SoT | `data/ai-demand-positioning/published/` | publication ≠ certification |
 
 ```powershell
+# Layer A only (CI / local free)
+npm run test:adp-permanent-full-e2e-certification-v1
+
+# Layer B required when durable volume is mounted
 $env:ADP_PERMANENCE_REQUIRE_LAYER_B = "1"
 npm run test:adp-permanent-full-e2e-certification-v1
-npm run test:adp-e2e-persistence-contract-v1
 ```
 
-6. Record pass/fail/blocked under a new dated folder under `reports/adp-hotel-explorer-baseline-audit/phase-1.1/` if needed.
-
-Full write-up: `PHASE1_1_LAYER_B_DURABLE_EVIDENCE_PROCESS.md`.
+Rules: publication ≠ certification; do not invent packages; fail closed with `BLOCKED_MISSING_AUTHORITATIVE_EVIDENCE`; keep synthetic CI separate from real durable validation. **Never commit production secrets or unrestricted production dumps.**
 
 ---
 
-## 6. Merge-readiness checklist (PR `#364`)
+## 6. Merge-readiness checklist (PR #364) — not merge authorization
 
-**Verdict at handoff: NOT READY to merge/deploy.**
+| Area | Status |
+|------|--------|
+| ADP Phase 1 HE in canonical ranked-list Radar | Implemented + gated |
+| Phase 1.1 reliability / permanence Layer A | Implemented + gated |
+| Phase 1.2/1.3 Bethesda authorized internal preview | Implemented; temporary bridge |
+| Automated CI on tip | Must be green on latest push (do not treat “5 checks” as production readiness) |
+| Local Phase 1 composite | PASS at reconciliation |
+| Outstanding customer-surface failures | **33** legacy evidence/measurement gaps |
+| Browser signed-in `/app` | Often **BLOCKED_AUTH** until founder Memberstack login |
+| Customer publication safeguards | Fail-closed; Bethesda not in share packs / public list |
+| GDI compatibility | Merged through `origin/main` `9632c5154`; isolated GDI gates PASS |
+| Conflicts with newer main | None at handoff tip (synchronized via merge) |
+| Census migration 1.3a/1.3b | **Out of PR #364** — local-only follow-on |
 
-| Check | Status | Notes |
-|-------|--------|-------|
-| ADP Phase 1 Radar HE functionality (code) | Ready for **local** validation | Progressive enrichment + ranked-list host wiring |
-| Phase 1.1 reliability fixes | In branch | Persist demotion/lifecycle; scan attach; BPP affiliations; Layer A fixtures |
-| Automated CI (5 checks) | **PASS** | Runs `test:adp-phase1-radar-he-gates` only — **not** full production readiness |
-| Permanence Layer A | PASS locally/CI path | Offline fixtures |
-| Permanence / persistence Layer B | BLOCKED without durable | Expected until local materialization |
-| Customer-surface | FAIL partial (33) | Legacy evidence/BPP/Bethesda — see §4 |
-| Browser HE validation | Required locally | Cloud was BLOCKED_ENV without Airtable |
-| Customer publication safeguards | Intact | No new share packs; Bethesda internal-only; writes flags off |
-| GDI regression risk | Low if isolated worktree | Do not run ADP publish/history apply against GDI workflows |
-| Conflict with newer `origin/main` | **Behind by 2 commits** (`#366`, `#367`) | Rebase/merge main **locally after** HE validation; resolve carefully — do not auto-merge in cloud |
-
-Five green CI checks ≠ production certified.
+**Founder stance:** Phase 1.1 accepted with conditions → **do not merge/deploy #364** until local validation + your explicit approval. Five CI checks ≠ complete production readiness.
 
 ---
 
 ## 7. First recommended local Cursor prompt
 
-Paste into Cursor against the **ADP worktree** (`my-operators-backend-adp-audit` on `d4b2ae10`):
-
 ```text
-You are working ONLY in the ADP worktree on branch cursor/adp-hotel-explorer-audit-1ed2
-(tip at/after 082d16a7ef08c8394a077eac6e5798bfe10e3406). Do not modify the primary GDI checkout.
+Work only in C:\Dev\dealality\my-operators-backend-adp-audit on
+cursor/adp-hotel-explorer-audit-1ed2 at tip 6b03f6290 (or latest ff-only).
 
-Read reports/adp-hotel-explorer-baseline-audit/phase-1.1/LOCAL_WINDOWS_TRANSITION_V1.md
-and FOUNDER_STOP_PHASE1_1.md.
+Do not modify C:\Dev\dealality\my-operators-backend or port 8080.
+Do not merge/deploy PR #364. Do not start Phase 2 or census cutover.
 
-Task: run the first local Radar ↔ Hotel Explorer validation sequence (§3):
-census pins load, HE opens on click, baseline-only vs enriched hotels, five Radar sections,
-map/list sync, Bethesda internalPreview only, share stays fail-closed.
-
-Use PORT=8091. Read-only Airtable. No merge, deploy, Airtable writes, paid research,
-or Phase 2 implementation. Report PASS/FAIL/BLOCKED with screenshots.
+Follow reports/adp-hotel-explorer-baseline-audit/phase-1.1/LOCAL_WINDOWS_TRANSITION_V1.md:
+1) Confirm HEAD SHA and start server on PORT=8091 with write flags off.
+2) Run npm run test:adp-phase1-radar-he-gates and Layer A permanence.
+3) Browser-validate Radar pins → Hotel Explorer (baseline + enriched) and
+   Bethesda authorized internal preview; report BLOCKED_AUTH if /app sign-in fails.
+4) Summarize results vs the §3 checklist. Stop for founder review.
 ```
 
 ---
 
-## 8. Report index (already on branch)
+## Related reports
 
-| File | Role |
-|------|------|
-| `FOUNDER_STOP_PHASE1_1.md` | Phase 1.1 stop package |
-| `CERTIFICATION_BASELINE_AUTHORITY_RECONCILIATION.md` | 27=27 provisional inventory |
-| `DURABLE_FIXTURE_ARCHITECTURE.md` | Layer A/B |
-| `E2E_PERSISTENCE_GATE_RESULTS.md` | Persistence |
-| `CUSTOMER_SURFACE_ROOT_CAUSE_MATRIX.md` | 33 failures |
-| `RADAR_HOTEL_EXPLORER_VALIDATION.md` | HE gates + cloud browser block |
-| `PHASE1_1_GATE_MATRIX.md` | Pass/fail/blocked |
-| `LOCAL_HANDOFF_PHASE1_1.md` | Cloud-oriented handoff |
-| **`LOCAL_WINDOWS_TRANSITION_V1.md`** | **This document** |
-| `PHASE2_FULL_E2E_PRIORITIES.md` | Deferred — do not start |
+- `CUSTOMER_SURFACE_BLOCKER_REGISTER_V1.json`  
+- `CUSTOMER_SURFACE_ROOT_CAUSE_MATRIX.md`  
+- `PHASE1_1_LAYER_B_DURABLE_EVIDENCE_PROCESS.md`  
+- `../phase-1-closeout/PHASE1_FINAL_MAIN_RECONCILIATION.md`  
+- `../phase-1-closeout/FOUNDER_DECISION_REPORT.md`  
 
----
-
-**STOP — LOCAL HANDOFF READY.** Await founder direction before merge, deploy, or Phase 2.
+**STOP — LOCAL HANDOFF READY. No merge, deploy, Airtable writes, customer visibility changes, or paid research.**
