@@ -836,13 +836,22 @@ export async function getGdiOpportunities(req, res) {
       } = await import(
         "../lib/group-demand-intelligence/publication-package/gdi-share-approved-package-resolver-v1.js"
       );
-      const requireStagedPreview =
-        String(req.query.preview || "").trim().toLowerCase() === "staged";
+      const previewParam = String(req.query.preview || "")
+        .trim()
+        .toLowerCase();
+      const requireStagedPreview = previewParam === "staged";
+      const requireCurrentPreview =
+        previewParam === "current" || previewParam === "published";
       const pkgResolved = resolvePreviewOpportunitiesFromPublicationPackage({
         hotelId,
         forceLive: false,
         preferStaged: requireStagedPreview,
-        preview: requireStagedPreview ? "staged" : null,
+        // Explicit CURRENT-only: never silently serve STAGED or research.
+        preview: requireStagedPreview
+          ? "staged"
+          : requireCurrentPreview
+            ? "current"
+            : null,
       });
       if (
         requireStagedPreview &&
@@ -864,7 +873,35 @@ export async function getGdiOpportunities(req, res) {
           message:
             "Authenticated founder preview requested STAGED publication package, but none is available for this hotel. Refusing to fall back to another hotel, CURRENT published inventory, or live research.",
           founderMessage:
-            "A staged review package is not available for this property yet. You can go back to Hotels, choose another property, or open the published version when one exists — without switching hotels automatically.",
+            "No staged version available for this hotel.",
+          hotelId,
+          publication: pkgResolved.meta || null,
+          detail: pkgResolved.detail || null,
+          recovery: availability,
+        });
+      }
+      if (
+        requireCurrentPreview &&
+        !(
+          pkgResolved.ok &&
+          pkgResolved.mode === "PACKAGE" &&
+          String(pkgResolved.meta?.previewSource || "").toUpperCase() ===
+            "CURRENT"
+        )
+      ) {
+        const { inspectFounderPreviewPublicationAvailability } = await import(
+          "../lib/group-demand-intelligence/publication-package/gdi-founder-preview-availability-v1.js"
+        );
+        const availability = inspectFounderPreviewPublicationAvailability({
+          hotelId,
+        });
+        return res.status(409).json({
+          ok: false,
+          error: "CURRENT_PUBLICATION_PREVIEW_UNAVAILABLE",
+          message:
+            "Authenticated founder preview requested CURRENT publication package, but none is available for this hotel. Refusing to fall back to STAGED, another hotel, or live research.",
+          founderMessage:
+            "No published version available for this hotel.",
           hotelId,
           publication: pkgResolved.meta || null,
           detail: pkgResolved.detail || null,

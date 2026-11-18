@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Founder preview missing-STAGED navigation recovery — deterministic tests.
+ * Founder preview missing-STAGED / missing-CURRENT — compact empty state.
  * No paid research, no Airtable writes, no publication mutation.
  */
 import assert from "node:assert/strict";
@@ -15,6 +15,7 @@ const SAN_DIEGO = "recnPB3Q02NO8Ma1o";
 const YOTEL = "recrPQcZg7SFARRb2";
 const BETHESDA = "recLuxvwwxID7U2B8";
 const RADISSON = "recH9h3McgMNFQEla";
+const NOBU = "recC2kbCaS48jFjFF";
 
 const results = [];
 function check(name, fn) {
@@ -45,15 +46,17 @@ check("san_diego_id_is_wyndham_bayside_and_has_no_staged", () => {
   });
   assert.equal(avail.hasStagedPublication, false);
   assert.equal(avail.hasCurrentPublication, false);
-  assert.ok(avail.recoveryActions.includes("BACK_TO_HOTELS"));
-  assert.ok(avail.recoveryActions.includes("CHOOSE_ANOTHER_HOTEL"));
-  assert.ok(!avail.recoveryActions.includes("VIEW_PUBLISHED_VERSION"));
   const stagedOnly = resolvePreviewOpportunitiesFromPublicationPackage({
     hotelId: SAN_DIEGO,
     preferStaged: true,
   });
   assert.equal(stagedOnly.ok, false);
   assert.equal(stagedOnly.mode, "FAIL_CLOSED");
+});
+
+check("nobu_portman_has_no_staged_package", () => {
+  const avail = inspectFounderPreviewPublicationAvailability({ hotelId: NOBU });
+  assert.equal(avail.hasStagedPublication, false);
 });
 
 check("yotel_has_staged_and_opens_via_prefer_staged", () => {
@@ -73,7 +76,6 @@ check("bethesda_has_current_and_staged", () => {
   });
   assert.equal(avail.hasStagedPublication, true);
   assert.equal(avail.hasCurrentPublication, true);
-  assert.ok(avail.recoveryActions.includes("VIEW_PUBLISHED_VERSION"));
 });
 
 check("radisson_inventory_present", () => {
@@ -83,22 +85,21 @@ check("radisson_inventory_present", () => {
   assert.equal(avail.hasStagedPublication, true);
 });
 
-check("ui_has_recoverable_staged_unavailable_state", () => {
-  assert.match(appJs, /showStagedPreviewUnavailable/);
-  assert.match(appJs, /handleLoadFailure/);
-  assert.match(appJs, /Back to Hotels/);
-  assert.match(appJs, /Choose Another Hotel/);
-  assert.match(appJs, /View Published Version/);
-  assert.match(appJs, /data-gdi-recovery="back-hotels"/);
-  assert.match(appJs, /data-gdi-recovery="choose-hotel"/);
-  assert.match(appJs, /data-gdi-recovery="view-published"/);
-  assert.match(appJs, /clearPreview:\s*true/);
+check("ui_uses_compact_empty_state_not_full_page_error", () => {
+  assert.doesNotMatch(appJs, /showStagedPreviewUnavailable/);
+  assert.doesNotMatch(appJs, /Staged preview unavailable/);
+  assert.match(appJs, /applyMissingInventoryEmptyState/);
+  assert.match(appJs, /gdi-empty--inventory-unavailable/);
+  assert.match(appJs, /No staged version available for this hotel/);
+  assert.match(appJs, /No published version available for this hotel/);
+  assert.match(appJs, /data-gdi-recovery="view-research"/);
   assert.match(appJs, /STAGED_PUBLICATION_PREVIEW_UNAVAILABLE/);
+  assert.match(appJs, /CURRENT_PUBLICATION_PREVIEW_UNAVAILABLE/);
 });
 
-check("select_hotel_clears_preview_params", () => {
-  assert.match(appJs, /url\.searchParams\.delete\("preview"\)/);
-  assert.match(appJs, /Switching properties clears incompatible/);
+check("select_hotel_preserves_inventory_mode_unless_cleared", () => {
+  assert.match(appJs, /opts\.clearPreview === true/);
+  assert.match(appJs, /Preserve explicit Research\/Staged\/Published mode/);
 });
 
 check("api_returns_recovery_without_silent_fallback", () => {
@@ -109,20 +110,11 @@ check("api_returns_recovery_without_silent_fallback", () => {
     apiJs,
     /Refusing to fall back to another hotel, CURRENT published inventory, or live research/,
   );
+  assert.match(apiJs, /CURRENT_PUBLICATION_PREVIEW_UNAVAILABLE/);
 });
 
 check("cache_bust_updated", () => {
-  assert.match(
-    html,
-    /gdi-sidebar-inventory-toggle-v1|gdi-founder-local-research-preview-v1|gdi-founder-preview-missing-staged-nav-v1/,
-  );
-});
-
-check("no_cross_hotel_fallback_in_recovery_copy", () => {
-  assert.match(
-    appJs,
-    /will not switch to another hotel, another publication version, or live research automatically/,
-  );
+  assert.match(html, /gdi-missing-inventory-empty-state-v1/);
 });
 
 check("inventories_unchanged_pointers", () => {
@@ -155,6 +147,7 @@ console.log(
       contract: "gdi-founder-preview-missing-staged-nav-v1",
       sanDiegoHotelId: SAN_DIEGO,
       sanDiegoHotelName: "Wyndham San Diego Bayside",
+      nobuHotelId: NOBU,
       passed: results.filter((r) => r.ok).length,
       failed: failed.length,
       results,
