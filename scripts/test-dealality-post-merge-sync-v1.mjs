@@ -14,6 +14,7 @@ import {
   runGitPreflight,
 } from "../lib/dealality-dev-os/git-preflight.js";
 import {
+  allowDirtyForPreflight,
   classifyProductWorkspaceSync,
   findOverwriteRisks,
   planPostMergeWorkspaceSync,
@@ -25,6 +26,28 @@ import { loadWorktreeRegistry } from "../lib/dealality-dev-os/worktree-registry.
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const registry = loadWorktreeRegistry(ROOT);
+
+{
+  const empty = allowDirtyForPreflight([]);
+  assert.equal(empty, "");
+  const runtimeOnly = allowDirtyForPreflight([
+    "data/group-demand-intelligence/hotels/recX/full-e2e-fourteen-segment-state/a.json",
+    "reports/gdi-canonical-full-e2e-entry-v1/run/summary.json",
+    "tmp/gitleaks-bin/gitleaks.exe",
+  ]);
+  assert.equal(runtimeOnly, "data,reports,tmp");
+  const withSource = allowDirtyForPreflight([
+    "data/foo.json",
+    "lib/dealality-dev-os/post-merge-workspace-sync.js",
+    ".gitignore",
+  ]);
+  const parts = new Set(withSource.split(","));
+  assert.ok(parts.has("data") && parts.has("reports") && parts.has("tmp"));
+  assert.ok(parts.has("lib/dealality-dev-os/post-merge-workspace-sync.js"));
+  assert.ok(parts.has(".gitignore"));
+  assert.equal(parts.has("*"), false);
+  console.log("PASS allowDirtyForPreflight runtime prefixes + explicit non-runtime paths");
+}
 
 function expectAction(label, input, action) {
   const got = classifyProductWorkspaceSync(input);
