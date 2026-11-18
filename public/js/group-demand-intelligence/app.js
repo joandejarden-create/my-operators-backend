@@ -77,6 +77,8 @@
     isAdmin: false,
     flag: null,
     visibilityWarning: null,
+    /** Missing STAGED/CURRENT inventory — compact empty state, not full-page error. */
+    inventoryEmpty: null,
     drawerReturnFocusEl: null,
     contactRevealInFlight: Object.create(null),
   };
@@ -306,12 +308,12 @@
 
   function showError(msg) {
     setLoading(false);
+    // Genuine load/auth failures only — missing STAGED/CURRENT uses compact empty state.
     root.innerHTML =
       '<div class="gdi-error" role="alert"><p>' +
       esc(msg) +
       "</p><p>Local servers enable pilot read automatically. On production set GROUP_DEMAND_INTELLIGENCE_V1=1. Admin actions still require sign-in.</p>" +
-      '<p class="gdi-error__nav"><button type="button" class="gdi-btn" data-gdi-recovery="back-hotels">Back to Hotels</button> ' +
-      '<button type="button" class="gdi-btn" data-gdi-recovery="choose-hotel">Choose Another Hotel</button></p></div>';
+      '<p class="gdi-error__nav"><button type="button" class="gdi-btn gdi-btn-primary" data-gdi-recovery="view-research">View Research</button></p></div>';
     wireRecoveryActions({ hasCurrentPublication: false });
   }
 
@@ -331,40 +333,6 @@
     return id || "this property";
   }
 
-  function clearPreviewQueryParams() {
-    try {
-      var url = new URL(window.location.href);
-      url.searchParams.delete("preview");
-      url.searchParams.delete("live");
-      url.searchParams.delete("publicationPackage");
-      window.history.replaceState({}, "", url.pathname + url.search + url.hash);
-      if (window.parent && window.parent !== window) {
-        try {
-          var parentUrl = new URL(window.parent.location.href);
-          var hash = String(parentUrl.hash || "");
-          var qIdx = hash.indexOf("?");
-          if (qIdx >= 0) {
-            var route = hash.slice(0, qIdx);
-            var hp = new URLSearchParams(hash.slice(qIdx + 1));
-            hp.delete("preview");
-            hp.delete("live");
-            hp.delete("publicationPackage");
-            var qs = hp.toString();
-            window.parent.history.replaceState(
-              {},
-              "",
-              parentUrl.pathname + parentUrl.search + route + (qs ? "?" + qs : "")
-            );
-          }
-        } catch (eParent) {
-          /* cross-origin */
-        }
-      }
-    } catch (e) {
-      /* ignore */
-    }
-  }
-
   function setPreviewQueryParam(value) {
     try {
       var url = new URL(window.location.href);
@@ -377,80 +345,11 @@
     }
   }
 
-  function hotelOptionsHtml(selectedId) {
-    var hotels = state.hotels || [];
-    if (!hotels.length) {
-      return (
-        '<option value="' +
-        esc(selectedId || "") +
-        '">' +
-        esc(hotelLabelForId(selectedId)) +
-        "</option>"
-      );
-    }
-    return hotels
-      .map(function (h) {
-        var id = String(h.hotelId || "");
-        var label =
-          h.optionLabel || h.displayName || h.hotelName || id;
-        return (
-          '<option value="' +
-          esc(id) +
-          '"' +
-          (id === selectedId ? " selected" : "") +
-          ">" +
-          esc(label) +
-          "</option>"
-        );
-      })
-      .join("");
-  }
-
   function wireRecoveryActions(opts) {
     opts = opts || {};
-    var choose = root.querySelector('[data-gdi-recovery="choose-hotel"]');
-    var back = root.querySelector('[data-gdi-recovery="back-hotels"]');
     var published = root.querySelector(
       '[data-gdi-recovery="view-published"]'
     );
-    var select = root.querySelector("#gdiRecoveryHotel");
-    if (choose && select) {
-      choose.addEventListener("click", function () {
-        select.focus();
-        if (typeof select.showPicker === "function") {
-          try {
-            select.showPicker();
-          } catch (e) {
-            /* ignore */
-          }
-        }
-      });
-    }
-    if (select) {
-      select.addEventListener("change", function () {
-        var next = String(select.value || "").trim();
-        if (!next) return;
-        selectHotel(next, { clearPreview: true }).catch(function (err) {
-          handleLoadFailure(err);
-        });
-      });
-    }
-    if (back) {
-      back.addEventListener("click", function () {
-        clearPreviewQueryParams();
-        var fallback =
-          DEFAULT_HOTEL_ID && DEFAULT_HOTEL_ID !== state.hotelId
-            ? DEFAULT_HOTEL_ID
-            : (state.hotels[0] && state.hotels[0].hotelId) || DEFAULT_HOTEL_ID;
-        if (fallback && fallback !== state.hotelId) {
-          selectHotel(fallback, { clearPreview: true }).catch(function (err) {
-            handleLoadFailure(err);
-          });
-          return;
-        }
-        if (select) select.focus();
-      });
-    }
     if (published && opts.hasCurrentPublication) {
       published.addEventListener("click", function () {
         applyFounderInventoryMode("published");
@@ -472,64 +371,77 @@
     }
   }
 
-  function showStagedPreviewUnavailable(err) {
-    setLoading(false);
-    var data = (err && err.data) || {};
-    var recovery = data.recovery || {};
-    var hasCurrent = recovery.hasCurrentPublication === true;
-    var hotelId = data.hotelId || state.hotelId;
-    var label = hotelLabelForId(hotelId);
-    var founderMsg =
-      data.founderMessage ||
-      "A staged review package is not available for this property yet.";
-    var publishedBtn = hasCurrent
-      ? '<button type="button" class="gdi-btn" data-gdi-recovery="view-published">View Published Version</button> '
-      : "";
-    root.innerHTML =
-      '<div class="gdi-error gdi-error--recoverable" role="alert">' +
-      "<h2>Staged preview unavailable</h2>" +
-      "<p>" +
-      esc(founderMsg) +
-      "</p>" +
-      "<p><strong>" +
-      esc(label) +
-      "</strong> does not have a staged publication package" +
-      (hasCurrent
-        ? ". You can open Research Preview or the published version — nothing is opened automatically."
-        : ". You can open Research Preview to inspect existing hotel research when available.") +
-      "</p>" +
-      '<div class="filter-group filter-group--grow" style="max-width:28rem;margin:1rem 0">' +
-      '<label class="filter-label" for="gdiRecoveryHotel">Choose Another Hotel</label>' +
-      '<select class="filter-select" id="gdiRecoveryHotel" aria-label="Choose another GDI hotel">' +
-      hotelOptionsHtml(hotelId) +
-      "</select></div>" +
-      '<p class="gdi-error__nav">' +
-      '<button type="button" class="gdi-btn gdi-btn-primary" data-gdi-recovery="view-research">Open Research Preview</button> ' +
-      '<button type="button" class="gdi-btn" data-gdi-recovery="back-hotels">Back to Hotels</button> ' +
-      '<button type="button" class="gdi-btn" data-gdi-recovery="choose-hotel">Choose Another Hotel</button> ' +
-      publishedBtn +
-      "</p>" +
-      '<p class="gdi-muted">Dealality will not switch to another hotel, another publication version, or live research automatically.</p>' +
-      "</div>";
-    wireRecoveryActions({ hasCurrentPublication: hasCurrent });
-  }
-
-  function handleLoadFailure(err) {
+  function isMissingInventoryError(err) {
     var code =
       (err && err.data && err.data.error) ||
       (err && err.code) ||
       "";
-    if (String(code) === "STAGED_PUBLICATION_PREVIEW_UNAVAILABLE") {
-      var ensureCatalog = state.hotels && state.hotels.length
-        ? Promise.resolve()
-        : loadHotelCatalog().catch(function () {
-            return null;
-          });
+    return (
+      String(code) === "STAGED_PUBLICATION_PREVIEW_UNAVAILABLE" ||
+      String(code) === "CURRENT_PUBLICATION_PREVIEW_UNAVAILABLE"
+    );
+  }
+
+  function applyMissingInventoryEmptyState(err) {
+    var data = (err && err.data) || {};
+    var code = String(data.error || (err && err.code) || "");
+    var mode =
+      code === "CURRENT_PUBLICATION_PREVIEW_UNAVAILABLE" ? "published" : "staged";
+    state.opportunities = [];
+    state.publication = null;
+    state.visibilityWarning = null;
+    state.inventoryEmpty = {
+      mode: mode,
+      code: code,
+      message:
+        data.founderMessage ||
+        (mode === "published"
+          ? "No published version available for this hotel."
+          : "No staged version available for this hotel."),
+      recovery: data.recovery || null,
+    };
+  }
+
+  function inventoryUnavailableEmptyHtml() {
+    var empty = state.inventoryEmpty;
+    if (!empty) return "";
+    var recovery = empty.recovery || {};
+    var publishedBtn =
+      empty.mode === "staged" && recovery.hasCurrentPublication === true
+        ? '<button type="button" class="gdi-btn" data-gdi-recovery="view-published">View Published</button> '
+        : "";
+    return (
+      '<div class="gdi-empty gdi-empty--inventory-unavailable" role="status" data-gdi-inventory-empty="' +
+      esc(empty.mode) +
+      '">' +
+      "<p>" +
+      esc(empty.message) +
+      "</p>" +
+      '<p class="gdi-empty__actions">' +
+      '<button type="button" class="gdi-btn gdi-btn-primary" data-gdi-recovery="view-research">View Research</button> ' +
+      publishedBtn +
+      "</p>" +
+      "</div>"
+    );
+  }
+
+  function handleLoadFailure(err) {
+    if (isMissingInventoryError(err)) {
+      var ensureCatalog =
+        state.hotels && state.hotels.length
+          ? Promise.resolve()
+          : loadHotelCatalog().catch(function () {
+              return null;
+            });
       return ensureCatalog.then(function () {
-        showStagedPreviewUnavailable(err);
+        applyMissingInventoryEmptyState(err);
+        setLoading(false);
+        render();
       });
     }
-    showError((err && err.message) || "Failed to load Group & Demand Intelligence");
+    showError(
+      (err && err.message) || "Failed to load Group & Demand Intelligence"
+    );
     return Promise.resolve();
   }
 
@@ -678,6 +590,7 @@
     state.opportunities = [];
     state.publication = null;
     state.visibilityWarning = null;
+    state.inventoryEmpty = null;
     state.runs = [];
     state.filters = PC.createDefaultFilters();
     state.sortKey = "priority";
@@ -706,10 +619,15 @@
       localStorage.setItem(STORAGE_PREFIX + "hotelId", next);
       var url = new URL(window.location.href);
       url.searchParams.set("hotelId", next);
-      // Switching properties clears incompatible hotel-specific preview flags.
-      if (opts.clearPreview !== false) {
+      // Preserve explicit Research/Staged/Published mode across hotel switches so
+      // a missing STAGED/CURRENT shows the compact empty state for that mode.
+      // Only clear when callers intentionally request a reset (clearPreview:true).
+      if (opts.clearPreview === true) {
         url.searchParams.delete("preview");
         url.searchParams.delete("live");
+        url.searchParams.delete("inventory");
+        url.searchParams.delete("gdiInventory");
+        url.searchParams.delete("publicationPackage");
       }
       window.history.replaceState({}, "", url.pathname + url.search + url.hash);
     } catch (e) {
@@ -994,6 +912,9 @@
         // Explicit founder staged-preview (no CURRENT / no silent Bethesda fallback).
         if (wantsExplicitStagedPreview()) {
           q.push("preview=staged");
+        } else {
+          // Published Inventory: CURRENT only — never STAGED or research substitute.
+          q.push("preview=current");
         }
       }
     } catch (e) {
@@ -1003,17 +924,36 @@
     return path;
   }
 
+  function loadOpportunitiesOrEmpty(hotelIdEnc) {
+    return api(opportunitiesApiPath(hotelIdEnc)).then(
+      function (payload) {
+        return { ok: true, payload: payload };
+      },
+      function (err) {
+        if (isMissingInventoryError(err)) {
+          return { ok: false, missingInventory: true, err: err };
+        }
+        throw err;
+      }
+    );
+  }
+
   function loadAll() {
     var knownHotelId = state.hotelId;
     var id = encodeURIComponent(knownHotelId);
     // Critical path: catalog + flag + summary + opportunities + profile in parallel.
     // Hotel-scoped fetches use the known hotelId immediately; catalog may refine it.
     // Research-run history/costs load only in AI Demand Admin (admin ledger tab).
+    // Missing STAGED/CURRENT is a normal empty state — keep shell navigation.
     return Promise.all([
       loadHotelCatalog(),
       api("/api/group-demand-intelligence/flag"),
-      api("/api/group-demand-intelligence/hotels/" + id + "/summary"),
-      api(opportunitiesApiPath(id)),
+      api("/api/group-demand-intelligence/hotels/" + id + "/summary").catch(
+        function () {
+          return { summary: null };
+        }
+      ),
+      loadOpportunitiesOrEmpty(id),
       api("/api/group-demand-intelligence/hotels/" + id + "/profile").catch(function () {
         return { ok: false, profile: null };
       }),
@@ -1023,14 +963,23 @@
       if (state.hotelId !== knownHotelId) {
         id = encodeURIComponent(state.hotelId);
         return Promise.all([
-          api("/api/group-demand-intelligence/hotels/" + id + "/summary"),
-          api(opportunitiesApiPath(id)),
+          api("/api/group-demand-intelligence/hotels/" + id + "/summary").catch(
+            function () {
+              return { summary: null };
+            }
+          ),
+          loadOpportunitiesOrEmpty(id),
           api("/api/group-demand-intelligence/hotels/" + id + "/profile").catch(function () {
             return { ok: false, profile: null };
           }),
         ]).then(function (scoped) {
           state.summary = scoped[0].summary;
-          applyOpportunitiesPayload(scoped[1] || {});
+          if (scoped[1] && scoped[1].missingInventory) {
+            applyMissingInventoryEmptyState(scoped[1].err);
+          } else {
+            state.inventoryEmpty = null;
+            applyOpportunitiesPayload((scoped[1] && scoped[1].payload) || {});
+          }
           state.hotelProfile = (scoped[2] && scoped[2].profile) || null;
           state.demandCampaigns = [];
           state.demandCampaignMeta = { visibleCount: 0, storedCount: 0 };
@@ -1039,7 +988,12 @@
         });
       }
       state.summary = parts[2].summary;
-      applyOpportunitiesPayload(parts[3] || {});
+      if (parts[3] && parts[3].missingInventory) {
+        applyMissingInventoryEmptyState(parts[3].err);
+      } else {
+        state.inventoryEmpty = null;
+        applyOpportunitiesPayload((parts[3] && parts[3].payload) || {});
+      }
       state.hotelProfile = (parts[4] && parts[4].profile) || null;
       state.demandCampaigns = [];
       state.demandCampaignMeta = { visibleCount: 0, storedCount: 0 };
@@ -1116,6 +1070,9 @@
 
   function renderOpportunityCards(rows) {
     if (!rows.length) {
+      if (state.inventoryEmpty) {
+        return inventoryUnavailableEmptyHtml();
+      }
       var total = (state.opportunities || []).length;
       if (total > 0) {
         var scope = String(
@@ -2102,7 +2059,8 @@
     var hotelSelect = document.getElementById("gdiHotel");
     if (hotelSelect) {
       hotelSelect.addEventListener("change", function () {
-        selectHotel(hotelSelect.value, { clearPreview: true }).catch(function (err) {
+        // Keep Research/Staged/Published mode; missing package → compact empty state.
+        selectHotel(hotelSelect.value).catch(function (err) {
           handleLoadFailure(err);
         });
       });
@@ -2166,6 +2124,12 @@
     });
 
     wireBrowseControls();
+    if (state.inventoryEmpty) {
+      var recovery = state.inventoryEmpty.recovery || {};
+      wireRecoveryActions({
+        hasCurrentPublication: recovery.hasCurrentPublication === true,
+      });
+    }
 
     root.querySelectorAll("[data-open]").forEach(function (el) {
       el.addEventListener("click", function (e) {

@@ -76,7 +76,10 @@ check("share_app_has_no_inventory_banner", () => {
 });
 
 check("auth_html_cache_bust_updated", () => {
-  assert.match(authHtml, /app\.js\?v=gdi-no-inventory-status-banner-v1/);
+  assert.match(
+    authHtml,
+    /app\.js\?v=gdi-(?:no-inventory-status-banner-v1|missing-inventory-empty-state-v1)/,
+  );
 });
 
 check("representative_hotel_ids_still_registered_for_mode_switching", () => {

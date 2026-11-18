@@ -787,6 +787,26 @@ body.gdi-page.embed-mode .gdi-shell {
   color: var(--gdi-muted);
 }
 
+/* Missing STAGED/CURRENT — normal empty state inside the GDI shell (not a red error page). */
+.gdi-empty--inventory-unavailable {
+  margin: 12px 0 24px;
+  padding: 28px 20px;
+  border: 1px solid var(--gdi-border, #2a3560);
+  border-radius: var(--gdi-radius-sm, 8px);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--gdi-text, #d1dbf9);
+}
+.gdi-empty--inventory-unavailable p {
+  margin: 0 0 12px;
+}
+.gdi-empty--inventory-unavailable .gdi-empty__actions {
+  margin: 16px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
 /*
  * Drawer detail loader — reuse page toast wave orb / chrome, but static+centered in drawer body
  * (not the fixed top-right toast). Particles inherit from ai-visibility-shared.css.
