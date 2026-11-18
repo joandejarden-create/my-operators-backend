@@ -1,0 +1,40 @@
+---
+description: Mandatory authenticated /app#/opportunity-radar acceptance for Radar and Hotel Explorer visibility/navigation changes
+alwaysApply: true
+---
+
+# Radar authenticated application acceptance gate
+
+Applies to **Hotel Explorer / Radar** work that changes hotel visibility, filtering, search, mapping, authentication, or Radar → Hotel Explorer navigation.
+
+## Not sufficient for DONE
+
+Do **not** treat a Radar task as complete because:
+
+- APIs returned HTTP 200
+- Automated tests passed
+- Hotels exist only in a JS dataset
+- A standalone Radar/demo/share page works
+- GitHub CI is green
+
+## Required
+
+Validate in the actual authenticated application:
+
+`http://localhost:8080/app#/opportunity-radar`
+
+Confirm authenticated access, authorized APIs, hotels in the live app dataset, visible map/list/search behavior, correct property selection, correct Hotel Explorer open, and customer/share isolation.
+
+For dynamic HPC: eligible Open/Pipeline hotels appear **without** hotel-specific allowlists.
+
+## Completion states
+
+- **PASS** — authenticated-app checks succeeded
+- **FAIL** — user-facing behavior wrong
+- **BLOCKED** — authenticated testing unavailable/incomplete
+
+Automated tests alone cannot upgrade **BLOCKED** → **PASS**.
+
+Record evidence (SHA, URL, session type, API status, expected vs observed hotels, screenshots, HE navigation). Never record tokens, cookies, or secrets.
+
+Contract: `docs/ai-build-system/RADAR_AUTHENTICATED_APP_ACCEPTANCE_GATE.md`
