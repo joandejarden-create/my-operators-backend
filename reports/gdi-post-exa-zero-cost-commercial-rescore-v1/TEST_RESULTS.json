@@ -1,0 +1,55 @@
+{
+  "generatedAt": "2026-11-18T14:59:23.807Z",
+  "testResults": [
+    {
+      "script": "inline:hydrated_processed_export_named_contacts_ge_6",
+      "status": "PASS"
+    },
+    {
+      "script": "inline:fully_sales_ready_eligibility_ge_1",
+      "status": "PASS"
+    },
+    {
+      "script": "inline:whiting_turner_reliable_inferred_after_rescore",
+      "status": "PASS"
+    },
+    {
+      "script": "inline:six_opps_customer_publication_ready_false",
+      "status": "PASS"
+    },
+    {
+      "script": "scripts/test-gdi-evidence-demand-mapping-v1.mjs",
+      "status": "FAIL",
+      "exitCode": 1,
+      "stdoutTail": "",
+      "stderrTail": "node:internal/modules/run_main:123\r\n    triggerUncaughtException(\r\n    ^\r\n\r\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\r\n\r\ntrue !== false\r\n\r\n    at file:///C:/Dev/dealality/my-operators-backend/scripts/test-gdi-evidence-demand-mapping-v1.mjs:173:10\r\n    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)\r\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)\r\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {\r\n  generatedMessage: true,\r\n  code: 'ERR_ASSERTION',\r\n  actual: true,\r\n  expected: false,\r\n  operator: 'strictEqual',\r\n  diff: 'simple'\r\n}\r\n\r\nNode.js v22.23.2\r\n",
+      "note": null
+    },
+    {
+      "script": "scripts/test-gdi-powershell-to-canonical-full-e2e-reconciliation-v1.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "stdoutTail": "ok: processed rows serialize primaryContactName\nok: processed rows serialize salesReadyContactNames\nok: restore pass hydrates primaryContact from eligible classified people\nok: positive fixture recovers Jason (got: Jason Danner)\nok: negative fixture does not promote unrelated celebrity as sales-ready\nok: reconciliation script exits 0\nok: report EXECUTIVE_ROOT_CAUSE.md\nok: report ORIGINAL_POWERSHELL_WORKFLOW_MAP.md\nok: report CURRENT_CANONICAL_WORKFLOW_MAP.md\nok: report CAPABILITY_GAP_MATRIX.md\nok: report HISTORICAL_CONTACT_SUCCESS_CASES.md\nok: report PR382_ZERO_CONTACT_ROOT_CAUSE.md\nok: report MINIMAL_INTEGRATION_RECOVERY_PLAN.md\nok: report BEFORE_AFTER_VALIDATION.md\nok: report FOUNDER_NEXT_DECISIONS.md\nok: zero paid calls\nok: zero Airtable writes\nok: recovers named contacts from PR382 state\n\nAll reconciliation gates passed.\n",
+      "stderrTail": "",
+      "note": null
+    }
+  ],
+  "inlineChecks": [
+    {
+      "name": "hydrated_processed_export_named_contacts_ge_6",
+      "status": "PASS"
+    },
+    {
+      "name": "fully_sales_ready_eligibility_ge_1",
+      "status": "PASS"
+    },
+    {
+      "name": "whiting_turner_reliable_inferred_after_rescore",
+      "status": "PASS"
+    },
+    {
+      "name": "six_opps_customer_publication_ready_false",
+      "status": "PASS"
+    }
+  ]
+}

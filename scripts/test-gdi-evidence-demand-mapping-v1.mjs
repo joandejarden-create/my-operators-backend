@@ -74,6 +74,24 @@ const unsupported = classifyCommercialDemandThesis({
 });
 assert.equal(unsupported.thesisStandard, "SPECULATIVE_DEMAND");
 
+// Construction GC + local staged opening/move-ins is RELIABLE_INFERRED project
+// workforce lodging — not SPECULATIVE merely because lodging words are absent.
+const constructionGc = classifyCommercialDemandThesis({
+  evidence: [
+    {
+      statement:
+        "Whiting-Turner is general contractor for The Grandview in Bethesda; construction and staged opening/move-ins are underway.",
+    },
+  ],
+  title:
+    "Whiting-Turner is general contractor for The Grandview; construction and staged opening/move-ins are underway.",
+});
+assert.equal(
+  constructionGc.thesisStandard,
+  "RELIABLE_INFERRED_DEMAND",
+  "local construction GC + staged move-ins must qualify as RELIABLE_INFERRED",
+);
+
 const intermediary = classifyContactEligibility(
   { name: "Alex Morgan", role: "Destination Management Company Director", email: "alex@example.org" },
   { evidenceQuote: "Alex Morgan at Example DMC is arranging the conference program.", organizationName: "Example DMC" }
