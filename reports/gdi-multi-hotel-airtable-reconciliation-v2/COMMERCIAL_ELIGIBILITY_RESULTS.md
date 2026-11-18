@@ -30,7 +30,8 @@ Eligibility gate: `gdi-full-e2e-airtable-persistence-eligibility-v1` via reconci
 | Disjoint ID namespaces (0 overlap) | YOTEL | FS `rx_d_` / `gdi_opp_yotel_fe2e_*` vs AT `gdi_opp_aifg_*` — all 150 DEFERRED |
 | FS-only below eligibility | Radisson (36), Guadalajara (43) | Missing confirmed/reliable demand and/or credible entry point |
 | Never persisted to GDO | Guadalajara | Provisional need periods ≠ GDO authorization |
-| AT-only historical | YOTEL (108), Radisson (6), Bethesda (27), Nobu (65), Waterstone (7) | Preserve — no silent import |
+| AT-only historical | Radisson (6), Bethesda (27), Nobu (65), Waterstone (7) | Preserve — no silent import |
+| AT obsolete (YOTEL) | YOTEL (108) | **SUPERSEDED preserve** → delete-and-replace per founder; backup for recovery only |
 | FS-only research continuation | YOTEL (42) | Not yet commercially eligible for GDO create |
 
 ## CONFLICT (blocks sync)

@@ -22,7 +22,7 @@ Filesystem and Airtable are **not mirrors**. Each store has a role. Synchronizat
 1. **Join key:** canonical opportunity ID per hotel (`gdi_opp_*`, `rx_d_*`, etc.) — not org name or title alone.
 2. **Shared demand:** same global DG/program may legitimately map to **different** hotel GDO IDs; cross-hotel duplicate GDO IDs are invalid.
 3. **Decisions:** CREATE, UPDATE, UNCHANGED, DUPLICATE_LINKED, DEFERRED, CONFLICT, REJECTED — planner is fail-closed; zero CREATE candidates in current dry-run.
-4. **Airtable-only historical:** preserve; do not silent-import or delete.
+4. **Airtable-only historical (non-YOTEL):** preserve; do not silent-import or delete. **YOTEL exception (founder-authorized policy):** obsolete GDO inventory is scheduled for controlled delete-and-replace; backup for recovery only — see `../gdi-yotel-replacement-other-hotel-reconciliation-v1/SUPERSEDED_YOTEL_POLICY.md`.
 5. **Filesystem-only:** research continuation until commercial eligibility + founder allowlist.
 6. **Conflicts:** block automated sync until human/founder resolution.
 
