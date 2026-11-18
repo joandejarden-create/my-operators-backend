@@ -1,0 +1,207 @@
+{
+  "ok": true,
+  "executed": false,
+  "fullE2eComplete": false,
+  "fullE2eCompleteReason": "publication_not_authorized",
+  "version": "gdi-association-events-hotel-runner-v1",
+  "discoveryVersion": "gdi-association-events-discovery-strategies-v1",
+  "qualificationVersion": "gdi-association-events-qualification-v1",
+  "goldBriefVersion": "gdi-association-events-gold-brief-v1",
+  "stages": [
+    "hotel_profile",
+    "continuous_campaign_budget_reconcile",
+    "continuous_campaign_wave_loop",
+    "event_discovery",
+    "entity_verification",
+    "event_chronology",
+    "organizer_identity_resolution",
+    "net_new_reconciliation",
+    "event_demand_mechanism_screening",
+    "ors_longform_research",
+    "buyer_and_contact_intelligence",
+    "deep_sourcing_investigation",
+    "named_buyer_research",
+    "contact_verification",
+    "alternative_lodging_catering_research",
+    "hotel_specific_fit",
+    "intelligent_investigation_loop",
+    "association_long_form_investigation",
+    "research_gap_reassessment",
+    "commercial_qualification",
+    "gold_standard_brief_generation",
+    "canonical_opportunity_payload",
+    "airtable_publication",
+    "customer_share_verification"
+  ],
+  "startedAt": "2026-11-18T14:34:47.886Z",
+  "finishedAt": "2026-11-18T14:34:59.292Z",
+  "config": {
+    "hotelId": "recrPQcZg7SFARRb2",
+    "mode": "preview",
+    "budgetCeilingUsd": 0,
+    "authorizePaidResearch": false,
+    "authorizePublication": false,
+    "applyProductionWrites": false,
+    "maxCandidates": 2
+  },
+  "hotel": {
+    "hotelId": "recrPQcZg7SFARRb2",
+    "displayName": "YOTEL Geneva Lake",
+    "city": "Founex",
+    "country": "Switzerland",
+    "demandTerritory": {
+      "label": "La Côte / Nyon / Geneva Airport corridor",
+      "country": "Switzerland",
+      "includes": [
+        "PRIMARY: Founex / Nyon / Coppet / La Côte corridor",
+        "SECONDARY: Geneva Airport stays and selected Geneva international/corporate demand when travel friction is acceptable",
+        "ADJACENT: Lausanne and selected cross-border nodes only when lodging access is realistic"
+      ],
+      "evaluationQuestion": "Could YOTEL Geneva Lake realistically capture this group demand given 237 rooms, 6 meeting rooms (to ~250), Founex/La Côte location, Geneva Airport access, and Vaud corridor relevance — without requiring downtown Geneva positioning?",
+      "classifications": [
+        "TERRITORY_CORE",
+        "TERRITORY_NEARBY",
+        "TERRITORY_COMPETITIVE",
+        "TERRITORY_STRETCH",
+        "OUTSIDE_REALISTIC_TERRITORY"
+      ],
+      "displayLabels": {
+        "TERRITORY_CORE": "La Côte / Nyon Core",
+        "TERRITORY_NEARBY": "Geneva Airport Nearby",
+        "TERRITORY_COMPETITIVE": "Greater Geneva Competitive",
+        "TERRITORY_STRETCH": "Lausanne / Cross-Border Stretch",
+        "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+      },
+      "classificationKeywords": {
+        "TERRITORY_CORE": [
+          "founex",
+          "nyon",
+          "coppet",
+          "la côte",
+          "la cote",
+          "chavannes-de-bogis",
+          "vaud"
+        ],
+        "TERRITORY_NEARBY": [
+          "geneva airport",
+          "aéroport de genève",
+          "aeroport de geneve",
+          "gva",
+          "cointrin",
+          "park and fly",
+          "park & fly"
+        ],
+        "TERRITORY_COMPETITIVE": [
+          "geneva",
+          "genève",
+          "geneve",
+          "palexpo",
+          "cern",
+          "international organizations"
+        ],
+        "TERRITORY_STRETCH": [
+          "lausanne",
+          "divonne",
+          "annemasse",
+          "montreux"
+        ],
+        "OUTSIDE_REALISTIC_TERRITORY": [
+          "zurich",
+          "bern downtown only",
+          "basel"
+        ]
+      }
+    },
+    "capabilityProfile": {
+      "totalGuestrooms": 237,
+      "totalMeetingSpaceSqFt": null,
+      "totalMeetingSpaceSqM": null,
+      "largestBallroomSqFt": null,
+      "largestBallroomSqM": 352,
+      "largestTheaterCapacity": 250,
+      "largestReceptionCapacity": 300,
+      "meetingRoomsIndoor": 6,
+      "outdoorEventSpace": true,
+      "softBrand": "YOTEL",
+      "serviceLevel": "upscale_tech_forward",
+      "classification": "airport_corridor_meetings_business",
+      "country": "Switzerland",
+      "notes": "HOTEL_SPECIFIC_DATA from yotel.com — 6 flexible rooms 25–352 sqm, auditorium ~270 sqm / up to 250, hybrid AV, HVGGE Place / rooftop. Not hardcoded into scoring engine.",
+      "meetingRoomCount": 6,
+      "largestMeetingRoomSqM": 352,
+      "outdoorMeetingSpaceSqFt": null,
+      "brand": "YOTEL",
+      "parentCompany": "YOTEL",
+      "loyalty": "YOTEL"
+    },
+    "commercialPriorities": {
+      "targetSegments": [],
+      "coreTargetPeakRoomsMin": 20,
+      "coreTargetPeakRoomsMax": 120,
+      "allowSmallerIfCommerciallyMeaningful": true,
+      "demandAnchorFocus": [],
+      "weekendFocus": false,
+      "notes": "HOTEL_SPECIFIC_DATA from YOTEL first-party (237 rooms, 6 meeting rooms, up to 250 delegates, airport park-and-fly). Peak band sized for corporate/meetings + airport stays. targetSegments empty — discovery must not be seeded with demand-type assumptions. Do NOT treat every Geneva CBD event as automatic fit — Founex travel friction applies."
+    },
+    "totalGuestrooms": 237
+  },
+  "fitProfile": {
+    "hotelId": "recrPQcZg7SFARRb2",
+    "positioning": "generic",
+    "strengths": [],
+    "limitations": [],
+    "preferredMechanisms": [
+      "HOST_EVENT",
+      "SMALL_GROUP_LODGING",
+      "ANCILLARY_EVENT_BUSINESS"
+    ]
+  },
+  "blockers": [],
+  "funnel": {
+    "rawDiscoveryHits": 0,
+    "candidates": 0,
+    "matured": 0,
+    "qualified": 0,
+    "researchContinuation": 0,
+    "crossSegmentDuplicates": 0,
+    "rejected": 0
+  },
+  "discovery": {
+    "attempted": false,
+    "searches": [],
+    "hits": 0,
+    "rawHits": [],
+    "skippedReason": "preview_or_preflight"
+  },
+  "ors": {
+    "count": 0,
+    "results": []
+  },
+  "investigationLoop": {
+    "attempted": false,
+    "error": null
+  },
+  "spending": {
+    "spentUsd": 0,
+    "budgetCeilingUsd": 0,
+    "remainingUsd": 0,
+    "authorizePaidResearch": false,
+    "ledgerPath": "C:\\Dev\\dealality\\my-operators-backend\\reports\\gdi-association-events-runs\\assoc-2026-11-18T14-34-47-483e22\\ledgers\\association-events-run-ledger-assoc-2026-11-18T14-34-47-483e22.json",
+    "providersUsed": [],
+    "forbiddenNotUsed": [
+      "surfe",
+      "pdl",
+      "parallel"
+    ]
+  },
+  "publication": {
+    "status": "PREVIEW_SKIPPED",
+    "authorizePublication": false,
+    "applyProductionWrites": false
+  },
+  "productionWrite": {
+    "applied": false,
+    "reason": "not_authorized_in_founder_directive"
+  },
+  "reportDir": "C:\\Dev\\dealality\\my-operators-backend\\reports\\gdi-association-events-runs\\assoc-2026-11-18T14-34-47-483e22"
+}

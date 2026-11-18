@@ -1,0 +1,139 @@
+{
+  "version": "gdi-full-e2e-fourteen-segment-discovery-state-v1",
+  "hotelId": "recrPQcZg7SFARRb2",
+  "segmentId": "preferred_lodging_partnerships",
+  "applicable": true,
+  "status": "PARTIAL",
+  "coverageStatus": "PARTIAL",
+  "completionDecision": "NOT_COMPLETE",
+  "completionRationale": "FIXTURE_PROVIDER_ONLY",
+  "executionStatus": "EXECUTION_PARTIAL",
+  "executorVersion": "gdi-segment-discovery-executor-v1",
+  "executionModuleVersion": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+  "researchRunId": "gdi_disc_run_mwm837w8_7ead06",
+  "researchHorizon": null,
+  "querySpecs": [
+    {
+      "id": "pref_prompt",
+      "segmentId": "preferred_lodging_partnerships",
+      "intent": "preferred_lodging_prompt",
+      "query": "Task: PREFERRED_LODGING_PARTNERSHIP_VENUE_DISCOVERY | Find businesses and venues near the hotel (verified hotel address, the hotel market) that could refer hotel guestrooms or groups — weddings, private celebrations, banquets, cultural/private functions, clubs, museums, entertainment destinations, and complementary event facilities. | A competing event venue can be a valuable Preferred Lodging partner when it has no guestrooms or only complementary / overflow lodging need. | Do NOT reject a venue merely because it offers meeting space, banquet halls, or catering — those often create overnight guest referral demand for a nearby hotel. | Prefer venues without a full competing guestroom inventory; still assess limited on-site lodging for overflow partnership potential (use UNKNOWN when not evidenced). | Exclude generic restaurants unless a documented event format credibly creates overnight visitors. | Return venue name, address, website, event types, on-site lodging status if published, and any lodging-partner language. | Do not invent distances, drive times, annual wedding counts, or room-night forecasts. | Venue types: wedding_reception_venue, standalone_banquet_hall, private_event_facility, independent_conference_event_venue, museum_event_rental, garden_or_historic_property, country_club_or_private_club_outside_events, cultural_institution_event_space, entertainment_destination_event_venue, waterfront_or_rooftop_event_venue"
+    },
+    {
+      "id": "pref_q1",
+      "segmentId": "preferred_lodging_partnerships",
+      "intent": "preferred_lodging_referral_venues",
+      "query": "Founex (wedding venue OR banquet hall OR private event venue OR museum rental OR country club events) (\"preferred hotel\" OR lodging OR \"room block\" OR overflow OR \"guest accommodations\") -restaurant-only"
+    },
+    {
+      "id": "pref_q2",
+      "segmentId": "preferred_lodging_partnerships",
+      "intent": "complementary_venue_no_guestrooms",
+      "query": "Founex event venue (no hotel OR \"no on-site lodging\" OR \"partner hotels\" OR \"recommended hotels\") (wedding OR gala OR private event)"
+    }
+  ],
+  "providerInvocations": [
+    {
+      "at": "2026-11-18T14:01:18.530Z",
+      "fingerprint": "e7d4f1ae4f78",
+      "researchRunId": "gdi_disc_run_mwm6w419_360576",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 3,
+      "costUsd": 0,
+      "retrievalMode": "FIXTURE",
+      "counted": true,
+      "stopReason": "FIXTURE_PROVIDER_ONLY"
+    },
+    {
+      "at": "2026-11-18T14:35:07.725Z",
+      "fingerprint": "58722d4a105e",
+      "researchRunId": "gdi_disc_run_mwm837w8_7ead06",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 3,
+      "costUsd": 0,
+      "retrievalMode": "FIXTURE",
+      "counted": true,
+      "stopReason": "FIXTURE_PROVIDER_ONLY"
+    }
+  ],
+  "cacheReferences": [],
+  "rawCandidateReferences": [
+    "pref_prompt",
+    "pref_q1",
+    "pref_q2"
+  ],
+  "candidateIds": [
+    "disc_9026f33ceb5e",
+    "disc_d94d6a94e401",
+    "disc_e8096e4cccb0"
+  ],
+  "extractedCandidateIds": [
+    "disc_9026f33ceb5e",
+    "disc_d94d6a94e401",
+    "disc_e8096e4cccb0"
+  ],
+  "deduplicatedCandidateIds": [
+    "disc_9026f33ceb5e",
+    "disc_d94d6a94e401",
+    "disc_e8096e4cccb0"
+  ],
+  "unresolvedCandidateIds": [
+    "disc_9026f33ceb5e",
+    "disc_d94d6a94e401",
+    "disc_e8096e4cccb0"
+  ],
+  "completedCandidateIds": [],
+  "evidenceProvenance": [],
+  "rejectionReasons": [],
+  "remainingResearchGaps": [
+    "live_provider_not_executed",
+    "no_http_source_evidence_in_this_pass",
+    "discovery_not_completed"
+  ],
+  "providerUsage": {
+    "attempts": 2,
+    "liveCalls": 0,
+    "cacheHits": 6,
+    "costUsd": 0,
+    "byProvider": {
+      "FIXTURE": {
+        "calls": 0,
+        "costUsd": 0
+      }
+    }
+  },
+  "stopReason": "FIXTURE_PROVIDER_ONLY",
+  "lastSuccessfulCheckpoint": {
+    "kind": "FIXTURE_CHECKPOINT",
+    "at": "2026-11-18T14:35:07.725Z",
+    "fingerprint": "58722d4a105e",
+    "researchRunId": "gdi_disc_run_mwm837w8_7ead06",
+    "executionStatus": "EXECUTION_PARTIAL",
+    "providerRunIds": [],
+    "extractedCount": 3,
+    "costUsdCumulative": 0
+  },
+  "lastCheckpointAt": "2026-11-18T14:35:07.725Z",
+  "researchActions": [
+    {
+      "at": "2026-11-18T14:01:18.530Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_PARTIAL",
+      "fingerprint": "e7d4f1ae4f78",
+      "countedNewCost": 0
+    },
+    {
+      "at": "2026-11-18T14:35:07.725Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_PARTIAL",
+      "fingerprint": "58722d4a105e",
+      "countedNewCost": 0
+    }
+  ],
+  "publicationOccurred": false,
+  "airtableWrites": 0,
+  "createdAt": "2026-11-18T14:01:18.530Z",
+  "updatedAt": "2026-11-18T14:35:07.725Z"
+}

@@ -1,0 +1,153 @@
+{
+  "version": "gdi-full-e2e-fourteen-segment-discovery-state-v1",
+  "hotelId": "recrPQcZg7SFARRb2",
+  "segmentId": "education_scientific",
+  "applicable": true,
+  "status": "PARTIAL",
+  "coverageStatus": "PARTIAL",
+  "completionDecision": "NOT_COMPLETE",
+  "completionRationale": "FIXTURE_PROVIDER_ONLY",
+  "executionStatus": "EXECUTION_PARTIAL",
+  "executorVersion": "gdi-segment-discovery-executor-v1",
+  "executionModuleVersion": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+  "researchRunId": "gdi_disc_run_mwm837w8_7ead06",
+  "researchHorizon": null,
+  "querySpecs": [
+    {
+      "id": "education_scientific_q1",
+      "segmentId": "education_scientific",
+      "intent": "assoc_city_medical_en",
+      "query": "(\"Founex\") (medical OR scientific OR academic) (congress OR symposium OR conference) (association OR society OR colegio) (2025 OR 2026 OR 2027) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+      "language": null,
+      "sourceTypes": null,
+      "weight": 6
+    },
+    {
+      "id": "education_scientific_q2",
+      "segmentId": "education_scientific",
+      "intent": "assoc_city_medico_es",
+      "query": "(\"Founex\") (congreso médico OR simposio OR \"jornadas académicas\") (asociación OR colegio OR sociedad) (2025 OR 2026 OR 2027) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+      "language": "es",
+      "sourceTypes": null,
+      "weight": 5
+    },
+    {
+      "id": "education_scientific_base_q1",
+      "segmentId": "education_scientific",
+      "intent": "PHARMA_MEDICAL_ECOSYSTEM",
+      "query": "Founex investigator meeting OR advisory board OR medical affairs OR medical congress sponsor 2026 OR 2027",
+      "language": "en"
+    },
+    {
+      "id": "education_scientific_base_q2",
+      "segmentId": "education_scientific",
+      "intent": "PHARMA_MEDICAL_ECOSYSTEM",
+      "query": "Founex CRO \"investigator meeting\" OR \"advisory board\" hotel",
+      "language": "en"
+    }
+  ],
+  "providerInvocations": [
+    {
+      "at": "2026-11-18T14:01:18.456Z",
+      "fingerprint": "7c01aa83e00b",
+      "researchRunId": "gdi_disc_run_mwm6w419_360576",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 4,
+      "costUsd": 0,
+      "retrievalMode": "FIXTURE",
+      "counted": true,
+      "stopReason": "FIXTURE_PROVIDER_ONLY"
+    },
+    {
+      "at": "2026-11-18T14:35:07.626Z",
+      "fingerprint": "f2c81b73b977",
+      "researchRunId": "gdi_disc_run_mwm837w8_7ead06",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 4,
+      "costUsd": 0,
+      "retrievalMode": "FIXTURE",
+      "counted": true,
+      "stopReason": "FIXTURE_PROVIDER_ONLY"
+    }
+  ],
+  "cacheReferences": [],
+  "rawCandidateReferences": [
+    "education_scientific_q1",
+    "education_scientific_q2",
+    "education_scientific_base_q1"
+  ],
+  "candidateIds": [
+    "disc_465a58594eab",
+    "disc_1b5066fda514",
+    "disc_d6d6ecdcc7c0"
+  ],
+  "extractedCandidateIds": [
+    "disc_465a58594eab",
+    "disc_1b5066fda514",
+    "disc_d6d6ecdcc7c0"
+  ],
+  "deduplicatedCandidateIds": [
+    "disc_465a58594eab",
+    "disc_1b5066fda514",
+    "disc_d6d6ecdcc7c0"
+  ],
+  "unresolvedCandidateIds": [
+    "disc_465a58594eab",
+    "disc_1b5066fda514",
+    "disc_d6d6ecdcc7c0"
+  ],
+  "completedCandidateIds": [],
+  "evidenceProvenance": [],
+  "rejectionReasons": [],
+  "remainingResearchGaps": [
+    "live_provider_not_executed",
+    "no_http_source_evidence_in_this_pass",
+    "discovery_not_completed"
+  ],
+  "providerUsage": {
+    "attempts": 2,
+    "liveCalls": 0,
+    "cacheHits": 8,
+    "costUsd": 0,
+    "byProvider": {
+      "FIXTURE": {
+        "calls": 0,
+        "costUsd": 0
+      }
+    }
+  },
+  "stopReason": "FIXTURE_PROVIDER_ONLY",
+  "lastSuccessfulCheckpoint": {
+    "kind": "FIXTURE_CHECKPOINT",
+    "at": "2026-11-18T14:35:07.626Z",
+    "fingerprint": "f2c81b73b977",
+    "researchRunId": "gdi_disc_run_mwm837w8_7ead06",
+    "executionStatus": "EXECUTION_PARTIAL",
+    "providerRunIds": [],
+    "extractedCount": 3,
+    "costUsdCumulative": 0
+  },
+  "lastCheckpointAt": "2026-11-18T14:35:07.626Z",
+  "researchActions": [
+    {
+      "at": "2026-11-18T14:01:18.456Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_PARTIAL",
+      "fingerprint": "7c01aa83e00b",
+      "countedNewCost": 0
+    },
+    {
+      "at": "2026-11-18T14:35:07.626Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_PARTIAL",
+      "fingerprint": "f2c81b73b977",
+      "countedNewCost": 0
+    }
+  ],
+  "publicationOccurred": false,
+  "airtableWrites": 0,
+  "createdAt": "2026-11-18T14:01:18.456Z",
+  "updatedAt": "2026-11-18T14:35:07.626Z"
+}

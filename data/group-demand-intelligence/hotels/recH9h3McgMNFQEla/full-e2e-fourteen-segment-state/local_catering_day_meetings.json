@@ -1,0 +1,781 @@
+{
+  "version": "gdi-full-e2e-fourteen-segment-discovery-state-v1",
+  "hotelId": "recH9h3McgMNFQEla",
+  "segmentId": "local_catering_day_meetings",
+  "applicable": true,
+  "status": "PARTIAL",
+  "coverageStatus": "PARTIAL",
+  "completionDecision": "NOT_COMPLETE",
+  "completionRationale": "FIXTURE_PROVIDER_ONLY",
+  "executionStatus": "EXECUTION_PARTIAL",
+  "executorVersion": "gdi-segment-discovery-executor-v1",
+  "executionModuleVersion": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+  "researchRunId": "gdi_disc_run_mwm83plo_1697cb",
+  "researchHorizon": null,
+  "querySpecs": [
+    {
+      "id": "local_q1",
+      "segmentId": "local_catering_day_meetings",
+      "intent": "corporate_training_board_workshops",
+      "query": "\"Toronto\" (corporate training OR \"board meeting\" OR workshop OR \"offsite meeting\" OR \"half-day meeting\" OR \"team lunch\") (hotel OR \"meeting room\" OR banquet) -\"annual conference\" -\"national conference\" -crunchbase -yelp"
+    },
+    {
+      "id": "local_q2",
+      "segmentId": "local_catering_day_meetings",
+      "intent": "recurring_professional_room_rental",
+      "query": "\"Toronto\" (\"monthly meeting\" OR \"chapter meeting\" OR \"continuing education\" OR \"professional development\" OR reception) (\"meeting space\" OR \"conference room\" OR hotel OR catering) contact -\"annual conference\" -\"world congress\" -directory"
+    },
+    {
+      "id": "local_q3",
+      "segmentId": "local_catering_day_meetings",
+      "intent": "chapter_awards_dinners",
+      "query": "\"Toronto\" (chapter OR local) (awards dinner OR holiday luncheon OR chapter dinner OR monthly luncheon OR \"engineering excellence\") (hotel OR banquet OR catering) -\"annual conference\" -\"national meeting\" -crunchbase"
+    },
+    {
+      "id": "local_q5",
+      "segmentId": "local_catering_day_meetings",
+      "intent": "nonprofit_fundraisers",
+      "query": "\"Toronto\" (nonprofit OR foundation) (gala OR fundraiser OR awards) (downtown OR banquet) contact -yelp"
+    },
+    {
+      "id": "local_q6",
+      "segmentId": "local_catering_day_meetings",
+      "intent": "social_celebrations_planners",
+      "query": "\"Toronto\" (\"event planner\" OR \"social events\" OR \"private dining\" OR mitzvah OR quinceañera OR anniversary) (hotel OR catering OR banquet) -guestlist -children"
+    },
+    {
+      "id": "local_q7",
+      "segmentId": "local_catering_day_meetings",
+      "intent": "professional_planners_intermediaries",
+      "query": "\"Toronto\" (\"meeting planner\" OR \"event planner\" OR \"destination management\" OR \"corporate events\") (hotel OR catering) (portfolio OR clients) -yelp"
+    }
+  ],
+  "providerInvocations": [
+    {
+      "at": "2026-11-18T14:01:22.894Z",
+      "fingerprint": "f1ffbcd86175",
+      "researchRunId": "gdi_disc_run_mwm6w7tn_2307de",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 6,
+      "costUsd": 0,
+      "retrievalMode": "FIXTURE",
+      "counted": true,
+      "stopReason": "FIXTURE_PROVIDER_ONLY"
+    },
+    {
+      "at": "2026-11-18T14:35:12.124Z",
+      "fingerprint": "0fdc464f6269",
+      "researchRunId": "gdi_disc_run_mwm83plo_1697cb",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 6,
+      "costUsd": 0,
+      "retrievalMode": "FIXTURE",
+      "counted": true,
+      "stopReason": "FIXTURE_PROVIDER_ONLY"
+    }
+  ],
+  "cacheReferences": [
+    "C:\\Dev\\dealality\\my-operators-backend\\data\\group-demand-intelligence\\discovery-ledgers\\recH9h3McgMNFQEla\\four-hotel-14-workflow-full-e2e-v1.json"
+  ],
+  "rawCandidateReferences": [
+    "local_q1",
+    "local_q2",
+    "local_q3",
+    "local_q5",
+    "local_q6",
+    "local_q7",
+    "hist_a487d11ca3cf",
+    "hist_7e4d1b91c087",
+    "hist_88d4f522c278",
+    "hist_49d40be2a07f",
+    "hist_2b26e1d3da60",
+    "hist_1ccc0af22604",
+    "hist_9d92e427332f",
+    "hist_0fde0bde449d",
+    "hist_e7fb64e294a0",
+    "hist_7fdb1f830231",
+    "hist_58aa29f3bf6f",
+    "hist_c3e22c2fa70f",
+    "hist_1d7ea090c70b",
+    "hist_9cc25dbffa81",
+    "hist_595b349ed9af",
+    "hist_9f6d8257afd4",
+    "hist_3379cc5d18c3",
+    "hist_8d73c5741f71",
+    "hist_c081552dba20"
+  ],
+  "candidateIds": [
+    "disc_2ee98c2fbae5",
+    "disc_1a04db538325",
+    "disc_a8d1e693f698",
+    "disc_50bac131f92e",
+    "disc_9a6d44f44a48",
+    "disc_c326d46231cf",
+    "hist_a487d11ca3cf",
+    "hist_7e4d1b91c087",
+    "hist_88d4f522c278",
+    "hist_49d40be2a07f",
+    "hist_2b26e1d3da60",
+    "hist_1ccc0af22604",
+    "hist_9d92e427332f",
+    "hist_0fde0bde449d",
+    "hist_e7fb64e294a0",
+    "hist_7fdb1f830231",
+    "hist_58aa29f3bf6f",
+    "hist_c3e22c2fa70f",
+    "hist_1d7ea090c70b",
+    "hist_9cc25dbffa81",
+    "hist_595b349ed9af",
+    "hist_9f6d8257afd4",
+    "hist_3379cc5d18c3",
+    "hist_8d73c5741f71",
+    "hist_c081552dba20"
+  ],
+  "extractedCandidateIds": [
+    "disc_2ee98c2fbae5",
+    "disc_1a04db538325",
+    "disc_a8d1e693f698",
+    "disc_50bac131f92e",
+    "disc_9a6d44f44a48",
+    "disc_c326d46231cf",
+    "hist_a487d11ca3cf",
+    "hist_7e4d1b91c087",
+    "hist_88d4f522c278",
+    "hist_49d40be2a07f",
+    "hist_2b26e1d3da60",
+    "hist_1ccc0af22604",
+    "hist_9d92e427332f",
+    "hist_0fde0bde449d",
+    "hist_e7fb64e294a0",
+    "hist_7fdb1f830231",
+    "hist_58aa29f3bf6f",
+    "hist_c3e22c2fa70f",
+    "hist_1d7ea090c70b",
+    "hist_9cc25dbffa81",
+    "hist_595b349ed9af",
+    "hist_9f6d8257afd4",
+    "hist_3379cc5d18c3",
+    "hist_8d73c5741f71",
+    "hist_c081552dba20"
+  ],
+  "deduplicatedCandidateIds": [
+    "disc_2ee98c2fbae5",
+    "disc_1a04db538325",
+    "disc_a8d1e693f698",
+    "disc_50bac131f92e",
+    "disc_9a6d44f44a48",
+    "disc_c326d46231cf",
+    "hist_a487d11ca3cf",
+    "hist_7e4d1b91c087",
+    "hist_88d4f522c278",
+    "hist_49d40be2a07f",
+    "hist_2b26e1d3da60",
+    "hist_1ccc0af22604",
+    "hist_9d92e427332f",
+    "hist_0fde0bde449d",
+    "hist_e7fb64e294a0",
+    "hist_7fdb1f830231",
+    "hist_58aa29f3bf6f",
+    "hist_c3e22c2fa70f",
+    "hist_1d7ea090c70b",
+    "hist_9cc25dbffa81",
+    "hist_595b349ed9af",
+    "hist_9f6d8257afd4",
+    "hist_3379cc5d18c3",
+    "hist_8d73c5741f71",
+    "hist_c081552dba20"
+  ],
+  "unresolvedCandidateIds": [
+    "disc_2ee98c2fbae5",
+    "disc_1a04db538325",
+    "disc_a8d1e693f698",
+    "disc_50bac131f92e",
+    "disc_9a6d44f44a48",
+    "disc_c326d46231cf",
+    "hist_a487d11ca3cf",
+    "hist_7e4d1b91c087",
+    "hist_88d4f522c278",
+    "hist_49d40be2a07f",
+    "hist_2b26e1d3da60",
+    "hist_1ccc0af22604",
+    "hist_9d92e427332f",
+    "hist_0fde0bde449d",
+    "hist_e7fb64e294a0",
+    "hist_7fdb1f830231",
+    "hist_58aa29f3bf6f",
+    "hist_c3e22c2fa70f",
+    "hist_1d7ea090c70b",
+    "hist_9cc25dbffa81",
+    "hist_595b349ed9af",
+    "hist_9f6d8257afd4",
+    "hist_3379cc5d18c3",
+    "hist_8d73c5741f71",
+    "hist_c081552dba20"
+  ],
+  "completedCandidateIds": [],
+  "evidenceProvenance": [
+    {
+      "candidateId": "hist_a487d11ca3cf",
+      "evidenceUrls": [
+        "https://downtown.org/event/2026-annual-conference/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_05865d636c3e43a7af708deaaba50bf8",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.894Z"
+    },
+    {
+      "candidateId": "hist_7e4d1b91c087",
+      "evidenceUrls": [
+        "https://pdac.ca/about-pdac/news-publications/press-releases/toronto-to-host-global-mineral-sector-for-pdac-2026-march-1-4",
+        "https://pdac.ca/convention-2026"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_05865d636c3e43a7af708deaaba50bf8",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.894Z"
+    },
+    {
+      "candidateId": "hist_88d4f522c278",
+      "evidenceUrls": [
+        "https://ilaglobalconference.org/",
+        "https://ilaglobalconference.org/agenda/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_05865d636c3e43a7af708deaaba50bf8",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.894Z"
+    },
+    {
+      "candidateId": "hist_49d40be2a07f",
+      "evidenceUrls": [
+        "https://ipo.org/index.php/am2026/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_05865d636c3e43a7af708deaaba50bf8",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.894Z"
+    },
+    {
+      "candidateId": "hist_2b26e1d3da60",
+      "evidenceUrls": [
+        "https://www.destinationtoronto.com/about-us/work-with-us/connect-with-the-visitor-economy/",
+        "https://www.destinationtoronto.com/about-us/work-with-us/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_05865d636c3e43a7af708deaaba50bf8",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.894Z"
+    },
+    {
+      "candidateId": "hist_1ccc0af22604",
+      "evidenceUrls": [
+        "https://www.torontotechweek.com/events",
+        "https://torontotechweek.com/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_05865d636c3e43a7af708deaaba50bf8",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.894Z"
+    },
+    {
+      "candidateId": "hist_9d92e427332f",
+      "evidenceUrls": [
+        "https://toronto.tie.org/events/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_05865d636c3e43a7af708deaaba50bf8",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.894Z"
+    },
+    {
+      "candidateId": "hist_0fde0bde449d",
+      "evidenceUrls": [
+        "https://ama-toronto.com/ama-events/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_05865d636c3e43a7af708deaaba50bf8",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.894Z"
+    },
+    {
+      "candidateId": "hist_e7fb64e294a0",
+      "evidenceUrls": [
+        "https://www.toronto.ca/business-economy/new-businesses-startups/small-business-startup-events/",
+        "https://www.toronto.ca/explore-enjoy/festivals-events/small-business-forum/",
+        "https://www.toronto.ca/business-economy/new-businesses-startups/business-webinars/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_05865d636c3e43a7af708deaaba50bf8",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.894Z"
+    },
+    {
+      "candidateId": "hist_7fdb1f830231",
+      "evidenceUrls": [
+        "https://www.uhn.ca/Education/About-Us/Portfolios/CEPD/Pages/default.aspx",
+        "https://www.uhn.ca/Education/Lifelong-Learners/Pages/conferences-workshops.aspx"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_05865d636c3e43a7af708deaaba50bf8",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.894Z"
+    },
+    {
+      "candidateId": "hist_58aa29f3bf6f",
+      "evidenceUrls": [
+        "https://lifesciencesontario.ca/breakfast-forum/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_24a9757e2dec459d83fc22accb960c44",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.894Z"
+    },
+    {
+      "candidateId": "hist_c3e22c2fa70f",
+      "evidenceUrls": [
+        "https://bomaportal.bomatoronto.org/events/event_list.asp"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_24a9757e2dec459d83fc22accb960c44",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.894Z"
+    },
+    {
+      "candidateId": "hist_1d7ea090c70b",
+      "evidenceUrls": [
+        "https://www.canadianspeakers.org/caps-toronto/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_24a9757e2dec459d83fc22accb960c44",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.894Z"
+    },
+    {
+      "candidateId": "hist_9cc25dbffa81",
+      "evidenceUrls": [
+        "https://cfatoronto.ca/programming/upcoming-events/",
+        "https://cfatoronto.ca/programming/upcoming-events/brewing-connections-september/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_24a9757e2dec459d83fc22accb960c44",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.894Z"
+    },
+    {
+      "candidateId": "hist_595b349ed9af",
+      "evidenceUrls": [
+        "https://www.pmitoronto.ca/calendar",
+        "https://www.pmitoronto.ca/calendar?eventId=48042"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_24a9757e2dec459d83fc22accb960c44",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.894Z"
+    },
+    {
+      "candidateId": "hist_9f6d8257afd4",
+      "evidenceUrls": [
+        "https://www.tocw.ca/events"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_24a9757e2dec459d83fc22accb960c44",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.894Z"
+    },
+    {
+      "candidateId": "hist_3379cc5d18c3",
+      "evidenceUrls": [
+        "https://www.canadianclub.org/events/the-honourable-francois-philippe-champagne-nov/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_24a9757e2dec459d83fc22accb960c44",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.894Z"
+    },
+    {
+      "candidateId": "hist_8d73c5741f71",
+      "evidenceUrls": [
+        "https://cintl.org/impact-events/idg2026/to/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_24a9757e2dec459d83fc22accb960c44",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.894Z"
+    },
+    {
+      "candidateId": "hist_c081552dba20",
+      "evidenceUrls": [
+        "https://porridgeforparkinsonsto.org/about-us-4/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_24a9757e2dec459d83fc22accb960c44",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.894Z"
+    },
+    {
+      "candidateId": "hist_a487d11ca3cf",
+      "evidenceUrls": [
+        "https://downtown.org/event/2026-annual-conference/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_05865d636c3e43a7af708deaaba50bf8",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.123Z"
+    },
+    {
+      "candidateId": "hist_7e4d1b91c087",
+      "evidenceUrls": [
+        "https://pdac.ca/about-pdac/news-publications/press-releases/toronto-to-host-global-mineral-sector-for-pdac-2026-march-1-4",
+        "https://pdac.ca/convention-2026"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_05865d636c3e43a7af708deaaba50bf8",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.123Z"
+    },
+    {
+      "candidateId": "hist_88d4f522c278",
+      "evidenceUrls": [
+        "https://ilaglobalconference.org/",
+        "https://ilaglobalconference.org/agenda/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_05865d636c3e43a7af708deaaba50bf8",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.123Z"
+    },
+    {
+      "candidateId": "hist_49d40be2a07f",
+      "evidenceUrls": [
+        "https://ipo.org/index.php/am2026/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_05865d636c3e43a7af708deaaba50bf8",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.123Z"
+    },
+    {
+      "candidateId": "hist_2b26e1d3da60",
+      "evidenceUrls": [
+        "https://www.destinationtoronto.com/about-us/work-with-us/connect-with-the-visitor-economy/",
+        "https://www.destinationtoronto.com/about-us/work-with-us/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_05865d636c3e43a7af708deaaba50bf8",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.123Z"
+    },
+    {
+      "candidateId": "hist_1ccc0af22604",
+      "evidenceUrls": [
+        "https://www.torontotechweek.com/events",
+        "https://torontotechweek.com/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_05865d636c3e43a7af708deaaba50bf8",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.123Z"
+    },
+    {
+      "candidateId": "hist_9d92e427332f",
+      "evidenceUrls": [
+        "https://toronto.tie.org/events/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_05865d636c3e43a7af708deaaba50bf8",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.123Z"
+    },
+    {
+      "candidateId": "hist_0fde0bde449d",
+      "evidenceUrls": [
+        "https://ama-toronto.com/ama-events/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_05865d636c3e43a7af708deaaba50bf8",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.123Z"
+    },
+    {
+      "candidateId": "hist_e7fb64e294a0",
+      "evidenceUrls": [
+        "https://www.toronto.ca/business-economy/new-businesses-startups/small-business-startup-events/",
+        "https://www.toronto.ca/explore-enjoy/festivals-events/small-business-forum/",
+        "https://www.toronto.ca/business-economy/new-businesses-startups/business-webinars/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_05865d636c3e43a7af708deaaba50bf8",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.123Z"
+    },
+    {
+      "candidateId": "hist_7fdb1f830231",
+      "evidenceUrls": [
+        "https://www.uhn.ca/Education/About-Us/Portfolios/CEPD/Pages/default.aspx",
+        "https://www.uhn.ca/Education/Lifelong-Learners/Pages/conferences-workshops.aspx"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_05865d636c3e43a7af708deaaba50bf8",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.123Z"
+    },
+    {
+      "candidateId": "hist_58aa29f3bf6f",
+      "evidenceUrls": [
+        "https://lifesciencesontario.ca/breakfast-forum/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_24a9757e2dec459d83fc22accb960c44",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.123Z"
+    },
+    {
+      "candidateId": "hist_c3e22c2fa70f",
+      "evidenceUrls": [
+        "https://bomaportal.bomatoronto.org/events/event_list.asp"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_24a9757e2dec459d83fc22accb960c44",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.123Z"
+    },
+    {
+      "candidateId": "hist_1d7ea090c70b",
+      "evidenceUrls": [
+        "https://www.canadianspeakers.org/caps-toronto/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_24a9757e2dec459d83fc22accb960c44",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.123Z"
+    },
+    {
+      "candidateId": "hist_9cc25dbffa81",
+      "evidenceUrls": [
+        "https://cfatoronto.ca/programming/upcoming-events/",
+        "https://cfatoronto.ca/programming/upcoming-events/brewing-connections-september/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_24a9757e2dec459d83fc22accb960c44",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.123Z"
+    },
+    {
+      "candidateId": "hist_595b349ed9af",
+      "evidenceUrls": [
+        "https://www.pmitoronto.ca/calendar",
+        "https://www.pmitoronto.ca/calendar?eventId=48042"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_24a9757e2dec459d83fc22accb960c44",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.123Z"
+    },
+    {
+      "candidateId": "hist_9f6d8257afd4",
+      "evidenceUrls": [
+        "https://www.tocw.ca/events"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_24a9757e2dec459d83fc22accb960c44",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.123Z"
+    },
+    {
+      "candidateId": "hist_3379cc5d18c3",
+      "evidenceUrls": [
+        "https://www.canadianclub.org/events/the-honourable-francois-philippe-champagne-nov/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_24a9757e2dec459d83fc22accb960c44",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.124Z"
+    },
+    {
+      "candidateId": "hist_8d73c5741f71",
+      "evidenceUrls": [
+        "https://cintl.org/impact-events/idg2026/to/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_24a9757e2dec459d83fc22accb960c44",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.124Z"
+    },
+    {
+      "candidateId": "hist_c081552dba20",
+      "evidenceUrls": [
+        "https://porridgeforparkinsonsto.org/about-us-4/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_24a9757e2dec459d83fc22accb960c44",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.124Z"
+    }
+  ],
+  "rejectionReasons": [],
+  "remainingResearchGaps": [
+    "live_provider_not_executed",
+    "discovery_not_completed"
+  ],
+  "providerUsage": {
+    "attempts": 2,
+    "liveCalls": 0,
+    "cacheHits": 12,
+    "costUsd": 0,
+    "byProvider": {
+      "FIXTURE": {
+        "calls": 0,
+        "costUsd": 0
+      }
+    }
+  },
+  "stopReason": "FIXTURE_PROVIDER_ONLY",
+  "lastSuccessfulCheckpoint": {
+    "kind": "FIXTURE_CHECKPOINT",
+    "at": "2026-11-18T14:35:12.124Z",
+    "fingerprint": "0fdc464f6269",
+    "researchRunId": "gdi_disc_run_mwm83plo_1697cb",
+    "executionStatus": "EXECUTION_PARTIAL",
+    "providerRunIds": [],
+    "extractedCount": 25,
+    "costUsdCumulative": 0
+  },
+  "lastCheckpointAt": "2026-11-18T14:35:12.124Z",
+  "researchActions": [
+    {
+      "at": "2026-11-18T14:01:22.894Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_PARTIAL",
+      "fingerprint": "f1ffbcd86175",
+      "countedNewCost": 0
+    },
+    {
+      "at": "2026-11-18T14:35:12.124Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_PARTIAL",
+      "fingerprint": "0fdc464f6269",
+      "countedNewCost": 0
+    }
+  ],
+  "publicationOccurred": false,
+  "airtableWrites": 0,
+  "createdAt": "2026-11-18T14:01:22.894Z",
+  "updatedAt": "2026-11-18T14:35:12.124Z"
+}

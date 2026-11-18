@@ -1,0 +1,266 @@
+[
+  {
+    "pathway": "TRIGGER_LED",
+    "segment": "scaling_companies",
+    "intent": "local_office_expansion_en",
+    "demandMode": "LOCAL_CORPORATE_GROWTH",
+    "researchQuestion": "\"Bethesda\" (\"opens office\" OR \"opened an office\" OR \"new office\" OR \"regional hub\" OR headquarters) (company OR corporate OR firm) (training OR meetings OR lodging OR \"project team\") -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+    "sourceTypes": [
+      "corp_announcements"
+    ],
+    "discoveryWeight": 4,
+    "version": "gdi-scaling-destination-demand-discovery-v1",
+    "demandSeeking": true,
+    "track": "NEW_DISCOVERY",
+    "destinationDiscoveryVersion": "gdi-scaling-destination-demand-discovery-v1"
+  },
+  {
+    "pathway": "ORGANIZATION_LED",
+    "segment": "scaling_companies",
+    "intent": "local_training_meetings_en",
+    "demandMode": "LOCAL_CORPORATE_GROWTH",
+    "researchQuestion": "\"Bethesda\" (company OR corporate) (\"sales kickoff\" OR offsite OR \"leadership meeting\" OR \"customer training\" OR \"project team\") (hotel OR lodging OR meetings) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+    "sourceTypes": [
+      "training_calendars",
+      "corp_news"
+    ],
+    "discoveryWeight": 4,
+    "version": "gdi-scaling-destination-demand-discovery-v1",
+    "demandSeeking": true,
+    "track": "NEW_DISCOVERY",
+    "destinationDiscoveryVersion": "gdi-scaling-destination-demand-discovery-v1"
+  },
+  {
+    "pathway": "TRIGGER_LED",
+    "segment": "scaling_companies",
+    "intent": "destination_incentive_program_en",
+    "demandMode": "DESTINATION_CORPORATE_MEETINGS",
+    "researchQuestion": "(\"Bethesda\" OR \"District of Columbia\" OR \"Montgomery County\" OR \"Northern Virginia\") (\"incentive travel\" OR \"incentive trip\" OR \"incentive program\" OR \"sales incentive\" OR \"employee incentive\") (company OR corporate OR \"sales team\" OR distributor) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+    "sourceTypes": [
+      "corp_news",
+      "incentive_case_studies",
+      "hr_program_pages"
+    ],
+    "discoveryWeight": 6,
+    "underrepresentedPriority": true,
+    "notes": "Program-first: destination is meeting location, not company HQ requirement",
+    "version": "gdi-scaling-destination-demand-discovery-v1",
+    "demandSeeking": true,
+    "track": "NEW_DISCOVERY",
+    "destinationDiscoveryVersion": "gdi-scaling-destination-demand-discovery-v1"
+  },
+  {
+    "pathway": "TRIGGER_LED",
+    "segment": "scaling_companies",
+    "intent": "destination_sales_kickoff_retreat_en",
+    "demandMode": "DESTINATION_CORPORATE_MEETINGS",
+    "researchQuestion": "(\"Bethesda\" OR \"District of Columbia\" OR \"Montgomery County\" OR \"Northern Virginia\") (\"sales kickoff\" OR \"annual sales meeting\" OR \"leadership retreat\" OR \"corporate retreat\" OR \"partner summit\" OR \"distributor meeting\") (company OR corporate OR brand) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo",
+    "sourceTypes": [
+      "corp_news",
+      "sales_ops_announcements"
+    ],
+    "discoveryWeight": 6,
+    "underrepresentedPriority": true,
+    "version": "gdi-scaling-destination-demand-discovery-v1",
+    "demandSeeking": true,
+    "track": "NEW_DISCOVERY",
+    "destinationDiscoveryVersion": "gdi-scaling-destination-demand-discovery-v1"
+  },
+  {
+    "pathway": "ORGANIZATION_LED",
+    "segment": "scaling_companies",
+    "researchQuestion": "Bethesda scale-up OR expanding company operations training program OR project team lodging needs",
+    "questionFingerprint": "organization led scaling companies bethesda scale up or expanding company operations training program or project team lodging needs",
+    "sourceTypes": [
+      "ops_office_disclosures",
+      "training_program_calendars",
+      "dmc_planner_portfolios",
+      "chapter_association_program_pages"
+    ],
+    "expectedSignalKinds": [
+      "ORGANIZATION_CAPABILITY",
+      "RECURRING_CYCLE"
+    ],
+    "demandSeeking": true,
+    "housingPageExtractionOnly": false,
+    "discoveryWeight": 3,
+    "underrepresentedPriority": true,
+    "track": "NEW_DISCOVERY",
+    "notes": "Require specific demand mechanism before opportunity promotion",
+    "version": "gdi-autonomous-demand-discovery-v5",
+    "demandMode": "LOCAL_CORPORATE_GROWTH",
+    "destinationDiscoveryVersion": "gdi-scaling-destination-demand-discovery-v1"
+  },
+  {
+    "pathway": "ORGANIZATION_LED",
+    "segment": "scaling_companies",
+    "researchQuestion": "Bethesda DMV company with multi-site project mobilization lodging OR integration offsite OR corporate retreat",
+    "questionFingerprint": "organization led scaling companies bethesda dmv company with multi site project mobilization lodging or integration offsite or corporate retreat",
+    "sourceTypes": [
+      "ops_office_disclosures",
+      "training_program_calendars",
+      "dmc_planner_portfolios",
+      "chapter_association_program_pages"
+    ],
+    "expectedSignalKinds": [
+      "ORGANIZATION_CAPABILITY",
+      "RECURRING_CYCLE"
+    ],
+    "demandSeeking": true,
+    "housingPageExtractionOnly": false,
+    "discoveryWeight": 3,
+    "underrepresentedPriority": true,
+    "track": "NEW_DISCOVERY",
+    "notes": "Require specific demand mechanism before opportunity promotion",
+    "version": "gdi-autonomous-demand-discovery-v5",
+    "demandMode": "LOCAL_CORPORATE_GROWTH",
+    "destinationDiscoveryVersion": "gdi-scaling-destination-demand-discovery-v1"
+  },
+  {
+    "pathway": "TRIGGER_LED",
+    "segment": "scaling_companies",
+    "researchQuestion": "Bethesda \"opens office\" OR \"expanding workforce\" OR \"new headquarters\" OR relocation training OR offsite 2026 OR 2027",
+    "questionFingerprint": "trigger led scaling companies bethesda opens office or expanding workforce or new headquarters or relocation training or offsite 2026 or 2027",
+    "sourceTypes": [
+      "corporate_news_announcements",
+      "government_contract_awards",
+      "procurement_solicitations"
+    ],
+    "expectedSignalKinds": [
+      "SOURCING_ACTIVITY",
+      "PROGRAM_OR_EVENT"
+    ],
+    "demandSeeking": true,
+    "housingPageExtractionOnly": false,
+    "discoveryWeight": 3,
+    "underrepresentedPriority": true,
+    "track": "NEW_DISCOVERY",
+    "notes": "Trigger alone ≠ opportunity; require causal demand mechanism",
+    "version": "gdi-autonomous-demand-discovery-v5",
+    "demandMode": "LOCAL_CORPORATE_GROWTH",
+    "destinationDiscoveryVersion": "gdi-scaling-destination-demand-discovery-v1"
+  },
+  {
+    "pathway": "TRIGGER_LED",
+    "segment": "scaling_companies",
+    "researchQuestion": "Bethesda DMV merger OR integration OR relocation project team lodging OR kickoff meeting OR corporate retreat",
+    "questionFingerprint": "trigger led scaling companies bethesda dmv merger or integration or relocation project team lodging or kickoff meeting or corporate retreat",
+    "sourceTypes": [
+      "corporate_news_announcements",
+      "government_contract_awards",
+      "procurement_solicitations"
+    ],
+    "expectedSignalKinds": [
+      "SOURCING_ACTIVITY",
+      "PROGRAM_OR_EVENT"
+    ],
+    "demandSeeking": true,
+    "housingPageExtractionOnly": false,
+    "discoveryWeight": 3,
+    "underrepresentedPriority": true,
+    "track": "NEW_DISCOVERY",
+    "notes": "Trigger alone ≠ opportunity; require causal demand mechanism",
+    "version": "gdi-autonomous-demand-discovery-v5",
+    "demandMode": "LOCAL_CORPORATE_GROWTH",
+    "destinationDiscoveryVersion": "gdi-scaling-destination-demand-discovery-v1"
+  },
+  {
+    "segment": "scaling_companies",
+    "researchQuestion": "Bethesda OR Rockville biotech OR tech hiring surge OR new office training wave hotel",
+    "questionFingerprint": "bethesda or rockville biotech or tech hiring surge or new office training wave hotel",
+    "demandSeeking": true,
+    "housingPageExtractionOnly": false,
+    "discoveryWeight": 3,
+    "underrepresentedPriority": true,
+    "sourceTypes": [
+      "workforce_expansion",
+      "project_mobilization",
+      "new_office_training_wave"
+    ],
+    "hotelName": "Bethesda Marriott",
+    "geo": "Bethesda DMV",
+    "inventoryHints": {
+      "guestrooms": 407,
+      "meetingRooms": 27,
+      "ballroomReception": null,
+      "peakRoomsMin": 100,
+      "peakRoomsMax": 300
+    },
+    "anchors": [
+      "NIH",
+      "Walter Reed National Military Medical Center",
+      "federal health / research ecosystem",
+      "Washington DC metro access",
+      "Montgomery County employers",
+      "District of Columbia"
+    ],
+    "expectedSignalKinds": [
+      "PROGRAM_OR_EVENT",
+      "ORGANIZATION_CAPABILITY",
+      "RECURRING_CYCLE",
+      "SOURCING_ACTIVITY"
+    ],
+    "track": "NEW_DISCOVERY",
+    "pathway": "EVENT_LED",
+    "version": "gdi-autonomous-demand-discovery-v5",
+    "earlyChecks": [
+      "event_dates_forward_looking",
+      "rfp_deadline_not_expired",
+      "respondent_class_matches_hotel_or_venue",
+      "destination_eligibility",
+      "existing_hotel_commitments",
+      "reject_housing_tab_as_opportunity"
+    ],
+    "parentPackVersion": "gdi-commercial-demand-discovery-v4",
+    "demandMode": "LOCAL_CORPORATE_GROWTH",
+    "destinationDiscoveryVersion": "gdi-scaling-destination-demand-discovery-v1"
+  },
+  {
+    "pathway": "TRIGGER_LED",
+    "segment": "scaling_companies",
+    "researchQuestion": "\"Bethesda\" OR \"District of Columbia\" OR \"Montgomery County\" OR \"Prince George's County (where commercially relevant)\" (opens OR opened OR expanding OR \"new office\" OR headquarters OR relocation) (company OR corporate OR firm) (hotel OR lodging OR meetings OR offsite) -crunchbase",
+    "sourceTypes": [
+      "corp_announcements",
+      "facility_openings"
+    ],
+    "intent": "local_hq_expansion",
+    "demandMode": "LOCAL_CORPORATE_GROWTH",
+    "destinationDiscoveryVersion": "gdi-scaling-destination-demand-discovery-v1"
+  },
+  {
+    "pathway": "TRIGGER_LED",
+    "segment": "scaling_companies",
+    "researchQuestion": "(\"Bethesda\" OR \"DMV\") (\"opening an office\" OR \"expands to\" OR \"new location\" OR relocating) (hiring OR training OR offsite OR \"project team\" OR \"customer success\")",
+    "sourceTypes": [
+      "corp_announcements",
+      "facility_openings"
+    ],
+    "intent": "inbound_expansion",
+    "demandMode": "LOCAL_CORPORATE_GROWTH",
+    "destinationDiscoveryVersion": "gdi-scaling-destination-demand-discovery-v1"
+  },
+  {
+    "pathway": "TRIGGER_LED",
+    "segment": "scaling_companies",
+    "researchQuestion": "\"Bethesda\" (onboarding OR \"sales kickoff\" OR \"customer training\" OR offsite OR retreat OR \"leadership meeting\" OR \"corporate retreat\") (hotel OR \"meeting space\" OR resort OR rooms OR \"espacios de reunión\")",
+    "sourceTypes": [
+      "corp_announcements",
+      "facility_openings"
+    ],
+    "intent": "training_retreat_meetings",
+    "demandMode": "LOCAL_CORPORATE_GROWTH",
+    "destinationDiscoveryVersion": "gdi-scaling-destination-demand-discovery-v1"
+  },
+  {
+    "pathway": "TRIGGER_LED",
+    "segment": "scaling_companies",
+    "researchQuestion": "\"Bethesda\" (\"project team\" OR mobilization OR \"implementation team\" OR \"corporate travel\") (lodging OR hotel OR \"extended stay\" OR meetings)",
+    "sourceTypes": [
+      "corp_announcements",
+      "facility_openings"
+    ],
+    "intent": "visiting_project_teams",
+    "demandMode": "LOCAL_CORPORATE_GROWTH",
+    "destinationDiscoveryVersion": "gdi-scaling-destination-demand-discovery-v1"
+  }
+]

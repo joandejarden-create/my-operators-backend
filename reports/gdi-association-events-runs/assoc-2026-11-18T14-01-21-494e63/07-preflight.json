@@ -1,0 +1,80 @@
+{
+  "hotelResolved": true,
+  "strategiesPresent": true,
+  "pricingOk": true,
+  "paidContactGuardOk": true,
+  "authorizationStates": {
+    "PROFILE_READY": true,
+    "RESEARCH_AUTHORIZED": false,
+    "PUBLICATION_AUTHORIZED": false,
+    "WEEKLY_ACTIVE": false
+  },
+  "universalPreviewReadiness": {
+    "version": "gdi-adp-universal-hotel-roster-v1",
+    "hotelId": "recH9h3McgMNFQEla",
+    "auth": {
+      "version": "gdi-adp-universal-hotel-roster-v1",
+      "hotelId": "recH9h3McgMNFQEla",
+      "inUniversalRoster": true,
+      "inAdpCommissioned": false,
+      "gdiOnlyNotInAdp": true,
+      "states": {
+        "PROFILE_READY": true,
+        "RESEARCH_AUTHORIZED": false,
+        "PUBLICATION_AUTHORIZED": false,
+        "WEEKLY_ACTIVE": false
+      },
+      "notes": [
+        "Existing GDI hotel preserved though not in current ADP commissioned roster.",
+        "PUBLICATION_AUTHORIZED requires reviewed-prospect allowlist — not ADP membership.",
+        "RESEARCH_AUTHORIZED requires explicit run authorizePaidResearch + budget.",
+        "WEEKLY_ACTIVE requires GDI_WEEKLY_DEEP_RESEARCH_ENABLED=1 and hotel on GDI_WEEKLY_ACTIVE_HOTEL_IDS."
+      ]
+    },
+    "share": {
+      "ready": false,
+      "tokenId": null,
+      "source": null
+    },
+    "publication": {
+      "local": {
+        "ok": false,
+        "hotelId": "recH9h3McgMNFQEla",
+        "publicationEnabled": true,
+        "enabled": false,
+        "usingBuiltInFallback": false,
+        "inExplicitEnvAllowlist": false,
+        "explicitAllowlistCount": 33,
+        "requireExplicitEnvAllowlist": false,
+        "blockerCode": "HOTEL_NOT_ON_REVIEWED_PROSPECT_ALLOWLIST",
+        "requiredAction": "Enable hotel recH9h3McgMNFQEla for reviewed-prospect publication (GDI_REVIEWED_PROSPECT_PUBLICATION_V1 + allowlist).",
+        "note": "Production share list uses Railway env allowlist. Local built-in REVIEWED_PROSPECT_HOTEL_IDS does not update Railway."
+      },
+      "explicitEnv": {
+        "ok": false,
+        "hotelId": "recH9h3McgMNFQEla",
+        "publicationEnabled": true,
+        "enabled": false,
+        "usingBuiltInFallback": false,
+        "inExplicitEnvAllowlist": false,
+        "explicitAllowlistCount": 33,
+        "requireExplicitEnvAllowlist": true,
+        "blockerCode": "HOTEL_ABSENT_FROM_REVIEWED_PROSPECT_ALLOWLIST_ENV",
+        "requiredAction": "Append recH9h3McgMNFQEla to local process env GDI_REVIEWED_PROSPECT_HOTEL_IDS while preserving every existing hotel ID.",
+        "note": "Production share list uses Railway env allowlist. Local built-in REVIEWED_PROSPECT_HOTEL_IDS does not update Railway."
+      },
+      "railway": {
+        "ok": false,
+        "blockerCode": "RAILWAY_ENV_NOT_PROBED",
+        "requiredAction": "Probe Railway GDI_REVIEWED_PROSPECT_HOTEL_IDS (preserve existing IDs) before claiming production publication readiness.",
+        "note": "Local allowlist ≠ Railway production allowlist."
+      }
+    },
+    "missingPrerequisites": [],
+    "previewOkForPaidExecution": true,
+    "note": "Preview must report these blockers before any paid Full E2E spend."
+  },
+  "ledgerPath": "C:\\Dev\\dealality\\my-operators-backend\\reports\\gdi-association-events-runs\\assoc-2026-11-18T14-01-21-494e63\\ledgers\\association-events-run-ledger-assoc-2026-11-18T14-01-21-494e63.json",
+  "budgetCeilingUsd": 0,
+  "ledgerSpentUsd": 0
+}

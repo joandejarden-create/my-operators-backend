@@ -1,0 +1,392 @@
+{
+  "version": "gdi-full-e2e-fourteen-segment-discovery-state-v1",
+  "hotelId": "recH9h3McgMNFQEla",
+  "segmentId": "associations_conferences_events",
+  "applicable": true,
+  "status": "PARTIAL",
+  "coverageStatus": "PARTIAL",
+  "completionDecision": "NOT_COMPLETE",
+  "completionRationale": "ORIGINAL_FULL_E2E_CHAIN_DEEP_RESEARCH_CONTACTS_QUALIFICATION_EXECUTED",
+  "executionStatus": "QUALIFICATION_PARTIAL",
+  "executorVersion": "gdi-segment-discovery-executor-v1",
+  "executionModuleVersion": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+  "researchRunId": "original_full_e2e_chain",
+  "researchHorizon": null,
+  "querySpecs": [
+    {
+      "id": "associations_conferences_events_q1",
+      "segmentId": "associations_conferences_events",
+      "intent": "assoc_city_housing_sede_es",
+      "query": "(\"Toronto\") (congreso OR convención OR expo OR cumbre) (\"hotel sede\" OR \"sede hotel\" OR \"hoteles oficiales\" OR hospedaje OR alojamiento OR \"bloque de habitaciones\" OR \"agencia de viajes\" OR PCO OR \"organizador de congresos\") (2025 OR 2026 OR 2027)",
+      "language": "es",
+      "sourceTypes": null,
+      "weight": 7
+    },
+    {
+      "id": "associations_conferences_events_q2",
+      "segmentId": "associations_conferences_events",
+      "intent": "events_recurring_competitive_capture_en",
+      "query": "(\"Toronto\") (\"annual incentive\" OR \"president's club\" OR \"sales incentive\" OR \"recognition trip\" OR \"dealer trip\" OR \"gold trip\" OR \"passport to paradise\") (hotel OR resort OR \"hosted at\" OR \"took place\") -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+      "language": null,
+      "sourceTypes": null,
+      "weight": 7
+    },
+    {
+      "id": "associations_conferences_events_q3",
+      "segmentId": "associations_conferences_events",
+      "intent": "assoc_city_congress_en",
+      "query": "(\"Toronto\") (association OR society OR federation OR colegio OR cámara) (congress OR conference OR \"annual meeting\" OR board meeting OR workshop) (2025 OR 2026 OR 2027) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+      "language": null,
+      "sourceTypes": null,
+      "weight": 6
+    },
+    {
+      "id": "associations_conferences_events_q4",
+      "segmentId": "associations_conferences_events",
+      "intent": "assoc_city_medical_en",
+      "query": "(\"Toronto\") (medical OR scientific OR academic) (congress OR symposium OR conference) (association OR society OR colegio) (2025 OR 2026 OR 2027) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+      "language": null,
+      "sourceTypes": null,
+      "weight": 6
+    },
+    {
+      "id": "associations_conferences_events_q5",
+      "segmentId": "associations_conferences_events",
+      "intent": "assoc_city_congress_es",
+      "query": "(\"Toronto\") (asociación OR colegio OR cámara OR federación) (congreso OR convención OR asamblea OR \"junta de consejo\" OR taller) (2025 OR 2026 OR 2027) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+      "language": "es",
+      "sourceTypes": null,
+      "weight": 6
+    },
+    {
+      "id": "associations_conferences_events_q6",
+      "segmentId": "associations_conferences_events",
+      "intent": "assoc_city_prior_host_es",
+      "query": "(\"Toronto\") (congreso OR convención) (\"edición anterior\" OR \"ediciones anteriores\" OR \"se realizó en\" OR \"tuvo lugar en\" OR \"hotel sede\") (Marriott OR Hilton OR Hyatt OR \"Fiesta Americana\" OR Westin OR InterContinental OR Live Aqua)",
+      "language": "es",
+      "sourceTypes": null,
+      "weight": 6
+    },
+    {
+      "id": "associations_conferences_events_q7",
+      "segmentId": "associations_conferences_events",
+      "intent": "events_recurring_congress_history_es",
+      "query": "(\"Toronto\") (congreso OR convención OR \"viaje de incentivo\" OR \"retiro corporativo\") (\"edición\" OR anual OR \"ediciones anteriores\" OR \"hotel sede\") (2023 OR 2024 OR 2025 OR 2026)",
+      "language": "es",
+      "sourceTypes": null,
+      "weight": 6
+    },
+    {
+      "id": "associations_conferences_events_q8",
+      "segmentId": "associations_conferences_events",
+      "intent": "events_incentive_viaje_es",
+      "query": "(\"Toronto\") (\"viaje de incentivo\" OR \"viaje de reconocimiento\" OR \"premio a distribuidores\" OR \"convención de ventas\") (resort OR hotel OR destino) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+      "language": "es",
+      "sourceTypes": null,
+      "weight": 6
+    },
+    {
+      "id": "associations_conferences_events_q9",
+      "segmentId": "associations_conferences_events",
+      "intent": "assoc_city_midsize_meetings_en",
+      "query": "(\"Toronto\") (association OR society) (\"committee meeting\" OR \"board meeting\" OR \"executive meeting\" OR \"professional development\" OR workshop OR \"training seminar\") (hotel OR venue OR \"meeting space\" OR lodging) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+      "language": null,
+      "sourceTypes": null,
+      "weight": 5
+    },
+    {
+      "id": "associations_conferences_events_q10",
+      "segmentId": "associations_conferences_events",
+      "intent": "assoc_citywide_ancillary_en",
+      "query": "(\"Toronto\") (\"convention center\" OR \"centro de convenciones\" OR Centro Citibanamex OR Banamex) (congress OR exhibition OR trade show) (hotel OR overflow OR speakers OR lodging OR \"room block\") (2025 OR 2026 OR 2027) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+      "language": null,
+      "sourceTypes": null,
+      "weight": 5
+    }
+  ],
+  "providerInvocations": [
+    {
+      "at": "2026-11-18T14:01:22.156Z",
+      "fingerprint": "6f6292ac304e",
+      "researchRunId": "gdi_disc_run_mwm6w7tn_2307de",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 10,
+      "costUsd": 0,
+      "retrievalMode": "FIXTURE",
+      "counted": true,
+      "stopReason": "FIXTURE_PROVIDER_ONLY"
+    },
+    {
+      "at": "2026-11-18T14:01:43.723Z",
+      "fingerprint": "aa0e4c7d1868",
+      "researchRunId": "original_full_e2e_chain",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 0,
+      "costUsd": 0,
+      "retrievalMode": "ZERO_COST_CHAIN",
+      "counted": true,
+      "stopReason": "ORIGINAL_FULL_E2E_CHAIN_DEEP_RESEARCH_CONTACTS_QUALIFICATION_EXECUTED"
+    },
+    {
+      "at": "2026-11-18T14:35:11.382Z",
+      "fingerprint": "49e3275b7546",
+      "researchRunId": "gdi_disc_run_mwm83plo_1697cb",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 10,
+      "costUsd": 0,
+      "retrievalMode": "FIXTURE",
+      "counted": true,
+      "stopReason": "FIXTURE_PROVIDER_ONLY"
+    },
+    {
+      "at": "2026-11-18T14:35:34.326Z",
+      "fingerprint": "aa0e4c7d1868",
+      "researchRunId": "original_full_e2e_chain",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 0,
+      "costUsd": 0,
+      "retrievalMode": "ZERO_COST_CHAIN",
+      "counted": false,
+      "stopReason": "ORIGINAL_FULL_E2E_CHAIN_DEEP_RESEARCH_CONTACTS_QUALIFICATION_EXECUTED"
+    }
+  ],
+  "cacheReferences": [
+    "C:\\Dev\\dealality\\my-operators-backend\\data\\group-demand-intelligence\\discovery-ledgers\\recH9h3McgMNFQEla\\four-hotel-14-workflow-full-e2e-v1.json"
+  ],
+  "rawCandidateReferences": [
+    "associations_conferences_events_q1",
+    "associations_conferences_events_q2",
+    "associations_conferences_events_q3",
+    "associations_conferences_events_q4",
+    "associations_conferences_events_q5",
+    "associations_conferences_events_q6",
+    "associations_conferences_events_q7",
+    "associations_conferences_events_q8",
+    "associations_conferences_events_q9",
+    "associations_conferences_events_q10",
+    "hist_2661e5a28979",
+    "hist_9f7b72cdd268",
+    "hist_04012170a3dd",
+    "hist_162033792e25",
+    "hist_d73d962ee918",
+    "hist_03a015d63faf",
+    "hist_6cde73f26ab9",
+    "hist_516437e87254",
+    "hist_c8607629c755",
+    "hist_d3ffd25c1504",
+    "hist_c59578af9f8f",
+    "hist_e26efd41a72d",
+    "hist_8e592ab259b1",
+    "hist_2e33fc82bdd2",
+    "hist_321992524ea9",
+    "hist_5f523cec0daf"
+  ],
+  "candidateIds": [
+    "disc_24ba680c2eee",
+    "disc_4da1c81e06ca",
+    "disc_1d807cfa376a",
+    "disc_801b462d6767",
+    "disc_25d429b802cc",
+    "disc_f0b1aebad8e9",
+    "disc_816d11b35fba",
+    "disc_6d10e0b2a38a",
+    "disc_eb231cfeb44c",
+    "disc_0403281d211b",
+    "hist_2661e5a28979",
+    "hist_9f7b72cdd268",
+    "hist_04012170a3dd",
+    "hist_162033792e25",
+    "hist_d73d962ee918",
+    "hist_03a015d63faf",
+    "hist_6cde73f26ab9",
+    "hist_516437e87254",
+    "hist_c8607629c755",
+    "hist_d3ffd25c1504",
+    "hist_c59578af9f8f",
+    "hist_e26efd41a72d",
+    "hist_8e592ab259b1",
+    "hist_2e33fc82bdd2",
+    "hist_321992524ea9",
+    "hist_5f523cec0daf"
+  ],
+  "extractedCandidateIds": [
+    "disc_24ba680c2eee",
+    "disc_4da1c81e06ca",
+    "disc_1d807cfa376a",
+    "disc_801b462d6767",
+    "disc_25d429b802cc",
+    "disc_f0b1aebad8e9",
+    "disc_816d11b35fba",
+    "disc_6d10e0b2a38a",
+    "disc_eb231cfeb44c",
+    "disc_0403281d211b",
+    "hist_2661e5a28979",
+    "hist_9f7b72cdd268",
+    "hist_04012170a3dd",
+    "hist_162033792e25",
+    "hist_d73d962ee918",
+    "hist_03a015d63faf",
+    "hist_6cde73f26ab9",
+    "hist_516437e87254",
+    "hist_c8607629c755",
+    "hist_d3ffd25c1504",
+    "hist_c59578af9f8f",
+    "hist_e26efd41a72d",
+    "hist_8e592ab259b1",
+    "hist_2e33fc82bdd2",
+    "hist_321992524ea9",
+    "hist_5f523cec0daf"
+  ],
+  "deduplicatedCandidateIds": [
+    "disc_24ba680c2eee",
+    "disc_4da1c81e06ca",
+    "disc_1d807cfa376a",
+    "disc_801b462d6767",
+    "disc_25d429b802cc",
+    "disc_f0b1aebad8e9",
+    "disc_816d11b35fba",
+    "disc_6d10e0b2a38a",
+    "disc_eb231cfeb44c",
+    "disc_0403281d211b",
+    "hist_2661e5a28979",
+    "hist_9f7b72cdd268",
+    "hist_04012170a3dd",
+    "hist_162033792e25",
+    "hist_d73d962ee918",
+    "hist_03a015d63faf",
+    "hist_6cde73f26ab9",
+    "hist_516437e87254",
+    "hist_c8607629c755",
+    "hist_d3ffd25c1504",
+    "hist_c59578af9f8f",
+    "hist_e26efd41a72d",
+    "hist_8e592ab259b1",
+    "hist_2e33fc82bdd2",
+    "hist_321992524ea9",
+    "hist_5f523cec0daf"
+  ],
+  "unresolvedCandidateIds": [
+    "disc_24ba680c2eee",
+    "disc_4da1c81e06ca",
+    "disc_1d807cfa376a",
+    "disc_801b462d6767",
+    "disc_25d429b802cc",
+    "disc_f0b1aebad8e9",
+    "disc_816d11b35fba",
+    "disc_6d10e0b2a38a",
+    "disc_eb231cfeb44c",
+    "disc_0403281d211b",
+    "hist_2661e5a28979",
+    "hist_9f7b72cdd268",
+    "hist_04012170a3dd",
+    "hist_162033792e25",
+    "hist_d73d962ee918",
+    "hist_03a015d63faf",
+    "hist_6cde73f26ab9",
+    "hist_516437e87254",
+    "hist_c8607629c755",
+    "hist_d3ffd25c1504",
+    "hist_c59578af9f8f",
+    "hist_e26efd41a72d",
+    "hist_8e592ab259b1",
+    "hist_2e33fc82bdd2",
+    "hist_321992524ea9",
+    "hist_5f523cec0daf"
+  ],
+  "completedCandidateIds": [],
+  "evidenceProvenance": [
+    {
+      "candidateId": "hist_04012170a3dd",
+      "evidenceUrls": [],
+      "provenance": null,
+      "at": "2026-11-18T14:01:43.723Z"
+    },
+    {
+      "candidateId": "hist_c59578af9f8f",
+      "evidenceUrls": [],
+      "provenance": null,
+      "at": "2026-11-18T14:35:34.326Z"
+    }
+  ],
+  "rejectionReasons": [
+    {
+      "reason": "NO_HTTP_SOURCE_EVIDENCE_KEPT_AS_STAGE_A_INCOMPLETE",
+      "count": 21
+    },
+    {
+      "reason": "NO_HTTP_SOURCE_EVIDENCE_KEPT_AS_STAGE_A_INCOMPLETE",
+      "count": 21
+    }
+  ],
+  "remainingResearchGaps": [
+    "live_provider_not_executed",
+    "no_http_source_evidence_in_this_pass",
+    "discovery_not_completed"
+  ],
+  "providerUsage": {
+    "attempts": 3,
+    "liveCalls": 0,
+    "cacheHits": 20,
+    "costUsd": 0,
+    "byProvider": {
+      "FIXTURE": {
+        "calls": 0,
+        "costUsd": 0
+      },
+      "ZERO_COST_CHAIN": {
+        "calls": 0,
+        "costUsd": 0
+      }
+    }
+  },
+  "stopReason": "ORIGINAL_FULL_E2E_CHAIN_DEEP_RESEARCH_CONTACTS_QUALIFICATION_EXECUTED",
+  "lastSuccessfulCheckpoint": {
+    "kind": "EXECUTION_CHECKPOINT",
+    "at": "2026-11-18T14:35:34.327Z",
+    "fingerprint": "aa0e4c7d1868",
+    "researchRunId": "original_full_e2e_chain",
+    "executionStatus": "QUALIFICATION_PARTIAL",
+    "providerRunIds": [],
+    "extractedCount": 26,
+    "costUsdCumulative": 0
+  },
+  "lastCheckpointAt": "2026-11-18T14:35:34.327Z",
+  "researchActions": [
+    {
+      "at": "2026-11-18T14:01:22.156Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_PARTIAL",
+      "fingerprint": "6f6292ac304e",
+      "countedNewCost": 0
+    },
+    {
+      "at": "2026-11-18T14:01:43.723Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "QUALIFICATION_PARTIAL",
+      "fingerprint": "aa0e4c7d1868",
+      "countedNewCost": 0
+    },
+    {
+      "at": "2026-11-18T14:35:11.382Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_PARTIAL",
+      "fingerprint": "49e3275b7546",
+      "countedNewCost": 0
+    },
+    {
+      "at": "2026-11-18T14:35:34.327Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "QUALIFICATION_PARTIAL",
+      "fingerprint": "aa0e4c7d1868",
+      "countedNewCost": 0
+    }
+  ],
+  "publicationOccurred": false,
+  "airtableWrites": 0,
+  "createdAt": "2026-11-18T14:01:22.156Z",
+  "updatedAt": "2026-11-18T14:35:34.327Z"
+}

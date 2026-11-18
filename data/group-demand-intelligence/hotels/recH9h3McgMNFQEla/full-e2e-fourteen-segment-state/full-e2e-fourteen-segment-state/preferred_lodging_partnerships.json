@@ -1,0 +1,739 @@
+{
+  "version": "gdi-full-e2e-fourteen-segment-discovery-state-v1",
+  "hotelId": "recH9h3McgMNFQEla",
+  "segmentId": "preferred_lodging_partnerships",
+  "applicable": true,
+  "status": "PARTIAL",
+  "coverageStatus": "PARTIAL",
+  "completionDecision": "NOT_COMPLETE",
+  "completionRationale": "FIXTURE_PROVIDER_ONLY",
+  "executionStatus": "EXECUTION_PARTIAL",
+  "executorVersion": "gdi-segment-discovery-executor-v1",
+  "executionModuleVersion": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+  "researchRunId": "gdi_disc_run_mwm83plo_1697cb",
+  "researchHorizon": null,
+  "querySpecs": [
+    {
+      "id": "pref_prompt",
+      "segmentId": "preferred_lodging_partnerships",
+      "intent": "preferred_lodging_prompt",
+      "query": "Task: PREFERRED_LODGING_PARTNERSHIP_VENUE_DISCOVERY | Find businesses and venues near the hotel (verified hotel address, the hotel market) that could refer hotel guestrooms or groups — weddings, private celebrations, banquets, cultural/private functions, clubs, museums, entertainment destinations, and complementary event facilities. | A competing event venue can be a valuable Preferred Lodging partner when it has no guestrooms or only complementary / overflow lodging need. | Do NOT reject a venue merely because it offers meeting space, banquet halls, or catering — those often create overnight guest referral demand for a nearby hotel. | Prefer venues without a full competing guestroom inventory; still assess limited on-site lodging for overflow partnership potential (use UNKNOWN when not evidenced). | Exclude generic restaurants unless a documented event format credibly creates overnight visitors. | Return venue name, address, website, event types, on-site lodging status if published, and any lodging-partner language. | Do not invent distances, drive times, annual wedding counts, or room-night forecasts. | Venue types: wedding_reception_venue, standalone_banquet_hall, private_event_facility, independent_conference_event_venue, museum_event_rental, garden_or_historic_property, country_club_or_private_club_outside_events, cultural_institution_event_space, entertainment_destination_event_venue, waterfront_or_rooftop_event_venue"
+    },
+    {
+      "id": "pref_q1",
+      "segmentId": "preferred_lodging_partnerships",
+      "intent": "preferred_lodging_referral_venues",
+      "query": "Toronto (wedding venue OR banquet hall OR private event venue OR museum rental OR country club events) (\"preferred hotel\" OR lodging OR \"room block\" OR overflow OR \"guest accommodations\") -restaurant-only"
+    },
+    {
+      "id": "pref_q2",
+      "segmentId": "preferred_lodging_partnerships",
+      "intent": "complementary_venue_no_guestrooms",
+      "query": "Toronto event venue (no hotel OR \"no on-site lodging\" OR \"partner hotels\" OR \"recommended hotels\") (wedding OR gala OR private event)"
+    }
+  ],
+  "providerInvocations": [
+    {
+      "at": "2026-11-18T14:01:22.980Z",
+      "fingerprint": "660c2850f069",
+      "researchRunId": "gdi_disc_run_mwm6w7tn_2307de",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 3,
+      "costUsd": 0,
+      "retrievalMode": "FIXTURE",
+      "counted": true,
+      "stopReason": "FIXTURE_PROVIDER_ONLY"
+    },
+    {
+      "at": "2026-11-18T14:35:12.214Z",
+      "fingerprint": "d259c90c6248",
+      "researchRunId": "gdi_disc_run_mwm83plo_1697cb",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 3,
+      "costUsd": 0,
+      "retrievalMode": "FIXTURE",
+      "counted": true,
+      "stopReason": "FIXTURE_PROVIDER_ONLY"
+    }
+  ],
+  "cacheReferences": [
+    "C:\\Dev\\dealality\\my-operators-backend\\data\\group-demand-intelligence\\discovery-ledgers\\recH9h3McgMNFQEla\\four-hotel-14-workflow-full-e2e-v1.json"
+  ],
+  "rawCandidateReferences": [
+    "pref_prompt",
+    "pref_q1",
+    "pref_q2",
+    "hist_a80d8e5d7da4",
+    "hist_42ed0fb6ceb8",
+    "hist_e2c1b69f442e",
+    "hist_16516a0bc887",
+    "hist_3146332b3946",
+    "hist_673984f5981d",
+    "hist_b1e2ce4fc256",
+    "hist_5efb288287c3",
+    "hist_1f8e6051abf0",
+    "hist_21677380828d",
+    "hist_3a2c768819da",
+    "hist_dd2cf0cbbebf",
+    "hist_fab25a271792",
+    "hist_5539f382231a",
+    "hist_810e8f740af4",
+    "hist_307ef9225bad",
+    "hist_e6f22897e319",
+    "hist_225a08dbd1e5"
+  ],
+  "candidateIds": [
+    "disc_65ce8408c216",
+    "disc_44612f9a5da3",
+    "disc_7bb386003751",
+    "hist_a80d8e5d7da4",
+    "hist_42ed0fb6ceb8",
+    "hist_e2c1b69f442e",
+    "hist_16516a0bc887",
+    "hist_3146332b3946",
+    "hist_673984f5981d",
+    "hist_b1e2ce4fc256",
+    "hist_5efb288287c3",
+    "hist_1f8e6051abf0",
+    "hist_21677380828d",
+    "hist_3a2c768819da",
+    "hist_dd2cf0cbbebf",
+    "hist_fab25a271792",
+    "hist_5539f382231a",
+    "hist_810e8f740af4",
+    "hist_307ef9225bad",
+    "hist_e6f22897e319",
+    "hist_225a08dbd1e5"
+  ],
+  "extractedCandidateIds": [
+    "disc_65ce8408c216",
+    "disc_44612f9a5da3",
+    "disc_7bb386003751",
+    "hist_a80d8e5d7da4",
+    "hist_42ed0fb6ceb8",
+    "hist_e2c1b69f442e",
+    "hist_16516a0bc887",
+    "hist_3146332b3946",
+    "hist_673984f5981d",
+    "hist_b1e2ce4fc256",
+    "hist_5efb288287c3",
+    "hist_1f8e6051abf0",
+    "hist_21677380828d",
+    "hist_3a2c768819da",
+    "hist_dd2cf0cbbebf",
+    "hist_fab25a271792",
+    "hist_5539f382231a",
+    "hist_810e8f740af4",
+    "hist_307ef9225bad",
+    "hist_e6f22897e319",
+    "hist_225a08dbd1e5"
+  ],
+  "deduplicatedCandidateIds": [
+    "disc_65ce8408c216",
+    "disc_44612f9a5da3",
+    "disc_7bb386003751",
+    "hist_a80d8e5d7da4",
+    "hist_42ed0fb6ceb8",
+    "hist_e2c1b69f442e",
+    "hist_16516a0bc887",
+    "hist_3146332b3946",
+    "hist_673984f5981d",
+    "hist_b1e2ce4fc256",
+    "hist_5efb288287c3",
+    "hist_1f8e6051abf0",
+    "hist_21677380828d",
+    "hist_3a2c768819da",
+    "hist_dd2cf0cbbebf",
+    "hist_fab25a271792",
+    "hist_5539f382231a",
+    "hist_810e8f740af4",
+    "hist_307ef9225bad",
+    "hist_e6f22897e319",
+    "hist_225a08dbd1e5"
+  ],
+  "unresolvedCandidateIds": [
+    "disc_65ce8408c216",
+    "disc_44612f9a5da3",
+    "disc_7bb386003751",
+    "hist_a80d8e5d7da4",
+    "hist_42ed0fb6ceb8",
+    "hist_e2c1b69f442e",
+    "hist_16516a0bc887",
+    "hist_3146332b3946",
+    "hist_673984f5981d",
+    "hist_b1e2ce4fc256",
+    "hist_5efb288287c3",
+    "hist_1f8e6051abf0",
+    "hist_21677380828d",
+    "hist_3a2c768819da",
+    "hist_dd2cf0cbbebf",
+    "hist_fab25a271792",
+    "hist_5539f382231a",
+    "hist_810e8f740af4",
+    "hist_307ef9225bad",
+    "hist_e6f22897e319",
+    "hist_225a08dbd1e5"
+  ],
+  "completedCandidateIds": [],
+  "evidenceProvenance": [
+    {
+      "candidateId": "hist_a80d8e5d7da4",
+      "evidenceUrls": [
+        "https://amsterdambeer.com/pages/brewhouse-events",
+        "https://downloads.ctfassets.net/rbuh5qmi65d4/5ISMhOukuWagSoWkkSIqwI/ab67e83e074a594d2134fe051cbdb153/BrewHouse_Venue_Guide.pdf",
+        "https://www.sigsphoto.ca/venues/amsterdam-brewery"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1c18f959bdc34df184764a4da1da3584",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.980Z"
+    },
+    {
+      "candidateId": "hist_42ed0fb6ceb8",
+      "evidenceUrls": [
+        "https://steamwhistle.ca/pages/events"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1c18f959bdc34df184764a4da1da3584",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.980Z"
+    },
+    {
+      "candidateId": "hist_e2c1b69f442e",
+      "evidenceUrls": [
+        "https://www.palaisroyale.ca/",
+        "https://www.palaisroyale.ca/services/",
+        "https://www.palaisroyale.ca/contact/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1c18f959bdc34df184764a4da1da3584",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.980Z"
+    },
+    {
+      "candidateId": "hist_16516a0bc887",
+      "evidenceUrls": [
+        "https://thegreathall.ca/wedding/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1c18f959bdc34df184764a4da1da3584",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.980Z"
+    },
+    {
+      "candidateId": "hist_3146332b3946",
+      "evidenceUrls": [
+        "https://ago.ca/visit/host-your-event"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1c18f959bdc34df184764a4da1da3584",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.980Z"
+    },
+    {
+      "candidateId": "hist_673984f5981d",
+      "evidenceUrls": [
+        "https://www.artsandlettersclub.ca/rent-the-club",
+        "https://www.artsandlettersclub.ca/contact",
+        "https://www.artsandlettersclub.ca/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1c18f959bdc34df184764a4da1da3584",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.980Z"
+    },
+    {
+      "candidateId": "hist_b1e2ce4fc256",
+      "evidenceUrls": [
+        "https://sjcceventvenue.ca/",
+        "https://sjcceventvenue.ca/contact"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1c18f959bdc34df184764a4da1da3584",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.980Z"
+    },
+    {
+      "candidateId": "hist_5efb288287c3",
+      "evidenceUrls": [
+        "https://www.stlawrencemarket.com/st_lawrence_hall"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1c18f959bdc34df184764a4da1da3584",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.980Z"
+    },
+    {
+      "candidateId": "hist_1f8e6051abf0",
+      "evidenceUrls": [
+        "https://casaloma.ca/privateevents/",
+        "https://casaloma.ca/weddings-socialevents/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1c18f959bdc34df184764a4da1da3584",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.980Z"
+    },
+    {
+      "candidateId": "hist_21677380828d",
+      "evidenceUrls": [
+        "https://berkeleyevents.com/berkeley-church/",
+        "https://berkeleyeventsblog.com/2019/01/08/ten-reasons-to-love-getting-married-at-871-berkeley-church-wedding-venues-toronto/",
+        "https://www.nicolesweddingguide.ca/toronto/toronto-wedding-reception-venues.php?vendor=501"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1c18f959bdc34df184764a4da1da3584",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.980Z"
+    },
+    {
+      "candidateId": "hist_3a2c768819da",
+      "evidenceUrls": [
+        "https://libertygrand.com/libertygrand/",
+        "https://libertygrand.com/planning-wedding-social/",
+        "https://libertygrand.com/contact/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1b264a5089264344a7e4a4981a2568ac",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.980Z"
+    },
+    {
+      "candidateId": "hist_dd2cf0cbbebf",
+      "evidenceUrls": [
+        "https://corleck.ca/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1b264a5089264344a7e4a4981a2568ac",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.980Z"
+    },
+    {
+      "candidateId": "hist_fab25a271792",
+      "evidenceUrls": [
+        "https://www.danielsspectrum.ca/whats-here",
+        "https://www.danielsspectrum.ca/contact",
+        "https://www.danielsspectrum.ca/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1b264a5089264344a7e4a4981a2568ac",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.980Z"
+    },
+    {
+      "candidateId": "hist_5539f382231a",
+      "evidenceUrls": [
+        "https://harthouse.ca/spaces",
+        "https://harthouse.ca/spaces/venues",
+        "https://harthouse.ca/gallery-grill"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1b264a5089264344a7e4a4981a2568ac",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.980Z"
+    },
+    {
+      "candidateId": "hist_810e8f740af4",
+      "evidenceUrls": [
+        "https://918bathurst.com/renting/",
+        "https://www.918bathurst.com/contact/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1b264a5089264344a7e4a4981a2568ac",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.980Z"
+    },
+    {
+      "candidateId": "hist_307ef9225bad",
+      "evidenceUrls": [
+        "https://www.thecarlu.com/",
+        "https://www.thecarlu.com/weddings/",
+        "https://www.thecarlu.com/contact-us/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1b264a5089264344a7e4a4981a2568ac",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.980Z"
+    },
+    {
+      "candidateId": "hist_e6f22897e319",
+      "evidenceUrls": [
+        "https://www.globeandmailcentre.com/wedding-private/",
+        "https://www.globeandmailcentre.com/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1b264a5089264344a7e4a4981a2568ac",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.980Z"
+    },
+    {
+      "candidateId": "hist_225a08dbd1e5",
+      "evidenceUrls": [
+        "https://www.arthubsevents.ca/wychwood-barns"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1b264a5089264344a7e4a4981a2568ac",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.980Z"
+    },
+    {
+      "candidateId": "hist_a80d8e5d7da4",
+      "evidenceUrls": [
+        "https://amsterdambeer.com/pages/brewhouse-events",
+        "https://downloads.ctfassets.net/rbuh5qmi65d4/5ISMhOukuWagSoWkkSIqwI/ab67e83e074a594d2134fe051cbdb153/BrewHouse_Venue_Guide.pdf",
+        "https://www.sigsphoto.ca/venues/amsterdam-brewery"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1c18f959bdc34df184764a4da1da3584",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.214Z"
+    },
+    {
+      "candidateId": "hist_42ed0fb6ceb8",
+      "evidenceUrls": [
+        "https://steamwhistle.ca/pages/events"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1c18f959bdc34df184764a4da1da3584",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.214Z"
+    },
+    {
+      "candidateId": "hist_e2c1b69f442e",
+      "evidenceUrls": [
+        "https://www.palaisroyale.ca/",
+        "https://www.palaisroyale.ca/services/",
+        "https://www.palaisroyale.ca/contact/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1c18f959bdc34df184764a4da1da3584",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.214Z"
+    },
+    {
+      "candidateId": "hist_16516a0bc887",
+      "evidenceUrls": [
+        "https://thegreathall.ca/wedding/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1c18f959bdc34df184764a4da1da3584",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.214Z"
+    },
+    {
+      "candidateId": "hist_3146332b3946",
+      "evidenceUrls": [
+        "https://ago.ca/visit/host-your-event"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1c18f959bdc34df184764a4da1da3584",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.214Z"
+    },
+    {
+      "candidateId": "hist_673984f5981d",
+      "evidenceUrls": [
+        "https://www.artsandlettersclub.ca/rent-the-club",
+        "https://www.artsandlettersclub.ca/contact",
+        "https://www.artsandlettersclub.ca/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1c18f959bdc34df184764a4da1da3584",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.214Z"
+    },
+    {
+      "candidateId": "hist_b1e2ce4fc256",
+      "evidenceUrls": [
+        "https://sjcceventvenue.ca/",
+        "https://sjcceventvenue.ca/contact"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1c18f959bdc34df184764a4da1da3584",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.214Z"
+    },
+    {
+      "candidateId": "hist_5efb288287c3",
+      "evidenceUrls": [
+        "https://www.stlawrencemarket.com/st_lawrence_hall"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1c18f959bdc34df184764a4da1da3584",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.214Z"
+    },
+    {
+      "candidateId": "hist_1f8e6051abf0",
+      "evidenceUrls": [
+        "https://casaloma.ca/privateevents/",
+        "https://casaloma.ca/weddings-socialevents/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1c18f959bdc34df184764a4da1da3584",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.214Z"
+    },
+    {
+      "candidateId": "hist_21677380828d",
+      "evidenceUrls": [
+        "https://berkeleyevents.com/berkeley-church/",
+        "https://berkeleyeventsblog.com/2019/01/08/ten-reasons-to-love-getting-married-at-871-berkeley-church-wedding-venues-toronto/",
+        "https://www.nicolesweddingguide.ca/toronto/toronto-wedding-reception-venues.php?vendor=501"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1c18f959bdc34df184764a4da1da3584",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.214Z"
+    },
+    {
+      "candidateId": "hist_3a2c768819da",
+      "evidenceUrls": [
+        "https://libertygrand.com/libertygrand/",
+        "https://libertygrand.com/planning-wedding-social/",
+        "https://libertygrand.com/contact/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1b264a5089264344a7e4a4981a2568ac",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.214Z"
+    },
+    {
+      "candidateId": "hist_dd2cf0cbbebf",
+      "evidenceUrls": [
+        "https://corleck.ca/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1b264a5089264344a7e4a4981a2568ac",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.214Z"
+    },
+    {
+      "candidateId": "hist_fab25a271792",
+      "evidenceUrls": [
+        "https://www.danielsspectrum.ca/whats-here",
+        "https://www.danielsspectrum.ca/contact",
+        "https://www.danielsspectrum.ca/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1b264a5089264344a7e4a4981a2568ac",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.214Z"
+    },
+    {
+      "candidateId": "hist_5539f382231a",
+      "evidenceUrls": [
+        "https://harthouse.ca/spaces",
+        "https://harthouse.ca/spaces/venues",
+        "https://harthouse.ca/gallery-grill"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1b264a5089264344a7e4a4981a2568ac",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.214Z"
+    },
+    {
+      "candidateId": "hist_810e8f740af4",
+      "evidenceUrls": [
+        "https://918bathurst.com/renting/",
+        "https://www.918bathurst.com/contact/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1b264a5089264344a7e4a4981a2568ac",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.214Z"
+    },
+    {
+      "candidateId": "hist_307ef9225bad",
+      "evidenceUrls": [
+        "https://www.thecarlu.com/",
+        "https://www.thecarlu.com/weddings/",
+        "https://www.thecarlu.com/contact-us/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1b264a5089264344a7e4a4981a2568ac",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.214Z"
+    },
+    {
+      "candidateId": "hist_e6f22897e319",
+      "evidenceUrls": [
+        "https://www.globeandmailcentre.com/wedding-private/",
+        "https://www.globeandmailcentre.com/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1b264a5089264344a7e4a4981a2568ac",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.214Z"
+    },
+    {
+      "candidateId": "hist_225a08dbd1e5",
+      "evidenceUrls": [
+        "https://www.arthubsevents.ca/wychwood-barns"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_1b264a5089264344a7e4a4981a2568ac",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.214Z"
+    }
+  ],
+  "rejectionReasons": [],
+  "remainingResearchGaps": [
+    "live_provider_not_executed",
+    "discovery_not_completed"
+  ],
+  "providerUsage": {
+    "attempts": 2,
+    "liveCalls": 0,
+    "cacheHits": 6,
+    "costUsd": 0,
+    "byProvider": {
+      "FIXTURE": {
+        "calls": 0,
+        "costUsd": 0
+      }
+    }
+  },
+  "stopReason": "FIXTURE_PROVIDER_ONLY",
+  "lastSuccessfulCheckpoint": {
+    "kind": "FIXTURE_CHECKPOINT",
+    "at": "2026-11-18T14:35:12.214Z",
+    "fingerprint": "d259c90c6248",
+    "researchRunId": "gdi_disc_run_mwm83plo_1697cb",
+    "executionStatus": "EXECUTION_PARTIAL",
+    "providerRunIds": [],
+    "extractedCount": 21,
+    "costUsdCumulative": 0
+  },
+  "lastCheckpointAt": "2026-11-18T14:35:12.214Z",
+  "researchActions": [
+    {
+      "at": "2026-11-18T14:01:22.980Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_PARTIAL",
+      "fingerprint": "660c2850f069",
+      "countedNewCost": 0
+    },
+    {
+      "at": "2026-11-18T14:35:12.214Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_PARTIAL",
+      "fingerprint": "d259c90c6248",
+      "countedNewCost": 0
+    }
+  ],
+  "publicationOccurred": false,
+  "airtableWrites": 0,
+  "createdAt": "2026-11-18T14:01:22.980Z",
+  "updatedAt": "2026-11-18T14:35:12.214Z"
+}

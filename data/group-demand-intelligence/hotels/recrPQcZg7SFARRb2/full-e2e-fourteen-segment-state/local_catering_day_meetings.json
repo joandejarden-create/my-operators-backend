@@ -1,0 +1,172 @@
+{
+  "version": "gdi-full-e2e-fourteen-segment-discovery-state-v1",
+  "hotelId": "recrPQcZg7SFARRb2",
+  "segmentId": "local_catering_day_meetings",
+  "applicable": true,
+  "status": "PARTIAL",
+  "coverageStatus": "PARTIAL",
+  "completionDecision": "NOT_COMPLETE",
+  "completionRationale": "FIXTURE_PROVIDER_ONLY",
+  "executionStatus": "EXECUTION_PARTIAL",
+  "executorVersion": "gdi-segment-discovery-executor-v1",
+  "executionModuleVersion": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+  "researchRunId": "gdi_disc_run_mwm837w8_7ead06",
+  "researchHorizon": null,
+  "querySpecs": [
+    {
+      "id": "local_q1",
+      "segmentId": "local_catering_day_meetings",
+      "intent": "corporate_training_board_workshops",
+      "query": "\"Founex\" (corporate training OR \"board meeting\" OR workshop OR \"offsite meeting\" OR \"half-day meeting\" OR \"team lunch\") (hotel OR \"meeting room\" OR banquet) -\"annual conference\" -\"national conference\" -crunchbase -yelp"
+    },
+    {
+      "id": "local_q2",
+      "segmentId": "local_catering_day_meetings",
+      "intent": "recurring_professional_room_rental",
+      "query": "\"Founex\" (\"monthly meeting\" OR \"chapter meeting\" OR \"continuing education\" OR \"professional development\" OR reception) (\"meeting space\" OR \"conference room\" OR hotel OR catering) contact -\"annual conference\" -\"world congress\" -directory"
+    },
+    {
+      "id": "local_q3",
+      "segmentId": "local_catering_day_meetings",
+      "intent": "chapter_awards_dinners",
+      "query": "\"Founex\" (chapter OR local) (awards dinner OR holiday luncheon OR chapter dinner OR monthly luncheon OR \"engineering excellence\") (hotel OR banquet OR catering) -\"annual conference\" -\"national meeting\" -crunchbase"
+    },
+    {
+      "id": "local_q5",
+      "segmentId": "local_catering_day_meetings",
+      "intent": "nonprofit_fundraisers",
+      "query": "\"Founex\" (nonprofit OR foundation) (gala OR fundraiser OR awards) (downtown OR banquet) contact -yelp"
+    },
+    {
+      "id": "local_q6",
+      "segmentId": "local_catering_day_meetings",
+      "intent": "social_celebrations_planners",
+      "query": "\"Founex\" (\"event planner\" OR \"social events\" OR \"private dining\" OR mitzvah OR quinceañera OR anniversary) (hotel OR catering OR banquet) -guestlist -children"
+    },
+    {
+      "id": "local_q7",
+      "segmentId": "local_catering_day_meetings",
+      "intent": "professional_planners_intermediaries",
+      "query": "\"Founex\" (\"meeting planner\" OR \"event planner\" OR \"destination management\" OR \"corporate events\") (hotel OR catering) (portfolio OR clients) -yelp"
+    }
+  ],
+  "providerInvocations": [
+    {
+      "at": "2026-11-18T14:01:18.491Z",
+      "fingerprint": "8139595f15ba",
+      "researchRunId": "gdi_disc_run_mwm6w419_360576",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 6,
+      "costUsd": 0,
+      "retrievalMode": "FIXTURE",
+      "counted": true,
+      "stopReason": "FIXTURE_PROVIDER_ONLY"
+    },
+    {
+      "at": "2026-11-18T14:35:07.666Z",
+      "fingerprint": "0f7ef9d1ea03",
+      "researchRunId": "gdi_disc_run_mwm837w8_7ead06",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 6,
+      "costUsd": 0,
+      "retrievalMode": "FIXTURE",
+      "counted": true,
+      "stopReason": "FIXTURE_PROVIDER_ONLY"
+    }
+  ],
+  "cacheReferences": [],
+  "rawCandidateReferences": [
+    "local_q1",
+    "local_q2",
+    "local_q3",
+    "local_q5",
+    "local_q6",
+    "local_q7"
+  ],
+  "candidateIds": [
+    "disc_63214193c408",
+    "disc_5d61be77df61",
+    "disc_7aaf73e63cdb",
+    "disc_af0273b0fe7a",
+    "disc_fa96d13546f1",
+    "disc_2a086e2a6ae5"
+  ],
+  "extractedCandidateIds": [
+    "disc_63214193c408",
+    "disc_5d61be77df61",
+    "disc_7aaf73e63cdb",
+    "disc_af0273b0fe7a",
+    "disc_fa96d13546f1",
+    "disc_2a086e2a6ae5"
+  ],
+  "deduplicatedCandidateIds": [
+    "disc_63214193c408",
+    "disc_5d61be77df61",
+    "disc_7aaf73e63cdb",
+    "disc_af0273b0fe7a",
+    "disc_fa96d13546f1",
+    "disc_2a086e2a6ae5"
+  ],
+  "unresolvedCandidateIds": [
+    "disc_63214193c408",
+    "disc_5d61be77df61",
+    "disc_7aaf73e63cdb",
+    "disc_af0273b0fe7a",
+    "disc_fa96d13546f1",
+    "disc_2a086e2a6ae5"
+  ],
+  "completedCandidateIds": [],
+  "evidenceProvenance": [],
+  "rejectionReasons": [],
+  "remainingResearchGaps": [
+    "live_provider_not_executed",
+    "no_http_source_evidence_in_this_pass",
+    "discovery_not_completed"
+  ],
+  "providerUsage": {
+    "attempts": 2,
+    "liveCalls": 0,
+    "cacheHits": 12,
+    "costUsd": 0,
+    "byProvider": {
+      "FIXTURE": {
+        "calls": 0,
+        "costUsd": 0
+      }
+    }
+  },
+  "stopReason": "FIXTURE_PROVIDER_ONLY",
+  "lastSuccessfulCheckpoint": {
+    "kind": "FIXTURE_CHECKPOINT",
+    "at": "2026-11-18T14:35:07.666Z",
+    "fingerprint": "0f7ef9d1ea03",
+    "researchRunId": "gdi_disc_run_mwm837w8_7ead06",
+    "executionStatus": "EXECUTION_PARTIAL",
+    "providerRunIds": [],
+    "extractedCount": 6,
+    "costUsdCumulative": 0
+  },
+  "lastCheckpointAt": "2026-11-18T14:35:07.666Z",
+  "researchActions": [
+    {
+      "at": "2026-11-18T14:01:18.491Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_PARTIAL",
+      "fingerprint": "8139595f15ba",
+      "countedNewCost": 0
+    },
+    {
+      "at": "2026-11-18T14:35:07.666Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_PARTIAL",
+      "fingerprint": "0f7ef9d1ea03",
+      "countedNewCost": 0
+    }
+  ],
+  "publicationOccurred": false,
+  "airtableWrites": 0,
+  "createdAt": "2026-11-18T14:01:18.490Z",
+  "updatedAt": "2026-11-18T14:35:07.666Z"
+}

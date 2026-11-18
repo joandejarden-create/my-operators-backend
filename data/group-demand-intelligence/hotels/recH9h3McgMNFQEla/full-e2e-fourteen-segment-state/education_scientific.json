@@ -1,0 +1,785 @@
+{
+  "version": "gdi-full-e2e-fourteen-segment-discovery-state-v1",
+  "hotelId": "recH9h3McgMNFQEla",
+  "segmentId": "education_scientific",
+  "applicable": true,
+  "status": "PARTIAL",
+  "coverageStatus": "PARTIAL",
+  "completionDecision": "NOT_COMPLETE",
+  "completionRationale": "FIXTURE_PROVIDER_ONLY",
+  "executionStatus": "EXECUTION_PARTIAL",
+  "executorVersion": "gdi-segment-discovery-executor-v1",
+  "executionModuleVersion": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+  "researchRunId": "gdi_disc_run_mwm83plo_1697cb",
+  "researchHorizon": null,
+  "querySpecs": [
+    {
+      "id": "education_scientific_q1",
+      "segmentId": "education_scientific",
+      "intent": "assoc_city_medical_en",
+      "query": "(\"Toronto\") (medical OR scientific OR academic) (congress OR symposium OR conference) (association OR society OR colegio) (2025 OR 2026 OR 2027) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+      "language": null,
+      "sourceTypes": null,
+      "weight": 6
+    },
+    {
+      "id": "education_scientific_q2",
+      "segmentId": "education_scientific",
+      "intent": "assoc_city_medico_es",
+      "query": "(\"Toronto\") (congreso médico OR simposio OR \"jornadas académicas\") (asociación OR colegio OR sociedad) (2025 OR 2026 OR 2027) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta americana -allinclusive -\"todo incluido\" promo",
+      "language": "es",
+      "sourceTypes": null,
+      "weight": 5
+    },
+    {
+      "id": "education_scientific_base_q1",
+      "segmentId": "education_scientific",
+      "intent": "PHARMA_MEDICAL_ECOSYSTEM",
+      "query": "Toronto investigator meeting OR advisory board OR medical affairs OR medical congress sponsor 2026 OR 2027",
+      "language": "en"
+    },
+    {
+      "id": "education_scientific_base_q2",
+      "segmentId": "education_scientific",
+      "intent": "PHARMA_MEDICAL_ECOSYSTEM",
+      "query": "Toronto CRO \"investigator meeting\" OR \"advisory board\" hotel",
+      "language": "en"
+    }
+  ],
+  "providerInvocations": [
+    {
+      "at": "2026-11-18T14:01:22.823Z",
+      "fingerprint": "dd5677d33624",
+      "researchRunId": "gdi_disc_run_mwm6w7tn_2307de",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 4,
+      "costUsd": 0,
+      "retrievalMode": "FIXTURE",
+      "counted": true,
+      "stopReason": "FIXTURE_PROVIDER_ONLY"
+    },
+    {
+      "at": "2026-11-18T14:35:12.052Z",
+      "fingerprint": "119a856b7782",
+      "researchRunId": "gdi_disc_run_mwm83plo_1697cb",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 4,
+      "costUsd": 0,
+      "retrievalMode": "FIXTURE",
+      "counted": true,
+      "stopReason": "FIXTURE_PROVIDER_ONLY"
+    }
+  ],
+  "cacheReferences": [
+    "C:\\Dev\\dealality\\my-operators-backend\\data\\group-demand-intelligence\\discovery-ledgers\\recH9h3McgMNFQEla\\four-hotel-14-workflow-full-e2e-v1.json"
+  ],
+  "rawCandidateReferences": [
+    "education_scientific_q1",
+    "education_scientific_q2",
+    "education_scientific_base_q1",
+    "hist_039e973d6e9b",
+    "hist_6d6914b6eb6a",
+    "hist_d4855033ac39",
+    "hist_71f8ab22be4b",
+    "hist_d2e2acaa1c23",
+    "hist_8d38a85ecc5a",
+    "hist_a0cbad95c134",
+    "hist_c634ed55c0ad",
+    "hist_1bbd1881aeac",
+    "hist_4e7a900c3934",
+    "hist_2df80cc969a6",
+    "hist_3d7f7e99f46f",
+    "hist_cb286e614d1d",
+    "hist_33afec0f6d05",
+    "hist_b8a3ded1e953",
+    "hist_7f2375d39a2f",
+    "hist_1a86b0fd8e1e",
+    "hist_c90eee66c8ee",
+    "hist_78ec9b400594",
+    "hist_5247fe300c49"
+  ],
+  "candidateIds": [
+    "disc_d17ecdf217a9",
+    "disc_2002f6e6b4e9",
+    "disc_e6346874dba1",
+    "hist_039e973d6e9b",
+    "hist_6d6914b6eb6a",
+    "hist_d4855033ac39",
+    "hist_71f8ab22be4b",
+    "hist_d2e2acaa1c23",
+    "hist_8d38a85ecc5a",
+    "hist_a0cbad95c134",
+    "hist_c634ed55c0ad",
+    "hist_1bbd1881aeac",
+    "hist_4e7a900c3934",
+    "hist_2df80cc969a6",
+    "hist_3d7f7e99f46f",
+    "hist_cb286e614d1d",
+    "hist_33afec0f6d05",
+    "hist_b8a3ded1e953",
+    "hist_7f2375d39a2f",
+    "hist_1a86b0fd8e1e",
+    "hist_c90eee66c8ee",
+    "hist_78ec9b400594",
+    "hist_5247fe300c49"
+  ],
+  "extractedCandidateIds": [
+    "disc_d17ecdf217a9",
+    "disc_2002f6e6b4e9",
+    "disc_e6346874dba1",
+    "hist_039e973d6e9b",
+    "hist_6d6914b6eb6a",
+    "hist_d4855033ac39",
+    "hist_71f8ab22be4b",
+    "hist_d2e2acaa1c23",
+    "hist_8d38a85ecc5a",
+    "hist_a0cbad95c134",
+    "hist_c634ed55c0ad",
+    "hist_1bbd1881aeac",
+    "hist_4e7a900c3934",
+    "hist_2df80cc969a6",
+    "hist_3d7f7e99f46f",
+    "hist_cb286e614d1d",
+    "hist_33afec0f6d05",
+    "hist_b8a3ded1e953",
+    "hist_7f2375d39a2f",
+    "hist_1a86b0fd8e1e",
+    "hist_c90eee66c8ee",
+    "hist_78ec9b400594",
+    "hist_5247fe300c49"
+  ],
+  "deduplicatedCandidateIds": [
+    "disc_d17ecdf217a9",
+    "disc_2002f6e6b4e9",
+    "disc_e6346874dba1",
+    "hist_039e973d6e9b",
+    "hist_6d6914b6eb6a",
+    "hist_d4855033ac39",
+    "hist_71f8ab22be4b",
+    "hist_d2e2acaa1c23",
+    "hist_8d38a85ecc5a",
+    "hist_a0cbad95c134",
+    "hist_c634ed55c0ad",
+    "hist_1bbd1881aeac",
+    "hist_4e7a900c3934",
+    "hist_2df80cc969a6",
+    "hist_3d7f7e99f46f",
+    "hist_cb286e614d1d",
+    "hist_33afec0f6d05",
+    "hist_b8a3ded1e953",
+    "hist_7f2375d39a2f",
+    "hist_1a86b0fd8e1e",
+    "hist_c90eee66c8ee",
+    "hist_78ec9b400594",
+    "hist_5247fe300c49"
+  ],
+  "unresolvedCandidateIds": [
+    "disc_d17ecdf217a9",
+    "disc_2002f6e6b4e9",
+    "disc_e6346874dba1",
+    "hist_039e973d6e9b",
+    "hist_6d6914b6eb6a",
+    "hist_d4855033ac39",
+    "hist_71f8ab22be4b",
+    "hist_d2e2acaa1c23",
+    "hist_8d38a85ecc5a",
+    "hist_a0cbad95c134",
+    "hist_c634ed55c0ad",
+    "hist_1bbd1881aeac",
+    "hist_4e7a900c3934",
+    "hist_2df80cc969a6",
+    "hist_3d7f7e99f46f",
+    "hist_cb286e614d1d",
+    "hist_33afec0f6d05",
+    "hist_b8a3ded1e953",
+    "hist_7f2375d39a2f",
+    "hist_1a86b0fd8e1e",
+    "hist_c90eee66c8ee",
+    "hist_78ec9b400594",
+    "hist_5247fe300c49"
+  ],
+  "completedCandidateIds": [],
+  "evidenceProvenance": [
+    {
+      "candidateId": "hist_039e973d6e9b",
+      "evidenceUrls": [
+        "https://www.cpd.utoronto.ca/walterwright/venue/",
+        "https://www.cpd.utoronto.ca/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_fac93e474f4a4548bc42db538156d848",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.823Z"
+    },
+    {
+      "candidateId": "hist_6d6914b6eb6a",
+      "evidenceUrls": [
+        "https://www.rotman.utoronto.ca/cfea-2026/",
+        "https://www.rotman.utoronto.ca/cfea-2026/hotels-and-accommodation/",
+        "https://www.rotman.utoronto.ca/cfea-2026/registration/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_fac93e474f4a4548bc42db538156d848",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.823Z"
+    },
+    {
+      "candidateId": "hist_d4855033ac39",
+      "evidenceUrls": [
+        "https://epic.utoronto.ca/event/2026-ci2i-symposium/",
+        "https://www.uhn.ca/Education/conference_services"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_fac93e474f4a4548bc42db538156d848",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.823Z"
+    },
+    {
+      "candidateId": "hist_71f8ab22be4b",
+      "evidenceUrls": [
+        "https://conference.cita.utoronto.ca/event/2/overview",
+        "https://conference.cita.utoronto.ca/event/2/page/1-logistics"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_fac93e474f4a4548bc42db538156d848",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.823Z"
+    },
+    {
+      "candidateId": "hist_d2e2acaa1c23",
+      "evidenceUrls": [
+        "https://tc.canada.ca/en/road-transportation/28th-international-technical-conference-enhanced-safety-vehicles-esv/esv-conference-program"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_fac93e474f4a4548bc42db538156d848",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.823Z"
+    },
+    {
+      "candidateId": "hist_8d38a85ecc5a",
+      "evidenceUrls": [
+        "https://4sonline.org/about_the_conference_toronto.php"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_fac93e474f4a4548bc42db538156d848",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.823Z"
+    },
+    {
+      "candidateId": "hist_a0cbad95c134",
+      "evidenceUrls": [
+        "https://climatehealth.utoronto.ca/events/conference-overview/climate-health-2026-conference/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_fac93e474f4a4548bc42db538156d848",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.823Z"
+    },
+    {
+      "candidateId": "hist_c634ed55c0ad",
+      "evidenceUrls": [
+        "https://bme.utoronto.ca/tobeconference/tobe2026/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_fac93e474f4a4548bc42db538156d848",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.823Z"
+    },
+    {
+      "candidateId": "hist_1bbd1881aeac",
+      "evidenceUrls": [
+        "https://psychiatry.utoronto.ca/sites/default/files/inline-files/2026-02-12_Sandler2026ConferenceProgram_0.pdf"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_fac93e474f4a4548bc42db538156d848",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.823Z"
+    },
+    {
+      "candidateId": "hist_4e7a900c3934",
+      "evidenceUrls": [
+        "https://www.oise.utoronto.ca/cld/conference/2026"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_fac93e474f4a4548bc42db538156d848",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.823Z"
+    },
+    {
+      "candidateId": "hist_2df80cc969a6",
+      "evidenceUrls": [
+        "https://epic.utoronto.ca/event/adaptive-platform-trials-conference/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.823Z"
+    },
+    {
+      "candidateId": "hist_3d7f7e99f46f",
+      "evidenceUrls": [
+        "https://temertymedicine.utoronto.ca/event/second-annual-university-toronto-obstetric-anesthesia-conference"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.823Z"
+    },
+    {
+      "candidateId": "hist_cb286e614d1d",
+      "evidenceUrls": [
+        "https://bme.utoronto.ca/tobeconference/tobe2026/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.823Z"
+    },
+    {
+      "candidateId": "hist_33afec0f6d05",
+      "evidenceUrls": [
+        "https://www.dunlap.utoronto.ca/training/summer%e2%80%90school/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.823Z"
+    },
+    {
+      "candidateId": "hist_b8a3ded1e953",
+      "evidenceUrls": [
+        "https://www.yorku.ca/cvr/summer-school/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.823Z"
+    },
+    {
+      "candidateId": "hist_7f2375d39a2f",
+      "evidenceUrls": [
+        "https://ihpme.utoronto.ca/event/2026-annual-cquips-symposium/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.823Z"
+    },
+    {
+      "candidateId": "hist_1a86b0fd8e1e",
+      "evidenceUrls": [
+        "https://lci.utoronto.ca/event/tmec-opening-symposium/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.823Z"
+    },
+    {
+      "candidateId": "hist_c90eee66c8ee",
+      "evidenceUrls": [
+        "https://iaea2026.org/faq/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.823Z"
+    },
+    {
+      "candidateId": "hist_78ec9b400594",
+      "evidenceUrls": [
+        "https://www.mdrsto2026.ca/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.823Z"
+    },
+    {
+      "candidateId": "hist_5247fe300c49",
+      "evidenceUrls": [
+        "https://www.torontomu.ca/law/news-events/2026/10/cale-acej-2026-conference-guidance-accountability-towards-a-more-just-society/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:22.823Z"
+    },
+    {
+      "candidateId": "hist_039e973d6e9b",
+      "evidenceUrls": [
+        "https://www.cpd.utoronto.ca/walterwright/venue/",
+        "https://www.cpd.utoronto.ca/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_fac93e474f4a4548bc42db538156d848",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.052Z"
+    },
+    {
+      "candidateId": "hist_6d6914b6eb6a",
+      "evidenceUrls": [
+        "https://www.rotman.utoronto.ca/cfea-2026/",
+        "https://www.rotman.utoronto.ca/cfea-2026/hotels-and-accommodation/",
+        "https://www.rotman.utoronto.ca/cfea-2026/registration/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_fac93e474f4a4548bc42db538156d848",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.052Z"
+    },
+    {
+      "candidateId": "hist_d4855033ac39",
+      "evidenceUrls": [
+        "https://epic.utoronto.ca/event/2026-ci2i-symposium/",
+        "https://www.uhn.ca/Education/conference_services"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_fac93e474f4a4548bc42db538156d848",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.052Z"
+    },
+    {
+      "candidateId": "hist_71f8ab22be4b",
+      "evidenceUrls": [
+        "https://conference.cita.utoronto.ca/event/2/overview",
+        "https://conference.cita.utoronto.ca/event/2/page/1-logistics"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_fac93e474f4a4548bc42db538156d848",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.052Z"
+    },
+    {
+      "candidateId": "hist_d2e2acaa1c23",
+      "evidenceUrls": [
+        "https://tc.canada.ca/en/road-transportation/28th-international-technical-conference-enhanced-safety-vehicles-esv/esv-conference-program"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_fac93e474f4a4548bc42db538156d848",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.052Z"
+    },
+    {
+      "candidateId": "hist_8d38a85ecc5a",
+      "evidenceUrls": [
+        "https://4sonline.org/about_the_conference_toronto.php"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_fac93e474f4a4548bc42db538156d848",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.052Z"
+    },
+    {
+      "candidateId": "hist_a0cbad95c134",
+      "evidenceUrls": [
+        "https://climatehealth.utoronto.ca/events/conference-overview/climate-health-2026-conference/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_fac93e474f4a4548bc42db538156d848",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.052Z"
+    },
+    {
+      "candidateId": "hist_c634ed55c0ad",
+      "evidenceUrls": [
+        "https://bme.utoronto.ca/tobeconference/tobe2026/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_fac93e474f4a4548bc42db538156d848",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.052Z"
+    },
+    {
+      "candidateId": "hist_1bbd1881aeac",
+      "evidenceUrls": [
+        "https://psychiatry.utoronto.ca/sites/default/files/inline-files/2026-02-12_Sandler2026ConferenceProgram_0.pdf"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_fac93e474f4a4548bc42db538156d848",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.052Z"
+    },
+    {
+      "candidateId": "hist_4e7a900c3934",
+      "evidenceUrls": [
+        "https://www.oise.utoronto.ca/cld/conference/2026"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_fac93e474f4a4548bc42db538156d848",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.052Z"
+    },
+    {
+      "candidateId": "hist_2df80cc969a6",
+      "evidenceUrls": [
+        "https://epic.utoronto.ca/event/adaptive-platform-trials-conference/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.052Z"
+    },
+    {
+      "candidateId": "hist_3d7f7e99f46f",
+      "evidenceUrls": [
+        "https://temertymedicine.utoronto.ca/event/second-annual-university-toronto-obstetric-anesthesia-conference"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.052Z"
+    },
+    {
+      "candidateId": "hist_cb286e614d1d",
+      "evidenceUrls": [
+        "https://bme.utoronto.ca/tobeconference/tobe2026/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.052Z"
+    },
+    {
+      "candidateId": "hist_33afec0f6d05",
+      "evidenceUrls": [
+        "https://www.dunlap.utoronto.ca/training/summer%e2%80%90school/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.052Z"
+    },
+    {
+      "candidateId": "hist_b8a3ded1e953",
+      "evidenceUrls": [
+        "https://www.yorku.ca/cvr/summer-school/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.052Z"
+    },
+    {
+      "candidateId": "hist_7f2375d39a2f",
+      "evidenceUrls": [
+        "https://ihpme.utoronto.ca/event/2026-annual-cquips-symposium/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.052Z"
+    },
+    {
+      "candidateId": "hist_1a86b0fd8e1e",
+      "evidenceUrls": [
+        "https://lci.utoronto.ca/event/tmec-opening-symposium/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.052Z"
+    },
+    {
+      "candidateId": "hist_c90eee66c8ee",
+      "evidenceUrls": [
+        "https://iaea2026.org/faq/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.052Z"
+    },
+    {
+      "candidateId": "hist_78ec9b400594",
+      "evidenceUrls": [
+        "https://www.mdrsto2026.ca/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.052Z"
+    },
+    {
+      "candidateId": "hist_5247fe300c49",
+      "evidenceUrls": [
+        "https://www.torontomu.ca/law/news-events/2026/10/cale-acej-2026-conference-guidance-accountability-towards-a-more-just-society/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_cee9cf2eef2e4f10bb4c79fab5b9fa21",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.052Z"
+    }
+  ],
+  "rejectionReasons": [],
+  "remainingResearchGaps": [
+    "live_provider_not_executed",
+    "discovery_not_completed"
+  ],
+  "providerUsage": {
+    "attempts": 2,
+    "liveCalls": 0,
+    "cacheHits": 8,
+    "costUsd": 0,
+    "byProvider": {
+      "FIXTURE": {
+        "calls": 0,
+        "costUsd": 0
+      }
+    }
+  },
+  "stopReason": "FIXTURE_PROVIDER_ONLY",
+  "lastSuccessfulCheckpoint": {
+    "kind": "FIXTURE_CHECKPOINT",
+    "at": "2026-11-18T14:35:12.052Z",
+    "fingerprint": "119a856b7782",
+    "researchRunId": "gdi_disc_run_mwm83plo_1697cb",
+    "executionStatus": "EXECUTION_PARTIAL",
+    "providerRunIds": [],
+    "extractedCount": 23,
+    "costUsdCumulative": 0
+  },
+  "lastCheckpointAt": "2026-11-18T14:35:12.052Z",
+  "researchActions": [
+    {
+      "at": "2026-11-18T14:01:22.823Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_PARTIAL",
+      "fingerprint": "dd5677d33624",
+      "countedNewCost": 0
+    },
+    {
+      "at": "2026-11-18T14:35:12.052Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_PARTIAL",
+      "fingerprint": "119a856b7782",
+      "countedNewCost": 0
+    }
+  ],
+  "publicationOccurred": false,
+  "airtableWrites": 0,
+  "createdAt": "2026-11-18T14:01:22.823Z",
+  "updatedAt": "2026-11-18T14:35:12.052Z"
+}

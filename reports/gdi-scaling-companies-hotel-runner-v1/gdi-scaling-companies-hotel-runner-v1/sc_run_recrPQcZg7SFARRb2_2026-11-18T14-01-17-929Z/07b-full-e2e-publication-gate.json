@@ -1,0 +1,84 @@
+{
+  "version": "gdi-full-e2e-publication-gate-v1",
+  "profileReadyForResearch": true,
+  "localReviewedProspectAllowlistReady": true,
+  "productionExplicitAllowlistReady": true,
+  "readyForAuthorizedFullE2ePublication": true,
+  "readyForLiveCustomerShareClaims": true,
+  "authorizationStates": {
+    "PROFILE_READY": true,
+    "RESEARCH_AUTHORIZED": false,
+    "PUBLICATION_AUTHORIZED": true,
+    "WEEKLY_ACTIVE": false
+  },
+  "inUniversalAdpGdiRoster": true,
+  "inAdpCommissioned": false,
+  "universalPreviewReadiness": {
+    "version": "gdi-adp-universal-hotel-roster-v1",
+    "hotelId": "recrPQcZg7SFARRb2",
+    "auth": {
+      "version": "gdi-adp-universal-hotel-roster-v1",
+      "hotelId": "recrPQcZg7SFARRb2",
+      "inUniversalRoster": true,
+      "inAdpCommissioned": false,
+      "gdiOnlyNotInAdp": true,
+      "states": {
+        "PROFILE_READY": true,
+        "RESEARCH_AUTHORIZED": false,
+        "PUBLICATION_AUTHORIZED": true,
+        "WEEKLY_ACTIVE": false
+      },
+      "notes": [
+        "Existing GDI hotel preserved though not in current ADP commissioned roster.",
+        "PUBLICATION_AUTHORIZED requires reviewed-prospect allowlist — not ADP membership.",
+        "RESEARCH_AUTHORIZED requires explicit run authorizePaidResearch + budget.",
+        "WEEKLY_ACTIVE requires GDI_WEEKLY_DEEP_RESEARCH_ENABLED=1 and hotel on GDI_WEEKLY_ACTIVE_HOTEL_IDS."
+      ]
+    },
+    "share": {
+      "ready": false,
+      "tokenId": null,
+      "source": null
+    },
+    "publication": {
+      "local": {
+        "ok": true,
+        "hotelId": "recrPQcZg7SFARRb2",
+        "publicationEnabled": true,
+        "enabled": true,
+        "usingBuiltInFallback": false,
+        "inExplicitEnvAllowlist": true,
+        "explicitAllowlistCount": 33,
+        "requireExplicitEnvAllowlist": false,
+        "blockerCode": null,
+        "requiredAction": null,
+        "note": "Production share list uses Railway env allowlist. Local built-in REVIEWED_PROSPECT_HOTEL_IDS does not update Railway."
+      },
+      "explicitEnv": {
+        "ok": true,
+        "hotelId": "recrPQcZg7SFARRb2",
+        "publicationEnabled": true,
+        "enabled": true,
+        "usingBuiltInFallback": false,
+        "inExplicitEnvAllowlist": true,
+        "explicitAllowlistCount": 33,
+        "requireExplicitEnvAllowlist": true,
+        "blockerCode": null,
+        "requiredAction": null,
+        "note": "Production share list uses Railway env allowlist. Local built-in REVIEWED_PROSPECT_HOTEL_IDS does not update Railway."
+      },
+      "railway": {
+        "ok": false,
+        "blockerCode": "RAILWAY_ENV_NOT_PROBED",
+        "requiredAction": "Probe Railway GDI_REVIEWED_PROSPECT_HOTEL_IDS (preserve existing IDs) before claiming production publication readiness.",
+        "note": "Local allowlist ≠ Railway production allowlist."
+      }
+    },
+    "missingPrerequisites": [],
+    "previewOkForPaidExecution": true,
+    "note": "Preview must report these blockers before any paid Full E2E spend."
+  },
+  "note": "ADP membership enables profile onboarding only. PUBLICATION_AUTHORIZED requires reviewed-prospect allowlist — never auto-append from ADP. RESEARCH_AUTHORIZED requires explicit run budget. WEEKLY_ACTIVE is separate.",
+  "missingConfiguration": [],
+  "blockerCodes": []
+}

@@ -1,0 +1,125 @@
+{
+  "version": "gdi-full-e2e-fourteen-segment-discovery-state-v1",
+  "hotelId": "recrPQcZg7SFARRb2",
+  "segmentId": "sports_entertainment",
+  "applicable": true,
+  "status": "PARTIAL",
+  "coverageStatus": "PARTIAL",
+  "completionDecision": "NOT_COMPLETE",
+  "completionRationale": "FIXTURE_PROVIDER_ONLY",
+  "executionStatus": "EXECUTION_PARTIAL",
+  "executorVersion": "gdi-segment-discovery-executor-v1",
+  "executionModuleVersion": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+  "researchRunId": "gdi_disc_run_mwm837w8_7ead06",
+  "researchHorizon": null,
+  "querySpecs": [
+    {
+      "id": "sports_entertainment_base_q1",
+      "segmentId": "sports_entertainment",
+      "intent": "SPORTS_ENTERTAINMENT_PRODUCTION",
+      "query": "Founex team hotel OR production crew OR tournament housing OR tournament OR production crew hotel block",
+      "language": "en"
+    },
+    {
+      "id": "sports_entertainment_base_q2",
+      "segmentId": "sports_entertainment",
+      "intent": "SPORTS_ENTERTAINMENT_PRODUCTION",
+      "query": "Founex federation team housing OR broadcast crew hotel",
+      "language": "en"
+    }
+  ],
+  "providerInvocations": [
+    {
+      "at": "2026-11-18T14:01:18.442Z",
+      "fingerprint": "9f52156fbca6",
+      "researchRunId": "gdi_disc_run_mwm6w419_360576",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 2,
+      "costUsd": 0,
+      "retrievalMode": "FIXTURE",
+      "counted": true,
+      "stopReason": "FIXTURE_PROVIDER_ONLY"
+    },
+    {
+      "at": "2026-11-18T14:35:07.610Z",
+      "fingerprint": "dced180516ab",
+      "researchRunId": "gdi_disc_run_mwm837w8_7ead06",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 2,
+      "costUsd": 0,
+      "retrievalMode": "FIXTURE",
+      "counted": true,
+      "stopReason": "FIXTURE_PROVIDER_ONLY"
+    }
+  ],
+  "cacheReferences": [],
+  "rawCandidateReferences": [
+    "sports_entertainment_base_q1"
+  ],
+  "candidateIds": [
+    "disc_de474235c4d5"
+  ],
+  "extractedCandidateIds": [
+    "disc_de474235c4d5"
+  ],
+  "deduplicatedCandidateIds": [
+    "disc_de474235c4d5"
+  ],
+  "unresolvedCandidateIds": [
+    "disc_de474235c4d5"
+  ],
+  "completedCandidateIds": [],
+  "evidenceProvenance": [],
+  "rejectionReasons": [],
+  "remainingResearchGaps": [
+    "live_provider_not_executed",
+    "no_http_source_evidence_in_this_pass",
+    "discovery_not_completed"
+  ],
+  "providerUsage": {
+    "attempts": 2,
+    "liveCalls": 0,
+    "cacheHits": 4,
+    "costUsd": 0,
+    "byProvider": {
+      "FIXTURE": {
+        "calls": 0,
+        "costUsd": 0
+      }
+    }
+  },
+  "stopReason": "FIXTURE_PROVIDER_ONLY",
+  "lastSuccessfulCheckpoint": {
+    "kind": "FIXTURE_CHECKPOINT",
+    "at": "2026-11-18T14:35:07.610Z",
+    "fingerprint": "dced180516ab",
+    "researchRunId": "gdi_disc_run_mwm837w8_7ead06",
+    "executionStatus": "EXECUTION_PARTIAL",
+    "providerRunIds": [],
+    "extractedCount": 1,
+    "costUsdCumulative": 0
+  },
+  "lastCheckpointAt": "2026-11-18T14:35:07.610Z",
+  "researchActions": [
+    {
+      "at": "2026-11-18T14:01:18.443Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_PARTIAL",
+      "fingerprint": "9f52156fbca6",
+      "countedNewCost": 0
+    },
+    {
+      "at": "2026-11-18T14:35:07.610Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_PARTIAL",
+      "fingerprint": "dced180516ab",
+      "countedNewCost": 0
+    }
+  ],
+  "publicationOccurred": false,
+  "airtableWrites": 0,
+  "createdAt": "2026-11-18T14:01:18.442Z",
+  "updatedAt": "2026-11-18T14:35:07.610Z"
+}

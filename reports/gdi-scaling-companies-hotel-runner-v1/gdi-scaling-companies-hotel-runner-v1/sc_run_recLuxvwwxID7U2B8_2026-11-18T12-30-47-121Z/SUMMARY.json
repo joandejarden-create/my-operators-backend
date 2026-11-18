@@ -1,0 +1,1117 @@
+{
+  "ok": true,
+  "executed": false,
+  "fullE2eComplete": false,
+  "fullE2eCompleteReason": "mode_not_full_e2e",
+  "version": "gdi-scaling-companies-hotel-runner-v1",
+  "discoveryVersion": "gdi-autonomous-demand-discovery-v5",
+  "researchVersion": "gdi-scaling-companies-research-v1",
+  "publicationVersion": "gdi-scaling-companies-full-e2e-publication-v1",
+  "stages": [
+    "hotel_profile",
+    "discovery",
+    "organization_identity_resolution",
+    "net_new_reconciliation",
+    "commercial_mechanism_screening",
+    "ors_longform_research",
+    "buyer_and_contact_intelligence",
+    "intelligent_investigation_loop",
+    "commercial_qualification",
+    "gold_standard_brief_generation",
+    "canonical_opportunity_payload",
+    "airtable_publication",
+    "customer_share_verification"
+  ],
+  "startedAt": "2026-11-18T12:30:47.121Z",
+  "finishedAt": "2026-11-18T12:30:47.986Z",
+  "config": {
+    "hotelId": "recLuxvwwxID7U2B8",
+    "mode": "preview",
+    "authorizePaidResearch": false,
+    "authorizePublication": false,
+    "authorizeProductionWrites": false,
+    "applyProductionWrites": false,
+    "probeLiveShare": false,
+    "budgetCeilingUsd": 0,
+    "maxCandidates": 2,
+    "runId": "sc_run_recLuxvwwxID7U2B8_2026-11-18T12-30-47-121Z",
+    "reportDir": "C:\\Dev\\dealality\\my-operators-backend\\reports\\gdi-scaling-companies-hotel-runner-v1\\sc_run_recLuxvwwxID7U2B8_2026-11-18T12-30-47-121Z"
+  },
+  "hotel": {
+    "hotelId": "recLuxvwwxID7U2B8",
+    "displayName": "Bethesda Marriott",
+    "city": "Bethesda",
+    "country": "United States",
+    "demandTerritory": {
+      "label": "DMV",
+      "includes": [
+        "District of Columbia",
+        "Montgomery County",
+        "Prince George's County (where commercially relevant)",
+        "Northern Virginia",
+        "broader Washington metropolitan area where reasonable"
+      ],
+      "evaluationQuestion": "Could Bethesda Marriott realistically compete for this event?",
+      "classifications": [
+        "BETHESDA_MONTGOMERY_CORE",
+        "NORTH_DC_MEDICAL_CORRIDOR",
+        "DMV_COMPETITIVE",
+        "DMV_STRETCH",
+        "OUTSIDE_REALISTIC_TERRITORY"
+      ],
+      "notes": "Do not scrape every DMV event. Geography outside Bethesda can still be strong if the hotel is a credible alternative."
+    },
+    "totalGuestrooms": 407,
+    "meetingRoomsIndoor": 27,
+    "totalMeetingSpaceSqFt": 18719,
+    "demandAnchors": [
+      "NIH",
+      "Walter Reed National Military Medical Center",
+      "federal health / research ecosystem",
+      "Washington DC metro access",
+      "Montgomery County employers",
+      "District of Columbia",
+      "Prince George's County (commercially relevant)",
+      "Northern Virginia",
+      "broader Washington metropolitan / DMV",
+      "universities",
+      "government contractors"
+    ],
+    "targetSegments": [
+      "Associations",
+      "Medical",
+      "Healthcare",
+      "Scientific",
+      "Corporate",
+      "Government",
+      "Government contractor",
+      "Weekend group",
+      "Social",
+      "Sports",
+      "University / education"
+    ]
+  },
+  "applicability": {
+    "applicable": true,
+    "researchCity": "Bethesda",
+    "inventory": {
+      "rooms": 407,
+      "meetings": 27,
+      "meetingSqFt": 18719
+    },
+    "rationale": "Verified identity, geography, and inventory support hotel-specific scaling-company discovery. Opportunity fit is evaluated per candidate — empty segment inventory does not block research."
+  },
+  "persistenceMode": "airtable",
+  "opportunitySource": "airtable",
+  "opportunityCount": 86,
+  "preflight": {
+    "hotelResolved": true,
+    "applicabilityOk": true,
+    "strategiesPresent": true,
+    "pathwaysPresent": true,
+    "pricingOk": true,
+    "paidContactGuardOk": true,
+    "orsCallPathOk": true,
+    "reviewedProspectHotelEnabled": true,
+    "reviewedProspectLocalPreflight": {
+      "ok": true,
+      "hotelId": "recLuxvwwxID7U2B8",
+      "publicationEnabled": true,
+      "enabled": true,
+      "usingBuiltInFallback": false,
+      "inExplicitEnvAllowlist": true,
+      "explicitAllowlistCount": 33,
+      "requireExplicitEnvAllowlist": false,
+      "blockerCode": null,
+      "requiredAction": null,
+      "note": "Production share list uses Railway env allowlist. Local built-in REVIEWED_PROSPECT_HOTEL_IDS does not update Railway."
+    },
+    "reviewedProspectProductionSharePreflight": {
+      "ok": true,
+      "hotelId": "recLuxvwwxID7U2B8",
+      "publicationEnabled": true,
+      "enabled": true,
+      "usingBuiltInFallback": false,
+      "inExplicitEnvAllowlist": true,
+      "explicitAllowlistCount": 33,
+      "requireExplicitEnvAllowlist": true,
+      "blockerCode": null,
+      "requiredAction": null,
+      "note": "Production share list uses Railway env allowlist. Local built-in REVIEWED_PROSPECT_HOTEL_IDS does not update Railway."
+    },
+    "emptyScalingInventoryOk": true,
+    "existingScalingCount": 21,
+    "ledgerPath": "C:\\Dev\\dealality\\my-operators-backend\\reports\\gdi-scaling-companies-hotel-runner-v1\\sc_run_recLuxvwwxID7U2B8_2026-11-18T12-30-47-121Z\\ledgers\\scaling-companies-run-ledger-sc_run_recLuxvwwxID7U2B8_2026-11-18T12-30-47-121Z.json",
+    "ledgerSpentUsd": 0,
+    "ledgerBaselineSpentUsd": 0,
+    "runSpentUsd": 0,
+    "budgetCeilingUsd": 0,
+    "authorizationStates": {
+      "PROFILE_READY": true,
+      "RESEARCH_AUTHORIZED": false,
+      "PUBLICATION_AUTHORIZED": true,
+      "WEEKLY_ACTIVE": false
+    },
+    "inUniversalAdpGdiRoster": true,
+    "universalPreviewReadiness": {
+      "shareReady": true,
+      "missingPrerequisites": []
+    }
+  },
+  "fullE2ePublicationGate": {
+    "version": "gdi-full-e2e-publication-gate-v1",
+    "profileReadyForResearch": true,
+    "localReviewedProspectAllowlistReady": true,
+    "productionExplicitAllowlistReady": true,
+    "readyForAuthorizedFullE2ePublication": true,
+    "readyForLiveCustomerShareClaims": true,
+    "authorizationStates": {
+      "PROFILE_READY": true,
+      "RESEARCH_AUTHORIZED": false,
+      "PUBLICATION_AUTHORIZED": true,
+      "WEEKLY_ACTIVE": false
+    },
+    "inUniversalAdpGdiRoster": true,
+    "inAdpCommissioned": true,
+    "universalPreviewReadiness": {
+      "version": "gdi-adp-universal-hotel-roster-v1",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "auth": {
+        "version": "gdi-adp-universal-hotel-roster-v1",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "inUniversalRoster": true,
+        "inAdpCommissioned": true,
+        "gdiOnlyNotInAdp": false,
+        "states": {
+          "PROFILE_READY": true,
+          "RESEARCH_AUTHORIZED": false,
+          "PUBLICATION_AUTHORIZED": true,
+          "WEEKLY_ACTIVE": false
+        },
+        "notes": [
+          "ADP commissioned membership enables profile onboarding only.",
+          "PUBLICATION_AUTHORIZED requires reviewed-prospect allowlist — not ADP membership.",
+          "RESEARCH_AUTHORIZED requires explicit run authorizePaidResearch + budget.",
+          "WEEKLY_ACTIVE requires GDI_WEEKLY_DEEP_RESEARCH_ENABLED=1 and hotel on GDI_WEEKLY_ACTIVE_HOTEL_IDS."
+        ]
+      },
+      "share": {
+        "ready": true,
+        "tokenId": "gdisht_47c25d74c79216021fb36150",
+        "source": "reports/group-demand-intelligence/gdi-client-share-urls-20260922.json"
+      },
+      "publication": {
+        "local": {
+          "ok": true,
+          "hotelId": "recLuxvwwxID7U2B8",
+          "publicationEnabled": true,
+          "enabled": true,
+          "usingBuiltInFallback": false,
+          "inExplicitEnvAllowlist": true,
+          "explicitAllowlistCount": 33,
+          "requireExplicitEnvAllowlist": false,
+          "blockerCode": null,
+          "requiredAction": null,
+          "note": "Production share list uses Railway env allowlist. Local built-in REVIEWED_PROSPECT_HOTEL_IDS does not update Railway."
+        },
+        "explicitEnv": {
+          "ok": true,
+          "hotelId": "recLuxvwwxID7U2B8",
+          "publicationEnabled": true,
+          "enabled": true,
+          "usingBuiltInFallback": false,
+          "inExplicitEnvAllowlist": true,
+          "explicitAllowlistCount": 33,
+          "requireExplicitEnvAllowlist": true,
+          "blockerCode": null,
+          "requiredAction": null,
+          "note": "Production share list uses Railway env allowlist. Local built-in REVIEWED_PROSPECT_HOTEL_IDS does not update Railway."
+        },
+        "railway": {
+          "ok": false,
+          "blockerCode": "RAILWAY_ENV_NOT_PROBED",
+          "requiredAction": "Probe Railway GDI_REVIEWED_PROSPECT_HOTEL_IDS (preserve existing IDs) before claiming production publication readiness.",
+          "note": "Local allowlist ≠ Railway production allowlist."
+        }
+      },
+      "missingPrerequisites": [],
+      "previewOkForPaidExecution": true,
+      "note": "Preview must report these blockers before any paid Full E2E spend."
+    },
+    "note": "ADP membership enables profile onboarding only. PUBLICATION_AUTHORIZED requires reviewed-prospect allowlist — never auto-append from ADP. RESEARCH_AUTHORIZED requires explicit run budget. WEEKLY_ACTIVE is separate.",
+    "missingConfiguration": [],
+    "blockerCodes": []
+  },
+  "blockers": [],
+  "reconciliation": {
+    "existingScalingCount": 21,
+    "existingPublished": [
+      {
+        "id": "gdi_sc_b36b66547864e8ce",
+        "organizationName": "Matthews",
+        "researchSegment": "scaling_companies",
+        "customerVisible": true,
+        "prospectHotelFacing": true,
+        "prospectPublicationBasis": "REVIEWED_PACKAGE_V1",
+        "contactName": "Jeff Perkins",
+        "contactEmail": "jeff.perkins@matthews.com",
+        "contactPhone": "+1 (646) 216-8104",
+        "guestroomStatus": "POTENTIAL_ADDITIONAL_USE",
+        "recommendedAction": "Monitor for fresher local operating/hiring evidence before active pursuit. keep organizational route on file. Introduce Bethesda Marriott and learn who owns visiting-staff lodging, training, and meeting decisions for the Bethesda team. Timi"
+      },
+      {
+        "id": "gdi_sc_a5768a99d4e89875",
+        "organizationName": "IMC Construction",
+        "researchSegment": "scaling_companies",
+        "customerVisible": true,
+        "prospectHotelFacing": true,
+        "prospectPublicationBasis": "REVIEWED_PACKAGE_V1",
+        "contactName": "Dan Baker",
+        "contactEmail": "info@imcconstruction.com",
+        "contactPhone": null,
+        "guestroomStatus": "POTENTIAL_ADDITIONAL_USE",
+        "recommendedAction": "Contact Dan Baker. ask the qualification questions above. log the travel owner and any preferred-hotel constraints. Introduce Bethesda Marriott and learn who owns visiting-staff lodging, training, and meeting decisions for the Bethesda team"
+      },
+      {
+        "id": "gdi_sc_e7dd46732dd5bb7a",
+        "organizationName": "BioHub Maryland",
+        "researchSegment": "scaling_companies",
+        "customerVisible": true,
+        "prospectHotelFacing": true,
+        "prospectPublicationBasis": "REVIEWED_PACKAGE_V1",
+        "contactName": "Alexandra Haarich",
+        "contactEmail": "info@biohubmd.com",
+        "contactPhone": "(301) 835-7212",
+        "guestroomStatus": "POTENTIAL_ADDITIONAL_USE",
+        "recommendedAction": "Contact Alexandra Haarich. ask the qualification questions above. log the travel owner and any preferred-hotel constraints. Introduce Bethesda Marriott and learn who owns visiting-staff lodging, training, and meeting decisions for the Bethe"
+      },
+      {
+        "id": "gdi_sc_5c5d41eb670e6c7b",
+        "organizationName": "Miles & Stockbridge",
+        "researchSegment": "scaling_companies",
+        "customerVisible": true,
+        "prospectHotelFacing": true,
+        "prospectPublicationBasis": "REVIEWED_PACKAGE_V1",
+        "contactName": "Bradford S. Bernstein",
+        "contactEmail": "bbernstein@milesstockbridge.com",
+        "contactPhone": "301-762-1600",
+        "guestroomStatus": "POTENTIAL_ADDITIONAL_USE",
+        "recommendedAction": "Contact Bradford S. Bernstein. ask the qualification questions above. log the travel owner and any preferred-hotel constraints. Introduce Bethesda Marriott and learn who owns visiting-staff lodging, training, and meeting decisions for the B"
+      },
+      {
+        "id": "gdi_sc_9d14aee7ff250b11",
+        "organizationName": "REGENXBIO",
+        "researchSegment": "scaling_companies",
+        "customerVisible": true,
+        "prospectHotelFacing": true,
+        "prospectPublicationBasis": "REVIEWED_PACKAGE_V1",
+        "contactName": "Jerome Jackson",
+        "contactEmail": null,
+        "contactPhone": "+1-240-552-8181",
+        "guestroomStatus": "POTENTIAL_ADDITIONAL_USE",
+        "recommendedAction": "Contact the workplace / HR / facilities or travel owner via the official company contact path. ask the qualification questions above. log the travel owner and any preferred-hotel constraints. Introduce Bethesda Marriott and learn who owns v"
+      }
+    ],
+    "existingOther": [
+      {
+        "id": "disp_recLuxvwwxID7U2B8_pmi_montgomery_county_maryland_chapter",
+        "organizationName": "PMI Montgomery County Maryland Chapter",
+        "researchSegment": "local_meetings_catering",
+        "customerVisible": false,
+        "contactName": "Matt Lowy",
+        "contactEmail": null,
+        "contactPhone": null,
+        "recommendedAction": "Research continuation — convert the recovered organization contact path into a named commercially relevant person, then confirm hotel-fit and timing."
+      },
+      {
+        "id": "disp_recLuxvwwxID7U2B8_greater_bethesda_chamber_of_commerce",
+        "organizationName": "Greater Bethesda Chamber of Commerce",
+        "researchSegment": "local_meetings_catering",
+        "customerVisible": false,
+        "contactName": "Clarissa Harris",
+        "contactEmail": "charris@greaterbethesdachamber.org",
+        "contactPhone": null,
+        "recommendedAction": "Monitor for sourcing signals; do not claim open RFP or overflow without evidence."
+      },
+      {
+        "id": "gdi_s4912_59382d1e71a2",
+        "organizationName": "Montgomery College — AI Skills Summit",
+        "researchSegment": "local_catering_day_meetings",
+        "customerVisible": false,
+        "contactName": "Shinta Hernandez",
+        "contactEmail": "shinta.hernandez@montgomerycollege.edu",
+        "contactPhone": "240-567-2374",
+        "recommendedAction": "Research continuation — establish a verified named commercial contact and an evidence-backed Bethesda Marriott demand thesis before sales outreach."
+      },
+      {
+        "id": "gdi_s4912_66a1f89e5afb",
+        "organizationName": "NIH Intramural Postdoctoral Fellowship / OITE",
+        "researchSegment": "relocation_extended_stay",
+        "customerVisible": false,
+        "contactName": "Laura Marler",
+        "contactEmail": null,
+        "contactPhone": "301-496-2427",
+        "recommendedAction": "Research continuation — establish a verified named commercial contact and an evidence-backed Bethesda Marriott demand thesis before sales outreach."
+      },
+      {
+        "id": "gdi_s4912_6c8a62552bfa",
+        "organizationName": "Maryland Tech Council — ICON Awards",
+        "researchSegment": "corporate_celebrations_private_events",
+        "customerVisible": false,
+        "contactName": "Amy Speck",
+        "contactEmail": "amy@mdtechcouncil.com",
+        "contactPhone": "(240) 831-4829",
+        "recommendedAction": "Contact the relevant housing representative to establish whether overflow accommodation or a secondary room block is needed for Bethesda Marriott. Competitor booking is confirmed at Bethesda North Marriott Hotel & Conference Center — do not"
+      },
+      {
+        "id": "gdi_s4912_364713d41c67",
+        "organizationName": "NIH IRP / Division of International Services",
+        "researchSegment": "relocation_extended_stay",
+        "customerVisible": false,
+        "contactName": "Candelario Zapata",
+        "contactEmail": null,
+        "contactPhone": "301-496-6166",
+        "recommendedAction": "Research continuation — establish a verified named commercial contact and an evidence-backed Bethesda Marriott demand thesis before sales outreach."
+      },
+      {
+        "id": "gdi_s4912_732496c2f8aa",
+        "organizationName": "CASSS — 2027 Cell & Gene Therapy Products Symposium",
+        "researchSegment": "corporate_meetings_incentives",
+        "customerVisible": false,
+        "contactName": "Randi Jacobs",
+        "contactEmail": "info@casss.org",
+        "contactPhone": "510-428-0740",
+        "recommendedAction": "Contact the relevant housing representative to establish whether overflow accommodation or a secondary room block is needed for Bethesda Marriott. Competitor booking is confirmed at Bethesda North Marriott Hotel & Conference Center — do not"
+      },
+      {
+        "id": "disp_recLuxvwwxID7U2B8_city_of_rockville",
+        "organizationName": "City of Rockville",
+        "researchSegment": "local_meetings_catering",
+        "customerVisible": false,
+        "contactName": "Colleen McQuitty",
+        "contactEmail": "cmcquitty@rockvillemd.gov",
+        "contactPhone": "240-314-8606",
+        "recommendedAction": "Research continuation — establish a verified named commercial contact and an evidence-backed Bethesda Marriott demand thesis before sales outreach."
+      },
+      {
+        "id": "disp_recLuxvwwxID7U2B8_nature_forward",
+        "organizationName": "Nature Forward",
+        "researchSegment": "local_meetings_catering",
+        "customerVisible": false,
+        "contactName": "Beatriz Engel",
+        "contactEmail": "beatriz.engel@natureforward.org",
+        "contactPhone": "(301) 450-1407",
+        "recommendedAction": "Research continuation — establish a verified named commercial contact and an evidence-backed Bethesda Marriott demand thesis before sales outreach."
+      },
+      {
+        "id": "disp_recLuxvwwxID7U2B8_aledade",
+        "organizationName": "Aledade",
+        "researchSegment": "corporate_meetings_training",
+        "customerVisible": false,
+        "contactName": "Mary Kate Connor",
+        "contactEmail": "info@aledade.com",
+        "contactPhone": "(202) 803-7979",
+        "recommendedAction": "Research continuation — establish a verified named commercial contact and an evidence-backed Bethesda Marriott demand thesis before sales outreach."
+      },
+      {
+        "id": "gdi_s4912_d55ee8a8e9ca",
+        "organizationName": "NIDDK — Meetings & Workshops portfolio",
+        "researchSegment": "local_catering_day_meetings",
+        "customerVisible": false,
+        "contactName": "Allison Hurst",
+        "contactEmail": "ahurst@scgcorp.com",
+        "contactPhone": null,
+        "recommendedAction": "Research continuation — establish a verified named commercial contact and an evidence-backed Bethesda Marriott demand thesis before sales outreach."
+      },
+      {
+        "id": "disp_recLuxvwwxID7U2B8_linder_global_events",
+        "organizationName": "LINDER Global Events",
+        "researchSegment": "professional_planners_dmc",
+        "customerVisible": false,
+        "contactName": "Heather Guay Yoo",
+        "contactEmail": null,
+        "contactPhone": "(202) 298-6970",
+        "recommendedAction": "Continue Partnership Watch — identify a named commercial entry point and a specific referral mechanism; do not present an unestablished relationship as an existing partnership."
+      },
+      {
+        "id": "disp_recLuxvwwxID7U2B8_parenteral_drug_association_pda_",
+        "organizationName": "Parenteral Drug Association (PDA)",
+        "researchSegment": "corporate_meetings_training",
+        "customerVisible": false,
+        "contactName": "Laura Keeley",
+        "contactEmail": "training@pda.org",
+        "contactPhone": null,
+        "recommendedAction": "Research continuation — establish a verified named commercial contact and an evidence-backed Bethesda Marriott demand thesis before sales outreach."
+      },
+      {
+        "id": "gdi_s4912_6ffc303bf55a",
+        "organizationName": "The Children’s Inn at NIH — An Evening for Hope Gala",
+        "researchSegment": "corporate_celebrations_private_events",
+        "customerVisible": false,
+        "contactName": "Diane Kendrick",
+        "contactEmail": "Events@childrensinn.org",
+        "contactPhone": "301-451-6271",
+        "recommendedAction": "Research continuation — establish a verified named commercial contact and an evidence-backed Bethesda Marriott demand thesis before sales outreach."
+      },
+      {
+        "id": "disp_recLuxvwwxID7U2B8_cohera_formerly_csi_dmc_and_360dg_",
+        "organizationName": "Cohera (formerly CSI DMC and 360DG)",
+        "researchSegment": "professional_planners_dmc",
+        "customerVisible": false,
+        "contactName": "Annette Hawks",
+        "contactEmail": "annette.hawks@meetcohera.com",
+        "contactPhone": null,
+        "recommendedAction": "Continue Partnership Watch — identify a named commercial entry point and a specific referral mechanism; do not present an unestablished relationship as an existing partnership."
+      },
+      {
+        "id": "disp_recLuxvwwxID7U2B8_montgomery_county_shrm",
+        "organizationName": "Montgomery County SHRM",
+        "researchSegment": "local_meetings_catering",
+        "customerVisible": false,
+        "contactName": "Neha Agarwal",
+        "contactEmail": "mcshrm@gmail.com",
+        "contactPhone": null,
+        "recommendedAction": "Research continuation — use recovered functional route (mcshrm@gmail.com) to identify the named commercial owner; verify current demand before outreach."
+      }
+    ],
+    "netNewThisRun": [],
+    "lifecycle": {
+      "version": "gdi-scaling-companies-intelligent-lifecycle-v1",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "decisionCounts": {
+        "NO_ACTION": 5,
+        "CONTINUE_RESEARCH": 1,
+        "MONITOR": 15
+      },
+      "researchQueueSize": 1,
+      "scheduleNetNewDiscovery": true,
+      "netNewSlots": 1,
+      "doNotRediscoverCount": 5
+    },
+    "doNotRediscoverAsNetNew": [
+      "matthews",
+      "imc construction",
+      "biohub maryland",
+      "miles stockbridge",
+      "regenxbio"
+    ],
+    "note": "Zero existing scaling opportunities is a valid starting state and does not block discovery. Dry-run/preflight does not mint NET_NEW. Published orgs are excluded from NET_NEW via lifecycle doNotRediscoverAsNetNew + findExistingScalingCompanyMatches. HOLD/CONTINUE/REFRESH decisions drive research queue before new discovery."
+  },
+  "intelligentLifecycle": {
+    "version": "gdi-scaling-companies-intelligent-lifecycle-v1",
+    "summary": {
+      "version": "gdi-scaling-companies-intelligent-lifecycle-v1",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "decisionCounts": {
+        "NO_ACTION": 5,
+        "CONTINUE_RESEARCH": 1,
+        "MONITOR": 15
+      },
+      "researchQueueSize": 1,
+      "scheduleNetNewDiscovery": true,
+      "netNewSlots": 1,
+      "doNotRediscoverCount": 5
+    },
+    "researchQueue": [
+      {
+        "opportunityId": "disp_recLuxvwwxID7U2B8_pmi_montgomery_county_maryland_chapter",
+        "organizationName": "PMI Montgomery County Maryland Chapter",
+        "decision": "CONTINUE_RESEARCH",
+        "gateBeforeContactEnrichment": false,
+        "researchFocus": [],
+        "unpublishedHold": false
+      }
+    ],
+    "discoveryPlan": {
+      "scheduleNetNewDiscovery": true,
+      "netNewSlots": 1,
+      "doNotRediscoverAsNetNew": [
+        "matthews",
+        "imc construction",
+        "biohub maryland",
+        "miles stockbridge",
+        "regenxbio"
+      ],
+      "note": "Published accounts must never be rediscovered as GENUINELY_NET_NEW. HOLD continuation and justified refresh take queue priority over raw discovery."
+    }
+  },
+  "funnel": null,
+  "genuinelyNetNewCount": 0,
+  "publicationReadyInternalCount": 0,
+  "publicationReadiness": [
+    {
+      "id": "gdi_sc_b36b66547864e8ce",
+      "organizationName": "Matthews",
+      "hotelFacing": true,
+      "usableContactRoute": true,
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": true,
+        "alreadyCustomerFacing": true,
+        "failReasons": [
+          "CONTACT_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_pmi_montgomery_county_maryland_chapter",
+      "organizationName": "PMI Montgomery County Maryland Chapter",
+      "hotelFacing": false,
+      "usableContactRoute": false,
+      "contactAuditClass": "MISSING",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": false,
+        "alreadyCustomerFacing": false,
+        "failReasons": [
+          "ORS_DEEP_RESEARCH_NOT_EXECUTED",
+          "UNSUPPORTED_HOTEL_DEMAND",
+          "NO_LEGITIMATE_CONTACT_ROUTE"
+        ]
+      }
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_greater_bethesda_chamber_of_commerce",
+      "organizationName": "Greater Bethesda Chamber of Commerce",
+      "hotelFacing": true,
+      "usableContactRoute": true,
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": false,
+        "alreadyCustomerFacing": false,
+        "failReasons": [
+          "ORS_DEEP_RESEARCH_NOT_EXECUTED",
+          "UNSUPPORTED_HOTEL_DEMAND",
+          "CONTACT_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "gdi_s4912_59382d1e71a2",
+      "organizationName": "Montgomery College — AI Skills Summit",
+      "hotelFacing": false,
+      "usableContactRoute": true,
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": false,
+        "alreadyCustomerFacing": false,
+        "failReasons": [
+          "ORS_DEEP_RESEARCH_NOT_EXECUTED",
+          "UNSUPPORTED_HOTEL_DEMAND",
+          "CONTACT_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "gdi_s4912_66a1f89e5afb",
+      "organizationName": "NIH Intramural Postdoctoral Fellowship / OITE",
+      "hotelFacing": true,
+      "usableContactRoute": true,
+      "contactAuditClass": "MISSING",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": false,
+        "alreadyCustomerFacing": false,
+        "failReasons": [
+          "ORS_DEEP_RESEARCH_NOT_EXECUTED",
+          "UNSUPPORTED_HOTEL_DEMAND",
+          "NO_LEGITIMATE_CONTACT_ROUTE"
+        ]
+      }
+    },
+    {
+      "id": "gdi_s4912_6c8a62552bfa",
+      "organizationName": "Maryland Tech Council — ICON Awards",
+      "hotelFacing": true,
+      "usableContactRoute": true,
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": false,
+        "alreadyCustomerFacing": false,
+        "failReasons": [
+          "ORS_DEEP_RESEARCH_NOT_EXECUTED",
+          "UNSUPPORTED_HOTEL_DEMAND",
+          "CONTACT_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "gdi_sc_a5768a99d4e89875",
+      "organizationName": "IMC Construction",
+      "hotelFacing": true,
+      "usableContactRoute": true,
+      "contactAuditClass": "GENERAL_ORGANIZATION_ROUTE",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": true,
+        "alreadyCustomerFacing": true,
+        "failReasons": [
+          "GENERAL_INBOX_NOT_HOTEL_SOURCING_ROUTE"
+        ]
+      }
+    },
+    {
+      "id": "gdi_sc_e7dd46732dd5bb7a",
+      "organizationName": "BioHub Maryland",
+      "hotelFacing": true,
+      "usableContactRoute": true,
+      "contactAuditClass": "GENERAL_ORGANIZATION_ROUTE",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": true,
+        "alreadyCustomerFacing": true,
+        "failReasons": [
+          "GENERAL_INBOX_NOT_HOTEL_SOURCING_ROUTE"
+        ]
+      }
+    },
+    {
+      "id": "gdi_s4912_364713d41c67",
+      "organizationName": "NIH IRP / Division of International Services",
+      "hotelFacing": true,
+      "usableContactRoute": true,
+      "contactAuditClass": "MISSING",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": false,
+        "alreadyCustomerFacing": false,
+        "failReasons": [
+          "ORS_DEEP_RESEARCH_NOT_EXECUTED",
+          "UNSUPPORTED_HOTEL_DEMAND",
+          "NO_LEGITIMATE_CONTACT_ROUTE"
+        ]
+      }
+    },
+    {
+      "id": "gdi_s4912_732496c2f8aa",
+      "organizationName": "CASSS — 2027 Cell & Gene Therapy Products Symposium",
+      "hotelFacing": false,
+      "usableContactRoute": true,
+      "contactAuditClass": "GENERAL_ORGANIZATION_ROUTE",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": false,
+        "alreadyCustomerFacing": false,
+        "failReasons": [
+          "ORS_DEEP_RESEARCH_NOT_EXECUTED",
+          "UNSUPPORTED_HOTEL_DEMAND",
+          "GENERAL_INBOX_NOT_HOTEL_SOURCING_ROUTE"
+        ]
+      }
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_city_of_rockville",
+      "organizationName": "City of Rockville",
+      "hotelFacing": true,
+      "usableContactRoute": true,
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": false,
+        "alreadyCustomerFacing": false,
+        "failReasons": [
+          "ORS_DEEP_RESEARCH_NOT_EXECUTED",
+          "UNSUPPORTED_HOTEL_DEMAND",
+          "CONTACT_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_nature_forward",
+      "organizationName": "Nature Forward",
+      "hotelFacing": true,
+      "usableContactRoute": true,
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": false,
+        "alreadyCustomerFacing": false,
+        "failReasons": [
+          "ORS_DEEP_RESEARCH_NOT_EXECUTED",
+          "UNSUPPORTED_HOTEL_DEMAND",
+          "CONTACT_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_aledade",
+      "organizationName": "Aledade",
+      "hotelFacing": false,
+      "usableContactRoute": true,
+      "contactAuditClass": "GENERAL_ORGANIZATION_ROUTE",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": false,
+        "alreadyCustomerFacing": false,
+        "failReasons": [
+          "ORS_DEEP_RESEARCH_NOT_EXECUTED",
+          "UNSUPPORTED_HOTEL_DEMAND",
+          "GENERAL_INBOX_NOT_HOTEL_SOURCING_ROUTE"
+        ]
+      }
+    },
+    {
+      "id": "gdi_s4912_d55ee8a8e9ca",
+      "organizationName": "NIDDK — Meetings & Workshops portfolio",
+      "hotelFacing": false,
+      "usableContactRoute": true,
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": false,
+        "alreadyCustomerFacing": false,
+        "failReasons": [
+          "ORS_DEEP_RESEARCH_NOT_EXECUTED",
+          "UNSUPPORTED_HOTEL_DEMAND",
+          "CONTACT_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_linder_global_events",
+      "organizationName": "LINDER Global Events",
+      "hotelFacing": true,
+      "usableContactRoute": true,
+      "contactAuditClass": "MISSING",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": false,
+        "alreadyCustomerFacing": false,
+        "failReasons": [
+          "ORS_DEEP_RESEARCH_NOT_EXECUTED",
+          "UNSUPPORTED_HOTEL_DEMAND",
+          "NO_LEGITIMATE_CONTACT_ROUTE"
+        ]
+      }
+    },
+    {
+      "id": "gdi_sc_5c5d41eb670e6c7b",
+      "organizationName": "Miles & Stockbridge",
+      "hotelFacing": true,
+      "usableContactRoute": true,
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": true,
+        "alreadyCustomerFacing": true,
+        "failReasons": [
+          "CONTACT_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_parenteral_drug_association_pda_",
+      "organizationName": "Parenteral Drug Association (PDA)",
+      "hotelFacing": false,
+      "usableContactRoute": true,
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": false,
+        "alreadyCustomerFacing": false,
+        "failReasons": [
+          "ORS_DEEP_RESEARCH_NOT_EXECUTED",
+          "UNSUPPORTED_HOTEL_DEMAND",
+          "CONTACT_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "gdi_s4912_6ffc303bf55a",
+      "organizationName": "The Children’s Inn at NIH — An Evening for Hope Gala",
+      "hotelFacing": false,
+      "usableContactRoute": true,
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": false,
+        "alreadyCustomerFacing": false,
+        "failReasons": [
+          "ORS_DEEP_RESEARCH_NOT_EXECUTED",
+          "UNSUPPORTED_HOTEL_DEMAND",
+          "CONTACT_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "gdi_sc_9d14aee7ff250b11",
+      "organizationName": "REGENXBIO",
+      "hotelFacing": true,
+      "usableContactRoute": true,
+      "contactAuditClass": "MISSING",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": true,
+        "alreadyCustomerFacing": true,
+        "failReasons": [
+          "NO_LEGITIMATE_CONTACT_ROUTE"
+        ]
+      }
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_cohera_formerly_csi_dmc_and_360dg_",
+      "organizationName": "Cohera (formerly CSI DMC and 360DG)",
+      "hotelFacing": false,
+      "usableContactRoute": true,
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": false,
+        "alreadyCustomerFacing": false,
+        "failReasons": [
+          "ORS_DEEP_RESEARCH_NOT_EXECUTED",
+          "UNSUPPORTED_HOTEL_DEMAND",
+          "CONTACT_UNVERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_montgomery_county_shrm",
+      "organizationName": "Montgomery County SHRM",
+      "hotelFacing": true,
+      "usableContactRoute": true,
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": false,
+        "alreadyCustomerFacing": false,
+        "failReasons": [
+          "ORS_DEEP_RESEARCH_NOT_EXECUTED",
+          "UNSUPPORTED_HOTEL_DEMAND",
+          "CONTACT_UNVERIFIED"
+        ]
+      }
+    }
+  ],
+  "discovery": {
+    "attempted": false,
+    "searches": [],
+    "hits": 0,
+    "skippedReason": "preview_or_preflight",
+    "rawHitCount": 0
+  },
+  "handoff": null,
+  "ors": {
+    "path": {
+      "ok": true,
+      "checks": {
+        "runDeepResearchExported": true,
+        "matureOpportunityCalled": true,
+        "matureOpportunityExported": true,
+        "runDeepResearchFn": true
+      },
+      "entrypoint": "runDeepResearchOnExistingGdiOpportunity → matureOpportunity"
+    },
+    "results": [],
+    "plannedOnly": true
+  },
+  "buyerIntelligence": [],
+  "investigationLoop": null,
+  "contacts": [
+    {
+      "id": "gdi_sc_b36b66547864e8ce",
+      "organizationName": "Matthews",
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "usableContactRoute": true
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_pmi_montgomery_county_maryland_chapter",
+      "organizationName": "PMI Montgomery County Maryland Chapter",
+      "contactAuditClass": "MISSING",
+      "usableContactRoute": false
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_greater_bethesda_chamber_of_commerce",
+      "organizationName": "Greater Bethesda Chamber of Commerce",
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "usableContactRoute": true
+    },
+    {
+      "id": "gdi_s4912_59382d1e71a2",
+      "organizationName": "Montgomery College — AI Skills Summit",
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "usableContactRoute": true
+    },
+    {
+      "id": "gdi_s4912_66a1f89e5afb",
+      "organizationName": "NIH Intramural Postdoctoral Fellowship / OITE",
+      "contactAuditClass": "MISSING",
+      "usableContactRoute": true
+    },
+    {
+      "id": "gdi_s4912_6c8a62552bfa",
+      "organizationName": "Maryland Tech Council — ICON Awards",
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "usableContactRoute": true
+    },
+    {
+      "id": "gdi_sc_a5768a99d4e89875",
+      "organizationName": "IMC Construction",
+      "contactAuditClass": "GENERAL_ORGANIZATION_ROUTE",
+      "usableContactRoute": true
+    },
+    {
+      "id": "gdi_sc_e7dd46732dd5bb7a",
+      "organizationName": "BioHub Maryland",
+      "contactAuditClass": "GENERAL_ORGANIZATION_ROUTE",
+      "usableContactRoute": true
+    },
+    {
+      "id": "gdi_s4912_364713d41c67",
+      "organizationName": "NIH IRP / Division of International Services",
+      "contactAuditClass": "MISSING",
+      "usableContactRoute": true
+    },
+    {
+      "id": "gdi_s4912_732496c2f8aa",
+      "organizationName": "CASSS — 2027 Cell & Gene Therapy Products Symposium",
+      "contactAuditClass": "GENERAL_ORGANIZATION_ROUTE",
+      "usableContactRoute": true
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_city_of_rockville",
+      "organizationName": "City of Rockville",
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "usableContactRoute": true
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_nature_forward",
+      "organizationName": "Nature Forward",
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "usableContactRoute": true
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_aledade",
+      "organizationName": "Aledade",
+      "contactAuditClass": "GENERAL_ORGANIZATION_ROUTE",
+      "usableContactRoute": true
+    },
+    {
+      "id": "gdi_s4912_d55ee8a8e9ca",
+      "organizationName": "NIDDK — Meetings & Workshops portfolio",
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "usableContactRoute": true
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_linder_global_events",
+      "organizationName": "LINDER Global Events",
+      "contactAuditClass": "MISSING",
+      "usableContactRoute": true
+    },
+    {
+      "id": "gdi_sc_5c5d41eb670e6c7b",
+      "organizationName": "Miles & Stockbridge",
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "usableContactRoute": true
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_parenteral_drug_association_pda_",
+      "organizationName": "Parenteral Drug Association (PDA)",
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "usableContactRoute": true
+    },
+    {
+      "id": "gdi_s4912_6ffc303bf55a",
+      "organizationName": "The Children’s Inn at NIH — An Evening for Hope Gala",
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "usableContactRoute": true
+    },
+    {
+      "id": "gdi_sc_9d14aee7ff250b11",
+      "organizationName": "REGENXBIO",
+      "contactAuditClass": "MISSING",
+      "usableContactRoute": true
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_cohera_formerly_csi_dmc_and_360dg_",
+      "organizationName": "Cohera (formerly CSI DMC and 360DG)",
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "usableContactRoute": true
+    },
+    {
+      "id": "disp_recLuxvwwxID7U2B8_montgomery_county_shrm",
+      "organizationName": "Montgomery County SHRM",
+      "contactAuditClass": "UNVERIFIED_CONTACT",
+      "usableContactRoute": true
+    }
+  ],
+  "spending": {
+    "ledgerPath": "C:\\Dev\\dealality\\my-operators-backend\\reports\\gdi-scaling-companies-hotel-runner-v1\\sc_run_recLuxvwwxID7U2B8_2026-11-18T12-30-47-121Z\\ledgers\\scaling-companies-run-ledger-sc_run_recLuxvwwxID7U2B8_2026-11-18T12-30-47-121Z.json",
+    "ceilingUsd": 0,
+    "spentUsd": 0,
+    "runSpentUsd": 0,
+    "ledgerBaselineSpentUsd": 0,
+    "aggregateSpentUsd": 0,
+    "sharedCampaignLedger": false,
+    "remainingUsd": 0
+  },
+  "publication": {
+    "version": "gdi-scaling-companies-full-e2e-publication-v1",
+    "status": "PREVIEW_SKIPPED",
+    "authorizePublication": false,
+    "note": "Preview mode does not publish. Re-run Mode FullE2E with -AuthorizePublication to publish.",
+    "fullE2eComplete": false
+  },
+  "productionWrite": {
+    "attempted": false,
+    "applied": false,
+    "publishedIds": [],
+    "status": "PREVIEW_SKIPPED"
+  },
+  "strategiesSample": [
+    {
+      "pathway": "TRIGGER_LED",
+      "researchQuestion": "\"Bethesda\" (\"opens office\" OR \"opened an office\" OR \"new office\" OR \"regional hub\" OR headquarters) (company OR corporate OR firm) (training OR meetings OR lodging OR \"project team\") -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo"
+    },
+    {
+      "pathway": "ORGANIZATION_LED",
+      "researchQuestion": "\"Bethesda\" (company OR corporate) (\"sales kickoff\" OR offsite OR \"leadership meeting\" OR \"customer training\" OR \"project team\") (hotel OR lodging OR meetings) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo"
+    },
+    {
+      "pathway": "TRIGGER_LED",
+      "researchQuestion": "(\"Bethesda\" OR \"District of Columbia\" OR \"Montgomery County\" OR \"Northern Virginia\") (\"incentive travel\" OR \"incentive trip\" OR \"incentive program\" OR \"sales incentive\" OR \"employee incentive\") (company OR corporate OR \"sales team\" OR distributor) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo"
+    },
+    {
+      "pathway": "TRIGGER_LED",
+      "researchQuestion": "(\"Bethesda\" OR \"District of Columbia\" OR \"Montgomery County\" OR \"Northern Virginia\") (\"sales kickoff\" OR \"annual sales meeting\" OR \"leadership retreat\" OR \"corporate retreat\" OR \"partner summit\" OR \"distributor meeting\") (company OR corporate OR brand) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo"
+    },
+    {
+      "pathway": "ORGANIZATION_LED",
+      "researchQuestion": "Bethesda scale-up OR expanding company operations training program OR project team lodging needs"
+    },
+    {
+      "pathway": "ORGANIZATION_LED",
+      "researchQuestion": "Bethesda DMV company with multi-site project mobilization lodging OR integration offsite OR corporate retreat"
+    },
+    {
+      "pathway": "TRIGGER_LED",
+      "researchQuestion": "Bethesda \"opens office\" OR \"expanding workforce\" OR \"new headquarters\" OR relocation training OR offsite 2026 OR 2027"
+    },
+    {
+      "pathway": "TRIGGER_LED",
+      "researchQuestion": "Bethesda DMV merger OR integration OR relocation project team lodging OR kickoff meeting OR corporate retreat"
+    }
+  ],
+  "localTerms": [
+    "bethesda",
+    "bethesda marriott",
+    "district of columbia",
+    "montgomery county",
+    "prince george's county (where commercially relevant)",
+    "northern virginia",
+    "broader washington metropolitan area where reasonable",
+    "dmv",
+    "nih",
+    "federal health",
+    "research ecosystem",
+    "washington dc metro access",
+    "montgomery county employers",
+    "broader washington metropolitan",
+    "universities",
+    "government contractors"
+  ]
+}

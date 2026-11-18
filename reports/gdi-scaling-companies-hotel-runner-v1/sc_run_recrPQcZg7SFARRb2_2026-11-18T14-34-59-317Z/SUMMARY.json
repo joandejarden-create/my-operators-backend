@@ -1,0 +1,486 @@
+{
+  "ok": true,
+  "executed": false,
+  "fullE2eComplete": false,
+  "fullE2eCompleteReason": "mode_not_full_e2e",
+  "version": "gdi-scaling-companies-hotel-runner-v1",
+  "discoveryVersion": "gdi-autonomous-demand-discovery-v5",
+  "researchVersion": "gdi-scaling-companies-research-v1",
+  "publicationVersion": "gdi-scaling-companies-full-e2e-publication-v1",
+  "stages": [
+    "hotel_profile",
+    "discovery",
+    "organization_identity_resolution",
+    "net_new_reconciliation",
+    "commercial_mechanism_screening",
+    "ors_longform_research",
+    "buyer_and_contact_intelligence",
+    "intelligent_investigation_loop",
+    "commercial_qualification",
+    "gold_standard_brief_generation",
+    "canonical_opportunity_payload",
+    "airtable_publication",
+    "customer_share_verification"
+  ],
+  "startedAt": "2026-11-18T14:34:59.316Z",
+  "finishedAt": "2026-11-18T14:35:07.560Z",
+  "config": {
+    "hotelId": "recrPQcZg7SFARRb2",
+    "mode": "preview",
+    "authorizePaidResearch": false,
+    "authorizePublication": false,
+    "authorizeProductionWrites": false,
+    "applyProductionWrites": false,
+    "probeLiveShare": false,
+    "budgetCeilingUsd": 0,
+    "maxCandidates": 2,
+    "runId": "sc_run_recrPQcZg7SFARRb2_2026-11-18T14-34-59-317Z",
+    "reportDir": "C:\\Dev\\dealality\\my-operators-backend\\reports\\gdi-scaling-companies-hotel-runner-v1\\sc_run_recrPQcZg7SFARRb2_2026-11-18T14-34-59-317Z"
+  },
+  "hotel": {
+    "hotelId": "recrPQcZg7SFARRb2",
+    "displayName": "YOTEL Geneva Lake",
+    "city": "Founex",
+    "country": "Switzerland",
+    "demandTerritory": {
+      "label": "La Côte / Nyon / Geneva Airport corridor",
+      "country": "Switzerland",
+      "includes": [
+        "PRIMARY: Founex / Nyon / Coppet / La Côte corridor",
+        "SECONDARY: Geneva Airport stays and selected Geneva international/corporate demand when travel friction is acceptable",
+        "ADJACENT: Lausanne and selected cross-border nodes only when lodging access is realistic"
+      ],
+      "evaluationQuestion": "Could YOTEL Geneva Lake realistically capture this group demand given 237 rooms, 6 meeting rooms (to ~250), Founex/La Côte location, Geneva Airport access, and Vaud corridor relevance — without requiring downtown Geneva positioning?",
+      "classifications": [
+        "TERRITORY_CORE",
+        "TERRITORY_NEARBY",
+        "TERRITORY_COMPETITIVE",
+        "TERRITORY_STRETCH",
+        "OUTSIDE_REALISTIC_TERRITORY"
+      ],
+      "displayLabels": {
+        "TERRITORY_CORE": "La Côte / Nyon Core",
+        "TERRITORY_NEARBY": "Geneva Airport Nearby",
+        "TERRITORY_COMPETITIVE": "Greater Geneva Competitive",
+        "TERRITORY_STRETCH": "Lausanne / Cross-Border Stretch",
+        "OUTSIDE_REALISTIC_TERRITORY": "Outside Realistic Territory"
+      },
+      "classificationKeywords": {
+        "TERRITORY_CORE": [
+          "founex",
+          "nyon",
+          "coppet",
+          "la côte",
+          "la cote",
+          "chavannes-de-bogis",
+          "vaud"
+        ],
+        "TERRITORY_NEARBY": [
+          "geneva airport",
+          "aéroport de genève",
+          "aeroport de geneve",
+          "gva",
+          "cointrin",
+          "park and fly",
+          "park & fly"
+        ],
+        "TERRITORY_COMPETITIVE": [
+          "geneva",
+          "genève",
+          "geneve",
+          "palexpo",
+          "cern",
+          "international organizations"
+        ],
+        "TERRITORY_STRETCH": [
+          "lausanne",
+          "divonne",
+          "annemasse",
+          "montreux"
+        ],
+        "OUTSIDE_REALISTIC_TERRITORY": [
+          "zurich",
+          "bern downtown only",
+          "basel"
+        ]
+      }
+    },
+    "totalGuestrooms": 237,
+    "meetingRoomsIndoor": 6,
+    "totalMeetingSpaceSqFt": null,
+    "demandAnchors": [],
+    "targetSegments": []
+  },
+  "applicability": {
+    "applicable": true,
+    "researchCity": "Founex",
+    "inventory": {
+      "rooms": 237,
+      "meetings": 6,
+      "meetingSqFt": 0
+    },
+    "rationale": "Verified identity, geography, and inventory support hotel-specific scaling-company discovery. Opportunity fit is evaluated per candidate — empty segment inventory does not block research."
+  },
+  "persistenceMode": "airtable",
+  "opportunitySource": "filesystem",
+  "opportunityCount": 42,
+  "preflight": {
+    "hotelResolved": true,
+    "applicabilityOk": true,
+    "strategiesPresent": true,
+    "pathwaysPresent": true,
+    "pricingOk": true,
+    "paidContactGuardOk": true,
+    "orsCallPathOk": true,
+    "reviewedProspectHotelEnabled": true,
+    "reviewedProspectLocalPreflight": {
+      "ok": true,
+      "hotelId": "recrPQcZg7SFARRb2",
+      "publicationEnabled": true,
+      "enabled": true,
+      "usingBuiltInFallback": false,
+      "inExplicitEnvAllowlist": true,
+      "explicitAllowlistCount": 33,
+      "requireExplicitEnvAllowlist": false,
+      "blockerCode": null,
+      "requiredAction": null,
+      "note": "Production share list uses Railway env allowlist. Local built-in REVIEWED_PROSPECT_HOTEL_IDS does not update Railway."
+    },
+    "reviewedProspectProductionSharePreflight": {
+      "ok": true,
+      "hotelId": "recrPQcZg7SFARRb2",
+      "publicationEnabled": true,
+      "enabled": true,
+      "usingBuiltInFallback": false,
+      "inExplicitEnvAllowlist": true,
+      "explicitAllowlistCount": 33,
+      "requireExplicitEnvAllowlist": true,
+      "blockerCode": null,
+      "requiredAction": null,
+      "note": "Production share list uses Railway env allowlist. Local built-in REVIEWED_PROSPECT_HOTEL_IDS does not update Railway."
+    },
+    "emptyScalingInventoryOk": true,
+    "existingScalingCount": 2,
+    "ledgerPath": "C:\\Dev\\dealality\\my-operators-backend\\reports\\gdi-scaling-companies-hotel-runner-v1\\sc_run_recrPQcZg7SFARRb2_2026-11-18T14-34-59-317Z\\ledgers\\scaling-companies-run-ledger-sc_run_recrPQcZg7SFARRb2_2026-11-18T14-34-59-317Z.json",
+    "ledgerSpentUsd": 0,
+    "ledgerBaselineSpentUsd": 0,
+    "runSpentUsd": 0,
+    "budgetCeilingUsd": 0,
+    "authorizationStates": {
+      "PROFILE_READY": true,
+      "RESEARCH_AUTHORIZED": false,
+      "PUBLICATION_AUTHORIZED": true,
+      "WEEKLY_ACTIVE": false
+    },
+    "inUniversalAdpGdiRoster": true,
+    "universalPreviewReadiness": {
+      "shareReady": false,
+      "missingPrerequisites": []
+    }
+  },
+  "fullE2ePublicationGate": {
+    "version": "gdi-full-e2e-publication-gate-v1",
+    "profileReadyForResearch": true,
+    "localReviewedProspectAllowlistReady": true,
+    "productionExplicitAllowlistReady": true,
+    "readyForAuthorizedFullE2ePublication": true,
+    "readyForLiveCustomerShareClaims": true,
+    "authorizationStates": {
+      "PROFILE_READY": true,
+      "RESEARCH_AUTHORIZED": false,
+      "PUBLICATION_AUTHORIZED": true,
+      "WEEKLY_ACTIVE": false
+    },
+    "inUniversalAdpGdiRoster": true,
+    "inAdpCommissioned": false,
+    "universalPreviewReadiness": {
+      "version": "gdi-adp-universal-hotel-roster-v1",
+      "hotelId": "recrPQcZg7SFARRb2",
+      "auth": {
+        "version": "gdi-adp-universal-hotel-roster-v1",
+        "hotelId": "recrPQcZg7SFARRb2",
+        "inUniversalRoster": true,
+        "inAdpCommissioned": false,
+        "gdiOnlyNotInAdp": true,
+        "states": {
+          "PROFILE_READY": true,
+          "RESEARCH_AUTHORIZED": false,
+          "PUBLICATION_AUTHORIZED": true,
+          "WEEKLY_ACTIVE": false
+        },
+        "notes": [
+          "Existing GDI hotel preserved though not in current ADP commissioned roster.",
+          "PUBLICATION_AUTHORIZED requires reviewed-prospect allowlist — not ADP membership.",
+          "RESEARCH_AUTHORIZED requires explicit run authorizePaidResearch + budget.",
+          "WEEKLY_ACTIVE requires GDI_WEEKLY_DEEP_RESEARCH_ENABLED=1 and hotel on GDI_WEEKLY_ACTIVE_HOTEL_IDS."
+        ]
+      },
+      "share": {
+        "ready": false,
+        "tokenId": null,
+        "source": null
+      },
+      "publication": {
+        "local": {
+          "ok": true,
+          "hotelId": "recrPQcZg7SFARRb2",
+          "publicationEnabled": true,
+          "enabled": true,
+          "usingBuiltInFallback": false,
+          "inExplicitEnvAllowlist": true,
+          "explicitAllowlistCount": 33,
+          "requireExplicitEnvAllowlist": false,
+          "blockerCode": null,
+          "requiredAction": null,
+          "note": "Production share list uses Railway env allowlist. Local built-in REVIEWED_PROSPECT_HOTEL_IDS does not update Railway."
+        },
+        "explicitEnv": {
+          "ok": true,
+          "hotelId": "recrPQcZg7SFARRb2",
+          "publicationEnabled": true,
+          "enabled": true,
+          "usingBuiltInFallback": false,
+          "inExplicitEnvAllowlist": true,
+          "explicitAllowlistCount": 33,
+          "requireExplicitEnvAllowlist": true,
+          "blockerCode": null,
+          "requiredAction": null,
+          "note": "Production share list uses Railway env allowlist. Local built-in REVIEWED_PROSPECT_HOTEL_IDS does not update Railway."
+        },
+        "railway": {
+          "ok": false,
+          "blockerCode": "RAILWAY_ENV_NOT_PROBED",
+          "requiredAction": "Probe Railway GDI_REVIEWED_PROSPECT_HOTEL_IDS (preserve existing IDs) before claiming production publication readiness.",
+          "note": "Local allowlist ≠ Railway production allowlist."
+        }
+      },
+      "missingPrerequisites": [],
+      "previewOkForPaidExecution": true,
+      "note": "Preview must report these blockers before any paid Full E2E spend."
+    },
+    "note": "ADP membership enables profile onboarding only. PUBLICATION_AUTHORIZED requires reviewed-prospect allowlist — never auto-append from ADP. RESEARCH_AUTHORIZED requires explicit run budget. WEEKLY_ACTIVE is separate.",
+    "missingConfiguration": [],
+    "blockerCodes": []
+  },
+  "blockers": [],
+  "reconciliation": {
+    "existingScalingCount": 2,
+    "existingPublished": [],
+    "existingOther": [
+      {
+        "id": "rx_d_d6223c6a6e37",
+        "organizationName": "Society of Environmental Toxicology and Chemistry Europe (SETAC Europe)",
+        "researchSegment": "scaling_companies",
+        "contactName": "Jill Murray",
+        "contactEmail": null,
+        "contactPhone": null,
+        "recommendedAction": "Confirm supplier admission, location acceptance and actual unmet demand before submitting a limited inventory proposal."
+      },
+      {
+        "id": "rx_d_18d49635c05d",
+        "organizationName": "BY Connect S.A.S.",
+        "researchSegment": "scaling_companies",
+        "contactName": "Yannick Bazin",
+        "contactEmail": null,
+        "contactPhone": null,
+        "recommendedAction": "Qualify housing ownership and incumbent contracts before pricing; if closed, establish the next competitive procurement window."
+      }
+    ],
+    "netNewThisRun": [],
+    "lifecycle": {
+      "version": "gdi-scaling-companies-intelligent-lifecycle-v1",
+      "hotelId": "recrPQcZg7SFARRb2",
+      "decisionCounts": {
+        "CONTINUE_RESEARCH": 2
+      },
+      "researchQueueSize": 2,
+      "scheduleNetNewDiscovery": true,
+      "netNewSlots": 0,
+      "doNotRediscoverCount": 0
+    },
+    "doNotRediscoverAsNetNew": [],
+    "note": "Zero existing scaling opportunities is a valid starting state and does not block discovery. Dry-run/preflight does not mint NET_NEW. Published orgs are excluded from NET_NEW via lifecycle doNotRediscoverAsNetNew + findExistingScalingCompanyMatches. HOLD/CONTINUE/REFRESH decisions drive research queue before new discovery."
+  },
+  "intelligentLifecycle": {
+    "version": "gdi-scaling-companies-intelligent-lifecycle-v1",
+    "summary": {
+      "version": "gdi-scaling-companies-intelligent-lifecycle-v1",
+      "hotelId": "recrPQcZg7SFARRb2",
+      "decisionCounts": {
+        "CONTINUE_RESEARCH": 2
+      },
+      "researchQueueSize": 2,
+      "scheduleNetNewDiscovery": true,
+      "netNewSlots": 0,
+      "doNotRediscoverCount": 0
+    },
+    "researchQueue": [
+      {
+        "opportunityId": "rx_d_d6223c6a6e37",
+        "organizationName": "Society of Environmental Toxicology and Chemistry Europe (SETAC Europe)",
+        "decision": "CONTINUE_RESEARCH",
+        "gateBeforeContactEnrichment": false,
+        "researchFocus": [],
+        "unpublishedHold": false
+      },
+      {
+        "opportunityId": "rx_d_18d49635c05d",
+        "organizationName": "BY Connect S.A.S.",
+        "decision": "CONTINUE_RESEARCH",
+        "gateBeforeContactEnrichment": false,
+        "researchFocus": [],
+        "unpublishedHold": false
+      }
+    ],
+    "discoveryPlan": {
+      "scheduleNetNewDiscovery": true,
+      "netNewSlots": 0,
+      "doNotRediscoverAsNetNew": [],
+      "note": "Published accounts must never be rediscovered as GENUINELY_NET_NEW. HOLD continuation and justified refresh take queue priority over raw discovery."
+    }
+  },
+  "funnel": null,
+  "genuinelyNetNewCount": 0,
+  "publicationReadyInternalCount": 0,
+  "publicationReadiness": [
+    {
+      "id": "rx_d_d6223c6a6e37",
+      "organizationName": "Society of Environmental Toxicology and Chemistry Europe (SETAC Europe)",
+      "hotelFacing": false,
+      "usableContactRoute": false,
+      "contactAuditClass": "MISSING",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": false,
+        "alreadyCustomerFacing": false,
+        "failReasons": [
+          "ORS_DEEP_RESEARCH_NOT_EXECUTED",
+          "UNSUPPORTED_HOTEL_DEMAND",
+          "LOCAL_CONNECTION_GENERIC_OR_MISSING",
+          "NO_LEGITIMATE_CONTACT_ROUTE"
+        ]
+      }
+    },
+    {
+      "id": "rx_d_18d49635c05d",
+      "organizationName": "BY Connect S.A.S.",
+      "hotelFacing": false,
+      "usableContactRoute": false,
+      "contactAuditClass": "MISSING",
+      "gate": {
+        "commerciallyPublicationReady": false,
+        "accountDevelopmentEligible": false,
+        "alreadyCustomerFacing": false,
+        "failReasons": [
+          "ORS_DEEP_RESEARCH_NOT_EXECUTED",
+          "UNSUPPORTED_HOTEL_DEMAND",
+          "LOCAL_CONNECTION_GENERIC_OR_MISSING",
+          "NO_LEGITIMATE_CONTACT_ROUTE"
+        ]
+      }
+    }
+  ],
+  "discovery": {
+    "attempted": false,
+    "searches": [],
+    "hits": 0,
+    "skippedReason": "preview_or_preflight",
+    "rawHitCount": 0
+  },
+  "handoff": null,
+  "ors": {
+    "path": {
+      "ok": true,
+      "checks": {
+        "runDeepResearchExported": true,
+        "matureOpportunityCalled": true,
+        "matureOpportunityExported": true,
+        "runDeepResearchFn": true
+      },
+      "entrypoint": "runDeepResearchOnExistingGdiOpportunity → matureOpportunity"
+    },
+    "results": [],
+    "plannedOnly": true
+  },
+  "buyerIntelligence": [],
+  "investigationLoop": null,
+  "contacts": [
+    {
+      "id": "rx_d_d6223c6a6e37",
+      "organizationName": "Society of Environmental Toxicology and Chemistry Europe (SETAC Europe)",
+      "contactAuditClass": "MISSING",
+      "usableContactRoute": false
+    },
+    {
+      "id": "rx_d_18d49635c05d",
+      "organizationName": "BY Connect S.A.S.",
+      "contactAuditClass": "MISSING",
+      "usableContactRoute": false
+    }
+  ],
+  "spending": {
+    "ledgerPath": "C:\\Dev\\dealality\\my-operators-backend\\reports\\gdi-scaling-companies-hotel-runner-v1\\sc_run_recrPQcZg7SFARRb2_2026-11-18T14-34-59-317Z\\ledgers\\scaling-companies-run-ledger-sc_run_recrPQcZg7SFARRb2_2026-11-18T14-34-59-317Z.json",
+    "ceilingUsd": 0,
+    "spentUsd": 0,
+    "runSpentUsd": 0,
+    "ledgerBaselineSpentUsd": 0,
+    "aggregateSpentUsd": 0,
+    "sharedCampaignLedger": false,
+    "remainingUsd": 0
+  },
+  "publication": {
+    "version": "gdi-scaling-companies-full-e2e-publication-v1",
+    "status": "PREVIEW_SKIPPED",
+    "authorizePublication": false,
+    "note": "Preview mode does not publish. Re-run Mode FullE2E with -AuthorizePublication to publish.",
+    "fullE2eComplete": false
+  },
+  "productionWrite": {
+    "attempted": false,
+    "applied": false,
+    "publishedIds": [],
+    "status": "PREVIEW_SKIPPED"
+  },
+  "strategiesSample": [
+    {
+      "pathway": "TRIGGER_LED",
+      "researchQuestion": "\"Founex\" (\"opens office\" OR \"opened an office\" OR \"new office\" OR \"regional hub\" OR headquarters) (company OR corporate OR firm) (training OR meetings OR lodging OR \"project team\") -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo"
+    },
+    {
+      "pathway": "ORGANIZATION_LED",
+      "researchQuestion": "\"Founex\" (company OR corporate) (\"sales kickoff\" OR offsite OR \"leadership meeting\" OR \"customer training\" OR \"project team\") (hotel OR lodging OR meetings) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo"
+    },
+    {
+      "pathway": "TRIGGER_LED",
+      "researchQuestion": "(\"Founex\") (\"incentive travel\" OR \"incentive trip\" OR \"incentive program\" OR \"sales incentive\" OR \"employee incentive\") (company OR corporate OR \"sales team\" OR distributor) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo"
+    },
+    {
+      "pathway": "TRIGGER_LED",
+      "researchQuestion": "(\"Founex\") (\"sales kickoff\" OR \"annual sales meeting\" OR \"leadership retreat\" OR \"corporate retreat\" OR \"partner summit\" OR \"distributor meeting\") (company OR corporate OR brand) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo"
+    },
+    {
+      "pathway": "ORGANIZATION_LED",
+      "researchQuestion": "Founex scale-up OR expanding company operations training program OR project team lodging needs"
+    },
+    {
+      "pathway": "ORGANIZATION_LED",
+      "researchQuestion": "Founex La Côte / Nyon / Geneva Airport corridor company with multi-site project mobilization lodging OR integration offsite OR corporate retreat"
+    },
+    {
+      "pathway": "TRIGGER_LED",
+      "researchQuestion": "Founex \"opens office\" OR \"expanding workforce\" OR \"new headquarters\" OR relocation training OR offsite 2026 OR 2027"
+    },
+    {
+      "pathway": "TRIGGER_LED",
+      "researchQuestion": "Founex La Côte / Nyon / Geneva Airport corridor merger OR integration OR relocation project team lodging OR kickoff meeting OR corporate retreat"
+    }
+  ],
+  "localTerms": [
+    "founex",
+    "yotel geneva lake",
+    "primary: founex / nyon / coppet / la côte corridor",
+    "secondary: geneva airport stays and selected geneva international/corporate demand when travel friction is acceptable",
+    "adjacent: lausanne and selected cross-border nodes only when lodging access is realistic",
+    "la côte / nyon / geneva airport corridor"
+  ]
+}

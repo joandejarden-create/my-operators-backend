@@ -1,0 +1,597 @@
+{
+  "version": "gdi-full-e2e-fourteen-segment-discovery-state-v1",
+  "hotelId": "recH9h3McgMNFQEla",
+  "segmentId": "professional_event_planners",
+  "applicable": true,
+  "status": "PARTIAL",
+  "coverageStatus": "PARTIAL",
+  "completionDecision": "NOT_COMPLETE",
+  "completionRationale": "FIXTURE_PROVIDER_ONLY",
+  "executionStatus": "EXECUTION_PARTIAL",
+  "executorVersion": "gdi-segment-discovery-executor-v1",
+  "executionModuleVersion": "gdi-full-e2e-fourteen-segment-discovery-execution-v1",
+  "researchRunId": "gdi_disc_run_mwm83plo_1697cb",
+  "researchHorizon": null,
+  "querySpecs": [
+    {
+      "id": "pep_prompt",
+      "segmentId": "professional_event_planners",
+      "intent": "professional_event_planner_prompt",
+      "query": "Task: PROFESSIONAL_EVENT_PLANNER_PARTNERSHIP_DISCOVERY | Discover actual planning companies, DMCs, meeting planners, and event-management businesses serving the hotel (verified hotel address, the hotel market) that can influence hotel bookings — guestroom blocks, wedding accommodation, banquets/catering, meeting space, private dining, or resort celebrations. | The commercial target is the planner / intermediary firm — not the conference, association, or host organization alone. | Conferences, galas, and published events are evidence of planner activity; use them to identify the credited planner, PCO, DMC, or event-management company. Do not substitute the conference brand for the planner identity. | Prioritize firms with evidence of recurring or multi-client event production and genuine hotel-sourcing influence — not directory popularity rankings. | Include planners physically based in the market AND planners demonstrably producing events in the destination even if their office is elsewhere. | Do NOT classify generic decorators, florists, photographers, equipment suppliers, or entertainment vendors as demand producers unless hotel-sourcing influence is independently evidenced. | Separate office location, verified service area, and actual event destination history. | Do not invent client counts, annual weddings, contracts, or production volume. | Local terminology: wedding planner; destination wedding planner; corporate event management company; event planning agency; meeting planner; boutique event producer | Channels: official_planner_websites, verified_planner_portfolios,"
+    },
+    {
+      "id": "pep_q1",
+      "segmentId": "professional_event_planners",
+      "intent": "planner_dmc_firm",
+      "query": "Toronto (\"event planner\" OR \"meeting planner\" OR \"wedding planner\" OR DMC OR \"destination management\" OR \"event management company\" OR PCO) (hotel OR \"room block\" OR banquet OR catering) (portfolio OR clients OR \"preferred hotels\") -\"annual conference agenda\""
+    },
+    {
+      "id": "pep_q2",
+      "segmentId": "professional_event_planners",
+      "intent": "planner_not_conference_brand",
+      "query": "Toronto (\"planned by\" OR \"produced by\" OR \"event management by\") (planner OR DMC OR \"event company\") (wedding OR corporate OR gala) hotel"
+    }
+  ],
+  "providerInvocations": [
+    {
+      "at": "2026-11-18T14:01:23.013Z",
+      "fingerprint": "290342d97c86",
+      "researchRunId": "gdi_disc_run_mwm6w7tn_2307de",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 3,
+      "costUsd": 0,
+      "retrievalMode": "FIXTURE",
+      "counted": true,
+      "stopReason": "FIXTURE_PROVIDER_ONLY"
+    },
+    {
+      "at": "2026-11-18T14:35:12.246Z",
+      "fingerprint": "9514a5509c66",
+      "researchRunId": "gdi_disc_run_mwm83plo_1697cb",
+      "providerCallCount": 0,
+      "freshRetrievals": 0,
+      "cacheHits": 3,
+      "costUsd": 0,
+      "retrievalMode": "FIXTURE",
+      "counted": true,
+      "stopReason": "FIXTURE_PROVIDER_ONLY"
+    }
+  ],
+  "cacheReferences": [
+    "C:\\Dev\\dealality\\my-operators-backend\\data\\group-demand-intelligence\\discovery-ledgers\\recH9h3McgMNFQEla\\four-hotel-14-workflow-full-e2e-v1.json"
+  ],
+  "rawCandidateReferences": [
+    "pep_prompt",
+    "pep_q1",
+    "pep_q2",
+    "hist_658b8b85a2cf",
+    "hist_09275b4f56ec",
+    "hist_a3fc5696da1f",
+    "hist_cc099311e617",
+    "hist_e7d387870e71",
+    "hist_b0950f8c2cc2",
+    "hist_12f92d10f718",
+    "hist_61f0ca0daba7",
+    "hist_06e86941f8cf",
+    "hist_5c9c6d9a092b",
+    "hist_2e9721e092f9",
+    "hist_0afbae296c3a",
+    "hist_98367313dd19",
+    "hist_f6ae3c9080d5"
+  ],
+  "candidateIds": [
+    "disc_e96af6c49016",
+    "disc_e5437e81fcbd",
+    "disc_6070e69a95d3",
+    "hist_658b8b85a2cf",
+    "hist_09275b4f56ec",
+    "hist_a3fc5696da1f",
+    "hist_cc099311e617",
+    "hist_e7d387870e71",
+    "hist_b0950f8c2cc2",
+    "hist_12f92d10f718",
+    "hist_61f0ca0daba7",
+    "hist_06e86941f8cf",
+    "hist_5c9c6d9a092b",
+    "hist_2e9721e092f9",
+    "hist_0afbae296c3a",
+    "hist_98367313dd19",
+    "hist_f6ae3c9080d5"
+  ],
+  "extractedCandidateIds": [
+    "disc_e96af6c49016",
+    "disc_e5437e81fcbd",
+    "disc_6070e69a95d3",
+    "hist_658b8b85a2cf",
+    "hist_09275b4f56ec",
+    "hist_a3fc5696da1f",
+    "hist_cc099311e617",
+    "hist_e7d387870e71",
+    "hist_b0950f8c2cc2",
+    "hist_12f92d10f718",
+    "hist_61f0ca0daba7",
+    "hist_06e86941f8cf",
+    "hist_5c9c6d9a092b",
+    "hist_2e9721e092f9",
+    "hist_0afbae296c3a",
+    "hist_98367313dd19",
+    "hist_f6ae3c9080d5"
+  ],
+  "deduplicatedCandidateIds": [
+    "disc_e96af6c49016",
+    "disc_e5437e81fcbd",
+    "disc_6070e69a95d3",
+    "hist_658b8b85a2cf",
+    "hist_09275b4f56ec",
+    "hist_a3fc5696da1f",
+    "hist_cc099311e617",
+    "hist_e7d387870e71",
+    "hist_b0950f8c2cc2",
+    "hist_12f92d10f718",
+    "hist_61f0ca0daba7",
+    "hist_06e86941f8cf",
+    "hist_5c9c6d9a092b",
+    "hist_2e9721e092f9",
+    "hist_0afbae296c3a",
+    "hist_98367313dd19",
+    "hist_f6ae3c9080d5"
+  ],
+  "unresolvedCandidateIds": [
+    "disc_e96af6c49016",
+    "disc_e5437e81fcbd",
+    "disc_6070e69a95d3",
+    "hist_658b8b85a2cf",
+    "hist_09275b4f56ec",
+    "hist_a3fc5696da1f",
+    "hist_cc099311e617",
+    "hist_e7d387870e71",
+    "hist_b0950f8c2cc2",
+    "hist_12f92d10f718",
+    "hist_61f0ca0daba7",
+    "hist_06e86941f8cf",
+    "hist_5c9c6d9a092b",
+    "hist_2e9721e092f9",
+    "hist_0afbae296c3a",
+    "hist_98367313dd19",
+    "hist_f6ae3c9080d5"
+  ],
+  "completedCandidateIds": [],
+  "evidenceProvenance": [
+    {
+      "candidateId": "hist_658b8b85a2cf",
+      "evidenceUrls": [
+        "https://www.theideahunter.co/case-studies/insulate-america",
+        "https://www.theideahunter.co/case-studies/bayshore-healthcare"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_86186496b4fa45c7aec0e9d5fd9a33eb",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:23.013Z"
+    },
+    {
+      "candidateId": "hist_09275b4f56ec",
+      "evidenceUrls": [
+        "https://mccevents.ca/about/",
+        "https://mccevents.ca/destination-management/",
+        "https://mccevents.ca/business-events-strategic-meetings/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_86186496b4fa45c7aec0e9d5fd9a33eb",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:23.013Z"
+    },
+    {
+      "candidateId": "hist_a3fc5696da1f",
+      "evidenceUrls": [
+        "https://traneventmanagement.com/venue-sourcing/",
+        "https://traneventmanagement.com/case-studies/an-authentic-toronto-from-arrival-to-departure/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_86186496b4fa45c7aec0e9d5fd9a33eb",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:23.013Z"
+    },
+    {
+      "candidateId": "hist_cc099311e617",
+      "evidenceUrls": [
+        "https://keystoneevents.ca/corporate-event-planner-toronto.html"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_86186496b4fa45c7aec0e9d5fd9a33eb",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:23.013Z"
+    },
+    {
+      "candidateId": "hist_e7d387870e71",
+      "evidenceUrls": [
+        "https://www.mgrouptoronto.com/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_86186496b4fa45c7aec0e9d5fd9a33eb",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:23.013Z"
+    },
+    {
+      "candidateId": "hist_b0950f8c2cc2",
+      "evidenceUrls": [
+        "https://www.amconsultingltd.ca/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_86186496b4fa45c7aec0e9d5fd9a33eb",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:23.013Z"
+    },
+    {
+      "candidateId": "hist_12f92d10f718",
+      "evidenceUrls": [
+        "https://eternaconcepts.com/services/corporate-events-toronto"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_86186496b4fa45c7aec0e9d5fd9a33eb",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:23.013Z"
+    },
+    {
+      "candidateId": "hist_61f0ca0daba7",
+      "evidenceUrls": [
+        "https://www.theconduit.ca/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_86186496b4fa45c7aec0e9d5fd9a33eb",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:23.013Z"
+    },
+    {
+      "candidateId": "hist_06e86941f8cf",
+      "evidenceUrls": [
+        "https://museeventco.ca/",
+        "https://museeventco.ca/services"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_86186496b4fa45c7aec0e9d5fd9a33eb",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:23.013Z"
+    },
+    {
+      "candidateId": "hist_5c9c6d9a092b",
+      "evidenceUrls": [
+        "https://www.devotedtoyou.ca/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_86186496b4fa45c7aec0e9d5fd9a33eb",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:23.013Z"
+    },
+    {
+      "candidateId": "hist_2e9721e092f9",
+      "evidenceUrls": [
+        "https://yellowhouseevents.com/corporate-event-planning/",
+        "https://yellowhouseevents.com/corporate-retreat-planners/",
+        "https://yellowhouseevents.com/about/",
+        "https://yellowhouseevents.com/contact-us/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_97f65aa07333401da4322e28b7cf15a2",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:23.013Z"
+    },
+    {
+      "candidateId": "hist_0afbae296c3a",
+      "evidenceUrls": [
+        "https://theexperienceagency.ca/",
+        "https://theexperienceagency.ca/services.html",
+        "https://theexperienceagency.ca/about.html",
+        "https://theexperienceagency.ca/contact.html"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_97f65aa07333401da4322e28b7cf15a2",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:23.013Z"
+    },
+    {
+      "candidateId": "hist_98367313dd19",
+      "evidenceUrls": [
+        "https://www.eclecticevents.com/toronto/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_97f65aa07333401da4322e28b7cf15a2",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:23.013Z"
+    },
+    {
+      "candidateId": "hist_f6ae3c9080d5",
+      "evidenceUrls": [
+        "https://www.artofcelebrations.com/services/aoc-destination-wedding-planner-in-toronto"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_97f65aa07333401da4322e28b7cf15a2",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:01:23.013Z"
+    },
+    {
+      "candidateId": "hist_658b8b85a2cf",
+      "evidenceUrls": [
+        "https://www.theideahunter.co/case-studies/insulate-america",
+        "https://www.theideahunter.co/case-studies/bayshore-healthcare"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_86186496b4fa45c7aec0e9d5fd9a33eb",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.246Z"
+    },
+    {
+      "candidateId": "hist_09275b4f56ec",
+      "evidenceUrls": [
+        "https://mccevents.ca/about/",
+        "https://mccevents.ca/destination-management/",
+        "https://mccevents.ca/business-events-strategic-meetings/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_86186496b4fa45c7aec0e9d5fd9a33eb",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.246Z"
+    },
+    {
+      "candidateId": "hist_a3fc5696da1f",
+      "evidenceUrls": [
+        "https://traneventmanagement.com/venue-sourcing/",
+        "https://traneventmanagement.com/case-studies/an-authentic-toronto-from-arrival-to-departure/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_86186496b4fa45c7aec0e9d5fd9a33eb",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.246Z"
+    },
+    {
+      "candidateId": "hist_cc099311e617",
+      "evidenceUrls": [
+        "https://keystoneevents.ca/corporate-event-planner-toronto.html"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_86186496b4fa45c7aec0e9d5fd9a33eb",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.246Z"
+    },
+    {
+      "candidateId": "hist_e7d387870e71",
+      "evidenceUrls": [
+        "https://www.mgrouptoronto.com/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_86186496b4fa45c7aec0e9d5fd9a33eb",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.246Z"
+    },
+    {
+      "candidateId": "hist_b0950f8c2cc2",
+      "evidenceUrls": [
+        "https://www.amconsultingltd.ca/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_86186496b4fa45c7aec0e9d5fd9a33eb",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.246Z"
+    },
+    {
+      "candidateId": "hist_12f92d10f718",
+      "evidenceUrls": [
+        "https://eternaconcepts.com/services/corporate-events-toronto"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_86186496b4fa45c7aec0e9d5fd9a33eb",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.246Z"
+    },
+    {
+      "candidateId": "hist_61f0ca0daba7",
+      "evidenceUrls": [
+        "https://www.theconduit.ca/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_86186496b4fa45c7aec0e9d5fd9a33eb",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.246Z"
+    },
+    {
+      "candidateId": "hist_06e86941f8cf",
+      "evidenceUrls": [
+        "https://museeventco.ca/",
+        "https://museeventco.ca/services"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_86186496b4fa45c7aec0e9d5fd9a33eb",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.246Z"
+    },
+    {
+      "candidateId": "hist_5c9c6d9a092b",
+      "evidenceUrls": [
+        "https://www.devotedtoyou.ca/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_86186496b4fa45c7aec0e9d5fd9a33eb",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.246Z"
+    },
+    {
+      "candidateId": "hist_2e9721e092f9",
+      "evidenceUrls": [
+        "https://yellowhouseevents.com/corporate-event-planning/",
+        "https://yellowhouseevents.com/corporate-retreat-planners/",
+        "https://yellowhouseevents.com/about/",
+        "https://yellowhouseevents.com/contact-us/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_97f65aa07333401da4322e28b7cf15a2",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.246Z"
+    },
+    {
+      "candidateId": "hist_0afbae296c3a",
+      "evidenceUrls": [
+        "https://theexperienceagency.ca/",
+        "https://theexperienceagency.ca/services.html",
+        "https://theexperienceagency.ca/about.html",
+        "https://theexperienceagency.ca/contact.html"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_97f65aa07333401da4322e28b7cf15a2",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.246Z"
+    },
+    {
+      "candidateId": "hist_98367313dd19",
+      "evidenceUrls": [
+        "https://www.eclecticevents.com/toronto/"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_97f65aa07333401da4322e28b7cf15a2",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.246Z"
+    },
+    {
+      "candidateId": "hist_f6ae3c9080d5",
+      "evidenceUrls": [
+        "https://www.artofcelebrations.com/services/aoc-destination-wedding-planner-in-toronto"
+      ],
+      "provenance": {
+        "campaignId": "four-hotel-14-workflow-full-e2e-v1",
+        "exaRunId": "agent_run_97f65aa07333401da4322e28b7cf15a2",
+        "replayOnly": true,
+        "freshRetrieval": false
+      },
+      "at": "2026-11-18T14:35:12.246Z"
+    }
+  ],
+  "rejectionReasons": [],
+  "remainingResearchGaps": [
+    "live_provider_not_executed",
+    "discovery_not_completed"
+  ],
+  "providerUsage": {
+    "attempts": 2,
+    "liveCalls": 0,
+    "cacheHits": 6,
+    "costUsd": 0,
+    "byProvider": {
+      "FIXTURE": {
+        "calls": 0,
+        "costUsd": 0
+      }
+    }
+  },
+  "stopReason": "FIXTURE_PROVIDER_ONLY",
+  "lastSuccessfulCheckpoint": {
+    "kind": "FIXTURE_CHECKPOINT",
+    "at": "2026-11-18T14:35:12.246Z",
+    "fingerprint": "9514a5509c66",
+    "researchRunId": "gdi_disc_run_mwm83plo_1697cb",
+    "executionStatus": "EXECUTION_PARTIAL",
+    "providerRunIds": [],
+    "extractedCount": 17,
+    "costUsdCumulative": 0
+  },
+  "lastCheckpointAt": "2026-11-18T14:35:12.246Z",
+  "researchActions": [
+    {
+      "at": "2026-11-18T14:01:23.013Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_PARTIAL",
+      "fingerprint": "290342d97c86",
+      "countedNewCost": 0
+    },
+    {
+      "at": "2026-11-18T14:35:12.246Z",
+      "action": "discovery_execution_checkpoint",
+      "executionStatus": "EXECUTION_PARTIAL",
+      "fingerprint": "9514a5509c66",
+      "countedNewCost": 0
+    }
+  ],
+  "publicationOccurred": false,
+  "airtableWrites": 0,
+  "createdAt": "2026-11-18T14:01:23.012Z",
+  "updatedAt": "2026-11-18T14:35:12.246Z"
+}

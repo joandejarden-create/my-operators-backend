@@ -1,0 +1,347 @@
+{
+  "ok": true,
+  "executed": false,
+  "fullE2eComplete": false,
+  "fullE2eCompleteReason": "mode_not_full_e2e",
+  "version": "gdi-scaling-companies-hotel-runner-v1",
+  "discoveryVersion": "gdi-autonomous-demand-discovery-v5",
+  "researchVersion": "gdi-scaling-companies-research-v1",
+  "publicationVersion": "gdi-scaling-companies-full-e2e-publication-v1",
+  "stages": [
+    "hotel_profile",
+    "discovery",
+    "organization_identity_resolution",
+    "net_new_reconciliation",
+    "commercial_mechanism_screening",
+    "ors_longform_research",
+    "buyer_and_contact_intelligence",
+    "intelligent_investigation_loop",
+    "commercial_qualification",
+    "gold_standard_brief_generation",
+    "canonical_opportunity_payload",
+    "airtable_publication",
+    "customer_share_verification"
+  ],
+  "startedAt": "2026-11-18T14:01:22.178Z",
+  "finishedAt": "2026-11-18T14:01:22.713Z",
+  "config": {
+    "hotelId": "recH9h3McgMNFQEla",
+    "mode": "preview",
+    "authorizePaidResearch": false,
+    "authorizePublication": false,
+    "authorizeProductionWrites": false,
+    "applyProductionWrites": false,
+    "probeLiveShare": false,
+    "budgetCeilingUsd": 0,
+    "maxCandidates": 2,
+    "runId": "sc_run_recH9h3McgMNFQEla_2026-11-18T14-01-22-178Z",
+    "reportDir": "C:\\Dev\\dealality\\my-operators-backend\\reports\\gdi-scaling-companies-hotel-runner-v1\\sc_run_recH9h3McgMNFQEla_2026-11-18T14-01-22-178Z"
+  },
+  "hotel": {
+    "hotelId": "recH9h3McgMNFQEla",
+    "displayName": "Radisson Blu Toronto Downtown",
+    "city": "Toronto",
+    "country": "Canada",
+    "demandTerritory": {
+      "label": "Toronto",
+      "country": "Canada",
+      "includes": [
+        "Harbourfront / Queens Quay",
+        "Toronto",
+        "Toronto"
+      ],
+      "evaluationQuestion": "Could Radisson Blu Toronto Downtown realistically capture this demand given verified inventory, facilities, and catchment — without assuming market-wide capabilities?"
+    },
+    "totalGuestrooms": 157,
+    "meetingRoomsIndoor": 20,
+    "totalMeetingSpaceSqFt": 11000,
+    "demandAnchors": [],
+    "targetSegments": []
+  },
+  "applicability": {
+    "applicable": true,
+    "researchCity": "Toronto",
+    "inventory": {
+      "rooms": 157,
+      "meetings": 20,
+      "meetingSqFt": 11000
+    },
+    "rationale": "Verified identity, geography, and inventory support hotel-specific scaling-company discovery. Opportunity fit is evaluated per candidate — empty segment inventory does not block research."
+  },
+  "persistenceMode": "airtable",
+  "opportunitySource": "airtable",
+  "opportunityCount": 36,
+  "preflight": {
+    "hotelResolved": true,
+    "applicabilityOk": true,
+    "strategiesPresent": true,
+    "pathwaysPresent": true,
+    "pricingOk": true,
+    "paidContactGuardOk": true,
+    "orsCallPathOk": true,
+    "reviewedProspectHotelEnabled": false,
+    "reviewedProspectLocalPreflight": {
+      "ok": false,
+      "hotelId": "recH9h3McgMNFQEla",
+      "publicationEnabled": true,
+      "enabled": false,
+      "usingBuiltInFallback": false,
+      "inExplicitEnvAllowlist": false,
+      "explicitAllowlistCount": 33,
+      "requireExplicitEnvAllowlist": false,
+      "blockerCode": "HOTEL_NOT_ON_REVIEWED_PROSPECT_ALLOWLIST",
+      "requiredAction": "Enable hotel recH9h3McgMNFQEla for reviewed-prospect publication (GDI_REVIEWED_PROSPECT_PUBLICATION_V1 + allowlist).",
+      "note": "Production share list uses Railway env allowlist. Local built-in REVIEWED_PROSPECT_HOTEL_IDS does not update Railway."
+    },
+    "reviewedProspectProductionSharePreflight": {
+      "ok": false,
+      "hotelId": "recH9h3McgMNFQEla",
+      "publicationEnabled": true,
+      "enabled": false,
+      "usingBuiltInFallback": false,
+      "inExplicitEnvAllowlist": false,
+      "explicitAllowlistCount": 33,
+      "requireExplicitEnvAllowlist": true,
+      "blockerCode": "HOTEL_ABSENT_FROM_REVIEWED_PROSPECT_ALLOWLIST_ENV",
+      "requiredAction": "Append recH9h3McgMNFQEla to Railway production GDI_REVIEWED_PROSPECT_HOTEL_IDS while preserving every existing hotel ID.",
+      "note": "Production share list uses Railway env allowlist. Local built-in REVIEWED_PROSPECT_HOTEL_IDS does not update Railway."
+    },
+    "emptyScalingInventoryOk": true,
+    "existingScalingCount": 0,
+    "ledgerPath": "C:\\Dev\\dealality\\my-operators-backend\\reports\\gdi-scaling-companies-hotel-runner-v1\\sc_run_recH9h3McgMNFQEla_2026-11-18T14-01-22-178Z\\ledgers\\scaling-companies-run-ledger-sc_run_recH9h3McgMNFQEla_2026-11-18T14-01-22-178Z.json",
+    "ledgerSpentUsd": 0,
+    "ledgerBaselineSpentUsd": 0,
+    "runSpentUsd": 0,
+    "budgetCeilingUsd": 0,
+    "authorizationStates": {
+      "PROFILE_READY": true,
+      "RESEARCH_AUTHORIZED": false,
+      "PUBLICATION_AUTHORIZED": false,
+      "WEEKLY_ACTIVE": false
+    },
+    "inUniversalAdpGdiRoster": true,
+    "universalPreviewReadiness": {
+      "shareReady": false,
+      "missingPrerequisites": []
+    },
+    "fullE2eNotReadyWarning": "Enable hotel recH9h3McgMNFQEla for reviewed-prospect publication (GDI_REVIEWED_PROSPECT_PUBLICATION_V1 + allowlist). | Append recH9h3McgMNFQEla to Railway production GDI_REVIEWED_PROSPECT_HOTEL_IDS while preserving every existing hotel ID."
+  },
+  "fullE2ePublicationGate": {
+    "version": "gdi-full-e2e-publication-gate-v1",
+    "profileReadyForResearch": true,
+    "localReviewedProspectAllowlistReady": false,
+    "productionExplicitAllowlistReady": false,
+    "readyForAuthorizedFullE2ePublication": false,
+    "readyForLiveCustomerShareClaims": false,
+    "authorizationStates": {
+      "PROFILE_READY": true,
+      "RESEARCH_AUTHORIZED": false,
+      "PUBLICATION_AUTHORIZED": false,
+      "WEEKLY_ACTIVE": false
+    },
+    "inUniversalAdpGdiRoster": true,
+    "inAdpCommissioned": false,
+    "universalPreviewReadiness": {
+      "version": "gdi-adp-universal-hotel-roster-v1",
+      "hotelId": "recH9h3McgMNFQEla",
+      "auth": {
+        "version": "gdi-adp-universal-hotel-roster-v1",
+        "hotelId": "recH9h3McgMNFQEla",
+        "inUniversalRoster": true,
+        "inAdpCommissioned": false,
+        "gdiOnlyNotInAdp": true,
+        "states": {
+          "PROFILE_READY": true,
+          "RESEARCH_AUTHORIZED": false,
+          "PUBLICATION_AUTHORIZED": false,
+          "WEEKLY_ACTIVE": false
+        },
+        "notes": [
+          "Existing GDI hotel preserved though not in current ADP commissioned roster.",
+          "PUBLICATION_AUTHORIZED requires reviewed-prospect allowlist — not ADP membership.",
+          "RESEARCH_AUTHORIZED requires explicit run authorizePaidResearch + budget.",
+          "WEEKLY_ACTIVE requires GDI_WEEKLY_DEEP_RESEARCH_ENABLED=1 and hotel on GDI_WEEKLY_ACTIVE_HOTEL_IDS."
+        ]
+      },
+      "share": {
+        "ready": false,
+        "tokenId": null,
+        "source": null
+      },
+      "publication": {
+        "local": {
+          "ok": false,
+          "hotelId": "recH9h3McgMNFQEla",
+          "publicationEnabled": true,
+          "enabled": false,
+          "usingBuiltInFallback": false,
+          "inExplicitEnvAllowlist": false,
+          "explicitAllowlistCount": 33,
+          "requireExplicitEnvAllowlist": false,
+          "blockerCode": "HOTEL_NOT_ON_REVIEWED_PROSPECT_ALLOWLIST",
+          "requiredAction": "Enable hotel recH9h3McgMNFQEla for reviewed-prospect publication (GDI_REVIEWED_PROSPECT_PUBLICATION_V1 + allowlist).",
+          "note": "Production share list uses Railway env allowlist. Local built-in REVIEWED_PROSPECT_HOTEL_IDS does not update Railway."
+        },
+        "explicitEnv": {
+          "ok": false,
+          "hotelId": "recH9h3McgMNFQEla",
+          "publicationEnabled": true,
+          "enabled": false,
+          "usingBuiltInFallback": false,
+          "inExplicitEnvAllowlist": false,
+          "explicitAllowlistCount": 33,
+          "requireExplicitEnvAllowlist": true,
+          "blockerCode": "HOTEL_ABSENT_FROM_REVIEWED_PROSPECT_ALLOWLIST_ENV",
+          "requiredAction": "Append recH9h3McgMNFQEla to local process env GDI_REVIEWED_PROSPECT_HOTEL_IDS while preserving every existing hotel ID.",
+          "note": "Production share list uses Railway env allowlist. Local built-in REVIEWED_PROSPECT_HOTEL_IDS does not update Railway."
+        },
+        "railway": {
+          "ok": false,
+          "blockerCode": "RAILWAY_ENV_NOT_PROBED",
+          "requiredAction": "Probe Railway GDI_REVIEWED_PROSPECT_HOTEL_IDS (preserve existing IDs) before claiming production publication readiness.",
+          "note": "Local allowlist ≠ Railway production allowlist."
+        }
+      },
+      "missingPrerequisites": [],
+      "previewOkForPaidExecution": true,
+      "note": "Preview must report these blockers before any paid Full E2E spend."
+    },
+    "note": "ADP membership enables profile onboarding only. PUBLICATION_AUTHORIZED requires reviewed-prospect allowlist — never auto-append from ADP. RESEARCH_AUTHORIZED requires explicit run budget. WEEKLY_ACTIVE is separate.",
+    "missingConfiguration": [
+      "Enable hotel recH9h3McgMNFQEla for reviewed-prospect publication (GDI_REVIEWED_PROSPECT_PUBLICATION_V1 + allowlist).",
+      "Append recH9h3McgMNFQEla to Railway production GDI_REVIEWED_PROSPECT_HOTEL_IDS while preserving every existing hotel ID."
+    ],
+    "blockerCodes": [
+      "HOTEL_NOT_ON_REVIEWED_PROSPECT_ALLOWLIST",
+      "HOTEL_ABSENT_FROM_REVIEWED_PROSPECT_ALLOWLIST_ENV"
+    ]
+  },
+  "blockers": [],
+  "reconciliation": {
+    "existingScalingCount": 0,
+    "existingPublished": [],
+    "existingOther": [],
+    "netNewThisRun": [],
+    "lifecycle": {
+      "version": "gdi-scaling-companies-intelligent-lifecycle-v1",
+      "hotelId": "recH9h3McgMNFQEla",
+      "decisionCounts": {},
+      "researchQueueSize": 0,
+      "scheduleNetNewDiscovery": true,
+      "netNewSlots": 2,
+      "doNotRediscoverCount": 0
+    },
+    "doNotRediscoverAsNetNew": [],
+    "note": "Zero existing scaling opportunities is a valid starting state and does not block discovery. Dry-run/preflight does not mint NET_NEW. Published orgs are excluded from NET_NEW via lifecycle doNotRediscoverAsNetNew + findExistingScalingCompanyMatches. HOLD/CONTINUE/REFRESH decisions drive research queue before new discovery."
+  },
+  "intelligentLifecycle": {
+    "version": "gdi-scaling-companies-intelligent-lifecycle-v1",
+    "summary": {
+      "version": "gdi-scaling-companies-intelligent-lifecycle-v1",
+      "hotelId": "recH9h3McgMNFQEla",
+      "decisionCounts": {},
+      "researchQueueSize": 0,
+      "scheduleNetNewDiscovery": true,
+      "netNewSlots": 2,
+      "doNotRediscoverCount": 0
+    },
+    "researchQueue": [],
+    "discoveryPlan": {
+      "scheduleNetNewDiscovery": true,
+      "netNewSlots": 2,
+      "doNotRediscoverAsNetNew": [],
+      "note": "Published accounts must never be rediscovered as GENUINELY_NET_NEW. HOLD continuation and justified refresh take queue priority over raw discovery."
+    }
+  },
+  "funnel": null,
+  "genuinelyNetNewCount": 0,
+  "publicationReadyInternalCount": 0,
+  "publicationReadiness": [],
+  "discovery": {
+    "attempted": false,
+    "searches": [],
+    "hits": 0,
+    "skippedReason": "preview_or_preflight",
+    "rawHitCount": 0
+  },
+  "handoff": null,
+  "ors": {
+    "path": {
+      "ok": true,
+      "checks": {
+        "runDeepResearchExported": true,
+        "matureOpportunityCalled": true,
+        "matureOpportunityExported": true,
+        "runDeepResearchFn": true
+      },
+      "entrypoint": "runDeepResearchOnExistingGdiOpportunity → matureOpportunity"
+    },
+    "results": [],
+    "plannedOnly": true
+  },
+  "buyerIntelligence": [],
+  "investigationLoop": null,
+  "contacts": [],
+  "spending": {
+    "ledgerPath": "C:\\Dev\\dealality\\my-operators-backend\\reports\\gdi-scaling-companies-hotel-runner-v1\\sc_run_recH9h3McgMNFQEla_2026-11-18T14-01-22-178Z\\ledgers\\scaling-companies-run-ledger-sc_run_recH9h3McgMNFQEla_2026-11-18T14-01-22-178Z.json",
+    "ceilingUsd": 0,
+    "spentUsd": 0,
+    "runSpentUsd": 0,
+    "ledgerBaselineSpentUsd": 0,
+    "aggregateSpentUsd": 0,
+    "sharedCampaignLedger": false,
+    "remainingUsd": 0
+  },
+  "publication": {
+    "version": "gdi-scaling-companies-full-e2e-publication-v1",
+    "status": "PREVIEW_SKIPPED",
+    "authorizePublication": false,
+    "note": "Preview mode does not publish. Re-run Mode FullE2E with -AuthorizePublication to publish.",
+    "fullE2eComplete": false
+  },
+  "productionWrite": {
+    "attempted": false,
+    "applied": false,
+    "publishedIds": [],
+    "status": "PREVIEW_SKIPPED"
+  },
+  "strategiesSample": [
+    {
+      "pathway": "TRIGGER_LED",
+      "researchQuestion": "\"Toronto\" (\"opens office\" OR \"opened an office\" OR \"new office\" OR \"regional hub\" OR headquarters) (company OR corporate OR firm) (training OR meetings OR lodging OR \"project team\") -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo"
+    },
+    {
+      "pathway": "ORGANIZATION_LED",
+      "researchQuestion": "\"Toronto\" (company OR corporate) (\"sales kickoff\" OR offsite OR \"leadership meeting\" OR \"customer training\" OR \"project team\") (hotel OR lodging OR meetings) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo"
+    },
+    {
+      "pathway": "TRIGGER_LED",
+      "researchQuestion": "(\"Toronto\" OR \"Harbourfront / Queens Quay\" OR \"Toronto\" OR \"Toronto\") (\"incentive travel\" OR \"incentive trip\" OR \"incentive program\" OR \"sales incentive\" OR \"employee incentive\") (company OR corporate OR \"sales team\" OR distributor) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo"
+    },
+    {
+      "pathway": "TRIGGER_LED",
+      "researchQuestion": "(\"Toronto\" OR \"Harbourfront / Queens Quay\" OR \"Toronto\" OR \"Toronto\") (\"sales kickoff\" OR \"annual sales meeting\" OR \"leadership retreat\" OR \"corporate retreat\" OR \"partner summit\" OR \"distributor meeting\") (company OR corporate OR brand) -hotel -hoteles -resort -resorts -dmc -\"destination management\" -oasis -iberostar -marriott -hilton -hyatt -kempinski -\"city express\" -fiesta -allinclusive -\"todo incluido\" promo"
+    },
+    {
+      "pathway": "ORGANIZATION_LED",
+      "researchQuestion": "Toronto scale-up OR expanding company operations training program OR project team lodging needs"
+    },
+    {
+      "pathway": "ORGANIZATION_LED",
+      "researchQuestion": "Toronto Toronto company with multi-site project mobilization lodging OR integration offsite OR corporate retreat"
+    },
+    {
+      "pathway": "TRIGGER_LED",
+      "researchQuestion": "Toronto \"opens office\" OR \"expanding workforce\" OR \"new headquarters\" OR relocation training OR offsite 2026 OR 2027"
+    },
+    {
+      "pathway": "TRIGGER_LED",
+      "researchQuestion": "Toronto Toronto merger OR integration OR relocation project team lodging OR kickoff meeting OR corporate retreat"
+    }
+  ],
+  "localTerms": [
+    "toronto",
+    "radisson blu toronto downtown",
+    "harbourfront / queens quay"
+  ]
+}
