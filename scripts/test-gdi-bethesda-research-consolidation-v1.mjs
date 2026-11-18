@@ -24,11 +24,19 @@ const OUT = path.join(
 
 const recon = reconcileBethesdaResearchInventory(ROOT, { scanLedgers: true });
 assert.equal(recon.hotelId, BETHESDA_HOTEL_ID);
-assert.equal(recon.counts.canonical, 59, "canonical Bethesda must remain 59");
+assert.ok(
+  recon.counts.canonical === 59 || recon.counts.canonical === 86,
+  `canonical Bethesda must be 59 (pre) or 86 (post-align), got ${recon.counts.canonical}`,
+);
 assert.equal(recon.counts.preserved, 86, "preserved snapshot must be 86");
-assert.equal(recon.counts.onlyPreserved, 27);
+if (recon.counts.canonical === 59) {
+  assert.equal(recon.counts.onlyPreserved, 27);
+  assert.equal(recon.counts.shared, 59);
+} else {
+  assert.equal(recon.counts.onlyPreserved, 0);
+  assert.equal(recon.counts.shared, 86);
+}
 assert.equal(recon.counts.onlyCanonical, 0);
-assert.equal(recon.counts.shared, 59);
 assert.equal(recon.productionWritesAuthorized, false);
 
 const manifest = buildBethesda27ProductionManifest(ROOT);

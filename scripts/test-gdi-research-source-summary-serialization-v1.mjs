@@ -133,7 +133,8 @@ for (const e of manifest.entries) {
 }
 assert.equal(objectObjectHits, 0);
 
-// Baseline 659 dry field builds — no Airtable I/O
+// Baseline research dry field builds — no Airtable I/O
+// 659 pre Bethesda+27 align; 686 after canonical 86 alignment.
 const hotels = listCanonicalResearchHotels(ROOT);
 let baselineBuilt = 0;
 let baselineBad = 0;
@@ -148,7 +149,10 @@ for (const hotel of hotels) {
     }
   }
 }
-assert.equal(baselineBuilt, 659);
+assert.ok(
+  baselineBuilt === 659 || baselineBuilt === 686,
+  `expected baseline 659 or 686, got ${baselineBuilt}`,
+);
 assert.equal(baselineBad, 0, "baseline research field builds must not emit [object Object]");
 
 // Persist corrected manifest + repair note (non-mutating vs Airtable)
