@@ -196,6 +196,19 @@ Score **Arm B − Arm A** only for challenger-confirmed items. Assess lift **aga
 | **ITERATE** | Some challenger-confirmed lift **or** clear reasoning-only quality gains **but** <2 material lifts **or** weak/URL theater **or** cost not justified | Refine agent planning; re-test under parity |
 | **REJECT** | No confirmed commercial lift and no systematic quality gain, **or** increased false positives / unsupported sales-ready pressure | Do not integrate agentic research on this basis |
 
+### Evidence-grounded `materialLift` (binding)
+
+`materialLift` requires independently verified incremental commercial value:
+
+- more **verified named commercial contacts**, and/or
+- more **genuinely-new verified demand evidence**
+
+These alone do **not** count as material commercial lift: `drawerReady` becoming true, formatting/narrative polish, recovery overlays, fewer retrievals, rubric totals, eligibility-only changes, or existing facts repackaged as new findings.
+
+Efficiency (fetch/time savings) and correct demotions are tracked **separately**. The automated decision **must not return ADOPT** when evidence-grounded material commercial lifts are zero (aligns with independent evaluation).
+
+Evaluator module: `lib/group-demand-intelligence/experiments/gdi-ai-agent-wave1-evidence-grounded-evaluator-v1.js`. Offline rescore: `npm run gdi:ai-agent-wave1-evidence-grounded-rescore-v1`.
+
 ### Wave 0 rule
 
 Wave 0 may only support **ITERATE** or **REJECT** for reasoning-only hypotheses. It **cannot** support **ADOPT**.
