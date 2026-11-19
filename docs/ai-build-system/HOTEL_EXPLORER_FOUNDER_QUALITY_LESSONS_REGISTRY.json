@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.14",
+  "version": "hotel-explorer-founder-quality-lessons-v1.15",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -255,6 +255,15 @@
       "sharedComponent": "guest-sentiment-model-v1.js; hotel-intelligence-workspace.js renderGuestSentimentSection; hotel-explorer.css hiw-rep-*",
       "regressionTest": "he_guest_sentiment_brand_operator_gates / test:he-guest-sentiment-brand-operator-v1",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v13-rep-scorecards.png; quality-v13-rep-category.png; quality-v13-rep-insights.png; quality-v13-rep-methodology.png; quality-v13-rep-empty-kgpv.png; reports/hotel-explorer/HE-GUEST-REPUTATION-DASHBOARD-V13.md"
+    },
+    {
+      "id": "HE-QL-026",
+      "originalProblem": "Ownership network showed overflowing node text, crossed edges, auto-loaded people/portfolio, and unreadable Show All expansion",
+      "rootCause": "Fixed small node boxes with truncated labels, straight-line edges through clusters, default includePeople=true, and unbounded sponsor hotel dump",
+      "approvedStandard": "Hotel-centered default (hotel/legal/economic/operator/brand; UBO when known); content-measured wrapped nodes ≥13px; ownership above / ops-brand below; progressive Explore Key People / Related Hotels with caps; short edge tags + detail panel; Brand Development filter; no invented capital/financing nodes; no Expand sponsor hotels unbounded dump",
+      "sharedComponent": "ownership-control-network-v1.js; he-ownership-control-network-v1.js; hotel-explorer.css ocn-*",
+      "regressionTest": "test:he-ownership-control-network-v1 / he_ownership_control_network_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v14-ocn-default.png; quality-v14-ocn-people.png; quality-v14-ocn-hotels.png; quality-v14-ocn-detail.png; reports/hotel-explorer/HE-STAKEHOLDER-NETWORK-READABILITY-V14.md"
     }
   ]
 }

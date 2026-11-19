@@ -1523,9 +1523,9 @@
   function renderOwnershipNetworkSection() {
     return (
       '<section class="hiw-section hiw-section--ocn" data-ocn-section="network">' +
-      '<h3 class="hiw-section__h">Interactive Ownership &amp; Control Network</h3>' +
-      '<p class="hiw-prose hiw-prose--quiet">Typed relationships only. Operator and brand are never drawn as ownership. Expand organizations on demand.</p>' +
-      '<div class="ocn-host" data-ocn-host="1" aria-label="Ownership and control network"></div>' +
+      '<h3 class="hiw-section__h">Hotel Stakeholder &amp; Deal Relationship Network</h3>' +
+      '<p class="hiw-prose hiw-prose--quiet">Hotel-centered default view. Ownership above · Operations &amp; Brand below. Explore people and related hotels progressively — operator/brand are never drawn as ownership.</p>' +
+      '<div class="ocn-host" data-ocn-host="1" aria-label="Hotel stakeholder and deal relationship network"></div>' +
       "</section>"
     );
   }

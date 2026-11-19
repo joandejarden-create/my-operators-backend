@@ -1,21 +1,44 @@
 /**
- * Interactive Ownership & Control Network (browser).
- * Hierarchical SVG layout — no force-directed drift.
- * Typed edges only; operator/brand never drawn as ownership.
+ * Hotel Stakeholder & Deal Relationship Network (browser).
+ * Layered SVG layout — content-measured nodes, progressive disclosure, bounded expansion.
+ * Operator/brand never drawn as ownership.
  */
 (function (global) {
   "use strict";
 
   var VERSION = "ownership-control-network-v1";
-  var MAX_EXPANSION_HOTELS = 12;
+  var MAX_EXPANSION_HOTELS = 8;
+  var MAX_VISIBLE_PEOPLE = 5;
+  var MIN_LABEL_PX = 13;
 
   var EDGE_LABELS = {
     LEGALLY_OWNED_BY: "Legally owned by",
     ECONOMICALLY_CONTROLLED_BY: "Economically controlled by",
+    ULTIMATE_CONTROL: "Ultimate control",
     MANAGED_BY: "Managed by",
     BRANDED_AS: "Branded as",
     ASSOCIATED_PERSON: "Key person",
-    PORTFOLIO_HOTEL: "Associated hotel",
+    PORTFOLIO_HOTEL: "Related hotel",
+    ASSET_MANAGED_BY: "Asset managed by",
+    FINANCED_BY: "Financed by",
+    DEVELOPED_BY: "Developed by",
+    ADVISED_BY: "Advised by",
+    EQUITY_PARTNER: "Equity partner",
+  };
+
+  var SHORT_EDGE = {
+    LEGALLY_OWNED_BY: "Legal",
+    ECONOMICALLY_CONTROLLED_BY: "Economic",
+    ULTIMATE_CONTROL: "UBO",
+    MANAGED_BY: "Managed",
+    BRANDED_AS: "Brand",
+    ASSOCIATED_PERSON: "Person",
+    PORTFOLIO_HOTEL: "Hotel",
+    ASSET_MANAGED_BY: "Asset mgmt",
+    FINANCED_BY: "Financing",
+    DEVELOPED_BY: "Developer",
+    ADVISED_BY: "Advisor",
+    EQUITY_PARTNER: "Equity",
   };
 
   function esc(v) {
@@ -69,21 +92,62 @@
     return "Unresolved";
   }
 
+  function wrapNodeLabel(label, maxChars, maxLines) {
+    maxChars = maxChars || 22;
+    maxLines = maxLines || 3;
+    var raw = String(label || "").trim();
+    if (!raw) return [""];
+    var words = raw.split(/\s+/);
+    var lines = [];
+    var cur = "";
+    for (var i = 0; i < words.length; i++) {
+      var w = words[i];
+      var next = cur ? cur + " " + w : w;
+      if (next.length <= maxChars) {
+        cur = next;
+      } else {
+        if (cur) lines.push(cur);
+        cur = w.length > maxChars ? w.slice(0, maxChars - 1) + "…" : w;
+        if (lines.length >= maxLines - 1) break;
+      }
+    }
+    if (cur && lines.length < maxLines) lines.push(cur);
+    return lines.length ? lines : [raw.slice(0, maxChars)];
+  }
+
+  function measureNodeBox(node) {
+    var focus = !!(node && node.focus);
+    var width = focus ? 248 : 212;
+    var lines = wrapNodeLabel(node && node.label, focus ? 26 : 22, 3);
+    var height = 14 + 14 + lines.length * 16 + 14 + 10;
+    return {
+      width: width,
+      height: Math.max(focus ? 78 : 70, height),
+      labelLines: lines,
+    };
+  }
+
   function buildOwnershipControlNetwork(hotel, ownership, opts) {
     opts = opts || {};
-    var includePeople = opts.includePeople !== false;
+    var includePeople = opts.includePeople === true;
     var includePortfolioPreview = opts.includePortfolioPreview === true;
     var maxPortfolio = Math.min(Number(opts.maxPortfolio) || MAX_EXPANSION_HOTELS, MAX_EXPANSION_HOTELS);
+    var maxPeople = Math.min(Number(opts.maxPeople) || MAX_VISIBLE_PEOPLE, MAX_VISIBLE_PEOPLE);
+    var brandDevFilter = opts.brandDevelopmentFilter === true;
+
     var ctrl = (ownership && ownership.report && ownership.report.ownership_and_control) || {};
     var propco = ctrl.legal_property_owner_propco || ctrl.property_company || {};
     var econ = ctrl.economic_owner_or_group || ctrl.economic_owner || {};
     var ubo = ctrl.ubo_group || {};
     var operator = ctrl.operator || {};
     var brandParty = ctrl.brand || {};
+    var assetMgr = ctrl.asset_manager || ctrl.asset_management_company || {};
+    var lender = ctrl.lender || ctrl.financing_institution || {};
+    var developer = ctrl.developer || {};
+    var advisor = ctrl.advisor || ctrl.broker || {};
 
     var hotelId = text(hotel && (hotel.id || hotel.recordId || hotel.airtable_record_id)) || "focus";
     var hotelName = text(hotel && hotel.name) || "Hotel";
-    // Prefer brand affiliation / hotel brand over parent org name on the brand node.
     var brandName =
       text(ownership && ownership.hotel && ownership.hotel.brand_display) ||
       text(hotel && hotel.brand) ||
@@ -98,6 +162,11 @@
     function addNode(node) {
       if (!node || !node.id) return null;
       if (byId[node.id]) return byId[node.id];
+      var box = measureNodeBox(node);
+      node.labelLines = box.labelLines;
+      node.boxW = box.width;
+      node.boxH = box.height;
+      node.fullName = node.fullName || node.label;
       byId[node.id] = node;
       nodes.push(node);
       return node;
@@ -113,6 +182,7 @@
         to: edge.to,
         type: edge.type,
         label: edge.label || EDGE_LABELS[edge.type] || edge.type,
+        shortLabel: SHORT_EDGE[edge.type] || EDGE_LABELS[edge.type] || edge.type,
         verification: edge.verification || "unresolved",
         temporal: edge.temporal || "CURRENT",
       });
@@ -127,6 +197,7 @@
       verification: "verified",
       hpcId: /^rec[a-zA-Z0-9]{14}$/.test(hotelId) ? hotelId : null,
       focus: true,
+      group: "focus",
     });
 
     var propcoId = null;
@@ -138,9 +209,11 @@
         id: propcoId,
         kind: "org",
         label: partyName(propco),
+        fullName: text(propco.legal_name) || partyName(propco),
         role: "Legal property owner",
         verification: verificationOf(propco),
         expandKey: text(propco.entity_id) || null,
+        group: "ownership_control",
       });
       addEdge({
         from: hotelNodeId,
@@ -156,25 +229,36 @@
         id: econId,
         kind: "org",
         label: partyName(econ),
+        fullName: text(econ.legal_name) || partyName(econ),
         role: "Economic owner / sponsor",
         verification: verificationOf(econ),
         expandKey: text(econ.entity_id) || null,
+        group: "ownership_control",
       });
-      if (propcoId) {
-        addEdge({
-          from: propcoId,
-          to: econId,
-          type: "ECONOMICALLY_CONTROLLED_BY",
-          verification: verificationOf(econ),
-        });
-      } else {
-        addEdge({
-          from: hotelNodeId,
-          to: econId,
-          type: "ECONOMICALLY_CONTROLLED_BY",
-          verification: verificationOf(econ),
-        });
-      }
+      addEdge({
+        from: propcoId || hotelNodeId,
+        to: econId,
+        type: "ECONOMICALLY_CONTROLLED_BY",
+        verification: verificationOf(econ),
+      });
+    }
+
+    if (partyKnown(ubo) && String(ubo.status || "").toUpperCase() !== "UNRESOLVED") {
+      var uboId = "org:ubo:" + (text(ubo.entity_id) || partyName(ubo));
+      addNode({
+        id: uboId,
+        kind: "org",
+        label: partyName(ubo),
+        role: "Ultimate beneficial owner",
+        verification: verificationOf(ubo),
+        group: "ownership_control",
+      });
+      addEdge({
+        from: econId || propcoId || hotelNodeId,
+        to: uboId,
+        type: "ULTIMATE_CONTROL",
+        verification: verificationOf(ubo),
+      });
     }
 
     if (operatorName) {
@@ -186,6 +270,7 @@
         role: "Hotel operator",
         verification: verificationOf(operator, "HIGH"),
         expandKey: text(operator.entity_id) || null,
+        group: "operations_brand",
       });
       addEdge({
         from: hotelNodeId,
@@ -203,6 +288,7 @@
         label: brandName,
         role: "Brand",
         verification: verificationOf(brandParty, "HIGH"),
+        group: "operations_brand",
       });
       addEdge({
         from: hotelNodeId,
@@ -212,6 +298,76 @@
       });
     }
 
+    if (partyKnown(assetMgr)) {
+      var amId = "org:asset:" + (text(assetMgr.entity_id) || partyName(assetMgr));
+      addNode({
+        id: amId,
+        kind: "org",
+        label: partyName(assetMgr),
+        role: "Asset manager",
+        verification: verificationOf(assetMgr),
+        group: "asset_people",
+      });
+      addEdge({
+        from: hotelNodeId,
+        to: amId,
+        type: "ASSET_MANAGED_BY",
+        verification: verificationOf(assetMgr),
+      });
+    }
+    if (partyKnown(lender)) {
+      var lid = "org:lender:" + (text(lender.entity_id) || partyName(lender));
+      addNode({
+        id: lid,
+        kind: "org",
+        label: partyName(lender),
+        role: "Lender / financing",
+        verification: verificationOf(lender),
+        group: "capital_financing",
+      });
+      addEdge({
+        from: hotelNodeId,
+        to: lid,
+        type: "FINANCED_BY",
+        verification: verificationOf(lender),
+      });
+    }
+    if (partyKnown(developer)) {
+      var did = "org:dev:" + (text(developer.entity_id) || partyName(developer));
+      addNode({
+        id: did,
+        kind: "org",
+        label: partyName(developer),
+        role: "Developer",
+        verification: verificationOf(developer),
+        group: "development_advisors",
+      });
+      addEdge({
+        from: hotelNodeId,
+        to: did,
+        type: "DEVELOPED_BY",
+        verification: verificationOf(developer),
+      });
+    }
+    if (partyKnown(advisor)) {
+      var aid = "org:adv:" + (text(advisor.entity_id) || partyName(advisor));
+      addNode({
+        id: aid,
+        kind: "org",
+        label: partyName(advisor),
+        role: "Advisor / broker",
+        verification: verificationOf(advisor),
+        group: "development_advisors",
+      });
+      addEdge({
+        from: hotelNodeId,
+        to: aid,
+        type: "ADVISED_BY",
+        verification: verificationOf(advisor),
+      });
+    }
+
+    var peopleHidden = 0;
     if (includePeople) {
       var people =
         (ownership &&
@@ -219,7 +375,9 @@
           ownership.report.decision_authority &&
           ownership.report.decision_authority.people) ||
         [];
-      people.slice(0, 6).forEach(function (p, idx) {
+      var pSlice = people.slice(0, maxPeople);
+      peopleHidden = Math.max(0, people.length - pSlice.length);
+      pSlice.forEach(function (p, idx) {
         var name = text(p.display_name || p.name);
         if (!name) return;
         var personId = "person:" + (text(p.personId || p.person_id || p.entity_id) || idx) + ":" + name;
@@ -227,10 +385,12 @@
           id: personId,
           kind: "person",
           label: name,
-          role: text(p.title || p.role) || "Decision-maker",
+          role: "Key person",
+          title: text(p.title || p.role) || "Decision-maker",
           verification: "proposed",
           personKey: text(p.personId || p.person_id) || null,
           linkedIn: text(p.linkedinUrl || (p.professional_profile && p.professional_profile.url)),
+          group: "asset_people",
         });
         var anchor = econId || propcoId;
         if (anchor) {
@@ -244,16 +404,24 @@
       });
     }
 
+    var portfolioHidden = 0;
     if (includePortfolioPreview && econId) {
       var owned =
         (ownership && ownership.organization && ownership.organization.owned_controlled_hotels) ||
         [];
-      owned.slice(0, maxPortfolio).forEach(function (h) {
+      var eligible = owned.filter(function (h) {
+        var hname = text(h.hotel_name || h.name);
+        var hid = text(h.airtable_record_id || h.id);
+        if (!hname) return false;
+        var nid = hid ? "hotel:" + hid : "hotel:portfolio:" + hname;
+        return nid !== hotelNodeId;
+      });
+      var hSlice = eligible.slice(0, maxPortfolio);
+      portfolioHidden = Math.max(0, eligible.length - hSlice.length);
+      hSlice.forEach(function (h) {
         var hid = text(h.airtable_record_id || h.id);
         var hname = text(h.hotel_name || h.name);
-        if (!hname) return;
         var nid = hid ? "hotel:" + hid : "hotel:portfolio:" + hname;
-        if (nid === hotelNodeId) return;
         var bucket = String(h.verification_bucket || h.ownership_evidence_class || "").toUpperCase();
         var ver = /VERIFIED/.test(bucket)
           ? "verified"
@@ -266,10 +434,11 @@
           id: nid,
           kind: "hotel",
           label: hname,
-          role: "Portfolio hotel",
+          role: "Related hotel",
           verification: ver,
           hpcId: hid && /^rec[a-zA-Z0-9]{14}$/.test(hid) ? hid : null,
           pendingHpc: !hid,
+          group: "related_hotels",
         });
         addEdge({
           from: econId,
@@ -281,8 +450,33 @@
       });
     }
 
+    if (brandDevFilter) {
+      var keep = {};
+      keep[hotelNodeId] = true;
+      nodes.forEach(function (n) {
+        if (n.group === "ownership_control" || n.group === "operations_brand" || n.focus) keep[n.id] = true;
+      });
+      edges.forEach(function (e) {
+        if (
+          /LEGALLY|ECONOMIC|ULTIMATE|MANAGED|BRANDED|ASSET_MANAGED|ASSOCIATED_PERSON|DEVELOPED|FINANCED|EQUITY/.test(
+            e.type
+          )
+        ) {
+          keep[e.from] = true;
+          keep[e.to] = true;
+        }
+      });
+      nodes = nodes.filter(function (n) {
+        return keep[n.id];
+      });
+      edges = edges.filter(function (e) {
+        return keep[e.from] && keep[e.to];
+      });
+    }
+
     return {
       version: VERSION,
+      networkTitle: "Hotel Stakeholder & Deal Relationship Network",
       focusHotelId: hotelNodeId,
       nodes: nodes,
       edges: edges,
@@ -294,8 +488,16 @@
         operator: operatorName || "Not yet verified",
         brand: brandName || "—",
         ubo:
-          partyKnown(ubo) && ubo.status !== "UNRESOLVED" ? partyName(ubo) : "Unresolved",
+          partyKnown(ubo) && String(ubo.status || "").toUpperCase() !== "UNRESOLVED"
+            ? partyName(ubo)
+            : "Unresolved",
         ownershipStatus: text(ctrl.control_status) || "PARTIAL",
+      },
+      expansion: {
+        peopleVisible: includePeople,
+        peopleHidden: peopleHidden,
+        portfolioVisible: includePortfolioPreview,
+        portfolioHidden: portfolioHidden,
       },
       legend: [
         { key: "verified", label: "Verified current" },
@@ -310,28 +512,41 @@
             ownership.report &&
             ownership.report.research_status &&
             ownership.report.research_status.preview_mode === "PHASE3_PROPOSED"),
+        brandDevelopmentFilter: brandDevFilter,
+        defaultView: !includePeople && !includePortfolioPreview,
       },
     };
   }
 
   function layout(graph, opts) {
     opts = opts || {};
-    var width = Number(opts.width) || 920;
-    var height = Number(opts.height) || 480;
-    var nodeW = 172;
-    var nodeH = 62;
-    var nodes = graph.nodes || [];
+    var width = Number(opts.width) || 960;
+    var nodes = (graph.nodes || []).map(function (n) {
+      var box = measureNodeBox(n);
+      return Object.assign({}, n, {
+        boxW: n.boxW || box.width,
+        boxH: n.boxH || box.height,
+        labelLines: n.labelLines || box.labelLines,
+      });
+    });
     var edges = graph.edges || [];
+    var positions = {};
+    var boxes = {};
+    nodes.forEach(function (n) {
+      boxes[n.id] = { w: n.boxW, h: n.boxH };
+    });
+
     var focus = nodes.filter(function (n) {
       return n.focus;
     })[0] || nodes[0];
-    var positions = {};
-    var cx = width / 2;
     var econ = nodes.filter(function (n) {
       return n.role === "Economic owner / sponsor";
     })[0];
     var propco = nodes.filter(function (n) {
       return n.role === "Legal property owner";
+    })[0];
+    var uboN = nodes.filter(function (n) {
+      return n.role === "Ultimate beneficial owner";
     })[0];
     var operator = nodes.filter(function (n) {
       return n.role === "Hotel operator";
@@ -343,36 +558,144 @@
       return n.kind === "person";
     });
     var portfolio = nodes.filter(function (n) {
-      return n.role === "Portfolio hotel";
+      return n.role === "Related hotel" || n.role === "Portfolio hotel";
+    });
+    var extras = nodes.filter(function (n) {
+      return (
+        n.group === "capital_financing" ||
+        n.group === "development_advisors" ||
+        (n.group === "asset_people" && n.kind === "org")
+      );
     });
 
-    if (focus) positions[focus.id] = { x: cx, y: 230 };
-    if (propco) positions[propco.id] = { x: cx, y: 125 };
-    if (econ) positions[econ.id] = { x: cx, y: 30 };
-    if (operator) positions[operator.id] = { x: cx - 230, y: 340 };
-    if (brand) positions[brand.id] = { x: cx + 230, y: 340 };
+    var cx = width / 2;
+    var gapY = 40;
+    var y = 32;
+
+    if (uboN) {
+      positions[uboN.id] = { x: cx, y: y + boxes[uboN.id].h / 2 };
+      y += boxes[uboN.id].h + gapY;
+    }
+    if (econ) {
+      positions[econ.id] = { x: cx, y: y + boxes[econ.id].h / 2 };
+      y += boxes[econ.id].h + gapY;
+    }
+    if (propco) {
+      positions[propco.id] = { x: cx, y: y + boxes[propco.id].h / 2 };
+      y += boxes[propco.id].h + gapY;
+    }
+    if (focus) {
+      y += 10;
+      positions[focus.id] = { x: cx, y: y + boxes[focus.id].h / 2 };
+      y += boxes[focus.id].h + gapY + 14;
+    }
+
+    var opsY =
+      y +
+      Math.max(
+        (operator && boxes[operator.id].h) || 70,
+        (brand && boxes[brand.id].h) || 70
+      ) /
+        2;
+    if (operator) positions[operator.id] = { x: cx - 240, y: opsY };
+    if (brand) positions[brand.id] = { x: cx + 240, y: opsY };
+    if (operator || brand) {
+      y =
+        opsY +
+        Math.max((operator && boxes[operator.id].h) || 0, (brand && boxes[brand.id].h) || 0) / 2 +
+        gapY;
+    }
+
+    if (extras.length) {
+      var span = Math.min(extras.length, 4);
+      var startX = cx - ((span - 1) * 230) / 2;
+      extras.slice(0, 4).forEach(function (n, i) {
+        positions[n.id] = { x: startX + i * 230, y: y + boxes[n.id].h / 2 };
+      });
+      var maxH = 0;
+      extras.slice(0, 4).forEach(function (n) {
+        maxH = Math.max(maxH, boxes[n.id].h);
+      });
+      y += maxH + gapY;
+    }
+
+    var peopleAnchor = econ || propco || focus;
+    var peopleBaseX = Math.min(
+      width - 130,
+      (peopleAnchor && positions[peopleAnchor.id] ? positions[peopleAnchor.id].x : cx) + 280
+    );
+    var peopleBaseY =
+      (peopleAnchor && positions[peopleAnchor.id] ? positions[peopleAnchor.id].y : y) -
+      ((people.length - 1) * 92) / 2;
     people.forEach(function (p, i) {
-      positions[p.id] = { x: cx + 250, y: (econ ? 30 : 125) + i * 74 };
+      positions[p.id] = { x: peopleBaseX, y: peopleBaseY + i * 92 };
     });
-    portfolio.forEach(function (h, i) {
-      positions[h.id] = { x: 90 + (i % 4) * 200, y: 430 + Math.floor(i / 4) * 74 };
-    });
+
+    if (portfolio.length) {
+      var cols = Math.min(3, portfolio.length);
+      var peopleBottom = y;
+      people.forEach(function (p) {
+        peopleBottom = Math.max(peopleBottom, positions[p.id].y + boxes[p.id].h / 2 + 28);
+      });
+      var gridTop = peopleBottom;
+      portfolio.forEach(function (h, i) {
+        var col = i % cols;
+        var row = Math.floor(i / cols);
+        var gridWidth = cols * 230;
+        var left = cx - gridWidth / 2 + 115;
+        positions[h.id] = {
+          x: left + col * 230,
+          y: gridTop + row * 100 + boxes[h.id].h / 2,
+        };
+      });
+      y = gridTop + Math.ceil(portfolio.length / cols) * 100 + 28;
+    }
+
     var leftover = 0;
     nodes.forEach(function (n) {
       if (!positions[n.id]) {
         positions[n.id] = {
-          x: 90 + (leftover % 4) * 200,
-          y: 430 + Math.floor(leftover / 4) * 74,
+          x: 130 + (leftover % 3) * 230,
+          y: y + Math.floor(leftover / 3) * 100,
         };
         leftover += 1;
       }
     });
+
+    // Horizontal collision nudge
+    var sorted = nodes.slice().sort(function (a, b) {
+      return positions[a.id].y - positions[b.id].y;
+    });
+    for (var i = 0; i < sorted.length; i++) {
+      for (var j = i + 1; j < sorted.length; j++) {
+        var a = sorted[i];
+        var b = sorted[j];
+        if (Math.abs(positions[a.id].y - positions[b.id].y) > 42) continue;
+        var minDx = (boxes[a.id].w + boxes[b.id].w) / 2 + 32;
+        var dx = positions[b.id].x - positions[a.id].x;
+        if (Math.abs(dx) < minDx) {
+          var push = (minDx - Math.abs(dx)) / 2 + 2;
+          if (dx >= 0) {
+            positions[b.id].x += push;
+            positions[a.id].x -= push;
+          } else {
+            positions[a.id].x += push;
+            positions[b.id].x -= push;
+          }
+        }
+      }
+    }
+
+    var maxY = 440;
+    nodes.forEach(function (n) {
+      maxY = Math.max(maxY, positions[n.id].y + boxes[n.id].h / 2 + 48);
+    });
+
     return {
       width: width,
-      height: Math.max(height, portfolio.length ? 430 + Math.ceil(portfolio.length / 4) * 74 + 50 : height),
-      nodeW: nodeW,
-      nodeH: nodeH,
+      height: Math.max(Number(opts.height) || 520, maxY),
       positions: positions,
+      boxes: boxes,
       nodes: nodes,
       edges: edges,
     };
@@ -385,13 +708,100 @@
     return "none";
   }
 
-  function renderShell(graph, layoutData) {
+  function elbowPath(a, b, aw, ah, bw, bh) {
+    // Connect bottom/top centers with a vertical-then-horizontal elbow to reduce crossings.
+    var x1 = a.x;
+    var y1 = a.y;
+    var x2 = b.x;
+    var y2 = b.y;
+    if (Math.abs(y2 - y1) > Math.abs(x2 - x1)) {
+      if (y2 > y1) {
+        y1 += ah / 2;
+        y2 -= bh / 2;
+      } else {
+        y1 -= ah / 2;
+        y2 += bh / 2;
+      }
+      var midY = (y1 + y2) / 2;
+      return "M " + x1 + " " + y1 + " L " + x1 + " " + midY + " L " + x2 + " " + midY + " L " + x2 + " " + y2;
+    }
+    if (x2 > x1) {
+      x1 += aw / 2;
+      x2 -= bw / 2;
+    } else {
+      x1 -= aw / 2;
+      x2 += bw / 2;
+    }
+    var midX = (x1 + x2) / 2;
+    return "M " + x1 + " " + y1 + " L " + midX + " " + y1 + " L " + midX + " " + y2 + " L " + x2 + " " + y2;
+  }
+
+  function renderNodeSvg(n, L) {
+    var p = L.positions[n.id];
+    var box = L.boxes[n.id] || { w: n.boxW || 212, h: n.boxH || 70 };
+    if (!p) return "";
+    var x = p.x - box.w / 2;
+    var y = p.y - box.h / 2;
+    var role = n.nodeRole || n.role || "";
+    var lines = n.labelLines || wrapNodeLabel(n.label, n.focus ? 26 : 22, 3);
+    var tspans = lines
+      .map(function (line, idx) {
+        return (
+          '<tspan x="14" dy="' +
+          (idx === 0 ? 0 : 16) +
+          '">' +
+          esc(line) +
+          "</tspan>"
+        );
+      })
+      .join("");
+    return (
+      '<g class="ocn-node ocn-node--' +
+      esc(n.kind) +
+      " ocn-node--" +
+      esc(n.verification) +
+      (n.focus ? " is-focus" : "") +
+      '" data-ocn-node="' +
+      esc(n.id) +
+      '" transform="translate(' +
+      x +
+      " " +
+      y +
+      ')">' +
+      '<rect width="' +
+      box.w +
+      '" height="' +
+      box.h +
+      '" rx="10"></rect>' +
+      '<text class="ocn-node__role" x="14" y="18">' +
+      esc(role) +
+      "</text>" +
+      '<text class="ocn-node__label" x="14" y="38" font-size="' +
+      MIN_LABEL_PX +
+      '">' +
+      tspans +
+      "</text>" +
+      '<text class="ocn-node__meta" x="14" y="' +
+      (box.h - 10) +
+      '">' +
+      esc(friendlyVerification(n.verification)) +
+      "</text></g>"
+    );
+  }
+
+  function renderShell(graph, layoutData, opts) {
+    opts = opts || {};
     var L = layoutData;
     var edgeSvg = (L.edges || [])
       .map(function (e) {
         var a = L.positions[e.from];
         var b = L.positions[e.to];
+        var aw = (L.boxes[e.from] && L.boxes[e.from].w) || 212;
+        var ah = (L.boxes[e.from] && L.boxes[e.from].h) || 70;
+        var bw = (L.boxes[e.to] && L.boxes[e.to].w) || 212;
+        var bh = (L.boxes[e.to] && L.boxes[e.to].h) || 70;
         if (!a || !b) return "";
+        var d = elbowPath(a, b, aw, ah, bw, bh);
         var mx = (a.x + b.x) / 2;
         var my = (a.y + b.y) / 2;
         return (
@@ -399,24 +809,20 @@
           esc(e.verification) +
           '" data-ocn-edge="' +
           esc(e.id) +
+          '" data-ocn-edge-label="' +
+          esc(e.label) +
           '">' +
-          '<line x1="' +
-          a.x +
-          '" y1="' +
-          a.y +
-          '" x2="' +
-          b.x +
-          '" y2="' +
-          b.y +
-          '" stroke-dasharray="' +
+          '<path d="' +
+          d +
+          '" fill="none" stroke-dasharray="' +
           strokeDash(e.verification) +
-          '"></line>' +
+          '"></path>' +
           '<text class="ocn-edge-label" x="' +
           mx +
           '" y="' +
           (my - 6) +
           '">' +
-          esc(e.label) +
+          esc(e.shortLabel || SHORT_EDGE[e.type] || "") +
           "</text></g>"
         );
       })
@@ -424,38 +830,7 @@
 
     var nodeSvg = (L.nodes || [])
       .map(function (n) {
-        var p = L.positions[n.id];
-        if (!p) return "";
-        var x = p.x - L.nodeW / 2;
-        var y = p.y - L.nodeH / 2;
-        return (
-          '<g class="ocn-node ocn-node--' +
-          esc(n.kind) +
-          " ocn-node--" +
-          esc(n.verification) +
-          (n.focus ? " is-focus" : "") +
-          '" data-ocn-node="' +
-          esc(n.id) +
-          '" transform="translate(' +
-          x +
-          " " +
-          y +
-          ')">' +
-          '<rect width="' +
-          L.nodeW +
-          '" height="' +
-          L.nodeH +
-          '" rx="10"></rect>' +
-          '<text class="ocn-node__role" x="12" y="20">' +
-          esc(n.role) +
-          "</text>" +
-          '<text class="ocn-node__label" x="12" y="40">' +
-          esc((n.label || "").slice(0, 34)) +
-          "</text>" +
-          '<text class="ocn-node__meta" x="12" y="54">' +
-          esc(friendlyVerification(n.verification)) +
-          "</text></g>"
-        );
+        return renderNodeSvg(n, L);
       })
       .join("");
 
@@ -472,23 +847,36 @@
       .join("");
 
     var s = graph.summary || {};
+    var exp = graph.expansion || {};
     return (
-      '<div class="ocn" data-ocn="1">' +
+      '<div class="ocn" data-ocn="1" data-ocn-default="' +
+      (graph.meta && graph.meta.defaultView ? "1" : "0") +
+      '">' +
       '<div class="ocn-toolbar">' +
       '<button type="button" class="ocn-btn" data-ocn-fit>Fit</button>' +
       '<button type="button" class="ocn-btn" data-ocn-reset>Reset</button>' +
-      '<button type="button" class="ocn-btn" data-ocn-expand-sponsor>Expand sponsor hotels</button>' +
+      '<button type="button" class="ocn-btn' +
+      (opts.brandDevelopmentFilter ? " is-active" : "") +
+      '" data-ocn-brand-dev aria-pressed="' +
+      (opts.brandDevelopmentFilter ? "true" : "false") +
+      '">Brand Development view</button>' +
+      '<button type="button" class="ocn-btn" data-ocn-expand-people>' +
+      (exp.peopleVisible ? "Collapse Key People" : "Explore Key People") +
+      "</button>" +
+      '<button type="button" class="ocn-btn" data-ocn-expand-hotels>' +
+      (exp.portfolioVisible ? "Collapse Related Hotels" : "Explore Related Hotels") +
+      "</button>" +
       "</div>" +
       '<div class="ocn-legend" aria-label="Relationship legend">' +
       legend +
-      '<span class="ocn-legend__note">Solid = verified · Dashed = proposed · Dotted = historical</span>' +
+      '<span class="ocn-legend__note">Ownership above · Operations &amp; Brand below · Short edge tags; full meaning in detail</span>' +
       "</div>" +
       '<div class="ocn-stage">' +
       '<svg class="ocn-svg" viewBox="0 0 ' +
       L.width +
       " " +
       L.height +
-      '" role="img" aria-label="Ownership and control network">' +
+      '" role="img" aria-label="Hotel stakeholder and deal relationship network">' +
       '<g class="ocn-viewport">' +
       edgeSvg +
       nodeSvg +
@@ -497,6 +885,16 @@
       '<button type="button" class="ocn-detail__close" data-ocn-detail-close aria-label="Close detail">&times;</button>' +
       '<div class="ocn-detail__body"></div>' +
       "</aside></div>" +
+      (exp.portfolioHidden
+        ? '<p class="ocn-bound-note" role="status">' +
+          esc(String(exp.portfolioHidden)) +
+          " additional related hotels are available — open the sponsor detail panel for Show more.</p>"
+        : "") +
+      (exp.peopleHidden
+        ? '<p class="ocn-bound-note" role="status">' +
+          esc(String(exp.peopleHidden)) +
+          " additional people are available in Contact Intelligence.</p>"
+        : "") +
       '<div class="ocn-summary" aria-label="Ownership status">' +
       '<div><span class="ocn-summary__k">Legal owner</span><span class="ocn-summary__v">' +
       esc(s.legalOwner) +
@@ -521,13 +919,19 @@
     );
   }
 
-  function detailHtml(node, graph) {
+  function detailHtml(node, graph, opts) {
     if (!node) return "";
+    opts = opts || {};
     var bits = [];
-    bits.push("<h4>" + esc(node.label) + "</h4>");
-    bits.push('<p class="ocn-detail__role">' + esc(node.role) + "</p>");
+    bits.push("<h4>" + esc(node.fullName || node.label) + "</h4>");
+    bits.push('<p class="ocn-detail__role">' + esc(node.title || node.role) + "</p>");
     bits.push(
-      '<p><strong>Status:</strong> ' + esc(friendlyVerification(node.verification)) + "</p>"
+      "<p><strong>Type:</strong> " +
+        esc(node.kind === "hotel" ? "Hotel" : node.kind === "person" ? "Person" : "Organization") +
+        "</p>"
+    );
+    bits.push(
+      "<p><strong>Status:</strong> " + esc(friendlyVerification(node.verification)) + "</p>"
     );
     if (node.kind === "hotel" && node.hpcId) {
       bits.push(
@@ -540,7 +944,7 @@
     }
     if (node.kind === "person") {
       bits.push(
-        '<p><button type="button" class="ocn-btn" data-ocn-open-contacts>Open Contact Intelligence</button></p>'
+        '<p><button type="button" class="ocn-btn" data-ocn-open-contacts>Open Contact Intelligence →</button></p>'
       );
       if (node.linkedIn) {
         bits.push(
@@ -550,11 +954,17 @@
         );
       }
     }
-    if (node.kind === "org" && node.expandKey) {
+    if (node.kind === "org") {
+      bits.push('<div class="ocn-detail__actions">');
       bits.push(
-        '<p><button type="button" class="ocn-btn" data-ocn-expand-org="' +
-          esc(node.id) +
-          '">Expand related hotels</button></p>'
+        '<button type="button" class="ocn-btn" data-ocn-expand-people>Explore Key People</button>'
+      );
+      bits.push(
+        '<button type="button" class="ocn-btn" data-ocn-expand-hotels>Explore Related Hotels</button>'
+      );
+      bits.push("</div>");
+      bits.push(
+        '<p class="ocn-detail__hint">Expansion is bounded and hotel-centered. Financing, development, and advisor links appear only when verified evidence exists.</p>'
       );
     }
     var related = (graph.edges || []).filter(function (e) {
@@ -563,23 +973,50 @@
     if (related.length) {
       bits.push("<p><strong>Connections</strong></p><ul>");
       related.forEach(function (e) {
-        bits.push("<li>" + esc(e.label) + "</li>");
+        var otherId = e.from === node.id ? e.to : e.from;
+        var other = (graph.nodes || []).filter(function (n) {
+          return n.id === otherId;
+        })[0];
+        bits.push(
+          "<li>" +
+            esc(e.label) +
+            (other ? " → " + esc(other.label) : "") +
+            " · " +
+            esc(friendlyVerification(e.verification)) +
+            "</li>"
+        );
       });
       bits.push("</ul>");
     }
     return bits.join("");
   }
 
+  function remount(host, hotel, ownership, opts) {
+    return mount(host, hotel, ownership, opts);
+  }
+
   function mount(host, hotel, ownership, opts) {
     if (!host) return null;
     opts = opts || {};
     var graph = buildOwnershipControlNetwork(hotel, ownership, {
-      includePeople: true,
-      includePortfolioPreview: !!opts.includePortfolioPreview,
+      includePeople: opts.includePeople === true,
+      includePortfolioPreview: opts.includePortfolioPreview === true,
+      brandDevelopmentFilter: opts.brandDevelopmentFilter === true,
+      maxPortfolio: opts.maxPortfolio,
+      maxPeople: opts.maxPeople,
     });
-    var laid = layout(graph, { width: opts.width || 920, height: opts.height || 480 });
-    host.innerHTML = renderShell(graph, laid);
-    host._ocn = { graph: graph, laid: laid, hotel: hotel, ownership: ownership, scale: 1, tx: 0, ty: 0 };
+    var laid = layout(graph, { width: opts.width || 960, height: opts.height || 520 });
+    host.innerHTML = renderShell(graph, laid, opts);
+    host._ocn = {
+      graph: graph,
+      laid: laid,
+      hotel: hotel,
+      ownership: ownership,
+      opts: opts,
+      scale: 1,
+      tx: 0,
+      ty: 0,
+    };
 
     var svg = host.querySelector(".ocn-svg");
     var viewport = host.querySelector(".ocn-viewport");
@@ -598,16 +1035,45 @@
     function showDetail(node) {
       if (!detail || !detailBody) return;
       detail.hidden = false;
-      detailBody.innerHTML = detailHtml(node, host._ocn.graph);
+      detailBody.innerHTML = detailHtml(node, host._ocn.graph, host._ocn.opts);
       host.querySelectorAll(".ocn-node").forEach(function (el) {
         el.classList.toggle("is-selected", el.getAttribute("data-ocn-node") === node.id);
       });
     }
 
-    host.addEventListener("click", function (ev) {
-      var close = ev.target.closest("[data-ocn-detail-close]");
-      if (close && detail) {
-        detail.hidden = true;
+    function showEdgeDetail(edge) {
+      if (!detail || !detailBody || !edge) return;
+      detail.hidden = false;
+      detailBody.innerHTML =
+        "<h4>" +
+        esc(edge.label) +
+        "</h4>" +
+        '<p class="ocn-detail__role">' +
+        esc(edge.shortLabel || "") +
+        "</p>" +
+        "<p><strong>Status:</strong> " +
+        esc(friendlyVerification(edge.verification)) +
+        "</p>" +
+        "<p><strong>Temporal:</strong> " +
+        esc(edge.temporal || "CURRENT") +
+        "</p>" +
+        "<p>Selecting an edge reveals precise relationship meaning. Unsupported ownership or financing is never inferred.</p>";
+    }
+
+    function withWave(label, run) {
+      if (global.HeAsyncSection && global.HeAsyncSection.waveCompact) {
+        var banner = document.createElement("div");
+        banner.className = "ocn-expand-loading";
+        banner.setAttribute("data-ocn-expand-loading", "1");
+        banner.innerHTML = global.HeAsyncSection.waveCompact(label, "Stakeholder network");
+        host.insertBefore(banner, host.firstChild);
+      }
+      setTimeout(run, 0);
+    }
+
+    host.onclick = function (ev) {
+      if (ev.target.closest("[data-ocn-detail-close]")) {
+        if (detail) detail.hidden = true;
         return;
       }
       if (ev.target.closest("[data-ocn-fit]")) {
@@ -618,30 +1084,49 @@
         return;
       }
       if (ev.target.closest("[data-ocn-reset]")) {
-        mount(host, hotel, ownership, opts);
+        remount(host, hotel, ownership, {
+          brandDevelopmentFilter: !!host._ocn.opts.brandDevelopmentFilter,
+        });
         return;
       }
-      if (ev.target.closest("[data-ocn-expand-sponsor]")) {
-        var expandSlot = host.querySelector("[data-ocn-expand-loading]") || host;
-        if (global.HeAsyncSection && global.HeAsyncSection.waveCompact) {
-          var banner = document.createElement("div");
-          banner.className = "ocn-expand-loading";
-          banner.setAttribute("data-ocn-expand-loading", "1");
-          banner.innerHTML = global.HeAsyncSection.waveCompact(
-            "Expanding portfolio…",
-            "Ownership network"
-          );
-          host.insertBefore(banner, host.firstChild);
-        }
-        // Sync remount — yield so the compact wave paints before work
-        setTimeout(function () {
-          mount(
+      if (ev.target.closest("[data-ocn-brand-dev]")) {
+        var next = !host._ocn.opts.brandDevelopmentFilter;
+        remount(
+          host,
+          hotel,
+          ownership,
+          Object.assign({}, host._ocn.opts, {
+            brandDevelopmentFilter: next,
+            includePeople: host._ocn.opts.includePeople,
+            includePortfolioPreview: host._ocn.opts.includePortfolioPreview,
+          })
+        );
+        return;
+      }
+      if (ev.target.closest("[data-ocn-expand-people]")) {
+        withWave("Loading key people…", function () {
+          remount(
             host,
             hotel,
             ownership,
-            Object.assign({}, opts, { includePortfolioPreview: true })
+            Object.assign({}, host._ocn.opts, {
+              includePeople: !host._ocn.opts.includePeople,
+            })
           );
-        }, 0);
+        });
+        return;
+      }
+      if (ev.target.closest("[data-ocn-expand-hotels]")) {
+        withWave("Loading related hotels…", function () {
+          remount(
+            host,
+            hotel,
+            ownership,
+            Object.assign({}, host._ocn.opts, {
+              includePortfolioPreview: !host._ocn.opts.includePortfolioPreview,
+            })
+          );
+        });
         return;
       }
       var openHotel = ev.target.closest("[data-ocn-open-hotel]");
@@ -662,6 +1147,15 @@
         }
         return;
       }
+      var edgeEl = ev.target.closest("[data-ocn-edge]");
+      if (edgeEl) {
+        var eid = edgeEl.getAttribute("data-ocn-edge");
+        var edge = (host._ocn.graph.edges || []).filter(function (e) {
+          return e.id === eid;
+        })[0];
+        if (edge) showEdgeDetail(edge);
+        return;
+      }
       var nodeEl = ev.target.closest("[data-ocn-node]");
       if (nodeEl) {
         var nid = nodeEl.getAttribute("data-ocn-node");
@@ -670,15 +1164,14 @@
         })[0];
         if (node) showDetail(node);
       }
-    });
+    };
 
-    // Pan via drag on SVG background
     if (svg) {
       var dragging = false;
       var lastX = 0;
       var lastY = 0;
       svg.addEventListener("pointerdown", function (ev) {
-        if (ev.target.closest("[data-ocn-node]")) return;
+        if (ev.target.closest("[data-ocn-node],[data-ocn-edge]")) return;
         dragging = true;
         lastX = ev.clientX;
         lastY = ev.clientY;
@@ -700,7 +1193,7 @@
         function (ev) {
           ev.preventDefault();
           var delta = ev.deltaY > 0 ? 0.92 : 1.08;
-          host._ocn.scale = Math.max(0.55, Math.min(1.8, host._ocn.scale * delta));
+          host._ocn.scale = Math.max(0.6, Math.min(1.6, host._ocn.scale * delta));
           applyTransform();
         },
         { passive: false }
@@ -721,5 +1214,8 @@
     mount: mount,
     renderMountHtml: renderMountHtml,
     EDGE_LABELS: EDGE_LABELS,
+    wrapNodeLabel: wrapNodeLabel,
+    measureNodeBox: measureNodeBox,
+    MIN_LABEL_PX: MIN_LABEL_PX,
   };
 })(typeof window !== "undefined" ? window : globalThis);
