@@ -1,0 +1,1845 @@
+{
+  "contractVersion": "ADP_VERIFIED_CONTEXT_BRIDGE_V1",
+  "suite": "PHASE_1B_PR1_VERIFIED_CONTEXT_DUAL_RUN",
+  "pilots": [
+    {
+      "ok": true,
+      "contractVersion": "ADP_VERIFIED_CONTEXT_BRIDGE_V1",
+      "diagnosticMode": "RG_BRIDGED_ELIGIBLE_DIAGNOSTIC_V1",
+      "customerFacingMode": "RG_FIXTURE_BASELINE",
+      "propertyId": "adp_bethesda_marriott",
+      "propertyName": "Bethesda Marriott",
+      "hpcHotelId": "recLuxvwwxID7U2B8",
+      "identity": {
+        "propertyId": "adp_bethesda_marriott",
+        "hpcHotelId": "recLuxvwwxID7U2B8",
+        "censusRecordId": "recLuxvwwxID7U2B8",
+        "isolationKey": "adp_bethesda_marriott::recLuxvwwxID7U2B8"
+      },
+      "selectedAttributes": [
+        "bethesda_md_location",
+        "pooks_hill",
+        "montgomery_county",
+        "marriott_hotels",
+        "marriott_bonvoy",
+        "m_club",
+        "coopers_mill",
+        "fitness_center_24hr",
+        "peloton",
+        "meeting_space",
+        "ballroom",
+        "outdoor_pool",
+        "full_service",
+        "nih_access",
+        "dc_metro_access"
+      ],
+      "eligibility": {
+        "contractVersion": "ADP_ATTRIBUTE_ELIGIBILITY_CLASSIFIER_V1",
+        "propertyId": "adp_bethesda_marriott",
+        "selectedCount": 15,
+        "uniqueSelectedCount": 15,
+        "eligibleCount": 12,
+        "eligibleKeys": [
+          "bethesda_md_location",
+          "pooks_hill",
+          "montgomery_county",
+          "marriott_hotels",
+          "marriott_bonvoy",
+          "m_club",
+          "coopers_mill",
+          "meeting_space",
+          "ballroom",
+          "full_service",
+          "nih_access",
+          "dc_metro_access"
+        ],
+        "needsVerificationKeys": [
+          "fitness_center_24hr",
+          "peloton",
+          "outdoor_pool"
+        ],
+        "undefinedKeys": [],
+        "conflictingKeys": [],
+        "duplicateKeys": [],
+        "semanticOverlaps": [
+          {
+            "group": [
+              "fitness_center_24hr",
+              "peloton"
+            ],
+            "note": "Semantically related selected keys — review for double-counting risk"
+          },
+          {
+            "group": [
+              "meeting_space",
+              "ballroom"
+            ],
+            "note": "Semantically related selected keys — review for double-counting risk"
+          }
+        ],
+        "attributeDefinitionsVersion": "e467e2c74eaac172",
+        "selectionInventoryHash": "625f03ad78c91adc",
+        "rows": [
+          {
+            "attribute": "bethesda_md_location",
+            "label": "Bethesda, Maryland Location",
+            "priority": "high",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "NEEDS_SOURCE_VERIFICATION",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "note": "Supported by profile nearby/positioning/restaurant fields for bethesda_md_location",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "pooks_hill",
+            "label": "Pooks Hill Location",
+            "priority": "high",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_LOCATION",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "note": "Location/market fields support attribute (Bethesda | Maryland | Bethesda / Montgomery County | Pooks Hill / Rockville Pike | US | 5151 Pooks Hill Road, Bethesda, MD 20814, United States | Bethesda Marri)",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "montgomery_county",
+            "label": "Montgomery County Location",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_LOCATION",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "note": "Location/market fields support attribute (Bethesda | Maryland | Bethesda / Montgomery County | Pooks Hill / Rockville Pike | US | 5151 Pooks Hill Road, Bethesda, MD 20814, United States | Bethesda Marri)",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "marriott_hotels",
+            "label": "Marriott Hotels Brand",
+            "priority": "high",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_BRAND",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "note": "Matched brand/affiliation fields: Marriott Hotels | Marriott Hotels | Marriott International | Upper Upscale",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "marriott_bonvoy",
+            "label": "Marriott Bonvoy Loyalty",
+            "priority": "high",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_AFFILIATION",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "note": "Matched brand/affiliation fields: Marriott Hotels | Marriott Hotels | Marriott International | Upper Upscale",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "m_club",
+            "label": "M Club / Concierge Level",
+            "priority": "high",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "NEEDS_SOURCE_VERIFICATION",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "note": "Supported by profile nearby/positioning/restaurant fields for m_club",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "coopers_mill",
+            "label": "Cooper's Mill Restaurant",
+            "priority": "high",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "NEEDS_SOURCE_VERIFICATION",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "note": "Supported by profile nearby/positioning/restaurant fields for coopers_mill",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "fitness_center_24hr",
+            "label": "24-Hour Fitness Center",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "SELECTED_NEEDS_VERIFICATION",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": false,
+            "provenanceClass": "NEEDS_SOURCE_VERIFICATION",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "note": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "peloton",
+            "label": "Peloton Fitness",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "SELECTED_NEEDS_VERIFICATION",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": false,
+            "provenanceClass": "NEEDS_SOURCE_VERIFICATION",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "note": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "meeting_space",
+            "label": "Meeting & Event Space",
+            "priority": "high",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_MEETING_SPACE",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/events/",
+            "note": "meetingSpace object present on governed profile (existence / inventory — not inventing sq ft beyond profile)",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "ballroom",
+            "label": "Ballroom",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_MEETING_SPACE",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/events/",
+            "note": "Largest / banquet room present on profile meetingSpace",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "outdoor_pool",
+            "label": "Outdoor Pool",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "SELECTED_NEEDS_VERIFICATION",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": false,
+            "provenanceClass": "NEEDS_SOURCE_VERIFICATION",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "note": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "full_service",
+            "label": "Full-Service Hotel",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_PROPERTY_TYPE",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "note": "propertyType/positioning/chainScale+meetingSpace indicates full-service (Upper Upscale)",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "nih_access",
+            "label": "NIH Access",
+            "priority": "high",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "NEEDS_SOURCE_VERIFICATION",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "note": "Supported by profile nearby/positioning/restaurant fields for nih_access",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "dc_metro_access",
+            "label": "Washington DC Metro Access",
+            "priority": "high",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "NEEDS_SOURCE_VERIFICATION",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "note": "Supported by profile nearby/positioning/restaurant fields for dc_metro_access",
+            "airtableSupport": null
+          }
+        ],
+        "eligibilityPolicyVersion": "SELECTED_NEEDS_VERIFICATION_EXCLUDED_FROM_BRIDGED_DENOM_V1"
+      },
+      "minimumCoverage": {
+        "contractVersion": "ADP_MINIMUM_ATTRIBUTE_COVERAGE_V1",
+        "minimumEligible": 12,
+        "source": "DEFAULT_FOUNDER_WORKING",
+        "programId": null,
+        "hotelType": null,
+        "productionBlockingGateActive": false,
+        "note": "Diagnostic only in Phase 1B. Future fail-closed research gate requires separate founder approval.",
+        "eligibleCount": 12,
+        "shortfall": 0,
+        "meetsMinimum": true,
+        "flag": null
+      },
+      "suggestions": {
+        "contractVersion": "ADP_ATTRIBUTE_SUGGESTION_CANDIDATES_V1",
+        "propertyId": "adp_bethesda_marriott",
+        "demandSegmentsConsidered": [
+          "corporate_meetings",
+          "business_transient",
+          "associations_conventions",
+          "medical_pharma"
+        ],
+        "selectedCount": 15,
+        "suggestionCount": 6,
+        "suggestions": [
+          {
+            "attribute": "large_ballroom",
+            "label": "Large Ballroom",
+            "suggestedPriority": "high",
+            "supportingFact": "Largest / banquet room present on profile meetingSpace",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/events/",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_MEETING_SPACE",
+            "verifiedSupport": true,
+            "relevantSegments": [
+              "corporate_meetings",
+              "associations_conventions"
+            ],
+            "reason": "Relevant to demand segments: corporate_meetings, associations_conventions",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_ADDITION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "executive_lounge",
+            "label": "Executive Lounge",
+            "suggestedPriority": "high",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "business_transient"
+            ],
+            "reason": "Relevant to demand segments: business_transient",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "fitness_center",
+            "label": "Fitness Center",
+            "suggestedPriority": "medium",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "business_transient"
+            ],
+            "reason": "Relevant to demand segments: business_transient",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "event_space_outdoor",
+            "label": "Outdoor Event Space",
+            "suggestedPriority": "medium",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "associations_conventions"
+            ],
+            "reason": "Relevant to demand segments: associations_conventions",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "business_center",
+            "label": "Business Center",
+            "suggestedPriority": "low",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "corporate_meetings"
+            ],
+            "reason": "Relevant to demand segments: corporate_meetings",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "concierge",
+            "label": "Concierge Service",
+            "suggestedPriority": "low",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "business_transient"
+            ],
+            "reason": "Relevant to demand segments: business_transient",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          }
+        ],
+        "note": "Suggestions never overwrite existing attributes[]. Approval required before selection change.",
+        "topSuggestions": [
+          {
+            "attribute": "large_ballroom",
+            "label": "Large Ballroom",
+            "suggestedPriority": "high",
+            "supportingFact": "Largest / banquet room present on profile meetingSpace",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/events/",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_MEETING_SPACE",
+            "verifiedSupport": true,
+            "relevantSegments": [
+              "corporate_meetings",
+              "associations_conventions"
+            ],
+            "reason": "Relevant to demand segments: corporate_meetings, associations_conventions",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_ADDITION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "executive_lounge",
+            "label": "Executive Lounge",
+            "suggestedPriority": "high",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "business_transient"
+            ],
+            "reason": "Relevant to demand segments: business_transient",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "fitness_center",
+            "label": "Fitness Center",
+            "suggestedPriority": "medium",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "business_transient"
+            ],
+            "reason": "Relevant to demand segments: business_transient",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "event_space_outdoor",
+            "label": "Outdoor Event Space",
+            "suggestedPriority": "medium",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "associations_conventions"
+            ],
+            "reason": "Relevant to demand segments: associations_conventions",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "business_center",
+            "label": "Business Center",
+            "suggestedPriority": "low",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "corporate_meetings"
+            ],
+            "reason": "Relevant to demand segments: corporate_meetings",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "concierge",
+            "label": "Concierge Service",
+            "suggestedPriority": "low",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.marriott.com/en-us/hotels/wasbt-bethesda-marriott/overview/",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "business_transient"
+            ],
+            "reason": "Relevant to demand segments: business_transient",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          }
+        ]
+      },
+      "dualRun": {
+        "fixtureBaseline": {
+          "mode": "RG_FIXTURE_BASELINE",
+          "realityGap": {
+            "gapScore": 80,
+            "display": "80.0%",
+            "totalAttributes": 15,
+            "recognizedCount": 3,
+            "gapCount": 12,
+            "totalPropertyMentions": 108
+          },
+          "denominatorKeys": [
+            "bethesda_md_location",
+            "pooks_hill",
+            "montgomery_county",
+            "marriott_hotels",
+            "marriott_bonvoy",
+            "m_club",
+            "coopers_mill",
+            "fitness_center_24hr",
+            "peloton",
+            "meeting_space",
+            "ballroom",
+            "outdoor_pool",
+            "full_service",
+            "nih_access",
+            "dc_metro_access"
+          ]
+        },
+        "bridgedEligible": {
+          "mode": "RG_BRIDGED_ELIGIBLE_DIAGNOSTIC_V1",
+          "realityGap": {
+            "gapScore": 75,
+            "display": "75.0%",
+            "totalAttributes": 12,
+            "recognizedCount": 3,
+            "gapCount": 9,
+            "totalPropertyMentions": 108
+          },
+          "denominatorKeys": [
+            "bethesda_md_location",
+            "pooks_hill",
+            "montgomery_county",
+            "marriott_hotels",
+            "marriott_bonvoy",
+            "m_club",
+            "coopers_mill",
+            "meeting_space",
+            "ballroom",
+            "full_service",
+            "nih_access",
+            "dc_metro_access"
+          ]
+        },
+        "difference": {
+          "fixtureDenominator": 15,
+          "bridgedEligibleDenominator": 12,
+          "denominatorDelta": -3,
+          "fixtureGapScore": 80,
+          "bridgedEligibleGapScore": 75,
+          "gapScoreDelta": -5,
+          "excludedFromEligible": [
+            {
+              "attribute": "fitness_center_24hr",
+              "eligibilityStatus": "SELECTED_NEEDS_VERIFICATION",
+              "note": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support"
+            },
+            {
+              "attribute": "peloton",
+              "eligibilityStatus": "SELECTED_NEEDS_VERIFICATION",
+              "note": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support"
+            },
+            {
+              "attribute": "outdoor_pool",
+              "eligibilityStatus": "SELECTED_NEEDS_VERIFICATION",
+              "note": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support"
+            }
+          ],
+          "artifactWarning": "DENOMINATOR_ARTIFACT — bridged gapScore is lower (looks 'better') primarily because ineligible selected attributes were excluded from the diagnostic denominator. This is NOT improved AI recognition.",
+          "customerFacingUnchanged": true,
+          "interpretation": "Compare inventories and per-attribute recognition. Never treat denominator exclusion as AI positioning improvement."
+        }
+      },
+      "transparency": {
+        "totalVerifiedHotelAttributesEstimate": 7,
+        "suggestedPositioningAttributes": 6,
+        "approvedSelectedAttributes": 15,
+        "eligibleMeasurableAttributes": 12,
+        "actuallyMeasuredFixture": 15,
+        "actuallyMeasuredBridgedEligible": 12,
+        "belowMinimumShortfall": 0,
+        "awaitingVerification": 3,
+        "missingRecognitionDefinitions": 0
+      },
+      "inventoryPin": {
+        "selectedAttributeKeys": [
+          "bethesda_md_location",
+          "pooks_hill",
+          "montgomery_county",
+          "marriott_hotels",
+          "marriott_bonvoy",
+          "m_club",
+          "coopers_mill",
+          "fitness_center_24hr",
+          "peloton",
+          "meeting_space",
+          "ballroom",
+          "outdoor_pool",
+          "full_service",
+          "nih_access",
+          "dc_metro_access"
+        ],
+        "selectionInventoryHash": "625f03ad78c91adc",
+        "attributeDefinitionsVersion": "e467e2c74eaac172",
+        "eligibilityPolicyVersion": "SELECTED_NEEDS_VERIFICATION_EXCLUDED_FROM_BRIDGED_DENOM_V1",
+        "methodologyNote": "Customer RG remains fixture baseline; bridged path is diagnostic-only",
+        "researchPeriodId": "adp_period_adp_bethesda_marriott_20261002142154_62428a",
+        "observationCount": 252
+      },
+      "historicalCompatibility": {
+        "customerFacingRealityGapUnchanged": true,
+        "historicalPeriodsImmutable": true,
+        "methodologyWeightsUnchanged": true,
+        "automaticPublication": false,
+        "cutoverAuthorized": false
+      },
+      "generatedAt": "2026-11-19T15:21:52.646Z"
+    },
+    {
+      "ok": true,
+      "contractVersion": "ADP_VERIFIED_CONTEXT_BRIDGE_V1",
+      "diagnosticMode": "RG_BRIDGED_ELIGIBLE_DIAGNOSTIC_V1",
+      "customerFacingMode": "RG_FIXTURE_BASELINE",
+      "propertyId": "adp_spice_island_beach_resort",
+      "propertyName": "Spice Island Beach Resort",
+      "hpcHotelId": "recKRJjcPnb4tVDDS",
+      "identity": {
+        "propertyId": "adp_spice_island_beach_resort",
+        "hpcHotelId": "recKRJjcPnb4tVDDS",
+        "censusRecordId": "recKRJjcPnb4tVDDS",
+        "isolationKey": "adp_spice_island_beach_resort::recKRJjcPnb4tVDDS"
+      },
+      "selectedAttributes": [
+        "luxury",
+        "beachfront",
+        "oceanfront",
+        "island_resort",
+        "resort",
+        "all_inclusive_option",
+        "suite_inventory",
+        "swim_out",
+        "spa",
+        "full_service_spa",
+        "outdoor_pool",
+        "tennis_courts",
+        "watersports",
+        "kayaking",
+        "fine_dining",
+        "wedding_venue",
+        "honeymoon_destination",
+        "family_friendly",
+        "soft_brand",
+        "boutique_feel",
+        "full_service",
+        "five_diamond",
+        "meeting_space",
+        "event_space_outdoor"
+      ],
+      "eligibility": {
+        "contractVersion": "ADP_ATTRIBUTE_ELIGIBILITY_CLASSIFIER_V1",
+        "propertyId": "adp_spice_island_beach_resort",
+        "selectedCount": 24,
+        "uniqueSelectedCount": 24,
+        "eligibleCount": 24,
+        "eligibleKeys": [
+          "luxury",
+          "beachfront",
+          "oceanfront",
+          "island_resort",
+          "resort",
+          "all_inclusive_option",
+          "suite_inventory",
+          "swim_out",
+          "spa",
+          "full_service_spa",
+          "outdoor_pool",
+          "tennis_courts",
+          "watersports",
+          "kayaking",
+          "fine_dining",
+          "wedding_venue",
+          "honeymoon_destination",
+          "family_friendly",
+          "soft_brand",
+          "boutique_feel",
+          "full_service",
+          "five_diamond",
+          "meeting_space",
+          "event_space_outdoor"
+        ],
+        "needsVerificationKeys": [],
+        "undefinedKeys": [],
+        "conflictingKeys": [],
+        "duplicateKeys": [],
+        "semanticOverlaps": [
+          {
+            "group": [
+              "beachfront",
+              "oceanfront"
+            ],
+            "note": "Semantically related selected keys — review for double-counting risk"
+          },
+          {
+            "group": [
+              "spa",
+              "full_service_spa"
+            ],
+            "note": "Semantically related selected keys — review for double-counting risk"
+          },
+          {
+            "group": [
+              "meeting_space",
+              "event_space_outdoor"
+            ],
+            "note": "Semantically related selected keys — review for double-counting risk"
+          },
+          {
+            "group": [
+              "luxury",
+              "five_diamond"
+            ],
+            "note": "Semantically related selected keys — review for double-counting risk"
+          }
+        ],
+        "attributeDefinitionsVersion": "e467e2c74eaac172",
+        "selectionInventoryHash": "7627f956808d9315",
+        "rows": [
+          {
+            "attribute": "luxury",
+            "label": "Luxury Positioning",
+            "priority": "high",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "Official luxury all-inclusive positioning + SLH membership",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "beachfront",
+            "label": "Beachfront",
+            "priority": "high",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "Grand Anse Beach beachfront suites",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "oceanfront",
+            "label": "Oceanfront",
+            "priority": "high",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "Caribbean Sea / Grand Anse beachfront",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "island_resort",
+            "label": "Island Resort",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "Grenada island resort",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "resort",
+            "label": "Resort Experience",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "All-suite beach resort experience",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "all_inclusive_option",
+            "label": "All-Inclusive Option",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "Official all-inclusive product",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "suite_inventory",
+            "label": "Suite Inventory",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "64-suite / all-suite inventory",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "swim_out",
+            "label": "Swim-Out Suites",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "Private plunge / pool suites on official suite copy",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "spa",
+            "label": "On-Site Spa",
+            "priority": "high",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "Janissa Spa on-site",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "full_service_spa",
+            "label": "Full-Service Spa",
+            "priority": "high",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "Full-service spa named Janissa Spa",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "outdoor_pool",
+            "label": "Outdoor Pool",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "Outdoor swimming pool amenity",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "tennis_courts",
+            "label": "Tennis Courts",
+            "priority": "low",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "Tennis included in resort amenities",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "watersports",
+            "label": "Water Sports",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "Non-motorized water sports included",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "kayaking",
+            "label": "Kayaking",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "Kayaking listed in inclusions",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "fine_dining",
+            "label": "Fine Dining",
+            "priority": "high",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "Oliver Restaurant + award-winning fare positioning",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "wedding_venue",
+            "label": "Wedding Venue",
+            "priority": "high",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "Weddings & honeymoons first-party program",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "honeymoon_destination",
+            "label": "Honeymoon Destination",
+            "priority": "high",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "Active honeymoon offer / program",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "family_friendly",
+            "label": "Family-Friendly",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "Official couples and families catering",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "soft_brand",
+            "label": "Soft Brand / Independence",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "Small Luxury Hotels of the World membership",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "boutique_feel",
+            "label": "Boutique Character",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "64-suite intimate scale",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "full_service",
+            "label": "Full-Service Hotel",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "Full-service luxury resort",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "five_diamond",
+            "label": "Five Diamond Positioning",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "AAA Five Diamond award cited on official schema (verify currency per period)",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "meeting_space",
+            "label": "Meeting & Event Space",
+            "priority": "high",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "Wedding / social event venue; small-meeting capability inferred Medium",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "event_space_outdoor",
+            "label": "Outdoor Event Space",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_STEWARDSHIP",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "note": "Beachfront wedding / social outdoor venue",
+            "airtableSupport": null
+          }
+        ],
+        "eligibilityPolicyVersion": "SELECTED_NEEDS_VERIFICATION_EXCLUDED_FROM_BRIDGED_DENOM_V1"
+      },
+      "minimumCoverage": {
+        "contractVersion": "ADP_MINIMUM_ATTRIBUTE_COVERAGE_V1",
+        "minimumEligible": 12,
+        "source": "DEFAULT_FOUNDER_WORKING",
+        "programId": null,
+        "hotelType": null,
+        "productionBlockingGateActive": false,
+        "note": "Diagnostic only in Phase 1B. Future fail-closed research gate requires separate founder approval.",
+        "eligibleCount": 24,
+        "shortfall": 0,
+        "meetsMinimum": true,
+        "flag": null
+      },
+      "suggestions": {
+        "contractVersion": "ADP_ATTRIBUTE_SUGGESTION_CANDIDATES_V1",
+        "propertyId": "adp_spice_island_beach_resort",
+        "demandSegmentsConsidered": [
+          "luxury_leisure",
+          "weddings_honeymoons",
+          "family_leisure",
+          "wellness_destination",
+          "soft_brand_collection"
+        ],
+        "selectedCount": 24,
+        "suggestionCount": 2,
+        "suggestions": [
+          {
+            "attribute": "heated_outdoor_pool",
+            "label": "Heated Outdoor Pool",
+            "suggestedPriority": "medium",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "family_leisure"
+            ],
+            "reason": "Relevant to demand segments: family_leisure",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "wellness",
+            "label": "Wellness Positioning",
+            "suggestedPriority": "medium",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "wellness_destination"
+            ],
+            "reason": "Relevant to demand segments: wellness_destination",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          }
+        ],
+        "note": "Suggestions never overwrite existing attributes[]. Approval required before selection change.",
+        "topSuggestions": [
+          {
+            "attribute": "heated_outdoor_pool",
+            "label": "Heated Outdoor Pool",
+            "suggestedPriority": "medium",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "family_leisure"
+            ],
+            "reason": "Relevant to demand segments: family_leisure",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "wellness",
+            "label": "Wellness Positioning",
+            "suggestedPriority": "medium",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.spiceislandbeachresort.com/",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "wellness_destination"
+            ],
+            "reason": "Relevant to demand segments: wellness_destination",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          }
+        ]
+      },
+      "dualRun": {
+        "fixtureBaseline": {
+          "mode": "RG_FIXTURE_BASELINE",
+          "realityGap": {
+            "gapScore": 100,
+            "display": "100.0%",
+            "totalAttributes": 24,
+            "recognizedCount": 0,
+            "gapCount": 24,
+            "totalPropertyMentions": 0
+          },
+          "denominatorKeys": [
+            "luxury",
+            "beachfront",
+            "oceanfront",
+            "island_resort",
+            "resort",
+            "all_inclusive_option",
+            "suite_inventory",
+            "swim_out",
+            "spa",
+            "full_service_spa",
+            "outdoor_pool",
+            "tennis_courts",
+            "watersports",
+            "kayaking",
+            "fine_dining",
+            "wedding_venue",
+            "honeymoon_destination",
+            "family_friendly",
+            "soft_brand",
+            "boutique_feel",
+            "full_service",
+            "five_diamond",
+            "meeting_space",
+            "event_space_outdoor"
+          ]
+        },
+        "bridgedEligible": {
+          "mode": "RG_BRIDGED_ELIGIBLE_DIAGNOSTIC_V1",
+          "realityGap": {
+            "gapScore": 100,
+            "display": "100.0%",
+            "totalAttributes": 24,
+            "recognizedCount": 0,
+            "gapCount": 24,
+            "totalPropertyMentions": 0
+          },
+          "denominatorKeys": [
+            "luxury",
+            "beachfront",
+            "oceanfront",
+            "island_resort",
+            "resort",
+            "all_inclusive_option",
+            "suite_inventory",
+            "swim_out",
+            "spa",
+            "full_service_spa",
+            "outdoor_pool",
+            "tennis_courts",
+            "watersports",
+            "kayaking",
+            "fine_dining",
+            "wedding_venue",
+            "honeymoon_destination",
+            "family_friendly",
+            "soft_brand",
+            "boutique_feel",
+            "full_service",
+            "five_diamond",
+            "meeting_space",
+            "event_space_outdoor"
+          ]
+        },
+        "difference": {
+          "fixtureDenominator": 24,
+          "bridgedEligibleDenominator": 24,
+          "denominatorDelta": 0,
+          "fixtureGapScore": 100,
+          "bridgedEligibleGapScore": 100,
+          "gapScoreDelta": 0,
+          "excludedFromEligible": [],
+          "artifactWarning": null,
+          "customerFacingUnchanged": true,
+          "interpretation": "Compare inventories and per-attribute recognition. Never treat denominator exclusion as AI positioning improvement."
+        }
+      },
+      "transparency": {
+        "totalVerifiedHotelAttributesEstimate": 24,
+        "suggestedPositioningAttributes": 2,
+        "approvedSelectedAttributes": 24,
+        "eligibleMeasurableAttributes": 24,
+        "actuallyMeasuredFixture": 24,
+        "actuallyMeasuredBridgedEligible": 24,
+        "belowMinimumShortfall": 0,
+        "awaitingVerification": 0,
+        "missingRecognitionDefinitions": 0
+      },
+      "inventoryPin": {
+        "selectedAttributeKeys": [
+          "luxury",
+          "beachfront",
+          "oceanfront",
+          "island_resort",
+          "resort",
+          "all_inclusive_option",
+          "suite_inventory",
+          "swim_out",
+          "spa",
+          "full_service_spa",
+          "outdoor_pool",
+          "tennis_courts",
+          "watersports",
+          "kayaking",
+          "fine_dining",
+          "wedding_venue",
+          "honeymoon_destination",
+          "family_friendly",
+          "soft_brand",
+          "boutique_feel",
+          "full_service",
+          "five_diamond",
+          "meeting_space",
+          "event_space_outdoor"
+        ],
+        "selectionInventoryHash": "7627f956808d9315",
+        "attributeDefinitionsVersion": "e467e2c74eaac172",
+        "eligibilityPolicyVersion": "SELECTED_NEEDS_VERIFICATION_EXCLUDED_FROM_BRIDGED_DENOM_V1",
+        "methodologyNote": "Customer RG remains fixture baseline; bridged path is diagnostic-only",
+        "researchPeriodId": null,
+        "observationCount": 0
+      },
+      "historicalCompatibility": {
+        "customerFacingRealityGapUnchanged": true,
+        "historicalPeriodsImmutable": true,
+        "methodologyWeightsUnchanged": true,
+        "automaticPublication": false,
+        "cutoverAuthorized": false
+      },
+      "generatedAt": "2026-11-19T15:21:52.652Z"
+    }
+  ],
+  "regression": [
+    {
+      "ok": true,
+      "contractVersion": "ADP_VERIFIED_CONTEXT_BRIDGE_V1",
+      "diagnosticMode": "RG_BRIDGED_ELIGIBLE_DIAGNOSTIC_V1",
+      "customerFacingMode": "RG_FIXTURE_BASELINE",
+      "propertyId": "adp_yotel_geneva_lake",
+      "propertyName": "YOTEL Geneva Lake",
+      "hpcHotelId": "recrPQcZg7SFARRb2",
+      "identity": {
+        "propertyId": "adp_yotel_geneva_lake",
+        "hpcHotelId": "recrPQcZg7SFARRb2",
+        "censusRecordId": "recrPQcZg7SFARRb2",
+        "isolationKey": "adp_yotel_geneva_lake::recrPQcZg7SFARRb2"
+      },
+      "selectedAttributes": [
+        "full_service",
+        "meeting_space",
+        "airport_shuttle",
+        "park_and_fly",
+        "design_forward",
+        "urban_lifestyle",
+        "fitness_center",
+        "pet_friendly"
+      ],
+      "eligibility": {
+        "contractVersion": "ADP_ATTRIBUTE_ELIGIBILITY_CLASSIFIER_V1",
+        "propertyId": "adp_yotel_geneva_lake",
+        "selectedCount": 8,
+        "uniqueSelectedCount": 8,
+        "eligibleCount": 3,
+        "eligibleKeys": [
+          "full_service",
+          "meeting_space",
+          "urban_lifestyle"
+        ],
+        "needsVerificationKeys": [
+          "design_forward",
+          "fitness_center",
+          "pet_friendly"
+        ],
+        "undefinedKeys": [
+          "airport_shuttle",
+          "park_and_fly"
+        ],
+        "conflictingKeys": [],
+        "duplicateKeys": [],
+        "semanticOverlaps": [],
+        "attributeDefinitionsVersion": "e467e2c74eaac172",
+        "selectionInventoryHash": "8f6db2e05a7a69cb",
+        "rows": [
+          {
+            "attribute": "full_service",
+            "label": "Full-Service Hotel",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_PROPERTY_TYPE",
+            "evidenceUrl": "https://www.yotel.com/en/hotels/yotel-geneva-lake",
+            "note": "propertyType/positioning/chainScale+meetingSpace indicates full-service (select_service)",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "meeting_space",
+            "label": "Meeting & Event Space",
+            "priority": "high",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_MEETING_SPACE",
+            "evidenceUrl": "https://www.yotel.com/en/hotels/yotel-geneva-lake",
+            "note": "meetingSpace object present on governed profile (existence / inventory — not inventing sq ft beyond profile)",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "airport_shuttle",
+            "label": "airport_shuttle",
+            "priority": null,
+            "defined": false,
+            "eligibilityStatus": "SELECTED_UNDEFINED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": false,
+            "provenanceClass": "NOT_MEASURABLE",
+            "verificationStatus": "NOT_MEASURABLE",
+            "evidenceUrl": "https://www.yotel.com/en/hotels/yotel-geneva-lake",
+            "note": "Selected key absent from ATTRIBUTE_DEFINITIONS (and/or recognition registry)",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "park_and_fly",
+            "label": "park_and_fly",
+            "priority": null,
+            "defined": false,
+            "eligibilityStatus": "SELECTED_UNDEFINED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": false,
+            "provenanceClass": "NOT_MEASURABLE",
+            "verificationStatus": "NOT_MEASURABLE",
+            "evidenceUrl": "https://www.yotel.com/en/hotels/yotel-geneva-lake",
+            "note": "Selected key absent from ATTRIBUTE_DEFINITIONS (and/or recognition registry)",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "design_forward",
+            "label": "Design-Forward Interiors",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "SELECTED_NEEDS_VERIFICATION",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": false,
+            "provenanceClass": "NEEDS_SOURCE_VERIFICATION",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "evidenceUrl": "https://www.yotel.com/en/hotels/yotel-geneva-lake",
+            "note": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "urban_lifestyle",
+            "label": "Urban Lifestyle Hotel",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "VERIFIED_AND_SELECTED",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": true,
+            "provenanceClass": "VERIFIED_EXISTING_SOURCE",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_LOCATION",
+            "evidenceUrl": "https://www.yotel.com/en/hotels/yotel-geneva-lake",
+            "note": "Named city on governed profile (Founex) supports urban location tag",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "fitness_center",
+            "label": "Fitness Center",
+            "priority": "medium",
+            "defined": true,
+            "eligibilityStatus": "SELECTED_NEEDS_VERIFICATION",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": false,
+            "provenanceClass": "NEEDS_SOURCE_VERIFICATION",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "evidenceUrl": "https://www.yotel.com/en/hotels/yotel-geneva-lake",
+            "note": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "airtableSupport": null
+          },
+          {
+            "attribute": "pet_friendly",
+            "label": "Pet-Friendly",
+            "priority": "low",
+            "defined": true,
+            "eligibilityStatus": "SELECTED_NEEDS_VERIFICATION",
+            "inSelectionInventory": true,
+            "inEligibleDenominator": false,
+            "provenanceClass": "NEEDS_SOURCE_VERIFICATION",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "evidenceUrl": "https://www.yotel.com/en/hotels/yotel-geneva-lake",
+            "note": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "airtableSupport": null
+          }
+        ],
+        "eligibilityPolicyVersion": "SELECTED_NEEDS_VERIFICATION_EXCLUDED_FROM_BRIDGED_DENOM_V1"
+      },
+      "minimumCoverage": {
+        "contractVersion": "ADP_MINIMUM_ATTRIBUTE_COVERAGE_V1",
+        "minimumEligible": 12,
+        "source": "DEFAULT_FOUNDER_WORKING",
+        "programId": null,
+        "hotelType": null,
+        "productionBlockingGateActive": false,
+        "note": "Diagnostic only in Phase 1B. Future fail-closed research gate requires separate founder approval.",
+        "eligibleCount": 3,
+        "shortfall": 9,
+        "meetsMinimum": false,
+        "flag": "BELOW_MINIMUM_ATTRIBUTE_COVERAGE"
+      },
+      "suggestions": {
+        "contractVersion": "ADP_ATTRIBUTE_SUGGESTION_CANDIDATES_V1",
+        "propertyId": "adp_yotel_geneva_lake",
+        "demandSegmentsConsidered": [
+          "airport_travel",
+          "corporate_meetings",
+          "business_transient"
+        ],
+        "selectedCount": 8,
+        "suggestionCount": 6,
+        "suggestions": [
+          {
+            "attribute": "large_ballroom",
+            "label": "Large Ballroom",
+            "suggestedPriority": "high",
+            "supportingFact": "Largest / banquet room present on profile meetingSpace",
+            "evidenceUrl": "https://www.yotel.com/en/hotels/yotel-geneva-lake",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_MEETING_SPACE",
+            "verifiedSupport": true,
+            "relevantSegments": [
+              "corporate_meetings"
+            ],
+            "reason": "Relevant to demand segments: corporate_meetings",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_ADDITION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "ballroom",
+            "label": "Ballroom",
+            "suggestedPriority": "medium",
+            "supportingFact": "Largest / banquet room present on profile meetingSpace",
+            "evidenceUrl": "https://www.yotel.com/en/hotels/yotel-geneva-lake",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_MEETING_SPACE",
+            "verifiedSupport": true,
+            "relevantSegments": [
+              "corporate_meetings"
+            ],
+            "reason": "Relevant to demand segments: corporate_meetings",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_ADDITION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "executive_lounge",
+            "label": "Executive Lounge",
+            "suggestedPriority": "high",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.yotel.com/en/hotels/yotel-geneva-lake",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "business_transient"
+            ],
+            "reason": "Relevant to demand segments: business_transient",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "fitness_center_24hr",
+            "label": "24-Hour Fitness Center",
+            "suggestedPriority": "medium",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.yotel.com/en/hotels/yotel-geneva-lake",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "business_transient"
+            ],
+            "reason": "Relevant to demand segments: business_transient",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "business_center",
+            "label": "Business Center",
+            "suggestedPriority": "low",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.yotel.com/en/hotels/yotel-geneva-lake",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "corporate_meetings"
+            ],
+            "reason": "Relevant to demand segments: corporate_meetings",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "concierge",
+            "label": "Concierge Service",
+            "suggestedPriority": "low",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.yotel.com/en/hotels/yotel-geneva-lake",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "business_transient"
+            ],
+            "reason": "Relevant to demand segments: business_transient",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          }
+        ],
+        "note": "Suggestions never overwrite existing attributes[]. Approval required before selection change.",
+        "topSuggestions": [
+          {
+            "attribute": "large_ballroom",
+            "label": "Large Ballroom",
+            "suggestedPriority": "high",
+            "supportingFact": "Largest / banquet room present on profile meetingSpace",
+            "evidenceUrl": "https://www.yotel.com/en/hotels/yotel-geneva-lake",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_MEETING_SPACE",
+            "verifiedSupport": true,
+            "relevantSegments": [
+              "corporate_meetings"
+            ],
+            "reason": "Relevant to demand segments: corporate_meetings",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_ADDITION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "ballroom",
+            "label": "Ballroom",
+            "suggestedPriority": "medium",
+            "supportingFact": "Largest / banquet room present on profile meetingSpace",
+            "evidenceUrl": "https://www.yotel.com/en/hotels/yotel-geneva-lake",
+            "verificationStatus": "VERIFIED_FROM_PROFILE_MEETING_SPACE",
+            "verifiedSupport": true,
+            "relevantSegments": [
+              "corporate_meetings"
+            ],
+            "reason": "Relevant to demand segments: corporate_meetings",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_ADDITION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "executive_lounge",
+            "label": "Executive Lounge",
+            "suggestedPriority": "high",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.yotel.com/en/hotels/yotel-geneva-lake",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "business_transient"
+            ],
+            "reason": "Relevant to demand segments: business_transient",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "fitness_center_24hr",
+            "label": "24-Hour Fitness Center",
+            "suggestedPriority": "medium",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.yotel.com/en/hotels/yotel-geneva-lake",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "business_transient"
+            ],
+            "reason": "Relevant to demand segments: business_transient",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "business_center",
+            "label": "Business Center",
+            "suggestedPriority": "low",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.yotel.com/en/hotels/yotel-geneva-lake",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "corporate_meetings"
+            ],
+            "reason": "Relevant to demand segments: corporate_meetings",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          },
+          {
+            "attribute": "concierge",
+            "label": "Concierge Service",
+            "suggestedPriority": "low",
+            "supportingFact": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support",
+            "evidenceUrl": "https://www.yotel.com/en/hotels/yotel-geneva-lake",
+            "verificationStatus": "NEEDS_SOURCE_VERIFICATION",
+            "verifiedSupport": false,
+            "relevantSegments": [
+              "business_transient"
+            ],
+            "reason": "Relevant to demand segments: business_transient",
+            "measurementDefinitionAvailable": true,
+            "suggestedInclusionStatus": "PROPOSED_PENDING_VERIFICATION",
+            "autoApproved": false
+          }
+        ]
+      },
+      "dualRun": {
+        "fixtureBaseline": {
+          "mode": "RG_FIXTURE_BASELINE",
+          "realityGap": {
+            "gapScore": 100,
+            "display": "100.0%",
+            "totalAttributes": 6,
+            "recognizedCount": 0,
+            "gapCount": 6,
+            "totalPropertyMentions": 0
+          },
+          "denominatorKeys": [
+            "full_service",
+            "meeting_space",
+            "design_forward",
+            "urban_lifestyle",
+            "fitness_center",
+            "pet_friendly"
+          ]
+        },
+        "bridgedEligible": {
+          "mode": "RG_BRIDGED_ELIGIBLE_DIAGNOSTIC_V1",
+          "realityGap": {
+            "gapScore": 100,
+            "display": "100.0%",
+            "totalAttributes": 3,
+            "recognizedCount": 0,
+            "gapCount": 3,
+            "totalPropertyMentions": 0
+          },
+          "denominatorKeys": [
+            "full_service",
+            "meeting_space",
+            "urban_lifestyle"
+          ]
+        },
+        "difference": {
+          "fixtureDenominator": 6,
+          "bridgedEligibleDenominator": 3,
+          "denominatorDelta": -3,
+          "fixtureGapScore": 100,
+          "bridgedEligibleGapScore": 100,
+          "gapScoreDelta": 0,
+          "excludedFromEligible": [
+            {
+              "attribute": "airport_shuttle",
+              "eligibilityStatus": "SELECTED_UNDEFINED",
+              "note": "Selected key absent from ATTRIBUTE_DEFINITIONS (and/or recognition registry)"
+            },
+            {
+              "attribute": "park_and_fly",
+              "eligibilityStatus": "SELECTED_UNDEFINED",
+              "note": "Selected key absent from ATTRIBUTE_DEFINITIONS (and/or recognition registry)"
+            },
+            {
+              "attribute": "design_forward",
+              "eligibilityStatus": "SELECTED_NEEDS_VERIFICATION",
+              "note": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support"
+            },
+            {
+              "attribute": "fitness_center",
+              "eligibilityStatus": "SELECTED_NEEDS_VERIFICATION",
+              "note": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support"
+            },
+            {
+              "attribute": "pet_friendly",
+              "eligibilityStatus": "SELECTED_NEEDS_VERIFICATION",
+              "note": "Present on profile.attributes but no stewardship note, brand/affiliation match, meetingSpace field, location field, or positioning differentiator support"
+            }
+          ],
+          "artifactWarning": null,
+          "customerFacingUnchanged": true,
+          "interpretation": "Compare inventories and per-attribute recognition. Never treat denominator exclusion as AI positioning improvement."
+        }
+      },
+      "transparency": {
+        "totalVerifiedHotelAttributesEstimate": 3,
+        "suggestedPositioningAttributes": 6,
+        "approvedSelectedAttributes": 8,
+        "eligibleMeasurableAttributes": 3,
+        "actuallyMeasuredFixture": 6,
+        "actuallyMeasuredBridgedEligible": 3,
+        "belowMinimumShortfall": 9,
+        "awaitingVerification": 3,
+        "missingRecognitionDefinitions": 2
+      },
+      "inventoryPin": {
+        "selectedAttributeKeys": [
+          "full_service",
+          "meeting_space",
+          "airport_shuttle",
+          "park_and_fly",
+          "design_forward",
+          "urban_lifestyle",
+          "fitness_center",
+          "pet_friendly"
+        ],
+        "selectionInventoryHash": "8f6db2e05a7a69cb",
+        "attributeDefinitionsVersion": "e467e2c74eaac172",
+        "eligibilityPolicyVersion": "SELECTED_NEEDS_VERIFICATION_EXCLUDED_FROM_BRIDGED_DENOM_V1",
+        "methodologyNote": "Customer RG remains fixture baseline; bridged path is diagnostic-only",
+        "researchPeriodId": null,
+        "observationCount": 0
+      },
+      "historicalCompatibility": {
+        "customerFacingRealityGapUnchanged": true,
+        "historicalPeriodsImmutable": true,
+        "methodologyWeightsUnchanged": true,
+        "automaticPublication": false,
+        "cutoverAuthorized": false
+      },
+      "generatedAt": "2026-11-19T15:21:52.657Z"
+    }
+  ],
+  "isolation": [
+    {
+      "a": "adp_bethesda_marriott",
+      "b": "adp_spice_island_beach_resort",
+      "selectionHashesEqual": false,
+      "ok": true
+    }
+  ],
+  "generatedAt": "2026-11-19T15:21:52.657Z",
+  "contentHash": "430baf27c955789f"
+}
