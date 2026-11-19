@@ -54,7 +54,8 @@ Both tracks **reuse** these systems; neither invents a parallel stack:
 | Phase 0A / Slice 1 | Baseline drawer audit; research priority + depth amendment | Shipped (#438 / #440 lineage) |
 | Slice 2 audit | Airtable persistence / partners / reuse audit | Shipped (#441) |
 | **Slice 2A** | Persistence honesty + slim payload + one-run 12-dimension lifecycle | **MERGED** [#444](https://github.com/joandejarden-create/my-operators-backend/pull/444) |
-| **Slice 2B** | DG / Partner relationship wiring (existing tables; dry-run first) | **IN FLIGHT** after #446 merged |
+| **Slice 2B** | DG / Partner relationship wiring (existing tables; dry-run first) | **MERGED** [#448](https://github.com/joandejarden-create/my-operators-backend/pull/448) |
+| **Brief v2** | Commercial Intelligence Brief narrative quality (PDAC/NICE gold; NRC/IMC/OWWA weak) | **Plan prepared** — implement after #450 merges |
 | Slice 2C | Read-only Airtable DG reuse hooks + continuation / Weekly Change prep | After 2B |
 | Brief v2 | Commercial Intelligence Brief v2 drawer quality | Parallel readiness after 2B evidence |
 | 14-segment Full E2E | Certified repeatable process + progressive depth | Ongoing; not a PDI UI blocker |
@@ -62,10 +63,12 @@ Both tracks **reuse** these systems; neither invents a parallel stack:
 
 ### Next focused PR (Track A)
 
-**Slice 2B — Demand Generator / Partner relationship wiring**  
-- Reuse existing routers/tables; dry-run relationship manifests  
-- `dgGeneratorId` linkage; no confidential feedback in DG payloads  
-- No new Airtable tables; no production writes without founder auth  
+**Commercial Intelligence Brief v2** (after PDI-2 merges)  
+- Improve generated narrative/commercial reasoning (not field-presence only)  
+- Gold: PDAC / NICE · Weak: NRC RIC, IMC Construction, OWWA  
+- Reuse existing drawer generator + presentation controller  
+- Before/after briefs with evidence-based quality scoring  
+- No second drawer engine; PDI-3 must consume the same contract  
 
 ---
 
@@ -75,8 +78,8 @@ Both tracks **reuse** these systems; neither invents a parallel stack:
 |---|---|---|
 | Assessment | Portfolio Demand Intelligence product assessment | **MERGED** [#445](https://github.com/joandejarden-create/my-operators-backend/pull/445) |
 | **PDI-1** | Operator/market/hotel membership + fit classes + Aimbridge GDL fixtures | **MERGED** [#446](https://github.com/joandejarden-create/my-operators-backend/pull/446) |
-| **PDI-2** | Read-only portfolio API + operator authorization | After Slice 2B merges |
-| **PDI-3** | GDI tab left of Commercial Priorities + fit matrix + drawer integration | After PDI-2 API/data deps verified |
+| **PDI-2** | Read-only portfolio API + operator authorization | **IN FLIGHT** |
+| **PDI-3** | GDI tab left of Commercial Priorities + fit matrix; **reuse Brief v2 + existing drawer** | After PDI-2 + Brief v2 |
 | PDI-4 | Market-level Full E2E orchestration + same-run multi-hotel qualification | After shared persistence + auth tested |
 | PDI-5 | Portfolio Weekly Change + hotel-isolated feedback | After PDI-3/4 foundations |
 
@@ -86,7 +89,7 @@ Both tracks **reuse** these systems; neither invents a parallel stack:
 
 ### Next focused PR (Track B)
 
-After #446 merges and home-sync: **PDI-2** read-only portfolio API + authorization (no paid research; no multi-hotel production writes).
+**PDI-2** read-only portfolio API + authorization (this cycle). After founder review + Brief v2: **PDI-3** tab.
 
 ---
 
@@ -113,8 +116,9 @@ Coordinate before changing: market id computation, slim payload allowlist, `eval
 | A | Finish PR #444 + integration lifecycle | **DONE** |
 | B | Portfolio assessment docs PR | **DONE** (#445) |
 | C | PDI-1 identity + fit fixtures | **DONE** (#446) |
-| D | Track A Slice 2B persistence relationship wiring + drawer quality | **IN FLIGHT** |
-| E | PDI-2 / PDI-3 when API/data deps verified | **QUEUED** (after 2B) |
+| D | Track A Slice 2B relationship wiring | **DONE** (#448) |
+| E | PDI-2 read-only portfolio API | **IN FLIGHT** |
+| F | Track A Brief v2 → then PDI-3 (shared drawer) | **QUEUED** |
 
 ## Milestone report template
 
@@ -131,12 +135,14 @@ At each merge / milestone, report:
 
 ## Coordinated follow-on — Brief v2 + PDI-3
 
-After Slice 2B and PDI-2:
+Sequence after PDI-2:
 
-- **Commercial Intelligence Brief v2** (Track A) and **PDI-3 portfolio tab** (Track B) must share **one** opportunity presentation contract / drawer content engine.
+1. **Commercial Intelligence Brief v2** (Track A) — narrative quality on audited samples.  
+2. **PDI-3 portfolio tab** (Track B) — reuses Brief v2 + existing hotel opportunity detail component.
+
 - Do **not** create a second drawer renderer for portfolio.
-- Tab placement remains: Opportunities · **Portfolio Demand Intelligence** · Commercial Priorities.
-- PDI-3 waits until PDI-2 API + authorization tests pass.
+- Tab placement: Opportunities · **Portfolio Demand Intelligence** · Commercial Priorities.
+- Remaining deps: Airtable membership write/read-back certification; market-level Full E2E (PDI-4) founder-gated.
 
 ## Related docs
 
