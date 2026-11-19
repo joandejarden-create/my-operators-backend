@@ -21,9 +21,50 @@ import {
 } from "../lib/dealality/local-demo-dealality-user.js";
 import { resolveLocalDevBypassAdminUser } from "../lib/dealality/local-dev-bypass-admin-user.js";
 import {
-  elevateGovernedPlatformAdmin,
+  classifyMemberstackId,
+  classifyVerifiedEmail,
   elevateGovernedPlatformAdminOnRequest,
+  finalizeDealalityUserAuthorization,
+  traceDealalityAdminAuthDecision,
 } from "../lib/dealality/governed-platform-admin-emails.js";
+
+function verifiedViaClass(req) {
+  const via = String(req.memberstackVerifiedVia || "").toLowerCase();
+  if (!via) return "missing";
+  if (via === "dev_bypass") return "dev_bypass";
+  if (via.includes("jwks")) return "jwks";
+  if (via.includes("rest")) return "rest";
+  if (via.includes("member_lookup")) return "member_lookup";
+  return "other";
+}
+
+function attachAndFinalize(req, dealalityUser, resolution) {
+  const fin = finalizeDealalityUserAuthorization(req, dealalityUser);
+  req.dealalityUser = dealalityUser;
+  req.dealalityAuthResolution = resolution;
+  req.dealalityAuthFinalizePath = fin.path;
+  traceDealalityAdminAuthDecision({
+    correlationId: req.dealalityAuthCorr || null,
+    phase: "requireDealalityUser",
+    route: req.originalUrl || req.url || null,
+    bearerPresent: Boolean(req.headers?.authorization || req.headers?.Authorization),
+    jwtOutcome:
+      req.memberstackVerifiedVia === "dev_bypass" ? "dev_bypass_no_bearer" : "verified",
+    memberstackIdClass: classifyMemberstackId(req.memberstackMemberId),
+    memberstackId: req.memberstackMemberId || null,
+    verifiedEmailClass: classifyVerifiedEmail(req.memberstackEmail),
+    resolution,
+    finalizePath: fin.path,
+    elevated: fin.elevated,
+    isAdmin: dealalityUser.isAdmin === true,
+    userSource: dealalityUser.userSource || null,
+    hasMemberstackId: Boolean(req.memberstackMemberId),
+    hasVerifiedEmailClaim: Boolean(req.memberstackEmail),
+    verifiedViaClass: verifiedViaClass(req),
+    middleware: "requireDealalityUser",
+  });
+  return dealalityUser;
+}
 
 export async function requireDealalityUser(req, res, next) {
   if (!req.memberstackMemberId) {
@@ -61,7 +102,9 @@ export async function requireDealalityUser(req, res, next) {
       });
       if (localDemo) {
         const dealalityUser = attachLocalDemoRequestContext({ ...localDemo }, req);
-        req.dealalityUser = dealalityUser;
+        // CRITICAL: must finalize elevation before next() — local-demo previously
+        // returned with isAdmin=false and skipped governed elevation.
+        attachAndFinalize(req, dealalityUser, "local_demo_fallback");
         return next();
       }
 
@@ -74,13 +117,15 @@ export async function requireDealalityUser(req, res, next) {
         req,
       });
       if (localBypassAdmin) {
-        req.dealalityUser = localBypassAdmin;
+        // Already isAdmin=true; finalize is a no-op skip for dev_bypass.
+        attachAndFinalize(req, localBypassAdmin, "local_dev_bypass");
         return next();
       }
 
       // Governed founder/demo emails (assignments.v1.json) — stub admin when Users row missing.
       const governedStub = elevateGovernedPlatformAdminOnRequest(req);
       if (governedStub) {
+        attachAndFinalize(req, governedStub, "governed_stub_missing_users_row");
         return next();
       }
 
@@ -153,27 +198,7 @@ export async function requireDealalityUser(req, res, next) {
     // Portfolio must never shrink workspace options.
     dealalityUser.canonicalWorkspaceOptions = resolveWorkspaceOptions(dealalityUser);
 
-    // Founder/demo may be Airtable role=owner with isAdmin=false — elevate only when
-    // the verified Memberstack email (or Users.email bound to verified memberstackId)
-    // is on the server allowlist. Never elevate from client-supplied fields.
-    // Elevate only for verified Memberstack sessions (never DEV bypass impersonation here).
-    // Try JWT email first, then Users.email when the row is bound to the verified memberstack id
-    // (parity with /api/me elevateEmail / matchedBy=memberstack_id).
-    if (
-      req.memberstackMemberId &&
-      req.memberstackMemberId !== "dev_bypass" &&
-      String(req.memberstackVerifiedVia || "") !== "dev_bypass"
-    ) {
-      elevateGovernedPlatformAdmin(dealalityUser, req.memberstackEmail);
-      if (
-        !dealalityUser.governedPlatformAdminElevated &&
-        dealalityUser.memberstackId === req.memberstackMemberId
-      ) {
-        elevateGovernedPlatformAdmin(dealalityUser, dealalityUser.email);
-      }
-    }
-
-    req.dealalityUser = dealalityUser;
+    attachAndFinalize(req, dealalityUser, "airtable_users_row");
     return next();
   } catch (err) {
     // Local/dev only: an unreachable Airtable base must not block the approved
@@ -184,7 +209,9 @@ export async function requireDealalityUser(req, res, next) {
       req,
     });
     if (localDemo) {
-      req.dealalityUser = attachLocalDemoRequestContext({ ...localDemo }, req);
+      const dealalityUser = attachLocalDemoRequestContext({ ...localDemo }, req);
+      // Same finalize requirement as the !found local-demo branch.
+      attachAndFinalize(req, dealalityUser, "local_demo_airtable_error");
       return next();
     }
     console.error("[requireDealalityUser] lookup error:", (err && err.message) || err);

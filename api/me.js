@@ -15,7 +15,11 @@
 
 import Airtable from "airtable";
 import { verifyMemberstackToken } from "../lib/memberstack/verify-token.js";
-import { shouldSyncMemberstackIdToUsersRow } from "../lib/memberstack/environment.js";
+import {
+  isSandboxMemberstackId,
+  shouldSyncMemberstackIdToUsersRow,
+} from "../lib/memberstack/environment.js";
+import { resolveLocalDemoEmailForVerifiedMemberstackId } from "../lib/dealality/local-demo-memberstack-id-binding.js";
 
 import {
   INTAKE_USERS_TABLE,
@@ -54,6 +58,7 @@ import {
 import { buildLocalDevBypassAdminMeResponse } from "../lib/dealality/local-dev-bypass-admin-user.js";
 import {
   elevateGovernedPlatformAdmin,
+  finalizeDealalityUserAuthorization,
   isGovernedPlatformAdminEmail,
 } from "../lib/dealality/governed-platform-admin-emails.js";
 
@@ -241,6 +246,13 @@ async function getMe(req, res) {
       (verified.email && String(verified.email).trim().toLowerCase()) ||
       pickEmailFromPayload(verified.raw);
 
+    if (!emailFromToken) {
+      emailFromToken = resolveLocalDemoEmailForVerifiedMemberstackId(
+        memberstackId,
+        req
+      );
+    }
+
     tokenPayload =
       verified.raw && typeof verified.raw === "object" ? verified.raw : {};
   }
@@ -254,11 +266,23 @@ async function getMe(req, res) {
   const base = new Airtable({ apiKey }).base(baseId);
   const formula = buildUserLookupFormula(memberstackId);
 
-  let userRows;
+  let userRows = [];
   let matchedBy = "memberstack_id";
+  // Localhost Test Mode (mem_sb_…) must resolve canonical Live Users by email when present.
+  const preferEmailForSandbox =
+    Boolean(emailFromToken) && isSandboxMemberstackId(memberstackId);
   try {
-    userRows = await base(USERS_TABLE).select({ filterByFormula: formula, maxRecords: 1 }).firstPage();
-    if (!userRows.length && emailFromToken) {
+    if (preferEmailForSandbox) {
+      userRows = await findUserByEmail(base, emailFromToken);
+      if (userRows.length) matchedBy = "email";
+    }
+    if (!userRows.length) {
+      userRows = await base(USERS_TABLE)
+        .select({ filterByFormula: formula, maxRecords: 1 })
+        .firstPage();
+      if (userRows.length) matchedBy = "memberstack_id";
+    }
+    if (!userRows.length && emailFromToken && !preferEmailForSandbox) {
       userRows = await findUserByEmail(base, emailFromToken);
       if (userRows.length) matchedBy = "email";
     }
@@ -648,13 +672,26 @@ async function getMe(req, res) {
     companyIds: companyProfileIds,
   });
 
-  // Founder/demo may be Airtable role=owner with isAdmin=false — elevate only from
-  // verified Memberstack email, or Users.email when the row was bound by verified memberstack id.
-  // Never elevate from unmatched/client-controlled email alone.
-  const elevateEmail =
-    emailFromToken ||
-    (matchedBy === "memberstack_id" ? email : null);
-  elevateGovernedPlatformAdmin(dealality, elevateEmail);
+  // Same finalize policy as requireDealalityUser (single authorization decision).
+  // Synthesize the req fields getMe already verified from the JWT.
+  const finalizeReq = {
+    memberstackMemberId: memberstackId,
+    memberstackEmail: emailFromToken || null,
+    memberstackVerifiedVia: verifiedVia === "dev_bypass" ? "dev_bypass" : verifiedVia || "jwks",
+    // Host required for LOCAL admin override host gate (parity with requireDealalityUser).
+    hostname: req.hostname,
+    headers: req.headers,
+  };
+  // Bind Users.email for finalize airtable_email_bound when matched by memberstack id.
+  dealality.email = email;
+  dealality.memberstackId = memberstackId;
+  dealality.userSource = dealality.userSource || "AIRTABLE";
+  finalizeDealalityUserAuthorization(finalizeReq, dealality);
+  // If JWT email was missing but matchedBy=memberstack_id, finalize already tried Users.email.
+  // If JWT email present but unmatched earlier, ensure governed elevation still runs once.
+  if (!dealality.governedPlatformAdminElevated && emailFromToken) {
+    elevateGovernedPlatformAdmin(dealality, emailFromToken);
+  }
 
   // ADP admin tools — same decision as middleware (nav/page/API parity).
   // Local QA: approved demo email on localhost/dev. Production: RBAC only.

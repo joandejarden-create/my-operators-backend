@@ -42,7 +42,9 @@
     if (window.DealalityMemberstackAuth && window.DealalityMemberstackAuth.authFetch) {
       return window.DealalityMemberstackAuth.authFetch(url, opts);
     }
-    return fetch(url, opts);
+    return Promise.reject(
+      new Error("DealalityMemberstackAuth.authFetch unavailable — cannot call admin APIs")
+    );
   }
 
   function $(id) {

@@ -10,12 +10,31 @@ import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { verifyMemberstackToken } from "../lib/memberstack/verify-token.js";
 import { resolveDealalityUser } from "../lib/dealality/resolve-user.js";
+import { resolveLocalDemoEmailForVerifiedMemberstackId } from "../lib/dealality/local-demo-memberstack-id-binding.js";
+import { finalizeDealalityUserAuthorization } from "../lib/dealality/governed-platform-admin-emails.js";
 
 function readBearerToken(req) {
   const raw = req.headers.authorization || req.headers.Authorization;
   if (!raw || typeof raw !== "string") return null;
   const m = raw.match(/^Bearer\s+(\S+)$/i);
   return m ? m[1] : null;
+}
+
+/** Parity with memberstackAuth / api/me — nested JWT email claims. */
+function pickEmailFromPayload(payload) {
+  if (!payload || typeof payload !== "object") return null;
+  const candidates = [
+    payload.email,
+    payload.auth?.email,
+    payload.member?.email,
+    payload.data?.email,
+    payload.data?.auth?.email,
+  ];
+  for (const c of candidates) {
+    const s = c != null ? String(c).trim().toLowerCase() : "";
+    if (s && s.includes("@")) return s;
+  }
+  return null;
 }
 
 function ownerAppHeaderPresent(req) {
@@ -142,7 +161,16 @@ export async function optionalDealalityAuth(req, res, next) {
     const verified = await verifyMemberstackToken(token);
     req.memberstack = verified.raw;
     req.memberstackMemberId = verified.id;
-    req.memberstackEmail = verified.email || null;
+    req.memberstackEmail =
+      (verified.email && String(verified.email).trim().toLowerCase()) ||
+      pickEmailFromPayload(verified.raw) ||
+      null;
+    if (!req.memberstackEmail) {
+      req.memberstackEmail = resolveLocalDemoEmailForVerifiedMemberstackId(
+        verified.id,
+        req
+      );
+    }
     req.memberstackVerifiedVia = verified.verifiedVia;
 
     const result = await resolveDealalityUser({
@@ -161,15 +189,17 @@ export async function optionalDealalityAuth(req, res, next) {
         isBrand: result.isBrand,
         isOperator: result.isOperator,
         userRecordId: result.userRecordId,
+        userSource: "AIRTABLE",
       };
+      finalizeDealalityUserAuthorization(req, req.dealalityUser);
     }
     elevateAdpOwnerAppAdminFlags(req);
   } catch (err) {
-    // JWT failed — allow governed local owner-app bypass for internal QA.
-    if (tryDevAuthBypass(req)) return next();
+    // Invalid/expired JWT must NEVER fall back to DEV_AUTH_BYPASS admin.
+    // Bypass is only for no-Bearer local owner-app requests (tryDevAuthBypass above).
     if (process.env.NODE_ENV !== "production") {
       console.warn(
-        "[optionalDealalityAuth] auth skipped:",
+        "[optionalDealalityAuth] JWT present but unverifiable — not falling back to bypass:",
         (err && err.message) || err
       );
     }

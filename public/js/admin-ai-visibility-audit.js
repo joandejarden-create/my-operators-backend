@@ -53,7 +53,9 @@
     if (auth && typeof auth.authFetch === "function") {
       return auth.authFetch(url, opts);
     }
-    return fetch(url, Object.assign({ credentials: "same-origin" }, opts));
+    return Promise.reject(
+      new Error("DealalityMemberstackAuth.authFetch unavailable — cannot call admin APIs")
+    );
   }
 
   function esc(s) {
