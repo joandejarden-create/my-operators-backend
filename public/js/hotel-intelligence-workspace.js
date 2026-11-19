@@ -2211,15 +2211,39 @@
       .join("");
   }
 
+  function resolveOwnerPortfolioScope(orgPayload, ownership) {
+    var api = window.HeOwnerPortfolioOperatorView;
+    var scopes = (api && api.PORTFOLIO_SCOPE) || {
+      VERIFIED_ONLY: "verified_only",
+      VERIFIED_AND_PROPOSED: "verified_and_proposed",
+    };
+    var stored = "";
+    try {
+      stored = sessionStorage.getItem("he-owner-portfolio-scope-v1") || "";
+    } catch (_err) {
+      stored = "";
+    }
+    if (stored === scopes.VERIFIED_ONLY || stored === scopes.VERIFIED_AND_PROPOSED) {
+      return stored;
+    }
+    var proposedMode =
+      (ownership &&
+        ownership.founder_preview &&
+        String(ownership.founder_preview.mode || "").toLowerCase() === "proposed") ||
+      (orgPayload && orgPayload._from_proposed_owner_portfolio) ||
+      (ownership &&
+        ownership.organization &&
+        ownership.organization.preview_state === "PROPOSED_STAGED");
+    return proposedMode ? scopes.VERIFIED_AND_PROPOSED : scopes.VERIFIED_ONLY;
+  }
+
   function hotelExplorerDeepLinkButton(h, focusId) {
-    var id = h.airtable_record_id || h.id || "";
+    var id = String(h.airtable_record_id || h.id || "").trim();
     var name = h.hotel_name || h.name || "Hotel";
     if (!id) {
       return (
         esc(name) +
-        (h.census_match_status === "UNRESOLVED_HOTEL_CANDIDATE"
-          ? ' <span class="hiw-status hiw-status--med">Census candidate</span>'
-          : "")
+        ' <span class="hiw-status hiw-status--med">Pending HPC Match</span>'
       );
     }
     return (
@@ -2249,11 +2273,12 @@
       (window.HeOwnerPortfolioOperatorView &&
         window.HeOwnerPortfolioOperatorView.formatOwnershipRelationshipLabel(h)) ||
       "Owned / controlled";
-    var bucket = String(h.verification_bucket || h.confidence || "PROPOSED").toUpperCase();
     var status =
-      bucket === "PROPOSED" || bucket === "PROPOSED_STAGED"
-        ? "Proposed"
-        : friendlyStatus(bucket);
+      h.ownership_evidence_label ||
+      (window.HeOwnerPortfolioOperatorView &&
+        window.HeOwnerPortfolioOperatorView.classifyPortfolioHotel &&
+        window.HeOwnerPortfolioOperatorView.classifyPortfolioHotel(h).label) ||
+      "Proposed";
     return (
       "<tr>" +
       "<td>" +
@@ -2280,29 +2305,68 @@
     );
   }
 
-  function buildPortfolioOperatorView(ownedRows, ownerName, coverageMeta) {
+  function buildPortfolioOperatorView(ownedRows, ownerName, coverageMeta, scope) {
     var api = window.HeOwnerPortfolioOperatorView;
     if (api && typeof api.buildOwnerPortfolioOperatorView === "function") {
       return api.buildOwnerPortfolioOperatorView(ownedRows, {
         ownerDisplayName: ownerName,
-        coverageLabel: (coverageMeta && coverageMeta.coverage_label) || "Verified Portfolio Coverage",
+        // Coverage title is derived from selected scope (verified vs verified+proposed).
         completeness: (coverageMeta && coverageMeta.completeness) || "PARTIAL",
+        scope: scope,
       });
     }
     return {
       ownedHotels: ownedRows,
+      scope: scope,
       totals: {
         hotels: ownedRows.length,
         roomsKnown: ownedRows.reduce(function (s, h) {
           return s + (Number(h.rooms) || 0);
         }, 0),
+        roomsKnownHotelCount: 0,
         roomsUnknownHotelCount: 0,
       },
       operatorGroups: [],
       reconciliation: { ok: false, hotelsMatch: false, roomsMatch: false },
       stats: {},
-      coverageLabel: "Verified Portfolio Coverage",
+      partition: { verified: 0, proposed: 0, unresolved_match: 0, historical: 0 },
+      coverageLabel: "Selected Portfolio Coverage",
     };
+  }
+
+  function renderPortfolioScopeToggle(scope, partition) {
+    var api = window.HeOwnerPortfolioOperatorView;
+    var scopes = (api && api.PORTFOLIO_SCOPE) || {
+      VERIFIED_ONLY: "verified_only",
+      VERIFIED_AND_PROPOSED: "verified_and_proposed",
+    };
+    var verified = (partition && partition.verified) || 0;
+    var proposed =
+      ((partition && partition.proposed) || 0);
+    return (
+      '<div class="hex-portfolio-scope" role="group" aria-label="Portfolio evidence scope">' +
+      '<span class="hex-portfolio-scope__label">Portfolio scope</span>' +
+      '<button type="button" class="hex-portfolio-scope__btn' +
+      (scope === scopes.VERIFIED_ONLY ? " is-active" : "") +
+      '" data-hex-portfolio-scope="' +
+      esc(scopes.VERIFIED_ONLY) +
+      '" aria-pressed="' +
+      (scope === scopes.VERIFIED_ONLY ? "true" : "false") +
+      '">Verified only (' +
+      esc(String(verified)) +
+      ")</button>" +
+      '<button type="button" class="hex-portfolio-scope__btn' +
+      (scope === scopes.VERIFIED_AND_PROPOSED ? " is-active" : "") +
+      '" data-hex-portfolio-scope="' +
+      esc(scopes.VERIFIED_AND_PROPOSED) +
+      '" aria-pressed="' +
+      (scope === scopes.VERIFIED_AND_PROPOSED ? "true" : "false") +
+      '">Verified + proposed (' +
+      esc(String(verified + proposed)) +
+      ")</button>" +
+      '<p class="hiw-muted hex-portfolio-scope__note">A published portfolio listing is association evidence — not verified current title or economic control. Both sections below use this same selected set.</p>' +
+      "</div>"
+    );
   }
 
   function renderOperatorGroupsHtml(view, focusId) {
@@ -2529,8 +2593,10 @@
       (ownership && ownership.organization && ownership.organization.portfolio_kpis) ||
       orgPayload.portfolio_kpis ||
       null;
-    var view = buildPortfolioOperatorView(ownedSeed, g.display_name, coverageMeta);
+    var scope = resolveOwnerPortfolioScope(orgPayload, ownership);
+    var view = buildPortfolioOperatorView(ownedSeed, g.display_name, coverageMeta, scope);
     var ownedRows = view.ownedHotels || [];
+    var partition = view.partition || {};
 
     var orgPeople =
       (ownership &&
@@ -2549,9 +2615,16 @@
         ownership.organization.portfolio_source.limitation) ||
       (orgPayload.portfolio_source && orgPayload.portfolio_source.limitation) ||
       "";
+    var historicalNote =
+      partition.historical > 0
+        ? partition.historical +
+          " historical / disposed listing(s) are excluded from current portfolio totals."
+        : "";
 
     return (
-      '<article class="hiw-report hex-owner-portfolio" data-hex-owner-portfolio="1">' +
+      '<article class="hiw-report hex-owner-portfolio" data-hex-owner-portfolio="1" data-hex-portfolio-scope="' +
+      esc(scope) +
+      '">' +
       '<h2 class="hiw-report__title">' +
       esc(g.display_name) +
       "</h2>" +
@@ -2574,43 +2647,52 @@
       esc(g.display_name) +
       (g.legal_name ? " (" + esc(g.legal_name) + ")" : "") +
       (g.ticker ? " · " + esc(g.ticker) : "") +
-      ". Sections below show this owner's verified / proposed owned–controlled hotels, then group <em>those same hotels</em> by management company. Brand affiliation and third-party management contracts are not treated as real-estate ownership." +
+      ". Sections below show this owner's owned–controlled hotels for the selected evidence scope, then group <em>those same hotels</em> by management company. Brand affiliation and third-party management contracts are not treated as real-estate ownership." +
       (framingNote ? "</p><p>" + esc(framingNote) : "") +
       (portfolioSourceNote ? "</p><p>" + esc(portfolioSourceNote) : "") +
-      "</p></div></section>" +
+      (historicalNote ? "</p><p>" + esc(historicalNote) : "") +
+      "</p></div>" +
+      renderPortfolioScopeToggle(scope, partition) +
+      "</section>" +
       '<section class="hiw-section"><h3 class="hiw-section__h">' +
-      esc(view.coverageLabel || "Verified Portfolio Coverage") +
+      esc(view.coverageLabel || "Selected Portfolio Coverage") +
       "</h3>" +
       '<div class="hex-facts hex-facts--5 hex-facts--own" aria-label="Owner portfolio coverage">' +
-      hexFact(formatCount(view.totals.hotels), "Owned / controlled hotels") +
+      hexFact(formatCount(view.totals.hotels), "Selected hotels") +
+      hexFact(
+        formatCount(view.totals.roomsKnownHotelCount || 0),
+        "Hotels with known rooms"
+      ) +
       hexFact(formatCount(view.totals.roomsKnown), "Known rooms") +
       hexFact(
-        formatCount((view.stats && view.stats.hotelsThirdPartyManaged) || 0),
-        "3rd-party managed"
-      ) +
-      hexFact(
-        formatCount((view.stats && view.stats.hotelsOwnerOperated) || 0),
-        "Owner-operated"
+        formatCount(view.totals.roomsUnknownHotelCount || 0),
+        "Rooms unresolved"
       ) +
       hexFact(
         formatCount((view.stats && view.stats.hotelsOperatorUnresolved) || 0),
         "Operator unresolved"
       ) +
       "</div>" +
-      (view.totals.roomsUnknownHotelCount
-        ? '<p class="hiw-muted">' +
-          esc(String(view.totals.roomsUnknownHotelCount)) +
-          " hotel(s) have unresolved room counts and are excluded from the known-room sum (not treated as zero).</p>"
-        : "") +
+      '<p class="hiw-muted">Universe: ' +
+      esc(String(partition.verified || 0)) +
+      " verified · " +
+      esc(String(partition.proposed || 0)) +
+      " proposed/unresolved · " +
+      esc(String(partition.historical || 0)) +
+      " historical excluded. Known-room totals are not a complete portfolio-room figure.</p>" +
       (view.reconciliation && view.reconciliation.ok
-        ? '<p class="hiw-muted">Totals reconcile: owned hotels = operator-group hotels; known rooms match.</p>'
+        ? '<p class="hiw-muted">Totals reconcile for this scope: selected hotels = operator-group hotels; known rooms match.</p>'
         : '<p class="hiw-muted">Reconciliation check pending or incomplete for this portfolio payload.</p>') +
       "</section>" +
       '<section class="hiw-section"><h3 class="hiw-section__h">Owned / Controlled Hotels</h3>' +
-      '<p class="hiw-muted">Total hotels: ' +
+      '<p class="hiw-muted">Selected hotels: ' +
       esc(formatCount(view.totals.hotels)) +
-      " · Total known rooms: " +
+      " · Hotels with known rooms: " +
+      esc(formatCount(view.totals.roomsKnownHotelCount || 0)) +
+      " · Known rooms: " +
       esc(formatCount(view.totals.roomsKnown)) +
+      " · Rooms unresolved: " +
+      esc(formatCount(view.totals.roomsUnknownHotelCount || 0)) +
       "</p>" +
       (ownedRows.length
         ? '<div class="dl-table-wrap">' +
@@ -2633,10 +2715,14 @@
             "hiw-table--portfolio dl-table ada-table"
           ) +
           "</div>"
-        : '<div class="hiw-gap-box"><h4>None verified in this ownership portfolio</h4><p>Operator or brand evidence alone does not certify ownership. Research the organization once, link matched HPC hotels, and reuse the graph.</p></div>') +
+        : '<div class="hiw-gap-box"><h4>No hotels in this scope</h4><p>' +
+          (scope === "verified_only"
+            ? "No verified current owned/controlled hotels yet. Switch to Verified + proposed to review staged candidates. A portfolio website listing alone does not certify ownership."
+            : "No owned/controlled hotels in the selected scope. Research the organization once, link matched HPC hotels, and reuse the graph.") +
+          "</p></div>") +
       "</section>" +
       '<section class="hiw-section"><h3 class="hiw-section__h">Who Manages These Hotels?</h3>' +
-      '<p class="hiw-muted">Same hotel set as Owned / Controlled, grouped by current management company. Owner-operated properties are labeled separately from third-party managers.</p>' +
+      '<p class="hiw-muted">Same hotel set as Owned / Controlled for the selected scope, grouped by current management company. Owner-operated properties are labeled separately from third-party managers.</p>' +
       renderOperatorGroupsHtml(view, focusId) +
       "</section>" +
       '<section class="hiw-section"><h3 class="hiw-section__h">Key People</h3>' +

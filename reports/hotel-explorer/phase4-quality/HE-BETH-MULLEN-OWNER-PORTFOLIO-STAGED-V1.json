@@ -31,9 +31,15 @@
     "limitation": "Owner website portfolio is not a complete global census; asterisked assets are realized/historical and excluded from current Owned/Controlled totals."
   },
   "coverage": {
-    "label": "Verified Portfolio Coverage",
+    "label": "Selected Portfolio Coverage (verified + proposed)",
     "completeness": "PARTIAL",
-    "do_not_claim": ["Full Portfolio", "Complete Portfolio", "All Hotels Owned"]
+    "do_not_claim": [
+      "Full Portfolio",
+      "Complete Portfolio",
+      "All Hotels Owned",
+      "Verified holdings for all listed hotels"
+    ],
+    "note": "Company portfolio listings are association evidence, not verified current title/control for every hotel."
   },
   "owned_controlled_current": [
     {
@@ -48,15 +54,20 @@
       "operator": "Marriott International",
       "relationship_type": "OWNED_BY",
       "include_as_owned": true,
-      "economic_owner_verified": true,
+      "economic_owner_verified": false,
       "current_historical": "CURRENT",
       "census_match_status": "MATCHED",
       "confidence": "MEDIUM",
       "verification_bucket": "PROPOSED",
       "management_model": "Management agreement",
-      "source_ids": ["src_mrec_portfolio", "src_sdat_marbeth"],
+      "source_ids": [
+        "src_mrec_portfolio",
+        "src_sdat_marbeth"
+      ],
       "why_in_portfolio": "OWNED_BY → Marbeth Acquisition LLC → CONTROLLED_BY → Mullen Real Estate Capital",
-      "note": "SDAT legal title + MREC portfolio sponsor association. UBO unresolved."
+      "note": "SDAT PropCo title + MREC portfolio association. Staged proposed — not Airtable-verified ownership.",
+      "ownership_evidence_class": "PROPOSED",
+      "proposed": true
     },
     {
       "hotel_name": "AC Hotel Newtown Square",
@@ -70,14 +81,18 @@
       "operator": null,
       "relationship_type": "OWNED_BY",
       "include_as_owned": true,
-      "economic_owner_verified": true,
+      "economic_owner_verified": false,
       "current_historical": "CURRENT",
       "census_match_status": "UNRESOLVED_HOTEL_CANDIDATE",
       "confidence": "MEDIUM",
       "verification_bucket": "PROPOSED",
-      "source_ids": ["src_mrec_portfolio"],
+      "source_ids": [
+        "src_mrec_portfolio"
+      ],
       "why_in_portfolio": "Listed on MREC portfolio (US current)",
-      "note": "Stage for HPC stewardship match — do not invent census duplicate."
+      "note": "Listed on MREC portfolio website only. Pending HPC match and ownership verification.",
+      "ownership_evidence_class": "UNRESOLVED_MATCH",
+      "proposed": true
     },
     {
       "hotel_name": "Hilton Garden Inn Newtown Square Radnor",
@@ -91,14 +106,18 @@
       "operator": null,
       "relationship_type": "OWNED_BY",
       "include_as_owned": true,
-      "economic_owner_verified": true,
+      "economic_owner_verified": false,
       "current_historical": "CURRENT",
       "census_match_status": "UNRESOLVED_HOTEL_CANDIDATE",
       "confidence": "MEDIUM",
       "verification_bucket": "PROPOSED",
-      "source_ids": ["src_mrec_portfolio"],
+      "source_ids": [
+        "src_mrec_portfolio"
+      ],
       "why_in_portfolio": "Listed on MREC portfolio (US current)",
-      "note": "Stage for HPC stewardship match."
+      "note": "Listed on MREC portfolio website only. Pending HPC match and ownership verification.",
+      "ownership_evidence_class": "UNRESOLVED_MATCH",
+      "proposed": true
     },
     {
       "hotel_name": "Carton House, a Fairmont Hotel",
@@ -112,13 +131,18 @@
       "operator": null,
       "relationship_type": "OWNED_BY",
       "include_as_owned": true,
-      "economic_owner_verified": true,
+      "economic_owner_verified": false,
       "current_historical": "CURRENT",
       "census_match_status": "UNRESOLVED_HOTEL_CANDIDATE",
       "confidence": "MEDIUM",
       "verification_bucket": "PROPOSED",
-      "source_ids": ["src_mrec_portfolio"],
-      "why_in_portfolio": "Listed on MREC portfolio (Ireland current)"
+      "source_ids": [
+        "src_mrec_portfolio"
+      ],
+      "why_in_portfolio": "Listed on MREC portfolio (Ireland current)",
+      "ownership_evidence_class": "UNRESOLVED_MATCH",
+      "proposed": true,
+      "note": "Listed on MREC portfolio website only. Pending HPC match and ownership verification."
     },
     {
       "hotel_name": "JW Marriott Costa Elena Resort All-Inclusive",
@@ -132,13 +156,18 @@
       "operator": null,
       "relationship_type": "OWNED_BY",
       "include_as_owned": true,
-      "economic_owner_verified": true,
+      "economic_owner_verified": false,
       "current_historical": "CURRENT",
       "census_match_status": "UNRESOLVED_HOTEL_CANDIDATE",
       "confidence": "MEDIUM",
       "verification_bucket": "PROPOSED",
-      "source_ids": ["src_mrec_portfolio"],
-      "why_in_portfolio": "Listed on MREC portfolio (Costa Rica current; formerly Dreams Las Mareas)"
+      "source_ids": [
+        "src_mrec_portfolio"
+      ],
+      "why_in_portfolio": "Listed on MREC portfolio (Costa Rica current; formerly Dreams Las Mareas)",
+      "ownership_evidence_class": "UNRESOLVED_MATCH",
+      "proposed": true,
+      "note": "Listed on MREC portfolio website only. Pending HPC match and ownership verification."
     },
     {
       "hotel_name": "Secrets Cap Cana Resort & Spa",
@@ -152,12 +181,17 @@
       "operator": null,
       "relationship_type": "OWNED_BY",
       "include_as_owned": true,
-      "economic_owner_verified": true,
+      "economic_owner_verified": false,
       "current_historical": "CURRENT",
       "census_match_status": "UNRESOLVED_HOTEL_CANDIDATE",
       "confidence": "MEDIUM",
       "verification_bucket": "PROPOSED",
-      "source_ids": ["src_mrec_portfolio"]
+      "source_ids": [
+        "src_mrec_portfolio"
+      ],
+      "ownership_evidence_class": "UNRESOLVED_MATCH",
+      "proposed": true,
+      "note": "Listed on MREC portfolio website only. Pending HPC match and ownership verification."
     },
     {
       "hotel_name": "Secrets Papagayo Costa Rica",
@@ -171,12 +205,17 @@
       "operator": null,
       "relationship_type": "OWNED_BY",
       "include_as_owned": true,
-      "economic_owner_verified": true,
+      "economic_owner_verified": false,
       "current_historical": "CURRENT",
       "census_match_status": "UNRESOLVED_HOTEL_CANDIDATE",
       "confidence": "MEDIUM",
       "verification_bucket": "PROPOSED",
-      "source_ids": ["src_mrec_portfolio"]
+      "source_ids": [
+        "src_mrec_portfolio"
+      ],
+      "ownership_evidence_class": "UNRESOLVED_MATCH",
+      "proposed": true,
+      "note": "Listed on MREC portfolio website only. Pending HPC match and ownership verification."
     },
     {
       "hotel_name": "Secrets St. Lucia",
@@ -190,12 +229,17 @@
       "operator": null,
       "relationship_type": "OWNED_BY",
       "include_as_owned": true,
-      "economic_owner_verified": true,
+      "economic_owner_verified": false,
       "current_historical": "CURRENT",
       "census_match_status": "UNRESOLVED_HOTEL_CANDIDATE",
       "confidence": "MEDIUM",
       "verification_bucket": "PROPOSED",
-      "source_ids": ["src_mrec_portfolio"]
+      "source_ids": [
+        "src_mrec_portfolio"
+      ],
+      "ownership_evidence_class": "UNRESOLVED_MATCH",
+      "proposed": true,
+      "note": "Listed on MREC portfolio website only. Pending HPC match and ownership verification."
     }
   ],
   "historical_realized_excluded_from_current_totals": [
@@ -219,7 +263,12 @@
     "Secrets Vallarta Bay"
   ],
   "hpc_matching": {
-    "matched": [{ "hotel_name": "Bethesda Marriott", "airtable_record_id": "recLuxvwwxID7U2B8" }],
+    "matched": [
+      {
+        "hotel_name": "Bethesda Marriott",
+        "airtable_record_id": "recLuxvwwxID7U2B8"
+      }
+    ],
     "unresolved_candidates": 7,
     "note": "Unresolved names are staged for census stewardship — not written as duplicate HPC records."
   },

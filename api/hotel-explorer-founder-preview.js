@@ -53,7 +53,8 @@ function loadMullenOwnerPortfolioOverlay() {
     return {
       owned_controlled_hotels: owned,
       portfolio_kpis: {
-        coverage_label: staged.coverage?.label || "Verified Portfolio Coverage",
+        coverage_label:
+          staged.coverage?.label || "Selected Portfolio Coverage (verified + proposed)",
         completeness: staged.coverage?.completeness || "PARTIAL",
         matched_hpc: staged.hpc_matching?.matched?.length || 0,
         unresolved_candidates: staged.hpc_matching?.unresolved_candidates || 0,

@@ -42,7 +42,10 @@ import {
 } from "../lib/hotel-intelligence/he-amenity-icon-map-v1.js";
 import {
   buildOwnerPortfolioOperatorView,
+  classifyPortfolioHotel,
   OPERATOR_NOT_VERIFIED_LABEL,
+  PORTFOLIO_EVIDENCE,
+  PORTFOLIO_SCOPE,
 } from "../lib/hotel-intelligence/ownership/owner-portfolio-operator-view-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -473,6 +476,7 @@ run("owner_portfolio_operator_reconciliation_gates", () => {
         airtable_record_id: "recLuxvwwxID7U2B8",
         rooms: 407,
         include_as_owned: true,
+        verification_bucket: "PROPOSED",
         operator: "Marriott International",
         brand: "Marriott Hotels",
         market: "Bethesda",
@@ -490,13 +494,19 @@ run("owner_portfolio_operator_reconciliation_gates", () => {
         airtable_record_id: null,
         rooms: null,
         include_as_owned: true,
+        verification_bucket: "PROPOSED",
+        census_match_status: "UNRESOLVED_HOTEL_CANDIDATE",
         operator: null,
       },
     ],
-    { ownerDisplayName: "Mullen Real Estate Capital" }
+    {
+      ownerDisplayName: "Mullen Real Estate Capital",
+      scope: PORTFOLIO_SCOPE.VERIFIED_AND_PROPOSED,
+    }
   );
   assert.equal(view.totals.hotels, 2);
   assert.equal(view.totals.roomsKnown, 407);
+  assert.equal(view.totals.roomsKnownHotelCount, 1);
   assert.equal(view.totals.roomsUnknownHotelCount, 1);
   assert.equal(view.reconciliation.hotelsMatch, true);
   assert.equal(view.reconciliation.roomsMatch, true);
@@ -504,22 +514,41 @@ run("owner_portfolio_operator_reconciliation_gates", () => {
   assert.ok(
     view.operatorGroups.some((g) => g.operatorName === OPERATOR_NOT_VERIFIED_LABEL)
   );
+  assert.equal(
+    classifyPortfolioHotel({
+      verification_bucket: "PROPOSED",
+      include_as_owned: true,
+      airtable_record_id: "recX",
+    }).class,
+    PORTFOLIO_EVIDENCE.PROPOSED
+  );
   const std = read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md");
   mustInclude(std, "Who Manages These Hotels?");
-  mustInclude(std, "Verified Portfolio Coverage");
+  mustInclude(std, "Pending HPC Match");
+  mustInclude(std, "Verified + proposed");
   const ws = read("public/js/hotel-intelligence-workspace.js");
   mustInclude(ws, "Who Manages These Hotels?");
   mustInclude(ws, "data-hex-op-toggle");
+  mustInclude(ws, "data-hex-portfolio-scope");
+  mustInclude(ws, "Pending HPC Match");
   mustNotMatch(ws, />Operated \/ Managed Hotels</);
   mustInclude(read("public/hotel-explorer-preview.html"), "he-owner-portfolio-operator-view-v1.js");
   const staged = JSON.parse(
     read("reports/hotel-explorer/phase4-quality/HE-BETH-MULLEN-OWNER-PORTFOLIO-STAGED-V1.json")
   );
   assert.equal(staged.applyAuthorized, false);
+  const verifiedOnly = buildOwnerPortfolioOperatorView(staged.owned_controlled_current, {
+    ownerDisplayName: staged.owner.display_name,
+    scope: PORTFOLIO_SCOPE.VERIFIED_ONLY,
+  });
+  assert.equal(verifiedOnly.totals.hotels, 0);
   const mullen = buildOwnerPortfolioOperatorView(staged.owned_controlled_current, {
     ownerDisplayName: staged.owner.display_name,
+    scope: PORTFOLIO_SCOPE.VERIFIED_AND_PROPOSED,
   });
   assert.equal(mullen.reconciliation.ok, true);
+  assert.equal(mullen.totals.hotels, 8);
+  assert.ok(mullen.ownedHotels.every((h) => h.ownership_evidence_class !== "VERIFIED"));
   assert.ok(mullen.ownedHotels.some((h) => h.airtable_record_id === "recLuxvwwxID7U2B8"));
 });
 

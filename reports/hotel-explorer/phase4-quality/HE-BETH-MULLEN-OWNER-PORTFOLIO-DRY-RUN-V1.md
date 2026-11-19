@@ -22,13 +22,13 @@ Legal title, economic ownership/control, and management remain separate relation
 
 | Bucket | Count | Notes |
 | --- | --- | --- |
-| Current owned/controlled (proposed) | 8 | From MREC portfolio US current + Bethesda chain |
-| HPC MATCHED | 1 | Bethesda Marriott |
-| UNRESOLVED_HOTEL_CANDIDATE | 7 | Stage for census stewardship — no duplicate HPC write |
+| Verified current owned/controlled | 0 | None Airtable-confirmed yet in this staged packet |
+| Proposed (HPC matched) | 1 | Bethesda Marriott — SDAT PropCo + portfolio association; still **Proposed** |
+| Unresolved org→hotel match | 7 | Website listings only — **Pending HPC Match** |
 | Historical / realized (excluded) | 18 | Asterisked MREC assets — not in current totals |
-| Completeness label | PARTIAL | **Verified Portfolio Coverage** only |
+| Completeness | PARTIAL | Scope **Verified only** → 0 hotels; **Verified + proposed** → 8 |
 
-Do not claim full/global Mullen portfolio from website disclosure alone.
+A published portfolio listing is association evidence, not verified current title/control.
 
 ## HPC matching
 

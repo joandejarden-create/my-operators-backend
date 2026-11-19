@@ -1,296 +1,532 @@
 /**
- * Browser mirror of owner-portfolio-operator-view-v1 (owner-centric portfolio + operators).
+ * Browser mirror of owner-portfolio-operator-view-v1 (auto-synced from lib).
  */
 (function (global) {
   "use strict";
+/**
+ * Owner-centric portfolio view: Owned/Controlled hotels + operator grouping
+ * over the *same* hotel set, with mandatory total reconciliation and
+ * verified vs proposed scope filtering.
+ *
+ * Version: owner-portfolio-operator-view-v1
+ */
 
-  var OPERATOR_NOT_VERIFIED_LABEL = "Operator Not Verified";
-  var OWNER_OPERATED_LABEL = "Owner-Operated";
+const OWNER_PORTFOLIO_OPERATOR_VIEW_VERSION = "owner-portfolio-operator-view-v1";
+const OPERATOR_NOT_VERIFIED_LABEL = "Operator Not Verified";
+const OWNER_OPERATED_LABEL = "Owner-Operated";
 
-  function normName(v) {
-    return String(v || "")
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, " ")
-      .trim();
-  }
+const PORTFOLIO_EVIDENCE = {
+  VERIFIED: "VERIFIED",
+  PROPOSED: "PROPOSED",
+  HISTORICAL: "HISTORICAL",
+  UNRESOLVED_MATCH: "UNRESOLVED_MATCH",
+};
 
-  function hotelIdentityKey(hotel) {
-    var id = String((hotel && (hotel.airtable_record_id || hotel.id || hotel.hotel_id)) || "").trim();
-    if (id) return "id:" + id;
-    var name = normName(hotel && (hotel.hotel_name || hotel.name || hotel.hotel));
-    var city = normName(hotel && (hotel.city || hotel.market));
-    return "name:" + name + "|" + city;
-  }
+const PORTFOLIO_SCOPE = {
+  VERIFIED_ONLY: "verified_only",
+  VERIFIED_AND_PROPOSED: "verified_and_proposed",
+};
 
-  function parseRooms(raw) {
-    if (raw == null || raw === "" || raw === "—") return null;
-    var n = Number(String(raw).replace(/,/g, "").trim());
-    return Number.isFinite(n) && n > 0 ? n : null;
-  }
+function normName(v) {
+  return String(v || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
 
-  function isOwnedRow(hotel) {
-    if (!hotel) return false;
-    if (hotel.include_as_owned === true || hotel.economic_owner_verified === true) return true;
-    var rel = String(hotel.relationship_type || hotel.relationship || "").toUpperCase();
-    return (
-      rel === "OWNED_BY" ||
-      rel === "CONTROLLED_BY" ||
-      rel === "ECONOMIC_OWNER" ||
-      rel === "LEGAL_OWNER" ||
-      /OWNED|CONTROLLED|ECONOMIC OWNER|LEGAL OWNER/i.test(rel)
-    );
-  }
+function hotelIdentityKey(hotel) {
+  const id = String(hotel?.airtable_record_id || hotel?.id || hotel?.hotel_id || "").trim();
+  if (id) return `id:${id}`;
+  const name = normName(hotel?.hotel_name || hotel?.name || hotel?.hotel);
+  const city = normName(hotel?.city || hotel?.market);
+  return `name:${name}|${city}`;
+}
 
-  function isCurrentHolding(hotel) {
-    var t = String(
-      (hotel && (hotel.current_historical || hotel.temporal_status)) || "CURRENT"
-    ).toUpperCase();
-    return !(t === "HISTORICAL" || t === "FORMER" || t === "DISPOSED" || t === "REALIZED");
-  }
+function parseRooms(raw) {
+  if (raw == null || raw === "" || raw === "—") return null;
+  const n = Number(String(raw).replace(/,/g, "").trim());
+  return Number.isFinite(n) && n > 0 ? n : null;
+}
 
-  function resolvePrimaryOperator(hotel, ownerDisplayName) {
-    var raw =
-      (hotel &&
-        (hotel.operator ||
-          hotel.management_company ||
-          hotel.operating_company ||
-          hotel.operator_name)) ||
-      null;
-    var op = String(raw || "").trim();
-    if (!op) {
-      return {
-        operatorKey: "__unverified__",
-        operatorLabel: OPERATOR_NOT_VERIFIED_LABEL,
-        ownerOperated: false,
-        verified: false,
-        ambiguous: Boolean(hotel && hotel.operator_ambiguous),
-      };
-    }
-    var ownerKey = normName(ownerDisplayName);
-    var opKey = normName(op);
-    var ownerOperated =
-      Boolean(hotel && hotel.owner_operated) ||
-      (ownerKey &&
-        opKey &&
-        (opKey === ownerKey ||
-          opKey.indexOf(ownerKey) >= 0 ||
-          ownerKey.indexOf(opKey) >= 0 ||
-          /owner.?operat/i.test(op)));
-    if (ownerOperated) {
-      return {
-        operatorKey: "__owner_operated__",
-        operatorLabel: OWNER_OPERATED_LABEL,
-        ownerOperated: true,
-        verified: true,
-        displayOperatorName: op,
-        ambiguous: false,
-      };
-    }
+function isOwnedRow(hotel) {
+  if (!hotel) return false;
+  if (hotel.include_as_owned === true) return true;
+  const rel = String(hotel.relationship_type || hotel.relationship || "").toUpperCase();
+  return (
+    rel === "OWNED_BY" ||
+    rel === "CONTROLLED_BY" ||
+    rel === "ECONOMIC_OWNER" ||
+    rel === "LEGAL_OWNER" ||
+    /OWNED|CONTROLLED|ECONOMIC OWNER|LEGAL OWNER/i.test(rel)
+  );
+}
+
+function isHistoricalHolding(hotel) {
+  const t = String(hotel?.current_historical || hotel?.temporal_status || "CURRENT").toUpperCase();
+  return t === "HISTORICAL" || t === "FORMER" || t === "DISPOSED" || t === "REALIZED";
+}
+
+function isProposedMarker(hotel) {
+  const bucket = String(
+    hotel?.verification_bucket || hotel?.verification_state || hotel?.preview_state || ""
+  ).toUpperCase();
+  if (bucket.includes("PROPOSED")) return true;
+  if (String(hotel?.ownership_evidence_class || "").toUpperCase() === "PROPOSED") return true;
+  if (hotel?.proposed === true) return true;
+  return false;
+}
+
+/**
+ * Classify ownership evidence. Portfolio website listings alone are PROPOSED,
+ * not VERIFIED current legal/economic control.
+ */
+function classifyPortfolioHotel(hotel) {
+  if (!hotel) {
     return {
-      operatorKey: opKey || op,
-      operatorLabel: op,
+      class: PORTFOLIO_EVIDENCE.PROPOSED,
+      label: "Proposed",
+      pendingHpcMatch: true,
+    };
+  }
+  const explicit = String(hotel.ownership_evidence_class || "").toUpperCase();
+  if (explicit && Object.values(PORTFOLIO_EVIDENCE).includes(explicit)) {
+    const pending =
+      explicit === PORTFOLIO_EVIDENCE.UNRESOLVED_MATCH ||
+      (!hotel.airtable_record_id && !hotel.id);
+    return {
+      class: explicit,
+      label:
+        explicit === PORTFOLIO_EVIDENCE.VERIFIED
+          ? "Verified"
+          : explicit === PORTFOLIO_EVIDENCE.HISTORICAL
+            ? "Historical"
+            : pending
+              ? "Proposed · Pending HPC Match"
+              : "Proposed",
+      pendingHpcMatch: pending,
+    };
+  }
+
+  if (isHistoricalHolding(hotel)) {
+    return {
+      class: PORTFOLIO_EVIDENCE.HISTORICAL,
+      label: "Historical",
+      pendingHpcMatch: false,
+    };
+  }
+
+  const census = String(hotel.census_match_status || "").toUpperCase();
+  const hasHpc = Boolean(String(hotel.airtable_record_id || hotel.id || "").trim());
+  const unresolvedMatch =
+    census === "UNRESOLVED_HOTEL_CANDIDATE" ||
+    census === "UNRESOLVED" ||
+    (!hasHpc && isProposedMarker(hotel));
+
+  if (isProposedMarker(hotel)) {
+    return {
+      class: unresolvedMatch
+        ? PORTFOLIO_EVIDENCE.UNRESOLVED_MATCH
+        : PORTFOLIO_EVIDENCE.PROPOSED,
+      label: unresolvedMatch ? "Proposed · Pending HPC Match" : "Proposed",
+      pendingHpcMatch: unresolvedMatch || !hasHpc,
+    };
+  }
+
+  const bucket = String(hotel.verification_bucket || hotel.confidence || "").toUpperCase();
+  const verifiedTokens = ["VERIFIED", "CONFIRMED", "VALIDATED", "HIGH", "LIVE"];
+  const looksVerified =
+    hotel.ownership_verified === true ||
+    (hotel.economic_owner_verified === true && verifiedTokens.includes(bucket)) ||
+    verifiedTokens.includes(bucket);
+
+  if (looksVerified) {
+    return {
+      class: PORTFOLIO_EVIDENCE.VERIFIED,
+      label: "Verified",
+      pendingHpcMatch: !hasHpc,
+    };
+  }
+
+  if (unresolvedMatch || !hasHpc) {
+    return {
+      class: PORTFOLIO_EVIDENCE.UNRESOLVED_MATCH,
+      label: "Proposed · Pending HPC Match",
+      pendingHpcMatch: true,
+    };
+  }
+
+  return {
+    class: PORTFOLIO_EVIDENCE.PROPOSED,
+    label: "Proposed",
+    pendingHpcMatch: false,
+  };
+}
+
+function partitionPortfolioHotels(hotels = []) {
+  const buckets = {
+    verified: [],
+    proposed: [],
+    unresolved_match: [],
+    historical: [],
+    excluded_operated_only: [],
+  };
+  for (const raw of hotels || []) {
+    if (!raw) continue;
+    if (!isOwnedRow(raw)) {
+      buckets.excluded_operated_only.push(raw);
+      continue;
+    }
+    const cls = classifyPortfolioHotel(raw);
+    if (cls.class === PORTFOLIO_EVIDENCE.HISTORICAL) buckets.historical.push(raw);
+    else if (cls.class === PORTFOLIO_EVIDENCE.VERIFIED) buckets.verified.push(raw);
+    else if (cls.class === PORTFOLIO_EVIDENCE.UNRESOLVED_MATCH) {
+      buckets.unresolved_match.push(raw);
+    } else buckets.proposed.push(raw);
+  }
+  return buckets;
+}
+
+/**
+ * Apply scope to owned/controlled rows (excludes historical from both scopes).
+ */
+function selectHotelsForScope(hotels = [], scope = PORTFOLIO_SCOPE.VERIFIED_AND_PROPOSED) {
+  const normalized =
+    scope === PORTFOLIO_SCOPE.VERIFIED_ONLY
+      ? PORTFOLIO_SCOPE.VERIFIED_ONLY
+      : PORTFOLIO_SCOPE.VERIFIED_AND_PROPOSED;
+  const out = [];
+  for (const raw of hotels || []) {
+    if (!raw || !isOwnedRow(raw)) continue;
+    const cls = classifyPortfolioHotel(raw);
+    if (cls.class === PORTFOLIO_EVIDENCE.HISTORICAL) continue;
+    if (normalized === PORTFOLIO_SCOPE.VERIFIED_ONLY) {
+      if (cls.class === PORTFOLIO_EVIDENCE.VERIFIED) out.push(raw);
+      continue;
+    }
+    if (
+      cls.class === PORTFOLIO_EVIDENCE.VERIFIED ||
+      cls.class === PORTFOLIO_EVIDENCE.PROPOSED ||
+      cls.class === PORTFOLIO_EVIDENCE.UNRESOLVED_MATCH
+    ) {
+      out.push(raw);
+    }
+  }
+  return out;
+}
+
+/**
+ * Resolve primary operator label for an owned hotel.
+ * Owner-affiliated operators collapse to Owner-Operated.
+ */
+function resolvePrimaryOperator(hotel, ownerDisplayName) {
+  const raw =
+    hotel?.operator ||
+    hotel?.management_company ||
+    hotel?.operating_company ||
+    hotel?.operator_name ||
+    null;
+  const op = String(raw || "").trim();
+  if (!op) {
+    return {
+      operatorKey: "__unverified__",
+      operatorLabel: OPERATOR_NOT_VERIFIED_LABEL,
+      managementModel: null,
       ownerOperated: false,
-      verified: true,
-      ambiguous: Boolean(hotel && hotel.operator_ambiguous),
+      verified: false,
+      ambiguous: Boolean(hotel?.operator_ambiguous),
     };
   }
-
-  function formatOwnershipRelationshipLabel(hotel) {
-    var raw = String((hotel && (hotel.relationship_type || hotel.relationship)) || "").toUpperCase();
-    if (hotel && hotel.legal_owner && hotel.economic_owner) return "Economic control via PropCo";
-    if (raw === "OWNED_BY" || raw === "LEGAL_OWNER") return "Legal / economic ownership";
-    if (raw === "CONTROLLED_BY" || raw === "ECONOMIC_OWNER") return "Economic / controlling ownership";
-    if (raw === "SPONSORED_BY") return "Economic sponsor interest";
-    if (/OWNED|CONTROL/i.test(raw)) return "Owned / controlled";
-    if (raw) {
-      return raw
-        .replace(/_/g, " ")
-        .replace(/\b\w/g, function (c) {
-          return c.toUpperCase();
-        });
-    }
-    return "Owned / controlled";
-  }
-
-  function formatOperatorRelationshipLabel(resolved, hotel) {
-    if (resolved.ownerOperated) {
-      return (
-        "Owner-operated" +
-        (resolved.displayOperatorName ? " (" + resolved.displayOperatorName + ")" : "")
-      );
-    }
-    if (!resolved.verified) return "Management company not verified";
-    var brand = (hotel && (hotel.brand_display || hotel.brand)) || "";
-    return "Managed by " + resolved.operatorLabel + (brand ? " · branded " + brand : "");
-  }
-
-  function dedupeOwnedHotels(hotels) {
-    var map = {};
-    var order = [];
-    (hotels || []).forEach(function (raw) {
-      if (!raw || !isOwnedRow(raw) || !isCurrentHolding(raw)) return;
-      var key = hotelIdentityKey(raw);
-      var rooms = parseRooms(raw.rooms_display != null ? raw.rooms_display : raw.rooms);
-      var next = Object.assign({}, raw, {
-        hotel_name: raw.hotel_name || raw.name || raw.hotel || "Hotel",
-        name: raw.hotel_name || raw.name || raw.hotel || "Hotel",
-        airtable_record_id: raw.airtable_record_id || raw.id || null,
-        rooms: rooms,
-        rooms_known: rooms != null,
-        brand_display: raw.brand_display || raw.brand || null,
-        market_display: raw.market_display || raw.market || raw.city || null,
-        operator: raw.operator || raw.management_company || raw.operating_company || null,
-      });
-      var prev = map[key];
-      if (!prev) {
-        map[key] = next;
-        order.push(key);
-        return;
-      }
-      function score(h) {
-        return (h.airtable_record_id ? 4 : 0) + (h.rooms_known ? 2 : 0) + (h.operator ? 1 : 0);
-      }
-      map[key] = score(next) >= score(prev) ? Object.assign({}, prev, next) : prev;
-    });
-    return order
-      .map(function (k) {
-        return map[k];
-      })
-      .sort(function (a, b) {
-        return String(a.hotel_name).localeCompare(String(b.hotel_name));
-      });
-  }
-
-  function sumRooms(hotels) {
-    var known = 0;
-    var unknownHotels = 0;
-    (hotels || []).forEach(function (h) {
-      if (h.rooms_known && h.rooms != null) known += h.rooms;
-      else unknownHotels += 1;
-    });
-    return { roomsKnown: known, roomsUnknownHotelCount: unknownHotels };
-  }
-
-  function buildOwnerPortfolioOperatorView(ownedHotels, opts) {
-    opts = opts || {};
-    var ownerDisplayName = opts.ownerDisplayName || "";
-    var owned = dedupeOwnedHotels(ownedHotels);
-    var ownedTotals = sumRooms(owned);
-    var groupMap = {};
-    var groupOrder = [];
-    var ambiguous = [];
-
-    owned.forEach(function (hotel) {
-      var resolved = resolvePrimaryOperator(hotel, ownerDisplayName);
-      if (resolved.ambiguous) ambiguous.push(hotelIdentityKey(hotel));
-      var key = resolved.operatorKey;
-      if (!groupMap[key]) {
-        groupMap[key] = {
-          operatorKey: key,
-          operatorName: resolved.operatorLabel,
-          ownerOperated: resolved.ownerOperated,
-          verified: resolved.verified,
-          hotels: [],
-        };
-        groupOrder.push(key);
-      }
-      groupMap[key].hotels.push(
-        Object.assign({}, hotel, {
-          operator_relationship_label: formatOperatorRelationshipLabel(resolved, hotel),
-          ownership_relationship_label: formatOwnershipRelationshipLabel(hotel),
-        })
-      );
-    });
-
-    var operatorGroups = groupOrder
-      .map(function (k) {
-        var g = groupMap[k];
-        var roomSum = sumRooms(g.hotels);
-        return Object.assign({}, g, {
-          hotelCount: g.hotels.length,
-          roomsKnown: roomSum.roomsKnown,
-          roomsUnknownHotelCount: roomSum.roomsUnknownHotelCount,
-          hotels: g.hotels.slice().sort(function (a, b) {
-            return String(a.hotel_name).localeCompare(String(b.hotel_name));
-          }),
-        });
-      })
-      .sort(function (a, b) {
-        if (a.ownerOperated !== b.ownerOperated) return a.ownerOperated ? -1 : 1;
-        if (a.verified !== b.verified) return a.verified ? -1 : 1;
-        return a.operatorName.localeCompare(b.operatorName);
-      });
-
-    var groupHotelSum = operatorGroups.reduce(function (s, g) {
-      return s + g.hotelCount;
-    }, 0);
-    var groupRoomSum = operatorGroups.reduce(function (s, g) {
-      return s + g.roomsKnown;
-    }, 0);
-    var groupUnknownSum = operatorGroups.reduce(function (s, g) {
-      return s + g.roomsUnknownHotelCount;
-    }, 0);
-
+  const ownerKey = normName(ownerDisplayName);
+  const opKey = normName(op);
+  const ownerOperated =
+    Boolean(hotel?.owner_operated) ||
+    (ownerKey &&
+      opKey &&
+      (opKey === ownerKey ||
+        opKey.includes(ownerKey) ||
+        ownerKey.includes(opKey) ||
+        /owner.?operat/i.test(op)));
+  if (ownerOperated) {
     return {
-      version: "owner-portfolio-operator-view-v1",
-      ownerDisplayName: ownerDisplayName,
-      coverageLabel: opts.coverageLabel || "Verified Portfolio Coverage",
-      ownedHotels: owned.map(function (h) {
-        return Object.assign({}, h, {
-          ownership_relationship_label: formatOwnershipRelationshipLabel(h),
-          operator_relationship_label: formatOperatorRelationshipLabel(
-            resolvePrimaryOperator(h, ownerDisplayName),
-            h
-          ),
-        });
-      }),
-      totals: {
-        hotels: owned.length,
-        roomsKnown: ownedTotals.roomsKnown,
-        roomsUnknownHotelCount: ownedTotals.roomsUnknownHotelCount,
-      },
-      operatorGroups: operatorGroups,
-      reconciliation: {
-        hotelsMatch: groupHotelSum === owned.length,
-        roomsMatch:
-          groupRoomSum === ownedTotals.roomsKnown &&
-          groupUnknownSum === ownedTotals.roomsUnknownHotelCount,
-        ownedHotels: owned.length,
-        operatorGroupHotels: groupHotelSum,
-        ownedRoomsKnown: ownedTotals.roomsKnown,
-        operatorGroupRoomsKnown: groupRoomSum,
-        ok:
-          groupHotelSum === owned.length &&
-          groupRoomSum === ownedTotals.roomsKnown &&
-          groupUnknownSum === ownedTotals.roomsUnknownHotelCount &&
-          !ambiguous.length,
-      },
-      stats: {
-        hotelsOwnedControlled: owned.length,
-        hotelsOwnerOperated: (operatorGroups.filter(function (g) {
-          return g.ownerOperated;
-        })[0] || { hotelCount: 0 }).hotelCount,
-        hotelsThirdPartyManaged: operatorGroups
-          .filter(function (g) {
-            return g.verified && !g.ownerOperated;
-          })
-          .reduce(function (s, g) {
-            return s + g.hotelCount;
-          }, 0),
-        hotelsOperatorUnresolved: (operatorGroups.filter(function (g) {
-          return g.operatorKey === "__unverified__";
-        })[0] || { hotelCount: 0 }).hotelCount,
-      },
+      operatorKey: "__owner_operated__",
+      operatorLabel: OWNER_OPERATED_LABEL,
+      managementModel: hotel?.management_model || "Owner-operated",
+      ownerOperated: true,
+      verified: true,
+      displayOperatorName: op,
+      ambiguous: false,
     };
   }
+  return {
+    operatorKey: opKey || op,
+    operatorLabel: op,
+    managementModel: hotel?.management_model || null,
+    ownerOperated: false,
+    verified: true,
+    ambiguous: Boolean(hotel?.operator_ambiguous),
+  };
+}
+
+/**
+ * Readable ownership relationship label (never raw codes like OPERATOR).
+ */
+function formatOwnershipRelationshipLabel(hotel) {
+  const raw = String(hotel?.relationship_type || hotel?.relationship || "").toUpperCase();
+  if (hotel?.legal_owner && hotel?.economic_owner) {
+    return "Economic control via PropCo";
+  }
+  if (raw === "OWNED_BY" || raw === "LEGAL_OWNER") return "Legal / economic ownership";
+  if (raw === "CONTROLLED_BY" || raw === "ECONOMIC_OWNER") return "Economic / controlling ownership";
+  if (raw === "SPONSORED_BY") return "Economic sponsor interest";
+  if (/OWNED|CONTROL/i.test(raw)) return "Owned / controlled";
+  if (raw) return raw.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  return "Owned / controlled";
+}
+
+function formatOperatorRelationshipLabel(resolved, hotel) {
+  if (resolved.ownerOperated) {
+    return `Owner-operated${resolved.displayOperatorName ? ` (${resolved.displayOperatorName})` : ""}`;
+  }
+  if (!resolved.verified) return "Management company not verified";
+  const brand = hotel?.brand_display || hotel?.brand;
+  return `Managed by ${resolved.operatorLabel}${brand ? ` · branded ${brand}` : ""}`;
+}
+
+/**
+ * Deduplicate hotels by canonical property identity.
+ * Prefer rows with airtable_record_id and known rooms.
+ * Does not filter by verification class (caller applies scope).
+ */
+function dedupePortfolioHotels(hotels = [], { currentOnly = true } = {}) {
+  const map = new Map();
+  for (const raw of hotels || []) {
+    if (!raw) continue;
+    if (!isOwnedRow(raw)) continue;
+    if (currentOnly && isHistoricalHolding(raw)) continue;
+    const key = hotelIdentityKey(raw);
+    const rooms = parseRooms(raw.rooms_display != null ? raw.rooms_display : raw.rooms);
+    const evidence = classifyPortfolioHotel(raw);
+    const hpcId = String(raw.airtable_record_id || raw.id || "").trim() || null;
+    const next = {
+      ...raw,
+      hotel_name: raw.hotel_name || raw.name || raw.hotel || "Hotel",
+      name: raw.hotel_name || raw.name || raw.hotel || "Hotel",
+      airtable_record_id: hpcId,
+      rooms: rooms,
+      rooms_known: rooms != null,
+      brand_display: raw.brand_display || raw.brand || null,
+      market_display: raw.market_display || raw.market || raw.city || null,
+      city: raw.city || null,
+      operator: raw.operator || raw.management_company || raw.operating_company || null,
+      ownership_evidence_class: evidence.class,
+      ownership_evidence_label: evidence.label,
+      pending_hpc_match: evidence.pendingHpcMatch || !hpcId,
+    };
+    const prev = map.get(key);
+    if (!prev) {
+      map.set(key, next);
+      continue;
+    }
+    const score = (h) =>
+      (h.airtable_record_id ? 4 : 0) +
+      (h.rooms_known ? 2 : 0) +
+      (h.operator ? 1 : 0) +
+      (h.ownership_evidence_class === PORTFOLIO_EVIDENCE.VERIFIED ? 3 : 0);
+    map.set(key, score(next) >= score(prev) ? { ...prev, ...next } : prev);
+  }
+  return [...map.values()].sort((a, b) =>
+    String(a.hotel_name).localeCompare(String(b.hotel_name))
+  );
+}
+
+/** @deprecated Prefer dedupePortfolioHotels; kept for callers expecting owned-current filter. */
+function dedupeOwnedHotels(hotels = []) {
+  return dedupePortfolioHotels(hotels, { currentOnly: true });
+}
+
+function sumRooms(hotels) {
+  let known = 0;
+  let unknownHotels = 0;
+  let knownHotelCount = 0;
+  for (const h of hotels) {
+    if (h.rooms_known && h.rooms != null) {
+      known += h.rooms;
+      knownHotelCount += 1;
+    } else unknownHotels += 1;
+  }
+  return {
+    roomsKnown: known,
+    roomsUnknownHotelCount: unknownHotels,
+    roomsKnownHotelCount: knownHotelCount,
+  };
+}
+
+function coverageLabelForScope(scope, opts = {}) {
+  if (opts.coverageLabel) return opts.coverageLabel;
+  if (scope === PORTFOLIO_SCOPE.VERIFIED_ONLY) return "Verified Portfolio Coverage";
+  return "Selected Portfolio Coverage (verified + proposed)";
+}
+
+/**
+ * Build the owner portfolio + operator grouping view for a selected scope.
+ * @param {object[]} ownedHotels - ownership portfolio rows (owned/controlled only)
+ * @param {{ ownerDisplayName?: string, coverageLabel?: string, completeness?: string, scope?: string }} [opts]
+ */
+function buildOwnerPortfolioOperatorView(ownedHotels = [], opts = {}) {
+  const ownerDisplayName = opts.ownerDisplayName || "";
+  const scope =
+    opts.scope === PORTFOLIO_SCOPE.VERIFIED_ONLY
+      ? PORTFOLIO_SCOPE.VERIFIED_ONLY
+      : PORTFOLIO_SCOPE.VERIFIED_AND_PROPOSED;
+
+  const partitioned = partitionPortfolioHotels(ownedHotels);
+  const scopedSeed = selectHotelsForScope(ownedHotels, scope);
+  const owned = dedupePortfolioHotels(scopedSeed, { currentOnly: true });
+  const ownedTotals = sumRooms(owned);
+
+  const groupMap = new Map();
+  const ambiguous = [];
+
+  for (const hotel of owned) {
+    const resolved = resolvePrimaryOperator(hotel, ownerDisplayName);
+    if (resolved.ambiguous) ambiguous.push(hotelIdentityKey(hotel));
+    const key = resolved.operatorKey;
+    if (!groupMap.has(key)) {
+      groupMap.set(key, {
+        operatorKey: key,
+        operatorName: resolved.operatorLabel,
+        ownerOperated: resolved.ownerOperated,
+        verified: resolved.verified,
+        hotels: [],
+      });
+    }
+    groupMap.get(key).hotels.push({
+      ...hotel,
+      operator_relationship_label: formatOperatorRelationshipLabel(resolved, hotel),
+      ownership_relationship_label: formatOwnershipRelationshipLabel(hotel),
+    });
+  }
+
+  const operatorGroups = [...groupMap.values()]
+    .map((g) => {
+      const roomSum = sumRooms(g.hotels);
+      return {
+        ...g,
+        hotelCount: g.hotels.length,
+        roomsKnown: roomSum.roomsKnown,
+        roomsUnknownHotelCount: roomSum.roomsUnknownHotelCount,
+        roomsKnownHotelCount: roomSum.roomsKnownHotelCount,
+        hotels: g.hotels.sort((a, b) => String(a.hotel_name).localeCompare(String(b.hotel_name))),
+      };
+    })
+    .sort((a, b) => {
+      if (a.ownerOperated !== b.ownerOperated) return a.ownerOperated ? -1 : 1;
+      if (a.verified !== b.verified) return a.verified ? -1 : 1;
+      return a.operatorName.localeCompare(b.operatorName);
+    });
+
+  const groupHotelSum = operatorGroups.reduce((s, g) => s + g.hotelCount, 0);
+  const groupRoomSum = operatorGroups.reduce((s, g) => s + g.roomsKnown, 0);
+  const groupUnknownSum = operatorGroups.reduce((s, g) => s + g.roomsUnknownHotelCount, 0);
+
+  const hotelsMatch = groupHotelSum === owned.length;
+  const roomsMatch =
+    groupRoomSum === ownedTotals.roomsKnown &&
+    groupUnknownSum === ownedTotals.roomsUnknownHotelCount;
+
+  const completeness = String(opts.completeness || opts.portfolio_status || "PARTIAL").toUpperCase();
+  const verifiedCount = dedupePortfolioHotels(partitioned.verified).length;
+  const proposedCount =
+    dedupePortfolioHotels(partitioned.proposed).length +
+    dedupePortfolioHotels(partitioned.unresolved_match).length;
+  const historicalCount = partitioned.historical.length;
+  const unresolvedMatchCount = dedupePortfolioHotels(partitioned.unresolved_match).length;
+
+  return {
+    version: OWNER_PORTFOLIO_OPERATOR_VIEW_VERSION,
+    ownerDisplayName,
+    scope,
+    coverageLabel: coverageLabelForScope(scope, opts),
+    completeness,
+    partition: {
+      verified: verifiedCount,
+      proposed: proposedCount,
+      unresolved_match: unresolvedMatchCount,
+      historical: historicalCount,
+    },
+    ownedHotels: owned.map((h) => {
+      const evidence = classifyPortfolioHotel(h);
+      return {
+        ...h,
+        ownership_evidence_class: evidence.class,
+        ownership_evidence_label: evidence.label,
+        pending_hpc_match: evidence.pendingHpcMatch || !h.airtable_record_id,
+        ownership_relationship_label: formatOwnershipRelationshipLabel(h),
+        operator_relationship_label: formatOperatorRelationshipLabel(
+          resolvePrimaryOperator(h, ownerDisplayName),
+          h
+        ),
+      };
+    }),
+    totals: {
+      hotels: owned.length,
+      roomsKnown: ownedTotals.roomsKnown,
+      roomsKnownHotelCount: ownedTotals.roomsKnownHotelCount,
+      roomsUnknownHotelCount: ownedTotals.roomsUnknownHotelCount,
+      labelHotels: "Selected portfolio hotels",
+      labelRooms: "Known rooms (not a complete portfolio-room total)",
+    },
+    operatorGroups,
+    reconciliation: {
+      hotelsMatch,
+      roomsMatch,
+      ownedHotels: owned.length,
+      operatorGroupHotels: groupHotelSum,
+      ownedRoomsKnown: ownedTotals.roomsKnown,
+      operatorGroupRoomsKnown: groupRoomSum,
+      ownedRoomsUnknownHotels: ownedTotals.roomsUnknownHotelCount,
+      operatorGroupRoomsUnknownHotels: groupUnknownSum,
+      ambiguousOperatorHotelKeys: ambiguous,
+      ok: hotelsMatch && roomsMatch && ambiguous.length === 0,
+    },
+    stats: {
+      hotelsOwnedControlled: owned.length,
+      hotelsOwnerOperated: operatorGroups.find((g) => g.ownerOperated)?.hotelCount || 0,
+      hotelsThirdPartyManaged: operatorGroups
+        .filter((g) => g.verified && !g.ownerOperated)
+        .reduce((s, g) => s + g.hotelCount, 0),
+      hotelsOperatorUnresolved:
+        operatorGroups.find((g) => g.operatorKey === "__unverified__")?.hotelCount || 0,
+      hotelsVerifiedInUniverse: verifiedCount,
+      hotelsProposedInUniverse: proposedCount,
+      hotelsHistoricalExcluded: historicalCount,
+    },
+  };
+}
+
+/**
+ * Filter a mixed portfolio (owned + operated) down to owned/controlled current holdings.
+ */
+function selectOwnedControlledHotels(portfolio = []) {
+  return dedupePortfolioHotels(portfolio, { currentOnly: true });
+}
+
 
   global.HeOwnerPortfolioOperatorView = {
+    OWNER_PORTFOLIO_OPERATOR_VIEW_VERSION: OWNER_PORTFOLIO_OPERATOR_VIEW_VERSION,
     OPERATOR_NOT_VERIFIED_LABEL: OPERATOR_NOT_VERIFIED_LABEL,
     OWNER_OPERATED_LABEL: OWNER_OPERATED_LABEL,
+    PORTFOLIO_EVIDENCE: PORTFOLIO_EVIDENCE,
+    PORTFOLIO_SCOPE: PORTFOLIO_SCOPE,
+    classifyPortfolioHotel: classifyPortfolioHotel,
+    partitionPortfolioHotels: partitionPortfolioHotels,
+    selectHotelsForScope: selectHotelsForScope,
     buildOwnerPortfolioOperatorView: buildOwnerPortfolioOperatorView,
     dedupeOwnedHotels: dedupeOwnedHotels,
+    dedupePortfolioHotels: dedupePortfolioHotels,
     resolvePrimaryOperator: resolvePrimaryOperator,
     formatOwnershipRelationshipLabel: formatOwnershipRelationshipLabel,
-    selectOwnedControlledHotels: dedupeOwnedHotels,
+    formatOperatorRelationshipLabel: formatOperatorRelationshipLabel,
+    selectOwnedControlledHotels: selectOwnedControlledHotels,
   };
 })(typeof window !== "undefined" ? window : globalThis);

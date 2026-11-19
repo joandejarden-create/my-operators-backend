@@ -60,12 +60,15 @@ KGPV (golden UX) and Bethesda Marriott (Airtable-first pilot) define the permane
 
 ### 5a. Owner portfolio & operator reconciliation (Organization & Portfolio)
 
-- **Owned / Controlled Hotels** and **Who Manages These Hotels?** must use the **same** owned/controlled hotel set (deduped by canonical HPC identity).
-- Do not equate brand affiliation or management contracts with real-estate ownership. Operator-only hotels must not enter ownership totals.
-- Section B groups Section A hotels by current primary operator; include **Operator Not Verified** and **Owner-Operated** when applicable.
-- Mandatory reconciliation: owned hotel count = sum of operator-group hotel counts; known rooms = sum of operator-group known rooms.
-- Unknown room counts are excluded from known-room sums (never treated as zero); surface unresolved room hotel counts.
-- Label totals **Verified Portfolio Coverage** when completeness is partial — never claim “full/complete portfolio” without certified coverage.
+- **Owned / Controlled Hotels** and **Who Manages These Hotels?** must use the **same** selected hotel set (deduped by canonical HPC identity) for the active evidence scope.
+- Evidence classes: **Verified**, **Proposed**, **Historical**, **Unresolved match**. A company portfolio listing is association evidence — not verified current title/control.
+- Scope toggle: **Verified only** vs **Verified + proposed**. Changing scope must update both sections with identical denominators.
+- Do not equate brand affiliation or management contracts with real-estate ownership. Operator-only hotels must not enter ownership totals. Historical dispositions stay out of current totals.
+- HPC-matched hotels deep-link to Hotel Explorer; unmatched candidates show **Pending HPC Match** (no speculative links).
+- Section B groups the selected Section A hotels by current primary operator; include **Operator Not Verified** and **Owner-Operated** when applicable.
+- Mandatory reconciliation for the selected scope: hotel count = sum of operator-group hotel counts; known rooms = sum of operator-group known rooms.
+- Room coverage: total properties, hotels with known rooms, known-room sum, hotels with unresolved rooms. Never present incomplete rooms as a complete portfolio-room total.
+- Label **Verified Portfolio Coverage** only for verified-only scope; use **Selected Portfolio Coverage (verified + proposed)** when proposed candidates are included.
 - Research the organization once; persist HI graph relationships; reuse across every linked Hotel Explorer.
 - Shared modules: `lib/hotel-intelligence/ownership/owner-portfolio-operator-view-v1.js` + `public/js/he-owner-portfolio-operator-view-v1.js`.
 

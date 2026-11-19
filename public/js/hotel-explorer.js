@@ -881,6 +881,19 @@
       paint();
       return;
     }
+    var scopeBtn = e.target.closest("[data-hex-portfolio-scope]");
+    if (scopeBtn) {
+      var nextScope = scopeBtn.getAttribute("data-hex-portfolio-scope");
+      if (nextScope) {
+        try {
+          sessionStorage.setItem("he-owner-portfolio-scope-v1", nextScope);
+        } catch (_err) {
+          /* ignore */
+        }
+        paint();
+      }
+      return;
+    }
     var opToggle = e.target.closest("[data-hex-op-toggle]");
     if (opToggle) {
       var group = opToggle.closest("[data-hex-op-group]");
