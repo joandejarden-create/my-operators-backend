@@ -35,10 +35,12 @@ Also read when applicable:
 - [../../AGENTS.md](../../AGENTS.md) — repo layout, schema authority, common mistakes
 - [../platform-reference/TESTING_PROTOCOL.md](../platform-reference/TESTING_PROTOCOL.md) — PR and test expectations
 - Matching `docs/*-airtable-fields.md` before any Airtable read/write
+- [AIRTABLE_PERSISTENCE_GATE.md](./AIRTABLE_PERSISTENCE_GATE.md) — permanent gate for durable intelligence SoT / E2E classification
 
 ## Rules
 
 - Do not invent Airtable fields.
+- Do not claim FULL E2E COMPLETE for durable intelligence without proven Airtable (or approved durable) persistence and retrieval — see [AIRTABLE_PERSISTENCE_GATE.md](./AIRTABLE_PERSISTENCE_GATE.md).
 - Do not overwrite validated data.
 - Do not change unrelated files.
 - Do not bypass role/access assumptions.

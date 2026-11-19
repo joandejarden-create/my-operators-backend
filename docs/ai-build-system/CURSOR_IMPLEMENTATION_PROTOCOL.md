@@ -29,6 +29,8 @@ If task is low-risk, proceed after summarizing. If task is high-risk, ask for co
 
 **High-risk indicators:** Airtable writes, schema changes, scoring logic, auth/access changes, company-validated data paths, exports, approval/workflow states.
 
+**Durable intelligence persistence (binding):** Before implementing or closing any feature that creates reusable business intelligence, define canonical Airtable ownership, reuse existing schema first, plan idempotent writes, provenance/history, and retrieval across restarts. Do not classify the work `FULL_E2E_VALIDATED` from UI/API/PDF/local JSON alone. Contract: [AIRTABLE_PERSISTENCE_GATE.md](./AIRTABLE_PERSISTENCE_GATE.md).
+
 ## Implementation Rules
 
 - Prefer small, reversible changes.
@@ -56,6 +58,7 @@ At the end, provide:
 4. **Risks or assumptions** — what could break or what was assumed.
 5. **Documentation updated** — if any durable decisions were captured.
 6. **Suggested next step** — one concrete follow-up if useful.
+7. **Persistence classification** (when durable intelligence changed) — one of `PROTOTYPE` | `PERSISTENCE_DESIGNED` | `PERSISTENCE_VALIDATED` | `FULL_E2E_VALIDATED` | `CUSTOMER_PUBLISHED`, plus Airtable SoT mapping and retrieval evidence (or explicit limitations).
 
 ## Brand Explorer Tab Factory (mandatory)
 

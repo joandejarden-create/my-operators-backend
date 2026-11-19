@@ -55,7 +55,7 @@ Both tracks **reuse** these systems; neither invents a parallel stack:
 | Slice 2 audit | Airtable persistence / partners / reuse audit | Shipped (#441) |
 | **Slice 2A** | Persistence honesty + slim payload + one-run 12-dimension lifecycle | **MERGED** [#444](https://github.com/joandejarden-create/my-operators-backend/pull/444) |
 | **Slice 2B** | DG / Partner relationship wiring (existing tables; dry-run first) | **MERGED** [#448](https://github.com/joandejarden-create/my-operators-backend/pull/448) |
-| **Brief v2** | Commercial Intelligence Brief narrative quality (PDAC/NICE gold; NRC/IMC/OWWA weak) | **Plan prepared** — implement after #450 merges |
+| **Brief v2** | Commercial Intelligence Brief narrative quality (PDAC/NICE gold; NRC/IMC/OWWA weak) | **IN FLIGHT** after #450 |
 | Slice 2C | Read-only Airtable DG reuse hooks + continuation / Weekly Change prep | After 2B |
 | Brief v2 | Commercial Intelligence Brief v2 drawer quality | Parallel readiness after 2B evidence |
 | 14-segment Full E2E | Certified repeatable process + progressive depth | Ongoing; not a PDI UI blocker |
@@ -78,8 +78,8 @@ Both tracks **reuse** these systems; neither invents a parallel stack:
 |---|---|---|
 | Assessment | Portfolio Demand Intelligence product assessment | **MERGED** [#445](https://github.com/joandejarden-create/my-operators-backend/pull/445) |
 | **PDI-1** | Operator/market/hotel membership + fit classes + Aimbridge GDL fixtures | **MERGED** [#446](https://github.com/joandejarden-create/my-operators-backend/pull/446) |
-| **PDI-2** | Read-only portfolio API + operator authorization | **IN FLIGHT** |
-| **PDI-3** | GDI tab left of Commercial Priorities + fit matrix; **reuse Brief v2 + existing drawer** | After PDI-2 + Brief v2 |
+| **PDI-2** | Read-only portfolio API + operator authorization | **MERGED** [#450](https://github.com/joandejarden-create/my-operators-backend/pull/450) |
+| **PDI-3** | GDI tab left of Commercial Priorities + fit matrix; **reuse Brief v2 + existing drawer** | Prep doc ready; implement after Brief v2 |
 | PDI-4 | Market-level Full E2E orchestration + same-run multi-hotel qualification | After shared persistence + auth tested |
 | PDI-5 | Portfolio Weekly Change + hotel-isolated feedback | After PDI-3/4 foundations |
 
