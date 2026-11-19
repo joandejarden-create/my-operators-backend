@@ -1,0 +1,51 @@
+{
+  "contract": "BE_PHASE2E_QUALITY_REASSESSMENT_V1",
+  "generatedAt": "2026-11-19T13:34:17.521Z",
+  "method": "renderBrandExplorerHtmlForTest(allPanels=true, internalPreview=true) against quality-candidate overlays",
+  "liveBrowser": {
+    "status": "BLOCKED",
+    "reason": "Integration/HE server not serving Brand Explorer brand API on this machine (8091 library empty / brand API 404; primary checkout cannot start). Overlay JSON served 200 from HE public copy.",
+    "attemptedUrl": "http://127.0.0.1:8091/brand-explorer-combined.html?brand=receQkxgjlezsc1xg&beInternalPreview=1&beCandidateOverlay=1&beCandidateOverlayUrl=/brand-explorer-phase2e-preview/curio-collection-quality-candidate.json"
+  },
+  "atelierVm": {
+    "status": "PASS",
+    "note": "Canonical atelier renderer in Node VM — ten panels present (Dealality Insight label, not 'Insights')"
+  },
+  "brands": {
+    "curio-collection": {
+      "htmlChars": 86232,
+      "tabsPresent": [
+        "Overview",
+        "Value for Owners",
+        "Operations",
+        "Standards",
+        "Commercial Engine",
+        "Economics",
+        "Loyalty",
+        "Footprint",
+        "Materials",
+        "Dealality Insight"
+      ],
+      "loyaltyNeedle": { "Hilton Honors": true },
+      "crossBrandContamination": false
+    },
+    "ascend": {
+      "htmlChars": 84731,
+      "tabsPresent": [
+        "Overview",
+        "Value for Owners",
+        "Operations",
+        "Standards",
+        "Commercial Engine",
+        "Economics",
+        "Loyalty",
+        "Footprint",
+        "Materials",
+        "Dealality Insight"
+      ],
+      "loyaltyNeedle": { "Choice Privileges": true },
+      "crossBrandContamination": false,
+      "note": "Peer set may mention Hilton/Curio as competitive comps — not loyalty contamination"
+    }
+  }
+}

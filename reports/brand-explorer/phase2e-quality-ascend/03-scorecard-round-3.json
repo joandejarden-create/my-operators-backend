@@ -1,0 +1,7330 @@
+{
+  "contract": "BE_PHASE2E_FIELD_QUALITY_GATES_V1",
+  "evaluatedAt": "2026-11-19T13:32:00.200Z",
+  "target": {
+    "slug": "ascend",
+    "recordId": "reclkgOzvAcBheUSo",
+    "name": "Ascend Hotel Collection"
+  },
+  "rules": {
+    "targets": {
+      "populationCompleteness": 0.99,
+      "contentQualityPassRate": 0.99,
+      "qualityAdjustedCompleteness": 0.99
+    },
+    "untestedRequiredGate": "FAIL",
+    "silentPassProhibited": true,
+    "aiSelfScoringIsNotProductionReady": true,
+    "founderManualReviewRequired": true,
+    "denominator": "inventory.applicableSlotKeys — not shrunk"
+  },
+  "metrics": {
+    "A_populationCompleteness": 0.995,
+    "B_contentQualityPassRate": 0.9848,
+    "C_qualityAdjustedCompleteness": 0.9799,
+    "counts": {
+      "totalApplicable": 199,
+      "populated": 198,
+      "qualityPassAmongPopulated": 195,
+      "qualityAdjustedPass": 195,
+      "failures": 4
+    },
+    "meets": {
+      "A": true,
+      "B": false,
+      "C": false,
+      "allThree": false
+    }
+  },
+  "failReasonCounts": {
+    "does_not_render_in_atelier": 2,
+    "insufficient_owner_developer_value": 1,
+    "empty_or_thin_population": 1
+  },
+  "failureRegister": [
+    {
+      "slotKey": "materials.caseStudy",
+      "populated": true,
+      "failReasons": [
+        "does_not_render_in_atelier"
+      ],
+      "failedGates": [
+        "actual_rendering"
+      ],
+      "notes": [
+        "Failed gates: actual_rendering"
+      ]
+    },
+    {
+      "slotKey": "positioning.positioning",
+      "populated": true,
+      "failReasons": [
+        "insufficient_owner_developer_value"
+      ],
+      "failedGates": [
+        "owner_value"
+      ],
+      "notes": [
+        "Failed gates: owner_value"
+      ]
+    },
+    {
+      "slotKey": "snapshot.branded_residences",
+      "populated": false,
+      "failReasons": [
+        "empty_or_thin_population"
+      ],
+      "failedGates": [
+        "population"
+      ],
+      "notes": [
+        "Not meaningfully populated — quality gates not evaluated"
+      ]
+    },
+    {
+      "slotKey": "snapshot.typical_keys",
+      "populated": true,
+      "failReasons": [
+        "does_not_render_in_atelier"
+      ],
+      "failedGates": [
+        "actual_rendering"
+      ],
+      "notes": [
+        "Failed gates: actual_rendering"
+      ]
+    }
+  ],
+  "fieldResults": [
+    {
+      "slotKey": "commercial.demand",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.chain_scale",
+        "loyalty.program"
+      ],
+      "wordCount": 27,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "commercial.differentiator",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth",
+        "differentiation"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "differentiation": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.program",
+        "identity.parent",
+        "basics.chain_scale"
+      ],
+      "wordCount": 26,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "commercial.intro",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.program",
+        "identity.parent",
+        "basics.chain_scale"
+      ],
+      "wordCount": 38,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "commercial.kpi.b2b",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "basics.positioning"
+      ],
+      "wordCount": 36,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "commercial.kpi.campaigns",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "basics.positioning"
+      ],
+      "wordCount": 36,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "commercial.kpi.channels",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "basics.positioning"
+      ],
+      "wordCount": 36,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "commercial.kpi.lens",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "basics.positioning"
+      ],
+      "wordCount": 36,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "commercial.lever.corporate_group",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "basics.positioning"
+      ],
+      "wordCount": 36,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "commercial.lever.data_analytics",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "basics.positioning"
+      ],
+      "wordCount": 36,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "commercial.lever.digital_marketing",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "basics.positioning"
+      ],
+      "wordCount": 36,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "commercial.lever.distribution",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "basics.positioning"
+      ],
+      "wordCount": 36,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "commercial.lever.international",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "basics.positioning"
+      ],
+      "wordCount": 36,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "commercial.lever.leisure_destination",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "basics.positioning"
+      ],
+      "wordCount": 36,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "commercial.lever.reputation_qa",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "basics.positioning"
+      ],
+      "wordCount": 36,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "commercial.lever.revenue_management",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.program",
+        "identity.parent"
+      ],
+      "wordCount": 15,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "commercial.lever.sales_catering",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "basics.positioning"
+      ],
+      "wordCount": 36,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "commercial.perception",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.program",
+        "identity.parent",
+        "basics.chain_scale"
+      ],
+      "wordCount": 38,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "commercial.theme",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.chain_scale",
+        "loyalty.program"
+      ],
+      "wordCount": 27,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.cash.preopening",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.cash.ramp",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.cash.renewal",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.cash.steadystate",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.checklist",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.diligence",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.fee",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 48,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.fee.change",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.fee.join",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.fee.operate",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.fee_variability",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.incentives",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.intro",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.kpi.agreement",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.kpi.application",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.kpi.capital",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.kpi.fee_stack",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.kpi.incentives",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.kpi.loyalty",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.kpi.marketing",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.kpi.negotiability",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.kpi.performance",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.kpi.royalty",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.kpi.technology",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.kpi.term",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.legal",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 30,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.lifecycle.preopening",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.lifecycle.ramp",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.lifecycle.renewal",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.lifecycle.steadystate",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.model",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.negotiability",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.negotiable_items",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.opening.financials",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.opening.process",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.opening.step.1",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.opening.step.2",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.opening.step.3",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.opening.step.4",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.opening.step.5",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.performance_exit",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.rarely_negotiable",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.risk",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.risk_exit",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.support_burden",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "economics.term_renewal",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path"
+      ],
+      "wordCount": 53,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "footprint.editorial",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels"
+      ],
+      "wordCount": 28,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "footprint.editorial_bullets",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels"
+      ],
+      "wordCount": 28,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "footprint.geo.summary",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels"
+      ],
+      "wordCount": 28,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "footprint.geo_intro",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.region_offered",
+        "metric.open_hotels"
+      ],
+      "wordCount": 20,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "footprint.growth.narrative",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels"
+      ],
+      "wordCount": 28,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "footprint.growth_editorial",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels"
+      ],
+      "wordCount": 28,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "footprint.growth_fit",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels"
+      ],
+      "wordCount": 28,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "footprint.growth_style",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels"
+      ],
+      "wordCount": 28,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "footprint.growth_themes",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels"
+      ],
+      "wordCount": 28,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "footprint.momentum",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels"
+      ],
+      "wordCount": 28,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "footprint.momentum_label",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels"
+      ],
+      "wordCount": 28,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "footprint.openings",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels"
+      ],
+      "wordCount": 28,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "footprint.portfolio_mix",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels"
+      ],
+      "wordCount": 28,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "footprint.primary_regions",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.region_offered",
+        "metric.open_hotels"
+      ],
+      "wordCount": 20,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "footprint.region.am",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels"
+      ],
+      "wordCount": 28,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "footprint.region.apac",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels"
+      ],
+      "wordCount": 28,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "footprint.region.cala",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels"
+      ],
+      "wordCount": 28,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "footprint.region.eu",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels"
+      ],
+      "wordCount": 28,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "footprint.region.mea",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels"
+      ],
+      "wordCount": 28,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "identity.brand_name",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "identity.brand_name"
+      ],
+      "wordCount": 3,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "identity.parent",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "identity.parent"
+      ],
+      "wordCount": 3,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "identity.segment",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.chain_scale",
+        "basics.positioning"
+      ],
+      "wordCount": 41,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "insight.similar",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth",
+        "differentiation"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "differentiation": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "competitive.soft_brand_peers",
+        "basics.positioning"
+      ],
+      "wordCount": 47,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "insight.summary",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "competitive.soft_brand_peers"
+      ],
+      "wordCount": 38,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "loyalty.earn",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.program"
+      ],
+      "wordCount": 13,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "loyalty.ecosystem",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "loyalty.program"
+      ],
+      "wordCount": 37,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "loyalty.elite",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_tiers"
+      ],
+      "wordCount": 12,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "loyalty.hero_title",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.program"
+      ],
+      "wordCount": 2,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "loyalty.implications.ops",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "loyalty.program"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "loyalty.implications.pnl",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "loyalty.program"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "loyalty.implications.systems",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "loyalty.program"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "loyalty.kpi.hotels",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "loyalty.program"
+      ],
+      "wordCount": 26,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "loyalty.kpi.markets",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "loyalty.program"
+      ],
+      "wordCount": 26,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "loyalty.kpi.members",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "loyalty.program"
+      ],
+      "wordCount": 26,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "loyalty.kpi.mix",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "loyalty.program"
+      ],
+      "wordCount": 26,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "loyalty.owner_lens",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "loyalty.program"
+      ],
+      "wordCount": 37,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "loyalty.program",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "loyalty.program"
+      ],
+      "wordCount": 25,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "loyalty.proof",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "loyalty.program"
+      ],
+      "wordCount": 37,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "loyalty.redeem",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.program"
+      ],
+      "wordCount": 10,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "materials.caseStudy",
+      "populated": true,
+      "qualityPass": false,
+      "qualityAdjustedPass": false,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "FAIL",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [
+        "does_not_render_in_atelier"
+      ],
+      "evidenceIds": [
+        "official.page",
+        "basics.positioning"
+      ],
+      "wordCount": 28,
+      "notes": [
+        "Failed gates: actual_rendering"
+      ]
+    },
+    {
+      "slotKey": "materials.documents.available",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "official.page",
+        "basics.positioning"
+      ],
+      "wordCount": 27,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "materials.file",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "official.page",
+        "basics.positioning"
+      ],
+      "wordCount": 26,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "materials.gallery.1",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "official.image.1"
+      ],
+      "wordCount": 1,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "materials.gallery.2",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "official.image.2"
+      ],
+      "wordCount": 1,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "materials.gallery.3",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "official.image.3"
+      ],
+      "wordCount": 1,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "materials.gallery.4",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "official.image.1"
+      ],
+      "wordCount": 1,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "materials.gallery.5",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "official.image.2"
+      ],
+      "wordCount": 1,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "materials.gallery.6",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "official.image.3"
+      ],
+      "wordCount": 1,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "metric.open_hotels",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels"
+      ],
+      "wordCount": 8,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "metric.pipeline",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels"
+      ],
+      "wordCount": 28,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.compliance.brand_interaction",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.compliance.qa_cadence",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.compliance.reporting",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "identity.parent"
+      ],
+      "wordCount": 9,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.compliance.training_rigor",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.flexibility.conversion",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.chain_scale"
+      ],
+      "wordCount": 1,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.flexibility.design",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.chain_scale"
+      ],
+      "wordCount": 1,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.flexibility.localization",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.chain_scale"
+      ],
+      "wordCount": 1,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.flexibility.operational_rigidity",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.chain_scale"
+      ],
+      "wordCount": 1,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.flexibility.pip",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.chain_scale"
+      ],
+      "wordCount": 1,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.flexibility.prototype",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.chain_scale"
+      ],
+      "wordCount": 1,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.model.brand_involvement",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.model.fb_complexity",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.model.management_option",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.model.pre_opening",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.model.primary_model",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.model.qa_rhythm",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.model.reporting_discipline",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.model.staffing_intensity",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.model.systems_integration",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.model.technology",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.model.training",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.model.typical_ownership",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.operator_compat.fit",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.operator_compat.summary",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.chain_scale"
+      ],
+      "wordCount": 22,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.operator_compat.tags",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.owner_experience",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "operations.standards_philosophy",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.bestAt.1",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "identity.parent",
+        "basics.chain_scale",
+        "basics.positioning"
+      ],
+      "wordCount": 27,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.bestAt.2",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "identity.parent",
+        "basics.chain_scale"
+      ],
+      "wordCount": 12,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.bestAt.3",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "identity.parent",
+        "basics.chain_scale",
+        "basics.positioning"
+      ],
+      "wordCount": 29,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.development_model",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.brand_model",
+        "basics.chain_scale"
+      ],
+      "wordCount": 15,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.differentiators.commercial",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth",
+        "differentiation"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "differentiation": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.program",
+        "identity.parent"
+      ],
+      "wordCount": 23,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.differentiators.identity",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth",
+        "differentiation"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "differentiation": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.differentiators",
+        "basics.positioning"
+      ],
+      "wordCount": 41,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.featured_application",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "loyalty.program"
+      ],
+      "wordCount": 26,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.owner_experience",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "loyalty.honors_value",
+        "economics.diligence_path"
+      ],
+      "wordCount": 40,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.portfolio_context",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.history",
+        "identity.parent"
+      ],
+      "wordCount": 33,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.portfolio_ladder_tier",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "identity.parent",
+        "economics.diligence_path",
+        "basics.positioning"
+      ],
+      "wordCount": 26,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.proof.1",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "competitive.soft_brand_peers",
+        "basics.positioning"
+      ],
+      "wordCount": 32,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.proof.2",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels",
+        "loyalty.honors_value",
+        "competitive.soft_brand_peers",
+        "basics.positioning"
+      ],
+      "wordCount": 37,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.proof.3",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "loyalty.honors_value",
+        "competitive.soft_brand_peers",
+        "basics.positioning"
+      ],
+      "wordCount": 38,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.proof.4",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels",
+        "loyalty.honors_value",
+        "competitive.soft_brand_peers",
+        "basics.positioning"
+      ],
+      "wordCount": 32,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.proof.5",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels",
+        "loyalty.honors_value",
+        "competitive.soft_brand_peers",
+        "basics.positioning"
+      ],
+      "wordCount": 41,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.proof.6",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "metric.open_hotels",
+        "loyalty.honors_value",
+        "competitive.soft_brand_peers",
+        "basics.positioning"
+      ],
+      "wordCount": 41,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.relative_positioning",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth",
+        "differentiation"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "differentiation": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "competitive.soft_brand_peers",
+        "basics.chain_scale"
+      ],
+      "wordCount": 29,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.scenario.1",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "loyalty.program",
+        "basics.chain_scale"
+      ],
+      "wordCount": 49,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.scenario.2",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "loyalty.program",
+        "basics.chain_scale"
+      ],
+      "wordCount": 25,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.scenario.3",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "basics.differentiators",
+        "loyalty.honors_value"
+      ],
+      "wordCount": 50,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.typical_use_case",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "basics.chain_scale"
+      ],
+      "wordCount": 21,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "overview.why_value",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "basics.value_prop"
+      ],
+      "wordCount": 32,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "owner.outcomes",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "loyalty.honors_value",
+        "economics.diligence_path"
+      ],
+      "wordCount": 40,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "positioning.audience",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.chain_scale",
+        "basics.brand_model",
+        "basics.audience",
+        "basics.positioning",
+        "basics.region_offered",
+        "basics.year_launched",
+        "identity.parent"
+      ],
+      "wordCount": 13,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "positioning.positioning",
+      "populated": true,
+      "qualityPass": false,
+      "qualityAdjustedPass": false,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "FAIL",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [
+        "insufficient_owner_developer_value"
+      ],
+      "evidenceIds": [
+        "basics.chain_scale",
+        "basics.brand_model",
+        "basics.audience",
+        "basics.positioning",
+        "basics.region_offered",
+        "basics.year_launched",
+        "identity.parent"
+      ],
+      "wordCount": 16,
+      "notes": [
+        "Failed gates: owner_value"
+      ]
+    },
+    {
+      "slotKey": "snapshot.brand_family",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "identity.parent"
+      ],
+      "wordCount": 8,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "snapshot.brand_type",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.brand_model"
+      ],
+      "wordCount": 5,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "snapshot.brand_website",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "snapshot.brand_website"
+      ],
+      "wordCount": 1,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "snapshot.branded_residences",
+      "populated": false,
+      "qualityPass": false,
+      "qualityAdjustedPass": false,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "FAIL",
+        "factual_accuracy": "NOT_EVALUATED",
+        "brand_specificity": "NOT_EVALUATED",
+        "writing_quality": "NOT_EVALUATED",
+        "correct_placement": "NOT_EVALUATED",
+        "actual_rendering": "NOT_EVALUATED",
+        "source_of_truth": "NOT_EVALUATED"
+      },
+      "failReasons": [
+        "empty_or_thin_population"
+      ],
+      "notes": [
+        "Not meaningfully populated — quality gates not evaluated"
+      ]
+    },
+    {
+      "slotKey": "snapshot.geographic_focus",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.region_offered"
+      ],
+      "wordCount": 18,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "snapshot.launch_year",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.year_launched"
+      ],
+      "wordCount": 1,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "snapshot.parent_company",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "identity.parent"
+      ],
+      "wordCount": 3,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "snapshot.segment",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.chain_scale"
+      ],
+      "wordCount": 3,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "snapshot.service_level",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.service_model"
+      ],
+      "wordCount": 8,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "snapshot.typical_keys",
+      "populated": true,
+      "qualityPass": false,
+      "qualityAdjustedPass": false,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "FAIL",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [
+        "does_not_render_in_atelier"
+      ],
+      "evidenceIds": [
+        "basics.chain_scale",
+        "basics.brand_model",
+        "basics.audience",
+        "basics.positioning",
+        "basics.region_offered",
+        "basics.year_launched",
+        "identity.parent"
+      ],
+      "wordCount": 21,
+      "notes": [
+        "Failed gates: actual_rendering"
+      ]
+    },
+    {
+      "slotKey": "standards.conversion",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "standards.deal_inputs",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "standards.intro",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "standards.last_reviewed",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "standards.owner_considerations",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "standards.questions",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "standards.diligence"
+      ],
+      "wordCount": 38,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "standards.requirement",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "standards.residences",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning"
+      ],
+      "wordCount": 30,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "standards.similar",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "competitive.soft_brand_peers",
+        "basics.positioning"
+      ],
+      "wordCount": 47,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "standards.source_confidence",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "economics.diligence_path"
+      ],
+      "wordCount": 39,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "valueOwners.lifecycle.1",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "basics.differentiators",
+        "loyalty.honors_value"
+      ],
+      "wordCount": 51,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "valueOwners.lifecycle.2",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "economics.diligence_path",
+        "loyalty.program",
+        "basics.chain_scale"
+      ],
+      "wordCount": 28,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "valueOwners.lifecycle.3",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "basics.differentiators",
+        "loyalty.honors_value"
+      ],
+      "wordCount": 51,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "valueOwners.lifecycle.4",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "basics.differentiators",
+        "loyalty.honors_value"
+      ],
+      "wordCount": 51,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "valueOwners.lifecycle.5",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "basics.differentiators",
+        "loyalty.honors_value"
+      ],
+      "wordCount": 51,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "valueOwners.lifecycle.6",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "basics.differentiators",
+        "loyalty.honors_value"
+      ],
+      "wordCount": 51,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "valueOwners.overview",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "loyalty.honors_value",
+        "economics.diligence_path"
+      ],
+      "wordCount": 41,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "valueOwners.overview.outcomes",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "loyalty.honors_value",
+        "economics.diligence_path"
+      ],
+      "wordCount": 40,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "valueOwners.scenario.1",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "basics.differentiators",
+        "loyalty.honors_value"
+      ],
+      "wordCount": 50,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "valueOwners.scenario.2",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "basics.differentiators",
+        "loyalty.honors_value"
+      ],
+      "wordCount": 50,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "valueOwners.scenario.3",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "basics.differentiators",
+        "loyalty.honors_value"
+      ],
+      "wordCount": 50,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "valueOwners.scenario.4",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "basics.differentiators",
+        "loyalty.honors_value"
+      ],
+      "wordCount": 50,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    },
+    {
+      "slotKey": "valueOwners.watchouts",
+      "populated": true,
+      "qualityPass": true,
+      "qualityAdjustedPass": true,
+      "gatesApplicable": [
+        "population",
+        "factual_accuracy",
+        "brand_specificity",
+        "writing_quality",
+        "correct_placement",
+        "actual_rendering",
+        "source_of_truth",
+        "owner_value",
+        "research_depth"
+      ],
+      "gateResults": {
+        "population": "PASS",
+        "factual_accuracy": "PASS",
+        "brand_specificity": "PASS",
+        "owner_value": "PASS",
+        "research_depth": "PASS",
+        "writing_quality": "PASS",
+        "correct_placement": "PASS",
+        "actual_rendering": "PASS",
+        "source_of_truth": "PASS"
+      },
+      "failReasons": [],
+      "evidenceIds": [
+        "basics.positioning",
+        "loyalty.program"
+      ],
+      "wordCount": 37,
+      "notes": [
+        "All applicable quality gates PASS"
+      ]
+    }
+  ],
+  "productionReadyClaim": "PROHIBITED_WITHOUT_FOUNDER_MANUAL_REVIEW",
+  "renderContext": {
+    "renderValidated": true,
+    "htmlChars": 86659
+  }
+}
