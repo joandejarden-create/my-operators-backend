@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>ADP Admin Actions Fixture — Methodology PR</title>
+  <link rel="stylesheet" href="/css/admin-ai-demand.css" />
+  <style>
+    body { background: #0b1220; color: #e8eef7; font-family: Segoe UI, sans-serif; padding: 24px; }
+    h1 { font-size: 18px; margin: 0 0 8px; }
+    p { color: #9db0c9; font-size: 13px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+    th, td { border-bottom: 1px solid #1e2a3d; padding: 12px 10px; text-align: left; font-size: 13px; }
+    th { color: #9db0c9; font-weight: 600; }
+    .row-hotel { font-weight: 600; }
+    .note { margin-top: 16px; font-size: 12px; color: #7f93ad; }
+  </style>
+</head>
+<body>
+  <h1>AI Demand Reviews — row actions (fixture)</h1>
+  <p>Primary: View PDF → Download PDF → Copy URL → More. Client view stays in More.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Hotel</th>
+        <th>Coverage</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <p class="note">Local fixture for founder screenshot evidence — not a customer surface.</p>
+  <script src="/js/admin-ai-demand-table.js"></script>
+  <script>
+    (function () {
+      var T = window.DealalityAiAdminTable;
+      function pack(r) {
+        var adpOk = !!(r.adpClient && r.adpClient.available === true);
+        var pdfOk = !!(r.hasPdf && r.reviewId);
+        var primary = [];
+        var more = [];
+        primary.push({
+          label: "View PDF",
+          act: "view-pdf",
+          disabled: !pdfOk,
+          title: pdfOk ? "View performance review PDF" : "PDF unavailable",
+        });
+        primary.push({
+          label: "Download PDF",
+          act: "download-pdf",
+          disabled: !pdfOk,
+          title: pdfOk ? "Download current performance review PDF" : "PDF unavailable",
+        });
+        primary.push({
+          label: "Copy URL",
+          act: "copy-adp-client",
+          disabled: !adpOk,
+          title: adpOk
+            ? "Copy authorized production HTTPS ADP client URL"
+            : "No authorized ADP share link",
+        });
+        more.push({
+          label: "Open review in client view",
+          act: "open-adp-client",
+          disabled: !adpOk,
+          title: adpOk
+            ? "Open authorized production ADP client report"
+            : "No authorized share",
+        });
+        more.push({ label: "Open action plan", act: "open-action-plan" });
+        more.push({ label: "Regenerate review", act: "regenerate" });
+        more.push({ label: "View report history", act: "open-archive" });
+        return T.actionsHtml(
+          { primary: primary, more: more },
+          { id: r.reviewId || "", property: r.propertyId || "" }
+        );
+      }
+      var samples = [
+        {
+          propertyName: "AC Hotel A Coruña",
+          hasPdf: true,
+          reviewId: "r1",
+          adpClient: { available: true },
+        },
+        {
+          propertyName: "Charlotte Marriott City Center",
+          hasPdf: true,
+          reviewId: "r2",
+          adpClient: { available: false },
+        },
+        {
+          propertyName: "PDF pending hotel",
+          hasPdf: false,
+          reviewId: null,
+          adpClient: { available: false },
+        },
+      ];
+      var html = samples
+        .map(function (s) {
+          return (
+            '<tr><td class="row-hotel">' +
+            s.propertyName +
+            "</td><td>" +
+            (s.hasPdf ? "READY" : "NEEDS_REBUILD") +
+            "</td><td>" +
+            pack(s) +
+            "</td></tr>"
+          );
+        })
+        .join("");
+      document.getElementById("rows").innerHTML = html;
+    })();
+  </script>
+</body>
+</html>

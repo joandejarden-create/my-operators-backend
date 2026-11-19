@@ -39,6 +39,11 @@ import {
   buildPublishedAdpReviewCoverageV1,
   ADP_AI_DEMAND_REVIEW_COVERAGE_V1,
 } from "../lib/ai-demand-positioning/monthly-review/admin/published-review-coverage-v1.js";
+import { classifyAdpMethodologyCompatibility } from "../lib/ai-demand-positioning/methodology/adp-methodology-compatibility-audit-v1.js";
+import {
+  ADP_METHODOLOGY_CANONICAL_V1,
+  buildAdminMethodologyProvenanceBlock,
+} from "../lib/ai-demand-positioning/methodology/adp-methodology-canonical-v1.js";
 import {
   getPublishedOwnerReport,
 } from "../lib/ai-demand-positioning/published-read-service.js";
@@ -322,7 +327,24 @@ export function getAdminMonthlyReviews(req, res) {
 
     // Coverage-first catalog: one row per published ADP property (never silent omit).
     // Archive version history remains available as `reviews`.
-    let properties = coverage.properties;
+    let properties = coverage.properties
+      .filter((p) => !isAdpSyntheticOrTestPropertyId(p.propertyId))
+      .map((p) => {
+        const meth = classifyAdpMethodologyCompatibility(p.propertyId, {
+          coverageRow: p,
+        });
+        if (!meth) return null;
+        return {
+          ...p,
+          methodologyCompatibility: meth.compatibility,
+          methodologyReasons: meth.reasons,
+          methodologyProvenance: buildAdminMethodologyProvenanceBlock({
+            ...(meth.provenance || {}),
+            compatibility: meth.compatibility,
+          }),
+        };
+      })
+      .filter(Boolean);
     if (filters.propertyId) {
       properties = properties.filter((p) => p.propertyId === filters.propertyId);
     }
@@ -340,6 +362,7 @@ export function getAdminMonthlyReviews(req, res) {
       ok: true,
       schema: ARCHIVE_INDEX_SCHEMA,
       coverageGate: ADP_AI_DEMAND_REVIEW_COVERAGE_V1,
+      methodologyGate: ADP_METHODOLOGY_CANONICAL_V1,
       statusModel: "ADP_MONTHLY_REVIEW_REPORT_STATUS_V1",
       builderVersion: REVIEW_BUILDER_VERSION,
       actionLibraryVersion: ACTION_LIBRARY_VERSION,

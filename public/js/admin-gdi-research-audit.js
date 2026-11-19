@@ -113,9 +113,16 @@
     if (prev) sel.value = prev;
   }
 
+  var graSortKey = "startedAt";
+  var graSortDir = -1;
+
   function renderRunsTable() {
     var body = $("graTableBody");
     if (!body) return;
+    var T = window.DealalityAiAdminTable;
+    if (T && typeof T.paintSortState === "function") {
+      T.paintSortState($("graTableHead"), graSortKey, graSortDir);
+    }
     if (!selectedHotelId) {
       body.innerHTML =
         '<tr><td colspan="7">Select a hotel to load research runs.</td></tr>';
@@ -126,9 +133,33 @@
         '<tr><td colspan="7">No research runs found for this hotel.</td></tr>';
       return;
     }
-    body.innerHTML = runs
+    var rows = runs.map(function (run) {
+      return Object.assign({}, run, {
+        runId: runIdOf(run),
+        status: run.status || run.kind || "",
+        startedAt: run.startedAt || run.createdAt || null,
+        completedAt: run.completedAt || null,
+        qualified: qualifiedCount(run),
+        costUsd: runCostUsd(run),
+      });
+    });
+    if (T && typeof T.sortRows === "function") {
+      var type =
+        graSortKey === "qualified" || graSortKey === "costUsd"
+          ? "number"
+          : graSortKey === "startedAt" || graSortKey === "completedAt"
+            ? "date"
+            : "string";
+      rows = T.sortRows(rows, {
+        key: graSortKey,
+        dir: graSortDir,
+        type: type,
+        tieBreak: "runId",
+      });
+    }
+    body.innerHTML = rows
       .map(function (run) {
-        var id = runIdOf(run);
+        var id = run.runId || runIdOf(run);
         return (
           "<tr>" +
           "<td><code>" +
@@ -639,6 +670,20 @@
       close.addEventListener("click", function () {
         var drawer = $("graDrawer");
         if (drawer) drawer.hidden = true;
+      });
+    }
+    var graHead = $("graTableHead");
+    if (graHead) {
+      graHead.addEventListener("click", function (ev) {
+        var th = ev.target.closest("th[data-sort]");
+        if (!th) return;
+        var key = th.getAttribute("data-sort");
+        if (graSortKey === key) graSortDir *= -1;
+        else {
+          graSortKey = key;
+          graSortDir = 1;
+        }
+        renderRunsTable();
       });
     }
   }

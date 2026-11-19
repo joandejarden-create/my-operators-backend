@@ -7,11 +7,58 @@
 (function (global) {
   "use strict";
 
+  /** Neutral dual-chevron SVG; active direction is styled via .sort-asc / .sort-desc. */
   var SORT_INDICATOR =
     '<span class="ada-sort-indicator" aria-hidden="true">' +
-    '<span class="ada-sort-arrow ada-sort-arrow--up"></span>' +
-    '<span class="ada-sort-arrow ada-sort-arrow--down"></span>' +
+    '<svg class="ada-sort-svg" width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+    '<path class="ada-sort-chevron ada-sort-chevron--up" d="M5 1.5 L9 5.5 H1 Z" />' +
+    '<path class="ada-sort-chevron ada-sort-chevron--down" d="M5 12.5 L1 8.5 H9 Z" />' +
+    "</svg>" +
     "</span>";
+
+  /**
+   * Paint sortable header state onto any thead (shared across AI Admin tabs).
+   * @param {HTMLElement|null} thead
+   * @param {string} sortKey
+   * @param {1|-1} sortDir
+   */
+  function paintSortState(thead, sortKey, sortDir) {
+    if (!thead) return;
+    thead.querySelectorAll("th[data-sort]").forEach(function (th) {
+      th.classList.add("ada-th--sortable");
+      th.setAttribute("role", "columnheader");
+      th.setAttribute("tabindex", "0");
+      var k = th.getAttribute("data-sort");
+      th.classList.toggle("sort-asc", k === sortKey && sortDir === 1);
+      th.classList.toggle("sort-desc", k === sortKey && sortDir === -1);
+      th.setAttribute(
+        "aria-sort",
+        k === sortKey ? (sortDir === 1 ? "ascending" : "descending") : "none"
+      );
+      if (!th.querySelector(".ada-sort-indicator")) {
+        if (th.querySelector(".ada-th-label")) {
+          th.querySelector(".ada-th-label").insertAdjacentHTML(
+            "beforeend",
+            SORT_INDICATOR
+          );
+        } else {
+          th.innerHTML =
+            '<span class="ada-th-label">' + th.innerHTML + "</span>" + SORT_INDICATOR;
+        }
+      }
+    });
+    // Nonsortable columns must not look interactive.
+    thead.querySelectorAll("th.no-sort, th.ada-th--check, th.ada-col-actions").forEach(
+      function (th) {
+        th.classList.remove("ada-th--sortable", "sort-asc", "sort-desc");
+        th.removeAttribute("data-sort");
+        th.removeAttribute("tabindex");
+        th.setAttribute("aria-sort", "none");
+        var ind = th.querySelector(".ada-sort-indicator");
+        if (ind) ind.remove();
+      }
+    );
+  }
 
   function esc(s) {
     return String(s == null ? "" : s)
@@ -190,34 +237,7 @@
         };
       },
       paintSortHeaders: function (thead) {
-        if (!thead) return;
-        thead.querySelectorAll("th[data-sort]").forEach(function (th) {
-          th.classList.add("ada-th--sortable");
-          th.setAttribute("role", "columnheader");
-          th.setAttribute("tabindex", "0");
-          var k = th.getAttribute("data-sort");
-          th.classList.toggle("sort-asc", k === sortKey && sortDir === 1);
-          th.classList.toggle("sort-desc", k === sortKey && sortDir === -1);
-          th.setAttribute(
-            "aria-sort",
-            k === sortKey ? (sortDir === 1 ? "ascending" : "descending") : "none"
-          );
-          if (!th.querySelector(".ada-sort-indicator")) {
-            var label = th.querySelector(".ada-th-label") || th;
-            if (th.querySelector(".ada-th-label")) {
-              th.querySelector(".ada-th-label").insertAdjacentHTML(
-                "beforeend",
-                SORT_INDICATOR
-              );
-            } else {
-              th.innerHTML =
-                '<span class="ada-th-label">' +
-                th.innerHTML +
-                "</span>" +
-                SORT_INDICATOR;
-            }
-          }
-        });
+        paintSortState(thead, sortKey, sortDir);
       },
       wireSortHeaders: function (thead, onChange) {
         if (!thead || thead.__adaSortWired) return;
@@ -725,6 +745,7 @@
   global.DealalityAiAdminTable = {
     esc: esc,
     sortRows: sortRows,
+    paintSortState: paintSortState,
     createSelectionStore: createSelectionStore,
     createTableController: createTableController,
     resultsCountHtml: resultsCountHtml,

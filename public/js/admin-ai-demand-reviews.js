@@ -12,7 +12,7 @@
     priorRunDate: true,
     generatedAt: true,
   };
-  var NUM_SORT_KEYS = { actionCount: true };
+  var NUM_SORT_KEYS = { actionCount: true, hasPdf: true };
 
   var state = {
     reviews: [],
@@ -198,6 +198,7 @@
         { key: key, dir: dir, type: type, tieBreak: "propertyName" },
         function (row, k) {
           if (k === "clientIssued") return row.clientIssued ? 1 : 0;
+          if (k === "hasPdf") return row.hasPdf ? 1 : 0;
           if (k === "market") return row.market || row.location || "";
           return row[k];
         }
@@ -251,38 +252,75 @@
     if (!T) return coverageMoreActions(r);
     var adpOk = !!(r.adpClient && r.adpClient.available === true);
     var adpDisabledTitle = adpClientUnavailableTitle(r);
+    var pdfOk = !!(r.hasPdf && r.reviewId);
+    var pdfDisabledTitle =
+      r.pdfUnavailableReason ||
+      "PDF unavailable — generate a performance review PDF first";
     var primary = [];
     var more = [];
-    if (r.hasPdf && r.reviewId) {
-      primary.push({ label: "View PDF", act: "view-pdf", title: "View performance review PDF" });
-      more.push({ label: "Download PDF", act: "download-pdf" });
-    } else if (r.propertyId && r.coverageStatus !== "BLOCKED") {
-      primary.push({ label: "Generate PDF", act: "draft", title: "Generate performance review PDF" });
-    }
-    if (r.reviewId) {
-      primary.push({ label: "Open review", act: "open", title: "Open review in client preview" });
-      more.push({ label: "Meeting mode", act: "meeting" });
-      more.push({ label: "Regenerate", act: "regenerate" });
-    }
-    more.push({
-      label: "Open ADP client",
-      act: "open-adp-client",
-      disabled: !adpOk,
-      title: adpOk ? "Open authorized production ADP client report" : adpDisabledTitle,
+
+    // Primary icons: View PDF → Download PDF → Copy URL (PDF ≠ customer-share gate).
+    primary.push({
+      label: "View PDF",
+      act: "view-pdf",
+      disabled: !pdfOk,
+      title: pdfOk ? "View performance review PDF" : pdfDisabledTitle,
     });
-    more.push({
-      label: "Copy ADP URL",
+    primary.push({
+      label: "Download PDF",
+      act: "download-pdf",
+      disabled: !pdfOk,
+      title: pdfOk
+        ? "Download current performance review PDF"
+        : pdfDisabledTitle,
+    });
+    primary.push({
+      label: "Copy URL",
       act: "copy-adp-client",
       disabled: !adpOk,
-      title: adpOk ? "Copy authorized production ADP client URL" : adpDisabledTitle,
+      title: adpOk
+        ? "Copy authorized production HTTPS ADP client URL"
+        : adpDisabledTitle,
+    });
+
+    if (!pdfOk && r.propertyId && r.coverageStatus !== "BLOCKED") {
+      more.push({
+        label: "Generate PDF",
+        act: "draft",
+        title: "Generate performance review PDF",
+      });
+    }
+
+    // More: client view (authorized share only), action plan, regenerate, history.
+    // Do not duplicate View PDF / Download PDF here.
+    more.push({
+      label: "Open review in client view",
+      act: "open-adp-client",
+      disabled: !adpOk,
+      title: adpOk
+        ? "Open authorized production ADP client report"
+        : adpDisabledTitle,
     });
     more.push({
-      label: "Action plan",
+      label: "Open action plan",
       act: "open-action-plan",
       disabled: !r.propertyId,
       title: "Open ADP Action Plan for this hotel",
     });
-    more.push({ label: "Report Archive", act: "open-archive" });
+    if (r.reviewId) {
+      more.push({ label: "Regenerate review", act: "regenerate" });
+      more.push({
+        label: "Open admin preview",
+        act: "open",
+        title: "Open archived review in admin preview",
+      });
+      more.push({ label: "Meeting mode", act: "meeting" });
+    }
+    more.push({
+      label: "View report history",
+      act: "open-archive",
+      title: "Open report archive / version history",
+    });
     return T.actionsHtml({ primary: primary, more: more }, {
       id: r.reviewId || "",
       property: r.propertyId || "",
@@ -455,10 +493,18 @@
     );
   }
 
+  function paintAdrSortHeaders() {
+    var thead = document.getElementById("adrTableHead");
+    if (T && typeof T.paintSortState === "function") {
+      T.paintSortState(thead, state.sortKey, state.sortDir);
+    }
+  }
+
   function renderTable() {
     var tbody = document.getElementById("adrTableBody");
     if (!tbody) return;
     var rows = sortedRows();
+    paintAdrSortHeaders();
     if (state.coverageMode) {
       var covFilter = document.getElementById("adrFilterCoverage");
       var covVal = covFilter ? covFilter.value : "";

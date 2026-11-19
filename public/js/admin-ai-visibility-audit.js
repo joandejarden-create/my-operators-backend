@@ -13,6 +13,8 @@
     loaded: false,
     selectedId: null,
     drawerFocus: null,
+    sortKey: "name",
+    sortDir: 1,
   };
   var selection = T && T.createSelectionStore ? T.createSelectionStore() : null;
 
@@ -235,7 +237,7 @@
 
   function filterHotels() {
     var f = appliedFilters();
-    return state.hotels.filter(function (h) {
+    var filtered = state.hotels.filter(function (h) {
       if (f.status) {
         if (f.status === "BASELINE_READY") {
           if (h.auditStatus !== "BASELINE_READY" && h.auditStatus !== "NOT_STARTED") {
@@ -260,6 +262,29 @@
           .indexOf(f.q) >= 0
       );
     });
+    if (!T || typeof T.sortRows !== "function") return filtered;
+    var key = state.sortKey;
+    var type =
+      key === "recommendationCount"
+        ? "number"
+        : key === "pdfAvailability" || key === "customerApproval"
+          ? "number"
+          : "string";
+    return T.sortRows(
+      filtered,
+      { key: key, dir: state.sortDir, type: type, tieBreak: "name" },
+      function (row, k) {
+        if (k === "pdfAvailability") return hasPdf(row) ? 1 : 0;
+        if (k === "customerApproval") return isCustomerApproved(row) ? 1 : 0;
+        if (k === "recommendationCount") {
+          return row.recommendationCount != null
+            ? row.recommendationCount
+            : row.acceptedRecommendationCount || 0;
+        }
+        if (k === "market") return row.market || "";
+        return row[k];
+      }
+    );
   }
 
   function computeSummary(hotels) {
@@ -728,6 +753,13 @@
     if (!body) return;
     renderSummary();
     var rows = filterHotels();
+    if (T && typeof T.paintSortState === "function") {
+      T.paintSortState(
+        document.querySelector("#avaTable thead"),
+        state.sortKey,
+        state.sortDir
+      );
+    }
     renderResultsRow(rows.length, state.hotels.length);
     if (selection) {
       selection.retain(rows.map(function (h) {
@@ -1912,6 +1944,33 @@
           }),
           selectPage.checked
         );
+        renderTable();
+      });
+    }
+
+    if (table) {
+      table.addEventListener("click", function (ev) {
+        var th = ev.target.closest("th[data-sort]");
+        if (!th || !table.contains(th)) return;
+        var key = th.getAttribute("data-sort");
+        if (state.sortKey === key) state.sortDir *= -1;
+        else {
+          state.sortKey = key;
+          state.sortDir = 1;
+        }
+        renderTable();
+      });
+      table.addEventListener("keydown", function (ev) {
+        if (ev.key !== "Enter" && ev.key !== " ") return;
+        var th = ev.target.closest("th[data-sort]");
+        if (!th) return;
+        ev.preventDefault();
+        var key = th.getAttribute("data-sort");
+        if (state.sortKey === key) state.sortDir *= -1;
+        else {
+          state.sortKey = key;
+          state.sortDir = 1;
+        }
         renderTable();
       });
     }
