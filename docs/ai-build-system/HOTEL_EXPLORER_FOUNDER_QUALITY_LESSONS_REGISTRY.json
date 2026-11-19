@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.24",
+  "version": "hotel-explorer-founder-quality-lessons-v1.25",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -15,6 +15,7 @@
     "test:he-loading-ux-toast-v1",
     "test:he-public-contact-channel-hierarchy-v1",
     "test:he-5-0-full-e2e-pilot-v1",
+    "test:he-5-0-autonomous-reconciliation-v1",
     "test:he-mullen-pilot-hpc-population-v1"
   ],
   "referenceHotels": {
@@ -386,6 +387,15 @@
       "sharedComponent": "lib/hotel-intelligence/he-5-0-full-e2e/*; hpc-population/mullen-pilot-*; research-engine-v1 budget ledgers; HE_HPC_POPULATION_WORKFLOW_V1.md",
       "regressionTest": "he_5_0_full_e2e_pilot_gates",
       "browserEvidence": "reports/hotel-explorer/he-5-0-pilot/HE50-FOUNDER-COMPLETION-REPORT.md"
+    },
+    {
+      "id": "HE-QL-040",
+      "originalProblem": "Research engine stopped for founder review on routine ambiguities (room-count conflicts, property-name near-neighbors, renovation date pairs, missing identity fields) instead of investigating them",
+      "rootCause": "Reconciliation treated ordinary factual disagreements as founder gates; no autonomous detect→research→adjudicate→continue loop with resolution classes and budget-aware escalation",
+      "approvedStandard": "Autonomous reconciliation supervisor investigates conflicts with reuse→free→bounded paid (within authorized ceiling); resolve only when evidence supports; preserve dual historical events; escalate REQUIRES_FOUNDER_DECISION only for governance/authorization; continue remaining gaps when one field stays unresolved; STOP only before production Airtable apply / budget / schema / subscription",
+      "sharedComponent": "lib/hotel-intelligence/he-5-0-full-e2e/autonomous-reconciliation-v1.js; pilot-budget-ledger.js; mutation-reconciliation-v1.js",
+      "regressionTest": "he_5_0_autonomous_reconciliation_gates",
+      "browserEvidence": "reports/hotel-explorer/he-5-0-pilot/HE50-AUTONOMOUS-RECONCILIATION-V1.md"
     }
   ]
 }

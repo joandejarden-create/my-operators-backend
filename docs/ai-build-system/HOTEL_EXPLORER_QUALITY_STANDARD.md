@@ -1,9 +1,9 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.24`  
+**Version:** `hotel-explorer-quality-standard-v1.25`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
-**Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1` · `npm run test:he-hotel-news-from-market-alerts-v1` · `npm run test:he-guest-sentiment-brand-operator-v1` · `npm run test:he-market-alerts-closeout-v1` · `npm run test:he-async-section-loading-v1` · `npm run test:he-contact-intelligence-directory-ux-v1` · `npm run test:he-loading-ux-toast-v1` · `npm run test:he-5-0-full-e2e-pilot-v1`
+**Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1` · `npm run test:he-hotel-news-from-market-alerts-v1` · `npm run test:he-guest-sentiment-brand-operator-v1` · `npm run test:he-market-alerts-closeout-v1` · `npm run test:he-async-section-loading-v1` · `npm run test:he-contact-intelligence-directory-ux-v1` · `npm run test:he-loading-ux-toast-v1` · `npm run test:he-5-0-full-e2e-pilot-v1` · `npm run test:he-5-0-autonomous-reconciliation-v1`
 
 ## Purpose
 
@@ -260,6 +260,17 @@ Reusable path: `AUDIT → REUSE → RESEARCH → VERIFY → DEDUPLICATE → MAP 
 - Surfe remains click-only / session-only / nonpersistent.
 - Production Airtable apply requires a **separate** founder authorization after dry-run review.
 - Second run with no new evidence must not duplicate records, overwrite verified facts, or re-spend unnecessarily.
+
+### Autonomous reconciliation (HE-QL-040)
+
+When the engine detects uncertain, incomplete, or conflicting hotel intelligence, it must **investigate autonomously** (reuse → free authoritative sources → optional bounded paid within the authorized ceiling), adjudicate with evidence rules, and continue other gaps.
+
+- Do **not** stop the research batch merely to ask the founder about routine room-count conflicts, near-neighbor hotel names, dual renovation milestones, or missing identity fields.
+- Resolve only when evidence supports a defensible result; preserve historical vs current context and contradictory sources.
+- Classification vocabulary: `RESOLVED_VERIFIED` · `RESOLVED_WITH_HISTORICAL_CONTEXT` · `RESOLVED_NOT_APPLICABLE` · `UNRESOLVED_CONFLICT` · `UNRESOLVED_INSUFFICIENT_EVIDENCE` · `UNRESOLVED_PROVIDER_RESTRICTED` · `UNRESOLVED_BUDGET_LIMIT` · `REQUIRES_FOUNDER_DECISION`.
+- Use `REQUIRES_FOUNDER_DECISION` only for genuine business / authorization / governance decisions — not ordinary factual disagreements.
+- Runner: `npm run he:5-0-autonomous-reconciliation` · gate: `npm run test:he-5-0-autonomous-reconciliation-v1`.
+- **STOP** only before production Airtable apply, unauthorized schema changes, spend beyond the authorized ceiling, new subscriptions, or production deployment.
 
 ## Safety
 

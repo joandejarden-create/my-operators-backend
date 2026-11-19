@@ -2,7 +2,7 @@
   "contract": "HE_5_0_AIRTABLE_DRY_RUN_PACKAGE_V1",
   "version": "he-5-0-full-e2e-pilot-v1",
   "packageRevision": "founder-pre-apply-reconciliation-v1",
-  "generatedAt": "2026-11-19T23:05:38.147Z",
+  "generatedAt": "2026-11-19T23:10:03.522Z",
   "applyGate": {
     "applyAuthorized": false,
     "airtableWritesAllowed": false,
@@ -11,7 +11,7 @@
     "stopMessage": "STOP — AWAITING SEPARATE FOUNDER AUTHORIZATION FOR PRODUCTION AIRTABLE APPLY."
   },
   "cohortSize": 8,
-  "mutationCount": 11,
+  "mutationCount": 12,
   "mutations": [
     {
       "applyAuthorized": false,
@@ -180,12 +180,12 @@
         "website": "https://www.hilton.com/en/hotels/phlnsgi-hilton-garden-inn-newtown-square-radnor/",
         "phone": "+1 484-420-7500",
         "rooms": 138,
-        "roomsConfidence": "MEDIUM",
+        "roomsConfidence": "HIGH",
         "status": "Open",
         "operator": null,
         "mullenAssociation": "PROPOSED_PORTFOLIO_CANDIDATE_NOT_VERIFIED_HOLDING"
       },
-      "supportingSource": "https://www.hilton.com/en/hotels/phlnsgi-hilton-garden-inn-newtown-square-radnor/ | https://newtownsquarehotels.com/hotels/hilton-garden-inn/",
+      "supportingSource": "https://www.hilton.com/en/hotels/phlnsgi-hilton-garden-inn-newtown-square-radnor/ | https://www.hilton.com/en-gb/hotels/phlnsgi-hilton-garden-inn-newtown-square-radnor/events/ | https://www.cvent.com/venues/newtown-square/hotel/hilton-garden-inn-newtown-square-radnor/venue-80f98513-8db5-4046-a20c-7881d33eb20a | https://newtownsquarehotels.com/hotels/hilton-garden-inn/",
       "verificationStatus": "MIN_IDENTITY_FREE_VERIFIED",
       "reason": "NEW_HPC after collision search confirmed absent; create only after founder approval",
       "founderRecommendation": "READY"
@@ -223,7 +223,7 @@
       "conflictHandling": "PROTECT_NEWER_VERIFIED",
       "duplicateCheck": "REQUIRED",
       "researchDate": "2026-11-19",
-      "id": "M-UPD-secrets_cap_cana",
+      "id": "M-UPD-secrets_cap_cana-identity",
       "destinationTable": "tbl9aY5ijiuIzzWam",
       "destinationLabel": "Hotel Property Census",
       "action": "NO_OP",
@@ -237,10 +237,30 @@
         "dreamsNeighborHpcId": "reclS16CMUS6eJgpC"
       },
       "proposedValue": null,
-      "supportingSource": "live HPC read recd7XAM6tLjzQhaI vs Dreams reclS16CMUS6eJgpC | https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana-resort-spa/",
+      "supportingSource": "live HPC read recd7XAM6tLjzQhaI vs Dreams reclS16CMUS6eJgpC | https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana-resort-spa/accommodations/rooms-suites/ | https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana-resort-spa/events/meetings-incentives/",
       "verificationStatus": "IDENTITY_VERIFIED_NO_WRITE",
-      "reason": "Secrets Cap Cana HPC already correct and distinct from Dreams — REJECT field UPDATE",
+      "reason": "Secrets Cap Cana HPC already correct and distinct from Dreams",
       "founderRecommendation": "REJECT"
+    },
+    {
+      "applyAuthorized": false,
+      "baseId": "appCCUsuGsE1ifoLk",
+      "conflictHandling": "PROTECT_NEWER_VERIFIED",
+      "duplicateCheck": "REQUIRED",
+      "researchDate": "2026-11-19",
+      "id": "M-UPD-secrets_cap_cana-rooms",
+      "destinationTable": "tbl9aY5ijiuIzzWam",
+      "destinationLabel": "Hotel Property Census",
+      "action": "UPDATE",
+      "canonicalEntityId": "recd7XAM6tLjzQhaI",
+      "field": "Rooms / Keys",
+      "existingValue": "empty_or_unenriched",
+      "proposedValue": 457,
+      "supportingSource": "live HPC read recd7XAM6tLjzQhaI vs Dreams reclS16CMUS6eJgpC | https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana-resort-spa/accommodations/rooms-suites/ | https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana-resort-spa/events/meetings-incentives/",
+      "verificationStatus": "VERIFIED_FREE_AUTONOMOUS",
+      "reason": "Autonomous free pass: official 457 suites after identity ≠ Dreams verified",
+      "founderRecommendation": "READY",
+      "roomsConfidence": "HIGH"
     },
     {
       "applyAuthorized": false,
@@ -304,7 +324,7 @@
     }
   ],
   "reconciliationSummary": {
-    "READY": 9,
+    "READY": 10,
     "HOLD": 1,
     "REJECT": 1,
     "readyIds": [
@@ -315,6 +335,7 @@
       "M-NEW-carton_house_fairmont",
       "M-NEW-hgi_newtown_square_radnor",
       "M-UPD-jw_marriott_costa_elena",
+      "M-UPD-secrets_cap_cana-rooms",
       "M-PROMOTE-secrets_papagayo",
       "M-NEW-secrets_st_lucia"
     ],
@@ -322,7 +343,7 @@
       "M-BETH-REF-STAKEHOLDER"
     ],
     "rejectIds": [
-      "M-UPD-secrets_cap_cana"
+      "M-UPD-secrets_cap_cana-identity"
     ]
   },
   "blockedOperations": [

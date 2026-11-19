@@ -54,7 +54,9 @@ Until founder-approved apply + re-read: at most `PERSISTENCE_DESIGNED` / staged 
 
 ```bash
 npm run he:5-0-full-e2e-pilot
+npm run he:5-0-autonomous-reconciliation
 npm run test:he-5-0-full-e2e-pilot-v1
+npm run test:he-5-0-autonomous-reconciliation-v1
 ```
 
-Reports: `reports/hotel-explorer/he-5-0-pilot/`. **STOP** at founder Airtable apply gate (`applyAuthorized: false`).
+Reports: `reports/hotel-explorer/he-5-0-pilot/`. Autonomous reconciliation (HE-QL-040) investigates routine conflicts without founder prompts. **STOP** only before production Airtable apply (`applyAuthorized: false`).

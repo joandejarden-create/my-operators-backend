@@ -7,9 +7,9 @@
     "productionDeploy": false,
     "stopMessage": "STOP — AWAITING SEPARATE FOUNDER AUTHORIZATION FOR PRODUCTION AIRTABLE APPLY."
   },
-  "totalOps": 11,
+  "totalOps": 12,
   "counts": {
-    "READY": 9,
+    "READY": 10,
     "HOLD": 1,
     "REJECT": 1
   },
@@ -21,6 +21,7 @@
     "M-NEW-carton_house_fairmont",
     "M-NEW-hgi_newtown_square_radnor",
     "M-UPD-jw_marriott_costa_elena",
+    "M-UPD-secrets_cap_cana-rooms",
     "M-PROMOTE-secrets_papagayo",
     "M-NEW-secrets_st_lucia"
   ],
@@ -28,7 +29,7 @@
     "M-BETH-REF-STAKEHOLDER"
   ],
   "rejectIds": [
-    "M-UPD-secrets_cap_cana"
+    "M-UPD-secrets_cap_cana-identity"
   ],
   "conflictResolutions": {
     "ac_rooms": {
@@ -244,16 +245,15 @@
         "name": "Hilton Garden Inn Newtown Square Radnor",
         "address": "3743 West Chester Pike, Newtown Square, PA 19073",
         "rooms": 138,
-        "roomsConfidence": "MEDIUM",
-        "roomsNote": "Ellis Preserve listing — Hilton fact sheet not independently scraped this pass",
+        "roomsConfidence": "HIGH",
+        "roomsNote": "Autonomous free pass: Cvent + Hilton events + Expedia + Ellis + IMC",
         "mullenAssociation": "PROPOSED_PORTFOLIO_CANDIDATE_NOT_VERIFIED_HOLDING"
       },
-      "evidence": "hilton.com property page + Ellis Preserve",
-      "conflictStatus": "ROOMS_MEDIUM_CONFIDENCE",
+      "evidence": "Cvent 138 + Hilton events 138 + Expedia 138 + Ellis + IMC",
+      "conflictStatus": "ROOMS_RESOLVED_138_HIGH",
       "duplicateCheck": "PASS — live collision absent",
-      "expectedHeDisplay": "Min identity; rooms may show Not yet verified if steward strips MEDIUM at apply",
-      "recommendation": "READY",
-      "applyNote": "Optional: omit rooms on first CREATE if founder wants HIGH-only keys"
+      "expectedHeDisplay": "Min identity with rooms 138",
+      "recommendation": "READY"
     },
     {
       "op": 8,
@@ -282,10 +282,10 @@
     },
     {
       "op": 9,
-      "id": "M-UPD-secrets_cap_cana",
+      "id": "M-UPD-secrets_cap_cana-identity",
       "hotel": "Secrets Cap Cana Resort & Spa",
       "canonicalRecord": "recd7XAM6tLjzQhaI",
-      "target": "HPC (no field change required)",
+      "target": "HPC identity fields",
       "existingValue": {
         "name": "Secrets Cap Cana Resort & Spa",
         "brand": "Secrets (Hyatt Inclusive Collection)",
@@ -316,9 +316,23 @@
       },
       "conflictStatus": "IDENTITY_VERIFIED_NO_WRITE_NEEDED",
       "duplicateCheck": "PASS vs Dreams; steward HOLD lowercase alias recFP9eslejVXbyuR separately",
-      "expectedHeDisplay": "No change — already correct Secrets identity in HE when HPC linked",
+      "expectedHeDisplay": "No identity change",
       "recommendation": "REJECT",
-      "rejectReason": "Identity confirmation complete; empty rooms/website UPDATE adds no verified value"
+      "rejectReason": "Identity confirmation complete — do not rewrite correct name/brand/coords"
+    },
+    {
+      "op": 9.1,
+      "id": "M-UPD-secrets_cap_cana-rooms",
+      "hotel": "Secrets Cap Cana Resort & Spa",
+      "canonicalRecord": "recd7XAM6tLjzQhaI",
+      "target": "HPC Rooms / Keys",
+      "existingValue": "empty_or_unenriched",
+      "proposedValue": 457,
+      "evidence": "Official Hyatt Inclusive rooms + meetings pages: 457 suites; census prior hit aligned",
+      "conflictStatus": "ROOMS_RESOLVED_AUTONOMOUS",
+      "duplicateCheck": "PASS — update matched Secrets HPC only",
+      "expectedHeDisplay": "Overview rooms = 457 after apply",
+      "recommendation": "READY"
     },
     {
       "op": 10,
