@@ -7,7 +7,8 @@
     "Only the Integration Controller may edit this file (dedicated tiny PR).",
     "Product chats must not rewrite this registry.",
     "Product home branches ws/hotel-explorer, ws/adp, ws/gdi track origin/main tips; task work uses feat|fix|docs|research|exec branches.",
-    "After each PR merge: npm run dealality:post-merge-sync (return affected product home, FF origin/main, peer-fetch idle homes). Never auto-switch active tasks; preserve dirty WIP; no extra worktrees for ordinary sync."
+    "After each PR merge: npm run dealality:post-merge-sync (return affected product home, FF origin/main, peer-fetch idle homes). Never auto-switch active tasks; preserve dirty WIP; no extra worktrees for ordinary sync.",
+    "Universal completion: npm run dealality:pr-completion-report (home sync + CLEAN_WORKTREE|PRESERVED_DIRTY|BLOCKED). Cross-workstream feature branches are fail-closed on mutations. See PR_COMPLETION_AND_WORKSPACE_OWNERSHIP.md."
   ],
   "workspaces": [
     {
@@ -98,15 +99,16 @@
       "safeRemovalEligibility": "founder_approved_after_clean_verify"
     },
     {
-      "id": "dev-os-radar-acceptance-gate-v1",
+      "id": "dev-os-pr-completion-ownership-v1",
       "stream": "integration",
-      "role": "Temporary governance worktree — Radar authenticated app acceptance gate",
+      "role": "Temporary governance worktree — universal PR completion + workspace ownership (reuses prior radar-gate path)",
       "path": "C:/Dev/dealality/wt-dev-os-radar-acceptance-gate-v1",
-      "expectedBranchPattern": "^chore/dev-os-radar-authenticated-acceptance-gate-v1$",
+      "expectedBranchPattern": "^chore/dev-os-pr-completion-ownership-v1$",
       "lifecycle": "temporary",
       "owner": "integration",
       "status": "active",
-      "safeRemovalEligibility": "founder_approved_after_pr_merge_and_clean_verify"
+      "safeRemovalEligibility": "founder_approved_after_pr_merge_and_clean_verify",
+      "statusNotes": "Prior radar acceptance gate PR #399 merged; same path now hosts chore/dev-os-pr-completion-ownership-v1."
     }
   ],
   "protectedRefs": [

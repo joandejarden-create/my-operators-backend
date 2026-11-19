@@ -28,10 +28,11 @@ On start:
 2. Run: git branch --show-current && git rev-parse --short HEAD && git status -sb
 3. Run: npm run dealality:git-preflight -- --op status-check --stream he
 4. If idle on home and behind origin/main: npm run dealality:post-merge-sync -- --mode status (Integration applies sync after merges)
-5. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline + dealality-radar-authenticated-acceptance-gate
+5. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline + dealality-radar-authenticated-acceptance-gate + dealality-pr-completion-workspace-ownership
 
-Workflow: one task → branch from latest origin/main inside this workspace → implement → targeted tests → authenticated /app#/opportunity-radar acceptance (PASS/FAIL/BLOCKED) → commit → push → PR → STOP for Integration Controller merge + post-merge sync.
+Workflow: one task → branch from latest origin/main inside this workspace → implement → targeted tests → authenticated /app#/opportunity-radar acceptance (PASS/FAIL/BLOCKED) → commit → push → PR → STOP for Integration Controller merge + post-merge sync + pr-completion-report.
 For Radar visibility/filter/search/map/auth/HE-navigation/HPC changes: authenticated acceptance at http://localhost:8080/app#/opportunity-radar is mandatory. CI/unit/API/demo alone cannot PASS. See docs/ai-build-system/RADAR_AUTHENTICATED_APP_ACCEPTANCE_GATE.md.
+Merge alone is not complete — restore ws/hotel-explorer, sync origin/main, report COMPLETE — MERGED_AND_HOME_SYNCED — CLEAN_WORKTREE|PRESERVED_DIRTY (or BLOCKED — …). See docs/ai-build-system/PR_COMPLETION_AND_WORKSPACE_OWNERSHIP.md.
 Do not create unregistered worktrees. Do not force-push. Do not merge to main. Do not touch the dirty primary checkout.
 No Airtable writes, paid research, or deploy without founder authorization.
 Shared files (package.json, radar HE surfaces, registry): coordinate with Integration Controller.
@@ -58,11 +59,12 @@ On start:
 3. Run: npm run dealality:git-preflight -- --op status-check --stream adp
 4. If idle on home and behind origin/main: npm run dealality:post-merge-sync -- --mode status (Integration applies sync after merges)
 5. Confirm no prior ADP PR remains unresolved before starting a new task
-6. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline
+6. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline + dealality-pr-completion-workspace-ownership
 
-Workflow: one task → short-lived branch from latest origin/main inside this workspace → implement → targeted tests → commit → push → PR → STOP for Integration Controller merge + post-merge sync.
-After founder-approved merge is confirmed on GitHub, ADP must restore ws/adp to origin/main and verify a clean home before the next task. Do not remain on a completed feature/fix branch.
-If merge is approved but not yet on main, report BLOCKED — AWAITING INTEGRATION CONTROLLER MERGE (cycle not closed).
+Workflow: one task → short-lived branch from latest origin/main inside this workspace → implement → targeted tests → commit → push → PR → STOP for Integration Controller merge + post-merge sync + pr-completion-report.
+After founder-approved merge is confirmed on GitHub, ADP must restore ws/adp to origin/main and verify CLEAN_WORKTREE or explicitly report PRESERVED_DIRTY before the next task. Do not remain on a completed feature/fix branch.
+If merge is approved but not yet on main, report AWAITING_INTEGRATION_CONTROLLER (cycle not closed).
+Do not checkout GDI/HE feature branches in this workspace (BLOCKED — CROSS_WORKSTREAM_BRANCH).
 Do not create unregistered worktrees. Do not force-push. Do not merge to main from ADP. Do not import primary dirty ADP paths until founder-approved preservation transfer.
 No Airtable writes, paid research, or deploy without founder authorization.
 ```
@@ -83,16 +85,18 @@ On start:
 2. Run: git branch --show-current && git rev-parse --short HEAD && git status -sb
 3. Run: npm run dealality:git-preflight -- --op status-check --stream gdi
 4. If idle on home and behind origin/main: npm run dealality:post-merge-sync -- --mode status (Integration applies sync after merges)
-5. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline
+5. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline + dealality-pr-completion-workspace-ownership
 
-Workflow: one task → branch from latest origin/main inside this workspace → implement → targeted tests → commit → push → PR → STOP for Integration Controller merge + post-merge sync.
+Workflow: one task → branch from latest origin/main inside this workspace → implement → targeted tests → commit → push → PR → STOP for Integration Controller merge + post-merge sync + pr-completion-report.
 Do not create unregistered worktrees. Do not force-push. Do not merge to main. Do not copy dirty primary GDI WIP until founder-approved preservation execution.
+Do not checkout ADP/HE feature branches here (BLOCKED — CROSS_WORKSTREAM_BRANCH).
 No Airtable writes, paid research, or deploy without founder authorization.
 
 Permanent cycle completion (GDI):
 - Opening a PR is NOT complete. Do not claim full integration until merge + ws/gdi sync are verified.
 - If PR is still open: report AWAITING_INTEGRATION_CONTROLLER and STOP.
 - After Integration Controller merges: restore C:\Dev\dealality\ws-gdi to ws/gdi, FF origin/main, verify HEAD == origin/main, retire the temporary feature branch when safe, SetActiveBranch to ws/gdi when supported.
+- Final status must be COMPLETE — MERGED_AND_HOME_SYNCED — CLEAN_WORKTREE|PRESERVED_DIRTY (or BLOCKED — …). Run: npm run dealality:pr-completion-report -- --stream gdi --pr <n>
 - Final report must include PR number/status, CI, merge SHA (if any), workspace path, actual Git branch, HEAD, origin/main, HEAD==origin/main, branch cleanup, preserved dirty/untracked, and Cursor chip note if UI disagrees with Git.
 - End with exactly one of: COMPLETE — MERGED_AND_HOME_SYNCED | AWAITING_INTEGRATION_CONTROLLER | BLOCKED — WORKSPACE_RESTORATION_REQUIRED
 - Trust git in ws-gdi over Cursor multi-branch UI lists; do not touch ADP/HE workspaces to fix a chip.
