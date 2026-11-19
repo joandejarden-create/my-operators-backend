@@ -58,7 +58,7 @@ Report final state with one of:
 ## Workspace ownership (permanent)
 
 Authoritative map: `docs/ai-build-system/worktree-registry.json`.  
-Enforcement: `npm run dealality:git-preflight` + `lib/dealality-dev-os/workspace-ownership-guard-v1.js` (optional `.githooks/post-checkout`).
+Enforcement: `npm run dealality:git-preflight` + `lib/dealality-dev-os/workspace-ownership-guard-v1.js` (optional `.githooks/post-checkout`). For `switch`/`checkout`, require `--target-ref <branch>` (alias `--to-branch`); unknown flags and missing targets exit nonzero so the CLI cannot silently authorize a prohibited mutation.
 
 - Product homes must not check out another stream’s feature branches (e.g. `ws-gdi` must not check out `fix/adp-*`).
 - Unresolved merge/rebase/orphan UU index stages fail closed.
