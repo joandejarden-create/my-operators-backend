@@ -197,7 +197,7 @@ Attribution must still use: `REASONING_ONLY` | `RETRIEVAL_STRATEGY` | `PROVIDER_
 
 | Wave | Auth | Spend | Purpose |
 |------|------|-------|---------|
-| **Wave E0** | None | `$0` | Offline / mock-Exa parity smoke — selection records + gates only |
+| **Wave E0** | None | `$0` | Mock-Exa parity harness (`gdi-ai-agent-exa-parity-e0-harness-v1`) — validity / E1 readiness only |
 | **Wave E1** | Separate founder auth | Bounded paid Exa | Eight-case Conclusion A paired run |
 | **Wave E2** | Separate | TBD | Optional paid follow-up after E1 ITERATE/ADOPT |
 
