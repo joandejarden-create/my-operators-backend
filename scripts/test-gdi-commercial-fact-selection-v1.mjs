@@ -54,9 +54,11 @@ function uniqueSectionSources(after, keys, opportunityTitle) {
   return rows;
 }
 
-function sourcesButtonHtml(rows) {
+function sourcesButtonHtml(rows, { expanded = false } = {}) {
   if (!rows.length) return "";
-  return `<details class="gdi-inline-details gdi-section-sources" open><summary>Sources (${rows.length})</summary><ul class="gdi-evidence-default">${rows
+  // Customer default: collapsed (no open attribute) — matches gdi-inline-details
+  const openAttr = expanded ? " open" : "";
+  return `<details class="gdi-inline-details gdi-section-sources"${openAttr}><summary>Sources (${rows.length})</summary><ul class="gdi-evidence-default">${rows
     .map(
       (s) =>
         `<li class="gdi-evidence-item"><a href="${esc(s.url)}">${esc(s.title || s.url)}</a></li>`,
@@ -64,15 +66,11 @@ function sourcesButtonHtml(rows) {
     .join("")}</ul></details>`;
 }
 
-function renderDrawerHtml(after, { expanded = true } = {}) {
+function renderDrawerHtml(after, { expanded = false } = {}) {
   const oppTitle = after.title || after.displayTitle || "";
   const sections = DRAWER_SECTION_MAP.map((sec) => {
     const rows = uniqueSectionSources(after, sec.keys, oppTitle);
-    const btn = expanded
-      ? sourcesButtonHtml(rows)
-      : rows.length
-        ? `<details class="gdi-inline-details gdi-section-sources"><summary>Sources (${rows.length})</summary></details>`
-        : "";
+    const btn = sourcesButtonHtml(rows, { expanded });
     assert.ok(
       !btn || (btn.match(/<summary>Sources \(/g) || []).length === 1,
       `${sec.id} must have at most one Sources button`,
@@ -92,7 +90,6 @@ function renderDrawerHtml(after, { expanded = true } = {}) {
   const support = (after.supportingResearch || [])
     .map((r) => `<li>${esc(r.claim)}${r.hotelPrivate ? " <em>(hotel-private)</em>" : ""}</li>`)
     .join("");
-  const supportSources = uniqueSectionSources(after, ["supporting_research"], oppTitle);
 
   return `<article class="gdi-drawer-render" data-opportunity="${esc(after.id || after.opportunityId || "")}">
   <section data-section-id="opportunity_overview"><h3>Opportunity overview</h3><p>${esc(after.title || "")}</p></section>
@@ -127,7 +124,7 @@ ${sections.join("\n")}
       : "<p class=\"muted\">No source URLs attached yet.</p>"}
     ${
       support
-        ? `<details class="gdi-research-detail-expand" open><summary>Supporting Research (${after.supportingResearch.length})</summary><ul>${support}</ul>${sourcesButtonHtml(supportSources)}</details>`
+        ? `<details class="gdi-research-detail-expand"><summary>Supporting Research (${after.supportingResearch.length})</summary><ul>${support}</ul></details>`
         : ""
     }
   </section>
@@ -202,6 +199,19 @@ for (const sample of index.samples) {
     const housingMentions = (after.whatIsHappening.match(/housing bureau/gi) || []).length;
     assert.ok(housingMentions <= 1, "housing bureau stated at most once");
     assert.ok(/Nicole Sampson/i.test(after.recommendedNextStep + after.whatIsHappening));
+    assert.ok(
+      !/no direct route is published/i.test(after.recommendedNextStep),
+      "must not claim no contact route when organizational route exists",
+    );
+    assert.ok(
+      /convention@pdac\.ca/i.test(after.recommendedNextStep),
+      "published organizational route must remain visible",
+    );
+    const buyer = after.sectionCitations?.buyer_contacts || [];
+    assert.ok(
+      buyer.every((s) => /staff|about-pdac/i.test(s.url)),
+      "Who to contact Sources must be contact pages, not unrelated lodging pages",
+    );
   }
 
   if (sample.label === "nice") {
@@ -260,10 +270,19 @@ for (const sample of index.samples) {
   );
   assert.equal(hist.destination, "OMIT_UNSUPPORTED");
 
-  const drawerHtml = renderDrawerHtml(after, { expanded: true });
+  const drawerHtml = renderDrawerHtml(after, { expanded: false });
+  const drawerHtmlExpanded = renderDrawerHtml(after, { expanded: true });
   assertNoCustomerLeakage(drawerHtml);
   assert.ok(/Sources \(\d+\)/.test(drawerHtml), `${sample.label} must show Sources (N)`);
   assert.equal((drawerHtml.match(/<h3>All Sources<\/h3>/g) || []).length, 0);
+  assert.ok(
+    !/<details class="gdi-inline-details gdi-section-sources" open>/.test(drawerHtml),
+    "Sources controls collapsed by default",
+  );
+  assert.ok(
+    !/Supporting Research[\s\S]{0,400}Sources \(/i.test(drawerHtml),
+    "Supporting Research must not nest a duplicate Sources block",
+  );
 
   rows.push({
     label: sample.label,
@@ -299,7 +318,7 @@ for (const sample of index.samples) {
     persistence: after.factSelectionV1.persistence,
     archivedSources: catalog.archivedSources || [],
     drawerHtml,
-    drawerHtmlCollapsed: renderDrawerHtml(after, { expanded: false }),
+    drawerHtmlExpanded,
   });
 }
 
@@ -359,8 +378,11 @@ ${demoLabels
       `What is happening\n> ${r.beforeBrief.whatIsHappening}\n\n[visible citation lists / All Sources — removed]`,
     )}</pre>
   </div>
-  <div class="panel"><h2>After (Sources buttons expanded)</h2>
+  <div class="panel"><h2>After — default collapsed</h2>
     ${r.drawerHtml}
+  </div>
+  <div class="panel"><h2>After — Sources expanded (inspection)</h2>
+    ${r.drawerHtmlExpanded}
   </div>
 </div>`;
   })

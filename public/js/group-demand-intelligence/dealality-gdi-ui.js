@@ -9331,7 +9331,11 @@
     );
   }
 
-  /** Supporting Research claims inside existing Supporting evidence — no raw URL spam. */
+  /**
+   * Supporting Research claims inside existing Supporting evidence.
+   * Claims only — sources already appear via section Sources buttons /
+   * Supporting evidence list (avoid duplicate source blocks).
+   */
   function supportingResearchInEvidenceHtml(o) {
     var rows = Array.isArray(o && o.supportingResearch)
       ? o.supportingResearch
@@ -9356,9 +9360,7 @@
       ")</summary>" +
       '<div class="gdi-research-detail-body"><ul>' +
       items.join("") +
-      "</ul>" +
-      sectionSourcesButtonHtml(o, "supporting_research") +
-      "</div></details>"
+      "</ul></div></details>"
     );
   }
 

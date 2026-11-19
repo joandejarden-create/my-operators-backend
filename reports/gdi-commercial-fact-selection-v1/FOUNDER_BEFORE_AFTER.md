@@ -3,14 +3,30 @@
 **Amendment:** consolidated **Sources (N)** buttons (structural parity with existing drawer).  
 Fixed clock: 2026-11-19. Paid Exa: **0**. Airtable writes: **0**.
 
+## Final drawer parity (component vs origin/main)
+
+| Check | Result |
+|---|---|
+| Association section hierarchy equal to `origin/main` | **PASS** |
+| Section IDs | `opportunity_overview → what_is_happening → potential_business → why_this_hotel → why_act_now → facts_and_uncertainties → who_to_contact → recommended_next_step → supporting_evidence → hotel_validation` |
+| Visible citation lists | absent |
+| Prominent All Sources | absent |
+| Sources open by default | collapsed (PASS) |
+| Nested Sources under Supporting Research | absent (PASS) |
+| Authenticated browser smoke (`localhost:8080`) | **BLOCKED** — host not reachable; DOM/parity regressions used (not visual certification) |
+
+Persistence / read-back: **NOT_CERTIFIED** (slim URL rows only; full register via durableRef until Track A persistence certification).
+
 ## UI correction
 
 - Removed visible section citation lists and prominent All Sources block from the customer drawer.
-- One `Sources (N)` expandable control per applicable section (existing `gdi-inline-details` convention).
+- One `Sources (N)` expandable control per applicable section (existing `gdi-inline-details` convention), **collapsed by default**.
 - N = unique sources for that section (URL-deduped).
 - Descriptive titles derived from path when stored title was a generic opportunity name.
 - Supporting Research folded into existing Supporting evidence as expandable detail (no new top-level section).
 - Full `allSources` / `sourceIds` register retained in underlying data (not customer-primary).
+
+- PDAC next step: published `convention@pdac.ca` retained; does **not** claim that no contact route is published.
 
 ## Independent quality gates
 
@@ -39,7 +55,7 @@ See `RENDERED_DRAWER_SOURCES_BUTTONS.html` (PDAC / NICE / OWWA side-by-side befo
   <section data-section-id="opportunity_overview"><h3>Opportunity overview</h3><p>PDAC 2027 Convention</p></section>
   <section data-section-id="what_is_happening"><h3>What is happening</h3>
     <p>PDAC 2027 Convention (7–10 March 2027, MTCC) publishes Radisson Blu Toronto Downtown as an official hotel partner with promo rate CAD $449 and reference code for direct booking (cutoff 2 Feb 2027). Limited availability remains on select nights. PDAC does not use 3rd party housing bureaus; book directly with hotels</p>
-    <details class="gdi-inline-details gdi-section-sources" open><summary>Sources (2)</summary><ul class="gdi-evidence-default"><li class="gdi-evidence-item"><a href="https://pdac.ca/convention-2027/attending-2027/frequently-asked-questions-2027">Frequently Asked Questions 2027</a></li><li class="gdi-evidence-item"><a href="https://pdac.ca/convention-2027/attending-2027/accommodation-and-travel-2027/hotels-2027">Hotels 2027</a></li></ul></details>
+    <details class="gdi-inline-details gdi-section-sources"><summary>Sources (2)</summary><ul class="gdi-evidence-default"><li class="gdi-evidence-item"><a href="https://pdac.ca/convention-2027/attending-2027/frequently-asked-questions-2027">Frequently Asked Questions 2027</a></li><li class="gdi-evidence-item"><a href="https://pdac.ca/convention-2027/attending-2027/accommodation-and-travel-2027/hotels-2027">Hotels 2027</a></li></ul></details>
   </section>
   <section data-section-id="potential_business"><h3>Potential business for this hotel</h3>
     <p>Fill remaining partner-rate inventory; pursue exhibitor/company suites and overflow once partner nights sell; do not confuse with exclusive venue housing.</p>
@@ -47,23 +63,23 @@ See `RENDERED_DRAWER_SOURCES_BUTTONS.html` (PDAC / NICE / OWWA side-by-side befo
   </section>
   <section data-section-id="why_this_hotel"><h3>Why this hotel</h3>
     <p>157 guestrooms / ~11,000 sq ft / 20 meeting rooms on Queens Quay — realistic for mid-size groups, overflow, and meeting+rooms packages; not exclusive MTCC mega-housing. PDAC official partner list includes this hotel at 8-minute walk to MTCC.</p>
-    <details class="gdi-inline-details gdi-section-sources" open><summary>Sources (1)</summary><ul class="gdi-evidence-default"><li class="gdi-evidence-item"><a href="https://pdac.ca/convention-2027/attending-2027/accommodation-and-travel-2027/hotels-2027">Hotels 2027</a></li></ul></details>
+    <details class="gdi-inline-details gdi-section-sources"><summary>Sources (1)</summary><ul class="gdi-evidence-default"><li class="gdi-evidence-item"><a href="https://pdac.ca/convention-2027/attending-2027/accommodation-and-travel-2027/hotels-2027">Hotels 2027</a></li></ul></details>
   </section>
   <section data-section-id="why_act_now"><h3>Why act now</h3>
     <p>Partner promo cutoff 2 Feb 2027; limited availability already flagged on select nights.</p>
-    <details class="gdi-inline-details gdi-section-sources" open><summary>Sources (1)</summary><ul class="gdi-evidence-default"><li class="gdi-evidence-item"><a href="https://pdac.ca/convention-2027/attending-2027/accommodation-and-travel-2027/hotels-2027">Hotels 2027</a></li></ul></details>
+    <details class="gdi-inline-details gdi-section-sources"><summary>Sources (1)</summary><ul class="gdi-evidence-default"><li class="gdi-evidence-item"><a href="https://pdac.ca/convention-2027/attending-2027/accommodation-and-travel-2027/hotels-2027">Hotels 2027</a></li></ul></details>
   </section>
   <section data-section-id="who_to_contact"><h3>Who to contact</h3>
     <p>Nicole Sampson</p>
-    <details class="gdi-inline-details gdi-section-sources" open><summary>Sources (2)</summary><ul class="gdi-evidence-default"><li class="gdi-evidence-item"><a href="https://pdac.ca/convention-2027/attending-2027/accommodation-and-travel-2027/hotels-2027">Hotels 2027</a></li><li class="gdi-evidence-item"><a href="https://pdac.ca/about-pdac/staff">Staff</a></li></ul></details>
+    <details class="gdi-inline-details gdi-section-sources"><summary>Sources (1)</summary><ul class="gdi-evidence-default"><li class="gdi-evidence-item"><a href="https://pdac.ca/about-pdac/staff">Staff</a></li></ul></details>
   </section>
   <section data-section-id="recommended_next_step"><h3>Recommended next step</h3>
-    <p>Qualify before pursuing — no direct route is published; a Radisson Blu participant/partner listing already exists, so this is account management of an existing listing rather than new prospecting. Start with Nicole Sampson (Senior Director, Convention, Prospectors &amp; Developers Association of Canada) to review how the existing Radisson Blu listing for PDAC 2027 Convention (Mar 7–10, 2027) is performing (pickup, release dates, remaining inventory) and what extra rooms or meeting space the organizer needs. convention@pdac.ca is a published organizational route on staff materials</p>
-    <details class="gdi-inline-details gdi-section-sources" open><summary>Sources (2)</summary><ul class="gdi-evidence-default"><li class="gdi-evidence-item"><a href="https://pdac.ca/convention-2027/attending-2027/accommodation-and-travel-2027/hotels-2027">Hotels 2027</a></li><li class="gdi-evidence-item"><a href="https://pdac.ca/about-pdac/staff">Staff</a></li></ul></details>
+    <p>Qualify before pursuing — a Radisson Blu participant/partner listing already exists, so this is account management of an existing listing rather than new prospecting. Use the published organizational route convention@pdac.ca and start with Nicole Sampson (Senior Director, Convention, Prospectors &amp; Developers Association of Canada) to review how the existing Radisson Blu listing for PDAC 2027 Convention (Mar 7–10, 2027) is performing (pickup, release dates, remaining inventory) and what extra rooms or meeting space the organizer needs. A verified personal email for Nicole Sampson was not published on the staff materials reviewed.</p>
+    <details class="gdi-inline-details gdi-section-sources"><summary>Sources (2)</summary><ul class="gdi-evidence-default"><li class="gdi-evidence-item"><a href="https://pdac.ca/convention-2027/attending-2027/accommodation-and-travel-2027/hotels-2027">Hotels 2027</a></li><li class="gdi-evidence-item"><a href="https://pdac.ca/about-pdac/staff">Staff</a></li></ul></details>
   </section>
   <section data-section-id="supporting_evidence"><h3>Supporting evidence</h3>
     <ul><li><a href="https://pdac.ca/convention-2027/attending-2027/frequently-asked-questions-2027">Frequently Asked Questions 2027</a></li><li><a href="https://pdac.ca/convention-2027/attending-2027/key-dates-venue-info-2027">Key Dates Venue Info 2027</a></li><li><a href="https://pdac.ca/convention-2027/attending-2027/accommodation-and-travel-2027/hotels-2027">Hotels 2027</a></li><li><a href="https://pdac.ca/about-pdac/staff">Staff</a></li></ul>
-    <details class="gdi-research-detail-expand" open><summary>Supporting Research (1)</summary><ul><li>Limited availability remains on select nights</li></ul><details class="gdi-inline-details gdi-section-sources" open><summary>Sources (1)</summary><ul class="gdi-evidence-default"><li class="gdi-evidence-item"><a href="https://pdac.ca/convention-2027/attending-2027/accommodation-and-travel-2027/hotels-2027">Hotels 2027</a></li></ul></details></details>
+    <details class="gdi-research-detail-expand"><summary>Supporting Research (1)</summary><ul><li>Limited availability remains on select nights</li></ul></details>
   </section>
 </article>
 ```
@@ -81,7 +97,7 @@ See `RENDERED_DRAWER_SOURCES_BUTTONS.html` (PDAC / NICE / OWWA side-by-side befo
 - Potential business for this hotel: Sources (0) _(hidden — empty)_
 - Why this hotel: Sources (1) — Hotels 2027
 - Why act now: Sources (1) — Hotels 2027
-- Who to contact: Sources (2) — Hotels 2027; Staff
+- Who to contact: Sources (1) — Staff
 - Recommended next step: Sources (2) — Hotels 2027; Staff
 
 **Underlying register size:** 4 (not shown as primary All Sources list)
