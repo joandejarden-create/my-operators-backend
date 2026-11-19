@@ -122,6 +122,8 @@ regexes = [
   # Proven placeholders / metadata false positives.
   '''(?i)Authorization:\s*Bearer\s+YOUR_TOKEN''',
   '''(?i)const bannedKeys = \["email", "phone", "mobile", "linkedinUrl", "linkedInUrl", "providerPersonId", "emails", "phones"\];''',
+  # Boolean gate variable next to public LinkedIn URL field — not a LinkedIn OAuth client secret (PR #463).
+  '''linkedinUrl:\s*linkedinVerified\s*\?\s*linkedin\s*:\s*null''',
   '''https://v5\.airtableusercontent\.com/v3/u/''',
 
   # Public client-side IHG config captured from HTML.
