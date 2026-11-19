@@ -1,6 +1,6 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.7`  
+**Version:** `hotel-explorer-quality-standard-v1.8`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
 **Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1`
@@ -118,6 +118,15 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 - Sort and geographic inclusion always use source numeric units (sq ft / km). Unit toggle must not change which hotels qualify or mutate HPC/Airtable values.
 - Tab changes and hotel navigation must not reset session preferences.
 - Default Bethesda pilot: Sq. Ft. / mi when no prior preference.
+
+### 9b. Canonical HPC population (portfolio batches)
+
+- Reuse `HPC_LIVE_IDENTITY_COLLISION_V1`, `hpc-shared-upsert-v1`, and HI graph contracts — do not create a parallel hotel database.
+- Canonical base `appCCUsuGsE1ifoLk` / HPC `tbl9aY5ijiuIzzWam`; Hotel Census is legacy **read-only** for matching.
+- Identity outcomes: `MATCHED_HPC` | `MATCHED_HOTEL_CENSUS` | `MATCHED_EXISTING_ALIAS` | `NEW_HPC_CANDIDATE` | `AMBIGUOUS_MATCH` | `IDENTITY_UNRESOLVED`.
+- Default `applyAuthorized: false`. **STOP** before production Airtable apply until the dry-run CREATE/UPDATE packet is founder-approved.
+- Ownership intelligence lives in HI Organizations / Relationships / Evidence — not HPC free-text portfolio dumps.
+- Contract: `docs/ai-build-system/HE_HPC_POPULATION_WORKFLOW_V1.md`.
 
 ### 10. Submarket Snapshot & Area Hotels (HPC)
 

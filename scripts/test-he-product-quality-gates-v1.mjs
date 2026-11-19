@@ -78,15 +78,16 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.7");
-  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 18);
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.8");
+  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 19);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.7"
+    "hotel-explorer-quality-standard-v1.8"
   );
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-016"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-017"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-018"));
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-019"));
 });
 
 run("rejects_keyword_stuffed_and_id_leaking_descriptions", () => {
