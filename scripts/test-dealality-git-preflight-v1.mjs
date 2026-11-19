@@ -13,7 +13,11 @@ import {
   preflightFromArgv,
   runGitPreflight,
 } from "../lib/dealality-dev-os/git-preflight.js";
-import { loadWorktreeRegistry, normalizePath } from "../lib/dealality-dev-os/worktree-registry.js";
+import {
+  listRegisteredWorkspaces,
+  loadWorktreeRegistry,
+  normalizePath,
+} from "../lib/dealality-dev-os/worktree-registry.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -206,12 +210,12 @@ expectFail(
 
 // Positive: commit allowed in the current registered workspace stream
 {
-  const here = registry.workspaces.find(
+  const here = listRegisteredWorkspaces(registry).find(
     (w) => normalizePath(w.path) === normalizePath(ROOT),
   );
   expectOk("commit in current registered workspace with allow-dirty *", {
     op: "commit",
-    stream: here?.stream || "gdi",
+    stream: here?.stream || "integration",
     expectBranch: currentBranch,
     allowDirty: "*",
   });
