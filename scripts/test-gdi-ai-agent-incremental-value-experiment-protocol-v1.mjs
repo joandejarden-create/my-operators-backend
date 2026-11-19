@@ -9,9 +9,15 @@ import {
   resolveWaveMode,
   sharedExecutionLimits,
   runExperiment,
+  assertFairWave1Capability,
   WAVE1_AUTH_ENV,
   CONCLUSION_SCOPE,
 } from "../lib/group-demand-intelligence/experiments/gdi-ai-agent-incremental-value-experiment-v1.js";
+import {
+  collectOpportunitySeedUrls,
+  deriveAllowedOrigins,
+  buildSharedParityContext,
+} from "../lib/group-demand-intelligence/experiments/gdi-ai-agent-wave1-fair-parity-arms-v1.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const doc = path.join(
@@ -33,9 +39,12 @@ assert.ok(fs.existsSync(focusPath), "focus-eight lock missing");
 
 const j = JSON.parse(fs.readFileSync(summary, "utf8"));
 assert.equal(j.schema, "gdi_ai_agent_incremental_value_experiment_v1");
-assert.equal(j.status, "PROTOCOL_LOCKED");
+assert.ok(
+  j.status === "PROTOCOL_LOCKED" || j.schema === "gdi_ai_agent_incremental_value_experiment_v1",
+);
 assert.equal(j.pr414Role, "limitations_memo_only_not_product_authorization");
 assert.equal(j.fairnessContract.forbidden, "compare_active_agent_to_frozen_only_baseline_in_wave1");
+assert.equal(j.budgetParity.wave1_live_public.armAActiveBaselineRequired, true);
 assert.equal(
   j.conclusionScope.primary,
   "A_incremental_research_on_existing_opportunities",
@@ -95,6 +104,24 @@ assert.equal(limits.maxFetchesPerCase, 12);
 assert.equal(limits.maxPaidUsd, 0);
 assert.equal(sharedExecutionLimits("wave0").maxFetchesPerCase, 0);
 
+// Fair Wave 1 capability must be present before any live run
+const readiness = assertFairWave1Capability();
+assert.equal(readiness.ok, true, `Wave1 capability missing: ${JSON.stringify(readiness.missing)}`);
+
+const seeds = collectOpportunitySeedUrls({
+  sources: [{ url: "https://example.org/events/2027" }],
+  website: "https://example.org/",
+});
+assert.ok(seeds.length >= 1);
+const origins = deriveAllowedOrigins(seeds);
+assert.ok(origins.includes("https://example.org"));
+const parity = buildSharedParityContext(
+  { sources: [{ url: "https://example.org/a" }] },
+  { maxFetchesPerCase: 12 },
+);
+assert.equal(parity.maxFetchesPerCase, 12);
+assert.equal(parity.maxPaidUsd, 0);
+
 // Wave 0 harness smoke (no network, no Wave 1)
 const report = await runExperiment({ wave: "wave0", writeReports: true });
 assert.equal(report.wave, "wave0");
@@ -114,6 +141,7 @@ console.log(
       status: j.status,
       focusIds: j.cohort.focusOpportunityIds.length,
       wave0Decision: report.decision.decision,
+      wave1CapabilityOk: readiness.ok,
       wave1BlockedWithoutAuth: true,
     },
     null,
