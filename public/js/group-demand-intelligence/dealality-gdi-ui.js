@@ -9256,6 +9256,98 @@
    * Section 1 = structured Events overview grid (NOT Scaling narrative).
    * Sections 2–10 = same hierarchy / subsections as Scaling Companies gold.
    */
+  function sectionCitationsHtml(o, sectionKey) {
+    var cites =
+      (o && o.sectionCitations && o.sectionCitations[sectionKey]) || [];
+    if (!cites.length) return "";
+    return (
+      '<ul class="gdi-section-citations" data-section-citations="' +
+      esc(sectionKey) +
+      '">' +
+      cites
+        .map(function (s) {
+          var url = prose(s && s.url);
+          if (!url) return "";
+          var label = prose(s && s.title) || url;
+          return (
+            '<li class="gdi-section-citation">' +
+            '<a href="' +
+            esc(url) +
+            '" target="_blank" rel="noopener noreferrer">' +
+            esc(label) +
+            "</a></li>"
+          );
+        })
+        .filter(Boolean)
+        .join("") +
+      "</ul>"
+    );
+  }
+
+  function supportingResearchHtml(o) {
+    var rows = Array.isArray(o && o.supportingResearch)
+      ? o.supportingResearch
+      : [];
+    if (!rows.length) return "";
+    return (
+      '<section class="gdi-section gdi-section--supporting-research" data-section-id="supporting_research"><h3>Supporting Research</h3><ul class="gdi-supporting-research">' +
+      rows
+        .map(function (r) {
+          var claim = prose(r && r.claim);
+          if (!claim) return "";
+          var url = prose(r && (r.sourceUrl || (r.sourceUrls && r.sourceUrls[0])));
+          var priv = r && r.hotelPrivate ? ' <em class="gdi-muted">(hotel-private)</em>' : "";
+          return (
+            "<li>" +
+            esc(claim) +
+            priv +
+            (url
+              ? ' — <a href="' +
+                esc(url) +
+                '" target="_blank" rel="noopener noreferrer">' +
+                esc(url) +
+                "</a>"
+              : "") +
+            "</li>"
+          );
+        })
+        .filter(Boolean)
+        .join("") +
+      "</ul></section>"
+    );
+  }
+
+  function allSourcesRegisterHtml(o) {
+    var rows = Array.isArray(o && o.allSources) ? o.allSources : [];
+    if (!rows.length) return "";
+    return (
+      '<div class="gdi-all-sources-register" data-section-id="all_sources"><p><strong>All Sources</strong> (deduplicated register)</p><ul class="gdi-evidence-full">' +
+      rows
+        .map(function (s) {
+          var url = prose(s && s.url);
+          if (!url) return "";
+          var title = prose(s && s.title);
+          var bits = '<li class="gdi-evidence-item">';
+          if (title && title !== url) {
+            bits +=
+              '<div class="gdi-evidence-title"><strong>' +
+              esc(title) +
+              "</strong></div>";
+          }
+          bits +=
+            '<div><a href="' +
+            esc(url) +
+            '" target="_blank" rel="noopener noreferrer">' +
+            esc(url) +
+            "</a></div></li>";
+          return bits;
+        })
+        .filter(Boolean)
+        .join("") +
+      "</ul></div>"
+    );
+  }
+
   function associationConferenceEventsDetailHtml(o, audit, extras) {
     extras = extras || {};
     o = o || {};
@@ -9617,6 +9709,8 @@
           esc(whatS.activityDate) +
           "</p>"
         : "") +
+      sectionCitationsHtml(o, "demand_context") +
+      sectionCitationsHtml(o, "competitors_venues") +
       "</section>" +
       competitiveFutureCycleSectionsHtml(o) +
       '<section class="gdi-section" data-section-id="potential_business"><h3>Potential business for this hotel</h3><p>' +
@@ -9626,6 +9720,7 @@
         ? "<p><strong>Inferred (not verified volume)</strong></p>" +
           listHtml(cleanList(potS.inferred))
         : "") +
+      sectionCitationsHtml(o, "potential_hotel_business") +
       researchDetailExpandableHtml(o, "potentialBusinessForThisHotel", "Additional demand research", {
         esc: esc,
         prose: prose,
@@ -9635,6 +9730,7 @@
       "</section>" +
       '<section class="gdi-section gdi-section--matters" data-section-id="why_this_hotel"><h3>Why this hotel</h3>' +
       whyBits +
+      sectionCitationsHtml(o, "hotel_relevance") +
       researchDetailExpandableHtml(o, "whyThisHotel", "Additional hotel-fit research", {
         esc: esc,
         prose: prose,
@@ -9644,7 +9740,9 @@
       "</section>" +
       '<section class="gdi-section" data-section-id="why_act_now"><h3>Why act now</h3><p>' +
       esc(prose(nowS.body) || "—") +
-      "</p></section>" +
+      "</p>" +
+      sectionCitationsHtml(o, "commercial_timing") +
+      "</section>" +
       '<section class="gdi-section" data-section-id="facts_and_uncertainties"><h3>Established facts and uncertainties</h3>' +
       factsHtml +
       "</section>" +
@@ -9658,6 +9756,7 @@
           "</p>"
         : "") +
       whoShouldSalesContactHtml(o, extras.whoContactHtml) +
+      sectionCitationsHtml(o, "buyer_contacts") +
       researchDetailExpandableHtml(o, "buyerResearch", "Buyer research detail", {
         esc: esc,
         prose: prose,
@@ -9677,9 +9776,21 @@
       esc(prose(nextS.body) || "—") +
       "</p>" +
       qHtml +
+      sectionCitationsHtml(o, "recommended_next_step") +
       "</section>" +
-      '<section class="gdi-section gdi-section--evidence" data-section-id="supporting_evidence" data-gdi-tour-target="drawer-evidence"><h3>Supporting evidence</h3>' +
-      sourceListFromModel(evS.sources, evS.evidenceGroups, evS.sourcesFull) +
+      supportingResearchHtml(o) +
+'<section class="gdi-section gdi-section--evidence" data-section-id="supporting_evidence" data-gdi-tour-target="drawer-evidence"><h3>Supporting evidence</h3>' +sourceListFromModel(
+        evS.sources && evS.sources.length
+          ? evS.sources
+          : (o.allSources || []).map(function (s) {
+              return { url: s.url, title: s.title, publisher: s.publisher };
+            }),
+        evS.evidenceGroups,
+        evS.sourcesFull && evS.sourcesFull.length
+          ? evS.sourcesFull
+          : o.allSources || []
+      ) +
+      allSourcesRegisterHtml(o) +
       (evS.activityDate
         ? "<p><strong>Original activity date:</strong> " +
           esc(evS.activityDate) +
