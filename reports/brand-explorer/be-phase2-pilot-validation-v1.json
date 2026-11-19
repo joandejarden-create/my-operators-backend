@@ -1,10 +1,23 @@
 {
   "contract": "BE_PHASE2_PILOT_VALIDATION_V1",
   "hpcContract": "BE_HPC_FOOTPRINT_SUMMARY_V1",
-  "generatedAt": "2026-11-19T11:40:29.217Z",
+  "generatedAt": "2026-11-19T11:50:33.240Z",
   "mode": "staging_synthetic",
   "liveConfigured": false,
   "allowLiveRequested": false,
+  "scoringPolicy": {
+    "scored": [
+      "contractSchemaCompliance"
+    ],
+    "notValidatedUnlessProven": [
+      "profileFieldCompleteness",
+      "evidenceBasedFactualAccuracy",
+      "brandSpecificContentQuality",
+      "renderedApplicationValidation",
+      "liveHpcFootprintVerification"
+    ],
+    "note": "Do not treat synthetic fixture or tab-ID alignment as factual/UI validation."
+  },
   "authorizations": {
     "massPopulation": false,
     "paidResearch": false,
@@ -33,51 +46,35 @@
       "atelier-insight"
     ],
     "warnings": {
-      "unguardedHistoricalNpmScripts": [
-        "brand-explorer-presentation-copy-promotion-writer",
-        "brand-explorer-radisson-individuals-overview-scenario-reactivation-writer",
-        "brand-explorer-radisson-individuals-openings-rebuild-writer",
-        "brand-explorer-radisson-individuals-openings-momentum-parity-writer",
-        "brand-explorer-radisson-individuals-opening-asset-approval-reconciliation-writer",
-        "brand-explorer-radisson-individuals-momentum-source-link-parity-writer",
-        "brand-explorer-radisson-individuals-momentum-evidence-source-correction-writer",
-        "brand-explorer-radisson-individuals-final-presentation-quality-sync-writer",
-        "brand-explorer-choice-extended-stay-source-capture-writer",
-        "brand-explorer-everhome-source-registry-normalization-writer",
-        "brand-explorer-everhome-presentation-cleanup-writer",
-        "brand-explorer-everhome-openings-momentum-rebuild-writer",
-        "brand-explorer-everhome-openings-description-cleanup-writer",
-        "brand-explorer-everhome-image-governance-recognition-writer",
-        "brand-explorer-everhome-active-profile-finalization-writer",
-        "brand-explorer-everhome-existing-image-approval-recognition-writer",
-        "brand-explorer-everhome-final-gate-backfill-writer",
-        "brand-explorer-everhome-final-fact-formatting-cleanup-writer",
-        "brand-explorer-woodspring-source-registry-readiness-writer",
-        "brand-explorer-woodspring-presentation-cleanup-backfill-writer",
-        "brand-explorer-woodspring-openings-momentum-build-writer",
-        "brand-explorer-woodspring-visual-completion-writer",
-        "brand-explorer-woodspring-visual-registry-recovery-writer",
-        "brand-explorer-woodspring-final-content-cleanup-writer",
-        "brand-explorer-woodspring-insight-obligation-cleanup-writer",
-        "brand-explorer-woodspring-real-property-examples-writer",
-        "brand-explorer-woodspring-property-specific-images-writer",
-        "brand-explorer-woodspring-property-image-registry-linkage-writer",
-        "brand-explorer-woodspring-founder-visual-correction-writer",
-        "brand-explorer-woodspring-six-image-gallery-completion-writer",
-        "brand-explorer-v36c-remediation-planner",
-        "brand-explorer-v40-active-release-remediation",
-        "brand-explorer-v40c-economics-chrome-remediation",
-        "brand-explorer-v43-active-release-apply",
-        "brand-explorer-rendered-field-completeness-remediation",
-        "brand-explorer-atomic-collection-remediation-apply",
-        "brand-explorer-tab-factory-remediation",
-        "brand-explorer-image-role-match-remediation",
-        "brand-explorer-built-blocked-remediation",
-        "brand-explorer-section-pattern-parity-remediation"
-      ],
-      "unguardedHistoricalCount": 105,
-      "note": "Historical writers may still lack npm legacy-guard wrappers; canonical build refuses --apply and materializationEnabled=false. Progressive wrapping is a follow-up, not a MASTER gate weaken."
+      "unguardedHistoricalNpmScripts": [],
+      "unguardedHistoricalCount": 0,
+      "guardedCount": 129,
+      "applyCapableCount": 129,
+      "note": "Factory-critical npm writers must be fail-closed via brand-explorer-legacy-guard.mjs. Canonical build refuses --apply. Break-glass: BRAND_EXPLORER_ALLOW_LEGACY_APPLY=1"
     }
+  },
+  "legacyWriteSafety": {
+    "pass": true,
+    "guardModuleOk": true,
+    "applyCapableCount": 129,
+    "guardedCount": 129,
+    "unguardedCount": 0,
+    "unguardedNames": [],
+    "factoryCritical": [
+      "brand-explorer-full-tab-factory-build",
+      "brand-explorer-wave12-factory",
+      "brand-explorer-wave13-factory",
+      "brand-explorer-wave14-factory",
+      "brand-explorer-wave15-factory",
+      "brand-explorer-v43-active-release-apply",
+      "brand-explorer-v40-active-release-remediation",
+      "brand-explorer-atomic-collection-remediation-apply",
+      "brand-explorer-tab-factory-remediation",
+      "brand-explorer-built-blocked-remediation",
+      "brand-explorer-rendered-field-completeness-remediation"
+    ],
+    "factoryCriticalUnguarded": [],
+    "note": "Historical writers remain on disk; factory-critical npm entry points must be fail-closed via legacy-guard wrapper. Break-glass: BRAND_EXPLORER_ALLOW_LEGACY_APPLY=1"
   },
   "pilotsSummary": {
     "contract": "BE_HPC_FOOTPRINT_SUMMARY_V1",
@@ -129,7 +126,8 @@
     "designatedAuthority": "hpc",
     "writesAuthorized": false,
     "paidResearchAuthorized": false,
-    "autoPublishAuthorized": false
+    "autoPublishAuthorized": false,
+    "certificationNote": "HPC_BRAND_ROLLUP_CERTIFIED requires live Airtable origin + identity + complete pagination + status filter + dedupe + documented coverage + independentCertification=true. Synthetic fixtures never certify."
   },
   "pilots": [
     {
@@ -140,11 +138,13 @@
       "operatingModel": "franchise_soft_brand",
       "preserveAirtableRecords": true,
       "stagingOnly": true,
+      "validationMode": "staging_synthetic",
       "footprint": {
         "available": true,
-        "certified": true,
-        "certState": "HPC_BRAND_ROLLUP_CERTIFIED",
-        "fallbackRecommended": false,
+        "certified": false,
+        "dataOrigin": "synthetic_fixture",
+        "certState": "SYNTHETIC_FIXTURE_VALIDATION",
+        "fallbackRecommended": true,
         "metrics": {
           "totalOpenHotels": 2,
           "totalOpenKeys": 200,
@@ -152,16 +152,59 @@
           "totalPipelineKeys": 150
         },
         "recordsMatched": 3,
+        "paginationComplete": true,
+        "certificationGates": {
+          "identityMappingProven": true,
+          "paginationComplete": true,
+          "statusFilteringApplied": true,
+          "deduplicationApplied": true,
+          "coverageDocumented": true,
+          "liveSource": false,
+          "notSynthetic": false,
+          "hasQualifyingRows": true,
+          "notTransitional": true,
+          "independentCertification": false
+        },
         "warnings": [
-          "Excluded 1 non-Open/Pipeline HPC row(s) from totals"
-        ],
-        "mode": "synthetic_or_offline"
+          "Excluded 1 non-Open/Pipeline HPC row(s) from totals",
+          "SYNTHETIC_FIXTURE: counts are for pipeline/unit validation only — not certifiable inventory"
+        ]
       },
-      "scores": {
-        "completeness": 1,
-        "factualReliability": 1,
-        "contentQuality": 0.75,
-        "uiRendering": 1
+      "dimensions": {
+        "contractSchemaCompliance": {
+          "status": "PASS",
+          "detail": "Ten-tab shell, SoT ownership, identity id shape, doctor, write=0, synthetic≠CERTIFIED",
+          "score": 1
+        },
+        "profileFieldCompleteness": {
+          "status": "NOT_VALIDATED",
+          "detail": "No local full fixture; live Brand Setup field completeness not run",
+          "score": null
+        },
+        "evidenceBasedFactualAccuracy": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic HPC rows only — factual inventory accuracy not validated",
+          "score": null
+        },
+        "brandSpecificContentQuality": {
+          "status": "NOT_VALIDATED",
+          "detail": "Brand-specific copy quality requires human/source QA; not scored from fixtures alone",
+          "score": null
+        },
+        "renderedApplicationValidation": {
+          "status": "NOT_VALIDATED",
+          "detail": "Authenticated Brand Explorer UI render not exercised in this Phase 2 staging harness",
+          "score": null
+        },
+        "liveHpcFootprintVerification": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic fixture validation only — live HPC verification not run",
+          "score": null
+        }
+      },
+      "structuralScore": {
+        "contractSchemaCompliance": 1,
+        "note": "Only structural/contract dimensions are scored. Other dimensions are NOT_VALIDATED until live evidence or rendered-app checks exist."
       },
       "gates": {
         "identityPreserved": true,
@@ -172,7 +215,9 @@
         "noAutoPublish": true,
         "companyReportedSeparated": true,
         "adpGdiReadOnly": true,
-        "fixturePresent": false
+        "syntheticNeverCertified": true,
+        "fixturePresent": false,
+        "presentationBasicsTable": true
       }
     },
     {
@@ -183,11 +228,13 @@
       "operatingModel": "franchise_membership",
       "preserveAirtableRecords": true,
       "stagingOnly": true,
+      "validationMode": "staging_synthetic",
       "footprint": {
         "available": true,
-        "certified": true,
-        "certState": "HPC_BRAND_ROLLUP_CERTIFIED",
-        "fallbackRecommended": false,
+        "certified": false,
+        "dataOrigin": "synthetic_fixture",
+        "certState": "SYNTHETIC_FIXTURE_VALIDATION",
+        "fallbackRecommended": true,
         "metrics": {
           "totalOpenHotels": 2,
           "totalOpenKeys": 200,
@@ -195,16 +242,59 @@
           "totalPipelineKeys": 150
         },
         "recordsMatched": 3,
+        "paginationComplete": true,
+        "certificationGates": {
+          "identityMappingProven": true,
+          "paginationComplete": true,
+          "statusFilteringApplied": true,
+          "deduplicationApplied": true,
+          "coverageDocumented": true,
+          "liveSource": false,
+          "notSynthetic": false,
+          "hasQualifyingRows": true,
+          "notTransitional": true,
+          "independentCertification": false
+        },
         "warnings": [
-          "Excluded 1 non-Open/Pipeline HPC row(s) from totals"
-        ],
-        "mode": "synthetic_or_offline"
+          "Excluded 1 non-Open/Pipeline HPC row(s) from totals",
+          "SYNTHETIC_FIXTURE: counts are for pipeline/unit validation only — not certifiable inventory"
+        ]
       },
-      "scores": {
-        "completeness": 1,
-        "factualReliability": 1,
-        "contentQuality": 1,
-        "uiRendering": 1
+      "dimensions": {
+        "contractSchemaCompliance": {
+          "status": "PASS",
+          "detail": "Ten-tab shell, SoT ownership, identity id shape, doctor, write=0, synthetic≠CERTIFIED",
+          "score": 1
+        },
+        "profileFieldCompleteness": {
+          "status": "NOT_VALIDATED",
+          "detail": "Local presentation fixture present — not a full Airtable field completeness audit",
+          "score": null
+        },
+        "evidenceBasedFactualAccuracy": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic HPC rows only — factual inventory accuracy not validated",
+          "score": null
+        },
+        "brandSpecificContentQuality": {
+          "status": "NOT_VALIDATED",
+          "detail": "Brand-specific copy quality requires human/source QA; not scored from fixtures alone",
+          "score": null
+        },
+        "renderedApplicationValidation": {
+          "status": "NOT_VALIDATED",
+          "detail": "Authenticated Brand Explorer UI render not exercised in this Phase 2 staging harness",
+          "score": null
+        },
+        "liveHpcFootprintVerification": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic fixture validation only — live HPC verification not run",
+          "score": null
+        }
+      },
+      "structuralScore": {
+        "contractSchemaCompliance": 1,
+        "note": "Only structural/contract dimensions are scored. Other dimensions are NOT_VALIDATED until live evidence or rendered-app checks exist."
       },
       "gates": {
         "identityPreserved": true,
@@ -215,7 +305,9 @@
         "noAutoPublish": true,
         "companyReportedSeparated": true,
         "adpGdiReadOnly": true,
-        "fixturePresent": true
+        "syntheticNeverCertified": true,
+        "fixturePresent": true,
+        "presentationBasicsTable": true
       }
     },
     {
@@ -226,11 +318,13 @@
       "operatingModel": "franchise_soft_brand",
       "preserveAirtableRecords": true,
       "stagingOnly": true,
+      "validationMode": "staging_synthetic",
       "footprint": {
         "available": true,
-        "certified": true,
-        "certState": "HPC_BRAND_ROLLUP_CERTIFIED",
-        "fallbackRecommended": false,
+        "certified": false,
+        "dataOrigin": "synthetic_fixture",
+        "certState": "SYNTHETIC_FIXTURE_VALIDATION",
+        "fallbackRecommended": true,
         "metrics": {
           "totalOpenHotels": 2,
           "totalOpenKeys": 200,
@@ -238,16 +332,59 @@
           "totalPipelineKeys": 150
         },
         "recordsMatched": 3,
+        "paginationComplete": true,
+        "certificationGates": {
+          "identityMappingProven": true,
+          "paginationComplete": true,
+          "statusFilteringApplied": true,
+          "deduplicationApplied": true,
+          "coverageDocumented": true,
+          "liveSource": false,
+          "notSynthetic": false,
+          "hasQualifyingRows": true,
+          "notTransitional": true,
+          "independentCertification": false
+        },
         "warnings": [
-          "Excluded 1 non-Open/Pipeline HPC row(s) from totals"
-        ],
-        "mode": "synthetic_or_offline"
+          "Excluded 1 non-Open/Pipeline HPC row(s) from totals",
+          "SYNTHETIC_FIXTURE: counts are for pipeline/unit validation only — not certifiable inventory"
+        ]
       },
-      "scores": {
-        "completeness": 1,
-        "factualReliability": 1,
-        "contentQuality": 1,
-        "uiRendering": 1
+      "dimensions": {
+        "contractSchemaCompliance": {
+          "status": "PASS",
+          "detail": "Ten-tab shell, SoT ownership, identity id shape, doctor, write=0, synthetic≠CERTIFIED",
+          "score": 1
+        },
+        "profileFieldCompleteness": {
+          "status": "NOT_VALIDATED",
+          "detail": "Local presentation fixture present — not a full Airtable field completeness audit",
+          "score": null
+        },
+        "evidenceBasedFactualAccuracy": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic HPC rows only — factual inventory accuracy not validated",
+          "score": null
+        },
+        "brandSpecificContentQuality": {
+          "status": "NOT_VALIDATED",
+          "detail": "Brand-specific copy quality requires human/source QA; not scored from fixtures alone",
+          "score": null
+        },
+        "renderedApplicationValidation": {
+          "status": "NOT_VALIDATED",
+          "detail": "Authenticated Brand Explorer UI render not exercised in this Phase 2 staging harness",
+          "score": null
+        },
+        "liveHpcFootprintVerification": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic fixture validation only — live HPC verification not run",
+          "score": null
+        }
+      },
+      "structuralScore": {
+        "contractSchemaCompliance": 1,
+        "note": "Only structural/contract dimensions are scored. Other dimensions are NOT_VALIDATED until live evidence or rendered-app checks exist."
       },
       "gates": {
         "identityPreserved": true,
@@ -258,7 +395,9 @@
         "noAutoPublish": true,
         "companyReportedSeparated": true,
         "adpGdiReadOnly": true,
-        "fixturePresent": true
+        "syntheticNeverCertified": true,
+        "fixturePresent": true,
+        "presentationBasicsTable": true
       }
     },
     {
@@ -269,11 +408,13 @@
       "operatingModel": "franchise_soft_brand",
       "preserveAirtableRecords": true,
       "stagingOnly": true,
+      "validationMode": "staging_synthetic",
       "footprint": {
         "available": true,
-        "certified": true,
-        "certState": "HPC_BRAND_ROLLUP_CERTIFIED",
-        "fallbackRecommended": false,
+        "certified": false,
+        "dataOrigin": "synthetic_fixture",
+        "certState": "SYNTHETIC_FIXTURE_VALIDATION",
+        "fallbackRecommended": true,
         "metrics": {
           "totalOpenHotels": 2,
           "totalOpenKeys": 200,
@@ -281,16 +422,59 @@
           "totalPipelineKeys": 150
         },
         "recordsMatched": 3,
+        "paginationComplete": true,
+        "certificationGates": {
+          "identityMappingProven": true,
+          "paginationComplete": true,
+          "statusFilteringApplied": true,
+          "deduplicationApplied": true,
+          "coverageDocumented": true,
+          "liveSource": false,
+          "notSynthetic": false,
+          "hasQualifyingRows": true,
+          "notTransitional": true,
+          "independentCertification": false
+        },
         "warnings": [
-          "Excluded 1 non-Open/Pipeline HPC row(s) from totals"
-        ],
-        "mode": "synthetic_or_offline"
+          "Excluded 1 non-Open/Pipeline HPC row(s) from totals",
+          "SYNTHETIC_FIXTURE: counts are for pipeline/unit validation only — not certifiable inventory"
+        ]
       },
-      "scores": {
-        "completeness": 1,
-        "factualReliability": 1,
-        "contentQuality": 0.75,
-        "uiRendering": 1
+      "dimensions": {
+        "contractSchemaCompliance": {
+          "status": "PASS",
+          "detail": "Ten-tab shell, SoT ownership, identity id shape, doctor, write=0, synthetic≠CERTIFIED",
+          "score": 1
+        },
+        "profileFieldCompleteness": {
+          "status": "NOT_VALIDATED",
+          "detail": "No local full fixture; live Brand Setup field completeness not run",
+          "score": null
+        },
+        "evidenceBasedFactualAccuracy": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic HPC rows only — factual inventory accuracy not validated",
+          "score": null
+        },
+        "brandSpecificContentQuality": {
+          "status": "NOT_VALIDATED",
+          "detail": "Brand-specific copy quality requires human/source QA; not scored from fixtures alone",
+          "score": null
+        },
+        "renderedApplicationValidation": {
+          "status": "NOT_VALIDATED",
+          "detail": "Authenticated Brand Explorer UI render not exercised in this Phase 2 staging harness",
+          "score": null
+        },
+        "liveHpcFootprintVerification": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic fixture validation only — live HPC verification not run",
+          "score": null
+        }
+      },
+      "structuralScore": {
+        "contractSchemaCompliance": 1,
+        "note": "Only structural/contract dimensions are scored. Other dimensions are NOT_VALIDATED until live evidence or rendered-app checks exist."
       },
       "gates": {
         "identityPreserved": true,
@@ -301,7 +485,9 @@
         "noAutoPublish": true,
         "companyReportedSeparated": true,
         "adpGdiReadOnly": true,
-        "fixturePresent": false
+        "syntheticNeverCertified": true,
+        "fixturePresent": false,
+        "presentationBasicsTable": true
       }
     },
     {
@@ -312,11 +498,13 @@
       "operatingModel": "managed_operated",
       "preserveAirtableRecords": true,
       "stagingOnly": true,
+      "validationMode": "staging_synthetic",
       "footprint": {
         "available": true,
-        "certified": true,
-        "certState": "HPC_BRAND_ROLLUP_CERTIFIED",
-        "fallbackRecommended": false,
+        "certified": false,
+        "dataOrigin": "synthetic_fixture",
+        "certState": "SYNTHETIC_FIXTURE_VALIDATION",
+        "fallbackRecommended": true,
         "metrics": {
           "totalOpenHotels": 2,
           "totalOpenKeys": 200,
@@ -324,16 +512,59 @@
           "totalPipelineKeys": 150
         },
         "recordsMatched": 3,
+        "paginationComplete": true,
+        "certificationGates": {
+          "identityMappingProven": true,
+          "paginationComplete": true,
+          "statusFilteringApplied": true,
+          "deduplicationApplied": true,
+          "coverageDocumented": true,
+          "liveSource": false,
+          "notSynthetic": false,
+          "hasQualifyingRows": true,
+          "notTransitional": true,
+          "independentCertification": false
+        },
         "warnings": [
-          "Excluded 1 non-Open/Pipeline HPC row(s) from totals"
-        ],
-        "mode": "synthetic_or_offline"
+          "Excluded 1 non-Open/Pipeline HPC row(s) from totals",
+          "SYNTHETIC_FIXTURE: counts are for pipeline/unit validation only — not certifiable inventory"
+        ]
       },
-      "scores": {
-        "completeness": 1,
-        "factualReliability": 1,
-        "contentQuality": 0.75,
-        "uiRendering": 1
+      "dimensions": {
+        "contractSchemaCompliance": {
+          "status": "PASS",
+          "detail": "Ten-tab shell, SoT ownership, identity id shape, doctor, write=0, synthetic≠CERTIFIED",
+          "score": 1
+        },
+        "profileFieldCompleteness": {
+          "status": "NOT_VALIDATED",
+          "detail": "No local full fixture; live Brand Setup field completeness not run",
+          "score": null
+        },
+        "evidenceBasedFactualAccuracy": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic HPC rows only — factual inventory accuracy not validated",
+          "score": null
+        },
+        "brandSpecificContentQuality": {
+          "status": "NOT_VALIDATED",
+          "detail": "Brand-specific copy quality requires human/source QA; not scored from fixtures alone",
+          "score": null
+        },
+        "renderedApplicationValidation": {
+          "status": "NOT_VALIDATED",
+          "detail": "Authenticated Brand Explorer UI render not exercised in this Phase 2 staging harness",
+          "score": null
+        },
+        "liveHpcFootprintVerification": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic fixture validation only — live HPC verification not run",
+          "score": null
+        }
+      },
+      "structuralScore": {
+        "contractSchemaCompliance": 1,
+        "note": "Only structural/contract dimensions are scored. Other dimensions are NOT_VALIDATED until live evidence or rendered-app checks exist."
       },
       "gates": {
         "identityPreserved": true,
@@ -344,7 +575,9 @@
         "noAutoPublish": true,
         "companyReportedSeparated": true,
         "adpGdiReadOnly": true,
-        "fixturePresent": false
+        "syntheticNeverCertified": true,
+        "fixturePresent": false,
+        "presentationBasicsTable": true
       }
     },
     {
@@ -355,11 +588,13 @@
       "operatingModel": "membership_affiliation",
       "preserveAirtableRecords": true,
       "stagingOnly": true,
+      "validationMode": "staging_synthetic",
       "footprint": {
         "available": true,
-        "certified": true,
-        "certState": "HPC_BRAND_ROLLUP_CERTIFIED",
-        "fallbackRecommended": false,
+        "certified": false,
+        "dataOrigin": "synthetic_fixture",
+        "certState": "SYNTHETIC_FIXTURE_VALIDATION",
+        "fallbackRecommended": true,
         "metrics": {
           "totalOpenHotels": 2,
           "totalOpenKeys": 200,
@@ -367,16 +602,59 @@
           "totalPipelineKeys": 150
         },
         "recordsMatched": 3,
+        "paginationComplete": true,
+        "certificationGates": {
+          "identityMappingProven": true,
+          "paginationComplete": true,
+          "statusFilteringApplied": true,
+          "deduplicationApplied": true,
+          "coverageDocumented": true,
+          "liveSource": false,
+          "notSynthetic": false,
+          "hasQualifyingRows": true,
+          "notTransitional": true,
+          "independentCertification": false
+        },
         "warnings": [
-          "Excluded 1 non-Open/Pipeline HPC row(s) from totals"
-        ],
-        "mode": "synthetic_or_offline"
+          "Excluded 1 non-Open/Pipeline HPC row(s) from totals",
+          "SYNTHETIC_FIXTURE: counts are for pipeline/unit validation only — not certifiable inventory"
+        ]
       },
-      "scores": {
-        "completeness": 1,
-        "factualReliability": 1,
-        "contentQuality": 0.75,
-        "uiRendering": 1
+      "dimensions": {
+        "contractSchemaCompliance": {
+          "status": "PASS",
+          "detail": "Ten-tab shell, SoT ownership, identity id shape, doctor, write=0, synthetic≠CERTIFIED",
+          "score": 1
+        },
+        "profileFieldCompleteness": {
+          "status": "NOT_VALIDATED",
+          "detail": "No local full fixture; live Brand Setup field completeness not run",
+          "score": null
+        },
+        "evidenceBasedFactualAccuracy": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic HPC rows only — factual inventory accuracy not validated",
+          "score": null
+        },
+        "brandSpecificContentQuality": {
+          "status": "NOT_VALIDATED",
+          "detail": "Brand-specific copy quality requires human/source QA; not scored from fixtures alone",
+          "score": null
+        },
+        "renderedApplicationValidation": {
+          "status": "NOT_VALIDATED",
+          "detail": "Authenticated Brand Explorer UI render not exercised in this Phase 2 staging harness",
+          "score": null
+        },
+        "liveHpcFootprintVerification": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic fixture validation only — live HPC verification not run",
+          "score": null
+        }
+      },
+      "structuralScore": {
+        "contractSchemaCompliance": 1,
+        "note": "Only structural/contract dimensions are scored. Other dimensions are NOT_VALIDATED until live evidence or rendered-app checks exist."
       },
       "gates": {
         "identityPreserved": true,
@@ -387,20 +665,30 @@
         "noAutoPublish": true,
         "companyReportedSeparated": true,
         "adpGdiReadOnly": true,
-        "fixturePresent": false
+        "syntheticNeverCertified": true,
+        "fixturePresent": false,
+        "presentationBasicsTable": true
       }
     }
   ],
-  "averages": {
-    "completeness": 1,
-    "factualReliability": 1,
-    "contentQuality": 0.833,
-    "uiRendering": 1
+  "summary": {
+    "structuralContractPassCount": 6,
+    "pilotCount": 6,
+    "syntheticCertifiedViolations": 0,
+    "averagesScoredOnly": {
+      "contractSchemaCompliance": 1
+    },
+    "notValidatedDimensions": [
+      "profileFieldCompleteness",
+      "evidenceBasedFactualAccuracy",
+      "brandSpecificContentQuality",
+      "renderedApplicationValidation",
+      "liveHpcFootprintVerification"
+    ]
   },
   "nextSteps": [
-    "Founder review of Phase 2 PR",
-    "Progressive npm legacy-guard wrapping of historical writers (non-blocking warning today)",
-    "Certify live HPC brand rollup coverage before replacing transitional Hotel Census in API",
-    "No mass population until identity + HPC gates remain green"
+    "Demonstrate ≥1 genuine read-only live HPC rollup after merge",
+    "Demonstrate ≥1 complete ten-tab profile with real source evidence",
+    "Do not request population authorization until live evidence is reported"
   ]
 }
