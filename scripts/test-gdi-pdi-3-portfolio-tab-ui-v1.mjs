@@ -102,10 +102,26 @@ const liveShell = Tab.shellHtml({
   markets: demo.markets,
   hotels: demo.hotels,
   marketId: demo.markets[0].marketId,
+  defaultMarketId: demo.markets[0].marketId,
   opportunitiesPayload: demo.opportunitiesPayload,
 });
 assert.ok(/data-gdi-pdi-demo="1"/.test(liveShell));
 assert.ok(/DEMO — not a production customer/i.test(liveShell));
+assert.ok(
+  /filters-section aiv-filters-section gdi-property-bar/.test(liveShell),
+  "PDI must reuse Opportunities filter panel classes",
+);
+assert.ok(/filter-label/.test(liveShell) && /filter-select/.test(liveShell));
+assert.ok(/id="gdiPdiResetViewBtn"/.test(liveShell), "Reset View required");
+assert.ok(!/>No markets</.test(liveShell), "must not claim No markets when markets exist");
+
+const authShell = Tab.authRequiredHtml("Session required.");
+assert.ok(/data-gdi-pdi-state="AUTH_REQUIRED"/.test(authShell));
+assert.ok(!/>No markets</.test(authShell));
+assert.ok(!/Please log in again to continue/i.test(authShell));
+
+const mappedShell = Tab.notMappedHtml("Not mapped.");
+assert.ok(/data-gdi-pdi-state="OPERATOR_NOT_MAPPED"/.test(mappedShell));
 for (const key of Object.keys(PORTFOLIO_HOTEL_FIT_CLASS)) {
   assert.ok(
     liveShell.includes(`data-fit="${key}"`),

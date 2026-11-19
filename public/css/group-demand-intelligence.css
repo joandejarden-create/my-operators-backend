@@ -4005,34 +4005,55 @@ button.gdi-tile-pill.is-filter-active {
 .gdi-related { margin-top: 0.5rem; font-size: 0.9rem; }
 
 
-/* PDI-3 — Portfolio Demand Intelligence tab */
-.gdi-pdi-page { padding: 1.25rem 1.5rem 2rem; max-width: 1100px; }
-.gdi-pdi-header h1 { font-size: 1.35rem; margin: 0 0 0.35rem; }
-.gdi-pdi-sub { margin: 0 0 1rem; color: #4b5563; font-size: 0.95rem; max-width: 46rem; }
-.gdi-pdi-banner { padding: 0.75rem 1rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.9rem; }
-.gdi-pdi-banner--warn { background: #fff7ed; border: 1px solid #fdba74; color: #9a3412; }
-.gdi-pdi-banner--demo { background: #eff6ff; border: 1px solid #93c5fd; color: #1e3a8a; }
-.gdi-pdi-controls { margin-bottom: 1.25rem; }
-.gdi-pdi-label { display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.85rem; font-weight: 600; max-width: 22rem; }
-.gdi-pdi-select { font: inherit; padding: 0.4rem 0.55rem; }
+/* PDI-3 â€” Portfolio Demand Intelligence tab (reuses G&D Opportunities filter chrome) */
+.gdi-pdi-page { padding: 0 0 2rem; max-width: none; }
+.gdi-pdi-header { padding: 0.35rem 0 0.75rem; }
+.gdi-pdi-header h1 { font-size: 1.35rem; margin: 0 0 0.35rem; color: var(--gdi-text, inherit); }
+.gdi-pdi-sub { margin: 0 0 1rem; color: var(--gdi-muted, #9aa4b2); font-size: 0.95rem; max-width: 46rem; }
+.gdi-pdi-banner { padding: 0.75rem 1rem; border-radius: var(--gdi-radius-sm, 6px); margin-bottom: 1rem; font-size: 0.9rem; }
+.gdi-pdi-banner--warn { background: rgba(138, 109, 59, 0.12); border: 1px solid #8a6d3b; color: var(--gdi-text, #f5f5f5); }
+.gdi-pdi-banner--demo { background: rgba(59, 130, 246, 0.12); border: 1px solid #3b82f6; color: var(--gdi-text, #f5f5f5); }
+/* Filter panel: identical classes to Opportunities tab (.filters-section / .filter-group / .filter-select) */
+.gdi-pdi-page .filters-section.gdi-property-bar { margin-bottom: 1.25rem; }
 .gdi-pdi-section { margin-bottom: 1.5rem; }
-.gdi-pdi-section h2 { font-size: 1.05rem; margin: 0 0 0.6rem; }
-.gdi-pdi-hotel-list { margin: 0; padding-left: 1.2rem; }
-.gdi-pdi-matrix-wrap { overflow-x: auto; border: 1px solid #e5e7eb; border-radius: 8px; }
+.gdi-pdi-section h2 { font-size: 1.05rem; margin: 0 0 0.6rem; color: var(--gdi-text, inherit); }
+.gdi-pdi-hotel-list { margin: 0; padding-left: 1.2rem; color: var(--gdi-text, inherit); }
+.gdi-pdi-matrix-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--gdi-border, rgba(209, 219, 249, 0.18));
+  border-radius: var(--gdi-radius-sm, 8px);
+}
 .gdi-pdi-matrix { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
-.gdi-pdi-matrix th, .gdi-pdi-matrix td { border-bottom: 1px solid #e5e7eb; padding: 0.65rem 0.75rem; vertical-align: top; text-align: left; }
-.gdi-pdi-matrix thead th { background: #f9fafb; font-weight: 600; white-space: nowrap; }
+.gdi-pdi-matrix th,
+.gdi-pdi-matrix td {
+  border-bottom: 1px solid var(--gdi-border, rgba(209, 219, 249, 0.14));
+  padding: 0.65rem 0.75rem;
+  vertical-align: top;
+  text-align: left;
+}
+.gdi-pdi-matrix thead th {
+  background: var(--gdi-panel-2, rgba(255, 255, 255, 0.04));
+  font-weight: 600;
+  white-space: nowrap;
+}
 .gdi-pdi-opp-title { font-weight: 600; }
-.gdi-pdi-opp-summary, .gdi-pdi-pursuit, .gdi-pdi-level2-note, .gdi-pdi-withheld { color: #4b5563; margin-top: 0.35rem; font-size: 0.82rem; }
+.gdi-pdi-opp-summary,
+.gdi-pdi-pursuit,
+.gdi-pdi-level2-note,
+.gdi-pdi-withheld {
+  color: var(--gdi-muted, #9aa4b2);
+  margin-top: 0.35rem;
+  font-size: 0.82rem;
+}
 .gdi-pdi-fit { font-weight: 600; }
-.gdi-pdi-cell[data-fit="POTENTIAL_PRIMARY_HOST"] .gdi-pdi-fit { color: #166534; }
-.gdi-pdi-cell[data-fit="OVERFLOW_ACCOMMODATION"] .gdi-pdi-fit { color: #9a3412; }
-.gdi-pdi-cell[data-fit="INSUFFICIENT_EVIDENCE"] .gdi-pdi-fit { color: #6b7280; }
+.gdi-pdi-cell[data-fit="POTENTIAL_PRIMARY_HOST"] .gdi-pdi-fit { color: #4ade80; }
+.gdi-pdi-cell[data-fit="OVERFLOW_ACCOMMODATION"] .gdi-pdi-fit { color: #fb923c; }
+.gdi-pdi-cell[data-fit="INSUFFICIENT_EVIDENCE"] .gdi-pdi-fit { color: var(--gdi-muted, #9aa4b2); }
 .gdi-pdi-open-btn { margin-top: 0.45rem; }
-.gdi-pdi-empty { color: #6b7280; font-size: 0.9rem; }
-.gdi-pdi-demo-cue { font-size: 0.85rem; color: #4b5563; }
+.gdi-pdi-empty { color: var(--gdi-muted, #9aa4b2); font-size: 0.9rem; }
+.gdi-pdi-demo-cue { font-size: 0.85rem; color: var(--gdi-muted, #9aa4b2); }
 
-.gdi-pdi-cell[data-fit="PREFERRED_LODGING_OPPORTUNITY"] .gdi-pdi-fit { color: #1d4ed8; }
-.gdi-pdi-cell[data-fit="MEETING_CATERING_OPPORTUNITY"] .gdi-pdi-fit { color: #7c2d12; }
-.gdi-pdi-cell[data-fit="OTHER_PARTNERSHIP"] .gdi-pdi-fit { color: #6b21a8; }
-.gdi-pdi-cell[data-fit="UNSUITABLE"] .gdi-pdi-fit { color: #991b1b; }
+.gdi-pdi-cell[data-fit="PREFERRED_LODGING_OPPORTUNITY"] .gdi-pdi-fit { color: #60a5fa; }
+.gdi-pdi-cell[data-fit="MEETING_CATERING_OPPORTUNITY"] .gdi-pdi-fit { color: #fbbf24; }
+.gdi-pdi-cell[data-fit="OTHER_PARTNERSHIP"] .gdi-pdi-fit { color: #c084fc; }
+.gdi-pdi-cell[data-fit="UNSUITABLE"] .gdi-pdi-fit { color: #f87171; }

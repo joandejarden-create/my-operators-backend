@@ -2029,6 +2029,9 @@
         typeof window.DealalityGdiPortfolioTab.mount === "function"
       ) {
         window.DealalityGdiPortfolioTab.mount(portfolioRoot, {
+          onLoading: function (on, message) {
+            setLoading(!!on, message || "Loading Portfolio Demand Intelligence…");
+          },
           onOpenBrief: function (ref) {
             if (!ref || !ref.hotelId || !ref.opportunityId) return;
             var runOpen = function () {
