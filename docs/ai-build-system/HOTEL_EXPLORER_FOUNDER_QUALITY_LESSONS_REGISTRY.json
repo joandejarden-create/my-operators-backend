@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.2",
+  "version": "hotel-explorer-founder-quality-lessons-v1.3",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -130,6 +130,15 @@
       "sharedComponent": "property-decision-maker-engine-v1.js; hotel-contact-intelligence.js; hotel-explorer-founder-preview.js",
       "regressionTest": "owner_decision_maker_ranking_and_surfe_fallback",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v3-contacts-recommend.png"
+    },
+    {
+      "id": "HE-QL-013",
+      "originalProblem": "Amenities rendered as bordered card grid instead of KGPV horizontal icon strip; no ADP display cap",
+      "rootCause": "Phase 4 grid CSS/HTML replaced carousel; missing shared max-20 priority selector",
+      "approvedStandard": "KGPV carousel (no card borders); ADP/HPC verified attributes; target 12 / max 20; arrows on overflow only",
+      "sharedComponent": "he-amenity-display-v1.js; hotel-detail-panel.js; hotel-detail-panel.css; hilton-amenity-icons.js",
+      "regressionTest": "amenities_kgpv_strip_and_display_cap",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v3-amenities-strip.png"
     }
   ]
 }

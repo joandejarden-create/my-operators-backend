@@ -1,6 +1,6 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.2`  
+**Version:** `hotel-explorer-quality-standard-v1.3`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
 **Gate:** `npm run test:he-product-quality-gates-v1`
@@ -38,9 +38,11 @@ KGPV (golden UX) and Bethesda Marriott (Airtable-first pilot) define the permane
 
 ### 3. Amenities
 
-- Human-readable labels + standardized SVG icons + verified state.
-- Reusable attribute IDs for future search.
-- No raw DB tokens (`has_pool`, etc.) in UI.
+- **Visual (KGPV baseline):** single horizontal icon+label strip — no bordered amenity cards, no vertical grid. Prev/next arrows only when overflow; smooth horizontal scroll; keyboard arrows; minimal/hidden scrollbar.
+- Source: ADP verified attributes / HPC amenities via shared IDs — never invent amenities to hit a count.
+- Display policy: target **≥12** verified when research allows; hard max **20** displayed (priority selection); overflow retained in underlying intelligence.
+- Human-readable labels + consistent icons across hotels; no raw DB tokens (`has_pool`); no geo/brand marketing tags as amenity icons.
+- Shared policy: `lib/hotel-intelligence/he-amenity-display-v1.js` + `hotel-detail-panel.js` carousel.
 
 ### 4. Guest Rooms & Meeting Space
 

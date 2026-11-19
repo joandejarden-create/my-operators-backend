@@ -1016,52 +1016,10 @@
   margin-bottom: 6px;
 }
 
-/* Amenities grid (Phase 4) */
+/* Amenities strip — KGPV baseline: horizontal carousel, no bordered cards */
 
 .hdp-amenities-section {
   margin-bottom: 0;
-}
-
-.hdp-amenities-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
-  gap: 12px 10px;
-  padding: 4px 0 8px;
-}
-
-.hdp-amenity-card--grid {
-  width: auto;
-  min-height: 88px;
-  padding: 10px 8px;
-  border: 1px solid rgba(156, 170, 220, 0.16);
-  border-radius: 10px;
-  background: rgba(12, 20, 48, 0.45);
-  gap: 6px;
-}
-
-.hdp-amenity-card--grid .hdp-amenity-card__icon {
-  width: 28px;
-  height: 28px;
-}
-
-.hdp-amenity-card--grid .hdp-amenity-card__icon svg {
-  width: 22px;
-  height: 22px;
-  stroke-width: 1.6;
-}
-
-.hdp-amenity-card--grid .hdp-amenity-card__label {
-  font-size: 11px;
-  line-height: 1.25;
-  color: var(--hdp-text-body);
-  word-break: break-word;
-}
-
-.hdp-amenity-card__state {
-  font-size: 9px;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--hdp-text-muted);
 }
 
 .hdp-amenities-count {
@@ -1074,60 +1032,75 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
 .hdp-amenities-nav {
   flex: 0 0 auto;
-  width: 26px;
-  height: 26px;
+  width: 22px;
+  height: 28px;
   border: none;
   background: transparent;
   color: var(--hdp-text-muted);
-  font-size: 20px;
+  font-size: 22px;
   line-height: 1;
   cursor: pointer;
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 0.85;
 }
 
-.hdp-amenities-nav:hover {
+.hdp-amenities-nav[hidden] {
+  display: none !important;
+}
+
+.hdp-amenities-nav:hover:not(:disabled) {
   color: var(--hdp-accent);
+  opacity: 1;
+}
+
+.hdp-amenities-nav:disabled {
+  opacity: 0.35;
+  cursor: default;
 }
 
 .hdp-amenities-carousel {
   display: flex;
+  flex-wrap: nowrap;
   gap: 0;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: var(--hdp-border) transparent;
-  padding-bottom: 6px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 2px 0 4px;
   margin: 0;
   flex: 1 1 auto;
   min-width: 0;
+  -webkit-overflow-scrolling: touch;
 }
 
 .hdp-amenities-carousel::-webkit-scrollbar {
-  height: 4px;
-}
-
-.hdp-amenities-carousel::-webkit-scrollbar-thumb {
-  background: var(--hdp-border);
+  display: none;
+  height: 0;
 }
 
 .hdp-amenity-card {
   flex: 0 0 auto;
-  width: 76px;
+  width: 78px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 4px;
+  padding: 4px 2px;
   gap: 4px;
+  border: none;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  min-height: 0;
 }
 
 .hdp-amenity-card__icon {

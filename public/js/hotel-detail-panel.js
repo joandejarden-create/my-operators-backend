@@ -1001,19 +1001,69 @@
     return null;
   }
 
+  var HE_AMENITIES_DISPLAY_MAX = 20;
+  var HE_AMENITIES_DISPLAY_TARGET_MIN = 12;
+
+  function amenityDisplayPriority(item) {
+    var id = String((item && (item.id || item.attributeKey)) || "").trim();
+    var priorityById = {
+      meetingEventSpace: 100,
+      meetingRooms: 98,
+      ballroom: 96,
+      dining: 90,
+      spa: 88,
+      outdoorPool: 86,
+      indoorPool: 85,
+      pool: 84,
+      fitnessCenter: 82,
+      peloton: 80,
+      m_club: 78,
+      executiveLounge: 78,
+      concierge: 76,
+      businessCenter: 74,
+      freeParking: 72,
+      valetParking: 71,
+      airportShuttle: 70,
+      dc_metro_access: 68,
+      nih_access: 67,
+      roomAccessibility: 66,
+      beach: 64,
+      roomService: 55,
+      petsAllowed: 50,
+      evCharging: 48,
+    };
+    if (id && priorityById[id] != null) return priorityById[id];
+    var label = String((item && item.label) || "").toLowerCase();
+    if (/meeting|event|ballroom/.test(label)) return 95;
+    if (/restaurant|dining|bar|lounge|cooper/.test(label)) return 88;
+    if (/spa/.test(label)) return 86;
+    if (/pool/.test(label)) return 84;
+    if (/fitness|peloton|gym/.test(label)) return 82;
+    if (/club|concierge/.test(label)) return 76;
+    if (/business/.test(label)) return 74;
+    if (/park/.test(label)) return 70;
+    if (/access|shuttle|metro|airport|nih/.test(label)) return 66;
+    if (/accessib/.test(label)) return 64;
+    return 30;
+  }
+
   /**
-   * Prefer verified / human-readable amenity labels.
-   * Do not let raw snake_case Amenities tokens crowd the carousel.
+   * Prefer verified / human-readable amenity labels (ADP / HPC).
+   * Cap at 20 prioritized icons; never invent amenities to hit the 12 target.
    */
   function resolveAmenitiesDisplay(hotel) {
     function normalizeItem(item) {
       if (!item) return null;
       var label = toAmenityProperCase(item.label || item);
       if (!label || isNonAmenityPresentationLabel(label)) return null;
+      var id = item.id || resolveAmenityIdForLabel(label, null) || null;
       return {
-        id: item.id || resolveAmenityIdForLabel(label, null) || null,
+        id: id,
         label: label,
         verificationStatus: item.verificationStatus || item.factKind || null,
+        sourceUrl: item.sourceUrl || null,
+        lastVerified: item.lastVerified || item.lastVerifiedAt || null,
+        attributeKey: item.attributeKey || id || null,
       };
     }
 
@@ -1026,7 +1076,8 @@
             item.label &&
             item.factKind !== "UNSUPPORTED_CLAIM" &&
             item.factKind !== "INFERRED_SUITABILITY" &&
-            item.factKind !== "REALITY_GAP_RECOGNITION"
+            item.factKind !== "REALITY_GAP_RECOGNITION" &&
+            item.factKind !== "POSITIONING"
           );
         })
         .map(normalizeItem)
@@ -1058,12 +1109,31 @@
     var seen = {};
     var deduped = [];
     base.forEach(function (item) {
+      // Dedupe by human label so distinct amenities can share an icon asset
+      // (e.g. Peloton vs 24-Hour Fitness) without collapsing the strip.
       var key = amenityLabelKey(item.label);
       if (!key || seen[key]) return;
       seen[key] = true;
       deduped.push(item);
     });
-    return deduped;
+    deduped.sort(function (a, b) {
+      return amenityDisplayPriority(b) - amenityDisplayPriority(a) || a.label.localeCompare(b.label);
+    });
+    var selected = deduped.slice(0, HE_AMENITIES_DISPLAY_MAX);
+    try {
+      window.HOTEL_EXPLORER_AMENITIES_COVERAGE = {
+        verifiedCount: deduped.length,
+        displayedCount: selected.length,
+        targetMin: HE_AMENITIES_DISPLAY_TARGET_MIN,
+        max: HE_AMENITIES_DISPLAY_MAX,
+        belowTargetMin: deduped.length < HE_AMENITIES_DISPLAY_TARGET_MIN,
+        shortfall: Math.max(0, HE_AMENITIES_DISPLAY_TARGET_MIN - deduped.length),
+        overflowCount: Math.max(0, deduped.length - selected.length),
+      };
+    } catch (_err) {
+      /* ignore */
+    }
+    return selected;
   }
 
   function amenityIconSvg(item) {
@@ -1108,33 +1178,14 @@
     if (!amenities.length) {
       return '<p class="hdp-empty">No verified amenities are available for this property yet.</p>';
     }
+    var cards = amenities.map(renderAmenityCard).join("");
     return (
-      '<div class="hdp-amenities-grid" role="list" aria-label="Hotel amenities">' +
-        amenities
-          .map(function (item) {
-            return (
-              '<div class="hdp-amenity-card hdp-amenity-card--grid" role="listitem" title="' +
-              esc(item.label || "") +
-              '">' +
-              '<div class="hdp-amenity-card__icon" aria-hidden="true">' +
-              amenityIconSvg(item) +
-              "</div>" +
-              '<div class="hdp-amenity-card__label">' +
-              esc(item.label || "") +
-              "</div>" +
-              (item.verificationStatus
-                ? '<div class="hdp-amenity-card__state">' +
-                  esc(
-                    String(item.verificationStatus) === "VERIFIED_FACT"
-                      ? "Verified"
-                      : String(item.verificationStatus).replace(/_/g, " ")
-                  ) +
-                  "</div>"
-                : "") +
-              "</div>"
-            );
-          })
-          .join("") +
+      '<div class="hdp-amenities-wrap">' +
+      '<button type="button" class="hdp-amenities-nav hdp-amenities-nav--prev" aria-label="Previous amenities" hidden>&lsaquo;</button>' +
+      '<div class="hdp-amenities-carousel" role="list" aria-label="Hotel amenities" tabindex="0">' +
+      cards +
+      "</div>" +
+      '<button type="button" class="hdp-amenities-nav hdp-amenities-nav--next" aria-label="Next amenities" hidden>&rsaquo;</button>' +
       "</div>"
     );
   }
@@ -3233,12 +3284,53 @@
       track.scrollBy({ left: direction * step, behavior: "smooth" });
     }
 
-    if (prevBtn) {
-      prevBtn.addEventListener("click", function () { scrollByCards(-1); });
+    function updateNav() {
+      var overflow = track.scrollWidth > track.clientWidth + 4;
+      var atStart = track.scrollLeft <= 2;
+      var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+      if (prevBtn) {
+        if (!overflow || atStart) prevBtn.setAttribute("hidden", "");
+        else prevBtn.removeAttribute("hidden");
+        prevBtn.disabled = !overflow || atStart;
+      }
+      if (nextBtn) {
+        if (!overflow || atEnd) nextBtn.setAttribute("hidden", "");
+        else nextBtn.removeAttribute("hidden");
+        nextBtn.disabled = !overflow || atEnd;
+      }
     }
-    if (nextBtn) {
-      nextBtn.addEventListener("click", function () { scrollByCards(1); });
+
+    if (prevBtn && !prevBtn._hdpBound) {
+      prevBtn._hdpBound = true;
+      prevBtn.addEventListener("click", function () {
+        scrollByCards(-1);
+      });
     }
+    if (nextBtn && !nextBtn._hdpBound) {
+      nextBtn._hdpBound = true;
+      nextBtn.addEventListener("click", function () {
+        scrollByCards(1);
+      });
+    }
+    if (!track._hdpBound) {
+      track._hdpBound = true;
+      track.addEventListener("scroll", updateNav, { passive: true });
+      track.addEventListener("keydown", function (ev) {
+        if (ev.key === "ArrowLeft") {
+          ev.preventDefault();
+          scrollByCards(-1);
+        } else if (ev.key === "ArrowRight") {
+          ev.preventDefault();
+          scrollByCards(1);
+        }
+      });
+      if (typeof ResizeObserver !== "undefined") {
+        var ro = new ResizeObserver(updateNav);
+        ro.observe(track);
+      }
+    }
+    updateNav();
+    setTimeout(updateNav, 50);
   }
 
   function renderPanelContent(hotel) {

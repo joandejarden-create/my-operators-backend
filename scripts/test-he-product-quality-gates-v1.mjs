@@ -23,6 +23,11 @@ import {
   CONTACT_CLASS,
   PROPERTY_RESPONSIBILITY,
 } from "../lib/hotel-intelligence/contact-intelligence/property-decision-maker-engine-v1.js";
+import {
+  selectAmenitiesForHotelExplorerDisplay,
+  HE_AMENITIES_DISPLAY_MAX,
+  isNonGuestAmenityLabel,
+} from "../lib/hotel-intelligence/he-amenity-display-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -54,11 +59,11 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.2");
-  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 12);
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.3");
+  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 13);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.2"
+    "hotel-explorer-quality-standard-v1.3"
   );
 });
 
@@ -136,9 +141,43 @@ run("overview_exposes_year_built_and_renovated_slots", () => {
 
 run("amenities_forbid_raw_db_tokens", () => {
   const hdp = read("public/js/hotel-detail-panel.js");
-  mustInclude(hdp, "hdp-amenities-grid");
+  mustInclude(hdp, "hdp-amenities-carousel");
   mustInclude(hdp, "resolveAmenitiesDisplay");
   mustNotMatch(hdp, /label:\s*["']has_pool["']/);
+});
+
+run("amenities_kgpv_strip_and_display_cap", () => {
+  const hdp = read("public/js/hotel-detail-panel.js");
+  const css = read("public/css/hotel-detail-panel.css");
+  mustInclude(hdp, "hdp-amenities-wrap");
+  mustInclude(hdp, "hdp-amenities-carousel");
+  mustInclude(hdp, "HE_AMENITIES_DISPLAY_MAX");
+  mustInclude(hdp, "amenityDisplayPriority");
+  assert.ok(!/hdp-amenities-grid/.test(hdp), "grid markup must not be used");
+  assert.ok(!/hdp-amenity-card--grid/.test(hdp), "bordered grid cards must not be used");
+  mustInclude(css, "hdp-amenities-carousel");
+  assert.ok(/border:\s*none/.test(css.match(/\.hdp-amenity-card\s*\{[\s\S]*?\}/)?.[0] || ""));
+  assert.ok(!/\.hdp-amenities-grid\s*\{/.test(css), "grid CSS removed");
+  assert.equal(HE_AMENITIES_DISPLAY_MAX, 20);
+  assert.equal(isNonGuestAmenityLabel("Bethesda MD Location"), true);
+  assert.equal(isNonGuestAmenityLabel("Outdoor Pool", "outdoorPool"), false);
+  const many = Array.from({ length: 28 }, (_, i) => ({
+    id: i === 0 ? "meetingEventSpace" : `attr_${i}`,
+    label: i === 0 ? "Meeting & Event Space" : i === 1 ? "Meeting & Event Space" : `Amenity ${i}`,
+    verificationStatus: "VERIFIED_FACT",
+  }));
+  const selected = selectAmenitiesForHotelExplorerDisplay(many);
+  // Duplicate label collapses → 27 unique → capped at 20
+  assert.equal(selected.displayed.length, 20);
+  assert.equal(selected.coverage.overflowCount, 7);
+  assert.equal(selected.displayed[0].id, "meetingEventSpace");
+  const sparse = selectAmenitiesForHotelExplorerDisplay([
+    { id: "outdoorPool", label: "Outdoor Pool" },
+    { id: "fitnessCenter", label: "Fitness Center" },
+  ]);
+  assert.equal(sparse.displayed.length, 2);
+  assert.equal(sparse.coverage.belowTargetMin, true);
+  assert.equal(sparse.coverage.shortfall, 10);
 });
 
 run("forbids_internal_graph_ids_in_relationship_markup", () => {
