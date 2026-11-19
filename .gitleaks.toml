@@ -285,6 +285,9 @@ regexes = [
   '''^[A-Z][A-Z0-9_]{2,64}=[01]$''',
   # Bare env var *names* as documentation (exact match only). Real secrets remain detectable.
   '''^(?:APIFY_TOKEN|EXA_API_KEY|FIRECRAWL_API_KEY|SERPAPI_KEY|PARALLEL_API_KEY|MAPBOX_ACCESS_TOKEN|AIRTABLE_API_KEY|GITHUB_TOKEN)$''',
+  # Aimbridge ADP period rawResponse hotel amenity prose ("laundry/pressing service") —
+  # generic-api-key FP; not a credential (evidence runtime restore).
+  '''^laundry/pressing$''',
 ]
 
 # Airtable object identifiers are metadata, not API credentials.
