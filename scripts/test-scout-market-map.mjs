@@ -1,5 +1,5 @@
 /**
- * Scout Market Map API tests (read-only Hotel Census + signals; no Radar/Brand Explorer writes).
+ * Scout Market Map API tests (read-only Hotel Property Census + signals; no writes).
  *
  * Usage: node scripts/test-scout-market-map.mjs
  */
@@ -8,7 +8,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { buildMarketMapReport, isValidCoordinate } from "../lib/scout/market-map.js";
-import { HOTEL_CENSUS_TABLE } from "../lib/hotel-census/platform-base.js";
+import { HOTEL_PROPERTY_CENSUS_TABLE } from "../lib/hotel-census/platform-base.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
@@ -29,7 +29,7 @@ function assertHotelMarkerShape(marker) {
   ];
   for (const key of required) assert(key in marker, `hotel marker missing ${key}`);
   assert(marker.markerType === "hotel", "expected hotel markerType");
-  assert(marker.source === "Hotel Census", "hotel source must be Hotel Census");
+  assert(marker.source === "Hotel Property Census", "hotel source must be Hotel Property Census");
   assert(isValidCoordinate(marker.latitude, marker.longitude), "invalid hotel coordinates");
 }
 
@@ -141,7 +141,7 @@ async function main() {
 
     assert(report.source.readOnly === true, "source.readOnly must be true");
     assert(report.source.writes === false, "source.writes must be false");
-    assert(report.source.hotelSource === "Hotel Census", "hotelSource mismatch");
+    assert(report.source.hotelSource === "Hotel Property Census", "hotelSource mismatch");
     assert(report.source.marketField === "Market", "marketField should be Market");
     assert(report.source.submarketField === "Submarket", "submarketField should be Submarket");
 
@@ -182,13 +182,14 @@ async function main() {
     passed += 1;
   }
 
-  console.log("Confirm: no Hotel Census table writes in market-map module...");
+  console.log("Confirm: no Hotel Property Census writes in market-map module...");
   const libSource = fs.readFileSync(path.join(ROOT, "lib", "scout", "market-map.js"), "utf8");
-  assert(!libSource.includes(".create("), "market-map must not create census records");
-  assert(!libSource.includes(".update("), "market-map must not update census records");
-  assert(!libSource.includes(".destroy("), "market-map must not delete census records");
-  assert(libSource.includes(HOTEL_CENSUS_TABLE), "reads Hotel Census only");
-  console.log("  PASS — read-only census access\n");
+  assert(!libSource.includes(".create("), "market-map must not create HPC records");
+  assert(!libSource.includes(".update("), "market-map must not update HPC records");
+  assert(!libSource.includes(".destroy("), "market-map must not delete HPC records");
+  assert(libSource.includes(HOTEL_PROPERTY_CENSUS_TABLE) || libSource.includes("Hotel Property Census"), "reads HPC");
+  assert(!libSource.includes('hotelSource: "Hotel Census"'), "must not label Hotel Census as hotelSource");
+  console.log("  PASS — read-only HPC access\n");
   passed += 1;
 
   console.log(`=== ${passed} checks passed ===`);

@@ -45,7 +45,7 @@ function fixtureHotelResponse(recordId) {
 const cache = new Map();
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes cache
 /** Bump when API response shape or fetched fields change (invalidates stale cache). */
-const CACHE_SCHEMA_VERSION = 9;
+const CACHE_SCHEMA_VERSION = 10; // HPC-native list/search (legacy Hotel Census retired for runtime)
 
 // Cache helper functions
 function getCacheKey(query) {
@@ -86,48 +86,49 @@ async function refreshCacheInBackground() {
 // Refresh cache every 10 minutes
 setInterval(refreshCacheInBackground, 10 * 60 * 1000);
 
-// Field mappings for brand presence data
+// Field mappings — Hotel Property Census (canonical). Legacy Hotel Census retired for runtime.
 const F = {
   hotels: {
-    table: "Hotel Census", // Your actual table name
-    id: "id", // Airtable record ID
-    name: "name", // Your actual field name
-    brand: "Affiliation", // Your actual field name
-    parentCompany: "Parent Company", // Your actual field name
-    status: "status", // Your actual field name
-    lat: "Latitude", // Your actual field name
-    lng: "Longitude", // Your actual field name
-    city: "city", // Your actual field name
-    country: "country", // Your actual field name
-    region: "Region", // Using Region field
-    locationType: "Location", // Using Location field for location type
-    rooms: "rooms", // Your actual field name
+    table: HOTEL_PROPERTY_CENSUS_TABLE,
+    tableId: "tbl9aY5ijiuIzzWam",
+    id: "id",
+    name: "Property Name",
+    brand: "Current Brand",
+    parentCompany: "Parent Company",
+    status: "Radar Status",
+    lat: "Latitude",
+    lng: "Longitude",
+    city: "City",
+    country: "Country",
+    region: "Continent",
+    locationType: "Asset Context",
+    rooms: "Rooms / Keys",
     strNumber: "STR Number",
-    chainScale: "Chain Scale",
+    chainScale: "Hotel Class / Segment",
     projectPhase: "project_phase",
-    propertyType: "Chain Scale", // Using Chain Scale as property type
+    propertyType: "Property Type",
     operationType: "Operation Type",
-    managementCompany: "Management Company",
-    website: "Website",
-    telephone: "Telephone",
-    address1: "Address 1",
+    managementCompany: "Operator / Management Company",
+    website: "Official Property URL",
+    telephone: "Phone",
+    address1: "Address",
     address2: "Address 2",
     market: "Market",
     submarket: "Submarket",
     openDate: "Open Date",
     projectedOpenDate: "projected_open_date",
     starRating: "Star Rating",
-    amenities: "Amenities",
-    hotelDescription: process.env.AIRTABLE_CENSUS_DESCRIPTION_FIELD || "Hotel Description",
-    hotelHeadline: process.env.AIRTABLE_CENSUS_HOTEL_HEADLINE_FIELD || "Hotel Headline",
+    amenities: "Amenities - Source Text",
+    hotelDescription: "Short Property Summary",
+    hotelHeadline: "Property Positioning",
     occupancyRate: "Occupancy Rate",
     adr: "ADR",
     revpar: "RevPAR",
-    state: "State",
+    state: "State / Region",
     postalCode: "Postal Code",
     floors: "Floors",
     totalMeetingSpace: "Total Meeting Space",
-    dataConfidence: "Data Confidence",
+    dataConfidence: "Data Confidence Tier",
     censusPropertyType: "Property Type",
     hotelServiceModel: "Hotel Service Model",
     allSuites: "All Suites (Y/N)",
@@ -139,14 +140,16 @@ const F = {
     resort: "Resort (Y/N)",
     restaurant: "Restaurant (Y/N)",
     ski: "Ski (Y/N)",
-    spa: "Spa (Y/N)"
-  }
+    spa: "Spa (Y/N)",
+  },
 };
 
-/** Fields required for map markers and filters — keep bulk load lean. */
+/** Fields required for map markers and filters — real HPC field names only. */
 const MAP_HOTEL_FIELDS = [
   F.hotels.name,
+  "Canonical Property Name",
   F.hotels.brand,
+  "Brand Family",
   F.hotels.parentCompany,
   F.hotels.status,
   F.hotels.lat,
@@ -154,18 +157,15 @@ const MAP_HOTEL_FIELDS = [
   F.hotels.city,
   F.hotels.country,
   F.hotels.region,
+  "State / Region",
   F.hotels.locationType,
   F.hotels.rooms,
-  F.hotels.strNumber,
   F.hotels.chainScale,
-  F.hotels.projectPhase,
-  F.hotels.propertyType,
   F.hotels.operationType,
   F.hotels.managementCompany,
   F.hotels.market,
   F.hotels.submarket,
   F.hotels.censusPropertyType,
-  F.hotels.hotelServiceModel,
 ];
 
 function readTextField(fields, key) {
@@ -582,6 +582,11 @@ export async function getBrandPresence(req, res) {
     
     if (status) {
       conditions.push(`{${F.hotels.status}} = '${escapeAirtableString(status)}'`);
+    } else {
+      // HPC Radar Status: exclude Hidden/blank from map inventory (Open|Pipeline only).
+      conditions.push(
+        `OR({${F.hotels.status}}='Open',{${F.hotels.status}}='Pipeline')`
+      );
     }
     
     if (region) {
@@ -667,7 +672,10 @@ export async function getBrandPresence(req, res) {
       hasMore: !!limit && hotels.length === limit,
       page: parseInt(page, 10),
       limit,
-      cached: false
+      cached: false,
+      censusSourceTable: HOTEL_PROPERTY_CENSUS_TABLE,
+      censusSourceTableId: "tbl9aY5ijiuIzzWam",
+      legacyHotelCensusRuntimeDependency: false,
     };
 
     // Cache the response
