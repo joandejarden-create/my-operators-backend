@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>ADP Admin Headers + Sort Fixture</title>
+  <link rel="stylesheet" href="/css/admin-ai-demand.css" />
+  <link rel="stylesheet" href="/css/admin-ai-demand-reviews.css" />
+  <link rel="stylesheet" href="/css/admin-ai-demand-table.css" />
+  <style>
+    body { background: #0b1220; color: #e8eef7; font-family: Segoe UI, sans-serif; padding: 20px; }
+    h1 { font-size: 18px; margin: 0 0 8px; }
+    p { color: #9db0c9; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <h1>AI Demand Reviews — headers + sort (fixture)</h1>
+  <p>After fix: 15 aligned columns with SVG sort indicators. Click a header to toggle sort paint.</p>
+  <div class="adr-table-wrap ada-table-shell">
+    <table class="adr-table ada-table" id="adrTable">
+      <thead id="adrTableHead">
+        <tr>
+          <th class="ada-cell-check ada-th--check no-sort" scope="col"><input type="checkbox" disabled aria-label="Select" /></th>
+          <th data-sort="propertyName"><span class="ada-th-label">Hotel</span></th>
+          <th data-sort="market"><span class="ada-th-label">Location</span></th>
+          <th data-sort="reportingMonth"><span class="ada-th-label">Reporting Month</span></th>
+          <th data-sort="currentMonitoringDate"><span class="ada-th-label">Research Date</span></th>
+          <th data-sort="priorRunDate"><span class="ada-th-label">Prior Run</span></th>
+          <th data-sort="versionLabel"><span class="ada-th-label">Version</span></th>
+          <th data-sort="reviewStatus"><span class="ada-th-label">Review Status</span></th>
+          <th data-sort="generationStatus"><span class="ada-th-label">Generation</span></th>
+          <th data-sort="coverageStatus"><span class="ada-th-label">Coverage</span></th>
+          <th data-sort="clientIssued"><span class="ada-th-label">Customer Issued</span></th>
+          <th data-sort="hasPdf"><span class="ada-th-label">PDF</span></th>
+          <th data-sort="actionCount"><span class="ada-th-label">Actions #</span></th>
+          <th data-sort="generatedAt"><span class="ada-th-label">Generated</span></th>
+          <th class="ada-col-actions no-sort">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td><td class="ada-cell-hotel"><strong>AC Hotel A Coruña</strong></td><td class="ada-cell-loc">A Coruña</td>
+          <td>2026-09</td><td>2026-09-29</td><td>—</td><td>V2 · Current</td><td>Approved</td><td>OK</td><td>READY</td><td>Yes</td><td>READY</td><td>4</td><td>2026-11-05</td><td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <script src="/js/admin-ai-demand-table.js?v=ada-table-headers-sort-v1"></script>
+  <script>
+    (function () {
+      var T = window.DealalityAiAdminTable;
+      var sortKey = "propertyName";
+      var sortDir = 1;
+      function paint() { T.paintSortState(document.getElementById("adrTableHead"), sortKey, sortDir); }
+      paint();
+      document.getElementById("adrTableHead").addEventListener("click", function (ev) {
+        var th = ev.target.closest("th[data-sort]");
+        if (!th) return;
+        var key = th.getAttribute("data-sort");
+        if (sortKey === key) sortDir *= -1;
+        else { sortKey = key; sortDir = 1; }
+        paint();
+      });
+    })();
+  </script>
+</body>
+</html>

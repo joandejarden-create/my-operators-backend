@@ -7,11 +7,14 @@
 
   var CATALOG_API = "/api/admin/ai-demand-positioning/action-plan-catalog";
   var EXPORT_API = "/api/admin/ai-demand-positioning/action-plan-export";
+  var T = window.DealalityAiAdminTable;
   var state = {
     properties: [],
     selectedId: null,
     preview: null,
     externalLinks: null,
+    sortKey: "index",
+    sortDir: 1,
   };
 
   function authFetch(url, opts) {
@@ -182,11 +185,41 @@
       esc(pack.livePriorityActionCount || 0) +
       "</p>";
 
+    if (T && typeof T.paintSortState === "function") {
+      T.paintSortState(
+        document.getElementById("aapTableHead"),
+        state.sortKey,
+        state.sortDir
+      );
+    }
+
     if (!pack.actions || !pack.actions.length) {
       tbody.innerHTML =
         '<tr><td colspan="12">No Management Action Agenda on the current Performance Review.</td></tr>';
     } else {
-      tbody.innerHTML = pack.actions
+      var actions = pack.actions.map(function (a, i) {
+        return Object.assign({}, a, {
+          index: a.order != null ? a.order : i + 1,
+          due: a.dueDate || "",
+          nextMonitoringCheck: a.nextMonitoringCheck || "",
+        });
+      });
+      if (T && typeof T.sortRows === "function") {
+        actions = T.sortRows(
+          actions,
+          {
+            key: state.sortKey,
+            dir: state.sortDir,
+            type: state.sortKey === "index" ? "number" : "string",
+            tieBreak: "title",
+          },
+          function (row, k) {
+            if (k === "due") return row.dueDate || row.due || "";
+            return row[k];
+          }
+        );
+      }
+      tbody.innerHTML = actions
         .map(function (a, i) {
           function joinList(v) {
             if (Array.isArray(v)) return v.join(" · ");
@@ -195,7 +228,7 @@
           return (
             "<tr>" +
             "<td>" +
-            (a.order || i + 1) +
+            (a.index != null ? a.index : a.order || i + 1) +
             "</td>" +
             "<td>" +
             esc(a.priority || "—") +
@@ -366,6 +399,21 @@
           err && err.message ? err.message : "Unable to load ADP Action Plan."
         );
         return;
+      }
+
+      var aapHead = document.getElementById("aapTableHead");
+      if (aapHead) {
+        aapHead.addEventListener("click", function (ev) {
+          var th = ev.target.closest("th[data-sort]");
+          if (!th) return;
+          var key = th.getAttribute("data-sort");
+          if (state.sortKey === key) state.sortDir *= -1;
+          else {
+            state.sortKey = key;
+            state.sortDir = 1;
+          }
+          renderPreview();
+        });
       }
 
       document.getElementById("aapLoadPreview").addEventListener("click", function () {
