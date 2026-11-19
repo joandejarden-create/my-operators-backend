@@ -1,0 +1,94 @@
+{
+  "label": "owwa",
+  "opportunityId": "rbc_gdi_disc_2d592c1aec6a782f",
+  "archivedSources": [
+    "reports/gdi-radisson-blu-toronto-paid-full-e2e-15usd-v1/raw-runs/cmiC_rbc_gdi_disc_2d592c1aec6a782f.json",
+    "data/group-demand-intelligence/hotels/recH9h3McgMNFQEla/opportunities.json"
+  ],
+  "materialFacts": [
+    {
+      "id": "owwa-dates",
+      "claim": "May 10–13, 2027 conference dates",
+      "matchNeedles": ["May 10, 2027", "May 13, 2027"],
+      "sourceUrl": "https://owwa.ca/event/ontarios-water-wastewater-conference-exposition-2027/",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "HIGH",
+      "changesPursuit": true,
+      "destination": "BRIEF",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "owwa-four-hotels",
+      "claim": "Committed blocks at Hotel X, Sheraton Centre, Hyatt Regency, Le Méridien Pinnacle",
+      "matchNeedles": ["Hotel X Toronto", "Sheraton Centre", "Hyatt Regency", "Le Méridien"],
+      "sourceUrl": "https://www.weao.org/2027-joint-conference-present-partner-and-connect/",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "HIGH",
+      "changesPursuit": true,
+      "destination": "BRIEF",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "owwa-enercare",
+      "claim": "Venue is Enercare Centre, Exhibition Place",
+      "matchNeedles": ["Enercare"],
+      "sourceUrl": "https://owwa.ca/event/ontarios-water-wastewater-conference-exposition-2027/",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "HIGH",
+      "changesPursuit": false,
+      "destination": "SUPPORTING",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "owwa-oct20",
+      "claim": "Hotel reservations open October 20",
+      "matchNeedles": ["October 20"],
+      "sourceUrl": "https://www.weao.org/2027-joint-conference-present-partner-and-connect/",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "MEDIUM",
+      "changesPursuit": true,
+      "destination": "SUPPORTING",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "owwa-sam",
+      "claim": "Sam Petryna Conference & Sales Manager is commercial entry",
+      "matchNeedles": ["Sam Petryna"],
+      "sourceUrl": "https://owwa.ca/about/board-and-staff/",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "HIGH",
+      "changesPursuit": true,
+      "destination": "BRIEF",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "owwa-sam-email",
+      "claim": "spetryna@owwa.ca verified on staff page (Exa)",
+      "matchNeedles": ["spetryna@owwa.ca"],
+      "sourceUrl": "https://owwa.ca/about/board-and-staff/",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "HIGH",
+      "changesPursuit": true,
+      "destination": "SUPPORTING",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "owwa-live-pickup",
+      "claim": "Live 2027 pickup / rates",
+      "matchNeedles": ["live pickup confirmed"],
+      "verificationStatus": "UNKNOWN",
+      "commercialImportance": "MEDIUM",
+      "changesPursuit": false,
+      "destination": "BRIEF",
+      "origin": "ABSENT_FROM_RESEARCH"
+    }
+  ],
+  "unsupportedRiskPatterns": [
+    {
+      "id": "owwa-pitch-as-host",
+      "description": "Pitches Radisson as primary host despite committed four-hotel blocks",
+      "test": "request an RFP as host",
+      "allowIfAlsoMatches": "do not request an RFP as host"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 # GDI 3.0 — Commercial Intelligence Brief v2 implementation plan
 
 **Track:** A — Research & Commercial Intelligence  
-**Status:** PREPARATION ONLY (no active implementation PR while PDI-2 #450 is open)  
+**Status:** Implementation PR (after PDI-2 #450 merged)  
 **Shared contract:** Same brief must serve individual hotel GDI page **and** future Portfolio Demand Intelligence tab (PDI-3). Do **not** create a second drawer engine.
 
 ## Objective
