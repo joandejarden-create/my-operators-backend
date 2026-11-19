@@ -6,6 +6,7 @@ Do not use this as a verbose changelog. Only add decisions that will matter for 
 
 ## Current Decisions
 
+- **Permanent Airtable persistence gate (2026-11-19):** Durable business intelligence cannot be FULL E2E COMPLETE from UI/API/PDF/local JSON/untracked caches alone. Every durable capability must document Airtable (or approved durable) ownership, reuse existing schema first, use stable IDs, idempotent governed writes, retrieval across restarts, provenance/history, cross-product references without unnecessary duplication, and an explicit classification: `PROTOTYPE` → `PERSISTENCE_DESIGNED` → `PERSISTENCE_VALIDATED` → `FULL_E2E_VALIDATED` → `CUSTOMER_PUBLISHED`. Integration Controller must enforce closeout evidence. Contract: [AIRTABLE_PERSISTENCE_GATE.md](./AIRTABLE_PERSISTENCE_GATE.md). Does not itself authorize Airtable writes or schema changes.
 - Dealality is a hotel deal intelligence platform, not a listing marketplace or generic lead list.
 - Dealality should create recurring opportunity intelligence, not one-time lists.
 - Airtable is the operational source of truth unless a future migration changes this.

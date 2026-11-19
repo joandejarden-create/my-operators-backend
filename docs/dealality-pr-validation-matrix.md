@@ -119,6 +119,27 @@
 
 ---
 
+## Durable intelligence — Airtable persistence gate (mandatory)
+
+Contract: `docs/ai-build-system/AIRTABLE_PERSISTENCE_GATE.md` · rule: `.cursor/rules/dealality-airtable-persistence-gate.mdc`
+
+When the PR creates or changes durable business intelligence (ADP/GDI/HE/BE/Census/HI/research/actions/metrics/publication):
+
+| Closeout item | Required |
+|---------------|----------|
+| Airtable SoT mapping (base role, table, key fields/IDs, ownership) | Yes |
+| Persistence + retrieval evidence (or explicit PROTOTYPE / PERSISTENCE_DESIGNED only) | Yes |
+| History / provenance verification | Yes (or N/A with reason) |
+| Cross-workstream identity checks | Yes |
+| Remaining persistence limitations | Yes |
+| Classification: `PROTOTYPE` \| `PERSISTENCE_DESIGNED` \| `PERSISTENCE_VALIDATED` \| `FULL_E2E_VALIDATED` \| `CUSTOMER_PUBLISHED` | Exactly one |
+
+**Risk:** **High** when Airtable writes/schema are involved. UI/API/PDF/local JSON alone cannot justify `FULL_E2E_VALIDATED`.
+
+Integration Controller must fail closed on missing closeout for durable-intelligence PRs.
+
+---
+
 ## PR description template
 
 ```markdown
@@ -135,6 +156,14 @@
 
 ## Airtable fields touched (if any)
 - Table → field → read/write
+
+## Durable intelligence persistence (if applicable)
+- SoT mapping:
+- Persistence/retrieval evidence:
+- History/provenance:
+- Cross-workstream identity:
+- Limitations:
+- Classification: PROTOTYPE | PERSISTENCE_DESIGNED | PERSISTENCE_VALIDATED | FULL_E2E_VALIDATED | CUSTOMER_PUBLISHED
 
 ## Rollback (High only)
 …
