@@ -5,6 +5,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import dotenv from "dotenv";
 import {
   runP3BM1ReadinessValidation,
   buildP3BM1PlannedOperations,
@@ -14,6 +15,15 @@ import {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
+for (const p of [
+  path.join(ROOT, ".env"),
+  "C:/Dev/dealality/my-operators-backend/.env",
+]) {
+  if (fs.existsSync(p)) {
+    dotenv.config({ path: p });
+    break;
+  }
+}
 
 const report = await runP3BM1ReadinessValidation({ memoryOnly: true });
 const summary = {
