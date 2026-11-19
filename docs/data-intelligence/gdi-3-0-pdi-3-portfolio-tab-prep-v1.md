@@ -1,8 +1,8 @@
-# GDI 3.0 PDI-3 — Portfolio tab preparation V1
+# GDI 3.0 PDI-3 — Portfolio Demand Intelligence tab
 
 **Track:** B — Market & Portfolio Intelligence  
-**Status:** Planning + fixture prep (no implementation PR while Brief v2 is active)  
-**Depends on:** PDI-2 API (#450) · Brief v2 presentation contract
+**Status:** Implementation PR (after Brief v2 #452 merged)  
+**Depends on:** PDI-2 API (#450) · Brief v2 presentation contract (#452)
 
 ## Tab placement (binding)
 
@@ -14,18 +14,17 @@
 |---|---|
 | Data | PDI-2 read-only portfolio API (`/portfolio/markets|hotels|market-opportunities`) |
 | Auth | Verified Memberstack + steward operator mapping (PDI-2 hardened) |
-| Fit matrix | PDI-1 fit classes |
-| Opportunity detail | **Existing** hotel opportunity drawer + Brief v2 narrative contract |
-| Level 1 Brief | Same Commercial Intelligence Brief fields (concise, actionable) |
-| Level 2 Supporting | Same opportunity detail architecture (evidence, contacts, sources, gaps) — **no** separate portfolio drawer |
+| Fit matrix | PDI-1 fit classes via PDI-2 `hotelAssessments` |
+| Opportunity detail | **Existing** `#gdiDrawer` + Brief v2 + Supporting Research Level 2 |
+| Unavailable | Explicit UNAVAILABLE when live registry missing; labeled `?pdiDemo=1` DEMO only |
 
-## Prep checklist
+## Checklist
 
 - [x] PDI-2 API routes + security gate merged  
-- [ ] Brief v2 narrative contract shipping (current Track A PR)  
-- [ ] UI tab id `portfolio` inserted left of Commercial Priorities  
-- [ ] Fit matrix wired to PDI-2 market-opportunities response  
-- [ ] Drawer open uses existing detail route / hash — no forked content engine  
+- [x] Brief v2 narrative contract merged (#452)  
+- [x] UI tab id `portfolio` inserted left of Commercial Priorities  
+- [x] Fit matrix wired to PDI-2 market-opportunities response  
+- [x] Drawer open uses existing `openDetail` — no forked content engine  
 - [ ] Live operator registry provisioned before customer enablement  
 
 ## Explicit non-goals until founder auth
