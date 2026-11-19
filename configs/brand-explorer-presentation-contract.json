@@ -1,0 +1,40 @@
+{
+  "version": "presentation-contract-v1",
+  "productOwned": true,
+  "geography": {
+    "taxonomyId": "footprint-region-v1",
+    "source": "FOOTPRINT_REGION_SLOT_DEFS",
+    "regions": [
+      { "slot": "footprint.region.am", "label": "Americas" },
+      { "slot": "footprint.region.cala", "label": "CALA" },
+      { "slot": "footprint.region.eu", "label": "Europe" },
+      { "slot": "footprint.region.mea", "label": "MEA" },
+      { "slot": "footprint.region.apac", "label": "APAC" }
+    ],
+    "forbiddenLabels": ["Europe / other international", "North America", "Caribbean & Latin America", "Middle East & Africa", "Asia Pacific"]
+  },
+  "flexibility": {
+    "source": "lib/brand-explorer-flexibility-levels.mjs",
+    "indicators": [
+      { "slot": "operations.flexibility.design", "label": "Design Flexibility" },
+      { "slot": "operations.flexibility.conversion", "label": "Conversion Friendliness" },
+      { "slot": "operations.flexibility.localization", "label": "Localization Flexibility" },
+      { "slot": "operations.flexibility.operational_rigidity", "label": "Operational Rigidity" },
+      { "slot": "operations.flexibility.pip", "label": "PIP Sensitivity" },
+      { "slot": "operations.flexibility.prototype", "label": "Prototype Dependence" }
+    ],
+    "levels": ["Minimal", "Low", "Moderate", "Medium", "High", "Very high"]
+  },
+  "preview": {
+    "factory": "/brand-explorer-combined.html?brandId={recordId}&beInternalPreview=1&factoryPreview=1",
+    "requiresAllowlist": true,
+    "note": "Factory preview renders only slugs in FACTORY_PREVIEW_CANDIDATE_SLUGS or BRAND_EXPLORER_FACTORY_PREVIEW_SLUGS."
+  },
+  "airtable": {
+    "basicsTable": "Brand Setup - Brand Basics",
+    "basicsStatusField": "Brand Status",
+    "activeFormula": "OR({Brand Status}='Active', {Brand Status}='Live')",
+    "presentationTable": "Brand Setup - Brand Explorer Presentation",
+    "presentationFields": ["Brand", "Slot Key", "Title", "Body", "Image", "Active", "Sort Order", "External Display Status"]
+  }
+}
