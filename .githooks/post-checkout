@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Optional Dealality ownership guard — enable with:
+#   git config core.hooksPath .githooks
+#
+# Runs AFTER checkout. Cannot undo the checkout, but fails closed for automation
+# and prints BLOCKED — CROSS_WORKSTREAM_BRANCH when the new branch is foreign.
+# Cursor SetActiveBranch does NOT run this hook (UI-only metadata).
+set -euo pipefail
+PREV_HEAD="${1:-}"
+NEW_HEAD="${2:-}"
+BRANCH_SWITCH="${3:-}"
+# Only validate on branch switches (flag=1)
+if [[ "${BRANCH_SWITCH}" != "1" ]]; then
+  exit 0
+fi
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+BRANCH="$(git branch --show-current || true)"
+if [[ -z "${BRANCH}" ]]; then
+  exit 0
+fi
+# Infer stream from registered path via preflight status (fail if foreign for switch)
+node scripts/dealality-git-preflight-v1.mjs --op switch --target-ref "${BRANCH}" --allow-dirty "*" --json > /tmp/dealality-post-checkout-preflight.json 2>/tmp/dealality-post-checkout-preflight.err || {
+  echo "dealality:post-checkout ownership guard FAILED for branch '${BRANCH}'" >&2
+  echo "Cursor SetActiveBranch is UI-only and does not authorize this checkout." >&2
+  cat /tmp/dealality-post-checkout-preflight.err >&2 || true
+  cat /tmp/dealality-post-checkout-preflight.json >&2 || true
+  exit 1
+}
+exit 0

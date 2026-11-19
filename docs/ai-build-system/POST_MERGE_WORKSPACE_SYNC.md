@@ -46,9 +46,24 @@ GDI permanent rule: a development cycle is **not** complete when a PR is merely 
 
 Report final state with one of:
 
-- `COMPLETE — MERGED_AND_HOME_SYNCED`
+- `MERGED_AND_HOME_SYNCED`
+- `MERGED_AND_HOME_SYNCED — CLEAN_WORKTREE`
 - `AWAITING_INTEGRATION_CONTROLLER`
+- `BLOCKED — PRESERVATION_REQUIRED`
+- `BLOCKED — CROSS_WORKSTREAM_BRANCH`
+- `BLOCKED — UNRESOLVED_GIT_OPERATION`
 - `BLOCKED — WORKSPACE_RESTORATION_REQUIRED`
+
+## Workspace ownership (permanent)
+
+Authoritative map: `docs/ai-build-system/worktree-registry.json`.  
+Enforcement: `npm run dealality:git-preflight` + `lib/dealality-dev-os/workspace-ownership-guard-v1.js` (optional `.githooks/post-checkout`).
+
+- Product homes must not check out another stream’s feature branches (e.g. `ws-gdi` must not check out `fix/adp-*`).
+- Unresolved merge/rebase/orphan UU index stages fail closed.
+- Stash is not a routine branch-switch workaround (`FOUNDER_AUTH_STASH_PRESERVE` required).
+- Integration Controller merges PRs remotely: `npm run dealality:remote-pr-merge -- --pr <n>` — no feature-branch checkout, no dirty-tree mutation.
+- **Cursor `SetActiveBranch` / UI branch chips are not Git authorization** and cannot bypass ownership guards.
 
 Cursor may show historical/multi-root branch chips that are **not** the active Git branch of `ws-gdi`. Verify with `git branch --show-current` and `git rev-parse HEAD` in the registered path; use `SetActiveBranch` / workspace reattach when the UI chip is stale. Do not create worktrees or reset WIP to “fix” the chip.
 
