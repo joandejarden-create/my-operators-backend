@@ -1,9 +1,9 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.23`  
+**Version:** `hotel-explorer-quality-standard-v1.24`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
-**Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1` · `npm run test:he-hotel-news-from-market-alerts-v1` · `npm run test:he-guest-sentiment-brand-operator-v1` · `npm run test:he-market-alerts-closeout-v1` · `npm run test:he-async-section-loading-v1` · `npm run test:he-contact-intelligence-directory-ux-v1` · `npm run test:he-loading-ux-toast-v1`
+**Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1` · `npm run test:he-hotel-news-from-market-alerts-v1` · `npm run test:he-guest-sentiment-brand-operator-v1` · `npm run test:he-market-alerts-closeout-v1` · `npm run test:he-async-section-loading-v1` · `npm run test:he-contact-intelligence-directory-ux-v1` · `npm run test:he-loading-ux-toast-v1` · `npm run test:he-5-0-full-e2e-pilot-v1`
 
 ## Purpose
 
@@ -249,6 +249,17 @@ See `scripts/test-he-product-quality-gates-v1.mjs` and the lessons registry `reg
 ## Research / population workflow
 
 New hotels must reuse HPC + HI intelligence, run the commercial description rubric, normalize amenities, render ownership/contact/rooms with shared components, and attach evidence. Human corrections update **shared rules** (this standard + registry + code), not one-off hotel data.
+
+### HE 5.0 Full E2E engine (HE-QL-039)
+
+Reusable path: `AUDIT → REUSE → RESEARCH → VERIFY → DEDUPLICATE → MAP → DRY_RUN → APPROVAL → APPLY → RE_READ → UI_VALIDATE`.
+
+- Module: `lib/hotel-intelligence/he-5-0-full-e2e/` · runner `npm run he:5-0-full-e2e-pilot` · gate `npm run test:he-5-0-full-e2e-pilot-v1`.
+- Free-first research before any paid provider; shared paid ceiling must be cost-bounded (pilot: **$50** across the authorized cohort).
+- Never auto-classify portfolio *candidates* as verified current holdings.
+- Surfe remains click-only / session-only / nonpersistent.
+- Production Airtable apply requires a **separate** founder authorization after dry-run review.
+- Second run with no new evidence must not duplicate records, overwrite verified facts, or re-spend unnecessarily.
 
 ## Safety
 

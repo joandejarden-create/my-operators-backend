@@ -47,3 +47,14 @@ DISCOVER → MATCH → RESEARCH → VERIFY → DRY-RUN → APPROVED APPLY → RE
 ## Airtable persistence classification
 
 Until founder-approved apply + re-read: at most `PERSISTENCE_DESIGNED` / staged dry-run. Not `FULL_E2E_VALIDATED`.
+
+## HE 5.0 Full E2E supervisor (extends this workflow)
+
+`lib/hotel-intelligence/he-5-0-full-e2e/` — eight-hotel free-first research + shared $50 budget ledger + 12-tab field gap matrix + dry-run package.
+
+```bash
+npm run he:5-0-full-e2e-pilot
+npm run test:he-5-0-full-e2e-pilot-v1
+```
+
+Reports: `reports/hotel-explorer/he-5-0-pilot/`. **STOP** at founder Airtable apply gate (`applyAuthorized: false`).

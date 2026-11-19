@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.23",
+  "version": "hotel-explorer-founder-quality-lessons-v1.24",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -13,7 +13,9 @@
     "test:he-async-section-loading-v1",
     "test:he-contact-intelligence-directory-ux-v1",
     "test:he-loading-ux-toast-v1",
-    "test:he-public-contact-channel-hierarchy-v1"
+    "test:he-public-contact-channel-hierarchy-v1",
+    "test:he-5-0-full-e2e-pilot-v1",
+    "test:he-mullen-pilot-hpc-population-v1"
   ],
   "referenceHotels": {
     "uxGolden": {
@@ -375,6 +377,15 @@
       "sharedComponent": "hotel-explorer.js; hotel-intelligence-workspace.js; guest-sentiment-model-v1.js; hotel-explorer.css; dealality-chain-scale-theme.js; hotel-news-from-market-alerts-v1.js",
       "regressionTest": "he_guest_sentiment_tab_restructure_gates; he_guest_sentiment_brand_operator_gates",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/he-ql-038-guest-sentiment-*.png"
+    },
+    {
+      "id": "HE-QL-039",
+      "originalProblem": "Hotel Explorer needed a reusable research-to-Airtable-to-UI Full E2E population engine, not one-off hotel research reports; paid spend and production writes risked unbounded cost and unverified holdings",
+      "rootCause": "Research, identity matching, budget ledgers, and dry-run persistence existed as separate pilots without a shared eight-hotel supervisor, $50 hard cap, 12-tab field gap matrix, or founder STOP gate before apply",
+      "approvedStandard": "HE 5.0 engine: AUDIT→REUSE→free-first RESEARCH→VERIFY→MAP→DRY_RUN→STOP awaiting founder apply; shared $50 paid ceiling with reserve/settle ledger; reuse HPC population + HI graph; never auto-mark Mullen portfolio candidates as verified holdings; no Surfe persistence; no production Airtable writes without separate founder auth; second run must be idempotent",
+      "sharedComponent": "lib/hotel-intelligence/he-5-0-full-e2e/*; hpc-population/mullen-pilot-*; research-engine-v1 budget ledgers; HE_HPC_POPULATION_WORKFLOW_V1.md",
+      "regressionTest": "he_5_0_full_e2e_pilot_gates",
+      "browserEvidence": "reports/hotel-explorer/he-5-0-pilot/HE50-FOUNDER-COMPLETION-REPORT.md"
     }
   ]
 }
