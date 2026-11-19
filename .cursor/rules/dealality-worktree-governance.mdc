@@ -27,6 +27,8 @@ Run fail-closed preflight:
 npm run dealality:git-preflight -- --op <commit|push|merge|rebase|switch|checkout|stash|reset|worktree-add|worktree-remove|force-push|pr-sync|post-merge-sync> --stream <integration|he|adp|gdi>
 ```
 
+For `switch` / `checkout`, always pass `--target-ref <branch>` (accepted alias: `--to-branch`). Missing or unknown flags fail closed with a nonzero exit code — they must never return OK as silent authorization.
+
 Verify **actual** worktree root and branch match the stream. On mismatch: **STOP**.
 
 **Permanent ownership guard:** cross-workstream feature checkouts are refused (e.g. GDI must not check out `fix/adp-*`). Unresolved merges/rebases and stash-as-switch-workaround fail closed. Cursor `SetActiveBranch` is UI-only and does **not** authorize Git checkout.
