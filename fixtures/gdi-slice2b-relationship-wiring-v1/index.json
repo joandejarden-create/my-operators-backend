@@ -1,0 +1,48 @@
+{
+  "version": "gdi-slice2b-relationship-wiring-fixtures-v1",
+  "note": "Offline fixtures for DG/Partner/Program/Signal relationship wiring. No production writes.",
+  "cases": [
+    {
+      "id": "nado_primary_org",
+      "source": "fixtures/gdi-slice2a-persistence-honesty-v1/recLuxvwwxID7U2B8-gdi_opp_nado_ddaa_washcon_2028.json",
+      "expect": {
+        "primaryDg": true,
+        "hotelFit": true,
+        "signal": true,
+        "programDeferredWithoutRecurrence": true
+      }
+    },
+    {
+      "id": "icpic_with_partner_planner",
+      "file": "icpic-with-partner-planner.json",
+      "expect": {
+        "primaryDg": true,
+        "partnerDg": true,
+        "distinctPartnerId": true
+      }
+    },
+    {
+      "id": "guidepoint_cross_hotel",
+      "file": "guidepoint-cross-hotel.json",
+      "expect": {
+        "sharedDgAcrossHotels": true,
+        "distinctFitIds": true,
+        "distinctOpportunityIds": true
+      }
+    },
+    {
+      "id": "confidential_strip",
+      "file": "confidential-feedback-plant.json",
+      "expect": {
+        "noHotelSalesFeedbackOnDg": true
+      }
+    },
+    {
+      "id": "recurring_program",
+      "file": "recurring-program-evidence.json",
+      "expect": {
+        "programCreated": true
+      }
+    }
+  ]
+}
