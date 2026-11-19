@@ -16,16 +16,17 @@ After each successful PR merge into `origin/main`, keep the three permanent prod
 | HE | `C:/Dev/dealality/ws-hotel-explorer` | `ws/hotel-explorer` |
 | ADP | `C:/Dev/dealality/ws-adp` | `ws/adp` |
 | GDI | `C:/Dev/dealality/ws-gdi` | `ws/gdi` |
+| BE | `C:/Dev/dealality/ws-brand-explorer` | `ws/brand-explorer` |
 
 ## Mandatory Integration Controller step
 
 After merge confirmation:
 
 ```bash
-npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi> --pr <n>
+npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi|be> --pr <n>
 # or: --merged-branch <feature-branch>
 # review plan, then:
-npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi> --pr <n> --apply
+npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi|be> --pr <n> --apply
 ```
 
 Default is **dry-run**. `--apply` performs only safe fetch / verified backup (when dirty) / switch-home / `merge --ff-only origin/main` / preflight verify.
@@ -108,7 +109,7 @@ npm run dealality:post-merge-sync -- --mode peer-sync --apply
 After apply, each mutated product workspace must pass:
 
 ```bash
-npm run dealality:git-preflight -- --op status-check --stream <he|adp|gdi>
+npm run dealality:git-preflight -- --op status-check --stream <he|adp|gdi|be>
 ```
 
 Gate: `npm run test:dealality-post-merge-workspace-sync-v1`

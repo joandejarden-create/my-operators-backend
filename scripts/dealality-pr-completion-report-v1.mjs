@@ -80,7 +80,7 @@ if (audit) {
 
 if (!stream) {
   console.error(
-    "Usage: dealality:pr-completion-report -- --stream <he|adp|gdi|integration> [--pr n] [--audit] [--coverage]",
+    "Usage: dealality:pr-completion-report -- --stream <he|adp|gdi|be|integration> [--pr n] [--audit] [--coverage]",
   );
   process.exit(2);
 }

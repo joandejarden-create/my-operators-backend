@@ -15,6 +15,7 @@ Applies to **all** Dealality development in this repository (GDI, ADP, Census, B
    - Hotel Explorer — `C:\Dev\dealality\ws-hotel-explorer`
    - ADP — `C:\Dev\dealality\ws-adp`
    - GDI — `C:\Dev\dealality\ws-gdi`
+   - Brand Explorer — `C:\Dev\dealality\ws-brand-explorer`
    Registry: `docs/ai-build-system/worktree-registry.json`. Rules: `.cursor/rules/dealality-worktree-governance.mdc`.
 3. `main` is the authoritative integration branch.
 4. Start every new task with `npm run dealality:git-preflight` and synchronize with latest `origin/main` when safe.
@@ -34,12 +35,12 @@ Applies to **all** Dealality development in this repository (GDI, ADP, Census, B
 7. Run CI and resolve all failures on the latest commit (superseded runs may cancel).
 8. **Merge the PR into `main` before starting the next task** (especially GDI hotel/phase sequencing).
 9. Confirm the merge commit exists on `origin/main`.
-10. **Run post-merge product workspace sync** (mandatory for HE / ADP / GDI):
+10. **Run post-merge product workspace sync** (mandatory for HE / ADP / GDI / BE):
     ```bash
-    npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi> --pr <n>
-    npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi> --pr <n> --apply
+    npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi|be> --pr <n>
+    npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi|be> --pr <n> --apply
     ```
-    Safely return the affected registered product workspace to its home branch (explicit `--pr` / `--merged-branch` identity required), fast-forward to `origin/main`, verify `dealality:git-preflight` status-check, and peer-fetch/FF the other two product homes **only when they are not on active unmerged tasks**. Preserve all dirty/untracked files (verified backup before dirty return-home); never reset/clean/stash-discard; do not create extra worktrees for ordinary sync. See `docs/ai-build-system/POST_MERGE_WORKSPACE_SYNC.md`.
+    Safely return the affected registered product workspace to its home branch (explicit `--pr` / `--merged-branch` identity required), fast-forward to `origin/main`, verify `dealality:git-preflight` status-check, and peer-fetch/FF the other product homes **only when they are not on active unmerged tasks**. Preserve all dirty/untracked files (verified backup before dirty return-home); never reset/clean/stash-discard; do not create extra worktrees for ordinary sync. See `docs/ai-build-system/POST_MERGE_WORKSPACE_SYNC.md`.
 11. **Return the primary checkout to `main` when safe** and synchronize with a safe fast-forward (`git switch main` then `git merge --ff-only origin/main`, or equivalent). If the primary is dirty, preserve it and sync product workspaces instead (`SKIP_INTEGRATION_DIRTY`).
 12. Verify expected code, publication packages / CURRENT pointers, and Git working-tree state locally.
 13. Ensure Cursor is not left unnecessarily attached to the merged feature branch (`SetActiveBranch` to the stream home branch — or `main` for Integration — when supported). Repository Git rules alone may not update the Cursor UI branch chip—if the chip is wrong, say so and give manual UI reattachment steps.

@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-18",
+  "updatedAt": "2026-11-19",
   "updatedBy": "Integration Controller",
   "notes": [
     "Static intent only. Live HEAD/dirty/PR state must be computed by dealality:worktree-audit / registry-status.",
     "Only the Integration Controller may edit this file (dedicated tiny PR).",
     "Product chats must not rewrite this registry.",
-    "Product home branches ws/hotel-explorer, ws/adp, ws/gdi track origin/main tips; task work uses feat|fix|docs|research|exec branches.",
+    "Product home branches ws/hotel-explorer, ws/adp, ws/gdi, ws/brand-explorer track origin/main tips; task work uses feat|fix|docs|research|exec branches.",
     "After each PR merge: npm run dealality:post-merge-sync (return affected product home, FF origin/main, peer-fetch idle homes). Never auto-switch active tasks; preserve dirty WIP; no extra worktrees for ordinary sync.",
     "Universal completion: npm run dealality:pr-completion-report (home sync + CLEAN_WORKTREE|PRESERVED_DIRTY|BLOCKED). Cross-workstream feature branches are fail-closed on mutations. See PR_COMPLETION_AND_WORKSPACE_OWNERSHIP.md."
   ],
@@ -62,6 +62,19 @@
       "allowsProductFeatureBranches": true,
       "status": "active",
       "statusNotes": "Provisioned 2026-11-18 from origin/main after PR #383. Home branch ws/gdi. Do not import primary dirty GDI until preservation review completes."
+    },
+    {
+      "id": "brand-explorer",
+      "stream": "be",
+      "role": "Brand Explorer — profile factory, Active/Live universe, Tab Factory, publication gates",
+      "path": "C:/Dev/dealality/ws-brand-explorer",
+      "expectedBranchPattern": "^(ws/brand-explorer|chore/dev-os-|(feat|fix|docs|research)/(brand-explorer|be))",
+      "defaultBranch": "ws/brand-explorer",
+      "lifecycle": "permanent",
+      "owner": "be-product-chat",
+      "allowsProductFeatureBranches": true,
+      "status": "active",
+      "statusNotes": "Provisioned 2026-11-19 from origin/main for independent BE Phase 0 ownership. Home branch ws/brand-explorer (main not attached here). Do not develop BE in HE/ADP/GDI/Integration worktrees."
     }
   ],
   "temporaryWorkspaces": [
@@ -108,7 +121,7 @@
       "owner": "integration",
       "status": "active",
       "safeRemovalEligibility": "founder_approved_after_pr_merge_and_clean_verify",
-      "statusNotes": "Prior radar acceptance gate PR #399 merged; same path now hosts chore/dev-os-pr-completion-ownership-v1."
+      "statusNotes": "Prior radar acceptance gate PR #399 merged; same path now hosts chore/dev-os-pr-completion-ownership-v1. Extended 2026-11-19 with permanent Brand Explorer (be) stream registration."
     }
   ],
   "protectedRefs": [
@@ -120,7 +133,8 @@
     "refs/backup/hotel-explorer-accidental-merge-20261118-b",
     "ws/hotel-explorer",
     "ws/adp",
-    "ws/gdi"
+    "ws/gdi",
+    "ws/brand-explorer"
   ],
   "sharedFileGlobs": [
     "package.json",

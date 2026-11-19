@@ -1,7 +1,7 @@
 # Universal PR completion and workspace ownership (Dev OS)
 
 **Contract:** `DEALALITY_PR_COMPLETION_AND_WORKSPACE_OWNERSHIP_V1`  
-**Applies to:** GDI (`ws-gdi` / `ws/gdi`), ADP (`ws-adp` / `ws/adp`), Hotel Explorer (`ws-hotel-explorer` / `ws/hotel-explorer`), Integration Controller  
+**Applies to:** GDI (`ws-gdi` / `ws/gdi`), ADP (`ws-adp` / `ws/adp`), Hotel Explorer (`ws-hotel-explorer` / `ws/hotel-explorer`), Brand Explorer (`ws-brand-explorer` / `ws/brand-explorer`), Integration Controller  
 
 ## Non-negotiable
 
