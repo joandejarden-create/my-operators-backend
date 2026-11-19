@@ -15,6 +15,7 @@ import {
 import { listGdiSelectableHotels } from "../lib/group-demand-intelligence/index.js";
 import {
   deriveGdiReportStatus,
+  enrichGdiAdminShareFlagsWithProduction,
   normalizeGdiAdminReportRow,
   reconcileGdiAdminReportCounts,
   resolveGdiAdminShareFlags,
@@ -140,10 +141,16 @@ export async function getAdminGdiReportCatalog(req, res) {
       }
 
       // Share availability only — no signed URLs / tokens in catalog payload.
-      const shareFlags = resolveGdiAdminShareFlags(hotelId, {
-        req,
-        confirmUrls: true,
-      });
+      // Local DEV reconstruct can yield localhost URLs for shares that are
+      // authorized in production — confirm those via the internal resolver
+      // (same path as Open/Copy). Never mint shares from catalog.
+      const shareFlags = await enrichGdiAdminShareFlagsWithProduction(
+        resolveGdiAdminShareFlags(hotelId, {
+          req,
+          confirmUrls: true,
+        }),
+        hotelId
+      );
 
       const parityInv = parityByHotel.get(hotelId) || null;
       const parityStored = getHotelParityStatus(hotelId) || null;
