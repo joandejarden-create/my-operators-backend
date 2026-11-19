@@ -1,9 +1,9 @@
 {
   "schema": "gdi_ai_agent_exa_powered_parity_experiment_v1",
-  "version": "2026-11-19.1",
-  "status": "E0_HARNESS_READY_SPEND_DENIED",
-  "paidResearchAuthorized": false,
-  "paidResearchExecuted": false,
+  "version": "2026-11-19.2",
+  "status": "E1_COMPLETE_REJECT",
+  "paidResearchAuthorized": true,
+  "paidResearchExecuted": true,
   "e0": {
     "harnessVersion": "gdi-ai-agent-exa-parity-e0-harness-v1",
     "actualPaidUsd": 0,
@@ -65,7 +65,10 @@
       ],
       "hardCeilingUsdTotal": 20,
       "perArmPerCaseCeilingUsd": 1.25,
-      "preferredEffort": "medium"
+      "preferredEffort": "medium",
+      "executed": true,
+      "actualPaidUsd": 0.88,
+      "verdict": "REJECT"
     },
     "E2": {
       "defaultAuthorized": false
@@ -111,14 +114,29 @@
     "cannotAdoptOnZeroMaterialCommercialLifts": true
   },
   "recommendation": {
-    "conductBoundedPaidExperimentAfterSeparateAuth": true,
+    "conductBoundedPaidExperimentAfterSeparateAuth": false,
     "executePaidResearchNow": false,
-    "reason": "Wave1 official-page ITERATE does not test Exa-powered baseline; equal-budget Exa parity is the smallest valid commercial test"
+    "e1Complete": true,
+    "e1Verdict": "REJECT",
+    "authorizeE2": false,
+    "integrateAdaptiveAgentIntoProductionGdi": false,
+    "reason": "E1 live Exa-parity spent $0.88 with 0/8 evidence-grounded materialLift cases; adaptive planning did not beat existing Exa-powered GDI commercially"
   },
   "writes": {
     "airtable": false,
     "customerPublication": false,
     "productionPersistence": false
   },
-  "protocolDoc": "docs/data-intelligence/gdi-ai-agent-exa-powered-parity-experiment-v1.md"
+  "protocolDoc": "docs/data-intelligence/gdi-ai-agent-exa-powered-parity-experiment-v1.md",
+  "e1": {
+    "harnessVersion": "gdi-ai-agent-exa-parity-e1-harness-v1",
+    "actualPaidUsd": 0.88,
+    "commercialVerdict": "REJECT",
+    "independentVerdict": "REJECT",
+    "materialLiftCases": 0,
+    "resultsPath": "reports/gdi-ai-agent-exa-powered-parity-experiment-v1/E1_HARNESS_RESULTS.json",
+    "founderReportPath": "reports/gdi-ai-agent-exa-powered-parity-experiment-v1/E1_FOUNDER_REPORT.md",
+    "independentEvalPath": "reports/gdi-ai-agent-exa-powered-parity-experiment-v1/E1_INDEPENDENT_EVALUATION.json",
+    "authorizationId": "gdi-ai-agent-exa-parity-e1-founder-20usd-v1"
+  }
 }

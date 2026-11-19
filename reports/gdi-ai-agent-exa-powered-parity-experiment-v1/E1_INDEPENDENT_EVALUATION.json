@@ -1,0 +1,100 @@
+{
+  "schema": "gdi_ai_agent_exa_parity_e1_independent_evaluation_v1",
+  "evaluatedAt": "2026-11-19T10:16:58.972Z",
+  "authorizationId": "gdi-ai-agent-exa-parity-e1-founder-20usd-v1",
+  "actualPaidUsd": 0.88,
+  "ceilingUsd": 20,
+  "focusCaseCount": 8,
+  "materialLiftCaseCount": 0,
+  "materialLiftCaseIds": [],
+  "findings": {
+    "genuinelyNewVerifiedDemandEvidence": {
+      "armAVsArmBDeltaAcrossCases": 0,
+      "note": "Every case tied on genuinelyNewVerifiedCount; adaptive planning produced no incremental verified demand evidence vs existing Exa GDI policy."
+    },
+    "newlyVerifiedNamedCommercialBuyers": {
+      "armAVsArmBDeltaAcrossCases": 0,
+      "note": "Named-contact counts tied on every case (0 or 1). No Arm-B-only buyer/entry-point gains."
+    },
+    "materialDemandThesisImprovements": {
+      "observed": false,
+      "note": "Thesis overlays from live Exa signals did not create evidence-grounded materialLift vs Arm A."
+    },
+    "hotelSpecificRecommendedActions": {
+      "observedIncremental": false
+    },
+    "eligibilityAndDemotions": {
+      "armBCorrectDemotionStops": [
+        "gdi_opp_governor_s_hurricane_conference_2027_26",
+        "gdi_opp_ajas_hq_rockville_watch",
+        "gdi_opp_wrcamp_altaroma_2027_altaroma_organizer",
+        "camp_ivirma_2027_castillo"
+      ],
+      "falseSalesReadyWhileChallengerBlocked": {
+        "opportunityId": "rb_gdi_disc_dc428c1bd4c4e412",
+        "armA": true,
+        "armB": true,
+        "note": "Shared frozen-opportunity eligibility/challenger tension (ISCT). Arm B stop reason was STOP_RESEARCH_CONTINUATION_CHALLENGER_GUARD — not unique adaptive false-promotion pressure. Automated gate still REJECTS on this pattern."
+      },
+      "noAutomaticSalesReadyPromotionsBeyondExistingGates": true
+    },
+    "falsePositivesAndDuplicates": {
+      "adaptiveUniqueFalsePositives": 0,
+      "note": "No Arm-B-unique false positives observed relative to Arm A."
+    },
+    "costAndEfficiency": {
+      "totalPaidUsd": 0.88,
+      "perCaseBothArmsUsd": [
+        0.21,
+        0.21,
+        0.21,
+        0.21,
+        0.01,
+        0.01,
+        0.01,
+        0.01
+      ],
+      "armBReformulationsObserved": true,
+      "armBDistinctPlanningAllCases": true,
+      "researchEfficiencyGain": "none_commercially_material",
+      "note": "Adaptive planning used distinct tool sequences and reformulations but matched Arm A spend and yield on commercial evidence metrics."
+    },
+    "evidenceLossesOrPrematureStopping": {
+      "observedVsArmA": false,
+      "note": "Arm B did not lose verified evidence relative to Arm A on the eight frozen cases."
+    },
+    "drawerReadyOnlyLift": {
+      "countedAsMaterial": false
+    }
+  },
+  "attribution": {
+    "gainsAttributedToAdaptiveAgentPlanning": [],
+    "summary": "No independently verified incremental commercial gains to attribute to Dealality adaptive planning under matched Exa capabilities."
+  },
+  "automatedDecision": {
+    "decision": "REJECT",
+    "reason": "FALSE_SALES_READY_PRESSURE"
+  },
+  "independentChallengerVerdict": {
+    "decision": "REJECT",
+    "reason": "NO_INCREMENTAL_COMMERCIAL_INTELLIGENCE_VS_EXISTING_EXA_GDI",
+    "rationale": [
+      "Zero evidence-grounded materialLift cases (0/8).",
+      "Arm A and Arm B tied on verified named contacts and genuinely-new verified evidence on every frozen case.",
+      "Correct demotions on speculative/competitor/forward-looking slots are desirable but do not constitute commercial lift over the existing Exa-powered workflow (Arm A also did not falsely promote those slots).",
+      "Adaptive reformulation and tool sequencing were exercised but did not unlock additional hotel-specific buyers, demand facts, or eligibility upgrades beyond Arm A.",
+      "ISCT SALES_READY+challengerBlocked appears on both arms from the frozen baseline — not Arm-B-unique agent pressure."
+    ],
+    "adoptMeansIfEver": "Further selective validation only — not production deployment",
+    "doesNotAuthorize": [
+      "production integration",
+      "Airtable writes",
+      "customer publication",
+      "broader agent architecture",
+      "CMAA/DDAA expansion",
+      "cohort expansion"
+    ]
+  },
+  "sourceReport": "E1_HARNESS_RESULTS.json",
+  "finishedAt": "2026-11-19T10:15:58.953Z"
+}
