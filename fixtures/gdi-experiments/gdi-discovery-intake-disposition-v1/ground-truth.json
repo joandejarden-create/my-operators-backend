@@ -1,0 +1,150 @@
+{
+  "schema": "gdi_discovery_intake_disposition_ground_truth_v1",
+  "version": "2026-11-19.1",
+  "notes": [
+    "Independently labeled for offline classifier validation.",
+    "Labels are held as evaluation ground truth — not model inputs beyond opportunity fields already on disk.",
+    "Phase 2B CMAA/DDAA stopped cases are excluded from scoring cohorts.",
+    "Competitor-placed includes overflow plays where a named host is already committed."
+  ],
+  "excludedOpportunityIds": [
+    "gdi_lmc_00562bf81b1e1957",
+    "gdi_opp_2027_ddaa_annual_conference_8"
+  ],
+  "hotels": [
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelName": "Bethesda Marriott",
+      "role": "primary_frozen_inventory"
+    },
+    {
+      "hotelId": "recrPQcZg7SFARRb2",
+      "hotelName": "YOTEL Geneva Lake",
+      "role": "optional_supplement"
+    }
+  ],
+  "rows": [
+    {
+      "opportunityId": "gdi_opp_asa_advance_2027_disqualified",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "expectedDisposition": "COMPETITOR_PLACED",
+      "labelRationale": "VENUE_ALREADY_SELECTED at Gaylord National"
+    },
+    {
+      "opportunityId": "gdi_opp_ecs_251_2027_overflow",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "expectedDisposition": "COMPETITOR_PLACED",
+      "labelRationale": "WEWCC + Marriott Marquis host; overflow-only guestroom status"
+    },
+    {
+      "opportunityId": "gdi_opp_nado_ddaa_washcon_2027_overflow",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "expectedDisposition": "COMPETITOR_PLACED",
+      "labelRationale": "Crystal Gateway Marriott named host; overflow play retained"
+    },
+    {
+      "opportunityId": "gdi_s4912_732496c2f8aa",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "expectedDisposition": "COMPETITOR_PLACED",
+      "labelRationale": "Hosted at Bethesda North Marriott — distinct from target Bethesda Marriott"
+    },
+    {
+      "opportunityId": "gdi_opp_ntca_2027_disqualified",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "expectedDisposition": "COMPETITOR_PLACED",
+      "labelRationale": "Hyatt Regency Washington named host despite TOO_EARLY qualifier noise"
+    },
+    {
+      "opportunityId": "gdi_opp_aao_2028_annual_meeting_10",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "expectedDisposition": "TOO_EARLY_WATCH",
+      "labelRationale": "qualificationFailureReason=TOO_EARLY; lodging not evidenced"
+    },
+    {
+      "opportunityId": "gdi_opp_series_high_risk_high_reward_research_symposium_2027",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "expectedDisposition": "TOO_EARLY_WATCH",
+      "labelRationale": "TOO_EARLY NIH symposium"
+    },
+    {
+      "opportunityId": "gdi_opp_2027_nci_rna_biology_symposium_7",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "expectedDisposition": "TOO_EARLY_WATCH",
+      "labelRationale": "TOO_EARLY NCI symposium"
+    },
+    {
+      "opportunityId": "gdi_opp_ahima_advocacy_2027",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "expectedDisposition": "OPEN",
+      "labelRationale": "Hotel TBA with verified housing program — open/unknown sourcing"
+    },
+    {
+      "opportunityId": "gdi_opp_acc_legislative_2027",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "expectedDisposition": "OPEN",
+      "labelRationale": "Washington DC legislative conference; hotel not named"
+    },
+    {
+      "opportunityId": "gdi_opp_msysa_state_cup_2027",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "expectedDisposition": "OPEN",
+      "labelRationale": "Verified multi-weekend housing program without competitor host"
+    },
+    {
+      "opportunityId": "gdi_opp_nado_ddaa_washcon_2028",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "expectedDisposition": "OPEN",
+      "labelRationale": "2028 edition hotel not yet named (distinct from 2027 Crystal Gateway host)"
+    },
+    {
+      "opportunityId": "disp_recLuxvwwxID7U2B8_greater_bethesda_chamber_of_commerce",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "expectedDisposition": "OPEN",
+      "labelRationale": "Recurring local account demand; no named competitor host for target hotel"
+    }
+  ],
+  "yieldProbeCases": [
+    {
+      "id": "fixture_probe",
+      "retrievalMode": "FIXTURE",
+      "fixture": true,
+      "isLive": false,
+      "freshRetrievals": 0,
+      "expectedYield": "FIXTURE"
+    },
+    {
+      "id": "historical_probe",
+      "retrievalMode": "HISTORICAL_REPLAY",
+      "historical": true,
+      "isLive": false,
+      "freshRetrievals": 0,
+      "expectedYield": "HISTORICAL_REPLAY"
+    },
+    {
+      "id": "inventory_reopen_probe",
+      "retrievalMode": "INVENTORY_REOPEN",
+      "inventoryReopen": true,
+      "isLive": false,
+      "freshRetrievals": 0,
+      "expectedYield": "INVENTORY_REOPEN"
+    },
+    {
+      "id": "live_new_probe",
+      "retrievalMode": "FRESH_RETRIEVAL",
+      "isLive": true,
+      "freshRetrievals": 2,
+      "organizationName": "Synthetic Live Org Probe LLC",
+      "title": "Synthetic Live Demand Probe 2028",
+      "expectedYield": "LIVE_NEW"
+    },
+    {
+      "id": "false_live_from_fixture_blocked",
+      "retrievalMode": "FIXTURE",
+      "fixture": true,
+      "isLive": true,
+      "freshRetrievals": 5,
+      "expectedYield": "FIXTURE",
+      "note": "Even if flags lie, fixture must not become LIVE_NEW"
+    }
+  ]
+}

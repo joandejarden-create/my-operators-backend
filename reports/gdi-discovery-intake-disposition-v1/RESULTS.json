@@ -1,0 +1,860 @@
+{
+  "schema": "gdi_discovery_intake_disposition_v1",
+  "version": "2026-11-19.1",
+  "intakeModuleVersion": "gdi-discovery-intake-disposition-v1",
+  "startedAt": "2026-11-19T08:24:39.658Z",
+  "finishedAt": "2026-11-19T08:24:39.745Z",
+  "paidUsd": 0,
+  "airtableWrites": 0,
+  "customerPublication": false,
+  "phase2bExcludedOpportunityIds": [
+    "gdi_lmc_00562bf81b1e1957",
+    "gdi_opp_2027_ddaa_annual_conference_8"
+  ],
+  "hotels": [
+    {
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelName": "Bethesda Marriott",
+      "role": "primary_frozen_inventory",
+      "opportunityCount": 86,
+      "inventoryMissing": false
+    },
+    {
+      "hotelId": "recrPQcZg7SFARRb2",
+      "hotelName": "YOTEL Geneva Lake",
+      "role": "optional_supplement",
+      "opportunityCount": 42,
+      "inventoryMissing": false
+    }
+  ],
+  "yieldProbes": {
+    "results": [
+      {
+        "id": "fixture_probe",
+        "expected": "FIXTURE",
+        "predicted": "FIXTURE",
+        "ok": true,
+        "claimsGenuineNewDiscovery": false,
+        "novelty": [
+          "NONE"
+        ]
+      },
+      {
+        "id": "historical_probe",
+        "expected": "HISTORICAL_REPLAY",
+        "predicted": "HISTORICAL_REPLAY",
+        "ok": true,
+        "claimsGenuineNewDiscovery": false,
+        "novelty": [
+          "NONE"
+        ]
+      },
+      {
+        "id": "inventory_reopen_probe",
+        "expected": "INVENTORY_REOPEN",
+        "predicted": "INVENTORY_REOPEN",
+        "ok": true,
+        "claimsGenuineNewDiscovery": false,
+        "novelty": [
+          "NONE"
+        ]
+      },
+      {
+        "id": "live_new_probe",
+        "expected": "LIVE_NEW",
+        "predicted": "LIVE_NEW",
+        "ok": true,
+        "claimsGenuineNewDiscovery": true,
+        "novelty": [
+          "NEWLY_IDENTIFIED_ORGANIZATION",
+          "NEWLY_DISCOVERED_DEMAND_OPPORTUNITY",
+          "NEWLY_RETRIEVED_EVIDENCE"
+        ]
+      },
+      {
+        "id": "false_live_from_fixture_blocked",
+        "expected": "FIXTURE",
+        "predicted": "FIXTURE",
+        "ok": true,
+        "claimsGenuineNewDiscovery": false,
+        "novelty": [
+          "NONE"
+        ]
+      }
+    ],
+    "passCount": 5,
+    "total": 5,
+    "zeroHistoricalOrFixtureLabeledLiveNew": true,
+    "illegalLiveNew": []
+  },
+  "disposition": {
+    "rows": [
+      {
+        "opportunityId": "gdi_opp_asa_advance_2027_disqualified",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "organizationName": "American Society of Anesthesiologists",
+        "expected": "COMPETITOR_PLACED",
+        "predicted": "COMPETITOR_PLACED",
+        "ok": true,
+        "labelRationale": "VENUE_ALREADY_SELECTED at Gaylord National",
+        "reasons": [
+          "Named host/competitor evidenced: Gaylord National"
+        ],
+        "displacementOpportunity": false,
+        "watch": null,
+        "discoveryYieldLabel": "INVENTORY_REOPEN",
+        "claimsGenuineNewDiscovery": false,
+        "sharedDemandKey": "american society of anesthesiologists::asa advance gaylord national national harbor",
+        "drawerReady": false,
+        "drawerGaps": [
+          "credible_named_buyer_or_entry_point"
+        ],
+        "salesReadyBlockedByIntake": true
+      },
+      {
+        "opportunityId": "gdi_opp_ecs_251_2027_overflow",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "organizationName": "The Electrochemical Society (ECS)",
+        "expected": "COMPETITOR_PLACED",
+        "predicted": "COMPETITOR_PLACED",
+        "ok": true,
+        "labelRationale": "WEWCC + Marriott Marquis host; overflow-only guestroom status",
+        "reasons": [
+          "Named host/competitor evidenced: Marriott Marquis"
+        ],
+        "displacementOpportunity": true,
+        "watch": {
+          "evidenceGap": "Primary host is placed; overflow/alternate lodging is hypothesized or partial.",
+          "revisitTrigger": "Revisit if the host block sells out or overflow hotels are solicited publicly.",
+          "suggestedReviewTiming": "Monitor 60–120 days before event start for overflow solicitation."
+        },
+        "discoveryYieldLabel": "INVENTORY_REOPEN",
+        "claimsGenuineNewDiscovery": false,
+        "sharedDemandKey": "the electrochemical society::251st ecs meeting wewcc marriott marquis",
+        "drawerReady": true,
+        "drawerGaps": [],
+        "salesReadyBlockedByIntake": true
+      },
+      {
+        "opportunityId": "gdi_opp_nado_ddaa_washcon_2027_overflow",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "organizationName": "National Association of Development Organizations (NADO) / DDAA",
+        "expected": "COMPETITOR_PLACED",
+        "predicted": "COMPETITOR_PLACED",
+        "ok": true,
+        "labelRationale": "Crystal Gateway Marriott named host; overflow play retained",
+        "reasons": [
+          "Named host/competitor evidenced: Crystal Gateway Marriott"
+        ],
+        "displacementOpportunity": true,
+        "watch": {
+          "evidenceGap": "Primary host is placed; overflow/alternate lodging is hypothesized or partial.",
+          "revisitTrigger": "Revisit if the host block sells out or overflow hotels are solicited publicly.",
+          "suggestedReviewTiming": "Monitor 60–120 days before event start for overflow solicitation."
+        },
+        "discoveryYieldLabel": "INVENTORY_REOPEN",
+        "claimsGenuineNewDiscovery": false,
+        "sharedDemandKey": "national association of development organizations ddaa::nado ddaa washington conference crystal gateway host overflow play",
+        "drawerReady": true,
+        "drawerGaps": [],
+        "salesReadyBlockedByIntake": true
+      },
+      {
+        "opportunityId": "gdi_s4912_732496c2f8aa",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "organizationName": "CASSS — 2027 Cell & Gene Therapy Products Symposium",
+        "expected": "COMPETITOR_PLACED",
+        "predicted": "COMPETITOR_PLACED",
+        "ok": true,
+        "labelRationale": "Hosted at Bethesda North Marriott — distinct from target Bethesda Marriott",
+        "reasons": [
+          "Named host/competitor evidenced: Bethesda North Marriott"
+        ],
+        "displacementOpportunity": true,
+        "watch": {
+          "evidenceGap": "Primary host is placed; overflow/alternate lodging is hypothesized or partial.",
+          "revisitTrigger": "Revisit if the host block sells out or overflow hotels are solicited publicly.",
+          "suggestedReviewTiming": "Monitor 60–120 days before event start for overflow solicitation."
+        },
+        "discoveryYieldLabel": "INVENTORY_REOPEN",
+        "claimsGenuineNewDiscovery": false,
+        "sharedDemandKey": "casss 2027 cell gene therapy products symposium::casss cell gene therapy symposium",
+        "drawerReady": false,
+        "drawerGaps": [
+          "whyActNow",
+          "certified:missing_core_commercial_section:potentialHotelBusiness",
+          "certified:missing_core_commercial_section:whyActNow"
+        ],
+        "salesReadyBlockedByIntake": true
+      },
+      {
+        "opportunityId": "gdi_opp_ntca_2027_disqualified",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "organizationName": "NTCA — The Rural Broadband Association",
+        "expected": "COMPETITOR_PLACED",
+        "predicted": "COMPETITOR_PLACED",
+        "ok": true,
+        "labelRationale": "Hyatt Regency Washington named host despite TOO_EARLY qualifier noise",
+        "reasons": [
+          "Named host/competitor evidenced: Hyatt Regency Washington"
+        ],
+        "displacementOpportunity": false,
+        "watch": null,
+        "discoveryYieldLabel": "INVENTORY_REOPEN",
+        "claimsGenuineNewDiscovery": false,
+        "sharedDemandKey": "ntca the rural broadband association::ntca legislative and policy conference hyatt regency washington on capitol hill",
+        "drawerReady": false,
+        "drawerGaps": [
+          "credible_named_buyer_or_entry_point"
+        ],
+        "salesReadyBlockedByIntake": true
+      },
+      {
+        "opportunityId": "gdi_opp_aao_2028_annual_meeting_10",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "organizationName": "American Academy of Ophthalmology",
+        "expected": "TOO_EARLY_WATCH",
+        "predicted": "TOO_EARLY_WATCH",
+        "ok": true,
+        "labelRationale": "qualificationFailureReason=TOO_EARLY; lodging not evidenced",
+        "reasons": [
+          "qualificationFailureReason=TOO_EARLY"
+        ],
+        "displacementOpportunity": false,
+        "watch": {
+          "evidenceGap": "Too early",
+          "revisitTrigger": "Revisit when an official housing/hotel page, RFP, or named open sourcing statement appears.",
+          "suggestedReviewTiming": "Checkpoint 9–12 months before 2028-06-01 (watch only — not an open RFP)."
+        },
+        "discoveryYieldLabel": "INVENTORY_REOPEN",
+        "claimsGenuineNewDiscovery": false,
+        "sharedDemandKey": "american academy of ophthalmology::aao annual meeting",
+        "drawerReady": false,
+        "drawerGaps": [
+          "credible_named_buyer_or_entry_point",
+          "certified:missing_core_commercial_section:potentialHotelBusiness"
+        ],
+        "salesReadyBlockedByIntake": true
+      },
+      {
+        "opportunityId": "gdi_opp_series_high_risk_high_reward_research_symposium_2027",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "organizationName": "NIH Common Fund",
+        "expected": "TOO_EARLY_WATCH",
+        "predicted": "TOO_EARLY_WATCH",
+        "ok": true,
+        "labelRationale": "TOO_EARLY NIH symposium",
+        "reasons": [
+          "qualificationFailureReason=TOO_EARLY"
+        ],
+        "displacementOpportunity": false,
+        "watch": {
+          "evidenceGap": "Too early",
+          "revisitTrigger": "Revisit when an official housing/hotel page, RFP, or named open sourcing statement appears.",
+          "suggestedReviewTiming": "Checkpoint 9–12 months before 2027-03-10 (watch only — not an open RFP)."
+        },
+        "discoveryYieldLabel": "INVENTORY_REOPEN",
+        "claimsGenuineNewDiscovery": false,
+        "sharedDemandKey": "nih common fund::high risk high reward research symposium",
+        "drawerReady": false,
+        "drawerGaps": [
+          "certified:missing_core_commercial_section:potentialHotelBusiness"
+        ],
+        "salesReadyBlockedByIntake": true
+      },
+      {
+        "opportunityId": "gdi_opp_2027_nci_rna_biology_symposium_7",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "organizationName": "NCI RNA Biology Initiative",
+        "expected": "TOO_EARLY_WATCH",
+        "predicted": "TOO_EARLY_WATCH",
+        "ok": true,
+        "labelRationale": "TOO_EARLY NCI symposium",
+        "reasons": [
+          "qualificationFailureReason=TOO_EARLY"
+        ],
+        "displacementOpportunity": false,
+        "watch": {
+          "evidenceGap": "Too early",
+          "revisitTrigger": "Revisit when an official housing/hotel page, RFP, or named open sourcing statement appears.",
+          "suggestedReviewTiming": "Checkpoint 9–12 months before 2027-04-15 (watch only — not an open RFP)."
+        },
+        "discoveryYieldLabel": "INVENTORY_REOPEN",
+        "claimsGenuineNewDiscovery": false,
+        "sharedDemandKey": "nci rna biology initiative::nci rna biology symposium",
+        "drawerReady": false,
+        "drawerGaps": [
+          "credible_named_buyer_or_entry_point",
+          "certified:missing_core_commercial_section:potentialHotelBusiness"
+        ],
+        "salesReadyBlockedByIntake": true
+      },
+      {
+        "opportunityId": "gdi_opp_ahima_advocacy_2027",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "organizationName": "AHIMA",
+        "expected": "OPEN",
+        "predicted": "OPEN",
+        "ok": true,
+        "labelRationale": "Hotel TBA with verified housing program — open/unknown sourcing",
+        "reasons": [],
+        "displacementOpportunity": false,
+        "watch": null,
+        "discoveryYieldLabel": "INVENTORY_REOPEN",
+        "claimsGenuineNewDiscovery": false,
+        "sharedDemandKey": "ahima::ahima advocacy summit washington dc hotel not specified",
+        "drawerReady": true,
+        "drawerGaps": [],
+        "salesReadyBlockedByIntake": false
+      },
+      {
+        "opportunityId": "gdi_opp_acc_legislative_2027",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "organizationName": "American College of Cardiology (ACC)",
+        "expected": "OPEN",
+        "predicted": "OPEN",
+        "ok": true,
+        "labelRationale": "Washington DC legislative conference; hotel not named",
+        "reasons": [],
+        "displacementOpportunity": false,
+        "watch": null,
+        "discoveryYieldLabel": "INVENTORY_REOPEN",
+        "claimsGenuineNewDiscovery": false,
+        "sharedDemandKey": "american college of cardiology::acc legislative conference washington dc hotel not named",
+        "drawerReady": true,
+        "drawerGaps": [],
+        "salesReadyBlockedByIntake": false
+      },
+      {
+        "opportunityId": "gdi_opp_msysa_state_cup_2027",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "organizationName": "Maryland State Youth Soccer Association (MSYSA)",
+        "expected": "OPEN",
+        "predicted": "OPEN",
+        "ok": true,
+        "labelRationale": "Verified multi-weekend housing program without competitor host",
+        "reasons": [],
+        "displacementOpportunity": false,
+        "watch": null,
+        "discoveryYieldLabel": "INVENTORY_REOPEN",
+        "claimsGenuineNewDiscovery": false,
+        "sharedDemandKey": "maryland state youth soccer association::msysa spring state cup championships multi weekend soccerplex demand",
+        "drawerReady": true,
+        "drawerGaps": [],
+        "salesReadyBlockedByIntake": false
+      },
+      {
+        "opportunityId": "gdi_opp_nado_ddaa_washcon_2028",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "organizationName": "National Association of Development Organizations (NADO) / DDAA",
+        "expected": "OPEN",
+        "predicted": "OPEN",
+        "ok": true,
+        "labelRationale": "2028 edition hotel not yet named (distinct from 2027 Crystal Gateway host)",
+        "reasons": [],
+        "displacementOpportunity": false,
+        "watch": null,
+        "discoveryYieldLabel": "INVENTORY_REOPEN",
+        "claimsGenuineNewDiscovery": false,
+        "sharedDemandKey": "national association of development organizations ddaa::nado ddaa washington conference arlington va hotel not yet named",
+        "drawerReady": true,
+        "drawerGaps": [],
+        "salesReadyBlockedByIntake": false
+      },
+      {
+        "opportunityId": "disp_recLuxvwwxID7U2B8_greater_bethesda_chamber_of_commerce",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "organizationName": "Greater Bethesda Chamber of Commerce",
+        "expected": "OPEN",
+        "predicted": "OPEN",
+        "ok": true,
+        "labelRationale": "Recurring local account demand; no named competitor host for target hotel",
+        "reasons": [],
+        "displacementOpportunity": false,
+        "watch": null,
+        "discoveryYieldLabel": "INVENTORY_REOPEN",
+        "claimsGenuineNewDiscovery": false,
+        "sharedDemandKey": "greater bethesda chamber of commerce::greater bethesda chamber off the clock membership receptions",
+        "drawerReady": false,
+        "drawerGaps": [
+          "whyActNow",
+          "certified:missing_core_commercial_section:potentialHotelBusiness",
+          "certified:missing_core_commercial_section:whyActNow"
+        ],
+        "salesReadyBlockedByIntake": false
+      }
+    ],
+    "missing": [],
+    "scored": 13,
+    "correct": 13,
+    "accuracy": 1,
+    "competitorPlacement": {
+      "label": "COMPETITOR_PLACED",
+      "tp": 5,
+      "fp": 0,
+      "tn": 8,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1,
+      "accuracy": 1,
+      "falsePositives": [],
+      "falseNegatives": []
+    },
+    "meetsAccuracyTarget": true
+  },
+  "duplicates": {
+    "sharedKeys": 125,
+    "crossHotelReusableCount": 0,
+    "crossHotelReusable": [],
+    "withinHotelProgramKeyCollisions": [
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "sharedDemandKey": "nci rna biology initiative::nci rna biology symposium",
+        "opportunityIds": [
+          "gdi_opp_series_request_a_conference_registration_website_2026",
+          "gdi_opp_2027_nci_rna_biology_symposium_7"
+        ]
+      },
+      {
+        "hotelId": "recLuxvwwxID7U2B8",
+        "sharedDemandKey": "nida clinical trials network::ctn annual conference bethesda md",
+        "opportunityIds": [
+          "gdi_opp_series_new_in_the_library_august_2026",
+          "gdi_opp_series_ctn_annual_conference_2027"
+        ]
+      }
+    ],
+    "withinHotelCollisionCount": 2,
+    "newCanonicalOpportunitiesIntroduced": 0
+  },
+  "drawer": {
+    "audited": 13,
+    "readyCount": 6,
+    "gapFrequency": {
+      "credible_named_buyer_or_entry_point": 4,
+      "whyActNow": 2,
+      "certified:missing_core_commercial_section:potentialHotelBusiness": 5,
+      "certified:missing_core_commercial_section:whyActNow": 2
+    },
+    "rows": [
+      {
+        "opportunityId": "gdi_opp_asa_advance_2027_disqualified",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "ready": false,
+        "gaps": [
+          "credible_named_buyer_or_entry_point"
+        ],
+        "fields": {
+          "evidenceBackedDemandMechanism": true,
+          "relevantLocationAndTiming": true,
+          "hotelSpecificCommercialRelevance": true,
+          "credibleNamedBuyerOrEntryPoint": false,
+          "namedBuyer": null,
+          "buyerRole": null,
+          "whyActNow": true,
+          "recommendedNextStep": true,
+          "evidenceProvenance": true,
+          "researchFreshness": "2026-09-23T06:45:11.760Z"
+        },
+        "certifiedOk": true
+      },
+      {
+        "opportunityId": "gdi_opp_ecs_251_2027_overflow",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "ready": true,
+        "gaps": [],
+        "fields": {
+          "evidenceBackedDemandMechanism": true,
+          "relevantLocationAndTiming": true,
+          "hotelSpecificCommercialRelevance": true,
+          "credibleNamedBuyerOrEntryPoint": true,
+          "namedBuyer": "John Lewis",
+          "buyerRole": "Director of Meetings Operations — The Electrochemical Society",
+          "whyActNow": true,
+          "recommendedNextStep": true,
+          "evidenceProvenance": true,
+          "researchFreshness": "2026-09-24T19:33:50.200Z"
+        },
+        "certifiedOk": true
+      },
+      {
+        "opportunityId": "gdi_opp_nado_ddaa_washcon_2027_overflow",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "ready": true,
+        "gaps": [],
+        "fields": {
+          "evidenceBackedDemandMechanism": true,
+          "relevantLocationAndTiming": true,
+          "hotelSpecificCommercialRelevance": true,
+          "credibleNamedBuyerOrEntryPoint": true,
+          "namedBuyer": "Brittany Salazar",
+          "buyerRole": "Associate Director of Meetings and Events — NADO",
+          "whyActNow": true,
+          "recommendedNextStep": true,
+          "evidenceProvenance": true,
+          "researchFreshness": "2026-09-24T19:01:33.854Z"
+        },
+        "certifiedOk": true
+      },
+      {
+        "opportunityId": "gdi_s4912_732496c2f8aa",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "ready": false,
+        "gaps": [
+          "whyActNow",
+          "certified:missing_core_commercial_section:potentialHotelBusiness",
+          "certified:missing_core_commercial_section:whyActNow"
+        ],
+        "fields": {
+          "evidenceBackedDemandMechanism": true,
+          "relevantLocationAndTiming": true,
+          "hotelSpecificCommercialRelevance": true,
+          "credibleNamedBuyerOrEntryPoint": true,
+          "namedBuyer": "Randi Jacobs",
+          "buyerRole": "Symposium / Program Manager — CASSS CGTP",
+          "whyActNow": false,
+          "recommendedNextStep": true,
+          "evidenceProvenance": true,
+          "researchFreshness": "2026-11-13T18:16:44.758Z"
+        },
+        "certifiedOk": false
+      },
+      {
+        "opportunityId": "gdi_opp_ntca_2027_disqualified",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "ready": false,
+        "gaps": [
+          "credible_named_buyer_or_entry_point"
+        ],
+        "fields": {
+          "evidenceBackedDemandMechanism": true,
+          "relevantLocationAndTiming": true,
+          "hotelSpecificCommercialRelevance": true,
+          "credibleNamedBuyerOrEntryPoint": false,
+          "namedBuyer": null,
+          "buyerRole": null,
+          "whyActNow": true,
+          "recommendedNextStep": true,
+          "evidenceProvenance": true,
+          "researchFreshness": "2026-09-23T06:45:11.683Z"
+        },
+        "certifiedOk": true
+      },
+      {
+        "opportunityId": "gdi_opp_aao_2028_annual_meeting_10",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "ready": false,
+        "gaps": [
+          "credible_named_buyer_or_entry_point",
+          "certified:missing_core_commercial_section:potentialHotelBusiness"
+        ],
+        "fields": {
+          "evidenceBackedDemandMechanism": true,
+          "relevantLocationAndTiming": true,
+          "hotelSpecificCommercialRelevance": true,
+          "credibleNamedBuyerOrEntryPoint": false,
+          "namedBuyer": null,
+          "buyerRole": null,
+          "whyActNow": true,
+          "recommendedNextStep": true,
+          "evidenceProvenance": true,
+          "researchFreshness": "2026-09-25T17:41:40.850Z"
+        },
+        "certifiedOk": false
+      },
+      {
+        "opportunityId": "gdi_opp_series_high_risk_high_reward_research_symposium_2027",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "ready": false,
+        "gaps": [
+          "certified:missing_core_commercial_section:potentialHotelBusiness"
+        ],
+        "fields": {
+          "evidenceBackedDemandMechanism": true,
+          "relevantLocationAndTiming": true,
+          "hotelSpecificCommercialRelevance": true,
+          "credibleNamedBuyerOrEntryPoint": true,
+          "namedBuyer": "Jennifer Adona",
+          "buyerRole": "Symposium logistics contact — Rose Li and Associates (NIH Common Fund HRHR)",
+          "whyActNow": true,
+          "recommendedNextStep": true,
+          "evidenceProvenance": true,
+          "researchFreshness": "2026-09-25T17:41:41.840Z"
+        },
+        "certifiedOk": false
+      },
+      {
+        "opportunityId": "gdi_opp_2027_nci_rna_biology_symposium_7",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "ready": false,
+        "gaps": [
+          "credible_named_buyer_or_entry_point",
+          "certified:missing_core_commercial_section:potentialHotelBusiness"
+        ],
+        "fields": {
+          "evidenceBackedDemandMechanism": true,
+          "relevantLocationAndTiming": true,
+          "hotelSpecificCommercialRelevance": true,
+          "credibleNamedBuyerOrEntryPoint": false,
+          "namedBuyer": null,
+          "buyerRole": null,
+          "whyActNow": true,
+          "recommendedNextStep": true,
+          "evidenceProvenance": true,
+          "researchFreshness": "2026-09-25T17:41:42.320Z"
+        },
+        "certifiedOk": false
+      },
+      {
+        "opportunityId": "gdi_opp_ahima_advocacy_2027",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "ready": true,
+        "gaps": [],
+        "fields": {
+          "evidenceBackedDemandMechanism": true,
+          "relevantLocationAndTiming": true,
+          "hotelSpecificCommercialRelevance": true,
+          "credibleNamedBuyerOrEntryPoint": true,
+          "namedBuyer": "Sabrina Bracken",
+          "buyerRole": "Advocacy Summit prospectus / partner contact (Spargo)",
+          "whyActNow": true,
+          "recommendedNextStep": true,
+          "evidenceProvenance": true,
+          "researchFreshness": "2026-09-24T18:43:08.201Z"
+        },
+        "certifiedOk": true
+      },
+      {
+        "opportunityId": "gdi_opp_acc_legislative_2027",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "ready": true,
+        "gaps": [],
+        "fields": {
+          "evidenceBackedDemandMechanism": true,
+          "relevantLocationAndTiming": true,
+          "hotelSpecificCommercialRelevance": true,
+          "credibleNamedBuyerOrEntryPoint": true,
+          "namedBuyer": "Meg Novak",
+          "buyerRole": "ACC Legislative Conference contact",
+          "whyActNow": true,
+          "recommendedNextStep": true,
+          "evidenceProvenance": true,
+          "researchFreshness": "2026-09-24T18:43:09.360Z"
+        },
+        "certifiedOk": true
+      },
+      {
+        "opportunityId": "gdi_opp_msysa_state_cup_2027",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "ready": true,
+        "gaps": [],
+        "fields": {
+          "evidenceBackedDemandMechanism": true,
+          "relevantLocationAndTiming": true,
+          "hotelSpecificCommercialRelevance": true,
+          "credibleNamedBuyerOrEntryPoint": true,
+          "namedBuyer": "Brad Roos",
+          "buyerRole": "Cups Director",
+          "whyActNow": true,
+          "recommendedNextStep": true,
+          "evidenceProvenance": true,
+          "researchFreshness": "2026-09-23T06:45:11.557Z"
+        },
+        "certifiedOk": true
+      },
+      {
+        "opportunityId": "gdi_opp_nado_ddaa_washcon_2028",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "ready": true,
+        "gaps": [],
+        "fields": {
+          "evidenceBackedDemandMechanism": true,
+          "relevantLocationAndTiming": true,
+          "hotelSpecificCommercialRelevance": true,
+          "credibleNamedBuyerOrEntryPoint": true,
+          "namedBuyer": "Brittany Salazar",
+          "buyerRole": "Associate Director of Meetings and Events — NADO",
+          "whyActNow": true,
+          "recommendedNextStep": true,
+          "evidenceProvenance": true,
+          "researchFreshness": "2026-09-24T19:01:31.154Z"
+        },
+        "certifiedOk": true
+      },
+      {
+        "opportunityId": "disp_recLuxvwwxID7U2B8_greater_bethesda_chamber_of_commerce",
+        "hotelId": "recLuxvwwxID7U2B8",
+        "ready": false,
+        "gaps": [
+          "whyActNow",
+          "certified:missing_core_commercial_section:potentialHotelBusiness",
+          "certified:missing_core_commercial_section:whyActNow"
+        ],
+        "fields": {
+          "evidenceBackedDemandMechanism": true,
+          "relevantLocationAndTiming": true,
+          "hotelSpecificCommercialRelevance": true,
+          "credibleNamedBuyerOrEntryPoint": true,
+          "namedBuyer": "Clarissa Harris",
+          "buyerRole": "Vice President, Marketing Communications & Events",
+          "whyActNow": false,
+          "recommendedNextStep": true,
+          "evidenceProvenance": true,
+          "researchFreshness": "2026-11-13T18:16:44.758Z"
+        },
+        "certifiedOk": false
+      }
+    ]
+  },
+  "salesReady": {
+    "checks": [
+      {
+        "opportunityId": "gdi_opp_asa_advance_2027_disqualified",
+        "disposition": "COMPETITOR_PLACED",
+        "eligibilityBefore": "RESEARCH_CONTINUATION",
+        "eligibilityAfterGate": "RESEARCH_CONTINUATION",
+        "intakeBlockedSalesReady": false,
+        "speculativePromoted": false,
+        "competitorPromoted": false
+      },
+      {
+        "opportunityId": "gdi_opp_ecs_251_2027_overflow",
+        "disposition": "COMPETITOR_PLACED",
+        "eligibilityBefore": "RESEARCH_CONTINUATION",
+        "eligibilityAfterGate": "RESEARCH_CONTINUATION",
+        "intakeBlockedSalesReady": false,
+        "speculativePromoted": false,
+        "competitorPromoted": false
+      },
+      {
+        "opportunityId": "gdi_opp_nado_ddaa_washcon_2027_overflow",
+        "disposition": "COMPETITOR_PLACED",
+        "eligibilityBefore": "RESEARCH_CONTINUATION",
+        "eligibilityAfterGate": "RESEARCH_CONTINUATION",
+        "intakeBlockedSalesReady": false,
+        "speculativePromoted": false,
+        "competitorPromoted": false
+      },
+      {
+        "opportunityId": "gdi_s4912_732496c2f8aa",
+        "disposition": "COMPETITOR_PLACED",
+        "eligibilityBefore": "RESEARCH_CONTINUATION",
+        "eligibilityAfterGate": "RESEARCH_CONTINUATION",
+        "intakeBlockedSalesReady": false,
+        "speculativePromoted": false,
+        "competitorPromoted": false
+      },
+      {
+        "opportunityId": "gdi_opp_ntca_2027_disqualified",
+        "disposition": "COMPETITOR_PLACED",
+        "eligibilityBefore": "RESEARCH_CONTINUATION",
+        "eligibilityAfterGate": "RESEARCH_CONTINUATION",
+        "intakeBlockedSalesReady": false,
+        "speculativePromoted": false,
+        "competitorPromoted": false
+      },
+      {
+        "opportunityId": "gdi_opp_aao_2028_annual_meeting_10",
+        "disposition": "TOO_EARLY_WATCH",
+        "eligibilityBefore": "RESEARCH_CONTINUATION",
+        "eligibilityAfterGate": "RESEARCH_CONTINUATION",
+        "intakeBlockedSalesReady": false,
+        "speculativePromoted": false,
+        "competitorPromoted": false
+      },
+      {
+        "opportunityId": "gdi_opp_series_high_risk_high_reward_research_symposium_2027",
+        "disposition": "TOO_EARLY_WATCH",
+        "eligibilityBefore": "RESEARCH_CONTINUATION",
+        "eligibilityAfterGate": "RESEARCH_CONTINUATION",
+        "intakeBlockedSalesReady": false,
+        "speculativePromoted": false,
+        "competitorPromoted": false
+      },
+      {
+        "opportunityId": "gdi_opp_2027_nci_rna_biology_symposium_7",
+        "disposition": "TOO_EARLY_WATCH",
+        "eligibilityBefore": "RESEARCH_CONTINUATION",
+        "eligibilityAfterGate": "RESEARCH_CONTINUATION",
+        "intakeBlockedSalesReady": false,
+        "speculativePromoted": false,
+        "competitorPromoted": false
+      },
+      {
+        "opportunityId": "gdi_opp_ahima_advocacy_2027",
+        "disposition": "OPEN",
+        "eligibilityBefore": "RESEARCH_CONTINUATION",
+        "eligibilityAfterGate": "RESEARCH_CONTINUATION",
+        "intakeBlockedSalesReady": false,
+        "speculativePromoted": false,
+        "competitorPromoted": false
+      },
+      {
+        "opportunityId": "gdi_opp_acc_legislative_2027",
+        "disposition": "OPEN",
+        "eligibilityBefore": "RESEARCH_CONTINUATION",
+        "eligibilityAfterGate": "RESEARCH_CONTINUATION",
+        "intakeBlockedSalesReady": false,
+        "speculativePromoted": false,
+        "competitorPromoted": false
+      },
+      {
+        "opportunityId": "gdi_opp_msysa_state_cup_2027",
+        "disposition": "OPEN",
+        "eligibilityBefore": "RESEARCH_CONTINUATION",
+        "eligibilityAfterGate": "RESEARCH_CONTINUATION",
+        "intakeBlockedSalesReady": false,
+        "speculativePromoted": false,
+        "competitorPromoted": false
+      },
+      {
+        "opportunityId": "gdi_opp_nado_ddaa_washcon_2028",
+        "disposition": "OPEN",
+        "eligibilityBefore": "RESEARCH_CONTINUATION",
+        "eligibilityAfterGate": "RESEARCH_CONTINUATION",
+        "intakeBlockedSalesReady": false,
+        "speculativePromoted": false,
+        "competitorPromoted": false
+      },
+      {
+        "opportunityId": "disp_recLuxvwwxID7U2B8_greater_bethesda_chamber_of_commerce",
+        "disposition": "OPEN",
+        "eligibilityBefore": "RESEARCH_CONTINUATION",
+        "eligibilityAfterGate": "RESEARCH_CONTINUATION",
+        "intakeBlockedSalesReady": false,
+        "speculativePromoted": false,
+        "competitorPromoted": false
+      }
+    ],
+    "speculativePromotedToSalesReady": 0,
+    "competitorPlacedPromotedToSalesReady": 0,
+    "noSpeculativeSalesReady": true
+  },
+  "acceptance": {
+    "zeroHistoricalFixtureLabeledLiveNew": true,
+    "zeroInventoryReopenLabeledLiveNew": true,
+    "competitorPlacementPrecision": 1,
+    "competitorPlacementRecall": 1,
+    "dispositionAccuracy": 1,
+    "dispositionAccuracyTargetMet": true,
+    "noSpeculativePromotedToSalesReady": true,
+    "noNewCanonicalOpportunities": true,
+    "paidUsd": 0,
+    "phase2bCasesExcluded": true,
+    "claimsImprovedLiveDiscovery": false
+  },
+  "acceptancePass": true,
+  "claimsImprovedLiveDiscovery": false,
+  "remainingBlockersToLiveDiscovery": [
+    "Paid Exa / live providers require separate founder authorization",
+    "Most segment executors remain fixture/historical/blocked without authorizePaidDiscovery",
+    "Offline classifier does not create new LIVE_NEW organizations or opportunities",
+    "Demand-mechanism mission packs (slice 2+) not yet implemented"
+  ],
+  "recommendedNextSlice": {
+    "id": "gdi-discovery-mission-packs-scaling-projects-v1",
+    "focus": "Catchment-local mission packs for corporate_accounts_scaling + projects_infrastructure with $0 query diffs; optional bounded Exa only after founder budget auth",
+    "dependsOn": "gdi_discovery_intake_disposition_v1"
+  },
+  "disclaimer": "Offline classifier experiment only. Do not claim improved live opportunity discovery from these results alone."
+}
