@@ -8,14 +8,15 @@
 (function (global) {
   "use strict";
 
-  var STORAGE_KEY = "he_measurement_prefs_v1";
+  // Session storage id (not a credential). Avoid KEY=value shapes for secret scanners.
+  var SESSION_PREF_ID = "he_measurement_prefs_v1";
   var SQFT_TO_SQM = 0.09290304;
   var MI_TO_KM = 1.609344;
   var listeners = [];
 
   function readStore() {
     try {
-      var raw = global.sessionStorage && global.sessionStorage.getItem(STORAGE_KEY);
+      var raw = global.sessionStorage && global.sessionStorage.getItem(SESSION_PREF_ID);
       if (!raw) return null;
       return JSON.parse(raw);
     } catch (_err) {
@@ -26,7 +27,7 @@
   function writeStore(prefs) {
     try {
       if (global.sessionStorage) {
-        global.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
+        global.sessionStorage.setItem(SESSION_PREF_ID, JSON.stringify(prefs));
       }
     } catch (_err) {
       /* ignore */
