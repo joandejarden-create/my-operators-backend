@@ -33,6 +33,7 @@ docs/
 
 | Document | Purpose |
 |----------|---------|
+| [data-intelligence/brand-explorer-airtable-integration-sot-v1.md](./data-intelligence/brand-explorer-airtable-integration-sot-v1.md) | **Brand Explorer Phase 1** — Airtable/HPC identity + field SoT + footprint ownership (`npm run test:be-airtable-integration-sot-v1`) |
 | [data-intelligence/dealality-batch-learning-system.md](./data-intelligence/dealality-batch-learning-system.md) | **Batch learning loop** — Census + Brand Explorer code improvement ledger (`npm run dealality:batch-learning-ledger` · `npm run dealality:batch-learning-audit`) |
 | [data-intelligence/INTELLIGENCE_GOVERNANCE.md](./data-intelligence/INTELLIGENCE_GOVERNANCE.md) | Primary governance for platform intelligence |
 | [data-intelligence/DATA_VALIDATION_PROTOCOL.md](./data-intelligence/DATA_VALIDATION_PROTOCOL.md) | How data enters the platform |
