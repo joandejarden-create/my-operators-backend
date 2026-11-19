@@ -1,0 +1,82 @@
+{
+  "cohortId": "HE-INTEL-001-P3A-SIX-HOTEL-V1",
+  "contract": "HE_INTEL_001_RESEARCH_METHOD_BENCHMARK_V1",
+  "contractVersion": "1.0.0-p3a-foundation",
+  "phase": "P3A",
+  "status": "FROZEN_EVALUATION_FIXTURE",
+  "paidBudgetUsd": 0,
+  "sourceManifest": "fixtures/hotel-explorer/HE-INTEL-001-pilot-16-manifest-frozen-v1.json",
+  "fullPilot": {
+    "founderPropertyExperiences": 16,
+    "canonicalHpcHotels": 15,
+    "note": "Hyatt Centric Downtown + Beach share one HPC record"
+  },
+  "hotels": [
+    {
+      "order": 1,
+      "hpcId": "recLuxvwwxID7U2B8",
+      "name": "Bethesda Marriott",
+      "cohort": "US"
+    },
+    {
+      "order": 2,
+      "hpcId": "recnPB3Q02NO8Ma1o",
+      "name": "Wyndham San Diego Bayside",
+      "cohort": "US"
+    },
+    {
+      "order": 3,
+      "hpcId": "recG66DQJKP2c0UNh",
+      "name": "Renaissance New York Times Square Hotel",
+      "cohort": "US"
+    },
+    {
+      "order": 4,
+      "hpcId": "recvVZ5unh4d3Krzi",
+      "name": "The Ritz-Carlton, Mexico City",
+      "cohort": "CALA"
+    },
+    {
+      "order": 5,
+      "hpcId": "recBJZwMvgbdG7y4F",
+      "name": "Hyatt Centric Playa del Carmen",
+      "cohort": "CALA",
+      "dualHouseSingleRecord": true
+    },
+    {
+      "order": 6,
+      "hpcId": "recrTWMTHXQpA5geC",
+      "name": "Bruma Wine Resort",
+      "cohort": "CALA",
+      "founderLabel": "Bruma Valle de Guadalupe"
+    }
+  ],
+  "modes": ["INDEPENDENT_DISCOVERY", "INCREMENTAL_PRODUCTION"],
+  "priorSnapshots": {
+    "recLuxvwwxID7U2B8": {
+      "verifiedFacts": [
+        {
+          "claimType": "PROPERTY_IDENTITY",
+          "value": "Bethesda Marriott",
+          "provenance_tag": "KNOWN_PRIOR"
+        }
+      ],
+      "unresolvedGaps": [
+        "OWNER_ENTITY",
+        "OPERATOR_ENTITY",
+        "OWNER_VS_OPERATOR",
+        "DECISION_MAKER",
+        "PUBLIC_EMAIL"
+      ]
+    }
+  },
+  "restrictions": {
+    "productionAirtableWrites": false,
+    "canonicalGraphWrites": false,
+    "hpcOwnerOperatorMutation": false,
+    "radarStatusMutation": false,
+    "paidProviderCalls": false,
+    "surfe": false,
+    "syntheticFactsAreNotVerifiedResearch": true
+  }
+}
