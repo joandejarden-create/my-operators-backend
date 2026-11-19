@@ -9256,22 +9256,69 @@
    * Section 1 = structured Events overview grid (NOT Scaling narrative).
    * Sections 2–10 = same hierarchy / subsections as Scaling Companies gold.
    */
-  function sectionCitationsHtml(o, sectionKey) {
-    var cites =
-      (o && o.sectionCitations && o.sectionCitations[sectionKey]) || [];
-    if (!cites.length) return "";
+  /**
+   * Consolidated Sources (N) control — reuses existing gdi-inline-details /
+   * gdi-evidence-expand conventions. One button per drawer section; hidden when empty.
+   * Customer UI: titles + URLs only (no source IDs / section keys / claim IDs).
+   */
+  function sectionSourcesButtonHtml(o, registerKeys) {
+    var keys = Array.isArray(registerKeys) ? registerKeys : [registerKeys];
+    var citesMap = (o && o.sectionCitations) || {};
+    var seen = {};
+    var rows = [];
+    for (var ki = 0; ki < keys.length; ki++) {
+      var list = citesMap[keys[ki]] || [];
+      for (var i = 0; i < list.length; i++) {
+        var s = list[i];
+        var url = prose(s && s.url);
+        if (!url) continue;
+        var key = url.toLowerCase().replace(/\/$/, "");
+        if (seen[key]) continue;
+        seen[key] = true;
+        rows.push(s);
+      }
+    }
+    if (!rows.length) return "";
+    var oppTitle = prose(o && (o.title || o.displayTitle || o.organizationName));
+    function sourceLabel(s) {
+      var title = prose(s && s.title);
+      var url = prose(s && s.url);
+      if (
+        title &&
+        title !== url &&
+        (!oppTitle || title.toLowerCase() !== oppTitle.toLowerCase()) &&
+        !/^(official source|lodging evidence|contact source)$/i.test(title)
+      ) {
+        return title;
+      }
+      try {
+        var pathPart = String(url).split("?")[0].split("#")[0];
+        var parts = pathPart.split("/").filter(Boolean);
+        var last = (parts[parts.length - 1] || "").replace(/\.[a-z0-9]+$/i, "");
+        var human = last.replace(/[-_]+/g, " ").trim();
+        if (human.length >= 3) {
+          return human.replace(/\b[a-z]/g, function (c) {
+            return c.toUpperCase();
+          });
+        }
+      } catch (e) {
+        /* keep url */
+      }
+      return title || url;
+    }
     return (
-      '<ul class="gdi-section-citations" data-section-citations="' +
-      esc(sectionKey) +
-      '">' +
-      cites
+      '<details class="gdi-inline-details gdi-section-sources">' +
+      "<summary>Sources (" +
+      rows.length +
+      ")</summary>" +
+      '<ul class="gdi-evidence-default">' +
+      rows
         .map(function (s) {
           var url = prose(s && s.url);
           if (!url) return "";
-          var label = prose(s && s.title) || url;
+          var label = sourceLabel(s);
           return (
-            '<li class="gdi-section-citation">' +
-            '<a href="' +
+            '<li class="gdi-evidence-item"><a href="' +
             esc(url) +
             '" target="_blank" rel="noopener noreferrer">' +
             esc(label) +
@@ -9280,71 +9327,38 @@
         })
         .filter(Boolean)
         .join("") +
-      "</ul>"
+      "</ul></details>"
     );
   }
 
-  function supportingResearchHtml(o) {
+  /** Supporting Research claims inside existing Supporting evidence — no raw URL spam. */
+  function supportingResearchInEvidenceHtml(o) {
     var rows = Array.isArray(o && o.supportingResearch)
       ? o.supportingResearch
       : [];
     if (!rows.length) return "";
+    var items = rows
+      .map(function (r) {
+        var claim = prose(r && r.claim);
+        if (!claim) return "";
+        var priv =
+          r && r.hotelPrivate
+            ? ' <em class="gdi-muted">(hotel-private)</em>'
+            : "";
+        return "<li>" + esc(claim) + priv + "</li>";
+      })
+      .filter(Boolean);
+    if (!items.length) return "";
     return (
-      '<section class="gdi-section gdi-section--supporting-research" data-section-id="supporting_research"><h3>Supporting Research</h3><ul class="gdi-supporting-research">' +
-      rows
-        .map(function (r) {
-          var claim = prose(r && r.claim);
-          if (!claim) return "";
-          var url = prose(r && (r.sourceUrl || (r.sourceUrls && r.sourceUrls[0])));
-          var priv = r && r.hotelPrivate ? ' <em class="gdi-muted">(hotel-private)</em>' : "";
-          return (
-            "<li>" +
-            esc(claim) +
-            priv +
-            (url
-              ? ' — <a href="' +
-                esc(url) +
-                '" target="_blank" rel="noopener noreferrer">' +
-                esc(url) +
-                "</a>"
-              : "") +
-            "</li>"
-          );
-        })
-        .filter(Boolean)
-        .join("") +
-      "</ul></section>"
-    );
-  }
-
-  function allSourcesRegisterHtml(o) {
-    var rows = Array.isArray(o && o.allSources) ? o.allSources : [];
-    if (!rows.length) return "";
-    return (
-      '<div class="gdi-all-sources-register" data-section-id="all_sources"><p><strong>All Sources</strong> (deduplicated register)</p><ul class="gdi-evidence-full">' +
-      rows
-        .map(function (s) {
-          var url = prose(s && s.url);
-          if (!url) return "";
-          var title = prose(s && s.title);
-          var bits = '<li class="gdi-evidence-item">';
-          if (title && title !== url) {
-            bits +=
-              '<div class="gdi-evidence-title"><strong>' +
-              esc(title) +
-              "</strong></div>";
-          }
-          bits +=
-            '<div><a href="' +
-            esc(url) +
-            '" target="_blank" rel="noopener noreferrer">' +
-            esc(url) +
-            "</a></div></li>";
-          return bits;
-        })
-        .filter(Boolean)
-        .join("") +
-      "</ul></div>"
+      '<details class="gdi-research-detail-expand" data-research-detail="supportingResearch">' +
+      "<summary>Supporting Research (" +
+      items.length +
+      ")</summary>" +
+      '<div class="gdi-research-detail-body"><ul>' +
+      items.join("") +
+      "</ul>" +
+      sectionSourcesButtonHtml(o, "supporting_research") +
+      "</div></details>"
     );
   }
 
@@ -9709,8 +9723,7 @@
           esc(whatS.activityDate) +
           "</p>"
         : "") +
-      sectionCitationsHtml(o, "demand_context") +
-      sectionCitationsHtml(o, "competitors_venues") +
+      sectionSourcesButtonHtml(o, ["demand_context", "competitors_venues"]) +
       "</section>" +
       competitiveFutureCycleSectionsHtml(o) +
       '<section class="gdi-section" data-section-id="potential_business"><h3>Potential business for this hotel</h3><p>' +
@@ -9720,7 +9733,7 @@
         ? "<p><strong>Inferred (not verified volume)</strong></p>" +
           listHtml(cleanList(potS.inferred))
         : "") +
-      sectionCitationsHtml(o, "potential_hotel_business") +
+      sectionSourcesButtonHtml(o, "potential_hotel_business") +
       researchDetailExpandableHtml(o, "potentialBusinessForThisHotel", "Additional demand research", {
         esc: esc,
         prose: prose,
@@ -9730,7 +9743,7 @@
       "</section>" +
       '<section class="gdi-section gdi-section--matters" data-section-id="why_this_hotel"><h3>Why this hotel</h3>' +
       whyBits +
-      sectionCitationsHtml(o, "hotel_relevance") +
+      sectionSourcesButtonHtml(o, "hotel_relevance") +
       researchDetailExpandableHtml(o, "whyThisHotel", "Additional hotel-fit research", {
         esc: esc,
         prose: prose,
@@ -9741,7 +9754,7 @@
       '<section class="gdi-section" data-section-id="why_act_now"><h3>Why act now</h3><p>' +
       esc(prose(nowS.body) || "—") +
       "</p>" +
-      sectionCitationsHtml(o, "commercial_timing") +
+      sectionSourcesButtonHtml(o, "commercial_timing") +
       "</section>" +
       '<section class="gdi-section" data-section-id="facts_and_uncertainties"><h3>Established facts and uncertainties</h3>' +
       factsHtml +
@@ -9756,7 +9769,7 @@
           "</p>"
         : "") +
       whoShouldSalesContactHtml(o, extras.whoContactHtml) +
-      sectionCitationsHtml(o, "buyer_contacts") +
+      sectionSourcesButtonHtml(o, "buyer_contacts") +
       researchDetailExpandableHtml(o, "buyerResearch", "Buyer research detail", {
         esc: esc,
         prose: prose,
@@ -9776,21 +9789,11 @@
       esc(prose(nextS.body) || "—") +
       "</p>" +
       qHtml +
-      sectionCitationsHtml(o, "recommended_next_step") +
+      sectionSourcesButtonHtml(o, "recommended_next_step") +
       "</section>" +
-      supportingResearchHtml(o) +
-'<section class="gdi-section gdi-section--evidence" data-section-id="supporting_evidence" data-gdi-tour-target="drawer-evidence"><h3>Supporting evidence</h3>' +sourceListFromModel(
-        evS.sources && evS.sources.length
-          ? evS.sources
-          : (o.allSources || []).map(function (s) {
-              return { url: s.url, title: s.title, publisher: s.publisher };
-            }),
-        evS.evidenceGroups,
-        evS.sourcesFull && evS.sourcesFull.length
-          ? evS.sourcesFull
-          : o.allSources || []
-      ) +
-      allSourcesRegisterHtml(o) +
+      '<section class="gdi-section gdi-section--evidence" data-section-id="supporting_evidence" data-gdi-tour-target="drawer-evidence"><h3>Supporting evidence</h3>' +
+      sourceListFromModel(evS.sources, evS.evidenceGroups, evS.sourcesFull) +
+      supportingResearchInEvidenceHtml(o) +
       (evS.activityDate
         ? "<p><strong>Original activity date:</strong> " +
           esc(evS.activityDate) +

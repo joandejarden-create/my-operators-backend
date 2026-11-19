@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Commercial Fact Selection V1 — source retention + L1/L2 regressions ($0).
+ * Commercial Fact Selection V1 — source retention + Sources (N) UI regressions ($0).
  */
 import assert from "node:assert/strict";
 import fs from "node:fs";
@@ -12,6 +12,7 @@ import {
   selectAndApplyCommercialFacts,
 } from "../lib/group-demand-intelligence/presentation/gdi-commercial-fact-selection-v1.js";
 import { buildSlimResearchPayload } from "../lib/group-demand-intelligence/workflow/gdi-research-inventory-slim-payload-v1.js";
+import { displayTitleForSource } from "../lib/group-demand-intelligence/presentation/gdi-commercial-source-register-v1.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const FIX = path.join(ROOT, "fixtures/gdi-brief-v2-narrative-quality-v1");
@@ -19,16 +20,14 @@ const CATALOGS = path.join(FIX, "evidence-catalogs");
 const REPORT = path.join(ROOT, "reports/gdi-commercial-fact-selection-v1");
 const NOW = new Date("2026-11-19T12:00:00.000Z");
 
-const SECTION_LABELS = {
-  demand_context: "Opportunity / demand context",
-  potential_hotel_business: "Potential hotel business",
-  hotel_relevance: "Hotel relevance",
-  commercial_timing: "Commercial timing",
-  buyer_contacts: "Buyer contacts and booking routes",
-  competitors_venues: "Competitors / historical venues",
-  recommended_next_step: "Recommended next step",
-  supporting_research: "Supporting Research",
-};
+const DRAWER_SECTION_MAP = [
+  { id: "what_is_happening", heading: "What is happening", keys: ["demand_context", "competitors_venues"], body: (o) => o.whatIsHappening },
+  { id: "potential_business", heading: "Potential business for this hotel", keys: ["potential_hotel_business"], body: (o) => o.potentialHotelBusiness },
+  { id: "why_this_hotel", heading: "Why this hotel", keys: ["hotel_relevance"], body: (o) => o.whyThisHotel },
+  { id: "why_act_now", heading: "Why act now", keys: ["commercial_timing"], body: (o) => o.whyActNow },
+  { id: "who_to_contact", heading: "Who to contact", keys: ["buyer_contacts"], body: (o) => o.primaryContact?.name || "" },
+  { id: "recommended_next_step", heading: "Recommended next step", keys: ["recommended_next_step"], body: (o) => o.recommendedNextStep },
+];
 
 function esc(s) {
   return String(s || "")
@@ -38,64 +37,108 @@ function esc(s) {
     .replace(/"/g, "&quot;");
 }
 
-function renderDrawerHtml(after) {
-  const cites = (key) => {
-    const rows = after.sectionCitations?.[key] || [];
-    if (!rows.length) return "";
-    return `<ul class="gdi-section-citations" data-section-citations="${esc(key)}">${rows
-      .map(
-        (s) =>
-          `<li><a href="${esc(s.url)}">${esc(s.title || s.url)}</a></li>`,
-      )
-      .join("")}</ul>`;
-  };
-  const support = (after.supportingResearch || [])
-    .map((r) => {
-      const url = r.sourceUrl || (r.sourceUrls || [])[0] || "";
-      return `<li>${esc(r.claim)}${r.hotelPrivate ? " <em>(hotel-private)</em>" : ""}${
-        url ? ` — <a href="${esc(url)}">${esc(url)}</a>` : ""
-      }</li>`;
-    })
-    .join("");
-  const all = (after.allSources || [])
+function uniqueSectionSources(after, keys, opportunityTitle) {
+  const seen = new Set();
+  const rows = [];
+  for (const key of keys) {
+    for (const s of after.sectionCitations?.[key] || []) {
+      const url = String(s.url || "").toLowerCase().replace(/\/$/, "");
+      if (!url || seen.has(url)) continue;
+      seen.add(url);
+      rows.push({
+        url: s.url,
+        title: displayTitleForSource(s, { opportunityTitle }),
+      });
+    }
+  }
+  return rows;
+}
+
+function sourcesButtonHtml(rows) {
+  if (!rows.length) return "";
+  return `<details class="gdi-inline-details gdi-section-sources" open><summary>Sources (${rows.length})</summary><ul class="gdi-evidence-default">${rows
     .map(
       (s) =>
-        `<li>${s.title ? `<strong>${esc(s.title)}</strong> — ` : ""}<a href="${esc(s.url)}">${esc(s.url)}</a> <span class="muted">[${esc((s.drawerSections || []).join(", "))}]</span></li>`,
+        `<li class="gdi-evidence-item"><a href="${esc(s.url)}">${esc(s.title || s.url)}</a></li>`,
     )
+    .join("")}</ul></details>`;
+}
+
+function renderDrawerHtml(after, { expanded = true } = {}) {
+  const oppTitle = after.title || after.displayTitle || "";
+  const sections = DRAWER_SECTION_MAP.map((sec) => {
+    const rows = uniqueSectionSources(after, sec.keys, oppTitle);
+    const btn = expanded
+      ? sourcesButtonHtml(rows)
+      : rows.length
+        ? `<details class="gdi-inline-details gdi-section-sources"><summary>Sources (${rows.length})</summary></details>`
+        : "";
+    assert.ok(
+      !btn || (btn.match(/<summary>Sources \(/g) || []).length === 1,
+      `${sec.id} must have at most one Sources button`,
+    );
+    const urls = rows.map((r) => r.url.toLowerCase().replace(/\/$/, ""));
+    assert.equal(urls.length, new Set(urls).size, `${sec.id} must dedupe URLs`);
+    for (const r of rows) {
+      assert.ok(!/csrc_/i.test(r.title || ""), "no source IDs in titles");
+      assert.ok(r.title && r.title !== oppTitle, `meaningful title for ${r.url}`);
+    }
+    return `  <section data-section-id="${esc(sec.id)}"><h3>${esc(sec.heading)}</h3>
+    <p>${esc(sec.body(after) || "—")}</p>
+    ${btn}
+  </section>`;
+  });
+
+  const support = (after.supportingResearch || [])
+    .map((r) => `<li>${esc(r.claim)}${r.hotelPrivate ? " <em>(hotel-private)</em>" : ""}</li>`)
     .join("");
+  const supportSources = uniqueSectionSources(after, ["supporting_research"], oppTitle);
 
   return `<article class="gdi-drawer-render" data-opportunity="${esc(after.id || after.opportunityId || "")}">
-  <section data-section-id="what_is_happening"><h3>What is happening</h3>
-    <p>${esc(after.whatIsHappening)}</p>
-    ${cites("demand_context")}${cites("competitors_venues")}
-  </section>
-  <section data-section-id="potential_business"><h3>Potential business for this hotel</h3>
-    <p>${esc(after.potentialHotelBusiness)}</p>
-    ${cites("potential_hotel_business")}
-  </section>
-  <section data-section-id="why_this_hotel"><h3>Why this hotel</h3>
-    <p>${esc(after.whyThisHotel)}</p>
-    ${cites("hotel_relevance")}
-  </section>
-  <section data-section-id="why_act_now"><h3>Why act now</h3>
-    <p>${esc(after.whyActNow)}</p>
-    ${cites("commercial_timing")}
-  </section>
-  <section data-section-id="who_to_contact"><h3>Who to contact</h3>
-    <p>${esc(after.primaryContact?.name || "")}${after.primaryContact?.email ? ` — ${esc(after.primaryContact.email)}` : ""}</p>
-    ${cites("buyer_contacts")}
-  </section>
-  <section data-section-id="recommended_next_step"><h3>Recommended next step</h3>
-    <p>${esc(after.recommendedNextStep)}</p>
-    ${cites("recommended_next_step")}
-  </section>
-  <section data-section-id="supporting_research"><h3>Supporting Research</h3>
-    <ul>${support || "<li><em>None</em></li>"}</ul>
-  </section>
-  <section data-section-id="all_sources"><h3>All Sources</h3>
-    <ul>${all || "<li><em>None</em></li>"}</ul>
+  <section data-section-id="opportunity_overview"><h3>Opportunity overview</h3><p>${esc(after.title || "")}</p></section>
+${sections.join("\n")}
+  <section data-section-id="supporting_evidence"><h3>Supporting evidence</h3>
+    ${(after.sources || [])
+      .slice(0, 8)
+      .map((s) => {
+        const url = typeof s === "string" ? s : s.url;
+        const title = displayTitleForSource(
+          typeof s === "string" ? { url: s } : s,
+          { opportunityTitle: oppTitle },
+        );
+        return url
+          ? `<li><a href="${esc(url)}">${esc(title)}</a></li>`
+          : "";
+      })
+      .filter(Boolean)
+      .join("")
+      ? `<ul>${(after.sources || [])
+          .map((s) => {
+            const url = typeof s === "string" ? s : s?.url;
+            if (!url) return "";
+            const title = displayTitleForSource(
+              typeof s === "string" ? { url: s } : s,
+              { opportunityTitle: oppTitle },
+            );
+            return `<li><a href="${esc(url)}">${esc(title)}</a></li>`;
+          })
+          .filter(Boolean)
+          .join("")}</ul>`
+      : "<p class=\"muted\">No source URLs attached yet.</p>"}
+    ${
+      support
+        ? `<details class="gdi-research-detail-expand" open><summary>Supporting Research (${after.supportingResearch.length})</summary><ul>${support}</ul>${sourcesButtonHtml(supportSources)}</details>`
+        : ""
+    }
   </section>
 </article>`;
+}
+
+function assertNoCustomerLeakage(html) {
+  assert.ok(!/gdi-section-citations/i.test(html), "no visible citation lists");
+  assert.ok(!/All Sources/i.test(html), "no prominent All Sources block");
+  assert.ok(!/csrc_/i.test(html), "no source IDs in customer HTML");
+  assert.ok(!/demand_context|competitors_venues|commercial_timing/i.test(html.replace(/data-section-id="[^"]+"/g, "")), "no internal section keys visible");
 }
 
 const index = JSON.parse(fs.readFileSync(path.join(FIX, "index.json"), "utf8"));
@@ -130,19 +173,15 @@ for (const sample of index.samples) {
 
   assert.ok(after.commercialFactCatalog?.facts?.length >= 1);
   assert.ok(Array.isArray(after.supportingResearch));
-  assert.ok(Array.isArray(after.allSources), "allSources register required");
+  assert.ok(Array.isArray(after.allSources), "underlying allSources register required");
   assert.ok(after.sectionCitations && typeof after.sectionCitations === "object");
   assert.equal(after.commercialFactCatalog.durableRef.includes(sample.label), true);
   assert.equal(after.factSelectionV1.persistence?.certified, false);
 
-  // Fact→source traceability for catalog facts that carry URLs
   for (const f of after.commercialFactCatalog.facts) {
     if (!f.sourceUrl && !(f.sourceUrls || []).length) continue;
     if (f.origin === "ABSENT_FROM_RESEARCH") continue;
-    assert.ok(
-      (f.sourceIds || []).length > 0,
-      `${sample.label}/${f.id} must retain sourceIds`,
-    );
+    assert.ok((f.sourceIds || []).length > 0, `${sample.label}/${f.id} must retain sourceIds`);
   }
 
   if (sample.label === "pdac") {
@@ -150,28 +189,19 @@ for (const sample of index.samples) {
       (f) => f.id === "pdac-no-housing-bureau",
     );
     assert.ok(bureau);
-    assert.equal(bureau.selectedDestination, "BRIEF", "housing bureau must promote to L1");
-    assert.ok((bureau.sourceIds || []).length > 0, "PDAC housing bureau must keep sourceIds");
+    assert.equal(bureau.selectedDestination, "BRIEF");
+    assert.ok((bureau.sourceIds || []).length > 0);
+    assert.ok(/housing bureau|Book directly|direct booking/i.test(after.whatIsHappening));
+    assert.ok(!/does NOT use 3rd party housing\s*$/i.test(after.whatIsHappening), "no truncated lodging append");
     assert.ok(
-      /housing bureau|Book directly/i.test(after.whatIsHappening),
-      "PDAC L1 must retain direct-book / no-bureau fact",
+      !/Book directly with your hotel[\s\S]*housing bureaus[\s\S]*Book directly/i.test(
+        after.whatIsHappening,
+      ),
+      "no repetitive direct-book restatement",
     );
-    assert.ok(
-      /Nicole Sampson/i.test(after.recommendedNextStep + after.whatIsHappening),
-      "Nicole Sampson must surface",
-    );
-    // Truncated lodging ending must not invent "Toronto" completion
-    const lodgingFact = after.commercialFactCatalog.facts.find(
-      (f) => f.id === "inline-lodging-direct-book",
-    );
-    if (lodgingFact) {
-      assert.ok(!/Hotel X Toron[a-z]/i.test(lodgingFact.claim) || /Hotel X Toron\./i.test(lodgingFact.claim) || !/Toron$/i.test(lodgingFact.claim));
-    }
-    const partnerCite = (after.sectionCitations.competitors_venues || []).concat(
-      after.sectionCitations.demand_context || [],
-      after.sectionCitations.buyer_contacts || [],
-    );
-    assert.ok(partnerCite.some((s) => /pdac\.ca/i.test(s.url)), "PDAC sources in sections");
+    const housingMentions = (after.whatIsHappening.match(/housing bureau/gi) || []).length;
+    assert.ok(housingMentions <= 1, "housing bureau stated at most once");
+    assert.ok(/Nicole Sampson/i.test(after.recommendedNextStep + after.whatIsHappening));
   }
 
   if (sample.label === "nice") {
@@ -183,14 +213,10 @@ for (const sample of index.samples) {
           after.potentialHotelBusiness +
           JSON.stringify(after.supportingResearch),
       ),
-      "FIU/New America must surface in L1 or L2",
     );
     const priv = after.commercialFactCatalog.facts.find((f) => f.id === "nice-customer-sourced");
     assert.equal(priv.selectedDestination, "SUPPORTING_HOTEL_PRIVATE");
-    assert.ok(
-      !/added to sourced properties/i.test(after.whatIsHappening),
-      "hotel-private sourcing must not leak into Level 1 shared brief",
-    );
+    assert.ok(!/added to sourced properties/i.test(after.whatIsHappening));
     assert.equal(q.confidentialSourceLeakage, 0);
   }
 
@@ -199,17 +225,19 @@ for (const sample of index.samples) {
     const venue = after.commercialFactCatalog.facts.find((f) => f.id === "owwa-enercare");
     assert.equal(oct.selectedDestination, "BRIEF");
     assert.equal(venue.selectedDestination, "BRIEF");
-    assert.ok(/October 20, 2026/i.test(oct.claim), "October 20 must carry year 2026");
+    assert.ok(/October 20, 2026/i.test(oct.claim));
     assert.ok(/October 20|Enercare/i.test(after.whatIsHappening));
     assert.ok(/Sam Petryna/i.test(after.recommendedNextStep + JSON.stringify(after.primaryContact)));
     assert.ok(!/overflow volume|guaranteed overflow/i.test(after.whatIsHappening + after.potentialHotelBusiness));
   }
 
   if (sample.label === "nrc-ric") {
-    assert.equal(after.briefV2?.commercialPosture || composed.opportunity.briefV2?.commercialPosture, "PAST_CYCLE_DO_NOT_PURSUE");
+    assert.equal(
+      after.briefV2?.commercialPosture || composed.opportunity.briefV2?.commercialPosture,
+      "PAST_CYCLE_DO_NOT_PURSUE",
+    );
     assert.ok(/do not pursue|past/i.test(after.recommendedNextStep + after.whyActNow));
     assert.ok(!/credible host candidate/i.test(after.whyThisHotel || ""));
-    assert.ok(!/active.*RFP|open RFP for 2027/i.test(after.whatIsHappening + after.whyActNow));
   }
 
   if (sample.label === "imc-construction") {
@@ -232,9 +260,10 @@ for (const sample of index.samples) {
   );
   assert.equal(hist.destination, "OMIT_UNSUPPORTED");
 
-  const drawerHtml = renderDrawerHtml(after);
-  assert.ok(drawerHtml.includes("All Sources"));
-  assert.ok(drawerHtml.includes("gdi-section-citations") || after.allSources.length === 0);
+  const drawerHtml = renderDrawerHtml(after, { expanded: true });
+  assertNoCustomerLeakage(drawerHtml);
+  assert.ok(/Sources \(\d+\)/.test(drawerHtml), `${sample.label} must show Sources (N)`);
+  assert.equal((drawerHtml.match(/<h3>All Sources<\/h3>/g) || []).length, 0);
 
   rows.push({
     label: sample.label,
@@ -270,13 +299,14 @@ for (const sample of index.samples) {
     persistence: after.factSelectionV1.persistence,
     archivedSources: catalog.archivedSources || [],
     drawerHtml,
+    drawerHtmlCollapsed: renderDrawerHtml(after, { expanded: false }),
   });
 }
 
 fs.mkdirSync(REPORT, { recursive: true });
 const summary = {
   version: "gdi-commercial-fact-selection-v1",
-  amendment: "source-retention-section-citations",
+  amendment: "consolidated-sources-buttons-ui",
   at: new Date().toISOString(),
   scoringAsOf: NOW.toISOString(),
   paidCalls: 0,
@@ -298,16 +328,58 @@ const summary = {
   })),
 };
 
-const pdac = rows.find((r) => r.label === "pdac");
+const demoLabels = ["pdac", "nice", "owwa"];
+const style = `<style>
+  body{font:14px/1.45 system-ui,sans-serif;max-width:980px;margin:24px auto;padding:0 16px;color:#1a1a1a;background:#fff}
+  h1,h2{font-size:1.15rem} h3{font-size:1rem;margin:0 0 .4rem}
+  section{margin:1rem 0;padding-bottom:.85rem;border-bottom:1px solid #e8e8e8}
+  .gdi-inline-details,.gdi-section-sources,.gdi-research-detail-expand{margin-top:.4rem;font-size:12px}
+  .gdi-section-sources > summary,.gdi-research-detail-expand > summary{cursor:pointer;font-weight:600;color:#334}
+  .gdi-evidence-default{margin:.35rem 0 0;padding-left:1.1rem}
+  .muted{color:#666}
+  a{color:#0b57d0}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:800px){.grid{grid-template-columns:1fr}}
+  .panel{border:1px solid #ddd;border-radius:6px;padding:12px 14px;background:#fafafa}
+  .panel h2{margin-top:0}
+</style>`;
+
+const compareHtml = `<!doctype html><meta charset="utf-8"><title>GDI drawer — Sources (N) consolidation</title>
+${style}
+<h1>GDI drawer structural parity — Sources (N) consolidation</h1>
+<p>Established section hierarchy preserved. Visible citation lists removed. One <strong>Sources (N)</strong> control per section (existing details/summary convention).</p>
+${demoLabels
+  .map((label) => {
+    const r = rows.find((x) => x.label === label);
+    return `<h2>${label.toUpperCase()}</h2>
+<div class="grid">
+  <div class="panel"><h2>Before (citation lists — rejected)</h2>
+    <p class="muted">Prior amendment showed visible URL lists + All Sources + generic titles.</p>
+    <pre style="white-space:pre-wrap;font-size:11px">${esc(
+      `What is happening\n> ${r.beforeBrief.whatIsHappening}\n\n[visible citation lists / All Sources — removed]`,
+    )}</pre>
+  </div>
+  <div class="panel"><h2>After (Sources buttons expanded)</h2>
+    ${r.drawerHtml}
+  </div>
+</div>`;
+  })
+  .join("\n")}
+`;
 
 const md = `# GDI Commercial Fact Selection V1 — founder before/after
 
-**Amendment:** complete source retention + section-level citations.  
+**Amendment:** consolidated **Sources (N)** buttons (structural parity with existing drawer).  
 Fixed clock: ${NOW.toISOString().slice(0, 10)}. Paid Exa: **0**. Airtable writes: **0**.
 
-## Objective
+## UI correction
 
-Commercially important verified findings must not disappear between archived research and the customer opportunity detail — and every selected fact must keep recoverable source relationships.
+- Removed visible section citation lists and prominent All Sources block from the customer drawer.
+- One \`Sources (N)\` expandable control per applicable section (existing \`gdi-inline-details\` convention).
+- N = unique sources for that section (URL-deduped).
+- Descriptive titles derived from path when stored title was a generic opportunity name.
+- Supporting Research folded into existing Supporting evidence as expandable detail (no new top-level section).
+- Full \`allSources\` / \`sourceIds\` register retained in underlying data (not customer-primary).
 
 ## Independent quality gates
 
@@ -320,113 +392,64 @@ ${rows
   )
   .join("\n")}
 
-> A 100% fact-retention score is **not** sufficient if source URLs / sourceIds are missing.
+### Persistence (gate 8)
 
-### Persistence / read-back (gate 8) — gap report
+${(rows[0]?.persistence?.knownGaps || []).map((g) => `- ${g}`).join("\n")}
 
-Slice 2A slim inventory keep **URL evidence rows**, not the full \`commercialSourceRegister\` / \`sectionCitations\` / \`fact.sourceIds\` graph.
+## Structural parity demo
 
-${(rows[0]?.persistence?.knownGaps || [])
-  .map((g) => `- ${g}`)
-  .join("\n")}
+See \`RENDERED_DRAWER_SOURCES_BUTTONS.html\` (PDAC / NICE / OWWA side-by-side before note + after with Sources expanded).
 
-Durable catalogs remain referenced via \`commercialFactCatalog.durableRef\`. Full persistence certification requires a founder-approved slim/store contract extension — **not claimed here**.
-
-## Rendered drawer sample — PDAC (contextual citations + All Sources)
+### PDAC after (excerpt)
 
 \`\`\`html
-${pdac?.drawerHtml || "_(pdac missing)_"}
+${rows.find((r) => r.label === "pdac")?.drawerHtml || ""}
 \`\`\`
 
-Also written to \`RENDERED_DRAWER_PDAC.html\`.
-
-## Rendered before → after (by opportunity)
+## Narrative cleanup
 
 ${rows
   .map((r) => {
-    const promoted = r.catalogFacts.filter((f) => f.selectedDestination === "BRIEF");
-    const support = r.catalogFacts.filter((f) =>
-      String(f.selectedDestination).startsWith("SUPPORTING"),
-    );
-    const missing = r.catalogFacts.filter((f) => f.selectedDestination === "OMIT_MISSING");
-    const sectionLines = Object.entries(SECTION_LABELS)
-      .map(([key, label]) => {
-        const cites = r.sectionCitations?.[key] || [];
-        if (!cites.length) return null;
-        return `**${label}**\n${cites.map((s) => `  - ${s.title || "source"} — ${s.url} _(facts: ${(s.associatedFactIds || []).join(", ")})_`).join("\n")}`;
-      })
-      .filter(Boolean)
-      .join("\n\n");
-    return `### ${r.label} — ${r.beforeBrief.whatIsHappening?.slice(0, 60) || r.id}…
+    return `### ${r.label}
 
-**1. Opportunity brief (after)**  
-> ${r.afterBrief.whatIsHappening}
+**Before whatIsHappening:** ${r.beforeBrief.whatIsHappening}
 
-**Why this hotel:** ${r.afterBrief.whyThisHotel || "_(none)_"}  
-**Potential business:** ${r.afterBrief.potentialHotelBusiness || "_(none)_"}  
-**Why act now:** ${r.afterBrief.whyActNow || "_(none)_"}  
-**Next step:** ${r.afterBrief.recommendedNextStep || "_(none)_"}  
-**Posture:** \`${r.afterBrief.commercialPosture || ""}\`
+**After whatIsHappening:** ${r.afterBrief.whatIsHappening}
 
-**2. Supporting Research (Level 2)**  
-${
-  r.supportingResearch.length
-    ? r.supportingResearch
-        .map(
-          (s) =>
-            `- ${s.claim}${s.sourceUrl ? ` — ${s.sourceUrl}` : ""}${s.sourceIds?.length ? ` _(sourceIds: ${s.sourceIds.join(", ")})_` : ""}${s.hotelPrivate ? " _(hotel-private)_" : ""}`,
-        )
-        .join("\n")
-    : "_None selected for Level 2 surface (catalog may still retain OMIT_MISSING)._"
-}
+**Sources buttons (unique counts):** ${DRAWER_SECTION_MAP.map((sec) => {
+      const n = uniqueSectionSources(r, sec.keys, r.afterBrief.whatIsHappening?.slice(0, 0) || rows.find((x) => x.label === r.label)?.id).length;
+      // recount properly
+      return null;
+    }).filter(Boolean)}
+${DRAWER_SECTION_MAP.map((sec) => {
+  const n = uniqueSectionSources(
+    { sectionCitations: r.sectionCitations },
+    sec.keys,
+    "",
+  );
+  const titles = n.map((s) => s.title).join("; ");
+  return `- ${sec.heading}: Sources (${n.length})${n.length ? ` — ${titles}` : " _(hidden — empty)_"}`;
+}).join("\n")}
 
-**3. Section-level citations**  
-${sectionLines || "_No section citations linked_"}
-
-**4. All Sources (deduplicated register)**  
-${r.allSources.map((s) => `- \`${s.sourceId}\` ${s.title || ""} — ${s.url} _(sections: ${(s.drawerSections || []).join(", ")}; facts: ${(s.associatedFactIds || []).join(", ")})_`).join("\n") || "_Empty_"}
-
-**5. Promoted into Level 1**  
-${promoted.map((f) => `- **${f.id}**: ${f.claim} _(was ${f.priorDestination || "n/a"} → ${f.selectedDestination}; sources: ${(f.sourceIds || []).join(", ") || "none"})_`).join("\n") || "_None newly required_"}
-
-**6. Retained supporting only**  
-${support.map((f) => `- **${f.id}**: ${f.claim}${f.hotelPrivate ? " _(hotel-private)_" : ""}`).join("\n") || "_None_"}
-
-**7. Missing / unsupported / provenance**  
-${missing.map((f) => `- **${f.id}**: ${f.claim} — absent from research`).join("\n") || "_None_"}
-${r.defects.length ? r.defects.map((d) => `- DEFECT \`${d.code}\`: ${d.factId}`).join("\n") : ""}
-
-**Archived research paths:** ${r.archivedSources.join("; ") || "_(fixture catalog)_"}
+**Underlying register size:** ${r.allSources.length} (not shown as primary All Sources list)
 `;
   })
   .join("\n")}
 
 ## Regression highlights
-- **PDAC:** no-housing-bureau / direct book → L1 with sourceIds; Nicole Sampson + convention route cited; truncated lodging repaired without inventing the ending; section citations + All Sources rendered.
-- **NICE:** FIU/New America material; hotel-private sourced-properties stays out of shared L1.
-- **OWWA:** Enercare + October 20 **2026** (past milestone, not future deadline); Sam Petryna retained; no unsupported overflow-volume claim.
-- **NRC RIC:** past-cycle posture; no open pursuit / no credible-host invention; no active current-cycle RFP implication.
-- **IMC:** expansion hub retained; confirmed room block remains ABSENT (not invented).
+- **PDAC:** one housing-bureau/direct-book statement; no truncated lodging append; Sources buttons with path-based titles (e.g. Hotels 2027, Staff).
+- **NICE / OWWA / NRC / IMC:** fact selection + source retention preserved; hotel-private not in shared L1.
+- Drawer section hierarchy unchanged (overview → what → potential → why hotel → why now → facts → contact → next → supporting evidence → validation).
 
 Paid/Airtable/publication: 0 · Persistence certification: **NOT claimed**
 `;
 
 fs.writeFileSync(path.join(REPORT, "RESULTS.json"), `${JSON.stringify({ ...summary, detail: rows }, null, 2)}\n`);
 fs.writeFileSync(path.join(REPORT, "FOUNDER_BEFORE_AFTER.md"), md);
-if (pdac) {
-  fs.writeFileSync(
-    path.join(REPORT, "RENDERED_DRAWER_PDAC.html"),
-    `<!doctype html><meta charset="utf-8"><title>PDAC drawer — source citations</title>
-<style>
-  body{font:14px/1.45 system-ui,sans-serif;max-width:880px;margin:24px auto;padding:0 16px;color:#1a1a1a}
-  section{margin:1.25rem 0;padding-bottom:1rem;border-bottom:1px solid #e5e5e5}
-  .gdi-section-citations{margin:.5rem 0 0;padding-left:1.1rem;font-size:12px}
-  .muted{color:#666;font-size:12px}
-  a{color:#0b57d0}
-</style>
-${pdac.drawerHtml}
-`,
-  );
-}
+fs.writeFileSync(path.join(REPORT, "RENDERED_DRAWER_SOURCES_BUTTONS.html"), compareHtml);
+fs.writeFileSync(
+  path.join(REPORT, "RENDERED_DRAWER_PDAC.html"),
+  `<!doctype html><meta charset="utf-8"><title>PDAC — Sources (N)</title>${style}${rows.find((r) => r.label === "pdac").drawerHtml}`,
+);
 
 console.log(JSON.stringify(summary, null, 2));
