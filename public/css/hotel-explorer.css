@@ -770,6 +770,74 @@ button.hex-action {
 .hex-meas-prefs-slot {
   margin: 0 0 10px;
 }
+
+/* Owner portfolio — operator grouping accordion */
+.hex-op-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.hex-op-group {
+  border: 0.6px solid var(--runbook-border, #2a3550);
+  border-radius: 10px;
+  background: #0d152c;
+  overflow: hidden;
+}
+.hex-op-group__head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 0;
+  background: transparent;
+  color: #e8ecf4;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.hex-op-group__arrow {
+  width: 1em;
+  color: #9aa3ff;
+  flex-shrink: 0;
+}
+.hex-op-group__name {
+  font-weight: 600;
+  flex: 1 1 auto;
+}
+.hex-op-group__meta {
+  font-size: 12px;
+  color: rgba(197, 206, 240, 0.7);
+  white-space: nowrap;
+}
+.hex-op-group__body {
+  border-top: 0.6px solid var(--runbook-border, #2a3550);
+  padding: 8px 12px 10px;
+}
+.hex-op-group__hotels {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.hex-op-group__hotels li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 0.6px solid rgba(42, 53, 80, 0.55);
+  font-size: 13px;
+}
+.hex-op-group__hotels li:last-child {
+  border-bottom: 0;
+}
+.hex-op-group__rooms {
+  color: rgba(197, 206, 240, 0.65);
+  font-variant-numeric: tabular-nums;
+}
+.hex-root .hiw-table--portfolio.dl-table thead th,
+.hex-root .hiw-table--portfolio.ada-table thead th {
+  background: #0d152c !important;
+}
 .hex-main {
   max-width: none;
   width: 100%;

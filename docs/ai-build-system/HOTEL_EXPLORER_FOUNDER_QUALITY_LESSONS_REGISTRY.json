@@ -1,9 +1,10 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.4",
+  "version": "hotel-explorer-founder-quality-lessons-v1.5",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
   "npmScript": "test:he-product-quality-gates-v1",
+  "additionalGates": ["test:he-owner-portfolio-operator-view-v1"],
   "referenceHotels": {
     "uxGolden": {
       "id": "recUNycnMwOVFX0hc",
@@ -157,6 +158,15 @@
       "sharedComponent": "hotel-detail-panel.css; hotel-explorer.css; he-amenity-icon-map-v1.js; hilton-amenity-icons.js; hotel-detail-panel.js",
       "regressionTest": "he_universal_design_hpc_geo_gates",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v4-submarket.png"
+    },
+    {
+      "id": "HE-QL-016",
+      "originalProblem": "Organization & Portfolio confused ownership with managed hotels; mismatched section totals; missing HPC facts; non-reusable hotel-specific portfolio JSON",
+      "rootCause": "Operator-centric lists mixed into ownership tables; no shared reconciliation; incomplete HPC join; per-hotel research duplication",
+      "approvedStandard": "Owner-centric Owned/Controlled + Who Manages These Hotels? over the same deduped hotel set; room/hotel total reconciliation; Operator Not Verified + Owner-Operated; Verified Portfolio Coverage labeling; HI/HPC graph reuse; dry-run only until founder apply",
+      "sharedComponent": "lib/hotel-intelligence/ownership/owner-portfolio-operator-view-v1.js; public/js/he-owner-portfolio-operator-view-v1.js; hotel-intelligence-workspace.js",
+      "regressionTest": "owner_portfolio_operator_reconciliation_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v5-org-portfolio.png"
     }
   ]
 }

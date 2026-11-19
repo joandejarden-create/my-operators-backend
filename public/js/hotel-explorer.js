@@ -881,6 +881,33 @@
       paint();
       return;
     }
+    var opToggle = e.target.closest("[data-hex-op-toggle]");
+    if (opToggle) {
+      var group = opToggle.closest("[data-hex-op-group]");
+      if (group) {
+        var openNow = !group.classList.contains("is-open");
+        group.classList.toggle("is-open", openNow);
+        opToggle.setAttribute("aria-expanded", openNow ? "true" : "false");
+        var arrow = opToggle.querySelector(".hex-op-group__arrow");
+        if (arrow) arrow.textContent = openNow ? "▾" : "▸";
+        var body = group.querySelector(".hex-op-group__body");
+        if (body) {
+          if (openNow) body.removeAttribute("hidden");
+          else body.setAttribute("hidden", "");
+        }
+      }
+      return;
+    }
+    var portfolioHotel = e.target.closest("[data-hiw-hotel], [data-hex-open-hotel]");
+    if (portfolioHotel) {
+      var hid =
+        portfolioHotel.getAttribute("data-hex-open-hotel") ||
+        portfolioHotel.getAttribute("data-hiw-hotel");
+      if (hid) {
+        open({ id: hid, recordId: hid, name: portfolioHotel.textContent.trim() });
+      }
+      return;
+    }
     if (e.target.closest("[data-hiw-org-network]") && window.HotelIntelligenceWorkspace) {
       window.HotelIntelligenceWorkspace.loadOrgNetwork();
     }
@@ -1411,7 +1438,34 @@
       paint();
       return fetchOrg(orgSlug(ownership)).then(function (org) {
         if (!state.open || generation !== state.openGeneration) return;
-        state.org = org;
+        var ownedOverlay =
+          ownership &&
+          ownership.organization &&
+          Array.isArray(ownership.organization.owned_controlled_hotels) &&
+          ownership.organization.owned_controlled_hotels.length
+            ? ownership.organization
+            : null;
+        if (ownedOverlay) {
+          state.org = {
+            group: {
+              display_name: ownedOverlay.display_name,
+              legal_name: ownedOverlay.legal_name,
+              website: ownedOverlay.website,
+              known_hotel_relationships: ownedOverlay.owned_controlled_hotels.length,
+            },
+            portfolio: ownedOverlay.owned_controlled_hotels,
+            owned_controlled_hotels: ownedOverlay.owned_controlled_hotels,
+            portfolio_kpis: ownedOverlay.portfolio_kpis || null,
+            portfolio_source: ownedOverlay.portfolio_source || null,
+            why_this_matters: {
+              text:
+                "Proposed owner portfolio from organization-level research. Who Manages These Hotels? uses the same hotel set.",
+            },
+            _from_proposed_owner_portfolio: true,
+          };
+        } else {
+          state.org = org;
+        }
         paint();
         return embedRadarIfNeeded().then(function () {
           if (!state.open || generation !== state.openGeneration) return;

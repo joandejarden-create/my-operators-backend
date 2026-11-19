@@ -2211,54 +2211,152 @@
       .join("");
   }
 
-  function portfolioRow(h, focusId) {
-    var owned = h.relationship_type === "OWNED_BY" || h.economic_owner_verified;
-    var rawRel = String(h.relationship_type || "").toUpperCase();
-    var rel = owned
-      ? h.secondary_relationship_type === "OPERATED_BY"
-        ? "Owned / Controlled · 3rd-party operated"
-        : "Owned / Controlled"
-      : rawRel === "SPONSORED_BY"
-        ? "Sponsored"
-        : rawRel === "DEVELOPED_BY"
-          ? "Developed"
-          : rawRel === "OPERATED_BY"
-            ? "Operated / Managed"
-            : rawRel === "SIBLING_PROPERTY_OF"
-              ? "Sibling portfolio asset"
-              : rawRel
-                ? rawRel.replace(/_/g, " ").replace(/\b\w/g, function (c) { return c.toUpperCase(); })
-                : "Related";
-    var id = h.airtable_record_id || "";
+  function hotelExplorerDeepLinkButton(h, focusId) {
+    var id = h.airtable_record_id || h.id || "";
+    var name = h.hotel_name || h.name || "Hotel";
+    if (!id) {
+      return (
+        esc(name) +
+        (h.census_match_status === "UNRESOLVED_HOTEL_CANDIDATE"
+          ? ' <span class="hiw-status hiw-status--med">Census candidate</span>'
+          : "")
+      );
+    }
+    return (
+      '<button type="button" class="hiw-linkish" data-hiw-hotel="' +
+      esc(id) +
+      '" data-hex-open-hotel="' +
+      esc(id) +
+      '">' +
+      esc(name) +
+      "</button>" +
+      (id === focusId ? ' <span class="hiw-status hiw-status--high">Focus</span>' : "")
+    );
+  }
+
+  function ownedPortfolioRow(h, focusId) {
+    var market = h.market_display || h.market || h.city || "—";
+    var rooms =
+      h.rooms_known && h.rooms != null
+        ? formatCount(h.rooms)
+        : h.rooms != null && Number(h.rooms) > 0
+          ? formatCount(h.rooms)
+          : "—";
+    var brand = h.brand_display || h.brand || "—";
+    var operator = h.operator || "—";
+    var rel =
+      h.ownership_relationship_label ||
+      (window.HeOwnerPortfolioOperatorView &&
+        window.HeOwnerPortfolioOperatorView.formatOwnershipRelationshipLabel(h)) ||
+      "Owned / controlled";
+    var bucket = String(h.verification_bucket || h.confidence || "PROPOSED").toUpperCase();
+    var status =
+      bucket === "PROPOSED" || bucket === "PROPOSED_STAGED"
+        ? "Proposed"
+        : friendlyStatus(bucket);
     return (
       "<tr>" +
       "<td>" +
-      (id
-        ? '<button type="button" class="hiw-linkish" data-hiw-hotel="' +
-          esc(id) +
-          '">' +
-          esc(h.name) +
-          "</button>"
-        : esc(h.name)) +
-      (id && id === focusId
-        ? ' <span class="hiw-status hiw-status--high">Focus</span>'
-        : "") +
+      hotelExplorerDeepLinkButton(h, focusId) +
       "</td>" +
       "<td>" +
-      esc(h.city || h.market || "—") +
+      esc(market) +
+      "</td>" +
+      '<td class="dl-td--num">' +
+      esc(rooms) +
       "</td>" +
       "<td>" +
-      esc(h.rooms_display != null ? h.rooms_display : h.rooms != null ? h.rooms : "—") +
+      esc(brand) +
       "</td>" +
       "<td>" +
-      esc(h.brand_display || "—") +
+      esc(operator === "—" ? "Not verified" : operator) +
       "</td>" +
       "<td>" +
       esc(rel) +
       "</td>" +
       "<td>" +
-      esc(friendlyStatus(h.verification_bucket || "HIGH")) +
+      esc(status) +
       "</td></tr>"
+    );
+  }
+
+  function buildPortfolioOperatorView(ownedRows, ownerName, coverageMeta) {
+    var api = window.HeOwnerPortfolioOperatorView;
+    if (api && typeof api.buildOwnerPortfolioOperatorView === "function") {
+      return api.buildOwnerPortfolioOperatorView(ownedRows, {
+        ownerDisplayName: ownerName,
+        coverageLabel: (coverageMeta && coverageMeta.coverage_label) || "Verified Portfolio Coverage",
+        completeness: (coverageMeta && coverageMeta.completeness) || "PARTIAL",
+      });
+    }
+    return {
+      ownedHotels: ownedRows,
+      totals: {
+        hotels: ownedRows.length,
+        roomsKnown: ownedRows.reduce(function (s, h) {
+          return s + (Number(h.rooms) || 0);
+        }, 0),
+        roomsUnknownHotelCount: 0,
+      },
+      operatorGroups: [],
+      reconciliation: { ok: false, hotelsMatch: false, roomsMatch: false },
+      stats: {},
+      coverageLabel: "Verified Portfolio Coverage",
+    };
+  }
+
+  function renderOperatorGroupsHtml(view, focusId) {
+    var groups = (view && view.operatorGroups) || [];
+    if (!groups.length) {
+      return '<p class="hiw-empty">No operator groupings available for this ownership portfolio.</p>';
+    }
+    return (
+      '<div class="hex-op-groups" data-hex-op-groups>' +
+      groups
+        .map(function (g, idx) {
+          var open = idx === 0;
+          return (
+            '<div class="hex-op-group' +
+            (open ? " is-open" : "") +
+            '" data-hex-op-group>' +
+            '<button type="button" class="hex-op-group__head" data-hex-op-toggle aria-expanded="' +
+            (open ? "true" : "false") +
+            '">' +
+            '<span class="hex-op-group__arrow" aria-hidden="true">' +
+            (open ? "▾" : "▸") +
+            "</span>" +
+            '<span class="hex-op-group__name">' +
+            esc(g.operatorName) +
+            "</span>" +
+            '<span class="hex-op-group__meta">' +
+            esc(String(g.hotelCount)) +
+            " hotels · " +
+            esc(formatCount(g.roomsKnown)) +
+            " rooms" +
+            (g.roomsUnknownHotelCount
+              ? " · " + g.roomsUnknownHotelCount + " rooms unresolved"
+              : "") +
+            "</span></button>" +
+            '<div class="hex-op-group__body"' +
+            (open ? "" : " hidden") +
+            ">" +
+            '<ul class="hex-op-group__hotels">' +
+            (g.hotels || [])
+              .map(function (h) {
+                return (
+                  "<li>" +
+                  hotelExplorerDeepLinkButton(h, focusId) +
+                  ' <span class="hex-op-group__rooms">' +
+                  (h.rooms_known && h.rooms != null ? esc(formatCount(h.rooms)) + " rooms" : "rooms unresolved") +
+                  "</span></li>"
+                );
+              })
+              .join("") +
+            "</ul></div></div>"
+          );
+        })
+        .join("") +
+      "</div>"
     );
   }
 
@@ -2361,10 +2459,14 @@
         null,
       owned_controlled_hotels:
         (ownership.organization && ownership.organization.owned_controlled_hotels) ||
-        [],
+        portfolio.filter(function (h) {
+          return h.economic_owner_verified || h.relationship_type === "OWNED_BY";
+        }),
+      portfolio_source:
+        (ownership.organization && ownership.organization.portfolio_source) || null,
       operated_managed_hotels:
         (ownership.organization && ownership.organization.operated_managed_hotels) ||
-        portfolio,
+        [],
       ticker:
         org.ticker ||
         org.registry_id ||
@@ -2404,12 +2506,31 @@
       orgNameLower &&
       (orgNameLower.indexOf(opNameLower) >= 0 || opNameLower.indexOf(orgNameLower.slice(0, 12)) >= 0);
     var portfolio = orgPayload.portfolio || [];
-    var ownedRows = portfolio.filter(function (h) {
-      return h.relationship_type === "OWNED_BY" || h.economic_owner_verified;
-    });
-    var managedRows = portfolio.filter(function (h) {
-      return !(h.relationship_type === "OWNED_BY" || h.economic_owner_verified);
-    });
+    var ownedFromOrg =
+      (orgPayload.owned_controlled_hotels && orgPayload.owned_controlled_hotels.length
+        ? orgPayload.owned_controlled_hotels
+        : null) ||
+      (ownership &&
+        ownership.organization &&
+        ownership.organization.owned_controlled_hotels) ||
+      [];
+    var ownedSeed = ownedFromOrg.length
+      ? ownedFromOrg
+      : portfolio.filter(function (h) {
+          return (
+            h.include_as_owned === true ||
+            h.economic_owner_verified ||
+            /OWNED|CONTROLLED|ECONOMIC_OWNER|LEGAL_OWNER/i.test(
+              String(h.relationship_type || h.relationship || "")
+            )
+          );
+        });
+    var coverageMeta =
+      (ownership && ownership.organization && ownership.organization.portfolio_kpis) ||
+      orgPayload.portfolio_kpis ||
+      null;
+    var view = buildPortfolioOperatorView(ownedSeed, g.display_name, coverageMeta);
+    var ownedRows = view.ownedHotels || [];
 
     var orgPeople =
       (ownership &&
@@ -2421,20 +2542,27 @@
     var framingNote =
       (orgPayload.why_this_matters && orgPayload.why_this_matters.text) ||
       (g.evidence_summary || "");
+    var portfolioSourceNote =
+      (ownership &&
+        ownership.organization &&
+        ownership.organization.portfolio_source &&
+        ownership.organization.portfolio_source.limitation) ||
+      (orgPayload.portfolio_source && orgPayload.portfolio_source.limitation) ||
+      "";
 
     return (
-      '<article class="hiw-report">' +
+      '<article class="hiw-report hex-owner-portfolio" data-hex-owner-portfolio="1">' +
       '<h2 class="hiw-report__title">' +
       esc(g.display_name) +
       "</h2>" +
-      '<p class="hiw-report__subtitle">Organization intelligence · related hotel: ' +
+      '<p class="hiw-report__subtitle">Owner portfolio intelligence · related hotel: ' +
       esc(hotelName) +
       (ownedFocus
         ? ownerOperatorSame
           ? " · Economic owner &amp; operator"
-          : " · Public economic owner · operator is separate" +
-            (opName ? " (" + esc(opName) + ")" : "")
-        : " · Operator / manager · ownership not implied") +
+          : " · Economic owner · operator relationships shown per hotel" +
+            (opName ? " (this hotel: " + esc(opName) + ")" : "")
+        : " · Organization profile · ownership not implied by brand/management alone") +
       (orgPayload.owner_explorer_path
         ? ' · <a href="' +
           esc(orgPayload.owner_explorer_path) +
@@ -2446,81 +2574,80 @@
       esc(g.display_name) +
       (g.legal_name ? " (" + esc(g.legal_name) + ")" : "") +
       (g.ticker ? " · " + esc(g.ticker) : "") +
-      ". Known Dealality portfolio relationships below separate owned / controlled hotels from operated / managed hotels. Portfolio inclusion does not invent property-company ownership." +
-      (framingNote
-        ? "</p><p>" + esc(framingNote)
-        : "") +
+      ". Sections below show this owner's verified / proposed owned–controlled hotels, then group <em>those same hotels</em> by management company. Brand affiliation and third-party management contracts are not treated as real-estate ownership." +
+      (framingNote ? "</p><p>" + esc(framingNote) : "") +
+      (portfolioSourceNote ? "</p><p>" + esc(portfolioSourceNote) : "") +
       "</p></div></section>" +
-      '<section class="hiw-section"><h3 class="hiw-section__h">Known Dealality Portfolio</h3>' +
-      '<div class="hex-facts hex-facts--5 hex-facts--own" aria-label="Known Dealality portfolio">' +
+      '<section class="hiw-section"><h3 class="hiw-section__h">' +
+      esc(view.coverageLabel || "Verified Portfolio Coverage") +
+      "</h3>" +
+      '<div class="hex-facts hex-facts--5 hex-facts--own" aria-label="Owner portfolio coverage">' +
+      hexFact(formatCount(view.totals.hotels), "Owned / controlled hotels") +
+      hexFact(formatCount(view.totals.roomsKnown), "Known rooms") +
       hexFact(
-        formatCount(
-          summary.total_relationships || g.known_hotel_relationships || portfolio.length || "—"
-        ),
-        "Known hotels"
-      ) +
-      hexFact(formatCount(g.known_rooms != null ? g.known_rooms : "—"), "Known rooms") +
-      hexFact(
-        formatCount(
-          summary.owned_or_controlled_verified != null
-            ? summary.owned_or_controlled_verified
-            : ownedRows.length
-        ),
-        "Owned / Controlled"
+        formatCount((view.stats && view.stats.hotelsThirdPartyManaged) || 0),
+        "3rd-party managed"
       ) +
       hexFact(
-        formatCount(
-          summary.operated_or_managed != null ? summary.operated_or_managed : managedRows.length
-        ),
-        "Managed / operated"
+        formatCount((view.stats && view.stats.hotelsOwnerOperated) || 0),
+        "Owner-operated"
       ) +
-      hexFact(formatCount((g.markets || []).length || "—"), "Markets") +
-      "</div></section>" +
-      '<section class="hiw-section"><h3 class="hiw-section__h">Owned / Controlled Hotels</h3>' +
-      (ownedRows.length
-        ? wrapTable(
-            "<thead><tr>" +
-            th("Hotel") +
-            th("Market") +
-            th("Rooms") +
-            th("Brand") +
-            th("Relationship") +
-            th("Status") +
-            "</tr></thead><tbody>" +
-              ownedRows.map(function (h) {
-                return portfolioRow(h, focusId);
-              }).join("") +
-              "</tbody>",
-            "hiw-table--portfolio"
-          )
-        : '<div class="hiw-gap-box"><h4>None verified in this cohort</h4><p>Operator evidence alone does not certify ownership.</p></div>') +
+      hexFact(
+        formatCount((view.stats && view.stats.hotelsOperatorUnresolved) || 0),
+        "Operator unresolved"
+      ) +
+      "</div>" +
+      (view.totals.roomsUnknownHotelCount
+        ? '<p class="hiw-muted">' +
+          esc(String(view.totals.roomsUnknownHotelCount)) +
+          " hotel(s) have unresolved room counts and are excluded from the known-room sum (not treated as zero).</p>"
+        : "") +
+      (view.reconciliation && view.reconciliation.ok
+        ? '<p class="hiw-muted">Totals reconcile: owned hotels = operator-group hotels; known rooms match.</p>'
+        : '<p class="hiw-muted">Reconciliation check pending or incomplete for this portfolio payload.</p>') +
       "</section>" +
-      '<section class="hiw-section"><h3 class="hiw-section__h">Operated / Managed Hotels</h3>' +
-      (managedRows.length
-        ? wrapTable(
+      '<section class="hiw-section"><h3 class="hiw-section__h">Owned / Controlled Hotels</h3>' +
+      '<p class="hiw-muted">Total hotels: ' +
+      esc(formatCount(view.totals.hotels)) +
+      " · Total known rooms: " +
+      esc(formatCount(view.totals.roomsKnown)) +
+      "</p>" +
+      (ownedRows.length
+        ? '<div class="dl-table-wrap">' +
+          wrapTable(
             "<thead><tr>" +
-            th("Hotel") +
-            th("Market") +
-            th("Rooms") +
-            th("Brand") +
-            th("Relationship") +
-            th("Status") +
-            "</tr></thead><tbody>" +
-              managedRows.map(function (h) {
-                return portfolioRow(h, focusId);
-              }).join("") +
+              th("Hotel") +
+              th("Market") +
+              th("Rooms") +
+              th("Brand") +
+              th("Operator") +
+              th("Ownership relationship") +
+              th("Status") +
+              "</tr></thead><tbody>" +
+              ownedRows
+                .map(function (h) {
+                  return ownedPortfolioRow(h, focusId);
+                })
+                .join("") +
               "</tbody>",
-            "hiw-table--portfolio"
-          )
-        : '<p class="hiw-empty">No operated-only hotels in the known Dealality portfolio.</p>') +
+            "hiw-table--portfolio dl-table ada-table"
+          ) +
+          "</div>"
+        : '<div class="hiw-gap-box"><h4>None verified in this ownership portfolio</h4><p>Operator or brand evidence alone does not certify ownership. Research the organization once, link matched HPC hotels, and reuse the graph.</p></div>') +
+      "</section>" +
+      '<section class="hiw-section"><h3 class="hiw-section__h">Who Manages These Hotels?</h3>' +
+      '<p class="hiw-muted">Same hotel set as Owned / Controlled, grouped by current management company. Owner-operated properties are labeled separately from third-party managers.</p>' +
+      renderOperatorGroupsHtml(view, focusId) +
       "</section>" +
       '<section class="hiw-section"><h3 class="hiw-section__h">Key People</h3>' +
       renderPeopleGrouped(orgPeople.slice(0, 10)) +
       "</section>" +
       '<section class="hiw-section"><h3 class="hiw-section__h">Strategic Context</h3>' +
       '<div class="hiw-prose"><p>' +
-      esc((orgPayload.why_this_matters && orgPayload.why_this_matters.text) ||
-        "Review owned versus managed mix before outreach. Brand and operator relationships differ by hotel.") +
+      esc(
+        (orgPayload.why_this_matters && orgPayload.why_this_matters.text) ||
+          "Use Hotel → Owner → Portfolio and Owner → Hotels → Operators. Research one owner; reuse verified relationships across every connected hotel."
+      ) +
       "</p></div></section>" +
       "</article>"
     );
@@ -3430,6 +3557,23 @@
   }
 
   function onRootClick(e) {
+    var opToggle = e.target.closest("[data-hex-op-toggle]");
+    if (opToggle) {
+      var group = opToggle.closest("[data-hex-op-group]");
+      if (group) {
+        var openNow = !group.classList.contains("is-open");
+        group.classList.toggle("is-open", openNow);
+        opToggle.setAttribute("aria-expanded", openNow ? "true" : "false");
+        var arrow = opToggle.querySelector(".hex-op-group__arrow");
+        if (arrow) arrow.textContent = openNow ? "▾" : "▸";
+        var body = group.querySelector(".hex-op-group__body");
+        if (body) {
+          if (openNow) body.removeAttribute("hidden");
+          else body.setAttribute("hidden", "");
+        }
+      }
+      return;
+    }
     var back = e.target.closest("[data-hiw-back]");
     if (back) {
       close();
@@ -3454,13 +3598,34 @@
     var hotelBtn = e.target.closest("[data-hiw-hotel]");
     if (hotelBtn) {
       var hid = hotelBtn.getAttribute("data-hiw-hotel");
+      var ownedList =
+        (state.org && state.org.owned_controlled_hotels) ||
+        (state.ownership &&
+          state.ownership.organization &&
+          state.ownership.organization.owned_controlled_hotels) ||
+        [];
       var match =
+        ownedList.find(function (h) {
+          return (h.airtable_record_id || h.id) === hid;
+        }) ||
         (state.org &&
           state.org.portfolio &&
           state.org.portfolio.find(function (h) {
             return h.airtable_record_id === hid;
           })) ||
         null;
+      if (window.HotelExplorer && typeof window.HotelExplorer.open === "function") {
+        window.HotelExplorer.open({
+          id: hid,
+          recordId: hid,
+          name: (match && (match.hotel_name || match.name)) || hid,
+          city: match && (match.city || match.market),
+          market: match && (match.market || match.city),
+          rooms: match && match.rooms,
+          brand: match && (match.brand_display || match.brand),
+        });
+        return;
+      }
       if (match) {
         open(
           {
@@ -3590,7 +3755,12 @@
           operated_or_managed: managed.length,
         },
       },
-      portfolio: owned.map(mapRow).concat(managed.map(mapRow)),
+      portfolio: owned.map(mapRow),
+      owned_controlled_hotels: owned.map(mapRow),
+      portfolio_kpis: {
+        coverage_label: p.customer_label || "Verified Portfolio Coverage",
+        completeness: p.completeness || p.portfolio_status || "PARTIAL",
+      },
       owner_explorer_path:
         "/owner-explorer.html?owner=" +
         encodeURIComponent(p.owner_entity_id) +
@@ -3598,7 +3768,7 @@
       related_entities: p.related_entities || [],
       why_this_matters: {
         text:
-          "Organization-level portfolio from Owner Control Graph. Operator relationships stay separate from ownership. Every hotel row carries an attribution path.",
+          "Organization-level portfolio from Owner Control Graph. Who Manages These Hotels? groups only the owned/controlled set — operator-only hotels are excluded from these totals.",
       },
       _from_owner_portfolio: true,
     };

@@ -1,9 +1,9 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.4`  
+**Version:** `hotel-explorer-quality-standard-v1.5`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
-**Gate:** `npm run test:he-product-quality-gates-v1`
+**Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1`
 
 ## Purpose
 
@@ -57,6 +57,17 @@ KGPV (golden UX) and Bethesda Marriott (Airtable-first pilot) define the permane
 - KGPV-quality hierarchy: hotel → legal PropCo → economic sponsor → operator/brand; UBO unresolved when unknown.
 - Human org names only — never graph/org IDs in tables.
 - Proposed overlays must show **Proposed · not persisted** and never imply Airtable truth.
+
+### 5a. Owner portfolio & operator reconciliation (Organization & Portfolio)
+
+- **Owned / Controlled Hotels** and **Who Manages These Hotels?** must use the **same** owned/controlled hotel set (deduped by canonical HPC identity).
+- Do not equate brand affiliation or management contracts with real-estate ownership. Operator-only hotels must not enter ownership totals.
+- Section B groups Section A hotels by current primary operator; include **Operator Not Verified** and **Owner-Operated** when applicable.
+- Mandatory reconciliation: owned hotel count = sum of operator-group hotel counts; known rooms = sum of operator-group known rooms.
+- Unknown room counts are excluded from known-room sums (never treated as zero); surface unresolved room hotel counts.
+- Label totals **Verified Portfolio Coverage** when completeness is partial — never claim “full/complete portfolio” without certified coverage.
+- Research the organization once; persist HI graph relationships; reuse across every linked Hotel Explorer.
+- Shared modules: `lib/hotel-intelligence/ownership/owner-portfolio-operator-view-v1.js` + `public/js/he-owner-portfolio-operator-view-v1.js`.
 
 ### 6. Contact Intelligence / Owner & Decision-Maker Intelligence
 

@@ -28,6 +28,10 @@ const OWNER_DM_RESEARCH_PATH = path.join(
   ROOT,
   "reports/hotel-explorer/phase4-quality/HE-BETH-OWNER-DECISION-MAKER-RESEARCH-STAGED-V1.json",
 );
+const MULLEN_PORTFOLIO_PATH = path.join(
+  ROOT,
+  "reports/hotel-explorer/phase4-quality/HE-BETH-MULLEN-OWNER-PORTFOLIO-STAGED-V1.json",
+);
 const BETHESDA_ID = "recLuxvwwxID7U2B8";
 
 function loadOwnerDecisionMakerResearch() {
@@ -36,6 +40,33 @@ function loadOwnerDecisionMakerResearch() {
     return JSON.parse(fs.readFileSync(OWNER_DM_RESEARCH_PATH, "utf8"));
   } catch (_err) {
     return null;
+  }
+}
+
+function loadMullenOwnerPortfolioOverlay() {
+  if (!fs.existsSync(MULLEN_PORTFOLIO_PATH)) return {};
+  try {
+    const staged = JSON.parse(fs.readFileSync(MULLEN_PORTFOLIO_PATH, "utf8"));
+    const owned = Array.isArray(staged.owned_controlled_current)
+      ? staged.owned_controlled_current
+      : [];
+    return {
+      owned_controlled_hotels: owned,
+      portfolio_kpis: {
+        coverage_label: staged.coverage?.label || "Verified Portfolio Coverage",
+        completeness: staged.coverage?.completeness || "PARTIAL",
+        matched_hpc: staged.hpc_matching?.matched?.length || 0,
+        unresolved_candidates: staged.hpc_matching?.unresolved_candidates || 0,
+        apply_authorized: Boolean(staged.applyAuthorized),
+      },
+      portfolio_source: {
+        url: staged.source?.url || null,
+        limitation: staged.source?.limitation || null,
+        preview_state: "PROPOSED_STAGED",
+      },
+    };
+  } catch (_err) {
+    return {};
   }
 }
 
@@ -294,6 +325,7 @@ function buildProposedOverlay(dryRun, livePayload) {
           preview_state: "PROPOSED_STAGED",
           key_people: persons,
           contact_channels: channels,
+          ...loadMullenOwnerPortfolioOverlay(),
         }
       : livePayload?.organization || null,
     proposed_entities: {

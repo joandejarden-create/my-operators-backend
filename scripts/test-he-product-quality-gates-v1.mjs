@@ -40,6 +40,10 @@ import {
   iconIdsMustBeDistinctForUnrelatedAttributes,
   HE_AMENITY_ICON_MAP,
 } from "../lib/hotel-intelligence/he-amenity-icon-map-v1.js";
+import {
+  buildOwnerPortfolioOperatorView,
+  OPERATOR_NOT_VERIFIED_LABEL,
+} from "../lib/hotel-intelligence/ownership/owner-portfolio-operator-view-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -71,12 +75,13 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.4");
-  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 15);
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.5");
+  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 16);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.4"
+    "hotel-explorer-quality-standard-v1.5"
   );
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-016"));
 });
 
 run("rejects_keyword_stuffed_and_id_leaking_descriptions", () => {
@@ -458,6 +463,64 @@ run("he_universal_design_hpc_geo_gates", () => {
   const preview = read("public/hotel-explorer-preview.html");
   mustInclude(preview, "admin-ai-demand-table.css");
   assert.ok(HE_AMENITY_ICON_MAP.length >= 12);
+});
+
+run("owner_portfolio_operator_reconciliation_gates", () => {
+  const view = buildOwnerPortfolioOperatorView(
+    [
+      {
+        hotel_name: "Bethesda Marriott",
+        airtable_record_id: "recLuxvwwxID7U2B8",
+        rooms: 407,
+        include_as_owned: true,
+        operator: "Marriott International",
+        brand: "Marriott Hotels",
+        market: "Bethesda",
+      },
+      {
+        hotel_name: "Managed-only decoy",
+        airtable_record_id: "recDecoy",
+        rooms: 999,
+        include_as_owned: false,
+        relationship_type: "OPERATED_BY",
+        operator: "Marriott International",
+      },
+      {
+        hotel_name: "Unresolved rooms hotel",
+        airtable_record_id: null,
+        rooms: null,
+        include_as_owned: true,
+        operator: null,
+      },
+    ],
+    { ownerDisplayName: "Mullen Real Estate Capital" }
+  );
+  assert.equal(view.totals.hotels, 2);
+  assert.equal(view.totals.roomsKnown, 407);
+  assert.equal(view.totals.roomsUnknownHotelCount, 1);
+  assert.equal(view.reconciliation.hotelsMatch, true);
+  assert.equal(view.reconciliation.roomsMatch, true);
+  assert.ok(!view.ownedHotels.some((h) => /decoy/i.test(h.hotel_name)));
+  assert.ok(
+    view.operatorGroups.some((g) => g.operatorName === OPERATOR_NOT_VERIFIED_LABEL)
+  );
+  const std = read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md");
+  mustInclude(std, "Who Manages These Hotels?");
+  mustInclude(std, "Verified Portfolio Coverage");
+  const ws = read("public/js/hotel-intelligence-workspace.js");
+  mustInclude(ws, "Who Manages These Hotels?");
+  mustInclude(ws, "data-hex-op-toggle");
+  mustNotMatch(ws, />Operated \/ Managed Hotels</);
+  mustInclude(read("public/hotel-explorer-preview.html"), "he-owner-portfolio-operator-view-v1.js");
+  const staged = JSON.parse(
+    read("reports/hotel-explorer/phase4-quality/HE-BETH-MULLEN-OWNER-PORTFOLIO-STAGED-V1.json")
+  );
+  assert.equal(staged.applyAuthorized, false);
+  const mullen = buildOwnerPortfolioOperatorView(staged.owned_controlled_current, {
+    ownerDisplayName: staged.owner.display_name,
+  });
+  assert.equal(mullen.reconciliation.ok, true);
+  assert.ok(mullen.ownedHotels.some((h) => h.airtable_record_id === "recLuxvwwxID7U2B8"));
 });
 
 if (failures.length) {
