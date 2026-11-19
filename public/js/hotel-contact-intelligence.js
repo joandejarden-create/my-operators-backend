@@ -11,7 +11,17 @@
   };
 
   var FIND_LABEL = "Find Email & Phone";
+  var LABELS = {
+    directEmail: "Direct Business Email",
+    directPhone: "Direct Business Phone",
+    orgRoute: "Organizational Contact Route",
+    findEmail: "Find Email",
+    findPhone: "Find Phone",
+    findBoth: "Find Email & Phone",
+  };
   var _inflightReveal = Object.create(null);
+  /** Session-only Surfe results — never written into person channel arrays. */
+  var _sessionSurfeByPerson = Object.create(null);
 
   function esc(v) {
     return String(v == null ? "" : v)
@@ -62,25 +72,146 @@
     return "";
   }
 
+  function isCorporateMislabel(ch) {
+    var classification = String(ch.classification || ch.type || "").toLowerCase();
+    var value = String(ch.value || ch.email || "").toLowerCase();
+    var subject = String(ch.subject_type || ch.subjectType || "").toLowerCase();
+    var note = String(ch.note || "").toLowerCase();
+    return /official_org|org_general|organization|switchboard|info@|contact@|hello@|organizational/.test(
+      classification + " " + value + " " + subject + " " + note
+    );
+  }
+
+  function isEphemeralOrSurfe(ch) {
+    return !!(
+      ch &&
+      (ch.surfeDerived === true ||
+        ch.ephemeral === true ||
+        String(ch.provider || "").toLowerCase() === "surfe" ||
+        String(ch.verification_status || ch.verificationStatus || "")
+          .toUpperCase()
+          .indexOf("PROVIDER_RETURNED") >= 0)
+    );
+  }
+
   function personEmails(p) {
     return (p.emailContacts || p.emails || []).filter(function (c) {
-      return c && present(c.value || c.email) && !isCorporateMislabel(c);
+      return (
+        c &&
+        present(c.value || c.email) &&
+        !isCorporateMislabel(c) &&
+        !isEphemeralOrSurfe(c)
+      );
     });
   }
 
   function personPhones(p) {
     return (p.phoneContacts || p.phones || []).filter(function (c) {
-      return c && present(c.value || c.phone);
+      return c && present(c.value || c.phone) && !isCorporateMislabel(c) && !isEphemeralOrSurfe(c);
     });
   }
 
-  function isCorporateMislabel(ch) {
-    var classification = String(ch.classification || ch.type || "").toLowerCase();
-    var value = String(ch.value || ch.email || "").toLowerCase();
-    var subject = String(ch.subject_type || ch.subjectType || "").toLowerCase();
-    return /official_org|org_general|organization|switchboard|info@|contact@|hello@/.test(
-      classification + " " + value + " " + subject
-    );
+  function personOrgRoutes(p, vm) {
+    var out = [];
+    var seen = {};
+    function push(val, kind, source) {
+      if (!present(val)) return;
+      var key = kind + ":" + String(val).toLowerCase();
+      if (seen[key]) return;
+      seen[key] = true;
+      out.push({ value: val, kind: kind, source: source || null });
+    }
+    (p.emailContacts || p.emails || []).forEach(function (c) {
+      if (c && present(c.value || c.email) && isCorporateMislabel(c) && !isEphemeralOrSurfe(c)) {
+        push(c.value || c.email, "email", c.source_url || c.sourceUrl);
+      }
+    });
+    (p.phoneContacts || p.phones || []).forEach(function (c) {
+      if (c && present(c.value || c.phone) && isCorporateMislabel(c) && !isEphemeralOrSurfe(c)) {
+        push(c.value || c.phone, "phone", c.source_url || c.sourceUrl);
+      }
+    });
+    (p.organizationalChannels || []).forEach(function (c) {
+      var v = c && (c.value || c.email || c.phone || c.url);
+      if (!present(v)) return;
+      if (String(v).indexOf("@") >= 0) push(v, "email", c.source_url);
+      else if (/^https?:/i.test(String(v))) push(v, "web", c.source_url);
+      else push(v, "phone", c.source_url);
+    });
+    var org = (vm && vm.contactableOwnerOrg) || null;
+    if (org) {
+      (org.emails || []).forEach(function (c) {
+        push(c.value || c.email, "email", c.source_url);
+      });
+      (org.phones || []).forEach(function (c) {
+        push(c.value || c.phone, "phone", c.source_url);
+      });
+      if (present(org.website)) push(org.website, "web", org.website);
+    }
+    (vm && vm.bestContactPaths ? vm.bestContactPaths : []).forEach(function (path) {
+      if (!path || !present(path.value)) return;
+      if (String(path.channelKind || "").toLowerCase() === "organization" || /org/i.test(path.label || "")) {
+        if (String(path.value).indexOf("@") >= 0) push(path.value, "email");
+        else if (/^https?:/i.test(String(path.value))) push(path.value, "web");
+        else push(path.value, "phone");
+      }
+    });
+    return out;
+  }
+
+  function resolveEnrichMeta(p, capability) {
+    var hasName = present(p.name) && String(p.name).trim().split(/\s+/).length >= 2;
+    var hasOrg = present(p.organization) || present(p.organizationName);
+    var hasEmail = personEmails(p).length > 0;
+    var hasPhone = personPhones(p).length > 0;
+    var action = p.enrichAction || {};
+    var providerReady =
+      capability &&
+      (capability.surfeEnabled === true || capability.mockEnabled === true);
+    if (hasEmail && hasPhone) {
+      return { label: null, enabled: false, channel: null, missing: [] };
+    }
+    if (!hasName || !hasOrg) {
+      return {
+        label: LABELS.findBoth,
+        enabled: false,
+        channel: null,
+        missing: [],
+        reason: "Enrichment needs a full name and organization.",
+      };
+    }
+    var channel = "both";
+    var label = LABELS.findBoth;
+    var missing = [];
+    if (!hasEmail && hasPhone) {
+      channel = "email";
+      label = LABELS.findEmail;
+      missing = ["professional_email"];
+    } else if (hasEmail && !hasPhone) {
+      channel = "phone";
+      label = LABELS.findPhone;
+      missing = ["direct_business_phone"];
+    } else {
+      missing = ["professional_email", "direct_business_phone"];
+    }
+    if (present(action.label) && /find email|find phone/i.test(action.label)) {
+      label = action.label;
+    }
+    var enabled =
+      action.enabled === true ||
+      (providerReady && action.enabled !== false);
+    return {
+      label: label,
+      enabled: enabled,
+      channel: channel,
+      missing: missing,
+      reason:
+        (capability && capability.userReason) ||
+        action.reason ||
+        (!providerReady
+          ? "Contact enrichment is not configured in this environment."
+          : null),
+    };
   }
 
   function renderLoading() {
@@ -156,12 +287,22 @@
     );
   }
 
+  function renderLabeledChannel(label, ch, kind) {
+    var val = channelValue(ch);
+    if (!val) return "";
+    return (
+      '<div class="hci-channel-row"><span class="hci-channel-label">' +
+      esc(label) +
+      "</span> " +
+      renderCompactChannel(ch, kind) +
+      "</div>"
+    );
+  }
+
   function renderPersonActions(p, hotelId, capability, opts) {
     opts = opts || {};
     var li = linkedInUrl(p);
     var company = companyUrl(p);
-    var emails = personEmails(p);
-    var phones = personPhones(p);
     var parts = [];
 
     if (li) {
@@ -178,12 +319,6 @@
           '" target="_blank" rel="noopener">Company Profile</a>'
       );
     }
-    emails.forEach(function (c) {
-      parts.push(renderCompactChannel(c, "email"));
-    });
-    phones.forEach(function (c) {
-      parts.push(renderCompactChannel(c, "phone"));
-    });
 
     parts.push(renderEnrichAction(p, hotelId, capability, { inline: true }));
 
@@ -192,40 +327,20 @@
 
   function renderEnrichAction(p, hotelId, capability, opts) {
     opts = opts || {};
-    var hasName = present(p.name) && String(p.name).trim().split(/\s+/).length >= 2;
-    var hasOrg = present(p.organization) || present(p.organizationName);
-    var hasDirectContact = personEmails(p).length > 0 || personPhones(p).length > 0;
-    var action = p.enrichAction || {};
-    var label = action.label || FIND_LABEL;
-    if (label === "Find Contact Details") label = FIND_LABEL;
-    var providerReady =
-      capability &&
-      (capability.surfeEnabled === true || capability.mockEnabled === true);
-    var enabled =
-      action.enabled === true ||
-      (providerReady && hasName && hasOrg && !hasDirectContact && action.enabled !== false);
-
-    if (hasDirectContact) {
+    var meta = resolveEnrichMeta(p, capability);
+    if (!meta.label) {
       return opts.inline
         ? ""
-        : '<p class="hci-muted">Verified professional channels already on file.</p>';
+        : '<p class="hci-muted">Verified public direct channels already on file.</p>';
     }
-    if (!hasName || !hasOrg) {
-      return opts.inline
-        ? ""
-        : '<p class="hci-muted">Enrichment needs a full name and organization.</p>';
-    }
-    if (!enabled) {
-      var reason =
-        (capability && capability.userReason) ||
-        action.reason ||
-        "Contact enrichment is not configured in this environment.";
+    if (!meta.enabled) {
+      // Never show a nonfunctional enabled-looking button.
       return (
-        '<span class="hci-enrich hci-enrich--unavailable" title="' +
-        esc(reason) +
-        '"><button type="button" class="hci-btn hci-btn--enrich hci-btn--disabled" disabled>' +
-        esc(label) +
-        "</button></span>"
+        '<p class="hci-muted hci-enrich-unavailable" title="' +
+        esc(meta.reason || "") +
+        '">' +
+        esc(meta.reason || "Contact enrichment is unavailable in this environment.") +
+        "</p>"
       );
     }
     var li = linkedInUrl(p);
@@ -245,8 +360,12 @@
       esc(li) +
       '" data-company-domain="' +
       esc(p.organizationDomain || "") +
+      '" data-enrich-channel="' +
+      esc(meta.channel || "both") +
+      '" data-enrich-label="' +
+      esc(meta.label) +
       '">' +
-      esc(label) +
+      esc(meta.label) +
       "</button>" +
       '<div class="hci-enrich__result" hidden></div></div>'
     );
@@ -268,6 +387,54 @@
     }
     var emails = personEmails(p);
     var phones = personPhones(p);
+    var orgRoutes = personOrgRoutes(p, opts.vm || null);
+    var session = _sessionSurfeByPerson[p.personId || ""] || null;
+
+    var channelPreview = "";
+    if (emails.length || phones.length || orgRoutes.length || session) {
+      channelPreview =
+        '<div class="hci-person__channels-preview" data-hci-channel-hierarchy="1">' +
+        emails
+          .map(function (c) {
+            return renderLabeledChannel(LABELS.directEmail, c, "email");
+          })
+          .join("") +
+        phones
+          .map(function (c) {
+            return renderLabeledChannel(LABELS.directPhone, c, "phone");
+          })
+          .join("") +
+        orgRoutes
+          .slice(0, 3)
+          .map(function (c) {
+            return renderLabeledChannel(
+              LABELS.orgRoute,
+              c,
+              c.kind === "email" ? "email" : c.kind === "web" ? "web" : "phone"
+            );
+          })
+          .join("") +
+        (session
+          ? '<div class="hci-channel-row hci-channel-row--session" data-surfe-session="1">' +
+            '<span class="hci-channel-label">Surfe session result</span> ' +
+            (session.email
+              ? '<a class="hci-action-link" href="mailto:' +
+                esc(session.email) +
+                '">' +
+                esc(session.email) +
+                "</a> "
+              : "") +
+            (session.phone
+              ? '<a class="hci-action-link" href="tel:' +
+                esc(String(session.phone).replace(/\s+/g, "")) +
+                '">' +
+                esc(session.phone) +
+                "</a>"
+              : "") +
+            ' <span class="hci-muted">· not persisted</span></div>'
+          : "") +
+        "</div>";
+    }
 
     return (
       '<article class="hci-person' +
@@ -283,6 +450,18 @@
       (linkedInUrl(p) || p.identityVerification === "VERIFIED_PUBLIC" ? "1" : "0") +
       '" data-contact-details-verified="' +
       (emails.length || phones.length ? "1" : "0") +
+      '" data-demo-state="' +
+      esc(
+        emails.length && phones.length
+          ? "A"
+          : emails.length
+            ? "B"
+            : phones.length
+              ? "C"
+              : orgRoutes.length
+                ? "D"
+                : "D"
+      ) +
       '">' +
       '<div class="hci-person__row">' +
       '<div class="hci-person__identity">' +
@@ -301,24 +480,7 @@
       "</span>" +
       "</div>" +
       (present(relevance) ? '<p class="hci-person__why">' + esc(relevance) + "</p>" : "") +
-      ((emails.length || phones.length)
-        ? '<div class="hci-person__channels-preview">' +
-          (emails.length
-            ? "<div><span class=\"hci-muted\">Email</span> " +
-              emails.map(function (c) {
-                return renderCompactChannel(c, "email");
-              }).join(", ") +
-              "</div>"
-            : "") +
-          (phones.length
-            ? "<div><span class=\"hci-muted\">Phone</span> " +
-              phones.map(function (c) {
-                return renderCompactChannel(c, "phone");
-              }).join(", ") +
-              "</div>"
-            : "") +
-          "</div>"
-        : "") +
+      channelPreview +
       renderPersonActions(p, hotelId, capability, opts) +
       '<button type="button" class="hci-provenance-toggle" data-hci-toggle="' +
       detailsId +
@@ -338,7 +500,7 @@
       (present(p.lastVerified)
         ? "<div><strong>Last reviewed</strong> " + esc(p.lastVerified) + "</div>"
         : "") +
-      '<p class="hci-muted">Verified identity ≠ verified personal contact channels. Organization emails are not personal inboxes.</p>' +
+      '<p class="hci-muted">Verified identity ≠ verified personal contact channels. Organization emails are not personal inboxes. Surfe results stay session-only and are never saved as public research.</p>' +
       "</div></article>"
     );
   }
@@ -384,6 +546,7 @@
         featured: true,
         compact: false,
         rationaleOverride: rec.rationale || rec.person.whyRelevant,
+        vm: vm,
       }) +
       "</div></section>"
     );
@@ -429,7 +592,7 @@
       '<div class="hci-people hci-people--compact">' +
       alts
         .map(function (p) {
-          return renderPerson(p, hotelId, vmCapability, { compact: true });
+          return renderPerson(p, hotelId, vmCapability, { compact: true, vm: vm });
         })
         .join("") +
       "</div></section>"
@@ -442,7 +605,7 @@
     if (contactable) {
       if (present(contactable.website)) {
         rows.push({
-          label: (contactable.name || "Owner org") + " website",
+          label: LABELS.orgRoute,
           value: contactable.website,
           kind: "web",
         });
@@ -450,19 +613,20 @@
       (contactable.emails || []).forEach(function (c) {
         if (c && present(c.value)) {
           rows.push({
-            label: (contactable.name || "Owner org") + " email",
+            label: LABELS.orgRoute,
             value: c.value,
             kind: "email",
-            note: "Organization channel — not a personal inbox",
+            note: "Not a personal inbox",
           });
         }
       });
       (contactable.phones || []).forEach(function (c) {
         if (c && present(c.value)) {
           rows.push({
-            label: (contactable.name || "Owner org") + " phone",
+            label: LABELS.orgRoute,
             value: c.value,
             kind: "phone",
+            note: "Organization / published business line",
           });
         }
       });
@@ -477,7 +641,7 @@
       });
       if (dup) return;
       rows.push({
-        label: b.label || "Corporate channel",
+        label: LABELS.orgRoute,
         value: b.value,
         kind: /^https?:/i.test(b.value) ? "web" : /@/.test(b.value) ? "email" : "text",
         note: "Organization-level — not a personal decision-maker inbox",
@@ -487,7 +651,7 @@
     return (
       '<section class="hci-section hci-section--org-channels">' +
       "<h3>Organization Contact Channels</h3>" +
-      '<p class="hci-muted">Corporate paths — not personal inboxes.</p>' +
+      '<p class="hci-muted">Organizational Contact Routes — not personal direct channels.</p>' +
       '<ul class="hci-org-channel-list">' +
       rows
         .map(function (r) {
@@ -657,13 +821,22 @@
         '<div class="hci-note hci-note--unresolved">No additional professional contact details found.</div>';
       return;
     }
+    var personId = person.personId || slot.getAttribute("data-person-id") || "";
+    if (personId) {
+      _sessionSurfeByPerson[personId] = {
+        email: email || null,
+        phone: phone || null,
+        at: Date.now(),
+        mock: payload.mock === true,
+      };
+    }
     var attribution =
       payload.mock === true
-        ? "Mock provider (no-cost test) · unreviewed · not persisted"
+        ? "Mock Surfe provider (no-cost) · session-only · not persisted"
         : (payload.providerAttribution || "Surfe on-demand") +
-          " · unreviewed · review before Airtable save";
+          " · session-only · not persisted to Airtable";
     slot.innerHTML =
-      '<div class="hci-enrich-result" data-verification="PROVIDER_RETURNED_UNREVIEWED">' +
+      '<div class="hci-enrich-result" data-verification="PROVIDER_RETURNED_UNREVIEWED" data-surfe-session="1" data-persist="forbidden">' +
       '<div class="hci-note">' +
       esc(attribution) +
       (payload.surfeCalls != null
@@ -671,7 +844,7 @@
         : "") +
       "</div>" +
       (email
-        ? "<div><strong>Email</strong> " +
+        ? '<div class="hci-channel-row"><span class="hci-channel-label">Surfe session email</span> ' +
           '<a class="hci-action-link" href="mailto:' +
           esc(email) +
           '">' +
@@ -679,14 +852,14 @@
           "</a></div>"
         : "") +
       (phone
-        ? "<div><strong>Phone</strong> " +
+        ? '<div class="hci-channel-row"><span class="hci-channel-label">Surfe session phone</span> ' +
           '<a class="hci-action-link" href="tel:' +
           esc(String(phone).replace(/\s+/g, "")) +
           '">' +
           esc(phone) +
           "</a></div>"
         : "") +
-      '<p class="hci-muted">Provider results are not automatically verified. Save only through the approved Airtable review workflow.</p>' +
+      '<p class="hci-muted">Surfe results are ephemeral. They are never saved as public research, never written to Airtable from this action, and disappear after reload.</p>' +
       "</div>";
   }
 
@@ -729,6 +902,7 @@
             jobTitle: btn.getAttribute("data-job-title") || "",
             linkedinUrl: btn.getAttribute("data-linkedin-url") || "",
             companyDomain: btn.getAttribute("data-company-domain") || "",
+            channel: btn.getAttribute("data-enrich-channel") || "both",
             persist: false,
           }),
         }
@@ -740,7 +914,10 @@
         })
         .then(function (pack) {
           var body = pack.body || { ok: false, error: "http_" + pack.status };
+          if (slot) slot.setAttribute("data-person-id", personId);
+          if (body && body.person && !body.person.personId) body.person.personId = personId;
           paintEnrichResult(slot, body);
+          var restoreLabel = btn.getAttribute("data-enrich-label") || FIND_LABEL;
           if (body && body.ok && !body.pending && (body.person || body.cached)) {
             btn.textContent = "Lookup complete";
             btn.disabled = true;
@@ -748,7 +925,7 @@
             return;
           }
           btn.disabled = false;
-          btn.textContent = FIND_LABEL;
+          btn.textContent = restoreLabel;
         })
         .catch(function (err) {
           paintEnrichResult(slot, {
@@ -758,7 +935,7 @@
             message: String((err && err.message) || err),
           });
           btn.disabled = false;
-          btn.textContent = FIND_LABEL;
+          btn.textContent = btn.getAttribute("data-enrich-label") || FIND_LABEL;
         })
         .finally(function () {
           delete _inflightReveal[key];
@@ -961,42 +1138,64 @@
       });
   }
 
+  function patchPersonEnrichAction(p, capability) {
+    if (!p) return p;
+    var meta = resolveEnrichMeta(p, capability);
+    return Object.assign({}, p, {
+      enrichAction: {
+        label: meta.label || FIND_LABEL,
+        enabled: meta.enabled === true,
+        reason: meta.reason || null,
+        channel: meta.channel || null,
+        missing: meta.missing || [],
+      },
+    });
+  }
+
   function mount(host, hotelId) {
     if (!host) return Promise.resolve();
+    // Surfe session results must not survive hotel remount / reload.
+    _sessionSurfeByPerson = Object.create(null);
     host.innerHTML = renderLoading();
     return Promise.all([loadViewModel(hotelId), loadEnrichmentCapability()]).then(function (pack) {
       var vm = pack[0];
       vmCapability = pack[1] || null;
       if (vm && vm.ownershipSummary) {
-        if (vmCapability && vmCapability.surfeEnabled && Array.isArray(vm.people)) {
+        if (Array.isArray(vm.people)) {
           vm.people = vm.people.map(function (p) {
-            var next = Object.assign({}, p);
-            if (!next.enrichAction) next.enrichAction = { label: FIND_LABEL };
-            else if (next.enrichAction.label === "Find Contact Details") {
-              next.enrichAction = Object.assign({}, next.enrichAction, {
-                label: FIND_LABEL,
-              });
-            }
-            if (next.enrichAction.enabled !== true) {
-              next.enrichAction = Object.assign({}, next.enrichAction, {
-                enabled: true,
-                reason: null,
-              });
-            }
-            return next;
+            return patchPersonEnrichAction(p, vmCapability);
           });
-          if (vm.recommendation && vm.recommendation.person) {
-            vm.recommendation.person = Object.assign({}, vm.recommendation.person, {
-              enrichAction: Object.assign(
-                {},
-                vm.recommendation.person.enrichAction || {},
-                { label: FIND_LABEL, enabled: true }
-              ),
-            });
-          }
+        }
+        if (Array.isArray(vm.recommendedContacts)) {
+          vm.recommendedContacts = vm.recommendedContacts.map(function (p) {
+            return patchPersonEnrichAction(p, vmCapability);
+          });
+        }
+        if (Array.isArray(vm.otherContacts)) {
+          vm.otherContacts = vm.otherContacts.map(function (p) {
+            return patchPersonEnrichAction(p, vmCapability);
+          });
+        }
+        if (vm.recommendation && vm.recommendation.person) {
+          vm.recommendation.person = patchPersonEnrichAction(
+            vm.recommendation.person,
+            vmCapability
+          );
+        }
+        if (vm.recommendation && Array.isArray(vm.recommendation.alternatives)) {
+          vm.recommendation.alternatives = vm.recommendation.alternatives.map(function (p) {
+            return patchPersonEnrichAction(p, vmCapability);
+          });
         }
         host.innerHTML = renderViewModel(vm);
         bindToggles(host);
+        if (
+          Array.isArray(vm.contactEvidence) &&
+          window.HotelIntelligenceWorkspace &&
+          typeof window.HotelIntelligenceWorkspace.applyContactEvidenceCitations === "function"
+        ) {
+          window.HotelIntelligenceWorkspace.applyContactEvidenceCitations(vm.contactEvidence);
+        }
         return;
       }
       return loadHpcPropertyFallback(hotelId).then(function (fallback) {

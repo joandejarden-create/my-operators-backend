@@ -649,6 +649,32 @@ a.hci-channel__value {
   font-size: 13px;
 }
 
+.hci-channel-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 10px;
+  line-height: 1.4;
+}
+
+.hci-channel-label {
+  font-size: 11px;
+  font-weight: 650;
+  color: var(--hci-muted);
+  letter-spacing: 0.02em;
+  min-width: 10.5rem;
+}
+
+.hci-channel-row--session .hci-channel-label,
+.hci-enrich-result[data-surfe-session="1"] .hci-channel-label {
+  color: #fdb52a;
+}
+
+.hci-enrich-unavailable {
+  margin: 0;
+  font-size: 12px;
+}
+
 .hci-profiles {
   margin: 8px 0;
 }

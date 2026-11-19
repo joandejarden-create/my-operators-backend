@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.20",
+  "version": "hotel-explorer-founder-quality-lessons-v1.21",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -12,7 +12,8 @@
     "test:he-market-alerts-closeout-v1",
     "test:he-async-section-loading-v1",
     "test:he-contact-intelligence-directory-ux-v1",
-    "test:he-loading-ux-toast-v1"
+    "test:he-loading-ux-toast-v1",
+    "test:he-public-contact-channel-hierarchy-v1"
   ],
   "referenceHotels": {
     "uxGolden": {
@@ -311,6 +312,15 @@
       "sharedComponent": "hotel-intelligence-workspace.js (sectionHeadHtml, navLinkHtml, renderSourcesList, normalizeCitationDates); hotel-explorer.css hiw-navlink / hiw-section__head; market-alerts-evidence-citations-v1.js publication_date; he-ownership-control-network-v1.js View Contacts",
       "regressionTest": "sources_evidence_consolidated_nav_and_dates",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v19-sources-nav-beth.png; quality-v19-sources-register-beth.png; reports/hotel-explorer/HE-SOURCES-EVIDENCE-CONSOLIDATED-NAV-V19.md"
+    },
+    {
+      "id": "HE-QL-032",
+      "originalProblem": "Contact Intelligence needed the same public-first hierarchy as GDI: labeled direct vs organizational channels, Surfe only for missing directs, and no Surfe persistence",
+      "rootCause": "HE used a single Find Email & Phone CTA that hid when any channel existed, unlabeled Email/Phone rows, and insufficient session-only Surfe / Sources wiring for public contact evidence",
+      "approvedStandard": "Shared Direct Business Email / Direct Business Phone / Organizational Contact Route labels with GDI; Find Email|Phone|Both by missing channel; public research first; Surfe explicit-click session-only never persisted or indexed in Sources; dry-run canonical upserts only; reject invented emails; never claim property assignment without evidence",
+      "sharedComponent": "he-public-contact-channel-hierarchy-v1.js; hotel-contact-intelligence.js; api/contact-intelligence.js reveal; hotel-explorer-founder-preview.js; GDI gdi-public-contact-channel-hierarchy-v1 (label parity)",
+      "regressionTest": "test:he-public-contact-channel-hierarchy-v1; contact_cards_omit_dash_placeholders_and_surfe_not_on_get",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v20-contacts-hierarchy-beth.png; reports/hotel-explorer/HE-PUBLIC-CONTACT-HIERARCHY-V20.md"
     }
   ]
 }

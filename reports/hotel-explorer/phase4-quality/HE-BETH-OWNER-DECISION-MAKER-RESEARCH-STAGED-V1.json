@@ -37,6 +37,15 @@
       "note": "Organization channel — not a personal decision-maker inbox"
     },
     {
+      "kind": "phone",
+      "value": "(610) 742-9167",
+      "classification": "official_org",
+      "verification_status": "VERIFIED_PUBLIC",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/2080980/0002080980-25-000001.txt",
+      "last_verified": "2026-11-19",
+      "note": "SEC Form D business phone for MREC DLM Fund — organizational route, not a personal direct line"
+    },
+    {
       "kind": "address",
       "value": "7 Campus Blvd., Suite 300, Newtown Square, PA 19073",
       "classification": "official_org",
@@ -52,6 +61,17 @@
       "last_verified": "2026-11-19"
     }
   ],
+  "publicResearchPass": {
+    "researchedAt": "2026-11-19",
+    "method": "Official company pages + LinkedIn identity pages linked from mullencap.com/about + SEC Form D + rejection of scraper/guessed emails",
+    "paidResearch": false,
+    "surfeCalls": 0,
+    "rejectedSources": [
+      "RocketReach / AeroLeads / Prospeo guessed or masked personal emails and phones",
+      "Email-format inventing (e.g. jdoe@mullencap.com patterns)",
+      "Wrong-company emails (e.g. legacyparking.com for Patrick Reece)"
+    ]
+  },
   "people": [
     {
       "personId": "proposed:jeff_mullen",
@@ -152,6 +172,12 @@
     "Named property-level asset manager assignment for Bethesda Marriott",
     "Ultimate beneficial owner (natural person)"
   ],
+  "channelDemoStates": {
+    "Katherine Button": "D",
+    "Jeff Mullen": "D",
+    "Patrick Reece": "E",
+    "note": "D = named person + organizational fallback only; E = relevant influencer without property-confirmed responsibility. Surfe CTA = Find Email & Phone (session-only)."
+  },
   "evidence": [
     {
       "id": "EV-010",
@@ -235,10 +261,40 @@
       "sourceUrl": "https://mullencap.com/contact/",
       "verificationStatus": "VERIFIED",
       "retrievedAt": "2026-11-19"
+    },
+    {
+      "id": "EV-ORG-PHONE-SEC",
+      "claim": "MREC-related SEC Form D lists business phone (610) 742-9167 at Newtown Square HQ",
+      "proves": ["organization_contact_channel"],
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/2080980/0002080980-25-000001.txt",
+      "sourceTitle": "SEC Form D — MREC DLM Fund, LP",
+      "verificationStatus": "VERIFIED",
+      "note": "Organizational / fund business phone. Do not label as Jeff Mullen personal direct phone.",
+      "retrievedAt": "2026-11-19"
+    },
+    {
+      "id": "EV-MHM-TEAM",
+      "claim": "Mullen Hospitality Management team page lists Katherine Button and Patrick Reece as affiliate advisors",
+      "proves": ["current_employment", "portfolio_responsibility"],
+      "sourceUrl": "https://mullenhospitality.com/about/team/",
+      "sourceTitle": "Mullen Hospitality Management — Meet the Team",
+      "verificationStatus": "VERIFIED",
+      "note": "Supports sponsor-side AM affiliation; not Bethesda property assignment",
+      "retrievedAt": "2026-11-19"
+    },
+    {
+      "id": "EV-GAP-DIRECT-CHANNELS",
+      "claim": "No independently published direct business email or phone found for Katherine Button, Jeff Mullen, or Patrick Reece on official company pages",
+      "proves": ["research_gap"],
+      "sourceUrl": "https://mullencap.com/contact/",
+      "verificationStatus": "VERIFIED_GAP",
+      "note": "Enables Surfe Find Email & Phone as session-only fallback after public research",
+      "retrievedAt": "2026-11-19"
     }
   ],
   "airtableDryRunMutations": {
     "path": "reports/hotel-explorer/phase4-quality/HE-BETH-CONTACT-LINKEDIN-CHANNELS-DRY-RUN-V1.json",
-    "note": "Staged only — Phase 3 production apply remains blocked"
+    "publicContactUpsertsPath": "reports/hotel-explorer/phase4-quality/HE-BETH-PUBLIC-CONTACT-UPSERTS-DRY-RUN-V1.json",
+    "note": "Staged only — Phase 3 production apply remains blocked. Surfe fields excluded."
   }
 }

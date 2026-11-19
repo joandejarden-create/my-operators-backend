@@ -19,6 +19,7 @@
     relFilter: "all",
     marketAlertsCitations: [],
     guestSentimentCitations: [],
+    contactCitations: [],
     sourceFilter: "all",
     sourceFocusN: null,
   };
@@ -926,7 +927,44 @@
     );
     list = mergeMarketAlertsCitationsLocal(list, state.marketAlertsCitations || []);
     list = mergeMarketAlertsCitationsLocal(list, state.guestSentimentCitations || []);
+    list = mergeMarketAlertsCitationsLocal(list, state.contactCitations || []);
     return dedupeCitations(list.map(enrichCitation));
+  }
+
+  function applyContactEvidenceCitations(evidenceList) {
+    var cites = (evidenceList || [])
+      .filter(function (e) {
+        // Never index Surfe / provider-only payloads in the canonical Sources register.
+        var blob = String(e.provider || e.provenance || e.verificationStatus || e.note || "").toLowerCase();
+        if (/surfe|provider_returned|ephemeral|session-only/.test(blob)) return false;
+        if (e.surfeDerived === true) return false;
+        return !!(e.title || e.claim || e.sourceUrl || e.sourceTitle);
+      })
+      .map(function (e) {
+        return enrichCitation({
+          title: e.sourceTitle || e.title || e.claim || "Contact research source",
+          url: e.sourceUrl || e.profileUrl || e.url || null,
+          provider: e.publisher || e.provider || "Contact research",
+          publisher: e.publisher || null,
+          publication_date: e.documentDate || e.publication_date || null,
+          verified_at: e.retrievedAt || e.lastVerified || null,
+          accessed_at: e.retrievedAt || null,
+          observed_date: null,
+          excerpt: e.note || e.claim || "",
+          claim: e.claim || e.title || "",
+          proves: Array.isArray(e.proves) ? e.proves.join("; ") : e.proves || e.claim || "",
+          does_not:
+            e.does_not ||
+            "Does not by itself prove signing authority or property-specific assignment without independent confirmation.",
+          supports: "contact_research",
+          source_type: "Contacts & People",
+          category: "contacts",
+          verification_status: e.verificationStatus || "VERIFIED_PUBLIC",
+          dedupe_id: e.id || e.dedupe_id || null,
+        });
+      });
+    state.contactCitations = cites;
+    state.citations = buildCitations(state.hotel, state.ownership);
   }
 
   /** Client-side dedupe merge — MarketAlerts remain canonical; no HI Evidence copy. */
@@ -5123,5 +5161,6 @@
     mountMarketAlertsEvidenceForSources: mountMarketAlertsEvidenceForSources,
     openCitation: openCitation,
     highlightFocusedSourceRow: highlightFocusedSourceRow,
+    applyContactEvidenceCitations: applyContactEvidenceCitations,
   };
 })();

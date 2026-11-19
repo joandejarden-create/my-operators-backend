@@ -82,11 +82,11 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.20");
-  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 31);
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.21");
+  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 32);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.20"
+    "hotel-explorer-quality-standard-v1.21"
   );
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-016"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-017"));
@@ -104,6 +104,7 @@ run("registry_and_standard_exist", () => {
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-029"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-030"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-031"));
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-032"));
 });
 
 run("rejects_keyword_stuffed_and_id_leaking_descriptions", () => {
@@ -534,7 +535,11 @@ run("owner_decision_maker_ranking_and_surfe_fallback", () => {
   assert.ok(!/enrichPeople|provider\.enrich/.test(hci.slice(mountIdx, mountIdx + 1200)));
   mustInclude(read("api/hotel-explorer-founder-preview.js"), "HE-BETH-OWNER-DECISION-MAKER-RESEARCH");
   mustInclude(read("api/hotel-explorer-founder-preview.js"), "buildDecisionOrientedContactSections");
-  mustInclude(read("api/hotel-explorer-founder-preview.js"), "Find Email & Phone");
+  mustInclude(read("api/hotel-explorer-founder-preview.js"), "resolveEnrichAction");
+  mustInclude(
+    read("lib/hotel-intelligence/contact-intelligence/he-public-contact-channel-hierarchy-v1.js"),
+    "Find Email & Phone"
+  );
 });
 
 run("measurement_prefs_conversion_and_sort_keys", () => {
@@ -954,6 +959,34 @@ run("sources_evidence_consolidated_nav_and_dates", () => {
     !/hiw-btn[^>]*(?:data-hiw-tab="contacts"|data-hiw-tab="sources")/.test(ws),
     "Contacts/Sources cross-tab nav must not use hiw-btn"
   );
+});
+
+run("he_public_contact_hierarchy_and_surfe_session_only", () => {
+  const hci = read("public/js/hotel-contact-intelligence.js");
+  const api = read("api/contact-intelligence.js");
+  const lib = read(
+    "lib/hotel-intelligence/contact-intelligence/he-public-contact-channel-hierarchy-v1.js"
+  );
+  const std = read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md");
+  const reg = JSON.parse(
+    read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
+  );
+  mustInclude(hci, "Direct Business Email");
+  mustInclude(hci, "Organizational Contact Route");
+  mustInclude(hci, "Find Phone");
+  mustInclude(hci, "_sessionSurfeByPerson");
+  mustInclude(hci, "session-only");
+  mustInclude(api, "persist_forbidden");
+  mustInclude(api, "NOT_WRITTEN");
+  mustInclude(lib, "looksLikeInventedEmail");
+  mustInclude(lib, "resolveEnrichAction");
+  mustInclude(lib, "surfeDerived: false");
+  mustInclude(std, "HE-QL-032");
+  mustInclude(std, "Surfe session-only");
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-032"));
+  // Surfe must not be auto-invoked on mount/GET.
+  const mountSlice = hci.slice(hci.indexOf("function mount("), hci.indexOf("function mount(") + 2500);
+  assert.ok(!/enrichPeople|createSurfeContactProvider|\/reveal/.test(mountSlice));
 });
 
 if (failures.length) {

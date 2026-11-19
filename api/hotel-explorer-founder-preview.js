@@ -13,6 +13,11 @@ import {
   CONTACT_CLASS_LABEL,
   PROPERTY_RESPONSIBILITY_LABEL,
 } from "../lib/hotel-intelligence/contact-intelligence/property-decision-maker-engine-v1.js";
+import {
+  CONTACT_DISPLAY_LABELS,
+  proposeHePublicContactUpsert,
+  resolveEnrichAction,
+} from "../lib/hotel-intelligence/contact-intelligence/he-public-contact-channel-hierarchy-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -459,12 +464,15 @@ function buildProposedContactsViewModel(dryRun, livePayload) {
       hotelEvidenceIds: enriched.hotelEvidenceIds || [],
       portfolioEvidenceIds: enriched.portfolioEvidenceIds || [],
       evidenceIds: enriched.evidenceIds || [],
-      enrichAction: {
-        label: "Find Email & Phone",
-        enabled: true,
-        reason: null,
-        missing: ["professional_email", "direct_business_phone"],
-      },
+      enrichAction: resolveEnrichAction(
+        {
+          name,
+          organization: enriched.organization || nameOfOrg(mrec),
+          emailContacts: enriched.emailContacts || [],
+          phoneContacts: enriched.phoneContacts || [],
+        },
+        { providerReady: true }
+      ),
     };
   });
 
@@ -563,7 +571,24 @@ function buildProposedContactsViewModel(dryRun, livePayload) {
       relationshipBadges: ["PROPOSED ECONOMIC OWNER", "NOT UBO"],
       hq: (addressCh && addressCh.value) || null,
       website: (mrec && mrec.official_website) || "https://mullencap.com/",
-      phones: [],
+      phones: [
+        {
+          type: "ORG_GENERAL_PHONE",
+          value: "(610) 742-9167",
+          classification: "official_org",
+          source: "SEC_FORM_D",
+          source_type: "issuer_filing",
+          source_url:
+            "https://www.sec.gov/Archives/edgar/data/2080980/0002080980-25-000001.txt",
+          verification_status: "VERIFIED_PUBLIC",
+          verification_method: "sec_form_d_business_phone",
+          last_verified: "2026-11-19",
+          confidence: "HIGH",
+          note:
+            "Organizational / fund business phone from SEC Form D (MREC DLM Fund). Not a verified personal direct line for any named decision-maker.",
+          preview_state: "PROPOSED_STAGED",
+        },
+      ],
       emails: emailCh
         ? [
             {
@@ -623,11 +648,28 @@ function buildProposedContactsViewModel(dryRun, livePayload) {
         ]
       : [],
     contactEvidence: researchEvidence,
+    contactDisplayLabels: CONTACT_DISPLAY_LABELS,
+    publicContactUpsertsDryRun: basePeople
+      .map((p) =>
+        proposeHePublicContactUpsert(p, {
+          hotelId: BETHESDA_ID,
+          hotelName,
+          orgFallback: {
+            emails: emailCh ? [{ value: emailCh.value }] : [],
+            phones: [{ value: "(610) 742-9167", classification: "official_org" }],
+            website: "https://mullencap.com/contact/",
+          },
+          contactPageUrl: "https://mullencap.com/contact/",
+        })
+      )
+      .filter(Boolean),
     airtablePersistence: {
       status: "STAGED_DRY_RUN_ONLY",
       applyAuthorized: false,
       linkedInChannelsDryRun:
         "reports/hotel-explorer/phase4-quality/HE-BETH-CONTACT-LINKEDIN-CHANNELS-DRY-RUN-V1.json",
+      publicContactUpsertsDryRun:
+        "reports/hotel-explorer/phase4-quality/HE-BETH-PUBLIC-CONTACT-UPSERTS-DRY-RUN-V1.json",
       ownerResearchPackage:
         "reports/hotel-explorer/phase4-quality/HE-BETH-OWNER-DECISION-MAKER-RESEARCH-STAGED-V1.json",
     },

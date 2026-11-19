@@ -227,11 +227,18 @@ run("quality_registry_he_ql_027", () => {
     assert.ok(articles.length >= 3, "primary + alternatives rendered as articles");
     articles.forEach((block) => {
       const surface = block.split("hci-person__details")[0];
-      assert.ok(
-        !/mailto:info@mullencap\.com/.test(surface),
-        "corporate email must not be personal channel on person card"
-      );
+      if (/mailto:info@mullencap\.com/.test(surface)) {
+        assert.ok(
+          /Organizational Contact Route/.test(surface),
+          "org email on person card must be labeled Organizational Contact Route, never as personal direct"
+        );
+        assert.ok(
+          !/Direct Business Email[\s\S]{0,80}info@mullencap\.com/.test(surface),
+          "info@ must not be labeled Direct Business Email"
+        );
+      }
     });
+    mustInclude(html, "Organizational Contact Route");
   });
 }
 
