@@ -26,9 +26,19 @@
 
 1. `attachPackageCustomerPresentation` — apply `applyUnifiedWhoToContactStandard({ force: true })` (read-time; package bytes unchanged).
 2. `prepareCustomerFacingOpportunity` — same hydration for locked / published snapshots.
-3. Production host refuses Surfe mock fixture values even if mock env is accidentally set.
-4. Cache-bust main + share GDI assets to `?v=gdi-drawer-contact-card-parity-v1`.
-5. Regression: `npm run test:gdi-drawer-contact-card-parity-v1`.
+3. `ensureDrawerContactParityPresentation` on auth + share detail paths — same public-channel recovery used by comparison RIGHT (no Surfe), then rebuild two-contact DTO.
+4. Production host refuses Surfe mock fixture values even if mock env is accidentally set.
+5. Cache-bust main + share GDI assets to `?v=gdi-drawer-contact-card-parity-v1`.
+6. Regression: `npm run test:gdi-drawer-contact-card-parity-v1` (includes EUROGUSS live public recovery).
+
+## EUROGUSS / Gissella data path
+
+| Layer | Result |
+|---|---|
+| Publication package `primaryContact` | Name/title/org only — **no** email/phone in locked snapshot |
+| Pre-fix production detail API | `hasTwo=false`; plain-text drawer fallback |
+| Public source recovery (euroguss-mexico.com/contacts) | `gissella.palma@nmna.us` + `+1 (770) 618-5833` |
+| Airtable research-inventory readback from this workstation | **Blocked** (`INVALID_PERMISSIONS_OR_MODEL_NOT_FOUND` on configured token/base) — treat as separate persistence verification, not drawer render |
 
 ## Mock data
 

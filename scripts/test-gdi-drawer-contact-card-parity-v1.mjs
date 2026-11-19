@@ -4,8 +4,12 @@
  * main GDI drawer matches the approved comparison renderer.
  */
 import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { attachPackageCustomerPresentation } from "../lib/group-demand-intelligence/publication-package/gdi-package-customer-presentation-attach-v1.js";
 import { prepareCustomerFacingOpportunity } from "../lib/group-demand-intelligence/share/gdi-customer-facing-opportunity-contract-v1.js";
+import { ensureDrawerContactParityPresentation } from "../lib/group-demand-intelligence/presentation/gdi-drawer-contact-parity-presentation-v1.js";
 
 const EUROGUSS_LIKE = Object.freeze({
   id: "opp-euroguss-mexico-2027",
@@ -66,6 +70,46 @@ const locked = prepareCustomerFacingOpportunity({
 });
 assertStructuredPrimary("locked-customer-facing", locked);
 
+const root = path.dirname(fileURLToPath(import.meta.url));
+const sheratonPath = path.join(
+  root,
+  "..",
+  "data",
+  "group-demand-intelligence",
+  "hotels",
+  "recCAGqkERSXgiku4",
+  "opportunities.json",
+);
+let eurogussRecovery = null;
+if (fs.existsSync(sheratonPath)) {
+  const raw = JSON.parse(fs.readFileSync(sheratonPath, "utf8"));
+  const opps = Array.isArray(raw) ? raw : raw.opportunities || [];
+  const euro = opps.find((o) => o?.id === "paid3_565ce4588e6d");
+  assert.ok(euro, "EUROGUSS fixture opportunity missing from Sheraton inventory");
+  const recovered = await ensureDrawerContactParityPresentation(euro, {
+    timeoutMs: 12000,
+    maxUrls: 3,
+  });
+  const primary = recovered.scalingTwoContactPresentation?.primary;
+  assert.equal(primary?.customerFacingNamed, true, "EUROGUSS named primary");
+  assert.equal(
+    primary?.email,
+    "gissella.palma@nmna.us",
+    "EUROGUSS public email recovered",
+  );
+  assert.match(
+    String(primary?.phone || ""),
+    /770/,
+    "EUROGUSS public phone recovered",
+  );
+  assert.notEqual(primary?.email, "alex.buyer@fixture.example");
+  eurogussRecovery = {
+    email: primary.email,
+    phone: primary.phone,
+    reason: recovered.publicChannelRecoveryMeta?.reason || null,
+  };
+}
+
 console.log(
   JSON.stringify(
     {
@@ -74,6 +118,7 @@ console.log(
       packageHasTwoContact: true,
       lockedHasTwoContact: true,
       mockFixtureBlocked: true,
+      eurogussRecovery,
     },
     null,
     2,
