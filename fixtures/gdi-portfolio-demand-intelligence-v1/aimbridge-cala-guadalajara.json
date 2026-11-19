@@ -1,0 +1,190 @@
+{
+  "version": "gdi-portfolio-demand-intelligence-fixture-v1",
+  "operator": {
+    "operatorId": "op_aimbridge_cala_steward_v1",
+    "operatorDisplayName": "Aimbridge CALA",
+    "note": "Steward-authorized fixture operator id — not inferred from free text."
+  },
+  "markets": [
+    {
+      "marketId": "market_guadalajara_mx_v1",
+      "marketLabel": "Guadalajara, Mexico",
+      "country": "Mexico",
+      "marketHints": {
+        "metroLabel": "Guadalajara",
+        "metroPatterns": [
+          "guadalajara",
+          "zapopan",
+          "jalisco"
+        ],
+        "boroughs": [
+          {
+            "label": "Guadalajara metro",
+            "patterns": ["guadalajara", "zapopan", "jalisco"]
+          }
+        ],
+        "submarkets": [
+          {
+            "label": "Expo Guadalajara / Plaza del Sol corridor",
+            "patterns": [
+              "expo guadalajara",
+              "plaza del sol",
+              "avenida mariano otero"
+            ]
+          },
+          {
+            "label": "Guadalajara metro select-service",
+            "patterns": ["guadalajara metro select", "zapopan select"]
+          }
+        ],
+        "microAreas": [
+          {
+            "label": "Expo Guadalajara",
+            "submarket": "Expo Guadalajara / Plaza del Sol corridor",
+            "patterns": ["expo guadalajara"]
+          }
+        ],
+        "cityTokens": ["guadalajara", "zapopan", "jalisco", "expo guadalajara"],
+        "excludeTokens": ["cancun", "cancún", "punta cana", "uvero alto"]
+      }
+    },
+    {
+      "marketId": "market_cancun_mx_v1",
+      "marketLabel": "Cancún, Mexico",
+      "country": "Mexico"
+    }
+  ],
+  "memberships": [
+    {
+      "operatorId": "op_aimbridge_cala_steward_v1",
+      "operatorDisplayName": "Aimbridge CALA",
+      "hotelId": "recCAGqkERSXgiku4",
+      "hotelDisplayName": "Sheraton Guadalajara Expo",
+      "marketId": "market_guadalajara_mx_v1",
+      "marketLabel": "Guadalajara, Mexico",
+      "provenanceKind": "STEWARD_AUTHORIZED_FIXTURE",
+      "provenanceDetail": "Explicit steward authorization for PDI-1 Aimbridge CALA × Guadalajara. HPC recCAGqkERSXgiku4. Not inferred from config notes.",
+      "censusManagementCompanyExact": null,
+      "validity": "ACTIVE"
+    },
+    {
+      "operatorId": "op_aimbridge_cala_steward_v1",
+      "operatorDisplayName": "Aimbridge CALA",
+      "hotelId": "fixture_gdi_pdi_gdl_select_service_unknown_meetings",
+      "hotelDisplayName": "Fixture Guadalajara Select Service (meetings UNKNOWN)",
+      "marketId": "market_guadalajara_mx_v1",
+      "marketLabel": "Guadalajara, Mexico",
+      "provenanceKind": "STEWARD_AUTHORIZED_FIXTURE",
+      "provenanceDetail": "Offline fixture peer in Guadalajara with unknown meeting capability — for INSUFFICIENT_EVIDENCE certification only.",
+      "validity": "ACTIVE"
+    },
+    {
+      "operatorId": "op_aimbridge_cala_steward_v1",
+      "operatorDisplayName": "Aimbridge CALA",
+      "hotelId": "recTk5I8VOzsPhxDz",
+      "hotelDisplayName": "voco Cancún Zona Hotelera",
+      "marketId": "market_cancun_mx_v1",
+      "marketLabel": "Cancún, Mexico",
+      "provenanceKind": "STEWARD_AUTHORIZED_FIXTURE",
+      "provenanceDetail": "Authorized for Cancún market only — must NOT appear in Guadalajara portfolio matrix.",
+      "validity": "ACTIVE"
+    }
+  ],
+  "hotelConfigs": {
+    "recCAGqkERSXgiku4": {
+      "hotelId": "recCAGqkERSXgiku4",
+      "displayName": "Sheraton Guadalajara Expo",
+      "capabilityProfile": {
+        "totalGuestrooms": 216,
+        "totalMeetingSpaceSqFt": 17803,
+        "country": "Mexico",
+        "serviceLevel": "full_service"
+      },
+      "commercialPriorities": {
+        "coreTargetPeakRoomsMin": 30,
+        "coreTargetPeakRoomsMax": 120,
+        "allowSmallerIfCommerciallyMeaningful": true
+      },
+      "demandTerritory": {
+        "label": "Guadalajara Expo / Plaza del Sol corridor",
+        "classificationKeywords": {
+          "TERRITORY_CORE": ["expo guadalajara", "plaza del sol", "guadalajara"]
+        }
+      },
+      "eventSpaceDomainStatus": "RESEARCHED",
+      "eventSpaceCapability": {
+        "meetingCapabilityState": "KNOWN_PRESENT",
+        "mayTreatAsNoCapability": false
+      },
+      "metro": "Guadalajara",
+      "city": "Guadalajara",
+      "country": "Mexico",
+      "submarket": "Expo Guadalajara / Plaza del Sol corridor",
+      "microArea": "Expo Guadalajara"
+    },
+    "fixture_gdi_pdi_gdl_select_service_unknown_meetings": {
+      "hotelId": "fixture_gdi_pdi_gdl_select_service_unknown_meetings",
+      "displayName": "Fixture Guadalajara Select Service (meetings UNKNOWN)",
+      "capabilityProfile": {
+        "totalGuestrooms": 140,
+        "totalMeetingSpaceSqFt": null,
+        "country": "Mexico",
+        "serviceLevel": "select_service"
+      },
+      "commercialPriorities": {
+        "coreTargetPeakRoomsMin": 20,
+        "coreTargetPeakRoomsMax": 80
+      },
+      "demandTerritory": {
+        "label": "Guadalajara metro select-service",
+        "classificationKeywords": {
+          "TERRITORY_CORE": ["guadalajara", "zapopan"],
+          "TERRITORY_NEARBY": ["expo guadalajara"]
+        }
+      },
+      "eventSpaceDomainStatus": "UNKNOWN_UNRESEARCHED",
+      "eventSpaceCapability": {
+        "meetingCapabilityState": "UNKNOWN_UNRESEARCHED",
+        "mayTreatAsNoCapability": false
+      },
+      "metro": "Guadalajara",
+      "city": "Guadalajara",
+      "country": "Mexico"
+    }
+  },
+  "marketOpportunitySeed": {
+    "id": "seed_gdl_mice_congress_2028",
+    "opportunityId": "seed_gdl_mice_congress_2028",
+    "hotelId": "recCAGqkERSXgiku4",
+    "organizationName": "Asociación Mexicana de Congresos Fixture",
+    "title": "Guadalajara Expo medical congress 2028 — plenary and breakouts",
+    "eventName": "Guadalajara Expo medical congress 2028",
+    "eventLocation": "Expo Guadalajara",
+    "location": "Expo Guadalajara, Guadalajara, Jalisco",
+    "eventStartDate": "2028-09-12",
+    "opportunityType": "associations_conferences_events",
+    "segment": "associations_conferences_events",
+    "summaryWhat": "Multi-day medical congress at Expo Guadalajara requiring plenary hall, breakout meeting rooms, banquet catering, and overnight guest rooms for delegates.",
+    "estimatedPeakRooms": 90,
+    "peakRooms": 90,
+    "sources": [
+      "https://example.org/fixture/gdl-medical-congress-2028",
+      "https://example.org/fixture/gdl-housing-bulletin"
+    ],
+    "officialSource": "https://example.org/fixture/gdl-medical-congress-2028",
+    "primaryContact": {
+      "name": "Fixture Planner Contact",
+      "role": "Housing coordinator"
+    },
+    "lodgingEvidence": {
+      "overflowMentioned": true,
+      "roomBlockMentioned": true
+    },
+    "hotelSalesFeedback": {
+      "notes": "CONFIDENTIAL_OPERATOR_FEEDBACK_MUST_NOT_LEAK",
+      "usefulnessRating": 5
+    },
+    "salesOwner": "ShouldNotAppearInSharedPacket",
+    "operatorPrivateNotes": "private pursuit history"
+  }
+}
