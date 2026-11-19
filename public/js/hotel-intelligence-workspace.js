@@ -654,7 +654,18 @@
   }
 
   function getControl(ownership) {
-    return (ownership && ownership.report && ownership.report.ownership_and_control) || {};
+    var ctrl =
+      (ownership && ownership.report && ownership.report.ownership_and_control) || {};
+    // Normalize HI-graph overlay keys to golden-demo control vocabulary.
+    if (!ctrl.economic_owner_or_group && ctrl.economic_owner) {
+      ctrl = Object.assign({}, ctrl, { economic_owner_or_group: ctrl.economic_owner });
+    }
+    if (!ctrl.legal_property_owner_propco && ctrl.property_company) {
+      ctrl = Object.assign({}, ctrl, {
+        legal_property_owner_propco: ctrl.property_company,
+      });
+    }
+    return ctrl;
   }
 
   function controlPartyKnown(party) {
@@ -1389,7 +1400,11 @@
       esc(hotel.name || "Hotel") +
       '<div class="hiw-report__subtitle">Ownership, Corporate Structure &amp; Development Intelligence</div>';
 
-    if (!inCohort) {
+    var airtableGraphPartial =
+      ownership.data_status === "AIRTABLE_GRAPH_PARTIAL" ||
+      (ownership.airtable_graph && ownership.airtable_graph.relationshipCount > 0);
+
+    if (!inCohort && !airtableGraphPartial) {
       return (
         '<article class="hiw-report"><h2 class="hiw-report__title">' +
         title +
@@ -1397,6 +1412,70 @@
         '<section class="hiw-section"><h3 class="hiw-section__h">Executive Summary</h3>' +
         '<div class="hiw-prose"><p>Ownership Intelligence is not yet available for this hotel in the controlled demo cohort. Economic ownership is not verified. No fabricated owner is shown.</p></div>' +
         "</section></article>"
+      );
+    }
+
+    if (!inCohort && airtableGraphPartial) {
+      var graphCtrl = ctrl || {};
+      var econName =
+        (graphCtrl.economic_owner && graphCtrl.economic_owner.name) || "Not verified";
+      var propCoName =
+        (graphCtrl.property_company && graphCtrl.property_company.name) || "—";
+      var graphOp =
+        (graphCtrl.operator && graphCtrl.operator.name) || opName || "—";
+      var graphBrand =
+        (graphCtrl.brand && graphCtrl.brand.name) || brand || "—";
+      var graphContacts =
+        (ownership.report && ownership.report.corporate_contacts) || {};
+      var graphExec =
+        (ownership.report &&
+          ownership.report.executive_summary &&
+          ownership.report.executive_summary.text) ||
+        "Airtable HI graph relationships are available for this hotel. Economic ownership remains unresolved unless a Validated Economic Owner relationship exists. No fabricated owner is shown.";
+      var graphRelRows = renderRelationshipEdgesTable(ownership, state.relFilter);
+      return (
+        '<article class="hiw-report"><h2 class="hiw-report__title">' +
+        title +
+        "</h2>" +
+        '<section class="hiw-section"><h3 class="hiw-section__h">Executive Summary</h3>' +
+        '<div class="hiw-prose"><p>' +
+        esc(graphExec) +
+        "</p></div></section>" +
+        '<section class="hiw-section"><h3 class="hiw-section__h">Ownership &amp; Control (Airtable graph)</h3>' +
+        '<div class="hiw-kv"><div><span class="hiw-kv__k">Economic owner</span><span class="hiw-kv__v">' +
+        esc(econName) +
+        '</span></div><div><span class="hiw-kv__k">Property company</span><span class="hiw-kv__v">' +
+        esc(propCoName) +
+        '</span></div><div><span class="hiw-kv__k">Operator</span><span class="hiw-kv__v">' +
+        esc(graphOp) +
+        '</span></div><div><span class="hiw-kv__k">Brand</span><span class="hiw-kv__v">' +
+        esc(graphBrand) +
+        '</span></div><div><span class="hiw-kv__k">Control status</span><span class="hiw-kv__v">' +
+        esc(
+          (ownership.airtable_graph && ownership.airtable_graph.control_status) ||
+            graphCtrl.control_status ||
+            "PARTIAL",
+        ) +
+        '</span></div><div><span class="hiw-kv__k">Graph relationships</span><span class="hiw-kv__v">' +
+        esc(
+          String(
+            (ownership.airtable_graph && ownership.airtable_graph.relationshipCount) ||
+              0,
+          ),
+        ) +
+        "</span></div></div>" +
+        '<p class="hiw-muted">Source: HI Organizations + HI Hotel–Org Relationships (live Airtable). Golden-demo fixtures are not used for this hotel.</p>' +
+        "</section>" +
+        '<section class="hiw-section"><h3 class="hiw-section__h">Property contact fallback (HPC)</h3>' +
+        '<div class="hiw-kv"><div><span class="hiw-kv__k">Property phone</span><span class="hiw-kv__v">' +
+        esc(graphContacts.property_phone || hotel.telephone || "—") +
+        '</span></div><div><span class="hiw-kv__k">Website</span><span class="hiw-kv__v">' +
+        esc(graphContacts.website || hotel.website || "—") +
+        "</span></div></div>" +
+        '<p class="hiw-muted">Fallback from Hotel Property Census — not HI Contact Channels (person enrichment still pending Gate 1 research approval).</p>' +
+        "</section>" +
+        graphRelRows +
+        "</article>"
       );
     }
 
@@ -2111,10 +2190,27 @@
   }
 
   function synthesizeOrgPayloadFromOwnership(ownership, hotel) {
-    if (!ownership || !ownership.report) return null;
+    if (!ownership) return null;
+    if (!ownership.report && !(ownership.airtable_graph && ownership.airtable_graph.relationshipCount)) {
+      return null;
+    }
     var org = ownership.organization || ownership.ownership_group || {};
+    if (
+      !org.display_name &&
+      ownership.airtable_graph &&
+      ownership.airtable_graph.primaryOrganization
+    ) {
+      var po = ownership.airtable_graph.primaryOrganization;
+      org = {
+        display_name: po.tradingName || po.legalName,
+        legal_name: po.legalName || po.tradingName,
+        website: po.officialWebsite || null,
+        known_hotel_count: (ownership.airtable_graph.portfolioCount || 0),
+      };
+    }
     var portfolioRows =
-      (ownership.report.organization_and_portfolio &&
+      (ownership.report &&
+        ownership.report.organization_and_portfolio &&
         ownership.report.organization_and_portfolio.hotels) ||
       [];
     var assets = (ownership.deep_research &&
@@ -2343,9 +2439,25 @@
   function edgeEndpoint(e, side) {
     if (!e || typeof e !== "object") return "";
     if (side === "from") {
-      return e.from || e.subject || e.from_label || e.source || "";
+      return (
+        e.from ||
+        e.subject ||
+        e.from_label ||
+        e.source ||
+        e.hpcHotelId ||
+        (e.source === "HI_AIRTABLE_GRAPH" ? "Hotel" : "") ||
+        ""
+      );
     }
-    return e.to || e.object || e.to_label || e.target || "";
+    return (
+      e.to ||
+      e.object ||
+      e.to_label ||
+      e.target ||
+      e.organization_id ||
+      e.organizationId ||
+      ""
+    );
   }
 
   function edgeTemporal(e) {
@@ -2374,15 +2486,49 @@
     return "other";
   }
 
-  function renderRelationshipEdgesTable(ownership, filter) {
-    var edges =
+  function normalizeGraphEdges(ownership) {
+    var fromReport = (ownership && ownership.report && ownership.report.relationships) || [];
+    if (Array.isArray(fromReport) && fromReport.length && fromReport[0] && fromReport[0].relationship_type) {
+      return fromReport.map(function (rel) {
+        return {
+          type: rel.relationship_type,
+          relationship_type: rel.relationship_type,
+          from: "Focus hotel",
+          to: rel.organization_id || rel.airtable_id || "Organization",
+          temporal_status: "CURRENT",
+          confidence: rel.confidence || rel.verification_state || "MEDIUM",
+          source: rel.source || "HI_AIRTABLE_GRAPH",
+        };
+      });
+    }
+    var fromGraph =
+      (ownership && ownership.airtable_graph && ownership.airtable_graph.relationships) || [];
+    if (Array.isArray(fromGraph) && fromGraph.length) {
+      return fromGraph.map(function (rel) {
+        return {
+          type: rel.relationshipType || rel.relationship_type,
+          relationship_type: rel.relationshipType || rel.relationship_type,
+          from: "Focus hotel",
+          to: rel.organizationId || rel.organization_id || "Organization",
+          temporal_status: "CURRENT",
+          confidence: rel.confidence || rel.verificationState || "MEDIUM",
+          source: "HI_AIRTABLE_GRAPH",
+        };
+      });
+    }
+    return (
       (ownership && ownership.deep_research && ownership.deep_research.relationships) ||
       (ownership && ownership.report && ownership.report.relationship_edges) ||
       (ownership &&
         ownership.report &&
         ownership.report.relationships &&
         ownership.report.relationships.edges) ||
-      [];
+      []
+    );
+  }
+
+  function renderRelationshipEdgesTable(ownership, filter) {
+    var edges = normalizeGraphEdges(ownership);
     if (!edges.length) return "";
     var f = filter || state.relFilter || "all";
     var filters = [

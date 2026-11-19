@@ -507,6 +507,84 @@
     });
   }
 
+  function renderHpcPropertyFallback(hotelId, contacts, hotelName) {
+    var phone = contacts && contacts.property_phone;
+    var website = contacts && contacts.website;
+    var source =
+      (contacts && contacts.property_fallback_source) || "Hotel Property Census";
+    var phoneHtml = phone
+      ? '<a class="hci-channel__value" href="tel:' +
+        esc(String(phone).replace(/\s+/g, "")) +
+        '">' +
+        esc(phone) +
+        "</a>"
+      : '<span class="hci-channel__value">—</span>';
+    var websiteHtml = website
+      ? '<a class="hci-channel__value" href="' +
+        esc(website) +
+        '" target="_blank" rel="noopener">' +
+        esc(website) +
+        "</a>"
+      : '<span class="hci-channel__value">—</span>';
+    return (
+      '<div class="hci-root" data-hci-state="hpc-fallback">' +
+      '<section class="hci-section">' +
+      '<div class="hci-section__head"><h3>Property contacts (HPC fallback)</h3>' +
+      '<p class="hci-note">Read-only fallback from ' +
+      esc(source) +
+      " for " +
+      esc(hotelName || hotelId) +
+      ". Not HI Contact Channels / person enrichment. Person-level Contact Intelligence staging is unavailable for this hotel.</p></div>" +
+      '<div class="hci-channel"><div class="hci-channel__main">' +
+      '<span class="hci-channel__type">PROPERTY PHONE</span>' +
+      phoneHtml +
+      '<span class="hci-badge hci-badge--public">HPC FIELD</span>' +
+      '<span class="hci-src">HOTEL PROPERTY CENSUS</span>' +
+      "</div></div>" +
+      '<div class="hci-channel"><div class="hci-channel__main">' +
+      '<span class="hci-channel__type">PROPERTY WEBSITE</span>' +
+      websiteHtml +
+      '<span class="hci-badge hci-badge--public">HPC FIELD</span>' +
+      '<span class="hci-src">HOTEL PROPERTY CENSUS</span>' +
+      "</div></div>" +
+      '<p class="hci-note">Provenance: source=' +
+      esc((contacts && contacts.source) || "HPC_PROPERTY_FALLBACK") +
+      "; no Contact Intelligence write on GET.</p>" +
+      "</section></div>"
+    );
+  }
+
+  function loadHpcPropertyFallback(hotelId) {
+    return fetch(
+      "/api/golden-demo/ownership/hotel/" + encodeURIComponent(hotelId),
+      { credentials: "same-origin" }
+    )
+      .then(function (r) {
+        if (!r.ok) throw new Error("http_" + r.status);
+        return r.json();
+      })
+      .then(function (json) {
+        var contacts =
+          (json && json.report && json.report.corporate_contacts) || null;
+        if (
+          !contacts ||
+          (!contacts.property_phone && !contacts.website)
+        ) {
+          return null;
+        }
+        return {
+          hotelId: hotelId,
+          hotelName:
+            (json.hotel && (json.hotel.name || json.hotel.display_name)) ||
+            hotelId,
+          contacts: contacts,
+        };
+      })
+      .catch(function () {
+        return null;
+      });
+  }
+
   function loadViewModel(hotelId) {
     var showcase = SHOWCASE_PATHS[hotelId];
     var tries = [];
@@ -538,22 +616,34 @@
     if (!host) return Promise.resolve();
     host.innerHTML = renderLoading();
     return loadViewModel(hotelId).then(function (vm) {
-      if (!vm || !vm.ownershipSummary) {
+      if (vm && vm.ownershipSummary) {
+        host.innerHTML = renderViewModel(vm);
+        bindToggles(host);
+        return;
+      }
+      return loadHpcPropertyFallback(hotelId).then(function (fallback) {
+        if (fallback) {
+          host.innerHTML = renderHpcPropertyFallback(
+            hotelId,
+            fallback.contacts,
+            fallback.hotelName
+          );
+          return;
+        }
         host.innerHTML = renderEmpty(
           "Contact Intelligence staging is not available for this hotel yet. KGPV showcase data is local/dev only."
         );
-        return;
-      }
-      host.innerHTML = renderViewModel(vm);
-      bindToggles(host);
+      });
     });
   }
 
   global.HotelContactIntelligence = {
     renderLoading: renderLoading,
     renderEmpty: renderEmpty,
+    renderHpcPropertyFallback: renderHpcPropertyFallback,
     renderViewModel: renderViewModel,
     mount: mount,
     loadViewModel: loadViewModel,
+    loadHpcPropertyFallback: loadHpcPropertyFallback,
   };
 })(typeof window !== "undefined" ? window : globalThis);
