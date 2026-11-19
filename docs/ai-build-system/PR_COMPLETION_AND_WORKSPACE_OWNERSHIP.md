@@ -5,45 +5,69 @@
 
 ## Non-negotiable
 
-A successful GitHub PR merge is **not** a completed development task until:
+A successful GitHub PR merge is **not** a completed development task until positively verified:
 
 1. Required CI checks passed.
 2. The PR merged into `main`.
-3. The owning permanent workspace returned to its registered **home branch**.
-4. That home branch is synchronized with latest `origin/main`.
-5. Cursor active branch association corrected (`SetActiveBranch` / UI chip).
-6. Temporary feature branches retired when safe.
-7. Working-tree cleanliness explicitly verified and reported.
-8. Valuable research / runtime / execution evidence preserved.
+3. Actual merge SHA recorded.
+4. The owning permanent workspace returned to its registered **home branch**.
+5. Home branch HEAD equals latest `origin/main` (and workspace HEAD equals `origin/main` when on home).
+6. Working-tree status explicitly inspected.
+7. Research/runtime evidence preservation **explicitly assessed** (never inferred).
+8. Cursor active branch and feature-branch retirement either **verified** or clearly marked `OUTSTANDING: …`.
 9. Other workspaces not disturbed.
 
 Opening a PR, passing CI, or merging into GitHub alone is **not sufficient**.
+
+### Fail-closed COMPLETE
+
+`npm run dealality:pr-completion-report` **must not** return COMPLETE when merge/CI/home/preservation/cursor/retirement evidence is null, omitted, unknown, or `NOT_ASSESSED`.
+
+Prefer querying GitHub (`gh pr view`) for merge + CI evidence rather than trusting caller-supplied booleans alone. Offline/test callers may inject verified GitHub-shaped evidence, but null/unknown still fails closed.
 
 ## Ownership enforcement
 
 Authoritative ownership source: `docs/ai-build-system/worktree-registry.json`.
 
-Before branch mutations, verify:
+Before branch mutations, verify worktree root, owning stream, current branch/HEAD, target branch, unresolved merge/rebase/unmerged-index, dirty/untracked, and preservation needs.
 
-- Actual Git worktree root
-- Registered owning workstream
-- Current branch and HEAD
-- Requested target branch
-- In-progress merge / rebase / cherry-pick
-- Tracked and untracked changes
-- Preservation needs for ignored runtime evidence
+**Fail closed** on:
 
-**Fail closed** when operations violate ownership or would overwrite unpreserved changes.
+- Cross-workstream feature branch targets
+- **Unclassified** branch targets (not matching the owning stream pattern) unless narrow founder auth:
+  - `FOUNDER_AUTH_CROSS_STREAM_BRANCH`
+  - `FOUNDER_AUTH_UNCLASSIFIED_BRANCH`
+- Product workspace checkout of `main` (use home `ws/*` instead)
+- Mutations while MERGE_HEAD / rebase / unmerged index is active
 
 Cursor conversation branch chips are **not** authoritative Git state.
 
-Cross-workstream feature branch checkouts/merges are prohibited.
+### Enforcement coverage (honest)
+
+**Enforcement level: PARTIAL — not universal.**
+
+| Entry point | Enforcement |
+|-------------|-------------|
+| `dealality:git-preflight` switch/checkout/merge/rebase | **Machine** fail-closed ownership + unresolved gates |
+| `dealality:post-merge-sync` | **Machine** preserve-first; never auto-switch active tasks; no reset/clean/stash-discard |
+| `dealality:pr-completion-report` | **Machine** fail-closed COMPLETE evidence rules |
+| Raw `git` without preflight | **Instruction-only** (bypass possible) |
+| Cursor `SetActiveBranch` / UI chip | **Instruction-only** (non-Git metadata) |
+| Cursor cloud-agent / `move_agent_to_root` / worktree reattachment | **Instruction-only** (not intercepted) |
+| Product chat startup prompts | **Instruction-only** |
+| Integration Controller `gh pr merge` | **Remote merge OK with dirty Integration checkout**; local sync remains separate |
+
+Unavoidable bypasses: any direct git/IDE path that skips `dealality:git-preflight`; Cursor branch-chip tools; external agents outside Dev OS commands.
+
+Do **not** claim universal enforcement. Print coverage: `npm run dealality:pr-completion-report -- --coverage`.
 
 ## Preservation
 
 Do **not** automatically stash, discard, force-checkout, reset, or `git clean` to resolve conflicts.
 
 A clean Source Control display must never take priority over preserving work.
+
+`NOT_ASSESSED` preservation **cannot** be treated as verified preservation and **cannot** yield COMPLETE.
 
 ## Integration Controller
 
@@ -55,13 +79,15 @@ Product chats must not independently merge to `main` or run disruptive cross-wor
 
 | Status | Meaning |
 |--------|---------|
-| **COMPLETE — MERGED_AND_HOME_SYNCED — CLEAN_WORKTREE** | Merged, home synced, working tree clean |
-| **COMPLETE — MERGED_AND_HOME_SYNCED — PRESERVED_DIRTY** | Merged + home synced; intentional local/research artifacts remain (list them) |
+| **COMPLETE — MERGED_AND_HOME_SYNCED — CLEAN_WORKTREE** | All required evidence verified; home synced; clean tree |
+| **COMPLETE — MERGED_AND_HOME_SYNCED — PRESERVED_DIRTY** | All required evidence verified; intentional local/research artifacts remain (listed) |
+| **BLOCKED — EVIDENCE_INCOMPLETE** | Missing/unknown merge SHA, CI, preservation, cursor, or retirement evidence |
 | **BLOCKED — PRESERVATION_REQUIRED** | Cannot continue without protecting existing work |
 | **BLOCKED — CROSS_WORKSTREAM_BRANCH** | Branch violates registered workspace ownership |
-| **BLOCKED — UNRESOLVED_GIT_OPERATION** | Active merge/rebase/cherry-pick must be reconciled |
+| **BLOCKED — UNCLASSIFIED_BRANCH** | Target/current branch not owned and not authorized |
+| **BLOCKED — UNRESOLVED_GIT_OPERATION** | Active merge/rebase/cherry-pick/unmerged index |
 | **BLOCKED — HOME_NOT_SYNCED** | Not on home and/or home/HEAD not at `origin/main` |
-| **BLOCKED — NOT_MERGED** / **BLOCKED — CI_INCOMPLETE** | Merge or CI gate incomplete |
+| **BLOCKED — NOT_MERGED** / **BLOCKED — CI_INCOMPLETE** | Merge or CI gate failed |
 
 Never report completion from PR merge status alone.
 
@@ -76,25 +102,27 @@ Never report completion from PR merge status alone.
 - HEAD synchronization status
 - Tracked modification count
 - Visible untracked count
-- Ignored evidence preservation status
-- Cursor active branch
-- Temporary feature branch retirement status
+- Ignored evidence preservation status (**assessed**, not NOT_ASSESSED)
+- Cursor active branch (verified or `OUTSTANDING: …`)
+- Temporary feature branch retirement status (verified or `OUTSTANDING: …`)
 - Peer worktree impact
 - Final standardized completion status
+- Enforcement level (PARTIAL) and known bypasses when relevant
 
 ## Tooling (reuse — do not fork)
 
 | Concern | Command / module |
 |---------|------------------|
-| Ownership + dirty gates | `npm run dealality:git-preflight` → `lib/dealality-dev-os/git-preflight.js` + `workspace-ownership.js` |
-| Post-merge home sync | `npm run dealality:post-merge-sync` → `POST_MERGE_WORKSPACE_SYNC.md` |
-| Completion report | `npm run dealality:pr-completion-report` → `lib/dealality-dev-os/pr-completion-ownership.js` |
+| Ownership + dirty gates | `npm run dealality:git-preflight` → `git-preflight.js` + `workspace-ownership.js` |
+| Post-merge home sync | `npm run dealality:post-merge-sync` |
+| Completion report | `npm run dealality:pr-completion-report` |
 | Ownership audit | `npm run dealality:pr-completion-report -- --audit` |
+| Enforcement coverage | `npm run dealality:pr-completion-report -- --coverage` |
 | Regression gate | `npm run test:dealality-pr-completion-ownership-v1` |
 
 ### Recovery before disruptive enforcement
 
-Live workspace recovery (especially cross-stream checkouts and dirty preserve state) must be inventoried with `--audit` **before** forcing home returns. Fail-closed mutation gates refuse new cross-stream switches/merges; they do **not** auto-reset or discard existing dirty trees.
+Live workspace recovery must be inventoried with `--audit` **before** forcing home returns. Fail-closed mutation gates refuse new cross-stream/unclassified switches; they do **not** auto-reset or discard existing dirty trees.
 
 ## Related
 
