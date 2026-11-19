@@ -16,6 +16,8 @@
 | Auth | Verified Memberstack + steward operator mapping (PDI-2 hardened) |
 | Fit matrix | PDI-1 fit classes |
 | Opportunity detail | **Existing** hotel opportunity drawer + Brief v2 narrative contract |
+| Level 1 Brief | Same Commercial Intelligence Brief fields (concise, actionable) |
+| Level 2 Supporting | Same opportunity detail architecture (evidence, contacts, sources, gaps) — **no** separate portfolio drawer |
 
 ## Prep checklist
 

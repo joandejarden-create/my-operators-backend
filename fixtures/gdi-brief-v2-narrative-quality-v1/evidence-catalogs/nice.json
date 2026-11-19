@@ -1,0 +1,83 @@
+{
+  "label": "nice",
+  "opportunityId": "gdi_opp_nice_2027",
+  "archivedSources": [
+    "data/group-demand-intelligence/hotels/recLuxvwwxID7U2B8/opportunities.json",
+    "reports/group-demand-intelligence/bethesda-nice-commercial-progression-apply.json"
+  ],
+  "notes": "No per-ID Exa archive (paidResearch:false). Depth = Webhound + NIST pages + customer progression artifact.",
+  "materialFacts": [
+    {
+      "id": "nice-dates",
+      "claim": "NICE 2027 June 7–9; location TBA",
+      "matchNeedles": ["June 7–9, 2027", "location TBA"],
+      "sourceUrl": "https://www.nist.gov/news-events/events/18th-annual-nice-conference-and-expo",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "HIGH",
+      "changesPursuit": true,
+      "destination": "BRIEF",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "nice-karen",
+      "claim": "Karen Wetzel karen.wetzel@nist.gov is verified decision-maker contact",
+      "matchNeedles": ["Karen Wetzel", "karen.wetzel@nist.gov"],
+      "sourceUrl": "https://www.nist.gov/itl/applied-cybersecurity/nice/about/meet-staff",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "HIGH",
+      "changesPursuit": true,
+      "destination": "BRIEF",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "nice-historical-attendance",
+      "claim": "Historical attendance ~400–450",
+      "matchNeedles": ["400", "450"],
+      "sourceUrl": "https://www.nist.gov/news-events/news/2026/08/foundations-future-insights-2026-nice-conference",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "MEDIUM",
+      "changesPursuit": false,
+      "destination": "SUPPORTING",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "nice-fiu-ops",
+      "claim": "FIU / New America operate conference logistics under NIST award",
+      "matchNeedles": ["FIU", "New America"],
+      "sourceUrl": "https://it.fiu.edu/national-initiative-for-cybersecurity-education-nice-conference/",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "HIGH",
+      "changesPursuit": true,
+      "destination": "SUPPORTING",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "nice-customer-sourced",
+      "claim": "Customer reported hotel added to sourced properties (2026-09-17)",
+      "matchNeedles": ["sourced properties", "added to sourced"],
+      "sourceUrl": null,
+      "verificationStatus": "RELIABLY_INFERRED",
+      "commercialImportance": "HIGH",
+      "changesPursuit": true,
+      "destination": "SUPPORTING",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "nice-2027-city",
+      "claim": "Confirmed 2027 host city",
+      "matchNeedles": ["host city confirmed"],
+      "verificationStatus": "UNKNOWN",
+      "commercialImportance": "HIGH",
+      "changesPursuit": true,
+      "destination": "BRIEF",
+      "origin": "ABSENT_FROM_RESEARCH"
+    }
+  ],
+  "unsupportedRiskPatterns": [
+    {
+      "id": "nice-credible-host-from-tba",
+      "description": "Claims credible host merely because venue is unannounced",
+      "test": "credible host candidate"
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "label": "pdac",
+  "opportunityId": "rbc_gdi_disc_45447a18d2d0e412",
+  "archivedSources": [
+    "reports/gdi-radisson-blu-toronto-paid-full-e2e-15usd-v1/raw-runs/cmiC_rbc_gdi_disc_45447a18d2d0e412.json",
+    "data/group-demand-intelligence/hotels/recH9h3McgMNFQEla/opportunities.json"
+  ],
+  "materialFacts": [
+    {
+      "id": "pdac-dates-mtcc",
+      "claim": "PDAC 2027 runs 7–10 March 2027 at MTCC",
+      "matchNeedles": ["7–10 March 2027", "MTCC"],
+      "sourceUrl": "https://pdac.ca/convention-2027/attending-2027/frequently-asked-questions-2027",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "HIGH",
+      "changesPursuit": true,
+      "destination": "BRIEF",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "pdac-radisson-partner-rate",
+      "claim": "Radisson Blu is an official hotel partner at CAD $449 with 2 Feb 2027 cutoff",
+      "matchNeedles": ["official hotel partner", "449", "2 Feb 2027"],
+      "sourceUrl": "https://pdac.ca/convention-2027/attending-2027/accommodation-and-travel-2027/hotels-2027",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "HIGH",
+      "changesPursuit": true,
+      "destination": "BRIEF",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "pdac-no-housing-bureau",
+      "claim": "PDAC does not use 3rd party housing bureaus; book directly with hotels",
+      "matchNeedles": ["housing bureaus", "Book directly"],
+      "sourceUrl": "https://pdac.ca/convention-2027/attending-2027/accommodation-and-travel-2027/hotels-2027",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "HIGH",
+      "changesPursuit": true,
+      "destination": "SUPPORTING",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "pdac-nicole-sampson",
+      "claim": "Nicole Sampson, Senior Director, Convention is the primary commercial entry",
+      "matchNeedles": ["Nicole Sampson"],
+      "sourceUrl": "https://pdac.ca/about-pdac/staff",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "HIGH",
+      "changesPursuit": true,
+      "destination": "BRIEF",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "pdac-convention-inbox",
+      "claim": "convention@pdac.ca is a published organizational route on staff materials",
+      "matchNeedles": ["convention@pdac.ca"],
+      "sourceUrl": "https://pdac.ca/about-pdac/staff",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "HIGH",
+      "changesPursuit": true,
+      "destination": "SUPPORTING",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "pdac-limited-nights",
+      "claim": "Limited availability remains on select nights",
+      "matchNeedles": ["Limited availability"],
+      "sourceUrl": "https://pdac.ca/convention-2027/attending-2027/accommodation-and-travel-2027/hotels-2027",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "MEDIUM",
+      "changesPursuit": true,
+      "destination": "BRIEF",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "pdac-2027-attendance",
+      "claim": "Verified 2027 attendance forecast",
+      "matchNeedles": ["verified 2027 attendance"],
+      "verificationStatus": "UNKNOWN",
+      "commercialImportance": "MEDIUM",
+      "changesPursuit": false,
+      "destination": "SUPPORTING",
+      "origin": "ABSENT_FROM_RESEARCH"
+    }
+  ],
+  "unsupportedRiskPatterns": [
+    {
+      "id": "pdac-false-competitor-overflow-posture",
+      "description": "Treats official Radisson partner listing as competitor-placed overflow-only",
+      "test": "COMPETITOR_PLACED_OVERFLOW_ONLY"
+    }
+  ]
+}
