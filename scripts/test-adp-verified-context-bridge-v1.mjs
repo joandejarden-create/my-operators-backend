@@ -8,8 +8,11 @@ import {
   DEFAULT_MINIMUM_ELIGIBLE_ATTRIBUTES,
   assessMinimumAttributeCoverage,
   classifySelectedAttributeEligibility,
+  collapseEligibleToUniqueConcepts,
   ELIGIBILITY_STATUS,
+  MEASUREMENT_COMPARISON_STATUS,
   hashSelectionInventory,
+  assessObservationEvidence,
   explainDenominatorDifference,
   buildVerifiedContextBridgeDiagnostic,
   buildPilotSuiteDiagnostics,
@@ -116,9 +119,72 @@ check("denominator exclusion artifact warning", () => {
       },
     ],
   };
-  const diff = explainDenominatorDifference(fixtureRg, bridgedRg, eligibility);
+  const diff = explainDenominatorDifference(fixtureRg, bridgedRg, eligibility, {
+    comparisonStatus: MEASUREMENT_COMPARISON_STATUS.OBSERVATION_BACKED,
+  });
   assert.ok(String(diff.artifactWarning || "").includes("DENOMINATOR_ARTIFACT"));
   assert.equal(diff.customerFacingUnchanged, true);
+});
+
+check("empty observations → DATA_INSUFFICIENT, not false 100 score", () => {
+  const evidence = assessObservationEvidence([]);
+  assert.equal(evidence.status, MEASUREMENT_COMPARISON_STATUS.DATA_INSUFFICIENT);
+  assert.equal(evidence.sufficientForScoreComparison, false);
+
+  const diag = buildVerifiedContextBridgeDiagnostic("adp_spice_island_beach_resort", {
+    observations: [],
+  });
+  assert.equal(diag.ok, true);
+  assert.equal(diag.attributeCoverageValidation.status, "ATTRIBUTE_COVERAGE_VALIDATED");
+  assert.equal(
+    diag.measurementComparison.status,
+    MEASUREMENT_COMPARISON_STATUS.DATA_INSUFFICIENT
+  );
+  assert.equal(diag.measurementComparison.dualRunScoresValid, false);
+  assert.equal(diag.dualRun.fixtureBaseline.realityGap.gapScore, null);
+  assert.equal(diag.dualRun.bridgedEligible.realityGap.gapScore, null);
+  assert.equal(diag.dualRun.difference.fixtureGapScore, null);
+  assert.equal(diag.dualRun.difference.bridgedEligibleGapScore, null);
+  // Published reference may exist but must not count as dual-run success
+  if (diag.measurementComparison.publishedReference) {
+    assert.equal(diag.measurementComparison.publishedReference.dualRunValid, false);
+  }
+});
+
+check("non-mentioned observations still DATA_INSUFFICIENT", () => {
+  const obs = [{ mentioned: false, attributesRecognized: ["luxury"] }];
+  const diag = buildVerifiedContextBridgeDiagnostic("adp_spice_island_beach_resort", {
+    observations: obs,
+  });
+  assert.equal(diag.measurementComparison.dualRunScoresValid, false);
+  assert.equal(diag.dualRun.fixtureBaseline.realityGap.gapScore, null);
+});
+
+check("observation-backed path returns scores", () => {
+  const obs = [
+    { mentioned: true, attributesRecognized: ["luxury", "beachfront"] },
+    { mentioned: true, attributesRecognized: ["luxury"] },
+  ];
+  const diag = buildVerifiedContextBridgeDiagnostic("adp_spice_island_beach_resort", {
+    observations: obs,
+  });
+  assert.equal(diag.measurementComparison.dualRunScoresValid, true);
+  assert.equal(typeof diag.dualRun.fixtureBaseline.realityGap.gapScore, "number");
+});
+
+check("synonyms cannot pad minimum unique-concept count", () => {
+  const collapsed = collapseEligibleToUniqueConcepts([
+    "beachfront",
+    "oceanfront",
+    "spa",
+    "full_service_spa",
+  ]);
+  assert.equal(collapsed.uniqueConceptCount, 2);
+  const coverage = assessMinimumAttributeCoverage(collapsed.uniqueConceptCount, {
+    minimumEligible: 12,
+  });
+  assert.equal(coverage.meetsMinimum, false);
+  assert.equal(coverage.shortfall, 10);
 });
 
 check("dual-run does not mutate profile selection", () => {
@@ -133,6 +199,7 @@ check("dual-run does not mutate profile selection", () => {
   assert.equal(diag.historicalCompatibility.customerFacingRealityGapUnchanged, true);
   assert.equal(diag.dualRun.fixtureBaseline.mode, "RG_FIXTURE_BASELINE");
   assert.equal(diag.dualRun.bridgedEligible.mode, "RG_BRIDGED_ELIGIBLE_DIAGNOSTIC_V1");
+  assert.equal(diag.measurementComparison.dualRunScoresValid, false);
 });
 
 check("identity isolation across pilots", () => {

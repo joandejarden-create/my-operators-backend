@@ -32,8 +32,12 @@ function summarizeHotel(diag) {
   return {
     propertyId: diag.propertyId,
     hpcHotelId: diag.hpcHotelId,
+    attributeCoverageValidation: diag.attributeCoverageValidation?.status || null,
+    measurementComparisonStatus: diag.measurementComparison?.status || null,
+    dualRunScoresValid: diag.measurementComparison?.dualRunScoresValid === true,
     selectedCount: diag.selectedAttributes.length,
     eligibleCount: diag.eligibility.eligibleCount,
+    eligibleUniqueConceptCount: diag.eligibility.eligibleUniqueConceptCount,
     needsVerification: diag.eligibility.needsVerificationKeys,
     undefinedKeys: diag.eligibility.undefinedKeys,
     conflictingKeys: diag.eligibility.conflictingKeys,
@@ -43,12 +47,25 @@ function summarizeHotel(diag) {
       eligibleCount: diag.minimumCoverage.eligibleCount,
       shortfall: diag.minimumCoverage.shortfall,
       flag: diag.minimumCoverage.flag,
+      countedAs: "eligibleUniqueConceptCount",
     },
     fixtureDenom: diag.dualRun.fixtureBaseline.realityGap?.totalAttributes,
     bridgedDenom: diag.dualRun.bridgedEligible.realityGap?.totalAttributes,
-    fixtureGapScore: diag.dualRun.fixtureBaseline.realityGap?.gapScore,
-    bridgedGapScore: diag.dualRun.bridgedEligible.realityGap?.gapScore,
+    fixtureGapScore: diag.measurementComparison?.dualRunScoresValid
+      ? diag.dualRun.fixtureBaseline.realityGap?.gapScore
+      : null,
+    bridgedGapScore: diag.measurementComparison?.dualRunScoresValid
+      ? diag.dualRun.bridgedEligible.realityGap?.gapScore
+      : null,
     artifactWarning: diag.dualRun.difference.artifactWarning,
+    publishedReference: diag.measurementComparison?.publishedReference
+      ? {
+          periodId: diag.measurementComparison.publishedReference.periodId,
+          gapScore: diag.measurementComparison.publishedReference.realityGap?.gapScore,
+          dualRunValid: false,
+          note: diag.measurementComparison.publishedReference.note,
+        }
+      : null,
     topSuggestions: (diag.suggestions.topSuggestions || []).slice(0, 5).map((s) => ({
       attribute: s.attribute,
       status: s.suggestedInclusionStatus,
@@ -92,12 +109,15 @@ async function main() {
     scope: "PHASE_1B_PR1_DIAGNOSTIC_ONLY",
     airtableWrites: false,
     customerFacingCutover: false,
+    observationBackedHotels: suite.observationBackedHotels || [],
+    attributeCoverageOnlyHotels: suite.attributeCoverageOnlyHotels || [],
     pilots: (suite.pilots || []).map(summarizeHotel),
     regression: (suite.regression || []).map(summarizeHotel),
     isolation: suite.isolation,
     airtableSelectionPersistenceProposal: STRATEGIC_SELECTION_PERSISTENCE_PROPOSAL,
     founderGatesBeforePr2OrWrites: [
-      "Approve OPTION_B (or alternate) strategic selection Airtable schema",
+      "Approve OPTION_B schema implementation details before Airtable creation/writes",
+      "Fixture selections migrate as review-required — not auto-APPROVED",
       "Approve YOTEL Y1 defs+parser only after factual/strategic/recognition review (D2)",
       "Do not activate production research-blocking minimum-12 gate without pilot review",
       "Bridged RG remains diagnostic-only (D6)",

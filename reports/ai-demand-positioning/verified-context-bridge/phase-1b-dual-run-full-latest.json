@@ -53,6 +53,35 @@
           "nih_access",
           "dc_metro_access"
         ],
+        "eligibleUniqueConceptCount": 11,
+        "eligibleUniqueConceptKeys": [
+          "bethesda_md_location",
+          "pooks_hill",
+          "montgomery_county",
+          "marriott_hotels",
+          "marriott_bonvoy",
+          "m_club",
+          "coopers_mill",
+          "meeting_space",
+          "full_service",
+          "nih_access",
+          "dc_metro_access"
+        ],
+        "semanticCollapseGroups": [
+          {
+            "kept": "meeting_space",
+            "collapsed": [
+              "ballroom"
+            ],
+            "group": [
+              "meeting_space",
+              "ballroom",
+              "large_ballroom",
+              "event_space_outdoor",
+              "business_center"
+            ]
+          }
+        ],
         "needsVerificationKeys": [
           "fitness_center_24hr",
           "peloton",
@@ -301,10 +330,43 @@
         "hotelType": null,
         "productionBlockingGateActive": false,
         "note": "Diagnostic only in Phase 1B. Future fail-closed research gate requires separate founder approval.",
+        "eligibleCount": 11,
+        "shortfall": 1,
+        "meetsMinimum": false,
+        "flag": "BELOW_MINIMUM_ATTRIBUTE_COVERAGE"
+      },
+      "attributeCoverageValidation": {
+        "status": "ATTRIBUTE_COVERAGE_VALIDATED",
+        "selectedCount": 15,
         "eligibleCount": 12,
-        "shortfall": 0,
-        "meetsMinimum": true,
-        "flag": null
+        "eligibleUniqueConceptCount": 11,
+        "minimumCoverage": {
+          "contractVersion": "ADP_MINIMUM_ATTRIBUTE_COVERAGE_V1",
+          "minimumEligible": 12,
+          "source": "DEFAULT_FOUNDER_WORKING",
+          "programId": null,
+          "hotelType": null,
+          "productionBlockingGateActive": false,
+          "note": "Diagnostic only in Phase 1B. Future fail-closed research gate requires separate founder approval.",
+          "eligibleCount": 11,
+          "shortfall": 1,
+          "meetsMinimum": false,
+          "flag": "BELOW_MINIMUM_ATTRIBUTE_COVERAGE"
+        }
+      },
+      "measurementComparison": {
+        "status": "OBSERVATION_BACKED",
+        "dualRunScoresValid": true,
+        "observationEvidence": {
+          "observationCount": 252,
+          "subjectMentionedCount": 108,
+          "subjectMentionedWithAttributesCount": 108,
+          "sufficientForScoreComparison": true,
+          "status": "OBSERVATION_BACKED",
+          "reason": null
+        },
+        "reason": null,
+        "publishedReference": null
       },
       "suggestions": {
         "contractVersion": "ADP_ATTRIBUTE_SUGGESTION_CANDIDATES_V1",
@@ -520,6 +582,7 @@
       "dualRun": {
         "fixtureBaseline": {
           "mode": "RG_FIXTURE_BASELINE",
+          "scoresValid": true,
           "realityGap": {
             "gapScore": 80,
             "display": "80.0%",
@@ -548,6 +611,7 @@
         },
         "bridgedEligible": {
           "mode": "RG_BRIDGED_ELIGIBLE_DIAGNOSTIC_V1",
+          "scoresValid": true,
           "realityGap": {
             "gapScore": 75,
             "display": "75.0%",
@@ -597,6 +661,7 @@
           ],
           "artifactWarning": "DENOMINATOR_ARTIFACT — bridged gapScore is lower (looks 'better') primarily because ineligible selected attributes were excluded from the diagnostic denominator. This is NOT improved AI recognition.",
           "customerFacingUnchanged": true,
+          "comparisonStatus": "OBSERVATION_BACKED",
           "interpretation": "Compare inventories and per-attribute recognition. Never treat denominator exclusion as AI positioning improvement."
         }
       },
@@ -605,11 +670,13 @@
         "suggestedPositioningAttributes": 6,
         "approvedSelectedAttributes": 15,
         "eligibleMeasurableAttributes": 12,
+        "eligibleUniqueConcepts": 11,
         "actuallyMeasuredFixture": 15,
         "actuallyMeasuredBridgedEligible": 12,
-        "belowMinimumShortfall": 0,
+        "belowMinimumShortfall": 1,
         "awaitingVerification": 3,
-        "missingRecognitionDefinitions": 0
+        "missingRecognitionDefinitions": 0,
+        "measurementComparisonStatus": "OBSERVATION_BACKED"
       },
       "inventoryPin": {
         "selectedAttributeKeys": [
@@ -634,7 +701,8 @@
         "eligibilityPolicyVersion": "SELECTED_NEEDS_VERIFICATION_EXCLUDED_FROM_BRIDGED_DENOM_V1",
         "methodologyNote": "Customer RG remains fixture baseline; bridged path is diagnostic-only",
         "researchPeriodId": "adp_period_adp_bethesda_marriott_20261002142154_62428a",
-        "observationCount": 252
+        "observationCount": 252,
+        "subjectMentionedCount": 108
       },
       "historicalCompatibility": {
         "customerFacingRealityGapUnchanged": true,
@@ -643,7 +711,7 @@
         "automaticPublication": false,
         "cutoverAuthorized": false
       },
-      "generatedAt": "2026-11-19T15:21:52.646Z"
+      "generatedAt": "2026-11-19T16:19:30.917Z"
     },
     {
       "ok": true,
@@ -716,6 +784,81 @@
           "five_diamond",
           "meeting_space",
           "event_space_outdoor"
+        ],
+        "eligibleUniqueConceptCount": 20,
+        "eligibleUniqueConceptKeys": [
+          "luxury",
+          "beachfront",
+          "island_resort",
+          "resort",
+          "all_inclusive_option",
+          "suite_inventory",
+          "swim_out",
+          "spa",
+          "outdoor_pool",
+          "tennis_courts",
+          "watersports",
+          "kayaking",
+          "fine_dining",
+          "wedding_venue",
+          "honeymoon_destination",
+          "family_friendly",
+          "soft_brand",
+          "boutique_feel",
+          "full_service",
+          "meeting_space"
+        ],
+        "semanticCollapseGroups": [
+          {
+            "kept": "luxury",
+            "collapsed": [
+              "five_diamond"
+            ],
+            "group": [
+              "luxury",
+              "urban_luxury",
+              "five_diamond",
+              "upper_upscale"
+            ]
+          },
+          {
+            "kept": "beachfront",
+            "collapsed": [
+              "oceanfront"
+            ],
+            "group": [
+              "beachfront",
+              "oceanfront",
+              "beach_access",
+              "private_beach",
+              "walking_distance_beach"
+            ]
+          },
+          {
+            "kept": "spa",
+            "collapsed": [
+              "full_service_spa"
+            ],
+            "group": [
+              "spa",
+              "full_service_spa",
+              "heavenly_spa",
+              "wellness"
+            ]
+          },
+          {
+            "kept": "meeting_space",
+            "collapsed": [
+              "event_space_outdoor"
+            ],
+            "group": [
+              "meeting_space",
+              "ballroom",
+              "large_ballroom",
+              "event_space_outdoor",
+              "business_center"
+            ]
+          }
         ],
         "needsVerificationKeys": [],
         "undefinedKeys": [],
@@ -1101,10 +1244,58 @@
         "hotelType": null,
         "productionBlockingGateActive": false,
         "note": "Diagnostic only in Phase 1B. Future fail-closed research gate requires separate founder approval.",
-        "eligibleCount": 24,
+        "eligibleCount": 20,
         "shortfall": 0,
         "meetsMinimum": true,
         "flag": null
+      },
+      "attributeCoverageValidation": {
+        "status": "ATTRIBUTE_COVERAGE_VALIDATED",
+        "selectedCount": 24,
+        "eligibleCount": 24,
+        "eligibleUniqueConceptCount": 20,
+        "minimumCoverage": {
+          "contractVersion": "ADP_MINIMUM_ATTRIBUTE_COVERAGE_V1",
+          "minimumEligible": 12,
+          "source": "DEFAULT_FOUNDER_WORKING",
+          "programId": null,
+          "hotelType": null,
+          "productionBlockingGateActive": false,
+          "note": "Diagnostic only in Phase 1B. Future fail-closed research gate requires separate founder approval.",
+          "eligibleCount": 20,
+          "shortfall": 0,
+          "meetsMinimum": true,
+          "flag": null
+        }
+      },
+      "measurementComparison": {
+        "status": "DATA_INSUFFICIENT",
+        "dualRunScoresValid": false,
+        "observationEvidence": {
+          "observationCount": 0,
+          "subjectMentionedCount": 0,
+          "subjectMentionedWithAttributesCount": 0,
+          "sufficientForScoreComparison": false,
+          "status": "DATA_INSUFFICIENT",
+          "reason": "No research-period observations available for dual-run score comparison"
+        },
+        "reason": "No research-period observations available for dual-run score comparison",
+        "publishedReference": {
+          "available": true,
+          "propertyId": "adp_spice_island_beach_resort",
+          "periodId": "adp_period_adp_spice_island_beach_resort_20260929123443_966d88",
+          "measurementContractVersion": null,
+          "realityGap": {
+            "gapScore": 62.5,
+            "display": "62.5%",
+            "totalAttributes": 24,
+            "recognizedCount": 9,
+            "gapCount": 15,
+            "totalPropertyMentions": 186
+          },
+          "note": "Published certified/archived Reality Gap citation only. Not a dual-run recomputation and not observation-backed comparison success.",
+          "dualRunValid": false
+        }
       },
       "suggestions": {
         "contractVersion": "ADP_ATTRIBUTE_SUGGESTION_CANDIDATES_V1",
@@ -1191,13 +1382,15 @@
       "dualRun": {
         "fixtureBaseline": {
           "mode": "RG_FIXTURE_BASELINE",
+          "scoresValid": false,
           "realityGap": {
-            "gapScore": 100,
-            "display": "100.0%",
+            "gapScore": null,
+            "display": null,
             "totalAttributes": 24,
-            "recognizedCount": 0,
-            "gapCount": 24,
-            "totalPropertyMentions": 0
+            "recognizedCount": null,
+            "gapCount": null,
+            "totalPropertyMentions": 0,
+            "status": "DATA_INSUFFICIENT"
           },
           "denominatorKeys": [
             "luxury",
@@ -1228,13 +1421,15 @@
         },
         "bridgedEligible": {
           "mode": "RG_BRIDGED_ELIGIBLE_DIAGNOSTIC_V1",
+          "scoresValid": false,
           "realityGap": {
-            "gapScore": 100,
-            "display": "100.0%",
+            "gapScore": null,
+            "display": null,
             "totalAttributes": 24,
-            "recognizedCount": 0,
-            "gapCount": 24,
-            "totalPropertyMentions": 0
+            "recognizedCount": null,
+            "gapCount": null,
+            "totalPropertyMentions": 0,
+            "status": "DATA_INSUFFICIENT"
           },
           "denominatorKeys": [
             "luxury",
@@ -1267,13 +1462,14 @@
           "fixtureDenominator": 24,
           "bridgedEligibleDenominator": 24,
           "denominatorDelta": 0,
-          "fixtureGapScore": 100,
-          "bridgedEligibleGapScore": 100,
-          "gapScoreDelta": 0,
+          "fixtureGapScore": null,
+          "bridgedEligibleGapScore": null,
+          "gapScoreDelta": null,
           "excludedFromEligible": [],
           "artifactWarning": null,
           "customerFacingUnchanged": true,
-          "interpretation": "Compare inventories and per-attribute recognition. Never treat denominator exclusion as AI positioning improvement."
+          "comparisonStatus": "DATA_INSUFFICIENT",
+          "interpretation": "Attribute denominators compared; Reality Gap scores withheld — DATA_INSUFFICIENT observation evidence."
         }
       },
       "transparency": {
@@ -1281,11 +1477,13 @@
         "suggestedPositioningAttributes": 2,
         "approvedSelectedAttributes": 24,
         "eligibleMeasurableAttributes": 24,
-        "actuallyMeasuredFixture": 24,
-        "actuallyMeasuredBridgedEligible": 24,
+        "eligibleUniqueConcepts": 20,
+        "actuallyMeasuredFixture": null,
+        "actuallyMeasuredBridgedEligible": null,
         "belowMinimumShortfall": 0,
         "awaitingVerification": 0,
-        "missingRecognitionDefinitions": 0
+        "missingRecognitionDefinitions": 0,
+        "measurementComparisonStatus": "DATA_INSUFFICIENT"
       },
       "inventoryPin": {
         "selectedAttributeKeys": [
@@ -1319,7 +1517,8 @@
         "eligibilityPolicyVersion": "SELECTED_NEEDS_VERIFICATION_EXCLUDED_FROM_BRIDGED_DENOM_V1",
         "methodologyNote": "Customer RG remains fixture baseline; bridged path is diagnostic-only",
         "researchPeriodId": null,
-        "observationCount": 0
+        "observationCount": 0,
+        "subjectMentionedCount": 0
       },
       "historicalCompatibility": {
         "customerFacingRealityGapUnchanged": true,
@@ -1328,7 +1527,7 @@
         "automaticPublication": false,
         "cutoverAuthorized": false
       },
-      "generatedAt": "2026-11-19T15:21:52.652Z"
+      "generatedAt": "2026-11-19T16:19:30.925Z"
     }
   ],
   "regression": [
@@ -1367,6 +1566,13 @@
           "meeting_space",
           "urban_lifestyle"
         ],
+        "eligibleUniqueConceptCount": 3,
+        "eligibleUniqueConceptKeys": [
+          "full_service",
+          "meeting_space",
+          "urban_lifestyle"
+        ],
+        "semanticCollapseGroups": [],
         "needsVerificationKeys": [
           "design_forward",
           "fitness_center",
@@ -1509,6 +1715,54 @@
         "shortfall": 9,
         "meetsMinimum": false,
         "flag": "BELOW_MINIMUM_ATTRIBUTE_COVERAGE"
+      },
+      "attributeCoverageValidation": {
+        "status": "ATTRIBUTE_COVERAGE_VALIDATED",
+        "selectedCount": 8,
+        "eligibleCount": 3,
+        "eligibleUniqueConceptCount": 3,
+        "minimumCoverage": {
+          "contractVersion": "ADP_MINIMUM_ATTRIBUTE_COVERAGE_V1",
+          "minimumEligible": 12,
+          "source": "DEFAULT_FOUNDER_WORKING",
+          "programId": null,
+          "hotelType": null,
+          "productionBlockingGateActive": false,
+          "note": "Diagnostic only in Phase 1B. Future fail-closed research gate requires separate founder approval.",
+          "eligibleCount": 3,
+          "shortfall": 9,
+          "meetsMinimum": false,
+          "flag": "BELOW_MINIMUM_ATTRIBUTE_COVERAGE"
+        }
+      },
+      "measurementComparison": {
+        "status": "DATA_INSUFFICIENT",
+        "dualRunScoresValid": false,
+        "observationEvidence": {
+          "observationCount": 0,
+          "subjectMentionedCount": 0,
+          "subjectMentionedWithAttributesCount": 0,
+          "sufficientForScoreComparison": false,
+          "status": "DATA_INSUFFICIENT",
+          "reason": "No research-period observations available for dual-run score comparison"
+        },
+        "reason": "No research-period observations available for dual-run score comparison",
+        "publishedReference": {
+          "available": true,
+          "propertyId": "adp_yotel_geneva_lake",
+          "periodId": "adp_period_adp_yotel_geneva_lake_20261005160004_d03a62",
+          "measurementContractVersion": null,
+          "realityGap": {
+            "gapScore": 83.3,
+            "display": "83.3%",
+            "totalAttributes": 6,
+            "recognizedCount": 1,
+            "gapCount": 5,
+            "totalPropertyMentions": 88
+          },
+          "note": "Published certified/archived Reality Gap citation only. Not a dual-run recomputation and not observation-backed comparison success.",
+          "dualRunValid": false
+        }
       },
       "suggestions": {
         "contractVersion": "ADP_ATTRIBUTE_SUGGESTION_CANDIDATES_V1",
@@ -1721,13 +1975,15 @@
       "dualRun": {
         "fixtureBaseline": {
           "mode": "RG_FIXTURE_BASELINE",
+          "scoresValid": false,
           "realityGap": {
-            "gapScore": 100,
-            "display": "100.0%",
+            "gapScore": null,
+            "display": null,
             "totalAttributes": 6,
-            "recognizedCount": 0,
-            "gapCount": 6,
-            "totalPropertyMentions": 0
+            "recognizedCount": null,
+            "gapCount": null,
+            "totalPropertyMentions": 0,
+            "status": "DATA_INSUFFICIENT"
           },
           "denominatorKeys": [
             "full_service",
@@ -1740,13 +1996,15 @@
         },
         "bridgedEligible": {
           "mode": "RG_BRIDGED_ELIGIBLE_DIAGNOSTIC_V1",
+          "scoresValid": false,
           "realityGap": {
-            "gapScore": 100,
-            "display": "100.0%",
+            "gapScore": null,
+            "display": null,
             "totalAttributes": 3,
-            "recognizedCount": 0,
-            "gapCount": 3,
-            "totalPropertyMentions": 0
+            "recognizedCount": null,
+            "gapCount": null,
+            "totalPropertyMentions": 0,
+            "status": "DATA_INSUFFICIENT"
           },
           "denominatorKeys": [
             "full_service",
@@ -1758,9 +2016,9 @@
           "fixtureDenominator": 6,
           "bridgedEligibleDenominator": 3,
           "denominatorDelta": -3,
-          "fixtureGapScore": 100,
-          "bridgedEligibleGapScore": 100,
-          "gapScoreDelta": 0,
+          "fixtureGapScore": null,
+          "bridgedEligibleGapScore": null,
+          "gapScoreDelta": null,
           "excludedFromEligible": [
             {
               "attribute": "airport_shuttle",
@@ -1790,7 +2048,8 @@
           ],
           "artifactWarning": null,
           "customerFacingUnchanged": true,
-          "interpretation": "Compare inventories and per-attribute recognition. Never treat denominator exclusion as AI positioning improvement."
+          "comparisonStatus": "DATA_INSUFFICIENT",
+          "interpretation": "Attribute denominators compared; Reality Gap scores withheld — DATA_INSUFFICIENT observation evidence."
         }
       },
       "transparency": {
@@ -1798,11 +2057,13 @@
         "suggestedPositioningAttributes": 6,
         "approvedSelectedAttributes": 8,
         "eligibleMeasurableAttributes": 3,
-        "actuallyMeasuredFixture": 6,
-        "actuallyMeasuredBridgedEligible": 3,
+        "eligibleUniqueConcepts": 3,
+        "actuallyMeasuredFixture": null,
+        "actuallyMeasuredBridgedEligible": null,
         "belowMinimumShortfall": 9,
         "awaitingVerification": 3,
-        "missingRecognitionDefinitions": 2
+        "missingRecognitionDefinitions": 2,
+        "measurementComparisonStatus": "DATA_INSUFFICIENT"
       },
       "inventoryPin": {
         "selectedAttributeKeys": [
@@ -1820,7 +2081,8 @@
         "eligibilityPolicyVersion": "SELECTED_NEEDS_VERIFICATION_EXCLUDED_FROM_BRIDGED_DENOM_V1",
         "methodologyNote": "Customer RG remains fixture baseline; bridged path is diagnostic-only",
         "researchPeriodId": null,
-        "observationCount": 0
+        "observationCount": 0,
+        "subjectMentionedCount": 0
       },
       "historicalCompatibility": {
         "customerFacingRealityGapUnchanged": true,
@@ -1829,7 +2091,7 @@
         "automaticPublication": false,
         "cutoverAuthorized": false
       },
-      "generatedAt": "2026-11-19T15:21:52.657Z"
+      "generatedAt": "2026-11-19T16:19:30.931Z"
     }
   ],
   "isolation": [
@@ -1840,6 +2102,13 @@
       "ok": true
     }
   ],
-  "generatedAt": "2026-11-19T15:21:52.657Z",
+  "observationBackedHotels": [
+    "adp_bethesda_marriott"
+  ],
+  "attributeCoverageOnlyHotels": [
+    "adp_spice_island_beach_resort",
+    "adp_yotel_geneva_lake"
+  ],
+  "generatedAt": "2026-11-19T16:19:30.931Z",
   "contentHash": "430baf27c955789f"
 }

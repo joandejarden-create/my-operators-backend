@@ -91,10 +91,11 @@ Authorized users can:
 
 ## Migration
 
-1. Seed lines from existing fixture `attributes[]` as `SELECTED` + `APPROVED` v1 per hotel (Bethesda, Spice first).
+1. Seed lines from existing fixture `attributes[]` as **`SELECTED` + `REVIEW_REQUIRED`** (or `DRAFT`) unless explicit approval evidence already exists — **do not auto-APPROVE** fixture baselines into Airtable.
 2. Attach eligibility classification from Phase 1B diagnostics.
 3. Suggestions appear as `SUGGESTED` lines — never auto-selected.
 4. Fixtures remain readable fallback until cutover flag.
+5. Configuration header starts as `DRAFT` / `SUGGESTED` until steward approval.
 
 ## Persistence gate classification path
 
