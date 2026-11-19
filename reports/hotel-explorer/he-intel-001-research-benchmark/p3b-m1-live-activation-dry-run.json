@@ -1,0 +1,1210 @@
+{
+  "ok": true,
+  "phase": "P3B-M1-LIVE-ACTIVATION",
+  "parentPhase": "P3B-M1",
+  "contract": "HE_INTEL_001_P3B_M1_LIVE_BENCHMARK_V1",
+  "contract_version": "1.1.0-m1-live-activation",
+  "guarantees": {
+    "contract": "HE_INTEL_001_P3B_M1_LIVE_BENCHMARK_V1",
+    "contract_version": "1.1.0-m1-live-activation",
+    "phase": "P3B-M1",
+    "paid_budget_authorized": false,
+    "proposed_hard_cap_usd": 5,
+    "proposed_per_hotel_cap_usd": 2.5,
+    "surfe": false,
+    "pdl": false,
+    "production_airtable_writes": false,
+    "canonical_graph_writes": false,
+    "staging_only": true
+  },
+  "policy": {
+    "phase": "P3B-M1",
+    "parent_engine": "HOTEL_INTELLIGENCE_RESEARCH_ENGINE_V1",
+    "parent_benchmark": "HE_INTEL_001_RESEARCH_METHOD_BENCHMARK_V1",
+    "paid_budget_proposed_usd": 5,
+    "paid_budget_authorized": false,
+    "per_hotel_cap_usd": 2.5,
+    "surfe_enabled": false,
+    "pdl_enabled": false,
+    "production_airtable_writes": false,
+    "canonical_graph_writes": false,
+    "customer_publication": "BLOCKED",
+    "auto_publication": false,
+    "deployment": false,
+    "graph_base_id": "appCCUsuGsE1ifoLk",
+    "hpc_table_id": "tbl9aY5ijiuIzzWam",
+    "inherits_p1_paid_default": true,
+    "modes": [
+      "INDEPENDENT_DISCOVERY",
+      "INCREMENTAL_PRODUCTION"
+    ],
+    "arms": [
+      "ARM_EXA",
+      "ARM_PARALLEL_SEARCH",
+      "ARM_PARALLEL_TASK",
+      "ARM_DEALALITY_NATIVE"
+    ]
+  },
+  "founderAuthorizationGate": {
+    "ok": false,
+    "authId": null,
+    "error": "P3B_M1_PAID_NOT_AUTHORIZED",
+    "message": "Paid M1 execution requires FOUNDER_AUTH_HE_INTEL_001_P3B_M1_PAID_V1 + confirmPaidExecution + authorizedBudgetUsd ≤ $5"
+  },
+  "paidExecutionAuthorized": false,
+  "proposedBudgetNotAuthorized": true,
+  "phaseASafety": {
+    "ok": true,
+    "tmpDir": "C:\\Users\\joand\\AppData\\Local\\Temp\\he-intel-p3b-m1-budget-ro6NxB",
+    "durableRestart": {
+      "reserved": true,
+      "statusAfterRestart": "RESERVED",
+      "reservedUsd": 0.5
+    },
+    "concurrent": {
+      "accepted": 3,
+      "refusedBudget": 3,
+      "runUsdCap": 1,
+      "results": [
+        {
+          "ok": true,
+          "error": null
+        },
+        {
+          "ok": true,
+          "error": null
+        },
+        {
+          "ok": true,
+          "error": null
+        },
+        {
+          "ok": false,
+          "error": "BUDGET_EXHAUSTED"
+        },
+        {
+          "ok": false,
+          "error": "BUDGET_EXHAUSTED"
+        },
+        {
+          "ok": false,
+          "error": "BUDGET_EXHAUSTED"
+        }
+      ]
+    },
+    "pendingReconcile": {
+      "marked": true,
+      "releaseBlocked": "PENDING_RECONCILE_NO_AUTO_RELEASE",
+      "retryBlocked": "PENDING_RECONCILE_BLOCKS_RETRY",
+      "gatewayTimeout": "PENDING_RECONCILE",
+      "gatewayRetryBlocked": "PENDING_RECONCILE_BLOCKS_RETRY"
+    },
+    "noDuplicateSpend": {
+      "firstOk": true,
+      "resumeReplayed": true,
+      "sameOpId": "op_a9b00ec51b7cd5c8bb743280"
+    },
+    "claimExclusivity": {
+      "claimA": true,
+      "claimBError": "OPERATION_IN_FLIGHT"
+    },
+    "failClosedCorruption": {
+      "corrupt": "LEDGER_STATE_CORRUPT",
+      "interrupted": "LEDGER_STATE_CORRUPT",
+      "capMismatch": "LEDGER_CAP_MISMATCH"
+    },
+    "opScopedAuth": {
+      "bypassThrown": true,
+      "rawBypassThrown": true
+    },
+    "failClosedUnknownCost": {
+      "ok": false,
+      "error": "BUDGET_EXHAUSTED",
+      "note": "fail_closed_unbounded_or_unknown_cost"
+    },
+    "failClosedNegative": {
+      "ok": false,
+      "error": "INVALID_CHARGE"
+    }
+  },
+  "liveProviderWiring": {
+    "transportsWired": true,
+    "liveNetworkDefaultBlocked": true,
+    "liveBlockCode": "LIVE_TRANSPORT_BLOCKED",
+    "gatewayWithoutLiveNetwork": {
+      "ok": false,
+      "error": "PROVIDER_FAILED"
+    },
+    "gatewayWithMockFetchLiveFlag": {
+      "ok": true,
+      "operation_id": "op_055538048a3b80d2173af18d",
+      "fetchCalls": 1,
+      "facts": 1
+    },
+    "bypassForbidden": true,
+    "noDirectAdapterBypass": true,
+    "availability": {
+      "EXA": {
+        "keyConfigured": false,
+        "adapterReady": true,
+        "liveFlag": "0",
+        "boundedOps": [
+          "search_lite",
+          "contents"
+        ]
+      },
+      "PARALLEL": {
+        "keyConfigured": false,
+        "adapterReady": true,
+        "liveFlag": "0",
+        "boundedOps": [
+          "search_fast",
+          "task_core"
+        ]
+      },
+      "SERPAPI": {
+        "keyConfigured": false,
+        "adapterReady": true,
+        "liveFlag": "0",
+        "note": "USD/search UNKNOWN until plan confirmed — count-capped in M1 plan"
+      },
+      "DEALALITY_NATIVE": {
+        "keyConfigured": false,
+        "adapterReady": true,
+        "liveFlag": "offline_loop_ready",
+        "note": "USD/credit UNKNOWN — credit-capped"
+      },
+      "SURFE": {
+        "keyConfigured": false,
+        "forbidden": true
+      },
+      "PDL": {
+        "keyConfigured": false,
+        "forbidden": true
+      }
+    },
+    "pricingPresence": {
+      "EXA": {
+        "keyPresent": false,
+        "listPriceSource": "benchmark-provider-pricing-v1 exa lite/contents",
+        "accountBalanceChecked": false,
+        "accountBalanceStatus": "NOT_QUERIED_CREDENTIAL_SAFE",
+        "planEffectivePricingStatus": "LIST_PRICE_ASSUMPTION_ONLY"
+      },
+      "PARALLEL": {
+        "keyPresent": false,
+        "listPriceSource": "public Parallel fast ~$1/1k + core task $0.025",
+        "accountBalanceChecked": false,
+        "accountBalanceStatus": "NOT_QUERIED_CREDENTIAL_SAFE",
+        "planEffectivePricingStatus": "LIST_PRICE_ASSUMPTION_ONLY"
+      },
+      "credentialsExposed": false,
+      "note": "List-price assumptions are NOT a guarantee of maximum charges"
+    }
+  },
+  "requestManifest": {
+    "envelopeId": "P3B_M1_THREE_HOTEL_LIVE_ACTIVATION",
+    "authorized_for_paid_spend": false,
+    "hotels": [
+      {
+        "hpcId": "recLuxvwwxID7U2B8",
+        "name": "Bethesda Marriott",
+        "research_objectives": [
+          "ultimate_owner_or_controlling_org",
+          "legal_entity_and_ownership_chain",
+          "ownership_decision_makers",
+          "verified_direct_contact_channels",
+          "credible_indirect_ownership_contact_routes",
+          "missing_conflicting_unverifiable_ownership_info"
+        ]
+      },
+      {
+        "hpcId": "recnPB3Q02NO8Ma1o",
+        "name": "Wyndham San Diego Bayside",
+        "research_objectives": [
+          "ultimate_owner_or_controlling_org",
+          "legal_entity_and_ownership_chain",
+          "ownership_decision_makers",
+          "verified_direct_contact_channels",
+          "credible_indirect_ownership_contact_routes",
+          "missing_conflicting_unverifiable_ownership_info"
+        ]
+      },
+      {
+        "hpcId": "recvVZ5unh4d3Krzi",
+        "name": "The Ritz-Carlton, Mexico City",
+        "research_objectives": [
+          "ultimate_owner_or_controlling_org",
+          "legal_entity_and_ownership_chain",
+          "ownership_decision_makers",
+          "verified_direct_contact_channels",
+          "credible_indirect_ownership_contact_routes",
+          "missing_conflicting_unverifiable_ownership_info"
+        ]
+      }
+    ],
+    "maxRequestsByProvider": {
+      "EXA": 13,
+      "PARALLEL_SEARCH": 6,
+      "PARALLEL_TASK": 1,
+      "DEALALITY_NATIVE": 8
+    },
+    "plannedOperations": {
+      "envelopeId": "P3B_M1_THREE_HOTEL",
+      "authorized": false,
+      "hardCapUsd": 5,
+      "perHotelCapUsd": 2.5,
+      "hotels": [
+        "recLuxvwwxID7U2B8",
+        "recnPB3Q02NO8Ma1o",
+        "recvVZ5unh4d3Krzi"
+      ],
+      "hotelPlans": [
+        {
+          "hpcId": "recLuxvwwxID7U2B8",
+          "maxRequests": {
+            "EXA": 13,
+            "PARALLEL_SEARCH": 6,
+            "PARALLEL_TASK": 1,
+            "DEALALITY_NATIVE": 8
+          },
+          "expectedProviderCostUsd": 0.068,
+          "expectedModelTokenCostUsd": null,
+          "expectedModelTokenCostStatus": "UNKNOWN",
+          "expectedOrchestrationCostUsd": 0,
+          "perHotelCapUsd": 2.5,
+          "withinPerHotelCap": true,
+          "operations": {
+            "EXA": {
+              "search_lite": {
+                "maxRequests": 8,
+                "unitUsd": 0.004,
+                "maxUsd": 0.032
+              },
+              "contents": {
+                "maxRequests": 5,
+                "unitUsd": 0.001,
+                "maxUsd": 0.005
+              }
+            },
+            "PARALLEL_SEARCH": {
+              "search_fast": {
+                "maxRequests": 6,
+                "unitUsd": 0.001,
+                "maxUsd": 0.006
+              }
+            },
+            "PARALLEL_TASK": {
+              "task_core": {
+                "maxRequests": 1,
+                "unitUsd": 0.025,
+                "maxUsd": 0.025
+              },
+              "task_pro_optional": {
+                "maxRequests": 1,
+                "unitUsd": 0.1,
+                "maxUsd": 0.1,
+                "conditional": "only_if_core_fails_quality_gate"
+              }
+            },
+            "DEALALITY_NATIVE": {
+              "research_loop": {
+                "maxRequests": 8,
+                "unitUsd": null,
+                "maxUsd": null,
+                "usdStatus": "UNKNOWN",
+                "creditCap": 8
+              }
+            }
+          }
+        },
+        {
+          "hpcId": "recnPB3Q02NO8Ma1o",
+          "maxRequests": {
+            "EXA": 13,
+            "PARALLEL_SEARCH": 6,
+            "PARALLEL_TASK": 1,
+            "DEALALITY_NATIVE": 8
+          },
+          "expectedProviderCostUsd": 0.068,
+          "expectedModelTokenCostUsd": null,
+          "expectedModelTokenCostStatus": "UNKNOWN",
+          "expectedOrchestrationCostUsd": 0,
+          "perHotelCapUsd": 2.5,
+          "withinPerHotelCap": true,
+          "operations": {
+            "EXA": {
+              "search_lite": {
+                "maxRequests": 8,
+                "unitUsd": 0.004,
+                "maxUsd": 0.032
+              },
+              "contents": {
+                "maxRequests": 5,
+                "unitUsd": 0.001,
+                "maxUsd": 0.005
+              }
+            },
+            "PARALLEL_SEARCH": {
+              "search_fast": {
+                "maxRequests": 6,
+                "unitUsd": 0.001,
+                "maxUsd": 0.006
+              }
+            },
+            "PARALLEL_TASK": {
+              "task_core": {
+                "maxRequests": 1,
+                "unitUsd": 0.025,
+                "maxUsd": 0.025
+              },
+              "task_pro_optional": {
+                "maxRequests": 1,
+                "unitUsd": 0.1,
+                "maxUsd": 0.1,
+                "conditional": "only_if_core_fails_quality_gate"
+              }
+            },
+            "DEALALITY_NATIVE": {
+              "research_loop": {
+                "maxRequests": 8,
+                "unitUsd": null,
+                "maxUsd": null,
+                "usdStatus": "UNKNOWN",
+                "creditCap": 8
+              }
+            }
+          }
+        },
+        {
+          "hpcId": "recvVZ5unh4d3Krzi",
+          "maxRequests": {
+            "EXA": 13,
+            "PARALLEL_SEARCH": 6,
+            "PARALLEL_TASK": 1,
+            "DEALALITY_NATIVE": 8
+          },
+          "expectedProviderCostUsd": 0.068,
+          "expectedModelTokenCostUsd": null,
+          "expectedModelTokenCostStatus": "UNKNOWN",
+          "expectedOrchestrationCostUsd": 0,
+          "perHotelCapUsd": 2.5,
+          "withinPerHotelCap": true,
+          "operations": {
+            "EXA": {
+              "search_lite": {
+                "maxRequests": 8,
+                "unitUsd": 0.004,
+                "maxUsd": 0.032
+              },
+              "contents": {
+                "maxRequests": 5,
+                "unitUsd": 0.001,
+                "maxUsd": 0.005
+              }
+            },
+            "PARALLEL_SEARCH": {
+              "search_fast": {
+                "maxRequests": 6,
+                "unitUsd": 0.001,
+                "maxUsd": 0.006
+              }
+            },
+            "PARALLEL_TASK": {
+              "task_core": {
+                "maxRequests": 1,
+                "unitUsd": 0.025,
+                "maxUsd": 0.025
+              },
+              "task_pro_optional": {
+                "maxRequests": 1,
+                "unitUsd": 0.1,
+                "maxUsd": 0.1,
+                "conditional": "only_if_core_fails_quality_gate"
+              }
+            },
+            "DEALALITY_NATIVE": {
+              "research_loop": {
+                "maxRequests": 8,
+                "unitUsd": null,
+                "maxUsd": null,
+                "usdStatus": "UNKNOWN",
+                "creditCap": 8
+              }
+            }
+          }
+        }
+      ],
+      "totals": {
+        "expectedMaxProviderUsd": 0.204,
+        "optionalParallelProAltUsd": 0.3,
+        "expectedMaxWithOptionalProUsd": 0.429,
+        "modelTokenUsdStatus": "UNKNOWN",
+        "orchestrationUsd": 0,
+        "hardCapUsd": 5,
+        "headroomUsd": 4.796,
+        "expectedCostIsNotMaxGuarantee": true,
+        "bindingCaps": {
+          "runUsd": 5,
+          "perHotelUsd": 2.5
+        },
+        "nativeUsd": "UNKNOWN_FAIL_CLOSED_NOT_PAID_ARM"
+      },
+      "retriesDefault": 0,
+      "boundedRetrieval": {
+        "exa": "lite search ≤10 results; contents ≤5 URLs as separate op; no inline contents; no agent unless separately budgeted",
+        "parallelSearch": "fast/turbo only; reserve for max_results requested",
+        "parallelTask": "core preferred; pro optional; resume run_id — no duplicate create"
+      },
+      "forbidden": [
+        "SURFE",
+        "PDL",
+        "inferred_email_as_verified",
+        "native_unknown_usd_paid_arm"
+      ]
+    },
+    "priceAssumptions": {
+      "exa_search_lite_usd": 0.004,
+      "exa_contents_usd": 0.001,
+      "parallel_search_fast_usd": 0.001,
+      "parallel_task_core_usd": 0.025,
+      "parallel_task_pro_usd": 0.1,
+      "source": "list_price_assumptions_only",
+      "account_balances": {
+        "EXA": {
+          "keyPresent": false,
+          "listPriceSource": "benchmark-provider-pricing-v1 exa lite/contents",
+          "accountBalanceChecked": false,
+          "accountBalanceStatus": "NOT_QUERIED_CREDENTIAL_SAFE",
+          "planEffectivePricingStatus": "LIST_PRICE_ASSUMPTION_ONLY"
+        },
+        "PARALLEL": {
+          "keyPresent": false,
+          "listPriceSource": "public Parallel fast ~$1/1k + core task $0.025",
+          "accountBalanceChecked": false,
+          "accountBalanceStatus": "NOT_QUERIED_CREDENTIAL_SAFE",
+          "planEffectivePricingStatus": "LIST_PRICE_ASSUMPTION_ONLY"
+        },
+        "credentialsExposed": false,
+        "note": "List-price assumptions are NOT a guarantee of maximum charges"
+      }
+    },
+    "worstCaseSpendUsd": {
+      "expectedMaxProviderUsd": 0.204,
+      "withOptionalProUsd": 0.429,
+      "hardCapUsd": 5,
+      "perHotelCapUsd": 2.5,
+      "authorized": false
+    }
+  },
+  "executionCommand": {
+    "dryRunLiveActivation": "npm run dry-run:he-intel-001-p3b-m1-live-activation",
+    "paidExecutionBlockedUntilAuth": true,
+    "preciseAuthorizedCommand": "npm run run:he-intel-001-p3b-m1-live -- --founder-auth FOUNDER_AUTH_HE_INTEL_001_P3B_M1_PAID_V1 --confirm-paid-execution --authorized-budget-usd 5 --enable-live-network",
+    "note": "Proposed $5 maximum remains NOT AUTHORIZED. Command must refuse without founder auth AND without --enable-live-network. Do not run paid spend until separate founder approval.",
+    "envFlagsRequired": [
+      "HE_INTEL_P3B_M1_LIVE_NETWORK=1 (or --enable-live-network)",
+      "FOUNDER_AUTH_HE_INTEL_001_P3B_M1_PAID_V1",
+      "--confirm-paid-execution",
+      "--authorized-budget-usd ≤ 5"
+    ]
+  },
+  "verificationMethodology": {
+    "objective": "HE_INTEL_001_OWNERSHIP_RESEARCH_OBJECTIVE_V1",
+    "version": "1.1.0",
+    "rules": [
+      "Evidence-grounded FULL_ACTIONABLE only",
+      "Legal titleholder alone = PARTIAL",
+      "Valid URL alone ≠ ownership verification",
+      "Do not score known hotel identity as new intelligence",
+      "Provider arms isolated"
+    ]
+  },
+  "comparableReport": {
+    "version": "he-intel-p3b-m1-experiment-scoring-v1",
+    "objective_id": "HE_INTEL_001_OWNERSHIP_RESEARCH_OBJECTIVE_V1",
+    "objective_version": "1.1.0",
+    "hard_cap_usd": 5,
+    "per_hotel_cap_usd": 2.5,
+    "paid_execution_authorized": false,
+    "rows": [
+      {
+        "hotel": {
+          "hpcId": "recLuxvwwxID7U2B8",
+          "name": "Bethesda Marriott"
+        },
+        "method": "EXA",
+        "objective": {
+          "id": "HE_INTEL_001_OWNERSHIP_RESEARCH_OBJECTIVE_V1",
+          "version": "1.1.0"
+        },
+        "questions": {
+          "ultimate_owner_identified": false,
+          "ownership_verified": false,
+          "named_relevant_ownership_contacts_found": false,
+          "direct_verified_contact_found": false,
+          "credible_indirect_pathways_found": false,
+          "unsupported_or_incorrect_claims": [],
+          "research_gaps_remaining": [
+            "ULTIMATE_OWNER_NOT_IDENTIFIED",
+            "LEGAL_ENTITY_CHAIN_INCOMPLETE",
+            "NAMED_OWNERSHIP_CONTACTS_MISSING",
+            "VERIFIED_CONTACT_CHANNELS_MISSING"
+          ],
+          "sources_reviewed_and_accepted": [],
+          "url_alone_not_verification": true
+        },
+        "classifier": {
+          "tier": "UNRESOLVED",
+          "fullResearchSuccess": false,
+          "partial": false,
+          "unresolvedUltimateOwnership": true,
+          "provisionalStaged": true,
+          "researchSuccess": false,
+          "evidenceVerification": "PROVISIONAL",
+          "customerPublication": "BLOCKED",
+          "contactChannelClass": "NONE",
+          "dualOrgRoles": {
+            "supported": [],
+            "rejected": []
+          },
+          "note": "Staged but unsupported/unverified owner claims remain provisional"
+        },
+        "cost": {
+          "provider_usd": 0,
+          "model_token_usd": null,
+          "orchestration_usd": 0,
+          "total_usd": 0,
+          "cost_per_verified_useful_ownership_finding": null,
+          "cost_per_actionable_ownership_contact": null
+        },
+        "scoring_version": "he-intel-p3b-m1-experiment-scoring-v1"
+      },
+      {
+        "hotel": {
+          "hpcId": "recLuxvwwxID7U2B8",
+          "name": "Bethesda Marriott"
+        },
+        "method": "PARALLEL_SEARCH",
+        "objective": {
+          "id": "HE_INTEL_001_OWNERSHIP_RESEARCH_OBJECTIVE_V1",
+          "version": "1.1.0"
+        },
+        "questions": {
+          "ultimate_owner_identified": false,
+          "ownership_verified": false,
+          "named_relevant_ownership_contacts_found": false,
+          "direct_verified_contact_found": false,
+          "credible_indirect_pathways_found": false,
+          "unsupported_or_incorrect_claims": [],
+          "research_gaps_remaining": [
+            "ULTIMATE_OWNER_NOT_IDENTIFIED",
+            "LEGAL_ENTITY_CHAIN_INCOMPLETE",
+            "NAMED_OWNERSHIP_CONTACTS_MISSING",
+            "VERIFIED_CONTACT_CHANNELS_MISSING"
+          ],
+          "sources_reviewed_and_accepted": [],
+          "url_alone_not_verification": true
+        },
+        "classifier": {
+          "tier": "UNRESOLVED",
+          "fullResearchSuccess": false,
+          "partial": false,
+          "unresolvedUltimateOwnership": true,
+          "provisionalStaged": true,
+          "researchSuccess": false,
+          "evidenceVerification": "PROVISIONAL",
+          "customerPublication": "BLOCKED",
+          "contactChannelClass": "NONE",
+          "dualOrgRoles": {
+            "supported": [],
+            "rejected": []
+          },
+          "note": "Staged but unsupported/unverified owner claims remain provisional"
+        },
+        "cost": {
+          "provider_usd": 0,
+          "model_token_usd": null,
+          "orchestration_usd": 0,
+          "total_usd": 0,
+          "cost_per_verified_useful_ownership_finding": null,
+          "cost_per_actionable_ownership_contact": null
+        },
+        "scoring_version": "he-intel-p3b-m1-experiment-scoring-v1"
+      },
+      {
+        "hotel": {
+          "hpcId": "recLuxvwwxID7U2B8",
+          "name": "Bethesda Marriott"
+        },
+        "method": "PARALLEL_TASK",
+        "objective": {
+          "id": "HE_INTEL_001_OWNERSHIP_RESEARCH_OBJECTIVE_V1",
+          "version": "1.1.0"
+        },
+        "questions": {
+          "ultimate_owner_identified": false,
+          "ownership_verified": false,
+          "named_relevant_ownership_contacts_found": false,
+          "direct_verified_contact_found": false,
+          "credible_indirect_pathways_found": false,
+          "unsupported_or_incorrect_claims": [],
+          "research_gaps_remaining": [
+            "ULTIMATE_OWNER_NOT_IDENTIFIED",
+            "LEGAL_ENTITY_CHAIN_INCOMPLETE",
+            "NAMED_OWNERSHIP_CONTACTS_MISSING",
+            "VERIFIED_CONTACT_CHANNELS_MISSING"
+          ],
+          "sources_reviewed_and_accepted": [],
+          "url_alone_not_verification": true
+        },
+        "classifier": {
+          "tier": "UNRESOLVED",
+          "fullResearchSuccess": false,
+          "partial": false,
+          "unresolvedUltimateOwnership": true,
+          "provisionalStaged": true,
+          "researchSuccess": false,
+          "evidenceVerification": "PROVISIONAL",
+          "customerPublication": "BLOCKED",
+          "contactChannelClass": "NONE",
+          "dualOrgRoles": {
+            "supported": [],
+            "rejected": []
+          },
+          "note": "Staged but unsupported/unverified owner claims remain provisional"
+        },
+        "cost": {
+          "provider_usd": 0,
+          "model_token_usd": null,
+          "orchestration_usd": 0,
+          "total_usd": 0,
+          "cost_per_verified_useful_ownership_finding": null,
+          "cost_per_actionable_ownership_contact": null
+        },
+        "scoring_version": "he-intel-p3b-m1-experiment-scoring-v1"
+      },
+      {
+        "hotel": {
+          "hpcId": "recLuxvwwxID7U2B8",
+          "name": "Bethesda Marriott"
+        },
+        "method": "DEALALITY_NATIVE",
+        "objective": {
+          "id": "HE_INTEL_001_OWNERSHIP_RESEARCH_OBJECTIVE_V1",
+          "version": "1.1.0"
+        },
+        "questions": {
+          "ultimate_owner_identified": false,
+          "ownership_verified": false,
+          "named_relevant_ownership_contacts_found": false,
+          "direct_verified_contact_found": false,
+          "credible_indirect_pathways_found": false,
+          "unsupported_or_incorrect_claims": [],
+          "research_gaps_remaining": [
+            "ULTIMATE_OWNER_NOT_IDENTIFIED",
+            "LEGAL_ENTITY_CHAIN_INCOMPLETE",
+            "NAMED_OWNERSHIP_CONTACTS_MISSING",
+            "VERIFIED_CONTACT_CHANNELS_MISSING"
+          ],
+          "sources_reviewed_and_accepted": [],
+          "url_alone_not_verification": true
+        },
+        "classifier": {
+          "tier": "UNRESOLVED",
+          "fullResearchSuccess": false,
+          "partial": false,
+          "unresolvedUltimateOwnership": true,
+          "provisionalStaged": true,
+          "researchSuccess": false,
+          "evidenceVerification": "PROVISIONAL",
+          "customerPublication": "BLOCKED",
+          "contactChannelClass": "NONE",
+          "dualOrgRoles": {
+            "supported": [],
+            "rejected": []
+          },
+          "note": "Staged but unsupported/unverified owner claims remain provisional"
+        },
+        "cost": {
+          "provider_usd": 0,
+          "model_token_usd": null,
+          "orchestration_usd": 0,
+          "total_usd": 0,
+          "cost_per_verified_useful_ownership_finding": null,
+          "cost_per_actionable_ownership_contact": null
+        },
+        "scoring_version": "he-intel-p3b-m1-experiment-scoring-v1"
+      },
+      {
+        "hotel": {
+          "hpcId": "recnPB3Q02NO8Ma1o",
+          "name": "Wyndham San Diego Bayside"
+        },
+        "method": "EXA",
+        "objective": {
+          "id": "HE_INTEL_001_OWNERSHIP_RESEARCH_OBJECTIVE_V1",
+          "version": "1.1.0"
+        },
+        "questions": {
+          "ultimate_owner_identified": false,
+          "ownership_verified": false,
+          "named_relevant_ownership_contacts_found": false,
+          "direct_verified_contact_found": false,
+          "credible_indirect_pathways_found": false,
+          "unsupported_or_incorrect_claims": [],
+          "research_gaps_remaining": [
+            "ULTIMATE_OWNER_NOT_IDENTIFIED",
+            "LEGAL_ENTITY_CHAIN_INCOMPLETE",
+            "NAMED_OWNERSHIP_CONTACTS_MISSING",
+            "VERIFIED_CONTACT_CHANNELS_MISSING"
+          ],
+          "sources_reviewed_and_accepted": [],
+          "url_alone_not_verification": true
+        },
+        "classifier": {
+          "tier": "UNRESOLVED",
+          "fullResearchSuccess": false,
+          "partial": false,
+          "unresolvedUltimateOwnership": true,
+          "provisionalStaged": true,
+          "researchSuccess": false,
+          "evidenceVerification": "PROVISIONAL",
+          "customerPublication": "BLOCKED",
+          "contactChannelClass": "NONE",
+          "dualOrgRoles": {
+            "supported": [],
+            "rejected": []
+          },
+          "note": "Staged but unsupported/unverified owner claims remain provisional"
+        },
+        "cost": {
+          "provider_usd": 0,
+          "model_token_usd": null,
+          "orchestration_usd": 0,
+          "total_usd": 0,
+          "cost_per_verified_useful_ownership_finding": null,
+          "cost_per_actionable_ownership_contact": null
+        },
+        "scoring_version": "he-intel-p3b-m1-experiment-scoring-v1"
+      },
+      {
+        "hotel": {
+          "hpcId": "recnPB3Q02NO8Ma1o",
+          "name": "Wyndham San Diego Bayside"
+        },
+        "method": "PARALLEL_SEARCH",
+        "objective": {
+          "id": "HE_INTEL_001_OWNERSHIP_RESEARCH_OBJECTIVE_V1",
+          "version": "1.1.0"
+        },
+        "questions": {
+          "ultimate_owner_identified": false,
+          "ownership_verified": false,
+          "named_relevant_ownership_contacts_found": false,
+          "direct_verified_contact_found": false,
+          "credible_indirect_pathways_found": false,
+          "unsupported_or_incorrect_claims": [],
+          "research_gaps_remaining": [
+            "ULTIMATE_OWNER_NOT_IDENTIFIED",
+            "LEGAL_ENTITY_CHAIN_INCOMPLETE",
+            "NAMED_OWNERSHIP_CONTACTS_MISSING",
+            "VERIFIED_CONTACT_CHANNELS_MISSING"
+          ],
+          "sources_reviewed_and_accepted": [],
+          "url_alone_not_verification": true
+        },
+        "classifier": {
+          "tier": "UNRESOLVED",
+          "fullResearchSuccess": false,
+          "partial": false,
+          "unresolvedUltimateOwnership": true,
+          "provisionalStaged": true,
+          "researchSuccess": false,
+          "evidenceVerification": "PROVISIONAL",
+          "customerPublication": "BLOCKED",
+          "contactChannelClass": "NONE",
+          "dualOrgRoles": {
+            "supported": [],
+            "rejected": []
+          },
+          "note": "Staged but unsupported/unverified owner claims remain provisional"
+        },
+        "cost": {
+          "provider_usd": 0,
+          "model_token_usd": null,
+          "orchestration_usd": 0,
+          "total_usd": 0,
+          "cost_per_verified_useful_ownership_finding": null,
+          "cost_per_actionable_ownership_contact": null
+        },
+        "scoring_version": "he-intel-p3b-m1-experiment-scoring-v1"
+      },
+      {
+        "hotel": {
+          "hpcId": "recnPB3Q02NO8Ma1o",
+          "name": "Wyndham San Diego Bayside"
+        },
+        "method": "PARALLEL_TASK",
+        "objective": {
+          "id": "HE_INTEL_001_OWNERSHIP_RESEARCH_OBJECTIVE_V1",
+          "version": "1.1.0"
+        },
+        "questions": {
+          "ultimate_owner_identified": false,
+          "ownership_verified": false,
+          "named_relevant_ownership_contacts_found": false,
+          "direct_verified_contact_found": false,
+          "credible_indirect_pathways_found": false,
+          "unsupported_or_incorrect_claims": [],
+          "research_gaps_remaining": [
+            "ULTIMATE_OWNER_NOT_IDENTIFIED",
+            "LEGAL_ENTITY_CHAIN_INCOMPLETE",
+            "NAMED_OWNERSHIP_CONTACTS_MISSING",
+            "VERIFIED_CONTACT_CHANNELS_MISSING"
+          ],
+          "sources_reviewed_and_accepted": [],
+          "url_alone_not_verification": true
+        },
+        "classifier": {
+          "tier": "UNRESOLVED",
+          "fullResearchSuccess": false,
+          "partial": false,
+          "unresolvedUltimateOwnership": true,
+          "provisionalStaged": true,
+          "researchSuccess": false,
+          "evidenceVerification": "PROVISIONAL",
+          "customerPublication": "BLOCKED",
+          "contactChannelClass": "NONE",
+          "dualOrgRoles": {
+            "supported": [],
+            "rejected": []
+          },
+          "note": "Staged but unsupported/unverified owner claims remain provisional"
+        },
+        "cost": {
+          "provider_usd": 0,
+          "model_token_usd": null,
+          "orchestration_usd": 0,
+          "total_usd": 0,
+          "cost_per_verified_useful_ownership_finding": null,
+          "cost_per_actionable_ownership_contact": null
+        },
+        "scoring_version": "he-intel-p3b-m1-experiment-scoring-v1"
+      },
+      {
+        "hotel": {
+          "hpcId": "recnPB3Q02NO8Ma1o",
+          "name": "Wyndham San Diego Bayside"
+        },
+        "method": "DEALALITY_NATIVE",
+        "objective": {
+          "id": "HE_INTEL_001_OWNERSHIP_RESEARCH_OBJECTIVE_V1",
+          "version": "1.1.0"
+        },
+        "questions": {
+          "ultimate_owner_identified": false,
+          "ownership_verified": false,
+          "named_relevant_ownership_contacts_found": false,
+          "direct_verified_contact_found": false,
+          "credible_indirect_pathways_found": false,
+          "unsupported_or_incorrect_claims": [],
+          "research_gaps_remaining": [
+            "ULTIMATE_OWNER_NOT_IDENTIFIED",
+            "LEGAL_ENTITY_CHAIN_INCOMPLETE",
+            "NAMED_OWNERSHIP_CONTACTS_MISSING",
+            "VERIFIED_CONTACT_CHANNELS_MISSING"
+          ],
+          "sources_reviewed_and_accepted": [],
+          "url_alone_not_verification": true
+        },
+        "classifier": {
+          "tier": "UNRESOLVED",
+          "fullResearchSuccess": false,
+          "partial": false,
+          "unresolvedUltimateOwnership": true,
+          "provisionalStaged": true,
+          "researchSuccess": false,
+          "evidenceVerification": "PROVISIONAL",
+          "customerPublication": "BLOCKED",
+          "contactChannelClass": "NONE",
+          "dualOrgRoles": {
+            "supported": [],
+            "rejected": []
+          },
+          "note": "Staged but unsupported/unverified owner claims remain provisional"
+        },
+        "cost": {
+          "provider_usd": 0,
+          "model_token_usd": null,
+          "orchestration_usd": 0,
+          "total_usd": 0,
+          "cost_per_verified_useful_ownership_finding": null,
+          "cost_per_actionable_ownership_contact": null
+        },
+        "scoring_version": "he-intel-p3b-m1-experiment-scoring-v1"
+      },
+      {
+        "hotel": {
+          "hpcId": "recvVZ5unh4d3Krzi",
+          "name": "The Ritz-Carlton, Mexico City"
+        },
+        "method": "EXA",
+        "objective": {
+          "id": "HE_INTEL_001_OWNERSHIP_RESEARCH_OBJECTIVE_V1",
+          "version": "1.1.0"
+        },
+        "questions": {
+          "ultimate_owner_identified": false,
+          "ownership_verified": false,
+          "named_relevant_ownership_contacts_found": false,
+          "direct_verified_contact_found": false,
+          "credible_indirect_pathways_found": false,
+          "unsupported_or_incorrect_claims": [],
+          "research_gaps_remaining": [
+            "ULTIMATE_OWNER_NOT_IDENTIFIED",
+            "LEGAL_ENTITY_CHAIN_INCOMPLETE",
+            "NAMED_OWNERSHIP_CONTACTS_MISSING",
+            "VERIFIED_CONTACT_CHANNELS_MISSING"
+          ],
+          "sources_reviewed_and_accepted": [],
+          "url_alone_not_verification": true
+        },
+        "classifier": {
+          "tier": "UNRESOLVED",
+          "fullResearchSuccess": false,
+          "partial": false,
+          "unresolvedUltimateOwnership": true,
+          "provisionalStaged": true,
+          "researchSuccess": false,
+          "evidenceVerification": "PROVISIONAL",
+          "customerPublication": "BLOCKED",
+          "contactChannelClass": "NONE",
+          "dualOrgRoles": {
+            "supported": [],
+            "rejected": []
+          },
+          "note": "Staged but unsupported/unverified owner claims remain provisional"
+        },
+        "cost": {
+          "provider_usd": 0,
+          "model_token_usd": null,
+          "orchestration_usd": 0,
+          "total_usd": 0,
+          "cost_per_verified_useful_ownership_finding": null,
+          "cost_per_actionable_ownership_contact": null
+        },
+        "scoring_version": "he-intel-p3b-m1-experiment-scoring-v1"
+      },
+      {
+        "hotel": {
+          "hpcId": "recvVZ5unh4d3Krzi",
+          "name": "The Ritz-Carlton, Mexico City"
+        },
+        "method": "PARALLEL_SEARCH",
+        "objective": {
+          "id": "HE_INTEL_001_OWNERSHIP_RESEARCH_OBJECTIVE_V1",
+          "version": "1.1.0"
+        },
+        "questions": {
+          "ultimate_owner_identified": false,
+          "ownership_verified": false,
+          "named_relevant_ownership_contacts_found": false,
+          "direct_verified_contact_found": false,
+          "credible_indirect_pathways_found": false,
+          "unsupported_or_incorrect_claims": [],
+          "research_gaps_remaining": [
+            "ULTIMATE_OWNER_NOT_IDENTIFIED",
+            "LEGAL_ENTITY_CHAIN_INCOMPLETE",
+            "NAMED_OWNERSHIP_CONTACTS_MISSING",
+            "VERIFIED_CONTACT_CHANNELS_MISSING"
+          ],
+          "sources_reviewed_and_accepted": [],
+          "url_alone_not_verification": true
+        },
+        "classifier": {
+          "tier": "UNRESOLVED",
+          "fullResearchSuccess": false,
+          "partial": false,
+          "unresolvedUltimateOwnership": true,
+          "provisionalStaged": true,
+          "researchSuccess": false,
+          "evidenceVerification": "PROVISIONAL",
+          "customerPublication": "BLOCKED",
+          "contactChannelClass": "NONE",
+          "dualOrgRoles": {
+            "supported": [],
+            "rejected": []
+          },
+          "note": "Staged but unsupported/unverified owner claims remain provisional"
+        },
+        "cost": {
+          "provider_usd": 0,
+          "model_token_usd": null,
+          "orchestration_usd": 0,
+          "total_usd": 0,
+          "cost_per_verified_useful_ownership_finding": null,
+          "cost_per_actionable_ownership_contact": null
+        },
+        "scoring_version": "he-intel-p3b-m1-experiment-scoring-v1"
+      },
+      {
+        "hotel": {
+          "hpcId": "recvVZ5unh4d3Krzi",
+          "name": "The Ritz-Carlton, Mexico City"
+        },
+        "method": "PARALLEL_TASK",
+        "objective": {
+          "id": "HE_INTEL_001_OWNERSHIP_RESEARCH_OBJECTIVE_V1",
+          "version": "1.1.0"
+        },
+        "questions": {
+          "ultimate_owner_identified": false,
+          "ownership_verified": false,
+          "named_relevant_ownership_contacts_found": false,
+          "direct_verified_contact_found": false,
+          "credible_indirect_pathways_found": false,
+          "unsupported_or_incorrect_claims": [],
+          "research_gaps_remaining": [
+            "ULTIMATE_OWNER_NOT_IDENTIFIED",
+            "LEGAL_ENTITY_CHAIN_INCOMPLETE",
+            "NAMED_OWNERSHIP_CONTACTS_MISSING",
+            "VERIFIED_CONTACT_CHANNELS_MISSING"
+          ],
+          "sources_reviewed_and_accepted": [],
+          "url_alone_not_verification": true
+        },
+        "classifier": {
+          "tier": "UNRESOLVED",
+          "fullResearchSuccess": false,
+          "partial": false,
+          "unresolvedUltimateOwnership": true,
+          "provisionalStaged": true,
+          "researchSuccess": false,
+          "evidenceVerification": "PROVISIONAL",
+          "customerPublication": "BLOCKED",
+          "contactChannelClass": "NONE",
+          "dualOrgRoles": {
+            "supported": [],
+            "rejected": []
+          },
+          "note": "Staged but unsupported/unverified owner claims remain provisional"
+        },
+        "cost": {
+          "provider_usd": 0,
+          "model_token_usd": null,
+          "orchestration_usd": 0,
+          "total_usd": 0,
+          "cost_per_verified_useful_ownership_finding": null,
+          "cost_per_actionable_ownership_contact": null
+        },
+        "scoring_version": "he-intel-p3b-m1-experiment-scoring-v1"
+      },
+      {
+        "hotel": {
+          "hpcId": "recvVZ5unh4d3Krzi",
+          "name": "The Ritz-Carlton, Mexico City"
+        },
+        "method": "DEALALITY_NATIVE",
+        "objective": {
+          "id": "HE_INTEL_001_OWNERSHIP_RESEARCH_OBJECTIVE_V1",
+          "version": "1.1.0"
+        },
+        "questions": {
+          "ultimate_owner_identified": false,
+          "ownership_verified": false,
+          "named_relevant_ownership_contacts_found": false,
+          "direct_verified_contact_found": false,
+          "credible_indirect_pathways_found": false,
+          "unsupported_or_incorrect_claims": [],
+          "research_gaps_remaining": [
+            "ULTIMATE_OWNER_NOT_IDENTIFIED",
+            "LEGAL_ENTITY_CHAIN_INCOMPLETE",
+            "NAMED_OWNERSHIP_CONTACTS_MISSING",
+            "VERIFIED_CONTACT_CHANNELS_MISSING"
+          ],
+          "sources_reviewed_and_accepted": [],
+          "url_alone_not_verification": true
+        },
+        "classifier": {
+          "tier": "UNRESOLVED",
+          "fullResearchSuccess": false,
+          "partial": false,
+          "unresolvedUltimateOwnership": true,
+          "provisionalStaged": true,
+          "researchSuccess": false,
+          "evidenceVerification": "PROVISIONAL",
+          "customerPublication": "BLOCKED",
+          "contactChannelClass": "NONE",
+          "dualOrgRoles": {
+            "supported": [],
+            "rejected": []
+          },
+          "note": "Staged but unsupported/unverified owner claims remain provisional"
+        },
+        "cost": {
+          "provider_usd": 0,
+          "model_token_usd": null,
+          "orchestration_usd": 0,
+          "total_usd": 0,
+          "cost_per_verified_useful_ownership_finding": null,
+          "cost_per_actionable_ownership_contact": null
+        },
+        "scoring_version": "he-intel-p3b-m1-experiment-scoring-v1"
+      }
+    ],
+    "recommendation": {
+      "develop_further": null,
+      "ranked": [
+        {
+          "method": "EXA",
+          "full": 0,
+          "partial": 0,
+          "unresolved": 3,
+          "totalCost": 0,
+          "actionableContacts": 0
+        },
+        {
+          "method": "PARALLEL_SEARCH",
+          "full": 0,
+          "partial": 0,
+          "unresolved": 3,
+          "totalCost": 0,
+          "actionableContacts": 0
+        },
+        {
+          "method": "PARALLEL_TASK",
+          "full": 0,
+          "partial": 0,
+          "unresolved": 3,
+          "totalCost": 0,
+          "actionableContacts": 0
+        },
+        {
+          "method": "DEALALITY_NATIVE",
+          "full": 0,
+          "partial": 0,
+          "unresolved": 3,
+          "totalCost": 0,
+          "actionableContacts": 0
+        }
+      ],
+      "rationale": "Live paid results not yet authorized — recommendation deferred until founder-authorized execution produces scored rows with real costs."
+    }
+  },
+  "staging": {
+    "production_airtable_writes": false,
+    "canonical_graph_writes": false,
+    "staging_only": true,
+    "graphGate": {
+      "ok": true,
+      "stagingOnly": true
+    }
+  },
+  "forbidden": [
+    "SURFE",
+    "PDL",
+    "canonical_graph_writes",
+    "customer_publication"
+  ]
+}
