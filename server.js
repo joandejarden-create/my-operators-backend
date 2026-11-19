@@ -107,6 +107,11 @@ import {
 } from "./api/contact-intelligence.js";
 
 import {
+  getHeIntelEngineMeta,
+  postHeIntelEngineDryRun,
+} from "./api/hotel-intelligence-research-engine-v1.js";
+
+import {
   listHotelIntelligenceDossiers,
   getHotelIntelligenceDossier,
   getHotelIntelligenceDossierForHotel,
@@ -1007,6 +1012,20 @@ app.post(
   memberstackAuth,
   requireDealalityUser,
   postContactIntelligenceHotelRefresh
+);
+
+// HE-INTEL-001 Research Engine V1 (P1: dry-run / meta only — no Airtable apply, no paid providers)
+app.get(
+  "/api/hotel-intelligence/research-engine/v1/meta",
+  memberstackAuth,
+  requireDealalityUser,
+  getHeIntelEngineMeta
+);
+app.post(
+  "/api/hotel-intelligence/research-engine/v1/dry-run",
+  memberstackAuth,
+  requireDealalityUser,
+  postHeIntelEngineDryRun
 );
 
 // Hotel Intelligence Dossiers
