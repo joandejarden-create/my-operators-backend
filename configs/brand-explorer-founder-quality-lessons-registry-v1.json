@@ -546,6 +546,37 @@
       "curioAscendApproval": "NOT_APPROVED",
       "publicationVerified": false,
       "implementationModule": "lib/brand-explorer/be-hpc-footprint-summary-v1.js"
+    },
+    {
+      "lessonId": "BE-QL-LOCAL-PRODUCT-PARITY-001",
+      "date": "2026-11-20",
+      "phase": "LOCAL-PRODUCT-PARITY-GATE",
+      "founderObservation": "Brand Explorer improvements refined in Comparison Studio must not remain isolated in the BE preview worktree. The canonical local Dealality application must render the exact approved candidate with full content, presentation, and functional parity before any Airtable writeback or publication promotion. HTTP 200, matching Git commits, or unit-test PASS alone are not proof.",
+      "affected": [
+        "All Brand Explorer publications",
+        "Initial brand population",
+        "Existing-brand updates",
+        "Future automated refreshes",
+        "Founder approval → publication orchestrator",
+        "Comparison Studio preview (:8082)",
+        "Canonical local app (:8080)"
+      ],
+      "correctExpectedBehavior": "BE_LOCAL_PRODUCT_PARITY_GATE must PASS for the exact approved immutable candidate hash on the intended application commit before production writeback or customer promotion. Compare all ten tabs, subsections, cards, tables, bullets, images, KPIs, navigation, footprint toggles, and matching-viewport screenshots between preview and canonical local app. Fail closed on missing tabs, lost content, unexpected component diffs, style regressions, navigation failures, outdated/mismatched assets, payload version mismatch, unreconciled HPC/Airtable divergence, or stale/wrong-hash parity reports. Retain evidence in the publication audit store. Preserve Gate 1/2, scorecard, research quality, and founder approval fail-closed rules — never bypass via a separate pathway.",
+      "failingExampleRef": "reports/brand-explorer/local-app-parity-v1/FOUNDER-LOCAL-APP-PARITY-REPORT.md",
+      "associatedContract": "configs/brand-explorer-local-product-parity-gate-contract-v1.json",
+      "automatedRegressionTest": "test:be-local-product-parity-gate-v1",
+      "browserValidationEvidence": "reports/brand-explorer/local-app-parity-v1/FOUNDER-LOCAL-APP-PARITY-REPORT.md",
+      "browserScreenshots": [
+        "reports/brand-explorer/local-app-parity-v1/screenshots/app-atelier-overview.png",
+        "reports/brand-explorer/local-app-parity-v1/screenshots/preview-atelier-overview.png",
+        "reports/brand-explorer/local-app-parity-v1/screenshots/app-compare-studio.png"
+      ],
+      "status": "ENCODED",
+      "supersededRule": "Treating BE worktree/Comparison Studio preview parity as optional or assuming merge/commit equality proves runtime product parity",
+      "linkedRequirementIds": [],
+      "curioAscendApproval": "NOT_APPROVED",
+      "publicationVerified": false,
+      "implementationModule": "lib/brand-explorer/be-local-product-parity-gate-v1.js"
     }
   ]
 }

@@ -72,7 +72,13 @@ check("lessons_registry_phase2c_through_arch", () => {
   const reg = loadFounderQualityLessonsRegistry({ reload: true });
   assert.strictEqual(reg.version, BE_FOUNDER_QUALITY_LESSONS_REGISTRY_V1);
   const ids = new Set(reg.lessons.map((l) => l.lessonId));
-  for (const id of ["BE-QL-2C-001", "BE-QL-2H-A-001", "BE-QL-ARCH-005", "BE-QL-ARCH-006"]) {
+  for (const id of [
+    "BE-QL-2C-001",
+    "BE-QL-2H-A-001",
+    "BE-QL-ARCH-005",
+    "BE-QL-ARCH-006",
+    "BE-QL-LOCAL-PRODUCT-PARITY-001",
+  ]) {
     assert.ok(ids.has(id), `missing ${id}`);
   }
   const summary = summarizeLessonsRegistry();
@@ -91,7 +97,15 @@ check("gate1_evidence_preserved", () => {
   const root = process.cwd();
   assert.ok(existsSync(join(root, "reports/brand-explorer/phase2h-a-renderer-parity/00-payload-manifest.json")));
   assert.ok(existsSync(join(root, "public/brand-explorer-phase2e-preview/curio-gate1-renderer-parity-payload.json")));
-  assert.ok(!existsSync(join(root, "reports/brand-explorer/phase2h-a-renderer-parity/GATE1_FOUNDER_APPROVED.json")));
+  // Visual Gate 1 founder artifact may exist after PR #465; must remain visual-only (excludes Gate 2 / Airtable writes).
+  const gate1Path = join(root, "reports/brand-explorer/phase2h-a-renderer-parity/GATE1_FOUNDER_APPROVED.json");
+  if (existsSync(gate1Path)) {
+    const g1 = JSON.parse(readFileSync(gate1Path, "utf8"));
+    assert.strictEqual(g1.disposition, "FOUNDER_APPROVED");
+    assert.ok(Array.isArray(g1.scope?.excludes));
+    assert.ok(g1.scope.excludes.some((x) => /Gate 2/i.test(String(x))));
+    assert.ok(g1.scope.excludes.some((x) => /Airtable|publication/i.test(String(x))));
+  }
 });
 
 check("live_curio_lifecycle_passes_exact_6", () => {
