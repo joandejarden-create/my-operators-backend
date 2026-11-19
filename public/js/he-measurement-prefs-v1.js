@@ -48,12 +48,41 @@
     return { area: state.area, distance: state.distance };
   }
 
+  function syncControlUi(root, prefs) {
+    prefs = prefs || get();
+    var nodes = [];
+    if (root && root.querySelectorAll) {
+      if (root.classList && root.classList.contains("he-meas-prefs")) {
+        nodes.push(root);
+      }
+      root.querySelectorAll(".he-meas-prefs").forEach(function (el) {
+        nodes.push(el);
+      });
+    } else if (global.document) {
+      global.document.querySelectorAll(".he-meas-prefs").forEach(function (el) {
+        nodes.push(el);
+      });
+    }
+    nodes.forEach(function (el) {
+      el.querySelectorAll("[data-he-meas]").forEach(function (btn) {
+        var dim = btn.getAttribute("data-he-meas");
+        var val = btn.getAttribute("data-he-meas-value");
+        var active =
+          (dim === "area" && val === prefs.area) ||
+          (dim === "distance" && val === prefs.distance);
+        btn.classList.toggle("is-active", active);
+        btn.setAttribute("aria-pressed", active ? "true" : "false");
+      });
+    });
+  }
+
   function set(partial) {
     var next = normalize(Object.assign({}, state, partial || {}));
     var changed = next.area !== state.area || next.distance !== state.distance;
     state = next;
     writeStore(state);
     if (changed) {
+      syncControlUi(null, get());
       listeners.forEach(function (fn) {
         try {
           fn(get());
@@ -117,9 +146,9 @@
     var n = Number(sqFt);
     if (!Number.isFinite(n)) return "—";
     if (prefs.area === "sqm") {
-      return formatNumber(sqFtToSqM(n), n >= 1000 ? 0 : 1) + " sq m";
+      return formatNumber(sqFtToSqM(n), n >= 1000 ? 0 : 1) + " " + areaUnitLabel(prefs);
     }
-    return formatNumber(n, 0) + " sq ft";
+    return formatNumber(n, 0) + " " + areaUnitLabel(prefs);
   }
 
   /** @param {number} km — source distance in kilometers (haversine canonical) */
@@ -166,37 +195,90 @@
     return miToKm(defaultRadiusMilesForLocationType(locationType));
   }
 
-  function renderControlHtml() {
+  /**
+   * Contextual measurement controls.
+   * @param {{ showArea?: boolean, showDistance?: boolean, className?: string }} [opts]
+   * Default (legacy): both dimensions. Prefer explicit showArea / showDistance for tab placement.
+   */
+  function renderControlHtml(opts) {
+    opts = opts || {};
+    var showArea;
+    var showDistance;
+    // Legacy / tests: both omitted → both groups. Explicit flags → only those set true.
+    if (opts.showArea == null && opts.showDistance == null) {
+      showArea = true;
+      showDistance = true;
+    } else {
+      showArea = opts.showArea === true;
+      showDistance = opts.showDistance === true;
+    }
+    if (!showArea && !showDistance) return "";
     var prefs = get();
+    var parts = [];
+    if (showArea) {
+      parts.push(
+        '<div class="he-meas-prefs__group" data-he-meas-group="area">' +
+          '<span class="he-meas-prefs__label">Area</span>' +
+          '<button type="button" class="he-meas-prefs__btn' +
+          (prefs.area === "sqft" ? " is-active" : "") +
+          '" data-he-meas="area" data-he-meas-value="sqft" aria-pressed="' +
+          (prefs.area === "sqft" ? "true" : "false") +
+          '">Sq. Ft.</button>' +
+          '<button type="button" class="he-meas-prefs__btn' +
+          (prefs.area === "sqm" ? " is-active" : "") +
+          '" data-he-meas="area" data-he-meas-value="sqm" aria-pressed="' +
+          (prefs.area === "sqm" ? "true" : "false") +
+          '">Sq. M.</button>' +
+          "</div>"
+      );
+    }
+    if (showDistance) {
+      parts.push(
+        '<div class="he-meas-prefs__group" data-he-meas-group="distance">' +
+          '<span class="he-meas-prefs__label">Distance</span>' +
+          '<button type="button" class="he-meas-prefs__btn' +
+          (prefs.distance === "mi" ? " is-active" : "") +
+          '" data-he-meas="distance" data-he-meas-value="mi" aria-pressed="' +
+          (prefs.distance === "mi" ? "true" : "false") +
+          '">mi</button>' +
+          '<button type="button" class="he-meas-prefs__btn' +
+          (prefs.distance === "km" ? " is-active" : "") +
+          '" data-he-meas="distance" data-he-meas-value="km" aria-pressed="' +
+          (prefs.distance === "km" ? "true" : "false") +
+          '">km</button>' +
+          "</div>"
+      );
+    }
+    var cls =
+      "he-meas-prefs" +
+      (opts.className ? " " + opts.className : "") +
+      (showArea && !showDistance ? " he-meas-prefs--area" : "") +
+      (showDistance && !showArea ? " he-meas-prefs--distance" : "");
+    var label =
+      showArea && showDistance
+        ? "Measurement units"
+        : showArea
+          ? "Area units"
+          : "Distance units";
     return (
-      '<div class="he-meas-prefs" role="group" aria-label="Measurement units">' +
-      '<div class="he-meas-prefs__group">' +
-      '<span class="he-meas-prefs__label">Area</span>' +
-      '<button type="button" class="he-meas-prefs__btn' +
-      (prefs.area === "sqft" ? " is-active" : "") +
-      '" data-he-meas="area" data-he-meas-value="sqft" aria-pressed="' +
-      (prefs.area === "sqft" ? "true" : "false") +
-      '">Sq. Ft.</button>' +
-      '<button type="button" class="he-meas-prefs__btn' +
-      (prefs.area === "sqm" ? " is-active" : "") +
-      '" data-he-meas="area" data-he-meas-value="sqm" aria-pressed="' +
-      (prefs.area === "sqm" ? "true" : "false") +
-      '">Sq. M.</button>' +
-      "</div>" +
-      '<div class="he-meas-prefs__group">' +
-      '<span class="he-meas-prefs__label">Distance</span>' +
-      '<button type="button" class="he-meas-prefs__btn' +
-      (prefs.distance === "mi" ? " is-active" : "") +
-      '" data-he-meas="distance" data-he-meas-value="mi" aria-pressed="' +
-      (prefs.distance === "mi" ? "true" : "false") +
-      '">mi</button>' +
-      '<button type="button" class="he-meas-prefs__btn' +
-      (prefs.distance === "km" ? " is-active" : "") +
-      '" data-he-meas="distance" data-he-meas-value="km" aria-pressed="' +
-      (prefs.distance === "km" ? "true" : "false") +
-      '">km</button>' +
-      "</div></div>"
+      '<div class="' +
+      cls +
+      '" role="group" aria-label="' +
+      label +
+      '" data-he-meas-scope="' +
+      (showArea && showDistance ? "both" : showArea ? "area" : "distance") +
+      '">' +
+      parts.join("") +
+      "</div>"
     );
+  }
+
+  function renderAreaControlHtml(className) {
+    return renderControlHtml({ showArea: true, showDistance: false, className: className });
+  }
+
+  function renderDistanceControlHtml(className) {
+    return renderControlHtml({ showArea: false, showDistance: true, className: className });
   }
 
   function bindControls(root) {
@@ -211,11 +293,6 @@
         var patch = {};
         patch[dim] = val;
         set(patch);
-        root.querySelectorAll('[data-he-meas="' + dim + '"]').forEach(function (el) {
-          var active = el.getAttribute("data-he-meas-value") === val;
-          el.classList.toggle("is-active", active);
-          el.setAttribute("aria-pressed", active ? "true" : "false");
-        });
       }
     });
   }
@@ -237,6 +314,9 @@
     defaultRadiusMilesForLocationType: defaultRadiusMilesForLocationType,
     defaultRadiusKmForLocationType: defaultRadiusKmForLocationType,
     renderControlHtml: renderControlHtml,
+    renderAreaControlHtml: renderAreaControlHtml,
+    renderDistanceControlHtml: renderDistanceControlHtml,
     bindControls: bindControls,
+    syncControlUi: syncControlUi,
   };
 })(typeof window !== "undefined" ? window : globalThis);

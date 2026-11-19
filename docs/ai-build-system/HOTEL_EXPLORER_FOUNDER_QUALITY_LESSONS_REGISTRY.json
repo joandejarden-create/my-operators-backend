@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.6",
+  "version": "hotel-explorer-founder-quality-lessons-v1.7",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -176,6 +176,15 @@
       "sharedComponent": "public/css/hotel-explorer.css; public/css/hotel-detail-panel.css",
       "regressionTest": "he_surface_hierarchy_consistency_gates",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v6-surface-org-portfolio.png"
+    },
+    {
+      "id": "HE-QL-018",
+      "originalProblem": "Global Area + Distance measurement toolbar on every Hotel Explorer tab cluttered unrelated surfaces",
+      "rootCause": "Shell-level hex-meas-prefs-slot-host rendered both dimensions for all tabs instead of contextual placement",
+      "approvedStandard": "No global measurement bar; Area Sq. Ft./Sq. M. only in Guest Rooms & Meeting Space; Distance mi/km only in Area Hotels + Demand Drivers via he-measurement-prefs-v1 contextual renderers; shared session prefs; exact label capitalization",
+      "sharedComponent": "public/js/he-measurement-prefs-v1.js; hotel-explorer-rooms-meeting-space.js; hotel-detail-panel.js; hotel-explorer.js",
+      "regressionTest": "he_contextual_measurement_toggle_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v7-meas-overview.png; quality-v7-meas-rooms.png; quality-v7-meas-area.png; quality-v7-meas-demand.png"
     }
   ]
 }

@@ -647,29 +647,11 @@
     api.clearTheme(hotelExplorerThemeRoots());
   }
 
-  function renderMeasurementPrefsSlot() {
-    if (!window.HeMeasurementPrefs || typeof window.HeMeasurementPrefs.renderControlHtml !== "function") {
-      return "";
-    }
-    return (
-      '<div class="hex-meas-prefs-slot">' +
-      window.HeMeasurementPrefs.renderControlHtml() +
-      "</div>"
-    );
-  }
-
   function paint() {
     var root = document.getElementById("hexRoot");
     if (!root || !state.hotel) return;
     root.querySelector(".hex-hero-slot").innerHTML = renderHero(state.hotel, state.ownership);
     root.querySelector(".hex-tabs-slot").innerHTML = renderTabs();
-    var prefsSlot = root.querySelector(".hex-meas-prefs-slot-host");
-    if (prefsSlot) {
-      prefsSlot.innerHTML = renderMeasurementPrefsSlot();
-      if (window.HeMeasurementPrefs && typeof window.HeMeasurementPrefs.bindControls === "function") {
-        window.HeMeasurementPrefs.bindControls(prefsSlot);
-      }
-    }
     applyHotelExplorerChainScaleTheme();
     var hiHost = document.getElementById("hexHiHost");
     var radarHost = document.getElementById("hexRadarHost");
@@ -827,7 +809,6 @@
       '<div class="hex-scroll">' +
       '<div class="hex-hero-slot"></div>' +
       '<div class="hex-tabs-slot"></div>' +
-      '<div class="hex-meas-prefs-slot-host"></div>' +
       '<div class="hex-main" id="hexMain">' +
       '<div id="hexHiHost"></div>' +
       '<div id="hexRadarHost" class="hex-radar-host" hidden></div>' +
@@ -1526,12 +1507,22 @@
 
   document.addEventListener("he-measurement-prefs-change", function () {
     if (!state.open || !state.hotel) return;
-    paint();
-    if (
-      window.HotelDetailPanel &&
-      typeof window.HotelDetailPanel.reloadDistanceSensitiveTabs === "function"
-    ) {
-      window.HotelDetailPanel.reloadDistanceSensitiveTabs();
+    // Reload distance-sensitive HDP panels first so Area Hotels / Demand Drivers
+    // pick up the new unit even if paint() throws.
+    try {
+      if (
+        window.HotelDetailPanel &&
+        typeof window.HotelDetailPanel.reloadDistanceSensitiveTabs === "function"
+      ) {
+        window.HotelDetailPanel.reloadDistanceSensitiveTabs();
+      }
+    } catch (errReload) {
+      console.warn("[HotelExplorer] measurement reload failed", errReload);
+    }
+    try {
+      paint();
+    } catch (errPaint) {
+      console.warn("[HotelExplorer] measurement paint failed", errPaint);
     }
   });
 

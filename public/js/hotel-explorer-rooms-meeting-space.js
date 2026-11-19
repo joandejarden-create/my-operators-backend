@@ -335,12 +335,24 @@
       '<p class="hiw-muted">Capacity-chart totals and marketing private-space figures are not interchangeable. Units follow the Hotel Explorer measurement preference (presentation only).</p>' +
       "</section>";
 
+    var areaPrefsHtml =
+      global.HeMeasurementPrefs && typeof global.HeMeasurementPrefs.renderAreaControlHtml === "function"
+        ? '<div class="hex-rms-meas-prefs" data-hex-rms-meas="area">' +
+          global.HeMeasurementPrefs.renderAreaControlHtml("he-meas-prefs--tab") +
+          "</div>"
+        : "";
+
     return (
       '<article class="hiw-report hex-rms" data-hex-rms="1">' +
+      '<header class="hex-rms-header">' +
+      '<div class="hex-rms-header__copy">' +
       '<h2 class="hiw-report__title">Guest Rooms &amp; Meeting Space</h2>' +
       '<p class="hiw-report__subtitle">' +
       esc(hotel && hotel.name ? hotel.name : "Hotel") +
       " · physical product · capacities from official brand materials where verified</p>" +
+      "</div>" +
+      areaPrefsHtml +
+      "</header>" +
       guestHtml +
       meetHtml +
       renderMeetingTable(rows) +
@@ -358,6 +370,14 @@
       global.DealalitySortableTable.bind(host);
     }
     bindDetailToggles(host);
+    var prefsSlot = host.querySelector("[data-hex-rms-meas]");
+    if (
+      prefsSlot &&
+      global.HeMeasurementPrefs &&
+      typeof global.HeMeasurementPrefs.bindControls === "function"
+    ) {
+      global.HeMeasurementPrefs.bindControls(prefsSlot);
+    }
     if (!host._hexRmsPrefsBound && global.HeMeasurementPrefs && typeof global.HeMeasurementPrefs.onChange === "function") {
       host._hexRmsPrefsBound = true;
       global.HeMeasurementPrefs.onChange(function () {

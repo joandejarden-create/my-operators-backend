@@ -742,17 +742,20 @@ button.hex-action {
   }
 }
 
-/* Shared measurement preference control — chrome on canvas, not a third navy fill */
+/* Shared measurement preference control — contextual tab chrome only (not global) */
 .he-meas-prefs {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 10px 16px;
-  margin: 0 0 12px;
+  margin: 0;
   padding: 8px 10px;
   border: 0.6px solid var(--hex-surface-border);
   border-radius: 8px;
   background: transparent;
+}
+.he-meas-prefs--tab {
+  flex: 0 0 auto;
 }
 .he-meas-prefs__group {
   display: inline-flex;
@@ -784,8 +787,33 @@ button.hex-action {
   color: #fff;
   background: rgba(108, 114, 255, 0.18);
 }
-.hex-meas-prefs-slot {
-  margin: 0 0 10px;
+.hex-rms-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px 16px;
+  margin: 0 0 16px;
+}
+.hex-rms-header__copy {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+.hex-rms-header .hiw-report__title {
+  margin-bottom: 4px;
+}
+.hex-rms-header .hiw-report__subtitle {
+  margin-bottom: 0;
+}
+.hex-rms-meas-prefs,
+.hdp-meas-prefs-slot {
+  margin: 0 0 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+.hdp-area-hotels-tab > .hdp-meas-prefs-slot,
+.hdp-demand-drivers-tab > .hdp-meas-prefs-slot {
+  margin-bottom: 10px;
 }
 
 /* Owner portfolio — verified vs proposed scope */

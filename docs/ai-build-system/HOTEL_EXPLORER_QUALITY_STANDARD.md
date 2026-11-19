@@ -1,6 +1,6 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.6`  
+**Version:** `hotel-explorer-quality-standard-v1.7`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
 **Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1`
@@ -108,9 +108,15 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 
 ### 9. Measurement units (presentation only)
 
-- Shared session preference: Area **Sq. Ft. / Sq. M.** and Distance **mi / km** (`he-measurement-prefs-v1`).
+- Shared session preference module: `he-measurement-prefs-v1` (do not duplicate conversion logic).
+- **Contextual controls only — no global measurement toolbar** (forbidden: `hex-meas-prefs-slot-host` in the HE shell).
+  - Area **Sq. Ft. / Sq. M.** selector appears **only** in Guest Rooms & Meeting Space (`renderAreaControlHtml`).
+  - Distance **mi / km** selector appears **only** in Area Hotels and Demand Drivers (`renderDistanceControlHtml`); both tabs share one session distance preference.
+  - All other tabs (Overview, Ownership, Contacts, Organization & Portfolio, Relationships, Submarket Snapshot, Access & Connectivity, Brand/Operator, Sources) must show **neither** selector.
+- Visible labels use exact capitalization: `Sq. Ft.`, `Sq. M.`, `mi`, `km`.
 - Conversion constants: `1 sq ft = 0.09290304 sq m`; `1 mi = 1.609344 km`.
-- Sort and geographic inclusion always use source numeric units (sq ft / km). Unit toggle must not change which hotels qualify.
+- Sort and geographic inclusion always use source numeric units (sq ft / km). Unit toggle must not change which hotels qualify or mutate HPC/Airtable values.
+- Tab changes and hotel navigation must not reset session preferences.
 - Default Bethesda pilot: Sq. Ft. / mi when no prior preference.
 
 ### 10. Submarket Snapshot & Area Hotels (HPC)

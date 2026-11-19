@@ -1727,9 +1727,36 @@
     );
   }
 
+  function renderDistancePrefsControlHtml() {
+    if (
+      !window.HeMeasurementPrefs ||
+      typeof window.HeMeasurementPrefs.renderDistanceControlHtml !== "function"
+    ) {
+      return "";
+    }
+    return (
+      '<div class="hdp-meas-prefs-slot" data-hdp-meas="distance">' +
+      window.HeMeasurementPrefs.renderDistanceControlHtml("he-meas-prefs--tab") +
+      "</div>"
+    );
+  }
+
+  function bindDistancePrefsControls(container) {
+    if (
+      !container ||
+      !window.HeMeasurementPrefs ||
+      typeof window.HeMeasurementPrefs.bindControls !== "function"
+    ) {
+      return;
+    }
+    var slot = container.querySelector("[data-hdp-meas=\"distance\"]");
+    if (slot) window.HeMeasurementPrefs.bindControls(slot);
+  }
+
   function renderDemandDriversTabPanel(hotel, bodyHtml) {
     return (
       '<div class="hdp-demand-drivers-tab">' +
+        renderDistancePrefsControlHtml() +
         '<div class="hdp-detail-row">' +
           '<section class="hdp-section hdp-demand-drivers-location">' +
             '<h3 class="hdp-section__title">Location</h3>' +
@@ -1937,6 +1964,9 @@
       panelId === "area-hotels"
     ) {
       bindFilterPills(panel);
+    }
+    if (panelId === "demand-drivers" || panelId === "area-hotels") {
+      bindDistancePrefsControls(panel);
     }
   }
 
@@ -2822,6 +2852,7 @@
 
     return (
       '<div class="hdp-area-hotels-tab">' +
+        renderDistancePrefsControlHtml() +
         '<div class="hdp-detail-row">' +
           '<section class="hdp-section hdp-area-hotels-existing">' +
             '<h3 class="hdp-section__title">Existing Hotels</h3>' +
@@ -3368,14 +3399,21 @@
     if (!panel) return;
 
     panel.dataset.state = "loading";
-    panel.innerHTML = '<p class="hdp-empty hdp-context-state">Loading area hotels…</p>';
+    panel.innerHTML =
+      '<div class="hdp-area-hotels-tab">' +
+      renderDistancePrefsControlHtml() +
+      '<p class="hdp-empty hdp-context-state">Loading area hotels…</p></div>';
+    bindDistancePrefsControls(panel);
 
     ensureAreaHotelsCensus(hotel).then(function (allHotels) {
       if (!isOpen || !isSameHotel(currentHotel, hotel)) return;
       if (!allHotels.length) {
         panel.dataset.state = "empty";
         panel.innerHTML =
-          '<p class="hdp-empty">No nearby hotels found for this city / market yet.</p>';
+          '<div class="hdp-area-hotels-tab">' +
+          renderDistancePrefsControlHtml() +
+          '<p class="hdp-empty">No nearby hotels found for this city / market yet.</p></div>';
+        bindDistancePrefsControls(panel);
         return;
       }
 
@@ -3397,6 +3435,7 @@
       panel.dataset.state = hasContent ? "success" : "empty";
       panel.innerHTML = renderAreaHotelsTabPanel(hotel, scope);
       bindFilterPills(panel);
+      bindDistancePrefsControls(panel);
     });
   }
 

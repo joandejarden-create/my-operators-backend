@@ -78,14 +78,15 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.6");
-  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 17);
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.7");
+  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 18);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.6"
+    "hotel-explorer-quality-standard-v1.7"
   );
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-016"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-017"));
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-018"));
 });
 
 run("rejects_keyword_stuffed_and_id_leaking_descriptions", () => {
@@ -437,10 +438,59 @@ run("measurement_prefs_conversion_and_sort_keys", () => {
   mustInclude(prefsJs, "0.09290304");
   mustInclude(prefsJs, "1.609344");
   mustInclude(prefsJs, "sessionStorage");
+  mustInclude(prefsJs, "Sq. Ft.");
+  mustInclude(prefsJs, "Sq. M.");
+  mustInclude(prefsJs, 'return prefs.area === "sqm" ? "Sq. M." : "Sq. Ft."');
+  mustNotMatch(prefsJs, /"\s*sq ft\s*"/i);
+  mustNotMatch(prefsJs, /"\s*sq m\s*"/i);
   const rms = read("public/js/hotel-explorer-rooms-meeting-space.js");
   mustInclude(rms, "formatAreaFromSqFt");
   mustInclude(rms, "area: r.areaSqFt");
   mustInclude(read("public/hotel-explorer-preview.html"), "he-measurement-prefs-v1.js");
+});
+
+run("he_contextual_measurement_toggle_gates", () => {
+  const hex = read("public/js/hotel-explorer.js");
+  mustNotMatch(hex, /hex-meas-prefs-slot-host/);
+  mustNotMatch(hex, /renderMeasurementPrefsSlot/);
+  const prefsJs = read("public/js/he-measurement-prefs-v1.js");
+  mustInclude(prefsJs, "renderAreaControlHtml");
+  mustInclude(prefsJs, "renderDistanceControlHtml");
+  mustInclude(prefsJs, 'data-he-meas-scope="');
+  const rms = read("public/js/hotel-explorer-rooms-meeting-space.js");
+  mustInclude(rms, "renderAreaControlHtml");
+  mustInclude(rms, 'data-hex-rms-meas="area"');
+  mustNotMatch(rms, /renderDistanceControlHtml|data-he-meas="distance"|data-he-meas-value="mi"/);
+  const hdp = read("public/js/hotel-detail-panel.js");
+  mustInclude(hdp, "renderDistanceControlHtml");
+  mustInclude(hdp, 'data-hdp-meas="distance"');
+  mustInclude(hdp, "bindDistancePrefsControls");
+  // Distance control is placed in Area Hotels + Demand Drivers panel renderers only.
+  const areaFn = hdp.slice(
+    hdp.indexOf("function renderAreaHotelsTabPanel"),
+    hdp.indexOf("function bindFilterPills")
+  );
+  const demandFn = hdp.slice(
+    hdp.indexOf("function renderDemandDriversTabPanel"),
+    hdp.indexOf("function buildDemandAnchorsFetchOpts")
+  );
+  mustInclude(areaFn, "renderDistancePrefsControlHtml");
+  mustInclude(demandFn, "renderDistancePrefsControlHtml");
+  mustNotMatch(areaFn, /renderAreaControlHtml|data-he-meas="area"|data-he-meas-value="sqft"/);
+  mustNotMatch(demandFn, /renderAreaControlHtml|data-he-meas="area"|data-he-meas-value="sqft"/);
+  // Access / overview / submarket panels must not mount measurement controls.
+  const accessSlice = hdp.includes("function loadAccessConnectivityTab")
+    ? hdp.slice(hdp.indexOf("function loadAccessConnectivityTab"), hdp.indexOf("function loadAccessConnectivityTab") + 2500)
+    : "";
+  mustNotMatch(accessSlice, /renderDistancePrefsControlHtml|renderAreaControlHtml|he-meas-prefs/);
+  const std = read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md");
+  mustInclude(std, "Contextual controls only");
+  mustInclude(std, "Guest Rooms & Meeting Space");
+  mustInclude(std, "Area Hotels and Demand Drivers");
+  mustNotMatch(hex, /renderControlHtml\(\)/);
+  const css = read("public/css/hotel-explorer.css");
+  mustInclude(css, "hex-rms-header");
+  mustInclude(css, "hdp-meas-prefs-slot");
 });
 
 run("he_universal_design_hpc_geo_gates", () => {
