@@ -56,6 +56,8 @@ const opts = {
   authorizePublish: has("--authorize-publish"),
   budgetCeilingUsd,
   maxCandidates: maxCandidates != null ? Number(maxCandidates) : 8,
+  allowPartial: has("--allow-partial"),
+  authorizationId: arg("--authorization-id") || null,
   exaEffort,
   researchTrack,
   outDir,
