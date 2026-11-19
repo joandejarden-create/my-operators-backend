@@ -121,8 +121,8 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 - Shared session preference module: `he-measurement-prefs-v1` (do not duplicate conversion logic).
 - **Contextual controls only — no global measurement toolbar** (forbidden: `hex-meas-prefs-slot-host` in the HE shell).
   - Area **Sq. Ft. / Sq. M.** selector appears **only** in Guest Rooms & Meeting Space (`renderAreaControlHtml`).
-  - Distance **mi / km** selector appears **only** in Area Hotels and Demand Drivers (`renderDistanceControlHtml`); both tabs share one session distance preference.
-  - All other tabs (Overview, Ownership, Contacts, Organization & Portfolio, Relationships, Submarket Snapshot, Access & Connectivity, Brand/Operator, Sources) must show **neither** selector.
+  - Distance **mi / km** selector appears **only** in Area Hotels and Access & Connectivity when distances are shown (`renderDistanceControlHtml`); those tabs share one session distance preference (HE-QL-037: not Demand Drivers; not a global toolbar).
+  - All other tabs (Overview, Ownership, Contacts, Organization & Portfolio, Relationships, Submarket Snapshot, Demand Drivers, Brand/Operator, Sources) must show **neither** selector.
 - Visible labels use exact capitalization: `Sq. Ft.`, `Sq. M.`, `mi`, `km`.
 - Conversion constants: `1 sq ft = 0.09290304 sq m`; `1 mi = 1.609344 km`.
 - Sort and geographic inclusion always use source numeric units (sq ft / km). Unit toggle must not change which hotels qualify or mutate HPC/Airtable values.
@@ -232,6 +232,18 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 - Area Hotels radii by location setting (initial): Urban 5 mi, Suburban/Airport 10 mi, Resort 30 mi, Rural 25 mi — adjustable; distance unit display independent of inclusion.
 - Shared module: `lib/hotel-intelligence/he-hpc-submarket-snapshot-v1.js` + `GET /api/hotel-explorer/hotels/:hotelId/submarket-snapshot` (GET-only).
 - No GET-triggered writes; no unapproved Airtable submarket bulk apply. Geo-gap research uses dry-run artifacts only.
+
+### 11. Demand Drivers & Access / Connectivity (Airtable reuse)
+
+- **Do not rebuild** Demand Anchors or Travel Infrastructure research before recovering existing modules (`lib/demand-anchors/*`, `lib/travel-infrastructure/*`, Radar APIs).
+- Canonical hotel identity is **HPC** (`appCCUsuGsE1ifoLk` / `tbl9aY5ijiuIzzWam`). Bethesda Marriott: `recLuxvwwxID7U2B8`.
+- **Demand Drivers** read from reusable **Demand Anchors** (Platform base / `AIRTABLE_BASE_ID_ALT`). Entities are researched once and reused across hotels; hotel relevance = straight-line distance + optional verified rationale — **not** automatic confirmation of hotel demand from proximity alone.
+- **Access & Connectivity** read from reusable **Travel Infrastructure Data** (same Platform base). Airports/rail/roads are shared geographic entities.
+- Distances are **straight-line** from verified HPC coordinates unless Airtable holds a verified Estimated Drive Time. **Never invent** drive/transit times from distance heuristics.
+- **mi / km** toggle appears on the Access & Connectivity tab when distances are shown — not as a global toolbar and not on Demand Drivers (HE-QL-037).
+- Empty US / geography tables are honest empty states; tabs auto-populate when canonical records are imported — no hardcoded demo rows.
+- Shared read model: `lib/hotel-intelligence/he-demand-access-read-v1.js` + `GET /api/hotel-explorer/hotels/:hotelId/demand-drivers` + `…/access-connectivity` (GET-only; no paid providers on tab open).
+- Inventory: `reports/hotel-explorer/HE-DEMAND-ACCESS-AIRTABLE-RECOVERY-V1.md`.
 
 ## Machine-testable acceptance
 

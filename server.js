@@ -91,6 +91,10 @@ import {
 import { getHotelExplorerNewsArticles } from "./api/hotel-explorer-news-articles.js";
 import { getHotelExplorerGuestSentiment } from "./api/hotel-explorer-guest-sentiment.js";
 import { getHotelExplorerSubmarketSnapshot } from "./api/hotel-explorer-submarket-snapshot.js";
+import {
+  getHotelExplorerDemandDrivers,
+  getHotelExplorerAccessConnectivity,
+} from "./api/hotel-explorer-demand-access.js";
 import { getHeAirtableGraphHotel } from "./api/he-airtable-graph.js";
 import {
   getOwnerIntelligenceMeta,
@@ -1010,6 +1014,15 @@ app.get(
 app.get(
   "/api/hotel-explorer/hotels/:hotelId/submarket-snapshot",
   getHotelExplorerSubmarketSnapshot
+);
+// Hotel Explorer — Demand Drivers + Access & Connectivity (GET-only; Demand Anchors / TI)
+app.get(
+  "/api/hotel-explorer/hotels/:hotelId/demand-drivers",
+  getHotelExplorerDemandDrivers
+);
+app.get(
+  "/api/hotel-explorer/hotels/:hotelId/access-connectivity",
+  getHotelExplorerAccessConnectivity
 );
 
 // Hotel Explorer — Airtable HI graph read (Airtable-first tabs 2/4/5)

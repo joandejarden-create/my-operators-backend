@@ -1810,9 +1810,10 @@
   }
 
   function renderDemandDriversTabPanel(hotel, bodyHtml) {
+    // mi/km toggle lives on Access & Connectivity when distances are shown (HE-QL-037).
+    // Demand Drivers still format via HeMeasurementPrefs when set elsewhere.
     return (
       '<div class="hdp-demand-drivers-tab">' +
-        renderDistancePrefsControlHtml() +
         '<div class="hdp-detail-row">' +
           '<section class="hdp-section hdp-demand-drivers-location">' +
             '<h3 class="hdp-section__title">Location</h3>' +
@@ -1983,9 +1984,29 @@
     return groups;
   }
 
-  function estimateDriveMinutes(distanceKm) {
-    if (!Number.isFinite(distanceKm)) return null;
-    return Math.max(1, Math.round((distanceKm / 55) * 60));
+  /**
+   * Never invent drive times from straight-line distance.
+   * Only surface verified Airtable Estimated Drive Time / travelTime fields.
+   */
+  function verifiedTravelTimeLabel(item) {
+    if (!item || typeof item !== "object") return null;
+    if (item.travelTimeVerified === false && item.estimatedDriveTime == null && !item.travelTime) {
+      return null;
+    }
+    var raw =
+      item.estimatedDriveTime != null
+        ? item.estimatedDriveTime
+        : item.travelTime != null
+          ? item.travelTime
+          : item.verifiedDriveMinutes != null
+            ? item.verifiedDriveMinutes
+            : null;
+    if (raw == null || raw === "") return null;
+    if (typeof raw === "number" && Number.isFinite(raw)) {
+      return Math.round(raw) + " min drive (verified)";
+    }
+    var s = String(raw).trim();
+    return s || null;
   }
 
   function renderMetricChips(chips) {
@@ -2021,7 +2042,7 @@
     ) {
       bindFilterPills(panel);
     }
-    if (panelId === "demand-drivers" || panelId === "area-hotels") {
+    if (panelId === "access-connectivity" || panelId === "area-hotels") {
       bindDistancePrefsControls(panel);
     }
   }
@@ -3137,9 +3158,9 @@
     var typeLabel = item.pointSubtype || item.pointType || item.mapIconType || item.type || "Point";
     var meta = [];
     if (item.distanceKm != null) {
-      meta.push(formatDistanceKm(item.distanceKm));
-      var mins = estimateDriveMinutes(item.distanceKm);
-      if (mins) meta.push("~" + mins + " min drive");
+      meta.push(formatDistanceKm(item.distanceKm) + " straight-line");
+      var verified = verifiedTravelTimeLabel(item);
+      if (verified) meta.push(verified);
     }
     if (item.outsideSearchRadius) {
       meta.push("beyond search radius");
@@ -3156,10 +3177,16 @@
     } else {
       filterAttrs = ' class="hdp-context-list__item"';
     }
+    var colorFn =
+      infraApi && typeof infraApi.getInfraColor === "function"
+        ? infraApi.getInfraColor
+        : function () {
+            return "#6c72ff";
+          };
 
     return (
       "<li" + filterAttrs + ">" +
-        '<span class="hdp-context-list__dot" style="background:' + esc(infraApi.getInfraColor(item)) + '"></span>' +
+        '<span class="hdp-context-list__dot" style="background:' + esc(colorFn(item)) + '"></span>' +
         '<div class="hdp-context-list__body">' +
           '<div class="hdp-context-list__name">' + esc(item.name || "Unknown") + "</div>" +
           '<div class="hdp-context-list__type">' + esc(typeLabel) + "</div>" +
@@ -3178,9 +3205,12 @@
     var scopeLabel = formatContextScopeLabel(scope);
     if (!items.length) {
       return (
-        '<p class="hdp-empty">No airports or connectivity points within ' +
+        '<div class="hdp-access-connectivity-tab">' +
+          renderDistancePrefsControlHtml() +
+          '<p class="hdp-empty">No airports or connectivity points within ' +
           esc(scopeLabel || formatRadiusLabel(radiusKm)) +
-          ".</p>"
+          ".</p>" +
+        "</div>"
       );
     }
 
@@ -3199,11 +3229,12 @@
 
     return (
       '<div class="hdp-access-connectivity-tab hdp-context-filterable-panel">' +
+        renderDistancePrefsControlHtml() +
         renderContextScopeLine(
           scope,
-          "Drive times estimated from straight-line distance (~55 km/h average). Closest " +
+          "Distances are straight-line (mi/km). Drive times appear only when verified in Airtable — never invented from distance. Closest " +
             CONTEXT_CONFIG.minAirports +
-            " airports always included."
+            " airports always included when available."
         ) +
         renderMetricChips(kpiChips) +
         buildAreaHotelsFilterPills(
@@ -3376,44 +3407,204 @@
     });
   }
 
+  function hotelRecordIdForContext(hotel) {
+    return String((hotel && (hotel.id || hotel.recordId || hotel.airtable_record_id)) || "").trim();
+  }
+
+  /**
+   * Hydrate lat/lng/country/market from canonical HPC when the open hotel payload is thin
+   * (common in Founder Preview). Never invents coordinates.
+   */
+  function hydrateHotelFromHpc(hotel) {
+    var id = hotelRecordIdForContext(hotel);
+    if (!/^rec[A-Za-z0-9]{14}$/.test(id)) {
+      return Promise.resolve(hotel);
+    }
+    if (hotelCoords(hotel) && hotel.country && hotel.country !== "Unknown Country") {
+      return Promise.resolve(hotel);
+    }
+    return fetch("/api/brand-presence/hotel/" + encodeURIComponent(id), {
+      headers: { "ngrok-skip-browser-warning": "true" },
+    })
+      .then(function (res) {
+        return res.json();
+      })
+      .then(function (body) {
+        var h = body && (body.hotel || body.data || body);
+        if (!h || typeof h !== "object") return hotel;
+        var next = Object.assign({}, hotel);
+        ["lat", "lng", "latitude", "longitude", "city", "country", "region", "market", "submarket", "locationType", "brand", "name", "rooms", "chainScale", "status"].forEach(
+          function (k) {
+            if ((next[k] == null || next[k] === "" || next[k] === "Unknown Country" || next[k] === "Unknown City") && h[k] != null && h[k] !== "") {
+              next[k] = h[k];
+            }
+          }
+        );
+        if (next.lat == null && h.lat != null) next.lat = h.lat;
+        if (next.lng == null && h.lng != null) next.lng = h.lng;
+        return next;
+      })
+      .catch(function () {
+        return hotel;
+      });
+  }
+
+  function fetchHeDemandDrivers(hotel, contextScope) {
+    var id = hotelRecordIdForContext(hotel);
+    var params = [];
+    if (contextScope && contextScope.radiusKm != null) {
+      params.push("radiusKm=" + encodeURIComponent(String(contextScope.radiusKm)));
+    }
+    params.push("limit=" + encodeURIComponent(String(CONTEXT_CONFIG.demandDriversLimit)));
+    var url =
+      "/api/hotel-explorer/hotels/" +
+      encodeURIComponent(id) +
+      "/demand-drivers" +
+      (params.length ? "?" + params.join("&") : "");
+    return fetch(url, { headers: { "ngrok-skip-browser-warning": "true" } }).then(function (res) {
+      return res.json();
+    });
+  }
+
+  function fetchHeAccessConnectivity(hotel, contextScope) {
+    var id = hotelRecordIdForContext(hotel);
+    var params = [];
+    if (contextScope && contextScope.radiusKm != null) {
+      params.push("radiusKm=" + encodeURIComponent(String(contextScope.radiusKm)));
+    }
+    params.push("limit=" + encodeURIComponent(String(CONTEXT_CONFIG.infraLimit * 2)));
+    params.push("minAirports=" + encodeURIComponent(String(CONTEXT_CONFIG.minAirports)));
+    var url =
+      "/api/hotel-explorer/hotels/" +
+      encodeURIComponent(id) +
+      "/access-connectivity" +
+      (params.length ? "?" + params.join("&") : "");
+    return fetch(url, { headers: { "ngrok-skip-browser-warning": "true" } }).then(function (res) {
+      return res.json();
+    });
+  }
+
+  function mergeHotelFromHePayload(hotel, payloadHotel) {
+    if (!payloadHotel || typeof payloadHotel !== "object") return hotel;
+    var next = Object.assign({}, hotel);
+    ["lat", "lng", "city", "country", "region", "market", "submarket", "locationType", "name", "brand"].forEach(
+      function (k) {
+        if ((next[k] == null || next[k] === "") && payloadHotel[k] != null && payloadHotel[k] !== "") {
+          next[k] = payloadHotel[k];
+        }
+      }
+    );
+    return next;
+  }
+
   function loadDemandAnchorTabs(hotel, contextScope) {
     var nearbyApi = window.DemandAnchorsRadar;
     contextScope = contextScope || getPropertyContextScope(hotel);
-    if (!nearbyApi) {
-      setTabPanel(
-        "demand-drivers",
-        renderDemandDriversTabPanel(hotel, '<p class="hdp-empty">Demand anchor modules are not loaded.</p>'),
-        "error"
-      );
-      return;
-    }
+    var id = hotelRecordIdForContext(hotel);
 
     setTabPanel(
       "demand-drivers",
-      renderDemandDriversTabPanel(hotel, '<p class="hdp-empty hdp-context-state">Loading demand drivers…</p>'),
+      renderDemandDriversTabPanel(
+        hotel,
+        '<p class="hdp-empty hdp-context-state" data-he-async="demand-drivers">Loading demand drivers…</p>'
+      ),
       "loading"
     );
 
-    nearbyApi
-      .fetchDemandAnchors(buildDemandAnchorsFetchOpts(hotel))
-      .then(function (data) {
-        if (!isOpen || !isSameHotel(currentHotel, hotel)) return;
-        var allItems = nearbyApi.parseItems(data);
-        var drivers = filterAndSortByDistance(allItems, hotel, {
-          radiusKm: contextScope.radiusKm,
-          limit: CONTEXT_CONFIG.demandDriversLimit,
-        });
+    var loadPromise =
+      /^rec[A-Za-z0-9]{14}$/.test(id)
+        ? fetchHeDemandDrivers(hotel, contextScope).then(function (payload) {
+            if (payload && payload.success !== false && payload.ok !== false && Array.isArray(payload.items)) {
+              return {
+                mode: "he_api",
+                hotel: mergeHotelFromHePayload(hotel, payload.hotel),
+                drivers: payload.items,
+                emptyMessage: payload.emptyMessage || null,
+                sourceNote:
+                  "Source: Demand Anchors (Airtable) · HPC hotel " +
+                  id +
+                  ". Straight-line distance only. Entities are reusable across hotels.",
+              };
+            }
+            return null;
+          })
+        : Promise.resolve(null);
 
-        setTabPanel(
-          "demand-drivers",
-          renderDemandDriversPanel(hotel, drivers, nearbyApi, contextScope),
-          drivers.length ? "success" : "empty"
+    loadPromise
+      .then(function (heResult) {
+        if (heResult) return heResult;
+        // Fallback: legacy Radar Demand Anchors client (same Airtable store).
+        if (!nearbyApi) {
+          return {
+            mode: "error",
+            hotel: hotel,
+            drivers: [],
+            emptyMessage: "Demand Anchors modules are not loaded.",
+          };
+        }
+        return nearbyApi.fetchDemandAnchors(buildDemandAnchorsFetchOpts(hotel)).then(function (data) {
+          var allItems = nearbyApi.parseItems(data);
+          var drivers = filterAndSortByDistance(allItems, hotel, {
+            radiusKm: contextScope.radiusKm,
+            limit: CONTEXT_CONFIG.demandDriversLimit,
+          });
+          return {
+            mode: "legacy_radar",
+            hotel: hotel,
+            drivers: drivers,
+            emptyMessage: drivers.length
+              ? null
+              : "No Demand Anchors within " +
+                formatContextScopeLabel(contextScope) +
+                ". Tab will populate when canonical Demand Anchors exist for this geography.",
+            sourceNote: "Source: Demand Anchors via Radar API (read-only).",
+          };
+        });
+      })
+      .then(function (result) {
+        if (!isOpen || !isSameHotel(currentHotel, hotel)) return;
+        if (!result) return;
+        if (result.mode === "error") {
+          setTabPanel(
+            "demand-drivers",
+            renderDemandDriversTabPanel(result.hotel, '<p class="hdp-empty">' + esc(result.emptyMessage) + "</p>"),
+            "error"
+          );
+          return;
+        }
+        var html = renderDemandDriversPanel(
+          result.hotel,
+          result.drivers,
+          nearbyApi || {
+            getAnchorColor: function () {
+              return "#6c72ff";
+            },
+            getDemandTypeLabel: function (item) {
+              return item.pointType || item.type || "Demand Anchor";
+            },
+          },
+          contextScope
         );
+        if (result.sourceNote) {
+          html += '<p class="hdp-snapshot-meta" data-hdp-demand-source="1">' + esc(result.sourceNote) + "</p>";
+        }
+        if (!result.drivers.length && result.emptyMessage) {
+          html = renderDemandDriversTabPanel(
+            result.hotel,
+            '<p class="hdp-empty">' +
+              esc(result.emptyMessage) +
+              "</p>" +
+              (result.sourceNote
+                ? '<p class="hdp-snapshot-meta">' + esc(result.sourceNote) + "</p>"
+                : "")
+          );
+        }
+        setTabPanel("demand-drivers", html, result.drivers.length ? "success" : "empty");
       })
       .catch(function (err) {
         if (!isOpen || !isSameHotel(currentHotel, hotel)) return;
         if (typeof console !== "undefined" && console.warn) {
-          console.warn("[HotelDetailPanel] demand anchors fetch failed:", err);
+          console.warn("[HotelDetailPanel] demand drivers fetch failed:", err);
         }
         setTabPanel(
           "demand-drivers",
@@ -3426,40 +3617,106 @@
   function loadAccessConnectivityTab(hotel, contextScope) {
     var infraApi = window.TravelInfrastructureRadar;
     contextScope = contextScope || getPropertyContextScope(hotel);
-    if (!infraApi) {
-      setTabPanel("access-connectivity", '<p class="hdp-empty">Travel infrastructure modules are not loaded.</p>', "error");
-      return;
-    }
+    var id = hotelRecordIdForContext(hotel);
 
-    setTabPanel("access-connectivity", '<p class="hdp-empty hdp-context-state">Loading access and connectivity…</p>', "loading");
+    setTabPanel(
+      "access-connectivity",
+      '<p class="hdp-empty hdp-context-state" data-he-async="access-connectivity">Loading access and connectivity…</p>',
+      "loading"
+    );
 
-    infraApi
-      .fetchInfrastructure(buildInfrastructureFetchOpts(hotel))
-      .then(function (data) {
-        if (!isOpen || !isSameHotel(currentHotel, hotel)) return;
-        var parsed = infraApi.parseItems(data);
-        var allWithDistance = enrichItemsWithDistance(parsed, hotel);
-        var items = filterAndSortByDistance(parsed, hotel, {
-          radiusKm: contextScope.radiusKm,
-          limit: CONTEXT_CONFIG.infraLimit * 2,
-          typePriority: accessInfraTypePriority,
+    var loadPromise =
+      /^rec[A-Za-z0-9]{14}$/.test(id)
+        ? fetchHeAccessConnectivity(hotel, contextScope).then(function (payload) {
+            if (payload && payload.success !== false && payload.ok !== false && Array.isArray(payload.items)) {
+              return {
+                mode: "he_api",
+                hotel: mergeHotelFromHePayload(hotel, payload.hotel),
+                items: payload.items,
+                emptyMessage: payload.emptyMessage || null,
+                sourceNote:
+                  "Source: Travel Infrastructure Data (Airtable) · HPC hotel " +
+                  id +
+                  ". Distances are straight-line (mi/km toggle). Drive times are shown only when verified in Airtable — not invented from distance.",
+              };
+            }
+            return null;
+          })
+        : Promise.resolve(null);
+
+    loadPromise
+      .then(function (heResult) {
+        if (heResult) return heResult;
+        if (!infraApi) {
+          return {
+            mode: "error",
+            items: [],
+            emptyMessage: "Travel infrastructure modules are not loaded.",
+          };
+        }
+        return infraApi.fetchInfrastructure(buildInfrastructureFetchOpts(hotel)).then(function (data) {
+          var parsed = infraApi.parseItems(data);
+          var allWithDistance = enrichItemsWithDistance(parsed, hotel);
+          var items = filterAndSortByDistance(parsed, hotel, {
+            radiusKm: contextScope.radiusKm,
+            limit: CONTEXT_CONFIG.infraLimit * 2,
+            typePriority: accessInfraTypePriority,
+          });
+          items = mergeClosestAirportsIntoAccessItems(
+            items,
+            allWithDistance,
+            contextScope.radiusKm,
+            CONTEXT_CONFIG.minAirports
+          );
+          return {
+            mode: "legacy_radar",
+            hotel: hotel,
+            items: items,
+            emptyMessage: items.length
+              ? null
+              : "No airports or connectivity points within " + formatContextScopeLabel(contextScope) + ".",
+            sourceNote: "Source: Travel Infrastructure Data via Radar API (read-only).",
+          };
         });
-        items = mergeClosestAirportsIntoAccessItems(
-          items,
-          allWithDistance,
-          contextScope.radiusKm,
-          CONTEXT_CONFIG.minAirports
-        );
-        setTabPanel(
-          "access-connectivity",
-          renderAccessConnectivityPanel(items, infraApi, contextScope, hotel),
-          items.length ? "success" : "empty"
-        );
+      })
+      .then(function (result) {
+        if (!isOpen || !isSameHotel(currentHotel, hotel)) return;
+        if (!result) return;
+        if (result.mode === "error") {
+          setTabPanel(
+            "access-connectivity",
+            '<p class="hdp-empty">' + esc(result.emptyMessage) + "</p>",
+            "error"
+          );
+          return;
+        }
+        var html = result.items.length
+          ? renderAccessConnectivityPanel(
+              result.items,
+              infraApi || {
+                getInfraColor: function () {
+                  return "#6c72ff";
+                },
+              },
+              contextScope,
+              result.hotel || hotel
+            )
+          : '<p class="hdp-empty">' +
+            esc(
+              result.emptyMessage ||
+                "No airports or connectivity points within " + formatContextScopeLabel(contextScope) + "."
+            ) +
+            "</p>";
+        if (result.sourceNote) {
+          html += '<p class="hdp-snapshot-meta" data-hdp-access-source="1">' + esc(result.sourceNote) + "</p>";
+        }
+        setTabPanel("access-connectivity", html, result.items.length ? "success" : "empty");
+        bindDistancePrefsControls(panelEl && panelEl.querySelector('[data-panel="access-connectivity"]'));
       })
       .catch(function (err) {
         if (!isOpen || !isSameHotel(currentHotel, hotel)) return;
         if (typeof console !== "undefined" && console.warn) {
-          console.warn("[HotelDetailPanel] infrastructure fetch failed:", err);
+          console.warn("[HotelDetailPanel] access connectivity fetch failed:", err);
         }
         setTabPanel("access-connectivity", '<p class="hdp-empty">Could not load access and connectivity.</p>', "error");
       });
@@ -3672,24 +3929,19 @@
     ensureAreaHotelsCensus(hotel).then(function () {
       if (!isOpen || !isSameHotel(currentHotel, hotel)) return;
 
-      var contextScope = getPropertyContextScope(hotel);
       loadAreaHotelsTab(hotel);
 
-      if (!hotelCoords(hotel)) {
-        setTabPanel(
-          "demand-drivers",
-          renderDemandDriversTabPanel(
-            hotel,
-            '<p class="hdp-empty">Location coordinates are not available for nearby demand driver search.</p>'
-          ),
-          "empty"
-        );
-        setTabPanel("access-connectivity", '<p class="hdp-empty">Location coordinates are not available.</p>', "empty");
-        return;
-      }
-
-      loadDemandAnchorTabs(hotel, contextScope);
-      loadAccessConnectivityTab(hotel, contextScope);
+      return hydrateHotelFromHpc(hotel).then(function (hydrated) {
+        if (!isOpen || !isSameHotel(currentHotel, hotel)) return;
+        if (hydrated && hydrated !== hotel) {
+          currentHotel = Object.assign({}, currentHotel || {}, hydrated);
+          hotel = currentHotel;
+        }
+        var contextScope = getPropertyContextScope(hotel);
+        // HE Demand / Access APIs resolve HPC coords server-side; still gate legacy path.
+        loadDemandAnchorTabs(hotel, contextScope);
+        loadAccessConnectivityTab(hotel, contextScope);
+      });
     });
   }
 

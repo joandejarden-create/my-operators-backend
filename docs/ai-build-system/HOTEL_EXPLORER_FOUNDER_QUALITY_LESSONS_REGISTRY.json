@@ -357,6 +357,15 @@
       "sharedComponent": "he-hpc-submarket-snapshot-v1.js; api/hotel-explorer-submarket-snapshot.js; hotel-detail-panel.js resolveCensusHotelPool",
       "regressionTest": "he_hpc_submarket_snapshot_canonical_gates",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/he-ql-036-submarket-*.png"
+    },
+    {
+      "id": "HE-QL-037",
+      "originalProblem": "Demand Drivers and Access & Connectivity tabs were empty/incomplete and appeared disconnected from existing Airtable intelligence and research code",
+      "rootCause": "HE relied on Radar client modules without hotel-scoped HPC hydration or dedicated GET read APIs; US Demand Anchors / Travel Infrastructure tables were unpopulated while MX had data; Access invented drive times from straight-line distance",
+      "approvedStandard": "Recover Demand Anchors + Travel Infrastructure Data; HPC hotel identity; reusable geographic entities; GET-only demand-drivers and access-connectivity APIs; straight-line distance only unless Airtable has verified Estimated Drive Time; mi/km on Access tab only; honest empty states; no GET writes or paid calls on tab open; auto-populate after canonical writes",
+      "sharedComponent": "he-demand-access-read-v1.js; api/hotel-explorer-demand-access.js; hotel-detail-panel.js; lib/demand-anchors/*; lib/travel-infrastructure/*",
+      "regressionTest": "he_demand_access_airtable_read_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/he-ql-037-demand-access-*.png"
     }
   ]
 }

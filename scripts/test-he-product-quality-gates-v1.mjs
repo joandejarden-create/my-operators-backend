@@ -56,6 +56,11 @@ import {
   HE_HPC_SUBMARKET_SNAPSHOT_V1,
 } from "../lib/hotel-intelligence/he-hpc-submarket-snapshot-v1.js";
 import {
+  HE_DEMAND_ACCESS_READ_V1,
+  resolveContextRadiusKm,
+  HE_CONTEXT_RADIUS_KM,
+} from "../lib/hotel-intelligence/he-demand-access-read-v1.js";
+import {
   buildOwnerPortfolioOperatorView,
   classifyPortfolioHotel,
   OPERATOR_NOT_VERIFIED_LABEL,
@@ -594,7 +599,7 @@ run("he_contextual_measurement_toggle_gates", () => {
   mustInclude(hdp, "renderDistanceControlHtml");
   mustInclude(hdp, 'data-hdp-meas="distance"');
   mustInclude(hdp, "bindDistancePrefsControls");
-  // Distance control is placed in Area Hotels + Demand Drivers panel renderers only.
+  // Distance control: Area Hotels + Access & Connectivity (HE-QL-037); not Demand Drivers.
   const areaFn = hdp.slice(
     hdp.indexOf("function renderAreaHotelsTabPanel"),
     hdp.indexOf("function bindFilterPills")
@@ -603,19 +608,20 @@ run("he_contextual_measurement_toggle_gates", () => {
     hdp.indexOf("function renderDemandDriversTabPanel"),
     hdp.indexOf("function buildDemandAnchorsFetchOpts")
   );
+  const accessPanelFn = hdp.slice(
+    hdp.indexOf("function renderAccessConnectivityPanel"),
+    hdp.indexOf("function renderAccessConnectivityPanel") + 2200
+  );
   mustInclude(areaFn, "renderDistancePrefsControlHtml");
-  mustInclude(demandFn, "renderDistancePrefsControlHtml");
+  mustInclude(accessPanelFn, "renderDistancePrefsControlHtml");
+  mustNotMatch(demandFn, /renderDistancePrefsControlHtml/);
   mustNotMatch(areaFn, /renderAreaControlHtml|data-he-meas="area"|data-he-meas-value="sqft"/);
   mustNotMatch(demandFn, /renderAreaControlHtml|data-he-meas="area"|data-he-meas-value="sqft"/);
-  // Access / overview / submarket panels must not mount measurement controls.
-  const accessSlice = hdp.includes("function loadAccessConnectivityTab")
-    ? hdp.slice(hdp.indexOf("function loadAccessConnectivityTab"), hdp.indexOf("function loadAccessConnectivityTab") + 2500)
-    : "";
-  mustNotMatch(accessSlice, /renderDistancePrefsControlHtml|renderAreaControlHtml|he-meas-prefs/);
+  mustNotMatch(accessPanelFn, /renderAreaControlHtml|data-he-meas="area"|data-he-meas-value="sqft"/);
   const std = read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md");
   mustInclude(std, "Contextual controls only");
   mustInclude(std, "Guest Rooms & Meeting Space");
-  mustInclude(std, "Area Hotels and Demand Drivers");
+  mustInclude(std, "Area Hotels and Access");
   mustNotMatch(hex, /renderControlHtml\(\)/);
   const css = read("public/css/hotel-explorer.css");
   mustInclude(css, "hex-rms-header");
@@ -1238,6 +1244,87 @@ run("he_hpc_submarket_snapshot_canonical_gates", () => {
   // Empty Scout must not be coded as the only path that can populate the panel.
   mustInclude(hdp, 'source: "hpc"');
   mustInclude(hdp, "Hotel Property Census (canonical)");
+});
+
+run("he_demand_access_airtable_read_gates", () => {
+  const lib = read("lib/hotel-intelligence/he-demand-access-read-v1.js");
+  const api = read("api/hotel-explorer-demand-access.js");
+  const hdp = read("public/js/hotel-detail-panel.js");
+  const server = read("server.js");
+  const daFields = read("lib/demand-anchors/airtable-demand-anchors-fields.js");
+  const tiFields = read("lib/travel-infrastructure/airtable-travel-infrastructure-fields.js");
+  const std = read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md");
+  const inv = read("reports/hotel-explorer/HE-DEMAND-ACCESS-AIRTABLE-RECOVERY-V1.md");
+  const reg = JSON.parse(
+    read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
+  );
+
+  mustInclude(lib, HE_DEMAND_ACCESS_READ_V1);
+  mustInclude(lib, "buildHeDemandDriversRead");
+  mustInclude(lib, "buildHeAccessConnectivityRead");
+  mustInclude(lib, "resolveHpcHotelForDemandAccess");
+  mustInclude(lib, "fetchDemandAnchorRecords");
+  mustInclude(lib, "fetchTravelInfrastructureRecords");
+  mustInclude(lib, "STRAIGHT_LINE");
+  mustInclude(lib, "Reusable geographic");
+  mustInclude(lib, "Do not invent");
+  mustInclude(api, "X-Dealality-Write");
+  mustInclude(api, "X-Dealality-Paid-Providers");
+  mustInclude(api, "buildHeDemandDriversRead");
+  mustInclude(api, "buildHeAccessConnectivityRead");
+  mustInclude(server, "/api/hotel-explorer/hotels/:hotelId/demand-drivers");
+  mustInclude(server, "/api/hotel-explorer/hotels/:hotelId/access-connectivity");
+  mustInclude(hdp, "fetchHeDemandDrivers");
+  mustInclude(hdp, "fetchHeAccessConnectivity");
+  mustInclude(hdp, "hydrateHotelFromHpc");
+  mustInclude(hdp, "verifiedTravelTimeLabel");
+  mustInclude(hdp, "data-hdp-demand-source");
+  mustInclude(hdp, "data-hdp-access-source");
+  mustInclude(hdp, "data-he-async=\"demand-drivers\"");
+  mustInclude(hdp, "data-he-async=\"access-connectivity\"");
+  // No invented drive times from haversine / 55 km/h heuristic.
+  mustNotMatch(hdp, /estimateDriveMinutes\s*\(/);
+  mustNotMatch(hdp, /55\s*km\/h/);
+  mustNotMatch(hdp, /~\s*"\s*\+\s*mins\s*\+\s*"\s*min drive/);
+  // Access tab hosts mi/km; Demand Drivers tab does not reintroduce the control.
+  mustInclude(hdp, "hdp-access-connectivity-tab");
+  mustInclude(hdp, "renderDistancePrefsControlHtml()");
+  const demandTabFn = hdp.match(
+    /function renderDemandDriversTabPanel\([\s\S]*?\n  function /
+  );
+  assert.ok(demandTabFn, "renderDemandDriversTabPanel must exist");
+  assert.ok(
+    !demandTabFn[0].includes("renderDistancePrefsControlHtml()"),
+    "Demand Drivers tab must not host the mi/km toggle (Access-only placement)"
+  );
+  assert.ok(
+    /function renderAccessConnectivityPanel[\s\S]*renderDistancePrefsControlHtml\(\)/.test(hdp),
+    "Access & Connectivity must host the mi/km toggle when distances are shown"
+  );
+  // Canonical HPC + reusable entity stores.
+  mustInclude(daFields, "Demand Anchors");
+  mustInclude(tiFields, "Travel Infrastructure Data");
+  mustInclude(lib, "Demand Anchors");
+  mustInclude(lib, "Travel Infrastructure Data");
+  mustInclude(std, "HE-QL-037");
+  mustInclude(std, "Demand Anchors");
+  mustInclude(std, "Travel Infrastructure Data");
+  mustInclude(inv, "recLuxvwwxID7U2B8");
+  mustInclude(inv, "Demand Anchors");
+  mustInclude(inv, "Travel Infrastructure Data");
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-037"));
+
+  assert.equal(resolveContextRadiusKm({ locationType: "Urban" }), HE_CONTEXT_RADIUS_KM.Urban);
+  assert.equal(resolveContextRadiusKm({ locationType: "Suburban" }), HE_CONTEXT_RADIUS_KM.Suburban);
+  // Distance conversion sanity (mi/km) — Access toggle uses shared prefs.
+  assert.ok(Math.abs(kmToMi(16.09) - 10) < 0.05);
+  assert.ok(Math.abs(MI_TO_KM * 10 - 16.09) < 0.05);
+
+  // GET handlers must not import apply/write planners or invoke paid research.
+  mustNotMatch(api, /--apply|applyAuthorized:\s*true|createRecords|updateRecords/);
+  mustNotMatch(lib, /openai|webhound|createRecords|updateRecords/i);
+  mustInclude(lib, "paidProviders: false");
+  mustInclude(api, "paidProviders: false");
 });
 
 if (failures.length) {
