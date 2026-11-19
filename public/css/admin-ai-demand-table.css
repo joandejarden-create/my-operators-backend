@@ -174,10 +174,10 @@
 
 .ada-sort-indicator {
   display: inline-flex;
-  flex-direction: column;
-  gap: 2px;
-  opacity: 0.35;
-  margin-left: 2px;
+  align-items: center;
+  opacity: 0.4;
+  margin-left: 4px;
+  flex-shrink: 0;
 }
 
 .ada-th--sortable:hover .ada-sort-indicator,
@@ -186,6 +186,33 @@
   opacity: 1;
 }
 
+.ada-sort-svg {
+  display: block;
+}
+
+.ada-sort-chevron {
+  fill: #8b95a8;
+}
+
+.ada-th--sortable.sort-asc .ada-sort-chevron--up {
+  fill: #6c72ff;
+}
+
+.ada-th--sortable.sort-asc .ada-sort-chevron--down {
+  fill: #3a4560;
+  opacity: 0.45;
+}
+
+.ada-th--sortable.sort-desc .ada-sort-chevron--down {
+  fill: #6c72ff;
+}
+
+.ada-th--sortable.sort-desc .ada-sort-chevron--up {
+  fill: #3a4560;
+  opacity: 0.45;
+}
+
+/* Legacy CSS-triangle arrows (kept for older cached markup) */
 .ada-sort-arrow {
   width: 0;
   height: 0;

@@ -12,7 +12,7 @@
     priorRunDate: true,
     generatedAt: true,
   };
-  var NUM_SORT_KEYS = { actionCount: true };
+  var NUM_SORT_KEYS = { actionCount: true, hasPdf: true };
 
   var state = {
     reviews: [],
@@ -198,6 +198,7 @@
         { key: key, dir: dir, type: type, tieBreak: "propertyName" },
         function (row, k) {
           if (k === "clientIssued") return row.clientIssued ? 1 : 0;
+          if (k === "hasPdf") return row.hasPdf ? 1 : 0;
           if (k === "market") return row.market || row.location || "";
           return row[k];
         }
@@ -492,10 +493,18 @@
     );
   }
 
+  function paintAdrSortHeaders() {
+    var thead = document.getElementById("adrTableHead");
+    if (T && typeof T.paintSortState === "function") {
+      T.paintSortState(thead, state.sortKey, state.sortDir);
+    }
+  }
+
   function renderTable() {
     var tbody = document.getElementById("adrTableBody");
     if (!tbody) return;
     var rows = sortedRows();
+    paintAdrSortHeaders();
     if (state.coverageMode) {
       var covFilter = document.getElementById("adrFilterCoverage");
       var covVal = covFilter ? covFilter.value : "";

@@ -129,19 +129,27 @@
         <table class="adr-table ada-table" id="adrTable">
           <thead id="adrTableHead">
             <tr>
-              <th class="ada-cell-check ada-th--check" scope="col">
+              <th class="ada-cell-check ada-th--check no-sort" scope="col">
                 <input type="checkbox" class="ada-select-page" id="adrSelectPage" title="Select all on this page" aria-label="Select all on this page" />
               </th>
               <th data-sort="propertyName"><span class="ada-th-label">Hotel</span></th>
-              <th data-sort="publishedMonthYear"><span class="ada-th-label">Published</span></th>
-              <th data-sort="newDraftLabel"><span class="ada-th-label">New Draft</span></th>
-              <th data-sort="customerAccessLabel"><span class="ada-th-label">Customer Access</span></th>
-              <th data-sort="pdfLabel"><span class="ada-th-label">PDF</span></th>
+              <th data-sort="market"><span class="ada-th-label">Location</span></th>
+              <th data-sort="reportingMonth"><span class="ada-th-label">Reporting Month</span></th>
+              <th data-sort="currentMonitoringDate" title="Current research / monitoring date for the published period"><span class="ada-th-label">Research Date</span></th>
+              <th data-sort="priorRunDate"><span class="ada-th-label">Prior Run</span></th>
+              <th data-sort="versionLabel"><span class="ada-th-label">Version</span></th>
+              <th data-sort="reviewStatus"><span class="ada-th-label">Review Status</span></th>
+              <th data-sort="generationStatus"><span class="ada-th-label">Generation</span></th>
+              <th data-sort="coverageStatus"><span class="ada-th-label">Coverage</span></th>
+              <th data-sort="clientIssued" title="Customer-issued / publication status"><span class="ada-th-label">Customer Issued</span></th>
+              <th data-sort="hasPdf"><span class="ada-th-label">PDF</span></th>
+              <th data-sort="actionCount"><span class="ada-th-label">Actions #</span></th>
+              <th data-sort="generatedAt"><span class="ada-th-label">Generated</span></th>
               <th class="ada-col-actions no-sort">Actions</th>
             </tr>
           </thead>
           <tbody id="adrTableBody">
-            <tr><td colspan="7">Loading…</td></tr>
+            <tr><td colspan="15">Loading…</td></tr>
           </tbody>
         </table>
       </div>
@@ -210,20 +218,20 @@
 
       <div class="adr-table-wrap ada-table-shell">
         <table class="adr-table ada-table" id="aapTable">
-          <thead>
+          <thead id="aapTableHead">
             <tr>
-              <th>#</th>
-              <th>Priority</th>
-              <th>Status</th>
-              <th>Title</th>
-              <th>Owner</th>
-              <th>Due</th>
-              <th>Observed Issue</th>
-              <th>Implementation Steps</th>
-              <th>Target Sources</th>
-              <th>Definition of Done</th>
-              <th>Expected Signal</th>
-              <th>Next Monitoring Check</th>
+              <th data-sort="index"><span class="ada-th-label">#</span></th>
+              <th data-sort="priority"><span class="ada-th-label">Priority</span></th>
+              <th data-sort="status"><span class="ada-th-label">Status</span></th>
+              <th data-sort="title"><span class="ada-th-label">Title</span></th>
+              <th data-sort="owner"><span class="ada-th-label">Owner</span></th>
+              <th data-sort="due"><span class="ada-th-label">Due</span></th>
+              <th class="no-sort"><span class="ada-th-label">Observed Issue</span></th>
+              <th class="no-sort"><span class="ada-th-label">Implementation Steps</span></th>
+              <th class="no-sort"><span class="ada-th-label">Target Sources</span></th>
+              <th class="no-sort"><span class="ada-th-label">Definition of Done</span></th>
+              <th class="no-sort"><span class="ada-th-label">Expected Signal</span></th>
+              <th data-sort="nextMonitoringCheck"><span class="ada-th-label">Next Monitoring Check</span></th>
             </tr>
           </thead>
           <tbody id="aapTableBody">
@@ -291,7 +299,7 @@
         <table class="adr-table ada-table" id="gdiRptTable">
           <thead id="gdiRptTableHead">
             <tr>
-              <th class="ada-cell-check ada-th--check" scope="col">
+              <th class="ada-cell-check ada-th--check no-sort" scope="col">
                 <input type="checkbox" class="ada-select-page" title="Select all on this page" aria-label="Select all on this page" />
               </th>
               <th data-sort="displayName"><span class="ada-th-label">Hotel</span></th>
@@ -380,7 +388,7 @@
               <th data-sort="reportClass"><span class="ada-th-label">Class</span></th>
               <th data-sort="versionLabel"><span class="ada-th-label">Version</span></th>
               <th data-sort="pdfStatus"><span class="ada-th-label">PDF</span></th>
-              <th>Snapshot</th>
+              <th class="no-sort"><span class="ada-th-label">Snapshot</span></th>
               <th class="ada-col-actions no-sort">Actions</th>
             </tr>
           </thead>
@@ -468,16 +476,16 @@
         <table class="adr-table ada-table ava-table" id="avaTable">
           <thead>
             <tr>
-              <th class="ada-cell-check ada-th--check" scope="col">
+              <th class="ada-cell-check ada-th--check no-sort" scope="col">
                 <input type="checkbox" class="ada-select-page" id="avaSelectPage" title="Select all on this page" aria-label="Select all on this page" />
               </th>
-              <th><span class="ada-th-label">Hotel</span></th>
-              <th><span class="ada-th-label">Location</span></th>
-              <th><span class="ada-th-label">ADP Baseline</span></th>
-              <th><span class="ada-th-label">Audit Status</span></th>
-              <th><span class="ada-th-label">Recommendations</span></th>
-              <th><span class="ada-th-label">PDF</span></th>
-              <th><span class="ada-th-label">Customer Approval</span></th>
+              <th data-sort="name"><span class="ada-th-label">Hotel</span></th>
+              <th data-sort="market"><span class="ada-th-label">Location</span></th>
+              <th data-sort="adpBaselinePeriodId"><span class="ada-th-label">ADP Baseline</span></th>
+              <th data-sort="auditStatus"><span class="ada-th-label">Audit Status</span></th>
+              <th data-sort="recommendationCount"><span class="ada-th-label">Recommendations</span></th>
+              <th data-sort="pdfAvailability"><span class="ada-th-label">PDF</span></th>
+              <th data-sort="customerApproval"><span class="ada-th-label">Customer Approval</span></th>
               <th class="ada-col-actions no-sort">Actions</th>
             </tr>
           </thead>
@@ -642,14 +650,14 @@
         </div>
         <div class="adr-table-wrap ada-table-shell">
           <table class="adr-table ada-table" id="graHistoricalTable">
-            <thead>
+            <thead id="graHistoricalTableHead">
               <tr>
-                <th><span class="ada-th-label">Organization / Event</span></th>
-                <th><span class="ada-th-label">Group</span></th>
-                <th><span class="ada-th-label">Original ID</span></th>
-                <th><span class="ada-th-label">Historical disposition</span></th>
-                <th><span class="ada-th-label">Body status</span></th>
-                <th><span class="ada-th-label">Provenance</span></th>
+                <th data-sort="organization"><span class="ada-th-label">Organization / Event</span></th>
+                <th data-sort="group"><span class="ada-th-label">Group</span></th>
+                <th data-sort="originalId"><span class="ada-th-label">Original ID</span></th>
+                <th data-sort="disposition"><span class="ada-th-label">Historical disposition</span></th>
+                <th data-sort="bodyStatus"><span class="ada-th-label">Body status</span></th>
+                <th data-sort="provenance"><span class="ada-th-label">Provenance</span></th>
               </tr>
             </thead>
             <tbody id="graHistoricalTableBody">
@@ -695,14 +703,14 @@
 
       <div class="adr-table-wrap ada-table-shell">
         <table class="adr-table ada-table" id="graTable">
-          <thead>
+          <thead id="graTableHead">
             <tr>
-              <th><span class="ada-th-label">Run ID</span></th>
-              <th><span class="ada-th-label">Status</span></th>
-              <th><span class="ada-th-label">Started</span></th>
-              <th><span class="ada-th-label">Completed</span></th>
-              <th><span class="ada-th-label">Qualified</span></th>
-              <th><span class="ada-th-label">Cost USD</span></th>
+              <th data-sort="runId"><span class="ada-th-label">Run ID</span></th>
+              <th data-sort="status"><span class="ada-th-label">Status</span></th>
+              <th data-sort="startedAt"><span class="ada-th-label">Started</span></th>
+              <th data-sort="completedAt"><span class="ada-th-label">Completed</span></th>
+              <th data-sort="qualified"><span class="ada-th-label">Qualified</span></th>
+              <th data-sort="costUsd"><span class="ada-th-label">Cost USD</span></th>
               <th class="ada-col-actions no-sort">Actions</th>
             </tr>
           </thead>
@@ -733,7 +741,7 @@
       }
     })();
   </script>
-  <script src="/js/admin-ai-demand-table.js?v=ada-table-parity-v1"></script>
+  <script src="/js/admin-ai-demand-table.js?v=ada-table-headers-sort-v1"></script>
   <script src="/js/admin-ai-demand-admin.js?v=ada-gdi-research-audit-nav-v1"></script>
   <script src="/js/admin-ai-demand-reviews.js?v=adp-auth-split-brain-v1"></script>
   <script src="/js/admin-adp-action-plan.js?v=adp-auth-split-brain-v1"></script>
