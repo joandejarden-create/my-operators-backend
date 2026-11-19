@@ -1,0 +1,131 @@
+#!/usr/bin/env node
+/**
+ * Phase 2C Curio independent reconstruction — dry-run / staging only.
+ * Never writes Airtable. Never uses production Presentation as generator input.
+ *
+ *   node --env-file=… scripts/be-phase2c-curio-reconstruction-v1.mjs
+ */
+import { writeFileSync, mkdirSync } from "node:fs";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import { runPhase2cCurioReconstruction } from "../lib/brand-explorer/be-phase2c-curio-reconstruction-v1.js";
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+
+async function main() {
+  const result = await runPhase2cCurioReconstruction({
+    captureBaseline: true,
+    allowLiveHpc: true,
+    allowOfficialFetch: true,
+  });
+
+  // Isolated preview payload (candidate blocks only — not published profile)
+  const previewDir = join(ROOT, "public/brand-explorer-phase2c-preview");
+  mkdirSync(previewDir, { recursive: true });
+  const previewPayload = {
+    mode: "isolated_candidate_preview",
+    brandId: result.candidate.brandBasicsRecordId,
+    brandName: result.candidate.brandName,
+    note: "Does not modify published Presentation. Load beside atelier for visual QA.",
+    blocks: result.candidate.rows
+      .filter((r) => r.body || r.title)
+      .map((r, i) => ({
+        recordId: `phase2c-candidate-${i}`,
+        slotKey: r.slotKey,
+        title: r.title,
+        body: r.body,
+        sort: i,
+        disposition: r.disposition,
+        evidenceIds: r.evidenceIds,
+      })),
+  };
+  writeFileSync(join(previewDir, "curio-candidate.json"), JSON.stringify(previewPayload, null, 2));
+  writeFileSync(
+    join(previewDir, "index.html"),
+    `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Phase 2C Curio isolated candidate preview</title>
+  <style>
+    :root { --bg:#f6f3ee; --ink:#1c1916; --muted:#6b645c; --line:#d9d1c7; --card:#fff; }
+    body { margin:0; font-family:"Iowan Old Style", "Palatino Linotype", Palatino, serif; background:linear-gradient(160deg,#efe8dc,#f7f4ef 40%,#e7eef2); color:var(--ink); }
+    header { padding:2rem 1.5rem 1rem; border-bottom:1px solid var(--line); }
+    h1 { margin:0 0 .35rem; font-size:1.75rem; letter-spacing:-.02em; }
+    .meta { color:var(--muted); font-size:.95rem; }
+    .warn { margin:1rem 1.5rem; padding:.75rem 1rem; border:1px solid #c9a227; background:#fff8e6; }
+    main { display:grid; gap:1rem; padding:1.5rem; max-width:980px; }
+    article { background:var(--card); border:1px solid var(--line); padding:1rem 1.15rem; }
+    .slot { font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:.75rem; color:var(--muted); }
+    h2 { margin:.2rem 0 .5rem; font-size:1.1rem; }
+    p { margin:0; line-height:1.45; white-space:pre-wrap; }
+    .disp { display:inline-block; margin-top:.6rem; font-size:.75rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Curio Collection — Phase 2C candidate</h1>
+    <div class="meta">Isolated preview · not the published Brand Explorer profile · no Airtable writes</div>
+  </header>
+  <div class="warn">Rendered-application validation against atelier components remains incomplete until this payload is mounted in the live atelier shell. This page is a candidate block dump for founder QA.</div>
+  <main id="root">Loading…</main>
+  <script>
+    fetch('./curio-candidate.json').then(r=>r.json()).then(data=>{
+      const root=document.getElementById('root');
+      root.innerHTML='';
+      for (const b of data.blocks||[]) {
+        const el=document.createElement('article');
+        el.innerHTML='<div class="slot"></div><h2></h2><p></p><div class="disp"></div>';
+        el.querySelector('.slot').textContent=b.slotKey;
+        el.querySelector('h2').textContent=b.title||'(no title)';
+        el.querySelector('p').textContent=b.body||'(empty)';
+        el.querySelector('.disp').textContent=b.disposition||'';
+        root.appendChild(el);
+      }
+    }).catch(err=>{
+      document.getElementById('root').textContent=String(err);
+    });
+  </script>
+</body>
+</html>
+`,
+  );
+
+  writeFileSync(
+    join(result.dir, "07-render-preview-note.json"),
+    JSON.stringify(
+      {
+        status: "PARTIAL",
+        previewPath: "public/brand-explorer-phase2c-preview/index.html",
+        atelierMount: "NOT_VALIDATED",
+        note: "Candidate block dump preview shipped. Full atelier component mount remains NOT_VALIDATED without a staging Presentation write or in-memory atelier harness.",
+      },
+      null,
+      2,
+    ),
+  );
+
+  console.log(
+    JSON.stringify(
+      {
+        ok: true,
+        dir: result.dir,
+        scores: result.acceptance.scores,
+        researchRequired: result.quality.counts.researchRequired,
+        populated: result.quality.counts.populated,
+        stopForPaidAuth: result.paid.stopForAuthorization,
+        preview: "public/brand-explorer-phase2c-preview/index.html",
+      },
+      null,
+      2,
+    ),
+  );
+
+  // Exit 0 for successful evidence run; founder gate is separate
+  process.exit(0);
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
