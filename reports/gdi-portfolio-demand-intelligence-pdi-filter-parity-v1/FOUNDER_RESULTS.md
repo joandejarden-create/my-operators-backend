@@ -31,6 +31,14 @@
 - Do **not** treat detached primary `:8080` as the GDI product home.  
 - Unrelated primary dirty work left untouched.
 
+## Evidence
+
+- Local demo screenshot: `local-pdi-filters-demo.png` (`?pdiDemo=1` on `:8095`)
+- Commit: `75c4ba3a11335295eb455da342aff015a1a1d92c`
+- PR: https://github.com/joandejarden-create/my-operators-backend/pull/467
+- Cache marker: `gdi-pdi-filter-parity-v1`
+
 ## STOP
 
-Founder visual review required before declaring UI parity complete.
+Founder visual review required before declaring UI parity complete.  
+Awaiting Integration Controller merge + external deploy; do **not** claim EXTERNALLY_VERIFIED until AFTER screenshots on Railway.
