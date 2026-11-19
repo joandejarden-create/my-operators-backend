@@ -4,6 +4,7 @@
 **Date:** 2026-11-19  
 **Stream:** `gdi` · Workspace `C:\Dev\dealality\ws-gdi`  
 **Does not disrupt:** Slice 2A PR #444 · prior Slice 1 merges  
+**Coordination:** Parallel Track B (Portfolio) alongside Track A (Research & Commercial) — see `gdi-3-0-dual-track-roadmap-v1.md`  
 **Does not authorize:** UI implementation · schema changes · paid research · production Airtable writes · customer publication · deployment
 
 **Success target:** One market research process serving multiple hotels, presented through a management-company portfolio view, with evidence-backed qualification and individual hotel pursuit recommendations.
@@ -176,7 +177,7 @@ Machine draft (implementation slice): `gdi-portfolio-hotel-opportunity-fit-contr
 
 ## 6. Recommended implementation PR sequence
 
-Keep Slice 2A (#444) independent. Start Portfolio work only after founder approval of this assessment (and preferably after #444 merges for persistence honesty).
+Keep Slice 2A (#444) independent. Portfolio (Track B) and Research & Commercial (Track A) progress **in parallel** after this assessment is approved — one active GDI implementation PR at a time; coordinate shared identity / persistence / fit contracts before either track changes them.
 
 | PR | Scope | Auth / writes |
 | --- | --- | --- |
