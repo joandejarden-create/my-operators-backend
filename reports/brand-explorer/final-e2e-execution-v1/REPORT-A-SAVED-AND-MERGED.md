@@ -12,9 +12,9 @@
 | Feature commit | `ef4fdba5c` — Phase 2H factory, standards, publication gates |
 | Merge `origin/main` | `ebc650f8f` (clean ort merge; behind=0) |
 | SoT test follow-up | staged with this report package |
-| PR | *opened after push — see PR URL below / GitHub* |
+| PR | https://github.com/joandejarden-create/my-operators-backend/pull/465 · **OPEN** |
 | Merge into `main` | **AWAITING_INTEGRATION_CONTROLLER** |
-| Superseded PRs (do not merge) | #447, #451, #453, #457 |
+| Superseded PRs (do not merge) | #447, #451, #453, #457 (commented) |
 
 ## Integrated capability (this branch)
 
