@@ -1,0 +1,117 @@
+{
+  "schema": "gdi_ai_agent_exa_powered_parity_experiment_v1",
+  "version": "2026-11-19.1",
+  "status": "PROTOCOL_DESIGN_LOCKED_SPEND_DENIED",
+  "paidResearchAuthorized": false,
+  "paidResearchExecuted": false,
+  "clarification": {
+    "wave1OfficialPageIterateDoesNotTestExaPoweredBaseline": true,
+    "doNotConcludeAgentsHaveNoValueFromOfficialPageOnly": true
+  },
+  "terminology": {
+    "exaSearchContents": "Exa HTTP /search and /contents",
+    "exaAgentApi": "Exa vendor multi-step agent runs already used by GDI",
+    "dealalityAdaptiveResearchAgent": "Local planning/refinement/stop layer under test"
+  },
+  "conclusionScope": {
+    "primary": "A_incremental_research_on_existing_opportunities",
+    "doesNotEstablish": "B_incremental_discovery_of_genuinely_new_opportunities",
+    "conclusionBRequiresSeparateDiscoveryDesign": true
+  },
+  "cohort": {
+    "focusSubsetCases": 8,
+    "focusLockPath": "fixtures/gdi-experiments/gdi-ai-agent-incremental-value-experiment-v1/focus-eight-cases.json",
+    "reuseExistingFocusEight": true
+  },
+  "fairnessContract": {
+    "identicalExaCapabilitiesBothArms": true,
+    "identicalUsdAndCallCaps": true,
+    "armAIsCurrentExaPoweredGdiNotOfficialPageOnly": true,
+    "armBAddsDealalityAdaptivePlanningOnly": true,
+    "budgetAsymmetryForbidden": true,
+    "evidenceGroundedMaterialLiftRequired": true,
+    "drawerReadyAloneCannotAdopt": true,
+    "noAirtableOrPublicationWrites": true,
+    "deniedExtraProviders": [
+      "serpapi",
+      "pdl",
+      "surfe",
+      "firecrawl_metered",
+      "parallel",
+      "jev"
+    ]
+  },
+  "waves": {
+    "E0_offline_mock": {
+      "paidUsd": 0,
+      "purpose": "selection_and_gate_smoke"
+    },
+    "E1_paid_exa_parity": {
+      "defaultAuthorized": false,
+      "requiresSeparateFounderAuth": true,
+      "proposedAuthEnv": "GDI_AI_AGENT_EXA_PARITY_AUTH",
+      "alsoRequires": [
+        "GDI_EXA_AGENT_LIVE=1",
+        "authorizePaidDiscovery",
+        "authorizePaidResearch",
+        "authorizeExaAgentLive"
+      ],
+      "hardCeilingUsdTotal": 20,
+      "perArmPerCaseCeilingUsd": 1.25,
+      "preferredEffort": "medium"
+    },
+    "E2": {
+      "defaultAuthorized": false
+    }
+  },
+  "costEstimate": {
+    "exaAgentMediumUsd": 0.1,
+    "exaAgentHighUsd": 0.5,
+    "exaLiteSearchUsd": 0.004,
+    "proposedExperimentHardCeilingUsd": 20,
+    "bethesdaPriority8ReferenceSpendUsd": 2.2,
+    "pricingAsOf": "2026-10-24"
+  },
+  "workflowMapModules": [
+    "lib/group-demand-intelligence/workflow/gdi-canonical-full-e2e-entry-v1.js",
+    "lib/group-demand-intelligence/research/segment-discovery-executor-v1.js",
+    "lib/group-demand-intelligence/research/exa-agent/exa-live-discovery-provider-bridge-v1.js",
+    "lib/group-demand-intelligence/research/exa-agent/exa-agent-provider-adapter-v1.js",
+    "lib/group-demand-intelligence/research/exa-agent/exa-agent-ors-strategy-v1.js",
+    "lib/group-demand-intelligence/research/adaptive-ors-exa-research-loop-v1.js",
+    "lib/group-demand-intelligence/research/gdi-segment-stage-call-budget-v1.js",
+    "lib/group-demand-intelligence/research/opportunity-research-supervisor-v1.js"
+  ],
+  "agentIncrementalRoles": [
+    "adaptive_query_formulation_across_calls",
+    "evidence_driven_search_refinement",
+    "multi_step_investigation_across_paid_calls",
+    "commercial_contact_prioritization",
+    "cross_source_verification_planning",
+    "dynamic_gap_prioritization",
+    "cost_aware_stopping_preserving_evidence_yield"
+  ],
+  "notAgentRoles": [
+    "replace_exa_agent_api",
+    "relax_eligibility_or_challenger",
+    "extra_paid_providers",
+    "discovery_architecture_productization"
+  ],
+  "decisionFramework": {
+    "evaluator": "gdi-ai-agent-wave1-evidence-grounded-evaluator-v1",
+    "adoptRequiresGe2EvidenceGroundedLifts": true,
+    "adoptMeans": "further_validation_or_selective_integration_only",
+    "cannotAdoptOnZeroMaterialCommercialLifts": true
+  },
+  "recommendation": {
+    "conductBoundedPaidExperimentAfterSeparateAuth": true,
+    "executePaidResearchNow": false,
+    "reason": "Wave1 official-page ITERATE does not test Exa-powered baseline; equal-budget Exa parity is the smallest valid commercial test"
+  },
+  "writes": {
+    "airtable": false,
+    "customerPublication": false,
+    "productionPersistence": false
+  },
+  "protocolDoc": "docs/data-intelligence/gdi-ai-agent-exa-powered-parity-experiment-v1.md"
+}
