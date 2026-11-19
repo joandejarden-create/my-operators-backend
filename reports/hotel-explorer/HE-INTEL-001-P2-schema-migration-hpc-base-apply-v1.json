@@ -1,0 +1,250 @@
+{
+  "at": "2026-11-19T09:46:24.404Z",
+  "mode": "APPLY",
+  "baseId": "appCCUsuGsE1ifoLk",
+  "expectedBaseId": "appCCUsuGsE1ifoLk",
+  "forbiddenBaseId": "appa2cE7FTRmIbB32",
+  "hpcTableId": "tbl9aY5ijiuIzzWam",
+  "graph_contract": "HOTEL_INTELLIGENCE_AIRTABLE_GRAPH_V1",
+  "graph_contract_version": "1.0.1-p2-hpc-base",
+  "schema_version": "he_intel_airtable_graph_v1",
+  "write_guarantees": {
+    "contract": "HOTEL_INTELLIGENCE_RESEARCH_ENGINE_V1",
+    "contract_version": "1.0.0-p1",
+    "graph_contract": "HOTEL_INTELLIGENCE_AIRTABLE_GRAPH_V1",
+    "graph_contract_version": "1.0.1-p2-hpc-base",
+    "graph_base_id": "appCCUsuGsE1ifoLk",
+    "forbidden_base_id": "appa2cE7FTRmIbB32",
+    "hpc_table_id": "tbl9aY5ijiuIzzWam",
+    "canonical_writes": false,
+    "bulk_research_data_writes": false,
+    "airtable_schema_create": true,
+    "paid_providers": false,
+    "surfe": false,
+    "customer_publication": "BLOCKED",
+    "hpc_owner_operator_overwrite": false,
+    "radar_status_mutation": false,
+    "research_complete_claim_allowed": false
+  },
+  "tables": [
+    {
+      "tableName": "HI Organizations",
+      "tableId": "tbliXEfUOWk32AN9y",
+      "createdTable": true,
+      "reused": false,
+      "fieldsWouldCreate": [],
+      "fieldsCreated": [
+        "Organization ID",
+        "Legal Name",
+        "Trading Name",
+        "Organization Type",
+        "Jurisdiction",
+        "Registry / Identifier",
+        "Official Website",
+        "Parent Organization ID",
+        "Verification State",
+        "Confidence",
+        "Dedupe Key",
+        "Provenance Summary",
+        "Publication State",
+        "Evidence Refs",
+        "Schema Version",
+        "Notes"
+      ],
+      "fieldsSkipped": [],
+      "fieldsFailed": []
+    },
+    {
+      "tableName": "HI Hotel–Org Relationships",
+      "tableId": "tblGiwN0foXXDESvZ",
+      "createdTable": true,
+      "reused": false,
+      "fieldsWouldCreate": [],
+      "fieldsCreated": [
+        "Relationship ID",
+        "HPC Hotel ID",
+        "Organization ID",
+        "Relationship Type",
+        "Current?",
+        "Effective From",
+        "Effective To",
+        "Confidence",
+        "Verification State",
+        "Conflict Status",
+        "Dedupe Key",
+        "Evidence Refs",
+        "Publication State",
+        "Schema Version",
+        "Notes"
+      ],
+      "fieldsSkipped": [],
+      "fieldsFailed": []
+    },
+    {
+      "tableName": "HI Org Contacts",
+      "tableId": "tbldJAj0nK1l39JZL",
+      "createdTable": true,
+      "reused": false,
+      "fieldsWouldCreate": [],
+      "fieldsCreated": [
+        "Person ID",
+        "Display Name",
+        "Organization ID",
+        "Title",
+        "Function / Role",
+        "Hotel / Commercial Responsibility",
+        "Affiliation Verified?",
+        "Role Currency",
+        "Confidence",
+        "Verification State",
+        "Person Dedupe Key",
+        "Affiliation Dedupe Key",
+        "Evidence Refs",
+        "Publication State",
+        "Schema Version",
+        "Notes"
+      ],
+      "fieldsSkipped": [],
+      "fieldsFailed": []
+    },
+    {
+      "tableName": "HI Contact Channels",
+      "tableId": "tblqC7C4ypy5Zojyw",
+      "createdTable": true,
+      "reused": false,
+      "fieldsWouldCreate": [],
+      "fieldsCreated": [
+        "Channel ID",
+        "Subject Type",
+        "Subject ID",
+        "Channel Kind",
+        "Channel Value",
+        "Classification",
+        "Verification Status",
+        "Source Name",
+        "Source URL",
+        "Observed At",
+        "Provider",
+        "Usage Provenance",
+        "Access / Publication Restriction",
+        "Dedupe Key",
+        "Publication State",
+        "Schema Version",
+        "Notes"
+      ],
+      "fieldsSkipped": [],
+      "fieldsFailed": []
+    },
+    {
+      "tableName": "HI Ownership Research Runs",
+      "tableId": "tblGwk1YefumCf2eu",
+      "createdTable": true,
+      "reused": false,
+      "fieldsWouldCreate": [],
+      "fieldsCreated": [
+        "Run ID",
+        "Case ID",
+        "Contract ID",
+        "Contract Version",
+        "HPC Hotel ID",
+        "Organization Scope",
+        "Execution Mode",
+        "Current Stage",
+        "Run Status",
+        "Checkpoint / Resume Ref",
+        "Evidence Version",
+        "Provider Operations JSON",
+        "Cost USD",
+        "Cost USD Status",
+        "Credits",
+        "Validation State",
+        "Publication State",
+        "Failure / Retry Info",
+        "Input Fingerprint",
+        "Schema Version",
+        "Notes"
+      ],
+      "fieldsSkipped": [],
+      "fieldsFailed": []
+    },
+    {
+      "tableName": "HI Graph Evidence",
+      "tableId": "tblc9JhKT1edr4grE",
+      "createdTable": true,
+      "reused": false,
+      "fieldsWouldCreate": [],
+      "fieldsCreated": [
+        "Evidence ID",
+        "HPC Hotel ID",
+        "Entity Type",
+        "Entity Record ID",
+        "Field Name",
+        "Value Observed",
+        "Source Name",
+        "Source Type",
+        "Source URL",
+        "Source Published Date",
+        "Retrieved At",
+        "Evidence Snippet",
+        "Confidence",
+        "Evidence Strength",
+        "Current?",
+        "Superseded By",
+        "Notes",
+        "Schema Version"
+      ],
+      "fieldsSkipped": [],
+      "fieldsFailed": []
+    }
+  ],
+  "links": [
+    {
+      "table": "HI Organizations",
+      "field": "Parent Organization",
+      "created": true,
+      "linkedTableId": "tbliXEfUOWk32AN9y"
+    },
+    {
+      "table": "HI Hotel–Org Relationships",
+      "field": "Organization",
+      "created": true,
+      "linkedTableId": "tbliXEfUOWk32AN9y"
+    },
+    {
+      "table": "HI Hotel–Org Relationships",
+      "field": "Hotel Property Census",
+      "created": true,
+      "linkedTableId": "tbl9aY5ijiuIzzWam"
+    },
+    {
+      "table": "HI Org Contacts",
+      "field": "Organization",
+      "created": true,
+      "linkedTableId": "tbliXEfUOWk32AN9y"
+    },
+    {
+      "table": "HI Contact Channels",
+      "field": "Person",
+      "created": true,
+      "linkedTableId": "tbldJAj0nK1l39JZL"
+    },
+    {
+      "table": "HI Contact Channels",
+      "field": "Organization",
+      "created": true,
+      "linkedTableId": "tbliXEfUOWk32AN9y"
+    },
+    {
+      "table": "HI Ownership Research Runs",
+      "field": "Hotel Property Census",
+      "created": true,
+      "linkedTableId": "tbl9aY5ijiuIzzWam"
+    },
+    {
+      "table": "HI Graph Evidence",
+      "field": "Hotel Property Census",
+      "created": true,
+      "linkedTableId": "tbl9aY5ijiuIzzWam"
+    }
+  ]
+}

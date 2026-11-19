@@ -1,63 +1,55 @@
-# HE-INTEL-001 P2 — Founder completion report
+# HE-INTEL-001 P2 — Founder completion report (base correction)
 
 **Status:** `AWAITING_INTEGRATION_CONTROLLER` — STOP before merge  
-**Branch:** `feat/he-intel-001-p2-airtable-intelligence-graph`  
-**Base P1 merge:** `0b867c43c394e40cdbf1d8780fb01f692bcbe1d5`  
-**Workspace:** `C:\Dev\dealality\ws-hotel-explorer`  
+**PR:** [#422](https://github.com/joandejarden-create/my-operators-backend/pull/422)  
+**Correction:** HI graph moved to HPC base `appCCUsuGsE1ifoLk`
 
-## 1. Airtable IDs (base `appa2cE7FTRmIbB32`)
+## Correct HPC base verification
 
-| Table | ID | Status |
-| --- | --- | --- |
-| HI Organizations | `tbl4XhanPXiUIsvaB` | **CREATED** |
-| HI Hotel–Org Relationships | `tblbBbIYtIWEPyRPH` | **CREATED** |
-| HI Org Contacts | `tblki7hgPmcrkrfSY` | **CREATED** |
-| HI Contact Channels | `tblMscC8FgXUpmFts` | **CREATED** |
-| HI Ownership Research Runs | `tbl6cUPY5J84P3QLn` | **CREATED** |
-| Hotel Intelligence Evidence | `tblHxS8x0niDEGVsh` | **REUSED** |
+- Base `appCCUsuGsE1ifoLk` contains Hotel Property Census `tbl9aY5ijiuIzzWam`
+- Schema ensure refuses forbidden base `appa2cE7FTRmIbB32`
 
-Links created: Parent Organization (self), Relationship→Org, Contact→Org, Channel→Person, Channel→Org.
+## Five new table IDs (HPC base)
 
-## 2. Created vs reused
+| Table | ID |
+| --- | --- |
+| HI Organizations | `tbliXEfUOWk32AN9y` |
+| HI Hotel–Org Relationships | `tblGiwN0foXXDESvZ` |
+| HI Org Contacts | `tbldJAj0nK1l39JZL` |
+| HI Contact Channels | `tblqC7C4ypy5Zojyw` |
+| HI Ownership Research Runs | `tblGwk1YefumCf2eu` |
+| HI Graph Evidence (new, HPC-side) | `tblc9JhKT1edr4grE` |
 
-- **Created:** five approved graph tables + link fields  
-- **Reused:** Hotel Intelligence Evidence  
-- **Deferred (manual):** Evidence `Entity Type` option append — Meta API returns “Changing a field's type…”. Add manually: Organization, Hotel–Org Relationship, Org Contact, Contact Channel, Ownership Research Run. Do **not** recreate the field.
+Links: Org self-parent; Relationship→Org + →HPC; Contact→Org; Channel→Person/Org; Run→HPC; GraphEvidence→HPC.
 
-## 3. Entity model
+HPC field count increased by reciprocal link fields only (expected). Owner/Operator/Radar Status not intentionally modified.
 
-Organizations (`dle_`) · Relationships (`dor_`) · Persons (`dlp_`) · Channels (`dlc_`) · Research runs (`ownrun_`). Brand / operator / legal owner are distinct relationship types. Person identity ≠ affiliation. Publication layers separated; Airtable persist ≠ customer publish.
+## Evidence architecture
 
-## 4. Migration / rollback
+**Decision:** `HI Graph Evidence` on HPC base for graph-entity provenance.  
+**Preserved:** ADP `Hotel Intelligence Evidence` `tblHxS8x0niDEGVsh` — not deleted/mutated.
 
-- Idempotent ensure script: `--dry-run` then `--apply`  
-- Non-destructive (no deletes/renames)  
-- Rollback: leave empty tables; do not auto-drop. Data apply remains gated off.
+## Old five-table deletion
 
-## 5. Tests
+| Result | Detail |
+| --- | --- |
+| Emptiness recheck | All five empty |
+| Evidence preserved | Yes |
+| API DELETE | **FAILED** — Meta API `DELETE /tables/{id}` → `404 NOT_FOUND` |
+| Tables still on wrong base | Yes (manual UI deletion required) |
 
-`npm run test:he-intel-001-p2-airtable-graph-v1` — **14/14 PASS**  
-`npm run test:he-intel-001-research-engine-v1` — **24/24 PASS**  
-`dealality:ci-precheck` — PASS  
+**Blocker:** Airtable API cannot delete tables with current token/API. Founder should delete the five empty misplaced tables in the UI on `appa2cE7FTRmIbB32`. Do not delete Evidence.
 
-## 6. Dry-run vs apply (data)
+## Tests
 
-Synthetic store: dry-run writes=0; apply requires founder auth + synthetic allow; bulk production writes **disabled**.
+- `test:he-intel-001-p2-airtable-graph-v1` — PASS (includes base gate)
+- `test:he-intel-001-research-engine-v1` — PASS
+- CI: update on push of corrected HEAD
 
-## 7. Security / publication
+## WIP preservation
 
-Customer publication blocked. HPC Owner/Operator overwrite forbidden. Radar Status mutation forbidden. Name-only merge forbidden.
-
-## 8. Remaining before P3
-
-- Manual Evidence Entity Type choices  
-- Production data apply path (founder-gated) after validated research  
-- P3 paid research-method benchmark  
-
-## 9. WIP preservation
-
-ADP revoked-token registry, HE-INTEL evidence/reports, tmp probes **not** committed.
+Unrelated dirty HE/ADP artifacts not committed.
 
 ---
 
-**STOP** — no merge, no bulk research apply, no paid research, no deploy, no customer publication.
+**STOP** — no merge until founder review (esp. manual deletion of misplaced tables).

@@ -11,10 +11,15 @@ import { fileURLToPath } from "node:url";
 import {
   GRAPH_CONTRACT_ID,
   GRAPH_CONTRACT_VERSION,
+  GRAPH_BASE_ID_CANONICAL,
+  GRAPH_BASE_ID_FORBIDDEN,
+  HPC_TABLE_ID,
   HI_GRAPH_TABLES,
   P2_POLICY,
   PUBLICATION_LAYER,
   EVIDENCE_ENTITY_TYPE_EXTENSIONS,
+  assertCanonicalGraphBase,
+  resolveGraphBaseId,
   writeGuaranteesP2,
 } from "../lib/hotel-intelligence/research-engine-v1/airtable-graph-contract-v1.js";
 import {
@@ -78,17 +83,31 @@ function syntheticStaged(hpcId, orgName = "Synthetic Owner LLC") {
   return staged;
 }
 
-// 1. Contract / policy
+// 1. Contract / policy + canonical HPC base gate
 {
   assert.equal(GRAPH_CONTRACT_ID, "HOTEL_INTELLIGENCE_AIRTABLE_GRAPH_V1");
+  assert.equal(GRAPH_BASE_ID_CANONICAL, "appCCUsuGsE1ifoLk");
+  assert.equal(GRAPH_BASE_ID_FORBIDDEN, "appa2cE7FTRmIbB32");
+  assert.equal(HPC_TABLE_ID, "tbl9aY5ijiuIzzWam");
+  assert.equal(assertCanonicalGraphBase(GRAPH_BASE_ID_CANONICAL).ok, true);
+  assert.equal(assertCanonicalGraphBase(GRAPH_BASE_ID_FORBIDDEN).ok, false);
+  assert.equal(assertCanonicalGraphBase(GRAPH_BASE_ID_FORBIDDEN).error, "GRAPH_BASE_FORBIDDEN");
+  assert.equal(resolveGraphBaseId({}), GRAPH_BASE_ID_CANONICAL);
+  assert.equal(
+    resolveGraphBaseId({ AIRTABLE_INTELLIGENCE_BASE_ID: GRAPH_BASE_ID_FORBIDDEN }),
+    GRAPH_BASE_ID_CANONICAL
+  );
   assert.equal(P2_POLICY.bulk_research_data_writes, false);
   assert.equal(P2_POLICY.paid_providers_enabled, false);
   assert.equal(P2_POLICY.customer_publication, "BLOCKED");
   assert.equal(P2_POLICY.hpc_owner_operator_overwrite, false);
   assert.equal(P2_POLICY.name_only_auto_merge, false);
   assert.ok(EVIDENCE_ENTITY_TYPE_EXTENSIONS.includes("Organization"));
+  assert.ok(HI_GRAPH_TABLES.graphEvidence);
   const g = writeGuaranteesP2();
   assert.equal(g.customer_publication, "BLOCKED");
+  assert.equal(g.graph_base_id, GRAPH_BASE_ID_CANONICAL);
+  assert.equal(g.forbidden_base_id, GRAPH_BASE_ID_FORBIDDEN);
   ok("p2_contract_and_policy");
 }
 

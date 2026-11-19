@@ -1,17 +1,15 @@
 #!/usr/bin/env node
 /**
- * HE-INTEL-001 P2 — ensure Airtable intelligence graph schema.
+ * HE-INTEL-001 P2 — ensure Airtable intelligence graph schema on HPC base.
  *
- * Creates five approved tables + extends Hotel Intelligence Evidence entity types.
- * Non-destructive: never deletes/renames fields. Stops on unexpected conflicts.
+ * Canonical base: appCCUsuGsE1ifoLk (Hotel Property Census).
+ * FORBIDDEN: appa2cE7FTRmIbB32 (ADP/intelligence) — refuse writes there.
  *
  *   node scripts/ensure-he-intel-001-p2-airtable-graph-schema.mjs --dry-run
  *   node scripts/ensure-he-intel-001-p2-airtable-graph-schema.mjs --apply
  *
- * Env: AIRTABLE_API_KEY (preferred) or AIRTABLE_PAT; base via AIRTABLE_INTELLIGENCE_BASE_ID
- * or ADP_AIRTABLE_BASE_ID (default appa2cE7FTRmIbB32).
- *
- * Schema creation only — no bulk hotel research data writes.
+ * Creates five HI graph tables + HI Graph Evidence; links relationships/runs/evidence to HPC.
+ * Does NOT mutate ADP Hotel Intelligence Evidence.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -20,15 +18,19 @@ import dotenv from "dotenv";
 
 import {
   GRAPH_BASE_ID_CANONICAL,
+  GRAPH_BASE_ID_FORBIDDEN,
   GRAPH_CONTRACT_ID,
   GRAPH_CONTRACT_VERSION,
   GRAPH_SCHEMA_VERSION,
+  HPC_TABLE_ID,
+  HPC_TABLE_NAME,
   HI_GRAPH_TABLES,
   MAP_HI_ORGANIZATION,
   MAP_HI_HOTEL_ORG_RELATIONSHIP,
   MAP_HI_ORG_CONTACT,
   MAP_HI_CONTACT_CHANNEL,
   MAP_HI_OWNERSHIP_RESEARCH_RUN,
+  MAP_HI_GRAPH_EVIDENCE,
   ORG_TYPES,
   RELATIONSHIP_TYPES,
   VERIFICATION_STATES,
@@ -40,7 +42,9 @@ import {
   RECORD_PUBLICATION_STATE,
   CONFLICT_STATUS,
   SUBJECT_TYPES,
-  EVIDENCE_ENTITY_TYPE_EXTENSIONS,
+  GRAPH_EVIDENCE_ENTITY_TYPES,
+  assertCanonicalGraphBase,
+  resolveGraphBaseId,
   writeGuaranteesP2,
 } from "../lib/hotel-intelligence/research-engine-v1/airtable-graph-contract-v1.js";
 
@@ -87,12 +91,11 @@ function dateTimeField(name) {
 function numberField(name, precision = 2) {
   return { name, type: "number", options: { precision } };
 }
-function linkField(name, tableId, description) {
+function linkField(name, tableId) {
   return {
     name,
     type: "multipleRecordLinks",
     options: { linkedTableId: tableId },
-    ...(description ? { description } : {}),
   };
 }
 
@@ -231,6 +234,30 @@ function runFields() {
   ];
 }
 
+function evidenceFields() {
+  const M = MAP_HI_GRAPH_EVIDENCE;
+  return [
+    { name: M.evidenceId, type: "singleLineText" },
+    { name: M.hpcHotelId, type: "singleLineText" },
+    singleSelect(M.entityType, GRAPH_EVIDENCE_ENTITY_TYPES),
+    { name: M.entityRecordId, type: "singleLineText" },
+    { name: M.fieldName, type: "singleLineText" },
+    { name: M.valueObserved, type: "multilineText" },
+    { name: M.sourceName, type: "singleLineText" },
+    { name: M.sourceType, type: "singleLineText" },
+    { name: M.sourceUrl, type: "url" },
+    dateField(M.sourcePublishedDate),
+    dateTimeField(M.retrievedAt),
+    { name: M.evidenceSnippet, type: "multilineText" },
+    singleSelect(M.confidence, CONFIDENCE_LEVELS),
+    { name: M.evidenceStrength, type: "singleLineText" },
+    checkbox(M.current),
+    { name: M.supersededBy, type: "singleLineText" },
+    { name: M.notes, type: "multilineText" },
+    { name: M.schemaVersion, type: "singleLineText" },
+  ];
+}
+
 async function ensureTable(baseId, token, tables, report, { tableName, description, primaryName, buildFields }) {
   const entry = {
     tableName,
@@ -279,7 +306,6 @@ async function ensureTable(baseId, token, tables, report, { tableName, descripti
         entry.fieldsSkipped.push(fieldSpec.name);
         continue;
       }
-      // Guard: do not replace existing field types
       if (DRY) {
         entry.fieldsWouldCreate.push(fieldSpec.name);
         continue;
@@ -290,7 +316,6 @@ async function ensureTable(baseId, token, tables, report, { tableName, descripti
           name: fieldSpec.name,
           type: fieldSpec.type,
           ...(fieldSpec.options ? { options: fieldSpec.options } : {}),
-          ...(fieldSpec.description ? { description: fieldSpec.description } : {}),
         }),
       });
       if (!res.ok) {
@@ -306,92 +331,30 @@ async function ensureTable(baseId, token, tables, report, { tableName, descripti
   return table;
 }
 
-async function ensureEvidenceEntityTypes(baseId, token, tables, report) {
-  const table = tables.find((t) => t.name === HI_GRAPH_TABLES.evidence);
-  const entry = {
-    tableName: HI_GRAPH_TABLES.evidence,
-    tableId: table?.id || null,
-    reused: Boolean(table),
-    choicesWouldAdd: [],
-    choicesAdded: [],
-    choicesSkipped: [],
-    error: null,
-  };
-  if (!table) {
-    entry.error = "EVIDENCE_TABLE_MISSING";
-    report.evidenceExtension = entry;
-    console.error("STOP: Hotel Intelligence Evidence table missing — unexpected");
-    return entry;
-  }
-  const field = (table.fields || []).find((f) => f.name === "Entity Type");
-  if (!field || field.type !== "singleSelect") {
-    entry.error = "ENTITY_TYPE_FIELD_UNEXPECTED";
-    report.evidenceExtension = entry;
-    console.error("STOP: Entity Type field missing or wrong type — founder review required");
-    return entry;
-  }
-  const existing = new Set((field.options?.choices || []).map((c) => c.name));
-  const toAdd = EVIDENCE_ENTITY_TYPE_EXTENSIONS.filter((n) => !existing.has(n));
-  entry.choicesSkipped = EVIDENCE_ENTITY_TYPE_EXTENSIONS.filter((n) => existing.has(n));
-  if (!toAdd.length) {
-    console.log("Evidence Entity Type already has all P2 extensions");
-    report.evidenceExtension = entry;
-    return entry;
-  }
+async function ensureLinks(baseId, token, tables, report, hpcTableId) {
   if (DRY) {
-    entry.choicesWouldAdd = toAdd;
-    console.log(`[dry-run] WOULD ADD Entity Type choices: ${toAdd.join(", ")}`);
-    report.evidenceExtension = entry;
-    return entry;
-  }
-  // Airtable PATCH for select options — append by updating field options
-  const nextChoices = [
-    ...(field.options?.choices || []),
-    ...toAdd.map((name) => ({ name })),
-  ];
-  const { res, json } = await metaFetch(
-    baseId,
-    token,
-    `/tables/${table.id}/fields/${field.id}`,
-    {
-      method: "PATCH",
-      body: JSON.stringify({
-        options: { choices: nextChoices },
-      }),
-    }
-  );
-  if (!res.ok) {
-    // Airtable Meta API often refuses select-option mutations on existing fields
-    // ("Changing a field's type..."). Non-destructive: leave existing choices intact
-    // and record a manual founder step — do not attempt destructive field recreation.
-    entry.error = json;
-    entry.manual_required = true;
-    entry.manual_choices_to_add = toAdd;
-    entry.note =
-      "Meta API refused Entity Type option append. Add choices manually in Airtable UI; do not recreate the field.";
-    console.warn(
-      "Evidence Entity Type extend deferred (manual):",
-      toAdd.join(", "),
-      JSON.stringify(json)
-    );
-  } else {
-    entry.choicesAdded = toAdd;
-    console.log("ADDED Evidence Entity Type choices:", toAdd.join(", "));
-  }
-  report.evidenceExtension = entry;
-  return entry;
-}
-
-async function ensureLinks(baseId, token, tables, report) {
-  if (DRY) {
-    report.links = { dry_run: true, would_create: ["Parent Organization self-link", "Relationship→Org", "Contact→Org", "Channel→Person", "Channel→Org"] };
-    console.log("[dry-run] WOULD CREATE cross-table link fields after table creation");
+    report.links = {
+      dry_run: true,
+      would_create: [
+        "Parent Organization self-link",
+        "Relationship→Org",
+        "Relationship→HPC",
+        "Contact→Org",
+        "Channel→Person",
+        "Channel→Org",
+        "Run→HPC",
+        "GraphEvidence→HPC",
+      ],
+    };
+    console.log("[dry-run] WOULD CREATE cross-table + HPC link fields after table creation");
     return;
   }
   const org = tables.find((t) => t.name === HI_GRAPH_TABLES.organizations);
   const rel = tables.find((t) => t.name === HI_GRAPH_TABLES.hotelOrgRelationships);
   const contact = tables.find((t) => t.name === HI_GRAPH_TABLES.orgContacts);
   const channel = tables.find((t) => t.name === HI_GRAPH_TABLES.contactChannels);
+  const run = tables.find((t) => t.name === HI_GRAPH_TABLES.ownershipResearchRuns);
+  const evidence = tables.find((t) => t.name === HI_GRAPH_TABLES.graphEvidence);
   const linkReport = [];
 
   async function ensureLink(table, fieldName, linkedTableId) {
@@ -409,30 +372,79 @@ async function ensureLinks(baseId, token, tables, report) {
       linkReport.push({ table: table.name, field: fieldName, error: json });
       console.error("LINK FAILED", table.name, fieldName, JSON.stringify(json));
     } else {
-      linkReport.push({ table: table.name, field: fieldName, created: true });
+      linkReport.push({ table: table.name, field: fieldName, created: true, linkedTableId });
       table.fields = [...(table.fields || []), json];
-      console.log("CREATED LINK", table.name, fieldName);
+      console.log("CREATED LINK", table.name, fieldName, "→", linkedTableId);
     }
   }
 
   if (org) await ensureLink(org, MAP_HI_ORGANIZATION.parentOrgLink, org.id);
   if (rel && org) await ensureLink(rel, MAP_HI_HOTEL_ORG_RELATIONSHIP.organizationLink, org.id);
+  if (rel && hpcTableId) await ensureLink(rel, MAP_HI_HOTEL_ORG_RELATIONSHIP.hpcHotelLink, hpcTableId);
   if (contact && org) await ensureLink(contact, MAP_HI_ORG_CONTACT.organizationLink, org.id);
   if (channel && contact) await ensureLink(channel, MAP_HI_CONTACT_CHANNEL.personLink, contact.id);
   if (channel && org) await ensureLink(channel, MAP_HI_CONTACT_CHANNEL.organizationLink, org.id);
+  if (run && hpcTableId) await ensureLink(run, MAP_HI_OWNERSHIP_RESEARCH_RUN.hpcHotelLink, hpcTableId);
+  if (evidence && hpcTableId) await ensureLink(evidence, MAP_HI_GRAPH_EVIDENCE.hpcHotelLink, hpcTableId);
   report.links = linkReport;
+}
+
+function writeRegistry(report) {
+  const ids = {};
+  for (const t of report.tables || []) {
+    if (t.tableId) ids[t.tableName] = t.tableId;
+  }
+  const registry = {
+    at: new Date().toISOString(),
+    graph_contract: GRAPH_CONTRACT_ID,
+    graph_contract_version: GRAPH_CONTRACT_VERSION,
+    baseId: report.baseId,
+    forbiddenBaseId: GRAPH_BASE_ID_FORBIDDEN,
+    hpcTableId: HPC_TABLE_ID,
+    hpcTableName: HPC_TABLE_NAME,
+    tableIds: ids,
+    evidenceArchitecture: {
+      decision: "HI_GRAPH_EVIDENCE_ON_HPC_BASE",
+      graphEvidenceTable: HI_GRAPH_TABLES.graphEvidence,
+      adpEvidencePreserved: {
+        baseId: GRAPH_BASE_ID_FORBIDDEN,
+        tableId: "tblHxS8x0niDEGVsh",
+        tableName: "Hotel Intelligence Evidence",
+        action: "DO_NOT_DELETE_OR_MUTATE",
+      },
+      rationale:
+        "Cross-base evidence links undermine HPC consistency; ownership/org/person/channel/run evidence belongs beside HPC.",
+    },
+  };
+  const outDir = path.join(ROOT, "reports", "hotel-explorer");
+  fs.mkdirSync(outDir, { recursive: true });
+  const regPath = path.join(outDir, "HE-INTEL-001-P2-live-schema-ids-v1.json");
+  fs.writeFileSync(regPath, `${JSON.stringify(registry, null, 2)}\n`, "utf8");
+  const libPath = path.join(
+    ROOT,
+    "lib/hotel-intelligence/research-engine-v1/airtable-graph-table-ids.generated.json"
+  );
+  fs.writeFileSync(libPath, `${JSON.stringify(registry, null, 2)}\n`, "utf8");
+  console.log("Wrote registry", regPath);
+  return registry;
 }
 
 async function main() {
   const token = process.env.AIRTABLE_API_KEY || process.env.AIRTABLE_PAT || process.env.AIRTABLE_TOKEN;
-  const baseId = (
-    process.env.AIRTABLE_INTELLIGENCE_BASE_ID ||
-    process.env.ADP_AIRTABLE_BASE_ID ||
-    GRAPH_BASE_ID_CANONICAL
-  ).trim();
   if (!token) {
     console.error("Missing AIRTABLE_API_KEY / AIRTABLE_PAT");
     process.exit(2);
+  }
+
+  const baseId = resolveGraphBaseId(process.env);
+  const gate = assertCanonicalGraphBase(baseId);
+  if (!gate.ok) {
+    console.error("STOP — base gate failed:", JSON.stringify(gate));
+    process.exit(3);
+  }
+  if (baseId === GRAPH_BASE_ID_FORBIDDEN) {
+    console.error("STOP — refusing forbidden ADP/intelligence base");
+    process.exit(3);
   }
 
   const { res, json } = await metaFetch(baseId, token, "/tables");
@@ -441,8 +453,13 @@ async function main() {
     process.exit(1);
   }
   const tables = json.tables || [];
+  const hpc = tables.find((t) => t.id === HPC_TABLE_ID || t.name === HPC_TABLE_NAME);
+  if (!hpc) {
+    console.error("STOP — Hotel Property Census not found on canonical base");
+    process.exit(3);
+  }
+  console.log("HPC verified", hpc.id, hpc.name, "base", baseId);
 
-  // Conflict detection: unexpected same-name variants
   const blockers = [];
   for (const t of tables) {
     if (/^HI\s+Organi/i.test(t.name) && t.name !== HI_GRAPH_TABLES.organizations) {
@@ -458,6 +475,9 @@ async function main() {
     at: new Date().toISOString(),
     mode: DRY ? "DRY_RUN" : "APPLY",
     baseId,
+    expectedBaseId: GRAPH_BASE_ID_CANONICAL,
+    forbiddenBaseId: GRAPH_BASE_ID_FORBIDDEN,
+    hpcTableId: hpc.id,
     graph_contract: GRAPH_CONTRACT_ID,
     graph_contract_version: GRAPH_CONTRACT_VERSION,
     schema_version: GRAPH_SCHEMA_VERSION,
@@ -473,7 +493,7 @@ async function main() {
   });
   await ensureTable(baseId, token, tables, report, {
     tableName: HI_GRAPH_TABLES.hotelOrgRelationships,
-    description: "Hotel–organization relationships. Brand/operator/owner are distinct relationship types.",
+    description: "Hotel–organization relationships linked to HPC. Brand/operator/owner are distinct types.",
     primaryName: MAP_HI_HOTEL_ORG_RELATIONSHIP.relationshipId,
     buildFields: relFields,
   });
@@ -495,8 +515,14 @@ async function main() {
     primaryName: MAP_HI_OWNERSHIP_RESEARCH_RUN.runId,
     buildFields: runFields,
   });
+  await ensureTable(baseId, token, tables, report, {
+    tableName: HI_GRAPH_TABLES.graphEvidence,
+    description:
+      "Field-level evidence for HI graph entities on the HPC base. ADP Hotel Intelligence Evidence is separate and preserved.",
+    primaryName: MAP_HI_GRAPH_EVIDENCE.evidenceId,
+    buildFields: evidenceFields,
+  });
 
-  // Refresh tables after creates for links
   if (!DRY) {
     const refreshed = await metaFetch(baseId, token, "/tables");
     if (refreshed.res.ok) {
@@ -505,20 +531,24 @@ async function main() {
     }
   }
 
-  await ensureEvidenceEntityTypes(baseId, token, tables, report);
-  await ensureLinks(baseId, token, tables, report);
+  await ensureLinks(baseId, token, tables, report, hpc.id);
 
   const outDir = path.join(ROOT, "reports", "hotel-explorer");
   fs.mkdirSync(outDir, { recursive: true });
   const outPath = path.join(
     outDir,
     DRY
-      ? "HE-INTEL-001-P2-schema-migration-dry-run-v1.json"
-      : "HE-INTEL-001-P2-schema-migration-apply-v1.json"
+      ? "HE-INTEL-001-P2-schema-migration-hpc-base-dry-run-v1.json"
+      : "HE-INTEL-001-P2-schema-migration-hpc-base-apply-v1.json"
   );
   fs.writeFileSync(outPath, `${JSON.stringify(report, null, 2)}\n`, "utf8");
   console.log("\nWrote", outPath);
-  console.log(DRY ? "DRY-RUN complete — re-run with --apply to create schema" : "APPLY complete");
+
+  if (!DRY) {
+    writeRegistry(report);
+  }
+
+  console.log(DRY ? "DRY-RUN complete — re-run with --apply to create schema on HPC base" : "APPLY complete on HPC base");
   console.log("Guarantees:", JSON.stringify(writeGuaranteesP2()));
 }
 
