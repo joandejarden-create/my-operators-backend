@@ -4,12 +4,20 @@
  * Keep trust rules in sync with lib/brand-explorer-footprint-trust.js (Node audit/tests).
  */
 (function (global) {
-  var SOURCE_NOTE_CENSUS = 'Based on current Dealality census records.';
+  var SOURCE_NOTE_CENSUS = 'Based on current Dealality hotel inventory records.';
+  var SOURCE_NOTE_HPC =
+    'Observed Dealality hotel-database coverage — not the brand\'s complete worldwide portfolio.';
+  var SOURCE_NOTE_OFFICIAL =
+    'Company-reported brand footprint figures, shown separately from Dealality observed inventory.';
   var SOURCE_NOTE_MVP = 'Based on brand setup footprint data.';
   var SOURCE_NOTE_MVP_VERIFIED = 'Based on verified brand setup footprint data.';
   var SOURCE_NOTE_MVP_ESTIMATED = 'Based on estimated brand setup footprint data.';
   var VERIFIED_EMPTY_MESSAGE = 'Portfolio data being verified.';
   var BREAKDOWN_EMPTY_MESSAGE = 'Detailed footprint data is being verified.';
+  var HPC_UNAVAILABLE_MESSAGE =
+    'Dealality hotel inventory is temporarily unavailable — metrics are not shown as zero.';
+  var HPC_INCOMPLETE_KEYS_MESSAGE =
+    'Room counts are incomplete for some identified properties. Figures below show known rooms only.';
 
   function hasVal(v) {
     return v != null && v !== '';
@@ -24,6 +32,24 @@
     return String(v == null ? '' : v)
       .trim()
       .toLowerCase();
+  }
+
+  function useHpcFootprint(brand) {
+    var h = brand && brand.hpcFootprint;
+    if (!h || h.available !== true || !h.metrics) return false;
+    if (h.certState === 'HPC_LIVE_LOOKUP_UNAVAILABLE') return false;
+    var matched = h.census && h.census.recordsMatched;
+    return Number(matched) > 0;
+  }
+
+  function hpcLookupFailed(brand) {
+    var h = brand && brand.hpcFootprint;
+    if (!h) return false;
+    return (
+      h.certState === 'HPC_LIVE_LOOKUP_UNAVAILABLE' ||
+      h.dataOrigin === 'unavailable' ||
+      (h.displayMetrics && h.displayMetrics.status === 'airtable_unavailable')
+    );
   }
 
   function useCensusSummary(brand) {
@@ -190,9 +216,27 @@
 
     var fp = (brand && brand.footprint) || {};
 
+    // Designated authority: HPC Open/Pipeline (never invent zeros when lookup failed).
+    if (useHpcFootprint(brand)) {
+      return {
+        sourceUsed: 'hpc',
+        isHpcBacked: true,
+        isCensusBacked: false,
+        isMvpFallback: false,
+        isUnverifiedFallback: false,
+        displaySourceLabel: SOURCE_NOTE_HPC,
+        showVerifiedMetrics: true
+      };
+    }
+
+    if (hpcLookupFailed(brand)) {
+      // Fall through to census/MVP only for continuity; banner must not present zeros as HPC.
+    }
+
     if (useCensusSummary(brand)) {
       return {
         sourceUsed: 'census',
+        isHpcBacked: false,
         isCensusBacked: true,
         isMvpFallback: false,
         isUnverifiedFallback: false,
@@ -288,13 +332,41 @@
 
   function normalizeBreakdownRow(row) {
     if (!row || !row.label) return null;
+    var openWithKeys = Number(row.openWithKeys) || 0;
+    var openMissingKeys = Number(row.openMissingKeys) || 0;
+    var pipelineWithKeys = Number(row.pipelineWithKeys) || 0;
+    var pipelineMissingKeys = Number(row.pipelineMissingKeys) || 0;
+    var keysIncomplete =
+      row.keysIncomplete != null
+        ? Boolean(row.keysIncomplete)
+        : openMissingKeys + pipelineMissingKeys > 0;
+    // Preserve null display keys — never coerce missing Rooms/Keys into verified 0.
+    var displayOpenKeys =
+      row.displayOpenKeys !== undefined
+        ? row.displayOpenKeys
+        : keysIncomplete && openWithKeys === 0
+          ? null
+          : Number(row.keys) || 0;
+    var displayPipelineKeys =
+      row.displayPipelineKeys !== undefined
+        ? row.displayPipelineKeys
+        : keysIncomplete && pipelineWithKeys === 0
+          ? null
+          : Number(row.pipelineKeys) || 0;
     return {
       label: row.label,
       hotels: Number(row.hotels) || 0,
       keys: Number(row.keys) || 0,
       pipelineHotels: Number(row.pipelineHotels) || 0,
       pipelineKeys: Number(row.pipelineKeys) || 0,
-      keysPct: row.keysPct
+      keysPct: row.keysPct,
+      openWithKeys: openWithKeys,
+      openMissingKeys: openMissingKeys,
+      pipelineWithKeys: pipelineWithKeys,
+      pipelineMissingKeys: pipelineMissingKeys,
+      keysIncomplete: keysIncomplete,
+      displayOpenKeys: displayOpenKeys,
+      displayPipelineKeys: displayPipelineKeys
     };
   }
 
@@ -436,13 +508,143 @@
 
   function finalizeFootprintDisplayModel(model, brand) {
     if (!model || !model.fp) return model;
+    // HPC is designated authority — never let transitional census overwrite HPC totals.
+    if (model.useHpc || model.sourceUsed === 'hpc') return model;
     model.fp = applyCensusPipelineAuthority(brand, model.fp);
     return model;
+  }
+
+  function regionalDistributionFromBreakdownRows(rows) {
+    var rd = {};
+    (rows || []).forEach(function (row) {
+      if (!row || !row.label) return;
+      if (!(Number(row.hotels) > 0 || Number(row.pipelineHotels) > 0)) return;
+      var openKeys =
+        row.displayOpenKeys !== undefined
+          ? row.displayOpenKeys
+          : row.keysIncomplete && Number(row.openWithKeys || 0) === 0
+            ? null
+            : Number(row.keys) || 0;
+      var pipeKeys =
+        row.displayPipelineKeys !== undefined
+          ? row.displayPipelineKeys
+          : row.keysIncomplete && Number(row.pipelineWithKeys || 0) === 0
+            ? null
+            : Number(row.pipelineKeys) || 0;
+      rd[row.label] = {
+        hotels: Number(row.hotels) || 0,
+        rooms: openKeys,
+        pipelineHotels: Number(row.pipelineHotels) || 0,
+        pipelineRooms: pipeKeys,
+        openWithKeys: Number(row.openWithKeys) || 0,
+        openMissingKeys: Number(row.openMissingKeys) || 0,
+        keysIncomplete: Boolean(row.keysIncomplete)
+      };
+    });
+    return rd;
+  }
+
+  function buildHpcCustomerCoverageNote(hpc) {
+    if (!hpc || !hpc.metrics) return '';
+    var m = hpc.metrics || {};
+    var rc = hpc.roomsCoverage || {};
+    var open = Number(m.totalOpenHotels) || 0;
+    var known = Number(rc.openWithKeys) || 0;
+    var missing = Number(rc.openMissingKeys) || 0;
+    var word = open === 1 ? 'property' : 'properties';
+    var parts = [];
+    if (open > 0) {
+      parts.push('Dealality has identified ' + open + ' affiliated ' + word + ' in its hotel database.');
+    }
+    if (open > 0 && missing > 0 && known > 0) {
+      parts.push('Room counts are available for ' + known + ' of these ' + word + '.');
+    } else if (open > 0 && missing > 0 && known === 0) {
+      parts.push('Room counts are not yet available for these properties.');
+    } else if (open > 0 && known > 0) {
+      parts.push('Room counts are available for all identified properties.');
+    }
+    parts.push(
+      'This represents observed coverage rather than the brand\'s complete worldwide portfolio.'
+    );
+    return parts.join(' ');
   }
 
   function footprintDisplayModel(brand) {
     var baseFp = (brand && brand.footprint) || {};
     var trust = footprintTrustModel(brand);
+
+    if (trust.sourceUsed === 'hpc') {
+      var hpc = brand.hpcFootprint || {};
+      var dm = hpc.displayMetrics || {};
+      var bd = hpc.breakdowns || {};
+      var fpHpc = Object.assign({}, baseFp);
+      fpHpc.formValues = Object.assign({}, baseFp.formValues || {});
+      fpHpc.totalExistingHotels = dm.totalOpenHotels != null ? dm.totalOpenHotels : hpc.metrics.totalOpenHotels;
+      fpHpc.totalExistingRooms = dm.totalOpenKeys;
+      fpHpc.totalPipelineHotels = dm.totalPipelineHotels != null ? dm.totalPipelineHotels : hpc.metrics.totalPipelineHotels;
+      fpHpc.totalPipelineRooms = dm.totalPipelineKeys;
+      fpHpc.totalNewBuildHotels = fpHpc.totalPipelineHotels;
+      fpHpc.totalNewBuildRooms = fpHpc.totalPipelineRooms;
+      fpHpc.totalConversionHotels = 0;
+      fpHpc.totalConversionRooms = 0;
+      fpHpc.regionalDistribution = regionalDistributionFromBreakdownRows(bd.region || []);
+      var countryRows = sortBreakdownForPortfolioDisplay(bd.country || []);
+      var archetypeRows = sortBreakdownForPortfolioDisplay(bd.propertyType || []);
+      var regionRows = sortBreakdownForPortfolioDisplay(bd.region || []);
+      var customerNote = buildHpcCustomerCoverageNote(hpc);
+      var coverageNotes = customerNote ? [customerNote] : [];
+      if (hpc.roomsCoverage && (hpc.roomsCoverage.openKeysIncomplete || hpc.roomsCoverage.pipelineKeysIncomplete)) {
+        coverageNotes.push(HPC_INCOMPLETE_KEYS_MESSAGE);
+      }
+      var official =
+        (hpc.companyReported &&
+        hpc.companyReported.totalOpenHotels > 0 &&
+        hpc.companyReported.figuresAsOf
+          ? hpc.companyReported
+          : null) ||
+        (brand.officialReportedFootprint &&
+        brand.officialReportedFootprint.totalOpenHotels > 0 &&
+        brand.officialReportedFootprint.figuresAsOf
+          ? brand.officialReportedFootprint
+          : null) ||
+        null;
+      // If Brand Setup totals exist without figuresAsOf, keep them out of customer "official" label.
+      var officialUnverifiedSetup =
+        !official &&
+        ((hpc.companyReported && hpc.companyReported.totalOpenHotels > 0) ||
+          (brand.officialReportedFootprint && brand.officialReportedFootprint.totalOpenHotels > 0));
+      return finalizeFootprintDisplayModel({
+        useCensus: false,
+        useHpc: true,
+        sourceUsed: 'hpc',
+        isHpcBacked: true,
+        isCensusBacked: false,
+        isMvpFallback: false,
+        isUnverifiedFallback: false,
+        showVerifiedMetrics: true,
+        displaySourceLabel: SOURCE_NOTE_HPC,
+        sourceNote: SOURCE_NOTE_HPC,
+        metricsBanner: null,
+        coverageNotes: coverageNotes,
+        roomsIncomplete: Boolean(
+          hpc.roomsCoverage &&
+            (hpc.roomsCoverage.openKeysIncomplete || hpc.roomsCoverage.pipelineKeysIncomplete)
+        ),
+        roomsCoverage: hpc.roomsCoverage || null,
+        // Keep certState internal only — never render into customer HTML.
+        hpcCertStateInternal: hpc.certState || null,
+        officialReported: official,
+        officialSourceNote: official ? SOURCE_NOTE_OFFICIAL : null,
+        officialReportedDeferred: Boolean(officialUnverifiedSetup),
+        verifiedEmptyMessage: VERIFIED_EMPTY_MESSAGE,
+        breakdownEmptyMessage: BREAKDOWN_EMPTY_MESSAGE,
+        fp: fpHpc,
+        countryBreakdown: countryRows.length ? countryRows : null,
+        dealalityRegionBreakdown: regionRows.length ? regionRows : null,
+        chainScaleBreakdown: null,
+        locationTypeBreakdown: archetypeRows.length ? archetypeRows : null
+      }, brand);
+    }
 
     if (trust.sourceUsed === 'unverified') {
       if (footprintHasMetricValues(baseFp) && !isDemoOrMockFootprintBrand(brand)) {
@@ -560,12 +762,18 @@
 
   global.BrandExplorerCensusMetrics = {
     SOURCE_NOTE_CENSUS: SOURCE_NOTE_CENSUS,
+    SOURCE_NOTE_HPC: SOURCE_NOTE_HPC,
+    SOURCE_NOTE_OFFICIAL: SOURCE_NOTE_OFFICIAL,
     SOURCE_NOTE_MVP: SOURCE_NOTE_MVP,
     SOURCE_NOTE_MVP_VERIFIED: SOURCE_NOTE_MVP_VERIFIED,
     SOURCE_NOTE_MVP_ESTIMATED: SOURCE_NOTE_MVP_ESTIMATED,
     VERIFIED_EMPTY_MESSAGE: VERIFIED_EMPTY_MESSAGE,
     BREAKDOWN_EMPTY_MESSAGE: BREAKDOWN_EMPTY_MESSAGE,
+    HPC_UNAVAILABLE_MESSAGE: HPC_UNAVAILABLE_MESSAGE,
+    HPC_INCOMPLETE_KEYS_MESSAGE: HPC_INCOMPLETE_KEYS_MESSAGE,
     useCensusSummary: useCensusSummary,
+    useHpcFootprint: useHpcFootprint,
+    hpcLookupFailed: hpcLookupFailed,
     footprintTrustModel: footprintTrustModel,
     footprintDisplayModel: footprintDisplayModel,
     footprintPipelineTotals: footprintPipelineTotals,

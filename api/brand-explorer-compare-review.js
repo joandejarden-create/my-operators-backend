@@ -24,6 +24,8 @@ export function postBrandExplorerCompareReview(req, res) {
     const brandId = sanitizeId(req.body?.brandId || req.body?.entry?.brandId);
     const all = req.body?.all && typeof req.body.all === "object" ? req.body.all : null;
     const entry = req.body?.entry || null;
+    const brandDecision = req.body?.brandDecision || null;
+    const publicationPackage = req.body?.publicationPackage || null;
     if (!brandId) {
       return res.status(400).json({ success: false, error: "brandId required" });
     }
@@ -33,7 +35,11 @@ export function postBrandExplorerCompareReview(req, res) {
       brandId,
       updatedAt: new Date().toISOString(),
       airtableWrites: 0,
+      publicationApplied: false,
       reviews: {},
+      brandDecision: null,
+      publicationPackageDraft: null,
+      auditTrail: [],
     };
     if (existsSync(path)) {
       try {
@@ -46,11 +52,58 @@ export function postBrandExplorerCompareReview(req, res) {
     else if (entry && entry.slotKey) {
       payload.reviews = payload.reviews || {};
       payload.reviews[entry.slotKey] = entry;
+      payload.auditTrail = Array.isArray(payload.auditTrail) ? payload.auditTrail : [];
+      payload.auditTrail.push({
+        at: new Date().toISOString(),
+        type: "subsection_decision",
+        slotKey: entry.slotKey,
+        decision: entry.decision || null,
+      });
+    }
+    if (brandDecision && typeof brandDecision === "object") {
+      payload.brandDecision = {
+        ...brandDecision,
+        recordedAt: new Date().toISOString(),
+        airtableWrites: 0,
+        publicationApplied: false,
+        note:
+          brandDecision.note ||
+          "Founder brand-level decision recorded. Does NOT write Airtable or publish.",
+      };
+      payload.auditTrail = Array.isArray(payload.auditTrail) ? payload.auditTrail : [];
+      payload.auditTrail.push({
+        at: new Date().toISOString(),
+        type: "brand_decision",
+        decision: brandDecision.decision || null,
+      });
+    }
+    if (publicationPackage && typeof publicationPackage === "object") {
+      payload.publicationPackageDraft = {
+        ...publicationPackage,
+        preparedAt: new Date().toISOString(),
+        status: "DRAFT_NOT_APPLIED",
+        airtableWrites: 0,
+        applied: false,
+      };
+      payload.auditTrail = Array.isArray(payload.auditTrail) ? payload.auditTrail : [];
+      payload.auditTrail.push({
+        at: new Date().toISOString(),
+        type: "publication_package_draft",
+        changeCount: Array.isArray(publicationPackage.approvedChanges)
+          ? publicationPackage.approvedChanges.length
+          : 0,
+      });
     }
     payload.updatedAt = new Date().toISOString();
     payload.airtableWrites = 0;
+    payload.publicationApplied = false;
     writeFileSync(path, JSON.stringify(payload, null, 2));
-    return res.json({ success: true, path: `reports/brand-explorer/comparison-studio/${brandId}-founder-review.json`, writes: 0 });
+    return res.json({
+      success: true,
+      path: `reports/brand-explorer/comparison-studio/${brandId}-founder-review.json`,
+      writes: 0,
+      publicationApplied: false,
+    });
   } catch (err) {
     return res.status(500).json({ success: false, error: err?.message || String(err) });
   }

@@ -186,6 +186,24 @@
     return div.innerHTML;
   }
 
+  /**
+   * Editorial Title Case for white card/section headings on the RIGHT cumulative
+   * proposal only. LEFT current profile stays verbatim (no silent Airtable rewrite).
+   */
+  function proposedHeading(brand, raw) {
+    var s = raw == null ? '' : String(raw).trim();
+    if (!s) return '';
+    if (
+      brand &&
+      (brand.beCumulativeProposal || brand.beCandidateOverlay) &&
+      globalThis.BeEditorialTitleCase &&
+      typeof globalThis.BeEditorialTitleCase.toEditorialTitleCase === 'function'
+    ) {
+      return globalThis.BeEditorialTitleCase.toEditorialTitleCase(s);
+    }
+    return s;
+  }
+
   function hasVal(v) {
     if (v == null || v === '') return false;
     if (Array.isArray(v)) return v.length > 0;
@@ -446,17 +464,60 @@
     return rows;
   }
 
+  function sanitizeCustomerFacingCopy(text) {
+    if (
+      globalThis.BeDealalityInsightAdvisory &&
+      typeof globalThis.BeDealalityInsightAdvisory.sanitizeCustomerFacingText === 'function'
+    ) {
+      return globalThis.BeDealalityInsightAdvisory.sanitizeCustomerFacingText(text);
+    }
+    return text == null ? '' : String(text);
+  }
+
+  function stripCardHeadingEcho(title, body) {
+    if (
+      globalThis.BeNoRepeatedCardHeading &&
+      typeof globalThis.BeNoRepeatedCardHeading.stripRepeatedCardHeading === 'function'
+    ) {
+      return globalThis.BeNoRepeatedCardHeading.stripRepeatedCardHeading(title, body);
+    }
+    var t = hasVal(title) ? String(title).trim() : '';
+    var b = hasVal(body) ? String(body).trim() : '';
+    if (!t || !b) return b;
+    var escaped = t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var re = new RegExp('^' + escaped + '\\s*[:\\-–—.|]\\s*', 'i');
+    if (re.test(b)) {
+      var stripped = b.replace(re, '').trim();
+      return stripped || b;
+    }
+    return b;
+  }
+
+  /**
+   * Prefer Body; fall back to Title only when Body is empty.
+   * Never prepend "Title: " — card/section UI already supplies the heading.
+   * Also strip a leading title echo already stored inside Body.
+   */
   function explorerMergedBody(brand, slotKey, joinStr) {
     joinStr = joinStr == null ? '\n\n' : joinStr;
-    return explorerBlocksForSlot(brand, slotKey)
+    var raw = explorerBlocksForSlot(brand, slotKey)
       .map(function (r) {
         var t = hasVal(r.title) ? String(r.title).trim() : '';
         var bd = hasVal(r.body) ? String(r.body).trim() : '';
-        if (t && bd) return t + ': ' + bd;
-        return bd || t;
+        if (bd) return stripCardHeadingEcho(t, bd);
+        return t;
       })
       .filter(hasVal)
       .join(joinStr);
+    // Never paint internal HPC / certification / steward workflow language into customer panels.
+    if (
+      globalThis.BeDealalityInsightAdvisory &&
+      globalThis.BeDealalityInsightAdvisory.isCustomerFacingAdvisorySlot &&
+      globalThis.BeDealalityInsightAdvisory.isCustomerFacingAdvisorySlot(slotKey)
+    ) {
+      return sanitizeCustomerFacingCopy(raw);
+    }
+    return raw;
   }
 
   /**
@@ -468,9 +529,10 @@
     joinStr = joinStr == null ? '\n\n' : joinStr;
     return explorerBlocksForSlot(brand, slotKey)
       .map(function (r) {
+        var t = hasVal(r.title) ? String(r.title).trim() : '';
         var bd = hasVal(r.body) ? String(r.body).trim() : '';
-        if (bd) return bd;
-        return hasVal(r.title) ? String(r.title).trim() : '';
+        if (bd) return stripCardHeadingEcho(t, bd);
+        return t;
       })
       .filter(hasVal)
       .join(joinStr);
@@ -1888,6 +1950,7 @@
         if (srowOv && hasVal(srowOv.body)) body = String(srowOv.body).trim();
         var title = srowOv && hasVal(srowOv.title) ? String(srowOv.title).trim() : '';
         if (!hasVal(title)) title = 'Scenario ' + (idx + 1);
+        title = proposedHeading(brand, title);
         var imgUrl =
           srowOv && hasVal(srowOv.imageUrl) ? String(srowOv.imageUrl).trim() : '';
         var visual = hasVal(imgUrl)
@@ -2058,16 +2121,17 @@
           ? 'overview.proof.' + (i + 1)
           : proofRowsInApi[i].slotKey || 'overview.proof.' + (i + 1);
         var row = useProofFallbacks ? null : proofRowsInApi[i];
-        var slotBody = explorerMergedBody(brand, sk);
         var title = useProofFallbacks ? fallbackHead : '';
         if (row && hasVal(row.title)) title = String(row.title).trim();
+        title = proposedHeading(brand, title);
+        var slotBody = explorerMergedBodiesOnly(brand, sk);
         var body;
         if (hasVal(slotBody)) {
-          body = String(slotBody).trim();
+          body = stripCardHeadingEcho(title, String(slotBody).trim());
         } else if (row && hasVal(row.body)) {
-          body = String(row.body).trim();
+          body = stripCardHeadingEcho(title, String(row.body).trim());
         } else if (useProofFallbacks) {
-          body = proofFallbackBodies[i];
+          body = stripCardHeadingEcho(title, proofFallbackBodies[i]);
         } else {
           body = '';
         }
@@ -2328,27 +2392,75 @@
     );
   }
 
+  /** Roles that may enforce compact numeric / unavailable gates. */
+  function isNumericKpiRole(role) {
+    return /^(number|percentage|percent|amount|ratio|currency)$/i.test(String(role || 'number'));
+  }
+
+  function isInternalResearchInstructionText(val) {
+    var t = String(val || '').trim();
+    if (!t) return false;
+    return /diligence:|KPI lens:|request (current|negotiated|channel)|confirm definitions|do not invent|do not rely on generated|KPI figures are not disclosed|Focus this card|RESEARCH_REQUIRED|owner diligence:|obtain brand\.com|ask which brand campaigns|define the primary KPI stack|account concentration/i.test(
+      t
+    );
+  }
+
+  function isDiligenceOrProseKpiValue(val) {
+    var t = String(val || '').trim();
+    if (!t) return false;
+    if (isInternalResearchInstructionText(t)) return true;
+    if (/diligence:|request current|confirm definitions|Use disclosure\/scorecards|from .+ development/i.test(t)) {
+      return true;
+    }
+    // Paragraphs do not belong in *numeric* KPI value slots
+    if (t.length > 64 || t.split(/\s+/).length > 10) return true;
+    return false;
+  }
+
+  function isCompactKpiValue(val) {
+    var t = String(val || '').trim();
+    if (!t) return false;
+    if (/^(n\/?a|not disclosed|unavailable|—|-)$/i.test(t)) return true;
+    if (isDiligenceOrProseKpiValue(t)) return false;
+    return t.length <= 48 && t.split(/\s+/).length <= 8;
+  }
+
   function kpiCard(label, value, opts) {
     opts = opts || {};
+    var note = opts.note || '';
+    var role = opts.role || 'number';
+    var unavailable = !!opts.unavailable;
     if (!hasVal(value)) {
       // Public full profiles must not render empty KPI shells (empty-component gate).
       if (opts.suppressEmpty) return '';
-      return (
-        '<div class="brand-markets-kpi__card">' +
-        '<div class="brand-markets-kpi__label">' +
-        escapeHtml(label) +
-        '</div>' +
-        '<div class="brand-markets-kpi__value oe-dd--empty">&nbsp;</div></div>'
-      );
+      value = 'N/A';
+      unavailable = true;
+      if (!note) note = 'Not disclosed in available materials';
+    }
+    // Numeric validation applies ONLY to numeric roles — never erase commercial summaries.
+    if (isNumericKpiRole(role) && isDiligenceOrProseKpiValue(value)) {
+      value = 'N/A';
+      unavailable = true;
+      if (!note) note = 'Numeric value unavailable — research required';
     }
     return (
-      '<div class="brand-markets-kpi__card">' +
+      '<div class="brand-markets-kpi__card' +
+      (unavailable ? ' brand-markets-kpi__card--unavailable' : '') +
+      '" data-kpi-role="' +
+      escapeHtml(role) +
+      '">' +
       '<div class="brand-markets-kpi__label">' +
       escapeHtml(label) +
       '</div>' +
-      '<div class="brand-markets-kpi__value">' +
+      '<div class="brand-markets-kpi__value' +
+      (unavailable ? ' oe-dd--empty' : '') +
+      '">' +
       escapeHtml(fmtCell(value)) +
-      '</div></div>'
+      '</div>' +
+      (hasVal(note)
+        ? '<div class="brand-markets-kpi__note">' + escapeHtml(fmtCell(note)) + '</div>'
+        : '') +
+      '</div>'
     );
   }
 
@@ -2451,6 +2563,7 @@
         if (hasVal(parsed.projectImpact)) projectImpact = parsed.projectImpact;
       }
     }
+    title = proposedHeading(brand, title);
     return commercialStrengthCardHtml(
       title,
       hasVal(mechanism) ? escapeHtml(mechanism) : '',
@@ -2458,15 +2571,33 @@
     );
   }
 
+  /**
+   * Commercial Engine summary tiles (Channels / Campaigns / B2B / Owner Lens).
+   * These are short commercial narratives — NOT numeric KPIs.
+   */
+  var COMMERCIAL_SUMMARY_SLOT_META = {
+    'commercial.kpi.channels': { role: 'short_commercial_summary', label: 'Channels' },
+    'commercial.kpi.campaigns': { role: 'short_commercial_summary', label: 'Campaigns' },
+    'commercial.kpi.b2b': { role: 'short_commercial_summary', label: 'B2B Programs' },
+    'commercial.kpi.lens': { role: 'owner_insight', label: 'Owner Lens' }
+  };
+
   function commercialKpiFromSlot(brand, slotKey, defLabel, defVal) {
+    var meta = COMMERCIAL_SUMMARY_SLOT_META[slotKey] || {
+      role: 'short_commercial_summary',
+      label: defLabel
+    };
     var r = explorerFirstBlock(brand, slotKey);
-    var lbl = defLabel;
+    // Canonical labels for the four Commercial Engine summary tiles.
+    var lbl = meta.label || defLabel;
     var val = defVal;
-    if (r) {
-      if (hasVal(r.title)) lbl = String(r.title).trim();
-      if (hasVal(r.body)) val = String(r.body).trim();
+    if (r && hasVal(r.body)) val = String(r.body).trim();
+    // Internal research instructions are not customer-facing commercial summaries.
+    if (isInternalResearchInstructionText(val) || !hasVal(val)) {
+      val = defVal;
     }
-    return kpiCard(lbl, val);
+    lbl = proposedHeading(brand, lbl);
+    return kpiCard(lbl, val, { role: meta.role, unavailable: false });
   }
 
   /** Trusted static HTML — owner-facing commercial lever cards (no sales-script labels). */
@@ -2600,7 +2731,7 @@
     var scenGrid = VALUE_SCENARIOS.map(function (title, i) {
       var srowT = explorerFirstBlock(brand, 'valueOwners.scenario.' + (i + 1));
       var cardTitle = srowT && hasVal(srowT.title) ? String(srowT.title).trim() : title;
-      return scenarioDetailCard(cardTitle, scenBodies[i]);
+      return scenarioDetailCard(proposedHeading(brand, cardTitle), scenBodies[i]);
     }).join('');
     var watchSlot = explorerMergedBody(brand, 'valueOwners.watchouts');
     var watchLines = hasVal(watchSlot)
@@ -3196,24 +3327,24 @@
       }).join('') +
       '</div>';
     var kpis =
-      '<div class="brand-markets-kpi" style="margin-bottom:16px" aria-label="Illustrative Commercial Footprint">' +
+      '<div class="brand-markets-kpi" style="margin-bottom:16px" aria-label="Commercial Engine Summaries">' +
       commercialKpiFromSlot(
         brand,
         'commercial.kpi.channels',
-        'Channels in Franchise Materials',
+        'Channels',
         'Brand.com · major OTAs · GDS · metasearch'
       ) +
       commercialKpiFromSlot(
         brand,
         'commercial.kpi.campaigns',
-        'Campaign Rhythm',
+        'Campaigns',
         'Always-on + seasonal / market bursts'
       ) +
       commercialKpiFromSlot(brand, 'commercial.kpi.b2b', 'B2B Programs', 'RFP & account programs (where active)') +
       commercialKpiFromSlot(
         brand,
         'commercial.kpi.lens',
-        'Owner Underwriting Lens',
+        'Owner Lens',
         'Net contribution after fees and channel costs'
       ) +
       '</div>';
@@ -4209,11 +4340,26 @@
         .filter(hasVal)
         .join('\n\n');
 
-    var negotiableItems = splitBullets(explorerMergedBody(brand, 'economics.negotiable_items')).map(
-      econListItemCase
+    function filterAgreementBulletItems(items) {
+      return (items || [])
+        .map(function (x) {
+          return String(x || '').trim();
+        })
+        .filter(function (line) {
+          if (!line) return false;
+          // Reject diligence meta / generic investment commentary masquerading as bullets
+          if (/diligence:|confirm definitions|do not reuse|request current|Use disclosure/i.test(line)) {
+            return false;
+          }
+          if (line.length > 120 && /paragraph|investment|unrelated/i.test(line)) return false;
+          return true;
+        });
+    }
+    var negotiableItems = filterAgreementBulletItems(
+      splitBullets(explorerMergedBody(brand, 'economics.negotiable_items')).map(econListItemCase)
     );
-    var rarelyItems = splitBullets(explorerMergedBody(brand, 'economics.rarely_negotiable')).map(
-      econListItemCase
+    var rarelyItems = filterAgreementBulletItems(
+      splitBullets(explorerMergedBody(brand, 'economics.rarely_negotiable')).map(econListItemCase)
     );
     if (!negotiableItems.length) {
       negotiableItems = [
@@ -4346,41 +4492,93 @@
     var isMarriottBonvoy =
       String(progNameEarly || '').toLowerCase().indexOf('bonvoy') >= 0 ||
       String(brand && brand.parentCompany || '').toLowerCase().indexOf('marriott') >= 0;
+    var progNameKpi = lcFv(brand, 'typicalLoyaltyProgramName');
+    var progLabel = progNameKpi ? String(progNameKpi).trim() : 'Parent loyalty program';
     var memM = lcFv(brand, 'totalGlobalMembersMillions');
-    var defMembersVal = hasVal(memM)
-      ? '~' + String(memM).trim() + 'M members (est.)'
+    var membersStructured = hasVal(memM)
+      ? {
+          value: '~' + String(memM).trim() + 'M',
+          note: progLabel + ' · parent-program membership (directional)',
+          role: 'number',
+          unavailable: false
+        }
       : isChoiceFamily
-        ? '~70M members (program-wide)'
+        ? {
+            value: '~70M',
+            note: 'Choice Privileges · program-wide (directional)',
+            role: 'number',
+            unavailable: false
+          }
         : isMarriottBonvoy
-          ? '200M+ members (Bonvoy program scale)'
-          : '—';
+          ? {
+              value: '200M+',
+              note: 'Bonvoy · program-wide (directional)',
+              role: 'number',
+              unavailable: false
+            }
+          : {
+              value: 'N/A',
+              note: 'Parent-program membership not disclosed',
+              role: 'number',
+              unavailable: true
+            };
+
     var openHotels = Number(fp.totalExistingHotels);
-    var defHotelsVal = '—';
-    if (hasVal(fp.totalExistingHotels) && openHotels > 0) {
-      defHotelsVal = fmtNum(fp.totalExistingHotels) + '+ hotels in portfolio (open)';
-    } else if (isChoiceFamily) {
-      defHotelsVal = '7,100+ properties (Choice Privileges network)';
-    } else if (isMarriottBonvoy) {
-      defHotelsVal = 'Global member directory · Bonvoy participation varies';
-    }
+    var hotelsStructured =
+      hasVal(fp.totalExistingHotels) && openHotels > 0
+        ? {
+            value: fmtNum(fp.totalExistingHotels) + '+',
+            note: 'Open hotels in brand portfolio (not loyalty-only count)',
+            role: 'number',
+            unavailable: false
+          }
+        : isChoiceFamily
+          ? {
+              value: '7,100+',
+              note: 'Choice Privileges network properties (directional)',
+              role: 'number',
+              unavailable: false
+            }
+          : {
+              value: 'N/A',
+              note: 'Participating hotel count not disclosed for this metric',
+              role: 'number',
+              unavailable: true
+            };
+
     var marketsN = fpFv.numberOfMarkets;
-    var defMarketsVal = hasVal(marketsN)
-      ? fmtNum(marketsN) +
-        ' markets · ' +
-        (hasVal(fpFv.specificMarkets)
-          ? String(fpFv.specificMarkets).trim()
-          : hasVal(fp.priorityCities)
-            ? String(fp.priorityCities).trim()
-            : 'regional mix')
-      : isChoiceFamily
-        ? 'Global · 20+ brands in portfolio'
-        : '—';
+    var marketsStructured = hasVal(marketsN)
+      ? {
+          value: fmtNum(marketsN),
+          note: hasVal(fpFv.specificMarkets)
+            ? String(fpFv.specificMarkets).trim()
+            : hasVal(fp.priorityCities)
+              ? String(fp.priorityCities).trim()
+              : 'Markets reported in footprint',
+          role: 'number',
+          unavailable: false
+        }
+      : {
+          value: 'N/A',
+          note: 'Market count not disclosed for this metric',
+          role: 'number',
+          unavailable: true
+        };
+
     var mixPct = lcFv(brand, 'typicalLoyaltyRoomsPercent');
-    var defMixVal = hasVal(mixPct)
-      ? '~' + String(mixPct).trim() + '% of rooms from loyalty (est.)'
-      : isMarriottBonvoy
-        ? 'Varies by property · confirm during diligence'
-        : '—';
+    var mixStructured = hasVal(mixPct)
+      ? {
+          value: '~' + String(mixPct).trim() + '%',
+          note: 'Typical loyalty rooms mix · educational estimate (not property-level)',
+          role: 'percentage',
+          unavailable: false
+        }
+      : {
+          value: 'N/A',
+          note: 'Property-level loyalty mix not disclosed',
+          role: 'percentage',
+          unavailable: true
+        };
 
     var heroRow = explorerFirstBlock(brand, 'loyalty.hero_title');
     var loyaltyH2;
@@ -4397,21 +4595,47 @@
     var kpiRow =
       '<div class="brand-markets-kpi" aria-label="Loyalty Program Snapshot">' +
       (function () {
-        function kpiSlot(sk, defLbl, defVal) {
+        function resolveLoyaltyKpi(sk, defLbl, structured) {
           var r = explorerFirstBlock(brand, sk);
           var lbl = defLbl;
-          var val = defVal;
-          if (r) {
-            if (hasVal(r.title)) lbl = String(r.title).trim();
-            if (hasVal(r.body)) val = String(r.body).trim();
+          if (r && hasVal(r.title) && String(r.title).trim().length < 48) {
+            lbl = String(r.title).trim();
           }
-          return kpiCard(lbl, val);
+          var blockVal = r && hasVal(r.body) ? String(r.body).trim() : '';
+          // Prefer compact presentation values; reject diligence prose in KPI slots
+          if (blockVal && isCompactKpiValue(blockVal) && !/^not disclosed$/i.test(blockVal)) {
+            return kpiCard(lbl, blockVal, {
+              role: structured.role,
+              note: structured.note,
+              unavailable: false
+            });
+          }
+          // Prefer verified structured commercial values over "Not disclosed" stubs
+          if (structured && hasVal(structured.value) && !structured.unavailable) {
+            return kpiCard(lbl, structured.value, {
+              role: structured.role,
+              note: structured.note,
+              unavailable: false
+            });
+          }
+          if (blockVal && /^not disclosed$/i.test(blockVal)) {
+            return kpiCard(lbl, 'N/A', {
+              role: structured.role || 'number',
+              note: structured.note || 'Not disclosed in available materials',
+              unavailable: true
+            });
+          }
+          return kpiCard(lbl, structured.value || 'N/A', {
+            role: structured.role || 'number',
+            note: structured.note || 'Not disclosed in available materials',
+            unavailable: true
+          });
         }
         return (
-          kpiSlot('loyalty.kpi.members', 'Members (approx.)', defMembersVal) +
-          kpiSlot('loyalty.kpi.hotels', 'Participating hotels (portfolio)', defHotelsVal) +
-          kpiSlot('loyalty.kpi.markets', 'Markets & corridors', defMarketsVal) +
-          kpiSlot('loyalty.kpi.mix', 'Typical loyalty mix (est.)', defMixVal)
+          resolveLoyaltyKpi('loyalty.kpi.members', 'Members', membersStructured) +
+          resolveLoyaltyKpi('loyalty.kpi.hotels', 'Participating hotels', hotelsStructured) +
+          resolveLoyaltyKpi('loyalty.kpi.markets', 'Markets', marketsStructured) +
+          resolveLoyaltyKpi('loyalty.kpi.mix', 'Typical loyalty mix', mixStructured)
         );
       })() +
       '</div>';
@@ -4467,7 +4691,7 @@
       proofRows.length > 0
         ? proofRows
             .map(function (x) {
-              var h = hasVal(x.title) ? x.title : 'Proof';
+              var h = proposedHeading(brand, hasVal(x.title) ? x.title : 'Proof');
               var b = x.body || '';
               var empty = !hasVal(b);
               var bodyText = empty ? '&nbsp;' : escapeHtml(fmtCell(b));
@@ -5161,11 +5385,17 @@
     return escapeHtml(fmtNum(n));
   }
 
-  function fpMetricAvgKeys(hotels, rooms) {
-    var h = fpMetricNum(hotels);
+  function fpMetricAvgKeys(hotels, rooms, knownHotelsDenominator) {
+    if (rooms == null || rooms === '') return '&nbsp;';
+    // Never fall back to total hotels when room coverage is incomplete —
+    // missing keys must not dilute the average as zero-room properties.
+    if (knownHotelsDenominator == null || !(Number(knownHotelsDenominator) > 0)) {
+      return '&nbsp;';
+    }
+    var denom = Number(knownHotelsDenominator);
     var r = fpMetricNum(rooms);
-    if (h <= 0) return '&nbsp;';
-    return escapeHtml(fmtNum(Math.round(r / h)));
+    if (denom <= 0 || r <= 0) return '&nbsp;';
+    return escapeHtml(fmtNum(Math.round(r / denom)));
   }
 
   var FP_METRIC_COLGROUP =
@@ -5183,9 +5413,19 @@
     '<th scope="col">Avg Keys</th>' +
     '</tr></thead><tbody>';
 
-  function fpMetricRowHtml(label, openH, openR, pipeH, pipeR, isTotal) {
+  function fpMetricRowHtml(label, openH, openR, pipeH, pipeR, isTotal, opts) {
+    opts = opts || {};
+    var openRMissing = openR == null || openR === '';
+    var pipeRMissing = pipeR == null || pipeR === '';
     var totalH = fpMetricNum(openH) + fpMetricNum(pipeH);
-    var totalR = fpMetricNum(openR) + fpMetricNum(pipeR);
+    // Do not coerce incomplete room inventories into a verified total of 0.
+    var totalR =
+      openRMissing && pipeRMissing
+        ? null
+        : openRMissing && (pipeRMissing || fpMetricNum(pipeR) === 0)
+          ? null
+          : fpMetricNum(openR) + fpMetricNum(pipeR);
+    var avgDenom = opts.knownHotelsDenominator;
     return (
       '<tr' +
       (isTotal ? ' class="brand-ft-total-row"' : '') +
@@ -5205,7 +5445,9 @@
       '</td><td>' +
       fpMetricCell(totalR) +
       '</td><td>' +
-      (isTotal && totalH <= 0 ? '&nbsp;' : fpMetricAvgKeys(totalH, totalR)) +
+      (isTotal && totalH <= 0
+        ? '&nbsp;'
+        : fpMetricAvgKeys(totalH, totalR, avgDenom)) +
       '</td></tr>'
     );
   }
@@ -5215,11 +5457,14 @@
     if (M && typeof M.footprintDisplayModel === 'function') {
       return M.footprintDisplayModel(brand);
     }
+    // Fail closed: never present raw Brand Setup zeros as verified portfolio metrics
+    // when the census/HPC trust module failed to load.
     return {
       fp: brand.footprint || {},
-      showVerifiedMetrics: true,
-      displaySourceLabel: null,
+      showVerifiedMetrics: false,
+      displaySourceLabel: 'Portfolio metrics trust module unavailable.',
       sourceNote: null,
+      metricsBanner: 'Portfolio metrics trust module unavailable — values are not shown as verified zeros.',
       countryBreakdown: null,
       locationTypeBreakdown: null
     };
@@ -5230,7 +5475,12 @@
     if (M && typeof M.footprintPipelineTotals === 'function') {
       return M.footprintPipelineTotals(fp);
     }
-    if (!fp || typeof fp !== 'object') return { hotels: 0, rooms: 0 };
+    if (!fp || typeof fp !== 'object') return { hotels: null, rooms: null };
+    var ph = fp.totalPipelineHotels;
+    var pr = fp.totalPipelineRooms;
+    if (ph != null || pr != null) {
+      return { hotels: ph == null ? null : fpMetricNum(ph), rooms: pr == null ? null : fpMetricNum(pr) };
+    }
     return {
       hotels: fpMetricNum(fp.totalNewBuildHotels) + fpMetricNum(fp.totalConversionHotels),
       rooms: fpMetricNum(fp.totalNewBuildRooms) + fpMetricNum(fp.totalConversionRooms)
@@ -5241,12 +5491,86 @@
     if (!disp) return '';
     var M = typeof BrandExplorerCensusMetrics !== 'undefined' ? BrandExplorerCensusMetrics : null;
     if (!M || typeof M.unverifiedFootprintHtml !== 'function') return '';
-    var msg =
-      disp.metricsBanner ||
-      (disp.showVerifiedMetrics ? disp.censusBreakdownNotice : null) ||
-      (!disp.showVerifiedMetrics ? disp.verifiedEmptyMessage : null);
-    if (!msg) return '';
-    return M.unverifiedFootprintHtml(msg);
+    var parts = [];
+    if (disp.coverageNotes && disp.coverageNotes.length) {
+      for (var i = 0; i < disp.coverageNotes.length; i++) {
+        if (disp.coverageNotes[i]) parts.push(disp.coverageNotes[i]);
+      }
+    } else if (disp.metricsBanner) {
+      parts.push(disp.metricsBanner);
+    } else if (disp.showVerifiedMetrics && disp.censusBreakdownNotice) {
+      parts.push(disp.censusBreakdownNotice);
+    } else if (!disp.showVerifiedMetrics && disp.verifiedEmptyMessage) {
+      parts.push(disp.verifiedEmptyMessage);
+    }
+    // Never surface internal certState / Radar Status / mapping jargon in customer HTML.
+    if (!parts.length) return '';
+    return parts
+      .filter(function (msg) {
+        return !/LIVE_UNVERIFIED|certState|Radar Status|Brand Setup MVP|steward-confirmed|fixture|candidate JSON/i.test(
+          String(msg || '')
+        );
+      })
+      .map(function (msg) {
+        return M.unverifiedFootprintHtml(msg);
+      })
+      .join('');
+  }
+
+  function fpMetricHeaderHtml(opts) {
+    opts = opts || {};
+    var openRoomsLabel = opts.knownRooms ? 'Known Open Rooms' : 'Open Rooms';
+    var pipeRoomsLabel = opts.knownRooms ? 'Known Pipeline Rooms' : 'Pipeline Rooms';
+    var totalRoomsLabel = opts.knownRooms ? 'Known Total Rooms' : 'Total Rooms';
+    var firstCol = opts.firstCol || 'Region';
+    return (
+      '<thead><tr>' +
+      '<th scope="col">' +
+      escapeHtml(firstCol) +
+      '</th>' +
+      '<th scope="col">Open Hotels</th>' +
+      '<th scope="col">' +
+      escapeHtml(openRoomsLabel) +
+      '</th>' +
+      '<th scope="col">Pipeline Hotels</th>' +
+      '<th scope="col">' +
+      escapeHtml(pipeRoomsLabel) +
+      '</th>' +
+      '<th scope="col">Total Hotels</th>' +
+      '<th scope="col">' +
+      escapeHtml(totalRoomsLabel) +
+      '</th>' +
+      '<th scope="col">Avg Keys</th>' +
+      '</tr></thead><tbody>'
+    );
+  }
+
+  function officialReportedFootprintHtml(disp) {
+    var off = disp && disp.officialReported;
+    if (!off || !(Number(off.totalOpenHotels) > 0 || Number(off.totalOpenRooms) > 0)) return '';
+    var note = disp.officialSourceNote
+      ? '<p class="brand-fp-table-note brand-fp-source-note">' + escapeHtml(disp.officialSourceNote) + '</p>'
+      : '';
+    return (
+      '<div class="brand-fp-subsection brand-fp-official-reported">' +
+      '<h3 class="brand-fp-table-title">Official Reported Brand Footprint</h3>' +
+      note +
+      '<div class="brand-fp-table-wrap" role="region" aria-label="Official Reported Brand Footprint">' +
+      '<table class="brand-fp-table brand-fp-table--metrics">' +
+      FP_METRIC_COLGROUP +
+      FP_METRIC_HEADER +
+      fpMetricRowHtml(
+        'Total (Official Reported)',
+        off.totalOpenHotels,
+        off.totalOpenRooms,
+        off.totalPipelineHotels,
+        off.totalPipelineRooms,
+        true
+      ) +
+      '</tbody></table></div>' +
+      '<p class="brand-fp-table-note">Separate from Dealality observed inventory — do not combine the two populations.</p>' +
+      '</div>'
+    );
   }
 
   function buildFpRowsFromCensusBreakdown(breakdownRows) {
@@ -5255,40 +5579,64 @@
     var sorted =
       M && typeof M.sortBreakdownForPortfolioDisplay === 'function'
         ? M.sortBreakdownForPortfolioDisplay(breakdownRows)
-        : breakdownRows;
+        : breakdownRows.slice();
+    // Keep Unknown / Unclassified rows — never silently drop.
     var sumOpenH = 0;
     var sumOpenR = 0;
     var sumPipeH = 0;
     var sumPipeR = 0;
+    var sumKnownHotels = 0;
+    var anyIncomplete = false;
     var body = sorted
       .map(function (row) {
-        var n =
-          M && typeof M.normalizeBreakdownRow === 'function' ? M.normalizeBreakdownRow(row) : null;
-        if (!n && row && row.label) {
-          n = {
-            label: row.label,
-            hotels: Number(row.hotels) || 0,
-            keys: Number(row.keys) || 0,
-            pipelineHotels: Number(row.pipelineHotels) || 0,
-            pipelineKeys: Number(row.pipelineKeys) || 0
-          };
-        }
-        if (!n || !n.label) return '';
-        sumOpenH += n.hotels;
-        sumOpenR += n.keys;
-        sumPipeH += n.pipelineHotels;
-        sumPipeR += n.pipelineKeys;
-        return fpMetricRowHtml(n.label, n.hotels, n.keys, n.pipelineHotels, n.pipelineKeys, false);
+        if (!row || !row.label) return '';
+        var openH = Number(row.hotels) || 0;
+        var pipeH = Number(row.pipelineHotels) || 0;
+        var openR =
+          row.displayOpenKeys !== undefined
+            ? row.displayOpenKeys
+            : row.keysIncomplete && Number(row.openWithKeys || 0) === 0
+              ? null
+              : Number(row.keys) || 0;
+        var pipeR =
+          row.displayPipelineKeys !== undefined
+            ? row.displayPipelineKeys
+            : row.keysIncomplete && Number(row.pipelineWithKeys || 0) === 0
+              ? null
+              : Number(row.pipelineKeys) || 0;
+        var knownDenom = Number(row.openWithKeys) || 0;
+        if (row.keysIncomplete) anyIncomplete = true;
+        sumOpenH += openH;
+        sumPipeH += pipeH;
+        if (openR != null) sumOpenR += Number(openR) || 0;
+        if (pipeR != null) sumPipeR += Number(pipeR) || 0;
+        sumKnownHotels += knownDenom;
+        return fpMetricRowHtml(row.label, openH, openR, pipeH, pipeR, false, {
+          knownHotelsDenominator: knownDenom > 0 ? knownDenom : null
+        });
       })
       .join('');
     if (!body) return '';
-    body += fpMetricRowHtml('Total (Portfolio)', sumOpenH, sumOpenR, sumPipeH, sumPipeR, true);
+    var totalOpenR = anyIncomplete && sumKnownHotels === 0 ? null : sumOpenR;
+    body += fpMetricRowHtml(
+      'Total (Observed)',
+      sumOpenH,
+      totalOpenR,
+      sumPipeH,
+      sumPipeR,
+      true,
+      { knownHotelsDenominator: sumKnownHotels > 0 ? sumKnownHotels : null }
+    );
     return body;
   }
 
   function buildFpRegionDistributionRows(reg, regionKeys) {
     if (!regionKeys.length) return '';
     var sorted = regionKeys.slice().sort(function (a, b) {
+      var aUnk = /^(unknown|unclassified)$/i.test(a);
+      var bUnk = /^(unknown|unclassified)$/i.test(b);
+      if (aUnk && !bUnk) return 1;
+      if (bUnk && !aUnk) return -1;
       var ta = fpMetricNum((reg[a] || {}).hotels) + fpMetricNum((reg[a] || {}).pipelineHotels);
       var tb = fpMetricNum((reg[b] || {}).hotels) + fpMetricNum((reg[b] || {}).pipelineHotels);
       return tb - ta;
@@ -5297,21 +5645,37 @@
     var sumOpenR = 0;
     var sumPipeH = 0;
     var sumPipeR = 0;
+    var sumKnownHotels = 0;
+    var anyIncomplete = false;
     var body = sorted
       .map(function (region) {
         var o = reg[region] || {};
         var openH = fpMetricNum(o.hotels);
-        var openR = fpMetricNum(o.rooms);
+        var openR = o.rooms == null || o.rooms === '' ? null : fpMetricNum(o.rooms);
         var pipeH = fpMetricNum(o.pipelineHotels);
-        var pipeR = fpMetricNum(o.pipelineRooms);
+        var pipeR = o.pipelineRooms == null || o.pipelineRooms === '' ? null : fpMetricNum(o.pipelineRooms);
+        var knownDenom = Number(o.openWithKeys) || 0;
+        if (o.keysIncomplete) anyIncomplete = true;
         sumOpenH += openH;
-        sumOpenR += openR;
         sumPipeH += pipeH;
-        sumPipeR += pipeR;
-        return fpMetricRowHtml(region, openH, openR, pipeH, pipeR, false);
+        if (openR != null) sumOpenR += openR;
+        if (pipeR != null) sumPipeR += pipeR;
+        sumKnownHotels += knownDenom;
+        return fpMetricRowHtml(region, openH, openR, pipeH, pipeR, false, {
+          knownHotelsDenominator: knownDenom > 0 ? knownDenom : null
+        });
       })
       .join('');
-    body += fpMetricRowHtml('Total (Portfolio)', sumOpenH, sumOpenR, sumPipeH, sumPipeR, true);
+    var totalOpenR = anyIncomplete && sumKnownHotels === 0 ? null : sumOpenR;
+    body += fpMetricRowHtml(
+      'Total (Observed)',
+      sumOpenH,
+      totalOpenR,
+      sumPipeH,
+      sumPipeR,
+      true,
+      { knownHotelsDenominator: sumKnownHotels > 0 ? sumKnownHotels : null }
+    );
     return body;
   }
 
@@ -5334,44 +5698,37 @@
     var suppressEmptyKpi = shouldRenderFullProfile(brand);
     var kpiRow =
       '<div class="brand-markets-kpi" aria-label="Markets and Footprint Summary">' +
-      kpiCard('Regions', regionsSummary, { suppressEmpty: suppressEmptyKpi }) +
-      kpiCard('Markets Operated In', fv.numberOfMarkets, { suppressEmpty: suppressEmptyKpi }) +
+      kpiCard('Regions', regionsSummary, { suppressEmpty: suppressEmptyKpi, role: 'text' }) +
+      kpiCard('Markets Operated In', fv.numberOfMarkets, {
+        suppressEmpty: suppressEmptyKpi,
+        role: 'number'
+      }) +
       kpiCard('Open Hotels (Public YE2025)', fp.totalExistingHotels > 0 ? fp.totalExistingHotels : '', {
         suppressEmpty: suppressEmptyKpi,
+        role: 'number'
       }) +
       kpiCard(
         'Coverage Model',
         [brand.brandModelFormat, brand.hotelChainScale].filter(hasVal).join(' · '),
-        { suppressEmpty: suppressEmptyKpi }
+        { suppressEmpty: suppressEmptyKpi, role: 'text' }
       ) +
       '</div>';
     var openH = fp.totalExistingHotels;
     var openR = fp.totalExistingRooms;
-    var portfolioTotalsRow = fpMetricRowHtml('Total (Portfolio)', openH, openR, pipH, pipR, true);
+    // Prefer null over misleading 0 when rooms are incomplete (HPC displayMetrics).
+    if (disp.useHpc && openR == null) openR = null;
+    if (disp.useHpc && pipR == null) pipR = null;
+    var knownRooms = Boolean(disp.useHpc && disp.roomsIncomplete);
+    var knownDenom =
+      disp.roomsCoverage && Number(disp.roomsCoverage.openWithKeys) > 0
+        ? Number(disp.roomsCoverage.openWithKeys)
+        : null;
+    var portfolioLabel = disp.useHpc ? 'Total (Observed Inventory)' : 'Total (Portfolio)';
+    var portfolioTotalsRow = fpMetricRowHtml(portfolioLabel, openH, openR, pipH, pipR, true, {
+      knownHotelsDenominator: knownDenom
+    });
     var fp8Empty =
       '<tr><th scope="row">&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>';
-    var fp8HeadCountry =
-      '<thead><tr>' +
-      '<th scope="col">Country</th>' +
-      '<th scope="col">Open Hotels</th>' +
-      '<th scope="col">Open Rooms</th>' +
-      '<th scope="col">Pipeline Hotels</th>' +
-      '<th scope="col">Pipeline Rooms</th>' +
-      '<th scope="col">Total Hotels</th>' +
-      '<th scope="col">Total Rooms</th>' +
-      '<th scope="col">Avg Keys</th>' +
-      '</tr></thead><tbody>';
-    var fp8HeadArchetype =
-      '<thead><tr>' +
-      '<th scope="col">Asset Archetype</th>' +
-      '<th scope="col">Open Hotels</th>' +
-      '<th scope="col">Open Rooms</th>' +
-      '<th scope="col">Pipeline Hotels</th>' +
-      '<th scope="col">Pipeline Rooms</th>' +
-      '<th scope="col">Total Hotels</th>' +
-      '<th scope="col">Total Rooms</th>' +
-      '<th scope="col">Avg Keys</th>' +
-      '</tr></thead><tbody>';
     var distRows = regionKeys.length ? buildFpRegionDistributionRows(reg, regionKeys) : fp8Empty;
     var countryRows = disp.countryBreakdown
       ? buildFpRowsFromCensusBreakdown(disp.countryBreakdown)
@@ -5379,64 +5736,101 @@
     var archetypeRows = disp.locationTypeBreakdown
       ? buildFpRowsFromCensusBreakdown(disp.locationTypeBreakdown)
       : '';
+    // Unique radio name/id per mount so Compare Studio LEFT + RIGHT toggles work independently.
+    var fpUid =
+      'fp' +
+      String((brand && (brand.id || brand.brandId || brand.name)) || 'x')
+        .replace(/[^a-zA-Z0-9]/g, '')
+        .slice(0, 12) +
+      String(Math.floor(Math.random() * 1e6));
+    var nameGroup = 'beAtFpView-' + fpUid;
+    var idReg = 'beAtFpReg-' + fpUid;
+    var idCtry = 'beAtFpCtry-' + fpUid;
+    var idArch = 'beAtFpArch-' + fpUid;
     var regionPanel =
       '<div class="brand-fp-table-wrap brand-fp-panel brand-fp-panel-region" role="tabpanel" aria-label="By Region">' +
       '<table class="brand-fp-table brand-fp-table--metrics">' +
       FP_METRIC_COLGROUP +
-      FP_METRIC_HEADER +
+      fpMetricHeaderHtml({ firstCol: 'Region', knownRooms: knownRooms }) +
       distRows +
       '</tbody></table></div>';
     var countryPanel =
       '<div class="brand-fp-table-wrap brand-fp-panel brand-fp-panel-country" role="tabpanel" aria-label="By Country">' +
       '<table class="brand-fp-table brand-fp-table--metrics">' +
       FP_METRIC_COLGROUP +
-      fp8HeadCountry +
+      fpMetricHeaderHtml({ firstCol: 'Country', knownRooms: knownRooms }) +
       (countryRows || fp8Empty) +
       '</tbody></table></div>';
     var archetypePanel =
       '<div class="brand-fp-table-wrap brand-fp-panel brand-fp-panel-archetype" role="tabpanel" aria-label="By Asset Archetype">' +
       '<table class="brand-fp-table brand-fp-table--metrics">' +
       FP_METRIC_COLGROUP +
-      fp8HeadArchetype +
+      fpMetricHeaderHtml({ firstCol: 'Asset Archetype', knownRooms: knownRooms }) +
       (archetypeRows || fp8Empty) +
       '</tbody></table></div>';
     var fpSourceNote = disp.sourceNote
       ? '<p class="brand-fp-table-note brand-fp-source-note">' + escapeHtml(disp.sourceNote) + '</p>'
       : '';
     var portfolioDistribution =
-      '<div class="brand-fp-subsection brand-fp-distribution be-atelier-fp-dist">' +
+      '<div class="brand-fp-subsection brand-fp-distribution be-atelier-fp-dist" data-fp-dist-uid="' +
+      escapeHtml(fpUid) +
+      '">' +
       '<div class="brand-fp-distribution-head">' +
       '<h3 class="brand-fp-table-title">Portfolio Distribution</h3>' +
       '<p class="brand-fp-view-hint">View By Region, Country, or Asset Archetype</p>' +
       '</div>' +
-      '<input type="radio" name="beAtFpView" id="beAtFpReg" class="brand-fp-view-input" checked />' +
-      '<input type="radio" name="beAtFpView" id="beAtFpCtry" class="brand-fp-view-input" />' +
-      '<input type="radio" name="beAtFpView" id="beAtFpArch" class="brand-fp-view-input" />' +
+      '<input type="radio" name="' +
+      nameGroup +
+      '" id="' +
+      idReg +
+      '" class="brand-fp-view-input" data-fp-view="region" checked />' +
+      '<input type="radio" name="' +
+      nameGroup +
+      '" id="' +
+      idCtry +
+      '" class="brand-fp-view-input" data-fp-view="country" />' +
+      '<input type="radio" name="' +
+      nameGroup +
+      '" id="' +
+      idArch +
+      '" class="brand-fp-view-input" data-fp-view="archetype" />' +
       '<div class="brand-fp-view-toggle" role="tablist" aria-label="Portfolio Distribution View">' +
-      '<label class="brand-fp-view-label" for="beAtFpReg">Region</label>' +
-      '<label class="brand-fp-view-label" for="beAtFpCtry">Country</label>' +
-      '<label class="brand-fp-view-label" for="beAtFpArch">Asset Archetype</label>' +
+      '<label class="brand-fp-view-label" data-fp-view="region" for="' +
+      idReg +
+      '">Region</label>' +
+      '<label class="brand-fp-view-label" data-fp-view="country" for="' +
+      idCtry +
+      '">Country</label>' +
+      '<label class="brand-fp-view-label" data-fp-view="archetype" for="' +
+      idArch +
+      '">Asset Archetype</label>' +
       '</div>' +
       regionPanel +
       countryPanel +
       archetypePanel +
       fpSourceNote +
-      '<p class="brand-fp-table-note">Illustrative Directional View · Not Audited Financials or Property-Level Disclosure</p>' +
+      '<p class="brand-fp-table-note">Directional observed inventory · Not audited financials or property-level disclosure</p>' +
       '</div>';
+    var openPipelineTitle = disp.useHpc
+      ? 'Open vs. Pipeline (Observed Inventory)'
+      : 'Open vs. Pipeline (Portfolio)';
     var openPipelineSub =
       '<div class="brand-fp-subsection">' +
-      '<h3 class="brand-fp-table-title">Open vs. Pipeline (Portfolio)</h3>' +
+      '<h3 class="brand-fp-table-title">' +
+      openPipelineTitle +
+      '</h3>' +
       '<div class="brand-fp-table-wrap" role="region" aria-label="Open Versus Pipeline Portfolio Totals">' +
       '<table class="brand-fp-table brand-fp-table--metrics">' +
       FP_METRIC_COLGROUP +
-      FP_METRIC_HEADER +
+      fpMetricHeaderHtml({ firstCol: 'Scope', knownRooms: knownRooms }) +
       portfolioTotalsRow +
       '</tbody></table></div></div>';
+    var officialBlock = officialReportedFootprintHtml(disp);
     var metricsBlock =
       '<div class="brand-fp-metrics">' +
       metricsNotice +
       (disp.showVerifiedMetrics
-        ? openPipelineSub + portfolioDistribution
+        ? openPipelineSub + portfolioDistribution + officialBlock
         : '<p class="brand-fp-table-note">Footprint tables are hidden until portfolio metrics are verified.</p>') +
       '</div>';
     var suppressEmptyFp = shouldRenderFullProfile(brand);
@@ -6122,16 +6516,48 @@
           .join('')
       : '<span class="tag-chip">&nbsp;</span>';
     var imgUrl = block && hasVal(block.imageUrl) ? String(block.imageUrl).trim() : '';
+    // Proposed column: never display publication thumbnails / Travel Weekly graphics as hotel photos.
+    if (
+      globalThis.BePropertyImageIntegrity &&
+      typeof globalThis.BePropertyImageIntegrity.proposedPropertyImageUrl === 'function'
+    ) {
+      // brand is closed over from renderFootprint — resolve via block marker or global proposed flag on mount
+      var brandHint =
+        block && block.__proposedBrand
+          ? block.__proposedBrand
+          : typeof window !== 'undefined' && window.__BE_ATELIER_ACTIVE_BRAND__
+            ? window.__BE_ATELIER_ACTIVE_BRAND__
+            : null;
+      imgUrl = globalThis.BePropertyImageIntegrity.proposedPropertyImageUrl(brandHint, imgUrl, {
+        imageFilename: block && block.imageFilename,
+        imageType: block && block.imageType
+      });
+    }
+    // If integrity repair already ran on the block, prefer its verified URL
+    if (block && block.__propertyImageIntegrity && block.__propertyImageIntegrity.replacementUrl) {
+      imgUrl = String(block.__propertyImageIntegrity.replacementUrl).trim();
+    }
     var topInner = '';
+    var photoCredit = '';
+    if (block && block.__propertyImageIntegrity && block.__propertyImageIntegrity.caption) {
+      photoCredit = String(block.__propertyImageIntegrity.caption).trim();
+    }
     if (imgUrl && isSafeHttpUrl(imgUrl)) {
       topInner =
         '<img src="' +
         escapeHtml(imgUrl) +
         '" alt="' +
-        escapeHtml(title || 'Property') +
+        escapeHtml(photoCredit || title || 'Property') +
         '"' +
         exportPdfImgAttrs() +
         ' />';
+    } else if (
+      block &&
+      block.__propertyImageIntegrity &&
+      block.__propertyImageIntegrity.researchRequired
+    ) {
+      topInner =
+        '<div class="property-example-card__image-missing" role="img" aria-label="Property photograph research required">Property photograph research required</div>';
     }
     var situationSn = hasVal(p.situation) ? String(p.situation).trim() : '';
     if (!hasVal(situationSn)) {
@@ -6165,7 +6591,13 @@
       escapeHtml(title) +
       '</h4>' +
       '<span>' +
-      (hasVal(p.loc) ? escapeHtml(p.loc) : '') +
+      escapeHtml(
+        hasVal(photoCredit)
+          ? photoCredit
+          : hasVal(p.loc)
+            ? p.loc
+            : ''
+      ) +
       '</span></div></div>' +
       '<div class="property-example-card__mid">' +
       (hasVal(metaHtml) ? '<div class="property-example-card__meta">' + metaHtml + '</div>' : '') +
@@ -6347,6 +6779,31 @@
   }
 
   function renderDealalityInsight(brand) {
+    var assessmentSections =
+      (globalThis.BeDealalityInsightAdvisory &&
+        globalThis.BeDealalityInsightAdvisory.ASSESSMENT_SECTIONS) ||
+      [];
+    var assessmentHtml = '';
+    if (assessmentSections.length) {
+      assessmentHtml = assessmentSections
+        .map(function (sec) {
+          var body = sanitizeCustomerFacingCopy(explorerMergedBodiesOnly(brand, sec.slotKey));
+          if (!hasVal(body)) return '';
+          return (
+            '<section class="oe-section">' +
+            '<h2 class="oe-section-title">' +
+            escapeHtml(proposedHeading(brand, sec.title)) +
+            '</h2>' +
+            '<p class="oe-section-hint">Dealality Advisory Assessment</p>' +
+            '<div class="dealality-editorial-card">' +
+            '<div class="dealality-editorial-card__brand">Dealality</div>' +
+            '<p>' +
+            escapeHtml(body).replace(/\n/g, '<br>') +
+            '</p></div></section>'
+          );
+        })
+        .join('');
+    }
     var STRENGTH_PAIRS = [
       ['Character-Rich Conversions', 'When the story is already there and needs commercial scaffolding.'],
       ['Premium Urban Repositioning', 'Where design credibility and distribution lift both matter.'],
@@ -6378,10 +6835,11 @@
       similarRows.length > 0
         ? similarRows
             .map(function (r) {
-              var label = hasVal(r.title) ? r.title : r.body;
+              var label = proposedHeading(brand, hasVal(r.title) ? r.title : r.body);
+              var bodySafe = sanitizeCustomerFacingCopy(hasVal(r.body) ? String(r.body).trim() : '');
               var sub =
-                hasVal(r.title) && hasVal(r.body) && String(r.body).trim() !== String(r.title).trim()
-                  ? ' ' + escapeHtml(String(r.body).trim())
+                hasVal(r.title) && hasVal(bodySafe) && bodySafe !== String(r.title).trim()
+                  ? ' ' + escapeHtml(bodySafe)
                   : '';
               return (
                 '<div class="scenario-card"><strong>' +
@@ -6395,12 +6853,25 @@
         : '<div class="scenario-card"><strong>&nbsp;</strong></div>' +
           '<div class="scenario-card"><strong>&nbsp;</strong></div>' +
           '<div class="scenario-card"><strong>&nbsp;</strong></div>';
-    return wrapOe(
+    var summarySafe = sanitizeCustomerFacingCopy(dealalitySummaryFromBrand(brand));
+    var legacySections =
       '<section class="oe-section">' +
+      '<h2 class="oe-section-title">Dealality Summary</h2>' +
+      '<p class="oe-section-hint">Dealality Editorial Summary</p>' +
+      explorerDetailCard('Summary', summarySafe) +
+      '</section>';
+    // When structured assessment is present on the proposed profile, lead with it.
+    if (assessmentHtml) {
+      legacySections =
+        assessmentHtml +
+        '<section class="oe-section">' +
         '<h2 class="oe-section-title">Dealality Summary</h2>' +
-        '<p class="oe-section-hint">Dealality Editorial Summary</p>' +
-        explorerDetailCard('Summary', dealalitySummaryFromBrand(brand)) +
-        '</section>' +
+        '<p class="oe-section-hint">Concise Rollup</p>' +
+        explorerDetailCard('Summary', summarySafe) +
+        '</section>';
+    }
+    return wrapOe(
+      legacySections +
         '<section class="oe-section">' +
         '<h2 class="oe-section-title">Key Strengths &amp; Strategic Fit</h2>' +
         '<p class="oe-section-hint">Brand-to-Owner Framing — Where Affiliation Tends to Show the Most Upside (Illustrative)</p>' +
@@ -6717,12 +7188,138 @@
     return true;
   }
 
+  /** Tab → HTML using the same builders as the customer-facing atelier (Phase 2H compare reuse). */
+  function renderTabInnerHtml(brand, tabId) {
+    if (!brand || !tabId) return '';
+    var sink = [];
+    if (tabId === 'atelier-overview') return renderAtelierOverview(brand);
+    if (tabId === 'atelier-value-owners') return renderValueToOwners(brand);
+    if (tabId === 'atelier-ops') return renderOperationsStandards(brand);
+    if (tabId === 'atelier-standards-owner') return renderStandardsOwnerConsiderations(brand);
+    if (tabId === 'atelier-commercial') return renderCommercialEngine(brand);
+    if (tabId === 'atelier-economics') return renderAtelierEconomicsObligations(brand);
+    if (tabId === 'atelier-loyalty') return renderLoyaltyProgram(brand);
+    if (tabId === 'atelier-footprint') return renderFootprintGrowth(brand, sink);
+    if (tabId === 'atelier-materials') return renderBrandMaterials(brand);
+    if (tabId === 'atelier-insight') return renderDealalityInsight(brand);
+    return '';
+  }
+
+  function normalizeSectionTitle(s) {
+    return String(s || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  /**
+   * Extract a product subsection fragment from tab HTML for paired comparison.
+   * Returns HTML that retains OE component markup (not flattened text).
+   */
+  function extractSubsectionHtml(tabHtml, subsection) {
+    if (!tabHtml || !subsection) return '';
+    var wrap = document.createElement('div');
+    wrap.innerHTML = tabHtml;
+    var label = normalizeSectionTitle(subsection.label || subsection.section || '');
+    var id = String(subsection.id || '');
+
+    function matchTitle(el) {
+      if (!el) return false;
+      var t = normalizeSectionTitle(el.textContent || '');
+      if (!label) return false;
+      return t === label || t.indexOf(label) >= 0 || label.indexOf(t) >= 0;
+    }
+
+    if (id === 'overview.scenarios' || /scenario/.test(id)) {
+      var scen = wrap.querySelector('.scenario-card-grid');
+      if (scen) {
+        var scenSec = scen.closest('.oe-section') || scen.parentElement;
+        return scenSec ? scenSec.outerHTML : scen.outerHTML;
+      }
+    }
+    if (id === 'overview.why_value') {
+      var clusters = wrap.querySelectorAll('.oe-cluster');
+      for (var ci = 0; ci < clusters.length; ci++) {
+        var h3 = clusters[ci].querySelector('h3');
+        if (h3 && /why value is strongest/i.test(h3.textContent || '')) {
+          return '<section class="oe-section">' + clusters[ci].outerHTML + '</section>';
+        }
+      }
+    }
+    if (id === 'materials.gallery') {
+      var gal = wrap.querySelector('.gallery-grid');
+      if (gal) {
+        var gsec = gal.closest('.oe-section');
+        return gsec ? gsec.outerHTML : gal.outerHTML;
+      }
+    }
+    if (id === 'materials.files') {
+      var files = wrap.querySelector('.file-card-grid');
+      if (files) {
+        var fsec = files.closest('.oe-section');
+        return fsec ? fsec.outerHTML : files.outerHTML;
+      }
+    }
+
+    var sections = wrap.querySelectorAll('.oe-section');
+    for (var si = 0; si < sections.length; si++) {
+      var titleEl = sections[si].querySelector(':scope > .oe-section-title, :scope > h2.oe-section-title, .oe-section-title');
+      if (matchTitle(titleEl)) {
+        var matched = sections[si].outerHTML;
+        // Fold untitled Economics intro into the glance section (never emit a separate "Section 1")
+        if (
+          id === 'economics.glance' ||
+          /typical economics at a glance/i.test(label)
+        ) {
+          var prev = sections[si].previousElementSibling;
+          if (
+            prev &&
+            prev.classList &&
+            prev.classList.contains('oe-section') &&
+            !prev.querySelector('.oe-section-title')
+          ) {
+            matched = prev.outerHTML + matched;
+          }
+        }
+        return matched;
+      }
+    }
+    var clusterNodes = wrap.querySelectorAll('.oe-cluster');
+    for (var kj = 0; kj < clusterNodes.length; kj++) {
+      var ch = clusterNodes[kj].querySelector('h3');
+      if (matchTitle(ch)) {
+        return '<section class="oe-section">' + clusterNodes[kj].outerHTML + '</section>';
+      }
+    }
+    // Fallback: return full tab HTML when subsection mapping is ambiguous
+    return tabHtml;
+  }
+
+  function brandShellFromBlocks(baseBrand, blocks, meta) {
+    var brand = baseBrand ? JSON.parse(JSON.stringify(baseBrand)) : { id: (meta && meta.id) || '', name: (meta && meta.name) || '' };
+    brand.brandExplorer = {
+      version: 1,
+      blocks: Array.isArray(blocks) ? blocks : [],
+      overlaySource: (meta && meta.overlaySource) || 'compare-studio'
+    };
+    if (meta && meta.beCandidateOverlay) brand.beCandidateOverlay = true;
+    return brand;
+  }
+
   window.BrandExplorerAtelierFromApi = {
     mountIntoRoot: mountAtelierIntoRoot,
     mountFromBrand: mountAtelierFromBrand,
     prepareAllPanelsForExport: prepareAllPanelsForExport,
     buildPanelsHtmlForTest: buildAtelierPanelsHtml,
     renderOverviewHtmlForTest: renderAtelierOverview,
+    renderTabInnerHtml: renderTabInnerHtml,
+    extractSubsectionHtml: extractSubsectionHtml,
+    brandShellFromBlocks: brandShellFromBlocks,
+    renderOperationsStandardsHtml: renderOperationsStandards,
+    renderLoyaltyProgramHtml: renderLoyaltyProgram,
+    renderBrandMaterialsHtml: renderBrandMaterials,
+    renderFootprintGrowthHtml: renderFootprintGrowth,
     shouldRenderFullProfile: shouldRenderFullProfile,
     externalShouldRenderFullProfile: externalShouldRenderFullProfile,
     isExternalQualityLocked: isExternalQualityLocked,

@@ -1,0 +1,80 @@
+{
+  "phase": "2H-A",
+  "gate": 1,
+  "capturedAt": "2026-11-19T15:14:39.000Z",
+  "founderApprovalStatus": "NOT_FOUNDER_APPROVED",
+  "contentMutation": false,
+  "payloadHashSha256": "3bdbd3927e8bf7ccb19cbcd8f60dfcec3dd87ac5ccf278653be9987ecd7ef37f",
+  "blockCount": 225,
+  "environments": {
+    "A_product": {
+      "url": "http://127.0.0.1:8082/brand-explorer-renderer-parity.html?beInternalPreview=1&payload=curio-gate1-renderer-parity-payload.json",
+      "renderer": "BrandExplorerAtelierFromApi.mountIntoRoot",
+      "hash": "3bdbd3927e8bf7ccb19cbcd8f60dfcec3dd87ac5ccf278653be9987ecd7ef37f",
+      "brandSnapshotSectionOuterHtmlLength": 2834,
+      "overviewOeSectionCount": 8,
+      "titleComputed": {
+        "fontFamily": "Inter, \"Segoe UI\", system-ui, sans-serif",
+        "fontSize": "17px",
+        "fontWeight": "700",
+        "color": "rgb(255, 255, 255)"
+      },
+      "screenshot": "screenshots/A-product-curio-brand-snapshot.png"
+    },
+    "B_compareStudio": {
+      "url": "http://127.0.0.1:8082/brand-explorer-compare.html?beInternalPreview=1&rendererParity=1&brand=receQkxgjlezsc1xg",
+      "renderer": "BrandExplorerAtelierFromApi.renderTabInnerHtml → .oe-section pairs",
+      "hash": "3bdbd3927e8bf7ccb19cbcd8f60dfcec3dd87ac5ccf278653be9987ecd7ef37f",
+      "identicalLeftRightHtmlAtRender": true,
+      "brandSnapshotSectionOuterHtmlLength": 2834,
+      "overviewOeSectionCount": 8,
+      "titleComputed": {
+        "fontFamily": "Inter, \"Segoe UI\", system-ui, sans-serif",
+        "fontSize": "17px",
+        "fontWeight": "700",
+        "color": "rgb(255, 255, 255)"
+      },
+      "columnWidthPxObserved": 808.5,
+      "screenshot": "screenshots/B-compare-curio-brand-snapshot-identical-columns.png"
+    }
+  },
+  "domStructureComparison": {
+    "snapshotOuterHtmlLengthMatch": true,
+    "overviewSectionCountMatch": true,
+    "canonicalClassesPresent": [".be-atelier-oe", ".oe-section", ".oe-section-title", ".oe-grid-2--snapshot", ".kv"],
+    "bulletListsPresentOnValueSections": true,
+    "note": "Post-render browser tooling may inject data-cursor-ref attributes; render-time left/right HTML identity is the Gate 1 compare check."
+  },
+  "cssComputedStyleComparison": {
+    "titleFontFamilyMatch": true,
+    "titleFontSizeMatch": true,
+    "titleFontWeightMatch": true,
+    "titleColorMatch": true,
+    "priorRegressionFixed": "Removed compare-only light theme override that forced rgb(26,26,26) titles"
+  },
+  "geometry": {
+    "productContentMaxWidthCss": "1120px (#beAtelierExplorer)",
+    "compareDefault": "half-page paired columns (~808px observed) — documented responsive adaptation",
+    "equalWidthModeUrl": "http://127.0.0.1:8082/brand-explorer-compare.html?beInternalPreview=1&rendererParity=1&equalWidth=1",
+    "equalWidthTargetCss": "560px + 560px"
+  },
+  "visualDifferenceReport": [
+    {
+      "id": "chrome_only",
+      "severity": "Compare Studio topbar/sidebar/scorecard chrome surrounds product OE panels; product page uses product tab nav only.",
+      "acceptable": true,
+      "reason": "Controls kept outside canonical subsection markup"
+    },
+    {
+      "id": "column_width_responsive",
+      "severity": "Default compare columns are narrower than full product content width.",
+      "acceptable": true,
+      "reason": "Documented responsive adaptation; equal-width mode available for geometry check"
+    },
+    {
+      "id": "payload_and_subsection_html",
+      "severity": "None for Brand Snapshot outerHTML length / title computed style after theme fix",
+      "acceptable": true
+    }
+  ]
+}

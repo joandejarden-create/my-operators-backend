@@ -60,7 +60,10 @@
       "tabId": "atelier-standards-owner",
       "tabName": "Owner Considerations",
       "subsections": [
-        { "id": "standards.requirements", "section": "Owner Considerations", "label": "Owner Considerations / Requirements", "slotPatterns": ["^standards\\."] }
+        { "id": "standards.detail", "section": "Standard Detail, Where Available", "label": "Standard Detail, Where Available", "slotPatterns": ["^standards\\.(requirement|intro|last_reviewed|source_confidence)"] },
+        { "id": "standards.conversion", "section": "Conversion & Sister-Flag Transitions", "label": "Conversion & Sister-Flag Transitions", "slotPatterns": ["^standards\\.conversion"] },
+        { "id": "standards.questions", "section": "Confirm With Brand", "label": "Confirm With Brand", "slotPatterns": ["^standards\\.questions"] },
+        { "id": "standards.deal_inputs", "section": "Deal Context Inputs", "label": "Deal Context Inputs", "slotPatterns": ["^standards\\.deal_inputs"] }
       ]
     },
     {
@@ -77,12 +80,13 @@
       "tabId": "atelier-economics",
       "tabName": "Economics & Obligations",
       "subsections": [
-        { "id": "economics.fees", "section": "Fee Structure", "label": "Fees & Fee Stack", "slotPatterns": ["^economics\\.fee"] },
-        { "id": "economics.cash", "section": "Cash & Capital", "label": "Cash & Capital Rhythm", "slotPatterns": ["^economics\\.cash\\.", "^economics\\.lifecycle\\."] },
-        { "id": "economics.negotiable", "section": "Negotiable Items", "label": "Negotiable Items", "slotPatterns": ["^economics\\.(negotiab|rarely_negotiable|negotiable)"] },
+        { "id": "economics.glance", "section": "Typical Economics at a Glance", "label": "Typical Economics at a Glance", "slotPatterns": ["^economics\\.kpi\\.", "^economics\\.intro$"] },
+        { "id": "economics.cash", "section": "Cash & Capital Rhythm", "label": "Cash & Capital Rhythm", "slotPatterns": ["^economics\\.cash\\.", "^economics\\.lifecycle\\."] },
         { "id": "economics.opening", "section": "Opening & Conversion Path", "label": "Opening & Conversion Path", "slotPatterns": ["^economics\\.opening"] },
-        { "id": "economics.risks", "section": "Risks & Legal", "label": "Risks, Legal & Exit", "slotPatterns": ["^economics\\.(risk|legal|performance|support|diligence|checklist|model|intro|incentives|term)"] },
-        { "id": "economics.kpis", "section": "Economics KPIs", "label": "Economics KPI Cards", "slotPatterns": ["^economics\\.kpi\\."] }
+        { "id": "economics.fees", "section": "Fees in Three Buckets", "label": "Fees in Three Buckets", "slotPatterns": ["^economics\\.fee"] },
+        { "id": "economics.risks", "section": "Term, Renewal & Exit Risk", "label": "Term, Renewal & Exit Risk", "slotPatterns": ["^economics\\.(risk|legal|performance|support|diligence|checklist|model|term)"] },
+        { "id": "economics.negotiable", "section": "Negotiability & Incentives", "label": "Negotiability & Incentives", "slotPatterns": ["^economics\\.(negotiab|rarely_negotiable|negotiable|incentives)"] },
+        { "id": "economics.confirm", "section": "Confirm With Brand / Legal Counsel", "label": "Confirm With Brand / Legal Counsel", "slotPatterns": ["^economics\\.(confirm|disclaimer)"] }
       ]
     },
     {

@@ -27,8 +27,8 @@
         { "id": "overview.snapshot", "section": "Brand Snapshot", "label": "Brand Snapshot", "slotPatterns": ["^snapshot\\.", "^identity\\.", "^overview\\.(typical_use_case|development_model|relative_positioning)$"] },
         { "id": "overview.positioning", "section": "Brand Positioning", "label": "Brand Positioning", "slotPatterns": ["^positioning\\."] },
         { "id": "overview.scenarios", "section": "Where This Brand Creates the Most Value", "label": "Where This Brand Creates the Most Value", "slotPatterns": ["^overview\\.scenario\\.\\d+$"], "minItems": 3, "requireImage": true, "componentType": "scenario_card" },
-        { "id": "overview.why_value", "section": "Why Value Is Strongest", "label": "Why Value Is Strongest", "slotPatterns": ["^overview\\.why_value$"] },
-        { "id": "overview.differentiators", "section": "Key Differentiators", "label": "Key Differentiators", "slotPatterns": ["^overview\\.differentiators\\."] },
+        { "id": "overview.why_value", "section": "Why Value Is Strongest in These Scenarios", "label": "Why Value Is Strongest in These Scenarios", "slotPatterns": ["^overview\\.why_value$"], "minInsights": 5, "format": "Bold Title Case Insight + explanatory sentence" },
+        { "id": "overview.differentiators", "section": "Key Differentiators", "label": "Key Differentiators", "slotPatterns": ["^overview\\.differentiators\\.(identity|commercial)$"], "categories": ["Experience & Identity", "Commercial & Distribution"], "exactBulletsPerCategory": 4 },
         { "id": "overview.best_at", "section": "What This Brand Is Best At", "label": "What This Brand Is Best At", "slotPatterns": ["^overview\\.bestAt\\.\\d+$"], "minItems": 3 },
         { "id": "overview.proof", "section": "Proof Points", "label": "Proof Points", "slotPatterns": ["^overview\\.proof\\.\\d+$"], "minItems": 4, "forbidGenericTitles": ["Proof 1", "Proof 2", "Proof 3", "Proof 4", "Proof 5", "Proof 6"] },
         { "id": "overview.featured", "section": "Featured Application", "label": "Featured Application / Conversion Example", "slotPatterns": ["^overview\\.featured"] },
@@ -39,10 +39,19 @@
       "tabId": "atelier-value-owners",
       "tabName": "Value to Owners",
       "subsections": [
+        {
+          "id": "value.really_buying",
+          "section": "What the Owner Is Really Buying",
+          "label": "What the Owner Is Really Buying",
+          "slotPatterns": ["^valueOwners\\.overview", "^owner\\.outcomes$", "^overview\\.owner_experience$"],
+          "minItems": 2,
+          "requiredPropositions": ["What the Guest Receives", "What the Hotel Owner Receives"],
+          "forbidReduceTo": ["Owner outcomes"],
+          "critical": true
+        },
         { "id": "value.scenarios", "section": "Value Creation Scenarios", "label": "Value Creation Scenarios", "slotPatterns": ["^valueOwners\\.scenario\\.\\d+$"], "minItems": 4 },
-        { "id": "value.outcomes", "section": "Owner Outcomes", "label": "Owner Outcomes", "slotPatterns": ["^valueOwners\\.overview\\.outcomes$", "^owner\\.outcomes$"] },
-        { "id": "value.experience", "section": "Owner Experience", "label": "Owner Experience", "slotPatterns": ["^valueOwners\\.overview\\.experience$", "^owner\\.experience$"] },
-        { "id": "value.lifecycle", "section": "Support Across the Lifecycle", "label": "Support Across the Lifecycle", "slotPatterns": ["^valueOwners\\.lifecycle\\.\\d+$"], "minItems": 6 }
+        { "id": "value.lifecycle", "section": "Support Across the Lifecycle", "label": "Support Across the Lifecycle", "slotPatterns": ["^valueOwners\\.lifecycle\\.\\d+$"], "minItems": 6, "exactItems": 6, "forbidInventedSeventh": true },
+        { "id": "value.watchouts", "section": "Key Watchouts", "label": "Key Watchouts", "slotPatterns": ["^valueOwners\\.watchouts$"] }
       ]
     },
     {
@@ -68,7 +77,7 @@
       "tabName": "Commercial Engine",
       "subsections": [
         { "id": "commercial.intro", "section": "Commercial Engine", "label": "Commercial Intro & Perception", "slotPatterns": ["^commercial\\.(intro|perception|differentiator)$"] },
-        { "id": "commercial.demand", "section": "Demand Themes", "label": "Demand Themes", "slotPatterns": ["^commercial\\.(demand|theme)$"] },
+        { "id": "commercial.demand", "section": "Demand Scenario View", "label": "Demand Scenario View", "slotPatterns": ["^commercial\\.demand"], "minItems": 6 },
         { "id": "commercial.levers", "section": "Commercial Levers", "label": "Commercial Levers", "slotPatterns": ["^commercial\\.lever\\."] },
         { "id": "commercial.kpis", "section": "Commercial KPIs", "label": "Commercial KPIs", "slotPatterns": ["^commercial\\.kpi\\."] }
       ]

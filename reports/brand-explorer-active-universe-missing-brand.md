@@ -1,6 +1,6 @@
 # Brand Explorer Active Universe — Missing / Mismatched Brand
 
-Version: `active-universe-source-of-truth-v1` · Generated: 2026-08-09T21:12:55.241Z
+Version: `active-universe-source-of-truth-v1` · Generated: 2026-11-19T20:49:05.816Z
 
 ## Verdict
 
@@ -31,7 +31,7 @@ The prior 23 list was a code-constant union, not Brand Status Active/Live. Live 
 | Brand Name | Aloft Hotels |
 | Record ID | `recJ1GZQpttX7qHgw` |
 | Brand Basics | yes (Active) |
-| Presentation rows | 101 |
+| Presentation rows | 165 |
 | Public full | true |
 | Classification | `public_full_clean` |
 | Slug alias issue | no — resolved via `slugifyBrandName` |
@@ -150,6 +150,20 @@ The prior 23 list was a code-constant union, not Brand Status Active/Live. Live 
 | Excluded by filter | no — included in Active/Live; excluded only from stale code lists |
 | Active but hidden profile | false |
 
+### `delta-hotels-by-marriott`
+
+| Field | Value |
+| --- | --- |
+| Brand Name | Delta Hotels by Marriott |
+| Record ID | `rec50qkCj6yt9fMPg` |
+| Brand Basics | yes (Active) |
+| Presentation rows | 164 |
+| Public full | true |
+| Classification | `public_full_failing_pvql` |
+| Slug alias issue | no — resolved via `known_identity_map` |
+| Excluded by filter | no — included in Active/Live; excluded only from stale code lists |
+| Active but hidden profile | false |
+
 ### `doubletree-by-hilton`
 
 | Field | Value |
@@ -178,6 +192,20 @@ The prior 23 list was a code-constant union, not Brand Status Active/Live. Live 
 | Excluded by filter | no — included in Active/Live; excluded only from stale code lists |
 | Active but hidden profile | false |
 
+### `fairfield-by-marriott`
+
+| Field | Value |
+| --- | --- |
+| Brand Name | Fairfield by Marriott |
+| Record ID | `recpUTDtwt1wPMDPj` |
+| Brand Basics | yes (Active) |
+| Presentation rows | 97 |
+| Public full | true |
+| Classification | `public_full_failing_pvql` |
+| Slug alias issue | no — resolved via `known_identity_map` |
+| Excluded by filter | no — included in Active/Live; excluded only from stale code lists |
+| Active but hidden profile | false |
+
 ### `fairmont`
 
 | Field | Value |
@@ -189,6 +217,20 @@ The prior 23 list was a code-constant union, not Brand Status Active/Live. Live 
 | Public full | true |
 | Classification | `public_full_clean` |
 | Slug alias issue | no — resolved via `slugifyBrandName` |
+| Excluded by filter | no — included in Active/Live; excluded only from stale code lists |
+| Active but hidden profile | false |
+
+### `four-points-by-sheraton`
+
+| Field | Value |
+| --- | --- |
+| Brand Name | Four Points by Sheraton |
+| Record ID | `recH5ZF9V6ivz9p5h` |
+| Brand Basics | yes (Active) |
+| Presentation rows | 97 |
+| Public full | true |
+| Classification | `public_full_failing_pvql` |
+| Slug alias issue | no — resolved via `known_identity_map` |
 | Excluded by filter | no — included in Active/Live; excluded only from stale code lists |
 | Active but hidden profile | false |
 
@@ -276,6 +318,34 @@ The prior 23 list was a code-constant union, not Brand Status Active/Live. Live 
 | Excluded by filter | no — included in Active/Live; excluded only from stale code lists |
 | Active but hidden profile | false |
 
+### `hyatt-centric`
+
+| Field | Value |
+| --- | --- |
+| Brand Name | Hyatt Centric |
+| Record ID | `recNy2efMm4N1JtgC` |
+| Brand Basics | yes (Active) |
+| Presentation rows | 97 |
+| Public full | true |
+| Classification | `public_full_failing_pvql` |
+| Slug alias issue | no — resolved via `slugifyBrandName` |
+| Excluded by filter | no — included in Active/Live; excluded only from stale code lists |
+| Active but hidden profile | false |
+
+### `hyatt-regency`
+
+| Field | Value |
+| --- | --- |
+| Brand Name | Hyatt Regency |
+| Record ID | `recP9SqDootMrzaU1` |
+| Brand Basics | yes (Active) |
+| Presentation rows | 97 |
+| Public full | true |
+| Classification | `public_full_failing_pvql` |
+| Slug alias issue | no — resolved via `slugifyBrandName` |
+| Excluded by filter | no — included in Active/Live; excluded only from stale code lists |
+| Active but hidden profile | false |
+
 ### `ibis`
 
 | Field | Value |
@@ -311,7 +381,7 @@ The prior 23 list was a code-constant union, not Brand Status Active/Live. Live 
 | Brand Name | Marriott Hotels |
 | Record ID | `recn59UtkyyoYwzSz` |
 | Brand Basics | yes (Active) |
-| Presentation rows | 102 |
+| Presentation rows | 166 |
 | Public full | true |
 | Classification | `public_full_clean` |
 | Slug alias issue | no — resolved via `slugifyBrandName` |
@@ -409,7 +479,7 @@ The prior 23 list was a code-constant union, not Brand Status Active/Live. Live 
 | Brand Name | Residence Inn by Marriott |
 | Record ID | `rec9Ufbpa0GxJGzt8` |
 | Brand Basics | yes (Active) |
-| Presentation rows | 102 |
+| Presentation rows | 166 |
 | Public full | true |
 | Classification | `public_full_clean` |
 | Slug alias issue | no — resolved via `slugifyBrandName` |
@@ -423,7 +493,7 @@ The prior 23 list was a code-constant union, not Brand Status Active/Live. Live 
 | Brand Name | Sheraton |
 | Record ID | `recg8HjT5Bky7NXeV` |
 | Brand Basics | yes (Active) |
-| Presentation rows | 102 |
+| Presentation rows | 166 |
 | Public full | true |
 | Classification | `public_full_clean` |
 | Slug alias issue | no — resolved via `slugifyBrandName` |
@@ -496,6 +566,20 @@ The prior 23 list was a code-constant union, not Brand Status Active/Live. Live 
 | Presentation rows | 107 |
 | Public full | true |
 | Classification | `public_full_clean` |
+| Slug alias issue | no — resolved via `slugifyBrandName` |
+| Excluded by filter | no — included in Active/Live; excluded only from stale code lists |
+| Active but hidden profile | false |
+
+### `thompson-hotels`
+
+| Field | Value |
+| --- | --- |
+| Brand Name | Thompson Hotels |
+| Record ID | `rec4Mga6ejz3L1M3P` |
+| Brand Basics | yes (Active) |
+| Presentation rows | 97 |
+| Public full | true |
+| Classification | `public_full_failing_pvql` |
 | Slug alias issue | no — resolved via `slugifyBrandName` |
 | Excluded by filter | no — included in Active/Live; excluded only from stale code lists |
 | Active but hidden profile | false |
