@@ -722,6 +722,13 @@
           );
         }
         hiHost.innerHTML = html || '<p class="hex-card">This section is not available yet.</p>';
+        if (
+          state.tab === "ownership" &&
+          window.HotelIntelligenceWorkspace &&
+          typeof window.HotelIntelligenceWorkspace.mountOwnershipControlNetwork === "function"
+        ) {
+          window.HotelIntelligenceWorkspace.mountOwnershipControlNetwork();
+        }
       }
     }
     writeDeepLink();
@@ -743,6 +750,13 @@
     }
     if (hiHost) {
       hiHost.innerHTML = html || '<p class="hex-card">This section is not available yet.</p>';
+      if (
+        state.tab === "ownership" &&
+        window.HotelIntelligenceWorkspace &&
+        typeof window.HotelIntelligenceWorkspace.mountOwnershipControlNetwork === "function"
+      ) {
+        window.HotelIntelligenceWorkspace.mountOwnershipControlNetwork();
+      }
     }
   }
 

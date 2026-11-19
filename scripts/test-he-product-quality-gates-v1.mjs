@@ -78,16 +78,17 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.8");
-  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 19);
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.9");
+  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 20);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.8"
+    "hotel-explorer-quality-standard-v1.9"
   );
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-016"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-017"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-018"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-019"));
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-020"));
 });
 
 run("rejects_keyword_stuffed_and_id_leaking_descriptions", () => {
@@ -319,13 +320,15 @@ run("meeting_table_readable_room_names_no_forced_min_width", () => {
 
 run("ownership_hierarchy_proper_case_labels", () => {
   const ws = read("public/js/hotel-intelligence-workspace.js");
-  mustInclude(ws, "Ownership &amp; Control Hierarchy");
+  mustInclude(ws, "Interactive Ownership &amp; Control Network");
   mustInclude(ws, "Legal Property Owner");
   mustInclude(ws, "Economic Owner / Sponsor");
   mustInclude(ws, "Hotel Operator");
   mustInclude(ws, "Brand Affiliation");
-  mustInclude(ws, "Ultimate Beneficial Owner");
-  mustInclude(ws, "Ownership Status");
+  // Relationships tab + OCN still use proper-cased role labels (not raw enums)
+  mustInclude(ws, "Legal property owner");
+  mustInclude(read("public/js/he-ownership-control-network-v1.js"), "Economic owner / sponsor");
+  mustNotMatch(ws, /\bLEGAL_PROPERTY_OWNER\b|\bECONOMIC_OWNER_OR_GROUP\b/);
 });
 
 run("proposed_overlay_never_marked_live_persisted", () => {
@@ -628,6 +631,40 @@ run("owner_portfolio_operator_reconciliation_gates", () => {
   assert.equal(mullen.totals.hotels, 8);
   assert.ok(mullen.ownedHotels.every((h) => h.ownership_evidence_class !== "VERIFIED"));
   assert.ok(mullen.ownedHotels.some((h) => h.airtable_record_id === "recLuxvwwxID7U2B8"));
+});
+
+run("he_ownership_control_network_gates", () => {
+  const std = read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md");
+  mustInclude(std, "Ownership & Control Network");
+  mustInclude(std, "he-ownership-control-network-v1");
+  mustInclude(std, "Typed edges");
+  const ws = read("public/js/hotel-intelligence-workspace.js");
+  mustInclude(ws, "data-ocn-host");
+  mustInclude(ws, "mountOwnershipControlNetwork");
+  mustInclude(ws, "Executive Ownership Summary");
+  mustInclude(ws, "Interactive Ownership &amp; Control Network");
+  mustInclude(ws, "Relevant Decision-Makers");
+  mustNotMatch(ws, /Property contact fallback \(HPC\)/);
+  mustNotMatch(ws, /<h3 class="hiw-section__h">Ownership &amp; Control Hierarchy<\/h3>/);
+  mustInclude(
+    read("public/js/hotel-explorer.js"),
+    "mountOwnershipControlNetwork"
+  );
+  mustInclude(read("public/hotel-explorer-preview.html"), "he-ownership-control-network-v1.js");
+  mustInclude(read("public/js/he-ownership-control-network-v1.js"), "HeOwnershipControlNetwork");
+  mustInclude(read("public/css/hotel-explorer.css"), "ocn-legend__item--proposed");
+  mustInclude(
+    read("lib/hotel-intelligence/ownership/ownership-control-network-v1.js"),
+    "LEGALLY_OWNED_BY"
+  );
+  mustInclude(
+    read("lib/hotel-intelligence/ownership/ownership-control-network-v1.js"),
+    "ECONOMICALLY_CONTROLLED_BY"
+  );
+  mustNotMatch(
+    read("lib/hotel-intelligence/ownership/ownership-control-network-v1.js"),
+    /operator.*LEGALLY_OWNED_BY|brand.*ECONOMICALLY_CONTROLLED_BY/i
+  );
 });
 
 if (failures.length) {

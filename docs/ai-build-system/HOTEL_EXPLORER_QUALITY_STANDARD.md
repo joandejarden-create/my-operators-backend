@@ -1,9 +1,9 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.8`  
+**Version:** `hotel-explorer-quality-standard-v1.9`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
-**Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1`
+**Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1`
 
 ## Purpose
 
@@ -118,6 +118,17 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 - Sort and geographic inclusion always use source numeric units (sq ft / km). Unit toggle must not change which hotels qualify or mutate HPC/Airtable values.
 - Tab changes and hotel navigation must not reset session preferences.
 - Default Bethesda pilot: Sq. Ft. / mi when no prior preference.
+
+### 9a. Ownership & Control Network
+
+- Ownership Intelligence presents an **interactive Ownership & Control Network**, not a linear hierarchy dump.
+- Typed edges only: Legally owned by / Economically controlled by / Managed by / Branded as / Associated person / Portfolio hotel.
+- **Never** draw operator or brand as an ownership chain step; never invent PropCo→sponsor control from unrelated hotel associations.
+- Hotel-centered hierarchical SVG layout (pan/zoom/fit/reset); expand organization hotels on demand with bounded depth/node limits.
+- Visual + label differentiation for verified / proposed / historical / unresolved (not color alone).
+- Tab structure: Executive Ownership Summary → Interactive Network → Relevant Decision-Makers (compact; Contact Intelligence for full cards) → Relationship Detail ↔ graph highlight → Sources & Verification.
+- Forbidden: duplicate hierarchy text blocks, concatenated label/value strings, raw graph node IDs / internal enums, HPC property-contact fallback panels in the ownership narrative, proposed relationships styled as verified, deep links without resolved HPC IDs.
+- Shared modules: `lib/hotel-intelligence/ownership/ownership-control-network-v1.js` + `public/js/he-ownership-control-network-v1.js`.
 
 ### 9b. Canonical HPC population (portfolio batches)
 
