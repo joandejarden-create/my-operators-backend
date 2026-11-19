@@ -20,6 +20,7 @@ import {
   applyOverviewEnrichmentToHotel,
   buildHotelExplorerOverviewEnrichment,
 } from "../lib/hotel-intelligence/hotel-explorer-overview-enrichment-v1.js";
+import { attachOverviewFieldProvenance } from "../lib/hotel-intelligence/he-overview-field-provenance-v1.js";
 
 const AIRTABLE_KEY = process.env.AIRTABLE_API_KEY;
 const AIRTABLE_BASE = process.env.AIRTABLE_BASE_ID_ALT;
@@ -44,7 +45,7 @@ function fixtureHotelResponse(recordId) {
 const cache = new Map();
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes cache
 /** Bump when API response shape or fetched fields change (invalidates stale cache). */
-const CACHE_SCHEMA_VERSION = 8;
+const CACHE_SCHEMA_VERSION = 9;
 
 // Cache helper functions
 function getCacheKey(query) {
@@ -428,14 +429,6 @@ export async function getBrandPresenceHotelById(req, res) {
 
     // Hotel-agnostic Overview enrichment (display-only overlays; no Airtable writes).
     // Fail-open: enrichment errors must not break legacy census hotel detail.
-    // For HPC-owned hotels: do not keep enrichment-invented Parent Company when the
-    // HPC Parent Company field is empty (canonical blank > unverified fill).
-    const hpcParentCompanyPresent =
-      owningTableKind === "HPC" &&
-      Boolean(
-        String(identity.record?.fields?.["Parent Company"] || "")
-          .trim(),
-      );
     try {
       const enrichment = await buildHotelExplorerOverviewEnrichment(recordId, {
         hotelDto: formatted,
@@ -444,12 +437,6 @@ export async function getBrandPresenceHotelById(req, res) {
         skipHiAirtable: true,
       });
       formatted = applyOverviewEnrichmentToHotel(formatted, enrichment);
-      if (owningTableKind === "HPC" && !hpcParentCompanyPresent) {
-        formatted.parentCompany = null;
-        if (formatted.parentCompanyProvenance) {
-          delete formatted.parentCompanyProvenance;
-        }
-      }
       if (
         Array.isArray(formatted.verifiedAmenitiesDisplay) &&
         formatted.verifiedAmenitiesDisplay.length &&
@@ -494,6 +481,23 @@ export async function getBrandPresenceHotelById(req, res) {
         recordId,
         enrichErr?.message || enrichErr
       );
+    }
+
+    // HPC: re-assert Parent Company / Brand Family over ADP parent overlay, and
+    // attach explicit provenance for the five Gate 1 Overview audit fields.
+    if (owningTableKind === "HPC") {
+      attachOverviewFieldProvenance(formatted, {
+        hpcFields: identity.record?.fields || {},
+        owningTableKind,
+      });
+      // Strip ADP-only parent provenance when HPC Brand Family / Parent Company wins.
+      if (
+        formatted.fieldProvenance?.parentCompany?.class === "VERIFIED_HPC" &&
+        formatted.parentCompanyProvenance?.provenance ===
+          "adp_property_profile_parent_company"
+      ) {
+        delete formatted.parentCompanyProvenance;
+      }
     }
 
     res.json({ success: true, hotel: formatted });

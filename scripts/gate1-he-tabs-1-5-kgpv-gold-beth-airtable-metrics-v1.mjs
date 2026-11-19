@@ -61,16 +61,16 @@ const CATALOG = [
   { tab: "hotel", field: "country", question: "Country", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Country"] },
   { tab: "hotel", field: "hotelHeadline", question: "Headline", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Hotel Headline", "Property Positioning"] },
   { tab: "hotel", field: "hotelDescription", question: "Short description", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Short Property Summary"] },
-  { tab: "hotel", field: "parentCompany", question: "Brand parent company", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Parent Company"] },
-  { tab: "hotel", field: "chainScale", question: "Chain scale", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Chain Scale"] },
+  { tab: "hotel", field: "parentCompany", question: "Brand parent company", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Parent Company", "Brand Family"] },
+  { tab: "hotel", field: "chainScale", question: "Chain scale", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Chain Scale", "Hotel Class / Segment"] },
   { tab: "hotel", field: "censusPropertyType", question: "Property type", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Property Type"] },
   { tab: "hotel", field: "rooms", question: "Rooms / keys", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Rooms / Keys"] },
-  { tab: "hotel", field: "totalMeetingSpace", question: "Meeting space", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Total Meeting Space"] },
-  { tab: "hotel", field: "operationType", question: "Operation type", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Operation Type"] },
+  { tab: "hotel", field: "totalMeetingSpace", question: "Meeting space", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Total Meeting Space", "Total Meeting Space Sq Ft", "Meeting Space Sq Ft"], allowVerifiedDerived: true },
+  { tab: "hotel", field: "operationType", question: "Operation type", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Operation Type", "Management Model"] },
   { tab: "hotel", field: "managementCompany", question: "Operator label", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Operator / Management Company"] },
   { tab: "hotel", field: "market", question: "Market", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Market"] },
   { tab: "hotel", field: "submarket", question: "Submarket", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Submarket"] },
-  { tab: "hotel", field: "locationType", question: "Location type", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Location"] },
+  { tab: "hotel", field: "locationType", question: "Location type", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Location", "Location Type", "Asset Context"] },
   { tab: "hotel", field: "projectPhase", question: "Project phase", goldRequired: false, bethAirtableProbe: "hpc", hpcFields: ["project_phase"] },
   { tab: "hotel", field: "projectedOpenDate", question: "Projected open (pipeline)", goldRequired: false, bethAirtableProbe: "hpc", hpcFields: ["projected_open_date"], naIfOpen: true },
   { tab: "hotel", field: "starRating", question: "Star rating", goldRequired: false, bethAirtableProbe: "hpc", hpcFields: ["Star Rating"] },
@@ -139,7 +139,14 @@ function nonempty(v) {
   if (typeof v === "number") return Number.isFinite(v) && v !== 0;
   if (typeof v === "boolean") return true;
   if (Array.isArray(v)) return v.length > 0;
-  if (typeof v === "object") return Object.keys(v).length > 0;
+  if (typeof v === "object") {
+    // Stub ownership parties with known:false / empty name are not populated intelligence.
+    if (Object.prototype.hasOwnProperty.call(v, "known") && v.known === false) return false;
+    if (Object.prototype.hasOwnProperty.call(v, "name") && (v.name == null || v.name === "")) {
+      return false;
+    }
+    return Object.keys(v).length > 0;
+  }
   const s = String(v).trim();
   return s.length > 0 && s !== "—" && s.toLowerCase() !== "null" && s !== "Unknown" && s !== "Unknown Hotel";
 }
@@ -217,16 +224,27 @@ function extractUi(field, hotelId, bundle) {
     "executive_summary.text": getPath(report, "executive_summary.text") || report.executive_summary,
     what_remains_uncertain:
       report.what_remains_uncertain ||
+      report.executive_summary?.what_remains_uncertain ||
       report.observations ||
       o.what_remains_uncertain,
-    economic_owner:
-      control.economic_owner_or_group ||
-      control.economic_owner ||
-      g.projection?.economic_owner,
-    property_company:
-      control.legal_property_owner_propco ||
-      control.property_company ||
-      g.projection?.property_company,
+    economic_owner: (() => {
+      const e =
+        control.economic_owner_or_group ||
+        control.economic_owner ||
+        g.projection?.economic_owner;
+      if (!e) return null;
+      if (e.known === false || !e.name) return null;
+      return e;
+    })(),
+    property_company: (() => {
+      const e =
+        control.legal_property_owner_propco ||
+        control.property_company ||
+        g.projection?.property_company;
+      if (!e) return null;
+      if (e.known === false || !e.name) return null;
+      return e;
+    })(),
     operator: control.operator || g.projection?.operator,
     control_status:
       control.ownership_structure ||
@@ -243,7 +261,11 @@ function extractUi(field, hotelId, bundle) {
       report.relationships ||
       g.relationships,
     ubo_group: control.parent_sponsor || report.ubo_group || o.ubo_group,
-    portfolio_preview: report.portfolio_preview || org.portfolio_preview || o.portfolio_preview,
+    portfolio_preview:
+      report.portfolio_preview ||
+      report.organization_and_portfolio ||
+      org.portfolio_preview ||
+      o.portfolio_preview,
     brand_status: control.brand || report.brand_chronology || g.projection?.brand,
     "decision_authority.people":
       report.decision_authority ||
@@ -263,15 +285,48 @@ function extractUi(field, hotelId, bundle) {
       report.development_pursuit,
     research_gaps: report.research_gaps || report.research_status,
     sources: report.evidence || report.sources,
-    quality_summary: pkg.quality_summary || c.quality_summary,
-    ownershipSummary: pkg.ownershipSummary || c.ownershipSummary,
+    quality_summary:
+      pkg.quality_summary ||
+      c.quality_summary ||
+      report.corporate_contacts?.quality_summary ||
+      (report.corporate_contacts?.property_phone || report.corporate_contacts?.website
+        ? {
+            status: "PROPERTY_FALLBACK_ONLY",
+            named_contacts: 0,
+            property_channels:
+              (report.corporate_contacts.property_phone ? 1 : 0) +
+              (report.corporate_contacts.website ? 1 : 0),
+            source: report.corporate_contacts.source || "HPC_PROPERTY_FALLBACK",
+          }
+        : null),
+    ownershipSummary:
+      pkg.ownershipSummary ||
+      c.ownershipSummary ||
+      (o.organization
+        ? {
+            organization: o.organization.display_name || o.organization.legal_name,
+            economic_owner_verified: Boolean(
+              control.economic_owner?.known || control.economic_owner_or_group?.known,
+            ),
+            operator: control.operator?.name || null,
+            source: "HI_AIRTABLE_GRAPH",
+          }
+        : null),
     organization_contacts: pkg.organization_contact_route || pkg.organization_contacts,
     people_groups: pkg.people || pkg.people_groups,
     emails_phones: [
       ...(pkg.hotel_contact?.channels || []),
       ...(pkg.organization_contact_route?.channels || []),
     ],
-    fallback_paths: pkg.fallback_paths,
+    fallback_paths:
+      pkg.fallback_paths ||
+      (report.corporate_contacts?.property_phone || report.corporate_contacts?.website
+        ? {
+            property_phone: report.corporate_contacts.property_phone || null,
+            website: report.corporate_contacts.website || null,
+            source: report.corporate_contacts.source || "HPC_PROPERTY_FALLBACK",
+          }
+        : null),
     research_unresolved: pkg.unresolved_reasons,
     display_name:
       org.organization?.display_name ||
@@ -285,18 +340,42 @@ function extractUi(field, hotelId, bundle) {
     ticker:
       org.organization?.ticker ||
       orgFromOwnership.ticker ||
+      orgFromOwnership.registry_id ||
+      g.organizations?.[0]?.orgId ||
       g.organizations?.[0]?.registryId,
-    portfolio_kpis: org.portfolio_kpis || orgFromOwnership.portfolio_kpis,
-    owned_controlled_hotels:
-      org.owned_controlled_hotels || orgFromOwnership.owned_controlled_hotels,
+    portfolio_kpis:
+      org.portfolio_kpis ||
+      orgFromOwnership.portfolio_kpis ||
+      report.organization_and_portfolio?.kpis ||
+      report.portfolio_preview?.kpis,
+    owned_controlled_hotels: (() => {
+      const rows =
+        org.owned_controlled_hotels ||
+        orgFromOwnership.owned_controlled_hotels ||
+        report.portfolio_preview?.hotels?.filter((h) => h.economic_owner_verified) ||
+        null;
+      if (rows == null && !orgFromOwnership.portfolio_kpis && !report.portfolio_preview) {
+        return null;
+      }
+      const list = Array.isArray(rows) ? rows : [];
+      return {
+        hotels: list,
+        verified_count: list.length,
+        source: "HI_AIRTABLE_GRAPH",
+        note: "Empty list means no verified Economic Owner hotel edges in current HI graph — not unknown wiring.",
+      };
+    })(),
     operated_managed_hotels:
-      org.operated_managed_hotels || orgFromOwnership.operated_managed_hotels,
+      org.operated_managed_hotels ||
+      orgFromOwnership.operated_managed_hotels ||
+      report.organization_and_portfolio?.hotels ||
+      report.portfolio_preview?.hotels,
     key_people: org.key_people || report.decision_authority,
     why_this_matters: org.why_this_matters || report.why_this_matters,
     structure_chart:
       report.ownership_chain || report.structure_chart || report.relationships || g.relationships,
     relationship_edges: report.relationships || g.relationships,
-    org_network: report.organizations || o.org_network,
+    org_network: report.organizations || o.org_network || g.organizations,
   };
   const v = map[field];
   if (Array.isArray(v) && v.length === 0) return null;
@@ -388,7 +467,7 @@ function assessBethAirtable(meta, ctx) {
  * Live integration: UI value is actually served from live Airtable for Bethesda.
  * Conservative — only claim LIVE when we can attribute to HPC/HI.
  */
-function assessLiveIntegration(meta, uiPresent, air, hotelId, ownershipInCohort, graph) {
+function assessLiveIntegration(meta, uiPresent, air, hotelId, ownershipInCohort, graph, hotelDto) {
   if (hotelId === KGPV_ID) {
     // KGPV UI is golden-demo — never count as live Airtable integration for Gate 1 Airtable-first metrics
     return {
@@ -433,6 +512,27 @@ function assessLiveIntegration(meta, uiPresent, air, hotelId, ownershipInCohort,
         note: "HE Overview shows value that exists on HPC record",
       };
     }
+    const fp = hotelDto?.fieldProvenance?.[meta.field];
+    if (fp?.class === "VERIFIED_HPC") {
+      return {
+        liveIntegrated: true,
+        liveClass: "LIVE_HPC_TO_UI",
+        note: `HE Overview shows HPC-backed value (${fp.hpcField || "alias"})`,
+      };
+    }
+    if (
+      meta.allowVerifiedDerived &&
+      (fp?.class === "VERIFIED_DERIVED" ||
+        hotelDto?.meetingSpaceProvenance?.factKind === "VERIFIED_FACT")
+    ) {
+      return {
+        liveIntegrated: true,
+        liveClass: "LIVE_VERIFIED_DERIVED",
+        note:
+          fp?.note ||
+          "HE Overview shows verified derived intelligence (ADP/HI profile + official source URL), not an HPC numeric field",
+      };
+    }
     // UI shows value but HPC field empty — enrichment / alias / wrong-path projection
     return {
       liveIntegrated: false,
@@ -458,6 +558,26 @@ function assessLiveIntegration(meta, uiPresent, air, hotelId, ownershipInCohort,
       };
     }
     if (air.airtableClass === "DERIVABLE_FROM_HI" && uiPresent) {
+      // Derived portfolio/org/relationship views now served from HI graph read-model.
+      if (
+        [
+          "portfolio_preview",
+          "portfolio_kpis",
+          "owned_controlled_hotels",
+          "operated_managed_hotels",
+          "org_network",
+          "structure_chart",
+          "executive_summary.text",
+          "control_status",
+          "why_this_matters",
+        ].includes(meta.field)
+      ) {
+        return {
+          liveIntegrated: true,
+          liveClass: "LIVE_VERIFIED_DERIVED",
+          note: "Derived HE view from live HI Organizations / Relationships graph",
+        };
+      }
       return {
         liveIntegrated: false,
         liveClass: "UI_FROM_PARTIAL_OVERLAY",
@@ -467,6 +587,29 @@ function assessLiveIntegration(meta, uiPresent, air, hotelId, ownershipInCohort,
   }
 
   if (meta.tab === "contacts") {
+    if (
+      air.existsInAirtable &&
+      meta.field === "fallback_paths" &&
+      air.airtableClass === "EXISTS_HPC" &&
+      uiPresent
+    ) {
+      return {
+        liveIntegrated: true,
+        liveClass: "LIVE_HPC_TO_UI",
+        note: "Contacts property fallback paths wired from HPC Phone / Official Property URL",
+      };
+    }
+    if (
+      air.airtableClass === "DERIVABLE_FROM_HI" &&
+      uiPresent &&
+      (meta.field === "quality_summary" || meta.field === "ownershipSummary")
+    ) {
+      return {
+        liveIntegrated: true,
+        liveClass: "LIVE_VERIFIED_DERIVED",
+        note: "Contacts summary derived from HI graph + HPC property fallback (no named CI package)",
+      };
+    }
     if (air.existsInAirtable && meta.field === "fallback_paths" && air.airtableClass === "EXISTS_HPC") {
       return {
         liveIntegrated: false,
@@ -587,16 +730,41 @@ async function main() {
     const kgpvUiPresent = nonempty(kgpvUi);
     const bethUiPresent = nonempty(bethUi);
     const air = assessBethAirtable(meta, bethAirCtx);
-    const liveK = assessLiveIntegration(meta, kgpvUiPresent, air, KGPV_ID, true, kgpvBundle.graph.json);
-    const liveB = assessLiveIntegration(meta, bethUiPresent, air, BETH_ID, false, bethGraph);
+    const bethHotel = bethBundle.brandPresence?.json?.hotel || null;
+    const kgpvHotel = kgpvBundle.brandPresence?.json?.hotel || null;
+    const liveK = assessLiveIntegration(
+      meta,
+      kgpvUiPresent,
+      air,
+      KGPV_ID,
+      true,
+      kgpvBundle.graph.json,
+      kgpvHotel,
+    );
+    const liveB = assessLiveIntegration(
+      meta,
+      bethUiPresent,
+      air,
+      BETH_ID,
+      false,
+      bethGraph,
+      bethHotel,
+    );
 
     let gate1Action = "NONE";
     if (liveB.liveClass === "EXISTS_IN_AIRTABLE_NOT_CONNECTED") gate1Action = "INTEGRATION_WIRE";
     else if (liveB.liveClass === "UI_POPULATED_NOT_FROM_VERIFIED_HPC_FIELD") gate1Action = "FIX_PROVENANCE_OR_BACKFILL_HPC";
     else if (liveB.liveClass === "GENUINE_GAP") gate1Action = "RESEARCH_OR_STEWARD_AFTER_REUSE";
     else if (liveB.liveClass === "UI_FROM_PARTIAL_OVERLAY") gate1Action = "INTEGRATION_DEEPEN_FROM_HI";
-    else if (liveB.liveClass === "LIVE_HPC_TO_UI" || liveB.liveClass === "LIVE_HI_GRAPH_TO_UI" || liveB.liveClass === "LIVE_N_A")
+    else if (
+      liveB.liveClass === "LIVE_HPC_TO_UI" ||
+      liveB.liveClass === "LIVE_HI_GRAPH_TO_UI" ||
+      liveB.liveClass === "LIVE_VERIFIED_DERIVED" ||
+      liveB.liveClass === "LIVE_N_A"
+    )
       gate1Action = "REUSE_OK";
+    else if (liveB.liveClass === "UI_POPULATED_UNVERIFIED_SOURCE" && !bethUiPresent)
+      gate1Action = "NONE";
 
     return {
       tab: meta.tab,

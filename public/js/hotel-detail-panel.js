@@ -355,8 +355,16 @@
     return String(value);
   }
 
-  function formatParentCompanyDisplay(value) {
+  function formatParentCompanyDisplay(value, hotel) {
     if (value == null || value === "" || value === "Unknown") return "No Parent Company (Blank)";
+    var semantic =
+      hotel &&
+      hotel.fieldProvenance &&
+      hotel.fieldProvenance.parentCompany &&
+      hotel.fieldProvenance.parentCompany.semantic;
+    if (semantic === "brand_parent_company") {
+      return String(value) + " (brand parent)";
+    }
     return String(value);
   }
 
@@ -520,9 +528,17 @@
       meetingValue = formatNumber(hotel.totalMeetingSpace) + " sq ft";
     }
 
+    var parentSemantic =
+      hotel.fieldProvenance &&
+      hotel.fieldProvenance.parentCompany &&
+      hotel.fieldProvenance.parentCompany.semantic;
+    var parentLabel =
+      parentSemantic === "brand_parent_company"
+        ? "Parent company (brand)"
+        : "Parent company";
     var rows = [
       { label: "Brand", value: displayValue(hotel.brand) },
-      { label: "Parent company", value: formatParentCompanyDisplay(hotel.parentCompany) },
+      { label: parentLabel, value: formatParentCompanyDisplay(hotel.parentCompany, hotel) },
       { label: "Chain scale", value: displayValue(hotel.chainScale || hotel.propertyType) },
       { label: "Property type", value: displayValue(hotel.censusPropertyType) },
       { label: "Rooms", value: hotel.rooms ? formatNumber(hotel.rooms) : "—" },
