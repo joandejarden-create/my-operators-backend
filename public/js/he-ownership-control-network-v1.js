@@ -622,12 +622,26 @@
         return;
       }
       if (ev.target.closest("[data-ocn-expand-sponsor]")) {
-        mount(
-          host,
-          hotel,
-          ownership,
-          Object.assign({}, opts, { includePortfolioPreview: true })
-        );
+        var expandSlot = host.querySelector("[data-ocn-expand-loading]") || host;
+        if (global.HeAsyncSection && global.HeAsyncSection.waveCompact) {
+          var banner = document.createElement("div");
+          banner.className = "ocn-expand-loading";
+          banner.setAttribute("data-ocn-expand-loading", "1");
+          banner.innerHTML = global.HeAsyncSection.waveCompact(
+            "Expanding portfolio…",
+            "Ownership network"
+          );
+          host.insertBefore(banner, host.firstChild);
+        }
+        // Sync remount — yield so the compact wave paints before work
+        setTimeout(function () {
+          mount(
+            host,
+            hotel,
+            ownership,
+            Object.assign({}, opts, { includePortfolioPreview: true })
+          );
+        }, 0);
         return;
       }
       var openHotel = ev.target.closest("[data-ocn-open-hotel]");

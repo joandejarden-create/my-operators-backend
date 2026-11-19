@@ -43,7 +43,15 @@
   function renderLoading() {
     return (
       '<div class="hci-root" data-hci-state="loading">' +
-      '<div class="hci-loading">Loading Contact Intelligence…</div>' +
+      '<div class="hci-loading" data-hci-wave-loading="1">' +
+      (window.HeAsyncSection && window.HeAsyncSection.waveCompact
+        ? window.HeAsyncSection.waveCompact("Loading Contact Intelligence…")
+        : window.DealalityWaveLoader && window.DealalityWaveLoader.compactHtml
+          ? window.DealalityWaveLoader.compactHtml("Loading Contact Intelligence…", {
+              progress: false,
+            })
+          : "Loading Contact Intelligence…") +
+      "</div>" +
       "</div>"
     );
   }
@@ -757,6 +765,18 @@
       var slot = btn.parentElement && btn.parentElement.querySelector(".hci-enrich__result");
       btn.disabled = true;
       btn.textContent = "Looking up…";
+      if (slot) {
+        slot.hidden = false;
+        slot.innerHTML =
+          window.HeAsyncSection && window.HeAsyncSection.waveCompact
+            ? window.HeAsyncSection.waveCompact("Looking up contact details…", "Surfe on demand")
+            : window.DealalityWaveLoader && window.DealalityWaveLoader.compactHtml
+              ? window.DealalityWaveLoader.compactHtml("Looking up contact details…", {
+                  progress: false,
+                  subText: "Surfe on demand",
+                })
+              : '<p class="hci-muted">Looking up…</p>';
+      }
       _inflightReveal[key] = true;
       fetch(
         "/api/contact-intelligence/hotels/" +

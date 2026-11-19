@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.12",
+  "version": "hotel-explorer-founder-quality-lessons-v1.13",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -9,7 +9,8 @@
     "test:he-ownership-control-network-v1",
     "test:he-hotel-news-from-market-alerts-v1",
     "test:he-guest-sentiment-brand-operator-v1",
-    "test:he-market-alerts-closeout-v1"
+    "test:he-market-alerts-closeout-v1",
+    "test:he-async-section-loading-v1"
   ],
   "referenceHotels": {
     "uxGolden": {
@@ -236,6 +237,15 @@
       "sharedComponent": "hotel-news-from-market-alerts-v1.js; market-alerts-hotel-association-sync-v1.js; market-alerts-evidence-citations-v1.js; api/hotel-explorer-news-articles.js; hotel-intelligence-workspace.js Sources",
       "regressionTest": "he_market_alerts_closeout_gates",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v11-ma-beth-news-hidden.png; quality-v11-ma-beth-sources-no-ma.png"
+    },
+    {
+      "id": "HE-QL-024",
+      "originalProblem": "Risk of whole-tab blocking spinners or competing loaders as HE subsections multiply (News, Sentiment, OCN, Surfe)",
+      "rootCause": "No shared independent-section loading contract reusing DealalityWaveLoader",
+      "approvedStandard": "Canonical Dealality wave only (compact/inline variants OK); independent IDLE/LOADING/READY/EMPTY/ERROR/STALE sections; Brand overview not blocked by News/Sentiment; cancel/ignore stale hotel fetches; Surfe wave per-person only; no GET writes / no new spinner systems",
+      "sharedComponent": "dealality-wave-loader.js/css; he-async-section-v1.js; hotel-intelligence-workspace.js; hotel-contact-intelligence.js; he-ownership-control-network-v1.js",
+      "regressionTest": "he_async_section_loading_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v12-async-brand-loading.png; quality-v12-async-news-empty.png; quality-v12-async-sentiment-error.png; quality-v12-async-contacts-ready.png; reports/hotel-explorer/HE-ASYNC-INDEPENDENT-LOADING-V12.md"
     }
   ]
 }

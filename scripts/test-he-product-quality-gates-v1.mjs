@@ -78,11 +78,11 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.12");
-  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 23);
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.13");
+  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 24);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.12"
+    "hotel-explorer-quality-standard-v1.13"
   );
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-016"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-017"));
@@ -92,6 +92,7 @@ run("registry_and_standard_exist", () => {
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-021"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-022"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-023"));
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-024"));
 });
 
 run("rejects_keyword_stuffed_and_id_leaking_descriptions", () => {
@@ -691,6 +692,26 @@ run("he_hotel_news_from_market_alerts_gates", () => {
     read("lib/hotel-intelligence/hotel-news-from-market-alerts-v1.js"),
     "HOTEL_SPECIFIC"
   );
+});
+
+run("he_async_section_loading_gates", () => {
+  mustInclude(read("public/js/dealality-wave-loader.js"), "compactHtml");
+  mustInclude(read("public/css/dealality-wave-loader.css"), "prefers-reduced-motion");
+  mustInclude(read("public/js/he-async-section-v1.js"), "AbortController");
+  mustInclude(read("public/js/he-async-section-v1.js"), "LOADING");
+  const ws = read("public/js/hotel-intelligence-workspace.js");
+  mustInclude(ws, "newsAsync");
+  mustInclude(ws, "sentimentAsync");
+  mustInclude(ws, "heWaveCompact");
+  mustInclude(ws, "newsAsync.cancel()");
+  mustInclude(read("public/hotel-explorer-preview.html"), "he-async-section-v1.js");
+  mustInclude(read("public/hotel-explorer-preview.html"), "dealality-wave-loader.js");
+  const reg = JSON.parse(
+    read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
+  );
+  if (!reg.lessons.some((l) => l.id === "HE-QL-024")) {
+    throw new Error("HE-QL-024 missing");
+  }
 });
 
 run("he_market_alerts_closeout_gates", () => {

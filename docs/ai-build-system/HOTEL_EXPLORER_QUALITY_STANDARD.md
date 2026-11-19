@@ -1,9 +1,9 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.12`  
+**Version:** `hotel-explorer-quality-standard-v1.13`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
-**Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1` · `npm run test:he-hotel-news-from-market-alerts-v1` · `npm run test:he-guest-sentiment-brand-operator-v1` · `npm run test:he-market-alerts-closeout-v1`
+**Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1` · `npm run test:he-hotel-news-from-market-alerts-v1` · `npm run test:he-guest-sentiment-brand-operator-v1` · `npm run test:he-market-alerts-closeout-v1` · `npm run test:he-async-section-loading-v1`
 
 ## Purpose
 
@@ -131,6 +131,16 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 - GET `/api/hotel-explorer/hotels/:hotelId/news-articles` is read-only (`X-Dealality-Write: forbidden`); Market Alerts outage → invisible news section, not a hard HE failure.
 - Persist metadata/summaries/URLs only — not full copyrighted article text.
 - Shared modules: `lib/hotel-intelligence/hotel-news-from-market-alerts-v1.js`, `market-alerts-hotel-association-sync-v1.js`, `market-alerts-evidence-citations-v1.js`, `api/hotel-explorer-news-articles.js`.
+
+### 9e. Independent loading & canonical wave animation
+
+- Reuse **only** `DealalityWaveLoader` / `dealality-wave-loader.css` (My Deals lineage). Compact/inline variants extend the same component — do not invent new spinners or skeleton systems.
+- Hotel Explorer subsections load **independently** (Brand overview, Hotel News, Guest Sentiment, Sources Market Alerts evidence, OCN expand, Contact Surfe enrich). A slow or failed provider must not block sibling sections or the whole tab.
+- Section states: `IDLE` · `LOADING` · `READY` · `EMPTY` · `ERROR` · `STALE` via `he-async-section-v1.js`.
+- Loading: show compact wave **inside** the section. Empty News remains **hidden**. Errors use restrained copy + Retry — never stack traces or raw JSON.
+- Lifecycle: request generation + AbortController; cache TTL; ignore stale responses after hotel switch; no unnecessary refetch of warm cache; no GET-triggered writes; no aggressive polling or unpaid provider calls.
+- Accessibility: `role="status"` / `aria-live="polite"`; honor `prefers-reduced-motion`; avoid focus traps and large layout jumps.
+- Shared modules: `public/js/dealality-wave-loader.js`, `public/js/he-async-section-v1.js`, Brand/Operator mounts in `hotel-intelligence-workspace.js`.
 
 ### 9d. Guest Sentiment & Reputation (Brand / Operator)
 

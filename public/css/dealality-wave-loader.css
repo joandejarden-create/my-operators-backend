@@ -277,3 +277,74 @@
   background: linear-gradient(90deg, #fdb52a, #d5691b);
   animation: bl-progress 3s ease-in-out infinite;
 }
+
+/* Inline / compact variants — subsection loading without full-page takeover */
+.dealality-wave-loader--inline {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  z-index: auto;
+  display: inline-flex;
+  flex-direction: column;
+  margin: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  min-width: 0;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.dealality-wave-loader--compact {
+  padding: 10px 14px;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dealality-wave-loader--compact .loading-content {
+  margin-bottom: 0;
+  gap: 10px;
+}
+
+.dealality-wave-loader--sm .wave-container {
+  width: 24px;
+  height: 24px;
+}
+
+.dealality-wave-loader--sm .loading-text-main {
+  font-size: 12px;
+  margin-bottom: 0;
+}
+
+.dealality-wave-loader--compact .loading-progress {
+  margin-top: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dealality-wave-loader .wave,
+  .dealality-wave-loader .particle,
+  .dealality-wave-loader .loading-progress-bar,
+  .loading .wave,
+  .loading .particle,
+  .loading .loading-progress-bar,
+  .loading-deals .wave,
+  .loading-deals .particle,
+  .loading-deals .loading-progress-bar {
+    animation: none !important;
+  }
+
+  .dealality-wave-loader .wave-1,
+  .loading .wave-1,
+  .loading-deals .wave-1 {
+    transform: none;
+    opacity: 0.9;
+  }
+
+  .dealality-wave-loader .loading-progress-bar,
+  .loading .loading-progress-bar {
+    width: 55%;
+  }
+}

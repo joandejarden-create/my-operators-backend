@@ -20,6 +20,52 @@
     marketAlertsCitations: [],
   };
 
+  var asyncApi = typeof window !== "undefined" ? window.HeAsyncSection : null;
+  var newsAsync =
+    asyncApi && asyncApi.createController
+      ? asyncApi.createController({ key: "hotel-news", cacheTtlMs: 5 * 60 * 1000, timeoutMs: 20000 })
+      : null;
+  var sentimentAsync =
+    asyncApi && asyncApi.createController
+      ? asyncApi.createController({
+          key: "guest-sentiment",
+          cacheTtlMs: 5 * 60 * 1000,
+          timeoutMs: 20000,
+        })
+      : null;
+  var sourcesMaAsync =
+    asyncApi && asyncApi.createController
+      ? asyncApi.createController({
+          key: "sources-market-alerts",
+          cacheTtlMs: 5 * 60 * 1000,
+          timeoutMs: 20000,
+        })
+      : null;
+
+  function heWaveCompact(text, sub) {
+    if (asyncApi && asyncApi.waveCompact) return asyncApi.waveCompact(text, sub);
+    if (window.DealalityWaveLoader && window.DealalityWaveLoader.compactHtml) {
+      return window.DealalityWaveLoader.compactHtml(text || "Loading…", {
+        subText: sub || "",
+        progress: false,
+      });
+    }
+    return (
+      '<div class="he-async-fallback" role="status" aria-live="polite">' +
+      esc(text || "Loading…") +
+      "</div>"
+    );
+  }
+
+  function heAsyncError(message, retryKey) {
+    if (asyncApi && asyncApi.errorHtml) return asyncApi.errorHtml(message, retryKey);
+    return (
+      '<div class="he-async-error" role="status"><p class="hiw-prose hiw-prose--quiet">' +
+      esc(message || "This information is temporarily unavailable.") +
+      "</p></div>"
+    );
+  }
+
   var TABS = [
     { id: "overview", label: "Overview" },
     { id: "ownership", label: "Ownership Intelligence" },
@@ -1492,6 +1538,10 @@
         '<p class="hiw-empty">Ownership network module unavailable.</p>';
       return;
     }
+    if (!state.ownership) {
+      host.innerHTML = heWaveCompact("Loading ownership network…");
+      return;
+    }
     window.HeOwnershipControlNetwork.mount(host, state.hotel, state.ownership, {
       includePortfolioPreview: false,
     });
@@ -1573,8 +1623,9 @@
     return params;
   }
 
-  function fetchHotelNewsArticles(opts) {
+  function fetchHotelNewsArticles(opts, fetchOpts) {
     opts = opts || {};
+    fetchOpts = fetchOpts || {};
     var id = state.hotel && recordId(state.hotel);
     if (!id) {
       return Promise.resolve(null);
@@ -1584,11 +1635,58 @@
       encodeURIComponent(id) +
       "/news-articles?" +
       buildHotelNewsQuery(opts).toString();
-    return fetch(url, { headers: { "ngrok-skip-browser-warning": "true" } }).then(function (r) {
+    var init = { headers: { "ngrok-skip-browser-warning": "true" } };
+    if (fetchOpts.signal) init.signal = fetchOpts.signal;
+    return fetch(url, init).then(function (r) {
       return r.json().catch(function () {
         return null;
       });
     });
+  }
+
+  function paintHotelNewsHost(host, result, opts) {
+    if (!host || !host.isConnected) return;
+    var st = result && result.state;
+    if (st === "LOADING") {
+      host.hidden = false;
+      host.innerHTML =
+        '<section class="hiw-section hiw-section--hotel-news he-async-loading" data-hiw-hotel-news-loading="1">' +
+        '<h3 class="hiw-section__h">Hotel News &amp; Articles</h3>' +
+        heWaveCompact("Loading hotel news…", "Market Alerts") +
+        "</section>";
+      return;
+    }
+    if (st === "ERROR") {
+      host.hidden = false;
+      host.innerHTML =
+        '<section class="hiw-section hiw-section--hotel-news" data-hiw-hotel-news-error="1">' +
+        '<h3 class="hiw-section__h">Hotel News &amp; Articles</h3>' +
+        heAsyncError(
+          result.message || "Hotel news is temporarily unavailable.",
+          "hotel-news"
+        ) +
+        "</section>";
+      return;
+    }
+    if (st === "STALE" && result.payload && result.payload.visible === true) {
+      applyMarketAlertsEvidencePayload(result.payload);
+      host.hidden = false;
+      host.innerHTML =
+        renderHotelNewsSection(result.payload, opts) +
+        '<p class="hiw-prose hiw-prose--quiet he-async-stale" data-he-async-stale="1">Showing last available coverage while refresh continues.</p>';
+      return;
+    }
+    var payload = result && result.payload;
+    applyMarketAlertsEvidencePayload(
+      payload && payload.visible === true ? payload : { articles: [], evidenceCitations: [] }
+    );
+    if (!payload || payload.visible !== true || !(payload.articles || []).length) {
+      host.hidden = true;
+      host.innerHTML = "";
+      return;
+    }
+    host.hidden = false;
+    host.innerHTML = renderHotelNewsSection(payload, opts);
   }
 
   function mountHotelNewsArticles(opts) {
@@ -1602,55 +1700,116 @@
         host.innerHTML = "";
       }
       state.marketAlertsCitations = [];
+      if (newsAsync) newsAsync.cancel();
       return;
     }
-    fetchHotelNewsArticles(opts)
-      .then(function (payload) {
-        applyMarketAlertsEvidencePayload(
-          payload && payload.visible === true ? payload : { articles: [], evidenceCitations: [] }
-        );
-        if (host && host.isConnected) {
-          if (!payload || payload.visible !== true || !(payload.articles || []).length) {
-            host.hidden = true;
-            host.innerHTML = "";
-          } else {
-            host.hidden = false;
-            host.innerHTML = renderHotelNewsSection(payload, opts);
-          }
-        }
-        if (state.tab === "sources") {
-          var main = document.getElementById("hiwMain");
-          if (main) main.innerHTML = renderSourcesTab();
-          var rail = document.getElementById("hiwRail");
-          if (rail) rail.innerHTML = renderRail(state.hotel, state.ownership);
-        }
-      })
-      .catch(function () {
-        state.marketAlertsCitations = [];
-        if (host && host.isConnected) {
-          host.hidden = true;
-          host.innerHTML = "";
-        }
-      });
+
+    function applyResult(result) {
+      paintHotelNewsHost(host, result, opts);
+      if (state.tab === "sources" && result && result.state !== "LOADING") {
+        var main = document.getElementById("hiwMain");
+        if (main) main.innerHTML = renderSourcesTab();
+        var rail = document.getElementById("hiwRail");
+        if (rail) rail.innerHTML = renderRail(state.hotel, state.ownership);
+      }
+    }
+
+    if (!newsAsync) {
+      if (host) {
+        host.hidden = false;
+        host.innerHTML =
+          '<section class="hiw-section">' + heWaveCompact("Loading hotel news…") + "</section>";
+      }
+      fetchHotelNewsArticles(opts)
+        .then(function (payload) {
+          applyResult({
+            state:
+              payload && payload.visible === true && (payload.articles || []).length
+                ? "READY"
+                : "EMPTY",
+            payload: payload,
+          });
+        })
+        .catch(function () {
+          applyResult({ state: "ERROR", message: "Hotel news is temporarily unavailable." });
+        });
+      return;
+    }
+
+    newsAsync.load(
+      id,
+      function (ticket) {
+        return fetchHotelNewsArticles(opts, { signal: ticket && ticket.signal });
+      },
+      {
+        force: opts.force === true,
+        isEmpty: function (payload) {
+          return !(payload && payload.visible === true && (payload.articles || []).length);
+        },
+        onLoading: function () {
+          applyResult({ state: "LOADING" });
+        },
+        onResult: applyResult,
+      }
+    );
   }
 
   /** Sources tab: refresh Market Alerts evidence via same GET-only news path (no writes). */
   function mountMarketAlertsEvidenceForSources() {
     if (!state.hotel || !recordId(state.hotel)) return;
-    fetchHotelNewsArticles({ viewAll: true })
-      .then(function (payload) {
+    var id = recordId(state.hotel);
+
+    function finish(result) {
+      if (result && result.payload) {
         applyMarketAlertsEvidencePayload(
-          payload && payload.visible === true ? payload : { articles: [], evidenceCitations: [] }
+          result.payload.visible === true
+            ? result.payload
+            : { articles: [], evidenceCitations: [] }
         );
-        if (state.tab !== "sources") return;
-        var main = document.getElementById("hiwMain");
-        if (main) main.innerHTML = renderSourcesTab();
-        var rail = document.getElementById("hiwRail");
-        if (rail) rail.innerHTML = renderRail(state.hotel, state.ownership);
-      })
-      .catch(function () {
-        /* fail soft — keep existing citations */
-      });
+      } else if (result && result.state === "ERROR") {
+        /* keep prior citations */
+      } else {
+        applyMarketAlertsEvidencePayload({ articles: [], evidenceCitations: [] });
+      }
+      if (state.tab !== "sources") return;
+      var main = document.getElementById("hiwMain");
+      if (main) {
+        main.innerHTML = renderSourcesTab();
+        if (result && result.state === "LOADING") {
+          var slot = main.querySelector("[data-hiw-sources-ma-slot]");
+          if (slot) {
+            slot.hidden = false;
+            slot.innerHTML = heWaveCompact("Updating Market Alerts sources…");
+          }
+        }
+      }
+      var rail = document.getElementById("hiwRail");
+      if (rail) rail.innerHTML = renderRail(state.hotel, state.ownership);
+    }
+
+    if (!sourcesMaAsync) {
+      fetchHotelNewsArticles({ viewAll: true })
+        .then(function (payload) {
+          finish({ state: "READY", payload: payload });
+        })
+        .catch(function () {
+          finish({ state: "ERROR" });
+        });
+      return;
+    }
+
+    sourcesMaAsync.load(
+      id,
+      function (ticket) {
+        return fetchHotelNewsArticles({ viewAll: true }, { signal: ticket && ticket.signal });
+      },
+      {
+        onLoading: function () {
+          finish({ state: "LOADING", payload: sourcesMaAsync.getCached(id) });
+        },
+        onResult: finish,
+      }
+    );
   }
 
   function renderOwnershipReport(hotel, ownership) {
@@ -3491,16 +3650,11 @@
     );
   }
 
-  function mountGuestSentiment(opts) {
+  function fetchGuestSentiment(opts, fetchOpts) {
     opts = opts || {};
-    var host = document.querySelector("[data-hiw-guest-sentiment-host]");
-    if (!host || !state.hotel) return;
-    var id = recordId(state.hotel);
-    if (!id) {
-      host.hidden = true;
-      host.innerHTML = "";
-      return;
-    }
+    fetchOpts = fetchOpts || {};
+    var id = state.hotel && recordId(state.hotel);
+    if (!id) return Promise.resolve(null);
     var params = new URLSearchParams();
     if (state.hotel.name) params.set("name", state.hotel.name);
     if (opts.founderPreview || isFounderProposedPreview()) {
@@ -3512,27 +3666,113 @@
       encodeURIComponent(id) +
       "/guest-sentiment?" +
       params.toString();
-    fetch(url, { headers: { "ngrok-skip-browser-warning": "true" } })
-      .then(function (r) {
-        return r.json().catch(function () {
-          return null;
-        });
-      })
-      .then(function (payload) {
-        if (!host.isConnected) return;
-        if (!payload || payload.visible !== true || !(payload.platforms || []).length) {
-          host.hidden = true;
-          host.innerHTML = "";
-          return;
-        }
-        host.hidden = false;
-        host.innerHTML = renderGuestSentimentSection(payload);
-      })
-      .catch(function () {
-        if (!host.isConnected) return;
-        host.hidden = true;
-        host.innerHTML = "";
+    var init = { headers: { "ngrok-skip-browser-warning": "true" } };
+    if (fetchOpts.signal) init.signal = fetchOpts.signal;
+    return fetch(url, init).then(function (r) {
+      return r.json().catch(function () {
+        return null;
       });
+    });
+  }
+
+  function paintGuestSentimentHost(host, result) {
+    if (!host || !host.isConnected) return;
+    var st = result && result.state;
+    if (st === "LOADING") {
+      host.hidden = false;
+      host.innerHTML =
+        '<section class="hiw-section he-async-loading" data-hiw-guest-sentiment-loading="1">' +
+        '<h3 class="hiw-section__h">Guest Sentiment &amp; Reputation</h3>' +
+        heWaveCompact("Loading guest sentiment…") +
+        "</section>";
+      return;
+    }
+    if (st === "ERROR") {
+      host.hidden = false;
+      host.innerHTML =
+        '<section class="hiw-section" data-hiw-guest-sentiment-error="1">' +
+        '<h3 class="hiw-section__h">Guest Sentiment &amp; Reputation</h3>' +
+        heAsyncError(
+          result.message || "Guest sentiment is temporarily unavailable.",
+          "guest-sentiment"
+        ) +
+        "</section>";
+      return;
+    }
+    if (st === "STALE" && result.payload && result.payload.visible === true) {
+      host.hidden = false;
+      host.innerHTML =
+        renderGuestSentimentSection(result.payload) +
+        '<p class="hiw-prose hiw-prose--quiet he-async-stale">Showing last available sentiment while refresh continues.</p>';
+      return;
+    }
+    var payload = result && result.payload;
+    if (!payload || payload.visible !== true || !(payload.platforms || []).length) {
+      host.hidden = true;
+      host.innerHTML = "";
+      return;
+    }
+    host.hidden = false;
+    host.innerHTML = renderGuestSentimentSection(payload);
+  }
+
+  function mountGuestSentiment(opts) {
+    opts = opts || {};
+    var host = document.querySelector("[data-hiw-guest-sentiment-host]");
+    if (!host || !state.hotel) return;
+    var id = recordId(state.hotel);
+    if (!id) {
+      host.hidden = true;
+      host.innerHTML = "";
+      if (sentimentAsync) sentimentAsync.cancel();
+      return;
+    }
+
+    if (!sentimentAsync) {
+      host.hidden = false;
+      host.innerHTML =
+        '<section class="hiw-section">' + heWaveCompact("Loading guest sentiment…") + "</section>";
+      fetchGuestSentiment(opts)
+        .then(function (payload) {
+          paintGuestSentimentHost(host, {
+            state:
+              payload && payload.visible === true && (payload.platforms || []).length
+                ? "READY"
+                : "EMPTY",
+            payload: payload,
+          });
+        })
+        .catch(function () {
+          paintGuestSentimentHost(host, {
+            state: "ERROR",
+            message: "Guest sentiment is temporarily unavailable.",
+          });
+        });
+      return;
+    }
+
+    if (opts.force === true && opts.bypassStale === true) {
+      sentimentAsync.clearCache(id);
+    }
+
+    sentimentAsync.load(
+      id,
+      function (ticket) {
+        return fetchGuestSentiment(opts, { signal: ticket && ticket.signal });
+      },
+      {
+        force: opts.force === true,
+        isEmpty: function (payload) {
+          return !(payload && payload.visible === true && (payload.platforms || []).length);
+        },
+        onLoading: function () {
+          paintGuestSentimentHost(host, { state: "LOADING" });
+        },
+        onResult: function (result) {
+          paintGuestSentimentHost(host, result);
+        },
+      }
+    );
   }
 
   function renderSourcesTab() {
@@ -3540,6 +3780,7 @@
       '<article class="hiw-report">' +
       '<h2 class="hiw-report__title">Sources &amp; Evidence</h2>' +
       '<p class="hiw-report__subtitle">Click a citation in Ownership or Open Evidence here to inspect what the source supports and what it does not establish.</p>' +
+      '<div class="he-async-slot" data-hiw-sources-ma-slot="1" hidden></div>' +
       renderSourcesList() +
       "</article>"
     );
@@ -3880,6 +4121,13 @@
       mountHotelNewsArticles({ viewAll: true });
       return;
     }
+    var asyncRetry = e.target.closest("[data-he-async-retry]");
+    if (asyncRetry) {
+      var which = asyncRetry.getAttribute("data-he-async-retry") || "";
+      if (which === "hotel-news") mountHotelNewsArticles({ force: true });
+      else if (which === "guest-sentiment") mountGuestSentiment({ force: true });
+      return;
+    }
     var filt = e.target.closest("[data-hiw-rel-filter]");
     if (filt) {
       state.relFilter = filt.getAttribute("data-hiw-rel-filter") || "all";
@@ -4089,6 +4337,10 @@
   function open(hotel, opts) {
     opts = opts || {};
     if (!hotel) return;
+    if (newsAsync) newsAsync.cancel();
+    if (sentimentAsync) sentimentAsync.cancel();
+    if (sourcesMaAsync) sourcesMaAsync.cancel();
+    state.marketAlertsCitations = [];
     state.radarSnapshot = snapshotRadar();
     state.hotel = hotel;
     state.tab = opts.tab || "ownership";
