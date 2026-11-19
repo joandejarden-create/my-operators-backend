@@ -228,6 +228,286 @@ await testAsync("op_scoped_auth_forged_id_and_cancellation", async () => {
   assert.equal(cancelled, true);
 });
 
+await testAsync("claim_never_reauthorizes_same_worker", async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "he-m1-claim-same-"));
+  const persistPath = path.join(dir, "c.json");
+  const ledger = createDurableM1BudgetLedger({
+    persistPath,
+    memoryOnly: false,
+    workerId: "same_w",
+    runUsdCap: 5,
+    perHotelUsdCap: 2.5,
+  });
+  ledger.reserve({
+    operation_id: "op_same_claim",
+    hotel_id: "recLuxvwwxID7U2B8",
+    provider: "EXA",
+    operation: "search_lite",
+    cost_usd: 0.01,
+    cost_usd_status: "ESTIMATED",
+  });
+  const first = ledger.claimDispatch("op_same_claim", { workerId: "same_w" });
+  assert.equal(first.ok, true);
+  assert.equal(first.newly_acquired, true);
+  const second = ledger.claimDispatch("op_same_claim", { workerId: "same_w" });
+  assert.equal(second.ok, false);
+  assert.equal(second.error, "OPERATION_IN_FLIGHT");
+  assert.notEqual(second.newly_acquired, true);
+});
+
+await testAsync("restart_while_claimed_no_repeat_dispatch", async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "he-m1-claim-rst-"));
+  const persistPath = path.join(dir, "r.json");
+  const a = createDurableM1BudgetLedger({
+    persistPath,
+    memoryOnly: false,
+    workerId: "w1",
+    runUsdCap: 5,
+    perHotelUsdCap: 2.5,
+  });
+  a.reserve({
+    operation_id: "op_claimed_restart",
+    hotel_id: "recLuxvwwxID7U2B8",
+    provider: "EXA",
+    operation: "search_lite",
+    cost_usd: 0.01,
+    cost_usd_status: "ESTIMATED",
+  });
+  assert.equal(a.claimDispatch("op_claimed_restart", { workerId: "w1" }).ok, true);
+  const b = createDurableM1BudgetLedger({
+    persistPath,
+    memoryOnly: false,
+    workerId: "w1",
+    runUsdCap: 5,
+    perHotelUsdCap: 2.5,
+  });
+  const op = b.getOperation("op_claimed_restart");
+  assert.equal(op.status, OP_STATUS.CLAIMED);
+  const reclaim = b.claimDispatch("op_claimed_restart", { workerId: "w1" });
+  assert.equal(reclaim.ok, false);
+  assert.equal(reclaim.error, "OPERATION_IN_FLIGHT");
+  // Gateway must also refuse without a new provider call
+  let calls = 0;
+  const gw = createExecutionGateway({
+    ledger: b,
+    workerId: "w1",
+    adapters: {
+      [PROVIDER_IDS.EXA]: {
+        estimateCost: () => ({
+          cost_usd: 0.01,
+          cost_usd_status: "ESTIMATED",
+          bounded: true,
+          credits: 0,
+        }),
+        call: async () => {
+          calls += 1;
+          return { ok: true, cost_usd: 0.01, cost_usd_status: "REPORTED", facts: [] };
+        },
+      },
+    },
+    paidProvidersEnabled: true,
+    allowBenchmarkPaidOverride: true,
+    founderPaidAuthorization: {
+      ok: true,
+      authId: P3B_M1_FOUNDER_PAID_AUTH_ID,
+    },
+  });
+  const refused = await gw.execute({
+    provider: PROVIDER_IDS.EXA,
+    operation: "search_lite",
+    hotelId: "recLuxvwwxID7U2B8",
+    operationId: "op_claimed_restart",
+    params: { numResults: 8 },
+  });
+  assert.equal(refused.ok, false);
+  assert.equal(refused.error, "OPERATION_IN_FLIGHT");
+  assert.equal(calls, 0);
+});
+
+await testAsync("mandatory_integrity_and_version_fail_closed", async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "he-m1-int-req-"));
+  const goodPath = path.join(dir, "good.json");
+  const good = createDurableM1BudgetLedger({
+    persistPath: goodPath,
+    memoryOnly: false,
+    runUsdCap: 5,
+    perHotelUsdCap: 2.5,
+  });
+  good.reserve({
+    operation_id: "op_good",
+    hotel_id: "recLuxvwwxID7U2B8",
+    provider: "EXA",
+    operation: "search_lite",
+    cost_usd: 0.25,
+    cost_usd_status: "ESTIMATED",
+  });
+  good.settle("op_good", { cost_usd: 0.25, status: "OK" });
+
+  // Positive restart/replay of settled op with integrity
+  const replayLedger = createDurableM1BudgetLedger({
+    persistPath: goodPath,
+    memoryOnly: false,
+    runUsdCap: 5,
+    perHotelUsdCap: 2.5,
+  });
+  assert.equal(replayLedger.isFatal(), false);
+  assert.equal(replayLedger.getOperation("op_good").status, OP_STATUS.SETTLED);
+
+  let calls = 0;
+  const gw = createExecutionGateway({
+    ledger: replayLedger,
+    adapters: {
+      [PROVIDER_IDS.EXA]: {
+        estimateCost: () => ({
+          cost_usd: 0.25,
+          cost_usd_status: "ESTIMATED",
+          bounded: true,
+          credits: 0,
+        }),
+        call: async () => {
+          calls += 1;
+          return {
+            ok: true,
+            cost_usd: 0.25,
+            cost_usd_status: "REPORTED",
+            facts: [],
+          };
+        },
+      },
+    },
+    paidProvidersEnabled: true,
+    allowBenchmarkPaidOverride: true,
+    founderPaidAuthorization: {
+      ok: true,
+      authId: P3B_M1_FOUNDER_PAID_AUTH_ID,
+    },
+  });
+  const replayed = await gw.execute({
+    provider: PROVIDER_IDS.EXA,
+    operation: "search_lite",
+    hotelId: "recLuxvwwxID7U2B8",
+    operationId: "op_good",
+    params: { numResults: 8 },
+  });
+  assert.equal(replayed.replayed, true);
+  assert.equal(calls, 0);
+
+  // Missing integrity → fail closed
+  const missingInt = path.join(dir, "missing-int.json");
+  const raw = JSON.parse(fs.readFileSync(goodPath, "utf8"));
+  delete raw.integrity;
+  fs.writeFileSync(missingInt, JSON.stringify(raw));
+  const missingLedger = createDurableM1BudgetLedger({
+    persistPath: missingInt,
+    memoryOnly: false,
+    runUsdCap: 5,
+    perHotelUsdCap: 2.5,
+  });
+  assert.equal(missingLedger.isFatal(), true);
+  assert.equal(missingLedger.getFatal()?.reason, "missing_integrity_hash");
+
+  // Legacy / wrong version → fail closed
+  const legacyPath = path.join(dir, "legacy.json");
+  raw.integrity = "deadbeef";
+  raw.meta.version = "he-intel-p3b-m1-durable-budget-v1";
+  fs.writeFileSync(legacyPath, JSON.stringify(raw));
+  const legacyLedger = createDurableM1BudgetLedger({
+    persistPath: legacyPath,
+    memoryOnly: false,
+    runUsdCap: 5,
+    perHotelUsdCap: 2.5,
+  });
+  assert.equal(legacyLedger.isFatal(), true);
+  assert.equal(legacyLedger.getFatal()?.reason, "unrecognized_or_legacy_ledger_version");
+
+  // Missing version → fail closed
+  const noVerPath = path.join(dir, "nover.json");
+  const noVerBody = JSON.parse(fs.readFileSync(goodPath, "utf8"));
+  delete noVerBody.meta.version;
+  fs.writeFileSync(noVerPath, JSON.stringify(noVerBody));
+  const noVer = createDurableM1BudgetLedger({
+    persistPath: noVerPath,
+    memoryOnly: false,
+    runUsdCap: 5,
+    perHotelUsdCap: 2.5,
+  });
+  assert.equal(noVer.isFatal(), true);
+  assert.equal(noVer.getFatal()?.reason, "missing_version");
+});
+
+await testAsync("gateway_sequential_same_worker_while_claimed_blocks", async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "he-m1-seq-"));
+  const persistPath = path.join(dir, "seq.json");
+  let active = 0;
+  let maxActive = 0;
+  let calls = 0;
+  const makeGw = () => {
+    const ledger = createDurableM1BudgetLedger({
+      persistPath,
+      memoryOnly: false,
+      workerId: "seq_w",
+      runUsdCap: 5,
+      perHotelUsdCap: 2.5,
+    });
+    return createExecutionGateway({
+      ledger,
+      workerId: "seq_w",
+      adapters: {
+        [PROVIDER_IDS.EXA]: {
+          estimateCost: () => ({
+            cost_usd: 0.01,
+            cost_usd_status: "ESTIMATED",
+            bounded: true,
+            credits: 0,
+          }),
+          call: async () => {
+            calls += 1;
+            active += 1;
+            maxActive = Math.max(maxActive, active);
+            await new Promise((r) => setTimeout(r, 60));
+            active -= 1;
+            return {
+              ok: true,
+              cost_usd: 0.01,
+              cost_usd_status: "REPORTED",
+              provider_cost_usd: 0.01,
+              facts: [],
+            };
+          },
+        },
+      },
+      paidProvidersEnabled: true,
+      allowBenchmarkPaidOverride: true,
+      founderPaidAuthorization: {
+        ok: true,
+        authId: P3B_M1_FOUNDER_PAID_AUTH_ID,
+      },
+    });
+  };
+  const opId = "op_seq_same_worker";
+  const firstP = makeGw().execute({
+    provider: PROVIDER_IDS.EXA,
+    operation: "search_lite",
+    hotelId: "recLuxvwwxID7U2B8",
+    operationId: opId,
+    params: { numResults: 8 },
+  });
+  await new Promise((r) => setTimeout(r, 5));
+  const second = await makeGw().execute({
+    provider: PROVIDER_IDS.EXA,
+    operation: "search_lite",
+    hotelId: "recLuxvwwxID7U2B8",
+    operationId: opId,
+    params: { numResults: 8 },
+  });
+  const first = await firstP;
+  assert.equal(first.ok, true);
+  assert.equal(second.ok, false);
+  assert.equal(second.error, "OPERATION_IN_FLIGHT");
+  assert.equal(calls, 1);
+  assert.equal(maxActive, 1);
+});
+
 await testAsync("duplicate_execution_refused_via_claim", async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "he-m1-dup-"));
   const persistPath = path.join(dir, "dup.json");
