@@ -821,6 +821,15 @@ export async function getGdiPublicationComparison(req, res) {
 export async function getGdiDrawerComparison(req, res) {
   try {
     if (!flagGate(req, res)) return;
+    // Founder/admin only — never serve unpublished research via pilot unauth read.
+    if (req.gdiPilotUnauthRead || !req.dealalityUser) {
+      return res.status(401).json({
+        ok: false,
+        error: "authentication_required",
+        message:
+          "Sheraton drawer comparison requires authenticated founder/admin access.",
+      });
+    }
     const hotelId = String(req.params.hotelId || "").trim();
     if (!hotelId) {
       return res.status(400).json({ ok: false, error: "hotelId_required" });
