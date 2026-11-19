@@ -1,6 +1,6 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.3`  
+**Version:** `hotel-explorer-quality-standard-v1.4`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
 **Gate:** `npm run test:he-product-quality-gates-v1`
@@ -41,6 +41,7 @@ KGPV (golden UX) and Bethesda Marriott (Airtable-first pilot) define the permane
 - **Visual (KGPV baseline):** single horizontal icon+label strip — no bordered amenity cards, no vertical grid. Prev/next arrows only when overflow; smooth horizontal scroll; keyboard arrows; minimal/hidden scrollbar.
 - Source: ADP verified attributes / HPC amenities via shared IDs — never invent amenities to hit a count.
 - Display policy: target **≥12** verified when research allows; hard max **20** displayed (priority selection); overflow retained in underlying intelligence.
+- Canonical map: `attribute_id → display_label → icon_id → category → display_priority` (`he-amenity-icon-map-v1.js` + `hilton-amenity-icons.js`). Unrelated attributes must not share a generic icon (e.g. Bar ≠ Restaurant, Accessibility ≠ checkmark-only default).
 - Human-readable labels + consistent icons across hotels; no raw DB tokens (`has_pool`); no geo/brand marketing tags as amenity icons.
 - Shared policy: `lib/hotel-intelligence/he-amenity-display-v1.js` + `hotel-detail-panel.js` carousel.
 
@@ -75,8 +76,24 @@ KGPV (golden UX) and Bethesda Marriott (Airtable-first pilot) define the permane
 
 ### 8. Navigation & tables
 
-- Tabs evenly distributed; consistent icon size; readable labels; overflow scroll without crushing layout when a tab is inserted.
-- Inventory tables use shared `DealalitySortableTable` — not hotel-specific CSS patches.
+- Tabs use equal grid allocation (`hex-tabs`); consistent icon size/gap; stable 2px icon borders (no active-state layout shift); overflow scroll on narrow screens.
+- Inventory + Submarket tables reuse My Deals / `ada-table` surfaces (`#0d152c` headers, dark rows, sort chevrons) — not approximate new themes.
+- Tab panels share `--hdp-bg-deep`; no arbitrary patch backgrounds across sections.
+
+### 9. Measurement units (presentation only)
+
+- Shared session preference: Area **Sq. Ft. / Sq. M.** and Distance **mi / km** (`he-measurement-prefs-v1`).
+- Conversion constants: `1 sq ft = 0.09290304 sq m`; `1 mi = 1.609344 km`.
+- Sort and geographic inclusion always use source numeric units (sq ft / km). Unit toggle must not change which hotels qualify.
+- Default Bethesda pilot: Sq. Ft. / mi when no prior preference.
+
+### 10. Submarket Snapshot & Area Hotels (HPC)
+
+- Prefer Radar map census; when empty, read-only Scout Hotel Census coverage (never invent market totals).
+- Deduplicate hotel identities before aggregation; separate open vs pipeline.
+- Show explicit coverage limitations when geography is provisional or sample-capped.
+- Area Hotels radii by location setting (initial): Urban 5 mi, Suburban/Airport 10 mi, Resort 30 mi, Rural 25 mi — adjustable; distance unit display independent of inclusion.
+- No GET-triggered writes; no unapproved Airtable submarket bulk apply.
 
 ## Machine-testable acceptance
 

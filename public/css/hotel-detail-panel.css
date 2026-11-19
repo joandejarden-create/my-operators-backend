@@ -436,14 +436,25 @@
   border-top: 0.6px solid var(--hdp-border);
 }
 
-.hdp-tab-panels .tab-panel[data-panel="access-connectivity"],
-.hdp-tab-panels .tab-panel[data-panel="submarket-snapshot"] {
-  padding: 12px 16px 14px;
+.hdp-tab-panels .tab-panel {
+  background: var(--hdp-bg-deep);
 }
 
+.hdp-tab-panels .tab-panel[data-panel="access-connectivity"],
+.hdp-tab-panels .tab-panel[data-panel="submarket-snapshot"],
 .hdp-tab-panels .tab-panel[data-panel="area-hotels"],
-.hdp-tab-panels .tab-panel[data-panel="demand-drivers"] {
-  padding: 0;
+.hdp-tab-panels .tab-panel[data-panel="demand-drivers"],
+.hdp-tab-panels .tab-panel[data-panel="hotel"] {
+  padding: 12px 16px 14px;
+  background: var(--hdp-bg-deep);
+}
+
+.hdp-section,
+.hdp-area-hotels-tab,
+.hdp-submarket-snapshot,
+.hdp-access-connectivity-tab,
+.hdp-demand-drivers-tab {
+  background: transparent;
 }
 
 .hdp-area-hotels-tab {
@@ -811,34 +822,44 @@
   color: var(--hdp-text-body);
 }
 
-.hdp-footprint-table-wrap {
+.hdp-footprint-table-wrap,
+.hdp-footprint-table-wrap.ada-table-shell,
+.hdp-footprint-table-wrap.dl-table-wrap {
   overflow-x: auto;
-  border: 0.6px solid var(--hdp-border);
-  border-radius: 8px;
-  background: rgba(8, 15, 37, 0.35);
+  border: 0.6px solid var(--runbook-border, #2a3550);
+  border-radius: 10px;
+  background: #0d152c;
 }
 
-.hdp-footprint-table {
+.hdp-footprint-table,
+.hdp-footprint-table.ada-table,
+.hdp-footprint-table.dl-table {
   width: 100%;
   min-width: 640px;
-  border-collapse: collapse;
-  font-size: 12px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
+  background: #0d152c;
 }
 
 .hdp-footprint-table th,
 .hdp-footprint-table td {
-  padding: 8px 10px;
-  border-bottom: 0.6px solid var(--hdp-border);
+  padding: 7px 10px;
+  border-bottom: 0.6px solid var(--runbook-border, #2a3550);
   text-align: right;
   vertical-align: middle;
+  background: #0d152c;
 }
 
 .hdp-footprint-table thead th {
-  background: rgba(16, 25, 53, 0.95);
-  color: var(--hdp-text-muted);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #0d152c !important;
+  color: var(--runbook-heading, #e8ecf4);
   font-weight: 600;
-  font-size: 10px;
-  letter-spacing: 0.03em;
+  font-size: 12px;
+  letter-spacing: 0.01em;
   text-align: center;
 }
 
@@ -849,8 +870,8 @@
 
 .hdp-footprint-table tbody th[scope="row"] {
   font-weight: 600;
-  color: var(--hdp-text);
-  background: rgba(8, 15, 37, 0.35);
+  color: var(--hdp-text, #e8ecf4);
+  background: #0d152c;
   max-width: 180px;
   white-space: nowrap;
   overflow: hidden;
@@ -858,15 +879,20 @@
 }
 
 .hdp-footprint-table tbody td {
-  color: var(--hdp-text-body);
+  color: var(--hdp-text-body, #c5cef0);
   font-variant-numeric: tabular-nums;
+}
+
+.hdp-footprint-table tbody tr:hover td,
+.hdp-footprint-table tbody tr:hover th {
+  background: rgba(108, 114, 255, 0.08);
 }
 
 .hdp-footprint-table .hdp-ft-total-row th,
 .hdp-footprint-table .hdp-ft-total-row td {
   font-weight: 700;
-  background: rgba(255, 255, 255, 0.06);
-  border-top: 0.6px solid var(--hdp-border);
+  background: rgba(255, 255, 255, 0.04);
+  border-top: 0.6px solid var(--runbook-border, #2a3550);
 }
 
 .hdp-submarket-snapshot .hdp-submarket-hotel-table-wrap {

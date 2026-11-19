@@ -65,11 +65,33 @@
     );
   }
 
+  function prefs() {
+    return (global.HeMeasurementPrefs && global.HeMeasurementPrefs.get()) || {
+      area: "sqft",
+      distance: "mi",
+    };
+  }
+
+  function formatAreaSqFt(sqFt) {
+    if (sqFt == null || sqFt === "") return "—";
+    if (global.HeMeasurementPrefs && typeof global.HeMeasurementPrefs.formatAreaFromSqFt === "function") {
+      return global.HeMeasurementPrefs.formatAreaFromSqFt(sqFt, prefs());
+    }
+    return fmt(sqFt) + " sq ft";
+  }
+
+  function areaColumnLabel() {
+    if (global.HeMeasurementPrefs && typeof global.HeMeasurementPrefs.areaUnitLabel === "function") {
+      return "Area (" + global.HeMeasurementPrefs.areaUnitLabel(prefs()) + ")";
+    }
+    return "Area (Sq. Ft.)";
+  }
+
   /** Primary desktop columns — Config moved to expandable row details. */
   function meetingRoomColumns() {
     return [
       { key: "name", label: "Room", type: "text", align: "left" },
-      { key: "area", label: "Area (sq ft)", type: "number", align: "right" },
+      { key: "area", label: areaColumnLabel(), type: "number", align: "right" },
       { key: "dimensions", label: "Dimensions", type: "text", align: "left" },
       { key: "ceiling", label: "Ceiling", type: "number", align: "right" },
       { key: "theater", label: "Theater", type: "number", align: "right" },
@@ -105,6 +127,7 @@
         "</div>";
       return {
         name: r.name || "",
+        // Sort on source sq ft — never on formatted display strings.
         area: r.areaSqFt != null ? r.areaSqFt : null,
         dimensions: r.dimensions || "",
         ceiling: r.ceilingFt != null ? r.ceilingFt : null,
@@ -116,7 +139,7 @@
         _rowClass: excluded ? "hex-rms-row--secondary" : "",
         _cells: {
           name: nameHtml,
-          area: r.areaSqFt != null ? esc(fmt(r.areaSqFt)) : "—",
+          area: r.areaSqFt != null ? esc(formatAreaSqFt(r.areaSqFt)) : "—",
           dimensions: esc(r.dimensions || "—"),
           ceiling: r.ceilingFt != null ? esc(fmt(r.ceilingFt)) + " ft" : "—",
           theater: r.theater != null ? esc(fmt(r.theater)) : "—",
@@ -284,7 +307,7 @@
       metricCard(
         "Total meeting space",
         sum.totalMeetingSpaceSqFt && sum.totalMeetingSpaceSqFt.value != null
-          ? fmt(sum.totalMeetingSpaceSqFt.value) + " sq ft"
+          ? formatAreaSqFt(sum.totalMeetingSpaceSqFt.value)
           : "—",
         statusLabel(sum.totalMeetingSpaceSqFt && sum.totalMeetingSpaceSqFt.verificationStatus)
       ) +
@@ -297,19 +320,19 @@
         "Largest room",
         largest.name
           ? largest.name +
-              (largest.areaSqFt != null ? " · " + fmt(largest.areaSqFt) + " sq ft" : "")
+              (largest.areaSqFt != null ? " · " + formatAreaSqFt(largest.areaSqFt) : "")
           : "—",
         statusLabel(largest.verificationStatus)
       ) +
       metricCard(
         "Marketing private-space figure",
         sum.privateSpaceMarketingSqFt && sum.privateSpaceMarketingSqFt.value != null
-          ? fmt(sum.privateSpaceMarketingSqFt.value) + " sq ft"
+          ? formatAreaSqFt(sum.privateSpaceMarketingSqFt.value)
           : "—",
         statusLabel(sum.privateSpaceMarketingSqFt && sum.privateSpaceMarketingSqFt.verificationStatus)
       ) +
       "</div>" +
-      '<p class="hiw-muted">Capacity-chart totals and marketing private-space figures are not interchangeable.</p>' +
+      '<p class="hiw-muted">Capacity-chart totals and marketing private-space figures are not interchangeable. Units follow the Hotel Explorer measurement preference (presentation only).</p>' +
       "</section>";
 
     return (
@@ -328,11 +351,20 @@
 
   function mount(host, hotel, ownership) {
     if (!host) return;
+    host._hexRmsHotel = hotel;
+    host._hexRmsOwnership = ownership;
     host.innerHTML = render(hotel, ownership);
     if (global.DealalitySortableTable && typeof global.DealalitySortableTable.bind === "function") {
       global.DealalitySortableTable.bind(host);
     }
     bindDetailToggles(host);
+    if (!host._hexRmsPrefsBound && global.HeMeasurementPrefs && typeof global.HeMeasurementPrefs.onChange === "function") {
+      host._hexRmsPrefsBound = true;
+      global.HeMeasurementPrefs.onChange(function () {
+        if (!host.isConnected) return;
+        mount(host, host._hexRmsHotel, host._hexRmsOwnership);
+      });
+    }
   }
 
   global.HotelExplorerRoomsMeetingSpace = {

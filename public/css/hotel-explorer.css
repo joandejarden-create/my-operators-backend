@@ -609,12 +609,13 @@ button.hex-action {
   letter-spacing: 0.02em;
 }
 .hex-tabs {
-  display: flex;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(76px, 1fr);
   gap: 0;
   margin-bottom: 18px;
   align-items: stretch;
-  justify-content: space-between;
+  justify-content: stretch;
   width: 100%;
   background-color: var(--neutral--800);
   border-bottom: 0.6px solid var(--neutral--600);
@@ -627,10 +628,8 @@ button.hex-action {
   height: 4px;
 }
 .hex-tabs .section-nav-item {
-  flex: 1 1 0;
+  width: 100%;
   min-width: 76px;
-  max-width: 1fr;
-  width: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -645,7 +644,7 @@ button.hex-action {
   border: none;
   background: none;
   font-family: inherit;
-  padding: 10px 6px;
+  padding: 10px 4px;
   transition: color 0.2s;
   position: relative;
   box-sizing: border-box;
@@ -656,14 +655,15 @@ button.hex-action {
   min-width: 32px;
   min-height: 32px;
   border-radius: 50%;
-  border: 0.6px solid var(--neutral--600);
+  border: 2px solid var(--neutral--600);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--neutral--500);
   background: transparent;
-  transition: all 0.2s;
+  transition: color 0.2s, border-color 0.2s;
   flex-shrink: 0;
+  box-sizing: border-box;
 }
 .hex-tabs .section-nav-icon svg {
   width: 18px;
@@ -708,7 +708,6 @@ button.hex-action {
 }
 .hex-tabs .section-nav-item.active .section-nav-icon {
   border-color: var(--accent--primary-1);
-  border-width: 2px;
   color: var(--accent--primary-1);
 }
 .hex-tabs .section-nav-item.active:hover,
@@ -721,10 +720,55 @@ button.hex-action {
   border-color: var(--accent--primary-1);
 }
 @media (max-width: 720px) {
-  .hex-tabs .section-nav-item {
-    flex: 0 0 auto;
-    min-width: 72px;
+  .hex-tabs {
+    grid-auto-columns: minmax(72px, 1fr);
   }
+}
+
+/* Shared measurement preference control */
+.he-meas-prefs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  margin: 0 0 12px;
+  padding: 8px 10px;
+  border: 0.6px solid var(--runbook-border, #2a3550);
+  border-radius: 8px;
+  background: #0d152c;
+}
+.he-meas-prefs__group {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.he-meas-prefs__label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(197, 206, 240, 0.65);
+  margin-right: 4px;
+}
+.he-meas-prefs__btn {
+  appearance: none;
+  border: 0.6px solid #2a3550;
+  background: transparent;
+  color: #c5cef0;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.he-meas-prefs__btn.is-active {
+  border-color: var(--accent--primary-1, #6c72ff);
+  color: #fff;
+  background: rgba(108, 114, 255, 0.18);
+}
+.hex-meas-prefs-slot {
+  margin: 0 0 10px;
 }
 .hex-main {
   max-width: none;

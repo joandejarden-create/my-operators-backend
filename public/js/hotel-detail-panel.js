@@ -95,22 +95,23 @@
   };
 
   /** Area Hotels scope — location-type radii + submarket + auto-expand (see docs). */
+  /** Initial search radii (km). Founder defaults: Urban 5mi, Suburban/Airport 10mi, Resort 30mi, Rural 25mi. */
   var AREA_HOTELS_SCOPE = {
     minCompHotels: 5,
     listLimit: 50,
-    maxRadiusKm: 75,
+    maxRadiusKm: 80,
     byLocationType: {
-      Urban: 10,
-      Suburban: 20,
-      Airport: 15,
-      "Small Metro/Town": 30,
-      Interstate: 25,
-      Resort: 50,
-      default: 25,
+      Urban: 8.05,
+      Suburban: 16.09,
+      Airport: 16.09,
+      "Small Metro/Town": 40.23,
+      Interstate: 40.23,
+      Resort: 48.28,
+      default: 16.09,
     },
-    denseUrbanKm: 8,
-    islandKm: 25,
-    sparseCorridorKm: 60,
+    denseUrbanKm: 8.05,
+    islandKm: 40.23,
+    sparseCorridorKm: 48.28,
     denseUrbanCities: {
       "mexico city": true,
       "ciudad de mexico": true,
@@ -1230,9 +1231,17 @@
 
   function formatDistanceKm(km) {
     if (!Number.isFinite(km)) return "";
+    if (window.HeMeasurementPrefs && typeof window.HeMeasurementPrefs.formatDistanceFromKm === "function") {
+      return window.HeMeasurementPrefs.formatDistanceFromKm(km);
+    }
     if (km < 1) return Math.round(km * 1000) + " m";
     if (km < 10) return km.toFixed(1) + " km";
     return Math.round(km) + " km";
+  }
+
+  function formatRadiusLabel(km) {
+    if (!Number.isFinite(km)) return "";
+    return formatDistanceKm(km);
   }
 
   function filterAndSortByDistance(items, hotel, options) {
@@ -1497,6 +1506,21 @@
       }
     }
 
+    // Empty census pool: keep the location-type default radius (do not expand to max).
+    if (!pool.length) {
+      return {
+        mode: "radius",
+        radiusKm: baseRadiusKm,
+        baseRadiusKm: baseRadiusKm,
+        expanded: false,
+        locationType: locationType,
+        corridor: corridor,
+        note: "Hotel Census pool unavailable in this session — search radius kept at the location-type default. Market totals are not fabricated.",
+        existing: [],
+        pipeline: [],
+      };
+    }
+
     var ladder = buildAreaHotelsRadiusLadder(baseRadiusKm);
     var chosenRadius = ladder[ladder.length - 1];
     var chosenExisting = [];
@@ -1515,7 +1539,11 @@
         break;
       }
       if (i === ladder.length - 1) {
-        expanded = radiusKm > baseRadiusKm;
+        expanded = radiusKm > baseRadiusKm && chosenExisting.length > 0;
+        if (!chosenExisting.length && !chosenPipeline.length) {
+          chosenRadius = baseRadiusKm;
+          expanded = false;
+        }
       }
     }
 
@@ -1525,12 +1553,12 @@
       var atBaseCount = splitAreaHotelCandidates(hotel, atBase).existing.length;
       note =
         "Expanded to " +
-        chosenRadius +
-        " km — only " +
+        formatRadiusLabel(chosenRadius) +
+        " — only " +
         atBaseCount +
         " open hotels within " +
-        baseRadiusKm +
-        " km.";
+        formatRadiusLabel(baseRadiusKm) +
+        ".";
     }
 
     return {
@@ -1574,7 +1602,7 @@
     if (scope.mode === "submarket" && scope.corridor) {
       parts.push("Submarket: " + scope.corridor);
     } else if (scope.radiusKm != null) {
-      parts.push("Within " + scope.radiusKm + " km");
+      parts.push("Within " + formatRadiusLabel(scope.radiusKm));
     }
     return parts.join(" · ");
   }
@@ -1932,6 +1960,120 @@
     }).then(function (res) {
       return res.json();
     });
+  }
+
+  /** Map Scout / Hotel Census sample rows into HE hotel objects (read-only). */
+  function mapCensusSampleToHotels(sample) {
+    return (sample || [])
+      .map(function (row) {
+        if (!row) return null;
+        var lat = Number(row.latitude != null ? row.latitude : row.lat);
+        var lng = Number(row.longitude != null ? row.longitude : row.lng);
+        return {
+          id: row.id,
+          recordId: row.id,
+          name: row.name,
+          brand: row.affiliation || row.brand || "",
+          parentCompany: row.parentCompany || "",
+          status: row.status || "",
+          rooms: row.rooms,
+          country: row.country || "",
+          city: row.city || "",
+          market: row.market || "",
+          submarket: row.submarket || "",
+          chainScale: row.chainScale || "",
+          locationType: row.locationType || "",
+          projectPhase: row.projectPhase || "",
+          lat: Number.isFinite(lat) ? lat : null,
+          lng: Number.isFinite(lng) ? lng : null,
+          latitude: Number.isFinite(lat) ? lat : null,
+          longitude: Number.isFinite(lng) ? lng : null,
+        };
+      })
+      .filter(Boolean);
+  }
+
+  function dedupeHotelsByIdentity(hotels) {
+    var seen = {};
+    var out = [];
+    (hotels || []).forEach(function (h) {
+      var id = String(h.id || h.recordId || "").trim();
+      var key =
+        id ||
+        [
+          String(h.name || "")
+            .toLowerCase()
+            .trim(),
+          String(h.city || "")
+            .toLowerCase()
+            .trim(),
+          String(h.brand || "")
+            .toLowerCase()
+            .trim(),
+        ].join("|");
+      if (!key || seen[key]) return;
+      seen[key] = true;
+      out.push(h);
+    });
+    return out;
+  }
+
+  /**
+   * Prefer Radar map census; when empty (Founder Preview), load Hotel Census via Scout coverage.
+   * Never writes. Dedupes identities before aggregation.
+   */
+  function buildCityMarketCoverageUrl(hotel) {
+    var params = [];
+    if (hotel && hotel.country) params.push("country=" + encodeURIComponent(hotel.country));
+    if (hotel && hotel.city) params.push("city=" + encodeURIComponent(hotel.city));
+    else if (hotel && hotel.market) params.push("market=" + encodeURIComponent(hotel.market));
+    params.push("includePipeline=1");
+    return "/api/scout/market-coverage?" + params.join("&");
+  }
+
+  function fetchCoverageByUrl(url) {
+    return fetch(url, { headers: { "ngrok-skip-browser-warning": "true" } }).then(function (res) {
+      return res.json();
+    });
+  }
+
+  function resolveCensusHotelPool(hotel) {
+    var fromMap = dedupeHotelsByIdentity(window.allHotels || []);
+    if (fromMap.length) {
+      return Promise.resolve({ hotels: fromMap, source: "radar_map" });
+    }
+    return fetchSubmarketCoverage(hotel)
+      .then(function (report) {
+        var sample = report && report.success ? mapCensusSampleToHotels(report.recordsSample || []) : [];
+        var metricsTotal =
+          report && report.success && report.metrics
+            ? fpMetricNum(report.metrics.totalHotels) ||
+              fpMetricNum(report.metrics.openHotels) + fpMetricNum(report.metrics.pipelineHotels)
+            : 0;
+        if (sample.length || metricsTotal > 0) {
+          return {
+            hotels: dedupeHotelsByIdentity(sample),
+            source: "scout_census",
+            report: report,
+          };
+        }
+        // Provisional / unmatched submarket labels → widen to city/market (read-only).
+        return fetchCoverageByUrl(buildCityMarketCoverageUrl(hotel)).then(function (cityReport) {
+          var citySample =
+            cityReport && cityReport.success
+              ? mapCensusSampleToHotels(cityReport.recordsSample || [])
+              : [];
+          return {
+            hotels: dedupeHotelsByIdentity(citySample),
+            source: citySample.length || (cityReport && cityReport.success) ? "scout_census_city" : "none",
+            report: cityReport && cityReport.success ? cityReport : report,
+            coverageScope: "city_or_market_fallback",
+          };
+        });
+      })
+      .catch(function () {
+        return { hotels: [], source: "none", report: null };
+      });
   }
 
   function isStrRegionalSubmarket(value) {
@@ -2333,12 +2475,14 @@
 
   function renderFootprintTable(title, labelHeader, bodyRows, totalRow, wrapClass) {
     if (!bodyRows && !totalRow) return "";
-    var wrapCls = "hdp-footprint-table-wrap" + (wrapClass ? " " + wrapClass : "");
+    var wrapCls =
+      "hdp-footprint-table-wrap ada-table-shell dl-table-wrap" +
+      (wrapClass ? " " + wrapClass : "");
     return (
       '<section class="hdp-footprint-subsection">' +
         '<h4 class="hdp-footprint-table-title">' + esc(title) + "</h4>" +
         '<div class="' + wrapCls + '">' +
-          '<table class="hdp-footprint-table">' +
+          '<table class="hdp-footprint-table ada-table dl-table">' +
             '<colgroup><col class="hdp-fp-col-label" /><col class="hdp-fp-col-metric" span="9" /></colgroup>' +
             FP_METRIC_TABLE_HEAD.replace("Category", esc(labelHeader)) +
             (bodyRows || "") +
@@ -2452,8 +2596,12 @@
         "",
         "hdp-submarket-hotel-table-wrap"
       );
+    } else if (metrics && fpMetricNum(metrics.totalHotels) > 0) {
+      hotelTable =
+        '<p class="hdp-snapshot-meta">Hotel-level census rows are not loaded in this session. Aggregate Submarket Snapshot metrics above come from Hotel Census / Scout coverage (read-only).</p>';
     } else {
-      hotelTable = '<p class="hdp-empty">No census hotels found for this submarket in the loaded map data.</p>';
+      hotelTable =
+        '<p class="hdp-empty">No Hotel Census hotels matched this submarket/market with verified geography. Coverage may be incomplete — market totals are not fabricated.</p>';
     }
 
     var metaLine = penetrationPct != null
@@ -2573,7 +2721,7 @@
       var emptyRadius =
         scope.mode === "submarket" && scope.corridor
           ? 'the "' + scope.corridor + '" submarket'
-          : scope.radiusKm + " km";
+          : formatRadiusLabel(scope.radiusKm);
       return (
         '<p class="hdp-empty">No other open hotels found within ' + esc(String(emptyRadius)) + ".</p>"
       );
@@ -2618,7 +2766,7 @@
       var emptyRadius =
         scope.mode === "submarket" && scope.corridor
           ? 'the "' + scope.corridor + '" submarket'
-          : scope.radiusKm + " km";
+          : formatRadiusLabel(scope.radiusKm);
       return (
         '<p class="hdp-empty">No pipeline hotels within ' + esc(String(emptyRadius)) + ".</p>"
       );
@@ -2740,7 +2888,7 @@
     if (!items.length) {
       bodyHtml =
         '<p class="hdp-empty">No demand drivers within ' +
-        esc(scopeLabel || String(radiusKm) + " km") +
+        esc(scopeLabel || formatRadiusLabel(radiusKm)) +
         " of this property.</p>";
     } else {
       var typeCounts = buildContextTypeCounts(items, getContextCategoryKey);
@@ -2751,7 +2899,7 @@
         { value: items.length, label: "Drivers nearby" },
         { value: typeCount, label: "Categories" },
         { value: nearest, label: "Nearest" },
-        { value: radiusKm + " km", label: "Search radius" },
+        { value: formatRadiusLabel(radiusKm), label: "Search radius" },
       ];
 
       bodyHtml =
@@ -2823,7 +2971,7 @@
     if (!items.length) {
       return (
         '<p class="hdp-empty">No airports or connectivity points within ' +
-          esc(scopeLabel || String(radiusKm) + " km") +
+          esc(scopeLabel || formatRadiusLabel(radiusKm)) +
           ".</p>"
       );
     }
@@ -2838,7 +2986,7 @@
       { value: inRadiusCount, label: "Points nearby" },
       { value: typeCount, label: "Types" },
       { value: airportCount, label: "Airports" },
-      { value: radiusKm + " km", label: "Search radius" },
+      { value: formatRadiusLabel(radiusKm), label: "Search radius" },
     ];
 
     return (
@@ -2871,21 +3019,68 @@
     );
   }
 
-  function loadMarketIntelTabs(hotel) {
-    setTabPanel("submarket-snapshot", '<p class="hdp-empty hdp-context-state">Loading submarket snapshot…</p>', "loading");
-
+  function paintSubmarketFromPool(hotel, censusHotels, report, source) {
     var RBP = window.RadarBrandedPenetration;
-    var censusHotels = window.allHotels || [];
     var mapFilters =
       RBP && typeof RBP.resolveMapFilters === "function" ? RBP.resolveMapFilters() : {};
     var submarketHotels =
       RBP && typeof RBP.hotelsInGeographyBucket === "function"
         ? RBP.hotelsInGeographyBucket(hotel, censusHotels)
         : filterHotelsBySubmarket(hotel, censusHotels);
+    submarketHotels = dedupeHotelsByIdentity(submarketHotels);
+
     var submarketMetrics = computeSubmarketMetrics(submarketHotels);
     var submarketBreakdowns = computeSubmarketBreakdowns(submarketHotels);
     var penetrationPct = computeSubmarketPenetration(hotel, censusHotels, mapFilters);
     var pipelineMetrics = computeSubmarketPipelinePressure(hotel, censusHotels, mapFilters);
+    var coverageNote = "";
+
+    if (!submarketHotels.length && report && report.success) {
+      var metrics = report.metrics || {};
+      var breakdowns = normalizeCoverageBreakdowns(report.breakdowns || {});
+      var openHotels = fpMetricNum(metrics.openHotels);
+      var openRooms = fpMetricNum(metrics.openRooms);
+      var pipelineHotels = fpMetricNum(metrics.pipelineHotels);
+      var pipelineRooms = fpMetricNum(metrics.pipelineRooms);
+      var totalHotels = fpMetricNum(metrics.totalHotels) || openHotels + pipelineHotels;
+      var totalRooms =
+        fpMetricNum(metrics.totalRooms) ||
+        openRooms + pipelineRooms + fpMetricNum(metrics.candidateRooms);
+      var sampleHotels = mapCensusSampleToHotels(report.recordsSample || []);
+      submarketHotels = dedupeHotelsByIdentity(sampleHotels);
+      if (submarketHotels.length) {
+        submarketMetrics = computeSubmarketMetrics(submarketHotels);
+        submarketBreakdowns = computeSubmarketBreakdowns(submarketHotels);
+      } else {
+        submarketMetrics = {
+          totalHotels: totalHotels,
+          openHotels: openHotels,
+          openRooms: openRooms,
+          pipelineHotels: pipelineHotels,
+          pipelineRooms: pipelineRooms,
+          totalRooms: totalRooms,
+          brandCount: metrics.brandCount,
+          parentCompanyCount: metrics.parentCompanyCount,
+        };
+        submarketBreakdowns = breakdowns;
+      }
+      coverageNote =
+        '<p class="hdp-snapshot-meta">Source: Hotel Census via Scout (read-only). ' +
+        (source === "scout_census"
+          ? "Radar map census was empty in this session."
+          : "Showing Scout aggregates where map geography buckets were empty.") +
+        " Incomplete HPC coverage is not treated as a complete market census.</p>";
+    } else if (source === "scout_census" && submarketHotels.length) {
+      coverageNote =
+        '<p class="hdp-snapshot-meta">Source: Hotel Census sample (read-only). Sample size may be capped — not a full market census.</p>';
+    }
+
+    var status =
+      submarketHotels.length || fpMetricNum(submarketMetrics.totalHotels) > 0
+        ? submarketHotels.length
+          ? "success"
+          : "partial"
+        : "empty";
 
     setTabPanel(
       "submarket-snapshot",
@@ -2896,56 +3091,33 @@
         submarketBreakdowns,
         penetrationPct,
         pipelineMetrics
-      ),
-      submarketHotels.length ? "success" : "empty"
+      ) + coverageNote,
+      status
+    );
+  }
+
+  function loadMarketIntelTabs(hotel) {
+    setTabPanel(
+      "submarket-snapshot",
+      '<p class="hdp-empty hdp-context-state">Loading Hotel Census submarket intelligence…</p>',
+      "loading"
     );
 
-    fetchSubmarketCoverage(hotel)
-      .then(function (report) {
-        if (!isOpen || !isSameHotel(currentHotel, hotel)) return;
-        if (!report || !report.success || submarketHotels.length) return;
-        var metrics = report.metrics || {};
-        var breakdowns = normalizeCoverageBreakdowns(report.breakdowns || {});
-        var openHotels = fpMetricNum(metrics.openHotels);
-        var openRooms = fpMetricNum(metrics.openRooms);
-        var pipelineHotels = fpMetricNum(metrics.pipelineHotels);
-        var pipelineRooms = fpMetricNum(metrics.pipelineRooms);
-        var totalHotels =
-          fpMetricNum(metrics.totalHotels) || openHotels + pipelineHotels;
-        var totalRooms =
-          fpMetricNum(metrics.totalRooms) ||
-          openRooms + pipelineRooms + fpMetricNum(metrics.candidateRooms);
-        try {
-          setTabPanel(
-            "submarket-snapshot",
-            renderSubmarketSnapshotPanel(
-              hotel,
-              [],
-              {
-                totalHotels: totalHotels,
-                openHotels: openHotels,
-                openRooms: openRooms,
-                pipelineHotels: pipelineHotels,
-                pipelineRooms: pipelineRooms,
-                totalRooms: totalRooms,
-                brandCount: metrics.brandCount,
-                parentCompanyCount: metrics.parentCompanyCount,
-              },
-              breakdowns,
-              null
-            ) +
-              '<p class="hdp-empty">Showing Scout submarket data; reload map census for full hotel list.</p>',
-            totalHotels > 0 ? "partial" : "empty"
-          );
-        } catch (err) {
-          if (typeof console !== "undefined" && console.warn) {
-            console.warn("[hdp] scout submarket snapshot render failed", err);
-          }
+    resolveCensusHotelPool(hotel).then(function (pool) {
+      if (!isOpen || !isSameHotel(currentHotel, hotel)) return;
+      try {
+        paintSubmarketFromPool(hotel, pool.hotels || [], pool.report || null, pool.source);
+      } catch (err) {
+        if (typeof console !== "undefined" && console.warn) {
+          console.warn("[hdp] submarket snapshot render failed", err);
         }
-      })
-      .catch(function () {
-        /* census-first snapshot already rendered */
-      });
+        setTabPanel(
+          "submarket-snapshot",
+          '<p class="hdp-empty">Could not render Submarket Snapshot.</p>',
+          "error"
+        );
+      }
+    });
   }
 
   function loadDemandAnchorTabs(hotel, contextScope) {
@@ -3127,7 +3299,7 @@
   }
 
   function ensureAreaHotelsCensus(hotel) {
-    var existing = window.allHotels || [];
+    var existing = dedupeHotelsByIdentity(window.allHotels || []);
     if (existing.length) return Promise.resolve(existing);
 
     var cacheKey = areaHotelsCensusCacheKey(hotel);
@@ -3139,25 +3311,40 @@
       return Promise.resolve(window.__hexAreaHotelsCensusCache);
     }
 
-    var queries = areaHotelsCensusQueries(hotel);
-    if (!queries.length) return Promise.resolve([]);
-
-    function tryNext(i) {
-      if (i >= queries.length) return Promise.resolve([]);
-      return fetchAreaHotelsCensusByQuery(queries[i]).then(function (rows) {
-        if (rows.length) {
-          window.__hexAreaHotelsCensusCache = rows;
-          window.__hexAreaHotelsCensusCacheKey = cacheKey;
-          if (!(window.allHotels && window.allHotels.length)) {
-            window.allHotels = rows;
-          }
-          return rows;
-        }
-        return tryNext(i + 1);
+    // Prefer Scout Hotel Census sample (coords + status) before brand-presence search.
+    return resolveCensusHotelPool(hotel).then(function (pool) {
+      var scoutRows = dedupeHotelsByIdentity(pool.hotels || []).filter(function (h) {
+        return hotelCoords(h);
       });
-    }
+      if (scoutRows.length) {
+        window.__hexAreaHotelsCensusCache = scoutRows;
+        window.__hexAreaHotelsCensusCacheKey = cacheKey;
+        if (!(window.allHotels && window.allHotels.length)) {
+          window.allHotels = scoutRows;
+        }
+        return scoutRows;
+      }
 
-    return tryNext(0).catch(function (err) {
+      var queries = areaHotelsCensusQueries(hotel);
+      if (!queries.length) return [];
+
+      function tryNext(i) {
+        if (i >= queries.length) return Promise.resolve([]);
+        return fetchAreaHotelsCensusByQuery(queries[i]).then(function (rows) {
+          var deduped = dedupeHotelsByIdentity(rows || []);
+          if (deduped.length) {
+            window.__hexAreaHotelsCensusCache = deduped;
+            window.__hexAreaHotelsCensusCacheKey = cacheKey;
+            if (!(window.allHotels && window.allHotels.length)) {
+              window.allHotels = deduped;
+            }
+            return deduped;
+          }
+          return tryNext(i + 1);
+        });
+      }
+      return tryNext(0);
+    }).catch(function (err) {
       if (typeof console !== "undefined" && console.warn) {
         console.warn("[HotelDetailPanel] area hotels census fallback failed:", err);
       }
@@ -3760,6 +3947,16 @@
     return marker;
   }
 
+  function reloadDistanceSensitiveTabs() {
+    if (!isOpen || !currentHotel || !panelEl) return;
+    loadAreaHotelsTab(currentHotel);
+    var scope = getPropertyContextScope(currentHotel);
+    if (hotelCoords(currentHotel)) {
+      loadDemandAnchorTabs(currentHotel, scope);
+      loadAccessConnectivityTab(currentHotel, scope);
+    }
+  }
+
   window.HotelDetailPanel = {
     open: open,
     close: close,
@@ -3769,6 +3966,7 @@
     unembed: unembed,
     openCompact: openCompact,
     showEmbeddedPanel: showEmbeddedPanel,
+    reloadDistanceSensitiveTabs: reloadDistanceSensitiveTabs,
     setPresentationOverrides: function (overrides) {
       presentationOverrides = overrides || null;
     },

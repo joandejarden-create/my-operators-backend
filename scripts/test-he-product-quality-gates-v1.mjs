@@ -28,6 +28,18 @@ import {
   HE_AMENITIES_DISPLAY_MAX,
   isNonGuestAmenityLabel,
 } from "../lib/hotel-intelligence/he-amenity-display-v1.js";
+import {
+  SQFT_TO_SQM,
+  MI_TO_KM,
+  sqFtToSqM,
+  kmToMi,
+  areaSortValueSqFt,
+  defaultRadiusMilesForLocationType,
+} from "../lib/hotel-intelligence/he-measurement-prefs-v1.js";
+import {
+  iconIdsMustBeDistinctForUnrelatedAttributes,
+  HE_AMENITY_ICON_MAP,
+} from "../lib/hotel-intelligence/he-amenity-icon-map-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -59,11 +71,11 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.3");
-  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 13);
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.4");
+  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 15);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.3"
+    "hotel-explorer-quality-standard-v1.4"
   );
 });
 
@@ -208,8 +220,9 @@ run("rooms_tab_after_overview_and_sortable_inventory", () => {
 run("hex_tabs_even_flex_and_rooms_present", () => {
   const css = read("public/css/hotel-explorer.css");
   mustInclude(css, ".hex-tabs .section-nav-item");
-  mustInclude(css, "flex: 1 1 0");
+  mustInclude(css, "grid-auto-columns: minmax(76px, 1fr)");
   mustInclude(css, "min-width: 32px");
+  mustInclude(css, "border: 2px solid var(--neutral--600)");
 });
 
 run("contact_cards_omit_dash_placeholders_and_surfe_not_on_get", () => {
@@ -398,6 +411,53 @@ run("owner_decision_maker_ranking_and_surfe_fallback", () => {
   assert.ok(!/enrichPeople|provider\.enrich/.test(hci.slice(mountIdx, mountIdx + 1200)));
   mustInclude(read("api/hotel-explorer-founder-preview.js"), "HE-BETH-OWNER-DECISION-MAKER-RESEARCH");
   mustInclude(read("api/hotel-explorer-founder-preview.js"), "buildDecisionOrientedContactSections");
+});
+
+run("measurement_prefs_conversion_and_sort_keys", () => {
+  assert.equal(SQFT_TO_SQM, 0.09290304);
+  assert.equal(MI_TO_KM, 1.609344);
+  assert.ok(Math.abs(sqFtToSqM(10000) - 929.0304) < 1e-6);
+  assert.ok(Math.abs(kmToMi(16.09344) - 10) < 1e-6);
+  assert.equal(areaSortValueSqFt(18719), 18719);
+  assert.equal(areaSortValueSqFt("12,000"), 12000);
+  assert.equal(defaultRadiusMilesForLocationType("Suburban"), 10);
+  assert.equal(defaultRadiusMilesForLocationType("Urban"), 5);
+  assert.equal(defaultRadiusMilesForLocationType("Resort"), 30);
+  const prefsJs = read("public/js/he-measurement-prefs-v1.js");
+  mustInclude(prefsJs, "0.09290304");
+  mustInclude(prefsJs, "1.609344");
+  mustInclude(prefsJs, "sessionStorage");
+  const rms = read("public/js/hotel-explorer-rooms-meeting-space.js");
+  mustInclude(rms, "formatAreaFromSqFt");
+  mustInclude(rms, "area: r.areaSqFt");
+  mustInclude(read("public/hotel-explorer-preview.html"), "he-measurement-prefs-v1.js");
+});
+
+run("he_universal_design_hpc_geo_gates", () => {
+  const collisions = iconIdsMustBeDistinctForUnrelatedAttributes(HE_AMENITY_ICON_MAP);
+  assert.equal(collisions.length, 0, collisions.join("; "));
+  const icons = read("public/js/hilton-amenity-icons.js");
+  mustInclude(icons, "barLounge");
+  mustInclude(icons, "ballroom");
+  mustInclude(icons, "metroAccess");
+  mustInclude(icons, "roomAccessibility");
+  const hexCss = read("public/css/hotel-explorer.css");
+  mustInclude(hexCss, "grid-auto-columns: minmax(76px, 1fr)");
+  mustInclude(hexCss, "he-meas-prefs");
+  const hdpCss = read("public/css/hotel-detail-panel.css");
+  mustInclude(hdpCss, "background: #0d152c");
+  mustInclude(hdpCss, "--hdp-bg-deep");
+  const hdp = read("public/js/hotel-detail-panel.js");
+  mustInclude(hdp, "resolveCensusHotelPool");
+  mustInclude(hdp, "dedupeHotelsByIdentity");
+  mustInclude(hdp, "formatDistanceFromKm");
+  mustInclude(hdp, "ada-table-shell");
+  mustInclude(hdp, "8.05");
+  mustInclude(hdp, "48.28");
+  mustNotMatch(hdp, /X-Dealality-Write:\s*1|Airtable\.update/);
+  const preview = read("public/hotel-explorer-preview.html");
+  mustInclude(preview, "admin-ai-demand-table.css");
+  assert.ok(HE_AMENITY_ICON_MAP.length >= 12);
 });
 
 if (failures.length) {

@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.3",
+  "version": "hotel-explorer-founder-quality-lessons-v1.4",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -139,6 +139,24 @@
       "sharedComponent": "he-amenity-display-v1.js; hotel-detail-panel.js; hotel-detail-panel.css; hilton-amenity-icons.js",
       "regressionTest": "amenities_kgpv_strip_and_display_cap",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v3-amenities-strip.png"
+    },
+    {
+      "id": "HE-QL-014",
+      "originalProblem": "Mixed area/distance units; sorting on formatted strings; no session preference",
+      "rootCause": "Hardcoded sq ft / km labels without shared conversion prefs",
+      "approvedStandard": "Shared he-measurement-prefs-v1; presentation-only conversion; sort on source numerics; inclusion independent of display units",
+      "sharedComponent": "public/js/he-measurement-prefs-v1.js; lib/hotel-intelligence/he-measurement-prefs-v1.js; hotel-explorer-rooms-meeting-space.js; hotel-detail-panel.js",
+      "regressionTest": "measurement_prefs_conversion_and_sort_keys",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v4-units.png"
+    },
+    {
+      "id": "HE-QL-015",
+      "originalProblem": "Meeting/Submarket tables and tab backgrounds mismatched My Deals; uneven top tabs; generic amenity icons; empty Bethesda submarket/area hotels",
+      "rootCause": "Custom footprint table theme; flex content-driven tabs; incomplete icon map; map-only census with no Scout fallback",
+      "approvedStandard": "ada-table #0d152c surfaces; equal hex-tabs grid; canonical amenity icon map; Scout census read-only fallback + coverage honesty; location-type radii",
+      "sharedComponent": "hotel-detail-panel.css; hotel-explorer.css; he-amenity-icon-map-v1.js; hilton-amenity-icons.js; hotel-detail-panel.js",
+      "regressionTest": "he_universal_design_hpc_geo_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v4-submarket.png"
     }
   ]
 }
