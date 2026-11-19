@@ -1,0 +1,112 @@
+/* Founder-only Current Saved / Proposed Update toolbar (beInternalPreview=1). */
+.be-founder-profile-mode {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(143, 195, 255, 0.28);
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(18, 28, 58, 0.98), rgba(10, 16, 36, 0.96));
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  color: #dbe6f8;
+  font-family: Inter, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.be-founder-profile-mode[hidden] {
+  display: none !important;
+}
+
+.be-founder-profile-mode__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+
+.be-founder-profile-mode__label {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8fc3ff;
+  font-weight: 600;
+}
+
+.be-founder-profile-mode__modes {
+  display: inline-flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.be-founder-profile-mode__btn {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: #d7e4fa;
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.be-founder-profile-mode__btn:hover {
+  border-color: rgba(143, 195, 255, 0.55);
+  background: rgba(143, 195, 255, 0.08);
+}
+
+.be-founder-profile-mode__btn.is-active {
+  border-color: rgba(143, 195, 255, 0.85);
+  background: rgba(108, 114, 255, 0.28);
+  color: #fff;
+}
+
+.be-founder-profile-mode__btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.be-founder-profile-mode__note {
+  margin: 8px 0 0;
+  font-size: 0.75rem;
+  color: #9aabc9;
+  line-height: 1.4;
+}
+
+.be-founder-profile-mode__meta {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 6px 12px;
+  font-size: 0.72rem;
+  color: #b7c6e2;
+}
+
+.be-founder-profile-mode__meta dt {
+  margin: 0;
+  color: #7e89ac;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.62rem;
+}
+
+.be-founder-profile-mode__meta dd {
+  margin: 1px 0 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  word-break: break-all;
+}
+
+.be-founder-profile-mode__error {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 120, 120, 0.45);
+  background: rgba(90, 20, 20, 0.35);
+  color: #ffd0d0;
+  font-size: 0.78rem;
+}
+
+.be-atelier-internal-preview-banner--proposed {
+  border-color: rgba(143, 195, 255, 0.45);
+}
