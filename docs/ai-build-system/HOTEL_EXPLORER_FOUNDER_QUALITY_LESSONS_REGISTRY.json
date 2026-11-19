@@ -1,0 +1,99 @@
+{
+  "version": "hotel-explorer-founder-quality-lessons-v1",
+  "updated": "2026-11-19",
+  "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
+  "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
+  "npmScript": "test:he-product-quality-gates-v1",
+  "referenceHotels": {
+    "uxGolden": {
+      "id": "recUNycnMwOVFX0hc",
+      "name": "Krystal Grand Puerto Vallarta",
+      "role": "KGPV_GOLDEN_UX"
+    },
+    "airtablePilot": {
+      "id": "recLuxvwwxID7U2B8",
+      "name": "Bethesda Marriott",
+      "role": "AIRTABLE_FIRST_PILOT"
+    },
+    "generalizationProbe": {
+      "id": "auto",
+      "name": "Third hotel with different coverage",
+      "role": "GENERALIZATION_PROBE",
+      "note": "Selected from golden-demo / live ownership without new paid research"
+    }
+  },
+  "lessons": [
+    {
+      "id": "HE-QL-001",
+      "originalProblem": "Keyword / fact-list hotel descriptions",
+      "rootCause": "Thin template synthesis from census tokens without commercial rubric",
+      "approvedStandard": "Evidence-grounded commercial narrative via hotel-commercial-description-v1",
+      "sharedComponent": "lib/hotel-intelligence/hotel-commercial-description-v1.js; public/js/hotel-detail-panel.js",
+      "regressionTest": "rejects_keyword_stuffed_and_id_leaking_descriptions",
+      "browserEvidence": "reports/hotel-explorer/phase4-founder-preview-screenshots/phase4-overview-desc.png"
+    },
+    {
+      "id": "HE-QL-002",
+      "originalProblem": "Missing Year Built / Last Renovated",
+      "rootCause": "Fields omitted when null instead of explicit unresolved state",
+      "approvedStandard": "Always show facts; Not yet verified when unknown; never invent",
+      "sharedComponent": "public/js/hotel-detail-panel.js",
+      "regressionTest": "overview_exposes_year_built_and_renovated_slots",
+      "browserEvidence": "reports/hotel-explorer/phase4-founder-preview-screenshots/phase4-overview-desc.png"
+    },
+    {
+      "id": "HE-QL-003",
+      "originalProblem": "Crowded amenity icon strip with raw tokens",
+      "rootCause": "Direct DB token render without taxonomy / grid",
+      "approvedStandard": "Amenity grid with human labels, SVG icons, verified state, reusable IDs",
+      "sharedComponent": "public/js/hotel-detail-panel.js; public/css/hotel-detail-panel.css",
+      "regressionTest": "amenities_forbid_raw_db_tokens",
+      "browserEvidence": "reports/hotel-explorer/phase4-founder-preview-screenshots/phase4-amenities.png"
+    },
+    {
+      "id": "HE-QL-004",
+      "originalProblem": "Flat ownership text; relationship tables showed dle_ IDs",
+      "rootCause": "Org display name unresolved; hierarchy not rendered",
+      "approvedStandard": "KGPV-quality hierarchy + human org names; Proposed badges for staged overlays",
+      "sharedComponent": "public/js/hotel-intelligence-workspace.js",
+      "regressionTest": "forbids_internal_graph_ids_in_relationship_markup",
+      "browserEvidence": "reports/hotel-explorer/phase4-founder-preview-screenshots/phase4-relationships-fixed.png"
+    },
+    {
+      "id": "HE-QL-005",
+      "originalProblem": "No Guest Rooms & Meeting Space tab; crowded unsorted inventory table",
+      "rootCause": "Tab missing from shell; table not using Dealality sortable pattern",
+      "approvedStandard": "Tab after Overview; DealalitySortableTable with high-contrast headers and numeric sort; no double-count",
+      "sharedComponent": "public/js/hotel-explorer.js; public/js/hotel-explorer-rooms-meeting-space.js; public/js/dealality-sortable-table.js",
+      "regressionTest": "rooms_tab_after_overview_and_sortable_inventory",
+      "browserEvidence": "reports/hotel-explorer/phase4-founder-preview-screenshots/phase4-meeting-inventory.png"
+    },
+    {
+      "id": "HE-QL-006",
+      "originalProblem": "Contact cards with dash placeholders; identity vs contact details conflated; Surfe nonfunctional button",
+      "rootCause": "Always-render KV rows; enrich button only rendered when disabled",
+      "approvedStandard": "Omit empty rows; unresolved notes; identity≠contact details; user-initiated Surfe with honest unavailable state",
+      "sharedComponent": "public/js/hotel-contact-intelligence.js; api/contact-intelligence.js#postContactIntelligencePersonReveal",
+      "regressionTest": "contact_cards_omit_dash_placeholders_and_surfe_not_on_get",
+      "browserEvidence": "KGPV Contact Intelligence + Bethesda proposed contacts"
+    },
+    {
+      "id": "HE-QL-007",
+      "originalProblem": "Proposed research presented as persisted Airtable truth",
+      "rootCause": "Missing preview_state labeling on overlays",
+      "approvedStandard": "Proposed · not persisted badges; Sources distinguish staged vs live",
+      "sharedComponent": "api/hotel-explorer-founder-preview.js; hotel-intelligence-workspace.js",
+      "regressionTest": "proposed_overlay_never_marked_live_persisted",
+      "browserEvidence": "reports/hotel-explorer/phase4-founder-preview-screenshots/phase4-sources.png"
+    },
+    {
+      "id": "HE-QL-008",
+      "originalProblem": "Inserted Rooms tab distorted navigation",
+      "rootCause": "Uneven flex / label overflow without clamp",
+      "approvedStandard": "Even flex distribution, fixed icon size, clamped labels, horizontal overflow",
+      "sharedComponent": "public/css/hotel-explorer.css; public/js/hotel-explorer.js",
+      "regressionTest": "hex_tabs_even_flex_and_rooms_present",
+      "browserEvidence": "Founder Preview tab strip"
+    }
+  ]
+}

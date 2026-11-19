@@ -367,6 +367,156 @@ export async function postContactIntelligenceResearchCaseReview(req, res) {
   }
 }
 
+const _heRevealInflight = new Map();
+
+/**
+ * User-initiated Surfe contact reveal for Hotel Explorer Contact Intelligence.
+ * Never runs on GET. Never persists to Airtable. Checks existing channels first.
+ */
+export async function postContactIntelligencePersonReveal(req, res) {
+  try {
+    const hotelId = String(req.params.hotelId || "").trim();
+    const personId = String(req.params.personId || "").trim();
+    if (!hotelId || !personId) {
+      return sendError(res, 400, "hotel_and_person_required");
+    }
+    if (req.body && req.body.persist === true) {
+      return sendError(res, 403, "persist_forbidden", {
+        message:
+          "Reveal returns ephemeral Surfe results only. Canonical Airtable persistence requires a separate reviewed apply path.",
+      });
+    }
+
+    const body = req.body || {};
+    const personName = String(body.personName || body.person_name || "").trim();
+    const organization = String(body.organization || body.company || "").trim();
+    const inflightKey = `${hotelId}::${personId}`;
+    if (_heRevealInflight.has(inflightKey)) {
+      return sendError(res, 409, "reveal_in_flight", {
+        message: "A Surfe reveal is already in progress for this person.",
+        surfeCalls: 0,
+      });
+    }
+
+    // Prefer existing Contact Intelligence package channels (no credit spend).
+    try {
+      const existing = serviceForRequest(req).hotelGet({
+        hotel_id: hotelId,
+        audience: "internal",
+      });
+      if (existing?.ok && existing.package) {
+        const people = existing.package.people || existing.package.persons || [];
+        const match =
+          people.find((p) => String(p.personId || p.person_id || "") === personId) ||
+          people.find(
+            (p) =>
+              String(p.name || p.display_name || "")
+                .trim()
+                .toLowerCase() === personName.toLowerCase()
+          );
+        const emails = (match && (match.emailContacts || match.emails)) || [];
+        const phones = (match && (match.phoneContacts || match.phones)) || [];
+        const has =
+          emails.some((c) => c && (c.value || c.email)) ||
+          phones.some((c) => c && (c.value || c.phone));
+        if (has) {
+          return res.json({
+            ok: true,
+            cached: true,
+            surfeCalls: 0,
+            estimatedCostUsd: 0,
+            provider: null,
+            channels: { emails, phones },
+            existing: { personId, personName: match?.name || personName },
+            persistence: "NOT_WRITTEN",
+            review_required: false,
+          });
+        }
+      }
+    } catch (_err) {
+      // Fall through to Surfe path / capability report.
+    }
+
+    const enrichmentEnabled =
+      String(process.env.CONTACT_ENRICHMENT_ENABLED || "").toLowerCase() === "true";
+    const hasKey = Boolean(process.env.SURFE_API_KEY && String(process.env.SURFE_API_KEY).trim());
+    if (!enrichmentEnabled || !hasKey) {
+      return res.status(503).json({
+        ok: false,
+        error: "surfe_unavailable_for_hotel_explorer",
+        message:
+          !enrichmentEnabled
+            ? "Surfe on-demand is disabled (CONTACT_ENRICHMENT_ENABLED≠true). Find Contact Details is not available."
+            : "SURFE_API_KEY is not configured. Find Contact Details cannot call Surfe.",
+        surfeCalls: 0,
+        persistence: "NOT_WRITTEN",
+      });
+    }
+    if (!personName || personName.split(/\s+/).length < 2 || !organization) {
+      return sendError(res, 400, "named_person_and_organization_required", {
+        message: "Surfe reveal requires a full person name and organization.",
+        surfeCalls: 0,
+      });
+    }
+
+    _heRevealInflight.set(inflightKey, Date.now());
+    try {
+      const { createSurfeContactProvider } = await import(
+        "../lib/market-alerts-contact/surfe-adapter.js"
+      );
+      const { getContactEnrichmentLimits } = await import(
+        "../lib/market-alerts-contact/eligibility.js"
+      );
+      const limits = getContactEnrichmentLimits();
+      const provider = createSurfeContactProvider({ pollOnEnrich: true });
+      const enrichRes = await provider.enrichPeople({
+        people: [
+          {
+            personName,
+            companyName: organization,
+            jobTitle: body.jobTitle || body.title || null,
+            linkedinUrl: body.linkedinUrl || null,
+          },
+        ],
+        includeEmail: true,
+        includeMobile: limits.includeMobile === true,
+        includeLinkedIn: true,
+      });
+      if (!enrichRes?.ok) {
+        return res.status(502).json({
+          ok: false,
+          error: enrichRes?.error || "surfe_enrich_failed",
+          surfeCalls: 1,
+          persistence: "NOT_WRITTEN",
+        });
+      }
+      const person = (enrichRes.people && enrichRes.people[0]) || null;
+      return res.json({
+        ok: true,
+        cached: false,
+        pending: Boolean(enrichRes.pending),
+        surfeCalls: 1,
+        estimatedCostUsd: enrichRes.estimatedCostUsd ?? null,
+        provider: "surfe",
+        providerAttribution: "Surfe on-demand (ephemeral)",
+        verificationStatus: "PROVIDER_RETURNED_UNREVIEWED",
+        person,
+        persistence: "NOT_WRITTEN",
+        review_required: true,
+        note: "Review required before any canonical Airtable write.",
+      });
+    } finally {
+      _heRevealInflight.delete(inflightKey);
+    }
+  } catch (err) {
+    console.error("[contact-intelligence] person-reveal", err);
+    return sendError(res, 500, "contact_person_reveal_failed", {
+      message: String(err?.message || err).slice(0, 160),
+      surfeCalls: 0,
+    });
+  }
+}
+
 /** Test helper — ephemeral service rooted in tmp (not used by production routes). */
 export function createEphemeralContactIntelligenceService() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "ci-v1-"));

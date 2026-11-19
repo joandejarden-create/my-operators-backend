@@ -442,6 +442,7 @@
   function friendlyStatus(raw) {
     var s = String(raw || "").toUpperCase();
     if (s === "HIGH" || s === "VERIFIED") return s === "HIGH" ? "High" : "Verified";
+    if (s === "MEDIUM") return "Medium";
     if (s === "PROBABLE") return "Probable";
     if (s === "CONTESTED") return "Contested";
     if (s === "PREVIEW") return "Display Only";
@@ -451,6 +452,15 @@
     if (s === "PLANNED") return "Planned";
     if (s === "CANCELLED") return "Cancelled";
     if (s === "LIVE") return "Verified";
+    if (s === "PROPOSED" || s === "PROPOSED_STAGED") return "Proposed · not persisted";
+    if (s === "UNRESOLVED") return "Unresolved";
+    if (s === "OPERATOR_PRESENT_OWNER_UNRESOLVED") {
+      return "Operator identified · economic owner unresolved";
+    }
+    if (s === "ECONOMIC_OWNER_PROPOSED_UBO_UNRESOLVED") {
+      return "Economic sponsor proposed · UBO unresolved";
+    }
+    if (s === "PARTIAL") return "Partial graph";
     if (
       s === "UNKNOWN" ||
       s === "NOT_YET_VERIFIED" ||
@@ -486,6 +496,10 @@
       LEASED_FROM: "Leased From",
       FORMER_OWNED_BY: "Formerly Owned By",
       ANNOUNCED_BRAND: "Announced Brand",
+      "LEGAL OWNER": "Legal Owner / PropCo",
+      "ECONOMIC OWNER": "Economic Owner / Sponsor",
+      OPERATOR: "Operated / Managed By",
+      BRAND: "Branded As",
     };
     if (map[t]) return map[t];
     return toProperCase(
@@ -1416,11 +1430,13 @@
     }
 
     if (!inCohort && airtableGraphPartial) {
-      var graphCtrl = ctrl || {};
-      var econName =
-        (graphCtrl.economic_owner && graphCtrl.economic_owner.name) || "Not verified";
-      var propCoName =
-        (graphCtrl.property_company && graphCtrl.property_company.name) || "—";
+      var graphCtrl = getControl(ownership) || ctrl || {};
+      var econParty = graphCtrl.economic_owner_or_group || graphCtrl.economic_owner || {};
+      var propCoParty =
+        graphCtrl.legal_property_owner_propco || graphCtrl.property_company || {};
+      var uboParty = graphCtrl.ubo_group || {};
+      var econName = econParty.name || "Not verified";
+      var propCoName = propCoParty.name || "—";
       var graphOp =
         (graphCtrl.operator && graphCtrl.operator.name) || opName || "—";
       var graphBrand =
@@ -1432,6 +1448,48 @@
           ownership.report.executive_summary &&
           ownership.report.executive_summary.text) ||
         "Airtable HI graph relationships are available for this hotel. Economic ownership remains unresolved unless a Validated Economic Owner relationship exists. No fabricated owner is shown.";
+      var controlRaw =
+        graphCtrl.control_status ||
+        (ownership.airtable_graph && ownership.airtable_graph.control_status) ||
+        "PARTIAL";
+      var proposedMode =
+        ownership.preview_mode === "PHASE3_PROPOSED" ||
+        (ownership.report &&
+          ownership.report.research_status &&
+          ownership.report.research_status.preview_mode === "PHASE3_PROPOSED");
+      var structureHtml = buildOwnershipStructureChart(hotel, graphCtrl, graphOp, {
+        includeOperator: true,
+        includeBrand: true,
+        brand: graphBrand,
+        brandStatus: brandStatus,
+        forceEcon: controlPartyKnown(econParty),
+        ariaLabel: "Ownership and control hierarchy",
+      });
+      var graphPeople =
+        (ownership.report &&
+          ownership.report.decision_authority &&
+          ownership.report.decision_authority.people) ||
+        [];
+      var peopleHtml = graphPeople.length
+        ? '<section class="hiw-section"><h3 class="hiw-section__h">Named decision-makers</h3><ul class="hiw-list">' +
+          graphPeople
+            .map(function (p) {
+              return (
+                "<li><strong>" +
+                esc(p.display_name || p.name) +
+                "</strong> — " +
+                esc(p.title || p.role || "Role pending") +
+                (p.preview_state
+                  ? ' <span class="hiw-chip hiw-chip--proposed">' +
+                    esc(friendlyStatus(p.preview_state)) +
+                    "</span>"
+                  : "") +
+                "</li>"
+              );
+            })
+            .join("") +
+          "</ul></section>"
+        : "";
       var graphRelRows = renderRelationshipEdgesTable(ownership, state.relFilter);
       return (
         '<article class="hiw-report"><h2 class="hiw-report__title">' +
@@ -1440,39 +1498,54 @@
         '<section class="hiw-section"><h3 class="hiw-section__h">Executive Summary</h3>' +
         '<div class="hiw-prose"><p>' +
         esc(graphExec) +
-        "</p></div></section>" +
-        '<section class="hiw-section"><h3 class="hiw-section__h">Ownership &amp; Control (Airtable graph)</h3>' +
-        '<div class="hiw-kv"><div><span class="hiw-kv__k">Economic owner</span><span class="hiw-kv__v">' +
-        esc(econName) +
-        '</span></div><div><span class="hiw-kv__k">Property company</span><span class="hiw-kv__v">' +
+        "</p>" +
+        (proposedMode
+          ? '<p class="hiw-chip hiw-chip--proposed">Phase 3 Proposed Preview — staged ownership overlay. Not Airtable-persisted. Not customer-approved.</p>'
+          : "") +
+        "</div></section>" +
+        '<section class="hiw-section"><h3 class="hiw-section__h">Ownership &amp; control hierarchy</h3>' +
+        structureHtml +
+        '<div class="hiw-kv hiw-kv--spaced"><div><span class="hiw-kv__k">Legal owner / PropCo</span><span class="hiw-kv__v">' +
         esc(propCoName) +
+        (propCoParty.preview_state
+          ? " · " + friendlyStatus(propCoParty.preview_state)
+          : propCoParty.status
+            ? " · " + friendlyStatus(propCoParty.status)
+            : "") +
+        '</span></div><div><span class="hiw-kv__k">Economic owner / sponsor</span><span class="hiw-kv__v">' +
+        esc(econName) +
+        (econParty.preview_state
+          ? " · " + friendlyStatus(econParty.preview_state)
+          : econParty.verification_bucket || econParty.status
+            ? " · " + friendlyStatus(econParty.verification_bucket || econParty.status)
+            : "") +
         '</span></div><div><span class="hiw-kv__k">Operator</span><span class="hiw-kv__v">' +
         esc(graphOp) +
         '</span></div><div><span class="hiw-kv__k">Brand</span><span class="hiw-kv__v">' +
         esc(graphBrand) +
+        '</span></div><div><span class="hiw-kv__k">UBO / controlling parent</span><span class="hiw-kv__v">' +
+        esc(
+          uboParty.name ||
+            (uboParty.status === "UNRESOLVED" || !uboParty.known
+              ? "Unresolved"
+              : "—")
+        ) +
         '</span></div><div><span class="hiw-kv__k">Control status</span><span class="hiw-kv__v">' +
-        esc(
-          (ownership.airtable_graph && ownership.airtable_graph.control_status) ||
-            graphCtrl.control_status ||
-            "PARTIAL",
-        ) +
-        '</span></div><div><span class="hiw-kv__k">Graph relationships</span><span class="hiw-kv__v">' +
-        esc(
-          String(
-            (ownership.airtable_graph && ownership.airtable_graph.relationshipCount) ||
-              0,
-          ),
-        ) +
+        esc(friendlyStatus(controlRaw)) +
         "</span></div></div>" +
-        '<p class="hiw-muted">Source: HI Organizations + HI Hotel–Org Relationships (live Airtable). Golden-demo fixtures are not used for this hotel.</p>' +
-        "</section>" +
+        '<p class="hiw-muted">' +
+        (proposedMode
+          ? "Proposed entities are staged research overlays on live Airtable operator/brand edges. Medium-confidence sponsors are not shown as validated legal owners."
+          : "Source: HI Organizations + HI Hotel–Org Relationships (live Airtable).") +
+        "</p></section>" +
+        peopleHtml +
         '<section class="hiw-section"><h3 class="hiw-section__h">Property contact fallback (HPC)</h3>' +
         '<div class="hiw-kv"><div><span class="hiw-kv__k">Property phone</span><span class="hiw-kv__v">' +
         esc(graphContacts.property_phone || hotel.telephone || "—") +
         '</span></div><div><span class="hiw-kv__k">Website</span><span class="hiw-kv__v">' +
         esc(graphContacts.website || hotel.website || "—") +
         "</span></div></div>" +
-        '<p class="hiw-muted">Fallback from Hotel Property Census — not HI Contact Channels (person enrichment still pending Gate 1 research approval).</p>' +
+        '<p class="hiw-muted">Property channels from Hotel Property Census — not personal decision-maker emails.</p>' +
         "</section>" +
         graphRelRows +
         "</article>"
@@ -2503,6 +2576,62 @@
     return "other";
   }
 
+  function resolveOrgDisplayName(rel, ownership) {
+    if (!rel) return "Organization";
+    if (rel.organization_name) return rel.organization_name;
+    if (rel.organizationName) return rel.organizationName;
+    if (rel.display_name) return rel.display_name;
+    if (rel.tradingName || rel.trading_name) return rel.tradingName || rel.trading_name;
+    if (rel.legalName || rel.legal_name) return rel.legalName || rel.legal_name;
+    if (rel.to_label) return rel.to_label;
+    if (
+      rel.to &&
+      !/^rec[A-Za-z0-9]{14}$/.test(String(rel.to)) &&
+      !/^dle_[A-Za-z0-9]+$/i.test(String(rel.to)) &&
+      !/^dor_[A-Za-z0-9]+$/i.test(String(rel.to))
+    ) {
+      return rel.to;
+    }
+    var orgs =
+      (ownership && ownership.airtable_graph && ownership.airtable_graph.organizations) ||
+      (ownership && ownership.report && ownership.report.organizations) ||
+      [];
+    var id = rel.organization_id || rel.organizationId || rel.airtable_id || rel.to;
+    var linkIds = [].concat(rel.organizationLink || rel.organization_link || []);
+    if (id && Array.isArray(orgs)) {
+      for (var i = 0; i < orgs.length; i++) {
+        var o = orgs[i] || {};
+        var candidates = [
+          o.airtableId,
+          o.orgId,
+          o.organizationId,
+          o.id,
+          o.organization_id,
+        ];
+        var hit =
+          candidates.indexOf(id) >= 0 ||
+          linkIds.some(function (lid) {
+            return candidates.indexOf(lid) >= 0;
+          });
+        if (hit) {
+          return (
+            o.tradingName ||
+            o.trading_name ||
+            o.display_name ||
+            o.legalName ||
+            o.legal_name ||
+            o.name ||
+            "Organization"
+          );
+        }
+      }
+    }
+    if (id && (/^rec[A-Za-z0-9]{14}$/.test(String(id)) || /^dle_/i.test(String(id)))) {
+      return "Organization (name pending)";
+    }
+    return id || "Organization";
+  }
+
   function normalizeGraphEdges(ownership) {
     var fromReport = (ownership && ownership.report && ownership.report.relationships) || [];
     if (Array.isArray(fromReport) && fromReport.length && fromReport[0] && fromReport[0].relationship_type) {
@@ -2511,10 +2640,11 @@
           type: rel.relationship_type,
           relationship_type: rel.relationship_type,
           from: "Focus hotel",
-          to: rel.organization_id || rel.airtable_id || "Organization",
-          temporal_status: "CURRENT",
+          to: resolveOrgDisplayName(rel, ownership),
+          temporal_status: rel.preview_state === "PROPOSED_STAGED" ? "PROPOSED" : "CURRENT",
           confidence: rel.confidence || rel.verification_state || "MEDIUM",
           source: rel.source || "HI_AIRTABLE_GRAPH",
+          preview_state: rel.preview_state || null,
         };
       });
     }
@@ -2526,7 +2656,7 @@
           type: rel.relationshipType || rel.relationship_type,
           relationship_type: rel.relationshipType || rel.relationship_type,
           from: "Focus hotel",
-          to: rel.organizationId || rel.organization_id || "Organization",
+          to: resolveOrgDisplayName(rel, ownership),
           temporal_status: "CURRENT",
           confidence: rel.confidence || rel.verificationState || "MEDIUM",
           source: "HI_AIRTABLE_GRAPH",

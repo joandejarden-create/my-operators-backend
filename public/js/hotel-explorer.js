@@ -6,22 +6,25 @@
   "use strict";
 
   var TABS = [
-    { id: "hotel", label: "Hotel<br>Overview" },
-    { id: "ownership", label: "Ownership<br>Intelligence" },
-    { id: "contacts", label: "Contact<br>Intelligence" },
-    { id: "organization", label: "Organization<br>&amp; Portfolio" },
-    { id: "relationships", label: "Relationships<br>&amp; Structure" },
-    { id: "submarket", label: "Submarket<br>Snapshot" },
-    { id: "area", label: "Area<br>Hotels" },
-    { id: "demand", label: "Demand<br>Drivers" },
-    { id: "access", label: "Access &amp;<br>Connectivity" },
-    { id: "brand", label: "Brand /<br>Operator" },
-    { id: "sources", label: "Sources &amp;<br>Evidence" },
+    { id: "hotel", label: "Hotel<br>Overview", shortLabel: "Overview" },
+    { id: "rooms", label: "Guest Rooms &amp;<br>Meeting Space", shortLabel: "Rooms" },
+    { id: "ownership", label: "Ownership<br>Intelligence", shortLabel: "Ownership" },
+    { id: "contacts", label: "Contact<br>Intelligence", shortLabel: "Contacts" },
+    { id: "organization", label: "Organization<br>&amp; Portfolio", shortLabel: "Org" },
+    { id: "relationships", label: "Relationships<br>&amp; Structure", shortLabel: "Relations" },
+    { id: "submarket", label: "Submarket<br>Snapshot", shortLabel: "Submarket" },
+    { id: "area", label: "Area<br>Hotels", shortLabel: "Area" },
+    { id: "demand", label: "Demand<br>Drivers", shortLabel: "Demand" },
+    { id: "access", label: "Access &amp;<br>Connectivity", shortLabel: "Access" },
+    { id: "brand", label: "Brand /<br>Operator", shortLabel: "Brand" },
+    { id: "sources", label: "Sources &amp;<br>Evidence", shortLabel: "Sources" },
   ];
 
   var TAB_ICONS = {
     hotel:
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5L12 3l9 6.5"/><path d="M5 10v10h14V10"/></svg>',
+    rooms:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v12H3z"/><path d="M3 11h18"/><path d="M7 7V5h4v2"/><path d="M13 15h4"/></svg>',
     ownership:
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v2"/><path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3H7a2 2 0 0 1-2-2 2 2 0 0 1 2-2h16"/></svg>',
     contacts:
@@ -63,6 +66,7 @@
   }
 
   var HI_TABS = {
+    rooms: "rooms",
     ownership: "ownership",
     organization: "organization",
     relationships: "relationships",
@@ -445,6 +449,12 @@
     return (
       '<nav class="tabs-section hex-tabs" role="tablist" aria-label="Hotel Explorer sections">' +
       TABS.map(function (t) {
+        var plain = String(t.label || "")
+          .replace(/<br\s*\/?>/gi, " ")
+          .replace(/&amp;/g, "&")
+          .replace(/<[^>]+>/g, "")
+          .replace(/\s+/g, " ")
+          .trim();
         return (
           '<button type="button" class="section-nav-item' +
           (state.tab === t.id ? " active" : "") +
@@ -452,6 +462,10 @@
           (state.tab === t.id ? "true" : "false") +
           '" data-hex-tab="' +
           t.id +
+          '" title="' +
+          esc(plain) +
+          '" aria-label="' +
+          esc(plain) +
           '"><div class="section-nav-icon" aria-hidden="true">' +
           (TAB_ICONS[t.id] || "") +
           '</div><div class="section-nav-label">' +
@@ -494,6 +508,11 @@
     var profile = propertyProfile(ownership) || {};
     var loc = (ownership && ownership.location) || hi.location || {};
     var next = Object.assign({}, hotel);
+    if (ownership && ownership.guestRoomsMeetingSpace) {
+      next.guestRoomsMeetingSpace = ownership.guestRoomsMeetingSpace;
+    } else if (hi.guestRoomsMeetingSpace) {
+      next.guestRoomsMeetingSpace = hi.guestRoomsMeetingSpace;
+    }
     var rooms = next.rooms || profile.rooms_suites || hi.rooms || hi.room_count;
     if (rooms != null && rooms !== "" && Number(rooms) !== 0) next.rooms = rooms;
     next.city = preferKnown(next.city, hi.city || loc.city || loc.parish);
@@ -624,6 +643,20 @@
       if (state.tab === "contacts" && window.HotelContactIntelligence) {
         hiHost.innerHTML = window.HotelContactIntelligence.renderLoading();
         window.HotelContactIntelligence.mount(hiHost, recordId(state.hotel));
+      } else if (state.tab === "rooms" && window.HotelExplorerRoomsMeetingSpace) {
+        setTabRenderSource("ROOMS_MEETING");
+        if (typeof window.HotelExplorerRoomsMeetingSpace.mount === "function") {
+          window.HotelExplorerRoomsMeetingSpace.mount(
+            hiHost,
+            state.hotel,
+            state.ownership
+          );
+        } else {
+          hiHost.innerHTML = window.HotelExplorerRoomsMeetingSpace.render(
+            state.hotel,
+            state.ownership
+          );
+        }
       } else {
         var html = "";
         if (window.HotelIntelligenceWorkspace && window.HotelIntelligenceWorkspace.renderTabHtml) {

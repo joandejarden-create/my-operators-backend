@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hotel Explorer — Founder Preview</title>
+  <link rel="stylesheet" href="/css/hotel-detail-panel.css?v=41" />
+  <link rel="stylesheet" href="/css/hotel-ownership-intelligence.css?v=24" />
+  <link rel="stylesheet" href="/css/hotel-intelligence-workspace.css?v=30" />
+  <link rel="stylesheet" href="/css/hotel-explorer.css?v=51" />
+  <link rel="stylesheet" href="/css/hotel-contact-intelligence.css?v=2" />
+  <link rel="stylesheet" href="/css/brand-alignment-snapshot.css" />
+  <link rel="stylesheet" href="/css/dealality-report-print-chrome.css?v=4" />
+  <link rel="stylesheet" href="/css/hotel-intelligence-dossier.css?v=24" />
+  <link rel="stylesheet" href="/css/hotel-intelligence-research-center.css?v=12" />
+  <style>
+    :root {
+      --hefp-bg: #080f25;
+      --hefp-ink: #c5cef0;
+      --hefp-proposed: #c45c26;
+      --hefp-live: #2f6fed;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--hefp-bg);
+      color: var(--hefp-ink);
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+    #hefp-banner {
+      position: sticky;
+      top: 0;
+      z-index: 10050;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 16px;
+      padding: 10px 16px;
+      background: #0d1630;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    #hefp-banner[data-mode="proposed"] {
+      border-bottom-color: var(--hefp-proposed);
+    }
+    #hefp-banner[data-mode="live"] {
+      border-bottom-color: var(--hefp-live);
+    }
+    .hefp-brand {
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.02em;
+    }
+    .hefp-mode-label {
+      font-weight: 650;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    #hefp-banner[data-mode="proposed"] .hefp-mode-label {
+      color: #ffd4b8;
+      background: rgba(196, 92, 38, 0.25);
+    }
+    #hefp-banner[data-mode="live"] .hefp-mode-label {
+      color: #c8dbff;
+      background: rgba(47, 111, 237, 0.28);
+    }
+    .hefp-copy { flex: 1 1 280px; opacity: 0.92; }
+    .hefp-modes { display: inline-flex; gap: 6px; }
+    .hefp-modes button {
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: transparent;
+      color: #e8ecff;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-weight: 650;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .hefp-modes button[aria-pressed="true"] {
+      background: #6c72ff;
+      border-color: #6c72ff;
+      color: #fff;
+    }
+    #hefp-boot {
+      max-width: 40rem;
+      margin: 12vh auto;
+      padding: 24px;
+    }
+    #hefp-boot h1 { color: #fff; font-size: 1.35rem; margin: 0 0 8px; }
+    #hefp-status { margin-top: 12px; font-size: 13px; opacity: 0.85; }
+    html[data-he-founder-preview="proposed"] .hex-shell::before {
+      content: "PROPOSED · NOT PERSISTED";
+      position: fixed;
+      right: 12px;
+      bottom: 12px;
+      z-index: 10040;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 6px 10px;
+      border-radius: 4px;
+      background: rgba(196, 92, 38, 0.92);
+      color: #fff;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="hefp-banner" data-mode="proposed" role="region" aria-label="Founder preview mode">
+    <span class="hefp-brand">Hotel Explorer · Founder Preview</span>
+    <span class="hefp-mode-label" id="hefp-mode-label">Phase 3 Proposed Preview</span>
+    <span class="hefp-copy" data-hefp-copy>
+      Phase 3 Proposed Preview — staged research overlay on live Airtable. Not persisted. Not customer-approved. GET-only (no writes).
+    </span>
+    <div class="hefp-modes" role="group" aria-label="Preview data mode">
+      <button type="button" id="hefp-mode-live" aria-pressed="false">Live Airtable</button>
+      <button type="button" id="hefp-mode-proposed" aria-pressed="true">Phase 3 Proposed</button>
+    </div>
+  </div>
+
+  <div id="hefp-boot">
+    <h1>Opening Bethesda Marriott…</h1>
+    <p>Reuses the real Hotel Explorer UI. Default hotel: <code>recLuxvwwxID7U2B8</code>.</p>
+    <p id="hefp-status">Booting…</p>
+  </div>
+
+  <script src="/js/travel-infrastructure-radar-layer.js?v=2"></script>
+  <script src="/js/demand-anchors-radar-layer.js"></script>
+  <script src="/js/dealality-chain-scale-theme.js?v=1"></script>
+  <script src="/js/dealality-hotel-property-merge.js?v=2"></script>
+  <script src="/js/hotel-detail-panel.js?v=66"></script>
+  <script src="/js/hotel-ownership-intelligence.js?v=24"></script>
+  <script src="/js/hotel-contact-intelligence.js?v=3"></script>
+  <script src="/js/hotel-intelligence-workspace.js?v=63"></script>
+  <script src="/js/dealality-sortable-table.js?v=1"></script>
+  <script src="/js/hotel-explorer-rooms-meeting-space.js?v=2"></script>
+  <script src="/js/dealality-book-shell.js?v=1"></script>
+  <script src="/js/dealality-report-print-chrome.js?v=4"></script>
+  <script src="/js/hotel-intelligence-dossier.js?v=31"></script>
+  <script src="/js/hotel-intelligence-research-center.js?v=11"></script>
+  <script src="/js/hotel-intelligence-golden-demo-route.js?v=9"></script>
+  <script src="/js/hotel-explorer.js?v=63"></script>
+  <script src="/js/hotel-explorer-founder-preview.js?v=2"></script>
+</body>
+</html>

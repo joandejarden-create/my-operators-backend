@@ -481,6 +481,14 @@
     var s = String(text || "").trim();
     if (!s) return true;
     if (/hotel\s+hotel/i.test(s)) return true;
+    if (/signals\s*:/i.test(s)) return true;
+    if (/_[a-z0-9]+_/i.test(s)) return true;
+    if (/\brec[A-Za-z0-9]{10,}\b/.test(s)) return true;
+    if (/\bdle_[A-Z0-9]+\b/i.test(s)) return true;
+    if (/\b\d+\s+keys\b/i.test(s) && s.length < 120) return true;
+    if (/^(OPEN|PIPELINE|CLOSED)\b/i.test(s) && s.length < 80) return true;
+    var commas = (s.match(/,/g) || []).length;
+    if (commas >= 6 && s.split(".").length <= 2) return true;
     if (/^hotel property,/i.test(s) && !(hotel && hotel.brand && hotel.brand !== "Unknown Brand")) {
       return true;
     }
@@ -490,7 +498,6 @@
       var hasParent = hotel.parentCompany && hotel.parentCompany !== "Unknown";
       var hasRooms = Number(hotel.rooms) > 0;
       if (!hasBrand && !hasParent && !hasRooms) return true;
-      // "Hotel hotel, serving City, Country." style — thin template with only geo.
       if (!hasBrand && !hasParent && /serving\s+/i.test(s) && s.split(",").length <= 3) {
         return true;
       }
@@ -498,11 +505,161 @@
     return false;
   }
 
+  function isLowQualityHeadline(text) {
+    var s = String(text || "").trim();
+    if (!s) return true;
+    if (/signals\s*:/i.test(s)) return true;
+    if (/_[a-z0-9]+/i.test(s)) return true;
+    if (/serving\s+.+\s+—\s+signals/i.test(s)) return true;
+    if (s.length < 24) return true;
+    return false;
+  }
+
+  function buildCommercialOverviewNarrative(hotel) {
+    hotel = hotel || {};
+    var name = displayValue(hotel.name, "This hotel");
+    var brand = hotel.brand && hotel.brand !== "Unknown Brand" ? hotel.brand : null;
+    var scale = hotel.chainScale || hotel.propertyType || null;
+    var city = hotel.city && hotel.city.indexOf("Unknown") !== 0 ? hotel.city : null;
+    var market =
+      hotel.market && String(hotel.market).indexOf("Unknown") !== 0 ? hotel.market : null;
+    var submarket = resolveEffectiveSubmarket(hotel);
+    var rooms = Number(hotel.rooms) > 0 ? formatNumber(hotel.rooms) : null;
+    var meeting = hotel.meetingSpaceDisplay
+      ? String(hotel.meetingSpaceDisplay)
+      : hotel.totalMeetingSpace != null && Number(hotel.totalMeetingSpace) > 0
+        ? formatNumber(hotel.totalMeetingSpace) + " sq ft of meeting and event space"
+        : null;
+    var operator =
+      hotel.managementCompany && hotel.managementCompany !== "Unknown"
+        ? hotel.managementCompany
+        : null;
+    var opType =
+      hotel.operationType && String(hotel.operationType).indexOf("Unknown") !== 0
+        ? hotel.operationType
+        : null;
+    var locationType = hotel.locationType || null;
+    var demand = [];
+    var rawDemand = hotel.demandGenerators || hotel.nearbyDemand || [];
+    if (Array.isArray(rawDemand)) {
+      rawDemand.forEach(function (d) {
+        var label = typeof d === "string" ? d : d && (d.name || d.label);
+        if (label && String(label).trim()) demand.push(String(label).trim());
+      });
+    }
+    if (hotel.primaryDemandDriver) demand.push(String(hotel.primaryDemandDriver).trim());
+    demand = demand.filter(Boolean).slice(0, 3);
+    var ownershipCtx = hotel.ownershipContext || null;
+    var economicOwner =
+      (ownershipCtx && (ownershipCtx.economicOwnerName || ownershipCtx.economic_owner)) ||
+      hotel.economicOwner ||
+      null;
+    var legalOwner =
+      (ownershipCtx && (ownershipCtx.legalOwnerName || ownershipCtx.legal_owner)) ||
+      hotel.legalOwner ||
+      null;
+    var ownershipOk =
+      ownershipCtx &&
+      (ownershipCtx.verified === true ||
+        ownershipCtx.confidence === "HIGH" ||
+        ownershipCtx.confidence === "MEDIUM" ||
+        ownershipCtx.preview_state === "LIVE");
+    var sentences = [];
+
+    var lead = name + " is";
+    if (scale) {
+      var scalePhrase = String(scale).replace(/\s+Chain$/i, "").toLowerCase();
+      var article = /^[aeiou]/i.test(scalePhrase) ? " an " : " a ";
+      lead += article + scalePhrase + " hotel";
+    } else {
+      lead += " a hotel";
+    }
+    if (brand) lead += " branded " + brand;
+    if (city) {
+      lead += " in " + city;
+      if (hotel.state || hotel.country) {
+        var geoTail = [hotel.state, hotel.country]
+          .filter(function (p) {
+            if (!p || String(p).indexOf("Unknown") === 0) return false;
+            return String(p).toLowerCase() !== String(city).toLowerCase();
+          })
+          .join(", ");
+        if (geoTail) lead += ", " + geoTail;
+      }
+    }
+    lead += ".";
+    sentences.push(lead);
+
+    var product = [];
+    if (rooms) product.push(rooms + " guestrooms");
+    if (meeting) product.push(meeting);
+    if (product.length === 1) {
+      sentences.push("The physical product comprises " + product[0] + ".");
+    } else if (product.length > 1) {
+      sentences.push("The physical product comprises " + product[0] + " and " + product[1] + ".");
+    }
+
+    var placeBits = [];
+    if (submarket) placeBits.push(submarket);
+    else if (market) placeBits.push(market);
+    if (locationType) placeBits.push(String(locationType).toLowerCase() + " location");
+    if (placeBits.length === 1) {
+      sentences.push("It sits in " + placeBits[0] + ".");
+    } else if (placeBits.length > 1) {
+      sentences.push("It sits in " + placeBits[0] + " within a " + placeBits[1] + ".");
+    }
+
+    if (demand.length === 1) {
+      sentences.push("Relevant demand context includes proximity to " + demand[0] + ".");
+    } else if (demand.length > 1) {
+      sentences.push(
+        "Relevant demand context includes " +
+          demand.slice(0, -1).join(", ") +
+          " and " +
+          demand[demand.length - 1] +
+          "."
+      );
+    }
+
+    if (operator) {
+      sentences.push(
+        "Day-to-day operations are managed by " +
+          operator +
+          (opType ? " under a " + String(opType).toLowerCase() : "") +
+          "."
+      );
+    }
+
+    if (ownershipOk && (economicOwner || legalOwner)) {
+      if (economicOwner && legalOwner && economicOwner !== legalOwner) {
+        sentences.push(
+          "Ownership intelligence identifies " +
+            legalOwner +
+            " as legal owner and " +
+            economicOwner +
+            " as economic sponsor."
+        );
+      } else if (economicOwner) {
+        sentences.push("Economic ownership is associated with " + economicOwner + ".");
+      } else {
+        sentences.push("Legal ownership is associated with " + legalOwner + ".");
+      }
+    }
+
+    return sentences.join(" ");
+  }
+
   var DESCRIPTION_UNAVAILABLE = "Property description is not yet available.";
+
+  function resolveHeadlineText(hotel) {
+    var raw = hotel && hotel.hotelHeadline;
+    if (!raw || isLowQualityHeadline(raw)) return "";
+    return String(raw).trim();
+  }
 
   function resolveDescriptionText(hotel) {
     var fromAirtable = hotel && (hotel.hotelDescription || hotel.description);
-    if (fromAirtable && String(fromAirtable).trim()) {
+    if (fromAirtable && String(fromAirtable).trim() && !isLowQualityGeneratedDescription(fromAirtable, hotel)) {
       return String(fromAirtable).trim();
     }
     var positioning =
@@ -510,14 +667,51 @@
       hotel.overviewEnrichment &&
       hotel.overviewEnrichment.positioning &&
       hotel.overviewEnrichment.positioning.text;
-    if (positioning && String(positioning).trim()) {
+    if (
+      positioning &&
+      String(positioning).trim() &&
+      !isLowQualityGeneratedDescription(positioning, hotel)
+    ) {
       return String(positioning).trim();
+    }
+    var commercial = buildCommercialOverviewNarrative(hotel);
+    if (commercial && !isLowQualityGeneratedDescription(commercial, hotel)) {
+      return commercial;
     }
     var synthesized = buildDescription(hotel);
     if (isLowQualityGeneratedDescription(synthesized, hotel)) {
       return DESCRIPTION_UNAVAILABLE;
     }
     return synthesized;
+  }
+
+  function resolveYearBuiltDisplay(hotel) {
+    var v =
+      hotel.yearBuilt ||
+      hotel.year_built ||
+      hotel.YearBuilt ||
+      (hotel.commercialProfile && hotel.commercialProfile.yearBuilt) ||
+      null;
+    if (v == null || v === "" || v === "—") return null;
+    var n = Number(v);
+    if (Number.isFinite(n) && n >= 1800 && n <= 2100) return String(Math.round(n));
+    var s = String(v).trim();
+    return s || null;
+  }
+
+  function resolveLastRenovatedDisplay(hotel) {
+    var v =
+      hotel.yearRenovated ||
+      hotel.lastRenovated ||
+      hotel.last_renovated ||
+      hotel.YearRenovated ||
+      (hotel.commercialProfile && hotel.commercialProfile.yearRenovated) ||
+      null;
+    if (v == null || v === "" || v === "—") return null;
+    var n = Number(v);
+    if (Number.isFinite(n) && n >= 1800 && n <= 2100) return String(Math.round(n));
+    var s = String(v).trim();
+    return s || null;
   }
 
   function buildOverviewRows(hotel) {
@@ -536,12 +730,16 @@
       parentSemantic === "brand_parent_company"
         ? "Parent company (brand)"
         : "Parent company";
+    var yearBuilt = resolveYearBuiltDisplay(hotel);
+    var lastRenovated = resolveLastRenovatedDisplay(hotel);
     var rows = [
       { label: "Brand", value: displayValue(hotel.brand) },
       { label: parentLabel, value: formatParentCompanyDisplay(hotel.parentCompany, hotel) },
       { label: "Chain scale", value: displayValue(hotel.chainScale || hotel.propertyType) },
       { label: "Property type", value: displayValue(hotel.censusPropertyType) },
       { label: "Rooms", value: hotel.rooms ? formatNumber(hotel.rooms) : "—" },
+      { label: "Year built", value: yearBuilt || "Not yet verified" },
+      { label: "Last renovated", value: lastRenovated || "Not yet verified" },
       { label: "Meeting space", value: meetingValue },
       { label: "Operation type", value: displayValue(hotel.operationType) },
       { label: "Management company", value: displayValue(hotel.managementCompany) },
@@ -555,6 +753,7 @@
     ];
 
     return rows.filter(function (row) {
+      if (row.label === "Year built" || row.label === "Last renovated") return true;
       return row.value && row.value !== "—" && row.value !== "Unknown" && row.value !== "Unknown Brand"
         && row.value !== "Unknown City" && row.value !== "Unknown Country" && row.value !== "Unknown Region";
     });
@@ -601,9 +800,20 @@
 
   function toAmenityProperCase(label) {
     var smallWords = { a: 1, an: 1, and: 1, at: 1, by: 1, for: 1, in: 1, of: 1, on: 1, or: 1, the: 1, to: 1, not: 1 };
-    var preserved = { wifi: "WiFi", "wi-fi": "Wi-Fi", ev: "EV" };
-    return String(label || "")
+    var preserved = {
+      wifi: "WiFi",
+      "wi-fi": "Wi-Fi",
+      ev: "EV",
+      nih: "NIH",
+      dc: "DC",
+      "24hr": "24-Hour",
+      "24-hr": "24-Hour",
+    };
+    var normalized = String(label || "")
       .trim()
+      .replace(/_/g, " ")
+      .replace(/\s+/g, " ");
+    return normalized
       .split(/\s+/)
       .map(function (word, index) {
         if (!word) return word;
@@ -623,8 +833,39 @@
   function amenityLabelKey(label) {
     return String(label || "")
       .toLowerCase()
+      .replace(/_/g, " ")
       .replace(/[^a-z0-9]+/g, " ")
       .trim();
+  }
+
+  /** Location / brand identity tokens that are not guest-facing amenities. */
+  function isNonAmenityPresentationLabel(label) {
+    var key = amenityLabelKey(label);
+    if (!key) return true;
+    if (
+      /^(brand|loyalty|location|market|submarket|city|state|country|full service|full service hotel)$/.test(
+        key
+      )
+    ) {
+      return true;
+    }
+    if (/\b(location|brand|loyalty)\b$/.test(key)) return true;
+    if (/^(bethesda md|pooks hill|montgomery county|marriott hotels|marriott bonvoy)\b/.test(key)) {
+      return true;
+    }
+    if (/^(nih access|washington dc metro access|dc metro access)$/.test(key)) {
+      // Keep access attributes — they are commercially useful amenities/access facts.
+      return false;
+    }
+    return false;
+  }
+
+  function looksLikeMachineAmenityToken(label) {
+    var s = String(label || "").trim();
+    if (!s) return true;
+    if (/_/.test(s)) return true;
+    if (/signals\s*:/i.test(s)) return true;
+    return false;
   }
 
   function resolveAmenityIdForLabel(label, idByLabelKey) {
@@ -638,77 +879,68 @@
   }
 
   /**
-   * Prefer the Amenities text field when it lists more items than amenitiesDisplay.
-   * amenitiesDisplay can be stale (older API builds only kept Hilton-mapped ids).
+   * Prefer verified / human-readable amenity labels.
+   * Do not let raw snake_case Amenities tokens crowd the carousel.
    */
   function resolveAmenitiesDisplay(hotel) {
-    var fromField = parseAmenitiesField(hotel && hotel.amenities);
-    var fromDisplay = [];
-    if (hotel && Array.isArray(hotel.amenitiesDisplay)) {
-      fromDisplay = hotel.amenitiesDisplay.filter(function (item) {
-        return item && (item.id || item.label);
-      }).map(function (item) {
-        return {
-          id: item.id || null,
-          label: toAmenityProperCase(item.label),
-        };
-      });
+    function normalizeItem(item) {
+      if (!item) return null;
+      var label = toAmenityProperCase(item.label || item);
+      if (!label || isNonAmenityPresentationLabel(label)) return null;
+      return {
+        id: item.id || resolveAmenityIdForLabel(label, null) || null,
+        label: label,
+        verificationStatus: item.verificationStatus || item.factKind || null,
+      };
     }
 
     var fromVerified = [];
     if (hotel && Array.isArray(hotel.verifiedAmenitiesDisplay)) {
-      fromVerified = hotel.verifiedAmenitiesDisplay.filter(function (item) {
-        return item && item.label && item.factKind !== "UNSUPPORTED_CLAIM" &&
-          item.factKind !== "INFERRED_SUITABILITY" &&
-          item.factKind !== "REALITY_GAP_RECOGNITION";
-      }).map(function (item) {
-        return {
-          id: item.id || null,
-          label: toAmenityProperCase(item.label),
-        };
-      });
+      fromVerified = hotel.verifiedAmenitiesDisplay
+        .filter(function (item) {
+          return (
+            item &&
+            item.label &&
+            item.factKind !== "UNSUPPORTED_CLAIM" &&
+            item.factKind !== "INFERRED_SUITABILITY" &&
+            item.factKind !== "REALITY_GAP_RECOGNITION"
+          );
+        })
+        .map(normalizeItem)
+        .filter(Boolean);
     }
 
-    var idByLabelKey = {};
-    fromDisplay.forEach(function (item) {
-      if (!item.id || !item.label) return;
-      idByLabelKey[amenityLabelKey(item.label)] = item.id;
-    });
-
-    var sourceLabels = fromField.length >= fromDisplay.length ? fromField : [];
-    var base;
-    if (sourceLabels.length) {
-      base = sourceLabels.map(function (label) {
-        var proper = toAmenityProperCase(label);
-        return {
-          id: resolveAmenityIdForLabel(label, idByLabelKey) || resolveAmenityIdForLabel(proper, idByLabelKey),
-          label: proper,
-        };
-      });
-    } else if (fromDisplay.length) {
-      base = fromDisplay;
-    } else {
-      base = fromField.map(function (label) {
-        return {
-          id: resolveAmenityIdForLabel(label, idByLabelKey),
-          label: toAmenityProperCase(label),
-        };
-      });
+    var fromDisplay = [];
+    if (hotel && Array.isArray(hotel.amenitiesDisplay)) {
+      fromDisplay = hotel.amenitiesDisplay
+        .filter(function (item) {
+          return item && (item.id || item.label) && !looksLikeMachineAmenityToken(item.label);
+        })
+        .map(normalizeItem)
+        .filter(Boolean);
     }
 
-    if (!fromVerified.length) return base;
+    var fromField = parseAmenitiesField(hotel && hotel.amenities)
+      .map(function (label) {
+        return normalizeItem({ label: label });
+      })
+      .filter(Boolean);
+
+    var base = fromVerified.length
+      ? fromVerified
+      : fromDisplay.length
+        ? fromDisplay
+        : fromField;
 
     var seen = {};
+    var deduped = [];
     base.forEach(function (item) {
-      seen[amenityLabelKey(item.label)] = true;
-    });
-    fromVerified.forEach(function (item) {
       var key = amenityLabelKey(item.label);
       if (!key || seen[key]) return;
       seen[key] = true;
-      base.push(item);
+      deduped.push(item);
     });
-    return base;
+    return deduped;
   }
 
   function amenityIconSvg(item) {
@@ -751,15 +983,35 @@
 
   function renderAmenitiesSection(amenities) {
     if (!amenities.length) {
-      return '<p class="hdp-empty">No amenities recorded in the Amenities field for this property.</p>';
+      return '<p class="hdp-empty">No verified amenities are available for this property yet.</p>';
     }
     return (
-      '<div class="hdp-amenities-wrap">' +
-        '<button type="button" class="hdp-amenities-nav hdp-amenities-nav--prev" aria-label="Previous amenities">&lsaquo;</button>' +
-        '<div class="hdp-amenities-carousel" tabindex="0">' +
-          amenities.map(renderAmenityCard).join("") +
-        "</div>" +
-        '<button type="button" class="hdp-amenities-nav hdp-amenities-nav--next" aria-label="Next amenities">&rsaquo;</button>' +
+      '<div class="hdp-amenities-grid" role="list" aria-label="Hotel amenities">' +
+        amenities
+          .map(function (item) {
+            return (
+              '<div class="hdp-amenity-card hdp-amenity-card--grid" role="listitem" title="' +
+              esc(item.label || "") +
+              '">' +
+              '<div class="hdp-amenity-card__icon" aria-hidden="true">' +
+              amenityIconSvg(item) +
+              "</div>" +
+              '<div class="hdp-amenity-card__label">' +
+              esc(item.label || "") +
+              "</div>" +
+              (item.verificationStatus
+                ? '<div class="hdp-amenity-card__state">' +
+                  esc(
+                    String(item.verificationStatus) === "VERIFIED_FACT"
+                      ? "Verified"
+                      : String(item.verificationStatus).replace(/_/g, " ")
+                  ) +
+                  "</div>"
+                : "") +
+              "</div>"
+            );
+          })
+          .join("") +
       "</div>"
     );
   }
@@ -2890,8 +3142,10 @@
         '<div class="hdp-detail-row">' +
           '<section class="hdp-section hdp-description-section">' +
             '<h3 class="hdp-section__title">Description</h3>' +
-            (hotel.hotelHeadline
-              ? '<p class="hdp-description hdp-description--headline">' + esc(hotel.hotelHeadline) + "</p>"
+            (resolveHeadlineText(hotel)
+              ? '<p class="hdp-description hdp-description--headline">' +
+                esc(resolveHeadlineText(hotel)) +
+                "</p>"
               : "") +
             '<p class="hdp-description">' + esc(resolveDescriptionText(hotel)) + "</p>" +
           "</section>" +
@@ -3172,9 +3426,9 @@
           '<div class="hdp-detail-row">' +
           '<section class="hdp-section hdp-description-section">' +
           '<h3 class="hdp-section__title">Description</h3>' +
-          (currentHotel.hotelHeadline
+          (resolveHeadlineText(currentHotel)
             ? '<p class="hdp-description hdp-description--headline">' +
-              esc(currentHotel.hotelHeadline) +
+              esc(resolveHeadlineText(currentHotel)) +
               "</p>"
             : "") +
           '<p class="hdp-description">' +

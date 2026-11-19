@@ -84,6 +84,10 @@ import {
   getGoldenDemoOwnershipGroup,
   getGoldenDemoOwnershipNeighbors,
 } from "./api/golden-demo-ownership.js";
+import {
+  getHotelExplorerFounderPreview,
+  getHotelExplorerFounderPreviewContacts,
+} from "./api/hotel-explorer-founder-preview.js";
 import { getHeAirtableGraphHotel } from "./api/he-airtable-graph.js";
 import {
   getOwnerIntelligenceMeta,
@@ -105,6 +109,7 @@ import {
   getContactIntelligenceBenchmark100,
   getContactIntelligenceLiveSliceTen,
   postContactIntelligenceHotelRefresh,
+  postContactIntelligencePersonReveal,
 } from "./api/contact-intelligence.js";
 
 import {
@@ -978,6 +983,16 @@ app.get(
   getGoldenDemoHotelOwnership
 );
 
+// Hotel Explorer Founder Preview — GET-only Live Airtable vs Phase 3 Proposed overlay
+app.get(
+  "/api/hotel-explorer/founder-preview/:recordId",
+  getHotelExplorerFounderPreview
+);
+app.get(
+  "/api/hotel-explorer/founder-preview/:recordId/contacts",
+  getHotelExplorerFounderPreviewContacts
+);
+
 // Hotel Explorer — Airtable HI graph read (Airtable-first tabs 2/4/5)
 app.get("/api/he-airtable-graph/hotel/:recordId", getHeAirtableGraphHotel);
 
@@ -1022,6 +1037,13 @@ app.post(
   memberstackAuth,
   requireDealalityUser,
   postContactIntelligenceHotelRefresh
+);
+// User-initiated Surfe reveal for HE Contact Intelligence (ephemeral; never on GET).
+app.post(
+  "/api/contact-intelligence/hotels/:hotelId/people/:personId/reveal",
+  memberstackAuth,
+  requireDealalityUser,
+  postContactIntelligencePersonReveal
 );
 
 // HE-INTEL-001 Research Engine V1 (P1: dry-run / meta only — no Airtable apply, no paid providers)

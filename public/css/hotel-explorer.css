@@ -613,21 +613,23 @@ button.hex-action {
   flex-wrap: nowrap;
   gap: 0;
   margin-bottom: 18px;
-  align-items: flex-start;
+  align-items: stretch;
+  justify-content: space-between;
   width: 100%;
   background-color: var(--neutral--800);
   border-bottom: 0.6px solid var(--neutral--600);
   padding-bottom: 10px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+  scrollbar-width: thin;
 }
 .hex-tabs::-webkit-scrollbar {
-  display: none;
+  height: 4px;
 }
 .hex-tabs .section-nav-item {
   flex: 1 1 0;
-  min-width: 0;
+  min-width: 76px;
+  max-width: 1fr;
   width: auto;
   display: flex;
   flex-direction: column;
@@ -637,13 +639,13 @@ button.hex-action {
   cursor: pointer;
   color: var(--neutral--400);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   font-size: 10px;
   font-weight: 600;
   border: none;
   background: none;
   font-family: inherit;
-  padding: 10px 4px;
+  padding: 10px 6px;
   transition: color 0.2s;
   position: relative;
   box-sizing: border-box;
@@ -651,6 +653,8 @@ button.hex-action {
 .hex-tabs .section-nav-icon {
   width: 32px;
   height: 32px;
+  min-width: 32px;
+  min-height: 32px;
   border-radius: 50%;
   border: 0.6px solid var(--neutral--600);
   display: flex;
@@ -672,19 +676,23 @@ button.hex-action {
 }
 .hex-tabs .section-nav-label {
   text-align: center;
-  line-height: 1.3;
+  line-height: 1.25;
   width: 100%;
   max-width: 100%;
   min-width: 0;
+  min-height: 2.5em;
   margin: 0 auto;
   padding: 0 2px;
   box-sizing: border-box;
   white-space: normal;
-  overflow: visible;
-  display: block;
-  font-size: 10px;
-  word-break: break-word;
-  overflow-wrap: break-word;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-size: 9.5px;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }
 .hex-tabs .section-nav-item:hover,
 .hex-tabs .section-nav-item:focus-visible {
@@ -1921,4 +1929,176 @@ button.hex-action {
   .hex-facts--5 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+/* Guest Rooms & Meeting Space */
+.hex-rms-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0 0 14px;
+}
+@media (max-width: 1100px) {
+  .hex-rms-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.hex-rms-metric {
+  border: 1px solid rgba(156, 170, 220, 0.18);
+  border-radius: 10px;
+  padding: 12px 12px 10px;
+  background: rgba(10, 18, 42, 0.55);
+}
+.hex-rms-metric__value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #eef2ff;
+  margin-bottom: 4px;
+}
+.hex-rms-metric__label {
+  font-size: 12px;
+  color: rgba(197, 206, 240, 0.88);
+}
+.hex-rms-metric__note {
+  margin-top: 6px;
+  font-size: 10px;
+  line-height: 1.3;
+  color: rgba(197, 206, 240, 0.62);
+}
+.hex-rms-row--secondary td {
+  opacity: 0.78;
+}
+.hex-rms-sources {
+  margin: 0;
+  padding-left: 1.1rem;
+  line-height: 1.45;
+}
+.hex-rms-src-state {
+  margin-left: 6px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: rgba(197, 206, 240, 0.65);
+}
+
+/* Dealality sortable inventory tables (reusable) */
+.dl-table-wrap {
+  width: 100%;
+  max-height: min(60vh, 520px);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid rgba(156, 170, 220, 0.2);
+  border-radius: 10px;
+  background: rgba(8, 14, 32, 0.55);
+}
+.dl-table {
+  width: 100%;
+  min-width: 920px;
+  border-collapse: collapse;
+  table-layout: auto;
+  font-size: 12.5px;
+}
+.dl-table thead th,
+.hex-root .dl-table thead th,
+.hex-root .hiw-table.dl-table--inventory thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 10px 12px;
+  background: #f4f6fc !important;
+  color: #1a2340 !important;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-bottom: 1px solid #c9d0e6;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.dl-th-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.dl-th--sortable {
+  cursor: pointer;
+  user-select: none;
+}
+.dl-th--sortable:hover {
+  background: #e8ecf8 !important;
+}
+.dl-th--num,
+.dl-td--num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.dl-th--center,
+.dl-td--center {
+  text-align: center;
+}
+.dl-sort-indicator {
+  display: inline-flex;
+  opacity: 0.45;
+  flex-shrink: 0;
+}
+.dl-th--sortable:hover .dl-sort-indicator,
+.dl-th--sortable.sort-asc .dl-sort-indicator,
+.dl-th--sortable.sort-desc .dl-sort-indicator {
+  opacity: 1;
+}
+.dl-sort-chevron {
+  fill: #6b7594;
+}
+.dl-th--sortable.sort-asc .dl-sort-chevron--up {
+  fill: #3b43c8;
+}
+.dl-th--sortable.sort-asc .dl-sort-chevron--down {
+  fill: #b6bdd4;
+}
+.dl-th--sortable.sort-desc .dl-sort-chevron--down {
+  fill: #3b43c8;
+}
+.dl-th--sortable.sort-desc .dl-sort-chevron--up {
+  fill: #b6bdd4;
+}
+.dl-table tbody td,
+.hex-root .dl-table tbody td,
+.hex-root .hiw-table.dl-table--inventory tbody td {
+  padding: 11px 12px;
+  border-bottom: 1px solid rgba(55, 68, 107, 0.55);
+  color: #d7e4fa;
+  white-space: nowrap;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+.dl-td--primary {
+  font-weight: 650;
+  color: #eef2ff;
+  max-width: 260px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.dl-td--empty {
+  text-align: center;
+  color: rgba(197, 206, 240, 0.7);
+  padding: 18px !important;
+}
+.hex-rms-table.dl-table--inventory {
+  min-width: 980px;
+}
+.hiw-chip--proposed {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(196, 92, 38, 0.22);
+  color: #ffd4b8;
+  font-size: 12px;
+  font-weight: 650;
+}
+.hiw-kv--spaced {
+  margin-top: 14px;
+  gap: 10px 16px;
 }

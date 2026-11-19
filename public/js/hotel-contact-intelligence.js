@@ -1,6 +1,6 @@
 /**
  * Hotel Explorer — Contact Intelligence tab (generic renderer).
- * Loads ContactIntelligenceViewModel from staging/API. No Surfe live calls.
+ * Surfe "Find Contact Details" is user-initiated only (never on mount/GET).
  */
 (function (global) {
   "use strict";
@@ -9,12 +9,35 @@
     recUNycnMwOVFX0hc: "/data/hotel-contact-intelligence/kgpv-recUNycnMwOVFX0hc.json",
   };
 
+  var _inflightReveal = Object.create(null);
+
   function esc(v) {
     return String(v == null ? "" : v)
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
+  }
+
+  function present(v) {
+    if (v == null) return false;
+    var s = String(v).trim();
+    return s !== "" && s !== "—" && s !== "-" && s.toLowerCase() !== "n/a";
+  }
+
+  function kvRow(label, value) {
+    if (!present(value)) return "";
+    return (
+      '<div class="hci-kv"><span>' +
+      esc(label) +
+      "</span><strong>" +
+      esc(value) +
+      "</strong></div>"
+    );
+  }
+
+  function unresolvedNote(msg) {
+    return '<p class="hci-note hci-note--unresolved">' + esc(msg) + "</p>";
   }
 
   function renderLoading() {
@@ -134,19 +157,19 @@
       '<div class="hci-chain__node"><div class="hci-chain__label">' +
       esc((o.propco && o.propco.label) || "Property Owner / PropCo") +
       '</div><div class="hci-chain__value">' +
-      esc((o.propco && (o.propco.shortName || o.propco.name)) || "—") +
+      esc((o.propco && (o.propco.shortName || o.propco.name)) || "Not yet verified") +
       "</div></div>" +
       '<div class="hci-chain__arrow" aria-hidden="true">↓ sponsored / controlled by</div>' +
       '<div class="hci-chain__node hci-chain__node--focus"><div class="hci-chain__label">' +
       esc((o.sponsor && o.sponsor.label) || "Economic Owner") +
       '</div><div class="hci-chain__value">' +
-      esc((o.sponsor && o.sponsor.name) || "—") +
+      esc((o.sponsor && o.sponsor.name) || "Not yet verified") +
       "</div></div>" +
       '<div class="hci-chain__arrow" aria-hidden="true">↓ operated by</div>' +
       '<div class="hci-chain__node"><div class="hci-chain__label">' +
       esc((o.operator && o.operator.label) || "Current Operator") +
       '</div><div class="hci-chain__value">' +
-      esc((o.operator && o.operator.name) || "—") +
+      esc((o.operator && o.operator.name) || "Not yet verified") +
       (o.operator && o.operator.sameAsSponsor
         ? '<div class="hci-muted">Same organization also acts as current operator</div>'
         : "") +
@@ -155,7 +178,7 @@
       '<div class="hci-chain__node"><div class="hci-chain__label">' +
       esc((o.brand && o.brand.label) || "Current Brand") +
       '</div><div class="hci-chain__value">' +
-      esc((o.brand && o.brand.name) || "—") +
+      esc((o.brand && o.brand.name) || "Not yet verified") +
       "</div></div>" +
       "</div>" +
       (o.formerOwner
@@ -288,11 +311,50 @@
     );
   }
 
-  function renderPerson(p) {
+  function renderEnrichAction(p, hotelId) {
+    var action = p.enrichAction || null;
+    if (!action) {
+      return unresolvedNote(
+        "Find Contact Details unavailable — Surfe on-demand is not configured for this person."
+      );
+    }
+    if (!action.enabled) {
+      return unresolvedNote(
+        (action.label || "Find Contact Details") +
+          " unavailable: " +
+          (action.reason || "provider not enabled for this context") +
+          ". Identity may be verified without verified personal contact details."
+      );
+    }
+    return (
+      '<div class="hci-enrich">' +
+      '<button type="button" class="hci-btn hci-btn--enrich" data-hci-enrich="1" data-person-id="' +
+      esc(p.personId || "") +
+      '" data-hotel-id="' +
+      esc(hotelId || "") +
+      '" data-person-name="' +
+      esc(p.name || "") +
+      '" data-organization="' +
+      esc(p.organization || "") +
+      '">' +
+      esc(action.label || "Find Contact Details") +
+      "</button>" +
+      '<p class="hci-muted">User-initiated Surfe lookup. Checks existing channels first. Results require review before Airtable persistence. Credits tracked per call.</p>' +
+      '<div class="hci-enrich__result" hidden></div></div>'
+    );
+  }
+
+  function renderPerson(p, hotelId) {
+    var hasEmail = (p.emailContacts || []).some(function (c) {
+      return c && c.value;
+    });
+    var hasPhone = (p.phoneContacts || []).some(function (c) {
+      return c && c.value;
+    });
     var emails = (p.emailContacts || []).map(renderChannel).join("") ||
-      '<div class="hci-channel hci-channel--empty">No direct email verified</div>';
+      unresolvedNote("No direct email verified yet (person identity may still be verified).");
     var phones = (p.phoneContacts || []).map(renderChannel).join("") ||
-      '<div class="hci-channel hci-channel--empty">Public phone not found</div>';
+      unresolvedNote("No public phone verified yet.");
     var profiles = (p.profileUrls || [])
       .map(function (pr) {
         return (
@@ -313,8 +375,7 @@
         "<strong>Fallback contact path</strong>" +
         "<p>" +
         esc(p.fallbackPath.label) +
-        " — " +
-        esc(p.fallbackPath.organization) +
+        (present(p.fallbackPath.organization) ? " — " + esc(p.fallbackPath.organization) : "") +
         "</p>" +
         (p.fallbackPath.channels || [])
           .map(function (c) {
@@ -323,51 +384,43 @@
           .join("") +
         "</div>";
     }
-    var enrich =
-      p.enrichAction && !p.enrichAction.enabled
-        ? '<button type="button" class="hci-btn hci-btn--disabled" disabled title="' +
-          esc(p.enrichAction.reason || "Unavailable") +
-          '">' +
-          esc(p.enrichAction.label || "Find Contact Details") +
-          "</button>"
-        : "";
     var detailsId = "hci-person-" + esc(p.personId || Math.random().toString(36).slice(2));
+    var metaBits = [p.organization, p.stakeholderClass].filter(present);
     return (
       '<article class="hci-person" data-person-id="' +
       esc(p.personId || "") +
       '" data-display-state="' +
       esc(p.displayState || "") +
+      '" data-identity-verified="' +
+      (p.displayState === "AVAILABLE" || p.displayState === "PARTIAL" ? "1" : "0") +
+      '" data-contact-details-verified="' +
+      (hasEmail || hasPhone ? "1" : "0") +
       '">' +
       '<div class="hci-person__head">' +
       "<div><h5>" +
       esc(p.name) +
       "</h5>" +
-      '<div class="hci-person__title">' +
-      esc(p.title || "—") +
+      (present(p.title) ? '<div class="hci-person__title">' + esc(p.title) + "</div>" : "") +
+      (metaBits.length
+        ? '<div class="hci-muted">' + esc(metaBits.join(" · ")) + "</div>"
+        : "") +
       "</div>" +
-      '<div class="hci-muted">' +
-      esc(p.organization || "") +
-      " · " +
-      esc(p.stakeholderClass || "") +
-      "</div></div>" +
-      '<span class="' +
-      badgeClass(p.displayState === "AVAILABLE" ? "VERIFIED_PUBLIC" : p.displayState) +
-      '">' +
-      esc(p.displayState || "UNRESOLVED") +
-      "</span></div>" +
-      '<div class="hci-kv"><span>Why relevant</span><strong>' +
-      esc(p.whyRelevant || "—") +
-      "</strong></div>" +
-      '<div class="hci-kv"><span>Contactability</span><strong>' +
-      esc(p.contactability || "—") +
-      "</strong></div>" +
-      '<div class="hci-kv"><span>Confidence</span><strong>' +
-      esc(p.confidence || "—") +
-      "</strong></div>" +
-      '<div class="hci-kv"><span>Last verified</span><strong>' +
-      esc(p.lastVerified || "—") +
-      "</strong></div>" +
-      (profiles ? '<div class="hci-profiles">' + profiles + "</div>" : '<div class="hci-muted">Profile: Not yet verified</div>') +
+      (present(p.displayState)
+        ? '<span class="' +
+          badgeClass(p.displayState === "AVAILABLE" ? "VERIFIED_PUBLIC" : p.displayState) +
+          '">' +
+          esc(p.displayState) +
+          "</span>"
+        : "") +
+      "</div>" +
+      kvRow("Why relevant", p.whyRelevant || p.relationshipToHotel) +
+      kvRow("Likely commercial role", p.commercialRole || p.stakeholderClass) +
+      kvRow("Contactability", p.contactability) +
+      kvRow("Confidence", p.confidence) +
+      kvRow("Last verified", p.lastVerified) +
+      (profiles
+        ? '<div class="hci-profiles">' + profiles + "</div>"
+        : unresolvedNote("Public profile not yet verified.")) +
       '<button type="button" class="hci-provenance-toggle" data-hci-toggle="' +
       detailsId +
       '">Contact details</button>' +
@@ -384,13 +437,14 @@
       esc(p.decisionAuthority || "Authority Not Verified") +
       " · Signing authority: " +
       esc(p.signingAuthority || "Authority Not Verified") +
-      " (not inferred)</p>" +
-      enrich +
+      " (not inferred). Verified identity ≠ verified personal contact details.</p>" +
+      renderEnrichAction(p, hotelId) +
       "</div></article>"
     );
   }
 
   function renderPeopleGroups(vm) {
+    var hotelId = vm.hotelId || "";
     var groups = [
       { id: "PRIMARY_OWNER_SIDE", title: "Primary owner-side contacts" },
       { id: "SECONDARY_OWNER_CORPORATE", title: "Secondary owner / corporate contacts" },
@@ -406,7 +460,11 @@
           '<section class="hci-section"><h3>' +
           esc(g.title) +
           '</h3><div class="hci-people">' +
-          rows.map(renderPerson).join("") +
+          rows
+            .map(function (p) {
+              return renderPerson(p, hotelId);
+            })
+            .join("") +
           "</div></section>"
         );
       })
@@ -492,6 +550,95 @@
     );
   }
 
+  function paintEnrichResult(slot, payload) {
+    if (!slot) return;
+    slot.removeAttribute("hidden");
+    if (!payload || !payload.ok) {
+      slot.innerHTML =
+        '<div class="hci-note hci-note--unresolved">' +
+        esc((payload && (payload.message || payload.error)) || "Enrichment failed") +
+        (payload && payload.surfeCalls != null
+          ? " · Surfe calls: " + esc(payload.surfeCalls)
+          : "") +
+        "</div>";
+      return;
+    }
+    if (payload.cached) {
+      slot.innerHTML =
+        '<div class="hci-note">Existing canonical / staging contact details found — no Surfe credit used.</div>' +
+        '<pre class="hci-enrich__json">' +
+        esc(JSON.stringify(payload.channels || payload.existing || {}, null, 2)) +
+        "</pre>";
+      return;
+    }
+    slot.innerHTML =
+      '<div class="hci-note">Surfe result (ephemeral · review required before Airtable persistence) · provider=Surfe · calls=' +
+      esc(payload.surfeCalls != null ? payload.surfeCalls : 1) +
+      (payload.estimatedCostUsd != null
+        ? " · est. cost USD " + esc(payload.estimatedCostUsd)
+        : "") +
+      "</div>" +
+      '<pre class="hci-enrich__json">' +
+      esc(JSON.stringify(payload.person || payload.result || {}, null, 2)) +
+      "</pre>" +
+      '<p class="hci-muted">Not persisted. Duplicate calls for the same person+org are blocked while in flight.</p>';
+  }
+
+  function bindEnrich(root) {
+    if (!root) return;
+    root.addEventListener("click", function (ev) {
+      var btn = ev.target.closest("[data-hci-enrich]");
+      if (!btn || btn.disabled) return;
+      var hotelId = btn.getAttribute("data-hotel-id") || "";
+      var personId = btn.getAttribute("data-person-id") || "";
+      var personName = btn.getAttribute("data-person-name") || "";
+      var organization = btn.getAttribute("data-organization") || "";
+      var key = hotelId + "::" + personId;
+      if (_inflightReveal[key]) return;
+      var slot = btn.parentElement && btn.parentElement.querySelector(".hci-enrich__result");
+      btn.disabled = true;
+      btn.textContent = "Looking up…";
+      _inflightReveal[key] = true;
+      fetch(
+        "/api/contact-intelligence/hotels/" +
+          encodeURIComponent(hotelId) +
+          "/people/" +
+          encodeURIComponent(personId) +
+          "/reveal",
+        {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({
+            personName: personName,
+            organization: organization,
+            persist: false,
+          }),
+        }
+      )
+        .then(function (r) {
+          return r.json().then(function (j) {
+            return { status: r.status, body: j };
+          });
+        })
+        .then(function (pack) {
+          paintEnrichResult(slot, pack.body || { ok: false, error: "http_" + pack.status });
+        })
+        .catch(function (err) {
+          paintEnrichResult(slot, {
+            ok: false,
+            error: "network_error",
+            message: String((err && err.message) || err),
+          });
+        })
+        .finally(function () {
+          delete _inflightReveal[key];
+          btn.disabled = false;
+          btn.textContent = "Find Contact Details";
+        });
+    });
+  }
+
   function bindToggles(root) {
     if (!root) return;
     root.addEventListener("click", function (ev) {
@@ -505,6 +652,7 @@
       else el.setAttribute("hidden", "");
       btn.setAttribute("aria-expanded", open ? "true" : "false");
     });
+    bindEnrich(root);
   }
 
   function renderHpcPropertyFallback(hotelId, contacts, hotelName, ownershipSummary) {
@@ -518,14 +666,14 @@
         '">' +
         esc(phone) +
         "</a>"
-      : '<span class="hci-channel__value">—</span>';
+      : '<span class="hci-channel__value hci-channel--empty">Not published on HPC</span>';
     var websiteHtml = website
       ? '<a class="hci-channel__value" href="' +
         esc(website) +
         '" target="_blank" rel="noopener">' +
         esc(website) +
         "</a>"
-      : '<span class="hci-channel__value">—</span>';
+      : '<span class="hci-channel__value hci-channel--empty">Not published on HPC</span>';
     var summaryHtml = "";
     if (ownershipSummary) {
       summaryHtml =
