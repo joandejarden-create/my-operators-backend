@@ -1,0 +1,118 @@
+{
+  "at": "2026-11-19T09:50:03.730Z",
+  "mode": "APPLY",
+  "baseId": "appCCUsuGsE1ifoLk",
+  "synthetic": true,
+  "research_claim": false,
+  "note": "SYNTHETIC_P2_LINK_DEMO — not verified research",
+  "orgDedupe": "org::hei_hotel_resorts_synthetic_p2_link_demo::us_md",
+  "hotels": [
+    {
+      "hpcId": "recnPB3Q02NO8Ma1o",
+      "name": "Wyndham San Diego Bayside",
+      "exists": true,
+      "airtableId": "recnPB3Q02NO8Ma1o"
+    },
+    {
+      "hpcId": "recG66DQJKP2c0UNh",
+      "name": "Renaissance New York Times Square Hotel",
+      "exists": true,
+      "airtableId": "recG66DQJKP2c0UNh"
+    },
+    {
+      "hpcId": "recdmo0CnhIZAwHGC",
+      "name": "The Westin Tampa Waterside",
+      "exists": true,
+      "airtableId": "recdmo0CnhIZAwHGC"
+    }
+  ],
+  "organization": {
+    "op": "UPDATE",
+    "id": "recxtysEZn9PELHha",
+    "orgCanonicalId": "dle_06GZ6DMCDW1KMJR5GCZA6EGVR6",
+    "dedupe": "org::hei_hotel_resorts_synthetic_p2_link_demo::us_md"
+  },
+  "relationships": [
+    {
+      "hotel": {
+        "hpcId": "recnPB3Q02NO8Ma1o",
+        "name": "Wyndham San Diego Bayside"
+      },
+      "dedupe": "rel::recnPB3Q02NO8Ma1o::operator::org::hei_hotel_resorts_synthetic_p2_link_demo::us_md",
+      "op": "UPDATE",
+      "recordId": "recev4kNe5kpWzEcn",
+      "hpcLink": [
+        "recnPB3Q02NO8Ma1o"
+      ],
+      "orgLink": [
+        "recxtysEZn9PELHha"
+      ],
+      "storedHpcHotelId": "recnPB3Q02NO8Ma1o",
+      "read_after_write_ok": true
+    },
+    {
+      "hotel": {
+        "hpcId": "recG66DQJKP2c0UNh",
+        "name": "Renaissance New York Times Square Hotel"
+      },
+      "dedupe": "rel::recG66DQJKP2c0UNh::operator::org::hei_hotel_resorts_synthetic_p2_link_demo::us_md",
+      "op": "UPDATE",
+      "recordId": "recurh6asTT3S6j3Z",
+      "hpcLink": [
+        "recG66DQJKP2c0UNh"
+      ],
+      "orgLink": [
+        "recxtysEZn9PELHha"
+      ],
+      "storedHpcHotelId": "recG66DQJKP2c0UNh",
+      "read_after_write_ok": true
+    },
+    {
+      "hotel": {
+        "hpcId": "recdmo0CnhIZAwHGC",
+        "name": "The Westin Tampa Waterside"
+      },
+      "dedupe": "rel::recdmo0CnhIZAwHGC::operator::org::hei_hotel_resorts_synthetic_p2_link_demo::us_md",
+      "op": "UPDATE",
+      "recordId": "recfxgZAQVEzuzSUy",
+      "hpcLink": [
+        "recdmo0CnhIZAwHGC"
+      ],
+      "orgLink": [
+        "recxtysEZn9PELHha"
+      ],
+      "storedHpcHotelId": "recdmo0CnhIZAwHGC",
+      "read_after_write_ok": true
+    }
+  ],
+  "secondPassSafe": {
+    "orgCount": 1,
+    "relCounts": [
+      {
+        "hotel": "recnPB3Q02NO8Ma1o",
+        "count": 1
+      },
+      {
+        "hotel": "recG66DQJKP2c0UNh",
+        "count": 1
+      },
+      {
+        "hotel": "recdmo0CnhIZAwHGC",
+        "count": 1
+      }
+    ],
+    "ok": true
+  },
+  "schema": {
+    "hpcHotelField": {
+      "id": "fldcpmADxtKNKDTDN",
+      "name": "HPC Hotel",
+      "linkedTableId": "tbl9aY5ijiuIzzWam"
+    },
+    "reciprocal": {
+      "id": "fldIrXDEBhEnhDFDg",
+      "name": "HI Organization Relationships",
+      "linkedTableId": "tblGiwN0foXXDESvZ"
+    }
+  }
+}
