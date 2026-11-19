@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.11",
+  "version": "hotel-explorer-founder-quality-lessons-v1.12",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -8,7 +8,8 @@
     "test:he-owner-portfolio-operator-view-v1",
     "test:he-ownership-control-network-v1",
     "test:he-hotel-news-from-market-alerts-v1",
-    "test:he-guest-sentiment-brand-operator-v1"
+    "test:he-guest-sentiment-brand-operator-v1",
+    "test:he-market-alerts-closeout-v1"
   ],
   "referenceHotels": {
     "uxGolden": {
@@ -226,6 +227,15 @@
       "sharedComponent": "lib/hotel-intelligence/guest-sentiment/*; api/hotel-explorer-guest-sentiment.js; hotel-intelligence-workspace.js Brand/Operator",
       "regressionTest": "he_guest_sentiment_brand_operator_gates",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v10-sentiment-beth-proposed.png; quality-v10-sentiment-beth-live-hidden.png; quality-v10-sentiment-kgpv-hidden.png"
+    },
+    {
+      "id": "HE-QL-023",
+      "originalProblem": "Market Alerts hotel news preview lacked durable multi-hotel association design, Sources & Evidence reuse, and explicit no-write-on-read refresh rules",
+      "rootCause": "News matching shipped before association field design, evidence citation merge, and closeout validation for one-article-many-hotels / empty-state / GET-only behavior",
+      "approvedStandard": "One canonical MarketAlerts row; Tags hpc:<recId> (+ designed HPC Hotel Record IDs) for multi-hotel links without duplicates; Sources & Evidence citations reuse MA id/URL/publisher/date/fact/verification via GET evidenceCitations; no Airtable writes or paid research on tab open; association apply remains MARKET_ALERTS_HOTEL_LINK_APPLY gated",
+      "sharedComponent": "hotel-news-from-market-alerts-v1.js; market-alerts-hotel-association-sync-v1.js; market-alerts-evidence-citations-v1.js; api/hotel-explorer-news-articles.js; hotel-intelligence-workspace.js Sources",
+      "regressionTest": "he_market_alerts_closeout_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v11-ma-beth-news-hidden.png; quality-v11-ma-beth-sources-no-ma.png"
     }
   ]
 }

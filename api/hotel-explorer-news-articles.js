@@ -9,7 +9,11 @@ import {
   HOTEL_NEWS_FROM_MARKET_ALERTS_V1,
   HOTEL_NEWS_ALERT_FIELDS as F_ALERT,
   HOTEL_NEWS_INTEL_FIELDS as MAP_INTEL,
+  MAP_HOTEL_ASSOC,
 } from "../lib/hotel-intelligence/hotel-news-from-market-alerts-v1.js";
+import {
+  marketAlertsArticlesToCitations,
+} from "../lib/hotel-intelligence/market-alerts-evidence-citations-v1.js";
 
 const TABLE = process.env.AIRTABLE_TABLE_MARKET_ALERTS || "MarketAlerts";
 const CACHE_MS = 5 * 60 * 1000;
@@ -58,7 +62,7 @@ async function fetchCandidateRecords(base, identity) {
   const formula = buildSearchFormula(identity);
   if (!formula) return [];
 
-  const fields = [
+  const baseFields = [
     F_ALERT.title,
     F_ALERT.dedupeId,
     F_ALERT.summary,
@@ -72,31 +76,35 @@ async function fetchCandidateRecords(base, identity) {
     MAP_INTEL.operatorInvolved,
     MAP_INTEL.ownerDeveloper,
   ];
-  // Assoc field may not exist yet — omit from select fields list and tolerate missing.
+  // Optional designed assoc field — include when present; never create schema here.
+  const fieldsWithAssoc = [...baseFields, MAP_HOTEL_ASSOC.hpcHotelRecordIds];
+
+  async function selectWith(fields, withSort) {
+    const opts = {
+      filterByFormula: formula,
+      maxRecords: 80,
+      fields,
+    };
+    if (withSort) opts.sort = [{ field: F_ALERT.publishedAt, direction: "desc" }];
+    return base(TABLE).select(opts).all();
+  }
 
   try {
-    return await base(TABLE)
-      .select({
-        filterByFormula: formula,
-        maxRecords: 80,
-        fields,
-        sort: [{ field: F_ALERT.publishedAt, direction: "desc" }],
-      })
-      .all();
+    return await selectWith(fieldsWithAssoc, true);
   } catch (err) {
-    // Retry without sort if Published At issues
-    console.warn("[he-news] market alerts select failed", err?.message || err);
+    const msg = String(err?.message || err);
+    const missingAssoc = /unknown field name/i.test(msg) && /HPC Hotel Record IDs/i.test(msg);
+    console.warn("[he-news] market alerts select failed", msg);
     try {
-      return await base(TABLE)
-        .select({
-          filterByFormula: formula,
-          maxRecords: 80,
-          fields,
-        })
-        .all();
+      return await selectWith(missingAssoc ? baseFields : fieldsWithAssoc, false);
     } catch (err2) {
       console.warn("[he-news] market alerts retry failed", err2?.message || err2);
-      return null;
+      try {
+        return await selectWith(baseFields, false);
+      } catch (err3) {
+        console.warn("[he-news] market alerts final retry failed", err3?.message || err3);
+        return null;
+      }
     }
   }
 }
@@ -179,7 +187,7 @@ export async function getHotelExplorerNewsArticles(req, res) {
       includeHistorical: true,
     });
 
-    // Strip internal match enums from client cards? Founder: do not show internal classifications.
+    // Client cards omit internal match enums; evidence citations keep verification for Sources.
     const articles = (selected.articles || []).map((a) => ({
       id: a.id,
       headline: a.headline,
@@ -187,9 +195,16 @@ export async function getHotelExplorerNewsArticles(req, res) {
       publishedAt: a.publishedAt,
       category: a.category,
       relevanceSummary: a.relevanceSummary,
+      supportedFact: a.supportedFact || a.relevanceSummary,
       url: a.url,
+      verificationStatus: a.verificationStatus || null,
       canonicalSource: a.canonicalSource,
+      dedupeKey: a.dedupeKey || null,
     }));
+
+    const evidenceCitations = marketAlertsArticlesToCitations(selected.articles || [], {
+      hotelName: selected.hotelName,
+    });
 
     const payload = {
       success: true,
@@ -202,6 +217,8 @@ export async function getHotelExplorerNewsArticles(req, res) {
       total: selected.total,
       hasMore: selected.hasMore,
       articles,
+      evidenceCitations,
+      writeOnRead: false,
       cached: false,
     };
     cache.set(key, { at: Date.now(), payload });

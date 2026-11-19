@@ -17,6 +17,7 @@
     radarSnapshot: null,
     evidenceOpen: null,
     relFilter: "all",
+    marketAlertsCitations: [],
   };
 
   var TABS = [
@@ -461,6 +462,8 @@
       return "Economic sponsor proposed · UBO unresolved";
     }
     if (s === "PARTIAL") return "Partial graph";
+    if (s === "VERIFIED_HPC_ASSOCIATION") return "Verified HPC association";
+    if (s === "PROPERTY_MATCH_READ") return "Property match (read)";
     if (
       s === "UNKNOWN" ||
       s === "NOT_YET_VERIFIED" ||
@@ -664,7 +667,63 @@
       supports: "brand_census",
       source_type: "Dealality Census",
     });
-    return list;
+    return mergeMarketAlertsCitationsLocal(list, state.marketAlertsCitations || []);
+  }
+
+  /** Client-side dedupe merge — MarketAlerts remain canonical; no HI Evidence copy. */
+  function mergeMarketAlertsCitationsLocal(base, ma) {
+    var out = (base || []).slice();
+    var seen = {};
+    function mark(c) {
+      if (c && c.market_alerts_id) seen["id:" + c.market_alerts_id] = true;
+      if (c && c.dedupe_id) seen["dedupe:" + c.dedupe_id] = true;
+      if (c && c.url) seen["url:" + String(c.url).toLowerCase()] = true;
+    }
+    out.forEach(mark);
+    (ma || []).forEach(function (c) {
+      var keys = [];
+      if (c.market_alerts_id) keys.push("id:" + c.market_alerts_id);
+      if (c.dedupe_id) keys.push("dedupe:" + c.dedupe_id);
+      if (c.url) keys.push("url:" + String(c.url).toLowerCase());
+      if (keys.some(function (k) {
+        return seen[k];
+      }))
+        return;
+      keys.forEach(function (k) {
+        seen[k] = true;
+      });
+      out.push(c);
+    });
+    return out;
+  }
+
+  function applyMarketAlertsEvidencePayload(payload) {
+    var cites = (payload && payload.evidenceCitations) || [];
+    if ((!cites || !cites.length) && payload && payload.articles && payload.articles.length) {
+      cites = payload.articles.map(function (a) {
+        return {
+          title: a.headline || "Market Alerts article",
+          url: a.url || null,
+          provider: a.publisher || "Market Alerts",
+          publisher: a.publisher || null,
+          observed_date: a.publishedAt || null,
+          excerpt: a.supportedFact || a.relevanceSummary || "",
+          claim: a.supportedFact || a.relevanceSummary || a.headline || "",
+          proves:
+            "Supports the hotel-specific Market Alerts fact summarized for this property.",
+          does_not:
+            "Does not by itself prove completed ownership transfer, CapEx execution, or franchise contracting without independent verification.",
+          supports: "market_alerts_hotel_fact",
+          source_type: "Market Alerts",
+          verification_status: a.verificationStatus || "PROPERTY_MATCH_READ",
+          market_alerts_id: a.id || null,
+          dedupe_id: a.dedupeKey || null,
+          canonicalSource: "MarketAlerts",
+        };
+      });
+    }
+    state.marketAlertsCitations = cites || [];
+    state.citations = buildCitations(state.hotel, state.ownership);
   }
 
   function getControl(ownership) {
@@ -1493,21 +1552,14 @@
     );
   }
 
-  function mountHotelNewsArticles(opts) {
+  function buildHotelNewsQuery(opts) {
     opts = opts || {};
-    var host = document.querySelector("[data-hiw-hotel-news-host]");
-    if (!host || !state.hotel) return;
-    var id = recordId(state.hotel);
-    if (!id) {
-      host.hidden = true;
-      host.innerHTML = "";
-      return;
-    }
     var params = new URLSearchParams();
-    if (state.hotel.name) params.set("name", state.hotel.name);
-    if (state.hotel.brand) params.set("brand", state.hotel.brand);
-    if (state.hotel.managementCompany) params.set("operator", state.hotel.managementCompany);
-    if (state.hotel.city) params.set("city", state.hotel.city);
+    if (state.hotel && state.hotel.name) params.set("name", state.hotel.name);
+    if (state.hotel && state.hotel.brand) params.set("brand", state.hotel.brand);
+    if (state.hotel && state.hotel.managementCompany)
+      params.set("operator", state.hotel.managementCompany);
+    if (state.hotel && state.hotel.city) params.set("city", state.hotel.city);
     var econ =
       (state.ownership &&
         state.ownership.report &&
@@ -1518,31 +1570,86 @@
     if (econ) params.set("economicOwner", econ);
     params.set("limit", opts.viewAll ? "25" : "5");
     if (opts.viewAll) params.set("view", "all");
+    return params;
+  }
+
+  function fetchHotelNewsArticles(opts) {
+    opts = opts || {};
+    var id = state.hotel && recordId(state.hotel);
+    if (!id) {
+      return Promise.resolve(null);
+    }
     var url =
       "/api/hotel-explorer/hotels/" +
       encodeURIComponent(id) +
       "/news-articles?" +
-      params.toString();
-    fetch(url, { headers: { "ngrok-skip-browser-warning": "true" } })
-      .then(function (r) {
-        return r.json().catch(function () {
-          return null;
-        });
-      })
-      .then(function (payload) {
-        if (!host.isConnected) return;
-        if (!payload || payload.visible !== true || !(payload.articles || []).length) {
-          host.hidden = true;
-          host.innerHTML = "";
-          return;
-        }
-        host.hidden = false;
-        host.innerHTML = renderHotelNewsSection(payload, opts);
-      })
-      .catch(function () {
-        if (!host.isConnected) return;
+      buildHotelNewsQuery(opts).toString();
+    return fetch(url, { headers: { "ngrok-skip-browser-warning": "true" } }).then(function (r) {
+      return r.json().catch(function () {
+        return null;
+      });
+    });
+  }
+
+  function mountHotelNewsArticles(opts) {
+    opts = opts || {};
+    var host = document.querySelector("[data-hiw-hotel-news-host]");
+    if (!state.hotel) return;
+    var id = recordId(state.hotel);
+    if (!id) {
+      if (host) {
         host.hidden = true;
         host.innerHTML = "";
+      }
+      state.marketAlertsCitations = [];
+      return;
+    }
+    fetchHotelNewsArticles(opts)
+      .then(function (payload) {
+        applyMarketAlertsEvidencePayload(
+          payload && payload.visible === true ? payload : { articles: [], evidenceCitations: [] }
+        );
+        if (host && host.isConnected) {
+          if (!payload || payload.visible !== true || !(payload.articles || []).length) {
+            host.hidden = true;
+            host.innerHTML = "";
+          } else {
+            host.hidden = false;
+            host.innerHTML = renderHotelNewsSection(payload, opts);
+          }
+        }
+        if (state.tab === "sources") {
+          var main = document.getElementById("hiwMain");
+          if (main) main.innerHTML = renderSourcesTab();
+          var rail = document.getElementById("hiwRail");
+          if (rail) rail.innerHTML = renderRail(state.hotel, state.ownership);
+        }
+      })
+      .catch(function () {
+        state.marketAlertsCitations = [];
+        if (host && host.isConnected) {
+          host.hidden = true;
+          host.innerHTML = "";
+        }
+      });
+  }
+
+  /** Sources tab: refresh Market Alerts evidence via same GET-only news path (no writes). */
+  function mountMarketAlertsEvidenceForSources() {
+    if (!state.hotel || !recordId(state.hotel)) return;
+    fetchHotelNewsArticles({ viewAll: true })
+      .then(function (payload) {
+        applyMarketAlertsEvidencePayload(
+          payload && payload.visible === true ? payload : { articles: [], evidenceCitations: [] }
+        );
+        if (state.tab !== "sources") return;
+        var main = document.getElementById("hiwMain");
+        if (main) main.innerHTML = renderSourcesTab();
+        var rail = document.getElementById("hiwRail");
+        if (rail) rail.innerHTML = renderRail(state.hotel, state.ownership);
+      })
+      .catch(function () {
+        /* fail soft — keep existing citations */
       });
   }
 
@@ -3527,6 +3634,15 @@
           "</a></p>"
         : "") +
       (cite.observed_date ? "<p>Observed " + esc(cite.observed_date) + "</p>" : "") +
+      (cite.publisher || cite.provider
+        ? "<p><strong>Publisher</strong> — " + esc(cite.publisher || cite.provider) + "</p>"
+        : "") +
+      (cite.verification_status
+        ? "<p><strong>Verification</strong> — " + esc(friendlyStatus(cite.verification_status)) + "</p>"
+        : "") +
+      (cite.market_alerts_id
+        ? "<p><strong>Market Alerts ID</strong> — " + esc(cite.market_alerts_id) + "</p>"
+        : "") +
       (cite.excerpt ? "<p>" + esc(cite.excerpt) + "</p>" : "") +
       "<p><strong>Supports</strong> — " +
       esc(cite.proves || "") +
@@ -3593,6 +3709,7 @@
       mountHotelNewsArticles();
       mountGuestSentiment();
     }
+    if (state.tab === "sources") mountMarketAlertsEvidenceForSources();
   }
 
   function loadOrgNetwork() {
@@ -4091,6 +4208,7 @@
     mountOwnershipControlNetwork: mountOwnershipControlNetwork,
     mountHotelNewsArticles: mountHotelNewsArticles,
     mountGuestSentiment: mountGuestSentiment,
+    mountMarketAlertsEvidenceForSources: mountMarketAlertsEvidenceForSources,
     openCitation: openCitation,
   };
 })();

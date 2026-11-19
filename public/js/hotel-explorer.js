@@ -740,6 +740,14 @@
             window.HotelIntelligenceWorkspace.mountGuestSentiment();
           }
         }
+        if (
+          state.tab === "sources" &&
+          window.HotelIntelligenceWorkspace &&
+          typeof window.HotelIntelligenceWorkspace.mountMarketAlertsEvidenceForSources ===
+            "function"
+        ) {
+          window.HotelIntelligenceWorkspace.mountMarketAlertsEvidenceForSources();
+        }
       }
     }
     writeDeepLink();

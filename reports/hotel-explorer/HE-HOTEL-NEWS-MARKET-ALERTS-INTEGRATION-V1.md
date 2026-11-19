@@ -41,8 +41,11 @@ Excluded: `ORGANIZATION_CONTEXT_ONLY`, `AMBIGUOUS_MATCH`, `UNRELATED`
 - Example property-specific MA rows exist (e.g. Loews Nashville, Plaza Hotel) for positive matching demos.
 - Mullen / Marbeth: no MA hits in probe.
 
-## 6. Remaining blockers
+## 6. Closeout status (2026-11-19)
 
-- No production Tag apply until Market Alerts owner + founder authorize `MARKET_ALERTS_HOTEL_LINK_APPLY`.
-- Optional `HPC Hotel Record IDs` field not created (design-only).
-- Sources & Evidence deep-link to MA record IDs deferred to association maturity (reference by URL/dedupe, not duplicated HI evidence rows).
+See `HE-MARKET-ALERTS-INTEGRATION-CLOSEOUT-V1.md` + HE-QL-023.
+
+- Sources & Evidence: **wired** via GET `evidenceCitations` (no HI Evidence copy).
+- Association apply still gated (`MARKET_ALERTS_HOTEL_LINK_APPLY`); `HPC Hotel Record IDs` still design-only (field absent).
+- Bethesda property-specific MA coverage: discovery gap recorded (`HE-BETHESDA-MARKET-ALERTS-DISCOVERY-GAP-V1.md`).
+

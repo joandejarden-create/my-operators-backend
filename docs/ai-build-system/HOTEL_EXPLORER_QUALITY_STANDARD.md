@@ -1,9 +1,9 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.11`  
+**Version:** `hotel-explorer-quality-standard-v1.12`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
-**Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1` · `npm run test:he-hotel-news-from-market-alerts-v1` · `npm run test:he-guest-sentiment-brand-operator-v1`
+**Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1` · `npm run test:he-hotel-news-from-market-alerts-v1` · `npm run test:he-guest-sentiment-brand-operator-v1` · `npm run test:he-market-alerts-closeout-v1`
 
 ## Purpose
 
@@ -125,10 +125,12 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 - Brand / Operator tab may show **Hotel News & Articles** only when ≥1 property-relevant article exists; otherwise **hide the subsection** (no empty state).
 - Matching classes: `HOTEL_SPECIFIC` / `MULTI_HOTEL_SPECIFIC` visible; `ORGANIZATION_CONTEXT_ONLY` / `AMBIGUOUS_MATCH` / `UNRELATED` never shown as hotel news.
 - Brand- or sponsor-only coverage must not populate the subsection.
-- Association: Tags `hpc:<HPC record id>` (idempotent); optional designed field `HPC Hotel Record IDs` — apply only via authorized Market Alerts write (`MARKET_ALERTS_HOTEL_LINK_APPLY=1`).
-- GET `/api/hotel-explorer/hotels/:hotelId/news-articles` is read-only (`X-Dealality-Write: forbidden`); Market Alerts outage → invisible section, not a hard HE failure.
+- **Canonical hotel relationships:** Tags `hpc:<HPC record id>` (idempotent, multi-hotel via multiple tags) is the production association path today. Designed complementary multiline field `HPC Hotel Record IDs` supports one article → many HPC ids — **do not create the field or write associations** without Market Alerts owner + founder authorization (`MARKET_ALERTS_HOTEL_LINK_APPLY=1`). Never duplicate article rows for multi-hotel links.
+- **Automatic refresh:** After associations are approved and persisted, HE discovers them through the normal GET news read path (Tags / optional assoc field / property-name matching). Opening Brand/Operator or Sources must **not** write Airtable or trigger paid research (`writeOnRead: false`).
+- **Sources & Evidence:** Property-relevant Market Alerts articles surface as citations via the same GET payload (`evidenceCitations`) — preserve Market Alerts record id, source URL, publisher, publication date, supported hotel fact, and verification status. Do **not** copy articles into a second HI Evidence database.
+- GET `/api/hotel-explorer/hotels/:hotelId/news-articles` is read-only (`X-Dealality-Write: forbidden`); Market Alerts outage → invisible news section, not a hard HE failure.
 - Persist metadata/summaries/URLs only — not full copyrighted article text.
-- Shared modules: `lib/hotel-intelligence/hotel-news-from-market-alerts-v1.js`, `market-alerts-hotel-association-sync-v1.js`, `api/hotel-explorer-news-articles.js`.
+- Shared modules: `lib/hotel-intelligence/hotel-news-from-market-alerts-v1.js`, `market-alerts-hotel-association-sync-v1.js`, `market-alerts-evidence-citations-v1.js`, `api/hotel-explorer-news-articles.js`.
 
 ### 9d. Guest Sentiment & Reputation (Brand / Operator)
 

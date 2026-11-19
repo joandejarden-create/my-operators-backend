@@ -78,11 +78,11 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.11");
-  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 22);
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.12");
+  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 23);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.11"
+    "hotel-explorer-quality-standard-v1.12"
   );
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-016"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-017"));
@@ -91,6 +91,7 @@ run("registry_and_standard_exist", () => {
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-020"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-021"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-022"));
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-023"));
 });
 
 run("rejects_keyword_stuffed_and_id_leaking_descriptions", () => {
@@ -689,6 +690,29 @@ run("he_hotel_news_from_market_alerts_gates", () => {
   mustInclude(
     read("lib/hotel-intelligence/hotel-news-from-market-alerts-v1.js"),
     "HOTEL_SPECIFIC"
+  );
+});
+
+run("he_market_alerts_closeout_gates", () => {
+  const std = read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md");
+  mustInclude(std, "Sources & Evidence");
+  mustInclude(std, "HPC Hotel Record IDs");
+  mustInclude(std, "writeOnRead");
+  const ws = read("public/js/hotel-intelligence-workspace.js");
+  mustInclude(ws, "mountMarketAlertsEvidenceForSources");
+  mustInclude(ws, "market_alerts_id");
+  mustInclude(read("public/js/hotel-explorer.js"), "mountMarketAlertsEvidenceForSources");
+  const api = read("api/hotel-explorer-news-articles.js");
+  mustInclude(api, "evidenceCitations");
+  mustInclude(api, "writeOnRead");
+  mustNotMatch(api, /\.create\(|\.update\(/);
+  mustInclude(
+    read("lib/hotel-intelligence/market-alerts-evidence-citations-v1.js"),
+    "mergeMarketAlertsIntoCitations"
+  );
+  mustInclude(
+    read("lib/hotel-intelligence/hotel-news-from-market-alerts-v1.js"),
+    "planHpcAssocFieldMerge"
   );
 });
 
