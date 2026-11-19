@@ -1,6 +1,6 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.13`  
+**Version:** `hotel-explorer-quality-standard-v1.14`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
 **Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1` · `npm run test:he-hotel-news-from-market-alerts-v1` · `npm run test:he-guest-sentiment-brand-operator-v1` · `npm run test:he-market-alerts-closeout-v1` · `npm run test:he-async-section-loading-v1`
@@ -144,13 +144,17 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 
 ### 9d. Guest Sentiment & Reputation (Brand / Operator)
 
-- **Not a new Hotel Explorer tab.** Guest Sentiment lives inside **Brand / Operator** after Brand & Operator Overview and Hotel News & Articles.
+- **Not a new Hotel Explorer tab.** Guest Reputation & Experience lives inside **Brand / Operator** after Brand & Operator Overview and Hotel News & Articles (same Guest Sentiment data model).
+- Present a **dashboard**, not a flat text report when structured platform data exists: platform scorecards, Category Performance bars, executive insight cards, restrained trends status, collapsed Sources & Methodology.
 - Show platform-native rating, scale, review count, observation date, and listing link per source. **Never** silently average incompatible scales (e.g. Tripadvisor /5 vs Booking /10).
+- **Category Performance** uses platform-published category scores only. Do **not** label category scores as “Frequently praised” / guest-theme frequency unless licensed review-level evidence exists.
+- Review Theme Analysis and historical trend charts remain **hidden** when unsupported — never invent themes, percentages, or 30/90/180/365 series from one snapshot.
+- Executive insights must include finding + evidence + owner implication + confidence; do not imply CapEx / service failure without supporting evidence.
 - Live customer UI stays **hidden** unless `live_ui_authorized === true` from a rights-cleared store. Founder Proposed Preview may render staged public-listing metadata with an explicit rights chip.
 - No unauthorized paid provider calls from HE routes (`X-Dealality-Paid-Providers: forbidden`). No consumer OTA scrape. No full copyrighted review bodies unless licensed.
+- Independent loading (HE-QL-024): reputation provider failure must not block Brand overview or Hotel News.
 - Themes use `guest-theme-taxonomy-v1`; category scores are evidence of platform aggregates — not operational KPIs or CapEx proof. Do not emit precise % claims below `MIN_SAMPLE_FOR_PERCENT` (30).
-- Trends require ≥2 historical observations; a single snapshot must not manufacture 30/90/180/365-day series.
-- Incorrect hotel↔platform property matches, duplicate reviews, unsupported conclusions, and stale-as-current displays are regression failures (HE-QL-022).
+- Incorrect hotel↔platform property matches, duplicate reviews, unsupported conclusions, and stale-as-current displays are regression failures (HE-QL-022 / HE-QL-025).
 - Shared modules: `lib/hotel-intelligence/guest-sentiment/*`, `api/hotel-explorer-guest-sentiment.js`, Brand/Operator host in `hotel-intelligence-workspace.js`.
 
 ### 9a. Ownership & Control Network

@@ -3530,124 +3530,308 @@
     );
   }
 
-  function renderGuestSentimentSection(payload) {
-    if (!payload || payload.visible !== true) return "";
-    var platforms = payload.platforms || [];
-    var themes = payload.themes || [];
-    var insights = payload.insights || {};
-    var platRows = platforms
+  function renderSentimentScorecards(platforms) {
+    if (!platforms || !platforms.length) return "";
+    return (
+      '<div class="hiw-rep-scorecards" data-hiw-rep-scorecards="1">' +
+      platforms
+        .map(function (p) {
+          var rating =
+            p.rating != null
+              ? '<span class="hiw-rep-scorecard__rating">' +
+                esc(Number(p.rating).toFixed(1)) +
+                "</span>"
+              : '<span class="hiw-rep-scorecard__rating hiw-rep-scorecard__rating--na">—</span>';
+          var scale =
+            p.scaleMax != null
+              ? '<span class="hiw-rep-scorecard__scale">/ ' + esc(String(p.scaleMax)) + "</span>"
+              : "";
+          var link = p.listingUrl
+            ? '<a class="hiw-sentiment-link" href="' +
+              esc(p.listingUrl) +
+              '" target="_blank" rel="noopener noreferrer">Open listing</a>'
+            : "";
+          return (
+            '<article class="hiw-rep-scorecard" data-platform="' +
+            esc(p.platform || "") +
+            '">' +
+            '<header class="hiw-rep-scorecard__head">' +
+            '<h4 class="hiw-rep-scorecard__platform">' +
+            esc(p.platformLabel || p.platform) +
+            "</h4>" +
+            link +
+            "</header>" +
+            '<div class="hiw-rep-scorecard__score" aria-label="Native rating">' +
+            rating +
+            scale +
+            "</div>" +
+            '<div class="hiw-rep-scorecard__meta">' +
+            '<span class="hiw-rep-scorecard__reviews">' +
+            (p.reviewCount != null
+              ? esc(formatCount(p.reviewCount)) + " reviews"
+              : "Review count unavailable") +
+            "</span>" +
+            '<span class="hiw-rep-scorecard__fresh">' +
+            (p.observedAt ? "Observed " + esc(p.observedAt) : "Freshness unknown") +
+            "</span>" +
+            "</div>" +
+            "</article>"
+          );
+        })
+        .join("") +
+      "</div>" +
+      '<p class="hiw-prose hiw-prose--quiet hiw-rep-scale-note">Native platform scales and review populations differ — scores are never averaged into a combined index.</p>'
+    );
+  }
+
+  function renderCategoryBars(categories) {
+    if (!categories || !categories.length) {
+      return '<p class="hiw-prose hiw-prose--quiet">No category scores for this platform.</p>';
+    }
+    var sorted = categories.slice().sort(function (a, b) {
+      var pa = a.pct != null ? a.pct : -1;
+      var pb = b.pct != null ? b.pct : -1;
+      return pb - pa;
+    });
+    return (
+      '<ul class="hiw-rep-bars" role="list">' +
+      sorted
+        .map(function (c) {
+          var pct = c.pct != null ? Math.max(0, Math.min(100, c.pct)) : 0;
+          return (
+            '<li class="hiw-rep-bar">' +
+            '<div class="hiw-rep-bar__label">' +
+            '<span>' +
+            esc(c.label) +
+            "</span>" +
+            '<span class="hiw-rep-bar__score">' +
+            esc(c.scoreDisplay || "—") +
+            "</span>" +
+            "</div>" +
+            '<div class="hiw-rep-bar__track" role="presentation">' +
+            '<div class="hiw-rep-bar__fill" style="width:' +
+            pct +
+            '%"></div>' +
+            "</div>" +
+            "</li>"
+          );
+        })
+        .join("") +
+      "</ul>"
+    );
+  }
+
+  function renderCategoryPerformance(cp) {
+    if (!cp || cp.available !== true || !(cp.platforms || []).length) return "";
+    var active =
+      cp.defaultPlatform ||
+      (cp.platforms[0] && cp.platforms[0].platform) ||
+      "";
+    var tabs = cp.platforms
       .map(function (p) {
-        var link = p.listingUrl
-          ? '<a class="hiw-sentiment-link" href="' +
-            esc(p.listingUrl) +
-            '" target="_blank" rel="noopener noreferrer">Open listing</a>'
-          : "";
+        var isOn = p.platform === active;
         return (
-          "<tr><th scope=\"row\">" +
+          '<button type="button" class="hiw-rep-cat-tab' +
+          (isOn ? " is-active" : "") +
+          '" data-hiw-rep-cat-platform="' +
+          esc(p.platform) +
+          '" aria-pressed="' +
+          (isOn ? "true" : "false") +
+          '">' +
           esc(p.platformLabel || p.platform) +
-          "</th><td>" +
-          esc(p.ratingDisplay || "—") +
-          "</td><td>" +
-          esc(p.reviewCount != null ? formatCount(p.reviewCount) : "—") +
-          "</td><td>" +
-          esc(p.observedAt || "—") +
-          "</td><td>" +
-          link +
-          "</td></tr>"
+          "</button>"
         );
       })
       .join("");
-
-    var strengthThemes = themes.filter(function (t) {
-      return t.polarity === "strength";
-    });
-    var concernThemes = themes.filter(function (t) {
-      return t.polarity === "concern";
-    });
-    function themeList(list) {
-      if (!list.length) {
-        return '<p class="hiw-prose hiw-prose--quiet">No directional category themes in the permitted sample.</p>';
-      }
-      return (
-        '<ul class="hiw-sentiment-theme-list">' +
-        list
-          .map(function (t) {
-            var ev = (t.evidence || [])
-              .map(function (e) {
-                return esc(e.platform) + " " + esc(e.scoreDisplay);
-              })
-              .join("; ");
-            return (
-              "<li><strong>" +
-              esc(t.label) +
-              "</strong>" +
-              (ev ? '<span class="hiw-sentiment-theme-ev"> — ' + ev + "</span>" : "") +
-              "</li>"
-            );
-          })
-          .join("") +
-        "</ul>"
-      );
-    }
-
-    var trends =
-      payload.trends && payload.trends.available
-        ? '<p class="hiw-prose">Historical observation windows are available for trend comparison.</p>'
-        : '<p class="hiw-prose hiw-prose--quiet">Trends unavailable — insufficient historical observations (single snapshot only).</p>';
-
-    var followUps = (insights.followUps || [])
-      .map(function (f) {
-        return "<li>" + esc(f) + "</li>";
+    var panels = cp.platforms
+      .map(function (p) {
+        var isOn = p.platform === active;
+        return (
+          '<div class="hiw-rep-cat-panel" data-hiw-rep-cat-panel="' +
+          esc(p.platform) +
+          '"' +
+          (isOn ? "" : " hidden") +
+          ">" +
+          renderCategoryBars(p.categories) +
+          "</div>"
+        );
       })
       .join("");
+    return (
+      '<div class="hiw-rep-block" data-hiw-rep-category="1">' +
+      '<div class="hiw-rep-block__head">' +
+      '<h4 class="hiw-section__h hiw-section__h--sub">Category Performance</h4>' +
+      '<p class="hiw-prose hiw-prose--quiet">' +
+      esc(
+        cp.note ||
+          "Platform-published category scores — not review-theme frequency counts."
+      ) +
+      "</p>" +
+      "</div>" +
+      '<div class="hiw-rep-cat-tabs" role="tablist" aria-label="Category platform">' +
+      tabs +
+      "</div>" +
+      panels +
+      "</div>"
+    );
+  }
 
+  function renderExecutiveInsights(cards) {
+    if (!cards || !cards.length) return "";
+    return (
+      '<div class="hiw-rep-block" data-hiw-rep-insights="1">' +
+      '<h4 class="hiw-section__h hiw-section__h--sub">Guest Experience Insights</h4>' +
+      '<div class="hiw-rep-insights">' +
+      cards
+        .map(function (c) {
+          return (
+            '<article class="hiw-rep-insight" data-insight="' +
+            esc(c.id || "") +
+            '">' +
+            '<h5 class="hiw-rep-insight__title">' +
+            esc(c.title) +
+            "</h5>" +
+            '<p class="hiw-rep-insight__finding">' +
+            esc(c.finding) +
+            "</p>" +
+            (c.evidence
+              ? '<p class="hiw-rep-insight__evidence"><span class="hiw-rep-insight__k">Evidence</span> ' +
+                esc(c.evidence) +
+                "</p>"
+              : "") +
+            (c.implication
+              ? '<p class="hiw-rep-insight__impl"><span class="hiw-rep-insight__k">Implication</span> ' +
+                esc(c.implication) +
+                "</p>"
+              : "") +
+            (c.confidence
+              ? '<p class="hiw-rep-insight__conf">' + esc(c.confidence) + "</p>"
+              : "") +
+            "</article>"
+          );
+        })
+        .join("") +
+      "</div></div>"
+    );
+  }
+
+  function renderReviewThemes(rt) {
+    if (!rt || rt.available !== true || !(rt.items || []).length) return "";
+    return (
+      '<div class="hiw-rep-block" data-hiw-rep-themes="1">' +
+      '<h4 class="hiw-section__h hiw-section__h--sub">Review Theme Analysis</h4>' +
+      '<ul class="hiw-sentiment-theme-list">' +
+      rt.items
+        .map(function (t) {
+          return (
+            "<li><strong>" +
+            esc(t.label || t.theme) +
+            "</strong>" +
+            (t.sampleCount != null
+              ? ' <span class="hiw-sentiment-theme-ev">(' +
+                esc(String(t.sampleCount)) +
+                ")</span>"
+              : "") +
+            (t.summary ? " — " + esc(t.summary) : "") +
+            "</li>"
+          );
+        })
+        .join("") +
+      "</ul></div>"
+    );
+  }
+
+  function renderReputationTrends(trends) {
+    var available = trends && trends.available === true;
+    return (
+      '<div class="hiw-rep-block" data-hiw-rep-trends="1">' +
+      '<h4 class="hiw-section__h hiw-section__h--sub">Reputation Trends</h4>' +
+      (available
+        ? '<p class="hiw-prose">Historical observation windows are available for trend comparison.</p>'
+        : '<p class="hiw-rep-trend-status" role="status">Trend data not yet available — 30 / 90 / 180 / 365-day windows require additional historical observations. This snapshot is not projected into a chart.</p>') +
+      "</div>"
+    );
+  }
+
+  function renderSentimentMethodology(payload) {
     var lim = (payload.limitations || [])
-      .slice(0, 6)
+      .slice(0, 8)
       .map(function (l) {
         return "<li>" + esc(l) + "</li>";
       })
       .join("");
-
+    var followUps = ((payload.insights && payload.insights.followUps) || [])
+      .map(function (f) {
+        return "<li>" + esc(f) + "</li>";
+      })
+      .join("");
+    if (!lim && !followUps) return "";
     return (
-      '<section class="hiw-section hiw-section--guest-sentiment" data-hiw-guest-sentiment="1">' +
-      '<h3 class="hiw-section__h">Guest Sentiment &amp; Reputation</h3>' +
-      (payload.rightsChip
-        ? '<p class="hiw-chip hiw-chip--proposed">' + esc(payload.rightsChip) + "</p>"
-        : "") +
-      '<p class="hiw-prose hiw-prose--quiet">Platform-native scores only — incompatible scales are not averaged.</p>' +
-      '<div class="hiw-table-wrap">' +
-      '<table class="hiw-table hiw-table--sentiment"><thead><tr>' +
-      "<th>Platform</th><th>Native rating</th><th>Reviews</th><th>Observed</th><th>Source</th>" +
-      "</tr></thead><tbody>" +
-      platRows +
-      "</tbody></table></div>" +
-      '<details class="hiw-sentiment-details">' +
-      "<summary>Guest Experience Insights</summary>" +
+      '<details class="hiw-sentiment-details hiw-rep-methodology">' +
+      "<summary>Sources &amp; Methodology</summary>" +
       '<div class="hiw-sentiment-insights">' +
-      (insights.executiveSummary
-        ? '<p class="hiw-prose">' + esc(insights.executiveSummary) + "</p>"
-        : "") +
-      (insights.interpretationNote
-        ? '<p class="hiw-prose hiw-prose--quiet">' + esc(insights.interpretationNote) + "</p>"
-        : "") +
-      '<h4 class="hiw-section__h hiw-section__h--sub">Frequently praised (category scores)</h4>' +
-      themeList(strengthThemes) +
-      '<h4 class="hiw-section__h hiw-section__h--sub">Relative concerns (category scores)</h4>' +
-      themeList(concernThemes) +
-      '<h4 class="hiw-section__h hiw-section__h--sub">Sentiment change</h4>' +
-      trends +
-      (followUps
-        ? '<h4 class="hiw-section__h hiw-section__h--sub">Recommended follow-ups</h4><ul class="hiw-sentiment-followups">' +
-          followUps +
-          "</ul>"
+      (payload.insights && payload.insights.interpretationNote
+        ? '<p class="hiw-prose hiw-prose--quiet">' +
+          esc(payload.insights.interpretationNote) +
+          "</p>"
         : "") +
       (lim
-        ? '<h4 class="hiw-section__h hiw-section__h--sub">Sources &amp; limitations</h4><ul class="hiw-sentiment-limits">' +
+        ? '<h5 class="hiw-rep-methodology__h">Limitations</h5><ul class="hiw-sentiment-limits">' +
           lim +
           "</ul>"
         : "") +
-      "</div></details></section>"
+      (followUps
+        ? '<h5 class="hiw-rep-methodology__h">Recommended follow-ups</h5><ul class="hiw-sentiment-followups">' +
+          followUps +
+          "</ul>"
+        : "") +
+      '<p class="hiw-prose hiw-prose--quiet">Platform listing links above open primary sources. Hotel Explorer Sources &amp; Evidence remains the citation rail for ownership claims.</p>' +
+      "</div></details>"
     );
+  }
+
+  function renderGuestSentimentSection(payload) {
+    if (!payload || payload.visible !== true) return "";
+    var platforms = payload.platforms || [];
+    if (!platforms.length) return "";
+
+    return (
+      '<section class="hiw-section hiw-section--guest-sentiment hiw-section--rep-dashboard" data-hiw-guest-sentiment="1" data-hiw-rep-dashboard="1">' +
+      '<div class="hiw-rep-dash-head">' +
+      '<h3 class="hiw-section__h">Guest Reputation &amp; Experience</h3>' +
+      (payload.rightsChip
+        ? '<p class="hiw-chip hiw-chip--proposed">' + esc(payload.rightsChip) + "</p>"
+        : "") +
+      "</div>" +
+      renderSentimentScorecards(platforms) +
+      renderCategoryPerformance(payload.categoryPerformance) +
+      renderExecutiveInsights(payload.executiveInsights) +
+      renderReviewThemes(payload.reviewThemes) +
+      renderReputationTrends(payload.trends) +
+      renderSentimentMethodology(payload) +
+      "</section>"
+    );
+  }
+
+  function bindGuestSentimentDashboard(root) {
+    if (!root || root.__hiwRepBound) return;
+    root.__hiwRepBound = true;
+    root.addEventListener("click", function (ev) {
+      var btn = ev.target.closest("[data-hiw-rep-cat-platform]");
+      if (!btn || !root.contains(btn)) return;
+      var plat = btn.getAttribute("data-hiw-rep-cat-platform");
+      if (!plat) return;
+      var tabs = root.querySelectorAll("[data-hiw-rep-cat-platform]");
+      for (var i = 0; i < tabs.length; i++) {
+        var on = tabs[i].getAttribute("data-hiw-rep-cat-platform") === plat;
+        tabs[i].classList.toggle("is-active", on);
+        tabs[i].setAttribute("aria-pressed", on ? "true" : "false");
+      }
+      var panels = root.querySelectorAll("[data-hiw-rep-cat-panel]");
+      for (var j = 0; j < panels.length; j++) {
+        panels[j].hidden = panels[j].getAttribute("data-hiw-rep-cat-panel") !== plat;
+      }
+    });
   }
 
   function fetchGuestSentiment(opts, fetchOpts) {
@@ -3682,8 +3866,8 @@
       host.hidden = false;
       host.innerHTML =
         '<section class="hiw-section he-async-loading" data-hiw-guest-sentiment-loading="1">' +
-        '<h3 class="hiw-section__h">Guest Sentiment &amp; Reputation</h3>' +
-        heWaveCompact("Loading guest sentiment…") +
+        '<h3 class="hiw-section__h">Guest Reputation &amp; Experience</h3>' +
+        heWaveCompact("Loading guest reputation…") +
         "</section>";
       return;
     }
@@ -3691,9 +3875,9 @@
       host.hidden = false;
       host.innerHTML =
         '<section class="hiw-section" data-hiw-guest-sentiment-error="1">' +
-        '<h3 class="hiw-section__h">Guest Sentiment &amp; Reputation</h3>' +
+        '<h3 class="hiw-section__h">Guest Reputation &amp; Experience</h3>' +
         heAsyncError(
-          result.message || "Guest sentiment is temporarily unavailable.",
+          result.message || "Guest reputation is temporarily unavailable.",
           "guest-sentiment"
         ) +
         "</section>";
@@ -3704,6 +3888,7 @@
       host.innerHTML =
         renderGuestSentimentSection(result.payload) +
         '<p class="hiw-prose hiw-prose--quiet he-async-stale">Showing last available sentiment while refresh continues.</p>';
+      bindGuestSentimentDashboard(host.querySelector("[data-hiw-rep-dashboard]"));
       return;
     }
     var payload = result && result.payload;
@@ -3714,6 +3899,7 @@
     }
     host.hidden = false;
     host.innerHTML = renderGuestSentimentSection(payload);
+    bindGuestSentimentDashboard(host.querySelector("[data-hiw-rep-dashboard]"));
   }
 
   function mountGuestSentiment(opts) {
@@ -3731,7 +3917,7 @@
     if (!sentimentAsync) {
       host.hidden = false;
       host.innerHTML =
-        '<section class="hiw-section">' + heWaveCompact("Loading guest sentiment…") + "</section>";
+        '<section class="hiw-section">' + heWaveCompact("Loading guest reputation…") + "</section>";
       fetchGuestSentiment(opts)
         .then(function (payload) {
           paintGuestSentimentHost(host, {
@@ -3745,7 +3931,7 @@
         .catch(function () {
           paintGuestSentimentHost(host, {
             state: "ERROR",
-            message: "Guest sentiment is temporarily unavailable.",
+            message: "Guest reputation is temporarily unavailable.",
           });
         });
       return;

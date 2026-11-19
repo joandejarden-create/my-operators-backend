@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.13",
+  "version": "hotel-explorer-founder-quality-lessons-v1.14",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -246,6 +246,15 @@
       "sharedComponent": "dealality-wave-loader.js/css; he-async-section-v1.js; hotel-intelligence-workspace.js; hotel-contact-intelligence.js; he-ownership-control-network-v1.js",
       "regressionTest": "he_async_section_loading_gates",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v12-async-brand-loading.png; quality-v12-async-news-empty.png; quality-v12-async-sentiment-error.png; quality-v12-async-contacts-ready.png; reports/hotel-explorer/HE-ASYNC-INDEPENDENT-LOADING-V12.md"
+    },
+    {
+      "id": "HE-QL-025",
+      "originalProblem": "Guest Sentiment subsection was flat, text-heavy, and mislabeled platform category scores as frequently praised themes",
+      "rootCause": "Table + long narrative presentation without scorecards, category bars, or structured executive insights; category aggregates conflated with review-theme frequency",
+      "approvedStandard": "Guest Reputation & Experience dashboard inside Brand/Operator: platform scorecards (native scales, no averages), Category Performance bars with platform switcher, 3–5 executive insight cards, hide unsupported themes/trends, collapsed Sources & Methodology; independent wave loading preserved",
+      "sharedComponent": "guest-sentiment-model-v1.js; hotel-intelligence-workspace.js renderGuestSentimentSection; hotel-explorer.css hiw-rep-*",
+      "regressionTest": "he_guest_sentiment_brand_operator_gates / test:he-guest-sentiment-brand-operator-v1",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v13-rep-scorecards.png; quality-v13-rep-category.png; quality-v13-rep-insights.png; quality-v13-rep-methodology.png; quality-v13-rep-empty-kgpv.png; reports/hotel-explorer/HE-GUEST-REPUTATION-DASHBOARD-V13.md"
     }
   ]
 }

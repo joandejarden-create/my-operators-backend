@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * HE Guest Sentiment — Brand / Operator subsection gates (HE-QL-022).
+ * HE Guest Sentiment / Reputation dashboard — Brand / Operator (HE-QL-022 / HE-QL-025).
  */
 import assert from "node:assert/strict";
 import fs from "node:fs";
@@ -81,6 +81,40 @@ const KGPV = "recUNycnMwOVFX0hc";
   );
   // No invented Google platform when unresolved
   assert.ok(!preview.platforms.some((p) => p.platform === "GOOGLE"));
+  assert.equal(preview.dashboardVariant, "guest-reputation-experience-v1");
+  assert.ok(preview.categoryPerformance?.available === true);
+  assert.ok(preview.categoryPerformance?.platforms?.length >= 1);
+  assert.ok((preview.executiveInsights || []).length >= 2);
+  assert.equal(preview.reviewThemes?.available, false);
+  assert.ok(
+    preview.platforms.every((p) => Array.isArray(p.categoryScores)),
+    "platforms expose categoryScores for dashboard bars"
+  );
+  // Different coverage packet shape still builds without averaging
+  const sparse = buildGuestSentimentView(
+    { id: "recTESTSPARSE0001", name: "Sparse Coverage Hotel" },
+    {
+      founder_preview_render: true,
+      live_ui_authorized: false,
+      observations: [
+        {
+          platform: "TRIPADVISOR",
+          rating: 3.8,
+          scaleMax: 5,
+          reviewCount: 12,
+          observedAt: "2026-11-19",
+          listingUrl: "https://www.tripadvisor.com/example",
+          categoryScores: [{ label: "Cleanliness", score: 4.0, scaleMax: 5 }],
+        },
+      ],
+      history: [],
+    },
+    { founderPreview: true }
+  );
+  assert.equal(sparse.visible, true);
+  assert.equal(sparse.platforms.length, 1);
+  assert.equal(sparse.categoryPerformance.platforms.length, 1);
+  assert.ok(!String(JSON.stringify(sparse)).includes("Frequently praised"));
 }
 
 // Wrong hotel / KGPV without packet → hidden
@@ -190,16 +224,20 @@ const KGPV = "recUNycnMwOVFX0hc";
   assert.equal(schema.applyAuthorized, false);
 }
 
-// UI: Guest Sentiment inside Brand/Operator — not a new tab
+// UI: Guest Reputation dashboard inside Brand/Operator — not a new tab
 {
   const ws = read("public/js/hotel-intelligence-workspace.js");
   assert.ok(ws.includes("data-hiw-guest-sentiment-host"));
-  assert.ok(ws.includes("Guest Sentiment"));
+  assert.ok(ws.includes("Guest Reputation"));
+  assert.ok(ws.includes("hiw-rep-scorecards"));
+  assert.ok(ws.includes("Category Performance"));
+  assert.ok(ws.includes("Sources &amp; Methodology"));
+  assert.ok(!ws.includes("Frequently praised"));
   assert.ok(ws.includes("mountGuestSentiment"));
   assert.ok(!/id:\s*"guest-sentiment"|id:\s*"sentiment"/.test(ws));
   const tabs = ws.match(/var TABS = \[[\s\S]*?\];/);
   assert.ok(tabs);
-  assert.ok(!/Guest Sentiment/.test(tabs[0]));
+  assert.ok(!/Guest Sentiment|Guest Reputation/.test(tabs[0]));
   assert.ok(ws.includes("Brand / Operator"));
   assert.ok(ws.includes("data-hiw-hotel-news-host"), "news host preserved");
 }
@@ -215,6 +253,9 @@ const KGPV = "recUNycnMwOVFX0hc";
   const api = read("api/hotel-explorer-guest-sentiment.js");
   assert.ok(api.includes("X-Dealality-Write"));
   assert.ok(api.includes("X-Dealality-Paid-Providers"));
+  assert.ok(api.includes("executiveInsights"));
+  assert.ok(api.includes("categoryPerformance"));
+  assert.ok(api.includes("reviewThemes"));
   assert.ok(!/\.create\(|\.update\(/.test(api));
   assert.ok(!/apify|rapid|demand.?api|places\.googleapis/i.test(api));
 }
@@ -223,16 +264,21 @@ const KGPV = "recUNycnMwOVFX0hc";
   const css = read("public/css/hotel-explorer.css");
   assert.ok(css.includes("hiw-guest-sentiment-host"));
   assert.ok(css.includes("hiw-sentiment-link"));
+  assert.ok(css.includes("hiw-rep-scorecard"));
+  assert.ok(css.includes("hiw-rep-bar__fill"));
 }
 
 {
   const std = read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md");
   assert.ok(std.includes("Guest Sentiment"));
+  assert.ok(std.includes("Category Performance"));
   assert.ok(std.includes("Brand / Operator"));
+  assert.ok(/label category scores as/i.test(std));
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-022"));
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-025"));
 }
 
 assert.ok(SENTIMENT_PLATFORMS.TRIPADVISOR.scaleMax === 5);
