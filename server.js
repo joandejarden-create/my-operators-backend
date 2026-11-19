@@ -268,6 +268,10 @@ import {
   updateLegalTermsByBrandId,
   getOperationalSupportByBrandId
 } from "./api/brand-library.js";
+import {
+  postBrandExplorerCompareReview,
+  getBrandExplorerCompareReview,
+} from "./api/brand-explorer-compare-review.js";
 import submitThirdPartyOperator from "./api/third-party-operator-intake.js";
 import listThirdPartyOperators from "./api/third-party-operators-list.js";
 import getThirdPartyOperatorDetail from "./api/third-party-operator-detail.js";
@@ -3320,6 +3324,9 @@ app.get("/api/capital-provider-explorer/provider", optionalDealalityAuth, getCap
 app.get("/api/brand-library/operational-support", getOperationalSupportByBrandId);
 app.get("/api/brand-library/brands", getBrandLibraryBrands);
 app.get("/api/brand-library/brand", getBrandLibraryBrandById);
+// Brand Explorer Comparison Studio — local founder review only (no Airtable writes)
+app.get("/api/brand-explorer-compare/review", ...internalRunbookAuth, getBrandExplorerCompareReview);
+app.post("/api/brand-explorer-compare/review", ...internalRunbookAuth, postBrandExplorerCompareReview);
 app.get("/api/brand-library/brand-status-options", getBrandStatusOptions);
 app.patch("/api/brand-library/brand/:recordId", updateBrandBasicsById);
 app.patch("/api/brand-library/brand/:recordId/sustainability-esg", updateSustainabilityEsgByBrandId);

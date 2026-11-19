@@ -6707,6 +6707,16 @@
   window.addEventListener('brand-explorer-detail-loaded', onDetailLoaded);
   window.addEventListener('brand-explorer-list-loaded', onBrandListLoaded);
 
+  function activateAtelierTab(rootEl, tabId) {
+    if (!rootEl || !tabId) return false;
+    var nav = rootEl.querySelector('[data-be-atelier-nav]');
+    if (!nav) return false;
+    var btn = nav.querySelector('.section-nav-item[data-atelier-tab="' + tabId + '"]');
+    if (!btn) return false;
+    btn.click();
+    return true;
+  }
+
   window.BrandExplorerAtelierFromApi = {
     mountIntoRoot: mountAtelierIntoRoot,
     mountFromBrand: mountAtelierFromBrand,
@@ -6719,6 +6729,9 @@
     isInternalPreviewRequest: isInternalPreviewRequest,
     isFactoryPreviewRequest: isFactoryPreviewRequest,
     isCandidateOverlayRequest: isCandidateOverlayRequest,
-    canRenderFactoryPreview: canRenderFactoryPreview
+    canRenderFactoryPreview: canRenderFactoryPreview,
+    applyCandidateOverlayToBrand: applyCandidateOverlayToBrand,
+    activateAtelierTab: activateAtelierTab,
+    ATELIER_TAB_DEFS: ATELIER_TAB_DEFS
   };
 })();

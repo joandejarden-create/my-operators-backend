@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" class="becs-page" data-brand-explorer-unified-tabs="1">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brand Explorer Comparison Studio — Dealality (Internal)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/dealality-explorer-platform.css" />
+  <link rel="stylesheet" href="/css/brand-explorer-atelier-list-parity.css?v=3" />
+  <link rel="stylesheet" href="/css/brand-explorer-gold-surface.css" />
+  <link rel="stylesheet" href="/css/brand-explorer-atelier-oe-panels.css" />
+  <link rel="stylesheet" href="/css/brand-explorer-compare-studio.css" />
+</head>
+<body>
+  <div class="becs-shell">
+    <header class="becs-topbar">
+      <h1>Brand Explorer Comparison Studio</h1>
+      <span class="becs-badge">Internal · Temporary · No Airtable writes</span>
+      <div class="becs-controls">
+        <label>Brand
+          <select id="becsBrand"></select>
+        </label>
+        <div id="becsTabs" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+        <label style="flex-direction:row;align-items:center;gap:6px">
+          <input type="checkbox" id="becsSyncScroll" checked /> Sync scroll
+        </label>
+        <button type="button" id="becsFullBoth">Both</button>
+        <button type="button" id="becsFullLeft">Full left</button>
+        <button type="button" id="becsFullRight">Full right</button>
+        <button type="button" id="becsExport">Export review report</button>
+      </div>
+    </header>
+
+    <div class="becs-summary" id="becsSummary" aria-label="Changes summary"></div>
+    <div class="becs-scorecard" id="becsScorecard"></div>
+
+    <div class="becs-main">
+      <aside class="becs-sidebar">
+        <h2>Changed fields</h2>
+        <ul class="becs-change-list" id="becsChangeList"></ul>
+      </aside>
+      <div class="becs-panes" id="becsPanes">
+        <section class="becs-pane becs-pane-left">
+          <div class="becs-pane-head">
+            <strong id="becsLeftLabel">CURRENT PROFILE</strong>
+            <span class="tag" id="becsLeftTag">Loading…</span>
+          </div>
+          <div class="becs-pane-body" id="becsLeftScroll"></div>
+        </section>
+        <section class="becs-pane becs-pane-right">
+          <div class="becs-pane-head">
+            <strong id="becsRightLabel">RECREATED PROFILE</strong>
+            <span class="tag" id="becsRightTag">Loading…</span>
+          </div>
+          <div class="becs-pane-body" id="becsRightScroll"></div>
+        </section>
+      </div>
+    </div>
+
+    <div class="becs-review-drawer" id="becsReviewDrawer">
+      <h3>Field review</h3>
+      <p class="becs-review-meta">Select a changed field from the list.</p>
+    </div>
+    <div class="becs-status-bar" id="becsStatus">Starting…</div>
+  </div>
+
+  <script src="/js/brand-explorer-census-metrics.js"></script>
+  <script src="/js/brand-explorer-atelier-from-api.js"></script>
+  <script src="/js/brand-explorer-compare-studio.js"></script>
+</body>
+</html>
