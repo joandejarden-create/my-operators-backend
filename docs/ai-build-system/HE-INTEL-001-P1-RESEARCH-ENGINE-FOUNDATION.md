@@ -1,7 +1,7 @@
 # HE-INTEL-001 P1 — Hotel Intelligence Research Engine Foundation
 
 **Contract:** `HOTEL_INTELLIGENCE_RESEARCH_ENGINE_V1` (`1.0.0-p1`)  
-**Status:** Implementation complete — awaiting founder review / Integration Controller merge  
+**Status:** Founder-review corrections applied — awaiting final founder approval / Integration Controller merge  
 **Airtable apply:** disabled  
 **Paid providers:** disabled  
 
@@ -15,16 +15,24 @@ Promotes `full-research-workflow-v2` into a versioned, deterministic, resumable 
 | 2 | Deterministic stage graph | `stages.js` |
 | 3 | Canonical HPC + pilot manifest | `pilot-manifest.js` + `fixtures/hotel-explorer/HE-INTEL-001-pilot-16-manifest-frozen-v1.json` |
 | 4 | Standardized outputs | `output-schemas.js` |
-| 5 | Durable cases / resume | `supervisor.js` → `research-case-store` (reuse) |
+| 5 | Durable cases / resume | `supervisor.js` → `research-case-store` (reuse); COMPLETE checkpoint persisted before putCase |
 | 6 | Failure classifications | `FAILURE_CLASS` in `contract.js` |
 | 7 | Org/person/rel/channel dedupe keys | `entity-keys.js` |
-| 8 | Provider-neutral interface | `provider-interface.js` |
-| 9 | Budget / usage ledger | `budget-ledger.js` |
-| 10 | Dry-run vs apply | `apply-policy.js` (APPLY blocked) |
-| 11 | Authenticated routes | `api/hotel-intelligence-research-engine-v1.js` + `server.js` mounts |
-| 12 | HE Contact VM projection | `he-contact-projection.js` (`ownershipSummary`) |
-| 13 | Golden-demo isolation | `golden-demo-isolation.js` (KGPV excluded) |
-| 14 | Regression harness | `npm run test:he-intel-001-research-engine-v1` |
+| 8 | Provider-neutral interface | `provider-interface.js` → sealed adapters |
+| 9 | Fail-closed execution gateway | `execution-gateway.js` (auth → reserve → execute → settle; durable op id) |
+| 10 | Budget / usage ledger | `budget-ledger.js` (`reserve` / `settle` / `release`) |
+| 11 | Dry-run vs apply | `apply-policy.js` (APPLY blocked) |
+| 12 | Authenticated routes | `api/hotel-intelligence-research-engine-v1.js` + `requireAdminAccess`; unauth local never in production |
+| 13 | HE Contact VM projection | `he-contact-projection.js` (`ownershipSummary`) |
+| 14 | Golden-demo isolation | `golden-demo-isolation.js` (KGPV excluded) |
+| 15 | Regression harness | `npm run test:he-intel-001-research-engine-v1` |
+
+## Execution modes (do not conflate)
+
+| Mode | Meaning |
+| --- | --- |
+| `OFFLINE_DETERMINISTIC_STAGING` | P1 default — structured stage traversal; **not** verified live research |
+| `LIVE_STAGE_RESEARCH` | Future genuine live stage-level research (not claimed by offline staging) |
 
 ## Stage graph (same for every pilot hotel)
 

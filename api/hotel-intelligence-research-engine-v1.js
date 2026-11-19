@@ -2,8 +2,8 @@
  * Authenticated research route contracts for HOTEL_INTELLIGENCE_RESEARCH_ENGINE_V1.
  * P1: dry-run / status only — no Airtable apply, no paid providers.
  *
- * Mount (optional until Integration wires auth middleware):
- *   import { getHeIntelEngineMeta, postHeIntelEngineDryRun } from "./api/hotel-intelligence-research-engine-v1.js";
+ * Auth: Memberstack + Dealality user + admin/workspace-admin required for initiation.
+ * HE_INTEL_ENGINE_ALLOW_UNAUTH_LOCAL never applies in production.
  */
 
 import {
@@ -18,23 +18,125 @@ import {
   APPLY_MODE,
   KGPV_HPC_ID,
 } from "../lib/hotel-intelligence/research-engine-v1/index.js";
+import { WORKSPACE_ADMIN } from "../lib/company-workspace-access.js";
+import { hasLocalDealalityAdminAccess } from "../lib/dealality/local-dealality-admin-access.js";
 
-function requireAuth(req, res) {
-  // Mirror other HI routes: Memberstack / Dealality user must be present when mounted.
-  if (req.dealalityUser || req.user || req.member) return true;
-  if (String(process.env.HE_INTEL_ENGINE_ALLOW_UNAUTH_LOCAL || "").trim() === "1") {
-    return true;
+/**
+ * Production-safe environment check (never trust unauth flag in prod).
+ */
+export function isHeIntelProductionEnv(env = process.env) {
+  const nodeEnv = String(env.NODE_ENV || "").trim().toLowerCase();
+  const vercelEnv = String(env.VERCEL_ENV || "").trim().toLowerCase();
+  if (nodeEnv === "production") return true;
+  if (vercelEnv === "production") return true;
+  return false;
+}
+
+/**
+ * Whether local unauth bypass flag is honored.
+ * Production: always false. Non-production: only when explicitly set.
+ */
+export function allowHeIntelUnauthLocal(env = process.env) {
+  if (isHeIntelProductionEnv(env)) return false;
+  return String(env.HE_INTEL_ENGINE_ALLOW_UNAUTH_LOCAL || "").trim() === "1";
+}
+
+/**
+ * Research initiation authorization.
+ * Requires verified Dealality identity + admin / workspace-admin (or local admin).
+ * Customer/share contexts without admin are refused.
+ *
+ * @returns {{ ok: true } | { ok: false, status: number, body: object }}
+ */
+export function assertHeIntelEngineAuth(req, env = process.env) {
+  const contract = ENGINE_CONTRACT_ID;
+
+  // Production must never honor unauth local flag
+  if (isHeIntelProductionEnv(env) && String(env.HE_INTEL_ENGINE_ALLOW_UNAUTH_LOCAL || "").trim() === "1") {
+    // Flag present in prod is ignored for access; still require real identity below.
   }
-  res.status(401).json({
+
+  const user = req?.dealalityUser || null;
+  if (!user) {
+    if (allowHeIntelUnauthLocal(env)) {
+      return { ok: true, auth_mode: "UNAUTH_LOCAL_DEV_ONLY" };
+    }
+    return {
+      ok: false,
+      status: 401,
+      body: {
+        ok: false,
+        error: "UNAUTHORIZED",
+        message: "Dealality identity required.",
+        contract,
+      },
+    };
+  }
+
+  // Customer / share isolation: share tokens and customer-only users cannot initiate research
+  if (user.isShareSession === true || user.shareToken || user.authMode === "share") {
+    return {
+      ok: false,
+      status: 403,
+      body: {
+        ok: false,
+        error: "FORBIDDEN_SHARE_ISOLATION",
+        message: "Share sessions cannot initiate hotel intelligence research.",
+        contract,
+      },
+    };
+  }
+
+  if (user.isCustomerOnly === true || user.customerShare === true) {
+    return {
+      ok: false,
+      status: 403,
+      body: {
+        ok: false,
+        error: "FORBIDDEN_CUSTOMER_ISOLATION",
+        message: "Customer contexts cannot initiate hotel intelligence research.",
+        contract,
+      },
+    };
+  }
+
+  const isAdmin = user.isAdmin === true || user.flags?.isAdmin === true;
+  const workspaces = Array.isArray(user.workspaceAccess) ? user.workspaceAccess : [];
+  const isWorkspaceAdmin = workspaces.includes(WORKSPACE_ADMIN);
+  const localAdmin = hasLocalDealalityAdminAccess(user, req, env);
+
+  if (isAdmin || isWorkspaceAdmin || localAdmin) {
+    return {
+      ok: true,
+      auth_mode: isAdmin
+        ? "ADMIN"
+        : isWorkspaceAdmin
+          ? "WORKSPACE_ADMIN"
+          : "LOCAL_ADMIN",
+    };
+  }
+
+  return {
     ok: false,
-    error: "UNAUTHORIZED",
-    contract: ENGINE_CONTRACT_ID,
-  });
+    status: 403,
+    body: {
+      ok: false,
+      error: "FORBIDDEN_ADMIN",
+      message: "Internal admin access required to initiate research.",
+      contract,
+    },
+  };
+}
+
+function requireEngineAuth(req, res) {
+  const gate = assertHeIntelEngineAuth(req, process.env);
+  if (gate.ok) return true;
+  res.status(gate.status).json(gate.body);
   return false;
 }
 
 export function getHeIntelEngineMeta(req, res) {
-  if (!requireAuth(req, res)) return;
+  if (!requireEngineAuth(req, res)) return;
   const manifest = loadPilotManifest();
   res.json({
     ok: true,
@@ -52,11 +154,15 @@ export function getHeIntelEngineMeta(req, res) {
     },
     apply_modes: Object.values(APPLY_MODE),
     default_apply_mode: APPLY_MODE.DRY_RUN,
+    auth: {
+      unauth_local_honored: allowHeIntelUnauthLocal(process.env),
+      production_env: isHeIntelProductionEnv(process.env),
+    },
   });
 }
 
 export async function postHeIntelEngineDryRun(req, res) {
-  if (!requireAuth(req, res)) return;
+  if (!requireEngineAuth(req, res)) return;
   try {
     const body = req.body || {};
     if (body.apply_mode === APPLY_MODE.APPLY || body.apply === true) {
