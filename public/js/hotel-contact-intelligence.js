@@ -84,16 +84,24 @@
   }
 
   function renderLoading() {
+    var body =
+      window.HeLoadingUx && window.HeLoadingUx.toastHtml
+        ? window.HeLoadingUx.toastHtml("Loading Contacts…")
+        : window.HeAsyncSection && window.HeAsyncSection.waveCompact
+          ? window.HeAsyncSection.waveCompact("Loading Contacts…")
+          : window.DealalityWaveLoader && window.DealalityWaveLoader.toastHtml
+            ? window.DealalityWaveLoader.toastHtml("Loading Contacts…")
+            : window.DealalityWaveLoader && window.DealalityWaveLoader.compactHtml
+              ? '<div class="dealality-loading-toast-host">' +
+                window.DealalityWaveLoader.compactHtml("Loading Contacts…", {
+                  progress: false,
+                }) +
+                "</div>"
+              : '<div class="dealality-loading-toast-host" role="status">Loading Contacts…</div>';
     return (
-      '<div class="hci-root" data-hci-state="loading">' +
-      '<div class="hci-loading" data-hci-wave-loading="1">' +
-      (window.HeAsyncSection && window.HeAsyncSection.waveCompact
-        ? window.HeAsyncSection.waveCompact("Loading Contact Intelligence…")
-        : window.DealalityWaveLoader && window.DealalityWaveLoader.compactHtml
-          ? window.DealalityWaveLoader.compactHtml("Loading Contact Intelligence…", {
-              progress: false,
-            })
-          : "Loading Contact Intelligence…") +
+      '<div class="hci-root hci-root--loading" data-hci-state="loading">' +
+      '<div class="hci-loading" data-hci-wave-loading="1" data-he-loading-toast="1">' +
+      body +
       "</div></div>"
     );
   }
@@ -108,8 +116,8 @@
   }
 
   function waveHtml(label, sub) {
-    if (window.HeAsyncSection && window.HeAsyncSection.waveCompact) {
-      return window.HeAsyncSection.waveCompact(label, sub || "");
+    if (window.HeLoadingUx && window.HeLoadingUx.inlineHtml) {
+      return window.HeLoadingUx.inlineHtml(label, { subText: sub || "" });
     }
     if (window.DealalityWaveLoader && window.DealalityWaveLoader.compactHtml) {
       return window.DealalityWaveLoader.compactHtml(label, {

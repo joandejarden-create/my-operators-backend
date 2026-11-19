@@ -78,11 +78,11 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.16");
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.17");
   assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 26);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.16"
+    "hotel-explorer-quality-standard-v1.17"
   );
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-016"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-017"));
@@ -247,6 +247,8 @@ run("hex_tabs_even_flex_and_rooms_present", () => {
 run("contact_cards_omit_dash_placeholders_and_surfe_not_on_get", () => {
   const hci = read("public/js/hotel-contact-intelligence.js");
   mustInclude(hci, "Find Email & Phone");
+  mustInclude(hci, "Loading Contacts…");
+  mustInclude(hci, "HeLoadingUx");
   mustInclude(hci, "hci-note--unresolved");
   mustInclude(hci, "Verified identity ≠ verified personal contact channels");
   mustInclude(hci, "data-hci-enrich");
@@ -274,6 +276,13 @@ run("contact_cards_omit_dash_placeholders_and_surfe_not_on_get", () => {
   mustInclude(api, "buildMockSurfePerson");
   mustInclude(api, "CONTACT_ENRICHMENT_MOCK");
   mustInclude(api, "No additional professional contact details found");
+  const waveCss = read("public/css/dealality-wave-loader.css");
+  const compactRule = waveCss.slice(
+    waveCss.indexOf(".dealality-wave-loader--compact"),
+    waveCss.indexOf(".dealality-loading-toast-host")
+  );
+  assert.ok(!/width:\s*100%/.test(compactRule), "HE loaders must not use full-width compact bars");
+  mustInclude(waveCss, "dealality-wave-loader--toast");
 });
 
 run("rejects_mechanical_fact_dump_descriptions", () => {

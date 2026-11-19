@@ -19,9 +19,20 @@
   var DEFAULT_CACHE_TTL_MS = 5 * 60 * 1000;
 
   function waveCompact(text, sub) {
+    // Prefer shared HE toast adapter (compact centered) when available.
+    if (global.HeLoadingUx && typeof global.HeLoadingUx.toastHtml === "function") {
+      return global.HeLoadingUx.toastHtml(text || "Loading…", { subText: sub || "" });
+    }
     var api = global.DealalityWaveLoader;
+    if (api && typeof api.toastHtml === "function") {
+      return api.toastHtml(text || "Loading…", { subText: sub || "" });
+    }
     if (api && typeof api.compactHtml === "function") {
-      return api.compactHtml(text || "Loading…", { subText: sub || "", progress: false });
+      return (
+        '<div class="dealality-loading-toast-host">' +
+        api.compactHtml(text || "Loading…", { subText: sub || "", progress: false }) +
+        "</div>"
+      );
     }
     if (api && typeof api.html === "function") {
       return api.html(text || "Loading…", {
@@ -32,10 +43,11 @@
       });
     }
     return (
-      '<div class="dealality-wave-loader dealality-wave-loader--inline dealality-wave-loader--compact" role="status" aria-live="polite">' +
+      '<div class="dealality-loading-toast-host" role="status" aria-live="polite">' +
+      '<div class="dealality-wave-loader dealality-wave-loader--inline dealality-wave-loader--compact dealality-wave-loader--toast">' +
       '<div class="loading-text-main">' +
       String(text || "Loading…") +
-      "</div></div>"
+      "</div></div></div>"
     );
   }
 

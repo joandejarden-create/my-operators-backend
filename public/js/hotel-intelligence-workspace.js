@@ -43,7 +43,13 @@
       : null;
 
   function heWaveCompact(text, sub) {
+    if (window.HeLoadingUx && window.HeLoadingUx.toastHtml) {
+      return window.HeLoadingUx.toastHtml(text || "Loading…", { subText: sub || "" });
+    }
     if (asyncApi && asyncApi.waveCompact) return asyncApi.waveCompact(text, sub);
+    if (window.DealalityWaveLoader && window.DealalityWaveLoader.toastHtml) {
+      return window.DealalityWaveLoader.toastHtml(text || "Loading…", { subText: sub || "" });
+    }
     if (window.DealalityWaveLoader && window.DealalityWaveLoader.compactHtml) {
       return window.DealalityWaveLoader.compactHtml(text || "Loading…", {
         subText: sub || "",

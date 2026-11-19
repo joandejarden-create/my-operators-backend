@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.16",
+  "version": "hotel-explorer-founder-quality-lessons-v1.17",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -11,7 +11,8 @@
     "test:he-guest-sentiment-brand-operator-v1",
     "test:he-market-alerts-closeout-v1",
     "test:he-async-section-loading-v1",
-    "test:he-contact-intelligence-directory-ux-v1"
+    "test:he-contact-intelligence-directory-ux-v1",
+    "test:he-loading-ux-toast-v1"
   ],
   "referenceHotels": {
     "uxGolden": {
@@ -274,6 +275,15 @@
       "sharedComponent": "public/js/hotel-contact-intelligence.js; public/css/hotel-contact-intelligence.css; api/contact-intelligence.js#postContactIntelligencePersonReveal; property-decision-maker-engine-v1.js",
       "regressionTest": "contact_cards_omit_dash_placeholders_and_surfe_not_on_get; test:he-contact-intelligence-directory-ux-v1",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v15-ci-default.png; quality-v15-ci-expanded.png; reports/hotel-explorer/HE-CONTACT-INTELLIGENCE-DIRECTORY-UX-V15.md"
+    },
+    {
+      "id": "HE-QL-028",
+      "originalProblem": "Contact Intelligence and other HE async loads showed a full-width dark loading bar that felt like a system alert",
+      "rootCause": "dealality-wave-loader--compact used width:100% inside section hosts; no shared toast mode for short HE fetches",
+      "approvedStandard": "Shared HeLoadingUx adapter: toast (centered compact Dealality toast chrome) for short loads, wave for sustained sections, inline for Surfe/OCN actions; never full-width black banners; independent section loading preserved; auto-dismiss on ready/empty/error; reduced-motion honored",
+      "sharedComponent": "dealality-wave-loader.js/css (toastHtml); he-loading-ux-v1.js; he-async-section-v1.js; hotel-contact-intelligence.js; hotel-intelligence-workspace.js; he-ownership-control-network-v1.js",
+      "regressionTest": "test:he-loading-ux-toast-v1; he_async_section_loading_gates; contact_cards_omit_dash_placeholders_and_surfe_not_on_get",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v16-loading-toast-ci.png; quality-v16-loading-toast-news.png; quality-v16-loading-inline-surfe.png; reports/hotel-explorer/HE-LOADING-UX-TOAST-V16.md"
     }
   ]
 }

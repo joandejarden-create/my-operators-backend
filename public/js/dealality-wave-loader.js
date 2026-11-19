@@ -98,9 +98,36 @@
     return html(mainText, opts);
   }
 
+  /**
+   * Compact centered loading toast — same wave orb + Dealality toast chrome.
+   * Use for short subsection fetches; not a full-width banner and not a fixed page overlay.
+   */
+  function toastHtml(mainText, opts) {
+    opts = opts || {};
+    opts.compact = true;
+    opts.fixed = false;
+    opts.progress = false;
+    opts.size = 'sm';
+    var hostClass = opts.hostClass || 'dealality-loading-toast-host';
+    var inner = html(mainText, Object.assign({}, opts, { wrapperClass: null }));
+    // Inject toast modifier onto the loader root class list.
+    inner = inner.replace(
+      'dealality-wave-loader--compact',
+      'dealality-wave-loader--compact dealality-wave-loader--toast'
+    );
+    return (
+      '<div class="' +
+      escapeHtml(hostClass) +
+      '" data-dealality-loading-toast="1">' +
+      inner +
+      '</div>'
+    );
+  }
+
   window.DealalityWaveLoader = {
     html: html,
     compactHtml: compactHtml,
+    toastHtml: toastHtml,
     waveParticlesHtml: waveParticlesHtml
   };
 })();

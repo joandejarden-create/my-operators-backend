@@ -1,6 +1,6 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.16`  
+**Version:** `hotel-explorer-quality-standard-v1.17`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
 **Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1` · `npm run test:he-hotel-news-from-market-alerts-v1` · `npm run test:he-guest-sentiment-brand-operator-v1` · `npm run test:he-market-alerts-closeout-v1` · `npm run test:he-async-section-loading-v1`
@@ -132,15 +132,19 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 - Persist metadata/summaries/URLs only — not full copyrighted article text.
 - Shared modules: `lib/hotel-intelligence/hotel-news-from-market-alerts-v1.js`, `market-alerts-hotel-association-sync-v1.js`, `market-alerts-evidence-citations-v1.js`, `api/hotel-explorer-news-articles.js`.
 
-### 9e. Independent loading & canonical wave animation
+### 9e. Independent loading & canonical Dealality toast / wave (HE-QL-028)
 
-- Reuse **only** `DealalityWaveLoader` / `dealality-wave-loader.css` (My Deals lineage). Compact/inline variants extend the same component — do not invent new spinners or skeleton systems.
-- Hotel Explorer subsections load **independently** (Brand overview, Hotel News, Guest Sentiment, Sources Market Alerts evidence, OCN expand, Contact Surfe enrich). A slow or failed provider must not block sibling sections or the whole tab.
+- Reuse **only** `DealalityWaveLoader` + `HeLoadingUx` (`he-loading-ux-v1.js`) + `he-async-section-v1.js`. Do **not** invent new spinners, skeleton systems, or full-width black loading banners.
+- **Modes (shared adapter):**
+  - **Toast** (`toastHtml`) — short subsection fetches / tab transitions: small, horizontally centered in the section, Dealality toast chrome (wave orb + border/shadow). Message e.g. `Loading Contacts…`. Auto-dismisses when READY/EMPTY/ERROR.
+  - **Wave** (`waveHtml` / compact inline) — sustained section loads, still centered — never `width: 100%` black strips.
+  - **Inline** (`inlineHtml`) — action-local (Surfe Find Email & Phone, OCN Explore Key People / Related Hotels, Retry).
+- Forbidden: full-width black notification bars; page-blocking overlays for subsection loads; multiple overlapping toasts; stuck loaders; generic browser busy indicators where Dealality UI exists.
+- Hotel Explorer subsections load **independently** (Brand overview, Hotel News, Guest Sentiment, Sources Market Alerts evidence, OCN expand, Contact Surfe enrich, Area Hotels / Submarket). A slow or failed provider must not block sibling sections or the whole tab.
 - Section states: `IDLE` · `LOADING` · `READY` · `EMPTY` · `ERROR` · `STALE` via `he-async-section-v1.js`.
-- Loading: show compact wave **inside** the section. Empty News remains **hidden**. Errors use restrained copy + Retry — never stack traces or raw JSON.
-- Lifecycle: request generation + AbortController; cache TTL; ignore stale responses after hotel switch; no unnecessary refetch of warm cache; no GET-triggered writes; no aggressive polling or unpaid provider calls.
+- Lifecycle: request generation + AbortController; cache TTL; skip toast flash for warm cache; ignore stale responses after hotel switch; preserve visible content on background refresh; no GET-triggered writes; no aggressive polling or unpaid provider calls.
 - Accessibility: `role="status"` / `aria-live="polite"`; honor `prefers-reduced-motion`; avoid focus traps and large layout jumps.
-- Shared modules: `public/js/dealality-wave-loader.js`, `public/js/he-async-section-v1.js`, Brand/Operator mounts in `hotel-intelligence-workspace.js`.
+- Shared modules: `dealality-wave-loader.js/css`, `he-loading-ux-v1.js`, `he-async-section-v1.js`, Contact Intelligence + Brand/Operator mounts, OCN expand.
 
 ### 9d. Guest Sentiment & Reputation (Brand / Operator)
 

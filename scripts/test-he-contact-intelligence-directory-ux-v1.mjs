@@ -84,7 +84,10 @@ run("quality_registry_he_ql_027", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.16");
+  assert.ok(
+    String(reg.version).startsWith("hotel-explorer-founder-quality-lessons-v1."),
+    "registry version present"
+  );
   const lesson = reg.lessons.find((l) => l.id === "HE-QL-027");
   assert.ok(lesson);
   mustInclude(lesson.approvedStandard, "Find Email & Phone");

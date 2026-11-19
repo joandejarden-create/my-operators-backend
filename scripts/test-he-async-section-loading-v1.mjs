@@ -12,14 +12,22 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const read = (rel) => fs.readFileSync(path.join(ROOT, rel), "utf8");
 
-// Wave loader: compact variant exists
+// Wave loader: compact + toast variants exist; compact is not full-width
 {
   const js = read("public/js/dealality-wave-loader.js");
   assert.ok(js.includes("compactHtml"));
+  assert.ok(js.includes("toastHtml"));
   assert.ok(js.includes("dealality-wave-loader--compact"));
   const css = read("public/css/dealality-wave-loader.css");
   assert.ok(css.includes("dealality-wave-loader--compact"));
+  assert.ok(css.includes("dealality-wave-loader--toast"));
+  assert.ok(css.includes("dealality-loading-toast-host"));
   assert.ok(css.includes("prefers-reduced-motion"));
+  const compactRule = css.slice(
+    css.indexOf(".dealality-wave-loader--compact"),
+    css.indexOf(".dealality-loading-toast-host")
+  );
+  assert.ok(!/width:\s*100%/.test(compactRule));
 }
 
 // HeAsyncSection controller: isolation, cache, stale generation

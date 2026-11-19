@@ -1061,13 +1061,19 @@
     }
 
     function withWave(label, run) {
-      if (global.HeAsyncSection && global.HeAsyncSection.waveCompact) {
-        var banner = document.createElement("div");
-        banner.className = "ocn-expand-loading";
-        banner.setAttribute("data-ocn-expand-loading", "1");
+      var banner = document.createElement("div");
+      banner.className = "ocn-expand-loading";
+      banner.setAttribute("data-ocn-expand-loading", "1");
+      if (global.HeLoadingUx && global.HeLoadingUx.inlineHtml) {
+        banner.innerHTML = global.HeLoadingUx.inlineHtml(label, {
+          subText: "Stakeholder network",
+        });
+      } else if (global.HeAsyncSection && global.HeAsyncSection.waveCompact) {
         banner.innerHTML = global.HeAsyncSection.waveCompact(label, "Stakeholder network");
-        host.insertBefore(banner, host.firstChild);
+      } else {
+        banner.textContent = label || "Loading…";
       }
+      host.insertBefore(banner, host.firstChild);
       setTimeout(run, 0);
     }
 

@@ -3013,9 +3013,32 @@ button.hex-action {
   font-weight: 400;
 }
 
-/* Independent async section loading (canonical Dealality wave) */
+/* Independent async section loading (canonical Dealality toast / wave) */
 .hex-root .he-async-loading {
-  min-height: 56px;
+  min-height: 72px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+}
+.hex-root .he-async-loading .dealality-loading-toast-host,
+.hex-root .he-loading-toast-host,
+.hex-root .he-loading-wave-host {
+  width: 100%;
+}
+.hex-root .he-async-loading .dealality-wave-loader,
+.hex-root .he-loading-wave-host .dealality-wave-loader {
+  width: auto;
+  max-width: min(100%, 320px);
+  margin-left: auto;
+  margin-right: auto;
+}
+.hex-root .he-loading-wave-host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 12px;
+  background: transparent;
 }
 .hex-root .he-async-error {
   margin-top: 8px;
@@ -3031,7 +3054,22 @@ button.hex-action {
 }
 .hex-root .ocn-expand-loading {
   margin: 0 0 10px;
+  display: flex;
+  justify-content: flex-start;
+}
+.hex-root .ocn-expand-loading .dealality-wave-loader {
+  width: auto;
+  max-width: min(100%, 280px);
 }
 .hex-root .hci-enrich__result .dealality-wave-loader {
   margin-top: 8px;
+  width: auto;
+  max-width: min(100%, 280px);
+}
+/* Forbid full-width black loading strips inside HE */
+.hex-root .dealality-wave-loader--compact {
+  width: auto;
+}
+.hex-root .hiw-section .dealality-wave-loader--compact:not(.dealality-wave-loader--toast) {
+  display: inline-flex;
 }
