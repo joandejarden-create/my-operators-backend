@@ -128,18 +128,71 @@ const peopleGraph = buildOwnershipControlNetwork(hotel, ownership, {
   includePeople: true,
 });
 assert.ok(peopleGraph.nodes.some((n) => n.kind === "person"));
-assert.ok(peopleGraph.nodes.every((n) => n.kind !== "person" || n.role === "Key person"));
+assert.ok(
+  peopleGraph.nodes.every(
+    (n) => n.kind !== "person" || (n.role && n.role !== "Person" && n.role !== "Key person")
+  ),
+  "person nodes must show business title, not generic Person/Key person"
+);
 
 const expanded = buildOwnershipControlNetwork(hotel, ownership, {
   includePeople: true,
   includePortfolioPreview: true,
+  portfolioAsCluster: true,
   maxPortfolio: OCN_MAX_EXPANSION_HOTELS,
 });
-const portfolio = expanded.nodes.filter((n) => /Related hotel|Portfolio hotel/.test(n.role || ""));
-assert.ok(portfolio.length >= 1);
-assert.ok(portfolio.some((n) => n.verification === "proposed"));
-assert.ok(portfolio.some((n) => n.pendingHpc === true));
-assert.ok(portfolio.every((n) => n.verification !== "verified" || n.hpcId));
+const cluster = expanded.nodes.find((n) => n.kind === "cluster");
+assert.ok(cluster, "related hotels must render as a bounded cluster");
+assert.match(cluster.label, /Related Hotels \(\d+\)/);
+assert.ok(Array.isArray(cluster.clusterHotels) && cluster.clusterHotels.length >= 1);
+assert.ok(cluster.clusterHotels.some((h) => h.pendingHpc === true));
+assert.ok(cluster.clusterHotels.every((h) => h.verification !== "verified" || h.hpcId));
+
+// Historical lender must not appear on default view
+const withHist = {
+  ...ownership,
+  report: {
+    ...ownership.report,
+    ownership_and_control: {
+      ...ownership.report.ownership_and_control,
+      lender: {
+        name: "Ramsfield Hospitality Finance",
+        known: true,
+        preview_state: "HISTORICAL",
+        current: false,
+        amount_usd: 63000000,
+      },
+      advisor: {
+        name: "Hodges Ward Elliott",
+        known: true,
+        preview_state: "HISTORICAL",
+        current: false,
+      },
+      asset_manager: {
+        name: "Mullen Hospitality Management",
+        known: true,
+        preview_state: "PROPOSED",
+      },
+      stakeholder_research_coverage: {
+        financing: "HISTORICAL_VERIFIED_CURRENT_GAP",
+        advisors: "HISTORICAL_VERIFIED_CURRENT_GAP",
+      },
+    },
+  },
+};
+const defHist = buildOwnershipControlNetwork(hotel, withHist, {});
+assert.ok(!defHist.nodes.some((n) => /Ramsfield/i.test(n.label)), "historical lender hidden by default");
+assert.ok(!defHist.nodes.some((n) => /Hodges/i.test(n.label)), "historical advisor hidden by default");
+assert.ok(defHist.nodes.some((n) => /Mullen Hospitality/i.test(n.label)), "asset manager on default when supported");
+const capital = buildOwnershipControlNetwork(hotel, withHist, { activeGroup: "capital_financing" });
+const rams = capital.nodes.find((n) => /Ramsfield/i.test(n.label));
+assert.ok(rams);
+assert.equal(rams.verification, "historical");
+assert.ok(capital.edges.some((e) => e.type === OCN_EDGE_TYPES.FINANCED_BY && e.temporal === "HISTORICAL"));
+const advisors = buildOwnershipControlNetwork(hotel, withHist, { activeGroup: "development_advisors" });
+assert.ok(advisors.nodes.some((n) => /Hodges/i.test(n.label) && n.verification === "historical"));
+assert.ok(defHist.researchCoverage);
+assert.ok(defHist.visualizationCoverage);
 
 // Readable wrapping + measured boxes
 const lines = wrapNodeLabel("Mullen Real Estate Capital", 22, 3);
@@ -186,13 +239,15 @@ assert.ok(!ws.includes("Ownership &amp; Control Hierarchy"));
 const browser = read("public/js/he-ownership-control-network-v1.js");
 assert.ok(browser.includes("HeOwnershipControlNetwork"));
 assert.ok(browser.includes("LEGALLY_OWNED_BY"));
-assert.ok(browser.includes("Explore Key People"));
-assert.ok(browser.includes("Explore Related Hotels"));
+assert.ok(browser.includes("data-ocn-group"));
+assert.ok(browser.includes("Related Hotels ("));
 assert.ok(browser.includes("Brand Development view"));
-assert.ok(browser.includes("includePeople === true"));
+assert.ok(browser.includes("portfolioAsCluster"));
+assert.ok(browser.includes("includeHistoricalCapital"));
 assert.ok(!browser.includes("Expand sponsor hotels"));
 assert.ok(browser.includes("wrapNodeLabel"));
 assert.ok(browser.includes("elbowPath"));
+assert.ok(browser.includes("ocn-chip"));
 
 const preview = read("public/hotel-explorer-preview.html");
 assert.ok(preview.includes("he-ownership-control-network-v1.js"));
@@ -202,13 +257,17 @@ assert.ok(css.includes(".ocn-node"));
 assert.ok(css.includes("ocn-legend__item--proposed"));
 assert.ok(css.includes("ocn-node__label"));
 assert.match(css, /ocn-node__label[\s\S]*font-size:\s*13px/);
+assert.ok(css.includes("ocn-chip") || css.includes("ocn-groups"));
 
 const std = read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md");
 assert.ok(std.includes("Ownership & Control Network") || std.includes("Stakeholder"));
+assert.ok(std.includes("Related Hotels") && std.includes("cluster"));
+assert.ok(std.includes("Stakeholder Research Coverage"));
 
 const reg = JSON.parse(
   read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
 );
 assert.ok(reg.lessons.some((l) => l.id === "HE-QL-020"));
+assert.ok(reg.lessons.some((l) => l.id === "HE-QL-033"));
 
 console.log("PASS test:he-ownership-control-network-v1");

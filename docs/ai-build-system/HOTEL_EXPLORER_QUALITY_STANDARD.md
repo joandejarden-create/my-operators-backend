@@ -1,6 +1,6 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.21`  
+**Version:** `hotel-explorer-quality-standard-v1.22`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
 **Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1` · `npm run test:he-hotel-news-from-market-alerts-v1` · `npm run test:he-guest-sentiment-brand-operator-v1` · `npm run test:he-market-alerts-closeout-v1` · `npm run test:he-async-section-loading-v1` · `npm run test:he-contact-intelligence-directory-ux-v1` · `npm run test:he-loading-ux-toast-v1`
@@ -177,15 +177,19 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 ### 9a. Ownership & Control Network / Stakeholder Network
 
 - Ownership Intelligence presents a **Hotel Stakeholder & Deal Relationship Network** (interactive), not a linear hierarchy dump and not an unbounded “Show All” web.
-- **Default view (hotel-centered):** selected hotel · legal property owner · economic owner/sponsor · current operator · current brand · UBO only when a named party is known. Do **not** auto-load all people or portfolio hotels.
-- Ownership/control relationships render **above** the hotel; operations/brand render **below** — never imply a false linear hierarchy between sponsor, operator, and brand.
-- Typed edges only (extended taxonomy allowed when evidence-backed): Legal / Economic / UBO / Managed / Brand / Key person / Related hotel / Asset managed / Financed / Developed / Advised / Equity partner.
+- **Default view (hotel-centered):** selected hotel · legal property owner · economic owner/sponsor · current operator · current brand · asset manager when evidence-backed · UBO only when a named party is known. Do **not** auto-load all people, financing history, advisors, or portfolio hotels.
+- **Relationship-group selectors:** Ownership & Control · Asset Management & People · Capital & Financing · Operations & Brand · Development & Advisors · Related Hotels. Empty categories show an honest research-status message — never fabricate edges.
+- Ownership/control relationships render **above** the hotel; operations/brand render **below** — never imply a false linear hierarchy between sponsor, operator, lender, asset manager, and brand.
+- Typed edges only (extended taxonomy allowed when evidence-backed): Legal / Economic / UBO / Managed / Brand / role-labeled person edges / Related hotel / Asset managed / Financed / Developed / Advised / Equity partner.
 - **Never** draw operator or brand as an ownership chain step; never invent PropCo→sponsor control, financing terms, franchise expiration, or brand-conversion willingness.
-- Readable nodes: min ~13px body label, content-measured width/height, wrapped text, no overflow clipping; long titles/evidence belong in the **detail panel**.
-- Progressive disclosure: Explore Key People / Explore Related Hotels / Brand Development view; bounded visible caps; collapse supported; short edge tags with full meaning on edge/node selection.
+- **Historical ≠ current:** historical lenders/advisors may appear only in their group, marked Historical, and never as current decision-makers.
+- **Related Hotels** use a bounded **cluster node** (`Related Hotels (N)`) with list + HPC links in the detail panel — never dump every portfolio hotel onto the canvas.
+- Person nodes show title + organization relevance; never a generic “Person” as the only explanation; people connect to their organization, not as direct hotel controllers unless evidence says so.
+- Readable nodes: min ~13px body label, content-measured width/height, wrapped text, no overflow clipping; edge labels offset from midpoints; long titles/evidence belong in the **detail panel**.
+- **Two independent measures:** Stakeholder Research Coverage (what was investigated/verified) vs Network Visualization Coverage (what is correctly rendered). Graph completeness ≠ research completeness.
 - Visual + label differentiation for verified / proposed / historical / unresolved (not color alone).
 - Tab structure: Executive Ownership Summary → Stakeholder Network → Relevant Decision-Makers (compact; header **View Contacts** link) → Relationship Detail ↔ graph highlight (header **View Sources** deep-links to Sources & Evidence). No inline Sources and Verification table on Ownership.
-- Forbidden: node-text overflow, overlapping nodes, unreadable typography, unbounded portfolio dumps, duplicate hierarchy text blocks, raw graph node IDs / internal enums, HPC property-contact fallback panels, proposed styled as verified, deep links without resolved HPC IDs, unsupported capital/advisor nodes.
+- Forbidden: node-text overflow, overlapping nodes/labels, unreadable typography, unbounded portfolio dumps, incorrect asset-manager attribution, historical lenders as current, unsupported ownership/control edges, duplicate hierarchy text blocks, raw graph node IDs / internal enums, HPC property-contact fallback panels, proposed styled as verified, deep links without resolved HPC IDs.
 - Shared modules: `lib/hotel-intelligence/ownership/ownership-control-network-v1.js` + `public/js/he-ownership-control-network-v1.js`.
 
 ### 9b. Canonical HPC population (portfolio batches)

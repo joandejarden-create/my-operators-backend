@@ -82,11 +82,11 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.21");
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.22");
   assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 32);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.21"
+    "hotel-explorer-quality-standard-v1.22"
   );
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-016"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-017"));
@@ -767,15 +767,17 @@ run("he_ownership_control_network_gates", () => {
   mustInclude(read("public/hotel-explorer-preview.html"), "he-ownership-control-network-v1.js");
   const ocnJs = read("public/js/he-ownership-control-network-v1.js");
   mustInclude(ocnJs, "HeOwnershipControlNetwork");
-  mustInclude(ocnJs, "Explore Key People");
-  mustInclude(ocnJs, "Explore Related Hotels");
+  mustInclude(ocnJs, "data-ocn-group");
+  mustInclude(ocnJs, "Related Hotels (");
   mustInclude(ocnJs, "Brand Development view");
-  mustInclude(ocnJs, "includePeople === true");
+  mustInclude(ocnJs, "portfolioAsCluster");
+  mustInclude(ocnJs, "includeHistoricalCapital");
   mustInclude(ocnJs, "wrapNodeLabel");
   mustInclude(ocnJs, "elbowPath");
   mustNotMatch(ocnJs, /Expand sponsor hotels/);
   mustInclude(read("public/css/hotel-explorer.css"), "ocn-legend__item--proposed");
   mustInclude(read("public/css/hotel-explorer.css"), "ocn-node__label");
+  mustInclude(read("public/css/hotel-explorer.css"), "ocn-chip");
   mustInclude(
     read("lib/hotel-intelligence/ownership/ownership-control-network-v1.js"),
     "LEGALLY_OWNED_BY"
@@ -788,10 +790,40 @@ run("he_ownership_control_network_gates", () => {
     read("lib/hotel-intelligence/ownership/ownership-control-network-v1.js"),
     "OCN_STAKEHOLDER_GROUPS"
   );
+  mustInclude(
+    read("lib/hotel-intelligence/ownership/ownership-control-network-v1.js"),
+    "assessStakeholderResearchCoverage"
+  );
   mustNotMatch(
     read("lib/hotel-intelligence/ownership/ownership-control-network-v1.js"),
     /operator.*LEGALLY_OWNED_BY|brand.*ECONOMICALLY_CONTROLLED_BY/i
   );
+});
+
+run("he_stakeholder_research_vs_viz_coverage", () => {
+  const std = read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md");
+  mustInclude(std, "Stakeholder Research Coverage");
+  mustInclude(std, "Network Visualization Coverage");
+  mustInclude(std, "Historical ≠ current");
+  mustInclude(read("api/hotel-explorer-founder-preview.js"), "stakeholder_research_coverage");
+  mustInclude(read("api/hotel-explorer-founder-preview.js"), "Ramsfield Hospitality Finance");
+  mustInclude(read("api/hotel-explorer-founder-preview.js"), "Hodges Ward Elliott");
+  mustInclude(read("api/hotel-explorer-founder-preview.js"), "HISTORICAL");
+  assert.ok(
+    !/current lender|current mortgagee/i.test(
+      read("reports/hotel-explorer/phase4-quality/HE-BETH-STAKEHOLDER-UPSERTS-DRY-RUN-V1.json")
+    ) ||
+      /NOT proof of current|current": false/i.test(
+        read("reports/hotel-explorer/phase4-quality/HE-BETH-STAKEHOLDER-UPSERTS-DRY-RUN-V1.json")
+      )
+  );
+  const matrix = read("reports/hotel-explorer/HE-BETH-STAKEHOLDER-COVERAGE-MATRIX-V21.md");
+  mustInclude(matrix, "HISTORICAL VERIFIED · CURRENT GAP");
+  mustInclude(matrix, "FIRM RESEARCHED · PROPERTY ASSIGNMENT GAP");
+  const reg = JSON.parse(
+    read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
+  );
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-033"));
 });
 
 run("he_hotel_news_from_market_alerts_gates", () => {

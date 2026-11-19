@@ -2558,6 +2558,50 @@ button.hex-action {
   flex-wrap: wrap;
   gap: 8px;
 }
+.hex-root .ocn-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.hex-root .ocn-chip {
+  appearance: none;
+  border: 0.6px solid rgba(148, 163, 184, 0.28);
+  background: transparent;
+  color: #cbd5e1;
+  border-radius: 999px;
+  padding: 5px 11px;
+  font-size: 11px;
+  cursor: pointer;
+}
+.hex-root .ocn-chip:hover {
+  border-color: rgba(148, 163, 184, 0.5);
+  color: #f8fafc;
+}
+.hex-root .ocn-chip.is-active,
+.hex-root .ocn-chip[aria-pressed="true"] {
+  border-color: #6c72ff;
+  background: rgba(108, 114, 255, 0.16);
+  color: #f8fafc;
+}
+.hex-root .ocn-research-status {
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 0.6px solid rgba(251, 191, 36, 0.35);
+  background: rgba(251, 191, 36, 0.08);
+  color: #fde68a;
+  font-size: 12px;
+}
+.hex-root .ocn-cluster-list {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+.hex-root .ocn-cluster-list li {
+  margin: 6px 0;
+}
+.hex-root .ocn-node--cluster rect {
+  stroke-dasharray: 5 4;
+}
 .hex-root .ocn-btn {
   appearance: none;
   border: 0.6px solid var(--hex-surface-border);

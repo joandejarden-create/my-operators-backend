@@ -32,8 +32,8 @@
     ULTIMATE_CONTROL: "UBO",
     MANAGED_BY: "Managed",
     BRANDED_AS: "Brand",
-    ASSOCIATED_PERSON: "Person",
-    PORTFOLIO_HOTEL: "Hotel",
+    ASSOCIATED_PERSON: "Role",
+    PORTFOLIO_HOTEL: "Portfolio",
     ASSET_MANAGED_BY: "Asset mgmt",
     FINANCED_BY: "Financing",
     DEVELOPED_BY: "Developer",
@@ -129,8 +129,12 @@
 
   function buildOwnershipControlNetwork(hotel, ownership, opts) {
     opts = opts || {};
-    var includePeople = opts.includePeople === true;
-    var includePortfolioPreview = opts.includePortfolioPreview === true;
+    var activeGroup = text(opts.activeGroup) || null;
+    var includePeople = opts.includePeople === true || activeGroup === "asset_people";
+    var includePortfolioPreview = opts.includePortfolioPreview === true || activeGroup === "related_hotels";
+    var includeHistoricalCapital = opts.includeHistoricalCapital === true || activeGroup === "capital_financing";
+    var includeHistoricalAdvisors = opts.includeHistoricalAdvisors === true || activeGroup === "development_advisors";
+    var portfolioAsCluster = opts.portfolioAsCluster !== false;
     var maxPortfolio = Math.min(Number(opts.maxPortfolio) || MAX_EXPANSION_HOTELS, MAX_EXPANSION_HOTELS);
     var maxPeople = Math.min(Number(opts.maxPeople) || MAX_VISIBLE_PEOPLE, MAX_VISIBLE_PEOPLE);
     var brandDevFilter = opts.brandDevelopmentFilter === true;
@@ -182,7 +186,7 @@
         to: edge.to,
         type: edge.type,
         label: edge.label || EDGE_LABELS[edge.type] || edge.type,
-        shortLabel: SHORT_EDGE[edge.type] || EDGE_LABELS[edge.type] || edge.type,
+        shortLabel: edge.shortLabel || SHORT_EDGE[edge.type] || EDGE_LABELS[edge.type] || edge.type,
         verification: edge.verification || "unresolved",
         temporal: edge.temporal || "CURRENT",
       });
@@ -316,23 +320,32 @@
       });
     }
     if (partyKnown(lender)) {
-      var lid = "org:lender:" + (text(lender.entity_id) || partyName(lender));
-      addNode({
-        id: lid,
-        kind: "org",
-        label: partyName(lender),
-        role: "Lender / financing",
-        verification: verificationOf(lender),
-        group: "capital_financing",
-      });
-      addEdge({
-        from: hotelNodeId,
-        to: lid,
-        type: "FINANCED_BY",
-        verification: verificationOf(lender),
-      });
+      var lenderVer = verificationOf(lender);
+      var lenderHistorical = lenderVer === "historical" || lender.current === false;
+      if (!lenderHistorical || includeHistoricalCapital) {
+        var lid = "org:lender:" + (text(lender.entity_id) || partyName(lender));
+        addNode({
+          id: lid,
+          kind: "org",
+          label: partyName(lender),
+          role: lenderHistorical ? "Historical lender" : "Lender / financing",
+          verification: lenderVer,
+          group: "capital_financing",
+          amountUsd: lender.amount_usd || lender.amountUsd || null,
+          financingDate: text(lender.financing_date_approx || lender.effective_date),
+          evidenceUrls: lender.evidence_urls || lender.evidenceUrls || [],
+          note: text(lender.note),
+        });
+        addEdge({
+          from: hotelNodeId,
+          to: lid,
+          type: "FINANCED_BY",
+          verification: lenderVer,
+          temporal: lenderHistorical ? "HISTORICAL" : "CURRENT",
+        });
+      }
     }
-    if (partyKnown(developer)) {
+    if (partyKnown(developer) && String(developer.status || "").toUpperCase() !== "NOT_APPLICABLE") {
       var did = "org:dev:" + (text(developer.entity_id) || partyName(developer));
       addNode({
         id: did,
@@ -350,21 +363,29 @@
       });
     }
     if (partyKnown(advisor)) {
-      var aid = "org:adv:" + (text(advisor.entity_id) || partyName(advisor));
-      addNode({
-        id: aid,
-        kind: "org",
-        label: partyName(advisor),
-        role: "Advisor / broker",
-        verification: verificationOf(advisor),
-        group: "development_advisors",
-      });
-      addEdge({
-        from: hotelNodeId,
-        to: aid,
-        type: "ADVISED_BY",
-        verification: verificationOf(advisor),
-      });
+      var advVer = verificationOf(advisor);
+      var advHistorical = advVer === "historical" || advisor.current === false;
+      if (!advHistorical || includeHistoricalAdvisors) {
+        var aid = "org:adv:" + (text(advisor.entity_id) || partyName(advisor));
+        addNode({
+          id: aid,
+          kind: "org",
+          label: partyName(advisor),
+          role: advHistorical ? "Historical advisor" : "Advisor / broker",
+          verification: advVer,
+          group: "development_advisors",
+          evidenceUrls: advisor.evidence_urls || advisor.evidenceUrls || [],
+          note: text(advisor.note),
+          effectiveDate: text(advisor.effective_date),
+        });
+        addEdge({
+          from: hotelNodeId,
+          to: aid,
+          type: "ADVISED_BY",
+          verification: advVer,
+          temporal: advHistorical ? "HISTORICAL" : "CURRENT",
+        });
+      }
     }
 
     var peopleHidden = 0;
@@ -381,12 +402,16 @@
         var name = text(p.display_name || p.name);
         if (!name) return;
         var personId = "person:" + (text(p.personId || p.person_id || p.entity_id) || idx) + ":" + name;
+        var title = text(p.title || p.role) || "Relevant contact";
+        var orgName = text(p.organization || p.company || p.org) || partyName(econ) || "Sponsor organization";
         addNode({
           id: personId,
           kind: "person",
           label: name,
-          role: "Key person",
-          title: text(p.title || p.role) || "Decision-maker",
+          role: title,
+          title: title,
+          orgName: orgName,
+          propertyResponsibility: text(p.propertyResponsibility || p.property_responsibility) || "UNKNOWN",
           verification: "proposed",
           personKey: text(p.personId || p.person_id) || null,
           linkedIn: text(p.linkedinUrl || (p.professional_profile && p.professional_profile.url)),
@@ -399,6 +424,8 @@
             to: personId,
             type: "ASSOCIATED_PERSON",
             verification: "proposed",
+            shortLabel: title.length > 18 ? title.slice(0, 16) + "…" : title,
+            label: title + " at " + orgName,
           });
         }
       });
@@ -418,10 +445,9 @@
       });
       var hSlice = eligible.slice(0, maxPortfolio);
       portfolioHidden = Math.max(0, eligible.length - hSlice.length);
-      hSlice.forEach(function (h) {
+      var mapped = hSlice.map(function (h) {
         var hid = text(h.airtable_record_id || h.id);
         var hname = text(h.hotel_name || h.name);
-        var nid = hid ? "hotel:" + hid : "hotel:portfolio:" + hname;
         var bucket = String(h.verification_bucket || h.ownership_evidence_class || "").toUpperCase();
         var ver = /VERIFIED/.test(bucket)
           ? "verified"
@@ -430,27 +456,99 @@
             : /UNRESOLVED|PENDING/.test(bucket)
               ? "unresolved"
               : "proposed";
-        addNode({
-          id: nid,
-          kind: "hotel",
-          label: hname,
-          role: "Related hotel",
+        return {
+          id: hid ? "hotel:" + hid : "hotel:portfolio:" + hname,
+          name: hname,
+          brand: text(h.brand || h.brand_display),
+          location: text(h.city || h.location || h.market),
+          rooms: h.rooms || h.keys || null,
           verification: ver,
           hpcId: hid && /^rec[a-zA-Z0-9]{14}$/.test(hid) ? hid : null,
           pendingHpc: !hid,
+        };
+      });
+      if (portfolioAsCluster && mapped.length) {
+        var clusterId = "cluster:related-hotels";
+        addNode({
+          id: clusterId,
+          kind: "cluster",
+          label: "Related Hotels (" + eligible.length + ")",
+          role: "Portfolio cluster",
+          verification: "proposed",
           group: "related_hotels",
+          clusterHotels: mapped,
+          clusterTotal: eligible.length,
         });
         addEdge({
           from: econId,
-          to: nid,
+          to: clusterId,
           type: "PORTFOLIO_HOTEL",
-          verification: ver,
-          temporal: /HISTOR/.test(String(h.current_historical || "")) ? "HISTORICAL" : "CURRENT",
+          verification: "proposed",
+          shortLabel: "Portfolio",
+          label: "Related hotels (bounded cluster — expand in detail)",
         });
-      });
+      } else {
+        mapped.forEach(function (h) {
+          addNode({
+            id: h.id,
+            kind: "hotel",
+            label: h.name,
+            role: "Related hotel",
+            verification: h.verification,
+            hpcId: h.hpcId,
+            pendingHpc: h.pendingHpc,
+            group: "related_hotels",
+          });
+          addEdge({
+            from: econId,
+            to: h.id,
+            type: "PORTFOLIO_HOTEL",
+            verification: h.verification,
+          });
+        });
+      }
     }
 
-    if (brandDevFilter) {
+    var groupResearchStatus = null;
+    var STAKEHOLDER_GROUPS = [
+      { id: "ownership_control", label: "Ownership & Control", edgeTypes: ["LEGALLY_OWNED_BY", "ECONOMICALLY_CONTROLLED_BY", "ULTIMATE_CONTROL", "EQUITY_PARTNER"] },
+      { id: "asset_people", label: "Asset Management & People", edgeTypes: ["ASSET_MANAGED_BY", "ASSOCIATED_PERSON"] },
+      { id: "capital_financing", label: "Capital & Financing", edgeTypes: ["FINANCED_BY", "EQUITY_PARTNER"] },
+      { id: "operations_brand", label: "Operations & Brand", edgeTypes: ["MANAGED_BY", "BRANDED_AS"] },
+      { id: "development_advisors", label: "Development & Advisors", edgeTypes: ["DEVELOPED_BY", "ADVISED_BY"] },
+      { id: "related_hotels", label: "Related Hotels", edgeTypes: ["PORTFOLIO_HOTEL"] },
+    ];
+    if (activeGroup) {
+      var groupDef = STAKEHOLDER_GROUPS.filter(function (g) { return g.id === activeGroup; })[0];
+      var allowedTypes = {};
+      ((groupDef && groupDef.edgeTypes) || []).forEach(function (t) { allowedTypes[t] = true; });
+      var keepG = {};
+      keepG[hotelNodeId] = true;
+      if (activeGroup === "asset_people" || activeGroup === "related_hotels" || activeGroup === "capital_financing") {
+        nodes.forEach(function (n) {
+          if (n.group === "ownership_control") keepG[n.id] = true;
+        });
+      }
+      edges.forEach(function (e) {
+        if (allowedTypes[e.type]) {
+          keepG[e.from] = true;
+          keepG[e.to] = true;
+        }
+      });
+      nodes.forEach(function (n) {
+        if (n.group === activeGroup || n.focus) keepG[n.id] = true;
+      });
+      nodes = nodes.filter(function (n) { return keepG[n.id]; });
+      edges = edges.filter(function (e) { return keepG[e.from] && keepG[e.to]; });
+      var groupHasContent = nodes.some(function (n) { return n.group === activeGroup; });
+      if (!groupHasContent) {
+        groupResearchStatus = {
+          groupId: activeGroup,
+          label: (groupDef && groupDef.label) || activeGroup,
+          message: "No verified records in this category yet. Research status is tracked for future refresh.",
+        };
+      }
+    } else if (brandDevFilter) {
       var keep = {};
       keep[hotelNodeId] = true;
       nodes.forEach(function (n) {
@@ -513,8 +611,12 @@
             ownership.report.research_status &&
             ownership.report.research_status.preview_mode === "PHASE3_PROPOSED"),
         brandDevelopmentFilter: brandDevFilter,
-        defaultView: !includePeople && !includePortfolioPreview,
+        activeGroup: activeGroup,
+        defaultView: !includePeople && !includePortfolioPreview && !activeGroup,
       },
+      stakeholderGroups: STAKEHOLDER_GROUPS,
+      groupResearchStatus: groupResearchStatus,
+      researchCoverage: (ctrl && ctrl.stakeholder_research_coverage) || null,
     };
   }
 
@@ -558,7 +660,12 @@
       return n.kind === "person";
     });
     var portfolio = nodes.filter(function (n) {
-      return n.role === "Related hotel" || n.role === "Portfolio hotel";
+      return (
+        n.kind === "cluster" ||
+        n.role === "Related hotel" ||
+        n.role === "Portfolio hotel" ||
+        n.role === "Portfolio cluster"
+      );
     });
     var extras = nodes.filter(function (n) {
       return (
@@ -818,10 +925,10 @@
           strokeDash(e.verification) +
           '"></path>' +
           '<text class="ocn-edge-label" x="' +
-          mx +
+          (mx + (a.x === b.x ? 10 : 0)) +
           '" y="' +
-          (my - 6) +
-          '">' +
+          (my - 10) +
+          '" text-anchor="middle">' +
           esc(e.shortLabel || SHORT_EDGE[e.type] || "") +
           "</text></g>"
         );
@@ -848,6 +955,32 @@
 
     var s = graph.summary || {};
     var exp = graph.expansion || {};
+    var groups = graph.stakeholderGroups || [];
+    var activeGroup = (graph.meta && graph.meta.activeGroup) || opts.activeGroup || "";
+    var groupChips = groups
+      .map(function (g) {
+        return (
+          '<button type="button" class="ocn-chip' +
+          (activeGroup === g.id ? " is-active" : "") +
+          '" data-ocn-group="' +
+          esc(g.id) +
+          '" aria-pressed="' +
+          (activeGroup === g.id ? "true" : "false") +
+          '">' +
+          esc(g.label) +
+          "</button>"
+        );
+      })
+      .join("");
+    var researchBanner = "";
+    if (graph.groupResearchStatus && graph.groupResearchStatus.message) {
+      researchBanner =
+        '<div class="ocn-research-status" role="status"><strong>' +
+        esc(graph.groupResearchStatus.label || "Research status") +
+        ":</strong> " +
+        esc(graph.groupResearchStatus.message) +
+        "</div>";
+    }
     return (
       '<div class="ocn" data-ocn="1" data-ocn-default="' +
       (graph.meta && graph.meta.defaultView ? "1" : "0") +
@@ -860,13 +993,16 @@
       '" data-ocn-brand-dev aria-pressed="' +
       (opts.brandDevelopmentFilter ? "true" : "false") +
       '">Brand Development view</button>' +
-      '<button type="button" class="ocn-btn" data-ocn-expand-people>' +
-      (exp.peopleVisible ? "Collapse Key People" : "Explore Key People") +
-      "</button>" +
-      '<button type="button" class="ocn-btn" data-ocn-expand-hotels>' +
-      (exp.portfolioVisible ? "Collapse Related Hotels" : "Explore Related Hotels") +
-      "</button>" +
       "</div>" +
+      '<div class="ocn-groups" role="toolbar" aria-label="Relationship groups">' +
+      '<button type="button" class="ocn-chip' +
+      (!activeGroup ? " is-active" : "") +
+      '" data-ocn-group="" aria-pressed="' +
+      (!activeGroup ? "true" : "false") +
+      '">Default</button>' +
+      groupChips +
+      "</div>" +
+      researchBanner +
       '<div class="ocn-legend" aria-label="Relationship legend">' +
       legend +
       '<span class="ocn-legend__note">Ownership above · Operations &amp; Brand below · Short edge tags; full meaning in detail</span>' +
@@ -925,14 +1061,28 @@
     var bits = [];
     bits.push("<h4>" + esc(node.fullName || node.label) + "</h4>");
     bits.push('<p class="ocn-detail__role">' + esc(node.title || node.role) + "</p>");
+    if (node.orgName) {
+      bits.push("<p><strong>Organization:</strong> " + esc(node.orgName) + "</p>");
+    }
     bits.push(
       "<p><strong>Type:</strong> " +
-        esc(node.kind === "hotel" ? "Hotel" : node.kind === "person" ? "Person" : "Organization") +
+        esc(
+          node.kind === "hotel"
+            ? "Hotel"
+            : node.kind === "person"
+              ? "Person"
+              : node.kind === "cluster"
+                ? "Related hotels cluster"
+                : "Organization"
+        ) +
         "</p>"
     );
     bits.push(
       "<p><strong>Status:</strong> " + esc(friendlyVerification(node.verification)) + "</p>"
     );
+    if (node.note) {
+      bits.push('<p class="ocn-detail__hint">' + esc(node.note) + "</p>");
+    }
     if (node.kind === "hotel" && node.hpcId) {
       bits.push(
         '<p><button type="button" class="ocn-btn ocn-btn--primary" data-ocn-open-hotel="' +
@@ -942,9 +1092,38 @@
     } else if (node.kind === "hotel" && node.pendingHpc) {
       bits.push("<p>Pending HPC match — deep link unavailable.</p>");
     }
+    if (node.kind === "cluster" && Array.isArray(node.clusterHotels)) {
+      bits.push(
+        "<p><strong>Related hotels</strong> (" +
+          esc(String(node.clusterTotal || node.clusterHotels.length)) +
+          ') — verification status and Hotel Explorer links where HPC-matched.</p><ul class="ocn-cluster-list">'
+      );
+      node.clusterHotels.forEach(function (h) {
+        bits.push(
+          "<li><strong>" +
+            esc(h.name) +
+            "</strong> · " +
+            esc(friendlyVerification(h.verification)) +
+            (h.brand ? " · " + esc(h.brand) : "") +
+            (h.location ? " · " + esc(h.location) : "") +
+            (h.hpcId
+              ? ' · <button type="button" class="ocn-btn ocn-btn--primary" data-ocn-open-hotel="' +
+                esc(h.hpcId) +
+                '">Open</button>'
+              : " · Pending HPC match") +
+            "</li>"
+        );
+      });
+      bits.push("</ul>");
+    }
     if (node.kind === "person") {
       bits.push(
-        '<p><button type="button" class="hiw-navlink ocn-navlink" data-ocn-open-contacts>View Contacts<span class="hiw-navlink__icon" aria-hidden="true">↗</span></button></p>'
+        "<p><strong>Property responsibility:</strong> " +
+          esc(node.propertyResponsibility || "UNKNOWN") +
+          " (confirmed vs inferred — never invent signing authority)</p>"
+      );
+      bits.push(
+        '<p><button type="button" class="hiw-navlink ocn-navlink" data-ocn-open-contacts>View Contacts / Surfe actions<span class="hiw-navlink__icon" aria-hidden="true">↗</span></button></p>'
       );
       if (node.linkedIn) {
         bits.push(
@@ -954,17 +1133,48 @@
         );
       }
     }
-    if (node.kind === "org") {
+    if (node.role === "Historical lender" || node.group === "capital_financing") {
+      if (node.amountUsd) {
+        bits.push(
+          "<p><strong>Documented amount:</strong> $" +
+            esc(Number(node.amountUsd).toLocaleString("en-US")) +
+            "</p>"
+        );
+      }
+      if (node.financingDate) {
+        bits.push("<p><strong>Approx. date:</strong> " + esc(node.financingDate) + "</p>");
+      }
+      bits.push(
+        "<p><strong>Temporal:</strong> Historical — not proof of the hotel's current lender.</p>"
+      );
+      (node.evidenceUrls || []).forEach(function (u) {
+        bits.push(
+          '<p><a class="ocn-ext" href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">Evidence</a></p>'
+        );
+      });
+    }
+    if (node.role === "Historical advisor" || (node.group === "development_advisors" && node.verification === "historical")) {
+      if (node.effectiveDate) {
+        bits.push("<p><strong>Effective:</strong> " + esc(node.effectiveDate) + "</p>");
+      }
+      bits.push("<p><strong>Temporal:</strong> Historical — not a current decision-maker.</p>");
+      (node.evidenceUrls || []).forEach(function (u) {
+        bits.push(
+          '<p><a class="ocn-ext" href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">Evidence</a></p>'
+        );
+      });
+    }
+    if (node.kind === "org" && node.kind !== "cluster") {
       bits.push('<div class="ocn-detail__actions">');
       bits.push(
-        '<button type="button" class="ocn-btn" data-ocn-expand-people>Explore Key People</button>'
+        '<button type="button" class="ocn-btn" data-ocn-group="asset_people">Asset Management &amp; People</button>'
       );
       bits.push(
-        '<button type="button" class="ocn-btn" data-ocn-expand-hotels>Explore Related Hotels</button>'
+        '<button type="button" class="ocn-btn" data-ocn-group="related_hotels">Related Hotels</button>'
       );
       bits.push("</div>");
       bits.push(
-        '<p class="ocn-detail__hint">Expansion is bounded and hotel-centered. Financing, development, and advisor links appear only when verified evidence exists.</p>'
+        '<p class="ocn-detail__hint">Use relationship-group selectors for Capital, Advisors, and Operations. Historical parties stay historical.</p>'
       );
     }
     var related = (graph.edges || []).filter(function (e) {
@@ -1001,10 +1211,29 @@
     var graph = buildOwnershipControlNetwork(hotel, ownership, {
       includePeople: opts.includePeople === true,
       includePortfolioPreview: opts.includePortfolioPreview === true,
+      includeHistoricalCapital: opts.includeHistoricalCapital === true,
+      includeHistoricalAdvisors: opts.includeHistoricalAdvisors === true,
+      portfolioAsCluster: opts.portfolioAsCluster !== false,
+      activeGroup: opts.activeGroup || null,
       brandDevelopmentFilter: opts.brandDevelopmentFilter === true,
       maxPortfolio: opts.maxPortfolio,
       maxPeople: opts.maxPeople,
     });
+    if (graph.groupResearchStatus && graph.groupResearchStatus.message) {
+      // Ensure detail panel surfaces research honesty when a group has no edges.
+      setTimeout(function () {
+        var d = host.querySelector("[data-ocn-detail]");
+        var b = host.querySelector(".ocn-detail__body");
+        if (!d || !b) return;
+        d.hidden = false;
+        b.innerHTML =
+          "<h4>" +
+          esc(graph.groupResearchStatus.label || "Research status") +
+          "</h4><p>" +
+          esc(graph.groupResearchStatus.message) +
+          "</p>";
+      }, 0);
+    }
     var laid = layout(graph, { width: opts.width || 960, height: opts.height || 520 });
     host.innerHTML = renderShell(graph, laid, opts);
     host._ocn = {
@@ -1109,6 +1338,26 @@
         );
         return;
       }
+      var groupBtn = ev.target.closest("[data-ocn-group]");
+      if (groupBtn) {
+        var gid = groupBtn.getAttribute("data-ocn-group") || "";
+        withWave(gid ? "Loading relationship group…" : "Resetting network…", function () {
+          remount(
+            host,
+            hotel,
+            ownership,
+            Object.assign({}, host._ocn.opts, {
+              activeGroup: gid || null,
+              includePeople: gid === "asset_people",
+              includePortfolioPreview: gid === "related_hotels",
+              includeHistoricalCapital: gid === "capital_financing",
+              includeHistoricalAdvisors: gid === "development_advisors",
+              brandDevelopmentFilter: false,
+            })
+          );
+        });
+        return;
+      }
       if (ev.target.closest("[data-ocn-expand-people]")) {
         withWave("Loading key people…", function () {
           remount(
@@ -1116,7 +1365,8 @@
             hotel,
             ownership,
             Object.assign({}, host._ocn.opts, {
-              includePeople: !host._ocn.opts.includePeople,
+              activeGroup: "asset_people",
+              includePeople: true,
             })
           );
         });
@@ -1129,7 +1379,9 @@
             hotel,
             ownership,
             Object.assign({}, host._ocn.opts, {
-              includePortfolioPreview: !host._ocn.opts.includePortfolioPreview,
+              activeGroup: "related_hotels",
+              includePortfolioPreview: true,
+              portfolioAsCluster: true,
             })
           );
         });

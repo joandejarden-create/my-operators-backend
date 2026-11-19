@@ -231,7 +231,91 @@ function buildProposedOverlay(dryRun, livePayload) {
         },
         operator: liveControl.operator || null,
         brand: liveControl.brand || null,
+        asset_manager: mhm
+          ? {
+              name: nameOfOrg(mhm) || "Mullen Hospitality Management",
+              known: true,
+              status: "PROPOSED",
+              verification_bucket: "MEDIUM",
+              source: "PHASE3_STAGED_DRY_RUN",
+              preview_state: "PROPOSED_STAGED",
+              note:
+                "Affiliate ops/investment supervision posture — not a named Bethesda property AM assignment",
+            }
+          : liveControl.asset_manager || null,
+        asset_management_company: mhm
+          ? {
+              name: nameOfOrg(mhm) || "Mullen Hospitality Management",
+              known: true,
+              preview_state: "PROPOSED_STAGED",
+            }
+          : liveControl.asset_management_company || null,
+        lender: {
+          name: "Ramsfield Hospitality Finance",
+          known: true,
+          status: "HISTORICAL",
+          preview_state: "HISTORICAL",
+          verification_bucket: "HISTORICAL",
+          source: "PUBLIC_CASE_STUDY",
+          current: false,
+          amount_usd: 63000000,
+          financing_date_approx: "2018",
+          note:
+            "Historical acquisition financing case study (~$63M stretch senior). Not proof of current lender.",
+          evidence_urls: [
+            "https://www.ramsfieldrealestate.com/projects/bethesda-marriott",
+          ],
+        },
+        financing_institution: {
+          name: "Ramsfield Hospitality Finance",
+          known: true,
+          preview_state: "HISTORICAL",
+          current: false,
+        },
+        advisor: {
+          name: "Hodges Ward Elliott",
+          known: true,
+          status: "HISTORICAL",
+          preview_state: "HISTORICAL",
+          verification_bucket: "HISTORICAL",
+          source: "HWE_2018_SALE_ANNOUNCEMENT",
+          current: false,
+          effective_date: "2018-12-03",
+          note:
+            "Historical transaction broker for Dec 2018 sale (seller side). Not a current decision-maker.",
+          evidence_urls: [
+            "https://hodgeswardelliott.com/news-posts/hodges-ward-elliott-represents-owner-in-the-sale-of-the-407-key-bethesda-marriott-in-bethesda-maryland/",
+          ],
+        },
+        broker: {
+          name: "Hodges Ward Elliott",
+          known: true,
+          preview_state: "HISTORICAL",
+          current: false,
+        },
+        developer: liveControl.developer || {
+          name: null,
+          known: false,
+          status: "NOT_APPLICABLE",
+          preview_state: "UNRESOLVED",
+          note: "Open operating hotel — original developer not established in free public pass",
+        },
         control_status: "ECONOMIC_OWNER_PROPOSED_UBO_UNRESOLVED",
+        stakeholder_research_coverage: {
+          legal_ownership: "VERIFIED_RESEARCH_PERSIST_BLOCKED",
+          economic_ownership: "SPONSOR_VERIFIED_UBO_UNRESOLVED",
+          asset_management: "FIRM_VERIFIED_PROPERTY_ASSIGNMENT_GAP",
+          financing: "HISTORICAL_VERIFIED_CURRENT_GAP",
+          equity_jv: "NO_PUBLIC_CURRENT_RESULT",
+          operator: "LIVE_VERIFIED",
+          brand: "LIVE_VERIFIED",
+          development: "NOT_APPLICABLE_OPEN_HOTEL",
+          advisors: "HISTORICAL_VERIFIED_CURRENT_GAP",
+          key_people: "IDENTITY_VERIFIED_CHANNELS_GAP",
+          related_hotels: "PARTIAL_PROPOSED_PORTFOLIO",
+          matrix_report:
+            "reports/hotel-explorer/HE-BETH-STAKEHOLDER-COVERAGE-MATRIX-V21.md",
+        },
       },
       organizations: [
         ...(liveReport.organizations || []),

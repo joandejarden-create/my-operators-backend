@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.21",
+  "version": "hotel-explorer-founder-quality-lessons-v1.22",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -321,6 +321,15 @@
       "sharedComponent": "he-public-contact-channel-hierarchy-v1.js; hotel-contact-intelligence.js; api/contact-intelligence.js reveal; hotel-explorer-founder-preview.js; GDI gdi-public-contact-channel-hierarchy-v1 (label parity)",
       "regressionTest": "test:he-public-contact-channel-hierarchy-v1; contact_cards_omit_dash_placeholders_and_surfe_not_on_get",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v20-contacts-hierarchy-beth.png; reports/hotel-explorer/HE-PUBLIC-CONTACT-HIERARCHY-V20.md"
+    },
+    {
+      "id": "HE-QL-033",
+      "originalProblem": "Stakeholder network remained cluttered when expanded and missing researched categories (financing, advisors, AM firm, related-hotel clustering); graph rendering was treated as research completeness",
+      "rootCause": "OCN focused on layout/progressive disclosure without completing free-first stakeholder coverage, historical vs current classification, relationship-group focus, or bounded Related Hotels clusters; research coverage was not measured separately from visualization coverage",
+      "approvedStandard": "Complete stakeholder research coverage matrix before further graph work; historical Ramsfield/HWE only in Capital/Advisors groups as Historical; MHM asset manager when supported without inventing property AM assignment; Default + six relationship-group selectors; Related Hotels (N) cluster with detail list; person nodes titled with org relevance; research-status messages for empty categories; dual Research vs Visualization coverage measures; dry-run HI upserts only",
+      "sharedComponent": "ownership-control-network-v1.js; he-ownership-control-network-v1.js; hotel-explorer-founder-preview.js stakeholder_research_coverage; HE-BETH-STAKEHOLDER-COVERAGE-MATRIX-V21.md",
+      "regressionTest": "test:he-ownership-control-network-v1; he_ownership_control_network_gates; he_stakeholder_research_vs_viz_coverage",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/he-ql-033-ocn-*.png; reports/hotel-explorer/HE-BETH-STAKEHOLDER-COVERAGE-MATRIX-V21.md"
     }
   ]
 }
