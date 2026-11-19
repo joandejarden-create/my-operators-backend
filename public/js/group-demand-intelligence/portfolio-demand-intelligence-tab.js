@@ -12,13 +12,26 @@
   var API_HOTELS = "/api/group-demand-intelligence/portfolio/hotels";
   var API_OPPS = "/api/group-demand-intelligence/portfolio/market-opportunities";
 
+  /** Align with PDI-1 PORTFOLIO_HOTEL_FIT_CLASS — display labels only. */
   var FIT_LABELS = {
     POTENTIAL_PRIMARY_HOST: "Potential primary host",
-    OVERFLOW_ACCOMMODATION: "Overflow / secondary",
+    OVERFLOW_ACCOMMODATION: "Overflow accommodation",
+    PREFERRED_LODGING_OPPORTUNITY: "Preferred lodging",
+    MEETING_CATERING_OPPORTUNITY: "Meeting / catering",
+    OTHER_PARTNERSHIP: "Other partnership",
+    UNSUITABLE: "Unsuitable",
     INSUFFICIENT_EVIDENCE: "Insufficient evidence",
-    NOT_SUITABLE: "Not suitable",
-    COMPETITOR_PLACED: "Competitor placed",
   };
+
+  var FIT_CLASS_ORDER = [
+    "POTENTIAL_PRIMARY_HOST",
+    "OVERFLOW_ACCOMMODATION",
+    "PREFERRED_LODGING_OPPORTUNITY",
+    "MEETING_CATERING_OPPORTUNITY",
+    "OTHER_PARTNERSHIP",
+    "UNSUITABLE",
+    "INSUFFICIENT_EVIDENCE",
+  ];
 
   function esc(s) {
     return String(s == null ? "" : s)
@@ -40,11 +53,55 @@
     return null;
   }
 
-  function wantsExplicitDemo() {
+  /** Demo preview is local/test hosts only — query flag alone never unlocks production. */
+  function isAuthorizedLocalDemoHost(loc) {
     try {
-      var p = new URLSearchParams(global.location.search || "");
-      var v = String(p.get("pdiDemo") || "").trim();
-      return v === "1" || v === "true" || v === "demo";
+      var host = String(
+        (loc && loc.hostname) ||
+          (global.location && global.location.hostname) ||
+          "",
+      ).toLowerCase();
+      return (
+        host === "localhost" ||
+        host === "127.0.0.1" ||
+        host === "0.0.0.0" ||
+        host === "[::1]"
+      );
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function readQueryParam(search, key) {
+    var raw = String(search || "");
+    if (raw.charAt(0) === "?") raw = raw.slice(1);
+    if (!raw) return "";
+    try {
+      if (typeof URLSearchParams === "function") {
+        return String(new URLSearchParams(raw).get(key) || "").trim();
+      }
+    } catch (e) {
+      /* fall through */
+    }
+    var parts = raw.split("&");
+    for (var i = 0; i < parts.length; i++) {
+      var kv = parts[i].split("=");
+      if (decodeURIComponent(kv[0] || "") === key) {
+        return decodeURIComponent((kv[1] || "").replace(/\+/g, " ")).trim();
+      }
+    }
+    return "";
+  }
+
+  function wantsExplicitDemo(loc) {
+    try {
+      var search =
+        (loc && loc.search) ||
+        (global.location && global.location.search) ||
+        "";
+      var v = readQueryParam(search, "pdiDemo");
+      if (!(v === "1" || v === "true" || v === "demo")) return false;
+      return isAuthorizedLocalDemoHost(loc || global.location);
     } catch (e) {
       return false;
     }
@@ -52,9 +109,11 @@
 
   function unavailableHtml(reason, opts) {
     opts = opts || {};
-    var demoNote = opts.allowDemoCue
-      ? '<p class="gdi-pdi-demo-cue">Founder / internal preview only: append <code>?pdiDemo=1</code> for a <strong>labeled DEMO</strong> matrix. Demo data is never a production customer surface.</p>'
-      : "";
+    var localOk = isAuthorizedLocalDemoHost(opts.location || global.location);
+    var demoNote =
+      opts.allowDemoCue && localOk
+        ? '<p class="gdi-pdi-demo-cue">Local/test only: on <code>localhost</code> append <code>?pdiDemo=1</code> for a <strong>labeled DEMO</strong> matrix. The query flag is ignored on non-local hosts.</p>'
+        : "";
     return (
       '<div class="gdi-pdi-page" data-gdi-pdi-state="UNAVAILABLE" role="status">' +
       "<header class=\"gdi-pdi-header\">" +
@@ -158,12 +217,18 @@
             if (!a) {
               return '<td class="gdi-pdi-cell gdi-pdi-cell--empty">—</td>';
             }
+            var canOpen =
+              a.drawer &&
+              a.drawer.hotelOpportunityId &&
+              a.drawer.detailPath &&
+              a.drawer.withheld !== "UNPUBLISHED_HOTEL_DRAWER";
             var withheld =
+              !canOpen &&
               a.drawer &&
               (a.drawer.withheld === "UNPUBLISHED_HOTEL_DRAWER" || !a.drawer.detailPath);
             var pursuit = a.recommendedPursuit || "";
             var openAttrs = "";
-            if (!withheld && a.drawer && a.drawer.hotelOpportunityId) {
+            if (canOpen) {
               openAttrs =
                 ' data-gdi-pdi-open="1"' +
                 ' data-hotel-id="' +
@@ -172,9 +237,21 @@
                 ' data-opportunity-id="' +
                 esc(a.drawer.hotelOpportunityId) +
                 '"' +
-                (a.drawer.detailPath
-                  ? ' data-detail-path="' + esc(a.drawer.detailPath) + '"'
-                  : "");
+                ' data-detail-path="' +
+                esc(a.drawer.detailPath) +
+                '"';
+            }
+            var actionHtml = "";
+            if (canOpen) {
+              actionHtml =
+                '<button type="button" class="gdi-btn gdi-btn-ghost gdi-pdi-open-btn">Open brief</button>' +
+                '<div class="gdi-pdi-level2-note">Opens the existing opportunity drawer (Commercial Intelligence Brief). Supporting Research appears only when already persisted on that opportunity.</div>';
+            } else if (withheld) {
+              actionHtml =
+                '<div class="gdi-pdi-withheld" data-gdi-pdi-l2="UNAVAILABLE">Brief and Supporting Research unavailable — not customer-published for this hotel.</div>';
+            } else {
+              actionHtml =
+                '<div class="gdi-pdi-withheld" data-gdi-pdi-l2="UNAVAILABLE">Supporting Research unavailable — no published drawer path for this hotel.</div>';
             }
             return (
               '<td class="gdi-pdi-cell" data-fit="' +
@@ -189,11 +266,7 @@
               (pursuit
                 ? '<div class="gdi-pdi-pursuit">' + esc(pursuit) + "</div>"
                 : "") +
-              (withheld
-                ? '<div class="gdi-pdi-withheld">Drawer withheld — not customer-published for this hotel.</div>'
-                : openAttrs
-                  ? '<button type="button" class="gdi-btn gdi-btn-ghost gdi-pdi-open-btn">Open brief</button>'
-                  : "") +
+              actionHtml +
               "</td>"
             );
           })
@@ -209,7 +282,6 @@
           (summary
             ? '<div class="gdi-pdi-opp-summary">' + esc(summary) + "</div>"
             : "") +
-          '<div class="gdi-pdi-level2-note">Supporting Research (Level 2) opens in the existing opportunity drawer with the Commercial Intelligence Brief.</div>' +
           "</th>" +
           cells +
           "</tr>"
@@ -289,67 +361,155 @@
     );
   }
 
-  /** Minimal Guadalajara DEMO payload for labeled UI QA (never silent production). */
+  /** Minimal Guadalajara DEMO payload for labeled local UI QA (never production). */
   function demoPayload() {
+    var hotels = [
+      {
+        hotelId: "fixture_gdi_pdi_demo_primary",
+        hotelDisplayName: "DEMO Primary Host Hotel",
+        marketId: "market_guadalajara_mx_v1",
+      },
+      {
+        hotelId: "fixture_gdi_pdi_demo_overflow",
+        hotelDisplayName: "DEMO Overflow Hotel",
+        marketId: "market_guadalajara_mx_v1",
+      },
+      {
+        hotelId: "fixture_gdi_pdi_demo_preferred",
+        hotelDisplayName: "DEMO Preferred Lodging",
+        marketId: "market_guadalajara_mx_v1",
+      },
+      {
+        hotelId: "fixture_gdi_pdi_demo_meeting",
+        hotelDisplayName: "DEMO Meeting / Catering",
+        marketId: "market_guadalajara_mx_v1",
+      },
+      {
+        hotelId: "fixture_gdi_pdi_demo_other",
+        hotelDisplayName: "DEMO Other Partnership",
+        marketId: "market_guadalajara_mx_v1",
+      },
+      {
+        hotelId: "fixture_gdi_pdi_demo_unsuitable",
+        hotelDisplayName: "DEMO Unsuitable",
+        marketId: "market_guadalajara_mx_v1",
+      },
+      {
+        hotelId: "fixture_gdi_pdi_demo_insufficient",
+        hotelDisplayName: "DEMO Insufficient Evidence",
+        marketId: "market_guadalajara_mx_v1",
+      },
+    ];
+    var assessments = [
+      {
+        hotelId: "fixture_gdi_pdi_demo_primary",
+        fitClass: "POTENTIAL_PRIMARY_HOST",
+        confidence: "HIGH",
+        recommendedPursuit: "DEMO: pursue as potential primary host.",
+        drawer: {
+          hotelId: "fixture_gdi_pdi_demo_primary",
+          hotelOpportunityId: "demo_opp_primary_v1",
+          detailPath:
+            "/api/group-demand-intelligence/hotels/fixture_gdi_pdi_demo_primary/opportunities/demo_opp_primary_v1",
+        },
+      },
+      {
+        hotelId: "fixture_gdi_pdi_demo_overflow",
+        fitClass: "OVERFLOW_ACCOMMODATION",
+        confidence: "MEDIUM",
+        recommendedPursuit: "DEMO: overflow / room-block pathway.",
+        drawer: {
+          hotelId: "fixture_gdi_pdi_demo_overflow",
+          hotelOpportunityId: "demo_opp_overflow_v1",
+          detailPath:
+            "/api/group-demand-intelligence/hotels/fixture_gdi_pdi_demo_overflow/opportunities/demo_opp_overflow_v1",
+        },
+      },
+      {
+        hotelId: "fixture_gdi_pdi_demo_preferred",
+        fitClass: "PREFERRED_LODGING_OPPORTUNITY",
+        confidence: "MEDIUM",
+        recommendedPursuit: "DEMO: preferred-lodging partnership route.",
+        drawer: {
+          hotelId: "fixture_gdi_pdi_demo_preferred",
+          hotelOpportunityId: "demo_opp_preferred_v1",
+          detailPath:
+            "/api/group-demand-intelligence/hotels/fixture_gdi_pdi_demo_preferred/opportunities/demo_opp_preferred_v1",
+        },
+      },
+      {
+        hotelId: "fixture_gdi_pdi_demo_meeting",
+        fitClass: "MEETING_CATERING_OPPORTUNITY",
+        confidence: "MEDIUM",
+        recommendedPursuit: "DEMO: meeting/catering capture.",
+        drawer: {
+          hotelId: "fixture_gdi_pdi_demo_meeting",
+          hotelOpportunityId: "demo_opp_meeting_v1",
+          detailPath:
+            "/api/group-demand-intelligence/hotels/fixture_gdi_pdi_demo_meeting/opportunities/demo_opp_meeting_v1",
+        },
+      },
+      {
+        hotelId: "fixture_gdi_pdi_demo_other",
+        fitClass: "OTHER_PARTNERSHIP",
+        confidence: "LOW",
+        recommendedPursuit: "DEMO: non-host partnership path.",
+        drawer: {
+          hotelId: "fixture_gdi_pdi_demo_other",
+          hotelOpportunityId: "demo_opp_other_v1",
+          detailPath:
+            "/api/group-demand-intelligence/hotels/fixture_gdi_pdi_demo_other/opportunities/demo_opp_other_v1",
+        },
+      },
+      {
+        hotelId: "fixture_gdi_pdi_demo_unsuitable",
+        fitClass: "UNSUITABLE",
+        confidence: "HIGH",
+        recommendedPursuit: "DEMO: do not pursue on current evidence.",
+        drawer: {
+          hotelId: "fixture_gdi_pdi_demo_unsuitable",
+          hotelOpportunityId: "demo_opp_unsuitable_v1",
+          detailPath: null,
+          withheld: "UNPUBLISHED_HOTEL_DRAWER",
+        },
+      },
+      {
+        hotelId: "fixture_gdi_pdi_demo_insufficient",
+        fitClass: "INSUFFICIENT_EVIDENCE",
+        confidence: "UNKNOWN",
+        recommendedPursuit: "DEMO: do not claim suitability yet.",
+        missingAttributes: ["meeting_capability_unknown"],
+        drawer: {
+          hotelId: "fixture_gdi_pdi_demo_insufficient",
+          hotelOpportunityId: "demo_opp_insufficient_v1",
+          detailPath: null,
+          withheld: "UNPUBLISHED_HOTEL_DRAWER",
+        },
+      },
+    ];
     return {
       markets: [
         {
           marketId: "market_guadalajara_mx_v1",
           marketLabel: "Guadalajara, Mexico (DEMO)",
           country: "Mexico",
-          hotelCount: 2,
+          hotelCount: hotels.length,
         },
       ],
-      hotels: [
-        {
-          hotelId: "fixture_gdi_pdi_gdl_full_service_v1",
-          hotelDisplayName: "DEMO Full-Service Guadalajara",
-          marketId: "market_guadalajara_mx_v1",
-        },
-        {
-          hotelId: "fixture_gdi_pdi_gdl_select_service_unknown_meetings",
-          hotelDisplayName: "DEMO Select-Service (meetings unknown)",
-          marketId: "market_guadalajara_mx_v1",
-        },
-      ],
+      hotels: hotels,
       opportunitiesPayload: {
         marketId: "market_guadalajara_mx_v1",
+        fitClasses: FIT_LABELS,
         results: [
           {
             marketOpportunityId: "demo_mog_expo_v1",
             sharedMarketPacket: {
               title: "DEMO — Regional expo (sample)",
               summaryWhat:
-                "Labeled demo opportunity for Portfolio UI QA. Not live research.",
+                "Labeled local-only demo opportunity for Portfolio UI QA. Not live research.",
               layer: "SHARED_PUBLIC_MARKET_INTELLIGENCE",
             },
-            hotelAssessments: [
-              {
-                hotelId: "fixture_gdi_pdi_gdl_full_service_v1",
-                fitClass: "POTENTIAL_PRIMARY_HOST",
-                confidence: "HIGH",
-                recommendedPursuit: "DEMO: qualify as potential primary host.",
-                drawer: {
-                  hotelId: "fixture_gdi_pdi_gdl_full_service_v1",
-                  hotelOpportunityId: "demo_opp_full_v1",
-                  detailPath: null,
-                  withheld: "UNPUBLISHED_HOTEL_DRAWER",
-                },
-              },
-              {
-                hotelId: "fixture_gdi_pdi_gdl_select_service_unknown_meetings",
-                fitClass: "INSUFFICIENT_EVIDENCE",
-                confidence: "UNKNOWN",
-                recommendedPursuit: "DEMO: meetings capability not evidenced.",
-                missingAttributes: ["meeting_capability_unknown"],
-                drawer: {
-                  hotelId: "fixture_gdi_pdi_gdl_select_service_unknown_meetings",
-                  hotelOpportunityId: "demo_opp_select_v1",
-                  detailPath: null,
-                  withheld: "UNPUBLISHED_HOTEL_DRAWER",
-                },
-              },
-            ],
+            hotelAssessments: assessments,
           },
         ],
       },
@@ -602,7 +762,10 @@
     renderHotelListHtml: renderHotelListHtml,
     unavailableHtml: unavailableHtml,
     demoPayload: demoPayload,
+    wantsExplicitDemo: wantsExplicitDemo,
+    isAuthorizedLocalDemoHost: isAuthorizedLocalDemoHost,
     FIT_LABELS: FIT_LABELS,
+    FIT_CLASS_ORDER: FIT_CLASS_ORDER,
   };
 
   global.DealalityGdiPortfolioTab = api;
