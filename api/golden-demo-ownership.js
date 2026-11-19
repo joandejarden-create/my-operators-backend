@@ -101,6 +101,26 @@ export async function getGoldenDemoHotelOwnership(req, res) {
 
       if (!payload.in_cohort) {
         payload.data_status = "AIRTABLE_GRAPH_PARTIAL";
+        const portfolioKpis = {
+          total_relationships: portfolioHotels.length,
+          operated_or_managed: portfolioHotels.filter((h) =>
+            /Operator|Management|OPERATED/i.test(
+              String(h.relationship_type || h.relationship || ""),
+            ),
+          ).length,
+          owned_or_controlled_verified: portfolioHotels.filter(
+            (h) => h.economic_owner_verified === true,
+          ).length,
+        };
+        const ownedHotels = portfolioHotels.filter(
+          (h) => h.economic_owner_verified === true,
+        );
+        const operatedHotels = portfolioHotels.filter((h) =>
+          /Operator|Management|OPERATED/i.test(
+            String(h.relationship_type || h.relationship || ""),
+          ),
+        );
+        const economicResolved = Boolean(nameOf(proj.economic_owner));
         if (primaryOrg) {
           payload.organization = {
             id: primaryOrg.orgId || primaryOrg.airtableId,
@@ -110,28 +130,89 @@ export async function getGoldenDemoHotelOwnership(req, res) {
             website: primaryOrg.officialWebsite || null,
             jurisdiction: primaryOrg.jurisdiction || null,
             verification_state: primaryOrg.verificationState || null,
+            organization_type: primaryOrg.organizationType || null,
+            ticker: primaryOrg.orgId || null,
+            registry_id: primaryOrg.orgId || null,
+            portfolio_kpis: portfolioKpis,
+            owned_controlled_hotels: ownedHotels,
+            operated_managed_hotels: operatedHotels,
             source: "HI_AIRTABLE_GRAPH",
           };
           payload.ownership_group = payload.organization;
         }
+        const operatorName = nameOf(proj.operator);
+        const execText = economicResolved
+          ? `Validated HI graph economic owner: ${nameOf(proj.economic_owner)}. Operator/brand edges also present where validated.`
+          : `HI Airtable graph has ${airtableGraph.relationshipCount} validated relationship(s)` +
+            (operatorName ? ` including operator ${operatorName}` : "") +
+            `. Economic owner is not verified. No fabricated ownership is shown.`;
         payload.report = {
           ...report,
           executive_summary: {
-            text:
-              report.executive_summary?.text ||
-              `Airtable HI graph relationships available for this hotel (${airtableGraph.relationshipCount}). ` +
-                `Operator/brand may be present; economic ownership remains unresolved unless a Validated Economic Owner relationship exists.`,
+            text: execText,
+            verification_bucket: economicResolved ? "HIGH" : "PARTIAL",
+            source: "HI_AIRTABLE_GRAPH",
+            what_remains_uncertain: economicResolved
+              ? []
+              : [
+                  "Economic owner / controlling sponsor",
+                  "Property company (PropCo) / legal titleholder",
+                  "Named decision-makers and outreach channels",
+                ],
           },
+          what_remains_uncertain: economicResolved
+            ? []
+            : [
+                "Economic owner / controlling sponsor",
+                "Property company (PropCo) / legal titleholder",
+                "Named decision-makers and outreach channels",
+              ],
+          why_this_matters: {
+            text: operatorName
+              ? `${operatorName} appears on verified HI operator/brand relationships for this hotel. Operator/brand presence does not certify economic ownership. Use Ownership and Relationships tabs for verified edges only.`
+              : "HI graph relationships for this hotel are partial. Do not infer ownership from brand or operator alone.",
+            source: "HI_AIRTABLE_GRAPH",
+          },
+          portfolio_preview: {
+            hotels: portfolioHotels,
+            kpis: portfolioKpis,
+            source: "HI_AIRTABLE_GRAPH",
+            coverage_note:
+              "Portfolio limited to hotels with HI Hotel–Org Relationships in the current graph — not a complete Marriott system portfolio.",
+          },
+          organizations: (airtableGraph.organizations || []).map((org) => ({
+            airtable_id: org.airtableId,
+            org_id: org.orgId,
+            display_name: nameOf(org),
+            legal_name: org.legalName || nameOf(org),
+            organization_type: org.organizationType || null,
+            verification_state: org.verificationState || null,
+            source: "HI_AIRTABLE_GRAPH",
+          })),
           ownership_and_control: {
             ...control,
-            economic_owner: nameOf(proj.economic_owner)
+            economic_owner_or_group: economicResolved
+              ? {
+                  name: nameOf(proj.economic_owner),
+                  known: true,
+                  status: "VALIDATED",
+                  verification_bucket: proj.economic_owner.confidence || "MEDIUM",
+                  source: "HI_AIRTABLE_GRAPH",
+                }
+              : {
+                  name: null,
+                  known: false,
+                  status: "NOT_YET_VERIFIED",
+                  note: "Owner: Not yet verified",
+                },
+            economic_owner: economicResolved
               ? {
                   name: nameOf(proj.economic_owner),
                   known: true,
                   verification_bucket: proj.economic_owner.confidence || "MEDIUM",
                   source: "HI_AIRTABLE_GRAPH",
                 }
-              : control.economic_owner || {
+              : {
                   name: null,
                   known: false,
                   note: "ECONOMIC_OWNER_UNRESOLVED",
@@ -142,10 +223,15 @@ export async function getGoldenDemoHotelOwnership(req, res) {
                   known: true,
                   source: "HI_AIRTABLE_GRAPH",
                 }
-              : control.property_company || null,
-            operator: nameOf(proj.operator)
+              : {
+                  name: null,
+                  known: false,
+                  status: "UNKNOWN",
+                  note: "PropCo / legal title unknown.",
+                },
+            operator: operatorName
               ? {
-                  name: nameOf(proj.operator),
+                  name: operatorName,
                   known: true,
                   verification_bucket: "HIGH",
                   relationship_type: "OPERATED_BY",
@@ -157,6 +243,7 @@ export async function getGoldenDemoHotelOwnership(req, res) {
                   name: nameOf(proj.brand),
                   known: true,
                   source: "HI_AIRTABLE_GRAPH",
+                  note: "Brand relationship organization (brand parent/operator entity) — not an economic-owner claim",
                 }
               : control.brand || null,
             control_status: proj.control_status,
@@ -172,22 +259,33 @@ export async function getGoldenDemoHotelOwnership(req, res) {
           organization_and_portfolio: {
             hotels: portfolioHotels,
             source: "HI_AIRTABLE_GRAPH",
-            kpis: {
-              total_relationships: portfolioHotels.length,
-              operated_or_managed: portfolioHotels.filter((h) =>
-                /Operator|Management/i.test(String(h.relationship_type || "")),
-              ).length,
-              owned_or_controlled_verified: portfolioHotels.filter(
-                (h) => h.economic_owner_verified,
-              ).length,
-            },
+            kpis: portfolioKpis,
           },
           research_status: {
             ...(report.research_status || {}),
             airtable_graph: true,
-            economic_owner_resolved: Boolean(proj.economic_owner),
+            economic_owner_resolved: economicResolved,
+            message: economicResolved
+              ? "HI graph includes validated economic owner."
+              : "HI graph partial — operator/brand may be present; economic owner unresolved.",
+          },
+          field_provenance: {
+            operator: { class: operatorName ? "VERIFIED_HI_REL" : "EMPTY", source: "HI Hotel–Org Relationships" },
+            brand: {
+              class: nameOf(proj.brand) ? "VERIFIED_HI_REL" : "EMPTY",
+              source: "HI Hotel–Org Relationships",
+            },
+            economic_owner: {
+              class: economicResolved ? "VERIFIED_HI_REL" : "UNVERIFIED",
+              source: "HI Hotel–Org Relationships",
+            },
+            portfolio_preview: {
+              class: "VERIFIED_DERIVED",
+              source: "HI Hotel–Org Relationships portfolio query",
+            },
           },
         };
+        payload.org_network = payload.report.organizations;
       }
     }
 

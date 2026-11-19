@@ -1,7 +1,7 @@
 # Gate 1 — Founder Review (Revised: KGPV Golden Demo Clarification)
 
 **Status:** AWAITING FOUNDER APPROVAL — substantive paid research **blocked**
-**Audited:** 2026-11-19T14:18:15.354Z
+**Audited:** 2026-11-19T14:33:57.473Z
 **Runtime:** http://127.0.0.1:8091
 
 ## Architecture principle
@@ -26,13 +26,13 @@ Base: `appCCUsuGsE1ifoLk` (`AIRTABLE_BASE_ID_ALT`).
 
 | Metric | Value | Meaning |
 |---|---:|---|
-| **KGPV golden-demo field coverage** | **77.6%** (45/58 gold-required) | Demonstrated UI depth — **not** Airtable proof |
+| **KGPV golden-demo field coverage** | **82.8%** (48/58 gold-required) | Demonstrated UI depth — **not** Airtable proof |
 | **Bethesda existing verified Airtable coverage** | **63.5%** (40/63) | Facts already in HPC/HI (independent of HE wiring) |
-| **Bethesda Airtable not yet connected to HE** | **15.9%** (10) | Exists in Airtable; HE not showing / not wired |
-| **Bethesda live Airtable→UI integration** | **46%** (29/63) | HE actually serving verified HPC/HI values |
-| **Genuine research gaps (after reuse)** | **23.8%** (15) | Missing in Airtable and HE — candidates for research post-integration |
+| **Bethesda Airtable not yet connected to HE** | **0%** (0) | Exists in Airtable; HE not showing / not wired |
+| **Bethesda live Airtable→UI integration** | **66.7%** (42/63) | HE actually serving verified HPC/HI values |
+| **Genuine research gaps (after reuse)** | **25.4%** (16) | Missing in Airtable and HE — candidates for research post-integration |
 | **UI populated without verified HPC field** | **0%** (0) | Overview shows values not present on primary HPC fields (enrichment/fallback) |
-| **Integration work items before paid** | **13** fields | Must wire/fix provenance before enrichment spend |
+| **Integration work items before paid** | **0** fields | Must wire/fix provenance before enrichment spend |
 
 ## What already exists in Airtable (Bethesda)
 
@@ -44,22 +44,14 @@ HI Org Contacts: 0 · Channels: 0 · Evidence: 0 · Runs: 0
 
 ### Existing Airtable not yet connected
 
-- **portfolio_preview** (ownership) — Derived read-model — requires underlying HI facts + HE wiring
-- **quality_summary** (contacts) — Derived read-model — requires underlying HI facts + HE wiring
-- **ownershipSummary** (contacts) — Derived read-model — requires underlying HI facts + HE wiring
-- **fallback_paths** (contacts) — HPC.Phone
-- **ticker** (organization) — HI Organizations (Marriott International, Inc.)
-- **portfolio_kpis** (organization) — Derived read-model — requires underlying HI facts + HE wiring
-- **owned_controlled_hotels** (organization) — Derived read-model — requires underlying HI facts + HE wiring
-- **operated_managed_hotels** (organization) — Derived read-model — requires underlying HI facts + HE wiring
-- **why_this_matters** (organization) — HI Organizations (Marriott International, Inc.)
-- **org_network** (relationships) — Derived read-model — requires underlying HI facts + HE wiring
+_None classified in this pass._
 
 ### Genuine research gaps (after source reuse)
 
 - **projectPhase** (hotel) — Not in Airtable and not in HE — research or steward fill after reuse
 - **starRating** (hotel) — Not in Airtable and not in HE — research or steward fill after reuse
-- **what_remains_uncertain** (ownership) — Not in Airtable and not in HE — research or steward fill after reuse
+- **economic_owner** (ownership) — Not in Airtable and not in HE — research or steward fill after reuse
+- **property_company** (ownership) — Not in Airtable and not in HE — research or steward fill after reuse
 - **source_coverage** (ownership) — Not in Airtable and not in HE — research or steward fill after reuse
 - **what_we_know[]** (ownership) — Not in Airtable and not in HE — research or steward fill after reuse
 - **ubo_group** (ownership) — Not in Airtable and not in HE — research or steward fill after reuse
@@ -118,17 +110,17 @@ HI Org Contacts: 0 · Channels: 0 · Evidence: 0 · Runs: 0
 | starRating | hotel |  | MISSING_HPC | GENUINE_GAP | RESEARCH_OR_STEWARD_AFTER_REUSE |
 | dataConfidence | hotel |  | EXISTS_HPC | LIVE_HPC_TO_UI | REUSE_OK |
 | amenitiesDisplay | hotel | YES | EXISTS_HPC | LIVE_HPC_TO_UI | REUSE_OK |
-| executive_summary.text | ownership | YES | DERIVABLE_FROM_HI | UI_FROM_PARTIAL_OVERLAY | INTEGRATION_DEEPEN_FROM_HI |
-| what_remains_uncertain | ownership | YES | MISSING_HI_EVIDENCE | GENUINE_GAP | RESEARCH_OR_STEWARD_AFTER_REUSE |
-| economic_owner | ownership | YES | MISSING_HI_REL | UI_POPULATED_UNVERIFIED_SOURCE | NONE |
-| property_company | ownership | YES | MISSING_HI_REL | UI_POPULATED_UNVERIFIED_SOURCE | NONE |
+| executive_summary.text | ownership | YES | DERIVABLE_FROM_HI | LIVE_VERIFIED_DERIVED | REUSE_OK |
+| what_remains_uncertain | ownership | YES | MISSING_HI_EVIDENCE | UI_POPULATED_UNVERIFIED_SOURCE | NONE |
+| economic_owner | ownership | YES | MISSING_HI_REL | GENUINE_GAP | RESEARCH_OR_STEWARD_AFTER_REUSE |
+| property_company | ownership | YES | MISSING_HI_REL | GENUINE_GAP | RESEARCH_OR_STEWARD_AFTER_REUSE |
 | operator | ownership | YES | EXISTS_HI_REL | LIVE_HI_GRAPH_TO_UI | REUSE_OK |
-| control_status | ownership | YES | DERIVABLE_FROM_HI | UI_FROM_PARTIAL_OVERLAY | INTEGRATION_DEEPEN_FROM_HI |
+| control_status | ownership | YES | DERIVABLE_FROM_HI | LIVE_VERIFIED_DERIVED | REUSE_OK |
 | source_coverage | ownership | YES | MISSING_HI_EVIDENCE | GENUINE_GAP | RESEARCH_OR_STEWARD_AFTER_REUSE |
 | what_we_know[] | ownership | YES | MISSING_HI_EVIDENCE | GENUINE_GAP | RESEARCH_OR_STEWARD_AFTER_REUSE |
 | control_rows | ownership | YES | EXISTS_HI_REL | LIVE_HI_GRAPH_TO_UI | REUSE_OK |
 | ubo_group | ownership | YES | MISSING_HI_ORG | GENUINE_GAP | RESEARCH_OR_STEWARD_AFTER_REUSE |
-| portfolio_preview | ownership |  | DERIVABLE_FROM_HI | EXISTS_IN_AIRTABLE_NOT_CONNECTED | INTEGRATION_WIRE |
+| portfolio_preview | ownership |  | DERIVABLE_FROM_HI | LIVE_VERIFIED_DERIVED | REUSE_OK |
 | brand_status | ownership | YES | EXISTS_HI_REL | LIVE_HI_GRAPH_TO_UI | REUSE_OK |
 | decision_authority.people | ownership | YES | MISSING_HI_CONTACTS | GENUINE_GAP | RESEARCH_OR_STEWARD_AFTER_REUSE |
 | qualified_signatories | ownership |  | MISSING_HI_CONTACTS | GENUINE_GAP | RESEARCH_OR_STEWARD_AFTER_REUSE |
@@ -138,24 +130,24 @@ HI Org Contacts: 0 · Channels: 0 · Evidence: 0 · Runs: 0
 | development_pursuit | ownership | YES | MISSING_HI_RUNS | GENUINE_GAP | RESEARCH_OR_STEWARD_AFTER_REUSE |
 | research_gaps | ownership | YES | MISSING_HI_RUNS | UI_POPULATED_UNVERIFIED_SOURCE | NONE |
 | sources | ownership | YES | MISSING_HI_EVIDENCE | GENUINE_GAP | RESEARCH_OR_STEWARD_AFTER_REUSE |
-| quality_summary | contacts |  | DERIVABLE_FROM_HI | EXISTS_IN_AIRTABLE_NOT_CONNECTED | INTEGRATION_WIRE |
-| ownershipSummary | contacts |  | DERIVABLE_FROM_HI | EXISTS_IN_AIRTABLE_NOT_CONNECTED | INTEGRATION_WIRE |
+| quality_summary | contacts | YES | DERIVABLE_FROM_HI | LIVE_VERIFIED_DERIVED | REUSE_OK |
+| ownershipSummary | contacts | YES | DERIVABLE_FROM_HI | LIVE_VERIFIED_DERIVED | REUSE_OK |
 | organization_contacts | contacts | YES | MISSING_HI_CHANNELS | UI_POPULATED_UNVERIFIED_SOURCE | NONE |
 | people_groups | contacts | YES | MISSING_HI_CONTACTS | GENUINE_GAP | RESEARCH_OR_STEWARD_AFTER_REUSE |
 | emails_phones | contacts | YES | MISSING_HI_CHANNELS | GENUINE_GAP | RESEARCH_OR_STEWARD_AFTER_REUSE |
-| fallback_paths | contacts |  | EXISTS_HPC | EXISTS_IN_AIRTABLE_NOT_CONNECTED | INTEGRATION_WIRE |
+| fallback_paths | contacts | YES | EXISTS_HPC | LIVE_HPC_TO_UI | REUSE_OK |
 | research_unresolved | contacts |  | MISSING_HI_RUNS | UI_POPULATED_UNVERIFIED_SOURCE | NONE |
 | display_name | organization | YES | EXISTS_HI_ORG | LIVE_HI_GRAPH_TO_UI | REUSE_OK |
 | legal_name | organization | YES | EXISTS_HI_ORG | LIVE_HI_GRAPH_TO_UI | REUSE_OK |
-| ticker | organization |  | EXISTS_HI_ORG | EXISTS_IN_AIRTABLE_NOT_CONNECTED | INTEGRATION_WIRE |
-| portfolio_kpis | organization |  | DERIVABLE_FROM_HI | EXISTS_IN_AIRTABLE_NOT_CONNECTED | INTEGRATION_WIRE |
-| owned_controlled_hotels | organization |  | DERIVABLE_FROM_HI | EXISTS_IN_AIRTABLE_NOT_CONNECTED | INTEGRATION_WIRE |
-| operated_managed_hotels | organization |  | DERIVABLE_FROM_HI | EXISTS_IN_AIRTABLE_NOT_CONNECTED | INTEGRATION_WIRE |
+| ticker | organization |  | EXISTS_HI_ORG | LIVE_HI_GRAPH_TO_UI | REUSE_OK |
+| portfolio_kpis | organization |  | DERIVABLE_FROM_HI | LIVE_VERIFIED_DERIVED | REUSE_OK |
+| owned_controlled_hotels | organization |  | DERIVABLE_FROM_HI | LIVE_VERIFIED_DERIVED | REUSE_OK |
+| operated_managed_hotels | organization |  | DERIVABLE_FROM_HI | LIVE_VERIFIED_DERIVED | REUSE_OK |
 | key_people | organization | YES | MISSING_HI_CONTACTS | GENUINE_GAP | RESEARCH_OR_STEWARD_AFTER_REUSE |
-| why_this_matters | organization | YES | EXISTS_HI_ORG | EXISTS_IN_AIRTABLE_NOT_CONNECTED | INTEGRATION_WIRE |
-| structure_chart | relationships | YES | DERIVABLE_FROM_HI | UI_FROM_PARTIAL_OVERLAY | INTEGRATION_DEEPEN_FROM_HI |
+| why_this_matters | organization | YES | EXISTS_HI_ORG | LIVE_HI_GRAPH_TO_UI | REUSE_OK |
+| structure_chart | relationships | YES | DERIVABLE_FROM_HI | LIVE_VERIFIED_DERIVED | REUSE_OK |
 | relationship_edges | relationships | YES | EXISTS_HI_REL | LIVE_HI_GRAPH_TO_UI | REUSE_OK |
-| org_network | relationships | YES | DERIVABLE_FROM_HI | EXISTS_IN_AIRTABLE_NOT_CONNECTED | INTEGRATION_WIRE |
+| org_network | relationships | YES | DERIVABLE_FROM_HI | LIVE_VERIFIED_DERIVED | REUSE_OK |
 
 ---
 

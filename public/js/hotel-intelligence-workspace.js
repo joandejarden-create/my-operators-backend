@@ -2275,11 +2275,28 @@
       },
       why_this_matters: {
         text:
+          (ownership.report.why_this_matters && ownership.report.why_this_matters.text) ||
           (ownership.report.commercial_pursuit &&
             ownership.report.commercial_pursuit.why_matters) ||
           (ownership.report.executive_summary && ownership.report.executive_summary.why_this_hotel_matters) ||
           "",
       },
+      portfolio_kpis:
+        (ownership.organization && ownership.organization.portfolio_kpis) ||
+        (ownership.report.organization_and_portfolio &&
+          ownership.report.organization_and_portfolio.kpis) ||
+        null,
+      owned_controlled_hotels:
+        (ownership.organization && ownership.organization.owned_controlled_hotels) ||
+        [],
+      operated_managed_hotels:
+        (ownership.organization && ownership.organization.operated_managed_hotels) ||
+        portfolio,
+      ticker:
+        org.ticker ||
+        org.registry_id ||
+        (ownership.organization && ownership.organization.ticker) ||
+        null,
       _synthesized_from_ownership: true,
     };
   }

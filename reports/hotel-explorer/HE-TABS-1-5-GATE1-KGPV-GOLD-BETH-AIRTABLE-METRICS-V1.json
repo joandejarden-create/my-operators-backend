@@ -2,7 +2,7 @@
   "contract": "HE_TABS_1_5_GATE1_KGPV_GOLD_BETH_AIRTABLE_METRICS_V1",
   "gate": "GATE_1_REVISED_KGPV_GOLDEN_DEMO_CLARIFICATION",
   "status": "AWAITING_FOUNDER_APPROVAL",
-  "auditedAt": "2026-11-19T14:18:15.354Z",
+  "auditedAt": "2026-11-19T14:33:57.473Z",
   "principle": "KGPV defines the desired experience. HPC and established Airtable tables define canonical intelligence. Do not migrate golden-demo fixtures without independent verification.",
   "paidResearch": {
     "substantivePaidEnrichment": "BLOCKED_UNTIL_GATE1_APPROVAL",
@@ -73,20 +73,20 @@
     }
   },
   "metrics": {
-    "kgpvGoldenDemoFieldCoveragePct": 77.6,
+    "kgpvGoldenDemoFieldCoveragePct": 82.8,
     "bethesdaExistingVerifiedAirtableCoveragePct": 63.5,
-    "bethesdaAirtableNotYetConnectedPct": 15.9,
-    "bethesdaLiveAirtableToUiIntegrationPct": 46,
-    "bethesdaGenuineResearchGapsAfterReusePct": 23.8,
+    "bethesdaAirtableNotYetConnectedPct": 0,
+    "bethesdaLiveAirtableToUiIntegrationPct": 66.7,
+    "bethesdaGenuineResearchGapsAfterReusePct": 25.4,
     "bethesdaUiPopulatedWithoutVerifiedHpcFieldPct": 0,
-    "integrationWorkBeforePaidCount": 13,
-    "researchGapCount": 15
+    "integrationWorkBeforePaidCount": 0,
+    "researchGapCount": 16
   },
   "scorecard": {
     "kgpvGoldenDemoFieldCoverage": {
       "fields": 58,
-      "demonstratedUi": 45,
-      "demonstratedUiPct": 77.6,
+      "demonstratedUi": 48,
+      "demonstratedUiPct": 82.8,
       "note": "KGPV UI population = desired experience depth. NOT verified Airtable coverage."
     },
     "bethesdaExistingVerifiedAirtableCoverage": {
@@ -109,32 +109,22 @@
       }
     },
     "bethesdaAirtableNotYetConnected": {
-      "count": 10,
-      "pct": 15.9,
-      "fields": [
-        "portfolio_preview",
-        "quality_summary",
-        "ownershipSummary",
-        "fallback_paths",
-        "ticker",
-        "portfolio_kpis",
-        "owned_controlled_hotels",
-        "operated_managed_hotels",
-        "why_this_matters",
-        "org_network"
-      ]
+      "count": 0,
+      "pct": 0,
+      "fields": []
     },
     "bethesdaLiveAirtableToUiIntegration": {
-      "count": 29,
-      "pct": 46
+      "count": 42,
+      "pct": 66.7
     },
     "bethesdaGenuineResearchGapsAfterReuse": {
-      "count": 15,
-      "pct": 23.8,
+      "count": 16,
+      "pct": 25.4,
       "fields": [
         "projectPhase",
         "starRating",
-        "what_remains_uncertain",
+        "economic_owner",
+        "property_company",
         "source_coverage",
         "what_we_know[]",
         "ubo_group",
@@ -150,87 +140,8 @@
       ]
     },
     "requiredIntegrationBeforePaidEnrichment": {
-      "count": 13,
-      "fields": [
-        {
-          "field": "executive_summary.text",
-          "tab": "ownership",
-          "action": "INTEGRATION_DEEPEN_FROM_HI",
-          "liveClass": "UI_FROM_PARTIAL_OVERLAY"
-        },
-        {
-          "field": "control_status",
-          "tab": "ownership",
-          "action": "INTEGRATION_DEEPEN_FROM_HI",
-          "liveClass": "UI_FROM_PARTIAL_OVERLAY"
-        },
-        {
-          "field": "portfolio_preview",
-          "tab": "ownership",
-          "action": "INTEGRATION_WIRE",
-          "liveClass": "EXISTS_IN_AIRTABLE_NOT_CONNECTED"
-        },
-        {
-          "field": "quality_summary",
-          "tab": "contacts",
-          "action": "INTEGRATION_WIRE",
-          "liveClass": "EXISTS_IN_AIRTABLE_NOT_CONNECTED"
-        },
-        {
-          "field": "ownershipSummary",
-          "tab": "contacts",
-          "action": "INTEGRATION_WIRE",
-          "liveClass": "EXISTS_IN_AIRTABLE_NOT_CONNECTED"
-        },
-        {
-          "field": "fallback_paths",
-          "tab": "contacts",
-          "action": "INTEGRATION_WIRE",
-          "liveClass": "EXISTS_IN_AIRTABLE_NOT_CONNECTED"
-        },
-        {
-          "field": "ticker",
-          "tab": "organization",
-          "action": "INTEGRATION_WIRE",
-          "liveClass": "EXISTS_IN_AIRTABLE_NOT_CONNECTED"
-        },
-        {
-          "field": "portfolio_kpis",
-          "tab": "organization",
-          "action": "INTEGRATION_WIRE",
-          "liveClass": "EXISTS_IN_AIRTABLE_NOT_CONNECTED"
-        },
-        {
-          "field": "owned_controlled_hotels",
-          "tab": "organization",
-          "action": "INTEGRATION_WIRE",
-          "liveClass": "EXISTS_IN_AIRTABLE_NOT_CONNECTED"
-        },
-        {
-          "field": "operated_managed_hotels",
-          "tab": "organization",
-          "action": "INTEGRATION_WIRE",
-          "liveClass": "EXISTS_IN_AIRTABLE_NOT_CONNECTED"
-        },
-        {
-          "field": "why_this_matters",
-          "tab": "organization",
-          "action": "INTEGRATION_WIRE",
-          "liveClass": "EXISTS_IN_AIRTABLE_NOT_CONNECTED"
-        },
-        {
-          "field": "structure_chart",
-          "tab": "relationships",
-          "action": "INTEGRATION_DEEPEN_FROM_HI",
-          "liveClass": "UI_FROM_PARTIAL_OVERLAY"
-        },
-        {
-          "field": "org_network",
-          "tab": "relationships",
-          "action": "INTEGRATION_WIRE",
-          "liveClass": "EXISTS_IN_AIRTABLE_NOT_CONNECTED"
-        }
-      ]
+      "count": 0,
+      "fields": []
     }
   },
   "integrationWork": [
@@ -840,11 +751,11 @@
         "airtableExists": true,
         "airtableClass": "DERIVABLE_FROM_HI",
         "airtableDetail": "Derived read-model — requires underlying HI facts + HE wiring",
-        "liveClass": "UI_FROM_PARTIAL_OVERLAY",
-        "liveIntegrated": false,
-        "note": "Partial overlay/stub — not full gold-depth derived view from Airtable"
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Derived HE view from live HI Organizations / Relationships graph"
       },
-      "gate1Action": "INTEGRATION_DEEPEN_FROM_HI"
+      "gate1Action": "REUSE_OK"
     },
     {
       "tab": "ownership",
@@ -857,15 +768,15 @@
         "note": "Golden-demo UX reference only — not canonical Airtable proof"
       },
       "bethesda": {
-        "uiPresent": false,
+        "uiPresent": true,
         "airtableExists": false,
         "airtableClass": "MISSING_HI_EVIDENCE",
         "airtableDetail": "No HI Graph Evidence rows",
-        "liveClass": "GENUINE_GAP",
+        "liveClass": "UI_POPULATED_UNVERIFIED_SOURCE",
         "liveIntegrated": false,
-        "note": "Not in Airtable and not in HE — research or steward fill after reuse"
+        "note": "UI populated; not attributed to verified HPC/HI field"
       },
-      "gate1Action": "RESEARCH_OR_STEWARD_AFTER_REUSE"
+      "gate1Action": "NONE"
     },
     {
       "tab": "ownership",
@@ -878,15 +789,15 @@
         "note": "Golden-demo UX reference only — not canonical Airtable proof"
       },
       "bethesda": {
-        "uiPresent": true,
+        "uiPresent": false,
         "airtableExists": false,
         "airtableClass": "MISSING_HI_REL",
         "airtableDetail": "No HI Rel type=Economic Owner",
-        "liveClass": "UI_POPULATED_UNVERIFIED_SOURCE",
+        "liveClass": "GENUINE_GAP",
         "liveIntegrated": false,
-        "note": "UI populated; not attributed to verified HPC/HI field"
+        "note": "Not in Airtable and not in HE — research or steward fill after reuse"
       },
-      "gate1Action": "NONE"
+      "gate1Action": "RESEARCH_OR_STEWARD_AFTER_REUSE"
     },
     {
       "tab": "ownership",
@@ -899,15 +810,15 @@
         "note": "Golden-demo UX reference only — not canonical Airtable proof"
       },
       "bethesda": {
-        "uiPresent": true,
+        "uiPresent": false,
         "airtableExists": false,
         "airtableClass": "MISSING_HI_REL",
         "airtableDetail": "No HI Rel type=Legal Owner",
-        "liveClass": "UI_POPULATED_UNVERIFIED_SOURCE",
+        "liveClass": "GENUINE_GAP",
         "liveIntegrated": false,
-        "note": "UI populated; not attributed to verified HPC/HI field"
+        "note": "Not in Airtable and not in HE — research or steward fill after reuse"
       },
-      "gate1Action": "NONE"
+      "gate1Action": "RESEARCH_OR_STEWARD_AFTER_REUSE"
     },
     {
       "tab": "ownership",
@@ -945,11 +856,11 @@
         "airtableExists": true,
         "airtableClass": "DERIVABLE_FROM_HI",
         "airtableDetail": "Derived read-model — requires underlying HI facts + HE wiring",
-        "liveClass": "UI_FROM_PARTIAL_OVERLAY",
-        "liveIntegrated": false,
-        "note": "Partial overlay/stub — not full gold-depth derived view from Airtable"
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Derived HE view from live HI Organizations / Relationships graph"
       },
-      "gate1Action": "INTEGRATION_DEEPEN_FROM_HI"
+      "gate1Action": "REUSE_OK"
     },
     {
       "tab": "ownership",
@@ -1046,15 +957,15 @@
         "note": "Golden-demo UX reference only — not canonical Airtable proof"
       },
       "bethesda": {
-        "uiPresent": false,
+        "uiPresent": true,
         "airtableExists": true,
         "airtableClass": "DERIVABLE_FROM_HI",
         "airtableDetail": "Derived read-model — requires underlying HI facts + HE wiring",
-        "liveClass": "EXISTS_IN_AIRTABLE_NOT_CONNECTED",
-        "liveIntegrated": false,
-        "note": "Underlying HI facts exist; derived HE view not connected"
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Derived HE view from live HI Organizations / Relationships graph"
       },
-      "gate1Action": "INTEGRATION_WIRE"
+      "gate1Action": "REUSE_OK"
     },
     {
       "tab": "ownership",
@@ -1251,20 +1162,20 @@
       "question": "Contact quality summary",
       "goldRequired": true,
       "kgpv": {
-        "demonstratedUi": false,
-        "liveClass": "GOLDEN_DEMO_UI_EMPTY",
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
         "note": "Golden-demo UX reference only — not canonical Airtable proof"
       },
       "bethesda": {
-        "uiPresent": false,
+        "uiPresent": true,
         "airtableExists": true,
         "airtableClass": "DERIVABLE_FROM_HI",
         "airtableDetail": "Derived read-model — requires underlying HI facts + HE wiring",
-        "liveClass": "EXISTS_IN_AIRTABLE_NOT_CONNECTED",
-        "liveIntegrated": false,
-        "note": "Underlying HI facts exist; derived HE view not connected"
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Contacts summary derived from HI graph + HPC property fallback (no named CI package)"
       },
-      "gate1Action": "INTEGRATION_WIRE"
+      "gate1Action": "REUSE_OK"
     },
     {
       "tab": "contacts",
@@ -1272,20 +1183,20 @@
       "question": "Ownership summary on contacts",
       "goldRequired": true,
       "kgpv": {
-        "demonstratedUi": false,
-        "liveClass": "GOLDEN_DEMO_UI_EMPTY",
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
         "note": "Golden-demo UX reference only — not canonical Airtable proof"
       },
       "bethesda": {
-        "uiPresent": false,
+        "uiPresent": true,
         "airtableExists": true,
         "airtableClass": "DERIVABLE_FROM_HI",
         "airtableDetail": "Derived read-model — requires underlying HI facts + HE wiring",
-        "liveClass": "EXISTS_IN_AIRTABLE_NOT_CONNECTED",
-        "liveIntegrated": false,
-        "note": "Underlying HI facts exist; derived HE view not connected"
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Contacts summary derived from HI graph + HPC property fallback (no named CI package)"
       },
-      "gate1Action": "INTEGRATION_WIRE"
+      "gate1Action": "REUSE_OK"
     },
     {
       "tab": "contacts",
@@ -1356,20 +1267,20 @@
       "question": "Public fallback paths",
       "goldRequired": true,
       "kgpv": {
-        "demonstratedUi": false,
-        "liveClass": "GOLDEN_DEMO_UI_EMPTY",
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
         "note": "Golden-demo UX reference only — not canonical Airtable proof"
       },
       "bethesda": {
-        "uiPresent": false,
+        "uiPresent": true,
         "airtableExists": true,
         "airtableClass": "EXISTS_HPC",
         "airtableDetail": "HPC.Phone",
-        "liveClass": "EXISTS_IN_AIRTABLE_NOT_CONNECTED",
-        "liveIntegrated": false,
-        "note": "Present in Airtable but not shown (or not wired) in HE"
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "Contacts property fallback paths wired from HPC Phone / Official Property URL"
       },
-      "gate1Action": "INTEGRATION_WIRE"
+      "gate1Action": "REUSE_OK"
     },
     {
       "tab": "contacts",
@@ -1445,15 +1356,15 @@
         "note": "Golden-demo UX reference only — not canonical Airtable proof"
       },
       "bethesda": {
-        "uiPresent": false,
+        "uiPresent": true,
         "airtableExists": true,
         "airtableClass": "EXISTS_HI_ORG",
         "airtableDetail": "HI Organizations (Marriott International, Inc.)",
-        "liveClass": "EXISTS_IN_AIRTABLE_NOT_CONNECTED",
-        "liveIntegrated": false,
-        "note": "Present in Airtable but not shown (or not wired) in HE"
+        "liveClass": "LIVE_HI_GRAPH_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE shows live HI graph Airtable data"
       },
-      "gate1Action": "INTEGRATION_WIRE"
+      "gate1Action": "REUSE_OK"
     },
     {
       "tab": "organization",
@@ -1466,15 +1377,15 @@
         "note": "Golden-demo UX reference only — not canonical Airtable proof"
       },
       "bethesda": {
-        "uiPresent": false,
+        "uiPresent": true,
         "airtableExists": true,
         "airtableClass": "DERIVABLE_FROM_HI",
         "airtableDetail": "Derived read-model — requires underlying HI facts + HE wiring",
-        "liveClass": "EXISTS_IN_AIRTABLE_NOT_CONNECTED",
-        "liveIntegrated": false,
-        "note": "Underlying HI facts exist; derived HE view not connected"
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Derived HE view from live HI Organizations / Relationships graph"
       },
-      "gate1Action": "INTEGRATION_WIRE"
+      "gate1Action": "REUSE_OK"
     },
     {
       "tab": "organization",
@@ -1487,15 +1398,15 @@
         "note": "Golden-demo UX reference only — not canonical Airtable proof"
       },
       "bethesda": {
-        "uiPresent": false,
+        "uiPresent": true,
         "airtableExists": true,
         "airtableClass": "DERIVABLE_FROM_HI",
         "airtableDetail": "Derived read-model — requires underlying HI facts + HE wiring",
-        "liveClass": "EXISTS_IN_AIRTABLE_NOT_CONNECTED",
-        "liveIntegrated": false,
-        "note": "Underlying HI facts exist; derived HE view not connected"
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Derived HE view from live HI Organizations / Relationships graph"
       },
-      "gate1Action": "INTEGRATION_WIRE"
+      "gate1Action": "REUSE_OK"
     },
     {
       "tab": "organization",
@@ -1508,15 +1419,15 @@
         "note": "Golden-demo UX reference only — not canonical Airtable proof"
       },
       "bethesda": {
-        "uiPresent": false,
+        "uiPresent": true,
         "airtableExists": true,
         "airtableClass": "DERIVABLE_FROM_HI",
         "airtableDetail": "Derived read-model — requires underlying HI facts + HE wiring",
-        "liveClass": "EXISTS_IN_AIRTABLE_NOT_CONNECTED",
-        "liveIntegrated": false,
-        "note": "Underlying HI facts exist; derived HE view not connected"
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Derived HE view from live HI Organizations / Relationships graph"
       },
-      "gate1Action": "INTEGRATION_WIRE"
+      "gate1Action": "REUSE_OK"
     },
     {
       "tab": "organization",
@@ -1550,15 +1461,15 @@
         "note": "Golden-demo UX reference only — not canonical Airtable proof"
       },
       "bethesda": {
-        "uiPresent": false,
+        "uiPresent": true,
         "airtableExists": true,
         "airtableClass": "EXISTS_HI_ORG",
         "airtableDetail": "HI Organizations (Marriott International, Inc.)",
-        "liveClass": "EXISTS_IN_AIRTABLE_NOT_CONNECTED",
-        "liveIntegrated": false,
-        "note": "Present in Airtable but not shown (or not wired) in HE"
+        "liveClass": "LIVE_HI_GRAPH_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE shows live HI graph Airtable data"
       },
-      "gate1Action": "INTEGRATION_WIRE"
+      "gate1Action": "REUSE_OK"
     },
     {
       "tab": "relationships",
@@ -1575,11 +1486,11 @@
         "airtableExists": true,
         "airtableClass": "DERIVABLE_FROM_HI",
         "airtableDetail": "Derived read-model — requires underlying HI facts + HE wiring",
-        "liveClass": "UI_FROM_PARTIAL_OVERLAY",
-        "liveIntegrated": false,
-        "note": "Partial overlay/stub — not full gold-depth derived view from Airtable"
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Derived HE view from live HI Organizations / Relationships graph"
       },
-      "gate1Action": "INTEGRATION_DEEPEN_FROM_HI"
+      "gate1Action": "REUSE_OK"
     },
     {
       "tab": "relationships",
@@ -1613,15 +1524,15 @@
         "note": "Golden-demo UX reference only — not canonical Airtable proof"
       },
       "bethesda": {
-        "uiPresent": false,
+        "uiPresent": true,
         "airtableExists": true,
         "airtableClass": "DERIVABLE_FROM_HI",
         "airtableDetail": "Derived read-model — requires underlying HI facts + HE wiring",
-        "liveClass": "EXISTS_IN_AIRTABLE_NOT_CONNECTED",
-        "liveIntegrated": false,
-        "note": "Underlying HI facts exist; derived HE view not connected"
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Derived HE view from live HI Organizations / Relationships graph"
       },
-      "gate1Action": "INTEGRATION_WIRE"
+      "gate1Action": "REUSE_OK"
     }
   ]
 }

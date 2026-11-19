@@ -507,7 +507,7 @@
     });
   }
 
-  function renderHpcPropertyFallback(hotelId, contacts, hotelName) {
+  function renderHpcPropertyFallback(hotelId, contacts, hotelName, ownershipSummary) {
     var phone = contacts && contacts.property_phone;
     var website = contacts && contacts.website;
     var source =
@@ -526,8 +526,28 @@
         esc(website) +
         "</a>"
       : '<span class="hci-channel__value">—</span>';
+    var summaryHtml = "";
+    if (ownershipSummary) {
+      summaryHtml =
+        '<section class="hci-section"><div class="hci-section__head"><h3>Ownership summary (graph)</h3>' +
+        '<p class="hci-note">Derived from HI graph + HPC property channels. Named decision-makers are not verified.</p></div>' +
+        '<div class="hci-channel"><div class="hci-channel__main"><span class="hci-channel__type">ORGANIZATION</span><span class="hci-channel__value">' +
+        esc(ownershipSummary.organization || "—") +
+        '</span></div></div>' +
+        '<div class="hci-channel"><div class="hci-channel__main"><span class="hci-channel__type">OPERATOR</span><span class="hci-channel__value">' +
+        esc(ownershipSummary.operator || "—") +
+        '</span></div></div>' +
+        '<div class="hci-channel"><div class="hci-channel__main"><span class="hci-channel__type">ECONOMIC OWNER</span><span class="hci-channel__value">' +
+        esc(
+          ownershipSummary.economic_owner_verified
+            ? "Verified"
+            : "Not verified"
+        ) +
+        "</span></div></div></section>";
+    }
     return (
       '<div class="hci-root" data-hci-state="hpc-fallback">' +
+      summaryHtml +
       '<section class="hci-section">' +
       '<div class="hci-section__head"><h3>Property contacts (HPC fallback)</h3>' +
       '<p class="hci-note">Read-only fallback from ' +
@@ -549,7 +569,7 @@
       "</div></div>" +
       '<p class="hci-note">Provenance: source=' +
       esc((contacts && contacts.source) || "HPC_PROPERTY_FALLBACK") +
-      "; no Contact Intelligence write on GET.</p>" +
+      "; quality=PROPERTY_FALLBACK_ONLY; no Contact Intelligence write on GET.</p>" +
       "</section></div>"
     );
   }
@@ -572,12 +592,39 @@
         ) {
           return null;
         }
+        var control =
+          (json.report && json.report.ownership_and_control) || {};
         return {
           hotelId: hotelId,
           hotelName:
             (json.hotel && (json.hotel.name || json.hotel.display_name)) ||
             hotelId,
           contacts: contacts,
+          ownershipSummary: {
+            organization:
+              (json.organization &&
+                (json.organization.display_name || json.organization.legal_name)) ||
+              null,
+            operator: (control.operator && control.operator.name) || null,
+            economic_owner_verified: Boolean(
+              (control.economic_owner && control.economic_owner.known) ||
+                (control.economic_owner_or_group &&
+                  control.economic_owner_or_group.known)
+            ),
+            source: "HI_AIRTABLE_GRAPH",
+          },
+          quality_summary: {
+            status: "PROPERTY_FALLBACK_ONLY",
+            named_contacts: 0,
+            property_channels:
+              (contacts.property_phone ? 1 : 0) + (contacts.website ? 1 : 0),
+            source: contacts.source || "HPC_PROPERTY_FALLBACK",
+          },
+          fallback_paths: {
+            property_phone: contacts.property_phone || null,
+            website: contacts.website || null,
+            source: contacts.source || "HPC_PROPERTY_FALLBACK",
+          },
         };
       })
       .catch(function () {
@@ -626,7 +673,8 @@
           host.innerHTML = renderHpcPropertyFallback(
             hotelId,
             fallback.contacts,
-            fallback.hotelName
+            fallback.hotelName,
+            fallback.ownershipSummary
           );
           return;
         }

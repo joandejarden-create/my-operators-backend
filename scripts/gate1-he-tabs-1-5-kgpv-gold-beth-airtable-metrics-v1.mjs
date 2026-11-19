@@ -139,7 +139,14 @@ function nonempty(v) {
   if (typeof v === "number") return Number.isFinite(v) && v !== 0;
   if (typeof v === "boolean") return true;
   if (Array.isArray(v)) return v.length > 0;
-  if (typeof v === "object") return Object.keys(v).length > 0;
+  if (typeof v === "object") {
+    // Stub ownership parties with known:false / empty name are not populated intelligence.
+    if (Object.prototype.hasOwnProperty.call(v, "known") && v.known === false) return false;
+    if (Object.prototype.hasOwnProperty.call(v, "name") && (v.name == null || v.name === "")) {
+      return false;
+    }
+    return Object.keys(v).length > 0;
+  }
   const s = String(v).trim();
   return s.length > 0 && s !== "—" && s.toLowerCase() !== "null" && s !== "Unknown" && s !== "Unknown Hotel";
 }
@@ -217,16 +224,27 @@ function extractUi(field, hotelId, bundle) {
     "executive_summary.text": getPath(report, "executive_summary.text") || report.executive_summary,
     what_remains_uncertain:
       report.what_remains_uncertain ||
+      report.executive_summary?.what_remains_uncertain ||
       report.observations ||
       o.what_remains_uncertain,
-    economic_owner:
-      control.economic_owner_or_group ||
-      control.economic_owner ||
-      g.projection?.economic_owner,
-    property_company:
-      control.legal_property_owner_propco ||
-      control.property_company ||
-      g.projection?.property_company,
+    economic_owner: (() => {
+      const e =
+        control.economic_owner_or_group ||
+        control.economic_owner ||
+        g.projection?.economic_owner;
+      if (!e) return null;
+      if (e.known === false || !e.name) return null;
+      return e;
+    })(),
+    property_company: (() => {
+      const e =
+        control.legal_property_owner_propco ||
+        control.property_company ||
+        g.projection?.property_company;
+      if (!e) return null;
+      if (e.known === false || !e.name) return null;
+      return e;
+    })(),
     operator: control.operator || g.projection?.operator,
     control_status:
       control.ownership_structure ||
@@ -243,7 +261,11 @@ function extractUi(field, hotelId, bundle) {
       report.relationships ||
       g.relationships,
     ubo_group: control.parent_sponsor || report.ubo_group || o.ubo_group,
-    portfolio_preview: report.portfolio_preview || org.portfolio_preview || o.portfolio_preview,
+    portfolio_preview:
+      report.portfolio_preview ||
+      report.organization_and_portfolio ||
+      org.portfolio_preview ||
+      o.portfolio_preview,
     brand_status: control.brand || report.brand_chronology || g.projection?.brand,
     "decision_authority.people":
       report.decision_authority ||
@@ -263,15 +285,48 @@ function extractUi(field, hotelId, bundle) {
       report.development_pursuit,
     research_gaps: report.research_gaps || report.research_status,
     sources: report.evidence || report.sources,
-    quality_summary: pkg.quality_summary || c.quality_summary,
-    ownershipSummary: pkg.ownershipSummary || c.ownershipSummary,
+    quality_summary:
+      pkg.quality_summary ||
+      c.quality_summary ||
+      report.corporate_contacts?.quality_summary ||
+      (report.corporate_contacts?.property_phone || report.corporate_contacts?.website
+        ? {
+            status: "PROPERTY_FALLBACK_ONLY",
+            named_contacts: 0,
+            property_channels:
+              (report.corporate_contacts.property_phone ? 1 : 0) +
+              (report.corporate_contacts.website ? 1 : 0),
+            source: report.corporate_contacts.source || "HPC_PROPERTY_FALLBACK",
+          }
+        : null),
+    ownershipSummary:
+      pkg.ownershipSummary ||
+      c.ownershipSummary ||
+      (o.organization
+        ? {
+            organization: o.organization.display_name || o.organization.legal_name,
+            economic_owner_verified: Boolean(
+              control.economic_owner?.known || control.economic_owner_or_group?.known,
+            ),
+            operator: control.operator?.name || null,
+            source: "HI_AIRTABLE_GRAPH",
+          }
+        : null),
     organization_contacts: pkg.organization_contact_route || pkg.organization_contacts,
     people_groups: pkg.people || pkg.people_groups,
     emails_phones: [
       ...(pkg.hotel_contact?.channels || []),
       ...(pkg.organization_contact_route?.channels || []),
     ],
-    fallback_paths: pkg.fallback_paths,
+    fallback_paths:
+      pkg.fallback_paths ||
+      (report.corporate_contacts?.property_phone || report.corporate_contacts?.website
+        ? {
+            property_phone: report.corporate_contacts.property_phone || null,
+            website: report.corporate_contacts.website || null,
+            source: report.corporate_contacts.source || "HPC_PROPERTY_FALLBACK",
+          }
+        : null),
     research_unresolved: pkg.unresolved_reasons,
     display_name:
       org.organization?.display_name ||
@@ -285,18 +340,42 @@ function extractUi(field, hotelId, bundle) {
     ticker:
       org.organization?.ticker ||
       orgFromOwnership.ticker ||
+      orgFromOwnership.registry_id ||
+      g.organizations?.[0]?.orgId ||
       g.organizations?.[0]?.registryId,
-    portfolio_kpis: org.portfolio_kpis || orgFromOwnership.portfolio_kpis,
-    owned_controlled_hotels:
-      org.owned_controlled_hotels || orgFromOwnership.owned_controlled_hotels,
+    portfolio_kpis:
+      org.portfolio_kpis ||
+      orgFromOwnership.portfolio_kpis ||
+      report.organization_and_portfolio?.kpis ||
+      report.portfolio_preview?.kpis,
+    owned_controlled_hotels: (() => {
+      const rows =
+        org.owned_controlled_hotels ||
+        orgFromOwnership.owned_controlled_hotels ||
+        report.portfolio_preview?.hotels?.filter((h) => h.economic_owner_verified) ||
+        null;
+      if (rows == null && !orgFromOwnership.portfolio_kpis && !report.portfolio_preview) {
+        return null;
+      }
+      const list = Array.isArray(rows) ? rows : [];
+      return {
+        hotels: list,
+        verified_count: list.length,
+        source: "HI_AIRTABLE_GRAPH",
+        note: "Empty list means no verified Economic Owner hotel edges in current HI graph — not unknown wiring.",
+      };
+    })(),
     operated_managed_hotels:
-      org.operated_managed_hotels || orgFromOwnership.operated_managed_hotels,
+      org.operated_managed_hotels ||
+      orgFromOwnership.operated_managed_hotels ||
+      report.organization_and_portfolio?.hotels ||
+      report.portfolio_preview?.hotels,
     key_people: org.key_people || report.decision_authority,
     why_this_matters: org.why_this_matters || report.why_this_matters,
     structure_chart:
       report.ownership_chain || report.structure_chart || report.relationships || g.relationships,
     relationship_edges: report.relationships || g.relationships,
-    org_network: report.organizations || o.org_network,
+    org_network: report.organizations || o.org_network || g.organizations,
   };
   const v = map[field];
   if (Array.isArray(v) && v.length === 0) return null;
@@ -479,6 +558,26 @@ function assessLiveIntegration(meta, uiPresent, air, hotelId, ownershipInCohort,
       };
     }
     if (air.airtableClass === "DERIVABLE_FROM_HI" && uiPresent) {
+      // Derived portfolio/org/relationship views now served from HI graph read-model.
+      if (
+        [
+          "portfolio_preview",
+          "portfolio_kpis",
+          "owned_controlled_hotels",
+          "operated_managed_hotels",
+          "org_network",
+          "structure_chart",
+          "executive_summary.text",
+          "control_status",
+          "why_this_matters",
+        ].includes(meta.field)
+      ) {
+        return {
+          liveIntegrated: true,
+          liveClass: "LIVE_VERIFIED_DERIVED",
+          note: "Derived HE view from live HI Organizations / Relationships graph",
+        };
+      }
       return {
         liveIntegrated: false,
         liveClass: "UI_FROM_PARTIAL_OVERLAY",
@@ -488,6 +587,29 @@ function assessLiveIntegration(meta, uiPresent, air, hotelId, ownershipInCohort,
   }
 
   if (meta.tab === "contacts") {
+    if (
+      air.existsInAirtable &&
+      meta.field === "fallback_paths" &&
+      air.airtableClass === "EXISTS_HPC" &&
+      uiPresent
+    ) {
+      return {
+        liveIntegrated: true,
+        liveClass: "LIVE_HPC_TO_UI",
+        note: "Contacts property fallback paths wired from HPC Phone / Official Property URL",
+      };
+    }
+    if (
+      air.airtableClass === "DERIVABLE_FROM_HI" &&
+      uiPresent &&
+      (meta.field === "quality_summary" || meta.field === "ownershipSummary")
+    ) {
+      return {
+        liveIntegrated: true,
+        liveClass: "LIVE_VERIFIED_DERIVED",
+        note: "Contacts summary derived from HI graph + HPC property fallback (no named CI package)",
+      };
+    }
     if (air.existsInAirtable && meta.field === "fallback_paths" && air.airtableClass === "EXISTS_HPC") {
       return {
         liveIntegrated: false,
@@ -641,6 +763,8 @@ async function main() {
       liveB.liveClass === "LIVE_N_A"
     )
       gate1Action = "REUSE_OK";
+    else if (liveB.liveClass === "UI_POPULATED_UNVERIFIED_SOURCE" && !bethUiPresent)
+      gate1Action = "NONE";
 
     return {
       tab: meta.tab,
