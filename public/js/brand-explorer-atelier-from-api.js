@@ -510,6 +510,73 @@
     }
   }
 
+  /** Phase 2D: mount independent candidate blocks into real atelier (not standalone HTML). */
+  function isCandidateOverlayRequest() {
+    try {
+      return /(?:\?|&)beCandidateOverlay=1(?:&|$)/.test(String(window.location.search || ''));
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function candidateOverlayUrl() {
+    try {
+      var params = new URLSearchParams(String(window.location.search || ''));
+      var custom = String(params.get('beCandidateOverlayUrl') || '').trim();
+      if (custom && custom.indexOf('..') === -1 && custom.charAt(0) === '/') return custom;
+    } catch (e) {
+      /* ignore */
+    }
+    return '/brand-explorer-phase2d-preview/curio-candidate.json';
+  }
+
+  function applyCandidateOverlayToBrand(brand, overlay) {
+    if (!brand || !overlay) return brand;
+    var incoming = (overlay.brandExplorer && overlay.brandExplorer.blocks) || overlay.blocks || [];
+    if (!Array.isArray(incoming) || !incoming.length) return brand;
+    var blocks = incoming.map(function (b, i) {
+      var slotKey = String(b.slotKey || b.slot_key || '').trim();
+      var body = String(b.body || '').trim();
+      var imageUrl = b.imageUrl || b.image_url || null;
+      if (!imageUrl && /^materials\.gallery\./.test(slotKey) && /^https?:\/\//i.test(body)) {
+        imageUrl = body;
+      }
+      return {
+        recordId: b.recordId || 'phase2d-overlay-' + i,
+        slotKey: slotKey,
+        title: String(b.title || '').trim(),
+        body: body,
+        sort: typeof b.sort_order === 'number' ? b.sort_order : typeof b.sort === 'number' ? b.sort : i + 1,
+        imageUrl: imageUrl,
+        imageFilename: b.imageFilename || null,
+        summaryUrl: b.summaryUrl || '',
+        caseSummaryOverview: '',
+        caseSummaryOwnerObjective: '',
+        caseSummaryBrandRelevance: '',
+        caseSummaryInterpretation: '',
+        caseSummaryTags: ''
+      };
+    }).filter(function (b) {
+      return b.slotKey;
+    });
+    brand.brandExplorer = { version: 1, blocks: blocks, overlaySource: 'beCandidateOverlay' };
+    brand.beCandidateOverlay = true;
+    brand.beCandidateOverlayMeta = {
+      phase: overlay.phase || '2D',
+      brandName: overlay.brandName || null,
+      note: overlay.note || 'Independent factory candidate overlay'
+    };
+    return brand;
+  }
+
+  function fetchCandidateOverlay() {
+    return fetch(candidateOverlayUrl(), { credentials: 'same-origin' })
+      .then(function (res) {
+        if (!res.ok) throw new Error('candidate overlay HTTP ' + res.status);
+        return res.json();
+      });
+  }
+
   /** Built-in factory candidate allowlist (mirrors server module; API may also set factoryPreview.eligible). */
   var FACTORY_PREVIEW_CANDIDATE_SLUGS = {
     'tapestry-collection-by-hilton': true,
@@ -6596,16 +6663,37 @@
   function onDetailLoaded(ev) {
     var brand = ev.detail && ev.detail.brand;
     if (!brand) return;
-    lastAtelierBrand = brand;
-    mountAtelierFromBrand(brand);
-    var root = document.getElementById('brandRoot');
-    if (isExportPdfMode()) {
-      waitForExportImages(root).then(function () {
-        notifyExportReady();
-      });
+
+    function finishMount(resolvedBrand) {
+      lastAtelierBrand = resolvedBrand;
+      mountAtelierFromBrand(resolvedBrand);
+      var root = document.getElementById('brandRoot');
+      if (isExportPdfMode()) {
+        waitForExportImages(root).then(function () {
+          notifyExportReady();
+        });
+        return;
+      }
+      notifyExportReady();
+    }
+
+    if (isCandidateOverlayRequest() && isInternalPreviewRequest()) {
+      fetchCandidateOverlay()
+        .then(function (overlay) {
+          finishMount(applyCandidateOverlayToBrand(brand, overlay));
+        })
+        .catch(function (err) {
+          try {
+            console.warn('[BrandExplorer] beCandidateOverlay failed; mounting live Presentation', err);
+          } catch (e) {
+            /* ignore */
+          }
+          finishMount(brand);
+        });
       return;
     }
-    notifyExportReady();
+
+    finishMount(brand);
   }
 
   function onBrandListLoaded() {
@@ -6630,6 +6718,7 @@
     isExternalQualityLocked: isExternalQualityLocked,
     isInternalPreviewRequest: isInternalPreviewRequest,
     isFactoryPreviewRequest: isFactoryPreviewRequest,
+    isCandidateOverlayRequest: isCandidateOverlayRequest,
     canRenderFactoryPreview: canRenderFactoryPreview
   };
 })();
