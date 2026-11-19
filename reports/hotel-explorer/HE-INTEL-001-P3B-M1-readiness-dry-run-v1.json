@@ -1,0 +1,326 @@
+{
+  "ok": true,
+  "phase": "P3B-M1",
+  "contract": "HE_INTEL_001_P3B_M1_LIVE_BENCHMARK_V1",
+  "paidExecutionAuthorized": false,
+  "founderAuthorizationGate": {
+    "ok": false,
+    "authId": null,
+    "error": "P3B_M1_PAID_NOT_AUTHORIZED",
+    "message": "Paid M1 execution requires FOUNDER_AUTH_HE_INTEL_001_P3B_M1_PAID_V1 + confirmPaidExecution + authorizedBudgetUsd ≤ $5"
+  },
+  "availability": {
+    "EXA": {
+      "keyConfigured": true,
+      "adapterReady": true,
+      "liveFlag": "0",
+      "boundedOps": [
+        "search_lite",
+        "contents"
+      ]
+    },
+    "PARALLEL": {
+      "keyConfigured": true,
+      "adapterReady": true,
+      "liveFlag": "0",
+      "boundedOps": [
+        "search_fast",
+        "task_core"
+      ]
+    },
+    "SERPAPI": {
+      "keyConfigured": true,
+      "adapterReady": true,
+      "liveFlag": "0",
+      "note": "USD/search UNKNOWN until plan confirmed — count-capped in M1 plan"
+    },
+    "DEALALITY_NATIVE": {
+      "keyConfigured": true,
+      "adapterReady": true,
+      "liveFlag": "offline_loop_ready",
+      "note": "USD/credit UNKNOWN — credit-capped"
+    },
+    "SURFE": {
+      "keyConfigured": true,
+      "forbidden": true
+    },
+    "PDL": {
+      "keyConfigured": true,
+      "forbidden": true
+    }
+  },
+  "plannedOperations": {
+    "envelopeId": "P3B_M1_THREE_HOTEL",
+    "authorized": false,
+    "hardCapUsd": 5,
+    "perHotelCapUsd": 2.5,
+    "hotels": [
+      "recLuxvwwxID7U2B8",
+      "recnPB3Q02NO8Ma1o",
+      "recvVZ5unh4d3Krzi"
+    ],
+    "hotelPlans": [
+      {
+        "hpcId": "recLuxvwwxID7U2B8",
+        "maxRequests": {
+          "EXA": 13,
+          "PARALLEL_SEARCH": 6,
+          "PARALLEL_TASK": 1,
+          "DEALALITY_NATIVE": 8
+        },
+        "expectedProviderCostUsd": 0.068,
+        "expectedModelTokenCostUsd": null,
+        "expectedModelTokenCostStatus": "UNKNOWN",
+        "expectedOrchestrationCostUsd": 0,
+        "perHotelCapUsd": 2.5,
+        "withinPerHotelCap": true,
+        "operations": {
+          "EXA": {
+            "search_lite": {
+              "maxRequests": 8,
+              "unitUsd": 0.004,
+              "maxUsd": 0.032
+            },
+            "contents": {
+              "maxRequests": 5,
+              "unitUsd": 0.001,
+              "maxUsd": 0.005
+            }
+          },
+          "PARALLEL_SEARCH": {
+            "search_fast": {
+              "maxRequests": 6,
+              "unitUsd": 0.001,
+              "maxUsd": 0.006
+            }
+          },
+          "PARALLEL_TASK": {
+            "task_core": {
+              "maxRequests": 1,
+              "unitUsd": 0.025,
+              "maxUsd": 0.025
+            },
+            "task_pro_optional": {
+              "maxRequests": 1,
+              "unitUsd": 0.1,
+              "maxUsd": 0.1,
+              "conditional": "only_if_core_fails_quality_gate"
+            }
+          },
+          "DEALALITY_NATIVE": {
+            "research_loop": {
+              "maxRequests": 8,
+              "unitUsd": null,
+              "maxUsd": null,
+              "usdStatus": "UNKNOWN",
+              "creditCap": 8
+            }
+          }
+        }
+      },
+      {
+        "hpcId": "recnPB3Q02NO8Ma1o",
+        "maxRequests": {
+          "EXA": 13,
+          "PARALLEL_SEARCH": 6,
+          "PARALLEL_TASK": 1,
+          "DEALALITY_NATIVE": 8
+        },
+        "expectedProviderCostUsd": 0.068,
+        "expectedModelTokenCostUsd": null,
+        "expectedModelTokenCostStatus": "UNKNOWN",
+        "expectedOrchestrationCostUsd": 0,
+        "perHotelCapUsd": 2.5,
+        "withinPerHotelCap": true,
+        "operations": {
+          "EXA": {
+            "search_lite": {
+              "maxRequests": 8,
+              "unitUsd": 0.004,
+              "maxUsd": 0.032
+            },
+            "contents": {
+              "maxRequests": 5,
+              "unitUsd": 0.001,
+              "maxUsd": 0.005
+            }
+          },
+          "PARALLEL_SEARCH": {
+            "search_fast": {
+              "maxRequests": 6,
+              "unitUsd": 0.001,
+              "maxUsd": 0.006
+            }
+          },
+          "PARALLEL_TASK": {
+            "task_core": {
+              "maxRequests": 1,
+              "unitUsd": 0.025,
+              "maxUsd": 0.025
+            },
+            "task_pro_optional": {
+              "maxRequests": 1,
+              "unitUsd": 0.1,
+              "maxUsd": 0.1,
+              "conditional": "only_if_core_fails_quality_gate"
+            }
+          },
+          "DEALALITY_NATIVE": {
+            "research_loop": {
+              "maxRequests": 8,
+              "unitUsd": null,
+              "maxUsd": null,
+              "usdStatus": "UNKNOWN",
+              "creditCap": 8
+            }
+          }
+        }
+      },
+      {
+        "hpcId": "recvVZ5unh4d3Krzi",
+        "maxRequests": {
+          "EXA": 13,
+          "PARALLEL_SEARCH": 6,
+          "PARALLEL_TASK": 1,
+          "DEALALITY_NATIVE": 8
+        },
+        "expectedProviderCostUsd": 0.068,
+        "expectedModelTokenCostUsd": null,
+        "expectedModelTokenCostStatus": "UNKNOWN",
+        "expectedOrchestrationCostUsd": 0,
+        "perHotelCapUsd": 2.5,
+        "withinPerHotelCap": true,
+        "operations": {
+          "EXA": {
+            "search_lite": {
+              "maxRequests": 8,
+              "unitUsd": 0.004,
+              "maxUsd": 0.032
+            },
+            "contents": {
+              "maxRequests": 5,
+              "unitUsd": 0.001,
+              "maxUsd": 0.005
+            }
+          },
+          "PARALLEL_SEARCH": {
+            "search_fast": {
+              "maxRequests": 6,
+              "unitUsd": 0.001,
+              "maxUsd": 0.006
+            }
+          },
+          "PARALLEL_TASK": {
+            "task_core": {
+              "maxRequests": 1,
+              "unitUsd": 0.025,
+              "maxUsd": 0.025
+            },
+            "task_pro_optional": {
+              "maxRequests": 1,
+              "unitUsd": 0.1,
+              "maxUsd": 0.1,
+              "conditional": "only_if_core_fails_quality_gate"
+            }
+          },
+          "DEALALITY_NATIVE": {
+            "research_loop": {
+              "maxRequests": 8,
+              "unitUsd": null,
+              "maxUsd": null,
+              "usdStatus": "UNKNOWN",
+              "creditCap": 8
+            }
+          }
+        }
+      }
+    ],
+    "totals": {
+      "expectedMaxProviderUsd": 0.204,
+      "optionalParallelProAltUsd": 0.3,
+      "expectedMaxWithOptionalProUsd": 0.429,
+      "modelTokenUsdStatus": "UNKNOWN",
+      "orchestrationUsd": 0,
+      "hardCapUsd": 5,
+      "headroomUsd": 4.796
+    },
+    "retriesDefault": 0,
+    "boundedRetrieval": {
+      "exa": "lite search ≤10 results; contents ≤5 URLs; no agent unless separately budgeted",
+      "parallelSearch": "fast/turbo only",
+      "parallelTask": "core preferred; pro optional"
+    },
+    "forbidden": [
+      "SURFE",
+      "PDL",
+      "inferred_email_as_verified"
+    ]
+  },
+  "proposedExecutionCommand": {
+    "dryRunReadiness": "npm run dry-run:he-intel-001-p3b-m1-readiness",
+    "paidExecutionBlockedUntilAuth": true,
+    "proposedPaidCommand": "npm run run:he-intel-001-p3b-m1-live -- --founder-auth FOUNDER_AUTH_HE_INTEL_001_P3B_M1_PAID_V1 --confirm-paid-execution --authorized-budget-usd 5",
+    "note": "Paid command must refuse without founder auth; do not run until separate authorization."
+  },
+  "atomicBudget": {
+    "hardCapUsd": 5,
+    "perHotelCapUsd": 2.5,
+    "refusedWithoutAuth": {
+      "ok": false,
+      "error": "PROVIDER_UNAUTHORIZED"
+    },
+    "resume": {
+      "firstOk": true,
+      "replayed": true,
+      "sameOpId": "op_aa81e21de10ebbd4f5f8ebec"
+    },
+    "sharedCapExhausted": {
+      "ok": false,
+      "error": "BUDGET_EXHAUSTED",
+      "scope": "shared_run_usd"
+    },
+    "canParallelBypassSharedBudget": false
+  },
+  "cohort": {
+    "hotels": [
+      {
+        "hpcId": "recLuxvwwxID7U2B8",
+        "name": "Bethesda Marriott"
+      },
+      {
+        "hpcId": "recnPB3Q02NO8Ma1o",
+        "name": "Wyndham San Diego Bayside"
+      },
+      {
+        "hpcId": "recvVZ5unh4d3Krzi",
+        "name": "The Ritz-Carlton, Mexico City"
+      }
+    ],
+    "subsequentSixHotelCohort": {
+      "cohortId": "HE-INTEL-001-P3A-SIX-HOTEL-V1",
+      "hpcIds": [
+        "recLuxvwwxID7U2B8",
+        "recnPB3Q02NO8Ma1o",
+        "recG66DQJKP2c0UNh",
+        "recvVZ5unh4d3Krzi",
+        "recBJZwMvgbdG7y4F",
+        "recrTWMTHXQpA5geC"
+      ],
+      "retained": true
+    }
+  },
+  "guarantees": {
+    "contract": "HE_INTEL_001_P3B_M1_LIVE_BENCHMARK_V1",
+    "contract_version": "1.0.0-m1-readiness",
+    "phase": "P3B-M1",
+    "paid_budget_authorized": false,
+    "proposed_hard_cap_usd": 5,
+    "proposed_per_hotel_cap_usd": 2.5,
+    "surfe": false,
+    "pdl": false,
+    "production_airtable_writes": false,
+    "canonical_graph_writes": false,
+    "staging_only": true
+  },
+  "leakageViolations": []
+}
