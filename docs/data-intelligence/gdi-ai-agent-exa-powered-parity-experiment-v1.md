@@ -1,9 +1,10 @@
 # GDI AI Agent — Exa-Powered Parity Experiment V1
 
-**Status:** PROTOCOL DESIGN LOCKED (not authorized to spend)  
+**Status:** E1 COMPLETE — independent verdict **REJECT** (actual paid **$0.88** / $20 ceiling; 0/8 materialLift)  
 **Date:** 2026-11-19  
 **Primary question:** Under matched Exa capabilities, models, budgets, and GDI qualification gates, does Dealality adaptive research planning add independently verified commercial value over the existing Exa-powered GDI workflow?  
-**Non-goals:** Wave 2 execution in this PR; production/Airtable/publication writes; redesign of Exa Agent contracts; broad discovery productization.
+**Answer (E1):** No — adaptive planning exercised distinct sequences/reformulations but did not produce incremental verified contacts or demand evidence vs Arm A on the frozen eight cases.  
+**Non-goals:** Production/Airtable/publication writes; redesign of Exa Agent contracts; broad discovery productization; E2 unless separately authorized.
 
 ---
 
@@ -197,9 +198,9 @@ Attribution must still use: `REASONING_ONLY` | `RETRIEVAL_STRATEGY` | `PROVIDER_
 
 | Wave | Auth | Spend | Purpose |
 |------|------|-------|---------|
-| **Wave E0** | None | `$0` | Mock-Exa parity harness (`gdi-ai-agent-exa-parity-e0-harness-v1`) — validity / E1 readiness only |
-| **Wave E1** | Separate founder auth | Bounded paid Exa | Eight-case Conclusion A paired run |
-| **Wave E2** | Separate | TBD | Optional paid follow-up after E1 ITERATE/ADOPT |
+| **Wave E0** | None | `$0` | Mock-Exa parity harness — validity / E1 readiness (**done**, PRs #423/#425) |
+| **Wave E1** | Founder auth ≤$20 | **$0.88 actual** | Eight-case live Exa parity — independent verdict **REJECT** (0 materialLift) |
+| **Wave E2** | Separate | TBD | Not justified by E1 REJECT; requires new founder auth if revisited |
 
 Auth env (proposed, not enabled by this PR):  
 `GDI_AI_AGENT_EXA_PARITY_AUTH=1` **and** existing `GDI_EXA_AGENT_LIVE=1` + paid authorize flags.
@@ -283,16 +284,13 @@ Do **not** claim B from an eight-case E1 ADOPT.
 
 ## 6. Recommendation
 
-**Yes — a bounded paid Exa-parity experiment is commercially justified to run *after* separate founder authorization**, because:
+E0 established validity; founder authorized E1 ≤$20; E1 executed (**$0.88** actual).
 
-1. Wave 1 `$0` official-page ITERATE does not answer the real product question.  
-2. Existing Exa runs already show high retrieval / low commercial conversion — the plausible agent value is **better investigation sequencing and contact/thesis focus**, not “more Exa.”  
-3. Cost can be capped at **~$20** for eight paired cases with equal arms.  
-4. Evidence-grounded evaluator + frozen cohort already exist.
+**Independent verdict: REJECT** — Dealality adaptive planning did not create enough independently verified commercial intelligence on the frozen eight cases to justify integrating it into the existing Exa-powered GDI process.
 
-**Do not spend yet.** Ship this protocol lock only. Await founder authorization for Wave E1.
+Evidence preserved under `reports/gdi-ai-agent-exa-powered-parity-experiment-v1/` (`E1_HARNESS_RESULTS.json`, `E1_FOUNDER_REPORT.md`, `E1_INDEPENDENT_EVALUATION.json`).
 
-If founder declines spend: keep agent work focused on stop-gate quality and offline planning tests against recorded Exa artifacts (`HISTORICAL_REPLAY` labeled — never scored as fresh).
+Do **not** authorize E2 or production integration from this result. Further agent work should stay offline / stop-gate quality unless a new founder-authorized design revisits a different hypothesis.
 
 ---
 
@@ -305,4 +303,4 @@ If founder declines spend: keep agent work focused on stop-gate quality and offl
 5. Risks / implementation requirements — §5  
 6. Recommendation — §6  
 
-**Paid research executed by this PR:** none.
+**Paid research executed (E1):** $0.88 actual / $20 ceiling — independent verdict REJECT.
