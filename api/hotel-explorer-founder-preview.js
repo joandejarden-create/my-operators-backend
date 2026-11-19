@@ -18,6 +18,10 @@ import {
   proposeHePublicContactUpsert,
   resolveEnrichAction,
 } from "../lib/hotel-intelligence/contact-intelligence/he-public-contact-channel-hierarchy-v1.js";
+import {
+  normalizeOrgPortfolioKeyPeople,
+  buildOrgPortfolioStrategicContext,
+} from "../lib/hotel-intelligence/ownership/he-org-portfolio-key-people-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -106,6 +110,121 @@ function nameOfOrg(org) {
 }
 
 /**
+ * Shared owner-side people model for Contact Intelligence + Organization Key People.
+ * Prefers staged owner decision-maker research; falls back to Phase 3 persons.
+ */
+function buildSharedProposedPeople(persons, mrec) {
+  const research = loadOwnerDecisionMakerResearch();
+  const researchByName = new Map(
+    (research?.people || []).map((p) => [
+      String(p.name || p.display_name || "")
+        .trim()
+        .toLowerCase(),
+      p,
+    ])
+  );
+  const source = research?.people?.length ? research.people : persons || [];
+  return source.map((p) => {
+    const name = p.display_name || p.name;
+    const enriched = researchByName.get(String(name || "").trim().toLowerCase()) || p;
+    const linkedinUrl = enriched.linkedinUrl || null;
+    const contactClass = enriched.contactClass || null;
+    const propertyResponsibility = enriched.propertyResponsibility || "UNKNOWN";
+    const group =
+      contactClass === "OWNER_DECISION_AUTHORITY" ||
+      /ownership|decision|ceo|president/i.test(
+        String(enriched.role_group || "") + " " + String(enriched.title || "")
+      )
+        ? "PRIMARY_OWNER_SIDE"
+        : "SECONDARY_OWNER_CORPORATE";
+    return {
+      personId:
+        enriched.personId ||
+        "proposed:" + String(name || "").toLowerCase().replace(/\s+/g, "_"),
+      name,
+      display_name: name,
+      title: enriched.title || p.title,
+      role: enriched.title || p.title,
+      group,
+      role_group: enriched.role_group || p.role_group,
+      organization: enriched.organization || nameOfOrg(mrec),
+      organizationName: enriched.organization || nameOfOrg(mrec),
+      organizationDomain: "mullencap.com",
+      confidence: enriched.confidence || p.confidence,
+      preview_state: "PROPOSED_STAGED",
+      displayState: "PARTIAL",
+      identityVerification: enriched.identityVerification || "VERIFIED_PUBLIC",
+      contactClass,
+      contactClassLabel: CONTACT_CLASS_LABEL[contactClass] || contactClass,
+      propertyResponsibility,
+      propertyResponsibilityLabel:
+        PROPERTY_RESPONSIBILITY_LABEL[propertyResponsibility] || propertyResponsibility,
+      decisionAuthority:
+        contactClass === "OWNER_DECISION_AUTHORITY"
+          ? "Owner decision authority (proposed sponsor)"
+          : contactClass === "RELEVANT_COMMERCIAL_ENTRY_POINT"
+            ? "Asset-management commercial entry point (proposed)"
+            : "Authority Not Verified",
+      signingAuthority: "Authority Not Verified",
+      verificationNotes:
+        enriched.propertyResponsibilityNote ||
+        "PROPOSED — identity verified from public professional sources. Personal email/phone unresolved. Not UBO.",
+      whyRelevant: enriched.whyRelevant,
+      recommendationRationale: enriched.recommendationRationale,
+      strategic_relevance: enriched.whyRelevant,
+      relationship_to_hotel: enriched.whyRelevant,
+      contactability: linkedinUrl ? "LINKEDIN_AND_ORG_FALLBACK" : "PROFILE_OR_ORG_FALLBACK",
+      stakeholderClass: enriched.role_group || p.role_group || "Owner / Principal",
+      commercialRole: CONTACT_CLASS_LABEL[contactClass] || enriched.role_group,
+      lastVerified: enriched.lastVerified || "2026-11-19",
+      linkedinUrl,
+      professional_profile: linkedinUrl
+        ? {
+            type: "LINKEDIN",
+            url: linkedinUrl,
+            verified: true,
+          }
+        : null,
+      professional_profile_url: linkedinUrl,
+      professional_profile_verified: Boolean(linkedinUrl),
+      profileUrls: linkedinUrl
+        ? [
+            {
+              type: "LinkedIn",
+              url: linkedinUrl,
+              verification_status: enriched.linkedinVerification || "VERIFIED_PUBLIC",
+              verified: true,
+              source_url: enriched.linkedinSourceUrl || "https://mullencap.com/about/",
+            },
+          ]
+        : [],
+      emailContacts: enriched.emailContacts || [],
+      phoneContacts: enriched.phoneContacts || [],
+      emails: enriched.emailContacts || [],
+      phones: enriched.phoneContacts || [],
+      channels: [],
+      hotelEvidenceCount: enriched.hotelEvidenceCount || 0,
+      portfolioEvidenceCount: enriched.portfolioEvidenceCount || 0,
+      hotelEvidenceIds: enriched.hotelEvidenceIds || [],
+      portfolioEvidenceIds: enriched.portfolioEvidenceIds || [],
+      evidenceIds: enriched.evidenceIds || [],
+      enrichAction: resolveEnrichAction(
+        {
+          name,
+          organization: enriched.organization || nameOfOrg(mrec),
+          emailContacts: enriched.emailContacts || [],
+          phoneContacts: enriched.phoneContacts || [],
+        },
+        { providerReady: true }
+      ),
+      source: "OWNER_DECISION_MAKER_RESEARCH_STAGED",
+      decision_authority_category: enriched.role_group || p.role_group,
+      category: enriched.role_group || p.role_group,
+    };
+  });
+}
+
+/**
  * Build proposed ownership overlay from staged dry-run (read-only file).
  * Marks every proposed field so UI can distinguish from live Airtable.
  */
@@ -123,17 +242,71 @@ function buildProposedOverlay(dryRun, livePayload) {
   const marbeth = orgs.find((o) => /marbeth/i.test(String(o.legal_name || "")));
   const mrec = orgs.find((o) => /mullen real estate capital/i.test(String(o.legal_name || "")));
   const mhm = orgs.find((o) => /mullen hospitality/i.test(String(o.legal_name || "")));
-  const proposedPeople = persons.map((p) => ({
-    display_name: p.display_name,
-    name: p.display_name,
-    title: p.title,
-    role: p.title,
-    role_group: p.role_group,
-    confidence: p.confidence,
-    source: "PHASE3_STAGED_DRY_RUN",
-    preview_state: "PROPOSED_STAGED",
-    organization: nameOfOrg(mrec),
-  }));
+  const sharedPeople = buildSharedProposedPeople(persons, mrec);
+  const proposedPeople = normalizeOrgPortfolioKeyPeople(sharedPeople, {
+    organizationName: nameOfOrg(mrec),
+  });
+  const portfolioOverlay = loadMullenOwnerPortfolioOverlay();
+  const roomsInventory = loadRoomsMeetingInventory();
+  const bethRooms =
+    roomsInventory?.guestRooms?.totalGuestrooms?.value ||
+    livePayload?.hotel?.rooms ||
+    livePayload?.hotel?.guestRoomsMeetingSpace?.guestRooms?.totalGuestrooms?.value ||
+    407;
+  const bethBrand =
+    livePayload?.hotel?.brand_display ||
+    livePayload?.hotel?.brand ||
+    livePayload?.hotel?.affiliation ||
+    "Marriott Hotels";
+  const bethCity = livePayload?.hotel?.city || "Bethesda";
+  const bethMarket = livePayload?.hotel?.market || "Bethesda / Montgomery County";
+  const hotelFacts = {
+    ...(livePayload?.hotel || {}),
+    name: (livePayload?.hotel && livePayload.hotel.name) || "Bethesda Marriott",
+    rooms: bethRooms,
+    brand: bethBrand,
+    brand_display: bethBrand,
+    city: bethCity,
+    market: bethMarket,
+  };
+  const strategicContext = buildOrgPortfolioStrategicContext(hotelFacts, {
+    hotel: hotelFacts,
+    report: {
+      ownership_and_control: {
+        legal_property_owner_propco: {
+          name: nameOfOrg(marbeth),
+          preview_state: "PROPOSED_STAGED",
+        },
+        economic_owner_or_group: {
+          name: nameOfOrg(mrec),
+          preview_state: "PROPOSED_STAGED",
+        },
+        operator: {
+          name:
+            (livePayload?.report?.ownership_and_control?.operator &&
+              livePayload.report.ownership_and_control.operator.name) ||
+            "Marriott International",
+        },
+        ubo_group: { known: false, status: "UNRESOLVED" },
+        asset_manager: mhm
+          ? { name: nameOfOrg(mhm), preview_state: "PROPOSED_STAGED" }
+          : { name: "Mullen Hospitality Management" },
+        lender: {
+          name: "Ramsfield Hospitality Finance",
+          current: false,
+          preview_state: "HISTORICAL",
+        },
+        advisor: {
+          name: "Hodges Ward Elliott",
+          preview_state: "HISTORICAL",
+        },
+      },
+    },
+    organization: {
+      display_name: nameOfOrg(mrec),
+      ...portfolioOverlay,
+    },
+  });
 
   const sources = projectEvidenceToSourcesCitations(
     evidence.map((e) => ({
@@ -351,11 +524,13 @@ function buildProposedOverlay(dryRun, livePayload) {
       ],
       decision_authority: {
         people: proposedPeople,
-        source: "PHASE3_STAGED_DRY_RUN",
+        source: "OWNER_DECISION_MAKER_RESEARCH_STAGED",
         preview_state: "PROPOSED_STAGED",
-        note: "Proposed people from Phase 3 staging — personal emails/phones unresolved",
+        note:
+          "Shared contact intelligence model — Key People and Contact Intelligence use the same verified people pack. Personal emails/phones unresolved.",
       },
       decision_makers: proposedPeople,
+      strategic_context: strategicContext,
       contact_channels_proposed: channels.map((c) => ({
         kind: c.kind,
         value: c.value,
@@ -376,8 +551,14 @@ function buildProposedOverlay(dryRun, livePayload) {
       },
       why_this_matters: {
         text:
-          "Proposed ownership intelligence distinguishes PropCo (Marbeth), economic sponsor (MREC), and operator (Marriott). Review Sources for evidence before authorizing Airtable apply.",
-        source: "PHASE3_STAGED_DRY_RUN",
+          (strategicContext.sections &&
+            strategicContext.sections
+              .map((s) => s.body)
+              .filter(Boolean)
+              .slice(0, 2)
+              .join(" ")) ||
+          "Proposed ownership intelligence distinguishes PropCo, economic sponsor, and operator. Review Sources for evidence before authorizing Airtable apply.",
+        source: "ORG_PORTFOLIO_STRATEGIC_CONTEXT_V1",
         preview_state: "PROPOSED_STAGED",
       },
       research_status: {
@@ -413,9 +594,10 @@ function buildProposedOverlay(dryRun, livePayload) {
           verification_state: "PROPOSED",
           source: "PHASE3_STAGED_DRY_RUN",
           preview_state: "PROPOSED_STAGED",
-          key_people: persons,
+          key_people: proposedPeople,
           contact_channels: channels,
-          ...loadMullenOwnerPortfolioOverlay(),
+          strategic_context: strategicContext,
+          ...portfolioOverlay,
         }
       : livePayload?.organization || null,
     proposed_entities: {
@@ -467,98 +649,7 @@ function buildProposedContactsViewModel(dryRun, livePayload) {
   const hotelName =
     (livePayload && livePayload.hotel && livePayload.hotel.name) || "Bethesda Marriott";
   const research = loadOwnerDecisionMakerResearch();
-  const researchByName = new Map(
-    (research?.people || []).map((p) => [
-      String(p.name || p.display_name || "")
-        .trim()
-        .toLowerCase(),
-      p,
-    ])
-  );
-
-  const basePeople = (research?.people?.length ? research.people : persons).map((p) => {
-    const name = p.display_name || p.name;
-    const enriched = researchByName.get(String(name || "").trim().toLowerCase()) || p;
-    const linkedinUrl = enriched.linkedinUrl || null;
-    const contactClass = enriched.contactClass || null;
-    const propertyResponsibility = enriched.propertyResponsibility || "UNKNOWN";
-    const group =
-      contactClass === "OWNER_DECISION_AUTHORITY" ||
-      /ownership|decision|ceo|president/i.test(
-        String(enriched.role_group || "") + " " + String(enriched.title || "")
-      )
-        ? "PRIMARY_OWNER_SIDE"
-        : "SECONDARY_OWNER_CORPORATE";
-    return {
-      personId:
-        enriched.personId ||
-        "proposed:" + String(name || "").toLowerCase().replace(/\s+/g, "_"),
-      name,
-      title: enriched.title || p.title,
-      role: enriched.title || p.title,
-      group,
-      role_group: enriched.role_group || p.role_group,
-      organization: enriched.organization || nameOfOrg(mrec),
-      organizationName: enriched.organization || nameOfOrg(mrec),
-      organizationDomain: "mullencap.com",
-      confidence: enriched.confidence || p.confidence,
-      preview_state: "PROPOSED_STAGED",
-      displayState: "PARTIAL",
-      identityVerification: enriched.identityVerification || "VERIFIED_PUBLIC",
-      contactClass,
-      contactClassLabel: CONTACT_CLASS_LABEL[contactClass] || contactClass,
-      propertyResponsibility,
-      propertyResponsibilityLabel:
-        PROPERTY_RESPONSIBILITY_LABEL[propertyResponsibility] || propertyResponsibility,
-      decisionAuthority:
-        contactClass === "OWNER_DECISION_AUTHORITY"
-          ? "Owner decision authority (proposed sponsor)"
-          : contactClass === "RELEVANT_COMMERCIAL_ENTRY_POINT"
-            ? "Asset-management commercial entry point (proposed)"
-            : "Authority Not Verified",
-      signingAuthority: "Authority Not Verified",
-      verificationNotes:
-        enriched.propertyResponsibilityNote ||
-        "PROPOSED — identity verified from public professional sources. Personal email/phone unresolved. Not UBO.",
-      whyRelevant: enriched.whyRelevant,
-      recommendationRationale: enriched.recommendationRationale,
-      contactability: linkedinUrl ? "LINKEDIN_AND_ORG_FALLBACK" : "PROFILE_OR_ORG_FALLBACK",
-      stakeholderClass: enriched.role_group || p.role_group || "Owner / Principal",
-      commercialRole: CONTACT_CLASS_LABEL[contactClass] || enriched.role_group,
-      lastVerified: enriched.lastVerified || "2026-11-19",
-      linkedinUrl,
-      profileUrls: linkedinUrl
-        ? [
-            {
-              type: "LinkedIn",
-              url: linkedinUrl,
-              verification_status: enriched.linkedinVerification || "VERIFIED_PUBLIC",
-              verified: true,
-              source_url: enriched.linkedinSourceUrl || "https://mullencap.com/about/",
-            },
-          ]
-        : [],
-      emailContacts: enriched.emailContacts || [],
-      phoneContacts: enriched.phoneContacts || [],
-      emails: enriched.emailContacts || [],
-      phones: enriched.phoneContacts || [],
-      channels: [],
-      hotelEvidenceCount: enriched.hotelEvidenceCount || 0,
-      portfolioEvidenceCount: enriched.portfolioEvidenceCount || 0,
-      hotelEvidenceIds: enriched.hotelEvidenceIds || [],
-      portfolioEvidenceIds: enriched.portfolioEvidenceIds || [],
-      evidenceIds: enriched.evidenceIds || [],
-      enrichAction: resolveEnrichAction(
-        {
-          name,
-          organization: enriched.organization || nameOfOrg(mrec),
-          emailContacts: enriched.emailContacts || [],
-          phoneContacts: enriched.phoneContacts || [],
-        },
-        { providerReady: true }
-      ),
-    };
-  });
+  const basePeople = buildSharedProposedPeople(persons, mrec);
 
   const sections = buildDecisionOrientedContactSections(basePeople, {
     hotelId: BETHESDA_ID,

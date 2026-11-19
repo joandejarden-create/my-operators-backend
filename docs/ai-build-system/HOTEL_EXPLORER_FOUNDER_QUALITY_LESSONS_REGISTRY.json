@@ -339,6 +339,15 @@
       "sharedComponent": "hotel-intelligence-workspace.js renderRelationships; hotel-explorer.js click handlers; hotel-intelligence-workspace.css",
       "regressionTest": "he_relationships_no_radial_org_network",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/he-ql-034-relationships-no-org-network.png"
+    },
+    {
+      "id": "HE-QL-035",
+      "originalProblem": "Organization & Portfolio Key People showed empty relevance/title/LinkedIn/verification fields for people who already had verified intelligence in Contact Intelligence; Strategic Context was generic pipeline copy",
+      "rootCause": "decision_authority.people was a thin Phase 3 persons overlay disconnected from the shared owner decision-maker / Contact Intelligence view model; Strategic Context fell back to why_this_matters workflow boilerplate instead of an evidence-based executive assessment",
+      "approvedStandard": "One shared contact intelligence model for Key People + Contacts; display name/title/org/relevance/commercial role/property responsibility/verified LinkedIn/verification; names link to Contact Intelligence; no dashes when shared model has values; no invented property responsibility; Strategic Context with Asset & Market, Ownership & Portfolio, Strengths, Investment Considerations, Priority Follow-Ups; no pipeline jargon or unsupported investment conclusions; dry-run persistence only",
+      "sharedComponent": "he-org-portfolio-key-people-v1.js; hotel-explorer-founder-preview.js buildSharedProposedPeople; hotel-intelligence-workspace.js collectOrgKeyPeople + renderStrategicContext",
+      "regressionTest": "he_org_portfolio_key_people_strategic_context_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/he-ql-035-org-key-people-strategic-*.png"
     }
   ]
 }

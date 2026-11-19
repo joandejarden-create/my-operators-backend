@@ -181,6 +181,19 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 - Stakeholder exploration belongs in **Ownership Intelligence** (OCN). Organization & Portfolio remains the portfolio surface. Do not duplicate those experiences on Relationships.
 - Canonical HI organization/relationship intelligence and APIs remain; only the redundant radial presentation is removed (HE-QL-034).
 
+### 9a-1. Organization & Portfolio — Key People & Strategic Context (HE-QL-035)
+
+- **One shared contact intelligence model.** Organization & Portfolio Key People and Contact Intelligence must read the same canonical people pack (HI Org Contacts / Contact Channels / staged owner decision-maker research / HPC–HI graph). Do not ship a thinner parallel people array that blanks fields Contact Intelligence already shows.
+- Key People is a **concise organization-level summary**, not a second contact database and not a Surfe enrichment UI. Required columns when known: Name · Current title · Organization · Relevance to the hotel · Commercial role · Property responsibility · Verified LinkedIn/profile · Verification status.
+- **No empty fields when verified intelligence already exists** (relevance, title, organization, LinkedIn, verification, property-responsibility label). Do not show placeholder dashes for shared-model fields that are populated. Genuine gaps go to the research backlog — do not invent authority or property assignment.
+- Property responsibility must distinguish **Confirmed** vs **Inferred portfolio** vs **Unknown / organization entry point**. Never claim property-assigned AM / signing authority without evidence.
+- Names navigate to Contact Intelligence. Verified LinkedIn / company-profile URLs open independently. Surfe remains gated, user-triggered, session-only on Contact Intelligence — never auto-called for Key People rendering.
+- Ranking / person identity must stay consistent between Organization Key People and Contact Intelligence (no duplicate competing person records for the same verified individual).
+- **Strategic Context** is an evidence-based executive assessment for a knowledgeable hotel executive — not pipeline/workflow copy. Required substance: Asset & Market Position · Ownership & Portfolio Context · Commercial Strengths · Brand Development & Investment Considerations · Research Priorities / Priority Follow-Ups.
+- Presentation: compact subsections (Asset & Market Position · Commercial Strengths · Strategic Considerations · Priority Follow-Ups). No oversized empty boxes, nested card stacks, inconsistent backgrounds, raw research jargon, unsupported sell/rebrand/refinance/management-change conclusions, or “Use Hotel → Owner → Portfolio…” boilerplate.
+- Evidence access stays in **Sources & Evidence**. Generated narrative retains supporting facts, generation version, and research date; never overwrite canonical Airtable facts with commentary. Production Airtable apply remains blocked until authorized.
+- Shared modules: `lib/hotel-intelligence/ownership/he-org-portfolio-key-people-v1.js`, founder-preview shared people builder, Organization renderers in `hotel-intelligence-workspace.js`.
+
 ### 9a. Ownership & Control Network / Stakeholder Network
 
 - Ownership Intelligence presents a **Hotel Stakeholder & Deal Relationship Network** (interactive), not a linear hierarchy dump and not an unbounded “Show All” web.

@@ -2399,9 +2399,15 @@
       return { type: "", url: "", verified: false };
     }
     var nested = p.professional_profile && typeof p.professional_profile === "object" ? p.professional_profile : null;
+    var profileUrl0 =
+      Array.isArray(p.profileUrls) && p.profileUrls[0] && p.profileUrls[0].url
+        ? p.profileUrls[0].url
+        : "";
     var url = String(
       (nested && nested.url) ||
         p.professional_profile_url ||
+        p.linkedinUrl ||
+        profileUrl0 ||
         ""
     ).trim();
     var type = String(
@@ -2410,7 +2416,12 @@
     var verified =
       nested && typeof nested.verified === "boolean"
         ? nested.verified
-        : p.professional_profile_verified === true;
+        : p.professional_profile_verified === true ||
+          (Array.isArray(p.profileUrls) &&
+            p.profileUrls.some(function (u) {
+              return u && u.verified !== false;
+            })) ||
+          Boolean(p.linkedinUrl);
     // Only person-level LinkedIn /in/ profiles — never company pages or guesses
     var isPersonLinkedIn =
       /^https?:\/\/((www|[a-z]{2})\.)?linkedin\.com\/in\//i.test(url);
@@ -2422,6 +2433,265 @@
       url: url,
       verified: true,
     };
+  }
+
+  function normalizeOrgKeyPeopleRows(people) {
+    var rows = [];
+    var seen = {};
+    (people || []).forEach(function (raw) {
+      if (!raw || typeof raw !== "object") return;
+      var name = String(raw.display_name || raw.name || "").trim();
+      if (!name) return;
+      var key = name.toLowerCase();
+      if (seen[key]) return;
+      seen[key] = true;
+      var relevance = String(
+        raw.whyRelevant ||
+          raw.strategic_relevance ||
+          raw.relationship_to_hotel ||
+          raw.recommendationRationale ||
+          raw.verificationNotes ||
+          ""
+      ).trim();
+      var commercial = String(
+        raw.commercialRole ||
+          raw.contactClassLabel ||
+          raw.role_group ||
+          raw.stakeholderClass ||
+          raw.title ||
+          ""
+      ).trim();
+      var propLabel = String(
+        raw.propertyResponsibilityLabel ||
+          (raw.propertyResponsibility === "CONFIRMED"
+            ? "Confirmed property responsibility"
+            : raw.propertyResponsibility === "INFERRED"
+              ? "Inferred portfolio responsibility"
+              : raw.propertyResponsibility === "UNKNOWN"
+                ? "Unknown property responsibility"
+                : "") ||
+          ""
+      ).trim();
+      var verification = String(
+        raw.verificationStatus ||
+          raw.identityVerification ||
+          raw.preview_state ||
+          raw.confidence ||
+          ""
+      ).trim();
+      if (/VERIFIED|HIGH/i.test(verification)) verification = "Verified identity";
+      else if (/PROPOSED|STAGED|MEDIUM/i.test(verification)) verification = "Proposed";
+      rows.push({
+        name: name,
+        title: String(raw.title || raw.role || "").trim() || "—",
+        organization: String(raw.organization || raw.organizationName || "").trim() || "—",
+        relevance: relevance || "Role verified; hotel-specific relevance not yet documented.",
+        commercialRole: commercial || "Relevant contact",
+        propertyResponsibilityLabel: propLabel || "Unknown property responsibility",
+        verificationStatus: verification || "Proposed",
+        confidence: raw.confidence,
+        professional_profile: raw.professional_profile,
+        professional_profile_url: raw.professional_profile_url || raw.linkedinUrl,
+        professional_profile_verified: raw.professional_profile_verified,
+        linkedinUrl: raw.linkedinUrl,
+        profileUrls: raw.profileUrls,
+        decision_authority_category:
+          raw.decision_authority_category || raw.role_group || raw.contactClass || raw.category,
+        category: raw.role_group || raw.contactClass || raw.category,
+        strategic_relevance: relevance,
+        relationship_to_hotel: relevance,
+      });
+    });
+    return rows;
+  }
+
+  function collectOrgKeyPeople(ownership, orgPayload) {
+    var bags = [];
+    if (
+      ownership &&
+      ownership.report &&
+      ownership.report.decision_authority &&
+      ownership.report.decision_authority.people
+    ) {
+      bags = bags.concat(ownership.report.decision_authority.people);
+    }
+    if (ownership && ownership.report && ownership.report.decision_makers) {
+      bags = bags.concat(ownership.report.decision_makers);
+    }
+    if (orgPayload && orgPayload.key_people) bags = bags.concat(orgPayload.key_people);
+    if (
+      ownership &&
+      ownership.organization &&
+      ownership.organization.key_people
+    ) {
+      bags = bags.concat(ownership.organization.key_people);
+    }
+    return normalizeOrgKeyPeopleRows(bags);
+  }
+
+  function resolveStrategicContext(hotel, ownership, orgPayload) {
+    var sc =
+      (ownership && ownership.report && ownership.report.strategic_context) ||
+      (orgPayload && orgPayload.strategic_context) ||
+      (ownership && ownership.organization && ownership.organization.strategic_context) ||
+      null;
+    if (sc && Array.isArray(sc.sections) && sc.sections.length) return sc;
+    var ctrl =
+      (ownership &&
+        ownership.report &&
+        ownership.report.ownership_and_control) ||
+      {};
+    var propco = ctrl.legal_property_owner_propco || ctrl.property_company || {};
+    var econ = ctrl.economic_owner_or_group || ctrl.economic_owner || {};
+    var operator = ctrl.operator || {};
+    var brand =
+      (ownership && ownership.hotel && ownership.hotel.brand_display) ||
+      (hotel && (hotel.brand_display || hotel.brand || hotel.affiliation)) ||
+      "";
+    var hotelName = (hotel && hotel.name) || "This hotel";
+    var city = (hotel && hotel.city) || "";
+    var roomsRaw =
+      (hotel && (hotel.rooms || hotel.Rooms || hotel.room_count)) ||
+      (hotel &&
+        hotel.guestRoomsMeetingSpace &&
+        hotel.guestRoomsMeetingSpace.guestRooms &&
+        hotel.guestRoomsMeetingSpace.guestRooms.totalGuestrooms &&
+        hotel.guestRoomsMeetingSpace.guestRooms.totalGuestrooms.value) ||
+      null;
+    var rooms = roomsRaw != null && roomsRaw !== "" ? String(roomsRaw) : "";
+    var uboUnresolved =
+      !ctrl.ubo_group ||
+      ctrl.ubo_group.known === false ||
+      /UNRESOLVED/i.test(String((ctrl.ubo_group && ctrl.ubo_group.status) || ""));
+    var owned =
+      (ownership &&
+        ownership.organization &&
+        ownership.organization.owned_controlled_hotels) ||
+      (orgPayload && orgPayload.owned_controlled_hotels) ||
+      [];
+    var portfolioCount = Array.isArray(owned)
+      ? owned.filter(function (h) {
+          var n = String((h && (h.hotel_name || h.name)) || "").trim();
+          return n && n.toLowerCase() !== String(hotelName).toLowerCase();
+        }).length
+      : 0;
+    var scaleBits = [];
+    if (rooms) scaleBits.push(rooms + "-room");
+    scaleBits.push(brand || "branded");
+    return {
+      version: "he-org-portfolio-key-people-v1-client",
+      generated: true,
+      sections: [
+        {
+          id: "asset_market",
+          title: "Asset & Market Position",
+          body:
+            hotelName +
+            " is a " +
+            scaleBits.join(" ") +
+            " lodging asset" +
+            (city ? " in " + city : "") +
+            ". " +
+            (operator.name
+              ? "Day-to-day operations are associated with " +
+                operator.name +
+                (brand ? " under the " + brand + " brand. " : ". ")
+              : "") +
+            "Scale, brand distribution, and management structure frame outreach; they do not by themselves establish ownership economics.",
+        },
+        {
+          id: "ownership_portfolio",
+          title: "Ownership & Portfolio Context",
+          body:
+            (propco.name
+              ? "Legal property ownership is associated with " + propco.name + ". "
+              : "Legal property company remains incompletely verified. ") +
+            (econ.name
+              ? "Economic sponsor context points to " +
+                econ.name +
+                (portfolioCount
+                  ? ", with " +
+                    portfolioCount +
+                    " additional related hotel listing(s) in the selected portfolio scope. "
+                  : ". ")
+              : "Economic sponsor is not yet verified. ") +
+            (uboUnresolved
+              ? "Ultimate beneficial ownership remains unresolved — seniority alone is not treated as UBO proof."
+              : ""),
+        },
+        {
+          id: "strengths",
+          title: "Commercial Strengths",
+          body:
+            (brand
+              ? "Established " + brand + " affiliation supports distribution and commercial recognition. "
+              : "") +
+            (operator.name
+              ? "Management relationship with " +
+                operator.name +
+                " separates operating execution from ownership decision rights. "
+              : "") +
+            (rooms
+              ? "Published inventory scale (" +
+                rooms +
+                " rooms) is material for meeting, group, and brand conversations."
+              : "Verified operating relationships provide a commercial baseline while ownership research continues."),
+        },
+        {
+          id: "strategic",
+          title: "Brand Development & Investment Considerations",
+          body:
+            "Brand positioning and management agreements should be discussed with the economic sponsor and operator as separate counterparties. Current lender and capital structure remain priority diligence items when not publicly verified. No public evidence in this packet authorizes claims that the owner is actively selling, rebranding, refinancing, or changing management.",
+        },
+        {
+          id: "follow_ups",
+          title: "Priority Follow-Ups",
+          body:
+            (uboUnresolved
+              ? "Resolve ultimate beneficial ownership if it becomes material to counterparty mapping. "
+              : "") +
+            "Confirm any property-assigned asset manager without inferring from portfolio titles alone. Verify personal professional channels for priority owner-side people via Contact Intelligence (Surfe on explicit click only).",
+        },
+      ],
+    };
+  }
+
+  function renderStrategicContext(hotel, ownership, orgPayload) {
+    var sc = resolveStrategicContext(hotel, ownership, orgPayload);
+    var preferred = ["asset_market", "strengths", "strategic", "follow_ups", "ownership_portfolio"];
+    var byId = {};
+    (sc.sections || []).forEach(function (s) {
+      if (s && s.id) byId[s.id] = s;
+    });
+    var ordered = [];
+    preferred.forEach(function (id) {
+      if (byId[id]) ordered.push(byId[id]);
+    });
+    (sc.sections || []).forEach(function (s) {
+      if (!s || !s.id) return;
+      if (preferred.indexOf(s.id) >= 0) return;
+      ordered.push(s);
+    });
+    // Presentation: Asset & Market · Commercial Strengths · Strategic Considerations · Priority Follow-Ups
+    // Keep Ownership & Portfolio as fifth when present (founder required content).
+    var html =
+      '<div class="hiw-strategic" data-hiw-strategic-context="1">' +
+      '<p class="hiw-muted hiw-strategic__lede">Executive assessment synthesized from verified and appropriately qualified proposed intelligence. Evidence lives in Sources &amp; Evidence.</p>';
+    ordered.forEach(function (s) {
+      var title = s.title || "";
+      if (s.id === "strategic") title = "Strategic Considerations";
+      if (s.id === "follow_ups") title = "Priority Follow-Ups";
+      html +=
+        '<div class="hiw-strategic__block">' +
+        "<h4>" +
+        esc(title) +
+        "</h4>" +
+        '<p class="hiw-prose">' +
+        esc(s.body || "") +
+        "</p></div>";
+    });
+    html += "</div>";
+    return html;
   }
 
   function renderPeopleProfileCell(p) {
@@ -2440,15 +2710,26 @@
     );
   }
 
+  function renderKeyPeopleNameCell(p) {
+    return (
+      '<td><a class="hiw-person-link" href="#contacts" data-hiw-tab="contacts" data-hiw-person="' +
+      esc(p.name) +
+      '">' +
+      esc(p.name) +
+      "</a></td>"
+    );
+  }
+
   function renderPeopleGrouped(people) {
-    if (!people || !people.length) {
+    var rows = normalizeOrgKeyPeopleRows(people);
+    if (!rows.length) {
       return '<div class="hiw-gap-box"><h4>Decision authority not yet verified</h4><p>No named individuals verified for this hotel.</p></div>';
     }
     var claimed = {};
     var html = "";
     PERSON_GROUP_ORDER.forEach(function (group, gi) {
       var members = [];
-      people.forEach(function (p, idx) {
+      rows.forEach(function (p, idx) {
         if (claimed[idx]) return;
         var cat = String(p.decision_authority_category || p.role_category || p.category || "");
         var title = String(p.title || "");
@@ -2467,42 +2748,36 @@
             th("Title") +
             th("Organization") +
             th("Relevance") +
-            th("Confidence") +
+            th("Commercial role") +
+            th("Property responsibility") +
             th("Profile") +
+            th("Verification") +
             "</tr></thead><tbody>" +
             members
               .map(function (p) {
-                var authNote = "";
-                if (
-                  /ceo|president|director general|chairman|vice.?chairman|development/i.test(
-                    p.title || ""
-                  )
-                ) {
-                  authNote =
-                    '<div class="hiw-auth-subtle">Decision authority: not established</div>';
-                }
                 return (
-                  "<tr><td>" +
-                  esc(p.name) +
-                  "</td><td>" +
+                  "<tr>" +
+                  renderKeyPeopleNameCell(p) +
+                  "<td>" +
                   esc(p.title) +
                   "</td><td>" +
                   esc(p.organization) +
                   "</td><td>" +
-                  esc(
-                    (p.strategic_relevance || p.relationship_to_hotel || "—").slice(0, 120)
-                  ) +
-                  authNote +
+                  esc((p.relevance || "").slice(0, 160)) +
                   "</td><td>" +
-                  esc(friendlyStatus(p.confidence)) +
+                  esc(p.commercialRole) +
+                  "</td><td>" +
+                  esc(p.propertyResponsibilityLabel) +
                   "</td>" +
                   renderPeopleProfileCell(p) +
-                  "</tr>"
+                  "<td>" +
+                  esc(p.verificationStatus) +
+                  "</td></tr>"
                 );
               })
               .join("") +
             "</tbody>",
-          "hiw-table--people"
+          "hiw-table--people hiw-table--key-people"
         )
       );
     });
@@ -3057,6 +3332,16 @@
           (ownership.report.executive_summary && ownership.report.executive_summary.why_this_hotel_matters) ||
           "",
       },
+      strategic_context:
+        (ownership.report && ownership.report.strategic_context) ||
+        (ownership.organization && ownership.organization.strategic_context) ||
+        null,
+      key_people:
+        (ownership.organization && ownership.organization.key_people) ||
+        (ownership.report &&
+          ownership.report.decision_authority &&
+          ownership.report.decision_authority.people) ||
+        [],
       portfolio_kpis:
         (ownership.organization && ownership.organization.portfolio_kpis) ||
         (ownership.report.organization_and_portfolio &&
@@ -3139,16 +3424,9 @@
     var ownedRows = view.ownedHotels || [];
     var partition = view.partition || {};
 
-    var orgPeople =
-      (ownership &&
-        ownership.report &&
-        ownership.report.decision_authority &&
-        ownership.report.decision_authority.people) ||
-      [];
+    var orgPeople = collectOrgKeyPeople(ownership, orgPayload);
 
-    var framingNote =
-      (orgPayload.why_this_matters && orgPayload.why_this_matters.text) ||
-      (g.evidence_summary || "");
+    var framingNote = g.evidence_summary || "";
     var portfolioSourceNote =
       (ownership &&
         ownership.organization &&
@@ -3267,15 +3545,12 @@
       renderOperatorGroupsHtml(view, focusId) +
       "</section>" +
       '<section class="hiw-section"><h3 class="hiw-section__h">Key People</h3>' +
-      renderPeopleGrouped(orgPeople.slice(0, 10)) +
+      '<p class="hiw-muted">Organization-level summary from the shared contact intelligence model. Names open Contact Intelligence; LinkedIn opens verified profiles. Surfe enrichment stays on Contact Intelligence.</p>' +
+      renderPeopleGrouped(orgPeople.slice(0, 12)) +
       "</section>" +
       '<section class="hiw-section"><h3 class="hiw-section__h">Strategic Context</h3>' +
-      '<div class="hiw-prose"><p>' +
-      esc(
-        (orgPayload.why_this_matters && orgPayload.why_this_matters.text) ||
-          "Use Hotel → Owner → Portfolio and Owner → Hotels → Operators. Research one owner; reuse verified relationships across every connected hotel."
-      ) +
-      "</p></div></section>" +
+      renderStrategicContext(hotel, ownership, orgPayload) +
+      "</section>" +
       "</article>"
     );
   }

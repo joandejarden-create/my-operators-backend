@@ -45,6 +45,11 @@ import {
   HE_AMENITY_ICON_MAP,
 } from "../lib/hotel-intelligence/he-amenity-icon-map-v1.js";
 import {
+  normalizeOrgPortfolioKeyPeople,
+  buildOrgPortfolioStrategicContext,
+  strategicContextHasGenericCopy,
+} from "../lib/hotel-intelligence/ownership/he-org-portfolio-key-people-v1.js";
+import {
   buildOwnerPortfolioOperatorView,
   classifyPortfolioHotel,
   OPERATOR_NOT_VERIFIED_LABEL,
@@ -1039,6 +1044,118 @@ run("he_public_contact_hierarchy_and_surfe_session_only", () => {
   // Surfe must not be auto-invoked on mount/GET.
   const mountSlice = hci.slice(hci.indexOf("function mount("), hci.indexOf("function mount(") + 2500);
   assert.ok(!/enrichPeople|createSurfeContactProvider|\/reveal/.test(mountSlice));
+});
+
+run("he_org_portfolio_key_people_strategic_context_gates", () => {
+  const ws = read("public/js/hotel-intelligence-workspace.js");
+  const api = read("api/hotel-explorer-founder-preview.js");
+  const lib = read("lib/hotel-intelligence/ownership/he-org-portfolio-key-people-v1.js");
+  const std = read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md");
+  const reg = JSON.parse(
+    read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
+  );
+  const research = JSON.parse(
+    read(
+      "reports/hotel-explorer/phase4-quality/HE-BETH-OWNER-DECISION-MAKER-RESEARCH-STAGED-V1.json"
+    )
+  );
+
+  mustInclude(api, "buildSharedProposedPeople");
+  mustInclude(api, "normalizeOrgPortfolioKeyPeople");
+  mustInclude(api, "buildOrgPortfolioStrategicContext");
+  mustInclude(api, "strategic_context");
+  mustInclude(ws, "collectOrgKeyPeople");
+  mustInclude(ws, "normalizeOrgKeyPeopleRows");
+  mustInclude(ws, "renderStrategicContext");
+  mustInclude(ws, "data-hiw-strategic-context");
+  mustInclude(ws, "hiw-person-link");
+  mustInclude(ws, "Commercial role");
+  mustInclude(ws, "Property responsibility");
+  mustInclude(ws, "linkedinUrl");
+  mustNotMatch(
+    ws,
+    /Use Hotel → Owner → Portfolio and Owner → Hotels → Operators/
+  );
+  mustNotMatch(ws, /Research one owner; reuse verified relationships across every connected hotel/);
+  mustInclude(lib, "normalizeOrgPortfolioKeyPeople");
+  mustInclude(lib, "buildOrgPortfolioStrategicContext");
+  mustInclude(std, "HE-QL-035");
+  mustInclude(std, "One shared contact intelligence model");
+  mustInclude(std, "No empty fields when verified intelligence already exists");
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-035"));
+
+  const rows = normalizeOrgPortfolioKeyPeople(research.people || [], {
+    organizationName: "Mullen Real Estate Capital",
+  });
+  assert.ok(rows.length >= 3, "Bethesda research people must normalize to ≥3 Key People rows");
+  const jeff = rows.find((p) => /jeff mullen/i.test(p.name));
+  const katherine = rows.find((p) => /katherine button/i.test(p.name));
+  const patrick = rows.find((p) => /patrick reece/i.test(p.name));
+  assert.ok(jeff, "Jeff Mullen required");
+  assert.ok(katherine, "Katherine Button required");
+  assert.ok(patrick, "Patrick Reece required");
+  assert.ok(jeff.relevance && !/^—$/.test(jeff.relevance), "Jeff relevance must not be blank");
+  assert.ok(jeff.linkedinUrl, "Jeff LinkedIn must surface from shared model");
+  assert.ok(jeff.professional_profile_verified, "Jeff LinkedIn must be verified");
+  assert.ok(
+    katherine.relevance && /asset/i.test(katherine.relevance),
+    "Katherine asset-management relevance required"
+  );
+  assert.ok(
+    patrick.organization && /mullen/i.test(patrick.organization),
+    "Patrick organization/portfolio role required"
+  );
+  assert.equal(
+    rows.filter((p) => /jeff mullen/i.test(p.name)).length,
+    1,
+    "No duplicate Jeff Mullen rows"
+  );
+  assert.ok(
+    /INFERRED|inferred/i.test(String(jeff.propertyResponsibilityLabel || "")),
+    "Property responsibility must stay qualified (inferred), not invented confirmed"
+  );
+
+  const sc = buildOrgPortfolioStrategicContext(
+    { name: "Bethesda Marriott", city: "Bethesda", rooms: 407, brand: "Marriott" },
+    {
+      hotel: { name: "Bethesda Marriott", brand_display: "Marriott" },
+      report: {
+        ownership_and_control: {
+          legal_property_owner_propco: { name: "Marbeth Acquisition LLC", preview_state: "PROPOSED_STAGED" },
+          economic_owner_or_group: { name: "Mullen Real Estate Capital" },
+          operator: { name: "Marriott International" },
+          ubo_group: { known: false, status: "UNRESOLVED" },
+          lender: { name: "Ramsfield Hospitality Finance", current: false, preview_state: "HISTORICAL" },
+        },
+      },
+      organization: {
+        owned_controlled_hotels: [
+          { hotel_name: "Bethesda Marriott" },
+          { hotel_name: "Example Related Hotel" },
+        ],
+      },
+    }
+  );
+  const bodies = (sc.sections || []).map((s) => s.body).join(" ");
+  assert.ok(sc.sections.some((s) => s.id === "asset_market"));
+  assert.ok(sc.sections.some((s) => s.id === "ownership_portfolio"));
+  assert.ok(sc.sections.some((s) => s.id === "strengths"));
+  assert.ok(sc.sections.some((s) => s.id === "strategic"));
+  assert.ok(sc.sections.some((s) => s.id === "follow_ups"));
+  assert.ok(!strategicContextHasGenericCopy(bodies), "Strategic Context must not be pipeline boilerplate");
+  // Affirmative unsupported investment conclusions are forbidden; denial / qualification language is required.
+  assert.ok(
+    !/\b(owner is willing to sell|owner plans to sell|definitely selling|confirmed refinance|confirmed rebrand)\b/i.test(
+      bodies
+    ),
+    "Must not assert unsupported sell/rebrand/refinance conclusions"
+  );
+  assert.ok(
+    /no public evidence|does not authorize|without evidence/i.test(bodies),
+    "Must qualify that sell/rebrand/refinance willingness is unproven"
+  );
+  assert.ok(/unresolved/i.test(bodies), "UBO / unresolved claims must stay qualified");
+  assert.ok(/Sources|evidence/i.test(ws) || /Sources & Evidence/.test(std));
 });
 
 if (failures.length) {
