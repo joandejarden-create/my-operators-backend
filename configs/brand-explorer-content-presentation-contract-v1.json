@@ -1,0 +1,152 @@
+{
+  "version": "BE_CONTENT_PRESENTATION_CONTRACT_V1",
+  "phase": "2F",
+  "purpose": "Canonical Brand Explorer content & presentation rules for research, generation, and validation. Field-specific limits from Curio production baseline structure — not a universal character cap.",
+  "baselineReference": {
+    "brand": "Curio Collection by Hilton",
+    "brandId": "receQkxgjlezsc1xg",
+    "inventoryPath": "reports/brand-explorer/phase2f-visual-quality/01-curio-baseline-field-inventory.json",
+    "note": "Layout/depth/cardinality reference only. Do not copy production facts as generator truth."
+  },
+  "semanticTypes": {
+    "short_title": {
+      "description": "Concise heading for cards/lists",
+      "maxWords": 12,
+      "maxChars": 80,
+      "forbidParagraph": true,
+      "forbidEvidenceKeys": true,
+      "forbidSlotKeyEcho": true
+    },
+    "identity_label": {
+      "description": "Short factual identity values",
+      "titleMaxWords": 12,
+      "bodyMaxWords": 40,
+      "minChars": 2
+    },
+    "level_indicator": {
+      "description": "Flexibility / rigidity level labels",
+      "allowedValues": ["Minimal", "Low", "Moderate", "Medium", "High", "Very high", "N/A", "Not applicable"]
+    },
+    "passthrough": {
+      "description": "No default depth floor — only explicit semantic types enforce min/max",
+      "forbidParagraph": false
+    },
+    "narrative": {
+      "description": "Owner-facing analysis paragraph(s)",
+      "minWords": 28,
+      "maxWords": 140,
+      "maxChars": 900
+    },
+    "commercial_lever": {
+      "description": "Distinct commercial lever/KPI card",
+      "titleMaxWords": 8,
+      "bodyMinWords": 16,
+      "bodyMaxWords": 70,
+      "mustDifferentiateAcrossPeers": true,
+      "nearDuplicateThreshold": 0.85
+    },
+    "scenario_card": {
+      "description": "Distinctive title + substantive narrative + optional imagery",
+      "titleMaxWords": 8,
+      "bodyMinWords": 40,
+      "bodyMaxWords": 110,
+      "imageRequired": true,
+      "mustDifferentiateAcrossPeers": true
+    },
+    "value_scenario_card": {
+      "titleMaxWords": 8,
+      "bodyMinWords": 24,
+      "bodyMaxWords": 80,
+      "imageRequired": false,
+      "mustDifferentiateAcrossPeers": true
+    },
+    "economic_metric": {
+      "description": "Metric-specific economics content — never reuse a single disclosure paragraph across unrelated metrics",
+      "titleMaxWords": 8,
+      "bodyMinWords": 16,
+      "bodyMaxWords": 90,
+      "forbidCrossMetricNearDuplicate": true,
+      "nearDuplicateThreshold": 0.78
+    },
+    "list_collection": {
+      "description": "Repeated collection items",
+      "forbidEmptyItems": true,
+      "minMeaningfulWordsPerItem": 4
+    },
+    "gallery_image": {
+      "imageRequired": true,
+      "forbidLogoOnly": true,
+      "forbidPlaceholder": true,
+      "titleMaxWords": 12,
+      "bodyMaxWords": 20
+    },
+    "property_example": {
+      "requireVerifiedPropertyName": true,
+      "imagePreferred": true,
+      "forbidInventedHotels": true
+    },
+    "hero": {
+      "requireBrandIdentity": true,
+      "requireHeadlineOrKeyFacts": true
+    }
+  },
+  "slotRules": [
+    { "match": "^overview\\.scenario\\.\\d+$", "semanticType": "scenario_card", "minItems": 3, "maxItems": 3, "tab": "overview" },
+    { "match": "^valueOwners\\.scenario\\.\\d+$", "semanticType": "value_scenario_card", "minItems": 4, "maxItems": 4, "tab": "value-owners" },
+    { "match": "^overview\\.proof\\.\\d+$", "semanticType": "narrative", "titleSemantic": "short_title", "minItems": 6, "maxItems": 6, "tab": "overview" },
+    { "match": "^materials\\.gallery\\.\\d+$", "semanticType": "gallery_image", "minItems": 6, "maxItems": 6, "tab": "materials" },
+    { "match": "^economics\\.(kpi|cash|fee|fee\\.|checklist|diligence|incentives|term)", "semanticType": "economic_metric", "tab": "economics" },
+    { "match": "^commercial\\.(intro|perception|differentiator)$", "semanticType": "narrative", "titleSemantic": "short_title", "tab": "commercial" },
+    { "match": "^commercial\\.(lever|kpi)\\.", "semanticType": "commercial_lever", "titleSemantic": "short_title", "mustDifferentiateAcrossPeers": true, "tab": "commercial" },
+    { "match": "^commercial\\.(theme|demand)$", "semanticType": "list_collection", "tab": "commercial" },
+    { "match": "^operations\\.flexibility\\.", "semanticType": "level_indicator", "tab": "ops" },
+    { "match": "^identity\\.|^snapshot\\.", "semanticType": "identity_label", "tab": "overview" },
+    { "match": "^footprint\\.openings$", "semanticType": "property_example", "minItems": 3, "tab": "footprint" },
+    { "match": "^standards\\.requirement$", "semanticType": "list_collection", "minItems": 5, "tab": "standards-owner" },
+    { "match": "^commercial\\.demand$", "semanticType": "list_collection", "minItems": 3, "tab": "commercial" },
+    { "match": "^loyalty\\.proof(\\.\\d+)?$", "semanticType": "list_collection", "minItems": 6, "maxItems": 6, "tab": "loyalty", "note": "BE_PERMANENT_CONTENT_STANDARDS_V1 — Key Benefits & Program Strengths EXACT 6 when loyalty participates" },
+    { "match": "^hero\\.", "semanticType": "hero", "tab": "overview" }
+  ],
+  "collectionCardinalityFromBaseline": {
+    "commercial.demand": { "min": 3, "target": 6 },
+    "commercial.theme": { "min": 2, "target": 3 },
+    "economics.fee": { "min": 3, "target": 6 },
+    "economics.risk": { "min": 3, "target": 4 },
+    "economics.legal": { "min": 2, "target": 3 },
+    "footprint.momentum": { "min": 3, "target": 5 },
+    "footprint.openings": { "min": 3, "target": 5 },
+    "footprint.portfolio_mix": { "min": 3, "target": 5 },
+    "insight.similar": { "min": 2, "target": 3 },
+    "loyalty.elite": { "min": 3, "target": 5 },
+    "loyalty.proof": { "min": 6, "target": 6 },
+    "materials.caseStudy": { "min": 2, "target": 5 },
+    "materials.file": { "min": 1, "target": 3 },
+    "standards.requirement": { "min": 5, "target": 7 }
+  },
+  "gates": {
+    "founderApprovalBlockedBy": [
+      "paragraph_in_title",
+      "empty_list_item",
+      "missing_required_image",
+      "image_placeholder",
+      "near_duplicate_cross_metric",
+      "insufficient_scenario_depth",
+      "incorrect_cardinality",
+      "logo_as_gallery_photo",
+      "unverified_property_example",
+      "em_dash_in_customer_facing_text",
+      "missing_lifecycle_stage",
+      "missing_opening_conversion_stage",
+      "loyalty_benefits_not_exact_6",
+      "heading_not_title_case"
+    ],
+    "abcNote": "Structural A/B/C alone is not founder approval. Permanent content standards + rendered gates + founder review are required.",
+    "permanentStandardsContract": "configs/brand-explorer-permanent-content-standards-contract-v1.json",
+    "gate2BlockedUntilGate1FounderApproved": true
+  },
+  "editorial": {
+    "forbidEmDashInGeneratedCustomerFacingText": true,
+    "sectionHeadingCase": "Title Case",
+    "ref": "BE_PERMANENT_CONTENT_STANDARDS_CONTRACT_V1"
+  }
+}

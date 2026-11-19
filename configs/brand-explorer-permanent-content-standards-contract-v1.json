@@ -1,0 +1,660 @@
+{
+  "version": "BE_PERMANENT_CONTENT_STANDARDS_CONTRACT_V1",
+  "status": "FOUNDER_REQUIRED",
+  "appliesTo": "all_current_and_future_brand_explorer_profiles",
+  "universeScope": "Brand Status Active/Live and factory candidates destined for Active/Live",
+  "forbidBrandSpecificExceptions": true,
+  "forbidCurioOrAscendHardcoding": true,
+  "acceptanceSequence": {
+    "gate1": {
+      "id": "RENDERER_PARITY",
+      "requiredBeforeGate2": true,
+      "founderApprovalRequired": true,
+      "automatedPassIsNotApproval": true,
+      "contractRef": "docs/brand-explorer/BE_PHASE2H_A_GATE1_RENDERER_PARITY_FOUNDER_REVIEW.md"
+    },
+    "gate2": {
+      "id": "CONTENT_RECONSTRUCTION",
+      "blockedUntil": "gate1.founderApproved === true",
+      "founderApprovalRequired": true,
+      "automatedPassIsNotApproval": true,
+      "noMassPopulationUntilApproved": true
+    }
+  },
+  "relatedContracts": [
+    "configs/brand-explorer-subsection-parity-contract-v1.json",
+    "configs/brand-explorer-content-presentation-contract-v1.json",
+    "configs/brand-explorer-collection-cardinality-contract.json",
+    "configs/brand-explorer-content-item-contract.json",
+    "configs/brand-explorer-visual-geometry-contract.json",
+    "configs/brand-explorer-founder-architecture-corrections-contract-v1.json",
+    "configs/brand-explorer-canonical-subsection-inventory-v1.json",
+    "configs/brand-explorer-founder-quality-lessons-registry-v1.json",
+    "configs/brand-explorer-field-content-roles-contract-v1.json"
+  ],
+  "architectureCorrections": {
+    "contract": "configs/brand-explorer-founder-architecture-corrections-contract-v1.json",
+    "inventory": "configs/brand-explorer-canonical-subsection-inventory-v1.json",
+    "lessonsRegistry": "configs/brand-explorer-founder-quality-lessons-registry-v1.json",
+    "optimizeForAdvisoryUsefulnessNotCompletionScores": true,
+    "criticalOmissionsBlockRegardlessOfAggregateScore": true
+  },
+  "typographyAndWriting": {
+    "sectionHeadings": {
+      "case": "Title Case",
+      "conjunction": "&",
+      "forbidStandaloneWordAnd": true,
+      "appliesTo": ["primary_white_section_headings", "oe-section-title", "canonical_component_titles"],
+      "doesNotApplyTo": ["body_text", "proper_brand_names", "source_quotations", "trademark_spellings"],
+      "examplesRequired": [
+        "Support Across the Lifecycle",
+        "Opening & Conversion Path",
+        "Key Benefits & Program Strengths",
+        "What the Owner Is Really Buying",
+        "Similar Brands",
+        "Geographic Footprint",
+        "Independent & Soft-Brand Conversion",
+        "Commercial Platform & Lobby Experience"
+      ],
+      "incorrectExamples": [
+        "Commercial Platform And Lobby Experience",
+        "Opening And Conversion Path"
+      ],
+      "preserveOfficialBrandSpelling": true,
+      "preserveTrademarks": true,
+      "useCanonicalHierarchyFontsWeightsSizesColors": true,
+      "enforcer": "BE_EDITORIAL_TITLE_CASE_V1",
+      "enforcerModule": "lib/brand-explorer/be-editorial-title-case-v1.js",
+      "cssTextTransformCapitalizeIsNotSourceOfCorrectness": true
+    },
+    "cardHeadings": {
+      "case": "Title Case",
+      "conjunction": "&",
+      "forbidStandaloneWordAnd": true,
+      "enforcer": "BE_EDITORIAL_TITLE_CASE_V1",
+      "enforcerModule": "lib/brand-explorer/be-editorial-title-case-v1.js",
+      "appliesTo": [
+        "proof-point-card__headline",
+        "scenario-card h4",
+        "commercial lever titles",
+        "value creation scenario titles",
+        "loyalty proof titles",
+        "similar brand card titles",
+        "demand scenario titles",
+        "white nested collection card titles"
+      ],
+      "doesNotApplyTo": ["body_paragraphs", "quotations", "gallery descriptive captions that are already hotel|scene lines"],
+      "appliesToProposedProfileOnlyInCompareStudio": true,
+      "leftCurrentProfileRemainsUnchanged": true,
+      "founderRegressionExamples": [
+        { "input": "Global soft-collection scale", "expected": "Global Soft-Collection Scale" },
+        { "input": "Conversion-weighted growth", "expected": "Conversion-Weighted Growth" },
+        { "input": "Curio since 2014", "expected": "Curio Since 2014" }
+      ],
+      "preserveAcronyms": ["F&B", "OTA", "GDS", "KPI", "PIP", "QA", "ADR", "CRS"],
+      "preserveHyphenation": true,
+      "preserveNumbersAndDates": true,
+      "cssTextTransformCapitalizeIsNotSourceOfCorrectness": true,
+      "automatedUnitTestIsNotBrowserVerification": true,
+      "forbidRepeatedTitleInBody": true,
+      "noRepeatedCardHeadingEnforcer": "BE_NO_REPEATED_CARD_HEADING_V1",
+      "noRepeatedCardHeadingModule": "lib/brand-explorer/be-no-repeated-card-heading-v1.js",
+      "titleAppearsOnceInTitleField": true,
+      "descriptionBeginsWithSubstantiveContent": true,
+      "detectEquivalentRepetitionsIgnoringPunctuationAndCase": true,
+      "doNotStripLaterInBodyMentionsOfSameWords": true
+    },
+    "editorialQuality": {
+      "forbidEmDashInGeneratedCustomerFacingText": true,
+      "forbidNonBreakingSpaceArtifacts": true,
+      "forbidHtmlEntitiesAsVisibleText": true,
+      "forbidInternalSlotKeysInCustomerText": true,
+      "forbidGenerationInstructionsInCustomerText": true,
+      "forbidRepetitiveBrandNameSentenceStarters": true,
+      "forbidGenericConfirmWithBrandDevelopmentBoilerplate": true,
+      "forbidNearIdenticalSiblingCardBodies": true,
+      "nearDuplicateJaccardThreshold": 0.85,
+      "forbidArtificialPadding": true,
+      "forbidHeadingsWithoutContent": true,
+      "preferShortSentencesWhereAppropriate": true,
+      "requireHospitalityInvestmentDevelopmentRegister": true,
+      "retainCommercialDepth": true,
+      "quotedSourceMaterial": "preserve_in_evidence_rewrite_for_customer_facing"
+    },
+    "forbiddenCustomerFacingPatterns": [
+      "—",
+      "\\u00a0",
+      "&nbsp;",
+      "RESEARCH_REQUIRED",
+      "Focus this card",
+      "Evidence-grounded reconstruction",
+      "diligence framing only",
+      "do not invent",
+      "slotKey",
+      "phase2",
+      "Benefit\\s*\\d+",
+      "Loyalty proof points",
+      "confirm with brand development",
+      "Owner diligence note"
+    ]
+  },
+  "fixedCollections": {
+    "supportAcrossTheLifecycle": {
+      "componentId": "valueOwners.lifecycle",
+      "sectionTitle": "Support Across the Lifecycle",
+      "slotPattern": "^valueOwners\\.lifecycle\\.\\d+$",
+      "mode": "EXACT",
+      "count": 6,
+      "founderAssertedCount": 7,
+      "liveRecoveredCount": 6,
+      "conflictId": "BE-CONFLICT-LIFECYCLE-6-VS-7",
+      "conflictStatus": "OPEN",
+      "resolution": "RETAIN_PRODUCTION_EXACT_6_KEEP_REQUESTED_7_OPEN_DO_NOT_INVENT",
+      "recoveryEvidence": [
+        "public/js/brand-explorer-atelier-from-api.js TIMELINE length 6",
+        "Curio Gate1 payload valueOwners.lifecycle.1-6",
+        "docs/brand-explorer-presentation-slots.md lifecycle.1…6",
+        "browser Gate1 mount .timeline__phase titles"
+      ],
+      "orderedCanonicalTitles": [
+        "Evaluation",
+        "Conversion Design",
+        "Pre-Opening",
+        "Opening",
+        "Ramp-Up",
+        "Ongoing"
+      ],
+      "slotKeys": [
+        "valueOwners.lifecycle.1",
+        "valueOwners.lifecycle.2",
+        "valueOwners.lifecycle.3",
+        "valueOwners.lifecycle.4",
+        "valueOwners.lifecycle.5",
+        "valueOwners.lifecycle.6"
+      ],
+      "perCardRequired": [
+        "canonicalStageTitle",
+        "brandSpecificDescription",
+        "ownerOrDeveloperActions",
+        "operatingOrCommercialImplications"
+      ],
+      "forbidDroppingStagesForIncompleteResearch": true,
+      "forbidInventingSeventhStage": true,
+      "forbidInventedBrandObligations": true,
+      "insufficientEvidenceBehavior": "identify_gap_and_block_stage_quality_gate",
+      "compatibleWithCanonicalRenderer": true
+    },
+    "whatTheOwnerIsReallyBuying": {
+      "componentId": "valueOwners.really_buying",
+      "sectionTitle": "What the Owner Is Really Buying",
+      "critical": true,
+      "mode": "EXACT_TWO_PROPOSITIONS",
+      "propositions": [
+        "What the Guest Receives",
+        "What the Hotel Owner Receives"
+      ],
+      "forbidReduceToOwnerOutcomesOnly": true,
+      "forbidTreatingGuestAndOwnerAsInterchangeable": true,
+      "currentLiveRendererGap": "atelier currently renders single Overview card — dual propositions required at Gate 2"
+    },
+    "keyDifferentiators": {
+      "componentId": "overview.differentiators",
+      "sectionTitle": "Key Differentiators",
+      "categories": [
+        { "name": "Experience & Identity", "exactBullets": 4 },
+        { "name": "Commercial & Distribution", "exactBullets": 4 }
+      ],
+      "emptyOrGenericBulletsFail": true
+    },
+    "demandScenarioView": {
+      "componentId": "commercial.demand",
+      "sectionTitle": "Demand Scenario View",
+      "mode": "MINIMUM",
+      "count": 6,
+      "forbidRepeatedDemandPropositionAcrossCards": true
+    },
+    "proofPoints": {
+      "componentId": "overview.proof",
+      "sectionTitle": "Proof Points",
+      "mode": "MINIMUM",
+      "count": 4,
+      "targetCount": 6,
+      "forbidTitles": [
+        "Curio Proof 1",
+        "Curio Proof 2",
+        "Curio Proof 3",
+        "Generic Proof Point",
+        "Research Required",
+        "Proof 1",
+        "Proof 2",
+        "Proof 3",
+        "Proof 4"
+      ],
+      "forbidInventedNumericalEvidence": true
+    },
+    "openingAndConversionPath": {
+      "componentId": "economics.opening.step",
+      "sectionTitle": "Opening & Conversion Path",
+      "slotPattern": "^economics\\.opening\\.step\\.\\d+$",
+      "mode": "EXACT",
+      "count": 5,
+      "orderedCanonicalTitles": [
+        "Application & Feasibility",
+        "Design & Standards",
+        "Pre-Opening Planning",
+        "Opening Support",
+        "Stabilization"
+      ],
+      "slotKeys": [
+        "economics.opening.step.1",
+        "economics.opening.step.2",
+        "economics.opening.step.3",
+        "economics.opening.step.4",
+        "economics.opening.step.5"
+      ],
+      "forbidGenericProcessParagraphOnly": true,
+      "requireBrandSpecificDevelopmentGuidance": true,
+      "compatibleWithCanonicalRenderer": true
+    },
+    "loyaltyKeyBenefits": {
+      "componentId": "loyalty.proof",
+      "sectionTitle": "Key Benefits & Program Strengths",
+      "slotPattern": "^loyalty\\.proof(\\.\\d+)?$",
+      "preferredSlotPattern": "^loyalty\\.proof\\.\\d+$",
+      "mode": "CONDITIONAL_EXACT",
+      "when": "conventionalLoyaltyProgram === true",
+      "count": 6,
+      "perCardRequired": [
+        "meaningfulConciseTitle",
+        "substantiveExplanatoryDescription",
+        "verifiedProgramBenefit",
+        "guestOrOwnerImplication",
+        "supportingEvidenceId",
+        "properCardFormatting"
+      ],
+      "forbidPlaceholderTitles": ["Benefit 1", "Benefit 2", "Benefit 3", "Benefit 4", "Benefit 5", "Benefit 6", "Loyalty proof points"],
+      "forbidNearDuplicateBenefits": true,
+      "nonParticipationTreatment": "canonical_non_participation_component",
+      "forbidInventingBenefitsForIndependentNonLoyaltyBrands": true
+    },
+    "loyaltyTiers": {
+      "componentId": "loyalty.elite",
+      "sectionTitle": "Elite Tiers",
+      "mode": "CONDITIONAL_ALL_SOURCE_MEMBERS",
+      "when": "conventionalLoyaltyProgram === true",
+      "perTierRequired": [
+        "officialTierName",
+        "qualificationRequirementsWhenVerified",
+        "primaryBenefits",
+        "differentiationFromPriorTier",
+        "sourceAndEffectiveDate"
+      ],
+      "forbidAssumingUniformTierCount": true,
+      "forbidSingleUnstructuredTierNameListCard": true,
+      "preserveProductTierCardOrComparisonTablePresentation": true
+    },
+    "loyaltyKpis": {
+      "componentId": "loyalty.kpi",
+      "metricsResearchTargets": [
+        "loyalty_members",
+        "participating_hotels",
+        "countries_or_markets",
+        "participating_brands",
+        "program_scale_or_reach",
+        "other_relevant_loyalty_indicators"
+      ],
+      "requireSourcePublicationDateAndDefinition": true,
+      "forbidConfusingParentNetworkWithBrandSpecific": true,
+      "forbidInventedNumericalEstimates": true,
+      "forbidStaleAutoCarryForwardWithoutRecert": true,
+      "undisclosedDisplay": {
+        "value": "Not Disclosed",
+        "forbidLengthyGenericParagraphInsideKpiCard": true,
+        "forbidRepeatingSameExplanationInEveryKpi": true
+      }
+    },
+    "dealalityInsightAdvisory": {
+      "componentId": "dealality_insight_advisory",
+      "permanentStandard": "BE_DEALALITY_INSIGHT_ADVISORY_V1",
+      "standardModule": "lib/brand-explorer/be-dealality-insight-advisory-v1.js",
+      "appliesTo": [
+        "Dealality Insight tab",
+        "Dealality View on Market Presence",
+        "insight.summary",
+        "insight.assessment.*",
+        "footprint.editorial",
+        "footprint.editorial_bullets"
+      ],
+      "separateInternalEvidenceFromPublishedAssessment": true,
+      "internalEvidenceBelongsIn": [
+        "Issues & Research Gaps panel",
+        "internal evidence register",
+        "incompleteDrafts hold-outs"
+      ],
+      "customerFacingMustNeverExpose": [
+        "HPC record counts and keys",
+        "certState / LIVE_UNVERIFIED_INVENTORY",
+        "steward confirmation workflow instructions",
+        "pipeline validation instructions",
+        "developer or editorial research notes",
+        "raw Airtable record IDs",
+        "fixture / candidate / slotKey / phase2 language"
+      ],
+      "assessmentStructure": [
+        "Overall Brand Assessment",
+        "Where We See the Greatest Opportunity",
+        "Principal Competitive Advantages",
+        "Ideal Owner, Asset & Operator Fit",
+        "Commercial & Investment Considerations",
+        "Dealality Perspective"
+      ],
+      "writingRequirements": [
+        "what_matters",
+        "why_it_matters_commercially",
+        "which_owners_or_assets",
+        "tradeoffs_or_assumptions",
+        "distinguish_verified_facts_from_dealality_interpretation"
+      ],
+      "forbidFabricatedPerformanceOrRoiClaims": true,
+      "forbidGenericMarketingCopy": true,
+      "positiveMeansConstructiveNotPromotional": true,
+      "compareStudio": {
+        "leftPreservesCurrentSavedInsight": true,
+        "rightShowsCumulativeProposedAdvisory": true,
+        "highlightOnlyOnProposed": true,
+        "highlightOffShowsCustomerFacingExact": true
+      },
+      "regressionCases": [
+        "internal_technical_language_leakage",
+        "generic_marketing_copy",
+        "unsupported_factual_claims",
+        "missing_commercial_interpretation",
+        "missing_asset_owner_suitability_analysis",
+        "empty_advisory_sections",
+        "repetitive_content",
+        "incorrect_title_case",
+        "inappropriate_rendering_or_formatting"
+      ],
+      "browserValidateRenderedInsight": true,
+      "curioAscendApproval": "NOT_APPROVED",
+      "gate2ContentReconstructionStillBlockedUntilGate1": true
+    },
+    "propertyFacingImages": {
+      "componentId": "property_facing_images",
+      "permanentStandard": "BE_PROPERTY_IMAGE_INTEGRITY_V1",
+      "standardModule": "lib/brand-explorer/be-property-image-integrity-v1.js",
+      "appliesTo": [
+        "footprint.openings",
+        "footprint.momentum",
+        "materials.caseStudy",
+        "materials.gallery.*",
+        "overview.scenario.*",
+        "valueOwners.scenario.*",
+        "Hotel Examples",
+        "Conversion Examples",
+        "Development Pipeline",
+        "Recent Openings",
+        "Recent Momentum",
+        "Case Studies",
+        "Image Gallery"
+      ],
+      "separateResearchSourcesFromDisplayImages": true,
+      "structuredFields": [
+        "researchSourceUrl",
+        "articleOrPublicationMetadata",
+        "propertyIdentity",
+        "propertyImageUrlOrApprovedAssetReference",
+        "imageProvenance",
+        "imageRightsUseStatus",
+        "imageType",
+        "caption"
+      ],
+      "articleThumbnailsAreNotPropertyPhotos": true,
+      "sourcingHierarchy": [
+        "official_photograph_of_named_operating_hotel",
+        "verified_photograph_from_authorized_hotel_or_property_source",
+        "official_rendering_of_named_development_clearly_labeled",
+        "explicit_missing_image_or_research_required_state"
+      ],
+      "forbiddenSubstitutions": [
+        "publication_mastheads_including_travel_weekly",
+        "article_screenshots",
+        "text_heavy_promotional_graphics",
+        "brand_logos",
+        "social_media_placeholders",
+        "generic_stock_photography",
+        "images_of_unrelated_properties",
+        "duplicate_assets_masquerading_as_distinct_hotels",
+        "hotel_related_website_url_alone_without_property_match"
+      ],
+      "imageToPropertyMatchingRequired": true,
+      "preserveOnEachAsset": [
+        "canonicalHotelOrPropertyIdentity",
+        "brandAffiliation",
+        "location",
+        "sourceUrl",
+        "imageUrlOrAssetReference",
+        "rightsUseInformation",
+        "photographVersusRenderingClassification",
+        "verificationResult"
+      ],
+      "captionRequirements": {
+        "mustIdentifyWhatIsShown": true,
+        "format": "HotelOrProjectName | SceneOrRenderingLabel",
+        "example": "Royal Palm Galápagos | Hotel & Guest Villas",
+        "forbidGeneric": ["Property imagery", "Hotel image", "Image 1", "Gallery 1"]
+      },
+      "compareStudio": {
+        "leftPreservesCurrentSavedImageExactly": true,
+        "rightShowsVerifiedPropertyImageOrResearchRequired": true,
+        "highlightChangesMarksImageReplacement": true,
+        "highlightOffShowsCleanProposedCard": true,
+        "doNotAlterUnrelatedCardsOrPublishedRecords": true
+      },
+      "regressionCases": [
+        "publication_thumbnail_substituted_for_hotel_photo",
+        "logo_substituted_for_property_imagery",
+        "incorrect_property_association",
+        "generic_or_misleading_caption",
+        "broken_image",
+        "duplicate_image",
+        "unverified_rendering",
+        "missing_rights_information"
+      ],
+      "browserValidateRenderedPropertyCards": true,
+      "curioAscendApproval": "NOT_APPROVED"
+    },
+    "imageGallery": {
+      "componentId": "materials.gallery",
+      "slotPattern": "^materials\\.gallery\\.\\d+$",
+      "mode": "EXACT",
+      "count": 6,
+      "permanentStandard": "BE_PERMANENT_SIX_IMAGE_GALLERY_STANDARD_V1",
+      "standardModule": "lib/brand-explorer/be-permanent-six-image-gallery-standard-v1.js",
+      "alsoSubjectTo": "BE_PROPERTY_IMAGE_INTEGRITY_V1",
+      "sourcingHierarchy": [
+        "verified_photos_of_operating_branded_hotels",
+        "official_photos_of_recently_opened_or_announced_branded_hotels",
+        "official_architectural_renderings_of_confirmed_pipeline_projects_clearly_labeled",
+        "block_gallery_quality_gate_rather_than_logos_or_fabricated_images"
+      ],
+      "forbiddenReplacements": [
+        "generic_logos",
+        "brand_name_promotional_graphics",
+        "text_only_slides",
+        "social_media_placeholders",
+        "unrelated_stock_photography",
+        "repeated_imagery_as_fake_completeness",
+        "images_with_large_promotional_text_overlays"
+      ],
+      "forbiddenCaptions": [
+        "Property imagery",
+        "Hotel image",
+        "Image 1",
+        "Gallery 1",
+        "Imagery unavailable as published customer caption"
+      ],
+      "captionFormat": "HotelOrProjectName [| Location] | SceneOrRenderingLabel",
+      "captionExamples": [
+        "Zemi Miches Punta Cana | Beachfront Pool & Resort Grounds",
+        "Hotel X | Lobby & Arrival Experience",
+        "Hotel Y | Guestroom Interior",
+        "Hotel Z | Proposed Exterior Rendering"
+      ],
+      "logoRejection": {
+        "enforceViaAssetMetadataAndVisualChecks": true,
+        "urlNamingAloneInsufficient": true,
+        "brandNameOnlyBasenamesAreLogos": true,
+        "incidentalHotelSignInAuthenticPhotoAcceptable": true,
+        "logoCenteredImageForbidden": true
+      },
+      "renderings": {
+        "allowedAsFallbackWhenOperatingPhotosInsufficient": true,
+        "mustHaveConfirmedProjectIdentity": true,
+        "mustHaveBrandAffiliation": true,
+        "mustHaveSourceAttribution": true,
+        "mustHaveAppropriateUsageRights": true,
+        "mustBeClearlyLabeledAsRendering": true,
+        "neverPresentRenderingAsCompletedOperatingHotel": true
+      },
+      "assetRegisterRequiredFields": [
+        "brandId",
+        "propertyIdOrProjectIdentity",
+        "imageUrlOrApprovedAssetReference",
+        "sourceUrl",
+        "imageType",
+        "sceneType",
+        "hotelName",
+        "location",
+        "rightsUseAuthorization",
+        "verificationStatus",
+        "dateChecked",
+        "caption",
+        "duplicateDetectionIdentifier"
+      ],
+      "perImageRequired": [
+        "hotelOrProjectName",
+        "location",
+        "brandAffiliation",
+        "imageSource",
+        "publicationOrVerificationDateWhenAvailable",
+        "rightsOrPermittedUse",
+        "caption",
+        "correctAssetUrl",
+        "suitableDimensionsAndAspectRatio"
+      ],
+      "browserImageLoadDetectionRequired": true,
+      "browserValidateAllSixGalleryCards": true,
+      "missingMandatoryPropertyImagesBlockApproval": true,
+      "forbidOnePhotoSimulatingCompleteGallery": true,
+      "compareStudio": {
+        "leftShowsCurrentSavedGalleryUnchanged": true,
+        "rightShowsSixImageProposedGallery": true,
+        "highlightOnlyGenuineImageOrCaptionChanges": true,
+        "doNotMarkAllSixChangedForMetadataReprocessAlone": true
+      }
+    },
+    "similarBrands": {
+      "componentId": "insight.similar",
+      "sectionTitle": "Similar Brands",
+      "slotPattern": "^insight\\.similar(\\.\\d+)?$",
+      "mode": "MINIMUM",
+      "count": 2,
+      "targetCount": 3,
+      "childRule": "one_card_equals_one_competitor_brand",
+      "forbidCombiningMultipleCompetitorsIntoOneNarrativeCard": true,
+      "perCardRequired": [
+        "canonicalCompetitorBrandName",
+        "parentCompany",
+        "segmentAndAffiliationModel",
+        "whyItCompetes",
+        "keyPositioningDifferences",
+        "ownerDevelopmentTradeoffs",
+        "linkToBrandExplorerProfileWhenAvailable"
+      ],
+      "preferGenuineCompetitiveSubstitutesOverSameParentOnly": true,
+      "useStableBrandBasicsIdsWhenAvailable": true,
+      "forbidGenericRepeatedCompetitorDescriptions": true,
+      "independentlyValidateEachItem": true
+    }
+  },
+  "emptySectionAndDensity": {
+    "failWhenTitleOnly": true,
+    "failWhenEmptyDescription": true,
+    "failWhenGenericPlaceholderOnly": true,
+    "failWhenInternalDiligenceInstructionOnly": true,
+    "notDisclosedIsNotSubstantiveContent": true,
+    "researchRequiredIsNotSubstantiveContent": true,
+    "forbidSatisfyingMinWordCountViaDuplicationOrFiller": true,
+    "insufficientEvidenceBehavior": "report_missing_accurately_and_block_content_gate",
+    "forbidFabricatingAnswers": true,
+    "eachComponentRequiresExplicitContract": [
+      "requiredTitle",
+      "requiredContentFields",
+      "minCollectionItems",
+      "maxCollectionItems",
+      "appropriateDescriptionDepth",
+      "maxVisualTextLength",
+      "requiredEvidence",
+      "requiredImageAssets",
+      "allowedDataTypes",
+      "missingDataBehavior"
+    ]
+  },
+  "researchMustSupportPopulation": {
+    "requiredResearchCategories": [
+      "development_stages_and_brand_support",
+      "operating_standards_and_service_requirements",
+      "brand_specific_commercial_and_owner_benefits",
+      "loyalty_membership_and_program_architecture",
+      "current_loyalty_tiers_and_benefits",
+      "verified_hotel_photographs_and_project_renderings",
+      "comparable_competing_brands",
+      "named_hotel_examples",
+      "current_geographic_and_portfolio_information"
+    ],
+    "forbidGenericTemplatesCompensatingForMissingResearch": true,
+    "keepBrandSpecificEvidenceSeparateFromUniversalGenerationLogic": true
+  },
+  "renderingAndQualityGates": {
+    "testActualRenderedComponentsNotOnlyJsonPresence": true,
+    "fieldCannotPassMerelyBecauseItContainsText": true,
+    "criticalFailuresBlockApprovalRegardlessOfOverallScore": true,
+    "regressionCases": [
+      "incorrect_heading_capitalization",
+      "em_dashes_and_unwanted_html_unicode_spacing_artifacts",
+      "missing_lifecycle_cards",
+      "missing_opening_conversion_stages",
+      "empty_stages_and_empty_subsection_bodies",
+      "generic_and_duplicated_paragraphs",
+      "missing_loyalty_benefits",
+      "incorrect_loyalty_tiers",
+      "unsupported_loyalty_membership_figures",
+      "incorrect_loyalty_kpi_formatting",
+      "logos_used_instead_of_available_hotel_imagery",
+      "publication_thumbnail_substituted_for_hotel_photo",
+      "internal_technical_language_in_dealality_insight",
+      "repeated_card_heading_in_description",
+      "broken_images",
+      "incorrect_or_duplicated_competitor_cards",
+      "wrong_collection_item_counts",
+      "insufficient_content_depth",
+      "overflowing_card_text",
+      "content_rendered_in_inappropriate_component"
+    ]
+  },
+  "governance": {
+    "workspace": "C:/Dev/dealality/ws-brand-explorer",
+    "stream": "be",
+    "preservePhase2hWip": true,
+    "preservePr457": true,
+    "preserveRejectedPr453": true,
+    "noCrossWorkstreamEdits": ["adp", "gdi", "he"],
+    "noPaidResearchWithoutFounderAuth": true,
+    "noProductionAirtableWritesWithoutFounderAuth": true,
+    "noMassPopulationWithoutFounderAuth": true,
+    "noPublicationWithoutFounderAuth": true,
+    "noAutomaticFounderApproval": true,
+    "curioAndAscendStatus": "NOT_APPROVED"
+  }
+}

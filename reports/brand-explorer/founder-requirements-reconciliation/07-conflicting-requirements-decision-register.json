@@ -1,0 +1,60 @@
+{
+  "version": "BE_CONFLICTING_REQUIREMENTS_DECISION_REGISTER_V1",
+  "conflicts": [
+    {
+      "conflictId": "BE-CONFLICT-LIFECYCLE-6-VS-7",
+      "topic": "Support Across the Lifecycle stage count",
+      "requirementA": {
+        "id": "BE-REQ-019-BASELINE",
+        "statement": "Live production template / atelier TIMELINE / Curio Gate1 payload / slots.md = EXACT 6 stages",
+        "stages": [
+          "Evaluation",
+          "Conversion Design",
+          "Pre-Opening",
+          "Opening",
+          "Ramp-Up",
+          "Ongoing"
+        ],
+        "evidence": [
+          "public/js/brand-explorer-atelier-from-api.js TIMELINE length 6",
+          "public/brand-explorer-phase2e-preview/curio-gate1-renderer-parity-payload.json lifecycle.1-6",
+          "docs/brand-explorer-presentation-slots.md valueOwners.lifecycle.1…6",
+          "browser Gate1 mount .timeline__phase"
+        ]
+      },
+      "requirementB": {
+        "id": "BE-REQ-019-FOUNDER-REQUEST",
+        "statement": "Founder requested exactly SEVEN canonical stages; prior permanent contract of six called incorrect",
+        "source": "Founder architecture corrections prompt 2026-11-19 §9",
+        "alsoSaid": "Do not invent a seventh stage; inspect live and recover exact structure"
+      },
+      "historicalSeventhStageSearch": {
+        "valueOwnersLifecycle7InRepo": false,
+        "atelierPhase7InTimelines": false,
+        "note": "Stabilization exists as economics.opening.step.5 (Opening & Conversion Path), NOT as a 7th Support Across the Lifecycle stage. Search for valueOwners.lifecycle.7 finds only the intentional failing fixture."
+      },
+      "potentialReasonsForDifference": [
+        "Founder may be counting a desired product enhancement beyond current live IA",
+        "Possible conflation with Opening & Conversion Path stages or Owner Buying dual cards",
+        "Earlier verbal/design intent never landed in production TIMELINE"
+      ],
+      "documentedCurrentProductionBaseline": {
+        "count": 6,
+        "titles": [
+          "Evaluation",
+          "Conversion Design",
+          "Pre-Opening",
+          "Opening",
+          "Ramp-Up",
+          "Ongoing"
+        ],
+        "retainedInContracts": true
+      },
+      "unresolvedFounderDecision": {
+        "targetDesign": "OPEN — choose retain 6 OR approve a specified 7th stage title/order/semantics",
+        "untilThen": "Retain six in unchanged production baseline; keep seven-stage enhancement OPEN; never invent unsupported stages"
+      },
+      "status": "OPEN_CONFLICT"
+    }
+  ]
+}

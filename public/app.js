@@ -106,6 +106,12 @@
         '/outreach/deal-activity-log': { file: '/outreach-deal-activity-log.html', title: 'Outreach Deal Activity Log' },
         '/outreach/templates': { file: '/outreach-template-manager.html', title: 'Outreach Templates' },
         '/brand-explorer-combined': { file: '/brand-explorer-combined.html', title: 'Brand Explorer' },
+        '/brand-explorer-compare': {
+            file: '/brand-explorer-compare.html',
+            title: 'Brand Explorer Comparison',
+            roles: ['admin'],
+            internalRunbookOnly: true
+        },
         '/brand-explorer-export': { file: '/brand-explorer-export.html', title: 'Brand Explorer PDF' },
         '/financial-term-library': { file: '/financial-term-library.html', title: 'Financial Term Library' },
         '/clause-library': { file: '/clause-library.html', title: 'Clause Library' },
@@ -332,6 +338,12 @@
                         { label: 'Scoring Weight Model', route: '/support/scoring-weight-model', roles: ['admin'], internalRunbookOnly: true },
                         { label: 'Brand AI Visibility Reference', route: '/support/ai-visibility-benchmark-admin', roles: ['admin'], internalRunbookOnly: true },
                         { label: 'AI Demand Admin', route: '/admin/ai-demand', roles: ['admin'], adpMonthlyReviewAdmin: true },
+                        {
+                            label: 'Brand Explorer Comparison',
+                            route: '/brand-explorer-compare',
+                            roles: ['admin'],
+                            internalRunbookOnly: true
+                        },
                         { label: 'Route Map', route: '/route-map', roles: ['admin'], devOnly: true },
                         {
                             label: 'Validation Scorecard',
@@ -394,6 +406,7 @@
         '/brand-library': '/brand-explorer-combined',
         '/brand-library.html': '/brand-explorer-combined',
         '/brand-explorer-combined.html': '/brand-explorer-combined',
+        '/brand-explorer-compare.html': '/brand-explorer-compare',
         '/brand-library-atelier': '/brand-explorer-combined',
         '/brand-library-atelier-north.html': '/brand-explorer-combined',
         '/financial-term-library.html': '/financial-term-library',

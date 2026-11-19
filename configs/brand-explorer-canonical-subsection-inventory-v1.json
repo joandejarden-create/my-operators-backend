@@ -1,0 +1,748 @@
+{
+  "version": "BE_CANONICAL_SUBSECTION_INVENTORY_V1",
+  "status": "FROZEN_FROM_LIVE_CURIO_GATE1_PLUS_FOUNDER_CORRECTIONS",
+  "benchmarkBrand": "Curio Collection by Hilton",
+  "benchmarkBrandId": "receQkxgjlezsc1xg",
+  "recoveredAt": "2026-11-19T16:05:15.387Z",
+  "evidence": {
+    "payload": "public/brand-explorer-phase2e-preview/curio-gate1-renderer-parity-payload.json",
+    "payloadSha256": "3bdbd392…ef37f (see phase2h-a-renderer-parity/00-payload-manifest.json)",
+    "renderer": "public/js/brand-explorer-atelier-from-api.js TIMELINE + section builders",
+    "browserDom": "Gate1 product mount: Support Across the Lifecycle phases Evaluation→Ongoing (6); Opening path 5 stages",
+    "gate1Approval": "ABSENT — GATE1_FOUNDER_APPROVED not present"
+  },
+  "lifecycleRecovery": {
+    "founderAssertedCount": 7,
+    "liveRecoveredCount": 6,
+    "resolution": "KEEP_LIVE_EXACT_6_DO_NOT_INVENT_SEVENTH",
+    "orderedTitles": [
+      "Evaluation",
+      "Conversion Design",
+      "Pre-Opening",
+      "Opening",
+      "Ramp-Up",
+      "Ongoing"
+    ],
+    "sources": [
+      "atelier TIMELINE array (6)",
+      "Curio Gate1 lifecycle.1-6",
+      "docs/brand-explorer-presentation-slots.md valueOwners.lifecycle.1…6",
+      "browser .timeline__phase count"
+    ]
+  },
+  "blockCountInGate1Payload": 225,
+  "sections": [
+    {
+      "tabId": "atelier-overview",
+      "tabName": "Overview",
+      "sectionTitle": "Brand Snapshot",
+      "componentId": "overview.snapshot",
+      "semanticType": "structured_snapshot",
+      "slotPatterns": [
+        "^snapshot\\.",
+        "^identity\\.",
+        "^overview\\.(typical_use_case|development_model|relative_positioning)$"
+      ],
+      "requiredItemCount": null,
+      "renderingComponent": "oe-section Brand Snapshot",
+      "sot": "Brand Basics + presentation"
+    },
+    {
+      "tabId": "atelier-overview",
+      "tabName": "Overview",
+      "sectionTitle": "Brand Positioning",
+      "componentId": "overview.positioning",
+      "semanticType": "narrative",
+      "slotPatterns": [
+        "^positioning\\."
+      ],
+      "requiredItemCount": null,
+      "renderingComponent": "oe-section Brand Positioning",
+      "sot": "presentation + Brand Basics"
+    },
+    {
+      "tabId": "atelier-overview",
+      "tabName": "Overview",
+      "sectionTitle": "Where This Brand Creates the Most Value",
+      "componentId": "overview.scenario",
+      "semanticType": "visual_scenario_cards",
+      "slotPatterns": [
+        "^overview\\.scenario\\.\\\\d+$"
+      ],
+      "requiredItemCount": 3,
+      "countMode": "EXACT",
+      "imageRequired": true,
+      "perItem": [
+        "Title Case heading",
+        "verified hotel image",
+        "project/market scenario",
+        "brand fit",
+        "owner value",
+        "commercial implications",
+        "substantive description"
+      ],
+      "forbid": [
+        "generic logos",
+        "unrelated stock"
+      ],
+      "renderingComponent": "scenario-card--visual",
+      "sot": "presentation overview.scenario.*"
+    },
+    {
+      "tabId": "atelier-overview",
+      "tabName": "Overview",
+      "sectionTitle": "Why Value Is Strongest in These Scenarios",
+      "componentId": "overview.why_value",
+      "semanticType": "insight_bullet_list",
+      "slotPatterns": [
+        "^overview\\.why_value$"
+      ],
+      "requiredItemCount": 5,
+      "countMode": "MINIMUM",
+      "perItem": [
+        "Bold Title Case Insight",
+        "evidence-grounded explanatory sentence"
+      ],
+      "renderingComponent": "bullet-list under Why Value",
+      "sot": "presentation overview.why_value"
+    },
+    {
+      "tabId": "atelier-overview",
+      "tabName": "Overview",
+      "sectionTitle": "Key Differentiators",
+      "componentId": "overview.differentiators",
+      "semanticType": "two_column_bullet_categories",
+      "slotPatterns": [
+        "^overview\\.differentiators\\.(identity|commercial)$"
+      ],
+      "requiredItemCount": 8,
+      "countMode": "EXACT_4_PER_CATEGORY",
+      "categories": [
+        {
+          "id": "Experience & Identity",
+          "slot": "overview.differentiators.identity",
+          "bullets": 4
+        },
+        {
+          "id": "Commercial & Distribution",
+          "slot": "overview.differentiators.commercial",
+          "bullets": 4
+        }
+      ],
+      "renderingComponent": "two-column differentiators",
+      "sot": "presentation differentiators"
+    },
+    {
+      "tabId": "atelier-overview",
+      "tabName": "Overview",
+      "sectionTitle": "What This Brand Is Best At",
+      "componentId": "overview.bestAt",
+      "semanticType": "card_grid",
+      "slotPatterns": [
+        "^overview\\.bestAt\\.\\\\d+$"
+      ],
+      "requiredItemCount": 3,
+      "countMode": "EXACT",
+      "renderingComponent": "oe-card grid",
+      "sot": "presentation"
+    },
+    {
+      "tabId": "atelier-overview",
+      "tabName": "Overview",
+      "sectionTitle": "Owner Value Snapshot",
+      "componentId": "overview.owner_value_snapshot",
+      "semanticType": "kpi_or_summary",
+      "slotPatterns": [
+        "^overview\\.owner_experience$",
+        "^hero\\."
+      ],
+      "requiredItemCount": null,
+      "renderingComponent": "Owner Value Snapshot",
+      "sot": "presentation"
+    },
+    {
+      "tabId": "atelier-overview",
+      "tabName": "Overview",
+      "sectionTitle": "Proof Points",
+      "componentId": "overview.proof",
+      "semanticType": "proof_cards",
+      "slotPatterns": [
+        "^overview\\.proof\\.\\\\d+$"
+      ],
+      "requiredItemCount": 4,
+      "countMode": "MINIMUM",
+      "targetCount": 6,
+      "forbidTitles": [
+        "Curio Proof 1",
+        "Curio Proof 2",
+        "Curio Proof 3",
+        "Generic Proof Point",
+        "Research Required",
+        "Proof 1",
+        "Proof 2"
+      ],
+      "perItem": [
+        "Title Case heading",
+        "distinct factual/market proof",
+        "supporting evidence",
+        "brand-specific commercial relevance",
+        "owner implication"
+      ],
+      "renderingComponent": "proof-point cards",
+      "sot": "presentation + evidence"
+    },
+    {
+      "tabId": "atelier-overview",
+      "tabName": "Overview",
+      "sectionTitle": "Portfolio Context",
+      "componentId": "overview.portfolio_context",
+      "semanticType": "narrative",
+      "slotPatterns": [
+        "^overview\\.portfolio_context$"
+      ],
+      "requiredItemCount": 1,
+      "renderingComponent": "explorer-detail-card",
+      "sot": "presentation"
+    },
+    {
+      "tabId": "atelier-value-owners",
+      "tabName": "Value to Owners",
+      "sectionTitle": "What the Owner Is Really Buying",
+      "componentId": "valueOwners.really_buying",
+      "semanticType": "dual_value_propositions",
+      "slotPatterns": [
+        "^valueOwners\\.overview",
+        "^owner\\.outcomes$",
+        "^overview\\.owner_experience$"
+      ],
+      "requiredItemCount": 2,
+      "countMode": "EXACT_TWO_PROPOSITIONS",
+      "propositions": [
+        {
+          "id": "guest_receives",
+          "label": "What the Guest Receives"
+        },
+        {
+          "id": "owner_receives",
+          "label": "What the Hotel Owner Receives"
+        }
+      ],
+      "forbidReduceTo": [
+        "Owner outcomes"
+      ],
+      "renderingComponent": "must become dual proposition cards (current live shows Overview only — founder correction)",
+      "sot": "presentation valueOwners.overview* + owner experience",
+      "founderCorrection": "dual guest/owner propositions required"
+    },
+    {
+      "tabId": "atelier-value-owners",
+      "tabName": "Value to Owners",
+      "sectionTitle": "Value Creation Scenarios",
+      "componentId": "valueOwners.scenario",
+      "semanticType": "scenario_cards",
+      "slotPatterns": [
+        "^valueOwners\\.scenario\\.\\\\d+$"
+      ],
+      "requiredItemCount": 4,
+      "countMode": "EXACT",
+      "perItem": [
+        "Title Case heading",
+        "owner/developer use case",
+        "brand fit",
+        "ops/capital considerations",
+        "commercial opportunity",
+        "explanatory depth"
+      ],
+      "renderingComponent": "scenario-card-grid--owner-value",
+      "sot": "presentation"
+    },
+    {
+      "tabId": "atelier-value-owners",
+      "tabName": "Value to Owners",
+      "sectionTitle": "Ownership Profiles That Benefit Most",
+      "componentId": "valueOwners.profiles",
+      "semanticType": "pill_select",
+      "slotPatterns": [],
+      "requiredItemCount": 6,
+      "renderingComponent": "pillSelect VALUE_PILLS",
+      "sot": "renderer constants + brand fit"
+    },
+    {
+      "tabId": "atelier-value-owners",
+      "tabName": "Value to Owners",
+      "sectionTitle": "Support Across the Lifecycle",
+      "componentId": "valueOwners.lifecycle",
+      "semanticType": "ordered_timeline",
+      "slotPatterns": [
+        "^valueOwners\\.lifecycle\\.\\\\d+$"
+      ],
+      "requiredItemCount": 6,
+      "countMode": "EXACT",
+      "orderedCanonicalTitles": [
+        "Evaluation",
+        "Conversion Design",
+        "Pre-Opening",
+        "Opening",
+        "Ramp-Up",
+        "Ongoing"
+      ],
+      "liveRecoveryNote": "Founder asserted SEVEN; live atelier TIMELINE + Curio Gate1 payload + slots.md recover EXACT SIX. Do not invent a seventh stage.",
+      "renderingComponent": "timeline__phase",
+      "sot": "presentation valueOwners.lifecycle.1-6"
+    },
+    {
+      "tabId": "atelier-value-owners",
+      "tabName": "Value to Owners",
+      "sectionTitle": "Key Watchouts",
+      "componentId": "valueOwners.watchouts",
+      "semanticType": "bullet_list",
+      "slotPatterns": [
+        "^valueOwners\\.watchouts$"
+      ],
+      "requiredItemCount": 3,
+      "countMode": "MINIMUM",
+      "renderingComponent": "explorer-detail-card list",
+      "sot": "presentation"
+    },
+    {
+      "tabId": "atelier-ops",
+      "tabName": "Operating Model",
+      "sectionTitle": "Operating Model",
+      "componentId": "operations.model",
+      "semanticType": "structured_field_grid",
+      "slotPatterns": [
+        "^operations\\.model\\."
+      ],
+      "requiredItemCount": 12,
+      "countMode": "MINIMUM_CANONICAL_FIELDS",
+      "fields": [
+        "typical_ownership",
+        "primary_model",
+        "systems_integration",
+        "training",
+        "management_option",
+        "brand_involvement",
+        "pre_opening",
+        "staffing_intensity",
+        "qa_rhythm",
+        "reporting_discipline",
+        "technology",
+        "fb_complexity"
+      ],
+      "renderingComponent": "ops model key/value grids",
+      "sot": "presentation operations.model.*"
+    },
+    {
+      "tabId": "atelier-ops",
+      "tabName": "Operating Model",
+      "sectionTitle": "Standards Philosophy",
+      "componentId": "operations.standards_philosophy",
+      "semanticType": "narrative",
+      "slotPatterns": [
+        "^operations\\.standards_philosophy$"
+      ],
+      "requiredItemCount": 1,
+      "renderingComponent": "oe-section",
+      "sot": "presentation"
+    },
+    {
+      "tabId": "atelier-ops",
+      "tabName": "Operating Model",
+      "sectionTitle": "Flexibility Indicators",
+      "componentId": "operations.flexibility",
+      "semanticType": "indicator_bars",
+      "slotPatterns": [
+        "^operations\\.flexibility\\."
+      ],
+      "requiredItemCount": 6,
+      "countMode": "EXACT",
+      "renderingComponent": "flexibility indicators",
+      "sot": "presentation"
+    },
+    {
+      "tabId": "atelier-ops",
+      "tabName": "Operating Model",
+      "sectionTitle": "Third-Party Operator Compatibility",
+      "componentId": "operations.operator_compat",
+      "semanticType": "fit_analysis",
+      "slotPatterns": [
+        "^operations\\.operator_compat\\."
+      ],
+      "requiredItemCount": 3,
+      "countMode": "MINIMUM",
+      "perItem": [
+        "ideal operator profile",
+        "required capabilities",
+        "F&B competence",
+        "service/staffing",
+        "standards compliance",
+        "parent systems experience",
+        "reporting/QA",
+        "better-fit vs weaker-fit",
+        "advantages/risks"
+      ],
+      "renderingComponent": "operator compat summary + badges",
+      "sot": "presentation"
+    },
+    {
+      "tabId": "atelier-ops",
+      "tabName": "Operating Model",
+      "sectionTitle": "Compliance & Oversight",
+      "componentId": "operations.compliance",
+      "semanticType": "structured",
+      "slotPatterns": [
+        "^operations\\.compliance\\."
+      ],
+      "requiredItemCount": 3,
+      "renderingComponent": "compliance cards",
+      "sot": "presentation"
+    },
+    {
+      "tabId": "atelier-standards-owner",
+      "tabName": "Owner Considerations",
+      "sectionTitle": "Standard Detail, Where Available",
+      "componentId": "standards.requirement",
+      "semanticType": "standards_table",
+      "slotPatterns": [
+        "^standards\\.requirement"
+      ],
+      "requiredItemCount": 7,
+      "countMode": "MINIMUM_FULL_TABLE",
+      "columns": [
+        "Requirement area",
+        "Typical consideration",
+        "Owner planning consideration",
+        "Applicability/status",
+        "Notes / items to verify"
+      ],
+      "topicCoverage": [
+        "Guestrooms",
+        "Public spaces",
+        "F&B",
+        "Technology",
+        "Signage",
+        "Fitness and wellness",
+        "Service requirements",
+        "Design and renovation"
+      ],
+      "forbidSingleRowDiligenceThemes": true,
+      "renderingComponent": "standards table",
+      "sot": "presentation standards.requirement*"
+    },
+    {
+      "tabId": "atelier-standards-owner",
+      "tabName": "Owner Considerations",
+      "sectionTitle": "Conversion & Sister-Flag Transitions",
+      "componentId": "standards.conversion",
+      "semanticType": "narrative",
+      "slotPatterns": [
+        "^standards\\.conversion$"
+      ],
+      "requiredItemCount": 1,
+      "renderingComponent": "oe-section",
+      "sot": "presentation"
+    },
+    {
+      "tabId": "atelier-standards-owner",
+      "tabName": "Owner Considerations",
+      "sectionTitle": "Confirm With Brand",
+      "componentId": "standards.questions",
+      "semanticType": "diligence_questions",
+      "slotPatterns": [
+        "^standards\\.questions$"
+      ],
+      "requiredItemCount": 1,
+      "renderingComponent": "oe-section",
+      "sot": "presentation"
+    },
+    {
+      "tabId": "atelier-standards-owner",
+      "tabName": "Owner Considerations",
+      "sectionTitle": "Deal Context Inputs",
+      "componentId": "standards.deal_inputs",
+      "semanticType": "structured",
+      "slotPatterns": [
+        "^standards\\.deal_inputs$"
+      ],
+      "requiredItemCount": 1,
+      "renderingComponent": "oe-section",
+      "sot": "presentation"
+    },
+    {
+      "tabId": "atelier-commercial",
+      "tabName": "Commercial Engine",
+      "sectionTitle": "Commercial Strengths",
+      "componentId": "commercial.intro",
+      "semanticType": "narrative_plus_kpis",
+      "slotPatterns": [
+        "^commercial\\.(intro|perception|differentiator)$",
+        "^commercial\\.kpi\\."
+      ],
+      "requiredItemCount": null,
+      "renderingComponent": "commercial intro + KPI cards",
+      "sot": "presentation"
+    },
+    {
+      "tabId": "atelier-commercial",
+      "tabName": "Commercial Engine",
+      "sectionTitle": "Demand Scenario View",
+      "componentId": "commercial.demand",
+      "semanticType": "demand_scenario_cards",
+      "slotPatterns": [
+        "^commercial\\.demand"
+      ],
+      "requiredItemCount": 6,
+      "countMode": "MINIMUM",
+      "perItem": [
+        "demand segment",
+        "customer/use case",
+        "brand appeal",
+        "market/location conditions",
+        "owner/commercial implications",
+        "evidence or labeled inference"
+      ],
+      "forbidRepeatedProposition": true,
+      "renderingComponent": "Demand Scenario View cards",
+      "sot": "presentation commercial.demand"
+    },
+    {
+      "tabId": "atelier-commercial",
+      "tabName": "Commercial Engine",
+      "sectionTitle": "Market Perception",
+      "componentId": "commercial.perception",
+      "semanticType": "narrative",
+      "slotPatterns": [
+        "^commercial\\.perception$",
+        "^commercial\\.theme"
+      ],
+      "requiredItemCount": 1,
+      "renderingComponent": "oe-section",
+      "sot": "presentation"
+    },
+    {
+      "tabId": "atelier-economics",
+      "tabName": "Economics & Obligations",
+      "sectionTitle": "Typical Economics at a Glance",
+      "componentId": "economics.kpi",
+      "semanticType": "kpi_cards",
+      "slotPatterns": [
+        "^economics\\.kpi\\."
+      ],
+      "requiredItemCount": 4,
+      "countMode": "MINIMUM",
+      "renderingComponent": "KPI strip",
+      "sot": "presentation + Brand Setup when available"
+    },
+    {
+      "tabId": "atelier-economics",
+      "tabName": "Economics & Obligations",
+      "sectionTitle": "Cash & Capital Rhythm",
+      "componentId": "economics.cash",
+      "semanticType": "structured",
+      "slotPatterns": [
+        "^economics\\.cash\\."
+      ],
+      "requiredItemCount": 3,
+      "renderingComponent": "cash rhythm cards",
+      "sot": "presentation"
+    },
+    {
+      "tabId": "atelier-economics",
+      "tabName": "Economics & Obligations",
+      "sectionTitle": "Opening & Conversion Path",
+      "componentId": "economics.opening.step",
+      "semanticType": "ordered_timeline",
+      "slotPatterns": [
+        "^economics\\.opening\\.step\\.\\\\d+$"
+      ],
+      "requiredItemCount": 5,
+      "countMode": "EXACT",
+      "orderedCanonicalTitles": [
+        "Application & Feasibility",
+        "Design & Standards",
+        "Pre-Opening Planning",
+        "Opening Support",
+        "Stabilization"
+      ],
+      "renderingComponent": "timeline",
+      "sot": "presentation"
+    },
+    {
+      "tabId": "atelier-economics",
+      "tabName": "Economics & Obligations",
+      "sectionTitle": "Fees in Three Buckets",
+      "componentId": "economics.fee",
+      "semanticType": "fee_cards",
+      "slotPatterns": [
+        "^economics\\.fee"
+      ],
+      "requiredItemCount": 3,
+      "renderingComponent": "fee buckets",
+      "sot": "presentation / FDD-style ranges when available"
+    },
+    {
+      "tabId": "atelier-economics",
+      "tabName": "Economics & Obligations",
+      "sectionTitle": "Term, Renewal & Exit Risk",
+      "componentId": "economics.risk",
+      "semanticType": "contractual_risk_section",
+      "slotPatterns": [
+        "^economics\\.(risk|term_renewal|performance_exit|legal)"
+      ],
+      "requiredItemCount": 3,
+      "countMode": "MINIMUM",
+      "themes": [
+        "initial term",
+        "renewal",
+        "performance/compliance",
+        "termination",
+        "change of ownership",
+        "transfer approvals",
+        "rebranding/conversion",
+        "capital obligations",
+        "commercial/operating consequences"
+      ],
+      "forbidEmptyRiskCard": true,
+      "forbidInventedAgreementTerms": true,
+      "renderingComponent": "risk cards",
+      "sot": "franchise/development disclosures + diligence guidance labeled"
+    },
+    {
+      "tabId": "atelier-economics",
+      "tabName": "Economics & Obligations",
+      "sectionTitle": "Negotiability & Incentives",
+      "componentId": "economics.negotiability",
+      "semanticType": "structured",
+      "slotPatterns": [
+        "^economics\\.(negotiab|rarely_negotiable|incentives)"
+      ],
+      "requiredItemCount": 2,
+      "renderingComponent": "negotiability section",
+      "sot": "presentation"
+    },
+    {
+      "tabId": "atelier-loyalty",
+      "tabName": "Loyalty Program",
+      "sectionTitle": "Key Benefits & Program Strengths",
+      "componentId": "loyalty.proof",
+      "semanticType": "benefit_cards",
+      "slotPatterns": [
+        "^loyalty\\.proof(\\\\.\\\\d+)?$"
+      ],
+      "requiredItemCount": 6,
+      "countMode": "CONDITIONAL_EXACT",
+      "renderingComponent": "loyalty benefit cards",
+      "sot": "program disclosures"
+    },
+    {
+      "tabId": "atelier-loyalty",
+      "tabName": "Loyalty Program",
+      "sectionTitle": "Elite Tiers",
+      "componentId": "loyalty.elite",
+      "semanticType": "tier_cards_or_table",
+      "slotPatterns": [
+        "^loyalty\\.elite"
+      ],
+      "requiredItemCount": null,
+      "renderingComponent": "Elite Tiers",
+      "sot": "program disclosures"
+    },
+    {
+      "tabId": "atelier-footprint",
+      "tabName": "Footprint & Growth",
+      "sectionTitle": "Geographic Footprint",
+      "componentId": "footprint.geo",
+      "semanticType": "geo_narrative_and_regions",
+      "slotPatterns": [
+        "^footprint\\.(geo|region|editorial)"
+      ],
+      "requiredItemCount": 1,
+      "renderingComponent": "geo sections",
+      "sot": "HPC + presentation"
+    },
+    {
+      "tabId": "atelier-footprint",
+      "tabName": "Footprint & Growth",
+      "sectionTitle": "Growth Priorities",
+      "componentId": "footprint.growth",
+      "semanticType": "narrative",
+      "slotPatterns": [
+        "^footprint\\.growth"
+      ],
+      "requiredItemCount": 1,
+      "renderingComponent": "oe-section",
+      "sot": "presentation"
+    },
+    {
+      "tabId": "atelier-footprint",
+      "tabName": "Footprint & Growth",
+      "sectionTitle": "Recent Momentum",
+      "componentId": "footprint.momentum",
+      "semanticType": "momentum_timeline",
+      "slotPatterns": [
+        "^footprint\\.momentum$"
+      ],
+      "requiredItemCount": 3,
+      "countMode": "MINIMUM",
+      "perItem": [
+        "event title",
+        "date",
+        "hotel/project",
+        "location",
+        "summary",
+        "source URL",
+        "why it matters"
+      ],
+      "forbidGenericDiligenceCard": true,
+      "freshnessTracked": true,
+      "renderingComponent": "Recent Momentum timeline",
+      "sot": "researched announcements"
+    },
+    {
+      "tabId": "atelier-materials",
+      "tabName": "Brand Materials",
+      "sectionTitle": "Image Gallery",
+      "componentId": "materials.gallery",
+      "semanticType": "gallery",
+      "slotPatterns": [
+        "^materials\\.gallery\\.\\\\d+$"
+      ],
+      "requiredItemCount": 6,
+      "countMode": "EXACT",
+      "imageRequired": true,
+      "renderingComponent": "gallery grid",
+      "sot": "verified property photos"
+    },
+    {
+      "tabId": "atelier-insight",
+      "tabName": "Dealality Insight",
+      "sectionTitle": "Similar Brands",
+      "componentId": "insight.similar",
+      "semanticType": "competitor_cards",
+      "slotPatterns": [
+        "^insight\\.similar"
+      ],
+      "requiredItemCount": 2,
+      "countMode": "MINIMUM",
+      "targetCount": 3,
+      "childRule": "one_card_equals_one_competitor_brand",
+      "perItem": [
+        "canonical name",
+        "parent",
+        "segment",
+        "why competes",
+        "key distinction",
+        "owner trade-off"
+      ],
+      "renderingComponent": "similar brand cards",
+      "sot": "Brand Basics links preferred"
+    }
+  ],
+  "qualityGatePolicy": {
+    "optimizeFor": "materially useful professionally written hotel brand advisory profile",
+    "forbidOptimizingForAutomatedCompletionScoresAlone": true,
+    "failWhenRendersButLacksSubstance": true,
+    "criticalOmissionsBlockRegardlessOfAggregateScore": true,
+    "automatedPassIsNotFounderApproval": true
+  }
+}

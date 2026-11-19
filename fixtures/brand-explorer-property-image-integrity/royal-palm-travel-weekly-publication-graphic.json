@@ -1,0 +1,48 @@
+{
+  "version": "BE_PROPERTY_IMAGE_INTEGRITY_FIXTURE_V1",
+  "founderFailure": "Royal Palm Galápagos used a Travel Weekly publication graphic as the featured property photograph",
+  "blocks": [
+    {
+      "slotKey": "footprint.openings",
+      "title": "Royal Palm Galapagos Curio Collection by Hilton — Santa Cruz Island",
+      "body": "Resort, Ecuador, CALA, Galápagos, Nature destination lodge\n\nSanta Cruz Island, Galápagos, Ecuador\n\nhttps://www.hilton.com/en/hotels/gpsrpqq-royal-palm-galapagos/\n\nhttps://www.travelweekly.com/example-article-not-a-property-photo",
+      "imageUrl": "https://v5.airtableusercontent.com/v3/u/example/royal-palm-travel-weekly-graphic",
+      "imageFilename": "royal-palm-galapagos-curio-collection-by-hilton-santa-cruz-island-tw.jpg",
+      "imageType": "publication_thumbnail"
+    },
+    {
+      "slotKey": "footprint.openings",
+      "title": "Unrelated Logo Card",
+      "body": "Should reject logo as property photo",
+      "imageUrl": "https://cdn.example.com/brands/Curio-Collection-by-Hilton.webp",
+      "imageFilename": "Curio-Collection-by-Hilton.webp"
+    },
+    {
+      "slotKey": "materials.gallery.1",
+      "title": "Zemi Miches Punta Cana | Beachfront Pool & Resort Grounds",
+      "body": "",
+      "imageUrl": "https://cdn.example.com/hotels/zemi-miches-pool.jpg",
+      "imageFilename": "zemi-miches-pool.jpg"
+    },
+    {
+      "slotKey": "footprint.momentum",
+      "title": "Trade press host image",
+      "body": "https://www.travelweekly.com/Hoteliers/Some-Story",
+      "imageUrl": "https://www.travelweekly.com/ext/resources/2022/07/masthead-share.jpg",
+      "imageFilename": "masthead-share.jpg"
+    },
+    {
+      "slotKey": "overview.proof.1",
+      "title": "Not a property-facing slot",
+      "body": "Proof cards are headings, not hotel photos",
+      "imageUrl": "https://www.travelweekly.com/should-be-ignored.jpg",
+      "imageFilename": "should-be-ignored-tw.jpg"
+    }
+  ],
+  "expected": {
+    "royalPalmReplacementUrlContains": "Royal-Palm-Galapagos-Curio-Collection-by-Hilton_Aerial",
+    "royalPalmCaption": "Royal Palm Galápagos | Hotel & Guest Villas",
+    "logoOrTradePressMustNotRemainAsDisplayImage": true,
+    "researchCitationRetainedInBody": "travelweekly.com"
+  }
+}

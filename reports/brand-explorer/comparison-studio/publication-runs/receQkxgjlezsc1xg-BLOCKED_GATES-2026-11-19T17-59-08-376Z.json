@@ -1,0 +1,273 @@
+{
+  "contract": "BE_FOUNDER_APPROVAL_PUBLICATION_V1",
+  "mode": "DRY_RUN",
+  "startedAt": "2026-11-19T17:59:08.376Z",
+  "finishedAt": "2026-11-19T17:59:08.377Z",
+  "brandId": "receQkxgjlezsc1xg",
+  "brandSlug": "curio-collection",
+  "brandName": "Curio Collection by Hilton",
+  "candidateVersion": "phase2h-component-parity",
+  "lockId": "be-pub-lock-1c1f7684cbf5d2042a632663",
+  "contentHash": "f0ef60df3d4b886c7062e30b6ac80a9466a4f7ce21f59e98b26a0d0438598f12",
+  "productionWritesEnabled": false,
+  "activation": {
+    "productionWritesAuthorized": false,
+    "automaticPublicationEnabled": false
+  },
+  "status": "BLOCKED_GATES",
+  "airtableWrites": 0,
+  "publicationApplied": false,
+  "customerPromoted": false,
+  "steps": [
+    {
+      "step": "LOCK_CANDIDATE",
+      "ok": true,
+      "lockId": "be-pub-lock-1c1f7684cbf5d2042a632663",
+      "brandId": "receQkxgjlezsc1xg",
+      "candidateVersion": "phase2h-component-parity",
+      "contentHash": "f0ef60df3d4b886c7062e30b6ac80a9466a4f7ce21f59e98b26a0d0438598f12",
+      "blockCount": 1,
+      "lockedAt": "2026-11-19T17:59:08.376Z",
+      "immutable": true
+    },
+    {
+      "step": "VALIDATE_GATES",
+      "ok": false,
+      "failures": [
+        {
+          "code": "GATE1_NOT_APPROVED",
+          "message": "Gate 1 (Renderer Parity) is not founder-approved."
+        },
+        {
+          "code": "GATE2_BLOCKED",
+          "message": "Gate 2 (content reconstruction) is blocked or not founder-approved."
+        },
+        {
+          "code": "SCORECARD_NOT_FOUNDER_APPROVED",
+          "message": "Candidate scorecard is not FOUNDER_APPROVED.",
+          "observed": "NOT_FOUNDER_APPROVED"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "RESEARCH_GAPS_REMAIN",
+          "message": "Research gaps remain on the candidate.",
+          "observed": 11
+        },
+        {
+          "code": "BENCHMARK_BRAND_NOT_APPROVED",
+          "message": "Curio/Ascend remain NOT APPROVED for publication."
+        }
+      ],
+      "gate1Status": "FAIL",
+      "gate2Status": "FAIL",
+      "founderBrandDecision": "approve_and_publish"
+    },
+    {
+      "step": "BUILD_WRITE_PLAN",
+      "ok": true,
+      "targetBaseEnv": "AIRTABLE_BASE_ID",
+      "targetTable": "Brand Setup - Brand Explorer Presentation",
+      "brandBasicsTable": "Brand Setup - Brand Basics",
+      "brandBasicsId": "receQkxgjlezsc1xg",
+      "excludedTables": [
+        "Hotel Property Census",
+        "Hotel Census",
+        "Brand Setup - Fee Structure",
+        "Brand Setup - Deal Terms",
+        "Brand Setup - Legal Terms",
+        "any ADP / GDI / HE tables"
+      ],
+      "operations": [
+        {
+          "op": "CREATE",
+          "table": "Brand Setup - Brand Explorer Presentation",
+          "recordId": null,
+          "brandBasicsId": "receQkxgjlezsc1xg",
+          "slotKey": "overview.proof.1",
+          "before": null,
+          "after": {
+            "title": "T",
+            "body": "B",
+            "imageUrl": null,
+            "sort": 1
+          },
+          "fields": {
+            "Slot Key": "overview.proof.1",
+            "Brand": [
+              "receQkxgjlezsc1xg"
+            ],
+            "Title": "T",
+            "Body": "B",
+            "Sort Order": 1,
+            "Active": true
+          },
+          "writeClass": "founder_publish"
+        }
+      ],
+      "counts": {
+        "update": 0,
+        "create": 1,
+        "deactivate": 0,
+        "skippedNotApproved": 0
+      },
+      "childRecordChanges": [
+        {
+          "op": "CREATE",
+          "table": "Brand Setup - Brand Explorer Presentation",
+          "recordId": null,
+          "brandBasicsId": "receQkxgjlezsc1xg",
+          "slotKey": "overview.proof.1",
+          "before": null,
+          "after": {
+            "title": "T",
+            "body": "B",
+            "imageUrl": null,
+            "sort": 1
+          },
+          "fields": {
+            "Slot Key": "overview.proof.1",
+            "Brand": [
+              "receQkxgjlezsc1xg"
+            ],
+            "Title": "T",
+            "Body": "B",
+            "Sort Order": 1,
+            "Active": true
+          },
+          "writeClass": "founder_publish"
+        }
+      ],
+      "idempotencyKey": "fe534ead1348ce18c901d9ebd34e46cd34cac3d6f073b70b61f60113397538de"
+    },
+    {
+      "step": "VERIFY_IDENTITY_CONCURRENCY",
+      "ok": true,
+      "failures": [],
+      "brandBasicsId": "receQkxgjlezsc1xg",
+      "baselineContentHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "liveContentHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "step": "CREATE_SNAPSHOT",
+      "ok": true,
+      "path": "C:\\Dev\\dealality\\ws-brand-explorer\\reports\\brand-explorer\\comparison-studio\\publication-snapshots\\receQkxgjlezsc1xg-2026-11-19T17-59-08-376Z.json",
+      "relativePath": "reports/brand-explorer/comparison-studio/publication-snapshots/receQkxgjlezsc1xg-2026-11-19T17-59-08-376Z.json",
+      "blockCount": 0,
+      "recoverable": true
+    },
+    {
+      "step": "APPLY_WRITES",
+      "ok": true,
+      "applied": false,
+      "airtableWrites": 0,
+      "mode": "DRY_RUN",
+      "reason": "Production writes disabled (activation + env gate)",
+      "wouldApply": 1
+    },
+    {
+      "step": "STAGED_BOUNDARY",
+      "ok": true,
+      "publicExposure": "BLOCKED",
+      "customerFacingPromotion": false,
+      "note": "Profiles remain internal until post-write verification and explicit promote step succeed.",
+      "stagingFlag": "bePublicationStaged=1",
+      "applied": false
+    },
+    {
+      "step": "READBACK_VERIFY",
+      "ok": true,
+      "simulated": true,
+      "plannedChecks": [
+        {
+          "recordId": null,
+          "slotKey": "overview.proof.1",
+          "expected": {
+            "title": "T",
+            "body": "B",
+            "imageUrl": null,
+            "sort": 1
+          },
+          "fields": [
+            "Slot Key",
+            "Brand",
+            "Title",
+            "Body",
+            "Sort Order",
+            "Active"
+          ]
+        }
+      ],
+      "note": "Dry-run: readback checks planned but not executed against Airtable"
+    },
+    {
+      "step": "PROMOTE_CUSTOMER",
+      "ok": true,
+      "promoted": false,
+      "reason": "Promotion blocked until successful apply + readback + production authorization"
+    },
+    {
+      "step": "POST_PUBLISH_VERIFY",
+      "ok": true,
+      "simulated": true,
+      "requiredTabs": [
+        "atelier-overview",
+        "atelier-value-owners",
+        "atelier-ops",
+        "atelier-standards-owner",
+        "atelier-commercial",
+        "atelier-economics",
+        "atelier-loyalty",
+        "atelier-footprint",
+        "atelier-materials",
+        "atelier-insight"
+      ],
+      "checks": [
+        "ten_tab_navigation",
+        "product_components_present",
+        "images_resolve",
+        "critical_sections_non_empty",
+        "customer_url_renders"
+      ],
+      "note": "Dry-run: post-publish verification plan recorded only"
+    },
+    {
+      "step": "COMPLETE_OR_ROLLBACK",
+      "ok": true,
+      "rollbackAvailable": true,
+      "snapshotPath": "C:\\Dev\\dealality\\ws-brand-explorer\\reports\\brand-explorer\\comparison-studio\\publication-snapshots\\receQkxgjlezsc1xg-2026-11-19T17-59-08-376Z.json",
+      "strategy": [
+        "Restore Presentation rows from recoverable snapshot (Title/Body/Active/Sort Order)",
+        "Keep Brand Basics and unrelated tables untouched",
+        "Leave customer promotion flag off if verification failed",
+        "Record rollback audit entry with original lockId + contentHash"
+      ],
+      "publicationStatus": "NOT_APPLIED"
+    }
+  ],
+  "writePlanSummary": {
+    "update": 0,
+    "create": 1,
+    "deactivate": 0,
+    "skippedNotApproved": 0
+  },
+  "idempotencyKey": "fe534ead1348ce18c901d9ebd34e46cd34cac3d6f073b70b61f60113397538de",
+  "audit": {
+    "approver": "founder",
+    "brandDecision": {
+      "decision": "approve_and_publish",
+      "brandId": "receQkxgjlezsc1xg",
+      "recordedAt": "2026-11-19T17:59:08.374Z",
+      "airtableWrites": 0,
+      "publicationApplied": false,
+      "note": "Approve & Publish requested from Comparison Studio (workflow may still be blocked by gates / activation)."
+    },
+    "evidencePaths": [
+      "reports/brand-explorer/comparison-studio/publication-snapshots/receQkxgjlezsc1xg-2026-11-19T17-59-08-376Z.json",
+      "reports/brand-explorer/comparison-studio/receQkxgjlezsc1xg-founder-review.json"
+    ]
+  },
+  "restartable": true,
+  "idempotent": true,
+  "note": "Ordinary approved publications will use this workflow. Production Airtable writes require separate founder activation. Curio/Ascend remain NOT APPROVED."
+}

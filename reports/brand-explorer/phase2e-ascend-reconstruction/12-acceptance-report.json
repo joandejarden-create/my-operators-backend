@@ -1,0 +1,188 @@
+{
+  "contract": "BE_PHASE2E_UNIVERSAL_RECONSTRUCTION_V1",
+  "generatedAt": "2026-11-19T13:18:02.947Z",
+  "target": {
+    "slug": "ascend",
+    "recordId": "reclkgOzvAcBheUSo",
+    "name": "Ascend Hotel Collection",
+    "parentCompany": "Choice Hotels",
+    "hpcMatchers": [
+      "Ascend Hotel Collection",
+      "Ascend"
+    ],
+    "loyalty": {
+      "programName": "Choice Privileges",
+      "tiers": "Member; Gold; Platinum; Diamond (confirm current Choice Privileges tier names before publish)",
+      "earn": "Guests earn Choice Privileges points on qualifying stays at Ascend Hotel Collection properties.",
+      "redeem": "Points redeem across Choice brands, including Ascend Hotel Collection hotels.",
+      "sourceNote": "Choice Privileges parent loyalty (public / attributable)"
+    },
+    "officialUrls": [
+      "https://www.choicehotels.com/ascend",
+      "https://media.choicehotels.com/ascend-hotel-collection-press-kit",
+      "https://www.choicehotelsdevelopment.com/our-brands/upscale/ascend"
+    ],
+    "sentenceBrandToken": "Ascend",
+    "fddPlainPath": null,
+    "fddInvestRegex": null,
+    "websiteFallback": "https://www.choicehotels.com/ascend",
+    "peers": "Curio Collection by Hilton; Autograph Collection (Marriott); Tribute Portfolio (Marriott); Tapestry Collection by Hilton",
+    "authorizedRepoTexts": [
+      "fixtures/choice-dev-site-text/our-brands__upscale__ascend.txt",
+      "fixtures/choice-media-center-text/ascend-hotel-collection-press-kit.txt"
+    ],
+    "authorizedBasicsFixture": "fixtures/brand-basics-from-choice-materials/ascend-hotel-collection.json"
+  },
+  "canonicalTabs": [
+    "atelier-overview",
+    "atelier-value-owners",
+    "atelier-ops",
+    "atelier-standards-owner",
+    "atelier-commercial",
+    "atelier-economics",
+    "atelier-loyalty",
+    "atelier-footprint",
+    "atelier-materials",
+    "atelier-insight"
+  ],
+  "scores": {
+    "actualFieldCompleteness": 0.953,
+    "sourceVerification": 0.686,
+    "brandSpecificity": 0.522,
+    "contentUsefulness": 0.901,
+    "correctPlacement": "NOT_VALIDATED",
+    "visualRendering": "NOT_VALIDATED",
+    "applicableFieldCompleteness": 0.95
+  },
+  "qualityCounts": {
+    "slotsEvaluated": 213,
+    "populated": 203,
+    "researchRequired": 10,
+    "thin": 23,
+    "genericFlags": 1,
+    "applicableSlots": 199,
+    "applicablePopulated": 189,
+    "applicableResearchRequired": 10,
+    "targetApplicableCompleteness": 0.9,
+    "meetsTarget": true
+  },
+  "sourceAttribution": {
+    "populatedCount": 203,
+    "withEvidenceIds": 185,
+    "evidenceCoverage": 0.911,
+    "financeOpsCommercialCount": 131,
+    "financeOpsGroundedCount": 128,
+    "financeOpsGroundingRate": 0.977,
+    "evidencePackSize": 35,
+    "highConfidenceEvidence": 24,
+    "notes": [
+      "Financial figures must be disclosure-attributable or labeled diligence — inventing fee % is prohibited",
+      "HPC metrics carry certState; LIVE_UNVERIFIED is not CERTIFIED"
+    ]
+  },
+  "airtableMapping": {
+    "presentationTable": "Brand Setup - Brand Explorer Presentation",
+    "brandBasicsTable": "Brand Setup - Brand Basics",
+    "ownership": "presentation_stage_only — no writes in Phase 2E",
+    "candidateSlots": 213,
+    "inventoryApplicableMatched": 199,
+    "outsideApplicableInventory": [
+      "operations.flexibility.1",
+      "operations.flexibility.2",
+      "operations.flexibility.3",
+      "operations.flexibility.4",
+      "operations.flexibility.5",
+      "operations.flexibility.6",
+      "operations.model.1",
+      "operations.model.2",
+      "operations.model.3",
+      "operations.model.4",
+      "operations.model.5",
+      "operations.model.6",
+      "operations.model.7",
+      "operations.model.8"
+    ],
+    "slotKeyField": "Slot Key",
+    "titleField": "Title",
+    "bodyField": "Body",
+    "mappingContract": "candidate.slotKey → Presentation Slot Key; Title/Body from candidate; Brand link = Brand Basics recordId",
+    "writes": 0
+  },
+  "hpc": {
+    "dataOrigin": null,
+    "certState": null,
+    "certified": false,
+    "metrics": null
+  },
+  "atelierVm": {
+    "status": "PASS_ATELIER_VM_MOUNT",
+    "htmlChars": 66703,
+    "overlayBlocks": 206,
+    "tabsDetected": 10,
+    "brandTokenMatch": true,
+    "loyaltyContamination": "OK"
+  },
+  "vsBaseline": null,
+  "masterReleaseOnPartialCandidate": {
+    "pass": false,
+    "status": "NOT_READY"
+  },
+  "researchCosts": {
+    "paidResearchAuthorized": false,
+    "paidResearchUsed": false,
+    "stopForAuthorization": true,
+    "costVersusQuality": [
+      {
+        "method": "Exhaust Brand Basics + official HTTP + HPC + repo FDD diligence",
+        "costUsd": 0,
+        "qualityImpact": "High for identity/positioning/ops/lifecycle; medium for economics framing",
+        "status": "EXECUTED_IN_2D"
+      },
+      {
+        "method": "Public press for named Curio openings / momentum URLs",
+        "costUsd": 0,
+        "qualityImpact": "High for footprint.momentum/openings cards",
+        "status": "RECOMMENDED_NEXT_FREE"
+      },
+      {
+        "method": "Licensed/current FDD fee table extraction (figures)",
+        "costUsd": "UNKNOWN — founder gate",
+        "qualityImpact": "Required only if customer-facing fee % demanded; diligence guidance ships without it",
+        "status": "NOT_REQUIRED_FOR_90PCT_IF_DILIGENCE_ACCEPTED"
+      },
+      {
+        "method": "Professional / CALA imagery pack",
+        "costUsd": "UNKNOWN — founder gate",
+        "qualityImpact": "Gallery completeness when official CDN yield < 6",
+        "status": "CONDITIONAL"
+      },
+      {
+        "method": "Paid Webhound hard-case research",
+        "costUsd": "UNKNOWN — founder gate",
+        "qualityImpact": "Last resort after free stages",
+        "status": "NOT_ACTIVATED"
+      }
+    ],
+    "remainingByCategory": {
+      "PUBLIC_RESEARCH_NEEDED": 5,
+      "OPTIONAL_INAPPLICABLE_UNDISCLOSED": 2,
+      "GENERATOR_MAPPING_FAILED": 3
+    },
+    "evidenceCounts": {
+      "total": 35,
+      "highConfidence": 24,
+      "images": 3
+    }
+  },
+  "reproducibility": {
+    "presentationUsedAsInput": false,
+    "completedFixtureUsedAsInput": false,
+    "brandSpecificHardcodingInGenerator": false,
+    "brandIdentityIsConfigOnly": true,
+    "paidResearchUsed": false
+  },
+  "writes": 0,
+  "productionAirtableWrites": false,
+  "atelierOverlayPath": "/brand-explorer-phase2e-preview/ascend-candidate.json",
+  "atelierValidationUrl": "/brand-explorer-combined.html?brand=reclkgOzvAcBheUSo&beInternalPreview=1&beCandidateOverlay=1&beCandidateOverlayUrl=/brand-explorer-phase2e-preview/ascend-candidate.json"
+}

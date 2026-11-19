@@ -1,0 +1,72 @@
+{
+  "version": "BE_IMPLEMENTATION_BACKLOG_ATTACHED_TO_MASTER_V1",
+  "note": "NOT a parallel registry. Extends existing 82 requirement IDs with implementation work fields. Increment order: A→E.",
+  "masterRegister": "reports/brand-explorer/founder-requirements-reconciliation/01-master-founder-requirements-register.json",
+  "increments": {
+    "A": {
+      "name": "Renderer parity and visual verification",
+      "gate": 1,
+      "status": "AWAITING_FOUNDER_APPROVAL",
+      "stopForFounderApproval": true,
+      "visualPack": "reports/brand-explorer/phase2h-a-renderer-parity/ten-tab-visual-v1/02-FOUNDER_GATE1_VISUAL_ACCEPTANCE.md",
+      "requirementIds": ["BE-REQ-045", "BE-REQ-046", "BE-REQ-047", "BE-REQ-048", "BE-REQ-049", "BE-REQ-050", "BE-REQ-052", "BE-REQ-059", "BE-REQ-066", "BE-REQ-070", "BE-REQ-073", "BE-REQ-077", "BE-REQ-080", "BE-REQ-081"],
+      "implementingComponents": [
+        "public/js/brand-explorer-atelier-from-api.js",
+        "public/js/brand-explorer-compare-studio.js",
+        "public/brand-explorer-renderer-parity.html",
+        "public/brand-explorer-compare.html",
+        "public/css/brand-explorer-atelier-oe-panels.css"
+      ],
+      "evidenceDir": "reports/brand-explorer/phase2h-a-renderer-parity/ten-tab-visual-v1/"
+    },
+    "B": {
+      "name": "Shared component architecture and fixed collection layouts",
+      "gate": "1_approved_or_founder_priority_for_renderer_IA",
+      "status": "QUEUED_AFTER_GATE1",
+      "requirementIds": ["BE-REQ-016", "BE-REQ-017", "BE-REQ-018", "BE-REQ-019", "BE-REQ-020", "BE-REQ-021", "BE-REQ-022", "BE-REQ-023", "BE-REQ-025", "BE-REQ-013", "BE-REQ-028", "BE-REQ-032", "BE-REQ-042", "BE-REQ-015", "BE-REQ-014", "BE-REQ-057", "BE-REQ-058"],
+      "implementingComponents": [
+        "public/js/brand-explorer-atelier-from-api.js (Value / Ops / Standards / Risk builders)",
+        "configs/brand-explorer-permanent-content-standards-contract-v1.json",
+        "configs/brand-explorer-founder-architecture-corrections-contract-v1.json"
+      ],
+      "notes": [
+        "Preserve production 6-stage lifecycle; 7 remains OPEN conflict",
+        "Owner Buying dual Guest/Owner layout is renderer IA — do not invent content in Gate1"
+      ]
+    },
+    "C": {
+      "name": "Typography, card styling and editorial formatting",
+      "gate": "after_or_with_B",
+      "status": "QUEUED",
+      "requirementIds": ["BE-REQ-001", "BE-REQ-002", "BE-REQ-003", "BE-REQ-004", "BE-REQ-005", "BE-REQ-006", "BE-REQ-007", "BE-REQ-008", "BE-REQ-009", "BE-REQ-010", "BE-REQ-012"],
+      "implementingComponents": [
+        "public/css/brand-explorer-atelier-oe-panels.css",
+        "public/js/brand-explorer-atelier-from-api.js",
+        "lib/brand-explorer/be-permanent-content-standards-v1.js"
+      ]
+    },
+    "D": {
+      "name": "Evidence-backed content research and population",
+      "gate": 2,
+      "status": "BLOCKED_UNTIL_GATE1_FOUNDER_APPROVED",
+      "requirementIds": ["BE-REQ-011", "BE-REQ-014", "BE-REQ-024", "BE-REQ-026", "BE-REQ-029", "BE-REQ-030", "BE-REQ-031", "BE-REQ-033", "BE-REQ-034", "BE-REQ-035", "BE-REQ-037", "BE-REQ-038", "BE-REQ-039", "BE-REQ-040", "BE-REQ-041", "BE-REQ-043", "BE-REQ-044"]
+    },
+    "E": {
+      "name": "Comprehensive ten-tab browser regression and founder review",
+      "gate": "post_D",
+      "status": "QUEUED",
+      "requirementIds": ["BE-REQ-050", "BE-REQ-060", "BE-REQ-062"]
+    }
+  },
+  "lifecycleConflict": {
+    "conflictId": "BE-CONFLICT-LIFECYCLE-6-VS-7",
+    "action": "Retain production EXACT 6; keep requested 7 OPEN; do not invent"
+  },
+  "hardStops": {
+    "noGate2ContentRegenUntilGate1Approved": true,
+    "noProductionAirtableWrites": true,
+    "noPaidResearchWithoutAuth": true,
+    "noMassPopulation": true,
+    "noPublication": true
+  }
+}
