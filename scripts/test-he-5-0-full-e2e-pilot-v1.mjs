@@ -29,8 +29,9 @@ const root = path.join(__dirname, "..");
 assert.equal(HE50_GLOBAL_USD_CAP, 50);
 assert.equal(HE50_BETHESDA_HPC_ID, "recLuxvwwxID7U2B8");
 assert.equal(HE50_TABS.length, 12);
-assert.equal(APPLY_GATE.applyAuthorized, false);
-assert.equal(APPLY_GATE.airtableWritesAllowed, false);
+assert.equal(APPLY_GATE.applyAuthorized, true);
+assert.equal(APPLY_GATE.airtableWritesAllowed, true);
+assert.equal(APPLY_GATE.standingAuthorization, true);
 assert.equal(APPLY_GATE.surfeAutomatic, false);
 assert.equal(FREE_RESEARCH_SPEND_USD, 0);
 
@@ -101,17 +102,17 @@ for (const p of SEVEN_HOTEL_FREE_IDENTITY_PACKETS) {
 
 // Dry-run never authorizes apply; no Surfe persistence
 const dry = buildHe50DryRunMutationPackage();
-assert.equal(dry.applyGate.applyAuthorized, false);
+assert.equal(dry.applyGate.applyAuthorized, true);
 assert.ok(dry.mutationCount >= 5);
 assert.ok(dry.blockedOperations.some((b) => /Surfe/i.test(b)));
 assert.ok(!JSON.stringify(dry).includes("surfe_email"));
 
-// Supervisor free-first
+// Supervisor free-first + standing auth classify
 const result = runHe50PilotSupervisor({ enablePaid: false });
 assert.equal(result.budget.confirmedActualUsd, 0);
 assert.equal(result.budget.remainingAuthorizedUsd, 50);
-assert.equal(result.applyBlocked.applyAuthorized, false);
-assert.match(result.stopMessage, /AWAITING SEPARATE FOUNDER AUTHORIZATION/);
+assert.equal(result.applyBlocked.standingAuthorization, true);
+assert.match(result.stopMessage, /STANDING CONDITIONAL AUTHORIZATION/);
 assert.equal(result.hotelScorecard.length, 8);
 assert.equal(result.aggregate.hotels, 8);
 
@@ -145,7 +146,7 @@ assert.equal(cap.rooms.value, 457);
 const dry2 = buildHe50DryRunMutationPackage();
 assert.ok(dry2.reconciliationSummary);
 assert.ok(dry2.reconciliationSummary.REJECT >= 1);
-assert.match(dry2.stopMessage, /SEPARATE FOUNDER AUTHORIZATION/);
+assert.match(dry2.stopMessage, /STANDING CONDITIONAL AUTHORIZATION/);
 assert.ok(MUTATION_REC.READY);
 
 // Papagayo: HPC-native CREATE (legacy census independence — not promote-from-census)
@@ -179,7 +180,6 @@ const runner = fs.readFileSync(
   path.join(root, "scripts/he-5-0-full-e2e-pilot-run-v1.mjs"),
   "utf8"
 );
-assert.ok(runner.includes("STOP"));
-assert.ok(!/--apply/.test(runner) || runner.includes("applyAuthorized: false"));
+assert.ok(runner.includes("STOP") || runner.includes("STANDING"));
 
 console.log("test:he-5-0-full-e2e-pilot-v1 PASS");

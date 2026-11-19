@@ -263,13 +263,12 @@ New hotels must reuse HPC + HI intelligence, run the commercial description rubr
 
 ### HE 5.0 Full E2E engine (HE-QL-039)
 
-Reusable path: `AUDIT → REUSE → RESEARCH → VERIFY → DEDUPLICATE → MAP → DRY_RUN → APPROVAL → APPLY → RE_READ → UI_VALIDATE`.
+Reusable path: `AUDIT → REUSE → RESEARCH → VERIFY → DEDUPLICATE → MAP → DRY_RUN → CONDITIONAL_APPROVAL → APPLY → RE_READ → UI_VALIDATE`.
 
 - Module: `lib/hotel-intelligence/he-5-0-full-e2e/` · runner `npm run he:5-0-full-e2e-pilot` · gate `npm run test:he-5-0-full-e2e-pilot-v1`.
 - Free-first research before any paid provider; shared paid ceiling must be cost-bounded (pilot: **$50** across the authorized cohort).
 - Never auto-classify portfolio *candidates* as verified current holdings.
 - Surfe remains click-only / session-only / nonpersistent.
-- Production Airtable apply requires a **separate** founder authorization after dry-run review.
 - Second run with no new evidence must not duplicate records, overwrite verified facts, or re-spend unnecessarily.
 
 ### Autonomous reconciliation (HE-QL-040)
@@ -281,7 +280,18 @@ When the engine detects uncertain, incomplete, or conflicting hotel intelligence
 - Classification vocabulary: `RESOLVED_VERIFIED` · `RESOLVED_WITH_HISTORICAL_CONTEXT` · `RESOLVED_NOT_APPLICABLE` · `UNRESOLVED_CONFLICT` · `UNRESOLVED_INSUFFICIENT_EVIDENCE` · `UNRESOLVED_PROVIDER_RESTRICTED` · `UNRESOLVED_BUDGET_LIMIT` · `REQUIRES_FOUNDER_DECISION`.
 - Use `REQUIRES_FOUNDER_DECISION` only for genuine business / authorization / governance decisions — not ordinary factual disagreements.
 - Runner: `npm run he:5-0-autonomous-reconciliation` · gate: `npm run test:he-5-0-autonomous-reconciliation-v1`.
-- **STOP** only before production Airtable apply, unauthorized schema changes, spend beyond the authorized ceiling, new subscriptions, or production deployment.
+
+### Standing conditional Airtable apply (HE-QL-042)
+
+For the authorized eight-hotel pilot, do **not** stop for routine founder approval of each READY mutation.
+
+- Standing gate: `HE50_STANDING_APPLY_GATE` · classifier `conditional-approval-v1` · executor `controlled-apply-executor-v1` · `npm run he:5-0-controlled-apply` / `:write`.
+- Approval classes: `AUTO_APPROVED_*` · `SKIPPED_NO_CHANGE` · `QUARANTINED_INSUFFICIENT_EVIDENCE` · `BLOCKED_OUT_OF_SCOPE` · `FOUNDER_APPROVAL_REQUIRED`.
+- Auto-apply only when destination/field allowlist, evidence, identity, null-fill/CREATE safety, idempotency, and pilot scope all pass. Quarantine exceptions and continue.
+- Never write legacy Hotel Census; never Surfe persistence; never schema changes; never promote proposed Mullen holdings to verified ownership.
+- Persistence stages: `RESEARCH_VERIFIED` → `CANONICAL_PERSISTED` → `AIRTABLE_READBACK_VALIDATED` → `HOTEL_EXPLORER_UI_VALIDATED`.
+- Report statuses: `AUTO-APPROVED PILOT MUTATIONS APPLIED AND VALIDATED` · `PARTIAL AUTO-APPLY — EXCEPTIONS QUARANTINED` · `FOUNDER APPROVAL REQUIRED — OUT-OF-SCOPE OPERATION`.
+- Escalate only for spend >$50, out-of-cohort writes, schema/destructive ops, ambiguous merges, unsupported ownership assertions, new subscriptions, or production deploy.
 
 ### Legacy Hotel Census independence (HE-QL-041)
 
@@ -289,6 +299,6 @@ See §9c. Gate `LEGACY_HOTEL_CENSUS_INDEPENDENCE_GATE` fails whenever an active 
 
 ## Safety
 
-- No production Airtable apply / schema mutation / deploy from quality work alone.
+- Outside standing pilot authorization, no production Airtable apply / schema mutation / deploy from quality work alone.
 - GET routes remain write-forbidden.
 - Proposed ≠ Live.

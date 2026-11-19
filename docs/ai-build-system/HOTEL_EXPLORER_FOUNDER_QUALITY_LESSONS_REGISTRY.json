@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.26",
+  "version": "hotel-explorer-founder-quality-lessons-v1.27",
   "updated": "2026-11-20",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -17,7 +17,8 @@
     "test:he-5-0-full-e2e-pilot-v1",
     "test:he-5-0-autonomous-reconciliation-v1",
     "test:he-mullen-pilot-hpc-population-v1",
-    "test:he-legacy-hotel-census-independence-v1"
+    "test:he-legacy-hotel-census-independence-v1",
+    "test:he-5-0-controlled-apply-v1"
   ],
   "referenceHotels": {
     "uxGolden": {
@@ -406,6 +407,15 @@
       "sharedComponent": "lib/hotel-intelligence/hpc-population/legacy-hotel-census-access-guard-v1.js; hotel-census-identity-search-v1.js; mullen-pilot-identity-resolution-v1.js; property-census-identity-v1.js; he-5-0-full-e2e/*",
       "regressionTest": "he_legacy_hotel_census_independence_gates",
       "browserEvidence": "reports/hotel-explorer/he-5-0-pilot/HE50-LEGACY-HOTEL-CENSUS-INDEPENDENCE-AUDIT-V1.md"
+    },
+    {
+      "id": "HE-QL-042",
+      "originalProblem": "HE 5.0 stopped after every dry-run for founder mutation approval even when evidence, destination, identity, and safety gates were already satisfied inside the authorized eight-hotel pilot",
+      "rootCause": "Default pipeline was RESEARCH→DRY_RUN→STOP awaiting separate apply auth; READY labels alone were treated as founder gates without a standing conditional allowlist executor",
+      "approvedStandard": "Standing conditional authorization: classify mutations AUTO_APPROVED_* / SKIPPED / QUARANTINED / BLOCKED / FOUNDER_REQUIRED; auto-apply only when allowlist+evidence+identity+null-fill/CREATE safety+idempotency pass; quarantine exceptions and continue; $50 shared paid ceiling; no legacy Census; no Surfe persistence; no schema/destructive/out-of-cohort writes; read-back required before claiming CANONICAL_PERSISTED",
+      "sharedComponent": "lib/hotel-intelligence/he-5-0-full-e2e/standing-authorization-v1.js; conditional-approval-v1.js; controlled-apply-executor-v1.js",
+      "regressionTest": "he_5_0_controlled_apply_gates",
+      "browserEvidence": "reports/hotel-explorer/he-5-0-pilot/HE50-CONTROLLED-APPLY-RESULT-V1.md"
     }
   ]
 }

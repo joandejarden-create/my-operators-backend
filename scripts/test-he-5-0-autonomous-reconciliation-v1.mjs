@@ -105,7 +105,8 @@ assert.equal(result.stopReason, "apply_gate_only");
 
 // Dry-run includes Cap Cana rooms READY; no production apply
 const dry = buildHe50DryRunMutationPackage();
-assert.equal(dry.applyGate.airtableWritesAllowed, false);
+assert.equal(dry.applyGate.airtableWritesAllowed, true);
+assert.equal(dry.applyGate.standingAuthorization, true);
 const capRoomsMut = dry.mutations.find((m) => m.id === "M-UPD-secrets_cap_cana-rooms");
 assert.ok(capRoomsMut);
 assert.equal(capRoomsMut.proposedValue, 457);
@@ -134,6 +135,7 @@ assert.ok(mod.includes("REQUIRES_FOUNDER_DECISION"));
 assert.ok(mod.includes("diminishing"));
 assert.ok(!/Airtable\.update|\.create\(|--apply/.test(mod));
 
-assert.equal(APPLY_GATE.applyAuthorized, false);
+assert.equal(APPLY_GATE.standingAuthorization, true);
+assert.equal(APPLY_GATE.surfeAutomatic, false);
 
 console.log("test:he-5-0-autonomous-reconciliation-v1 PASS");
