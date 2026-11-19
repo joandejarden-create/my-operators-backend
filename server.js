@@ -84,6 +84,7 @@ import {
   getGoldenDemoOwnershipGroup,
   getGoldenDemoOwnershipNeighbors,
 } from "./api/golden-demo-ownership.js";
+import { getHeAirtableGraphHotel } from "./api/he-airtable-graph.js";
 import {
   getOwnerIntelligenceMeta,
   listOwnerIntelligenceOwners,
@@ -970,6 +971,9 @@ app.get(
   "/api/golden-demo/ownership/hotel/:recordId",
   getGoldenDemoHotelOwnership
 );
+
+// Hotel Explorer — Airtable HI graph read (Airtable-first tabs 2/4/5)
+app.get("/api/he-airtable-graph/hotel/:recordId", getHeAirtableGraphHotel);
 
 // Packet 2.8B-2 — Owner Intelligence (org-level portfolio / control graph)
 app.get("/api/owner-intelligence/meta", getOwnerIntelligenceMeta);

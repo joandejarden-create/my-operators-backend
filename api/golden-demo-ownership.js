@@ -31,6 +31,79 @@ export async function getGoldenDemoHotelOwnership(req, res) {
       return sendError(res, 400, "invalid_airtable_record_id");
     }
     const payload = buildHotelOwnershipReport(recordId);
+
+    // Airtable-first overlay: when golden cohort has no rich report, project HI graph.
+    let airtableGraph = null;
+    try {
+      const { readHiGraphForHotel } = await import(
+        "../lib/hotel-intelligence/research-engine-v1/he-airtable-graph-reader-v1.js"
+      );
+      airtableGraph = await readHiGraphForHotel(recordId);
+    } catch (graphErr) {
+      console.warn("[golden-demo-ownership] hi-graph overlay skipped", graphErr?.message || graphErr);
+    }
+
+    if (airtableGraph?.ok && airtableGraph.relationshipCount > 0) {
+      const proj = airtableGraph.projection || {};
+      const report = payload.report || {};
+      const control = report.ownership_and_control || {};
+      const nameOf = (org) => org?.tradingName || org?.legalName || null;
+      payload.airtable_graph = {
+        source: "HI_AIRTABLE_GRAPH",
+        relationshipCount: airtableGraph.relationshipCount,
+        control_status: proj.control_status,
+      };
+      if (!payload.in_cohort) {
+        payload.data_status = "AIRTABLE_GRAPH_PARTIAL";
+        payload.report = {
+          ...report,
+          executive_summary: {
+            text:
+              report.executive_summary?.text ||
+              `Airtable HI graph relationships available for this hotel (${airtableGraph.relationshipCount}). ` +
+                `Operator/brand may be present; economic ownership remains unresolved unless a Validated Economic Owner relationship exists.`,
+          },
+          ownership_and_control: {
+            ...control,
+            economic_owner: nameOf(proj.economic_owner)
+              ? {
+                  name: nameOf(proj.economic_owner),
+                  known: true,
+                  verification_bucket: proj.economic_owner.confidence || "MEDIUM",
+                  source: "HI_AIRTABLE_GRAPH",
+                }
+              : control.economic_owner || {
+                  name: null,
+                  known: false,
+                  note: "ECONOMIC_OWNER_UNRESOLVED",
+                },
+            property_company: nameOf(proj.property_company)
+              ? {
+                  name: nameOf(proj.property_company),
+                  known: true,
+                  source: "HI_AIRTABLE_GRAPH",
+                }
+              : control.property_company || null,
+            operator: nameOf(proj.operator)
+              ? {
+                  name: nameOf(proj.operator),
+                  known: true,
+                  verification_bucket: "HIGH",
+                  relationship_type: "OPERATED_BY",
+                  source: "HI_AIRTABLE_GRAPH",
+                }
+              : control.operator || null,
+            control_status: proj.control_status,
+          },
+          research_status: {
+            ...(report.research_status || {}),
+            airtable_graph: true,
+            economic_owner_resolved: Boolean(proj.economic_owner),
+          },
+        };
+      }
+    }
+
     return res.json({ success: true, ...payload });
   } catch (err) {
     console.error("[golden-demo-ownership] hotel", err);

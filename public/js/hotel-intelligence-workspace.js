@@ -1389,13 +1389,64 @@
       esc(hotel.name || "Hotel") +
       '<div class="hiw-report__subtitle">Ownership, Corporate Structure &amp; Development Intelligence</div>';
 
-    if (!inCohort) {
+    var airtableGraphPartial =
+      ownership.data_status === "AIRTABLE_GRAPH_PARTIAL" ||
+      (ownership.airtable_graph && ownership.airtable_graph.relationshipCount > 0);
+
+    if (!inCohort && !airtableGraphPartial) {
       return (
         '<article class="hiw-report"><h2 class="hiw-report__title">' +
         title +
         "</h2>" +
         '<section class="hiw-section"><h3 class="hiw-section__h">Executive Summary</h3>' +
         '<div class="hiw-prose"><p>Ownership Intelligence is not yet available for this hotel in the controlled demo cohort. Economic ownership is not verified. No fabricated owner is shown.</p></div>' +
+        "</section></article>"
+      );
+    }
+
+    if (!inCohort && airtableGraphPartial) {
+      var graphCtrl = ctrl || {};
+      var econName =
+        (graphCtrl.economic_owner && graphCtrl.economic_owner.name) || "Not verified";
+      var propCoName =
+        (graphCtrl.property_company && graphCtrl.property_company.name) || "—";
+      var graphOp =
+        (graphCtrl.operator && graphCtrl.operator.name) || opName || "—";
+      var graphExec =
+        (ownership.report &&
+          ownership.report.executive_summary &&
+          ownership.report.executive_summary.text) ||
+        "Airtable HI graph relationships are available for this hotel. Economic ownership remains unresolved unless a Validated Economic Owner relationship exists. No fabricated owner is shown.";
+      return (
+        '<article class="hiw-report"><h2 class="hiw-report__title">' +
+        title +
+        "</h2>" +
+        '<section class="hiw-section"><h3 class="hiw-section__h">Executive Summary</h3>' +
+        '<div class="hiw-prose"><p>' +
+        esc(graphExec) +
+        "</p></div></section>" +
+        '<section class="hiw-section"><h3 class="hiw-section__h">Ownership &amp; Control (Airtable graph)</h3>' +
+        '<div class="hiw-kv"><div><span class="hiw-kv__k">Economic owner</span><span class="hiw-kv__v">' +
+        esc(econName) +
+        '</span></div><div><span class="hiw-kv__k">Property company</span><span class="hiw-kv__v">' +
+        esc(propCoName) +
+        '</span></div><div><span class="hiw-kv__k">Operator</span><span class="hiw-kv__v">' +
+        esc(graphOp) +
+        '</span></div><div><span class="hiw-kv__k">Control status</span><span class="hiw-kv__v">' +
+        esc(
+          (ownership.airtable_graph && ownership.airtable_graph.control_status) ||
+            graphCtrl.control_status ||
+            "PARTIAL",
+        ) +
+        '</span></div><div><span class="hiw-kv__k">Graph relationships</span><span class="hiw-kv__v">' +
+        esc(
+          String(
+            (ownership.airtable_graph && ownership.airtable_graph.relationshipCount) ||
+              0,
+          ),
+        ) +
+        "</span></div></div>" +
+        '<p class="hiw-muted">Source: HI Organizations + HI Hotel–Org Relationships (INTERNAL_ONLY). Golden-demo fixtures are not used for this hotel.</p>' +
         "</section></article>"
       );
     }

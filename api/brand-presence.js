@@ -193,6 +193,15 @@ function readNumberField(fields, key) {
   return Number.isFinite(num) ? num : null;
 }
 
+/** Prefer legacy census numeric fields, then HPC-style aliases (e.g. Rooms / Keys). */
+function readNumberFieldAliases(fields, keys) {
+  for (const key of keys) {
+    const value = readNumberField(fields, key);
+    if (value != null) return value;
+  }
+  return null;
+}
+
 function readYnFlag(fields, key) {
   const raw = readTextField(fields, key);
   if (!raw) return false;
@@ -239,8 +248,19 @@ function formatHotelRecord(hotel) {
         "Current Brand",
         "Brand Family",
       ]) || "Unknown Brand",
-    parentCompany: readTextField(fields, F.hotels.parentCompany) || "Unknown",
-    status: readTextField(fields, F.hotels.status) || "unknown",
+    parentCompany:
+      readTextFieldAliases(fields, [
+        F.hotels.parentCompany,
+        "Brand Family",
+        "Family / Source Family",
+      ]) || "Unknown",
+    status:
+      readTextFieldAliases(fields, [
+        F.hotels.status,
+        "Radar Status",
+        "project_phase",
+        "Project Phase",
+      ]) || "unknown",
     lat: hasCoords ? lat : 0,
     lng: hasCoords ? lng : 0,
     city:
@@ -248,34 +268,67 @@ function formatHotelRecord(hotel) {
     country:
       readTextFieldAliases(fields, [F.hotels.country, "Country"]) ||
       "Unknown Country",
-    region: readTextField(fields, F.hotels.region) || "Unknown Region",
-    locationType: readTextField(fields, F.hotels.locationType) || null,
-    rooms: parseInt(fields[F.hotels.rooms], 10) || 0,
+    region:
+      readTextFieldAliases(fields, [F.hotels.region, "Continent", "State / Region"]) ||
+      "Unknown Region",
+    locationType:
+      readTextFieldAliases(fields, [F.hotels.locationType, "Asset Context"]) || null,
+    rooms: readNumberFieldAliases(fields, [F.hotels.rooms, "Rooms / Keys", "Rooms"]) || 0,
     strNumber: fields[F.hotels.strNumber] ?? null,
-    chainScale: readTextField(fields, F.hotels.chainScale),
+    chainScale: readTextFieldAliases(fields, [
+      F.hotels.chainScale,
+      "Hotel Class / Segment",
+    ]),
     projectPhase: readTextField(fields, F.hotels.projectPhase),
     propertyType: readTextField(fields, F.hotels.propertyType),
-    operationType: readTextField(fields, F.hotels.operationType),
-    managementCompany: readTextField(fields, F.hotels.managementCompany),
-    website: readTextField(fields, F.hotels.website),
-    telephone: readTextField(fields, F.hotels.telephone),
-    address1: readTextField(fields, F.hotels.address1),
+    operationType: readTextFieldAliases(fields, [
+      F.hotels.operationType,
+      "Management Model",
+    ]),
+    managementCompany: readTextFieldAliases(fields, [
+      F.hotels.managementCompany,
+      "Operator / Management Company",
+    ]),
+    website: readTextFieldAliases(fields, [
+      F.hotels.website,
+      "Official Property URL",
+    ]),
+    telephone: readTextFieldAliases(fields, [F.hotels.telephone, "Phone"]),
+    address1: readTextFieldAliases(fields, [F.hotels.address1, "Address"]),
     address2: readTextField(fields, F.hotels.address2),
-    market: readTextField(fields, F.hotels.market),
+    market: readTextFieldAliases(fields, [F.hotels.market, "Market / Submarket"]),
     submarket: readTextField(fields, F.hotels.submarket),
     openDate: readDateField(fields, F.hotels.openDate),
     projectedOpenDate: readDateField(fields, F.hotels.projectedOpenDate),
     starRating: readNumberField(fields, F.hotels.starRating),
-    amenities: readTextField(fields, F.hotels.amenities),
-    hotelDescription: readTextField(fields, F.hotels.hotelDescription),
-    hotelHeadline: readTextField(fields, F.hotels.hotelHeadline),
+    amenities: readTextFieldAliases(fields, [
+      F.hotels.amenities,
+      "Amenities - Source Text",
+      "Amenities - Structured Tags",
+    ]),
+    hotelDescription: readTextFieldAliases(fields, [
+      F.hotels.hotelDescription,
+      "Short Property Summary",
+      "Property Positioning",
+      "Hotel Description - AI Summary",
+      "Hotel Description - Source Text",
+    ]),
+    hotelHeadline: readTextFieldAliases(fields, [
+      F.hotels.hotelHeadline,
+      "Property Positioning",
+      "Hotel Headline",
+    ]),
     occupancyRate: readNumberField(fields, F.hotels.occupancyRate),
     adr: readNumberField(fields, F.hotels.adr),
     revpar: readNumberField(fields, F.hotels.revpar),
-    state: readTextField(fields, F.hotels.state),
+    state: readTextFieldAliases(fields, [F.hotels.state, "State / Region"]),
     postalCode: readTextField(fields, F.hotels.postalCode),
     floors: readNumberField(fields, F.hotels.floors),
-    totalMeetingSpace: readNumberField(fields, F.hotels.totalMeetingSpace),
+    totalMeetingSpace: readNumberFieldAliases(fields, [
+      F.hotels.totalMeetingSpace,
+      "Total Meeting Space Sq Ft",
+      "Meeting Space Sq Ft",
+    ]),
     dataConfidence: readTextField(fields, F.hotels.dataConfidence),
     censusPropertyType: readTextField(fields, F.hotels.censusPropertyType),
     hotelServiceModel: readTextField(fields, F.hotels.hotelServiceModel),
