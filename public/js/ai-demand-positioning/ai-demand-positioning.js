@@ -212,7 +212,20 @@
 
   function formatIntentTerritoryLabel(intent, fallbackTerritory) {
     if (fallbackTerritory) return normalizeLeisureTerritoryLabel(fallbackTerritory);
-    if (intent === "leisure") return "Leisure Travel";
+    // Keep customer drawer titles aligned with governed territory labels
+    // (e.g. business → "Business Travel", not bare "Business").
+    var INTENT_TERRITORY_LABELS = {
+      business: "Business Travel",
+      leisure: "Leisure Travel",
+      couples: "Couples / Romantic Stay",
+      family: "Family Travel",
+      group_meeting: "Meetings & Groups",
+      wellness: "Wellness",
+      adventure: "Adventure & Experiences",
+      celebration: "Celebrations & Events",
+    };
+    var key = String(intent || "").trim().toLowerCase();
+    if (INTENT_TERRITORY_LABELS[key]) return INTENT_TERRITORY_LABELS[key];
     return String(intent || "").replace(/_/g, " ").replace(/\b\w/g, function(c) { return c.toUpperCase(); });
   }
 
