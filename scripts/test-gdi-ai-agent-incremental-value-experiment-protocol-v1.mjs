@@ -12,7 +12,11 @@ import {
   assertFairWave1Capability,
   WAVE1_AUTH_ENV,
   CONCLUSION_SCOPE,
+  EVALUATOR_VERSION,
 } from "../lib/group-demand-intelligence/experiments/gdi-ai-agent-incremental-value-experiment-v1.js";
+import {
+  evaluateMaterialCommercialLift,
+} from "../lib/group-demand-intelligence/experiments/gdi-ai-agent-wave1-evidence-grounded-evaluator-v1.js";
 import {
   collectOpportunitySeedUrls,
   deriveAllowedOrigins,
@@ -131,8 +135,32 @@ assert.equal(report.focusCaseCount, 8);
 assert.equal(report.conclusionScope, CONCLUSION_SCOPE.A_EXISTING_OPPORTUNITY_RESEARCH);
 assert.equal(report.doesNotEstablish, CONCLUSION_SCOPE.B_NEW_OPPORTUNITY_DISCOVERY);
 assert.equal(report.fairnessContract.frozenOnlyBaselineForbiddenInWave1, true);
+assert.equal(report.fairnessContract.materialLiftRequiresEvidence, true);
+assert.equal(report.fairnessContract.drawerReadyAloneCannotAdopt, true);
+assert.equal(report.fairnessContract.evaluatorVersion, EVALUATOR_VERSION);
 assert.ok(["ITERATE", "REJECT"].includes(report.decision.decision));
 assert.notEqual(report.decision.decision, "ADOPT");
+
+// Regression: drawerReady-only must never count as material commercial lift
+const drawerOnly = evaluateMaterialCommercialLift(
+  {
+    commercial: {
+      verifiedNamedCount: 1,
+      genuinelyNewVerifiedCount: 2,
+      drawerReady: false,
+      fetchCount: 12,
+    },
+  },
+  {
+    commercial: {
+      verifiedNamedCount: 1,
+      genuinelyNewVerifiedCount: 2,
+      drawerReady: true,
+      fetchCount: 4,
+    },
+  },
+);
+assert.equal(drawerOnly.materialLift, false);
 
 console.log(
   JSON.stringify(
@@ -143,6 +171,8 @@ console.log(
       wave0Decision: report.decision.decision,
       wave1CapabilityOk: readiness.ok,
       wave1BlockedWithoutAuth: true,
+      evidenceGroundedEvaluator: EVALUATOR_VERSION,
+      drawerReadyAloneRejected: true,
     },
     null,
     2,
