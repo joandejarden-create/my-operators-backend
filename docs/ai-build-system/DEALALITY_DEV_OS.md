@@ -5,12 +5,12 @@
 
 ## Goals
 
-- Three product streams (Hotel Explorer, ADP, GDI) evolve in parallel.
+- Product streams (Hotel Explorer, ADP, GDI, Brand Explorer) evolve in parallel.
 - Completed work merges into `main` frequently via small tested PRs.
 - Dirty/unfinished work is never discarded accidentally.
 - Cursor chats do not spawn uncontrolled worktrees.
 
-## Four permanent homes
+## Five permanent homes
 
 | Role | Path | Branch policy |
 |---|---|---|
@@ -18,6 +18,7 @@
 | Hotel Explorer | `C:\Dev\dealality\ws-hotel-explorer` | short-lived `feat|fix|docs/…` from main |
 | ADP | `C:\Dev\dealality\ws-adp` | short-lived task branches from main |
 | GDI | `C:\Dev\dealality\ws-gdi` | short-lived task branches from main |
+| Brand Explorer | `C:\Dev\dealality\ws-brand-explorer` | short-lived `feat|fix|docs|research/(brand-explorer|be)/…` from main |
 
 Static registry: `docs/ai-build-system/worktree-registry.json`  
 Live audit (does not edit registry): `npm run dealality:worktree-audit`  
@@ -37,26 +38,26 @@ Preflight → Branch from origin/main → Implement → Targeted tests
 Commands:
 
 ```bash
-npm run dealality:git-preflight -- --op commit --stream <he|adp|gdi|integration>
+npm run dealality:git-preflight -- --op commit --stream <he|adp|gdi|be|integration>
 npm run dealality:pr-check-suggest -- --base origin/main
 npm run dealality:ci-precheck
 ```
 
 **Merges are serialized** by the Integration Controller. Product chats stop at green PR.
 
-### Post-merge workspace sync (required — HE / ADP / GDI)
+### Post-merge workspace sync (required — HE / ADP / GDI / BE)
 
 After each successful PR merge into `main`, Integration Controller runs the **single** supported command:
 
 ```bash
-npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi> --pr <n>
+npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi|be> --pr <n>
 # or: --merged-branch <feature-branch>
-npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi> --pr <n> --apply
+npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi|be> --pr <n> --apply
 ```
 
-This plans (then optionally applies) safe sync for all three product homes:
+This plans (then optionally applies) safe sync for all product homes:
 
-1. Affected workspace → return to registered home (`ws/hotel-explorer` / `ws/adp` / `ws/gdi`) when the merged head is explicit
+1. Affected workspace → return to registered home (`ws/hotel-explorer` / `ws/adp` / `ws/gdi` / `ws/brand-explorer`) when the merged head is explicit
 2. Fast-forward home to `origin/main`
 3. Verify `dealality:git-preflight --op status-check`
 4. Idle peer homes → fetch + FF when not on an active unmerged task
@@ -74,7 +75,7 @@ Cross-workstream feature branches are fail-closed on mutation ops. Do not stash/
 
 ```bash
 npm run dealality:pr-completion-report -- --audit
-npm run dealality:pr-completion-report -- --stream <he|adp|gdi|integration> --pr <n>
+npm run dealality:pr-completion-report -- --stream <he|adp|gdi|be|integration> --pr <n>
 npm run test:dealality-pr-completion-ownership-v1
 ```
 
@@ -146,6 +147,20 @@ Registered workspace: C:\Dev\dealality\ws-gdi (once provisioned).
 Before any Git mutation: npm run dealality:git-preflight -- --op <op> --stream gdi
 One task → one branch → tests → commit → push → PR. Do not merge; Integration Controller merges.
 No unregistered worktrees. No force-push. Preserve dirty work. STOP on blockers.
+```
+
+### Brand Explorer
+
+```
+You are the Brand Explorer (BE) stream chat.
+Registered workspace: C:\Dev\dealality\ws-brand-explorer
+Home branch: ws/brand-explorer (must track latest origin/main after each completed merge).
+Before any Git mutation: npm run dealality:git-preflight -- --op <op> --stream be
+Permanent cycle: Implement → Test → PR → Founder Approval (when required) → Integration Controller merge
+→ post-merge sync → return to ws/brand-explorer → verify clean → next task.
+One task → one short-lived branch → tests → commit → push → PR. Do not merge from BE; Integration Controller merges.
+Do not develop BE in ADP/GDI/HE/Integration worktrees. No unregistered worktrees. No force-push. Preserve dirty work. STOP on blockers.
+No Airtable writes, paid research, mass population, or publication without founder authorization.
 ```
 
 ## Related docs

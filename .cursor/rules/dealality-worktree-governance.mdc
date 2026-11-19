@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Dealality worktree governance (Dev OS)
 
-Applies to **all** Dealality chats (Hotel Explorer, ADP, GDI, Integration).
+Applies to **all** Dealality chats (Hotel Explorer, ADP, GDI, Brand Explorer, Integration).
 
 ## Registered workspaces
 
@@ -15,6 +15,7 @@ Permanent homes (see `docs/ai-build-system/worktree-registry.json`):
 2. **Hotel Explorer** — `C:/Dev/dealality/ws-hotel-explorer`
 3. **ADP** — `C:/Dev/dealality/ws-adp`
 4. **GDI** — `C:/Dev/dealality/ws-gdi`
+5. **Brand Explorer** — `C:/Dev/dealality/ws-brand-explorer`
 
 Do **not** create unregistered worktrees. Do **not** create a new worktree per task.
 Use short-lived task branches inside the registered product workspace.
@@ -24,7 +25,7 @@ Use short-lived task branches inside the registered product workspace.
 Run fail-closed preflight:
 
 ```bash
-npm run dealality:git-preflight -- --op <commit|push|merge|rebase|switch|checkout|stash|reset|worktree-add|worktree-remove|force-push|pr-sync|post-merge-sync> --stream <integration|he|adp|gdi>
+npm run dealality:git-preflight -- --op <commit|push|merge|rebase|switch|checkout|stash|reset|worktree-add|worktree-remove|force-push|pr-sync|post-merge-sync> --stream <integration|he|adp|gdi|be>
 ```
 
 Verify **actual** worktree root and branch match the stream. On mismatch: **STOP**.
@@ -39,7 +40,7 @@ This preflight does **not** intercept raw `git` by itself. Optional hooks: `.git
 
 - Preserve all dirty/untracked work — never reset/clean/stash-discard without founder auth + verified backup.
 - No force-push; no destructive cleanup without founder authorization.
-- One completed task → tested commit → push → PR → CI → Integration Controller merge → **post-merge workspace sync** → product home verified (`ws/gdi` for GDI) with HEAD == `origin/main` before the next product task.
+- One completed task → tested commit → push → PR → CI → Integration Controller merge → **post-merge workspace sync** → product home verified (`ws/gdi` for GDI, `ws/brand-explorer` for BE) with HEAD == `origin/main` before the next product task.
 - Product chats must not claim completion on PR-open alone. Use final states: `COMPLETE — MERGED_AND_HOME_SYNCED`, `AWAITING_INTEGRATION_CONTROLLER`, or `BLOCKED — WORKSPACE_RESTORATION_REQUIRED` (see `gdi-github-branch-merge-discipline.mdc`).
 - Product chats **do not** merge concurrently and **do not** edit `worktree-registry.json`.
 - Shared files (`package.json`, radar/HE surfaces, registry, Cursor rules): coordinate via Integration Controller.
@@ -50,18 +51,18 @@ This preflight does **not** intercept raw `git` by itself. Optional hooks: `.git
 
 Merge into GitHub is not task completion. After merge: return owning permanent home, FF `origin/main`, correct Cursor branch, retire feature branches when safe, and report `COMPLETE — MERGED_AND_HOME_SYNCED — CLEAN_WORKTREE|PRESERVED_DIRTY` or a `BLOCKED — …` status via `npm run dealality:pr-completion-report`. Cross-workstream checkouts/merges fail closed. Never stash/discard/reset/clean to force a clean UI. Contract: `docs/ai-build-system/PR_COMPLETION_AND_WORKSPACE_OWNERSHIP.md`.
 
-## Post-merge sync (permanent — all three product streams)
+## Post-merge sync (permanent — all product streams)
 
 After each successful PR merge into `origin/main`, Integration Controller runs:
 
 ```bash
-npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi> --pr <n>
-npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi> --pr <n> --apply
+npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi|be> --pr <n>
+npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi|be> --pr <n> --apply
 ```
 
 Required outcomes when safe:
 
-1. Affected product workspace returns to its registered **home branch** (`ws/hotel-explorer`, `ws/adp`, `ws/gdi`).
+1. Affected product workspace returns to its registered **home branch** (`ws/hotel-explorer`, `ws/adp`, `ws/gdi`, `ws/brand-explorer`).
 2. Home branch fast-forwards to latest `origin/main`.
 3. `npm run dealality:git-preflight -- --op status-check --stream <…>` passes.
 4. Idle peer product workspaces fetch and FF home when not on an active unmerged task.

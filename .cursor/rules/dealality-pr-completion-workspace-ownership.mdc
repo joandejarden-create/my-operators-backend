@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Universal PR completion and workspace ownership
 
-Applies to **all** Dealality streams: GDI, ADP, Hotel Explorer, Integration Controller.
+Applies to **all** Dealality streams: GDI, ADP, Hotel Explorer, Brand Explorer, Integration Controller.
 
 ## Not complete
 
@@ -45,9 +45,9 @@ Enforcement is **PARTIAL** (preflight/sync/report are machine-gated; raw git and
 ## Commands
 
 ```bash
-npm run dealality:git-preflight -- --op <op> --stream <integration|he|adp|gdi>
-npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi> --pr <n>
-npm run dealality:pr-completion-report -- --stream <he|adp|gdi|integration> --pr <n>
+npm run dealality:git-preflight -- --op <op> --stream <integration|he|adp|gdi|be>
+npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi|be> --pr <n>
+npm run dealality:pr-completion-report -- --stream <he|adp|gdi|be|integration> --pr <n>
 npm run dealality:pr-completion-report -- --audit
 npm run dealality:pr-completion-report -- --coverage
 ```
