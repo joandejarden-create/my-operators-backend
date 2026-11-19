@@ -235,21 +235,30 @@ assert.equal(
   ),
   true,
 );
-expectOk("switch with directory-prefix allow-dirty", {
-  op: "switch",
-  stream: "gdi",
-  targetRef: "ws/gdi",
-  allowDirty: ["tmp/gitleaks-bin", "reports/x.json"],
-  _simulate: {
-    root: normalizePath(registry.workspaces.find((w) => w.stream === "gdi").path),
-    registered: registry.workspaces.find((w) => w.stream === "gdi"),
-    branch: "feat/gdi-example",
-    dirty: [
-      { status: "??", path: "tmp/gitleaks-bin/gitleaks.exe" },
-      { status: " M", path: "reports/x.json" },
-    ],
-  },
-});
+{
+  const gdiWs = registry.workspaces.find((w) => w.stream === "gdi");
+  const gdiRoot = normalizePath(gdiWs.path);
+  const result = runGitPreflight({
+    cwd: gdiRoot,
+    registryRoot: ROOT,
+    op: "switch",
+    stream: "gdi",
+    targetRef: "ws/gdi",
+    allowDirty: ["tmp/gitleaks-bin", "reports/x.json"],
+    _simulate: {
+      root: gdiRoot,
+      registered: gdiWs,
+      branch: "feat/gdi-example",
+      dirty: [
+        { status: "??", path: "tmp/gitleaks-bin/gitleaks.exe" },
+        { status: " M", path: "reports/x.json" },
+      ],
+      unresolvedGitOperation: { active: false },
+    },
+  });
+  assert.equal(result.ok, true, `switch with directory-prefix allow-dirty: ${result.errors.join("; ")}`);
+  console.log("PASS allow: switch with directory-prefix allow-dirty");
+}
 assert.deepEqual(
   collectArgValues(
     ["--allow-dirty", "tmp/gitleaks-bin/", "--allow-dirty", "reports/probe.json"],
