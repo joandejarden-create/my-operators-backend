@@ -110,7 +110,9 @@
             file: '/brand-explorer-compare.html',
             title: 'Brand Explorer Comparison',
             roles: ['admin'],
-            internalRunbookOnly: true
+            internalRunbookOnly: true,
+            // Founder Comparison Studio — always open internal preview on the active origin.
+            defaultQuery: { beInternalPreview: '1' }
         },
         '/brand-explorer-export': { file: '/brand-explorer-export.html', title: 'Brand Explorer PDF' },
         '/financial-term-library': { file: '/financial-term-library.html', title: 'Financial Term Library' },
@@ -339,10 +341,13 @@
                         { label: 'Brand AI Visibility Reference', route: '/support/ai-visibility-benchmark-admin', roles: ['admin'], internalRunbookOnly: true },
                         { label: 'AI Demand Admin', route: '/admin/ai-demand', roles: ['admin'], adpMonthlyReviewAdmin: true },
                         {
+                            // Permanent founder review workspace (CURRENT vs PROPOSED).
+                            // Single Admin Resources entry — do not duplicate elsewhere.
                             label: 'Brand Explorer Comparison',
                             route: '/brand-explorer-compare',
                             roles: ['admin'],
-                            internalRunbookOnly: true
+                            internalRunbookOnly: true,
+                            navId: 'brand-explorer-comparison'
                         },
                         { label: 'Route Map', route: '/route-map', roles: ['admin'], devOnly: true },
                         {
@@ -1387,6 +1392,15 @@
             if (mapped.defaultTab && !u.searchParams.get('tab')) {
                 u.searchParams.set('tab', mapped.defaultTab);
             }
+            // Origin-relative defaults (never hardcode host/port). Comparison Studio always
+            // needs beInternalPreview=1 so founder review loads on 8080, 8082, or deployed admin.
+            if (mapped.defaultQuery && typeof mapped.defaultQuery === 'object') {
+                Object.keys(mapped.defaultQuery).forEach(function (key) {
+                    if (!u.searchParams.get(key)) {
+                        u.searchParams.set(key, String(mapped.defaultQuery[key]));
+                    }
+                });
+            }
             url = u.pathname + u.search;
         } catch (_hashQsErr) {
             /* keep base embed URL */
@@ -1549,10 +1563,19 @@
                 pendingDivider = false;
             }
             visibleBeforeDivider = true;
-            html += '<button type="button" class="nav-item nav-item-child' + (isAdpAdminNavActive(child.route, currentRoute) ? ' active' : '') + '" data-href="' + child.route + '">' +
+            html +=
+                '<button type="button" class="nav-item nav-item-child' +
+                (isAdpAdminNavActive(child.route, currentRoute) ? ' active' : '') +
+                '" data-href="' +
+                child.route +
+                '"' +
+                (child.navId ? ' data-nav-id="' + escapeHtml(child.navId) + '"' : '') +
+                '>' +
                 (child.icon ? '<span class="nav-item-icon">' + child.icon + '</span>' : '') +
-                '<span class="nav-label">' + child.label + '</span>' +
-            '</button>';
+                '<span class="nav-label">' +
+                child.label +
+                '</span>' +
+                '</button>';
         });
         return html;
     }
@@ -1782,6 +1805,21 @@
         }
         var target = ROUTES[normalized] ? normalized : getLandingRouteForNavRole(resolveCurrentNavRole());
         currentRoute = target;
+
+        // Apply route defaultQuery into the hash when the caller did not supply query params
+        // (e.g. Admin Resources → Brand Explorer Comparison).
+        if (!routeQuery && ROUTES[target] && ROUTES[target].defaultQuery) {
+            try {
+                var dq = new URLSearchParams();
+                Object.keys(ROUTES[target].defaultQuery).forEach(function (key) {
+                    dq.set(key, String(ROUTES[target].defaultQuery[key]));
+                });
+                var dqStr = dq.toString();
+                if (dqStr) routeQuery = '?' + dqStr;
+            } catch (_dqErr) {
+                /* keep empty */
+            }
+        }
 
         var hashRoute = target + routeQuery;
         if (updateHash !== false && window.location.hash !== '#' + hashRoute) {
