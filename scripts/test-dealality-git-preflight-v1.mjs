@@ -101,14 +101,17 @@ expectFail(
   "refusing mutation on local main",
 );
 
-// Accidental preservation-branch merge
+// Accidental preservation-branch merge (simulate HE workspace holding a protected HE ref)
 expectFail(
   "merge while on preservation branch",
   {
     op: "merge",
     targetRef: "origin/main",
     allowDirty: "*",
+    stream: "he",
     _simulate: {
+      root: normalizePath(registry.workspaces.find((w) => w.stream === "he").path),
+      registered: registry.workspaces.find((w) => w.stream === "he"),
       branch: "feat/hotel-explorer-overview-adp-enrichment-v1",
       dirty: [],
     },
@@ -122,7 +125,7 @@ expectOk("merge origin/main into feature branch", {
   targetRef: "origin/main",
   allowDirty: "*",
   _simulate: {
-    branch: "feat/hotel-explorer-example",
+    branch: "feat/gdi-example",
     dirty: [],
   },
 });
@@ -234,10 +237,13 @@ assert.equal(
 );
 expectOk("switch with directory-prefix allow-dirty", {
   op: "switch",
-  targetRef: "ws/hotel-explorer",
+  stream: "gdi",
+  targetRef: "ws/gdi",
   allowDirty: ["tmp/gitleaks-bin", "reports/x.json"],
   _simulate: {
-    branch: "feat/example",
+    root: normalizePath(registry.workspaces.find((w) => w.stream === "gdi").path),
+    registered: registry.workspaces.find((w) => w.stream === "gdi"),
+    branch: "feat/gdi-example",
     dirty: [
       { status: "??", path: "tmp/gitleaks-bin/gitleaks.exe" },
       { status: " M", path: "reports/x.json" },

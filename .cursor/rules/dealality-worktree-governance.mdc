@@ -24,12 +24,16 @@ Use short-lived task branches inside the registered product workspace.
 Run fail-closed preflight:
 
 ```bash
-npm run dealality:git-preflight -- --op <commit|push|merge|rebase|switch|reset|worktree-add|worktree-remove|force-push|pr-sync> --stream <integration|he|adp|gdi>
+npm run dealality:git-preflight -- --op <commit|push|merge|rebase|switch|checkout|stash|reset|worktree-add|worktree-remove|force-push|pr-sync|post-merge-sync> --stream <integration|he|adp|gdi>
 ```
 
 Verify **actual** worktree root and branch match the stream. On mismatch: **STOP**.
 
-This preflight does **not** intercept raw `git` by itself. Optional hooks: `.githooks/` + `git config core.hooksPath .githooks` (Integration Controller only).
+**Permanent ownership guard:** cross-workstream feature checkouts are refused (e.g. GDI must not check out `fix/adp-*`). Unresolved merges/rebases and stash-as-switch-workaround fail closed. Cursor `SetActiveBranch` is UI-only and does **not** authorize Git checkout.
+
+Integration remote merge (no local feature checkout): `npm run dealality:remote-pr-merge -- --pr <n>`.
+
+This preflight does **not** intercept raw `git` by itself. Optional hooks: `.githooks/` + `git config core.hooksPath .githooks` (Integration Controller only; `post-checkout` ownership check included).
 
 ## Hard rules
 

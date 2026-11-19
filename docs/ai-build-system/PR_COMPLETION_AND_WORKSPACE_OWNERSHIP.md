@@ -48,7 +48,7 @@ Cursor conversation branch chips are **not** authoritative Git state.
 
 | Entry point | Enforcement |
 |-------------|-------------|
-| `dealality:git-preflight` switch/checkout/merge/rebase | **Machine** fail-closed ownership + unresolved gates |
+| `dealality:git-preflight` switch/checkout/merge/rebase/stash | **Machine** fail-closed ownership + unresolved gates (`workspace-ownership.js` + `workspace-ownership-guard-v1.js`) |
 | `dealality:post-merge-sync` | **Machine** preserve-first; never auto-switch active tasks; no reset/clean/stash-discard |
 | `dealality:pr-completion-report` | **Machine** fail-closed COMPLETE evidence rules |
 | Raw `git` without preflight | **Instruction-only** (bypass possible) |
