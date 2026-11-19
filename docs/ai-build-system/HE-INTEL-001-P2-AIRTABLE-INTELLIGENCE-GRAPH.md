@@ -19,6 +19,42 @@
 
 Live IDs: `reports/hotel-explorer/HE-INTEL-001-P2-live-schema-ids-v1.json` and `lib/hotel-intelligence/research-engine-v1/airtable-graph-table-ids.generated.json`.
 
+## Direct HPC linkage (mandatory)
+
+Native Airtable linked-record fields on **HI Hotel–Org Relationships**:
+
+| Field | Type | Target |
+| --- | --- | --- |
+| **HPC Hotel** | `multipleRecordLinks` | Hotel Property Census `tbl9aY5ijiuIzzWam` |
+| **HPC Hotel ID** | `singleLineText` | Canonical HPC record id (text twin; preserved) |
+| **Organization** | `multipleRecordLinks` | HI Organizations |
+
+Cardinality: **exactly one** HPC hotel per relationship — enforced by application validation (`airtable-graph-referential-integrity.js`), not Airtable alone.
+
+Reciprocal on Census (Airtable-generated; rename-only, no duplicates on rerun):
+
+- **HI Organization Relationships** → HI Hotel–Org Relationships
+
+Referential integrity before create/update:
+
+1. Resolve canonical HPC record in `appCCUsuGsE1ifoLk`
+2. Verify hotel exists
+3. Resolve canonical HI Organization
+4. Confirm org exists or approved creation
+5. Write relationship with both native links
+6. Read back both linked-record references
+7. Confirm stored **HPC Hotel ID** matches linked HPC record
+8. Reject/hold orphan, ambiguous, or mismatched rows
+
+Synthetic pilot demo (not verified research):
+
+```bash
+npm run demo:he-intel-001-p2-hpc-link-synthetic -- --dry-run
+npm run demo:he-intel-001-p2-hpc-link-synthetic -- --apply
+```
+
+Evidence: `reports/hotel-explorer/HE-INTEL-001-P2-hpc-link-synthetic-demo-v1.json` (Wyndham / Renaissance / Westin → one synthetic HEI org; second apply is UPDATE-only).
+
 ## Evidence architecture
 
 - **HI Graph Evidence** lives on the HPC base so ownership/org/person/channel/run evidence stays with Census-linked identity.
