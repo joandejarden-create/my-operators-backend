@@ -111,10 +111,17 @@
     if (!host) return;
     var rows = (d && d.segmentMatrix) || [];
     var html =
-      '<table class="gem-table"><thead><tr>' +
-      "<th>Segment</th><th>Discovery</th><th>Deep Research</th><th>Providers</th>" +
-      "<th>Requests</th><th>Cost</th><th>Candidates</th><th>Qualified</th>" +
-      "<th>Visible</th><th>Reason</th></tr></thead><tbody>";
+      '<table class="gem-table ada-table"><thead><tr>' +
+      '<th><span class="ada-th-label">Segment</span></th>' +
+      '<th><span class="ada-th-label">Discovery</span></th>' +
+      '<th><span class="ada-th-label">Deep Research</span></th>' +
+      '<th><span class="ada-th-label">Providers</span></th>' +
+      '<th><span class="ada-th-label">Requests</span></th>' +
+      '<th><span class="ada-th-label">Cost</span></th>' +
+      '<th><span class="ada-th-label">Candidates</span></th>' +
+      '<th><span class="ada-th-label">Qualified</span></th>' +
+      '<th><span class="ada-th-label">Visible</span></th>' +
+      '<th><span class="ada-th-label">Reason</span></th></tr></thead><tbody>';
     rows.forEach(function (r, idx) {
       html +=
         '<tr data-expand="' +
@@ -174,10 +181,18 @@
     if (!host) return;
     var rows = (d && d.providerMatrix) || [];
     var html =
-      '<table class="gem-table"><thead><tr>' +
-      "<th>Provider</th><th>Config</th><th>Enabled</th><th>Submitted</th>" +
-      "<th>Completed</th><th>Failed</th><th>Cache</th><th>Spend</th>" +
-      "<th>Segments</th><th>Last</th><th>Reason</th></tr></thead><tbody>";
+      '<table class="gem-table ada-table"><thead><tr>' +
+      '<th><span class="ada-th-label">Provider</span></th>' +
+      '<th><span class="ada-th-label">Config</span></th>' +
+      '<th><span class="ada-th-label">Enabled</span></th>' +
+      '<th><span class="ada-th-label">Submitted</span></th>' +
+      '<th><span class="ada-th-label">Completed</span></th>' +
+      '<th><span class="ada-th-label">Failed</span></th>' +
+      '<th><span class="ada-th-label">Cache</span></th>' +
+      '<th><span class="ada-th-label">Spend</span></th>' +
+      '<th><span class="ada-th-label">Segments</span></th>' +
+      '<th><span class="ada-th-label">Last</span></th>' +
+      '<th><span class="ada-th-label">Reason</span></th></tr></thead><tbody>';
     rows.forEach(function (r) {
       html +=
         "<tr><td>" +
