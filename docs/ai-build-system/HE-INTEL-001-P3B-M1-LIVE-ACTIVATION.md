@@ -8,12 +8,15 @@
 
 1. **Phase A — live execution blockers resolved**
    - Durable shared-budget ledger (file-backed, restart-safe)
+   - Fail-closed on corrupt / partial / integrity / cap-mismatch ledgers (never empty-usable)
    - Multi-worker atomic reserve via file lock + shared run cap
+   - Durable dispatch **claim/lease** — RESERVED ≠ second live dispatch
    - Combined provider / model-token / orchestration accounting
    - `PENDING_RECONCILE` for timeouts / ambiguous billing (no auto-release)
    - No duplicate billable execution after interrupt/resume
-   - Operation-scoped adapter authorization (not shared mutable boolean)
+   - Operation-scoped sealed `adapter.call` (no `__rawCall` bypass)
    - Fail-closed when cost cannot be bounded (`UNKNOWN` → refuse)
+   - Multi-process Node worker regressions for same-op and cap races
 
 2. **Phase B — providers wired**
    - Exa + Parallel Search/Task transports connected behind P1 execution gateway

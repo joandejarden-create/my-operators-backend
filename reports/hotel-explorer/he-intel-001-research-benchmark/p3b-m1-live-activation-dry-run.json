@@ -55,7 +55,7 @@
   "proposedBudgetNotAuthorized": true,
   "phaseASafety": {
     "ok": true,
-    "tmpDir": "C:\\Users\\joand\\AppData\\Local\\Temp\\he-intel-p3b-m1-budget-jxDjJ4",
+    "tmpDir": "C:\\Users\\joand\\AppData\\Local\\Temp\\he-intel-p3b-m1-budget-ro6NxB",
     "durableRestart": {
       "reserved": true,
       "statusAfterRestart": "RESERVED",
@@ -104,13 +104,27 @@
       "resumeReplayed": true,
       "sameOpId": "op_a9b00ec51b7cd5c8bb743280"
     },
+    "claimExclusivity": {
+      "claimA": true,
+      "claimBError": "OPERATION_IN_FLIGHT"
+    },
+    "failClosedCorruption": {
+      "corrupt": "LEDGER_STATE_CORRUPT",
+      "interrupted": "LEDGER_STATE_CORRUPT",
+      "capMismatch": "LEDGER_CAP_MISMATCH"
+    },
     "opScopedAuth": {
-      "bypassThrown": true
+      "bypassThrown": true,
+      "rawBypassThrown": true
     },
     "failClosedUnknownCost": {
       "ok": false,
       "error": "BUDGET_EXHAUSTED",
       "note": "fail_closed_unbounded_or_unknown_cost"
+    },
+    "failClosedNegative": {
+      "ok": false,
+      "error": "INVALID_CHARGE"
     }
   },
   "liveProviderWiring": {
@@ -184,7 +198,8 @@
         "accountBalanceStatus": "NOT_QUERIED_CREDENTIAL_SAFE",
         "planEffectivePricingStatus": "LIST_PRICE_ASSUMPTION_ONLY"
       },
-      "credentialsExposed": false
+      "credentialsExposed": false,
+      "note": "List-price assumptions are NOT a guarantee of maximum charges"
     }
   },
   "requestManifest": {
@@ -427,18 +442,25 @@
         "modelTokenUsdStatus": "UNKNOWN",
         "orchestrationUsd": 0,
         "hardCapUsd": 5,
-        "headroomUsd": 4.796
+        "headroomUsd": 4.796,
+        "expectedCostIsNotMaxGuarantee": true,
+        "bindingCaps": {
+          "runUsd": 5,
+          "perHotelUsd": 2.5
+        },
+        "nativeUsd": "UNKNOWN_FAIL_CLOSED_NOT_PAID_ARM"
       },
       "retriesDefault": 0,
       "boundedRetrieval": {
-        "exa": "lite search ≤10 results; contents ≤5 URLs; no agent unless separately budgeted",
-        "parallelSearch": "fast/turbo only",
-        "parallelTask": "core preferred; pro optional"
+        "exa": "lite search ≤10 results; contents ≤5 URLs as separate op; no inline contents; no agent unless separately budgeted",
+        "parallelSearch": "fast/turbo only; reserve for max_results requested",
+        "parallelTask": "core preferred; pro optional; resume run_id — no duplicate create"
       },
       "forbidden": [
         "SURFE",
         "PDL",
-        "inferred_email_as_verified"
+        "inferred_email_as_verified",
+        "native_unknown_usd_paid_arm"
       ]
     },
     "priceAssumptions": {
@@ -463,7 +485,8 @@
           "accountBalanceStatus": "NOT_QUERIED_CREDENTIAL_SAFE",
           "planEffectivePricingStatus": "LIST_PRICE_ASSUMPTION_ONLY"
         },
-        "credentialsExposed": false
+        "credentialsExposed": false,
+        "note": "List-price assumptions are NOT a guarantee of maximum charges"
       }
     },
     "worstCaseSpendUsd": {

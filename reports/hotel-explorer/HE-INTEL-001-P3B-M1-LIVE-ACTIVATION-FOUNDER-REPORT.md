@@ -9,8 +9,10 @@
 
 - **PR:** [#439](https://github.com/joandejarden-create/my-operators-backend/pull/439) — OPEN  
 - **Branch:** `feat/he-intel-001-p3b-m1-live-activation`  
-- **HEAD:** `1109c9f0c38fc7fa4e327391d250358649e8deef`  
-- **Base:** `origin/main` (`824fc4f8733e8b9177e6089b21d158101e994b0f` at branch creation)
+- **Founder review HEAD (pre-corrections):** `434c78d213b2eaddcd4dcfb27c2053497e781e41`  
+- **Corrected HEAD:** see tip of branch after founder-corrections commit  
+- **Base:** `origin/main`  
+- **Corrections report:** `reports/hotel-explorer/HE-INTEL-001-P3B-M1-LIVE-ACTIVATION-FOUNDER-CORRECTIONS.md`
 
 ## 2. Durable budget and multi-worker safety evidence
 
