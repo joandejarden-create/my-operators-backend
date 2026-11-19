@@ -40,6 +40,8 @@ Do not return COMPLETE with null/omitted/unknown merge SHA, CI, home sync, or `N
 - `BLOCKED — UNRESOLVED_GIT_OPERATION`
 - `BLOCKED — HOME_NOT_SYNCED`
 
+For durable intelligence PRs, also require Airtable persistence closeout classifications from `docs/ai-build-system/AIRTABLE_PERSISTENCE_GATE.md` (`PROTOTYPE` … `CUSTOMER_PUBLISHED`). Merge/home COMPLETE does **not** imply `FULL_E2E_VALIDATED`.
+
 Enforcement is **PARTIAL** (preflight/sync/report are machine-gated; raw git and Cursor chips can bypass). Do not claim universal enforcement.
 
 ## Commands

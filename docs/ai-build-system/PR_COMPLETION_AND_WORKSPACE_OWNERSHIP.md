@@ -75,6 +75,19 @@ Owns: merge authorization/execution, CI verification, remote merges that do not 
 
 Product chats must not independently merge to `main` or run disruptive cross-worktree operations.
 
+### Durable intelligence persistence review (binding)
+
+When a PR creates or changes durable business intelligence, Integration Controller must verify the PR closeout includes the [AIRTABLE_PERSISTENCE_GATE.md](./AIRTABLE_PERSISTENCE_GATE.md) package:
+
+1. Airtable source-of-truth mapping  
+2. Persistence and retrieval evidence  
+3. History/provenance verification  
+4. Cross-workstream identity checks  
+5. Remaining persistence limitations  
+6. Explicit classification: `PROTOTYPE` | `PERSISTENCE_DESIGNED` | `PERSISTENCE_VALIDATED` | `FULL_E2E_VALIDATED` | `CUSTOMER_PUBLISHED`
+
+Do **not** accept `FULL_E2E_VALIDATED` / customer-ready claims when data exists only in a local checkout, temporary runtime cache, untracked files, UI demos, PDFs, or unit tests without proven persistence.
+
 ## Standardized completion statuses
 
 | Status | Meaning |
