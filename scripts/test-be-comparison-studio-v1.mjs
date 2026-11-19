@@ -24,15 +24,15 @@ for (const rel of mustExist) {
 
 const html = readFileSync(join(root, "public/brand-explorer-compare.html"), "utf8");
 assert.ok(html.includes("brand-explorer-compare-studio.js"));
-assert.ok(html.includes("brand-explorer-atelier-from-api.js"));
+assert.ok(html.includes("becsPairedDoc"), "Phase 2G paired-subsection document root required");
 
 const appJs = readFileSync(join(root, "public/app.js"), "utf8");
 assert.ok(appJs.includes("Brand Explorer Comparison"));
 assert.ok(appJs.includes("/brand-explorer-compare"));
 
-const atelier = readFileSync(join(root, "public/js/brand-explorer-atelier-from-api.js"), "utf8");
-assert.ok(atelier.includes("applyCandidateOverlayToBrand"));
-assert.ok(atelier.includes("activateAtelierTab"));
+const compareJs = readFileSync(join(root, "public/js/brand-explorer-compare-studio.js"), "utf8");
+assert.ok(compareJs.includes("becs-pair-cols"));
+assert.ok(compareJs.includes("matchItems"));
 
 const server = readFileSync(join(root, "server.js"), "utf8");
 assert.ok(server.includes("postBrandExplorerCompareReview"));

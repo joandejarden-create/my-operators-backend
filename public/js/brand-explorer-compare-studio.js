@@ -1,7 +1,7 @@
 /**
- * Brand Explorer Comparison Studio — founder visual QA (internal).
- * Left: live Presentation (or labeled frozen baseline). Right: Phase 2E candidate overlay.
- * Diff + review feedback are local only — never production Airtable writes.
+ * Brand Explorer Comparison Studio — Phase 2G paired-subsection document.
+ * ONE page-level scroll. Each subsection is a shared grid row (left existing | right reconstructed).
+ * Next pair begins below the taller column — no dual full-profile scroll sync.
  */
 (function () {
   'use strict';
@@ -11,65 +11,38 @@
       id: 'receQkxgjlezsc1xg',
       slug: 'curio-collection',
       name: 'Curio Collection by Hilton',
-      overlayUrl: '/brand-explorer-phase2e-preview/curio-collection-phase2f-candidate.json',
-      scorecardUrl: '/brand-explorer-phase2e-preview/curio-collection-phase2f-scorecard.json',
+      overlayUrl: '/brand-explorer-phase2e-preview/curio-collection-phase2g-candidate.json',
+      scorecardUrl: '/brand-explorer-phase2e-preview/curio-collection-phase2g-scorecard.json',
       baselineUrl: '/brand-explorer-phase2e-preview/curio-frozen-baseline-snapshot.json',
-      candidateVersion: 'phase2f-visual-repair',
-      fallbackOverlayUrl: '/brand-explorer-phase2e-preview/curio-collection-quality-candidate.json'
+      candidateVersion: 'phase2g-parity',
+      fallbackOverlayUrl: '/brand-explorer-phase2e-preview/curio-collection-phase2f-candidate.json'
     },
     {
       id: 'reclkgOzvAcBheUSo',
       slug: 'ascend',
       name: 'Ascend Hotel Collection',
-      overlayUrl: '/brand-explorer-phase2e-preview/ascend-phase2f-candidate.json',
-      scorecardUrl: '/brand-explorer-phase2e-preview/ascend-phase2f-scorecard.json',
+      overlayUrl: '/brand-explorer-phase2e-preview/ascend-phase2g-candidate.json',
+      scorecardUrl: '/brand-explorer-phase2e-preview/ascend-phase2g-scorecard.json',
       baselineUrl: null,
-      candidateVersion: 'phase2f-visual-repair',
-      fallbackOverlayUrl: '/brand-explorer-phase2e-preview/ascend-quality-candidate.json'
+      candidateVersion: 'phase2g-parity',
+      fallbackOverlayUrl: '/brand-explorer-phase2e-preview/ascend-phase2f-candidate.json'
     }
-  ];
-
-  var TAB_IDS = [
-    'atelier-overview',
-    'atelier-value-owners',
-    'atelier-ops',
-    'atelier-standards-owner',
-    'atelier-commercial',
-    'atelier-economics',
-    'atelier-loyalty',
-    'atelier-footprint',
-    'atelier-materials',
-    'atelier-insight'
   ];
 
   var state = {
     brand: BRANDS[0],
-    activeTab: TAB_IDS[0],
-    syncScroll: true,
-    viewMode: 'section', // section | changes | full
+    activeTab: 'atelier-overview',
+    viewMode: 'full',
     filter: 'all',
     qualityFilter: 'all',
+    contract: null,
     diffs: [],
     selectedSlot: null,
-    leftSource: 'live', // live | baseline | unavailable
-    leftBrand: null,
-    rightBrand: null,
-    overlay: null,
+    leftSource: 'live',
+    leftBlocks: [],
+    rightBlocks: [],
     scorecard: null,
     reviews: {}
-  };
-
-  var SLOT_SECTION_ANCHORS = {
-    'atelier-overview': ['overview.', 'snapshot.', 'identity.', 'positioning.', 'hero.'],
-    'atelier-value-owners': ['valueOwners.', 'owner.'],
-    'atelier-ops': ['operations.'],
-    'atelier-standards-owner': ['standards.'],
-    'atelier-commercial': ['commercial.'],
-    'atelier-economics': ['economics.'],
-    'atelier-loyalty': ['loyalty.'],
-    'atelier-footprint': ['footprint.', 'metric.'],
-    'atelier-materials': ['materials.'],
-    'atelier-insight': ['insight.']
   };
 
   function $(sel, root) {
@@ -78,6 +51,14 @@
 
   function nz(s) {
     return s == null ? '' : String(s).trim();
+  }
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   }
 
   function storageKey(brand) {
@@ -96,197 +77,147 @@
     localStorage.setItem(storageKey(state.brand), JSON.stringify(state.reviews));
   }
 
+  async function fetchJson(url) {
+    var res = await fetch(url, { credentials: 'same-origin' });
+    if (!res.ok) throw new Error(url + ' → HTTP ' + res.status);
+    return res.json();
+  }
+
   function blocksFromBrand(brand) {
     var be = brand && brand.brandExplorer;
     var blocks = (be && be.blocks) || [];
     return Array.isArray(blocks) ? blocks : [];
   }
 
-  function indexBlocks(blocks) {
-    var map = new Map();
-    blocks.forEach(function (b, i) {
-      var key = nz(b.slotKey || b.slot_key);
-      if (!key) return;
-      if (!map.has(key)) map.set(key, []);
-      map.get(key).push({
-        slotKey: key,
-        title: nz(b.title),
-        body: nz(b.body),
-        imageUrl: nz(b.imageUrl || b.image_url),
-        sort: typeof b.sort === 'number' ? b.sort : i + 1,
-        index: i
+  function baselineToBlocks(snapshot) {
+    var rows =
+      (snapshot && snapshot.presentation && snapshot.presentation.blocks) ||
+      (snapshot && snapshot.presentation && snapshot.presentation.rows) ||
+      [];
+    return rows
+      .map(function (r, i) {
+        return {
+          slotKey: nz(r.slotKey || (r.fields && r.fields['Slot Key'])),
+          title: nz(r.title || (r.fields && r.fields.Title)),
+          body: nz(r.body || (r.fields && r.fields.Body)),
+          imageUrl: r.imageUrl || null,
+          sort: typeof r.sort === 'number' ? r.sort : i + 1
+        };
+      })
+      .filter(function (b) {
+        return b.slotKey;
+      });
+  }
+
+  function listSubsections(tabId) {
+    if (!state.contract) return [];
+    var out = [];
+    (state.contract.tabs || []).forEach(function (tab) {
+      if (tabId && tab.tabId !== tabId) return;
+      (tab.subsections || []).forEach(function (sub) {
+        out.push(Object.assign({ tabId: tab.tabId, tabName: tab.tabName }, sub));
       });
     });
-    return map;
+    return out;
   }
 
-  function itemSignature(item) {
-    return [item.title, item.body, item.imageUrl].join('\u0001');
-  }
-
-  function tokenizeWords(text) {
-    return nz(text).split(/(\s+)/).filter(function (t) {
-      return t.length;
+  function slotMatches(slotKey, patterns) {
+    return (patterns || []).some(function (p) {
+      return new RegExp(p).test(slotKey);
     });
   }
 
-  /** Simple word-level LCS diff → HTML with ins/del */
-  function wordDiffHtml(a, b) {
-    var A = tokenizeWords(a);
-    var B = tokenizeWords(b);
-    var n = A.length;
-    var m = B.length;
-    if (n + m > 800) {
-      if (a === b) return escapeHtml(a);
-      return (
-        '<del class="becs-diff-del">' +
-        escapeHtml(a) +
-        '</del> <ins class="becs-diff-add">' +
-        escapeHtml(b) +
-        '</ins>'
-      );
-    }
-    var dp = Array(n + 1);
-    for (var i = 0; i <= n; i++) {
-      dp[i] = Array(m + 1).fill(0);
-    }
-    for (i = n - 1; i >= 0; i--) {
-      for (var j = m - 1; j >= 0; j--) {
-        dp[i][j] = A[i] === B[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
-      }
-    }
-    var out = [];
-    i = 0;
-    j = 0;
-    while (i < n && j < m) {
-      if (A[i] === B[j]) {
-        out.push(escapeHtml(A[i]));
-        i++;
-        j++;
-      } else if (dp[i + 1][j] >= dp[i][j + 1]) {
-        out.push('<del class="becs-diff-del">' + escapeHtml(A[i]) + '</del>');
-        i++;
-      } else {
-        out.push('<ins class="becs-diff-add">' + escapeHtml(B[j]) + '</ins>');
-        j++;
-      }
-    }
-    while (i < n) {
-      out.push('<del class="becs-diff-del">' + escapeHtml(A[i++]) + '</del>');
-    }
-    while (j < m) {
-      out.push('<ins class="becs-diff-add">' + escapeHtml(B[j++]) + '</ins>');
-    }
-    return out.join('');
+  function itemsForSubsection(blocks, sub) {
+    return (blocks || []).filter(function (b) {
+      return slotMatches(nz(b.slotKey), sub.slotPatterns);
+    });
   }
 
-  function escapeHtml(s) {
-    return String(s)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
-
-  function lookLikeConflict(leftBody, rightBody) {
-    var feeL = /\d+(\.\d+)?%/.test(leftBody);
-    var feeR = /\d+(\.\d+)?%/.test(rightBody);
-    if (feeL && feeR && leftBody !== rightBody) return true;
-    var numL = leftBody.match(/\b\d{2,5}\b/g) || [];
-    var numR = rightBody.match(/\b\d{2,5}\b/g) || [];
-    if (numL.length && numR.length && numL.join(',') !== numR.join(',') && /hotel|key|room|pipeline|matched/i.test(leftBody + rightBody)) {
-      return true;
-    }
-    return false;
-  }
-
-  /** Match repeated collection items by title/body signature — never by array index alone. */
-  function matchCollectionItems(leftItems, rightItems) {
-    var usedR = new Set();
+  function matchItems(leftItems, rightItems) {
+    var used = {};
     var pairs = [];
     leftItems.forEach(function (L) {
       var best = -1;
       var bestScore = 0;
-      rightItems.forEach(function (R, ri) {
-        if (usedR.has(ri)) return;
+      rightItems.forEach(function (R, i) {
+        if (used[i]) return;
         var score = 0;
-        if (L.title && R.title && L.title.toLowerCase() === R.title.toLowerCase()) score += 3;
-        if (L.body && R.body && L.body.slice(0, 48) === R.body.slice(0, 48)) score += 2;
-        if (L.imageUrl && R.imageUrl && L.imageUrl === R.imageUrl) score += 1;
+        if (nz(L.slotKey) && nz(L.slotKey) === nz(R.slotKey)) score += 2;
+        if (nz(L.title) && nz(L.title).toLowerCase() === nz(R.title).toLowerCase()) score += 4;
+        else if (nz(L.title) && nz(R.title) && nz(L.title).toLowerCase().indexOf(nz(R.title).toLowerCase()) >= 0) score += 2;
+        if (nz(L.body).slice(0, 40) && nz(L.body).slice(0, 40) === nz(R.body).slice(0, 40)) score += 2;
         if (score > bestScore) {
           bestScore = score;
-          best = ri;
+          best = i;
         }
       });
       if (best >= 0 && bestScore > 0) {
-        usedR.add(best);
-        pairs.push({ left: L, right: rightItems[best] });
+        used[best] = true;
+        pairs.push({ left: L, right: rightItems[best], status: 'matched' });
       } else {
-        pairs.push({ left: L, right: null });
+        pairs.push({ left: L, right: null, status: 'missing_right' });
       }
     });
-    rightItems.forEach(function (R, ri) {
-      if (!usedR.has(ri)) pairs.push({ left: null, right: R });
+    rightItems.forEach(function (R, i) {
+      if (!used[i]) pairs.push({ left: null, right: R, status: 'missing_left' });
     });
     return pairs;
   }
 
-  function classifyQualityIssues(d) {
+  function itemSig(it) {
+    if (!it) return '';
+    return [nz(it.title), nz(it.body), nz(it.imageUrl)].join('\u0001');
+  }
+
+  function classifyPair(pair) {
+    if (!pair.left && pair.right) return 'added';
+    if (pair.left && !pair.right) return 'removed';
+    if (itemSig(pair.left) !== itemSig(pair.right)) return 'modified';
+    return 'unchanged';
+  }
+
+  function qualityIssues(item, slotKey) {
     var issues = [];
-    var rightBody = d.rightBody || '';
-    var rightTitle = ((d.right || [])[0] && d.right[0].title) || '';
-    var rightImg = ((d.right || [])[0] && d.right[0].imageUrl) || '';
-    if (rightTitle && (rightTitle.split(/\s+/).length > 12 || rightTitle.length > 80)) issues.push('title_paragraph');
-    if (/scenario|gallery/i.test(d.slotKey) && !rightImg) issues.push('missing_image');
-    if (/^economics\./.test(d.slotKey) && /total investment|Economics diligence/i.test(rightTitle + rightBody)) issues.push('repeated_economics');
-    if (!rightBody && !rightTitle && d.change !== 'removed') issues.push('empty_item');
-    if (rightBody.split(/\s+/).filter(Boolean).length > 140) issues.push('excessive_text');
-    if (/scenario/i.test(d.slotKey) && rightBody.split(/\s+/).filter(Boolean).length < 28) issues.push('insufficient_content');
+    if (!item) return ['missing_item'];
+    var title = nz(item.title);
+    var body = nz(item.body);
+    if (title.split(/\s+/).length > 12 || title.length > 80) issues.push('title_paragraph');
+    if (/Proof\s*\d+/i.test(title)) issues.push('generic_proof');
+    if (!item.imageUrl && /scenario|gallery/i.test(slotKey || '')) issues.push('missing_image');
+    if (/Focus this card|RESEARCH_REQUIRED|Evidence-grounded|slotKey|phase2/i.test(title + body)) issues.push('internal_meta');
+    if (body.split(/\s+/).filter(Boolean).length > 140) issues.push('excessive_text');
+    if (body.split(/\s+/).filter(Boolean).length > 0 && body.split(/\s+/).filter(Boolean).length < 12) issues.push('insufficient_content');
+    if (!body && !title) issues.push('empty_item');
     return issues;
   }
 
-  function buildDiffs(leftBrand, rightBrand) {
-    var leftMap = indexBlocks(blocksFromBrand(leftBrand));
-    var rightMap = indexBlocks(blocksFromBrand(rightBrand));
-    var keys = new Set([].concat(Array.from(leftMap.keys()), Array.from(rightMap.keys())));
+  function buildDiffs() {
     var diffs = [];
-    keys.forEach(function (slotKey) {
-      var L = leftMap.get(slotKey) || [];
-      var R = rightMap.get(slotKey) || [];
-      var pairs = matchCollectionItems(L, R);
-      var leftSig = L.map(itemSignature).join('\n---\n');
-      var rightSig = R.map(itemSignature).join('\n---\n');
-      var leftBody = L.map(function (x) {
-        return x.body;
-      }).join('\n');
-      var rightBody = R.map(function (x) {
-        return x.body;
-      }).join('\n');
-      var change = 'unchanged';
-      if (!L.length && R.length) change = 'added';
-      else if (L.length && !R.length) change = 'removed';
-      else if (leftSig !== rightSig) change = 'modified';
-      var conflict = change === 'modified' && lookLikeConflict(leftBody, rightBody);
-      var needsReview = change !== 'unchanged' || conflict;
-      var row = {
-        slotKey: slotKey,
-        change: change,
-        conflict: conflict,
-        needsReview: needsReview,
-        left: L,
-        right: R,
-        pairs: pairs,
-        leftBody: leftBody,
-        rightBody: rightBody,
-        wordDiffHtml: change === 'modified' ? wordDiffHtml(leftBody, rightBody) : '',
-        qualityIssues: []
-      };
-      row.qualityIssues = classifyQualityIssues(row);
-      diffs.push(row);
-    });
-    diffs.sort(function (a, b) {
-      var order = { added: 0, removed: 1, modified: 2, unchanged: 3 };
-      return (order[a.change] - order[b.change]) || a.slotKey.localeCompare(b.slotKey);
+    listSubsections().forEach(function (sub) {
+      var L = itemsForSubsection(state.leftBlocks, sub);
+      var R = itemsForSubsection(state.rightBlocks, sub);
+      var pairs = matchItems(L, R);
+      pairs.forEach(function (p, idx) {
+        var change = classifyPair(p);
+        var slotKey = nz((p.right || p.left || {}).slotKey) || sub.id + '#' + idx;
+        var issues = qualityIssues(p.right, slotKey).concat(
+          change !== 'unchanged' && change !== 'removed' ? [] : []
+        );
+        diffs.push({
+          slotKey: slotKey,
+          subsectionId: sub.id,
+          tabId: sub.tabId,
+          change: change,
+          needsReview: change !== 'unchanged',
+          conflict: false,
+          left: p.left ? [p.left] : [],
+          right: p.right ? [p.right] : [],
+          leftBody: p.left ? nz(p.left.body) : '',
+          rightBody: p.right ? nz(p.right.body) : '',
+          qualityIssues: issues,
+          status: p.status
+        });
+      });
     });
     return diffs;
   }
@@ -297,9 +228,8 @@
       if (d.change === 'unchanged') s.unchanged++;
       else {
         s.totalChanged++;
-        s[d.change]++;
+        s[d.change] = (s[d.change] || 0) + 1;
       }
-      if (d.conflict) s.conflicts++;
       if (d.needsReview) s.needsReview++;
     });
     return s;
@@ -307,7 +237,14 @@
 
   function reviewStats() {
     var keys = Object.keys(state.reviews);
-    var counts = { reviewed: keys.length, approve_new: 0, keep_existing: 0, needs_correction: 0, needs_research: 0, unresolved: 0 };
+    var counts = {
+      reviewed: keys.length,
+      approve_new: 0,
+      keep_existing: 0,
+      needs_correction: 0,
+      needs_research: 0,
+      unresolved: 0
+    };
     keys.forEach(function (k) {
       var d = state.reviews[k] && state.reviews[k].decision;
       if (d && counts[d] != null) counts[d]++;
@@ -318,167 +255,138 @@
     return counts;
   }
 
-  async function fetchJson(url) {
-    var res = await fetch(url, { credentials: 'same-origin' });
-    if (!res.ok) throw new Error(url + ' → HTTP ' + res.status);
-    return res.json();
+  function renderCard(item, side, status) {
+    if (!item) {
+      return (
+        '<div class="becs-card becs-card-empty becs-' +
+        (status === 'missing_left' ? 'missing-left' : 'missing-right') +
+        '"><div class="becs-empty-label">' +
+        (status === 'missing_left' ? 'Missing in existing' : 'Missing in reconstructed / New') +
+        '</div></div>'
+      );
+    }
+    var img = nz(item.imageUrl)
+      ? '<div class="becs-card-media"><img src="' + escapeHtml(item.imageUrl) + '" alt="" loading="lazy" /></div>'
+      : '';
+    return (
+      '<article class="becs-card becs-card-' +
+      side +
+      '" data-becs-slot="' +
+      escapeHtml(nz(item.slotKey)) +
+      '">' +
+      img +
+      (nz(item.title) ? '<h4 class="becs-card-title">' + escapeHtml(item.title) + '</h4>' : '') +
+      (nz(item.body) ? '<div class="becs-card-body">' + escapeHtml(item.body).replace(/\n/g, '<br/>') + '</div>' : '') +
+      '<div class="becs-card-slot"><code>' +
+      escapeHtml(nz(item.slotKey)) +
+      '</code></div></article>'
+    );
   }
 
-  async function loadLiveBrand(brandId) {
-    var url = '/api/brand-library/brand?brandId=' + encodeURIComponent(brandId) + '&beInternalPreview=1';
-    var data = await fetchJson(url);
-    if (!data || !data.success || !data.brand) throw new Error('Brand API returned no brand');
-    return data.brand;
-  }
-
-  function baselineToBrand(snapshot, meta) {
-    var rows = (snapshot && snapshot.presentation && snapshot.presentation.rows) || snapshot.rows || [];
-    var blocks = rows
-      .map(function (r, i) {
-        return {
-          slotKey: nz(r.slotKey || r.fields && r.fields['Slot Key']),
-          title: nz(r.title || r.fields && r.fields.Title),
-          body: nz(r.body || r.fields && r.fields.Body),
-          imageUrl: r.imageUrl || null,
-          sort: i + 1
-        };
-      })
-      .filter(function (b) {
-        return b.slotKey;
+  function filteredSubsections() {
+    var subs = listSubsections(state.activeTab);
+    if (state.viewMode !== 'changes') return subs;
+    return subs.filter(function (sub) {
+      return state.diffs.some(function (d) {
+        return d.subsectionId === sub.id && d.change !== 'unchanged';
       });
-    return {
-      id: meta.id,
-      name: meta.name,
-      slug: meta.slug,
-      brandExplorer: { version: 1, blocks: blocks, overlaySource: 'frozen_baseline' },
-      brandExplorerDisplayState: 'external_owner_ready',
-      beComparisonBaseline: true
-    };
+    });
   }
 
-  async function loadLeftBrand(cfg) {
-    try {
-      var live = await loadLiveBrand(cfg.id);
-      if (!blocksFromBrand(live).length) throw new Error('Live brand has no Presentation blocks');
-      state.leftSource = 'live';
-      return live;
-    } catch (err) {
-      if (cfg.baselineUrl) {
-        try {
-          var snap = await fetchJson(cfg.baselineUrl);
-          state.leftSource = 'baseline';
-          return baselineToBrand(snap, cfg);
-        } catch (e2) {
-          state.leftSource = 'unavailable';
-          throw new Error('Live profile unavailable (' + err.message + '); baseline also failed (' + e2.message + ')');
-        }
-      }
-      state.leftSource = 'unavailable';
-      throw err;
+  function pairPassesFilters(pair, sub) {
+    if (state.viewMode === 'changes' && classifyPair(pair) === 'unchanged') return false;
+    if (state.qualityFilter && state.qualityFilter !== 'all') {
+      var slot = nz((pair.right || pair.left || {}).slotKey);
+      var issues = qualityIssues(pair.right, slot);
+      if (state.qualityFilter === 'content_diff') return classifyPair(pair) !== 'unchanged';
+      if (state.qualityFilter === 'styling') return false; // geometry flagged separately when empty/missing image
+      if (state.qualityFilter === 'missing_image') return issues.indexOf('missing_image') >= 0 || issues.indexOf('missing_item') >= 0;
+      if (state.qualityFilter === 'quality_failures') return issues.length > 0;
+      return issues.indexOf(state.qualityFilter) >= 0;
     }
+    return true;
   }
 
-  async function loadRightBrand(cfg, leftBrand) {
-    var overlay = null;
-    try {
-      overlay = await fetchJson(cfg.overlayUrl);
-    } catch (err) {
-      if (cfg.fallbackOverlayUrl) overlay = await fetchJson(cfg.fallbackOverlayUrl);
-      else throw err;
-    }
-    state.overlay = overlay;
-    var clone = JSON.parse(JSON.stringify(leftBrand));
-    var api = window.BrandExplorerAtelierFromApi;
-    if (!api || !api.applyCandidateOverlayToBrand) throw new Error('Atelier overlay API missing');
-    return api.applyCandidateOverlayToBrand(clone, overlay);
-  }
-
-  function mountPane(rootSel, brand, unavailableMsg) {
-    var root = $(rootSel);
+  function renderPairedDoc() {
+    var root = $('#becsPairedDoc');
     if (!root) return;
-    var nav = root.querySelector('[data-be-atelier-nav]');
-    var panels = root.querySelector('[data-be-atelier-panels]');
-    if (unavailableMsg) {
-      if (nav) nav.innerHTML = '';
-      if (panels) {
-        panels.innerHTML = '<div class="becs-unavailable" role="alert">' + escapeHtml(unavailableMsg) + '</div>';
-      }
-      return;
-    }
-    var api = window.BrandExplorerAtelierFromApi;
-    if (!api) {
-      if (panels) panels.innerHTML = '<div class="becs-unavailable">Atelier renderer failed to load.</div>';
-      return;
-    }
-    // Ensure internal-preview unlock for locked profiles
-    brand.shouldRenderFullProfile = true;
-    if (!brand.brandExplorerDisplayState) brand.brandExplorerDisplayState = 'external_owner_ready';
-    api.mountIntoRoot(root, brand);
-  }
-
-  function setActiveTab(tabId) {
-    state.activeTab = tabId;
-    var api = window.BrandExplorerAtelierFromApi;
-    if (api && api.activateAtelierTab) {
-      api.activateAtelierTab($('#becsLeftAtelier'), tabId);
-      api.activateAtelierTab($('#becsRightAtelier'), tabId);
-    }
-    document.querySelectorAll('[data-becs-tab]').forEach(function (btn) {
-      btn.classList.toggle('active', btn.getAttribute('data-becs-tab') === tabId);
-    });
-    if (state.viewMode === 'section' || state.viewMode === 'full') {
-      setTimeout(function () {
-        alignSectionStart(tabId);
-      }, 30);
-    }
-  }
-
-  function wireSyncScroll() {
-    var left = $('#becsLeftScroll');
-    var right = $('#becsRightScroll');
-    if (!left || !right || left._becsScrollWired) return;
-    left._becsScrollWired = true;
-    var lock = false;
-    function sync(from, to) {
-      if (!state.syncScroll || lock) return;
-      lock = true;
-      var ratio = from.scrollTop / Math.max(1, from.scrollHeight - from.clientHeight);
-      to.scrollTop = ratio * Math.max(1, to.scrollHeight - to.clientHeight);
-      lock = false;
-    }
-    left.addEventListener('scroll', function () {
-      sync(left, right);
-    });
-    right.addEventListener('scroll', function () {
-      sync(right, left);
-    });
-  }
-
-  function applyTextHighlights() {
-    // Annotate right pane bodies for modified slots with amber marker on section titles when possible
-    state.diffs.forEach(function (d) {
-      if (d.change === 'unchanged') return;
-      var side = d.change === 'removed' ? '#becsLeftAtelier' : '#becsRightAtelier';
-      var root = $(side);
-      if (!root) return;
-      // Mark first text node containers that contain a distinctive needle
-      var needle = (d.change === 'removed' ? d.leftBody : d.rightBody).slice(0, 40);
-      if (needle.length < 12) return;
-      root.querySelectorAll('p, li, h2, h3, .brand-position-card__body, .oe-section-hint').forEach(function (el) {
-        if (el.getAttribute('data-becs-marked')) return;
-        if (el.textContent && el.textContent.indexOf(needle) !== -1) {
-          el.setAttribute('data-becs-slot', d.slotKey);
-          el.setAttribute('data-becs-marked', d.change);
-          el.classList.add(
-            d.change === 'added' ? 'becs-diff-add' : d.change === 'removed' ? 'becs-diff-del' : d.conflict ? 'becs-diff-amber' : 'becs-diff-amber'
-          );
-        }
+    var html = [];
+    filteredSubsections().forEach(function (sub) {
+      var L = itemsForSubsection(state.leftBlocks, sub);
+      var R = itemsForSubsection(state.rightBlocks, sub);
+      var pairs = matchItems(L, R).filter(function (p) {
+        return pairPassesFilters(p, sub);
       });
+      if (state.viewMode === 'changes' && !pairs.length) return;
+      var changeCount = pairs.filter(function (p) {
+        return classifyPair(p) !== 'unchanged';
+      }).length;
+      html.push(
+        '<section class="becs-pair" id="becs-sub-' +
+          escapeHtml(sub.id) +
+          '" data-subsection-id="' +
+          escapeHtml(sub.id) +
+          '" data-tab-id="' +
+          escapeHtml(sub.tabId) +
+          '">' +
+          '<header class="becs-pair-head">' +
+          '<div class="becs-pair-label">' +
+          '<span class="becs-tab-chip">' +
+          escapeHtml(sub.tabName) +
+          '</span> ' +
+          escapeHtml(sub.label) +
+          (changeCount ? ' <span class="becs-pill mod">' + changeCount + ' changed</span>' : '') +
+          '</div></header>' +
+          '<div class="becs-pair-cols">' +
+          '<div class="becs-col becs-col-left" data-side="left">' +
+          (pairs.length
+            ? pairs
+                .map(function (p) {
+                  return renderCard(p.left, 'left', p.status);
+                })
+                .join('')
+            : '<div class="becs-card becs-card-empty"><div class="becs-empty-label">No items</div></div>') +
+          '</div>' +
+          '<div class="becs-col becs-col-right" data-side="right">' +
+          (pairs.length
+            ? pairs
+                .map(function (p) {
+                  return renderCard(p.right, 'right', p.status);
+                })
+                .join('')
+            : '<div class="becs-card becs-card-empty"><div class="becs-empty-label">No items</div></div>') +
+          '</div></div></section>'
+      );
     });
+    root.innerHTML = html.join('') || '<p class="becs-muted">No subsections match the current filters.</p>';
+  }
+
+  function renderSubnav() {
+    var nav = $('#becsSubnav');
+    if (!nav) return;
+    nav.innerHTML = listSubsections(state.activeTab)
+      .map(function (sub) {
+        var changed = state.diffs.some(function (d) {
+          return d.subsectionId === sub.id && d.change !== 'unchanged';
+        });
+        return (
+          '<a href="#becs-sub-' +
+          encodeURIComponent(sub.id) +
+          '" class="becs-subnav-link" data-becs-sub="' +
+          escapeHtml(sub.id) +
+          '">' +
+          escapeHtml(sub.label) +
+          (changed ? ' · Δ' : '') +
+          '</a>'
+        );
+      })
+      .join('');
   }
 
   function renderSummary() {
-    var s = summarize(state.diffs);
+    var s = summarize(state.diffs.filter(function (d) {
+      return d.tabId === state.activeTab;
+    }));
     var el = $('#becsSummary');
     if (!el) return;
     var cards = [
@@ -487,7 +395,6 @@
       ['removed', 'Removed', s.removed],
       ['modified', 'Modified', s.modified],
       ['unchanged', 'Unchanged', s.unchanged],
-      ['conflicts', 'Source conflicts', s.conflicts],
       ['needsReview', 'Needs review', s.needsReview]
     ];
     el.innerHTML = cards
@@ -510,47 +417,22 @@
   function renderScorecard() {
     var el = $('#becsScorecard');
     if (!el) return;
-    var sc = state.scorecard && state.scorecard.metrics;
+    var sc = state.scorecard && (state.scorecard.metrics || state.scorecard);
     var rs = reviewStats();
-    if (!sc) {
-      el.innerHTML =
-        '<span class="warn">Automated quality scorecard not loaded — AI gate pass ≠ founder approval.</span>' +
-        ' · Founder reviewed: <strong>' +
-        rs.reviewed +
-        '</strong> · Unresolved changed: <strong>' +
-        rs.unresolved +
-        '</strong>';
-      return;
-    }
-    var a = sc.structuralPopulation != null ? sc.structuralPopulation : sc.A_populationCompleteness;
-    var b = sc.visualQualityPassRate != null ? sc.visualQualityPassRate : sc.B_contentQualityPassRate;
-    var c = sc.qualityAdjustedCompleteness != null ? sc.qualityAdjustedCompleteness : sc.C_qualityAdjustedCompleteness;
-    var fails = sc.failureCount != null ? sc.failureCount : (sc.counts && sc.counts.failures) || 0;
-    var status = sc.founderApprovalStatus || 'NOT_FOUNDER_APPROVED';
+    var visual = (sc && sc.visual) || sc || {};
+    var anti = (sc && sc.antiPadding) || {};
     el.innerHTML =
-      'Phase 2F visual gates (not founder-approved): ' +
-      'A(struct) <strong>' +
-      a +
-      '</strong> · B(visual) <strong>' +
-      b +
-      '</strong> · C(adj) <strong>' +
-      c +
-      '</strong> · Failures <strong>' +
-      fails +
-      '</strong> · Status <strong>' +
-      escapeHtml(status) +
-      '</strong>' +
-      ' · Founder reviewed <strong>' +
+      'Phase 2G (not founder-approved): visual B <strong>' +
+      (visual.visualQualityPassRate != null ? visual.visualQualityPassRate : '—') +
+      '</strong> · anti-padding failures <strong>' +
+      (anti.paddingFailures != null ? anti.paddingFailures : sc && sc.researchGapCount != null ? sc.researchGapCount : '—') +
+      '</strong> · research gaps <strong>' +
+      ((sc && sc.researchGapCount) || 0) +
+      '</strong> · status <strong>' +
+      escapeHtml((sc && sc.founderApprovalStatus) || 'NOT_FOUNDER_APPROVED') +
+      '</strong> · founder reviewed <strong>' +
       rs.reviewed +
-      '</strong> · Approve new <strong>' +
-      rs.approve_new +
-      '</strong> · Keep existing <strong>' +
-      rs.keep_existing +
-      '</strong> · Needs correction <strong>' +
-      rs.needs_correction +
-      '</strong> · Needs research <strong>' +
-      rs.needs_research +
-      '</strong> · Unresolved <strong>' +
+      '</strong> · unresolved <strong>' +
       rs.unresolved +
       '</strong>';
   }
@@ -560,12 +442,13 @@
     if (!el) return;
     var filters = [
       ['all', 'All'],
+      ['content_diff', 'Content differences'],
       ['missing_image', 'Missing imagery'],
-      ['excessive_text', 'Excessive text'],
+      ['quality_failures', 'Quality failures'],
+      ['generic_proof', 'Generic proof titles'],
+      ['internal_meta', 'Internal meta language'],
       ['insufficient_content', 'Insufficient content'],
-      ['title_paragraph', 'Title formatting'],
-      ['repeated_economics', 'Repeated economics'],
-      ['empty_item', 'Empty items']
+      ['excessive_text', 'Excessive text']
     ];
     el.innerHTML = filters
       .map(function (f) {
@@ -582,104 +465,20 @@
       .join('');
   }
 
-  function applyViewMode() {
-    var panes = $('#becsPanes');
-    var changes = $('#becsChangesOnly');
-    document.querySelectorAll('.becs-mode').forEach(function (btn) {
-      btn.classList.toggle('active', btn.getAttribute('data-becs-mode') === state.viewMode);
-    });
-    if (state.viewMode === 'changes') {
-      if (panes) panes.hidden = true;
-      if (changes) {
-        changes.hidden = false;
-        renderChangesOnly();
-      }
-    } else {
-      if (panes) panes.hidden = false;
-      if (changes) changes.hidden = true;
-      if (state.viewMode === 'section') {
-        alignSectionStart(state.activeTab);
-      }
-    }
-  }
-
-  function renderChangesOnly() {
-    var el = $('#becsChangesOnly');
-    if (!el) return;
-    var rows = filteredDiffs().filter(function (d) {
-      return d.change !== 'unchanged';
-    });
-    el.innerHTML =
-      '<div class="becs-changes-head">Changes only — paired by slot / title match (not array index)</div>' +
-      rows
-        .map(function (d) {
-          return (
-            '<article class="becs-change-row" data-becs-slot-jump="' +
-            escapeHtml(d.slotKey) +
-            '">' +
-            '<header><span class="becs-pill ' +
-            (d.change === 'added' ? 'add' : d.change === 'removed' ? 'del' : 'mod') +
-            '">' +
-            d.change +
-            '</span> <code>' +
-            escapeHtml(d.slotKey) +
-            '</code></header>' +
-            '<div class="becs-change-pair">' +
-            '<div class="becs-change-col"><h4>Existing</h4><pre>' +
-            escapeHtml(d.leftBody || '—') +
-            '</pre></div>' +
-            '<div class="becs-change-col"><h4>Recreated</h4><pre>' +
-            escapeHtml(d.rightBody || '—') +
-            '</pre></div>' +
-            '</div>' +
-            (d.wordDiffHtml ? '<div class="becs-worddiff">' + d.wordDiffHtml + '</div>' : '') +
-            '</article>'
-          );
-        })
-        .join('');
-  }
-
-  function alignSectionStart(tabId) {
-    var prefixes = SLOT_SECTION_ANCHORS[tabId] || [];
-    ['#becsLeftScroll', '#becsRightScroll'].forEach(function (sel) {
-      var scroller = $(sel);
-      if (!scroller) return;
-      var panel = scroller.querySelector('.be-atelier-tab-panel.is-active, .be-atelier-tab-panel.active, [data-atelier-panel].is-active');
-      if (panel) {
-        scroller.scrollTop = panel.offsetTop - scroller.offsetTop;
-        return;
-      }
-      scroller.scrollTop = 0;
-    });
-    // Also try first matching slot marker inside both panes
-    var firstDiff = state.diffs.find(function (d) {
-      return prefixes.some(function (p) {
-        return d.slotKey.indexOf(p) === 0;
-      });
-    });
-    if (firstDiff) {
-      setTimeout(function () {
-        document.querySelectorAll('[data-becs-slot="' + firstDiff.slotKey + '"]').forEach(function (el) {
-          el.scrollIntoView({ block: 'start', behavior: 'smooth' });
-        });
-      }, 40);
-    }
-  }
-
   function filteredDiffs() {
     return state.diffs.filter(function (d) {
-      var ok = true;
-      if (state.filter === 'changed') ok = d.change !== 'unchanged';
-      else if (state.filter === 'conflicts') ok = d.conflict;
-      else if (state.filter === 'needsReview') ok = d.needsReview;
-      else if (state.filter === 'added') ok = d.change === 'added';
-      else if (state.filter === 'removed') ok = d.change === 'removed';
-      else if (state.filter === 'modified') ok = d.change === 'modified';
-      else if (state.filter === 'unchanged') ok = d.change === 'unchanged';
-      if (!ok) return false;
-      if (state.qualityFilter && state.qualityFilter !== 'all') {
-        return (d.qualityIssues || []).indexOf(state.qualityFilter) >= 0;
+      if (d.tabId !== state.activeTab) return false;
+      if (state.filter === 'changed') return d.change !== 'unchanged';
+      if (state.filter === 'added') return d.change === 'added';
+      if (state.filter === 'removed') return d.change === 'removed';
+      if (state.filter === 'modified') return d.change === 'modified';
+      if (state.filter === 'unchanged') return d.change === 'unchanged';
+      if (state.filter === 'needsReview') return d.needsReview;
+      if (state.qualityFilter && state.qualityFilter !== 'all' && state.qualityFilter !== 'content_diff') {
+        return (d.qualityIssues || []).indexOf(state.qualityFilter) >= 0 ||
+          (state.qualityFilter === 'quality_failures' && (d.qualityIssues || []).length);
       }
+      if (state.qualityFilter === 'content_diff') return d.change !== 'unchanged';
       return true;
     });
   }
@@ -687,85 +486,63 @@
   function renderChangeList() {
     var ul = $('#becsChangeList');
     if (!ul) return;
-    var rows = filteredDiffs();
-    ul.innerHTML = rows
+    ul.innerHTML = filteredDiffs()
       .slice(0, 400)
       .map(function (d) {
-        var pill =
-          d.conflict
-            ? 'conflict'
-            : d.change === 'added'
-              ? 'add'
-              : d.change === 'removed'
-                ? 'del'
-                : d.change === 'modified'
-                  ? 'mod'
-                  : 'same';
-        var rev = state.reviews[d.slotKey];
+        var pill = d.change === 'added' ? 'add' : d.change === 'removed' ? 'del' : d.change === 'modified' ? 'mod' : 'same';
         return (
           '<li data-becs-slot-jump="' +
           escapeHtml(d.slotKey) +
+          '" data-becs-sub="' +
+          escapeHtml(d.subsectionId) +
           '" class="' +
           (state.selectedSlot === d.slotKey ? 'active' : '') +
           '"><span class="becs-pill ' +
           pill +
           '">' +
-          (d.conflict ? 'conflict' : d.change) +
+          d.change +
           '</span>' +
           escapeHtml(d.slotKey) +
-          (rev ? ' · <em>' + escapeHtml(rev.decision) + '</em>' : '') +
           '</li>'
         );
       })
       .join('');
   }
 
-  function selectSlot(slotKey) {
-    state.selectedSlot = slotKey;
-    var d = state.diffs.find(function (x) {
-      return x.slotKey === slotKey;
-    });
-    renderChangeList();
-    renderReviewDrawer(d);
-    // Jump both panes — try activate tab heuristically by slot prefix
-    var tabGuess = guessTabForSlot(slotKey);
-    if (tabGuess) setActiveTab(tabGuess);
-    flashSlot(slotKey);
-    var preview = $('#becsWordDiff');
-    if (preview && d) {
-      preview.innerHTML = d.wordDiffHtml || '<span class="becs-muted">No word-level diff (added/removed/unchanged).</span>';
+  function jumpToSubsection(subId, slotKey) {
+    var el = document.getElementById('becs-sub-' + subId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      el.classList.add('becs-pair-flash');
+      setTimeout(function () {
+        el.classList.remove('becs-pair-flash');
+      }, 1200);
+    }
+    if (slotKey) {
+      document.querySelectorAll('[data-becs-slot="' + slotKey + '"]').forEach(function (node) {
+        node.classList.add('becs-field-flash');
+        setTimeout(function () {
+          node.classList.remove('becs-field-flash');
+        }, 1600);
+      });
     }
   }
 
-  function guessTabForSlot(slotKey) {
-    if (/^overview\.|^snapshot\.|^positioning\.|^identity\./.test(slotKey)) return 'atelier-overview';
-    if (/^valueOwners\.|^owner\./.test(slotKey)) return 'atelier-value-owners';
-    if (/^operations\./.test(slotKey)) return 'atelier-ops';
-    if (/^standards\./.test(slotKey)) return 'atelier-standards-owner';
-    if (/^commercial\./.test(slotKey)) return 'atelier-commercial';
-    if (/^economics\./.test(slotKey)) return 'atelier-economics';
-    if (/^loyalty\./.test(slotKey)) return 'atelier-loyalty';
-    if (/^footprint\.|^metric\./.test(slotKey)) return 'atelier-footprint';
-    if (/^materials\./.test(slotKey)) return 'atelier-materials';
-    if (/^insight\./.test(slotKey)) return 'atelier-insight';
-    return state.activeTab;
-  }
-
-  function flashSlot(slotKey) {
-    document.querySelectorAll('[data-becs-slot="' + slotKey + '"]').forEach(function (el) {
-      el.classList.add('becs-field-flash');
-      el.scrollIntoView({ block: 'center', behavior: 'smooth' });
-      setTimeout(function () {
-        el.classList.remove('becs-field-flash');
-      }, 1600);
+  function selectSlot(slotKey, subId) {
+    state.selectedSlot = slotKey;
+    renderChangeList();
+    var d = state.diffs.find(function (x) {
+      return x.slotKey === slotKey;
     });
+    renderReviewDrawer(d);
+    jumpToSubsection(subId || (d && d.subsectionId), slotKey);
   }
 
   function renderReviewDrawer(d) {
     var box = $('#becsReviewDrawer');
     if (!box) return;
     if (!d) {
-      box.innerHTML = '<h3>Field review</h3><p class="becs-review-meta">Select a changed field from the list.</p>';
+      box.innerHTML = '<h3>Field review</h3><p class="becs-review-meta">Select a changed field.</p>';
       return;
     }
     var rev = state.reviews[d.slotKey] || {};
@@ -780,19 +557,14 @@
       '<button type="button" data-becs-decision="needs_research">Needs research</button>' +
       '<textarea id="becsComment" placeholder="Optional comment">' +
       escapeHtml(rev.comment || '') +
-      '</textarea>' +
-      '</div>' +
-      '<div class="becs-review-meta">Automated change: <strong>' +
+      '</textarea></div>' +
+      '<div class="becs-review-meta">Change: <strong>' +
       escapeHtml(d.change) +
-      '</strong>' +
-      (d.conflict ? ' · <span class="warn">possible source/numeric conflict</span>' : '') +
-      ' · Current decision: <strong>' +
+      '</strong> · Subsection: <strong>' +
+      escapeHtml(d.subsectionId) +
+      '</strong> · Decision: <strong>' +
       escapeHtml(rev.decision || 'unresolved') +
-      '</strong>' +
-      ' · Color = change type, not quality judgment.</div>' +
-      '<div id="becsWordDiff" style="margin-top:8px;font-size:0.8rem;line-height:1.45;max-height:120px;overflow:auto;padding:8px;background:#121a33;border-radius:8px;border:1px solid rgba(255,255,255,0.08)"></div>';
-    var preview = $('#becsWordDiff');
-    if (preview) preview.innerHTML = d.wordDiffHtml || '—';
+      '</strong></div>';
   }
 
   function recordDecision(decision) {
@@ -808,46 +580,38 @@
       updatedAt: new Date().toISOString()
     };
     saveReviewsLocal();
-    persistReviewRemote(state.reviews[state.selectedSlot]);
-    renderScorecard();
-    renderChangeList();
-    renderReviewDrawer(
-      state.diffs.find(function (x) {
-        return x.slotKey === state.selectedSlot;
-      })
-    );
-    setStatus('Saved decision for ' + state.selectedSlot);
-  }
-
-  function persistReviewRemote(entry) {
     fetch('/api/brand-explorer-compare/review', {
       method: 'POST',
       credentials: 'same-origin',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ brandId: state.brand.id, entry: entry, all: state.reviews })
-    }).catch(function () {
-      /* localStorage remains source of truth if API unavailable */
-    });
+      body: JSON.stringify({ brandId: state.brand.id, entry: state.reviews[state.selectedSlot], all: state.reviews })
+    }).catch(function () {});
+    renderScorecard();
+    renderChangeList();
+    renderReviewDrawer(state.diffs.find(function (x) {
+      return x.slotKey === state.selectedSlot;
+    }));
+    setStatus('Saved decision for ' + state.selectedSlot);
   }
 
   function exportReport() {
     var report = {
-      contract: 'BE_COMPARISON_STUDIO_REVIEW_V1',
+      contract: 'BE_COMPARISON_STUDIO_PAIRED_V2G',
       exportedAt: new Date().toISOString(),
       brand: { id: state.brand.id, slug: state.brand.slug, name: state.brand.name },
       candidateVersion: state.brand.candidateVersion,
       leftSource: state.leftSource,
       summary: summarize(state.diffs),
       founderReview: reviewStats(),
-      automatedScorecard: state.scorecard && state.scorecard.metrics ? state.scorecard.metrics : null,
-      note: 'Automated gate pass ≠ founder approval. Decisions are local review only — no Airtable writes.',
+      scorecard: state.scorecard,
+      note: 'Paired-subsection comparison. Automated metrics ≠ founder approval. No Airtable writes.',
       reviews: state.reviews,
       diffs: state.diffs.map(function (d) {
         return {
           slotKey: d.slotKey,
+          subsectionId: d.subsectionId,
           change: d.change,
-          conflict: d.conflict,
-          needsReview: d.needsReview,
+          qualityIssues: d.qualityIssues,
           decision: (state.reviews[d.slotKey] && state.reviews[d.slotKey].decision) || null
         };
       })
@@ -855,7 +619,7 @@
     var blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'be-comparison-review-' + state.brand.slug + '-' + Date.now() + '.json';
+    a.download = 'be-comparison-paired-' + state.brand.slug + '-' + Date.now() + '.json';
     a.click();
     URL.revokeObjectURL(a.href);
   }
@@ -865,58 +629,91 @@
     if (el) el.textContent = msg;
   }
 
+  function setActiveTab(tabId) {
+    state.activeTab = tabId;
+    document.querySelectorAll('[data-becs-tab]').forEach(function (btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-becs-tab') === tabId);
+    });
+    renderSubnav();
+    renderSummary();
+    renderChangeList();
+    renderPairedDoc();
+    var scroll = $('#becsDocScroll');
+    if (scroll) scroll.scrollTop = 0;
+  }
+
+  async function loadLeftBlocks(cfg) {
+    try {
+      var data = await fetchJson(
+        '/api/brand-library/brand?brandId=' + encodeURIComponent(cfg.id) + '&beInternalPreview=1'
+      );
+      if (!data || !data.success || !data.brand) throw new Error('no brand');
+      var blocks = blocksFromBrand(data.brand);
+      if (!blocks.length) throw new Error('empty presentation');
+      state.leftSource = 'live';
+      return blocks;
+    } catch (err) {
+      if (cfg.baselineUrl) {
+        var snap = await fetchJson(cfg.baselineUrl);
+        state.leftSource = 'baseline';
+        return baselineToBlocks(snap);
+      }
+      state.leftSource = 'unavailable';
+      throw err;
+    }
+  }
+
+  async function loadRightBlocks(cfg) {
+    var overlay = null;
+    try {
+      overlay = await fetchJson(cfg.overlayUrl);
+    } catch (e) {
+      if (cfg.fallbackOverlayUrl) overlay = await fetchJson(cfg.fallbackOverlayUrl);
+      else throw e;
+    }
+    return blocksFromBrand(overlay);
+  }
+
   async function loadBrand(cfg) {
     state.brand = cfg;
     loadReviews();
     setStatus('Loading ' + cfg.name + '…');
-    $('#becsLeftLabel').textContent = 'CURRENT PROFILE';
-    $('#becsRightLabel').textContent = 'PHASE 2F RECREATED';
     try {
-      state.scorecard = null;
+      if (!state.contract) {
+        state.contract = await fetchJson('/brand-explorer-phase2e-preview/subsection-parity-contract-v1.json');
+      }
       try {
         state.scorecard = await fetchJson(cfg.scorecardUrl);
       } catch (e) {
-        /* optional */
+        state.scorecard = null;
       }
-      var left = await loadLeftBrand(cfg);
-      state.leftBrand = left;
-      var right = await loadRightBrand(cfg, left);
-      state.rightBrand = right;
-      state.diffs = buildDiffs(left, right);
-      mountPane('#becsLeftAtelier', left, null);
-      mountPane('#becsRightAtelier', right, null);
-      if (state.leftSource === 'baseline') {
-        $('#becsLeftTag').textContent = 'FROZEN BASELINE FALLBACK (not silent live substitute)';
-      } else {
-        $('#becsLeftTag').textContent = 'Live Airtable Presentation (read-only)';
-      }
-      $('#becsRightTag').textContent = 'Phase 2F candidate · ' + cfg.overlayUrl;
-      setActiveTab(TAB_IDS[0]);
-      wireSyncScroll();
-      setTimeout(applyTextHighlights, 50);
+      state.leftBlocks = await loadLeftBlocks(cfg);
+      state.rightBlocks = await loadRightBlocks(cfg);
+      state.diffs = buildDiffs();
+      $('#becsLeftTag').textContent =
+        state.leftSource === 'baseline'
+          ? 'FROZEN BASELINE FALLBACK (labeled)'
+          : 'Live Airtable Presentation (read-only)';
+      $('#becsRightTag').textContent = 'Phase 2G candidate · ' + cfg.overlayUrl;
       renderSummary();
       renderScorecard();
       renderQualityFilters();
       renderChangeList();
+      renderSubnav();
+      renderPairedDoc();
       renderReviewDrawer(null);
-      applyViewMode();
       setStatus(
         cfg.name +
-          ' · left=' +
+          ' · paired subsections · left=' +
           state.leftSource +
-          ' · slots compared=' +
+          ' · items compared=' +
           state.diffs.length +
           ' · writes=0'
       );
     } catch (err) {
-      state.diffs = [];
-      mountPane('#becsLeftAtelier', null, 'Existing profile unavailable: ' + err.message);
-      mountPane('#becsRightAtelier', null, 'Recreated profile not mounted because left comparison context failed.');
-      $('#becsLeftTag').textContent = 'UNAVAILABLE';
-      renderSummary();
-      renderScorecard();
-      renderChangeList();
       setStatus('ERROR: ' + err.message);
+      $('#becsPairedDoc').innerHTML =
+        '<div class="becs-unavailable" role="alert">' + escapeHtml(err.message) + '</div>';
     }
   }
 
@@ -936,7 +733,6 @@
       if (cfg) loadBrand(cfg);
     });
 
-    var tabBar = $('#becsTabs');
     var labels = {
       'atelier-overview': 'Overview',
       'atelier-value-owners': 'Value',
@@ -949,15 +745,27 @@
       'atelier-materials': 'Materials',
       'atelier-insight': 'Insight'
     };
-    TAB_IDS.forEach(function (id) {
+    var tabBar = $('#becsTabs');
+    Object.keys(labels).forEach(function (id) {
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.setAttribute('data-becs-tab', id);
-      btn.textContent = labels[id] || id;
+      btn.textContent = labels[id];
+      if (id === state.activeTab) btn.classList.add('active');
       btn.addEventListener('click', function () {
         setActiveTab(id);
       });
       tabBar.appendChild(btn);
+    });
+
+    document.querySelectorAll('[data-becs-mode]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        state.viewMode = btn.getAttribute('data-becs-mode') || 'full';
+        document.querySelectorAll('.becs-mode').forEach(function (b) {
+          b.classList.toggle('active', b.getAttribute('data-becs-mode') === state.viewMode);
+        });
+        renderPairedDoc();
+      });
     });
 
     $('#becsSummary').addEventListener('click', function (e) {
@@ -968,10 +776,26 @@
       renderChangeList();
     });
 
+    $('#becsQualityFilters').addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-becs-qfilter]');
+      if (!btn) return;
+      state.qualityFilter = btn.getAttribute('data-becs-qfilter') || 'all';
+      renderQualityFilters();
+      renderChangeList();
+      renderPairedDoc();
+    });
+
     $('#becsChangeList').addEventListener('click', function (e) {
       var li = e.target.closest('[data-becs-slot-jump]');
       if (!li) return;
-      selectSlot(li.getAttribute('data-becs-slot-jump'));
+      selectSlot(li.getAttribute('data-becs-slot-jump'), li.getAttribute('data-becs-sub'));
+    });
+
+    $('#becsSubnav').addEventListener('click', function (e) {
+      var a = e.target.closest('[data-becs-sub]');
+      if (!a) return;
+      e.preventDefault();
+      jumpToSubsection(a.getAttribute('data-becs-sub'));
     });
 
     $('#becsReviewDrawer').addEventListener('click', function (e) {
@@ -980,86 +804,26 @@
       recordDecision(btn.getAttribute('data-becs-decision'));
     });
 
-    $('#becsSyncScroll').addEventListener('change', function (e) {
-      state.syncScroll = !!e.target.checked;
-    });
-
     $('#becsExport').addEventListener('click', exportReport);
-
-    $('#becsFullLeft').addEventListener('click', function () {
-      $('#becsPanes').className = 'becs-panes full-left';
-    });
-    $('#becsFullRight').addEventListener('click', function () {
-      $('#becsPanes').className = 'becs-panes full-right';
-    });
-    $('#becsFullBoth').addEventListener('click', function () {
-      $('#becsPanes').className = 'becs-panes';
-    });
-
-    document.querySelectorAll('[data-becs-mode]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        state.viewMode = btn.getAttribute('data-becs-mode') || 'section';
-        applyViewMode();
-      });
-    });
-
-    var qf = $('#becsQualityFilters');
-    if (qf) {
-      qf.addEventListener('click', function (e) {
-        var btn = e.target.closest('[data-becs-qfilter]');
-        if (!btn) return;
-        state.qualityFilter = btn.getAttribute('data-becs-qfilter') || 'all';
-        renderQualityFilters();
-        renderChangeList();
-        if (state.viewMode === 'changes') renderChangesOnly();
-      });
-    }
-
-    var changesOnly = $('#becsChangesOnly');
-    if (changesOnly) {
-      changesOnly.addEventListener('click', function (e) {
-        var row = e.target.closest('[data-becs-slot-jump]');
-        if (!row) return;
-        state.viewMode = 'section';
-        applyViewMode();
-        selectSlot(row.getAttribute('data-becs-slot-jump'));
-      });
-    }
-  }
-
-  function atelierShell(id) {
-    return (
-      '<div class="be-atelier-root" id="' +
-      id +
-      '" data-be-atelier-root="1">' +
-      '<nav class="section-nav" data-be-atelier-nav role="tablist"></nav>' +
-      '<div data-be-atelier-panels></div>' +
-      '</div>'
-    );
   }
 
   function boot() {
-    // Ensure internal preview gate for locked brands
     if (!/[?&]beInternalPreview=1/.test(location.search)) {
       var u = new URL(location.href);
       u.searchParams.set('beInternalPreview', '1');
       history.replaceState({}, '', u.toString());
     }
     wireUi();
-    $('#becsLeftScroll').innerHTML = atelierShell('becsLeftAtelier');
-    $('#becsRightScroll').innerHTML = atelierShell('becsRightAtelier');
     var q = new URLSearchParams(location.search);
     var brandParam = q.get('brand') || q.get('id');
-    var cfg = BRANDS.find(function (b) {
-      return b.id === brandParam || b.slug === brandParam;
-    }) || BRANDS[0];
+    var cfg =
+      BRANDS.find(function (b) {
+        return b.id === brandParam || b.slug === brandParam;
+      }) || BRANDS[0];
     $('#becsBrand').value = cfg.id;
     loadBrand(cfg);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', boot);
-  } else {
-    boot();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
 })();

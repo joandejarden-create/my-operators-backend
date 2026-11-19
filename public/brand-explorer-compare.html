@@ -14,67 +14,50 @@
   <link rel="stylesheet" href="/css/brand-explorer-compare-studio.css" />
 </head>
 <body>
-  <div class="becs-shell">
+  <div class="becs-shell becs-shell-paired">
     <header class="becs-topbar">
       <h1>Brand Explorer Comparison Studio</h1>
-      <span class="becs-badge">Internal · Temporary · No Airtable writes</span>
+      <span class="becs-badge">Internal · Phase 2G · Paired subsections · No Airtable writes</span>
       <div class="becs-controls">
         <label>Brand
           <select id="becsBrand"></select>
         </label>
-        <div id="becsTabs" style="display:flex;flex-wrap:wrap;gap:6px"></div>
-        <label style="flex-direction:row;align-items:center;gap:6px">
-          <input type="checkbox" id="becsSyncScroll" checked /> Sync scroll
-        </label>
-        <div id="becsViewModes" style="display:flex;gap:6px;flex-wrap:wrap">
-          <button type="button" id="becsModeSection" class="becs-mode active" data-becs-mode="section">Section-locked</button>
-          <button type="button" id="becsModeChanges" class="becs-mode" data-becs-mode="changes">Changes only</button>
-          <button type="button" id="becsModeFull" class="becs-mode" data-becs-mode="full">Full profile</button>
+        <div id="becsTabs" class="becs-tabbar"></div>
+        <div id="becsViewModes" class="becs-modes">
+          <button type="button" class="becs-mode active" data-becs-mode="full">Full subsection comparison</button>
+          <button type="button" class="becs-mode" data-becs-mode="changes">Changes only</button>
         </div>
-        <button type="button" id="becsFullBoth">Both</button>
-        <button type="button" id="becsFullLeft">Full left</button>
-        <button type="button" id="becsFullRight">Full right</button>
         <button type="button" id="becsExport">Export review report</button>
       </div>
     </header>
 
     <div class="becs-summary" id="becsSummary" aria-label="Changes summary"></div>
     <div class="becs-scorecard" id="becsScorecard"></div>
-    <div class="becs-quality-filters" id="becsQualityFilters" aria-label="Quality failure filters"></div>
+    <div class="becs-quality-filters" id="becsQualityFilters" aria-label="Filters"></div>
 
-    <div class="becs-main">
+    <div class="becs-paired-layout">
       <aside class="becs-sidebar">
+        <h2>Subsections</h2>
+        <nav id="becsSubnav" class="becs-subnav" aria-label="Subsection navigation"></nav>
         <h2>Changed fields</h2>
         <ul class="becs-change-list" id="becsChangeList"></ul>
       </aside>
-      <div class="becs-panes" id="becsPanes">
-        <section class="becs-pane becs-pane-left">
-          <div class="becs-pane-head">
-            <strong id="becsLeftLabel">CURRENT PROFILE</strong>
-            <span class="tag" id="becsLeftTag">Loading…</span>
-          </div>
-          <div class="becs-pane-body" id="becsLeftScroll"></div>
-        </section>
-        <section class="becs-pane becs-pane-right">
-          <div class="becs-pane-head">
-            <strong id="becsRightLabel">RECREATED PROFILE</strong>
-            <span class="tag" id="becsRightTag">Loading…</span>
-          </div>
-          <div class="becs-pane-body" id="becsRightScroll"></div>
-        </section>
-      </div>
-      <div class="becs-changes-only" id="becsChangesOnly" hidden></div>
+      <main class="becs-doc-scroll" id="becsDocScroll">
+        <div class="becs-col-heads sticky">
+          <div><strong>LEFT — Existing production</strong> <span class="tag" id="becsLeftTag">…</span></div>
+          <div><strong>RIGHT — Reconstructed factory</strong> <span class="tag" id="becsRightTag">…</span></div>
+        </div>
+        <div id="becsPairedDoc" class="becs-paired-doc"></div>
+      </main>
     </div>
 
     <div class="becs-review-drawer" id="becsReviewDrawer">
       <h3>Field review</h3>
-      <p class="becs-review-meta">Select a changed field from the list.</p>
+      <p class="becs-review-meta">Select a changed field or subsection.</p>
     </div>
     <div class="becs-status-bar" id="becsStatus">Starting…</div>
   </div>
 
-  <script src="/js/brand-explorer-census-metrics.js"></script>
-  <script src="/js/brand-explorer-atelier-from-api.js"></script>
   <script src="/js/brand-explorer-compare-studio.js"></script>
 </body>
 </html>
