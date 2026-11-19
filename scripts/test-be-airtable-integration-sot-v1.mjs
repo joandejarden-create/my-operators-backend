@@ -98,12 +98,11 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
   const deduped = dedupeByRecordId(rows);
   assert.equal(deduped.length, 4);
   const metrics = aggregateOpenPipelineCounts(matched);
-  assert.deepEqual(metrics, {
-    totalOpenHotels: 1,
-    totalOpenKeys: 120,
-    totalPipelineHotels: 1,
-    totalPipelineKeys: 80,
-  });
+  assert.equal(metrics.totalOpenHotels, 1);
+  assert.equal(metrics.totalOpenKeys, 120);
+  assert.equal(metrics.totalPipelineHotels, 1);
+  assert.equal(metrics.totalPipelineKeys, 80);
+  assert.ok(metrics.byRegion && typeof metrics.byRegion === "object");
   console.log("PASS HPC join / dedupe / Open|Pipeline filters");
 }
 
