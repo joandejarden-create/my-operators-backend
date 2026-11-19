@@ -46,6 +46,10 @@ This preflight does **not** intercept raw `git` by itself. Optional hooks: `.git
 - No production Airtable writes, paid research, or deployment without explicit founder authorization.
 - STOP for exceptional ops (preservation branches, main mutation, worktree removal, bulk cleanup).
 
+## Universal PR completion (all streams)
+
+Merge into GitHub is not task completion. After merge: return owning permanent home, FF `origin/main`, correct Cursor branch, retire feature branches when safe, and report `COMPLETE — MERGED_AND_HOME_SYNCED — CLEAN_WORKTREE|PRESERVED_DIRTY` or a `BLOCKED — …` status via `npm run dealality:pr-completion-report`. Cross-workstream checkouts/merges fail closed. Never stash/discard/reset/clean to force a clean UI. Contract: `docs/ai-build-system/PR_COMPLETION_AND_WORKSPACE_OWNERSHIP.md`.
+
 ## Post-merge sync (permanent — all three product streams)
 
 After each successful PR merge into `origin/main`, Integration Controller runs:

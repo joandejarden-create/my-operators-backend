@@ -13,7 +13,11 @@ import {
   preflightFromArgv,
   runGitPreflight,
 } from "../lib/dealality-dev-os/git-preflight.js";
-import { loadWorktreeRegistry, normalizePath } from "../lib/dealality-dev-os/worktree-registry.js";
+import {
+  listRegisteredWorkspaces,
+  loadWorktreeRegistry,
+  normalizePath,
+} from "../lib/dealality-dev-os/worktree-registry.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -209,12 +213,12 @@ expectFail(
 
 // Positive: commit allowed in the current registered workspace stream
 {
-  const here = registry.workspaces.find(
+  const here = listRegisteredWorkspaces(registry).find(
     (w) => normalizePath(w.path) === normalizePath(ROOT),
   );
   expectOk("commit in current registered workspace with allow-dirty *", {
     op: "commit",
-    stream: here?.stream || "gdi",
+    stream: here?.stream || "integration",
     expectBranch: currentBranch,
     allowDirty: "*",
   });
@@ -231,21 +235,30 @@ assert.equal(
   ),
   true,
 );
-expectOk("switch with directory-prefix allow-dirty", {
-  op: "switch",
-  stream: "gdi",
-  targetRef: "ws/gdi",
-  allowDirty: ["tmp/gitleaks-bin", "reports/x.json"],
-  _simulate: {
-    root: normalizePath(registry.workspaces.find((w) => w.stream === "gdi").path),
-    registered: registry.workspaces.find((w) => w.stream === "gdi"),
-    branch: "feat/gdi-example",
-    dirty: [
-      { status: "??", path: "tmp/gitleaks-bin/gitleaks.exe" },
-      { status: " M", path: "reports/x.json" },
-    ],
-  },
-});
+{
+  const gdiWs = registry.workspaces.find((w) => w.stream === "gdi");
+  const gdiRoot = normalizePath(gdiWs.path);
+  const result = runGitPreflight({
+    cwd: gdiRoot,
+    registryRoot: ROOT,
+    op: "switch",
+    stream: "gdi",
+    targetRef: "ws/gdi",
+    allowDirty: ["tmp/gitleaks-bin", "reports/x.json"],
+    _simulate: {
+      root: gdiRoot,
+      registered: gdiWs,
+      branch: "feat/gdi-example",
+      dirty: [
+        { status: "??", path: "tmp/gitleaks-bin/gitleaks.exe" },
+        { status: " M", path: "reports/x.json" },
+      ],
+      unresolvedGitOperation: { active: false },
+    },
+  });
+  assert.equal(result.ok, true, `switch with directory-prefix allow-dirty: ${result.errors.join("; ")}`);
+  console.log("PASS allow: switch with directory-prefix allow-dirty");
+}
 assert.deepEqual(
   collectArgValues(
     ["--allow-dirty", "tmp/gitleaks-bin/", "--allow-dirty", "reports/probe.json"],

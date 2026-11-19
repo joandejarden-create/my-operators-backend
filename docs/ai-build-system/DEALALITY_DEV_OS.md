@@ -66,6 +66,21 @@ Safety: never reset/clean/stash-discard; verified external backup before dirty r
 
 Contract: `docs/ai-build-system/POST_MERGE_WORKSPACE_SYNC.md`
 
+### Universal PR completion + workspace ownership (required — all streams)
+
+A GitHub merge is **not** task completion. Every PR must finish with home-branch restore, `origin/main` sync, Cursor branch correction, feature-branch retirement when safe, and an explicit **CLEAN_WORKTREE** or **PRESERVED_DIRTY** report (or a standardized **BLOCKED — …** status).
+
+Cross-workstream feature branches are fail-closed on mutation ops. Do not stash/discard/reset/clean to force a clean Source Control view.
+
+```bash
+npm run dealality:pr-completion-report -- --audit
+npm run dealality:pr-completion-report -- --stream <he|adp|gdi|integration> --pr <n>
+npm run test:dealality-pr-completion-ownership-v1
+```
+
+Contract: `docs/ai-build-system/PR_COMPLETION_AND_WORKSPACE_OWNERSHIP.md`  
+Cursor rule: `.cursor/rules/dealality-pr-completion-workspace-ownership.mdc`
+
 ### Radar authenticated application acceptance (required — HE / Radar)
 
 For changes that affect hotel visibility, filtering, search, mapping, authentication, or Radar → Hotel Explorer navigation, automated tests and CI are **not sufficient**.

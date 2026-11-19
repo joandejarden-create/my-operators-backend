@@ -1,0 +1,55 @@
+---
+description: Universal PR completion gate — home sync + ownership + explicit working-tree status
+alwaysApply: true
+---
+
+# Universal PR completion and workspace ownership
+
+Applies to **all** Dealality streams: GDI, ADP, Hotel Explorer, Integration Controller.
+
+## Not complete
+
+Do **not** declare a task complete because a PR opened, CI passed, or GitHub shows merged.
+
+Completion requires: CI pass → merge into `main` → owning permanent workspace on home branch → home/`HEAD` synced to `origin/main` → Cursor branch corrected → feature branch retired when safe → explicit clean or preserved-dirty report → evidence preserved → peers undisturbed.
+
+## Ownership
+
+Registry is authoritative: `docs/ai-build-system/worktree-registry.json`.
+
+Before branch mutations: verify worktree root, owning stream, current branch/HEAD, target branch, unresolved merge/rebase, dirty/untracked, and preservation needs.
+
+Fail closed on cross-workstream checkouts/merges. Cursor UI branch chips are not Git truth.
+
+## Preservation
+
+Never auto stash/discard/force-checkout/reset/`git clean` to make Source Control look clean.
+
+## Fail-closed COMPLETE
+
+Do not return COMPLETE with null/omitted/unknown merge SHA, CI, home sync, or `NOT_ASSESSED` preservation. Prefer GitHub PR evidence over caller booleans. Cursor/retirement must be verified or marked `OUTSTANDING: …`.
+
+## Status vocabulary
+
+- `COMPLETE — MERGED_AND_HOME_SYNCED — CLEAN_WORKTREE`
+- `COMPLETE — MERGED_AND_HOME_SYNCED — PRESERVED_DIRTY`
+- `BLOCKED — EVIDENCE_INCOMPLETE`
+- `BLOCKED — PRESERVATION_REQUIRED`
+- `BLOCKED — CROSS_WORKSTREAM_BRANCH`
+- `BLOCKED — UNCLASSIFIED_BRANCH`
+- `BLOCKED — UNRESOLVED_GIT_OPERATION`
+- `BLOCKED — HOME_NOT_SYNCED`
+
+Enforcement is **PARTIAL** (preflight/sync/report are machine-gated; raw git and Cursor chips can bypass). Do not claim universal enforcement.
+
+## Commands
+
+```bash
+npm run dealality:git-preflight -- --op <op> --stream <integration|he|adp|gdi>
+npm run dealality:post-merge-sync -- --mode post-merge --stream <he|adp|gdi> --pr <n>
+npm run dealality:pr-completion-report -- --stream <he|adp|gdi|integration> --pr <n>
+npm run dealality:pr-completion-report -- --audit
+npm run dealality:pr-completion-report -- --coverage
+```
+
+Contract: `docs/ai-build-system/PR_COMPLETION_AND_WORKSPACE_OWNERSHIP.md`
