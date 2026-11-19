@@ -82,11 +82,11 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.22");
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.23");
   assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 32);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.22"
+    "hotel-explorer-quality-standard-v1.23"
   );
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-016"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-017"));
@@ -798,6 +798,26 @@ run("he_ownership_control_network_gates", () => {
     read("lib/hotel-intelligence/ownership/ownership-control-network-v1.js"),
     /operator.*LEGALLY_OWNED_BY|brand.*ECONOMICALLY_CONTROLLED_BY/i
   );
+});
+
+run("he_relationships_no_radial_org_network", () => {
+  const ws = read("public/js/hotel-intelligence-workspace.js");
+  mustNotMatch(ws, /Show Organization Network|data-hiw-org-network|hiwOrgNetwork|loadOrgNetwork|drawMiniNetwork|Organization Network/);
+  mustInclude(ws, "Relationship Detail");
+  mustInclude(ws, "renderRelationships");
+  mustInclude(ws, "mountOwnershipControlNetwork");
+  mustNotMatch(read("public/js/hotel-explorer.js"), /data-hiw-org-network|loadOrgNetwork/);
+  mustNotMatch(
+    read("public/css/hotel-intelligence-workspace.css"),
+    /\.ofg-edge|\.ofg-node|hiw-graph-svg \.ofg/
+  );
+  const std = read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md");
+  mustInclude(std, "no redundant radial Organization Network");
+  mustInclude(std, "HE-QL-034");
+  const reg = JSON.parse(
+    read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
+  );
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-034"));
 });
 
 run("he_stakeholder_research_vs_viz_coverage", () => {

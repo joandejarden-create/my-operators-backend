@@ -3549,10 +3549,8 @@
           forceEcon: true,
           ariaLabel: "Hotel structure",
         }) +
-        '<div class="hiw-prose"><p>Ownership, operations, and brand are separate relationships. Package / economic owner naming is not the same as a verified Mexican PropCo or deed vehicle. Operator or brand is never drawn as owner.</p></div>' +
+        '<div class="hiw-prose"><p>Ownership, operations, and brand are separate relationships. Package / economic owner naming is not the same as a verified Mexican PropCo or deed vehicle. Operator or brand is never drawn as owner. Stakeholder exploration lives in Ownership Intelligence.</p></div>' +
         renderRelationshipEdgesTable(ownership, state.relFilter) +
-        '<div class="hiw-actions"><button type="button" class="hiw-btn hiw-btn--primary" data-hiw-org-network>Show Organization Network</button></div>' +
-        '<div id="hiwOrgNetwork" hidden></div>' +
         "</section>"
       : '<section class="hiw-section"><h3 class="hiw-section__h">Hotel Structure</h3>' +
         orgChart(
@@ -3563,16 +3561,14 @@
             chainNode(brand, "Brand", contested ? "Contested" : brandStatus || "Affiliation", "brand"),
           "Hotel structure"
         ) +
-        '<div class="hiw-prose"><p>Economic owner and property company are held back when unverified — the operator is not relabeled as owner.</p></div>' +
+        '<div class="hiw-prose"><p>Economic owner and property company are held back when unverified — the operator is not relabeled as owner. Stakeholder exploration lives in Ownership Intelligence.</p></div>' +
         renderRelationshipEdgesTable(ownership, state.relFilter) +
-        '<div class="hiw-actions"><button type="button" class="hiw-btn hiw-btn--primary" data-hiw-org-network>Show Organization Network</button></div>' +
-        '<div id="hiwOrgNetwork" hidden></div>' +
         "</section>";
 
     return (
       '<article class="hiw-report">' +
       '<h2 class="hiw-report__title">Relationships &amp; Structure</h2>' +
-      '<p class="hiw-report__subtitle">Hotel structure first · organization network on demand</p>' +
+      '<p class="hiw-report__subtitle">Hotel structure · relationship detail · sources — stakeholder network lives under Ownership Intelligence</p>' +
       hotelDiagram +
       "</article>"
     );
@@ -4637,136 +4633,6 @@
     }
   }
 
-  function loadOrgNetwork() {
-    var box = document.getElementById("hiwOrgNetwork");
-    if (!box) return;
-    box.hidden = false;
-    box.innerHTML = '<p class="hiw-empty">Loading organization network…</p>';
-    var org =
-      (state.ownership && (state.ownership.organization || state.ownership.ownership_group)) ||
-      {};
-    var orgId = org.entity_id || org.slug || "dle_06G6AB1VK0BCCD94DNN7W8DRWZ";
-    fetch(
-      "/api/golden-demo/ownership/graph/neighbors?node_id=" +
-        encodeURIComponent(orgId) +
-        "&node_type=organization&limit=12&relationship_categories=ownership,operator,brand,other&include_probable=1",
-      { headers: { "ngrok-skip-browser-warning": "true" } }
-    )
-      .then(function (r) {
-        return r.json().then(function (data) {
-          return { okHttp: r.ok, data: data };
-        });
-      })
-      .then(function (pack) {
-        var data = pack && pack.data;
-        if (!pack.okHttp || !data || data.success === false || !Array.isArray(data.nodes) || !data.nodes.length) {
-          box.innerHTML = '<p class="hiw-empty">Unable to load network.</p>';
-          return;
-        }
-        box.innerHTML =
-          '<h3 class="hiw-section__h" style="margin-top:18px">Organization Network</h3>' +
-          '<div class="hiw-prose"><p>Organization-centered hotel relationships. Edge labels use product language (Operates / Owns) — not graph schema keys.</p></div>' +
-          drawMiniNetwork(data);
-      })
-      .catch(function () {
-        box.innerHTML = '<p class="hiw-empty">Network failed to load.</p>';
-      });
-  }
-
-  function drawMiniNetwork(payload) {
-    var width = 640;
-    var height = 380;
-    var cx = width / 2;
-    var cy = height / 2;
-    var nodes = payload.nodes || [];
-    var edges = payload.edges || [];
-    var center = nodes.find(function (n) {
-      return n.type === "organization";
-    }) || nodes[0];
-    var positions = {};
-    if (center) positions[center.id] = { x: cx, y: cy, r: 36 };
-    var hotels = nodes.filter(function (n) {
-      return n.type === "hotel";
-    });
-    hotels.forEach(function (n, i) {
-      var angle = (Math.PI * 2 * i) / Math.max(hotels.length, 1) - Math.PI / 2;
-      positions[n.id] = {
-        x: cx + Math.cos(angle) * 140,
-        y: cy + Math.sin(angle) * 140,
-        r: 22,
-      };
-    });
-    var edgeSvg = edges
-      .map(function (e) {
-        var a = positions[e.from];
-        var b = positions[e.to];
-        if (!a || !b) return "";
-        return (
-          '<g class="ofg-edge"><line x1="' +
-          a.x +
-          '" y1="' +
-          a.y +
-          '" x2="' +
-          b.x +
-          '" y2="' +
-          b.y +
-          '"></line>' +
-          '<text class="ofg-edge-label" x="' +
-          (a.x + b.x) / 2 +
-          '" y="' +
-          ((a.y + b.y) / 2 - 6) +
-          '" text-anchor="middle">' +
-          esc(
-            e.relationship_label ||
-              (/OWN|CONTROL/i.test(String(e.relationship_type || ""))
-                ? "Owns"
-                : /BRAND|FRANCHIS/i.test(String(e.relationship_type || ""))
-                  ? "Brands"
-                  : "Operates")
-          ) +
-          "</text></g>"
-        );
-      })
-      .join("");
-    var nodeSvg = nodes
-      .filter(function (n) {
-        return positions[n.id];
-      })
-      .map(function (n) {
-        var p = positions[n.id];
-        var label = String(n.label || "").slice(0, 16);
-        return (
-          '<g class="ofg-node ofg-node--' +
-          esc(n.type) +
-          '" transform="translate(' +
-          p.x +
-          "," +
-          p.y +
-          ')"><circle r="' +
-          p.r +
-          '"></circle><text text-anchor="middle" y="' +
-          (p.r + 12) +
-          '">' +
-          esc(label) +
-          "</text></g>"
-        );
-      })
-      .join("");
-    return (
-      '<svg class="hiw-graph-svg" viewBox="0 0 ' +
-      width +
-      " " +
-      height +
-      '">' +
-      edgeSvg +
-      nodeSvg +
-      "</svg>" +
-      (payload.pagination && payload.pagination.truncated
-        ? '<p class="hiw-teaser">Showing first relationships — expand in-tab for more.</p>'
-        : "")
-    );
-  }
-
   function onRootClick(e) {
     var opToggle = e.target.closest("[data-hex-op-toggle]");
     if (opToggle) {
@@ -4899,10 +4765,6 @@
         );
       }
       return;
-    }
-    var net = e.target.closest("[data-hiw-org-network]");
-    if (net) {
-      loadOrgNetwork();
     }
   }
 
@@ -5127,7 +4989,6 @@
     close: close,
     setTab: setTab,
     prepareTabNav: prepareTabNav,
-    loadOrgNetwork: loadOrgNetwork,
     setRelFilter: function (value) {
       state.relFilter = value || "all";
     },

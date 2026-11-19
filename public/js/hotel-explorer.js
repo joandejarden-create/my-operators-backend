@@ -956,9 +956,6 @@
       }
       return;
     }
-    if (e.target.closest("[data-hiw-org-network]") && window.HotelIntelligenceWorkspace) {
-      window.HotelIntelligenceWorkspace.loadOrgNetwork();
-    }
   }
 
   function closeDossierLayer() {

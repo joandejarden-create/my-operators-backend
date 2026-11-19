@@ -1,6 +1,6 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.22`  
+**Version:** `hotel-explorer-quality-standard-v1.23`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
 **Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1` · `npm run test:he-hotel-news-from-market-alerts-v1` · `npm run test:he-guest-sentiment-brand-operator-v1` · `npm run test:he-market-alerts-closeout-v1` · `npm run test:he-async-section-loading-v1` · `npm run test:he-contact-intelligence-directory-ux-v1` · `npm run test:he-loading-ux-toast-v1`
@@ -173,6 +173,13 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 - Themes use `guest-theme-taxonomy-v1`; category scores are evidence of platform aggregates — not operational KPIs or CapEx proof. Do not emit precise % claims below `MIN_SAMPLE_FOR_PERCENT` (30).
 - Incorrect hotel↔platform property matches, duplicate reviews, unsupported conclusions, invented missing-platform values, and stale-as-current displays are regression failures (HE-QL-022 / HE-QL-025 / HE-QL-029).
 - Shared modules: `lib/hotel-intelligence/guest-sentiment/*`, `api/hotel-explorer-guest-sentiment.js`, Brand/Operator host in `hotel-intelligence-workspace.js`.
+
+### 9a-0. Relationships & Structure (no redundant radial Organization Network)
+
+- Relationships & Structure presents **Hotel Structure** + **Relationship Detail** (filters, verified/proposed distinctions, source deep-links).
+- Do **not** render a radial **Organization Network**, “Show Organization Network” control, empty `#hiwOrgNetwork` container, or on-demand mini-graph fetch for that tab.
+- Stakeholder exploration belongs in **Ownership Intelligence** (OCN). Organization & Portfolio remains the portfolio surface. Do not duplicate those experiences on Relationships.
+- Canonical HI organization/relationship intelligence and APIs remain; only the redundant radial presentation is removed (HE-QL-034).
 
 ### 9a. Ownership & Control Network / Stakeholder Network
 

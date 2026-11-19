@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.22",
+  "version": "hotel-explorer-founder-quality-lessons-v1.23",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -330,6 +330,15 @@
       "sharedComponent": "ownership-control-network-v1.js; he-ownership-control-network-v1.js; hotel-explorer-founder-preview.js stakeholder_research_coverage; HE-BETH-STAKEHOLDER-COVERAGE-MATRIX-V21.md",
       "regressionTest": "test:he-ownership-control-network-v1; he_ownership_control_network_gates; he_stakeholder_research_vs_viz_coverage",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/he-ql-033-ocn-*.png; reports/hotel-explorer/HE-BETH-STAKEHOLDER-COVERAGE-MATRIX-V21.md"
+    },
+    {
+      "id": "HE-QL-034",
+      "originalProblem": "Relationships & Structure showed a redundant radial Organization Network that was hard to read and duplicated Ownership Intelligence / relationship tables",
+      "rootCause": "On-demand Show Organization Network mini-graph (neighbors API + ofg-* SVG) was retained after the Stakeholder/OCN network became the canonical interactive exploration surface",
+      "approvedStandard": "Remove Organization Network control, heading, container, loadOrgNetwork/drawMiniNetwork, and unused ofg-* Relationships styling; keep Hotel Structure + Relationship Detail + sources; preserve Ownership OCN and Organization & Portfolio; do not delete shared HI graph APIs",
+      "sharedComponent": "hotel-intelligence-workspace.js renderRelationships; hotel-explorer.js click handlers; hotel-intelligence-workspace.css",
+      "regressionTest": "he_relationships_no_radial_org_network",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/he-ql-034-relationships-no-org-network.png"
     }
   ]
 }
