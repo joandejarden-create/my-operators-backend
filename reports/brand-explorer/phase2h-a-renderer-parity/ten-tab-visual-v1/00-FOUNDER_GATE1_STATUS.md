@@ -1,7 +1,7 @@
 # Gate 1 — Comparison Studio ready for founder visual acceptance
 
-**FOUNDER_APPROVED = false**  
-**Gate 2 = BLOCKED** (do not regenerate / publish)
+**FOUNDER_APPROVED = true** (visual/functionality only — see `../GATE1_FOUNDER_APPROVED.json`)  
+**Gate 2 = BLOCKED** (do not regenerate / publish; scorecard still NOT_FOUNDER_APPROVED)
 
 ## Canonical URL (permanent)
 
