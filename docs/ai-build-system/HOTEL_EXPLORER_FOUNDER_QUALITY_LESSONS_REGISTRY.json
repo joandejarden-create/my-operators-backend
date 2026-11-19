@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.18",
+  "version": "hotel-explorer-founder-quality-lessons-v1.19",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -293,6 +293,15 @@
       "sharedComponent": "guest-sentiment-model-v1.js REPUTATION_OVERVIEW_PLATFORMS_V1; hotel-intelligence-workspace.js renderGuestSentimentSection; hotel-explorer.css hiw-rep-*",
       "regressionTest": "test:he-guest-sentiment-brand-operator-v1 / he_guest_sentiment_brand_operator_gates",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v17-rep-seven-platforms.png; quality-v17-rep-insights.png; quality-v17-rep-methodology.png; quality-v17-rep-sparse.png; quality-v17-rep-empty.png; reports/hotel-explorer/HE-GUEST-REPUTATION-VISUAL-QUALITY-V17.md"
+    },
+    {
+      "id": "HE-QL-030",
+      "originalProblem": "Bethesda Marriott showed only 9 amenities despite ≥12 research target; undercoverage was silently accepted without investigating recoverable verified attributes",
+      "rootCause": "ADP profile omitted guest amenities already published on Marriott.com WASBT; notes blocked parking/pets/accessibility as UNVERIFIED; UI used exclusive verified-only selection that could ignore HPC amenitiesDisplay; gates checked max-20 but not research-gap trigger",
+      "approvedStandard": "Target ≥12 verified guest amenities when first-party evidence permits; hard max 20 displayed; never invent; union verified+HPC sources with dedupe; flag RESEARCH_GAP when below 12 (no customer completeness badge); persist recovered attributes into ADP catalog with source URLs; dry-run Airtable mutations only until apply authorized",
+      "sharedComponent": "he-amenity-display-v1.js (mergeAmenityDisplaySources, assessAmenityCoverageResearchNeed); hotel-detail-panel.js resolveAmenitiesDisplay; ADP property profile attributes + ATTRIBUTE_DEFINITIONS; he-amenity-icon-map-v1.js",
+      "regressionTest": "amenities_kgpv_strip_and_display_cap; amenities_verified_coverage_research_trigger",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v18-amenities-beth-coverage.png; reports/hotel-explorer/HE-AMENITY-COVERAGE-RESEARCH-V18.md"
     }
   ]
 }

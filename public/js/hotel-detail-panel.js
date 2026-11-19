@@ -962,6 +962,61 @@
       .trim();
   }
 
+  /** Collapse near-duplicate HPC vs ADP amenity labels for strip dedupe. */
+  function amenityDedupeKey(label) {
+    var s = String(label || "")
+      .toLowerCase()
+      .replace(/['’]/g, "")
+      .replace(/&/g, " and ")
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+    s = s
+      .replace(/\bwashington dc\b/g, "dc")
+      .replace(/\bcomplimentary\b/g, "")
+      .replace(/\bon[\s-]?site\b/g, "onsite")
+      .replace(/\b24[\s-]?hour\b/g, "24hr");
+    var tokens = s.split(/\s+/).filter(function (t) {
+      return t && !/^(and|the|a|an|level|service|rooms)$/.test(t);
+    });
+    if (
+      tokens.indexOf("coopers") >= 0 ||
+      (tokens.indexOf("cooper") >= 0 && tokens.indexOf("mill") >= 0)
+    ) {
+      return "coopers_mill";
+    }
+    if (tokens.indexOf("peloton") >= 0) return "peloton";
+    if (tokens.indexOf("fitness") >= 0 && tokens.indexOf("24hr") >= 0) return "fitness_24hr";
+    if (tokens.indexOf("fitness") >= 0) return "fitness_center";
+    if (tokens.indexOf("metro") >= 0 && tokens.indexOf("shuttle") >= 0) return "metro_shuttle";
+    if (tokens.indexOf("metro") >= 0 && tokens.indexOf("access") >= 0) return "metro_access";
+    if (tokens.indexOf("m") >= 0 && tokens.indexOf("club") >= 0) return "m_club";
+    if (tokens.indexOf("ballroom") >= 0) return "ballroom";
+    if (
+      tokens.indexOf("meeting") >= 0 &&
+      (tokens.indexOf("event") >= 0 ||
+        tokens.indexOf("space") >= 0 ||
+        tokens.indexOf("room") >= 0)
+    ) {
+      return "meeting_space";
+    }
+    if (tokens.indexOf("wifi") >= 0 || (tokens.indexOf("wi") >= 0 && tokens.indexOf("fi") >= 0)) {
+      return "wifi";
+    }
+    if (tokens.indexOf("pet") >= 0 || tokens.indexOf("pets") >= 0) return "pets";
+    if (tokens.indexOf("parking") >= 0) return "parking";
+    if (tokens.indexOf("business") >= 0 && tokens.indexOf("center") >= 0) return "business_center";
+    if (tokens.indexOf("room") >= 0 && tokens.indexOf("service") >= 0) return "room_service";
+    if (
+      tokens.indexOf("accessible") >= 0 ||
+      tokens.indexOf("accessibility") >= 0 ||
+      tokens.indexOf("ada") >= 0
+    ) {
+      return "accessibility";
+    }
+    if (tokens.indexOf("concierge") >= 0 && tokens.indexOf("club") < 0) return "concierge";
+    return tokens.slice().sort().join("_");
+  }
+
   /** Location / brand identity tokens that are not guest-facing amenities. */
   function isNonAmenityPresentationLabel(label) {
     var key = amenityLabelKey(label);
@@ -1101,18 +1156,15 @@
       })
       .filter(Boolean);
 
-    var base = fromVerified.length
-      ? fromVerified
-      : fromDisplay.length
-        ? fromDisplay
-        : fromField;
+    // Union verified + HPC/display/text (verified first). Collapse near-duplicates.
+    var merged = fromVerified.concat(fromDisplay).concat(fromField);
 
     var seen = {};
     var deduped = [];
-    base.forEach(function (item) {
-      // Dedupe by human label so distinct amenities can share an icon asset
-      // (e.g. Peloton vs 24-Hour Fitness) without collapsing the strip.
-      var key = amenityLabelKey(item.label);
+    merged.forEach(function (item) {
+      // Prefer canonicalized dedupe so "Meeting Space" does not duplicate
+      // "Meeting & Event Space", while Peloton vs 24-Hour Fitness stay distinct.
+      var key = amenityDedupeKey(item.label) || amenityLabelKey(item.label);
       if (!key || seen[key]) return;
       seen[key] = true;
       deduped.push(item);
@@ -1121,15 +1173,19 @@
       return amenityDisplayPriority(b) - amenityDisplayPriority(a) || a.label.localeCompare(b.label);
     });
     var selected = deduped.slice(0, HE_AMENITIES_DISPLAY_MAX);
+    var belowTarget = deduped.length < HE_AMENITIES_DISPLAY_TARGET_MIN;
     try {
       window.HOTEL_EXPLORER_AMENITIES_COVERAGE = {
         verifiedCount: deduped.length,
         displayedCount: selected.length,
         targetMin: HE_AMENITIES_DISPLAY_TARGET_MIN,
         max: HE_AMENITIES_DISPLAY_MAX,
-        belowTargetMin: deduped.length < HE_AMENITIES_DISPLAY_TARGET_MIN,
+        belowTargetMin: belowTarget,
         shortfall: Math.max(0, HE_AMENITIES_DISPLAY_TARGET_MIN - deduped.length),
         overflowCount: Math.max(0, deduped.length - selected.length),
+        researchTrigger: belowTarget,
+        researchStatus: belowTarget ? "RESEARCH_GAP" : "COVERAGE_OK",
+        customerFacingCompletenessIndicator: false,
       };
     } catch (_err) {
       /* ignore */

@@ -1,6 +1,6 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.18`  
+**Version:** `hotel-explorer-quality-standard-v1.19`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
 **Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1` · `npm run test:he-hotel-news-from-market-alerts-v1` · `npm run test:he-guest-sentiment-brand-operator-v1` · `npm run test:he-market-alerts-closeout-v1` · `npm run test:he-async-section-loading-v1` · `npm run test:he-contact-intelligence-directory-ux-v1` · `npm run test:he-loading-ux-toast-v1`
@@ -39,11 +39,13 @@ KGPV (golden UX) and Bethesda Marriott (Airtable-first pilot) define the permane
 ### 3. Amenities
 
 - **Visual (KGPV baseline):** single horizontal icon+label strip — no bordered amenity cards, no vertical grid. Prev/next arrows only when overflow; smooth horizontal scroll; keyboard arrows; minimal/hidden scrollbar.
-- Source: ADP verified attributes / HPC amenities via shared IDs — never invent amenities to hit a count.
-- Display policy: target **≥12** verified when research allows; hard max **20** displayed (priority selection); overflow retained in underlying intelligence.
+- Source: ADP verified attributes / HPC amenities via shared canonical IDs — never invent amenities to hit a count.
+- Display policy: research target **≥12** verified when credible evidence permits; hard max **20** displayed (priority selection); overflow retained in underlying intelligence for search/filter.
+- **Coverage research trigger (HE-QL-030):** when verified guest-amenity count is below 12, the system must flag an internal `RESEARCH_GAP` (investigate ADP catalog, HPC amenities, first-party brand materials). Do **not** pad the strip, invent amenities, or show a customer-facing completeness badge.
+- Prefer **union** of verified + HPC amenity sources (dedupe by human label; verified rows win collisions). Exclusive verified-only selection that hides recoverable HPC guest amenities is a regression.
 - Canonical map: `attribute_id → display_label → icon_id → category → display_priority` (`he-amenity-icon-map-v1.js` + `hilton-amenity-icons.js`). Unrelated attributes must not share a generic icon (e.g. Bar ≠ Restaurant, Accessibility ≠ checkmark-only default).
 - Human-readable labels + consistent icons across hotels; no raw DB tokens (`has_pool`); no geo/brand marketing tags as amenity icons.
-- Shared policy: `lib/hotel-intelligence/he-amenity-display-v1.js` + `hotel-detail-panel.js` carousel.
+- Shared policy: `lib/hotel-intelligence/he-amenity-display-v1.js` (`selectAmenitiesForHotelExplorerDisplay`, `mergeAmenityDisplaySources`, `assessAmenityCoverageResearchNeed`) + `hotel-detail-panel.js` carousel.
 
 ### 4. Guest Rooms & Meeting Space
 

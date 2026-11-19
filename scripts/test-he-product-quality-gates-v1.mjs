@@ -25,9 +25,13 @@ import {
 } from "../lib/hotel-intelligence/contact-intelligence/property-decision-maker-engine-v1.js";
 import {
   selectAmenitiesForHotelExplorerDisplay,
+  mergeAmenityDisplaySources,
+  assessAmenityCoverageResearchNeed,
   HE_AMENITIES_DISPLAY_MAX,
+  HE_AMENITIES_DISPLAY_TARGET_MIN,
   isNonGuestAmenityLabel,
 } from "../lib/hotel-intelligence/he-amenity-display-v1.js";
+import { ATTRIBUTE_DEFINITIONS } from "../lib/ai-demand-positioning/intelligence/reality-gap.js";
 import {
   SQFT_TO_SQM,
   MI_TO_KM,
@@ -78,11 +82,11 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.18");
-  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 29);
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.19");
+  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 30);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.18"
+    "hotel-explorer-quality-standard-v1.19"
   );
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-016"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-017"));
@@ -98,6 +102,7 @@ run("registry_and_standard_exist", () => {
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-027"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-028"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-029"));
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-030"));
 });
 
 run("rejects_keyword_stuffed_and_id_leaking_descriptions", () => {
@@ -186,6 +191,8 @@ run("amenities_kgpv_strip_and_display_cap", () => {
   mustInclude(hdp, "hdp-amenities-carousel");
   mustInclude(hdp, "HE_AMENITIES_DISPLAY_MAX");
   mustInclude(hdp, "amenityDisplayPriority");
+  mustInclude(hdp, "researchTrigger");
+  mustInclude(hdp, "fromVerified.concat(fromDisplay)");
   assert.ok(!/hdp-amenities-grid/.test(hdp), "grid markup must not be used");
   assert.ok(!/hdp-amenity-card--grid/.test(hdp), "bordered grid cards must not be used");
   mustInclude(css, "hdp-amenities-carousel");
@@ -211,6 +218,76 @@ run("amenities_kgpv_strip_and_display_cap", () => {
   assert.equal(sparse.displayed.length, 2);
   assert.equal(sparse.coverage.belowTargetMin, true);
   assert.equal(sparse.coverage.shortfall, 10);
+  assert.equal(sparse.research.researchTrigger, true);
+  assert.equal(sparse.research.status, "RESEARCH_GAP");
+  assert.equal(sparse.research.customerFacingCompletenessIndicator, false);
+});
+
+run("amenities_verified_coverage_research_trigger", () => {
+  assert.equal(HE_AMENITIES_DISPLAY_TARGET_MIN, 12);
+  for (const key of [
+    "business_center",
+    "room_service",
+    "free_wifi",
+    "pet_friendly",
+    "on_site_parking",
+    "metro_shuttle",
+    "room_accessibility",
+  ]) {
+    assert.ok(ATTRIBUTE_DEFINITIONS[key], "missing ATTRIBUTE_DEFINITIONS." + key);
+  }
+  const merged = mergeAmenityDisplaySources([
+    [{ id: "outdoorPool", label: "Outdoor Pool", verificationStatus: "VERIFIED_FACT" }],
+    [
+      { id: "outdoorPool", label: "Outdoor Pool" },
+      { id: "businessCenter", label: "Business Center" },
+      { id: "bethesda_md_location", label: "Bethesda, Maryland Location" },
+      { id: "meetingRooms", label: "Meeting Space" },
+      { id: "meeting_space", label: "Meeting & Event Space" },
+    ],
+  ]);
+  assert.equal(merged.length, 3, "geo filtered; pool+meeting near-dupes collapsed; business kept");
+
+  const bethProfile = JSON.parse(
+    read("fixtures/ai-demand-positioning/bethesda-marriott-property-profile.json")
+  );
+  const bethGuest = (bethProfile.attributes || [])
+    .map((key) => ({
+      id: key,
+      label: ATTRIBUTE_DEFINITIONS[key]?.label || key,
+      factKind: "VERIFIED_FACT",
+      sourceUrl: bethProfile.attributeEvidence?.[key]?.sourceUrl || bethProfile.website,
+    }))
+    .filter((row) => !isNonGuestAmenityLabel(row.label, row.id));
+  const guest = selectAmenitiesForHotelExplorerDisplay(bethGuest, {
+    hotelId: "recLuxvwwxID7U2B8",
+    hotelName: "Bethesda Marriott",
+  });
+  assert.ok(
+    guest.coverage.verifiedCount >= 12,
+    "Bethesda must meet ≥12 when first-party evidence permits (was 9)"
+  );
+  assert.ok(guest.coverage.displayedCount <= 20);
+  assert.equal(guest.coverage.belowTargetMin, false);
+  assert.equal(guest.research.status, "COVERAGE_OK");
+  assert.ok(
+    !/UNVERIFIED/i.test(String(bethProfile.notes?.parking || "")),
+    "parking note must not remain UNVERIFIED after Marriott.com freeze"
+  );
+  const gap = assessAmenityCoverageResearchNeed(
+    { verifiedCount: 9, targetMin: 12, max: 20 },
+    { hotelId: "recTEST", hotelName: "Sparse" }
+  );
+  assert.equal(gap.researchTrigger, true);
+  assert.equal(gap.shortfall, 3);
+  mustInclude(
+    read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
+    "HE-QL-030"
+  );
+  const reg = JSON.parse(
+    read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
+  );
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-030"));
 });
 
 run("forbids_internal_graph_ids_in_relationship_markup", () => {

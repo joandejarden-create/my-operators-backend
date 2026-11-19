@@ -129,6 +129,8 @@
     "full service spa": "spa",
     "parking": "freeParking",
     "free parking": "freeParking",
+    "on site parking": "freeParking",
+    "on-site parking": "freeParking",
     "valet parking": "valetParking",
     "wi fi": "freeWifi",
     "wifi": "freeWifi",
@@ -137,6 +139,11 @@
     "washington dc metro access": "metroAccess",
     "dc metro access": "metroAccess",
     "metro access": "metroAccess",
+    "complimentary metro shuttle": "airportShuttle",
+    "metro shuttle": "airportShuttle",
+    "accessible rooms facilities": "roomAccessibility",
+    "accessible rooms & facilities": "roomAccessibility",
+    "concierge service": "concierge",
   };
 
   function normalizeLabelKey(label) {
