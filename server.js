@@ -89,6 +89,7 @@ import {
   getHotelExplorerFounderPreviewContacts,
 } from "./api/hotel-explorer-founder-preview.js";
 import { getHotelExplorerNewsArticles } from "./api/hotel-explorer-news-articles.js";
+import { getHotelExplorerGuestSentiment } from "./api/hotel-explorer-guest-sentiment.js";
 import { getHeAirtableGraphHotel } from "./api/he-airtable-graph.js";
 import {
   getOwnerIntelligenceMeta,
@@ -998,6 +999,11 @@ app.get(
 app.get(
   "/api/hotel-explorer/hotels/:hotelId/news-articles",
   getHotelExplorerNewsArticles
+);
+// Hotel Explorer — guest sentiment (GET-only; staged / rights-gated; no paid providers)
+app.get(
+  "/api/hotel-explorer/hotels/:hotelId/guest-sentiment",
+  getHotelExplorerGuestSentiment
 );
 
 // Hotel Explorer — Airtable HI graph read (Airtable-first tabs 2/4/5)

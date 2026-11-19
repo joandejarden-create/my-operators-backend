@@ -3244,8 +3244,188 @@
       citeBtn(1) +
       "</p></div></section>" +
       '<div class="hiw-hotel-news-host" data-hiw-hotel-news-host="1" hidden></div>' +
+      '<div class="hiw-guest-sentiment-host" data-hiw-guest-sentiment-host="1" hidden></div>' +
       "</article>"
     );
+  }
+
+  function isFounderProposedPreview() {
+    try {
+      var q = new URLSearchParams(window.location.search || "");
+      var mode = String(q.get("previewMode") || q.get("mode") || "")
+        .trim()
+        .toLowerCase();
+      if (mode === "proposed" || mode === "phase3") return true;
+    } catch (_e) {}
+    return !!(
+      state.ownership &&
+      state.ownership.founder_preview &&
+      String(state.ownership.founder_preview.mode || "").toLowerCase() === "proposed"
+    );
+  }
+
+  function renderGuestSentimentSection(payload) {
+    if (!payload || payload.visible !== true) return "";
+    var platforms = payload.platforms || [];
+    var themes = payload.themes || [];
+    var insights = payload.insights || {};
+    var platRows = platforms
+      .map(function (p) {
+        var link = p.listingUrl
+          ? '<a class="hiw-sentiment-link" href="' +
+            esc(p.listingUrl) +
+            '" target="_blank" rel="noopener noreferrer">Open listing</a>'
+          : "";
+        return (
+          "<tr><th scope=\"row\">" +
+          esc(p.platformLabel || p.platform) +
+          "</th><td>" +
+          esc(p.ratingDisplay || "—") +
+          "</td><td>" +
+          esc(p.reviewCount != null ? formatCount(p.reviewCount) : "—") +
+          "</td><td>" +
+          esc(p.observedAt || "—") +
+          "</td><td>" +
+          link +
+          "</td></tr>"
+        );
+      })
+      .join("");
+
+    var strengthThemes = themes.filter(function (t) {
+      return t.polarity === "strength";
+    });
+    var concernThemes = themes.filter(function (t) {
+      return t.polarity === "concern";
+    });
+    function themeList(list) {
+      if (!list.length) {
+        return '<p class="hiw-prose hiw-prose--quiet">No directional category themes in the permitted sample.</p>';
+      }
+      return (
+        '<ul class="hiw-sentiment-theme-list">' +
+        list
+          .map(function (t) {
+            var ev = (t.evidence || [])
+              .map(function (e) {
+                return esc(e.platform) + " " + esc(e.scoreDisplay);
+              })
+              .join("; ");
+            return (
+              "<li><strong>" +
+              esc(t.label) +
+              "</strong>" +
+              (ev ? '<span class="hiw-sentiment-theme-ev"> — ' + ev + "</span>" : "") +
+              "</li>"
+            );
+          })
+          .join("") +
+        "</ul>"
+      );
+    }
+
+    var trends =
+      payload.trends && payload.trends.available
+        ? '<p class="hiw-prose">Historical observation windows are available for trend comparison.</p>'
+        : '<p class="hiw-prose hiw-prose--quiet">Trends unavailable — insufficient historical observations (single snapshot only).</p>';
+
+    var followUps = (insights.followUps || [])
+      .map(function (f) {
+        return "<li>" + esc(f) + "</li>";
+      })
+      .join("");
+
+    var lim = (payload.limitations || [])
+      .slice(0, 6)
+      .map(function (l) {
+        return "<li>" + esc(l) + "</li>";
+      })
+      .join("");
+
+    return (
+      '<section class="hiw-section hiw-section--guest-sentiment" data-hiw-guest-sentiment="1">' +
+      '<h3 class="hiw-section__h">Guest Sentiment &amp; Reputation</h3>' +
+      (payload.rightsChip
+        ? '<p class="hiw-chip hiw-chip--proposed">' + esc(payload.rightsChip) + "</p>"
+        : "") +
+      '<p class="hiw-prose hiw-prose--quiet">Platform-native scores only — incompatible scales are not averaged.</p>' +
+      '<div class="hiw-table-wrap">' +
+      '<table class="hiw-table hiw-table--sentiment"><thead><tr>' +
+      "<th>Platform</th><th>Native rating</th><th>Reviews</th><th>Observed</th><th>Source</th>" +
+      "</tr></thead><tbody>" +
+      platRows +
+      "</tbody></table></div>" +
+      '<details class="hiw-sentiment-details">' +
+      "<summary>Guest Experience Insights</summary>" +
+      '<div class="hiw-sentiment-insights">' +
+      (insights.executiveSummary
+        ? '<p class="hiw-prose">' + esc(insights.executiveSummary) + "</p>"
+        : "") +
+      (insights.interpretationNote
+        ? '<p class="hiw-prose hiw-prose--quiet">' + esc(insights.interpretationNote) + "</p>"
+        : "") +
+      '<h4 class="hiw-section__h hiw-section__h--sub">Frequently praised (category scores)</h4>' +
+      themeList(strengthThemes) +
+      '<h4 class="hiw-section__h hiw-section__h--sub">Relative concerns (category scores)</h4>' +
+      themeList(concernThemes) +
+      '<h4 class="hiw-section__h hiw-section__h--sub">Sentiment change</h4>' +
+      trends +
+      (followUps
+        ? '<h4 class="hiw-section__h hiw-section__h--sub">Recommended follow-ups</h4><ul class="hiw-sentiment-followups">' +
+          followUps +
+          "</ul>"
+        : "") +
+      (lim
+        ? '<h4 class="hiw-section__h hiw-section__h--sub">Sources &amp; limitations</h4><ul class="hiw-sentiment-limits">' +
+          lim +
+          "</ul>"
+        : "") +
+      "</div></details></section>"
+    );
+  }
+
+  function mountGuestSentiment(opts) {
+    opts = opts || {};
+    var host = document.querySelector("[data-hiw-guest-sentiment-host]");
+    if (!host || !state.hotel) return;
+    var id = recordId(state.hotel);
+    if (!id) {
+      host.hidden = true;
+      host.innerHTML = "";
+      return;
+    }
+    var params = new URLSearchParams();
+    if (state.hotel.name) params.set("name", state.hotel.name);
+    if (opts.founderPreview || isFounderProposedPreview()) {
+      params.set("mode", "proposed");
+      params.set("founderPreview", "1");
+    }
+    var url =
+      "/api/hotel-explorer/hotels/" +
+      encodeURIComponent(id) +
+      "/guest-sentiment?" +
+      params.toString();
+    fetch(url, { headers: { "ngrok-skip-browser-warning": "true" } })
+      .then(function (r) {
+        return r.json().catch(function () {
+          return null;
+        });
+      })
+      .then(function (payload) {
+        if (!host.isConnected) return;
+        if (!payload || payload.visible !== true || !(payload.platforms || []).length) {
+          host.hidden = true;
+          host.innerHTML = "";
+          return;
+        }
+        host.hidden = false;
+        host.innerHTML = renderGuestSentimentSection(payload);
+      })
+      .catch(function () {
+        if (!host.isConnected) return;
+        host.hidden = true;
+        host.innerHTML = "";
+      });
   }
 
   function renderSourcesTab() {
@@ -3409,7 +3589,10 @@
     var mainEl = document.getElementById("hiwMain");
     if (mainEl) mainEl.scrollTop = 0;
     if (state.tab === "ownership") mountOwnershipControlNetwork();
-    if (state.tab === "brand") mountHotelNewsArticles();
+    if (state.tab === "brand") {
+      mountHotelNewsArticles();
+      mountGuestSentiment();
+    }
   }
 
   function loadOrgNetwork() {
@@ -3907,6 +4090,7 @@
     },
     mountOwnershipControlNetwork: mountOwnershipControlNetwork,
     mountHotelNewsArticles: mountHotelNewsArticles,
+    mountGuestSentiment: mountGuestSentiment,
     openCitation: openCitation,
   };
 })();

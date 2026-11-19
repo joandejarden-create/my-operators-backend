@@ -1,0 +1,224 @@
+{
+  "generatedAt": "2026-11-19T19:44:45.535Z",
+  "applyAuthorized": false,
+  "paidProvidersCalled": false,
+  "hpcId": "recLuxvwwxID7U2B8",
+  "schema": {
+    "applyAuthorized": false,
+    "classification": "PERSISTENCE_DESIGNED",
+    "tables": [
+      {
+        "name": "HI Hotel Reputation Observations",
+        "purpose": "Point-in-time platform rating snapshots keyed to HPC",
+        "fields": [
+          "HPC Hotel ID",
+          "Platform",
+          "Platform Property ID",
+          "Listing URL",
+          "Native Rating",
+          "Rating Scale Max",
+          "Review Count",
+          "Observed At",
+          "Sample Period",
+          "Collection Method",
+          "Rights Status",
+          "Provenance Notes",
+          "Dedupe Key"
+        ]
+      },
+      {
+        "name": "HI Hotel Reputation Theme Scores",
+        "purpose": "Platform category / theme scores linked to observations",
+        "fields": [
+          "Observation",
+          "Theme ID",
+          "Theme Label",
+          "Score",
+          "Scale Max",
+          "Polarity Hint",
+          "Evidence Note"
+        ]
+      }
+    ],
+    "notes": [
+      "Do not store full review bodies unless licensed.",
+      "Reuse HPC identity; do not invent parallel hotel keys.",
+      "Historical rows retained — never overwrite prior Observed At snapshots."
+    ]
+  },
+  "dryRun": {
+    "applyAuthorized": false,
+    "classification": "PERSISTENCE_DESIGNED",
+    "hpcId": "recLuxvwwxID7U2B8",
+    "hotelName": "Bethesda Marriott",
+    "sourcePacket": "fixtures/hotel-explorer/guest-sentiment/beth-marriott-staged-v1.json",
+    "observations": [
+      {
+        "action": "CREATE_CANDIDATE",
+        "table": "HI Hotel Reputation Observations",
+        "fields": {
+          "HPC Hotel ID": [
+            "recLuxvwwxID7U2B8"
+          ],
+          "Platform": "TRIPADVISOR",
+          "Platform Property ID": "d83967",
+          "Listing URL": "https://www.tripadvisor.com/Hotel_Review-g41003-d83967-Reviews-Bethesda_Marriott-Bethesda_Montgomery_County_Maryland.html",
+          "Native Rating": 4.1,
+          "Rating Scale Max": 5,
+          "Review Count": 366,
+          "Observed At": "2026-11-19",
+          "Sample Period": "all-time listing aggregate (platform-reported)",
+          "Collection Method": "PUBLIC_LISTING_METADATA_RESEARCH",
+          "Rights Status": "RIGHTS_REVIEW_REQUIRED",
+          "Provenance Notes": "Public Tripadvisor hotel listing aggregates observed during HE Guest Sentiment Phase 1 research (no Actor/paid pull; no review bodies stored).",
+          "Dedupe Key": "recLuxvwwxID7U2B8|TRIPADVISOR|2026-11-19|d83967"
+        }
+      },
+      {
+        "action": "CREATE_CANDIDATE",
+        "table": "HI Hotel Reputation Observations",
+        "fields": {
+          "HPC Hotel ID": [
+            "recLuxvwwxID7U2B8"
+          ],
+          "Platform": "BOOKING",
+          "Platform Property ID": "bethesda-marriott",
+          "Listing URL": "https://www.booking.com/hotel/us/bethesda-marriott.html",
+          "Native Rating": 8,
+          "Rating Scale Max": 10,
+          "Review Count": 234,
+          "Observed At": "2026-11-19",
+          "Sample Period": "all-time listing aggregate (platform-reported)",
+          "Collection Method": "PUBLIC_LISTING_METADATA_RESEARCH",
+          "Rights Status": "RIGHTS_REVIEW_REQUIRED",
+          "Provenance Notes": "Public Booking.com hotel listing score card observed during HE Guest Sentiment Phase 1 research (no Demand API; no review bodies stored).",
+          "Dedupe Key": "recLuxvwwxID7U2B8|BOOKING|2026-11-19|bethesda-marriott"
+        }
+      },
+      {
+        "action": "CREATE_CANDIDATE",
+        "table": "HI Hotel Reputation Observations",
+        "fields": {
+          "HPC Hotel ID": [
+            "recLuxvwwxID7U2B8"
+          ],
+          "Platform": "EXPEDIA",
+          "Platform Property ID": "h23292",
+          "Listing URL": "https://www.expedia.com/Bethesda-Hotels-Bethesda-Marriott.h23292.Hotel-Information",
+          "Native Rating": 8.6,
+          "Rating Scale Max": 10,
+          "Review Count": 1001,
+          "Observed At": "2026-11-19",
+          "Sample Period": "all-time listing aggregate (platform-reported)",
+          "Collection Method": "PUBLIC_LISTING_METADATA_RESEARCH",
+          "Rights Status": "RIGHTS_REVIEW_REQUIRED",
+          "Provenance Notes": "Public Expedia hotel listing score observed during HE Guest Sentiment Phase 1 research (no Rapid Content API; no review bodies stored).",
+          "Dedupe Key": "recLuxvwwxID7U2B8|EXPEDIA|2026-11-19|h23292"
+        }
+      }
+    ],
+    "themeScores": [
+      {
+        "action": "CREATE_CANDIDATE",
+        "table": "HI Hotel Reputation Theme Scores",
+        "fields": {
+          "Observation": "(link → TRIPADVISOR @ 2026-11-19)",
+          "Theme Label": "Cleanliness",
+          "Score": 4.5,
+          "Scale Max": 5,
+          "Evidence Note": "Platform category aggregate — not a review excerpt"
+        }
+      },
+      {
+        "action": "CREATE_CANDIDATE",
+        "table": "HI Hotel Reputation Theme Scores",
+        "fields": {
+          "Observation": "(link → TRIPADVISOR @ 2026-11-19)",
+          "Theme Label": "Sleep Quality",
+          "Score": 4.3,
+          "Scale Max": 5,
+          "Evidence Note": "Platform category aggregate — not a review excerpt"
+        }
+      },
+      {
+        "action": "CREATE_CANDIDATE",
+        "table": "HI Hotel Reputation Theme Scores",
+        "fields": {
+          "Observation": "(link → BOOKING @ 2026-11-19)",
+          "Theme Label": "Staff",
+          "Score": 8.5,
+          "Scale Max": 10,
+          "Evidence Note": "Platform category aggregate — not a review excerpt"
+        }
+      },
+      {
+        "action": "CREATE_CANDIDATE",
+        "table": "HI Hotel Reputation Theme Scores",
+        "fields": {
+          "Observation": "(link → BOOKING @ 2026-11-19)",
+          "Theme Label": "Facilities",
+          "Score": 8.5,
+          "Scale Max": 10,
+          "Evidence Note": "Platform category aggregate — not a review excerpt"
+        }
+      },
+      {
+        "action": "CREATE_CANDIDATE",
+        "table": "HI Hotel Reputation Theme Scores",
+        "fields": {
+          "Observation": "(link → BOOKING @ 2026-11-19)",
+          "Theme Label": "Cleanliness",
+          "Score": 8.8,
+          "Scale Max": 10,
+          "Evidence Note": "Platform category aggregate — not a review excerpt"
+        }
+      },
+      {
+        "action": "CREATE_CANDIDATE",
+        "table": "HI Hotel Reputation Theme Scores",
+        "fields": {
+          "Observation": "(link → BOOKING @ 2026-11-19)",
+          "Theme Label": "Comfort",
+          "Score": 8.8,
+          "Scale Max": 10,
+          "Evidence Note": "Platform category aggregate — not a review excerpt"
+        }
+      },
+      {
+        "action": "CREATE_CANDIDATE",
+        "table": "HI Hotel Reputation Theme Scores",
+        "fields": {
+          "Observation": "(link → BOOKING @ 2026-11-19)",
+          "Theme Label": "Value for money",
+          "Score": 7.7,
+          "Scale Max": 10,
+          "Evidence Note": "Platform category aggregate — not a review excerpt"
+        }
+      },
+      {
+        "action": "CREATE_CANDIDATE",
+        "table": "HI Hotel Reputation Theme Scores",
+        "fields": {
+          "Observation": "(link → BOOKING @ 2026-11-19)",
+          "Theme Label": "Location",
+          "Score": 8.2,
+          "Scale Max": 10,
+          "Evidence Note": "Platform category aggregate — not a review excerpt"
+        }
+      }
+    ],
+    "notes": [
+      "No production Airtable writes in this dry-run.",
+      "Do not store full copyrighted review text.",
+      "Retain historical observation rows; never overwrite prior Observed At snapshots."
+    ]
+  },
+  "previewView": {
+    "visible": true,
+    "proposedPreview": true,
+    "platformCount": 3,
+    "themeCount": 7,
+    "trendsAvailable": false,
+    "rightsChip": "Proposed preview — public listing metadata. Rights review required. Not Airtable-persisted. Not a licensed review feed."
+  }
+}

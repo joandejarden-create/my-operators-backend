@@ -1,9 +1,9 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.10`  
+**Version:** `hotel-explorer-quality-standard-v1.11`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
-**Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1` · `npm run test:he-hotel-news-from-market-alerts-v1`
+**Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1` · `npm run test:he-hotel-news-from-market-alerts-v1` · `npm run test:he-guest-sentiment-brand-operator-v1`
 
 ## Purpose
 
@@ -129,6 +129,17 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 - GET `/api/hotel-explorer/hotels/:hotelId/news-articles` is read-only (`X-Dealality-Write: forbidden`); Market Alerts outage → invisible section, not a hard HE failure.
 - Persist metadata/summaries/URLs only — not full copyrighted article text.
 - Shared modules: `lib/hotel-intelligence/hotel-news-from-market-alerts-v1.js`, `market-alerts-hotel-association-sync-v1.js`, `api/hotel-explorer-news-articles.js`.
+
+### 9d. Guest Sentiment & Reputation (Brand / Operator)
+
+- **Not a new Hotel Explorer tab.** Guest Sentiment lives inside **Brand / Operator** after Brand & Operator Overview and Hotel News & Articles.
+- Show platform-native rating, scale, review count, observation date, and listing link per source. **Never** silently average incompatible scales (e.g. Tripadvisor /5 vs Booking /10).
+- Live customer UI stays **hidden** unless `live_ui_authorized === true` from a rights-cleared store. Founder Proposed Preview may render staged public-listing metadata with an explicit rights chip.
+- No unauthorized paid provider calls from HE routes (`X-Dealality-Paid-Providers: forbidden`). No consumer OTA scrape. No full copyrighted review bodies unless licensed.
+- Themes use `guest-theme-taxonomy-v1`; category scores are evidence of platform aggregates — not operational KPIs or CapEx proof. Do not emit precise % claims below `MIN_SAMPLE_FOR_PERCENT` (30).
+- Trends require ≥2 historical observations; a single snapshot must not manufacture 30/90/180/365-day series.
+- Incorrect hotel↔platform property matches, duplicate reviews, unsupported conclusions, and stale-as-current displays are regression failures (HE-QL-022).
+- Shared modules: `lib/hotel-intelligence/guest-sentiment/*`, `api/hotel-explorer-guest-sentiment.js`, Brand/Operator host in `hotel-intelligence-workspace.js`.
 
 ### 9a. Ownership & Control Network
 

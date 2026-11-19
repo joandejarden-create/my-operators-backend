@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.10",
+  "version": "hotel-explorer-founder-quality-lessons-v1.11",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -7,7 +7,8 @@
   "additionalGates": [
     "test:he-owner-portfolio-operator-view-v1",
     "test:he-ownership-control-network-v1",
-    "test:he-hotel-news-from-market-alerts-v1"
+    "test:he-hotel-news-from-market-alerts-v1",
+    "test:he-guest-sentiment-brand-operator-v1"
   ],
   "referenceHotels": {
     "uxGolden": {
@@ -216,6 +217,15 @@
       "sharedComponent": "lib/hotel-intelligence/hotel-news-from-market-alerts-v1.js; api/hotel-explorer-news-articles.js; hotel-intelligence-workspace.js Brand/Operator",
       "regressionTest": "he_hotel_news_from_market_alerts_gates",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v9-news-beth-hidden.png; quality-v9-news-loews-visible.png"
+    },
+    {
+      "id": "HE-QL-022",
+      "originalProblem": "Risk of a ratings-only widget or new HE tab that scrapes/averages review platforms without rights, invents trends, or mis-matches hotels",
+      "rootCause": "No HE guest-sentiment model, taxonomy, rights gate, or Brand/Operator subsection contract",
+      "approvedStandard": "Guest Sentiment inside Brand/Operator only; platform-native scales; hide unless authorized (founder proposed may show rights-gated staged metadata); taxonomy themes with evidence; no fabricated trends; no paid/scrape calls from HE API; Airtable dry-run only until approved",
+      "sharedComponent": "lib/hotel-intelligence/guest-sentiment/*; api/hotel-explorer-guest-sentiment.js; hotel-intelligence-workspace.js Brand/Operator",
+      "regressionTest": "he_guest_sentiment_brand_operator_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v10-sentiment-beth-proposed.png; quality-v10-sentiment-beth-live-hidden.png; quality-v10-sentiment-kgpv-hidden.png"
     }
   ]
 }

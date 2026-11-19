@@ -1,0 +1,93 @@
+{
+  "packetId": "he-guest-sentiment-beth-marriott-staged-v1",
+  "version": "guest-sentiment-model-v1",
+  "hpcId": "recLuxvwwxID7U2B8",
+  "hotelName": "Bethesda Marriott",
+  "observedAt": "2026-11-19",
+  "live_ui_authorized": false,
+  "founder_preview_render": true,
+  "canonicalSource": "STAGED_PUBLIC_LISTING_METADATA",
+  "applyAuthorized": false,
+  "airtablePersistence": "NONE — dry-run design only",
+  "totalReviewSample": 1601,
+  "limitations": [
+    "No licensed multi-platform reputation feed is contracted for Hotel Explorer.",
+    "Google Reviews / Places review storage is not authorized (Places ToS / storage policy).",
+    "Tripadvisor / Booking.com / Expedia consumer scrapes are blocked; Rapid/Demand APIs are stubs pending credentials + ToS review.",
+    "This packet stores public listing aggregates and category scores only — no full review bodies.",
+    "Category scores are platform-published aggregates, not operational KPIs or CapEx proof.",
+    "No historical observation series — trend windows are unavailable.",
+    "Expedia category breakdown was not captured in the rights-gated research pass.",
+    "Tripadvisor Location / Rooms / Value / Service bubble scores were incomplete in SERP extraction; only clearly attributed category scores are retained."
+  ],
+  "history": [],
+  "insights": {
+    "executiveSummary": "Bethesda Marriott shows mid-to-upper public listing scores across Tripadvisor (4.1/5), Booking.com (8.0/10), and Expedia (8.6/10). Booking category scores highlight cleanliness and comfort as relative strengths and value for money as the softer category. Tripadvisor sleep-quality and cleanliness bubbles are relatively firm where captured. Location / shuttle / aging-product themes appear in public commentary summaries but are not treated as measured causes here. No time-series is available — do not infer renovation or service-recovery trends from this snapshot.",
+    "followUps": [
+      "Confirm Tripadvisor d83967, Booking bethesda-marriott, and Expedia h23292 against HPC recLuxvwwxID7U2B8 before any paid refresh.",
+      "Founder decision required: licensed review/reputation vendor vs platform partner APIs vs public-metadata-only posture.",
+      "If CapEx or shuttle narrative is material, request ops evidence (work orders, guest-recovery logs) — do not treat review category scores as proof."
+    ]
+  },
+  "observations": [
+    {
+      "platform": "TRIPADVISOR",
+      "platformPropertyId": "d83967",
+      "listingUrl": "https://www.tripadvisor.com/Hotel_Review-g41003-d83967-Reviews-Bethesda_Marriott-Bethesda_Montgomery_County_Maryland.html",
+      "rating": 4.1,
+      "scaleMax": 5,
+      "reviewCount": 366,
+      "observedAt": "2026-11-19",
+      "samplePeriod": "all-time listing aggregate (platform-reported)",
+      "collectionMethod": "PUBLIC_LISTING_METADATA_RESEARCH",
+      "rightsStatus": "RIGHTS_REVIEW_REQUIRED",
+      "provenance": "Public Tripadvisor hotel listing aggregates observed during HE Guest Sentiment Phase 1 research (no Actor/paid pull; no review bodies stored).",
+      "categoryScores": [
+        { "label": "Cleanliness", "score": 4.5, "scaleMax": 5 },
+        { "label": "Sleep Quality", "score": 4.3, "scaleMax": 5 }
+      ]
+    },
+    {
+      "platform": "BOOKING",
+      "platformPropertyId": "bethesda-marriott",
+      "listingUrl": "https://www.booking.com/hotel/us/bethesda-marriott.html",
+      "rating": 8.0,
+      "scaleMax": 10,
+      "reviewCount": 234,
+      "observedAt": "2026-11-19",
+      "samplePeriod": "all-time listing aggregate (platform-reported)",
+      "collectionMethod": "PUBLIC_LISTING_METADATA_RESEARCH",
+      "rightsStatus": "RIGHTS_REVIEW_REQUIRED",
+      "provenance": "Public Booking.com hotel listing score card observed during HE Guest Sentiment Phase 1 research (no Demand API; no review bodies stored).",
+      "categoryScores": [
+        { "label": "Staff", "score": 8.5, "scaleMax": 10 },
+        { "label": "Facilities", "score": 8.5, "scaleMax": 10 },
+        { "label": "Cleanliness", "score": 8.8, "scaleMax": 10 },
+        { "label": "Comfort", "score": 8.8, "scaleMax": 10 },
+        { "label": "Value for money", "score": 7.7, "scaleMax": 10 },
+        { "label": "Location", "score": 8.2, "scaleMax": 10 }
+      ]
+    },
+    {
+      "platform": "EXPEDIA",
+      "platformPropertyId": "h23292",
+      "listingUrl": "https://www.expedia.com/Bethesda-Hotels-Bethesda-Marriott.h23292.Hotel-Information",
+      "rating": 8.6,
+      "scaleMax": 10,
+      "reviewCount": 1001,
+      "observedAt": "2026-11-19",
+      "samplePeriod": "all-time listing aggregate (platform-reported)",
+      "collectionMethod": "PUBLIC_LISTING_METADATA_RESEARCH",
+      "rightsStatus": "RIGHTS_REVIEW_REQUIRED",
+      "provenance": "Public Expedia hotel listing score observed during HE Guest Sentiment Phase 1 research (no Rapid Content API; no review bodies stored).",
+      "categoryScores": []
+    }
+  ],
+  "unresolvedPlatforms": [
+    {
+      "platform": "GOOGLE",
+      "status": "NOT_AUTHORIZED",
+      "note": "Google Places may expose rating/user_ratings_total under Places API, but storage/display requires Places ToS review. No Place ID resolved in this packet."
+    }
+  ]
+}

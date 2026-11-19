@@ -731,10 +731,14 @@
         }
         if (
           state.tab === "brand" &&
-          window.HotelIntelligenceWorkspace &&
-          typeof window.HotelIntelligenceWorkspace.mountHotelNewsArticles === "function"
+          window.HotelIntelligenceWorkspace
         ) {
-          window.HotelIntelligenceWorkspace.mountHotelNewsArticles();
+          if (typeof window.HotelIntelligenceWorkspace.mountHotelNewsArticles === "function") {
+            window.HotelIntelligenceWorkspace.mountHotelNewsArticles();
+          }
+          if (typeof window.HotelIntelligenceWorkspace.mountGuestSentiment === "function") {
+            window.HotelIntelligenceWorkspace.mountGuestSentiment();
+          }
         }
       }
     }
