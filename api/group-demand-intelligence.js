@@ -2880,9 +2880,15 @@ export async function postGdiContactReveal(req, res) {
 
   // Mock: env GDI_CONTACT_REVEAL_MOCK=1, or explicit body.useMock on local
   // worktree preview servers (never enables live Surfe / never spends credits).
+  // Production customer hosts must never honor fixture contact values — even if
+  // GDI_CONTACT_REVEAL_MOCK is accidentally set on the deploy host.
+  const isProductionCustomerHost =
+    process.env.NODE_ENV === "production" &&
+    process.env.DEALALITY_ALLOW_WORKTREE_SERVER !== "1";
   const allowLocalMock =
-    process.env.GDI_CONTACT_REVEAL_MOCK === "1" ||
-    process.env.DEALALITY_ALLOW_WORKTREE_SERVER === "1";
+    !isProductionCustomerHost &&
+    (process.env.GDI_CONTACT_REVEAL_MOCK === "1" ||
+      process.env.DEALALITY_ALLOW_WORKTREE_SERVER === "1");
   const useMock =
     allowLocalMock &&
     (body.useMock === true || process.env.GDI_CONTACT_REVEAL_MOCK === "1");
