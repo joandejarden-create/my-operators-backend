@@ -2,7 +2,7 @@
 
 **PR:** https://github.com/joandejarden-create/my-operators-backend/pull/439  
 **Prior reviewed HEAD:** `434c78d213b2eaddcd4dcfb27c2053497e781e41`  
-**Corrected HEAD (tip):** `6797cc04bc915a8236f4c253e68cbadcc1cdfe06` (includes origin/main FF merge after fix commit `f23ea2a33`)  
+**Corrected HEAD (tip):** `d19a8ec7f4d4738ec162e14743ddb3fe90887a0f` (fix `f23ea2a33` + main merge + docs)  
 **Status:** Corrections applied on same PR — AWAITING_INTEGRATION_CONTROLLER  
 **Paid $5:** NOT AUTHORIZED
 
