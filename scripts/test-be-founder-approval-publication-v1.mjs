@@ -123,8 +123,16 @@ assert.equal(dry.airtableWrites, 0);
 assert.equal(dry.publicationApplied, false);
 assert.equal(dry.customerPromoted, false);
 assert.equal(dry.productionWritesEnabled, false);
-assert.ok(dry.steps.length >= 10);
+assert.ok(dry.steps.length >= 11);
+assert.ok(dry.steps.some((s) => s.step === "LOCAL_PRODUCT_PARITY"));
+assert.ok(dry.localProductParityGate);
+assert.equal(dry.localProductParityGate.ok, false);
 assert.ok(dry.auditRelativePath);
+assert.ok(
+  (dry.steps.find((s) => s.step === "VALIDATE_GATES")?.failures || []).some(
+    (f) => f.code === "LOCAL_PRODUCT_PARITY_REQUIRED" || f.code === "GATE1_NOT_APPROVED",
+  ),
+);
 
 // Even with approve decision + fake gate pass, production writer remains inert without activation
 const wouldPassGates = runFounderApprovalPublication({
