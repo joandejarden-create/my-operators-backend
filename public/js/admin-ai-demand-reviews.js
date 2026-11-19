@@ -252,34 +252,27 @@
     var adpOk = !!(r.adpClient && r.adpClient.available === true);
     var adpDisabledTitle = adpClientUnavailableTitle(r);
     var pdfOk = !!(r.hasPdf && r.reviewId);
+    var pdfDisabledTitle =
+      r.pdfUnavailableReason ||
+      "PDF unavailable — generate a performance review PDF first";
     var primary = [];
     var more = [];
 
-    // Primary: Download PDF + Copy external URL (admin-authorized; PDF ≠ customer-share gate).
-    if (pdfOk) {
-      primary.push({
-        label: "Download PDF",
-        act: "download-pdf",
-        title: "Download current performance review PDF",
-      });
-    } else {
-      primary.push({
-        label: "Download PDF",
-        act: "download-pdf",
-        disabled: true,
-        title:
-          r.pdfUnavailableReason ||
-          "PDF unavailable — generate a performance review PDF first",
-      });
-      if (r.propertyId && r.coverageStatus !== "BLOCKED") {
-        more.push({
-          label: "Generate PDF",
-          act: "draft",
-          title: "Generate performance review PDF",
-        });
-      }
-    }
-
+    // Primary icons: View PDF → Download PDF → Copy URL (PDF ≠ customer-share gate).
+    primary.push({
+      label: "View PDF",
+      act: "view-pdf",
+      disabled: !pdfOk,
+      title: pdfOk ? "View performance review PDF" : pdfDisabledTitle,
+    });
+    primary.push({
+      label: "Download PDF",
+      act: "download-pdf",
+      disabled: !pdfOk,
+      title: pdfOk
+        ? "Download current performance review PDF"
+        : pdfDisabledTitle,
+    });
     primary.push({
       label: "Copy URL",
       act: "copy-adp-client",
@@ -289,7 +282,16 @@
         : adpDisabledTitle,
     });
 
+    if (!pdfOk && r.propertyId && r.coverageStatus !== "BLOCKED") {
+      more.push({
+        label: "Generate PDF",
+        act: "draft",
+        title: "Generate performance review PDF",
+      });
+    }
+
     // More: client view (authorized share only), action plan, regenerate, history.
+    // Do not duplicate View PDF / Download PDF here.
     more.push({
       label: "Open review in client view",
       act: "open-adp-client",
@@ -312,13 +314,6 @@
         title: "Open archived review in admin preview",
       });
       more.push({ label: "Meeting mode", act: "meeting" });
-      if (pdfOk) {
-        more.push({
-          label: "View PDF",
-          act: "view-pdf",
-          title: "View performance review PDF in browser",
-        });
-      }
     }
     more.push({
       label: "View report history",

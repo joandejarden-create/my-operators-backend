@@ -77,9 +77,9 @@ All 38 legitimate hotels: `CURRENT_COMPARABLE`.
 
 **Before (prior primary):** View PDF + Open review (admin preview); Download PDF + Copy ADP URL buried in More / ADP Client column.
 
-**After (this PR):**
-- Primary: **Download PDF**, **Copy URL**
-- More: Open review in client view (authorized share only), Open action plan, Regenerate review, View report history (+ admin preview / meeting / view PDF retained)
+**After (this PR — final row-action order):**
+- Primary icons: **View PDF** → **Download PDF** → **Copy URL** → **More**
+- More: Open review in client view (authorized share only), Open action plan, Regenerate review, View report history (+ admin preview / meeting). View/Download PDF are not duplicated in More.
 
 Screenshots:
 - `reports/ai-demand-positioning/methodology/admin-actions-after-primary.png`

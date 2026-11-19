@@ -17,7 +17,7 @@
 </head>
 <body>
   <h1>AI Demand Reviews — row actions (fixture)</h1>
-  <p>Primary: Download PDF + Copy URL. More: client view, action plan, regenerate, history.</p>
+  <p>Primary: View PDF → Download PDF → Copy URL → More. Client view stays in More.</p>
   <table>
     <thead>
       <tr>
@@ -38,32 +38,75 @@
         var pdfOk = !!(r.hasPdf && r.reviewId);
         var primary = [];
         var more = [];
-        if (pdfOk) {
-          primary.push({ label: "Download PDF", act: "download-pdf", title: "Download current performance review PDF" });
-        } else {
-          primary.push({ label: "Download PDF", act: "download-pdf", disabled: true, title: "PDF unavailable" });
-        }
+        primary.push({
+          label: "View PDF",
+          act: "view-pdf",
+          disabled: !pdfOk,
+          title: pdfOk ? "View performance review PDF" : "PDF unavailable",
+        });
+        primary.push({
+          label: "Download PDF",
+          act: "download-pdf",
+          disabled: !pdfOk,
+          title: pdfOk ? "Download current performance review PDF" : "PDF unavailable",
+        });
         primary.push({
           label: "Copy URL",
           act: "copy-adp-client",
           disabled: !adpOk,
-          title: adpOk ? "Copy authorized production HTTPS ADP client URL" : "No authorized ADP share link",
+          title: adpOk
+            ? "Copy authorized production HTTPS ADP client URL"
+            : "No authorized ADP share link",
         });
-        more.push({ label: "Open review in client view", act: "open-adp-client", disabled: !adpOk, title: adpOk ? "Open authorized production ADP client report" : "No authorized share" });
+        more.push({
+          label: "Open review in client view",
+          act: "open-adp-client",
+          disabled: !adpOk,
+          title: adpOk
+            ? "Open authorized production ADP client report"
+            : "No authorized share",
+        });
         more.push({ label: "Open action plan", act: "open-action-plan" });
         more.push({ label: "Regenerate review", act: "regenerate" });
         more.push({ label: "View report history", act: "open-archive" });
-        return T.actionsHtml({ primary: primary, more: more }, { id: r.reviewId || "", property: r.propertyId || "" });
+        return T.actionsHtml(
+          { primary: primary, more: more },
+          { id: r.reviewId || "", property: r.propertyId || "" }
+        );
       }
       var samples = [
-        { propertyName: "AC Hotel A Coruña", hasPdf: true, reviewId: "r1", adpClient: { available: true } },
-        { propertyName: "Charlotte Marriott City Center", hasPdf: true, reviewId: "r2", adpClient: { available: false } },
-        { propertyName: "PDF pending hotel", hasPdf: false, reviewId: null, adpClient: { available: false } },
+        {
+          propertyName: "AC Hotel A Coruña",
+          hasPdf: true,
+          reviewId: "r1",
+          adpClient: { available: true },
+        },
+        {
+          propertyName: "Charlotte Marriott City Center",
+          hasPdf: true,
+          reviewId: "r2",
+          adpClient: { available: false },
+        },
+        {
+          propertyName: "PDF pending hotel",
+          hasPdf: false,
+          reviewId: null,
+          adpClient: { available: false },
+        },
       ];
-      var html = samples.map(function (s) {
-        return "<tr><td class=\"row-hotel\">" + s.propertyName + "</td><td>" +
-          (s.hasPdf ? "READY" : "NEEDS_REBUILD") + "</td><td>" + pack(s) + "</td></tr>";
-      }).join("");
+      var html = samples
+        .map(function (s) {
+          return (
+            '<tr><td class="row-hotel">' +
+            s.propertyName +
+            "</td><td>" +
+            (s.hasPdf ? "READY" : "NEEDS_REBUILD") +
+            "</td><td>" +
+            pack(s) +
+            "</td></tr>"
+          );
+        })
+        .join("");
       document.getElementById("rows").innerHTML = html;
     })();
   </script>

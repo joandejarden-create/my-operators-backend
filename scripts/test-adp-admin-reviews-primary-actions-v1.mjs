@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 /**
- * Static contract: AI Demand Reviews compact actions expose Download PDF + Copy URL
- * as primary, with client-view / action plan / regenerate / history in More.
+ * Static contract: AI Demand Reviews primary icons are
+ * View PDF → Download PDF → Copy URL → More.
+ * Client view / action plan / regenerate / history stay in More.
+ * View/Download PDF must not be duplicated in the overflow menu.
  */
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -20,12 +22,18 @@ const fnMatch = src.match(
 assert.ok(fnMatch, "compactCoverageActions not found");
 const body = fnMatch[0];
 
-assert.match(body, /label:\s*"Download PDF"/);
+const viewIdx = body.indexOf('label: "View PDF"');
+const downloadIdx = body.indexOf('label: "Download PDF"');
+const copyIdx = body.indexOf('label: "Copy URL"');
+assert.ok(viewIdx > -1, "View PDF missing");
+assert.ok(downloadIdx > -1, "Download PDF missing");
+assert.ok(copyIdx > -1, "Copy URL missing");
+assert.ok(viewIdx < downloadIdx, "View PDF must precede Download PDF");
+assert.ok(downloadIdx < copyIdx, "Download PDF must precede Copy URL");
+
+assert.match(body, /act:\s*"view-pdf"/);
 assert.match(body, /act:\s*"download-pdf"/);
-assert.match(body, /label:\s*"Copy URL"/);
 assert.match(body, /act:\s*"copy-adp-client"/);
-assert.match(body, /primary\.push\(\{[\s\S]*Download PDF/);
-assert.match(body, /primary\.push\(\{[\s\S]*Copy URL/);
 assert.match(body, /Open review in client view/);
 assert.match(body, /act:\s*"open-adp-client"/);
 assert.match(body, /Open action plan/);
@@ -33,7 +41,10 @@ assert.match(body, /Regenerate review/);
 assert.match(body, /View report history/);
 assert.match(body, /act:\s*"open-archive"/);
 
-// Must not keep Download PDF / Copy URL only in More as sole access path.
+assert.ok(
+  /primary\.push\([\s\S]*view-pdf/.test(body),
+  "View PDF must be primary"
+);
 assert.ok(
   /primary\.push\([\s\S]*download-pdf/.test(body),
   "Download PDF must be primary"
@@ -43,12 +54,23 @@ assert.ok(
   "Copy URL must be primary"
 );
 
+// Overflow must not re-add View/Download PDF.
+const moreSection = body.slice(body.indexOf("// More:"));
+assert.ok(
+  !/act:\s*"view-pdf"/.test(moreSection),
+  "View PDF must not be duplicated in More"
+);
+assert.ok(
+  !/act:\s*"download-pdf"/.test(moreSection),
+  "Download PDF must not be duplicated in More"
+);
+
 console.log(
   JSON.stringify(
     {
       ok: true,
       gate: "test:adp-admin-reviews-primary-actions-v1",
-      primary: ["Download PDF", "Copy URL"],
+      primary: ["View PDF", "Download PDF", "Copy URL"],
       more: [
         "Open review in client view",
         "Open action plan",
