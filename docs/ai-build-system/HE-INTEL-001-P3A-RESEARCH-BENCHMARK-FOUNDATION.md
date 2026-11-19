@@ -43,6 +43,8 @@ Brave = not ready (no adapter/key). Surfe/PDL excluded.
 Separated layers: discovered claim → supporting source → independent verification → confidence → acceptance → graph mapping → publication eligibility.  
 No evidence → **UNKNOWN** (never accepted). Inferred emails rejected. Provider self-confidence is not proof. Blind adjudication supported.
 
+**Ownership objective (founder correction):** success = actionable ultimate ownership + decision-makers + contact pathways + structure. Legal-entity-only results are **partial**, not full research success. See `HE-INTEL-001-OWNERSHIP-RESEARCH-OBJECTIVE.md`.
+
 ## Cost ledger
 
 Search requests, tokens, credits, failures/retries, org-level and per-hotel incremental costs, actual vs estimated, UNKNOWN labels. Shared budget cannot be bypassed by parallel arms. P3A hard cap = **$0**.

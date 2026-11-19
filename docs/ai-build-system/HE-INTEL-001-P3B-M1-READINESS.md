@@ -12,6 +12,10 @@
 
 Six-hotel P3A cohort retained for subsequent evaluation.
 
+## Ownership research objective
+
+Primary M1/live evaluation goal is **actionable ultimate ownership intelligence** (who owns, who to speak with, how to reach them, how we know) — not legal-titleholder identification alone. Legal-entity-only = partial. Operators/brands are not owners. See `HE-INTEL-001-OWNERSHIP-RESEARCH-OBJECTIVE.md`.
+
 ## What this PR delivers
 - Gateway-compatible adapters for Exa, Parallel Search/Task, Dealality native
 - Atomic shared-budget ledger (run + per-hotel caps; no concurrent bypass)
