@@ -24,6 +24,7 @@ import {
   GRAPH_SCHEMA_VERSION,
   HPC_TABLE_ID,
   HPC_TABLE_NAME,
+  HPC_RECIPROCAL_RELATIONSHIP_FIELD,
   HI_GRAPH_TABLES,
   MAP_HI_ORGANIZATION,
   MAP_HI_HOTEL_ORG_RELATIONSHIP,
@@ -380,7 +381,78 @@ async function ensureLinks(baseId, token, tables, report, hpcTableId) {
 
   if (org) await ensureLink(org, MAP_HI_ORGANIZATION.parentOrgLink, org.id);
   if (rel && org) await ensureLink(rel, MAP_HI_HOTEL_ORG_RELATIONSHIP.organizationLink, org.id);
-  if (rel && hpcTableId) await ensureLink(rel, MAP_HI_HOTEL_ORG_RELATIONSHIP.hpcHotelLink, hpcTableId);
+  if (rel && hpcTableId) {
+    // Prefer founder name "HPC Hotel"; rename legacy "Hotel Property Census" if present
+    const existingNames = new Set((rel.fields || []).map((f) => f.name));
+    if (
+      existingNames.has("Hotel Property Census") &&
+      !existingNames.has(MAP_HI_HOTEL_ORG_RELATIONSHIP.hpcHotelLink)
+    ) {
+      const legacy = (rel.fields || []).find((f) => f.name === "Hotel Property Census");
+      if (legacy && !DRY) {
+        const { res, json } = await metaFetch(baseId, token, `/tables/${rel.id}/fields/${legacy.id}`, {
+          method: "PATCH",
+          body: JSON.stringify({ name: MAP_HI_HOTEL_ORG_RELATIONSHIP.hpcHotelLink }),
+        });
+        if (res.ok) {
+          legacy.name = MAP_HI_HOTEL_ORG_RELATIONSHIP.hpcHotelLink;
+          linkReport.push({
+            table: rel.name,
+            field: MAP_HI_HOTEL_ORG_RELATIONSHIP.hpcHotelLink,
+            renamedFrom: "Hotel Property Census",
+          });
+          console.log("RENAMED LINK", rel.name, "Hotel Property Census → HPC Hotel");
+        } else {
+          linkReport.push({ table: rel.name, field: "HPC Hotel", renameError: json });
+        }
+      }
+    }
+    await ensureLink(rel, MAP_HI_HOTEL_ORG_RELATIONSHIP.hpcHotelLink, hpcTableId);
+
+    // Ensure reciprocal on HPC is named HI Organization Relationships (idempotent rename)
+    const hpcTable = tables.find((t) => t.id === hpcTableId);
+    const recip = (hpcTable?.fields || []).find(
+      (f) =>
+        f.options?.linkedTableId === rel.id ||
+        f.name === "HI Hotel–Org Relationships" ||
+        f.name === HPC_RECIPROCAL_RELATIONSHIP_FIELD
+    );
+    if (recip && recip.name !== HPC_RECIPROCAL_RELATIONSHIP_FIELD && !DRY) {
+      const previousName = recip.name;
+      const { res, json } = await metaFetch(
+        baseId,
+        token,
+        `/tables/${hpcTableId}/fields/${recip.id}`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({ name: HPC_RECIPROCAL_RELATIONSHIP_FIELD }),
+        }
+      );
+      if (res.ok) {
+        recip.name = HPC_RECIPROCAL_RELATIONSHIP_FIELD;
+        linkReport.push({
+          table: HPC_TABLE_NAME,
+          field: HPC_RECIPROCAL_RELATIONSHIP_FIELD,
+          renamedFrom: previousName,
+          skippedDuplicate: false,
+        });
+        console.log("RENAMED RECIPROCAL", previousName, "→", HPC_RECIPROCAL_RELATIONSHIP_FIELD);
+      } else {
+        linkReport.push({
+          table: HPC_TABLE_NAME,
+          field: HPC_RECIPROCAL_RELATIONSHIP_FIELD,
+          renameError: json,
+        });
+      }
+    } else if (recip && recip.name === HPC_RECIPROCAL_RELATIONSHIP_FIELD) {
+      linkReport.push({
+        table: HPC_TABLE_NAME,
+        field: HPC_RECIPROCAL_RELATIONSHIP_FIELD,
+        skipped: true,
+        note: "reciprocal already correctly named",
+      });
+    }
+  }
   if (contact && org) await ensureLink(contact, MAP_HI_ORG_CONTACT.organizationLink, org.id);
   if (channel && contact) await ensureLink(channel, MAP_HI_CONTACT_CHANNEL.personLink, contact.id);
   if (channel && org) await ensureLink(channel, MAP_HI_CONTACT_CHANNEL.organizationLink, org.id);

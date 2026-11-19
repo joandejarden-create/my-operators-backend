@@ -31,6 +31,10 @@ import {
   assertNoCustomerPublication,
 } from "../lib/hotel-intelligence/research-engine-v1/airtable-graph-store.js";
 import {
+  validateHotelOrgRelationshipRefs,
+} from "../lib/hotel-intelligence/research-engine-v1/airtable-graph-referential-integrity.js";
+import { MAP_HI_HOTEL_ORG_RELATIONSHIP, HPC_RECIPROCAL_RELATIONSHIP_FIELD } from "../lib/hotel-intelligence/research-engine-v1/airtable-graph-contract-v1.js";
+import {
   normalizeOrganization,
   normalizeRelationship,
   normalizePerson,
@@ -316,7 +320,67 @@ function syntheticStaged(hpcId, orgName = "Synthetic Owner LLC") {
     ),
     true
   );
+  assert.equal(MAP_HI_HOTEL_ORG_RELATIONSHIP.hpcHotelLink, "HPC Hotel");
+  assert.equal(HPC_RECIPROCAL_RELATIONSHIP_FIELD, "HI Organization Relationships");
   ok("schema_ensure_script_present");
+}
+
+// 15. HPC native-link referential integrity / cardinality
+{
+  const hpcId = "recnPB3Q02NO8Ma1o";
+  const okRef = validateHotelOrgRelationshipRefs(
+    {
+      hpcHotelId: hpcId,
+      hpcHotelLinkIds: [hpcId],
+      organizationId: "dle_SYNTH",
+      organizationLinkIds: ["recOrgAirtable0001"],
+    },
+    {
+      hpcRecord: { id: hpcId },
+      orgRecord: { id: "recOrgAirtable0001" },
+      orgAirtableRecId: "recOrgAirtable0001",
+    }
+  );
+  assert.equal(okRef.ok, true);
+
+  const multi = validateHotelOrgRelationshipRefs(
+    {
+      hpcHotelId: hpcId,
+      hpcHotelLinkIds: [hpcId, "recOTHER000000001"],
+      organizationId: "dle_SYNTH",
+      organizationLinkIds: ["recOrgAirtable0001"],
+    },
+    {
+      hpcRecord: { id: hpcId },
+      orgRecord: { id: "recOrgAirtable0001" },
+      orgAirtableRecId: "recOrgAirtable0001",
+    }
+  );
+  assert.equal(multi.ok, false);
+  assert.equal(multi.error, "HPC_CARDINALITY_VIOLATION");
+
+  const mismatch = validateHotelOrgRelationshipRefs(
+    {
+      hpcHotelId: hpcId,
+      hpcHotelLinkIds: ["recOTHER000000001"],
+      organizationId: "dle_SYNTH",
+      organizationLinkIds: ["recOrgAirtable0001"],
+    },
+    {
+      hpcRecord: { id: hpcId },
+      orgRecord: { id: "recOrgAirtable0001" },
+      orgAirtableRecId: "recOrgAirtable0001",
+    }
+  );
+  assert.equal(mismatch.ok, false);
+  assert.equal(mismatch.error, "HPC_ID_LINK_MISMATCH");
+
+  const orphan = validateHotelOrgRelationshipRefs(
+    { hpcHotelId: hpcId, hpcHotelLinkIds: [hpcId] },
+    { hpcRecord: null, orgRecord: null }
+  );
+  assert.equal(orphan.ok, false);
+  ok("hpc_native_link_referential_integrity");
 }
 
 console.log(`\nOK he-intel-001-p2-airtable-graph-v1 (${passed} assertions)`);
