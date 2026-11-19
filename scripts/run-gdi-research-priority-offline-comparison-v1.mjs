@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
  * Offline research-priority comparison on frozen inventories ($0).
+ * Includes founder Option 2 fairness/commercial arms.
  * Does not change production selection policy. Does not call paid providers.
  */
 import fs from "node:fs";
@@ -43,6 +44,7 @@ const report = {
   paidCalls: 0,
   airtableWrites: 0,
   productionPolicyChanged: false,
+  founderOption2Selected: true,
   hotels: [],
 };
 
@@ -58,7 +60,9 @@ for (const h of hotels) {
     candidates,
     maxCandidates: h.maxCandidates,
     fairMinPerSegment: 1,
-    hotelProfile: { city: h.hotelName.includes("Bethesda") ? "Bethesda" : "Toronto" },
+    hotelProfile: {
+      city: h.hotelName.includes("Bethesda") ? "Bethesda" : "Toronto",
+    },
   });
   report.hotels.push({
     hotelId: h.hotelId,
@@ -79,7 +83,17 @@ fs.writeFileSync(
 );
 
 const bethesda = report.hotels[0]?.comparison;
-const md = `# GDI research-priority offline comparison V1
+const q = bethesda?.qualityByPolicy || {};
+const arms =
+  bethesda?.policies?.option2BoundedFairnessThenCommercialEval || {};
+const rot = bethesda?.fairRotationSimulation?.fair40_commercial60;
+
+function qualityRow(label, quality) {
+  if (!quality) return `| ${label} | — | — | — | — | — |`;
+  return `| ${label} | ${quality.selectedCount} | ${quality.segmentDiversity} | ${quality.meanProposedScore} | ${quality.withEvidenceCount} | ${quality.withContactNameCount} |`;
+}
+
+const md = `# GDI research-priority offline comparison V1 (Option 2)
 
 Generated: ${report.at}
 
@@ -87,27 +101,50 @@ Generated: ${report.at}
 - Paid calls: 0
 - Airtable writes: 0
 - Production selection policy changed: **false**
+- Founder Option 2 selected for evaluation: **true**
+- Production scoring weights: **unchanged**
 
 ## Structural finding
 ${bethesda?.structuralFinding?.note || ""}
 
-## Bethesda Marriott (frozen inventory)
+## Coverage distinction
+- Shallow discovery coverage ≠ deep-research coverage
+- ${bethesda?.coverageDistinction?.note || ""}
 
-| Metric | Value |
-| --- | ---: |
-| Inventory rows | ${report.hotels[0]?.inventoryCount} |
-| Cap | ${bethesda?.maxCandidates} |
-| Current selected | ${bethesda?.policies?.currentProductionFairFloorThenScore?.selectedCount} |
-| Proposed pure-score selected | ${bethesda?.policies?.proposedPureScoreEval?.selectedCount} |
-| Overlap current∩proposed | ${bethesda?.overlap?.currentVsProposed} |
-| Overlooked by current (in proposed top) | ${bethesda?.valuableOverlookedByCurrentCap?.length} |
+## Edition dedupe (Bethesda)
+- Inventory rows: ${report.hotels[0]?.inventoryCount}
+- After org+edition dedupe: ${bethesda?.afterEditionDedupeCount}
+- Dropped same-edition duplicates: ${bethesda?.droppedSameEditionDuplicates}
+- Distinct future editions of the same org are **not** collapsed
 
-### Segments selected under current policy
-\`\`\`
-${JSON.stringify(bethesda?.policies?.currentProductionFairFloorThenScore?.segmentSelected || {}, null, 2)}
-\`\`\`
+## Policy quality comparison (Bethesda, cap=8)
 
-### Examples overlooked by current cap (proposed score)
+| Policy | Selected | Segment diversity | Mean score | With evidence | With contact name |
+| --- | ---: | ---: | ---: | ---: | ---: |
+${qualityRow("Current fair-floor", q.currentFairFloor)}
+${qualityRow("Pure commercial", q.pureCommercial)}
+${qualityRow("Fair 25% / Commercial 75%", q.fair25_commercial75)}
+${qualityRow("Fair 40% / Commercial 60%", q.fair40_commercial60)}
+${qualityRow("Fair 50% / Commercial 50%", q.fair50_commercial50)}
+
+### Option 2 arm slot budgets
+${Object.entries(arms)
+  .map(
+    ([id, arm]) =>
+      `- **${id}**: fairSlots=${arm.fairSlots}, commercialSlots=${arm.commercialSlots}, diversity=${arm.quality?.segmentDiversity}`,
+  )
+  .join("\n") || "- (none)"}
+
+### Fair rotation (fair40 / 4 cycles)
+- Late segments recovered across cycles: **${rot?.lateSegmentsRecovered}**
+- Starved after 4 cycles: ${(rot?.starvedAfterCycles || []).join(", ") || "(none)"}
+
+### Overlap
+- Current ∩ pure commercial: ${bethesda?.overlap?.currentVsProposed}
+- Option2 40/60 ∩ current: ${bethesda?.overlap?.option2_40_vs_current}
+- Option2 40/60 ∩ pure: ${bethesda?.overlap?.option2_40_vs_pure}
+
+### Examples overlooked by current fair-floor cap (pure commercial top)
 ${(bethesda?.valuableOverlookedByCurrentCap || [])
   .slice(0, 8)
   .map(
@@ -119,8 +156,19 @@ ${(bethesda?.valuableOverlookedByCurrentCap || [])
 ## Recommendation
 ${bethesda?.recommendation || ""}
 
-**Founder gate:** do not enable proposed weights in production until review.
+**Founder gate:** keep production weights unchanged until this Option 2 evaluation is reviewed. Do not enable a new paid production selection policy from this report alone.
 `;
 
 fs.writeFileSync(path.join(outDir, "FOUNDER_COMPARISON.md"), md);
-console.log(JSON.stringify({ ok: true, outDir, hotels: report.hotels.length }, null, 2));
+console.log(
+  JSON.stringify(
+    {
+      ok: true,
+      outDir,
+      hotels: report.hotels.length,
+      productionPolicyChanged: false,
+    },
+    null,
+    2,
+  ),
+);

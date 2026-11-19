@@ -53,10 +53,25 @@ const comparison = compareResearchPriorityPolicies({
   hotelProfile: { city: "Bethesda" },
 });
 assert.equal(comparison.productionPolicyChanged, false);
+assert.equal(comparison.productionWeightsUnchanged, true);
+assert.equal(comparison.founderOption2Selected, true);
 assert.equal(comparison.structuralFinding.fairPassCanConsumeEntireCap, true);
 assert.equal(
   comparison.policies.currentProductionFairFloorThenScore.selectedCount,
   8,
+);
+assert.ok(comparison.policies.option2BoundedFairnessThenCommercialEval.fair40_commercial60);
+assert.equal(
+  comparison.policies.option2BoundedFairnessThenCommercialEval.fair40_commercial60.fairSlots,
+  3,
+);
+assert.equal(
+  comparison.policies.option2BoundedFairnessThenCommercialEval.fair25_commercial75.fairSlots,
+  2,
+);
+assert.equal(
+  comparison.fairRotationSimulation.fair40_commercial60.cycles,
+  4,
 );
 
 const emerging = scoreProposedResearchPriority({
