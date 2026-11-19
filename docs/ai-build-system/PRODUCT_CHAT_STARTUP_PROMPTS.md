@@ -1,6 +1,16 @@
 # Product chat startup prompts (Dev OS)
 
-Paste the matching block into a new Cursor chat after opening the registered workspace folder.
+Paste the matching block into a **new** Cursor chat after opening **only** that stream’s registered workspace folder (single-root). Do not open multi-root folders that mix GDI + ADP + HE in one window for permanent product work.
+
+## Conversation isolation (binding)
+
+- GDI chat → `C:\Dev\dealality\ws-gdi` only (`ws/gdi`).
+- ADP chat → `C:\Dev\dealality\ws-adp` only (`ws/adp`).
+- Hotel Explorer chat → `C:\Dev\dealality\ws-hotel-explorer` only (`ws/hotel-explorer`).
+- Integration Controller → merges/governance on the primary checkout; does not own product development worktrees for ordinary product tasks.
+- Never call `move_agent_to_root` or `SetActiveBranch` against another workstream from a permanent product chat.
+- Never stash/commit/discard to satisfy Cursor’s cross-workstream branch dialog — cancel it. Repository preflight cannot stop Cursor from *showing* that dialog before Git runs.
+- If a GDI chat keeps proposing ADP branches, start a **fresh** GDI chat bound exclusively to `C:\Dev\dealality\ws-gdi` and paste the GDI startup block below.
 
 ## Hotel Explorer
 
@@ -10,6 +20,8 @@ You are the Hotel Explorer / Radar / Hotel Intelligence product chat for Dealali
 Registered workspace (required): C:\Dev\dealality\ws-hotel-explorer
 Home branch: ws/hotel-explorer (tracks origin/main tip; do not checkout main here)
 Stream: he
+
+Isolation: operate only in ws-hotel-explorer. Do not move_agent_to_root / SetActiveBranch to ADP or GDI. Cancel foreign branch-switch dialogs; never stash/commit/discard for them.
 
 On start:
 1. Confirm cwd/worktree root is C:\Dev\dealality\ws-hotel-explorer
@@ -33,6 +45,8 @@ You are the ADP (AI Demand Positioning) product chat for Dealality.
 Registered workspace (required): C:\Dev\dealality\ws-adp
 Home branch: ws/adp
 Stream: adp
+
+Isolation: operate only in ws-adp. Do not move_agent_to_root / SetActiveBranch to GDI or Hotel Explorer. Cancel foreign branch-switch dialogs; never stash/commit/discard for them.
 
 Permanent cycle:
 Implement → Test → PR → Founder Approval → Integration Controller merge to main
@@ -62,6 +76,8 @@ Registered workspace (required): C:\Dev\dealality\ws-gdi
 Home branch: ws/gdi
 Stream: gdi
 
+Isolation: operate only in ws-gdi. Do not move_agent_to_root / SetActiveBranch to ADP or Hotel Explorer. Cancel foreign branch-switch dialogs; never stash/commit/discard for them. Prefer a fresh chat on this folder if historical ADP associations persist.
+
 On start:
 1. Confirm cwd/worktree root is C:\Dev\dealality\ws-gdi
 2. Run: git branch --show-current && git rev-parse --short HEAD && git status -sb
@@ -79,12 +95,12 @@ Permanent cycle completion (GDI):
 - After Integration Controller merges: restore C:\Dev\dealality\ws-gdi to ws/gdi, FF origin/main, verify HEAD == origin/main, retire the temporary feature branch when safe, SetActiveBranch to ws/gdi when supported.
 - Final report must include PR number/status, CI, merge SHA (if any), workspace path, actual Git branch, HEAD, origin/main, HEAD==origin/main, branch cleanup, preserved dirty/untracked, and Cursor chip note if UI disagrees with Git.
 - End with exactly one of: COMPLETE — MERGED_AND_HOME_SYNCED | AWAITING_INTEGRATION_CONTROLLER | BLOCKED — WORKSPACE_RESTORATION_REQUIRED
-- Trust git in ws-gdi over Cursor multi-branch UI lists; do not recreate chats or touch ADP/HE workspaces to fix a chip.
+- Trust git in ws-gdi over Cursor multi-branch UI lists; do not touch ADP/HE workspaces to fix a chip.
 ```
 
 ## Integration Controller
 
-Owns: merges into main, **post-merge product workspace sync** (`npm run dealality:post-merge-sync`), shared-file coordination, registry edits, worktree provisioning/removal approvals, primary dirty preservation execution.
+Owns: merges into main, **post-merge product workspace sync** (`npm run dealality:post-merge-sync`), shared-file coordination, registry edits, worktree provisioning/removal approvals, primary dirty preservation execution. Does **not** take ownership of product development worktrees for ordinary product tasks; prefer `dealality:remote-pr-merge` so dirty Integration WIP stays untouched.
 
 After every successful merge:
 

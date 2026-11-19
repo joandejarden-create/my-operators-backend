@@ -104,6 +104,7 @@ Registered path: `C:\Dev\dealality\ws-gdi`. Home: `ws/gdi`.
 - After confirmed merge, restore `ws/gdi`, fast-forward to current `origin/main`, verify HEAD equals `origin/main`, retire the temporary feature branch when safe, then report `COMPLETE — MERGED_AND_HOME_SYNCED`.
 - Do **not** start the next GDI hotel / phase / major task while the prior required PR is unmerged or while the registered GDI workspace is not on synchronized `ws/gdi`.
 - Cursor may show historical or multi-root branch chips; trust `git branch --show-current` + `git rev-parse HEAD` in `ws-gdi` over the UI list.
+- **Chat isolation:** operate only in `ws-gdi`. Never `move_agent_to_root` / `SetActiveBranch` to ADP or Hotel Explorer paths or their feature branches from this chat. Cancel Cursor cross-workstream switch dialogs; never stash/commit/discard to satisfy them. Prefer a fresh GDI chat opened on `C:\Dev\dealality\ws-gdi` when historical ADP associations keep resurfacing.
 
 **A task is not technically complete until its PR is merged into `main` and the affected product workspace is safely synchronized to its home/`origin/main` tip (primary sync when safe), unless an explicit blocker is reported.**
 
