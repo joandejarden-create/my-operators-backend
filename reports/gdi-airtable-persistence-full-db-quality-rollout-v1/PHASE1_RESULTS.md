@@ -1,7 +1,7 @@
 # Phase 1 results — write/read-back certification
 
-**Classification:** `PERSISTENCE_VALIDATED` (Sheraton controlled sample)  
-**Not yet:** database-wide / `FULL_E2E_VALIDATED`
+**Classification:** `PERSISTENCE_VALIDATED` (Sheraton full 79-opportunity inventory)  
+**Not yet:** cross-hotel database-wide / `FULL_E2E_VALIDATED`
 
 ## Contract change shipped
 
@@ -41,9 +41,24 @@ Artifacts: `SHERATON_DRY_RUN_CERT.json`, `SHERATON_APPLY_CERT.json`.
 3. **Public contact recovery / Surfe** intentionally off during persistence certification (no paid spend). Contact hierarchy code is in #462; channels persist when already on the opportunity DTO.
 4. **79-opportunity union** reconciled by canonical id — only a controlled sample written so far.
 
-## Next (Phase 2 continuation)
+## Full Sheraton inventory apply (Phase 2 reference hotel)
 
-1. IC merges #462 (GDI chat does not merge).  
-2. Expand Sheraton to full 79 with restartable batches + baseline capture.  
-3. Improve fact extraction so `commercialFactCatalog.facts[]` is populated where verified evidence exists.  
-4. Then Phase 3 full-database inventory.
+| Metric | Value |
+|--------|-------|
+| Union opportunities | **79** |
+| Slim OK / FAIL | 79 / 0 |
+| Wrote + read-back OK | **79 / 79** |
+| Read-back FAIL | 0 |
+| Publication leaks | 0 |
+| Batch certified | **YES** |
+
+See latest `SHERATON_APPLY_CERT.json` for per-opportunity Airtable record IDs and actions (CREATE/UPDATE/UNCHANGED).
+
+EUROGUSS MEXICO 2027 (`paid3_565ce4588e6d`) → research inventory `recqjHnN2XV56rvmZ` (read-back OK; source register retained).
+
+## Next
+
+1. **Integration Controller merges #462** (GDI chat does not merge) + post-merge sync `ws/gdi`.  
+2. Improve fact extraction so `commercialFactCatalog.facts[]` is populated where verified evidence exists.  
+3. Phase 3 — canonical inventory of **all** GDI hotels/opportunities, then restartable batches.  
+4. Do not start Phase 8 Full E2E roadmap until Phase 7 database certification.
