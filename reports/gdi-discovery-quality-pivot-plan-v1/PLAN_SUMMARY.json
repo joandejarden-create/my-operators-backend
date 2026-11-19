@@ -1,0 +1,55 @@
+{
+  "schema": "gdi_discovery_quality_pivot_plan_v1",
+  "version": "2026-11-19.1",
+  "parentPrs": [411, 412, 413],
+  "phase2bDecision": "STOP",
+  "nonGoals": [
+    "cmaa_ddaa_deepen",
+    "parallel_research_platform",
+    "paid_providers_without_founder_auth"
+  ],
+  "bottlenecks": [
+    {
+      "id": "P0_replay_as_discovery",
+      "title": "Discovery yield is replay/fixture-shaped unless paid Exa authorized",
+      "change": "Discovery Yield Contract + optional $0 official public discovery providers"
+    },
+    {
+      "id": "P1_wrong_demand_missions",
+      "title": "Missions optimize for published events not open hotel demand",
+      "change": "Demand Mechanism Mission Packs + OPEN/COMPETITOR_PLACED/TOO_EARLY intake disposition"
+    },
+    {
+      "id": "P2_no_graph_reuse",
+      "title": "Entity graph not wired at discovery intake",
+      "change": "Market Opportunity Graph intake + certified write-up gate"
+    }
+  ],
+  "firstTestableSlice": {
+    "id": "gdi-discovery-intake-disposition-v1",
+    "paidUsd": 0,
+    "airtableWrites": false,
+    "excludesOpportunityIds": [
+      "gdi_lmc_00562bf81b1e1957",
+      "gdi_opp_2027_ddaa_annual_conference_8"
+    ],
+    "successCriteria": [
+      "competitor_placed_classification_accuracy_ge_80_on_frozen_sample",
+      "zero_fixture_or_historical_labeled_LIVE_NEW",
+      "drawer_contract_gaps_enumerated"
+    ]
+  },
+  "validationDesign": {
+    "hotels": ["Bethesda_read_only", "one_non_US_read_only"],
+    "segments": [
+      "corporate_accounts_scaling",
+      "projects_infrastructure",
+      "associations_conferences_events",
+      "government_public_sector",
+      "education_scientific"
+    ],
+    "providersSlice1": ["historical_ledger", "inventory_bag", "optional_official_page"],
+    "commercialMetricsOnly": true
+  },
+  "docPath": "docs/data-intelligence/gdi-discovery-quality-pivot-plan-v1.md"
+}
