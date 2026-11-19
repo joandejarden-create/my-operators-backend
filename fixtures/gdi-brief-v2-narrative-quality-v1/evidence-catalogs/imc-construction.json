@@ -1,0 +1,65 @@
+{
+  "label": "imc-construction",
+  "opportunityId": "gdi_sc_a5768a99d4e89875",
+  "archivedSources": [
+    "data/group-demand-intelligence/hotels/recLuxvwwxID7U2B8/opportunities.json"
+  ],
+  "notes": "No Exa archive. Scaling-company research from company announcement + ConnectCRE.",
+  "materialFacts": [
+    {
+      "id": "imc-bethesda-hub",
+      "claim": "IMC opened a Bethesda regional hub to expand into Washington D.C. (announced 2026-07-21)",
+      "matchNeedles": ["Bethesda regional hub", "2026-07-21"],
+      "sourceUrl": "https://imcconstruction.com/imc-construction-expands-into-the-washington-d-c-region/",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "HIGH",
+      "changesPursuit": true,
+      "destination": "BRIEF",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "imc-info-route",
+      "claim": "info@imcconstruction.com is public organizational route",
+      "matchNeedles": ["info@imcconstruction.com"],
+      "sourceUrl": "https://imcconstruction.com/imc-construction-expands-into-the-washington-d-c-region/",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "MEDIUM",
+      "changesPursuit": true,
+      "destination": "BRIEF",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "imc-dan-baker",
+      "claim": "Dan Baker named as DMV expansion lead (email not public)",
+      "matchNeedles": ["Dan Baker"],
+      "sourceUrl": "https://imcconstruction.com/imc-construction-expands-into-the-washington-d-c-region/",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "MEDIUM",
+      "changesPursuit": false,
+      "destination": "SUPPORTING",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "imc-room-block",
+      "claim": "Confirmed hotel room block or preferred agreement",
+      "matchNeedles": ["confirmed room block"],
+      "verificationStatus": "UNKNOWN",
+      "commercialImportance": "HIGH",
+      "changesPursuit": true,
+      "destination": "BRIEF",
+      "origin": "ABSENT_FROM_RESEARCH"
+    }
+  ],
+  "unsupportedRiskPatterns": [
+    {
+      "id": "imc-conference-rfp-bleed",
+      "description": "Maps scaling account to conference RFP / site-visit host language without group demand evidence",
+      "test": "request RFP or site-visit inclusion"
+    },
+    {
+      "id": "imc-generic-truncation-filler",
+      "description": "Appends generic visiting-staff demand filler to truncated sentences",
+      "test": "market with visiting-staff and meeting demand still to be qualified"
+    }
+  ]
+}

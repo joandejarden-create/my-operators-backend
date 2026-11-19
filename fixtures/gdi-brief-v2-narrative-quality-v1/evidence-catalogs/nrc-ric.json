@@ -1,0 +1,65 @@
+{
+  "label": "nrc-ric",
+  "opportunityId": "gdi_opp_regulatory_information_conference_20260930",
+  "archivedSources": [
+    "data/group-demand-intelligence/hotels/recLuxvwwxID7U2B8/opportunities.json"
+  ],
+  "notes": "No per-ID Exa archive. Venue is NRC HQ Rockville — not an open host RFP.",
+  "materialFacts": [
+    {
+      "id": "nrc-date",
+      "claim": "RIC dated 2026-09-30",
+      "matchNeedles": ["2026-09-30", "past"],
+      "sourceUrl": "https://www.nrc.gov/public-meetings-hearings/conferences-symposia/regulatory-information-conference/hotel-information",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "HIGH",
+      "changesPursuit": true,
+      "destination": "BRIEF",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "nrc-hq-host",
+      "claim": "Hybrid at NRC HQ Rockville; Bethesda is overflow-adjacent not contracted host",
+      "matchNeedles": ["Rockville", "not the contracted host"],
+      "sourceUrl": "https://www.nrc.gov/public-meetings-hearings/conferences-symposia/regulatory-information-conference/hotel-information",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "HIGH",
+      "changesPursuit": true,
+      "destination": "BRIEF",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "nrc-helpdesk",
+      "claim": "RICHelpDesk.Resource@nrc.gov is organizational housing route",
+      "matchNeedles": ["RICHelpDesk.Resource@nrc.gov"],
+      "sourceUrl": "https://www.nrc.gov/public-meetings-hearings/conferences-symposia/regulatory-information-conference/hotel-information",
+      "verificationStatus": "CONFIRMED",
+      "commercialImportance": "MEDIUM",
+      "changesPursuit": false,
+      "destination": "SUPPORTING",
+      "origin": "ARCHIVED_RESEARCH"
+    },
+    {
+      "id": "nrc-peak-rooms",
+      "claim": "Verified peak rooms",
+      "matchNeedles": ["peak rooms confirmed"],
+      "verificationStatus": "UNKNOWN",
+      "commercialImportance": "MEDIUM",
+      "changesPursuit": false,
+      "destination": "BRIEF",
+      "origin": "ABSENT_FROM_RESEARCH"
+    }
+  ],
+  "unsupportedRiskPatterns": [
+    {
+      "id": "nrc-credible-host-open-venue",
+      "description": "Applies open-venue credible-host template when venue is already NRC HQ / past cycle",
+      "test": "credible host candidate while"
+    },
+    {
+      "id": "nrc-active-pursue",
+      "description": "Active pursue language on past cycle",
+      "test": "lodging demand path open"
+    }
+  ]
+}
