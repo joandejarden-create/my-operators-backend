@@ -1,5 +1,7 @@
 # HE-INTEL-001 P3B-M1 — Founder readiness report
 
+**PR:** [#428](https://github.com/joandejarden-create/my-operators-backend/pull/428) — **OPEN**  
+**HEAD:** `4f07617ab28c701946c27c353b826442d72cbe3a`  
 **Status:** OPEN — **STOP before merge / live paid execution**  
 **Paid budget:** proposed **$5.00** / **$2.50** per hotel — **NOT AUTHORIZED**
 
