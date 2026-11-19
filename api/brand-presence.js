@@ -12,6 +12,11 @@ import {
   HOTEL_PROPERTY_CENSUS_TABLE,
 } from "../lib/hotel-intelligence/radar-internal-preview-hotels-v1.js";
 import {
+  resolvePropertyCensusOwnership,
+  HOTEL_CENSUS_TABLE,
+  PROPERTY_IDENTITY_CONTRACT,
+} from "../lib/hotel-intelligence/property-census-identity-v1.js";
+import {
   applyOverviewEnrichmentToHotel,
   buildHotelExplorerOverviewEnrichment,
 } from "../lib/hotel-intelligence/hotel-explorer-overview-enrichment-v1.js";
@@ -350,39 +355,23 @@ export async function getBrandPresenceHotelById(req, res) {
   }
 
   try {
-    let hotel;
-    let formatted;
-    let sourceTable = F.hotels.table;
-    try {
-      hotel = await base(F.hotels.table).find(recordId);
-      formatted = formatHotelRecord(hotel);
-    } catch (censusErr) {
-      hotel = null;
-      formatted = null;
-      if (censusErr?.statusCode !== 404) {
-        // Fall through to HPC only for not-found; rethrow unexpected errors after HPC attempt.
-      }
-    }
+    // Fail-closed ownership: RECORD_ID() filter — do not trust GET-by-id table path.
+    const identity = await resolvePropertyCensusOwnership(base, recordId);
+    let formatted = null;
+    let sourceTable = null;
+    let owningTableKind = identity.owningTableKind;
 
-    // Hotel Property Census holds some internal-preview hotels (e.g. Bethesda) that
-    // are not listable on legacy Hotel Census. Prefer HPC when Hotel Census identity
-    // is missing/unknown so by-id detail stays accurate without changing map SoT.
-    const needsHpc =
-      !formatted ||
-      !formatted.name ||
-      formatted.name === "Unknown Hotel" ||
-      formatted.country === "Unknown Country";
-    if (needsHpc) {
-      try {
-        const hpc = await base(HOTEL_PROPERTY_CENSUS_TABLE).find(recordId);
-        formatted = formatHotelPropertyCensusAsBrandPresenceHotel(hpc);
-        sourceTable = HOTEL_PROPERTY_CENSUS_TABLE;
-        // by-id detail for HE is available to authenticated Radar hosts; public share
-        // packs still omit Bethesda via share HTML gates (not this endpoint alone).
-        delete formatted.internalPreviewOnly;
-      } catch (hpcErr) {
-        if (!formatted) throw hpcErr;
-      }
+    if (identity.ok && identity.record && identity.owningTableKind === "HPC") {
+      formatted = formatHotelPropertyCensusAsBrandPresenceHotel(identity.record);
+      sourceTable = HOTEL_PROPERTY_CENSUS_TABLE;
+      delete formatted.internalPreviewOnly;
+    } else if (identity.ok && identity.record && identity.owningTableKind === "HOTEL_CENSUS") {
+      formatted = formatHotelRecord(identity.record);
+      sourceTable = HOTEL_CENSUS_TABLE;
+    } else if (identity.ok && identity.record && identity.owningTableKind === "AMBIGUOUS") {
+      formatted = formatHotelPropertyCensusAsBrandPresenceHotel(identity.record);
+      sourceTable = HOTEL_PROPERTY_CENSUS_TABLE;
+      delete formatted.internalPreviewOnly;
     }
 
     if (!formatted) {
@@ -391,28 +380,62 @@ export async function getBrandPresenceHotelById(req, res) {
 
     formatted.amenitiesDisplay = buildHiltonAmenitiesDisplay(formatted);
     formatted.censusSourceTable = sourceTable;
-    // Prefer golden-demo presentation for Mexico share hotels when census still shows former brand.
-    if (isMexicoRadarFixtureHotelId(recordId)) {
+    formatted.propertyIdentity = {
+      contract: PROPERTY_IDENTITY_CONTRACT,
+      owningTable: sourceTable,
+      owningTableKind,
+      censusFound: identity.censusFound === true,
+      hpcFound: identity.hpcFound === true,
+      warning: identity.warning || null,
+    };
+
+    // Golden-demo Mexico presentation overlay is UX-only for Hotel Census–owned
+    // Mexico demo hotels. Never overlay fixtures onto HPC-owned canonical records.
+    if (
+      owningTableKind === "HOTEL_CENSUS" &&
+      isMexicoRadarFixtureHotelId(recordId)
+    ) {
       const presentation = getFixtureHotelById(recordId);
       if (presentation) {
-        formatted.name = presentation.name || formatted.name;
-        formatted.brand = presentation.brand || formatted.brand;
-        formatted.parentCompany = presentation.parentCompany || formatted.parentCompany;
-        formatted.managementCompany =
-          presentation.managementCompany || formatted.managementCompany;
-        formatted.chainScale = presentation.chainScale || formatted.chainScale;
-        formatted.market = presentation.market || formatted.market;
-        formatted.submarket = presentation.submarket || formatted.submarket;
-        formatted.website = presentation.website || formatted.website;
-        formatted.hotelDescription =
-          presentation.hotelDescription || formatted.hotelDescription;
-        formatted.amenities = presentation.amenities || formatted.amenities;
+        const overlayFields = [];
+        const applyOverlay = (key, value) => {
+          if (value == null || value === "") return;
+          formatted[key] = value;
+          overlayFields.push(key);
+        };
+        applyOverlay("name", presentation.name);
+        applyOverlay("brand", presentation.brand);
+        applyOverlay("parentCompany", presentation.parentCompany);
+        applyOverlay("managementCompany", presentation.managementCompany);
+        applyOverlay("chainScale", presentation.chainScale);
+        applyOverlay("market", presentation.market);
+        applyOverlay("submarket", presentation.submarket);
+        applyOverlay("website", presentation.website);
+        applyOverlay("hotelDescription", presentation.hotelDescription);
+        if (presentation.amenities) {
+          formatted.amenities = presentation.amenities;
+          overlayFields.push("amenities");
+        }
         formatted.amenitiesDisplay = buildHiltonAmenitiesDisplay(formatted);
+        formatted.presentationOverlay = {
+          source: "golden_demo_mexico_fixture",
+          applied: true,
+          fields: overlayFields,
+          note: "UX reference overlay on Hotel Census–owned Mexico demo hotel — not verified HPC canonical intelligence",
+        };
       }
     }
 
     // Hotel-agnostic Overview enrichment (display-only overlays; no Airtable writes).
     // Fail-open: enrichment errors must not break legacy census hotel detail.
+    // For HPC-owned hotels: do not keep enrichment-invented Parent Company when the
+    // HPC Parent Company field is empty (canonical blank > unverified fill).
+    const hpcParentCompanyPresent =
+      owningTableKind === "HPC" &&
+      Boolean(
+        String(identity.record?.fields?.["Parent Company"] || "")
+          .trim(),
+      );
     try {
       const enrichment = await buildHotelExplorerOverviewEnrichment(recordId, {
         hotelDto: formatted,
@@ -421,6 +444,12 @@ export async function getBrandPresenceHotelById(req, res) {
         skipHiAirtable: true,
       });
       formatted = applyOverviewEnrichmentToHotel(formatted, enrichment);
+      if (owningTableKind === "HPC" && !hpcParentCompanyPresent) {
+        formatted.parentCompany = null;
+        if (formatted.parentCompanyProvenance) {
+          delete formatted.parentCompanyProvenance;
+        }
+      }
       if (
         Array.isArray(formatted.verifiedAmenitiesDisplay) &&
         formatted.verifiedAmenitiesDisplay.length &&

@@ -3817,6 +3817,40 @@ if (process.env.NODE_ENV !== "production") {
     } catch (_e) {
       /* keep nulls */
     }
+
+    let contactIntelligence = null;
+    try {
+      const {
+        resolveContactIntelligenceDataRoot,
+        assertContactIntelligenceDataRootAffinity,
+      } = await import("./lib/hotel-intelligence/contact-intelligence/data-root.js");
+      const resolved = resolveContactIntelligenceDataRoot({ repoRoot: __dirname });
+      const affinity = assertContactIntelligenceDataRootAffinity({ repoRoot: __dirname });
+      const rootBase = String(resolved.root || "")
+        .replace(/[\\/]+$/, "")
+        .split(/[\\/]/)
+        .slice(-3)
+        .join("/");
+      contactIntelligence = {
+        dataRootSource: resolved.source,
+        dataRootEnvOverride: resolved.envOverride === true,
+        // Basename trail only — do not expose full local filesystem paths.
+        dataRootBasenameTrail: rootBase || null,
+        affinityOk: affinity.ok === true,
+        affinityError: affinity.ok ? null : affinity.error || null,
+        servingStream: affinity.servingWorkspace?.stream || null,
+        dataStream: affinity.dataWorkspace?.stream || null,
+        allowCrossWorktree:
+          String(process.env.CONTACT_INTELLIGENCE_ALLOW_CROSS_WORKTREE || "").trim() === "1",
+      };
+    } catch (err) {
+      contactIntelligence = {
+        affinityOk: false,
+        affinityError: "contact_intelligence_identity_failed",
+        detail: String(err?.message || err).slice(0, 160),
+      };
+    }
+
     res.json({
       ok: true,
       contract: "DEALALITY_DEV_RUNTIME_IDENTITY_V1",
@@ -3826,6 +3860,7 @@ if (process.env.NODE_ENV !== "production") {
       isCanonicalCheckout,
       branch,
       sha,
+      contactIntelligence,
       // Basename only — do not expose full local filesystem paths.
     });
   });
