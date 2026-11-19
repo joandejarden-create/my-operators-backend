@@ -56,6 +56,10 @@ const app = readFileSync(
   join(ROOT, "public/js/group-demand-intelligence/app.js"),
   "utf8"
 );
+const revealClient = readFileSync(
+  join(ROOT, "public/js/group-demand-intelligence/gdi-contact-reveal-client-v1.js"),
+  "utf8"
+);
 const sanitizeSrc = readFileSync(
   join(ROOT, "lib/group-demand-intelligence/customer-presentation-sanitize-v1.js"),
   "utf8"
@@ -66,9 +70,11 @@ assert.match(
   server,
   /opportunities\/:opportunityId\/contacts\/reveal/
 );
-assert.match(app, /data-gdi-contact-cta/);
-assert.match(app, /contacts\/reveal/);
-assert.match(app, /authorizeLiveProvider/);
+// Shared Surfe binder lives in gdi-contact-reveal-client-v1.js; app.js + comparison mount it.
+assert.match(revealClient, /data-gdi-contact-cta/);
+assert.match(revealClient, /contacts\/reveal/);
+assert.match(revealClient, /authorizeLiveProvider/);
+assert.match(app, /DealalityGdiContactReveal\.bindContactRevealClicks/);
 assert.match(sanitizeSrc, /CUSTOMER_SURFE_UI_AFFORDANCE_KEYS/);
 assert.equal(/delete next\.surfeEnrichmentEligible/.test(sanitizeSrc), false);
 

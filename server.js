@@ -345,6 +345,7 @@ import {
   getGdiSummary,
   getGdiProfile,
   getGdiPublicationComparison,
+  getGdiDrawerComparison,
   getGdiOpportunities,
   getGdiDemandCampaigns,
   getGdiPublicationMonitors,
@@ -1146,6 +1147,13 @@ app.get(
   "/api/group-demand-intelligence/hotels/:hotelId/publication-comparison",
   gdiPilotReadAuth,
   getGdiPublicationComparison
+);
+app.get(
+  "/api/group-demand-intelligence/hotels/:hotelId/drawer-comparison",
+  memberstackAuth,
+  requireDealalityUser,
+  requireAdminAccess,
+  getGdiDrawerComparison
 );
 app.get(
   "/api/group-demand-intelligence/hotels/:hotelId/need-dates",
@@ -2521,8 +2529,17 @@ app.get("/group-demand-intelligence/", (req, res) => {
     res.redirect(302, "/group-demand-intelligence.html" + q);
 });
 app.get("/group-demand-intelligence.html", (req, res) => {
-    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    res.sendFile(path.join(__dirname, "public", "group-demand-intelligence.html"));
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.sendFile(path.join(__dirname, "public", "group-demand-intelligence.html"));
+});
+// Founder/admin comparison shell — API is admin-gated; mark non-indexable.
+app.get("/group-demand-intelligence-drawer-comparison.html", (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("X-Robots-Tag", "noindex, nofollow, noarchive");
+  res.setHeader("X-GDI-Surface", "FOUNDER_INTERNAL_DRAWER_COMPARISON");
+  res.sendFile(
+    path.join(__dirname, "public", "group-demand-intelligence-drawer-comparison.html")
+  );
 });
 app.get("/group-demand-intelligence-share", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
