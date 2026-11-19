@@ -39,24 +39,97 @@ export async function getContactIntelligenceMeta(req, res) {
   }
 }
 
+function contactEnrichmentFlags() {
+  const enrichmentEnabled =
+    String(process.env.CONTACT_ENRICHMENT_ENABLED || "").toLowerCase() === "true";
+  const hasApiKey = Boolean(process.env.SURFE_API_KEY && String(process.env.SURFE_API_KEY).trim());
+  const dryRunProvider =
+    String(process.env.CONTACT_ENRICHMENT_DRY_RUN_PROVIDER || "").toLowerCase() === "true";
+  const mockEnv = String(process.env.CONTACT_ENRICHMENT_MOCK || "").toLowerCase();
+  /**
+   * No-cost mock for Founder Preview / local QA when live Surfe is not configured.
+   * Opt out with CONTACT_ENRICHMENT_MOCK=false. Live Surfe still requires
+   * CONTACT_ENRICHMENT_ENABLED=true + SURFE_API_KEY (and MOCK not forcing dry-run).
+   */
+  const mockEnabled =
+    dryRunProvider ||
+    mockEnv === "true" ||
+    (mockEnv !== "false" && !hasApiKey && !enrichmentEnabled);
+  /** Live Surfe OR intentional no-cost mock for Founder Preview / local QA. */
+  const surfeEnabled = (enrichmentEnabled && hasApiKey) || mockEnabled;
+  let reason = null;
+  let userReason = null;
+  if (!surfeEnabled) {
+    if (!enrichmentEnabled && !mockEnabled) {
+      reason = "CONTACT_ENRICHMENT_ENABLED is not true";
+      userReason = "Contact enrichment is not configured in this environment.";
+    } else if (!hasApiKey) {
+      reason = "SURFE_API_KEY is not configured";
+      userReason = "Contact enrichment is not configured in this environment.";
+    }
+  }
+  return {
+    enrichmentEnabled,
+    hasApiKey,
+    dryRunProvider,
+    mockEnabled,
+    surfeEnabled,
+    reason,
+    userReason,
+  };
+}
+
+function buildMockSurfePerson({ personName, organization, jobTitle, linkedinUrl, companyDomain }) {
+  const slug = String(personName || "contact")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ".")
+    .replace(/^\.+|\.+$/g, "");
+  const domain =
+    String(companyDomain || "")
+      .trim()
+      .replace(/^https?:\/\//i, "")
+      .replace(/\/$/, "") || "example.com";
+  return {
+    ok: true,
+    people: [
+      {
+        fullName: personName,
+        personName,
+        companyName: organization,
+        jobTitle: jobTitle || null,
+        linkedinUrl: linkedinUrl || null,
+        email: `${slug}@${domain}`,
+        workEmail: `${slug}@${domain}`,
+        phone: null,
+        mobile: null,
+        emails: [{ email: `${slug}@${domain}`, type: "work" }],
+        phones: [],
+        confidence: "PROVIDER_MOCK",
+        verificationStatus: "PROVIDER_RETURNED_UNREVIEWED",
+      },
+    ],
+    pending: false,
+    estimatedCostUsd: 0,
+    mock: true,
+  };
+}
+
 /** Read-only Surfe capability for HE Contact Intelligence UI (no credits). */
 export async function getContactIntelligenceEnrichmentCapability(req, res) {
   try {
-    const enrichmentEnabled =
-      String(process.env.CONTACT_ENRICHMENT_ENABLED || "").toLowerCase() === "true";
-    const hasApiKey = Boolean(process.env.SURFE_API_KEY && String(process.env.SURFE_API_KEY).trim());
-    const surfeEnabled = enrichmentEnabled && hasApiKey;
-    let reason = null;
-    if (!enrichmentEnabled) reason = "CONTACT_ENRICHMENT_ENABLED is not true";
-    else if (!hasApiKey) reason = "SURFE_API_KEY is not configured";
+    const flags = contactEnrichmentFlags();
     return res.json({
       success: true,
-      surfeEnabled,
-      hasApiKey,
-      enrichmentEnabled,
+      surfeEnabled: flags.surfeEnabled,
+      hasApiKey: flags.hasApiKey,
+      enrichmentEnabled: flags.enrichmentEnabled,
+      dryRunProvider: flags.dryRunProvider,
+      mockEnabled: flags.mockEnabled,
       autoEnrichOnLoad: false,
       persistOnReveal: false,
-      reason,
+      reason: flags.reason,
+      userReason: flags.userReason,
     });
   } catch (err) {
     console.error("[contact-intelligence] enrichment-capability", err);
@@ -462,30 +535,59 @@ export async function postContactIntelligencePersonReveal(req, res) {
       // Fall through to Surfe path / capability report.
     }
 
-    const enrichmentEnabled =
-      String(process.env.CONTACT_ENRICHMENT_ENABLED || "").toLowerCase() === "true";
-    const hasKey = Boolean(process.env.SURFE_API_KEY && String(process.env.SURFE_API_KEY).trim());
-    if (!enrichmentEnabled || !hasKey) {
+    const flags = contactEnrichmentFlags();
+    if (!flags.surfeEnabled) {
       return res.status(503).json({
         ok: false,
         error: "surfe_unavailable_for_hotel_explorer",
-        message:
-          !enrichmentEnabled
-            ? "Surfe on-demand is disabled (CONTACT_ENRICHMENT_ENABLED≠true). Find Contact Details is not available."
-            : "SURFE_API_KEY is not configured. Find Contact Details cannot call Surfe.",
+        message: flags.reason || "enrichment_not_configured",
+        userMessage:
+          flags.userReason || "Contact enrichment is not available in this environment.",
         surfeCalls: 0,
         persistence: "NOT_WRITTEN",
       });
     }
     if (!personName || personName.split(/\s+/).length < 2 || !organization) {
       return sendError(res, 400, "named_person_and_organization_required", {
-        message: "Surfe reveal requires a full person name and organization.",
+        message: "Find Email & Phone requires a full person name and organization.",
+        userMessage: "A full person name and organization are required.",
         surfeCalls: 0,
       });
     }
 
+    const jobTitle = body.jobTitle || body.title || null;
+    const linkedinUrl = body.linkedinUrl || null;
+    const companyDomain = body.companyDomain || body.company_domain || null;
+
     _heRevealInflight.set(inflightKey, Date.now());
     try {
+      // No-cost mock path for Founder Preview / local QA (never calls Surfe; never persists).
+      if (flags.mockEnabled && !flags.hasApiKey) {
+        const enrichRes = buildMockSurfePerson({
+          personName,
+          organization,
+          jobTitle,
+          linkedinUrl,
+          companyDomain,
+        });
+        const person = (enrichRes.people && enrichRes.people[0]) || null;
+        return res.json({
+          ok: true,
+          cached: false,
+          pending: false,
+          mock: true,
+          surfeCalls: 0,
+          estimatedCostUsd: 0,
+          provider: "surfe_mock",
+          providerAttribution: "Mock Surfe provider (no-cost test)",
+          verificationStatus: "PROVIDER_RETURNED_UNREVIEWED",
+          person,
+          persistence: "NOT_WRITTEN",
+          review_required: true,
+          note: "Mock result only. Review required before any canonical Airtable write.",
+        });
+      }
+
       const { createSurfeContactProvider } = await import(
         "../lib/market-alerts-contact/surfe-adapter.js"
       );
@@ -493,14 +595,43 @@ export async function postContactIntelligencePersonReveal(req, res) {
         "../lib/market-alerts-contact/eligibility.js"
       );
       const limits = getContactEnrichmentLimits();
+
+      // Mock with key present still allows intentional dry-run without spend.
+      if (flags.mockEnabled && limits.dryRunProvider) {
+        const enrichRes = buildMockSurfePerson({
+          personName,
+          organization,
+          jobTitle,
+          linkedinUrl,
+          companyDomain,
+        });
+        const person = (enrichRes.people && enrichRes.people[0]) || null;
+        return res.json({
+          ok: true,
+          cached: false,
+          pending: false,
+          mock: true,
+          surfeCalls: 0,
+          estimatedCostUsd: 0,
+          provider: "surfe_mock",
+          providerAttribution: "Mock Surfe provider (dry-run)",
+          verificationStatus: "PROVIDER_RETURNED_UNREVIEWED",
+          person,
+          persistence: "NOT_WRITTEN",
+          review_required: true,
+          note: "Dry-run mock result. Review required before any canonical Airtable write.",
+        });
+      }
+
       const provider = createSurfeContactProvider({ pollOnEnrich: true });
       const enrichRes = await provider.enrichPeople({
         people: [
           {
             personName,
             companyName: organization,
-            jobTitle: body.jobTitle || body.title || null,
-            linkedinUrl: body.linkedinUrl || null,
+            jobTitle,
+            linkedinUrl,
+            companyDomain,
           },
         ],
         includeEmail: true,
@@ -511,11 +642,37 @@ export async function postContactIntelligencePersonReveal(req, res) {
         return res.status(502).json({
           ok: false,
           error: enrichRes?.error || "surfe_enrich_failed",
+          userMessage: "Contact enrichment could not complete. Try again later.",
           surfeCalls: 1,
           persistence: "NOT_WRITTEN",
         });
       }
       const person = (enrichRes.people && enrichRes.people[0]) || null;
+      const hasChannel =
+        person &&
+        (person.email ||
+          person.workEmail ||
+          person.phone ||
+          person.mobile ||
+          (Array.isArray(person.emails) && person.emails.length) ||
+          (Array.isArray(person.phones) && person.phones.length));
+      if (!hasChannel) {
+        return res.json({
+          ok: true,
+          cached: false,
+          pending: Boolean(enrichRes.pending),
+          surfeCalls: 1,
+          estimatedCostUsd: enrichRes.estimatedCostUsd ?? null,
+          provider: "surfe",
+          providerAttribution: "Surfe on-demand (ephemeral)",
+          verificationStatus: "PROVIDER_RETURNED_UNREVIEWED",
+          person: null,
+          error: "surfe_no_result",
+          userMessage: "No additional professional contact details found.",
+          persistence: "NOT_WRITTEN",
+          review_required: false,
+        });
+      }
       return res.json({
         ok: true,
         cached: false,

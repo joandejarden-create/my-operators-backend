@@ -52,10 +52,16 @@
     );
   }
 
-  function rewriteContactsUrl(url) {
+  function rewriteContactsUrl(url, init) {
     if (resolveMode() !== "proposed") return null;
     var s = String(url || "");
-    var m = s.match(/\/api\/contact-intelligence\/hotels\/([^/?#]+)/);
+    // Only rewrite the hotel Contact Intelligence package GET — never Surfe reveal / nested people routes.
+    if (/\/people\//i.test(s) || /\/reveal\b/i.test(s) || /enrichment-capability/i.test(s)) {
+      return null;
+    }
+    var method = String((init && init.method) || "GET").toUpperCase();
+    if (method !== "GET" && method !== "HEAD") return null;
+    var m = s.match(/\/api\/contact-intelligence\/hotels\/([^/?#]+)\/?(\?|$)/);
     if (!m) return null;
     var id = decodeURIComponent(m[1]);
     return (
@@ -67,7 +73,7 @@
 
   global.fetch = function (input, init) {
     var url = typeof input === "string" ? input : input && input.url;
-    var next = rewriteOwnershipUrl(url) || rewriteContactsUrl(url);
+    var next = rewriteOwnershipUrl(url) || rewriteContactsUrl(url, init);
     if (!next) return origFetch(input, init);
     if (typeof input === "string") return origFetch(next, init);
     try {

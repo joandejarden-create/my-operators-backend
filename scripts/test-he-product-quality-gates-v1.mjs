@@ -78,11 +78,11 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.15");
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.16");
   assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 26);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.15"
+    "hotel-explorer-quality-standard-v1.16"
   );
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-016"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-017"));
@@ -246,16 +246,24 @@ run("hex_tabs_even_flex_and_rooms_present", () => {
 
 run("contact_cards_omit_dash_placeholders_and_surfe_not_on_get", () => {
   const hci = read("public/js/hotel-contact-intelligence.js");
-  mustInclude(hci, "function kvRow");
+  mustInclude(hci, "Find Email & Phone");
   mustInclude(hci, "hci-note--unresolved");
   mustInclude(hci, "Verified identity ≠ verified personal contact channels");
   mustInclude(hci, "data-hci-enrich");
   mustInclude(hci, "/reveal");
   mustInclude(hci, "enrichment-capability");
+  mustInclude(hci, "Recommended First Contact");
+  mustInclude(hci, "Alternative Decision-Makers");
+  mustInclude(hci, "Organization Contact Channels");
+  mustInclude(hci, "Research gaps");
   assert.ok(!/hci-dev-json|Dev diagnostic|JSON\.stringify\(vm/.test(hci), "no user-visible VM dump");
   assert.ok(!/production_writes|write_on_get|apply_authorized|surfe_live_calls/.test(hci));
+  assert.ok(
+    !/LinkedIn · VERIFIED_PUBLIC|verification_status \|\| \"VERIFIED/.test(hci),
+    "raw verification enums must not be user-facing labels"
+  );
   const mountIdx = hci.indexOf("function mount(");
-  const mountSlice = hci.slice(mountIdx, mountIdx + 1200);
+  const mountSlice = hci.slice(mountIdx, mountIdx + 1600);
   assert.ok(!/enrichPeople|provider\.enrich/.test(mountSlice), "mount must not call Surfe provider");
   const api = read("api/contact-intelligence.js");
   mustInclude(api, "postContactIntelligencePersonReveal");
@@ -263,6 +271,9 @@ run("contact_cards_omit_dash_placeholders_and_surfe_not_on_get", () => {
   mustInclude(api, "persist_forbidden");
   mustInclude(api, "NOT_WRITTEN");
   mustInclude(api, "autoEnrichOnLoad: false");
+  mustInclude(api, "buildMockSurfePerson");
+  mustInclude(api, "CONTACT_ENRICHMENT_MOCK");
+  mustInclude(api, "No additional professional contact details found");
 });
 
 run("rejects_mechanical_fact_dump_descriptions", () => {
@@ -424,14 +435,16 @@ run("owner_decision_maker_ranking_and_surfe_fallback", () => {
   assert.ok(research.people.every((p) => p.linkedinUrl && p.linkedinUrl.includes("linkedin.com")));
   assert.ok(research.people.every((p) => !(p.emailContacts || []).length));
   const hci = read("public/js/hotel-contact-intelligence.js");
-  mustInclude(hci, "Suggested Contact");
+  mustInclude(hci, "Recommended First Contact");
+  mustInclude(hci, "Find Email & Phone");
   mustInclude(hci, "data-linkedin-url");
-  mustInclude(hci, "Corporate contact paths");
+  mustInclude(hci, "Organization Contact Channels");
   assert.ok(!/hci-dev-json|production_writes|JSON\.stringify\(vm/.test(hci));
   const mountIdx = hci.indexOf("function mount(");
   assert.ok(!/enrichPeople|provider\.enrich/.test(hci.slice(mountIdx, mountIdx + 1200)));
   mustInclude(read("api/hotel-explorer-founder-preview.js"), "HE-BETH-OWNER-DECISION-MAKER-RESEARCH");
   mustInclude(read("api/hotel-explorer-founder-preview.js"), "buildDecisionOrientedContactSections");
+  mustInclude(read("api/hotel-explorer-founder-preview.js"), "Find Email & Phone");
 });
 
 run("measurement_prefs_conversion_and_sort_keys", () => {

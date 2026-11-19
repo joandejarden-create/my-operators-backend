@@ -1,6 +1,6 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.15`  
+**Version:** `hotel-explorer-quality-standard-v1.16`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
 **Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1` · `npm run test:he-hotel-news-from-market-alerts-v1` · `npm run test:he-guest-sentiment-brand-operator-v1` · `npm run test:he-market-alerts-closeout-v1` · `npm run test:he-async-section-loading-v1`
@@ -77,11 +77,11 @@ KGPV (golden UX) and Bethesda Marriott (Airtable-first pilot) define the permane
 - Workflow: **Existing Airtable → public research → verification → staged/canonical persistence → Surfe only on explicit click** for missing email/phone.
 - Property-to-person path: Hotel → ownership/management entity → portfolio responsibility → relevant individual → contact channel.
 - Rank contacts with documented factors (hotel responsibility, AM/ownership authority, evidence, channels). Do **not** auto-select CEO for seniority alone.
-- Classifications: `PRIMARY_PROPERTY_DECISION_MAKER`, `OWNER_DECISION_AUTHORITY`, `RELEVANT_COMMERCIAL_ENTRY_POINT`, `CORPORATE_FALLBACK`, `ROLE_NOT_VERIFIED` — UI uses professional labels.
+- Classifications: `PRIMARY_PROPERTY_DECISION_MAKER`, `OWNER_DECISION_AUTHORITY`, `RELEVANT_COMMERCIAL_ENTRY_POINT`, `CORPORATE_FALLBACK`, `ROLE_NOT_VERIFIED` — UI uses professional labels; never show raw enums to users.
 - When property assignment is unconfirmed, show **Suggested Contact — Property Responsibility Not Confirmed** (never a false “verified primary decision-maker”).
-- Cards show name, title, org, hotel relevance, property responsibility, verified LinkedIn, email/phone when verified, corporate fallbacks separately, sources, and **Find Contact Details** when eligible.
-- Never invent emails/phones; never label org channels as personal; never treat scraped wrong-company data as verified.
-- Surfe is on-demand fallback (pass LinkedIn URL when known); check existing channels first; no auto-enrich; no Airtable write from reveal.
+- **Compact directory layout (HE-QL-027):** Recommended First Contact (name, title, company, one-line relevance, property responsibility chip, LinkedIn / Company Profile / email / phone / **Find Email & Phone**) → Alternative Decision-Makers as compact rows → Organization Contact Channels once → Research gaps collapsed by default. Progressive disclosure for evidence / notes. No oversized empty email/phone boxes, dash placeholders, duplicated corporate fallbacks under every person, or long repeated authority essays.
+- Never invent emails/phones or LinkedIn URLs; never label org channels as personal; never treat scraped wrong-company data as verified; never auto-associate ambiguous provider identities.
+- Surfe is on-demand fallback (pass LinkedIn URL, name, company, domain when known); check HI Contact Channels + public research first; no auto-enrich on load; no bulk paid enrichment; no duplicate paid lookup while in-flight or when channels already verified; no Airtable write from reveal. Mock/dry-run provider (`CONTACT_ENRICHMENT_MOCK` / `CONTACT_ENRICHMENT_DRY_RUN_PROVIDER`) enables no-cost UX testing. Provider results stay `PROVIDER_RETURNED_UNREVIEWED` until approved persistence. Per-person Dealality wave loading; other cards stay interactive.
 
 ### 7. Sources & evidence
 

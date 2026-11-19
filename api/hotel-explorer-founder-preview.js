@@ -460,7 +460,7 @@ function buildProposedContactsViewModel(dryRun, livePayload) {
       portfolioEvidenceIds: enriched.portfolioEvidenceIds || [],
       evidenceIds: enriched.evidenceIds || [],
       enrichAction: {
-        label: "Find Contact Details",
+        label: "Find Email & Phone",
         enabled: true,
         reason: null,
         missing: ["professional_email", "direct_business_phone"],
