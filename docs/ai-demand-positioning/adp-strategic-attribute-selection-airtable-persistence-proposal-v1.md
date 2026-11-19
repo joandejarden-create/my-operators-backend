@@ -1,9 +1,9 @@
 # ADP Strategic Attribute Selection — Airtable Persistence Proposal V1
 
-**Status:** `PROPOSAL_AWAITING_FOUNDER_APPROVAL`  
+**Status:** `OPTION_B_DESIGN_APPROVED_IMPLEMENTATION_READY` (PR-2)  
 **Contract:** `ADP_STRATEGIC_SELECTION_AIRTABLE_CONTRACT_V1`  
-**Gate:** `DEALALITY_AIRTABLE_PERSISTENCE_GATE_V1`  
-**Phase:** Design for PR-2/PR-3 — **no production schema mutation or writes in PR-1**
+**Gate:** `DEALALITY_AIRTABLE_PERSISTENCE_GATE_V1` · classification `PERSISTENCE_DESIGNED`  
+**Phase:** PR-2 finalizes field-level contract — **no production schema mutation or writes until PR-3 founder auth**
 
 ## Principle
 

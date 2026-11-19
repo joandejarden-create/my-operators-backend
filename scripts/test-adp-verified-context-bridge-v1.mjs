@@ -236,9 +236,11 @@ check("fixture RG path unchanged for empty observations", () => {
 
 check("Airtable selection proposal is design-only", () => {
   assert.equal(STRATEGIC_SELECTION_PERSISTENCE_PROPOSAL.productionWritesAuthorized, false);
-  assert.equal(
-    STRATEGIC_SELECTION_PERSISTENCE_PROPOSAL.status,
-    "PROPOSAL_AWAITING_FOUNDER_APPROVAL"
+  assert.equal(STRATEGIC_SELECTION_PERSISTENCE_PROPOSAL.schemaCreationAuthorized, false);
+  assert.ok(
+    String(STRATEGIC_SELECTION_PERSISTENCE_PROPOSAL.status || "").includes("OPTION_B") ||
+      String(STRATEGIC_SELECTION_PERSISTENCE_PROPOSAL.persistenceClassification || "") ===
+        "PERSISTENCE_DESIGNED"
   );
 });
 
