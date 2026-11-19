@@ -3,7 +3,7 @@
  * Shared AI Admin table pattern (sort / filter / select / compact actions).
  * Client Opportunities = external client-list count (before sanitization).
  * Ready / Action Set = strict report metrics. Watch may be a capped report sample.
- * Open/Copy Client Link follow a valid share and do not require Ready > 0 or a PDF.
+ * Open GDI client / Copy GDI URL follow a valid share and do not require Ready > 0 or a PDF.
  */
 (function () {
   "use strict";
@@ -359,36 +359,38 @@
     var emptyClient =
       knownClientCount && Number(row.clientOpportunityCount) === 0;
     var linkUnavailableReason =
-      row.gdiShareReason || "Client link unavailable in this environment.";
+      row.gdiShareReason ||
+      (row.gdiClient && row.gdiClient.reason) ||
+      "No authorized GDI share link — customer distribution requires founder approval.";
     if (gdiAvail) {
       primary.push({
-        label: "Open Client Link",
+        label: "Open GDI client",
         act: "open-gdi",
         icon: "external",
         title: emptyClient
-          ? "Open empty client preview. No published opportunities on this share."
-          : "Open client link",
+          ? "Open empty GDI client preview. No published opportunities on this share."
+          : "Open authorized GDI client report",
       });
       primary.push({
-        label: "Copy Client Link",
+        label: "Copy GDI URL",
         act: "copy-gdi",
         icon: "copy",
         title: emptyClient
-          ? "Copy empty client preview link. No published opportunities on this share."
-          : "Copy client link",
+          ? "Copy empty GDI client preview link. No published opportunities on this share."
+          : "Copy canonical production GDI client URL",
       });
     } else {
       // Keep Open/Copy visible in the Actions column (disabled) so link status
       // is not confused with inventory/PDF status. Detail lives on the control.
       primary.push({
-        label: "Open Client Link",
+        label: "Open GDI client",
         act: "open-gdi",
         icon: "external",
         disabled: true,
         title: linkUnavailableReason,
       });
       primary.push({
-        label: "Copy Client Link",
+        label: "Copy GDI URL",
         act: "copy-gdi",
         icon: "copy",
         disabled: true,
@@ -783,10 +785,16 @@
       }
       if (mode === "open") {
         window.open(pack.url, "_blank", "noopener");
-        setStatus("Opened " + (kind === "gdi" ? "GDI" : "ADP") + " client view.");
+        setStatus(
+          "Opened " + (kind === "gdi" ? "GDI client" : "ADP client") + " view."
+        );
       } else {
         await copyText(pack.url);
-        setStatus("Copied " + (kind === "gdi" ? "GDI" : "ADP") + " External Client URL.");
+        setStatus(
+          "Copied " +
+            (kind === "gdi" ? "GDI" : "ADP") +
+            " production client URL."
+        );
       }
     } catch (err) {
       setStatus("Client link failed: " + String(err.message || err));

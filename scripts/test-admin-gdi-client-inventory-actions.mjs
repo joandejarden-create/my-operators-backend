@@ -307,6 +307,9 @@ context.navigator = {
   },
 };
 context.URL.createObjectURL = () => "blob:row-pdf";
+context.DealalityMemberstackAuth = {
+  authFetch: (url, opts) => context.fetch(url, opts),
+};
 vm.createContext(context);
 vm.runInContext(tableJs, context);
 vm.runInContext(gdiJs, context);
@@ -330,11 +333,11 @@ assert.ok(primaryActs.includes("open-gdi"));
 assert.ok(primaryActs.includes("copy-gdi"));
 assert.equal(
   withShare.primary.find((a) => a.act === "open-gdi").label,
-  "Open Client Link"
+  "Open GDI client"
 );
 assert.equal(
   withShare.primary.find((a) => a.act === "copy-gdi").label,
-  "Copy Client Link"
+  "Copy GDI URL"
 );
 
 const emptyShare = api.buildActions({
@@ -393,8 +396,8 @@ const html = context.DealalityAiAdminTable.actionsHtml(withShare, {
   hotel: HOTEL,
   name: "Renaissance",
 });
-assert.match(html, /aria-label="Open Client Link"/);
-assert.match(html, /aria-label="Copy Client Link"/);
+assert.match(html, /aria-label="Open GDI client"/);
+assert.match(html, /aria-label="Copy GDI URL"/);
 assert.match(html, /aria-label="View PDF"/);
 assert.match(html, /data-act="download-pdf"/);
 
