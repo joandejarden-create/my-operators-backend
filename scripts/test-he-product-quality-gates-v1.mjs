@@ -78,11 +78,11 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.17");
-  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 26);
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.18");
+  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 29);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.17"
+    "hotel-explorer-quality-standard-v1.18"
   );
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-016"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-017"));
@@ -95,6 +95,9 @@ run("registry_and_standard_exist", () => {
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-024"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-025"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-026"));
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-027"));
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-028"));
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-029"));
 });
 
 run("rejects_keyword_stuffed_and_id_leaking_descriptions", () => {
@@ -781,13 +784,17 @@ run("he_guest_sentiment_brand_operator_gates", () => {
   mustInclude(std, "Never");
   mustInclude(std, "live_ui_authorized");
   mustInclude(std, "label category scores as");
+  mustInclude(std, "HE-QL-029");
+  mustInclude(std, "Seven-platform overview");
   const ws = read("public/js/hotel-intelligence-workspace.js");
   mustInclude(ws, "data-hiw-guest-sentiment-host");
   mustInclude(ws, "mountGuestSentiment");
   mustInclude(ws, "Guest Reputation");
   mustInclude(ws, "hiw-rep-scorecards");
   mustInclude(ws, "Category Performance");
-  mustInclude(ws, "Sources &amp; Methodology");
+  mustInclude(ws, "Sources, Methodology &amp; Limitations");
+  mustInclude(ws, "hiw-rep-scorecard--unavailable");
+  mustInclude(ws, "platformOverview");
   mustNotMatch(ws, /Frequently praised/);
   mustNotMatch(ws, /id:\s*"guest-sentiment"/);
   mustInclude(read("public/js/hotel-explorer.js"), "mountGuestSentiment");
@@ -800,6 +807,8 @@ run("he_guest_sentiment_brand_operator_gates", () => {
   mustInclude(model, "insufficient_history");
   mustInclude(model, "executiveInsights");
   mustInclude(model, "categoryPerformance");
+  mustInclude(model, "REPUTATION_OVERVIEW_PLATFORMS_V1");
+  mustInclude(model, "buildReputationPlatformOverview");
   mustInclude(model, "no_licensed_review_text");
   mustInclude(
     read("lib/hotel-intelligence/guest-sentiment/guest-theme-taxonomy-v1.js"),
@@ -807,7 +816,12 @@ run("he_guest_sentiment_brand_operator_gates", () => {
   );
   const css = read("public/css/hotel-explorer.css");
   mustInclude(css, "hiw-rep-scorecard");
+  mustInclude(css, "hiw-rep-scorecard--unavailable");
   mustInclude(css, "hiw-rep-bar__fill");
+  const repCss = css.slice(css.indexOf("/* Guest Reputation"));
+  if (/#38bdf8/.test(repCss)) {
+    throw new Error("Guest Reputation CSS must not use arbitrary #38bdf8 cyan");
+  }
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
@@ -816,6 +830,9 @@ run("he_guest_sentiment_brand_operator_gates", () => {
   }
   if (!reg.lessons.some((l) => l.id === "HE-QL-025")) {
     throw new Error("HE-QL-025 missing from founder quality lessons registry");
+  }
+  if (!reg.lessons.some((l) => l.id === "HE-QL-029")) {
+    throw new Error("HE-QL-029 missing from founder quality lessons registry");
   }
 });
 

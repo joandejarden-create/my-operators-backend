@@ -96,7 +96,7 @@ run("quality_registry_he_ql_028", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.17");
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.18");
   const lesson = reg.lessons.find((l) => l.id === "HE-QL-028");
   assert.ok(lesson);
   mustInclude(lesson.approvedStandard, "HeLoadingUx");

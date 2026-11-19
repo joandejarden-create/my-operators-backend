@@ -1,9 +1,9 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.17`  
+**Version:** `hotel-explorer-quality-standard-v1.18`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
-**Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1` · `npm run test:he-hotel-news-from-market-alerts-v1` · `npm run test:he-guest-sentiment-brand-operator-v1` · `npm run test:he-market-alerts-closeout-v1` · `npm run test:he-async-section-loading-v1`
+**Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1` · `npm run test:he-hotel-news-from-market-alerts-v1` · `npm run test:he-guest-sentiment-brand-operator-v1` · `npm run test:he-market-alerts-closeout-v1` · `npm run test:he-async-section-loading-v1` · `npm run test:he-contact-intelligence-directory-ux-v1` · `npm run test:he-loading-ux-toast-v1`
 
 ## Purpose
 
@@ -149,16 +149,19 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 ### 9d. Guest Sentiment & Reputation (Brand / Operator)
 
 - **Not a new Hotel Explorer tab.** Guest Reputation & Experience lives inside **Brand / Operator** after Brand & Operator Overview and Hotel News & Articles (same Guest Sentiment data model).
-- Present a **dashboard**, not a flat text report when structured platform data exists: platform scorecards, Category Performance bars, executive insight cards, restrained trends status, collapsed Sources & Methodology.
-- Show platform-native rating, scale, review count, observation date, and listing link per source. **Never** silently average incompatible scales (e.g. Tripadvisor /5 vs Booking /10).
-- **Category Performance** uses platform-published category scores only. Do **not** label category scores as “Frequently praised” / guest-theme frequency unless licensed review-level evidence exists.
-- Review Theme Analysis and historical trend charts remain **hidden** when unsupported — never invent themes, percentages, or 30/90/180/365 series from one snapshot.
-- Executive insights must include finding + evidence + owner implication + confidence; do not imply CapEx / service failure without supporting evidence.
-- Live customer UI stays **hidden** unless `live_ui_authorized === true` from a rights-cleared store. Founder Proposed Preview may render staged public-listing metadata with an explicit rights chip.
+- Present a **dashboard**, not a flat text report: seven-platform overview, Category Performance bars, compact executive insights, collapsed Sources, Methodology & Limitations.
+- **Seven-platform overview (HE-QL-029):** always show the canonical catalog (`REPUTATION_OVERVIEW_PLATFORMS_V1`) — Tripadvisor, Booking.com, Expedia, Google Reviews, Hotels.com, Agoda, Trivago. Available platforms show native rating, scale, review count, observation date, and listing link. Unavailable platforms stay visible as dimmed **Not connected** / **Data unavailable** cards — never invent 0 ratings, fabricated review counts, or summaries. Catalog candidates are not represented as integrated feeds until source access and rights are confirmed.
+- Accent colors reuse Dealality Chain Scale / My Deals tokens (`--accent--primary-1` `#6c72ff`, gold `#fdb52a` for hover) — no arbitrary cyan/sky (`#38bdf8`) on reputation bars, links, or selectors.
+- Show platform-native rating, scale, review count, observation date, and listing link per available source. **Never** silently average incompatible scales (e.g. Tripadvisor /5 vs Booking /10).
+- **Category Performance** uses platform-published category scores only. Do **not** label category scores as “Frequently praised” / guest-theme frequency unless licensed review-level evidence exists. Relatively softer category scores (e.g. Value 7.7/10) are **areas to investigate**, not proof of recurring guest complaints.
+- **Guest Experience Insights** are a compact executive assessment: Relative Strengths · Areas to Investigate · Recommended Management Follow-Up · Trend & Data Confidence — short finding + metric/source + optional expandable evidence. Do not repeat methodology caveats in every card.
+- Detailed coverage, licensing, sample scope, observation dates, and platform-score differences live in collapsed **Sources, Methodology & Limitations** — no raw API names or developer diagnostics in the main UI.
+- Review Theme Analysis remains **hidden** when unsupported — never invent themes, percentages, or 30/90/180/365 series from one snapshot. Trend status belongs in the compact confidence card, not a fabricated chart.
+- Live customer UI stays **hidden** unless `live_ui_authorized === true` from a rights-cleared store. Founder Proposed Preview may render staged public-listing metadata (or seven unavailable cards when no observations) with an explicit rights chip.
 - No unauthorized paid provider calls from HE routes (`X-Dealality-Paid-Providers: forbidden`). No consumer OTA scrape. No full copyrighted review bodies unless licensed.
-- Independent loading (HE-QL-024): reputation provider failure must not block Brand overview or Hotel News.
+- Independent loading (HE-QL-024 / HE-QL-028): reputation provider failure must not block Brand overview or Hotel News; use canonical compact toast/wave.
 - Themes use `guest-theme-taxonomy-v1`; category scores are evidence of platform aggregates — not operational KPIs or CapEx proof. Do not emit precise % claims below `MIN_SAMPLE_FOR_PERCENT` (30).
-- Incorrect hotel↔platform property matches, duplicate reviews, unsupported conclusions, and stale-as-current displays are regression failures (HE-QL-022 / HE-QL-025).
+- Incorrect hotel↔platform property matches, duplicate reviews, unsupported conclusions, invented missing-platform values, and stale-as-current displays are regression failures (HE-QL-022 / HE-QL-025 / HE-QL-029).
 - Shared modules: `lib/hotel-intelligence/guest-sentiment/*`, `api/hotel-explorer-guest-sentiment.js`, Brand/Operator host in `hotel-intelligence-workspace.js`.
 
 ### 9a. Ownership & Control Network / Stakeholder Network

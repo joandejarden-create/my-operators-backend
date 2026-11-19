@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * HE Guest Sentiment / Reputation dashboard — Brand / Operator (HE-QL-022 / HE-QL-025).
+ * HE Guest Sentiment / Reputation dashboard — Brand / Operator (HE-QL-022 / HE-QL-025 / HE-QL-029).
  */
 import assert from "node:assert/strict";
 import fs from "node:fs";
@@ -9,6 +9,8 @@ import { fileURLToPath } from "node:url";
 import {
   buildGuestSentimentView,
   SENTIMENT_PLATFORMS,
+  REPUTATION_OVERVIEW_PLATFORMS_V1,
+  buildReputationPlatformOverview,
   proposedAirtableSentimentSchema,
 } from "../lib/hotel-intelligence/guest-sentiment/guest-sentiment-model-v1.js";
 import {
@@ -79,12 +81,34 @@ const KGPV = "recUNycnMwOVFX0hc";
     String(preview.rightsChip || "").toLowerCase().includes("rights"),
     "rights chip required in proposed preview"
   );
-  // No invented Google platform when unresolved
+  // Available platforms stay accurate; overview adds catalog (no invented Google scores)
   assert.ok(!preview.platforms.some((p) => p.platform === "GOOGLE"));
-  assert.equal(preview.dashboardVariant, "guest-reputation-experience-v1");
+  assert.equal(preview.dashboardVariant, "guest-reputation-experience-v2");
+  assert.equal(preview.platformOverview?.length, 7);
+  assert.equal(preview.overviewPlatformCount, REPUTATION_OVERVIEW_PLATFORMS_V1.length);
+  const available = preview.platformOverview.filter((p) => p.available);
+  const unavailable = preview.platformOverview.filter((p) => !p.available);
+  assert.equal(available.length, 3);
+  assert.equal(unavailable.length, 4);
+  assert.ok(unavailable.every((p) => p.rating == null && p.reviewCount == null));
+  assert.ok(unavailable.every((p) => p.statusLabel));
   assert.ok(preview.categoryPerformance?.available === true);
   assert.ok(preview.categoryPerformance?.platforms?.length >= 1);
-  assert.ok((preview.executiveInsights || []).length >= 2);
+  assert.equal((preview.executiveInsights || []).length, 4);
+  const roles = new Set(preview.executiveInsights.map((c) => c.role));
+  assert.ok(roles.has("RELATIVE_STRENGTHS"));
+  assert.ok(roles.has("AREAS_TO_INVESTIGATE"));
+  assert.ok(roles.has("RECOMMENDED_FOLLOW_UP"));
+  assert.ok(roles.has("TREND_DATA_CONFIDENCE"));
+  const investigate = preview.executiveInsights.find(
+    (c) => c.id === "areas_to_investigate"
+  );
+  assert.ok(
+    /value/i.test(String(investigate?.finding || "")) ||
+      /value/i.test(String(investigate?.metric || "")),
+    "Bethesda Value for money should surface as relative investigate — not complaint proof"
+  );
+  assert.ok(!/regularly complain|frequently praised/i.test(JSON.stringify(preview)));
   assert.equal(preview.reviewThemes?.available, false);
   assert.ok(
     preview.platforms.every((p) => Array.isArray(p.categoryScores)),
@@ -113,17 +137,23 @@ const KGPV = "recUNycnMwOVFX0hc";
   );
   assert.equal(sparse.visible, true);
   assert.equal(sparse.platforms.length, 1);
+  assert.equal(sparse.platformOverview.length, 7);
+  assert.equal(sparse.platformOverview.filter((p) => p.available).length, 1);
   assert.equal(sparse.categoryPerformance.platforms.length, 1);
   assert.ok(!String(JSON.stringify(sparse)).includes("Frequently praised"));
 }
 
-// Wrong hotel / KGPV without packet → hidden
+// KGPV / no packet — founder preview shows seven unavailable cards (no invented scores)
 {
   const kgpv = resolveGuestSentimentForHotel(
     { id: KGPV, name: "Krystal Grand Puerto Vallarta" },
     { founderPreview: true }
   );
-  assert.equal(kgpv.visible, false);
+  assert.equal(kgpv.visible, true);
+  assert.equal(kgpv.platforms.length, 0);
+  assert.equal(kgpv.platformOverview.length, 7);
+  assert.ok(kgpv.platformOverview.every((p) => p.available === false));
+  assert.ok(kgpv.platformOverview.every((p) => p.rating == null && p.reviewCount == null));
 }
 
 // Property match: staged packet only for Bethesda HPC
@@ -199,14 +229,34 @@ const KGPV = "recUNycnMwOVFX0hc";
   assert.equal(view.themes[0].percentClaimAllowed, false);
 }
 
-// Unsupported: empty observations stay hidden even with founder preview
+// Empty observations in founder preview → seven unavailable cards, no invented zeros
 {
   const empty = buildGuestSentimentView(
-    { id: BETH },
+    { id: BETH, name: "Empty Hotel" },
     { founder_preview_render: true, observations: [] },
     { founderPreview: true }
   );
-  assert.equal(empty.visible, false);
+  assert.equal(empty.visible, true);
+  assert.equal(empty.platformOverview.length, 7);
+  assert.ok(empty.platformOverview.every((p) => p.available === false));
+  assert.ok(!JSON.stringify(empty).includes('"rating":0'));
+}
+
+// Live unauthorized without founder preview stays hidden
+{
+  const liveHidden = buildGuestSentimentView(
+    { id: BETH },
+    { founder_preview_render: true, observations: [] },
+    { founderPreview: false }
+  );
+  assert.equal(liveHidden.visible, false);
+}
+
+{
+  assert.equal(REPUTATION_OVERVIEW_PLATFORMS_V1.length, 7);
+  const overview = buildReputationPlatformOverview([]);
+  assert.equal(overview.length, 7);
+  assert.ok(overview.every((p) => p.available === false));
 }
 
 // Duplicate platform property ids should not invent second hotel match for other HPC
@@ -231,7 +281,11 @@ const KGPV = "recUNycnMwOVFX0hc";
   assert.ok(ws.includes("Guest Reputation"));
   assert.ok(ws.includes("hiw-rep-scorecards"));
   assert.ok(ws.includes("Category Performance"));
-  assert.ok(ws.includes("Sources &amp; Methodology"));
+  assert.ok(ws.includes("Sources, Methodology &amp; Limitations"));
+  assert.ok(ws.includes("hiw-rep-scorecard--unavailable"));
+  assert.ok(ws.includes("platformOverview"));
+  assert.ok(ws.includes("hasReputationOverview"));
+  assert.ok(ws.includes("hiw-rep-insights--executive"));
   assert.ok(!ws.includes("Frequently praised"));
   assert.ok(ws.includes("mountGuestSentiment"));
   assert.ok(!/id:\s*"guest-sentiment"|id:\s*"sentiment"/.test(ws));
@@ -265,7 +319,15 @@ const KGPV = "recUNycnMwOVFX0hc";
   assert.ok(css.includes("hiw-guest-sentiment-host"));
   assert.ok(css.includes("hiw-sentiment-link"));
   assert.ok(css.includes("hiw-rep-scorecard"));
+  assert.ok(css.includes("hiw-rep-scorecard--unavailable"));
   assert.ok(css.includes("hiw-rep-bar__fill"));
+  assert.ok(css.includes("background: #6c72ff"));
+  // Reputation bars/links must not use arbitrary cyan; pin Dealality accent literally
+  const repBlock = css.slice(css.indexOf("/* Guest Reputation"));
+  assert.ok(!/#38bdf8/.test(repBlock), "reputation CSS must not use #38bdf8");
+  assert.ok(/\.hiw-rep-bar__fill[\s\S]*?background:\s*#6c72ff/.test(repBlock));
+  assert.ok(/\.hiw-sentiment-link\s*\{[\s\S]*?color:\s*#6c72ff/.test(repBlock));
+  assert.ok(!/linear-gradient\(90deg,\s*#6c72ff\s*0%,\s*#38bdf8/.test(css));
 }
 
 {
@@ -273,12 +335,16 @@ const KGPV = "recUNycnMwOVFX0hc";
   assert.ok(std.includes("Guest Sentiment"));
   assert.ok(std.includes("Category Performance"));
   assert.ok(std.includes("Brand / Operator"));
+  assert.ok(std.includes("HE-QL-029"));
+  assert.ok(std.includes("Seven-platform overview"));
   assert.ok(/label category scores as/i.test(std));
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-022"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-025"));
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-029"));
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.18");
 }
 
 assert.ok(SENTIMENT_PLATFORMS.TRIPADVISOR.scaleMax === 5);
