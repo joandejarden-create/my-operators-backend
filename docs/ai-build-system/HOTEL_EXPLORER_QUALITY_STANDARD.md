@@ -223,11 +223,15 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 
 ### 10. Submarket Snapshot & Area Hotels (HPC)
 
-- Prefer Radar map census; when empty, read-only Scout Hotel Census coverage (never invent market totals).
-- Deduplicate hotel identities before aggregation; separate open vs pipeline.
-- Show explicit coverage limitations when geography is provisional or sample-capped.
+- **HPC is the source of truth** for Submarket Snapshot hotel identity, rooms, status, brand, and market/submarket classifications (`appCCUsuGsE1ifoLk` / `tbl9aY5ijiuIzzWam`). Scout / Hotel Census / Radar map pools are **supporting enrichment only**.
+- A valid canonical HPC hotel must **never** disappear from Submarket Snapshot because Scout returned zero rows or Radar has no loaded census (HE-QL-036).
+- Always resolve the selected hotel’s HPC record and include it in the matched cohort when the record exists.
+- Group by verified HPC Submarket when present; otherwise Market; otherwise city / selected-only with an explicit research flag. **Do not invent** market or submarket labels merely to fill the table.
+- Deduplicate by canonical HPC identity; separate Open vs Pipeline; sum only known positive room counts (unknown rooms ≠ zero inventory).
+- Incomplete coverage must be labeled (partial cohort ≠ complete submarket census). Never manufacture full-market totals or percentages from incomplete geography.
 - Area Hotels radii by location setting (initial): Urban 5 mi, Suburban/Airport 10 mi, Resort 30 mi, Rural 25 mi — adjustable; distance unit display independent of inclusion.
-- No GET-triggered writes; no unapproved Airtable submarket bulk apply.
+- Shared module: `lib/hotel-intelligence/he-hpc-submarket-snapshot-v1.js` + `GET /api/hotel-explorer/hotels/:hotelId/submarket-snapshot` (GET-only).
+- No GET-triggered writes; no unapproved Airtable submarket bulk apply. Geo-gap research uses dry-run artifacts only.
 
 ## Machine-testable acceptance
 

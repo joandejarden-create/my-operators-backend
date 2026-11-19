@@ -348,6 +348,15 @@
       "sharedComponent": "he-org-portfolio-key-people-v1.js; hotel-explorer-founder-preview.js buildSharedProposedPeople; hotel-intelligence-workspace.js collectOrgKeyPeople + renderStrategicContext",
       "regressionTest": "he_org_portfolio_key_people_strategic_context_gates",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/he-ql-035-org-key-people-strategic-*.png"
+    },
+    {
+      "id": "HE-QL-036",
+      "originalProblem": "Bethesda Marriott Submarket Snapshot showed an empty Scout/Hotel Census table even though the hotel is a canonical HPC record with Market/Submarket assigned",
+      "rootCause": "Submarket Snapshot preferred Radar map then Scout Hotel Census market-coverage; Founder Preview had an empty map pool and Scout returned zero Hotel Census rows, so the UI treated HPC absence as no hotels without ever querying Hotel Property Census",
+      "approvedStandard": "HPC is Submarket Snapshot source of truth; always include selected HPC hotel; Scout/Radar enrich only; verified Submarket→Market→city/selected-only grouping without inventing geography; dedupe by HPC id; known rooms only; label partial coverage; GET-only API; dry-run geo-gap research",
+      "sharedComponent": "he-hpc-submarket-snapshot-v1.js; api/hotel-explorer-submarket-snapshot.js; hotel-detail-panel.js resolveCensusHotelPool",
+      "regressionTest": "he_hpc_submarket_snapshot_canonical_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/he-ql-036-submarket-*.png"
     }
   ]
 }

@@ -50,6 +50,12 @@ import {
   strategicContextHasGenericCopy,
 } from "../lib/hotel-intelligence/ownership/he-org-portfolio-key-people-v1.js";
 import {
+  classifySubmarketGrouping,
+  dedupeHpcHotelsByIdentity,
+  computeHpcSubmarketMetrics,
+  HE_HPC_SUBMARKET_SNAPSHOT_V1,
+} from "../lib/hotel-intelligence/he-hpc-submarket-snapshot-v1.js";
+import {
   buildOwnerPortfolioOperatorView,
   classifyPortfolioHotel,
   OPERATOR_NOT_VERIFIED_LABEL,
@@ -1156,6 +1162,82 @@ run("he_org_portfolio_key_people_strategic_context_gates", () => {
   );
   assert.ok(/unresolved/i.test(bodies), "UBO / unresolved claims must stay qualified");
   assert.ok(/Sources|evidence/i.test(ws) || /Sources & Evidence/.test(std));
+});
+
+run("he_hpc_submarket_snapshot_canonical_gates", () => {
+  const lib = read("lib/hotel-intelligence/he-hpc-submarket-snapshot-v1.js");
+  const api = read("api/hotel-explorer-submarket-snapshot.js");
+  const hdp = read("public/js/hotel-detail-panel.js");
+  const server = read("server.js");
+  const std = read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md");
+  const reg = JSON.parse(
+    read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
+  );
+
+  mustInclude(lib, HE_HPC_SUBMARKET_SNAPSHOT_V1);
+  mustInclude(lib, "buildHpcSubmarketSnapshot");
+  mustInclude(lib, "selected_only");
+  mustInclude(lib, "supporting_enrichment_only");
+  mustInclude(lib, "tbl9aY5ijiuIzzWam");
+  mustInclude(api, "X-Dealality-Write");
+  mustInclude(api, "buildHpcSubmarketSnapshot");
+  mustInclude(server, "/api/hotel-explorer/hotels/:hotelId/submarket-snapshot");
+  mustInclude(hdp, "fetchHpcSubmarketSnapshot");
+  mustInclude(hdp, "ensureSelectedHotelInPool");
+  mustInclude(hdp, "data-hdp-submarket-source");
+  mustNotMatch(
+    hdp,
+    /Prefer Radar map census; when empty \(Founder Preview\), load Hotel Census via Scout coverage/
+  );
+  mustInclude(std, "HE-QL-036");
+  mustInclude(std, "HPC is the source of truth");
+  mustInclude(std, "never");
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-036"));
+
+  const beth = {
+    id: "recLuxvwwxID7U2B8",
+    name: "Bethesda Marriott",
+    market: "Bethesda / Montgomery County",
+    submarket: "Pooks Hill / Rockville Pike",
+    city: "Bethesda",
+    country: "United States",
+    status: "Open",
+    rooms: 407,
+  };
+  const grouping = classifySubmarketGrouping(beth);
+  assert.equal(grouping.mode, "submarket");
+  assert.equal(grouping.label, "Pooks Hill / Rockville Pike");
+  assert.equal(grouping.researchNeeded, false);
+
+  const noGeo = classifySubmarketGrouping({
+    id: "recTest",
+    name: "Unknown Geo Hotel",
+    status: "Open",
+  });
+  assert.equal(noGeo.mode, "selected_only");
+  assert.equal(noGeo.researchNeeded, true);
+
+  const deduped = dedupeHpcHotelsByIdentity([
+    beth,
+    { ...beth, name: "Bethesda Marriott Duplicate" },
+    { id: "recOtherHotel0001", name: "Other", status: "Open", rooms: 100 },
+  ]);
+  assert.equal(deduped.length, 2);
+
+  const metrics = computeHpcSubmarketMetrics([
+    beth,
+    { id: "recPipe", name: "Pipe", status: "Pipeline", rooms: null },
+  ]);
+  assert.equal(metrics.openHotels, 1);
+  assert.equal(metrics.openRooms, 407);
+  assert.equal(metrics.pipelineHotels, 1);
+  assert.equal(metrics.pipelineRooms, 0);
+  assert.equal(metrics.roomsUnknownHotelCount, 1);
+  assert.equal(metrics.roomsCoverageComplete, false);
+
+  // Empty Scout must not be coded as the only path that can populate the panel.
+  mustInclude(hdp, 'source: "hpc"');
+  mustInclude(hdp, "Hotel Property Census (canonical)");
 });
 
 if (failures.length) {

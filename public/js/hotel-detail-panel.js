@@ -2105,7 +2105,8 @@
   }
 
   /**
-   * Prefer Radar map census; when empty (Founder Preview), load Hotel Census via Scout coverage.
+   * Canonical HPC first; Radar map + Scout Hotel Census are supporting enrichment only.
+   * A valid HPC hotel must never disappear because Scout/Radar pools are empty.
    * Never writes. Dedupes identities before aggregation.
    */
   function buildCityMarketCoverageUrl(hotel) {
@@ -2123,10 +2124,64 @@
     });
   }
 
-  function resolveCensusHotelPool(hotel) {
+  function hotelRecordId(hotel) {
+    return String((hotel && (hotel.id || hotel.recordId || hotel.airtable_record_id)) || "").trim();
+  }
+
+  function fetchHpcSubmarketSnapshot(hotel) {
+    var id = hotelRecordId(hotel);
+    if (!/^rec[A-Za-z0-9]{14}$/.test(id)) {
+      return Promise.resolve(null);
+    }
+    return fetch("/api/hotel-explorer/hotels/" + encodeURIComponent(id) + "/submarket-snapshot", {
+      headers: { "ngrok-skip-browser-warning": "true" },
+    })
+      .then(function (res) {
+        return res.json().then(function (body) {
+          return { ok: res.ok && body && body.success !== false && body.ok !== false, body: body };
+        });
+      })
+      .catch(function () {
+        return null;
+      });
+  }
+
+  function ensureSelectedHotelInPool(hotel, hotels) {
+    var list = dedupeHotelsByIdentity(hotels || []);
+    var id = hotelRecordId(hotel);
+    if (!hotel || !id) return list;
+    var found = list.some(function (h) {
+      return hotelRecordId(h) === id;
+    });
+    if (found) return list;
+    return dedupeHotelsByIdentity(
+      [
+        {
+          id: id,
+          recordId: id,
+          name: hotel.name,
+          brand: hotel.brand || hotel.brand_display || "",
+          parentCompany: hotel.parentCompany || "",
+          status: hotel.status || hotel.radarStatus || "Open",
+          rooms: hotel.rooms,
+          country: hotel.country || "",
+          city: hotel.city || "",
+          market: hotel.market || "",
+          submarket: hotel.submarket || "",
+          chainScale: hotel.chainScale || hotel.chain_scale || "",
+          locationType: hotel.locationType || "",
+          lat: hotel.lat,
+          lng: hotel.lng,
+          source: "hpc_selected",
+        },
+      ].concat(list)
+    );
+  }
+
+  function resolveSupportingCensusPool(hotel) {
     var fromMap = dedupeHotelsByIdentity(window.allHotels || []);
     if (fromMap.length) {
-      return Promise.resolve({ hotels: fromMap, source: "radar_map" });
+      return Promise.resolve({ hotels: fromMap, source: "radar_map", report: null });
     }
     return fetchSubmarketCoverage(hotel)
       .then(function (report) {
@@ -2143,7 +2198,6 @@
             report: report,
           };
         }
-        // Provisional / unmatched submarket labels → widen to city/market (read-only).
         return fetchCoverageByUrl(buildCityMarketCoverageUrl(hotel)).then(function (cityReport) {
           var citySample =
             cityReport && cityReport.success
@@ -2160,6 +2214,37 @@
       .catch(function () {
         return { hotels: [], source: "none", report: null };
       });
+  }
+
+  function resolveCensusHotelPool(hotel) {
+    return fetchHpcSubmarketSnapshot(hotel).then(function (hpcResult) {
+      var hpcBody = hpcResult && hpcResult.ok ? hpcResult.body : null;
+      var hpcHotels = hpcBody && Array.isArray(hpcBody.hotels) ? hpcBody.hotels : [];
+      return resolveSupportingCensusPool(hotel).then(function (support) {
+        var merged = dedupeHotelsByIdentity((hpcHotels || []).concat(support.hotels || []));
+        merged = ensureSelectedHotelInPool(hotel, merged);
+        if (hpcHotels.length || (hpcBody && hpcBody.selectedHotel)) {
+          return {
+            hotels: merged,
+            source: "hpc",
+            supportSource: support.source,
+            report: support.report || null,
+            hpc: hpcBody,
+            coverage: hpcBody && hpcBody.coverage ? hpcBody.coverage : null,
+            grouping: hpcBody && hpcBody.grouping ? hpcBody.grouping : null,
+            metrics: hpcBody && hpcBody.metrics ? hpcBody.metrics : null,
+          };
+        }
+        // HPC unavailable — fall back to supporting pools, still force-include selected hotel.
+        return {
+          hotels: ensureSelectedHotelInPool(hotel, support.hotels || []),
+          source: support.source || "none",
+          report: support.report || null,
+          coverageScope: support.coverageScope || null,
+          hpc: null,
+        };
+      });
+    });
   }
 
   function isStrRegionalSubmarket(value) {
@@ -2306,6 +2391,11 @@
       });
   }
 
+  function knownRoomsValue(hotel) {
+    var n = Number(hotel && hotel.rooms);
+    return Number.isFinite(n) && n > 0 ? n : 0;
+  }
+
   function computeSubmarketMetrics(hotels) {
     var open = [];
     var pipeline = [];
@@ -2325,20 +2415,26 @@
       if (!isIndependentHotel(h) && h.brand) brands[h.brand] = true;
       if (h.parentCompany && h.parentCompany !== "Unknown") parents[h.parentCompany] = true;
     });
+    var roomsKnownHotelCount = (hotels || []).filter(function (h) {
+      return knownRoomsValue(h) > 0;
+    }).length;
     return {
       totalHotels: (hotels || []).length,
       openHotels: open.length,
+      // Sum only known positive room counts — never invent zero inventory for unknowns.
       openRooms: open.reduce(function (sum, h) {
-        return sum + (Number(h.rooms) || 0);
+        return sum + knownRoomsValue(h);
       }, 0),
       pipelineHotels: pipeline.length,
       pipelineRooms: pipeline.reduce(function (sum, h) {
-        return sum + (Number(h.rooms) || 0);
+        return sum + knownRoomsValue(h);
       }, 0),
       candidateHotels: candidate.length,
       candidateRooms: candidate.reduce(function (sum, h) {
-        return sum + (Number(h.rooms) || 0);
+        return sum + knownRoomsValue(h);
       }, 0),
+      roomsKnownHotelCount: roomsKnownHotelCount,
+      roomsUnknownHotelCount: (hotels || []).length - roomsKnownHotelCount,
       brandedOpen: brandedOpen.length,
       independentOpen: open.length - brandedOpen.length,
       brandCount: Object.keys(brands).length,
@@ -2632,16 +2728,27 @@
     );
   }
 
-  function renderSubmarketSnapshotPanel(hotel, submarketHotels, metrics, breakdowns, penetrationPct, pipelineMetrics) {
+  function renderSubmarketSnapshotPanel(
+    hotel,
+    submarketHotels,
+    metrics,
+    breakdowns,
+    penetrationPct,
+    pipelineMetrics,
+    opts
+  ) {
     metrics = metrics || {};
     breakdowns = breakdowns || {};
+    opts = opts || {};
     var corridor = resolveEffectiveSubmarket(hotel);
+    var grouping = opts.grouping || {};
+    var coverage = opts.coverage || {};
     var RBP = window.RadarBrandedPenetration;
     var geo = RBP && typeof RBP.geographyFromHotel === "function" ? RBP.geographyFromHotel(hotel) : null;
     var scopeLabel =
-      geo && RBP.buildGeographyTitle
-        ? RBP.buildGeographyTitle(geo)
-        : [corridor, hotel.market, hotel.country].filter(Boolean).join(" · ");
+      grouping.label ||
+      (geo && RBP.buildGeographyTitle ? RBP.buildGeographyTitle(geo) : null) ||
+      [corridor, hotel.submarket, hotel.market, hotel.country].filter(Boolean).join(" · ");
     var strRegionalNote =
       isStrRegionalSubmarket(hotel.submarket) && corridor && corridor !== hotel.submarket
         ? '<p class="hdp-snapshot-meta">Submarket "' +
@@ -2653,13 +2760,17 @@
       hotels: fpMetricNum(metrics.totalHotels),
       rooms: totalRooms,
     };
+    var incompletePctNote =
+      coverage.partial || (metrics.roomsUnknownHotelCount && metrics.roomsUnknownHotelCount > 0)
+        ? '<p class="hdp-snapshot-meta">Percentages reflect the matched HPC cohort only — not a complete market inventory. Unknown room counts are excluded from room totals (not treated as zero inventory).</p>'
+        : "";
 
     var summaryTable = renderFootprintTable(
       "Open vs. Pipeline (Submarket)",
       "Submarket",
       "",
       fpMetricRowHtml(
-        "Total (Submarket)",
+        "Total (matched HPC cohort)",
         metrics.openHotels,
         metrics.openRooms,
         metrics.pipelineHotels,
@@ -2673,8 +2784,15 @@
 
     var hotelTable = "";
     if (submarketHotels && submarketHotels.length) {
+      var tableTitle =
+        opts.source === "hpc"
+          ? "Matched HPC hotels (" +
+            submarketHotels.length +
+            ")" +
+            (coverage.partial ? " · partial coverage" : "")
+          : "All census hotels in submarket (" + submarketHotels.length + ")";
       hotelTable = renderFootprintTable(
-        "All census hotels in submarket (" + submarketHotels.length + ")",
+        tableTitle,
         "Hotel",
         sortSubmarketHotels(submarketHotels).map(function (h) {
           return footprintRowFromHotel(h, shareDenoms);
@@ -2684,10 +2802,10 @@
       );
     } else if (metrics && fpMetricNum(metrics.totalHotels) > 0) {
       hotelTable =
-        '<p class="hdp-snapshot-meta">Hotel-level census rows are not loaded in this session. Aggregate Submarket Snapshot metrics above come from Hotel Census / Scout coverage (read-only).</p>';
+        '<p class="hdp-snapshot-meta">Hotel-level rows are not loaded in this session. Aggregate metrics above are incomplete and are not treated as a full market census.</p>';
     } else {
       hotelTable =
-        '<p class="hdp-empty">No Hotel Census hotels matched this submarket/market with verified geography. Coverage may be incomplete — market totals are not fabricated.</p>';
+        '<p class="hdp-empty">No matched HPC hotels for this geography yet. The selected property should still appear when its canonical HPC record is available — empty Scout/Radar pools alone do not mean the hotel is missing.</p>';
     }
 
     var metaLine = penetrationPct != null
@@ -2700,9 +2818,12 @@
       : "";
 
     return (
-      '<div class="hdp-submarket-snapshot hdp-footprint-metrics">' +
+      '<div class="hdp-submarket-snapshot hdp-footprint-metrics" data-hdp-submarket-source="' +
+        esc(opts.source || "unknown") +
+        '">' +
         '<p class="hdp-snapshot-scope">' + esc(scopeLabel || "Submarket scope unavailable") + "</p>" +
         strRegionalNote +
+        incompletePctNote +
         metaLine +
         pipelineMetaLine +
         summaryTable +
@@ -3106,23 +3227,67 @@
     );
   }
 
-  function paintSubmarketFromPool(hotel, censusHotels, report, source) {
+  function paintSubmarketFromPool(hotel, censusHotels, report, source, poolMeta) {
+    poolMeta = poolMeta || {};
     var RBP = window.RadarBrandedPenetration;
     var mapFilters =
       RBP && typeof RBP.resolveMapFilters === "function" ? RBP.resolveMapFilters() : {};
-    var submarketHotels =
-      RBP && typeof RBP.hotelsInGeographyBucket === "function"
-        ? RBP.hotelsInGeographyBucket(hotel, censusHotels)
-        : filterHotelsBySubmarket(hotel, censusHotels);
+    var hpc = poolMeta.hpc || null;
+    var submarketHotels;
+
+    if (source === "hpc" && hpc && Array.isArray(hpc.hotels) && hpc.hotels.length) {
+      // HPC cohort is authoritative for this tab; do not re-bucket away the selected hotel.
+      submarketHotels = dedupeHotelsByIdentity(hpc.hotels);
+      if (hotel && hotel.market == null && hpc.selectedHotel && hpc.selectedHotel.market) {
+        hotel.market = hpc.selectedHotel.market;
+      }
+      if (hotel && hotel.submarket == null && hpc.selectedHotel && hpc.selectedHotel.submarket) {
+        hotel.submarket = hpc.selectedHotel.submarket;
+      }
+      if (hotel && !hotel.city && hpc.selectedHotel && hpc.selectedHotel.city) {
+        hotel.city = hpc.selectedHotel.city;
+      }
+      if (hotel && !hotel.country && hpc.selectedHotel && hpc.selectedHotel.country) {
+        hotel.country = hpc.selectedHotel.country;
+      }
+    } else {
+      submarketHotels =
+        RBP && typeof RBP.hotelsInGeographyBucket === "function"
+          ? RBP.hotelsInGeographyBucket(hotel, censusHotels)
+          : filterHotelsBySubmarket(hotel, censusHotels);
+      submarketHotels = ensureSelectedHotelInPool(hotel, submarketHotels);
+    }
     submarketHotels = dedupeHotelsByIdentity(submarketHotels);
 
-    var submarketMetrics = computeSubmarketMetrics(submarketHotels);
+    var submarketMetrics =
+      source === "hpc" && poolMeta.metrics
+        ? Object.assign({}, computeSubmarketMetrics(submarketHotels), poolMeta.metrics)
+        : computeSubmarketMetrics(submarketHotels);
     var submarketBreakdowns = computeSubmarketBreakdowns(submarketHotels);
     var penetrationPct = computeSubmarketPenetration(hotel, censusHotels, mapFilters);
     var pipelineMetrics = computeSubmarketPipelinePressure(hotel, censusHotels, mapFilters);
     var coverageNote = "";
 
-    if (!submarketHotels.length && report && report.success) {
+    if (source === "hpc") {
+      var cov = poolMeta.coverage || (hpc && hpc.coverage) || {};
+      var grouping = poolMeta.grouping || (hpc && hpc.grouping) || {};
+      coverageNote =
+        '<p class="hdp-snapshot-meta" data-hdp-submarket-source="hpc">Source: Hotel Property Census (canonical). Scout/Radar are supporting only — empty Scout does not hide HPC hotels.</p>';
+      if (cov.label) {
+        coverageNote +=
+          '<p class="hdp-snapshot-meta" data-hdp-submarket-coverage="1">' + esc(cov.label) + "</p>";
+      }
+      if (grouping.researchNeeded || grouping.mode === "selected_only") {
+        coverageNote +=
+          '<p class="hdp-snapshot-meta">Market/submarket research flagged — geography was not invented to fill the table.</p>';
+      }
+      if (poolMeta.supportSource && poolMeta.supportSource !== "none") {
+        coverageNote +=
+          '<p class="hdp-snapshot-meta">Supporting pool: ' +
+          esc(String(poolMeta.supportSource)) +
+          " (merged after HPC; duplicates removed).</p>";
+      }
+    } else if (!submarketHotels.length && report && report.success) {
       var metrics = report.metrics || {};
       var breakdowns = normalizeCoverageBreakdowns(report.breakdowns || {});
       var openHotels = fpMetricNum(metrics.openHotels);
@@ -3134,7 +3299,7 @@
         fpMetricNum(metrics.totalRooms) ||
         openRooms + pipelineRooms + fpMetricNum(metrics.candidateRooms);
       var sampleHotels = mapCensusSampleToHotels(report.recordsSample || []);
-      submarketHotels = dedupeHotelsByIdentity(sampleHotels);
+      submarketHotels = ensureSelectedHotelInPool(hotel, sampleHotels);
       if (submarketHotels.length) {
         submarketMetrics = computeSubmarketMetrics(submarketHotels);
         submarketBreakdowns = computeSubmarketBreakdowns(submarketHotels);
@@ -3152,20 +3317,19 @@
         submarketBreakdowns = breakdowns;
       }
       coverageNote =
-        '<p class="hdp-snapshot-meta">Source: Hotel Census via Scout (read-only). ' +
-        (source === "scout_census"
-          ? "Radar map census was empty in this session."
-          : "Showing Scout aggregates where map geography buckets were empty.") +
-        " Incomplete HPC coverage is not treated as a complete market census.</p>";
+        '<p class="hdp-snapshot-meta">Source: Hotel Census via Scout (read-only). HPC snapshot unavailable this session. Incomplete coverage is not treated as a complete market census.</p>';
     } else if (source === "scout_census" && submarketHotels.length) {
       coverageNote =
         '<p class="hdp-snapshot-meta">Source: Hotel Census sample (read-only). Sample size may be capped — not a full market census.</p>';
     }
 
+    var coverageMeta = poolMeta.coverage || (hpc && hpc.coverage) || null;
     var status =
       submarketHotels.length || fpMetricNum(submarketMetrics.totalHotels) > 0
         ? submarketHotels.length
-          ? "success"
+          ? coverageMeta && coverageMeta.partial
+            ? "partial"
+            : "success"
           : "partial"
         : "empty";
 
@@ -3177,7 +3341,12 @@
         submarketMetrics,
         submarketBreakdowns,
         penetrationPct,
-        pipelineMetrics
+        pipelineMetrics,
+        {
+          source: source,
+          coverage: coverageMeta,
+          grouping: poolMeta.grouping || (hpc && hpc.grouping) || null,
+        }
       ) + coverageNote,
       status
     );
@@ -3186,14 +3355,14 @@
   function loadMarketIntelTabs(hotel) {
     setTabPanel(
       "submarket-snapshot",
-      '<p class="hdp-empty hdp-context-state">Loading Hotel Census submarket intelligence…</p>',
+      '<p class="hdp-empty hdp-context-state">Loading Hotel Property Census submarket intelligence…</p>',
       "loading"
     );
 
     resolveCensusHotelPool(hotel).then(function (pool) {
       if (!isOpen || !isSameHotel(currentHotel, hotel)) return;
       try {
-        paintSubmarketFromPool(hotel, pool.hotels || [], pool.report || null, pool.source);
+        paintSubmarketFromPool(hotel, pool.hotels || [], pool.report || null, pool.source, pool);
       } catch (err) {
         if (typeof console !== "undefined" && console.warn) {
           console.warn("[hdp] submarket snapshot render failed", err);

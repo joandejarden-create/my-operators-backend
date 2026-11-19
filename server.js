@@ -90,6 +90,7 @@ import {
 } from "./api/hotel-explorer-founder-preview.js";
 import { getHotelExplorerNewsArticles } from "./api/hotel-explorer-news-articles.js";
 import { getHotelExplorerGuestSentiment } from "./api/hotel-explorer-guest-sentiment.js";
+import { getHotelExplorerSubmarketSnapshot } from "./api/hotel-explorer-submarket-snapshot.js";
 import { getHeAirtableGraphHotel } from "./api/he-airtable-graph.js";
 import {
   getOwnerIntelligenceMeta,
@@ -1004,6 +1005,11 @@ app.get(
 app.get(
   "/api/hotel-explorer/hotels/:hotelId/guest-sentiment",
   getHotelExplorerGuestSentiment
+);
+// Hotel Explorer — Submarket Snapshot from canonical HPC (GET-only; Scout is supporting only)
+app.get(
+  "/api/hotel-explorer/hotels/:hotelId/submarket-snapshot",
+  getHotelExplorerSubmarketSnapshot
 );
 
 // Hotel Explorer — Airtable HI graph read (Airtable-first tabs 2/4/5)
