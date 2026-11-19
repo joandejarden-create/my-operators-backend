@@ -7,8 +7,10 @@
 
 ## 1. Focused PR and HEAD
 
-See GitHub PR opened from this branch (title: HE-INTEL-001 P3B-M1 Live Activation).  
-HEAD will be the tip of `feat/he-intel-001-p3b-m1-live-activation` after push.
+- **PR:** [#439](https://github.com/joandejarden-create/my-operators-backend/pull/439) — OPEN  
+- **Branch:** `feat/he-intel-001-p3b-m1-live-activation`  
+- **HEAD:** `1109c9f0c38fc7fa4e327391d250358649e8deef`  
+- **Base:** `origin/main` (`824fc4f8733e8b9177e6089b21d158101e994b0f` at branch creation)
 
 ## 2. Durable budget and multi-worker safety evidence
 
