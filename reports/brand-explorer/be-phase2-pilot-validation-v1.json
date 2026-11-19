@@ -1,0 +1,694 @@
+{
+  "contract": "BE_PHASE2_PILOT_VALIDATION_V1",
+  "hpcContract": "BE_HPC_FOOTPRINT_SUMMARY_V1",
+  "generatedAt": "2026-11-19T11:50:33.240Z",
+  "mode": "staging_synthetic",
+  "liveConfigured": false,
+  "allowLiveRequested": false,
+  "scoringPolicy": {
+    "scored": [
+      "contractSchemaCompliance"
+    ],
+    "notValidatedUnlessProven": [
+      "profileFieldCompleteness",
+      "evidenceBasedFactualAccuracy",
+      "brandSpecificContentQuality",
+      "renderedApplicationValidation",
+      "liveHpcFootprintVerification"
+    ],
+    "note": "Do not treat synthetic fixture or tab-ID alignment as factual/UI validation."
+  },
+  "authorizations": {
+    "massPopulation": false,
+    "paidResearch": false,
+    "productionAirtableWrites": false,
+    "autoPublish": false
+  },
+  "factory": {
+    "doctorPass": true,
+    "doctorFailed": [],
+    "materializationEnabled": false,
+    "productionBuildEnabled": false,
+    "masterReleasePass": true,
+    "masterReleaseStatus": "READY_FOR_FOUNDER_REVIEW",
+    "tabCount": 10,
+    "tabContractCount": 10,
+    "canonicalTabs": [
+      "atelier-overview",
+      "atelier-value-owners",
+      "atelier-ops",
+      "atelier-standards-owner",
+      "atelier-commercial",
+      "atelier-economics",
+      "atelier-loyalty",
+      "atelier-footprint",
+      "atelier-materials",
+      "atelier-insight"
+    ],
+    "warnings": {
+      "unguardedHistoricalNpmScripts": [],
+      "unguardedHistoricalCount": 0,
+      "guardedCount": 129,
+      "applyCapableCount": 129,
+      "note": "Factory-critical npm writers must be fail-closed via brand-explorer-legacy-guard.mjs. Canonical build refuses --apply. Break-glass: BRAND_EXPLORER_ALLOW_LEGACY_APPLY=1"
+    }
+  },
+  "legacyWriteSafety": {
+    "pass": true,
+    "guardModuleOk": true,
+    "applyCapableCount": 129,
+    "guardedCount": 129,
+    "unguardedCount": 0,
+    "unguardedNames": [],
+    "factoryCritical": [
+      "brand-explorer-full-tab-factory-build",
+      "brand-explorer-wave12-factory",
+      "brand-explorer-wave13-factory",
+      "brand-explorer-wave14-factory",
+      "brand-explorer-wave15-factory",
+      "brand-explorer-v43-active-release-apply",
+      "brand-explorer-v40-active-release-remediation",
+      "brand-explorer-atomic-collection-remediation-apply",
+      "brand-explorer-tab-factory-remediation",
+      "brand-explorer-built-blocked-remediation",
+      "brand-explorer-rendered-field-completeness-remediation"
+    ],
+    "factoryCriticalUnguarded": [],
+    "note": "Historical writers remain on disk; factory-critical npm entry points must be fail-closed via legacy-guard wrapper. Break-glass: BRAND_EXPLORER_ALLOW_LEGACY_APPLY=1"
+  },
+  "pilotsSummary": {
+    "contract": "BE_HPC_FOOTPRINT_SUMMARY_V1",
+    "pilotCount": 6,
+    "pilots": [
+      {
+        "slug": "autograph-collection",
+        "recordId": "recEJCTDj1zrsjPM6",
+        "name": "Autograph Collection",
+        "affiliationModel": "soft_brand",
+        "operatingModel": "franchise_soft_brand"
+      },
+      {
+        "slug": "ascend",
+        "recordId": "reclkgOzvAcBheUSo",
+        "name": "Ascend Hotel Collection",
+        "affiliationModel": "soft_brand_collection",
+        "operatingModel": "franchise_membership"
+      },
+      {
+        "slug": "curio-collection",
+        "recordId": "receQkxgjlezsc1xg",
+        "name": "Curio Collection by Hilton",
+        "affiliationModel": "soft_brand",
+        "operatingModel": "franchise_soft_brand"
+      },
+      {
+        "slug": "tribute-portfolio",
+        "recordId": "recCvV0PuZOi8c3hC",
+        "name": "Tribute Portfolio",
+        "affiliationModel": "soft_brand",
+        "operatingModel": "franchise_soft_brand"
+      },
+      {
+        "slug": "mama-shelter",
+        "recordId": "recXCZCK05XXYX7Q8",
+        "name": "Mama Shelter",
+        "affiliationModel": "lifestyle_brand",
+        "operatingModel": "managed_operated"
+      },
+      {
+        "slug": "preferred-hotels-and-resorts",
+        "recordId": "recwl5JOYxlChuCAr",
+        "name": "Preferred Hotels & Resorts",
+        "affiliationModel": "independent_affiliation",
+        "operatingModel": "membership_affiliation"
+      }
+    ],
+    "designatedAuthority": "hpc",
+    "writesAuthorized": false,
+    "paidResearchAuthorized": false,
+    "autoPublishAuthorized": false,
+    "certificationNote": "HPC_BRAND_ROLLUP_CERTIFIED requires live Airtable origin + identity + complete pagination + status filter + dedupe + documented coverage + independentCertification=true. Synthetic fixtures never certify."
+  },
+  "pilots": [
+    {
+      "slug": "autograph-collection",
+      "recordId": "recEJCTDj1zrsjPM6",
+      "name": "Autograph Collection",
+      "affiliationModel": "soft_brand",
+      "operatingModel": "franchise_soft_brand",
+      "preserveAirtableRecords": true,
+      "stagingOnly": true,
+      "validationMode": "staging_synthetic",
+      "footprint": {
+        "available": true,
+        "certified": false,
+        "dataOrigin": "synthetic_fixture",
+        "certState": "SYNTHETIC_FIXTURE_VALIDATION",
+        "fallbackRecommended": true,
+        "metrics": {
+          "totalOpenHotels": 2,
+          "totalOpenKeys": 200,
+          "totalPipelineHotels": 1,
+          "totalPipelineKeys": 150
+        },
+        "recordsMatched": 3,
+        "paginationComplete": true,
+        "certificationGates": {
+          "identityMappingProven": true,
+          "paginationComplete": true,
+          "statusFilteringApplied": true,
+          "deduplicationApplied": true,
+          "coverageDocumented": true,
+          "liveSource": false,
+          "notSynthetic": false,
+          "hasQualifyingRows": true,
+          "notTransitional": true,
+          "independentCertification": false
+        },
+        "warnings": [
+          "Excluded 1 non-Open/Pipeline HPC row(s) from totals",
+          "SYNTHETIC_FIXTURE: counts are for pipeline/unit validation only — not certifiable inventory"
+        ]
+      },
+      "dimensions": {
+        "contractSchemaCompliance": {
+          "status": "PASS",
+          "detail": "Ten-tab shell, SoT ownership, identity id shape, doctor, write=0, synthetic≠CERTIFIED",
+          "score": 1
+        },
+        "profileFieldCompleteness": {
+          "status": "NOT_VALIDATED",
+          "detail": "No local full fixture; live Brand Setup field completeness not run",
+          "score": null
+        },
+        "evidenceBasedFactualAccuracy": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic HPC rows only — factual inventory accuracy not validated",
+          "score": null
+        },
+        "brandSpecificContentQuality": {
+          "status": "NOT_VALIDATED",
+          "detail": "Brand-specific copy quality requires human/source QA; not scored from fixtures alone",
+          "score": null
+        },
+        "renderedApplicationValidation": {
+          "status": "NOT_VALIDATED",
+          "detail": "Authenticated Brand Explorer UI render not exercised in this Phase 2 staging harness",
+          "score": null
+        },
+        "liveHpcFootprintVerification": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic fixture validation only — live HPC verification not run",
+          "score": null
+        }
+      },
+      "structuralScore": {
+        "contractSchemaCompliance": 1,
+        "note": "Only structural/contract dimensions are scored. Other dimensions are NOT_VALIDATED until live evidence or rendered-app checks exist."
+      },
+      "gates": {
+        "identityPreserved": true,
+        "tenTabContracts": true,
+        "hpcDesignated": true,
+        "noWrites": true,
+        "noPaidResearch": true,
+        "noAutoPublish": true,
+        "companyReportedSeparated": true,
+        "adpGdiReadOnly": true,
+        "syntheticNeverCertified": true,
+        "fixturePresent": false,
+        "presentationBasicsTable": true
+      }
+    },
+    {
+      "slug": "ascend",
+      "recordId": "reclkgOzvAcBheUSo",
+      "name": "Ascend Hotel Collection",
+      "affiliationModel": "soft_brand_collection",
+      "operatingModel": "franchise_membership",
+      "preserveAirtableRecords": true,
+      "stagingOnly": true,
+      "validationMode": "staging_synthetic",
+      "footprint": {
+        "available": true,
+        "certified": false,
+        "dataOrigin": "synthetic_fixture",
+        "certState": "SYNTHETIC_FIXTURE_VALIDATION",
+        "fallbackRecommended": true,
+        "metrics": {
+          "totalOpenHotels": 2,
+          "totalOpenKeys": 200,
+          "totalPipelineHotels": 1,
+          "totalPipelineKeys": 150
+        },
+        "recordsMatched": 3,
+        "paginationComplete": true,
+        "certificationGates": {
+          "identityMappingProven": true,
+          "paginationComplete": true,
+          "statusFilteringApplied": true,
+          "deduplicationApplied": true,
+          "coverageDocumented": true,
+          "liveSource": false,
+          "notSynthetic": false,
+          "hasQualifyingRows": true,
+          "notTransitional": true,
+          "independentCertification": false
+        },
+        "warnings": [
+          "Excluded 1 non-Open/Pipeline HPC row(s) from totals",
+          "SYNTHETIC_FIXTURE: counts are for pipeline/unit validation only — not certifiable inventory"
+        ]
+      },
+      "dimensions": {
+        "contractSchemaCompliance": {
+          "status": "PASS",
+          "detail": "Ten-tab shell, SoT ownership, identity id shape, doctor, write=0, synthetic≠CERTIFIED",
+          "score": 1
+        },
+        "profileFieldCompleteness": {
+          "status": "NOT_VALIDATED",
+          "detail": "Local presentation fixture present — not a full Airtable field completeness audit",
+          "score": null
+        },
+        "evidenceBasedFactualAccuracy": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic HPC rows only — factual inventory accuracy not validated",
+          "score": null
+        },
+        "brandSpecificContentQuality": {
+          "status": "NOT_VALIDATED",
+          "detail": "Brand-specific copy quality requires human/source QA; not scored from fixtures alone",
+          "score": null
+        },
+        "renderedApplicationValidation": {
+          "status": "NOT_VALIDATED",
+          "detail": "Authenticated Brand Explorer UI render not exercised in this Phase 2 staging harness",
+          "score": null
+        },
+        "liveHpcFootprintVerification": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic fixture validation only — live HPC verification not run",
+          "score": null
+        }
+      },
+      "structuralScore": {
+        "contractSchemaCompliance": 1,
+        "note": "Only structural/contract dimensions are scored. Other dimensions are NOT_VALIDATED until live evidence or rendered-app checks exist."
+      },
+      "gates": {
+        "identityPreserved": true,
+        "tenTabContracts": true,
+        "hpcDesignated": true,
+        "noWrites": true,
+        "noPaidResearch": true,
+        "noAutoPublish": true,
+        "companyReportedSeparated": true,
+        "adpGdiReadOnly": true,
+        "syntheticNeverCertified": true,
+        "fixturePresent": true,
+        "presentationBasicsTable": true
+      }
+    },
+    {
+      "slug": "curio-collection",
+      "recordId": "receQkxgjlezsc1xg",
+      "name": "Curio Collection by Hilton",
+      "affiliationModel": "soft_brand",
+      "operatingModel": "franchise_soft_brand",
+      "preserveAirtableRecords": true,
+      "stagingOnly": true,
+      "validationMode": "staging_synthetic",
+      "footprint": {
+        "available": true,
+        "certified": false,
+        "dataOrigin": "synthetic_fixture",
+        "certState": "SYNTHETIC_FIXTURE_VALIDATION",
+        "fallbackRecommended": true,
+        "metrics": {
+          "totalOpenHotels": 2,
+          "totalOpenKeys": 200,
+          "totalPipelineHotels": 1,
+          "totalPipelineKeys": 150
+        },
+        "recordsMatched": 3,
+        "paginationComplete": true,
+        "certificationGates": {
+          "identityMappingProven": true,
+          "paginationComplete": true,
+          "statusFilteringApplied": true,
+          "deduplicationApplied": true,
+          "coverageDocumented": true,
+          "liveSource": false,
+          "notSynthetic": false,
+          "hasQualifyingRows": true,
+          "notTransitional": true,
+          "independentCertification": false
+        },
+        "warnings": [
+          "Excluded 1 non-Open/Pipeline HPC row(s) from totals",
+          "SYNTHETIC_FIXTURE: counts are for pipeline/unit validation only — not certifiable inventory"
+        ]
+      },
+      "dimensions": {
+        "contractSchemaCompliance": {
+          "status": "PASS",
+          "detail": "Ten-tab shell, SoT ownership, identity id shape, doctor, write=0, synthetic≠CERTIFIED",
+          "score": 1
+        },
+        "profileFieldCompleteness": {
+          "status": "NOT_VALIDATED",
+          "detail": "Local presentation fixture present — not a full Airtable field completeness audit",
+          "score": null
+        },
+        "evidenceBasedFactualAccuracy": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic HPC rows only — factual inventory accuracy not validated",
+          "score": null
+        },
+        "brandSpecificContentQuality": {
+          "status": "NOT_VALIDATED",
+          "detail": "Brand-specific copy quality requires human/source QA; not scored from fixtures alone",
+          "score": null
+        },
+        "renderedApplicationValidation": {
+          "status": "NOT_VALIDATED",
+          "detail": "Authenticated Brand Explorer UI render not exercised in this Phase 2 staging harness",
+          "score": null
+        },
+        "liveHpcFootprintVerification": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic fixture validation only — live HPC verification not run",
+          "score": null
+        }
+      },
+      "structuralScore": {
+        "contractSchemaCompliance": 1,
+        "note": "Only structural/contract dimensions are scored. Other dimensions are NOT_VALIDATED until live evidence or rendered-app checks exist."
+      },
+      "gates": {
+        "identityPreserved": true,
+        "tenTabContracts": true,
+        "hpcDesignated": true,
+        "noWrites": true,
+        "noPaidResearch": true,
+        "noAutoPublish": true,
+        "companyReportedSeparated": true,
+        "adpGdiReadOnly": true,
+        "syntheticNeverCertified": true,
+        "fixturePresent": true,
+        "presentationBasicsTable": true
+      }
+    },
+    {
+      "slug": "tribute-portfolio",
+      "recordId": "recCvV0PuZOi8c3hC",
+      "name": "Tribute Portfolio",
+      "affiliationModel": "soft_brand",
+      "operatingModel": "franchise_soft_brand",
+      "preserveAirtableRecords": true,
+      "stagingOnly": true,
+      "validationMode": "staging_synthetic",
+      "footprint": {
+        "available": true,
+        "certified": false,
+        "dataOrigin": "synthetic_fixture",
+        "certState": "SYNTHETIC_FIXTURE_VALIDATION",
+        "fallbackRecommended": true,
+        "metrics": {
+          "totalOpenHotels": 2,
+          "totalOpenKeys": 200,
+          "totalPipelineHotels": 1,
+          "totalPipelineKeys": 150
+        },
+        "recordsMatched": 3,
+        "paginationComplete": true,
+        "certificationGates": {
+          "identityMappingProven": true,
+          "paginationComplete": true,
+          "statusFilteringApplied": true,
+          "deduplicationApplied": true,
+          "coverageDocumented": true,
+          "liveSource": false,
+          "notSynthetic": false,
+          "hasQualifyingRows": true,
+          "notTransitional": true,
+          "independentCertification": false
+        },
+        "warnings": [
+          "Excluded 1 non-Open/Pipeline HPC row(s) from totals",
+          "SYNTHETIC_FIXTURE: counts are for pipeline/unit validation only — not certifiable inventory"
+        ]
+      },
+      "dimensions": {
+        "contractSchemaCompliance": {
+          "status": "PASS",
+          "detail": "Ten-tab shell, SoT ownership, identity id shape, doctor, write=0, synthetic≠CERTIFIED",
+          "score": 1
+        },
+        "profileFieldCompleteness": {
+          "status": "NOT_VALIDATED",
+          "detail": "No local full fixture; live Brand Setup field completeness not run",
+          "score": null
+        },
+        "evidenceBasedFactualAccuracy": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic HPC rows only — factual inventory accuracy not validated",
+          "score": null
+        },
+        "brandSpecificContentQuality": {
+          "status": "NOT_VALIDATED",
+          "detail": "Brand-specific copy quality requires human/source QA; not scored from fixtures alone",
+          "score": null
+        },
+        "renderedApplicationValidation": {
+          "status": "NOT_VALIDATED",
+          "detail": "Authenticated Brand Explorer UI render not exercised in this Phase 2 staging harness",
+          "score": null
+        },
+        "liveHpcFootprintVerification": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic fixture validation only — live HPC verification not run",
+          "score": null
+        }
+      },
+      "structuralScore": {
+        "contractSchemaCompliance": 1,
+        "note": "Only structural/contract dimensions are scored. Other dimensions are NOT_VALIDATED until live evidence or rendered-app checks exist."
+      },
+      "gates": {
+        "identityPreserved": true,
+        "tenTabContracts": true,
+        "hpcDesignated": true,
+        "noWrites": true,
+        "noPaidResearch": true,
+        "noAutoPublish": true,
+        "companyReportedSeparated": true,
+        "adpGdiReadOnly": true,
+        "syntheticNeverCertified": true,
+        "fixturePresent": false,
+        "presentationBasicsTable": true
+      }
+    },
+    {
+      "slug": "mama-shelter",
+      "recordId": "recXCZCK05XXYX7Q8",
+      "name": "Mama Shelter",
+      "affiliationModel": "lifestyle_brand",
+      "operatingModel": "managed_operated",
+      "preserveAirtableRecords": true,
+      "stagingOnly": true,
+      "validationMode": "staging_synthetic",
+      "footprint": {
+        "available": true,
+        "certified": false,
+        "dataOrigin": "synthetic_fixture",
+        "certState": "SYNTHETIC_FIXTURE_VALIDATION",
+        "fallbackRecommended": true,
+        "metrics": {
+          "totalOpenHotels": 2,
+          "totalOpenKeys": 200,
+          "totalPipelineHotels": 1,
+          "totalPipelineKeys": 150
+        },
+        "recordsMatched": 3,
+        "paginationComplete": true,
+        "certificationGates": {
+          "identityMappingProven": true,
+          "paginationComplete": true,
+          "statusFilteringApplied": true,
+          "deduplicationApplied": true,
+          "coverageDocumented": true,
+          "liveSource": false,
+          "notSynthetic": false,
+          "hasQualifyingRows": true,
+          "notTransitional": true,
+          "independentCertification": false
+        },
+        "warnings": [
+          "Excluded 1 non-Open/Pipeline HPC row(s) from totals",
+          "SYNTHETIC_FIXTURE: counts are for pipeline/unit validation only — not certifiable inventory"
+        ]
+      },
+      "dimensions": {
+        "contractSchemaCompliance": {
+          "status": "PASS",
+          "detail": "Ten-tab shell, SoT ownership, identity id shape, doctor, write=0, synthetic≠CERTIFIED",
+          "score": 1
+        },
+        "profileFieldCompleteness": {
+          "status": "NOT_VALIDATED",
+          "detail": "No local full fixture; live Brand Setup field completeness not run",
+          "score": null
+        },
+        "evidenceBasedFactualAccuracy": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic HPC rows only — factual inventory accuracy not validated",
+          "score": null
+        },
+        "brandSpecificContentQuality": {
+          "status": "NOT_VALIDATED",
+          "detail": "Brand-specific copy quality requires human/source QA; not scored from fixtures alone",
+          "score": null
+        },
+        "renderedApplicationValidation": {
+          "status": "NOT_VALIDATED",
+          "detail": "Authenticated Brand Explorer UI render not exercised in this Phase 2 staging harness",
+          "score": null
+        },
+        "liveHpcFootprintVerification": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic fixture validation only — live HPC verification not run",
+          "score": null
+        }
+      },
+      "structuralScore": {
+        "contractSchemaCompliance": 1,
+        "note": "Only structural/contract dimensions are scored. Other dimensions are NOT_VALIDATED until live evidence or rendered-app checks exist."
+      },
+      "gates": {
+        "identityPreserved": true,
+        "tenTabContracts": true,
+        "hpcDesignated": true,
+        "noWrites": true,
+        "noPaidResearch": true,
+        "noAutoPublish": true,
+        "companyReportedSeparated": true,
+        "adpGdiReadOnly": true,
+        "syntheticNeverCertified": true,
+        "fixturePresent": false,
+        "presentationBasicsTable": true
+      }
+    },
+    {
+      "slug": "preferred-hotels-and-resorts",
+      "recordId": "recwl5JOYxlChuCAr",
+      "name": "Preferred Hotels & Resorts",
+      "affiliationModel": "independent_affiliation",
+      "operatingModel": "membership_affiliation",
+      "preserveAirtableRecords": true,
+      "stagingOnly": true,
+      "validationMode": "staging_synthetic",
+      "footprint": {
+        "available": true,
+        "certified": false,
+        "dataOrigin": "synthetic_fixture",
+        "certState": "SYNTHETIC_FIXTURE_VALIDATION",
+        "fallbackRecommended": true,
+        "metrics": {
+          "totalOpenHotels": 2,
+          "totalOpenKeys": 200,
+          "totalPipelineHotels": 1,
+          "totalPipelineKeys": 150
+        },
+        "recordsMatched": 3,
+        "paginationComplete": true,
+        "certificationGates": {
+          "identityMappingProven": true,
+          "paginationComplete": true,
+          "statusFilteringApplied": true,
+          "deduplicationApplied": true,
+          "coverageDocumented": true,
+          "liveSource": false,
+          "notSynthetic": false,
+          "hasQualifyingRows": true,
+          "notTransitional": true,
+          "independentCertification": false
+        },
+        "warnings": [
+          "Excluded 1 non-Open/Pipeline HPC row(s) from totals",
+          "SYNTHETIC_FIXTURE: counts are for pipeline/unit validation only — not certifiable inventory"
+        ]
+      },
+      "dimensions": {
+        "contractSchemaCompliance": {
+          "status": "PASS",
+          "detail": "Ten-tab shell, SoT ownership, identity id shape, doctor, write=0, synthetic≠CERTIFIED",
+          "score": 1
+        },
+        "profileFieldCompleteness": {
+          "status": "NOT_VALIDATED",
+          "detail": "No local full fixture; live Brand Setup field completeness not run",
+          "score": null
+        },
+        "evidenceBasedFactualAccuracy": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic HPC rows only — factual inventory accuracy not validated",
+          "score": null
+        },
+        "brandSpecificContentQuality": {
+          "status": "NOT_VALIDATED",
+          "detail": "Brand-specific copy quality requires human/source QA; not scored from fixtures alone",
+          "score": null
+        },
+        "renderedApplicationValidation": {
+          "status": "NOT_VALIDATED",
+          "detail": "Authenticated Brand Explorer UI render not exercised in this Phase 2 staging harness",
+          "score": null
+        },
+        "liveHpcFootprintVerification": {
+          "status": "NOT_VALIDATED",
+          "detail": "Synthetic fixture validation only — live HPC verification not run",
+          "score": null
+        }
+      },
+      "structuralScore": {
+        "contractSchemaCompliance": 1,
+        "note": "Only structural/contract dimensions are scored. Other dimensions are NOT_VALIDATED until live evidence or rendered-app checks exist."
+      },
+      "gates": {
+        "identityPreserved": true,
+        "tenTabContracts": true,
+        "hpcDesignated": true,
+        "noWrites": true,
+        "noPaidResearch": true,
+        "noAutoPublish": true,
+        "companyReportedSeparated": true,
+        "adpGdiReadOnly": true,
+        "syntheticNeverCertified": true,
+        "fixturePresent": false,
+        "presentationBasicsTable": true
+      }
+    }
+  ],
+  "summary": {
+    "structuralContractPassCount": 6,
+    "pilotCount": 6,
+    "syntheticCertifiedViolations": 0,
+    "averagesScoredOnly": {
+      "contractSchemaCompliance": 1
+    },
+    "notValidatedDimensions": [
+      "profileFieldCompleteness",
+      "evidenceBasedFactualAccuracy",
+      "brandSpecificContentQuality",
+      "renderedApplicationValidation",
+      "liveHpcFootprintVerification"
+    ]
+  },
+  "nextSteps": [
+    "Demonstrate ≥1 genuine read-only live HPC rollup after merge",
+    "Demonstrate ≥1 complete ten-tab profile with real source evidence",
+    "Do not request population authorization until live evidence is reported"
+  ]
+}
