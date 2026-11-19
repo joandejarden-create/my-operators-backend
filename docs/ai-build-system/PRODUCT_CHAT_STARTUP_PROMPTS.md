@@ -28,9 +28,10 @@ On start:
 2. Run: git branch --show-current && git rev-parse --short HEAD && git status -sb
 3. Run: npm run dealality:git-preflight -- --op status-check --stream he
 4. If idle on home and behind origin/main: npm run dealality:post-merge-sync -- --mode status (Integration applies sync after merges)
-5. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline + dealality-radar-authenticated-acceptance-gate + dealality-pr-completion-workspace-ownership
+5. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline + dealality-radar-authenticated-acceptance-gate + dealality-pr-completion-workspace-ownership + dealality-airtable-persistence-gate
 
 Workflow: one task → branch from latest origin/main inside this workspace → implement → targeted tests → authenticated /app#/opportunity-radar acceptance (PASS/FAIL/BLOCKED) → commit → push → PR → STOP for Integration Controller merge + post-merge sync + pr-completion-report.
+Durable intelligence PRs must include Airtable SoT mapping + persistence/retrieval evidence + explicit PROTOTYPE|PERSISTENCE_DESIGNED|PERSISTENCE_VALIDATED|FULL_E2E_VALIDATED|CUSTOMER_PUBLISHED (docs/ai-build-system/AIRTABLE_PERSISTENCE_GATE.md).
 For Radar visibility/filter/search/map/auth/HE-navigation/HPC changes: authenticated acceptance at http://localhost:8080/app#/opportunity-radar is mandatory. CI/unit/API/demo alone cannot PASS. See docs/ai-build-system/RADAR_AUTHENTICATED_APP_ACCEPTANCE_GATE.md.
 Merge alone is not complete — restore ws/hotel-explorer, sync origin/main, report COMPLETE — MERGED_AND_HOME_SYNCED — CLEAN_WORKTREE|PRESERVED_DIRTY (or BLOCKED — …). See docs/ai-build-system/PR_COMPLETION_AND_WORKSPACE_OWNERSHIP.md.
 Do not create unregistered worktrees. Do not force-push. Do not merge to main. Do not touch the dirty primary checkout.
@@ -59,9 +60,10 @@ On start:
 3. Run: npm run dealality:git-preflight -- --op status-check --stream adp
 4. If idle on home and behind origin/main: npm run dealality:post-merge-sync -- --mode status (Integration applies sync after merges)
 5. Confirm no prior ADP PR remains unresolved before starting a new task
-6. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline + dealality-pr-completion-workspace-ownership
+6. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline + dealality-pr-completion-workspace-ownership + dealality-airtable-persistence-gate
 
 Workflow: one task → short-lived branch from latest origin/main inside this workspace → implement → targeted tests → commit → push → PR → STOP for Integration Controller merge + post-merge sync + pr-completion-report.
+Durable intelligence PRs must include Airtable SoT mapping + persistence/retrieval evidence + explicit PROTOTYPE|PERSISTENCE_DESIGNED|PERSISTENCE_VALIDATED|FULL_E2E_VALIDATED|CUSTOMER_PUBLISHED (docs/ai-build-system/AIRTABLE_PERSISTENCE_GATE.md). Never claim FULL E2E from UI/API/PDF/local JSON alone.
 After founder-approved merge is confirmed on GitHub, ADP must restore ws/adp to origin/main and verify CLEAN_WORKTREE or explicitly report PRESERVED_DIRTY before the next task. Do not remain on a completed feature/fix branch.
 If merge is approved but not yet on main, report AWAITING_INTEGRATION_CONTROLLER (cycle not closed).
 Do not checkout GDI/HE feature branches in this workspace (BLOCKED — CROSS_WORKSTREAM_BRANCH).
@@ -85,9 +87,10 @@ On start:
 2. Run: git branch --show-current && git rev-parse --short HEAD && git status -sb
 3. Run: npm run dealality:git-preflight -- --op status-check --stream gdi
 4. If idle on home and behind origin/main: npm run dealality:post-merge-sync -- --mode status (Integration applies sync after merges)
-5. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline + dealality-pr-completion-workspace-ownership
+5. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline + dealality-pr-completion-workspace-ownership + dealality-airtable-persistence-gate
 
 Workflow: one task → branch from latest origin/main inside this workspace → implement → targeted tests → commit → push → PR → STOP for Integration Controller merge + post-merge sync + pr-completion-report.
+Durable intelligence PRs must include Airtable SoT mapping + persistence/retrieval evidence + explicit PROTOTYPE|PERSISTENCE_DESIGNED|PERSISTENCE_VALIDATED|FULL_E2E_VALIDATED|CUSTOMER_PUBLISHED (docs/ai-build-system/AIRTABLE_PERSISTENCE_GATE.md).
 Do not create unregistered worktrees. Do not force-push. Do not merge to main. Do not copy dirty primary GDI WIP until founder-approved preservation execution.
 Do not checkout ADP/HE feature branches here (BLOCKED — CROSS_WORKSTREAM_BRANCH).
 No Airtable writes, paid research, or deploy without founder authorization.
@@ -121,9 +124,10 @@ On start:
 3. Run: npm run dealality:git-preflight -- --op status-check --stream be
 4. If idle on home and behind origin/main: npm run dealality:post-merge-sync -- --mode status (Integration applies sync after merges)
 5. Confirm no prior BE PR remains unresolved before starting a dependent task
-6. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline + dealality-pr-completion-workspace-ownership
+6. Load rules: dealality-worktree-governance + gdi-github-branch-merge-discipline + dealality-ci-precheck-discipline + dealality-pr-completion-workspace-ownership + dealality-airtable-persistence-gate
 
 Workflow: one task → short-lived branch from latest origin/main inside this workspace (feat|fix|docs|research)/(brand-explorer|be)/… → implement → targeted tests → commit → push → PR → STOP for Integration Controller merge + post-merge sync + pr-completion-report.
+Durable intelligence PRs must include Airtable SoT mapping + persistence/retrieval evidence + explicit PROTOTYPE|PERSISTENCE_DESIGNED|PERSISTENCE_VALIDATED|FULL_E2E_VALIDATED|CUSTOMER_PUBLISHED (docs/ai-build-system/AIRTABLE_PERSISTENCE_GATE.md).
 Do not develop Brand Explorer in ADP, GDI, HE, or Integration worktrees (BLOCKED — CROSS_WORKSTREAM_BRANCH).
 Do not create unregistered worktrees. Do not force-push. Do not merge to main from BE.
 No Airtable writes, paid research, mass population, or publication without founder authorization.
@@ -134,6 +138,8 @@ Recover and reuse the existing Brand Explorer factory — do not build a competi
 ## Integration Controller
 
 Owns: merges into main, **post-merge product workspace sync** (`npm run dealality:post-merge-sync`), shared-file coordination, registry edits, worktree provisioning/removal approvals, primary dirty preservation execution. Does **not** take ownership of product development worktrees for ordinary product tasks; prefer `dealality:remote-pr-merge` so dirty Integration WIP stays untouched.
+
+**Persistence gate review:** For durable intelligence PRs, refuse FULL_E2E_VALIDATED / customer-ready claims unless closeout includes Airtable SoT mapping, persistence/retrieval evidence, history/provenance, identity checks, limitations, and an explicit classification per `docs/ai-build-system/AIRTABLE_PERSISTENCE_GATE.md`. UI/API/PDF/local JSON alone is insufficient.
 
 After every successful merge:
 

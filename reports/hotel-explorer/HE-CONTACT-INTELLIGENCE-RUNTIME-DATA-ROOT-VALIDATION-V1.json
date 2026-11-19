@@ -1,0 +1,75 @@
+{
+  "contract": "HE_CONTACT_INTELLIGENCE_RUNTIME_DATA_ROOT_VALIDATION_V1",
+  "validatedAt": "2026-11-19T13:33:28.031Z",
+  "proposedConfig": {
+    "CONTACT_INTELLIGENCE_DATA_ROOT": "C:/Dev/dealality/ws-hotel-explorer/data/hotel-intelligence/contact-intelligence",
+    "CONTACT_INTELLIGENCE_ALLOW_CROSS_WORKTREE": "0",
+    "HE_LOCAL_BASE_URL": "http://127.0.0.1:8091",
+    "PORT": "8091",
+    "DEALALITY_ALLOW_WORKTREE_SERVER": "1"
+  },
+  "airtableFirstPreserved": true,
+  "gsfContactsNotMigrated": true,
+  "adpAuthReportUntouched": true,
+  "checks": [
+    {
+      "id": "resolve_default_under_he",
+      "ok": true,
+      "source": "MODULE_REPO_DEFAULT",
+      "rootBasenameTrail": "ws-hotel-explorer/data/hotel-intelligence/contact-intelligence"
+    },
+    {
+      "id": "affinity_he_self",
+      "ok": true,
+      "root": "C:\\Dev\\dealality\\ws-hotel-explorer\\data\\hotel-intelligence\\contact-intelligence",
+      "source": "MODULE_REPO_DEFAULT",
+      "envOverride": false,
+      "servingWorkspace": {
+        "stream": "he",
+        "path": "C:/Dev/dealality/ws-hotel-explorer"
+      },
+      "dataWorkspace": {
+        "stream": "he",
+        "path": "C:/Dev/dealality/ws-hotel-explorer"
+      }
+    },
+    {
+      "id": "affinity_he_to_adp_refused",
+      "ok": true,
+      "error": "CONTACT_INTELLIGENCE_CROSS_WORKTREE_DATA_ROOT",
+      "dataStream": "adp"
+    },
+    {
+      "id": "default_audit_base_is_8091",
+      "ok": true,
+      "HE_DEFAULT_LOCAL_BASE_URL": "http://127.0.0.1:8091",
+      "resolvedBaseUrl": "http://127.0.0.1:8091"
+    },
+    {
+      "id": "live_he_runtime_identity",
+      "ok": true,
+      "baseUrl": "http://127.0.0.1:8091",
+      "error": null,
+      "servingDirectoryBasename": "ws-hotel-explorer",
+      "servingStream": "he",
+      "contactIntelligence": {
+        "dataRootSource": "MODULE_REPO_DEFAULT",
+        "dataRootEnvOverride": false,
+        "dataRootBasenameTrail": "data/hotel-intelligence/contact-intelligence",
+        "affinityOk": true,
+        "affinityError": null,
+        "servingStream": "he",
+        "dataStream": "he",
+        "allowCrossWorktree": false
+      }
+    },
+    {
+      "id": "audit_refuses_adp_basename",
+      "ok": true,
+      "error": "foreign_runtime_target",
+      "servingDirectoryBasename": "ws-adp"
+    }
+  ],
+  "passed": true,
+  "founderReview": "REQUIRED_BEFORE_INTEGRATION"
+}

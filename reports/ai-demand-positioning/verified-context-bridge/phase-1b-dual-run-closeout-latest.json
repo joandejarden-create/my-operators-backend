@@ -1,0 +1,327 @@
+{
+  "contractVersion": "ADP_VERIFIED_CONTEXT_BRIDGE_V1",
+  "generatedAt": "2026-11-19T16:19:30.931Z",
+  "scope": "PHASE_1B_PR1_DIAGNOSTIC_ONLY",
+  "airtableWrites": false,
+  "customerFacingCutover": false,
+  "observationBackedHotels": [
+    "adp_bethesda_marriott"
+  ],
+  "attributeCoverageOnlyHotels": [
+    "adp_spice_island_beach_resort",
+    "adp_yotel_geneva_lake"
+  ],
+  "pilots": [
+    {
+      "propertyId": "adp_bethesda_marriott",
+      "hpcHotelId": "recLuxvwwxID7U2B8",
+      "attributeCoverageValidation": "ATTRIBUTE_COVERAGE_VALIDATED",
+      "measurementComparisonStatus": "OBSERVATION_BACKED",
+      "dualRunScoresValid": true,
+      "selectedCount": 15,
+      "eligibleCount": 12,
+      "eligibleUniqueConceptCount": 11,
+      "needsVerification": [
+        "fitness_center_24hr",
+        "peloton",
+        "outdoor_pool"
+      ],
+      "undefinedKeys": [],
+      "conflictingKeys": [],
+      "semanticOverlaps": [
+        {
+          "group": [
+            "fitness_center_24hr",
+            "peloton"
+          ],
+          "note": "Semantically related selected keys — review for double-counting risk"
+        },
+        {
+          "group": [
+            "meeting_space",
+            "ballroom"
+          ],
+          "note": "Semantically related selected keys — review for double-counting risk"
+        }
+      ],
+      "minimumCoverage": {
+        "meetsMinimum": false,
+        "eligibleCount": 11,
+        "shortfall": 1,
+        "flag": "BELOW_MINIMUM_ATTRIBUTE_COVERAGE",
+        "countedAs": "eligibleUniqueConceptCount"
+      },
+      "fixtureDenom": 15,
+      "bridgedDenom": 12,
+      "fixtureGapScore": 80,
+      "bridgedGapScore": 75,
+      "artifactWarning": "DENOMINATOR_ARTIFACT — bridged gapScore is lower (looks 'better') primarily because ineligible selected attributes were excluded from the diagnostic denominator. This is NOT improved AI recognition.",
+      "publishedReference": null,
+      "topSuggestions": [
+        {
+          "attribute": "large_ballroom",
+          "status": "PROPOSED_ADDITION",
+          "verifiedSupport": true,
+          "reason": "Relevant to demand segments: corporate_meetings, associations_conventions"
+        },
+        {
+          "attribute": "executive_lounge",
+          "status": "PROPOSED_PENDING_VERIFICATION",
+          "verifiedSupport": false,
+          "reason": "Relevant to demand segments: business_transient"
+        },
+        {
+          "attribute": "fitness_center",
+          "status": "PROPOSED_PENDING_VERIFICATION",
+          "verifiedSupport": false,
+          "reason": "Relevant to demand segments: business_transient"
+        },
+        {
+          "attribute": "event_space_outdoor",
+          "status": "PROPOSED_PENDING_VERIFICATION",
+          "verifiedSupport": false,
+          "reason": "Relevant to demand segments: associations_conventions"
+        },
+        {
+          "attribute": "business_center",
+          "status": "PROPOSED_PENDING_VERIFICATION",
+          "verifiedSupport": false,
+          "reason": "Relevant to demand segments: corporate_meetings"
+        }
+      ],
+      "researchPeriodId": "adp_period_adp_bethesda_marriott_20261002142154_62428a"
+    },
+    {
+      "propertyId": "adp_spice_island_beach_resort",
+      "hpcHotelId": "recKRJjcPnb4tVDDS",
+      "attributeCoverageValidation": "ATTRIBUTE_COVERAGE_VALIDATED",
+      "measurementComparisonStatus": "DATA_INSUFFICIENT",
+      "dualRunScoresValid": false,
+      "selectedCount": 24,
+      "eligibleCount": 24,
+      "eligibleUniqueConceptCount": 20,
+      "needsVerification": [],
+      "undefinedKeys": [],
+      "conflictingKeys": [],
+      "semanticOverlaps": [
+        {
+          "group": [
+            "beachfront",
+            "oceanfront"
+          ],
+          "note": "Semantically related selected keys — review for double-counting risk"
+        },
+        {
+          "group": [
+            "spa",
+            "full_service_spa"
+          ],
+          "note": "Semantically related selected keys — review for double-counting risk"
+        },
+        {
+          "group": [
+            "meeting_space",
+            "event_space_outdoor"
+          ],
+          "note": "Semantically related selected keys — review for double-counting risk"
+        },
+        {
+          "group": [
+            "luxury",
+            "five_diamond"
+          ],
+          "note": "Semantically related selected keys — review for double-counting risk"
+        }
+      ],
+      "minimumCoverage": {
+        "meetsMinimum": true,
+        "eligibleCount": 20,
+        "shortfall": 0,
+        "flag": null,
+        "countedAs": "eligibleUniqueConceptCount"
+      },
+      "fixtureDenom": 24,
+      "bridgedDenom": 24,
+      "fixtureGapScore": null,
+      "bridgedGapScore": null,
+      "artifactWarning": null,
+      "publishedReference": {
+        "periodId": "adp_period_adp_spice_island_beach_resort_20260929123443_966d88",
+        "gapScore": 62.5,
+        "dualRunValid": false,
+        "note": "Published certified/archived Reality Gap citation only. Not a dual-run recomputation and not observation-backed comparison success."
+      },
+      "topSuggestions": [
+        {
+          "attribute": "heated_outdoor_pool",
+          "status": "PROPOSED_PENDING_VERIFICATION",
+          "verifiedSupport": false,
+          "reason": "Relevant to demand segments: family_leisure"
+        },
+        {
+          "attribute": "wellness",
+          "status": "PROPOSED_PENDING_VERIFICATION",
+          "verifiedSupport": false,
+          "reason": "Relevant to demand segments: wellness_destination"
+        }
+      ],
+      "researchPeriodId": null
+    }
+  ],
+  "regression": [
+    {
+      "propertyId": "adp_yotel_geneva_lake",
+      "hpcHotelId": "recrPQcZg7SFARRb2",
+      "attributeCoverageValidation": "ATTRIBUTE_COVERAGE_VALIDATED",
+      "measurementComparisonStatus": "DATA_INSUFFICIENT",
+      "dualRunScoresValid": false,
+      "selectedCount": 8,
+      "eligibleCount": 3,
+      "eligibleUniqueConceptCount": 3,
+      "needsVerification": [
+        "design_forward",
+        "fitness_center",
+        "pet_friendly"
+      ],
+      "undefinedKeys": [
+        "airport_shuttle",
+        "park_and_fly"
+      ],
+      "conflictingKeys": [],
+      "semanticOverlaps": [],
+      "minimumCoverage": {
+        "meetsMinimum": false,
+        "eligibleCount": 3,
+        "shortfall": 9,
+        "flag": "BELOW_MINIMUM_ATTRIBUTE_COVERAGE",
+        "countedAs": "eligibleUniqueConceptCount"
+      },
+      "fixtureDenom": 6,
+      "bridgedDenom": 3,
+      "fixtureGapScore": null,
+      "bridgedGapScore": null,
+      "artifactWarning": null,
+      "publishedReference": {
+        "periodId": "adp_period_adp_yotel_geneva_lake_20261005160004_d03a62",
+        "gapScore": 83.3,
+        "dualRunValid": false,
+        "note": "Published certified/archived Reality Gap citation only. Not a dual-run recomputation and not observation-backed comparison success."
+      },
+      "topSuggestions": [
+        {
+          "attribute": "large_ballroom",
+          "status": "PROPOSED_ADDITION",
+          "verifiedSupport": true,
+          "reason": "Relevant to demand segments: corporate_meetings"
+        },
+        {
+          "attribute": "ballroom",
+          "status": "PROPOSED_ADDITION",
+          "verifiedSupport": true,
+          "reason": "Relevant to demand segments: corporate_meetings"
+        },
+        {
+          "attribute": "executive_lounge",
+          "status": "PROPOSED_PENDING_VERIFICATION",
+          "verifiedSupport": false,
+          "reason": "Relevant to demand segments: business_transient"
+        },
+        {
+          "attribute": "fitness_center_24hr",
+          "status": "PROPOSED_PENDING_VERIFICATION",
+          "verifiedSupport": false,
+          "reason": "Relevant to demand segments: business_transient"
+        },
+        {
+          "attribute": "business_center",
+          "status": "PROPOSED_PENDING_VERIFICATION",
+          "verifiedSupport": false,
+          "reason": "Relevant to demand segments: corporate_meetings"
+        }
+      ],
+      "researchPeriodId": null
+    }
+  ],
+  "isolation": [
+    {
+      "a": "adp_bethesda_marriott",
+      "b": "adp_spice_island_beach_resort",
+      "selectionHashesEqual": false,
+      "ok": true
+    }
+  ],
+  "airtableSelectionPersistenceProposal": {
+    "contractVersion": "ADP_STRATEGIC_SELECTION_AIRTABLE_CONTRACT_V1",
+    "status": "PROPOSAL_AWAITING_FOUNDER_APPROVAL",
+    "productionWritesAuthorized": false,
+    "layers": {
+      "verifiedFacts": {
+        "owner": "Hotel ADP Attributes",
+        "tableId": "tblMA6v0HAmsY9ImW",
+        "baseId": "appa2cE7FTRmIbB32",
+        "role": "Layer A facts only — do not treat Used in ADP? as strategic selection SoT"
+      },
+      "strategicSelection": {
+        "recommendedApproach": "OPTION_B_CONFIG_PLUS_LINES",
+        "optionsEvaluated": [
+          {
+            "id": "OPTION_A_EXTEND_HOTEL_ADP_ATTRIBUTES",
+            "summary": "Add RG Priority / Selection Status fields on Hotel ADP Attributes rows",
+            "risk": "Collapses Layer A facts with Layer B selection; harder versioning of full configuration",
+            "recommended": false
+          },
+          {
+            "id": "OPTION_B_CONFIG_PLUS_LINES",
+            "summary": "Thin ADP Priority Attribute Configuration (header) + ADP Priority Attribute Lines (selected keys)",
+            "risk": "Two small tables — but preserves fact vs selection separation and version history",
+            "recommended": true
+          },
+          {
+            "id": "OPTION_C_DECISIONS_ONLY",
+            "summary": "Store selection snapshots as Decision evidence JSON",
+            "risk": "Poor Airtable editability for hotel stewards; weak row-level enable/disable UX",
+            "recommended": false
+          }
+        ],
+        "logicalFields": [
+          "canonicalHotelId (HPC rec…)",
+          "adpPropertyId",
+          "governedAttributeKey",
+          "sourceFactRefs / evidence refs",
+          "suggestedOrSelectedStatus",
+          "verificationStatus (linked/mirrored, not duplicated fact body)",
+          "measurementEligibility",
+          "strategicPriority (management only — not RG weights)",
+          "approvalStatus",
+          "approverSteward",
+          "effectiveDate",
+          "configurationVersion",
+          "changeHistory / supersedesVersion",
+          "researchPeriodReferences",
+          "selectionRationale"
+        ]
+      },
+      "researchPeriodSnapshot": {
+        "owner": "Immutable period / report artifacts (FS) + optional AT index refs",
+        "role": "Pin approved selection version + inventory hash used for measurement"
+      }
+    },
+    "migrationPolicy": {
+      "fixtureBaselineImportStatus": "REVIEW_REQUIRED",
+      "autoApproveFixtureSelections": false,
+      "note": "Existing fixture attributes[] migrate as review-required, not newly APPROVED configurations"
+    },
+    "persistenceGate": {
+      "fullE2eRequiresAirtableApprovedSelection": true,
+      "fixtureOnlyBlocksClassification": "FULL_E2E_VALIDATED",
+      "phase1bClassification": "PERSISTENCE_DESIGNED"
+    }
+  },
+  "founderGatesBeforePr2OrWrites": [
+    "Approve OPTION_B schema implementation details before Airtable creation/writes",
+    "Fixture selections migrate as review-required — not auto-APPROVED",
+    "Approve YOTEL Y1 defs+parser only after factual/strategic/recognition review (D2)",
+    "Do not activate production research-blocking minimum-12 gate without pilot review",
+    "Bridged RG remains diagnostic-only (D6)"
+  ]
+}

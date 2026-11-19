@@ -1,0 +1,53 @@
+---
+description: Permanent Airtable persistence gate for durable intelligence — blocks FULL E2E COMPLETE without proven SoT
+alwaysApply: true
+---
+
+# Dealality Airtable persistence gate (permanent)
+
+Applies to **all** Dealality streams (ADP, GDI, Hotel Explorer, Brand Explorer, Census/HI, Integration).
+
+## Not sufficient for FULL E2E
+
+Do **not** claim FULL E2E COMPLETE / FULL_E2E_VALIDATED because:
+
+- UI works
+- APIs returned 200
+- PDFs generated
+- Local JSON / runtime cache / untracked files hold the data
+- Unit tests passed
+
+Local-only proof is at most **PROTOTYPE**.
+
+## Required for durable intelligence work
+
+1. Canonical Airtable base/table/record ownership (reuse schema first).
+2. Stable hotel / org / opportunity / research identifiers.
+3. Governed idempotent persistence (dry-run before apply).
+4. Retrieval across restarts and authorized environments.
+5. Provenance + historical retention (do not erase prior belief).
+6. Cross-product references without unnecessary duplication.
+7. Fixture/authorized-test writes only unless founder authorizes production.
+8. Explicit split: Airtable business records vs durable raw-evidence archives.
+9. Founder/IC approval before schema changes or production Airtable writes.
+
+## Completion classifications (cross-workstream)
+
+- `PROTOTYPE`
+- `PERSISTENCE_DESIGNED`
+- `PERSISTENCE_VALIDATED`
+- `FULL_E2E_VALIDATED`
+- `CUSTOMER_PUBLISHED`
+
+Do not replace product-specific lifecycle enums; report both when applicable.
+
+## PR closeout (mandatory when durable intelligence changes)
+
+1. Airtable SoT mapping  
+2. Persistence + retrieval evidence  
+3. History/provenance verification  
+4. Cross-workstream identity checks  
+5. Remaining persistence limitations  
+6. Explicit E2E completion classification  
+
+Contract: `docs/ai-build-system/AIRTABLE_PERSISTENCE_GATE.md`
