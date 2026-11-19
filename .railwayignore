@@ -122,11 +122,15 @@ reports/ai-demand-positioning/**
 !reports/ai-demand-positioning/monthly-review/archive/adp_yotel_geneva_lake/2026-10/adp_mr_yotel_geneva_lake_2026-10_v2/**
 # RAILWAY_LEAN_ADP_UPLOAD_V2 — do not re-unignore monthly-review / current-report-pdf trees (73MB+).
 # PDFs remain in dealality-report-archive / prior Railway volumes; assert gate does not require these report trees.
-# Fixtures are not production runtime assets (assert gate does not require this tree).
+# Fixtures are lean-excluded; allowlist only profiles required for customer evidence drawers.
 fixtures/
 !fixtures/ai-demand-positioning/
 fixtures/ai-demand-positioning/**
 !fixtures/ai-demand-positioning/radisson-blu-toronto-downtown-property-profile.json
+# Aimbridge CALA — Cap Cana / market packs must resolve for Missing Evidence intent filters
+!fixtures/ai-demand-positioning/wyndham-alltra-punta-cana-property-profile.json
+!fixtures/ai-demand-positioning/sheraton-guadalajara-expo-property-profile.json
+!fixtures/ai-demand-positioning/voco-cancun-zona-hotelera-property-profile.json
 # Toronto monthly-review current READY package (customer release).
 !reports/ai-demand-positioning/monthly-review/archive/adp_radisson_blu_toronto_downtown/
 !reports/ai-demand-positioning/monthly-review/archive/adp_radisson_blu_toronto_downtown/2026-11/
