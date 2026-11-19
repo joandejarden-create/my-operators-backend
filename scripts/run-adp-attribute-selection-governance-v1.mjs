@@ -9,12 +9,27 @@ import { buildPhase1cGovernanceSuite } from "../lib/ai-demand-positioning/verifi
 
 function summarize(report) {
   if (!report?.ok) return { propertyId: report?.propertyId, error: report?.error };
+  const pack = report.package || {};
   return {
     propertyId: report.propertyId,
     coverageStatus: report.coverageStatus,
     selectedRawCount: report.selectedRawCount,
     uniqueEligibleConceptCount: report.uniqueEligibleConceptCount,
+    fullCandidateInventoryCount: pack.fullCandidateInventoryCount ?? null,
+    semanticRulesVersion: pack.semanticRulesVersion || null,
+    semanticReconciliation: pack.semanticReconciliation
+      ? {
+          phase1bUnique: pack.semanticReconciliation.phase1bUniqueConceptCount,
+          rulesV1_1Unique: pack.semanticReconciliation.rulesV1_1UniqueConceptCount,
+          delta: pack.semanticReconciliation.delta,
+          explanation: pack.semanticReconciliation.explanation,
+          deltaKeys: pack.semanticReconciliation.deltaKeys,
+        }
+      : null,
+    coverageSnapshot: pack.coverageSnapshot || null,
     shortlistCount: report.shortlistCount,
+    shortlistUniqueConceptCount: pack.proposedShortlistMax20?.uniqueConceptCount ?? null,
+    shortlistSatisfiesPolicy: pack.proposedShortlistMax20?.satisfiesMeasurementPolicy ?? null,
     proposedExclusions: report.proposedExclusions,
     validationSummary: report.validationSummary,
     topActions: (report.topRecommendations || []).slice(0, 12).map((r) => ({

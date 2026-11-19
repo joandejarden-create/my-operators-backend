@@ -1,7 +1,7 @@
 # ADP Strategic Attribute Selection — Airtable Persistence Proposal V1
 
 **Status:** `OPTION_B_DESIGN_APPROVED_IMPLEMENTATION_READY` (PR-2)  
-**Contract:** `ADP_STRATEGIC_SELECTION_AIRTABLE_CONTRACT_V1`  
+**Contract:** `ADP_STRATEGIC_SELECTION_AIRTABLE_CONTRACT_V1` / schema `adp_priority_attr_cfg_v1_1`  
 **Gate:** `DEALALITY_AIRTABLE_PERSISTENCE_GATE_V1` · classification `PERSISTENCE_DESIGNED`  
 **Phase:** PR-2 finalizes field-level contract — **no production schema mutation or writes until PR-3 founder auth**
 
@@ -12,6 +12,13 @@ Hotel ADP Attributes remain **Layer A verified facts**. Do not collapse these la
 
 Fixtures + attribute-set artifacts remain migration / compatibility inputs.  
 `FULL_E2E_VALIDATED` cannot be claimed while approved selections exist only in fixtures or local JSON.
+
+Coverage limits and semantic counting come from shared governed modules:
+
+- `ADP_MEASUREMENT_COVERAGE_POLICY_V1` — min 12 / preferred 15–18 / max 20
+- `ADP_SEMANTIC_EQUIVALENCE_RULES_V1_1` — unique eligible concept counting
+
+Full candidate / research inventory is **not** capped at 20. Only the approved measurement inventory must satisfy the policy.
 
 ## Reuse evaluation
 
@@ -34,20 +41,29 @@ Fixtures + attribute-set artifacts remain migration / compatibility inputs.
 | ADP Property ID | text | `adp_*` |
 | Hotel Name | text | Display |
 | Configuration Version | number/text | Monotonic per hotel |
-| Approval Status | select | `DRAFT` / `SUGGESTED` / `APPROVED` / `SUPERSEDED` |
+| Approval Status | select | `DRAFT` / `SUGGESTED` / `REVIEW_REQUIRED` / `APPROVED` / `SUPERSEDED` |
 | Approver / Steward | text | |
 | Effective Date | date | |
-| Selection Rationale Summary | long text | Optional |
-| Minimum Eligible Required | number | Default 12 (configurable) |
-| Eligible Count (cached) | number | Diagnostic cache |
-| Meets Minimum? | checkbox | Diagnostic |
-| Inventory Hash | text | Hash of approved keys |
+| Minimum Eligible Required | number | From shared policy (default 12) |
+| Maximum Eligible Allowed | number | From shared policy (default 20) |
+| Preferred Range Minimum | number | From shared policy (default 15) |
+| Preferred Range Maximum | number | From shared policy (default 18) |
+| Measurement Coverage Policy Version | text | Pin `ADP_MEASUREMENT_COVERAGE_POLICY_V1` |
+| Semantic Equivalence Rules Version | text | Pin `ADP_SEMANTIC_EQUIVALENCE_RULES_V1_1` |
+| Unique Eligible Concept Count | number | Diagnostic cache |
+| Measurement Coverage Compliance Result | select | Below-minimum / Compliant / Above-maximum |
+| Below-Minimum Flag | checkbox | Diagnostic |
+| Above-Maximum Flag | checkbox | Diagnostic |
+| Approved Measurement Inventory Hash | text | Hash of measurement-enabled unique concept keys |
+| Full Candidate Inventory Count | number | Uncapped research/candidate inventory size |
 | Attribute Definitions Version | text | Registry pin |
-| Supersedes Configuration ID | text | History |
-| Active? | checkbox | One active approved config per hotel |
-| Schema Version | text | `adp_priority_attr_cfg_v1` |
+| Supersedes Configuration ID | text | History chain |
+| Active? | checkbox | At most one Active APPROVED config per hotel |
+| Idempotency Key | text | |
+| Schema Version | text | `adp_priority_attr_cfg_v1_1` |
+| Notes | long text | |
 
-### Table 2 — `ADP Priority Attribute Lines` (selected keys)
+### Table 2 — `ADP Priority Attribute Lines` (selected + suggested keys)
 
 | Field | Type | Notes |
 |---|---|---|
@@ -57,57 +73,54 @@ Fixtures + attribute-set artifacts remain migration / compatibility inputs.
 | ADP Property ID | text | |
 | Governed Attribute Key | text | Must match registry when measurable |
 | Label | text | From definitions |
-| Line Status | select | `SUGGESTED` / `SELECTED` / `DISABLED` / `REJECTED` |
-| Measurement Enabled? | checkbox | Selection for RG inventory |
+| Semantic Concept ID | text | |
+| Line Status | select | `DRAFT` / `SUGGESTED` / `REVIEW_REQUIRED` / `SELECTED` / `DISABLED` / `REJECTED` |
+| Measurement Enabled? | checkbox | Only enabled lines enter approved measurement inventory (≤ max unique concepts) |
 | Strategic Priority | select | high/medium/low — **management only, not RG weights** |
-| Verification Status | select | Mirrored classification; not a duplicate fact body |
+| Verification Status | text | Mirrored classification; not a duplicate fact body |
 | Measurement Eligibility | select | `ELIGIBLE` / `NEEDS_VERIFICATION` / `UNDEFINED` / `CONFLICTING` / `N_A` |
-| Source Fact Refs | long text / JSON | Pointers to Hotel ADP Attributes dedupe keys / HI evidence ids |
+| Source Fact Refs | long text / JSON | Pointers to Hotel ADP Attributes / HI evidence — not duplicated fact bodies |
 | Evidence URLs | long text | References only |
-| Selection Rationale | long text | Why this attribute for this hotel |
-| Relevant Demand Segments | multiple select / text | |
+| Demand Segment Relevance | long text | |
+| Selection Rationale | long text | |
+| Recommended Action | text | |
 | Approved At | date/time | |
 | Active? | checkbox | |
 | Dedupe Key | text | `{hpc}::{configVersion}::{attributeKey}` |
-| Schema Version | text | `adp_priority_attr_line_v1` |
+| Schema Version | text | `adp_priority_attr_line_v1_1` |
 
 ### Explicit non-duplication
 
 - Do **not** copy Attribute Value / rooms / meeting sqft into selection lines.
 - Join to Hotel ADP Attributes / HI Evidence by reference.
-- Research-period snapshots remain immutable FS (or gated AT indexes) with `configurationVersion` + `inventoryHash`.
+- Research-period snapshots remain immutable FS (or gated AT indexes) with `configurationVersion` + `Approved Measurement Inventory Hash`.
 
-## Editing & approval UX (Airtable-first)
+## Editing & approval lifecycle
 
-Authorized users can:
+Aligned states: **DRAFT → SUGGESTED → REVIEW_REQUIRED → APPROVED → SUPERSEDED**
 
-1. Review suggested lines (`SUGGESTED`)
-2. Add / remove / enable / disable measurement
-3. Adjust strategic priority (non-metric)
-4. Review verification / eligibility
-5. Approve configuration (header → `APPROVED`, prior → `SUPERSEDED`)
-6. See minimum-12 compliance fields
-7. Retain history via supersession chain
+Rules:
+
+1. `DRAFT` / `SUGGESTED` / `REVIEW_REQUIRED` edits **never** mutate the Active `APPROVED` configuration.
+2. Approve creates a **new** Configuration Version; prior Active APPROVED → `SUPERSEDED` (history retained and retrievable).
+3. Suggestions appear as `SUGGESTED` lines until steward promotion.
+4. Full candidate inventory may exceed Maximum Eligible Allowed; only `Measurement Enabled?` lines form the approved measurement inventory.
+5. Below-Minimum / Above-Maximum compliance is diagnostic on the configuration header (no automatic production research blocking in PR-2).
 
 ## Migration
 
-1. Seed lines from existing fixture `attributes[]` as **`SELECTED` + `REVIEW_REQUIRED`** (or `DRAFT`) unless explicit approval evidence already exists — **do not auto-APPROVE** fixture baselines into Airtable.
-2. Attach eligibility classification from Phase 1B diagnostics.
+1. Seed lines from existing fixture `attributes[]` as **`REVIEW_REQUIRED`** — **never auto-APPROVE**.
+2. Attach eligibility classification from Phase 1B / 1C diagnostics.
 3. Suggestions appear as `SUGGESTED` lines — never auto-selected.
 4. Fixtures remain readable fallback until cutover flag.
-5. Configuration header starts as `DRAFT` / `SUGGESTED` until steward approval.
+5. Configuration header starts as `REVIEW_REQUIRED` (or `DRAFT` / `SUGGESTED`) until steward approval.
 
 ## Persistence gate classification path
 
 | Stage | Classification |
 |---|---|
-| PR-1 diagnostics (this PR) | `PERSISTENCE_DESIGNED` |
-| Schema approved, dry-run seed | `PERSISTENCE_DESIGNED` → toward `PERSISTENCE_VALIDATED` |
-| Idempotent write + retrieve + history + isolation proven | `PERSISTENCE_VALIDATED` |
-| Customer-facing measurement driven by approved Airtable config | Requires separate cutover + cannot claim `FULL_E2E_VALIDATED` before AT SoT |
+| PR-2 (this contract) | `PERSISTENCE_DESIGNED` |
+| PR-3 (authorized schema + dry-run writes) | toward `PERSISTENCE_VALIDATED` |
+| Approved AT selection + retrieval proof | required before `FULL_E2E_VALIDATED` |
 
-## Founder approval required before
-
-- Creating tables / fields in Airtable
-- Any production writes
-- Declaring selection SoT cutover from fixtures
+PR-3 requires separate founder authorization of the final schema and write plan.

@@ -8,9 +8,12 @@ import {
   DEFAULT_COVERAGE_LIMITS,
   MEASUREMENT_COVERAGE_STATUS,
   assessMeasurementCoveragePolicy,
+  buildMeasurementCoverageSnapshot,
   classifySemanticPair,
   SEMANTIC_RELATION,
   collapseToUniqueMeasurableConcepts,
+  reconcileSemanticCounting,
+  ADP_SEMANTIC_EQUIVALENCE_RULES_VERSION,
   buildAttributeRecommendationPackage,
   buildPrioritizedShortlist,
   RECOMMENDED_ACTION,
@@ -19,6 +22,7 @@ import {
   validateAttributeDefinitionAndRecognition,
   STRATEGIC_SELECTION_PERSISTENCE_PROPOSAL,
   CONFIG_APPROVAL_STATUS,
+  LINE_STATUS,
 } from "../lib/ai-demand-positioning/verified-context/index.js";
 import { loadPropertyProfile } from "../lib/ai-demand-positioning/data-model.js";
 import { ATTRIBUTE_DEFINITIONS } from "../lib/ai-demand-positioning/intelligence/reality-gap.js";
@@ -124,20 +128,61 @@ check("Bethesda recommendation package below minimum by unique concepts", () => 
   }
 });
 
-check("Spice Island above max unique concepts; preserves 24 raw selections", () => {
+check("Spice Island semantic reconciliation 20→22 explained", () => {
+  const profile = loadPropertyProfile("adp_spice_island_beach_resort");
+  const recon = reconcileSemanticCounting(profile.attributes);
+  assert.equal(recon.phase1bUniqueConceptCount, 20);
+  assert.equal(recon.rulesV1_1UniqueConceptCount, 22);
+  assert.equal(recon.delta, 2);
+  // Delta = RELATED independently measurable pairs kept separate
+  const deltaAttrs = recon.deltaKeys.map((d) => d.attribute).sort();
+  assert.ok(deltaAttrs.includes("event_space_outdoor") || deltaAttrs.includes("five_diamond"));
+  assert.ok(recon.explanation.includes("RELATED_BUT_DISTINCT"));
+});
+
+check("Spice Island above max unique concepts; shortlist satisfies policy", () => {
   const profile = loadPropertyProfile("adp_spice_island_beach_resort");
   const pack = buildAttributeRecommendationPackage(profile);
   assert.equal(pack.selectedRawCount, 24);
-  // TRUE_DUPLICATE + BROADER_NARROWER collapse; RELATED_BUT_DISTINCT remain separate
   assert.equal(pack.uniqueEligibleConceptCount, 22);
+  assert.equal(pack.semanticRulesVersion, ADP_SEMANTIC_EQUIVALENCE_RULES_VERSION);
   assert.equal(
     pack.coverage.status,
     MEASUREMENT_COVERAGE_STATUS.ABOVE_MAXIMUM_ATTRIBUTE_COVERAGE
   );
-  assert.ok(pack.proposedShortlistMax20.count <= 20);
+  assert.equal(pack.proposedShortlistMax20.semanticRulesVersion, ADP_SEMANTIC_EQUIVALENCE_RULES_VERSION);
+  assert.ok(pack.proposedShortlistMax20.uniqueConceptCount <= 20);
+  assert.equal(pack.proposedShortlistMax20.satisfiesMeasurementPolicy, true);
   assert.equal(pack.proposedShortlistMax20.autoRemoved, false);
-  assert.ok(pack.proposedShortlistMax20.proposedExclusions.length >= 1);
+  assert.equal(pack.proposedShortlistMax20.uniqueConceptCount, 20);
+  assert.equal(
+    pack.proposedShortlistMax20.count,
+    pack.proposedShortlistMax20.uniqueConceptCount
+  );
+  assert.ok(pack.proposedShortlistMax20.items.some((i) => i.attribute === "beachfront"));
+  assert.ok(pack.proposedShortlistMax20.items.some((i) => i.attribute === "spa"));
+  const exclAttrs = pack.proposedShortlistMax20.proposedExclusions.map((e) => e.attribute).sort();
+  assert.deepEqual(exclAttrs, [
+    "full_service",
+    "full_service_spa",
+    "oceanfront",
+    "tennis_courts",
+  ]);
+  assert.ok(pack.fullCandidateInventoryCount > 20);
   assert.deepEqual(pack.selectionPreserved, profile.attributes);
+});
+
+check("coverage snapshot exposes Airtable min/max fields", () => {
+  const snap = buildMeasurementCoverageSnapshot(22);
+  assert.equal(snap.minimumEligibleRequired, 12);
+  assert.equal(snap.maximumEligibleAllowed, 20);
+  assert.equal(snap.preferredRangeMinimum, 15);
+  assert.equal(snap.preferredRangeMaximum, 18);
+  assert.equal(snap.aboveMaximum, true);
+  assert.equal(
+    snap.measurementCoverageComplianceResult,
+    MEASUREMENT_COVERAGE_STATUS.ABOVE_MAXIMUM_ATTRIBUTE_COVERAGE
+  );
 });
 
 check("shortlist never exceeds maximum and does not auto-remove", () => {
@@ -188,7 +233,7 @@ check("definition/recognition registry: defs have recognition keys", () => {
   assert.equal(v.missingDefinitions.length, 0);
 });
 
-check("Airtable Option B contract is design-only", () => {
+check("Airtable Option B contract is design-only with min/max fields", () => {
   assert.equal(STRATEGIC_SELECTION_PERSISTENCE_PROPOSAL.productionWritesAuthorized, false);
   assert.equal(STRATEGIC_SELECTION_PERSISTENCE_PROPOSAL.schemaCreationAuthorized, false);
   assert.equal(
@@ -200,6 +245,29 @@ check("Airtable Option B contract is design-only", () => {
     STRATEGIC_SELECTION_PERSISTENCE_PROPOSAL.migrationPolicy.autoApproveFixtureSelections,
     false
   );
+  assert.equal(
+    STRATEGIC_SELECTION_PERSISTENCE_PROPOSAL.migrationPolicy.fixtureBaselineImportStatus,
+    CONFIG_APPROVAL_STATUS.REVIEW_REQUIRED
+  );
+  const cfgFields = STRATEGIC_SELECTION_PERSISTENCE_PROPOSAL.layers.strategicSelection.tables.configurations.fields.map(
+    (f) => f.name
+  );
+  for (const required of [
+    "Minimum Eligible Required",
+    "Maximum Eligible Allowed",
+    "Preferred Range Minimum",
+    "Preferred Range Maximum",
+    "Measurement Coverage Policy Version",
+    "Unique Eligible Concept Count",
+    "Measurement Coverage Compliance Result",
+    "Approved Measurement Inventory Hash",
+  ]) {
+    assert.ok(cfgFields.includes(required), `missing field ${required}`);
+  }
+  assert.ok(
+    STRATEGIC_SELECTION_PERSISTENCE_PROPOSAL.layers.strategicSelection.inventoryScopes
+      .fullCandidateInventory
+  );
 });
 
 check("suite isolation and no Airtable writes flag", () => {
@@ -210,11 +278,28 @@ check("suite isolation and no Airtable writes flag", () => {
   assert.equal(suite.yotelAirportReview.autoEnabledInCustomerRealityGap, false);
 });
 
-check("draft lifecycle statuses documented", () => {
+check("draft lifecycle statuses aligned across config and lines", () => {
   const lifecycle = STRATEGIC_SELECTION_PERSISTENCE_PROPOSAL.editingLifecycle.states;
-  assert.ok(lifecycle.includes("DRAFT"));
-  assert.ok(lifecycle.includes("APPROVED"));
-  assert.ok(lifecycle.includes("SUPERSEDED"));
+  assert.deepEqual(lifecycle, [
+    "DRAFT",
+    "SUGGESTED",
+    "REVIEW_REQUIRED",
+    "APPROVED",
+    "SUPERSEDED",
+  ]);
+  assert.ok(LINE_STATUS.DRAFT);
+  assert.ok(LINE_STATUS.REVIEW_REQUIRED);
+  assert.ok(LINE_STATUS.SUGGESTED);
+  assert.ok(
+    STRATEGIC_SELECTION_PERSISTENCE_PROPOSAL.editingLifecycle.rules.some((r) =>
+      r.includes("never mutate the Active APPROVED")
+    )
+  );
+  assert.ok(
+    STRATEGIC_SELECTION_PERSISTENCE_PROPOSAL.editingLifecycle.rules.some((r) =>
+      r.includes("historically retrievable")
+    )
+  );
 });
 
 if (failures) {
