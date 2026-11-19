@@ -129,8 +129,8 @@ check("ui_cache_bust_parity_marker", () => {
     path.join(ROOT, "public/group-demand-intelligence-share.html"),
     "utf8",
   );
-  assert.match(auth, /dealality-gdi-ui\.js\?v=gdi-pdi-filter-parity-v1/);
-  assert.match(share, /dealality-gdi-ui\.js\?v=gdi-pdi-filter-parity-v1/);
+  assert.match(auth, /dealality-gdi-ui\.js\?v=gdi-no-login-alert-v1/);
+  assert.match(share, /dealality-gdi-ui\.js\?v=gdi-no-login-alert-v1/);
 });
 
 check("research_scripts_no_hard_260_whyNow_slice", () => {
