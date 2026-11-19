@@ -497,10 +497,23 @@
   }
 
   /**
+   * Default My Deals / legacy callers still use a native alert.
+   * Optional GDI / Portfolio callers must pass `{ notifyLoginRequired: false }`
+   * (or `silent: true`) and render an inline sign-in state instead.
+   *
    * @param {string} message
+   * @param {{ silent?: boolean, notifyLoginRequired?: boolean, onNotify?: function }} [options]
    */
-  function notifyLoginRequired(message) {
+  function notifyLoginRequired(message, options) {
+    var opts = options || {};
+    if (opts.silent === true || opts.notifyLoginRequired === false) return;
     var msg = message || LOGIN_MSG;
+    if (typeof opts.onNotify === 'function') {
+      try {
+        opts.onNotify(msg);
+      } catch (_) {}
+      return;
+    }
     if (typeof global.alert === 'function') {
       try {
         global.alert(msg);
@@ -510,7 +523,12 @@
 
   /**
    * @param {string} url
-   * @param {RequestInit} [options]
+   * @param {RequestInit & {
+   *   waitForLogin?: boolean,
+   *   maxWaitMs?: number,
+   *   notifyLoginRequired?: boolean,
+   *   silent?: boolean,
+   * }} [options]
    * @returns {Promise<Response>}
    */
   async function authFetch(url, options) {
@@ -520,13 +538,23 @@
       maxWaitMs: options.maxWaitMs,
     });
     if (auth.error) {
-      notifyLoginRequired(auth.error);
-      throw new Error(auth.error);
+      notifyLoginRequired(auth.error, {
+        silent: options.silent === true,
+        notifyLoginRequired: options.notifyLoginRequired,
+        onNotify: options.onAuthNotify,
+      });
+      var err = new Error(auth.error);
+      err.code = 'AUTH_REQUIRED';
+      err.authRequired = true;
+      throw err;
     }
     var merged = Object.assign({}, auth.headers, options.headers || {});
     var fetchOpts = Object.assign({}, options, { headers: merged });
     delete fetchOpts.waitForLogin;
     delete fetchOpts.maxWaitMs;
+    delete fetchOpts.notifyLoginRequired;
+    delete fetchOpts.silent;
+    delete fetchOpts.onAuthNotify;
     return fetch(url, fetchOpts);
   }
 

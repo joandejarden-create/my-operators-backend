@@ -41,16 +41,14 @@
       .replace(/"/g, "&quot;");
   }
 
-  function memberFetch() {
-    if (
-      global.DealalityMemberstackAuth &&
-      typeof global.DealalityMemberstackAuth.fetchMyDealsApi === "function"
-    ) {
-      return global.DealalityMemberstackAuth.fetchMyDealsApi.bind(
-        global.DealalityMemberstackAuth,
-      );
-    }
-    return null;
+  function memberAuthApi() {
+    return global.DealalityMemberstackAuth || null;
+  }
+
+  function isLoginRequiredMessage(msg) {
+    return /please log in again to continue|please log in on dealality first/i.test(
+      String(msg || ""),
+    );
   }
 
   /** Demo preview is local/test hosts only — query flag alone never unlocks production. */
@@ -107,7 +105,7 @@
     }
   }
 
-  function unavailableHtml(reason, opts) {
+  function statusPageHtml(stateCode, title, reason, opts) {
     opts = opts || {};
     var localOk = isAuthorizedLocalDemoHost(opts.location || global.location);
     var demoNote =
@@ -115,17 +113,53 @@
         ? '<p class="gdi-pdi-demo-cue">Local/test only: on <code>localhost</code> append <code>?pdiDemo=1</code> for a <strong>labeled DEMO</strong> matrix. The query flag is ignored on non-local hosts.</p>'
         : "";
     return (
-      '<div class="gdi-pdi-page" data-gdi-pdi-state="UNAVAILABLE" role="status">' +
+      '<div class="gdi-pdi-page" data-gdi-pdi-state="' +
+      esc(stateCode || "UNAVAILABLE") +
+      '" role="status">' +
       "<header class=\"gdi-pdi-header\">" +
       "<h1>Portfolio Demand Intelligence</h1>" +
       "<p class=\"gdi-pdi-sub\">Market-wide demand viewed across your participating hotels — same Commercial Intelligence Brief as the hotel page.</p>" +
       "</header>" +
       '<div class="gdi-pdi-banner gdi-pdi-banner--warn" role="alert">' +
-      "<strong>Portfolio view unavailable.</strong> " +
-      esc(reason || "Live operator membership registry is not provisioned for this session.") +
+      "<strong>" +
+      esc(title || "Portfolio view unavailable.") +
+      "</strong> " +
+      esc(
+        reason ||
+          "Live operator membership registry is not provisioned for this session.",
+      ) +
       "</div>" +
       demoNote +
       "</div>"
+    );
+  }
+
+  function unavailableHtml(reason, opts) {
+    return statusPageHtml(
+      "UNAVAILABLE",
+      "Portfolio view unavailable.",
+      reason,
+      opts,
+    );
+  }
+
+  function authRequiredHtml(reason, opts) {
+    return statusPageHtml(
+      "AUTH_REQUIRED",
+      "Sign-in required for portfolio reads.",
+      reason ||
+        "Portfolio Demand Intelligence needs a signed-in Dealality session. Open GDI from the authenticated app shell, then return to this tab.",
+      Object.assign({}, opts, { allowDemoCue: false }),
+    );
+  }
+
+  function notMappedHtml(reason, opts) {
+    return statusPageHtml(
+      "OPERATOR_NOT_MAPPED",
+      "No portfolio membership for this account.",
+      reason ||
+        "You are signed in, but this Memberstack identity is not mapped to a portfolio operator. Contact Dealality to provision operator membership — demo membership is not substituted.",
+      Object.assign({}, opts, { allowDemoCue: true }),
     );
   }
 
@@ -299,18 +333,26 @@
     );
   }
 
-  function shellHtml(state) {
-    state = state || {};
+  function countActivePdiFilters(state) {
+    var n = 0;
+    if (state.hotelId) n += 1;
+    if (state.fitClass) n += 1;
+    var markets = state.markets || [];
+    var defaultMarket =
+      (markets[0] && markets[0].marketId) || state.defaultMarketId || "";
+    if (state.marketId && defaultMarket && state.marketId !== defaultMarket) {
+      n += 1;
+    }
+    return n;
+  }
+
+  function filterPanelHtml(state) {
     var markets = state.markets || [];
     var hotels = state.hotels || [];
     var marketId = state.marketId || "";
-    var demo = !!state.demo;
-    var err = state.error || null;
-    var payload = state.opportunitiesPayload || null;
-
-    if (err && err.code === "UNAVAILABLE") {
-      return unavailableHtml(err.message, { allowDemoCue: true });
-    }
+    var hotelId = state.hotelId || "";
+    var fitClass = state.fitClass || "";
+    var activeCount = countActivePdiFilters(state);
 
     var marketOpts = markets
       .map(function (m) {
@@ -327,6 +369,131 @@
       })
       .join("");
 
+    var hotelOpts =
+      '<option value="">All participating hotels (' +
+      hotels.length +
+      ")</option>" +
+      hotels
+        .map(function (h) {
+          return (
+            '<option value="' +
+            esc(h.hotelId) +
+            '"' +
+            (h.hotelId === hotelId ? " selected" : "") +
+            ">" +
+            esc(h.hotelDisplayName || h.hotelId) +
+            "</option>"
+          );
+        })
+        .join("");
+
+    var fitOpts =
+      '<option value="">All fit classes</option>' +
+      FIT_CLASS_ORDER.map(function (k) {
+        return (
+          '<option value="' +
+          esc(k) +
+          '"' +
+          (fitClass === k ? " selected" : "") +
+          ">" +
+          esc(FIT_LABELS[k] || k) +
+          "</option>"
+        );
+      }).join("");
+
+    var marketSelect =
+      markets.length > 0
+        ? '<select class="filter-select" id="gdiPdiMarket" data-gdi-pdi-market="1" aria-label="Filter by portfolio market">' +
+          marketOpts +
+          "</select>"
+        : '<select class="filter-select" id="gdiPdiMarket" data-gdi-pdi-market="1" aria-label="Filter by portfolio market" disabled>' +
+          '<option value="">Markets not provisioned</option></select>';
+
+    var hotelSelect =
+      hotels.length > 0
+        ? '<select class="filter-select" id="gdiPdiHotel" data-gdi-pdi-hotel="1" aria-label="Filter by participating hotel">' +
+          hotelOpts +
+          "</select>"
+        : '<select class="filter-select" id="gdiPdiHotel" data-gdi-pdi-hotel="1" aria-label="Filter by participating hotel" disabled>' +
+          '<option value="">Select a market first</option></select>';
+
+    var resetBadge =
+      '<span class="filter-count-badge" id="gdiPdiFilterCountBadge"' +
+      (activeCount > 0
+        ? ' aria-label="' + esc(String(activeCount)) + ' active filters">'
+        : ' style="display: none;" aria-hidden="true">') +
+      esc(String(activeCount)) +
+      "</span>";
+
+    return (
+      '<section class="filters-section aiv-filters-section gdi-property-bar" aria-label="Portfolio filters" data-gdi-pdi-filters="1">' +
+      '<div class="gdi-property-bar__primary">' +
+      '<div class="filter-group gdi-pdi-market-filter">' +
+      '<label class="filter-label" for="gdiPdiMarket">Market</label>' +
+      marketSelect +
+      "</div>" +
+      '<div class="filter-group gdi-pdi-hotel-filter">' +
+      '<label class="filter-label" for="gdiPdiHotel">Participating hotel</label>' +
+      hotelSelect +
+      "</div>" +
+      '<div class="filter-group gdi-pdi-fit-filter">' +
+      '<label class="filter-label" for="gdiPdiFit">Hotel fit</label>' +
+      '<select class="filter-select" id="gdiPdiFit" data-gdi-pdi-fit="1" aria-label="Filter by hotel fit class"' +
+      (state.opportunitiesPayload ? "" : " disabled") +
+      ">" +
+      fitOpts +
+      "</select></div>" +
+      '<div class="filter-group aiv-filter-actions gdi-property-bar__actions">' +
+      '<button type="button" class="btn-clear" id="gdiPdiResetViewBtn" aria-label="Reset View">' +
+      "Reset View" +
+      resetBadge +
+      "</button></div>" +
+      "</div></section>"
+    );
+  }
+
+  function shellHtml(state) {
+    state = state || {};
+    var markets = state.markets || [];
+    var hotels = state.hotels || [];
+    var hotelId = state.hotelId || "";
+    var fitClass = state.fitClass || "";
+    var demo = !!state.demo;
+    var err = state.error || null;
+    var payload = state.opportunitiesPayload || null;
+
+    if (err && err.code === "AUTH_REQUIRED") {
+      return authRequiredHtml(err.message, { allowDemoCue: false });
+    }
+    if (err && err.code === "OPERATOR_NOT_MAPPED") {
+      return notMappedHtml(err.message, { allowDemoCue: true });
+    }
+    if (err && err.code === "UNAVAILABLE") {
+      return unavailableHtml(err.message, { allowDemoCue: true });
+    }
+
+    var visibleHotels = hotelId
+      ? hotels.filter(function (h) {
+          return h.hotelId === hotelId;
+        })
+      : hotels;
+    var visiblePayload = payload;
+    if (payload && fitClass) {
+      visiblePayload = {
+        marketId: payload.marketId,
+        fitClasses: payload.fitClasses,
+        results: (payload.results || []).map(function (r) {
+          return {
+            marketOpportunityId: r.marketOpportunityId,
+            sharedMarketPacket: r.sharedMarketPacket,
+            hotelAssessments: (r.hotelAssessments || []).filter(function (a) {
+              return a && a.fitClass === fitClass;
+            }),
+          };
+        }),
+      };
+    }
+
     return (
       '<div class="gdi-pdi-page" data-gdi-pdi-state="' +
       (demo ? "DEMO" : "LIVE") +
@@ -341,21 +508,23 @@
           esc(err.message || "Unable to load portfolio data.") +
           "</div>"
         : "") +
-      '<div class="gdi-pdi-controls">' +
-      '<label class="gdi-pdi-label">Market' +
-      '<select id="gdiPdiMarket" class="gdi-pdi-select" data-gdi-pdi-market="1">' +
-      (marketOpts || '<option value="">No markets</option>') +
-      "</select></label>" +
-      "</div>" +
+      filterPanelHtml(state) +
       '<section class="gdi-pdi-section" aria-label="Participating hotels">' +
-      "<h2>Participating hotels</h2>" +
-      renderHotelListHtml(hotels) +
+      "<h2>Participating hotels" +
+      (hotels.length ? " (" + hotels.length + ")" : "") +
+      "</h2>" +
+      renderHotelListHtml(visibleHotels.length ? visibleHotels : hotels) +
       "</section>" +
       '<section class="gdi-pdi-section" aria-label="Opportunity fit matrix">' +
       "<h2>Market opportunity × hotel fit</h2>" +
-      (payload
-        ? renderMatrixHtml(payload, hotels)
-        : '<p class="gdi-pdi-empty">Select a market to load opportunities.</p>') +
+      (visiblePayload
+        ? renderMatrixHtml(
+            visiblePayload,
+            visibleHotels.length ? visibleHotels : hotels,
+          )
+        : markets.length
+          ? '<p class="gdi-pdi-empty">Select a market to load opportunities.</p>'
+          : '<p class="gdi-pdi-empty">No authorized markets are available for this account yet.</p>') +
       "</section>" +
       "</div>"
     );
@@ -522,33 +691,85 @@
     if (!root) throw new Error("pdi_tab_root_required");
     var onOpenBrief =
       typeof opts.onOpenBrief === "function" ? opts.onOpenBrief : null;
+    var onLoading =
+      typeof opts.onLoading === "function" ? opts.onLoading : null;
     var state = {
       markets: [],
       hotels: [],
       marketId: "",
+      defaultMarketId: "",
+      hotelId: "",
+      fitClass: "",
       opportunitiesPayload: null,
       demo: false,
       error: null,
       loading: false,
     };
 
+    function setBusy(on, message) {
+      state.loading = !!on;
+      if (onLoading) onLoading(!!on, message || "Loading Portfolio Demand Intelligence…");
+    }
+
     function paint() {
       root.innerHTML = shellHtml(state);
       bind();
     }
 
+    function resetView() {
+      state.hotelId = "";
+      state.fitClass = "";
+      state.marketId =
+        state.defaultMarketId ||
+        (state.markets[0] && state.markets[0].marketId) ||
+        "";
+      state.error = null;
+      if (state.demo) {
+        paint();
+        return;
+      }
+      if (state.marketId) {
+        loadMarket(state.marketId).catch(function (e) {
+          state.error = classifyThrownError(e);
+          paint();
+        });
+      } else {
+        paint();
+      }
+    }
+
     function bind() {
       var sel = root.querySelector("#gdiPdiMarket");
-      if (sel) {
+      if (sel && !sel.disabled) {
         sel.addEventListener("change", function () {
           state.marketId = sel.value || "";
+          state.hotelId = "";
+          state.fitClass = "";
           loadMarket(state.marketId).catch(function (e) {
-            state.error = {
-              code: "LOAD_FAILED",
-              message: (e && e.message) || "Failed to load market portfolio.",
-            };
+            state.error = classifyThrownError(e);
             paint();
           });
+        });
+      }
+      var hotelSel = root.querySelector("#gdiPdiHotel");
+      if (hotelSel && !hotelSel.disabled) {
+        hotelSel.addEventListener("change", function () {
+          state.hotelId = hotelSel.value || "";
+          paint();
+        });
+      }
+      var fitSel = root.querySelector("#gdiPdiFit");
+      if (fitSel && !fitSel.disabled) {
+        fitSel.addEventListener("change", function () {
+          state.fitClass = fitSel.value || "";
+          paint();
+        });
+      }
+      var resetBtn = root.querySelector("#gdiPdiResetViewBtn");
+      if (resetBtn) {
+        resetBtn.addEventListener("click", function (ev) {
+          ev.preventDefault();
+          resetView();
         });
       }
       root.querySelectorAll("[data-gdi-pdi-open] .gdi-pdi-open-btn, td[data-gdi-pdi-open]").forEach(
@@ -570,14 +791,56 @@
       );
     }
 
-    async function apiGet(url) {
-      var fetchFn = memberFetch();
-      if (!fetchFn) {
-        var err = new Error("Authentication required for portfolio API.");
-        err.code = "UNAUTHENTICATED";
-        throw err;
+    function classifyThrownError(e) {
+      var msg = (e && e.message) || "Failed to load market portfolio.";
+      var code = (e && e.code) || "LOAD_FAILED";
+      if (
+        code === "AUTH_REQUIRED" ||
+        code === "UNAUTHENTICATED" ||
+        isLoginRequiredMessage(msg)
+      ) {
+        return {
+          code: "AUTH_REQUIRED",
+          message:
+            "Portfolio Demand Intelligence needs a signed-in Dealality session. You can still use Group & Demand Opportunities for hotel-scoped inventory when authorized.",
+        };
       }
-      var res = await fetchFn(url, { method: "GET" });
+      return { code: code, message: msg };
+    }
+
+    async function apiGet(url) {
+      var auth = memberAuthApi();
+      if (!auth || typeof auth.getAuthHeaders !== "function") {
+        var missing = new Error(
+          "Portfolio Demand Intelligence needs a signed-in Dealality session.",
+        );
+        missing.code = "AUTH_REQUIRED";
+        throw missing;
+      }
+      // Prefer getAuthHeaders (no alert) so in-page AUTH_REQUIRED is authoritative.
+      var headersResult = await auth.getAuthHeaders(null, {
+        waitForLogin: false,
+        maxWaitMs: 4000,
+      });
+      if (headersResult.error) {
+        var authErr = new Error(headersResult.error);
+        authErr.code = "AUTH_REQUIRED";
+        throw authErr;
+      }
+      var origin = "";
+      try {
+        origin = global.location.origin || "";
+      } catch (e) {
+        origin = "";
+      }
+      var absolute =
+        String(url).indexOf("http") === 0
+          ? url
+          : origin + (String(url).charAt(0) === "/" ? url : "/" + url);
+      var res = await fetch(absolute, {
+        method: "GET",
+        headers: headersResult.headers,
+      });
       var body = null;
       try {
         body = await res.json();
@@ -587,58 +850,84 @@
       return { res: res, body: body };
     }
 
-    function classifyUnavailable(body, res) {
+    function classifyApiFailure(body, res) {
       var code =
         (body && body.error && body.error.code) ||
         (body && body.code) ||
         "";
+      var message =
+        (body && body.error && body.error.message) ||
+        (body && body.message) ||
+        "";
       var status = (res && res.status) || (body && body.status) || 0;
+      if (status === 401 || code === "UNAUTHENTICATED" || isLoginRequiredMessage(message)) {
+        return {
+          code: "AUTH_REQUIRED",
+          message:
+            "Portfolio Demand Intelligence needs a signed-in Dealality session.",
+        };
+      }
+      if (
+        status === 403 ||
+        /OPERATOR_NOT_MAPPED|OPERATOR_MISMATCH|CROSS_OPERATOR/i.test(String(code))
+      ) {
+        return {
+          code: "OPERATOR_NOT_MAPPED",
+          message:
+            message ||
+            "Signed-in identity is not mapped to a portfolio operator membership.",
+        };
+      }
       if (
         status === 503 ||
-        /REGISTRY|INVENTORY|UNAVAILABLE|NOT_PROVISIONED/i.test(String(code)) ||
-        /registry|not provisioned|unavailable/i.test(
-          String((body && body.error && body.error.message) || body && body.message || ""),
-        )
+        /REGISTRY|INVENTORY|UNAVAILABLE|NOT_PROVISIONED|MARKET_ALLOWLIST/i.test(
+          String(code),
+        ) ||
+        /registry|not provisioned|unavailable|not configured/i.test(String(message))
       ) {
-        return true;
+        return {
+          code: "UNAVAILABLE",
+          message:
+            message ||
+            "Live operator membership / portfolio inventory is not provisioned. Portfolio Demand Intelligence stays off until the steward registry is configured.",
+        };
       }
-      return false;
+      return {
+        code: "LOAD_FAILED",
+        message: message || "Could not load portfolio markets.",
+      };
     }
 
     async function loadMarkets() {
-      state.loading = true;
+      setBusy(true, "Loading Portfolio Demand Intelligence…");
       state.error = null;
       try {
         var out = await apiGet(API_MARKETS);
         if (!out.res.ok || !(out.body && out.body.ok)) {
-          if (classifyUnavailable(out.body, out.res)) {
-            if (wantsExplicitDemo()) {
-              applyDemo();
-              return;
-            }
-            state.error = {
-              code: "UNAVAILABLE",
-              message:
-                "Live operator membership / portfolio inventory is not available for this account. Portfolio Demand Intelligence stays off until the steward registry is provisioned.",
-            };
-            paint();
+          var classified = classifyApiFailure(out.body, out.res);
+          if (classified.code === "UNAVAILABLE" && wantsExplicitDemo()) {
+            applyDemo();
             return;
           }
-          state.error = {
-            code: "LOAD_FAILED",
-            message:
-              (out.body && out.body.error && out.body.error.message) ||
-              "Could not load portfolio markets.",
-          };
+          state.error = classified;
           paint();
           return;
         }
         state.demo = false;
         state.markets = out.body.markets || [];
+        state.defaultMarketId =
+          (state.markets[0] && state.markets[0].marketId) || "";
         state.marketId =
-          state.marketId ||
-          (state.markets[0] && state.markets[0].marketId) ||
-          "";
+          state.marketId || state.defaultMarketId || "";
+        if (!state.markets.length) {
+          state.error = {
+            code: "UNAVAILABLE",
+            message:
+              "No authorized portfolio markets are available for this account. Operator membership or market allowlist may not be provisioned yet.",
+          };
+          paint();
+          return;
+        }
         paint();
         if (state.marketId) await loadMarket(state.marketId);
       } catch (e) {
@@ -646,15 +935,10 @@
           applyDemo();
           return;
         }
-        state.error = {
-          code: e && e.code === "UNAUTHENTICATED" ? "UNAVAILABLE" : "LOAD_FAILED",
-          message:
-            (e && e.message) ||
-            "Portfolio Demand Intelligence could not authenticate to the read-only API.",
-        };
+        state.error = classifyThrownError(e);
         paint();
       } finally {
-        state.loading = false;
+        setBusy(false);
       }
     }
 
@@ -665,37 +949,40 @@
         paint();
         return;
       }
-      var hotelsOut = await apiGet(API_HOTELS + "?marketId=" + encodeURIComponent(marketId));
-      if (!hotelsOut.res.ok || !(hotelsOut.body && hotelsOut.body.ok)) {
-        if (classifyUnavailable(hotelsOut.body, hotelsOut.res)) {
-          state.error = {
-            code: "UNAVAILABLE",
-            message: "Portfolio inventory unavailable for this market.",
-          };
+      setBusy(true, "Loading portfolio market…");
+      try {
+        var hotelsOut = await apiGet(
+          API_HOTELS + "?marketId=" + encodeURIComponent(marketId),
+        );
+        if (!hotelsOut.res.ok || !(hotelsOut.body && hotelsOut.body.ok)) {
+          state.error = classifyApiFailure(hotelsOut.body, hotelsOut.res);
           paint();
           return;
         }
-        state.error = {
-          code: "LOAD_FAILED",
-          message: "Could not load participating hotels.",
-        };
+        state.hotels = hotelsOut.body.hotels || [];
+        if (
+          state.hotelId &&
+          !state.hotels.some(function (h) {
+            return h.hotelId === state.hotelId;
+          })
+        ) {
+          state.hotelId = "";
+        }
+        var oppOut = await apiGet(
+          API_OPPS + "?marketId=" + encodeURIComponent(marketId),
+        );
+        if (!oppOut.res.ok || !(oppOut.body && oppOut.body.ok)) {
+          state.error = classifyApiFailure(oppOut.body, oppOut.res);
+          state.opportunitiesPayload = null;
+          paint();
+          return;
+        }
+        state.opportunitiesPayload = oppOut.body;
+        state.error = null;
         paint();
-        return;
+      } finally {
+        setBusy(false);
       }
-      state.hotels = hotelsOut.body.hotels || [];
-      var oppOut = await apiGet(API_OPPS + "?marketId=" + encodeURIComponent(marketId));
-      if (!oppOut.res.ok || !(oppOut.body && oppOut.body.ok)) {
-        state.error = {
-          code: "LOAD_FAILED",
-          message: "Could not load market opportunities.",
-        };
-        state.opportunitiesPayload = null;
-        paint();
-        return;
-      }
-      state.opportunitiesPayload = oppOut.body;
-      state.error = null;
-      paint();
     }
 
     function applyDemo() {
@@ -703,7 +990,10 @@
       state.demo = true;
       state.markets = d.markets;
       state.hotels = d.hotels;
+      state.defaultMarketId = d.markets[0].marketId;
       state.marketId = d.markets[0].marketId;
+      state.hotelId = "";
+      state.fitClass = "";
       state.opportunitiesPayload = d.opportunitiesPayload;
       state.error = null;
       paint();
@@ -718,6 +1008,7 @@
     }
 
     function destroy() {
+      setBusy(false);
       root.innerHTML = "";
     }
 
@@ -728,6 +1019,7 @@
         return state;
       },
       paint: paint,
+      resetView: resetView,
     };
   }
 
@@ -741,6 +1033,7 @@
       var controller = createTabController({
         root: container,
         onOpenBrief: options.onOpenBrief,
+        onLoading: options.onLoading,
       });
       api._active = true;
       api._controller = controller;
@@ -761,6 +1054,9 @@
     renderMatrixHtml: renderMatrixHtml,
     renderHotelListHtml: renderHotelListHtml,
     unavailableHtml: unavailableHtml,
+    authRequiredHtml: authRequiredHtml,
+    notMappedHtml: notMappedHtml,
+    filterPanelHtml: filterPanelHtml,
     demoPayload: demoPayload,
     wantsExplicitDemo: wantsExplicitDemo,
     isAuthorizedLocalDemoHost: isAuthorizedLocalDemoHost,

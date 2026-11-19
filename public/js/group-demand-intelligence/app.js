@@ -236,18 +236,60 @@
     return fetch(url, opts);
   }
 
+  var memberAuth = window.DealalityMemberstackAuth || null;
   var memberFetch =
-    window.DealalityMemberstackAuth && window.DealalityMemberstackAuth.fetchMyDealsApi
-      ? window.DealalityMemberstackAuth.fetchMyDealsApi.bind(window.DealalityMemberstackAuth)
+    memberAuth && memberAuth.fetchMyDealsApi
+      ? memberAuth.fetchMyDealsApi.bind(memberAuth)
       : null;
+
+  /**
+   * GDI optional/authenticated requests must never raise window.alert().
+   * On missing credentials we either silently retry with a JWT (when present)
+   * or return the original 401 so callers can show an inline state.
+   */
+  function withSilentAuthOptions(opts) {
+    return Object.assign({}, opts || {}, {
+      notifyLoginRequired: false,
+      silent: true,
+      waitForLogin: false,
+    });
+  }
+
+  function retryWithMemberstackJwt(url, opts, priorResponse) {
+    if (!memberAuth || typeof memberAuth.getAuthHeaders !== "function") {
+      return Promise.resolve(priorResponse);
+    }
+    return memberAuth
+      .getAuthHeaders(null, { waitForLogin: false, maxWaitMs: 2500 })
+      .then(function (headersResult) {
+        if (!headersResult || headersResult.error || !headersResult.headers) {
+          return priorResponse;
+        }
+        var mergedHeaders = Object.assign(
+          {},
+          headersResult.headers,
+          (opts && opts.headers) || {},
+        );
+        return plainFetch(url, Object.assign({}, opts || {}, { headers: mergedHeaders }));
+      })
+      .catch(function () {
+        return priorResponse;
+      });
+  }
 
   function fetchFn(url, opts) {
     opts = opts || {};
     var method = String(opts.method || "GET").toUpperCase();
     var needsAuthWrite = method !== "GET" && method !== "HEAD";
-    if (needsAuthWrite && memberFetch) return memberFetch(url, opts);
+    if (needsAuthWrite && memberFetch) {
+      return memberFetch(url, withSilentAuthOptions(opts)).catch(function (err) {
+        // Preserve auth failure without native alert; let api() surface inline.
+        if (err && (err.code === "AUTH_REQUIRED" || err.authRequired)) throw err;
+        throw err;
+      });
+    }
     return plainFetch(url, opts).then(function (r) {
-      if (r.status === 401 && memberFetch) return memberFetch(url, opts);
+      if (r.status === 401) return retryWithMemberstackJwt(url, opts, r);
       return r;
     });
   }
@@ -555,6 +597,19 @@
   function api(path, opts) {
     return fetchFn(path, opts)
       .catch(function (networkErr) {
+        if (
+          networkErr &&
+          (networkErr.code === "AUTH_REQUIRED" || networkErr.authRequired)
+        ) {
+          var authErr = new Error(
+            networkErr.message ||
+              "Sign in required to continue with this Group & Demand Intelligence action.",
+          );
+          authErr.code = "AUTH_REQUIRED";
+          authErr.status = 401;
+          authErr.cause = networkErr;
+          throw authErr;
+        }
         var err = new Error(
           "This opportunity could not be opened. Please try again. If the problem continues, refresh the list and reopen the card."
         );
@@ -568,7 +623,14 @@
         return r.json().then(function (data) {
           if (!r.ok || data.ok === false) {
             var msg = data.message || data.error || "Request failed";
-            if (/opportunity_not_found/i.test(String(msg))) {
+            if (r.status === 401) {
+              msg =
+                "Sign in required to continue with this Group & Demand Intelligence action.";
+            } else if (r.status === 403) {
+              msg =
+                data.message ||
+                "Access denied for this Group & Demand Intelligence request.";
+            } else if (/opportunity_not_found/i.test(String(msg))) {
               msg =
                 data.message && !/opportunity_not_found/i.test(String(data.message))
                   ? data.message
@@ -577,6 +639,8 @@
             var err = new Error(msg);
             err.status = r.status;
             err.data = data;
+            if (r.status === 401) err.code = "AUTH_REQUIRED";
+            if (r.status === 403) err.code = "ACCESS_DENIED";
             throw err;
           }
           return data;
@@ -2029,6 +2093,9 @@
         typeof window.DealalityGdiPortfolioTab.mount === "function"
       ) {
         window.DealalityGdiPortfolioTab.mount(portfolioRoot, {
+          onLoading: function (on, message) {
+            setLoading(!!on, message || "Loading Portfolio Demand Intelligence…");
+          },
           onOpenBrief: function (ref) {
             if (!ref || !ref.hotelId || !ref.opportunityId) return;
             var runOpen = function () {

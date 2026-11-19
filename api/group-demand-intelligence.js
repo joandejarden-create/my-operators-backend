@@ -1724,6 +1724,19 @@ export async function getGdiOpportunityDetail(req, res) {
             tilePreviewErr?.message || tilePreviewErr,
           );
         }
+        try {
+          const { ensureDrawerContactParityPresentation } = await import(
+            "../lib/group-demand-intelligence/presentation/gdi-drawer-contact-parity-presentation-v1.js"
+          );
+          withFeedback = await ensureDrawerContactParityPresentation(
+            withFeedback,
+          );
+        } catch (contactParityErr) {
+          console.error(
+            "[gdi] auth publication-package detail contact parity failed",
+            contactParityErr?.message || contactParityErr,
+          );
+        }
         res.setHeader("X-GDI-Detail-Source", "PUBLICATION_PACKAGE");
         return res.json({
           ok: true,
@@ -1930,6 +1943,17 @@ export async function getGdiOpportunityDetail(req, res) {
     // Annotate Market Scope + competitive/future-cycle presentation before DTO
     // so Confirmed Competitor Business vs Potential Future Opportunity survive.
     opportunity = annotateInventoryPopulations([opportunity], { hotelId })[0];
+    try {
+      const { ensureDrawerContactParityPresentation } = await import(
+        "../lib/group-demand-intelligence/presentation/gdi-drawer-contact-parity-presentation-v1.js"
+      );
+      opportunity = await ensureDrawerContactParityPresentation(opportunity);
+    } catch (contactParityErr) {
+      console.error(
+        "[gdi] auth live detail contact parity failed",
+        contactParityErr?.message || contactParityErr,
+      );
+    }
     const authProjected = projectOpportunityForPresentation(opportunity, {
       hotelId,
       surface: GDI_PRESENTATION_SURFACES.LOCAL_AUTH,
@@ -2880,9 +2904,15 @@ export async function postGdiContactReveal(req, res) {
 
   // Mock: env GDI_CONTACT_REVEAL_MOCK=1, or explicit body.useMock on local
   // worktree preview servers (never enables live Surfe / never spends credits).
+  // Production customer hosts must never honor fixture contact values — even if
+  // GDI_CONTACT_REVEAL_MOCK is accidentally set on the deploy host.
+  const isProductionCustomerHost =
+    process.env.NODE_ENV === "production" &&
+    process.env.DEALALITY_ALLOW_WORKTREE_SERVER !== "1";
   const allowLocalMock =
-    process.env.GDI_CONTACT_REVEAL_MOCK === "1" ||
-    process.env.DEALALITY_ALLOW_WORKTREE_SERVER === "1";
+    !isProductionCustomerHost &&
+    (process.env.GDI_CONTACT_REVEAL_MOCK === "1" ||
+      process.env.DEALALITY_ALLOW_WORKTREE_SERVER === "1");
   const useMock =
     allowLocalMock &&
     (body.useMock === true || process.env.GDI_CONTACT_REVEAL_MOCK === "1");
@@ -3772,6 +3802,19 @@ export async function getGdiShareOpportunityDetail(req, res) {
         console.error(
           "[gdi] share publication-package detail customer presentation attach failed",
           tilePreviewErr?.message || tilePreviewErr,
+        );
+      }
+      try {
+        const { ensureDrawerContactParityPresentation } = await import(
+          "../lib/group-demand-intelligence/presentation/gdi-drawer-contact-parity-presentation-v1.js"
+        );
+        withFeedback = await ensureDrawerContactParityPresentation(
+          withFeedback,
+        );
+      } catch (contactParityErr) {
+        console.error(
+          "[gdi] share publication-package detail contact parity failed",
+          contactParityErr?.message || contactParityErr,
         );
       }
       const validation = getShareValidationForOpportunity(
