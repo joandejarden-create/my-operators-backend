@@ -1,0 +1,133 @@
+{
+  "contract": "BE_AIRTABLE_INTEGRATION_SOT_V1",
+  "generatedAt": "2026-11-19T11:28:05.790Z",
+  "dryRun": true,
+  "airtableWrites": false,
+  "identity": {
+    "primaryKey": {
+      "system": "airtable",
+      "baseEnv": "AIRTABLE_BASE_ID",
+      "table": "Brand Setup - Brand Basics",
+      "field": "id",
+      "description": "Airtable record id (rec…) on Brand Setup - Brand Basics"
+    },
+    "displayNameField": "Brand Name",
+    "universeFilter": "OR({Brand Status}='Active', {Brand Status}='Live')",
+    "parentCompanyField": "Parent Company",
+    "aliasTable": {
+      "baseEnv": "AIRTABLE_BASE_ID_ALT",
+      "table": "Brand Alias Mapping",
+      "canonicalField": "Canonical Brand Name",
+      "aliasField": "Alias / Source Brand Name",
+      "parentCompanyField": "Parent Company",
+      "activeField": "Active"
+    },
+    "censusAffiliationJoin": {
+      "transitionalTable": "Hotel Census",
+      "affiliationField": "Affiliation",
+      "parentCompanyField": "Parent Company",
+      "statusField": "status",
+      "roomsField": "rooms"
+    },
+    "hpcBrandJoin": {
+      "designatedTable": "Hotel Property Census",
+      "brandField": "Current Brand",
+      "affiliationStatusField": "Affiliation Status",
+      "brandFamilyField": "Brand Family",
+      "radarStatusField": "Radar Status",
+      "roomsKeysField": "Rooms / Keys",
+      "note": "HPC is the designated footprint authority for Brand Explorer when join coverage is certified. Hotel Census rollups remain transitional until HPC brand rollup gates pass."
+    },
+    "preserveRules": [
+      "Never mint a second Brand Basics row for an existing brand identity",
+      "Never rewrite Brand Basics record ids",
+      "Deduplicate via alias table + exact Affiliation / Current Brand matchers",
+      "Regional licensing / operating-rights differences must not collapse distinct brands"
+    ]
+  },
+  "footprint": {
+    "designatedAuthority": "hpc",
+    "transitionalAuthority": "hotel_census",
+    "companyReportedAuthority": "brand_setup_footprint",
+    "qualifyingHpcStatuses": [
+      "Open",
+      "Pipeline"
+    ],
+    "statusBuckets": {
+      "open": [
+        "Open"
+      ],
+      "pipeline": [
+        "Pipeline"
+      ],
+      "other": [
+        "Closed",
+        "Inactive",
+        "Unknown",
+        ""
+      ]
+    },
+    "requiredMetricKeys": [
+      "totalOpenHotels",
+      "totalOpenKeys",
+      "totalPipelineHotels",
+      "totalPipelineKeys"
+    ],
+    "requiredMetadataKeys": [
+      "source.table",
+      "source.base",
+      "source.aggregatedAt",
+      "match.canonicalBrandName",
+      "match.affiliationMatchers",
+      "census.recordsMatched",
+      "warnings",
+      "fallbackRecommended",
+      "coverageLimitations"
+    ],
+    "displayRules": [
+      "When HPC (or transitional Hotel Census with fallbackRecommended=false) is available, show those metrics as Dealality inventory",
+      "When Brand Setup Footprint has company-reported figures, show them as separately attributed company-reported metrics",
+      "Never present Brand Setup / AI-generated counts as HPC inventory",
+      "Always surface coverage limitations and timestamps with derived totals"
+    ],
+    "factoryWriteRules": [
+      "Factory must not overwrite Brand Setup - Brand Footprint numeric inventory fields that are system- or company-owned",
+      "Factory may stage qualitative footprint.copy (Presentation slots) only",
+      "Factory must not invent open/pipeline hotel or key totals"
+    ]
+  },
+  "contractSummary": {
+    "contract": "BE_AIRTABLE_INTEGRATION_SOT_V1",
+    "tabCount": 10,
+    "brandSetupChildTables": 10,
+    "footprintDesignatedAuthority": "hpc",
+    "footprintTransitionalAuthority": "hotel_census",
+    "externalReadContracts": [
+      "adpBrandLevel",
+      "gdiBrandLevel"
+    ],
+    "factorySafety": {
+      "noBulkPopulationUntil": [
+        "canonical_identity_verified",
+        "airtable_joins_verified",
+        "hpc_footprint_rules_verified",
+        "field_ownership_contract_merged"
+      ],
+      "preserveApprovedProfiles": true,
+      "dryRunDefault": true,
+      "noAutoPublish": true,
+      "noCompetingDatabase": true
+    }
+  },
+  "liveCensusProbe": null,
+  "gaps": [
+    "HPC brand rollup not yet wired as primary BE censusSummary path",
+    "TAB_CONTRACTS on main still 7 tabs vs atelier 10 (factory restore Phase 2)",
+    "ADP/GDI brand-level read contracts reserved only"
+  ],
+  "stopConditions": [
+    "No bulk brand population",
+    "No production Airtable writes",
+    "No ADP/GDI workstream modifications"
+  ]
+}
