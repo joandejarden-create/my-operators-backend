@@ -376,6 +376,11 @@ import {
   postGdiPublishHotelInventory,
 } from "./api/group-demand-intelligence.js";
 import {
+  getGdiPortfolioMarkets,
+  getGdiPortfolioHotels,
+  getGdiPortfolioMarketOpportunities,
+} from "./api/gdi-portfolio-demand-intelligence.js";
+import {
   getGdiPursuitEnums,
   getGdiPursuits,
   getGdiPursuitById,
@@ -507,6 +512,7 @@ import {
 import { memberstackAuth } from "./middleware/memberstackAuth.js";
 import { requireDealalityUser } from "./middleware/requireDealalityUser.js";
 import { gdiPilotReadAuth } from "./middleware/gdiPilotReadAuth.js";
+import { gdiPortfolioReadAuth } from "./middleware/gdiPortfolioReadAuth.js";
 import { gdiNeedDatesWriteAuth } from "./middleware/gdiNeedDatesWriteAuth.js";
 import { requireMyDealsAccess } from "./middleware/requireMyDealsAccess.js";
 import { requireOperatorDealsAccess } from "./middleware/requireOperatorDealsAccess.js";
@@ -1105,6 +1111,22 @@ app.post(
 // GROUP DEMAND INTELLIGENCE (EXPERIMENTAL / PILOT — not ADP)
 // ============================================================
 app.get("/api/group-demand-intelligence/flag", getGdiFlag);
+// PDI-2 — read-only portfolio API (verified Memberstack only; no pilot unauth; no writes)
+app.get(
+  "/api/group-demand-intelligence/portfolio/markets",
+  gdiPortfolioReadAuth,
+  getGdiPortfolioMarkets
+);
+app.get(
+  "/api/group-demand-intelligence/portfolio/hotels",
+  gdiPortfolioReadAuth,
+  getGdiPortfolioHotels
+);
+app.get(
+  "/api/group-demand-intelligence/portfolio/market-opportunities",
+  gdiPortfolioReadAuth,
+  getGdiPortfolioMarketOpportunities
+);
 app.get(
   "/api/group-demand-intelligence/hotels",
   gdiPilotReadAuth,

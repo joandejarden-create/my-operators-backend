@@ -1,0 +1,95 @@
+{
+  "version": "gdi-portfolio-demand-intelligence-pdi-2-v1",
+  "at": "2026-11-19T13:35:46.283Z",
+  "securityAmendment": true,
+  "paidCalls": 0,
+  "airtableWrites": 0,
+  "productionWrites": 0,
+  "publicationWrites": 0,
+  "securityTable": [
+    {
+      "vulnerability": "Unauthenticated access",
+      "mitigation": "serverVerified required",
+      "regression": "PASS"
+    },
+    {
+      "vulnerability": "Spoofed member/session headers",
+      "mitigation": "callerFromVerifiedRequest flags + ignores",
+      "regression": "PASS"
+    },
+    {
+      "vulnerability": "Query-supplied sessionId",
+      "mitigation": "ignored; not used for auth",
+      "regression": "PASS"
+    },
+    {
+      "vulnerability": "Company-name impersonation",
+      "mitigation": "FUZZY_NAME_MATCH_REJECTED",
+      "regression": "PASS"
+    },
+    {
+      "vulnerability": "Cross-operator access",
+      "mitigation": "CROSS_OPERATOR_DENIED",
+      "regression": "PASS"
+    },
+    {
+      "vulnerability": "Missing operator registry member",
+      "mitigation": "OPERATOR_NOT_MAPPED",
+      "regression": "PASS"
+    },
+    {
+      "vulnerability": "Missing market allowlist",
+      "mitigation": "MARKET_ALLOWLIST_REQUIRED (never broadens)",
+      "regression": "PASS"
+    },
+    {
+      "vulnerability": "Empty market allowlist",
+      "mitigation": "denies all markets",
+      "regression": "PASS"
+    },
+    {
+      "vulnerability": "Wrong-market hotel (Cancún under Guadalajara)",
+      "mitigation": "HOTEL_NOT_IN_PORTFOLIO",
+      "regression": "PASS"
+    },
+    {
+      "vulnerability": "Opportunity with no marketId",
+      "mitigation": "excluded from corpus",
+      "regression": "PASS"
+    },
+    {
+      "vulnerability": "Research-only without customerSurface (default customer)",
+      "mitigation": "unpublished/research-only filtered by default",
+      "regression": "PASS"
+    },
+    {
+      "vulnerability": "customerSurface=0 bypass attempt",
+      "mitigation": "requires GDI_INTERNAL_RESEARCH_READ",
+      "regression": "PASS"
+    },
+    {
+      "vulnerability": "Market-level publication without hotel-level authorization",
+      "mitigation": "hotel rows omitted; no drawer",
+      "regression": "PASS"
+    },
+    {
+      "vulnerability": "Unpublished hotel drawer link withheld",
+      "mitigation": "drawer.detailPath null",
+      "regression": "PASS"
+    },
+    {
+      "vulnerability": "Fixture auth on non-test runtime",
+      "mitigation": "live path fail-closed without data/",
+      "regression": "PASS"
+    },
+    {
+      "vulnerability": "Valid authorized customer access after corrections",
+      "mitigation": "Sheraton published only",
+      "regression": "PASS"
+    }
+  ],
+  "remainingGaps": [
+    "Live steward operator-auth-registry.json + portfolio-inventory.json must be provisioned before customer use",
+    "Brief v2 (Track A) and PDI-3 UI deferred pending founder merge of hardened PDI-2"
+  ]
+}
