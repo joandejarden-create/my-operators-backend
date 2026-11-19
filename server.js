@@ -375,6 +375,11 @@ import {
   postGdiPublishHotelInventory,
 } from "./api/group-demand-intelligence.js";
 import {
+  getGdiPortfolioMarkets,
+  getGdiPortfolioHotels,
+  getGdiPortfolioMarketOpportunities,
+} from "./api/gdi-portfolio-demand-intelligence.js";
+import {
   getGdiPursuitEnums,
   getGdiPursuits,
   getGdiPursuitById,
@@ -1101,6 +1106,22 @@ app.post(
 // GROUP DEMAND INTELLIGENCE (EXPERIMENTAL / PILOT — not ADP)
 // ============================================================
 app.get("/api/group-demand-intelligence/flag", getGdiFlag);
+// PDI-2 — read-only portfolio API (auth enforced inside handlers; no writes)
+app.get(
+  "/api/group-demand-intelligence/portfolio/markets",
+  gdiPilotReadAuth,
+  getGdiPortfolioMarkets
+);
+app.get(
+  "/api/group-demand-intelligence/portfolio/hotels",
+  gdiPilotReadAuth,
+  getGdiPortfolioHotels
+);
+app.get(
+  "/api/group-demand-intelligence/portfolio/market-opportunities",
+  gdiPilotReadAuth,
+  getGdiPortfolioMarketOpportunities
+);
 app.get(
   "/api/group-demand-intelligence/hotels",
   gdiPilotReadAuth,
