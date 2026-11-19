@@ -5,6 +5,8 @@
 **Non-goal:** Broad GDI discovery architecture productization.  
 **Wave 1 live research:** not authorized by this document — requires separate founder authorization.
 
+**Exa-powered baseline clarification (2026-11-19):** The `$0` official-page Wave 1 result must **not** be read as proof that agents lack commercial value on the real GDI process. Existing GDI already uses Exa. The fair Exa-parity design (spend still denied until separate auth) lives in `docs/data-intelligence/gdi-ai-agent-exa-powered-parity-experiment-v1.md`.
+
 ---
 
 ## Clarification vs PR #414
