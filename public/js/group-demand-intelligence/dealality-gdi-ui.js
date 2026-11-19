@@ -65,9 +65,57 @@
     MONITOR: 1,
   };
 
-  /** Shared whitespace normalizer — required by Who-to-Contact and drawer bodies. */
+  /**
+   * Customer-facing drawer prose scrub:
+   * - strip em/en dashes (AI clause separators)
+   * - strip zero-width / soft-hyphen artifacts
+   * - sentence-case the start of the string
+   */
+  function scrubCustomerFacingProse(v) {
+    var s = v == null ? "" : String(v);
+    if (!s) return "";
+    s = s
+      .replace(/[\u200B-\u200D\uFEFF\u00AD]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (!s) return "";
+    // Label-style dashes → colon (contact paths, org/title pairs).
+    s = s.replace(
+      /\b(Named person|Contact path|Primary route type|Primary route)\s*[—–]\s+/gi,
+      "$1: "
+    );
+    s = s.replace(
+      /^(.{2,100}?)\s*[—–]\s+((?:\d{4}\b|[A-ZÁÉÍÓÚÑ]).{0,140})$/u,
+      "$1: $2"
+    );
+    // Remaining em/en dash clause breaks → new sentence (common AI artifact).
+    s = s.replace(/\s*[—–]\s+([a-zA-Z])/g, function (_, ch) {
+      return ". " + ch.toUpperCase();
+    });
+    s = s.replace(/\s*[—–]\s*/g, ". ");
+    s = s.replace(/\.\s*\./g, ".");
+    s = s.replace(/([.!?]\s+)([a-z])/g, function (_, lead, ch) {
+      return lead + ch.toUpperCase();
+    });
+    s = s.replace(/^[a-z]/, function (ch) {
+      return ch.toUpperCase();
+    });
+    return s.replace(/\s+/g, " ").trim();
+  }
+
+  /** Shared whitespace + customer prose scrub — required by Who-to-Contact and drawer bodies. */
   function prose(v) {
-    return v == null ? "" : String(v).replace(/\s+/g, " ").trim();
+    return scrubCustomerFacingProse(v);
+  }
+
+  function cleanCustomerFacingList(items) {
+    if (!Array.isArray(items)) return [];
+    return items
+      .map(prose)
+      .filter(Boolean)
+      .filter(function (t) {
+        return !/^[,.—–-]+$/.test(t) && t !== "•";
+      });
   }
 
   /**
@@ -666,7 +714,7 @@
         '<div class="gdi-cmi-split__row"><span class="gdi-cmi-split__label">' +
         esc(label) +
         '</span><span class="gdi-cmi-split__value">' +
-        esc(value) +
+        esc(scrubCustomerFacingProse(value)) +
         "</span></div>"
       );
     }
@@ -702,7 +750,7 @@
         '<section class="gdi-section gdi-section--cmi-confirmed" data-section-id="confirmed_competitor_business">' +
           "<h3>Confirmed Competitor Business</h3>" +
           "<p>" +
-          esc(confirmed.headline || "—") +
+          esc(scrubCustomerFacingProse(confirmed.headline || "")) +
           "</p>" +
           '<div class="gdi-cmi-split__meta">' +
           metaRow("Event / edition", confirmed.eventNameEdition) +
@@ -730,7 +778,7 @@
         '<section class="gdi-section gdi-section--cmi-future" data-section-id="potential_future_opportunity">' +
           "<h3>Potential Future Opportunity</h3>" +
           "<p>" +
-          esc(future.headline || "—") +
+          esc(scrubCustomerFacingProse(future.headline || "")) +
           "</p>" +
           '<div class="gdi-cmi-split__meta">' +
           metaRow("Potential next edition", future.nextEditionHint) +
@@ -740,7 +788,7 @@
             future.futureHotelSelectionKnown === true
               ? "Yes"
               : future.applicable
-                ? "No — not confirmed"
+                ? "Not confirmed"
                 : null
           ) +
           metaRow("Why this hotel may be a candidate", future.whyTargetHotelCandidate) +
@@ -764,11 +812,11 @@
         '<div class="gdi-cmi-action-banner" data-competitive-action="' +
           esc(o.competitiveCommercialActionKey || "") +
           '"><strong>' +
-          esc(o.competitiveCommercialActionLabel) +
+          esc(scrubCustomerFacingProse(o.competitiveCommercialActionLabel)) +
           "</strong>" +
           (o.competitiveStatusLabel
             ? '<span class="gdi-muted"> · ' +
-              esc(o.competitiveStatusLabel) +
+              esc(scrubCustomerFacingProse(o.competitiveStatusLabel)) +
               "</span>"
             : "") +
           "</div>"
@@ -6923,17 +6971,11 @@
       slot.customerFacingNamed === true ||
       looksLikePersonNameLocal(slot.name);
     if (!named || !slot.name) return null;
-    var existing = String(slot.surfeEnrichmentChannel || "")
-      .trim()
-      .toLowerCase();
-    if (
-      (slot.surfeEnrichmentEligible === true || existing) &&
-      (existing === "email" || existing === "phone" || existing === "both")
-    ) {
-      return existing;
-    }
+    // Always derive from actual displayed channels — never keep a stale
+    // "both/email/phone" flag when Direct Business Email/Phone are present.
     var missingEmail = !String(slot.email || "").trim();
     var missingPhone = !String(slot.phone || "").trim();
+    if (!missingEmail && !missingPhone) return null;
     if (missingEmail && missingPhone) return "both";
     if (missingEmail) return "email";
     if (missingPhone) return "phone";
@@ -7003,17 +7045,25 @@
       ) {
         return (
           '<p class="gdi-contact-quality-quiet">' +
-          esc(slot.researchGapCopy || "Contact Research Required.") +
+          esc(
+            scrubCustomerFacingProse(
+              slot.researchGapCopy || "Contact Research Required."
+            )
+          ) +
           "</p>"
         );
       }
       return (
         '<div class="gdi-contact-slot gdi-contact-slot--gap">' +
         "<h4>" +
-        esc(slot.displayLabel || "Contact") +
+        esc(scrubCustomerFacingProse(slot.displayLabel || "Contact")) +
         "</h4>" +
         '<p class="gdi-contact-quality-quiet">' +
-        esc(slot.researchGapCopy || "Contact Research Required.") +
+        esc(
+          scrubCustomerFacingProse(
+            slot.researchGapCopy || "Contact Research Required."
+          )
+        ) +
         "</p>" +
         (slot.organizationEmail
           ? "<p><strong>" +
@@ -7038,26 +7088,42 @@
       );
     }
     var linkedIn =
-      (slot.linkedInUrl && isSafeHttpUrl(slot.linkedInUrl) && slot.linkedInUrl) ||
+      (slot.linkedInUrl &&
+        isSafeHttpUrl(slot.linkedInUrl) &&
+        /linkedin\.com\/in\//i.test(slot.linkedInUrl) &&
+        slot.linkedInUrl) ||
       (slot.profileUrl &&
       isSafeHttpUrl(slot.profileUrl) &&
-      /linkedin\.com/i.test(slot.profileUrl)
+      /linkedin\.com\/in\//i.test(slot.profileUrl)
         ? slot.profileUrl
         : "");
     var otherProfile =
       !linkedIn && slot.profileUrl && isSafeHttpUrl(slot.profileUrl)
         ? slot.profileUrl
         : "";
+    // Prefer server-verified person source. If verification ran and failed,
+    // do not fall back to unverified About/profile URLs (broken/misleading).
+    // LinkedIn /in/ shape is allowed only when verify did not explicitly skip.
+    var personSourceSkipped = Boolean(slot.personSourceSkipReason);
+    var personSourceUrl =
+      (slot.personSourceUrl && isSafeHttpUrl(slot.personSourceUrl) && slot.personSourceUrl) ||
+      (!personSourceSkipped && linkedIn) ||
+      "";
+    var personSourceLabel =
+      scrubCustomerFacingProse(slot.personSourceLabel) ||
+      (linkedIn ? "LinkedIn profile" : "Profile / source");
+    var personSourceKind = String(slot.personSourceKind || "").toUpperCase();
+    if (!personSourceKind && linkedIn) personSourceKind = "LINKEDIN_PROFILE";
     var pathLabelRaw = String(slot.commercialContactPathLabel || "").trim();
     var pathLabelUseful =
       pathLabelRaw &&
       !/not yet established|research incomplete|no contact/i.test(pathLabelRaw);
     var pathLabel = pathLabelUseful
       ? '<p class="gdi-contact-kind-label"><strong>Contact path:</strong> ' +
-        esc(pathLabelRaw) +
+        esc(scrubCustomerFacingProse(pathLabelRaw)) +
         "</p>"
       : slot.customerFacingNamed && !slot.email && !slot.phone
-        ? '<p class="gdi-contact-kind-label"><strong>Contact path:</strong> Named person — profile / referral route</p>'
+        ? '<p class="gdi-contact-kind-label"><strong>Contact path:</strong> Named person: profile / referral route</p>'
         : "";
     var surfeChannel = resolveSurfeEnrichmentChannel(slot);
     var surfeBtn = "";
@@ -7098,87 +7164,103 @@
     var whyClean = scrubCustomerContactWhyProse(slot.whyContact, {
       contactName: slot.name,
     });
+    var roleDisplay = slot.title
+      ? (function (role) {
+          var r = String(role || "").replace(/\s+/g, " ").trim();
+          if (/^OTHER_RELEVANT$/i.test(r)) return "Other contact";
+          return r.replace(/\bOTHER_RELEVANT\b/g, "Other contact");
+        })(slot.title)
+      : "";
+    var whyDisplay = whyClean
+      ? String(whyClean || "")
+          .replace(/\s+/g, " ")
+          .trim()
+          .replace(/\bOTHER_RELEVANT\b/g, "Other contact")
+      : "";
+    // Identity-first card: name / role / org are scannable; path + why stay supporting.
+    // Person source link only when URL is present + shape-safe (comparison API
+    // additionally HTTP-verifies and suppresses broken / non-person pages).
+    var personLinkHtml = personSourceUrl
+      ? '<a class="gdi-contact-identity__link" href="' +
+        esc(personSourceUrl) +
+        '" target="_blank" rel="noopener noreferrer" data-person-source-kind="' +
+        esc(personSourceKind || "") +
+        '" title="' +
+        esc(personSourceLabel) +
+        '">' +
+        esc(personSourceLabel) +
+        "</a>"
+      : "";
+    var identityHtml =
+      '<div class="gdi-contact-identity">' +
+      '<div class="gdi-contact-identity__main">' +
+      '<div class="gdi-contact-identity__name">' +
+      esc(slot.name) +
+      "</div>" +
+      (roleDisplay
+        ? '<div class="gdi-contact-identity__role">' + esc(roleDisplay) + "</div>"
+        : "") +
+      (slot.organization
+        ? '<div class="gdi-contact-identity__org">' +
+          esc(slot.organization) +
+          "</div>"
+        : "") +
+      "</div>" +
+      (personLinkHtml
+        ? '<div class="gdi-contact-identity__actions">' + personLinkHtml + "</div>"
+        : "") +
+      "</div>";
     return (
       '<div class="gdi-contact-slot" data-contact-slot="' +
       esc(slot.slot || "") +
       '">' +
       "<h4>" +
-      esc(slot.displayLabel || "Contact") +
+      esc(scrubCustomerFacingProse(slot.displayLabel || "Contact")) +
       "</h4>" +
       pathLabel +
-      "<p><strong>Name:</strong> " +
-      esc(slot.name) +
-      "</p>" +
-      (slot.title
-        ? "<p><strong>Role:</strong> " +
-          esc(
-            (function (role) {
-              var r = String(role || "").replace(/\s+/g, " ").trim();
-              if (/^OTHER_RELEVANT$/i.test(r)) return "Other contact";
-              return r.replace(/\bOTHER_RELEVANT\b/g, "Other contact");
-            })(slot.title)
-          ) +
-          "</p>"
-        : "") +
-      (slot.organization
-        ? "<p><strong>Organization:</strong> " + esc(slot.organization) + "</p>"
-        : "") +
-      (whyClean
-        ? "<p><strong>Why relevant:</strong> " +
-          esc(
-            String(whyClean || "")
-              .replace(/\s+/g, " ")
-              .trim()
-              .replace(/\bOTHER_RELEVANT\b/g, "Other contact")
-          ) +
+      identityHtml +
+      (whyDisplay
+        ? '<p class="gdi-contact-why"><span class="gdi-contact-why__label">Why relevant</span> ' +
+          esc(scrubCustomerFacingProse(whyDisplay)) +
           "</p>"
         : "") +
       (slot.email
-        ? "<p><strong>" +
-          esc(slot.emailLabel || "Direct work email") +
-          ":</strong> " +
+        ? '<p class="gdi-contact-field"><span class="gdi-contact-field__label">' +
+          esc(slot.emailLabel || "Direct Business Email") +
+          "</span> " +
           esc(slot.email) +
           "</p>"
         : "") +
       (slot.organizationEmail
-        ? "<p><strong>" +
-          esc(slot.organizationEmailLabel || "Organization email") +
-          ":</strong> " +
+        ? '<p class="gdi-contact-field"><span class="gdi-contact-field__label">' +
+          esc(scrubCustomerFacingProse(slot.organizationEmailLabel || "Organization email")) +
+          "</span> " +
           esc(slot.organizationEmail) +
           "</p>"
         : "") +
       (slotPersonPhone
-        ? "<p><strong>" +
-          esc(slot.phoneLabel || "Direct phone") +
-          ":</strong> " +
+        ? '<p class="gdi-contact-field"><span class="gdi-contact-field__label">' +
+          esc(slot.phoneLabel || "Direct Business Phone") +
+          "</span> " +
           esc(slotPersonPhone) +
           "</p>"
         : "") +
       (slotCompanyPhone
-        ? "<p><strong>" +
-          esc(slot.companyPhoneLabel || "Organization phone") +
-          ":</strong> " +
+        ? '<p class="gdi-contact-field"><span class="gdi-contact-field__label">' +
+          esc(scrubCustomerFacingProse(slot.companyPhoneLabel || "Organization phone")) +
+          "</span> " +
           esc(slotCompanyPhone) +
           "</p>"
         : "") +
-      (slot.officialContactUrl && isSafeHttpUrl(slot.officialContactUrl)
-        ? '<p><strong>Official contact / program page:</strong> <a href="' +
+      (slot.officialContactUrl &&
+      isSafeHttpUrl(slot.officialContactUrl) &&
+      slot.officialContactUrl !== personSourceUrl
+        ? '<p class="gdi-contact-field"><span class="gdi-contact-field__label">Official contact / program page</span> <a href="' +
           esc(slot.officialContactUrl) +
           '" target="_blank" rel="noopener noreferrer">' +
           esc(slot.officialContactUrl) +
           "</a></p>"
         : "") +
-      (linkedIn
-        ? '<p><strong>LinkedIn:</strong> <a href="' +
-          esc(linkedIn) +
-          '" target="_blank" rel="noopener noreferrer">' +
-          esc(linkedIn) +
-          "</a></p>"
-        : otherProfile
-          ? '<p><a href="' +
-            esc(otherProfile) +
-            '" target="_blank" rel="noopener noreferrer">Professional profile</a></p>'
-          : "") +
       surfeBtn +
       "</div>"
     );
@@ -7202,7 +7284,7 @@
         routeLabel,
       )
         ? '<p class="gdi-muted gdi-primary-route-type"><strong>Primary route type:</strong> ' +
-          esc(routeLabel) +
+          esc(scrubCustomerFacingProse(routeLabel)) +
           "</p>"
         : "";
     return (
@@ -7248,9 +7330,9 @@
       (drawer && drawer.functionalPath) ||
       o.commercialContactPathLabel ||
       (rawPath === "NAMED_DIRECT"
-        ? "Named person — direct business email"
+        ? "Named person: direct business email"
         : rawPath === "NAMED_PHONE"
-          ? "Named person — phone route"
+          ? "Named person: phone route"
           : rawPath === "ORGANIZATION_PATH"
             ? "Company contact path"
             : rawPath === "FUNCTIONAL_CONTACT"
@@ -7968,18 +8050,10 @@
     o = o || {};
 
     function prose(v) {
-      return String(v || "")
-        .replace(/\s+/g, " ")
-        .trim();
+      return scrubCustomerFacingProse(v);
     }
     function cleanList(items) {
-      if (!Array.isArray(items)) return [];
-      return items
-        .map(prose)
-        .filter(Boolean)
-        .filter(function (t) {
-          return !/^—+$/.test(t) && t !== "-" && t !== "•";
-        });
+      return cleanCustomerFacingList(items);
     }
     function listHtml(items) {
       if (!items || !items.length) return "";
@@ -8001,7 +8075,7 @@
         var url = prose(s && s.url);
         if (!url) return "";
         var title = prose(s && s.title) || "";
-        // Avoid listing the raw URL twice (title + href) — audit/readers see duplicates.
+        // Avoid listing the raw URL twice (title + href); audit/readers see duplicates.
         if (!title || title === url) title = "";
         var publisher = prose(s && s.publisher);
         var date = prose(s && (s.publicationDate || s.publishedDate));
@@ -9186,17 +9260,20 @@
         '<div class="gdi-events-overview-item"><span class="gdi-events-overview-label">' +
         esc(label) +
         '</span><span class="gdi-events-overview-value">' +
-        esc(value || "—") +
+        esc(scrubCustomerFacingProse(value || "") || "—") +
         "</span></div>"
       );
     }
     // Prefer live composed competitor-vs-target sourcing over stale overview
     // "Venue Confirmed" that collapses independent commercial dimensions.
-    var hotelSourcingDisplay =
+    var hotelSourcingDisplay = scrubCustomerFacingProse(
       (o && o.hotelSourcingStatusLabel) ||
-      ov.hotelSourcing ||
-      "Sourcing unconfirmed";
-    var locationDisplay = ov.location || "Not yet verified";
+        ov.hotelSourcing ||
+        "Sourcing unconfirmed"
+    );
+    var locationDisplay = scrubCustomerFacingProse(
+      ov.location || "Not yet verified"
+    );
     if (
       /host\s+hotel\s+contracted|competitor\s+(?:venue|hotel|booking)/i.test(
         String(locationDisplay),
@@ -9210,7 +9287,7 @@
             o.destination)) ||
         "Not yet verified";
     }
-    var venueNote = ov.venueConfirmationNote || "";
+    var venueNote = scrubCustomerFacingProse(ov.venueConfirmationNote || "");
     if (
       /Competitor venue confirmed/i.test(String(hotelSourcingDisplay)) &&
       !venueNote
@@ -9221,16 +9298,18 @@
             o.competitorHotel ||
             o.likelyCompetitor)) ||
         "";
-      venueNote = comp
-        ? "Competitor venue confirmed (" +
-          comp +
-          "). Target-hotel overflow or secondary lodging is not confirmed — do not treat as an open host RFP."
-        : "A competitor venue is confirmed; target-hotel overflow sourcing remains unconfirmed.";
+      venueNote = scrubCustomerFacingProse(
+        comp
+          ? "Competitor venue confirmed (" +
+              comp +
+              "). Target-hotel overflow or secondary lodging is not confirmed. Do not treat as an open host RFP."
+          : "A competitor venue is confirmed; target-hotel overflow sourcing remains unconfirmed."
+      );
     }
     return (
       '<div class="gdi-events-opportunity-overview" data-overview-version="gdi-events-opportunity-overview-v1">' +
       '<p class="gdi-events-overview-identity">' +
-      esc(ov.identityLine || "—") +
+      esc(scrubCustomerFacingProse(ov.identityLine || "") || "—") +
       "</p>" +
       '<div class="gdi-events-overview-grid">' +
 
@@ -9369,18 +9448,10 @@
     o = o || {};
 
     function prose(v) {
-      return String(v || "")
-        .replace(/\s+/g, " ")
-        .trim();
+      return scrubCustomerFacingProse(v);
     }
     function cleanList(items) {
-      if (!Array.isArray(items)) return [];
-      return items
-        .map(prose)
-        .filter(Boolean)
-        .filter(function (t) {
-          return !/^—+$/.test(t) && t !== "-" && t !== "•";
-        });
+      return cleanCustomerFacingList(items);
     }
     function listHtml(items) {
       if (!items || !items.length) return "";
@@ -10279,7 +10350,7 @@
 
   /** Brand AI / ADP intelligence-product loading toast (deal-workspace-shell .bdd-toast). */
   var DEFAULT_PAGE_LOADING_MESSAGE = "Loading Group Demand Intelligence\u2026";
-  var DETAIL_LOADING_MESSAGE = "Loading\u2026";
+  var DETAIL_LOADING_MESSAGE = "Loading opportunity\u2026";
 
   /** Shared wave-orb markup (same primitives as page .bdd-toast.aiv-loading-toast). */
   function loadingWaveOrbHtml() {

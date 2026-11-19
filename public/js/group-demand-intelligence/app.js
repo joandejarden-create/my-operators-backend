@@ -2214,6 +2214,25 @@
     });
   }
 
+  // Canonical Surfe / contact reveal — shared with comparison preview.
+  if (
+    drawerBody &&
+    window.DealalityGdiContactReveal &&
+    typeof window.DealalityGdiContactReveal.bindContactRevealClicks === "function"
+  ) {
+    window.DealalityGdiContactReveal.bindContactRevealClicks(drawerBody, {
+      getHotelId: function () {
+        return state.hotelId || "";
+      },
+      setLoadingToast: function (on, message) {
+        setLoading(on, message || "Retrieving contact details\u2026");
+      },
+      fetchFn: fetchFn,
+      plainFetch: plainFetch,
+      surface: "drawer",
+    });
+  }
+
   drawerBody &&
     drawerBody.addEventListener("click", function (e) {
       var t = e.target;
@@ -2221,142 +2240,6 @@
       if (retryBtn) {
         var retryId = retryBtn.getAttribute("data-gdi-detail-retry");
         if (retryId) openDetail(retryId);
-        return;
-      }
-
-      var surfeBtn =
-        t && t.closest ? t.closest("[data-gdi-contact-cta]") : null;
-      if (surfeBtn) {
-        e.preventDefault();
-        e.stopPropagation();
-        var channel = String(
-          surfeBtn.getAttribute("data-gdi-contact-channel") || "both"
-        ).toLowerCase();
-        var contactName = String(
-          surfeBtn.getAttribute("data-contact-name") || ""
-        ).trim();
-        var opportunityId = String(
-          surfeBtn.getAttribute("data-opportunity-id") || ""
-        ).trim();
-        var rootEl =
-          surfeBtn.closest("[data-gdi-contact-reveal-root]") ||
-          surfeBtn.parentElement;
-        var statusEl = rootEl
-          ? rootEl.querySelector("[data-gdi-contact-reveal-status]")
-          : null;
-        function setRevealStatus(msg, isError) {
-          if (!statusEl) return;
-          statusEl.hidden = false;
-          statusEl.textContent = msg || "";
-          statusEl.classList.toggle("gdi-contact-reveal-status--error", !!isError);
-        }
-        if (!opportunityId || !contactName) {
-          setRevealStatus("Select a named contact before retrieving details.", true);
-          return;
-        }
-        if (!state.hotelId) {
-          setRevealStatus("Hotel context missing.", true);
-          return;
-        }
-        var flightKey =
-          state.hotelId + "|" + opportunityId + "|" + contactName + "|" + channel;
-        if (state.contactRevealInFlight[flightKey]) return;
-        state.contactRevealInFlight[flightKey] = true;
-        surfeBtn.disabled = true;
-        var prevLabel = surfeBtn.textContent;
-        surfeBtn.textContent = "Looking up…";
-        setRevealStatus("Retrieving contact details…", false);
-
-        var useMock =
-          /(?:^|[?&])gdiContactRevealMock=1(?:&|$)/.test(
-            window.location.search || ""
-          ) || window.__GDI_CONTACT_REVEAL_MOCK__ === true;
-
-        var revealUrl =
-          "/api/group-demand-intelligence/hotels/" +
-          encodeURIComponent(state.hotelId) +
-          "/opportunities/" +
-          encodeURIComponent(opportunityId) +
-          "/contacts/reveal";
-        var revealOpts = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            channel: channel,
-            contactName: contactName,
-            authorizeLiveProvider: useMock ? false : true,
-            useMock: useMock,
-            mockScenario: "hit",
-          }),
-        };
-        // Mock certification uses plain fetch (no Memberstack). Live uses auth write path.
-        var revealFetch = useMock
-          ? plainFetch(revealUrl, revealOpts)
-          : fetchFn(revealUrl, revealOpts);
-        revealFetch
-          .then(function (r) {
-            return r.json().then(function (data) {
-              return { okHttp: r.ok, status: r.status, data: data || {} };
-            });
-          })
-          .then(function (res) {
-            var data = res.data || {};
-            var details = data.contactDetails || null;
-            if (res.okHttp && details && (details.email || details.phone)) {
-              var bits = [];
-              if (details.email) bits.push("Email: " + details.email);
-              if (details.phone) bits.push("Phone: " + details.phone);
-              setRevealStatus(
-                bits.join(" · ") +
-                  " (session only — not saved to Dealality records)",
-                false
-              );
-              return;
-            }
-            if (data.miss || data.error === "NO_RESULT") {
-              setRevealStatus(
-                data.message ||
-                  "No matching email/phone found for this person.",
-                false
-              );
-              return;
-            }
-            if (res.status === 401 || res.status === 403) {
-              setRevealStatus(
-                data.message ||
-                  "Contact lookup requires a signed-in Dealality user.",
-                true
-              );
-              return;
-            }
-            if (res.status === 402) {
-              setRevealStatus(
-                data.message || "Insufficient Surfe credits for this lookup.",
-                true
-              );
-              return;
-            }
-            setRevealStatus(
-              data.message ||
-                data.error ||
-                "Contact lookup did not return a usable result.",
-              true
-            );
-          })
-          .catch(function (err) {
-            setRevealStatus(
-              (err && err.message) || "Contact lookup failed.",
-              true
-            );
-          })
-          .finally(function () {
-            delete state.contactRevealInFlight[flightKey];
-            surfeBtn.disabled = false;
-            surfeBtn.textContent = prevLabel;
-          });
         return;
       }
 

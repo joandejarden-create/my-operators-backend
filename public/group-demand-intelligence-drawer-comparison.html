@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <title>GDI Drawer Comparison — Sheraton Guadalajara Expo (Founder)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/deal-workspace-shell.css" />
+  <link rel="stylesheet" href="/js/ai-visibility/ai-visibility-shared.css?v=gdi-universal-share-pc-v3" />
+  <link rel="stylesheet" href="/css/group-demand-intelligence.css?v=gdi-drawer-cmp-v11-contact-reveal" />
+  <style>
+    /* Comparison chrome only — panels reuse real .gdi-drawer styles */
+    html, body.gdi-page.gdi-cmp-page {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+    .gdi-cmp-page {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      min-height: 0;
+      background: var(--gdi-bg);
+      color: var(--gdi-text);
+    }
+    .gdi-cmp-banner {
+      flex: 0 0 auto;
+      background: #050a18;
+      color: var(--neutral--200);
+      padding: 10px 16px;
+      font-size: 12px;
+      line-height: 1.45;
+      border-bottom: 1px solid var(--gdi-border);
+    }
+    .gdi-cmp-banner strong { color: var(--secondary--color-5); }
+    .gdi-cmp-toolbar {
+      flex: 0 0 auto;
+      display: grid;
+      grid-template-columns: minmax(280px, 1.5fr) auto auto 1fr;
+      gap: 12px;
+      align-items: end;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--gdi-border);
+      background: var(--gdi-panel-2);
+    }
+    .gdi-cmp-toolbar label {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--neutral--400);
+    }
+    .gdi-cmp-toolbar select {
+      font: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: normal;
+      padding: 8px 10px;
+      min-width: 280px;
+      width: 100%;
+      border: 1px solid var(--gdi-border);
+      border-radius: 6px;
+      background: var(--gdi-panel);
+      color: var(--neutral--100);
+    }
+    .gdi-cmp-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: none;
+      letter-spacing: normal;
+      padding: 8px 10px;
+      border: 1px solid var(--gdi-border);
+      border-radius: 6px;
+      background: var(--gdi-panel);
+      color: var(--gdi-text);
+      height: 38px;
+      box-sizing: border-box;
+    }
+    .gdi-cmp-meta {
+      font-size: 12px;
+      color: var(--gdi-muted);
+      padding-bottom: 2px;
+      text-transform: none;
+      letter-spacing: normal;
+      font-weight: 500;
+    }
+    .gdi-cmp-summary {
+      flex: 0 0 auto;
+      padding: 8px 16px;
+      background: rgba(108, 114, 255, 0.1);
+      border-bottom: 1px solid var(--gdi-border);
+      font-size: 12px;
+      color: var(--neutral--300);
+    }
+    .gdi-cmp-summary strong { color: var(--neutral--100); }
+    .gdi-cmp-panels {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      background: var(--gdi-bg);
+    }
+    .gdi-cmp-panel {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      min-height: 0;
+      border-right: 1px solid var(--gdi-border-strong);
+    }
+    .gdi-cmp-panel:last-child { border-right: 0; }
+    .gdi-cmp-panel-label {
+      flex: 0 0 auto;
+      padding: 8px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--secondary--color-5);
+      background: #050a18;
+      border-bottom: 1px solid var(--gdi-border);
+    }
+    .gdi-cmp-panel-label span {
+      display: block;
+      margin-top: 2px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      text-transform: none;
+      color: var(--gdi-muted);
+      font-size: 11px;
+    }
+    /* Real drawer surface — full panel height, not modal rail width */
+    .gdi-cmp-panel .gdi-drawer.gdi-cmp-drawer {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: none;
+      height: auto;
+      max-height: none;
+      flex: 1 1 auto;
+      min-height: 0;
+      margin: 0;
+      border: none;
+      box-shadow: none;
+      background: var(--gdi-panel);
+      color: var(--gdi-text);
+    }
+    .gdi-cmp-panel .gdi-drawer-inner {
+      min-height: 0;
+      flex: 1 1 auto;
+    }
+    .gdi-cmp-panel .gdi-drawer-body {
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+    .gdi-cmp-error {
+      padding: 24px;
+      color: var(--system--red-400);
+      font-size: 14px;
+    }
+    .gdi-cmp-loading {
+      padding: 24px;
+      color: var(--gdi-muted);
+    }
+    /* Highlight Changes — dark-theme readable */
+    .gdi-cmp-highlight .gdi-section.gdi-cmp-changed {
+      outline: 1px solid rgba(253, 181, 42, 0.65);
+      background: rgba(253, 181, 42, 0.12);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+    }
+    .gdi-cmp-highlight .gdi-section.gdi-cmp-added {
+      outline: 1px solid rgba(20, 202, 116, 0.55);
+      background: rgba(20, 202, 116, 0.1);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+    }
+    .gdi-cmp-highlight .gdi-inline-details.gdi-section-sources.gdi-cmp-added-sources {
+      outline: 1px dashed rgba(20, 202, 116, 0.55);
+      background: rgba(20, 202, 116, 0.08);
+      border-radius: 6px;
+      padding: 2px 8px;
+    }
+    @media (max-width: 960px) {
+      .gdi-cmp-panels { grid-template-columns: 1fr; }
+      .gdi-cmp-toolbar { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="gdi-page aiv-page gdi-cmp-page">
+  <!-- Canonical Dealality loading toast (Brand AI / GDI / ADP lineage) -->
+  <div
+    class="bdd-toast aiv-loading-toast"
+    id="gdiCmpLoading"
+    role="status"
+    aria-live="polite"
+    aria-busy="false"
+    hidden
+    style="display: none"
+  >
+    <div class="toast-wave-container" aria-hidden="true">
+      <div class="wave-container">
+        <div class="wave wave-1"></div>
+        <div class="wave wave-2"></div>
+        <div class="wave wave-3"></div>
+        <div class="wave-particles">
+          <div class="particle"></div>
+          <div class="particle"></div>
+          <div class="particle"></div>
+          <div class="particle"></div>
+        </div>
+      </div>
+    </div>
+    <div class="toast-message" id="gdiCmpLoadingMessage">Loading opportunity comparison…</div>
+  </div>
+  <div class="gdi-cmp-banner">
+    <strong>FOUNDER INTERNAL ONLY</strong> —
+    Sheraton Guadalajara Expo drawer comparison. Not a customer route.
+    LEFT = original canonical drawer. RIGHT = Brief v2 + Fact Selection + Sources (N).
+    No publication overwrite. No Airtable writes.
+  </div>
+  <div class="gdi-cmp-toolbar" id="gdiCmpToolbar">
+    <label>
+      Opportunity
+      <select id="gdiCmpOpportunity" aria-label="Select opportunity"></select>
+    </label>
+    <label class="gdi-cmp-toggle">
+      <input type="checkbox" id="gdiCmpHighlight" checked />
+      Highlight Changes
+    </label>
+    <label class="gdi-cmp-toggle">
+      <input type="checkbox" id="gdiCmpSyncScroll" checked />
+      Sync scroll
+    </label>
+    <div class="gdi-cmp-meta" id="gdiCmpMeta" aria-live="polite"></div>
+  </div>
+  <div class="gdi-cmp-summary" id="gdiCmpSummary"></div>
+  <div class="gdi-cmp-panels" id="gdiCmpPanels">
+    <section class="gdi-cmp-panel" aria-label="Before — original">
+      <div class="gdi-cmp-panel-label">
+        LEFT — BEFORE
+        <span>Original canonical opportunity (Brief v2 / Fact Selection off)</span>
+      </div>
+      <div class="gdi-drawer gdi-cmp-drawer" open>
+        <div class="gdi-drawer-inner">
+          <header class="gdi-drawer-head">
+            <h2 id="gdiCmpLeftTitle">Opportunity</h2>
+          </header>
+          <div class="gdi-drawer-body" id="gdiCmpLeft" data-drawer-scroll="1" data-gdi-cmp-panel="before" aria-busy="false"></div>
+        </div>
+      </div>
+    </section>
+    <section class="gdi-cmp-panel" aria-label="After — proposed">
+      <div class="gdi-cmp-panel-label">
+        RIGHT — AFTER
+        <span>Proposed cleaned drawer (Brief v2 + Fact Selection + Sources)</span>
+      </div>
+      <div class="gdi-drawer gdi-cmp-drawer" open>
+        <div class="gdi-drawer-inner">
+          <header class="gdi-drawer-head">
+            <h2 id="gdiCmpRightTitle">Opportunity</h2>
+          </header>
+          <div class="gdi-drawer-body" id="gdiCmpRight" data-drawer-scroll="1" data-gdi-cmp-panel="after" aria-busy="false"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script src="/js/group-demand-intelligence/dealality-gdi-ui.js?v=gdi-drawer-cmp-v11-contact-reveal"></script>
+  <script src="/js/group-demand-intelligence/gdi-contact-reveal-client-v1.js?v=gdi-drawer-cmp-v11-contact-reveal"></script>
+  <script src="/js/group-demand-intelligence/drawer-comparison-app.js?v=gdi-drawer-cmp-v11-contact-reveal"></script>
+</body>
+</html>
