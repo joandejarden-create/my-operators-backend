@@ -430,9 +430,21 @@ function buildProposedContactsViewModel(dryRun, livePayload) {
         signingAuthority: "Authority Not Verified",
         verificationNotes:
           "PROPOSED — named on MREC About/Team. Personal email/phone unresolved. Not UBO.",
+        whyRelevant:
+          "Named on Mullen Real Estate Capital leadership materials; proposed owner-side entry point for this asset.",
+        contactability: "PROFILE_OR_ORG_FALLBACK",
+        stakeholderClass: p.role_group || "Owner / Principal",
+        lastVerified: "2026-11-19",
+        emailContacts: [],
+        phoneContacts: [],
         emails: [],
         phones: [],
         channels: [],
+        enrichAction: {
+          label: "Find Contact Details",
+          enabled: true,
+          reason: null,
+        },
       };
     }),
     organizations: [

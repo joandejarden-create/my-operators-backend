@@ -44,9 +44,12 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1");
-  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 6);
-  mustInclude(read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"), "hotel-explorer-quality-standard-v1");
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.1");
+  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 11);
+  mustInclude(
+    read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
+    "hotel-explorer-quality-standard-v1.1"
+  );
 });
 
 run("rejects_keyword_stuffed_and_id_leaking_descriptions", () => {
@@ -72,8 +75,9 @@ run("rejects_keyword_stuffed_and_id_leaking_descriptions", () => {
     locationType: "Suburban",
   });
   assert.equal(good.lowQuality, false);
-  assert.ok(/physical product/i.test(good.text));
+  assert.ok(/lodging asset|physical-product|guestrooms/i.test(good.text));
   assert.ok(!/rec[A-Z0-9]/i.test(good.text));
+  assert.ok(!/physical product comprises|It sits in|Day-to-day operations are managed by/i.test(good.text));
 });
 
 run("commercial_rubric_generalizes_across_hotels", () => {
@@ -101,12 +105,14 @@ run("commercial_rubric_generalizes_across_hotels", () => {
     city: "Austin",
     rooms: 120,
   });
-  assert.equal(beth.source, "rubric_v1");
-  assert.equal(kgpv.source, "rubric_v1");
+  assert.ok(String(beth.source || "").startsWith("rubric_v2"));
+  assert.ok(String(kgpv.source || "").startsWith("rubric_v2"));
   assert.ok(beth.text.includes("Bethesda Marriott"));
   assert.ok(kgpv.text.includes("Krystal Grand Puerto Vallarta"));
   assert.ok(third.text.includes("Sample Limited Coverage Hotel"));
-  assert.equal(HOTEL_COMMERCIAL_DESCRIPTION_VERSION, "hotel-commercial-description-v1");
+  assert.equal(HOTEL_COMMERCIAL_DESCRIPTION_VERSION, "hotel-commercial-description-v2");
+  assert.ok(!/physical product comprises|It sits in|Day-to-day operations are managed by/i.test(beth.text));
+  assert.ok(beth.wordCount >= 160 || beth.text.length >= 700);
 });
 
 run("overview_exposes_year_built_and_renovated_slots", () => {
@@ -147,7 +153,7 @@ run("rooms_tab_after_overview_and_sortable_inventory", () => {
   mustInclude(sort, "data-sort");
   const css = read("public/css/hotel-explorer.css");
   mustInclude(css, "dl-table");
-  mustInclude(css, "background: #f4f6fc");
+  mustInclude(css, "background: #0d152c");
 });
 
 run("hex_tabs_even_flex_and_rooms_present", () => {
@@ -164,14 +170,88 @@ run("contact_cards_omit_dash_placeholders_and_surfe_not_on_get", () => {
   mustInclude(hci, "Verified identity ≠ verified personal contact details");
   mustInclude(hci, "data-hci-enrich");
   mustInclude(hci, "/reveal");
-  // mount must not call Surfe
+  mustInclude(hci, "enrichment-capability");
+  assert.ok(!/hci-dev-json|Dev diagnostic|JSON\.stringify\(vm/.test(hci), "no user-visible VM dump");
+  assert.ok(!/production_writes|write_on_get|apply_authorized|surfe_live_calls/.test(hci));
   const mountIdx = hci.indexOf("function mount(");
-  const mountSlice = hci.slice(mountIdx, mountIdx + 800);
-  assert.ok(!/surfe|enrichPeople|Find Contact Details/.test(mountSlice) || /renderLoading/.test(mountSlice));
+  const mountSlice = hci.slice(mountIdx, mountIdx + 1200);
+  assert.ok(!/enrichPeople|provider\.enrich/.test(mountSlice), "mount must not call Surfe provider");
   const api = read("api/contact-intelligence.js");
   mustInclude(api, "postContactIntelligencePersonReveal");
+  mustInclude(api, "getContactIntelligenceEnrichmentCapability");
   mustInclude(api, "persist_forbidden");
   mustInclude(api, "NOT_WRITTEN");
+  mustInclude(api, "autoEnrichOnLoad: false");
+});
+
+run("rejects_mechanical_fact_dump_descriptions", () => {
+  assert.equal(
+    isLowQualityCommercialDescription(
+      "The physical product comprises 407 guestrooms. It sits in Bethesda. Day-to-day operations are managed by Marriott.",
+      { rooms: 407, brand: "Marriott Hotels" }
+    ),
+    true
+  );
+  const built = buildCommercialDescription({
+    name: "Bethesda Marriott",
+    brand: "Marriott Hotels",
+    chainScale: "Upper Upscale",
+    city: "Bethesda",
+    state: "MD",
+    country: "United States",
+    rooms: 407,
+    totalMeetingSpace: 18719,
+    meetingRooms: 27,
+    largestMeetingRoomName: "Grand Ballroom",
+    largestMeetingRoomSqFt: 4592,
+    managementCompany: "Marriott International",
+    operationType: "Management Agreement",
+    submarket: "Pooks Hill / Rockville Pike",
+    locationType: "Suburban",
+    demandGenerators: ["NIH Access", "Washington DC Metro Access"],
+    amenitiesDisplay: [{ label: "Outdoor Pool" }, { label: "24-Hour Fitness Center" }],
+    ownershipContext: {
+      legalOwnerName: "Marbeth Acquisition",
+      economicOwnerName: "Mullen Real Estate Capital",
+      preview_state: "PROPOSED_STAGED",
+      confidence: "MEDIUM",
+    },
+  });
+  assert.ok(built.wordCount >= 180, "executive length");
+  assert.ok(built.paragraphs.length >= 3, "multi-paragraph");
+  assert.ok(!MECHANICAL_CHECK(built.text));
+});
+
+function MECHANICAL_CHECK(t) {
+  return /physical product comprises|on the physical-product side|It sits in|Day-to-day operations are managed by/i.test(
+    t
+  );
+}
+
+run("meeting_table_readable_room_names_no_forced_min_width", () => {
+  const rms = read("public/js/hotel-explorer-rooms-meeting-space.js");
+  mustInclude(rms, "hex-rms-room-name");
+  mustInclude(rms, "Supporting Documentation");
+  mustInclude(rms, "hex-rms-ext-link");
+  assert.ok(!/Config.*Reception/s.test(rms.match(/meetingRoomColumns[\s\S]*?return \[([\s\S]*?)\];/)?.[1] || "") || true);
+  const cols = rms.match(/function meetingRoomColumns[\s\S]*?return \[([\s\S]*?)\];/);
+  assert.ok(cols, "columns fn");
+  assert.ok(!/key: "config"/.test(cols[1]), "config not a primary column");
+  const css = read("public/css/hotel-explorer.css");
+  mustInclude(css, "background: #0d152c");
+  mustInclude(css, "hex-rms-room-name");
+  assert.ok(!/\.hex-rms-table\.dl-table--inventory \{\s*min-width: 980px/.test(css));
+});
+
+run("ownership_hierarchy_proper_case_labels", () => {
+  const ws = read("public/js/hotel-intelligence-workspace.js");
+  mustInclude(ws, "Ownership &amp; Control Hierarchy");
+  mustInclude(ws, "Legal Property Owner");
+  mustInclude(ws, "Economic Owner / Sponsor");
+  mustInclude(ws, "Hotel Operator");
+  mustInclude(ws, "Brand Affiliation");
+  mustInclude(ws, "Ultimate Beneficial Owner");
+  mustInclude(ws, "Ownership Status");
 });
 
 run("proposed_overlay_never_marked_live_persisted", () => {

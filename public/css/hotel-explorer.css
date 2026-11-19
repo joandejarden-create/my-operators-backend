@@ -1981,22 +1981,24 @@ button.hex-action {
   color: rgba(197, 206, 240, 0.65);
 }
 
-/* Dealality sortable inventory tables (reusable) */
+/* Dealality sortable inventory tables — match admin ada-table / HI dark surface */
 .dl-table-wrap {
   width: 100%;
-  max-height: min(60vh, 520px);
+  max-height: min(62vh, 560px);
   overflow: auto;
   -webkit-overflow-scrolling: touch;
-  border: 1px solid rgba(156, 170, 220, 0.2);
+  border: 0.6px solid var(--runbook-border, rgba(42, 53, 80, 0.95));
   border-radius: 10px;
-  background: rgba(8, 14, 32, 0.55);
+  background: var(--runbook-surface, #0d152c);
 }
-.dl-table {
+.dl-table,
+.hex-root .dl-table.ada-table {
   width: 100%;
-  min-width: 920px;
-  border-collapse: collapse;
-  table-layout: auto;
-  font-size: 12.5px;
+  min-width: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+  font-size: 13px;
 }
 .dl-table thead th,
 .hex-root .dl-table thead th,
@@ -2004,14 +2006,14 @@ button.hex-action {
   position: sticky;
   top: 0;
   z-index: 2;
-  padding: 10px 12px;
-  background: #f4f6fc !important;
-  color: #1a2340 !important;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  border-bottom: 1px solid #c9d0e6;
+  padding: 8px 10px;
+  background: #0d152c !important;
+  color: var(--runbook-heading, #e8ecf4) !important;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  border-bottom: 0.6px solid var(--runbook-border, #2a3550);
   white-space: nowrap;
   vertical-align: middle;
 }
@@ -2025,7 +2027,7 @@ button.hex-action {
   user-select: none;
 }
 .dl-th--sortable:hover {
-  background: #e8ecf8 !important;
+  color: #9aa3ff !important;
 }
 .dl-th--num,
 .dl-td--num {
@@ -2038,8 +2040,9 @@ button.hex-action {
 }
 .dl-sort-indicator {
   display: inline-flex;
-  opacity: 0.45;
+  opacity: 0.4;
   flex-shrink: 0;
+  margin-left: 4px;
 }
 .dl-th--sortable:hover .dl-sort-indicator,
 .dl-th--sortable.sort-asc .dl-sort-indicator,
@@ -2047,46 +2050,104 @@ button.hex-action {
   opacity: 1;
 }
 .dl-sort-chevron {
-  fill: #6b7594;
+  fill: #8b95a8;
 }
 .dl-th--sortable.sort-asc .dl-sort-chevron--up {
-  fill: #3b43c8;
+  fill: #6c72ff;
 }
 .dl-th--sortable.sort-asc .dl-sort-chevron--down {
-  fill: #b6bdd4;
+  fill: #3a4560;
+  opacity: 0.45;
 }
 .dl-th--sortable.sort-desc .dl-sort-chevron--down {
-  fill: #3b43c8;
+  fill: #6c72ff;
 }
 .dl-th--sortable.sort-desc .dl-sort-chevron--up {
-  fill: #b6bdd4;
+  fill: #3a4560;
+  opacity: 0.45;
 }
 .dl-table tbody td,
 .hex-root .dl-table tbody td,
 .hex-root .hiw-table.dl-table--inventory tbody td {
-  padding: 11px 12px;
-  border-bottom: 1px solid rgba(55, 68, 107, 0.55);
+  padding: 9px 10px;
+  border-bottom: 0.6px solid var(--runbook-border, #2a3550);
   color: #d7e4fa;
   white-space: nowrap;
   vertical-align: middle;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 220px;
+  line-height: 1.35;
 }
-.dl-td--primary {
+.dl-td--primary,
+.hex-root .dl-table--inventory td.dl-td--primary {
   font-weight: 650;
   color: #eef2ff;
-  max-width: 260px;
   white-space: normal;
   overflow-wrap: anywhere;
+  word-break: normal;
+  width: 22%;
+  min-width: 160px;
+  max-width: none;
 }
 .dl-td--empty {
   text-align: center;
   color: rgba(197, 206, 240, 0.7);
   padding: 18px !important;
+  white-space: normal;
 }
 .hex-rms-table.dl-table--inventory {
-  min-width: 980px;
+  min-width: 0;
+}
+.hex-rms-room-name {
+  font-weight: 650;
+  color: #eef2ff;
+  line-height: 1.35;
+  white-space: normal;
+}
+.hex-rms-detail-toggle {
+  margin-top: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #9aa3ff;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.hex-rms-row-detail {
+  margin-top: 6px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 11px;
+  line-height: 1.4;
+  color: rgba(197, 206, 240, 0.88);
+  white-space: normal;
+}
+.hex-rms-ext-link {
+  color: #9aa3ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+.hex-rms-ext-link:hover {
+  color: #c5caff;
+  text-decoration: underline;
+}
+.hex-rms-ext-ico {
+  font-size: 0.85em;
+  opacity: 0.85;
+}
+.hex-rms-src-pub {
+  margin-left: 6px;
+  font-size: 11px;
+  color: rgba(197, 206, 240, 0.7);
+}
+@media (max-width: 1100px) {
+  .dl-table-wrap {
+    overflow-x: auto;
+  }
+  .hex-rms-table.dl-table--inventory {
+    min-width: 860px;
+  }
 }
 .hiw-chip--proposed {
   display: inline-block;

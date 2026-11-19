@@ -720,7 +720,7 @@
     html += chainEdge(propcoKnown ? "Held through" : "Title vehicle");
     html += chainNode(
       propcoLabel,
-      "Property Company / PropCo",
+      "Legal Property Owner",
       controlPartyMeta(propco, "Unknown"),
       propcoKnown ? "org" : "gap"
     );
@@ -728,7 +728,7 @@
       html += chainEdge("Controlled / sponsored by");
       html += chainNode(
         econLabel,
-        ownedOperated ? "Economic Owner · owned & operated" : "Economic Owner / Package Owner",
+        ownedOperated ? "Economic Owner / Sponsor · Owned & Operated" : "Economic Owner / Sponsor",
         controlPartyMeta(econ, "Not verified"),
         econKnown ? "org" : "gap"
       );
@@ -737,16 +737,16 @@
       html += chainEdge("Operated / managed by");
       html += chainNode(
         op,
-        "Operator / Management Company",
+        "Hotel Operator",
         friendlyStatus((ctrl.operator && (ctrl.operator.status || ctrl.operator.verification_bucket)) || "HIGH"),
         "org"
       );
     }
     if (opts.includeBrand && brand) {
       html += chainEdge("Current brand");
-      html += chainNode(brand, "Brand", brandStatus || "Current", "brand");
+      html += chainNode(brand, "Brand Affiliation", brandStatus || "Current", "brand");
     }
-    return orgChart(html, opts.ariaLabel || "Ownership structure");
+    return orgChart(html, opts.ariaLabel || "Ownership & Control Hierarchy");
   }
 
   function renderHeader(hotel, ownership) {
@@ -1503,34 +1503,34 @@
           ? '<p class="hiw-chip hiw-chip--proposed">Phase 3 Proposed Preview — staged ownership overlay. Not Airtable-persisted. Not customer-approved.</p>'
           : "") +
         "</div></section>" +
-        '<section class="hiw-section"><h3 class="hiw-section__h">Ownership &amp; control hierarchy</h3>' +
+        '<section class="hiw-section"><h3 class="hiw-section__h">Ownership &amp; Control Hierarchy</h3>' +
         structureHtml +
-        '<div class="hiw-kv hiw-kv--spaced"><div><span class="hiw-kv__k">Legal owner / PropCo</span><span class="hiw-kv__v">' +
+        '<div class="hiw-kv hiw-kv--spaced"><div><span class="hiw-kv__k">Legal Property Owner</span><span class="hiw-kv__v">' +
         esc(propCoName) +
         (propCoParty.preview_state
           ? " · " + friendlyStatus(propCoParty.preview_state)
           : propCoParty.status
             ? " · " + friendlyStatus(propCoParty.status)
             : "") +
-        '</span></div><div><span class="hiw-kv__k">Economic owner / sponsor</span><span class="hiw-kv__v">' +
+        '</span></div><div><span class="hiw-kv__k">Economic Owner / Sponsor</span><span class="hiw-kv__v">' +
         esc(econName) +
         (econParty.preview_state
           ? " · " + friendlyStatus(econParty.preview_state)
           : econParty.verification_bucket || econParty.status
             ? " · " + friendlyStatus(econParty.verification_bucket || econParty.status)
             : "") +
-        '</span></div><div><span class="hiw-kv__k">Operator</span><span class="hiw-kv__v">' +
+        '</span></div><div><span class="hiw-kv__k">Hotel Operator</span><span class="hiw-kv__v">' +
         esc(graphOp) +
-        '</span></div><div><span class="hiw-kv__k">Brand</span><span class="hiw-kv__v">' +
+        '</span></div><div><span class="hiw-kv__k">Brand Affiliation</span><span class="hiw-kv__v">' +
         esc(graphBrand) +
-        '</span></div><div><span class="hiw-kv__k">UBO / controlling parent</span><span class="hiw-kv__v">' +
+        '</span></div><div><span class="hiw-kv__k">Ultimate Beneficial Owner</span><span class="hiw-kv__v">' +
         esc(
           uboParty.name ||
             (uboParty.status === "UNRESOLVED" || !uboParty.known
               ? "Unresolved"
-              : "—")
+              : "Not yet verified")
         ) +
-        '</span></div><div><span class="hiw-kv__k">Control status</span><span class="hiw-kv__v">' +
+        '</span></div><div><span class="hiw-kv__k">Ownership Status</span><span class="hiw-kv__v">' +
         esc(friendlyStatus(controlRaw)) +
         "</span></div></div>" +
         '<p class="hiw-muted">' +

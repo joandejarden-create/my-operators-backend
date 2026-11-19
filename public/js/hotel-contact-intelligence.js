@@ -311,20 +311,40 @@
     );
   }
 
-  function renderEnrichAction(p, hotelId) {
-    var action = p.enrichAction || null;
-    if (!action) {
+  function renderEnrichAction(p, hotelId, capability) {
+    var hasName = present(p.name) && String(p.name).trim().split(/\s+/).length >= 2;
+    var hasOrg = present(p.organization) || present(p.organizationName);
+    var hasDirectContact =
+      (p.emailContacts || []).some(function (c) {
+        return c && c.value;
+      }) ||
+      (p.phoneContacts || []).some(function (c) {
+        return c && c.value;
+      });
+    var action = p.enrichAction || {};
+    var label = action.label || "Find Contact Details";
+    var enabled =
+      action.enabled === true ||
+      (capability &&
+        capability.surfeEnabled === true &&
+        hasName &&
+        hasOrg &&
+        !hasDirectContact &&
+        action.enabled !== false);
+    if (hasDirectContact) {
+      return unresolvedNote("Verified or published channels already present — Surfe not required.");
+    }
+    if (!hasName || !hasOrg) {
       return unresolvedNote(
-        "Find Contact Details unavailable — Surfe on-demand is not configured for this person."
+        "Find Contact Details unavailable until a full person name and organization are verified."
       );
     }
-    if (!action.enabled) {
-      return unresolvedNote(
-        (action.label || "Find Contact Details") +
-          " unavailable: " +
-          (action.reason || "provider not enabled for this context") +
-          ". Identity may be verified without verified personal contact details."
-      );
+    if (!enabled) {
+      var reason =
+        action.reason ||
+        (capability && capability.reason) ||
+        "Surfe on-demand is not available in this environment";
+      return unresolvedNote(label + " unavailable: " + reason + ".");
     }
     return (
       '<div class="hci-enrich">' +
@@ -335,16 +355,18 @@
       '" data-person-name="' +
       esc(p.name || "") +
       '" data-organization="' +
-      esc(p.organization || "") +
+      esc(p.organization || p.organizationName || "") +
+      '" data-job-title="' +
+      esc(p.title || "") +
       '">' +
-      esc(action.label || "Find Contact Details") +
+      esc(label) +
       "</button>" +
-      '<p class="hci-muted">User-initiated Surfe lookup. Checks existing channels first. Results require review before Airtable persistence. Credits tracked per call.</p>' +
+      '<p class="hci-muted">User-initiated only. Checks existing channels first. Surfe credits used only when needed. Review required before Airtable persistence.</p>' +
       '<div class="hci-enrich__result" hidden></div></div>'
     );
   }
 
-  function renderPerson(p, hotelId) {
+  function renderPerson(p, hotelId, capability) {
     var hasEmail = (p.emailContacts || []).some(function (c) {
       return c && c.value;
     });
@@ -438,10 +460,12 @@
       " · Signing authority: " +
       esc(p.signingAuthority || "Authority Not Verified") +
       " (not inferred). Verified identity ≠ verified personal contact details.</p>" +
-      renderEnrichAction(p, hotelId) +
+      renderEnrichAction(p, hotelId, capability) +
       "</div></article>"
     );
   }
+
+  var vmCapability = null;
 
   function renderPeopleGroups(vm) {
     var hotelId = vm.hotelId || "";
@@ -462,7 +486,7 @@
           '</h3><div class="hci-people">' +
           rows
             .map(function (p) {
-              return renderPerson(p, hotelId);
+              return renderPerson(p, hotelId, vmCapability);
             })
             .join("") +
           "</div></section>"
@@ -543,9 +567,6 @@
       renderPeopleGroups(vm) +
       best +
       unresolved +
-      '<details class="hci-dev"><summary>Dev diagnostic</summary><pre class="hci-dev-json">' +
-      esc(JSON.stringify(vm, null, 2)) +
-      "</pre></details>" +
       "</div>"
     );
   }
@@ -557,31 +578,47 @@
       slot.innerHTML =
         '<div class="hci-note hci-note--unresolved">' +
         esc((payload && (payload.message || payload.error)) || "Enrichment failed") +
-        (payload && payload.surfeCalls != null
-          ? " · Surfe calls: " + esc(payload.surfeCalls)
-          : "") +
         "</div>";
       return;
     }
     if (payload.cached) {
+      var ch = payload.channels || {};
+      var emails = (ch.emails || [])
+        .map(function (c) {
+          return c && (c.value || c.email);
+        })
+        .filter(Boolean);
+      var phones = (ch.phones || [])
+        .map(function (c) {
+          return c && (c.value || c.phone);
+        })
+        .filter(Boolean);
       slot.innerHTML =
-        '<div class="hci-note">Existing canonical / staging contact details found — no Surfe credit used.</div>' +
-        '<pre class="hci-enrich__json">' +
-        esc(JSON.stringify(payload.channels || payload.existing || {}, null, 2)) +
-        "</pre>";
+        '<div class="hci-note">Existing verified channels found — no Surfe credit used.</div>' +
+        (emails.length
+          ? "<div><strong>Email:</strong> " + esc(emails.join(", ")) + "</div>"
+          : "") +
+        (phones.length
+          ? "<div><strong>Phone:</strong> " + esc(phones.join(", ")) + "</div>"
+          : "");
       return;
     }
+    var person = payload.person || {};
+    var email =
+      person.email ||
+      person.workEmail ||
+      (person.emails && person.emails[0] && (person.emails[0].email || person.emails[0].value)) ||
+      null;
+    var phone =
+      person.phone ||
+      person.mobile ||
+      (person.phones && person.phones[0] && (person.phones[0].phone || person.phones[0].value)) ||
+      null;
     slot.innerHTML =
-      '<div class="hci-note">Surfe result (ephemeral · review required before Airtable persistence) · provider=Surfe · calls=' +
-      esc(payload.surfeCalls != null ? payload.surfeCalls : 1) +
-      (payload.estimatedCostUsd != null
-        ? " · est. cost USD " + esc(payload.estimatedCostUsd)
-        : "") +
-      "</div>" +
-      '<pre class="hci-enrich__json">' +
-      esc(JSON.stringify(payload.person || payload.result || {}, null, 2)) +
-      "</pre>" +
-      '<p class="hci-muted">Not persisted. Duplicate calls for the same person+org are blocked while in flight.</p>';
+      '<div class="hci-note">Surfe on-demand result · ephemeral · review required before Airtable persistence · provider attribution: Surfe</div>' +
+      (email ? "<div><strong>Email (provider):</strong> " + esc(email) + "</div>" : unresolvedNote("No email returned by provider")) +
+      (phone ? "<div><strong>Phone (provider):</strong> " + esc(phone) + "</div>" : unresolvedNote("No phone returned by provider")) +
+      '<p class="hci-muted">Channel verification status: Provider returned / unreviewed. Identity confidence is separate from channel confidence. Not persisted.</p>';
   }
 
   function bindEnrich(root) {
@@ -612,6 +649,7 @@
           body: JSON.stringify({
             personName: personName,
             organization: organization,
+            jobTitle: btn.getAttribute("data-job-title") || "",
             persist: false,
           }),
         }
@@ -807,11 +845,50 @@
     return next(0);
   }
 
+  function loadEnrichmentCapability() {
+    return fetch("/api/contact-intelligence/enrichment-capability", {
+      credentials: "same-origin",
+    })
+      .then(function (r) {
+        return r.json();
+      })
+      .then(function (j) {
+        return {
+          surfeEnabled: Boolean(j && j.surfeEnabled),
+          reason: (j && j.reason) || null,
+          hasApiKey: Boolean(j && j.hasApiKey),
+        };
+      })
+      .catch(function () {
+        return {
+          surfeEnabled: false,
+          reason: "Could not read Surfe enrichment capability",
+          hasApiKey: false,
+        };
+      });
+  }
+
   function mount(host, hotelId) {
     if (!host) return Promise.resolve();
     host.innerHTML = renderLoading();
-    return loadViewModel(hotelId).then(function (vm) {
+    return Promise.all([loadViewModel(hotelId), loadEnrichmentCapability()]).then(function (pack) {
+      var vm = pack[0];
+      vmCapability = pack[1] || null;
       if (vm && vm.ownershipSummary) {
+        // Enable Find Contact for eligible people when Surfe is live-capable
+        if (vmCapability && vmCapability.surfeEnabled && Array.isArray(vm.people)) {
+          vm.people = vm.people.map(function (p) {
+            var next = Object.assign({}, p);
+            if (!next.enrichAction) next.enrichAction = { label: "Find Contact Details" };
+            if (next.enrichAction.enabled !== true) {
+              next.enrichAction = Object.assign({}, next.enrichAction, {
+                enabled: true,
+                reason: null,
+              });
+            }
+            return next;
+          });
+        }
         host.innerHTML = renderViewModel(vm);
         bindToggles(host);
         return;

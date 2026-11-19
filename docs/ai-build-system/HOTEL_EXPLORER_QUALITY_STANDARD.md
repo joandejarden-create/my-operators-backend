@@ -1,6 +1,6 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1`  
+**Version:** `hotel-explorer-quality-standard-v1.1`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
 **Gate:** `npm run test:he-product-quality-gates-v1`
@@ -25,9 +25,10 @@ KGPV (golden UX) and Bethesda Marriott (Airtable-first pilot) define the permane
 
 ### 1. Hotel descriptions
 
-- Evidence-grounded commercial narrative for owners / operators / asset managers.
-- Rubric covers: asset positioning, market/location, physical product, group capability, operating structure, named demand generators only, verified ownership context only.
-- Forbidden: keyword stuffing, census fact-lists, internal IDs (`rec…`, `dle_…`), invented ADR/RevPAR/occupancy, raw status enums as prose.
+- Executive asset summary (~200–300 words when facts allow), multi-paragraph, owner / operator / asset-manager / investor voice (`hotel-commercial-description-v2`).
+- Rubric covers: asset positioning, market/location, physical product, demand potential (evidence-only), ownership/operation, asset considerations, commercial interpretation without invented performance.
+- Forbidden mechanical phrases: “The physical product comprises…”, “It sits in…”, “Day-to-day operations are managed by…”.
+- Forbidden: keyword stuffing, census fact-lists, internal IDs (`rec…`, `dle_…`), invented ADR/RevPAR/occupancy, raw status enums as prose, developer diagnostics in UI.
 - Prefer Airtable / overview enrichment when quality-gated; else rubric; else “not yet available.”
 
 ### 2. Property facts

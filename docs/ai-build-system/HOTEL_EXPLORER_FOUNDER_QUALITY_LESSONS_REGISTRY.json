@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1",
+  "version": "hotel-explorer-founder-quality-lessons-v1.1",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -94,6 +94,33 @@
       "sharedComponent": "public/css/hotel-explorer.css; public/js/hotel-explorer.js",
       "regressionTest": "hex_tabs_even_flex_and_rooms_present",
       "browserEvidence": "Founder Preview tab strip"
+    },
+    {
+      "id": "HE-QL-009",
+      "originalProblem": "Mechanical short hotel descriptions repeating Property Facts",
+      "rootCause": "Rubric v1 used template fact sentences",
+      "approvedStandard": "Executive multi-paragraph summary (v2); reject mechanical phrases and short fact dumps",
+      "sharedComponent": "lib/hotel-intelligence/hotel-commercial-description-v1.js; public/js/hotel-detail-panel.js",
+      "regressionTest": "rejects_mechanical_fact_dump_descriptions",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v2-executive-desc.png"
+    },
+    {
+      "id": "HE-QL-010",
+      "originalProblem": "Meeting table truncated room names; non-Dealality header styling; mid-page Marriott URL",
+      "rootCause": "Custom light headers + too many columns + floor-plan link in overview metrics",
+      "approvedStandard": "ada-table dark headers; primary columns only; full room names; Supporting Documentation at bottom with styled links",
+      "sharedComponent": "dealality-sortable-table.js; hotel-explorer-rooms-meeting-space.js; hotel-explorer.css",
+      "regressionTest": "meeting_table_readable_room_names_no_forced_min_width",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v2-meeting-table.png"
+    },
+    {
+      "id": "HE-QL-011",
+      "originalProblem": "Ownership labels inconsistent / Surfe unavailable / Dev diagnostic JSON visible",
+      "rootCause": "Mixed casing; enrichAction disabled in VM; full VM dump in HCI render",
+      "approvedStandard": "Proper-case ownership terms; capability endpoint + user-initiated Surfe; no diagnostics in UI",
+      "sharedComponent": "hotel-intelligence-workspace.js; hotel-contact-intelligence.js; api/contact-intelligence.js",
+      "regressionTest": "ownership_hierarchy_proper_case_labels; contact_cards_omit_dash_placeholders_and_surfe_not_on_get",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v2-ownership.png; quality-v2-surfe-action.png"
     }
   ]
 }

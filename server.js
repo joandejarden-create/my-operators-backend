@@ -110,6 +110,7 @@ import {
   getContactIntelligenceLiveSliceTen,
   postContactIntelligenceHotelRefresh,
   postContactIntelligencePersonReveal,
+  getContactIntelligenceEnrichmentCapability,
 } from "./api/contact-intelligence.js";
 
 import {
@@ -1027,6 +1028,10 @@ app.get(
 
 // Contact Intelligence V1 (Census + Hotel/Owner Explorer)
 app.get("/api/contact-intelligence/meta", getContactIntelligenceMeta);
+app.get(
+  "/api/contact-intelligence/enrichment-capability",
+  getContactIntelligenceEnrichmentCapability
+);
 app.get("/api/contact-intelligence/slice/ten", getContactIntelligenceSliceTen);
 app.get("/api/contact-intelligence/benchmark/100", getContactIntelligenceBenchmark100);
 app.get("/api/contact-intelligence/hotels/:hotelId", getContactIntelligenceHotel);

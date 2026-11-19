@@ -485,6 +485,10 @@
     if (/_[a-z0-9]+_/i.test(s)) return true;
     if (/\brec[A-Za-z0-9]{10,}\b/.test(s)) return true;
     if (/\bdle_[A-Z0-9]+\b/i.test(s)) return true;
+    if (/the physical product comprises/i.test(s)) return true;
+    if (/on the physical-product side/i.test(s)) return true;
+    if (/it sits in/i.test(s)) return true;
+    if (/day-to-day operations are managed by/i.test(s)) return true;
     if (/\b\d+\s+keys\b/i.test(s) && s.length < 120) return true;
     if (/^(OPEN|PIPELINE|CLOSED)\b/i.test(s) && s.length < 80) return true;
     var commas = (s.match(/,/g) || []).length;
@@ -492,6 +496,11 @@
     if (/^hotel property,/i.test(s) && !(hotel && hotel.brand && hotel.brand !== "Unknown Brand")) {
       return true;
     }
+    var rich =
+      (hotel && Number(hotel.rooms) > 0) ||
+      (hotel && hotel.brand && hotel.brand !== "Unknown Brand") ||
+      (hotel && Number(hotel.totalMeetingSpace) > 0);
+    if (rich && s.length < 420) return true;
     var censusType = hotel && hotel.censusPropertyType ? String(hotel.censusPropertyType).trim() : "";
     if (censusType && new RegExp("^" + censusType.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\s+hotel,", "i").test(s)) {
       var hasBrand = hotel.brand && hotel.brand !== "Unknown Brand";
@@ -503,6 +512,17 @@
       }
     }
     return false;
+  }
+
+  function formatDescriptionHtml(text) {
+    var raw = String(text || "").trim();
+    if (!raw) return "";
+    return raw
+      .split(/\n\n+/)
+      .map(function (p) {
+        return '<p class="hdp-description">' + esc(p.replace(/\s+/g, " ").trim()) + "</p>";
+      })
+      .join("");
   }
 
   function isLowQualityHeadline(text) {
@@ -519,17 +539,25 @@
     hotel = hotel || {};
     var name = displayValue(hotel.name, "This hotel");
     var brand = hotel.brand && hotel.brand !== "Unknown Brand" ? hotel.brand : null;
-    var scale = hotel.chainScale || hotel.propertyType || null;
+    var scaleRaw = hotel.chainScale || hotel.propertyType || null;
+    var scale = scaleRaw ? String(scaleRaw).replace(/\s+Chain$/i, "") : null;
+    var scaleLc = scale ? scale.toLowerCase() : null;
     var city = hotel.city && hotel.city.indexOf("Unknown") !== 0 ? hotel.city : null;
     var market =
       hotel.market && String(hotel.market).indexOf("Unknown") !== 0 ? hotel.market : null;
     var submarket = resolveEffectiveSubmarket(hotel);
-    var rooms = Number(hotel.rooms) > 0 ? formatNumber(hotel.rooms) : null;
-    var meeting = hotel.meetingSpaceDisplay
-      ? String(hotel.meetingSpaceDisplay)
-      : hotel.totalMeetingSpace != null && Number(hotel.totalMeetingSpace) > 0
-        ? formatNumber(hotel.totalMeetingSpace) + " sq ft of meeting and event space"
+    var roomsN = Number(hotel.rooms) > 0 ? Number(hotel.rooms) : null;
+    var rooms = roomsN ? formatNumber(roomsN) : null;
+    var meetingSq =
+      hotel.totalMeetingSpace != null && Number(hotel.totalMeetingSpace) > 0
+        ? Number(hotel.totalMeetingSpace)
         : null;
+    var meetingRooms =
+      hotel.meetingRooms ||
+      (hotel.meetingSpaceProvenance && hotel.meetingSpaceProvenance.meetingRooms) ||
+      null;
+    var largest =
+      (hotel.meetingSpaceProvenance && hotel.meetingSpaceProvenance.largestRoom) || null;
     var operator =
       hotel.managementCompany && hotel.managementCompany !== "Unknown"
         ? hotel.managementCompany
@@ -548,7 +576,19 @@
       });
     }
     if (hotel.primaryDemandDriver) demand.push(String(hotel.primaryDemandDriver).trim());
-    demand = demand.filter(Boolean).slice(0, 3);
+    resolveAmenitiesDisplay(hotel).forEach(function (a) {
+      var lab = a && a.label ? String(a.label) : "";
+      if (/NIH|Metro|Airport|Convention|University|Hospital/i.test(lab) && demand.indexOf(lab) < 0) {
+        demand.push(lab);
+      }
+    });
+    demand = demand.filter(Boolean).slice(0, 5);
+    var amenLabels = resolveAmenitiesDisplay(hotel)
+      .map(function (a) {
+        return a && a.label;
+      })
+      .filter(Boolean)
+      .slice(0, 6);
     var ownershipCtx = hotel.ownershipContext || null;
     var economicOwner =
       (ownershipCtx && (ownershipCtx.economicOwnerName || ownershipCtx.economic_owner)) ||
@@ -558,95 +598,175 @@
       (ownershipCtx && (ownershipCtx.legalOwnerName || ownershipCtx.legal_owner)) ||
       hotel.legalOwner ||
       null;
+    var ownershipProposed =
+      ownershipCtx &&
+      /PROPOSED|STAGED/i.test(String(ownershipCtx.preview_state || ownershipCtx.confidence || ""));
     var ownershipOk =
       ownershipCtx &&
-      (ownershipCtx.verified === true ||
+      (ownershipProposed ||
+        ownershipCtx.verified === true ||
         ownershipCtx.confidence === "HIGH" ||
         ownershipCtx.confidence === "MEDIUM" ||
         ownershipCtx.preview_state === "LIVE");
-    var sentences = [];
+    var yearBuilt = resolveYearBuiltDisplay(hotel);
+    var yearReno = resolveLastRenovatedDisplay(hotel);
+    var paras = [];
 
-    var lead = name + " is";
-    if (scale) {
-      var scalePhrase = String(scale).replace(/\s+Chain$/i, "").toLowerCase();
-      var article = /^[aeiou]/i.test(scalePhrase) ? " an " : " a ";
-      lead += article + scalePhrase + " hotel";
-    } else {
-      lead += " a hotel";
-    }
-    if (brand) lead += " branded " + brand;
+    var p1 = name + " is";
+    if (scaleLc) p1 += (/^[aeiou]/i.test(scaleLc) ? " an " : " a ") + scaleLc;
+    else p1 += " a";
+    p1 += " lodging asset";
+    if (brand) p1 += " affiliated with " + brand;
     if (city) {
-      lead += " in " + city;
-      if (hotel.state || hotel.country) {
-        var geoTail = [hotel.state, hotel.country]
-          .filter(function (p) {
-            if (!p || String(p).indexOf("Unknown") === 0) return false;
-            return String(p).toLowerCase() !== String(city).toLowerCase();
-          })
-          .join(", ");
-        if (geoTail) lead += ", " + geoTail;
-      }
+      p1 += " in " + city;
+      var geoTail = [hotel.state, hotel.country]
+        .filter(function (p) {
+          return p && String(p).indexOf("Unknown") !== 0;
+        })
+        .filter(function (p) {
+          return String(p).toLowerCase() !== String(city).toLowerCase();
+        })
+        .join(", ");
+      if (geoTail) p1 += ", " + geoTail;
     }
-    lead += ".";
-    sentences.push(lead);
-
-    var product = [];
-    if (rooms) product.push(rooms + " guestrooms");
-    if (meeting) product.push(meeting);
-    if (product.length === 1) {
-      sentences.push("The physical product comprises " + product[0] + ".");
-    } else if (product.length > 1) {
-      sentences.push("The physical product comprises " + product[0] + " and " + product[1] + ".");
+    p1 += ".";
+    if (rooms || brand || scaleLc) {
+      p1 +=
+        " From an owner and asset-management perspective, the hotel is positioned as" +
+        (scaleLc ? (/^[aeiou]/i.test(scaleLc) ? " an " : " a ") + scaleLc : " a") +
+        " product" +
+        (rooms ? " with a " + rooms + "-key inventory" : "") +
+        (brand ? " under the " + brand + " flag" : "") +
+        ", oriented to a mix of transient and group demand rather than a narrowly specialized format.";
     }
+    paras.push(p1);
 
     var placeBits = [];
-    if (submarket) placeBits.push(submarket);
-    else if (market) placeBits.push(market);
-    if (locationType) placeBits.push(String(locationType).toLowerCase() + " location");
-    if (placeBits.length === 1) {
-      sentences.push("It sits in " + placeBits[0] + ".");
-    } else if (placeBits.length > 1) {
-      sentences.push("It sits in " + placeBits[0] + " within a " + placeBits[1] + ".");
+    if (submarket) placeBits.push("the " + submarket + " corridor");
+    else if (market) placeBits.push("the " + market + " market");
+    if (locationType) placeBits.push(String(locationType).toLowerCase() + " setting");
+    if (placeBits.length || demand.length) {
+      var p2 = placeBits.length
+        ? "Commercially, the hotel anchors " + placeBits.join(" within a ") + "."
+        : "Location context is still being assembled for this asset.";
+      if (demand.length) {
+        p2 +=
+          " Documented demand environments that are relevant to commercial diligence include " +
+          (demand.length === 1
+            ? demand[0]
+            : demand.slice(0, -1).join(", ") + ", and " + demand[demand.length - 1]) +
+          ". These are contextual drivers, not proof of captured market share or realized occupancy.";
+      }
+      paras.push(p2);
     }
 
-    if (demand.length === 1) {
-      sentences.push("Relevant demand context includes proximity to " + demand[0] + ".");
-    } else if (demand.length > 1) {
-      sentences.push(
-        "Relevant demand context includes " +
-          demand.slice(0, -1).join(", ") +
-          " and " +
-          demand[demand.length - 1] +
-          "."
+    var productParts = [];
+    if (rooms) productParts.push(rooms + " guestrooms");
+    if (meetingSq) {
+      var m = formatNumber(meetingSq) + " sq ft of meeting and event space";
+      if (meetingRooms) m += " across " + formatNumber(meetingRooms) + " published rooms";
+      if (largest && largest.name && largest.sqFt) {
+        m +=
+          ", anchored by " +
+          largest.name +
+          " (" +
+          formatNumber(largest.sqFt) +
+          " sq ft)";
+      }
+      productParts.push(m);
+    }
+    if (amenLabels.length) {
+      productParts.push(
+        "guest-facing amenities such as " +
+          (amenLabels.length === 1
+            ? amenLabels[0]
+            : amenLabels.slice(0, -1).join(", ") + ", and " + amenLabels[amenLabels.length - 1])
+      );
+    }
+    if (productParts.length) {
+      paras.push(
+        "Published inventory includes " +
+          (productParts.length === 1
+            ? productParts[0]
+            : productParts.length === 2
+              ? productParts[0] + " and " + productParts[1]
+              : productParts.slice(0, -1).join("; ") +
+                "; and " +
+                productParts[productParts.length - 1]) +
+          ". Together these attributes support both individual transient stays and structured group / meeting business, subject to competitive set and sales execution that are outside this summary."
       );
     }
 
+    var ownBits = [];
     if (operator) {
-      sentences.push(
-        "Day-to-day operations are managed by " +
-          operator +
+      ownBits.push(
+        operator +
+          " provides hotel management" +
           (opType ? " under a " + String(opType).toLowerCase() : "") +
-          "."
+          (brand ? ", with brand standards and distribution tied to " + brand : "")
       );
     }
-
     if (ownershipOk && (economicOwner || legalOwner)) {
-      if (economicOwner && legalOwner && economicOwner !== legalOwner) {
-        sentences.push(
-          "Ownership intelligence identifies " +
+      if (ownershipProposed) {
+        if (legalOwner && economicOwner && legalOwner !== economicOwner) {
+          ownBits.push(
+            "staged ownership research proposes " +
+              legalOwner +
+              " as legal property owner and " +
+              economicOwner +
+              " as economic sponsor (not yet Airtable-persisted; ultimate beneficial owner unresolved)"
+          );
+        } else if (economicOwner) {
+          ownBits.push(
+            "staged ownership research proposes " +
+              economicOwner +
+              " as economic sponsor (not yet Airtable-persisted; ultimate beneficial owner unresolved)"
+          );
+        }
+      } else if (legalOwner && economicOwner && legalOwner !== economicOwner) {
+        ownBits.push(
+          "verified ownership intelligence associates legal title with " +
             legalOwner +
-            " as legal owner and " +
-            economicOwner +
-            " as economic sponsor."
+            " and economic sponsorship with " +
+            economicOwner
         );
       } else if (economicOwner) {
-        sentences.push("Economic ownership is associated with " + economicOwner + ".");
-      } else {
-        sentences.push("Legal ownership is associated with " + legalOwner + ".");
+        ownBits.push(
+          "verified ownership intelligence associates economic sponsorship with " + economicOwner
+        );
       }
     }
+    if (ownBits.length) {
+      paras.push(
+        "From an ownership and operating standpoint, " +
+          ownBits.join(". ") +
+          ". Proposed or medium-confidence relationships are shown as research posture, not as confirmed closing-table facts."
+      );
+    }
 
-    return sentences.join(" ");
+    var p5 = "";
+    if (yearBuilt && yearReno) {
+      p5 += "Originally developed in " + yearBuilt + " and last renovated in " + yearReno + ". ";
+    } else if (yearBuilt) {
+      p5 += "Originally developed in " + yearBuilt + ". ";
+    } else if (yearReno) {
+      p5 += "Last renovated in " + yearReno + ". ";
+    } else {
+      p5 +=
+        "Year built and last renovation are not yet independently verified in Dealality for this asset; capital-plan timing should not be inferred from branding alone. ";
+    }
+    var attrs = [];
+    if (scaleLc) attrs.push(scaleLc + " positioning");
+    if (rooms) attrs.push(rooms + "-key scale");
+    if (meetingSq) attrs.push("material meeting inventory");
+    if (operator || brand) attrs.push("branded / managed distribution");
+    p5 +=
+      "Commercially, the verified product attributes — " +
+      (attrs.length ? attrs.join(", ") : "available inventory and affiliation facts") +
+      " — frame a conventional business mix of corporate transient, group meetings, and leisure where the destination supports it. This overview does not estimate occupancy, ADR, RevPAR, or demand capture; those require performance data and competitive-set analysis beyond the verified property profile.";
+    paras.push(p5);
+
+    return paras.join("\n\n");
   }
 
   var DESCRIPTION_UNAVAILABLE = "Property description is not yet available.";
@@ -675,6 +795,9 @@
       return String(positioning).trim();
     }
     var commercial = buildCommercialOverviewNarrative(hotel);
+    if (commercial && String(commercial).trim().length >= 420) {
+      return commercial;
+    }
     if (commercial && !isLowQualityGeneratedDescription(commercial, hotel)) {
       return commercial;
     }
@@ -3147,7 +3270,7 @@
                 esc(resolveHeadlineText(hotel)) +
                 "</p>"
               : "") +
-            '<p class="hdp-description">' + esc(resolveDescriptionText(hotel)) + "</p>" +
+            formatDescriptionHtml(resolveDescriptionText(hotel)) +
           "</section>" +
           '<section class="hdp-section hdp-overview-section">' +
             '<h3 class="hdp-section__title">Property Facts</h3>' +
@@ -3431,9 +3554,8 @@
               esc(resolveHeadlineText(currentHotel)) +
               "</p>"
             : "") +
-          '<p class="hdp-description">' +
-          esc(resolveDescriptionText(currentHotel)) +
-          "</p></section>" +
+          formatDescriptionHtml(resolveDescriptionText(currentHotel)) +
+          "</section>" +
           '<section class="hdp-section hdp-overview-section">' +
           '<h3 class="hdp-section__title">Property Facts</h3>' +
           '<div class="hdp-overview">' +

@@ -39,6 +39,31 @@ export async function getContactIntelligenceMeta(req, res) {
   }
 }
 
+/** Read-only Surfe capability for HE Contact Intelligence UI (no credits). */
+export async function getContactIntelligenceEnrichmentCapability(req, res) {
+  try {
+    const enrichmentEnabled =
+      String(process.env.CONTACT_ENRICHMENT_ENABLED || "").toLowerCase() === "true";
+    const hasApiKey = Boolean(process.env.SURFE_API_KEY && String(process.env.SURFE_API_KEY).trim());
+    const surfeEnabled = enrichmentEnabled && hasApiKey;
+    let reason = null;
+    if (!enrichmentEnabled) reason = "CONTACT_ENRICHMENT_ENABLED is not true";
+    else if (!hasApiKey) reason = "SURFE_API_KEY is not configured";
+    return res.json({
+      success: true,
+      surfeEnabled,
+      hasApiKey,
+      enrichmentEnabled,
+      autoEnrichOnLoad: false,
+      persistOnReveal: false,
+      reason,
+    });
+  } catch (err) {
+    console.error("[contact-intelligence] enrichment-capability", err);
+    return sendError(res, 500, "enrichment_capability_failed");
+  }
+}
+
 export async function getContactIntelligenceHotel(req, res) {
   try {
     const hotelId = String(req.params.hotelId || "").trim();

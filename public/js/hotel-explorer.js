@@ -98,6 +98,12 @@
       .replace(/"/g, "&quot;");
   }
 
+  function formatNumberSafe(n) {
+    var num = Number(n);
+    if (!Number.isFinite(num)) return "";
+    return Math.round(num).toLocaleString("en-US");
+  }
+
   function recordId(hotel) {
     return (hotel && (hotel.id || hotel.recordId || hotel.airtable_record_id)) || "";
   }
@@ -507,12 +513,60 @@
     var hi = (ownership && ownership.hotel) || {};
     var profile = propertyProfile(ownership) || {};
     var loc = (ownership && ownership.location) || hi.location || {};
+    var ctrl =
+      (ownership && ownership.report && ownership.report.ownership_and_control) ||
+      (ownership && ownership.ownership_and_control) ||
+      {};
     var next = Object.assign({}, hotel);
     if (ownership && ownership.guestRoomsMeetingSpace) {
       next.guestRoomsMeetingSpace = ownership.guestRoomsMeetingSpace;
     } else if (hi.guestRoomsMeetingSpace) {
       next.guestRoomsMeetingSpace = hi.guestRoomsMeetingSpace;
     }
+    var rms = next.guestRoomsMeetingSpace || null;
+    if (rms && rms.meetingSpaceSummary) {
+      var sum = rms.meetingSpaceSummary;
+      next.totalMeetingSpace =
+        (sum.totalMeetingSpaceSqFt && sum.totalMeetingSpaceSqFt.value) || next.totalMeetingSpace;
+      next.meetingRooms =
+        (sum.meetingRoomCount && sum.meetingRoomCount.value) || next.meetingRooms;
+      next.meetingSpaceProvenance = {
+        totalSqFt: sum.totalMeetingSpaceSqFt && sum.totalMeetingSpaceSqFt.value,
+        meetingRooms: sum.meetingRoomCount && sum.meetingRoomCount.value,
+        largestRoom: sum.largestRoom
+          ? { name: sum.largestRoom.name, sqFt: sum.largestRoom.areaSqFt }
+          : null,
+        sourceUrl: sum.floorPlanUrl && sum.floorPlanUrl.value,
+      };
+      if (sum.largestRoom && sum.largestRoom.name) {
+        next.meetingSpaceDisplay =
+          formatNumberSafe(sum.totalMeetingSpaceSqFt && sum.totalMeetingSpaceSqFt.value) +
+          " sq ft · " +
+          (sum.meetingRoomCount && sum.meetingRoomCount.value
+            ? sum.meetingRoomCount.value + " rooms · "
+            : "") +
+          "largest: " +
+          sum.largestRoom.name +
+          (sum.largestRoom.areaSqFt != null
+            ? ", " + formatNumberSafe(sum.largestRoom.areaSqFt) + " sq ft"
+            : "");
+      }
+    }
+    var econ = ctrl.economic_owner_or_group || ctrl.economic_owner || {};
+    var legal = ctrl.legal_property_owner_propco || ctrl.legal_owner || {};
+    next.ownershipContext = {
+      economicOwnerName: econ.name || econ.display_name || null,
+      legalOwnerName: legal.name || legal.display_name || null,
+      confidence: econ.confidence || legal.confidence || null,
+      preview_state:
+        econ.preview_state ||
+        legal.preview_state ||
+        (ownership && ownership.preview_mode) ||
+        null,
+      verified: Boolean(econ.known || legal.known),
+    };
+    if (econ.name) next.economicOwner = econ.name;
+    if (legal.name) next.legalOwner = legal.name;
     var rooms = next.rooms || profile.rooms_suites || hi.rooms || hi.room_count;
     if (rooms != null && rooms !== "" && Number(rooms) !== 0) next.rooms = rooms;
     next.city = preferKnown(next.city, hi.city || loc.city || loc.parish);
