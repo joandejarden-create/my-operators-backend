@@ -282,6 +282,37 @@ assert.deepEqual(
 }
 console.log("PASS allow-dirty directory prefix + repeated flags");
 
+// CLI argv: missing target / unknown flags / --to-branch alias must not false-authorize
+{
+  const missing = preflightFromArgv(["--op", "switch", "--stream", "gdi"], ROOT);
+  assert.equal(missing.ok, false);
+  assert.ok(missing.errors.some((e) => String(e).includes("requires --target-ref")));
+  console.log("PASS argv fail-closed: switch without target-ref");
+
+  const unknown = preflightFromArgv(
+    ["--op", "switch", "--stream", "gdi", "--desired-branch", "feat/adp/x"],
+    ROOT,
+  );
+  assert.equal(unknown.ok, false);
+  assert.ok(unknown.errors.some((e) => String(e).includes("unknown preflight flag")));
+  console.log("PASS argv fail-closed: unknown flag");
+
+  const alias = preflightFromArgv(
+    [
+      "--op",
+      "switch",
+      "--stream",
+      "gdi",
+      "--to-branch",
+      "fix/adp-phase-2b1-durable-evidence-recovery-v1",
+    ],
+    ROOT,
+  );
+  assert.equal(alias.ok, false);
+  assert.ok(alias.errors.some((e) => String(e).includes("CROSS_WORKSTREAM")));
+  console.log("PASS argv fail-closed: --to-branch ADP target from GDI");
+}
+
 // Porcelain leading-space preservation: ` M path` must not become `ata/...`
 {
   const dirty = collectDirtyPaths(ROOT);
