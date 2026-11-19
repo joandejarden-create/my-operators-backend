@@ -1,8 +1,10 @@
 # HE-INTEL-001 — Ownership research objective (founder correction)
 
-**Contract:** `HE_INTEL_001_OWNERSHIP_RESEARCH_OBJECTIVE_V1`  
+**Contract:** `HE_INTEL_001_OWNERSHIP_RESEARCH_OBJECTIVE_V1` (`1.1.0`)  
 **Applies to:** P3A/P3B live benchmarking + Hotel Explorer ownership presentation  
-**Architecture:** Extends Research Engine V1 — no competing framework
+**Architecture:** Extends Research Engine V1 — no competing framework  
+
+`FULL_ACTIONABLE` requires **evidence** (URL + verification + hotel linkage + ownership-relevant person connected to owner/representative + verified direct or indirect institutional contact). Claim-type labels or populated staged arrays alone are insufficient.
 
 ## Primary goals
 
@@ -21,8 +23,8 @@ Legal entities are **intermediary evidence**, not the final measure of success.
 | Economic / beneficial owner | Prefer when evidenced |
 | Controlling investor / group | Family, fund, REIT, etc. |
 | Asset manager / ownership representative | Pathway when ultimate UNRESOLVED |
-| Hotel management / operator | **Not an owner** |
-| Brand / franchise | **Not an owner** |
+| Hotel management / operator | Not an owner by inference; dual owner+operator allowed only when **independently verified** |
+| Brand / franchise | Never infer ownership from brand alone |
 
 ## Scoring
 

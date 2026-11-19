@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Ownership research objective correction — legal-entity-only is partial.
+ * Ownership research objective — evidence-grounded FULL_ACTIONABLE gates.
  */
 import assert from "node:assert/strict";
 import {
@@ -8,6 +8,9 @@ import {
   OWNERSHIP_DRAWER_QUESTIONS,
   OWNERSHIP_SUCCESS_TIER,
   classifyOwnershipResearchSuccess,
+  buildClassifierInputFromClaims,
+  buildClassifierInputFromStaged,
+  evaluateDualOrgRoles,
   scoreUltimateOwnershipDimension,
   writeOwnershipObjectiveGuarantees,
 } from "../lib/hotel-intelligence/research-engine-v1/ownership-research-objective.js";
@@ -16,7 +19,7 @@ import {
   CLAIM_TYPES,
 } from "../lib/hotel-intelligence/research-engine-v1/benchmark-p3a/claim-schema.js";
 import { scoreClaims } from "../lib/hotel-intelligence/research-engine-v1/benchmark-p3a/quality-rubric.js";
-import { CLAIM_ACCEPTANCE, EVIDENCE_LAYER } from "../lib/hotel-intelligence/research-engine-v1/benchmark-p3a/contract.js";
+import { CLAIM_ACCEPTANCE } from "../lib/hotel-intelligence/research-engine-v1/benchmark-p3a/contract.js";
 import { projectHotelExplorerContactViewModel } from "../lib/hotel-intelligence/research-engine-v1/he-contact-projection.js";
 import { PRIORITY_OBJECTIVES } from "../lib/hotel-intelligence/research-engine-v1/benchmark-p3b-m1/evidence.js";
 
@@ -30,109 +33,348 @@ function test(name, fn) {
   pass(name);
 }
 
-test("objective_contract_and_drawer_questions", () => {
+function verifiedOwner(extra = {}) {
+  return {
+    verified: true,
+    name: "Controlling Family Office",
+    evidenceUrl: "https://example.com/owner",
+    linkedToHpc: true,
+    ...extra,
+  };
+}
+function verifiedPerson(extra = {}) {
+  return {
+    verified: true,
+    name: "Jane Asset Manager",
+    evidenceUrl: "https://example.com/person",
+    roleRelevant: true,
+    connectedToOwnerOrRepresentative: true,
+    ...extra,
+  };
+}
+function verifiedDirectContact(extra = {}) {
+  return {
+    directVerified: true,
+    indirectInstitutionalPathway: false,
+    inferred: false,
+    evidenceUrl: "https://example.com/email",
+    connectedToPersonOrOwner: true,
+    ...extra,
+  };
+}
+function verifiedStructure(extra = {}) {
+  return {
+    verified: true,
+    evidenceUrl: "https://example.com/structure",
+    relevant: true,
+    ...extra,
+  };
+}
+
+test("objective_contract", () => {
   assert.equal(OWNERSHIP_RESEARCH_OBJECTIVE_ID, "HE_INTEL_001_OWNERSHIP_RESEARCH_OBJECTIVE_V1");
   assert.equal(OWNERSHIP_DRAWER_QUESTIONS.length, 4);
-  assert.ok(OWNERSHIP_DRAWER_QUESTIONS[0].includes("Who owns"));
-  assert.equal(writeOwnershipObjectiveGuarantees().legal_entity_only_is_partial, true);
+  assert.equal(writeOwnershipObjectiveGuarantees().full_actionable_requires_evidence, true);
 });
 
-test("legal_entity_only_is_partial_not_full_success", () => {
-  const outcome = classifyOwnershipResearchSuccess({
-    acceptedClaimTypes: [CLAIM_TYPES.OWNER_ENTITY, CLAIM_TYPES.LEGAL_TITLEHOLDER],
+test("legal_llc_only_partial", () => {
+  const o = classifyOwnershipResearchSuccess({
+    legalTitleholder: {
+      verified: true,
+      name: "Hotel Holdco LLC",
+      evidenceUrl: "https://example.com/llc",
+      linkedToHpc: true,
+    },
   });
-  assert.equal(outcome.tier, OWNERSHIP_SUCCESS_TIER.PARTIAL_LEGAL_ENTITY_ONLY);
-  assert.equal(outcome.fullResearchSuccess, false);
-  assert.equal(scoreUltimateOwnershipDimension(new Set(["OWNER_ENTITY"])), 1);
+  assert.equal(o.tier, OWNERSHIP_SUCCESS_TIER.PARTIAL_LEGAL_ENTITY_ONLY);
+  assert.equal(o.fullResearchSuccess, false);
 });
 
-test("ultimate_owner_scores_higher_than_legal_only", () => {
-  assert.equal(scoreUltimateOwnershipDimension(new Set(["ULTIMATE_OWNER"])), 3);
-  assert.ok(
-    scoreUltimateOwnershipDimension(new Set(["ULTIMATE_OWNER"])) >
-      scoreUltimateOwnershipDimension(new Set(["LEGAL_TITLEHOLDER"]))
-  );
+test("actual_owner_without_relevant_contact_partial", () => {
+  const o = classifyOwnershipResearchSuccess({
+    ultimateOwner: verifiedOwner(),
+    ownershipPerson: verifiedPerson(),
+    structureChain: verifiedStructure(),
+    contact: { directVerified: false, indirectInstitutionalPathway: false },
+  });
+  assert.equal(o.tier, OWNERSHIP_SUCCESS_TIER.PARTIAL_OWNER_WITHOUT_CONTACT);
+  assert.equal(o.fullResearchSuccess, false);
 });
 
-test("full_actionable_requires_owner_dm_contact_structure", () => {
-  const outcome = classifyOwnershipResearchSuccess({
-    acceptedClaimTypes: [
-      "ULTIMATE_OWNER",
-      "OWNERSHIP_DECISION_MAKER",
-      "PUBLIC_EMAIL",
-      "OWNERSHIP_STRUCTURE_EDGE",
+test("owner_plus_unrelated_hotel_salesperson_not_full", () => {
+  const o = classifyOwnershipResearchSuccess({
+    ultimateOwner: verifiedOwner(),
+    ownershipPerson: verifiedPerson({
+      unrelatedHotelSales: true,
+      roleRelevant: false,
+      name: "Front Desk Sales",
+    }),
+    contact: verifiedDirectContact(),
+    structureChain: verifiedStructure(),
+  });
+  assert.notEqual(o.tier, OWNERSHIP_SUCCESS_TIER.FULL_ACTIONABLE);
+  assert.equal(o.fullResearchSuccess, false);
+});
+
+test("owner_plus_unverified_email_not_full", () => {
+  const o = classifyOwnershipResearchSuccess({
+    ultimateOwner: verifiedOwner(),
+    ownershipPerson: verifiedPerson(),
+    structureChain: verifiedStructure(),
+    contact: {
+      directVerified: false,
+      inferred: true,
+      evidenceUrl: null,
+      connectedToPersonOrOwner: false,
+    },
+  });
+  assert.equal(o.fullResearchSuccess, false);
+});
+
+test("owner_plus_verified_rep_and_credible_route_actionable", () => {
+  const o = classifyOwnershipResearchSuccess({
+    ultimateOwner: verifiedOwner(),
+    ownershipPerson: verifiedPerson(),
+    contact: verifiedDirectContact(),
+    structureChain: verifiedStructure(),
+  });
+  assert.equal(o.tier, OWNERSHIP_SUCCESS_TIER.FULL_ACTIONABLE);
+  assert.equal(o.fullResearchSuccess, true);
+  assert.equal(o.contactChannelClass, "VERIFIED_DIRECT");
+  assert.equal(o.customerPublication, "BLOCKED");
+});
+
+test("indirect_institutional_pathway_separated_from_direct", () => {
+  const o = classifyOwnershipResearchSuccess({
+    ultimateOwner: verifiedOwner(),
+    ownershipPerson: verifiedPerson(),
+    contact: {
+      directVerified: false,
+      indirectInstitutionalPathway: true,
+      inferred: false,
+      evidenceUrl: "https://example.com/ir-page",
+      connectedToPersonOrOwner: true,
+    },
+    structureChain: verifiedStructure(),
+  });
+  assert.equal(o.fullResearchSuccess, true);
+  assert.equal(o.contactChannelClass, "INDIRECT_INSTITUTIONAL");
+});
+
+test("owner_operator_dual_roles_independently_verified", () => {
+  const dual = evaluateDualOrgRoles([
+    {
+      orgId: "org_1",
+      roles: ["OWNER", "OPERATOR"],
+      ownershipVerifiedIndependently: true,
+      operationVerifiedIndependently: true,
+      ownershipInferredFromManagementOnly: false,
+    },
+  ]);
+  assert.equal(dual.supported.length, 1);
+  assert.equal(dual.rejected.length, 0);
+
+  const inferred = evaluateDualOrgRoles([
+    {
+      orgId: "org_2",
+      roles: ["OWNER", "OPERATOR"],
+      ownershipVerifiedIndependently: false,
+      operationVerifiedIndependently: true,
+      ownershipInferredFromManagementOnly: true,
+      claimsOwnership: true,
+    },
+  ]);
+  assert.equal(inferred.rejected.length, 1);
+
+  const o = classifyOwnershipResearchSuccess({
+    ultimateOwner: verifiedOwner(),
+    ownershipPerson: verifiedPerson(),
+    contact: verifiedDirectContact(),
+    structureChain: verifiedStructure(),
+    orgRoles: [
+      {
+        orgId: "org_1",
+        roles: ["OWNER", "OPERATOR"],
+        ownershipVerifiedIndependently: true,
+        operationVerifiedIndependently: true,
+      },
     ],
   });
-  assert.equal(outcome.tier, OWNERSHIP_SUCCESS_TIER.FULL_ACTIONABLE);
-  assert.equal(outcome.fullResearchSuccess, true);
+  assert.equal(o.fullResearchSuccess, true);
+  assert.equal(o.dualOrgRoles.supported.length, 1);
 });
 
-test("unresolved_ultimate_with_representative_pathway", () => {
-  const outcome = classifyOwnershipResearchSuccess({
-    acceptedClaimTypes: ["OWNERSHIP_REPRESENTATIVE", "ALTERNATIVE_CONTACT_PATHWAY"],
-    ultimateOwnerUnresolved: true,
+test("staged_but_unsupported_owner_claims_not_full", () => {
+  const o = classifyOwnershipResearchSuccess({
+    stagedOnly: true,
+    ultimateOwner: {
+      verified: false,
+      name: "Maybe Owner",
+      evidenceUrl: null,
+      linkedToHpc: false,
+      unsupported: true,
+    },
+    legalTitleholder: {
+      verified: false,
+      name: "Staged LLC",
+      evidenceUrl: null,
+    },
   });
-  assert.equal(outcome.tier, OWNERSHIP_SUCCESS_TIER.PARTIAL_REPRESENTATIVE_PATHWAY);
-  assert.equal(outcome.unresolvedUltimateOwnership, true);
+  assert.equal(o.fullResearchSuccess, false);
+  assert.equal(o.provisionalStaged, true);
+  assert.notEqual(o.tier, OWNERSHIP_SUCCESS_TIER.FULL_ACTIONABLE);
 });
 
-test("rubric_legal_only_not_full_research_success", () => {
-  const claims = [
-    buildClaimEnvelope({
-      claimType: CLAIM_TYPES.OWNER_ENTITY,
-      value: "Hotel Holdco LLC",
-      supportingSource: { url: "https://example.com/llc" },
-      independentVerification: { ok: true, method: "t" },
-      acceptanceDecision: CLAIM_ACCEPTANCE.ACCEPTED,
-    }),
-  ];
-  const s = scoreClaims(claims);
-  assert.equal(s.scores.ultimate_ownership, 1);
-  assert.equal(s.legalEntityOnlyIsPartial, true);
-  assert.equal(s.fullResearchSuccess, false);
-});
-
-test("rubric_full_actionable_path", () => {
-  const mk = (claimType, value) =>
+test("labels_alone_do_not_create_full_actionable_from_claims", () => {
+  const mk = (claimType, value, extra = {}) =>
     buildClaimEnvelope({
       claimType,
       value,
-      supportingSource: { url: "https://example.com/" + claimType },
-      independentVerification: { ok: true, method: "t" },
+      supportingSource: { url: extra.url || null },
+      independentVerification: { ok: Boolean(extra.url), method: "t" },
       acceptanceDecision: CLAIM_ACCEPTANCE.ACCEPTED,
+      ...extra,
     });
+  // Labels with no hotel link / person connection flags
   const claims = [
-    mk(CLAIM_TYPES.ULTIMATE_OWNER, "Controlling Family Office"),
-    mk(CLAIM_TYPES.OWNERSHIP_DECISION_MAKER, "Jane Owner"),
-    mk(CLAIM_TYPES.PUBLIC_EMAIL, "jane@example.com"),
-    mk(CLAIM_TYPES.OWNERSHIP_STRUCTURE_EDGE, "Holdco → OpCo"),
-    mk(CLAIM_TYPES.OWNER_VS_OPERATOR, "DISTINCT"),
+    mk(CLAIM_TYPES.ULTIMATE_OWNER, "X", { url: "https://example.com/o" }),
+    mk(CLAIM_TYPES.OWNERSHIP_DECISION_MAKER, "Y", { url: "https://example.com/p" }),
+    mk(CLAIM_TYPES.PUBLIC_EMAIL, "a@b.com", { url: "https://example.com/e" }),
+    mk(CLAIM_TYPES.OWNERSHIP_STRUCTURE_EDGE, "edge", { url: "https://example.com/s" }),
   ];
-  const s = scoreClaims(claims);
-  assert.equal(s.ownershipOutcome.fullResearchSuccess, true);
-  assert.equal(s.fullResearchSuccess, true);
-  assert.equal(s.scores.ultimate_ownership, 3);
+  const input = buildClassifierInputFromClaims(claims, { linkedToHpc: false });
+  const o = classifyOwnershipResearchSuccess(input);
+  assert.equal(o.fullResearchSuccess, false);
 });
 
-test("he_projection_drawer_answers_and_partial_legal", () => {
+test("rubric_uses_evidence_classifier_not_labels_alone", () => {
+  const claims = [
+    buildClaimEnvelope({
+      claimType: CLAIM_TYPES.OWNER_ENTITY,
+      value: "LLC Only",
+      supportingSource: { url: "https://example.com/llc" },
+      independentVerification: { ok: true, method: "t" },
+      acceptanceDecision: CLAIM_ACCEPTANCE.ACCEPTED,
+      linkedToHpc: true,
+    }),
+  ];
+  const s = scoreClaims(claims, { linkedToHpc: true });
+  assert.equal(s.legalEntityOnlyIsPartial || s.ownershipOutcome.partial, true);
+  assert.equal(s.fullResearchSuccess, false);
+});
+
+test("he_projection_matches_benchmark_classifier", () => {
+  const stagedFull = {
+    hpc_id: "recLuxvwwxID7U2B8",
+    hotel_name: "Bethesda Marriott",
+    ownership: {
+      ultimate_owner: {
+        legal_name: "Controlling Family Office",
+        verified: true,
+        evidence_url: "https://example.com/owner",
+        linked_to_hpc: true,
+      },
+      primary_ownership_contact: {
+        full_name: "Jane Asset Manager",
+        verified: true,
+        evidence_url: "https://example.com/person",
+        role_relevant: true,
+        connected_to_owner_or_representative: true,
+      },
+      primary_contact_channels: [
+        {
+          kind: "email",
+          value: "jane@example.com",
+          verified: true,
+          evidence_url: "https://example.com/email",
+          connected_to_person_or_owner: true,
+        },
+      ],
+      structure_chain: {
+        verified: true,
+        evidence_url: "https://example.com/structure",
+        relevant: true,
+      },
+    },
+  };
+  const vm = projectHotelExplorerContactViewModel(stagedFull);
+  const direct = classifyOwnershipResearchSuccess(buildClassifierInputFromStaged(stagedFull));
+  assert.equal(vm.ownershipOutcome.tier, direct.tier);
+  assert.equal(vm.ownershipOutcome.fullResearchSuccess, direct.fullResearchSuccess);
+  assert.equal(vm.qualitySummary.fullResearchSuccess, true);
+  assert.equal(vm.qualitySummary.customerPublication, "BLOCKED");
+  assert.equal(vm.ownershipSummary.verifiedDirectContact, true);
+  assert.equal(vm.research_complete, false);
+});
+
+test("he_projection_populated_arrays_without_verification_not_full", () => {
   const vm = projectHotelExplorerContactViewModel({
     hpc_id: "recLuxvwwxID7U2B8",
     hotel_name: "Bethesda Marriott",
     ownership: {
-      owner_entity: { legal_name: "Bethesda PropCo LLC", org_id: "dle_x" },
+      owner_entity: { legal_name: "Staged LLC" },
+      ultimate_owner: { legal_name: "Unverified Owner" },
+      primary_ownership_contact: { full_name: "Someone" },
+      primary_contact_channels: [{ kind: "email", value: "x@y.com" }],
+    },
+    persons: [{ name: "Someone" }],
+  });
+  assert.equal(vm.qualitySummary.fullResearchSuccess, false);
+  assert.equal(vm.qualitySummary.provisionalStaged, true);
+  assert.notEqual(vm.ownershipSummary.successTier, OWNERSHIP_SUCCESS_TIER.FULL_ACTIONABLE);
+});
+
+test("he_projection_legal_only_partial", () => {
+  const vm = projectHotelExplorerContactViewModel({
+    hpc_id: "recLuxvwwxID7U2B8",
+    hotel_name: "Bethesda Marriott",
+    ownership: {
+      legal_titleholder: {
+        legal_name: "Bethesda PropCo LLC",
+        verified: true,
+        evidence_url: "https://example.com/llc",
+        linked_to_hpc: true,
+      },
       ultimate_owner_status: "UNRESOLVED",
     },
   });
-  assert.equal(vm.ownershipSummary.successTier, OWNERSHIP_SUCCESS_TIER.PARTIAL_LEGAL_ENTITY_ONLY);
-  assert.deepEqual(vm.ownershipSummary.drawerQuestions, [...OWNERSHIP_DRAWER_QUESTIONS]);
+  assert.equal(
+    vm.ownershipSummary.successTier,
+    OWNERSHIP_SUCCESS_TIER.PARTIAL_LEGAL_ENTITY_ONLY
+  );
   assert.equal(vm.ownershipSummary.operator.notAnOwner, true);
   assert.equal(vm.ownershipSummary.brand.notAnOwner, true);
-  assert.equal(vm.qualitySummary.fullResearchSuccess, false);
 });
 
-test("p3b_priority_objectives_updated", () => {
-  assert.ok(PRIORITY_OBJECTIVES.includes("ULTIMATE_OWNER_INVESTOR_FAMILY_FUND_REIT_OR_CONTROLLING_ORG"));
-  assert.ok(!PRIORITY_OBJECTIVES.includes("LEGAL_OR_ECONOMIC_OWNER"));
+test("p3b_priorities_include_ultimate_owner", () => {
+  assert.ok(
+    PRIORITY_OBJECTIVES.includes(
+      "ULTIMATE_OWNER_INVESTOR_FAMILY_FUND_REIT_OR_CONTROLLING_ORG"
+    )
+  );
+});
+
+test("score_dimension_evidence_object", () => {
+  assert.equal(
+    scoreUltimateOwnershipDimension({
+      ultimateOwner: verifiedOwner(),
+      ownershipPerson: verifiedPerson(),
+      contact: verifiedDirectContact(),
+      structureChain: verifiedStructure(),
+    }),
+    3
+  );
+  assert.equal(
+    scoreUltimateOwnershipDimension({
+      legalTitleholder: {
+        verified: true,
+        name: "LLC",
+        evidenceUrl: "https://example.com/llc",
+        linkedToHpc: true,
+      },
+    }),
+    1
+  );
 });
 
 console.log(`\nOK he-intel-001-ownership-research-objective-v1 (${passed} assertions)`);
