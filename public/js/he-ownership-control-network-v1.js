@@ -944,7 +944,7 @@
     }
     if (node.kind === "person") {
       bits.push(
-        '<p><button type="button" class="ocn-btn" data-ocn-open-contacts>Open Contact Intelligence →</button></p>'
+        '<p><button type="button" class="hiw-navlink ocn-navlink" data-ocn-open-contacts>View Contacts<span class="hiw-navlink__icon" aria-hidden="true">↗</span></button></p>'
       );
       if (node.linkedIn) {
         bits.push(

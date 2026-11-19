@@ -747,6 +747,11 @@
             "function"
         ) {
           window.HotelIntelligenceWorkspace.mountMarketAlertsEvidenceForSources();
+          if (typeof window.HotelIntelligenceWorkspace.highlightFocusedSourceRow === "function") {
+            window.setTimeout(function () {
+              window.HotelIntelligenceWorkspace.highlightFocusedSourceRow();
+            }, 80);
+          }
         }
       }
     }
@@ -877,7 +882,23 @@
     if (hiTab) {
       var raw = hiTab.getAttribute("data-hiw-tab");
       var mapped = { overview: "hotel", market: "hotel", demand: "demand", intelligence: "hotel" }[raw] || raw;
+      if (window.HotelIntelligenceWorkspace && typeof window.HotelIntelligenceWorkspace.prepareTabNav === "function") {
+        window.HotelIntelligenceWorkspace.prepareTabNav({
+          sourceFilter: hiTab.getAttribute("data-hiw-source-filter") || undefined,
+          sourceFocus: hiTab.getAttribute("data-hiw-source-focus") || undefined,
+        });
+      }
       setTab(mapped);
+      return;
+    }
+    var sourceFilt = e.target.closest("[data-hiw-source-filter]");
+    if (sourceFilt && !sourceFilt.getAttribute("data-hiw-tab") && window.HotelIntelligenceWorkspace) {
+      if (typeof window.HotelIntelligenceWorkspace.setSourceFilter === "function") {
+        window.HotelIntelligenceWorkspace.setSourceFilter(
+          sourceFilt.getAttribute("data-hiw-source-filter") || "all"
+        );
+      }
+      paint();
       return;
     }
     if (e.target.closest("[data-hex-drawer-close]")) {

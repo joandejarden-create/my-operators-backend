@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.19",
+  "version": "hotel-explorer-founder-quality-lessons-v1.20",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -302,6 +302,15 @@
       "sharedComponent": "he-amenity-display-v1.js (mergeAmenityDisplaySources, assessAmenityCoverageResearchNeed); hotel-detail-panel.js resolveAmenitiesDisplay; ADP property profile attributes + ATTRIBUTE_DEFINITIONS; he-amenity-icon-map-v1.js",
       "regressionTest": "amenities_kgpv_strip_and_display_cap; amenities_verified_coverage_research_trigger",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v18-amenities-beth-coverage.png; reports/hotel-explorer/HE-AMENITY-COVERAGE-RESEARCH-V18.md"
+    },
+    {
+      "id": "HE-QL-031",
+      "originalProblem": "Oversized white Open Contact Intelligence / Open Sources & Evidence buttons and a duplicate Sources and Verification table on Ownership outside the canonical Sources tab",
+      "rootCause": "Cross-tab navigation used hiw-btn action cards; Ownership rendered a local sources strip instead of deep-linking into the unified Sources register; publication and verification dates were conflated via observed_date",
+      "approvedStandard": "One deduplicated Sources & Evidence register with category filters and distinct Published vs Verified/Accessed columns; compact header-right View Contacts / View Sources navlinks (hiw-navlink) with deep-link highlight; no Ownership Sources and Verification table; preserve LinkedIn/article contextual links; no second Airtable copy of canonical evidence",
+      "sharedComponent": "hotel-intelligence-workspace.js (sectionHeadHtml, navLinkHtml, renderSourcesList, normalizeCitationDates); hotel-explorer.css hiw-navlink / hiw-section__head; market-alerts-evidence-citations-v1.js publication_date; he-ownership-control-network-v1.js View Contacts",
+      "regressionTest": "sources_evidence_consolidated_nav_and_dates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v19-sources-nav-beth.png; quality-v19-sources-register-beth.png; reports/hotel-explorer/HE-SOURCES-EVIDENCE-CONSOLIDATED-NAV-V19.md"
     }
   ]
 }

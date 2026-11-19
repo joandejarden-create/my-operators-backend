@@ -82,11 +82,11 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.19");
-  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 30);
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.20");
+  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 31);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.19"
+    "hotel-explorer-quality-standard-v1.20"
   );
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-016"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-017"));
@@ -103,6 +103,7 @@ run("registry_and_standard_exist", () => {
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-028"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-029"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-030"));
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-031"));
 });
 
 run("rejects_keyword_stuffed_and_id_leaking_descriptions", () => {
@@ -911,6 +912,48 @@ run("he_guest_sentiment_brand_operator_gates", () => {
   if (!reg.lessons.some((l) => l.id === "HE-QL-029")) {
     throw new Error("HE-QL-029 missing from founder quality lessons registry");
   }
+});
+
+run("sources_evidence_consolidated_nav_and_dates", () => {
+  const ws = read("public/js/hotel-intelligence-workspace.js");
+  const css = read("public/css/hotel-explorer.css");
+  const ocn = read("public/js/he-ownership-control-network-v1.js");
+  const ma = read("lib/hotel-intelligence/market-alerts-evidence-citations-v1.js");
+  const std = read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md");
+  const reg = JSON.parse(
+    read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
+  );
+
+  mustNotMatch(ws, /Open Contact Intelligence/);
+  mustNotMatch(ws, /Open Sources\s*&(?:amp;)?\s*Evidence/);
+  mustNotMatch(ws, /Sources and Verification/);
+  mustNotMatch(ws, /function renderOwnershipSourcesStrip/);
+  mustInclude(ws, "hiw-navlink");
+  mustInclude(ws, "sectionHeadHtml");
+  mustInclude(ws, "View Contacts");
+  mustInclude(ws, "View Sources");
+  mustInclude(ws, "data-hiw-source-filter");
+  mustInclude(ws, "data-hiw-source-focus");
+  mustInclude(ws, "publication_date");
+  mustInclude(ws, "Verified / accessed");
+  mustInclude(ws, "normalizeCitationDates");
+  mustInclude(ws, "SOURCE_CATEGORY_DEFS");
+  mustInclude(ws, "dedupeCitations");
+  mustInclude(css, "hiw-navlink");
+  mustInclude(css, "hiw-section__head");
+  mustInclude(css, "is-source-focus");
+  mustInclude(ocn, "View Contacts");
+  mustNotMatch(ocn, /Open Contact Intelligence/);
+  mustInclude(ma, "publication_date");
+  mustInclude(std, "HE-QL-031");
+  mustInclude(std, "One canonical Sources & Evidence tab");
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-031"));
+
+  // Oversized cross-tab nav buttons for Contacts/Sources must not reappear as hiw-btn.
+  assert.ok(
+    !/hiw-btn[^>]*(?:data-hiw-tab="contacts"|data-hiw-tab="sources")/.test(ws),
+    "Contacts/Sources cross-tab nav must not use hiw-btn"
+  );
 });
 
 if (failures.length) {

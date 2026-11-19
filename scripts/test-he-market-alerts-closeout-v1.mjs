@@ -155,7 +155,8 @@ const articleDupUrl = {
   assert.equal(c.market_alerts_id, "recAlertTwo00002");
   assert.ok(c.url);
   assert.ok(c.publisher || c.provider);
-  assert.ok(c.observed_date);
+  assert.ok(c.publication_date || c.publishedAt, "publication date distinct from access/verify");
+  assert.ok(!c.observed_date, "do not stuff publication into observed_date");
   assert.ok(c.claim || c.excerpt);
   assert.equal(c.canonicalSource, "MarketAlerts");
   assert.equal(c.verification_status, "VERIFIED_HPC_ASSOCIATION");

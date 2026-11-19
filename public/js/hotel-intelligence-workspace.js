@@ -18,7 +18,21 @@
     evidenceOpen: null,
     relFilter: "all",
     marketAlertsCitations: [],
+    guestSentimentCitations: [],
+    sourceFilter: "all",
+    sourceFocusN: null,
   };
+
+  var SOURCE_CATEGORY_DEFS = [
+    { id: "all", label: "All sources" },
+    { id: "property", label: "Property & Facilities" },
+    { id: "ownership", label: "Ownership & Organizations" },
+    { id: "contacts", label: "Contacts & People" },
+    { id: "financing", label: "Financing & Development" },
+    { id: "brand", label: "Brand & Operator" },
+    { id: "news", label: "News & Market Alerts" },
+    { id: "sentiment", label: "Guest Sentiment" },
+  ];
 
   var asyncApi = typeof window !== "undefined" ? window.HeAsyncSection : null;
   var newsAsync =
@@ -600,7 +614,178 @@
     if (/operator|management/.test(p)) return "Operator";
     if (/linkedin|tripadvisor|people|listing/.test(p)) return "People / Listing";
     if (/transaction|acquisition/.test(p)) return "Transaction / History";
+    if (/market.?alert/.test(p)) return "Market Alerts";
+    if (/guest|reputation|booking|expedia|agoda|trivago|hotels\.com|google/.test(p))
+      return "Guest Reputation";
     return "Source";
+  }
+
+  function citationCategory(s) {
+    if (!s) return "ownership";
+    if (s.category && SOURCE_CATEGORY_DEFS.some(function (c) { return c.id === s.category; })) {
+      return s.category;
+    }
+    var supports = String(s.supports || "").toLowerCase();
+    var type = String(s.source_type || "").toLowerCase();
+    var provider = String(s.provider || s.publisher || "").toLowerCase();
+    var blob = supports + " " + type + " " + provider + " " + String(s.title || "").toLowerCase();
+    if (/guest_sentiment|guest reputation|tripadvisor|booking\.com|expedia|agoda|trivago|hotels\.com|google reviews/.test(blob))
+      return "sentiment";
+    if (/market_alerts|market alerts|news/.test(blob)) return "news";
+    if (/contact|people|linkedin|person/.test(blob)) return "contacts";
+    if (/financ|transaction|acquisition|develop|capex|debt|loan/.test(blob)) return "financing";
+    if (/brand_census|brand \/ press|brand|operator|franchise|management company/.test(blob) && !/ownership/.test(supports))
+      return /operator|management|brand/.test(supports + " " + type) ? "brand" : "brand";
+    if (/property|facilit|amenit|rooms|meeting|adp|hpc|census/.test(blob) && /property|facilit|amenit|rooms|meeting|adp/.test(blob))
+      return "property";
+    if (/dealality census/.test(type) || supports === "brand_census") return "brand";
+    if (/ownership|corporate filing|propco|sponsor|ubo|legal/.test(blob)) return "ownership";
+    if (supports === "operator" || supports === "brand_census") return "brand";
+    if (supports === "ownership") return "ownership";
+    return "ownership";
+  }
+
+  function formatSourceDate(value) {
+    if (value == null || value === "") return "—";
+    var s = String(value).trim();
+    if (!s) return "—";
+    if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10);
+    if (/^\d{4}$/.test(s)) return s;
+    try {
+      var d = new Date(s);
+      if (!isNaN(d.getTime())) return d.toISOString().slice(0, 10);
+    } catch (_e) {
+      /* keep raw */
+    }
+    return s.length > 12 ? s.slice(0, 10) : s;
+  }
+
+  /** Normalize citation dates — never promote access/verify time to publication. */
+  function normalizeCitationDates(raw) {
+    var s = raw || {};
+    var publication =
+      s.publication_date ||
+      s.published_at ||
+      s.publishedAt ||
+      s.document_date ||
+      s.transaction_date ||
+      s.source_date ||
+      null;
+    var verified = s.verified_at || s.last_verified || s.lastVerifiedAt || null;
+    var accessed = s.accessed_at || s.accessedAt || s.retrieved_at || null;
+    var type = String(s.source_type || s.canonicalSource || "").toLowerCase();
+    var blob =
+      type +
+      " " +
+      String(s.supports || "").toLowerCase() +
+      " " +
+      String(s.title || "").toLowerCase() +
+      " " +
+      String(s.provider || "").toLowerCase();
+    var isNews =
+      s.supports === "market_alerts_hotel_fact" ||
+      type.indexOf("market alert") >= 0 ||
+      s.canonicalSource === "MarketAlerts";
+    var looksPublishedSource =
+      isNews ||
+      /press|journal|news|business|transaction|acquisition|filing|securities|bmv|deed|registry/.test(
+        blob
+      );
+    // Legacy payloads often stuffed publication into observed_date.
+    if (!publication && s.observed_date && (s._observed_is_publication === true || looksPublishedSource)) {
+      publication = s.observed_date;
+    } else if (!publication && s.observed_date) {
+      var year = parseInt(String(s.observed_date).slice(0, 4), 10);
+      if (year && year < 2025) {
+        // Historical calendar date on a research citation is almost always publication/document date.
+        publication = s.observed_date;
+      } else if (!accessed && !verified) {
+        accessed = s.observed_date;
+      }
+    }
+    return {
+      publication_date: publication || null,
+      verified_at: verified || null,
+      accessed_at: accessed || null,
+    };
+  }
+
+  function citationDedupeKey(c) {
+    if (!c) return "";
+    if (c.market_alerts_id) return "ma:" + c.market_alerts_id;
+    if (c.dedupe_id) return "d:" + c.dedupe_id;
+    if (c.url) return "u:" + String(c.url).toLowerCase().replace(/\/$/, "");
+    return (
+      "t:" +
+      String(c.title || "")
+        .toLowerCase()
+        .trim() +
+      "|" +
+      String(c.provider || c.publisher || "")
+        .toLowerCase()
+        .trim()
+    );
+  }
+
+  function dedupeCitations(list) {
+    var out = [];
+    var seen = {};
+    (list || []).forEach(function (c) {
+      var key = citationDedupeKey(c);
+      if (!key || seen[key]) return;
+      seen[key] = true;
+      out.push(c);
+    });
+    return out;
+  }
+
+  function enrichCitation(raw) {
+    var s = Object.assign({}, raw || {});
+    var dates = normalizeCitationDates(s);
+    s.publication_date = dates.publication_date;
+    s.verified_at = dates.verified_at;
+    s.accessed_at = dates.accessed_at;
+    s.publisher = s.publisher || s.provider || "";
+    s.source_type = s.source_type || sourceTypeLabel(s.provider || s.title);
+    s.category = citationCategory(s);
+    s.verification_status =
+      s.verification_status ||
+      (s.supports === "ownership" ? "EVIDENCE_BACKED" : s.url ? "LINKED" : "REFERENCED");
+    return s;
+  }
+
+  function navLinkHtml(label, attrs) {
+    attrs = attrs || {};
+    var parts = ['type="button"', 'class="hiw-navlink"'];
+    Object.keys(attrs).forEach(function (k) {
+      if (attrs[k] == null || attrs[k] === "") return;
+      parts.push(k + '="' + esc(String(attrs[k])) + '"');
+    });
+    return (
+      "<button " +
+      parts.join(" ") +
+      ">" +
+      esc(label) +
+      '<span class="hiw-navlink__icon" aria-hidden="true">↗</span></button>'
+    );
+  }
+
+  function sectionHeadHtml(title, navHtml, headingClass) {
+    var hClass = headingClass || "hiw-section__h";
+    if (!navHtml) {
+      return '<h3 class="' + hClass + '">' + title + "</h3>";
+    }
+    return (
+      '<div class="hiw-section__head">' +
+      '<h3 class="' +
+      hClass +
+      '">' +
+      title +
+      "</h3>" +
+      '<div class="hiw-section__nav">' +
+      navHtml +
+      "</div></div>"
+    );
   }
 
   function citeBtn(n) {
@@ -668,58 +853,80 @@
       (ownership && ownership.report && ownership.report.evidence && ownership.report.evidence.sources) ||
       (ownership && ownership.deep_research && ownership.deep_research.sources) ||
       [];
-    if (deepSources.length) {
-      deepSources.forEach(function (s) {
-        list.push({
+    var ev = ownership && ownership.report && ownership.report.evidence;
+    var sources = deepSources.length ? deepSources : (ev && ev.sources) || [];
+    var defaultSupports = deepSources.length ? "ownership" : "operator";
+    sources.forEach(function (s) {
+      list.push(
+        enrichCitation({
           title: s.title || s.provider || "Source",
           url: s.url || null,
           provider: s.provider || "",
+          publisher: s.publisher || s.provider || "",
+          publication_date: s.publication_date || s.published_at || s.document_date || null,
+          verified_at: s.verified_at || s.last_verified || null,
+          accessed_at: s.accessed_at || s.retrieved_at || null,
           observed_date: s.observed_date || null,
           excerpt: s.evidence_excerpt || s.note || "",
-          claim: (ownership.report && ownership.report.evidence && ownership.report.evidence.claim) || "",
-          relationship: ownership.report && ownership.report.evidence && ownership.report.evidence.relationship,
-          proves: ownership.report && ownership.report.evidence && ownership.report.evidence.what_it_proves,
-          does_not: ownership.report && ownership.report.evidence && ownership.report.evidence.what_it_does_not_prove,
-          supports: "ownership",
+          claim:
+            (ev && ev.claim) ||
+            (ownership &&
+              ownership.report &&
+              ownership.report.evidence &&
+              ownership.report.evidence.claim) ||
+            "",
+          relationship:
+            (ev && ev.relationship) ||
+            (ownership &&
+              ownership.report &&
+              ownership.report.evidence &&
+              ownership.report.evidence.relationship),
+          proves:
+            (ev && ev.what_it_proves) ||
+            (ownership &&
+              ownership.report &&
+              ownership.report.evidence &&
+              ownership.report.evidence.what_it_proves),
+          does_not:
+            (ev && ev.what_it_does_not_prove) ||
+            (ownership &&
+              ownership.report &&
+              ownership.report.evidence &&
+              ownership.report.evidence.what_it_does_not_prove),
+          supports: s.supports || defaultSupports,
           source_type: sourceTypeLabel(s.provider || s.title),
-        });
-      });
-      return list;
-    }
-    var ev = ownership && ownership.report && ownership.report.evidence;
-    var sources = (ev && ev.sources) || [];
-    sources.forEach(function (s) {
-      list.push({
-        title: s.title || s.provider || "Source",
-        url: s.url || null,
-        provider: s.provider || "",
-        observed_date: s.observed_date || null,
-        excerpt: s.evidence_excerpt || "",
-        claim: (ev && ev.claim) || "",
-        relationship: ev && ev.relationship,
-        proves: ev && ev.what_it_proves,
-        does_not: ev && ev.what_it_does_not_prove,
-        supports: "operator",
-        source_type: sourceTypeLabel(s.provider || s.title),
-      });
+          verification_status: s.verification_status || null,
+          dedupe_id: s.id || s.source_id || null,
+        })
+      );
     });
-    list.push({
-      title: "Dealality Hotel Census — affiliation & management fields",
-      url: null,
-      provider: "dealality_hotel_census",
-      observed_date: null,
-      excerpt:
-        (hotel && hotel.name ? hotel.name + ": " : "") +
-        "Affiliation / brand field and Management Company as stored in Hotel Census.",
-      claim: "Census identity fields for brand affiliation and management company",
-      proves:
-        "Documents how Dealality currently stores trading name, affiliation, and management company for this hotel.",
-      does_not:
-        "Does not by itself prove completed reflag, franchise contract, or economic ownership.",
-      supports: "brand_census",
-      source_type: "Dealality Census",
-    });
-    return mergeMarketAlertsCitationsLocal(list, state.marketAlertsCitations || []);
+    list.push(
+      enrichCitation({
+        title: "Dealality Hotel Census — affiliation & management fields",
+        url: null,
+        provider: "dealality_hotel_census",
+        publisher: "Dealality Hotel Census",
+        publication_date: null,
+        verified_at: null,
+        accessed_at: null,
+        observed_date: null,
+        excerpt:
+          (hotel && hotel.name ? hotel.name + ": " : "") +
+          "Affiliation / brand field and Management Company as stored in Hotel Census.",
+        claim: "Census identity fields for brand affiliation and management company",
+        proves:
+          "Documents how Dealality currently stores trading name, affiliation, and management company for this hotel.",
+        does_not:
+          "Does not by itself prove completed reflag, franchise contract, or economic ownership.",
+        supports: "brand_census",
+        source_type: "Dealality Census",
+        category: "brand",
+        dedupe_id: "census:affiliation-management",
+      })
+    );
+    list = mergeMarketAlertsCitationsLocal(list, state.marketAlertsCitations || []);
+    list = mergeMarketAlertsCitationsLocal(list, state.guestSentimentCitations || []);
+    return dedupeCitations(list.map(enrichCitation));
   }
 
   /** Client-side dedupe merge — MarketAlerts remain canonical; no HI Evidence copy. */
@@ -753,12 +960,16 @@
     var cites = (payload && payload.evidenceCitations) || [];
     if ((!cites || !cites.length) && payload && payload.articles && payload.articles.length) {
       cites = payload.articles.map(function (a) {
-        return {
+        return enrichCitation({
           title: a.headline || "Market Alerts article",
           url: a.url || null,
           provider: a.publisher || "Market Alerts",
           publisher: a.publisher || null,
-          observed_date: a.publishedAt || null,
+          // Publication date = article date; never substitute research/access time.
+          publication_date: a.publishedAt || a.publicationDate || null,
+          verified_at: a.verifiedAt || a.lastVerifiedAt || null,
+          accessed_at: a.accessedAt || null,
+          observed_date: null,
           excerpt: a.supportedFact || a.relevanceSummary || "",
           claim: a.supportedFact || a.relevanceSummary || a.headline || "",
           proves:
@@ -767,14 +978,74 @@
             "Does not by itself prove completed ownership transfer, CapEx execution, or franchise contracting without independent verification.",
           supports: "market_alerts_hotel_fact",
           source_type: "Market Alerts",
+          category: "news",
           verification_status: a.verificationStatus || "PROPERTY_MATCH_READ",
           market_alerts_id: a.id || null,
           dedupe_id: a.dedupeKey || null,
           canonicalSource: "MarketAlerts",
-        };
+        });
+      });
+    } else {
+      cites = (cites || []).map(function (c) {
+        return enrichCitation(
+          Object.assign({}, c, {
+            publication_date:
+              c.publication_date ||
+              c.published_at ||
+              c.publishedAt ||
+              (c._observed_is_publication ? c.observed_date : null) ||
+              null,
+            verified_at: c.verified_at || c.last_verified || null,
+            accessed_at: c.accessed_at || c.accessedAt || null,
+            // If legacy payload stuffed publication into observed_date, recover it.
+            _observed_is_publication: !!(c.publication_date || c.publishedAt || c.published_at),
+            category: "news",
+            supports: c.supports || "market_alerts_hotel_fact",
+            source_type: c.source_type || "Market Alerts",
+            canonicalSource: c.canonicalSource || "MarketAlerts",
+          })
+        );
       });
     }
     state.marketAlertsCitations = cites || [];
+    state.citations = buildCitations(state.hotel, state.ownership);
+  }
+
+  function applyGuestSentimentEvidencePayload(payload) {
+    var overview = reputationOverviewCards(payload) || [];
+    var cites = overview
+      .filter(function (p) {
+        return p && p.available === true && p.listingUrl;
+      })
+      .map(function (p) {
+        return enrichCitation({
+          title: (p.platformLabel || p.platform || "Guest listing") + " reputation listing",
+          url: p.listingUrl,
+          provider: p.platformLabel || p.platform || "Guest Reputation",
+          publisher: p.platformLabel || p.platform || "Guest Reputation",
+          publication_date: null,
+          verified_at: p.observedAt || null,
+          accessed_at: p.observedAt || null,
+          observed_date: null,
+          excerpt:
+            p.rating != null
+              ? "Native listing score " +
+                p.rating +
+                (p.scale ? " / " + p.scale : "") +
+                (p.reviewCount != null ? " · " + p.reviewCount + " reviews" : "")
+              : "Guest reputation listing observation",
+          claim: "Guest reputation listing observation for this property",
+          proves: "Documents the observed guest-listing URL and native score metadata.",
+          does_not:
+            "Does not prove CapEx needs, operational KPIs, or ownership. Platform scores are never averaged across sites.",
+          supports: "guest_sentiment",
+          source_type: "Guest Reputation",
+          category: "sentiment",
+          verification_status: "OBSERVED_LISTING",
+          dedupe_id: "guest:" + String(p.platform || p.platformLabel || p.listingUrl),
+        });
+      });
+    state.guestSentimentCitations = cites;
     state.citations = buildCitations(state.hotel, state.ownership);
   }
 
@@ -1186,10 +1457,17 @@
   }
 
   /** Subsection card: title + body inside one bordered wrapper */
-  function snapSub(title, bodyHtml) {
+  function snapSub(title, bodyHtml, opts) {
+    opts = opts || {};
+    var head = "";
+    if (title) {
+      head = opts.navHtml
+        ? sectionHeadHtml(title, opts.navHtml, "hiw-snap-sub__title")
+        : '<h3 class="hiw-snap-sub__title">' + title + "</h3>";
+    }
     return (
       '<section class="hiw-snap-sub">' +
-      (title ? '<h3 class="hiw-snap-sub__title">' + title + "</h3>" : "") +
+      head +
       '<div class="hiw-snap-sub__body">' +
       (bodyHtml || "") +
       "</div></section>"
@@ -1467,18 +1745,18 @@
 
   function renderCompactDecisionMakers(people) {
     var list = Array.isArray(people) ? people : [];
+    var contactsLink = navLinkHtml("View Contacts", { "data-hiw-tab": "contacts" });
     if (!list.length) {
       return (
         '<section class="hiw-section" data-ocn-section="decision-makers">' +
-        '<h3 class="hiw-section__h">Relevant Decision-Makers</h3>' +
-        '<p class="hiw-prose hiw-prose--quiet">No owner-side decision-makers verified yet. Open Contact Intelligence for property-level channels.</p>' +
-        '<div class="hiw-actions"><button type="button" class="hiw-btn" data-hiw-tab="contacts">Open Contact Intelligence →</button></div>' +
+        sectionHeadHtml("Relevant Decision-Makers", contactsLink) +
+        '<p class="hiw-prose hiw-prose--quiet">No owner-side decision-makers verified yet. Use View Contacts for property-level channels.</p>' +
         "</section>"
       );
     }
     return (
       '<section class="hiw-section" data-ocn-section="decision-makers">' +
-      '<h3 class="hiw-section__h">Relevant Decision-Makers</h3>' +
+      sectionHeadHtml("Relevant Decision-Makers", contactsLink) +
       '<p class="hiw-prose hiw-prose--quiet">Owner-side contacts only — full cards live in Contact Intelligence.</p>' +
       '<ul class="hiw-list hiw-list--compact">' +
       list
@@ -1499,37 +1777,23 @@
         })
         .join("") +
       "</ul>" +
-      '<div class="hiw-actions"><button type="button" class="hiw-btn" data-hiw-tab="contacts">Open Contact Intelligence →</button></div>' +
       "</section>"
     );
   }
 
-  function renderOwnershipSourcesStrip(ownership) {
-    var cites = state.citations || [];
-    if (!cites.length && ownership && ownership.airtable_graph) {
-      return (
-        '<section class="hiw-section" data-ocn-section="sources">' +
-        '<h3 class="hiw-section__h">Sources and Verification</h3>' +
-        '<p class="hiw-prose">Relationships use HI Graph Evidence. Open Sources &amp; Evidence for citations — internal source IDs are not shown here.</p>' +
-        '<div class="hiw-actions"><button type="button" class="hiw-btn" data-hiw-tab="sources">Open Sources &amp; Evidence →</button></div>' +
-        "</section>"
-      );
-    }
-    return (
-      '<section class="hiw-section" data-ocn-section="sources">' +
-      '<h3 class="hiw-section__h">Sources and Verification</h3>' +
-      (cites.length
-        ? renderSourcesFlatTable(cites.slice(0, 8))
-        : '<p class="hiw-prose hiw-prose--quiet">No citations attached yet.</p>') +
-      '<div class="hiw-actions"><button type="button" class="hiw-btn" data-hiw-tab="sources">Open Sources &amp; Evidence →</button></div>' +
-      "</section>"
-    );
+  function ownershipSourcesNavLink(focusN) {
+    var attrs = { "data-hiw-tab": "sources", "data-hiw-source-filter": "ownership" };
+    if (focusN != null) attrs["data-hiw-source-focus"] = String(focusN);
+    return navLinkHtml("View Sources", attrs);
   }
 
   function renderOwnershipNetworkSection() {
     return (
       '<section class="hiw-section hiw-section--ocn" data-ocn-section="network">' +
-      '<h3 class="hiw-section__h">Hotel Stakeholder &amp; Deal Relationship Network</h3>' +
+      sectionHeadHtml(
+        "Hotel Stakeholder &amp; Deal Relationship Network",
+        ownershipSourcesNavLink(1)
+      ) +
       '<p class="hiw-prose hiw-prose--quiet">Hotel-centered default view. Ownership above · Operations &amp; Brand below. Explore people and related hotels progressively — operator/brand are never drawn as ownership.</p>' +
       '<div class="ocn-host" data-ocn-host="1" aria-label="Hotel stakeholder and deal relationship network"></div>' +
       "</section>"
@@ -1594,11 +1858,17 @@
       .join("");
     var more =
       payload.hasMore || opts.viewAll
-        ? '<div class="hiw-actions"><button type="button" class="hiw-btn" data-hiw-news-view-all>View all articles</button></div>'
+        ? '<div class="hiw-section__nav hiw-section__nav--below">' +
+          navLinkHtml("View all articles", { "data-hiw-news-view-all": "1" }) +
+          "</div>"
         : "";
+    var sourcesLink = navLinkHtml("View Sources", {
+      "data-hiw-tab": "sources",
+      "data-hiw-source-filter": "news",
+    });
     return (
       '<section class="hiw-section hiw-section--hotel-news" data-hiw-hotel-news="1">' +
-      '<h3 class="hiw-section__h">Hotel News &amp; Articles</h3>' +
+      sectionHeadHtml("Hotel News &amp; Articles", sourcesLink) +
       '<p class="hiw-prose hiw-prose--quiet">Property-specific coverage from Dealality Market Alerts.</p>' +
       '<div class="hiw-news-list">' +
       list +
@@ -1929,7 +2199,6 @@
         '<div data-ocn-section="relationships">' +
         graphRelRows +
         "</div>" +
-        renderOwnershipSourcesStrip(ownership) +
         "</article>"
       );
     }
@@ -2077,7 +2346,6 @@
       '<div data-ocn-section="relationships">' +
       cohortRelRows +
       "</div>" +
-      renderOwnershipSourcesStrip(ownership) +
       (gapsHtml
         ? '<section class="hiw-section"><h3 class="hiw-section__h">Research Gaps</h3>' +
           gapsHtml +
@@ -2271,9 +2539,32 @@
     );
   }
 
-  function sourceTableRow(s, n) {
+  function sourceTableRow(s, n, opts) {
+    opts = opts || {};
+    var dates = normalizeCitationDates(s);
+    var pub = formatSourceDate(dates.publication_date);
+    var verified = formatSourceDate(dates.verified_at || dates.accessed_at);
+    var claim = s.claim || s.proves || s.supports || "—";
+    if (String(claim).length > 120) claim = String(claim).slice(0, 117) + "…";
+    var catLabel =
+      (SOURCE_CATEGORY_DEFS.find(function (c) {
+        return c.id === citationCategory(s);
+      }) || {}).label || "Source";
+    var focusClass =
+      opts.focusN != null && Number(opts.focusN) === Number(n) ? " is-source-focus" : "";
+    var openLink = s.url
+      ? '<a class="hiw-linkish" href="' +
+        esc(s.url) +
+        '" target="_blank" rel="noopener noreferrer">Open</a>'
+      : "—";
     return (
-      "<tr>" +
+      '<tr class="hiw-source-row' +
+      focusClass +
+      '" data-hiw-source-row="' +
+      n +
+      '" id="hiw-source-' +
+      n +
+      '">' +
       "<td>" +
       n +
       "</td>" +
@@ -2281,15 +2572,28 @@
       esc(s.title || "Untitled source") +
       "</td>" +
       "<td>" +
-      esc(s.provider || "—") +
+      esc(s.publisher || s.provider || "—") +
       "</td>" +
       "<td>" +
-      esc(s.observed_date || "—") +
+      esc(catLabel) +
       "</td>" +
       "<td>" +
-      '<button type="button" class="hiw-linkish" data-hiw-cite="' +
+      esc(pub) +
+      "</td>" +
+      "<td>" +
+      esc(verified) +
+      "</td>" +
+      "<td>" +
+      esc(claim) +
+      "</td>" +
+      "<td>" +
+      esc(friendlyStatus(s.verification_status || "Referenced")) +
+      "</td>" +
+      "<td>" +
+      openLink +
+      ' · <button type="button" class="hiw-linkish" data-hiw-cite="' +
       n +
-      '">Open Evidence</button>' +
+      '">Evidence</button>' +
       "</td>" +
       "</tr>"
     );
@@ -2299,75 +2603,115 @@
     return (
       "<thead><tr>" +
       th("#") +
-      th("Source") +
+      th("Source title") +
       th("Publisher") +
-      th("Date") +
-      th("Evidence") +
+      th("Category") +
+      th("Published") +
+      th("Verified / accessed") +
+      th("Supports") +
+      th("Status") +
+      th("Link") +
       "</tr></thead>"
     );
   }
 
   /** One sorted Sources-style table (References chapter). */
-  function renderSourcesFlatTable(cites) {
+  function renderSourcesFlatTable(cites, opts) {
+    opts = opts || {};
     if (!cites || !cites.length) {
       return '<p class="hiw-empty">No sources in this cohort.</p>';
     }
     var entries = cites
       .map(function (s, i) {
-        return { s: s, n: i + 1 };
+        return { s: s, n: opts.indexOffset != null ? opts.indexOffset + i + 1 : i + 1 };
       })
       .sort(function (a, b) {
         return a.n - b.n;
       });
     var rows = entries
       .map(function (row) {
-        return sourceTableRow(row.s, row.n);
+        return sourceTableRow(row.s, row.n, { focusN: opts.focusN });
       })
       .join("");
     return wrapTable(sourcesTableHead() + "<tbody>" + rows + "</tbody>", "hiw-table--sources");
   }
 
-  function renderSourcesList() {
-    var cites = state.citations || [];
-    if (!cites.length) return '<p class="hiw-empty">No sources in this cohort.</p>';
-
-    var buckets = {};
-    var order = [];
-    cites.forEach(function (s, i) {
-      var key = toProperCase(s.source_type || sourceTypeLabel(s.provider || s.title));
-      if (!buckets[key]) {
-        buckets[key] = [];
-        order.push(key);
-      }
-      buckets[key].push({ s: s, n: i + 1 });
+  function renderSourcesCategoryFilters(cites) {
+    var counts = { all: (cites || []).length };
+    (cites || []).forEach(function (s) {
+      var cat = citationCategory(s);
+      counts[cat] = (counts[cat] || 0) + 1;
     });
-
-    order.sort(function (a, b) {
-      return String(a).localeCompare(String(b));
-    });
-
-    return order
-      .map(function (key) {
-        var rows = buckets[key]
-          .slice()
-          .sort(function (a, b) {
-            return a.n - b.n;
-          })
-          .map(function (row) {
-            return sourceTableRow(row.s, row.n);
-          })
-          .join("");
-
+    var active = state.sourceFilter || "all";
+    var pills = SOURCE_CATEGORY_DEFS.filter(function (c) {
+      if (c.id === "all") return counts.all > 0;
+      return (counts[c.id] || 0) > 0;
+    })
+      .map(function (c) {
         return (
-          '<section class="hiw-section">' +
-          '<h3 class="hiw-section__h">' +
-          esc(key) +
-          "</h3>" +
-          wrapTable(sourcesTableHead() + "<tbody>" + rows + "</tbody>", "hiw-table--sources") +
-          "</section>"
+          '<button type="button" class="hiw-filter' +
+          (active === c.id ? " is-active" : "") +
+          '" data-hiw-source-filter="' +
+          esc(c.id) +
+          '">' +
+          esc(c.label) +
+          ' <span class="hiw-filter__count">(' +
+          (counts[c.id] || 0) +
+          ")</span></button>"
         );
       })
       .join("");
+    if (!pills) return "";
+    return (
+      '<div class="hiw-filter-group hiw-filter-group--sources">' +
+      '<h4 class="hiw-filter-group__title">Source category</h4>' +
+      '<div class="hiw-filters">' +
+      pills +
+      "</div></div>"
+    );
+  }
+
+  function renderSourcesList() {
+    var all = state.citations || [];
+    if (!all.length) return '<p class="hiw-empty">No sources in this cohort.</p>';
+
+    var filter = state.sourceFilter || "all";
+    var indexed = all.map(function (s, i) {
+      return { s: s, n: i + 1 };
+    });
+    var filtered =
+      filter === "all"
+        ? indexed
+        : indexed.filter(function (row) {
+            return citationCategory(row.s) === filter;
+          });
+
+    if (!filtered.length) {
+      return (
+        renderSourcesCategoryFilters(all) +
+        '<p class="hiw-empty">No sources in this category.</p>'
+      );
+    }
+
+    var rows = filtered
+      .map(function (row) {
+        return sourceTableRow(row.s, row.n, { focusN: state.sourceFocusN });
+      })
+      .join("");
+
+    return (
+      renderSourcesCategoryFilters(all) +
+      '<section class="hiw-section hiw-section--sources-register" data-hiw-sources-register="1">' +
+      sectionHeadHtml(
+        "Hotel source register",
+        '<span class="hiw-prose hiw-prose--quiet">' +
+          filtered.length +
+          (filter === "all" ? " sources" : " in filter") +
+          "</span>"
+      ) +
+      wrapTable(sourcesTableHead() + "<tbody>" + rows + "</tbody>", "hiw-table--sources") +
+      "</section>"
+    );
   }
 
   function resolveOwnerPortfolioScope(orgPayload, ownership) {
@@ -3127,7 +3471,9 @@
           "hiw-table--relationships"
         )
       : '<p class="hiw-empty">No relationships in this filter.</p>';
-    return snapSub("Relationship Detail", pills + tableHtml);
+    return snapSub("Relationship Detail", pills + tableHtml, {
+      navHtml: ownershipSourcesNavLink(1),
+    });
   }
 
   function renderRelationships(hotel, ownership) {
@@ -3845,7 +4191,7 @@
           lim +
           "</ul>"
         : "") +
-      '<p class="hiw-prose hiw-prose--quiet">Hotel Explorer Sources &amp; Evidence remains the citation rail for ownership claims. Licensing and sample-scope notes above are secondary to the executive assessment.</p>' +
+      '<p class="hiw-prose hiw-prose--quiet">Listing URLs also appear in Sources &amp; Evidence under Guest Sentiment. Licensing notes above stay secondary to the executive assessment.</p>' +
       "</div></details>"
     );
   }
@@ -3874,7 +4220,13 @@
     return (
       '<section class="hiw-section hiw-section--guest-sentiment hiw-section--rep-dashboard" data-hiw-guest-sentiment="1" data-hiw-rep-dashboard="1">' +
       '<div class="hiw-rep-dash-head">' +
-      '<h3 class="hiw-section__h">Guest Reputation &amp; Experience</h3>' +
+      sectionHeadHtml(
+        "Guest Reputation &amp; Experience",
+        navLinkHtml("View Sources", {
+          "data-hiw-tab": "sources",
+          "data-hiw-source-filter": "sentiment",
+        })
+      ) +
       (payload.rightsChip
         ? '<p class="hiw-chip hiw-chip--proposed">' + esc(payload.rightsChip) + "</p>"
         : "") +
@@ -3959,6 +4311,7 @@
       return;
     }
     if (st === "STALE" && result.payload && result.payload.visible === true) {
+      applyGuestSentimentEvidencePayload(result.payload);
       host.hidden = false;
       host.innerHTML =
         renderGuestSentimentSection(result.payload) +
@@ -3972,6 +4325,7 @@
       host.innerHTML = "";
       return;
     }
+    applyGuestSentimentEvidencePayload(payload);
     host.hidden = false;
     host.innerHTML = renderGuestSentimentSection(payload);
     bindGuestSentimentDashboard(host.querySelector("[data-hiw-rep-dashboard]"));
@@ -4037,7 +4391,7 @@
     return (
       '<article class="hiw-report">' +
       '<h2 class="hiw-report__title">Sources &amp; Evidence</h2>' +
-      '<p class="hiw-report__subtitle">Click a citation in Ownership or Open Evidence here to inspect what the source supports and what it does not establish.</p>' +
+      '<p class="hiw-report__subtitle">One hotel-specific register for research evidence. Published dates stay distinct from verification or access dates. Open a source link or Evidence to inspect what it supports.</p>' +
       '<div class="he-async-slot" data-hiw-sources-ma-slot="1" hidden></div>' +
       renderSourcesList() +
       "</article>"
@@ -4132,15 +4486,20 @@
           esc(shortUrlLabel(cite.url)) +
           "</a></p>"
         : "") +
-      (cite.observed_date ? "<p>Observed " + esc(cite.observed_date) + "</p>" : "") +
+      (cite.publication_date
+        ? "<p><strong>Published</strong> — " + esc(formatSourceDate(cite.publication_date)) + "</p>"
+        : "") +
+      (cite.verified_at
+        ? "<p><strong>Last verified</strong> — " + esc(formatSourceDate(cite.verified_at)) + "</p>"
+        : "") +
+      (cite.accessed_at && cite.accessed_at !== cite.verified_at
+        ? "<p><strong>Accessed</strong> — " + esc(formatSourceDate(cite.accessed_at)) + "</p>"
+        : "") +
       (cite.publisher || cite.provider
         ? "<p><strong>Publisher</strong> — " + esc(cite.publisher || cite.provider) + "</p>"
         : "") +
       (cite.verification_status
         ? "<p><strong>Verification</strong> — " + esc(friendlyStatus(cite.verification_status)) + "</p>"
-        : "") +
-      (cite.market_alerts_id
-        ? "<p><strong>Market Alerts ID</strong> — " + esc(cite.market_alerts_id) + "</p>"
         : "") +
       (cite.excerpt ? "<p>" + esc(cite.excerpt) + "</p>" : "") +
       "<p><strong>Supports</strong> — " +
@@ -4152,9 +4511,35 @@
     );
   }
 
-  function setTab(tabId) {
+  function prepareTabNav(opts) {
+    opts = opts || {};
+    if (opts.sourceFilter) state.sourceFilter = opts.sourceFilter;
+    if (opts.sourceFocus != null && opts.sourceFocus !== "") {
+      state.sourceFocusN = Number(opts.sourceFocus) || opts.sourceFocus;
+    }
+  }
+
+  function setTab(tabId, opts) {
+    opts = opts || {};
+    prepareTabNav(opts);
     state.tab = tabId;
     paint();
+  }
+
+  function highlightFocusedSourceRow() {
+    if (state.tab !== "sources" || state.sourceFocusN == null) return;
+    var n = state.sourceFocusN;
+    var row =
+      document.getElementById("hiw-source-" + n) ||
+      document.querySelector('[data-hiw-source-row="' + n + '"]');
+    if (!row) return;
+    row.classList.add("is-source-focus");
+    try {
+      row.scrollIntoView({ block: "center", behavior: "smooth" });
+    } catch (_err) {
+      row.scrollIntoView(true);
+    }
+    openCitation(n);
   }
 
   function openCitation(n) {
@@ -4208,7 +4593,10 @@
       mountHotelNewsArticles();
       mountGuestSentiment();
     }
-    if (state.tab === "sources") mountMarketAlertsEvidenceForSources();
+    if (state.tab === "sources") {
+      mountMarketAlertsEvidenceForSources();
+      window.setTimeout(highlightFocusedSourceRow, 60);
+    }
   }
 
   function loadOrgNetwork() {
@@ -4366,7 +4754,17 @@
     }
     var tab = e.target.closest("[data-hiw-tab]");
     if (tab) {
-      setTab(tab.getAttribute("data-hiw-tab"));
+      setTab(tab.getAttribute("data-hiw-tab"), {
+        sourceFilter: tab.getAttribute("data-hiw-source-filter") || undefined,
+        sourceFocus: tab.getAttribute("data-hiw-source-focus") || undefined,
+      });
+      return;
+    }
+    var sourceFilt = e.target.closest("[data-hiw-source-filter]");
+    if (sourceFilt && !sourceFilt.getAttribute("data-hiw-tab")) {
+      state.sourceFilter = sourceFilt.getAttribute("data-hiw-source-filter") || "all";
+      state.sourceFocusN = null;
+      paint();
       return;
     }
     var cite = e.target.closest("[data-hiw-cite]");
@@ -4690,9 +5088,13 @@
     open: open,
     close: close,
     setTab: setTab,
+    prepareTabNav: prepareTabNav,
     loadOrgNetwork: loadOrgNetwork,
     setRelFilter: function (value) {
       state.relFilter = value || "all";
+    },
+    setSourceFilter: function (value) {
+      state.sourceFilter = value || "all";
     },
     getCitations: function () {
       return state.citations || [];
@@ -4720,5 +5122,6 @@
     mountGuestSentiment: mountGuestSentiment,
     mountMarketAlertsEvidenceForSources: mountMarketAlertsEvidenceForSources,
     openCitation: openCitation,
+    highlightFocusedSourceRow: highlightFocusedSourceRow,
   };
 })();

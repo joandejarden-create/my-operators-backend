@@ -1,6 +1,6 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.19`  
+**Version:** `hotel-explorer-quality-standard-v1.20`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
 **Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1` · `npm run test:he-hotel-news-from-market-alerts-v1` · `npm run test:he-guest-sentiment-brand-operator-v1` · `npm run test:he-market-alerts-closeout-v1` · `npm run test:he-async-section-loading-v1` · `npm run test:he-contact-intelligence-directory-ux-v1` · `npm run test:he-loading-ux-toast-v1`
@@ -89,6 +89,11 @@ KGPV (golden UX) and Bethesda Marriott (Airtable-first pilot) define the permane
 
 - Every newly displayed verified fact links to Sources / evidence.
 - Fixture / staged / proposed content must be labeled as such.
+- **One canonical Sources & Evidence tab (HE-QL-031):** all hotel-specific research evidence lives in a single deduplicated register (HI Graph Evidence, HPC/ADP references, Market Alerts, guest reputation listings, contact provenance). Do **not** duplicate source tables on Ownership or other tabs. Do **not** copy canonical Market Alerts / HI Evidence into a second Airtable merely for presentation.
+- Register fields: source title · publisher · category · publication date · verified/accessed date · supported claim · verification status · original link. Publication date must never be replaced by research/access/verification time; unknown publication stays unknown.
+- Category filters (show only categories present for the hotel): All · Property & Facilities · Ownership & Organizations · Contacts & People · Financing & Development · Brand & Operator · News & Market Alerts · Guest Sentiment.
+- Cross-tab navigation uses compact header-right text links (`View Contacts` / `View Sources`) — not oversized white `hiw-btn` cards. Links preserve hotel + preview mode and may deep-link (`data-hiw-source-filter` / `data-hiw-source-focus`) to highlight rows. Keep contextual hyperlinks (LinkedIn on contact cards, article headlines) where useful — centralize the register, not every action link.
+- Forbidden in customer UI: duplicate “Sources and Verification” subsections, raw evidence IDs / developer enums, repeated verification essays across tabs, inconsistent hyperlink styling.
 
 ### 8. Navigation & tables
 
@@ -176,7 +181,7 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 - Readable nodes: min ~13px body label, content-measured width/height, wrapped text, no overflow clipping; long titles/evidence belong in the **detail panel**.
 - Progressive disclosure: Explore Key People / Explore Related Hotels / Brand Development view; bounded visible caps; collapse supported; short edge tags with full meaning on edge/node selection.
 - Visual + label differentiation for verified / proposed / historical / unresolved (not color alone).
-- Tab structure: Executive Ownership Summary → Stakeholder Network → Relevant Decision-Makers (compact; Contact Intelligence for full cards) → Relationship Detail ↔ graph highlight → Sources & Verification.
+- Tab structure: Executive Ownership Summary → Stakeholder Network → Relevant Decision-Makers (compact; header **View Contacts** link) → Relationship Detail ↔ graph highlight (header **View Sources** deep-links to Sources & Evidence). No inline Sources and Verification table on Ownership.
 - Forbidden: node-text overflow, overlapping nodes, unreadable typography, unbounded portfolio dumps, duplicate hierarchy text blocks, raw graph node IDs / internal enums, HPC property-contact fallback panels, proposed styled as verified, deep links without resolved HPC IDs, unsupported capital/advisor nodes.
 - Shared modules: `lib/hotel-intelligence/ownership/ownership-control-network-v1.js` + `public/js/he-ownership-control-network-v1.js`.
 
