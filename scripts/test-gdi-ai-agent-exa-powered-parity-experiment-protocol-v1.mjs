@@ -24,9 +24,18 @@ assert.ok(fs.existsSync(focusPath), "focus-eight lock missing");
 
 const j = JSON.parse(fs.readFileSync(summary, "utf8"));
 assert.equal(j.schema, "gdi_ai_agent_exa_powered_parity_experiment_v1");
-assert.equal(j.status, "PROTOCOL_DESIGN_LOCKED_SPEND_DENIED");
+assert.ok(
+  j.status === "PROTOCOL_DESIGN_LOCKED_SPEND_DENIED" ||
+    j.status === "E0_HARNESS_READY_SPEND_DENIED",
+  `unexpected status ${j.status}`,
+);
 assert.equal(j.paidResearchAuthorized, false);
 assert.equal(j.paidResearchExecuted, false);
+if (j.e0) {
+  assert.equal(j.e0.actualPaidUsd, 0);
+  assert.equal(j.e0.e1Readiness, "E1_READY");
+  assert.equal(j.e0.commercialVerdict, "NOT_APPLICABLE_E0_MOCK");
+}
 assert.equal(j.clarification.wave1OfficialPageIterateDoesNotTestExaPoweredBaseline, true);
 assert.equal(j.clarification.doNotConcludeAgentsHaveNoValueFromOfficialPageOnly, true);
 assert.equal(j.fairnessContract.identicalExaCapabilitiesBothArms, true);
