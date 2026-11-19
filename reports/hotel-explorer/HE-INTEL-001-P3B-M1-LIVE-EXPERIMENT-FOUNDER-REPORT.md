@@ -1,6 +1,8 @@
 # HE-INTEL-001 P3B-M1 — First live ownership experiment (no-spend readiness)
 
 **Status:** `AWAITING_INTEGRATION_CONTROLLER` — STOP before paid execution  
+**PR:** [#443](https://github.com/joandejarden-create/my-operators-backend/pull/443) — OPEN  
+**HEAD:** `c978ea814c3487041cb27915010f17b52ef542d8`  
 **Workspace:** `C:\Dev\dealality\ws-hotel-explorer`  
 **Branch:** `feat/he-intel-001-p3b-m1-live-experiment-readiness`  
 **Baseline:** PR #439 merged at `8a3cd20eb33ee377ba38fafbe10f7c498ba4c7dc` (on `origin/main`)
