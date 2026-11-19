@@ -1,0 +1,85 @@
+{
+  "schema": "gdi_ai_agent_incremental_value_experiment_v1",
+  "version": "2026-11-19.1",
+  "status": "PROTOCOL",
+  "primaryQuestion": "Does agent-assisted research outperform current GDI workflow on genuinely new, verified, commercially actionable hotel demand intelligence?",
+  "pr414Role": "limitations_memo_only_not_product_authorization",
+  "deferredProductWork": [
+    "demand_mechanism_mission_packs",
+    "market_opportunity_graph_intake_product_gate",
+    "zero_cost_official_discovery_provider_architecture",
+    "full_e2e_discovery_completion_policy_hardening_as_product"
+  ],
+  "reusedHarnesses": [
+    "gdi-20opp-adaptive-investigation-experiment-v1",
+    "gdi-20opp-live-research-prep-v1",
+    "gdi-discovery-intake-disposition-v1",
+    "opportunity-research-supervisor-v1",
+    "commercial-eligibility-contract-v1"
+  ],
+  "arms": {
+    "A": "Existing GDI: ORS + eligibility + challenger on frozen evidence",
+    "B": "Agent-assisted: same gates + bounded adaptive planning/retrieval under parity"
+  },
+  "cohort": {
+    "frozenSource": "fixtures/gdi-experiments/gdi-20opp-adaptive-investigation-v1/",
+    "fullCases": 20,
+    "focusSubsetCases": 8,
+    "excludeDeepenLoops": [
+      "gdi_lmc_00562bf81b1e1957",
+      "gdi_opp_2027_ddaa_annual_conference_8"
+    ]
+  },
+  "budgetParity": {
+    "wave0_offline": { "paidUsd": 0, "network": false },
+    "wave1_live_public": {
+      "paidUsd": 0,
+      "paidProviders": "denied",
+      "requiresFounderAuthFlag": "GDI_AI_AGENT_LIVE_PUBLIC_AUTH=1",
+      "maxFetchesPerCase": 12
+    },
+    "wave2_paid": {
+      "requiresSeparateFounderAuthorization": true,
+      "defaultAuthorized": false
+    }
+  },
+  "attributionTags": [
+    "REASONING_ONLY",
+    "RETRIEVAL_COVERAGE",
+    "PROVIDER_ACCESS",
+    "BUDGET_ASYMMETRY"
+  ],
+  "primaryMetrics": [
+    "new_verified_opportunities_or_cycles",
+    "newly_verified_commercially_relevant_named_contacts",
+    "material_demand_thesis_strengtheners",
+    "hotel_specific_actionability",
+    "efficiency_time_cost_fetches",
+    "false_positives_unsupported_claims_duplicates",
+    "correct_rejections_demotions_separate"
+  ],
+  "nonRewards": [
+    "extra_urls_without_new_facts",
+    "historical_replay_as_new",
+    "fixture_recovery",
+    "narrative_without_new_facts",
+    "known_contacts_as_newly_discovered",
+    "rubric_total_alone"
+  ],
+  "decisionFramework": {
+    "wave0CannotAdopt": true,
+    "ADOPT": ">=2 focus cases with challenger-confirmed material lift on metrics 1-4; zero false SALES_READY; correct rejection retained; no budget asymmetry",
+    "ITERATE": "some confirmed lift or quality demotions but <2 material commercial lifts or weak/URL theater",
+    "REJECT": "no confirmed commercial lift and no systematic quality gain, or increased false positives"
+  },
+  "priorEvidence": {
+    "offline20opp": "ITERATE_rubric_not_new_facts",
+    "live5caseZeroCost": "weak_commercial_lift",
+    "phase2b": "STOP"
+  },
+  "writes": {
+    "airtable": false,
+    "customerPublication": false
+  },
+  "docPath": "docs/data-intelligence/gdi-ai-agent-incremental-value-experiment-v1.md"
+}
