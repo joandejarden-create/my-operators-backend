@@ -1,6 +1,6 @@
 # Brand Explorer Phase 2D — Curio Quality Recovery
 
-- Generated: 2026-11-19T12:53:43.931Z
+- Generated: 2026-11-19T12:57:37.133Z
 - Target: Curio Collection by Hilton
 - Presentation used as generator input: **NO**
 - Production Airtable writes: **NO**
@@ -61,10 +61,6 @@
 ```
 
 ## Atelier validation
-
-- Real renderer VM mount: **PASS** (10 tab markers, 68k HTML chars via uildPanelsHtmlForTest)
-- Live localhost browser: BLOCKED (BE worktree missing node_modules; :8080 serves another checkout without Phase 2D overlay assets)
-
 
 - Overlay: `/brand-explorer-phase2d-preview/curio-candidate.json`
 - URL: `/brand-explorer-combined.html?brand=curio-collection&beInternalPreview=1&beCandidateOverlay=1`
