@@ -2561,12 +2561,18 @@
     label: "Group & Demand\nOpportunities",
   };
 
+  /** PDI-3 — immediately left of Commercial Priorities */
+  var GDI_PORTFOLIO_TAB = {
+    id: "portfolio",
+    label: "Portfolio Demand\nIntelligence",
+  };
+
   var GDI_PRIORITIES_TAB = {
     id: "priorities",
     label: "Commercial Priorities",
   };
 
-  var GDI_CUSTOMER_TABS = [GDI_MAIN_TAB, GDI_PRIORITIES_TAB];
+  var GDI_CUSTOMER_TABS = [GDI_MAIN_TAB, GDI_PORTFOLIO_TAB, GDI_PRIORITIES_TAB];
 
   /**
    * Customer/share property-bar status only.
@@ -2799,6 +2805,8 @@
         '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
       audit:
         '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8a2 2 0 0 1 2 2v14l-6-3-6 3V6a2 2 0 0 1 2-2z"/></svg>',
+      portfolio:
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h7v10H3z"/><path d="M14 7h7v4h-7z"/><path d="M14 13h7v4h-7z"/></svg>',
       priorities:
         '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>',
     };
@@ -10298,6 +10306,7 @@
     contentTabsHtml: contentTabsHtml,
     formatTabLabel: formatTabLabel,
     GDI_MAIN_TAB: GDI_MAIN_TAB,
+    GDI_PORTFOLIO_TAB: GDI_PORTFOLIO_TAB,
     GDI_PRIORITIES_TAB: GDI_PRIORITIES_TAB,
     GDI_CUSTOMER_TABS: GDI_CUSTOMER_TABS,
     customerSafeRunStatusLabel: customerSafeRunStatusLabel,
