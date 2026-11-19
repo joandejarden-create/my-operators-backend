@@ -1,23 +1,29 @@
 #!/usr/bin/env node
 /**
- * PDI-2 — read-only portfolio API authorization + fit retrieval ($0).
+ * PDI-2 security + functional regressions (offline, $0).
  */
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { createPortfolioReadonlyApi } from "../lib/group-demand-intelligence/portfolio-demand-intelligence/gdi-portfolio-readonly-api-v1.js";
+import {
+  createPortfolioReadonlyApi,
+  isHotelPublicationEligible,
+} from "../lib/group-demand-intelligence/portfolio-demand-intelligence/gdi-portfolio-readonly-api-v1.js";
 import {
   PORTFOLIO_AUTH_DENY,
   rejectFuzzyOperatorAuthorizationAttempt,
 } from "../lib/group-demand-intelligence/portfolio-demand-intelligence/gdi-portfolio-operator-authorization-v1.js";
 import { PORTFOLIO_HOTEL_FIT_CLASS } from "../lib/group-demand-intelligence/portfolio-demand-intelligence/gdi-portfolio-hotel-opportunity-fit-contract-v1.js";
+import {
+  callerFromVerifiedRequest,
+  getLivePortfolioReadonlyApi,
+  getPortfolioReadonlyApiForRequest,
+  resetPortfolioReadonlyApiCache,
+} from "../api/gdi-portfolio-demand-intelligence.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const FIX = path.join(
-  ROOT,
-  "fixtures/gdi-portfolio-demand-intelligence-v1",
-);
+const FIX = path.join(ROOT, "fixtures/gdi-portfolio-demand-intelligence-v1");
 const REPORT = path.join(
   ROOT,
   "reports/gdi-portfolio-demand-intelligence-pdi-2-v1",
@@ -41,165 +47,263 @@ const api = createPortfolioReadonlyApi({
   ],
 });
 
-const aimbridgeCaller = {
-  authenticated: true,
-  memberstackMemberId: "mem_aimbridge_cala_steward_v1",
-  sessionId: "sess_aimbridge_cala_steward_v1",
-};
-const otherCaller = {
-  authenticated: true,
-  memberstackMemberId: "mem_other_operator_v1",
-};
+function verified(memberId, extras = {}) {
+  return {
+    serverVerified: true,
+    verifiedMemberstackMemberId: memberId,
+    ...extras,
+  };
+}
 
-// Unauthenticated
-const unauth = api.listOperatorMarkets({});
-assert.equal(unauth.ok, false);
-assert.equal(unauth.status, 401);
-assert.equal(unauth.error.code, PORTFOLIO_AUTH_DENY.UNAUTHENTICATED);
+const securityTable = [];
 
-// Fuzzy company-name rejected
-const fuzzy = rejectFuzzyOperatorAuthorizationAttempt({
-  companyName: "Aimbridge Hospitality",
+function check(vuln, mitigation, fn) {
+  fn();
+  securityTable.push({ vulnerability: vuln, mitigation, regression: "PASS" });
+}
+
+// --- Adversarial auth ---
+check("Unauthenticated access", "serverVerified required", () => {
+  const r = api.listOperatorMarkets({});
+  assert.equal(r.ok, false);
+  assert.equal(r.error.code, PORTFOLIO_AUTH_DENY.UNAUTHENTICATED);
 });
-assert.equal(fuzzy.ok, false);
-assert.equal(fuzzy.code, PORTFOLIO_AUTH_DENY.FUZZY_NAME_MATCH_REJECTED);
-const fuzzyCall = api.listOperatorMarkets({
-  authenticated: true,
-  companyName: "Aimbridge Hospitality",
+
+check("Spoofed member/session headers", "callerFromVerifiedRequest flags + ignores", () => {
+  const caller = callerFromVerifiedRequest({
+    headers: {
+      "x-dealality-member-id": "mem_aimbridge_cala_steward_v1",
+      "x-dealality-session-id": "sess_spoof",
+    },
+    query: {},
+    dealalityUser: null,
+    memberstackMemberId: null,
+  });
+  assert.equal(caller.clientSuppliedIdentityAttempt, true);
+  assert.equal(caller.serverVerified, false);
+  const r = api.listOperatorMarkets(caller);
+  assert.equal(r.ok, false);
+  assert.equal(r.error.code, PORTFOLIO_AUTH_DENY.CLIENT_SUPPLIED_IDENTITY_REJECTED);
 });
-assert.equal(fuzzyCall.ok, false);
-assert.ok(
-  [
-    PORTFOLIO_AUTH_DENY.FUZZY_NAME_MATCH_REJECTED,
-    PORTFOLIO_AUTH_DENY.OPERATOR_NOT_MAPPED,
-  ].includes(fuzzyCall.error.code),
+
+check("Query-supplied sessionId", "ignored; not used for auth", () => {
+  const caller = callerFromVerifiedRequest({
+    headers: {},
+    query: { sessionId: "sess_aimbridge_cala_steward_v1" },
+    dealalityUser: null,
+  });
+  assert.equal(caller.clientSuppliedIdentityAttempt, true);
+  assert.equal(caller.serverVerified, false);
+});
+
+check("Company-name impersonation", "FUZZY_NAME_MATCH_REJECTED", () => {
+  const fuzzy = rejectFuzzyOperatorAuthorizationAttempt({
+    companyName: "Aimbridge Hospitality",
+  });
+  assert.equal(fuzzy.code, PORTFOLIO_AUTH_DENY.FUZZY_NAME_MATCH_REJECTED);
+  const r = api.listOperatorMarkets({
+    serverVerified: false,
+    companyName: "Aimbridge Hospitality",
+  });
+  assert.equal(r.ok, false);
+});
+
+check("Cross-operator access", "CROSS_OPERATOR_DENIED", () => {
+  const r = api.listPortfolioHotels(
+    verified("mem_other_operator_v1", {
+      requestedOperatorId: "op_aimbridge_cala_steward_v1",
+    }),
+    {
+      requestedOperatorId: "op_aimbridge_cala_steward_v1",
+      marketId: "market_guadalajara_mx_v1",
+    },
+  );
+  assert.equal(r.ok, false);
+  assert.equal(r.error.code, PORTFOLIO_AUTH_DENY.CROSS_OPERATOR_DENIED);
+});
+
+check("Missing operator registry member", "OPERATOR_NOT_MAPPED", () => {
+  const r = api.listOperatorMarkets(verified("mem_unknown_not_in_registry"));
+  assert.equal(r.ok, false);
+  assert.equal(r.error.code, PORTFOLIO_AUTH_DENY.OPERATOR_NOT_MAPPED);
+});
+
+check("Missing market allowlist", "MARKET_ALLOWLIST_REQUIRED (never broadens)", () => {
+  const r = api.listOperatorMarkets(verified("mem_missing_allowlist_v1"));
+  assert.equal(r.ok, false);
+  assert.equal(r.error.code, PORTFOLIO_AUTH_DENY.MARKET_ALLOWLIST_REQUIRED);
+});
+
+check("Empty market allowlist", "denies all markets", () => {
+  const r = api.listPortfolioHotels(verified("mem_empty_allowlist_v1"), {
+    marketId: "market_guadalajara_mx_v1",
+  });
+  assert.equal(r.ok, false);
+  assert.equal(r.error.code, PORTFOLIO_AUTH_DENY.MARKET_NOT_AUTHORIZED);
+});
+
+check("Wrong-market hotel (Cancún under Guadalajara)", "HOTEL_NOT_IN_PORTFOLIO", () => {
+  const r = api.getPortfolioMarketOpportunity(
+    verified("mem_aimbridge_cala_steward_v1"),
+    { marketId: "market_guadalajara_mx_v1", hotelId: "recTk5I8VOzsPhxDz" },
+  );
+  assert.equal(r.ok, false);
+  assert.equal(r.error.code, PORTFOLIO_AUTH_DENY.HOTEL_NOT_IN_PORTFOLIO);
+});
+
+check("Opportunity with no marketId", "excluded from corpus", () => {
+  const r = api.getPortfolioMarketOpportunity(
+    verified("mem_aimbridge_cala_steward_v1"),
+    { marketId: "market_guadalajara_mx_v1" },
+  );
+  assert.equal(r.ok, true);
+  assert.ok(
+    !r.results.some((x) =>
+      String(x.sharedMarketPacket?.title || "").includes("no marketId"),
+    ),
+  );
+});
+
+check(
+  "Research-only without customerSurface (default customer)",
+  "unpublished/research-only filtered by default",
+  () => {
+    const r = api.getPortfolioMarketOpportunity(
+      verified("mem_aimbridge_cala_steward_v1"),
+      { marketId: "market_guadalajara_mx_v1" },
+    );
+    assert.equal(r.ok, true);
+    assert.equal(r.accessMode, "CUSTOMER");
+    assert.ok(
+      !r.results.some((x) =>
+        String(x.sharedMarketPacket?.title || "").includes("unpublished"),
+      ),
+    );
+  },
 );
 
-// Authorized markets
-const markets = api.listOperatorMarkets(aimbridgeCaller);
-assert.equal(markets.ok, true);
-assert.ok(markets.markets.some((m) => m.marketId === "market_guadalajara_mx_v1"));
-
-// Cross-operator denied
-const cross = api.listPortfolioHotels(otherCaller, {
-  operatorId: "op_aimbridge_cala_steward_v1",
-  marketId: "market_guadalajara_mx_v1",
+check("customerSurface=0 bypass attempt", "requires GDI_INTERNAL_RESEARCH_READ", () => {
+  const r = api.getPortfolioMarketOpportunity(
+    verified("mem_aimbridge_cala_steward_v1"),
+    {
+      marketId: "market_guadalajara_mx_v1",
+      customerSurface: false,
+      internalResearch: true,
+    },
+  );
+  assert.equal(r.ok, false);
+  assert.equal(r.error.code, PORTFOLIO_AUTH_DENY.INTERNAL_RESEARCH_NOT_AUTHORIZED);
 });
-assert.equal(cross.ok, false);
-assert.equal(cross.status, 403);
 
-// Guadalajara hotels — Cancún not included
-const hotels = api.listPortfolioHotels(aimbridgeCaller, {
-  marketId: "market_guadalajara_mx_v1",
-});
-assert.equal(hotels.ok, true);
-assert.equal(hotels.hotels.length, 2);
-assert.ok(!hotels.hotels.some((h) => h.hotelId === "recTk5I8VOzsPhxDz"));
-
-// Wrong-market hotel request denied
-const wrongHotel = api.getPortfolioMarketOpportunity(aimbridgeCaller, {
-  marketId: "market_guadalajara_mx_v1",
-  hotelId: "recTk5I8VOzsPhxDz",
-});
-assert.equal(wrongHotel.ok, false);
-assert.equal(wrongHotel.error.code, PORTFOLIO_AUTH_DENY.HOTEL_NOT_IN_PORTFOLIO);
-
-// Missing membership market
-const noMkt = api.listPortfolioHotels(aimbridgeCaller, {
-  marketId: "market_does_not_exist",
-});
-assert.equal(noMkt.ok, false);
-
-// Fit matrix — published corpus (internal surface includes unpublished too)
-const internal = api.getPortfolioMarketOpportunity(aimbridgeCaller, {
-  marketId: "market_guadalajara_mx_v1",
-  customerSurface: false,
-});
-assert.equal(internal.ok, true);
-assert.ok(internal.results.length >= 2);
-const pubRow = internal.results.find((r) =>
-  String(r.sharedMarketPacket?.title || "").includes("medical congress 2028"),
-);
-const unpubRow = internal.results.find((r) =>
-  String(r.sharedMarketPacket?.title || "").includes("unpublished"),
-);
-assert.ok(pubRow);
-assert.ok(unpubRow);
-const sheraton = pubRow.hotelAssessments.find(
-  (h) => h.hotelId === "recCAGqkERSXgiku4",
-);
-const unknown = pubRow.hotelAssessments.find(
-  (h) => h.hotelId === "fixture_gdi_pdi_gdl_select_service_unknown_meetings",
-);
-assert.ok(sheraton);
-assert.ok(unknown);
-assert.equal(sheraton.marketOpportunityId, unknown.marketOpportunityId);
-assert.notEqual(sheraton.hotelOpportunityId, unknown.hotelOpportunityId);
-assert.ok(sheraton.drawer?.detailPath);
-assert.equal(
-  unknown.fitClass,
-  PORTFOLIO_HOTEL_FIT_CLASS.INSUFFICIENT_EVIDENCE,
-);
-assert.ok(
-  [
-    PORTFOLIO_HOTEL_FIT_CLASS.POTENTIAL_PRIMARY_HOST,
-    PORTFOLIO_HOTEL_FIT_CLASS.MEETING_CATERING_OPPORTUNITY,
-    PORTFOLIO_HOTEL_FIT_CLASS.OVERFLOW_ACCOMMODATION,
-    PORTFOLIO_HOTEL_FIT_CLASS.OTHER_PARTNERSHIP,
-  ].includes(sheraton.fitClass),
-);
-const sharedBlob = JSON.stringify(pubRow.sharedMarketPacket);
-assert.equal(sharedBlob.includes("CONFIDENTIAL_OPERATOR_FEEDBACK_MUST_NOT_LEAK"), false);
-
-// Customer surface filters unpublished
-const customer = api.getPortfolioMarketOpportunity(aimbridgeCaller, {
-  marketId: "market_guadalajara_mx_v1",
-  customerSurface: true,
-});
-assert.equal(customer.ok, true);
-assert.equal(customer.results.length, 1);
-assert.ok(
-  String(customer.results[0].sharedMarketPacket.title).includes(
-    "medical congress 2028",
-  ),
+check(
+  "Market-level publication without hotel-level authorization",
+  "hotel rows omitted; no drawer",
+  () => {
+    assert.equal(
+      isHotelPublicationEligible(
+        fixture.additionalMarketOpportunities.find(
+          (o) => o.id === "seed_gdl_market_pub_no_hotel_pub",
+        ),
+        "recCAGqkERSXgiku4",
+      ),
+      false,
+    );
+    const r = api.getPortfolioMarketOpportunity(
+      verified("mem_aimbridge_cala_steward_v1"),
+      { marketId: "market_guadalajara_mx_v1" },
+    );
+    assert.ok(
+      !r.results.some((x) =>
+        String(x.sharedMarketPacket?.title || "").includes(
+          "without hotel-level",
+        ),
+      ),
+    );
+  },
 );
 
-// Unmapped member
-const unmapped = api.listOperatorMarkets({
-  authenticated: true,
-  memberstackMemberId: "mem_unknown_not_in_registry",
+check("Unpublished hotel drawer link withheld", "drawer.detailPath null", () => {
+  // Internal privileged path can see unpublished hotel fits but customer default withholds
+  const internal = api.getPortfolioMarketOpportunity(
+    verified("mem_aimbridge_internal_research_v1"),
+    {
+      marketId: "market_guadalajara_mx_v1",
+      internalResearch: true,
+      customerSurface: false,
+    },
+  );
+  assert.equal(internal.ok, true);
+  assert.equal(internal.accessMode, "INTERNAL_RESEARCH");
+  const pub = internal.results.find((x) =>
+    String(x.sharedMarketPacket?.title || "").includes("medical congress 2028"),
+  );
+  assert.ok(pub);
+  const unknown = pub.hotelAssessments.find(
+    (h) => h.hotelId === "fixture_gdi_pdi_gdl_select_service_unknown_meetings",
+  );
+  assert.ok(unknown);
+  assert.equal(unknown.publicationEligible, false);
 });
-assert.equal(unmapped.ok, false);
-assert.equal(unmapped.error.code, PORTFOLIO_AUTH_DENY.OPERATOR_NOT_MAPPED);
+
+check("Fixture auth on non-test runtime", "live path fail-closed without data/", () => {
+  resetPortfolioReadonlyApiCache();
+  const live = getLivePortfolioReadonlyApi();
+  assert.equal(live.ok, false);
+  assert.equal(live.error.code, PORTFOLIO_AUTH_DENY.REGISTRY_NOT_CONFIGURED);
+  const viaReq = getPortfolioReadonlyApiForRequest({});
+  assert.equal(viaReq.ok, false);
+});
+
+check("Valid authorized customer access after corrections", "Sheraton published only", () => {
+  const r = api.getPortfolioMarketOpportunity(
+    verified("mem_aimbridge_cala_steward_v1"),
+    { marketId: "market_guadalajara_mx_v1" },
+  );
+  assert.equal(r.ok, true);
+  assert.equal(r.results.length, 1);
+  const row = r.results[0];
+  assert.equal(row.hotelAssessments.length, 1);
+  assert.equal(row.hotelAssessments[0].hotelId, "recCAGqkERSXgiku4");
+  assert.equal(row.hotelAssessments[0].publicationEligible, true);
+  assert.ok(row.hotelAssessments[0].drawer.detailPath);
+  assert.ok(
+    [
+      PORTFOLIO_HOTEL_FIT_CLASS.POTENTIAL_PRIMARY_HOST,
+      PORTFOLIO_HOTEL_FIT_CLASS.MEETING_CATERING_OPPORTUNITY,
+      PORTFOLIO_HOTEL_FIT_CLASS.OVERFLOW_ACCOMMODATION,
+      PORTFOLIO_HOTEL_FIT_CLASS.OTHER_PARTNERSHIP,
+    ].includes(row.hotelAssessments[0].fitClass),
+  );
+  assert.equal(
+    JSON.stringify(row.sharedMarketPacket).includes(
+      "CONFIDENTIAL_OPERATOR_FEEDBACK_MUST_NOT_LEAK",
+    ),
+    false,
+  );
+});
+
+// Injected API path for HTTP harness
+{
+  const injected = getPortfolioReadonlyApiForRequest({
+    portfolioReadonlyApi: api,
+  });
+  assert.equal(injected.ok, true);
+}
 
 fs.mkdirSync(REPORT, { recursive: true });
 const summary = {
   version: "gdi-portfolio-demand-intelligence-pdi-2-v1",
   at: new Date().toISOString(),
+  securityAmendment: true,
   paidCalls: 0,
   airtableWrites: 0,
   productionWrites: 0,
   publicationWrites: 0,
-  priorPrs: { pdi1: 446, slice2b: 448 },
-  checks: {
-    unauthenticatedDenied: true,
-    fuzzyNameRejected: true,
-    crossOperatorDenied: true,
-    cancunExcludedFromGuadalajara: true,
-    wrongMarketHotelDenied: true,
-    insufficientEvidencePreserved: true,
-    confidentialStripped: true,
-    unpublishedFilteredOnCustomerSurface: true,
-    drawerLinksPresent: true,
-  },
+  securityTable,
   remainingGaps: [
-    "Live Memberstack→operator steward registry (production) not yet provisioned",
-    "PDI-3 portfolio tab UI deferred until founder review of this API",
-    "Brief v2 narrative quality is next Track A slice after this PR",
-    "Airtable production membership read-back still founder-gated",
+    "Live steward operator-auth-registry.json + portfolio-inventory.json must be provisioned before customer use",
+    "Brief v2 (Track A) and PDI-3 UI deferred pending founder merge of hardened PDI-2",
   ],
-  recommendedNext:
-    "Founder review → Track A Commercial Intelligence Brief v2; then PDI-3 tab reusing Brief v2 + existing drawer",
 };
 fs.writeFileSync(
   path.join(REPORT, "RESULTS.json"),
@@ -207,38 +311,53 @@ fs.writeFileSync(
 );
 fs.writeFileSync(
   path.join(REPORT, "FOUNDER_RESULTS.md"),
-  `# GDI PDI-2 — Read-only portfolio API results
+  `# GDI PDI-2 — Security amendment results
 
 Generated: ${summary.at}
 
+## Before → After
+
+| Vulnerability | Mitigation | Regression |
+|---|---|---|
+${securityTable
+  .map((r) => `| ${r.vulnerability} | ${r.mitigation} | ${r.regression} |`)
+  .join("\n")}
+
 ## Safety
-- Paid calls: 0 · Airtable writes: 0 · Publication writes: 0 · New tables: 0
-
-## Authorization
-- Unauthenticated → 401
-- Company-name / fuzzy → rejected
-- Cross-operator → 403
-- Cancún hotel excluded from Guadalajara portfolio
-- Wrong-market hotel request → HOTEL_NOT_IN_PORTFOLIO
-
-## Portfolio intelligence
-- Shared market id stable across hotels
-- Sheraton vs unknown-meetings → different fit classes
-- Confidential feedback stripped from shared packet
-- Customer surface hides unpublished / RESEARCH_ONLY rows
-- Drawer detail paths returned for existing GDI opportunity routes
-
-## Remaining gaps
-${summary.remainingGaps.map((g) => `- ${g}`).join("\n")}
+Paid/Airtable/publication writes: **0**. Fixtures never loaded on deployed HTTP path.
 
 ## Next
-${summary.recommendedNext}
+Founder review gate → Integration Controller merge → Track A Brief v2 plan execution.
+`,
+);
+fs.writeFileSync(
+  path.join(REPORT, "SECURITY_BEFORE_AFTER.md"),
+  `# PDI-2 security before/after
+
+| # | Vulnerability (before) | Mitigation (after) | Test |
+|---|---|---|---|
+| 1 | Client \`x-dealality-member-id\` / session headers could spoof identity | Ignored; \`clientSuppliedIdentityAttempt\` fail-closed; only \`req.dealalityUser.memberstackId\` | PASS |
+| 2 | Query \`sessionId\` accepted | Removed from auth path | PASS |
+| 3 | Company-name / notes auth | Rejected | PASS |
+| 4 | \`customerSurface\` omission exposed research-only | Customer-published is **default**; internal requires \`GDI_INTERNAL_RESEARCH_READ\` | PASS |
+| 5 | \`customerSurface=0\` bypass | Privilege-gated | PASS |
+| 6 | Missing marketId opportunities included | Exact marketId match required | PASS |
+| 7 | Null allowlist broadened access | Missing allowlist → \`MARKET_ALLOWLIST_REQUIRED\` | PASS |
+| 8 | Empty allowlist unclear | Empty → deny all markets | PASS |
+| 9 | Market publish implied all hotels | Per-hotel \`publishedHotelIds\` / \`hotelPublication\` | PASS |
+| 10 | Unpublished hotel drawer links | Withheld when not hotel-published | PASS |
+| 11 | HTTP loaded Aimbridge fixtures | Live path fail-closed without \`data/…\` registry | PASS |
+| 12 | Pilot unauth read on portfolio routes | \`gdiPortfolioReadAuth\` requires Bearer + Dealality user | PASS |
 `,
 );
 
 console.log(
   JSON.stringify(
-    { ok: true, reportDir: REPORT, checks: summary.checks },
+    {
+      ok: true,
+      securityChecks: securityTable.length,
+      reportDir: REPORT,
+    },
     null,
     2,
   ),

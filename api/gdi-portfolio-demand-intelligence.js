@@ -1,7 +1,9 @@
 /**
  * PDI-2 HTTP handlers — read-only portfolio Demand Intelligence.
- * Mounted under /api/group-demand-intelligence/portfolio/*
- * Default corpus: offline steward fixtures (no Airtable production reads required).
+ *
+ * Fail closed when live steward registry / inventory are not configured.
+ * Fixtures are NEVER loaded on the deployed HTTP path.
+ * Tests inject `req.portfolioReadonlyApi`.
  */
 
 import fs from "node:fs";
@@ -11,72 +13,107 @@ import { createPortfolioReadonlyApi } from "../lib/group-demand-intelligence/por
 import { PORTFOLIO_AUTH_DENY } from "../lib/group-demand-intelligence/portfolio-demand-intelligence/gdi-portfolio-operator-authorization-v1.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const DEFAULT_FIXTURE = path.join(
+
+/** Production / runtime steward config (not fixtures/). */
+const LIVE_AUTH_PATH = path.join(
   ROOT,
-  "fixtures/gdi-portfolio-demand-intelligence-v1/aimbridge-cala-guadalajara.json",
+  "data/group-demand-intelligence/portfolio-demand-intelligence/operator-auth-registry.json",
 );
-const DEFAULT_AUTH = path.join(
+const LIVE_INVENTORY_PATH = path.join(
   ROOT,
-  "fixtures/gdi-portfolio-demand-intelligence-v1/pdi-2-operator-auth-registry.json",
+  "data/group-demand-intelligence/portfolio-demand-intelligence/portfolio-inventory.json",
 );
 
-let cachedApi = null;
+let cachedLiveApi = null;
+let cachedLiveApiError = null;
 
-function loadJson(p) {
-  return JSON.parse(fs.readFileSync(p, "utf8"));
+function loadJsonSafe(p) {
+  if (!fs.existsSync(p)) return null;
+  try {
+    return JSON.parse(fs.readFileSync(p, "utf8"));
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Build live API from server-controlled data paths only.
+ * Returns { ok:false } when not configured — never falls back to fixtures.
+ */
+export function getLivePortfolioReadonlyApi() {
+  if (cachedLiveApi) return { ok: true, api: cachedLiveApi };
+  if (cachedLiveApiError) return cachedLiveApiError;
+
+  const authRegistry = loadJsonSafe(LIVE_AUTH_PATH);
+  const inventory = loadJsonSafe(LIVE_INVENTORY_PATH);
+  if (!authRegistry?.sessions?.length || !inventory) {
+    cachedLiveApiError = {
+      ok: false,
+      status: 503,
+      error: {
+        code: PORTFOLIO_AUTH_DENY.REGISTRY_NOT_CONFIGURED,
+        message:
+          "Portfolio Demand Intelligence live registry/inventory is not configured. Fixtures are offline-test only.",
+      },
+      airtableWrites: 0,
+      productionWrites: 0,
+      publicationWrites: 0,
+      readOnly: true,
+    };
+    return cachedLiveApiError;
+  }
+  cachedLiveApi = createPortfolioReadonlyApi({
+    authRegistry,
+    memberships: inventory.memberships || [],
+    hotelConfigsById: inventory.hotelConfigsById || inventory.hotelConfigs || {},
+    markets: inventory.markets || [],
+    marketOpportunities: inventory.marketOpportunities || [],
+  });
+  return { ok: true, api: cachedLiveApi };
+}
+
+export function resetPortfolioReadonlyApiCache() {
+  cachedLiveApi = null;
+  cachedLiveApiError = null;
 }
 
 export function getPortfolioReadonlyApiForRequest(req) {
-  if (req?.portfolioReadonlyApi) return req.portfolioReadonlyApi;
-  if (cachedApi) return cachedApi;
-  const fixture = loadJson(DEFAULT_FIXTURE);
-  const authRegistry = fs.existsSync(DEFAULT_AUTH)
-    ? loadJson(DEFAULT_AUTH)
-    : { sessions: [] };
-  cachedApi = createPortfolioReadonlyApi({
-    authRegistry,
-    memberships: fixture.memberships,
-    hotelConfigsById: fixture.hotelConfigs,
-    markets: fixture.markets,
-    marketOpportunities: [
-      {
-        ...fixture.marketOpportunitySeed,
-        marketId: "market_guadalajara_mx_v1",
-        published: fixture.marketOpportunitySeed.published === true,
-        customerFacing: fixture.marketOpportunitySeed.customerFacing === true,
-        publicationStatus:
-          fixture.marketOpportunitySeed.publicationStatus || "not_published",
-      },
-      ...(Array.isArray(fixture.additionalMarketOpportunities)
-        ? fixture.additionalMarketOpportunities
-        : []),
-    ],
-  });
-  return cachedApi;
+  // Tests / harness may inject a fully constructed API.
+  if (req?.portfolioReadonlyApi) return { ok: true, api: req.portfolioReadonlyApi };
+  return getLivePortfolioReadonlyApi();
 }
 
-/** Test helper — reset singleton between suites. */
-export function resetPortfolioReadonlyApiCache() {
-  cachedApi = null;
-}
+/**
+ * Trusted identity only — ignore spoofable headers / query identity.
+ */
+export function callerFromVerifiedRequest(req) {
+  const headerMember = req.headers?.["x-dealality-member-id"];
+  const headerSession = req.headers?.["x-dealality-session-id"];
+  const querySession = req.query?.sessionId;
+  const clientSuppliedIdentityAttempt = Boolean(
+    headerMember || headerSession || querySession,
+  );
 
-function callerFromReq(req) {
+  const verifiedMemberstackMemberId =
+    req.dealalityUser?.memberstackId || req.memberstackMemberId || null;
+
+  const serverVerified = Boolean(
+    req.dealalityUser &&
+      verifiedMemberstackMemberId &&
+      !req.gdiPilotUnauthRead,
+  );
+
   return {
-    authenticated: Boolean(req.dealalityUser || req.memberstackMemberId),
-    dealalityUser: req.dealalityUser || null,
-    memberstackMemberId:
-      req.memberstackMemberId ||
-      req.dealalityUser?.memberstackId ||
-      req.headers?.["x-dealality-member-id"] ||
-      null,
-    sessionId:
-      req.headers?.["x-dealality-session-id"] ||
-      req.query?.sessionId ||
-      null,
-    operatorId: req.query?.operatorId || req.body?.operatorId || null,
+    serverVerified,
+    verifiedMemberstackMemberId: serverVerified
+      ? String(verifiedMemberstackMemberId)
+      : null,
+    requestedOperatorId: req.query?.operatorId || null,
+    clientSuppliedIdentityAttempt,
+    // Captured only so fuzzy rejection tests can assert — never used to grant.
+    companyName: req.query?.companyName || req.body?.companyName || null,
     operatorDisplayName:
       req.query?.operatorDisplayName || req.body?.operatorDisplayName || null,
-    companyName: req.query?.companyName || req.body?.companyName || null,
   };
 }
 
@@ -85,49 +122,63 @@ function send(res, result) {
   return res.status(status).json(result);
 }
 
-/**
- * GET /api/group-demand-intelligence/portfolio/markets
- */
+function resolveApiOrFail(req, res) {
+  const resolved = getPortfolioReadonlyApiForRequest(req);
+  if (!resolved.ok) {
+    send(res, resolved);
+    return null;
+  }
+  return resolved.api;
+}
+
 export function getGdiPortfolioMarkets(req, res) {
-  const api = getPortfolioReadonlyApiForRequest(req);
+  const api = resolveApiOrFail(req, res);
+  if (!api) return;
   return send(
     res,
-    api.listOperatorMarkets(callerFromReq(req), {
-      operatorId: req.query?.operatorId,
+    api.listOperatorMarkets(callerFromVerifiedRequest(req), {
+      requestedOperatorId: req.query?.operatorId,
     }),
   );
 }
 
-/**
- * GET /api/group-demand-intelligence/portfolio/hotels?marketId=
- */
 export function getGdiPortfolioHotels(req, res) {
-  const api = getPortfolioReadonlyApiForRequest(req);
+  const api = resolveApiOrFail(req, res);
+  if (!api) return;
   return send(
     res,
-    api.listPortfolioHotels(callerFromReq(req), {
-      operatorId: req.query?.operatorId,
+    api.listPortfolioHotels(callerFromVerifiedRequest(req), {
+      requestedOperatorId: req.query?.operatorId,
       marketId: req.query?.marketId || req.params?.marketId,
     }),
   );
 }
 
 /**
- * GET /api/group-demand-intelligence/portfolio/market-opportunities?marketId=
- * Optional: marketOpportunityId, hotelId, customerSurface=1
+ * Customer-published is the default.
+ * customerSurface=0 / internalResearch requires steward privilege — enforced in API.
  */
 export function getGdiPortfolioMarketOpportunities(req, res) {
-  const api = getPortfolioReadonlyApiForRequest(req);
+  const api = resolveApiOrFail(req, res);
+  if (!api) return;
+  const q = req.query || {};
+  const customerSurfaceRaw = q.customerSurface;
+  const wantsInternal =
+    q.internalResearch === "1" ||
+    q.internalResearch === "true" ||
+    customerSurfaceRaw === "0" ||
+    customerSurfaceRaw === "false";
+
   return send(
     res,
-    api.getPortfolioMarketOpportunity(callerFromReq(req), {
-      operatorId: req.query?.operatorId,
-      marketId: req.query?.marketId || req.params?.marketId,
-      marketOpportunityId: req.query?.marketOpportunityId,
-      hotelId: req.query?.hotelId,
-      customerSurface:
-        req.query?.customerSurface === "1" ||
-        req.query?.customerSurface === "true",
+    api.getPortfolioMarketOpportunity(callerFromVerifiedRequest(req), {
+      requestedOperatorId: q.operatorId,
+      marketId: q.marketId || req.params?.marketId,
+      marketOpportunityId: q.marketOpportunityId,
+      hotelId: q.hotelId,
+      // Default customer; only privileged callers may set internal.
+      customerSurface: wantsInternal ? false : true,
+      internalResearch: wantsInternal,
     }),
   );
 }

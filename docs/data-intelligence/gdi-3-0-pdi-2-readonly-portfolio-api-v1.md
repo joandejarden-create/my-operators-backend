@@ -13,20 +13,27 @@
 
 Optional query: `marketOpportunityId`, `hotelId`, `customerSurface=1`, `operatorId`.
 
-## Authorization
+## Authorization (hardened)
 
-- Requires authenticated Memberstack / session mapped in steward registry.
-- **Never** authorize by company-name, notes, or fuzzy text.
+- Requires **verified** Memberstack → `req.dealalityUser` (`gdiPortfolioReadAuth`).
+- **Never** trust `x-dealality-member-id`, `x-dealality-session-id`, query `sessionId`, company-name, or notes.
+- Client `operatorId` may only match steward mapping — never grant access.
+- Market allowlist: missing → deny all; empty `[]` → deny all; non-empty → listed markets only.
 - Cross-operator requests denied.
-- Hotels returned only via PDI-1 membership for operator × market.
-- Wrong-market hotels (e.g. Cancún under Guadalajara) denied.
+- Hotels only via PDI-1 membership for operator × market.
 
-## Response guarantees
+## Publication boundary
 
-- Shared public market packet only (confidential keys stripped).
-- Independent hotel fit classes (PDI-1 / `evaluateCrossHotelFit`).
-- Drawer links to existing hotel opportunity detail routes.
-- `customerSurface=1` filters unpublished / RESEARCH_ONLY rows.
+- **Customer-published is the default** for market-opportunity retrieval.
+- Internal research requires steward privilege `GDI_INTERNAL_RESEARCH_READ` (not a client flag).
+- Opportunities without matching `marketId` are excluded.
+- Hotel publication is independent (`publishedHotelIds` / `hotelPublication`); market publish ≠ all hotels.
+- Unpublished hotels withhold drawer links on the customer surface.
+
+## Runtime isolation
+
+- Deployed HTTP path loads **only** `data/group-demand-intelligence/portfolio-demand-intelligence/*`.
+- Fixtures are offline-test only; missing live registry → **503 fail-closed**.
 
 ## Offline test
 

@@ -189,9 +189,45 @@
     "marketId": "market_guadalajara_mx_v1",
     "published": true,
     "customerFacing": true,
-    "publicationStatus": "published"
+    "publicationStatus": "published",
+    "publishedHotelIds": ["recCAGqkERSXgiku4"]
   },
   "additionalMarketOpportunities": [
+    {
+      "id": "seed_gdl_missing_market_id",
+      "opportunityId": "seed_gdl_missing_market_id",
+      "organizationName": "Fixture Missing Market Id Org",
+      "title": "Opportunity with no marketId must be excluded",
+      "eventLocation": "Expo Guadalajara",
+      "eventStartDate": "2029-05-01",
+      "segment": "associations_conferences_events",
+      "summaryWhat": "Plenary meeting demand without market assignment.",
+      "estimatedPeakRooms": 40,
+      "sources": ["https://example.org/fixture/gdl-missing-market"],
+      "officialSource": "https://example.org/fixture/gdl-missing-market",
+      "published": true,
+      "customerFacing": true,
+      "publicationStatus": "published",
+      "publishedHotelIds": ["recCAGqkERSXgiku4"]
+    },
+    {
+      "id": "seed_gdl_market_pub_no_hotel_pub",
+      "opportunityId": "seed_gdl_market_pub_no_hotel_pub",
+      "marketId": "market_guadalajara_mx_v1",
+      "organizationName": "Fixture Market Publish Without Hotel Publish",
+      "title": "Guadalajara market-published without hotel-level authorization",
+      "eventLocation": "Expo Guadalajara",
+      "location": "Expo Guadalajara, Guadalajara, Jalisco",
+      "eventStartDate": "2029-03-01",
+      "segment": "associations_conferences_events",
+      "summaryWhat": "Market-level publish must not expose hotels without hotel-level publication.",
+      "estimatedPeakRooms": 50,
+      "sources": ["https://example.org/fixture/gdl-market-only-pub"],
+      "officialSource": "https://example.org/fixture/gdl-market-only-pub",
+      "published": true,
+      "customerFacing": true,
+      "publicationStatus": "published"
+    },
     {
       "id": "seed_gdl_unpublished_research_only",
       "opportunityId": "seed_gdl_unpublished_research_only",

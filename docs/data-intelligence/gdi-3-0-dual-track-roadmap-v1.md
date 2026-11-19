@@ -55,7 +55,7 @@ Both tracks **reuse** these systems; neither invents a parallel stack:
 | Slice 2 audit | Airtable persistence / partners / reuse audit | Shipped (#441) |
 | **Slice 2A** | Persistence honesty + slim payload + one-run 12-dimension lifecycle | **MERGED** [#444](https://github.com/joandejarden-create/my-operators-backend/pull/444) |
 | **Slice 2B** | DG / Partner relationship wiring (existing tables; dry-run first) | **MERGED** [#448](https://github.com/joandejarden-create/my-operators-backend/pull/448) |
-| **Brief v2** | Commercial Intelligence Brief narrative quality (PDAC/NICE gold; NRC/IMC/OWWA weak) | **Next Track A** after PDI-2 |
+| **Brief v2** | Commercial Intelligence Brief narrative quality (PDAC/NICE gold; NRC/IMC/OWWA weak) | **Plan prepared** — implement after #450 merges |
 | Slice 2C | Read-only Airtable DG reuse hooks + continuation / Weekly Change prep | After 2B |
 | Brief v2 | Commercial Intelligence Brief v2 drawer quality | Parallel readiness after 2B evidence |
 | 14-segment Full E2E | Certified repeatable process + progressive depth | Ongoing; not a PDI UI blocker |
