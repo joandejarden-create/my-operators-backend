@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.5",
+  "version": "hotel-explorer-founder-quality-lessons-v1.6",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -167,6 +167,15 @@
       "sharedComponent": "lib/hotel-intelligence/ownership/owner-portfolio-operator-view-v1.js; public/js/he-owner-portfolio-operator-view-v1.js; hotel-intelligence-workspace.js",
       "regressionTest": "owner_portfolio_operator_reconciliation_gates",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v5-org-scope-verified-plus-proposed.png"
+    },
+    {
+      "id": "HE-QL-017",
+      "originalProblem": "Patchy navy backgrounds across HE tabs; Organization & Portfolio nested shades; Founder Preview vs Radar visual drift",
+      "rootCause": "Third navy --panel-soft #0c132c plus translucent rgba overlays and duplicated surface systems (--panel/--hdp/--runbook/--hiw)",
+      "approvedStandard": "Canonical .hex-root surface hierarchy: canvas #080f25 → section #101935 → table #0d152c; no intermediate navy; no translucent navy fills on content; shared CSS for Preview and Radar",
+      "sharedComponent": "public/css/hotel-explorer.css; public/css/hotel-detail-panel.css",
+      "regressionTest": "he_surface_hierarchy_consistency_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v6-surface-org-portfolio.png"
     }
   ]
 }

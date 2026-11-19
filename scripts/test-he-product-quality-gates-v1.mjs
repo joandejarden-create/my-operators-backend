@@ -78,13 +78,14 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.5");
-  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 16);
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.6");
+  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 17);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.5"
+    "hotel-explorer-quality-standard-v1.6"
   );
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-016"));
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-017"));
 });
 
 run("rejects_keyword_stuffed_and_id_leaking_descriptions", () => {
@@ -222,7 +223,8 @@ run("rooms_tab_after_overview_and_sortable_inventory", () => {
   mustInclude(sort, "data-sort");
   const css = read("public/css/hotel-explorer.css");
   mustInclude(css, "dl-table");
-  mustInclude(css, "background: #0d152c");
+  mustInclude(css, "--hex-surface-table");
+  mustInclude(css, "var(--hex-surface-table");
 });
 
 run("hex_tabs_even_flex_and_rooms_present", () => {
@@ -308,7 +310,7 @@ run("meeting_table_readable_room_names_no_forced_min_width", () => {
   assert.ok(cols, "columns fn");
   assert.ok(!/key: "config"/.test(cols[1]), "config not a primary column");
   const css = read("public/css/hotel-explorer.css");
-  mustInclude(css, "background: #0d152c");
+  mustInclude(css, "--hex-surface-table: #0d152c");
   mustInclude(css, "hex-rms-room-name");
   assert.ok(!/\.hex-rms-table\.dl-table--inventory \{\s*min-width: 980px/.test(css));
 });
@@ -453,7 +455,7 @@ run("he_universal_design_hpc_geo_gates", () => {
   mustInclude(hexCss, "grid-auto-columns: minmax(76px, 1fr)");
   mustInclude(hexCss, "he-meas-prefs");
   const hdpCss = read("public/css/hotel-detail-panel.css");
-  mustInclude(hdpCss, "background: #0d152c");
+  mustInclude(hdpCss, "--hex-surface-table");
   mustInclude(hdpCss, "--hdp-bg-deep");
   const hdp = read("public/js/hotel-detail-panel.js");
   mustInclude(hdp, "resolveCensusHotelPool");
@@ -466,6 +468,31 @@ run("he_universal_design_hpc_geo_gates", () => {
   const preview = read("public/hotel-explorer-preview.html");
   mustInclude(preview, "admin-ai-demand-table.css");
   assert.ok(HE_AMENITY_ICON_MAP.length >= 12);
+});
+
+run("he_surface_hierarchy_consistency_gates", () => {
+  const hex = read("public/css/hotel-explorer.css");
+  mustInclude(hex, "--hex-surface-canvas");
+  mustInclude(hex, "--hex-surface-section");
+  mustInclude(hex, "--hex-surface-table");
+  mustInclude(hex, "--panel-soft: var(--hex-surface-section)");
+  mustNotMatch(hex, /--panel-soft:\s*#0c132c/);
+  mustNotMatch(hex, /background:\s*#0c132c\b/);
+  mustNotMatch(hex, /background:\s*#0b1224\b/);
+  mustNotMatch(hex, /background:\s*#0b1228\b/);
+  mustNotMatch(hex, /background:\s*rgba\(13,\s*21,\s*44/);
+  mustInclude(hex, "background: var(--hex-surface-section)");
+  mustInclude(hex, "background: var(--hex-surface-table");
+  mustInclude(hex, ".hex-op-group__body");
+  mustInclude(hex, "background: transparent");
+  const std = read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md");
+  mustInclude(std, "Canonical surface hierarchy");
+  mustInclude(std, "--hex-surface-canvas");
+  const preview = read("public/hotel-explorer-preview.html");
+  mustInclude(preview, "hotel-explorer.css");
+  mustInclude(preview, "hotel-detail-panel.css");
+  // Preview and Radar both consume the same hex + hdp stylesheets (no fork).
+  assert.ok(!preview.includes("hotel-explorer-preview-only.css"));
 });
 
 run("owner_portfolio_operator_reconciliation_gates", () => {

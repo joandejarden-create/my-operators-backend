@@ -826,9 +826,9 @@
 .hdp-footprint-table-wrap.ada-table-shell,
 .hdp-footprint-table-wrap.dl-table-wrap {
   overflow-x: auto;
-  border: 0.6px solid var(--runbook-border, #2a3550);
+  border: 0.6px solid var(--hex-surface-border-table, var(--runbook-border, #2a3550));
   border-radius: 10px;
-  background: #0d152c;
+  background: var(--hex-surface-table, var(--runbook-surface, #0d152c));
 }
 
 .hdp-footprint-table,
@@ -839,23 +839,23 @@
   border-collapse: separate;
   border-spacing: 0;
   font-size: 13px;
-  background: #0d152c;
+  background: var(--hex-surface-table, var(--runbook-surface, #0d152c));
 }
 
 .hdp-footprint-table th,
 .hdp-footprint-table td {
   padding: 7px 10px;
-  border-bottom: 0.6px solid var(--runbook-border, #2a3550);
+  border-bottom: 0.6px solid var(--hex-surface-border-table, var(--runbook-border, #2a3550));
   text-align: right;
   vertical-align: middle;
-  background: #0d152c;
+  background: var(--hex-surface-table, var(--runbook-surface, #0d152c));
 }
 
 .hdp-footprint-table thead th {
   position: sticky;
   top: 0;
   z-index: 2;
-  background: #0d152c !important;
+  background: var(--hex-surface-table, var(--runbook-surface, #0d152c)) !important;
   color: var(--runbook-heading, #e8ecf4);
   font-weight: 600;
   font-size: 12px;
@@ -871,7 +871,7 @@
 .hdp-footprint-table tbody th[scope="row"] {
   font-weight: 600;
   color: var(--hdp-text, #e8ecf4);
-  background: #0d152c;
+  background: var(--hex-surface-table, var(--runbook-surface, #0d152c));
   max-width: 180px;
   white-space: nowrap;
   overflow: hidden;

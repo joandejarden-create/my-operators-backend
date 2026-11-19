@@ -14,9 +14,26 @@
   --accent--primary-1: #6c72ff;
   --secondary--color-1: #101935;
   --secondary--color-3: #57c3ff;
-  --panel: #101935;
-  --panel-soft: #0c132c;
-  --border: #37446b;
+  /*
+   * Canonical HE surface hierarchy (Dealality / My Deals aligned).
+   * Canvas → section/card → table. No intermediate navy shades.
+   */
+  --hex-surface-canvas: var(--neutral--800); /* #080f25 */
+  --hex-surface-section: var(--secondary--color-1); /* #101935 */
+  --hex-surface-table: #0d152c; /* My Deals / ada-table / runbook-surface */
+  --hex-surface-border: var(--neutral--600); /* #37446b */
+  --hex-surface-border-table: #2a3550;
+  --hex-surface-hover: rgba(108, 114, 255, 0.12);
+  --panel: var(--hex-surface-section);
+  /* Alias: formerly #0c132c — that third navy caused patchy section backgrounds */
+  --panel-soft: var(--hex-surface-section);
+  --runbook-surface: var(--hex-surface-table);
+  --runbook-border: var(--hex-surface-border-table);
+  --hdp-bg: var(--hex-surface-section);
+  --hdp-bg-deep: var(--hex-surface-canvas);
+  --hdp-bg-elevated: var(--neutral--700);
+  --hdp-border: var(--hex-surface-border);
+  --border: var(--hex-surface-border);
   --text: #ffffff;
   --muted: #aeb9e1;
   --ok: #3dd68c;
@@ -475,7 +492,7 @@ button.hex-action {
   z-index: 40;
   display: none;
   flex-direction: column;
-  background: #0b1224;
+  background: var(--hex-surface-canvas);
 }
 .hex-dossier-layer.is-open,
 .hex-dossier-layer:not([hidden]) {
@@ -725,7 +742,7 @@ button.hex-action {
   }
 }
 
-/* Shared measurement preference control */
+/* Shared measurement preference control — chrome on canvas, not a third navy fill */
 .he-meas-prefs {
   display: flex;
   flex-wrap: wrap;
@@ -733,9 +750,9 @@ button.hex-action {
   gap: 10px 16px;
   margin: 0 0 12px;
   padding: 8px 10px;
-  border: 0.6px solid var(--runbook-border, #2a3550);
+  border: 0.6px solid var(--hex-surface-border);
   border-radius: 8px;
-  background: #0d152c;
+  background: transparent;
 }
 .he-meas-prefs__group {
   display: inline-flex;
@@ -779,9 +796,9 @@ button.hex-action {
   gap: 8px 10px;
   margin-top: 12px;
   padding: 10px 12px;
-  border: 0.6px solid var(--runbook-border, #2a3550);
+  border: 0.6px solid var(--hex-surface-border);
   border-radius: 10px;
-  background: rgba(13, 21, 44, 0.85);
+  background: transparent;
 }
 .hex-portfolio-scope__label {
   font-size: 12px;
@@ -792,7 +809,7 @@ button.hex-action {
   margin-right: 4px;
 }
 .hex-portfolio-scope__btn {
-  border: 0.6px solid #3a4a72;
+  border: 0.6px solid var(--hex-surface-border);
   background: transparent;
   color: #d7def5;
   border-radius: 8px;
@@ -802,8 +819,8 @@ button.hex-action {
   cursor: pointer;
 }
 .hex-portfolio-scope__btn.is-active {
-  background: #2a3a6a;
-  border-color: #6b7cff;
+  background: var(--hex-surface-hover);
+  border-color: var(--accent--primary-1);
   color: #fff;
 }
 .hex-portfolio-scope__note {
@@ -818,9 +835,9 @@ button.hex-action {
   gap: 8px;
 }
 .hex-op-group {
-  border: 0.6px solid var(--runbook-border, #2a3550);
+  border: 0.6px solid var(--hex-surface-border-table, var(--runbook-border, #2a3550));
   border-radius: 10px;
-  background: #0d152c;
+  background: var(--hex-surface-table, #0d152c);
   overflow: hidden;
 }
 .hex-op-group__head {
@@ -851,8 +868,9 @@ button.hex-action {
   white-space: nowrap;
 }
 .hex-op-group__body {
-  border-top: 0.6px solid var(--runbook-border, #2a3550);
+  border-top: 0.6px solid var(--hex-surface-border-table, var(--runbook-border, #2a3550));
   padding: 8px 12px 10px;
+  background: transparent;
 }
 .hex-op-group__hotels {
   list-style: none;
@@ -876,7 +894,7 @@ button.hex-action {
 }
 .hex-root .hiw-table--portfolio.dl-table thead th,
 .hex-root .hiw-table--portfolio.ada-table thead th {
-  background: #0d152c !important;
+  background: var(--hex-surface-table, #0d152c) !important;
 }
 .hex-main {
   max-width: none;
@@ -893,10 +911,10 @@ button.hex-action {
   max-width: none;
 }
 .hex-radar-host {
-  --hdp-bg: #101935;
-  --hdp-bg-deep: #080f25;
-  --hdp-bg-elevated: #212c4d;
-  --hdp-border: #37446b;
+  --hdp-bg: var(--hex-surface-section);
+  --hdp-bg-deep: var(--hex-surface-canvas);
+  --hdp-bg-elevated: var(--neutral--700);
+  --hdp-border: var(--hex-surface-border);
   --hdp-text: #ffffff;
   --hdp-text-body: #aeb9e1;
   --hdp-text-muted: #7e89ac;
@@ -906,6 +924,7 @@ button.hex-action {
   max-width: none;
   min-width: 0;
   overflow-x: hidden;
+  background: transparent;
 }
 .hex-radar-host .hdp-snapshot-scope,
 .hex-radar-host .hdp-snapshot-meta {
@@ -924,9 +943,9 @@ button.hex-action {
 }
 .hex-radar-host .hdp-footprint-table-wrap {
   overflow-x: auto;
-  border: 0.6px solid var(--hdp-border);
-  border-radius: 8px;
-  background: rgba(8, 15, 37, 0.45);
+  border: 0.6px solid var(--hex-surface-border-table, var(--hdp-border));
+  border-radius: 10px;
+  background: var(--hex-surface-table, #0d152c);
 }
 .hex-radar-host .hdp-footprint-table {
   width: 100%;
@@ -943,7 +962,7 @@ button.hex-action {
   font-variant-numeric: tabular-nums;
 }
 .hex-radar-host .hdp-footprint-table thead th {
-  background: #101935;
+  background: var(--hex-surface-table, #0d152c);
   color: var(--muted, #aeb9e1);
   font-weight: 600;
   font-size: 0.65rem;
@@ -1229,10 +1248,10 @@ button.hex-action {
   display: none;
 }
 
-/* Section cards = BE .oe-section (lift off dark canvas) */
+/* Section cards = elevated surface (same as hero/panel — not a third navy) */
 .hex-root .hiw-section {
-  background: var(--panel-soft);
-  border: 0.6px solid var(--border);
+  background: var(--hex-surface-section);
+  border: 0.6px solid var(--hex-surface-border);
   border-radius: 12px;
   padding: 14px 16px 16px;
   margin: 0 0 var(--hex-space-3);
@@ -1885,8 +1904,8 @@ button.hex-action {
 }
 .hex-root .hiw-snap-sub {
   margin: 0 0 14px;
-  background: var(--panel-soft, #0c132c);
-  border: 0.6px solid var(--border);
+  background: var(--hex-surface-section);
+  border: 0.6px solid var(--hex-surface-border);
   border-radius: 12px;
   padding: 14px 16px 16px;
 }
@@ -1996,8 +2015,8 @@ button.hex-action {
   }
 }
 .hex-card {
-  background: var(--panel-soft);
-  border: 0.6px solid var(--border);
+  background: var(--hex-surface-section);
+  border: 0.6px solid var(--hex-surface-border);
   border-radius: 12px;
   padding: 14px 16px 16px;
   min-width: 0;
@@ -2139,9 +2158,9 @@ button.hex-action {
   max-height: min(62vh, 560px);
   overflow: auto;
   -webkit-overflow-scrolling: touch;
-  border: 0.6px solid var(--runbook-border, rgba(42, 53, 80, 0.95));
+  border: 0.6px solid var(--hex-surface-border-table, var(--runbook-border, #2a3550));
   border-radius: 10px;
-  background: var(--runbook-surface, #0d152c);
+  background: var(--hex-surface-table, var(--runbook-surface, #0d152c));
 }
 .dl-table,
 .hex-root .dl-table.ada-table {
@@ -2151,6 +2170,7 @@ button.hex-action {
   border-spacing: 0;
   table-layout: fixed;
   font-size: 13px;
+  background: transparent;
 }
 .dl-table thead th,
 .hex-root .dl-table thead th,
@@ -2159,13 +2179,13 @@ button.hex-action {
   top: 0;
   z-index: 2;
   padding: 8px 10px;
-  background: #0d152c !important;
+  background: var(--hex-surface-table, #0d152c) !important;
   color: var(--runbook-heading, #e8ecf4) !important;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.01em;
   text-transform: none;
-  border-bottom: 0.6px solid var(--runbook-border, #2a3550);
+  border-bottom: 0.6px solid var(--hex-surface-border-table, var(--runbook-border, #2a3550));
   white-space: nowrap;
   vertical-align: middle;
 }
@@ -2314,4 +2334,86 @@ button.hex-action {
 .hiw-kv--spaced {
   margin-top: 14px;
   gap: 10px 16px;
+}
+
+/*
+ * HE surface lock — nested HIW / HCI / HDP widgets inherit the canonical hierarchy.
+ * Prevents translucent navy overlays and third-shade section patches inside Explorer.
+ */
+.hex-root .hex-main,
+.hex-root .hex-scroll,
+.hex-root #hexHiHost,
+.hex-root #hexRadarHost {
+  background: transparent;
+}
+.hex-root .hiw-gap-box,
+.hex-root .hiw-finding,
+.hex-root .hiw-insight,
+.hex-root .hiw-research-gaps,
+.hex-root .hiw-activity-feed-wrap {
+  background: transparent;
+  border-color: var(--hex-surface-border);
+}
+.hex-root .hci-root {
+  --hci-bg: var(--hex-surface-section);
+  --hci-border: var(--hex-surface-border);
+  background: transparent;
+}
+.hex-root .hci-section {
+  background: transparent;
+  border: 0;
+}
+.hex-root .hci-person,
+.hex-root .hci-quality__item {
+  background: var(--hex-surface-section);
+  border-color: var(--hex-surface-border);
+}
+.hex-root .oi-intel {
+  background: transparent;
+}
+.hex-root .oi-exec,
+.hex-root .oi-party,
+.hex-root .oi-rel-card,
+.hex-root .oi-source,
+.hex-root .oi-block {
+  background: var(--hex-surface-section);
+  border-color: var(--hex-surface-border);
+}
+.hex-root .oi-rel-card:hover,
+.hex-root .oi-rel-card:focus-visible,
+.hex-root button.oi-party:hover,
+.hex-root button.oi-party:focus-visible {
+  background: var(--hex-surface-section);
+  border-color: var(--accent--primary-1);
+}
+.hex-root .ada-table-shell,
+.hex-root .hdp-footprint-table-wrap,
+.hex-root .hdp-footprint-table-wrap.ada-table-shell {
+  background: var(--hex-surface-table);
+  border-color: var(--hex-surface-border-table);
+}
+.hex-root .hdp-footprint-table,
+.hex-root .hdp-footprint-table th,
+.hex-root .hdp-footprint-table td,
+.hex-root .hdp-footprint-table thead th,
+.hex-root .hdp-footprint-table tbody th[scope="row"] {
+  background: var(--hex-surface-table) !important;
+}
+.hex-root .hdp-section,
+.hex-radar-host .hdp-section {
+  background: var(--hex-surface-section);
+  border: 0.6px solid var(--hex-surface-border);
+  border-radius: 12px;
+}
+.hex-root .hex-facts--own .hex-fact,
+.hex-root .hex-fact {
+  background: var(--hex-surface-section);
+  border-color: var(--hex-surface-border);
+}
+/* Nested table inside a section: table surface only — no extra translucent fill */
+.hex-root .hiw-section .dl-table-wrap,
+.hex-root .hiw-section .ada-table-shell,
+.hex-root .hiw-section .hex-op-group {
+  background: var(--hex-surface-table);
+  border-color: var(--hex-surface-border-table);
 }

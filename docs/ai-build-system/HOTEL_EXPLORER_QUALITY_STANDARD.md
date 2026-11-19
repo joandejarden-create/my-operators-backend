@@ -1,6 +1,6 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.5`  
+**Version:** `hotel-explorer-quality-standard-v1.6`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
 **Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1`
@@ -91,8 +91,20 @@ KGPV (golden UX) and Bethesda Marriott (Airtable-first pilot) define the permane
 ### 8. Navigation & tables
 
 - Tabs use equal grid allocation (`hex-tabs`); consistent icon size/gap; stable 2px icon borders (no active-state layout shift); overflow scroll on narrow screens.
-- Inventory + Submarket tables reuse My Deals / `ada-table` surfaces (`#0d152c` headers, dark rows, sort chevrons) — not approximate new themes.
-- Tab panels share `--hdp-bg-deep`; no arbitrary patch backgrounds across sections.
+- Inventory + Submarket tables reuse My Deals / `ada-table` surfaces (`--hex-surface-table` / `#0d152c` headers, dark rows, sort chevrons) — not approximate new themes.
+- Tab panels share canvas `--hex-surface-canvas` / `--hdp-bg-deep`; no arbitrary patch backgrounds across sections.
+
+### 8a. Canonical surface hierarchy (all tabs)
+
+Scoped to `.hex-root` (Founder Preview and Radar HE share the same CSS):
+
+| Level | Token | Value | Allowed uses |
+| --- | --- | --- | --- |
+| Canvas | `--hex-surface-canvas` | `#080f25` | Shell, scroll, tab rail |
+| Section / card | `--hex-surface-section` | `#101935` | `hiw-section`, cards, hero/panel, HCI/OI cards |
+| Table | `--hex-surface-table` | `#0d152c` | ada/dl tables, operator groups, meas prefs |
+
+Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), translucent navy fills (`rgba(8,15,37,…)`, `rgba(13,21,44,…)`) on HE content surfaces, and per-tab background inventions. Separation uses spacing, borders, and typography — not extra navy fills. Expanded table/operator content inherits the table surface (transparent body).
 
 ### 9. Measurement units (presentation only)
 
