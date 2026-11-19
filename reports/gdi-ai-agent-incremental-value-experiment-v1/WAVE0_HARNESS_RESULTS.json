@@ -1,0 +1,2459 @@
+{
+  "schema": "gdi_ai_agent_incremental_value_experiment_v1",
+  "version": "2026-11-19.2",
+  "startedAt": "2026-11-19T08:48:36.974Z",
+  "finishedAt": "2026-11-19T08:48:37.135Z",
+  "wave": "wave0",
+  "waveResolution": {
+    "wave": "wave0",
+    "blockedWave1": false,
+    "reason": null
+  },
+  "limits": {
+    "maxPaidUsd": 0,
+    "maxFetchesPerCase": 0,
+    "networkEnabled": false,
+    "allowlistPolicy": "none",
+    "paidProviders": "denied"
+  },
+  "paidUsd": 0,
+  "airtableWrites": 0,
+  "customerPublication": false,
+  "wave1Executed": false,
+  "focusCaseCount": 8,
+  "focusOpportunityIds": [
+    "disp_recLuxvwwxID7U2B8_aledade",
+    "disp_recLuxvwwxID7U2B8_cohera_formerly_csi_dmc_and_360dg_",
+    "rb_gdi_disc_dc428c1bd4c4e412",
+    "gdi_opp_prospect_mv8p5ddh_7edb8e7c",
+    "gdi_opp_governor_s_hurricane_conference_2027_26",
+    "gdi_opp_ajas_hq_rockville_watch",
+    "gdi_opp_wrcamp_altaroma_2027_altaroma_organizer",
+    "camp_ivirma_2027_castillo"
+  ],
+  "excludedDeepenIds": [
+    "gdi_lmc_00562bf81b1e1957",
+    "gdi_opp_2027_ddaa_annual_conference_8"
+  ],
+  "conclusionScope": "A_incremental_research_on_existing_opportunities",
+  "doesNotEstablish": "B_incremental_discovery_of_genuinely_new_opportunities",
+  "fairnessContract": {
+    "armAActiveInWave1": true,
+    "armBAdaptiveInWave1": true,
+    "identicalFetchBudgetRequired": true,
+    "frozenOnlyBaselineForbiddenInWave1": true
+  },
+  "decision": {
+    "decision": "ITERATE",
+    "reason": "WAVE0_REASONING_ONLY_CANNOT_ADOPT",
+    "adoptMeans": "ADOPT would mean further validation / selective integration only — never automatic production-wide deployment",
+    "conclusionScope": "A_incremental_research_on_existing_opportunities",
+    "doesNotEstablish": "B_incremental_discovery_of_genuinely_new_opportunities"
+  },
+  "results": [
+    {
+      "ok": true,
+      "focusIndex": 1,
+      "opportunityId": "disp_recLuxvwwxID7U2B8_aledade",
+      "slot": "incomplete_demand",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelName": "Bethesda Marriott",
+      "conclusionScope": "A_incremental_research_on_existing_opportunities",
+      "doesNotEstablish": "B_incremental_discovery_of_genuinely_new_opportunities",
+      "wave": "wave0",
+      "limits": {
+        "maxPaidUsd": 0,
+        "maxFetchesPerCase": 0,
+        "networkEnabled": false,
+        "allowlistPolicy": "none",
+        "paidProviders": "denied"
+      },
+      "attribution": {
+        "tag": "REASONING_ONLY",
+        "note": "Wave 0 — identical frozen bag; no network"
+      },
+      "armA": {
+        "arm": "baseline_current_gdi",
+        "executionKind": "fresh_deterministic_evaluation_on_frozen_snapshot",
+        "opportunityId": "disp_recLuxvwwxID7U2B8_aledade",
+        "durationMs": 33,
+        "supervisor": {
+          "blockers": [
+            "demand_scale",
+            "hotel_fit",
+            "contact_route",
+            "buyer_identity",
+            "corroboration"
+          ],
+          "publishable": false,
+          "exploratory": false,
+          "maturityHint": null,
+          "hardStopReason": null
+        },
+        "sharedEligibility": {
+          "status": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "gaps": [
+            "MISSING_HOTEL_DEMAND_THESIS",
+            "SOURCES_INSUFFICIENT"
+          ]
+        },
+        "challenger": {
+          "schema": "gdi-evidence-challenger-v1",
+          "confirmedDemand": false,
+          "reliablyInferredDemand": true,
+          "speculative": false,
+          "contactRelevance": {
+            "verifiedNamedCount": 0,
+            "nameShapedUnverifiedCount": 1
+          },
+          "unsupportedTiming": false,
+          "duplicateOrContradiction": false,
+          "commercialWeaknesses": [
+            "missing_verified_named_buyer_or_entry_point",
+            "missing_thesis"
+          ],
+          "claims": [],
+          "salesReadyBlockedByChallenger": true
+        },
+        "thesis": "Aledade was historically researched as corporate / group meetings demand for the Bethesda corridor (historical research 2026-10-19). Confirm meeting activity, lodging need, and a verified commercial contact before outreach.",
+        "contacts": [
+          {
+            "name": "Mary Kate Connor",
+            "email": null,
+            "role": "Events Coordinator — Aledade, Inc. (Bethesda HQ)",
+            "verifiedHint": false
+          }
+        ],
+        "costs": {
+          "actualPaidUsd": 0,
+          "estimatedUsd": 0,
+          "providerCalls": [],
+          "deniedPaidAttempts": 0,
+          "mode": "baseline_frozen_evaluation"
+        },
+        "rubric": {
+          "scores": {
+            "commercialEligibilityCorrectness": 3,
+            "evidenceAccuracyProvenance": 2,
+            "meaningfulNewVerifiedFindings": 1,
+            "contactQualityRelevance": 1,
+            "thesisCompleteness": 4,
+            "hotelSpecificRelevance": 3,
+            "salesActionability": 2,
+            "duplicateDetection": 3,
+            "falsePositiveNegativeRisk": 3,
+            "researchCostEfficiency": 5
+          },
+          "total": 27,
+          "maxTotal": 50
+        },
+        "redacted": {
+          "id": "disp_recLuxvwwxID7U2B8_aledade",
+          "hotelId": "recLuxvwwxID7U2B8",
+          "organizationName": "Aledade",
+          "researchSegment": "corporate_meetings_training",
+          "eventName": null,
+          "opportunityType": "CORPORATE_ACCOUNT_RELATIONSHIP",
+          "hasNamedContact": true,
+          "hasContactRoute": true,
+          "hasBuyerRole": true
+        },
+        "fairness": {
+          "arm": "A_existing_gdi",
+          "wave": "wave0",
+          "limits": {
+            "maxPaidUsd": 0,
+            "maxFetchesPerCase": 0,
+            "networkEnabled": false,
+            "allowlistPolicy": "none",
+            "paidProviders": "denied"
+          },
+          "activeResearch": "FROZEN_EVAL_ONLY",
+          "adaptivePlanner": false
+        },
+        "commercial": {
+          "eligibilityStatus": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "challengerBlocked": true,
+          "verifiedNamedCount": 0,
+          "drawerReady": false,
+          "drawerGaps": [
+            "whyActNow",
+            "certified:generic_commercial_boilerplate:whatIsHappening",
+            "certified:missing_core_commercial_section:potentialHotelBusiness",
+            "certified:missing_core_commercial_section:whyActNow",
+            "certified:generic_commercial_boilerplate:recommendedNextStep"
+          ],
+          "disposition": "OPEN",
+          "durationMs": 33,
+          "actualPaidUsd": 0,
+          "fetchCount": 0
+        }
+      },
+      "armB": {
+        "arm": "agentic_enhanced_gdi",
+        "executionKind": "fresh_deterministic_adaptive_planning_on_frozen_snapshot",
+        "opportunityId": "disp_recLuxvwwxID7U2B8_aledade",
+        "durationMs": 20,
+        "steps": [
+          {
+            "index": 1,
+            "continue": true,
+            "decision": "CONTINUE",
+            "reason": "pursue_MEETINGS_INCENTIVES_SALES_OPS_for_HOTEL_DEMAND_GAP",
+            "strategyId": "MEETINGS_INCENTIVES_SALES_OPS",
+            "gapType": "HOTEL_DEMAND_GAP",
+            "preflightGaps": [
+              "MISSING_HOTEL_DEMAND_THESIS",
+              "SOURCES_INSUFFICIENT"
+            ],
+            "preflightDecision": "CONTINUE",
+            "externalRetrieval": "skipped_zero_spend_offline_mode"
+          }
+        ],
+        "recovery": {
+          "applied": true,
+          "evidenceBackedNewSalesReady": false,
+          "category": "B_DETERMINISTIC_MAPPING_CORRECTED",
+          "overlaysApplied": {
+            "demand": true,
+            "buyer": true
+          },
+          "beforeStatus": "RESEARCH_CONTINUATION",
+          "afterStatus": "RESEARCH_CONTINUATION"
+        },
+        "supervisor": {
+          "blockers": [
+            "demand_scale",
+            "hotel_fit",
+            "contact_route",
+            "buyer_identity",
+            "corroboration"
+          ],
+          "publishable": false,
+          "exploratory": false,
+          "maturityHint": null,
+          "hardStopReason": null
+        },
+        "sharedEligibility": {
+          "status": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "gaps": [
+            "MISSING_HOTEL_DEMAND_THESIS",
+            "SOURCES_INSUFFICIENT"
+          ],
+          "challengerOverride": null
+        },
+        "challenger": {
+          "schema": "gdi-evidence-challenger-v1",
+          "confirmedDemand": false,
+          "reliablyInferredDemand": true,
+          "speculative": false,
+          "contactRelevance": {
+            "verifiedNamedCount": 0,
+            "nameShapedUnverifiedCount": 1
+          },
+          "unsupportedTiming": false,
+          "duplicateOrContradiction": false,
+          "commercialWeaknesses": [
+            "missing_verified_named_buyer_or_entry_point",
+            "missing_thesis"
+          ],
+          "claims": [],
+          "salesReadyBlockedByChallenger": true
+        },
+        "thesis": "Aledade was historically researched as corporate / group meetings demand for the Bethesda corridor (historical research 2026-10-19). Confirm meeting activity, lodging need, and a verified commercial contact before outreach.",
+        "contacts": [
+          {
+            "name": "Mary Kate Connor",
+            "email": null,
+            "role": "Events Coordinator — Aledade, Inc. (Bethesda HQ)",
+            "verifiedHint": false
+          }
+        ],
+        "costs": {
+          "actualPaidUsd": 0,
+          "estimatedUsd": 0,
+          "providerCalls": [],
+          "deniedPaidAttempts": 0,
+          "externalRetrievals": 0,
+          "mode": "agentic_offline_adaptive_planning_zero_paid",
+          "pilotLimits": {
+            "maxActionsPerOpportunity": 5,
+            "maxExternalRetrievalsPilot": 60,
+            "maxUrlsPerAction": 2,
+            "allowRender": false,
+            "authorizePaidResearch": false,
+            "initialActionsPerOpportunity": 1,
+            "initialRetrievalsPerOpportunity": 2,
+            "enforceBuyerEvidenceGate": true,
+            "usePortfolioAllocator": true,
+            "useSourceSelectionEfficiency": true,
+            "maxFetches": 0,
+            "maxPaidUsd": 0
+          },
+          "fetchBudgetCap": 0
+        },
+        "rubric": {
+          "scores": {
+            "commercialEligibilityCorrectness": 3,
+            "evidenceAccuracyProvenance": 2,
+            "meaningfulNewVerifiedFindings": 4,
+            "contactQualityRelevance": 1,
+            "thesisCompleteness": 4,
+            "hotelSpecificRelevance": 3,
+            "salesActionability": 2,
+            "duplicateDetection": 3,
+            "falsePositiveNegativeRisk": 3,
+            "researchCostEfficiency": 5
+          },
+          "total": 30,
+          "maxTotal": 50
+        },
+        "redacted": {
+          "id": "disp_recLuxvwwxID7U2B8_aledade",
+          "hotelId": "recLuxvwwxID7U2B8",
+          "organizationName": "Aledade",
+          "researchSegment": "corporate_meetings_training",
+          "eventName": null,
+          "opportunityType": "CORPORATE_ACCOUNT_RELATIONSHIP",
+          "hasNamedContact": true,
+          "hasContactRoute": true,
+          "hasBuyerRole": true
+        },
+        "fairness": {
+          "arm": "B_agent_assisted",
+          "wave": "wave0",
+          "limits": {
+            "maxPaidUsd": 0,
+            "maxFetchesPerCase": 0,
+            "networkEnabled": false,
+            "allowlistPolicy": "none",
+            "paidProviders": "denied"
+          },
+          "activeResearch": false,
+          "adaptivePlanner": true
+        },
+        "commercial": {
+          "eligibilityStatus": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "challengerBlocked": true,
+          "verifiedNamedCount": 0,
+          "drawerReady": false,
+          "drawerGaps": [
+            "whyActNow",
+            "certified:generic_commercial_boilerplate:whatIsHappening",
+            "certified:missing_core_commercial_section:potentialHotelBusiness",
+            "certified:missing_core_commercial_section:whyActNow",
+            "certified:generic_commercial_boilerplate:recommendedNextStep"
+          ],
+          "disposition": "OPEN",
+          "durationMs": 20,
+          "actualPaidUsd": 0,
+          "fetchCount": 0
+        }
+      },
+      "deltas": {
+        "verifiedNamedCount": 0,
+        "drawerReady": false,
+        "durationMs": -13,
+        "fetchCount": 0,
+        "paidUsd": 0,
+        "budgetAsymmetry": false
+      },
+      "discoveryYieldNote": "INVENTORY_REOPEN"
+    },
+    {
+      "ok": true,
+      "focusIndex": 2,
+      "opportunityId": "disp_recLuxvwwxID7U2B8_cohera_formerly_csi_dmc_and_360dg_",
+      "slot": "incomplete_demand",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelName": "Bethesda Marriott",
+      "conclusionScope": "A_incremental_research_on_existing_opportunities",
+      "doesNotEstablish": "B_incremental_discovery_of_genuinely_new_opportunities",
+      "wave": "wave0",
+      "limits": {
+        "maxPaidUsd": 0,
+        "maxFetchesPerCase": 0,
+        "networkEnabled": false,
+        "allowlistPolicy": "none",
+        "paidProviders": "denied"
+      },
+      "attribution": {
+        "tag": "REASONING_ONLY",
+        "note": "Wave 0 — identical frozen bag; no network"
+      },
+      "armA": {
+        "arm": "baseline_current_gdi",
+        "executionKind": "fresh_deterministic_evaluation_on_frozen_snapshot",
+        "opportunityId": "disp_recLuxvwwxID7U2B8_cohera_formerly_csi_dmc_and_360dg_",
+        "durationMs": 6,
+        "supervisor": {
+          "blockers": [
+            "demand_scale",
+            "hotel_fit",
+            "contact_route",
+            "buyer_identity",
+            "corroboration"
+          ],
+          "publishable": false,
+          "exploratory": false,
+          "maturityHint": null,
+          "hardStopReason": null
+        },
+        "sharedEligibility": {
+          "status": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "gaps": [
+            "BUYER_RESPONSIBILITY_UNKNOWN"
+          ]
+        },
+        "challenger": {
+          "schema": "gdi-evidence-challenger-v1",
+          "confirmedDemand": true,
+          "reliablyInferredDemand": true,
+          "speculative": false,
+          "contactRelevance": {
+            "verifiedNamedCount": 1,
+            "nameShapedUnverifiedCount": 0
+          },
+          "unsupportedTiming": false,
+          "duplicateOrContradiction": false,
+          "commercialWeaknesses": [
+            "missing_thesis"
+          ],
+          "claims": [],
+          "salesReadyBlockedByChallenger": true
+        },
+        "thesis": "DMV DMC / planner account that can route association and corporate programs into Bethesda/NIH corridor.",
+        "contacts": [
+          {
+            "name": "Annette Hawks",
+            "email": "annette.hawks@meetcohera.com",
+            "role": "GM, Orlando & Washington, D.C.",
+            "verifiedHint": false
+          }
+        ],
+        "costs": {
+          "actualPaidUsd": 0,
+          "estimatedUsd": 0,
+          "providerCalls": [],
+          "deniedPaidAttempts": 0,
+          "mode": "baseline_frozen_evaluation"
+        },
+        "rubric": {
+          "scores": {
+            "commercialEligibilityCorrectness": 3,
+            "evidenceAccuracyProvenance": 5,
+            "meaningfulNewVerifiedFindings": 1,
+            "contactQualityRelevance": 3,
+            "thesisCompleteness": 4,
+            "hotelSpecificRelevance": 3,
+            "salesActionability": 2,
+            "duplicateDetection": 3,
+            "falsePositiveNegativeRisk": 3,
+            "researchCostEfficiency": 5
+          },
+          "total": 32,
+          "maxTotal": 50
+        },
+        "redacted": {
+          "id": "disp_recLuxvwwxID7U2B8_cohera_formerly_csi_dmc_and_360dg_",
+          "hotelId": "recLuxvwwxID7U2B8",
+          "organizationName": "Cohera (formerly CSI DMC and 360DG)",
+          "researchSegment": "professional_planners_dmc",
+          "eventName": null,
+          "opportunityType": "CORPORATE_ACCOUNT_RELATIONSHIP",
+          "hasNamedContact": true,
+          "hasContactRoute": true,
+          "hasBuyerRole": true
+        },
+        "fairness": {
+          "arm": "A_existing_gdi",
+          "wave": "wave0",
+          "limits": {
+            "maxPaidUsd": 0,
+            "maxFetchesPerCase": 0,
+            "networkEnabled": false,
+            "allowlistPolicy": "none",
+            "paidProviders": "denied"
+          },
+          "activeResearch": "FROZEN_EVAL_ONLY",
+          "adaptivePlanner": false
+        },
+        "commercial": {
+          "eligibilityStatus": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "challengerBlocked": true,
+          "verifiedNamedCount": 1,
+          "drawerReady": false,
+          "drawerGaps": [
+            "relevant_location_and_timing",
+            "whyActNow",
+            "certified:missing_core_commercial_section:potentialHotelBusiness",
+            "certified:missing_core_commercial_section:whyActNow"
+          ],
+          "disposition": "OPEN",
+          "durationMs": 6,
+          "actualPaidUsd": 0,
+          "fetchCount": 0
+        }
+      },
+      "armB": {
+        "arm": "agentic_enhanced_gdi",
+        "executionKind": "fresh_deterministic_adaptive_planning_on_frozen_snapshot",
+        "opportunityId": "disp_recLuxvwwxID7U2B8_cohera_formerly_csi_dmc_and_360dg_",
+        "durationMs": 6,
+        "steps": [
+          {
+            "index": 1,
+            "continue": true,
+            "decision": "CONTINUE",
+            "reason": "pursue_WORKPLACE_FACILITIES_REAL_ESTATE_for_BUYER_RESPONSIBILITY_GAP",
+            "strategyId": "WORKPLACE_FACILITIES_REAL_ESTATE",
+            "gapType": "BUYER_RESPONSIBILITY_GAP",
+            "preflightGaps": [
+              "BUYER_RESPONSIBILITY_UNKNOWN"
+            ],
+            "preflightDecision": "CONTINUE",
+            "externalRetrieval": "skipped_zero_spend_offline_mode"
+          }
+        ],
+        "recovery": {
+          "applied": true,
+          "evidenceBackedNewSalesReady": false,
+          "category": "C_NEW_RESEARCH_REQUIRED",
+          "overlaysApplied": {
+            "demand": true,
+            "buyer": true
+          },
+          "beforeStatus": "RESEARCH_CONTINUATION",
+          "afterStatus": "RESEARCH_CONTINUATION"
+        },
+        "supervisor": {
+          "blockers": [
+            "demand_scale",
+            "hotel_fit",
+            "contact_route",
+            "buyer_identity",
+            "corroboration"
+          ],
+          "publishable": false,
+          "exploratory": false,
+          "maturityHint": null,
+          "hardStopReason": null
+        },
+        "sharedEligibility": {
+          "status": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "gaps": [
+            "BUYER_RESPONSIBILITY_UNKNOWN"
+          ],
+          "challengerOverride": null
+        },
+        "challenger": {
+          "schema": "gdi-evidence-challenger-v1",
+          "confirmedDemand": true,
+          "reliablyInferredDemand": true,
+          "speculative": false,
+          "contactRelevance": {
+            "verifiedNamedCount": 1,
+            "nameShapedUnverifiedCount": 0
+          },
+          "unsupportedTiming": false,
+          "duplicateOrContradiction": false,
+          "commercialWeaknesses": [
+            "missing_thesis"
+          ],
+          "claims": [],
+          "salesReadyBlockedByChallenger": true
+        },
+        "thesis": "DMV DMC / planner account that can route association and corporate programs into Bethesda/NIH corridor.",
+        "contacts": [
+          {
+            "name": "Annette Hawks",
+            "email": "annette.hawks@meetcohera.com",
+            "role": "GM, Orlando & Washington, D.C.",
+            "verifiedHint": false
+          }
+        ],
+        "costs": {
+          "actualPaidUsd": 0,
+          "estimatedUsd": 0,
+          "providerCalls": [],
+          "deniedPaidAttempts": 0,
+          "externalRetrievals": 0,
+          "mode": "agentic_offline_adaptive_planning_zero_paid",
+          "pilotLimits": {
+            "maxActionsPerOpportunity": 5,
+            "maxExternalRetrievalsPilot": 60,
+            "maxUrlsPerAction": 2,
+            "allowRender": false,
+            "authorizePaidResearch": false,
+            "initialActionsPerOpportunity": 1,
+            "initialRetrievalsPerOpportunity": 2,
+            "enforceBuyerEvidenceGate": true,
+            "usePortfolioAllocator": true,
+            "useSourceSelectionEfficiency": true,
+            "maxFetches": 0,
+            "maxPaidUsd": 0
+          },
+          "fetchBudgetCap": 0
+        },
+        "rubric": {
+          "scores": {
+            "commercialEligibilityCorrectness": 3,
+            "evidenceAccuracyProvenance": 5,
+            "meaningfulNewVerifiedFindings": 4,
+            "contactQualityRelevance": 3,
+            "thesisCompleteness": 4,
+            "hotelSpecificRelevance": 3,
+            "salesActionability": 2,
+            "duplicateDetection": 3,
+            "falsePositiveNegativeRisk": 3,
+            "researchCostEfficiency": 5
+          },
+          "total": 35,
+          "maxTotal": 50
+        },
+        "redacted": {
+          "id": "disp_recLuxvwwxID7U2B8_cohera_formerly_csi_dmc_and_360dg_",
+          "hotelId": "recLuxvwwxID7U2B8",
+          "organizationName": "Cohera (formerly CSI DMC and 360DG)",
+          "researchSegment": "professional_planners_dmc",
+          "eventName": null,
+          "opportunityType": "CORPORATE_ACCOUNT_RELATIONSHIP",
+          "hasNamedContact": true,
+          "hasContactRoute": true,
+          "hasBuyerRole": true
+        },
+        "fairness": {
+          "arm": "B_agent_assisted",
+          "wave": "wave0",
+          "limits": {
+            "maxPaidUsd": 0,
+            "maxFetchesPerCase": 0,
+            "networkEnabled": false,
+            "allowlistPolicy": "none",
+            "paidProviders": "denied"
+          },
+          "activeResearch": false,
+          "adaptivePlanner": true
+        },
+        "commercial": {
+          "eligibilityStatus": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "challengerBlocked": true,
+          "verifiedNamedCount": 1,
+          "drawerReady": false,
+          "drawerGaps": [
+            "relevant_location_and_timing",
+            "whyActNow",
+            "certified:missing_core_commercial_section:potentialHotelBusiness",
+            "certified:missing_core_commercial_section:whyActNow"
+          ],
+          "disposition": "OPEN",
+          "durationMs": 6,
+          "actualPaidUsd": 0,
+          "fetchCount": 0
+        }
+      },
+      "deltas": {
+        "verifiedNamedCount": 0,
+        "drawerReady": false,
+        "durationMs": 0,
+        "fetchCount": 0,
+        "paidUsd": 0,
+        "budgetAsymmetry": false
+      },
+      "discoveryYieldNote": "INVENTORY_REOPEN"
+    },
+    {
+      "ok": true,
+      "focusIndex": 3,
+      "opportunityId": "rb_gdi_disc_dc428c1bd4c4e412",
+      "slot": "missing_verified_contact",
+      "hotelId": "recH9h3McgMNFQEla",
+      "hotelName": "Radisson Blu Toronto Downtown",
+      "conclusionScope": "A_incremental_research_on_existing_opportunities",
+      "doesNotEstablish": "B_incremental_discovery_of_genuinely_new_opportunities",
+      "wave": "wave0",
+      "limits": {
+        "maxPaidUsd": 0,
+        "maxFetchesPerCase": 0,
+        "networkEnabled": false,
+        "allowlistPolicy": "none",
+        "paidProviders": "denied"
+      },
+      "attribution": {
+        "tag": "REASONING_ONLY",
+        "note": "Wave 0 — identical frozen bag; no network"
+      },
+      "armA": {
+        "arm": "baseline_current_gdi",
+        "executionKind": "fresh_deterministic_evaluation_on_frozen_snapshot",
+        "opportunityId": "rb_gdi_disc_dc428c1bd4c4e412",
+        "durationMs": 9,
+        "supervisor": {
+          "blockers": [
+            "demand_scale",
+            "hotel_fit",
+            "contact_route",
+            "buyer_identity",
+            "corroboration"
+          ],
+          "publishable": false,
+          "exploratory": false,
+          "maturityHint": null,
+          "hardStopReason": null
+        },
+        "sharedEligibility": {
+          "status": "SALES_READY",
+          "salesReady": true,
+          "gaps": []
+        },
+        "challenger": {
+          "schema": "gdi-evidence-challenger-v1",
+          "confirmedDemand": true,
+          "reliablyInferredDemand": true,
+          "speculative": false,
+          "contactRelevance": {
+            "verifiedNamedCount": 0,
+            "nameShapedUnverifiedCount": 1
+          },
+          "unsupportedTiming": false,
+          "duplicateOrContradiction": false,
+          "commercialWeaknesses": [
+            "missing_verified_named_buyer_or_entry_point",
+            "missing_thesis"
+          ],
+          "claims": [],
+          "salesReadyBlockedByChallenger": true
+        },
+        "thesis": "ISCT 2027 Toronto Annual Meeting is International Society for Cell & Gene Therapy's association scientific annual meeting in Toronto at Metro Toronto Convention Centre, May 12–15, 2027; official dates are published by the organizer. Published attendance scale: 3,000+ global delegates — organizer promotional scale for 2027, not a confirmed registration count. Venue is confirmed; no target-hotel sourcing path is evidenced.",
+        "contacts": [
+          {
+            "name": "Giovanni Guizzetti",
+            "email": null,
+            "role": "Global Conference Manager",
+            "verifiedHint": false
+          }
+        ],
+        "costs": {
+          "actualPaidUsd": 0,
+          "estimatedUsd": 0,
+          "providerCalls": [],
+          "deniedPaidAttempts": 0,
+          "mode": "baseline_frozen_evaluation"
+        },
+        "rubric": {
+          "scores": {
+            "commercialEligibilityCorrectness": 2,
+            "evidenceAccuracyProvenance": 5,
+            "meaningfulNewVerifiedFindings": 1,
+            "contactQualityRelevance": 1,
+            "thesisCompleteness": 4,
+            "hotelSpecificRelevance": 3,
+            "salesActionability": 2,
+            "duplicateDetection": 3,
+            "falsePositiveNegativeRisk": 3,
+            "researchCostEfficiency": 5
+          },
+          "total": 29,
+          "maxTotal": 50
+        },
+        "redacted": {
+          "id": "rb_gdi_disc_dc428c1bd4c4e412",
+          "hotelId": null,
+          "organizationName": "International Society for Cell & Gene Therapy",
+          "researchSegment": null,
+          "eventName": null,
+          "opportunityType": "association_events",
+          "hasNamedContact": true,
+          "hasContactRoute": false,
+          "hasBuyerRole": true
+        },
+        "fairness": {
+          "arm": "A_existing_gdi",
+          "wave": "wave0",
+          "limits": {
+            "maxPaidUsd": 0,
+            "maxFetchesPerCase": 0,
+            "networkEnabled": false,
+            "allowlistPolicy": "none",
+            "paidProviders": "denied"
+          },
+          "activeResearch": "FROZEN_EVAL_ONLY",
+          "adaptivePlanner": false
+        },
+        "commercial": {
+          "eligibilityStatus": "SALES_READY",
+          "salesReady": true,
+          "challengerBlocked": true,
+          "verifiedNamedCount": 0,
+          "drawerReady": false,
+          "drawerGaps": [
+            "research_freshness"
+          ],
+          "disposition": "OPEN",
+          "durationMs": 9,
+          "actualPaidUsd": 0,
+          "fetchCount": 0
+        }
+      },
+      "armB": {
+        "arm": "agentic_enhanced_gdi",
+        "executionKind": "fresh_deterministic_adaptive_planning_on_frozen_snapshot",
+        "opportunityId": "rb_gdi_disc_dc428c1bd4c4e412",
+        "durationMs": 12,
+        "steps": [
+          {
+            "index": 1,
+            "continue": true,
+            "decision": "CONTINUE",
+            "reason": "pursue_MEETINGS_CORPORATE_EVENTS_for_NONE",
+            "strategyId": "MEETINGS_CORPORATE_EVENTS",
+            "gapType": "NONE",
+            "preflightGaps": [],
+            "preflightDecision": "STOP_SALES_READY",
+            "externalRetrieval": "skipped_zero_spend_offline_mode"
+          }
+        ],
+        "recovery": {
+          "applied": true,
+          "evidenceBackedNewSalesReady": false,
+          "category": "A_ALREADY_SUPPORTED",
+          "overlaysApplied": {
+            "demand": true,
+            "buyer": false
+          },
+          "beforeStatus": "SALES_READY",
+          "afterStatus": "SALES_READY"
+        },
+        "supervisor": {
+          "blockers": [
+            "demand_scale",
+            "hotel_fit",
+            "contact_route",
+            "buyer_identity",
+            "corroboration"
+          ],
+          "publishable": false,
+          "exploratory": false,
+          "maturityHint": null,
+          "hardStopReason": null
+        },
+        "sharedEligibility": {
+          "status": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "gaps": [
+            "CHALLENGER_BLOCKED_SALES_READY"
+          ],
+          "challengerOverride": "blocked_unsupported_or_unverified_buyer"
+        },
+        "challenger": {
+          "schema": "gdi-evidence-challenger-v1",
+          "confirmedDemand": true,
+          "reliablyInferredDemand": true,
+          "speculative": false,
+          "contactRelevance": {
+            "verifiedNamedCount": 0,
+            "nameShapedUnverifiedCount": 1
+          },
+          "unsupportedTiming": false,
+          "duplicateOrContradiction": false,
+          "commercialWeaknesses": [
+            "missing_verified_named_buyer_or_entry_point",
+            "missing_thesis"
+          ],
+          "claims": [],
+          "salesReadyBlockedByChallenger": true
+        },
+        "thesis": "ISCT 2027 Toronto Annual Meeting is International Society for Cell & Gene Therapy's association scientific annual meeting in Toronto at Metro Toronto Convention Centre, May 12–15, 2027; official dates are published by the organizer. Published attendance scale: 3,000+ global delegates — organizer promotional scale for 2027, not a confirmed registration count. Venue is confirmed; no target-hotel sourcing path is evidenced.",
+        "contacts": [
+          {
+            "name": "Giovanni Guizzetti",
+            "email": null,
+            "role": "Global Conference Manager",
+            "verifiedHint": false
+          }
+        ],
+        "costs": {
+          "actualPaidUsd": 0,
+          "estimatedUsd": 0,
+          "providerCalls": [],
+          "deniedPaidAttempts": 0,
+          "externalRetrievals": 0,
+          "mode": "agentic_offline_adaptive_planning_zero_paid",
+          "pilotLimits": {
+            "maxActionsPerOpportunity": 5,
+            "maxExternalRetrievalsPilot": 60,
+            "maxUrlsPerAction": 2,
+            "allowRender": false,
+            "authorizePaidResearch": false,
+            "initialActionsPerOpportunity": 1,
+            "initialRetrievalsPerOpportunity": 2,
+            "enforceBuyerEvidenceGate": true,
+            "usePortfolioAllocator": true,
+            "useSourceSelectionEfficiency": true,
+            "maxFetches": 0,
+            "maxPaidUsd": 0
+          },
+          "fetchBudgetCap": 0
+        },
+        "rubric": {
+          "scores": {
+            "commercialEligibilityCorrectness": 3,
+            "evidenceAccuracyProvenance": 5,
+            "meaningfulNewVerifiedFindings": 4,
+            "contactQualityRelevance": 1,
+            "thesisCompleteness": 4,
+            "hotelSpecificRelevance": 3,
+            "salesActionability": 2,
+            "duplicateDetection": 3,
+            "falsePositiveNegativeRisk": 3,
+            "researchCostEfficiency": 5
+          },
+          "total": 33,
+          "maxTotal": 50
+        },
+        "redacted": {
+          "id": "rb_gdi_disc_dc428c1bd4c4e412",
+          "hotelId": null,
+          "organizationName": "International Society for Cell & Gene Therapy",
+          "researchSegment": null,
+          "eventName": null,
+          "opportunityType": "association_events",
+          "hasNamedContact": true,
+          "hasContactRoute": false,
+          "hasBuyerRole": true
+        },
+        "fairness": {
+          "arm": "B_agent_assisted",
+          "wave": "wave0",
+          "limits": {
+            "maxPaidUsd": 0,
+            "maxFetchesPerCase": 0,
+            "networkEnabled": false,
+            "allowlistPolicy": "none",
+            "paidProviders": "denied"
+          },
+          "activeResearch": false,
+          "adaptivePlanner": true
+        },
+        "commercial": {
+          "eligibilityStatus": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "challengerBlocked": true,
+          "verifiedNamedCount": 0,
+          "drawerReady": false,
+          "drawerGaps": [
+            "research_freshness"
+          ],
+          "disposition": "OPEN",
+          "durationMs": 12,
+          "actualPaidUsd": 0,
+          "fetchCount": 0
+        }
+      },
+      "deltas": {
+        "verifiedNamedCount": 0,
+        "drawerReady": false,
+        "durationMs": 3,
+        "fetchCount": 0,
+        "paidUsd": 0,
+        "budgetAsymmetry": false
+      },
+      "discoveryYieldNote": "INVENTORY_REOPEN"
+    },
+    {
+      "ok": true,
+      "focusIndex": 4,
+      "opportunityId": "gdi_opp_prospect_mv8p5ddh_7edb8e7c",
+      "slot": "missing_verified_contact",
+      "hotelId": "recnPB3Q02NO8Ma1o",
+      "hotelName": "Wyndham San Diego Bayside",
+      "conclusionScope": "A_incremental_research_on_existing_opportunities",
+      "doesNotEstablish": "B_incremental_discovery_of_genuinely_new_opportunities",
+      "wave": "wave0",
+      "limits": {
+        "maxPaidUsd": 0,
+        "maxFetchesPerCase": 0,
+        "networkEnabled": false,
+        "allowlistPolicy": "none",
+        "paidProviders": "denied"
+      },
+      "attribution": {
+        "tag": "REASONING_ONLY",
+        "note": "Wave 0 — identical frozen bag; no network"
+      },
+      "armA": {
+        "arm": "baseline_current_gdi",
+        "executionKind": "fresh_deterministic_evaluation_on_frozen_snapshot",
+        "opportunityId": "gdi_opp_prospect_mv8p5ddh_7edb8e7c",
+        "durationMs": 2,
+        "supervisor": {
+          "blockers": [
+            "demand_scale",
+            "hotel_fit",
+            "contact_route",
+            "buyer_identity",
+            "corroboration"
+          ],
+          "publishable": false,
+          "exploratory": false,
+          "maturityHint": null,
+          "hardStopReason": null
+        },
+        "sharedEligibility": {
+          "status": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "gaps": [
+            "MISSING_HOTEL_DEMAND_THESIS"
+          ]
+        },
+        "challenger": {
+          "schema": "gdi-evidence-challenger-v1",
+          "confirmedDemand": true,
+          "reliablyInferredDemand": true,
+          "speculative": false,
+          "contactRelevance": {
+            "verifiedNamedCount": 1,
+            "nameShapedUnverifiedCount": 0
+          },
+          "unsupportedTiming": false,
+          "duplicateOrContradiction": false,
+          "commercialWeaknesses": [
+            "missing_thesis"
+          ],
+          "claims": [],
+          "salesReadyBlockedByChallenger": true
+        },
+        "thesis": "2027 AANS Annual Scientific Meeting — Navigating the Impossible",
+        "contacts": [
+          {
+            "name": "Ann Marie Levra",
+            "email": "alevra@aans.org",
+            "role": "Senior Director Education & Meetings Strategy",
+            "verifiedHint": false
+          }
+        ],
+        "costs": {
+          "actualPaidUsd": 0,
+          "estimatedUsd": 0,
+          "providerCalls": [],
+          "deniedPaidAttempts": 0,
+          "mode": "baseline_frozen_evaluation"
+        },
+        "rubric": {
+          "scores": {
+            "commercialEligibilityCorrectness": 3,
+            "evidenceAccuracyProvenance": 4,
+            "meaningfulNewVerifiedFindings": 1,
+            "contactQualityRelevance": 3,
+            "thesisCompleteness": 1,
+            "hotelSpecificRelevance": 3,
+            "salesActionability": 2,
+            "duplicateDetection": 3,
+            "falsePositiveNegativeRisk": 3,
+            "researchCostEfficiency": 5
+          },
+          "total": 28,
+          "maxTotal": 50
+        },
+        "redacted": {
+          "id": "gdi_opp_prospect_mv8p5ddh_7edb8e7c",
+          "hotelId": "recnPB3Q02NO8Ma1o",
+          "organizationName": "American Association of Neurological Surgeons",
+          "researchSegment": "Association",
+          "eventName": null,
+          "opportunityType": "GROUP_LODGING_OCCASION",
+          "hasNamedContact": true,
+          "hasContactRoute": true,
+          "hasBuyerRole": true
+        },
+        "fairness": {
+          "arm": "A_existing_gdi",
+          "wave": "wave0",
+          "limits": {
+            "maxPaidUsd": 0,
+            "maxFetchesPerCase": 0,
+            "networkEnabled": false,
+            "allowlistPolicy": "none",
+            "paidProviders": "denied"
+          },
+          "activeResearch": "FROZEN_EVAL_ONLY",
+          "adaptivePlanner": false
+        },
+        "commercial": {
+          "eligibilityStatus": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "challengerBlocked": true,
+          "verifiedNamedCount": 1,
+          "drawerReady": true,
+          "drawerGaps": [],
+          "disposition": "OPEN",
+          "durationMs": 2,
+          "actualPaidUsd": 0,
+          "fetchCount": 0
+        }
+      },
+      "armB": {
+        "arm": "agentic_enhanced_gdi",
+        "executionKind": "fresh_deterministic_adaptive_planning_on_frozen_snapshot",
+        "opportunityId": "gdi_opp_prospect_mv8p5ddh_7edb8e7c",
+        "durationMs": 5,
+        "steps": [
+          {
+            "index": 1,
+            "continue": true,
+            "decision": "CONTINUE",
+            "reason": "pursue_MEETINGS_CORPORATE_EVENTS_for_HOTEL_DEMAND_GAP",
+            "strategyId": "MEETINGS_CORPORATE_EVENTS",
+            "gapType": "HOTEL_DEMAND_GAP",
+            "preflightGaps": [
+              "MISSING_HOTEL_DEMAND_THESIS"
+            ],
+            "preflightDecision": "CONTINUE",
+            "externalRetrieval": "skipped_zero_spend_offline_mode"
+          }
+        ],
+        "recovery": {
+          "applied": true,
+          "evidenceBackedNewSalesReady": false,
+          "category": "B_DETERMINISTIC_MAPPING_CORRECTED",
+          "overlaysApplied": {
+            "demand": true,
+            "buyer": true
+          },
+          "beforeStatus": "RESEARCH_CONTINUATION",
+          "afterStatus": "RESEARCH_CONTINUATION"
+        },
+        "supervisor": {
+          "blockers": [
+            "demand_scale",
+            "hotel_fit",
+            "contact_route",
+            "buyer_identity",
+            "corroboration"
+          ],
+          "publishable": false,
+          "exploratory": false,
+          "maturityHint": null,
+          "hardStopReason": null
+        },
+        "sharedEligibility": {
+          "status": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "gaps": [
+            "MISSING_HOTEL_DEMAND_THESIS"
+          ],
+          "challengerOverride": null
+        },
+        "challenger": {
+          "schema": "gdi-evidence-challenger-v1",
+          "confirmedDemand": true,
+          "reliablyInferredDemand": true,
+          "speculative": false,
+          "contactRelevance": {
+            "verifiedNamedCount": 1,
+            "nameShapedUnverifiedCount": 0
+          },
+          "unsupportedTiming": false,
+          "duplicateOrContradiction": false,
+          "commercialWeaknesses": [
+            "missing_thesis"
+          ],
+          "claims": [],
+          "salesReadyBlockedByChallenger": true
+        },
+        "thesis": "2027 AANS Annual Scientific Meeting — Navigating the Impossible",
+        "contacts": [
+          {
+            "name": "Ann Marie Levra",
+            "email": "alevra@aans.org",
+            "role": "Senior Director Education & Meetings Strategy",
+            "verifiedHint": false
+          }
+        ],
+        "costs": {
+          "actualPaidUsd": 0,
+          "estimatedUsd": 0,
+          "providerCalls": [],
+          "deniedPaidAttempts": 0,
+          "externalRetrievals": 0,
+          "mode": "agentic_offline_adaptive_planning_zero_paid",
+          "pilotLimits": {
+            "maxActionsPerOpportunity": 5,
+            "maxExternalRetrievalsPilot": 60,
+            "maxUrlsPerAction": 2,
+            "allowRender": false,
+            "authorizePaidResearch": false,
+            "initialActionsPerOpportunity": 1,
+            "initialRetrievalsPerOpportunity": 2,
+            "enforceBuyerEvidenceGate": true,
+            "usePortfolioAllocator": true,
+            "useSourceSelectionEfficiency": true,
+            "maxFetches": 0,
+            "maxPaidUsd": 0
+          },
+          "fetchBudgetCap": 0
+        },
+        "rubric": {
+          "scores": {
+            "commercialEligibilityCorrectness": 3,
+            "evidenceAccuracyProvenance": 4,
+            "meaningfulNewVerifiedFindings": 4,
+            "contactQualityRelevance": 3,
+            "thesisCompleteness": 4,
+            "hotelSpecificRelevance": 3,
+            "salesActionability": 2,
+            "duplicateDetection": 3,
+            "falsePositiveNegativeRisk": 3,
+            "researchCostEfficiency": 5
+          },
+          "total": 34,
+          "maxTotal": 50
+        },
+        "redacted": {
+          "id": "gdi_opp_prospect_mv8p5ddh_7edb8e7c",
+          "hotelId": "recnPB3Q02NO8Ma1o",
+          "organizationName": "American Association of Neurological Surgeons",
+          "researchSegment": "Association",
+          "eventName": null,
+          "opportunityType": "GROUP_LODGING_OCCASION",
+          "hasNamedContact": true,
+          "hasContactRoute": true,
+          "hasBuyerRole": true
+        },
+        "fairness": {
+          "arm": "B_agent_assisted",
+          "wave": "wave0",
+          "limits": {
+            "maxPaidUsd": 0,
+            "maxFetchesPerCase": 0,
+            "networkEnabled": false,
+            "allowlistPolicy": "none",
+            "paidProviders": "denied"
+          },
+          "activeResearch": false,
+          "adaptivePlanner": true
+        },
+        "commercial": {
+          "eligibilityStatus": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "challengerBlocked": true,
+          "verifiedNamedCount": 1,
+          "drawerReady": true,
+          "drawerGaps": [],
+          "disposition": "OPEN",
+          "durationMs": 5,
+          "actualPaidUsd": 0,
+          "fetchCount": 0
+        }
+      },
+      "deltas": {
+        "verifiedNamedCount": 0,
+        "drawerReady": false,
+        "durationMs": 3,
+        "fetchCount": 0,
+        "paidUsd": 0,
+        "budgetAsymmetry": false
+      },
+      "discoveryYieldNote": "INVENTORY_REOPEN"
+    },
+    {
+      "ok": true,
+      "focusIndex": 5,
+      "opportunityId": "gdi_opp_governor_s_hurricane_conference_2027_26",
+      "slot": "forward_looking",
+      "hotelId": "recgMYovrrZDJMqzX",
+      "hotelName": "Waterstone Resort & Marina",
+      "conclusionScope": "A_incremental_research_on_existing_opportunities",
+      "doesNotEstablish": "B_incremental_discovery_of_genuinely_new_opportunities",
+      "wave": "wave0",
+      "limits": {
+        "maxPaidUsd": 0,
+        "maxFetchesPerCase": 0,
+        "networkEnabled": false,
+        "allowlistPolicy": "none",
+        "paidProviders": "denied"
+      },
+      "attribution": {
+        "tag": "REASONING_ONLY",
+        "note": "Wave 0 — identical frozen bag; no network"
+      },
+      "armA": {
+        "arm": "baseline_current_gdi",
+        "executionKind": "fresh_deterministic_evaluation_on_frozen_snapshot",
+        "opportunityId": "gdi_opp_governor_s_hurricane_conference_2027_26",
+        "durationMs": 2,
+        "supervisor": {
+          "blockers": [
+            "demand_scale",
+            "hotel_fit",
+            "contact_route",
+            "buyer_identity",
+            "corroboration"
+          ],
+          "publishable": false,
+          "exploratory": false,
+          "maturityHint": null,
+          "hardStopReason": null
+        },
+        "sharedEligibility": {
+          "status": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "gaps": [
+            "MISSING_HOTEL_DEMAND_THESIS",
+            "MISSING_NAMED_RELEVANT_BUYER",
+            "MISSING_CONTACT_ROUTE"
+          ]
+        },
+        "challenger": {
+          "schema": "gdi-evidence-challenger-v1",
+          "confirmedDemand": false,
+          "reliablyInferredDemand": true,
+          "speculative": false,
+          "contactRelevance": {
+            "verifiedNamedCount": 0,
+            "nameShapedUnverifiedCount": 0
+          },
+          "unsupportedTiming": false,
+          "duplicateOrContradiction": false,
+          "commercialWeaknesses": [
+            "missing_verified_named_buyer_or_entry_point",
+            "missing_thesis"
+          ],
+          "claims": [],
+          "salesReadyBlockedByChallenger": true
+        },
+        "thesis": "Governor’s Hurricane Conference 2027",
+        "contacts": [],
+        "costs": {
+          "actualPaidUsd": 0,
+          "estimatedUsd": 0,
+          "providerCalls": [],
+          "deniedPaidAttempts": 0,
+          "mode": "baseline_frozen_evaluation"
+        },
+        "rubric": {
+          "scores": {
+            "commercialEligibilityCorrectness": 3,
+            "evidenceAccuracyProvenance": 2,
+            "meaningfulNewVerifiedFindings": 1,
+            "contactQualityRelevance": 1,
+            "thesisCompleteness": 1,
+            "hotelSpecificRelevance": 3,
+            "salesActionability": 2,
+            "duplicateDetection": 3,
+            "falsePositiveNegativeRisk": 3,
+            "researchCostEfficiency": 5
+          },
+          "total": 24,
+          "maxTotal": 50
+        },
+        "redacted": {
+          "id": "gdi_opp_governor_s_hurricane_conference_2027_26",
+          "hotelId": "recgMYovrrZDJMqzX",
+          "organizationName": "Governor’s Hurricane Conference",
+          "researchSegment": "Government / Emergency Management",
+          "eventName": null,
+          "opportunityType": "CLOSED_DISQUALIFIED",
+          "hasNamedContact": false,
+          "hasContactRoute": false,
+          "hasBuyerRole": false
+        },
+        "fairness": {
+          "arm": "A_existing_gdi",
+          "wave": "wave0",
+          "limits": {
+            "maxPaidUsd": 0,
+            "maxFetchesPerCase": 0,
+            "networkEnabled": false,
+            "allowlistPolicy": "none",
+            "paidProviders": "denied"
+          },
+          "activeResearch": "FROZEN_EVAL_ONLY",
+          "adaptivePlanner": false
+        },
+        "commercial": {
+          "eligibilityStatus": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "challengerBlocked": true,
+          "verifiedNamedCount": 0,
+          "drawerReady": false,
+          "drawerGaps": [
+            "hotel_specific_commercial_relevance",
+            "credible_named_buyer_or_entry_point",
+            "whyActNow",
+            "certified:missing_core_commercial_section:whyThisHotel",
+            "certified:missing_core_commercial_section:whyActNow"
+          ],
+          "disposition": "COMPETITOR_PLACED",
+          "durationMs": 2,
+          "actualPaidUsd": 0,
+          "fetchCount": 0
+        }
+      },
+      "armB": {
+        "arm": "agentic_enhanced_gdi",
+        "executionKind": "fresh_deterministic_adaptive_planning_on_frozen_snapshot",
+        "opportunityId": "gdi_opp_governor_s_hurricane_conference_2027_26",
+        "durationMs": 7,
+        "steps": [
+          {
+            "index": 1,
+            "continue": true,
+            "decision": "CONTINUE",
+            "reason": "pursue_MEETINGS_CORPORATE_EVENTS_for_BUYER_IDENTITY_GAP",
+            "strategyId": "MEETINGS_CORPORATE_EVENTS",
+            "gapType": "BUYER_IDENTITY_GAP",
+            "preflightGaps": [
+              "MISSING_HOTEL_DEMAND_THESIS",
+              "MISSING_NAMED_RELEVANT_BUYER",
+              "MISSING_CONTACT_ROUTE"
+            ],
+            "preflightDecision": "CONTINUE",
+            "externalRetrieval": "skipped_zero_spend_offline_mode"
+          }
+        ],
+        "recovery": {
+          "applied": true,
+          "evidenceBackedNewSalesReady": false,
+          "category": "C_NEW_RESEARCH_REQUIRED",
+          "overlaysApplied": {
+            "demand": true,
+            "buyer": false
+          },
+          "beforeStatus": "RESEARCH_CONTINUATION",
+          "afterStatus": "RESEARCH_CONTINUATION"
+        },
+        "supervisor": {
+          "blockers": [
+            "demand_scale",
+            "hotel_fit",
+            "contact_route",
+            "buyer_identity",
+            "corroboration"
+          ],
+          "publishable": false,
+          "exploratory": false,
+          "maturityHint": null,
+          "hardStopReason": null
+        },
+        "sharedEligibility": {
+          "status": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "gaps": [
+            "MISSING_HOTEL_DEMAND_THESIS",
+            "MISSING_NAMED_RELEVANT_BUYER",
+            "MISSING_CONTACT_ROUTE"
+          ],
+          "challengerOverride": null
+        },
+        "challenger": {
+          "schema": "gdi-evidence-challenger-v1",
+          "confirmedDemand": false,
+          "reliablyInferredDemand": true,
+          "speculative": false,
+          "contactRelevance": {
+            "verifiedNamedCount": 0,
+            "nameShapedUnverifiedCount": 0
+          },
+          "unsupportedTiming": false,
+          "duplicateOrContradiction": false,
+          "commercialWeaknesses": [
+            "missing_verified_named_buyer_or_entry_point",
+            "missing_thesis"
+          ],
+          "claims": [],
+          "salesReadyBlockedByChallenger": true
+        },
+        "thesis": "Governor’s Hurricane Conference 2027",
+        "contacts": [],
+        "costs": {
+          "actualPaidUsd": 0,
+          "estimatedUsd": 0,
+          "providerCalls": [],
+          "deniedPaidAttempts": 0,
+          "externalRetrievals": 0,
+          "mode": "agentic_offline_adaptive_planning_zero_paid",
+          "pilotLimits": {
+            "maxActionsPerOpportunity": 5,
+            "maxExternalRetrievalsPilot": 60,
+            "maxUrlsPerAction": 2,
+            "allowRender": false,
+            "authorizePaidResearch": false,
+            "initialActionsPerOpportunity": 1,
+            "initialRetrievalsPerOpportunity": 2,
+            "enforceBuyerEvidenceGate": true,
+            "usePortfolioAllocator": true,
+            "useSourceSelectionEfficiency": true,
+            "maxFetches": 0,
+            "maxPaidUsd": 0
+          },
+          "fetchBudgetCap": 0
+        },
+        "rubric": {
+          "scores": {
+            "commercialEligibilityCorrectness": 3,
+            "evidenceAccuracyProvenance": 2,
+            "meaningfulNewVerifiedFindings": 4,
+            "contactQualityRelevance": 1,
+            "thesisCompleteness": 4,
+            "hotelSpecificRelevance": 3,
+            "salesActionability": 2,
+            "duplicateDetection": 3,
+            "falsePositiveNegativeRisk": 3,
+            "researchCostEfficiency": 5
+          },
+          "total": 30,
+          "maxTotal": 50
+        },
+        "redacted": {
+          "id": "gdi_opp_governor_s_hurricane_conference_2027_26",
+          "hotelId": "recgMYovrrZDJMqzX",
+          "organizationName": "Governor’s Hurricane Conference",
+          "researchSegment": "Government / Emergency Management",
+          "eventName": null,
+          "opportunityType": "CLOSED_DISQUALIFIED",
+          "hasNamedContact": false,
+          "hasContactRoute": false,
+          "hasBuyerRole": false
+        },
+        "fairness": {
+          "arm": "B_agent_assisted",
+          "wave": "wave0",
+          "limits": {
+            "maxPaidUsd": 0,
+            "maxFetchesPerCase": 0,
+            "networkEnabled": false,
+            "allowlistPolicy": "none",
+            "paidProviders": "denied"
+          },
+          "activeResearch": false,
+          "adaptivePlanner": true
+        },
+        "commercial": {
+          "eligibilityStatus": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "challengerBlocked": true,
+          "verifiedNamedCount": 0,
+          "drawerReady": false,
+          "drawerGaps": [
+            "hotel_specific_commercial_relevance",
+            "credible_named_buyer_or_entry_point",
+            "whyActNow",
+            "certified:missing_core_commercial_section:whyThisHotel",
+            "certified:missing_core_commercial_section:whyActNow"
+          ],
+          "disposition": "COMPETITOR_PLACED",
+          "durationMs": 7,
+          "actualPaidUsd": 0,
+          "fetchCount": 0
+        }
+      },
+      "deltas": {
+        "verifiedNamedCount": 0,
+        "drawerReady": false,
+        "durationMs": 5,
+        "fetchCount": 0,
+        "paidUsd": 0,
+        "budgetAsymmetry": false
+      },
+      "discoveryYieldNote": "INVENTORY_REOPEN"
+    },
+    {
+      "ok": true,
+      "focusIndex": 6,
+      "opportunityId": "gdi_opp_ajas_hq_rockville_watch",
+      "slot": "rejected_speculative",
+      "hotelId": "recLuxvwwxID7U2B8",
+      "hotelName": "Bethesda Marriott",
+      "conclusionScope": "A_incremental_research_on_existing_opportunities",
+      "doesNotEstablish": "B_incremental_discovery_of_genuinely_new_opportunities",
+      "wave": "wave0",
+      "limits": {
+        "maxPaidUsd": 0,
+        "maxFetchesPerCase": 0,
+        "networkEnabled": false,
+        "allowlistPolicy": "none",
+        "paidProviders": "denied"
+      },
+      "attribution": {
+        "tag": "REASONING_ONLY",
+        "note": "Wave 0 — identical frozen bag; no network"
+      },
+      "armA": {
+        "arm": "baseline_current_gdi",
+        "executionKind": "fresh_deterministic_evaluation_on_frozen_snapshot",
+        "opportunityId": "gdi_opp_ajas_hq_rockville_watch",
+        "durationMs": 3,
+        "supervisor": {
+          "blockers": [
+            "demand_scale",
+            "hotel_fit",
+            "contact_route",
+            "buyer_identity",
+            "corroboration"
+          ],
+          "publishable": false,
+          "exploratory": false,
+          "maturityHint": null,
+          "hardStopReason": null
+        },
+        "sharedEligibility": {
+          "status": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "gaps": [
+            "MISSING_HOTEL_DEMAND_THESIS",
+            "MISSING_CONTACT_ROUTE"
+          ]
+        },
+        "challenger": {
+          "schema": "gdi-evidence-challenger-v1",
+          "confirmedDemand": true,
+          "reliablyInferredDemand": true,
+          "speculative": false,
+          "contactRelevance": {
+            "verifiedNamedCount": 0,
+            "nameShapedUnverifiedCount": 1
+          },
+          "unsupportedTiming": false,
+          "duplicateOrContradiction": false,
+          "commercialWeaknesses": [
+            "missing_verified_named_buyer_or_entry_point",
+            "missing_thesis"
+          ],
+          "claims": [],
+          "salesReadyBlockedByChallenger": true
+        },
+        "thesis": "AJAS Annual Conference 2027 — Fort Lauderdale (HQ Rockville; future DC-year watch)",
+        "contacts": [
+          {
+            "name": "Rachel Stevens",
+            "email": null,
+            "role": "Director of Operations",
+            "verifiedHint": false
+          }
+        ],
+        "costs": {
+          "actualPaidUsd": 0,
+          "estimatedUsd": 0,
+          "providerCalls": [],
+          "deniedPaidAttempts": 0,
+          "mode": "baseline_frozen_evaluation"
+        },
+        "rubric": {
+          "scores": {
+            "commercialEligibilityCorrectness": 3,
+            "evidenceAccuracyProvenance": 3,
+            "meaningfulNewVerifiedFindings": 1,
+            "contactQualityRelevance": 1,
+            "thesisCompleteness": 1,
+            "hotelSpecificRelevance": 3,
+            "salesActionability": 2,
+            "duplicateDetection": 3,
+            "falsePositiveNegativeRisk": 3,
+            "researchCostEfficiency": 5
+          },
+          "total": 25,
+          "maxTotal": 50
+        },
+        "redacted": {
+          "id": "gdi_opp_ajas_hq_rockville_watch",
+          "hotelId": "recLuxvwwxID7U2B8",
+          "organizationName": "Association of Jewish Aging Services (AJAS)",
+          "researchSegment": "Healthcare",
+          "eventName": null,
+          "opportunityType": "FUTURE_CYCLE",
+          "hasNamedContact": true,
+          "hasContactRoute": false,
+          "hasBuyerRole": true
+        },
+        "fairness": {
+          "arm": "A_existing_gdi",
+          "wave": "wave0",
+          "limits": {
+            "maxPaidUsd": 0,
+            "maxFetchesPerCase": 0,
+            "networkEnabled": false,
+            "allowlistPolicy": "none",
+            "paidProviders": "denied"
+          },
+          "activeResearch": "FROZEN_EVAL_ONLY",
+          "adaptivePlanner": false
+        },
+        "commercial": {
+          "eligibilityStatus": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "challengerBlocked": true,
+          "verifiedNamedCount": 0,
+          "drawerReady": true,
+          "drawerGaps": [],
+          "disposition": "TOO_EARLY_WATCH",
+          "durationMs": 3,
+          "actualPaidUsd": 0,
+          "fetchCount": 0
+        }
+      },
+      "armB": {
+        "arm": "agentic_enhanced_gdi",
+        "executionKind": "fresh_deterministic_adaptive_planning_on_frozen_snapshot",
+        "opportunityId": "gdi_opp_ajas_hq_rockville_watch",
+        "durationMs": 7,
+        "steps": [
+          {
+            "index": 1,
+            "continue": true,
+            "decision": "CONTINUE",
+            "reason": "pursue_ORG_ROUTE_ASK_FOR_NAMED_for_CONTACT_ROUTING_GAP",
+            "strategyId": "ORG_ROUTE_ASK_FOR_NAMED",
+            "gapType": "CONTACT_ROUTING_GAP",
+            "preflightGaps": [
+              "MISSING_HOTEL_DEMAND_THESIS",
+              "MISSING_CONTACT_ROUTE"
+            ],
+            "preflightDecision": "CONTINUE",
+            "externalRetrieval": "skipped_zero_spend_offline_mode"
+          }
+        ],
+        "recovery": {
+          "applied": true,
+          "evidenceBackedNewSalesReady": false,
+          "category": "C_NEW_RESEARCH_REQUIRED",
+          "overlaysApplied": {
+            "demand": false,
+            "buyer": true
+          },
+          "beforeStatus": "RESEARCH_CONTINUATION",
+          "afterStatus": "RESEARCH_CONTINUATION"
+        },
+        "supervisor": {
+          "blockers": [
+            "demand_scale",
+            "hotel_fit",
+            "contact_route",
+            "buyer_identity",
+            "corroboration"
+          ],
+          "publishable": false,
+          "exploratory": false,
+          "maturityHint": null,
+          "hardStopReason": null
+        },
+        "sharedEligibility": {
+          "status": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "gaps": [
+            "MISSING_HOTEL_DEMAND_THESIS",
+            "MISSING_CONTACT_ROUTE"
+          ],
+          "challengerOverride": null
+        },
+        "challenger": {
+          "schema": "gdi-evidence-challenger-v1",
+          "confirmedDemand": true,
+          "reliablyInferredDemand": true,
+          "speculative": false,
+          "contactRelevance": {
+            "verifiedNamedCount": 0,
+            "nameShapedUnverifiedCount": 1
+          },
+          "unsupportedTiming": false,
+          "duplicateOrContradiction": false,
+          "commercialWeaknesses": [
+            "missing_verified_named_buyer_or_entry_point",
+            "missing_thesis"
+          ],
+          "claims": [],
+          "salesReadyBlockedByChallenger": true
+        },
+        "thesis": "AJAS Annual Conference 2027 — Fort Lauderdale (HQ Rockville; future DC-year watch)",
+        "contacts": [
+          {
+            "name": "Rachel Stevens",
+            "email": null,
+            "role": "Director of Operations",
+            "verifiedHint": false
+          }
+        ],
+        "costs": {
+          "actualPaidUsd": 0,
+          "estimatedUsd": 0,
+          "providerCalls": [],
+          "deniedPaidAttempts": 0,
+          "externalRetrievals": 0,
+          "mode": "agentic_offline_adaptive_planning_zero_paid",
+          "pilotLimits": {
+            "maxActionsPerOpportunity": 5,
+            "maxExternalRetrievalsPilot": 60,
+            "maxUrlsPerAction": 2,
+            "allowRender": false,
+            "authorizePaidResearch": false,
+            "initialActionsPerOpportunity": 1,
+            "initialRetrievalsPerOpportunity": 2,
+            "enforceBuyerEvidenceGate": true,
+            "usePortfolioAllocator": true,
+            "useSourceSelectionEfficiency": true,
+            "maxFetches": 0,
+            "maxPaidUsd": 0
+          },
+          "fetchBudgetCap": 0
+        },
+        "rubric": {
+          "scores": {
+            "commercialEligibilityCorrectness": 3,
+            "evidenceAccuracyProvenance": 3,
+            "meaningfulNewVerifiedFindings": 4,
+            "contactQualityRelevance": 1,
+            "thesisCompleteness": 1,
+            "hotelSpecificRelevance": 3,
+            "salesActionability": 2,
+            "duplicateDetection": 3,
+            "falsePositiveNegativeRisk": 3,
+            "researchCostEfficiency": 5
+          },
+          "total": 28,
+          "maxTotal": 50
+        },
+        "redacted": {
+          "id": "gdi_opp_ajas_hq_rockville_watch",
+          "hotelId": "recLuxvwwxID7U2B8",
+          "organizationName": "Association of Jewish Aging Services (AJAS)",
+          "researchSegment": "Healthcare",
+          "eventName": null,
+          "opportunityType": "FUTURE_CYCLE",
+          "hasNamedContact": true,
+          "hasContactRoute": false,
+          "hasBuyerRole": true
+        },
+        "fairness": {
+          "arm": "B_agent_assisted",
+          "wave": "wave0",
+          "limits": {
+            "maxPaidUsd": 0,
+            "maxFetchesPerCase": 0,
+            "networkEnabled": false,
+            "allowlistPolicy": "none",
+            "paidProviders": "denied"
+          },
+          "activeResearch": false,
+          "adaptivePlanner": true
+        },
+        "commercial": {
+          "eligibilityStatus": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "challengerBlocked": true,
+          "verifiedNamedCount": 0,
+          "drawerReady": true,
+          "drawerGaps": [],
+          "disposition": "TOO_EARLY_WATCH",
+          "durationMs": 7,
+          "actualPaidUsd": 0,
+          "fetchCount": 0
+        }
+      },
+      "deltas": {
+        "verifiedNamedCount": 0,
+        "drawerReady": false,
+        "durationMs": 4,
+        "fetchCount": 0,
+        "paidUsd": 0,
+        "budgetAsymmetry": false
+      },
+      "discoveryYieldNote": "INVENTORY_REOPEN"
+    },
+    {
+      "ok": true,
+      "focusIndex": 7,
+      "opportunityId": "gdi_opp_wrcamp_altaroma_2027_altaroma_organizer",
+      "slot": "competitor_cross_hotel",
+      "hotelId": "rece0or38cxo3Fymb",
+      "hotelName": "W Rome",
+      "conclusionScope": "A_incremental_research_on_existing_opportunities",
+      "doesNotEstablish": "B_incremental_discovery_of_genuinely_new_opportunities",
+      "wave": "wave0",
+      "limits": {
+        "maxPaidUsd": 0,
+        "maxFetchesPerCase": 0,
+        "networkEnabled": false,
+        "allowlistPolicy": "none",
+        "paidProviders": "denied"
+      },
+      "attribution": {
+        "tag": "REASONING_ONLY",
+        "note": "Wave 0 — identical frozen bag; no network"
+      },
+      "armA": {
+        "arm": "baseline_current_gdi",
+        "executionKind": "fresh_deterministic_evaluation_on_frozen_snapshot",
+        "opportunityId": "gdi_opp_wrcamp_altaroma_2027_altaroma_organizer",
+        "durationMs": 1,
+        "supervisor": {
+          "blockers": [
+            "demand_scale",
+            "hotel_fit",
+            "contact_route",
+            "buyer_identity",
+            "corroboration"
+          ],
+          "publishable": false,
+          "exploratory": false,
+          "maturityHint": null,
+          "hardStopReason": null
+        },
+        "sharedEligibility": {
+          "status": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "gaps": [
+            "MISSING_HOTEL_DEMAND_THESIS",
+            "MISSING_NAMED_RELEVANT_BUYER",
+            "MISSING_CONTACT_ROUTE"
+          ]
+        },
+        "challenger": {
+          "schema": "gdi-evidence-challenger-v1",
+          "confirmedDemand": false,
+          "reliablyInferredDemand": true,
+          "speculative": false,
+          "contactRelevance": {
+            "verifiedNamedCount": 0,
+            "nameShapedUnverifiedCount": 0
+          },
+          "unsupportedTiming": false,
+          "duplicateOrContradiction": false,
+          "commercialWeaknesses": [
+            "missing_verified_named_buyer_or_entry_point",
+            "missing_thesis"
+          ],
+          "claims": [],
+          "salesReadyBlockedByChallenger": true
+        },
+        "thesis": "Altaroma — Altaroma 2027 (ORGANIZER)",
+        "contacts": [],
+        "costs": {
+          "actualPaidUsd": 0,
+          "estimatedUsd": 0,
+          "providerCalls": [],
+          "deniedPaidAttempts": 0,
+          "mode": "baseline_frozen_evaluation"
+        },
+        "rubric": {
+          "scores": {
+            "commercialEligibilityCorrectness": 3,
+            "evidenceAccuracyProvenance": 2,
+            "meaningfulNewVerifiedFindings": 1,
+            "contactQualityRelevance": 1,
+            "thesisCompleteness": 1,
+            "hotelSpecificRelevance": 3,
+            "salesActionability": 2,
+            "duplicateDetection": 3,
+            "falsePositiveNegativeRisk": 3,
+            "researchCostEfficiency": 5
+          },
+          "total": 24,
+          "maxTotal": 50
+        },
+        "redacted": {
+          "id": "gdi_opp_wrcamp_altaroma_2027_altaroma_organizer",
+          "hotelId": "rece0or38cxo3Fymb",
+          "organizationName": "Altaroma",
+          "researchSegment": "Exhibitor services / Hospitality",
+          "eventName": null,
+          "opportunityType": "FUTURE_CYCLE",
+          "hasNamedContact": false,
+          "hasContactRoute": false,
+          "hasBuyerRole": true
+        },
+        "fairness": {
+          "arm": "A_existing_gdi",
+          "wave": "wave0",
+          "limits": {
+            "maxPaidUsd": 0,
+            "maxFetchesPerCase": 0,
+            "networkEnabled": false,
+            "allowlistPolicy": "none",
+            "paidProviders": "denied"
+          },
+          "activeResearch": "FROZEN_EVAL_ONLY",
+          "adaptivePlanner": false
+        },
+        "commercial": {
+          "eligibilityStatus": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "challengerBlocked": true,
+          "verifiedNamedCount": 0,
+          "drawerReady": false,
+          "drawerGaps": [
+            "credible_named_buyer_or_entry_point",
+            "certified:duplicated_organization_in_title:Altaroma — Altaroma 2027 (ORGANIZER)"
+          ],
+          "disposition": "OPEN",
+          "durationMs": 1,
+          "actualPaidUsd": 0,
+          "fetchCount": 0
+        }
+      },
+      "armB": {
+        "arm": "agentic_enhanced_gdi",
+        "executionKind": "fresh_deterministic_adaptive_planning_on_frozen_snapshot",
+        "opportunityId": "gdi_opp_wrcamp_altaroma_2027_altaroma_organizer",
+        "durationMs": 5,
+        "steps": [
+          {
+            "index": 1,
+            "continue": true,
+            "decision": "CONTINUE",
+            "reason": "pursue_MEETINGS_CORPORATE_EVENTS_for_BUYER_IDENTITY_GAP",
+            "strategyId": "MEETINGS_CORPORATE_EVENTS",
+            "gapType": "BUYER_IDENTITY_GAP",
+            "preflightGaps": [
+              "MISSING_HOTEL_DEMAND_THESIS",
+              "MISSING_NAMED_RELEVANT_BUYER",
+              "MISSING_CONTACT_ROUTE"
+            ],
+            "preflightDecision": "CONTINUE",
+            "externalRetrieval": "skipped_zero_spend_offline_mode"
+          }
+        ],
+        "recovery": {
+          "applied": true,
+          "evidenceBackedNewSalesReady": false,
+          "category": "C_NEW_RESEARCH_REQUIRED",
+          "overlaysApplied": {
+            "demand": true,
+            "buyer": false
+          },
+          "beforeStatus": "RESEARCH_CONTINUATION",
+          "afterStatus": "RESEARCH_CONTINUATION"
+        },
+        "supervisor": {
+          "blockers": [
+            "demand_scale",
+            "hotel_fit",
+            "contact_route",
+            "buyer_identity",
+            "corroboration"
+          ],
+          "publishable": false,
+          "exploratory": false,
+          "maturityHint": null,
+          "hardStopReason": null
+        },
+        "sharedEligibility": {
+          "status": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "gaps": [
+            "MISSING_HOTEL_DEMAND_THESIS",
+            "MISSING_NAMED_RELEVANT_BUYER",
+            "MISSING_CONTACT_ROUTE"
+          ],
+          "challengerOverride": null
+        },
+        "challenger": {
+          "schema": "gdi-evidence-challenger-v1",
+          "confirmedDemand": false,
+          "reliablyInferredDemand": true,
+          "speculative": false,
+          "contactRelevance": {
+            "verifiedNamedCount": 0,
+            "nameShapedUnverifiedCount": 0
+          },
+          "unsupportedTiming": false,
+          "duplicateOrContradiction": false,
+          "commercialWeaknesses": [
+            "missing_verified_named_buyer_or_entry_point",
+            "missing_thesis"
+          ],
+          "claims": [],
+          "salesReadyBlockedByChallenger": true
+        },
+        "thesis": "Altaroma — Altaroma 2027 (ORGANIZER)",
+        "contacts": [],
+        "costs": {
+          "actualPaidUsd": 0,
+          "estimatedUsd": 0,
+          "providerCalls": [],
+          "deniedPaidAttempts": 0,
+          "externalRetrievals": 0,
+          "mode": "agentic_offline_adaptive_planning_zero_paid",
+          "pilotLimits": {
+            "maxActionsPerOpportunity": 5,
+            "maxExternalRetrievalsPilot": 60,
+            "maxUrlsPerAction": 2,
+            "allowRender": false,
+            "authorizePaidResearch": false,
+            "initialActionsPerOpportunity": 1,
+            "initialRetrievalsPerOpportunity": 2,
+            "enforceBuyerEvidenceGate": true,
+            "usePortfolioAllocator": true,
+            "useSourceSelectionEfficiency": true,
+            "maxFetches": 0,
+            "maxPaidUsd": 0
+          },
+          "fetchBudgetCap": 0
+        },
+        "rubric": {
+          "scores": {
+            "commercialEligibilityCorrectness": 3,
+            "evidenceAccuracyProvenance": 2,
+            "meaningfulNewVerifiedFindings": 4,
+            "contactQualityRelevance": 1,
+            "thesisCompleteness": 4,
+            "hotelSpecificRelevance": 3,
+            "salesActionability": 2,
+            "duplicateDetection": 3,
+            "falsePositiveNegativeRisk": 3,
+            "researchCostEfficiency": 5
+          },
+          "total": 30,
+          "maxTotal": 50
+        },
+        "redacted": {
+          "id": "gdi_opp_wrcamp_altaroma_2027_altaroma_organizer",
+          "hotelId": "rece0or38cxo3Fymb",
+          "organizationName": "Altaroma",
+          "researchSegment": "Exhibitor services / Hospitality",
+          "eventName": null,
+          "opportunityType": "FUTURE_CYCLE",
+          "hasNamedContact": false,
+          "hasContactRoute": false,
+          "hasBuyerRole": true
+        },
+        "fairness": {
+          "arm": "B_agent_assisted",
+          "wave": "wave0",
+          "limits": {
+            "maxPaidUsd": 0,
+            "maxFetchesPerCase": 0,
+            "networkEnabled": false,
+            "allowlistPolicy": "none",
+            "paidProviders": "denied"
+          },
+          "activeResearch": false,
+          "adaptivePlanner": true
+        },
+        "commercial": {
+          "eligibilityStatus": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "challengerBlocked": true,
+          "verifiedNamedCount": 0,
+          "drawerReady": false,
+          "drawerGaps": [
+            "credible_named_buyer_or_entry_point",
+            "certified:duplicated_organization_in_title:Altaroma — Altaroma 2027 (ORGANIZER)"
+          ],
+          "disposition": "OPEN",
+          "durationMs": 5,
+          "actualPaidUsd": 0,
+          "fetchCount": 0
+        }
+      },
+      "deltas": {
+        "verifiedNamedCount": 0,
+        "drawerReady": false,
+        "durationMs": 4,
+        "fetchCount": 0,
+        "paidUsd": 0,
+        "budgetAsymmetry": false
+      },
+      "discoveryYieldNote": "INVENTORY_REOPEN"
+    },
+    {
+      "ok": true,
+      "focusIndex": 8,
+      "opportunityId": "camp_ivirma_2027_castillo",
+      "slot": "competitor_cross_hotel",
+      "hotelId": "rec82D9zpB8fede1I",
+      "hotelName": "Castillo Hotel Son Vida",
+      "conclusionScope": "A_incremental_research_on_existing_opportunities",
+      "doesNotEstablish": "B_incremental_discovery_of_genuinely_new_opportunities",
+      "wave": "wave0",
+      "limits": {
+        "maxPaidUsd": 0,
+        "maxFetchesPerCase": 0,
+        "networkEnabled": false,
+        "allowlistPolicy": "none",
+        "paidProviders": "denied"
+      },
+      "attribution": {
+        "tag": "REASONING_ONLY",
+        "note": "Wave 0 — identical frozen bag; no network"
+      },
+      "armA": {
+        "arm": "baseline_current_gdi",
+        "executionKind": "fresh_deterministic_evaluation_on_frozen_snapshot",
+        "opportunityId": "camp_ivirma_2027_castillo",
+        "durationMs": 3,
+        "supervisor": {
+          "blockers": [
+            "demand_scale",
+            "hotel_fit",
+            "contact_route",
+            "buyer_identity",
+            "corroboration"
+          ],
+          "publishable": false,
+          "exploratory": false,
+          "maturityHint": null,
+          "hardStopReason": null
+        },
+        "sharedEligibility": {
+          "status": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "gaps": [
+            "MISSING_HOTEL_DEMAND_THESIS",
+            "MISSING_NAMED_RELEVANT_BUYER"
+          ]
+        },
+        "challenger": {
+          "schema": "gdi-evidence-challenger-v1",
+          "confirmedDemand": false,
+          "reliablyInferredDemand": true,
+          "speculative": false,
+          "contactRelevance": {
+            "verifiedNamedCount": 0,
+            "nameShapedUnverifiedCount": 0
+          },
+          "unsupportedTiming": false,
+          "duplicateOrContradiction": false,
+          "commercialWeaknesses": [
+            "missing_verified_named_buyer_or_entry_point",
+            "missing_thesis"
+          ],
+          "claims": [],
+          "salesReadyBlockedByChallenger": true
+        },
+        "thesis": "IVIRMA Congress 2027 Palma",
+        "contacts": [],
+        "costs": {
+          "actualPaidUsd": 0,
+          "estimatedUsd": 0,
+          "providerCalls": [],
+          "deniedPaidAttempts": 0,
+          "mode": "baseline_frozen_evaluation"
+        },
+        "rubric": {
+          "scores": {
+            "commercialEligibilityCorrectness": 3,
+            "evidenceAccuracyProvenance": 2,
+            "meaningfulNewVerifiedFindings": 1,
+            "contactQualityRelevance": 1,
+            "thesisCompleteness": 1,
+            "hotelSpecificRelevance": 3,
+            "salesActionability": 2,
+            "duplicateDetection": 3,
+            "falsePositiveNegativeRisk": 3,
+            "researchCostEfficiency": 5
+          },
+          "total": 24,
+          "maxTotal": 50
+        },
+        "redacted": {
+          "id": "camp_ivirma_2027_castillo",
+          "hotelId": "rec82D9zpB8fede1I",
+          "organizationName": "IVIRMA / Grupo Pacífico housing",
+          "researchSegment": "Housing / Overflow",
+          "eventName": null,
+          "opportunityType": "FUTURE_CYCLE",
+          "hasNamedContact": false,
+          "hasContactRoute": false,
+          "hasBuyerRole": false
+        },
+        "fairness": {
+          "arm": "A_existing_gdi",
+          "wave": "wave0",
+          "limits": {
+            "maxPaidUsd": 0,
+            "maxFetchesPerCase": 0,
+            "networkEnabled": false,
+            "allowlistPolicy": "none",
+            "paidProviders": "denied"
+          },
+          "activeResearch": "FROZEN_EVAL_ONLY",
+          "adaptivePlanner": false
+        },
+        "commercial": {
+          "eligibilityStatus": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "challengerBlocked": true,
+          "verifiedNamedCount": 0,
+          "drawerReady": false,
+          "drawerGaps": [
+            "credible_named_buyer_or_entry_point"
+          ],
+          "disposition": "OPEN",
+          "durationMs": 3,
+          "actualPaidUsd": 0,
+          "fetchCount": 0
+        }
+      },
+      "armB": {
+        "arm": "agentic_enhanced_gdi",
+        "executionKind": "fresh_deterministic_adaptive_planning_on_frozen_snapshot",
+        "opportunityId": "camp_ivirma_2027_castillo",
+        "durationMs": 4,
+        "steps": [
+          {
+            "index": 1,
+            "continue": true,
+            "decision": "CONTINUE",
+            "reason": "pursue_MEETINGS_CORPORATE_EVENTS_for_BUYER_IDENTITY_GAP",
+            "strategyId": "MEETINGS_CORPORATE_EVENTS",
+            "gapType": "BUYER_IDENTITY_GAP",
+            "preflightGaps": [
+              "MISSING_HOTEL_DEMAND_THESIS",
+              "MISSING_NAMED_RELEVANT_BUYER"
+            ],
+            "preflightDecision": "CONTINUE",
+            "externalRetrieval": "skipped_zero_spend_offline_mode"
+          }
+        ],
+        "recovery": {
+          "applied": true,
+          "evidenceBackedNewSalesReady": false,
+          "category": "C_NEW_RESEARCH_REQUIRED",
+          "overlaysApplied": {
+            "demand": true,
+            "buyer": false
+          },
+          "beforeStatus": "RESEARCH_CONTINUATION",
+          "afterStatus": "RESEARCH_CONTINUATION"
+        },
+        "supervisor": {
+          "blockers": [
+            "demand_scale",
+            "hotel_fit",
+            "contact_route",
+            "buyer_identity",
+            "corroboration"
+          ],
+          "publishable": false,
+          "exploratory": false,
+          "maturityHint": null,
+          "hardStopReason": null
+        },
+        "sharedEligibility": {
+          "status": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "gaps": [
+            "MISSING_HOTEL_DEMAND_THESIS",
+            "MISSING_NAMED_RELEVANT_BUYER"
+          ],
+          "challengerOverride": null
+        },
+        "challenger": {
+          "schema": "gdi-evidence-challenger-v1",
+          "confirmedDemand": false,
+          "reliablyInferredDemand": true,
+          "speculative": false,
+          "contactRelevance": {
+            "verifiedNamedCount": 0,
+            "nameShapedUnverifiedCount": 0
+          },
+          "unsupportedTiming": false,
+          "duplicateOrContradiction": false,
+          "commercialWeaknesses": [
+            "missing_verified_named_buyer_or_entry_point",
+            "missing_thesis"
+          ],
+          "claims": [],
+          "salesReadyBlockedByChallenger": true
+        },
+        "thesis": "IVIRMA Congress 2027 Palma",
+        "contacts": [],
+        "costs": {
+          "actualPaidUsd": 0,
+          "estimatedUsd": 0,
+          "providerCalls": [],
+          "deniedPaidAttempts": 0,
+          "externalRetrievals": 0,
+          "mode": "agentic_offline_adaptive_planning_zero_paid",
+          "pilotLimits": {
+            "maxActionsPerOpportunity": 5,
+            "maxExternalRetrievalsPilot": 60,
+            "maxUrlsPerAction": 2,
+            "allowRender": false,
+            "authorizePaidResearch": false,
+            "initialActionsPerOpportunity": 1,
+            "initialRetrievalsPerOpportunity": 2,
+            "enforceBuyerEvidenceGate": true,
+            "usePortfolioAllocator": true,
+            "useSourceSelectionEfficiency": true,
+            "maxFetches": 0,
+            "maxPaidUsd": 0
+          },
+          "fetchBudgetCap": 0
+        },
+        "rubric": {
+          "scores": {
+            "commercialEligibilityCorrectness": 3,
+            "evidenceAccuracyProvenance": 2,
+            "meaningfulNewVerifiedFindings": 4,
+            "contactQualityRelevance": 1,
+            "thesisCompleteness": 4,
+            "hotelSpecificRelevance": 3,
+            "salesActionability": 2,
+            "duplicateDetection": 3,
+            "falsePositiveNegativeRisk": 3,
+            "researchCostEfficiency": 5
+          },
+          "total": 30,
+          "maxTotal": 50
+        },
+        "redacted": {
+          "id": "camp_ivirma_2027_castillo",
+          "hotelId": "rec82D9zpB8fede1I",
+          "organizationName": "IVIRMA / Grupo Pacífico housing",
+          "researchSegment": "Housing / Overflow",
+          "eventName": null,
+          "opportunityType": "FUTURE_CYCLE",
+          "hasNamedContact": false,
+          "hasContactRoute": false,
+          "hasBuyerRole": false
+        },
+        "fairness": {
+          "arm": "B_agent_assisted",
+          "wave": "wave0",
+          "limits": {
+            "maxPaidUsd": 0,
+            "maxFetchesPerCase": 0,
+            "networkEnabled": false,
+            "allowlistPolicy": "none",
+            "paidProviders": "denied"
+          },
+          "activeResearch": false,
+          "adaptivePlanner": true
+        },
+        "commercial": {
+          "eligibilityStatus": "RESEARCH_CONTINUATION",
+          "salesReady": false,
+          "challengerBlocked": true,
+          "verifiedNamedCount": 0,
+          "drawerReady": false,
+          "drawerGaps": [
+            "credible_named_buyer_or_entry_point"
+          ],
+          "disposition": "OPEN",
+          "durationMs": 4,
+          "actualPaidUsd": 0,
+          "fetchCount": 0
+        }
+      },
+      "deltas": {
+        "verifiedNamedCount": 0,
+        "drawerReady": false,
+        "durationMs": 1,
+        "fetchCount": 0,
+        "paidUsd": 0,
+        "budgetAsymmetry": false
+      },
+      "discoveryYieldNote": "INVENTORY_REOPEN"
+    }
+  ],
+  "disclaimer": "This experiment tests incremental research quality on existing opportunities (Conclusion A). It does not establish discovery of genuinely new opportunities (Conclusion B). ADOPT ≠ production-wide deployment."
+}

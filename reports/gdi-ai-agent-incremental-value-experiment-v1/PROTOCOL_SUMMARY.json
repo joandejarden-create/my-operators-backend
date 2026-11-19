@@ -1,9 +1,19 @@
 {
   "schema": "gdi_ai_agent_incremental_value_experiment_v1",
-  "version": "2026-11-19.1",
-  "status": "PROTOCOL",
-  "primaryQuestion": "Does agent-assisted research outperform current GDI workflow on genuinely new, verified, commercially actionable hotel demand intelligence?",
+  "version": "2026-11-19.2",
+  "status": "PROTOCOL_LOCKED",
+  "primaryQuestion": "Does agent-assisted research deliver meaningful incremental commercial value over existing GDI under matched source access, fetch, budget, and execution limits?",
   "pr414Role": "limitations_memo_only_not_product_authorization",
+  "fairnessContract": {
+    "wave0": "identical_frozen_bag_reasoning_comparison",
+    "wave1": "both_arms_active_under_identical_caps_arm_A_existing_GDI_sequence_arm_B_adaptive",
+    "forbidden": "compare_active_agent_to_frozen_only_baseline_in_wave1"
+  },
+  "conclusionScope": {
+    "primary": "A_incremental_research_on_existing_opportunities",
+    "doesNotEstablish": "B_incremental_discovery_of_genuinely_new_opportunities"
+  },
+  "adoptInterpretation": "further_validation_or_selective_integration_not_automatic_production_wide_deployment",
   "deferredProductWork": [
     "demand_mechanism_mission_packs",
     "market_opportunity_graph_intake_product_gate",
@@ -18,13 +28,24 @@
     "commercial-eligibility-contract-v1"
   ],
   "arms": {
-    "A": "Existing GDI: ORS + eligibility + challenger on frozen evidence",
-    "B": "Agent-assisted: same gates + bounded adaptive planning/retrieval under parity"
+    "A": "Existing GDI research process under shared caps (active in Wave 1)",
+    "B": "Adaptive AI planning/investigation under identical caps"
   },
   "cohort": {
     "frozenSource": "fixtures/gdi-experiments/gdi-20opp-adaptive-investigation-v1/",
+    "focusLockPath": "fixtures/gdi-experiments/gdi-ai-agent-incremental-value-experiment-v1/focus-eight-cases.json",
     "fullCases": 20,
     "focusSubsetCases": 8,
+    "focusOpportunityIds": [
+      "disp_recLuxvwwxID7U2B8_aledade",
+      "disp_recLuxvwwxID7U2B8_cohera_formerly_csi_dmc_and_360dg_",
+      "rb_gdi_disc_dc428c1bd4c4e412",
+      "gdi_opp_prospect_mv8p5ddh_7edb8e7c",
+      "gdi_opp_governor_s_hurricane_conference_2027_26",
+      "gdi_opp_ajas_hq_rockville_watch",
+      "gdi_opp_wrcamp_altaroma_2027_altaroma_organizer",
+      "camp_ivirma_2027_castillo"
+    ],
     "excludeDeepenLoops": [
       "gdi_lmc_00562bf81b1e1957",
       "gdi_opp_2027_ddaa_annual_conference_8"
@@ -36,7 +57,8 @@
       "paidUsd": 0,
       "paidProviders": "denied",
       "requiresFounderAuthFlag": "GDI_AI_AGENT_LIVE_PUBLIC_AUTH=1",
-      "maxFetchesPerCase": 12
+      "maxFetchesPerCase": 12,
+      "armAActiveBaselineRequired": true
     },
     "wave2_paid": {
       "requiresSeparateFounderAuthorization": true,
@@ -45,12 +67,12 @@
   },
   "attributionTags": [
     "REASONING_ONLY",
-    "RETRIEVAL_COVERAGE",
+    "RETRIEVAL_STRATEGY",
     "PROVIDER_ACCESS",
     "BUDGET_ASYMMETRY"
   ],
   "primaryMetrics": [
-    "new_verified_opportunities_or_cycles",
+    "strengthened_verified_demand_on_existing_opportunity",
     "newly_verified_commercially_relevant_named_contacts",
     "material_demand_thesis_strengtheners",
     "hotel_specific_actionability",
@@ -64,12 +86,14 @@
     "fixture_recovery",
     "narrative_without_new_facts",
     "known_contacts_as_newly_discovered",
-    "rubric_total_alone"
+    "rubric_total_alone",
+    "claiming_conclusion_B_from_eight_case_design"
   ],
   "decisionFramework": {
     "wave0CannotAdopt": true,
-    "ADOPT": ">=2 focus cases with challenger-confirmed material lift on metrics 1-4; zero false SALES_READY; correct rejection retained; no budget asymmetry",
-    "ITERATE": "some confirmed lift or quality demotions but <2 material commercial lifts or weak/URL theater",
+    "wave1NotAuthorizedByThisPr": true,
+    "ADOPT": ">=2 focus cases with challenger-confirmed material lift; zero false SALES_READY; correct rejection retained; no budget asymmetry; cost-justified — means further validation/selective integration only",
+    "ITERATE": "some confirmed lift or quality demotions but <2 material commercial lifts or weak/URL theater or unjustified cost",
     "REJECT": "no confirmed commercial lift and no systematic quality gain, or increased false positives"
   },
   "priorEvidence": {
