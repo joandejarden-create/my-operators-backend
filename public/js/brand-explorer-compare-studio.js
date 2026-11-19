@@ -11,19 +11,21 @@
       id: 'receQkxgjlezsc1xg',
       slug: 'curio-collection',
       name: 'Curio Collection by Hilton',
-      overlayUrl: '/brand-explorer-phase2e-preview/curio-collection-quality-candidate.json',
-      scorecardUrl: '/brand-explorer-phase2e-preview/curio-collection-quality-scorecard.json',
+      overlayUrl: '/brand-explorer-phase2e-preview/curio-collection-phase2f-candidate.json',
+      scorecardUrl: '/brand-explorer-phase2e-preview/curio-collection-phase2f-scorecard.json',
       baselineUrl: '/brand-explorer-phase2e-preview/curio-frozen-baseline-snapshot.json',
-      candidateVersion: 'phase2e-quality'
+      candidateVersion: 'phase2f-visual-repair',
+      fallbackOverlayUrl: '/brand-explorer-phase2e-preview/curio-collection-quality-candidate.json'
     },
     {
       id: 'reclkgOzvAcBheUSo',
       slug: 'ascend',
       name: 'Ascend Hotel Collection',
-      overlayUrl: '/brand-explorer-phase2e-preview/ascend-quality-candidate.json',
-      scorecardUrl: '/brand-explorer-phase2e-preview/ascend-quality-scorecard.json',
+      overlayUrl: '/brand-explorer-phase2e-preview/ascend-phase2f-candidate.json',
+      scorecardUrl: '/brand-explorer-phase2e-preview/ascend-phase2f-scorecard.json',
       baselineUrl: null,
-      candidateVersion: 'phase2e-quality'
+      candidateVersion: 'phase2f-visual-repair',
+      fallbackOverlayUrl: '/brand-explorer-phase2e-preview/ascend-quality-candidate.json'
     }
   ];
 
@@ -44,7 +46,9 @@
     brand: BRANDS[0],
     activeTab: TAB_IDS[0],
     syncScroll: true,
+    viewMode: 'section', // section | changes | full
     filter: 'all',
+    qualityFilter: 'all',
     diffs: [],
     selectedSlot: null,
     leftSource: 'live', // live | baseline | unavailable
@@ -53,6 +57,19 @@
     overlay: null,
     scorecard: null,
     reviews: {}
+  };
+
+  var SLOT_SECTION_ANCHORS = {
+    'atelier-overview': ['overview.', 'snapshot.', 'identity.', 'positioning.', 'hero.'],
+    'atelier-value-owners': ['valueOwners.', 'owner.'],
+    'atelier-ops': ['operations.'],
+    'atelier-standards-owner': ['standards.'],
+    'atelier-commercial': ['commercial.'],
+    'atelier-economics': ['economics.'],
+    'atelier-loyalty': ['loyalty.'],
+    'atelier-footprint': ['footprint.', 'metric.'],
+    'atelier-materials': ['materials.'],
+    'atelier-insight': ['insight.']
   };
 
   function $(sel, root) {
@@ -183,6 +200,51 @@
     return false;
   }
 
+  /** Match repeated collection items by title/body signature — never by array index alone. */
+  function matchCollectionItems(leftItems, rightItems) {
+    var usedR = new Set();
+    var pairs = [];
+    leftItems.forEach(function (L) {
+      var best = -1;
+      var bestScore = 0;
+      rightItems.forEach(function (R, ri) {
+        if (usedR.has(ri)) return;
+        var score = 0;
+        if (L.title && R.title && L.title.toLowerCase() === R.title.toLowerCase()) score += 3;
+        if (L.body && R.body && L.body.slice(0, 48) === R.body.slice(0, 48)) score += 2;
+        if (L.imageUrl && R.imageUrl && L.imageUrl === R.imageUrl) score += 1;
+        if (score > bestScore) {
+          bestScore = score;
+          best = ri;
+        }
+      });
+      if (best >= 0 && bestScore > 0) {
+        usedR.add(best);
+        pairs.push({ left: L, right: rightItems[best] });
+      } else {
+        pairs.push({ left: L, right: null });
+      }
+    });
+    rightItems.forEach(function (R, ri) {
+      if (!usedR.has(ri)) pairs.push({ left: null, right: R });
+    });
+    return pairs;
+  }
+
+  function classifyQualityIssues(d) {
+    var issues = [];
+    var rightBody = d.rightBody || '';
+    var rightTitle = ((d.right || [])[0] && d.right[0].title) || '';
+    var rightImg = ((d.right || [])[0] && d.right[0].imageUrl) || '';
+    if (rightTitle && (rightTitle.split(/\s+/).length > 12 || rightTitle.length > 80)) issues.push('title_paragraph');
+    if (/scenario|gallery/i.test(d.slotKey) && !rightImg) issues.push('missing_image');
+    if (/^economics\./.test(d.slotKey) && /total investment|Economics diligence/i.test(rightTitle + rightBody)) issues.push('repeated_economics');
+    if (!rightBody && !rightTitle && d.change !== 'removed') issues.push('empty_item');
+    if (rightBody.split(/\s+/).filter(Boolean).length > 140) issues.push('excessive_text');
+    if (/scenario/i.test(d.slotKey) && rightBody.split(/\s+/).filter(Boolean).length < 28) issues.push('insufficient_content');
+    return issues;
+  }
+
   function buildDiffs(leftBrand, rightBrand) {
     var leftMap = indexBlocks(blocksFromBrand(leftBrand));
     var rightMap = indexBlocks(blocksFromBrand(rightBrand));
@@ -191,6 +253,7 @@
     keys.forEach(function (slotKey) {
       var L = leftMap.get(slotKey) || [];
       var R = rightMap.get(slotKey) || [];
+      var pairs = matchCollectionItems(L, R);
       var leftSig = L.map(itemSignature).join('\n---\n');
       var rightSig = R.map(itemSignature).join('\n---\n');
       var leftBody = L.map(function (x) {
@@ -205,17 +268,21 @@
       else if (leftSig !== rightSig) change = 'modified';
       var conflict = change === 'modified' && lookLikeConflict(leftBody, rightBody);
       var needsReview = change !== 'unchanged' || conflict;
-      diffs.push({
+      var row = {
         slotKey: slotKey,
         change: change,
         conflict: conflict,
         needsReview: needsReview,
         left: L,
         right: R,
+        pairs: pairs,
         leftBody: leftBody,
         rightBody: rightBody,
-        wordDiffHtml: change === 'modified' ? wordDiffHtml(leftBody, rightBody) : ''
-      });
+        wordDiffHtml: change === 'modified' ? wordDiffHtml(leftBody, rightBody) : '',
+        qualityIssues: []
+      };
+      row.qualityIssues = classifyQualityIssues(row);
+      diffs.push(row);
     });
     diffs.sort(function (a, b) {
       var order = { added: 0, removed: 1, modified: 2, unchanged: 3 };
@@ -312,7 +379,13 @@
   }
 
   async function loadRightBrand(cfg, leftBrand) {
-    var overlay = await fetchJson(cfg.overlayUrl);
+    var overlay = null;
+    try {
+      overlay = await fetchJson(cfg.overlayUrl);
+    } catch (err) {
+      if (cfg.fallbackOverlayUrl) overlay = await fetchJson(cfg.fallbackOverlayUrl);
+      else throw err;
+    }
     state.overlay = overlay;
     var clone = JSON.parse(JSON.stringify(leftBrand));
     var api = window.BrandExplorerAtelierFromApi;
@@ -353,6 +426,11 @@
     document.querySelectorAll('[data-becs-tab]').forEach(function (btn) {
       btn.classList.toggle('active', btn.getAttribute('data-becs-tab') === tabId);
     });
+    if (state.viewMode === 'section' || state.viewMode === 'full') {
+      setTimeout(function () {
+        alignSectionStart(tabId);
+      }, 30);
+    }
   }
 
   function wireSyncScroll() {
@@ -444,16 +522,23 @@
         '</strong>';
       return;
     }
+    var a = sc.structuralPopulation != null ? sc.structuralPopulation : sc.A_populationCompleteness;
+    var b = sc.visualQualityPassRate != null ? sc.visualQualityPassRate : sc.B_contentQualityPassRate;
+    var c = sc.qualityAdjustedCompleteness != null ? sc.qualityAdjustedCompleteness : sc.C_qualityAdjustedCompleteness;
+    var fails = sc.failureCount != null ? sc.failureCount : (sc.counts && sc.counts.failures) || 0;
+    var status = sc.founderApprovalStatus || 'NOT_FOUNDER_APPROVED';
     el.innerHTML =
-      'Automated gates (not founder-approved): ' +
-      'A <strong>' +
-      sc.A_populationCompleteness +
-      '</strong> · B <strong>' +
-      sc.B_contentQualityPassRate +
-      '</strong> · C <strong>' +
-      sc.C_qualityAdjustedCompleteness +
+      'Phase 2F visual gates (not founder-approved): ' +
+      'A(struct) <strong>' +
+      a +
+      '</strong> · B(visual) <strong>' +
+      b +
+      '</strong> · C(adj) <strong>' +
+      c +
       '</strong> · Failures <strong>' +
-      ((sc.counts && sc.counts.failures) || 0) +
+      fails +
+      '</strong> · Status <strong>' +
+      escapeHtml(status) +
       '</strong>' +
       ' · Founder reviewed <strong>' +
       rs.reviewed +
@@ -470,18 +555,131 @@
       '</strong>';
   }
 
+  function renderQualityFilters() {
+    var el = $('#becsQualityFilters');
+    if (!el) return;
+    var filters = [
+      ['all', 'All'],
+      ['missing_image', 'Missing imagery'],
+      ['excessive_text', 'Excessive text'],
+      ['insufficient_content', 'Insufficient content'],
+      ['title_paragraph', 'Title formatting'],
+      ['repeated_economics', 'Repeated economics'],
+      ['empty_item', 'Empty items']
+    ];
+    el.innerHTML = filters
+      .map(function (f) {
+        return (
+          '<button type="button" class="becs-qfilter' +
+          (state.qualityFilter === f[0] ? ' active' : '') +
+          '" data-becs-qfilter="' +
+          f[0] +
+          '">' +
+          f[1] +
+          '</button>'
+        );
+      })
+      .join('');
+  }
+
+  function applyViewMode() {
+    var panes = $('#becsPanes');
+    var changes = $('#becsChangesOnly');
+    document.querySelectorAll('.becs-mode').forEach(function (btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-becs-mode') === state.viewMode);
+    });
+    if (state.viewMode === 'changes') {
+      if (panes) panes.hidden = true;
+      if (changes) {
+        changes.hidden = false;
+        renderChangesOnly();
+      }
+    } else {
+      if (panes) panes.hidden = false;
+      if (changes) changes.hidden = true;
+      if (state.viewMode === 'section') {
+        alignSectionStart(state.activeTab);
+      }
+    }
+  }
+
+  function renderChangesOnly() {
+    var el = $('#becsChangesOnly');
+    if (!el) return;
+    var rows = filteredDiffs().filter(function (d) {
+      return d.change !== 'unchanged';
+    });
+    el.innerHTML =
+      '<div class="becs-changes-head">Changes only — paired by slot / title match (not array index)</div>' +
+      rows
+        .map(function (d) {
+          return (
+            '<article class="becs-change-row" data-becs-slot-jump="' +
+            escapeHtml(d.slotKey) +
+            '">' +
+            '<header><span class="becs-pill ' +
+            (d.change === 'added' ? 'add' : d.change === 'removed' ? 'del' : 'mod') +
+            '">' +
+            d.change +
+            '</span> <code>' +
+            escapeHtml(d.slotKey) +
+            '</code></header>' +
+            '<div class="becs-change-pair">' +
+            '<div class="becs-change-col"><h4>Existing</h4><pre>' +
+            escapeHtml(d.leftBody || '—') +
+            '</pre></div>' +
+            '<div class="becs-change-col"><h4>Recreated</h4><pre>' +
+            escapeHtml(d.rightBody || '—') +
+            '</pre></div>' +
+            '</div>' +
+            (d.wordDiffHtml ? '<div class="becs-worddiff">' + d.wordDiffHtml + '</div>' : '') +
+            '</article>'
+          );
+        })
+        .join('');
+  }
+
+  function alignSectionStart(tabId) {
+    var prefixes = SLOT_SECTION_ANCHORS[tabId] || [];
+    ['#becsLeftScroll', '#becsRightScroll'].forEach(function (sel) {
+      var scroller = $(sel);
+      if (!scroller) return;
+      var panel = scroller.querySelector('.be-atelier-tab-panel.is-active, .be-atelier-tab-panel.active, [data-atelier-panel].is-active');
+      if (panel) {
+        scroller.scrollTop = panel.offsetTop - scroller.offsetTop;
+        return;
+      }
+      scroller.scrollTop = 0;
+    });
+    // Also try first matching slot marker inside both panes
+    var firstDiff = state.diffs.find(function (d) {
+      return prefixes.some(function (p) {
+        return d.slotKey.indexOf(p) === 0;
+      });
+    });
+    if (firstDiff) {
+      setTimeout(function () {
+        document.querySelectorAll('[data-becs-slot="' + firstDiff.slotKey + '"]').forEach(function (el) {
+          el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        });
+      }, 40);
+    }
+  }
+
   function filteredDiffs() {
     return state.diffs.filter(function (d) {
-      if (state.filter === 'all' || state.filter === 'changed') {
-        if (state.filter === 'changed') return d.change !== 'unchanged';
-        return true;
+      var ok = true;
+      if (state.filter === 'changed') ok = d.change !== 'unchanged';
+      else if (state.filter === 'conflicts') ok = d.conflict;
+      else if (state.filter === 'needsReview') ok = d.needsReview;
+      else if (state.filter === 'added') ok = d.change === 'added';
+      else if (state.filter === 'removed') ok = d.change === 'removed';
+      else if (state.filter === 'modified') ok = d.change === 'modified';
+      else if (state.filter === 'unchanged') ok = d.change === 'unchanged';
+      if (!ok) return false;
+      if (state.qualityFilter && state.qualityFilter !== 'all') {
+        return (d.qualityIssues || []).indexOf(state.qualityFilter) >= 0;
       }
-      if (state.filter === 'conflicts') return d.conflict;
-      if (state.filter === 'needsReview') return d.needsReview;
-      if (state.filter === 'added') return d.change === 'added';
-      if (state.filter === 'removed') return d.change === 'removed';
-      if (state.filter === 'modified') return d.change === 'modified';
-      if (state.filter === 'unchanged') return d.change === 'unchanged';
       return true;
     });
   }
@@ -672,7 +870,7 @@
     loadReviews();
     setStatus('Loading ' + cfg.name + '…');
     $('#becsLeftLabel').textContent = 'CURRENT PROFILE';
-    $('#becsRightLabel').textContent = 'PHASE 2E RECREATED';
+    $('#becsRightLabel').textContent = 'PHASE 2F RECREATED';
     try {
       state.scorecard = null;
       try {
@@ -685,10 +883,6 @@
       var right = await loadRightBrand(cfg, left);
       state.rightBrand = right;
       state.diffs = buildDiffs(left, right);
-      var leftMsg =
-        state.leftSource === 'baseline'
-          ? null
-          : null;
       mountPane('#becsLeftAtelier', left, null);
       mountPane('#becsRightAtelier', right, null);
       if (state.leftSource === 'baseline') {
@@ -696,14 +890,16 @@
       } else {
         $('#becsLeftTag').textContent = 'Live Airtable Presentation (read-only)';
       }
-      $('#becsRightTag').textContent = 'Universal factory candidate · ' + cfg.overlayUrl;
+      $('#becsRightTag').textContent = 'Phase 2F candidate · ' + cfg.overlayUrl;
       setActiveTab(TAB_IDS[0]);
       wireSyncScroll();
       setTimeout(applyTextHighlights, 50);
       renderSummary();
       renderScorecard();
+      renderQualityFilters();
       renderChangeList();
       renderReviewDrawer(null);
+      applyViewMode();
       setStatus(
         cfg.name +
           ' · left=' +
@@ -799,6 +995,36 @@
     $('#becsFullBoth').addEventListener('click', function () {
       $('#becsPanes').className = 'becs-panes';
     });
+
+    document.querySelectorAll('[data-becs-mode]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        state.viewMode = btn.getAttribute('data-becs-mode') || 'section';
+        applyViewMode();
+      });
+    });
+
+    var qf = $('#becsQualityFilters');
+    if (qf) {
+      qf.addEventListener('click', function (e) {
+        var btn = e.target.closest('[data-becs-qfilter]');
+        if (!btn) return;
+        state.qualityFilter = btn.getAttribute('data-becs-qfilter') || 'all';
+        renderQualityFilters();
+        renderChangeList();
+        if (state.viewMode === 'changes') renderChangesOnly();
+      });
+    }
+
+    var changesOnly = $('#becsChangesOnly');
+    if (changesOnly) {
+      changesOnly.addEventListener('click', function (e) {
+        var row = e.target.closest('[data-becs-slot-jump]');
+        if (!row) return;
+        state.viewMode = 'section';
+        applyViewMode();
+        selectSlot(row.getAttribute('data-becs-slot-jump'));
+      });
+    }
   }
 
   function atelierShell(id) {

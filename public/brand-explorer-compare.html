@@ -26,6 +26,11 @@
         <label style="flex-direction:row;align-items:center;gap:6px">
           <input type="checkbox" id="becsSyncScroll" checked /> Sync scroll
         </label>
+        <div id="becsViewModes" style="display:flex;gap:6px;flex-wrap:wrap">
+          <button type="button" id="becsModeSection" class="becs-mode active" data-becs-mode="section">Section-locked</button>
+          <button type="button" id="becsModeChanges" class="becs-mode" data-becs-mode="changes">Changes only</button>
+          <button type="button" id="becsModeFull" class="becs-mode" data-becs-mode="full">Full profile</button>
+        </div>
         <button type="button" id="becsFullBoth">Both</button>
         <button type="button" id="becsFullLeft">Full left</button>
         <button type="button" id="becsFullRight">Full right</button>
@@ -35,6 +40,7 @@
 
     <div class="becs-summary" id="becsSummary" aria-label="Changes summary"></div>
     <div class="becs-scorecard" id="becsScorecard"></div>
+    <div class="becs-quality-filters" id="becsQualityFilters" aria-label="Quality failure filters"></div>
 
     <div class="becs-main">
       <aside class="becs-sidebar">
@@ -57,6 +63,7 @@
           <div class="becs-pane-body" id="becsRightScroll"></div>
         </section>
       </div>
+      <div class="becs-changes-only" id="becsChangesOnly" hidden></div>
     </div>
 
     <div class="becs-review-drawer" id="becsReviewDrawer">
