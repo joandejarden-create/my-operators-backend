@@ -214,7 +214,7 @@ See \`HE50-PROVIDER-ROUTING.md\`. Paid providers **not invoked** this wave (free
 | HGI Newtown Square Radnor | NEW_HPC | — | 138 MEDIUM | CREATE proposal |
 | JW Marriott Costa Elena | MATCHED_HPC | \`recq9KWr8UE7z2549\` | 415 HIGH | UPDATE alias/rooms |
 | Secrets Cap Cana | MATCHED_HPC | \`recd7XAM6tLjzQhaI\` | reuse HPC | Confirm not Dreams Cap Cana |
-| Secrets Papagayo | MATCHED_HOTEL_CENSUS | \`recyX1wLsHBJYRPw7\` | 202 HIGH | Promote — no duplicate |
+| Secrets Papagayo | NEW_HPC_CANDIDATE | — (legacy provenance \`recyX1wLsHBJYRPw7\` only) | 202 HIGH | HPC CREATE — no census runtime id |
 | Secrets St. Lucia | NEW_HPC | — | 355 HIGH | CREATE proposal |
 
 **Mullen holdings:** Not auto-verified. All non-Bethesda associations remain \`PROPOSED_PORTFOLIO_CANDIDATE_NOT_VERIFIED_HOLDING\` (JW trade press claims flagged VERIFY_BEFORE_GRAPH).
@@ -241,8 +241,8 @@ See \`HE50-PROVIDER-ROUTING.md\`. Paid providers **not invoked** this wave (free
 | --- | --- |
 | Bethesda | Overview + rooms + ownership/contacts/sources substantially populated from staged graph; Demand/News remain thin until anchors/alerts exist |
 | Matched HPC (JW, Cap Cana) | Identity + rooms/alias; HE deep-link available |
-| Papagayo | After census→HPC promote: deep-link + min identity |
-| NEW_HPC ×4 | After CREATE: Founder Preview deep-links + min HPC fields only |
+| Papagayo | After HPC CREATE: deep-link + min identity (legacy census id not canonical) |
+| NEW_HPC ×5 (incl. Papagayo) | After CREATE: Founder Preview deep-links + min HPC fields only |
 
 ## 14. Automated tests
 
@@ -301,9 +301,9 @@ const preApplyMd = `# HE 5.0 — Founder Pre-Apply Review Package
 | --- | --- |
 | AC rooms 140 vs 146 | **RESOLVED → 140 HIGH** (opening press 86+50+4; discard OTA 146) |
 | Secrets Cap Cana vs Dreams | **VERIFIED distinct** — HPC \`recd7XAM6tLjzQhaI\` Secrets @ 18.4844,-68.3943 vs Dreams \`reclS16CMUS6eJgpC\` |
-| Secrets Papagayo promote | **VALIDATED** census \`recyX1wLsHBJYRPw7\` rooms 202 — promote, no duplicate |
+| Secrets Papagayo | **HPC CREATE** rooms 202 — legacy census \`recyX1wLsHBJYRPw7\` provenance only (not runtime SoT) |
 | Bethesda 2015 vs 2017 | **Dual events** — 2015 major reno near-complete; 2017 guestroom unveil press |
-| Mullen portfolio | **Proposed listings ≠ verified holdings** (Papagayo census Owner Website = signal only) |
+| Mullen portfolio | **Proposed listings ≠ verified holdings** (legacy Owner Website signal only) |
 
 ## 2. Mutation matrix (${recon.counts.READY} READY / ${recon.counts.HOLD} HOLD / ${recon.counts.REJECT} REJECT)
 
@@ -316,12 +316,12 @@ ${reconTable}
 
 ## 3. Completeness (Min HPC ≠ Full HE)
 
-See \`HE50-COMPLETENESS-MATRIX-V1.json\`. Only Bethesda approaches Full HE (still staged). Seven others are min-identity / promote candidates.
+See \`HE50-COMPLETENESS-MATRIX-V1.json\`. Only Bethesda approaches Full HE (still staged). Seven others are min-identity / HPC CREATE-or-UPDATE candidates. Legacy Hotel Census is not a runtime dependency (HE-QL-041).
 
 ## 4. Expected HE improvement after approved apply
 
 - Bethesda: Year Built 1979 + renovation/CMBS evidence in Sources; prior stakeholder package still separate.
-- 4× NEW_HPC + Papagayo promote: Founder Preview deep-links with min Overview.
+- 5× NEW_HPC (incl. Papagayo CREATE): Founder Preview deep-links with min Overview.
 - Cap Cana / JW: identity already usable; JW rooms/alias after UPDATE.
 
 ## 5. Remaining Full HE work

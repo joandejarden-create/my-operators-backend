@@ -212,11 +212,22 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 ### 9b. Canonical HPC population (portfolio batches)
 
 - Reuse `HPC_LIVE_IDENTITY_COLLISION_V1`, `hpc-shared-upsert-v1`, and HI graph contracts — do not create a parallel hotel database.
-- Canonical base `appCCUsuGsE1ifoLk` / HPC `tbl9aY5ijiuIzzWam`; Hotel Census is legacy **read-only** for matching.
-- Identity outcomes: `MATCHED_HPC` | `MATCHED_HOTEL_CENSUS` | `MATCHED_EXISTING_ALIAS` | `NEW_HPC_CANDIDATE` | `AMBIGUOUS_MATCH` | `IDENTITY_UNRESOLVED`.
+- Canonical base `appCCUsuGsE1ifoLk` / HPC `tbl9aY5ijiuIzzWam` — **one canonical hotel database**.
+- Identity outcomes (runtime): `MATCHED_HPC` | `MATCHED_EXISTING_ALIAS` | `NEW_HPC_CANDIDATE` | `AMBIGUOUS_MATCH` | `IDENTITY_UNRESOLVED`. Legacy `MATCHED_HOTEL_CENSUS` is migration-tooling only.
 - Default `applyAuthorized: false`. **STOP** before production Airtable apply until the dry-run CREATE/UPDATE packet is founder-approved.
 - Ownership intelligence lives in HI Organizations / Relationships / Evidence — not HPC free-text portfolio dumps.
 - Contract: `docs/ai-build-system/HE_HPC_POPULATION_WORKFLOW_V1.md`.
+
+### 9c. Legacy Hotel Census independence (HE-QL-041)
+
+**Mandatory gate:** `LEGACY_HOTEL_CENSUS_INDEPENDENCE_GATE`
+
+- Legacy table `Hotel Census` / `tblgj2qEwxjTcg6q0` must **not** be read, written, updated, or used as a fallback on any Hotel Explorer production-intended execution path.
+- Canonical identity resolution uses HPC names, aliases, former names, brand changes, addresses, coordinates, org relationships, and external property ids via `hpc-live-identity-collision-v1` (and related HPC utilities).
+- Access guard: `lib/hotel-intelligence/hpc-population/legacy-hotel-census-access-guard-v1.js`. Default = block. Narrow migration reads require `HE_LEGACY_HOTEL_CENSUS_MIGRATION_READ=1` **and** explicit `allowLegacyHotelCensusRead` — never silent fallback.
+- Legacy Census record ids (e.g. Secrets Papagayo `recyX1wLsHBJYRPw7`) may appear only as **historical provenance**, never as runtime canonical hotel ids.
+- Regression: `npm run test:he-legacy-hotel-census-independence-v1`. Keep this gate after the Airtable table is eventually deleted.
+- Cross-product Scout / Brand Explorer / operators-by-brand-region consumers may still use Hotel Census until migrated — that blocks **global** retirement (`CROSS_PRODUCT_RETIREMENT_BLOCKED`), not HE research-path independence.
 
 ### 10. Submarket Snapshot & Area Hotels (HPC)
 
@@ -271,6 +282,10 @@ When the engine detects uncertain, incomplete, or conflicting hotel intelligence
 - Use `REQUIRES_FOUNDER_DECISION` only for genuine business / authorization / governance decisions — not ordinary factual disagreements.
 - Runner: `npm run he:5-0-autonomous-reconciliation` · gate: `npm run test:he-5-0-autonomous-reconciliation-v1`.
 - **STOP** only before production Airtable apply, unauthorized schema changes, spend beyond the authorized ceiling, new subscriptions, or production deployment.
+
+### Legacy Hotel Census independence (HE-QL-041)
+
+See §9c. Gate `LEGACY_HOTEL_CENSUS_INDEPENDENCE_GATE` fails whenever an active HE production-intended path depends on `tblgj2qEwxjTcg6q0`.
 
 ## Safety
 

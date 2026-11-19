@@ -1,6 +1,6 @@
 # HE 5.0 — Existing Infrastructure Inventory (Phase 0)
 
-**Generated:** 2026-11-19T23:05:38.151Z  
+**Generated:** 2026-11-19T23:16:36.792Z  
 **PR:** #463 · Branch `feat/he-beth-phase3-sources-evidence-v1`  
 **Apply:** blocked (`applyAuthorized: false`)
 

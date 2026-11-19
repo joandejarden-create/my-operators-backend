@@ -85,5 +85,14 @@ const resolver = fs.readFileSync(
 mustInclude(resolver, "performLiveHpcIdentityCollisionCheck");
 mustInclude(resolver, "writeBlocked: true");
 mustInclude(resolver, "airtableWrites: 0");
+mustInclude(resolver, "migrationReadAllowed");
+mustInclude(resolver, "HE_LEGACY_HOTEL_CENSUS_INDEPENDENCE");
+
+const guard = fs.readFileSync(
+  path.join(root, "lib/hotel-intelligence/hpc-population/legacy-hotel-census-access-guard-v1.js"),
+  "utf8"
+);
+mustInclude(guard, "tblgj2qEwxjTcg6q0");
+mustInclude(guard, "LEGACY_HOTEL_CENSUS_ACCESS_BLOCKED");
 
 console.log("PASS test-he-mullen-pilot-hpc-population-v1");

@@ -3,7 +3,8 @@
 **Status:** Binding design for HE research → HPC/HI → Hotel Explorer  
 **Pilot:** Eight Mullen Real Estate Capital portfolio *candidates* (not verified holdings)  
 **Canonical base:** `appCCUsuGsE1ifoLk`  
-**HPC:** `tbl9aY5ijiuIzzWam` · **Hotel Census (legacy read):** `tblgj2qEwxjTcg6q0`  
+**HPC:** `tbl9aY5ijiuIzzWam` (canonical SoT)  
+**Hotel Census:** `tblgj2qEwxjTcg6q0` — **retired for HE runtime** (migration-read opt-in only via `HE_LEGACY_HOTEL_CENSUS_MIGRATION_READ=1`; guard `legacy-hotel-census-access-guard-v1.js`). Do not delete the Airtable table until cross-product consumers clear.  
 **Apply policy:** Default dry-run (`applyAuthorized: false`). Production Airtable apply requires explicit founder authorization per batch.
 
 ## Phase 0 — Reuse map (do not recreate)
@@ -32,7 +33,7 @@
 DISCOVER → MATCH → RESEARCH → VERIFY → DRY-RUN → APPROVED APPLY → RE-READ → VALIDATE → HE PREVIEW
 ```
 
-1. **DISCOVER / MATCH** — `scripts/he-mullen-pilot-hpc-identity-resolution-v1.mjs` (read-only). Outcomes: `MATCHED_HPC` | `MATCHED_HOTEL_CENSUS` | `MATCHED_EXISTING_ALIAS` | `NEW_HPC_CANDIDATE` | `AMBIGUOUS_MATCH` | `IDENTITY_UNRESOLVED`.
+1. **DISCOVER / MATCH** — `scripts/he-mullen-pilot-hpc-identity-resolution-v1.mjs` (read-only, **HPC-only** by default). Outcomes: `MATCHED_HPC` | `MATCHED_EXISTING_ALIAS` | `NEW_HPC_CANDIDATE` | `AMBIGUOUS_MATCH` | `IDENTITY_UNRESOLVED`. (`MATCHED_HOTEL_CENSUS` only under explicit migration read.)
 2. **RESEARCH / VERIFY** — Minimum verified fields from `HPC_MINIMUM_IDENTITY_FIELDS` + ADP essentials; field-level provenance; never overwrite stronger verified facts with weaker sources.
 3. **DRY-RUN** — Per-mutation packet: table, record id or CREATE, field, before/after, evidence, verification state, conflict disposition.
 4. **APPROVED APPLY** — Founder-explicit only. Then re-read + certify.

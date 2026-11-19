@@ -2,7 +2,7 @@
   "contract": "HE_5_0_AIRTABLE_DRY_RUN_PACKAGE_V1",
   "version": "he-5-0-full-e2e-pilot-v1",
   "packageRevision": "founder-pre-apply-reconciliation-v1",
-  "generatedAt": "2026-11-19T23:10:03.522Z",
+  "generatedAt": "2026-11-19T23:16:36.788Z",
   "applyGate": {
     "applyAuthorized": false,
     "airtableWritesAllowed": false,
@@ -124,7 +124,8 @@
       "supportingSource": "https://www.marriott.com/en-us/hotels/phlqc-ac-hotel-newtown-square/overview/ | https://www.delcotimes.com/2024/09/27/ac-hotel-by-marriott-at-ellis-preserve-holds-grand-opening/ | https://www.cvent.com/venues/newtown-square/hotel/ac-hotel-newtown-square/venue-bbfcb889-1474-4e7c-afda-54dfadd1e929 | https://hotelbusiness.com/equus-capital-opens-philadelphia-area-ac-hotel/",
       "verificationStatus": "MIN_IDENTITY_FREE_VERIFIED",
       "reason": "NEW_HPC after collision search confirmed absent; create only after founder approval",
-      "founderRecommendation": "READY"
+      "founderRecommendation": "READY",
+      "legacyCensusRuntimeDependency": false
     },
     {
       "applyAuthorized": false,
@@ -156,7 +157,8 @@
       "supportingSource": "https://www.cartonhouse.com/the-resort | https://www.fairmont.com/en/hotels/county-kildare/carton-house.html | https://all.accor.com/hotel/B7D0/index.en.shtml",
       "verificationStatus": "MIN_IDENTITY_FREE_VERIFIED",
       "reason": "NEW_HPC after collision search confirmed absent; create only after founder approval",
-      "founderRecommendation": "READY"
+      "founderRecommendation": "READY",
+      "legacyCensusRuntimeDependency": false
     },
     {
       "applyAuthorized": false,
@@ -188,7 +190,8 @@
       "supportingSource": "https://www.hilton.com/en/hotels/phlnsgi-hilton-garden-inn-newtown-square-radnor/ | https://www.hilton.com/en-gb/hotels/phlnsgi-hilton-garden-inn-newtown-square-radnor/events/ | https://www.cvent.com/venues/newtown-square/hotel/hilton-garden-inn-newtown-square-radnor/venue-80f98513-8db5-4046-a20c-7881d33eb20a | https://newtownsquarehotels.com/hotels/hilton-garden-inn/",
       "verificationStatus": "MIN_IDENTITY_FREE_VERIFIED",
       "reason": "NEW_HPC after collision search confirmed absent; create only after founder approval",
-      "founderRecommendation": "READY"
+      "founderRecommendation": "READY",
+      "legacyCensusRuntimeDependency": false
     },
     {
       "applyAuthorized": false,
@@ -266,29 +269,36 @@
       "applyAuthorized": false,
       "baseId": "appCCUsuGsE1ifoLk",
       "conflictHandling": "PROTECT_NEWER_VERIFIED",
-      "duplicateCheck": "REQUIRED",
+      "duplicateCheck": "HPC_LIVE_COLLISION_ALREADY_RUN",
       "researchDate": "2026-11-19",
-      "id": "M-PROMOTE-secrets_papagayo",
+      "id": "M-NEW-secrets_papagayo",
       "destinationTable": "tbl9aY5ijiuIzzWam",
       "destinationLabel": "Hotel Property Census",
-      "action": "STEWARD_PROMOTE_FROM_CENSUS",
-      "canonicalEntityId": "recyX1wLsHBJYRPw7",
-      "field": "census_to_hpc_bridge",
-      "existingValue": {
-        "hotelCensusId": "recyX1wLsHBJYRPw7"
-      },
+      "action": "CREATE",
+      "canonicalEntityId": null,
+      "field": "minimum_identity",
+      "existingValue": null,
       "proposedValue": {
-        "promoteToHpc": true,
-        "rooms": 202,
+        "name": "Secrets Papagayo Costa Rica",
+        "brand": "Secrets",
+        "address": "Papagayo Gulf, 3 Km North West from Panama Beach",
+        "city": "Guanacaste Province",
+        "country": "Costa Rica",
         "website": "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/costa-rica/papagayo-costa-rica/",
-        "doNotCreateDuplicate": true,
-        "preserveCensusId": true,
-        "mullenAssociation": "CENSUS_OWNER_WEBSITE_SIGNAL_ONLY"
+        "phone": null,
+        "rooms": 202,
+        "roomsConfidence": "HIGH",
+        "status": "Open",
+        "operator": null,
+        "mullenAssociation": "PROPOSED_PORTFOLIO_CANDIDATE_NOT_VERIFIED_HOLDING",
+        "legacyHotelCensusProvenanceId": "recyX1wLsHBJYRPw7",
+        "note": "Historical census provenance only — not runtime SoT / not canonical id"
       },
-      "supportingSource": "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/costa-rica/papagayo-costa-rica/accommodations/rooms-suites/",
-      "verificationStatus": "CENSUS_MATCHED",
-      "reason": "Secrets Papagayo exists on Hotel Census — promote/link, never duplicate HPC",
-      "founderRecommendation": "READY"
+      "supportingSource": "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/costa-rica/papagayo-costa-rica/accommodations/rooms-suites/ | historical_legacy_census_provenance:recyX1wLsHBJYRPw7 (not runtime SoT)",
+      "verificationStatus": "MIN_IDENTITY_FREE_VERIFIED",
+      "reason": "HPC-native CREATE (legacy census independence); collision absent; create only after founder approval",
+      "founderRecommendation": "READY",
+      "legacyCensusRuntimeDependency": false
     },
     {
       "applyAuthorized": false,
@@ -320,7 +330,8 @@
       "supportingSource": "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/st-lucia/st-lucia-resort-spa/accommodations/rooms-suites/ | https://www.slutourism.govt.lc/certified-operator/secrets-resort-and-spa-st-lucia",
       "verificationStatus": "MIN_IDENTITY_FREE_VERIFIED",
       "reason": "NEW_HPC after collision search confirmed absent; create only after founder approval",
-      "founderRecommendation": "READY"
+      "founderRecommendation": "READY",
+      "legacyCensusRuntimeDependency": false
     }
   ],
   "reconciliationSummary": {
@@ -336,7 +347,7 @@
       "M-NEW-hgi_newtown_square_radnor",
       "M-UPD-jw_marriott_costa_elena",
       "M-UPD-secrets_cap_cana-rooms",
-      "M-PROMOTE-secrets_papagayo",
+      "M-NEW-secrets_papagayo",
       "M-NEW-secrets_st_lucia"
     ],
     "holdIds": [

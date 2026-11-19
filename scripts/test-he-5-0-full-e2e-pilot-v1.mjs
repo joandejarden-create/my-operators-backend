@@ -148,10 +148,19 @@ assert.ok(dry2.reconciliationSummary.REJECT >= 1);
 assert.match(dry2.stopMessage, /SEPARATE FOUNDER AUTHORIZATION/);
 assert.ok(MUTATION_REC.READY);
 
-// Duplicate CREATE prevention: Papagayo is promote not create-duplicate
+// Papagayo: HPC-native CREATE (legacy census independence — not promote-from-census)
+const papPkt = SEVEN_HOTEL_FREE_IDENTITY_PACKETS.find((p) => p.pilotKey === "secrets_papagayo");
+assert.equal(papPkt.identityOutcome, "NEW_HPC_CANDIDATE");
+assert.equal(papPkt.hotelCensusRecordId, null);
+assert.equal(papPkt.legacyHotelCensusProvenanceId, "recyX1wLsHBJYRPw7");
+assert.equal(papPkt.proposedHpcAction, "CREATE_AFTER_FOUNDER_APPROVAL");
 const pap = dry.mutations.find((m) => m.id.includes("papagayo"));
 assert.ok(pap);
-assert.equal(pap.action, "STEWARD_PROMOTE_FROM_CENSUS");
+assert.equal(pap.action, "CREATE");
+assert.equal(pap.canonicalEntityId, null);
+assert.equal(pap.legacyCensusRuntimeDependency, false);
+assert.equal(pap.proposedValue.legacyHotelCensusProvenanceId, "recyX1wLsHBJYRPw7");
+assert.ok(!dry.mutations.some((m) => m.action === "STEWARD_PROMOTE_FROM_CENSUS"));
 
 // Ownership vs operator: Bethesda findings keep operator Marriott separate from economic owner
 const beth = result.bethesdaFreeFindings;

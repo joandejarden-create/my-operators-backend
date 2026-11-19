@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * HE property identity — RECORD_ID ownership (Census vs HPC).
+ * HE property identity — RECORD_ID ownership (HPC-first; legacy Census opt-in).
  * Live Airtable when credentials present; otherwise structural asserts only.
  */
 import assert from "node:assert/strict";
@@ -34,12 +34,22 @@ if (!key || baseId !== "appCCUsuGsE1ifoLk") {
 const Airtable = (await import("airtable")).default;
 const base = new Airtable({ apiKey: key }).base(baseId);
 
-const kgpv = await resolvePropertyCensusOwnership(base, "recUNycnMwOVFX0hc");
-assert.equal(kgpv.ok, true);
-assert.equal(kgpv.owningTableKind, "HOTEL_CENSUS");
-assert.equal(kgpv.owningTable, HOTEL_CENSUS_TABLE);
-assert.equal(kgpv.hpcFound, false);
-assert.equal(kgpv.censusFound, true);
+// Default: HPC-only — Census-native KGPV must NOT be probed without migration flag.
+const kgpvDefault = await resolvePropertyCensusOwnership(base, "recUNycnMwOVFX0hc");
+assert.equal(kgpvDefault.ok, false);
+assert.equal(kgpvDefault.owningTableKind, "NOT_FOUND");
+assert.equal(kgpvDefault.legacyCensusProbed, false);
+assert.equal(kgpvDefault.error, "not_found_hpc_only");
+
+const kgpvMigration = await resolvePropertyCensusOwnership(base, "recUNycnMwOVFX0hc", {
+  allowLegacyHotelCensusRead: true,
+});
+assert.equal(kgpvMigration.ok, true);
+assert.equal(kgpvMigration.owningTableKind, "HOTEL_CENSUS");
+assert.equal(kgpvMigration.owningTable, HOTEL_CENSUS_TABLE);
+assert.equal(kgpvMigration.hpcFound, false);
+assert.equal(kgpvMigration.censusFound, true);
+assert.equal(kgpvMigration.legacyCensusProbed, true);
 
 const beth = await resolvePropertyCensusOwnership(base, "recLuxvwwxID7U2B8");
 assert.equal(beth.ok, true);
@@ -47,5 +57,6 @@ assert.equal(beth.owningTableKind, "HPC");
 assert.equal(beth.owningTable, HOTEL_PROPERTY_CENSUS_TABLE);
 assert.equal(beth.hpcFound, true);
 assert.equal(beth.censusFound, false);
+assert.equal(beth.legacyCensusProbed, false);
 
-console.log("OK — HE property census identity (live)");
+console.log("OK — HE property census identity (live HPC-first + migration opt-in)");

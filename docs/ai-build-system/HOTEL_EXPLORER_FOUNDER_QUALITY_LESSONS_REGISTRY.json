@@ -1,6 +1,6 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.25",
-  "updated": "2026-11-19",
+  "version": "hotel-explorer-founder-quality-lessons-v1.26",
+  "updated": "2026-11-20",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
   "npmScript": "test:he-product-quality-gates-v1",
@@ -16,7 +16,8 @@
     "test:he-public-contact-channel-hierarchy-v1",
     "test:he-5-0-full-e2e-pilot-v1",
     "test:he-5-0-autonomous-reconciliation-v1",
-    "test:he-mullen-pilot-hpc-population-v1"
+    "test:he-mullen-pilot-hpc-population-v1",
+    "test:he-legacy-hotel-census-independence-v1"
   ],
   "referenceHotels": {
     "uxGolden": {
@@ -203,7 +204,7 @@
       "id": "HE-QL-019",
       "originalProblem": "Risk of duplicate HPC records and parallel hotel DBs when expanding beyond Bethesda previews",
       "rootCause": "Portfolio listings treated as create-ready without live HPC + Hotel Census collision search and founder-gated apply",
-      "approvedStandard": "Reuse HPC_LIVE_IDENTITY_COLLISION_V1 + shared upsert; search Hotel Census read-only; outcomes MATCHED_HPC|MATCHED_HOTEL_CENSUS|MATCHED_EXISTING_ALIAS|NEW_HPC_CANDIDATE|AMBIGUOUS_MATCH|IDENTITY_UNRESOLVED; STOP before apply; HI graph for ownership — never free-text HPC ownership dumps",
+      "approvedStandard": "Reuse HPC_LIVE_IDENTITY_COLLISION_V1 + shared upsert; HPC-only identity by default (HE-QL-041); MATCHED_HOTEL_CENSUS only under explicit migration read; STOP before apply; HI graph for ownership — never free-text HPC ownership dumps",
       "sharedComponent": "lib/hotel-intelligence/hpc-population/*; lib/hotel-census/hpc-live-identity-collision-v1.js; docs/ai-build-system/HE_HPC_POPULATION_WORKFLOW_V1.md",
       "regressionTest": "test:he-mullen-pilot-hpc-population-v1",
       "browserEvidence": "reports/hotel-explorer/hpc-population/HE-MULLEN-PILOT-IDENTITY-RESOLUTION-V1.md"
@@ -396,6 +397,15 @@
       "sharedComponent": "lib/hotel-intelligence/he-5-0-full-e2e/autonomous-reconciliation-v1.js; pilot-budget-ledger.js; mutation-reconciliation-v1.js",
       "regressionTest": "he_5_0_autonomous_reconciliation_gates",
       "browserEvidence": "reports/hotel-explorer/he-5-0-pilot/HE50-AUTONOMOUS-RECONCILIATION-V1.md"
+    },
+    {
+      "id": "HE-QL-041",
+      "originalProblem": "Hotel Explorer identity resolution and HE 5.0 pilot still read legacy Hotel Census (tblgj2qEwxjTcg6q0) for matching/promotion (e.g. Secrets Papagayo), blocking safe table retirement and creating dual SoT risk",
+      "rootCause": "HPC-first collision existed but Census search remained a silent fallback; Papagayo was staged as STEWARD_PROMOTE_FROM_CENSUS with census record id as canonical bridge; brand-presence/Scout/BE still query Census for other products",
+      "approvedStandard": "LEGACY_HOTEL_CENSUS_INDEPENDENCE_GATE: HE production-intended paths block all access to tblgj2qEwxjTcg6q0 via legacy-hotel-census-access-guard-v1; identity is HPC-only (collision + aliases); Papagayo is HPC-native CREATE with historical provenance only; migration reads require HE_LEGACY_HOTEL_CENSUS_MIGRATION_READ=1; keep gate after table deletion; global retirement blocked until Scout/BE/operators-by-brand migrate",
+      "sharedComponent": "lib/hotel-intelligence/hpc-population/legacy-hotel-census-access-guard-v1.js; hotel-census-identity-search-v1.js; mullen-pilot-identity-resolution-v1.js; property-census-identity-v1.js; he-5-0-full-e2e/*",
+      "regressionTest": "he_legacy_hotel_census_independence_gates",
+      "browserEvidence": "reports/hotel-explorer/he-5-0-pilot/HE50-LEGACY-HOTEL-CENSUS-INDEPENDENCE-AUDIT-V1.md"
     }
   ]
 }

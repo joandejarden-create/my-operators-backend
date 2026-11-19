@@ -18,35 +18,35 @@
   "stagesCompleted": [
     {
       "stage": "AUDIT",
-      "at": "2026-11-19T23:05:38.140Z"
+      "at": "2026-11-19T23:16:36.783Z"
     },
     {
       "stage": "REUSE",
-      "at": "2026-11-19T23:05:38.141Z"
+      "at": "2026-11-19T23:16:36.784Z"
     },
     {
       "stage": "RESEARCH",
-      "at": "2026-11-19T23:05:38.141Z"
+      "at": "2026-11-19T23:16:36.784Z"
     },
     {
       "stage": "VERIFY",
-      "at": "2026-11-19T23:05:38.146Z"
+      "at": "2026-11-19T23:16:36.787Z"
     },
     {
       "stage": "DEDUPLICATE",
-      "at": "2026-11-19T23:05:38.146Z"
+      "at": "2026-11-19T23:16:36.788Z"
     },
     {
       "stage": "MAP",
-      "at": "2026-11-19T23:05:38.146Z"
+      "at": "2026-11-19T23:16:36.788Z"
     },
     {
       "stage": "DRY_RUN",
-      "at": "2026-11-19T23:05:38.146Z"
+      "at": "2026-11-19T23:16:36.788Z"
     },
     {
       "stage": "APPROVAL",
-      "at": "2026-11-19T23:05:38.147Z"
+      "at": "2026-11-19T23:16:36.788Z"
     }
   ],
   "providerRouting": {
@@ -349,14 +349,16 @@
       "website": "https://www.hilton.com/en/hotels/phlnsgi-hilton-garden-inn-newtown-square-radnor/",
       "rooms": {
         "value": 138,
-        "confidence": "MEDIUM",
-        "note": "Ellis Preserve hotels site — confirm on Hilton fact sheet before apply"
+        "confidence": "HIGH",
+        "note": "Autonomous free pass: Cvent + Hilton events + Expedia + Ellis + IMC converge on 138"
       },
       "operator": null,
       "mullenAssociation": "PROPOSED_PORTFOLIO_CANDIDATE_NOT_VERIFIED_HOLDING",
       "proposedHpcAction": "CREATE_AFTER_FOUNDER_APPROVAL",
       "sources": [
         "https://www.hilton.com/en/hotels/phlnsgi-hilton-garden-inn-newtown-square-radnor/",
+        "https://www.hilton.com/en-gb/hotels/phlnsgi-hilton-garden-inn-newtown-square-radnor/events/",
+        "https://www.cvent.com/venues/newtown-square/hotel/hilton-garden-inn-newtown-square-radnor/venue-80f98513-8db5-4046-a20c-7881d33eb20a",
         "https://newtownsquarehotels.com/hotels/hilton-garden-inn/"
       ]
     },
@@ -405,31 +407,35 @@
       "longitude": -68.3942656,
       "website": "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana/",
       "rooms": {
-        "value": null,
-        "confidence": "UNKNOWN",
-        "note": "HPC rooms not yet enriched; identity confirmed"
+        "value": 457,
+        "confidence": "HIGH",
+        "note": "Official Hyatt Inclusive rooms + meetings pages: 457 suites; aligns with Hotel Census prior hit"
       },
       "dreamsNeighborHpcId": "reclS16CMUS6eJgpC",
       "lowercaseAliasNeighborHpcId": "recFP9eslejVXbyuR",
       "mullenAssociation": "PROPOSED_PORTFOLIO_CANDIDATE_NOT_VERIFIED_HOLDING",
-      "proposedHpcAction": "NO_OP_IDENTITY_VERIFIED_DISTINCT_FROM_DREAMS",
+      "proposedHpcAction": "UPDATE_ROOMS_NULL_FILL_IDENTITY_ALREADY_VERIFIED",
       "sources": [
         "live HPC read recd7XAM6tLjzQhaI vs Dreams reclS16CMUS6eJgpC",
-        "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana-resort-spa/"
+        "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana-resort-spa/accommodations/rooms-suites/",
+        "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana-resort-spa/events/meetings-incentives/"
       ],
-      "note": "VERIFIED distinct from Dreams Cap Cana (separate HPC, brand, coords). Steward separately for lowercase alias duplicate."
+      "note": "Identity ≠ Dreams VERIFIED. Rooms 457 autonomous free pass. Steward lowercase alias separately."
     },
     {
       "pilotKey": "secrets_papagayo",
       "hotelName": "Secrets Papagayo Costa Rica",
-      "identityOutcome": "MATCHED_HOTEL_CENSUS",
+      "identityOutcome": "NEW_HPC_CANDIDATE",
       "hpcRecordId": null,
-      "hotelCensusRecordId": "recyX1wLsHBJYRPw7",
+      "legacyHotelCensusProvenanceId": "recyX1wLsHBJYRPw7",
+      "hotelCensusRecordId": null,
       "officialName": "Secrets Papagayo Costa Rica",
       "brand": "Secrets",
       "parentBrand": "Hyatt Inclusive Collection",
       "status": "Open",
+      "city": "Guanacaste Province",
       "country": "Costa Rica",
+      "address": "Papagayo Gulf, 3 Km North West from Panama Beach",
       "website": "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/costa-rica/papagayo-costa-rica/",
       "rooms": {
         "value": 202,
@@ -437,10 +443,12 @@
         "note": "Official Hyatt Inclusive: 202 rooms and suites"
       },
       "mullenAssociation": "PROPOSED_PORTFOLIO_CANDIDATE_NOT_VERIFIED_HOLDING",
-      "proposedHpcAction": "STEWARD_PROMOTE_CENSUS_TO_HPC_NO_DUPLICATE",
+      "proposedHpcAction": "CREATE_AFTER_FOUNDER_APPROVAL",
       "sources": [
-        "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/costa-rica/papagayo-costa-rica/accommodations/rooms-suites/"
-      ]
+        "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/costa-rica/papagayo-costa-rica/accommodations/rooms-suites/",
+        "historical_legacy_census_provenance:recyX1wLsHBJYRPw7 (not runtime SoT)"
+      ],
+      "note": "HPC-native CREATE after collision absent; do not use legacy census id as canonical hotel id"
     },
     {
       "pilotKey": "secrets_st_lucia",
@@ -531,7 +539,7 @@
     "byProvider": [],
     "byHotel": [],
     "byCategory": [],
-    "verifiedFindingsAttributed": 24,
+    "verifiedFindingsAttributed": 25,
     "costPerVerifiedUsefulField": 0,
     "entries": [
       {
@@ -541,7 +549,7 @@
         "research_category": "property_identity_physical",
         "provider": "public_web_free",
         "request_type": "free_source",
-        "timestamp": "2026-11-19T23:05:38.141Z",
+        "timestamp": "2026-11-19T23:16:36.784Z",
         "estimated_max_usd": 0,
         "actual_usd": 0,
         "status": "FREE",
@@ -562,7 +570,7 @@
         "research_category": "portfolio_hpc_matching",
         "provider": "public_web_free",
         "request_type": "free_source",
-        "timestamp": "2026-11-19T23:05:38.142Z",
+        "timestamp": "2026-11-19T23:16:36.784Z",
         "estimated_max_usd": 0,
         "actual_usd": 0,
         "status": "FREE",
@@ -582,7 +590,7 @@
         "research_category": "portfolio_hpc_matching",
         "provider": "public_web_free",
         "request_type": "free_source",
-        "timestamp": "2026-11-19T23:05:38.143Z",
+        "timestamp": "2026-11-19T23:16:36.785Z",
         "estimated_max_usd": 0,
         "actual_usd": 0,
         "status": "FREE",
@@ -602,7 +610,7 @@
         "research_category": "portfolio_hpc_matching",
         "provider": "public_web_free",
         "request_type": "free_source",
-        "timestamp": "2026-11-19T23:05:38.143Z",
+        "timestamp": "2026-11-19T23:16:36.785Z",
         "estimated_max_usd": 0,
         "actual_usd": 0,
         "status": "FREE",
@@ -622,7 +630,7 @@
         "research_category": "portfolio_hpc_matching",
         "provider": "public_web_free",
         "request_type": "free_source",
-        "timestamp": "2026-11-19T23:05:38.144Z",
+        "timestamp": "2026-11-19T23:16:36.785Z",
         "estimated_max_usd": 0,
         "actual_usd": 0,
         "status": "FREE",
@@ -642,13 +650,14 @@
         "research_category": "portfolio_hpc_matching",
         "provider": "public_web_free",
         "request_type": "free_source",
-        "timestamp": "2026-11-19T23:05:38.144Z",
+        "timestamp": "2026-11-19T23:16:36.786Z",
         "estimated_max_usd": 0,
         "actual_usd": 0,
         "status": "FREE",
         "fields_researched": [],
         "verified_findings": [
           "official_identity",
+          "rooms",
           "website"
         ],
         "evidence_refs": [],
@@ -657,11 +666,11 @@
       {
         "run_id": "he50_mullen_eight_hotel_2026_11_19",
         "operation_id": "free_secrets_papagayo_portfolio_hpc_matching",
-        "hotel_id": "recyX1wLsHBJYRPw7",
+        "hotel_id": "secrets_papagayo",
         "research_category": "portfolio_hpc_matching",
         "provider": "public_web_free",
         "request_type": "free_source",
-        "timestamp": "2026-11-19T23:05:38.145Z",
+        "timestamp": "2026-11-19T23:16:36.786Z",
         "estimated_max_usd": 0,
         "actual_usd": 0,
         "status": "FREE",
@@ -681,7 +690,7 @@
         "research_category": "portfolio_hpc_matching",
         "provider": "public_web_free",
         "request_type": "free_source",
-        "timestamp": "2026-11-19T23:05:38.146Z",
+        "timestamp": "2026-11-19T23:16:36.787Z",
         "estimated_max_usd": 0,
         "actual_usd": 0,
         "status": "FREE",
@@ -726,7 +735,7 @@
     "contract": "HE_5_0_AIRTABLE_DRY_RUN_PACKAGE_V1",
     "version": "he-5-0-full-e2e-pilot-v1",
     "packageRevision": "founder-pre-apply-reconciliation-v1",
-    "generatedAt": "2026-11-19T23:05:38.147Z",
+    "generatedAt": "2026-11-19T23:16:36.788Z",
     "applyGate": {
       "applyAuthorized": false,
       "airtableWritesAllowed": false,
@@ -735,7 +744,7 @@
       "stopMessage": "STOP — AWAITING SEPARATE FOUNDER AUTHORIZATION FOR PRODUCTION AIRTABLE APPLY."
     },
     "cohortSize": 8,
-    "mutationCount": 11,
+    "mutationCount": 12,
     "mutations": [
       {
         "applyAuthorized": false,
@@ -848,7 +857,8 @@
         "supportingSource": "https://www.marriott.com/en-us/hotels/phlqc-ac-hotel-newtown-square/overview/ | https://www.delcotimes.com/2024/09/27/ac-hotel-by-marriott-at-ellis-preserve-holds-grand-opening/ | https://www.cvent.com/venues/newtown-square/hotel/ac-hotel-newtown-square/venue-bbfcb889-1474-4e7c-afda-54dfadd1e929 | https://hotelbusiness.com/equus-capital-opens-philadelphia-area-ac-hotel/",
         "verificationStatus": "MIN_IDENTITY_FREE_VERIFIED",
         "reason": "NEW_HPC after collision search confirmed absent; create only after founder approval",
-        "founderRecommendation": "READY"
+        "founderRecommendation": "READY",
+        "legacyCensusRuntimeDependency": false
       },
       {
         "applyAuthorized": false,
@@ -880,7 +890,8 @@
         "supportingSource": "https://www.cartonhouse.com/the-resort | https://www.fairmont.com/en/hotels/county-kildare/carton-house.html | https://all.accor.com/hotel/B7D0/index.en.shtml",
         "verificationStatus": "MIN_IDENTITY_FREE_VERIFIED",
         "reason": "NEW_HPC after collision search confirmed absent; create only after founder approval",
-        "founderRecommendation": "READY"
+        "founderRecommendation": "READY",
+        "legacyCensusRuntimeDependency": false
       },
       {
         "applyAuthorized": false,
@@ -904,15 +915,16 @@
           "website": "https://www.hilton.com/en/hotels/phlnsgi-hilton-garden-inn-newtown-square-radnor/",
           "phone": "+1 484-420-7500",
           "rooms": 138,
-          "roomsConfidence": "MEDIUM",
+          "roomsConfidence": "HIGH",
           "status": "Open",
           "operator": null,
           "mullenAssociation": "PROPOSED_PORTFOLIO_CANDIDATE_NOT_VERIFIED_HOLDING"
         },
-        "supportingSource": "https://www.hilton.com/en/hotels/phlnsgi-hilton-garden-inn-newtown-square-radnor/ | https://newtownsquarehotels.com/hotels/hilton-garden-inn/",
+        "supportingSource": "https://www.hilton.com/en/hotels/phlnsgi-hilton-garden-inn-newtown-square-radnor/ | https://www.hilton.com/en-gb/hotels/phlnsgi-hilton-garden-inn-newtown-square-radnor/events/ | https://www.cvent.com/venues/newtown-square/hotel/hilton-garden-inn-newtown-square-radnor/venue-80f98513-8db5-4046-a20c-7881d33eb20a | https://newtownsquarehotels.com/hotels/hilton-garden-inn/",
         "verificationStatus": "MIN_IDENTITY_FREE_VERIFIED",
         "reason": "NEW_HPC after collision search confirmed absent; create only after founder approval",
-        "founderRecommendation": "READY"
+        "founderRecommendation": "READY",
+        "legacyCensusRuntimeDependency": false
       },
       {
         "applyAuthorized": false,
@@ -947,7 +959,7 @@
         "conflictHandling": "PROTECT_NEWER_VERIFIED",
         "duplicateCheck": "REQUIRED",
         "researchDate": "2026-11-19",
-        "id": "M-UPD-secrets_cap_cana",
+        "id": "M-UPD-secrets_cap_cana-identity",
         "destinationTable": "tbl9aY5ijiuIzzWam",
         "destinationLabel": "Hotel Property Census",
         "action": "NO_OP",
@@ -961,9 +973,9 @@
           "dreamsNeighborHpcId": "reclS16CMUS6eJgpC"
         },
         "proposedValue": null,
-        "supportingSource": "live HPC read recd7XAM6tLjzQhaI vs Dreams reclS16CMUS6eJgpC | https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana-resort-spa/",
+        "supportingSource": "live HPC read recd7XAM6tLjzQhaI vs Dreams reclS16CMUS6eJgpC | https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana-resort-spa/accommodations/rooms-suites/ | https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana-resort-spa/events/meetings-incentives/",
         "verificationStatus": "IDENTITY_VERIFIED_NO_WRITE",
-        "reason": "Secrets Cap Cana HPC already correct and distinct from Dreams — REJECT field UPDATE",
+        "reason": "Secrets Cap Cana HPC already correct and distinct from Dreams",
         "founderRecommendation": "REJECT"
       },
       {
@@ -972,27 +984,54 @@
         "conflictHandling": "PROTECT_NEWER_VERIFIED",
         "duplicateCheck": "REQUIRED",
         "researchDate": "2026-11-19",
-        "id": "M-PROMOTE-secrets_papagayo",
+        "id": "M-UPD-secrets_cap_cana-rooms",
         "destinationTable": "tbl9aY5ijiuIzzWam",
         "destinationLabel": "Hotel Property Census",
-        "action": "STEWARD_PROMOTE_FROM_CENSUS",
-        "canonicalEntityId": "recyX1wLsHBJYRPw7",
-        "field": "census_to_hpc_bridge",
-        "existingValue": {
-          "hotelCensusId": "recyX1wLsHBJYRPw7"
-        },
+        "action": "UPDATE",
+        "canonicalEntityId": "recd7XAM6tLjzQhaI",
+        "field": "Rooms / Keys",
+        "existingValue": "empty_or_unenriched",
+        "proposedValue": 457,
+        "supportingSource": "live HPC read recd7XAM6tLjzQhaI vs Dreams reclS16CMUS6eJgpC | https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana-resort-spa/accommodations/rooms-suites/ | https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/dominican-republic/cap-cana-resort-spa/events/meetings-incentives/",
+        "verificationStatus": "VERIFIED_FREE_AUTONOMOUS",
+        "reason": "Autonomous free pass: official 457 suites after identity ≠ Dreams verified",
+        "founderRecommendation": "READY",
+        "roomsConfidence": "HIGH"
+      },
+      {
+        "applyAuthorized": false,
+        "baseId": "appCCUsuGsE1ifoLk",
+        "conflictHandling": "PROTECT_NEWER_VERIFIED",
+        "duplicateCheck": "HPC_LIVE_COLLISION_ALREADY_RUN",
+        "researchDate": "2026-11-19",
+        "id": "M-NEW-secrets_papagayo",
+        "destinationTable": "tbl9aY5ijiuIzzWam",
+        "destinationLabel": "Hotel Property Census",
+        "action": "CREATE",
+        "canonicalEntityId": null,
+        "field": "minimum_identity",
+        "existingValue": null,
         "proposedValue": {
-          "promoteToHpc": true,
-          "rooms": 202,
+          "name": "Secrets Papagayo Costa Rica",
+          "brand": "Secrets",
+          "address": "Papagayo Gulf, 3 Km North West from Panama Beach",
+          "city": "Guanacaste Province",
+          "country": "Costa Rica",
           "website": "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/costa-rica/papagayo-costa-rica/",
-          "doNotCreateDuplicate": true,
-          "preserveCensusId": true,
-          "mullenAssociation": "CENSUS_OWNER_WEBSITE_SIGNAL_ONLY"
+          "phone": null,
+          "rooms": 202,
+          "roomsConfidence": "HIGH",
+          "status": "Open",
+          "operator": null,
+          "mullenAssociation": "PROPOSED_PORTFOLIO_CANDIDATE_NOT_VERIFIED_HOLDING",
+          "legacyHotelCensusProvenanceId": "recyX1wLsHBJYRPw7",
+          "note": "Historical census provenance only — not runtime SoT / not canonical id"
         },
-        "supportingSource": "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/costa-rica/papagayo-costa-rica/accommodations/rooms-suites/",
-        "verificationStatus": "CENSUS_MATCHED",
-        "reason": "Secrets Papagayo exists on Hotel Census — promote/link, never duplicate HPC",
-        "founderRecommendation": "READY"
+        "supportingSource": "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/costa-rica/papagayo-costa-rica/accommodations/rooms-suites/ | historical_legacy_census_provenance:recyX1wLsHBJYRPw7 (not runtime SoT)",
+        "verificationStatus": "MIN_IDENTITY_FREE_VERIFIED",
+        "reason": "HPC-native CREATE (legacy census independence); collision absent; create only after founder approval",
+        "founderRecommendation": "READY",
+        "legacyCensusRuntimeDependency": false
       },
       {
         "applyAuthorized": false,
@@ -1024,11 +1063,12 @@
         "supportingSource": "https://www.hyattinclusivecollection.com/en/resorts-hotels/secrets/st-lucia/st-lucia-resort-spa/accommodations/rooms-suites/ | https://www.slutourism.govt.lc/certified-operator/secrets-resort-and-spa-st-lucia",
         "verificationStatus": "MIN_IDENTITY_FREE_VERIFIED",
         "reason": "NEW_HPC after collision search confirmed absent; create only after founder approval",
-        "founderRecommendation": "READY"
+        "founderRecommendation": "READY",
+        "legacyCensusRuntimeDependency": false
       }
     ],
     "reconciliationSummary": {
-      "READY": 9,
+      "READY": 10,
       "HOLD": 1,
       "REJECT": 1,
       "readyIds": [
@@ -1039,14 +1079,15 @@
         "M-NEW-carton_house_fairmont",
         "M-NEW-hgi_newtown_square_radnor",
         "M-UPD-jw_marriott_costa_elena",
-        "M-PROMOTE-secrets_papagayo",
+        "M-UPD-secrets_cap_cana-rooms",
+        "M-NEW-secrets_papagayo",
         "M-NEW-secrets_st_lucia"
       ],
       "holdIds": [
         "M-BETH-REF-STAKEHOLDER"
       ],
       "rejectIds": [
-        "M-UPD-secrets_cap_cana"
+        "M-UPD-secrets_cap_cana-identity"
       ]
     },
     "blockedOperations": [
@@ -1081,6 +1122,7 @@
       "hpcIdentity": "MATCHED_HPC",
       "hpcId": "recLuxvwwxID7U2B8",
       "hotelCensusId": null,
+      "legacyHotelCensusProvenanceId": null,
       "newlyVerifiedFacts": 1,
       "existingFactsReused": 20,
       "proposedAirtableChanges": 4,
@@ -1105,6 +1147,7 @@
       "hpcIdentity": "NEW_HPC_CANDIDATE",
       "hpcId": null,
       "hotelCensusId": null,
+      "legacyHotelCensusProvenanceId": null,
       "newlyVerifiedFacts": 3,
       "existingFactsReused": 0,
       "proposedAirtableChanges": 1,
@@ -1126,6 +1169,7 @@
       "hpcIdentity": "NEW_HPC_CANDIDATE",
       "hpcId": null,
       "hotelCensusId": null,
+      "legacyHotelCensusProvenanceId": null,
       "newlyVerifiedFacts": 3,
       "existingFactsReused": 0,
       "proposedAirtableChanges": 1,
@@ -1147,6 +1191,7 @@
       "hpcIdentity": "NEW_HPC_CANDIDATE",
       "hpcId": null,
       "hotelCensusId": null,
+      "legacyHotelCensusProvenanceId": null,
       "newlyVerifiedFacts": 3,
       "existingFactsReused": 0,
       "proposedAirtableChanges": 1,
@@ -1168,6 +1213,7 @@
       "hpcIdentity": "MATCHED_HPC",
       "hpcId": "recq9KWr8UE7z2549",
       "hotelCensusId": null,
+      "legacyHotelCensusProvenanceId": null,
       "newlyVerifiedFacts": 3,
       "existingFactsReused": 5,
       "proposedAirtableChanges": 1,
@@ -1189,7 +1235,8 @@
       "hpcIdentity": "MATCHED_HPC",
       "hpcId": "recd7XAM6tLjzQhaI",
       "hotelCensusId": null,
-      "newlyVerifiedFacts": 2,
+      "legacyHotelCensusProvenanceId": null,
+      "newlyVerifiedFacts": 3,
       "existingFactsReused": 5,
       "proposedAirtableChanges": 1,
       "researchSpendUsd": 0,
@@ -1207,11 +1254,12 @@
     {
       "hotel": "Secrets Papagayo Costa Rica",
       "pilotKey": "secrets_papagayo",
-      "hpcIdentity": "MATCHED_HOTEL_CENSUS",
+      "hpcIdentity": "NEW_HPC_CANDIDATE",
       "hpcId": null,
-      "hotelCensusId": "recyX1wLsHBJYRPw7",
+      "hotelCensusId": null,
+      "legacyHotelCensusProvenanceId": "recyX1wLsHBJYRPw7",
       "newlyVerifiedFacts": 3,
-      "existingFactsReused": 5,
+      "existingFactsReused": 0,
       "proposedAirtableChanges": 1,
       "researchSpendUsd": 0,
       "remainingGaps": [
@@ -1220,7 +1268,7 @@
         "contacts"
       ],
       "readiness": [
-        "HPC_MINIMUM_VERIFIED"
+        "REVIEW_REQUIRED"
       ],
       "founderPreviewUrl": null,
       "mullenAssociation": "PROPOSED_PORTFOLIO_CANDIDATE_NOT_VERIFIED_HOLDING"
@@ -1231,6 +1279,7 @@
       "hpcIdentity": "NEW_HPC_CANDIDATE",
       "hpcId": null,
       "hotelCensusId": null,
+      "legacyHotelCensusProvenanceId": null,
       "newlyVerifiedFacts": 3,
       "existingFactsReused": 0,
       "proposedAirtableChanges": 1,
@@ -1250,10 +1299,10 @@
   "aggregate": {
     "hotels": 8,
     "matchedHpc": 3,
-    "matchedCensus": 1,
-    "newHpcCandidates": 4,
-    "newlyVerifiedFactsTotal": 21,
-    "existingFactsReusedTotal": 35,
+    "matchedCensus": 0,
+    "newHpcCandidates": 5,
+    "newlyVerifiedFactsTotal": 22,
+    "existingFactsReusedTotal": 30,
     "proposedAirtableChangesTotal": 11,
     "confirmedPaidSpendUsd": 0,
     "reservedPaidSpendUsd": 0,
