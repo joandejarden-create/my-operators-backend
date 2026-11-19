@@ -1,7 +1,7 @@
 # HE-INTEL-001 P2 — Founder completion report (HPC linkage)
 
 **PR:** [#422](https://github.com/joandejarden-create/my-operators-backend/pull/422) — **OPEN**  
-**HEAD:** `cfd8d19d762323a92824bef312acaa82ed774e5c` (+ report/docs follow-up)  
+**HEAD:** `8b2a1f6aff527bce8831742304ce073eaec4e3fa`  
 **Status:** AWAITING_INTEGRATION_CONTROLLER — **do not merge until CI green + founder review**
 
 ## Canonical placement
