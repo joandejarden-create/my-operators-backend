@@ -1,7 +1,7 @@
 # GDI 3.0 — Commercial Fact Selection implementation plan V1
 
 **Track:** A — Research & Commercial Intelligence  
-**Status:** Prepared for focused PR **after PDI-3 closes** (one active GDI implementation PR at a time)  
+**Status:** Implementation PR (after PDI-3 #460 merged)  
 **Contract:** `docs/data-intelligence/gdi-commercial-fact-selection-contract-v1.md` (shipped in #452)  
 **Catalogs:** `fixtures/gdi-brief-v2-narrative-quality-v1/evidence-catalogs/`
 
