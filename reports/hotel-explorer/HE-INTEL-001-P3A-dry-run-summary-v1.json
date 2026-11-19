@@ -1,0 +1,291 @@
+{
+  "ok": true,
+  "phase": "P3A",
+  "contract": "HE_INTEL_001_RESEARCH_METHOD_BENCHMARK_V1",
+  "contract_version": "1.0.0-p3a-foundation",
+  "runId": "p3a_dry_2026-11-19T10-06-22-149Z",
+  "cohort": {
+    "cohortId": "HE-INTEL-001-P3A-SIX-HOTEL-V1",
+    "hotels": [
+      {
+        "order": 1,
+        "hpcId": "recLuxvwwxID7U2B8",
+        "name": "Bethesda Marriott",
+        "dualHouse": false
+      },
+      {
+        "order": 2,
+        "hpcId": "recnPB3Q02NO8Ma1o",
+        "name": "Wyndham San Diego Bayside",
+        "dualHouse": false
+      },
+      {
+        "order": 3,
+        "hpcId": "recG66DQJKP2c0UNh",
+        "name": "Renaissance New York Times Square Hotel",
+        "dualHouse": false
+      },
+      {
+        "order": 4,
+        "hpcId": "recvVZ5unh4d3Krzi",
+        "name": "The Ritz-Carlton, Mexico City",
+        "dualHouse": false
+      },
+      {
+        "order": 5,
+        "hpcId": "recBJZwMvgbdG7y4F",
+        "name": "Hyatt Centric Playa del Carmen — Downtown House",
+        "dualHouse": true
+      },
+      {
+        "order": 6,
+        "hpcId": "recrTWMTHXQpA5geC",
+        "name": "Bruma Wine Resort",
+        "dualHouse": false
+      }
+    ],
+    "fullPilotDistinctHotels": 15,
+    "fullPilotFounderExperiences": 16
+  },
+  "authorizationSummary": {
+    "refusedPaidArms": 60,
+    "allowedOfflineArms": 24
+  },
+  "leakageViolations": [],
+  "dryRunExecuted": 24,
+  "sharedBudgetBypassPossible": false,
+  "proposedP3BBudget": {
+    "phase": "P3B",
+    "authorized": false,
+    "envelopeId": "M1_MINI_PILOT_SIX_HOTEL_SUBSET",
+    "hotels": 3,
+    "arms": [
+      "ARM_EXA",
+      "ARM_PARALLEL_SEARCH",
+      "ARM_PARALLEL_TASK",
+      "ARM_DEALALITY_NATIVE"
+    ],
+    "estimatedMaxUsd": 0.53,
+    "hardCapUsd": 5,
+    "perHotelHardStopUsd": 2.5,
+    "retriesDefault": 0,
+    "surfe": false,
+    "notes": [
+      "Conservative list-price ceiling from public docs (2026-11-19)",
+      "SerpAPI / native USD remain UNKNOWN until plan/dashboard confirm — search-count capped",
+      "Actual spend must stop at lower of ledger vs hard cap",
+      "Do not execute until founder authorizes P3B"
+    ],
+    "lineItems": [
+      {
+        "arm": "EXA",
+        "estMaxUsd": 0.13,
+        "status": "ESTIMATED"
+      },
+      {
+        "arm": "PARALLEL_SEARCH",
+        "estMaxUsd": 0.02,
+        "status": "ESTIMATED"
+      },
+      {
+        "arm": "PARALLEL_TASK_CORE",
+        "estMaxUsd": 0.08,
+        "status": "ESTIMATED"
+      },
+      {
+        "arm": "PARALLEL_TASK_PRO_OPTIONAL",
+        "estMaxUsd": 0.3,
+        "status": "ESTIMATED"
+      },
+      {
+        "arm": "SERPAPI",
+        "estMaxUsd": null,
+        "status": "UNKNOWN",
+        "searchCap": 15
+      },
+      {
+        "arm": "NATIVE",
+        "estMaxUsd": null,
+        "status": "UNKNOWN",
+        "creditCap": 24
+      }
+    ]
+  },
+  "p3bExecutionPlan": {
+    "phase": "P3B",
+    "status": "PROPOSED_NOT_AUTHORIZED",
+    "steps": [
+      "Founder authorize M1 envelope (hard cap $5 USD) and confirm SerpAPI/native USD rates or keep UNKNOWN+count caps",
+      "Enable paid providers only inside execution gateway with shared budget ledger",
+      "Run Mode A then Mode B on 3-hotel mini-pilot subset (spread: Bethesda, Wyndham or Renaissance, Ritz CDMX)",
+      "Blind adjudication + scoreboard; no production HI graph writes",
+      "Review cost/verified-fact; amend M2 ($40) only after M1 review",
+      "Surfe/PDL remain forbidden"
+    ],
+    "stopConditions": [
+      "Shared or per-hotel USD cap hit",
+      "Unknown pricing under enforced USD cap",
+      "Cross-arm leakage detected",
+      "Attempted Surfe/PDL/inferred-email promotion",
+      "Production Airtable canonical write attempted"
+    ]
+  },
+  "capabilityMatrix": {
+    "asOf": "2026-11-19",
+    "gdiHelperPriceAsOf": "2026-10-24",
+    "surfeExcluded": true,
+    "pdlExcluded": true,
+    "paidExecutionAuthorized": false,
+    "exaLiteBoundedQuote": {
+      "bounded": true,
+      "maxUsd": 0.004,
+      "assumption": "lite search, at most 10 results, cached text only, no summary",
+      "sources": [
+        "https://exa.ai/docs/admin/pricing"
+      ],
+      "asOf": "2026-10-24"
+    },
+    "providers": [
+      {
+        "arm": "ARM_EXA",
+        "provider": "EXA",
+        "keyConfigured": false,
+        "firstPartyAdapter": "lib/group-demand-intelligence/research/exa-agent/* + benchmark-provider-pricing-v1",
+        "adapterReady": true,
+        "listPriceUnit": "lite search $4/1k ($0.004); contents $1/1k pages; agent $0.012–$1.00/run",
+        "listPriceUsdStatus": "ESTIMATED",
+        "freeAllowancePublic": "$10/mo credits claimed by Exa (remaining UNKNOWN)",
+        "remainingBalanceStatus": "UNKNOWN",
+        "paidCallsInP3A": false,
+        "notes": "Prefer bounded lite + contents. Agent only if separately budgeted in P3B.",
+        "sources": [
+          "https://exa.ai/docs/admin/pricing"
+        ],
+        "feasibility": "READY_FOR_P3B_AFTER_AUTH"
+      },
+      {
+        "arm": "ARM_PARALLEL_TASK",
+        "provider": "PARALLEL_TASK",
+        "keyConfigured": false,
+        "firstPartyAdapter": "lib/hotel-intelligence/research/providers/parallel/*",
+        "adapterReady": true,
+        "listPriceUnit": "Task lite $5/1k … pro $100/1k ($0.10/run) … ultra8x higher; failed runs not billed",
+        "listPriceUsdStatus": "ESTIMATED",
+        "freeAllowancePublic": "$5/mo credits claimed (remaining UNKNOWN)",
+        "remainingBalanceStatus": "UNKNOWN",
+        "paidCallsInP3A": false,
+        "notes": "Existing HI ownership comparison used pro @ $0.10/run; prefer core before pro in P3B.",
+        "sources": [
+          "https://docs.parallel.ai/getting-started/pricing"
+        ],
+        "feasibility": "READY_FOR_P3B_AFTER_AUTH"
+      },
+      {
+        "arm": "ARM_PARALLEL_SEARCH",
+        "provider": "PARALLEL_SEARCH",
+        "keyConfigured": false,
+        "firstPartyAdapter": "lib/hotel-intelligence/research/providers/parallel/*",
+        "adapterReady": true,
+        "listPriceUnit": "Search turbo/fast $1/1k; basic/advanced $5/1k",
+        "listPriceUsdStatus": "ESTIMATED",
+        "freeAllowancePublic": "same Parallel credits (remaining UNKNOWN)",
+        "remainingBalanceStatus": "UNKNOWN",
+        "paidCallsInP3A": false,
+        "notes": "Low-cost discovery rung for Mode A.",
+        "sources": [
+          "https://docs.parallel.ai/getting-started/pricing"
+        ],
+        "feasibility": "READY_FOR_P3B_AFTER_AUTH"
+      },
+      {
+        "arm": "ARM_SERPAPI",
+        "provider": "SERPAPI",
+        "keyConfigured": false,
+        "firstPartyAdapter": "lib/hotel-intelligence/providers/serpapi.js",
+        "adapterReady": true,
+        "listPriceUnit": "Plan-based; Starter ~$25/1k; Production ~$10/1k effective",
+        "listPriceUsdStatus": "UNKNOWN",
+        "freeAllowancePublic": "250 searches/mo free plan (remaining UNKNOWN)",
+        "remainingBalanceStatus": "UNKNOWN",
+        "paidCallsInP3A": false,
+        "notes": "USD/search depends on active plan → UNKNOWN until plan confirmed.",
+        "sources": [
+          "https://serpapi.com/pricing"
+        ],
+        "feasibility": "READY_FOR_P3B_AFTER_PLAN_CONFIRM"
+      },
+      {
+        "arm": "ARM_BRAVE",
+        "provider": "BRAVE",
+        "keyConfigured": false,
+        "firstPartyAdapter": "none",
+        "adapterReady": false,
+        "listPriceUnit": "~$5/1k requests",
+        "listPriceUsdStatus": "ESTIMATED",
+        "freeAllowancePublic": "$5 credits/mo claimed; N/A without key",
+        "remainingBalanceStatus": "UNKNOWN",
+        "paidCallsInP3A": false,
+        "notes": "Out of paid mini-pilot unless founder adds key + adapter.",
+        "sources": [
+          "https://brave.com/search/api/"
+        ],
+        "feasibility": "NOT_READY"
+      },
+      {
+        "arm": "ARM_DEALALITY_NATIVE",
+        "provider": "DEALALITY_NATIVE",
+        "keyConfigured": false,
+        "firstPartyAdapter": "lib/hotel-intelligence/contact-intelligence/* + research-engine-v1",
+        "adapterReady": true,
+        "listPriceUnit": "Credits known in prior pilots; USD/credit UNKNOWN (CREDIT_BOUNDED_USD_NOT_VERIFIED)",
+        "listPriceUsdStatus": "UNKNOWN",
+        "freeAllowancePublic": null,
+        "remainingBalanceStatus": "UNKNOWN",
+        "paidCallsInP3A": false,
+        "notes": "Must log credits; convert to USD only when dashboard rate confirmed.",
+        "sources": [],
+        "feasibility": "READY_FOR_P3B_AFTER_AUTH"
+      },
+      {
+        "arm": "ARM_HYBRID_WATERFALL",
+        "provider": "HYBRID_WATERFALL",
+        "keyConfigured": null,
+        "firstPartyAdapter": "composes Exa / Parallel / SerpAPI / native under gap router",
+        "adapterReady": true,
+        "listPriceUnit": "sum of invoked rungs; must not bypass shared budget",
+        "listPriceUsdStatus": "UNKNOWN",
+        "freeAllowancePublic": null,
+        "remainingBalanceStatus": "UNKNOWN",
+        "paidCallsInP3A": false,
+        "notes": "Adaptive cascade; shared ledger + hard ceilings required.",
+        "sources": [],
+        "feasibility": "READY_FOR_P3B_AFTER_AUTH"
+      }
+    ],
+    "rules": [
+      "Never log or echo API credentials",
+      "Unknown pricing → refuse spend (never invent $0)",
+      "Account remaining balances = UNKNOWN until founder-authorized dashboard read",
+      "P3A paid budget = $0"
+    ]
+  },
+  "guarantees": {
+    "contract": "HE_INTEL_001_RESEARCH_METHOD_BENCHMARK_V1",
+    "contract_version": "1.0.0-p3a-foundation",
+    "phase": "P3A",
+    "paid_budget_usd": 0,
+    "paid_providers": false,
+    "surfe": false,
+    "production_airtable_writes": false,
+    "canonical_graph_writes": false,
+    "customer_publication": "BLOCKED",
+    "staging_only": true,
+    "inherits_p1_paid_policy": true
+  },
+  "costLedger": {
+    "runUsd": 0,
+    "runUsdStatus": "ZERO_AUTHORIZED",
+    "refused": 0,
+    "entryCount": 84
+  }
+}
