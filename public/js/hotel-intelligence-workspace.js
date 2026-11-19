@@ -94,9 +94,15 @@
     { id: "relationships", label: "Relationships" },
     { id: "market", label: "Market Intelligence" },
     { id: "demand", label: "Demand & Access" },
-    { id: "brand", label: "Brand / Operator" },
+    { id: "sentiment", label: "Guest Sentiment" },
     { id: "sources", label: "Sources & Evidence" },
   ];
+
+  var TAB_ALIASES = {
+    brand: "sentiment",
+    "brand-operator": "sentiment",
+    "guest-sentiment": "sentiment",
+  };
 
   var PERSON_GROUP_ORDER = [
     { key: "principals", label: "Principals / Ownership Leadership", match: /beneficial|principal|ubo|shareholder|owner/i },
@@ -4091,89 +4097,25 @@
     );
   }
 
-  function renderBrandOperator(hotel, ownership) {
-    var brand =
-      (ownership && ownership.hotel && ownership.hotel.brand_display) ||
-      hotel.brand ||
-      hotel.affiliation ||
-      "—";
-    var brandStatus =
-      (ownership && ownership.hotel && ownership.hotel.brand_display_status) || "";
-    var contested = String(brandStatus) === "CONTESTED";
-    var op =
-      (ownership &&
-        ownership.report &&
-        ownership.report.ownership_and_control &&
-        ownership.report.ownership_and_control.operator &&
-        ownership.report.ownership_and_control.operator.name) ||
-      hotel.managementCompany ||
-      "—";
-    var chrono = (ownership && ownership.report && ownership.report.brand_chronology) || [];
-    var byStatus = function (st) {
-      return chrono.filter(function (b) {
-        return String(b.status || "").toUpperCase() === st;
-      });
-    };
-    var brandCards = "";
-    ["CURRENT", "FORMER", "ANNOUNCED", "PLANNED", "CONTESTED", "CANCELLED"].forEach(function (st) {
-      var items = byStatus(st);
-      if (!items.length && st === "CURRENT" && brand && brand !== "—") {
-        items = [{ label: brand, brand: brand, date: "", status: "CURRENT" }];
-      }
-      if (!items.length) return;
-      brandCards +=
-        '<div class="hiw-brand-card hiw-brand-card--' +
-        esc(st.toLowerCase()) +
-        '"><div class="hiw-brand-card__status">' +
-        esc(friendlyStatus(st)) +
-        "</div><ul>" +
-        items
-          .map(function (b) {
-            return (
-              "<li><strong>" +
-              esc(b.label || b.brand) +
-              "</strong>" +
-              (b.date ? " · " + esc(b.date) : "") +
-              "</li>"
-            );
-          })
-          .join("") +
-        "</ul></div>";
-    });
-
+  /**
+   * Guest Sentiment tab shell (formerly Brand / Operator).
+   * Franchise & Current Operator removed — brand/operator facts live on Overview,
+   * Ownership Intelligence, and Relationships (HE-QL-038).
+   */
+  function renderGuestSentimentTab(_hotel, _ownership) {
     return (
-      '<article class="hiw-report">' +
-      '<h2 class="hiw-report__title">Brand / Operator</h2>' +
-      '<p class="hiw-report__subtitle">Current, former, and announced brand states · operating relationship</p>' +
-      '<section class="hiw-section"><h3 class="hiw-section__h">Franchise &amp; Brand Status</h3>' +
-      (brandCards ||
-        wrapTable(
-          "<tbody>" +
-            row("Current affiliation", brand + (brandStatus ? " · " + brandStatus : "")) +
-            "</tbody>"
-        )) +
-      (contested
-        ? '<div class="hiw-prose"><p>Trading presentation and affiliation evidence remain unresolved. Announced projects are not treated as completed reflags.' +
-          citeBtn(2) +
-          citeBtn(3) +
-          "</p></div>"
-        : '<div class="hiw-prose"><p>Announced brand relationships are shown separately from current affiliation.</p></div>') +
-      "</section>" +
-      '<section class="hiw-section"><h3 class="hiw-section__h">Current Operator</h3>' +
-      wrapTable(
-        "<tbody>" +
-          row("Management company", op) +
-          row("Relationship", "Operated / Managed By") +
-          row("Confidence", "High") +
-          "</tbody>"
-      ) +
-      '<div class="hiw-prose"><p>Operator evidence is tracked separately from economic ownership.' +
-      citeBtn(1) +
-      "</p></div></section>" +
+      '<article class="hiw-report hiw-report--guest-sentiment" data-hiw-guest-sentiment-tab="1">' +
+      '<h2 class="hiw-report__title">Guest Sentiment</h2>' +
+      '<p class="hiw-report__subtitle">Guest reputation · category performance · experience insights · hotel news</p>' +
       '<div class="hiw-hotel-news-host" data-hiw-hotel-news-host="1" hidden></div>' +
       '<div class="hiw-guest-sentiment-host" data-hiw-guest-sentiment-host="1" hidden></div>' +
       "</article>"
     );
+  }
+
+  /** @deprecated Use renderGuestSentimentTab — kept as alias for embed callers. */
+  function renderBrandOperator(hotel, ownership) {
+    return renderGuestSentimentTab(hotel, ownership);
   }
 
   function isFounderProposedPreview() {
@@ -4184,6 +4126,14 @@
         .toLowerCase();
       if (mode === "proposed" || mode === "phase3") return true;
     } catch (_e) {}
+    try {
+      var attr = String(
+        document.documentElement.getAttribute("data-he-founder-preview") || ""
+      )
+        .trim()
+        .toLowerCase();
+      if (attr === "proposed" || attr === "phase3") return true;
+    } catch (_e2) {}
     return !!(
       state.ownership &&
       state.ownership.founder_preview &&
@@ -4358,16 +4308,45 @@
     );
   }
 
+  function renderExecutiveInsightItems(items) {
+    if (!items || !items.length) return "";
+    return (
+      '<ul class="hiw-rep-insight__items">' +
+      items
+        .slice(0, 3)
+        .map(function (it) {
+          return (
+            "<li>" +
+            '<span class="hiw-rep-insight__item-title">' +
+            esc(it.title || it.label || "") +
+            "</span>" +
+            (it.detail || it.explanation
+              ? '<span class="hiw-rep-insight__item-detail">' +
+                esc(it.detail || it.explanation) +
+                "</span>"
+              : "") +
+            (it.metric
+              ? '<span class="hiw-rep-insight__item-metric">' + esc(it.metric) + "</span>"
+              : "") +
+            "</li>"
+          );
+        })
+        .join("") +
+      "</ul>"
+    );
+  }
+
   function renderExecutiveInsights(cards) {
     if (!cards || !cards.length) return "";
     return (
       '<div class="hiw-rep-block" data-hiw-rep-insights="1">' +
       '<h4 class="hiw-section__h hiw-section__h--sub">Guest Experience Insights</h4>' +
-      '<div class="hiw-rep-insights hiw-rep-insights--executive">' +
+      '<div class="hiw-rep-insights hiw-rep-insights--executive hiw-rep-insights--compact">' +
       cards
         .map(function (c) {
           var metric = c.metric || null;
           var evidenceBody = c.evidence && c.evidence !== metric ? c.evidence : null;
+          var itemsHtml = renderExecutiveInsightItems(c.items);
           return (
             '<article class="hiw-rep-insight" data-insight="' +
             esc(c.id || "") +
@@ -4377,10 +4356,9 @@
             '<h5 class="hiw-rep-insight__title">' +
             esc(c.title) +
             "</h5>" +
-            '<p class="hiw-rep-insight__finding">' +
-            esc(c.finding) +
-            "</p>" +
-            (metric
+            (itemsHtml ||
+              '<p class="hiw-rep-insight__finding">' + esc(c.finding || "") + "</p>") +
+            (!itemsHtml && metric
               ? '<p class="hiw-rep-insight__metric">' + esc(metric) + "</p>"
               : "") +
             (c.implication
@@ -4828,10 +4806,16 @@
     }
   }
 
+  function normalizeHiwTab(tabId) {
+    var raw = String(tabId || "").trim();
+    if (TAB_ALIASES[raw]) return TAB_ALIASES[raw];
+    return raw || "ownership";
+  }
+
   function setTab(tabId, opts) {
     opts = opts || {};
     prepareTabNav(opts);
-    state.tab = tabId;
+    state.tab = normalizeHiwTab(tabId);
     paint();
   }
 
@@ -4890,15 +4874,15 @@
       main = renderRelationships(state.hotel, state.ownership);
     else if (state.tab === "market") main = renderMarket(state.hotel);
     else if (state.tab === "demand") main = renderDemand(state.hotel);
-    else if (state.tab === "brand")
-      main = renderBrandOperator(state.hotel, state.ownership);
+    else if (state.tab === "sentiment" || state.tab === "brand")
+      main = renderGuestSentimentTab(state.hotel, state.ownership);
     else if (state.tab === "sources") main = renderSourcesTab();
     document.getElementById("hiwMain").innerHTML = main;
     document.getElementById("hiwRail").innerHTML = renderRail(state.hotel, state.ownership);
     var mainEl = document.getElementById("hiwMain");
     if (mainEl) mainEl.scrollTop = 0;
     if (state.tab === "ownership") mountOwnershipControlNetwork();
-    if (state.tab === "brand") {
+    if (state.tab === "sentiment" || state.tab === "brand") {
       mountHotelNewsArticles();
       mountGuestSentiment();
     }
@@ -5174,7 +5158,7 @@
     state.marketAlertsCitations = [];
     state.radarSnapshot = snapshotRadar();
     state.hotel = hotel;
-    state.tab = opts.tab || "ownership";
+    state.tab = normalizeHiwTab(opts.tab || "ownership");
     state.ownership = null;
     state.org = null;
     state.citations = [];
@@ -5283,7 +5267,8 @@
       if (tabId === "ownership") return renderOwnershipReport(hotel, ownership);
       if (tabId === "organization") return renderOrganization(hotel, ownership, org);
       if (tabId === "relationships") return renderRelationships(hotel, ownership);
-      if (tabId === "brand") return renderBrandOperator(hotel, ownership);
+      if (tabId === "sentiment" || tabId === "brand")
+        return renderGuestSentimentTab(hotel, ownership);
       if (tabId === "sources") return renderSourcesTab();
       if (tabId === "market" || tabId === "submarket") return renderSubmarketTab(hotel, ownership);
       if (tabId === "area") return renderAreaHotelsTab(hotel, ownership);

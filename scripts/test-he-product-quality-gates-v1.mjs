@@ -935,7 +935,6 @@ run("he_guest_sentiment_brand_operator_gates", () => {
   mustInclude(std, "Category Performance");
   mustInclude(std, "Never");
   mustInclude(std, "live_ui_authorized");
-  mustInclude(std, "label category scores as");
   mustInclude(std, "HE-QL-029");
   mustInclude(std, "Seven-platform overview");
   const ws = read("public/js/hotel-intelligence-workspace.js");
@@ -948,7 +947,6 @@ run("he_guest_sentiment_brand_operator_gates", () => {
   mustInclude(ws, "hiw-rep-scorecard--unavailable");
   mustInclude(ws, "platformOverview");
   mustNotMatch(ws, /Frequently praised/);
-  mustNotMatch(ws, /id:\s*"guest-sentiment"/);
   mustInclude(read("public/js/hotel-explorer.js"), "mountGuestSentiment");
   mustInclude(read("server.js"), "/api/hotel-explorer/hotels/:hotelId/guest-sentiment");
   const api = read("api/hotel-explorer-guest-sentiment.js");
@@ -986,6 +984,53 @@ run("he_guest_sentiment_brand_operator_gates", () => {
   if (!reg.lessons.some((l) => l.id === "HE-QL-029")) {
     throw new Error("HE-QL-029 missing from founder quality lessons registry");
   }
+});
+
+run("he_guest_sentiment_tab_restructure_gates", () => {
+  const hex = read("public/js/hotel-explorer.js");
+  const ws = read("public/js/hotel-intelligence-workspace.js");
+  const css = read("public/css/hotel-explorer.css");
+  const std = read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md");
+  const model = read("lib/hotel-intelligence/guest-sentiment/guest-sentiment-model-v1.js");
+  const fixture = read("fixtures/hotel-explorer/guest-sentiment/beth-marriott-staged-v1.json");
+  const reg = JSON.parse(
+    read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
+  );
+
+  mustInclude(hex, 'id: "sentiment"');
+  mustInclude(hex, "Guest<br>Sentiment");
+  mustInclude(hex, "TAB_ALIASES");
+  mustInclude(hex, "normalizeHexTab");
+  mustInclude(hex, 'brand: "sentiment"');
+  mustInclude(ws, 'id: "sentiment"');
+  mustInclude(ws, "Guest Sentiment");
+  mustInclude(ws, "renderGuestSentimentTab");
+  mustInclude(ws, "data-hiw-guest-sentiment-tab");
+  mustNotMatch(ws, /hiw-section__h">Franchise &amp; Brand Status/);
+  mustNotMatch(ws, /hiw-section__h">Current Operator/);
+  mustNotMatch(ws, /hiw-report__title">Brand \/ Operator/);
+  mustInclude(ws, "hiw-rep-insight__items");
+  mustInclude(ws, "data-he-founder-preview");
+  mustInclude(css, "var(--accent--primary-1");
+  mustInclude(css, "hiw-rep-bar__fill");
+  const fillSlice = css.slice(css.indexOf(".hex-root .hiw-rep-bar__fill"), css.indexOf(".hex-root .hiw-rep-bar__fill") + 280);
+  assert.ok(
+    fillSlice.includes("var(--accent--primary-1"),
+    "Category bars must use dynamic Chain Scale CSS variable"
+  );
+  mustNotMatch(fillSlice, /background:\s*#6c72ff/);
+  mustInclude(model, "scrubCustomerFacingFollowUps");
+  mustInclude(model, "items:");
+  mustNotMatch(model, /Confirm which platform property IDs/);
+  const followJson = JSON.parse(fixture).insights?.followUps || [];
+  assert.ok(Array.isArray(followJson) && followJson.length >= 1);
+  const followText = followJson.join("\n");
+  mustNotMatch(followText, /d83967|h23292|Confirm Tripadvisor|before any paid refresh|platform property ID/i);
+  mustNotMatch(followText, /rec[A-Za-z0-9]{14}/);
+  mustInclude(std, "HE-QL-038");
+  mustInclude(std, "Dynamic Chain Scale accents");
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-038"));
+  mustInclude(read("public/js/dealality-chain-scale-theme.js"), "chainStripeColor");
 });
 
 run("sources_evidence_consolidated_nav_and_dates", () => {

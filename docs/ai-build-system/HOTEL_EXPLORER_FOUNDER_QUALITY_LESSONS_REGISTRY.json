@@ -366,6 +366,15 @@
       "sharedComponent": "he-demand-access-read-v1.js; api/hotel-explorer-demand-access.js; hotel-detail-panel.js; lib/demand-anchors/*; lib/travel-infrastructure/*",
       "regressionTest": "he_demand_access_airtable_read_gates",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/he-ql-037-demand-access-*.png"
+    },
+    {
+      "id": "HE-QL-038",
+      "originalProblem": "Brand / Operator mixed redundant franchise/operator tables with reputation UI; accents were not consistently Chain Scale-driven; insights still exposed provider IDs; Market Alerts news placement needed a focused Guest Sentiment tab",
+      "rootCause": "Tab remained labeled Brand / Operator with Franchise & Current Operator sections; reputation CSS pinned #6c72ff instead of dynamic Chain Scale vars; default follow-ups emphasized platform ID reconciliation; Bethesda Market Alerts had no property-specific rows",
+      "approvedStandard": "Rename tab to Guest Sentiment with brand deep-link aliases; remove Franchise & Current Operator; dynamic Chain Scale accents on bars/links/selectors; seven platforms; category selectors only for platforms with category data; compact executive insight items without provider IDs; Hotel News from Market Alerts hidden when empty; independent loading; no GET writes/paid calls",
+      "sharedComponent": "hotel-explorer.js; hotel-intelligence-workspace.js; guest-sentiment-model-v1.js; hotel-explorer.css; dealality-chain-scale-theme.js; hotel-news-from-market-alerts-v1.js",
+      "regressionTest": "he_guest_sentiment_tab_restructure_gates; he_guest_sentiment_brand_operator_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/he-ql-038-guest-sentiment-*.png"
     }
   ]
 }

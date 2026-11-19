@@ -274,7 +274,7 @@ const KGPV = "recUNycnMwOVFX0hc";
   assert.equal(schema.applyAuthorized, false);
 }
 
-// UI: Guest Reputation dashboard inside Brand/Operator — not a new tab
+// UI: Guest Sentiment tab hosts reputation + news (HE-QL-038)
 {
   const ws = read("public/js/hotel-intelligence-workspace.js");
   assert.ok(ws.includes("data-hiw-guest-sentiment-host"));
@@ -288,11 +288,13 @@ const KGPV = "recUNycnMwOVFX0hc";
   assert.ok(ws.includes("hiw-rep-insights--executive"));
   assert.ok(!ws.includes("Frequently praised"));
   assert.ok(ws.includes("mountGuestSentiment"));
-  assert.ok(!/id:\s*"guest-sentiment"|id:\s*"sentiment"/.test(ws));
+  assert.ok(/id:\s*"sentiment"/.test(ws));
   const tabs = ws.match(/var TABS = \[[\s\S]*?\];/);
   assert.ok(tabs);
-  assert.ok(!/Guest Sentiment|Guest Reputation/.test(tabs[0]));
-  assert.ok(ws.includes("Brand / Operator"));
+  assert.ok(/Guest Sentiment/.test(tabs[0]));
+  assert.ok(!/Brand \/ Operator/.test(tabs[0]));
+  assert.ok(!/hiw-section__h">Franchise &amp; Brand Status/.test(ws));
+  assert.ok(!/hiw-section__h">Current Operator/.test(ws));
   assert.ok(ws.includes("data-hiw-hotel-news-host"), "news host preserved");
 }
 
@@ -321,12 +323,15 @@ const KGPV = "recUNycnMwOVFX0hc";
   assert.ok(css.includes("hiw-rep-scorecard"));
   assert.ok(css.includes("hiw-rep-scorecard--unavailable"));
   assert.ok(css.includes("hiw-rep-bar__fill"));
-  assert.ok(css.includes("background: #6c72ff"));
-  // Reputation bars/links must not use arbitrary cyan; pin Dealality accent literally
+  // Dynamic Chain Scale accent (HE-QL-038) — not hardcoded cyan or pinned single purple
   const repBlock = css.slice(css.indexOf("/* Guest Reputation"));
   assert.ok(!/#38bdf8/.test(repBlock), "reputation CSS must not use #38bdf8");
-  assert.ok(/\.hiw-rep-bar__fill[\s\S]*?background:\s*#6c72ff/.test(repBlock));
-  assert.ok(/\.hiw-sentiment-link\s*\{[\s\S]*?color:\s*#6c72ff/.test(repBlock));
+  assert.ok(
+    /\.hiw-rep-bar__fill[\s\S]*?background:\s*var\(--accent--primary-1/.test(repBlock)
+  );
+  assert.ok(
+    /\.hiw-sentiment-link\s*\{[\s\S]*?color:\s*var\(--accent--primary-1/.test(repBlock)
+  );
   assert.ok(!/linear-gradient\(90deg,\s*#6c72ff\s*0%,\s*#38bdf8/.test(css));
 }
 
@@ -334,17 +339,17 @@ const KGPV = "recUNycnMwOVFX0hc";
   const std = read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md");
   assert.ok(std.includes("Guest Sentiment"));
   assert.ok(std.includes("Category Performance"));
-  assert.ok(std.includes("Brand / Operator"));
   assert.ok(std.includes("HE-QL-029"));
+  assert.ok(std.includes("HE-QL-038"));
   assert.ok(std.includes("Seven-platform overview"));
-  assert.ok(/label category scores as/i.test(std));
+  assert.ok(std.includes("Dynamic Chain Scale accents"));
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-022"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-025"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-029"));
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.18");
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-038"));
 }
 
 assert.ok(SENTIMENT_PLATFORMS.TRIPADVISOR.scaleMax === 5);

@@ -16,9 +16,17 @@
     { id: "area", label: "Area<br>Hotels", shortLabel: "Area" },
     { id: "demand", label: "Demand<br>Drivers", shortLabel: "Demand" },
     { id: "access", label: "Access &amp;<br>Connectivity", shortLabel: "Access" },
-    { id: "brand", label: "Brand /<br>Operator", shortLabel: "Brand" },
+    { id: "sentiment", label: "Guest<br>Sentiment", shortLabel: "Sentiment" },
     { id: "sources", label: "Sources &amp;<br>Evidence", shortLabel: "Sources" },
   ];
+
+  /** Legacy Brand / Operator deep links → Guest Sentiment (HE-QL-038). */
+  var TAB_ALIASES = {
+    brand: "sentiment",
+    "brand-operator": "sentiment",
+    "guest-sentiment": "sentiment",
+    guest: "sentiment",
+  };
 
   var TAB_ICONS = {
     hotel:
@@ -41,6 +49,8 @@
       '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
     access:
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 16h20"/><path d="M5 16l2-8h10l2 8"/><path d="M12 8V4"/><path d="M9 4h6"/></svg>',
+    sentiment:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/><path d="M5 20h14"/></svg>',
     brand:
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>',
     sources:
@@ -70,10 +80,22 @@
     ownership: "ownership",
     organization: "organization",
     relationships: "relationships",
-    brand: "brand",
+    sentiment: "sentiment",
+    brand: "sentiment",
     sources: "sources",
     contacts: "contacts",
   };
+
+  function normalizeHexTab(tabId) {
+    var raw = String(tabId || "").trim();
+    if (!raw) return "hotel";
+    if (TAB_ALIASES[raw]) return TAB_ALIASES[raw];
+    if (TABS.some(function (t) {
+      return t.id === raw;
+    }))
+      return raw;
+    return "hotel";
+  }
 
   var state = {
     open: false,
@@ -730,7 +752,7 @@
           window.HotelIntelligenceWorkspace.mountOwnershipControlNetwork();
         }
         if (
-          state.tab === "brand" &&
+          (state.tab === "sentiment" || state.tab === "brand") &&
           window.HotelIntelligenceWorkspace
         ) {
           if (typeof window.HotelIntelligenceWorkspace.mountHotelNewsArticles === "function") {
@@ -881,7 +903,11 @@
     var hiTab = e.target.closest("[data-hiw-tab]");
     if (hiTab) {
       var raw = hiTab.getAttribute("data-hiw-tab");
-      var mapped = { overview: "hotel", market: "hotel", demand: "demand", intelligence: "hotel" }[raw] || raw;
+      var mapped = normalizeHexTab(
+        { overview: "hotel", market: "hotel", demand: "demand", intelligence: "hotel", brand: "sentiment" }[
+          raw
+        ] || raw
+      );
       if (window.HotelIntelligenceWorkspace && typeof window.HotelIntelligenceWorkspace.prepareTabNav === "function") {
         window.HotelIntelligenceWorkspace.prepareTabNav({
           sourceFilter: hiTab.getAttribute("data-hiw-source-filter") || undefined,
@@ -1289,11 +1315,12 @@
   }
 
   function setTab(tabId) {
+    var normalized = normalizeHexTab(tabId);
     if (!TABS.some(function (t) {
-      return t.id === tabId;
+      return t.id === normalized;
     }))
       return;
-    state.tab = tabId;
+    state.tab = normalized;
     paint();
     var scroll = document.querySelector("#hexRoot .hex-scroll");
     if (scroll) scroll.scrollTop = 0;
@@ -1426,7 +1453,7 @@
 
     state.radarSnapshot = snapshotRadar();
     state.hotel = hotel;
-    var tab = opts.tab || "hotel";
+    var tab = normalizeHexTab(opts.tab || "hotel");
     if (tab === "intelligence" || tab === "overview") tab = "hotel";
     state.tab = tab;
     state.ownership = null;

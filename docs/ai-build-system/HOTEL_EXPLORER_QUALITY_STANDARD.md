@@ -132,7 +132,7 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 ### 9c. Hotel News & Articles (Market Alerts)
 
 - Canonical store = Airtable **MarketAlerts** (`AIRTABLE_BASE_ID`). No parallel HE news database; no article rows in HPC/HI Organizations.
-- Brand / Operator tab may show **Hotel News & Articles** only when ≥1 property-relevant article exists; otherwise **hide the subsection** (no empty state).
+- Guest Sentiment tab may show **Hotel News & Articles** only when ≥1 property-relevant article exists; otherwise **hide the subsection** (no empty state).
 - Matching classes: `HOTEL_SPECIFIC` / `MULTI_HOTEL_SPECIFIC` visible; `ORGANIZATION_CONTEXT_ONLY` / `AMBIGUOUS_MATCH` / `UNRELATED` never shown as hotel news.
 - Brand- or sponsor-only coverage must not populate the subsection.
 - **Canonical hotel relationships:** Tags `hpc:<HPC record id>` (idempotent, multi-hotel via multiple tags) is the production association path today. Designed complementary multiline field `HPC Hotel Record IDs` supports one article → many HPC ids — **do not create the field or write associations** without Market Alerts owner + founder authorization (`MARKET_ALERTS_HOTEL_LINK_APPLY=1`). Never duplicate article rows for multi-hotel links.
@@ -156,23 +156,20 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 - Accessibility: `role="status"` / `aria-live="polite"`; honor `prefers-reduced-motion`; avoid focus traps and large layout jumps.
 - Shared modules: `dealality-wave-loader.js/css`, `he-loading-ux-v1.js`, `he-async-section-v1.js`, Contact Intelligence + Brand/Operator mounts, OCN expand.
 
-### 9d. Guest Sentiment & Reputation (Brand / Operator)
+### 9d. Guest Sentiment tab (reputation + news)
 
-- **Not a new Hotel Explorer tab.** Guest Reputation & Experience lives inside **Brand / Operator** after Brand & Operator Overview and Hotel News & Articles (same Guest Sentiment data model).
-- Present a **dashboard**, not a flat text report: seven-platform overview, Category Performance bars, compact executive insights, collapsed Sources, Methodology & Limitations.
-- **Seven-platform overview (HE-QL-029):** always show the canonical catalog (`REPUTATION_OVERVIEW_PLATFORMS_V1`) — Tripadvisor, Booking.com, Expedia, Google Reviews, Hotels.com, Agoda, Trivago. Available platforms show native rating, scale, review count, observation date, and listing link. Unavailable platforms stay visible as dimmed **Not connected** / **Data unavailable** cards — never invent 0 ratings, fabricated review counts, or summaries. Catalog candidates are not represented as integrated feeds until source access and rights are confirmed.
-- Accent colors reuse Dealality Chain Scale / My Deals tokens (`--accent--primary-1` `#6c72ff`, gold `#fdb52a` for hover) — no arbitrary cyan/sky (`#38bdf8`) on reputation bars, links, or selectors.
+- **Canonical HE tab label: Guest Sentiment** (HE-QL-038). Replaces the former **Brand / Operator** tab label. Internal deep-link aliases `hexTab=brand|guest-sentiment|guest` resolve to `sentiment`. Brand / operator facts remain on Hotel Overview, Ownership Intelligence, and Relationships — do **not** duplicate Franchise & Brand Status or Current Operator inside Guest Sentiment.
+- Present a **dashboard**: Guest Reputation (seven platforms) · Category Performance · Guest Experience Insights · Hotel News & Articles (when ≥1 property article) · collapsed Sources, Methodology & Limitations.
+- **Seven-platform overview (HE-QL-029):** always show the canonical catalog (`REPUTATION_OVERVIEW_PLATFORMS_V1`) — Tripadvisor, Booking.com, Expedia, Google Reviews, Hotels.com, Agoda, Trivago. Available platforms show native rating, scale, review count, observation date, and listing link. Unavailable platforms stay visible as dimmed **Not connected** / **Data unavailable** cards — never invent 0 ratings, fabricated review counts, or summaries.
+- **Dynamic Chain Scale accents (HE-QL-038):** reputation bars, active category selectors, hyperlinks, and insight titles use `DealalityChainScaleTheme` / `--accent--primary-1` for the selected hotel’s chain scale (e.g. Upper Upscale → `#9b59b6`). Do not hardcode one purple for all hotels. No arbitrary cyan/sky (`#38bdf8`) on reputation chrome. Hover may use Dealality gold `#fdb52a`.
 - Show platform-native rating, scale, review count, observation date, and listing link per available source. **Never** silently average incompatible scales (e.g. Tripadvisor /5 vs Booking /10).
-- **Category Performance** uses platform-published category scores only. Do **not** label category scores as “Frequently praised” / guest-theme frequency unless licensed review-level evidence exists. Relatively softer category scores (e.g. Value 7.7/10) are **areas to investigate**, not proof of recurring guest complaints.
-- **Guest Experience Insights** are a compact executive assessment: Relative Strengths · Areas to Investigate · Recommended Management Follow-Up · Trend & Data Confidence — short finding + metric/source + optional expandable evidence. Do not repeat methodology caveats in every card.
-- Detailed coverage, licensing, sample scope, observation dates, and platform-score differences live in collapsed **Sources, Methodology & Limitations** — no raw API names or developer diagnostics in the main UI.
-- Review Theme Analysis remains **hidden** when unsupported — never invent themes, percentages, or 30/90/180/365 series from one snapshot. Trend status belongs in the compact confidence card, not a fabricated chart.
-- Live customer UI stays **hidden** unless `live_ui_authorized === true` from a rights-cleared store. Founder Proposed Preview may render staged public-listing metadata (or seven unavailable cards when no observations) with an explicit rights chip.
-- No unauthorized paid provider calls from HE routes (`X-Dealality-Paid-Providers: forbidden`). No consumer OTA scrape. No full copyrighted review bodies unless licensed.
-- Independent loading (HE-QL-024 / HE-QL-028): reputation provider failure must not block Brand overview or Hotel News; use canonical compact toast/wave.
-- Themes use `guest-theme-taxonomy-v1`; category scores are evidence of platform aggregates — not operational KPIs or CapEx proof. Do not emit precise % claims below `MIN_SAMPLE_FOR_PERCENT` (30).
-- Incorrect hotel↔platform property matches, duplicate reviews, unsupported conclusions, invented missing-platform values, and stale-as-current displays are regression failures (HE-QL-022 / HE-QL-025 / HE-QL-029).
-- Shared modules: `lib/hotel-intelligence/guest-sentiment/*`, `api/hotel-explorer-guest-sentiment.js`, Brand/Operator host in `hotel-intelligence-workspace.js`.
+- **Category Performance** selectors include every platform that has published category scores. Platforms with overall ratings but no categories stay on the overview only — never invent category scores.
+- **Guest Experience Insights** are compact executive rows: Relative Strengths · Areas to Investigate · Recommended Management Follow-Up · Trend & Data Confidence — short title + one-line explanation + supporting metric. No raw provider IDs, API names, or “reconcile platform property IDs” as the primary management action.
+- Hotel News & Articles uses Market Alerts via `GET /api/hotel-explorer/hotels/:hotelId/news-articles` (independent of reputation). Hide the subsection when empty. Property-specific only — not generic brand-parent news.
+- Detailed coverage/licensing lives in collapsed methodology + central Sources & Evidence — do not duplicate full source tables here.
+- Live customer UI stays **hidden** unless `live_ui_authorized === true`. Founder Proposed Preview may render staged public-listing metadata with an explicit rights chip.
+- No unauthorized paid provider calls; no GET-triggered writes; independent toast/wave loading (HE-QL-024 / HE-QL-028).
+- Shared modules: `lib/hotel-intelligence/guest-sentiment/*`, `api/hotel-explorer-guest-sentiment.js`, Guest Sentiment host in `hotel-intelligence-workspace.js` / `hotel-explorer.js`.
 
 ### 9a-0. Relationships & Structure (no redundant radial Organization Network)
 
