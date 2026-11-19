@@ -239,9 +239,18 @@
       "</div>";
   }
 
+  function adpClientUnavailableTitle(r) {
+    var reason =
+      (r && r.adpClient && r.adpClient.reason) ||
+      "No authorized ADP share link — customer distribution requires founder approval.";
+    // Keep titles short for native tooltips; preserve authorization clarity.
+    return String(reason).slice(0, 180);
+  }
+
   function compactCoverageActions(r) {
     if (!T) return coverageMoreActions(r);
     var adpOk = !!(r.adpClient && r.adpClient.available === true);
+    var adpDisabledTitle = adpClientUnavailableTitle(r);
     var primary = [];
     var more = [];
     if (r.hasPdf && r.reviewId) {
@@ -259,13 +268,13 @@
       label: "Open ADP client",
       act: "open-adp-client",
       disabled: !adpOk,
-      title: adpOk ? "Open ADP client view" : "No authorized ADP share link",
+      title: adpOk ? "Open authorized production ADP client report" : adpDisabledTitle,
     });
     more.push({
       label: "Copy ADP URL",
       act: "copy-adp-client",
       disabled: !adpOk,
-      title: adpOk ? "Copy ADP client URL" : "No authorized ADP share link",
+      title: adpOk ? "Copy authorized production ADP client URL" : adpDisabledTitle,
     });
     more.push({
       label: "Action plan",
@@ -347,15 +356,19 @@
       row.adpClient &&
       row.adpClient.available === true;
     if (!available) {
-      return '<span class="adr-subtitle" title="No valid ADP external client share">—</span>';
+      return (
+        '<span class="adr-subtitle" title="' +
+        esc(adpClientUnavailableTitle(row)) +
+        '">Unauthorized</span>'
+      );
     }
     return (
       '<button type="button" class="adr-btn adr-btn--tiny" data-act="open-adp-client" data-property="' +
       esc(row.propertyId) +
-      '">Open</button>' +
+      '" title="Open authorized production ADP client report">Open</button>' +
       '<button type="button" class="adr-btn adr-btn--tiny" data-act="copy-adp-client" data-property="' +
       esc(row.propertyId) +
-      '">Copy URL</button>' +
+      '" title="Copy authorized production ADP client URL">Copy URL</button>' +
       '<span class="adr-subtitle adr-copy-toast" data-adp-copy-toast hidden style="margin-left:6px;color:#276749">Copied</span>'
     );
   }
