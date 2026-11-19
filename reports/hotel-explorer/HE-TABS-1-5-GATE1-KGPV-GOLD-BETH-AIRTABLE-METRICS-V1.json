@@ -2,7 +2,7 @@
   "contract": "HE_TABS_1_5_GATE1_KGPV_GOLD_BETH_AIRTABLE_METRICS_V1",
   "gate": "GATE_1_REVISED_KGPV_GOLDEN_DEMO_CLARIFICATION",
   "status": "AWAITING_FOUNDER_APPROVAL",
-  "auditedAt": "2026-11-19T14:10:42.867Z",
+  "auditedAt": "2026-11-19T14:18:15.354Z",
   "principle": "KGPV defines the desired experience. HPC and established Airtable tables define canonical intelligence. Do not migrate golden-demo fixtures without independent verification.",
   "paidResearch": {
     "substantivePaidEnrichment": "BLOCKED_UNTIL_GATE1_APPROVAL",
@@ -74,13 +74,13 @@
   },
   "metrics": {
     "kgpvGoldenDemoFieldCoveragePct": 77.6,
-    "bethesdaExistingVerifiedAirtableCoveragePct": 57.1,
+    "bethesdaExistingVerifiedAirtableCoveragePct": 63.5,
     "bethesdaAirtableNotYetConnectedPct": 15.9,
-    "bethesdaLiveAirtableToUiIntegrationPct": 38.1,
-    "bethesdaGenuineResearchGapsAfterReusePct": 25.4,
-    "bethesdaUiPopulatedWithoutVerifiedHpcFieldPct": 6.3,
-    "integrationWorkBeforePaidCount": 17,
-    "researchGapCount": 16
+    "bethesdaLiveAirtableToUiIntegrationPct": 46,
+    "bethesdaGenuineResearchGapsAfterReusePct": 23.8,
+    "bethesdaUiPopulatedWithoutVerifiedHpcFieldPct": 0,
+    "integrationWorkBeforePaidCount": 13,
+    "researchGapCount": 15
   },
   "scorecard": {
     "kgpvGoldenDemoFieldCoverage": {
@@ -91,11 +91,11 @@
     },
     "bethesdaExistingVerifiedAirtableCoverage": {
       "fields": 63,
-      "existsInAirtable": 36,
-      "existsInAirtablePct": 57.1,
+      "existsInAirtable": 40,
+      "existsInAirtablePct": 63.5,
       "byClass": {
-        "EXISTS_HPC": 18,
-        "MISSING_HPC": 8,
+        "EXISTS_HPC": 22,
+        "MISSING_HPC": 4,
         "N_A_OPEN_ASSET": 1,
         "DERIVABLE_FROM_HI": 10,
         "MISSING_HI_EVIDENCE": 5,
@@ -125,14 +125,13 @@
       ]
     },
     "bethesdaLiveAirtableToUiIntegration": {
-      "count": 24,
-      "pct": 38.1
+      "count": 29,
+      "pct": 46
     },
     "bethesdaGenuineResearchGapsAfterReuse": {
-      "count": 16,
-      "pct": 25.4,
+      "count": 15,
+      "pct": 23.8,
       "fields": [
-        "parentCompany",
         "projectPhase",
         "starRating",
         "what_remains_uncertain",
@@ -151,32 +150,8 @@
       ]
     },
     "requiredIntegrationBeforePaidEnrichment": {
-      "count": 17,
+      "count": 13,
       "fields": [
-        {
-          "field": "chainScale",
-          "tab": "hotel",
-          "action": "FIX_PROVENANCE_OR_BACKFILL_HPC",
-          "liveClass": "UI_POPULATED_NOT_FROM_VERIFIED_HPC_FIELD"
-        },
-        {
-          "field": "totalMeetingSpace",
-          "tab": "hotel",
-          "action": "FIX_PROVENANCE_OR_BACKFILL_HPC",
-          "liveClass": "UI_POPULATED_NOT_FROM_VERIFIED_HPC_FIELD"
-        },
-        {
-          "field": "operationType",
-          "tab": "hotel",
-          "action": "FIX_PROVENANCE_OR_BACKFILL_HPC",
-          "liveClass": "UI_POPULATED_NOT_FROM_VERIFIED_HPC_FIELD"
-        },
-        {
-          "field": "locationType",
-          "tab": "hotel",
-          "action": "FIX_PROVENANCE_OR_BACKFILL_HPC",
-          "liveClass": "UI_POPULATED_NOT_FROM_VERIFIED_HPC_FIELD"
-        },
         {
           "field": "executive_summary.text",
           "tab": "ownership",
@@ -546,15 +521,15 @@
         "note": "Golden-demo UX reference only — not canonical Airtable proof"
       },
       "bethesda": {
-        "uiPresent": false,
-        "airtableExists": false,
-        "airtableClass": "MISSING_HPC",
-        "airtableDetail": "Missing on HPC (Parent Company)",
-        "liveClass": "GENUINE_GAP",
-        "liveIntegrated": false,
-        "note": "Not in Airtable and not in HE — research or steward fill after reuse"
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Brand Family",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
       },
-      "gate1Action": "RESEARCH_OR_STEWARD_AFTER_REUSE"
+      "gate1Action": "REUSE_OK"
     },
     {
       "tab": "hotel",
@@ -568,14 +543,14 @@
       },
       "bethesda": {
         "uiPresent": true,
-        "airtableExists": false,
-        "airtableClass": "MISSING_HPC",
-        "airtableDetail": "Missing on HPC (Chain Scale)",
-        "liveClass": "UI_POPULATED_NOT_FROM_VERIFIED_HPC_FIELD",
-        "liveIntegrated": false,
-        "note": "HE shows a value but the primary HPC field(s) are empty — likely enrichment, Brand Family fallback, or Census-path formatter; not verified HPC field integration"
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Hotel Class / Segment",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
       },
-      "gate1Action": "FIX_PROVENANCE_OR_BACKFILL_HPC"
+      "gate1Action": "REUSE_OK"
     },
     {
       "tab": "hotel",
@@ -633,12 +608,12 @@
         "uiPresent": true,
         "airtableExists": false,
         "airtableClass": "MISSING_HPC",
-        "airtableDetail": "Missing on HPC (Total Meeting Space)",
-        "liveClass": "UI_POPULATED_NOT_FROM_VERIFIED_HPC_FIELD",
-        "liveIntegrated": false,
-        "note": "HE shows a value but the primary HPC field(s) are empty — likely enrichment, Brand Family fallback, or Census-path formatter; not verified HPC field integration"
+        "airtableDetail": "Missing on HPC (Total Meeting Space|Total Meeting Space Sq Ft|Meeting Space Sq Ft)",
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Total meeting space from ADP/HI commercial profile with official events URL; not yet persisted on HPC Total Meeting Space fields."
       },
-      "gate1Action": "FIX_PROVENANCE_OR_BACKFILL_HPC"
+      "gate1Action": "REUSE_OK"
     },
     {
       "tab": "hotel",
@@ -652,14 +627,14 @@
       },
       "bethesda": {
         "uiPresent": true,
-        "airtableExists": false,
-        "airtableClass": "MISSING_HPC",
-        "airtableDetail": "Missing on HPC (Operation Type)",
-        "liveClass": "UI_POPULATED_NOT_FROM_VERIFIED_HPC_FIELD",
-        "liveIntegrated": false,
-        "note": "HE shows a value but the primary HPC field(s) are empty — likely enrichment, Brand Family fallback, or Census-path formatter; not verified HPC field integration"
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Management Model",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
       },
-      "gate1Action": "FIX_PROVENANCE_OR_BACKFILL_HPC"
+      "gate1Action": "REUSE_OK"
     },
     {
       "tab": "hotel",
@@ -736,14 +711,14 @@
       },
       "bethesda": {
         "uiPresent": true,
-        "airtableExists": false,
-        "airtableClass": "MISSING_HPC",
-        "airtableDetail": "Missing on HPC (Location)",
-        "liveClass": "UI_POPULATED_NOT_FROM_VERIFIED_HPC_FIELD",
-        "liveIntegrated": false,
-        "note": "HE shows a value but the primary HPC field(s) are empty — likely enrichment, Brand Family fallback, or Census-path formatter; not verified HPC field integration"
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Asset Context",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
       },
-      "gate1Action": "FIX_PROVENANCE_OR_BACKFILL_HPC"
+      "gate1Action": "REUSE_OK"
     },
     {
       "tab": "hotel",

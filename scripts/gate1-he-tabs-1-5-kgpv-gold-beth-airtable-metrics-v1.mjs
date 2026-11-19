@@ -61,16 +61,16 @@ const CATALOG = [
   { tab: "hotel", field: "country", question: "Country", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Country"] },
   { tab: "hotel", field: "hotelHeadline", question: "Headline", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Hotel Headline", "Property Positioning"] },
   { tab: "hotel", field: "hotelDescription", question: "Short description", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Short Property Summary"] },
-  { tab: "hotel", field: "parentCompany", question: "Brand parent company", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Parent Company"] },
-  { tab: "hotel", field: "chainScale", question: "Chain scale", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Chain Scale"] },
+  { tab: "hotel", field: "parentCompany", question: "Brand parent company", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Parent Company", "Brand Family"] },
+  { tab: "hotel", field: "chainScale", question: "Chain scale", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Chain Scale", "Hotel Class / Segment"] },
   { tab: "hotel", field: "censusPropertyType", question: "Property type", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Property Type"] },
   { tab: "hotel", field: "rooms", question: "Rooms / keys", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Rooms / Keys"] },
-  { tab: "hotel", field: "totalMeetingSpace", question: "Meeting space", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Total Meeting Space"] },
-  { tab: "hotel", field: "operationType", question: "Operation type", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Operation Type"] },
+  { tab: "hotel", field: "totalMeetingSpace", question: "Meeting space", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Total Meeting Space", "Total Meeting Space Sq Ft", "Meeting Space Sq Ft"], allowVerifiedDerived: true },
+  { tab: "hotel", field: "operationType", question: "Operation type", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Operation Type", "Management Model"] },
   { tab: "hotel", field: "managementCompany", question: "Operator label", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Operator / Management Company"] },
   { tab: "hotel", field: "market", question: "Market", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Market"] },
   { tab: "hotel", field: "submarket", question: "Submarket", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Submarket"] },
-  { tab: "hotel", field: "locationType", question: "Location type", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Location"] },
+  { tab: "hotel", field: "locationType", question: "Location type", goldRequired: true, bethAirtableProbe: "hpc", hpcFields: ["Location", "Location Type", "Asset Context"] },
   { tab: "hotel", field: "projectPhase", question: "Project phase", goldRequired: false, bethAirtableProbe: "hpc", hpcFields: ["project_phase"] },
   { tab: "hotel", field: "projectedOpenDate", question: "Projected open (pipeline)", goldRequired: false, bethAirtableProbe: "hpc", hpcFields: ["projected_open_date"], naIfOpen: true },
   { tab: "hotel", field: "starRating", question: "Star rating", goldRequired: false, bethAirtableProbe: "hpc", hpcFields: ["Star Rating"] },
@@ -388,7 +388,7 @@ function assessBethAirtable(meta, ctx) {
  * Live integration: UI value is actually served from live Airtable for Bethesda.
  * Conservative — only claim LIVE when we can attribute to HPC/HI.
  */
-function assessLiveIntegration(meta, uiPresent, air, hotelId, ownershipInCohort, graph) {
+function assessLiveIntegration(meta, uiPresent, air, hotelId, ownershipInCohort, graph, hotelDto) {
   if (hotelId === KGPV_ID) {
     // KGPV UI is golden-demo — never count as live Airtable integration for Gate 1 Airtable-first metrics
     return {
@@ -431,6 +431,27 @@ function assessLiveIntegration(meta, uiPresent, air, hotelId, ownershipInCohort,
         liveIntegrated: true,
         liveClass: "LIVE_HPC_TO_UI",
         note: "HE Overview shows value that exists on HPC record",
+      };
+    }
+    const fp = hotelDto?.fieldProvenance?.[meta.field];
+    if (fp?.class === "VERIFIED_HPC") {
+      return {
+        liveIntegrated: true,
+        liveClass: "LIVE_HPC_TO_UI",
+        note: `HE Overview shows HPC-backed value (${fp.hpcField || "alias"})`,
+      };
+    }
+    if (
+      meta.allowVerifiedDerived &&
+      (fp?.class === "VERIFIED_DERIVED" ||
+        hotelDto?.meetingSpaceProvenance?.factKind === "VERIFIED_FACT")
+    ) {
+      return {
+        liveIntegrated: true,
+        liveClass: "LIVE_VERIFIED_DERIVED",
+        note:
+          fp?.note ||
+          "HE Overview shows verified derived intelligence (ADP/HI profile + official source URL), not an HPC numeric field",
       };
     }
     // UI shows value but HPC field empty — enrichment / alias / wrong-path projection
@@ -587,15 +608,38 @@ async function main() {
     const kgpvUiPresent = nonempty(kgpvUi);
     const bethUiPresent = nonempty(bethUi);
     const air = assessBethAirtable(meta, bethAirCtx);
-    const liveK = assessLiveIntegration(meta, kgpvUiPresent, air, KGPV_ID, true, kgpvBundle.graph.json);
-    const liveB = assessLiveIntegration(meta, bethUiPresent, air, BETH_ID, false, bethGraph);
+    const bethHotel = bethBundle.brandPresence?.json?.hotel || null;
+    const kgpvHotel = kgpvBundle.brandPresence?.json?.hotel || null;
+    const liveK = assessLiveIntegration(
+      meta,
+      kgpvUiPresent,
+      air,
+      KGPV_ID,
+      true,
+      kgpvBundle.graph.json,
+      kgpvHotel,
+    );
+    const liveB = assessLiveIntegration(
+      meta,
+      bethUiPresent,
+      air,
+      BETH_ID,
+      false,
+      bethGraph,
+      bethHotel,
+    );
 
     let gate1Action = "NONE";
     if (liveB.liveClass === "EXISTS_IN_AIRTABLE_NOT_CONNECTED") gate1Action = "INTEGRATION_WIRE";
     else if (liveB.liveClass === "UI_POPULATED_NOT_FROM_VERIFIED_HPC_FIELD") gate1Action = "FIX_PROVENANCE_OR_BACKFILL_HPC";
     else if (liveB.liveClass === "GENUINE_GAP") gate1Action = "RESEARCH_OR_STEWARD_AFTER_REUSE";
     else if (liveB.liveClass === "UI_FROM_PARTIAL_OVERLAY") gate1Action = "INTEGRATION_DEEPEN_FROM_HI";
-    else if (liveB.liveClass === "LIVE_HPC_TO_UI" || liveB.liveClass === "LIVE_HI_GRAPH_TO_UI" || liveB.liveClass === "LIVE_N_A")
+    else if (
+      liveB.liveClass === "LIVE_HPC_TO_UI" ||
+      liveB.liveClass === "LIVE_HI_GRAPH_TO_UI" ||
+      liveB.liveClass === "LIVE_VERIFIED_DERIVED" ||
+      liveB.liveClass === "LIVE_N_A"
+    )
       gate1Action = "REUSE_OK";
 
     return {

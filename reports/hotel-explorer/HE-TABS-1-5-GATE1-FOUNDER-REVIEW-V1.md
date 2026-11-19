@@ -1,7 +1,7 @@
 # Gate 1 — Founder Review (Revised: KGPV Golden Demo Clarification)
 
 **Status:** AWAITING FOUNDER APPROVAL — substantive paid research **blocked**
-**Audited:** 2026-11-19T14:10:42.867Z
+**Audited:** 2026-11-19T14:18:15.354Z
 **Runtime:** http://127.0.0.1:8091
 
 ## Architecture principle
@@ -27,12 +27,12 @@ Base: `appCCUsuGsE1ifoLk` (`AIRTABLE_BASE_ID_ALT`).
 | Metric | Value | Meaning |
 |---|---:|---|
 | **KGPV golden-demo field coverage** | **77.6%** (45/58 gold-required) | Demonstrated UI depth — **not** Airtable proof |
-| **Bethesda existing verified Airtable coverage** | **57.1%** (36/63) | Facts already in HPC/HI (independent of HE wiring) |
+| **Bethesda existing verified Airtable coverage** | **63.5%** (40/63) | Facts already in HPC/HI (independent of HE wiring) |
 | **Bethesda Airtable not yet connected to HE** | **15.9%** (10) | Exists in Airtable; HE not showing / not wired |
-| **Bethesda live Airtable→UI integration** | **38.1%** (24/63) | HE actually serving verified HPC/HI values |
-| **Genuine research gaps (after reuse)** | **25.4%** (16) | Missing in Airtable and HE — candidates for research post-integration |
-| **UI populated without verified HPC field** | **6.3%** (4) | Overview shows values not present on primary HPC fields (enrichment/fallback) |
-| **Integration work items before paid** | **17** fields | Must wire/fix provenance before enrichment spend |
+| **Bethesda live Airtable→UI integration** | **46%** (29/63) | HE actually serving verified HPC/HI values |
+| **Genuine research gaps (after reuse)** | **23.8%** (15) | Missing in Airtable and HE — candidates for research post-integration |
+| **UI populated without verified HPC field** | **0%** (0) | Overview shows values not present on primary HPC fields (enrichment/fallback) |
+| **Integration work items before paid** | **13** fields | Must wire/fix provenance before enrichment spend |
 
 ## What already exists in Airtable (Bethesda)
 
@@ -57,7 +57,6 @@ HI Org Contacts: 0 · Channels: 0 · Evidence: 0 · Runs: 0
 
 ### Genuine research gaps (after source reuse)
 
-- **parentCompany** (hotel) — Not in Airtable and not in HE — research or steward fill after reuse
 - **projectPhase** (hotel) — Not in Airtable and not in HE — research or steward fill after reuse
 - **starRating** (hotel) — Not in Airtable and not in HE — research or steward fill after reuse
 - **what_remains_uncertain** (ownership) — Not in Airtable and not in HE — research or steward fill after reuse
@@ -104,16 +103,16 @@ HI Org Contacts: 0 · Channels: 0 · Evidence: 0 · Runs: 0
 | country | hotel | YES | EXISTS_HPC | LIVE_HPC_TO_UI | REUSE_OK |
 | hotelHeadline | hotel |  | EXISTS_HPC | LIVE_HPC_TO_UI | REUSE_OK |
 | hotelDescription | hotel |  | EXISTS_HPC | LIVE_HPC_TO_UI | REUSE_OK |
-| parentCompany | hotel | YES | MISSING_HPC | GENUINE_GAP | RESEARCH_OR_STEWARD_AFTER_REUSE |
-| chainScale | hotel | YES | MISSING_HPC | UI_POPULATED_NOT_FROM_VERIFIED_HPC_FIELD | FIX_PROVENANCE_OR_BACKFILL_HPC |
+| parentCompany | hotel | YES | EXISTS_HPC | LIVE_HPC_TO_UI | REUSE_OK |
+| chainScale | hotel | YES | EXISTS_HPC | LIVE_HPC_TO_UI | REUSE_OK |
 | censusPropertyType | hotel |  | EXISTS_HPC | LIVE_HPC_TO_UI | REUSE_OK |
 | rooms | hotel | YES | EXISTS_HPC | LIVE_HPC_TO_UI | REUSE_OK |
-| totalMeetingSpace | hotel | YES | MISSING_HPC | UI_POPULATED_NOT_FROM_VERIFIED_HPC_FIELD | FIX_PROVENANCE_OR_BACKFILL_HPC |
-| operationType | hotel | YES | MISSING_HPC | UI_POPULATED_NOT_FROM_VERIFIED_HPC_FIELD | FIX_PROVENANCE_OR_BACKFILL_HPC |
+| totalMeetingSpace | hotel | YES | MISSING_HPC | LIVE_VERIFIED_DERIVED | REUSE_OK |
+| operationType | hotel | YES | EXISTS_HPC | LIVE_HPC_TO_UI | REUSE_OK |
 | managementCompany | hotel | YES | EXISTS_HPC | LIVE_HPC_TO_UI | REUSE_OK |
 | market | hotel | YES | EXISTS_HPC | LIVE_HPC_TO_UI | REUSE_OK |
 | submarket | hotel | YES | EXISTS_HPC | LIVE_HPC_TO_UI | REUSE_OK |
-| locationType | hotel | YES | MISSING_HPC | UI_POPULATED_NOT_FROM_VERIFIED_HPC_FIELD | FIX_PROVENANCE_OR_BACKFILL_HPC |
+| locationType | hotel | YES | EXISTS_HPC | LIVE_HPC_TO_UI | REUSE_OK |
 | projectPhase | hotel | YES | MISSING_HPC | GENUINE_GAP | RESEARCH_OR_STEWARD_AFTER_REUSE |
 | projectedOpenDate | hotel |  | N_A_OPEN_ASSET | LIVE_N_A | REUSE_OK |
 | starRating | hotel |  | MISSING_HPC | GENUINE_GAP | RESEARCH_OR_STEWARD_AFTER_REUSE |
