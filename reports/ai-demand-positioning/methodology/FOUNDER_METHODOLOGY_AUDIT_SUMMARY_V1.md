@@ -1,6 +1,6 @@
 # ADP Methodology Consistency — Founder Audit Summary
 
-Generated: 2026-11-19T11:39:12.833Z
+Generated: 2026-11-19T12:12:18.356Z
 
 ## Authoritative methodology
 
@@ -22,8 +22,7 @@ Generated: 2026-11-19T11:39:12.833Z
 | PARTIALLY_COMPARABLE | 0 |
 | HISTORICAL_ONLY | 0 |
 | EVIDENCE_INSUFFICIENT | 0 |
-| BLOCKED_SYNTHETIC | 1 |
-| Inventory (incl. synthetic) | 39 |
+| Live inventory | 38 |
 | Legitimate comparison set | 38 |
 
 ## Notes
@@ -32,5 +31,6 @@ Generated: 2026-11-19T11:39:12.833Z
 - RG_BINARY_GAP_V1 remains historically immutable; RG_WEIGHTED_PARTIAL_V2 is current for new staged editions.
 - No paid research; RECOMPUTABLE means deterministic recalculation from existing evidence only.
 - Do not silently overwrite published customer reports — stage new versions.
+- Synthetic/smoke-test properties are excluded from live inventory discovery permanently.
 
 Full matrix: `C:/Dev/dealality/ws-adp/reports/ai-demand-positioning/methodology/adp-methodology-compatibility-matrix-v1.md`

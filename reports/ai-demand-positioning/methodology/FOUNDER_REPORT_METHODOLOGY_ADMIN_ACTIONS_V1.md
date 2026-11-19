@@ -36,7 +36,7 @@ Source of truth: durable CURRENT snapshot envelopes under `data/adp-durable-publ
 - Admin API coverage rows now include `methodologyCompatibility` + `methodologyProvenance`
 - New Performance Review archives persist `methodologyProvenance` on metadata (no customer UI clutter)
 
-## 3–5. Portfolio counts (39 inventory / 38 legitimate)
+## 3–5. Portfolio counts (live inventory — synthetics excluded)
 
 | Class | Count |
 |---|---:|
@@ -45,11 +45,11 @@ Source of truth: durable CURRENT snapshot envelopes under `data/adp-durable-publ
 | PARTIALLY_COMPARABLE | 0 |
 | HISTORICAL_ONLY | 0 |
 | EVIDENCE_INSUFFICIENT | 0 |
-| BLOCKED_SYNTHETIC | 1 (`adp_smoke_test_synthetic`) |
 
-- Comparable calculations: **38**
-- Deterministic recomputation required: **0** (durable CURRENT already matches canonical stamps)
-- Additional evidence required: **0** for current durable editions
+Live AI Demand Reviews: **38 hotels / 38 ready / 0 rebuild / 0 blocked**.  
+`adp_smoke_test_synthetic` removed from live discovery (fixture under `fixtures/ai-demand-positioning/test-only/`).  
+`BLOCKED_SYNTHETIC` removed from live methodology compatibility classes.  
+Comparable: **38**. Recomputation required: **0**. Evidence gaps: **0**.
 
 ## 6. Important metric / template differences
 

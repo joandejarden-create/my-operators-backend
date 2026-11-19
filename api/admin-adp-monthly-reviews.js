@@ -327,20 +327,24 @@ export function getAdminMonthlyReviews(req, res) {
 
     // Coverage-first catalog: one row per published ADP property (never silent omit).
     // Archive version history remains available as `reviews`.
-    let properties = coverage.properties.map((p) => {
-      const meth = classifyAdpMethodologyCompatibility(p.propertyId, {
-        coverageRow: p,
-      });
-      return {
-        ...p,
-        methodologyCompatibility: meth.compatibility,
-        methodologyReasons: meth.reasons,
-        methodologyProvenance: buildAdminMethodologyProvenanceBlock({
-          ...(meth.provenance || {}),
-          compatibility: meth.compatibility,
-        }),
-      };
-    });
+    let properties = coverage.properties
+      .filter((p) => !isAdpSyntheticOrTestPropertyId(p.propertyId))
+      .map((p) => {
+        const meth = classifyAdpMethodologyCompatibility(p.propertyId, {
+          coverageRow: p,
+        });
+        if (!meth) return null;
+        return {
+          ...p,
+          methodologyCompatibility: meth.compatibility,
+          methodologyReasons: meth.reasons,
+          methodologyProvenance: buildAdminMethodologyProvenanceBlock({
+            ...(meth.provenance || {}),
+            compatibility: meth.compatibility,
+          }),
+        };
+      })
+      .filter(Boolean);
     if (filters.propertyId) {
       properties = properties.filter((p) => p.propertyId === filters.propertyId);
     }

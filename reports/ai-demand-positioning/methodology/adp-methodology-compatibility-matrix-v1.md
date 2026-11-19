@@ -1,6 +1,6 @@
 # ADP Methodology Compatibility Matrix
 
-Generated: 2026-11-19T11:39:12.833Z
+Generated: 2026-11-19T12:12:18.356Z
 
 Canonical: `ADP_METHODOLOGY_CANONICAL_V1`
 
@@ -13,15 +13,13 @@ Canonical: `ADP_METHODOLOGY_CANONICAL_V1`
 | PARTIALLY_COMPARABLE | 0 |
 | HISTORICAL_ONLY | 0 |
 | EVIDENCE_INSUFFICIENT | 0 |
-| BLOCKED_SYNTHETIC | 1 |
-| **Inventory** | **39** |
+| **Inventory (live)** | **38** |
 
 ## Hotel-by-hotel
 
 | Hotel | Property ID | Period | Compatibility | RG method | Appearance | Composition | Reasons |
 |---|---|---|---|---|---|---|---|
 | AC Hotel A Coruña | `adp_ac_hotel_a_coruna` | adp_period_adp_ac_hotel_a_coruna_20261105210617_3513a7 | CURRENT_COMPARABLE | RG_WEIGHTED_PARTIAL_V2 | ADP_AI_CONSIDERATION_INDEPENDENT_UNPROMPTED_V1 | ADP_EXECUTIVE_READ_COMPOSITION_V3 | all_canonical_stamps_match |
-| adp_smoke_test_synthetic | `adp_smoke_test_synthetic` | — | BLOCKED_SYNTHETIC | — | — | — | synthetic_or_test_property_excluded_from_customer_comparability |
 | Bethesda Marriott | `adp_bethesda_marriott` | adp_period_adp_bethesda_marriott_20261105213117_f695d6 | CURRENT_COMPARABLE | RG_WEIGHTED_PARTIAL_V2 | ADP_AI_CONSIDERATION_INDEPENDENT_UNPROMPTED_V1 | ADP_EXECUTIVE_READ_COMPOSITION_V3 | all_canonical_stamps_match |
 | Cambridge Beaches Resort & Spa | `adp_cambridge_beaches_bermuda` | adp_period_adp_cambridge_beaches_bermuda_20261105215424_e93d82 | CURRENT_COMPARABLE | RG_WEIGHTED_PARTIAL_V2 | ADP_AI_CONSIDERATION_INDEPENDENT_UNPROMPTED_V1 | ADP_EXECUTIVE_READ_COMPOSITION_V3 | all_canonical_stamps_match |
 | Casas del XVI | `adp_casas_del_xvi` | adp_period_adp_casas_del_xvi_20261020091515_9971ab | CURRENT_COMPARABLE | RG_WEIGHTED_PARTIAL_V2 | ADP_AI_CONSIDERATION_INDEPENDENT_UNPROMPTED_V1 | ADP_EXECUTIVE_READ_COMPOSITION_V3 | all_canonical_stamps_match |
@@ -66,3 +64,4 @@ Canonical: `ADP_METHODOLOGY_CANONICAL_V1`
 - RG_BINARY_GAP_V1 remains historically immutable; RG_WEIGHTED_PARTIAL_V2 is current for new staged editions.
 - No paid research; RECOMPUTABLE means deterministic recalculation from existing evidence only.
 - Do not silently overwrite published customer reports — stage new versions.
+- Synthetic/smoke-test properties are excluded from live inventory discovery permanently.
