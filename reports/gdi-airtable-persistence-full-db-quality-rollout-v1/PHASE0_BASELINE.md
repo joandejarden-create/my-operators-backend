@@ -83,6 +83,16 @@ These existed only in the GDI worktree after founder UX certification. They are 
 
 - [x] #462 status confirmed OPEN + CI green at tip `9a46e5c0e`  
 - [x] Local-only inventory documented  
-- [ ] Local approved work committed + pushed on #462  
+- [x] Local approved work committed + pushed on #462 (`0a16de932` + merge `210490914`)  
 - [ ] IC merge + `ws/gdi` == `origin/main` (GDI chat does not merge)  
-- [ ] Exact post-merge SHA recorded before Phase 1 production writes  
+- [ ] Exact post-merge SHA recorded after IC merge  
+
+### Post-push tip (awaiting IC)
+
+| Ref | SHA |
+|-----|-----|
+| Feature HEAD (pushed) | `210490914f91a013862ab6f9eea9e81ba3f431ff` |
+| Includes | #462 prior 4 commits + quality UX commit + merge of `origin/main` (ADP #461) |
+
+**PR status after push:** OPEN — Integration Controller owns merge.  
+**Phase 1 sample writes** used research-inventory upsert with founder env gates on this tip (see `PHASE1_RESULTS.md`) while PR remains open for code integration.
