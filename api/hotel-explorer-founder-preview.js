@@ -8,6 +8,11 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { getGoldenDemoHotelOwnership } from "./golden-demo-ownership.js";
 import { projectEvidenceToSourcesCitations } from "../lib/hotel-intelligence/research-engine-v1/he-airtable-graph-reader-v1.js";
+import {
+  buildDecisionOrientedContactSections,
+  CONTACT_CLASS_LABEL,
+  PROPERTY_RESPONSIBILITY_LABEL,
+} from "../lib/hotel-intelligence/contact-intelligence/property-decision-maker-engine-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -19,7 +24,20 @@ const ROOMS_MEETING_PATH = path.join(
   ROOT,
   "reports/hotel-explorer/phase4-quality/HE-BETH-GUEST-ROOMS-MEETING-SPACE-STAGED-V1.json",
 );
+const OWNER_DM_RESEARCH_PATH = path.join(
+  ROOT,
+  "reports/hotel-explorer/phase4-quality/HE-BETH-OWNER-DECISION-MAKER-RESEARCH-STAGED-V1.json",
+);
 const BETHESDA_ID = "recLuxvwwxID7U2B8";
+
+function loadOwnerDecisionMakerResearch() {
+  if (!fs.existsSync(OWNER_DM_RESEARCH_PATH)) return null;
+  try {
+    return JSON.parse(fs.readFileSync(OWNER_DM_RESEARCH_PATH, "utf8"));
+  } catch (_err) {
+    return null;
+  }
+}
 
 function loadRoomsMeetingInventory() {
   if (!fs.existsSync(ROOMS_MEETING_PATH)) return null;
@@ -326,21 +344,139 @@ function buildProposedContactsViewModel(dryRun, livePayload) {
   const addressCh = channels.find((c) => c.kind === "address");
   const hotelName =
     (livePayload && livePayload.hotel && livePayload.hotel.name) || "Bethesda Marriott";
+  const research = loadOwnerDecisionMakerResearch();
+  const researchByName = new Map(
+    (research?.people || []).map((p) => [
+      String(p.name || p.display_name || "")
+        .trim()
+        .toLowerCase(),
+      p,
+    ])
+  );
 
-  return {
-    version: "contact-intelligence-viewmodel-v1",
-    staging: true,
-    production_writes: false,
-    surfe_live_calls: 0,
-    newly_researched: false,
-    preview_mode: "PHASE3_PROPOSED",
-    preview_banner:
-      "Phase 3 Proposed contacts — staged research only. Not persisted. Not customer-approved.",
-    write_on_get: false,
-    apply_authorized: false,
+  const basePeople = (research?.people?.length ? research.people : persons).map((p) => {
+    const name = p.display_name || p.name;
+    const enriched = researchByName.get(String(name || "").trim().toLowerCase()) || p;
+    const linkedinUrl = enriched.linkedinUrl || null;
+    const contactClass = enriched.contactClass || null;
+    const propertyResponsibility = enriched.propertyResponsibility || "UNKNOWN";
+    const group =
+      contactClass === "OWNER_DECISION_AUTHORITY" ||
+      /ownership|decision|ceo|president/i.test(
+        String(enriched.role_group || "") + " " + String(enriched.title || "")
+      )
+        ? "PRIMARY_OWNER_SIDE"
+        : "SECONDARY_OWNER_CORPORATE";
+    return {
+      personId:
+        enriched.personId ||
+        "proposed:" + String(name || "").toLowerCase().replace(/\s+/g, "_"),
+      name,
+      title: enriched.title || p.title,
+      role: enriched.title || p.title,
+      group,
+      role_group: enriched.role_group || p.role_group,
+      organization: enriched.organization || nameOfOrg(mrec),
+      organizationName: enriched.organization || nameOfOrg(mrec),
+      organizationDomain: "mullencap.com",
+      confidence: enriched.confidence || p.confidence,
+      preview_state: "PROPOSED_STAGED",
+      displayState: "PARTIAL",
+      identityVerification: enriched.identityVerification || "VERIFIED_PUBLIC",
+      contactClass,
+      contactClassLabel: CONTACT_CLASS_LABEL[contactClass] || contactClass,
+      propertyResponsibility,
+      propertyResponsibilityLabel:
+        PROPERTY_RESPONSIBILITY_LABEL[propertyResponsibility] || propertyResponsibility,
+      decisionAuthority:
+        contactClass === "OWNER_DECISION_AUTHORITY"
+          ? "Owner decision authority (proposed sponsor)"
+          : contactClass === "RELEVANT_COMMERCIAL_ENTRY_POINT"
+            ? "Asset-management commercial entry point (proposed)"
+            : "Authority Not Verified",
+      signingAuthority: "Authority Not Verified",
+      verificationNotes:
+        enriched.propertyResponsibilityNote ||
+        "PROPOSED — identity verified from public professional sources. Personal email/phone unresolved. Not UBO.",
+      whyRelevant: enriched.whyRelevant,
+      recommendationRationale: enriched.recommendationRationale,
+      contactability: linkedinUrl ? "LINKEDIN_AND_ORG_FALLBACK" : "PROFILE_OR_ORG_FALLBACK",
+      stakeholderClass: enriched.role_group || p.role_group || "Owner / Principal",
+      commercialRole: CONTACT_CLASS_LABEL[contactClass] || enriched.role_group,
+      lastVerified: enriched.lastVerified || "2026-11-19",
+      linkedinUrl,
+      profileUrls: linkedinUrl
+        ? [
+            {
+              type: "LinkedIn",
+              url: linkedinUrl,
+              verification_status: enriched.linkedinVerification || "VERIFIED_PUBLIC",
+              verified: true,
+              source_url: enriched.linkedinSourceUrl || "https://mullencap.com/about/",
+            },
+          ]
+        : [],
+      emailContacts: enriched.emailContacts || [],
+      phoneContacts: enriched.phoneContacts || [],
+      emails: enriched.emailContacts || [],
+      phones: enriched.phoneContacts || [],
+      channels: [],
+      hotelEvidenceCount: enriched.hotelEvidenceCount || 0,
+      portfolioEvidenceCount: enriched.portfolioEvidenceCount || 0,
+      hotelEvidenceIds: enriched.hotelEvidenceIds || [],
+      portfolioEvidenceIds: enriched.portfolioEvidenceIds || [],
+      evidenceIds: enriched.evidenceIds || [],
+      enrichAction: {
+        label: "Find Contact Details",
+        enabled: true,
+        reason: null,
+        missing: ["professional_email", "direct_business_phone"],
+      },
+    };
+  });
+
+  const sections = buildDecisionOrientedContactSections(basePeople, {
     hotelId: BETHESDA_ID,
     hotelName,
-    lastReviewed: "2026-11-19",
+  });
+  const recommendation = research?.recommendation
+    ? {
+        ...sections.recommendation,
+        recommendationType: research.recommendation.recommendationType,
+        label: research.recommendation.label,
+        rationale: research.recommendation.rationale,
+        person:
+          sections.ranked.find((p) => p.personId === research.recommendation.primaryPersonId) ||
+          sections.recommendation.person,
+        alternatives: (research.recommendation.alternativePersonIds || [])
+          .map((id) => sections.ranked.find((p) => p.personId === id))
+          .filter(Boolean),
+      }
+    : sections.recommendation;
+
+  const researchEvidence = (research?.evidence || []).map((e) => ({
+    id: e.id,
+    claim: e.claim,
+    proves: e.proves || [],
+    sourceUrl: e.sourceUrl,
+    sourceTitle: e.sourceTitle || e.sourceUrl,
+    verificationStatus: e.verificationStatus,
+    retrievedAt: e.retrievedAt,
+    note: e.note || null,
+    preview_state: "PROPOSED_STAGED",
+  }));
+
+  return {
+    version: "contact-intelligence-viewmodel-v2",
+    preview_mode: "PHASE3_PROPOSED",
+    preview_banner:
+      "Phase 3 Proposed contacts — free-source research staged. Not Airtable-persisted. Surfe is on-demand only.",
+    hotelId: BETHESDA_ID,
+    hotelName,
+    lastReviewed: research?.researchedAt || "2026-11-19",
+    researchWorkflow:
+      research?.workflow ||
+      "Existing Airtable → Public research → Verification → Staged persistence → Surfe on click",
     ownershipSummary: {
       hotel: { name: hotelName, role: "HOTEL" },
       propco: {
@@ -372,13 +508,20 @@ function buildProposedContactsViewModel(dryRun, livePayload) {
     },
     qualitySummary: {
       ownerOrgStatus: "PROPOSED",
-      primaryDecisionMakers: persons.length,
+      primaryDecisionMakers: sections.recommendedContacts.length,
       verifiedEmails: emailCh ? 1 : 0,
       verifiedOrPublicPhones: 0,
+      verifiedLinkedInProfiles: basePeople.filter((p) => p.linkedinUrl).length,
       fallbackContactPaths: channels.length,
-      lastReviewed: "2026-11-19",
+      lastReviewed: research?.researchedAt || "2026-11-19",
       ubo_resolved: false,
+      contactResearchComplete: false,
+      contactResearchNote:
+        "Owner and operator identified; LinkedIn verified; personal email/phone unresolved; property-specific assignment not confirmed.",
     },
+    recommendation,
+    recommendedContacts: sections.recommendedContacts,
+    otherContacts: sections.otherContacts,
     contactableOwnerOrg: {
       organizationId: "proposed:mullen_real_estate_capital",
       name: nameOfOrg(mrec),
@@ -410,43 +553,7 @@ function buildProposedContactsViewModel(dryRun, livePayload) {
         : [],
       preview_state: "PROPOSED_STAGED",
     },
-    people: persons.map((p, idx) => {
-      const group =
-        /ownership|decision|ceo|president/i.test(String(p.role_group || "") + " " + String(p.title || ""))
-          ? "PRIMARY_OWNER_SIDE"
-          : "SECONDARY_OWNER_CORPORATE";
-      return {
-        personId: "proposed:" + String(p.display_name || "").toLowerCase().replace(/\s+/g, "_"),
-        name: p.display_name,
-        title: p.title,
-        role: p.title,
-        group,
-        role_group: p.role_group,
-        organization: nameOfOrg(mrec),
-        organizationName: nameOfOrg(mrec),
-        confidence: p.confidence,
-        preview_state: "PROPOSED_STAGED",
-        decisionAuthority: idx === 0 ? "Likely owner-side decision contact (proposed)" : "Authority Not Verified",
-        signingAuthority: "Authority Not Verified",
-        verificationNotes:
-          "PROPOSED — named on MREC About/Team. Personal email/phone unresolved. Not UBO.",
-        whyRelevant:
-          "Named on Mullen Real Estate Capital leadership materials; proposed owner-side entry point for this asset.",
-        contactability: "PROFILE_OR_ORG_FALLBACK",
-        stakeholderClass: p.role_group || "Owner / Principal",
-        lastVerified: "2026-11-19",
-        emailContacts: [],
-        phoneContacts: [],
-        emails: [],
-        phones: [],
-        channels: [],
-        enrichAction: {
-          label: "Find Contact Details",
-          enabled: true,
-          reason: null,
-        },
-      };
-    }),
+    people: sections.ranked,
     organizations: [
       {
         name: nameOfOrg(marbeth),
@@ -461,7 +568,7 @@ function buildProposedContactsViewModel(dryRun, livePayload) {
         preview_state: "PROPOSED_STAGED",
       },
     ],
-    unresolvedItems: [
+    unresolvedItems: research?.unresolved || [
       "Ultimate beneficial owner (natural person) unresolved",
       "Qualified signatories unresolved",
       "Personal emails / phones for owner-side contacts unresolved",
@@ -472,14 +579,25 @@ function buildProposedContactsViewModel(dryRun, livePayload) {
             label: "MREC organization email (proposed)",
             value: emailCh.value,
             verification_status: "VERIFIED_PUBLIC",
+            channelKind: "organization",
           },
           {
             label: "MREC website contact page",
             value: "https://mullencap.com/contact/",
             verification_status: "PUBLICLY_PUBLISHED",
+            channelKind: "organization",
           },
         ]
       : [],
+    contactEvidence: researchEvidence,
+    airtablePersistence: {
+      status: "STAGED_DRY_RUN_ONLY",
+      applyAuthorized: false,
+      linkedInChannelsDryRun:
+        "reports/hotel-explorer/phase4-quality/HE-BETH-CONTACT-LINKEDIN-CHANNELS-DRY-RUN-V1.json",
+      ownerResearchPackage:
+        "reports/hotel-explorer/phase4-quality/HE-BETH-OWNER-DECISION-MAKER-RESEARCH-STAGED-V1.json",
+    },
   };
 }
 

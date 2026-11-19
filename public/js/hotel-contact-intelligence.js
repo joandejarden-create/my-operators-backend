@@ -203,13 +203,16 @@
       '<div class="hci-quality__item"><span>Primary decision makers</span><strong>' +
       esc(q.primaryDecisionMakers != null ? q.primaryDecisionMakers : "—") +
       "</strong></div>" +
+      '<div class="hci-quality__item"><span>Verified LinkedIn</span><strong>' +
+      esc(q.verifiedLinkedInProfiles != null ? q.verifiedLinkedInProfiles : "—") +
+      "</strong></div>" +
       '<div class="hci-quality__item"><span>Verified emails</span><strong>' +
       esc(q.verifiedEmails != null ? q.verifiedEmails : "—") +
       "</strong></div>" +
-      '<div class="hci-quality__item"><span>Verified / public phones</span><strong>' +
+      '<div class="hci-quality__item"><span>Verified phones</span><strong>' +
       esc(q.verifiedOrPublicPhones != null ? q.verifiedOrPublicPhones : "—") +
       "</strong></div>" +
-      '<div class="hci-quality__item"><span>Fallback contact paths</span><strong>' +
+      '<div class="hci-quality__item"><span>Corporate paths</span><strong>' +
       esc(q.fallbackContactPaths != null ? q.fallbackContactPaths : "—") +
       "</strong></div>" +
       '<div class="hci-quality__item"><span>Last reviewed</span><strong>' +
@@ -346,6 +349,12 @@
         "Surfe on-demand is not available in this environment";
       return unresolvedNote(label + " unavailable: " + reason + ".");
     }
+    var linkedin =
+      p.linkedinUrl ||
+      ((p.profileUrls || []).find(function (pr) {
+        return pr && /linkedin/i.test(String(pr.type || pr.url || ""));
+      }) || {}).url ||
+      "";
     return (
       '<div class="hci-enrich">' +
       '<button type="button" class="hci-btn hci-btn--enrich" data-hci-enrich="1" data-person-id="' +
@@ -358,29 +367,46 @@
       esc(p.organization || p.organizationName || "") +
       '" data-job-title="' +
       esc(p.title || "") +
+      '" data-linkedin-url="' +
+      esc(linkedin) +
+      '" data-company-domain="' +
+      esc(p.organizationDomain || "") +
       '">' +
       esc(label) +
       "</button>" +
-      '<p class="hci-muted">User-initiated only. Checks existing channels first. Surfe credits used only when needed. Review required before Airtable persistence.</p>' +
+      '<p class="hci-muted">Free-source research first. Surfe is user-initiated fallback for missing email/phone only. Credits used only when needed. Review before Airtable persistence.</p>' +
       '<div class="hci-enrich__result" hidden></div></div>'
     );
   }
 
-  function renderPerson(p, hotelId, capability) {
+  function renderPerson(p, hotelId, capability, opts) {
+    opts = opts || {};
     var hasEmail = (p.emailContacts || []).some(function (c) {
       return c && c.value;
     });
     var hasPhone = (p.phoneContacts || []).some(function (c) {
       return c && c.value;
     });
-    var emails = (p.emailContacts || []).map(renderChannel).join("") ||
-      unresolvedNote("No direct email verified yet (person identity may still be verified).");
-    var phones = (p.phoneContacts || []).map(renderChannel).join("") ||
-      unresolvedNote("No public phone verified yet.");
+    var hasLinkedIn =
+      present(p.linkedinUrl) ||
+      (p.profileUrls || []).some(function (pr) {
+        return pr && /linkedin/i.test(String(pr.type || pr.url || ""));
+      });
+    var identityOk =
+      p.identityVerification === "VERIFIED_PUBLIC" ||
+      p.displayState === "AVAILABLE" ||
+      p.displayState === "PARTIAL" ||
+      hasLinkedIn;
+    var emails =
+      (p.emailContacts || []).map(renderChannel).join("") ||
+      unresolvedNote("No direct professional email verified yet.");
+    var phones =
+      (p.phoneContacts || []).map(renderChannel).join("") ||
+      unresolvedNote("No public direct business phone verified yet.");
     var profiles = (p.profileUrls || [])
       .map(function (pr) {
         return (
-          '<a class="hci-profile-link" href="' +
+          '<a class="hci-profile-link hex-rms-ext-link" href="' +
           esc(pr.url) +
           '" target="_blank" rel="noopener">' +
           esc(pr.type || "Profile") +
@@ -390,31 +416,31 @@
         );
       })
       .join("");
-    var fallback = "";
-    if (p.fallbackPath) {
-      fallback =
-        '<div class="hci-fallback-box">' +
-        "<strong>Fallback contact path</strong>" +
-        "<p>" +
-        esc(p.fallbackPath.label) +
-        (present(p.fallbackPath.organization) ? " — " + esc(p.fallbackPath.organization) : "") +
-        "</p>" +
-        (p.fallbackPath.channels || [])
-          .map(function (c) {
-            return "<div>" + esc(c.label || c.type) + ": " + esc(c.value) + "</div>";
-          })
-          .join("") +
-        "</div>";
+    if (!profiles && p.linkedinUrl) {
+      profiles =
+        '<a class="hci-profile-link hex-rms-ext-link" href="' +
+        esc(p.linkedinUrl) +
+        '" target="_blank" rel="noopener">LinkedIn · VERIFIED_PUBLIC</a>';
     }
     var detailsId = "hci-person-" + esc(p.personId || Math.random().toString(36).slice(2));
-    var metaBits = [p.organization, p.stakeholderClass].filter(present);
+    var badgeLabel = identityOk
+      ? hasEmail || hasPhone
+        ? "Identity + channels"
+        : "Identity verified"
+      : p.displayState || "";
+    var compact = opts.compact === true;
     return (
-      '<article class="hci-person" data-person-id="' +
+      '<article class="hci-person' +
+      (opts.featured ? " hci-person--featured" : "") +
+      (compact ? " hci-person--compact" : "") +
+      '" data-person-id="' +
       esc(p.personId || "") +
-      '" data-display-state="' +
-      esc(p.displayState || "") +
+      '" data-contact-class="' +
+      esc(p.contactClass || "") +
+      '" data-property-responsibility="' +
+      esc(p.propertyResponsibility || "") +
       '" data-identity-verified="' +
-      (p.displayState === "AVAILABLE" || p.displayState === "PARTIAL" ? "1" : "0") +
+      (identityOk ? "1" : "0") +
       '" data-contact-details-verified="' +
       (hasEmail || hasPhone ? "1" : "0") +
       '">' +
@@ -423,29 +449,66 @@
       esc(p.name) +
       "</h5>" +
       (present(p.title) ? '<div class="hci-person__title">' + esc(p.title) + "</div>" : "") +
-      (metaBits.length
-        ? '<div class="hci-muted">' + esc(metaBits.join(" · ")) + "</div>"
+      (present(p.organization)
+        ? '<div class="hci-muted">' + esc(p.organization) + "</div>"
         : "") +
       "</div>" +
-      (present(p.displayState)
+      (badgeLabel
         ? '<span class="' +
-          badgeClass(p.displayState === "AVAILABLE" ? "VERIFIED_PUBLIC" : p.displayState) +
+          badgeClass(hasEmail || hasPhone ? "VERIFIED_PUBLIC" : "PARTIAL") +
           '">' +
-          esc(p.displayState) +
+          esc(badgeLabel) +
           "</span>"
         : "") +
       "</div>" +
-      kvRow("Why relevant", p.whyRelevant || p.relationshipToHotel) +
-      kvRow("Likely commercial role", p.commercialRole || p.stakeholderClass) +
-      kvRow("Contactability", p.contactability) +
-      kvRow("Confidence", p.confidence) +
-      kvRow("Last verified", p.lastVerified) +
+      kvRow("Hotel relevance", p.whyRelevant || p.relationshipToHotel) +
+      kvRow("Commercial role", p.contactClassLabel || p.commercialRole || p.stakeholderClass) +
+      kvRow(
+        "Property responsibility",
+        p.propertyResponsibilityLabel || p.propertyResponsibility
+      ) +
       (profiles
-        ? '<div class="hci-profiles">' + profiles + "</div>"
-        : unresolvedNote("Public profile not yet verified.")) +
+        ? '<div class="hci-profiles"><span class="hci-profiles__label">LinkedIn</span> ' +
+          profiles +
+          "</div>"
+        : unresolvedNote("LinkedIn profile not yet verified.")) +
+      (compact
+        ? ""
+        : '<div class="hci-person__channels-preview">' +
+          "<div><strong>Email</strong> " +
+          (hasEmail
+            ? (p.emailContacts || [])
+                .map(function (c) {
+                  return c && c.value
+                    ? '<a class="hci-channel__value" href="mailto:' +
+                        esc(c.value) +
+                        '">' +
+                        esc(c.value) +
+                        "</a>"
+                    : "";
+                })
+                .join(", ")
+            : '<span class="hci-muted">Not yet verified — use Find Contact Details</span>') +
+          "</div>" +
+          "<div><strong>Phone</strong> " +
+          (hasPhone
+            ? (p.phoneContacts || [])
+                .map(function (c) {
+                  return c && c.value
+                    ? '<a class="hci-channel__value" href="tel:' +
+                        esc(String(c.value).replace(/\s+/g, "")) +
+                        '">' +
+                        esc(c.value) +
+                        "</a>"
+                    : "";
+                })
+                .join(", ")
+            : '<span class="hci-muted">Not yet verified</span>') +
+          "</div></div>") +
+      kvRow("Last verified", p.lastVerified) +
       '<button type="button" class="hci-provenance-toggle" data-hci-toggle="' +
       detailsId +
-      '">Contact details</button>' +
+      '" aria-expanded="false">Sources &amp; channel details</button>' +
       '<div class="hci-person__details" id="' +
       detailsId +
       '" hidden>' +
@@ -453,13 +516,8 @@
       emails +
       "<h6>Phone</h6>" +
       phones +
-      fallback +
       (p.verificationNotes ? '<p class="hci-muted">' + esc(p.verificationNotes) + "</p>" : "") +
-      '<p class="hci-muted">Decision authority: ' +
-      esc(p.decisionAuthority || "Authority Not Verified") +
-      " · Signing authority: " +
-      esc(p.signingAuthority || "Authority Not Verified") +
-      " (not inferred). Verified identity ≠ verified personal contact details.</p>" +
+      '<p class="hci-muted">Verified identity ≠ verified personal contact channels. Organization emails are not personal inboxes.</p>' +
       renderEnrichAction(p, hotelId, capability) +
       "</div></article>"
     );
@@ -467,32 +525,84 @@
 
   var vmCapability = null;
 
+  function renderRecommendation(vm) {
+    var rec = vm.recommendation;
+    if (!rec || !rec.person) return "";
+    var hotelId = vm.hotelId || "";
+    return (
+      '<section class="hci-section hci-section--recommend">' +
+      "<h3>" +
+      esc(rec.label || "Suggested Contact") +
+      "</h3>" +
+      '<p class="hci-recommend__rationale">' +
+      esc(rec.rationale || "") +
+      "</p>" +
+      '<div class="hci-people hci-people--featured">' +
+      renderPerson(rec.person, hotelId, vmCapability, { featured: true }) +
+      "</div>" +
+      ((rec.alternatives || []).length
+        ? '<p class="hci-muted">Alternatives if outreach is unsuccessful: ' +
+          rec.alternatives
+            .map(function (a) {
+              return esc(a.name) + (a.title ? " (" + esc(a.title) + ")" : "");
+            })
+            .join("; ") +
+          "</p>"
+        : "") +
+      "</section>"
+    );
+  }
+
   function renderPeopleGroups(vm) {
     var hotelId = vm.hotelId || "";
-    var groups = [
-      { id: "PRIMARY_OWNER_SIDE", title: "Primary owner-side contacts" },
-      { id: "SECONDARY_OWNER_CORPORATE", title: "Secondary owner / corporate contacts" },
-      { id: "OPERATOR_PROPERTY", title: "Operator / property contacts" },
-    ];
-    return groups
-      .map(function (g) {
-        var rows = (vm.people || []).filter(function (p) {
-          return p.group === g.id;
-        });
-        if (!rows.length) return "";
-        return (
-          '<section class="hci-section"><h3>' +
-          esc(g.title) +
-          '</h3><div class="hci-people">' +
-          rows
-            .map(function (p) {
-              return renderPerson(p, hotelId, vmCapability);
-            })
-            .join("") +
-          "</div></section>"
-        );
-      })
-      .join("");
+    var recommendedIds = {};
+    (vm.recommendedContacts || [])
+      .concat(vm.recommendation && vm.recommendation.person ? [vm.recommendation.person] : [])
+      .forEach(function (p) {
+        if (p && p.personId) recommendedIds[p.personId] = true;
+      });
+    var featuredId =
+      vm.recommendation && vm.recommendation.person && vm.recommendation.person.personId;
+    var recommended = (vm.recommendedContacts || []).filter(function (p) {
+      return p && p.personId && p.personId !== featuredId;
+    });
+    var others =
+      vm.otherContacts ||
+      (vm.people || []).filter(function (p) {
+        return !recommendedIds[p.personId];
+      });
+    var html = "";
+    if (recommended.length) {
+      html +=
+        '<section class="hci-section"><h3>Other recommended contacts</h3><div class="hci-people">' +
+        recommended
+          .map(function (p) {
+            return renderPerson(p, hotelId, vmCapability);
+          })
+          .join("") +
+        "</div></section>";
+    }
+    if (others.length) {
+      html +=
+        '<section class="hci-section"><h3>Other ownership &amp; corporate contacts</h3><div class="hci-people hci-people--compact">' +
+        others
+          .map(function (p) {
+            return renderPerson(p, hotelId, vmCapability, { compact: true });
+          })
+          .join("") +
+        "</div></section>";
+    }
+    if (!html && (vm.people || []).length) {
+      html =
+        '<section class="hci-section"><h3>Owner-side contacts</h3><div class="hci-people">' +
+        vm.people
+          .map(function (p) {
+            return renderPerson(p, hotelId, vmCapability);
+          })
+          .join("") +
+        "</div></section>";
+    }
+    return html;
   }
 
   function renderViewModel(vm) {
@@ -517,14 +627,25 @@
         : "";
     var best =
       (vm.bestContactPaths || []).length > 0
-        ? '<section class="hci-section"><h3>Fallback / best contact paths</h3><ol class="hci-list">' +
+        ? '<section class="hci-section"><h3>Corporate contact paths</h3><p class="hci-muted">Organization-level channels — not personal decision-maker inboxes.</p><ol class="hci-list">' +
           vm.bestContactPaths
             .map(function (b) {
+              var val = b.value || "";
+              var link =
+                /^https?:/i.test(val)
+                  ? '<a class="hex-rms-ext-link" href="' +
+                    esc(val) +
+                    '" target="_blank" rel="noopener">' +
+                    esc(val) +
+                    "</a>"
+                  : /@/.test(val)
+                    ? '<a class="hci-channel__value" href="mailto:' + esc(val) + '">' + esc(val) + "</a>"
+                    : esc(val || "—");
               return (
                 "<li><strong>" +
                 esc(b.label) +
                 "</strong>: " +
-                esc(b.value || "—") +
+                link +
                 ' <span class="' +
                 badgeClass(b.verification_status) +
                 '">' +
@@ -544,10 +665,15 @@
       "<div><h2>Contact Intelligence</h2>" +
       '<p class="hci-subtitle">' +
       esc(vm.hotelName || "") +
+      (vm.researchWorkflow
+        ? ' · <span class="hci-muted">Research: public sources first; Surfe on demand</span>'
+        : "") +
       "</p></div>" +
       renderQuality(vm) +
       "</header>" +
       renderOwnershipSummary(vm) +
+      renderRecommendation(vm) +
+      renderPeopleGroups(vm) +
       '<section class="hci-section"><h3>Organization contacts</h3><div class="hci-org-grid">' +
       (contactable
         ? renderOrgCard(
@@ -559,12 +685,8 @@
           )
         : "") +
       (propco ? renderOrgCard(propco, { title: "Property owner / PropCo" }) : "") +
-      (contactable && contactable.relationshipBadges && contactable.relationshipBadges.indexOf("OPERATOR") >= 0
-        ? '<article class="hci-org-card"><div class="hci-org-card__head"><div class="hci-org-card__kicker">Current operator</div><h4>Grupo Hotelero Santa Fe</h4><div class="hci-org-card__meta"><span class="hci-rel-badge">OPERATOR</span><span class="hci-rel-badge">OWNER / SPONSOR</span></div></div><p class="hci-note">Same organization also acts as current operator — contact details shown on the contactable owner organization card.</p></article>'
-        : "") +
       (brand ? renderOrgCard(brand, { title: "Current brand" }) : "") +
       "</div></section>" +
-      renderPeopleGroups(vm) +
       best +
       unresolved +
       "</div>"
@@ -650,6 +772,8 @@
             personName: personName,
             organization: organization,
             jobTitle: btn.getAttribute("data-job-title") || "",
+            linkedinUrl: btn.getAttribute("data-linkedin-url") || "",
+            companyDomain: btn.getAttribute("data-company-domain") || "",
             persist: false,
           }),
         }

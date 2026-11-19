@@ -1,6 +1,6 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.1`  
+**Version:** `hotel-explorer-quality-standard-v1.2`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
 **Gate:** `npm run test:he-product-quality-gates-v1`
@@ -55,11 +55,16 @@ KGPV (golden UX) and Bethesda Marriott (Airtable-first pilot) define the permane
 - Human org names only — never graph/org IDs in tables.
 - Proposed overlays must show **Proposed · not persisted** and never imply Airtable truth.
 
-### 6. Contact Intelligence
+### 6. Contact Intelligence / Owner & Decision-Maker Intelligence
 
-- Named contacts show available verified fields only; omit empty dash rows.
-- Distinguish verified **identity** from verified **personal contact details**.
-- **Find Contact Details** is user-initiated Surfe only; check existing channels first; no auto-enrich on tab load; no Airtable write from reveal; credits tracked; honest unavailable messaging when Surfe disabled.
+- Workflow: **Existing Airtable → public research → verification → staged/canonical persistence → Surfe only on explicit click** for missing email/phone.
+- Property-to-person path: Hotel → ownership/management entity → portfolio responsibility → relevant individual → contact channel.
+- Rank contacts with documented factors (hotel responsibility, AM/ownership authority, evidence, channels). Do **not** auto-select CEO for seniority alone.
+- Classifications: `PRIMARY_PROPERTY_DECISION_MAKER`, `OWNER_DECISION_AUTHORITY`, `RELEVANT_COMMERCIAL_ENTRY_POINT`, `CORPORATE_FALLBACK`, `ROLE_NOT_VERIFIED` — UI uses professional labels.
+- When property assignment is unconfirmed, show **Suggested Contact — Property Responsibility Not Confirmed** (never a false “verified primary decision-maker”).
+- Cards show name, title, org, hotel relevance, property responsibility, verified LinkedIn, email/phone when verified, corporate fallbacks separately, sources, and **Find Contact Details** when eligible.
+- Never invent emails/phones; never label org channels as personal; never treat scraped wrong-company data as verified.
+- Surfe is on-demand fallback (pass LinkedIn URL when known); check existing channels first; no auto-enrich; no Airtable write from reveal.
 
 ### 7. Sources & evidence
 

@@ -1,0 +1,87 @@
+{
+  "version": "he-beth-contact-linkedin-channels-dry-run-v1",
+  "hotelId": "recLuxvwwxID7U2B8",
+  "applyAuthorized": false,
+  "productionWrites": false,
+  "mode": "DRY_RUN_STAGED",
+  "note": "Idempotent proposed mutations for HI Contact Channels (LinkedIn as person professional identity). Do not apply until separate founder authorization.",
+  "mutations": [
+    {
+      "op": "CREATE",
+      "table": "HI Contact Channels",
+      "dedupe_key": "ch::person:person::jeff_mullen::identity::linkedin::jeffmmullen",
+      "record": {
+        "kind": "linkedin",
+        "value": "https://www.linkedin.com/in/jeffmmullen/",
+        "subject_id": "person:person::jeff_mullen::identity",
+        "classification": "person_professional_profile",
+        "verification_status": "Verified Direct",
+        "source_url": "https://mullencap.com/about/",
+        "last_verified": "2026-11-19",
+        "schema_version": "he_intel_airtable_graph_v1",
+        "publication_state": "INTERNAL_ONLY",
+        "note": "LinkedIn identity reference — does not verify email or phone"
+      }
+    },
+    {
+      "op": "CREATE",
+      "table": "HI Contact Channels",
+      "dedupe_key": "ch::person:person::katherine_button::identity::linkedin::katherine-button",
+      "record": {
+        "kind": "linkedin",
+        "value": "https://www.linkedin.com/in/katherine-button/",
+        "subject_id": "person:person::katherine_button::identity",
+        "classification": "person_professional_profile",
+        "verification_status": "Verified Direct",
+        "source_url": "https://mullencap.com/about/",
+        "last_verified": "2026-11-19",
+        "schema_version": "he_intel_airtable_graph_v1",
+        "publication_state": "INTERNAL_ONLY",
+        "note": "LinkedIn identity reference — does not verify email or phone"
+      }
+    },
+    {
+      "op": "CREATE",
+      "table": "HI Contact Channels",
+      "dedupe_key": "ch::person:person::patrick_reece::identity::linkedin::patrick-reece-375b8937",
+      "record": {
+        "kind": "linkedin",
+        "value": "https://www.linkedin.com/in/patrick-reece-375b8937/",
+        "subject_id": "person:person::patrick_reece::identity",
+        "classification": "person_professional_profile",
+        "verification_status": "Verified Direct",
+        "source_url": "https://mullencap.com/about/",
+        "last_verified": "2026-11-19",
+        "schema_version": "he_intel_airtable_graph_v1",
+        "publication_state": "INTERNAL_ONLY",
+        "note": "LinkedIn identity reference — does not verify email or phone"
+      }
+    },
+    {
+      "op": "UPDATE_FIELDS_IF_STRONGER",
+      "table": "HI Org Contacts",
+      "dedupe_key": "person::katherine_button::org::mullen_real_estate_capital::us_pa",
+      "record": {
+        "contact_class": "RELEVANT_COMMERCIAL_ENTRY_POINT",
+        "property_responsibility": "INFERRED",
+        "recommendation_note": "Suggested first contact for Bethesda owner-side AM outreach; property assignment not confirmed",
+        "last_verified": "2026-11-19"
+      },
+      "note": "Field names are proposed mapping — only apply after schema steward confirms HI Org Contacts columns exist or use notes/evidence until then"
+    }
+  ],
+  "rejected_candidates": [
+    {
+      "type": "email",
+      "person": "Patrick Reece",
+      "value_hint": "non-MREC domain from third-party scraper",
+      "reason": "Wrong-company / unverified personal channel — not staged"
+    },
+    {
+      "type": "phone",
+      "person": "Katherine Button",
+      "value_hint": "masked RocketReach mobile",
+      "reason": "Unverified paid-directory fragment — not treated as verified business phone"
+    }
+  ]
+}

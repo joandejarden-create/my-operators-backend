@@ -1,5 +1,5 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.1",
+  "version": "hotel-explorer-founder-quality-lessons-v1.2",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
@@ -121,6 +121,15 @@
       "sharedComponent": "hotel-intelligence-workspace.js; hotel-contact-intelligence.js; api/contact-intelligence.js",
       "regressionTest": "ownership_hierarchy_proper_case_labels; contact_cards_omit_dash_placeholders_and_surfe_not_on_get",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v2-ownership.png; quality-v2-surfe-action.png"
+    },
+    {
+      "id": "HE-QL-012",
+      "originalProblem": "Contact cards lacked LinkedIn/public channels; Surfe treated as default; CEO auto-primary; empty placeholders",
+      "rootCause": "No property-to-person ranking engine; contacts staged without free-source LinkedIn research; UI grouped peers equally",
+      "approvedStandard": "Free-source research first; decision-oriented recommendation with honesty labels; LinkedIn as identity channels; Surfe user-initiated fallback; staged Airtable dry-run only until apply auth",
+      "sharedComponent": "property-decision-maker-engine-v1.js; hotel-contact-intelligence.js; hotel-explorer-founder-preview.js",
+      "regressionTest": "owner_decision_maker_ranking_and_surfe_fallback",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v3-contacts-recommend.png"
     }
   ]
 }

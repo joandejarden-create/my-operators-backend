@@ -13,6 +13,16 @@ import {
   resolveCommercialDescription,
   HOTEL_COMMERCIAL_DESCRIPTION_VERSION,
 } from "../lib/hotel-intelligence/hotel-commercial-description-v1.js";
+import {
+  rankContactsForHotel,
+  selectRecommendedFirstContact,
+  looksLikeInventedEmail,
+  isCorporateChannelMislabeledAsDirect,
+  detectDuplicateNamedContacts,
+  assertNoUnsupportedPrimaryClaim,
+  CONTACT_CLASS,
+  PROPERTY_RESPONSIBILITY,
+} from "../lib/hotel-intelligence/contact-intelligence/property-decision-maker-engine-v1.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -44,11 +54,11 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.1");
-  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 11);
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.2");
+  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 12);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.1"
+    "hotel-explorer-quality-standard-v1.2"
   );
 });
 
@@ -167,7 +177,7 @@ run("contact_cards_omit_dash_placeholders_and_surfe_not_on_get", () => {
   const hci = read("public/js/hotel-contact-intelligence.js");
   mustInclude(hci, "function kvRow");
   mustInclude(hci, "hci-note--unresolved");
-  mustInclude(hci, "Verified identity ≠ verified personal contact details");
+  mustInclude(hci, "Verified identity ≠ verified personal contact channels");
   mustInclude(hci, "data-hci-enrich");
   mustInclude(hci, "/reveal");
   mustInclude(hci, "enrichment-capability");
@@ -288,6 +298,67 @@ run("rooms_inventory_fixture_no_double_count_rule", () => {
   const secondary = rooms.filter((r) => r.includeInAggregate === false);
   assert.ok(rooms.length > 0, "meeting rooms present");
   assert.ok(secondary.length > 0, "divisible/combined exclusions present");
+});
+
+run("owner_decision_maker_ranking_and_surfe_fallback", () => {
+  const ceo = {
+    personId: "ceo",
+    name: "Jeff Mullen",
+    title: "President and CEO",
+    propertyResponsibility: PROPERTY_RESPONSIBILITY.UNKNOWN,
+    contactClass: CONTACT_CLASS.OWNER_DECISION_AUTHORITY,
+  };
+  const am = {
+    personId: "am",
+    name: "Katherine Button",
+    title: "VP, Asset Management and Investments",
+    propertyResponsibility: PROPERTY_RESPONSIBILITY.INFERRED,
+    contactClass: CONTACT_CLASS.RELEVANT_COMMERCIAL_ENTRY_POINT,
+    portfolioEvidenceCount: 2,
+  };
+  const ranked = rankContactsForHotel([ceo, am], { hotelId: "recLuxvwwxID7U2B8" });
+  assert.equal(ranked[0].personId, "am", "asset manager outranks seniority-only CEO");
+  const rec = selectRecommendedFirstContact(ranked);
+  assert.equal(
+    rec.recommendationType,
+    "SUGGESTED_CONTACT_PROPERTY_RESPONSIBILITY_NOT_CONFIRMED"
+  );
+  assert.equal(rec.person.personId, "am");
+  assert.equal(looksLikeInventedEmail("jeff.mullen@mullencap.com", "Jeff Mullen"), true);
+  assert.equal(
+    isCorporateChannelMislabeledAsDirect({
+      classification: "direct_personal",
+      value: "info@mullencap.com",
+    }),
+    true
+  );
+  assert.deepEqual(detectDuplicateNamedContacts([am, { ...am, personId: "dup" }]), [
+    "katherine button",
+  ]);
+  assert.equal(
+    assertNoUnsupportedPrimaryClaim({
+      contactClass: CONTACT_CLASS.PRIMARY_PROPERTY_DECISION_MAKER,
+      propertyResponsibility: PROPERTY_RESPONSIBILITY.INFERRED,
+    }).ok,
+    false
+  );
+  const research = JSON.parse(
+    read(
+      "reports/hotel-explorer/phase4-quality/HE-BETH-OWNER-DECISION-MAKER-RESEARCH-STAGED-V1.json"
+    )
+  );
+  assert.equal(research.applyAuthorized, false);
+  assert.ok(research.people.every((p) => p.linkedinUrl && p.linkedinUrl.includes("linkedin.com")));
+  assert.ok(research.people.every((p) => !(p.emailContacts || []).length));
+  const hci = read("public/js/hotel-contact-intelligence.js");
+  mustInclude(hci, "Suggested Contact");
+  mustInclude(hci, "data-linkedin-url");
+  mustInclude(hci, "Corporate contact paths");
+  assert.ok(!/hci-dev-json|production_writes|JSON\.stringify\(vm/.test(hci));
+  const mountIdx = hci.indexOf("function mount(");
+  assert.ok(!/enrichPeople|provider\.enrich/.test(hci.slice(mountIdx, mountIdx + 1200)));
+  mustInclude(read("api/hotel-explorer-founder-preview.js"), "HE-BETH-OWNER-DECISION-MAKER-RESEARCH");
+  mustInclude(read("api/hotel-explorer-founder-preview.js"), "buildDecisionOrientedContactSections");
 });
 
 if (failures.length) {
