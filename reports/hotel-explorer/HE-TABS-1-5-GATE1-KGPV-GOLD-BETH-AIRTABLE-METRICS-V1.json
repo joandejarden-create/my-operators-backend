@@ -1,0 +1,1538 @@
+{
+  "contract": "HE_TABS_1_5_GATE1_KGPV_GOLD_BETH_AIRTABLE_METRICS_V1",
+  "gate": "GATE_1_REVISED_KGPV_GOLDEN_DEMO_CLARIFICATION",
+  "status": "AWAITING_FOUNDER_APPROVAL",
+  "auditedAt": "2026-11-19T14:33:57.473Z",
+  "principle": "KGPV defines the desired experience. HPC and established Airtable tables define canonical intelligence. Do not migrate golden-demo fixtures without independent verification.",
+  "paidResearch": {
+    "substantivePaidEnrichment": "BLOCKED_UNTIL_GATE1_APPROVAL",
+    "spendToDateUsd": 0,
+    "authorizedCeilingUsd": 25
+  },
+  "baseUrl": "http://127.0.0.1:8091",
+  "runtimeTarget": {
+    "servingDirectoryBasename": "ws-hotel-explorer",
+    "servingStream": "he"
+  },
+  "architecture": {
+    "kgpvRole": "GOLDEN_DEMO_UX_REFERENCE",
+    "bethesdaRole": "AIRTABLE_FIRST_VALIDATION_PILOT",
+    "canonicalBase": "appCCUsuGsE1ifoLk",
+    "hpc": {
+      "id": "tbl9aY5ijiuIzzWam",
+      "name": "Hotel Property Census"
+    },
+    "hotelCensus": {
+      "id": "tblgj2qEwxjTcg6q0",
+      "name": "Hotel Census"
+    },
+    "hiTables": {
+      "HI Organizations": "tbliXEfUOWk32AN9y",
+      "HI Hotel–Org Relationships": "tblGiwN0foXXDESvZ",
+      "HI Org Contacts": "tbldJAj0nK1l39JZL",
+      "HI Contact Channels": "tblqC7C4ypy5Zojyw",
+      "HI Ownership Research Runs": "tblGwk1YefumCf2eu",
+      "HI Graph Evidence": "tblc9JhKT1edr4grE"
+    }
+  },
+  "identity": {
+    "kgpv": {
+      "id": "recUNycnMwOVFX0hc",
+      "owningTable": "Hotel Census",
+      "owningTableId": "tblgj2qEwxjTcg6q0",
+      "onHpc": false,
+      "status": "HOTEL_CENSUS_NOT_HPC"
+    },
+    "bethesda": {
+      "id": "recLuxvwwxID7U2B8",
+      "owningTable": "Hotel Property Census",
+      "owningTableId": "tbl9aY5ijiuIzzWam",
+      "onHotelCensus": false,
+      "status": "HPC_CANONICAL",
+      "hiRelationships": [
+        {
+          "type": "Brand",
+          "airtableId": "rec4Bpr6tIcVA2fce"
+        },
+        {
+          "type": "Operator",
+          "airtableId": "recxH9JFPubxVBPG9"
+        }
+      ],
+      "hiOrganizations": [
+        {
+          "airtableId": "recStGNNlkZIMgmwK",
+          "legalName": "Marriott International, Inc.",
+          "tradingName": "Marriott International"
+        }
+      ],
+      "hiOrgContactsCount": 0,
+      "hiContactChannelsCount": 0,
+      "hiEvidenceCount": 0,
+      "hiRunsCount": 0
+    }
+  },
+  "metrics": {
+    "kgpvGoldenDemoFieldCoveragePct": 82.8,
+    "bethesdaExistingVerifiedAirtableCoveragePct": 63.5,
+    "bethesdaAirtableNotYetConnectedPct": 0,
+    "bethesdaLiveAirtableToUiIntegrationPct": 66.7,
+    "bethesdaGenuineResearchGapsAfterReusePct": 25.4,
+    "bethesdaUiPopulatedWithoutVerifiedHpcFieldPct": 0,
+    "integrationWorkBeforePaidCount": 0,
+    "researchGapCount": 16
+  },
+  "scorecard": {
+    "kgpvGoldenDemoFieldCoverage": {
+      "fields": 58,
+      "demonstratedUi": 48,
+      "demonstratedUiPct": 82.8,
+      "note": "KGPV UI population = desired experience depth. NOT verified Airtable coverage."
+    },
+    "bethesdaExistingVerifiedAirtableCoverage": {
+      "fields": 63,
+      "existsInAirtable": 40,
+      "existsInAirtablePct": 63.5,
+      "byClass": {
+        "EXISTS_HPC": 22,
+        "MISSING_HPC": 4,
+        "N_A_OPEN_ASSET": 1,
+        "DERIVABLE_FROM_HI": 10,
+        "MISSING_HI_EVIDENCE": 5,
+        "MISSING_HI_REL": 2,
+        "EXISTS_HI_REL": 4,
+        "MISSING_HI_ORG": 1,
+        "MISSING_HI_CONTACTS": 4,
+        "MISSING_HI_CHANNELS": 3,
+        "MISSING_HI_RUNS": 3,
+        "EXISTS_HI_ORG": 4
+      }
+    },
+    "bethesdaAirtableNotYetConnected": {
+      "count": 0,
+      "pct": 0,
+      "fields": []
+    },
+    "bethesdaLiveAirtableToUiIntegration": {
+      "count": 42,
+      "pct": 66.7
+    },
+    "bethesdaGenuineResearchGapsAfterReuse": {
+      "count": 16,
+      "pct": 25.4,
+      "fields": [
+        "projectPhase",
+        "starRating",
+        "economic_owner",
+        "property_company",
+        "source_coverage",
+        "what_we_know[]",
+        "ubo_group",
+        "decision_authority.people",
+        "qualified_signatories",
+        "asset_agreement_profile",
+        "property_history",
+        "development_pursuit",
+        "sources",
+        "people_groups",
+        "emails_phones",
+        "key_people"
+      ]
+    },
+    "requiredIntegrationBeforePaidEnrichment": {
+      "count": 0,
+      "fields": []
+    }
+  },
+  "integrationWork": [
+    {
+      "id": "fix_brand_presence_source_label",
+      "priority": "P0",
+      "summary": "Stop mislabeling HPC reads as Hotel Census; resolve owning table via RECORD_ID() and set censusSourceTable correctly."
+    },
+    {
+      "id": "wire_overview_from_hpc_formatter",
+      "priority": "P0",
+      "summary": "For HPC-owned hotels (Bethesda), use formatHotelPropertyCensusAsBrandPresenceHotel (or equivalent) so Overview provenance is true HPC — and backfill empty HPC fields that UI currently invents via Brand Family / enrichment."
+    },
+    {
+      "id": "wire_org_relationships_tabs_from_hi_graph",
+      "priority": "P0",
+      "summary": "Connect Organization + Relationships tabs to he-airtable-graph reader so Operator/Brand orgs and edges reach gold-depth UI without fixtures."
+    },
+    {
+      "id": "derive_portfolio_views",
+      "priority": "P1",
+      "summary": "Build portfolio_kpis / operated_managed_hotels / structure_chart from HI Rel queries once org is linked."
+    },
+    {
+      "id": "contacts_fallback_from_hpc",
+      "priority": "P1",
+      "summary": "Wire Contacts fallback_paths from HPC Phone + Official Property URL before paid person enrichment."
+    },
+    {
+      "id": "kgpv_identity_unification",
+      "priority": "P1",
+      "summary": "Unify KGPV onto HPC (or approved link strategy) before any golden-demo → Airtable migration. Fixtures stay UX reference only until independently verified."
+    }
+  ],
+  "researchPrioritiesAfterIntegration": [
+    {
+      "priority": 1,
+      "field": "economic_owner",
+      "action": "Confirm CURRENT Bethesda economic owner (free SDAT/filings first; paid only if blocked). Do not use 2013 Northview/Oaktree as current claim.",
+      "estimatedUsd": "8–15"
+    },
+    {
+      "priority": 2,
+      "fields": [
+        "property_company",
+        "ubo_group"
+      ],
+      "action": "After economic owner — PropCo/UBO if still missing.",
+      "estimatedUsd": "0–5"
+    },
+    {
+      "priority": 3,
+      "fields": [
+        "decision_authority.people",
+        "emails_phones",
+        "people_groups",
+        "key_people"
+      ],
+      "action": "Decision-maker contacts only after owner known; public paths before paid.",
+      "estimatedUsd": "5–10"
+    },
+    {
+      "priority": 4,
+      "hotel": "KGPV",
+      "action": "No paid research / no fixture migration until HPC identity unification + independent fact verification.",
+      "estimatedUsd": "0"
+    }
+  ],
+  "fields": [
+    {
+      "tab": "hotel",
+      "field": "name",
+      "question": "Property name",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Canonical Property Name",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "brand",
+      "question": "Brand / affiliation",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Current Brand",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "status",
+      "question": "Open / pipeline status",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Radar Status",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "website",
+      "question": "Official website",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Official Property URL",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "telephone",
+      "question": "Property phone",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Phone",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "address1",
+      "question": "Street address",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Address",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "city",
+      "question": "City",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.City",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "country",
+      "question": "Country",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Country",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "hotelHeadline",
+      "question": "Headline",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": false,
+        "liveClass": "GOLDEN_DEMO_UI_EMPTY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Property Positioning",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "hotelDescription",
+      "question": "Short description",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": false,
+        "liveClass": "GOLDEN_DEMO_UI_EMPTY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Short Property Summary",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "parentCompany",
+      "question": "Brand parent company",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Brand Family",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "chainScale",
+      "question": "Chain scale",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Hotel Class / Segment",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "censusPropertyType",
+      "question": "Property type",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": false,
+        "liveClass": "GOLDEN_DEMO_UI_EMPTY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Property Type",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "rooms",
+      "question": "Rooms / keys",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Rooms / Keys",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "totalMeetingSpace",
+      "question": "Meeting space",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HPC",
+        "airtableDetail": "Missing on HPC (Total Meeting Space|Total Meeting Space Sq Ft|Meeting Space Sq Ft)",
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Total meeting space from ADP/HI commercial profile with official events URL; not yet persisted on HPC Total Meeting Space fields."
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "operationType",
+      "question": "Operation type",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Management Model",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "managementCompany",
+      "question": "Operator label",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Operator / Management Company",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "market",
+      "question": "Market",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Market",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "submarket",
+      "question": "Submarket",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Submarket",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "locationType",
+      "question": "Location type",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Asset Context",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "projectPhase",
+      "question": "Project phase",
+      "goldRequired": false,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": false,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HPC",
+        "airtableDetail": "Missing on HPC (project_phase)",
+        "liveClass": "GENUINE_GAP",
+        "liveIntegrated": false,
+        "note": "Not in Airtable and not in HE — research or steward fill after reuse"
+      },
+      "gate1Action": "RESEARCH_OR_STEWARD_AFTER_REUSE"
+    },
+    {
+      "tab": "hotel",
+      "field": "projectedOpenDate",
+      "question": "Projected open (pipeline)",
+      "goldRequired": false,
+      "kgpv": {
+        "demonstratedUi": false,
+        "liveClass": "GOLDEN_DEMO_UI_EMPTY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": false,
+        "airtableExists": true,
+        "airtableClass": "N_A_OPEN_ASSET",
+        "airtableDetail": "N/A for Open — field not required",
+        "liveClass": "LIVE_N_A",
+        "liveIntegrated": true,
+        "note": "Correctly not required for Open asset"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "starRating",
+      "question": "Star rating",
+      "goldRequired": false,
+      "kgpv": {
+        "demonstratedUi": false,
+        "liveClass": "GOLDEN_DEMO_UI_EMPTY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": false,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HPC",
+        "airtableDetail": "Missing on HPC (Star Rating)",
+        "liveClass": "GENUINE_GAP",
+        "liveIntegrated": false,
+        "note": "Not in Airtable and not in HE — research or steward fill after reuse"
+      },
+      "gate1Action": "RESEARCH_OR_STEWARD_AFTER_REUSE"
+    },
+    {
+      "tab": "hotel",
+      "field": "dataConfidence",
+      "question": "Data confidence",
+      "goldRequired": false,
+      "kgpv": {
+        "demonstratedUi": false,
+        "liveClass": "GOLDEN_DEMO_UI_EMPTY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Data Confidence Tier",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "hotel",
+      "field": "amenitiesDisplay",
+      "question": "Amenities",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Amenities - Structured Tags",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE Overview shows value that exists on HPC record"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "ownership",
+      "field": "executive_summary.text",
+      "question": "Ownership narrative summary",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "DERIVABLE_FROM_HI",
+        "airtableDetail": "Derived read-model — requires underlying HI facts + HE wiring",
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Derived HE view from live HI Organizations / Relationships graph"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "ownership",
+      "field": "what_remains_uncertain",
+      "question": "Uncertainty callouts",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HI_EVIDENCE",
+        "airtableDetail": "No HI Graph Evidence rows",
+        "liveClass": "UI_POPULATED_UNVERIFIED_SOURCE",
+        "liveIntegrated": false,
+        "note": "UI populated; not attributed to verified HPC/HI field"
+      },
+      "gate1Action": "NONE"
+    },
+    {
+      "tab": "ownership",
+      "field": "economic_owner",
+      "question": "Economic owner",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": false,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HI_REL",
+        "airtableDetail": "No HI Rel type=Economic Owner",
+        "liveClass": "GENUINE_GAP",
+        "liveIntegrated": false,
+        "note": "Not in Airtable and not in HE — research or steward fill after reuse"
+      },
+      "gate1Action": "RESEARCH_OR_STEWARD_AFTER_REUSE"
+    },
+    {
+      "tab": "ownership",
+      "field": "property_company",
+      "question": "Legal PropCo",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": false,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HI_REL",
+        "airtableDetail": "No HI Rel type=Legal Owner",
+        "liveClass": "GENUINE_GAP",
+        "liveIntegrated": false,
+        "note": "Not in Airtable and not in HE — research or steward fill after reuse"
+      },
+      "gate1Action": "RESEARCH_OR_STEWARD_AFTER_REUSE"
+    },
+    {
+      "tab": "ownership",
+      "field": "operator",
+      "question": "Operator",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HI_REL",
+        "airtableDetail": "HI Rel Operator",
+        "liveClass": "LIVE_HI_GRAPH_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE shows live HI graph Airtable data"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "ownership",
+      "field": "control_status",
+      "question": "Control / verification posture",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "DERIVABLE_FROM_HI",
+        "airtableDetail": "Derived read-model — requires underlying HI facts + HE wiring",
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Derived HE view from live HI Organizations / Relationships graph"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "ownership",
+      "field": "source_coverage",
+      "question": "Evidence coverage",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": false,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HI_EVIDENCE",
+        "airtableDetail": "No HI Graph Evidence rows",
+        "liveClass": "GENUINE_GAP",
+        "liveIntegrated": false,
+        "note": "Not in Airtable and not in HE — research or steward fill after reuse"
+      },
+      "gate1Action": "RESEARCH_OR_STEWARD_AFTER_REUSE"
+    },
+    {
+      "tab": "ownership",
+      "field": "what_we_know[]",
+      "question": "Known facts list",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": false,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HI_EVIDENCE",
+        "airtableDetail": "No HI Graph Evidence rows",
+        "liveClass": "GENUINE_GAP",
+        "liveIntegrated": false,
+        "note": "Not in Airtable and not in HE — research or steward fill after reuse"
+      },
+      "gate1Action": "RESEARCH_OR_STEWARD_AFTER_REUSE"
+    },
+    {
+      "tab": "ownership",
+      "field": "control_rows",
+      "question": "Role × org control table",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HI_REL",
+        "airtableDetail": "2 HI relationships",
+        "liveClass": "LIVE_HI_GRAPH_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE shows live HI graph Airtable data"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "ownership",
+      "field": "ubo_group",
+      "question": "UBO / parent group",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": false,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HI_ORG",
+        "airtableDetail": "Parent/UBO chain not populated on HI Organizations for Bethesda",
+        "liveClass": "GENUINE_GAP",
+        "liveIntegrated": false,
+        "note": "Not in Airtable and not in HE — research or steward fill after reuse"
+      },
+      "gate1Action": "RESEARCH_OR_STEWARD_AFTER_REUSE"
+    },
+    {
+      "tab": "ownership",
+      "field": "portfolio_preview",
+      "question": "Portfolio preview",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": false,
+        "liveClass": "GOLDEN_DEMO_UI_EMPTY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "DERIVABLE_FROM_HI",
+        "airtableDetail": "Derived read-model — requires underlying HI facts + HE wiring",
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Derived HE view from live HI Organizations / Relationships graph"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "ownership",
+      "field": "brand_status",
+      "question": "Brand relationship",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HI_REL",
+        "airtableDetail": "HI Rel Brand",
+        "liveClass": "LIVE_HI_GRAPH_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE shows live HI graph Airtable data"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "ownership",
+      "field": "decision_authority.people",
+      "question": "Decision authority people",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": false,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HI_CONTACTS",
+        "airtableDetail": "No HI Org Contacts for linked orgs",
+        "liveClass": "GENUINE_GAP",
+        "liveIntegrated": false,
+        "note": "Not in Airtable and not in HE — research or steward fill after reuse"
+      },
+      "gate1Action": "RESEARCH_OR_STEWARD_AFTER_REUSE"
+    },
+    {
+      "tab": "ownership",
+      "field": "qualified_signatories",
+      "question": "Qualified signatories",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": false,
+        "liveClass": "GOLDEN_DEMO_UI_EMPTY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": false,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HI_CONTACTS",
+        "airtableDetail": "No HI Org Contacts for linked orgs",
+        "liveClass": "GENUINE_GAP",
+        "liveIntegrated": false,
+        "note": "Not in Airtable and not in HE — research or steward fill after reuse"
+      },
+      "gate1Action": "RESEARCH_OR_STEWARD_AFTER_REUSE"
+    },
+    {
+      "tab": "ownership",
+      "field": "corporate_contact_channels",
+      "question": "Corporate channels",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HI_CHANNELS",
+        "airtableDetail": "No HI Contact Channels",
+        "liveClass": "UI_POPULATED_UNVERIFIED_SOURCE",
+        "liveIntegrated": false,
+        "note": "UI populated; not attributed to verified HPC/HI field"
+      },
+      "gate1Action": "NONE"
+    },
+    {
+      "tab": "ownership",
+      "field": "asset_agreement_profile",
+      "question": "Agreement posture",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": false,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HPC",
+        "airtableDetail": "Missing on HPC (Operation Type)",
+        "liveClass": "GENUINE_GAP",
+        "liveIntegrated": false,
+        "note": "Not in Airtable and not in HE — research or steward fill after reuse"
+      },
+      "gate1Action": "RESEARCH_OR_STEWARD_AFTER_REUSE"
+    },
+    {
+      "tab": "ownership",
+      "field": "property_history",
+      "question": "Ownership history",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": false,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HI_EVIDENCE",
+        "airtableDetail": "No HI Graph Evidence rows",
+        "liveClass": "GENUINE_GAP",
+        "liveIntegrated": false,
+        "note": "Not in Airtable and not in HE — research or steward fill after reuse"
+      },
+      "gate1Action": "RESEARCH_OR_STEWARD_AFTER_REUSE"
+    },
+    {
+      "tab": "ownership",
+      "field": "development_pursuit",
+      "question": "Pursuit notes",
+      "goldRequired": false,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": false,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HI_RUNS",
+        "airtableDetail": "No HI Ownership Research Runs",
+        "liveClass": "GENUINE_GAP",
+        "liveIntegrated": false,
+        "note": "Not in Airtable and not in HE — research or steward fill after reuse"
+      },
+      "gate1Action": "RESEARCH_OR_STEWARD_AFTER_REUSE"
+    },
+    {
+      "tab": "ownership",
+      "field": "research_gaps",
+      "question": "Research gaps",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HI_RUNS",
+        "airtableDetail": "No HI Ownership Research Runs",
+        "liveClass": "UI_POPULATED_UNVERIFIED_SOURCE",
+        "liveIntegrated": false,
+        "note": "UI populated; not attributed to verified HPC/HI field"
+      },
+      "gate1Action": "NONE"
+    },
+    {
+      "tab": "ownership",
+      "field": "sources",
+      "question": "Source bibliography",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": false,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HI_EVIDENCE",
+        "airtableDetail": "No HI Graph Evidence rows",
+        "liveClass": "GENUINE_GAP",
+        "liveIntegrated": false,
+        "note": "Not in Airtable and not in HE — research or steward fill after reuse"
+      },
+      "gate1Action": "RESEARCH_OR_STEWARD_AFTER_REUSE"
+    },
+    {
+      "tab": "contacts",
+      "field": "quality_summary",
+      "question": "Contact quality summary",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "DERIVABLE_FROM_HI",
+        "airtableDetail": "Derived read-model — requires underlying HI facts + HE wiring",
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Contacts summary derived from HI graph + HPC property fallback (no named CI package)"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "contacts",
+      "field": "ownershipSummary",
+      "question": "Ownership summary on contacts",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "DERIVABLE_FROM_HI",
+        "airtableDetail": "Derived read-model — requires underlying HI facts + HE wiring",
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Contacts summary derived from HI graph + HPC property fallback (no named CI package)"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "contacts",
+      "field": "organization_contacts",
+      "question": "Org contact routes",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HI_CHANNELS",
+        "airtableDetail": "No HI Contact Channels",
+        "liveClass": "UI_POPULATED_UNVERIFIED_SOURCE",
+        "liveIntegrated": false,
+        "note": "UI populated; not attributed to verified HPC/HI field"
+      },
+      "gate1Action": "NONE"
+    },
+    {
+      "tab": "contacts",
+      "field": "people_groups",
+      "question": "People by role",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": false,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HI_CONTACTS",
+        "airtableDetail": "No HI Org Contacts for linked orgs",
+        "liveClass": "GENUINE_GAP",
+        "liveIntegrated": false,
+        "note": "Not in Airtable and not in HE — research or steward fill after reuse"
+      },
+      "gate1Action": "RESEARCH_OR_STEWARD_AFTER_REUSE"
+    },
+    {
+      "tab": "contacts",
+      "field": "emails_phones",
+      "question": "Emails / phones",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": false,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HI_CHANNELS",
+        "airtableDetail": "No HI Contact Channels",
+        "liveClass": "GENUINE_GAP",
+        "liveIntegrated": false,
+        "note": "Not in Airtable and not in HE — research or steward fill after reuse"
+      },
+      "gate1Action": "RESEARCH_OR_STEWARD_AFTER_REUSE"
+    },
+    {
+      "tab": "contacts",
+      "field": "fallback_paths",
+      "question": "Public fallback paths",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HPC",
+        "airtableDetail": "HPC.Phone",
+        "liveClass": "LIVE_HPC_TO_UI",
+        "liveIntegrated": true,
+        "note": "Contacts property fallback paths wired from HPC Phone / Official Property URL"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "contacts",
+      "field": "research_unresolved",
+      "question": "Unresolved contact research",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": false,
+        "liveClass": "GOLDEN_DEMO_UI_EMPTY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HI_RUNS",
+        "airtableDetail": "No HI Ownership Research Runs",
+        "liveClass": "UI_POPULATED_UNVERIFIED_SOURCE",
+        "liveIntegrated": false,
+        "note": "UI populated; not attributed to verified HPC/HI field"
+      },
+      "gate1Action": "NONE"
+    },
+    {
+      "tab": "organization",
+      "field": "display_name",
+      "question": "Org display name",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HI_ORG",
+        "airtableDetail": "HI Organizations (Marriott International, Inc.)",
+        "liveClass": "LIVE_HI_GRAPH_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE shows live HI graph Airtable data"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "organization",
+      "field": "legal_name",
+      "question": "Org legal name",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HI_ORG",
+        "airtableDetail": "HI Organizations (Marriott International, Inc.)",
+        "liveClass": "LIVE_HI_GRAPH_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE shows live HI graph Airtable data"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "organization",
+      "field": "ticker",
+      "question": "Ticker / registry id",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": false,
+        "liveClass": "GOLDEN_DEMO_UI_EMPTY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HI_ORG",
+        "airtableDetail": "HI Organizations (Marriott International, Inc.)",
+        "liveClass": "LIVE_HI_GRAPH_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE shows live HI graph Airtable data"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "organization",
+      "field": "portfolio_kpis",
+      "question": "Portfolio KPIs",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": false,
+        "liveClass": "GOLDEN_DEMO_UI_EMPTY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "DERIVABLE_FROM_HI",
+        "airtableDetail": "Derived read-model — requires underlying HI facts + HE wiring",
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Derived HE view from live HI Organizations / Relationships graph"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "organization",
+      "field": "owned_controlled_hotels",
+      "question": "Owned hotels list",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": false,
+        "liveClass": "GOLDEN_DEMO_UI_EMPTY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "DERIVABLE_FROM_HI",
+        "airtableDetail": "Derived read-model — requires underlying HI facts + HE wiring",
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Derived HE view from live HI Organizations / Relationships graph"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "organization",
+      "field": "operated_managed_hotels",
+      "question": "Operated hotels list",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": false,
+        "liveClass": "GOLDEN_DEMO_UI_EMPTY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "DERIVABLE_FROM_HI",
+        "airtableDetail": "Derived read-model — requires underlying HI facts + HE wiring",
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Derived HE view from live HI Organizations / Relationships graph"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "organization",
+      "field": "key_people",
+      "question": "Key people",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": false,
+        "airtableExists": false,
+        "airtableClass": "MISSING_HI_CONTACTS",
+        "airtableDetail": "No HI Org Contacts for linked orgs",
+        "liveClass": "GENUINE_GAP",
+        "liveIntegrated": false,
+        "note": "Not in Airtable and not in HE — research or steward fill after reuse"
+      },
+      "gate1Action": "RESEARCH_OR_STEWARD_AFTER_REUSE"
+    },
+    {
+      "tab": "organization",
+      "field": "why_this_matters",
+      "question": "Why org matters",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HI_ORG",
+        "airtableDetail": "HI Organizations (Marriott International, Inc.)",
+        "liveClass": "LIVE_HI_GRAPH_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE shows live HI graph Airtable data"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "relationships",
+      "field": "structure_chart",
+      "question": "Structure chart",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "DERIVABLE_FROM_HI",
+        "airtableDetail": "Derived read-model — requires underlying HI facts + HE wiring",
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Derived HE view from live HI Organizations / Relationships graph"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "relationships",
+      "field": "relationship_edges",
+      "question": "Relationship edges",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "EXISTS_HI_REL",
+        "airtableDetail": "2 HI relationships",
+        "liveClass": "LIVE_HI_GRAPH_TO_UI",
+        "liveIntegrated": true,
+        "note": "HE shows live HI graph Airtable data"
+      },
+      "gate1Action": "REUSE_OK"
+    },
+    {
+      "tab": "relationships",
+      "field": "org_network",
+      "question": "Org network",
+      "goldRequired": true,
+      "kgpv": {
+        "demonstratedUi": true,
+        "liveClass": "GOLDEN_DEMO_UI_ONLY",
+        "note": "Golden-demo UX reference only — not canonical Airtable proof"
+      },
+      "bethesda": {
+        "uiPresent": true,
+        "airtableExists": true,
+        "airtableClass": "DERIVABLE_FROM_HI",
+        "airtableDetail": "Derived read-model — requires underlying HI facts + HE wiring",
+        "liveClass": "LIVE_VERIFIED_DERIVED",
+        "liveIntegrated": true,
+        "note": "Derived HE view from live HI Organizations / Relationships graph"
+      },
+      "gate1Action": "REUSE_OK"
+    }
+  ]
+}

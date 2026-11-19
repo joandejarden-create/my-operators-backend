@@ -12,9 +12,15 @@ import {
   HOTEL_PROPERTY_CENSUS_TABLE,
 } from "../lib/hotel-intelligence/radar-internal-preview-hotels-v1.js";
 import {
+  resolvePropertyCensusOwnership,
+  HOTEL_CENSUS_TABLE,
+  PROPERTY_IDENTITY_CONTRACT,
+} from "../lib/hotel-intelligence/property-census-identity-v1.js";
+import {
   applyOverviewEnrichmentToHotel,
   buildHotelExplorerOverviewEnrichment,
 } from "../lib/hotel-intelligence/hotel-explorer-overview-enrichment-v1.js";
+import { attachOverviewFieldProvenance } from "../lib/hotel-intelligence/he-overview-field-provenance-v1.js";
 
 const AIRTABLE_KEY = process.env.AIRTABLE_API_KEY;
 const AIRTABLE_BASE = process.env.AIRTABLE_BASE_ID_ALT;
@@ -39,7 +45,7 @@ function fixtureHotelResponse(recordId) {
 const cache = new Map();
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes cache
 /** Bump when API response shape or fetched fields change (invalidates stale cache). */
-const CACHE_SCHEMA_VERSION = 8;
+const CACHE_SCHEMA_VERSION = 9;
 
 // Cache helper functions
 function getCacheKey(query) {
@@ -193,6 +199,15 @@ function readNumberField(fields, key) {
   return Number.isFinite(num) ? num : null;
 }
 
+/** Prefer legacy census numeric fields, then HPC-style aliases (e.g. Rooms / Keys). */
+function readNumberFieldAliases(fields, keys) {
+  for (const key of keys) {
+    const value = readNumberField(fields, key);
+    if (value != null) return value;
+  }
+  return null;
+}
+
 function readYnFlag(fields, key) {
   const raw = readTextField(fields, key);
   if (!raw) return false;
@@ -239,8 +254,19 @@ function formatHotelRecord(hotel) {
         "Current Brand",
         "Brand Family",
       ]) || "Unknown Brand",
-    parentCompany: readTextField(fields, F.hotels.parentCompany) || "Unknown",
-    status: readTextField(fields, F.hotels.status) || "unknown",
+    parentCompany:
+      readTextFieldAliases(fields, [
+        F.hotels.parentCompany,
+        "Brand Family",
+        "Family / Source Family",
+      ]) || "Unknown",
+    status:
+      readTextFieldAliases(fields, [
+        F.hotels.status,
+        "Radar Status",
+        "project_phase",
+        "Project Phase",
+      ]) || "unknown",
     lat: hasCoords ? lat : 0,
     lng: hasCoords ? lng : 0,
     city:
@@ -248,34 +274,67 @@ function formatHotelRecord(hotel) {
     country:
       readTextFieldAliases(fields, [F.hotels.country, "Country"]) ||
       "Unknown Country",
-    region: readTextField(fields, F.hotels.region) || "Unknown Region",
-    locationType: readTextField(fields, F.hotels.locationType) || null,
-    rooms: parseInt(fields[F.hotels.rooms], 10) || 0,
+    region:
+      readTextFieldAliases(fields, [F.hotels.region, "Continent", "State / Region"]) ||
+      "Unknown Region",
+    locationType:
+      readTextFieldAliases(fields, [F.hotels.locationType, "Asset Context"]) || null,
+    rooms: readNumberFieldAliases(fields, [F.hotels.rooms, "Rooms / Keys", "Rooms"]) || 0,
     strNumber: fields[F.hotels.strNumber] ?? null,
-    chainScale: readTextField(fields, F.hotels.chainScale),
+    chainScale: readTextFieldAliases(fields, [
+      F.hotels.chainScale,
+      "Hotel Class / Segment",
+    ]),
     projectPhase: readTextField(fields, F.hotels.projectPhase),
     propertyType: readTextField(fields, F.hotels.propertyType),
-    operationType: readTextField(fields, F.hotels.operationType),
-    managementCompany: readTextField(fields, F.hotels.managementCompany),
-    website: readTextField(fields, F.hotels.website),
-    telephone: readTextField(fields, F.hotels.telephone),
-    address1: readTextField(fields, F.hotels.address1),
+    operationType: readTextFieldAliases(fields, [
+      F.hotels.operationType,
+      "Management Model",
+    ]),
+    managementCompany: readTextFieldAliases(fields, [
+      F.hotels.managementCompany,
+      "Operator / Management Company",
+    ]),
+    website: readTextFieldAliases(fields, [
+      F.hotels.website,
+      "Official Property URL",
+    ]),
+    telephone: readTextFieldAliases(fields, [F.hotels.telephone, "Phone"]),
+    address1: readTextFieldAliases(fields, [F.hotels.address1, "Address"]),
     address2: readTextField(fields, F.hotels.address2),
-    market: readTextField(fields, F.hotels.market),
+    market: readTextFieldAliases(fields, [F.hotels.market, "Market / Submarket"]),
     submarket: readTextField(fields, F.hotels.submarket),
     openDate: readDateField(fields, F.hotels.openDate),
     projectedOpenDate: readDateField(fields, F.hotels.projectedOpenDate),
     starRating: readNumberField(fields, F.hotels.starRating),
-    amenities: readTextField(fields, F.hotels.amenities),
-    hotelDescription: readTextField(fields, F.hotels.hotelDescription),
-    hotelHeadline: readTextField(fields, F.hotels.hotelHeadline),
+    amenities: readTextFieldAliases(fields, [
+      F.hotels.amenities,
+      "Amenities - Source Text",
+      "Amenities - Structured Tags",
+    ]),
+    hotelDescription: readTextFieldAliases(fields, [
+      F.hotels.hotelDescription,
+      "Short Property Summary",
+      "Property Positioning",
+      "Hotel Description - AI Summary",
+      "Hotel Description - Source Text",
+    ]),
+    hotelHeadline: readTextFieldAliases(fields, [
+      F.hotels.hotelHeadline,
+      "Property Positioning",
+      "Hotel Headline",
+    ]),
     occupancyRate: readNumberField(fields, F.hotels.occupancyRate),
     adr: readNumberField(fields, F.hotels.adr),
     revpar: readNumberField(fields, F.hotels.revpar),
-    state: readTextField(fields, F.hotels.state),
+    state: readTextFieldAliases(fields, [F.hotels.state, "State / Region"]),
     postalCode: readTextField(fields, F.hotels.postalCode),
     floors: readNumberField(fields, F.hotels.floors),
-    totalMeetingSpace: readNumberField(fields, F.hotels.totalMeetingSpace),
+    totalMeetingSpace: readNumberFieldAliases(fields, [
+      F.hotels.totalMeetingSpace,
+      "Total Meeting Space Sq Ft",
+      "Meeting Space Sq Ft",
+    ]),
     dataConfidence: readTextField(fields, F.hotels.dataConfidence),
     censusPropertyType: readTextField(fields, F.hotels.censusPropertyType),
     hotelServiceModel: readTextField(fields, F.hotels.hotelServiceModel),
@@ -297,39 +356,23 @@ export async function getBrandPresenceHotelById(req, res) {
   }
 
   try {
-    let hotel;
-    let formatted;
-    let sourceTable = F.hotels.table;
-    try {
-      hotel = await base(F.hotels.table).find(recordId);
-      formatted = formatHotelRecord(hotel);
-    } catch (censusErr) {
-      hotel = null;
-      formatted = null;
-      if (censusErr?.statusCode !== 404) {
-        // Fall through to HPC only for not-found; rethrow unexpected errors after HPC attempt.
-      }
-    }
+    // Fail-closed ownership: RECORD_ID() filter — do not trust GET-by-id table path.
+    const identity = await resolvePropertyCensusOwnership(base, recordId);
+    let formatted = null;
+    let sourceTable = null;
+    let owningTableKind = identity.owningTableKind;
 
-    // Hotel Property Census holds some internal-preview hotels (e.g. Bethesda) that
-    // are not listable on legacy Hotel Census. Prefer HPC when Hotel Census identity
-    // is missing/unknown so by-id detail stays accurate without changing map SoT.
-    const needsHpc =
-      !formatted ||
-      !formatted.name ||
-      formatted.name === "Unknown Hotel" ||
-      formatted.country === "Unknown Country";
-    if (needsHpc) {
-      try {
-        const hpc = await base(HOTEL_PROPERTY_CENSUS_TABLE).find(recordId);
-        formatted = formatHotelPropertyCensusAsBrandPresenceHotel(hpc);
-        sourceTable = HOTEL_PROPERTY_CENSUS_TABLE;
-        // by-id detail for HE is available to authenticated Radar hosts; public share
-        // packs still omit Bethesda via share HTML gates (not this endpoint alone).
-        delete formatted.internalPreviewOnly;
-      } catch (hpcErr) {
-        if (!formatted) throw hpcErr;
-      }
+    if (identity.ok && identity.record && identity.owningTableKind === "HPC") {
+      formatted = formatHotelPropertyCensusAsBrandPresenceHotel(identity.record);
+      sourceTable = HOTEL_PROPERTY_CENSUS_TABLE;
+      delete formatted.internalPreviewOnly;
+    } else if (identity.ok && identity.record && identity.owningTableKind === "HOTEL_CENSUS") {
+      formatted = formatHotelRecord(identity.record);
+      sourceTable = HOTEL_CENSUS_TABLE;
+    } else if (identity.ok && identity.record && identity.owningTableKind === "AMBIGUOUS") {
+      formatted = formatHotelPropertyCensusAsBrandPresenceHotel(identity.record);
+      sourceTable = HOTEL_PROPERTY_CENSUS_TABLE;
+      delete formatted.internalPreviewOnly;
     }
 
     if (!formatted) {
@@ -338,23 +381,49 @@ export async function getBrandPresenceHotelById(req, res) {
 
     formatted.amenitiesDisplay = buildHiltonAmenitiesDisplay(formatted);
     formatted.censusSourceTable = sourceTable;
-    // Prefer golden-demo presentation for Mexico share hotels when census still shows former brand.
-    if (isMexicoRadarFixtureHotelId(recordId)) {
+    formatted.propertyIdentity = {
+      contract: PROPERTY_IDENTITY_CONTRACT,
+      owningTable: sourceTable,
+      owningTableKind,
+      censusFound: identity.censusFound === true,
+      hpcFound: identity.hpcFound === true,
+      warning: identity.warning || null,
+    };
+
+    // Golden-demo Mexico presentation overlay is UX-only for Hotel Census–owned
+    // Mexico demo hotels. Never overlay fixtures onto HPC-owned canonical records.
+    if (
+      owningTableKind === "HOTEL_CENSUS" &&
+      isMexicoRadarFixtureHotelId(recordId)
+    ) {
       const presentation = getFixtureHotelById(recordId);
       if (presentation) {
-        formatted.name = presentation.name || formatted.name;
-        formatted.brand = presentation.brand || formatted.brand;
-        formatted.parentCompany = presentation.parentCompany || formatted.parentCompany;
-        formatted.managementCompany =
-          presentation.managementCompany || formatted.managementCompany;
-        formatted.chainScale = presentation.chainScale || formatted.chainScale;
-        formatted.market = presentation.market || formatted.market;
-        formatted.submarket = presentation.submarket || formatted.submarket;
-        formatted.website = presentation.website || formatted.website;
-        formatted.hotelDescription =
-          presentation.hotelDescription || formatted.hotelDescription;
-        formatted.amenities = presentation.amenities || formatted.amenities;
+        const overlayFields = [];
+        const applyOverlay = (key, value) => {
+          if (value == null || value === "") return;
+          formatted[key] = value;
+          overlayFields.push(key);
+        };
+        applyOverlay("name", presentation.name);
+        applyOverlay("brand", presentation.brand);
+        applyOverlay("parentCompany", presentation.parentCompany);
+        applyOverlay("managementCompany", presentation.managementCompany);
+        applyOverlay("chainScale", presentation.chainScale);
+        applyOverlay("market", presentation.market);
+        applyOverlay("submarket", presentation.submarket);
+        applyOverlay("website", presentation.website);
+        applyOverlay("hotelDescription", presentation.hotelDescription);
+        if (presentation.amenities) {
+          formatted.amenities = presentation.amenities;
+          overlayFields.push("amenities");
+        }
         formatted.amenitiesDisplay = buildHiltonAmenitiesDisplay(formatted);
+        formatted.presentationOverlay = {
+          source: "golden_demo_mexico_fixture",
+          applied: true,
+          fields: overlayFields,
+          note: "UX reference overlay on Hotel Census–owned Mexico demo hotel — not verified HPC canonical intelligence",
+        };
       }
     }
 
@@ -412,6 +481,23 @@ export async function getBrandPresenceHotelById(req, res) {
         recordId,
         enrichErr?.message || enrichErr
       );
+    }
+
+    // HPC: re-assert Parent Company / Brand Family over ADP parent overlay, and
+    // attach explicit provenance for the five Gate 1 Overview audit fields.
+    if (owningTableKind === "HPC") {
+      attachOverviewFieldProvenance(formatted, {
+        hpcFields: identity.record?.fields || {},
+        owningTableKind,
+      });
+      // Strip ADP-only parent provenance when HPC Brand Family / Parent Company wins.
+      if (
+        formatted.fieldProvenance?.parentCompany?.class === "VERIFIED_HPC" &&
+        formatted.parentCompanyProvenance?.provenance ===
+          "adp_property_profile_parent_company"
+      ) {
+        delete formatted.parentCompanyProvenance;
+      }
     }
 
     res.json({ success: true, hotel: formatted });

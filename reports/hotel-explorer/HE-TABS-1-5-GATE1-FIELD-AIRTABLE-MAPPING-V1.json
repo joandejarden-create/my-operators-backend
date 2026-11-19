@@ -1,0 +1,3260 @@
+{
+  "contract": "HE_TABS_1_5_GATE1_FIELD_AIRTABLE_MAPPING_V1",
+  "gate": "GATE_1_FIELD_TO_AIRTABLE_MAPPING",
+  "status": "AWAITING_FOUNDER_APPROVAL",
+  "paidResearch": {
+    "substantivePaidEnrichment": "BLOCKED_UNTIL_GATE1_APPROVAL",
+    "spendToDateUsd": 0,
+    "authorizedCeilingUsd": 25,
+    "estimatedAdditionalResearchUsd": {
+      "low": 8,
+      "high": 25,
+      "notes": "Bethesda current owner + contacts; KGPV $0 until identity+migrate"
+    },
+    "limitedMappingAmbiguityCallsUsed": 0
+  },
+  "principle": "Map first → Reuse existing intelligence → Identify genuine gaps → Research → Verify → Persist to correct Airtable → Display in HE → Validate",
+  "auditedAt": "2026-11-19T13:36:07.536Z",
+  "baseUrl": "http://127.0.0.1:8091",
+  "runtimeTarget": {
+    "servingDirectoryBasename": "ws-hotel-explorer",
+    "servingStream": "he"
+  },
+  "canonicalGraph": {
+    "baseId": "appCCUsuGsE1ifoLk",
+    "hpcTable": {
+      "id": "tbl9aY5ijiuIzzWam",
+      "name": "Hotel Property Census"
+    },
+    "legacyCensusIdentityRisk": {
+      "id": "tblgj2qEwxjTcg6q0",
+      "name": "Hotel Census (legacy identity surface)"
+    },
+    "hiTables": {
+      "HI Organizations": "tbliXEfUOWk32AN9y",
+      "HI Hotel–Org Relationships": "tblGiwN0foXXDESvZ",
+      "HI Org Contacts": "tbldJAj0nK1l39JZL",
+      "HI Contact Channels": "tblqC7C4ypy5Zojyw",
+      "HI Ownership Research Runs": "tblGwk1YefumCf2eu",
+      "HI Graph Evidence": "tblc9JhKT1edr4grE"
+    },
+    "forbiddenAdpEvidenceBase": "appa2cE7FTRmIbB32"
+  },
+  "catalog": {
+    "fieldCount": 63,
+    "tabs": [
+      "hotel",
+      "ownership",
+      "contacts",
+      "organization",
+      "relationships"
+    ],
+    "destinationGaps": [],
+    "allFieldsHaveEstablishedOrDerivedDestination": true
+  },
+  "aggregate": {
+    "fieldSlots": 126,
+    "populatedFromExisting": 51,
+    "availableNotConnected": 51,
+    "requiresNewResearch": 24,
+    "noEstablishedDestination": 0,
+    "percentages": {
+      "populatedFromExistingPct": 40.5,
+      "availableNotConnectedPct": 40.5,
+      "requiresNewResearchPct": 19,
+      "noEstablishedDestinationPct": 0
+    }
+  },
+  "hotels": [
+    {
+      "id": "recUNycnMwOVFX0hc",
+      "label": "Krystal Grand Puerto Vallarta",
+      "role": "REFERENCE_AUDIT",
+      "identityNote": "Hotel Census–native (tblgj2qEwxjTcg6q0); HI HPC Hotel link targets tbl9aY5ijiuIzzWam — relationship writes blocked until identity unification",
+      "brandPresenceName": "Krystal Grand Puerto Vallarta",
+      "ownershipDataStatus": "DEEP_RESEARCH_PARTIAL",
+      "ownershipInCohort": true,
+      "hiGraphRelationshipCount": 0,
+      "hiGraphRelTypes": [],
+      "contactBytes": 17090,
+      "counts": {
+        "total": 63,
+        "populatedFromExisting": 21,
+        "availableNotConnected": 42,
+        "requiresNewResearch": 0,
+        "noEstablishedDestination": 0
+      },
+      "percentages": {
+        "populatedFromExistingPct": 33.3,
+        "availableNotConnectedPct": 66.7,
+        "requiresNewResearchPct": 0,
+        "noEstablishedDestinationPct": 0
+      },
+      "fields": [
+        {
+          "tab": "hotel",
+          "section": "Header",
+          "field": "name",
+          "question": "What is the property name?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Property Name",
+            "name"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC",
+            "Hotel Census"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Header",
+          "field": "brand",
+          "question": "What brand/affiliation is displayed?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Current Brand",
+            "Affiliation"
+          ],
+          "relationship": "HPC hotel record (+ optional HI Rel Brand)",
+          "reuseSources": [
+            "HPC",
+            "Brand Explorer"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Header",
+          "field": "status",
+          "question": "Open / pipeline / other status?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "project_phase",
+            "status",
+            "Radar Status"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Header",
+          "field": "website",
+          "question": "Official property website?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Official Property URL",
+            "Website"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC",
+            "Hotel Census"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Header",
+          "field": "telephone",
+          "question": "Property phone?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Phone",
+            "Telephone"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC",
+            "Hotel Census"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Header",
+          "field": "address1",
+          "question": "Street address?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Address 1"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Header",
+          "field": "city",
+          "question": "City?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "city",
+            "City"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Header",
+          "field": "country",
+          "question": "Country?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "country",
+            "Country"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Description",
+          "field": "hotelHeadline",
+          "question": "Short owner-facing headline?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "HPC field destination established; value may be empty on record or not projected — verify Census/HPC before researching.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Hotel Headline"
+          ],
+          "relationship": "HPC enrichment / ADP overlay",
+          "reuseSources": [
+            "HPC",
+            "ADP"
+          ],
+          "researchHint": "reuse_or_light_copy",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Description",
+          "field": "hotelDescription",
+          "question": "Short property summary?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "HPC field destination established; value may be empty on record or not projected — verify Census/HPC before researching.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Short Property Summary",
+            "description"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC",
+            "ADP"
+          ],
+          "researchHint": "reuse_or_light_copy",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "parentCompany",
+          "question": "Brand parent company?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Parent Company"
+          ],
+          "relationship": "HPC hotel record (brand parent, not economic owner)",
+          "reuseSources": [
+            "HPC",
+            "Brand Explorer"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "chainScale",
+          "question": "Chain scale?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Chain Scale"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "censusPropertyType",
+          "question": "Property type?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Property Type"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "rooms",
+          "question": "Rooms / keys?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Rooms / Keys",
+            "rooms"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC",
+            "Hotel Census"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "totalMeetingSpace",
+          "question": "Total meeting space?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Total Meeting Space"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "operationType",
+          "question": "Franchise / managed / etc.?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Operation Type"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "managementCompany",
+          "question": "Operator / management company label?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "COMPOSITE_ESTABLISHED",
+          "destClass": "COMPOSITE",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Operator / Management Company"
+          ],
+          "relationship": "HPC text + HI Rel Operator (tblGiwN0foXXDESvZ) → HI Organizations",
+          "reuseSources": [
+            "HPC",
+            "HI_graph"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "market",
+          "question": "Dealality market?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Market"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC",
+            "Radar"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "submarket",
+          "question": "Dealality submarket/corridor?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Submarket"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC",
+            "Radar"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "locationType",
+          "question": "Location type (resort/suburban/…)?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Location"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "projectPhase",
+          "question": "Project phase?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "project_phase"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "projectedOpenDate",
+          "question": "Projected open date (if pipeline)?",
+          "uiPresent": false,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "N/A for Open assets — not a research gap; HPC field exists for pipeline hotels.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "projected_open_date"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse_if_pipeline",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "starRating",
+          "question": "Star rating?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "HPC field destination established; value may be empty on record or not projected — verify Census/HPC before researching.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Star Rating"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse_or_optional",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "dataConfidence",
+          "question": "Census data confidence?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "HPC field destination established; value may be empty on record or not projected — verify Census/HPC before researching.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Data Confidence"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Amenities",
+          "field": "amenitiesDisplay",
+          "question": "Amenities shown in Overview?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "COMPOSITE_ESTABLISHED",
+          "destClass": "COMPOSITE",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "HPC amenity fields"
+          ],
+          "relationship": "HPC amenities + ADP verified Attributes (display overlay; do not mutate ADP publication gates)",
+          "reuseSources": [
+            "HPC",
+            "ADP"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Executive Summary",
+          "field": "executive_summary.text",
+          "question": "Who owns / controls — narrative summary?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_RUN",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGwk1YefumCf2eu",
+          "tableName": "HI Ownership Research Runs",
+          "airtableFields": [
+            "Summary",
+            "Notes"
+          ],
+          "relationship": "Run → HPC hotel; evidence in HI Graph Evidence",
+          "reuseSources": [
+            "HI_graph",
+            "golden_demo_fixtures"
+          ],
+          "researchHint": "migrate_or_research",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Executive Summary",
+          "field": "what_remains_uncertain",
+          "question": "What ownership facts remain uncertain?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_EVIDENCE",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblc9JhKT1edr4grE",
+          "tableName": "HI Graph Evidence",
+          "airtableFields": [
+            "Notes",
+            "Evidence"
+          ],
+          "relationship": "Evidence linked to hotel/org/rel",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "research_gaps",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Meta",
+          "field": "economic_owner",
+          "question": "Who is the economic owner?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_REL",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "Relationship Type",
+            "Legal Name",
+            "Trading Name"
+          ],
+          "relationship": "RelationshipType=Economic Owner → tbliXEfUOWk32AN9y via Organization link; HPC Hotel → tbl9aY5ijiuIzzWam",
+          "reuseSources": [
+            "HI_graph",
+            "golden_demo_fixtures"
+          ],
+          "researchHint": "critical_research_if_missing",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Meta",
+          "field": "property_company",
+          "question": "Legal PropCo / property vehicle?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_REL",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "Relationship Type=Legal Owner"
+          ],
+          "relationship": "Legal Owner → HI Organizations",
+          "reuseSources": [
+            "HI_graph",
+            "golden_demo_fixtures"
+          ],
+          "researchHint": "research_if_missing",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Meta",
+          "field": "operator",
+          "question": "Who operates/manages the hotel?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_REL",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "Relationship Type=Operator|Management Company"
+          ],
+          "relationship": "Operator → HI Organizations (+ HPC Operator text)",
+          "reuseSources": [
+            "HPC",
+            "HI_graph"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Meta",
+          "field": "control_status",
+          "question": "Control / verification posture?",
+          "uiPresent": true,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "DERIVED_READ_MODEL",
+          "destClass": "DERIVED",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "Verification State"
+          ],
+          "relationship": "Derived from relationship Verification State + presence of Economic Owner",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "derived",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Meta",
+          "field": "source_coverage",
+          "question": "How many evidence sources support ownership?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "DERIVED_READ_MODEL",
+          "destClass": "DERIVED",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblc9JhKT1edr4grE",
+          "tableName": "HI Graph Evidence",
+          "airtableFields": [
+            "count of evidence rows"
+          ],
+          "relationship": "Derived from HI Graph Evidence for hotel",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "derived",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Insights",
+          "field": "what_we_know[]",
+          "question": "Key ownership facts we know?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_EVIDENCE",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblc9JhKT1edr4grE",
+          "tableName": "HI Graph Evidence",
+          "airtableFields": [
+            "Evidence",
+            "Notes"
+          ],
+          "relationship": "Graph evidence + run summary",
+          "reuseSources": [
+            "HI_graph",
+            "golden_demo_fixtures"
+          ],
+          "researchHint": "migrate_or_research",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Ownership & Control",
+          "field": "control_rows",
+          "question": "Role × org control table?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_REL",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "Relationship Type",
+            "Organization",
+            "Verification State"
+          ],
+          "relationship": "All current hotel–org relationships",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "reuse_graph",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "UBO",
+          "field": "ubo_group",
+          "question": "Ultimate beneficial owner / parent group?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_ORG",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbliXEfUOWk32AN9y",
+          "tableName": "HI Organizations",
+          "airtableFields": [
+            "Parent Organization",
+            "Parent Organization ID"
+          ],
+          "relationship": "Parent Organization chain on HI Organizations",
+          "reuseSources": [
+            "HI_graph",
+            "golden_demo_fixtures"
+          ],
+          "researchHint": "research_if_missing",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Portfolio Preview",
+          "field": "portfolio_preview",
+          "question": "Other hotels in same ownership/control?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "DERIVED_READ_MODEL",
+          "destClass": "DERIVED",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "same Organization across HPC"
+          ],
+          "relationship": "Query HI Rel by Organization ID across HPC",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "derived_after_org_persist",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Franchise & Brand",
+          "field": "brand_status",
+          "question": "Brand relationship / affiliation status?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "COMPOSITE_ESTABLISHED",
+          "destClass": "COMPOSITE",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "Relationship Type=Brand"
+          ],
+          "relationship": "HI Rel Brand + HPC Affiliation/Current Brand",
+          "reuseSources": [
+            "HPC",
+            "HI_graph",
+            "Brand Explorer"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "People",
+          "field": "decision_authority.people",
+          "question": "Who has decision authority on ownership side?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Rich golden-demo / Contact Intelligence showcase intelligence exists; NOT migrated to HI Org Contacts/Channels. GSF→Airtable blocked until fact verification (Gate 1+).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_CONTACT",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbldJAj0nK1l39JZL",
+          "tableName": "HI Org Contacts",
+          "airtableFields": [
+            "Display Name",
+            "Title",
+            "Function / Role"
+          ],
+          "relationship": "HI Org Contacts → HI Organizations",
+          "reuseSources": [
+            "HI_graph",
+            "CI_showcase",
+            "golden_demo_fixtures"
+          ],
+          "researchHint": "migrate_verified_only",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Signatories",
+          "field": "qualified_signatories",
+          "question": "Qualified signatories?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_CONTACT",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbldJAj0nK1l39JZL",
+          "tableName": "HI Org Contacts",
+          "airtableFields": [
+            "authority / notes flags"
+          ],
+          "relationship": "HI Org Contacts with authority annotation (field may need ensure)",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "optional_schema_flag",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Channels",
+          "field": "corporate_contact_channels",
+          "question": "Corporate email/phone paths?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Rich golden-demo / Contact Intelligence showcase intelligence exists; NOT migrated to HI Org Contacts/Channels. GSF→Airtable blocked until fact verification (Gate 1+).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_CHANNEL",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblqC7C4ypy5Zojyw",
+          "tableName": "HI Contact Channels",
+          "airtableFields": [
+            "Channel Kind",
+            "Channel Value"
+          ],
+          "relationship": "Channels → Person or Organization",
+          "reuseSources": [
+            "HI_graph",
+            "CI_showcase"
+          ],
+          "researchHint": "migrate_verified_only",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Asset Profile",
+          "field": "asset_agreement_profile",
+          "question": "Franchise / management agreement posture?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "COMPOSITE_ESTABLISHED",
+          "destClass": "COMPOSITE",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Operation Type"
+          ],
+          "relationship": "HPC Operation Type + HI Rel Operator/Brand notes",
+          "reuseSources": [
+            "HPC",
+            "HI_graph"
+          ],
+          "researchHint": "reuse_light",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "History",
+          "field": "property_history",
+          "question": "Ownership / transaction history?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_EVIDENCE",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblc9JhKT1edr4grE",
+          "tableName": "HI Graph Evidence",
+          "airtableFields": [
+            "Evidence",
+            "Observed At",
+            "Source URL"
+          ],
+          "relationship": "Historical evidence rows (not current Economic Owner claim)",
+          "reuseSources": [
+            "HI_graph",
+            "staged_research"
+          ],
+          "researchHint": "stage_historical_separately",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Pursuit",
+          "field": "development_pursuit",
+          "question": "Development / pursuit notes?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_RUN",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGwk1YefumCf2eu",
+          "tableName": "HI Ownership Research Runs",
+          "airtableFields": [
+            "Notes"
+          ],
+          "relationship": "Research run notes",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "optional",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Gaps",
+          "field": "research_gaps",
+          "question": "Open research gaps?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_RUN",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGwk1YefumCf2eu",
+          "tableName": "HI Ownership Research Runs",
+          "airtableFields": [
+            "Notes",
+            "Status"
+          ],
+          "relationship": "Research run ledger",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "derived_from_gaps",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "References",
+          "field": "sources",
+          "question": "Source bibliography?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_EVIDENCE",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblc9JhKT1edr4grE",
+          "tableName": "HI Graph Evidence",
+          "airtableFields": [
+            "Source Name",
+            "Source URL"
+          ],
+          "relationship": "HI Graph Evidence",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "persist_with_evidence",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "contacts",
+          "section": "Quality",
+          "field": "quality_summary",
+          "question": "Contact package quality summary?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Rich golden-demo / Contact Intelligence showcase intelligence exists; NOT migrated to HI Org Contacts/Channels. GSF→Airtable blocked until fact verification (Gate 1+).",
+          "destinationStatus": "DERIVED_READ_MODEL",
+          "destClass": "DERIVED",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblqC7C4ypy5Zojyw",
+          "tableName": "HI Contact Channels",
+          "airtableFields": [
+            "derived from channel verification"
+          ],
+          "relationship": "Derived from HI Org Contacts + Channels",
+          "reuseSources": [
+            "HI_graph",
+            "CI_runtime"
+          ],
+          "researchHint": "derived",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "contacts",
+          "section": "Ownership Summary",
+          "field": "ownershipSummary",
+          "question": "Ownership summary on Contacts tab?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Rich golden-demo / Contact Intelligence showcase intelligence exists; NOT migrated to HI Org Contacts/Channels. GSF→Airtable blocked until fact verification (Gate 1+).",
+          "destinationStatus": "DERIVED_READ_MODEL",
+          "destClass": "DERIVED",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "projection"
+          ],
+          "relationship": "Projection of ownership relationships",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "derived",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "contacts",
+          "section": "Orgs",
+          "field": "organization_contacts",
+          "question": "Organization-level contact routes?",
+          "uiPresent": true,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Rich golden-demo / Contact Intelligence showcase intelligence exists; NOT migrated to HI Org Contacts/Channels. GSF→Airtable blocked until fact verification (Gate 1+).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_CHANNEL",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblqC7C4ypy5Zojyw",
+          "tableName": "HI Contact Channels",
+          "airtableFields": [
+            "Channel Value"
+          ],
+          "relationship": "Org-subject channels + HI Organizations",
+          "reuseSources": [
+            "CI_showcase",
+            "HI_graph"
+          ],
+          "researchHint": "migrate_verified_only",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "contacts",
+          "section": "People",
+          "field": "people_groups",
+          "question": "People grouped by role?",
+          "uiPresent": true,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Rich golden-demo / Contact Intelligence showcase intelligence exists; NOT migrated to HI Org Contacts/Channels. GSF→Airtable blocked until fact verification (Gate 1+).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_CONTACT",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbldJAj0nK1l39JZL",
+          "tableName": "HI Org Contacts",
+          "airtableFields": [
+            "Display Name",
+            "Title"
+          ],
+          "relationship": "HI Org Contacts",
+          "reuseSources": [
+            "CI_showcase",
+            "HI_graph"
+          ],
+          "researchHint": "migrate_verified_only",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "contacts",
+          "section": "Channels",
+          "field": "emails_phones",
+          "question": "Emails and phones?",
+          "uiPresent": true,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Rich golden-demo / Contact Intelligence showcase intelligence exists; NOT migrated to HI Org Contacts/Channels. GSF→Airtable blocked until fact verification (Gate 1+).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_CHANNEL",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblqC7C4ypy5Zojyw",
+          "tableName": "HI Contact Channels",
+          "airtableFields": [
+            "Channel Kind",
+            "Channel Value",
+            "Verification Status"
+          ],
+          "relationship": "HI Contact Channels",
+          "reuseSources": [
+            "CI_showcase",
+            "HI_graph"
+          ],
+          "researchHint": "migrate_verified_only",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "contacts",
+          "section": "Fallback",
+          "field": "fallback_paths",
+          "question": "Public/fallback contact paths?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Rich golden-demo / Contact Intelligence showcase intelligence exists; NOT migrated to HI Org Contacts/Channels. GSF→Airtable blocked until fact verification (Gate 1+).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_CHANNEL",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblqC7C4ypy5Zojyw",
+          "tableName": "HI Contact Channels",
+          "airtableFields": [
+            "Classification",
+            "Access / Publication Restriction"
+          ],
+          "relationship": "Public/fallback channels",
+          "reuseSources": [
+            "HPC_phone_website",
+            "CI_showcase"
+          ],
+          "researchHint": "reuse_property_channels",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "contacts",
+          "section": "Unresolved",
+          "field": "research_unresolved",
+          "question": "Unresolved contact research?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Rich golden-demo / Contact Intelligence showcase intelligence exists; NOT migrated to HI Org Contacts/Channels. GSF→Airtable blocked until fact verification (Gate 1+).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_RUN",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGwk1YefumCf2eu",
+          "tableName": "HI Ownership Research Runs",
+          "airtableFields": [
+            "Notes",
+            "Status"
+          ],
+          "relationship": "Research run unresolved reasons",
+          "reuseSources": [
+            "CI_runtime"
+          ],
+          "researchHint": "derived",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "organization",
+          "section": "Overview",
+          "field": "display_name",
+          "question": "Organization trading/display name?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_ORG",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbliXEfUOWk32AN9y",
+          "tableName": "HI Organizations",
+          "airtableFields": [
+            "Trading Name"
+          ],
+          "relationship": "HI Organizations",
+          "reuseSources": [
+            "HI_graph",
+            "golden_demo_fixtures"
+          ],
+          "researchHint": "reuse_after_org_persist",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "organization",
+          "section": "Overview",
+          "field": "legal_name",
+          "question": "Organization legal name?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_ORG",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbliXEfUOWk32AN9y",
+          "tableName": "HI Organizations",
+          "airtableFields": [
+            "Legal Name"
+          ],
+          "relationship": "HI Organizations",
+          "reuseSources": [
+            "HI_graph",
+            "golden_demo_fixtures"
+          ],
+          "researchHint": "reuse_after_org_persist",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "organization",
+          "section": "Overview",
+          "field": "ticker",
+          "question": "Ticker / registry identifier?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_ORG",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbliXEfUOWk32AN9y",
+          "tableName": "HI Organizations",
+          "airtableFields": [
+            "Registry / Identifier"
+          ],
+          "relationship": "HI Organizations Registry / Identifier",
+          "reuseSources": [
+            "public_filings",
+            "golden_demo_fixtures"
+          ],
+          "researchHint": "reuse_or_light_lookup",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "organization",
+          "section": "KPIs",
+          "field": "portfolio_kpis",
+          "question": "Portfolio KPI strip?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "DERIVED_READ_MODEL",
+          "destClass": "DERIVED",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "aggregated counts"
+          ],
+          "relationship": "Derived from HI Rel across portfolio",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "derived",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "organization",
+          "section": "Owned",
+          "field": "owned_controlled_hotels",
+          "question": "Hotels owned/controlled by org?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "DERIVED_READ_MODEL",
+          "destClass": "DERIVED",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "owner-role relationships"
+          ],
+          "relationship": "Query by Organization + owner roles",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "derived",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "organization",
+          "section": "Operated",
+          "field": "operated_managed_hotels",
+          "question": "Hotels operated/managed by org?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "DERIVED_READ_MODEL",
+          "destClass": "DERIVED",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "Operator relationships"
+          ],
+          "relationship": "Query by Organization + Operator",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "derived",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "organization",
+          "section": "People",
+          "field": "key_people",
+          "question": "Key people at organization?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Rich golden-demo / Contact Intelligence showcase intelligence exists; NOT migrated to HI Org Contacts/Channels. GSF→Airtable blocked until fact verification (Gate 1+).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_CONTACT",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbldJAj0nK1l39JZL",
+          "tableName": "HI Org Contacts",
+          "airtableFields": [
+            "Display Name",
+            "Title"
+          ],
+          "relationship": "HI Org Contacts for org",
+          "reuseSources": [
+            "HI_graph",
+            "CI_showcase"
+          ],
+          "researchHint": "migrate_verified_only",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "organization",
+          "section": "Context",
+          "field": "why_this_matters",
+          "question": "Why this org matters for the hotel?",
+          "uiPresent": true,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_ORG",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbliXEfUOWk32AN9y",
+          "tableName": "HI Organizations",
+          "airtableFields": [
+            "Notes",
+            "Provenance Summary"
+          ],
+          "relationship": "HI Organizations Notes / Provenance",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "copy_after_facts",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "relationships",
+          "section": "Structure",
+          "field": "structure_chart",
+          "question": "Ownership/control structure chart?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "DERIVED_READ_MODEL",
+          "destClass": "DERIVED",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "graph projection"
+          ],
+          "relationship": "Derived UI from HI Rel + HI Orgs",
+          "reuseSources": [
+            "HI_graph",
+            "golden_demo_fixtures"
+          ],
+          "researchHint": "derived",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "relationships",
+          "section": "Edges",
+          "field": "relationship_edges",
+          "question": "Relationship edges list?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_REL",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "Relationship Type",
+            "Organization",
+            "HPC Hotel"
+          ],
+          "relationship": "Direct HI Rel rows",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "reuse_graph",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "relationships",
+          "section": "Network",
+          "field": "org_network",
+          "question": "Broader org network?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Fixture/golden-demo ownership intelligence exists; HI graph relationships blocked (Census↔HPC identity). Reuse fixtures after identity unification — do not re-research GSF ownership first.",
+          "destinationStatus": "DERIVED_READ_MODEL",
+          "destClass": "DERIVED",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbliXEfUOWk32AN9y",
+          "tableName": "HI Organizations",
+          "airtableFields": [
+            "Parent Organization"
+          ],
+          "relationship": "Orgs + parent links + portfolio rels",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "derived",
+          "noEstablishedDestination": false
+        }
+      ]
+    },
+    {
+      "id": "recLuxvwwxID7U2B8",
+      "label": "Bethesda Marriott",
+      "role": "REPEATABILITY_TARGET",
+      "identityNote": "HPC-linkable (tbl9aY5ijiuIzzWam); Operator+Brand HI rels persisted; Economic Owner unresolved",
+      "brandPresenceName": "Bethesda Marriott",
+      "ownershipDataStatus": "AIRTABLE_GRAPH_PARTIAL",
+      "ownershipInCohort": false,
+      "hiGraphRelationshipCount": 2,
+      "hiGraphRelTypes": [
+        "Brand",
+        "Operator"
+      ],
+      "contactBytes": 1448,
+      "counts": {
+        "total": 63,
+        "populatedFromExisting": 30,
+        "availableNotConnected": 9,
+        "requiresNewResearch": 24,
+        "noEstablishedDestination": 0
+      },
+      "percentages": {
+        "populatedFromExistingPct": 47.6,
+        "availableNotConnectedPct": 14.3,
+        "requiresNewResearchPct": 38.1,
+        "noEstablishedDestinationPct": 0
+      },
+      "fields": [
+        {
+          "tab": "hotel",
+          "section": "Header",
+          "field": "name",
+          "question": "What is the property name?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Property Name",
+            "name"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC",
+            "Hotel Census"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Header",
+          "field": "brand",
+          "question": "What brand/affiliation is displayed?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Current Brand",
+            "Affiliation"
+          ],
+          "relationship": "HPC hotel record (+ optional HI Rel Brand)",
+          "reuseSources": [
+            "HPC",
+            "Brand Explorer"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Header",
+          "field": "status",
+          "question": "Open / pipeline / other status?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "project_phase",
+            "status",
+            "Radar Status"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Header",
+          "field": "website",
+          "question": "Official property website?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Official Property URL",
+            "Website"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC",
+            "Hotel Census"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Header",
+          "field": "telephone",
+          "question": "Property phone?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Phone",
+            "Telephone"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC",
+            "Hotel Census"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Header",
+          "field": "address1",
+          "question": "Street address?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Address 1"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Header",
+          "field": "city",
+          "question": "City?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "city",
+            "City"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Header",
+          "field": "country",
+          "question": "Country?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "country",
+            "Country"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Description",
+          "field": "hotelHeadline",
+          "question": "Short owner-facing headline?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Hotel Headline"
+          ],
+          "relationship": "HPC enrichment / ADP overlay",
+          "reuseSources": [
+            "HPC",
+            "ADP"
+          ],
+          "researchHint": "reuse_or_light_copy",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Description",
+          "field": "hotelDescription",
+          "question": "Short property summary?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Short Property Summary",
+            "description"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC",
+            "ADP"
+          ],
+          "researchHint": "reuse_or_light_copy",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "parentCompany",
+          "question": "Brand parent company?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Parent Company"
+          ],
+          "relationship": "HPC hotel record (brand parent, not economic owner)",
+          "reuseSources": [
+            "HPC",
+            "Brand Explorer"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "chainScale",
+          "question": "Chain scale?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Chain Scale"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "censusPropertyType",
+          "question": "Property type?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Property Type"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "rooms",
+          "question": "Rooms / keys?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Rooms / Keys",
+            "rooms"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC",
+            "Hotel Census"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "totalMeetingSpace",
+          "question": "Total meeting space?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Total Meeting Space"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "operationType",
+          "question": "Franchise / managed / etc.?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Operation Type"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "managementCompany",
+          "question": "Operator / management company label?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "COMPOSITE_ESTABLISHED",
+          "destClass": "COMPOSITE",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Operator / Management Company"
+          ],
+          "relationship": "HPC text + HI Rel Operator (tblGiwN0foXXDESvZ) → HI Organizations",
+          "reuseSources": [
+            "HPC",
+            "HI_graph"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "market",
+          "question": "Dealality market?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Market"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC",
+            "Radar"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "submarket",
+          "question": "Dealality submarket/corridor?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Submarket"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC",
+            "Radar"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "locationType",
+          "question": "Location type (resort/suburban/…)?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Location"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "projectPhase",
+          "question": "Project phase?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "HPC field destination established; value may be empty on record or not projected — verify Census/HPC before researching.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "project_phase"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "projectedOpenDate",
+          "question": "Projected open date (if pipeline)?",
+          "uiPresent": false,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "N/A for Open assets — not a research gap; HPC field exists for pipeline hotels.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "projected_open_date"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse_if_pipeline",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "starRating",
+          "question": "Star rating?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "HPC field destination established; value may be empty on record or not projected — verify Census/HPC before researching.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Star Rating"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse_or_optional",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Property Facts",
+          "field": "dataConfidence",
+          "question": "Census data confidence?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "HPC field destination established; value may be empty on record or not projected — verify Census/HPC before researching.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HPC",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Data Confidence"
+          ],
+          "relationship": "HPC hotel record",
+          "reuseSources": [
+            "HPC"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "hotel",
+          "section": "Amenities",
+          "field": "amenitiesDisplay",
+          "question": "Amenities shown in Overview?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "Visible via brand-presence from HPC/Hotel Census (canonical property attributes).",
+          "destinationStatus": "COMPOSITE_ESTABLISHED",
+          "destClass": "COMPOSITE",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "HPC amenity fields"
+          ],
+          "relationship": "HPC amenities + ADP verified Attributes (display overlay; do not mutate ADP publication gates)",
+          "reuseSources": [
+            "HPC",
+            "ADP"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Executive Summary",
+          "field": "executive_summary.text",
+          "question": "Who owns / controls — narrative summary?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "Not in HI graph or HE projection for Bethesda.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_RUN",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGwk1YefumCf2eu",
+          "tableName": "HI Ownership Research Runs",
+          "airtableFields": [
+            "Summary",
+            "Notes"
+          ],
+          "relationship": "Run → HPC hotel; evidence in HI Graph Evidence",
+          "reuseSources": [
+            "HI_graph",
+            "golden_demo_fixtures"
+          ],
+          "researchHint": "migrate_or_research",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Executive Summary",
+          "field": "what_remains_uncertain",
+          "question": "What ownership facts remain uncertain?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "Not in HI graph or HE projection for Bethesda.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_EVIDENCE",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblc9JhKT1edr4grE",
+          "tableName": "HI Graph Evidence",
+          "airtableFields": [
+            "Notes",
+            "Evidence"
+          ],
+          "relationship": "Evidence linked to hotel/org/rel",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "research_gaps",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Meta",
+          "field": "economic_owner",
+          "question": "Who is the economic owner?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "No current Economic/Legal Owner on HI graph. Historical 2013 Northview/Oaktree staged — not a current claim. Free SDAT/filings first; paid only if blocked.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_REL",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "Relationship Type",
+            "Legal Name",
+            "Trading Name"
+          ],
+          "relationship": "RelationshipType=Economic Owner → tbliXEfUOWk32AN9y via Organization link; HPC Hotel → tbl9aY5ijiuIzzWam",
+          "reuseSources": [
+            "HI_graph",
+            "golden_demo_fixtures"
+          ],
+          "researchHint": "critical_research_if_missing",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Meta",
+          "field": "property_company",
+          "question": "Legal PropCo / property vehicle?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "No current Economic/Legal Owner on HI graph. Historical 2013 Northview/Oaktree staged — not a current claim. Free SDAT/filings first; paid only if blocked.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_REL",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "Relationship Type=Legal Owner"
+          ],
+          "relationship": "Legal Owner → HI Organizations",
+          "reuseSources": [
+            "HI_graph",
+            "golden_demo_fixtures"
+          ],
+          "researchHint": "research_if_missing",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Meta",
+          "field": "operator",
+          "question": "Who operates/manages the hotel?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "HI graph Operator/Brand and/or HPC operator/brand fields already available.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_REL",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "Relationship Type=Operator|Management Company"
+          ],
+          "relationship": "Operator → HI Organizations (+ HPC Operator text)",
+          "reuseSources": [
+            "HPC",
+            "HI_graph"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Meta",
+          "field": "control_status",
+          "question": "Control / verification posture?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "2 HI Hotel–Org Relationships present; UI may still be partial overlay.",
+          "destinationStatus": "DERIVED_READ_MODEL",
+          "destClass": "DERIVED",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "Verification State"
+          ],
+          "relationship": "Derived from relationship Verification State + presence of Economic Owner",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "derived",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Meta",
+          "field": "source_coverage",
+          "question": "How many evidence sources support ownership?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Derived read-model — populate after underlying graph facts exist.",
+          "destinationStatus": "DERIVED_READ_MODEL",
+          "destClass": "DERIVED",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblc9JhKT1edr4grE",
+          "tableName": "HI Graph Evidence",
+          "airtableFields": [
+            "count of evidence rows"
+          ],
+          "relationship": "Derived from HI Graph Evidence for hotel",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "derived",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Insights",
+          "field": "what_we_know[]",
+          "question": "Key ownership facts we know?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "Not in HI graph or HE projection for Bethesda.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_EVIDENCE",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblc9JhKT1edr4grE",
+          "tableName": "HI Graph Evidence",
+          "airtableFields": [
+            "Evidence",
+            "Notes"
+          ],
+          "relationship": "Graph evidence + run summary",
+          "reuseSources": [
+            "HI_graph",
+            "golden_demo_fixtures"
+          ],
+          "researchHint": "migrate_or_research",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Ownership & Control",
+          "field": "control_rows",
+          "question": "Role × org control table?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "2 HI Hotel–Org Relationships present; UI may still be partial overlay.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_REL",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "Relationship Type",
+            "Organization",
+            "Verification State"
+          ],
+          "relationship": "All current hotel–org relationships",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "reuse_graph",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "UBO",
+          "field": "ubo_group",
+          "question": "Ultimate beneficial owner / parent group?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "No current Economic/Legal Owner on HI graph. Historical 2013 Northview/Oaktree staged — not a current claim. Free SDAT/filings first; paid only if blocked.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_ORG",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbliXEfUOWk32AN9y",
+          "tableName": "HI Organizations",
+          "airtableFields": [
+            "Parent Organization",
+            "Parent Organization ID"
+          ],
+          "relationship": "Parent Organization chain on HI Organizations",
+          "reuseSources": [
+            "HI_graph",
+            "golden_demo_fixtures"
+          ],
+          "researchHint": "research_if_missing",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Portfolio Preview",
+          "field": "portfolio_preview",
+          "question": "Other hotels in same ownership/control?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Derivable once org portfolio query is wired; Operator org already on graph.",
+          "destinationStatus": "DERIVED_READ_MODEL",
+          "destClass": "DERIVED",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "same Organization across HPC"
+          ],
+          "relationship": "Query HI Rel by Organization ID across HPC",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "derived_after_org_persist",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Franchise & Brand",
+          "field": "brand_status",
+          "question": "Brand relationship / affiliation status?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "HI graph Operator/Brand and/or HPC operator/brand fields already available.",
+          "destinationStatus": "COMPOSITE_ESTABLISHED",
+          "destClass": "COMPOSITE",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "Relationship Type=Brand"
+          ],
+          "relationship": "HI Rel Brand + HPC Affiliation/Current Brand",
+          "reuseSources": [
+            "HPC",
+            "HI_graph",
+            "Brand Explorer"
+          ],
+          "researchHint": "reuse",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "People",
+          "field": "decision_authority.people",
+          "question": "Who has decision authority on ownership side?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "No HI Org Contacts / Channels for Bethesda; property phone/website are fallback only (HPC).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_CONTACT",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbldJAj0nK1l39JZL",
+          "tableName": "HI Org Contacts",
+          "airtableFields": [
+            "Display Name",
+            "Title",
+            "Function / Role"
+          ],
+          "relationship": "HI Org Contacts → HI Organizations",
+          "reuseSources": [
+            "HI_graph",
+            "CI_showcase",
+            "golden_demo_fixtures"
+          ],
+          "researchHint": "migrate_verified_only",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Signatories",
+          "field": "qualified_signatories",
+          "question": "Qualified signatories?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "No HI Org Contacts / Channels for Bethesda; property phone/website are fallback only (HPC).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_CONTACT",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbldJAj0nK1l39JZL",
+          "tableName": "HI Org Contacts",
+          "airtableFields": [
+            "authority / notes flags"
+          ],
+          "relationship": "HI Org Contacts with authority annotation (field may need ensure)",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "optional_schema_flag",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Channels",
+          "field": "corporate_contact_channels",
+          "question": "Corporate email/phone paths?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "No HI Org Contacts / Channels for Bethesda; property phone/website are fallback only (HPC).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_CHANNEL",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblqC7C4ypy5Zojyw",
+          "tableName": "HI Contact Channels",
+          "airtableFields": [
+            "Channel Kind",
+            "Channel Value"
+          ],
+          "relationship": "Channels → Person or Organization",
+          "reuseSources": [
+            "HI_graph",
+            "CI_showcase"
+          ],
+          "researchHint": "migrate_verified_only",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Asset Profile",
+          "field": "asset_agreement_profile",
+          "question": "Franchise / management agreement posture?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "Not in HI graph or HE projection for Bethesda.",
+          "destinationStatus": "COMPOSITE_ESTABLISHED",
+          "destClass": "COMPOSITE",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbl9aY5ijiuIzzWam",
+          "tableName": "Hotel Property Census",
+          "airtableFields": [
+            "Operation Type"
+          ],
+          "relationship": "HPC Operation Type + HI Rel Operator/Brand notes",
+          "reuseSources": [
+            "HPC",
+            "HI_graph"
+          ],
+          "researchHint": "reuse_light",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "History",
+          "field": "property_history",
+          "question": "Ownership / transaction history?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "Not in HI graph or HE projection for Bethesda.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_EVIDENCE",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblc9JhKT1edr4grE",
+          "tableName": "HI Graph Evidence",
+          "airtableFields": [
+            "Evidence",
+            "Observed At",
+            "Source URL"
+          ],
+          "relationship": "Historical evidence rows (not current Economic Owner claim)",
+          "reuseSources": [
+            "HI_graph",
+            "staged_research"
+          ],
+          "researchHint": "stage_historical_separately",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Pursuit",
+          "field": "development_pursuit",
+          "question": "Development / pursuit notes?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "Not in HI graph or HE projection for Bethesda.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_RUN",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGwk1YefumCf2eu",
+          "tableName": "HI Ownership Research Runs",
+          "airtableFields": [
+            "Notes"
+          ],
+          "relationship": "Research run notes",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "optional",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "Gaps",
+          "field": "research_gaps",
+          "question": "Open research gaps?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "Not in HI graph or HE projection for Bethesda.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_RUN",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGwk1YefumCf2eu",
+          "tableName": "HI Ownership Research Runs",
+          "airtableFields": [
+            "Notes",
+            "Status"
+          ],
+          "relationship": "Research run ledger",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "derived_from_gaps",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "ownership",
+          "section": "References",
+          "field": "sources",
+          "question": "Source bibliography?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "Not in HI graph or HE projection for Bethesda.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_EVIDENCE",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblc9JhKT1edr4grE",
+          "tableName": "HI Graph Evidence",
+          "airtableFields": [
+            "Source Name",
+            "Source URL"
+          ],
+          "relationship": "HI Graph Evidence",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "persist_with_evidence",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "contacts",
+          "section": "Quality",
+          "field": "quality_summary",
+          "question": "Contact package quality summary?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "No HI Org Contacts / Channels for Bethesda; property phone/website are fallback only (HPC).",
+          "destinationStatus": "DERIVED_READ_MODEL",
+          "destClass": "DERIVED",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblqC7C4ypy5Zojyw",
+          "tableName": "HI Contact Channels",
+          "airtableFields": [
+            "derived from channel verification"
+          ],
+          "relationship": "Derived from HI Org Contacts + Channels",
+          "reuseSources": [
+            "HI_graph",
+            "CI_runtime"
+          ],
+          "researchHint": "derived",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "contacts",
+          "section": "Ownership Summary",
+          "field": "ownershipSummary",
+          "question": "Ownership summary on Contacts tab?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "No HI Org Contacts / Channels for Bethesda; property phone/website are fallback only (HPC).",
+          "destinationStatus": "DERIVED_READ_MODEL",
+          "destClass": "DERIVED",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "projection"
+          ],
+          "relationship": "Projection of ownership relationships",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "derived",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "contacts",
+          "section": "Orgs",
+          "field": "organization_contacts",
+          "question": "Organization-level contact routes?",
+          "uiPresent": true,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "No HI Org Contacts / Channels for Bethesda; property phone/website are fallback only (HPC).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_CHANNEL",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblqC7C4ypy5Zojyw",
+          "tableName": "HI Contact Channels",
+          "airtableFields": [
+            "Channel Value"
+          ],
+          "relationship": "Org-subject channels + HI Organizations",
+          "reuseSources": [
+            "CI_showcase",
+            "HI_graph"
+          ],
+          "researchHint": "migrate_verified_only",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "contacts",
+          "section": "People",
+          "field": "people_groups",
+          "question": "People grouped by role?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "No HI Org Contacts / Channels for Bethesda; property phone/website are fallback only (HPC).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_CONTACT",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbldJAj0nK1l39JZL",
+          "tableName": "HI Org Contacts",
+          "airtableFields": [
+            "Display Name",
+            "Title"
+          ],
+          "relationship": "HI Org Contacts",
+          "reuseSources": [
+            "CI_showcase",
+            "HI_graph"
+          ],
+          "researchHint": "migrate_verified_only",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "contacts",
+          "section": "Channels",
+          "field": "emails_phones",
+          "question": "Emails and phones?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "No HI Org Contacts / Channels for Bethesda; property phone/website are fallback only (HPC).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_CHANNEL",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblqC7C4ypy5Zojyw",
+          "tableName": "HI Contact Channels",
+          "airtableFields": [
+            "Channel Kind",
+            "Channel Value",
+            "Verification Status"
+          ],
+          "relationship": "HI Contact Channels",
+          "reuseSources": [
+            "CI_showcase",
+            "HI_graph"
+          ],
+          "researchHint": "migrate_verified_only",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "contacts",
+          "section": "Fallback",
+          "field": "fallback_paths",
+          "question": "Public/fallback contact paths?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "No HI Org Contacts / Channels for Bethesda; property phone/website are fallback only (HPC).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_CHANNEL",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblqC7C4ypy5Zojyw",
+          "tableName": "HI Contact Channels",
+          "airtableFields": [
+            "Classification",
+            "Access / Publication Restriction"
+          ],
+          "relationship": "Public/fallback channels",
+          "reuseSources": [
+            "HPC_phone_website",
+            "CI_showcase"
+          ],
+          "researchHint": "reuse_property_channels",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "contacts",
+          "section": "Unresolved",
+          "field": "research_unresolved",
+          "question": "Unresolved contact research?",
+          "uiPresent": true,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "No HI Org Contacts / Channels for Bethesda; property phone/website are fallback only (HPC).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_RUN",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGwk1YefumCf2eu",
+          "tableName": "HI Ownership Research Runs",
+          "airtableFields": [
+            "Notes",
+            "Status"
+          ],
+          "relationship": "Research run unresolved reasons",
+          "reuseSources": [
+            "CI_runtime"
+          ],
+          "researchHint": "derived",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "organization",
+          "section": "Overview",
+          "field": "display_name",
+          "question": "Organization trading/display name?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "HI Organizations row exists (Marriott International) — wire Organization tab from graph reader.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_ORG",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbliXEfUOWk32AN9y",
+          "tableName": "HI Organizations",
+          "airtableFields": [
+            "Trading Name"
+          ],
+          "relationship": "HI Organizations",
+          "reuseSources": [
+            "HI_graph",
+            "golden_demo_fixtures"
+          ],
+          "researchHint": "reuse_after_org_persist",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "organization",
+          "section": "Overview",
+          "field": "legal_name",
+          "question": "Organization legal name?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "HI Organizations row exists (Marriott International) — wire Organization tab from graph reader.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_ORG",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbliXEfUOWk32AN9y",
+          "tableName": "HI Organizations",
+          "airtableFields": [
+            "Legal Name"
+          ],
+          "relationship": "HI Organizations",
+          "reuseSources": [
+            "HI_graph",
+            "golden_demo_fixtures"
+          ],
+          "researchHint": "reuse_after_org_persist",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "organization",
+          "section": "Overview",
+          "field": "ticker",
+          "question": "Ticker / registry identifier?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "Not in HI graph or HE projection for Bethesda.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_ORG",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbliXEfUOWk32AN9y",
+          "tableName": "HI Organizations",
+          "airtableFields": [
+            "Registry / Identifier"
+          ],
+          "relationship": "HI Organizations Registry / Identifier",
+          "reuseSources": [
+            "public_filings",
+            "golden_demo_fixtures"
+          ],
+          "researchHint": "reuse_or_light_lookup",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "organization",
+          "section": "KPIs",
+          "field": "portfolio_kpis",
+          "question": "Portfolio KPI strip?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Derivable once org portfolio query is wired; Operator org already on graph.",
+          "destinationStatus": "DERIVED_READ_MODEL",
+          "destClass": "DERIVED",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "aggregated counts"
+          ],
+          "relationship": "Derived from HI Rel across portfolio",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "derived",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "organization",
+          "section": "Owned",
+          "field": "owned_controlled_hotels",
+          "question": "Hotels owned/controlled by org?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Derivable once org portfolio query is wired; Operator org already on graph.",
+          "destinationStatus": "DERIVED_READ_MODEL",
+          "destClass": "DERIVED",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "owner-role relationships"
+          ],
+          "relationship": "Query by Organization + owner roles",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "derived",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "organization",
+          "section": "Operated",
+          "field": "operated_managed_hotels",
+          "question": "Hotels operated/managed by org?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Derivable once org portfolio query is wired; Operator org already on graph.",
+          "destinationStatus": "DERIVED_READ_MODEL",
+          "destClass": "DERIVED",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "Operator relationships"
+          ],
+          "relationship": "Query by Organization + Operator",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "derived",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "organization",
+          "section": "People",
+          "field": "key_people",
+          "question": "Key people at organization?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "No HI Org Contacts / Channels for Bethesda; property phone/website are fallback only (HPC).",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_CONTACT",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbldJAj0nK1l39JZL",
+          "tableName": "HI Org Contacts",
+          "airtableFields": [
+            "Display Name",
+            "Title"
+          ],
+          "relationship": "HI Org Contacts for org",
+          "reuseSources": [
+            "HI_graph",
+            "CI_showcase"
+          ],
+          "researchHint": "migrate_verified_only",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "organization",
+          "section": "Context",
+          "field": "why_this_matters",
+          "question": "Why this org matters for the hotel?",
+          "uiPresent": false,
+          "gate1Class": "REQUIRES_NEW_RESEARCH",
+          "rationale": "Not in HI graph or HE projection for Bethesda.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_ORG",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbliXEfUOWk32AN9y",
+          "tableName": "HI Organizations",
+          "airtableFields": [
+            "Notes",
+            "Provenance Summary"
+          ],
+          "relationship": "HI Organizations Notes / Provenance",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "copy_after_facts",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "relationships",
+          "section": "Structure",
+          "field": "structure_chart",
+          "question": "Ownership/control structure chart?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "2 HI Hotel–Org Relationships present; UI may still be partial overlay.",
+          "destinationStatus": "DERIVED_READ_MODEL",
+          "destClass": "DERIVED",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "graph projection"
+          ],
+          "relationship": "Derived UI from HI Rel + HI Orgs",
+          "reuseSources": [
+            "HI_graph",
+            "golden_demo_fixtures"
+          ],
+          "researchHint": "derived",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "relationships",
+          "section": "Edges",
+          "field": "relationship_edges",
+          "question": "Relationship edges list?",
+          "uiPresent": true,
+          "gate1Class": "POPULATED_FROM_EXISTING",
+          "rationale": "2 HI Hotel–Org Relationships present; UI may still be partial overlay.",
+          "destinationStatus": "ESTABLISHED",
+          "destClass": "HI_REL",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tblGiwN0foXXDESvZ",
+          "tableName": "HI Hotel–Org Relationships",
+          "airtableFields": [
+            "Relationship Type",
+            "Organization",
+            "HPC Hotel"
+          ],
+          "relationship": "Direct HI Rel rows",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "reuse_graph",
+          "noEstablishedDestination": false
+        },
+        {
+          "tab": "relationships",
+          "section": "Network",
+          "field": "org_network",
+          "question": "Broader org network?",
+          "uiPresent": false,
+          "gate1Class": "AVAILABLE_NOT_CONNECTED",
+          "rationale": "Derivable once org portfolio query is wired; Operator org already on graph.",
+          "destinationStatus": "DERIVED_READ_MODEL",
+          "destClass": "DERIVED",
+          "baseId": "appCCUsuGsE1ifoLk",
+          "tableId": "tbliXEfUOWk32AN9y",
+          "tableName": "HI Organizations",
+          "airtableFields": [
+            "Parent Organization"
+          ],
+          "relationship": "Orgs + parent links + portfolio rels",
+          "reuseSources": [
+            "HI_graph"
+          ],
+          "researchHint": "derived",
+          "noEstablishedDestination": false
+        }
+      ]
+    }
+  ],
+  "schemaOrIntegrationImprovements": [
+    {
+      "id": "census_hpc_identity_unification",
+      "priority": "P0",
+      "summary": "Unify Hotel Census–native hotels (e.g. KGPV recUNycnMwOVFX0hc on tblgj2qEwxjTcg6q0) onto Hotel Property Census (tbl9aY5ijiuIzzWam) or retarget HI HPC Hotel link — currently blocks KGPV HI relationship writes.",
+      "blocks": [
+        "KGPV ownership/org/relationship Airtable persistence",
+        "GSF org↔hotel graph edges"
+      ]
+    },
+    {
+      "id": "he_org_tab_from_graph_reader",
+      "priority": "P1",
+      "summary": "Wire Organization + Relationships tabs to he-airtable-graph reader (display_name/legal_name/edges) so Bethesda Operator org is AVAILABLE→CONNECTED without research.",
+      "blocks": [
+        "AVAILABLE_NOT_CONNECTED org/relationship fields on Bethesda"
+      ]
+    },
+    {
+      "id": "signatory_authority_flag",
+      "priority": "P2",
+      "summary": "Optional HI Org Contacts field/flag for qualified signatory / decision authority (today Notes-only).",
+      "blocks": [
+        "qualified_signatories structured persistence"
+      ]
+    },
+    {
+      "id": "contact_migration_gate",
+      "priority": "P1",
+      "summary": "Verified-fact checklist before GSF showcase → HI Org Contacts / HI Contact Channels migration (no bulk CI runtime import).",
+      "blocks": [
+        "KGPV contacts Airtable-canonical"
+      ]
+    }
+  ],
+  "researchPrioritization": [
+    {
+      "priority": 1,
+      "hotel": "Bethesda Marriott",
+      "fields": [
+        "economic_owner",
+        "property_company",
+        "ubo_group",
+        "executive_summary.text",
+        "sources",
+        "what_we_know[]"
+      ],
+      "action": "Confirm CURRENT economic owner via free SDAT/county/filings first; paid Parallel only if blocked. Do not promote 2013 Northview/Oaktree as current.",
+      "estimatedUsd": "8–15",
+      "paidAllowedAfterGate1": true
+    },
+    {
+      "priority": 2,
+      "hotel": "Bethesda Marriott",
+      "fields": [
+        "decision_authority.people",
+        "emails_phones",
+        "people_groups",
+        "key_people"
+      ],
+      "action": "After owner known — native/public contact paths first; paid enrichment only for verified decision-makers within remaining budget.",
+      "estimatedUsd": "5–10",
+      "paidAllowedAfterGate1": true
+    },
+    {
+      "priority": 3,
+      "hotel": "KGPV",
+      "fields": [
+        "all ownership/contacts fixture fields"
+      ],
+      "action": "NO paid research until Census↔HPC identity fix + verified migration of existing GSF fixture/showcase facts.",
+      "estimatedUsd": "0",
+      "paidAllowedAfterGate1": false
+    },
+    {
+      "priority": 4,
+      "hotel": "Both",
+      "fields": [
+        "starRating",
+        "hotelHeadline gaps",
+        "ticker"
+      ],
+      "action": "HPC/public reuse; optional light lookup — not Gate 1 blockers.",
+      "estimatedUsd": "0–2",
+      "paidAllowedAfterGate1": true
+    }
+  ],
+  "persistencePlan": {
+    "propertyAttributes": "Write/reuse Hotel Property Census (tbl9aY5ijiuIzzWam) on appCCUsuGsE1ifoLk",
+    "ownershipControl": "HI Hotel–Org Relationships (tblGiwN0foXXDESvZ) with HPC Hotel link + HI Organizations (tbliXEfUOWk32AN9y)",
+    "people": "HI Org Contacts (tbldJAj0nK1l39JZL)",
+    "channels": "HI Contact Channels (tblqC7C4ypy5Zojyw)",
+    "evidenceRuns": "HI Graph Evidence (tblc9JhKT1edr4grE) + HI Ownership Research Runs (tblGwk1YefumCf2eu)",
+    "adp": "ADP verified attributes = display overlay only; do not mutate publication gates",
+    "contactIntelligenceRuntime": "Staging only under HE CONTACT_INTELLIGENCE_DATA_ROOT — not canonical",
+    "gsfContacts": "Do not migrate to Airtable until facts + field mappings verified (this Gate 1 mapping establishes destinations; fact verification is next after approval)"
+  }
+}
