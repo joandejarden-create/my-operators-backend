@@ -1,10 +1,14 @@
 {
-  "version": "hotel-explorer-founder-quality-lessons-v1.9",
+  "version": "hotel-explorer-founder-quality-lessons-v1.10",
   "updated": "2026-11-19",
   "standardDoc": "docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md",
   "gateScript": "scripts/test-he-product-quality-gates-v1.mjs",
   "npmScript": "test:he-product-quality-gates-v1",
-  "additionalGates": ["test:he-owner-portfolio-operator-view-v1", "test:he-ownership-control-network-v1"],
+  "additionalGates": [
+    "test:he-owner-portfolio-operator-view-v1",
+    "test:he-ownership-control-network-v1",
+    "test:he-hotel-news-from-market-alerts-v1"
+  ],
   "referenceHotels": {
     "uxGolden": {
       "id": "recUNycnMwOVFX0hc",
@@ -203,6 +207,15 @@
       "sharedComponent": "lib/hotel-intelligence/ownership/ownership-control-network-v1.js; public/js/he-ownership-control-network-v1.js; hotel-intelligence-workspace.js",
       "regressionTest": "he_ownership_control_network_gates",
       "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v8-ocn-beth-default.png; quality-v8-ocn-beth-expanded.png; quality-v8-ocn-beth-person.png"
+    },
+    {
+      "id": "HE-QL-021",
+      "originalProblem": "Hotel Explorer lacked property-specific news; risk of showing brand-level Market Alerts as hotel news or inventing a parallel news store",
+      "rootCause": "No HE read-model over Market Alerts with property-evidence matching and empty-state hide rules",
+      "approvedStandard": "Reuse MarketAlerts as SoT; hotel-specific/multi-hotel matches only; hide subsection when empty; Tags hpc:<recId> associations idempotent; GET-only news API; no brand/sponsor contamination",
+      "sharedComponent": "lib/hotel-intelligence/hotel-news-from-market-alerts-v1.js; api/hotel-explorer-news-articles.js; hotel-intelligence-workspace.js Brand/Operator",
+      "regressionTest": "he_hotel_news_from_market_alerts_gates",
+      "browserEvidence": "reports/hotel-explorer/phase4-quality/phase4-founder-preview-screenshots/quality-v9-news-beth-hidden.png; quality-v9-news-loews-visible.png"
     }
   ]
 }

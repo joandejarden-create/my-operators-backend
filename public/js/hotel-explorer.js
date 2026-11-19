@@ -729,6 +729,13 @@
         ) {
           window.HotelIntelligenceWorkspace.mountOwnershipControlNetwork();
         }
+        if (
+          state.tab === "brand" &&
+          window.HotelIntelligenceWorkspace &&
+          typeof window.HotelIntelligenceWorkspace.mountHotelNewsArticles === "function"
+        ) {
+          window.HotelIntelligenceWorkspace.mountHotelNewsArticles();
+        }
       }
     }
     writeDeepLink();

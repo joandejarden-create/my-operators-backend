@@ -78,17 +78,18 @@ run("registry_and_standard_exist", () => {
   const reg = JSON.parse(
     read("docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json")
   );
-  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.9");
-  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 20);
+  assert.equal(reg.version, "hotel-explorer-founder-quality-lessons-v1.10");
+  assert.ok(Array.isArray(reg.lessons) && reg.lessons.length >= 21);
   mustInclude(
     read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md"),
-    "hotel-explorer-quality-standard-v1.9"
+    "hotel-explorer-quality-standard-v1.10"
   );
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-016"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-017"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-018"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-019"));
   assert.ok(reg.lessons.some((l) => l.id === "HE-QL-020"));
+  assert.ok(reg.lessons.some((l) => l.id === "HE-QL-021"));
 });
 
 run("rejects_keyword_stuffed_and_id_leaking_descriptions", () => {
@@ -664,6 +665,29 @@ run("he_ownership_control_network_gates", () => {
   mustNotMatch(
     read("lib/hotel-intelligence/ownership/ownership-control-network-v1.js"),
     /operator.*LEGALLY_OWNED_BY|brand.*ECONOMICALLY_CONTROLLED_BY/i
+  );
+});
+
+run("he_hotel_news_from_market_alerts_gates", () => {
+  const std = read("docs/ai-build-system/HOTEL_EXPLORER_QUALITY_STANDARD.md");
+  mustInclude(std, "Hotel News & Articles");
+  mustInclude(std, "MarketAlerts");
+  mustInclude(std, "hpc:");
+  const ws = read("public/js/hotel-intelligence-workspace.js");
+  mustInclude(ws, "data-hiw-hotel-news-host");
+  mustInclude(ws, "mountHotelNewsArticles");
+  mustInclude(read("public/js/hotel-explorer.js"), "mountHotelNewsArticles");
+  mustInclude(read("server.js"), "/api/hotel-explorer/hotels/:hotelId/news-articles");
+  const api = read("api/hotel-explorer-news-articles.js");
+  mustInclude(api, "X-Dealality-Write");
+  mustNotMatch(api, /\.create\(|\.update\(/);
+  mustInclude(
+    read("lib/hotel-intelligence/hotel-news-from-market-alerts-v1.js"),
+    "ORGANIZATION_CONTEXT_ONLY"
+  );
+  mustInclude(
+    read("lib/hotel-intelligence/hotel-news-from-market-alerts-v1.js"),
+    "HOTEL_SPECIFIC"
   );
 });
 

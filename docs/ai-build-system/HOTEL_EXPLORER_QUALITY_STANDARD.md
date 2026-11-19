@@ -1,9 +1,9 @@
 # Hotel Explorer Quality Standard
 
-**Version:** `hotel-explorer-quality-standard-v1.9`  
+**Version:** `hotel-explorer-quality-standard-v1.10`  
 **Status:** Binding for Hotel Explorer product surfaces (Radar-hosted HE + Founder Preview + Golden Demo)  
 **Companion registry:** `docs/ai-build-system/HOTEL_EXPLORER_FOUNDER_QUALITY_LESSONS_REGISTRY.json`  
-**Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1`
+**Gate:** `npm run test:he-product-quality-gates-v1` · `npm run test:he-owner-portfolio-operator-view-v1` · `npm run test:he-ownership-control-network-v1` · `npm run test:he-hotel-news-from-market-alerts-v1`
 
 ## Purpose
 
@@ -118,6 +118,17 @@ Forbidden: intermediate navy shades (`#0c132c`, `#0b1224`, `#0b1228`), transluce
 - Sort and geographic inclusion always use source numeric units (sq ft / km). Unit toggle must not change which hotels qualify or mutate HPC/Airtable values.
 - Tab changes and hotel navigation must not reset session preferences.
 - Default Bethesda pilot: Sq. Ft. / mi when no prior preference.
+
+### 9c. Hotel News & Articles (Market Alerts)
+
+- Canonical store = Airtable **MarketAlerts** (`AIRTABLE_BASE_ID`). No parallel HE news database; no article rows in HPC/HI Organizations.
+- Brand / Operator tab may show **Hotel News & Articles** only when ≥1 property-relevant article exists; otherwise **hide the subsection** (no empty state).
+- Matching classes: `HOTEL_SPECIFIC` / `MULTI_HOTEL_SPECIFIC` visible; `ORGANIZATION_CONTEXT_ONLY` / `AMBIGUOUS_MATCH` / `UNRELATED` never shown as hotel news.
+- Brand- or sponsor-only coverage must not populate the subsection.
+- Association: Tags `hpc:<HPC record id>` (idempotent); optional designed field `HPC Hotel Record IDs` — apply only via authorized Market Alerts write (`MARKET_ALERTS_HOTEL_LINK_APPLY=1`).
+- GET `/api/hotel-explorer/hotels/:hotelId/news-articles` is read-only (`X-Dealality-Write: forbidden`); Market Alerts outage → invisible section, not a hard HE failure.
+- Persist metadata/summaries/URLs only — not full copyrighted article text.
+- Shared modules: `lib/hotel-intelligence/hotel-news-from-market-alerts-v1.js`, `market-alerts-hotel-association-sync-v1.js`, `api/hotel-explorer-news-articles.js`.
 
 ### 9a. Ownership & Control Network
 

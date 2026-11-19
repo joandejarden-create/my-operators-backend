@@ -88,6 +88,7 @@ import {
   getHotelExplorerFounderPreview,
   getHotelExplorerFounderPreviewContacts,
 } from "./api/hotel-explorer-founder-preview.js";
+import { getHotelExplorerNewsArticles } from "./api/hotel-explorer-news-articles.js";
 import { getHeAirtableGraphHotel } from "./api/he-airtable-graph.js";
 import {
   getOwnerIntelligenceMeta,
@@ -992,6 +993,11 @@ app.get(
 app.get(
   "/api/hotel-explorer/founder-preview/:recordId/contacts",
   getHotelExplorerFounderPreviewContacts
+);
+// Hotel Explorer — hotel-specific news from Market Alerts (GET-only)
+app.get(
+  "/api/hotel-explorer/hotels/:hotelId/news-articles",
+  getHotelExplorerNewsArticles
 );
 
 // Hotel Explorer — Airtable HI graph read (Airtable-first tabs 2/4/5)
