@@ -1911,6 +1911,8 @@
     }
 
     var showPriorities = state.tab === "priorities";
+    var showPortfolio = state.tab === "portfolio";
+    var hideOpportunityChrome = showPriorities || showPortfolio;
     root.className = "gdi-shell dashboard-container aiv-dashboard";
     var inventoryMode = resolveFounderInventoryMode();
     var presentationMode =
@@ -1959,7 +1961,7 @@
       }) +
       presentationModeBanner +
       UI.contentTabsHtml(state.tab, UI.GDI_CUSTOMER_TABS || [UI.GDI_MAIN_TAB]) +
-      (showPriorities
+      (hideOpportunityChrome
         ? ""
         : UI.propertyBarHtml({
             mode: "auth",
@@ -2000,10 +2002,13 @@
           })) +
       '<div id="gdiTabBody">' +
       '<div id="gdiTabOpportunities" class="gdi-tab-panel"' +
-      (showPriorities ? ' hidden aria-hidden="true"' : "") +
+      (hideOpportunityChrome ? ' hidden aria-hidden="true"' : "") +
       ">" +
       body +
       "</div>" +
+      '<div class="gdi-tab-panel gdi-pdi-root" id="gdiPortfolioRoot"' +
+      (showPortfolio ? "" : ' hidden aria-hidden="true"') +
+      "></div>" +
       '<div class="hnd-page gdi-tab-panel" id="gdiNeedTimesPrioritiesRoot"' +
       (showPriorities ? "" : ' hidden aria-hidden="true"') +
       "></div>" +
@@ -2015,6 +2020,45 @@
       preservedPrioritiesRoot.setAttribute("aria-hidden", showPriorities ? "false" : "true");
       prioritiesRoot.parentNode.replaceChild(preservedPrioritiesRoot, prioritiesRoot);
       prioritiesRoot = preservedPrioritiesRoot;
+    }
+
+    if (showPortfolio) {
+      var portfolioRoot = document.getElementById("gdiPortfolioRoot");
+      if (
+        window.DealalityGdiPortfolioTab &&
+        typeof window.DealalityGdiPortfolioTab.mount === "function"
+      ) {
+        window.DealalityGdiPortfolioTab.mount(portfolioRoot, {
+          onOpenBrief: function (ref) {
+            if (!ref || !ref.hotelId || !ref.opportunityId) return;
+            var runOpen = function () {
+              return openDetail(ref.opportunityId).catch(function (err) {
+                handleLoadFailure(err);
+              });
+            };
+            if (String(state.hotelId || "") === String(ref.hotelId)) {
+              runOpen();
+              return;
+            }
+            selectHotel(ref.hotelId)
+              .then(function () {
+                return runOpen();
+              })
+              .catch(function (err) {
+                handleLoadFailure(err);
+              });
+          },
+        });
+      } else if (portfolioRoot) {
+        portfolioRoot.innerHTML =
+          '<div class="gdi-pdi-banner gdi-pdi-banner--warn" role="alert">Portfolio Demand Intelligence module failed to load.</div>';
+      }
+    } else if (
+      window.DealalityGdiPortfolioTab &&
+      typeof window.DealalityGdiPortfolioTab.unmount === "function" &&
+      window.DealalityGdiPortfolioTab._active
+    ) {
+      window.DealalityGdiPortfolioTab.unmount();
     }
 
     if (showPriorities) {
