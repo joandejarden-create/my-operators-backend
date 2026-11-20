@@ -94,7 +94,8 @@ const F = {
     id: "id",
     name: "Property Name",
     brand: "Current Brand",
-    parentCompany: "Parent Company",
+    // HPC schema: brand parent lives on Brand Family (not legacy "Parent Company").
+    parentCompany: "Brand Family",
     status: "Radar Status",
     lat: "Latitude",
     lng: "Longitude",
@@ -105,9 +106,10 @@ const F = {
     rooms: "Rooms / Keys",
     strNumber: "STR Number",
     chainScale: "Hotel Class / Segment",
-    projectPhase: "project_phase",
+    // Not present on current HPC schema — keep keys for UI compatibility; omit from selects.
+    projectPhase: null,
     propertyType: "Property Type",
-    operationType: "Operation Type",
+    operationType: null,
     managementCompany: "Operator / Management Company",
     website: "Official Property URL",
     telephone: "Phone",
@@ -115,32 +117,32 @@ const F = {
     address2: "Address 2",
     market: "Market",
     submarket: "Submarket",
-    openDate: "Open Date",
-    projectedOpenDate: "projected_open_date",
-    starRating: "Star Rating",
+    openDate: "Opening Date",
+    projectedOpenDate: null,
+    starRating: null,
     amenities: "Amenities - Source Text",
     hotelDescription: "Short Property Summary",
     hotelHeadline: "Property Positioning",
-    occupancyRate: "Occupancy Rate",
-    adr: "ADR",
-    revpar: "RevPAR",
+    occupancyRate: null,
+    adr: null,
+    revpar: null,
     state: "State / Region",
     postalCode: "Postal Code",
-    floors: "Floors",
-    totalMeetingSpace: "Total Meeting Space",
+    floors: null,
+    totalMeetingSpace: null,
     dataConfidence: "Data Confidence Tier",
     censusPropertyType: "Property Type",
     hotelServiceModel: "Hotel Service Model",
-    allSuites: "All Suites (Y/N)",
-    boutique: "Boutique (Y/N)",
-    casino: "Casino (Y/N)",
-    conference: "Conference (Y/N)",
-    convention: "Convention (Y/N)",
-    golf: "Golf (Y/N)",
-    resort: "Resort (Y/N)",
-    restaurant: "Restaurant (Y/N)",
-    ski: "Ski (Y/N)",
-    spa: "Spa (Y/N)",
+    allSuites: null,
+    boutique: null,
+    casino: null,
+    conference: null,
+    convention: null,
+    golf: null,
+    resort: null,
+    restaurant: null,
+    ski: null,
+    spa: null,
   },
 };
 
@@ -161,12 +163,11 @@ const MAP_HOTEL_FIELDS = [
   F.hotels.locationType,
   F.hotels.rooms,
   F.hotels.chainScale,
-  F.hotels.operationType,
   F.hotels.managementCompany,
   F.hotels.market,
   F.hotels.submarket,
   F.hotels.censusPropertyType,
-];
+].filter((name) => typeof name === "string" && name.trim());
 
 function readTextField(fields, key) {
   const raw = fields[key];
@@ -304,7 +305,25 @@ function formatHotelRecord(hotel) {
     address2: readTextField(fields, F.hotels.address2),
     market: readTextFieldAliases(fields, [F.hotels.market, "Market / Submarket"]),
     submarket: readTextField(fields, F.hotels.submarket),
-    openDate: readDateField(fields, F.hotels.openDate),
+    openDate:
+      readDateField(fields, F.hotels.openDate) ||
+      readDateField(fields, "Open Date") ||
+      readDateField(fields, "Opening Date"),
+    openingDate:
+      readDateField(fields, F.hotels.openDate) ||
+      readDateField(fields, "Open Date") ||
+      readDateField(fields, "Opening Date"),
+    yearBuilt: (() => {
+      const raw =
+        readDateField(fields, F.hotels.openDate) ||
+        readDateField(fields, "Open Date") ||
+        readDateField(fields, "Opening Date");
+      if (!raw) return null;
+      const m = String(raw).match(/(18|19|20)\d{2}/);
+      if (!m) return null;
+      const y = Number(m[0]);
+      return Number.isFinite(y) && y >= 1800 && y <= 2100 ? y : null;
+    })(),
     projectedOpenDate: readDateField(fields, F.hotels.projectedOpenDate),
     starRating: readNumberField(fields, F.hotels.starRating),
     amenities: readTextFieldAliases(fields, [

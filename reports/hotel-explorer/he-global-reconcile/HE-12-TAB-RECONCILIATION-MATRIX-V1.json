@@ -1,0 +1,122 @@
+{
+  "version": "HE_12_TAB_RECONCILIATION_MATRIX_V1",
+  "generatedAt": "2026-11-20T01:35:00.000Z",
+  "hotel": { "name": "Bethesda Marriott", "hpcId": "recLuxvwwxID7U2B8" },
+  "entryPoints": {
+    "8080_radar_canonical": {
+      "urlBase": "http://localhost:8080",
+      "build": "canonical-main / origin/main a800e9cdc",
+      "panelShaPrefix": "24D7A742276F"
+    },
+    "8090_live_preview_he50_process": {
+      "urlBase": "http://localhost:8090",
+      "build": "HE50 WIP process (pre-unauthorized-switch)",
+      "panelShaPrefix": "F776B2168AA8"
+    },
+    "8091_proposed_preview_process": {
+      "urlBase": "http://127.0.0.1:8091",
+      "build": "same HE50 panel family; Demand API currently matches empty geography false-negative",
+      "panelShaPrefix": "F776B2168AA8"
+    },
+    "8094_reconcile_worktree": {
+      "urlBase": "http://127.0.0.1:8094",
+      "build": "wt-he-global-reconcile-v1 with ported HE50 Demand/Area Hotels fixes",
+      "branch": "feat/he-global-reconcile-entry-parity-v1"
+    }
+  },
+  "tabs": [
+    {
+      "tab": "Hotel Overview",
+      "8080": "VERIFIED_AND_RENDERED",
+      "8090": "VERIFIED_AND_RENDERED",
+      "discrepancyClass": null,
+      "canonicalSource": "HPC"
+    },
+    {
+      "tab": "Guest Rooms & Meeting Space",
+      "8080": "VERIFIED_AND_RENDERED",
+      "8090": "VERIFIED_AND_RENDERED",
+      "discrepancyClass": null,
+      "canonicalSource": "HPC + ADP/events derived"
+    },
+    {
+      "tab": "Ownership Intelligence",
+      "8080_live": "PARTIAL — operator/brand Live; economic owner unresolved",
+      "8090_live": "PARTIAL — same Live governance",
+      "proposed": "Marbeth PropCo + Mullen sponsor + decision-makers staged",
+      "discrepancyClass": "LIVE_PROPOSED_GOVERNANCE_DIFFERENCE",
+      "note": "Do not promote Mullen portfolio listing to verified legal ownership"
+    },
+    {
+      "tab": "Contact Intelligence",
+      "8080_live": "PARTIAL — phone/website HPC",
+      "proposed": "Named DMs staged; Surfe click-only",
+      "discrepancyClass": "LIVE_PROPOSED_GOVERNANCE_DIFFERENCE"
+    },
+    {
+      "tab": "Organization & Portfolio",
+      "8080_live": "PARTIAL",
+      "proposed": "Mullen portfolio staged PROPOSED",
+      "discrepancyClass": "LIVE_PROPOSED_GOVERNANCE_DIFFERENCE"
+    },
+    {
+      "tab": "Relationships & Structure",
+      "8080_live": "PARTIAL — HI operator/brand edges",
+      "proposed": "Ownership edges overlaid",
+      "discrepancyClass": "LIVE_PROPOSED_GOVERNANCE_DIFFERENCE"
+    },
+    {
+      "tab": "Submarket Snapshot",
+      "8080": "PARTIAL — 1 matched HPC corridor",
+      "8090": "PARTIAL — same honest coverage",
+      "discrepancyClass": null,
+      "canonicalSource": "HPC"
+    },
+    {
+      "tab": "Area Hotels",
+      "8080": "BROKEN_UX — Hotel Census pool unavailable; empty within 10 mi",
+      "8090": "IMPROVED — HPC-native nearby (Mayflower, Renaissance, Falls Church)",
+      "8094_expected": "HPC-native after port",
+      "discrepancyClass": "UI_VERSION_DRIFT",
+      "fix": "hotel-detail-panel.js HPC-native Area Hotels"
+    },
+    {
+      "tab": "Demand Drivers",
+      "8080": "FALSE_EMPTY — geography filter bug (0 items)",
+      "8090": "VERIFIED_AND_RENDERED — 8 anchors",
+      "8094_expected": "8 after country-only filter port",
+      "discrepancyClass": "API_VERSION_DRIFT",
+      "canonicalSource": "Demand Anchors",
+      "fix": "he-demand-access-read-v1.js country-only"
+    },
+    {
+      "tab": "Access & Connectivity",
+      "8080": "VERIFIED_AND_RENDERED — 6 TI",
+      "8090": "VERIFIED_AND_RENDERED — 6–7 TI",
+      "discrepancyClass": null,
+      "canonicalSource": "Travel Infrastructure Data"
+    },
+    {
+      "tab": "Guest Sentiment",
+      "8080_live": "PROVIDER_RESTRICTED — empty Live",
+      "proposed": "3 platforms staged (TA/Booking/Expedia)",
+      "discrepancyClass": "PROVIDER_RESTRICTED"
+    },
+    {
+      "tab": "Sources & Evidence",
+      "8080": "PARTIAL/VERIFIED",
+      "proposed": "18 sources register",
+      "discrepancyClass": "LIVE_PROPOSED_GOVERNANCE_DIFFERENCE"
+    }
+  ],
+  "certification": {
+    "CANONICAL_COMPONENT_PARITY": "IN_PROGRESS",
+    "CANONICAL_API_PARITY": "IN_PROGRESS — Demand fix ported; awaiting 8080 restart on merged build",
+    "AIRTABLE_FIELD_MAPPING_VALIDATED": "PARTIAL",
+    "LIVE_PROPOSED_GOVERNANCE_VALIDATED": "YES — ownership/sentiment remain Proposed-gated",
+    "TWELVE_TAB_RENDER_VALIDATED": "NO",
+    "EIGHT_HOTEL_RESEARCH_COVERAGE_VALIDATED": "PARTIAL — Demand/Access populated in Airtable; entry-point drift blocks certification",
+    "THREE_ENTRY_POINT_BROWSER_PARITY_VALIDATED": "NO — gate correctly fails on 8080 vs 8090 demand drift",
+    "FULL_HE_E2E_VALIDATED": "NO"
+  }
+}

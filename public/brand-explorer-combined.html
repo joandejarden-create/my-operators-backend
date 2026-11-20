@@ -1530,25 +1530,56 @@
                 if (myGen !== educationLoadGen) return;
                 if (brandEducationLoading) brandEducationLoading.style.display = 'none';
                 if (dataB && dataB.success && dataB.brand && window.BrandExplorerAtelierFromApi) {
-                    window.BrandExplorerAtelierFromApi.mountIntoRoot(popRoot, dataB.brand);
-                    var heroSlot = document.getElementById('beCombinedPopupHeroMount');
-                    if (heroSlot && window.BrandExplorerGoldDetail && window.BrandExplorerGoldDetail.renderPresentationHero) {
-                        heroSlot.innerHTML = window.BrandExplorerGoldDetail.renderPresentationHero(dataB.brand, {
-                            heroId: 'brandHeroPopup'
-                        });
-                        if (window.BrandExplorerGoldDetail.applyChainScaleTheme) {
-                            window.BrandExplorerGoldDetail.applyChainScaleTheme(dataB.brand, popRoot);
-                        } else if (window.BrandExplorerGoldDetail.applyHeroStripe) {
-                            window.BrandExplorerGoldDetail.applyHeroStripe(dataB.brand);
+                    var apiPop = window.BrandExplorerAtelierFromApi;
+                    var liveBrandPop = dataB.brand;
+                    function paintPopupAtelier(brandForPopup) {
+                        if (!brandForPopup || myGen !== educationLoadGen) return;
+                        try {
+                            window.__BE_ATELIER_ACTIVE_BRAND__ = brandForPopup;
+                        } catch (_e) {}
+                        apiPop.mountIntoRoot(popRoot, brandForPopup);
+                        var heroSlot = document.getElementById('beCombinedPopupHeroMount');
+                        if (heroSlot && window.BrandExplorerGoldDetail && window.BrandExplorerGoldDetail.renderPresentationHero) {
+                            heroSlot.innerHTML = window.BrandExplorerGoldDetail.renderPresentationHero(brandForPopup, {
+                                heroId: 'brandHeroPopup'
+                            });
+                            if (window.BrandExplorerGoldDetail.applyChainScaleTheme) {
+                                window.BrandExplorerGoldDetail.applyChainScaleTheme(brandForPopup, popRoot);
+                            } else if (window.BrandExplorerGoldDetail.applyHeroStripe) {
+                                window.BrandExplorerGoldDetail.applyHeroStripe(brandForPopup);
+                            }
+                            if (window.BrandExplorerGoldDetail.wirePresentationMetaValueTooltips) {
+                                window.BrandExplorerGoldDetail.wirePresentationMetaValueTooltips(heroSlot);
+                            }
+                            if (window.BrandExplorerFavorites) {
+                                window.BrandExplorerFavorites.wireSaveButtons(heroSlot);
+                            }
                         }
-                        if (window.BrandExplorerGoldDetail.wirePresentationMetaValueTooltips) {
-                            window.BrandExplorerGoldDetail.wirePresentationMetaValueTooltips(heroSlot);
-                        }
-                        if (window.BrandExplorerFavorites) {
-                            window.BrandExplorerFavorites.wireSaveButtons(heroSlot);
-                        }
+                        if (popRoot) popRoot.hidden = false;
                     }
-                    if (popRoot) popRoot.hidden = false;
+                    // Honor founder Current Saved | Proposed Update — never leave the popup
+                    // on raw Airtable CURRENT when PROPOSED UPDATE is selected.
+                    var wantProposed =
+                        (apiPop.getProfileMode && apiPop.getProfileMode() === 'proposed') ||
+                        (apiPop.isProposedProfileModeRequest && apiPop.isProposedProfileModeRequest());
+                    if (
+                        wantProposed &&
+                        apiPop.buildCumulativeProposedBrandAsync
+                    ) {
+                        apiPop
+                            .buildCumulativeProposedBrandAsync(liveBrandPop)
+                            .then(function (proposed) {
+                                paintPopupAtelier(proposed || liveBrandPop);
+                            })
+                            .catch(function (err) {
+                                try {
+                                    console.error('[BrandExplorer] popup PROPOSED mount failed', err);
+                                } catch (_e2) {}
+                                paintPopupAtelier(liveBrandPop);
+                            });
+                    } else {
+                        paintPopupAtelier(liveBrandPop);
+                    }
                 } else {
                     if (errEl) {
                         errEl.textContent =
@@ -2711,6 +2742,13 @@
         if (!brandEducationPopup || brandEducationPopup.style.display !== 'flex') return;
         onBrandEducationFrameReady();
     });
+
+    // Expose for founder/product certification automation and app-shell probes.
+    // Keeps the same Proposed Update mount path as card "View Brand" clicks.
+    try {
+        window.openBrandEducationPopupForBrand = openBrandEducationPopupForBrand;
+        window.closeBrandEducationPopup = closeBrandEducationPopup;
+    } catch (_exposeErr) { /* ignore */ }
 
     var brandPopupClose = document.getElementById('beCombinedBrandDetailPopupClose');
     var brandPopupOverlay = document.getElementById('beCombinedBrandDetailPopupOverlay');

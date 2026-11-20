@@ -426,6 +426,58 @@
       "implementationModule": "lib/brand-explorer/be-property-image-integrity-v1.js"
     },
     {
+      "lessonId": "BE-QL-PRODUCT-POPUP-VISUAL-001",
+      "date": "2026-11-20",
+      "phase": "PRODUCT-POPUP-VISUAL-QUALITY",
+      "founderObservation": "Authenticated product popup at /app#/brand-explorer-combined showed Royal Palm Galápagos with a Travel Weekly masthead, half-empty card row, and a long ALL-CAPS yellow description — despite Compare Studio RIGHT / hash parity previously reporting PASS. The popup fallback atelier mounted raw Airtable CURRENT and ignored Proposed Update; Airtable CDN URLs also stripped -tw.jpg so integrity filename gates did not fire.",
+      "affected": [
+        "brand-detail-popup",
+        "beCombinedPopupAtelierRoot",
+        "footprint.openings",
+        "property-example-card",
+        "property-example-card__scenario",
+        "property-example-grid",
+        "Current Saved | Proposed Update",
+        "BE_LOCAL_PRODUCT_PARITY_GATE (insufficient alone)"
+      ],
+      "correctExpectedBehavior": "Product popup must mount the same brand as founder profile mode (Proposed Update uses cumulative assembler + integrity). Never display article mastheads/publication graphics as hotel photographs — verified identity replacements apply even when CDN URLs hide -tw markers. Scenario accent CSS must not force uppercase on body prose; long paragraphs render as sentence-case description. One-card grids must not leave a vacant second column. Visual defects must fail an independent quality gate even when LEFT/RIGHT hashes match.",
+      "failingExampleRef": "reports/brand-explorer/royal-palm-visual-quality-v1/screenshots/01-BEFORE-popup-royal-palm-footprint.png",
+      "associatedContract": "configs/brand-explorer-permanent-content-standards-contract-v1.json#fixedCollections.propertyFacingImages",
+      "automatedRegressionTest": "test:be-product-popup-visual-quality-v1",
+      "browserValidationEvidence": "reports/brand-explorer/royal-palm-visual-quality-v1/00-completion-report.md",
+      "status": "IMPLEMENTED",
+      "supersededRule": "Treating Compare Studio / hash parity PASS as sufficient product visual acceptance; mounting popup atelier from raw Airtable CURRENT while page mode is Proposed Update; requiring -tw.jpg filename markers before replacing known bad property identities",
+      "linkedRequirementIds": [],
+      "curioAscendApproval": "NOT_APPROVED",
+      "publicationVerified": false,
+      "implementationModule": "public/js/brand-explorer-property-image-integrity.js"
+    },
+    {
+      "lessonId": "BE-QL-FINAL-TEN-TAB-PRODUCT-CERT-001",
+      "date": "2026-11-20",
+      "phase": "FINAL-TEN-TAB-PRODUCT-CERTIFICATION",
+      "founderObservation": "PR #476 fixed Royal Palm popup visual defects, but full customer-facing readiness still requires certifying ALL TEN tabs in the actual authenticated product popup under Proposed Update — not Compare Studio alone, not hash parity alone, and not a single-tab regression.",
+      "affected": [
+        "brand-detail-popup",
+        "beCombinedPopupAtelierRoot",
+        "all ten atelier tabs",
+        "Current Saved | Proposed Update",
+        "BE_LOCAL_PRODUCT_PARITY_GATE",
+        "publication readiness"
+      ],
+      "correctExpectedBehavior": "Before controlled Airtable publication, Curio and Ascend must pass subsection-level browser certification on the actual 8080 popup in Proposed Update: content, styling, images, layout, functionality, and independent visual quality. Hash/parity PASS is insufficient. Wrong profile mode mounts, mastheads-as-hotels, orphan half-width 2-col cards, ALL-CAPS body prose, N/A numeric placeholders, and internal research leaks must fail. Publication requires BOTH FULL_10_TAB_PRODUCT_QUALITY_CERTIFIED and local product parity.",
+      "failingExampleRef": "reports/brand-explorer/final-ten-tab-product-certification-v1/00-certification-report.md",
+      "associatedContract": "configs/brand-explorer-canonical-subsection-inventory-v1.json",
+      "automatedRegressionTest": "test:be-final-ten-tab-product-cert-gate-v1",
+      "browserValidationEvidence": "reports/brand-explorer/final-ten-tab-product-certification-v1/",
+      "status": "IMPLEMENTED",
+      "supersededRule": "Declaring product complete from PR #476 / ten tab icons / matching LEFT-RIGHT hashes without full popup subsection browser certification",
+      "linkedRequirementIds": [],
+      "curioAscendApproval": "NOT_APPROVED",
+      "publicationVerified": false,
+      "implementationModule": "scripts/verify-be-final-ten-tab-product-popup-cert-v1.mjs"
+    },
+    {
       "lessonId": "BE-QL-DEALALITY-INSIGHT-001",
       "date": "2026-11-19",
       "phase": "DEALALITY-INSIGHT-ADVISORY",

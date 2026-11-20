@@ -6219,6 +6219,9 @@
       }
       openingsGrid = openingBlocks
         .map(function (block) {
+          if (brand && (brand.beCumulativeProposal || brand.beCandidateOverlay)) {
+            block.__proposedBrand = brand;
+          }
           return propertyExampleCardFromBlock(block, footprintPropertyPayloadSink);
         })
         .join('');
@@ -6226,7 +6229,9 @@
         '<section class="oe-section" style="margin-top:8px">' +
         '<h2 class="oe-section-title">Openings / Examples / Properties</h2>' +
         '<p class="oe-section-hint">' + escapeHtml(openingsHint) + '</p>' +
-        '<div class="property-example-grid">' +
+        '<div class="property-example-grid" data-card-count="' +
+        openingBlocks.length +
+        '">' +
         openingsGrid +
         '</div></section>';
     }
@@ -6446,8 +6451,16 @@
       chips = paras[0];
       loc = paras[1];
       asset = paras[2];
-      scenario = paras[3];
-      situation = paras[4];
+      // Short accent only (e.g. "Nature lodge · low density"). Long prose must not
+      // become the yellow uppercase scenario line — that was a founder visual defect.
+      if (isShortPropertyScenarioAccent(paras[3])) {
+        scenario = paras[3];
+        situation = paras[4];
+      } else {
+        scenario = '';
+        situation = paras[3];
+        why = paras[4];
+      }
     } else if (paras.length === 4) {
       chips = paras[0];
       loc = paras[1];
@@ -6486,6 +6499,17 @@
         return s.trim();
       })
       .filter(Boolean);
+  }
+
+  /** True when a 5th body unit is a short scenario accent, not a full sentence paragraph. */
+  function isShortPropertyScenarioAccent(text) {
+    var s = String(text || '').trim();
+    if (!s) return false;
+    if (s.length > 90) return false;
+    var words = s.split(/\s+/).filter(Boolean);
+    if (words.length > 14) return false;
+    if (/[.!?]["']?\s*$/.test(s) && words.length > 8) return false;
+    return true;
   }
 
   function buildCaseStudyModalPayload(block, p, chipParts, externalUrl, modalAppendixParsed) {
@@ -6693,32 +6717,44 @@
           })
           .join('')
       : '<span class="tag-chip">&nbsp;</span>';
-    var imgUrl = block && hasVal(block.imageUrl) ? String(block.imageUrl).trim() : '';
-    // Proposed column: never display publication thumbnails / Travel Weekly graphics as hotel photos.
+    var brandHint =
+      block && block.__proposedBrand
+        ? block.__proposedBrand
+        : typeof window !== 'undefined' && window.__BE_ATELIER_ACTIVE_BRAND__
+          ? window.__BE_ATELIER_ACTIVE_BRAND__
+          : null;
+    var imgUrl = '';
+    // Always resolve via integrity helper: verified identity photos + masthead rejection.
     if (
       globalThis.BePropertyImageIntegrity &&
-      typeof globalThis.BePropertyImageIntegrity.proposedPropertyImageUrl === 'function'
+      typeof globalThis.BePropertyImageIntegrity.resolvePropertyDisplayImage === 'function'
     ) {
-      // brand is closed over from renderFootprint — resolve via block marker or global proposed flag on mount
-      var brandHint =
-        block && block.__proposedBrand
-          ? block.__proposedBrand
-          : typeof window !== 'undefined' && window.__BE_ATELIER_ACTIVE_BRAND__
-            ? window.__BE_ATELIER_ACTIVE_BRAND__
-            : null;
-      imgUrl = globalThis.BePropertyImageIntegrity.proposedPropertyImageUrl(brandHint, imgUrl, {
-        imageFilename: block && block.imageFilename,
-        imageType: block && block.imageType
-      });
-    }
-    // If integrity repair already ran on the block, prefer its verified URL
-    if (block && block.__propertyImageIntegrity && block.__propertyImageIntegrity.replacementUrl) {
-      imgUrl = String(block.__propertyImageIntegrity.replacementUrl).trim();
+      imgUrl = globalThis.BePropertyImageIntegrity.resolvePropertyDisplayImage(block, brandHint);
+    } else {
+      imgUrl = block && hasVal(block.imageUrl) ? String(block.imageUrl).trim() : '';
+      if (
+        globalThis.BePropertyImageIntegrity &&
+        typeof globalThis.BePropertyImageIntegrity.proposedPropertyImageUrl === 'function'
+      ) {
+        imgUrl = globalThis.BePropertyImageIntegrity.proposedPropertyImageUrl(brandHint, imgUrl, {
+          imageFilename: block && block.imageFilename,
+          imageType: block && block.imageType
+        });
+      }
+      if (block && block.__propertyImageIntegrity && block.__propertyImageIntegrity.replacementUrl) {
+        imgUrl = String(block.__propertyImageIntegrity.replacementUrl).trim();
+      }
     }
     var topInner = '';
     var photoCredit = '';
     if (block && block.__propertyImageIntegrity && block.__propertyImageIntegrity.caption) {
       photoCredit = String(block.__propertyImageIntegrity.caption).trim();
+    } else if (
+      globalThis.BePropertyImageIntegrity &&
+      typeof globalThis.BePropertyImageIntegrity.findReplacement === 'function'
+    ) {
+      var verified = globalThis.BePropertyImageIntegrity.findReplacement(block);
+      if (verified && verified.caption) photoCredit = String(verified.caption).trim();
     }
     if (imgUrl && isSafeHttpUrl(imgUrl)) {
       topInner =
@@ -6780,7 +6816,11 @@
       '<div class="property-example-card__mid">' +
       (hasVal(metaHtml) ? '<div class="property-example-card__meta">' + metaHtml + '</div>' : '') +
       (hasVal(scenarioHtml)
-        ? '<div class="property-example-card__scenario">' + scenarioHtml + '</div>'
+        ? '<div class="property-example-card__scenario"' +
+          (isShortPropertyScenarioAccent(scenario) ? ' data-accent-short="1"' : '') +
+          '>' +
+          scenarioHtml +
+          '</div>'
         : '') +
       (hasVal(teaserHtml) ? '<p>' + teaserHtml + '</p>' : '') +
       '</div>' +
@@ -7314,7 +7354,39 @@
 
   function finishMount(resolvedBrand) {
     lastAtelierBrand = resolvedBrand;
+    try {
+      window.__BE_ATELIER_ACTIVE_BRAND__ = resolvedBrand;
+    } catch (e0) {
+      /* ignore */
+    }
     mountAtelierFromBrand(resolvedBrand);
+    // Product popup fallback uses a second atelier root — keep it on the same
+    // Current Saved / Proposed Update brand as the page mount (founder popup QA).
+    try {
+      var popRoot = document.getElementById('beCombinedPopupAtelierRoot');
+      if (popRoot && !popRoot.hidden) {
+        mountAtelierIntoRoot(popRoot, resolvedBrand);
+        var heroSlot = document.getElementById('beCombinedPopupHeroMount');
+        if (
+          heroSlot &&
+          window.BrandExplorerGoldDetail &&
+          typeof window.BrandExplorerGoldDetail.renderPresentationHero === 'function'
+        ) {
+          heroSlot.innerHTML = window.BrandExplorerGoldDetail.renderPresentationHero(resolvedBrand, {
+            heroId: 'brandHeroPopup'
+          });
+          if (window.BrandExplorerGoldDetail.applyChainScaleTheme) {
+            window.BrandExplorerGoldDetail.applyChainScaleTheme(resolvedBrand, popRoot);
+          }
+        }
+      }
+    } catch (ePop) {
+      try {
+        console.warn('[BrandExplorer] popup atelier remount skipped', ePop);
+      } catch (e2) {
+        /* ignore */
+      }
+    }
     try {
       window.dispatchEvent(
         new CustomEvent('brand-explorer-profile-mode-mounted', {
