@@ -28,6 +28,7 @@ npm run be-factory-2-batch3               # voco / Motto / avid / Tribute / Indi
 npm run be-factory-2-batch4               # Tapestry / Tempo / Design / Aloft / Kimpton / Bunkhouse / Centric / Courtyard / Westin / HI Express
 npm run be-factory-2-batch5               # JW / W / Le Méridien / Waldorf / Conrad / LXR / Park Hyatt / Grand Hyatt / Andaz / Hyatt Place
 npm run be-factory-2-batch6               # Ritz / St. Regis / EDITION / Luxury Collection / Renaissance / Signia / Alila / Hyatt House / InterContinental / Six Senses
+npm run be-factory-2-batch7               # Garner / Sleep Inn / Econo / Rodeway / MainStay / Days Inn / Super 8 / Microtel / Baymont / Travelodge
 npm run be-factory-2-dashboard
 npm run test:be-factory-2-batch-v1
 npm run test:be-factory-2-named-batch-five-v1
@@ -35,6 +36,7 @@ npm run test:be-factory-2-batch3-v1
 npm run test:be-factory-2-batch4-v1
 npm run test:be-factory-2-batch5-v1
 npm run test:be-factory-2-batch6-v1
+npm run test:be-factory-2-batch7-v1
 ```
 
 ## Named batch five (2026-11-20)
@@ -68,6 +70,12 @@ Review package: `reports/brand-explorer/factory-2-0/41-batch5-consolidated-revie
 Ten brands: Ritz-Carlton, St. Regis, EDITION, Luxury Collection, Renaissance, Signia by Hilton, Alila, Hyatt House, InterContinental, Six Senses.  
 All EXISTING_CANONICAL Draft/Under Review (no Basics creates). Management-led luxury fee language does not invent franchise percentages.  
 Review package: `reports/brand-explorer/factory-2-0/51-batch6-consolidated-review.md`.
+
+## Batch 7 (2026-11-20)
+
+Economy / midscale / affordable extended-stay: Garner, Sleep Inn, Econo Lodge, Rodeway Inn, MainStay Suites, Days Inn, Super 8, Microtel, Baymont, Travelodge.  
+Choice Privileges + Wyndham Rewards loyalty-six; FDD disclosure language only (no invented fees).  
+Review package: `reports/brand-explorer/factory-2-0/61-batch7-consolidated-review.md`.
 
 ## Durable storage
 

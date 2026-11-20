@@ -579,6 +579,136 @@
       source: 'factory-2-0-depth-batch',
       founderApprovalStatus: 'NOT_APPROVED',
       approvalContentHash: '3bdae3d0e9cd0027d08ca93d5001a70adcf678d7337741b7cefb854853364760'
+    },
+    {
+      id: 'rec4y33IpMYdmWAqS',
+      slug: 'garner-hotels',
+      name: 'Garner Hotels',
+      overlayUrl: '/brand-explorer-phase2e-preview/garner-hotels-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-7-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'd62a547d53c5d46ab73fb173d075d6cc04800432d6704ca4e3da214b9064f0ee'
+    },
+    {
+      id: 'recXWQe2uMx69bQDL',
+      slug: 'sleep-inn',
+      name: 'Sleep Inn',
+      overlayUrl: '/brand-explorer-phase2e-preview/sleep-inn-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-7-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '0d56499f0b255859dae8d31fbd36f9989fbcdebd890b19116fb6e258bf947c8f'
+    },
+    {
+      id: 'recagQusDvkOUf2XN',
+      slug: 'econo-lodge',
+      name: 'Econo Lodge',
+      overlayUrl: '/brand-explorer-phase2e-preview/econo-lodge-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-7-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '2428f59e73416c3ccd7f063a8a4c9606df93efbabc01b222523a53c814ebfcb7'
+    },
+    {
+      id: 'recjkV8i8Px2jckSn',
+      slug: 'rodeway-inn',
+      name: 'Rodeway Inn',
+      overlayUrl: '/brand-explorer-phase2e-preview/rodeway-inn-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-7-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '8320d44386e280201a3ac1c686c2c14c542806b8f5cfd8bce5007ee6e0bb18f3'
+    },
+    {
+      id: 'recy9lvcO8iBf7q47',
+      slug: 'mainstay-suites',
+      name: 'MainStay Suites',
+      overlayUrl: '/brand-explorer-phase2e-preview/mainstay-suites-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-7-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '5dbab7a42bd6571f701ab1c5f37dfb6d49c673953586a25777d4157be3f17d5b'
+    },
+    {
+      id: 'recLenDbM22RP7PsB',
+      slug: 'days-inn-by-wyndham',
+      name: 'Days Inn by Wyndham',
+      overlayUrl: '/brand-explorer-phase2e-preview/days-inn-by-wyndham-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-7-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '230326afb02f7ce4c4819abcbac3d2e4005a4eb688bdbbf668515cd3f3de2cfd'
+    },
+    {
+      id: 'recBmtjThn1HgNX9d',
+      slug: 'super-8-by-wyndham',
+      name: 'Super 8 by Wyndham',
+      overlayUrl: '/brand-explorer-phase2e-preview/super-8-by-wyndham-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-7-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '7e324e145ba689ebfebb81647d26b5a3c377d9b49960071e46f98ae0cb1ff03b'
+    },
+    {
+      id: 'recIjv1h6tQPQTRXI',
+      slug: 'microtel-by-wyndham',
+      name: 'Microtel by Wyndham',
+      overlayUrl: '/brand-explorer-phase2e-preview/microtel-by-wyndham-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-7-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'df5f7d90d4a1a91b05f674a2404d409eb7880af563a61053e39790cba9599115'
+    },
+    {
+      id: 'recaORoZYBbFXyuCs',
+      slug: 'baymont-by-wyndham',
+      name: 'Baymont by Wyndham',
+      overlayUrl: '/brand-explorer-phase2e-preview/baymont-by-wyndham-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-7-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: '76150adfe76c6936895933463364e82b66defe9b25af7b0ecf539b22285ff7c7'
+    },
+    {
+      id: 'recgrfnefkcrkZtEa',
+      slug: 'travelodge-by-wyndham',
+      name: 'Travelodge by Wyndham',
+      overlayUrl: '/brand-explorer-phase2e-preview/travelodge-by-wyndham-factory2-frozen-approval-payload-v1.json',
+      scorecardUrl: null,
+      baselineUrl: null,
+      manifestUrl: null,
+      candidateVersion: 'factory-2-0-batch-7-v1',
+      source: 'factory-2-0-depth-batch',
+      founderApprovalStatus: 'NOT_APPROVED',
+      approvalContentHash: 'dc1986c8d2c90b636d328fc4b879ca559c89890a83735d0a87438e005d05b7f5'
     }
   ];
 
@@ -670,6 +800,16 @@
     if (/^alila\b/i.test(name)) return bySlug('alila');
     if (/hyatt house/i.test(name)) return bySlug('hyatt-house');
     if (/intercontinental/i.test(name)) return bySlug('intercontinental');
+    if (/^garner\b/i.test(name)) return bySlug('garner-hotels');
+    if (/sleep inn/i.test(name)) return bySlug('sleep-inn');
+    if (/econo\s*lodge/i.test(name)) return bySlug('econo-lodge');
+    if (/rodeway/i.test(name)) return bySlug('rodeway-inn');
+    if (/mainstay/i.test(name)) return bySlug('mainstay-suites');
+    if (/days inn/i.test(name)) return bySlug('days-inn-by-wyndham');
+    if (/super\s*8/i.test(name)) return bySlug('super-8-by-wyndham');
+    if (/microtel/i.test(name)) return bySlug('microtel-by-wyndham');
+    if (/baymont/i.test(name)) return bySlug('baymont-by-wyndham');
+    if (/travelodge/i.test(name)) return bySlug('travelodge-by-wyndham');
     if (/six senses/i.test(name)) return bySlug('six-senses');
     if (/hyatt place/i.test(name)) return bySlug('hyatt-place');
     return null;
